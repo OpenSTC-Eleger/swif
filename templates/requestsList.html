@@ -41,10 +41,14 @@
 					<th>
 						<%= _.capitalize(lang.status) %> 
 						    <div class="dropdown pull-right">
-							    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-filter icon-large muted"></i></a>
-							    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							    <a id="filterState" class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-filter icon-large muted"></i></a>
+							    
+							    <ul class="dropdown-menu" role="menu" aria-labelledby="filterState">
 									<% _.each(requestsState, function (state, i) { %>
-										<li role="menuitem"><a tabindex="-1" href="#help"> <%= state.traduction %></a></li>
+										<li role="menuitem">
+											<a tabindex="-1" href="#demandes-dinterventions/filter/state/<%= state.value %>"> 
+												<i class="badge <%= (state.color != '' ? 'badge-'+state.color : '') %>">&nbsp;</i>
+												&nbsp; <%= _.capitalize(state.traduction) %></a></li>
 									<% }) %>
 								</ul>
 						</div>

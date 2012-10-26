@@ -32,10 +32,10 @@ openstm.Models.Request = Backbone.RelationalModel.extend({
 
 	   	// Initialization Traduction request state //
 	   	openstm.Models.Request.state[0].traduction = openstm.lang.refused;
-	   	openstm.Models.Request.state[0].traduction = openstm.lang.wait;
-	   	openstm.Models.Request.state[0].traduction = openstm.lang.confirm;
-	   	openstm.Models.Request.state[0].traduction = openstm.lang.valid;
-	   	openstm.Models.Request.state[0].traduction = openstm.lang.closed;
+	   	openstm.Models.Request.state[1].traduction = openstm.lang.wait;
+	   	openstm.Models.Request.state[2].traduction = openstm.lang.confirm;
+	   	openstm.Models.Request.state[3].traduction = openstm.lang.valid;
+	   	openstm.Models.Request.state[4].traduction = openstm.lang.closed;
 	},
 
 
@@ -84,22 +84,22 @@ openstm.Models.Request = Backbone.RelationalModel.extend({
 	state:  [        
 		{
             value       : 'refused',
-            color       : 'label-important',
+            color       : 'important',
             traduction  : '',
         },
         {
             value       : 'wait',
-            color       : 'label-info',
-            traduction  : ,
+            color       : 'info',
+            traduction  : '',
         },
         {
             value       : 'confirm',
-            color       : 'label-warning',
+            color       : 'warning',
             traduction  : '', 
         },
         {
             value       : 'valid',
-            color       : 'label-success',
+            color       : 'success',
             traduction  : '',   
         },
         {

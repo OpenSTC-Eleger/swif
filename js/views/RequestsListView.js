@@ -47,6 +47,9 @@ openstm.Views.RequestsListView = Backbone.View.extend({
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
 
+console.log(this.options);
+console.log('###########################################################');
+
 
         // Retrieve the number of waiting Interventions //
         var interventionsWaiting = _.filter(requests, function(item){ return item.attributes.state == openstm.Models.Request.state[1].value; });
