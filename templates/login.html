@@ -1,0 +1,34 @@
+<!-- Container form connection -->
+<!--<div class="span12">-->
+
+	<!-- Connection Form -->
+	<form id="formConnection" action="#" class="form-horizontal well">
+	<fieldset>
+		<legend><i class="icon-user icon-large"></i> &nbsp;<%= _.capitalize(lang.connection) %></legend>
+
+		<div class="control-group">
+			<label class="control-label" for="loginUser"><%= _.capitalize(lang.login) %></label>
+			<div class="controls">
+				<input type="text" id="loginUser" name="loginUser" required="required" placeholder="<%= _.capitalize(lang.login) %>" autocomplete="off" autofocus="autofocus" value="<%= user.login %>">
+			</div>
+		</div>
+
+		<div class="control-group" >
+			<label class="control-label" for="passUser"><%= _.capitalize(lang.password) %></label>
+			<div class="controls">
+				<input type="password" id="passUser" name="passUser" required="required" placeholder="•••••••••••••">
+			</div>
+		</div>
+
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary pull-right"><i class="icon-signin icon-large"></i> &nbsp;<%= _.capitalize(lang.actions.logIn) %></button>
+		</div>
+
+		<% if (user.lastConnection != ''){ %>
+			<small class="muted" id="lastConnection"><%= _.capitalize(lang.lastConnection) %>  <%= user.lastConnection %></small>
+		<% } %>
+
+	</fieldset>
+	</form>
+	
+<!--</div>-->

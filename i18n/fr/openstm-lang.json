@@ -1,0 +1,65 @@
+{
+	"applicationName"	: "OpenSTM",
+
+	"connection"		: "connexion",
+	"login"				: "identifiant",
+	"password"			: "mot de passe",
+	"lastConnection"	: "dernière connexion le",
+	"settings"			: "paramètres",
+	"help"				: "aide",
+	"about"				: "à propos",
+	"name"				: "nom",
+	"label"				: "libellé",
+	"description"		: "description",
+	"status"			: "statut",
+	"place" 			: "site",
+	"claiment" 			: "demandeur",
+	"dateRequest" 		: "date demande",
+	"validateBy" 		: "validé par",
+	"toValidateBy" 		: "à valider par",
+	"service" 			: "service",
+	"refused" 			: "refusée",
+	"wait" 				: "en attente",
+	"valid" 			: "validée",
+	"closed" 			: "cloturée",
+	"confirm" 			: "DST",
+	"notKnown"			: "non renseigné",
+
+
+	"actions" : {
+		"logIn"			: "connectez-vous",
+		"logOut"			: "déconnexion",
+		"addRequest"		: "nouvelle demande",
+		"save"				: "enregistrer",
+		"cancel"			: "annuler",
+		"search"			: "rechercher",
+		"previous"			: "précédent",
+		"next"				: "suivant",
+		"first"				: "début",
+		"end"				: "fin",
+		"previousShort"		: "préc",
+		"nextShort"			: "suiv"
+	},
+
+	"errorMessages" : {
+		"connectionError"     : "Erreur de connexion",
+	    "loginIncorrect"      : "Identifiant ou mot de passe incorrect",
+	    "unablePerformAction" : "Impossible d'effectuer l'action",
+	    "serverUnreachable"   : "Impossible d'établir la connexion avec le serveur, contactez l'administrateur",
+	    "sufficientRights"    : "Vous n'avez pas les droits suffisants pour éffectuer cette action"
+	},
+
+	"infoMessages" : {
+   		"information"         : "Information",
+    	"successLogout"       : "Vous êtes maintenant déconnecté",
+    	"noRequest"      	  : "Aucune intervention dans la base de données"
+	},
+
+	"viewsTitles" : {
+    	"login"			: "OpenSTM connexion",
+    	"about"			: "À propos d'OpenSTM",
+    	"requestsList"	: "Demandes d'interventions",
+    	"requestDetail"	: "Détail de la demande",
+    	"newRequest"	: "Nouvelle demande d'intervention"
+	}
+}

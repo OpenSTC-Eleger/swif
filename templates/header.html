@@ -1,0 +1,65 @@
+<div class="navbar-inner">
+	<div class="container-fluid">
+	 
+	     
+	    <!-- Application name -->
+	    <a class="brand" href="#"><i class="icon-truck icon-large"></i> <%= lang.applicationName %> </a>
+
+		
+		<!-- Display the menu if user is logged -->
+		<% if (user.sessionID != ''){ %>
+
+		    <!-- Navbar button (display on smarthphone and touchpad)-->
+		    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+		    </a>
+		   
+		   	<!-- Elements (display on large screen) -->
+		    <div class="nav-collapse">
+			    	
+		    	<!-- Main menu application -->
+		    	<ul id="nav-menu-app" class="nav" role="menu">
+		    		
+	 				<% _.each(menus, function (menuRacine, i) { %>
+	 					<% _.each(menuRacine.children, function (menuParent, i) { %>
+				    		<li class="dropdown" id="<%= _.slugify(menuParent.name) %>">
+				    			<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuParent.id %>"><%= menuParent.name %> <b class="caret"></b></a>
+			    				
+			    				<ul aria-labelledby="drop-menu-app-<%= menuParent.id %>" role="menu" class="dropdown-menu">
+									<% _.each(menuParent.children, function (menuChildren, i) { %>
+										<li role="menuitem"><a href="#<%= _.slugify(menuChildren.name) %>"><%= menuChildren.name %></a></li>
+									<% }); %>
+								</ul>
+
+		  					</li>
+		  				<% }); %>	
+  					<% }); %>
+
+  					<li role="menuitem"><a href="#">Achat</a></li>
+					<li role="menuitem"><a href="#">Véhicules</a></li>
+		    	</ul>
+
+
+		    	<!-- User menu application -->
+				<ul class="nav pull-right" role="menu">
+					<li class="dropdown" id="login-drop-menu-container">
+						<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-user icon-large"></i> &nbsp; <%= user.login %> <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li role="menuitem"><a tabindex="-1" href="#about"><i class="icon-info-sign"></i> <%= _.capitalize(lang.about) %></a></li>
+							<li role="menuitem"><a tabindex="-1" href="#help"><i class="icon-question-sign"></i> <%= _.capitalize(lang.help) %></a></li>
+							<li role="menuitem" class="divider"></li>
+							<li role="menuitem"><a tabindex="-1" href="#settings"><i class="icon-cog"></i> <%= _.capitalize(lang.settings) %></a></li>
+							<li role="menuitem"><a tabindex="-1" href="#logout"><i class="icon-signout"></i> <%= _.capitalize(lang.actions.logOut) %></a></li>
+						</ul>
+					</li>
+				</ul>
+
+			</div>
+		<% } %>
+
+	</div>
+</div>

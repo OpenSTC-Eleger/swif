@@ -1,0 +1,29 @@
+/////////////////////////////////
+// A faire 
+
+- Récupérer les informations de l'utilisateur - Nom, prénom
+
+- Unit TEST
+
+- Catch erreur connexion
+
+- Faire une vue globale qui étend Backbone view, faire hériter les autres vues de cette nouvelle vue
+
+
+
+/////////////////////////////////
+// Problèmes 
+
+- Si l'on est connecté, que l'on quitte l'application et que l'on revient on n'est pas redirigé...
+
+
+
+
+
+
+/////////////////////////////////
+// Améliorations
+
+- Transition entre les vues
+
+- Vérifier W3C validator

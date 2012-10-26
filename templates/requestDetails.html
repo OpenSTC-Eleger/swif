@@ -1,0 +1,46 @@
+<form id="formRequest" action="#" class="form-horizontal">
+<fieldset>
+
+        <% if (request.id != null) { %>
+            <legend><%= lang.viewsTitles.requestDetail %> n°<%= request.id %></legend>
+        <% } else { %>
+            <legend><%= lang.viewsTitles.newRequest %></legend>
+        <% } %>
+        <br/>
+        
+        <div class="control-group">
+            <label for="requestName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
+
+            <div class="controls">
+                <input type="text" id="requestName" name="requestName" value="<%= request.name %>" required="required" />
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label for="requestDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
+
+            <div class="controls">
+                <textarea name="requestDescription" id="requestDescription" rows="5" required="required"><%= request.description %></textarea>
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        
+        
+        <div class="control-group">
+            <label for="requestPlace" class="control-label"><%= _.capitalize(lang.place) %>:</label>
+
+            <div class="controls">  
+        		<select id="requestPlace"><option value=''>Select</option></select>
+                <span class="help-inline"></span>                      		
+            </div>
+        </div>
+
+        
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary save"><%= lang.actions.save %></button>
+        <a href="#" class="btn btn-inverse"><%= lang.actions.cancel %></a>
+    </div>
+
+</fieldset>
+</form>
