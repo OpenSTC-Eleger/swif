@@ -33,6 +33,7 @@ var openstm = {
     models          : {},
     views           : {},
     lang            : {},
+    templates       : {},
 
 
 
