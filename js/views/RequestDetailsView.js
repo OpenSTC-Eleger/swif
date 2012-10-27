@@ -23,10 +23,11 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 	initialize: function (model, create) {
 		
 		// Check if the view is instantiate //
-		if(openstm.views.RequestDetailsView != null ){
-			return openstm.views.RequestDetailsView;
-		}
+//		if(openstm.views.RequestDetailsView != null ){
+//			return openstm.views.RequestDetailsView;
+//		}
 
+		//this.model = model;
 		this.create = create;
 		this.render();
 	},
@@ -50,41 +51,22 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
         // Change the active menu item //
         openstm.views.headerView.selectMenuItem(openstm.router.mainMenus.manageInterventions);
 
-
+        self.collection = this.collection;
     	// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 		  
 		     var template = _.template(templateData, {lang: openstm.lang, request: self.model.toJSON()});
-		     $(self.el).html(template);
+		     $(self.el).html(template);		     
 		     
-		     if( openstm.views.selectListPlacesView == null) {
-		    	 	openstm.collections.places = new openstm.Collections.Places();
-					openstm.views.selectListPlacesView = new openstm.Views.SelectListPlacesView({el: $("#requestPlace"), collection: openstm.collections.places})
-					
-					openstm.collections.places.fetch({
-						success: function(){
-							if (self.model.get("site1") != null && self.model.get("site1") != false)
-								openstm.views.selectListPlacesView.setSelectedPlace( self.model.get("site1").get(0) );
-						},	
-						error: function(){
-							console.log("Error: unable to load places - RequestDetailsView.js");
-						}
-					});				
-			}		     
-		    else {
-		    	if (self.model!= null && self.model.get("site1") != null && self.model.get("site1") != false ){		    		
-		    		openstm.views.selectListPlacesView.setSelectedPlace( self.model.get("site1").get(0) );	
-		    		//openstm.collections.Sites.reset();
-		    	}
-		    }
-
+		     openstm.views.selectListPlacesView = new openstm.Views.SelectListPlacesView({el: $("#requestPlace"), collection: openstm.collections.places})
+		     openstm.views.selectListPlacesView.addAll();
+		     openstm.views.selectListPlacesView.setSelectedPlace( self.model.get("site1")[0] );
 		    
 		 });
 
 		$(this.el).hide().fadeIn('slow');     
 		return this;
 	},
-
 
 
 	/** Save the request

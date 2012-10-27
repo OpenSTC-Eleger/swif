@@ -16,9 +16,9 @@ openstm.Views.SelectItemPlaceView = Backbone.View.extend({
 
 	/** Display the view
 	*/
-	render: function(){
-		 	$(this.el).attr('value', this.model.get('id')).html(this.model.get('name'));
-		if (this.selected)
+	render: function(select){
+		 $(this.el).attr('value', this.model.get('id')).html(this.model.get('name'));
+		if (select)
 			$(this.el).attr('selected', 'true');      	
 		
 		return this;
