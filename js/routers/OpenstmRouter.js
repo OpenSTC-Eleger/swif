@@ -188,7 +188,7 @@ openstm.Router = Backbone.Router.extend({
             openstm.collections.places.fetch({success: function(){
             
                 if(openstm.views.requestsDetailsView == null) {
-                    openstm.views.requestsDetailsView = new openstm.Views.RequestDetailsView({model: self.request}, false);
+                    openstm.views.requestsDetailsView = new openstm.Views.RequestDetailsView(self.request, false);
                 } 
                 else {
                     openstm.views.requestsDetailsView.initialize(self.request, false);             

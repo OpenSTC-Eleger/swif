@@ -27,6 +27,7 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 //			return openstm.views.RequestDetailsView;
 //		}
 
+		
 		this.model = model;
 		this.create = create;
 		this.render();
