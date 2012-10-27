@@ -191,7 +191,7 @@ openstm.Router = Backbone.Router.extend({
                     openstm.views.requestsDetailsView = new openstm.Views.RequestDetailsView({model: self.request}, false);
                 } 
                 else {
-                    openstm.views.requestsDetailsView.initialize();             
+                    openstm.views.requestsDetailsView.initialize(self.request, false);             
                 }
 
             }});        	
