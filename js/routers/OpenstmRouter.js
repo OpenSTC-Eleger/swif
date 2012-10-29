@@ -209,16 +209,27 @@ openstm.Router = Backbone.Router.extend({
         
         // Check if the user is connect //
         if(this.checkConnect()){
+        	
+        	var self = this;
             var request = new openstm.Models.Request();
+
+            if(openstm.collections.places == null ){
+                openstm.collections.places = new openstm.Collections.Places();
+            }
+
+            self.request = request;
+            openstm.collections.places.fetch({success: function(){
             
-            // Check if the requestView already exist //
-            if(openstm.views.requestView == null) {          
-                openstm.views.requestView = new openstm.Views.RequestDetailsView({model: request}, true);  
-            }
-            else{
-                openstm.views.requestView.model = request;
-                openstm.views.requestView.initialize(request,true);
-            }
+	            // Check if the requestView already exist //
+	            if(openstm.views.requestView == null) {          
+	                openstm.views.requestView = new openstm.Views.RequestDetailsView( request, true);  
+	            }
+	            else{
+	                openstm.views.requestView.model = request;
+	                openstm.views.requestView.initialize(request,true);
+	            }
+	            
+	       }});    
         }
         else{
             this.navigate('login', {trigger: true, replace: true});
