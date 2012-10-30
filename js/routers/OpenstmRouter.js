@@ -30,7 +30,8 @@ openstm.Router = Backbone.Router.extend({
     */
     initialize: function () {
 
-        // Header, Footer Initialize //
+    	this.checkConnect(); //to reload menu
+        // Header, Footer Initialize //    	
         openstm.views.headerView = new openstm.Views.HeaderView();
         openstm.views.footerView = new openstm.Views.FooterView();
 
@@ -107,8 +108,19 @@ openstm.Router = Backbone.Router.extend({
     /** Logout the user
     */
     logout: function(){
-        openstm.models.user.logout();
-        this.navigate('login', {trigger: true, replace: true});
+    	var self = this;
+    	//Destroy session after asynchronous openerp response
+        openstm.models.user.logout({        	
+        	success: function(){  
+        		openstm.models.user.destroySessionID();
+        		openstm.models.user.save();
+        		openstm.views.headerView.render();
+        		self.navigate('login', {trigger: true, replace: true});	
+			},
+        	error: function(){   
+				openstm.notify('error', openstm.lang.errorMessages.connectionError, openstm.lang.errorMessages.serverUnreachable);
+			}
+        });        
     },
 
 
@@ -183,7 +195,7 @@ openstm.Router = Backbone.Router.extend({
             if(openstm.collections.places == null ){
                 openstm.collections.places = new openstm.Collections.Places();
             }
-
+            //load details after places list loaded
             self.request = request;
             openstm.collections.places.fetch({success: function(){
             

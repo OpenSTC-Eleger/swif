@@ -50,13 +50,13 @@ openstm.Models.Request = Backbone.RelationalModel.extend({
 		
 	/** Save Model
 	*/
-	save: function(model, name, description, site, options, create) {
+	save: function(model, name, description, site, date_deadline, options, create) {
 		var data = {};
 		data.name = name;
 		data.description = description;  
 		data.site1 = site;
 		data.service_id = 1;
-		data.date_deadline = '2012-11-29';	    	      	
+		data.date_deadline = date_deadline;	    	      	
 		openstm.saveOE(data, this.get("id"), this.model_name,openstm.models.user.getSessionID(), options);
 	},
 

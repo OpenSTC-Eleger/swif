@@ -59,8 +59,7 @@
 				<% for (var i = startPos; i < endPos; i++) { %>
 					<tr>
 					    <td>
-					    	<a 
-					    		href="#demandes-dinterventions/<%= requests[i].id %>" 
+					    	<a  href="#demandes-dinterventions/<%= requests[i].id %>" 
 					    		rel="popover" 
 					    		data-content="<%= (requests[i].description != '' ? requests[i].description : _.capitalize(lang.notKnown)) %>" 
 					    		data-original-title="<strong><%= _.capitalize(lang.description) %>:</strong>">

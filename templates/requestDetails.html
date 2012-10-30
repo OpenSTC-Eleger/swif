@@ -26,6 +26,15 @@
             </div>
         </div>
         
+        <div class="control-group">
+            <label for="requestDateDeadline" class="control-label"><%= _.capitalize(lang.date_deadline) %>:</label>
+
+            <div class="controls">
+                <input type="date" id="requestDateDeadline" name="requestDateDeadline" value="<%= request.date_deadline %>"  />
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        
         
         <div class="control-group">
             <label for="requestPlace" class="control-label"><%= _.capitalize(lang.place) %>:</label>

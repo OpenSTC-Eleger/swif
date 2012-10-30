@@ -59,6 +59,7 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 		     var template = _.template(templateData, {lang: openstm.lang, request: self.model.toJSON()});
 		     $(self.el).html(template);		     
 		     
+		     //PYF 26/10/12 : Select place
 		     openstm.views.selectListPlacesView = new openstm.Views.SelectListPlacesView({el: $("#requestPlace"), collection: openstm.collections.places})
 		     openstm.views.selectListPlacesView.addAll();
 		     openstm.views.selectListPlacesView.setSelectedPlace( self.model.get("site1")[0] );
@@ -81,6 +82,7 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 			this.$('#requestName').val(),
 			this.$('#requestDescription').val(),
 			this.$('#requestPlace').val(),
+			this.$('#requestDateDeadline').val(),			
 		{
             success: function (data) {
                 console.log(data);

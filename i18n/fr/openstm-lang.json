@@ -24,6 +24,7 @@
 	"closed" 			: "cloturée",
 	"confirm" 			: "DST",
 	"notKnown"			: "non renseigné",
+	"date_deadline"		: "Date butoir",
 
 
 	"actions" : {
