@@ -6,7 +6,7 @@ var openstm = {
 
     // Global variables //
     versionOpenSTM  : '0.1 alpha',
-    userBDD         : 'pontlabbe5',
+    userBDD         : 'pontlabbe',
     uniq_id_counter : 0,
     
     urlOE                       : 'http://octm-dev.siclic.fr:8069',
@@ -296,4 +296,7 @@ _.mixin(_.str.exports());
 */
 $(document).ready(function () {
     openstm.init('fr');
+    
 });
+
+

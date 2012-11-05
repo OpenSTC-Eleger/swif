@@ -61,6 +61,7 @@
     	"about"			: "À propos d'OpenSTM",
     	"requestsList"	: "Demandes d'interventions",
     	"requestDetail"	: "Détail de la demande",
-    	"newRequest"	: "Nouvelle demande d'intervention"
+    	"newRequest"	: "Nouvelle demande d'intervention",
+    	"planning"		: "Planning"
 	}
 }

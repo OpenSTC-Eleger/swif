@@ -32,7 +32,7 @@ openstm.Views.HeaderView = Backbone.View.extend({
                 },
                 success: function (data) {
                     console.debug(data.result.data.children);
-                    self.initHeader(data.result.data.children, activeMenu);
+	                self.initHeader(data.result.data.children, activeMenu);
                 }
             });
         }

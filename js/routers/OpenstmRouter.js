@@ -12,6 +12,7 @@ openstm.Router = Backbone.Router.extend({
         'logout'                                : 'logout',
         'about'                                 : 'about',
         'interventions'                         : 'interventions',
+        'planning'                         		: 'planning',
         'demandes-dinterventions'               : 'requestsList',
         'demandes-dinterventions/page/:page'    : 'requestsList',
         'demandes-dinterventions/add'           : 'addRequest',
@@ -269,7 +270,27 @@ openstm.Router = Backbone.Router.extend({
         else{
             this.navigate('login', {trigger: true, replace: true});
         }
+    },
+    
+    
+    planning: function(){
+	
+        // Check if the user is connect //
+        if(this.checkConnect()){
+
+            // If the view exist we reuse it //
+            if(openstm.views.planningView){
+                openstm.views.planningView.render();
+            }
+            else{
+                openstm.views.planningView = new openstm.Views.PlanningView();
+            }
+        }
+        else{
+            this.navigate('login', {trigger: true, replace: true});
+        }
     }
+
 
 
 
