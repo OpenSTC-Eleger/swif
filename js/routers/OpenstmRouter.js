@@ -158,8 +158,7 @@ openstm.Router = Backbone.Router.extend({
         // Check if the user is connect //
         if(this.checkConnect()){
         	
-        	openstm.collections.officers = new openstm.Collections.Officers();
-            openstm.collections.officers.fetch();
+
            
             self.p = page ? parseInt(page, 10) : 1;         
 
@@ -279,23 +278,30 @@ openstm.Router = Backbone.Router.extend({
     planning: function(){
 	
         // Check if the user is connect //
-        if(this.checkConnect()){      
+        if(this.checkConnect()){   
         	
-        	if(openstm.collections.interventions == null ){
-                openstm.collections.interventions = new openstm.Collections.Interventions();
-            }
-        
-        	openstm.collections.interventions.fetch({
-        		success: function(){
-		            // If the view exist we reuse it //
-		            if(openstm.views.planningView){
-		                openstm.views.planningView.render();
-		            }
-		            else{
-		                openstm.views.planningView = new openstm.Views.PlanningView();
-		            }
-	        	}        	
-        	});
+        	if(openstm.collections.officers == null ){
+        		openstm.collections.officers = new openstm.Collections.Officers();        	
+        	}
+            openstm.collections.officers.fetch({            	
+            		success: function(){            
+			        	if(openstm.collections.interventions == null ){
+			                openstm.collections.interventions = new openstm.Collections.Interventions();
+			            }
+			        
+			        	openstm.collections.interventions.fetch({
+			        		success: function(){
+					            // If the view exist we reuse it //
+					            if(openstm.views.planningView){
+					                openstm.views.planningView.render();
+					            }
+					            else{
+					                openstm.views.planningView = new openstm.Views.PlanningView();
+					            }
+				        	}        	
+			        	});
+            		}
+            });
         	
         }
         else{
