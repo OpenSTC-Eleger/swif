@@ -157,6 +157,9 @@ openstm.Router = Backbone.Router.extend({
 
         // Check if the user is connect //
         if(this.checkConnect()){
+        	
+        	openstm.collections.officers = new openstm.Collections.Officers();
+            openstm.collections.officers.fetch();
            
             self.p = page ? parseInt(page, 10) : 1;         
 

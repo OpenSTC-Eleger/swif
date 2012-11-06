@@ -38,7 +38,11 @@ openstm.Views.PlanningView = Backbone.View.extend({
         // Retrieve the Login template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
          
-            var template = _.template(templateData, {lang: openstm.lang, interventions: openstm.collections.interventions.toJSON()});
+            var template = _.template(templateData, {
+            		lang: openstm.lang, 
+            		interventions: openstm.collections.interventions.toJSON(),
+            		officers: openstm.collections.officers.toJSON()            		
+            });
             $(self.el).html(template);
             self.initCalendar();
             self.initDragObject();

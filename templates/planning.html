@@ -89,7 +89,13 @@
 			
 			<!-- Calendrier -->
 			<div class="span7">
+				<% _.each(officers, function (officer, i) { %>
+					<section id="<%= officer.login %>" class="calendarContainer">
+						<div id="A<%= officer.login %>" class="calendar thumbnail" data-username="<%= officer.login %>"></div>
+					</section>
+				<% }) %>
 			
+				<!--
 				<section id="claudeTanniou" class="calendarContainer">
 					<div id="AclaudeTanniou" class="calendar thumbnail" data-username="François Pignon"></div>
 				</section>
@@ -123,6 +129,7 @@
 				<section id="rogerTanguy" class="calendarContainer">
 					<div id="ArogerTanguy" class="calendar thumbnail" data-username="Roger TANGUY"></div>
 				</section>
+				-->
 
 				<!-- <form class="form-horizontal" id="addOfficier">
 					<div class="control-group">
@@ -159,7 +166,12 @@
 				  	<li class="nav-header">
 				  		<h4><i class="icon-group icon-large"></i>&nbsp;&nbsp;&nbsp;&nbsp;Agents&nbsp;&nbsp;<span class="badge pull-right">11</span></h4></li>
 					<li class="divider"></li>
-					<li><a href="#claudeTanniou"><i class="icon-caret-right"></i> François Pignon</a></li>
+					
+					<% _.each(officers, function (officer, i) { %>
+						<li><a href="#<%= officer.login %>"><i class="icon-caret-right"></i><%= officer.login %></a></li>
+					<% }) %>
+					
+					<!--  <li><a href="#claudeTanniou"><i class="icon-caret-right"></i> François Pignon</a></li>
 					<li><a href="#denisDugor"><i class="icon-caret-right"></i> Marcel Durant</a></li>
 					<li><a href="#didierGuirrec"><i class="icon-caret-right"></i> Franck Dupond</a></li>
 					<li><a href="#fredericBironneau"><i class="icon-caret-right"></i> Aimery Desbois</a></li>
@@ -170,6 +182,7 @@
 					<li><a href="#marcelLegall"><i class="icon-caret-right"></i> Vincent Renaud</a></li>
 					<li><a href="#philippeBleis"><i class="icon-caret-right"></i> Frédéric Boisvert</a></li>
 					<li><a href="#rogerTanguy"><i class="icon-caret-right"></i> Hugues Véron</a></li>
+					-->
 				</ul>
 			</div>
 			<!-- /Menu Personnes - Equipes -->
