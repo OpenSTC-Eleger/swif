@@ -90,71 +90,10 @@
 			<!-- Calendrier -->
 			<div class="span7">
 				<% _.each(officers, function (officer, i) { %>
-					<section id="<%= officer.login %>" class="calendarContainer">
-						<div id="A<%= officer.login %>" class="calendar thumbnail" data-username="<%= officer.login %>"></div>
+					<section id="<%= officer.firstname %> &nbsp;<%= officer.name %>" class="calendarContainer">
+						<div id="A<%= officer.firstname %> &nbsp;<%= officer.name %>" class="calendar thumbnail" data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>"></div>
 					</section>
 				<% }) %>
-			
-				<!--
-				<section id="claudeTanniou" class="calendarContainer">
-					<div id="AclaudeTanniou" class="calendar thumbnail" data-username="François Pignon"></div>
-				</section>
-				<section id="denisDugor" class="calendarContainer">
-					<div id="AdenisDugor" class="calendar thumbnail" data-username="Marcel Durant" ></div>
-				</section>
-				<section id="didierGuirrec" class="calendarContainer">
-					<div id="AdidierGuirrec" class="calendar thumbnail" data-username="Franck Dupond"></div>
-				</section>
-				<section id="fredericBironneau" class="calendarContainer">
-					<div id="AfredericBironneau" class="calendar thumbnail" data-username="Frédéric BIRONNEAU"></div>
-				</section>
-				<section id="gilbertGalland" class="calendarContainer">
-					<div id="AgilbertGalland" class="calendar thumbnail" data-username="Gilbert GALLAND"></div>
-				</section>
-				<section id="joelBrigant" class="calendarContainer">
-					<div id="AjoelBrigant" class="calendar thumbnail" data-username="Joël BRIGANT"></div>
-				</section>
-				<section id="julienConan" class="calendarContainer">
-					<div id="AjulienConan" class="calendar thumbnail" data-username="Julien CONAN"></div>
-				</section>
-				<section id="larryBillien" class="calendarContainer">
-					<div id="AlarryBillien" class="calendar thumbnail" data-username="Larry BILLIEN"></div>
-				</section>
-				<section id="marcelLegall" class="calendarContainer">
-					<div id="AmarcelLegall" class="calendar thumbnail" data-username="Marcel LE GALL"></div>
-				</section>
-				<section id="philippeBleis" class="calendarContainer">
-					<div id="AphilippeBleis" class="calendar thumbnail" data-username="Philippe BLEIS"></div>
-				</section>
-				<section id="rogerTanguy" class="calendarContainer">
-					<div id="ArogerTanguy" class="calendar thumbnail" data-username="Roger TANGUY"></div>
-				</section>
-				-->
-
-				<!-- <form class="form-horizontal" id="addOfficier">
-					<div class="control-group">
-						<label class="control-label" for="nomFamille">Nom Famille *</label>
-						<div class="controls">
-							<input type="text" id="nomFamille" name="nomFamille" required placeholder="Nom Famille">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="prenomsOfficiels">Prénoms Officiels *</label>
-						<div class="controls">
-							<input type="text" id="prenomsOfficiels" name="prenomsOfficiels" required placeholder="Prénoms Officiels">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="actif">Actif</label>
-						<div class="controls">
-							<input type="checkbox" id="actif" name="actif" value="true">
-						</div>
-					</div>
-		    		<div class="form-actions">
-				    	<button type="submit" class="btn btn-primary">Enregistrer</button>
-				    	<button type="reset" class="btn">Annuler</button>
-				    </div>
-				</form> -->
 
 			</div>
 			<!-- /Calendrier -->
@@ -168,21 +107,8 @@
 					<li class="divider"></li>
 					
 					<% _.each(officers, function (officer, i) { %>
-						<li><a href="#<%= officer.login %>"><i class="icon-caret-right"></i><%= officer.login %></a></li>
+						<li><a href="#<%= officer.firstname %> &nbsp;<%= officer.name %>"><i class="icon-caret-right"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
 					<% }) %>
-					
-					<!--  <li><a href="#claudeTanniou"><i class="icon-caret-right"></i> François Pignon</a></li>
-					<li><a href="#denisDugor"><i class="icon-caret-right"></i> Marcel Durant</a></li>
-					<li><a href="#didierGuirrec"><i class="icon-caret-right"></i> Franck Dupond</a></li>
-					<li><a href="#fredericBironneau"><i class="icon-caret-right"></i> Aimery Desbois</a></li>
-					<li><a href="#gilbertGalland"><i class="icon-caret-right"></i> Andre Sergent</a></li>
-					<li><a href="#joelBrigant"><i class="icon-caret-right"></i> Paul Saunier</a></li>
-					<li><a href="#julienConan"><i class="icon-caret-right"></i> Philippe Royer</a></li>
-					<li><a href="#larryBillien"><i class="icon-caret-right"></i> Ernest Roussel</a></li>
-					<li><a href="#marcelLegall"><i class="icon-caret-right"></i> Vincent Renaud</a></li>
-					<li><a href="#philippeBleis"><i class="icon-caret-right"></i> Frédéric Boisvert</a></li>
-					<li><a href="#rogerTanguy"><i class="icon-caret-right"></i> Hugues Véron</a></li>
-					-->
 				</ul>
 			</div>
 			<!-- /Menu Personnes - Equipes -->
