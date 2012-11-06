@@ -276,15 +276,24 @@ openstm.Router = Backbone.Router.extend({
     planning: function(){
 	
         // Check if the user is connect //
-        if(this.checkConnect()){
-
-            // If the view exist we reuse it //
-            if(openstm.views.planningView){
-                openstm.views.planningView.render();
+        if(this.checkConnect()){      
+        	
+        	if(openstm.collections.interventions == null ){
+                openstm.collections.interventions = new openstm.Collections.Interventions();
             }
-            else{
-                openstm.views.planningView = new openstm.Views.PlanningView();
-            }
+        
+        	openstm.collections.interventions.fetch({
+        		success: function(){
+		            // If the view exist we reuse it //
+		            if(openstm.views.planningView){
+		                openstm.views.planningView.render();
+		            }
+		            else{
+		                openstm.views.planningView = new openstm.Views.PlanningView();
+		            }
+	        	}        	
+        	});
+        	
         }
         else{
             this.navigate('login', {trigger: true, replace: true});

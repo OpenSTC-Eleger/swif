@@ -1,5 +1,5 @@
     <!-- Contenu de la page -->
-	<div class="container-fluid" >
+	<div class="container-fluid" data-spy="scroll" data-target=".navUser">
 		
 		<!-- <div class="page-header">
 			<div class="alert alert-success" style="">
@@ -31,11 +31,13 @@
                   		</div>
                   		<div id="collapseOne" class="accordion-body collapse in">
                     		<div class="accordion-inner">
-                      			<ul class="unstyled tasks">
-                      				<li class="external-event" data-duration="2"><i class="icon-caret-right"></i> Tonte <span class="badge pull-right">2h</span></li>
-                      				<li class="external-event" data-duration="2"><i class="icon-caret-right"></i> Élagage <span class="badge pull-right">2h</span></li>
-                      				<li class="external-event" data-duration="2"><i class="icon-caret-right"></i> Taille <span class="badge pull-right">2h</span></li>
-                      				<li class="external-event" data-duration="2"><i class="icon-caret-right"></i> Désherbage <span class="badge pull-right">2h</span></li>
+					            <ul class="unstyled tasks">
+									<% _.each(interventions, function (intervention, i) { %>
+										<li class="external-event" data-duration="2">
+											<i class="icon-caret-right"></i> <%= intervention.name %>
+											<span class="badge pull-right">2h</span>
+										</li>
+									<% }) %>
                       			</ul>
                 			</div>
                   		</div>
@@ -87,7 +89,7 @@
 			
 			<!-- Calendrier -->
 			<div class="span7">
-
+			
 				<section id="claudeTanniou" class="calendarContainer">
 					<div id="AclaudeTanniou" class="calendar thumbnail" data-username="François Pignon"></div>
 				</section>
