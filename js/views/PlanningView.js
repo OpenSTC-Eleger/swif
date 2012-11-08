@@ -46,6 +46,19 @@ openstm.Views.PlanningView = Backbone.View.extend({
             $(self.el).html(template);
             self.initCalendar();
             self.initDragObject();
+            $('[data-spy="affix"]').affix();
+            $('[data-spy="scroll"], .navUser').scrollspy();
+
+                // Animated Scroll //
+			    $('ul.nav li a[href^="#"]').click(function(){  
+			        var elementID = $(this).attr("href");  
+			        
+			        $('html, body').animate({  
+			            scrollTop:$(elementID).offset().top -5
+			        }, 'slow');
+			        
+			        return false;
+			    });
         });
 
         return this;
