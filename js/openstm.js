@@ -4,12 +4,14 @@
 
 var openstm = {
 
+	
+
     // Global variables //
     versionOpenSTM  : '0.1 alpha',
-    userBDD         : 'pontlabbe',
+    userBDD         : 'pontlabbe3',
     uniq_id_counter : 0,
     
-    urlOE                       : 'http://octm-dev.siclic.fr:8069',
+    urlOE                       : 'http://localhost:8069',
     urlOE_authentication        : '/web/session/authenticate',
     urlOE_versionServer         : '/web/webclient/version_info',
     urlOE_sessionDestroy        : '/web/session/destroy',
@@ -40,7 +42,7 @@ var openstm = {
     /** Application initialization
     */
     init: function (lang) {
-
+    	
         // Retrieve Application language //
         $.ajax({
             type: 'GET', url: 'i18n/'+lang+'/openstm-lang.json', dataType: 'json',
@@ -237,7 +239,19 @@ var openstm = {
 
 */
 
+    /** mire d'attente **/
+    loader: function(action){
 
+        switch(action){
+            case 'display':
+                $('#loader').fadeIn();
+            break;
+
+             case 'hide':
+                $('#loader').fadeOut();
+            break;
+        }   
+    },
 
 
 
@@ -292,14 +306,11 @@ _.mixin(_.str.exports());
 
 
 /******************************************
-* AFTER THE LOADING OF THE PAGE
+* AFTER THE LOADING OF THEPAGE
 */
-$(document).ready(function () {
-	
-    openstm.init('fr');
-    
-
-    
+$(document).ready(function () {	
+	openstm.loader('hide');
+    openstm.init('fr');    
 });
 
 

@@ -16,7 +16,11 @@ openstm.Router = Backbone.Router.extend({
         'demandes-dinterventions'               : 'requestsList',
         'demandes-dinterventions/page/:page'    : 'requestsList',
         'demandes-dinterventions/add'           : 'addRequest',
-        'demandes-dinterventions/:id'           : 'detailsRequest'
+        'demandes-dinterventions/:id'           : 'detailsRequest',
+        'taches'               					: 'tasksList',
+        'taches/page/:page'    					: 'tasksList',
+        'taches/add'           					: 'addTask',
+        'taches/:id'           					: 'detailsTask'
     },
 
     
@@ -29,8 +33,7 @@ openstm.Router = Backbone.Router.extend({
 
     /** Router Initialization
     */
-    initialize: function () {
-
+    initialize: function () {    	
     	this.checkConnect(); //to reload menu
         // Header, Footer Initialize //    	
         openstm.views.headerView = new openstm.Views.HeaderView();
@@ -92,7 +95,7 @@ openstm.Router = Backbone.Router.extend({
         // Check if the user is connect //
         if(!this.checkConnect()){
 
-            // If the view exist we reuse it //
+            // If the view exist we reuse it //        	
             if(openstm.views.loginView){
                 openstm.views.loginView.render();
             }
@@ -111,16 +114,20 @@ openstm.Router = Backbone.Router.extend({
     logout: function(){
     	var self = this;
     	//Destroy session after asynchronous openerp response
+    	openstm.loader('display');
         openstm.models.user.logout({        	
         	success: function(){  
         		openstm.models.user.destroySessionID();
         		openstm.models.user.save();
         		openstm.views.headerView.render();
         		self.navigate('login', {trigger: true, replace: true});	
+        		openstm.loader('hide');
 			},
         	error: function(){   
 				openstm.notify('error', openstm.lang.errorMessages.connectionError, openstm.lang.errorMessages.serverUnreachable);
+				openstm.loader('hide');
 			}
+			
         });        
     },
 
@@ -167,6 +174,7 @@ openstm.Router = Backbone.Router.extend({
                 openstm.collections.requests = new openstm.Collections.Requests();
             }
 
+            openstm.loader('display');
             openstm.collections.requests.fetch({success: function(){
             
                 if(openstm.views.requestsListView == null) {
@@ -176,6 +184,7 @@ openstm.Router = Backbone.Router.extend({
                     openstm.views.requestsListView.options.page = self.p;
                     openstm.views.requestsListView.initialize();             
                 }
+                openstm.loader('hide');
 
             }});
         }
@@ -199,7 +208,9 @@ openstm.Router = Backbone.Router.extend({
                 openstm.collections.places = new openstm.Collections.Places();
             }
             //load details after places list loaded
-            self.request = request;
+            self.request = request;            
+           
+            openstm.loader('display');
             openstm.collections.places.fetch({success: function(){
             
                 if(openstm.views.requestsDetailsView == null) {
@@ -207,7 +218,8 @@ openstm.Router = Backbone.Router.extend({
                 } 
                 else {
                     openstm.views.requestsDetailsView.initialize(self.request, false);             
-                }
+                }  
+                openstm.loader('hide');
 
             }});        	
 
@@ -233,6 +245,7 @@ openstm.Router = Backbone.Router.extend({
             }
 
             self.request = request;
+            openstm.loader('display');
             openstm.collections.places.fetch({success: function(){
             
 	            // Check if the requestView already exist //
@@ -243,6 +256,7 @@ openstm.Router = Backbone.Router.extend({
 	                openstm.views.requestView.model = request;
 	                openstm.views.requestView.initialize(request,true);
 	            }
+	            openstm.loader('hide');
 	            
 	       }});    
         }
@@ -283,30 +297,50 @@ openstm.Router = Backbone.Router.extend({
         	if(openstm.collections.officers == null ){
         		openstm.collections.officers = new openstm.Collections.Officers();        	
         	}
-            openstm.collections.officers.fetch({            	
+        	
+        	openstm.loader('display');
+            openstm.collections.officers.fetch({  
+            	
             		success: function(){            
-			        	if(openstm.collections.interventions == null ){
-			                openstm.collections.interventions = new openstm.Collections.Interventions();
+			        	if(openstm.collections.tasks == null ){
+			                openstm.collections.tasks = new openstm.Collections.Tasks();
 			            }
 			        
-			        	openstm.collections.interventions.fetch({
+			        	openstm.collections.tasks.fetch({
 			        		success: function(){
-					            // If the view exist we reuse it //
-					            if(openstm.views.planningView){
-					                openstm.views.planningView.render();
+					        	if(openstm.collections.interventions == null ){
+					                openstm.collections.interventions = new openstm.Collections.Interventions();
 					            }
-					            else{
-					                openstm.views.planningView = new openstm.Views.PlanningView();
-					            }
-				        	}        	
-			        	});
-            		}
-            });
-        	
+					        
+					        	openstm.collections.interventions.fetch({
+					        		success: function(){
+							            // If the view exist we reuse it //
+							            if(openstm.views.planningView){
+							                openstm.views.planningView.render();
+							            }
+							            else{
+							                openstm.views.planningView = new openstm.Views.PlanningView();
+							            }						           
+							     	}				        	
+					        	});					            				             
+				        	} 			        		
+			        	});	
+			        	openstm.loader('hide');	
+            		}  
+            	 });
         }
         else{
             this.navigate('login', {trigger: true, replace: true});
         }
+       
+    },
+
+    
+
+    detailsTask: function(){
+	
+    	console.debug("****************detailsTask********************");
+	
     }
 
 

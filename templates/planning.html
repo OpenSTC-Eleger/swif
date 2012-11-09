@@ -1,5 +1,5 @@
     <!-- Contenu de la page -->
-	<div class="container-fluid" data-spy="scroll" data-target=".navUser">
+	<div class="container-fluid" data-spy="scroll" data-target=".navUser" data-spy="affix" data-offset-top="5">
 		
 		<!-- <div class="page-header">
 			<div class="alert alert-success" style="">
@@ -17,10 +17,10 @@
 
 			
 			<!-- Interventions -->
-			<div class="span3">
+			<div class="span3" data-spy="affix" data-offset-top="5">
 				
 				<aside class="accordion" id="accordionInterventions" data-spy="affix" data-offset-top="5">
-                	<div class="accordion-group">
+                	<!--  <div class="accordion-group">
                  		<div class="accordion-heading">
                     		<h5>
                     			<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionInterventions" href="#collapseOne">
@@ -32,9 +32,9 @@
                   		<div id="collapseOne" class="accordion-body collapse in">
                     		<div class="accordion-inner">
 					            <ul class="unstyled tasks">
-									<% _.each(interventions, function (intervention, i) { %>
-										<li class="external-event" data-duration="2">
-											<i class="icon-caret-right"></i> <%= intervention.name %>
+					            	<% _.each(tasks, function (task, i) { %>
+										<li class="external-event" id="task_<%= task.id %>" data-duration="2">
+											<i class="icon-caret-right"></i> <%= task.name %>
 											<span class="badge pull-right">2h</span>
 										</li>
 									<% }) %>
@@ -42,29 +42,41 @@
                 			</div>
                   		</div>
                 	</div>
-
+					-->
 					<div class="accordion-group">
 						<div class="accordion-heading">
 							<h5>
 								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionInterventions" href="#collapseTwo">
 								<i class="icon-pushpin icon-large"></i> 
-								&nbsp;Rénovation <em class="muted">Centre Culturel Le Triskell&nbsp;</em> <span class="badge badge-info pull-right">10h</span>
+								&nbsp;Interventions <em class="muted">Taches&nbsp;</em> <span class="badge badge-info pull-right">10h</span>
 								</a>
 							</h5>
 						</div>
-						<div id="collapseTwo" class="accordion-body collapse">
+						<div id="collapseTwo" class="accordion-body collapse in">
 							<div class="accordion-inner">
 								<ul class="unstyled tasks">
-									<li class="external-event" data-duration="4"><i class="icon-caret-right"></i> Tache 1 <span class="badge pull-right">4h</span></li>
-									<li class="external-event" data-duration="2"><i class="icon-caret-right"></i> Tache 2 <span class="badge pull-right">2h</span></li>
-									<li class="external-event" data-duration="2"><i class="icon-caret-right"></i> Tache 3 <span class="badge pull-right">2h</span></li>
-									<li class="external-event" data-duration="2"><i class="icon-caret-right"></i> Tache 4 <span class="badge pull-right">2h</span></li>
-	                      		</ul>
+					            	<% _.each(interventions, function (intervention, i) { %>
+										<li class="external-event" id="intervention_<%= intervention.id %>" data-duration="2">
+											<i class="icon-caret-right"></i> <%= intervention.name %>
+											<span class="badge pull-right">2h</span>
+											<div class="accordion-inner">
+									            <ul class="unstyled tasks">
+									            	<% _.each(intervention.tasks, function (task, i) { %>
+														<li class="external-event" id="task_<%= task.id %>" data-duration="2">
+															<i class="icon-caret-right"></i> <%= task.name %>
+															<span class="badge pull-right"><%= task.planned_hours %></span>
+														</li>
+													<% }) %>
+				                      			</ul>
+				                			</div>
+										</li>
+									<% }) %>
+								</ul>
 							</div>
 						</div>
 					</div>
 
-                	<div class="accordion-group">
+                	<!-- <div class="accordion-group">
                   		<div class="accordion-heading">
                     		<h5>
                     			<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionInterventions" href="#collapseThree">
@@ -81,7 +93,7 @@
 		                    </div>
                   		</div>
                 	</div>
-              	</aside>
+              	</aside>  -->
 
 			</div>
 			<!-- /Interventions -->
@@ -91,11 +103,15 @@
 			<div class="span7">
 				<% _.each(officers, function (officer, i) { %>
 					<section id="<%= officer.firstname %> &nbsp;<%= officer.name %>" class="calendarContainer">
-						<div id="A<%= officer.firstname %> &nbsp;<%= officer.name %>" class="calendar thumbnail" data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>"></div>
+						<div id="officer_<%= officer.id %>" class="calendar thumbnail"							
+							data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>"></div>
 					</section>
 				<% }) %>
+				
 
 			</div>
+			
+			
 			<!-- /Calendrier -->
 
 
@@ -114,6 +130,8 @@
 			<!-- /Menu Personnes - Equipes -->
 
 		</div>
+		
+
 
 	</div>
 	<!-- /Contenu de la page -->

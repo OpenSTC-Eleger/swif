@@ -405,10 +405,10 @@ $(document).ready(function () {
             // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
             $('.calendar').fullCalendar('renderEvent', copiedEventObject, true);
 
-               $.pnotify({
-        title: 'Tâche attribuée',
-        text: 'La tâche a correctement été attribué à l\'agent.'
-    });
+            $.pnotify({
+		        title: 'Tâche attribuée',
+		        text: 'La tâche a correctement été attribué à l\'agent.'
+            });
 
             $(this).remove();
      

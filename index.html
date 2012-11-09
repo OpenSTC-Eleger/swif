@@ -34,6 +34,7 @@
 		<script type="text/javascript" src="js/models/PlaceModel.js"></script>
 		<script type="text/javascript" src="js/models/InterventionModel.js"></script>
 		<script type="text/javascript" src="js/models/OfficerModel.js"></script>
+		<script type="text/javascript" src="js/models/TaskModel.js"></script>
 
 		<!-- Collections -->
 		<script type="text/javascript" src="js/collections/UsersCollection.js"></script>
@@ -41,7 +42,10 @@
 		<script type="text/javascript" src="js/collections/PlacesCollection.js"></script>
 		<script type="text/javascript" src="js/collections/InterventionsCollection.js"></script>
 		<script type="text/javascript" src="js/collections/OfficersCollection.js"></script>
+		<script type="text/javascript" src="js/collections/TasksCollection.js"></script>
 		
+		<!-- Others -->
+		<script type="text/javascript" src="js/ui/Backbone.ModalDialog.js"></script>
 		<!-- Views -->
 		<script type="text/javascript" src="js/views/HeaderView.js"></script>
 		<script type="text/javascript" src="js/views/FooterView.js"></script>
@@ -52,12 +56,16 @@
 		<script type="text/javascript" src="js/views/RequestsListView.js"></script>
 		<script type="text/javascript" src="js/views/SelectListPlacesView.js"></script>
 		<script type="text/javascript" src="js/views/PlanningView.js"></script>
+		<script type="text/javascript" src="js/views/EventView.js"></script>
+		<script type="text/javascript" src="js/views/EventsView.js"></script>
 
 		<!-- Routers -->
 		<script type="text/javascript" src="js/routers/OpenstmRouter.js"></script>
+		
+
 
 </head>
-<body id="openstm" >
+<body id="openstm" data-spy="scroll" data-target=".navUser">
 
 
     <!-- Header NavBar -->
@@ -68,6 +76,7 @@
 
     <!-- Page Content -->
 	<div class="container-fluid" id="container">
+		
 		 <div class="row-fluid" id="rowContainer">
 
 			<!-- No Script message -->
@@ -81,6 +90,7 @@
 		</div>
 
 	</div>
+	<div class="container-fluid" id="task_duration">
 	<!-- /Page Content -->
 
 
@@ -88,6 +98,14 @@
     <div class="navbar navbar-fixed-bottom" id="footer-navbar">
     </div>
     <!-- /Footer NavBar -->
+    
+    <div id="loader" class="well" style="position: fixed; width: 250px; height: auto; top: 45%; left: 50%; z-index: 99999; margin-left: -6%; margin-top: -5%;">
+	    <h5><i class="icon-refresh icon-large"> </i>Chargement en cours...</h5>
+	    <div class="progress progress-striped active">
+ 			<div class="bar" style="width: 100%;"></div>
+ 		</div>
+	</div>
+
 
 
 
