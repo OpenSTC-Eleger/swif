@@ -22,8 +22,6 @@ openstm.Views.LoginView = Backbone.View.extend({
     initialize : function(user) {
         console.log('Login view Initialize');
         this.setModel(user).render();
-
-
     },
 
 
@@ -71,13 +69,11 @@ openstm.Views.LoginView = Backbone.View.extend({
         var pass = $('#passUser').val();
 
 
-        // Execution userr login function //
+        // Execution user login function //
         openstm.loader('display');
         openstm.models.user.login(login, pass);
-        openstm.loader('hide');
         
         $('#passUser').val('');
-
     },
 
 

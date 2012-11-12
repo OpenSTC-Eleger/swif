@@ -102,17 +102,24 @@ openstm.Models.User = Backbone.Model.extend({
                 openstm.collections.users.add(self);
                 self.save();
 
+                
+                // Test //
                 self.getUserInformations();
                 
                 openstm.notify('', 'info', 'Information', 'Vous êtes connecté');
                 
                 Backbone.history.navigate(openstm.router.homePage, {trigger: true, replace: true});
                 
+        
                 // Refresh the header //
                 openstm.views.headerView.render(openstm.router.mainMenus.manageInterventions);
             }
             
             deferred.resolve();
+        })
+        .always(function(){
+            // Remove the loader //
+            openstm.loader('hide');
         })
 
        return deferred;
@@ -126,28 +133,31 @@ openstm.Models.User = Backbone.Model.extend({
         "use strict";
         var self = this;
 
-        //var deferred = $.Deferred();
+        var deferred = $.Deferred();
 
         openstm.json(openstm.urlOE+openstm.urlOE_sessionDestroy, {
             'session_id': self.getSessionID()
-        },options);
-//        .fail(function (){
-//            openstm.notify('error', openstm.lang.errorMessages.connectionError, openstm.lang.errorMessages.serverUnreachable);
-//        })
-//        .done(function (data) {
-//            // On détruit la session dans le localStorage //
-//            self.destroySessionID();
-//            self.save();
-//            
-//            openstm.notify('large', 'info', openstm.lang.infoMessages.information, openstm.lang.infoMessages.successLogout);
-//
-//            // Refresh the header //
-//            openstm.views.headerView.render();
-//
-//            deferred.resolve();
-//        });
-//
-//       return deferred;
+        })
+        .fail(function (){
+            openstm.notify('', 'error', openstm.lang.errorMessages.connectionError, openstm.lang.errorMessages.serverUnreachable);
+        })
+        .done(function (data) {
+            // On détruit la session dans le localStorage //
+            self.destroySessionID();
+            self.save();
+            
+            
+            openstm.notify('large', 'info', openstm.lang.infoMessages.information, openstm.lang.infoMessages.successLogout);
+
+            // Refresh the header //
+            openstm.views.headerView.render();
+
+            // Navigate to the login Page //
+            Backbone.history.navigate('login', {trigger: true, replace: true});
+            deferred.resolve();
+        });
+
+       return deferred;
     },
 
 
@@ -164,13 +174,15 @@ openstm.Models.User = Backbone.Model.extend({
     },
 
 
+
     /** Get the menu of the user
     */
     getUserInformations: function(options){
         "use strict";
         var self = this;
 
-        var lol = openstm.getOE( this.model_name ,  this.getUID, this.getSessionID(), options);
+        var lol = openstm.getOE(this.model_name, this.getUID, this.getSessionID(), options);
+        console.debug("################### GET USER INFORMATION ############################");
         console.debug(lol);
     }
 

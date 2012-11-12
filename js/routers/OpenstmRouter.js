@@ -34,11 +34,13 @@ openstm.Router = Backbone.Router.extend({
     /** Router Initialization
     */
     initialize: function () {    	
-    	this.checkConnect(); //to reload menu
+    	
+        // Check if the user is connect //
+        this.checkConnect();
+        
         // Header, Footer Initialize //    	
         openstm.views.headerView = new openstm.Views.HeaderView();
         openstm.views.footerView = new openstm.Views.FooterView();
-
     },
 
 
@@ -87,7 +89,7 @@ openstm.Router = Backbone.Router.extend({
     * ROUTE FUNCTION
     */
 
-    /*************Generiq****************/
+    /************* Generiq ****************/
 
     /** Display the login View
     */
@@ -112,23 +114,7 @@ openstm.Router = Backbone.Router.extend({
     /** Logout the user
     */
     logout: function(){
-    	var self = this;
-    	//Destroy session after asynchronous openerp response
-    	openstm.loader('display');
-        openstm.models.user.logout({        	
-        	success: function(){  
-        		openstm.models.user.destroySessionID();
-        		openstm.models.user.save();
-        		openstm.views.headerView.render();
-        		self.navigate('login', {trigger: true, replace: true});	
-        		openstm.loader('hide');
-			},
-        	error: function(){   
-				openstm.notify('error', openstm.lang.errorMessages.connectionError, openstm.lang.errorMessages.serverUnreachable);
-				openstm.loader('hide');
-			}
-			
-        });        
+        openstm.models.user.logout();
     },
 
 
@@ -155,8 +141,7 @@ openstm.Router = Backbone.Router.extend({
 
 
 
-
-    /*************Request****************/
+    /************* Request ****************/
     
     /** Requests List
     */
@@ -267,11 +252,12 @@ openstm.Router = Backbone.Router.extend({
 
 
 
-
+    
 
     /** Interventions OpenSTM
     */
     interventions: function(){
+        
         // Check if the user is connect //
         if(this.checkConnect()){
 
@@ -288,7 +274,11 @@ openstm.Router = Backbone.Router.extend({
         }
     },
     
-    
+
+
+
+    /** Planning
+    */
     planning: function(){
 	
         // Check if the user is connect //
@@ -342,10 +332,6 @@ openstm.Router = Backbone.Router.extend({
     	console.debug("****************detailsTask********************");
 	
     }
-
-
-
-
 
 
 
