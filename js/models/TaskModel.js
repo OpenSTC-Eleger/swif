@@ -47,6 +47,15 @@ openstm.Models.Task = Backbone.RelationalModel.extend({
 	save: function(data,options) { 
 		openstm.saveOE(data, this.model_name,openstm.models.user.getSessionID(), options);
 	},
+	
+	destroy: function (options) {	
+		openstm.deleteOE( 
+			[[this.get("id")]],
+			this.model_name,
+			openstm.models.user.getSessionID(),
+			options
+		);
+	},
 
 
 });

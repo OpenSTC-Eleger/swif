@@ -37,6 +37,7 @@ openstm.Views.EventsView = Backbone.View.extend({
 				    },           
 			},false);
 		},
+		
         addAll: function() {
             this.el.fullCalendar('addEventSource', this.collection.toJSON());
         },
@@ -62,11 +63,7 @@ openstm.Views.EventsView = Backbone.View.extend({
         eventDropOrResize: function(fcEvent) {
             // Lookup the model that has the ID of the event and update its attributes
             this.collection.get(fcEvent.id).save({start: fcEvent.start, end: fcEvent.end});            
-        },
-        destroy: function(event) {
-            this.el.fullCalendar('removeEvents', event.id);         
-        }, 
-        
+        },        
                 
         initEvents: function() {
         	this.events = [];
@@ -119,9 +116,10 @@ openstm.Views.EventsView = Backbone.View.extend({
                 editable: true,
                 ignoreTimezone: false,                
                 select: this.select,
-                eventClick: this.eventClick,
-                eventDrop: this.eventDropOrResize,        
-                eventResize: this.eventDropOrResize,
+                dragRevertDuration:0,
+//                eventClick: this.eventClick,
+//                eventDrop: this.eventDropOrResize,        
+//                eventResize: this.eventDropOrResize,
 				
 				eventColor: '#378006',
 				eventRender: function(evt, element){
@@ -144,6 +142,7 @@ openstm.Views.EventsView = Backbone.View.extend({
 				    // render the event on the calendar
 				    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
 				    $(self.el).fullCalendar('renderEvent', copiedEventObject, true);
+				    //$(self.el).append('<button type="button" class="close" data-dismiss="close">X</button>');
 				    params = { 
 				               id: copiedEventObject.id,
 				    		   date_end: date,
@@ -161,6 +160,20 @@ openstm.Views.EventsView = Backbone.View.extend({
 					
 					    $(this).remove();     
 					},
+					
+					
+					eventDragStop: function(event, jsEvent, ui, view) {
+					    //if (isElemOverDiv(ui, $('div.event-delete'))) {
+							$(self.el).fullCalendar('removeEvents', event.id);
+						    params = { 
+				               id: event.id,
+				               user_id: null
+						    };
+						    model = openstm.collections.tasks.get(event.id)
+							model.save(params);					
+					    //}
+					}
+
 				});
         	}
     });
