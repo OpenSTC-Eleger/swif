@@ -28,11 +28,14 @@ openstm.Views.PlanningView = Backbone.View.extend({
     render : function() {
         var self = this;
 
-        // Change the page title //
-        openstm.router.setPageTitle(openstm.lang.viewsTitles.planning);
 
         // Retrieve the Login template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
+
+            // Change the page title //
+            openstm.router.setPageTitle(openstm.lang.viewsTitles.planning);
+            // Change the Grid Mode of the view //
+            openstm.views.headerView.switchGridMode('fluid');
          
             
         	//var tasks = openstm.collections.tasks.search();

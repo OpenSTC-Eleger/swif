@@ -71,7 +71,7 @@ openstm.Views.HeaderView = Backbone.View.extend({
             $('#' + menuItem).addClass('active');
         }        
     },
-
+    
 
     /** Change the Grid view of the page
     */

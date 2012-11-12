@@ -249,7 +249,7 @@ var openstm = {
             break;
 
             case 'hide':
-                $('#loader').fadeOut();
+                $('#loader').delay(250).fadeOut('slow');
             break;
         }   
     },
