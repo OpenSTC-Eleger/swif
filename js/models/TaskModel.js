@@ -8,7 +8,10 @@ openstm.Models.Task = Backbone.RelationalModel.extend({
 	
 	url: "/#taches/:id",
 
-
+	defaults:{
+		total_hours: 0,
+		remaining_hours: 0,
+	},
 
 
 //	relations: [
@@ -40,13 +43,9 @@ openstm.Models.Task = Backbone.RelationalModel.extend({
     
 	/** Save Model
 		*/
-	save: function(params, options, create) {
-		var data = {};
-		data.date_start = params.date_start;
-		data.date_end = params.date_end;
-		data.planned_hours = params.planned_hours;
-		data.user_id = params.user_id;	      	
-		openstm.saveOE(data, params.task_id, this.model_name,openstm.models.user.getSessionID(), options);
+	
+	save: function(data,options) { 
+		openstm.saveOE(data, this.model_name,openstm.models.user.getSessionID(), options);
 	},
 
 

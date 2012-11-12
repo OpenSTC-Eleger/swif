@@ -193,12 +193,12 @@ var openstm = {
 
     /** Save object in OpenERP
     */
-    saveOE : function (data, id, model, session_id, options) {
-        if(id)
+    saveOE : function (data, model, session_id, options) {
+        if(data.id)
             this.json(this.urlOE + this.urlOE_updateObject, {
                 'data'      : data, 
                 'model'     : model, 
-                'id'        : id,
+                'id'        : data.id,
                 'session_id': session_id      
            },options);
         else

@@ -38,14 +38,10 @@ openstm.Collections.Tasks = Backbone.Collection.extend({
     },
     
     
-//	search : function(){
-//    	var self = this;
-//    	self.list = []
-//		_.each(this.toJSON(),function(task) {
-//			if (task.user_id == "undefined")
-//				self.list.push(task)	
-//		});
-//		return self.list;
+//	getNotAssignedTasks: function(){
+//	   return _.filter(this.models, function(model){ 
+//		   return model.get('user_id') === false; 
+//	   });
 //	}
     
 

@@ -1,51 +1,38 @@
 openstm.Views.EventView = Backbone.View.extend({
 	  
-		 el : '#task_duration',
+		el : '#myModal',
 
-		 templateHTML: 'task_duration',
+		templateHTML: 'task_duration',
+		
+        events : {
+          "click .btn-primary" : "save"
+        },
 
        
         initialize: function() {
             _.bindAll(this);           
         },
         render: function() {
-        	var self= this;
-        	$.get("templates/" + this.templateHTML + ".html", function(templateData){
-         
-	            var template = _.template(templateData);
-	            //$(this.el).html( this.template());
-	            
-//	            var buttons = {'Ok': this.save};
-//	            //if (!this.model.isNew()) {
-//                _.extend(buttons, {'Delete': this.destroy});
-//                //}
-//                _.extend(buttons, {'Cancel': this.close});   
-//	            
-//	            template.dialog({
-//	                modal: true,
-//	                //title: (this.model.isNew() ? 'New' : 'Edit') + ' Event',
-//	                title: ' Task',
-//	                buttons: buttons,
-//	                open: this.open
-//	            });
-	            $(self.el).append(template);
-        	});
-        	// $(this.el).append(template)
-        	//$(this.el).fadeIn('slow');
-            return this;
+        	$(this.el).modal();
         },        
         open: function() {
-            this.$('#title').val(this.model.get('title'));
-            this.$('#color').val(this.model.get('color'));            
+        	this.$('#total_hours').val(this.model.get('total_hours'));
+            this.$('#remaining_hours').val(this.model.get('remaining_hours'));                        
         },        
         save: function() {
-            this.model.set({'title': this.$('#title').val(), 'color': this.$('#color').val()});
+            //this.model.set({'total_hours': this.$('#total_hours').val(), 'remaining_hours': this.$('#remaining_hours').val()});
             
+            data = {'total_hours': this.$('#total_hours').val(), 
+                      'remaining_hours': this.$('#remaining_hours').val(),
+                      'id': this.model.attributes.id
+                      };
+
             if (this.model.isNew()) {
                 this.collection.create(this.model, {success: this.close});
             } else {
-                this.model.save({}, {success: this.close});
+                this.model.save(data,{success: this.close},false);
             }
+            $("#myModal").modal('hide');
         },
         close: function() {
             this.el.dialog('close');

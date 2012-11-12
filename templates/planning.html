@@ -1,5 +1,29 @@
+    		
+		<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="myModalLabel">Modal header</h3>
+		  </div>
+		  <div class="modal-body">
+		    <form>
+				<div>
+					<label>Temps travaillé:</label>
+					<input id='total_hours' class="field" type="time"></input>
+				</div>
+				<div>
+					<label>Temps restant:</label>
+					<input id='remaining_hours' class="field" type="time"></input>
+				</div>
+			</form>
+		  </div>
+		  <div class="modal-footer">
+		    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		    <button class="btn btn-primary">Save changes</button>
+		  </div>
+		</div>
+    
     <!-- Contenu de la page -->
-	<div class="container-fluid" data-spy="scroll" data-target=".navUser" data-spy="affix" data-offset-top="5">
+	<div class="container-fluid" data-spy="scroll" data-target=".navUser" >
 		
 		<!-- <div class="page-header">
 			<div class="alert alert-success" style="">
@@ -17,7 +41,7 @@
 
 			
 			<!-- Interventions -->
-			<div class="span3" data-spy="affix" data-offset-top="5">
+			<div class="span3" ">
 				
 				<aside class="accordion" id="accordionInterventions" data-spy="affix" data-offset-top="5">
                 	<!--  <div class="accordion-group">
@@ -55,21 +79,27 @@
 						<div id="collapseTwo" class="accordion-body collapse in">
 							<div class="accordion-inner">
 								<ul class="unstyled tasks">
-					            	<% _.each(interventions, function (intervention, i) { %>
+					            	<% _.each(interventions, function (intervention, i) { 
+					            		if(intervention.progress_rate != 100 ){
+					            		%>
 										<li class="external-event" id="intervention_<%= intervention.id %>" data-duration="2">
 											<i class="icon-caret-right"></i> <%= intervention.name %>
 											<span class="badge pull-right">2h</span>
 											<div class="accordion-inner">
 									            <ul class="unstyled tasks">
-									            	<% _.each(intervention.tasks, function (task, i) { %>
+									            	<% _.each(intervention.tasks, function (task, i) { 
+									            		console.debug(task.user_id);
+									            		if(task.user_id == false){ %>
 														<li class="external-event" id="task_<%= task.id %>" data-duration="2">
 															<i class="icon-caret-right"></i> <%= task.name %>
 															<span class="badge pull-right"><%= task.planned_hours %></span>
 														</li>
+														<% } %>
 													<% }) %>
 				                      			</ul>
 				                			</div>
 										</li>
+										<% } %>
 									<% }) %>
 								</ul>
 							</div>
@@ -102,9 +132,9 @@
 			<!-- Calendrier -->
 			<div class="span7">
 				<% _.each(officers, function (officer, i) { %>
-					<section id="<%= officer.firstname %> &nbsp;<%= officer.name %>" class="calendarContainer">
-						<div id="officer_<%= officer.id %>" class="calendar thumbnail"							
-							data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>"></div>
+					<section id="<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>" class="calendarContainer">
+						<div id="officer_<%= officer.id %>" class="calendar thumbnail" data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>"></div>
+
 					</section>
 				<% }) %>
 				
@@ -116,20 +146,21 @@
 
 
 			<!-- Menu Personnes - Equipes -->
-			<div class="span2 navUser" >
+			<div class="span2 navUser">
 				<ul class="nav nav-list well well-small" id="listAgents" data-spy="affix" data-offset-top="5">
 				  	<li class="nav-header">
-				  		<h4><i class="icon-group icon-large"></i>&nbsp;&nbsp;&nbsp;&nbsp;Agents&nbsp;&nbsp;<span class="badge pull-right">11</span></h4></li>
+				  		<h4><i class="icon-group icon-large"></i>&nbsp;&nbsp;&nbsp;&nbsp;Agents&nbsp;&nbsp;<span class="badge pull-right"><%= _.size(officers) %></span></h4></li>
 					<li class="divider"></li>
 					
 					<% _.each(officers, function (officer, i) { %>
-						<li><a href="#<%= officer.firstname %> &nbsp;<%= officer.name %>"><i class="icon-caret-right"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
+						<li><a href="#<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>"><i class="icon-caret-right"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
 					<% }) %>
 				</ul>
 			</div>
 			<!-- /Menu Personnes - Equipes -->
 
 		</div>
+
 		
 
 
