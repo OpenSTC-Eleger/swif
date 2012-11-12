@@ -310,8 +310,8 @@ _.mixin(_.str.exports());
 * AFTER THE LOADING OF THE PAGE
 */
 $(document).ready(function () {	
-	openstm.loader('hide');
-    openstm.init('fr');    
+	//openstm.loader('hide');
+    openstm.init('fr');
 });
 
 
