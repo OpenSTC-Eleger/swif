@@ -14,6 +14,13 @@ section.calendarContainer:not(:first-child){
 	border-color: @blueDark;
 }
 
+.fc-view
+ {
+   /* prevents dragging outside of widget */
+   width: 100%;
+   overflow: hidden;
+ }
+
 tr.fc-slot2 {
 	background-color: @grayLighter;
 }

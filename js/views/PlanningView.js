@@ -51,6 +51,8 @@ openstm.Views.PlanningView = Backbone.View.extend({
             $(self.el).html(template);
             self.initCalendar();
             self.initDragObject();
+            
+
             $('[data-spy="affix"]').affix();
             $('[data-spy="scroll"], .navUser').scrollspy();
 
