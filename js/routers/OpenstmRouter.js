@@ -39,6 +39,7 @@ openstm.Router = Backbone.Router.extend({
         this.checkConnect();
         
         // Header, Footer Initialize //    	
+        //openstm.views.openstmView = new openstm.Views.OpenstmView();
         openstm.views.headerView = new openstm.Views.HeaderView();
         openstm.views.footerView = new openstm.Views.FooterView();
     },
