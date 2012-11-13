@@ -1,8 +1,8 @@
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.requestsList %>
-		<sup>
-			<i class="badge badge-info" rel="tooltip" data-original-title="<%= lang.wait %>">
+		<sup rel="tooltip" data-original-title="<%= lang.wait %>">
+			<i class="badge badge-info" >
 				<%= nbInterventionsWaiting %>
 			</i>
 		</sup>
@@ -62,7 +62,7 @@
 					    	<a  href="#demandes-dinterventions/<%= requests[i].id %>" 
 					    		rel="popover" 
 					    		data-content="<%= (requests[i].description != '' ? requests[i].description : _.capitalize(lang.notKnown)) %>" 
-					    		data-original-title="<strong><%= _.capitalize(lang.description) %>:</strong>">
+					    		data-original-title="<%= _.capitalize(lang.description) %>:">
 					    		<%= requests[i].name %>
 					    	</a>
 					    </td>
@@ -70,7 +70,7 @@
 					    <td class="hidden-phone">
 					    	<span 
 					    		rel="tooltip"
-					    		data-original-title="<%= _.capitalize(lang.toValidateBy) %> <strong><%= (requests[i].manager_id != false ? requests[i].manager_id[1] : _.capitalize(lang.notKnown)) %></strong>">
+					    		data-original-title="<%= _.capitalize(lang.toValidateBy) %> <%= (requests[i].manager_id != false ? requests[i].manager_id[1] : _.capitalize(lang.notKnown)) %>">
 					    		<%= requests[i].service_id[1] %>
 					    	</span>
 					    </td>
