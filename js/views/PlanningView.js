@@ -54,7 +54,7 @@ openstm.Views.PlanningView = Backbone.View.extend({
             
 
             $('[data-spy="affix"]').affix();
-            $('[data-spy="scroll"], .navUser').scrollspy();
+            $('[data-spy="scroll"], .navListAgents').scrollspy();
 
                 // Animated Scroll //
 			    $('ul.nav li a[href^="#"]').click(function(){  
