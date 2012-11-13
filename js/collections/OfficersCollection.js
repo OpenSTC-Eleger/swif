@@ -21,7 +21,7 @@ openstm.Collections.Officers = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {	
-    	openstm.readOE( this.model_name , openstm.models.user.getSessionID(), options);
+    	openstm.readOE(this.model_name, openstm.models.user.getSessionID(), options);
     },
 
 

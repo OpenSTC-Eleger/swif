@@ -161,7 +161,7 @@ var openstm = {
     getOE : function (model, ids, session_id, options) {
         this.json(this.urlOE + this.urlOE_readObject, {
             'model'     : model,
-            'fields'    : [],
+            'fields'    : ["user_email", "login"],
             'ids'       : [ids],
             'session_id': session_id
         },options)

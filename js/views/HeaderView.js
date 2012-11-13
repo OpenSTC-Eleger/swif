@@ -53,7 +53,7 @@ openstm.Views.HeaderView = Backbone.View.extend({
         
         $.get("templates/" + this.templateHTML + ".html", function(templateData) {
 
-            var template = _.template(templateData, {lang: openstm.lang, menus: self.menus, user: openstm.models.user.toJSON()});
+            var template = _.template(templateData, {lang: openstm.lang, menus: self.menus, user: openstm.models.user.getFullname()});
             $(self.el).html(template);
 
             self.selectMenuItem(activeMenu);

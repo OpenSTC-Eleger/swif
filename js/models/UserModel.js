@@ -10,7 +10,9 @@ openstm.Models.User = Backbone.Model.extend({
         uid             : '',
         login           : '',
         sessionID       : '',
-        lastConnection  : ''
+        lastConnection  : '',
+        firstname       : '',
+        lastname        : ''
     },
 
     initialize: function(){
@@ -29,6 +31,25 @@ openstm.Models.User = Backbone.Model.extend({
     },
     setLogin : function(value) {
         this.set({ login : value });
+    },
+
+    getFirstname : function() {
+        return this.get('firstname');
+    },
+    setFirstname : function(value) {
+        this.set({ firstname : value });
+    },
+
+    getLastname : function() {
+        return this.get('lastname');
+    },
+    setLastname : function(value) {
+        this.set({ lastname : value });
+    },
+
+    getFullname : function() {
+        fullname = this.get('firstname')+' '+this.get('lastname');
+        return fullname;
     },
 
     getSessionID : function() {
@@ -100,10 +121,8 @@ openstm.Models.User = Backbone.Model.extend({
                
                 // Add the user to the collection and save it to the localStorage //
                 openstm.collections.users.add(self);
-                self.save();
 
-                
-                // Test //
+                // Get the user Information //
                 self.getUserInformations();
                 
                 openstm.notify('', 'info', 'Information', 'Vous êtes connecté');
@@ -181,10 +200,26 @@ openstm.Models.User = Backbone.Model.extend({
         "use strict";
         var self = this;
 
-        var lol = openstm.getOE(this.model_name, this.getUID, this.getSessionID(), options);
-        console.debug("################### GET USER INFORMATION ############################");
-        console.debug(lol);
+        openstm.json(openstm.urlOE + openstm.urlOE_readObject, {
+            'model'     : self.model_name,
+            'fields'    : ["firstname", "name"],
+            'ids'       : [self.getUID()],
+            'session_id': self.getSessionID()
+        })
+        .fail(function (){
+           openstm.notify('', 'error', openstm.lang.errorMessages.connectionError, openstm.lang.errorMessages.serverUnreachable);
+        })
+        .done(function(data){
+
+            // Retrieve the firstname and the lastname of the user //
+            self.setFirstname(data[0].firstname);
+            self.setLastname(data[0].name);
+            self.save();
+
+        });
+       
     }
+
 
 
 });
