@@ -7,14 +7,13 @@ openstm.Views.RequestsListView = Backbone.View.extend({
 	
 	templateHTML: 'requestsList',
 
-	numberListByPage: 25,
+	numberListByPage: 2,
 
 
     // The DOM events //
     events: {
 		'click li.active'		: 'preventDefault',
-		'click li.disabled'		: 'preventDefault',
-		'click a' 				: 'removeTooltip'
+		'click li.disabled'		: 'preventDefault'
     },
 
 	
@@ -83,17 +82,14 @@ openstm.Views.RequestsListView = Backbone.View.extend({
         return this;
     },
 
+
+
+
     preventDefault: function(event){
     	event.preventDefault();
     },
 
-    //PYF 30/10/12 :Remove popover on href click
-    removeTooltip: function(event){    	
-    	if(event.which == 1)
-	    {       		
-	        $(event.target).popover('hide');
-	    }
-    }
+
 
 
 });

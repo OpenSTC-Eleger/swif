@@ -165,6 +165,9 @@ var openstm = {
             'ids'       : [ids],
             'session_id': session_id
         },options)
+
+        console.log("OPTIONS@@@@@@@");
+        console.log(options);
     },
 
 

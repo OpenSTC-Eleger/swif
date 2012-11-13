@@ -12,8 +12,8 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 	create: false,
 
 	events: {
-		'click .save'   : 'saveRequest',
-		'click .delete' : 'deleteRequest',
+		'submit #formRequest'   : 'saveRequest',
+		'click .delete' 		: 'deleteRequest',
 	},
 
 

@@ -14,7 +14,7 @@ openstm.Router = Backbone.Router.extend({
         'interventions'                         : 'interventions',
         'planning'                         		: 'planning',
         'demandes-dinterventions'               : 'requestsList',
-        'demandes-dinterventions/page/:page'    : 'requestsList',
+        'demandes-dinterventions/page:page'     : 'requestsList',
         'demandes-dinterventions/add'           : 'addRequest',
         'demandes-dinterventions/:id'           : 'detailsRequest',
         'taches'               					: 'tasksList',
@@ -151,9 +151,8 @@ openstm.Router = Backbone.Router.extend({
         // Check if the user is connect //
         if(this.checkConnect()){
         	
-
-           
-            self.p = page ? parseInt(page, 10) : 1;         
+            
+            self.page = page ? parseInt(page, 10) : 1;
 
             // Check if the collections is instantiate //
             if(openstm.collections.requests == null ){
@@ -164,11 +163,11 @@ openstm.Router = Backbone.Router.extend({
             openstm.collections.requests.fetch({success: function(){
             
                 if(openstm.views.requestsListView == null) {
-                    openstm.views.requestsListView = new openstm.Views.RequestsListView({page: self.p});
+                    openstm.views.requestsListView = new openstm.Views.RequestsListView({page: self.page});
                 } 
                 else {
-                    openstm.views.requestsListView.options.page = self.p;
-                    openstm.views.requestsListView.initialize();             
+                    openstm.views.requestsListView.options.page = self.page;
+                    openstm.views.requestsListView.render();             
                 }
                 openstm.loader('hide');
 

@@ -37,13 +37,13 @@
 					<th class="hidden-phone"><%= _.capitalize(lang.place) %></th>
 					<th><%= _.capitalize(lang.service) %></th>
 					<th><%= _.capitalize(lang.claiment) %></th>
-					<th><%= _.capitalize(lang.dateRequest) %></th>
+					<th><%= _.capitalize(lang.dateRequest) %> <!--<a id="orderDateRequest" href="#" class="pull-right"><i class="icon-caret-down icon-large"></i></a>--></th>
 					<th>
 						<%= _.capitalize(lang.status) %> 
 						    <div class="dropdown pull-right">
-							    <a id="filterState" class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-filter icon-large muted"></i></a>
+							    <a id="filterStateRequest" class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-filter icon-large muted"></i></a>
 							    
-							    <ul class="dropdown-menu" role="menu" aria-labelledby="filterState">
+							    <ul class="dropdown-menu" role="menu" aria-labelledby="filterStateRequest">
 									<% _.each(requestsState, function (state, i) { %>
 										<li role="menuitem">
 											<a tabindex="-1" href="#demandes-dinterventions/filter/state/<%= state.value %>"> 
@@ -107,11 +107,11 @@
 			<ul>
 				<!-- First page button -->
 				<% if(page-2 >= 1){ %>
-					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#demandes-dinterventions/page/<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
+					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#demandes-dinterventions/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
 				<% } %>
 				
 				<!-- Previous page button -->
-				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#demandes-dinterventions/page/<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
+				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#demandes-dinterventions/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
 			
 				<!-- [...] page Button -->
 				<% 	if (page-2 > 1) { %>
@@ -120,7 +120,7 @@
 						
 					for (var i=(page-2); i < (page+3); i++) {
 						if(i >= 1 && i <= pageCount){ %>
-							<li <%= (i === page ? " class='active'" : "")%>><a href='#demandes-dinterventions/page/<%=i%>'><%= i %></a></li>
+							<li <%= (i === page ? " class='active'" : "")%>><a href='#demandes-dinterventions/page<%=i%>'><%= i %></a></li>
 						<% }
 
 					} %>
@@ -131,11 +131,11 @@
 				<% } %>
 				
 				<!-- Next page button -->
-				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#demandes-dinterventions/page/<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
+				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#demandes-dinterventions/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
 				
 				<!-- Last page button -->
 				<% if(page+2 <= pageCount){ %>
-					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#demandes-dinterventions/page/<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
+					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#demandes-dinterventions/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
 				<% } %>
 			</ul>
 		</div>
