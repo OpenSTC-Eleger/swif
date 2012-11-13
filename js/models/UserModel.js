@@ -37,19 +37,18 @@ openstm.Models.User = Backbone.Model.extend({
         return this.get('firstname');
     },
     setFirstname : function(value) {
-        this.set({ firstname : value });
+        this.set({ firstname : _.capitalize(value) });
     },
 
     getLastname : function() {
         return this.get('lastname');
     },
     setLastname : function(value) {
-        this.set({ lastname : value });
+        this.set({ lastname : value.toUpperCase() });
     },
 
     getFullname : function() {
-        fullname = this.get('firstname')+' '+this.get('lastname');
-        return fullname;
+        return this.get('firstname')+' '+this.get('lastname');
     },
 
     getSessionID : function() {
