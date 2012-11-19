@@ -6,6 +6,7 @@ openstm.Views.PlanningView = Backbone.View.extend({
 
     el : '#rowContainer',
     templateHTML: 'planning', 
+    calendarView: 'agendaWeek',
 
     
     // The DOM events //
@@ -108,8 +109,7 @@ openstm.Views.PlanningView = Backbone.View.extend({
 		    officers.each(function(o){		    	
 		    	self.events = self.getEvents(o.attributes.tasks.toJSON());		    	
 		    	var collection = o.attributes.tasks;
-		    	new openstm.Views.EventsView($('div#officer_'+o.attributes.id),
-		    		collection,o.attributes.id).render();
+		    	new openstm.Views.EventsView(self,collection,o.attributes.id).render();
 		    });
 	
     },
@@ -131,7 +131,9 @@ openstm.Views.PlanningView = Backbone.View.extend({
 			        id: task.id,
 					title: task.name, // use the element's text as the event title
 					user_id: task.user_id[0],
-					planned_hours: task.planned_hours                                                                                   ,
+					planned_hours: task.planned_hours,
+					total_hours: task.total_hours,
+					remaining_hours: task.remaining_hours,
 			};
 			
 			// store the Event Object in the DOM element so we can get to it later

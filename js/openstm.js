@@ -8,10 +8,10 @@ var openstm = {
 
     // Global variables //
     versionOpenSTM  : '0.1 alpha',
-    userBDD         : 'pontlabbe',
+    userBDD         : 'pontlabbe3',
     uniq_id_counter : 0,
     
-    urlOE                       : 'http://octm-dev.siclic.fr:8069',
+    urlOE                       : 'http://localhost:8069',
     urlOE_authentication        : '/web/session/authenticate',
     urlOE_versionServer         : '/web/webclient/version_info',
     urlOE_sessionDestroy        : '/web/session/destroy',
@@ -161,8 +161,8 @@ var openstm = {
     getOE : function (model, ids, session_id, options) {
         this.json(this.urlOE + this.urlOE_readObject, {
             'model'     : model,
-            'fields'    : ["user_email", "login"],
-            'ids'       : [ids],
+            'fields'    : [], //"user_email", "login"
+            'ids'       : ids,
             'session_id': session_id
         },options)
 

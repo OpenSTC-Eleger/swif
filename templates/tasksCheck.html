@@ -1,0 +1,21 @@
+   
+    <!-- Contenu de la page -->
+	<div class="container-fluid">
+	
+		<h1>Tâches <small><%=officer.name %></small></h1>
+
+		<div class="row-fluid">			
+	
+			<!-- Calendrier -->
+			<div class="span7">
+					<section id="<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.lastname)%>" class="calendarContainer">
+						<div id="officer_<%= officer.uid %>" class="calendar thumbnail" data-username="<%= officer.firstname %> &nbsp;<%= officer.lastname %>"></div>
+
+					</section>
+			</div>			
+			<!-- /Calendrier -->
+
+		</div>
+		
+	</div>
+	<!-- /Contenu de la page -->

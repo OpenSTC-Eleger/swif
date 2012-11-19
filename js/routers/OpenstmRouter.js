@@ -17,7 +17,7 @@ openstm.Router = Backbone.Router.extend({
         'demandes-dinterventions/page:page'     : 'requestsList',
         'demandes-dinterventions/add'           : 'addRequest',
         'demandes-dinterventions/:id'           : 'detailsRequest',
-        'taches'               					: 'tasksList',
+        'taches'               					: 'tasksCheck',
         'taches/page/:page'    					: 'tasksList',
         'taches/add'           					: 'addTask',
         'taches/:id'           					: 'detailsTask'
@@ -325,7 +325,36 @@ openstm.Router = Backbone.Router.extend({
        
     },
 
-    
+    tasksCheck: function(){
+	
+    	console.debug("****************tasksCheck********************");
+    	
+    	        // Check if the user is connect //
+        if(this.checkConnect()){
+        	if(openstm.collections.tasks == null ){
+                openstm.collections.tasks = new openstm.Collections.Tasks();
+            }
+        	
+        	openstm.loader('display');
+        	openstm.collections.tasks.fetch({
+        		success: function(){
+	                // If the view exist we reuse it //
+	                if(openstm.views.tasksView){
+	                    openstm.views.tasksView.render();
+	                }
+	                else{
+	                    openstm.views.tasksView = new openstm.Views.TasksView();
+	                }				            				             
+	        	} 			        		
+        	});	
+        	openstm.loader('hide');	
+
+        }
+        else{
+            this.navigate('login', {trigger: true, replace: true});
+        }
+
+    }, 
 
     detailsTask: function(){
 	

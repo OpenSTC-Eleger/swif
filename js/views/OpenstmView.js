@@ -4,7 +4,7 @@
 openstm.Views.OpenstmView = Backbone.View.extend({
 
 
-    el : '#openstm',
+    el : '#rowContainer',
 
 
     
@@ -30,6 +30,7 @@ openstm.Views.OpenstmView = Backbone.View.extend({
  
         // Display the Tooltip or Popover //
         $('*[rel="popover"]').popover({trigger: "hover"});
+        console.log("00000000000000000000000000000000000"+$('*[rel="popover"]').length);
         $('*[rel="tooltip"]').tooltip({placement: "right"});
 
         // Initialisation du Plugin Affix //

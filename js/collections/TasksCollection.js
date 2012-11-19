@@ -37,6 +37,20 @@ openstm.Collections.Tasks = Backbone.Collection.extend({
         return response.result.records;
     },
     
+    getTasksByOfficer: function(officer_id){    	
+    	self = this;
+    	self.tasks = this.toJSON();
+    	_.each(self.tasks, function(task){
+    		if(task.user_id != false) {
+    			if (task.user_id[0] != officer_id)
+    				self.remove(task);
+    		}
+    		else
+    			self.remove(task);
+    	});
+    	return this;
+    }
+    
     
 //	getNotAssignedTasks: function(){
 //	   return _.filter(this.models, function(model){ 

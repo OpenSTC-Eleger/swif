@@ -1,13 +1,13 @@
 /******************************************
 * Requests List View
 */
-openstm.Views.RequestsListView = Backbone.View.extend({
+openstm.Views.RequestsListView = openstm.Views.OpenstmView.extend({
 	
 	el : '#rowContainer',
 	
 	templateHTML: 'requestsList',
 
-	numberListByPage: 25,
+	numberListByPage: 2,
 
 
     // The DOM events //
@@ -20,7 +20,8 @@ openstm.Views.RequestsListView = Backbone.View.extend({
 
 	/** View Initialization
 	*/
-    initialize: function () {			
+    initialize: function () {	
+		openstm.Views.OpenstmView.prototype.initialize.call(this);
 		this.render();
     },
 
@@ -29,7 +30,7 @@ openstm.Views.RequestsListView = Backbone.View.extend({
 	/** Display the view
 	*/
     render: function () {
-		//openstm.Views.OpenstmView.prototype.render.call(this);
+		openstm.Views.OpenstmView.prototype.render.call(this);
 		var self = this;
 
 		// Change the page title //
@@ -74,8 +75,8 @@ openstm.Views.RequestsListView = Backbone.View.extend({
 			$(self.el).html(template);
 
 			// Display the Tooltip or Popover //
-			$('*[rel="popover"]').popover({trigger: "hover"});
-			$('*[rel="tooltip"]').tooltip({placement: "right"});
+			//$('*[rel="popover"]').popover({trigger: "hover"});
+			//$('*[rel="tooltip"]').tooltip({placement: "right"});
 		});
 
 	
