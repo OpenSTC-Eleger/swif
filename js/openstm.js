@@ -288,7 +288,7 @@ var openstm = {
             type: type,
             hide: hide,
             animate_speed: 'normal',
-            opacity: .8,
+            opacity: .9,
             icon: true,
             animation: "slide",
             closer: true,

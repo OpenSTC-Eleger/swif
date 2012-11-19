@@ -24,7 +24,7 @@
 		    		
 	 				<% _.each(menus, function (menuRacine, i) { %>
 	 					<% _.each(menuRacine.children, function (menuParent, i) { %>
-				    		<li class="dropdown" id="<%= _.slugify(menuParent.name) %>">
+				    		<li class="dropdown" id="<%= _.slugify(menuParent.name) %>" role="menuitem">
 				    			<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuParent.id %>"><%= menuParent.name %> <b class="caret"></b></a>
 			    				
 			    				<ul aria-labelledby="drop-menu-app-<%= menuParent.id %>" role="menu" class="dropdown-menu">
@@ -44,7 +44,7 @@
 
 		    	<!-- User menu application -->
 				<ul class="nav pull-right" role="menu">
-					<li class="dropdown" id="login-drop-menu-container">
+					<li class="dropdown" id="login-drop-menu-container" role="menuitem">
 						<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
 							<i class="icon-user icon-large"></i> &nbsp; <%= user.fullname %> <b class="caret"></b>
 						</a>
