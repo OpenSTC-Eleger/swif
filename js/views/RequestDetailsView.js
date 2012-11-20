@@ -8,9 +8,11 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 	templateHTML: 'requestDetails',
 	
 	places: openstm.collections.places,
+	claimersTypes: openstm.collections.claimersTypes,
 	
 	create: false,
 
+	// The DOM events //
 	events: {
 		'submit #formRequest'   : 'saveRequest',
 		'click .delete' 		: 'deleteRequest',
@@ -21,13 +23,6 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize: function (model, create) {
-		
-		// Check if the view is instantiate //
-//		if(openstm.views.RequestDetailsView != null ){
-//			return openstm.views.RequestDetailsView;
-//		}
-
-		
 		this.model = model;
 		this.create = create;
 		this.render();
@@ -37,34 +32,34 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 
 	/** Display the view
 	*/
-    render: function () {
-    	var self = this;
+	render: function () {
+		var self = this;
 
-    	// Change the page title depending on the create value //
-        if(this.create){
-        	openstm.router.setPageTitle(openstm.lang.viewsTitles.newRequest);
-        }
-        else{
-        	openstm.router.setPageTitle(openstm.lang.viewsTitles.requestDetail + 'n° ' + this.model.id);
-        	console.debug(this.model);
-        }
+		// Change the page title depending on the create value //
+		if(this.create){
+			openstm.router.setPageTitle(openstm.lang.viewsTitles.newRequest);
+		}
+		else{
+			openstm.router.setPageTitle(openstm.lang.viewsTitles.requestDetail + 'n° ' + this.model.id);
+			console.debug(this.model);
+		}
 
-        // Change the active menu item //
-        openstm.views.headerView.selectMenuItem(openstm.router.mainMenus.manageInterventions);
+		// Change the active menu item //
+		openstm.views.headerView.selectMenuItem(openstm.router.mainMenus.manageInterventions);
 
-        self.collection = this.collection;
-    	// Retrieve the template // 
+		self.collection = this.collection;
+		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 		  
-		     var template = _.template(templateData, {lang: openstm.lang, request: self.model.toJSON()});
-		     $(self.el).html(template);		     
+			var template = _.template(templateData, {lang: openstm.lang, request: self.model.toJSON()});
+			$(self.el).html(template);		     
 		     
-		     //PYF 26/10/12 : Select place
-		     openstm.views.selectListPlacesView = new openstm.Views.SelectListPlacesView({el: $("#requestPlace"), collection: openstm.collections.places})
-		     openstm.views.selectListPlacesView.addAll();
-		     openstm.views.selectListPlacesView.setSelectedPlace( self.model.get("site1")[0] );
-		    
-		 });
+			//PYF 26/10/12 : Select place
+			openstm.views.selectListPlacesView = new openstm.Views.SelectListPlacesView({el: $("#requestPlace"), collection: openstm.collections.places})
+			openstm.views.selectListPlacesView.addAll();
+			openstm.views.selectListPlacesView.setSelectedPlace( self.model.get("site1")[0] );
+
+		});
 
 		$(this.el).hide().fadeIn('slow');     
 		return this;
@@ -84,22 +79,22 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 			this.$('#requestPlace').val(),
 			this.$('#requestDateDeadline').val(),			
 		{
-            success: function (data) {
-                console.log(data);
-                if(data.error){
-            		openstm.notify('', 'error', openstm.lang.errorMessages.unablePerformAction, openstm.lang.errorMessages.sufficientRights);
-                }
-                else{
-	                self.render();
-	                openstm.router.navigate('#demandes-dinterventions' , true);
-		            console.log('Success SAVE REQUEST');
-                }
-            },
-            error: function () {
+			success: function (data) {
+				console.log(data);
+				if(data.error){
+					openstm.notify('', 'error', openstm.lang.errorMessages.unablePerformAction, openstm.lang.errorMessages.sufficientRights);
+				}
+				else{
+					self.render();
+					openstm.router.navigate('#demandes-dinterventions' , true);
+					console.log('Success SAVE REQUEST');
+				}
+			},
+			error: function () {
 				console.log('ERROR - Unable to save the Request - RequestDetailsView.js');
-            },           
-        },this.create);
-    },
+			},           
+		},this.create);
+	},
 
 
 
