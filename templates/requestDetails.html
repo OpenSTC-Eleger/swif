@@ -16,7 +16,7 @@
             
             <!-- Request Partner Type -->
             <div class="control-group">
-                <label for="requestPartnerType" class="control-label">Type:</label>
+                <label for="requestPartnerType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
 
                 <div class="controls">
                      <select id="requestPartnerType"><option value=''>Select</option></select>
@@ -26,7 +26,7 @@
             
             <!-- Request Partner -->
             <div class="control-group">
-                <label for="requestPartner" class="control-label">Nom:</label>
+                <label for="requestPartner" class="control-label"><%= _.capitalize(lang.name) %>:</label>
 
                 <div class="controls">
                      <input type="text" id="requestPartner" name="requestPartner" required="required" />
@@ -41,7 +41,7 @@
                 
                 <!-- Request Contact Service -->
                 <div class="control-group">
-                    <label for="requestContactService" class="control-label">Service:</label>
+                    <label for="requestContactService" class="control-label"><%= _.capitalize(lang.service) %>:</label>
 
                     <div class="controls">
                         <select id="requestContactService" disabled="disabled"><option value=''>Select</option></select>
@@ -51,7 +51,7 @@
                         
                 <!-- Request Contact -->
                 <div class="control-group">
-                    <label for="requestContact" class="control-label">Contact:</label>
+                    <label for="requestContact" class="control-label"><%= _.capitalize(lang.contact) %>:</label>
 
                     <div class="controls">
                          <input type="text" id="requestContact" name="requestContact" readonly="readonly" />
@@ -61,7 +61,7 @@
                 
                 <!-- Request Contact Phone -->
                 <div class="control-group">
-                    <label for="requestContactPhone" class="control-label">Téléphone:</label>
+                    <label for="requestContactPhone" class="control-label"><%= _.capitalize(lang.phone) %>:</label>
 
                     <div class="controls">
                          <input type="tel" id="requestContactPhone" name="requestContactPhone" readonly="readonly" />
@@ -71,7 +71,7 @@
                 
                 <!-- Request Contact Email -->
                 <div class="control-group">
-                    <label for="requestContactEmail" class="control-label">Email:</label>
+                    <label for="requestContactEmail" class="control-label"><%= _.capitalize(lang.email) %>:</label>
 
                     <div class="controls">
                          <input type="email" id="requestContactEmail" name="requestContactEmail" readonly="readonly" />
@@ -91,7 +91,7 @@
                 
                 <!-- Request Name -->
                 <div class="control-group">
-                    <label for="requestName" class="control-label">Libellé:</label>
+                    <label for="requestName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
 
                     <div class="controls">
                         <input type="text" id="requestName" name="requestName" value="<%= request.name %>" required="required" />
@@ -111,7 +111,7 @@
                 
                 <!-- Request DeadLine -->
                 <div class="control-group">
-                    <label for="requestDateDeadline" class="control-label">Date :</label>
+                    <label for="requestDateDeadline" class="control-label"><%= _.capitalize(lang.dateRequest) %> :</label>
 
                     <div class="controls">
                         <input type="text" id="requestDateDeadline" name="requestDateDeadline" />
@@ -121,7 +121,7 @@
                 
                 <!-- Request Contact Service -->
                 <div class="control-group">
-                    <label for="requestSite" class="control-label">Service conserné:</label>
+                    <label for="requestSite" class="control-label"><%= lang.serviceConcerned %>:</label>
 
                     <div class="controls">
                         <select id="requestSite"><option value=''>Select</option></select>
@@ -141,7 +141,7 @@
                 
                 <!-- Request Place precision -->
                 <div class="control-group">
-                    <label for="requestPlacePrecision" class="control-label">Précision sur le site:</label>
+                    <label for="requestPlacePrecision" class="control-label"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
 
                     <div class="controls">  
                          <textarea name="requestPlacePrecision" id="requestPlacePrecision" rows="2"></textarea>
