@@ -14,8 +14,9 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 
 	// The DOM events //
 	events: {
-		'submit #formRequest'   : 'saveRequest',
-		'click .delete' 		: 'deleteRequest',
+		'submit #formRequest'   	 : 'saveRequest',
+		'click .delete' 			 : 'deleteRequest',
+		'change #requestClaimerType' : 'fillDropdownClaimer'
 	},
 
 
@@ -107,10 +108,9 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 	},
 
 
-
 	/** Delete the request
     */
-    deleteRequest: function () {
+    deleteRequest: function() {
         this.model.destroy({
             success: function () {
                 //alert('Ask deleted successfully');
@@ -121,6 +121,35 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 			},   
 		});
 		return false;
+	},
+
+
+	/** Fill the dropdown select list claimer
+    */
+	fillDropdownClaimer: function(){
+
+		// Remove the disabled attribut to the dropdown list //
+		$('#requestClaimer').removeAttr('disabled');
+
+		if(!openstm.collections.claimers){
+			openstm.collections.claimers = new openstm.Collections.Claimers();
+		}
+
+
+		openstm.collections.claimers.fetch({
+	        beforeSend: function(){
+	        	openstm.loader('display');
+	        },
+	        success: function(){
+				// Fill select Places  //
+				openstm.views.selectListClaimersView = new openstm.Views.DropdownSelectListView({el: $("#requestClaimer"), collection: openstm.collections.claimers})
+				openstm.views.selectListClaimersView.addAll();
+	        },
+	        complete: function(){
+	            openstm.loader('hide');
+	        }
+	    });
+		
 	}
 
 
