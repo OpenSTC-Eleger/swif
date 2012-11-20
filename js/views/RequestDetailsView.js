@@ -50,14 +50,23 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 		self.collection = this.collection;
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-		  
+
 			var template = _.template(templateData, {lang: openstm.lang, request: self.model.toJSON()});
 			$(self.el).html(template);		     
-		     
+
+
+			// Fill select Places  //
 			openstm.views.selectListPlacesView = new openstm.Views.DropdownSelectListView({el: $("#requestPlace"), collection: openstm.collections.places})
 			openstm.views.selectListPlacesView.addAll();
 			if(!self.create){ 	
-				openstm.views.selectListPlacesView.setSelectedItem( self.model.get("site1")[0] );
+				openstm.views.selectListPlacesView.setSelectedItem( self.model.get("site1")[0]	 );
+			}
+
+			// Fill select ClaimersTypes //
+			openstm.views.selectListClaimersTypesView = new openstm.Views.DropdownSelectListView({el: $("#requestClaimerType"), collection: openstm.collections.claimersTypes})
+			openstm.views.selectListClaimersTypesView.addAll();
+			if(!self.create){ 	
+				openstm.views.selectListClaimersTypesView.setSelectedItem( self.model.get("partner_type")[0] );
 			}
 
 		});
@@ -71,7 +80,7 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 	*/
     saveRequest: function (e) {
 		e.preventDefault();
-		
+
 		var self = this;    
 
 		this.model.save(self.model, 
@@ -107,12 +116,12 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
                 //alert('Ask deleted successfully');
 				window.history.back();
             },
-            error: function () {
+			error: function () {
 				console.log('ERROR - Unable to delete the Request - RequestDetailsView.js');
-            },   
-        });
-        return false;
-    }
+			},   
+		});
+		return false;
+	}
 
 
 });
