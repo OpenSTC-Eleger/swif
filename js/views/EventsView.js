@@ -17,7 +17,7 @@ openstm.Views.EventsView = Backbone.View.extend({
         
         render: function() {	
         	this.initEvents();
-        	this.initCalendar();           
+        	this.initCalendar();       
         },
         
 		save: function(params) {
