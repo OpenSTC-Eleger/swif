@@ -1,167 +1,161 @@
 
 <% if (request.id != null) { %>
-    <h1><%= lang.viewsTitles.requestDetail %> n°<%= request.id %></h1>
+    <h1><%= lang.viewsTitles.requestDetail %> n°<%= request.id %></h1><br />
 <% } else { %>
-    <h1><%= lang.viewsTitles.newRequest %></h1>
+    <h1><%= lang.viewsTitles.newRequest %></h1><br />
 <% } %>
 
-<form id="formRequest" action="#" class="form-horizontal">
+
+<form id="formRequest" action="#" class="form-horizontal container-fluid">
     
-<div class="row-fluid">
-    <fieldset class="span6">
-        <legend>À propos du demandeur</legend>
-        
-            <br/>
-        
-        <!-- Request Partner Type -->
-        <div class="control-group">
-            <label for="requestPartnerType" class="control-label">Type:</label>
-
-            <div class="controls">
-                 <select id="requestPartnerType"><option value=''>Select</option></select>
-                <span class="help-inline"></span>
-            </div>
-        </div>
-        
-        
-        <!-- Request Partner -->
-        <div class="control-group">
-            <label for="requestPartner" class="control-label">Nom:</label>
-
-            <div class="controls">
-                 <input type="text" id="requestPartner" name="requestPartner" required="required" />
-                <span class="help-inline"></span>
-            </div>
-        </div>
-        
-        
-        
+    <div class="row-fluid">
+    
+        <!-- About the claimer -->
         <fieldset class="span6">
+            <legend><%= lang.aboutTheClaimer %>:</legend>
             
-            <legend>Détail</legend>
+            <!-- Request Partner Type -->
+            <div class="control-group">
+                <label for="requestPartnerType" class="control-label">Type:</label>
+
+                <div class="controls">
+                     <select id="requestPartnerType"><option value=''>Select</option></select>
+                    <span class="help-inline"></span>
+                </div>
+            </div>
             
-        <!-- Request Contact Service -->
-        <div class="control-group">
-            <label for="requestContactService" class="control-label">Service:</label>
+            <!-- Request Partner -->
+            <div class="control-group">
+                <label for="requestPartner" class="control-label">Nom:</label>
 
-            <div class="controls">
-                <select id="requestContactService" disabled="disabled"><option value=''>Select</option></select>
-                <span class="help-inline"></span>
-            </div>
-        </div>
-
+                <div class="controls">
+                     <input type="text" id="requestPartner" name="requestPartner" required="required" />
+                    <span class="help-inline"></span>
+                </div>
+            </div><br />
+            
+            
+            <!-- Details about the claimer -->
+            <fieldset>
+                <legend><%= lang.claimerDetails %>:</legend>
                 
-        <!-- Request Contact -->
-        <div class="control-group">
-            <label for="requestContact" class="control-label">Contact:</label>
+                <!-- Request Contact Service -->
+                <div class="control-group">
+                    <label for="requestContactService" class="control-label">Service:</label>
 
-            <div class="controls">
-                 <input type="text" id="requestContact" name="requestContact" readonly="readonly" />
-                <span class="help-inline"></span>
-            </div>
-        </div>
-        
+                    <div class="controls">
+                        <select id="requestContactService" disabled="disabled"><option value=''>Select</option></select>
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+                        
+                <!-- Request Contact -->
+                <div class="control-group">
+                    <label for="requestContact" class="control-label">Contact:</label>
+
+                    <div class="controls">
+                         <input type="text" id="requestContact" name="requestContact" readonly="readonly" />
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
                 
-        <!-- Request Contact Phone -->
-        <div class="control-group">
-            <label for="requestContactPhone" class="control-label">Téléphone:</label>
+                <!-- Request Contact Phone -->
+                <div class="control-group">
+                    <label for="requestContactPhone" class="control-label">Téléphone:</label>
 
-            <div class="controls">
-                 <input type="tel" id="requestContactPhone" name="requestContactPhone" readonly="readonly" />
-                <span class="help-inline"></span>
-            </div>
-        </div>
-        
-        <!-- Request Contact Email -->
-        <div class="control-group">
-            <label for="requestContactEmail" class="control-label">Email:</label>
+                    <div class="controls">
+                         <input type="tel" id="requestContactPhone" name="requestContactPhone" readonly="readonly" />
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+                
+                <!-- Request Contact Email -->
+                <div class="control-group">
+                    <label for="requestContactEmail" class="control-label">Email:</label>
 
-            <div class="controls">
-                 <input type="email" id="requestContactEmail" name="requestContactEmail" readonly="readonly" />
-                <span class="help-inline"></span>
-            </div>
-        </div>
-        
+                    <div class="controls">
+                         <input type="email" id="requestContactEmail" name="requestContactEmail" readonly="readonly" />
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+            
+            </fieldset>
+               
         </fieldset>
         
         
-        
-    </fieldset>
+        <!-- About the request -->
+        <fieldset class="span6">
+           
+            <legend><%= lang.aboutTheRequest %>:</legend>
+                
+                <!-- Request Name -->
+                <div class="control-group">
+                    <label for="requestName" class="control-label">Libellé:</label>
+
+                    <div class="controls">
+                        <input type="text" id="requestName" name="requestName" value="<%= request.name %>" required="required" />
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+                
+                <!-- Request Description -->
+                <div class="control-group">
+                    <label for="requestDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
+
+                    <div class="controls">
+                        <textarea name="requestDescription" id="requestDescription" rows="5" required="required"><%= request.description %></textarea>
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+                
+                <!-- Request DeadLine -->
+                <div class="control-group">
+                    <label for="requestDateDeadline" class="control-label">Date :</label>
+
+                    <div class="controls">
+                        <input type="text" id="requestDateDeadline" name="requestDateDeadline" />
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+                
+                <!-- Request Contact Service -->
+                <div class="control-group">
+                    <label for="requestSite" class="control-label">Service conserné:</label>
+
+                    <div class="controls">
+                        <select id="requestSite"><option value=''>Select</option></select>
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+                
+                <!-- Request Place -->
+                <div class="control-group">
+                    <label for="requestPlace" class="control-label"><%= _.capitalize(lang.place) %>:</label>
+
+                    <div class="controls">  
+                        <select id="requestPlace"><option value=''>Select</option></select>
+                        <span class="help-inline"></span>                           
+                    </div>
+                </div>
+                
+                <!-- Request Place precision -->
+                <div class="control-group">
+                    <label for="requestPlacePrecision" class="control-label">Précision sur le site:</label>
+
+                    <div class="controls">  
+                         <textarea name="requestPlacePrecision" id="requestPlacePrecision" rows="2"></textarea>
+                        <span class="help-inline"></span>                           
+                    </div>
+                </div>
+
+        </fieldset>
     
-    
-    
-    
-    <fieldset>
-       
-        <legend>À propos de la demande</legend>
-             
-            <br/>
-            
-            <!-- Request Name -->
-            <div class="control-group">
-                <label for="requestName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
-
-                <div class="controls">
-                    <input type="text" id="requestName" name="requestName" value="<%= request.name %>" required="required" />
-                    <span class="help-inline"></span>
-                </div>
-            </div>
-            
-            <!-- Request Description -->
-            <div class="control-group">
-                <label for="requestDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
-
-                <div class="controls">
-                    <textarea name="requestDescription" id="requestDescription" rows="5" required="required"><%= request.description %></textarea>
-                    <span class="help-inline"></span>
-                </div>
-            </div>
-            
-            <!-- Request DeadLine -->
-            <div class="control-group">
-                <label for="requestDateDeadline" class="control-label">Date :</label>
-
-                <div class="controls">
-                    <input type="date" id="requestDateDeadline" name="requestDateDeadline" />
-                    <span class="help-inline"></span>
-                </div>
-            </div>
-            
-            <!-- Request Contact Service -->
-            <div class="control-group">
-                <label for="requestSite" class="control-label">Service conserné:</label>
-
-                <div class="controls">
-                    <select id="requestSite"><option value=''>Select</option></select>
-                    <span class="help-inline"></span>
-                </div>
-            </div>
-            
-            <!-- Request Place -->
-            <div class="control-group">
-                <label for="requestPlace" class="control-label"><%= _.capitalize(lang.place) %>:</label>
-
-                <div class="controls">  
-                    <select id="requestPlace"><option value=''>Select</option></select>
-                    <span class="help-inline"></span>                           
-                </div>
-            </div>
-            
-            <!-- Request Place precision -->
-            <div class="control-group">
-                <label for="requestPlacePrecision" class="control-label">Précision sur le site:</label>
-
-                <div class="controls">  
-                     <textarea name="requestPlacePrecision" id="requestPlacePrecision" rows="2"></textarea>
-                    <span class="help-inline"></span>                           
-                </div>
-            </div>
-
-    </fieldset>
+    </div>
 
 
     <div class="form-actions">
-        <button type="submit" class="btn btn-primary save"><%= _.capitalize(lang.actions.save) %></button>&nbsp;
+        <button type="submit" class="btn btn-primary save"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
         <a href="#" class="text-info"><%= lang.actions.cancel %></a>
     </div>
     

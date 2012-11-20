@@ -25,6 +25,9 @@
 	"confirm" 			: "DST",
 	"notKnown"			: "non renseigné",
 	"date_deadline"		: "Date butoir",
+	"aboutTheClaimer"   : "À propos du demandeur",
+	"claimerDetails"	: "Détail du demandeur",
+	"aboutTheRequest"   : "À propos de la demande",
 
 
 	"actions" : {
