@@ -8,10 +8,10 @@ var openstm = {
 
     // Global variables //
     versionOpenSTM  : '0.1 alpha',
-    userBDD         : 'pontlabbe3',
+    userBDD         : 'pontlabbe',
     uniq_id_counter : 0,
     
-    urlOE                       : 'http://localhost:8069',
+    urlOE                       : 'http://octm-dev.siclic.fr:8069',
     urlOE_authentication        : '/web/session/authenticate',
     urlOE_versionServer         : '/web/webclient/version_info',
     urlOE_sessionDestroy        : '/web/session/destroy',
@@ -158,16 +158,14 @@ var openstm = {
 
     /** Retrieve an object from OpenERP
     */
-    getOE : function (model, ids, session_id, options) {
+    getOE : function (model, fields, ids, session_id, options) {
         this.json(this.urlOE + this.urlOE_readObject, {
             'model'     : model,
-            'fields'    : [], //"user_email", "login"
+            'fields'    : fields, 
             'ids'       : ids,
             'session_id': session_id
-        },options)
+        }, options)
 
-        console.log("OPTIONS@@@@@@@");
-        console.log(options);
     },
 
 
@@ -290,7 +288,7 @@ var openstm = {
             type: type,
             hide: hide,
             animate_speed: 'normal',
-            opacity: .8,
+            opacity: .9,
             icon: true,
             animation: "slide",
             closer: true,

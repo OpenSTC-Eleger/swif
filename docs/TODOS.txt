@@ -1,8 +1,6 @@
 /////////////////////////////////
 // A faire 
 
-- Récupérer les informations de l'utilisateur - Nom, prénom
-
 - Unit TEST
 
 - Catch erreur connexion
@@ -23,7 +21,5 @@
 
 /////////////////////////////////
 // Améliorations
-
-- Transition entre les vues
 
 - Vérifier W3C validator
