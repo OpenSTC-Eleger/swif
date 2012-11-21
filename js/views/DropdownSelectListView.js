@@ -27,7 +27,6 @@ openstm.Views.DropdownSelectListView = Backbone.View.extend({
 
 	addAll: function(){
 	    this.collection.each(this.addOne);
-	    console.log($(this.el));
 	},  
 
 
