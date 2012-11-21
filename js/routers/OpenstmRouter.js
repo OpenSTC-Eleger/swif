@@ -189,25 +189,39 @@ openstm.Router = Backbone.Router.extend({
         	var self = this;
         	var request = openstm.collections.requests.get(id);
 
-            if(openstm.collections.places == null ){
+            if(openstm.collections.places == null){
                 openstm.collections.places = new openstm.Collections.Places();
+                openstm.collections.claimersTypes = new openstm.Collections.ClaimersTypes();
             }
             //load details after places list loaded
             self.request = request;            
            
-            openstm.loader('display');
-            openstm.collections.places.fetch({success: function(){
             
-                if(openstm.views.requestsDetailsView == null) {
-                    openstm.views.requestsDetailsView = new openstm.Views.RequestDetailsView(self.request, false);
-                } 
-                else {
-                    openstm.views.requestsDetailsView.initialize(self.request, false);             
-                }  
-                openstm.loader('hide');
-
-            }});        	
-
+            openstm.collections.places.fetch({
+                beforeSend: function(){
+                    openstm.loader('display');
+                },
+                success: function(){
+                    
+                    openstm.collections.claimersTypes.fetch({
+                        success: function(){
+                            if(openstm.views.requestsDetailsView == null) {
+                                openstm.views.requestsDetailsView = new openstm.Views.RequestDetailsView(self.request, false);
+                            } 
+                            else {
+                                openstm.views.requestsDetailsView.initialize(self.request, false);             
+                            }
+                        },
+                        error: function(){
+                            console.log('ERROR - unable to load ClaimersTypes');
+                        },
+                        complete: function(){
+                            openstm.loader('hide');
+                        }
+                    });
+                    
+                }
+            });
         }
         else{
             this.navigate('login', {trigger: true, replace: true});
@@ -227,23 +241,35 @@ openstm.Router = Backbone.Router.extend({
 
             if(openstm.collections.places == null ){
                 openstm.collections.places = new openstm.Collections.Places();
+                openstm.collections.claimersTypes = new openstm.Collections.ClaimersTypes();
             }
 
             self.request = request;
-            openstm.loader('display');
-            openstm.collections.places.fetch({success: function(){
-            
-	            // Check if the requestView already exist //
-	            if(openstm.views.requestView == null) {          
-	                openstm.views.requestView = new openstm.Views.RequestDetailsView( request, true);  
+
+            openstm.collections.places.fetch({
+                beforeSend: function(){
+                    openstm.loader('display');
+                },
+                success: function(){
+                
+                    openstm.collections.claimersTypes.fetch({
+        	            success: function(){
+
+            	            if(openstm.views.requestView == null) {          
+            	                openstm.views.requestView = new openstm.Views.RequestDetailsView( request, true);  
+            	            }
+            	            else{
+            	                openstm.views.requestView.model = request;
+            	                openstm.views.requestView.initialize(request,true);
+            	            }
+
+                        },
+                        complete: function(){
+                            openstm.loader('hide');
+                        }
+                    });
 	            }
-	            else{
-	                openstm.views.requestView.model = request;
-	                openstm.views.requestView.initialize(request,true);
-	            }
-	            openstm.loader('hide');
-	            
-	       }});    
+            });    
         }
         else{
             this.navigate('login', {trigger: true, replace: true});
@@ -252,7 +278,7 @@ openstm.Router = Backbone.Router.extend({
 
 
 
-    
+
 
     /** Interventions OpenSTM
     */
@@ -291,16 +317,16 @@ openstm.Router = Backbone.Router.extend({
         	openstm.loader('display');
             openstm.collections.officers.fetch({  
             	
-            		success: function(){            
+            		success: function(){
 			        	if(openstm.collections.tasks == null ){
 			                openstm.collections.tasks = new openstm.Collections.Tasks();
 			            }
 			        
 			        	openstm.collections.tasks.fetch({
 			        		success: function(){
-					        	if(openstm.collections.interventions == null ){
-					                openstm.collections.interventions = new openstm.Collections.Interventions();
-					            }
+                        if(openstm.collections.interventions == null ){
+                                    openstm.collections.interventions = new openstm.Collections.Interventions();
+                                }
 					        
 					        	openstm.collections.interventions.fetch({
 					        		success: function(){

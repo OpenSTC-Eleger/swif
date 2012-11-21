@@ -176,7 +176,7 @@ var openstm = {
             'model'     : model,
             'fields'    : [],
             'session_id': session_id
-        },options)
+        }, options)
     },
     
 
@@ -188,7 +188,7 @@ var openstm = {
             'args'      : args, 
             'model'     : model,
             'session_id': session_id      
-       },options);  
+       }, options);  
     },
         
 
@@ -207,7 +207,7 @@ var openstm = {
                     'data'      : data, 
                     'model'     : model,                 
                     'session_id': session_id      
-           },options);      
+           }, options);      
     },
 
 /*

@@ -1,21 +1,19 @@
 /******************************************
-* Claimers Types Collection
+* Claimers Collection
 */
-openstm.Collections.ClaimersTypes = Backbone.Collection.extend({
+openstm.Collections.Claimers = Backbone.Collection.extend({
 
-    model: openstm.Models.ClaimerType,
+    model : openstm.Models.Claimer,
 
     // Model name in the database //
-    model_name : 'openctm.partner.type',
+    model_name : 'res.partner',
 
-   
-
+    
     /** Collection Initialization
     */
-    initialize: function (options) {
-    	console.log('Claimer type collection Initialization');
+    initialize : function() {
+        console.log('Claimer collection initialize');
     },
-
 
 
     /** Collection Sync
@@ -25,12 +23,10 @@ openstm.Collections.ClaimersTypes = Backbone.Collection.extend({
     },
 
 
-
     /** Collection Parse
     */
     parse: function(response) {
         return response.result.records;
     }
-
 
 });

@@ -36,6 +36,9 @@ openstm.Models.Request = Backbone.RelationalModel.extend({
 	   	openstm.Models.Request.state[2].traduction = openstm.lang.confirm;
 	   	openstm.Models.Request.state[3].traduction = openstm.lang.valid;
 	   	openstm.Models.Request.state[4].traduction = openstm.lang.closed;
+
+	   	//this.fetchRelated(this.relations[key]);
+	   	//this.fetchRelated("site1");
 	},
 
 

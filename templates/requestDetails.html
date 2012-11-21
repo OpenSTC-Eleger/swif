@@ -16,20 +16,20 @@
             
             <!-- Request Partner Type -->
             <div class="control-group">
-                <label for="requestPartnerType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
+                <label for="requestClaimerType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
 
                 <div class="controls">
-                     <select id="requestPartnerType"></select>
+                     <select id="requestClaimerType"><option value="" disabled="disabled"></option></select>
                     <span class="help-inline"></span>
                 </div>
             </div>
             
             <!-- Request Partner -->
             <div class="control-group">
-                <label for="requestPartner" class="control-label"><%= _.capitalize(lang.name) %>:</label>
+                <label for="requestClaimer" class="control-label"><%= _.capitalize(lang.name) %>:</label>
 
                 <div class="controls">
-                     <input type="text" id="requestPartner" name="requestPartner" required="required" />
+                     <select id="requestClaimer" disabled="disabled"><option value="" disabled="disabled"></option></select>
                     <span class="help-inline"></span>
                 </div>
             </div><br />
@@ -134,7 +134,7 @@
                     <label for="requestPlace" class="control-label"><%= _.capitalize(lang.place) %>:</label>
 
                     <div class="controls">  
-                        <select id="requestPlace"></select>
+                        <select id="requestPlace"><option value="" disabled="disabled"></option></select>
                         <span class="help-inline"></span>                           
                     </div>
                 </div>
