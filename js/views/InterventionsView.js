@@ -10,7 +10,8 @@ openstm.Views.InterventionsView = Backbone.View.extend({
     
     // The DOM events //
     events: {
-
+        'click .btn.addTask'    : 'displayFormAddTask',
+        'click button.saveTask'       : 'saveTask'
     },
 
 
@@ -55,7 +56,7 @@ openstm.Views.InterventionsView = Backbone.View.extend({
                     interventions: interventionsValidated
                 });
 
-            console.debug(interventions);
+            console.debug(interventionsValidated);
         
             $(self.el).html(template);
 
@@ -66,6 +67,27 @@ openstm.Views.InterventionsView = Backbone.View.extend({
         $(this.el).hide().fadeIn('slow');
         return this;
     },
+
+
+    /** Display the form to add a new Task
+    */
+    displayFormAddTask: function(e){
+        
+        // Retrieve the ID of the intervention //
+        var idIntervention = $(e.target).parents('tr').attr('id');
+        $('#modalAddTask').modal();
+   },
+
+
+    /** Save the Task
+    */
+    saveTask: function(e){
+
+        // Retrieve the ID of the intervention //
+        alert('todo');
+   }
+
+
   
 });
 
