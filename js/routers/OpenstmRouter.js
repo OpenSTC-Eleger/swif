@@ -308,13 +308,22 @@ openstm.Router = Backbone.Router.extend({
         // Check if the user is connect //
         if(this.checkConnect()){
 
-            // If the view exist we reuse it //
-            if(openstm.views.interventionsView){
-                openstm.views.interventionsView.render();
+            // Check if the collections is instantiate //
+            if(openstm.collections.interventions == null ){
+                openstm.collections.interventions = new openstm.Collections.Requests();
             }
-            else{
-                openstm.views.interventionsView = new openstm.Views.InterventionsView();
-            }
+
+            openstm.collections.interventions.fetch({
+                success: function(){
+                    // If the view exist we reuse it //
+                    if(openstm.views.interventionsView){
+                        openstm.views.interventionsView.render();
+                    }
+                    else{
+                        openstm.views.interventionsView = new openstm.Views.InterventionsView();
+                    }
+                }
+            });
         }
         else{
             this.navigate('login', {trigger: true, replace: true});

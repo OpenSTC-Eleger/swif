@@ -1,1 +1,84 @@
-<h1>Interventions Powaaaaaaaa</h1>
+<div class="page-header">
+	<h1>
+		Interventions
+		<sup rel="tooltip" data-original-title="<%= lang.wait %>">
+			<i class="badge badge-success" >
+				<%= nbInterventions %>
+			</i>
+		</sup>
+	</h1>
+</div>
+
+
+<div class="container-fluid">
+
+	<!-- Check if there is Request in the Database -->
+	<% if(interventions.length != 0) { %>
+
+		<!-- Table toolbar -->
+		<div class="tableToolbar">
+			<form class="form-search pull-right">
+    			<div class="input-append">
+					<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off">
+					<button type="submit" class="btn"><i class="icon-search icon-large"></i></button>
+				</div>
+			</form>
+		</div>
+		<!-- Table toolbar -->
+
+
+		<!-- Table Requests -->
+		<table class="table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<th><%= _.capitalize(lang.label) %></th>
+					<th>Responsable</th>
+					<th>Temps planifié</th>
+					<th>Temps passé</th>
+					<th>Avancement</th>
+					<th class="align">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% _.each(interventions, function (intervention, i) { %>
+					<tr>
+					    <td>
+					    	<a  href="#demandes-dintervent" 
+					    		rel="popover" 
+					    		data-content="<%= (intervention.description != '' ? intervention.description : _.capitalize(lang.notKnown)) %>" 
+					    		data-original-title="<%= _.capitalize(lang.description) %>:">
+					    		<%= intervention.attributes.name %>
+					    	</a>
+					    </td>
+					    <td></td>
+					    <td class="hidden-phone">
+					    
+					    </td>
+					    <td></td>
+					    <td>
+					    	<div class="progress">
+					    		<div class="bar" style="width: 70%;">70%</div>
+					    	</div>
+					    </td>
+					    <td class="align">
+					    	<button type="button" class="btn btn-primary" rel="tooltip" data-original-title="Ajouter une tâche"><i class="icon-plus-sign icon-large"></i></button>
+					   	</td>
+					</tr>
+				<% }) %>
+			</tbody>
+		</table>
+		<!-- /Table Requests -->
+
+	<% } 
+	else { %>
+		<!-- No request in the Database -->
+		<div class="alert alert-info">
+			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>.
+		</div>
+
+	<% } %>
+
+</div>
+
+
+		

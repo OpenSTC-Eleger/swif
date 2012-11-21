@@ -17,10 +17,9 @@ openstm.Views.InterventionsView = Backbone.View.extend({
 
     /** View Initialization
     */
-    initialize : function(user) {
+    initialize : function() {
         console.log('Interventions view Initialize');
         this.render();
-
     },
 
 
@@ -33,11 +32,35 @@ openstm.Views.InterventionsView = Backbone.View.extend({
         // Change the page title //
         openstm.router.setPageTitle(openstm.lang.viewsTitles.interventions);
 
-        // Retrieve the Login template // 
+        // Change the active menu item //
+        openstm.views.headerView.selectMenuItem(openstm.router.mainMenus.manageInterventions);
+
+        // Change the Grid Mode of the view //
+        openstm.views.headerView.switchGridMode('fluid');
+
+
+        var interventions = openstm.collections.interventions.models;
+
+        // Retrieve the number of validated Interventions //
+        var interventionsValidated = _.filter(interventions, function(item){ return item.attributes.state == openstm.Models.Request.state[3].value; });
+        var nbInterventions = _.size(interventionsValidated);
+
+
+        // Retrieve the HTML template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
          
-            var template = _.template(templateData, {});
+                var template = _.template(templateData, {
+                    lang: openstm.lang,
+                    nbInterventions: nbInterventions,
+                    interventions: interventionsValidated
+                });
+
+            console.debug(interventions);
+        
             $(self.el).html(template);
+
+            $('*[rel="tooltip"]').tooltip({placement: "right"});
+
         });
 
         $(this.el).hide().fadeIn('slow');
