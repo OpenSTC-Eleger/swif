@@ -5,7 +5,7 @@ openstm.Models.Intervention = Backbone.RelationalModel.extend({
     
 	model_name : 'project.project',	
 	
-	url: "/demandes-dinterventions/:id",
+	url: "/#demandes-dinterventions/:id",
 
 	
 	relations: [{

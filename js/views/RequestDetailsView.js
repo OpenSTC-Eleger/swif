@@ -66,9 +66,9 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 			// Fill select ClaimersTypes //
 			openstm.views.selectListClaimersTypesView = new openstm.Views.DropdownSelectListView({el: $("#requestClaimerType"), collection: openstm.collections.claimersTypes})
 			openstm.views.selectListClaimersTypesView.addAll();
-			if(!self.create){ 	
-				openstm.views.selectListClaimersTypesView.setSelectedItem( self.model.get("partner_type")[0] );
-			}
+//			if(!self.create){ 	
+//				openstm.views.selectListClaimersTypesView.setSelectedItem( self.model.get("partner_type")[0] );
+//			}
 
 		});
 
@@ -135,21 +135,9 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 			openstm.collections.claimers = new openstm.Collections.Claimers();
 		}
 
-
-		openstm.collections.claimers.fetch({
-	        beforeSend: function(){
-	        	openstm.loader('display');
-	        },
-	        success: function(){
-				// Fill select Places  //
-				openstm.views.selectListClaimersView = new openstm.Views.DropdownSelectListView({el: $("#requestClaimer"), collection: openstm.collections.claimers})
-				openstm.views.selectListClaimersView.addAll();
-	        },
-	        complete: function(){
-	            openstm.loader('hide');
-	        }
-	    });
-		
+		typeModel = openstm.views.selectListClaimersTypesView.getSelected();
+		openstm.views.selectListClaimersView = new openstm.Views.DropdownSelectListView({el: $("#requestClaimer"), collection: typeModel.attributes.claimers});
+		openstm.views.selectListClaimersView.addAll();
 	}
 
 

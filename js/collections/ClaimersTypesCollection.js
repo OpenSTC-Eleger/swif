@@ -8,7 +8,7 @@ openstm.Collections.ClaimersTypes = Backbone.Collection.extend({
     // Model name in the database //
     model_name : 'openctm.partner.type',
 
-   
+    url: "type-demandeurs",   
 
     /** Collection Initialization
     */

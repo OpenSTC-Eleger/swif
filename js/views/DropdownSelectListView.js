@@ -3,6 +3,10 @@
 */
 openstm.Views.DropdownSelectListView = Backbone.View.extend({
 	
+	events: {
+		"change": "changeSelected"
+	},
+
 	dropdownListView: new Array(),
 			
 	
@@ -29,6 +33,14 @@ openstm.Views.DropdownSelectListView = Backbone.View.extend({
 
 	setSelectedItem: function(id) {
 		this.dropdownListView[id].setSelected();
+	},
+
+	getSelected: function() {
+		return this.dropdownListView[this.selected_id].model;
+	},
+
+	changeSelected: function() {
+		this.selected_id = $(this.el).val();	
 	}
 });
 
@@ -65,6 +77,6 @@ openstm.Views.DropdownSelectItemView = Backbone.View.extend({
 	*/
     setSelected: function() {
     	this.render(true);
-    }
+    },
         
 });

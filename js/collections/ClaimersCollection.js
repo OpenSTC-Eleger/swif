@@ -8,6 +8,7 @@ openstm.Collections.Claimers = Backbone.Collection.extend({
     // Model name in the database //
     model_name : 'res.partner',
 
+    url: "demandeurs",   
     
     /** Collection Initialization
     */

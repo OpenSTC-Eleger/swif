@@ -191,7 +191,6 @@ openstm.Router = Backbone.Router.extend({
 
             if(openstm.collections.places == null){
                 openstm.collections.places = new openstm.Collections.Places();
-                openstm.collections.claimersTypes = new openstm.Collections.ClaimersTypes();
             }
             //load details after places list loaded
             self.request = request;            
@@ -203,24 +202,34 @@ openstm.Router = Backbone.Router.extend({
                 },
                 success: function(){
                     
-                    openstm.collections.claimersTypes.fetch({
+            		if(openstm.collections.claimers == null){
+                		openstm.collections.claimers = new openstm.Collections.Claimers();
+			}
+                    openstm.collections.claimers.fetch({
                         success: function(){
-                            if(openstm.views.requestsDetailsView == null) {
-                                openstm.views.requestsDetailsView = new openstm.Views.RequestDetailsView(self.request, false);
-                            } 
-                            else {
-                                openstm.views.requestsDetailsView.initialize(self.request, false);             
-                            }
-                        },
-                        error: function(){
-                            console.log('ERROR - unable to load ClaimersTypes');
-                        },
-                        complete: function(){
-                            openstm.loader('hide');
-                        }
-                    });
                     
-                }
+	            		if(openstm.collections.claimersTypes == null){
+	                		openstm.collections.claimersTypes = new openstm.Collections.ClaimersTypes();
+				}
+	                    openstm.collections.claimersTypes.fetch({
+	                        success: function(){
+	                            if(openstm.views.requestsDetailsView == null) {
+	                                openstm.views.requestsDetailsView = new openstm.Views.RequestDetailsView(self.request, false);
+	                            } 
+	                            else {
+	                                openstm.views.requestsDetailsView.initialize(self.request, false);             
+	                            }
+	                        },
+	                        error: function(){
+	                            console.log('ERROR - unable to load ClaimersTypes');
+	                        },
+	                        complete: function(){
+	                            openstm.loader('hide');
+	                        }
+	                    });
+			},
+		});
+                },
             });
         }
         else{
@@ -241,7 +250,6 @@ openstm.Router = Backbone.Router.extend({
 
             if(openstm.collections.places == null ){
                 openstm.collections.places = new openstm.Collections.Places();
-                openstm.collections.claimersTypes = new openstm.Collections.ClaimersTypes();
             }
 
             self.request = request;
@@ -252,24 +260,37 @@ openstm.Router = Backbone.Router.extend({
                 },
                 success: function(){
                 
-                    openstm.collections.claimersTypes.fetch({
+            		if(openstm.collections.claimers == null ){
+                		openstm.collections.claimers = new openstm.Collections.Claimers();
+			}
+                    openstm.collections.claimers.fetch({
         	            success: function(){
 
-            	            if(openstm.views.requestView == null) {          
-            	                openstm.views.requestView = new openstm.Views.RequestDetailsView( request, true);  
-            	            }
-            	            else{
-            	                openstm.views.requestView.model = request;
-            	                openstm.views.requestView.initialize(request,true);
-            	            }
+            			if(openstm.collections.claimersTypes == null ){
+						openstm.collections.claimersTypes = new openstm.Collections.ClaimersTypes();
+				}
+				openstm.collections.claimersTypes.fetch({
 
-                        },
-                        complete: function(){
-                            openstm.loader('hide');
-                        }
-                    });
-	            }
-            });    
+					success: function(){
+
+	            	            if(openstm.views.requestView == null) {          
+	            	                openstm.views.requestView = new openstm.Views.RequestDetailsView( request, true);  
+	            	            }
+	            	            else{
+	            	                openstm.views.requestView.model = request;
+	            	                openstm.views.requestView.initialize(request,true);
+	            	            }
+	
+                        	},
+                        	complete: function(){
+                        	    openstm.loader('hide');
+                        	}
+				
+			});
+                    },
+	            });
+            },
+	});
         }
         else{
             this.navigate('login', {trigger: true, replace: true});
