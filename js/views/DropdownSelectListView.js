@@ -17,6 +17,11 @@ openstm.Views.DropdownSelectListView = Backbone.View.extend({
 	    this.collection.bind('reset', this.addAll);
 	},
 
+	addEmptyFirst: function(){        	
+		dropdownSelectItemView = new openstm.Views.DropdownSelectItemView({});
+		this.dropdownListView[0] = dropdownSelectItemView;
+		$(this.el).append(dropdownSelectItemView.render(false).el); 
+	},
 
 	addOne: function(model){        	
 		dropdownSelectItemView = new openstm.Views.DropdownSelectItemView({ model: model });
@@ -24,18 +29,28 @@ openstm.Views.DropdownSelectListView = Backbone.View.extend({
 		$(this.el).append(dropdownSelectItemView.render(false).el); 
 	},
 
+	removeOne: function(id){
+		this.dropdownListView[0].hide();
+	},
 
 	addAll: function(){
 	    this.collection.each(this.addOne);
-	},  
+	},
 
+	clearAll: function(){
+		$(this.el).empty(); 
+	},  
 
 	setSelectedItem: function(id) {
 		this.dropdownListView[id].setSelected();
 	},
 
 	getSelected: function() {
-		return this.dropdownListView[this.selected_id].model;
+		if (typeof this.dropdownListView[this.selected_id] != "undefined") {
+			return this.dropdownListView[this.selected_id].model;
+		} else {
+			return false;
+		}
 	},
 
 	changeSelected: function() {
@@ -64,7 +79,11 @@ openstm.Views.DropdownSelectItemView = Backbone.View.extend({
 	/** Display the view
 	*/
 	render: function(select){
-		$(this.el).attr('value', this.model.get('id')).html(this.model.get('name'));
+		if (this.model) {
+			$(this.el).attr('value', this.model.get('id')).html(this.model.get('name'));
+		} else  {
+			$(this.el).attr('value', '');
+		}
 		if (select)
 			$(this.el).attr('selected', 'true');      	
 		
@@ -78,4 +97,13 @@ openstm.Views.DropdownSelectItemView = Backbone.View.extend({
     	this.render(true);
     },
         
+    hide: function() {
+	$(this.el).attr('disabled', 'disabled');
+	$(this.el).attr('style', 'display:none');
+    },
+        
+    show: function() {
+	$(this.el).removeAttr('disabled');
+	$(this.el).attr('style', 'display:inline');
+    },
 });

@@ -65,10 +65,11 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 
 			// Fill select ClaimersTypes //
 			openstm.views.selectListClaimersTypesView = new openstm.Views.DropdownSelectListView({el: $("#requestClaimerType"), collection: openstm.collections.claimersTypes})
+			openstm.views.selectListClaimersTypesView.addEmptyFirst();
 			openstm.views.selectListClaimersTypesView.addAll();
-//			if(!self.create){ 	
-//				openstm.views.selectListClaimersTypesView.setSelectedItem( self.model.get("partner_type")[0] );
-//			}
+			if(!self.create){ 	
+				openstm.views.selectListClaimersTypesView.setSelectedItem( self.model.get("partner_type")[0] );
+			}
 
 		});
 
@@ -130,13 +131,16 @@ openstm.Views.RequestDetailsView = Backbone.View.extend({
 
 		// Remove the disabled attribut to the dropdown list //
 		$('#requestClaimer').removeAttr('disabled');
+		openstm.views.selectListClaimersTypesView.removeOne(0);
 
 		if(!openstm.collections.claimers){
 			openstm.collections.claimers = new openstm.Collections.Claimers();
 		}
 
 		typeModel = openstm.views.selectListClaimersTypesView.getSelected();
+
 		openstm.views.selectListClaimersView = new openstm.Views.DropdownSelectListView({el: $("#requestClaimer"), collection: typeModel.attributes.claimers});
+		openstm.views.selectListClaimersView.clearAll();
 		openstm.views.selectListClaimersView.addAll();
 	}
 
