@@ -44,7 +44,8 @@ openstm.Views.RequestsListView = Backbone.View.extend({
     	//if( openstm.views.selectListServicesView  == null ) {
 	    	openstm.views.selectListServicesView = new openstm.Views.DropdownSelectListView(
 	    		{el: $("#requestService"), collection: openstm.collections.claimersServices})
-	    	openstm.views.selectListServicesView.clearAll(); 
+	    	openstm.views.selectListServicesView.clearAll();
+	    	openstm.views.selectListServicesView.addEmptyFirst();
 	    	openstm.views.selectListServicesView.addAll(); 
 	    //}
     	
@@ -52,6 +53,7 @@ openstm.Views.RequestsListView = Backbone.View.extend({
 	    	openstm.views.selectListAssignementView = new openstm.Views.DropdownSelectListView(
 	    		{el: $("#requestAssignement"), collection: openstm.collections.assignements})
 	    	openstm.views.selectListAssignementView.clearAll(); 
+	    	openstm.views.selectListAssignementView.addEmptyFirst();
 	    	openstm.views.selectListAssignementView.addAll(); 
 	    //}
     	
