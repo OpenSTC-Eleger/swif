@@ -160,18 +160,32 @@ openstm.Router = Backbone.Router.extend({
             }
 
             openstm.loader('display');
-            openstm.collections.requests.fetch({success: function(){
-            
-                if(openstm.views.requestsListView == null) {
-                    openstm.views.requestsListView = new openstm.Views.RequestsListView({page: self.page});
-                } 
-                else {
-                    openstm.views.requestsListView.options.page = self.page;
-                    openstm.views.requestsListView.render();             
-                }
-                openstm.loader('hide');
-
-            }});
+            openstm.collections.requests.fetch({
+            	success: function(){
+	            	if(openstm.collections.claimersServices == null ){
+	            		openstm.collections.claimersServices = new openstm.Collections.ClaimersServices();
+					}
+		            openstm.collections.claimersServices.fetch({
+		            	success: function(){
+			            	if(openstm.collections.assignements == null ){
+			            		openstm.collections.assignements = new openstm.Collections.Assignements();
+							}
+				            openstm.collections.assignements.fetch({
+				            	success: function(){	            
+					                if(openstm.views.requestsListView == null) {
+					                    openstm.views.requestsListView = new openstm.Views.RequestsListView({page: self.page});
+					                } 
+					                else {
+					                    openstm.views.requestsListView.options.page = self.page;
+					                    openstm.views.requestsListView.render();             
+					                }
+					                openstm.loader('hide');
+				            	}
+				            });
+					   }
+		            });
+			   	}
+	        });
         }
         else{
             this.navigate('login', {trigger: true, replace: true});
