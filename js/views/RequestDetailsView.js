@@ -65,14 +65,13 @@ render: function () {
 				}
 
 				// Fill select ClaimersTypes //
-				if (openstm.views.selectListClaimersTypesView == null) {
 					openstm.views.selectListClaimersTypesView = new openstm.Views.DropdownSelectListView({el: $("#requestClaimerType"), collection: openstm.collections.claimersTypes})
+					openstm.views.selectListClaimersTypesView.clearAll();
 					openstm.views.selectListClaimersTypesView.addEmptyFirst();
 					openstm.views.selectListClaimersTypesView.addAll();
 	//				if(!self.create){	
 	//				openstm.views.selectListClaimersTypesView.setSelectedItem( self.model.get("partner_type")[0] );
 	//				}
-				}
 
 		});
 
@@ -158,6 +157,7 @@ fillDropdownClaimerType: function(){
 					$('#requestContactPhone').attr('value', '');
 					$('#requestContactEmail').attr('value', '');
 					$('#requestContactSelectBlock').attr('style', 'display:inline');
+					$('#requestContactSelect').attr('disabled', 'disabled');
 
 				} else {
 
