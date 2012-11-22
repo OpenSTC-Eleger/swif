@@ -25,6 +25,13 @@ openstm.Models.User = Backbone.Model.extend({
     setUID : function(value) {
         this.set({ uid : value });
     },
+    
+    getGroups : function() {
+        return this.get('groups_id');
+    },
+    setGroups : function(value) {
+        this.set({ groups_id : value });
+    },
 
     getLogin : function() {
         return this.get('login');
@@ -115,23 +122,13 @@ openstm.Models.User = Backbone.Model.extend({
                 self.setLogin(loginUser);
                 self.setUID(data.uid);
                 
+                
                 var date = moment().format("LLL");
                 self.setLastConnection(date);
+                
+                self.getUserGroups();
                
-                // Add the user to the collection and save it to the localStorage //
-                openstm.collections.users.add(self);
 
-                // Get the user Information //
-                self.getUserInformations();
-               
-                
-                openstm.notify('', 'info', 'Information', 'Vous êtes connecté');
-                
-                Backbone.history.navigate(openstm.router.homePage, {trigger: true, replace: true});
-                
-        
-                // Refresh the header //
-                openstm.views.headerView.render(openstm.router.mainMenus.manageInterventions);
             }
             
             deferred.resolve();
@@ -217,9 +214,54 @@ openstm.Models.User = Backbone.Model.extend({
             })
         );
       
-    }
+    },
+    
+	getUserGroups: function() {
+		
+		"use strict";
+		var self = this;
+		
+		if(openstm.collections.groups == null ){
+		    openstm.collections.groups = new openstm.Collections.Groups();
+		}	
+		
+		openstm.collections.groups.fetch({
+		    error: function (){
+		    	console.log('ERROR: Unable to retrieve menu');
+			},
+			success: function(){	    
+		    	
+		    	
+		    	var fields = [];
+		        openstm.getUserGroups(self.model_name, fields, self.getUID(), self.getSessionID(),
+		            ({
+		                success: function(data){
+		            		console.debug("Set User groups");
+		            		self.setGroups(data.result.groups_id);
+		                    // Add the user to the collection and save it to the localStorage //
+		                    openstm.collections.users.add(self);
 
-
-
+		                    // Get the user Information //
+		                    self.getUserInformations();
+		                   
+		                    
+		                    openstm.notify('', 'info', 'Information', 'Vous êtes connecté');
+		                    
+		                    Backbone.history.navigate(openstm.router.homePage, {trigger: true, replace: true});
+		                    
+		            
+		                    // Refresh the header //
+		                    openstm.views.headerView.render(openstm.router.mainMenus.manageInterventions);
+		    			},
+		                error: function(error){
+		                    console.log(error);
+		                    openstm.notify('', 'error', openstm.lang.errorMessages.connectionError, openstm.lang.errorMessages.serverUnreachable);       
+		                }
+		            })
+		        );
+			}
+		});
+	},
+	
 });
 

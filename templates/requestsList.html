@@ -1,3 +1,41 @@
+		<div id="validModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="myModalLabel">Modal header</h3>
+		  </div>
+		  <div class="modal-body">
+		    <form>
+				<div>
+					<label>Temps travaillé:</label>
+					<input id='total_hours' class="field" type="time"></input>
+				</div>
+				<div>
+					<label>Temps restant:</label>
+					<input id='remaining_hours' class="field" type="time"></input>
+				</div>
+				<div>
+					<label>Test:</label>
+					<input id='test' name='test' class="field" type="text"></input>
+				</div>
+				<div class="control-group">
+                    <label for="requestPlace" class="control-label"><%= _.capitalize(lang.place) %>:</label>
+
+                    <div class="controls">  
+                        <select id="requestService"><option value="" disabled="disabled"></option></select>
+                        <span class="help-inline"></span>                           
+                    </div>
+                </div>
+				
+			</form>
+		  </div>
+		  <div class="modal-footer">
+		    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		    <button id="btnValidModal" class="btn btn-primary">Valid</button>
+		  </div>
+		</div>
+
+
+
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.requestsList %>
@@ -94,6 +132,13 @@
 				    		<% } else if(requests[i].state == openstm.Models.Request.state[4].value) { %>
 				    			<span class="label label"><%= lang.closed %></span>
 				    		<% } %>
+					   	</td>
+					   	<td>
+					   		<button type="submit" id="btnOpenValidModal<%=i%>" class="btn-small btnOpenValidModal" style="visibility:<%=btnOpenValidModalVisibility%>"><i class="icon-ok icon-small"></i></button>
+					   		<button type="submit" id="btnOpenCancelModal<%=i%>" class="btn-small btnOpenCancelModal" style="visibility:<%=btnOpenCancelModalVisibility%>"><i class="icon-remove icon-small"></i></button>
+					   		<button type="submit" id="btnOpenModifyModal<%=i%>" class="btn-small btnOpenModifyModal" style="visibility:<%=btnOpenModifyModalVisibility%>"><i class="icon-forward icon-small"></i></button>
+					   		<button type="submit" id="btnOpenConfirmModal<%=i%>" class="btn-small btnOpenConfirmModal" style="visibility:<%=btnOpenConfirmModalVisibility%>"><i class="icon-flag icon-small"></i></button>
+					   		<button type="submit" id="btnOpenToBeConfirmModal<%=i%>" class="btn-small btnOpenToBeConfirmModal" style="visibility:<%=btnOpenToBeConfirmModalVisibility%>"><i class="icon-check icon-small"></i></button>
 					   	</td>
 					</tr>
 				<% } %>

@@ -8,12 +8,21 @@ openstm.Views.RequestsListView = Backbone.View.extend({
 	templateHTML: 'requestsList',
 
 	numberListByPage: 25,
+	
+	btnOpenValidModalVisibility: "hidden",
+	btnOpenModifyModalVisibility: "hidden",
+	btnOpenCancelModalVisibility: "hidden",
+	btnOpenToBeConfirmModalVisibility: "hidden",
+	btnOpenConfirmModalVisibility: "hidden",
 
 
     // The DOM events //
     events: {
 		'click li.active'		: 'preventDefault',
-		'click li.disabled'		: 'preventDefault'
+		'click li.disabled'		: 'preventDefault',
+			
+    	'click .btnOpenValidModal'		: 'openValidModal',
+		'click #btnValidModal'			: 'validModal',
     },
 
 	
@@ -23,6 +32,56 @@ openstm.Views.RequestsListView = Backbone.View.extend({
     initialize: function () {			
 		this.render();
     },
+    
+    openValidModal: function() {
+	
+    	
+    	$("#validModal #test").val( 'test' );
+    	
+    	//openstm.views.selectListServicesView = new openstm.Views.DropdownSelectListView({el: $("#requestPlace"), collection: openstm.collections.places})
+    	//openstm.views.selectListPlacesView.addAll();    	
+    	
+
+    	$("#validModal").modal();
+    	
+    	//var model = new Backbone.Model({  title: 'Example Modal', body: 'Hello World' });    	
+        //var view = new openstm.Views.ValidRequestModalView({ model: model });
+        //view.show();
+    },
+
+    validModal: function() {
+    	$("#validModal").modal('hide');
+    	
+    },
+
+    loadButtons : function() {
+		var self = this;
+			
+		//userGroups = openstm.models.user.getGroups();    	
+		//
+		//$.each(userGroups, function(index, group) { 
+		//  	if ( jQuery.inArray( group, [18,19,16] ) == 0) {
+		//		self.btnOpenValidModalVisibility = 'visible';
+		//		self.btnOpenModifyModalVisibility = 'visible';
+		//		self.btnOpenCancelModalVisibility = 'visible';
+		//		return true;
+		//  	}
+		//  	if ( jQuery.inArray( group, [18] ) == 0 ) {
+		//		self.btnOpenConfirmModalVisibility = 'visible';						
+		//		return true;
+		//  	}
+		//  	if ( jQuery.inArray( group, [19,16] ) == 0 ) {
+		//		self.btnOpenToBeConfirmModalVisibility = 'visible';	
+		//		return true;
+		//  	}
+		//  	
+		//});
+		self.btnOpenValidModalVisibility = 'visible';
+//		self.btnOpenModifyModalVisibility = 'visible';
+//		self.btnOpenCancelModalVisibility = 'visible';
+//		self.btnOpenConfirmModalVisibility = 'visible';	
+//		self.btnOpenToBeConfirmModalVisibility = 'visible';	
+    },
 
 
 
@@ -31,6 +90,8 @@ openstm.Views.RequestsListView = Backbone.View.extend({
     render: function () {
 		//openstm.Views.OpenstmView.prototype.render.call(this);
 		var self = this;
+		
+		self.loadButtons();
 
 		// Change the page title //
         openstm.router.setPageTitle(openstm.lang.viewsTitles.requestsList);
@@ -66,7 +127,14 @@ openstm.Views.RequestsListView = Backbone.View.extend({
 				requestsState: openstm.Models.Request.state,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
-				pageCount: pageCount
+				pageCount: pageCount,
+				
+			
+				btnOpenValidModalVisibility: self.btnOpenValidModalVisibility,				
+				btnOpenModifyModalVisibility: self.btnOpenModifyModalVisibility,
+				btnOpenCancelModalVisibility: self.btnOpenCancelModalVisibility,
+				btnOpenToBeConfirmModalVisibility: self.btnOpenToBeConfirmModalVisibility,
+				btnOpenConfirmModalVisibility: self.btnOpenConfirmModalVisibility,
 			});
 
 			console.debug(requests);
