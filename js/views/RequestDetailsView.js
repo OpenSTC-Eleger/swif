@@ -157,11 +157,8 @@ fillDropdownClaimer: function(){
 					openstm.collections.claimersServices = new openstm.Collections.ClaimersServices();
 				}
 
-//				claimerModel = openstm.views.selectListClaimersView.getSelected();
-
 				openstm.views.selectListClaimersServicesView = new openstm.Views.DropdownSelectListView({el: $("#requestContactService"), collection: openstm.collections.claimersServices});
-//				openstm.views.selectListClaimersServicesView.clearAll();
-//				openstm.views.selectListClaimersServicesView.addEmptyFirst();
+				openstm.views.selectListClaimersServicesView.clearAll();
 				openstm.views.selectListClaimersServicesView.addAll();
 				openstm.views.selectListClaimersTypesView.setSelectedItem( openstm.views.selectListClaimersView.getSelected().attributes.service_id[0] );
 		     }

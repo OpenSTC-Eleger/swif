@@ -266,6 +266,13 @@ openstm.Router = Backbone.Router.extend({
                     openstm.collections.claimers.fetch({
         	            success: function(){
 
+            			if(openstm.collections.claimersServices == null ){
+						openstm.collections.claimersServices = new openstm.Collections.ClaimersServices();
+				}
+				openstm.collections.claimersServices.fetch({
+
+					success: function(){
+
             			if(openstm.collections.claimersTypes == null ){
 						openstm.collections.claimersTypes = new openstm.Collections.ClaimersTypes();
 				}
@@ -286,6 +293,8 @@ openstm.Router = Backbone.Router.extend({
                         	    openstm.loader('hide');
                         	}
 				
+			});
+			},
 			});
                     },
 	            });
