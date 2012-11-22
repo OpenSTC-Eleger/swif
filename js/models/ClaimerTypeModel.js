@@ -14,10 +14,10 @@ openstm.Models.ClaimerType = Backbone.RelationalModel.extend({
 		relatedModel: 'openstm.Models.Claimer',
 		collectionType: 'openstm.Collections.Claimers',
 		includeInJSON: true,
-/*		reverseRelation: {
+		reverseRelation: {
 			key: 'type_id',
 			includeInJSON: true,
-		}*/
+		}
 	}],
 
 	/** Model Initialization
@@ -25,7 +25,6 @@ openstm.Models.ClaimerType = Backbone.RelationalModel.extend({
     initialize: function(){
         console.log('Claimer Type Model initialization');
         this.fetchRelated('claimers');
-	console.log("bla bla bla")
     },
 
     /** Model Parser */
