@@ -150,13 +150,14 @@ fillDropdownClaimerType: function(){
 					openstm.views.selectListClaimersView.addEmptyFirst();
 					openstm.views.selectListClaimersView.addAll();
 
-					$('#requestContact').attr('readonly', 'readonly');
+					$('#requestContactInputBlock').attr('style', 'display:none');
+					$('#requestContactInput').attr('readonly', 'readonly');
 					$('#requestContactPhone').attr('readonly', 'readonly');
 					$('#requestContactEmail').attr('readonly', 'readonly');
-
-					$('#requestContact').attr('value', '');
+					$('#requestContactInput').attr('value', '');
 					$('#requestContactPhone').attr('value', '');
 					$('#requestContactEmail').attr('value', '');
+					$('#requestContactSelectBlock').attr('style', 'display:inline');
 
 				} else {
 
@@ -179,6 +180,7 @@ fillDropdownClaimer: function(){
 				$('#requestContactInputBlock').attr('style', 'display:none');
 				$('#requestContactInput').attr('readonly', 'readonly');
 				$('#requestContactSelectBlock').attr('style', 'display:inline');
+				$('#requestContactSelect').removeAttr('disabled');
 				$('#requestContactPhone').removeAttr('readonly');
 				$('#requestContactEmail').removeAttr('readonly');
 

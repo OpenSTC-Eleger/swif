@@ -54,13 +54,15 @@
                 <div class="control-group">
                     <label for="requestContact" class="control-label"><%= _.capitalize(lang.contact) %>:</label>
 
-                    <div class="controls" id="requestContactSelectBlock" style="display:none">
-                         <select id="requestContactSelect" name="requestContact" disabled="disabled"></select>
+                    <div class="controls">
+			<div id="requestContactSelectBlock" style="display:none">
+                         <select id="requestContactSelect" name="requestContact" disabled="disabled" style="float:left"></select>
                         <span class="help-inline"></span>
-                    </div>
-                    <div class="controls" id="requestContactInputBlock" style="display:inline">
-                         <input type="text" id="requestContactInput" name="requestContact" readonly="readonly" />
+			</div>
+			<div id="requestContactInputBlock" style="display:inline">
+                         <input type="text" id="requestContactInput" name="requestContact" readonly="readonly" style="float:left" />
                         <span class="help-inline"></span>
+			</div>
                     </div>
                 </div>
                 
