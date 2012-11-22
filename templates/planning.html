@@ -89,8 +89,7 @@
 													tasksNotAssigned.pop(task);
 												}
 											});
-											interventionNotAssigned.tasks = tasksNotAssigned;
-											console.debug("taille : " + interventionNotAssigned.tasks.length);
+											interventionNotAssigned.tasks = tasksNotAssigned;											
 											_.each(interventionNotAssigned.tasks, function (task, j) { 
 												console.debug("#########TASK : " + task.name);
 											});
@@ -98,8 +97,6 @@
 									     });
 									     interventions = interventionsNotAssigned;
 									    _.each(interventions, function (intervention, i) { 
-									    	console.debug("++rate:" + intervention.progress_rate);
-									    	console.debug("++taille:" + intervention.tasks.length);
 					            			if(intervention.progress_rate != 100 && intervention.tasks.length >0 ){
 						            		%>
 											<li class="external-event" id="intervention_<%= intervention.id %>" data-duration="2">
