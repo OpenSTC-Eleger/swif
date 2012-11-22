@@ -260,11 +260,18 @@ openstm.Router = Backbone.Router.extend({
                 },
                 success: function(){
                 
-            		if(openstm.collections.claimers == null ){
-                		openstm.collections.claimers = new openstm.Collections.Claimers();
+            		if(openstm.collections.claimersServices == null ){
+                		openstm.collections.claimersServices = new openstm.Collections.ClaimersServices();
 			}
-                    openstm.collections.claimers.fetch({
+                    openstm.collections.claimersServices.fetch({
         	            success: function(){
+
+            			if(openstm.collections.claimers == null ){
+						openstm.collections.claimers = new openstm.Collections.Claimers();
+				}
+				openstm.collections.claimers.fetch({
+
+					success: function(){
 
             			if(openstm.collections.claimersTypes == null ){
 						openstm.collections.claimersTypes = new openstm.Collections.ClaimersTypes();
@@ -286,6 +293,8 @@ openstm.Router = Backbone.Router.extend({
                         	    openstm.loader('hide');
                         	}
 				
+			});
+			},
 			});
                     },
 	            });

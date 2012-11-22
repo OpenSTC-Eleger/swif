@@ -9,8 +9,7 @@ openstm.Models.Claimer = Backbone.RelationalModel.extend({
 	url: "/#demandeurs/:id",
 
 	relations: [
-	{
-		// Create a cozy, recursive, one-to-one relationship
+/*	{
 		type: Backbone.HasOne,
 		key: 'type_id',
 		relatedModel: 'openstm.Models.ClaimerType',
@@ -18,13 +17,21 @@ openstm.Models.Claimer = Backbone.RelationalModel.extend({
 		reverseRelation: {
 			key: 'claimers'
 		}
-	}],
+	},*/
+	{
+		type: Backbone.HasOne,
+		key: 'service_id',
+		relatedModel: 'openstm.Models.ClaimerService',
+		includeInJSON: true,
+	}
+	],
 	
     
 	/** Model Initialization
 	*/
     initialize: function(){
         console.log('Claimer Model initialization');
+        this.fetchRelated('service_id');
     },
 
     /** Model Parser

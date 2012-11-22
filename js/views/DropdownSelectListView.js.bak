@@ -7,26 +7,25 @@ openstm.Views.DropdownSelectListView = Backbone.View.extend({
 		"change": "changeSelected"
 	},
 
+	dropdownListView: new Array(),
 	
 	/** View Initialization
 	*/
 	initialize: function(){
-		this.dropdownListView = new Array(),
-		this.selected_id = 0,
 	    _.bindAll(this, 'addOne', 'addAll');
 	    this.collection.bind('reset', this.addAll);
 	},
 
 	addEmptyFirst: function(){        	
-		dropdownSelectItemView = new openstm.Views.DropdownSelectItemView({});
-		this.dropdownListView[0] = dropdownSelectItemView;
+		this.dropdownSelectItemView = new openstm.Views.DropdownSelectItemView({});
+		this.dropdownListView[0] = this.dropdownSelectItemView;
 		$(this.el).append(dropdownSelectItemView.render(false).el); 
 	},
 
 	addOne: function(model){        	
-		dropdownSelectItemView = new openstm.Views.DropdownSelectItemView({ model: model });
-		this.dropdownListView[model.get("id")] = dropdownSelectItemView;
-		$(this.el).append(dropdownSelectItemView.render(false).el); 
+		this.dropdownSelectItemView = new openstm.Views.DropdownSelectItemView({ model: model });
+		this.dropdownListView[model.get("id")] = this.dropdownSelectItemView;
+		$(this.el).append(this.dropdownSelectItemView.render(false).el); 
 	},
 
 	removeOne: function(id){

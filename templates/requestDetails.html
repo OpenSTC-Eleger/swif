@@ -25,36 +25,41 @@
             </div>
             
             <!-- Request Partner -->
-            <div class="control-group">
+            <div class="control-group" id="requestClaimerBlock" style="display:none">
                 <label for="requestClaimer" class="control-label"><%= _.capitalize(lang.name) %>:</label>
 
                 <div class="controls">
-                     <select id="requestClaimer" disabled="disabled"><option value="" disabled="disabled"></option></select>
+                     <select id="requestClaimer"></select>
                     <span class="help-inline"></span>
                 </div>
-            </div><br />
+            </div>
+                
+                <!-- Request Contact Service -->
+                <div class="control-group" id="requestContactServiceBlock" style="display:none">
+                    <label for="requestContactService" class="control-label" ><%= _.capitalize(lang.service) %>:</label>
+
+                    <div class="controls">
+                        <input type="text" id="requestContactService" name="requestContactService" readonly="readonly" value="" />
+                        <!--<span class="help-inline"></span>-->
+                    </div>
+                </div>
+		<br />
             
             
             <!-- Details about the claimer -->
             <fieldset>
                 <legend><%= lang.claimerDetails %>:</legend>
-                
-                <!-- Request Contact Service -->
-                <div class="control-group">
-                    <label for="requestContactService" class="control-label"><%= _.capitalize(lang.service) %>:</label>
-
-                    <div class="controls">
-                        <select id="requestContactService" disabled="disabled"></select>
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
                         
                 <!-- Request Contact -->
                 <div class="control-group">
                     <label for="requestContact" class="control-label"><%= _.capitalize(lang.contact) %>:</label>
 
-                    <div class="controls">
-                         <input type="text" id="requestContact" name="requestContact" readonly="readonly" />
+                    <div class="controls" id="requestContactSelectBlock" style="display:none">
+                         <select id="requestContactSelect" name="requestContact" disabled="disabled"></select>
+                        <span class="help-inline"></span>
+                    </div>
+                    <div class="controls" id="requestContactInputBlock" style="display:inline">
+                         <input type="text" id="requestContactInput" name="requestContact" readonly="readonly" />
                         <span class="help-inline"></span>
                     </div>
                 </div>
