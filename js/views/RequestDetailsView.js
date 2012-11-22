@@ -184,17 +184,34 @@ fillDropdownClaimer: function(){
 				$('#requestContactPhone').removeAttr('readonly');
 				$('#requestContactEmail').removeAttr('readonly');
 
+				claimer = openstm.views.selectListClaimersView.getSelected();
+
 				if(!openstm.collections.claimersServices){
 					openstm.collections.claimersServices = new openstm.Collections.ClaimersServices();
 				}
 
-				if (openstm.views.selectListClaimersView.getSelected().attributes.service_id.attributes[1]) {
+				if (claimer.attributes.service_id.attributes[1]) {
 					$('#requestContactServiceBlock').attr('style', 'display:inline');
-					$('#requestContactService').attr('value', openstm.views.selectListClaimersView.getSelected().attributes.service_id.attributes[1] );
+					$('#requestContactService').attr('value', claimer.attributes.service_id.attributes[1] );
 				} else {
 					$('#requestContactServiceBlock').attr('style', 'display:none');
 					$('#requestContactService').attr('value', '' );
 				}
+
+				if(!openstm.collections.claimersContacts){
+					openstm.collections.claimersContacts = new openstm.Collections.ClaimersContacts();
+				}
+
+				currentContacts = new openstm.Collections.ClaimersContacts();
+				_.each(openstm.collections.claimersContacts, function(contact, i) {
+					if (contact.attributes.partner_id.models[0].attributes.id = claimer.attributes.id) {
+						currentContacts.add(contact);
+					}
+				});
+
+				openstm.views.selectListClaimersContactsView = new openstm.Views.DropdownSelectListView({el: $("#requestContactSelect"), collection: currentContacts});
+				openstm.views.selectListClaimersContactsView.clearAll();
+				openstm.views.selectListClaimersContactsView.addAll();
 		     }
 
 });

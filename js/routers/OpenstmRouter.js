@@ -273,6 +273,13 @@ openstm.Router = Backbone.Router.extend({
 
 					success: function(){
 
+            			if(openstm.collections.claimersContacts == null ){
+						openstm.collections.claimersContacts = new openstm.Collections.ClaimersContacts();
+				}
+				openstm.collections.claimersContacts.fetch({
+
+					success: function(){
+
             			if(openstm.collections.claimersTypes == null ){
 						openstm.collections.claimersTypes = new openstm.Collections.ClaimersTypes();
 				}
@@ -292,7 +299,8 @@ openstm.Router = Backbone.Router.extend({
                         	complete: function(){
                         	    openstm.loader('hide');
                         	}
-				
+				});
+				}
 			});
 			},
 			});
