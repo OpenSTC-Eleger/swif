@@ -14,10 +14,10 @@ openstm.Models.ClaimerType = Backbone.RelationalModel.extend({
 		relatedModel: 'openstm.Models.Claimer',
 		collectionType: 'openstm.Collections.Claimers',
 		includeInJSON: true,
-		reverseRelation: {
-			key: 'type_id',
-			includeInJSON: true,
-		}
+//		reverseRelation: {
+//			key: 'type_id',
+//			includeInJSON: true,
+//		}
 	}],
 
 	/** Model Initialization

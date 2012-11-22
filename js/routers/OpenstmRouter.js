@@ -260,16 +260,16 @@ openstm.Router = Backbone.Router.extend({
                 },
                 success: function(){
                 
-            		if(openstm.collections.claimers == null ){
-                		openstm.collections.claimers = new openstm.Collections.Claimers();
+            		if(openstm.collections.claimersServices == null ){
+                		openstm.collections.claimersServices = new openstm.Collections.ClaimersServices();
 			}
-                    openstm.collections.claimers.fetch({
+                    openstm.collections.claimersServices.fetch({
         	            success: function(){
 
-            			if(openstm.collections.claimersServices == null ){
-						openstm.collections.claimersServices = new openstm.Collections.ClaimersServices();
+            			if(openstm.collections.claimers == null ){
+						openstm.collections.claimers = new openstm.Collections.Claimers();
 				}
-				openstm.collections.claimersServices.fetch({
+				openstm.collections.claimers.fetch({
 
 					success: function(){
 

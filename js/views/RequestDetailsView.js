@@ -65,11 +65,13 @@ render: function () {
 				}
 
 				// Fill select ClaimersTypes //
-				openstm.views.selectListClaimersTypesView = new openstm.Views.DropdownSelectListView({el: $("#requestClaimerType"), collection: openstm.collections.claimersTypes})
-				openstm.views.selectListClaimersTypesView.addEmptyFirst();
-				openstm.views.selectListClaimersTypesView.addAll();
-				if(!self.create){	
-				openstm.views.selectListClaimersTypesView.setSelectedItem( self.model.get("partner_type")[0] );
+				if (openstm.views.selectListClaimersTypesView == null) {
+					openstm.views.selectListClaimersTypesView = new openstm.Views.DropdownSelectListView({el: $("#requestClaimerType"), collection: openstm.collections.claimersTypes})
+					openstm.views.selectListClaimersTypesView.addEmptyFirst();
+					openstm.views.selectListClaimersTypesView.addAll();
+	//				if(!self.create){	
+	//				openstm.views.selectListClaimersTypesView.setSelectedItem( self.model.get("partner_type")[0] );
+	//				}
 				}
 
 		});
@@ -130,9 +132,9 @@ return false;
 	 */
 fillDropdownClaimerType: function(){
 
-				// Remove the disabled attribut to the dropdown list //
-				$('#requestClaimer').removeAttr('disabled');
 				openstm.views.selectListClaimersTypesView.removeOne(0);
+				$('#requestContactService').attr('value', '' );
+				$('#requestContactServiceBlock').attr('style', 'display:none');
 
 				if(!openstm.collections.claimers){
 					openstm.collections.claimers = new openstm.Collections.Claimers();
@@ -140,27 +142,57 @@ fillDropdownClaimerType: function(){
 
 				claimerTypeModel = openstm.views.selectListClaimersTypesView.getSelected();
 
-				openstm.views.selectListClaimersView = new openstm.Views.DropdownSelectListView({el: $("#requestClaimer"), collection: claimerTypeModel.attributes.claimers});
-				openstm.views.selectListClaimersView.clearAll();
-				openstm.views.selectListClaimersView.addEmptyFirst();
-				openstm.views.selectListClaimersView.addAll();
+				if ( claimerTypeModel.attributes.claimers.length != 0) {
+
+					$('#requestClaimerBlock').attr('style', 'display:inline');
+					openstm.views.selectListClaimersView = new openstm.Views.DropdownSelectListView({el: $("#requestClaimer"), collection: claimerTypeModel.attributes.claimers});
+					openstm.views.selectListClaimersView.clearAll();
+					openstm.views.selectListClaimersView.addEmptyFirst();
+					openstm.views.selectListClaimersView.addAll();
+
+					$('#requestContact').attr('readonly', 'readonly');
+					$('#requestContactPhone').attr('readonly', 'readonly');
+					$('#requestContactEmail').attr('readonly', 'readonly');
+
+					$('#requestContact').attr('value', '');
+					$('#requestContactPhone').attr('value', '');
+					$('#requestContactEmail').attr('value', '');
+
+				} else {
+
+					$('#requestContactInputBlock').attr('style', 'display:inline');
+					$('#requestContactInput').removeAttr('readonly');
+					$('#requestContactSelectBlock').attr('style', 'display:none');
+
+					$('#requestContactPhone').removeAttr('readonly');
+					$('#requestContactEmail').removeAttr('readonly');
+
+					$('#requestClaimerBlock').attr('style', 'display:none');
+					if (openstm.views.selectListClaimersView) {
+						openstm.views.selectListClaimersView.clearAll();
+					}
+				}
 			 },
 
 fillDropdownClaimer: function(){
-				$('#requestContactService').removeAttr('disabled');
-				$('#requestContact').removeAttr('readonly');
+				openstm.views.selectListClaimersView.removeOne(0);
+				$('#requestContactInputBlock').attr('style', 'display:none');
+				$('#requestContactInput').attr('readonly', 'readonly');
+				$('#requestContactSelectBlock').attr('style', 'display:inline');
 				$('#requestContactPhone').removeAttr('readonly');
 				$('#requestContactEmail').removeAttr('readonly');
-				openstm.views.selectListClaimersView.removeOne(0);
 
 				if(!openstm.collections.claimersServices){
 					openstm.collections.claimersServices = new openstm.Collections.ClaimersServices();
 				}
 
-				openstm.views.selectListClaimersServicesView = new openstm.Views.DropdownSelectListView({el: $("#requestContactService"), collection: openstm.collections.claimersServices});
-				openstm.views.selectListClaimersServicesView.clearAll();
-				openstm.views.selectListClaimersServicesView.addAll();
-				openstm.views.selectListClaimersTypesView.setSelectedItem( openstm.views.selectListClaimersView.getSelected().attributes.service_id[0] );
+				if (openstm.views.selectListClaimersView.getSelected().attributes.service_id.attributes[1]) {
+					$('#requestContactServiceBlock').attr('style', 'display:inline');
+					$('#requestContactService').attr('value', openstm.views.selectListClaimersView.getSelected().attributes.service_id.attributes[1] );
+				} else {
+					$('#requestContactServiceBlock').attr('style', 'display:none');
+					$('#requestContactService').attr('value', '' );
+				}
 		     }
 
 });
