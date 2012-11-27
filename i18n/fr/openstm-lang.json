@@ -29,6 +29,7 @@
 	"aboutTheRequest"   	: "À propos de la demande",
 	"informationOfTheSite" 	: "Précision sur le site",
 	"serviceConcerned" 		: "Service concerné",
+	"action" 				: "actions",
 
 	"refused" 				: "refusée",
 	"wait" 					: "en attente",

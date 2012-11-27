@@ -10,7 +10,7 @@
 			    		<td>
 							<div>
 							<label>Libellé de la demande:</label>
-								<input id='name' class="field" type="text"></input>
+								<input id='name' class="field" type="text" />
 							</div>
 						</td>
 						<td>
@@ -38,7 +38,7 @@
 						<td>
 							<div>
 								<label>Test:</label>
-								<input id='deadlineDate' name='deadlineDate' class="field" type="date"></input>
+								<input id='deadlineDate' name='deadlineDate' class="field" type="date" />
 							</div>
 						</td>
 		            </tr>
@@ -124,23 +124,40 @@
 												&nbsp; <%= _.capitalize(state.traduction) %></a></li>
 									<% }) %>
 								</ul>
-						</div>
+							</div>
 					</th>
+					
+					<% if(!openstm.models.user.isDST() && !openstm.models.user.isManager()){ %>
+						<th><%= _.capitalize(lang.action) %></th>
+					<% } %>
 				</tr>
 			</thead>
 			<tbody>
 				<% for (var i = startPos; i < endPos; i++) { %>
-					<tr>
+				
+					<!-- Set if the table row should be hightlight and Bold -->
+					<% if(requests[i].state == openstm.Models.Request.state[1].value && openstm.models.user.isManager()) {
+						var classRow = "info bolder";
+					}
+					else if(requests[i].state == openstm.Models.Request.state[2].value && openstm.models.user.isDST()){
+						var classTR = "warning bolder";
+					}
+					else{
+						var classTR = "";
+					}
+					%>
+
+					<tr class="<%= classRow %>">
 					    <td>
-					    	<a  href="#demandes-dinterventions/<%= requests[i].id %>" 
-					    		rel="popover" 
-					    		data-content="<%= (requests[i].description != '' ? requests[i].description : _.capitalize(lang.notKnown)) %>" 
-					    		data-original-title="<%= _.capitalize(lang.description) %>:">
-					    		<%= requests[i].name %>
-					    	</a>
-					    </td>
-					    <td><%= (requests[i].site1 != false ? _(requests[i].site1[1].toLowerCase()).titleize() : "") %></td>
-					    <td class="hidden-phone">
+					    	<a 	href="#demandes-dinterventions/<%= requests[i].id %>" 
+								rel="popover" 
+								data-content="<%= (requests[i].description != '' ? requests[i].description : _.capitalize(lang.notKnown)) %>" 
+								data-original-title="<%= _.capitalize(lang.description) %>:">
+								<%= requests[i].name %>
+							</a>
+						</td>
+						<td><%= (requests[i].site1 != false ? _(requests[i].site1[1].toLowerCase()).titleize() : "") %></td>
+						<td class="hidden-phone">
 					    	<span 
 					    		rel="tooltip"
 					    		data-original-title="<%= _.capitalize(lang.toValidateBy) %> <%= (requests[i].manager_id != false ? requests[i].manager_id[1] : _.capitalize(lang.notKnown)) %>">
@@ -149,7 +166,7 @@
 					    </td>
 					    <td><%= requests[i].partner_id[1] %></td>
 					    <td>
-					    	<span 
+							<span 
 					    		rel="tooltip"
 					    		data-original-title="<%= moment(requests[i].current_date, 'YYYY-MM-DD HH:mm:ss').fromNow() %>">
 					    		<%= moment(requests[i].current_date, 'YYYY-MM-DD HH:mm:ss').format('LLL') %>
@@ -168,13 +185,68 @@
 				    			<span class="label label"><%= lang.closed %></span>
 				    		<% } %>
 					   	</td>
-					   	<td>
-					   		<button type="submit" id="btnOpenValidModal_<%=i%>" class="btn-small btnOpenValidModal" style="visibility:<%=btnOpenValidModalVisibility%>"><i class="icon-ok icon-small"></i></button>
-					   		<button type="submit" id="btnOpenCancelModal_<%=i%>" class="btn-small btnOpenCancelModal" style="visibility:<%=btnOpenCancelModalVisibility%>"><i class="icon-remove icon-small"></i></button>
-					   		<button type="submit" id="btnOpenModifyModal_<%=i%>" class="btn-small btnOpenModifyModal" style="visibility:<%=btnOpenModifyModalVisibility%>"><i class="icon-forward icon-small"></i></button>
-					   		<button type="submit" id="btnOpenConfirmModal_<%=i%>" class="btn-small btnOpenConfirmModal" style="visibility:<%=btnOpenConfirmModalVisibility%>"><i class="icon-flag icon-small"></i></button>
-					   		<button type="submit" id="btnOpenToBeConfirmModal_<%=i%>" class="btn-small btnOpenToBeConfirmModal" style="visibility:<%=btnOpenToBeConfirmModalVisibility%>"><i class="icon-check icon-small"></i></button>
-					   	</td>
+					   	
+					   	<% if(!openstm.models.user.isDST() && !openstm.models.user.isManager()){ %>
+						   	<td class="align">
+
+						   		<!-- Refused State -->
+								<% if(requests[i].state == openstm.Models.Request.state[0].value) { %>
+						   		
+									<div class="btn-group">
+										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small disabled no-outline"><i class="icon-remove text-error"></i></button>
+										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu pull-right align-left">
+											<li><a href="#" class="text-success"><i class="icon-ok text-sucess"></i>&nbsp;Valider</a></li>
+											<li><a href="#"><i class="icon-user text-warning"></i>&nbsp;remonter DST</a></li>
+										</ul>
+									</div>
+
+								<!-- Wait state -->
+								<% } else if(requests[i].state == openstm.Models.Request.state[1].value) { %>
+									
+									<div class="btn-group">
+										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small btn-success no-outline"><i class="icon-ok"></i></button>
+										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu pull-right align-left">
+											<li><a href="#"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
+											<li><a href="#"><i class="icon-user"></i>&nbsp;remonter DST</a></li>
+										</ul>
+									</div>
+
+								<!-- Confirm state -->
+								<% } else if(requests[i].state == openstm.Models.Request.state[2].value) { %>
+									
+									<div class="btn-group">
+										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small btn-success no-outline"><i class="icon-ok"></i></button>
+										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu pull-right align-left">
+											<li><a href="#"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
+										</ul>
+									</div>
+		
+								<!-- Valid State -->
+						   		<% } else if(requests[i].state == openstm.Models.Request.state[3].value) { %>
+						   		
+									<div class="btn-group">
+										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small disabled no-outline"><i class="icon-ok text-success"></i></button>
+										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu pull-right align-left">
+											<li><a href="#"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
+											<li><a href="#"><i class="icon-user"></i>&nbsp;remonter DST</a></li>
+										</ul>
+									</div>
+									
+						   		<% } %>
+						   	</td>
+						<% } %>
 					</tr>
 				<% } %>
 			</tbody>
@@ -230,7 +302,4 @@
 
 	<% } %>
 
-</div>
-
-
-		
+</div>	

@@ -13,7 +13,6 @@ var openstm = {
     
     urlOE                       : 'http://octm-dev.siclic.fr:8069',
     urlOE_authentication        : '/web/session/authenticate',
-    urlOE_groups        		: '/web/dataset/call_kw',
     urlOE_versionServer         : '/web/webclient/version_info',
     urlOE_sessionDestroy        : '/web/session/destroy',
     urlOE_sessionInformation    : '/web/session/get_session_info',
@@ -156,17 +155,6 @@ var openstm = {
         return deferred;
     },
     
-
-    getUserGroups : function (model, fields, uid, session_id, options) {
-	    this.json(this.urlOE + this.urlOE_groups, {
-	        'model'     : model,
-	        'method'	: 'read',
-	        'kwargs'	:{},
-	        'args'       : [uid,fields],
-	        'session_id': session_id
-	    }, options)	
-    },
-
 
     /** Retrieve an object from OpenERP
     */
