@@ -66,17 +66,30 @@
 		
 		
 		
-		
-
+<!-- Check the group of the user to display element with the good color -->	
+<% 
+	if(app.models.user.isDST()) { 
+		var classColor = "warning";
+		var actionRequestToProcess = lang.actions.confirm;
+	}
+	else if(app.models.user.isManager()){
+		var classColor = "info";
+		var actionRequestToProcess = lang.actions.process;
+	}
+	else{ 
+		var classColor = "";
+		var actionRequestToProcess = "";
+	} 
+%>
 
 
 
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.requestsList %>
-		<sup rel="tooltip" data-original-title="<%= lang.wait %>">
-			<i class="badge badge-info" >
-				<%= nbInterventionsWaiting %>
+		<sup rel="tooltip" data-original-title="<%= actionRequestToProcess %>">
+			<i class="badge badge-<%= classColor %>" >
+				<%= nbInterventionsInBadge %>
 			</i>
 		</sup>
 	</h1>
@@ -127,7 +140,7 @@
 							</div>
 					</th>
 					
-					<% if(!app.models.user.isDST() && !app.models.user.isManager()){ %>
+					<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
 						<th><%= _.capitalize(lang.action) %></th>
 					<% } %>
 				</tr>
@@ -137,13 +150,13 @@
 				
 					<!-- Set if the table row should be hightlight and Bold -->
 					<% if(requests[i].state == app.Models.Request.state[1].value && app.models.user.isManager()) {
-						var classRow = "info bolder";
+						var classRow = classColor+" bolder";
 					}
 					else if(requests[i].state == app.Models.Request.state[2].value && app.models.user.isDST()){
-						var classTR = "warning bolder";
+						var classRow = classColor+" bolder";
 					}
 					else{
-						var classTR = "";
+						var classRow = "";
 					}
 					%>
 
@@ -186,7 +199,7 @@
 				    		<% } %>
 					   	</td>
 					   	
-					   	<% if(!app.models.user.isDST() && !app.models.user.isManager()){ %>
+					   	<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
 						   	<td class="align">
 
 						   		<!-- Refused State -->
@@ -229,7 +242,7 @@
 											<li><a href="#"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
 										</ul>
 									</div>
-		
+
 								<!-- Valid State -->
 						   		<% } else if(requests[i].state == app.Models.Request.state[3].value) { %>
 						   		

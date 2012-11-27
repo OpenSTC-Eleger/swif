@@ -78,8 +78,6 @@ app.Views.RequestsListView = Backbone.View.extend({
 		//app.Views.appView.prototype.render.call(this);
 		var self = this;
 		
-		self.loadButtons();
-
 		// Change the page title //
         app.router.setPageTitle(app.lang.viewsTitles.requestsList);
 
@@ -98,9 +96,19 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 		
 
-        // Retrieve the number of waiting Interventions //
-        var interventionsWaiting = _.filter(requests, function(item){ return item.attributes.state == app.Models.Request.state[1].value; });
-        var nbInterventionsWaiting = _.size(interventionsWaiting);
+        // Retrieve the number Interventions due to the Group user //
+        if(app.models.user.isDST()){
+        	var interventionsFilter = _.filter(requests, function(item){ return item.attributes.state == app.Models.Request.state[2].value; });
+        	var nbInterventionsInBadge = _.size(interventionsFilter);	
+        }
+        else if(app.models.user.isManager()){
+        	var interventionsFilter = _.filter(requests, function(item){ return item.attributes.state == app.Models.Request.state[1].value; });
+        	var nbInterventionsInBadge = _.size(interventionsFilter);
+        }
+        else {
+			var nbInterventionsInBadge = _.size(app.collections.requests);
+        }
+
         
 
 
@@ -109,19 +117,13 @@ app.Views.RequestsListView = Backbone.View.extend({
 	  
 			var template = _.template(templateData, {
 				lang: app.lang,
-				nbInterventionsWaiting: nbInterventionsWaiting,
+				nbInterventionsInBadge: nbInterventionsInBadge,
 				requests: app.collections.requests.toJSON(),
 				requestsState: app.Models.Request.state,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
 				pageCount: pageCount,
-				
-			
-				btnOpenValidModalVisibility: self.btnOpenValidModalVisibility,				
-				btnOpenModifyModalVisibility: self.btnOpenModifyModalVisibility,
-				btnOpenCancelModalVisibility: self.btnOpenCancelModalVisibility,
-				btnOpenToBeConfirmModalVisibility: self.btnOpenToBeConfirmModalVisibility,
-				btnOpenConfirmModalVisibility: self.btnOpenConfirmModalVisibility,
+
 			});
 
 			console.debug(requests);

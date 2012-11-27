@@ -50,7 +50,9 @@
 		"first"				: "début",
 		"end"				: "fin",
 		"previousShort"		: "préc",
-		"nextShort"			: "suiv"
+		"nextShort"			: "suiv",
+		"process" 			: "à traiter",
+		"confirm" 			: "à confirmer"
 	},
 
 	"errorMessages" : {
