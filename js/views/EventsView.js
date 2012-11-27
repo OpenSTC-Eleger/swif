@@ -1,4 +1,4 @@
-openstm.Views.EventsView = Backbone.View.extend({
+app.Views.EventsView = Backbone.View.extend({
 	
 //		events: {
 //		    "submit form": "save"
@@ -17,7 +17,7 @@ openstm.Views.EventsView = Backbone.View.extend({
             this.collection.bind('change', this.change);            
             this.collection.bind('destroy', this.destroy);
             
-            this.eventView = new openstm.Views.EventView();            
+            this.eventView = new app.Views.EventView();            
         },
 
         
@@ -27,13 +27,13 @@ openstm.Views.EventsView = Backbone.View.extend({
         },
         
 		save: function(params) {
-			model = new openstm.Models.Task();
+			model = new app.Models.Task();
 			model.save(params,			
 				{
 				    success: function (data) {
 				        console.log(data);
 				        if(data.error){
-				    		openstm.notify('', 'error', openstm.lang.errorMessages.unablePerformAction, openstm.lang.errorMessages.sufficientRights);
+				    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				        }
 				        else{
 				            console.log('Success SAVE REQUEST');
@@ -190,18 +190,18 @@ openstm.Views.EventsView = Backbone.View.extend({
 				
 				eventDragStop: function(event, jsEvent, ui, view) {
 				    //if (self.isElemOverDiv($(this), $('div.accordion-group'))) {
-					openstm.loader('display');
+					app.loader('display');
 					
 				    params = { 
 				       id: event.id,
 				       user_id: null
 				    };
-				    model = openstm.collections.tasks.get(event.id)
+				    model = app.collections.tasks.get(event.id)
 					model.save(params);	
 				    	
 				    self.planning.render();	
 				    $(self.el).fullCalendar('removeEvents', event.id);
-				    openstm.loader('hide');
+				    app.loader('hide');
 				    //}
 				}
 

@@ -1,7 +1,7 @@
 /******************************************
 * Claimer Contact Model
 */
-openstm.Models.ClaimerContact = Backbone.RelationalModel.extend({
+app.Models.ClaimerContact = Backbone.RelationalModel.extend({
     
 	// Model name in the database //
 	model_name : 'res.partner.address',	
@@ -12,7 +12,7 @@ openstm.Models.ClaimerContact = Backbone.RelationalModel.extend({
 	{
 		type: Backbone.HasMany,
 		key: 'partner_id',
-		relatedModel: 'openstm.Models.Claimer',
+		relatedModel: 'app.Models.Claimer',
 		includeInJSON: true,
 	}],
 	

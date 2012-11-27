@@ -1,7 +1,7 @@
 /******************************************
 * Dropdown List View
 */
-openstm.Views.DropdownSelectListView = Backbone.View.extend({
+app.Views.DropdownSelectListView = Backbone.View.extend({
 	
 	events: {
 		"change": "changeSelected"
@@ -18,13 +18,13 @@ openstm.Views.DropdownSelectListView = Backbone.View.extend({
 	},
 
 	addEmptyFirst: function(){        	
-		dropdownSelectItemView = new openstm.Views.DropdownSelectItemView({});
+		dropdownSelectItemView = new app.Views.DropdownSelectItemView({});
 		this.dropdownListView[0] = dropdownSelectItemView;
 		$(this.el).append(dropdownSelectItemView.render(false).el); 
 	},
 
 	addOne: function(model){        	
-		dropdownSelectItemView = new openstm.Views.DropdownSelectItemView({ model: model });
+		dropdownSelectItemView = new app.Views.DropdownSelectItemView({ model: model });
 		this.dropdownListView[model.get("id")] = dropdownSelectItemView;
 		$(this.el).append(dropdownSelectItemView.render(false).el); 
 	},
@@ -60,7 +60,7 @@ openstm.Views.DropdownSelectListView = Backbone.View.extend({
 /******************************************
 * Dropdown list item View
 */
-openstm.Views.DropdownSelectItemView = Backbone.View.extend({
+app.Views.DropdownSelectItemView = Backbone.View.extend({
         
     tagName: "option",
     selected: false,

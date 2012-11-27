@@ -1,7 +1,7 @@
 /******************************************
 * Login View
 */
-openstm.Views.LoginView = Backbone.View.extend({
+app.Views.LoginView = Backbone.View.extend({
 
 
    el : '#rowContainer',
@@ -32,12 +32,12 @@ openstm.Views.LoginView = Backbone.View.extend({
         var self = this;
 
         // Change the page title //
-        openstm.router.setPageTitle(openstm.lang.viewsTitles.login);
+        app.router.setPageTitle(app.lang.viewsTitles.login);
 
         // Retrieve the Login template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
          
-            var template = _.template(templateData, {lang: openstm.lang, user: self.model.toJSON()});
+            var template = _.template(templateData, {lang: app.lang, user: self.model.toJSON()});
             $(self.el).html(template);
 
         });
@@ -70,8 +70,8 @@ openstm.Views.LoginView = Backbone.View.extend({
 
 
         // Execution user login function //
-        openstm.loader('display');
-        openstm.models.user.login(login, pass);
+        app.loader('display');
+        app.models.user.login(login, pass);
         
         $('#passUser').val('');
     },

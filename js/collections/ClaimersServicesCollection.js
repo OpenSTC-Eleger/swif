@@ -1,9 +1,9 @@
 /******************************************
 * Claimers Services Collection
 */
-openstm.Collections.ClaimersServices = Backbone.Collection.extend({
+app.Collections.ClaimersServices = Backbone.Collection.extend({
 
-    model : openstm.Models.ClaimerService,
+    model : app.Models.ClaimerService,
 
     // Model name in the database //
     model_name : 'openctm.service',
@@ -20,7 +20,7 @@ openstm.Collections.ClaimersServices = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {
-    	openstm.readOE(this.model_name, openstm.models.user.getSessionID(), options);
+    	app.readOE(this.model_name, app.models.user.getSessionID(), options);
     },
 
 

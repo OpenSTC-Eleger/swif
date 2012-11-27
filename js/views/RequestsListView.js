@@ -1,7 +1,7 @@
 /******************************************
 * Requests List View
 */
-openstm.Views.RequestsListView = Backbone.View.extend({
+app.Views.RequestsListView = Backbone.View.extend({
 	
 	el : '#rowContainer',
 	
@@ -41,27 +41,27 @@ openstm.Views.RequestsListView = Backbone.View.extend({
     	
     	$("#validModal #test").val( 'test' );
     	
-    	//if( openstm.views.selectListServicesView  == null ) {
-	    	openstm.views.selectListServicesView = new openstm.Views.DropdownSelectListView(
-	    		{el: $("#requestService"), collection: openstm.collections.claimersServices})
-	    	openstm.views.selectListServicesView.clearAll();
-	    	openstm.views.selectListServicesView.addEmptyFirst();
-	    	openstm.views.selectListServicesView.addAll(); 
+    	//if( app.views.selectListServicesView  == null ) {
+	    	app.views.selectListServicesView = new app.Views.DropdownSelectListView(
+	    		{el: $("#requestService"), collection: app.collections.claimersServices})
+	    	app.views.selectListServicesView.clearAll();
+	    	app.views.selectListServicesView.addEmptyFirst();
+	    	app.views.selectListServicesView.addAll(); 
 	    //}
     	
-	    //if( openstm.views.selectListAssignementView  == null ) {
-	    	openstm.views.selectListAssignementView = new openstm.Views.DropdownSelectListView(
-	    		{el: $("#requestAssignement"), collection: openstm.collections.assignements})
-	    	openstm.views.selectListAssignementView.clearAll(); 
-	    	openstm.views.selectListAssignementView.addEmptyFirst();
-	    	openstm.views.selectListAssignementView.addAll(); 
+	    //if( app.views.selectListAssignementView  == null ) {
+	    	app.views.selectListAssignementView = new app.Views.DropdownSelectListView(
+	    		{el: $("#requestAssignement"), collection: app.collections.assignements})
+	    	app.views.selectListAssignementView.clearAll(); 
+	    	app.views.selectListAssignementView.addEmptyFirst();
+	    	app.views.selectListAssignementView.addAll(); 
 	    //}
     	
 
     	$("#validModal").modal();
     	
     	//var model = new Backbone.Model({  title: 'Example Modal', body: 'Hello World' });    	
-        //var view = new openstm.Views.ValidRequestModalView({ model: model });
+        //var view = new app.Views.ValidRequestModalView({ model: model });
         //view.show();
     },
 
@@ -70,56 +70,27 @@ openstm.Views.RequestsListView = Backbone.View.extend({
     	
     },
 
-    loadButtons : function() {
-		var self = this;
-			
-		//userGroups = openstm.models.user.getGroups();    	
-		//
-		//$.each(userGroups, function(index, group) { 
-		//  	if ( jQuery.inArray( group, [18,19,16] ) == 0) {
-		//		self.btnOpenValidModalVisibility = 'visible';
-		//		self.btnOpenModifyModalVisibility = 'visible';
-		//		self.btnOpenCancelModalVisibility = 'visible';
-		//		return true;
-		//  	}
-		//  	if ( jQuery.inArray( group, [18] ) == 0 ) {
-		//		self.btnOpenConfirmModalVisibility = 'visible';						
-		//		return true;
-		//  	}
-		//  	if ( jQuery.inArray( group, [19,16] ) == 0 ) {
-		//		self.btnOpenToBeConfirmModalVisibility = 'visible';	
-		//		return true;
-		//  	}
-		//  	
-		//});
-		self.btnOpenValidModalVisibility = 'visible';
-//		self.btnOpenModifyModalVisibility = 'visible';
-//		self.btnOpenCancelModalVisibility = 'visible';
-//		self.btnOpenConfirmModalVisibility = 'visible';	
-//		self.btnOpenToBeConfirmModalVisibility = 'visible';	
-    },
-
 
 
 	/** Display the view
 	*/
     render: function () {
-		//openstm.Views.OpenstmView.prototype.render.call(this);
+		//app.Views.appView.prototype.render.call(this);
 		var self = this;
 		
 		self.loadButtons();
 
 		// Change the page title //
-        openstm.router.setPageTitle(openstm.lang.viewsTitles.requestsList);
+        app.router.setPageTitle(app.lang.viewsTitles.requestsList);
 
         // Change the active menu item //
-        openstm.views.headerView.selectMenuItem(openstm.router.mainMenus.manageInterventions);
+        app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
 
         // Change the Grid Mode of the view //
-        openstm.views.headerView.switchGridMode('fluid');
+        app.views.headerView.switchGridMode('fluid');
 
 
-		var requests = openstm.collections.requests.models;
+		var requests = app.collections.requests.models;
 		var len = requests.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
 		var endPos = Math.min(startPos + this.numberListByPage, len);
@@ -128,7 +99,7 @@ openstm.Views.RequestsListView = Backbone.View.extend({
 		
 
         // Retrieve the number of waiting Interventions //
-        var interventionsWaiting = _.filter(requests, function(item){ return item.attributes.state == openstm.Models.Request.state[1].value; });
+        var interventionsWaiting = _.filter(requests, function(item){ return item.attributes.state == app.Models.Request.state[1].value; });
         var nbInterventionsWaiting = _.size(interventionsWaiting);
         
 
@@ -137,10 +108,10 @@ openstm.Views.RequestsListView = Backbone.View.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 	  
 			var template = _.template(templateData, {
-				lang: openstm.lang,
+				lang: app.lang,
 				nbInterventionsWaiting: nbInterventionsWaiting,
-				requests: openstm.collections.requests.toJSON(),
-				requestsState: openstm.Models.Request.state,
+				requests: app.collections.requests.toJSON(),
+				requestsState: app.Models.Request.state,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
 				pageCount: pageCount,

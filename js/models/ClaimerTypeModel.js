@@ -1,7 +1,7 @@
 /******************************************
 * Place Model
 */
-openstm.Models.ClaimerType = Backbone.RelationalModel.extend({
+app.Models.ClaimerType = Backbone.RelationalModel.extend({
     
 	model_name : 'openctm.partner.type',
 	
@@ -11,8 +11,8 @@ openstm.Models.ClaimerType = Backbone.RelationalModel.extend({
 	relations: [{
 		type: Backbone.HasMany,
 		key: 'claimers',
-		relatedModel: 'openstm.Models.Claimer',
-		collectionType: 'openstm.Collections.Claimers',
+		relatedModel: 'app.Models.Claimer',
+		collectionType: 'app.Collections.Claimers',
 		includeInJSON: true,
 //		reverseRelation: {
 //			key: 'type_id',

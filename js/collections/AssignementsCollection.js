@@ -1,9 +1,9 @@
 /******************************************
 * Sites Collection
 */
-openstm.Collections.Assignements = Backbone.Collection.extend({
+app.Collections.Assignements = Backbone.Collection.extend({
 
-    model: openstm.Models.Assignement,
+    model: app.Models.Assignement,
 
     // Model name in the database //
     model_name : 'openctm.intervention.assignement',
@@ -22,7 +22,7 @@ openstm.Collections.Assignements = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {
-    	openstm.readOE( this.model_name ,  openstm.models.user.getSessionID(), options);
+    	app.readOE( this.model_name ,  app.models.user.getSessionID(), options);
     },
 
 

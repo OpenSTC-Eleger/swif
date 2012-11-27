@@ -2,12 +2,12 @@
 * APPLICATION NAMESPACE
 */
 
-var openstm = {
+var app = {
 
 	
 
     // Global variables //
-    versionOpenSTM  : '0.1 alpha',
+    appVersion      : '0.1 alpha',
     userBDD         : 'pontlabbe',
     uniq_id_counter : 0,
     
@@ -45,21 +45,21 @@ var openstm = {
     	
         // Retrieve Application language //
         $.ajax({
-            type: 'GET', url: 'i18n/'+lang+'/openstm-lang.json', dataType: 'json',
+            type: 'GET', url: 'i18n/'+lang+'/app-lang.json', dataType: 'json',
             success: function(data, textStatus, jqXHR) {
                 
-                openstm.lang = data;
+                app.lang = data;
 
                 // Load internationalization script //
-                openstm.loadI18nScript(lang);
+                app.loadI18nScript(lang);
 
                 // Instantiation Collections users  et user //
-                openstm.collections.users = new openstm.Collections.Users();               
-                openstm.collections.users.fetch();
-                openstm.models.user = new openstm.Models.User();
+                app.collections.users = new app.Collections.Users();               
+                app.collections.users.fetch();
+                app.models.user = new app.Models.User();
 
                 // Router initialization //
-                openstm.router = new openstm.Router();
+                app.router = new app.Router();
                 // Listen url changes //
                 Backbone.history.start();
             },
@@ -77,7 +77,7 @@ var openstm = {
     loadI18nScript: function (lang) {
         var script = document.createElement( 'script' );
         script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/moment-lang.js';
-        $("#openstm").append( script );
+        $("#app").append( script );
 
 
         // I18N Moment JS //
@@ -137,15 +137,15 @@ var openstm = {
 
         var deferred = $.Deferred();
 
-        openstm.uniq_id_counter += 1;
+        app.uniq_id_counter += 1;
         var payload = {
             'jsonrpc' : '2.0',
             'method'  : 'call',
             'params'  : params,
-            'id'      : ("r" + openstm.uniq_id_counter)
+            'id'      : ("r" + app.uniq_id_counter)
         };
 
-        openstm.rpc_jsonp(url, payload, options).then(function (data, textStatus, jqXHR) {
+        app.rpc_jsonp(url, payload, options).then(function (data, textStatus, jqXHR) {
             if (data.error) {
                 deferred.reject(data.error);
             }
@@ -214,7 +214,7 @@ var openstm = {
     loadTemplate : function(id, callback){
 
 
-        var template = openstm.templates[id];
+        var template = app.templates[id];
 
         if (template) {
           callback(template);
@@ -227,7 +227,7 @@ var openstm = {
             type: 'GET', url: 'templates/' + id + '.html',
             success: function(data, textStatus, jqXHR) {
                 var $tmpl = $(template);
-                openstm.templates[id] = $tmpl;
+                app.templates[id] = $tmpl;
                 callback($tmpl);
             },
             error: function(jqXHR, textStatus, errorThrown){
@@ -311,8 +311,8 @@ _.mixin(_.str.exports());
 * AFTER THE LOADING OF THE PAGE
 */
 $(document).ready(function () {	
-	//openstm.loader('hide');
-    openstm.init('fr');
+
+    app.init('fr');
 });
 
 

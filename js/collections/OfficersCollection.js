@@ -1,9 +1,9 @@
 /******************************************
 * Requests Collection
 */
-openstm.Collections.Officers = Backbone.Collection.extend({
+app.Collections.Officers = Backbone.Collection.extend({
 
-    model: openstm.Models.Officer,
+    model: app.Models.Officer,
 
     // Model name in the database //
     model_name : 'res.users',
@@ -21,7 +21,7 @@ openstm.Collections.Officers = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {	
-    	openstm.readOE(this.model_name, openstm.models.user.getSessionID(), options);
+    	app.readOE(this.model_name, app.models.user.getSessionID(), options);
     },
 
 

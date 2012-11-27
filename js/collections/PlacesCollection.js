@@ -1,9 +1,9 @@
 /******************************************
 * Sites Collection
 */
-openstm.Collections.Places = Backbone.Collection.extend({
+app.Collections.Places = Backbone.Collection.extend({
 
-    model: openstm.Models.Place,
+    model: app.Models.Place,
 
     // Model name in the database //
     model_name : 'openctm.site',
@@ -21,7 +21,7 @@ openstm.Collections.Places = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {
-    	openstm.readOE( this.model_name, openstm.models.user.getSessionID(), options);
+    	app.readOE( this.model_name, app.models.user.getSessionID(), options);
     },
 
 

@@ -1,7 +1,7 @@
 /******************************************
 * Interventions View
 */
-openstm.Views.InterventionsView = Backbone.View.extend({
+app.Views.InterventionsView = Backbone.View.extend({
 
     el : '#rowContainer',
 
@@ -31,19 +31,19 @@ openstm.Views.InterventionsView = Backbone.View.extend({
         var self = this;
 
         // Change the page title //
-        openstm.router.setPageTitle(openstm.lang.viewsTitles.interventions);
+        app.router.setPageTitle(app.lang.viewsTitles.interventions);
 
         // Change the active menu item //
-        openstm.views.headerView.selectMenuItem(openstm.router.mainMenus.manageInterventions);
+        app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
 
         // Change the Grid Mode of the view //
-        openstm.views.headerView.switchGridMode('fluid');
+        app.views.headerView.switchGridMode('fluid');
 
 
-        var interventions = openstm.collections.interventions.models;
+        var interventions = app.collections.interventions.models;
 
         // Retrieve the number of validated Interventions //
-        var interventionsValidated = _.filter(interventions, function(item){ return item.attributes.state == openstm.Models.Request.state[3].value; });
+        var interventionsValidated = _.filter(interventions, function(item){ return item.attributes.state == app.Models.Request.state[3].value; });
         var nbInterventions = _.size(interventionsValidated);
 
 
@@ -51,7 +51,7 @@ openstm.Views.InterventionsView = Backbone.View.extend({
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
          
                 var template = _.template(templateData, {
-                    lang: openstm.lang,
+                    lang: app.lang,
                     nbInterventions: nbInterventions,
                     interventions: interventionsValidated
                 });

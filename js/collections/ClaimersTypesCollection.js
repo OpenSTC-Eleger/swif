@@ -1,9 +1,9 @@
 /******************************************
 * Claimers Types Collection
 */
-openstm.Collections.ClaimersTypes = Backbone.Collection.extend({
+app.Collections.ClaimersTypes = Backbone.Collection.extend({
 
-    model: openstm.Models.ClaimerType,
+    model: app.Models.ClaimerType,
 
     // Model name in the database //
     model_name : 'openctm.partner.type',
@@ -21,7 +21,7 @@ openstm.Collections.ClaimersTypes = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {
-    	openstm.readOE(this.model_name, openstm.models.user.getSessionID(), options);
+    	app.readOE(this.model_name, app.models.user.getSessionID(), options);
     },
 
 

@@ -1,7 +1,7 @@
 /******************************************
 * Requests List View
 */
-openstm.Views.TasksView = Backbone.View.extend({
+app.Views.TasksView = Backbone.View.extend({
 	
 	el : '#rowContainer',
 	
@@ -31,21 +31,21 @@ openstm.Views.TasksView = Backbone.View.extend({
 		var self = this;
 
 		// Change the page title //
-        //openstm.router.setPageTitle(openstm.lang.viewsTitles.requestsList);
+        //app.router.setPageTitle(app.lang.viewsTitles.requestsList);
 
         // Change the active menu item //
-        //openstm.views.headerView.selectMenuItem(openstm.router.mainMenus.manageInterventions);
+        //app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
 
         // Change the Grid Mode of the view //
-        //openstm.views.headerView.switchGridMode('fluid');
+        //app.views.headerView.switchGridMode('fluid');
 
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 	  
 			var template = _.template(templateData, {
-				lang: openstm.lang,
-				officer: openstm.models.user.toJSON(),
+				lang: app.lang,
+				officer: app.models.user.toJSON(),
 
 			});
 		
@@ -63,11 +63,11 @@ openstm.Views.TasksView = Backbone.View.extend({
     initCalendar: function() {
 	
     		var self = this;
-    		officer = openstm.models.user;  
+    		officer = app.models.user;  
     		officer_id = officer.get('uid');
-	    	tasks = openstm.collections.tasks.getTasksByOfficer(officer_id);	    	
+	    	tasks = app.collections.tasks.getTasksByOfficer(officer_id);	    	
 	    	self.events = self.getEvents(tasks.toJSON());
-	    	new openstm.Views.EventsView(self,tasks,officer_id).render();
+	    	new app.Views.EventsView(self,tasks,officer_id).render();
 		    
 	
     },

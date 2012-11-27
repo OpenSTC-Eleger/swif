@@ -1,14 +1,14 @@
 /******************************************
  * Requests Details View
  */
-openstm.Views.RequestDetailsView = Backbone.View.extend({
+app.Views.RequestDetailsView = Backbone.View.extend({
 
 el : '#rowContainer',
 
 templateHTML: 'requestDetails',
 
-places: openstm.collections.places,
-claimersTypes: openstm.collections.claimersTypes,
+places: app.collections.places,
+claimersTypes: app.collections.claimersTypes,
 
 create: false,
 
@@ -39,38 +39,38 @@ render: function () {
 
 		// Change the page title depending on the create value //
 		if(this.create){
-			openstm.router.setPageTitle(openstm.lang.viewsTitles.newRequest);
+			app.router.setPageTitle(app.lang.viewsTitles.newRequest);
 		}
 		else{
-			openstm.router.setPageTitle(openstm.lang.viewsTitles.requestDetail + 'n° ' + this.model.id);
+			app.router.setPageTitle(app.lang.viewsTitles.requestDetail + 'n° ' + this.model.id);
 			console.debug(this.model);
 		}
 
 		// Change the active menu item //
-		openstm.views.headerView.selectMenuItem(openstm.router.mainMenus.manageInterventions);
+		app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
 
 		self.collection = this.collection;
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
-				var template = _.template(templateData, {lang: openstm.lang, request: self.model.toJSON()});
+				var template = _.template(templateData, {lang: app.lang, request: self.model.toJSON()});
 				$(self.el).html(template);		     
 
 
 				// Fill select Places  //
-				openstm.views.selectListPlacesView = new openstm.Views.DropdownSelectListView({el: $("#requestPlace"), collection: openstm.collections.places})
-				openstm.views.selectListPlacesView.addAll();
+				app.views.selectListPlacesView = new app.Views.DropdownSelectListView({el: $("#requestPlace"), collection: app.collections.places})
+				app.views.selectListPlacesView.addAll();
 				if(!self.create){	
-				openstm.views.selectListPlacesView.setSelectedItem( self.model.get("site1")[0]	 );
+				app.views.selectListPlacesView.setSelectedItem( self.model.get("site1")[0]	 );
 				}
 
 				// Fill select ClaimersTypes //
-					openstm.views.selectListClaimersTypesView = new openstm.Views.DropdownSelectListView({el: $("#requestClaimerType"), collection: openstm.collections.claimersTypes})
-					openstm.views.selectListClaimersTypesView.clearAll();
-					openstm.views.selectListClaimersTypesView.addEmptyFirst();
-					openstm.views.selectListClaimersTypesView.addAll();
+					app.views.selectListClaimersTypesView = new app.Views.DropdownSelectListView({el: $("#requestClaimerType"), collection: app.collections.claimersTypes})
+					app.views.selectListClaimersTypesView.clearAll();
+					app.views.selectListClaimersTypesView.addEmptyFirst();
+					app.views.selectListClaimersTypesView.addAll();
 	//				if(!self.create){	
-	//				openstm.views.selectListClaimersTypesView.setSelectedItem( self.model.get("partner_type")[0] );
+	//				app.views.selectListClaimersTypesView.setSelectedItem( self.model.get("partner_type")[0] );
 	//				}
 
 		});
@@ -96,11 +96,11 @@ saveRequest: function (e) {
 success: function (data) {
 console.log(data);
 if(data.error){
-openstm.notify('', 'error', openstm.lang.errorMessages.unablePerformAction, openstm.lang.errorMessages.sufficientRights);
+app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 }
 else{
 self.render();
-openstm.router.navigate('#demandes-dinterventions' , true);
+app.router.navigate('#demandes-dinterventions' , true);
 console.log('Success SAVE REQUEST');
 }
 },
@@ -131,23 +131,23 @@ return false;
 	 */
 fillDropdownClaimerType: function(){
 
-				openstm.views.selectListClaimersTypesView.removeOne(0);
+				app.views.selectListClaimersTypesView.removeOne(0);
 				$('#requestContactService').attr('value', '' );
 				$('#requestContactServiceBlock').attr('style', 'display:none');
 
-				if(!openstm.collections.claimers){
-					openstm.collections.claimers = new openstm.Collections.Claimers();
+				if(!app.collections.claimers){
+					app.collections.claimers = new app.Collections.Claimers();
 				}
 
-				claimerTypeModel = openstm.views.selectListClaimersTypesView.getSelected();
+				claimerTypeModel = app.views.selectListClaimersTypesView.getSelected();
 
 				if ( claimerTypeModel.attributes.claimers.length != 0) {
 
 					$('#requestClaimerBlock').attr('style', 'display:inline');
-					openstm.views.selectListClaimersView = new openstm.Views.DropdownSelectListView({el: $("#requestClaimer"), collection: claimerTypeModel.attributes.claimers});
-					openstm.views.selectListClaimersView.clearAll();
-					openstm.views.selectListClaimersView.addEmptyFirst();
-					openstm.views.selectListClaimersView.addAll();
+					app.views.selectListClaimersView = new app.Views.DropdownSelectListView({el: $("#requestClaimer"), collection: claimerTypeModel.attributes.claimers});
+					app.views.selectListClaimersView.clearAll();
+					app.views.selectListClaimersView.addEmptyFirst();
+					app.views.selectListClaimersView.addAll();
 
 					$('#requestContactInputBlock').attr('style', 'display:none');
 					$('#requestContactInput').attr('readonly', 'readonly');
@@ -169,14 +169,14 @@ fillDropdownClaimerType: function(){
 					$('#requestContactEmail').removeAttr('readonly');
 
 					$('#requestClaimerBlock').attr('style', 'display:none');
-					if (openstm.views.selectListClaimersView) {
-						openstm.views.selectListClaimersView.clearAll();
+					if (app.views.selectListClaimersView) {
+						app.views.selectListClaimersView.clearAll();
 					}
 				}
 			 },
 
 fillDropdownClaimer: function(){
-				openstm.views.selectListClaimersView.removeOne(0);
+				app.views.selectListClaimersView.removeOne(0);
 				$('#requestContactInputBlock').attr('style', 'display:none');
 				$('#requestContactInput').attr('readonly', 'readonly');
 				$('#requestContactSelectBlock').attr('style', 'display:inline');
@@ -184,10 +184,10 @@ fillDropdownClaimer: function(){
 				$('#requestContactPhone').removeAttr('readonly');
 				$('#requestContactEmail').removeAttr('readonly');
 
-				claimer = openstm.views.selectListClaimersView.getSelected();
+				claimer = app.views.selectListClaimersView.getSelected();
 
-				if(!openstm.collections.claimersServices){
-					openstm.collections.claimersServices = new openstm.Collections.ClaimersServices();
+				if(!app.collections.claimersServices){
+					app.collections.claimersServices = new app.Collections.ClaimersServices();
 				}
 
 				if (claimer.attributes.service_id.attributes[1]) {
@@ -198,20 +198,20 @@ fillDropdownClaimer: function(){
 					$('#requestContactService').attr('value', '' );
 				}
 
-				if(!openstm.collections.claimersContacts){
-					openstm.collections.claimersContacts = new openstm.Collections.ClaimersContacts();
+				if(!app.collections.claimersContacts){
+					app.collections.claimersContacts = new app.Collections.ClaimersContacts();
 				}
 
-				currentContacts = new openstm.Collections.ClaimersContacts();
-				_.each(openstm.collections.claimersContacts, function(contact, i) {
+				currentContacts = new app.Collections.ClaimersContacts();
+				_.each(app.collections.claimersContacts, function(contact, i) {
 					if (contact.attributes.partner_id.models[0].attributes.id = claimer.attributes.id) {
 						currentContacts.add(contact);
 					}
 				});
 
-				openstm.views.selectListClaimersContactsView = new openstm.Views.DropdownSelectListView({el: $("#requestContactSelect"), collection: currentContacts});
-				openstm.views.selectListClaimersContactsView.clearAll();
-				openstm.views.selectListClaimersContactsView.addAll();
+				app.views.selectListClaimersContactsView = new app.Views.DropdownSelectListView({el: $("#requestContactSelect"), collection: currentContacts});
+				app.views.selectListClaimersContactsView.clearAll();
+				app.views.selectListClaimersContactsView.addAll();
 		     }
 
 });

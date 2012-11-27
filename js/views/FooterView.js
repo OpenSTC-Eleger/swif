@@ -1,13 +1,13 @@
 /******************************************
 * Footer View
 */
-openstm.Views.FooterView = Backbone.View.extend({
+app.Views.FooterView = Backbone.View.extend({
 
     el: '#footer-navbar',
 
     templateHTML: 'footer',
 
-    data: {version: openstm.versionOpenSTM},
+    data: {version: app.appVersion},
 
  
  

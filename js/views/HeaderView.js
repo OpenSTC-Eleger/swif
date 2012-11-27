@@ -1,7 +1,7 @@
 /******************************************
 * Header View
 */
-openstm.Views.HeaderView = Backbone.View.extend({
+app.Views.HeaderView = Backbone.View.extend({
 
     el: '#header-navbar',
 
@@ -23,10 +23,10 @@ openstm.Views.HeaderView = Backbone.View.extend({
         var self = this;
 
         // If the user is connect, retrieve his menu from OpenERP //
-        if(openstm.models.user.hasSessionID()) {
+        if(app.models.user.hasSessionID()) {
             
             console.log("Retrieve menu");
-            openstm.models.user.getMenus({
+            app.models.user.getMenus({
                 error: function (){
                     console.log('ERROR: Unable to retrieve menu');
                 },
@@ -53,7 +53,7 @@ openstm.Views.HeaderView = Backbone.View.extend({
         
         $.get("templates/" + this.templateHTML + ".html", function(templateData) {
 
-            var template = _.template(templateData, {lang: openstm.lang, menus: self.menus, user:{fullname: openstm.models.user.getFullname(), fields: openstm.models.user.toJSON()}});
+            var template = _.template(templateData, {lang: app.lang, menus: self.menus, user:{fullname: app.models.user.getFullname(), fields: app.models.user.toJSON()}});
             $(self.el).html(template);
 
             self.selectMenuItem(activeMenu);

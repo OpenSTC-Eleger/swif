@@ -1,9 +1,9 @@
 /******************************************
 * Claimers Contacts Collection
 */
-openstm.Collections.ClaimersContacts = Backbone.Collection.extend({
+app.Collections.ClaimersContacts = Backbone.Collection.extend({
 
-    model : openstm.Models.ClaimerContact,
+    model : app.Models.ClaimerContact,
 
     // Model name in the database //
     model_name : 'res.partner.address',
@@ -20,7 +20,7 @@ openstm.Collections.ClaimersContacts = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {
-    	openstm.readOE(this.model_name, openstm.models.user.getSessionID(), options);
+    	app.readOE(this.model_name, app.models.user.getSessionID(), options);
     },
 
 

@@ -127,7 +127,7 @@
 							</div>
 					</th>
 					
-					<% if(!openstm.models.user.isDST() && !openstm.models.user.isManager()){ %>
+					<% if(!app.models.user.isDST() && !app.models.user.isManager()){ %>
 						<th><%= _.capitalize(lang.action) %></th>
 					<% } %>
 				</tr>
@@ -136,10 +136,10 @@
 				<% for (var i = startPos; i < endPos; i++) { %>
 				
 					<!-- Set if the table row should be hightlight and Bold -->
-					<% if(requests[i].state == openstm.Models.Request.state[1].value && openstm.models.user.isManager()) {
+					<% if(requests[i].state == app.Models.Request.state[1].value && app.models.user.isManager()) {
 						var classRow = "info bolder";
 					}
-					else if(requests[i].state == openstm.Models.Request.state[2].value && openstm.models.user.isDST()){
+					else if(requests[i].state == app.Models.Request.state[2].value && app.models.user.isDST()){
 						var classTR = "warning bolder";
 					}
 					else{
@@ -173,24 +173,24 @@
 					    	</span>
 					    </td>
 					    <td>
-				    		<% if(requests[i].state == openstm.Models.Request.state[0].value) { %> 
+				    		<% if(requests[i].state == app.Models.Request.state[0].value) { %> 
 				    			<span class="label label-important"><%= lang.refused %></span>
-				    		<% } else if(requests[i].state == openstm.Models.Request.state[1].value) { %>
+				    		<% } else if(requests[i].state == app.Models.Request.state[1].value) { %>
 				    			<span class="label label-info"><%= lang.wait %></span>
-				    		<% } else if(requests[i].state == openstm.Models.Request.state[2].value) { %>
+				    		<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
 				    			<span class="label label-warning"><%= lang.confirm %></span>
-				    		<% } else if(requests[i].state == openstm.Models.Request.state[3].value) { %>
+				    		<% } else if(requests[i].state == app.Models.Request.state[3].value) { %>
 				    			<span class="label label-success"><%= lang.valid %></span>
-				    		<% } else if(requests[i].state == openstm.Models.Request.state[4].value) { %>
+				    		<% } else if(requests[i].state == app.Models.Request.state[4].value) { %>
 				    			<span class="label label"><%= lang.closed %></span>
 				    		<% } %>
 					   	</td>
 					   	
-					   	<% if(!openstm.models.user.isDST() && !openstm.models.user.isManager()){ %>
+					   	<% if(!app.models.user.isDST() && !app.models.user.isManager()){ %>
 						   	<td class="align">
 
 						   		<!-- Refused State -->
-								<% if(requests[i].state == openstm.Models.Request.state[0].value) { %>
+								<% if(requests[i].state == app.Models.Request.state[0].value) { %>
 						   		
 									<div class="btn-group">
 										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small disabled no-outline"><i class="icon-remove text-error"></i></button>
@@ -204,7 +204,7 @@
 									</div>
 
 								<!-- Wait state -->
-								<% } else if(requests[i].state == openstm.Models.Request.state[1].value) { %>
+								<% } else if(requests[i].state == app.Models.Request.state[1].value) { %>
 									
 									<div class="btn-group">
 										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small btn-success no-outline"><i class="icon-ok"></i></button>
@@ -218,7 +218,7 @@
 									</div>
 
 								<!-- Confirm state -->
-								<% } else if(requests[i].state == openstm.Models.Request.state[2].value) { %>
+								<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
 									
 									<div class="btn-group">
 										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small btn-success no-outline"><i class="icon-ok"></i></button>
@@ -231,7 +231,7 @@
 									</div>
 		
 								<!-- Valid State -->
-						   		<% } else if(requests[i].state == openstm.Models.Request.state[3].value) { %>
+						   		<% } else if(requests[i].state == app.Models.Request.state[3].value) { %>
 						   		
 									<div class="btn-group">
 										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small disabled no-outline"><i class="icon-ok text-success"></i></button>

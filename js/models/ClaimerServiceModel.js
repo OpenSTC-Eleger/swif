@@ -1,7 +1,7 @@
 /******************************************
 * Claimer Service Model
 */
-openstm.Models.ClaimerService = Backbone.RelationalModel.extend({
+app.Models.ClaimerService = Backbone.RelationalModel.extend({
     
 	// Model name in the database //
 	model_name : 'openctm.service',	
@@ -13,7 +13,7 @@ openstm.Models.ClaimerService = Backbone.RelationalModel.extend({
 		// Create a cozy, recursive, one-to-one relationship
 		type: Backbone.HasMany,
 		key: '',
-		relatedModel: 'openstm.Models.Claimer',
+		relatedModel: 'app.Models.Claimer',
 		includeInJSON: true,
 		reverseRelation: {
 			key: 'service_id'

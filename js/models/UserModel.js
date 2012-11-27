@@ -1,7 +1,7 @@
 /******************************************
 * User Model
 */
-openstm.Models.User = Backbone.Model.extend({
+app.Models.User = Backbone.Model.extend({
 
     // Model name in the database //
     model_name : 'res.users',
@@ -98,22 +98,22 @@ openstm.Models.User = Backbone.Model.extend({
 
         var deferred = $.Deferred();
 
-        openstm.json(openstm.urlOE+openstm.urlOE_authentication, {
-            'base_location': openstm.urlOpenERP,
-            'db': openstm.userBDD,
+        app.json(app.urlOE+app.urlOE_authentication, {
+            'base_location': app.urlOpenERP,
+            'db': app.userBDD,
             'login': loginUser,
             'password': passUser,
             'session_id': ''
         })
         .fail(function (error){
-            openstm.notify('large', 'error', openstm.lang.errorMessages.connectionError, openstm.lang.errorMessages.serverUnreachable);
+            app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
         })
         .done(function (data) {
 
             console.debug(data);
 
             if(data.uid == false){
-                openstm.notify('large', 'error', openstm.lang.errorMessages.connectionError, openstm.lang.errorMessages.loginIncorrect);
+                app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
             }
             else{
                 
@@ -125,17 +125,17 @@ openstm.Models.User = Backbone.Model.extend({
                 self.setLastConnection(moment().format("LLL"));
                 
                 // Add the user to the collection and save it to the localStorage //
-                openstm.collections.users.add(self);
+                app.collections.users.add(self);
 
                 // Get the user Information //
                 self.getUserInformations();
                
                 
-                openstm.notify('', 'info', 'Information', 'Vous êtes connecté');
-                Backbone.history.navigate(openstm.router.homePage, {trigger: true, replace: true});
+                app.notify('', 'info', 'Information', 'Vous êtes connecté');
+                Backbone.history.navigate(app.router.homePage, {trigger: true, replace: true});
                         
                 // Refresh the header //
-                openstm.views.headerView.render(openstm.router.mainMenus.manageInterventions);
+                app.views.headerView.render(app.router.mainMenus.manageInterventions);
                
 
             }
@@ -144,7 +144,7 @@ openstm.Models.User = Backbone.Model.extend({
         })
         .always(function(){
             // Remove the loader //
-            openstm.loader('hide');
+            app.loader('hide');
         })
 
        return deferred;
@@ -160,21 +160,21 @@ openstm.Models.User = Backbone.Model.extend({
 
         var deferred = $.Deferred();
 
-        openstm.json(openstm.urlOE+openstm.urlOE_sessionDestroy, {
+        app.json(app.urlOE+app.urlOE_sessionDestroy, {
             'session_id': self.getSessionID()
         })
         .fail(function (){
-            openstm.notify('', 'error', openstm.lang.errorMessages.connectionError, openstm.lang.errorMessages.serverUnreachable);
+            app.notify('', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
         })
         .done(function (data) {
             // On détruit la session dans le localStorage //
             self.destroySessionID();
             self.save();
             
-            openstm.notify('large', 'info', openstm.lang.infoMessages.information, openstm.lang.infoMessages.successLogout);
+            app.notify('large', 'info', app.lang.infoMessages.information, app.lang.infoMessages.successLogout);
 
             // Refresh the header //
-            openstm.views.headerView.render();
+            app.views.headerView.render();
 
             // Navigate to the login Page //
             Backbone.history.navigate('login', {trigger: true, replace: true});
@@ -192,7 +192,7 @@ openstm.Models.User = Backbone.Model.extend({
         "use strict";
         var self = this;
 
-        return openstm.json(openstm.urlOE+openstm.urlOE_menuUser, {
+        return app.json(app.urlOE+app.urlOE_menuUser, {
             'session_id': self.getSessionID()
         }, options)
     },
@@ -207,7 +207,7 @@ openstm.Models.User = Backbone.Model.extend({
 
         var fields = ['firstname', 'name', 'groups', 'in_group_15', 'in_group_17', 'in_group_18', 'in_group_19'];
 
-        openstm.getOE(this.model_name, fields, [self.getUID()], self.getSessionID(),
+        app.getOE(this.model_name, fields, [self.getUID()], self.getSessionID(),
             ({
                 success: function(data){
      				// Retrieve the firstname and the lastname of the user //
@@ -218,7 +218,7 @@ openstm.Models.User = Backbone.Model.extend({
     			},
                 error: function(error){
                     console.log(error);
-                    openstm.notify('', 'error', openstm.lang.errorMessages.connectionError, openstm.lang.errorMessages.serverUnreachable);       
+                    app.notify('', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);       
                 }
             })
         );

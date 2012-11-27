@@ -1,7 +1,7 @@
 /******************************************
 * Place Model
 */
-openstm.Models.Place = Backbone.RelationalModel.extend({
+app.Models.Place = Backbone.RelationalModel.extend({
     
 
 	/** Model Initialization

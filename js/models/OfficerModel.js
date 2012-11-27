@@ -1,7 +1,7 @@
 /******************************************
 * Place Model
 */
-openstm.Models.Officer = Backbone.RelationalModel.extend({
+app.Models.Officer = Backbone.RelationalModel.extend({
     
 	model_name: "res.users",
 	
@@ -10,8 +10,8 @@ openstm.Models.Officer = Backbone.RelationalModel.extend({
 	relations: [{
 		type: Backbone.HasMany,
 		key: 'tasks',
-		relatedModel: 'openstm.Models.Task',
-		collectionType: 'openstm.Collections.Tasks',
+		relatedModel: 'app.Models.Task',
+		collectionType: 'app.Collections.Tasks',
 		includeInJSON: true,
 	}],
 

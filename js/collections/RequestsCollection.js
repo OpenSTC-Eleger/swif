@@ -1,9 +1,9 @@
 /******************************************
 * Requests Collection
 */
-openstm.Collections.Requests = Backbone.Collection.extend({
+app.Collections.Requests = Backbone.Collection.extend({
 
-    model: openstm.Models.Request,
+    model: app.Models.Request,
 
     // Model name in the database //
     model_name : 'openctm.ask',
@@ -21,7 +21,7 @@ openstm.Collections.Requests = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {	
-    	openstm.readOE( this.model_name , openstm.models.user.getSessionID(), options);
+    	app.readOE( this.model_name , app.models.user.getSessionID(), options);
     },
 
 

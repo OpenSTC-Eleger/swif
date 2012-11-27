@@ -1,7 +1,7 @@
 /******************************************
 * Request Model
 */
-openstm.Models.Task = Backbone.RelationalModel.extend({
+app.Models.Task = Backbone.RelationalModel.extend({
 
 	// Model name in the database //
 	model_name : 'project.task',	
@@ -19,7 +19,7 @@ openstm.Models.Task = Backbone.RelationalModel.extend({
 //		// Create a cozy, recursive, one-to-one relationship
 //		type: Backbone.HasOne,
 //		key: 'project_id',
-//		relatedModel: 'openstm.Models.Intervention',
+//		relatedModel: 'app.Models.Intervention',
 //		includeInJSON: true,
 //		reverseRelation: {
 //			key: 'tasks'
@@ -45,14 +45,14 @@ openstm.Models.Task = Backbone.RelationalModel.extend({
 		*/
 	
 	save: function(data,options) { 
-		openstm.saveOE(data, this.model_name,openstm.models.user.getSessionID(), options);
+		app.saveOE(data, this.model_name,app.models.user.getSessionID(), options);
 	},
 	
 	destroy: function (options) {	
-		openstm.deleteOE( 
+		app.deleteOE( 
 			[[this.get("id")]],
 			this.model_name,
-			openstm.models.user.getSessionID(),
+			app.models.user.getSessionID(),
 			options
 		);
 	},

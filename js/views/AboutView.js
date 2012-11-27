@@ -1,7 +1,7 @@
 /******************************************
 * About View
 */
-openstm.Views.AboutView = Backbone.View.extend({
+app.Views.AboutView = Backbone.View.extend({
 
     el : '#rowContainer',
 
@@ -29,19 +29,19 @@ openstm.Views.AboutView = Backbone.View.extend({
         var self = this;
 
         // Change the page title //
-        openstm.router.setPageTitle(openstm.lang.viewsTitles.about);
+        app.router.setPageTitle(app.lang.viewsTitles.about);
 
         // Change the active menu item //
-        openstm.views.headerView.selectMenuItem('');
+        app.views.headerView.selectMenuItem('');
 
         // Change the Grid Mode of the view //
-        openstm.views.headerView.switchGridMode('default');
+        app.views.headerView.switchGridMode('default');
 
         
         // Retrieve the Login template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
          
-            var template = _.template(templateData, {lang: openstm.lang, version: openstm.versionOpenSTM});
+            var template = _.template(templateData, {lang: app.lang, version: app.versionOpenSTM});
             $(self.el).html(template);
         });
 

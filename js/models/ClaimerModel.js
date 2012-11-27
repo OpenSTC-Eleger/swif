@@ -1,7 +1,7 @@
 /******************************************
 * Claimer Model
 */
-openstm.Models.Claimer = Backbone.RelationalModel.extend({
+app.Models.Claimer = Backbone.RelationalModel.extend({
     
 	// Model name in the database //
 	model_name : 'res.partner',	
@@ -12,7 +12,7 @@ openstm.Models.Claimer = Backbone.RelationalModel.extend({
 /*	{
 		type: Backbone.HasOne,
 		key: 'type_id',
-		relatedModel: 'openstm.Models.ClaimerType',
+		relatedModel: 'app.Models.ClaimerType',
 		includeInJSON: true,
 		reverseRelation: {
 			key: 'claimers'
@@ -21,7 +21,7 @@ openstm.Models.Claimer = Backbone.RelationalModel.extend({
 	{
 		type: Backbone.HasOne,
 		key: 'service_id',
-		relatedModel: 'openstm.Models.ClaimerService',
+		relatedModel: 'app.Models.ClaimerService',
 		includeInJSON: true,
 	}
 	],

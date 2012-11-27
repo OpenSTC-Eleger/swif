@@ -1,9 +1,9 @@
 /******************************************
 * Sites Collection
 */
-openstm.Collections.Groups = Backbone.Collection.extend({
+app.Collections.Groups = Backbone.Collection.extend({
 
-    model: openstm.Models.Group,
+    model: app.Models.Group,
 
     // Model name in the database //
     model_name : 'res.groups',
@@ -23,7 +23,7 @@ openstm.Collections.Groups = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {
-    	openstm.readOE( this.model_name ,  openstm.models.user.getSessionID(), options);
+    	app.readOE( this.model_name ,  app.models.user.getSessionID(), options);
     },
 
 

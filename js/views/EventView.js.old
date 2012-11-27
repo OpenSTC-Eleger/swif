@@ -1,4 +1,4 @@
-openstm.Views.EventView = Backbone.View.extend({
+app.Views.EventView = Backbone.View.extend({
 	  
 		el : '#myModal',
 

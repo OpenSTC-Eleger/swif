@@ -1,7 +1,7 @@
 /******************************************
 * Requests List View
 */
-openstm.Views.RequestsListView = openstm.Views.OpenstmView.extend({
+app.Views.RequestsListView = app.Views.app.extend({
 	
 	el : '#rowContainer',
 	
@@ -21,7 +21,7 @@ openstm.Views.RequestsListView = openstm.Views.OpenstmView.extend({
 	/** View Initialization
 	*/
     initialize: function () {	
-		openstm.Views.OpenstmView.prototype.initialize.call(this);
+		app.Views.app.prototype.initialize.call(this);
 		this.render();
     },
 
@@ -30,20 +30,20 @@ openstm.Views.RequestsListView = openstm.Views.OpenstmView.extend({
 	/** Display the view
 	*/
     render: function () {
-		openstm.Views.OpenstmView.prototype.render.call(this);
+		app.Views.app.prototype.render.call(this);
 		var self = this;
 
 		// Change the page title //
-        openstm.router.setPageTitle(openstm.lang.viewsTitles.requestsList);
+        app.router.setPageTitle(app.lang.viewsTitles.requestsList);
 
         // Change the active menu item //
-        openstm.views.headerView.selectMenuItem(openstm.router.mainMenus.manageInterventions);
+        app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
 
         // Change the Grid Mode of the view //
-        openstm.views.headerView.switchGridMode('fluid');
+        app.views.headerView.switchGridMode('fluid');
 
 
-		var requests = openstm.collections.requests.models;
+		var requests = app.collections.requests.models;
 		var len = requests.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
 		var endPos = Math.min(startPos + this.numberListByPage, len);
@@ -52,7 +52,7 @@ openstm.Views.RequestsListView = openstm.Views.OpenstmView.extend({
 		
 
         // Retrieve the number of waiting Interventions //
-        var interventionsWaiting = _.filter(requests, function(item){ return item.attributes.state == openstm.Models.Request.state[1].value; });
+        var interventionsWaiting = _.filter(requests, function(item){ return item.attributes.state == app.Models.Request.state[1].value; });
         var nbInterventionsWaiting = _.size(interventionsWaiting);
         
 
@@ -61,10 +61,10 @@ openstm.Views.RequestsListView = openstm.Views.OpenstmView.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 	  
 			var template = _.template(templateData, {
-				lang: openstm.lang,
+				lang: app.lang,
 				nbInterventionsWaiting: nbInterventionsWaiting,
-				requests: openstm.collections.requests.toJSON(),
-				requestsState: openstm.Models.Request.state,
+				requests: app.collections.requests.toJSON(),
+				requestsState: app.Models.Request.state,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
 				pageCount: pageCount

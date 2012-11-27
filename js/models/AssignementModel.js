@@ -1,7 +1,7 @@
 /******************************************
 * Assignement Request Model
 */
-openstm.Models.Assignement = Backbone.RelationalModel.extend({
+app.Models.Assignement = Backbone.RelationalModel.extend({
     
 	model_name : 'openctm.intervention.assignement',	
 	

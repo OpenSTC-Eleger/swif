@@ -1,9 +1,9 @@
 /******************************************
 * Sites Collection
 */
-openstm.Collections.Tasks = Backbone.Collection.extend({
+app.Collections.Tasks = Backbone.Collection.extend({
 
-    model: openstm.Models.Task,
+    model: app.Models.Task,
 
     // Model name in the database //
     model_name : 'project.task',
@@ -26,7 +26,7 @@ openstm.Collections.Tasks = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {
-    	openstm.readOE( this.model_name ,  openstm.models.user.getSessionID(), options);
+    	app.readOE( this.model_name ,  app.models.user.getSessionID(), options);
     },
 
 

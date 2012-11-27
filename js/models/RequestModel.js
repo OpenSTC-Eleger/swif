@@ -1,7 +1,7 @@
 /******************************************
 * Request Model
 */
-openstm.Models.Request = Backbone.RelationalModel.extend({
+app.Models.Request = Backbone.RelationalModel.extend({
 
 	// Model name in the database //
 	model_name : 'openctm.ask',	
@@ -31,11 +31,11 @@ openstm.Models.Request = Backbone.RelationalModel.extend({
 	   	console.log("Request Model Initialization");
 
 	   	// Initialization Traduction request state //
-	   	openstm.Models.Request.state[0].traduction = openstm.lang.refused;
-	   	openstm.Models.Request.state[1].traduction = openstm.lang.wait;
-	   	openstm.Models.Request.state[2].traduction = openstm.lang.confirm;
-	   	openstm.Models.Request.state[3].traduction = openstm.lang.valid;
-	   	openstm.Models.Request.state[4].traduction = openstm.lang.closed;
+	   	app.Models.Request.state[0].traduction = app.lang.refused;
+	   	app.Models.Request.state[1].traduction = app.lang.wait;
+	   	app.Models.Request.state[2].traduction = app.lang.confirm;
+	   	app.Models.Request.state[3].traduction = app.lang.valid;
+	   	app.Models.Request.state[4].traduction = app.lang.closed;
 
 	   	//this.fetchRelated(this.relations[key]);
 	   	//this.fetchRelated("site1");
@@ -61,7 +61,7 @@ openstm.Models.Request = Backbone.RelationalModel.extend({
 		data.service_id = 1;
 		data.date_deadline = date_deadline;	   
 		data.id = this.get("id");
-		openstm.saveOE(data, this.model_name,openstm.models.user.getSessionID(), options);
+		app.saveOE(data, this.model_name, app.models.user.getSessionID(), options);
 	},
 
 
@@ -69,10 +69,10 @@ openstm.Models.Request = Backbone.RelationalModel.extend({
 	/** Destroy Model
 	*/
 	destroy: function (options) {	
-		openstm.deleteOE( 
+		app.deleteOE( 
 			[[this.get("id")]],
 			this.model_name,
-			openstm.models.user.getSessionID(),
+			app.models.user.getSessionID(),
 			options
 		);
 	},

@@ -1,4 +1,4 @@
-openstm.Views.EventView = Backbone.View.extend({
+app.Views.EventView = Backbone.View.extend({
 	  
 	
 		templateHTML: 'tooltip',
@@ -16,7 +16,7 @@ openstm.Views.EventView = Backbone.View.extend({
 	        $.get("templates/" + this.templateHTML + ".html", function(templateData){
 		  
 				var template = _.template(templateData, {
-					lang: openstm.lang,
+					lang: app.lang,
 	
 				});
 			

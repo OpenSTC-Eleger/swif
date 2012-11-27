@@ -1,7 +1,7 @@
 /******************************************
 * Place Model
 */
-openstm.Models.Group = Backbone.RelationalModel.extend({
+app.Models.Group = Backbone.RelationalModel.extend({
     
 	model_name : 'res.groups',	
 	

@@ -1,7 +1,7 @@
 /******************************************
 * Login View
 */
-openstm.Views.OpenstmView = Backbone.View.extend({
+app.Views.AppView = Backbone.View.extend({
 
 
     el : '#rowContainer',
@@ -18,7 +18,7 @@ openstm.Views.OpenstmView = Backbone.View.extend({
     /** View Initialization
     */
     initialize : function(user) {
-        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaOpenSTM view Initialize');
+        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaApp view Initialize');
         this.render();
     },
 

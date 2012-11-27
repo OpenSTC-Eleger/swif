@@ -1,7 +1,7 @@
 /******************************************
 * Place Model
 */
-openstm.Models.Intervention = Backbone.RelationalModel.extend({
+app.Models.Intervention = Backbone.RelationalModel.extend({
     
 	model_name : 'project.project',	
 	
@@ -11,8 +11,8 @@ openstm.Models.Intervention = Backbone.RelationalModel.extend({
 	relations: [{
 		type: Backbone.HasMany,
 		key: 'tasks',
-		relatedModel: 'openstm.Models.Task',
-		collectionType: 'openstm.Collections.Tasks',
+		relatedModel: 'app.Models.Task',
+		collectionType: 'app.Collections.Tasks',
 		includeInJSON: true,
 //		reverseRelation: {
 //			key: 'project_id',

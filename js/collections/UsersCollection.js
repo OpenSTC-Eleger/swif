@@ -1,9 +1,9 @@
 /******************************************
 * Users Collection
 */
-openstm.Collections.Users = Backbone.Collection.extend({
+app.Collections.Users = Backbone.Collection.extend({
 
-    model : openstm.Models.User,
+    model : app.Models.User,
 
     localStorage : new Store("usersCollection"),
 

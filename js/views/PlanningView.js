@@ -1,7 +1,7 @@
 /******************************************
 * Login View
 */
-openstm.Views.PlanningView = Backbone.View.extend({
+app.Views.PlanningView = Backbone.View.extend({
 
 
     el : '#rowContainer',
@@ -34,20 +34,20 @@ openstm.Views.PlanningView = Backbone.View.extend({
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
 
             // Change the page title //
-            openstm.router.setPageTitle(openstm.lang.viewsTitles.planning);
+            app.router.setPageTitle(app.lang.viewsTitles.planning);
             // Change the Grid Mode of the view //
-            openstm.views.headerView.switchGridMode('fluid');
+            app.views.headerView.switchGridMode('fluid');
          
             
-        	//var tasks = openstm.collections.tasks.search();
-        	//openstm.collections.interventions.search();
+        	//var tasks = app.collections.tasks.search();
+        	//app.collections.interventions.search();
 
 
         	var template = _.template(templateData, {
-            		lang: openstm.lang,
-            		tasks: openstm.collections.tasks.toJSON(),
-            		interventions: openstm.collections.interventions.toJSON(),
-            		officers: openstm.collections.officers.toJSON()            		
+            		lang: app.lang,
+            		tasks: app.collections.tasks.toJSON(),
+            		interventions: app.collections.interventions.toJSON(),
+            		officers: app.collections.officers.toJSON()            		
             });
             $(self.el).html(template);
             self.initCalendar();
@@ -82,13 +82,13 @@ openstm.Views.PlanningView = Backbone.View.extend({
     },
     
     save: function(params) {
-    	model = new openstm.Models.Task();
+    	model = new app.Models.Task();
 		model.save(params,			
 			{
 			    success: function (data) {
 			        console.log(data);
 			        if(data.error){
-			    		openstm.notify('', 'error', openstm.lang.errorMessages.unablePerformAction, openstm.lang.errorMessages.sufficientRights);
+			    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 			        }
 			        else{
 			            console.log('Success SAVE REQUEST');
@@ -104,12 +104,12 @@ openstm.Views.PlanningView = Backbone.View.extend({
     initCalendar: function() {
 	
     		var self = this;
-    		officers = openstm.collections.officers;    		
+    		officers = app.collections.officers;    		
     		
 		    officers.each(function(o){		    	
 		    	self.events = self.getEvents(o.attributes.tasks.toJSON());		    	
 		    	var collection = o.attributes.tasks;
-		    	new openstm.Views.EventsView(self,collection,o.attributes.id).render();
+		    	new app.Views.EventsView(self,collection,o.attributes.id).render();
 		    });
 	
     },
@@ -124,7 +124,7 @@ openstm.Views.PlanningView = Backbone.View.extend({
     },
 
     initDragObject: function() {
-    	tasks = openstm.collections.tasks.toJSON();
+    	tasks = app.collections.tasks.toJSON();
     	_.each(tasks, function (task, i){
     		el = $('li#task_'+task.id);
 			var eventObject = {
