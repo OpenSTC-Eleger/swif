@@ -212,7 +212,9 @@
 										</button>
 										<ul class="dropdown-menu pull-right align-left">
 											<li><a href="#" class="text-success"><i class="icon-ok text-sucess"></i>&nbsp;Valider</a></li>
-											<li><a href="#"><i class="icon-user text-warning"></i>&nbsp;remonter DST</a></li>
+											<% if(!app.models.user.isDST()){ %>
+												<li><a href="#"><i class="icon-user"></i>&nbsp;remonter DST</a></li>
+											<% } %>
 										</ul>
 									</div>
 
@@ -226,7 +228,9 @@
 										</button>
 										<ul class="dropdown-menu pull-right align-left">
 											<li><a href="#"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
-											<li><a href="#"><i class="icon-user"></i>&nbsp;remonter DST</a></li>
+											<% if(!app.models.user.isDST()){ %>
+												<li><a href="#"><i class="icon-user"></i>&nbsp;remonter DST</a></li>
+											<% } %>
 										</ul>
 									</div>
 
@@ -253,7 +257,9 @@
 										</button>
 										<ul class="dropdown-menu pull-right align-left">
 											<li><a href="#"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
-											<li><a href="#"><i class="icon-user"></i>&nbsp;remonter DST</a></li>
+											<% if(!app.models.user.isDST()){ %>
+												<li><a href="#"><i class="icon-user"></i>&nbsp;remonter DST</a></li>
+											<% } %>
 										</ul>
 									</div>
 									
