@@ -336,7 +336,7 @@
 
 	    <form id="formValidRequest" action="#" class="form-horizontal">
 	    
-			<!-- Task name -->
+			<!-- Request name -->
             <div class="control-group">
                 <label for="requestName" class="control-label">Nom:</label>
 
@@ -346,32 +346,42 @@
                 </div>
             </div>
 
-            <!-- Task Category -->
+            <!-- Request Assignement -->
             <div class="control-group">
-                <label for="taskCategory" class="control-label">Catégorie:</label>
+                <label for="requestAssignement" class="control-label">Affectation:</label>
 
                 <div class="controls">
-                     <select id="taskCategory"></select>
+                     <select id="requestAssignement" name="requestAssignement" required="required"></select>
                     <span class="help-inline"></span>
                 </div>
             </div>
 
-			<!-- Task hour -->
+			<!-- Request Service -->
             <div class="control-group">
-                <label for="taskHour" class="control-label">Heures prévisionnelles:</label>
+                <label for="requestService" class="control-label">Service concerné:</label>
 
                 <div class="controls">
-                     <input type="number" id="taskHour" name="taskHour" />
+                      <select id="requestService" name="requestService"></select>
                     <span class="help-inline"></span>
                 </div>
             </div>
 
-			<!-- Assign to -->
+			<!-- Request Deadline -->
             <div class="control-group">
-                <label for="taskAssignTo" class="control-label">Assigné à:</label>
+                <label for="requestDeadline" class="control-label">Date butoire:</label>
 
                 <div class="controls">
-                     <select id="taskAssignTo"></select>
+                     <input id="requestDeadline" name="requestDeadline" />
+                    <span class="help-inline"></span>
+                </div>
+            </div>
+
+			<!-- Task name -->
+            <div class="control-group">
+                <label for="requestNote" class="control-label">Note:</label>
+
+                <div class="controls">
+                    <textarea id="requestNote" rows="5" required="required"></textarea>
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -380,6 +390,7 @@
 	</div>
 	
 	<div class="modal-footer">
+	    <button type="submit" form="formValidRequest" class="btn btn-primary">Enregistrer et ajouter des tâches</button>&nbsp;&nbsp;
 	    <button type="submit" form="formValidRequest" class="btn btn-primary">Enregistrer</button>&nbsp;&nbsp;
 	    <a href="#" data-dismiss="modal">Annuler</a>
 	</div>
@@ -402,9 +413,9 @@
 
 	    <form id="formRefuseRequest" action="#" class="form-horizontal">
 	    
-			<!-- Task name -->
+			<!-- Request refuse motif -->
             <div class="control-group">
-                <label for="taskName" class="control-label">Motif:</label>
+                <label for="motifRefuse" class="control-label">Motif:</label>
 
                 <div class="controls">
                     <textarea id="motifRefuse" rows="5" required="required" placeholder="Entrée les motifs de refus de la demande"></textarea>
