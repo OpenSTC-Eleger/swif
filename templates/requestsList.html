@@ -206,7 +206,7 @@
 								<% if(requests[i].state == app.Models.Request.state[0].value) { %>
 						   		
 									<div class="btn-group">
-										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small disabled no-outline"><i class="icon-remove text-error"></i></button>
+										<button class="btn btn-small disabled no-outline"><i class="icon-remove text-error"></i></button>
 										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
 											<span class="caret"></span>
 										</button>
@@ -222,7 +222,7 @@
 								<% } else if(requests[i].state == app.Models.Request.state[1].value) { %>
 									
 									<div class="btn-group">
-										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small btn-success no-outline buttonValidRequest" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok"></i></button>
+										<button class="btn btn-small btn-success no-outline buttonValidRequest" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok buttonValidRequest"></i></button>
 										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
 											<span class="caret"></span>
 										</button>
@@ -238,7 +238,7 @@
 								<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
 									
 									<div class="btn-group">
-										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small btn-success no-outline" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok"></i></button>
+										<button class="btn btn-small btn-success no-outline buttonValidRequest" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok buttonValidRequest"></i></button>
 										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
 											<span class="caret"></span>
 										</button>
@@ -251,7 +251,7 @@
 						   		<% } else if(requests[i].state == app.Models.Request.state[3].value) { %>
 						   		
 									<div class="btn-group">
-										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small disabled no-outline"><i class="icon-ok text-success"></i></button>
+										<button class="btn btn-small disabled no-outline"><i class="icon-ok text-success"></i></button>
 										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
 											<span class="caret"></span>
 										</button>
@@ -333,14 +333,15 @@
 	</div>
 	
 	<div class="modal-body">
+
 	    <form id="formValidRequest" action="#" class="form-horizontal">
 	    
 			<!-- Task name -->
             <div class="control-group">
-                <label for="taskName" class="control-label">Nom:</label>
+                <label for="requestName" class="control-label">Nom:</label>
 
                 <div class="controls">
-                    <input type="text" id="taskName" name="taskName" />
+                    <input type="text" id="requestName" name="requestName" disabled="disabled" />
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -379,7 +380,7 @@
 	</div>
 	
 	<div class="modal-footer">
-	    <button type="submit" form="" class="btn btn-primary saveTask">Enregistrer</button>&nbsp;&nbsp;
+	    <button type="submit" form="formValidRequest" class="btn btn-primary">Enregistrer</button>&nbsp;&nbsp;
 	    <a href="#" data-dismiss="modal">Annuler</a>
 	</div>
 </div>

@@ -150,7 +150,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 		this.selectedRequest = app.collections.requests.models[btn.parents('tr').attr('id')].toJSON();
 
 		if(btn.hasClass("buttonValidRequest")){
-			alert(this.selectedRequest);
+			$('#requestName').val(this.selectedRequest.name);
+			$('#infoModalValidRequest').children('small').html(this.selectedRequest.description);
 		}
 		else if(btn.hasClass("buttonRefuseRequest")){
 			$('#infoModalRefuseRequest').children('p').html(this.selectedRequest.name);
