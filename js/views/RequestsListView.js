@@ -9,26 +9,24 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 	numberListByPage: 25,
 	
-	btnOpenValidModalVisibility: "hidden",
-	btnOpenModifyModalVisibility: "hidden",
-	btnOpenCancelModalVisibility: "hidden",
-	btnOpenToBeConfirmModalVisibility: "hidden",
-	btnOpenConfirmModalVisibility: "hidden",
+	selectedRequest : 0,
 
 
     // The DOM events //
     events: {
-		'click li.active'		: 'preventDefault',
-		'click li.disabled'		: 'preventDefault',
+		'click li.active'				: 'preventDefault',
+		'click li.disabled'				: 'preventDefault',
 			
-    	'click .btnOpenValidModal'		: 'openValidModal',
-		'click #btnValidModal'			: 'validModal',
-		
-//		'click .btnOpenCancelModal'		: 'openCancelModal',
-//		'click #btnCancelModal'			: 'cancelModal',
+    	'click .buttonValidRequest'		: 'setInfoModal',
+    	'click .buttonRefuseRequest'	: 'setInfoModal',
+    	'click .buttonConfirmDST'		: 'setInfoModal',
+
+    	'submit #formValidRequest' 		: 'validRequest',
+    	'submit #formRefuseRequest' 	: 'refuseRequest',
+    	'submit #formConfirmDSTRequest' : 'confirmDSTRequest'
     },
 
-	
+ 
 
 	/** View Initialization
 	*/
@@ -142,10 +140,66 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 
 
+	/** Display request information in the Modal view
+	*/
+	setInfoModal: function(e){
+		
+		var btn = $(e.target);
 
-    preventDefault: function(event){
+		// Retrieve the ID of the request //
+		this.selectedRequest = app.collections.requests.models[btn.parents('tr').attr('id')].toJSON();
+
+		if(btn.hasClass("buttonValidRequest")){
+			alert(this.selectedRequest);
+		}
+		else if(btn.hasClass("buttonRefuseRequest")){
+			$('#infoModalRefuseRequest').children('p').html(this.selectedRequest.name);
+			$('#infoModalRefuseRequest').children('small').html(this.selectedRequest.description);
+		}
+		else if(btn.hasClass("buttonConfirmDST")){
+			$('#infoModalConfirmDST').children('p').html(this.selectedRequest.name);
+			$('#infoModalConfirmDST').children('small').html(this.selectedRequest.description);
+		}
+		
+	},
+
+
+
+	/** Change the request state to ConfirmDST
+	*/
+	validRequest: function(e){
+		e.preventDefault();
+
+		alert('TODO');
+	},
+
+
+
+	/** Change the request state to ConfirmDST
+	*/
+	refuseRequest: function(e){
+		e.preventDefault();
+
+		alert('TODO');
+	},
+
+
+
+	/** Change the request state to ConfirmDST
+	*/
+	confirmDSTRequest: function(e){
+		e.preventDefault();
+
+		alert('TODO');
+	},
+
+
+
+	/** Prevent the default action
+	*/
+	preventDefault: function(event){
     	event.preventDefault();
-    },
+    }
 
 
 

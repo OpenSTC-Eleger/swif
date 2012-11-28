@@ -160,7 +160,7 @@
 					}
 					%>
 
-					<tr class="<%= classRow %>">
+					<tr id="<%= i %>" class="<%= classRow %>">
 					    <td>
 					    	<a 	href="#demandes-dinterventions/<%= requests[i].id %>" 
 								rel="popover" 
@@ -206,14 +206,14 @@
 								<% if(requests[i].state == app.Models.Request.state[0].value) { %>
 						   		
 									<div class="btn-group">
-										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small disabled no-outline" data-toggle="modal" data-target="#modalRefuseRequest"><i class="icon-remove text-error"></i></button>
+										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small disabled no-outline"><i class="icon-remove text-error"></i></button>
 										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
 											<span class="caret"></span>
 										</button>
 										<ul class="dropdown-menu pull-right align-left">
-											<li><a href="#modalValidRequest" data-toggle="modal" class="text-success"><i class="icon-ok text-sucess"></i>&nbsp;Valider</a></li>
+											<li><a href="#modalValidRequest" data-toggle="modal" class="buttonValidRequest"><i class="icon-ok text-sucess"></i>&nbsp;Valider</a></li>
 											<% if(!app.models.user.isDST()){ %>
-												<li><a href="#modalConfirmDSTRequest" data-toggle="modal"><i class="icon-user"></i>&nbsp;Remonter DST</a></li>
+												<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-user"></i>&nbsp;Remonter DST</a></li>
 											<% } %>
 										</ul>
 									</div>
@@ -222,14 +222,14 @@
 								<% } else if(requests[i].state == app.Models.Request.state[1].value) { %>
 									
 									<div class="btn-group">
-										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small btn-success no-outline" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok"></i></button>
+										<button id="btnOpenCancelModal_<%=i%>" class="btn btn-small btn-success no-outline buttonValidRequest" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok"></i></button>
 										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
 											<span class="caret"></span>
 										</button>
 										<ul class="dropdown-menu pull-right align-left">
-											<li><a href="#modalRefuseRequest" data-toggle="modal"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
+											<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
 											<% if(!app.models.user.isDST()){ %>
-												<li><a href="#modalConfirmDSTRequest" data-toggle="modal"><i class="icon-user"></i>&nbsp;Remonter DST</a></li>
+												<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-user"></i>&nbsp;Remonter DST</a></li>
 											<% } %>
 										</ul>
 									</div>
@@ -243,7 +243,7 @@
 											<span class="caret"></span>
 										</button>
 										<ul class="dropdown-menu pull-right align-left">
-											<li><a href="#modalRefuseRequest" data-toggle="modal"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
+											<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
 										</ul>
 									</div>
 
@@ -256,9 +256,9 @@
 											<span class="caret"></span>
 										</button>
 										<ul class="dropdown-menu pull-right align-left">
-											<li><a href="#modalRefuseRequest" data-toggle="modal"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
+											<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
 											<% if(!app.models.user.isDST()){ %>
-												<li><a href="#modalConfirmDSTRequest" data-toggle="modal"><i class="icon-user"></i>&nbsp;Remonter DST</a></li>
+												<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-user"></i>&nbsp;Remonter DST</a></li>
 											<% } %>
 										</ul>
 									</div>
@@ -379,7 +379,7 @@
 	</div>
 	
 	<div class="modal-footer">
-	    <button type="submit" class="btn btn-primary saveTask">Enregistrer</button>&nbsp;&nbsp;
+	    <button type="submit" form="" class="btn btn-primary saveTask">Enregistrer</button>&nbsp;&nbsp;
 	    <a href="#" data-dismiss="modal">Annuler</a>
 	</div>
 </div>
@@ -393,14 +393,20 @@
 	</div>
 	
 	<div class="modal-body">
+
+		<blockquote id="infoModalRefuseRequest" class="spaceBottom">
+			<p></p>
+			<small></small>
+		</blockquote>
+
 	    <form id="formRefuseRequest" action="#" class="form-horizontal">
 	    
 			<!-- Task name -->
             <div class="control-group">
-                <label for="taskName" class="control-label">Nom:</label>
+                <label for="taskName" class="control-label">Motif:</label>
 
                 <div class="controls">
-                    <textarea></textarea>
+                    <textarea id="motifRefuse" rows="5" required="required" placeholder="Entrée les motifs de refus de la demande"></textarea>
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -408,7 +414,7 @@
 	</div>
 	
 	<div class="modal-footer">
-	    <button type="submit" class="btn btn-primary saveTask">Enregistrer</button>&nbsp;&nbsp;
+	    <button type="submit" form="formRefuseRequest" class="btn btn-primary">Enregistrer</button>&nbsp;&nbsp;
 	    <a href="#" data-dismiss="modal">Annuler</a>
 	</div>
 </div>
@@ -422,14 +428,20 @@
 	</div>
 	
 	<div class="modal-body">
+
+		<blockquote id="infoModalConfirmDST" class="spaceBottom">
+			<p></p>
+			<small></small>
+		</blockquote>
+
 	    <form id="formConfirmDSTRequest" action="#" class="form-horizontal">
 	    
 			<!-- Task name -->
             <div class="control-group">
-                <label for="taskName" class="control-label">Nom:</label>
+                <label for="motifDST" class="control-label">Motif:</label>
 
                 <div class="controls">
-                    <textarea></textarea>
+                    <textarea id="motifDST" rows="5" required="required" placeholder="Entrée les informations utiles pour le DST"></textarea>
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -437,7 +449,7 @@
 	</div>
 	
 	<div class="modal-footer">
-	    <button type="submit" class="btn btn-primary saveTask">Enregistrer</button>&nbsp;&nbsp;
+	    <button type="submit" form="formConfirmDSTRequest" class="btn btn-primary">Enregistrer</button>&nbsp;&nbsp;
 	    <a href="#" data-dismiss="modal">Annuler</a>
 	</div>
 </div>
