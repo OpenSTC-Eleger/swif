@@ -1,12 +1,22 @@
 <div id='event-create'>                               
         <fieldset>                                   
         <form>
-            <label for='eventState'>State:</label><input type='checkbox' name='eventState' id='eventState' value='eventState' title='state!'/>
-            <br />
-            <label for='eventTimeSpent'>Time Spent:</label><input type='number' name='eventTimeSpent' id='eventTimeSpent' value='' title='time spent!' size='10' /> 
-            <br />
-            <label for='eventTimeRemaining'>Time Remaining:</label><input type='number' name='eventTimeRemaining' id='eventTimeRemaining' value='' title='remaining time' size='10' /> 
-            <br />
+        	<div class="btn-group" id='eventState' data-toggle="buttons-radio">
+			  <button type="button" class="btn" value="done" >Fait</button>
+			  <button type="button" class="btn" value="notdone" >Pas Fait</button>
+			  <button type="button" class="btn" value="pending">En cours</button>
+			  <input type="hidden" name="view-opt-bt-group-value" value="0">
+			</div>
+			<br />
+			<div id="timeSpent">
+	            <label for='eventTimeSpent'>Temps travaillé:</label><input type='number' name='eventTimeSpent' id='eventTimeSpent' value='' title='time spent!' size='10' /> 
+	            <br />
+	        </div>
+	        <div id="timeRemaining">
+	            <label for='eventTimeRemaining'>Temps restant:</label><input type='number' name='eventTimeRemaining' id='eventTimeRemaining' value='' title='remaining time' size='10' /> 
+	        	<br />
+	        </div>
+	        <br />
             <input type='submit' id='event-button' name='btnOk' class='button150' value='Ok' />                                 
         </form>
     </fieldset>

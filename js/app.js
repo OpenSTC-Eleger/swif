@@ -11,7 +11,7 @@ var app = {
     userBDD         : 'pontlabbe',
     uniq_id_counter : 0,
     
-    urlOE                       : 'http://octm-dev.siclic.fr:8069',
+    urlOE                       : 'http://localhost:8069',
     urlOE_authentication        : '/web/session/authenticate',
     urlOE_versionServer         : '/web/webclient/version_info',
     urlOE_sessionDestroy        : '/web/session/destroy',

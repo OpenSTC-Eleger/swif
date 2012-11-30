@@ -78,6 +78,7 @@ app.Views.TasksView = Backbone.View.extend({
     		var event = { id: task.id, title: task.name, 
     		              start: task.date_start, end: task.date_end, 
     		              total_hours: task.total_hours,
+    		              effective_hours: task.effective_hours,
     		              remaining_hours: task.remaining_hours,
     		              allDay:false};
     		events.push(event);

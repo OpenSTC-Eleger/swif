@@ -341,7 +341,7 @@ app.Router = Backbone.Router.extend({
 
             // Check if the collections is instantiate //
             if(app.collections.interventions == null ){
-                app.collections.interventions = new app.Collections.Requests();
+                app.collections.interventions = new app.Collections.Interventions();
             }
 
             app.collections.interventions.fetch({
@@ -371,25 +371,25 @@ app.Router = Backbone.Router.extend({
         // Check if the user is connect //
         if(this.checkConnect()){   
         	
-        	if(app.collections.officers == null ){
-        		app.collections.officers = new app.Collections.Officers();        	
+        	if(app.collections.tasks == null ){
+        		app.collections.tasks = new app.Collections.Tasks();        	
         	}
         	
         	app.loader('display');
-            app.collections.officers.fetch({  
+            app.collections.tasks.fetch({  
             	
             		success: function(){
-			        	if(app.collections.tasks == null ){
-			                app.collections.tasks = new app.Collections.Tasks();
+			        	if(app.collections.interventions == null ){
+			                app.collections.interventions = new app.Collections.Interventions();
 			            }
 			        
-			        	app.collections.tasks.fetch({
+			        	app.collections.interventions.fetch({
 			        		success: function(){
-                        if(app.collections.interventions == null ){
-                                    app.collections.interventions = new app.Collections.Interventions();
+                        if(app.collections.officers == null ){
+                                    app.collections.officers = new app.Collections.Officers();
                                 }
 					        
-					        	app.collections.interventions.fetch({
+					        	app.collections.officers.fetch({
 					        		success: function(){
 							            // If the view exist we reuse it //
 							            if(app.views.planningView){

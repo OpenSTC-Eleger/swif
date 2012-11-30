@@ -4,7 +4,7 @@
 app.Models.ClaimerService = Backbone.RelationalModel.extend({
     
 	// Model name in the database //
-	model_name : 'openctm.service',	
+	model_name : 'openstc.service',	
 	
 	url: "/#demandeurs-services/:id",
 

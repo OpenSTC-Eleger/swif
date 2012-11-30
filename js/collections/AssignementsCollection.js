@@ -6,7 +6,7 @@ app.Collections.Assignements = Backbone.Collection.extend({
     model: app.Models.Assignement,
 
     // Model name in the database //
-    model_name : 'openctm.intervention.assignement',
+    model_name : 'openstc.intervention.assignement',
     
    	url: "assignement",
    

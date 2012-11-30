@@ -6,7 +6,7 @@ app.Collections.Requests = Backbone.Collection.extend({
     model: app.Models.Request,
 
     // Model name in the database //
-    model_name : 'openctm.ask',
+    model_name : 'openstc.ask',
 
     
     

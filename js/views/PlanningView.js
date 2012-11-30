@@ -133,6 +133,7 @@ app.Views.PlanningView = Backbone.View.extend({
 					user_id: task.user_id[0],
 					planned_hours: task.planned_hours,
 					total_hours: task.total_hours,
+					effective_hours: task.effective_hours,
 					remaining_hours: task.remaining_hours,
 			};
 			

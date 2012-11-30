@@ -4,7 +4,7 @@
 app.Models.Request = Backbone.RelationalModel.extend({
 
 	// Model name in the database //
-	model_name : 'openctm.ask',	
+	model_name : 'openstc.ask',	
 
     
     defaults: {

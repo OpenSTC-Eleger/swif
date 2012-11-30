@@ -3,7 +3,7 @@
 */
 app.Models.ClaimerType = Backbone.RelationalModel.extend({
     
-	model_name : 'openctm.partner.type',
+	model_name : 'openstc.partner.type',
 	
 	url: "/type-demandeurs/:id",
 

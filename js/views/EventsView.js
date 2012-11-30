@@ -71,7 +71,19 @@ app.Views.EventsView = Backbone.View.extend({
         eventDropOrResize: function(fcEvent) {
             // Lookup the model that has the ID of the event and update its attributes
             this.collection.get(fcEvent.id).save({start: fcEvent.start, end: fcEvent.end});            
-        },        
+        },
+        
+        copy: function() {
+        	console.debug("Copy Event");
+        },
+
+        remove: function() {
+        	console.debug("Remove Event");
+        },
+
+        edit: function() {
+        	console.debug("Edit Event");
+        },
                 
         initEvents: function() {
         	this.events = [];
@@ -84,6 +96,7 @@ app.Views.EventsView = Backbone.View.extend({
         		              end: task.date_end, 
         		              planned_hours: task.planned_hours,
         		              total_hours: task.total_hours,
+        		              effective_hours: task.effective_hours,
         		              remaning_hours: task.remaining_hours,
         		              allDay:false
         		             };
@@ -94,7 +107,9 @@ app.Views.EventsView = Backbone.View.extend({
         initCalendar: function() {
         	var self = this;
         	this.calendar = self.el.fullCalendar({
-				events: self.events,
+				events: function(start, end, callback) {  			   
+        			callback(self.events);
+				},
 				
 				defaultView: self.planning.calendarView,
 				aspectRatio: 1.30,
@@ -117,21 +132,20 @@ app.Views.EventsView = Backbone.View.extend({
 				defaultEventMinutes: 120,
 				dragOpacity: 0.5,
 				weekends: true,
-				editable: true,
 				droppable: true,
 				disableResizing: true,				
                 selectable: true,
                 selectHelper: true,
                 editable: true,
                 ignoreTimezone: false,                
-                select: this.select,
+                //select: this.eventSelect,
                 dragRevertDuration:0,
                 eventClick: this.eventClick,
 //                eventColor: {
 //					backgroundColor: 'black',
 //					borderColor: 'yellow',
 //				},
-//                eventDrop: this.eventDropOrResize,        
+                //eventDrop: this.eventDropOrResize,        
 //                eventResize: this.eventDropOrResize,
 				
 				//eventColor: '#378006',
@@ -140,9 +154,72 @@ app.Views.EventsView = Backbone.View.extend({
 //					// qTip call
 //					$('.fc-event', this).qtip();
 //				},
+
+                eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
+					app.loader('display');
+					
+				    params = { 
+				       id: event.id,
+				       date_start: event.start,
+				       date_end: event.end,
+				       //user_id: null
+				    };
+				    model = app.collections.tasks.get(event.id)
+					model.save(params);	
+				    	
+				    //self.planning.render();	
+				    $(self.el).fullCalendar('refresh');
+				    //$(self.el).fullCalendar('removeEvents', event.id);
+				    app.loader('hide');	
+				},
+                
+				loading: function (bool) { 
+				
+
+				},
 				
 				eventRender: function(event, element) {
 					console.debug(element);		
+					
+					
+
+				
+				        //jQuery('#com_jc_msg_saving').fadeOut();
+				
+				        jQuery.contextMenu({
+				
+				            selector: '.fc-event',//note the selector this will apply context to all events 
+				            trigger: 'right',
+//				            callback: function(key, options) {
+//				                //this is the element that was rightclicked
+//				                console.log(options.$trigger.context);
+//				
+//				                switch(key)
+//				                {
+//				                case 'edit_event':
+//				
+//				                  break;
+//				                case 'del_event':
+//				
+//				                  break;
+//				                case 'add_event':
+//				
+//				                  break;
+//				
+//				                }
+//				
+//				            },
+				            items: {
+				                'edit_event': {name: 'Edit',  icon: "edit", callback: function(key, options) {
+				            			self.edit();
+				            		}
+				            	 },
+				                'del_event': {name: 'Delete', icon: "delete", callback: function(key, options) {self.remove();}},
+				                'copy_event': {name: 'Copy', icon: "copy", callback: function(key, options) {self.copy();}},
+				            }
+				        });
+				    
+
 //					element.qtip({ content: event.description,
 //								   position: {
 //										corner:{target: 'topRight',tooltip: 'bottomLeft'}
@@ -187,23 +264,50 @@ app.Views.EventsView = Backbone.View.extend({
 				    $(this).remove();     
 				},
 				
+//				select: function( startDate, endDate, allDay) {
+//					console.debug('Event Select');
+//				},
 				
 				eventDragStop: function(event, jsEvent, ui, view) {
 				    //if (self.isElemOverDiv($(this), $('div.accordion-group'))) {
-					app.loader('display');
-					
-				    params = { 
-				       id: event.id,
-				       user_id: null
-				    };
-				    model = app.collections.tasks.get(event.id)
-					model.save(params);	
-				    	
-				    self.planning.render();	
-				    $(self.el).fullCalendar('removeEvents', event.id);
-				    app.loader('hide');
-				    //}
-				}
+//					app.loader('display');
+//					
+//				    params = { 
+//				       id: event.id,
+//				       date_start: event.start,
+//				       date_end: event.end,
+//				       //user_id: null
+//				    };
+//				    model = app.collections.tasks.get(event.id)
+//					model.save(params);	
+//				    	
+//				    //self.planning.render();	
+//				    $(self.el).fullCalendar('refresh');
+//				    //$(self.el).fullCalendar('removeEvents', event.id);
+//				    app.loader('hide');
+				    
+				},
+				
+//				eventMouseover: function(event, domEvent) {
+//					var layer =	'<div id="events-layer" class="fc-transparent" style="position:absolute; width:100%; height:100%; top:-1px; text-align:right; z-index:100"><a><img src="../../images/editbt.png" title="edit" width="14" id="edbut'+event.id+'" border="0" style="padding-right:5px; padding-top:2px;" /></a><a><img src="../../images/delete.png" title="delete" width="14" id="delbut'+event.id+'" border="0" style="padding-right:5px; padding-top:2px;" /></a></div>';
+//					$(this).append(layer);
+//					$("#delbut"+event.id).hide();
+//					$("#delbut"+event.id).fadeIn(300);
+//					$("#delbut"+event.id).click(function() {
+//						//$.post("your.php", {eventId: event.id});
+//						calendar.fullCalendar('refetchEvents');
+//					});
+//					$("#edbut"+event.id).hide();
+//					$("#edbut"+event.id).fadeIn(300);
+//					$("#edbut"+event.id).click(function() {
+//						var title = prompt('Current Event Title: ' + event.title + '\n\nNew Event Title: ');
+//						
+//						if(title){
+//							//$.post("your.php", {eventId: event.id, eventTitle: title});
+//							calendar.fullCalendar('refetchEvents');
+//						}
+//					});
+//				},   
 
 			});
     	}

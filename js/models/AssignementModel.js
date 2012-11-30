@@ -3,7 +3,7 @@
 */
 app.Models.Assignement = Backbone.RelationalModel.extend({
     
-	model_name : 'openctm.intervention.assignement',	
+	model_name : 'openstc.intervention.assignement',	
 	
 	url: "/#assignement/:id",
 

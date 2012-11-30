@@ -6,7 +6,7 @@ app.Collections.ClaimersTypes = Backbone.Collection.extend({
     model: app.Models.ClaimerType,
 
     // Model name in the database //
-    model_name : 'openctm.partner.type',
+    model_name : 'openstc.partner.type',
 
     url: "type-demandeurs",   
 

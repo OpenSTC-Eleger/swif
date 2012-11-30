@@ -6,7 +6,7 @@ app.Collections.ClaimersServices = Backbone.Collection.extend({
     model : app.Models.ClaimerService,
 
     // Model name in the database //
-    model_name : 'openctm.service',
+    model_name : 'openstc.service',
 
     url: "demandeurs-services",   
     

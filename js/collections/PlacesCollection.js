@@ -6,7 +6,7 @@ app.Collections.Places = Backbone.Collection.extend({
     model: app.Models.Place,
 
     // Model name in the database //
-    model_name : 'openctm.site',
+    model_name : 'openstc.site',
 
    
 
