@@ -1,7 +1,7 @@
 <div class="page-header">
 	<h1>
 		Interventions
-		<sup rel="tooltip" data-original-title="<%= lang.wait %>">
+		<sup>
 			<i class="badge badge-success" >
 				<%= nbInterventions %>
 			</i>
@@ -17,6 +17,8 @@
 
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
+			<a href="#" class="btn btn-primary"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	
+
 			<form class="form-search pull-right">
     			<div class="input-append">
 					<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off">

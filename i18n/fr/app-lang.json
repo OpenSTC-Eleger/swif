@@ -39,9 +39,12 @@
 
 
 	"actions" : {
-		"logIn"			: "connectez-vous",
+		"logIn"				: "connectez-vous",
 		"logOut"			: "déconnexion",
 		"addRequest"		: "nouvelle demande",
+		"addIntervention"	: "nouvelle intervention",
+		"addTask"			: "nouvelle tâche",
+		"enclosePlanning" 	: "cloturer la planification",
 		"save"				: "enregistrer",
 		"cancel"			: "annuler",
 		"search"			: "rechercher",
@@ -75,6 +78,6 @@
     	"requestsList"	: "Demandes d'interventions",
     	"requestDetail"	: "Détail de la demande",
     	"newRequest"	: "Nouvelle demande d'intervention",
-    	"planning"		: "Planning"
+    	"planning"		: "Planification des tâches"
 	}
 }

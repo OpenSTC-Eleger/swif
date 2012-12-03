@@ -12,6 +12,9 @@
 .spaceBottom{
 	margin-bottom: 30px;
 }
+small.badge{
+	font-size: @fontSizeMini;
+}
 
 
 
@@ -62,19 +65,26 @@ tr.fc-slot2 {
 -------------------------------------------------- */
 div.accordion-group{
 	border-color: darken(@grayLighter, 10%);
-
 }
-div.accordion-heading h5{
+div.accordion-heading{
 	margin: 0;
-	padding-top: 8px;
-	padding-bottom: 8px;
-	background-color: lighten(@grayLighter, 5%);
+	padding-top: 3px;
+	padding-bottom: 3px;
 }
-div.accordion-heading h5:hover{
-	background-color: @grayLighter;	
+div.accordion-heading:hover{
+	background-color: @grayLighter;
 }
-.accordion-inner{
+div.accordion-inner{
 	background-color: @white;
+}
+div.accordion-body.in{
+
+	div.accordion-inner{
+		background-color: @grayLighter;
+	}
+	border-bottom: 1px solid @grayLight;
+	border-left: 1px solid @grayLight;
+	border-right: 1px solid @grayLight;
 }
 
 ul.tasks li{
@@ -84,7 +94,11 @@ ul.tasks li{
 ul.tasks li:hover{
 	background-color: lighten(@blue, 50%);
 	.border-radius(10px);
-
+}
+div.div-actions{
+	border-left: thin dotted @gray;
+	border-right: thin dotted @gray;
+	padding: 5px;
 }
 
 

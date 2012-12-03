@@ -37,18 +37,18 @@ app.Views.PlanningView = Backbone.View.extend({
             app.router.setPageTitle(app.lang.viewsTitles.planning);
             // Change the Grid Mode of the view //
             app.views.headerView.switchGridMode('fluid');
-         
-            
-        	//var tasks = app.collections.tasks.search();
-        	//app.collections.interventions.search();
+
+
+            console.log("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+            console.log(app.collections.interventions);
 
 
         	var template = _.template(templateData, {
-            		lang: app.lang,
-            		tasks: app.collections.tasks.toJSON(),
-            		interventions: app.collections.interventions.toJSON(),
-            		officers: app.collections.officers.toJSON()            		
+        		lang: app.lang,
+        		interventions: app.collections.interventions.toJSON(),
+        		officers: app.collections.officers.toJSON()            		
             });
+
             $(self.el).html(template);
             self.initCalendar();
             self.initDragObject();
@@ -56,17 +56,19 @@ app.Views.PlanningView = Backbone.View.extend({
 
             $('[data-spy="affix"]').affix();
             $('[data-spy="scroll"], .navListAgents').scrollspy();
+            $('*[rel="tooltip"]').tooltip({placement: "left"});
 
-                // Animated Scroll //
-			    $('ul.nav li a[href^="#"]').click(function(){  
-			        var elementID = $(this).attr("href");  
-			        
-			        $('html, body').animate({  
-			            scrollTop:$(elementID).offset().top -5
-			        }, 'slow');
-			        
-			        return false;
-			    });
+            // Animated Scroll //
+            $('ul.nav li a[href^="#"]').click(function(){  
+		        var elementID = $(this).attr("href");  
+		        
+		        $('html, body').animate({  
+		            scrollTop:$(elementID).offset().top -5
+		        }, 'slow');
+		        
+		        return false;
+		    });
+
         });
        
         return this;
@@ -97,7 +99,8 @@ app.Views.PlanningView = Backbone.View.extend({
 			    error: function () {
 					console.log('ERROR - Unable to save the Request - RequestDetailsView.js');
 			    },           
-		},false);
+		},
+        false);
     },
     
     	

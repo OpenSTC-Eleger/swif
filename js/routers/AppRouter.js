@@ -363,7 +363,6 @@ app.Router = Backbone.Router.extend({
     
 
 
-
     /** Planning
     */
     planning: function(){
@@ -411,6 +410,8 @@ app.Router = Backbone.Router.extend({
         }
        
     },
+
+
 
     tasksCheck: function(){
 	
