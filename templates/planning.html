@@ -28,7 +28,8 @@
 						<div class="accordion-inner">
 							<ul class="unstyled tasks">
 								<% _.each(inter.tasks, function (task, i) { %>
-									<li>
+									<li id="task<%= task.id %>" class="external-event disabled">
+										<i class="icon-time"></i>&nbsp;
 										<%= task.name %>
 										<small class="badge pull-right"><%= task.planned_hours %>h</small>
 									</li>	
@@ -36,10 +37,10 @@
 							</ul>
 
 							<div class="div-actions">
-								<button class="btn btn-primary btn-small" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="right">
+								<button class="btn btn-primary btn-small no-outline" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="right">
 									<i class="icon-plus"></i>
 								</button>
-								<button class="btn btn-success btn-small pull-right" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.enclosePlanning) %>" data-placement="left">
+								<button class="btn btn-success btn-small pull-right no-outline disabled" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.enclosePlanning) %>" data-placement="left">
 									<i class="icon-check"></i>
 								</button>
 							</div>

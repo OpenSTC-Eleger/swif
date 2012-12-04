@@ -87,17 +87,20 @@ div.accordion-body.in{
 	border-right: 1px solid @grayLight;
 }
 
-ul.tasks li{
-	padding: 4px 5px 4px 3px;
+ul.tasks li.external-event{
+	padding: 5px 5px 5px 5px;
 	cursor: move;
 }
+li.external-event.disabled{
+	color: @grayLight;
+	cursor: no-drop!important;
+}
 ul.tasks li:hover{
-	background-color: lighten(@blue, 50%);
+	background-color: @white;
 	.border-radius(10px);
 }
 div.div-actions{
-	border-left: thin dotted @gray;
-	border-right: thin dotted @gray;
+	border-top: 1px solid @grayLight;
 	padding: 5px;
 }
 

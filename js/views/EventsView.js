@@ -261,7 +261,7 @@ app.Views.EventsView = Backbone.View.extend({
 					    });
 				
 				
-				    $(this).remove();     
+				    //$(this).remove();     
 				},
 				
 //				select: function( startDate, endDate, allDay) {

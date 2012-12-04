@@ -126,39 +126,45 @@ app.Views.PlanningView = Backbone.View.extend({
     	return events;
     },
 
+
+
+    /** Make the external event Draggable
+    */
     initDragObject: function() {
     	tasks = app.collections.tasks.toJSON();
-    	_.each(tasks, function (task, i){
-    		el = $('li#task_'+task.id);
-			var eventObject = {
-			        id: task.id,
-					title: task.name, // use the element's text as the event title
-					user_id: task.user_id[0],
-					planned_hours: task.planned_hours,
-					total_hours: task.total_hours,
-					effective_hours: task.effective_hours,
-					remaining_hours: task.remaining_hours,
+    	
+        _.each(tasks, function (task, i){
+
+    		el = $('li#task'+task.id);
+
+            var eventObject = {
+                id: task.id,
+				title: task.name,
+				user_id: task.user_id[0],
+				planned_hours: task.planned_hours,
+				total_hours: task.total_hours,
+				effective_hours: task.effective_hours,
+				remaining_hours: task.remaining_hours,
 			};
 			
-			// store the Event Object in the DOM element so we can get to it later
+			// Store the Event Object in the DOM element so we can get to it later //
 			el.data('eventObject', eventObject);
 			
-			// make the event draggable using jQuery UI
+			// Make the event draggable using jQuery UI //
 			el.draggable({
 			    zIndex: 9999,
 			    revert: true,
-			    revertDuration: 0,
-			    appendTo: 'div.container-fluid',
-			    opacity: 0.5,  //  original position after the drag
+			    revertDuration: 500,
+			    appendTo: '#app',
+			    opacity: 0.5,
 			    
 			    reverting: function() {
 					console.log('reverted');
 				},
-			
-
 			});
 
     	});	
-    }  
+    }
+
 });
 
