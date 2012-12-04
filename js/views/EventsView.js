@@ -247,11 +247,11 @@ app.Views.EventsView = Backbone.View.extend({
 				    $(self.el).fullCalendar('renderEvent', copiedEventObject, true);
 				    //$(self.el).append('<button type="button" class="close" data-dismiss="close">X</button>');
 				    params = { 
-				               id: copiedEventObject.id,
-				    		   date_end: date,
-				               date_start: date,
-				               planned_hours: copiedEventObject.planned_hours,
-				               user_id: self.officer_id
+		               id: copiedEventObject.id,
+		    		   date_end: date,
+		               date_start: date,
+		               planned_hours: copiedEventObject.planned_hours,
+		               user_id: self.officer_id
 				    };
 				    self.save(params);
 				

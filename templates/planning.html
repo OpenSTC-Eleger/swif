@@ -7,7 +7,6 @@
 
 	<div class="row-fluid">
 
-		
 		<!-- Interventions List -->
 		<div class="span3">
 			
@@ -22,25 +21,49 @@
 								<span class="badge badge-info pull-right"><%= inter.planned_hours %>h</span>
 							<% } %>
 						</a>
+						
+						<p>
+							<i class="icon-remove"></i> <a href="#">Supprimer</a> |
+							<i class="icon-edit"></i> <a href="#">Modifier</a>> 
+						</p>
 					</div>
 
 					<div id="collapse<%= inter.id %>" class="accordion-body collapse">
 						<div class="accordion-inner">
 							<ul class="unstyled tasks">
-								<% _.each(inter.tasks, function (task, i) { %>
-									<li id="task<%= task.id %>" class="external-event disabled">
-										<i class="icon-time"></i>&nbsp;
-										<%= task.name %>
-										<small class="badge pull-right"><%= task.planned_hours %>h</small>
-									</li>	
-								<% }) %>
+								<% 
+									var allPlanned = false;
+
+									_.each(inter.tasks, function (task, i) { %>
+									
+										<!-- Check if the Task is planned or not -->
+										<% if(task.date_start != ""){ %>
+											<li id="task<%= task.id %>" class="external-event disabled">
+												<i class="icon-time"></i>&nbsp;
+												<%= task.name %>
+												<small class="pull-right"><%= task.planned_hours %>h</small>
+											</li>
+										<% 
+											allPlanned = true;
+										} else{ %>
+											<li id="task<%= task.id %>" class="external-event">
+												&nbsp;<%= task.name %>
+												<small class="badge pull-right"><%= task.planned_hours %>h</small>
+											</li>
+										<% 
+											allPlanned = false;
+										} 
+									
+									});  %>
 							</ul>
 
 							<div class="div-actions">
 								<button class="btn btn-primary btn-small no-outline" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="right">
 									<i class="icon-plus"></i>
 								</button>
-								<button class="btn btn-success btn-small pull-right no-outline disabled" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.enclosePlanning) %>" data-placement="left">
+
+								<button 
+									class="btn btn-success btn-small pull-right no-outline <%= (allPlanned) ? "" : 'disabled' %>" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.enclosePlanning) %>" data-placement="left">
 									<i class="icon-check"></i>
 								</button>
 							</div>
@@ -49,7 +72,7 @@
 				</div>
 				<% }) %>
 
-          	</aside>
+			</aside>
 
 		</div>
 		<!-- /Interventions List -->
@@ -85,8 +108,5 @@
 
 	</div>
 
-	
-
-
 </div>
-<!-- /Contenu de la page -->
+

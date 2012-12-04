@@ -94,8 +94,15 @@ ul.tasks li.external-event{
 li.external-event.disabled{
 	color: @grayLight;
 	cursor: no-drop!important;
+
+	small{
+		margin-right: 5px;
+	}
 }
-ul.tasks li:hover{
+li.external-event.disabled:hover{
+	background-color: @grayLighter;
+}
+li.external-event:hover{
 	background-color: @white;
 	.border-radius(10px);
 }

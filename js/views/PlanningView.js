@@ -135,7 +135,7 @@ app.Views.PlanningView = Backbone.View.extend({
     	
         _.each(tasks, function (task, i){
 
-    		el = $('li#task'+task.id);
+    		el = $('li#task'+task.id+':not(.disabled)');
 
             var eventObject = {
                 id: task.id,
