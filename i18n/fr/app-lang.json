@@ -55,7 +55,9 @@
 		"previousShort"		: "préc",
 		"nextShort"			: "suiv",
 		"process" 			: "à traiter",
-		"confirm" 			: "à confirmer"
+		"confirm" 			: "à confirmer",
+		"delete" 			: "supprimer",
+		"update" 			: "modifier"
 	},
 
 	"errorMessages" : {
