@@ -39,7 +39,6 @@ app.Views.PlanningView = Backbone.View.extend({
             app.views.headerView.switchGridMode('fluid');
 
 
-            console.log("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
             console.log(app.collections.interventions);
 
 
