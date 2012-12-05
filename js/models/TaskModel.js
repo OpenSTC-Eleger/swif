@@ -46,7 +46,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		*/
 	
 	save: function(data,options) { 
-		app.saveOE(data, this.model_name,app.models.user.getSessionID(), options);
+		app.saveOE(this.get("id"), data, this.model_name,app.models.user.getSessionID(), options);
 	},
 	
 	destroy: function (options) {	

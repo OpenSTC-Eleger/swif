@@ -159,18 +159,20 @@ app.Router = Backbone.Router.extend({
                 app.collections.requests = new app.Collections.Requests();
             }
 
+
+
             app.loader('display');
             app.collections.requests.fetch({
             	success: function(){
-	            	if(app.collections.claimersServices == null ){
-	            		app.collections.claimersServices = new app.Collections.ClaimersServices();
+	            	if(app.collections.assignements == null ){
+	            		app.collections.assignements = new app.Collections.Assignements();
 					}
-		            app.collections.claimersServices.fetch({
+		            app.collections.assignements.fetch({
 		            	success: function(){
-			            	if(app.collections.assignements == null ){
-			            		app.collections.assignements = new app.Collections.Assignements();
-							}
-				            app.collections.assignements.fetch({
+			        	    if(app.collections.claimersServices == null ){
+			            		app.collections.claimersServices = new app.Collections.ClaimersServices();
+			    			}
+				            app.collections.claimersServices.fetch({
 				            	success: function(){	            
 					                if(app.views.requestsListView == null) {
 					                    app.views.requestsListView = new app.Views.RequestsListView({page: self.page});

@@ -18,12 +18,12 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
 			key: 'claimers'
 		}
 	},*/
-	{
-		type: Backbone.HasOne,
-		key: 'service_id',
-		relatedModel: 'app.Models.ClaimerService',
-		includeInJSON: true,
-	}
+//	{
+//		type: Backbone.HasOne,
+//		key: 'service_id',
+//		relatedModel: 'app.Models.ClaimerService',
+//		includeInJSON: true,
+//	}
 	],
 	
     

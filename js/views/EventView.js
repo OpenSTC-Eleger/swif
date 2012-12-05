@@ -37,7 +37,7 @@ app.Views.EventView = Backbone.View.extend({
 	        			   $('form', this).bind('submit', function(event) {
 	        				   
 	        				   	params = { 
-							               id: self.model.get('id'),
+							               //id: self.model.get('id'),
 							    		   state: $('#eventState').is(':checked')?"done":self.model.get('state'),
 							               effective_hours: $('#eventTimeSpent').val(),
 							               remaining_hours: $('#eventTimeRemaining').val(),

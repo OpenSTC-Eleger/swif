@@ -8,10 +8,10 @@ var app = {
 
     // Global variables //
     appVersion      : '0.1 alpha',
-    userBDD         : 'pontlabbe2',
+    userBDD         : 'pontlabbe',
     uniq_id_counter : 0,
     
-    urlOE                       : 'http://octm-dev.siclic.fr:8069',
+    urlOE                       : 'http://localhost:8069',
     urlOE_authentication        : '/web/session/authenticate',
     urlOE_versionServer         : '/web/webclient/version_info',
     urlOE_sessionDestroy        : '/web/session/destroy',
@@ -194,12 +194,12 @@ var app = {
 
     /** Save object in OpenERP
     */
-    saveOE : function (data, model, session_id, options) {
-        if(data.id)
+    saveOE : function (id, data, model, session_id, options) {
+        if(id)
             this.json(this.urlOE + this.urlOE_updateObject, {
                 'data'      : data, 
                 'model'     : model, 
-                'id'        : data.id,
+                'id'        : id,
                 'session_id': session_id      
            },options);
         else
