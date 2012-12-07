@@ -34,41 +34,6 @@ app.Views.RequestsListView = Backbone.View.extend({
 		this.render();
     },
     
-    openValidModal: function() {
-	
-    	
-    	$("#validModal #test").val( 'test' );
-    	
-    	//if( app.views.selectListServicesView  == null ) {
-	    	app.views.selectListServicesView = new app.Views.DropdownSelectListView(
-	    		{el: $("#requestService"), collection: app.collections.claimersServices})
-	    	app.views.selectListServicesView.clearAll();
-	    	app.views.selectListServicesView.addEmptyFirst();
-	    	app.views.selectListServicesView.addAll(); 
-	    //}
-    	
-	    //if( app.views.selectListAssignementView  == null ) {
-	    	app.views.selectListAssignementView = new app.Views.DropdownSelectListView(
-	    		{el: $("#requestAssignement"), collection: app.collections.assignements})
-	    	app.views.selectListAssignementView.clearAll(); 
-	    	app.views.selectListAssignementView.addEmptyFirst();
-	    	app.views.selectListAssignementView.addAll(); 
-	    //}
-    	
-
-    	$("#validModal").modal();
-    	
-    	//var model = new Backbone.Model({  title: 'Example Modal', body: 'Hello World' });    	
-        //var view = new app.Views.ValidRequestModalView({ model: model });
-        //view.show();
-    },
-
-    validModal: function() {
-    	$("#validModal").modal('hide');
-    	
-    },
-
-
 
 	/** Display the view
 	*/
@@ -144,7 +109,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 	/** Display request information in the Modal view
 	*/
 	setInfoModal: function(e){
-		$('#datepicker').datepicker();
+		
 		
 		var btn = $(e.target);
 
@@ -153,29 +118,33 @@ app.Views.RequestsListView = Backbone.View.extend({
 		this.model = app.collections.requests.models[this.pos];
 		this.selectedRequest = this.model.toJSON();
 		
-		app.views.selectServicesView = new app.Views.DropdownSelectListView({el: $("#requestService"), collection: app.collections.claimersServices})
-		app.views.selectServicesView.clearAll();
-		app.views.selectServicesView.addEmptyFirst();
-		app.views.selectServicesView.addAll();
-		if( this.selectedRequest.service_id )
-			app.views.selectServicesView.setSelectedItem( this.selectedRequest.service_id[0] );
-		else {
-			if( this.selectedRequest.belongsToService )
-				app.views.selectAssignementsView.setSelectedItem( this.selectedRequest.belongsToService.id );
-		}
-		
-		app.views.selectAssignementsView = new app.Views.DropdownSelectListView({el: $("#requestAssignement"), collection: app.collections.assignements})
-		app.views.selectAssignementsView.clearAll();
-		app.views.selectAssignementsView.addEmptyFirst();
-		app.views.selectAssignementsView.addAll();
-		if( this.selectedRequest.belongsToAssignement )
-			app.views.selectAssignementsView.setSelectedItem( this.selectedRequest.belongsToAssignement.id );
-		
-		$('#requestNote').val(this.selectedRequest.description);
+
 
 		if(btn.hasClass("buttonValidRequest")){
 			$('#requestName').val(this.selectedRequest.name);
 			$('#infoModalValidRequest').children('small').html(this.selectedRequest.description);
+			
+			app.views.selectServicesView = new app.Views.DropdownSelectListView({el: $("#requestService"), collection: app.collections.claimersServices})
+			app.views.selectServicesView.clearAll();
+			app.views.selectServicesView.addEmptyFirst();
+			app.views.selectServicesView.addAll();
+			if( this.selectedRequest.service_id )
+				app.views.selectServicesView.setSelectedItem( this.selectedRequest.service_id[0] );
+			else {
+				if( this.selectedRequest.belongsToService )
+					app.views.selectAssignementsView.setSelectedItem( this.selectedRequest.belongsToService.id );
+			}
+			
+			app.views.selectAssignementsView = new app.Views.DropdownSelectListView({el: $("#requestAssignement"), collection: app.collections.assignements})
+			app.views.selectAssignementsView.clearAll();
+			app.views.selectAssignementsView.addEmptyFirst();
+			app.views.selectAssignementsView.addAll();
+			if( this.selectedRequest.belongsToAssignement )
+				app.views.selectAssignementsView.setSelectedItem( this.selectedRequest.belongsToAssignement.id );
+			
+			$('#requestNote').val(this.selectedRequest.description);
+			$('#datepicker').datepicker();
+
 		}
 		else if(btn.hasClass("buttonRefuseRequest")){
 			$('#infoModalRefuseRequest').children('p').html(this.selectedRequest.name);
@@ -196,6 +165,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		
 		e.preventDefault();
 		params = {
+				state: app.Models.Request.state[3].value,
 		        description: $('#requestNote').val(),
 		        date_deadline: $('#datepicker').val(),
 		        intervention_assignement_id: $('#requestAssignement').val(),
@@ -215,10 +185,11 @@ app.Views.RequestsListView = Backbone.View.extend({
 					            console.log('Success VALID REQUEST');
 					            $('#modalValidRequest').modal('hide');
 					            self.model.update(self.params);	
+					            //TODO : la relation avec service ne fonctionnant pas on met à jour un id/nom
 					            //self.model.setService(app.views.selectServicesView.getSelected());
 					            var service = app.views.selectServicesView.getSelected().toJSON();
 					            self.model.setService([service.id,service.name]);
-					            self.model.setAssignement(app.views.selectAssignementsView.getSelected())
+					            self.model.setAssignement(app.views.selectAssignementsView.getSelected());
 					            app.collections.requests.models[self.pos] = self.model;
 					            self.initialize();
 					        }
@@ -237,7 +208,11 @@ app.Views.RequestsListView = Backbone.View.extend({
 	refuseRequest: function(e){
 		e.preventDefault();
 
-		alert('TODO');
+		params = {
+		        state: app.Models.Request.state[0].value,
+		        refusal_reason: $('#motifRefuse').val(),		
+		};		
+		this.saveNewState(params);
 	},
 
 
@@ -246,10 +221,36 @@ app.Views.RequestsListView = Backbone.View.extend({
 	*/
 	confirmDSTRequest: function(e){
 		e.preventDefault();
+		params = {
+		        state: app.Models.Request.state[2].value,
+		        note: $('#motifDST').val(),		
+		};
+		this.saveNewState(params);
 
-		alert('TODO');
 	},
 
+	saveNewState: function(params) {
+		var self = this;
+		self.params = params
+		this.model.save(params, {
+				    success: function (data) {
+					        console.log(data);
+					        if(data.error){
+					    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+					        }
+					        else{					        	
+					            console.log('NEW STATE REQUEST SAVED');
+					            $('#modalConfirmDSTRequest').modal('hide');
+					            self.model.update(params);
+					            app.collections.requests.models[self.pos] = self.model;
+					            self.initialize();
+					        }
+					    },
+					    error: function () {
+							console.log('ERROR - Unable to valid the Request - RequestsListView.js');
+					    },           
+					},false);
+	},
 
 
 	/** Prevent the default action

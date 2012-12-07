@@ -8,14 +8,29 @@ app.Models.Request = Backbone.RelationalModel.extend({
 	
 	url: "/#demandes-dinterventions/:id",
 	
+	defaults: {
+		id: null,
+		name: "",
+		state: null,
+		description: "",
+		deadline_date: null,
+		belongsToAssignement: null,
+		belongsToService: null,
+		service_id: [],
+		note: null,
+		refusal_reason: null,
+		test: null,
+	},
+	
 	relations: [
-	            {
-					type: Backbone.HasOne,
-					key: 'site1',
-					relatedModel: 'app.Models.Place',
-					collectionType: 'app.Collections.Places',
-					includeInJSON: true,
-	            },
+//	            {
+//					type: Backbone.HasOne,
+//					key: 'site1',
+//					//keyDestination: 'test',
+//					relatedModel: 'app.Models.Place',
+//					//collectionType: 'app.Collections.Places',
+//					includeInJSON: true,
+//	            },
 //				{
 //					// Create a cozy, recursive, one-to-one relationship
 //					type: Backbone.HasOne,
@@ -35,20 +50,13 @@ app.Models.Request = Backbone.RelationalModel.extend({
             ],
 
     
-    defaults: {
-		id: null,
-		name: "",
-		description: "",
-		deadline_date: null,
-		belongsToAssignement: null,
-		belongsToService: null,
-		service_id: [],
-	},
+
 
 	getDescription : function() {
         return this.get('description');
     },
     setDescription : function(value) {
+    	if( value == 'undefined') return;
         this.set({ description : value });
     },
     
@@ -56,7 +64,32 @@ app.Models.Request = Backbone.RelationalModel.extend({
         return this.get('deadline_date');
     },
     setDescription : function(value) {
+    	if( value == 'undefined') return;
         this.set({ deadline_date : value });
+    },
+    
+	getRefusalReason : function() {
+        return this.get('refusal_reason');
+    },
+    setRefusalReason  : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ refusal_reason : value });
+    },
+    
+    getState : function() {
+        return this.get('state');
+    },
+    setState : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ state : value });
+    },
+    
+    getNote : function() {
+        return this.get('note');
+    },
+    setNote : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ note : value });
     },
     
 //    getService : function() {
@@ -70,6 +103,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
         return this.get('service_id');
     },
     setService : function(value) {
+    	if( value == 'undefined') return;
         this.set({ service_id : value });
     },
     
@@ -77,7 +111,8 @@ app.Models.Request = Backbone.RelationalModel.extend({
         return this.get('belongsToAssignement');
     },
     setAssignement : function(value) {
-        this.set({ belongsToAssignement : value });
+    	if( value == 'undefined') return;
+    	this.set({ belongsToAssignement : value });
     },
 
 
@@ -118,13 +153,14 @@ app.Models.Request = Backbone.RelationalModel.extend({
 	},
 	
 	update: function(params) {
-		this.set({ description : params.description });
-		this.set({ service_id : params.service_id });
-		this.set({ intervention_assignement_id : params.intervention_assignement_id });
+		this.setDescription( params.description );
+		//this.setService( params.service_id );
+		//this.setAssignement( params.intervention_assignement_id );
+		this.setState( params.state );
+		this.setRefusalReason( params.refusal_reason );
+		this.setNote( params.note );
 		//this.set({ service_id : params.service_id });
 	},
-
-
 
 	/** Destroy Model
 	*/

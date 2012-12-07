@@ -26,6 +26,20 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
 //	}
 	],
 	
+	relations: [
+        {
+			type: Backbone.HasMany,
+			key: 'address',
+			relatedModel: 'app.Models.ClaimerContact',
+			includeInJSON: true,
+	        reverseRelation: {
+				type: Backbone.HasOne,
+	            key: 'livesIn',
+	            includeInJSON: true,
+	        }
+        },
+    ],
+	
     
 	/** Model Initialization
 	*/

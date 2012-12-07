@@ -160,7 +160,7 @@ app.Router = Backbone.Router.extend({
             }
 
 
-
+            
             app.loader('display');
             app.collections.requests.fetch({
             	success: function(){
@@ -216,35 +216,47 @@ app.Router = Backbone.Router.extend({
                 beforeSend: function(){
                     app.loader('display');
                 },
-                success: function(){
-                    
+                success: function(){                    
             		if(app.collections.claimers == null){
                 		app.collections.claimers = new app.Collections.Claimers();
-			}
-                    app.collections.claimers.fetch({
-                        success: function(){
-                    
-	            		if(app.collections.claimersTypes == null){
-	                		app.collections.claimersTypes = new app.Collections.ClaimersTypes();
-				}
-	                    app.collections.claimersTypes.fetch({
-	                        success: function(){
-	                            if(app.views.requestsDetailsView == null) {
-	                                app.views.requestsDetailsView = new app.Views.RequestDetailsView(self.request, false);
-	                            } 
-	                            else {
-	                                app.views.requestsDetailsView.initialize(self.request, false);             
-	                            }
-	                        },
-	                        error: function(){
-	                            console.log('ERROR - unable to load ClaimersTypes');
-	                        },
-	                        complete: function(){
-	                            app.loader('hide');
-	                        }
-	                    });
-			},
-		});
+            		}
+            		app.collections.claimers.fetch({
+            			success: function(){
+			        	    if(app.collections.claimersServices == null ){
+			            		app.collections.claimersServices = new app.Collections.ClaimersServices();
+			    			}
+				            app.collections.claimersServices.fetch({
+				            	success: function(){		                    	                                          	
+			                    	if(app.collections.claimersTypes == null){
+				                		app.collections.claimersTypes = new app.Collections.ClaimersTypes();
+				            		}
+				                    app.collections.claimersTypes.fetch({
+				                        success: function(){                    
+						            		if(app.collections.claimersContacts == null){
+						                		app.collections.claimersContacts = new app.Collections.ClaimersContacts();
+						            		}
+						                    app.collections.claimersContacts.fetch({
+						                        success: function(){
+						                            if(app.views.requestsDetailsView == null) {
+						                                app.views.requestsDetailsView = new app.Views.RequestDetailsView(self.request, false);
+						                            } 
+						                            else {
+						                                app.views.requestsDetailsView.initialize(self.request, false);             
+						                            }
+						                        },
+						                        error: function(){
+						                            console.log('ERROR - unable to load ClaimersTypes');
+						                        },
+						                        complete: function(){
+						                            app.loader('hide');
+						                        }
+						                    });
+				                    	}
+				                   });
+		                    	},
+		                    });
+                    	},
+                    });
                 },
             });
         }
