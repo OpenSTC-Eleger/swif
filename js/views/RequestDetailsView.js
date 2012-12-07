@@ -68,11 +68,11 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 					if( currentRequest.partner_type ) {
 						app.views.selectListClaimersTypesView.setSelectedItem( currentRequest.partner_type[0] );
 						self.renderClaimer(app.views.selectListClaimersTypesView.getSelected());
-						if( currentRequest.partner_id ) {
-								app.views.selectListClaimersView.setSelectedItem( currentRequest.partner_id[0] );
-								claimer = app.views.selectListClaimersView.getSelected();
-								self.renderContact(claimer);
-						}	
+						//if( currentRequest.partner_id ) {
+						//		app.views.selectListClaimersView.setSelectedItem( currentRequest.partner_id[0] );
+								//claimer = app.views.selectListClaimersView.getSelected();
+								//self.renderContact(claimer);
+						//}	
 						if( currentRequest.site1 )
 							self.renderTechnicalSite(currentRequest.site1[0]);
 						if( currentRequest.service_id )
@@ -92,14 +92,42 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 
 		     var self = this;
 		     
+		     partner_address_id = null;
+		     contact_name = null;
+		     contact_phone = null;
+		     contact_email = null;
+		     
+		     input_partner_address_id = null;
+		     if( app.views.selectListClaimersContactsView != null )
+		    	 input_partner_address_id = app.views.selectListClaimersContactsView.getSelected().toJSON().id;
+//		     else {
+//		    	 input_contact_name = this.$('#requestContactInput').val();
+//		    	 input_contact_phone = this.$('#requestContactPhone').val()
+//		    	 input_contact_email = this.$('#requestContactEmail').val();		    	 
+//		     }
+		     input_partner_type = null;
+		     if ( app.views.selectListClaimersTypesView )
+		    	 input_partner_type =  app.views.selectListClaimersTypesView.getSelected().toJSON().id;
+		    	
+		     input_partner_id = null;
+		     if ( app.views.selectListClaimersView )
+		    	 input_partner_id = app.views.selectListClaimersView.getSelected().toJSON().id;
+		     
+		     input_service_id = null;
+		     if ( app.views.selectListServicesView )
+		    	 input_service_id = app.views.selectListServicesView.getSelected().toJSON().id;
+		     
 		     var params = {
-		    	 partner_type: app.views.selectListClaimersTypesView.getSelected().toJSON().id,
-		    	 partner_id: app.views.selectListClaimersView.getSelected().toJSON().id,
-		    	 partner_address: app.views.selectListClaimersContactsView.getSelected().toJSON().id,
+		    	 partner_type: input_partner_type,
+		    	 partner_id: input_partner_id,
+		    	 partner_address: input_partner_address_id,
+		    	 people_name: this.$('#requestContactInput').val(),
+		    	 people_phone: this.$('#requestContactPhone').val(),
+		    	 people_email: this.$('#requestContactEmail').val(),	
 			     name: this.$('#requestName').val(),
 			     description: this.$('#requestDescription').val(),
 			     date_deadline: this.$('#requestDateDeadline').val(),
-			     service_id: app.views.selectListServicesView.getSelected().toJSON().id,
+			     service_id: input_service_id,
 			     site1: this.$('#requestPlace').val(),
 			     site_details: this.$('#requestPlacePrecision').val(),
 		     };
@@ -140,25 +168,43 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 		},
 		
 		renderClaimer: function(claimerType) {
+			$('#requestContactSelect').val('');
+			$('#requestContactInput').val('');
+			$('#requestContactPhone').val('');
+			$('#requestContactEmail').val('');
+			
 			if ( claimerType.attributes.claimers.length != 0) {
 	
 				$('#requestClaimerBlock').attr('style', 'display:inline');
+				$('#requestContactSelectBlock').attr('style', 'display:inline');
+				$('#requestContactInputBlock').attr('style', 'display:none');
+				
+
+				
 				app.views.selectListClaimersView = new app.Views.DropdownSelectListView({el: $("#requestClaimer"), collection: claimerType.attributes.claimers});
 				app.views.selectListClaimersView.clearAll();
 				app.views.selectListClaimersView.addEmptyFirst();
 				app.views.selectListClaimersView.addAll();
-				
-				$('#requestContactInputBlock').attr('style', 'display:none');
-				$('#requestContactInput').attr('readonly', 'readonly');
-				$('#requestContactPhone').attr('readonly', 'readonly');
-				$('#requestContactEmail').attr('readonly', 'readonly');
-				$('#requestContactInput').attr('value', '');
-				$('#requestContactPhone').attr('value', '');
-				$('#requestContactEmail').attr('value', '');
-				$('#requestContactSelectBlock').attr('style', 'display:inline');
-				$('#requestContactSelect').attr('disabled', 'disabled');
+				currentRequest = this.model.toJSON();
+				if( currentRequest.partner_id ) {
+					//TODO CTRL si partner_id est dans la liste
+					//if ( app.views.selectListClaimersView.getIndex )
+					app.views.selectListClaimersView.setSelectedItem( currentRequest.partner_id[0] );
+					this.renderContact( app.views.selectListClaimersView.getSelected() );
+					$('#requestContactSelect').removeAttr('disabled');
+					$('#requestContactInput').removeAttr('readonly');
+					$('#requestContactPhone').removeAttr('readonly');
+					$('#requestContactEmail').removeAttr('readonly');	
+				}
+				else {
+					$('#requestContactSelect').attr('disabled', 'disabled');
+					$('#requestContactInput').attr('readonly', 'readonly');
+					$('#requestContactPhone').attr('readonly', 'readonly');
+					$('#requestContactEmail').attr('readonly', 'readonly');					
+				}
 			
 			} else {
+				
 			
 				$('#requestContactInputBlock').attr('style', 'display:inline');
 				$('#requestContactInput').removeAttr('readonly');
@@ -171,6 +217,10 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 				if (app.views.selectListClaimersView) {
 					app.views.selectListClaimersView.clearAll();
 				}
+				
+				currentRequest.people_name==false?$('#requestContactInput').val(''):$('#requestContactInput').val(currentRequest.people_name);
+				currentRequest.people_phone==false?$('#requestContactPhone').val(''):$('#requestContactPhone').val(currentRequest.people_phone);
+				currentRequest.people_email==false?$('#requestContactInput').val(''):$('#requestContactInput').val(currentRequest.people_email);
 			}			
 		},
 		
