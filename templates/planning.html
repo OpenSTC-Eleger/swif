@@ -22,9 +22,9 @@
 							<% } %>
 						</a>
 						
-						<p class="intervention-actions">
-							<a href="#"><i class="icon-remove"></i>&nbsp;<small><%= _.capitalize(lang.actions.delete) %></small></a> |
-							<a href="#"><i class="icon-pencil"></i>&nbsp;<small><%= _.capitalize(lang.actions.update) %></small></a>
+						<p class="intervention-actions invisible">
+							<a href="#"><i class="icon-pencil"></i>&nbsp;<small><%= _.capitalize(lang.actions.update) %></small></a> |
+							<a href="#modalDeleteInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<small><%= _.capitalize(lang.actions.delete) %></small></a>
 						</p>
 					</div>
 
@@ -42,19 +42,22 @@
 												<i class="icon-time"></i>&nbsp;
 												<%= task.name %>
 												<small class="pull-right"><%= task.planned_hours %>h</small>
-											</li>
 										<% 
 											allPlanned = true;
 										} else{ %>
 											<li id="task<%= task.id %>" class="external-event">
 												&nbsp;<%= task.name %>
 												<small class="badge pull-right"><%= task.planned_hours %>h</small>
-											</li>
 										<% 
 											allPlanned = false;
-										} 
-									
-									});  %>
+										}  %>
+
+											<p class="task-actions invisible">
+												<a href="#"><i class="icon-pencil"></i>&nbsp;<small><%= _.capitalize(lang.actions.update) %></small></a> |
+												<a href="#modalDeleteTask" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<small><%= _.capitalize(lang.actions.delete) %></small></a>
+											</p>
+
+									<% });  %>
 							</ul>
 
 							<div class="div-actions">
@@ -110,3 +113,51 @@
 
 </div>
 
+
+
+
+<!-- Modal Form Delete Intervention -->
+<div id="modalDeleteInter" class="modal hide fade">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3>Suppression de l'intervention</h3>
+	</div>
+	
+	<div class="modal-body">
+
+		<blockquote id="infoModalDeleteInter" class="spaceBottom">
+			<p></p>
+			<small></small>
+		</blockquote>
+
+		<p>Etes-vous sûr de vouloir supprimer cette intervention ?</p>
+	</div>
+	
+	<div class="modal-footer">
+	    <button type="button" class="btn btn-danger">Supprimer</button>&nbsp;&nbsp;
+	    <a href="#" data-dismiss="modal">Annuler</a>
+	</div>
+</div>
+
+<!-- Modal Form Delete Task -->
+<div id="modalDeleteTask" class="modal hide fade">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3>Suppression de la tâche</h3>
+	</div>
+	
+	<div class="modal-body">
+
+		<blockquote id="infoModalDeleteTask" class="spaceBottom">
+			<p></p>
+			<small></small>
+		</blockquote>
+
+		<p>Etes-vous sûr de vouloir supprimer cette tâche ?</p>
+	</div>
+	
+	<div class="modal-footer">
+	    <button type="button" class="btn btn-danger">Supprimer</button>&nbsp;&nbsp;
+	    <a href="#" data-dismiss="modal">Annuler</a>
+	</div>
+</div>
