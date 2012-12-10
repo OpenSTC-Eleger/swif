@@ -13,11 +13,11 @@ app.Models.Assignement = Backbone.RelationalModel.extend({
 				key: 'asksAssigned',
 				relatedModel: 'app.Models.Request',
 				//collectionType: 'app.Collections.Requests',
-				includeInJSON: true,
+				//includeInJSON: true,
 		        reverseRelation: {
 					type: Backbone.HasOne,
 		            key: 'belongsToAssignement',
-		            includeInJSON: true,
+		            includeInJSON: 'id',
 		            // 'relatedModel' is automatically set to 'Zoo'; the 'relationType' to 'HasOne'.
 		        }
             },

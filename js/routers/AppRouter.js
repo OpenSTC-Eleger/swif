@@ -158,8 +158,6 @@ app.Router = Backbone.Router.extend({
             if(app.collections.requests == null ){
                 app.collections.requests = new app.Collections.Requests();
             }
-
-
             
             app.loader('display');
             app.collections.requests.fetch({
@@ -211,11 +209,11 @@ app.Router = Backbone.Router.extend({
             //load details after places list loaded
             self.request = request;            
            
-            
+            app.loader('display');
             app.collections.places.fetch({
-                beforeSend: function(){
-                    app.loader('display');
-                },
+//                beforeSend: function(){
+//                    app.loader('display');
+//                },
                 success: function(){                    
             		if(app.collections.claimers == null){
                 		app.collections.claimers = new app.Collections.Claimers();
@@ -237,12 +235,12 @@ app.Router = Backbone.Router.extend({
 						            		}
 						                    app.collections.claimersContacts.fetch({
 						                        success: function(){
-						                            if(app.views.requestsDetailsView == null) {
+						                            //if(app.views.requestsDetailsView == null) {
 						                                app.views.requestsDetailsView = new app.Views.RequestDetailsView(self.request, false);
-						                            } 
-						                            else {
-						                                app.views.requestsDetailsView.initialize(self.request, false);             
-						                            }
+//						                            } 
+//						                            else {
+//						                                app.views.requestsDetailsView.initialize(self.request, false);             
+//						                            }
 						                        },
 						                        error: function(){
 						                            console.log('ERROR - unable to load ClaimersTypes');

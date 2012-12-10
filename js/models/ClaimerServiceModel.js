@@ -13,11 +13,11 @@ app.Models.ClaimerService = Backbone.RelationalModel.extend({
 				key: 'asksBelongsto',
 				relatedModel: 'app.Models.Request',
 				//collectionType: 'app.Collections.Requests',
-				includeInJSON: true,
+				//includeInJSON: true,
 		        reverseRelation: {
 					type: Backbone.HasOne,
 		            key: 'belongsToService',
-		            includeInJSON: true,
+		            includeInJSON: ['id','name'],
 		            // 'relatedModel' is automatically set to 'Zoo'; the 'relationType' to 'HasOne'.
 		        }
             },
