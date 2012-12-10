@@ -358,13 +358,20 @@ app.Router = Backbone.Router.extend({
 
             app.collections.interventions.fetch({
                 success: function(){
-                    // If the view exist we reuse it //
-                    if(app.views.interventionsView){
-                        app.views.interventionsView.render();
-                    }
-                    else{
-                        app.views.interventionsView = new app.Views.InterventionsView();
-                    }
+	            	if(app.collections.categories == null ){
+	            		app.collections.categories = new app.Collections.Categories();
+					}
+		            app.collections.categories.fetch({
+		            	success: function(){
+		                    // If the view exist we reuse it //
+		                    if(app.views.interventionsView){
+		                        app.views.interventionsView.render();
+		                    }
+		                    else{
+		                        app.views.interventionsView = new app.Views.InterventionsView();
+		                    }
+		                 }
+		             });
                 }
             });
         }

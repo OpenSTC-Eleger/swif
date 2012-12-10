@@ -49,7 +49,6 @@ app.Views.InterventionsView = Backbone.View.extend({
 
         // Retrieve the HTML template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
-         
                 var template = _.template(templateData, {
                     lang: app.lang,
                     nbInterventions: nbInterventions,
@@ -59,6 +58,11 @@ app.Views.InterventionsView = Backbone.View.extend({
             console.debug(interventionsValidated);
         
             $(self.el).html(template);
+			
+			app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categories})
+			app.views.selectListAssignementsView.clearAll();
+			app.views.selectListAssignementsView.addEmptyFirst();
+			app.views.selectListAssignementsView.addAll();
 
             $('*[rel="tooltip"]').tooltip({placement: "right"});
 
@@ -74,7 +78,7 @@ app.Views.InterventionsView = Backbone.View.extend({
     displayFormAddTask: function(e){
         
         // Retrieve the ID of the intervention //
-        var idIntervention = $(e.target).parents('tr').attr('id');
+        this.pos = $(e.target).parents('tr').attr('id');
         $('#modalAddTask').modal();
    },
 
@@ -82,12 +86,38 @@ app.Views.InterventionsView = Backbone.View.extend({
     /** Save the Task
     */
     saveTask: function(e){
+    	
+		e.preventDefault();
+		
+		 var task = new app.Models.Task();
+		 input_category_id = null;
+	     if( app.views.selectListAssignementsView != null )
+	    	 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
 
-        // Retrieve the ID of the intervention //
-        alert('todo');
+	     var params = {
+	         project_id: this.pos,
+	         name: this.$('#taskName').val(),
+	         category_id: input_category_id,	         
+		     planned_hours: this.$('#taskHour').val(),
+	     };
+
+	    task.save(params,{
+			success: function (data) {
+				console.log(data);
+				if(data.error){
+					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				}
+				else{
+					$('#modalAddTask').modal('hide');
+					app.router.navigate('#interventions' , true);
+					console.log('Success SAVE TASK');
+				}
+			},
+			error: function () {
+				console.log('ERROR - Unable to save the Request - RequestDetailsView.js');
+			},	     
+		});
    }
-
-
   
 });
 
