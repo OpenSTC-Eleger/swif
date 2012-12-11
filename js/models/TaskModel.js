@@ -9,10 +9,19 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	url: "/#taches/:id",
 
 	defaults:{
+		id:0,
 		effective_hours:0,
 		total_hours: 0,
 		remaining_hours: 0,
 	},
+	
+    getId : function() {
+        return this.get('id');
+    },
+    setId: function(value) {
+    	if( value == 'undefined') return;
+        this.set({ id : value });
+    },
 
 
 //	relations: [

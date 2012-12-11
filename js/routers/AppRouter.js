@@ -350,30 +350,47 @@ app.Router = Backbone.Router.extend({
         
         // Check if the user is connect //
         if(this.checkConnect()){
+        	
+        	
 
-            // Check if the collections is instantiate //
-            if(app.collections.interventions == null ){
-                app.collections.interventions = new app.Collections.Interventions();
-            }
+        	app.loader('display');
+        	if(app.collections.tasks == null ){
+        		app.collections.tasks = new app.Collections.Tasks();        	
+        	}
+        	
+        	
+            app.collections.tasks.fetch({  
+            	
+            		success: function(){
 
-            app.collections.interventions.fetch({
-                success: function(){
-	            	if(app.collections.categories == null ){
-	            		app.collections.categories = new app.Collections.Categories();
-					}
-		            app.collections.categories.fetch({
-		            	success: function(){
-		                    // If the view exist we reuse it //
-		                    if(app.views.interventionsView){
-		                        app.views.interventionsView.render();
-		                    }
-		                    else{
-		                        app.views.interventionsView = new app.Views.InterventionsView();
-		                    }
-		                 }
-		             });
-                }
-            });
+			            // Check if the collections is instantiate //
+			            if(app.collections.interventions == null ){
+			                app.collections.interventions = new app.Collections.Interventions();
+			            }
+			
+			            app.collections.interventions.fetch({
+			                success: function(){
+				            	if(app.collections.categories == null ){
+				            		app.collections.categories = new app.Collections.Categories();
+								}
+					            app.collections.categories.fetch({
+					            	success: function(){
+					                    // If the view exist we reuse it //
+					                    if(app.views.interventionsView){
+					                        app.views.interventionsView.render();
+					                    }
+					                    else{
+					                        app.views.interventionsView = new app.Views.InterventionsView();
+					                    }
+					                 }
+					             });
+			                }
+			            });
+	                },
+                	complete: function(){
+                	    app.loader('hide');
+                	}	                
+	            });
         }
         else{
             this.navigate('login', {trigger: true, replace: true});

@@ -27,9 +27,11 @@
 			</form>
 		</div>
 		<!-- Table toolbar -->
-
-
+		
+		
+		
 		<!-- Table Requests -->
+		<div id="accordion2" class="accordion"></div>
 		<table class="table table-striped table-bordered table-hover">
 			<thead>
 				<tr>
@@ -38,37 +40,76 @@
 					<th>Temps planifié</th>
 					<th>Temps passé</th>
 					<th>Avancement</th>
-					<th class="align">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<% _.each(interventions, function (intervention, i) { %>
-					<tr id="<%= intervention.attributes.id %>">
-					    <td>
-					    	<a  href="#demandes-dintervent" 
-					    		rel="popover" 
-					    		data-content="<%= (intervention.description != '' ? intervention.description : _.capitalize(lang.notKnown)) %>" 
-					    		data-original-title="<%= _.capitalize(lang.description) %>:">
-					    		<%= intervention.attributes.name %>
-					    	</a>
-					    </td>
-					    <td></td>
-					    <td></td>
-					    <td></td>
-					    <td>
-					    	<div class="progress" style="margin-bottom: 0;">
-					    		<div class="bar" style="width: 70%;"><%= intervention.attributes.progress_rate %></div>
-					    	</div>
-					    </td>
-					    <td class="align">
-					    	<button type="button" class="btn btn-primary btn-small addTask" rel="tooltip" data-original-title="Ajouter une tâche"><i class="icon-plus-sign"></i></button>
-					   	</td>
-					</tr>
-				<% }) %>
+							<tr class="accordion" >	
+								<td>
+									<div class="accordion-group" >
+										<div class="accordion-heading">
+											<a class="accordion-toggle" data-toggle="collapse" data-parent="accordion2" href="#collapse<%= intervention.id %>">
+													<%= intervention.name %>
+											</a>
+										</div>
+									</div>
+								</td>	
+								<td></td>
+							    <td></td>
+							    <td></td>
+							    <td>
+							    	<div class="progress" style="margin-bottom: 0;">
+							    		<div class="bar" style="width: 70%;"><%= intervention.progress_rate %></div>
+							    	</div>
+							    </td>							   
+							</tr>
+							<tr>							
+								<td colspan="5">
+									<div class="accordion-body collapse" id="collapse<%= intervention.id %>" >
+										<div class="accordion-inner">
+											<table class="table table-striped table-bordered table-hover">
+												<tbody>	
+													<% 
+													var allPlanned = false;
+													_.each(intervention.tasks, function (task, i) { 
+														if(task.date_start != ""){ %>
+														<tr id="task<%= task.id %>" class="external-event disabled" colspan="4" >
+																<td><i class="icon-time"></i>&nbsp;
+																<%= task.name %>
+																<small class="pull-right"><%= task.planned_hours %>h</small>
+														<% 
+															allPlanned = true;
+														} else{ %>
+															<tr id="task<%= task.id %>" class="external-event" colspan="4">
+																<td>&nbsp;<%= task.name %>
+																<small class="badge pull-right"><%= task.planned_hours %>h</small>
+														<% 
+															allPlanned = false;
+														}  %>
+														<p class="task-actions invisible">
+															<a href="#"><i class="icon-pencil"></i>&nbsp;<small><%= _.capitalize(lang.actions.update) %></small></a> |
+															<a href="#modalDeleteTask" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<small><%= _.capitalize(lang.actions.delete) %></small></a>
+														</p>
+														</td>
+
+														</tr>
+													<% }); %>
+																											
+													<div class="div-actions" >
+														<button class="btn btn-primary btn-small no-outline addTask" 
+															id="<%= intervention.id %>" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="right">
+															<i class="icon-plus"></i>
+														</button>
+													</div>
+												</tbody>
+											 </table>	
+										</div>
+									</div>										 
+						    	</td>
+						    </tr>					  						
+				<% }); %>
 			</tbody>
 		</table>
-		<!-- /Table Requests -->
-
 	<% } 
 	else { %>
 		<!-- No request in the Database -->

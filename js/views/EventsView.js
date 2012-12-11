@@ -28,6 +28,8 @@ app.Views.EventsView = Backbone.View.extend({
         
 		save: function(params) {
 			model = new app.Models.Task();
+/*			model.setId(params.id);
+			params.remove(params.id)*/
 			model.save(params,			
 				{
 				    success: function (data) {

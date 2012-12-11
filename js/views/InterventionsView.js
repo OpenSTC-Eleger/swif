@@ -52,7 +52,7 @@ app.Views.InterventionsView = Backbone.View.extend({
                 var template = _.template(templateData, {
                     lang: app.lang,
                     nbInterventions: nbInterventions,
-                    interventions: interventionsValidated
+                    interventions: (new app.Collections.Interventions(interventionsValidated)).toJSON(),
                 });
 
             console.debug(interventionsValidated);
@@ -78,7 +78,7 @@ app.Views.InterventionsView = Backbone.View.extend({
     displayFormAddTask: function(e){
         
         // Retrieve the ID of the intervention //
-        this.pos = $(e.target).parents('tr').attr('id');
+        this.pos = e.currentTarget.id;
         $('#modalAddTask').modal();
    },
 
@@ -86,7 +86,8 @@ app.Views.InterventionsView = Backbone.View.extend({
     /** Save the Task
     */
     saveTask: function(e){
-    	
+    	 var self = this;
+
 		e.preventDefault();
 		
 		 var task = new app.Models.Task();
@@ -108,8 +109,21 @@ app.Views.InterventionsView = Backbone.View.extend({
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
-					$('#modalAddTask').modal('hide');
-					app.router.navigate('#interventions' , true);
+					$('#modalAddTask').modal('hide');        	
+        	
+					 	app.collections.tasks.fetch({  
+					 		success: function(){						 	
+						 		app.collections.interventions.fetch({
+					                success: function(){						 		
+										route = Backbone.history.fragment;
+										app.router.navigate('#demandes-dintervent',  {'trigger': true, replace: true});	
+										self.initialize();
+							 		}					 
+						 		});
+					 		}					 
+				 		});
+						 		
+
 					console.log('Success SAVE TASK');
 				}
 			},
