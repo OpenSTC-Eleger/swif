@@ -18,7 +18,7 @@ app.Router = Backbone.Router.extend({
         'demandes-dinterventions/add'           : 'addRequest',
         'demandes-dinterventions/:id'           : 'detailsRequest',
         'taches'               					: 'tasksCheck',
-        'taches/page/:page'    					: 'tasksList',
+        'taches/page:page'    					: 'tasksCheck',
         'taches/add'           					: 'addTask',
         'taches/:id'           					: 'detailsTask'
     },
@@ -404,7 +404,9 @@ app.Router = Backbone.Router.extend({
     planning: function(){
 	
         // Check if the user is connect //
-        if(this.checkConnect()){   
+        if(this.checkConnect()){  
+        	
+        	
         	
         	if(app.collections.tasks == null ){
         		app.collections.tasks = new app.Collections.Tasks();        	
@@ -449,12 +451,16 @@ app.Router = Backbone.Router.extend({
 
 
 
-    tasksCheck: function(){
+    tasksCheck: function(page){
 	
     	console.debug("****************tasksCheck********************");
     	
     	        // Check if the user is connect //
         if(this.checkConnect()){
+        	var self = this;
+        	
+        	self.page = page ? parseInt(page, 10) : 1;
+        	
         	if(app.collections.tasks == null ){
                 app.collections.tasks = new app.Collections.Tasks();
             }
@@ -462,13 +468,7 @@ app.Router = Backbone.Router.extend({
         	app.loader('display');
         	app.collections.tasks.fetch({
         		success: function(){
-	                // If the view exist we reuse it //
-	                if(app.views.tasksView){
-	                    app.views.tasksView.render();
-	                }
-	                else{
-	                    app.views.tasksView = new app.Views.TasksView();
-	                }				            				             
+                    app.views.tasksView = new app.Views.TasksView({page: self.page});	                				            				             
 	        	} 			        		
         	});	
         	app.loader('hide');	

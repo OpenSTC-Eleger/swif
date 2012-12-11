@@ -6,6 +6,9 @@ app.Views.TasksView = Backbone.View.extend({
 	el : '#rowContainer',
 	
 	templateHTML: 'tasksListCheck',
+	
+	numberListByPage: 25,
+	
 	calendarView: 'agendaDay',
 
 
@@ -31,15 +34,26 @@ app.Views.TasksView = Backbone.View.extend({
 		var self = this;
 
 		// Change the page title //
-        //app.router.setPageTitle(app.lang.viewsTitles.requestsList);
+        app.router.setPageTitle(app.lang.viewsTitles.tasksList);
 
         // Change the active menu item //
-        //app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
+        app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
 
         // Change the Grid Mode of the view //
-        //app.views.headerView.switchGridMode('fluid');
+        app.views.headerView.switchGridMode('fluid');
 
-		var nbTasks = _.size(app.collections.tasks);
+
+		var tasks = app.collections.tasks.models;
+		var len = tasks.length;
+		var startPos = (this.options.page - 1) * this.numberListByPage;
+		var endPos = Math.min(startPos + this.numberListByPage, len);
+		var pageCount = Math.ceil(len / this.numberListByPage);
+		
+        // Retrieve the number of validated Interventions //
+        var tasksPending = _.filter(tasks, function(item){ 
+        	return item.attributes.state == app.Models.Task.state[2].value; 
+        });
+        var nbTasks = _.size(tasksPending);
 		
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -47,7 +61,11 @@ app.Views.TasksView = Backbone.View.extend({
 			var template = _.template(templateData, {
 				lang: app.lang,
 				nbTasks: nbTasks,
-				tasks: app.collections.tasks.toJSON(),
+				tasks: (new app.Collections.Tasks(tasksPending)).toJSON(),
+				requestsState: app.Models.Task.state,
+				startPos: startPos, endPos: endPos,
+				page: self.options.page, 
+				pageCount: pageCount,
 
 			});
 		
