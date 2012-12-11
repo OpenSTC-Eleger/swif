@@ -50,8 +50,8 @@ var app = {
                 
                 app.lang = data;
 
-                // Load internationalization script //
-                app.loadI18nScript(lang);
+                // Load internationalization scripts //
+                app.loadI18nScripts(lang);
 
                 // Instantiation Collections users  et user //
                 app.collections.users = new app.Collections.Users();               
@@ -74,14 +74,21 @@ var app = {
 
     /** Load internationalization scripy
     */
-    loadI18nScript: function (lang) {
-        var script = document.createElement( 'script' );
-        script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/moment-lang.js';
-        $("#app").append( script );
+    loadI18nScripts: function (lang) {
+        
+        if(lang != 'en'){
 
+            var script = document.createElement('script');
+            script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/moment-lang.js';
+            $("#app").append(script);
 
-        // I18N Moment JS //
-        moment.lang(lang);
+            var script = document.createElement('script');
+            script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/bootstrap-datepicker-lang.js';
+            $("#app").append(script);
+
+            // I18N Moment JS //
+            moment.lang(lang);
+        }
     },
 
 

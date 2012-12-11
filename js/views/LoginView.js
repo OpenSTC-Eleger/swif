@@ -4,7 +4,7 @@
 app.Views.LoginView = Backbone.View.extend({
 
 
-   el : '#rowContainer',
+   el: '#rowContainer',
 
     templateHTML: 'login',
 
@@ -19,7 +19,7 @@ app.Views.LoginView = Backbone.View.extend({
 
     /** View Initialization
     */
-    initialize : function(user) {
+    initialize: function(user) {
         console.log('Login view Initialize');
         this.setModel(user).render();
     },
@@ -28,7 +28,7 @@ app.Views.LoginView = Backbone.View.extend({
 
     /** Display the view
     */
-    render : function() {
+    render: function() {
         var self = this;
 
         // Change the page title //
@@ -54,7 +54,7 @@ app.Views.LoginView = Backbone.View.extend({
 
     /** Set a user model to the view
     */
-    setModel : function(model) {
+    setModel: function(model) {
         this.model = model;
         return this;
     },
@@ -87,7 +87,6 @@ app.Views.LoginView = Backbone.View.extend({
         if(infoLastConnection.length != 0){
             infoLastConnection.fadeOut();
         }
-       
     },
 
 

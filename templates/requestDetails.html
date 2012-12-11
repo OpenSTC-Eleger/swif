@@ -39,8 +39,8 @@
                     <label for="requestContactService" class="control-label" ><%= _.capitalize(lang.service) %>:</label>
 
                     <div class="controls">
-                        <input type="text" id="requestContactService" name="requestContactService" readonly="readonly" value="" />
-                        <!--<span class="help-inline"></span>-->
+                        <input type="text" id="requestContactService" name="requestContactService" readonly="readonly" />
+                        <span class="help-inline"></span>
                     </div>
                 </div>
 		<br />
@@ -55,14 +55,15 @@
                     <label for="requestContact" class="control-label"><%= _.capitalize(lang.contact) %>:</label>
 
                     <div class="controls">
-			<div id="requestContactSelectBlock" style="display:none">
-                         <select id="requestContactSelect" name="requestContact" disabled="disabled" style="float:left"></select>
-                        <span class="help-inline"></span>
-			</div>
-			<div id="requestContactInputBlock" style="display:inline">
-                         <input type="text" id="requestContactInput" name="requestContact" readonly="readonly" style="float:left" />
-                        <span class="help-inline"></span>
-			</div>
+                        <div id="requestContactSelectBlock" style="display:none">
+                            <select id="requestContactSelect" name="requestContact" disabled="disabled" style="float:left"></select>
+                            <span class="help-inline"></span>
+                        </div>
+			
+                        <div id="requestContactInputBlock" style="display:inline">
+                            <input type="text" id="requestContactInput" name="requestContact" readonly="readonly" style="float:left" />
+                            <span class="help-inline"></span>
+                        </div>
                     </div>
                 </div>
                 
@@ -115,24 +116,21 @@
                         <span class="help-inline"></span>
                     </div>
                 </div>
-                
-                <!-- Request DeadLine -->
-                <!--  <div class="control-group">
-                    <label for="requestDateDeadline" class="control-label"><%= _.capitalize(lang.dateRequest) %> :</label>
 
+                <!-- Request DeadLine -->
+                <div class="control-group">
+                    <label class="control-label" for="requestDateDeadline"><%= _.capitalize(lang.dateDeadline) %>:</label>
                     <div class="controls">
-                        <input type="text" id="requestDateDeadline" name="requestDateDeadline" value="<%= request.date_deadline  %>"/>
+                        <input 
+                            type="text" class="datePicker" 
+                            id="requestDateDeadline" 
+                            value="<%= (request.date_deadline) != "" ? moment(request.date_deadline, 'YYYY-MM-DD').format('L') : "" %>" 
+                            placeholder="dd/mm/yyyy"
+                            required="required"
+                            readonly="readonly">
                         <span class="help-inline"></span>
                     </div>
                 </div>
-                -->
-              <div class="control-group">
-                <label class="control-label" for="requestDateDeadline">Date butoire:</label>
-                <div class="controls">
-                  <input class="datepicker" data-date-format="dd/mm/yyyy" id="requestDateDeadline" 
-                  	value="<%= request.date_deadline %>" placeholder="dd/mm/yyyy" size="30" type="text" required="required">
-                </div>
-              </div>
                 
                 <!-- Request Contact Service -->
                 <div class="control-group">

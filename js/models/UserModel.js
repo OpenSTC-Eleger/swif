@@ -136,7 +136,6 @@ app.Models.User = Backbone.Model.extend({
                         
                 // Refresh the header //
                 app.views.headerView.render(app.router.mainMenus.manageInterventions);
-               
 
             }
             

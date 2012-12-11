@@ -14,10 +14,10 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 		
 		// The DOM events //
 		events: {
-			'submit #formRequest'		: 'saveRequest',
-			//'click .delete'			: 'deleteRequest',
+			'submit #formRequest'			: 'saveRequest',
+			//'click .delete'				: 'deleteRequest',
 			'change #requestClaimerType'	: 'fillDropdownClaimerType',
-			'change #requestClaimer'	: 'fillDropdownClaimer',
+			'change #requestClaimer'		: 'fillDropdownClaimer',
 			'change #requestContactSelect'	: 'fillDropdownContact',
 		},
 
@@ -57,8 +57,19 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 					var template = _.template(templateData, {lang: app.lang, request: currentRequest});
 					$(self.el).html(template);		     
 	
-			
-					$('#requestDateDeadline').datepicker();
+
+					// Enable the datePicker //
+					$('.datePicker').datepicker({
+						format: 'dd/mm/yyyy',
+						weekStart: 1,
+						autoclose: true,
+						language: 'fr'
+					});
+
+					if(self.create){
+						$('#requestDateDeadline').val(moment().format("L"));
+					}
+
 					
 					app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#requestService"), collection: app.collections.claimersServices})
 					app.views.selectListServicesView.clearAll();
@@ -200,7 +211,6 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 				$('#requestContactInputBlock').attr('style', 'display:none');
 				
 
-				
 				app.views.selectListClaimersView = new app.Views.DropdownSelectListView({el: $("#requestClaimer"), collection: claimerType.attributes.claimers});
 				app.views.selectListClaimersView.clearAll();
 				app.views.selectListClaimersView.addEmptyFirst();
