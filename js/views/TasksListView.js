@@ -5,7 +5,7 @@ app.Views.TasksView = Backbone.View.extend({
 	
 	el : '#rowContainer',
 	
-	templateHTML: 'tasksCheck',
+	templateHTML: 'tasksListCheck',
 	calendarView: 'agendaDay',
 
 

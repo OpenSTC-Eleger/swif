@@ -6,6 +6,8 @@ app.Views.InterventionsView = Backbone.View.extend({
     el : '#rowContainer',
 
     templateHTML: 'interventions',
+    
+    task: new app.Models.Task(),
 
     
     // The DOM events //
@@ -49,16 +51,20 @@ app.Views.InterventionsView = Backbone.View.extend({
 
         // Retrieve the HTML template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
-         
                 var template = _.template(templateData, {
                     lang: app.lang,
                     nbInterventions: nbInterventions,
-                    interventions: interventionsValidated
+                    interventions: (new app.Collections.Interventions(interventionsValidated)).toJSON(),
                 });
 
             console.debug(interventionsValidated);
         
             $(self.el).html(template);
+			
+			app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categories})
+			app.views.selectListAssignementsView.clearAll();
+			app.views.selectListAssignementsView.addEmptyFirst();
+			app.views.selectListAssignementsView.addAll();
 
             $('*[rel="tooltip"]').tooltip({placement: "right"});
 
@@ -74,7 +80,7 @@ app.Views.InterventionsView = Backbone.View.extend({
     displayFormAddTask: function(e){
         
         // Retrieve the ID of the intervention //
-        var idIntervention = $(e.target).parents('tr').attr('id');
+        this.pos = e.currentTarget.id;
         $('#modalAddTask').modal();
    },
 
@@ -82,12 +88,52 @@ app.Views.InterventionsView = Backbone.View.extend({
     /** Save the Task
     */
     saveTask: function(e){
+    	 var self = this;
 
-        // Retrieve the ID of the intervention //
-        alert('todo');
+		e.preventDefault();
+		
+		 
+		 input_category_id = null;
+	     if( app.views.selectListAssignementsView != null )
+	    	 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
+
+	     var params = {
+	         project_id: this.pos,
+	         name: this.$('#taskName').val(),
+	         category_id: input_category_id,	         
+		     planned_hours: this.$('#taskHour').val(),
+	     };
+
+	    this.task.save(params,{
+			success: function (data) {
+				console.log(data);
+				if(data.error){
+					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				}
+				else{
+					$('#modalAddTask').modal('hide');        	
+        	
+					 	app.collections.tasks.fetch({  
+					 		success: function(){						 	
+						 		app.collections.interventions.fetch({
+					                success: function(){						 		
+										route = Backbone.history.fragment;
+										app.router.navigate('#demandes-dintervent',  {'trigger': true, replace: true});	
+										self.initialize();
+							 		}					 
+						 		});
+					 		}					 
+				 		});
+						 		
+
+					console.log('Success SAVE TASK');
+				}
+			},
+			error: function () {
+				console.log('ERROR - Unable to save the Request - RequestDetailsView.js');
+			},	     
+		});
    }
-
-
   
 });
 

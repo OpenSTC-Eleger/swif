@@ -12,11 +12,11 @@ app.Models.Place = Backbone.RelationalModel.extend({
 			type: Backbone.HasMany,
 			key: 'asksBelongsto',
 			relatedModel: 'app.Models.Request',
-			includeInJSON: true,
+			//includeInJSON: true,
 	        reverseRelation: {
 				type: Backbone.HasOne,
 	            key: 'belongsToSite',
-	            includeInJSON: true,
+	            includeInJSON: 'id',
 	        }
         },
     ],

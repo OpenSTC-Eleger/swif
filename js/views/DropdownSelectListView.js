@@ -46,6 +46,13 @@ app.Views.DropdownSelectListView = Backbone.View.extend({
 		this.dropdownListView[id].setSelected();
 	},
 
+	
+	hasId: function(id) {
+		if ( this.dropdownListView[id]!= null ) return true;
+		return false;
+	},
+	
+	
 	getSelected: function() {
 		return this.dropdownListView[this.selected_id].model;
 	},
@@ -53,6 +60,7 @@ app.Views.DropdownSelectListView = Backbone.View.extend({
 	changeSelected: function() {
 		this.selected_id = $(this.el).val();
 	}
+
 });
 
 
