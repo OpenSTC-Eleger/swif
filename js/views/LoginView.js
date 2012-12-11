@@ -40,6 +40,8 @@ app.Views.LoginView = Backbone.View.extend({
             var template = _.template(templateData, {lang: app.lang, user: self.model.toJSON()});
             $(self.el).html(template);
 
+            // Set the focus to the login input //
+            $('#loginUser').focus();
         });
 
 

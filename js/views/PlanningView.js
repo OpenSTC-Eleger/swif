@@ -8,10 +8,16 @@ app.Views.PlanningView = Backbone.View.extend({
     templateHTML: 'planning', 
     calendarView: 'agendaWeek',
 
+    selectedInter : '',
+    selectedTask : '',
     
     // The DOM events //
     events: {
+        'click a.modalDeleteInter'  : 'setInfoModal',
+        'click a.modalDeleteTask'   : 'setInfoModal',
 
+        'click button.btnDeleteInter'  : 'deleteInter',
+        'click button.btnDeleteTask'   : 'deleteTask'
     },
 
 
@@ -54,7 +60,7 @@ app.Views.PlanningView = Backbone.View.extend({
             
 
             $('[data-spy="affix"]').affix();
-            $('[data-spy="scroll"], .navListAgents').scrollspy();
+            $('[data-spy="scroll"], #listAgents').scrollspy();
             $('*[rel="tooltip"]').tooltip({placement: "left"});
 
             // Animated Scroll //
@@ -134,7 +140,7 @@ app.Views.PlanningView = Backbone.View.extend({
     	
         _.each(tasks, function (task, i){
 
-    		el = $('li#task'+task.id+':not(.disabled)');
+    		el = $('li#task_'+task.id+':not(.disabled)');
 
             var eventObject = {
                 id: task.id,
@@ -163,7 +169,59 @@ app.Views.PlanningView = Backbone.View.extend({
 			});
 
     	});	
+    },
+
+
+
+    /** Display information in the Modal view
+    */
+    setInfoModal: function(e){
+        
+        // Retrieve the ID of the intervention //
+        var link = $(e.target);
+        
+  
+        if(link.attr('href') == "#modalDeleteInter"){
+
+            var id = _(link.parent('p').siblings('a').attr('href')).strRightBack('_');
+            
+            this.selectedInter = _.filter(app.collections.interventions.models, function(item){ return item.attributes.id == id });
+            this.selectedInter = this.selectedInter[0].toJSON();
+
+            $('#infoModalDeleteInter p').html(this.selectedInter.name);
+            $('#infoModalDeleteInter small').html(this.selectedInter.description);
+        }
+        else if(link.attr('href') == "#modalDeleteTask"){        
+            
+            var id = _(link.parent('p').parent('li').attr('id')).strRightBack('_');
+
+            this.selectedTask = _.filter(app.collections.tasks.models, function(item){ return item.attributes.id == id });
+            this.selectedTask = this.selectedTask[0].toJSON();
+
+            $('#infoModalDeleteTask p').html(this.selectedTask.name);
+            $('#infoModalDeleteTask small').html(this.selectedTask.description);
+
+            console.debug(this.selectedTask[0]);
+        }
+
+    },
+
+
+
+    /** Delete intervention
+    */
+    deleteInter: function(e){
+        alert('TODO - Delete Intervention with ID ' + + this.selectedInter.id);
+    },
+
+
+    /** Delete task
+    */
+    deleteTask: function(e){
+        alert('TODO - Delete Task with ID ' + this.selectedTask.id);
+
     }
+
 
 });
 

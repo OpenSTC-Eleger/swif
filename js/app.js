@@ -311,7 +311,6 @@ _.mixin(_.str.exports());
 * AFTER THE LOADING OF THE PAGE
 */
 $(document).ready(function () {	
-
     app.init('fr');
 });
 
