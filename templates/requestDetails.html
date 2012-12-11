@@ -115,21 +115,10 @@
                         <span class="help-inline"></span>
                     </div>
                 </div>
-                
-                <!-- Request DeadLine -->
-                <!--  <div class="control-group">
-                    <label for="requestDateDeadline" class="control-label"><%= _.capitalize(lang.dateRequest) %> :</label>
-
-                    <div class="controls">
-                        <input type="text" id="requestDateDeadline" name="requestDateDeadline" value="<%= request.date_deadline  %>"/>
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-                -->
 
                 <!-- Request DeadLine -->
                 <div class="control-group">
-                    <label class="control-label" for="requestDateDeadline">Date butoire:</label>
+                    <label class="control-label" for="requestDateDeadline"><%= _.capitalize(lang.DateDeadline) %>:</label>
                     <div class="controls">
                         <input type="text" class="datePicker" id="requestDateDeadline" value="<%= request.date_deadline %>" placeholder="dd/mm/yyyy" required="required" readonly="readonly">
                         <span class="help-inline"></span>

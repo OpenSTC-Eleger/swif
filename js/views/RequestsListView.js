@@ -94,6 +94,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 			// Display the Tooltip or Popover //
 			$('*[rel="popover"]').popover({trigger: "hover"});
 			$('*[rel="tooltip"]').tooltip({placement: "right"});
+
 		});
 
 		
@@ -141,7 +142,14 @@ app.Views.RequestsListView = Backbone.View.extend({
 				app.views.selectAssignementsView.setSelectedItem( this.selectedRequest.belongsToAssignement.id );
 			
 			$('#requestNote').val(this.selectedRequest.description);
-			$('#datepicker').datepicker();
+			
+			// Enable the datePicker //
+			$('.datePicker').datepicker({
+				format: 'dd-mm-yyyy',
+				weekStart: 1,
+				autoclose: true,
+				language: 'fr'
+			});
 
 		}
 		else if(btn.hasClass("buttonRefuseRequest")){
@@ -165,7 +173,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		params = {
 				state: app.Models.Request.state[3].value,
 		        description: $('#requestNote').val(),
-		        date_deadline: $('#datepicker').val(),
+		        date_deadline: $('#requestDeadline').val(),
 		        intervention_assignement_id: $('#requestAssignement').val(),
 		        service_id: $('#requestService').val(),		
 		};

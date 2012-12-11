@@ -57,7 +57,8 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 					var template = _.template(templateData, {lang: app.lang, request: currentRequest});
 					$(self.el).html(template);		     
 	
-			
+
+					// Enable the datePicker //
 					$('.datePicker').datepicker({
 						format: 'dd-mm-yyyy',
 						weekStart: 1,
