@@ -1,4 +1,4 @@
-<div class="container-fluid" data-spy="scroll" data-target=".navListAgents" >
+<div class="container-fluid" data-spy="scroll" data-target="#listAgents" >
 	
 	<div class="page-header">
 		<h1><%= lang.viewsTitles.planning %></h1>
@@ -10,12 +10,13 @@
 		<!-- Interventions List -->
 		<div class="span3">
 			
-			<aside class="accordion" id="accordionInter" data-spy="affix" data-offset-top="5">
+			<aside class="accordion" id="accordionInter" data-spy="affix">
 
 				<% _.each(interventions, function (inter, i) { %>
 				<div class="accordion-group">
+					
 					<div class="accordion-heading">
-						<a class="accordion-toggle no-outline" data-toggle="collapse" data-parent="#accordionInter" href="#collapse<%= inter.id %>">
+						<a class="accordion-toggle no-outline" data-toggle="collapse" data-parent="#accordionInter" href="#collapse_<%= inter.id %>">
 							<i class="icon-pushpin"></i>&nbsp; <strong><%= inter.name %></strong>
 							<% if(inter.planned_hours != false){ %>
 								<span class="badge badge-info pull-right"><%= inter.planned_hours %>h</span>
@@ -23,14 +24,15 @@
 						</a>
 						
 						<p class="intervention-actions invisible">
-							<a href="#"><i class="icon-pencil"></i>&nbsp;<small><%= _.capitalize(lang.actions.update) %></small></a> |
-							<a href="#modalDeleteInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<small><%= _.capitalize(lang.actions.delete) %></small></a>
+							<a href="#"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
+							<a href="#modalDeleteInter" class="modalDeleteInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</div>
 
-					<div id="collapse<%= inter.id %>" class="accordion-body collapse">
+					<div id="collapse_<%= inter.id %>" class="accordion-body collapse">
 						<div class="accordion-inner">
 							<ul class="unstyled tasks">
+								<!-- Loop Each Tasks -->
 								<% 
 									var allPlanned = false;
 
@@ -38,23 +40,23 @@
 									
 										<!-- Check if the Task is planned or not -->
 										<% if(task.date_start != ""){ %>
-											<li id="task<%= task.id %>" class="external-event disabled">
+											<li id="task_<%= task.id %>" class="external-event disabled">
 												<i class="icon-time"></i>&nbsp;
-												<%= task.name %>
+												<strong><%= task.name %></strong>
 												<small class="pull-right"><%= task.planned_hours %>h</small>
 										<% 
 											allPlanned = true;
 										} else{ %>
-											<li id="task<%= task.id %>" class="external-event">
-												&nbsp;<%= task.name %>
+											<li id="task_<%= task.id %>" class="external-event">&nbsp;
+												<strong><%= task.name %></strong>
 												<small class="badge pull-right"><%= task.planned_hours %>h</small>
 										<% 
 											allPlanned = false;
 										}  %>
 
 											<p class="task-actions invisible">
-												<a href="#"><i class="icon-pencil"></i>&nbsp;<small><%= _.capitalize(lang.actions.update) %></small></a> |
-												<a href="#modalDeleteTask" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<small><%= _.capitalize(lang.actions.delete) %></small></a>
+												<a href="#"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
+												<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 											</p>
 
 									<% });  %>
@@ -97,7 +99,7 @@
 
 		<!-- List Agents -->
 		<div class="span2 navListAgents">
-			<ul class="nav nav-list well well-small" id="listAgents" data-spy="affix" data-offset-top="5">
+			<ul class="nav nav-list well well-small" id="listAgents" data-spy="affix" data-offset-top="20">
 			  	<li class="nav-header">
 			  		<h4><i class="icon-group icon-large"></i>&nbsp;&nbsp;&nbsp;&nbsp;Agents&nbsp;&nbsp;<span class="badge pull-right"><%= _.size(officers) %></span></h4></li>
 				<li class="divider"></li>
@@ -134,7 +136,7 @@
 	</div>
 	
 	<div class="modal-footer">
-	    <button type="button" class="btn btn-danger">Supprimer</button>&nbsp;&nbsp;
+	    <button type="button" class="btn btn-danger btnDeleteInter">Supprimer</button>&nbsp;&nbsp;
 	    <a href="#" data-dismiss="modal">Annuler</a>
 	</div>
 </div>
@@ -157,7 +159,7 @@
 	</div>
 	
 	<div class="modal-footer">
-	    <button type="button" class="btn btn-danger">Supprimer</button>&nbsp;&nbsp;
+	    <button type="button" class="btn btn-danger btnDeleteTask">Supprimer</button>&nbsp;&nbsp;
 	    <a href="#" data-dismiss="modal">Annuler</a>
 	</div>
 </div>

@@ -45,13 +45,11 @@ section.calendarContainer:not(:first-child){
    overflow: hidden;
  }
 
-tr.fc-slot2 {
-	background-color: @grayLighter;
-}
-
 #accordionInterventions.affix {
 	width: 22%;
 }
+
+
 
 // List Agents //
 #listAgents{
@@ -116,6 +114,7 @@ li.external-event:hover{
 	.border-radius(10px);
 }
 div.div-actions{
+	font-size: 85%;
 	border-top: 1px solid @grayLight;
 	padding: 5px;
 }
@@ -123,10 +122,14 @@ div.div-actions{
 
 // Intervention Actions //
 .intervention-actions{
+	font-size: 85%;
 	width: auto;
 	margin: 0 0 0 16px;
 }
-.intervention-actions a:hover i, task-actions a:hover i{
+.task-actions{
+	font-size: 85%;
+}
+.intervention-actions a:hover i, .task-actions a:hover i, a.accordion-toggle:hover i{
 	text-decoration: none;
 }
 
@@ -183,26 +186,25 @@ table thead th.align, .table tbody td.align{
 
 /* Responsive
 -------------------------------------------------- */
-@media (max-width: 767px) {
+//@media (max-width: 767px) {
 
 	// Accordions Interventions //
-	#accordionInterventions {
+	#accordionInter {
 		width: auto;
 		margin-bottom: 20px;
 	}
-	#accordionInterventions.affix {
-		width: 100%;
-		position: static;
-		top: 0;
+	#accordionInter.affix {
+		top: 70px;
+		width: 21%;
 	}
 
 
 	// List Agents //
 	#listAgents.affix{
-		position: static;
-		margin-top: 25px;
+		top: 70px;
+		width: 13.5%;
 	}
-}
+//}
 
 
 

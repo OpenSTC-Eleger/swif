@@ -57,22 +57,20 @@ app.Views.RequestsListView = Backbone.View.extend({
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
 
-		
 
-        // Retrieve the number Interventions due to the Group user //
-        if(app.models.user.isDST()){
-        	var interventionsFilter = _.filter(requests, function(item){ return item.attributes.state == app.Models.Request.state[2].value; });
-        	var nbInterventionsInBadge = _.size(interventionsFilter);	
-        }
-        else if(app.models.user.isManager()){
-        	var interventionsFilter = _.filter(requests, function(item){ return item.attributes.state == app.Models.Request.state[1].value; });
-        	var nbInterventionsInBadge = _.size(interventionsFilter);
-        }
-        else {
+		// Retrieve the number Interventions due to the Group user //
+		if(app.models.user.isDST()){
+			var interventionsFilter = _.filter(requests, function(item){ return item.attributes.state == app.Models.Request.state[2].value; });
+			var nbInterventionsInBadge = _.size(interventionsFilter);
+		}
+		else if(app.models.user.isManager()){
+			var interventionsFilter = _.filter(requests, function(item){ return item.attributes.state == app.Models.Request.state[1].value; });
+			var nbInterventionsInBadge = _.size(interventionsFilter);
+		}
+		else {
 			var nbInterventionsInBadge = _.size(app.collections.requests);
-        }
+		}
 
-        
 
 
 		// Retrieve the template // 
