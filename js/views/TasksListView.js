@@ -39,52 +39,28 @@ app.Views.TasksView = Backbone.View.extend({
         // Change the Grid Mode of the view //
         //app.views.headerView.switchGridMode('fluid');
 
-
+		var nbTasks = _.size(app.collections.tasks);
+		
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 	  
 			var template = _.template(templateData, {
 				lang: app.lang,
-				officer: app.models.user.toJSON(),
+				nbTasks: nbTasks,
+				tasks: app.collections.tasks.toJSON(),
 
 			});
 		
 			$(self.el).html(template);
-			 self.initCalendar();
 
 		});
 
-	
-		//$(this.el).hide().fadeIn('slow');
+		$(this.el).hide().fadeIn('slow');
+		
         return this;
     },
 
-    	
-    initCalendar: function() {
-	
-    		var self = this;
-    		officer = app.models.user;  
-    		officer_id = officer.get('uid');
-	    	tasks = app.collections.tasks.getTasksByOfficer(officer_id);	    	
-	    	self.events = self.getEvents(tasks.toJSON());
-	    	new app.Views.EventsView(self,tasks,officer_id).render();
-		    
-	
-    },
-    
-    getEvents: function(tasks) {
-    	events = [];
-    	_.each(tasks, function (task, i){
-    		var event = { id: task.id, title: task.name, 
-    		              start: task.date_start, end: task.date_end, 
-    		              total_hours: task.total_hours,
-    		              effective_hours: task.effective_hours,
-    		              remaining_hours: task.remaining_hours,
-    		              allDay:false};
-    		events.push(event);
-    	});
-    	return events;
-    },
+
 
 
     preventDefault: function(event){

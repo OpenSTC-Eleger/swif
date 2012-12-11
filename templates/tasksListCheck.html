@@ -1,21 +1,226 @@
+<!-- Check the group of the user to display element with the good color -->	
+<% 
+	if(app.models.user.isDST()) { 
+		var classColor = "warning";
+		var actionTaskToProcess = lang.actions.timeSpent;
+	}
+	else if(app.models.user.isManager()){
+		var classColor = "info";
+		var actionTaskToProcess = lang.actions.timeSpent;
+	}
+	else{ 
+		var classColor = "";
+		var actionTaskToProcess = "";
+	} 
+%>
 
-    <!-- Contenu de la page -->
-	<div class="container-fluid">
-	
-		<h1>Tâches <small><%=officer.name %></small></h1>
 
-		<div class="row-fluid">			
-	
-			<!-- Calendrier -->
-			<div class="span7">
-					<section id="<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.lastname)%>" class="calendarContainer">
-						<div id="officer_<%= officer.uid %>" class="calendar thumbnail" data-username="<%= officer.firstname %> &nbsp;<%= officer.lastname %>"></div>
 
-					</section>
-			</div>			
-			<!-- /Calendrier -->
+<div class="page-header">
+	<h1>
+		<%= lang.viewsTitles.tasksList %>
+		<sup rel="tooltip" data-original-title="<%= actionTaskToProcess %>">
+			<i class="badge badge-<%= classColor %>" >
+				<%= nbTasks %>
+			</i>
+		</sup>
+	</h1>
+</div>
 
+
+<div class="container-fluid">
+
+	<!-- Check if there is Request in the Database -->
+	<% if(tasks.length != 0) { %>
+
+		<!-- Table toolbar -->
+		<div class="tableToolbar">
+			<a href="#taches/add" class="btn btn-primary"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addTask) %></a>
+
+			<form class="form-search pull-right">
+    			<div class="input-append">
+					<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off">
+					<button type="submit" class="btn"><i class="icon-search icon-large"></i></button>
+				</div>
+			</form>
 		</div>
-		
-	</div>
-	<!-- /Contenu de la page -->
+		<!-- Table toolbar -->
+
+
+		<!-- Table Requests -->
+		<table class="table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<th><%= _.capitalize(lang.label) %></th>
+					<th class="hidden-phone"><%= _.capitalize(lang.category) %></th>
+					<th><%= _.capitalize(lang.intervention) %></th>
+					<th><%= _.capitalize(lang.assignedTo) %></th>
+					<th><%= _.capitalize(lang.plannedHours) %></th> 
+					<th><%= _.capitalize(lang.remainingHours) %></th>
+					<th><%= _.capitalize(lang.progressRate) %></th>
+					<th><%= _.capitalize(lang.status) %></th>
+					<th><%= _.capitalize(lang.action) %></th>
+				</tr>
+			</thead>
+			<tbody>
+				<% for (var i = startPos; i < endPos; i++) { %>
+
+					<tr id="<%= i %>" >
+					    <td>
+					    	<a 	href="#taches/<%= tasks[i].id %>" 
+								rel="popover">
+								<%= tasks[i].name %>
+							</a>
+						</td>
+						<td><%= (tasks[i].category_id != false ? _(tasks[i].category_id[1].toLowerCase()).titleize() : "") %></td>
+						<td class="hidden-phone"><%= tasks[i].project_id[1] %></td>
+					    <td><%= tasks[i].user_id[1] %></td>
+					    <td><%= tasks[i].planned_hours %></td>
+					    <td>
+							<span 
+					    		rel="tooltip">
+					    		<%= tasks[i].remaining_hours %>
+					    	</span>
+					    </td>
+					   	<td>
+					    	<div class="progress" style="margin-bottom: 0;">
+					    		<div class="bar" style="width: 70%;"><%= tasks[i].progress %></div>
+					    	</div>
+					    </td>
+					    <td>
+				    		<% if(tasks[i].state == app.Models.Task.state[0].value) { %> 
+				    			<span class="label label-important"><%= lang.refused %></span>
+				    		<% } else if(tasks[i].state == app.Models.Task.state[1].value) { %>
+				    			<span class="label label-info"><%= lang.wait %></span>
+				    		<% } else if(tasks[i].state == app.Models.Task.state[2].value) { %>
+				    			<span class="label label-warning"><%= lang.confirm %></span>
+				    		<% } else if(tasks[i].state == app.Models.Task.state[3].value) { %>
+				    			<span class="label label-success"><%= lang.valid %></span>
+				    		<% } else if(tasks[i].state == app.Models.Task.state[4].value) { %>
+				    			<span class="label label"><%= lang.closed %></span>
+				    		<% } %>
+					   	</td>
+					   	
+					   	<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
+						   	<td class="align">
+
+						   		<!-- Refused State -->
+								<% if(requests[i].state == app.Models.Request.state[0].value) { %>
+						   		
+									<div class="btn-group">
+										<button class="btn btn-small disabled no-outline"><i class="icon-remove text-error"></i></button>
+										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu pull-right align-left">
+											<li><a href="#modalValidRequest" data-toggle="modal" class="buttonValidRequest"><i class="icon-ok text-sucess"></i>&nbsp;Valider</a></li>
+											<% if(!app.models.user.isDST()){ %>
+												<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-user"></i>&nbsp;Remonter DST</a></li>
+											<% } %>
+										</ul>
+									</div>
+
+								<!-- Wait state -->
+								<% } else if(requests[i].state == app.Models.Request.state[1].value) { %>
+									
+									<div class="btn-group">
+										<button class="btn btn-small btn-success no-outline buttonValidRequest" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok buttonValidRequest"></i></button>
+										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu pull-right align-left">
+											<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
+											<% if(!app.models.user.isDST()){ %>
+												<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-user"></i>&nbsp;Remonter DST</a></li>
+											<% } %>
+										</ul>
+									</div>
+
+								<!-- Confirm state -->
+								<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
+									
+									<div class="btn-group">
+										<button class="btn btn-small btn-success no-outline buttonValidRequest" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok buttonValidRequest"></i></button>
+										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu pull-right align-left">
+											<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
+										</ul>
+									</div>
+
+								<!-- Valid State -->
+						   		<% } else if(requests[i].state == app.Models.Request.state[3].value) { %>
+						   		
+									<div class="btn-group">
+										<button class="btn btn-small disabled no-outline"><i class="icon-ok text-success"></i></button>
+										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu pull-right align-left">
+											<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
+											<% if(!app.models.user.isDST()){ %>
+												<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-user"></i>&nbsp;Remonter DST</a></li>
+											<% } %>
+										</ul>
+									</div>
+									
+						   		<% } %>
+						   	</td>
+						<% } %>
+					</tr>
+				<% } %>
+			</tbody>
+		</table>
+		<!-- /Table Requests -->
+
+
+		<!-- Table pagination -->
+		<div class="pagination pagination-right">
+			<ul>
+				<!-- First page button -->
+				<% if(page-2 >= 1){ %>
+					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#taches/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
+				<% } %>
+				
+				<!-- Previous page button -->
+				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#taches/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
+			
+				<!-- [...] page Button -->
+				<% 	if (page-2 > 1) { %>
+						<li class="disabled"><a href='#'>...</a></li>
+				<% } 
+						
+					for (var i=(page-2); i < (page+3); i++) {
+						if(i >= 1 && i <= pageCount){ %>
+							<li <%= (i === page ? " class='active'" : "")%>><a href='#taches/page<%=i%>'><%= i %></a></li>
+						<% }
+
+					} %>
+					
+				<!-- [...] page Button -->
+				<% if (page+2 < pageCount) { %>
+					<li class="disabled"><a href='#'>...</a></li>
+				<% } %>
+				
+				<!-- Next page button -->
+				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#taches/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
+				
+				<!-- Last page button -->
+				<% if(page+2 <= pageCount){ %>
+					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#taches/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
+				<% } %>
+			</ul>
+		</div>
+		<!-- /Table pagination -->
+
+	<% } 
+	else { %>
+		<!-- No request in the Database -->
+		<div class="alert alert-info">
+			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>.
+		</div>
+
+	<% } %>
+
+</div>
