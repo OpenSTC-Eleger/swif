@@ -14,10 +14,10 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 		
 		// The DOM events //
 		events: {
-			'submit #formRequest'		: 'saveRequest',
-			//'click .delete'			: 'deleteRequest',
+			'submit #formRequest'			: 'saveRequest',
+			//'click .delete'				: 'deleteRequest',
 			'change #requestClaimerType'	: 'fillDropdownClaimerType',
-			'change #requestClaimer'	: 'fillDropdownClaimer',
+			'change #requestClaimer'		: 'fillDropdownClaimer',
 			'change #requestContactSelect'	: 'fillDropdownContact',
 		},
 
@@ -58,7 +58,12 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 					$(self.el).html(template);		     
 	
 			
-					$('#requestDateDeadline').datepicker();
+					$('.datePicker').datepicker({
+						format: 'dd-mm-yyyy',
+						weekStart: 1,
+						autoclose: true,
+						language: 'fr'
+					});
 					
 					app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#requestService"), collection: app.collections.claimersServices})
 					app.views.selectListServicesView.clearAll();

@@ -126,13 +126,15 @@
                     </div>
                 </div>
                 -->
-              <div class="control-group">
-                <label class="control-label" for="requestDateDeadline">Date butoire:</label>
-                <div class="controls">
-                  <input class="datepicker" data-date-format="dd/mm/yyyy" id="requestDateDeadline" 
-                  	value="<%= request.date_deadline %>" placeholder="dd/mm/yyyy" size="30" type="text" required="required">
+
+                <!-- Request DeadLine -->
+                <div class="control-group">
+                    <label class="control-label" for="requestDateDeadline">Date butoire:</label>
+                    <div class="controls">
+                        <input type="text" class="datePicker" id="requestDateDeadline" value="<%= request.date_deadline %>" placeholder="dd/mm/yyyy" required="required" readonly="readonly">
+                        <span class="help-inline"></span>
+                    </div>
                 </div>
-              </div>
                 
                 <!-- Request Contact Service -->
                 <div class="control-group">
