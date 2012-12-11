@@ -60,11 +60,16 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 
 					// Enable the datePicker //
 					$('.datePicker').datepicker({
-						format: 'dd-mm-yyyy',
+						format: 'dd/mm/yyyy',
 						weekStart: 1,
 						autoclose: true,
 						language: 'fr'
 					});
+
+					if(self.create){
+						$('#requestDateDeadline').val(moment().format("L"));
+					}
+
 					
 					app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#requestService"), collection: app.collections.claimersServices})
 					app.views.selectListServicesView.clearAll();
@@ -206,7 +211,6 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 				$('#requestContactInputBlock').attr('style', 'display:none');
 				
 
-				
 				app.views.selectListClaimersView = new app.Views.DropdownSelectListView({el: $("#requestClaimer"), collection: claimerType.attributes.claimers});
 				app.views.selectListClaimersView.clearAll();
 				app.views.selectListClaimersView.addEmptyFirst();

@@ -142,10 +142,13 @@ app.Views.RequestsListView = Backbone.View.extend({
 				app.views.selectAssignementsView.setSelectedItem( this.selectedRequest.belongsToAssignement.id );
 			
 			$('#requestNote').val(this.selectedRequest.description);
+
+			// Set the current date to the input date Deadline //
+			$('#requestDeadline').val(moment().format("L"));
 			
 			// Enable the datePicker //
 			$('.datePicker').datepicker({
-				format: 'dd-mm-yyyy',
+				format: 'dd/mm/yyyy',
 				weekStart: 1,
 				autoclose: true,
 				language: 'fr'
