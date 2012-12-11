@@ -30,7 +30,12 @@
 	"informationOfTheSite" 	: "Précision sur le site",
 	"serviceConcerned" 		: "Service concerné",
 	"action" 				: "actions",
-
+	"category"				: "catégorie",
+	"intervention"			: "intervention",
+	"assignedTo"			: "Assigné à",
+	"plannedHours"			: "Heures planifiées",
+	"remainingHours"		: "Heures restantes",
+	"progressRate"			: "Avancement",
 	"refused" 				: "refusée",
 	"wait" 					: "en attente",
 	"valid" 				: "validée",
@@ -57,7 +62,8 @@
 		"process" 			: "à traiter",
 		"confirm" 			: "à confirmer",
 		"delete" 			: "supprimer",
-		"update" 			: "modifier"
+		"update" 			: "modifier",
+		"timeSpent"			: "Saisie des temps"
 	},
 
 	"errorMessages" : {
@@ -80,6 +86,7 @@
     	"requestsList"	: "Demandes d'interventions",
     	"requestDetail"	: "Détail de la demande",
     	"newRequest"	: "Nouvelle demande d'intervention",
-    	"planning"		: "Planification des tâches"
+    	"planning"		: "Planification des tâches",
+    	"tasksList"		: "Liste des tâches"
 	}
 }

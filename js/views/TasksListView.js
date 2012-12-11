@@ -6,6 +6,9 @@ app.Views.TasksView = Backbone.View.extend({
 	el : '#rowContainer',
 	
 	templateHTML: 'tasksListCheck',
+	
+	numberListByPage: 25,
+	
 	calendarView: 'agendaDay',
 
 
@@ -31,60 +34,51 @@ app.Views.TasksView = Backbone.View.extend({
 		var self = this;
 
 		// Change the page title //
-        //app.router.setPageTitle(app.lang.viewsTitles.requestsList);
+        app.router.setPageTitle(app.lang.viewsTitles.tasksList);
 
         // Change the active menu item //
-        //app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
+        app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
 
         // Change the Grid Mode of the view //
-        //app.views.headerView.switchGridMode('fluid');
+        app.views.headerView.switchGridMode('fluid');
 
 
+		var tasks = app.collections.tasks.models;
+		var len = tasks.length;
+		var startPos = (this.options.page - 1) * this.numberListByPage;
+		var endPos = Math.min(startPos + this.numberListByPage, len);
+		var pageCount = Math.ceil(len / this.numberListByPage);
+		
+        // Retrieve the number of validated Interventions //
+        var tasksPending = _.filter(tasks, function(item){ 
+        	return item.attributes.state == app.Models.Task.state[2].value; 
+        });
+        var nbTasks = _.size(tasksPending);
+		
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 	  
 			var template = _.template(templateData, {
 				lang: app.lang,
-				officer: app.models.user.toJSON(),
+				nbTasks: nbTasks,
+				tasks: (new app.Collections.Tasks(tasksPending)).toJSON(),
+				requestsState: app.Models.Task.state,
+				startPos: startPos, endPos: endPos,
+				page: self.options.page, 
+				pageCount: pageCount,
 
 			});
 		
 			$(self.el).html(template);
-			 self.initCalendar();
 
 		});
 
-	
-		//$(this.el).hide().fadeIn('slow');
+		$(this.el).hide().fadeIn('slow');
+		
         return this;
     },
 
-    	
-    initCalendar: function() {
-	
-    		var self = this;
-    		officer = app.models.user;  
-    		officer_id = officer.get('uid');
-	    	tasks = app.collections.tasks.getTasksByOfficer(officer_id);	    	
-	    	self.events = self.getEvents(tasks.toJSON());
-	    	new app.Views.EventsView(self,tasks,officer_id).render();
-		    
-	
-    },
-    
-    getEvents: function(tasks) {
-    	events = [];
-    	_.each(tasks, function (task, i){
-    		var event = { id: task.id, title: task.name, 
-    		              start: task.date_start, end: task.date_end, 
-    		              total_hours: task.total_hours,
-    		              effective_hours: task.effective_hours,
-    		              remaining_hours: task.remaining_hours,
-    		              allDay:false};
-    		events.push(event);
-    	});
-    	return events;
-    },
+
 
 
     preventDefault: function(event){
