@@ -1,21 +1,19 @@
 /******************************************
 * Requests List View
 */
-app.Views.TasksView = Backbone.View.extend({
+app.Views.TasksListView = Backbone.View.extend({
 	
 	el : '#rowContainer',
 	
 	templateHTML: 'tasksListCheck',
 	
 	numberListByPage: 25,
-	
-	calendarView: 'agendaDay',
 
 
     // The DOM events //
     events: {
-		//'click li.active'		: 'preventDefault',
-		//'click li.disabled'		: 'preventDefault'
+    	'click a.taskDone' 		: 'taskDone',
+    	'click a.taskNotDone' 	: 'taskNotDone'
     },
 
 	
@@ -36,6 +34,7 @@ app.Views.TasksView = Backbone.View.extend({
 		// Change the page title //
         app.router.setPageTitle(app.lang.viewsTitles.tasksList);
 
+
         // Change the active menu item //
         app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
 
@@ -43,17 +42,25 @@ app.Views.TasksView = Backbone.View.extend({
         app.views.headerView.switchGridMode('fluid');
 
 
-		var tasks = app.collections.tasks.models;
-		var len = tasks.length;
+		var officer = app.models.user;  
+		var officer_id = officer.get('uid');
+    	var tasks = app.collections.tasks.getTasksByOfficer(officer_id);
+    	
+        // Retrieve the number of validated Interventions //
+        var tasksPending = _.filter(tasks.models, function(item){ 
+        	return item.attributes.state == app.Models.Task.state[2].value; 
+        });
+        var nbTasks = _.size(tasksPending);
+        
+		//var tasks = app.collections.tasks.models;
+		var len = nbTasks;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
 		
-        // Retrieve the number of validated Interventions //
-        var tasksPending = _.filter(tasks, function(item){ 
-        	return item.attributes.state == app.Models.Task.state[2].value; 
-        });
-        var nbTasks = _.size(tasksPending);
+	  
+		
+
 		
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -62,7 +69,6 @@ app.Views.TasksView = Backbone.View.extend({
 				lang: app.lang,
 				nbTasks: nbTasks,
 				tasks: (new app.Collections.Tasks(tasksPending)).toJSON(),
-				requestsState: app.Models.Task.state,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
 				pageCount: pageCount,
@@ -77,15 +83,74 @@ app.Views.TasksView = Backbone.View.extend({
 		
         return this;
     },
+    
+    getTask: function(e) {
+		var href = $(e.target);
 
+		// Retrieve the ID of the request //	
+		this.pos = href.parents('tr').attr('id');
+		this.model = app.collections.tasks.models[this.pos];
+		
+    },
+    
+    taskDone: function(e) {
+    	event.preventDefault();
+		params = {
+		        state: app.Models.Task.state[3].value,
+		};
+		this.getTask(e);
+		this.saveNewStateTask(params,null);
+    	
+    },
+    
+    taskNotDone: function(e) {
+		e.preventDefault();
+		params = {
+		        state: app.Models.Task.state[2].value,
+				user_id: null,
+				date_end: null,
+				date_start: null,
+		};
+		this.getTask(e);
+		this.saveNewStateTask(params,null);
 
+	},
 
+	saveNewStateTask: function(params,el) {
+		var self = this;
+		self.params = params;
+		self.el = el;
+		this.model.save(params, {
+				    success: function (data) {
+					        console.log(data);
+					        if(data.error){
+					    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+					        }
+					        else{					        	
+					            console.log('NEW STATE TASK SAVED');
+					            if( self.el!= null )
+					            	self.el.modal('hide');
+
+					            self.model.update(params);
+					            app.collections.tasks.models[self.pos] = self.model;
+					            self.initialize();
+/*							 	app.collections.tasks.fetch({  
+					                success: function(){						 		
+										//route = Backbone.history.fragment;
+										//app.router.navigate(route,  {'trigger': true, replace: true});	
+										self.initialize();
+							 		}				 
+						 		});	*/				            
+					        }
+					    },
+					    error: function () {
+							console.log('ERROR - Unable to valid the Request - RequestsListView.js');
+					    },           
+					},false);
+	},
 
     preventDefault: function(event){
     	event.preventDefault();
     },
-
-
-
 
 });

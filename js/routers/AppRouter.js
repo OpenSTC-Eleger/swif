@@ -468,7 +468,7 @@ app.Router = Backbone.Router.extend({
         	app.loader('display');
         	app.collections.tasks.fetch({
         		success: function(){
-                    app.views.tasksView = new app.Views.TasksView({page: self.page});	                				            				             
+                    app.views.tasksListView = new app.Views.TasksListView({page: self.page});	                				            				             
 	        	} 			        		
         	});	
         	app.loader('hide');	

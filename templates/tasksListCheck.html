@@ -66,7 +66,7 @@
 				<% _.each(tasks, function (task, i) { %>
 				
 
-					<tr id="<%= i %>" >
+					<tr id="<%= i %>">
 					    <td>
 					    	<a 	href="#taches/<%= task.id %>" 
 								rel="popover">
@@ -114,9 +114,9 @@
 										<span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu pull-right align-left">
-										<li><a href="#modalValidRequest" data-toggle="modal" class="buttonValidRequest"><i class="icon-ok text-sucess"></i>&nbsp;Fait</a></li>
-										<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-user"></i>&nbsp;Pas Fait</a></li>
-										<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-user"></i>&nbsp;En cours</a></li>
+										<li><a href="#" class="taskDone" id="<%= task.id %>"><i class="icon-ok text-sucess"></i>&nbsp;Fait</a></li>
+										<li><a href="#" class="taskNotDone" id="<%= task.id %>"><i class="icon-remove"></i>&nbsp;Pas Fait</a></li>
+										<li><a href="#modalPendingTask" data-toggle="modal" class="buttonPendingTask"><i class="icon-user"></i>&nbsp;En cours</a></li>
 									</ul>
 								</div>
 

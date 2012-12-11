@@ -13,6 +13,10 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		effective_hours:0,
 		total_hours: 0,
 		remaining_hours: 0,
+		state: null,
+		user_id: null,
+		date_end: null,
+		date_start: null,
 	},
 	
     getId : function() {
@@ -21,6 +25,34 @@ app.Models.Task = Backbone.RelationalModel.extend({
     setId: function(value) {
     	if( value == 'undefined') return;
         this.set({ id : value });
+    },
+    getState : function() {
+        return this.get('state');
+    },
+    setState : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ state : value });
+    },    
+    getUserId : function() {
+        return this.get('user_id');
+    },
+    setUserId : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ user_id : value });
+    },
+    getDateEnd : function() {
+        return this.get('date_end');
+    },
+    setDateEnd : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ date_end : value });
+    },
+    getDateStart : function() {
+        return this.get('date_start');
+    },
+    setDateStart : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ date_start : value });
     },
 
 
@@ -56,6 +88,13 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	
 	save: function(data,options) { 
 		app.saveOE(this.get("id"), data, this.model_name,app.models.user.getSessionID(), options);
+	},
+	
+	update: function(params) {
+		this.setState( params.state );
+		this.setUserId( params.user_id );
+		this.setDateEnd( params.date_end );
+		this.setDateStart( params.date_start );
 	},
 	
 	destroy: function (options) {	
