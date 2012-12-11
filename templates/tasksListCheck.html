@@ -94,7 +94,7 @@
 				    		<% } else if(task.state == app.Models.Task.state[1].value) { %>
 				    			<span class="label label-info"><%= lang.wait %></span>
 				    		<% } else if(task.state == app.Models.Task.state[2].value) { %>
-				    			<span class="label label-warning"><%= lang.confirm %></span>
+				    			<span class="label label-warning"><%= lang.pending %></span>
 				    		<% } else if(task.state == app.Models.Task.state[3].value) { %>
 				    			<span class="label label-success"><%= lang.valid %></span>
 				    		<% } else if(task.state == app.Models.Task.state[4].value) { %>
@@ -109,14 +109,13 @@
 							<% if(task.state == app.Models.Task.state[2].value) { %>
 					   		
 								<div class="btn-group">
-									<button class="btn btn-small disabled no-outline"><i class="icon-remove text-error"></i></button>
+									<button class="btn btn-small btn-success no-outline taskDone" id="<%= task.id %>"><i class="icon-ok"></i></button>
 									<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
 										<span class="caret"></span>
 									</button>
-									<ul class="dropdown-menu pull-right align-left">
-										<li><a href="#" class="taskDone" id="<%= task.id %>"><i class="icon-ok text-sucess"></i>&nbsp;Fait</a></li>
-										<li><a href="#" class="taskNotDone" id="<%= task.id %>"><i class="icon-remove"></i>&nbsp;Pas Fait</a></li>
-										<li><a href="#modalPendingTask" data-toggle="modal" class="buttonPendingTask"><i class="icon-user"></i>&nbsp;En cours</a></li>
+									<ul class="dropdown-menu pull-right align-left">										
+										<li><a href="#" class="taskNotDone" id="<%= task.id %>"><i class="icon-remove"></i>&nbsp;Non Fait</a></li>
+										<li><a href="#modalTimeSpent" data-toggle="modal" id="<%= task.id %>" class="buttonTimeSpent"><i class="icon-user"></i>&nbsp;Non Terminée</a></li>
 									</ul>
 								</div>
 
@@ -178,4 +177,47 @@
 
 	<% } %>
 
+</div>
+
+
+<!-- Modal Form Time Spent -->
+<div id="modalTimeSpent" class="modal hide fade">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3>Saisie des temps passés</h3>
+	</div>
+	
+	<div class="modal-body">
+
+		<blockquote id="infoModalTimeSpent" class="spaceBottom">
+			<p></p>
+			<small></small>
+		</blockquote>
+
+	    <form id="formTimeSpent" action="#" class="form-horizontal">
+	    
+			<!-- Task name -->
+            <div class="control-group">
+                <label for="eventTimeSpent" class="control-label">Temps travaillé:</label>
+
+                <div class="controls">
+                    <input type='number' name='eventTimeSpent' id='eventTimeSpent' value='' title='time spent!' size='10' /> 
+                    <span class="help-inline"></span>
+                </div>
+                
+                
+                <label for="eventTimeRemaining" class="control-label">Temps restant:</label>
+
+                <div class="controls">
+                    <input type='number' name='eventTimeRemaining' id='eventTimeRemaining' value='' title='remaining time' size='10' /> 
+                    <span class="help-inline"></span>
+                </div>
+            </div>
+	    </form>
+	</div>
+	
+	<div class="modal-footer">
+	    <button type="submit" form="formTimeSpent" class="btn btn-primary">Enregistrer</button>&nbsp;&nbsp;
+	    <a href="#" data-dismiss="modal">Annuler</a>
+	</div>
 </div>

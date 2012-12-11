@@ -12,8 +12,11 @@ app.Views.TasksListView = Backbone.View.extend({
 
     // The DOM events //
     events: {
-    	'click a.taskDone' 		: 'taskDone',
-    	'click a.taskNotDone' 	: 'taskNotDone'
+    	'click .taskDone' 		: 'taskDone',
+    	'click a.taskNotDone' 	: 'taskNotDone',
+    		
+    	'click .buttonTimeSpent'		: 'setModalTimeSpent',
+    	'submit #formTimeSpent'    		: 'saveTimeSpent',
     },
 
 	
@@ -44,13 +47,25 @@ app.Views.TasksListView = Backbone.View.extend({
 
 		var officer = app.models.user;  
 		var officer_id = officer.get('uid');
-    	var tasks = app.collections.tasks.getTasksByOfficer(officer_id);
+		
+		var tasks = app.collections.tasks
+        var tasksUser = _.filter(tasks.models, function(item){
+        	userId = item.attributes.user_id
+        	if( userId )        		
+        		return item.attributes.user_id[0] == officer_id; 
+        	else
+        		return false;
+        });
+		
+    	//var tasks = app.collections.tasks.getTasksByOfficer(officer_id);
     	
         // Retrieve the number of validated Interventions //
-        var tasksPending = _.filter(tasks.models, function(item){ 
+        var tasksPending = _.filter(tasksUser, function(item){ 
         	return item.attributes.state == app.Models.Task.state[2].value; 
         });
         var nbTasks = _.size(tasksPending);
+        
+        
         
 		//var tasks = app.collections.tasks.models;
 		var len = nbTasks;
@@ -58,23 +73,22 @@ app.Views.TasksListView = Backbone.View.extend({
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
 		
-	  
+		
 		
 
 		
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-	  
+			var tasksList = new app.Collections.Tasks(tasksPending).toJSON();
 			var template = _.template(templateData, {
 				lang: app.lang,
 				nbTasks: nbTasks,
-				tasks: (new app.Collections.Tasks(tasksPending)).toJSON(),
+				tasks: tasksList,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
 				pageCount: pageCount,
 
 			});
-		
 			$(self.el).html(template);
 
 		});
@@ -84,12 +98,34 @@ app.Views.TasksListView = Backbone.View.extend({
         return this;
     },
     
+    setModalTimeSpent: function(e) {
+    	this.getTask(e);
+    	var task = this.model.toJSON();
+		$('#eventTimeSpent').val(task.effective_hours);
+		$('#eventTimeRemaining').val(task.remaining_hours);
+    },
+    
+    saveTimeSpent: function(e) {
+    	e.preventDefault();
+		params = {
+		    state: app.Models.Task.state[2].value,
+            effective_hours: $('#eventTimeSpent').val(),
+            remaining_hours: $('#eventTimeRemaining').val(),
+			user_id: null,
+			date_end: null,
+			date_start: null,
+		};
+		
+		this.saveNewStateTask(params,$('#modalTimeSpent'));
+    },
+    
     getTask: function(e) {
 		var href = $(e.target);
 
 		// Retrieve the ID of the request //	
 		this.pos = href.parents('tr').attr('id');
-		this.model = app.collections.tasks.models[this.pos];
+		this.taskId = e.currentTarget.id;
+		this.model = app.collections.tasks.get(this.taskId);
 		
     },
     
@@ -116,10 +152,10 @@ app.Views.TasksListView = Backbone.View.extend({
 
 	},
 
-	saveNewStateTask: function(params,el) {
+	saveNewStateTask: function(params,element) {
 		var self = this;
 		self.params = params;
-		self.el = el;
+		self.element = element;
 		this.model.save(params, {
 				    success: function (data) {
 					        console.log(data);
@@ -128,19 +164,11 @@ app.Views.TasksListView = Backbone.View.extend({
 					        }
 					        else{					        	
 					            console.log('NEW STATE TASK SAVED');
-					            if( self.el!= null )
-					            	self.el.modal('hide');
-
+					            if( self.element!= null )
+					            	self.element.modal('hide');
 					            self.model.update(params);
 					            app.collections.tasks.models[self.pos] = self.model;
-					            self.initialize();
-/*							 	app.collections.tasks.fetch({  
-					                success: function(){						 		
-										//route = Backbone.history.fragment;
-										//app.router.navigate(route,  {'trigger': true, replace: true});	
-										self.initialize();
-							 		}				 
-						 		});	*/				            
+					            self.render();		            
 					        }
 					    },
 					    error: function () {
