@@ -6,6 +6,8 @@ app.Views.InterventionsView = Backbone.View.extend({
     el : '#rowContainer',
 
     templateHTML: 'interventions',
+    
+    task: new app.Models.Task(),
 
     
     // The DOM events //
@@ -90,7 +92,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 
 		e.preventDefault();
 		
-		 var task = new app.Models.Task();
+		 
 		 input_category_id = null;
 	     if( app.views.selectListAssignementsView != null )
 	    	 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
@@ -102,7 +104,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 		     planned_hours: this.$('#taskHour').val(),
 	     };
 
-	    task.save(params,{
+	    this.task.save(params,{
 			success: function (data) {
 				console.log(data);
 				if(data.error){
