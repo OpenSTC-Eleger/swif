@@ -79,7 +79,8 @@
 	"infoMessages" : {
    		"information"         : "Information",
     	"successLogout"       : "Vous êtes maintenant déconnecté",
-    	"noRequest"      	  : "Aucune intervention dans la base de données"
+    	"noRequest"      	  : "Aucune intervention dans la base de données",
+    	"noTask"      	  	  : "Aucunes tâches à pointer"
 	},
 
 	"viewsTitles" : {

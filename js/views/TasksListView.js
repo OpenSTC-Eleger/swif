@@ -12,11 +12,14 @@ app.Views.TasksListView = Backbone.View.extend({
 
     // The DOM events //
     events: {
-    	'click .taskDone' 		: 'taskDone',
+    	//'click .taskDone' 		: 'taskDone',
     	'click a.taskNotDone' 	: 'taskNotDone',
     		
     	'click .buttonTimeSpent'		: 'setModalTimeSpent',
     	'submit #formTimeSpent'    		: 'saveTimeSpent',
+    	
+    	'click .buttonTaskDone'			: 'setModalTaskDone',
+    	'submit #formTaskDone'    		: 'saveTaskDone',
     },
 
 	
@@ -119,6 +122,22 @@ app.Views.TasksListView = Backbone.View.extend({
 		this.saveNewStateTask(params,$('#modalTimeSpent'));
     },
     
+    setModalTaskDone: function(e) {
+    	this.getTask(e);
+    	var task = this.model.toJSON();
+		$('#eventTimeSpent').val(0);
+    },
+    
+    saveTaskDone: function(e) {
+    	e.preventDefault();
+		params = {
+		    state: app.Models.Task.state[3].value,
+            effective_hours: $('#eventTimeSpent').val(),
+		};
+		
+		this.saveNewStateTask(params,$('#modalTaskDone'));
+    },
+    
     getTask: function(e) {
 		var href = $(e.target);
 
@@ -129,15 +148,15 @@ app.Views.TasksListView = Backbone.View.extend({
 		
     },
     
-    taskDone: function(e) {
-    	event.preventDefault();
-		params = {
-		        state: app.Models.Task.state[3].value,
-		};
-		this.getTask(e);
-		this.saveNewStateTask(params,null);
-    	
-    },
+//    taskDone: function(e) {
+//    	event.preventDefault();
+//		params = {
+//		        state: app.Models.Task.state[3].value,
+//		};
+//		this.getTask(e);
+//		this.saveNewStateTask(params,null);
+//    	
+//    },
     
     taskNotDone: function(e) {
 		e.preventDefault();

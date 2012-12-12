@@ -109,7 +109,7 @@
 							<% if(task.state == app.Models.Task.state[2].value) { %>
 					   		
 								<div class="btn-group">
-									<button class="btn btn-small btn-success no-outline taskDone" id="<%= task.id %>"><i class="icon-ok"></i></button>
+									<button class="btn btn-small btn-success no-outline buttonTaskDone" data-toggle="modal" id="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok buttonTaskDone"></i></button>
 									<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
 										<span class="caret"></span>
 									</button>
@@ -172,11 +172,45 @@
 	else { %>
 		<!-- No request in the Database -->
 		<div class="alert alert-info">
-			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>.
+			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTask %>.
 		</div>
 
 	<% } %>
 
+</div>
+
+<!-- Modal Form Task Done -->
+<div id="modalTaskDone" class="modal hide fade">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3>Saisie du temps passé</h3>
+	</div>
+	
+	<div class="modal-body">
+
+		<blockquote id="infoModalTaskDone" class="spaceBottom">
+			<p></p>
+			<small></small>
+		</blockquote>
+
+	    <form id="formTaskDone" action="#" class="form-horizontal">
+	    
+			<!-- Task name -->
+            <div class="control-group">
+                <label for="eventTimeSpent" class="control-label">Temps travaillé:</label>
+
+                <div class="controls">
+                    <input type='number' name='eventTimeSpent' id='eventTimeSpent' value='' title='time spent!' size='10' /> 
+                    <span class="help-inline"></span>
+                </div>
+            </div>
+	    </form>
+	</div>
+	
+	<div class="modal-footer">
+	    <button type="submit" form="formTimeSpent" class="btn btn-primary">Enregistrer</button>&nbsp;&nbsp;
+	    <a href="#" data-dismiss="modal">Annuler</a>
+	</div>
 </div>
 
 
