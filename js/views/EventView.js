@@ -29,15 +29,16 @@ app.Views.EventView = Backbone.View.extend({
 		            	text: self.template ,
 		            	
 	        		},
+	        		//hide: {event: "mouseout"}, // Don't' hide unless we call hide()
 					   events: {
 	        			 render: function(event, api) {
 	        			   $('#eventTimeSpent').val(self.model.get('effective_hours'))
 	        			   $('#eventTimeRemaining').val(self.model.get('remaining_hours'))
 	        			   var params = {};
-	        			   $('form', this).bind('submit', function(event) {
+	        			   $('#form', this).bind('submit', function(event) {
 	        				   
 	        				   	params = { 
-							               //id: self.model.get('id'),
+							               id: self.model.get('id'),
 							    		   state: $('#eventState').is(':checked')?"done":self.model.get('state'),
 							               effective_hours: $('#eventTimeSpent').val(),
 							               remaining_hours: $('#eventTimeRemaining').val(),
@@ -48,7 +49,7 @@ app.Views.EventView = Backbone.View.extend({
 								  
 									case 'done' :
 										params.user_id = null;
-										param.date_end = null;
+										params.date_end = null;
 										params.date_start = null;
 										break;
 								  
@@ -59,8 +60,8 @@ app.Views.EventView = Backbone.View.extend({
 									  
 								}
 							    self.save(params);
-							    $(this).destroy();							    
-	        					event.preventDefault();
+							    //$(this).destroy();							    
+	        					//event.preventDefault();
 	        				});
 	        			   	        			  	
 	        			  $("form",this).find(".btn").each(function(){
@@ -85,7 +86,7 @@ app.Views.EventView = Backbone.View.extend({
 						    	  //$("#timeRemaining").hide();
 						    	  break;
 
-						    	case 'pending' :
+						    	default  :
 						    	  params.state = this.value;
 						    	  //$("#timeSpent").show();
 						    	  //$("#timeRemaining").show();
@@ -98,7 +99,8 @@ app.Views.EventView = Backbone.View.extend({
 						    });
 						  });
 
-	        			}
+	        			},
+	        			//hide: function(event, api) { api.destroy(); }
 	        			   					      
 					 },
 	                position: {
@@ -113,23 +115,34 @@ app.Views.EventView = Backbone.View.extend({
 	                    container: self.el
 	                },
 	                show: {
-	                	when: 'click',	                	
+	                	//when: 'click',
+	                	event: false,
 	                    ready: true,
 	                    //event: false,
 	               	 	//event: "submit form",
 	                    //effect: self.save(),
 	                    modal: {
 	                        // 'true' = Make it modal (darken the rest of the page)...
-	                        on: false,                                
+	                        on: true,                                
 	                        blur: true // ... but don't close the tooltip when clicked
 	                    }
 	                },
-	                hide: 'mousedown',
+	                //hide: 'mousedown',
 	                style: {
-	                    classes: 'daytooltip ui-tooltip-dark ui-tooltip-shadow ui-tooltip-default width400',
+	                    classes: 'daytooltip ui-tooltip-light ui-tooltip-shadow ui-tooltip-default width400',
 	                    tip: { width: 20, height: 8 }                                                 
 	                },	
-				});
+				})
+				// Remove the previous tooltips data
+.removeData('qtip')
+ 
+// Create our second tooltip
+.qtip({
+	content: 'I\'m just one of many tooltips that will render on this element...',
+	style: {
+		classes: 'ui-tooltip-blue'
+	}
+});
 	
 			});	
 		

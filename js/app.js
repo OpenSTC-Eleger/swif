@@ -8,10 +8,10 @@ var app = {
 
     // Global variables //
     appVersion      : '0.1 alpha',
-    userBDD         : 'pontlabbe2',
+    userBDD         : 'pontlabbe',
     uniq_id_counter : 0,
     
-    urlOE                       : 'http://octm-dev.siclic.fr:8069',
+    urlOE                       : 'http://localhost:8069',
     urlOE_authentication        : '/web/session/authenticate',
     urlOE_versionServer         : '/web/webclient/version_info',
     urlOE_sessionDestroy        : '/web/session/destroy',
@@ -57,6 +57,7 @@ var app = {
                 app.collections.users = new app.Collections.Users();               
                 app.collections.users.fetch();
                 app.models.user = new app.Models.User();
+                app.models.task = new app.Models.Task();
 
                 // Router initialization //
                 app.router = new app.Router();

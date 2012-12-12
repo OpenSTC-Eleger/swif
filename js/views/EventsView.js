@@ -26,11 +26,11 @@ app.Views.EventsView = Backbone.View.extend({
         	this.initCalendar();       
         },
         
-		save: function(params) {
-			model = new app.Models.Task();
+		save: function(id,params) {
+			//model = new app.Models.Task();
 /*			model.setId(params.id);
 			params.remove(params.id)*/
-			model.save(params,			
+			app.models.task.save(id, params,			
 				{
 				    success: function (data) {
 				        console.log(data);
@@ -161,13 +161,35 @@ app.Views.EventsView = Backbone.View.extend({
 					app.loader('display');
 					
 				    params = { 
-				       id: event.id,
+				       //id: event.id,
 				       date_start: event.start,
 				       date_end: event.end,
+				       //planned_hours: 0.5,
 				       //user_id: null
 				    };
-				    model = app.collections.tasks.get(event.id)
-					model.save(params);	
+				    //model = app.collections.tasks.get(event.id)
+					self.save(event.id,params);	
+				    	
+				    //self.planning.render();	
+				    $(self.el).fullCalendar('refresh');
+				    //$(self.el).fullCalendar('removeEvents', event.id);
+				    app.loader('hide');	
+				},
+				
+				eventResize: function( event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) { 
+					
+					app.loader('display');
+					
+				    params = { 
+				       //id: event.id,
+				       date_start: event.start,
+				       date_end: event.end,
+				       planned_hours: (event.planned_hours + (minuteDelta)/60),
+				       remaining_hours: (event.planned_hours + (minuteDelta)/60),
+				       //user_id: null
+				    };
+				    //model = app.collections.tasks.get(event.id)
+					self.save(event.id,params);	
 				    	
 				    //self.planning.render();	
 				    $(self.el).fullCalendar('refresh');
@@ -188,38 +210,38 @@ app.Views.EventsView = Backbone.View.extend({
 				
 				        //jQuery('#com_jc_msg_saving').fadeOut();
 				
-				        jQuery.contextMenu({
-				
-				            selector: '.fc-event',//note the selector this will apply context to all events 
-				            trigger: 'right',
-//				            callback: function(key, options) {
-//				                //this is the element that was rightclicked
-//				                console.log(options.$trigger.context);
+//				        jQuery.contextMenu({
 //				
-//				                switch(key)
-//				                {
-//				                case 'edit_event':
-//				
-//				                  break;
-//				                case 'del_event':
-//				
-//				                  break;
-//				                case 'add_event':
-//				
-//				                  break;
-//				
-//				                }
-//				
-//				            },
-				            items: {
-				                'edit_event': {name: 'Edit',  icon: "edit", callback: function(key, options) {
-				            			self.edit();
-				            		}
-				            	 },
-				                'del_event': {name: 'Delete', icon: "delete", callback: function(key, options) {self.remove();}},
-				                'copy_event': {name: 'Copy', icon: "copy", callback: function(key, options) {self.copy();}},
-				            }
-				        });
+//				            selector: '.fc-event',//note the selector this will apply context to all events 
+//				            trigger: 'right',
+////				            callback: function(key, options) {
+////				                //this is the element that was rightclicked
+////				                console.log(options.$trigger.context);
+////				
+////				                switch(key)
+////				                {
+////				                case 'edit_event':
+////				
+////				                  break;
+////				                case 'del_event':
+////				
+////				                  break;
+////				                case 'add_event':
+////				
+////				                  break;
+////				
+////				                }
+////				
+////				            },
+//				            items: {
+//				                'edit_event': {name: 'Edit',  icon: "edit", callback: function(key, options) {
+//				            			self.edit();
+//				            		}
+//				            	 },
+//				                'del_event': {name: 'Delete', icon: "delete", callback: function(key, options) {self.remove();}},
+//				                'copy_event': {name: 'Copy', icon: "copy", callback: function(key, options) {self.copy();}},
+//				            }
+//				        });
 				    
 
 //					element.qtip({ content: event.description,
@@ -249,13 +271,15 @@ app.Views.EventsView = Backbone.View.extend({
 				    $(self.el).fullCalendar('renderEvent', copiedEventObject, true);
 				    //$(self.el).append('<button type="button" class="close" data-dismiss="close">X</button>');
 				    params = { 
-		               id: copiedEventObject.id,
+		               //id: copiedEventObject.id,
+				       state: 'pending',
 		    		   date_end: date,
 		               date_start: date,
-		               planned_hours: copiedEventObject.planned_hours,
+		               planned_hours: 0.5,
+		               remaining_hours: 0.5,
 		               user_id: self.officer_id
 				    };
-				    self.save(params);
+				    self.save(copiedEventObject.id,params);
 				
 				    $.pnotify({
 				        title: 'Tâche attribuée',

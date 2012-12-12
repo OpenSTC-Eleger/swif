@@ -11,13 +11,18 @@ app.Views.PlanningView = Backbone.View.extend({
     selectedInter : '',
     selectedTask : '',
     
+    //task: app.Models.Task.getCurrentTask(),
+    
     // The DOM events //
     events: {
         'click a.modalDeleteInter'  : 'setInfoModal',
         'click a.modalDeleteTask'   : 'setInfoModal',
 
         'click button.btnDeleteInter'  : 'deleteInter',
-        'click button.btnDeleteTask'   : 'deleteTask'
+        'click button.btnDeleteTask'   : 'deleteTask',
+        	
+        'click .btn.addTaskPlanning'    : 'displayFormAddTask',
+        'click button.saveTaskPlanning'       : 'saveTask'
     },
 
 
@@ -44,13 +49,18 @@ app.Views.PlanningView = Backbone.View.extend({
             // Change the Grid Mode of the view //
             app.views.headerView.switchGridMode('fluid');
 
-
+            var interventions = app.collections.interventions.models;
             console.log(app.collections.interventions);
 
+            var interventionsSortedArray = _.sortBy(interventions, function(item){ 
+                    	return item.attributes.date_start; 
+            });
+            
+            interventionSorted = new app.Collections.Interventions(interventionsSortedArray);
 
         	var template = _.template(templateData, {
         		lang: app.lang,
-        		interventions: app.collections.interventions.toJSON(),
+        		interventions: interventionSorted.toJSON(),
         		officers: app.collections.officers.toJSON()            		
             });
 
@@ -89,8 +99,7 @@ app.Views.PlanningView = Backbone.View.extend({
     },
     
     save: function(params) {
-    	model = new app.Models.Task();
-		model.save(params,			
+		app.models.task.save(params,			
 			{
 			    success: function (data) {
 			        console.log(data);
@@ -146,10 +155,10 @@ app.Views.PlanningView = Backbone.View.extend({
                 id: task.id,
 				title: task.name,
 				user_id: task.user_id[0],
-				planned_hours: task.planned_hours,
-				total_hours: task.total_hours,
-				effective_hours: task.effective_hours,
-				remaining_hours: task.remaining_hours,
+				planned_hours: 0.5,
+				total_hours: 0,
+				effective_hours: 0,
+				remaining_hours: 0.5,
 			};
 			
 			// Store the Event Object in the DOM element so we can get to it later //
@@ -220,7 +229,78 @@ app.Views.PlanningView = Backbone.View.extend({
     deleteTask: function(e){
         alert('TODO - Delete Task with ID ' + this.selectedTask.id);
 
-    }
+    },
+    
+    /** Display the form to add a new Task
+    */
+    displayFormAddTask: function(e){
+    	
+		app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categories})
+		app.views.selectListAssignementsView.clearAll();
+		app.views.selectListAssignementsView.addEmptyFirst();
+		app.views.selectListAssignementsView.addAll();
+        
+        // Retrieve the ID of the intervention //
+        this.pos = e.currentTarget.id;
+        $('#modalAddTask').modal();
+   },
+    
+    
+    /** Save the Task
+    */
+    saveTask: function(e){
+    	 var self = this;
+
+		e.preventDefault();
+		
+		 
+		 input_category_id = null;
+	     if( app.views.selectListAssignementsView != null )
+	    	 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
+
+	     var params = {
+	         project_id: this.pos,
+	         name: this.$('#taskName').val(),
+	         category_id: input_category_id,	         
+		     planned_hours: this.$('#taskHour').val(),
+	     };
+
+	    app.models.task.save(0,params,{
+            beforeSend: function(){
+	            app.loader('display');
+	        },
+        	complete: function(){
+        	    app.loader('hide');
+        	},
+			success: function (data) {
+				console.log(data);
+				if(data.error){
+					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				}
+				else{
+					$('#modalAddTask').modal('hide');        	
+        	
+					 	app.collections.tasks.fetch({  
+					 		success: function(){						 	
+						 		app.collections.interventions.fetch({
+					                success: function(){						 		
+										route = Backbone.history.fragment;
+										app.router.navigate('#planning',  {'trigger': true, replace: true});	
+										self.initialize();
+							 		}					 
+						 		});
+					 		}					 
+				 		});
+						 		
+
+					console.log('Success SAVE TASK');
+				}
+			},
+			error: function () {
+				console.log('ERROR - Unable to save the Request - RequestDetailsView.js');
+			},	     
+		});
+   }
 
 
 });

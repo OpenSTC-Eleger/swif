@@ -101,7 +101,7 @@ app.Views.TasksListView = Backbone.View.extend({
     setModalTimeSpent: function(e) {
     	this.getTask(e);
     	var task = this.model.toJSON();
-		$('#eventTimeSpent').val(task.effective_hours);
+		$('#eventTimeSpent').val(0);
 		$('#eventTimeRemaining').val(task.remaining_hours);
     },
     
@@ -156,7 +156,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		var self = this;
 		self.params = params;
 		self.element = element;
-		this.model.save(params, {
+		this.model.save(this.model.id,params, {
 				    success: function (data) {
 					        console.log(data);
 					        if(data.error){

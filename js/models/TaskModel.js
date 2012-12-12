@@ -7,6 +7,8 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	model_name : 'project.task',	
 	
 	url: "/#taches/:id",
+	
+//	currentTask:this,
 
 	defaults:{
 		id:0,
@@ -17,7 +19,12 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		user_id: null,
 		date_end: null,
 		date_start: null,
+		currentTask: null,
 	},
+	
+//	getCurrentTask : function() {
+//        return this.get('currentTask');
+//    },
 	
     getId : function() {
         return this.get('id');
@@ -86,8 +93,8 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	/** Save Model
 		*/
 	
-	save: function(data,options) { 
-		app.saveOE(this.get("id"), data, this.model_name,app.models.user.getSessionID(), options);
+	save: function(id,data,options) { 
+		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options);
 	},
 	
 	update: function(params) {

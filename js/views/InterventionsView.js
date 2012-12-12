@@ -7,7 +7,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 
     templateHTML: 'interventions',
     
-    task: new app.Models.Task(),
+    //task: app.models.task,
 
     
     // The DOM events //
@@ -47,6 +47,10 @@ app.Views.InterventionsView = Backbone.View.extend({
         // Retrieve the number of validated Interventions //
         var interventionsValidated = _.filter(interventions, function(item){ return item.attributes.progress_rate <= 99; });
         var nbInterventions = _.size(interventionsValidated);
+        
+        interventionsValidated = _.sortBy(interventionsValidated, function(item){ 
+        	 return item.attributes.date_start; 
+        });
 
 
         // Retrieve the HTML template // 
@@ -104,7 +108,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 		     planned_hours: this.$('#taskHour').val(),
 	     };
 
-	    this.task.save(params,{
+	    app.models.task.save(0,params,{
 			success: function (data) {
 				console.log(data);
 				if(data.error){
@@ -118,7 +122,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 						 		app.collections.interventions.fetch({
 					                success: function(){						 		
 										route = Backbone.history.fragment;
-										app.router.navigate('#demandes-dintervent',  {'trigger': true, replace: true});	
+										app.router.navigate('#interventions',  {'trigger': true, replace: true});	
 										self.initialize();
 							 		}					 
 						 		});

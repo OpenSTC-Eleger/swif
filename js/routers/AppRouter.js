@@ -422,19 +422,26 @@ app.Router = Backbone.Router.extend({
 			        
 			        	app.collections.interventions.fetch({
 			        		success: function(){
-                        if(app.collections.officers == null ){
+			        			if(app.collections.officers == null ){
                                     app.collections.officers = new app.Collections.Officers();
                                 }
 					        
 					        	app.collections.officers.fetch({
 					        		success: function(){
-							            // If the view exist we reuse it //
-							            if(app.views.planningView){
-							                app.views.planningView.render();
-							            }
-							            else{
-							                app.views.planningView = new app.Views.PlanningView();
-							            }						           
+						            	if(app.collections.categories == null ){
+						            		app.collections.categories = new app.Collections.Categories();
+										}
+							            app.collections.categories.fetch({
+							            	success: function(){
+									            // If the view exist we reuse it //
+									            if(app.views.planningView){
+									                app.views.planningView.render();
+									            }
+									            else{
+									                app.views.planningView = new app.Views.PlanningView();
+									            }
+									        }
+								        });
 							     	}				        	
 					        	});					            				             
 				        	} 			        		
