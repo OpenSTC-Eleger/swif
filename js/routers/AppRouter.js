@@ -475,7 +475,13 @@ app.Router = Backbone.Router.extend({
         	app.loader('display');
         	app.collections.tasks.fetch({
         		success: function(){
-                    app.views.tasksListView = new app.Views.TasksListView({page: self.page});	                				            				             
+			            if(app.views.tasksListView){
+			            	app.views.tasksListView.options.page = self.page;
+			                app.views.tasksListView.render();
+			            }
+			            else{
+			            	app.views.tasksListView = new app.Views.TasksListView({page: self.page});
+			            }
 	        	} 			        		
         	});	
         	app.loader('hide');	

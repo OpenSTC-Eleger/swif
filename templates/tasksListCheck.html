@@ -109,7 +109,7 @@
 							<% if(task.state == app.Models.Task.state[2].value) { %>
 					   		
 								<div class="btn-group">
-									<button class="btn btn-small btn-success no-outline buttonTaskDone" data-toggle="modal" id="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok buttonTaskDone"></i></button>
+									<button class="btn btn-small btn-success no-outline buttonTaskDone" data-toggle="modal" id="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok"></i></button>
 									<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
 										<span class="caret"></span>
 									</button>
@@ -208,7 +208,7 @@
 	</div>
 	
 	<div class="modal-footer">
-	    <button type="submit" form="formTimeSpent" class="btn btn-primary">Enregistrer</button>&nbsp;&nbsp;
+	    <button type="submit" form="formTaskDone" class="btn btn-primary">Enregistrer</button>&nbsp;&nbsp;
 	    <a href="#" data-dismiss="modal">Annuler</a>
 	</div>
 </div>
