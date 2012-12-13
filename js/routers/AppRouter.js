@@ -272,13 +272,13 @@ app.Router = Backbone.Router.extend({
         if(this.checkConnect()){
         	
         	var self = this;
-            var request = new app.Models.Request();
+           
 
             if(app.collections.places == null ){
                 app.collections.places = new app.Collections.Places();
             }
 
-            self.request = request;
+            self.request = app.models.request;
 
             app.collections.places.fetch({
                 beforeSend: function(){
@@ -312,14 +312,19 @@ app.Router = Backbone.Router.extend({
 				app.collections.claimersTypes.fetch({
 
 					success: function(){
+	
+//								if(app.views.requestView != null) {          
+//	            	                app.views.requestView = null  
+//	            	            }
+								app.views.requestView = new app.Views.RequestDetailsView( self.request, true);
 
-	            	            if(app.views.requestView == null) {          
-	            	                app.views.requestView = new app.Views.RequestDetailsView( request, true);  
-	            	            }
-	            	            else{
-	            	                app.views.requestView.model = request;
-	            	                app.views.requestView.initialize(request,true);
-	            	            }
+//	            	            if(app.views.requestView == null) {          
+//	            	                app.views.requestView = new app.Views.RequestDetailsView( request, true);  
+//	            	            }
+//	            	            else{
+//	            	                app.views.requestView.model = request;
+//	            	                app.views.requestView.initialize(request,true);
+//	            	            }
 	
                         	},
                         	complete: function(){

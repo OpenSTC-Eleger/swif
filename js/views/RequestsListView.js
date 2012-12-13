@@ -99,7 +99,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 		
 		$(this.el).hide().fadeIn('slow');
-		
+		//this.setElement(this.el, true);
         return this;
     },
 
@@ -200,7 +200,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 					            self.model.setService([service.id,service.name]);
 					            self.model.setAssignement(app.views.selectAssignementsView.getSelected());
 					            app.collections.requests.models[self.pos] = self.model;
-					            self.initialize();
+					            self.createIntervention();
 					        }
 					    },
 					    error: function () {
@@ -210,7 +210,33 @@ app.Views.RequestsListView = Backbone.View.extend({
 		
 	},
 
-
+	createIntervention: function() {
+		var self = this;
+		
+		params = {
+				name: this.model.getName(),
+				//state: app.Models.Request.state[3].value,
+		        date_deadline: this.model.getDeadline_date(),
+		        site1: this.model.getSite1()[0],
+		        ask_id: this.model.getId(),		
+		};
+		
+		app.models.intervention.save(params, {
+		    success: function (data) {
+		        console.log(data);
+		        if(data.error){
+		    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+		        }
+		        else{					        	
+		            console.log('Success VALID REQUEST');
+		            self.initialize();
+		        }
+		    },
+		    error: function () {
+				console.log('ERROR - Unable to valid the Request - RequestsListView.js');
+		    },           
+		},false);		
+	},
 
 	/** Change the request state to ConfirmDST
 	*/
@@ -266,7 +292,15 @@ app.Views.RequestsListView = Backbone.View.extend({
 	*/
 	preventDefault: function(event){
     	event.preventDefault();
-    }
+    },
+	
+//	setElement: function(element, delegate) {
+//	    if (this.$el) this.undelegateEvents();
+//	    this.$el = (element instanceof $) ? element : $(element);
+//	    this.el = this.$el[0];
+//	    if (delegate !== false) this.delegateEvents();
+//	    return this;
+//	 },
 
 
 

@@ -31,6 +31,10 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
     parse: function(response) {    	
         return response;
     },
+    
+	save: function(data,options) { 
+    	app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
+	},
 
 
 });

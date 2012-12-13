@@ -19,6 +19,7 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 			'change #requestClaimerType'	: 'fillDropdownClaimerType',
 			'change #requestClaimer'		: 'fillDropdownClaimer',
 			'change #requestContactSelect'	: 'fillDropdownContact',
+			'change #requestDetailService'		: 'fillDropdownService',
 		},
 
 
@@ -36,7 +37,7 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 	    /** Display the view
 	     */
 	    render: function () {
-			var self = this;
+			
 	
 			// Change the page title depending on the create value //
 			if(this.create){
@@ -49,12 +50,14 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 	
 			// Change the active menu item //
 			app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
-	
-			self.collection = this.collection;
+			
+			
+			//self.collection = this.collection;
+			var self = this;
 			// Retrieve the template // 
 			$.get("templates/" + this.templateHTML + ".html", function(templateData){
-					currentRequest = self.model.toJSON();
-					var template = _.template(templateData, {lang: app.lang, request: currentRequest});
+					
+					var template = _.template(templateData, {lang: app.lang, request: self.model.toJSON()});
 					$(self.el).html(template);		     
 	
 
@@ -71,11 +74,12 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 					}
 
 					
-					app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#requestService"), collection: app.collections.claimersServices})
+					app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#requestDetailService"), collection: app.collections.claimersServices})
 					app.views.selectListServicesView.clearAll();
 					app.views.selectListServicesView.addEmptyFirst();
 					app.views.selectListServicesView.addAll();
 					
+
 					// Fill select Places  //
 					app.views.selectListPlacesView = new app.Views.DropdownSelectListView({el: $("#requestPlace"), collection: app.collections.places})
 					app.views.selectListPlacesView.clearAll();
@@ -87,17 +91,19 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 					app.views.selectListClaimersTypesView.clearAll();
 					app.views.selectListClaimersTypesView.addEmptyFirst();
 					app.views.selectListClaimersTypesView.addAll();
+					currentRequest = self.model.toJSON()
 					if( currentRequest.partner_type ) {
 						app.views.selectListClaimersTypesView.setSelectedItem( currentRequest.partner_type[0] );
 						self.renderClaimer(app.views.selectListClaimersTypesView.getSelected(), true);
+						if( currentRequest.service_id ) {
+							self.renderTechnicalService(currentRequest.service_id[0]);
+						}
+						else
+							self.renderTechnicalService(null);
 						if( currentRequest.site1 )
 							self.renderTechnicalSite(currentRequest.site1[0]);
 						else
 							self.renderTechnicalSite(null);
-						if( currentRequest.service_id )
-							self.renderTechnicalService(currentRequest.service_id[0]);	
-						else
-							self.renderTechnicalService(null);
 					}
 			});
 	
@@ -170,6 +176,7 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 						//self.render();
 						//self.undelegateEvents();
 						self.setElement(this.el, false);
+						self = null;
 						app.router.navigate('#' , true);
 						console.log('Success SAVE REQUEST');
 					}
@@ -201,7 +208,7 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 			$('#requestContactInput').val('');
 			$('#requestContactPhone').val('');
 			$('#requestContactEmail').val('');
-			$('#requestService').val('');
+			$('#requestDetailService').val('');
 			$('#requestPlace').val('');
 			
 			if ( claimerType.attributes.claimers.length != 0) {
@@ -302,8 +309,18 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 		},
 		
 		renderTechnicalService: function ( service ) {
-			if( service!= null )
+			if( service!= null ) {
 				app.views.selectListServicesView.setSelectedItem( service );
+				places = app.collections.places.models;
+				var placesFiltered = _.filter(places, function(item){ 
+					return item.attributes.service[0] == service; 
+		        });
+				app.views.selectListPlacesView.collection = new app.Collections.Tasks(placesFiltered);
+				app.views.selectListPlacesView.clearAll();
+				app.views.selectListPlacesView.addEmptyFirst();
+				app.views.selectListPlacesView.addAll();
+				
+			}				
 		},
 		
 		renderContactDetails: function (contact) {
@@ -337,16 +354,23 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 			 e.preventDefault();
 			 claimer = app.views.selectListClaimersView.getSelected();
 			 this.renderContact(claimer);
-			 if (claimer.attributes.technical_site_id )
-				 this.renderTechnicalSite(claimer.attributes.technical_site_id[0]);
 			 if (claimer.attributes.technical_service_id )
 				 this.renderTechnicalService(claimer.attributes.technical_service_id[0]);
+			 if (claimer.attributes.technical_site_id )
+				 this.renderTechnicalSite(claimer.attributes.technical_site_id[0]);
+
 	     },
 
 		 fillDropdownContact: function (e) {
 	    	 e.preventDefault();
 	    	contact = app.views.selectListClaimersContactsView.getSelected().toJSON();
 	    	this.renderContactDetails(contact);
+		 },
+		 
+		 fillDropdownService: function(e){
+			 e.preventDefault();
+			 $('#requestPlace').val('');
+			 this.renderTechnicalService(e.target.selectedIndex)
 		 },
 		 
 		 setElement: function(element, delegate) {

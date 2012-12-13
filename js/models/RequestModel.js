@@ -9,17 +9,18 @@ app.Models.Request = Backbone.RelationalModel.extend({
 	url: "/#demandes-dinterventions/:id",
 	
 	defaults: {
-		id: null,
+		id: 0,
 		name: "",
-		state: null,
+		site1:"",
+		state: "",
 		description: "",
-		deadline_date: null,
-		belongsToAssignement: null,
-		belongsToService: null,
+		date_deadline: "",
+		belongsToAssignement: "",
+		belongsToService: "",
 		service_id: [],
-		note: null,
-		refusal_reason: null,
-		test: null,
+		note: "",
+		refusal_reason: "",
+		test: "",
 	},
 	
 	relations: [
@@ -30,7 +31,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 //					relatedModel: 'app.Models.Place',
 //					//collectionType: 'app.Collections.Places',
 //					includeInJSON: true,
-//	            },
+//	            },deadline_
 //				{
 //					// Create a cozy, recursive, one-to-one relationship
 //					type: Backbone.HasOne,
@@ -50,7 +51,29 @@ app.Models.Request = Backbone.RelationalModel.extend({
             ],
 
     
+	getId : function() {
+        return this.get('id');
+    },
+    setName : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ id : value });
+    },
 
+	getName : function() {
+        return this.get('name');
+    },
+    setName : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ name : value });
+    },
+    
+    getSite1 : function() {
+        return this.get('site1');
+    },
+    setSite1 : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ site1 : value });
+    },
 
 	getDescription : function() {
         return this.get('description');
@@ -61,8 +84,13 @@ app.Models.Request = Backbone.RelationalModel.extend({
     },
     
     getDeadline_date : function() {
-        return this.get('deadline_date');
+        return this.get('date_deadline');
     },
+    setDeadline_date : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ date_deadline : value });
+    },
+    
     setDescription : function(value) {
     	if( value == 'undefined') return;
         this.set({ deadline_date : value });
@@ -145,7 +173,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
     },
 
 
-		
 	/** Save Model
 	*/
 	save: function(data,options) { 
@@ -159,6 +186,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		this.setState( params.state );
 		this.setRefusalReason( params.refusal_reason );
 		this.setNote( params.note );
+		this.setDeadline_date( params.date_deadline);
 		//this.set({ service_id : params.service_id });
 	},
 
