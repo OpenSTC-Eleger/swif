@@ -187,7 +187,11 @@ app.Views.TasksListView = Backbone.View.extend({
 					            	self.element.modal('hide');
 					            self.model.update(params);
 					            app.collections.tasks.models[self.pos] = self.model;
-					            self.render();		            
+					        	app.collections.tasks.fetch({
+					        		success: function(){
+					        			self.render();	
+					        		}
+					        	});
 					        }
 					    },
 					    error: function () {
