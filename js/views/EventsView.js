@@ -27,9 +27,6 @@ app.Views.EventsView = Backbone.View.extend({
         },
         
 		save: function(id,params) {
-			//model = new app.Models.Task();
-/*			model.setId(params.id);
-			params.remove(params.id)*/
 			app.models.task.save(id, params,			
 				{
 				    success: function (data) {
@@ -86,6 +83,32 @@ app.Views.EventsView = Backbone.View.extend({
         edit: function() {
         	console.debug("Edit Event");
         },
+        
+        getColor: function(state) {	
+        	var color = 'green';
+        	switch (state) {        	
+        		case 'done' :
+			    	color = 'purple';
+			    	break;
+			    	
+//				case 'pending' :
+//			    	color = 'blue';
+//			    	break;
+//			    	
+//			    case 'open' :
+//			    	color = '#FFCCFF';
+//			    	break;
+//			    	
+//			    case 'cancelled' :
+//			    	color = '#CCFFCC';
+//			    	break;
+//			
+//			    case 'draft' :
+//			    	color = 'LemonChiffon';
+//			    	break;
+        	}
+        	return color;	
+        },
                 
         initEvents: function() {
         	this.events = [];
@@ -93,6 +116,7 @@ app.Views.EventsView = Backbone.View.extend({
         	
         	_.each(this.collection.toJSON(), function (task, i){
         		var event = { id: task.id, 
+        		              state: task.state,
         		              title: task.name, 
         		              start: task.date_start, 
         		              end: task.date_end, 
@@ -100,7 +124,8 @@ app.Views.EventsView = Backbone.View.extend({
         		              total_hours: task.total_hours,
         		              effective_hours: task.effective_hours,
         		              remaning_hours: task.remaining_hours,
-        		              allDay:false
+        		              allDay:false,
+        		              color: self.getColor(task.state)
         		             };
         		self.events.push(event);
         	});
@@ -139,40 +164,19 @@ app.Views.EventsView = Backbone.View.extend({
                 selectable: true,
                 selectHelper: true,
                 editable: true,
-                ignoreTimezone: false,                
-                //select: this.eventSelect,
+                ignoreTimezone: false,          
                 dragRevertDuration:0,
                 eventClick: this.eventClick,
-//                eventColor: {
-//					backgroundColor: 'black',
-//					borderColor: 'yellow',
-//				},
-                //eventDrop: this.eventDropOrResize,        
-//                eventResize: this.eventDropOrResize,
-				
-				//eventColor: '#378006',
-				
-//				viewDisplay: function() {
-//					// qTip call
-//					$('.fc-event', this).qtip();
-//				},
 
                 eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
 					app.loader('display');
 					
 				    params = { 
-				       //id: event.id,
 				       date_start: event.start,
 				       date_end: event.end,
-				       //planned_hours: 0.5,
-				       //user_id: null
 				    };
-				    //model = app.collections.tasks.get(event.id)
 					self.save(event.id,params);	
-				    	
-				    //self.planning.render();	
 				    $(self.el).fullCalendar('refresh');
-				    //$(self.el).fullCalendar('removeEvents', event.id);
 				    app.loader('hide');	
 				},
 				
@@ -181,76 +185,21 @@ app.Views.EventsView = Backbone.View.extend({
 					app.loader('display');
 					
 				    params = { 
-				       //id: event.id,
 				       date_start: event.start,
 				       date_end: event.end,
 				       planned_hours: (event.planned_hours + (minuteDelta)/60),
 				       remaining_hours: (event.planned_hours + (minuteDelta)/60),
-				       //user_id: null
 				    };
-				    //model = app.collections.tasks.get(event.id)
-					self.save(event.id,params);	
-				    	
-				    //self.planning.render();	
+					self.save(event.id,params);
 				    $(self.el).fullCalendar('refresh');
-				    //$(self.el).fullCalendar('removeEvents', event.id);
 				    app.loader('hide');	
 				},
                 
 				loading: function (bool) { 
-				
-
 				},
 				
 				eventRender: function(event, element) {
-					console.debug(element);		
-					
-					
-
-				
-				        //jQuery('#com_jc_msg_saving').fadeOut();
-				
-//				        jQuery.contextMenu({
-//				
-//				            selector: '.fc-event',//note the selector this will apply context to all events 
-//				            trigger: 'right',
-////				            callback: function(key, options) {
-////				                //this is the element that was rightclicked
-////				                console.log(options.$trigger.context);
-////				
-////				                switch(key)
-////				                {
-////				                case 'edit_event':
-////				
-////				                  break;
-////				                case 'del_event':
-////				
-////				                  break;
-////				                case 'add_event':
-////				
-////				                  break;
-////				
-////				                }
-////				
-////				            },
-//				            items: {
-//				                'edit_event': {name: 'Edit',  icon: "edit", callback: function(key, options) {
-//				            			self.edit();
-//				            		}
-//				            	 },
-//				                'del_event': {name: 'Delete', icon: "delete", callback: function(key, options) {self.remove();}},
-//				                'copy_event': {name: 'Copy', icon: "copy", callback: function(key, options) {self.copy();}},
-//				            }
-//				        });
-				    
-
-//					element.qtip({ content: event.description,
-//								   position: {
-//										corner:{target: 'topRight',tooltip: 'bottomLeft'}
-//											},	
-//								   show: 'mouseover',
-//								   hide: 'mouseout',
-//						});
+					//$(this.event).css('border-color', 'yellow');
 				},
 
 
@@ -285,55 +234,15 @@ app.Views.EventsView = Backbone.View.extend({
 				        title: 'Tâche attribuée',
 				        text: 'La tâche a correctement été attribué à l\'agent.'
 					    });
-				
-				
-				    //$(this).remove();     
+				    $(this).remove();     
 				},
 				
 //				select: function( startDate, endDate, allDay) {
 //					console.debug('Event Select');
 //				},
 				
-				eventDragStop: function(event, jsEvent, ui, view) {
-				    //if (self.isElemOverDiv($(this), $('div.accordion-group'))) {
-//					app.loader('display');
-//					
-//				    params = { 
-//				       id: event.id,
-//				       date_start: event.start,
-//				       date_end: event.end,
-//				       //user_id: null
-//				    };
-//				    model = app.collections.tasks.get(event.id)
-//					model.save(params);	
-//				    	
-//				    //self.planning.render();	
-//				    $(self.el).fullCalendar('refresh');
-//				    //$(self.el).fullCalendar('removeEvents', event.id);
-//				    app.loader('hide');
-				    
+				eventDragStop: function(event, jsEvent, ui, view) {				    
 				},
-				
-//				eventMouseover: function(event, domEvent) {
-//					var layer =	'<div id="events-layer" class="fc-transparent" style="position:absolute; width:100%; height:100%; top:-1px; text-align:right; z-index:100"><a><img src="../../images/editbt.png" title="edit" width="14" id="edbut'+event.id+'" border="0" style="padding-right:5px; padding-top:2px;" /></a><a><img src="../../images/delete.png" title="delete" width="14" id="delbut'+event.id+'" border="0" style="padding-right:5px; padding-top:2px;" /></a></div>';
-//					$(this).append(layer);
-//					$("#delbut"+event.id).hide();
-//					$("#delbut"+event.id).fadeIn(300);
-//					$("#delbut"+event.id).click(function() {
-//						//$.post("your.php", {eventId: event.id});
-//						calendar.fullCalendar('refetchEvents');
-//					});
-//					$("#edbut"+event.id).hide();
-//					$("#edbut"+event.id).fadeIn(300);
-//					$("#edbut"+event.id).click(function() {
-//						var title = prompt('Current Event Title: ' + event.title + '\n\nNew Event Title: ');
-//						
-//						if(title){
-//							//$.post("your.php", {eventId: event.id, eventTitle: title});
-//							calendar.fullCalendar('refetchEvents');
-//						}
-//					});
-//				},   
 
 			});
     	}

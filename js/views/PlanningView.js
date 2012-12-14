@@ -134,7 +134,7 @@ app.Views.PlanningView = Backbone.View.extend({
     getEvents: function(tasks) {
     	events = [];
     	_.each(tasks, function (task, i){
-    		var event = { id: task.id, title: task.name, start: task.date_start, end: task.date_end, allDay:false};
+    		var event = { id: task.id, state: task.state, title: task.name, start: task.date_start, end: task.date_end, allDay:false};
     		events.push(event);
     	});
     	return events;
@@ -152,6 +152,7 @@ app.Views.PlanningView = Backbone.View.extend({
     		el = $('li#task_'+task.id+':not(.disabled)');
 
             var eventObject = {
+                state: task.state,
                 id: task.id,
 				title: task.name,
 				user_id: task.user_id[0],

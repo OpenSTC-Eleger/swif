@@ -11,6 +11,7 @@
 	"name"					: "nom",
 	"label"					: "libellé",
 	"description"			: "description",
+	"note"					: "note",
 	"status"				: "statut",
 	"place" 				: "site",
 	"claiment" 				: "demandeur",
