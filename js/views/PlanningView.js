@@ -50,18 +50,25 @@ app.Views.PlanningView = Backbone.View.extend({
             //var user = app.models.user;  
             var officers = app.collections.officers.toJSON();
             
-            
-//            	var that = this;
-//            	_.each(app.models.user.attributes.service_ids,function (user_service_id){
-//            		that.agents += _.filter(officers, function(item,i){             	
-//            			var service = _.filter(item.service_ids,function (service_id){            		
-//            				return service_id == user_service_id;
-//            			}); 
-//            			return service.length != 0
-//            		}); 
-//            	});
- 
-
+            //Filter Agents : all agents belongs to user's services
+        	var that = this;
+        	_.each(app.models.user.attributes.service_ids,function (user_service_id){
+        		var agentsKeeped = _.filter(officers, function(item,i){             	
+        			var service = _.filter(item.service_ids,function (service_id){            		
+        				return service_id == user_service_id;
+        			}); 
+        			return service.length != 0
+        		});
+        		if ( that.agent == null )
+        			that.agent = agentsKeeped;
+        		else {
+        			that.agent = _.union(that.agent, agentsKeeped);
+        		}
+        	}); 
+        	//remove admin
+        	if ( that.agent.length > 0 )
+        		that.agent = _.without(that.agent,that.agent[0]);
+        	
             var interventions = app.collections.interventions.models;
             console.log(app.collections.interventions);
 
@@ -70,12 +77,12 @@ app.Views.PlanningView = Backbone.View.extend({
             });
             
             interventionSorted = new app.Collections.Interventions(interventionsSortedArray);
-            agentsFiltered = new app.Collections.Users(this.agents);
+            //agentsFiltered = new app.Collections.Users(that.agents);
 
         	var template = _.template(templateData, {
         		lang: app.lang,
         		interventions: interventionSorted.toJSON(),
-        		officers: officers            		
+        		officers: that.agent,            		
             });
 
             $(self.el).html(template);
@@ -170,10 +177,10 @@ app.Views.PlanningView = Backbone.View.extend({
                 id: task.id,
 				title: task.name,
 				user_id: task.user_id[0],
-				planned_hours: 0.5,
-				total_hours: 0,
-				effective_hours: 0,
-				remaining_hours: 0.5,
+				planned_hours: task.planned_hours,
+				total_hours: task.total_hours,
+				effective_hours: task.effective_hours,
+				remaining_hours: task.remaining_hours,
 			};
 			
 			// Store the Event Object in the DOM element so we can get to it later //

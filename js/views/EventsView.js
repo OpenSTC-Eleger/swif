@@ -212,8 +212,12 @@ app.Views.EventsView = Backbone.View.extend({
 				    var copiedEventObject = $.extend({}, originalEventObject);
 				
 				    // assign it the date that was reported
-				    copiedEventObject.start = date;
-				    copiedEventObject.end = date + planned_hours;
+				    var dateStart = date;
+				    var dateEnd = new Date(date); ;
+				    
+				    
+				    copiedEventObject.start = dateStart;
+				    copiedEventObject.end = new Date(dateEnd.setHours( dateEnd.getHours()+copiedEventObject.planned_hours )); 
 				    copiedEventObject.allDay = allDay;
 				
 				    // render the event on the calendar
@@ -223,10 +227,10 @@ app.Views.EventsView = Backbone.View.extend({
 				    params = { 
 		               //id: copiedEventObject.id,
 				       state: 'pending',
-		    		   date_end: date,
-		               date_start: date,
-		               planned_hours: 0.5,
-		               remaining_hours: 0.5,
+		               date_start: copiedEventObject.start,
+		    		   date_end: copiedEventObject.end,		               
+		               planned_hours: copiedEventObject.planned_hours,
+		               remaining_hours: copiedEventObject.remanning_hours,
 		               user_id: self.officer_id
 				    };
 				    self.save(copiedEventObject.id,params);
