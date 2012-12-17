@@ -7,13 +7,16 @@ app.Views.InterventionsView = Backbone.View.extend({
 
     templateHTML: 'interventions',
     
-    //task: app.models.task,
+    
+    selectedInter : '',
+    selectedTask : '',
 
     
     // The DOM events //
     events: {
-        'click .btn.addTask'    : 'displayFormAddTask',
-        'click button.saveTask'       : 'saveTask'
+        'click .btn.addTask'                : 'displayFormAddTask',
+        'click button.saveTask'             : 'saveTask',
+        'click a.accordion-intervention'    : 'tableAccordion'
     },
 
 
@@ -76,6 +79,36 @@ app.Views.InterventionsView = Backbone.View.extend({
         $(this.el).hide().fadeIn('slow');
         return this;
     },
+
+
+
+    /** Fonction collapse table row
+    */
+    tableAccordion: function(e){
+
+        e.preventDefault();
+        
+        // Retrieve the intervention ID //
+        var id = _($(e.target).attr('href')).strRightBack('_');
+
+
+        // Reset the default visibility //
+        $('tr.expend').css({ display: 'none' }).removeClass('expend');
+        $('i.icon-caret-down').removeClass('icon-caret-down').addClass('icon-caret-right');
+        
+        
+        // If the table row isn't already expend //       
+        if(!$('#collapse_'+id).hasClass('expend')){
+            
+            //alert('Already Open');
+
+            // Set the new visibility to the selected intervention //
+            $('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
+            $(e.target).children('i').removeClass('icon-caret-right').addClass('icon-caret-down');
+        }
+           
+    },
+
 
 
     /** Display the form to add a new Task
