@@ -8,6 +8,19 @@ app.Models.Request = Backbone.RelationalModel.extend({
 	
 	url: "/#demandes-dinterventions/:id",
 	
+	relations: [{
+		type: Backbone.HasMany,
+		key: 'intervention_ids',
+		relatedModel: 'app.Models.Intervention',
+		collectionType: 'app.Collections.Interventions',
+		includeInJSON: 'id',
+		reverseRelation: {
+			type: Backbone.HasOne,
+			key: 'ask',
+			includeInJSON: ['id','manager_id'],
+		}
+	}],
+	
 	defaults: {
 		id: 0,
 		name: "",
@@ -22,33 +35,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		refusal_reason: "",
 		test: "",
 	},
-	
-	relations: [
-//	            {
-//					type: Backbone.HasOne,
-//					key: 'site1',
-//					//keyDestination: 'test',
-//					relatedModel: 'app.Models.Place',
-//					//collectionType: 'app.Collections.Places',
-//					includeInJSON: true,
-//	            },deadline_
-//				{
-//					// Create a cozy, recursive, one-to-one relationship
-//					type: Backbone.HasOne,
-//					key: 'service_id',
-//					relatedModel: 'app.Models.Request',
-//					reverseRelation: {
-//						key: 'asksBelongsto'
-//					}
-//				},
-//				{
-//					type: Backbone.HasOne,
-//					key: 'service_id',
-//					relatedModel: 'app.Models.ClaimerService',
-//					collectionType: 'app.Collections.ClaimersServices',
-//					includeInJSON: true,
-//				},
-            ],
 
     
 	getId : function() {

@@ -23,7 +23,7 @@ app.Views.EventsView = Backbone.View.extend({
         
         render: function() {	
         	this.initEvents();
-        	this.initCalendar();       
+        	this.initCalendar();          	
         },
         
 		save: function(id,params) {
@@ -58,7 +58,7 @@ app.Views.EventsView = Backbone.View.extend({
         eventClick: function(fcEvent, jsEvent, view) {
         	var self = this;
             this.eventView.model = this.collection.get(fcEvent.id);
-            this.eventView.render($(jsEvent.currentTarget))
+            this.eventView.render($(jsEvent.currentTarget),this.el.fullCalendar)
         },
         change: function(event) {
             // Look up the underlying event in the calendar and update its details from the model
@@ -213,6 +213,7 @@ app.Views.EventsView = Backbone.View.extend({
 				
 				    // assign it the date that was reported
 				    copiedEventObject.start = date;
+				    copiedEventObject.end = date + planned_hours;
 				    copiedEventObject.allDay = allDay;
 				
 				    // render the event on the calendar

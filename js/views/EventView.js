@@ -2,15 +2,15 @@ app.Views.EventView = Backbone.View.extend({
 	  
 	
 		templateHTML: 'tooltip',
-		
 
        
         initialize: function() {
             _.bindAll(this);           
         },
         
-        render: function(event) {
+        render: function(event, calendar) {
         	this.event = event;
+        	this.calendar = calendar;
         	var self= this;
         	
 	        $.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -32,12 +32,24 @@ app.Views.EventView = Backbone.View.extend({
 	        		//hide: {event: "mouseout"}, // Don't' hide unless we call hide()
 					events: {
 		                render: function(event, api) {
-	        			   $('#taskNote').val(self.model.get('notes'));	        			   
+	        			   $('#taskNote').val(self.model.get('notes'));	
+	        			   	        			   var params = {};
+	   	        			$("form",this).find(".btn").each(function(){
+							    $(this).bind('click', function(){
+	        				   
+		        				   	params = {
+								        state: app.Models.Task.state[2].value,
+										user_id: null,
+										date_end: null,
+										date_start: null,
+									};
+								    self.model.save(self.model.get('id'),params);
+								    $(this).destroy();
+								    self.calendar('removeEvent',event.id);
+								});
+	        					//event.preventDefault();
+	        				});
 	                	},
-	                    text: function() {
-	                		$('#taskNote').val(self.model.get('notes'));
-	                        return $(this);
-	                    }
 	        			//hide: function(event, api) { api.destroy(); }
 	        			   					      
 					},
@@ -49,7 +61,7 @@ app.Views.EventView = Backbone.View.extend({
 	                        y: -2,
 	                        resize: false // We'll handle it manually
 	                    },
-	                    viewport: self.el,
+	                    viewport: $(window),
 	                    container: self.el
 	                },
 	                show: {

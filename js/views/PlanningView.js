@@ -30,8 +30,6 @@ app.Views.PlanningView = Backbone.View.extend({
     */
     initialize : function(user) {
         console.log('Planning view');
-        this.render();
-
     },
 
 
@@ -48,6 +46,21 @@ app.Views.PlanningView = Backbone.View.extend({
             app.router.setPageTitle(app.lang.viewsTitles.planning);
             // Change the Grid Mode of the view //
             app.views.headerView.switchGridMode('fluid');
+            
+            //var user = app.models.user;  
+            var officers = app.collections.officers.toJSON();
+            
+            
+//            	var that = this;
+//            	_.each(app.models.user.attributes.service_ids,function (user_service_id){
+//            		that.agents += _.filter(officers, function(item,i){             	
+//            			var service = _.filter(item.service_ids,function (service_id){            		
+//            				return service_id == user_service_id;
+//            			}); 
+//            			return service.length != 0
+//            		}); 
+//            	});
+ 
 
             var interventions = app.collections.interventions.models;
             console.log(app.collections.interventions);
@@ -57,11 +70,12 @@ app.Views.PlanningView = Backbone.View.extend({
             });
             
             interventionSorted = new app.Collections.Interventions(interventionsSortedArray);
+            agentsFiltered = new app.Collections.Users(this.agents);
 
         	var template = _.template(templateData, {
         		lang: app.lang,
         		interventions: interventionSorted.toJSON(),
-        		officers: app.collections.officers.toJSON()            		
+        		officers: officers            		
             });
 
             $(self.el).html(template);
@@ -287,7 +301,7 @@ app.Views.PlanningView = Backbone.View.extend({
 					                success: function(){						 		
 										route = Backbone.history.fragment;
 										app.router.navigate('#planning',  {'trigger': true, replace: true});	
-										self.initialize();
+										self.render();
 							 		}					 
 						 		});
 					 		}					 

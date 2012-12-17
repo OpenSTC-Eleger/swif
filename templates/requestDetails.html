@@ -1,5 +1,5 @@
 
-<% if (request.id != null) { %>
+<% if ( request.id != null && request.id !=0 ) { %>
     <h1><%= lang.viewsTitles.requestDetail %> n°<%= request.id %></h1><br />
 <% } else { %>
     <h1><%= lang.viewsTitles.newRequest %></h1><br />

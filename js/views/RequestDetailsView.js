@@ -27,9 +27,10 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 		/** View Initialization
 		 */
 		initialize: function (model, create) {
+			//$(this.el).empty();
 		    this.model = model;
 		    this.create = create;
-		    this.render();		    
+		    //this.render();		    
 	    },
 
 
@@ -108,7 +109,7 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 			});
 	
 			$(this.el).hide().fadeIn('slow'); 
-			this.setElement(this.el, true);
+			//this.setElement(this.el, true);
 			return this;
 	    },
 	    
@@ -175,8 +176,8 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 //							app.collections.requests.add(self.model);
 						//self.render();
 						//self.undelegateEvents();
-						self.setElement(this.el, false);
-						self = null;
+						//self.setElement(this.el, false);
+						//self = null;
 						app.router.navigate('#' , true);
 						console.log('Success SAVE REQUEST');
 					}

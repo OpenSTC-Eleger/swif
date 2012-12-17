@@ -43,6 +43,23 @@ app.Router = Backbone.Router.extend({
         app.views.headerView = new app.Views.HeaderView();
         app.views.footerView = new app.Views.FooterView();
     },
+    
+    render: function (view) {
+        //Close the current view
+        if (this.currentView) {
+		    if (this.currentView.$el) this.currentView.undelegateEvents();
+		    this.currentView.$el = (this.currentView.el instanceof $) ? this.currentView.el : $(this.currentView.el);
+		    this.currentView.el = this.currentView.$el[0];
+        }
+
+        //render the new view
+        view.render();
+
+        //Set the current view
+        this.currentView = view;
+
+        return this;
+    },
 
 
 
@@ -97,14 +114,11 @@ app.Router = Backbone.Router.extend({
     login: function(){
         // Check if the user is connect //
         if(!this.checkConnect()){
-
             // If the view exist we reuse it //        	
-            if(app.views.loginView){
-                app.views.loginView.render();
-            }
-            else{
-                app.views.loginView = new app.Views.LoginView(app.models.user);
-            }
+            //if(app.views.loginView == null){
+            	app.views.loginView = new app.Views.LoginView(app.models.user);
+            //}
+            this.render(app.views.loginView);
         }
         else{
             this.navigate(this.homePage, {trigger: true, replace: true});
@@ -124,14 +138,14 @@ app.Router = Backbone.Router.extend({
     about: function(){
         // Check if the user is connect //
         if(this.checkConnect()){
-
             // If the view exist we reuse it //
-            if(app.views.aboutView) {
-                app.views.aboutView.render();
-            }
-            else{
+//            if(app.views.aboutView) {
+//                app.views.aboutView.render();
+//            }
+//            else{
                 app.views.aboutView = new app.Views.AboutView();
-            }
+                this.render(app.views.aboutView);
+//            }
 
         }
         else{
@@ -147,6 +161,7 @@ app.Router = Backbone.Router.extend({
     /** Requests List
     */
     requestsList: function(page) {
+    	var self = this;
 
         // Check if the user is connect //
         if(this.checkConnect()){
@@ -172,15 +187,20 @@ app.Router = Backbone.Router.extend({
 			    			}
 				            app.collections.claimersServices.fetch({
 				            	success: function(){	            
-					                if(app.views.requestsListView == null) {
-					                    app.views.requestsListView = new app.Views.RequestsListView({page: self.page});
-					                } 
-					                else {
-					                    app.views.requestsListView.options.page = self.page;
-					                    app.views.requestsListView.render();             
-					                }
-					                app.loader('hide');
-				            	}
+//					                if(app.views.requestsListView == null) {
+//					                    app.views.requestsListView = new app.Views.RequestsListView({page: self.page});
+//					                } 
+//					                else {
+//					                    app.views.requestsListView.options.page = self.page;
+//					                    app.views.requestsListView.render();             
+//					                }
+					                
+					                app.views.requestsListView = new app.Views.RequestsListView({page: self.page});
+					                self.render(app.views.requestsListView);
+				            	},
+	                        	complete: function(){
+	                        	    app.loader('hide');
+	                        	}
 				            });
 					   }
 		            });
@@ -237,6 +257,7 @@ app.Router = Backbone.Router.extend({
 						                        success: function(){
 						                            //if(app.views.requestsDetailsView == null) {
 						                                app.views.requestsDetailsView = new app.Views.RequestDetailsView(self.request, false);
+						                                self.render(app.views.requestsDetailsView);
 //						                            } 
 //						                            else {
 //						                                app.views.requestsDetailsView.initialize(self.request, false);             
@@ -317,6 +338,7 @@ app.Router = Backbone.Router.extend({
 //	            	                app.views.requestView = null  
 //	            	            }
 								app.views.requestView = new app.Views.RequestDetailsView( self.request, true);
+								self.render(app.views.requestView);
 
 //	            	            if(app.views.requestView == null) {          
 //	            	                app.views.requestView = new app.Views.RequestDetailsView( request, true);  
@@ -352,6 +374,8 @@ app.Router = Backbone.Router.extend({
     /** Interventions app
     */
     interventions: function(){
+    	
+    	var self = this;
         
         // Check if the user is connect //
         if(this.checkConnect()){
@@ -375,26 +399,37 @@ app.Router = Backbone.Router.extend({
 			
 			            app.collections.interventions.fetch({
 			                success: function(){
-				            	if(app.collections.categories == null ){
-				            		app.collections.categories = new app.Collections.Categories();
-								}
-					            app.collections.categories.fetch({
-					            	success: function(){
-					                    // If the view exist we reuse it //
-					                    if(app.views.interventionsView){
-					                        app.views.interventionsView.render();
-					                    }
-					                    else{
-					                        app.views.interventionsView = new app.Views.InterventionsView();
-					                    }
-					                 }
-					             });
+					            if(app.collections.requests == null ){
+					                app.collections.requests = new app.Collections.Requests();
+					            }
+					
+					            app.collections.requests.fetch({
+					                success: function(){
+			            	
+						            	if(app.collections.categories == null ){
+						            		app.collections.categories = new app.Collections.Categories();
+										}
+							            app.collections.categories.fetch({
+							            	success: function(){
+							                    // If the view exist we reuse it //
+//							                    if(app.views.interventionsView){
+//							                        app.views.interventionsView.render();
+//							                    }
+//							                    else{
+//							                        app.views.interventionsView = new app.Views.InterventionsView();
+//							                    }
+							                    app.views.interventionsView = new app.Views.InterventionsView();
+							                    self.render(app.views.interventionsView);
+							                 },
+						                	complete: function(){
+						                	    app.loader('hide');
+						                	}	
+							             });
+							        }
+					            });
 			                }
 			            });
-	                },
-                	complete: function(){
-                	    app.loader('hide');
-                	}	                
+	                }                
 	            });
         }
         else{
@@ -407,6 +442,8 @@ app.Router = Backbone.Router.extend({
     /** Planning
     */
     planning: function(){
+    	
+    	var self = this;
 	
         // Check if the user is connect //
         if(this.checkConnect()){  
@@ -439,19 +476,23 @@ app.Router = Backbone.Router.extend({
 							            app.collections.categories.fetch({
 							            	success: function(){
 									            // If the view exist we reuse it //
-									            if(app.views.planningView){
-									                app.views.planningView.render();
-									            }
-									            else{
-									                app.views.planningView = new app.Views.PlanningView();
-									            }
-									        }
+//									            if(app.views.planningView){
+//									                app.views.planningView.render();
+//									            }
+//									            else{
+//									                app.views.planningView = new app.Views.PlanningView();
+//									            }
+									            app.views.planningView = new app.Views.PlanningView();
+									            self.render(app.views.planningView);
+									        },
+				                        	complete: function(){
+				                        	    app.loader('hide');
+				                        	}
 								        });
 							     	}				        	
 					        	});					            				             
 				        	} 			        		
 			        	});	
-			        	app.loader('hide');	
             		}  
             	 });
         }
@@ -480,17 +521,20 @@ app.Router = Backbone.Router.extend({
         	app.loader('display');
         	app.collections.tasks.fetch({
         		success: function(){
-			            if(app.views.tasksListView){
-			            	app.views.tasksListView.options.page = self.page;
-			                app.views.tasksListView.render();
-			            }
-			            else{
-			            	app.views.tasksListView = new app.Views.TasksListView({page: self.page});
-			            }
-	        	} 			        		
-        	});	
-        	app.loader('hide');	
-
+//			            if(app.views.tasksListView){
+//			            	app.views.tasksListView.options.page = self.page;
+//			                app.views.tasksListView.render();
+//			            }
+//			            else{
+//			            	app.views.tasksListView = new app.Views.TasksListView({page: self.page});
+//			            }
+        			app.views.tasksListView = new app.Views.TasksListView({page: self.page});
+        			self.render(app.views.tasksListView);
+	        	},
+            	complete: function(){
+            	    app.loader('hide');
+            	}			        		
+        	});
         }
         else{
             this.navigate('login', {trigger: true, replace: true});

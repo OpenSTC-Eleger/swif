@@ -18,7 +18,7 @@ app.Views.AboutView = Backbone.View.extend({
     /** View Initialization
     */
     initialize : function(user) {
-        this.render();
+        //this.render();
    },
 
 

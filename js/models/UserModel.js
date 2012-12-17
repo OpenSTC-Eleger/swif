@@ -5,6 +5,19 @@ app.Models.User = Backbone.Model.extend({
 
     // Model name in the database //
     model_name : 'res.users',
+    
+	relations: [
+        {
+			type: Backbone.HasMany,
+			key: 'service_ids',
+			relatedModel: 'app.Models.ClaimerService',
+	        reverseRelation: {
+				type: Backbone.HasMany,
+	            key: 'users',
+	            includeInJSON: ['id','name'],
+	        }
+        },
+	],
 
     defaults: {
         uid             : '',
@@ -12,7 +25,8 @@ app.Models.User = Backbone.Model.extend({
         sessionID       : '',
         lastConnection  : '',
         firstname       : '',
-        lastname        : ''
+        lastname        : '',
+        service_ids		: []
     },
 
     initialize: function(){
@@ -83,6 +97,13 @@ app.Models.User = Backbone.Model.extend({
         else{
             return false;
         }
+    },
+    
+    getServices : function() {
+        return this.get('service_ids');
+    },
+    setServices : function(value) {
+        this.set({ service_ids : value });
     },
 
 
@@ -204,7 +225,7 @@ app.Models.User = Backbone.Model.extend({
         "use strict";
         var self = this;
 
-        var fields = ['firstname', 'name', 'groups', 'in_group_15', 'in_group_17', 'in_group_18', 'in_group_19'];
+        var fields = ['firstname', 'name', 'groups', 'service_ids', 'in_group_15', 'in_group_17', 'in_group_18', 'in_group_19'];
 
         app.getOE(this.model_name, fields, [self.getUID()], self.getSessionID(),
             ({
@@ -213,6 +234,7 @@ app.Models.User = Backbone.Model.extend({
     				self.setFirstname(data.result[0].firstname);
     				self.setLastname(data.result[0].name);
                     self.setGroups(data.result[0].groups_id);
+                    self.setServices(data.result[0].service_ids);
     				self.save();
     			},
                 error: function(error){

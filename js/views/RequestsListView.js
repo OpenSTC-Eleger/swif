@@ -31,7 +31,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 	/** View Initialization
 	*/
     initialize: function () {			
-		this.render();
+		//this.render();
     },
     
 
@@ -229,7 +229,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		        }
 		        else{					        	
 		            console.log('Success VALID REQUEST');
-		            self.initialize();
+		            self.render();
 		        }
 		    },
 		    error: function () {
@@ -247,7 +247,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		        state: app.Models.Request.state[0].value,
 		        refusal_reason: $('#motifRefuse').val(),		
 		};		
-		this.saveNewState(params);
+		this.saveNewState( params,$('#modalRefuseRequest') );
 	},
 
 
@@ -260,12 +260,13 @@ app.Views.RequestsListView = Backbone.View.extend({
 		        state: app.Models.Request.state[2].value,
 		        note: $('#motifDST').val(),		
 		};
-		this.saveNewState(params);
+		this.saveNewState( params, $('#modalConfirmDSTRequest') );
 
 	},
 
-	saveNewState: function(params) {
+	saveNewState: function(params, element) {
 		var self = this;
+		self.element = element;
 		self.params = params
 		this.model.save(params, {
 				    success: function (data) {
@@ -275,10 +276,11 @@ app.Views.RequestsListView = Backbone.View.extend({
 					        }
 					        else{					        	
 					            console.log('NEW STATE REQUEST SAVED');
-					            $('#modalConfirmDSTRequest').modal('hide');
+					            if( self.element!= null )
+					            	self.element.modal('hide');
 					            self.model.update(params);
 					            app.collections.requests.models[self.pos] = self.model;
-					            self.initialize();
+					            self.render();
 					        }
 					    },
 					    error: function () {

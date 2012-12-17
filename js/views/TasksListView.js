@@ -27,7 +27,7 @@ app.Views.TasksListView = Backbone.View.extend({
 	/** View Initialization
 	*/
     initialize: function () {
-		this.render();
+		
     },
 
 

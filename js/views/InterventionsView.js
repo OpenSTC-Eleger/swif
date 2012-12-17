@@ -22,7 +22,6 @@ app.Views.InterventionsView = Backbone.View.extend({
     */
     initialize : function() {
         console.log('Interventions view Initialize');
-        this.render();
     },
 
 
@@ -121,9 +120,9 @@ app.Views.InterventionsView = Backbone.View.extend({
 					 		success: function(){						 	
 						 		app.collections.interventions.fetch({
 					                success: function(){						 		
-										route = Backbone.history.fragment;
-										app.router.navigate('#interventions',  {'trigger': true, replace: true});	
-										self.initialize();
+										//route = Backbone.history.fragment;
+										//app.router.navigate('#interventions',  {'trigger': true, replace: true});	
+										self.render();
 							 		}					 
 						 		});
 					 		}					 
