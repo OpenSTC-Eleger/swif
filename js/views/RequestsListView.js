@@ -215,7 +215,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		
 		params = {
 				name: this.model.getName(),
-				//state: app.Models.Request.state[3].value,
+				state: app.Models.Request.state[0].value,
 		        date_deadline: this.model.getDeadline_date(),
 		        site1: this.model.getSite1()[0],
 		        ask_id: this.model.getId(),		

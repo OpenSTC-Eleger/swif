@@ -37,4 +37,35 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 	},
 
 
+}, {
+
+// Request State Initialization //
+state:  [        
+	{
+        value       : 'toscheduled',
+        color       : 'important',
+        traduction  : '',
+    },
+    {
+        value       : 'scheduled',
+        color       : 'info',
+        traduction  : '',
+    },
+    {
+        value       : 'pending',
+        color       : 'warning',
+        traduction  : '', 
+    },
+    {
+        value       : 'closing',
+        color       : 'success',
+        traduction  : '',   
+    },
+    {
+        value       : 'canceled',
+        color       : '',
+        traduction  : '',  
+    }
+]
+
 });
