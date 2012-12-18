@@ -34,7 +34,7 @@
 							<ul class="unstyled tasks">
 								<!-- Loop Each Tasks -->
 								<% 
-									var allPlanned = false;
+									var allPlanned = true;
 
 									_.each(inter.tasks, function (task, i) { %>
 									
@@ -45,12 +45,12 @@
 												<strong><%= task.name %></strong>
 												<small class="pull-right"><%= task.planned_hours %>h</small>
 										<% 
-											allPlanned = true;
+											
 										} else{ %>
 											<li id="task_<%= task.id %>" class="external-event">&nbsp;
 												<strong><%= task.name %></strong>
 												<small class="badge pull-right"><%= task.planned_hours %>h</small>
-										<% 
+										<% 										
 											allPlanned = false;
 										}  %>
 
@@ -68,7 +68,15 @@
 								</button>
 
 								<button 
-									class="btn btn-success btn-small pull-right no-outline <%= (allPlanned) ? "" : 'disabled' %>" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.enclosePlanning) %>" data-placement="left">
+									class="btn btn-success btn-small pull-right no-outline" rel="tooltip" 
+										data-original-title="<%= _.capitalize(lang.actions.enclosePlanning) %>" 
+										data-placement="left" 
+										currentState="<%=inter.state%>" 
+										state="<%=app.Models.Intervention.state[1].value%>"										
+										test1 = "<%= allPlanned %>"
+										test2 = "<%= inter.state != app.Models.Intervention.state[1].value%>"
+										resultat = "<%= (allPlanned && (inter.state != app.Models.Intervention.state[1].value)) %>"
+										<%= (allPlanned && (inter.state != app.Models.Intervention.state[1].value)) ? "" : 'disabled' %>>
 									<i class="icon-check"></i>
 								</button>
 							</div>
@@ -104,9 +112,9 @@
 			  		<h4><i class="icon-group icon-large"></i>&nbsp;&nbsp;&nbsp;&nbsp;Agents&nbsp;&nbsp;<span class="badge pull-right"><%= _.size(officers) %></span></h4></li>
 				<li class="divider"></li>
 				
-				<% _.each(officers, function (officer, i) { %>
+				<%_.each(officers, function (officer, i) { %>
 					<li><a href="#<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>"><i class="icon-caret-right"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
-				<% }) %>
+				<% }) %>	
 			</ul>
 		</div>
 		<!-- /List Agents -->

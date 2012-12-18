@@ -144,36 +144,8 @@ app.Views.InterventionsView = Backbone.View.extend({
 	         category_id: input_category_id,	         
 		     planned_hours: this.$('#taskHour').val(),
 	     };
-
-	    app.models.task.save(0,params,{
-			success: function (data) {
-				console.log(data);
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					$('#modalAddTask').modal('hide');        	
-        	
-					 	app.collections.tasks.fetch({  
-					 		success: function(){						 	
-						 		app.collections.interventions.fetch({
-					                success: function(){						 		
-										//route = Backbone.history.fragment;
-										//app.router.navigate('#interventions',  {'trigger': true, replace: true});	
-										self.render();
-							 		}					 
-						 		});
-					 		}					 
-				 		});
-						 		
-
-					console.log('Success SAVE TASK');
-				}
-			},
-			error: function () {
-				console.log('ERROR - Unable to save the Request - RequestDetailsView.js');
-			},	     
-		});
+	     //TODO : test
+	     app.models.task.save(0,params,$('#modalAddTask'), null, "interventions");
    }
   
 });

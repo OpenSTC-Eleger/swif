@@ -175,29 +175,31 @@ app.Views.TasksListView = Backbone.View.extend({
 		var self = this;
 		self.params = params;
 		self.element = element;
-		this.model.save(this.model.id,params, {
-				    success: function (data) {
-					        console.log(data);
-					        if(data.error){
-					    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-					        }
-					        else{					        	
-					            console.log('NEW STATE TASK SAVED');
-					            if( self.element!= null )
-					            	self.element.modal('hide');
-					            self.model.update(params);
-					            app.collections.tasks.models[self.pos] = self.model;
-					        	app.collections.tasks.fetch({
-					        		success: function(){
-					        			self.render();	
-					        		}
-					        	});
-					        }
-					    },
-					    error: function () {
-							console.log('ERROR - Unable to valid the Request - RequestsListView.js');
-					    },           
-					},false);
+		app.models.task.save(this.model.id, params, element, this);
+		
+//		this.model.save(this.model.id,params, {
+//				    success: function (data) {
+//					        console.log(data);
+//					        if(data.error){
+//					    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+//					        }
+//					        else{					        	
+//					            console.log('NEW STATE TASK SAVED');
+//					            if( self.element!= null )
+//					            	self.element.modal('hide');
+//					            self.model.update(params);
+//					            app.collections.tasks.models[self.pos] = self.model;
+//					        	app.collections.tasks.fetch({
+//					        		success: function(){
+//					        			self.render();	
+//					        		}
+//					        	});
+//					        }
+//					    },
+//					    error: function () {
+//							console.log('ERROR - Unable to valid the Request - RequestsListView.js');
+//					    },           
+//					},false);
 	},
 
     preventDefault: function(event){

@@ -172,6 +172,9 @@
 		</table>
 	<% }
 	else { %>
+		<div class="tableToolbar">
+			<a href="#" class="btn btn-primary"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
+		</div>	
 		<!-- No request in the Database -->
 		<div class="alert alert-info">
 			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>.
