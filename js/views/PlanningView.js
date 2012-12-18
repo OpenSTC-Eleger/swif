@@ -22,7 +22,9 @@ app.Views.PlanningView = Backbone.View.extend({
         'click button.btnDeleteTask'   : 'deleteTask',
         	
         'click .btn.addTaskPlanning'    : 'displayFormAddTask',
-        'click button.saveTaskPlanning'       : 'saveTask'
+        'click button.saveTaskPlanning'       : 'saveTask',
+        
+        'click .btn.pull-right'    : 'scheduledInter',
     },
 
 
@@ -88,9 +90,8 @@ app.Views.PlanningView = Backbone.View.extend({
             $(self.el).html(template);
             self.initCalendar();
             self.initDragObject();
-            
 
-            $('[data-spy="affix"]').affix();
+            $('[data-spy="affix"]').affix();            
             $('[data-spy="scroll"], #listAgents').scrollspy();
             $('*[rel="tooltip"]').tooltip({placement: "left"});
 
@@ -104,6 +105,11 @@ app.Views.PlanningView = Backbone.View.extend({
 		        
 		        return false;
 		    });
+            
+            $('ul.nav li.active').removeClass('active');
+            //$('ul.nav li.active').first().addClass('active');
+            
+
 
         });
        
@@ -117,27 +123,7 @@ app.Views.PlanningView = Backbone.View.extend({
     setModel : function(model) {
         this.model = model;
         return this;
-    },
-    
-    save: function(params) {
-		app.models.task.save(params,			
-			{
-			    success: function (data) {
-			        console.log(data);
-			        if(data.error){
-			    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-			        }
-			        else{
-			            console.log('Success SAVE REQUEST');
-			        }
-			    },
-			    error: function () {
-					console.log('ERROR - Unable to save the Request - RequestDetailsView.js');
-			    },           
-		},
-        false);
-    },
-    
+    },    
     	
     initCalendar: function() {
 	
@@ -238,7 +224,19 @@ app.Views.PlanningView = Backbone.View.extend({
     },
 
 
-
+    scheduledInter: function(e) {
+		var self = this;
+		
+		var intervention = $(e.target);
+		var id = _(intervention.parents('.accordion-body').attr('id')).strRightBack('_');
+		
+		params = {
+				state: app.Models.Intervention.state[1].value,
+		};
+		
+		app.models.intervention.save(id,params,null,this);	
+	},
+	
     /** Delete intervention
     */
     deleteInter: function(e){
@@ -273,7 +271,7 @@ app.Views.PlanningView = Backbone.View.extend({
     saveTask: function(e){
     	 var self = this;
 
-		e.preventDefault();
+		 e.preventDefault();
 		
 		 
 		 input_category_id = null;
@@ -286,42 +284,8 @@ app.Views.PlanningView = Backbone.View.extend({
 	         category_id: input_category_id,	         
 		     planned_hours: this.$('#taskHour').val(),
 	     };
-
-	    app.models.task.save(0,params,{
-            beforeSend: function(){
-	            app.loader('display');
-	        },
-        	complete: function(){
-        	    app.loader('hide');
-        	},
-			success: function (data) {
-				console.log(data);
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					$('#modalAddTask').modal('hide');        	
-        	
-					 	app.collections.tasks.fetch({  
-					 		success: function(){						 	
-						 		app.collections.interventions.fetch({
-					                success: function(){						 		
-										route = Backbone.history.fragment;
-										app.router.navigate('#planning',  {'trigger': true, replace: true});	
-										self.render();
-							 		}					 
-						 		});
-					 		}					 
-				 		});
-						 		
-
-					console.log('Success SAVE TASK');
-				}
-			},
-			error: function () {
-				console.log('ERROR - Unable to save the Request - RequestDetailsView.js');
-			},	     
-		});
+	     
+	    app.models.task.save(0,params,$('#modalAddTask'), this, "#planning");
    }
 
 

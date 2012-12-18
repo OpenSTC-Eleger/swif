@@ -32,8 +32,41 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
         return response;
     },
     
-	save: function(data,options) { 
-    	app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
+//	save: function(id,data,options) { 
+//    	app.saveOE(id, data, this.model_name, app.models.user.getSessionID(), options);
+//	},
+	
+	save: function(id,data,closeModal, view, strRoute) { 
+		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {
+		    success: function (data) {
+		        console.log(data);
+		        if(data.error){
+		    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+		        }
+		        else{
+		        	if( closeModal!= null )
+		            	closeModal.modal('hide');
+		        	if( view ) {
+		                if(app.collections.interventions == null ){
+		                    app.collections.interventions = new app.Collections.Interventions();
+		                }		        		
+				 		app.collections.interventions.fetch({
+			                success: function(){				 			
+				 				if( strRoute ) {
+									route = Backbone.history.fragment;
+									Backbone.history.loadUrl(route);
+								}
+								else if (view)
+									view.render();
+					 		}					 
+				 		});					 	
+					}
+		        }
+		    },
+		    error: function () {
+				console.log('ERROR - Unable to save the Request - RequestDetailsView.js');
+		    }, 
+		});
 	},
 
 

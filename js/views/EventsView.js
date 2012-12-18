@@ -25,25 +25,7 @@ app.Views.EventsView = Backbone.View.extend({
         	this.initEvents();
         	this.initCalendar();          	
         },
-        
-		save: function(id,params) {
-			app.models.task.save(id, params,			
-				{
-				    success: function (data) {
-				        console.log(data);
-				        if(data.error){
-				    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				        }
-				        else{
-				            console.log('Success SAVE REQUEST');
-				        }
-				    },
-				    error: function () {
-						console.log('ERROR - Unable to save the Request - RequestDetailsView.js');
-				    },           
-			},false);
-		},
-		
+        		
         addAll: function() {
             this.el.fullCalendar('addEventSource', this.collection.toJSON());
         },
@@ -175,7 +157,8 @@ app.Views.EventsView = Backbone.View.extend({
 				       date_start: event.start,
 				       date_end: event.end,
 				    };
-					self.save(event.id,params);	
+				    app.models.task.save(event.id,params);	
+					//self.save(event.id,params);	
 				    $(self.el).fullCalendar('refresh');
 				    app.loader('hide');	
 				},
@@ -190,7 +173,7 @@ app.Views.EventsView = Backbone.View.extend({
 				       planned_hours: (event.planned_hours + (minuteDelta)/60),
 				       remaining_hours: (event.planned_hours + (minuteDelta)/60),
 				    };
-					self.save(event.id,params);
+				    app.models.task.save(event.id,params);
 				    $(self.el).fullCalendar('refresh');
 				    app.loader('hide');	
 				},
@@ -233,13 +216,15 @@ app.Views.EventsView = Backbone.View.extend({
 		               remaining_hours: copiedEventObject.remanning_hours,
 		               user_id: self.officer_id
 				    };
-				    self.save(copiedEventObject.id,params);
+				    
+				    app.models.task.save(copiedEventObject.id, params, null, null, "#planning"); 
+				    //self.save(copiedEventObject.id,params);
 				
 				    $.pnotify({
 				        title: 'Tâche attribuée',
 				        text: 'La tâche a correctement été attribué à l\'agent.'
 					    });
-				    $(this).remove();     
+				    //$(this).remove();  				    
 				},
 				
 //				select: function( startDate, endDate, allDay) {

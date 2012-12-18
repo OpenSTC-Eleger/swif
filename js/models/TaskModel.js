@@ -92,9 +92,46 @@ app.Models.Task = Backbone.RelationalModel.extend({
     
 	/** Save Model
 		*/
+//	
+//	save: function(id,data,options) { 
+//		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options);
+//	},
 	
-	save: function(id,data,options) { 
-		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options);
+	save: function(id,data,closeModal, view, strRoute) { 
+		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {
+		    success: function (data) {
+		        console.log(data);
+		        if(data.error){
+		    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+		        }
+		        else{
+		        	if( closeModal!= null )
+		            	closeModal.modal('hide');
+		        	if( view || strRoute ) {
+		                if(app.collections.tasks == null ){
+		                    app.collections.tasks = new app.Collections.Tasks();
+		                }	
+					 	app.collections.tasks.fetch({  
+					 		success: function(){
+						 		app.collections.interventions.fetch({
+					                success: function(){				 			
+						 				if( strRoute ) {
+											route = Backbone.history.fragment;
+											Backbone.history.loadUrl(route);
+										}
+										else if (view)
+											view.render();
+							 		}					 
+						 		});
+					 		}					 
+					 	});
+					}
+		        }
+		    },
+		    error: function () {
+				console.log('ERROR - Unable to save the Request - RequestDetailsView.js');
+		    }, 
+		});
 	},
 	
 	update: function(params) {

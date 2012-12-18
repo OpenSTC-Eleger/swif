@@ -215,27 +215,13 @@ app.Views.RequestsListView = Backbone.View.extend({
 		
 		params = {
 				name: this.model.getName(),
-				state: app.Models.Request.state[0].value,
+				state: app.Models.Intervention.state[0].value,
 		        date_deadline: this.model.getDeadline_date(),
 		        site1: this.model.getSite1()[0],
 		        ask_id: this.model.getId(),		
 		};
 		
-		app.models.intervention.save(params, {
-		    success: function (data) {
-		        console.log(data);
-		        if(data.error){
-		    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-		        }
-		        else{					        	
-		            console.log('Success VALID REQUEST');
-		            self.render();
-		        }
-		    },
-		    error: function () {
-				console.log('ERROR - Unable to valid the Request - RequestsListView.js');
-		    },           
-		},false);		
+		app.models.intervention.save(0,params,null, this, '#demandes-dinterventions');	
 	},
 
 	/** Change the request state to ConfirmDST
