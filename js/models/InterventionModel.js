@@ -25,6 +25,13 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
     initialize: function(){
         console.log('Intervention Model initialization');
         this.fetchRelated('tasks');
+
+
+        app.Models.Intervention.state[0].traduction = app.lang.toScheduled;
+        app.Models.Intervention.state[1].traduction = app.lang.planningFenced;
+        app.Models.Intervention.state[2].traduction = app.lang.pending;
+        app.Models.Intervention.state[3].traduction = app.lang.closed;
+        app.Models.Intervention.state[4].traduction = app.lang.cancelled;
     },
     
     /** Model Parser */
@@ -36,5 +43,36 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
     	app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
 	},
 
+
+}, {
+
+    // Request State Initialization //
+    state:  [        
+    	{
+            value       : 'toscheduled',
+            color       : 'warning',
+            traduction  : '',
+        },
+        {
+            value       : 'scheduled',
+            color       : 'success',
+            traduction  : '',
+        },
+        {
+            value       : 'pending',
+            color       : 'info',
+            traduction  : '', 
+        },
+        {
+            value       : 'closing',
+            color       : '',
+            traduction  : '',   
+        },
+        {
+            value       : 'cancelled',
+            color       : 'important',
+            traduction  : '',  
+        }
+    ]
 
 });

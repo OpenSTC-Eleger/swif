@@ -24,7 +24,7 @@
 			<a href="#" class="btn btn-primary"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	
 
 			<form class="form-search pull-right">
-    			<div class="input-append">
+				<div class="input-append">
 					<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off">
 					<button type="submit" class="btn"><i class="icon-search icon-large"></i></button>
 				</div>
@@ -34,67 +34,143 @@
 
 
 		<!-- Table Requests -->
-		<table class="table table-bordered table-hover">
+		<table class="table-interventions table table-bordered">
 			<thead>
 				<tr>
 					<th><%= _.capitalize(lang.label) %></th>
 					<th><%= _.capitalize(lang.responsible) %></th>
 					<th><%= _.capitalize(lang.plannedHours) %></th>
 					<th><%= _.capitalize(lang.spentHours) %></th>
-					<th><%= _.capitalize(lang.progressRate) %></th>
+					<th><%= _.capitalize(lang.progressRate) %>
+						<div class="dropdown pull-right">
+						    <a id="filterStateInter" class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-filter icon-large muted"></i></a>
+						    
+						    <ul class="dropdown-menu" role="menu" aria-labelledby="filterStateInter">
+								<% _.each(interventionsState, function (state, i) { %>
+									<li role="menuitem">
+										<a tabindex="-1" href="#interventions/filter/state/<%= state.value %>"> 
+											<i class="badge <%= (state.color != '' ? 'badge-'+state.color : '') %>">&nbsp;</i>
+											&nbsp; <%= _.capitalize(state.traduction) %></a></li>
+								<% }) %>
+							</ul>
+						</div>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
 			<% _.each(interventions, function (intervention, i) { %>
 				
 				<!-- Intervention row -->
-				<tr>	
+				<tr class="row-intervention">
 					<td>
 						<a class="accordion-intervention" href="#collapse_<%= intervention.id %>">
-							<i class="icon-caret-right">&nbsp;&nbsp;</i><%= intervention.name %>
+							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= intervention.name %>
 						</a>
+						<p class="intervention-actions invisible">
+							<a href="#"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
+							<a href="#modalDeleteInter" class="modalDeleteInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
+						</p>
 					</td>
 					<td><%=intervention.ask.manager_id[1]%></td>
-					<td><%=intervention.planned_hours%></td>
-					<td><%=intervention.total_hours%></td>
-				    <td>
-				    	<div class="progress" style="margin-bottom: 0;">
-							<div class="bar" style="width: 70%;"><%= intervention.progress_rate %></div>
-						</div>
-				    </td>
+					<td><%=intervention.planned_hours%>h</td>
+					<td><%=intervention.total_hours%>h</td>
+					<td>
+						<% if(intervention.progress_rate != 0 || intervention.progress_rate != false) {
+							
+							if(intervention.progress_rate == 100 ){ %>
+								<div class="progress progress-success" style="margin-bottom: 0;">
+									<div class="bar" style="width: <%= intervention.progress_rate %>%;"><%= intervention.progress_rate %>%</div>
+								</div>
+							<% }else{ %>
+								<div class="progress" style="margin-bottom: 0;">
+									<div class="bar" style="width: <%= intervention.progress_rate %>%;"></div>
+								</div>
+						<% } 
+						} else{ %>
+							<span class="text-warning"><%= _.capitalize(lang.notBegin) %></span>
+						<% } %>
+					</td>
 				</tr>
-				
+
 				<!-- Tasks row -->
 				<tr class="row-tasks-collapse" id="collapse_<%= intervention.id %>">
 					<td colspan="5">
-						<table class="table table-striped table-hover table-condensed">
-							<thead>
-								<tr>
-									<th><%= _.capitalize(lang.label) %></th>
-									<th><%= _.capitalize(lang.assignedTo) %></th>
-									<th><%= _.capitalize(lang.plannedHours) %></th>
-									<th><%= _.capitalize(lang.spentHours) %></th>
-									<th><%= _.capitalize(lang.progressRate) %></th>
-								</tr>
-							</thead>
-							<tbody>
-								<% _.each(intervention.tasks, function (task, i) { %>
+						
+						<!-- Check if there is some tasks -->
+						<% if(intervention.tasks.length != 0) { %>
+							<table class="table-tasks table table-striped table-condensed table-hover">
+								<thead>
 									<tr>
-										<td><%= task.name %></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
+										<th><%= _.capitalize(lang.label) %></th>
+										<th><%= _.capitalize(lang.assignedTo) %></th>
+										<th><%= _.capitalize(lang.plannedHours) %></th>
+										<th><%= _.capitalize(lang.spentHours) %></th>
+										<th><%= _.capitalize(lang.progressRate) %></th>
 									</tr>
-								<% }); %>
-							</tbody>
-						</table>
-			    	</td>
-			    </tr>					  						
+								</thead>
+								<tbody>
+									<% _.each(intervention.tasks, function (task, i) { %>
+										<tr class="row-tasks <%= (task.progress == '100' ? 'success' : '') %>">
+											<td>
+												<% if(task.date_start != ''){ %>
+													<i 
+														class="icon-time displayInlineBlock" 
+														rel="tooltip"
+														data-placement="top"
+														data-original-title="<%= moment(task.date_start).format('LLL') %>" >
+													</i>
+												<% } %>
+												<span class="<%= (task.progress == '100' ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
+												<span class="task-actions invisible">
+													<a href="#">
+														<i class="icon-pencil displayInlineBlock" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>" data-placement="top"></i>
+													</a>&nbsp;
+													<a href="#">
+														<i class="icon-remove displayInlineBlock" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top"></i>
+													</a>
+												</span>
+											</td>
+											<td><%= task.user_id[1] %></td>
+											<td><%= task.planned_hours %>h</td>
+											<td><%= task.effective_hours %>h</td>
+											<td>
+												<% if(task.progress != 0 || task.progress != false) {
+
+													if(task.progress == 100 ){ %>
+														<div class="progress progress-success" style="margin-bottom: 0;">
+															<div class="bar" style="width: <%= task.progress %>%;"><%= task.progress %>%</div>
+														</div>
+													<% } else{ %>
+														<div class="progress" style="margin-bottom: 0;">
+															<div class="bar" style="width: <%= task.progress %>%;"></div>
+														</div>
+													<% }
+													} else{ %>
+														<span class="text-warning"><%= _.capitalize(lang.notBegin) %></span>
+												<% } %>
+											</td>
+										</tr>
+									<% }); %>
+								</tbody>
+							</table>
+						<% } else { %>
+								<!-- No request in the Database -->
+								<div class="alert alert-info">
+									<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTaskForIntervention %>.
+								</div>
+						<% } %>
+
+							<div class="div-actions" >
+								<button class="btn btn-primary btn-small no-outline addTask">
+									<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addTask) %>
+								</button>
+							</div>
+					</td>
+				</tr>
 			<% }); %>
 			</tbody>
 		</table>
-	<% } 
+	<% }
 	else { %>
 		<!-- No request in the Database -->
 		<div class="alert alert-info">
@@ -109,49 +185,47 @@
 <!-- Form to add a new Task -->
 <div id="modalAddTask" class="modal hide fade">
 	<div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	    <h3>Nouvelle tâche</h3>
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Nouvelle tâche</h3>
 	</div>
 	
 	<div class="modal-body">
-	    <form id="formAddTask" action="#" class="form-horizontal">
-	    
+		<form id="formAddTask" action="#" class="form-horizontal">
+
 			<!-- Task name -->
-            <div class="control-group">
-                <label for="taskName" class="control-label">Nom:</label>
+			<div class="control-group">
+				<label for="taskName" class="control-label">Nom:</label>
 
-                <div class="controls">
-                    <input type="text" id="taskName" name="taskName" />
-                    <span class="help-inline"></span>
-                </div>
-            </div>
+				<div class="controls">
+					<input type="text" id="taskName" name="taskName" />
+					<span class="help-inline"></span>
+				</div>
+			</div>
 
-            <!-- Task Category -->
-            <div class="control-group">
-                <label for="taskCategory" class="control-label">Catégorie:</label>
+			<!-- Task Category -->
+			<div class="control-group">
+				<label for="taskCategory" class="control-label">Catégorie:</label>
 
-                <div class="controls">
-                     <select id="taskCategory"></select>
-                    <span class="help-inline"></span>
-                </div>
-            </div>
+				<div class="controls">
+					<select id="taskCategory"></select>
+					<span class="help-inline"></span>
+				</div>
+			</div>
 
 			<!-- Task hour -->
-            <div class="control-group">
-                <label for="taskHour" class="control-label">Heures prévisionnelles:</label>
+			<div class="control-group">
+				<label for="taskHour" class="control-label">Heures prévisionnelles:</label>
 
-                <div class="controls">
-                     <input type="number" id="taskHour" name="taskHour" />
-                    <span class="help-inline"></span>
-                </div>
-            </div>
-
-	    </form>
+				<div class="controls">
+					<input type="number" id="taskHour" name="taskHour" />
+					<span class="help-inline"></span>
+				</div>
+			</div>
+		</form>
 	</div>
 	
 	<div class="modal-footer">
-	    <button type="submit" class="btn btn-primary saveTask">Enregistrer</button>&nbsp;&nbsp;
-	    <a href="#" data-dismiss="modal">Annuler</a>
+		<button type="submit" class="btn btn-primary saveTask">Enregistrer</button>&nbsp;&nbsp;
+		<a href="#" data-dismiss="modal">Annuler</a>
 	</div>
 </div>
-		

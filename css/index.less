@@ -15,6 +15,12 @@
 small.badge{
 	font-size: @fontSizeMini;
 }
+.isCheck{
+	text-decoration: line-through;
+}
+.displayInlineBlock{
+	display: inline-block;
+}
 
 
 
@@ -127,14 +133,14 @@ div.div-actions{
 	margin: 0 0 0 16px;
 }
 .task-actions{
-	font-size: 85%;
+	font-size: 90%;
 }
 .intervention-actions a:hover i, .task-actions a:hover i, a.accordion-toggle:hover i, a.accordion-intervention:hover i{
 	text-decoration: none;
 }
 
 // Intervention Tasks //
-ul.tasks li:hover .task-actions{
+ul.tasks li:hover .task-actions, tr.row-tasks:hover .task-actions, tr.row-intervention:hover .intervention-actions{
 	visibility: visible;
 }
 
@@ -183,12 +189,25 @@ table thead th.align, .table tbody td.align{
 
 /* Interventions list
 -------------------------------------------------- */
+table.table-interventions tbody > tr:nth-child(4n+1){
+	background-color: @tableBackgroundAccent;
+}
+table.table-interventions tbody tr:hover > td{
+	background-color: @tableBackgroundHover;
+}
+tr.row-intervention > td{
+	padding-bottom: 2px;
+}
 tr.row-tasks-collapse{
 	display: none;
 }
-tr.row-tasks-collapse td[colspan="5"]{
-	padding: 15px 3% 15px 3%;
+tr.row-tasks-collapse.expend:hover td[colspan="5"]{
+	background-color: @white;
 }
+tr.row-tasks-collapse td[colspan="5"]{
+	padding: 25px 3% 5px 3%;
+}
+
 
 
 /* Responsive
