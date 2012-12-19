@@ -30,8 +30,6 @@ app.Views.TasksListView = Backbone.View.extend({
 		
     },
 
-
-
 	/** Display the view
 	*/
     render: function () {
@@ -76,10 +74,6 @@ app.Views.TasksListView = Backbone.View.extend({
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
 		
-		
-		
-
-		
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var tasksList = new app.Collections.Tasks(tasksPending).toJSON();
@@ -99,8 +93,19 @@ app.Views.TasksListView = Backbone.View.extend({
 		$(this.el).hide().fadeIn('slow');
 		
         return this;
+    },    
+        
+    getTask: function(e) {
+		var href = $(e.target);
+
+		// Retrieve the ID of the request //	
+		this.pos = href.parents('tr').attr('id');
+		this.taskId = e.currentTarget.id;
+		this.model = app.collections.tasks.get(this.taskId);
+		
     },
     
+    //Task not finished
     setModalTimeSpent: function(e) {
     	this.getTask(e);
     	var task = this.model.toJSON();
@@ -112,16 +117,17 @@ app.Views.TasksListView = Backbone.View.extend({
     	e.preventDefault();
 		params = {
 		    state: app.Models.Task.state[2].value,
-            effective_hours: $('#eventTimeSpent').val(),
+            spent_hours: $('#eventTimeSpent').val(),
             remaining_hours: $('#eventTimeRemaining').val(),
 			user_id: null,
 			date_end: null,
 			date_start: null,
 		};
-		
-		this.saveNewStateTask(params,$('#modalTimeSpent'));
+		var newInterState = app.Models.Intervention.state[2].value;
+		this.saveNewStateTask(params,$('#modalTimeSpent'),newInterState);
     },
     
+    //Task done
     setModalTaskDone: function(e) {
     	this.getTask(e);
     	var task = this.model.toJSON();
@@ -130,34 +136,25 @@ app.Views.TasksListView = Backbone.View.extend({
     
     saveTaskDone: function(e) {
     	e.preventDefault();
+
+		var that = this;
+		that.state = app.Models.Intervention.state[3].value;		
+		var tasks = this.model.toJSON().intervention.tasks;
+		_.each(tasks.models, function (task, i) {
+			if(task.toJSON().state == app.Models.Task.state[2])
+				that.state = app.Models.intervention[2];	
+		});
+		
 		params = {
 		    state: app.Models.Task.state[3].value,
-            effective_hours: $('#eventTimeSpent').val(),
+            //spent_hours: $('#eventTimeSpent').val(),
+            //remaining_hours: 0,
 		};
-		
-		this.saveNewStateTask(params,$('#modalTaskDone'));
+		var newInterState = that.state;
+		this.saveNewStateTask(params,$('#modalTaskDone'),newInterState);
     },
     
-    getTask: function(e) {
-		var href = $(e.target);
-
-		// Retrieve the ID of the request //	
-		this.pos = href.parents('tr').attr('id');
-		this.taskId = e.currentTarget.id;
-		this.model = app.collections.tasks.get(this.taskId);
-		
-    },
-    
-//    taskDone: function(e) {
-//    	event.preventDefault();
-//		params = {
-//		        state: app.Models.Task.state[3].value,
-//		};
-//		this.getTask(e);
-//		this.saveNewStateTask(params,null);
-//    	
-//    },
-    
+    //Task not beginning
     taskNotDone: function(e) {
 		e.preventDefault();
 		params = {
@@ -166,40 +163,28 @@ app.Views.TasksListView = Backbone.View.extend({
 				date_end: null,
 				date_start: null,
 		};
+		var newInterState = app.Models.Intervention.state[0].value;
 		this.getTask(e);
-		this.saveNewStateTask(params,null);
+		this.saveNewStateTask(params,null,newInterState);
 
 	},
 
-	saveNewStateTask: function(params,element) {
+	//Save task with new times
+	saveNewStateTask: function(params,element,newInterState) {
 		var self = this;
 		self.params = params;
 		self.element = element;
-		app.models.task.save(this.model.id, params, element, this);
 		
-//		this.model.save(this.model.id,params, {
-//				    success: function (data) {
-//					        console.log(data);
-//					        if(data.error){
-//					    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-//					        }
-//					        else{					        	
-//					            console.log('NEW STATE TASK SAVED');
-//					            if( self.element!= null )
-//					            	self.element.modal('hide');
-//					            self.model.update(params);
-//					            app.collections.tasks.models[self.pos] = self.model;
-//					        	app.collections.tasks.fetch({
-//					        		success: function(){
-//					        			self.render();	
-//					        		}
-//					        	});
-//					        }
-//					    },
-//					    error: function () {
-//							console.log('ERROR - Unable to valid the Request - RequestsListView.js');
-//					    },           
-//					},false);
+		// why 'saveWithCallback' and note 'save' on model
+		//When save intervention and just after save task (TaskListView L.187 et L.190) postgres send this error:
+		//TransactionRollbackError: could not serialize access due to concurrent update
+		//We must wait intervention save callback before save task
+		app.models.intervention.saveWithCallback(this.model.toJSON().intervention.id, {
+			state:newInterState },{
+				success: function (data) {
+					app.models.task.save(self.model.id, self.params, self.element, self, "#taches");
+				}
+			});
 	},
 
     preventDefault: function(event){

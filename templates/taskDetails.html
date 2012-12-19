@@ -1,0 +1,49 @@
+
+<% if ( task.id != null && task.id !=0 ) { %>
+    <h1><%= lang.viewsTitles.taskDetail %> n°<%= task.id %></h1><br />
+<% } else { %>
+    <h1><%= lang.viewsTitles.newtask %></h1><br />
+<% } %>
+
+
+<form id="formTask" action="#" class="form-horizontal container-fluid">
+    
+    <div class="row-fluid">
+        
+        <!-- About the task -->
+        <fieldset class="span6">
+           
+            <legend><%= lang.aboutThetask %>:</legend>
+                
+                <!-- task Name -->
+                <div class="control-group">
+                    <label for="taskName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
+
+                    <div class="controls">
+                        <input type="text" id="taskName" name="taskName" value="<%= task.name %>" required="required" />
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+                
+                <!-- task Description -->
+                <div class="control-group">
+                    <label for="taskDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
+
+                    <div class="controls">
+                        <textarea name="taskDescription" id="taskDescription" rows="5" required="required"><%= task.description %></textarea>
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+
+
+        </fieldset>
+    
+    </div>
+
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary save"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+        <a href="#" class="text-info"><%= lang.actions.cancel %></a>
+    </div>
+    
+</form>

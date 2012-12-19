@@ -104,7 +104,6 @@ app.Views.RequestsListView = Backbone.View.extend({
     },
 
 
-
 	/** Display request information in the Modal view
 	*/
 	setInfoModal: function(e){
@@ -200,7 +199,12 @@ app.Views.RequestsListView = Backbone.View.extend({
 					            self.model.setService([service.id,service.name]);
 					            self.model.setAssignement(app.views.selectAssignementsView.getSelected());
 					            app.collections.requests.models[self.pos] = self.model;
-					            self.createIntervention();
+					            //TODO : quand la demande a été validée, peut la refuser pour la revalider : effacer l'inter au refus
+					            // puis la récréer à la deuxième validation . POur le moment les actions ne sont plus disponibles quand le statut est 'validé'
+//					            if( self.model.getInterventions().size()==0 )
+					            	self.createIntervention();
+//					            else
+//					            	self.render();
 					        }
 					    },
 					    error: function () {

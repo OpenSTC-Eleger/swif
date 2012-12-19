@@ -9,9 +9,9 @@
 
 		<!-- Interventions List -->
 		<div class="span3">
-			
+			<% if( _.size(interventions) > 0 ) {%>
 			<aside class="accordion" id="accordionInter" data-spy="affix">
-
+				
 				<% _.each(interventions, function (inter, i) { %>
 				<div class="accordion-group">
 					
@@ -71,12 +71,7 @@
 									class="btn btn-success btn-small pull-right no-outline" rel="tooltip" 
 										data-original-title="<%= _.capitalize(lang.actions.enclosePlanning) %>" 
 										data-placement="left" 
-										currentState="<%=inter.state%>" 
-										state="<%=app.Models.Intervention.state[1].value%>"										
-										test1 = "<%= allPlanned %>"
-										test2 = "<%= inter.state != app.Models.Intervention.state[1].value%>"
-										resultat = "<%= (allPlanned && (inter.state != app.Models.Intervention.state[1].value)) %>"
-										<%= (allPlanned && (inter.state != app.Models.Intervention.state[1].value)) ? "" : 'disabled' %>>
+										<%= (allPlanned && (inter.state != app.Models.Intervention.state[1].value) && _.size(inter.tasks) > 0) ? "" : 'disabled' %>>
 									<i class="icon-check"></i>
 								</button>
 							</div>
@@ -86,6 +81,12 @@
 				<% }) %>
 
 			</aside>
+			<% }else { %>
+				<!-- No request in the Database -->
+				<div class="alert alert-info">
+					<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>.
+				</div>
+			<% } %>
 
 		</div>
 		<!-- /Interventions List -->

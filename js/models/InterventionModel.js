@@ -14,10 +14,10 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 		relatedModel: 'app.Models.Task',
 		collectionType: 'app.Collections.Tasks',
 		includeInJSON: true,
-//		reverseRelation: {
-//			key: 'project_id',
-//			includeInJSON: true,
-//		}
+		reverseRelation: {
+			key: 'intervention',
+			includeInJSON: ['id','state','tasks'],
+		}
 	}],
 
 	/** Model Initialization
@@ -31,11 +31,9 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
     parse: function(response) {    	
         return response;
     },
-    
-//	save: function(id,data,options) { 
-//    	app.saveOE(id, data, this.model_name, app.models.user.getSessionID(), options);
-//	},
-	
+
+
+	//save method with all redondant code
 	save: function(id,data,closeModal, view, strRoute) { 
 		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {
 		    success: function (data) {
@@ -67,6 +65,13 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 				console.log('ERROR - Unable to save the Request - RequestDetailsView.js');
 		    }, 
 		});
+	},
+	
+	//When save intervention and just after save task (TaskListView L.187 et L.190) postgres send this error:
+	//TransactionRollbackError: could not serialize access due to concurrent update
+	//We must wait intervention save callback before save task
+	saveWithCallback: function(id,data,options) { 
+		app.saveOE(id, data, this.model_name, app.models.user.getSessionID(), options);
 	},
 
 

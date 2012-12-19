@@ -514,25 +514,35 @@ app.Router = Backbone.Router.extend({
         	
         	self.page = page ? parseInt(page, 10) : 1;
         	
-        	if(app.collections.tasks == null ){
-                app.collections.tasks = new app.Collections.Tasks();
+        	if(app.collections.interventions == null ){
+                app.collections.interventions = new app.Collections.Interventions();
             }
         	
         	app.loader('display');
-        	app.collections.tasks.fetch({
+        	app.collections.interventions.fetch({
         		success: function(){
-//			            if(app.views.tasksListView){
-//			            	app.views.tasksListView.options.page = self.page;
-//			                app.views.tasksListView.render();
-//			            }
-//			            else{
-//			            	app.views.tasksListView = new app.Views.TasksListView({page: self.page});
-//			            }
-        			app.views.tasksListView = new app.Views.TasksListView({page: self.page});
-        			self.render(app.views.tasksListView);
-	        	},
-            	complete: function(){
-            	    app.loader('hide');
+        	
+		        	if(app.collections.tasks == null ){
+		                app.collections.tasks = new app.Collections.Tasks();
+		            }
+		        	
+		        	app.loader('display');
+		        	app.collections.tasks.fetch({
+		        		success: function(){
+		//			            if(app.views.tasksListView){
+		//			            	app.views.tasksListView.options.page = self.page;
+		//			                app.views.tasksListView.render();
+		//			            }
+		//			            else{
+		//			            	app.views.tasksListView = new app.Views.TasksListView({page: self.page});
+		//			            }
+		        			app.views.tasksListView = new app.Views.TasksListView({page: self.page});
+		        			self.render(app.views.tasksListView);
+			        	},
+		            	complete: function(){
+		            	    app.loader('hide');
+		            	}			        		
+		        	});
             	}			        		
         	});
         }
@@ -542,11 +552,43 @@ app.Router = Backbone.Router.extend({
 
     }, 
 
-    detailsTask: function(){
-	
-    	console.debug("****************detailsTask********************");
-	
-    }
+	detailsTask: function(id){		
+		console.debug("****************detailsTask********************");
+		// Check if the user is connect //
+		if(this.checkConnect()){
+			var self = this;
+			var task = app.collections.tasks.get(id);
+		    self.task = task;   
+			
+			if(app.collections.interventions == null ){
+		        app.collections.interventions = new app.Collections.Interventions();
+		    }
+			
+			app.loader('display');
+			app.collections.interventions.fetch({
+				success: function(){
+			
+		        	if(app.collections.tasks == null ){
+		                app.collections.tasks = new app.Collections.Tasks();
+		            }
+		        	
+		        	app.loader('display');
+		        	app.collections.tasks.fetch({
+		        		success: function(){
+		        			app.views.taskDetailsView = new app.Views.TaskDetailsView(self.task, false);
+		        			self.render(app.views.taskDetailsView);
+			        	},
+		            	complete: function(){
+		            	    app.loader('hide');
+		            	}			        		
+		        	});
+		    	}			        		
+			});
+		}
+		else{
+		    this.navigate('login', {trigger: true, replace: true});
+		}
+	}
 
 
 

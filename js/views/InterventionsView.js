@@ -25,6 +25,8 @@ app.Views.InterventionsView = Backbone.View.extend({
     */
     initialize : function() {
         console.log('Interventions view Initialize');
+        
+        
     },
 
 
@@ -79,6 +81,8 @@ app.Views.InterventionsView = Backbone.View.extend({
         $(this.el).hide().fadeIn('slow');
         return this;
     },
+    
+
 
 
 

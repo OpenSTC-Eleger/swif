@@ -34,6 +34,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		note: "",
 		refusal_reason: "",
 		test: "",
+		intervention_ids : []
 	},
 
     
@@ -129,6 +130,13 @@ app.Models.Request = Backbone.RelationalModel.extend({
     	this.set({ belongsToAssignement : value });
     },
 
+    getInterventions : function() {
+        return this.get('intervention_ids');
+    },
+    setInterventions : function(value) {
+    	if( value == 'undefined') return;
+    	this.set({ intervention_ids : value });
+    },
 
 
 

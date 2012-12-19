@@ -29,6 +29,7 @@
 	"aboutTheClaimer"   	: "À propos du demandeur",
 	"claimerDetails"		: "Détail du demandeur",
 	"aboutTheRequest"   	: "À propos de la demande",
+	"aboutTheTask"   		: "À propos de la tâche",
 	"informationOfTheSite" 	: "Précision sur le site",
 	"serviceConcerned" 		: "Service concerné",
 	"action" 				: "actions",
@@ -92,7 +93,9 @@
     	"about"			: "À propos d'OpenSTM",
     	"requestsList"	: "Demandes d'interventions",
     	"requestDetail"	: "Détail de la demande",
+    	"taskDetail"	: "Détail de la tâche",
     	"newRequest"	: "Nouvelle demande d'intervention",
+    	"newTask"		: "Nouvelle tâche",
     	"planning"		: "Planification des tâches",
     	"tasksList"		: "Liste des tâches"
 	}
