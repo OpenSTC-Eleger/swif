@@ -203,7 +203,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 }, {
 
 	// Request State Initialization //
-	state:  [        
+	state:  [
 		{
             value       : 'refused',
             color       : 'important',

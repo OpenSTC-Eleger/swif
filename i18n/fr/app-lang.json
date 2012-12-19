@@ -44,8 +44,11 @@
 	"wait" 					: "en attente",
 	"valid" 				: "validée",
 	"closed" 				: "cloturée",
+	"cancelled"				: "annulée",
 	"confirm" 				: "DST",
 	"pending"				: "en cours",
+	"notBegin"				: "non commencé",
+	"toScheduled" 			: "à planifier",
 	"planningFenced" 		: "planification cloturée",
 	"dateDeadline" 			: "date butoire",
 
@@ -82,10 +85,11 @@
 	},
 
 	"infoMessages" : {
-   		"information"         : "Information",
-    	"successLogout"       : "Vous êtes maintenant déconnecté",
-    	"noRequest"      	  : "Aucune intervention dans la base de données",
-    	"noTask"      	  	  : "Aucunes tâches à pointer"
+   		"information"         	: "Information",
+    	"successLogout"       	: "Vous êtes maintenant déconnecté",
+    	"noRequest"      	  	: "Aucune intervention dans la base de données",
+    	"noTaskForIntervention"	: "Aucune tâche pour cette intervention",
+    	"noTask"      	  	  	: "Aucunes tâches à pointer"
 	},
 
 	"viewsTitles" : {

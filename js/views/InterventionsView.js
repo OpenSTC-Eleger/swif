@@ -62,20 +62,20 @@ app.Views.InterventionsView = Backbone.View.extend({
                 var template = _.template(templateData, {
                     lang: app.lang,
                     nbInterventions: nbInterventions,
+                    interventionsState: app.Models.Intervention.state,
                     interventions: (new app.Collections.Interventions(interventionsValidated)).toJSON(),
                 });
 
             console.debug(interventionsValidated);
-        
+
             $(self.el).html(template);
-			
+
 			app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categories})
 			app.views.selectListAssignementsView.clearAll();
 			app.views.selectListAssignementsView.addEmptyFirst();
 			app.views.selectListAssignementsView.addAll();
 
             $('*[rel="tooltip"]').tooltip({placement: "right"});
-
         });
 
         $(this.el).hide().fadeIn('slow');
@@ -96,19 +96,24 @@ app.Views.InterventionsView = Backbone.View.extend({
         var id = _($(e.target).attr('href')).strRightBack('_');
 
 
+        var isExpend = $('#collapse_'+id).hasClass('expend');
+
         // Reset the default visibility //
         $('tr.expend').css({ display: 'none' }).removeClass('expend');
-        $('i.icon-caret-down').removeClass('icon-caret-down').addClass('icon-caret-right');
-        
+        $('tr.row-intervention').css({ opacity: '0.5'});
+        $('tr.row-intervention > td').css({ backgroundColor: '#FFF'});
         
         // If the table row isn't already expend //       
-        if(!$('#collapse_'+id).hasClass('expend')){
-            
-            //alert('Already Open');
-
+        if(!isExpend){
             // Set the new visibility to the selected intervention //
             $('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
-            $(e.target).children('i').removeClass('icon-caret-right').addClass('icon-caret-down');
+            $(e.target).parents('tr.row-intervention').css({ opacity: '1'});
+            $(e.target).parents('tr.row-intervention').children('td').css({ backgroundColor: '#F5F5F5'});
+        }
+        else{
+            $('tr.row-intervention').css({ opacity: '1'});
+            $('tr.row-intervention > td').css({ backgroundColor: '#FFF'});
+            $('tr.row-intervention:nth-child(4n+1) > td').css({ backgroundColor: '#F9F9F9'});
         }
            
     },
