@@ -50,12 +50,10 @@ app.Views.TasksListView = Backbone.View.extend({
 		var officer_id = officer.get('uid');
 		
 		var tasks = app.collections.tasks
-        var tasksUser = _.filter(tasks.models, function(item){
-        	userId = item.attributes.user_id
-        	if( userId )        		
-        		return item.attributes.user_id[0] == officer_id; 
-        	else
-        		return false;
+		
+		//TODO ajouter le DST et le manager du service de l'utilisateur
+        var tasksUser = _.filter(tasks.models, function(item){		
+        		return (item.attributes.user_id[0] == officer_id); 
         });
 		
     	//var tasks = app.collections.tasks.getTasksByOfficer(officer_id);
@@ -87,7 +85,6 @@ app.Views.TasksListView = Backbone.View.extend({
 
 			});
 			$(self.el).html(template);
-
 		});
 
 		$(this.el).hide().fadeIn('slow');
@@ -106,19 +103,28 @@ app.Views.TasksListView = Backbone.View.extend({
     },
     
     //Task not finished
-    setModalTimeSpent: function(e) {
+    setModalTimeSpent: function(e) {    	
     	this.getTask(e);
     	var task = this.model.toJSON();
+    	
+    	$('#infoModalTimeSpent').children('p').html(task.name);
+		$('#infoModalTimeSpent').children('small').html(task.notes);
+		$('.timepicker-default').timepicker({showMeridian:false});
+
 		$('#eventTimeSpent').val(0);
 		$('#eventTimeRemaining').val(task.remaining_hours);
     },
     
     saveTimeSpent: function(e) {
     	e.preventDefault();
+    	
+    	//TODO : query = query.split('&');
+    	
 		params = {
 		    state: app.Models.Task.state[2].value,
-            spent_hours: $('#eventTimeSpent').val(),
+            effective_hours: $('#eventTimeSpent').val(),
             remaining_hours: $('#eventTimeRemaining').val(),
+            planned_hours: $('#eventTimeRemaining').val(),
 			user_id: null,
 			date_end: null,
 			date_start: null,
@@ -131,7 +137,12 @@ app.Views.TasksListView = Backbone.View.extend({
     setModalTaskDone: function(e) {
     	this.getTask(e);
     	var task = this.model.toJSON();
-		$('#eventTimeSpent').val(0);
+    	
+    	$('#infoModalTaskDone').children('p').html(task.name);
+		$('#infoModalTaskDone').children('small').html(task.notes);
+		$('.timepicker-default').timepicker({showMeridian:false});
+
+		$('#eventTime').val(0);
     },
     
     saveTaskDone: function(e) {
@@ -147,8 +158,8 @@ app.Views.TasksListView = Backbone.View.extend({
 		
 		params = {
 		    state: app.Models.Task.state[3].value,
-            //spent_hours: $('#eventTimeSpent').val(),
-            //remaining_hours: 0,
+            effective_hours: $('#eventTime').val(),
+            remaining_hours: 0,
 		};
 		var newInterState = that.state;
 		this.saveNewStateTask(params,$('#modalTaskDone'),newInterState);

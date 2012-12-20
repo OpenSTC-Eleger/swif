@@ -157,7 +157,7 @@ app.Views.EventsView = Backbone.View.extend({
 				       date_start: event.start,
 				       date_end: event.end,
 				    };
-				    app.models.task.save(event.id,params);	
+				    app.models.task.save(event.id,params,null,null,'#planning');	
 					//self.save(event.id,params);	
 				    $(self.el).fullCalendar('refresh');
 				    app.loader('hide');	
@@ -174,7 +174,7 @@ app.Views.EventsView = Backbone.View.extend({
 				       total_hours: (event.total_hours + (minuteDelta)/60),
 				       remaining_hours: (event.remaining_hours + (minuteDelta)/60),
 				    };
-				    app.models.task.save(event.id,params);
+				    app.models.task.save(event.id,params,null,null,'#planning');
 				    $(self.el).fullCalendar('refresh');
 				    app.loader('hide');	
 				},
