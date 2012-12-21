@@ -52,17 +52,33 @@ app.Views.TasksListView = Backbone.View.extend({
 		var tasks = app.collections.tasks
 		
 		//TODO ajouter le DST et le manager du service de l'utilisateur
-        var tasksUser = _.filter(tasks.models, function(item){		
-        		return (item.attributes.user_id[0] == officer_id); 
+        var tasksUser = _.filter(tasks.models, function(item){	
+        		var task = item.toJSON();
+        		var intervention = task.intervention; 
+        		return (	//Tâches de l'agent
+        					task.user_id[0] == officer_id 
+        					&& 
+        					(
+        						//Tâches ouvertes (plannifiés) ou en cours
+        						task.state==app.Models.Task.state[1].value
+        						|| task.state==app.Models.Task.state[2].value                                                  	
+        					 )  
+        					&& 
+        					(
+        						//L'intervention de la tâche doit être planifiée ou en cours'
+        						intervention.state==app.Models.Intervention.state[1].value
+        						|| intervention.state==app.Models.Intervention.state[2].value                                                  	
+        					 )        					
+        			   ); 
         });
 		
     	//var tasks = app.collections.tasks.getTasksByOfficer(officer_id);
     	
         // Retrieve the number of validated Interventions //
-        var tasksPending = _.filter(tasksUser, function(item){ 
-        	return item.attributes.state == app.Models.Task.state[2].value; 
-        });
-        var nbTasks = _.size(tasksPending);
+//        var tasksPending = _.filter(tasksUser, function(item){         		
+//        	return item.attributes.state == app.Models.Task.state[2].value; 
+//        });
+        var nbTasks = _.size(tasksUser);
         
         
         
@@ -74,7 +90,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-			var tasksList = new app.Collections.Tasks(tasksPending).toJSON();
+			var tasksList = new app.Collections.Tasks(tasksUser).toJSON();
 			var template = _.template(templateData, {
 				lang: app.lang,
 				nbTasks: nbTasks,
@@ -110,28 +126,50 @@ app.Views.TasksListView = Backbone.View.extend({
     	$('#infoModalTimeSpent').children('p').html(task.name);
 		$('#infoModalTimeSpent').children('small').html(task.notes);
 		$('.timepicker-default').timepicker({showMeridian:false});
-
-		$('#eventTimeSpent').val(0);
-		$('#eventTimeRemaining').val(task.remaining_hours);
+		
+		$('#eventTimeSpent').val(this.secondsToHms(task.remaining_hours*60));
+		$('#eventTimeRemaining').val("00:00");
     },
     
     saveTimeSpent: function(e) {
     	e.preventDefault();
     	
-    	//TODO : query = query.split('&');
+    	var timeArray = $('#eventTimeSpent').val().split(':');
+    	var hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0)
     	
-		params = {
+    	timeArray = $('#eventTimeRemaining').val().split(':');
+    	var remaining_hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0)
+    	
+		taskParams = {
 		    state: app.Models.Task.state[2].value,
-            effective_hours: $('#eventTimeSpent').val(),
-            remaining_hours: $('#eventTimeRemaining').val(),
-            planned_hours: $('#eventTimeRemaining').val(),
+            planned_hours: remaining_hours,
+            remaining_hours: remaining_hours,
 			user_id: null,
 			date_end: null,
 			date_start: null,
 		};
+		
+		var task = this.model.toJSON();
+		
+		taskWorkParams = {
+    			 name: task.name,
+    	         date: new Date(),
+    	         task_id: task.id,
+    	         hours: hours,
+    	         user_id: task.user_id[0],
+    	         company_id: task.company_id[0]
+    	};
+		
 		var newInterState = app.Models.Intervention.state[2].value;
-		this.saveNewStateTask(params,$('#modalTimeSpent'),newInterState);
+		this.saveNewStateTask(taskParams, taskWorkParams,$('#modalTimeSpent'),newInterState);
     },
+    
+    secondsToHms : function (d) {
+d = Number(d);	
+var h = Math.floor(d / 3600);
+var m = Math.floor(d % 3600 / 60);
+var s = Math.floor(d % 3600 % 60);
+return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":" : "0:") + (s < 10 ? "0" : "") + s); },
     
     //Task done
     setModalTaskDone: function(e) {
@@ -142,7 +180,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		$('#infoModalTaskDone').children('small').html(task.notes);
 		$('.timepicker-default').timepicker({showMeridian:false});
 
-		$('#eventTime').val(0);
+		$('#eventTime').val(this.secondsToHms(task.remaining_hours*60));
     },
     
     saveTaskDone: function(e) {
@@ -152,49 +190,80 @@ app.Views.TasksListView = Backbone.View.extend({
 		that.state = app.Models.Intervention.state[3].value;		
 		var tasks = this.model.toJSON().intervention.tasks;
 		_.each(tasks.models, function (task, i) {
-			if(task.toJSON().state == app.Models.Task.state[2])
-				that.state = app.Models.intervention[2];	
+			if(task.toJSON().state == app.Models.Task.state[1].value
+				 || task.toJSON().state == app.Models.Task.state[2].value)
+				that.state = app.Models.Intervention.state[2].value;	
 		});
 		
-		params = {
+		var timeArray = $('#eventTime').val().split(':');
+    	var hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0)
+
+		taskParams = {
 		    state: app.Models.Task.state[3].value,
-            effective_hours: $('#eventTime').val(),
-            remaining_hours: 0,
+		    remaining_hours: 0,
 		};
+		
+		var task = this.model.toJSON();
+		
+    	taskWorkParams = {
+    			 name: task.name,
+    	         date: new Date(),
+    	         task_id: task.id,
+    	         hours: hours,
+    	         user_id: task.user_id[0],
+    	         company_id: task.company_id[0]
+    	};
+
 		var newInterState = that.state;
-		this.saveNewStateTask(params,$('#modalTaskDone'),newInterState);
+		this.saveNewStateTask(taskParams, taskWorkParams,$('#modalTaskDone'),newInterState);
     },
     
     //Task not beginning
     taskNotDone: function(e) {
 		e.preventDefault();
-		params = {
-		        state: app.Models.Task.state[2].value,
+		this.getTask(e);
+		taskParams = {
+		        state: app.Models.Task.state[1].value,		        
+		        //remaining_hours: 0,
+		        //planned_hours: 0,
 				user_id: null,
 				date_end: null,
 				date_start: null,
 		};
-		var newInterState = app.Models.Intervention.state[0].value;
-		this.getTask(e);
-		this.saveNewStateTask(params,null,newInterState);
+		var newInterState = app.Models.Intervention.state[1].value;		
+		this.saveNewStateTask(taskParams,null,null,newInterState);
 
 	},
 
 	//Save task with new times
-	saveNewStateTask: function(params,element,newInterState) {
+	saveNewStateTask: function(taskParams, taskWorkParams, element, newInterState) {
 		var self = this;
-		self.params = params;
+		self.taskParams = taskParams;
+		self.taskWorkParams = taskWorkParams;
 		self.element = element;
 		
 		// why 'saveWithCallback' and note 'save' on model
 		//When save intervention and just after save task (TaskListView L.187 et L.190) postgres send this error:
 		//TransactionRollbackError: could not serialize access due to concurrent update
 		//We must wait intervention save callback before save task
+		
 		app.models.intervention.saveWithCallback(this.model.toJSON().intervention.id, {
-			state:newInterState },{
-				success: function (data) {
-					app.models.task.save(self.model.id, self.params, self.element, self, "#taches");
-				}
+			state:newInterState },
+			{
+				//TODO save task work with callback
+				success: function (data) {		
+					if( self.taskWorkParams!=null )
+					{
+						app.models.taskWork.save(0, taskWorkParams,
+						{
+							success: function (data) {
+								app.models.task.save(self.model.id, self.taskParams, self.element, self, "#taches");
+							}
+						});
+					}
+					else
+						app.models.task.save(self.model.id, self.taskParams, self.element, self, "#taches");
+				}		
 			});
 	},
 

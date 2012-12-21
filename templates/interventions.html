@@ -38,7 +38,7 @@
 			<thead>
 				<tr>
 					<th><%= _.capitalize(lang.label) %></th>
-					<th><%= _.capitalize(lang.responsible) %></th>
+					<th><%= _.capitalize(lang.responsible) %></th>					
 					<th><%= _.capitalize(lang.plannedHours) %></th>
 					<th><%= _.capitalize(lang.spentHours) %></th>
 					<th><%= _.capitalize(lang.progressRate) %>
@@ -73,7 +73,7 @@
 					</td>
 					<td><%=intervention.ask.manager_id[1]%></td>
 					<td><%=intervention.planned_hours%>h</td>
-					<td><%=intervention.total_hours%>h</td>
+					<td><%=intervention.effective_hours%>h</td>
 					<td>
 						<% if(intervention.progress_rate != 0 || intervention.progress_rate != false) {
 							
@@ -102,9 +102,10 @@
 								<thead>
 									<tr>
 										<th><%= _.capitalize(lang.label) %></th>
-										<th><%= _.capitalize(lang.assignedTo) %></th>
+										<th><%= _.capitalize(lang.assignedTo) %></th>									
 										<th><%= _.capitalize(lang.plannedHours) %></th>
 										<th><%= _.capitalize(lang.spentHours) %></th>
+										<th><%= _.capitalize(lang.remainingHours) %></th>
 										<th><%= _.capitalize(lang.progressRate) %></th>
 									</tr>
 								</thead>
@@ -133,6 +134,7 @@
 											<td><%= task.user_id[1] %></td>
 											<td><%= task.planned_hours %>h</td>
 											<td><%= task.effective_hours %>h</td>
+											<td><%= task.remaining_hours %>h</td>
 											<td>
 												<% if(task.progress != 0 || task.progress != false) {
 
@@ -177,7 +179,7 @@
 		</div>	
 		<!-- No request in the Database -->
 		<div class="alert alert-info">
-			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>.
+			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequestPlanned %>.
 		</div>
 
 	<% } %>

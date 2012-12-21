@@ -83,11 +83,22 @@
 					    		<%= task.remaining_hours %>
 					    	</span>
 					    </td>
-					   	<td>
-					    	<div class="progress" style="margin-bottom: 0;">
-					    		<div class="bar" style="width: 70%;"><%= tasks.progress %></div>
-					    	</div>
-					    </td>
+						<td>
+							<% if(task.progress != 0 || task.progress != false) {
+
+								if(task.progress == 100 ){ %>
+									<div class="progress progress-success" style="margin-bottom: 0;">
+										<div class="bar" style="width: <%= task.progress %>%;"><%= task.progress %>%</div>
+									</div>
+								<% } else{ %>
+									<div class="progress" style="margin-bottom: 0;">
+										<div class="bar" style="width: <%= task.progress %>%;"></div>
+									</div>
+								<% }
+								} else{ %>
+									<span class="text-warning"><%= _.capitalize(lang.notBegin) %></span>
+							<% } %>
+						</td>
 					    <td>
 				    		<% if(task.state == app.Models.Task.state[0].value) { %> 
 				    			<span class="label label-important"><%= lang.refused %></span>
@@ -106,7 +117,8 @@
 					   	<td class="align">
 
 					   		<!-- Tâches à saisir -->
-							<% if(task.state == app.Models.Task.state[2].value) { %>
+							<% if(task.state == app.Models.Task.state[1].value
+									|| task.state == app.Models.Task.state[2].value) { %>
 					   		
 								<div class="btn-group">
 									<button class="btn btn-small btn-success no-outline buttonTaskDone" data-toggle="modal" id="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok"></i></button>

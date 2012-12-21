@@ -75,8 +75,9 @@ app.Views.PlanningView = Backbone.View.extend({
             console.log(app.collections.interventions);
             
             //Keep only inetrvention not planned
-            interventions = _.filter(interventions,function (intervention){            		
-				return intervention.attributes.state != app.Models.Intervention.state[1].value;
+            interventions = _.filter(interventions,function (intervention){    
+            	var inter = intervention.toJSON();
+				return inter.state != app.Models.Intervention.state[1].value;
 			});
             
            //Order by date start 
@@ -287,9 +288,7 @@ app.Views.PlanningView = Backbone.View.extend({
 	         project_id: this.pos,
 	         name: this.$('#taskName').val(),
 	         category_id: input_category_id,	         
-		     planned_hours: this.$('#taskHour').val(),
-		     total_hours: this.$('#taskHour').val(),
-		     remaining_hours: this.$('#taskHour').val(),
+	         planned_hours: this.$('#taskHour').val(),
 	     };
 	     
 	    app.models.task.save(0,params,$('#modalAddTask'), this, "#planning");

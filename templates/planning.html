@@ -42,7 +42,7 @@
 										<% if(task.date_start != ""){ %>
 											<li id="task_<%= task.id %>" class="external-event disabled">
 												<i class="icon-time"></i>&nbsp;
-												<strong><%= task.name %></strong>
+												<span class="<%= (task.progress == '100' ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
 												<small class="pull-right"><%= task.planned_hours %>h</small>
 										<% 
 											
@@ -190,7 +190,7 @@
                 <label for="taskName" class="control-label">Nom:</label>
 
                 <div class="controls">
-                    <input type="text" id="taskName" name="taskName" />
+                    <input type="text" id="taskName" name="taskName" required="required"/>
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -210,7 +210,7 @@
                 <label for="taskHour" class="control-label">Heures prévisionnelles:</label>
 
                 <div class="controls">
-                     <input type="number" id="taskHour" name="taskHour" />
+                     <input type="number" id="taskHour" name="taskHour" required="required"/>
                     <span class="help-inline"></span>
                 </div>
             </div>

@@ -36,6 +36,7 @@
 	"category"				: "catégorie",
 	"intervention"			: "intervention",
 	"assignedTo"			: "assigné à",
+	"estimatedHours"		: "Heures prévues",
 	"plannedHours"			: "Heures planifiées",
 	"remainingHours"		: "Heures restantes",
 	"spentHours"			: "Heures passées",
@@ -88,6 +89,7 @@
    		"information"         	: "Information",
     	"successLogout"       	: "Vous êtes maintenant déconnecté",
     	"noRequest"      	  	: "Aucune intervention dans la base de données",
+    	"noRequestPlanned"		: "Aucune intervention planifiées",
     	"noTaskForIntervention"	: "Aucune tâche pour cette intervention",
     	"noTask"      	  	  	: "Aucunes tâches à pointer"
 	},

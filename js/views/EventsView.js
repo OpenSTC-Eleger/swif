@@ -145,10 +145,14 @@ app.Views.EventsView = Backbone.View.extend({
 				disableResizing: false,				
                 selectable: true,
                 selectHelper: true,
-                editable: true,
+                editable: false,
                 ignoreTimezone: false,          
                 dragRevertDuration:0,
                 eventClick: this.eventClick,
+                
+				eventClick: function(calEvent, jsEvent, view) {
+					return false;
+				},
 
                 eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
 					app.loader('display');
@@ -210,12 +214,11 @@ app.Views.EventsView = Backbone.View.extend({
 				    //$(self.el).append('<button type="button" class="close" data-dismiss="close">X</button>');
 				    params = { 
 		               //id: copiedEventObject.id,
-				       state: 'pending',
+				       state: 'open',
 		               date_start: copiedEventObject.start,
-		    		   date_end: copiedEventObject.end,		               
+		    		   date_end: copiedEventObject.end,
 		               planned_hours: copiedEventObject.planned_hours,
-		               total_hours: copiedEventObject.total_hours,
-		               remaining_hours: copiedEventObject.remanning_hours,
+		               remaining_hours: copiedEventObject.planned_hours,
 		               user_id: self.officer_id
 				    };
 				    
