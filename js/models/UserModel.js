@@ -26,7 +26,8 @@ app.Models.User = Backbone.Model.extend({
         lastConnection  : '',
         firstname       : '',
         lastname        : '',
-        service_ids		: []
+        service_ids		: [],
+        context			: {},
     },
 
     initialize: function(){
@@ -105,6 +106,13 @@ app.Models.User = Backbone.Model.extend({
     setServices : function(value) {
         this.set({ service_ids : value });
     },
+    
+    getContext : function() {
+        return this.get('context');
+    },
+    setServices : function(value) {
+        this.set({ context : value });
+    },
 
 
 
@@ -144,6 +152,7 @@ app.Models.User = Backbone.Model.extend({
                 self.setLogin(loginUser);
                 self.setUID(data.uid);
                 self.setLastConnection(moment().format("LLL"));
+                self.setContext(data.context);
                 
                 // Add the user to the collection and save it to the localStorage //
                 app.collections.users.add(self);

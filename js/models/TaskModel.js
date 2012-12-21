@@ -87,6 +87,21 @@ app.Models.Task = Backbone.RelationalModel.extend({
     /** Model Parser
     */
     parse: function(response) {
+    	
+    	//Au moment de la sauvegarde openerp enregistre les dates en UTC
+		//A la lecture on  convertit en GMT+1
+    	var date_start = new Date(Date.parse(response.date_start));
+    	var date_end = new Date(Date.parse(response.date_end));
+    	
+    	var utc_date_start = date_start.getTime() + (date_start.getTimezoneOffset() * 60000);
+    	var new_date_start = new Date(utc_date_start + (3600000*+2));
+    	 
+    	var utc_date_end = date_end.getTime() + (date_end.getTimezoneOffset() * 60000);
+    	var new_date_end= new Date(utc_date_end + (3600000*+2));
+    	
+    	
+    	response.date_start = new_date_start;
+    	response.date_end = new_date_end;
         return response;
     },
     

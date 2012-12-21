@@ -71,7 +71,7 @@
 									class="btn btn-success btn-small pull-right no-outline" rel="tooltip" 
 										data-original-title="<%= _.capitalize(lang.actions.enclosePlanning) %>" 
 										data-placement="left" 
-										<%= (allPlanned && (inter.state != app.Models.Intervention.state[1].value) && _.size(inter.tasks) > 0) ? "" : 'disabled' %>>
+										<%= (allPlanned && (inter.state == app.Models.Intervention.state[0].value) && _.size(inter.tasks) > 0) ? "" : 'disabled' %>>
 									<i class="icon-check"></i>
 								</button>
 							</div>
