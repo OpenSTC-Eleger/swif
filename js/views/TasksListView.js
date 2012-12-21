@@ -236,7 +236,7 @@ return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":"
 				date_end: null,
 				date_start: null,
 		};
-		var newInterState = app.Models.Intervention.state[1].value;		
+		var newInterState = app.Models.Intervention.state[2].value;		
 		this.saveNewStateTask(taskParams,null,null,newInterState);
 
 	},
