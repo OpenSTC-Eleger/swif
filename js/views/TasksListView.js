@@ -55,6 +55,13 @@ app.Views.TasksListView = Backbone.View.extend({
         var tasksUser = _.filter(tasks.models, function(item){	
         		var task = item.toJSON();
         		var intervention = task.intervention; 
+        		
+        		var interCondition = false;
+        		if( intervention!=null )
+        			interCondition = intervention.state==app.Models.Intervention.state[1].value
+						|| intervention.state==app.Models.Intervention.state[2].value  
+        			
+
         		return (	//Tâches de l'agent
         					task.user_id[0] == officer_id 
         					&& 
@@ -66,8 +73,7 @@ app.Views.TasksListView = Backbone.View.extend({
         					&& 
         					(
         						//L'intervention de la tâche doit être planifiée ou en cours'
-        						intervention.state==app.Models.Intervention.state[1].value
-        						|| intervention.state==app.Models.Intervention.state[2].value                                                  	
+        						interCondition                                                  	
         					 )        					
         			   ); 
         });

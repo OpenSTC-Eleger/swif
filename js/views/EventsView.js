@@ -145,7 +145,7 @@ app.Views.EventsView = Backbone.View.extend({
 				disableResizing: false,				
                 selectable: true,
                 selectHelper: true,
-                editable: false,
+                editable: true,
                 ignoreTimezone: false,          
                 dragRevertDuration:0,
                 eventClick: this.eventClick,
