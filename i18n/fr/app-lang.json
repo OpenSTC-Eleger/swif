@@ -15,12 +15,14 @@
 	"note"					: "note",
 	"status"				: "statut",
 	"place" 				: "site",
+	"parentPlace" 			: "site parent",
 	"claiment" 				: "demandeur",
 	"dateRequest" 			: "date demande",
 	"validateBy" 			: "validé par",
 	"toValidateBy" 			: "à valider par",
 	"service" 				: "service",
 	"type" 					: "type",
+	"area" 					: "surface",
 	"phone"					: "téléphone",
 	"email"					: "email",
 	"contact"				: "contact",
@@ -60,6 +62,7 @@
 		"addRequest"		: "nouvelle demande",
 		"addIntervention"	: "nouvelle intervention",
 		"addTask"			: "nouvelle tâche",
+		"addPlace" 			: "nouveau site",
 		"enclosePlanning" 	: "cloturer la planification",
 		"save"				: "enregistrer",
 		"cancel"			: "annuler",
@@ -90,19 +93,22 @@
     	"successLogout"       	: "Vous êtes maintenant déconnecté",
     	"noRequest"      	  	: "Aucune intervention dans la base de données",
     	"noRequestPlanned"		: "Aucune intervention planifiées",
+    	"noSite"		: "Aucun site enregistré",
     	"noTaskForIntervention"	: "Aucune tâche pour cette intervention",
-    	"noTask"      	  	  	: "Aucunes tâches à pointer"
+    	"noTask"      	  	  	: "Aucune tâche à pointer"
 	},
 
 	"viewsTitles" : {
-    	"login"			: "OpenSTM connexion",
-    	"about"			: "À propos d'OpenSTM",
-    	"requestsList"	: "Demandes d'interventions",
-    	"requestDetail"	: "Détail de la demande",
-    	"taskDetail"	: "Détail de la tâche",
-    	"newRequest"	: "Nouvelle demande d'intervention",
-    	"newTask"		: "Nouvelle tâche",
-    	"planning"		: "Planification des tâches",
-    	"tasksList"		: "Liste des tâches"
+    	"login"					 : "OpenSTM connexion",
+    	"about"					 : "À propos d'OpenSTM",
+    	"requestsList"			 : "Demandes d'interventions",
+    	"requestDetail"			 : "Détail de la demande",
+    	"taskDetail"			 : "Détail de la tâche",
+    	"interventionsMonitoring": "Suivi des interventions",
+    	"newRequest"			 : "Nouvelle demande d'intervention",
+    	"newTask"				 : "Nouvelle tâche",
+    	"planning"				 : "Planification des tâches",
+    	"tasksList"				 : "Liste des tâches",
+    	"placesList"			 : "Liste des sites"
 	}
 }

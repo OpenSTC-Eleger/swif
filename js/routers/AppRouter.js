@@ -13,14 +13,19 @@ app.Router = Backbone.Router.extend({
         'about'                                 : 'about',
         'interventions'                         : 'interventions',
         'planning'                         		: 'planning',
+
         'demandes-dinterventions'               : 'requestsList',
         'demandes-dinterventions/page:page'     : 'requestsList',
         'demandes-dinterventions/add'           : 'addRequest',
         'demandes-dinterventions/:id'           : 'detailsRequest',
+
         'taches'               					: 'tasksCheck',
         'taches/page:page'    					: 'tasksCheck',
         'taches/add'           					: 'addTask',
-        'taches/:id'           					: 'detailsTask'
+        'taches/:id'           					: 'detailsTask',
+
+        'sites'                                 : 'places',
+        'sites/page:page'                       : 'places',
     },
 
     
@@ -550,7 +555,7 @@ app.Router = Backbone.Router.extend({
             this.navigate('login', {trigger: true, replace: true});
         }
 
-    }, 
+    },
 
 	detailsTask: function(id){		
 		console.debug("****************detailsTask********************");
@@ -561,7 +566,7 @@ app.Router = Backbone.Router.extend({
 		    self.task = task;   
 			
 			if(app.collections.interventions == null ){
-		        app.collections.interventions = new app.Collections.Interventions();
+                app.collections.interventions = new app.Collections.Interventions();
 		    }
 			
 			app.loader('display');
@@ -588,7 +593,44 @@ app.Router = Backbone.Router.extend({
 		else{
 		    this.navigate('login', {trigger: true, replace: true});
 		}
-	}
+	},
+
+
+
+    /** Places management
+    */
+    places: function(page){      
+
+        // Check if the user is connect //
+        if(this.checkConnect()){
+            var self = this;
+
+
+            self.page = page ? parseInt(page, 10) : 1;
+
+            // Check if the collections is instantiate //
+            if(app.collections.places == null ){
+                app.collections.places = new app.Collections.Places();
+            }
+
+           
+            app.collections.places.fetch({
+                beforeSend: function(){
+                    app.loader('display');
+                },
+                success: function(){
+                    app.views.placesView = new app.Views.PlacesView({page: self.page});
+                    self.render(app.views.placesView);
+                },
+                complete: function(){
+                    app.loader('hide');
+                }
+            });
+        }
+        else{
+            this.navigate('login', {trigger: true, replace: true});
+        }
+    }
 
 
 

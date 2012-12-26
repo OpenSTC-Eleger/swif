@@ -152,7 +152,7 @@ app.Models.User = Backbone.Model.extend({
                 self.setLogin(loginUser);
                 self.setUID(data.uid);
                 self.setLastConnection(moment().format("LLL"));
-                self.setContext(data.context);
+                //self.setContext(data.context);
                 
                 // Add the user to the collection and save it to the localStorage //
                 app.collections.users.add(self);
