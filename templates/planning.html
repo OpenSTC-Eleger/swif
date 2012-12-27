@@ -96,8 +96,9 @@
 		<div class="span7">
 			<% _.each(officers, function (officer, i) { %>
 				<section id="<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>" class="calendarContainer">
-					<div id="officer_<%= officer.id %>" class="calendar thumbnail" data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>"></div>
-
+					<div id="officer_<%= officer.id %>" class="calendar thumbnail" 
+					 	data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>">
+					</div>
 				</section>
 			<% }) %>
 			

@@ -68,7 +68,7 @@ app.Views.PlanningView = Backbone.View.extend({
         		}
         	}); 
         	//remove admin
-        	if ( that.agent.length > 0 )
+        	if ( that.agent!=null && that.agent.length > 0 )
         		that.agent = _.without(that.agent,that.agent[0]);
         	
             var interventions = app.collections.interventions.models;
@@ -292,7 +292,8 @@ app.Views.PlanningView = Backbone.View.extend({
 	     };
 	     
 	    app.models.task.save(0,params,$('#modalAddTask'), this, "#planning");
-   }
+   },
+
 
 
 });

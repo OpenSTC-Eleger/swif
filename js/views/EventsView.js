@@ -1,8 +1,9 @@
 app.Views.EventsView = Backbone.View.extend({
 	
-//		events: {
-//		    "submit form": "save"
-//		},
+		events: {
+
+			//'click .btn.printCalendar'    : 'printCalendar',
+		},
 	
 	
         initialize: function(planning,collection,officer_id){
@@ -240,5 +241,108 @@ app.Views.EventsView = Backbone.View.extend({
 				},
 
 			});
-    	}
-    });
+    	
+			// Print button
+			$('<span class="fc-button-print">' 
+				   +'<button class="btn btn-primary btn-small no-outline " ><i class="icon-print"></i></button></span>')
+				  //+('labels', 'Print') + '</span>')
+				  .appendTo('div#officer_'+this.officer_id+' td.fc-header-right')
+				  .button()
+				  .on('click', function() {
+				    self.printCalendar();
+				  })
+				  .before('<span class="fc-header-space">');
+			
+			//remove vertical scrollbar (http://code.google.com/p/fullcalendar/issues/detail?id=314)
+			$('.fc-view-agendaWeek > div > div').css('overflow-y', 'hidden'); $('.fc-agenda-gutter').css('width', 0);
+				
+			
+		},			
+			
+		printCalendar: function () {
+			var printEl = this.el.clone(true);
+			
+			//printEl.css("display", "none");
+			printEl.find('.fc-agenda-days').height("800");
+			printEl.find('.fc-agenda-slots').height("100");
+			printEl.find('.fc-header-right').css("display", "none")
+			printEl.find('.fc-event-title').append("F");
+			printEl.find('.fc-event-title').append("P");
+			printEl.find('.fc-event-title').append("N");
+			//printEl.find('.fc-content').height(1000);
+			//printEl.width(500);
+			//printEl.append("COUCOUOCUCOUCOUC")
+			printEl.printElement(
+					{
+		                leaveOpen:true,
+		                printMode:'popup',
+			            overrideElementCSS:[
+			                                'fullcalendar-1.5.4.less',
+			                                { href:'fullcalendar-1.5.4.less',media:'print'}]
+					});
+		},
+	});
+//	
+//	
+//    // save current calendar width
+//    w = $('div#officer_'+printObject_id).css('width');
+//
+//    // prepare calendar for printing
+//    $('div#officer_'+printObject_id).css('width', '6.5in');
+//    $('.fc-header').hide();  
+//    $('div#officer_'+printObject_id).fullCalendar('render');
+//
+//    window.print();
+//
+//    // return calendar to original, delay so the print processes the correct width
+//    window.setTimeout(function() {
+//        $('.fc-header').show();
+//        $('div#officer_'+printObject_id).css('width', w);
+//        $('div#officer_'+printObject_id).fullCalendar('render');
+//    }, 1000);
+
+    		
+//    		   $(this.el).css('width', '6.5in');
+//    $('.fc-content .fc-state-highlight').css('background', '#ccc');
+//    $(this.el).fullCalendar('render');
+//    bdhtml = window.document.body.innerHTML;
+//    sprnstr = "<!--startprint-->";
+//    eprnstr = "<!--endprint-->";
+//    prnhtml = bdhtml.substr(bdhtml.indexOf(sprnstr) + 17);
+//    prnhtml = prnhtml.substring(0, prnhtml.indexOf(eprnstr));
+//    window.document.body.innerHTML =  $(this.el).fullCalendar('render');
+//    window.print();
+	
+
+
+//		    var append = false;
+//		    var delimiter = "<hr />";
+//		    
+//		    var domClone = document.getElementById('officer_'+printObject_id).cloneNode(true);
+//		
+//		    var $printSection = document.getElementById("printSection");
+//		
+//		    if (!$printSection) {
+//		        var $printSection = document.createElement("div");
+//		        $printSection.id = "printSection";
+//		        document.body.appendChild($printSection);
+//		    }
+//		
+//		    if (append !== true) {
+//		        $printSection.innerHTML = "";
+//		    }
+//		
+//		    else if (append === true) {
+//		        if (typeof(delimiter) === "string") {
+//		            $printSection.innerHTML += delimiter;
+//		        }
+//		        else if (typeof(delimiter) === "object") {
+//		            $printSection.appendChlid(delimiter);
+//		        }
+//		    }
+//		
+//		    domClone.id = "printable";
+//		    $printSection.appendChild(domClone);
+//		    domClone = null;
+//		    window.print();
+

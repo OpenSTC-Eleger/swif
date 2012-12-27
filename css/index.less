@@ -238,3 +238,27 @@ tr.row-tasks-collapse td[colspan="5"]{
   	// To make the container go all the way to the bottom of the topbar //
   	body{ padding-top: 60px; padding-bottom: 60px;}
 }
+
+
+
+/* Print
+-------------------------------------------------- */
+@media screen {
+  #printSection {
+      display: none;
+  }
+}
+
+@media print {
+  body * {
+    visibility:hidden;
+  }
+  #printSection, #printSection * {
+    visibility:visible;
+  }
+  #printSection {
+    position:absolute;
+    left:0;
+    top:0;
+  }
+}
