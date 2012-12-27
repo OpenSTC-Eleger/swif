@@ -130,7 +130,7 @@ div.div-actions{
 
 
 // Intervention Actions //
-.intervention-actions, .place-actions{
+.intervention-actions, .place-actions, .row-actions{
 	font-size: 85%;
 	width: auto;
 	margin: 0 0 0 16px;
@@ -138,12 +138,12 @@ div.div-actions{
 .task-actions{
 	font-size: 90%;
 }
-.intervention-actions a:hover i, .task-actions a:hover i, a.accordion-toggle:hover i, a.accordion-intervention:hover i, .place-actions a:hover i{
+.intervention-actions a:hover i, .row-actions a:hover i, .task-actions a:hover i, a.accordion-toggle:hover i, a.accordion-intervention:hover i{
 	text-decoration: none;
 }
 
 // Intervention Tasks //
-ul.tasks li:hover .task-actions, tr.row-tasks:hover .task-actions, tr.row-intervention:hover .intervention-actions, tr.row-place:hover .place-actions{
+ul.tasks li:hover .task-actions, tr.row-item:hover .row-actions, tr.row-tasks:hover .task-actions, tr.row-intervention:hover .intervention-actions{
 	visibility: visible;
 }
 
@@ -201,7 +201,7 @@ table.table-interventions tbody > tr:nth-child(4n+1){
 table.table-interventions tbody tr:hover > td{
 	background-color: @tableBackgroundHover;
 }
-tr.row-intervention > td, tr.row-place td{
+tr.row-intervention > td, tr.row-item td{
 	padding-bottom: 2px;
 }
 tr.row-tasks-collapse{

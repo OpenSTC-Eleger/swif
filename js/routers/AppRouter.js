@@ -26,6 +26,9 @@ app.Router = Backbone.Router.extend({
 
         'sites'                                 : 'places',
         'sites/page:page'                       : 'places',
+
+        'services'                              : 'services',
+        'services/page:page'                    : 'services'
     },
 
     
@@ -621,6 +624,43 @@ app.Router = Backbone.Router.extend({
                 success: function(){
                     app.views.placesView = new app.Views.PlacesView({page: self.page});
                     self.render(app.views.placesView);
+                },
+                complete: function(){
+                    app.loader('hide');
+                }
+            });
+        }
+        else{
+            this.navigate('login', {trigger: true, replace: true});
+        }
+    },
+
+
+
+    /** Services management
+    */
+    services: function(page){      
+
+        // Check if the user is connect //
+        if(this.checkConnect()){
+            var self = this;
+
+
+            self.page = page ? parseInt(page, 10) : 1;
+
+            // Check if the collections is instantiate //
+            if(app.collections.claimersServices == null ){
+                app.collections.claimersServices = new app.Collections.ClaimersServices();
+            }
+
+           
+            app.collections.claimersServices.fetch({
+                beforeSend: function(){
+                    app.loader('display');
+                },
+                success: function(){
+                    app.views.servicesView = new app.Views.ServicesView({page: self.page});
+                    self.render(app.views.servicesView);
                 },
                 complete: function(){
                     app.loader('hide');
