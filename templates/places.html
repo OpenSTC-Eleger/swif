@@ -1,7 +1,7 @@
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.placesList %>
-		<sup><i class="badge badge-success" ><%= nbPlaces %></i></sup>
+		<sup><i class="badge"><%= nbPlaces %></i></sup>
 	</h1>
 </div>
 
@@ -122,14 +122,17 @@
 	</div>
 	
 	<div class="modal-body">
-		<form id="formAddSite" action="#" class="form-horizontal">
+		<form id="formAddPlace" action="#" class="form-horizontal">
 
+			<fieldset>
+				<legend><%= lang.aboutThePlace %></legend>
+			
 			<!-- Place name -->
 			<div class="control-group">
 				<label for="placeName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
 
 				<div class="controls">
-					<input type="text" id="placeName" name="placeName" />
+					<input type="text" id="placeName" name="placeName" required="required" />
 					<span class="help-inline"></span>
 				</div>
 			</div>
@@ -144,22 +147,54 @@
 				</div>
 			</div>
 
-			<!-- Place Service -->
+			</fieldset>
+
+
+			<fieldset>
+				<legend><%= _.capitalize(lang.organization) %></legend>
+
+				<!-- Place Service -->
+				<div class="control-group">
+					<label for="placeService" class="control-label"><%= _.capitalize(lang.service) %>:</label>
+
+					<div class="controls">
+						<select id="placeService"></select>
+						<span class="help-inline"></span>
+					</div>
+				</div>
+
+				<!-- Place Parent Place -->
+				<div class="control-group">
+					<label for="placeParentPlace" class="control-label"><%= _.capitalize(lang.parentPlace) %>:</label>
+
+					<div class="controls">
+						<select id="placeParentPlace"></select>
+						<span class="help-inline"></span>
+					</div>
+				</div>
+
+			</fieldset>
+
+
+			<fieldset>
+				<legend><%= _.capitalize(lang.property) %></legend>
+
+			<!-- Place Width -->
 			<div class="control-group">
-				<label for="placeService" class="control-label"><%= _.capitalize(lang.service) %>:</label>
+				<label for="placeWidth" class="control-label"><%= _.capitalize(lang.width) %>:</label>
 
 				<div class="controls">
-					<select id="placeService"></select>
+					<input type="number" id="placeWidth" />
 					<span class="help-inline"></span>
 				</div>
 			</div>
-
-			<!-- Place Parent Place -->
+			
+			<!-- Place Lenght -->
 			<div class="control-group">
-				<label for="placeParentPlace" class="control-label"><%= _.capitalize(lang.parentPlace) %>:</label>
+				<label for="placeLenght" class="control-label"><%= _.capitalize(lang.lenght) %>:</label>
 
 				<div class="controls">
-					<select id="placeParentPlace"></select>
+					<input type="number" id="placeLenght" />
 					<span class="help-inline"></span>
 				</div>
 			</div>
@@ -169,16 +204,18 @@
 				<label for="placeArea" class="control-label"><%= _.capitalize(lang.area) %>:</label>
 
 				<div class="controls">
-					<input type="text" id="placeArea" />
+					<input type="number" id="placeArea" />
 					<span class="help-inline"></span>
 				</div>
 			</div>
+
+			</fieldset>
 
 		</form>
 	</div>
 	
 	<div class="modal-footer">
-		<button type="submit" class="btn btn-primary saveTask"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+		<button type="submit" form="formAddPlace" class="btn btn-primary saveTask"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
 		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>

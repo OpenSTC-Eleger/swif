@@ -19,6 +19,7 @@ app.Views.PlacesView = Backbone.View.extend({
 
 		'click a.modalDeletePlace'  	: 'setInfoModal',
 
+		'submit #formAddPlace' 			: "addPlace", 
 		'click button.btnDeletePlace'  	: 'deletePlace'
     },
 
@@ -94,6 +95,16 @@ app.Views.PlacesView = Backbone.View.extend({
 
         $('#infoModalDeletePlace p').html(this.selectedPlace.name);
         $('#infoModalDeletePlace small').html(this.selectedPlace.service[1]);
+    },
+
+
+
+    /** Add a new place
+    */
+    addPlace: function(e){
+        e.preventDefault();
+
+        alert('TODO: save the new place');
 
     },
 
