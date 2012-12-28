@@ -1,15 +1,15 @@
 /******************************************
-* Services List View
+* Categories List View
 */
-app.Views.ServicesView = Backbone.View.extend({
+app.Views.CategoriesView = Backbone.View.extend({
 	
 	el : '#rowContainer',
 	
-	templateHTML: 'services',
+	templateHTML: 'categories',
 	
 	numberListByPage: 25,
 
-	selectedService : '',
+	selectedCat : '',
 
 
     // The DOM events //
@@ -17,10 +17,10 @@ app.Views.ServicesView = Backbone.View.extend({
 		'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
 
-		'click a.modalDeleteService'  	: 'setInfoModal',
+		'click a.modalDeleteCat'  		: 'setInfoModal',
 
-		'submit #formAddService' 		: "addService", 
-		'click button.btnDeleteService' : 'deleteService'
+		'submit #formAddCat' 			: "addCat", 
+		'click button.btnDeleteCat' 	: 'deleteCat'
     },
 
 	
@@ -38,7 +38,7 @@ app.Views.ServicesView = Backbone.View.extend({
 		var self = this;
 
 		// Change the page title //
-        app.router.setPageTitle(app.lang.viewsTitles.servicesList);
+        app.router.setPageTitle(app.lang.viewsTitles.categoriesList);
 
 
         // Change the active menu item //
@@ -48,13 +48,10 @@ app.Views.ServicesView = Backbone.View.extend({
         app.views.headerView.switchGridMode('fluid');
 
 
-		var services = app.collections.claimersServices.models;
-		var nbServices = _.size(services);
+		var categories = app.collections.categories.models;
+		console.debug(categories);
 
-		console.debug(services);
-
-
-		var len = services.length;
+		var len = categories.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
@@ -63,9 +60,9 @@ app.Views.ServicesView = Backbone.View.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				services: app.collections.claimersServices.toJSON(),
+				cats: app.collections.categories.toJSON(),
 				lang: app.lang,
-				nbServices: nbServices,
+				nbCats: len,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
 				pageCount: pageCount,
@@ -85,36 +82,36 @@ app.Views.ServicesView = Backbone.View.extend({
     */
     setInfoModal: function(e){
         
-        // Retrieve the ID of the service //
+        // Retrieve the ID of the categorie //
         var link = $(e.target);
 
         var id = _(link.parents('tr').attr('id')).strRightBack('_');
         
-        this.selectedService = _.filter(app.collections.claimersServices.models, function(item){ return item.attributes.id == id });
-        this.selectedService = this.selectedService[0].toJSON();
+        this.selectedCat = _.filter(app.collections.categories.models, function(item){ return item.attributes.id == id });
+        this.selectedCat = this.selectedCat[0].toJSON();
 
-        $('#infoModalDeleteService p').html(this.selectedService.name);
-        $('#infoModalDeleteService small').html(this.selectedService.code);
+        $('#infoModalDeleteCat p').html(this.selectedCat.name);
+        $('#infoModalDeleteCat small').html(this.selectedCat.code);
     },
 
 
 
-    /** Add a new service
+    /** Add a new categorie
     */
-    addService: function(e){
+    addCat: function(e){
         e.preventDefault();
 
-        alert('TODO: save the new service');
+        alert('TODO: save the new cat');
 
     },
 
 
 
-    /** Delete the selected service
+    /** Delete the selected categorie
     */
-    deleteService: function(e){
+    deleteCat: function(e){
         
-  		alert('TODO: delete service with id '+ this.selectedService.id);
+  		alert('TODO: delete categorie with id '+ this.selectedCat.id);
 
     },
 
