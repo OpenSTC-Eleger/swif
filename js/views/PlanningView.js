@@ -5,7 +5,7 @@ app.Views.PlanningView = Backbone.View.extend({
 
 
     el : '#rowContainer',
-    templateHTML: 'planning', 
+    templateHTML: 'planning-test', 
     calendarView: 'agendaWeek',
 
     selectedInter : '',
@@ -22,7 +22,7 @@ app.Views.PlanningView = Backbone.View.extend({
         'click button.btnDeleteTask'   : 'deleteTask',
         	
         'click .btn.addTaskPlanning'    : 'displayFormAddTask',
-        'click button.saveTaskPlanning'       : 'saveTask',
+        'click button.saveTaskPlanning' : 'saveTask',
         
         'click .btn.pull-right'    : 'scheduledInter',
     },
@@ -97,11 +97,10 @@ app.Views.PlanningView = Backbone.View.extend({
             self.initCalendar();
             self.initDragObject();
 
-            $('[data-spy="affix"]').affix();            
-            $('[data-spy="scroll"], #listAgents').scrollspy();
+            $('*[data-spy="affix"]').affix();            
             $('*[rel="tooltip"]').tooltip({placement: "left"});
-
-            // Animated Scroll //
+            
+           /* // Animated Scroll //
             $('ul.nav li a[href^="#"]').click(function(){  
 		        var elementID = $(this).attr("href");  
 		        
@@ -110,13 +109,13 @@ app.Views.PlanningView = Backbone.View.extend({
 		        }, 'slow');
 		        
 		        return false;
-		    });
-            
-            $('ul.nav li.active').removeClass('active');
-            //$('ul.nav li.active').first().addClass('active');
-            
+		    });*/
 
-
+            $('#listAgents li a').click(function(){
+                $('#listAgents li.active').removeClass('active');
+                $(this).parent('li').addClass('active');
+            })
+            
         });
        
         return this;

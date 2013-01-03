@@ -34,9 +34,11 @@ small.badge{
 -------------------------------------------------- */
 section.calendarContainer{
 	//min-width: 770px;
+	margin-bottom: 2px;
 }
 section.calendarContainer:not(:first-child){
-	padding-top: 50px;
+	//padding-top: 50px
+
 }
 
 
@@ -60,11 +62,6 @@ section.calendarContainer:not(:first-child){
 
 
 
-// List Agents //
-#listAgents{
-	max-height: 75%;
-	overflow-y: scroll;
-}
 
 
 
@@ -127,6 +124,35 @@ div.div-actions{
 	border-top: 1px solid @grayLight;
 	padding: 5px;
 }
+
+
+
+/* Planning List Agents
+-------------------------------------------------- */
+#listAgentsTeams{
+	margin-bottom: 15px;
+	overflow-y: hidden;
+}
+#listAgentsTeams.affix{
+	top: 60px;
+}
+#listAgentsTeams div.tab-content div.tab-pane{
+	max-height: 120px;
+}
+#listAgents{
+	margin-bottom: 0;
+}
+#listAgents li{
+	width: 31%;
+	height: 30px;
+}
+#listAgents li a{
+	margin-left: 0;
+	padding-left: 5px;
+	
+}
+
+
 
 
 // Intervention Actions //
@@ -219,35 +245,43 @@ tr.row-tasks-collapse td[colspan="5"]{
 
 
 
+
+
+
 /* Responsive
 -------------------------------------------------- */
-//@media (max-width: 767px) {
+@media (max-width: 767px) {
+
+
 
 	// Accordions Interventions //
-	#accordionInter {
+	/*#accordionInter {
 		width: auto;
 		margin-bottom: 20px;
 	}
 	#accordionInter.affix {
 		top: 70px;
 		width: 21%;
-	}
+	}*/
 
-
-	// List Agents //
-	#listAgents.affix{
-		top: 70px;
-		width: 13.5%;
-	}
-//}
+}
 
 
 
 @media (min-width: 980px) {
   	// To make the container go all the way to the bottom of the topbar //
   	body{ padding-top: 60px; padding-bottom: 60px;}
+
 }
 
+@media (max-width: 979px) {
+
+  	// Planning list Agents //
+	#listAgents li{
+		width: 45%;
+	}
+
+}
 
 
 /* Print

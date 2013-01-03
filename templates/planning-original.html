@@ -1,12 +1,14 @@
-<div class="page-header">
-	<h1><%= lang.viewsTitles.planning %></h1>
-</div>
+<div class="container-fluid" data-spy="scroll" data-target="#listAgents" >
+	
+	<div class="page-header">
+		<h1><%= lang.viewsTitles.planning %></h1>
+	</div>
 
 
 	<div class="row-fluid">
 
 		<!-- Interventions List -->
-		<div class="span4">
+		<div class="span3">
 			<% if( _.size(interventions) > 0 ) {%>
 			<aside class="accordion" id="accordionInter" data-spy="affix">
 				
@@ -90,49 +92,39 @@
 		<!-- /Interventions List -->
 
 
-		
-		<div class="span8">
-
-			<!-- List Agents -->
-			<div id="listAgentsTeams" class="tabbable tabs-left" data-spy="affix" data-offset-top="200">
-				<ul class="nav nav-tabs">
-					<li><a href="#tab-agents" data-toggle="tab"><%= _.capitalize(lang.agents) %> &nbsp;&nbsp;<span class="badge"><%= _.size(officers) %></span></a></li>
-					<li><a href="#tab-teams" data-toggle="tab"><%= _.capitalize(lang.teams) %></a></li>
-					<li><a href="#custom-teams" data-toggle="tab">Custom</a></li>
-				</ul>
-				<div class="tab-content">
-					<div class="tab-pane" id="tab-agents">
-						<ul class="unstyled inline">
-							<%_.each(officers, function (officer, i) { %>
-								<li><a href="#<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>"><i class="icon-caret-right"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
-							<% }) %>
-						</ul>
+		<!-- Calendar -->
+		<div class="span7">
+			<% _.each(officers, function (officer, i) { %>
+				<section id="<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>" class="calendarContainer">
+					<div id="officer_<%= officer.id %>" class="calendar thumbnail" 
+					 	data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>">
 					</div>
-					<div class="tab-pane" id="tab-teams">
-						<p>Teams</p>
-					</div>
-					<div class="tab-pane" id="tab-custom-teams">
-						<p>Custom</p>
-					</div>
-			  	</div>
-			</div>
-			<!-- /List Agents -->
-
-			<!-- Calendar -->
-			<div>
-				<% _.each(officers, function (officer, i) { %>
-					<section id="<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>" class="calendarContainer">
-						<div id="officer_<%= officer.id %>" class="calendar thumbnail" 
-						 	data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>">
-						</div>
-					</section>
-				<% }) %>
-			</div>
-			<!-- /Calendar -->
+				</section>
+			<% }) %>
 			
+
 		</div>
+		<!-- /Calendar -->
+
+
+		<!-- List Agents -->
+		<div class="span2 navListAgents">
+			<ul class="nav nav-list well well-small" id="listAgents" data-spy="affix" data-offset-top="20">
+			  	<li class="nav-header">
+			  		<h4><i class="icon-group icon-large"></i>&nbsp;&nbsp;&nbsp;&nbsp;Agents&nbsp;&nbsp;<span class="badge pull-right"><%= _.size(officers) %></span></h4></li>
+				<li class="divider"></li>
+				
+				<%_.each(officers, function (officer, i) { %>
+					<li><a href="#<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>"><i class="icon-caret-right"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
+				<% }) %>	
+			</ul>
+		</div>
+		<!-- /List Agents -->
 
 	</div>
+
+</div>
+
 
 
 

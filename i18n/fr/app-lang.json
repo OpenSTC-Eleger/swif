@@ -27,6 +27,8 @@
 	"type" 					: "type",
 	"area" 					: "surface",
 	"phone"					: "téléphone",
+	"agents"				: "agents",
+	"teams"					: "équipes",
 	"email"					: "email",
 	"organization" 			: "organisation",
 	"contact"				: "contact",

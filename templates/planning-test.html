@@ -1,5 +1,5 @@
-<div class="page-header">
-	<h1><%= lang.viewsTitles.planning %></h1>
+<div class="page-header" style="margin-top: 5px">
+	<h1 style="margin: 0;"><%= lang.viewsTitles.planning %></h1>
 </div>
 
 
@@ -7,8 +7,17 @@
 
 		<!-- Interventions List -->
 		<div class="span4">
-			<% if( _.size(interventions) > 0 ) {%>
-			<aside class="accordion" id="accordionInter" data-spy="affix">
+
+			<!-- Table toolbar -->
+			<div style="margin-bottom: 20px;">
+				<a href="#modalAddInter" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	
+
+			</div>
+			<!-- Table toolbar -->
+
+
+			<% if( _.size(interventions) > 0 ) { %>
+			<aside class="accordion" id="accordionInter">
 				
 				<% _.each(interventions, function (inter, i) { %>
 				<div class="accordion-group">
@@ -94,17 +103,17 @@
 		<div class="span8">
 
 			<!-- List Agents -->
-			<div id="listAgentsTeams" class="tabbable tabs-left" data-spy="affix" data-offset-top="200">
+			<div id="listAgentsTeams" class="tabbable tabs-left">
 				<ul class="nav nav-tabs">
-					<li><a href="#tab-agents" data-toggle="tab"><%= _.capitalize(lang.agents) %> &nbsp;&nbsp;<span class="badge"><%= _.size(officers) %></span></a></li>
-					<li><a href="#tab-teams" data-toggle="tab"><%= _.capitalize(lang.teams) %></a></li>
-					<li><a href="#custom-teams" data-toggle="tab">Custom</a></li>
+					<li class="active"><a href="#" data-target="#tab-agents" data-toggle="tab"><%= _.capitalize(lang.agents) %> &nbsp;&nbsp;<span class="badge"><%= _.size(officers) %></span></a></li>
+					<li><a href="#" data-target="#tab-teams" data-toggle="tab"><%= _.capitalize(lang.teams) %></a></li>
+					<li><a href="#" data-target="#tab-custom-teams" data-toggle="tab">Custom</a></li>
 				</ul>
 				<div class="tab-content">
-					<div class="tab-pane" id="tab-agents">
-						<ul class="unstyled inline">
+					<div class="tab-pane active" id="tab-agents">
+						<ul id="listAgents" class="unstyled inline nav nav-list">
 							<%_.each(officers, function (officer, i) { %>
-								<li><a href="#<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>"><i class="icon-caret-right"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
+								<li><a href="#<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>"><i class="icon-user"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
 							<% }) %>
 						</ul>
 					</div>
@@ -119,7 +128,7 @@
 			<!-- /List Agents -->
 
 			<!-- Calendar -->
-			<div>
+			<div style="overflow: hidden; max-height: 590px;">
 				<% _.each(officers, function (officer, i) { %>
 					<section id="<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>" class="calendarContainer">
 						<div id="officer_<%= officer.id %>" class="calendar thumbnail" 
