@@ -9,7 +9,7 @@
 		<div class="span4">
 
 			<!-- Table toolbar -->
-			<div style="margin-bottom: 20px;">
+			<div style="margin-bottom: 35px; height: 120px;">
 				<a href="#modalAddInter" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	
 
 			</div>
@@ -17,7 +17,7 @@
 
 
 			<% if( _.size(interventions) > 0 ) { %>
-			<aside class="accordion" id="accordionInter">
+			<aside class="accordion" id="accordionInter" style="overflow-y: scroll; max-height: 590px; margin-bottom: 0;">
 				
 				<% _.each(interventions, function (inter, i) { %>
 				<div class="accordion-group">

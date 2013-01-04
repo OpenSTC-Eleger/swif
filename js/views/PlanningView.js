@@ -5,7 +5,7 @@ app.Views.PlanningView = Backbone.View.extend({
 
 
     el : '#rowContainer',
-    templateHTML: 'planning-test', 
+    templateHTML: 'planning', 
     calendarView: 'agendaWeek',
 
     selectedInter : '',
