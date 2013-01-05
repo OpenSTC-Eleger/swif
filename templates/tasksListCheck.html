@@ -55,6 +55,7 @@
 					<th class="hidden-phone"><%= _.capitalize(lang.category) %></th>
 					<th><%= _.capitalize(lang.intervention) %></th>
 					<th><%= _.capitalize(lang.assignedTo) %></th>
+					<th><%= _.capitalize(lang.team) %></th>
 					<th><%= _.capitalize(lang.plannedHours) %></th> 
 					<th><%= _.capitalize(lang.remainingHours) %></th>
 					<th><%= _.capitalize(lang.progressRate) %></th>
@@ -76,6 +77,7 @@
 						<td><%= (task.category_id[0] != false && task.category_id[0] != null ? _(task.category_id[1].toLowerCase()).titleize() : "") %></td>
 						<td class="hidden-phone"><%= task.project_id[1] %></td>
 					    <td><%= task.user_id[1] %></td>
+					    <td><%= task.team_id[1] %></td>
 					    <td><%= task.planned_hours %></td>
 					    <td>
 							<span 

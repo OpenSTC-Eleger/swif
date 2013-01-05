@@ -7,7 +7,7 @@ app.Views.PlanningView = Backbone.View.extend({
     el : '#rowContainer',
     templateHTML: 'planning', 
     calendarView: 'agendaWeek',
-
+    
     selectedInter : '',
     selectedTask : '',
     
@@ -37,9 +37,10 @@ app.Views.PlanningView = Backbone.View.extend({
 
     /** Display the view
     */
-    render : function() {
+    render : function(teamMode) {
+    	this.teamMode = teamMode;
         var self = this;
-
+        
 
         // Retrieve the Login template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -49,11 +50,11 @@ app.Views.PlanningView = Backbone.View.extend({
             // Change the Grid Mode of the view //
             app.views.headerView.switchGridMode('fluid');
             
-            //var user = app.models.user;  
-            var officers = app.collections.officers.toJSON();
             
+           
+            var that = this;
             //Filter Agents : all agents belongs to user's services
-        	var that = this;
+            var officers = app.collections.officers.toJSON();        	
         	_.each(app.models.user.attributes.service_ids,function (user_service_id){
         		var agentsKeeped = _.filter(officers, function(item,i){             	
         			var service = _.filter(item.service_ids,function (service_id){            		
@@ -61,15 +62,33 @@ app.Views.PlanningView = Backbone.View.extend({
         			}); 
         			return service.length != 0
         		});
-        		if ( that.agent == null )
-        			that.agent = agentsKeeped;
+        		if ( that.agents == null )
+        			that.agents = agentsKeeped;
         		else {
-        			that.agent = _.union(that.agent, agentsKeeped);
+        			that.agents = _.union(that.agents, agentsKeeped);
         		}
         	}); 
+        	
+        	//Filter Teams : all teams belongs to user's services
+        	var teams = app.collections.teams.toJSON();
+        	var that = this;
+        	_.each(app.models.user.attributes.service_ids,function (user_service_id){
+        		var teamsKeeped = _.filter(teams, function(item,i){             	
+        			var service = _.filter(item.service_ids,function (service_id){            		
+        				return service_id == user_service_id;
+        			}); 
+        			return service.length != 0
+        		});
+        		if ( that.teams == null )
+        			that.teams = teamsKeeped;
+        		else {
+        			that.teams = _.union(that.teams, teamsKeeped);
+        		}
+        	}); 
+
         	//remove admin
-        	if ( that.agent!=null && that.agent.length > 0 )
-        		that.agent = _.without(that.agent,that.agent[0]);
+        	if ( that.agents!=null && that.agents.length > 0 )
+        		that.agents = _.without(that.agents,that.agents[0]);
         	
             var interventions = app.collections.interventions.models;
             console.log(app.collections.interventions);
@@ -86,34 +105,87 @@ app.Views.PlanningView = Backbone.View.extend({
             });
             
             interventionSorted = new app.Collections.Interventions(interventionsSortedArray);
+            
+            
 
-        	var template = _.template(templateData, {
+
+            var template = _.template(templateData, {
         		lang: app.lang,
         		interventions: interventionSorted.toJSON(),
-        		officers: that.agent,            		
+        		officers: that.agents,
+        		teams: that.teams,
+        		teamMode: self.teamMode
             });
 
             $(self.el).html(template);
             self.initCalendar();
             self.initDragObject();
+            
+            
+//            $('[data-spy="affix"]').affix();            
+//            $('[data-spy="scroll"], .navListAgents').scrollspy();
+//            
+//            $('*[rel="tooltip"]').tooltip({placement: "left"});
+//
+//            // Animated Scroll //
+//            $('#accordion2 li a[href^="#"]').click(function(){  
+//		        var elementID = $(this).attr("href");  
+//		        $('html, body').animate({  
+//		            scrollTop:$(elementID).offset()!=null?$(elementID).offset().top -5 : 0
+//		        }, 'slow');		        	
+//		        return false;
+//		    });
+//            $('#heading-agents').click(function (e) {
+//            	e.preventDefault(); 
+//			})
+//			
+//			$('#heading-equipes').click(function (e) {
+//            	e.preventDefault();
+//			})
+
+
 
             $('[data-spy="affix"]').affix();            
-            $('[data-spy="scroll"], #listAgents').scrollspy();
+            $('[data-spy="scroll"], .navListAgents').scrollspy();
+            
             $('*[rel="tooltip"]').tooltip({placement: "left"});
 
             // Animated Scroll //
-            $('ul.nav li a[href^="#"]').click(function(){  
+            $('#myTabContent li a[href^="#"]').click(function(){  
 		        var elementID = $(this).attr("href");  
-		        
 		        $('html, body').animate({  
-		            scrollTop:$(elementID).offset().top -5
+		            scrollTop:$(elementID).offset()!=null?$(elementID).offset().top -5 : 0
 		        }, 'slow');
 		        
 		        return false;
 		    });
             
-            $('ul.nav li.active').removeClass('active');
+            //$('ul.nav li.active').removeClass('active');
             //$('ul.nav li.active').first().addClass('active');
+            
+            
+            //Pas besoin de mettre ce code si include bootstrap-responsive?? : http://jsbin.com/oxukok/1/edit
+            // https://groups.google.com/forum/?fromgroups=#!topic/twitter-bootstrap/BCW0sXdc8Ls
+            $('#listAgents a[href=#agents]').click(function (e) {
+            	e.preventDefault(); 
+            	self.render(false);
+			})
+			
+			$('#listAgents a[href=#equipes]').click(function (e) {
+            	e.preventDefault();
+            	self.render(true);
+			})
+			
+        	$('html, body').animate({  
+	            scrollTop:$(this).offset()!=null?0 : 0
+	        }, 'slow');	
+        	if ( self.teamMode )
+        		$('#myTab a:last').tab('show');
+        	else
+        		$('#myTab a:first').tab('show');
+        		
+        		
+        	
             
 
 
@@ -131,16 +203,36 @@ app.Views.PlanningView = Backbone.View.extend({
         return this;
     },    
     	
-    initCalendar: function() {
-	
+    initCalendar: function() {    		
     		var self = this;
-    		officers = app.collections.officers;    		
     		
-		    officers.each(function(o){		    	
-		    	self.events = self.getEvents(o.attributes.tasks.toJSON());		    	
-		    	var collection = o.attributes.tasks;
-		    	new app.Views.EventsView(self,collection,o.attributes.id).render();
-		    });
+    		if (this.teamMode) {
+        		teams = app.collections.teams;    		
+        		
+				teams.each(function(t){	
+					var team_json = t.toJSON();	
+					var allTasks = team_json.tasks;
+					self.events = self.getEvents(allTasks);
+					var collection = t.attributes.tasks;
+					new app.Views.EventsView(self,collection,t.attributes.id,self.teamMode).render();
+				});
+    			
+    		}
+    		
+    		else {
+        		officers = app.collections.officers;    		
+        		
+				officers.each(function(o){	
+					var officer_json = o.toJSON();
+					var allTasks = officer_json.tasks;					
+					if( officer_json.belongsToTeam!= null && officer_json.belongsToTeam.tasks!=null )
+						allTasks = _.union(officer_json.tasks, officer_json.belongsToTeam.tasks.toJSON());				
+					self.events = self.getEvents(allTasks);		    	
+					var collection = new app.Collections.Tasks(allTasks);
+					new app.Views.EventsView(self,collection,o.attributes.id,self.teamMode).render();
+				});
+    		}
+
 	
     },
     
@@ -168,7 +260,7 @@ app.Views.PlanningView = Backbone.View.extend({
                 state: task.state,
                 id: task.id,
 				title: task.name,
-				user_id: task.user_id[0],
+				//user_id: task.user_id[0],
 				planned_hours: task.planned_hours,
 				total_hours: task.total_hours,
 				effective_hours: task.effective_hours,
