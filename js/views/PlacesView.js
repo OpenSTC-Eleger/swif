@@ -113,9 +113,7 @@ app.Views.PlacesView = Backbone.View.extend({
     /** Delete the selected place
     */
     deletePlace: function(e){
-        
   		alert('TODO: delete place with id '+ this.selectedPlace.id);
-
     },
 
 

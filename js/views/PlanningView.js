@@ -5,7 +5,7 @@ app.Views.PlanningView = Backbone.View.extend({
 
 
     el : '#rowContainer',
-    templateHTML: 'planning', 
+    templateHTML: 'planning-test', 
     calendarView: 'agendaWeek',
 
     selectedInter : '',
@@ -15,16 +15,16 @@ app.Views.PlanningView = Backbone.View.extend({
     
     // The DOM events //
     events: {
-        'click a.modalDeleteInter'  : 'setInfoModal',
-        'click a.modalDeleteTask'   : 'setInfoModal',
+        'click a.modalDeleteInter'      : 'setInfoModal',
+        'click a.modalDeleteTask'       : 'setInfoModal',
 
-        'click button.btnDeleteInter'  : 'deleteInter',
-        'click button.btnDeleteTask'   : 'deleteTask',
+        'click button.btnDeleteInter'   : 'deleteInter',
+        'click button.btnDeleteTask'    : 'deleteTask',
         	
         'click .btn.addTaskPlanning'    : 'displayFormAddTask',
         'click button.saveTaskPlanning' : 'saveTask',
         
-        'click .btn.pull-right'    : 'scheduledInter',
+        'click .btn.pull-right'         : 'scheduledInter',
     },
 
 
@@ -111,7 +111,7 @@ app.Views.PlanningView = Backbone.View.extend({
 		        return false;
 		    });*/
 
-            $('#listAgents li a').click(function(){
+            $('#listAgents li a').click(function(e){
                 $('#listAgents li.active').removeClass('active');
                 $(this).parent('li').addClass('active');
             })
