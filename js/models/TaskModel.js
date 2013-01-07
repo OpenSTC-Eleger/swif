@@ -105,12 +105,40 @@ app.Models.Task = Backbone.RelationalModel.extend({
         return response;
     },
     
+//    reload: function(){
+//		app.collections.tasks.fetch({ 
+//			success: function(){					    	
+//				app.collections.interventions.fetch({ 
+//					success: function(){
+//				 		app.collections.teams.fetch({
+//			                success: function(){				 			
+//				 				Console.debug("Tasks reloaded")
+//					 		}					 
+//				 		});
+//			        }
+//			   });
+//		 	}					 
+//		});
+//    },
+//    
+//    saveReTest: function(id,data,options) { 
+//    	that.options = options;
+//    	var self = that
+//		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {
+//			success: function() {
+//				that.reload()
+//			}
+//			complete: function() {
+//				
+//			}
+//		});
+//	},
+    
 	/** Save Model
 		*/
-//	
-//	save: function(id,data,options) { 
-//		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options);
-//	},
+	saveTest: function(id,data,options) { 
+		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options);
+	},
 	
 	save: function(id,data,closeModal, view, strRoute) { 
 		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {

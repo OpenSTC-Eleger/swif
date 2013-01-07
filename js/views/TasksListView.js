@@ -56,14 +56,28 @@ app.Views.TasksListView = Backbone.View.extend({
         		var task = item.toJSON();
         		var intervention = task.intervention; 
         		
+        		var belongsToOfficer = (task.user_id[0] == officer_id)
+        		if( task.teamWorkingOn != null && task.teamWorkingOn.manager_id!=null )
+						belongsToOfficer = belongsToOfficer || (task.teamWorkingOn.manager_id[0] == officer_id);
+        		
+        		var belongsToServiceManager = false;
+        		
         		var interCondition = false;
-        		if( intervention!=null )
+        		if( intervention!=null ) {
         			interCondition = intervention.state==app.Models.Intervention.state[1].value
-						|| intervention.state==app.Models.Intervention.state[2].value  
+						|| intervention.state==app.Models.Intervention.state[2].value 
+											
+					var service = intervention.service_id.toJSON()[0];
+					var userServices = app.models.user.toJSON().service_ids;
+					if ( service && userServices )
+						belongsToServiceManager = app.models.user.isManager() &&         										
+        												$.inArray(service[0], userServices)!=-1;
+						
+				}
         			
 
         		return (	//Tâches de l'agent
-        					task.user_id[0] == officer_id 
+        					( belongsToOfficer || app.models.user.isDST() || belongsToServiceManager )
         					&& 
         					(
         						//Tâches ouvertes (plannifiés) ou en cours
@@ -151,6 +165,7 @@ app.Views.TasksListView = Backbone.View.extend({
             planned_hours: remaining_hours,
             remaining_hours: remaining_hours,
 			user_id: null,
+			team_id:null,
 			date_end: null,
 			date_start: null,
 		};
@@ -162,7 +177,8 @@ app.Views.TasksListView = Backbone.View.extend({
     	         date: new Date(),
     	         task_id: task.id,
     	         hours: hours,
-    	         user_id: task.user_id[0],
+    	         user_id: task.user_id!=null?task.user_id[0]:null,
+    	         team_id: task.team_id!=null?task.team_id[0]:null,
     	         company_id: task.company_id[0]
     	};
 		
@@ -171,11 +187,12 @@ app.Views.TasksListView = Backbone.View.extend({
     },
     
     secondsToHms : function (d) {
-d = Number(d);	
-var h = Math.floor(d / 3600);
-var m = Math.floor(d % 3600 / 60);
-var s = Math.floor(d % 3600 % 60);
-return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":" : "0:") + (s < 10 ? "0" : "") + s); },
+		d = Number(d);	
+		var h = Math.floor(d / 3600);
+		var m = Math.floor(d % 3600 / 60);
+		var s = Math.floor(d % 3600 % 60);
+		return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":" : "0:") + (s < 10 ? "0" : "") + s); 
+	},
     
     //Task done
     setModalTaskDone: function(e) {
@@ -216,7 +233,8 @@ return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":"
     	         date: new Date(),
     	         task_id: task.id,
     	         hours: hours,
-    	         user_id: task.user_id[0],
+    	         user_id: task.user_id!=null?task.user_id[0]:null,
+    	         team_id: task.team_id!=null?task.team_id[0]:null,
     	         company_id: task.company_id[0]
     	};
 
@@ -233,6 +251,7 @@ return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":"
 		        //remaining_hours: 0,
 		        //planned_hours: 0,
 				user_id: null,
+				team_id:null,
 				date_end: null,
 				date_start: null,
 		};

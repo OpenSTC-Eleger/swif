@@ -9,8 +9,8 @@
 		<div class="span4">
 
 			<!-- Table toolbar -->
-			<!--<div style="margin-bottom: 35px; height: 120px; overflow-y: scroll;">
-				<a href="#modalAddInter" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	
+			<div style="margin-bottom: 35px; height: 120px; overflow-y: scroll;">
+				<!--<a href="#modalAddInter" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	-->
 				
 				<ul id="listInters" class="unstyled inline nav nav-list">
 					<% _.each(interventions, function (inter, i) { %>
@@ -18,7 +18,6 @@
 					<% }) %>
 				</ul>
 			</div>
-			-->
 			<!-- Table toolbar -->
 
 
@@ -105,14 +104,36 @@
 		<!-- /Interventions List -->
 
 
+<<<<<<< HEAD
+		<!-- Calendar -->
+		<div class="span7">
+			<% if( teamMode )  {
+				_.each(teams, function (team, i) { 	%>
+					
+				<section id="<%= _.slugify(team.name)%>" class="calendarContainer">
+					<div id="team_<%= team.id %>" class="calendar thumbnail" 
+					 	data-username="<%= team.name %>">
+					</div>
+				</section>
+				<% });
+			} else {
+				_.each(officers, function (officer, i) { %>
+				<section id="<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>" class="calendarContainer">
+					<div id="officer_<%= officer.id %>" class="calendar thumbnail" 
+					 	data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>">
+					</div>
+				</section>
+				<% });
+			} %>
+=======
 		
 		<div class="span8">
 
 			<!-- List Agents -->
 			<div id="listAgentsTeams" class="tabbable tabs-left">
-				<ul class="nav nav-tabs" id="allTabs">
+				<ul class="nav nav-tabs">
 					<li class="active"><a href="#" data-target="#tab-agents" data-toggle="tab"><%= _.capitalize(lang.agents) %> &nbsp;&nbsp;<span class="badge"><%= _.size(officers) %></span></a></li>
-					<li><a href="#" data-target="#tab-teams" data-toggle="tab"><%= _.capitalize(lang.teams) %>&nbsp;&nbsp;<span class="badge"><%= _.size(teams) %></span></a></li>
+					<li><a href="#" data-target="#tab-teams" data-toggle="tab"><%= _.capitalize(lang.teams) %></a></li>
 					<li><a href="#" data-target="#tab-custom-teams" data-toggle="tab">Custom</a></li>
 				</ul>
 				<div class="tab-content">
@@ -124,11 +145,7 @@
 						</ul>
 					</div>
 					<div class="tab-pane" id="tab-teams">
-						<ul id="listTeams" class="unstyled inline nav nav-list">
-							<%_.each(teams, function (team, i) { %>
-								<li><a href="#<%= _.slugify(team.name)%>"><i class="icon-user"></i><%= team.name %></a></li>
-							<% }) %>	
-						</ul>
+						<p>Teams</p>
 					</div>
 					<div class="tab-pane" id="tab-custom-teams">
 						<p>Custom</p>
@@ -136,36 +153,115 @@
 			  	</div>
 			</div>
 			<!-- /List Agents -->
-			
+
 			<!-- Calendar -->
 			<div style="overflow: hidden; max-height: 590px;">
-			
-					<%_.each(officers, function (officer, i) { %>
+				<% _.each(officers, function (officer, i) { %>
 					<section id="<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>" class="calendarContainer">
 						<div id="officer_<%= officer.id %>" class="calendar thumbnail" 
-					 		data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>">
+						 	data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>">
 						</div>
 					</section>
-					<% }) %>
-				
-					<%_.each(teams, function (team, j) { 	%>
-					
-				
-					<section id="<%= _.slugify(team.name)%>" class="calendarContainer">
-						<div id="team_<%= team.id %>" class="calendar thumbnail" 
-					 		data-username="<%= team.name %>">
-						</div>						
-					</section>
-					<%}); %>
-
-				
+				<% }) %>
 			</div>
 			<!-- /Calendar -->
-			
-			
+>>>>>>> 89b3ad12b41e28d20db9dd22c61646ac3f9dd76d
 			
 		</div>
+<<<<<<< HEAD
+		<!-- /Calendar -->
 
+
+		<!-- List Agents -->
+		
+				
+		<!--  
+		<div class="span2 navListAgents">
+			<ul class="nav nav-list well well-small" id="listAgents" data-spy="affix" data-offset-top="20">
+			  	<li class="nav-header">
+			  		<h4><i class="icon-group icon-large"></i>&nbsp;&nbsp;&nbsp;&nbsp;Agents&nbsp;&nbsp;<span class="badge pull-right"><%= _.size(officers) %></span></h4></li>
+				<li class="divider"></li>
+				
+				<%_.each(officers, function (officer, i) { %>
+					<li><a href="#<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>"><i class="icon-caret-right"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
+				<% }) %>	
+			</ul>
+		</div>
+		-->
+		<!-- <div class="span2 navListAgents">
+		<div class="accordion nav nav-pills nav-stacked well well-small" id="accordion2" data-spy="affix" data-offset-top="20">
+		  <div class="accordion-group">
+		    <div class="accordion-heading" id="heading-agents">
+		      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#agents">
+		        Agents
+		      </a>
+		    </div>
+		    <div id="agents" class="accordion-body collapse in">
+	      		<div class="accordion-inner">
+					<%_.each(officers, function (officer, i) { %>
+						<li><a href="#<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>"><i class="icon-caret-right"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
+					<% }) %>	
+				</div>		      
+		    </div>
+		  </div>
+		  <div class="accordion-group">
+		    <div class="accordion-heading"  id="heading-equipes">
+		      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#equipes">
+		        Equipes
+		      </a>
+		    </div>
+		    <div id="equipes" class="accordion-body collapse">
+				<div class="accordion-inner">
+					<%_.each(teams, function (team, i) { %>
+						<li><a href="#<%= _.slugify(team.name)%>"><i class="icon-caret-right"></i><%= team.name %></a></li>
+					<% }) %>	
+				</div>
+		    </div>
+		  </div>
+		</div>
+		</div>-->	
+		<div class="span2 navListAgents">
+			<div class="tabbable"  id="listAgents" data-spy="affix" data-offset-top="20">
+				<ul class="nav nav-pills nav-stacked well well-small" id="myTab">
+				
+					<li class="nav-header active">
+			  			<a href="#agents" data-toggle="tab">
+			  				<h4>
+			  					<i class="icon-group icon-large"></i>&nbsp;&nbsp;&nbsp;&nbsp;Agents&nbsp;&nbsp;
+			  					<span class="badge pull-right"><%= _.size(officers) %></span>
+			  				</h4>
+			  			</a>
+			  		</li>					
+				  	
+				  	<li class="nav-header">
+				  		<a href="#equipes" data-toggle="tab">
+			  				<h4>
+			  					<i class="icon-group icon-large"></i>&nbsp;&nbsp;&nbsp;&nbsp;Equipes&nbsp;&nbsp;
+			  					<span class="badge pull-right"><%= _.size(teams) %></span>
+			  				</h4>
+			  			</a>
+				  	</li>
+				  	
+				  	
+				</ul>
+				
+				<div id="myTabContent" class="tab-content">
+					<div class="tab-pane active well well-small" id="agents">
+						<%_.each(officers, function (officer, i) { %>
+							<li><a href="#<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>"><i class="icon-caret-right"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
+						<% }) %>	
+					</div>
+					<div class="tab-pane" id="equipes">
+						<%_.each(teams, function (team, i) { %>
+							<li><a href="#<%= _.slugify(team.name)%>"><i class="icon-caret-right"></i><%= team.name %></a></li>
+						<% }) %>	
+					</div>
+				</div>
+			</div>
+		</div>
+=======
+
+>>>>>>> 89b3ad12b41e28d20db9dd22c61646ac3f9dd76d
 	</div>
 
 

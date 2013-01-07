@@ -8,17 +8,26 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 	url: "/#demandes-dinterventions/:id",
 
 	
-	relations: [{
-		type: Backbone.HasMany,
-		key: 'tasks',
-		relatedModel: 'app.Models.Task',
-		collectionType: 'app.Collections.Tasks',
-		includeInJSON: true,
-		reverseRelation: {
-			key: 'intervention',
-			includeInJSON: ['id','state','tasks'],
+	relations: [
+	   {
+			type: Backbone.HasMany,
+			key: 'tasks',
+			relatedModel: 'app.Models.Task',
+			collectionType: 'app.Collections.Tasks',
+			includeInJSON: true,
+			reverseRelation: {
+				key: 'intervention',
+				includeInJSON: ['id','name','state','tasks','service_id'],
+			},
+		},		
+		{
+			type: Backbone.HasOne,
+			key: 'service_id',
+			relatedModel: 'app.Models.ClaimerService',
+			collectionType: 'app.Collections.ClaimerServices',
+			includeInJSON: ['id']
 		}
-	}],
+	],
 
 	/** Model Initialization
 	*/

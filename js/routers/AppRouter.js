@@ -481,26 +481,34 @@ app.Router = Backbone.Router.extend({
 					        
 					        	app.collections.officers.fetch({
 					        		success: function(){
-						            	if(app.collections.categories == null ){
-						            		app.collections.categories = new app.Collections.Categories();
-										}
-							            app.collections.categories.fetch({
-							            	success: function(){
-									            // If the view exist we reuse it //
-//									            if(app.views.planningView){
-//									                app.views.planningView.render();
-//									            }
-//									            else{
-//									                app.views.planningView = new app.Views.PlanningView();
-//									            }
-									            app.views.planningView = new app.Views.PlanningView();
-									            self.render(app.views.planningView);
-									        },
-				                        	complete: function(){
-				                        	    app.loader('hide');
-				                        	}
-								        });
-							     	}				        	
+							        	if(app.collections.teams == null ){
+							                app.collections.teams = new app.Collections.Teams();
+							            }
+							        
+								        app.collections.teams.fetch({
+								        	success: function(){
+								            	if(app.collections.categories == null ){
+								            		app.collections.categories = new app.Collections.Categories();
+												}
+									            app.collections.categories.fetch({
+									            	success: function(){
+											            // If the view exist we reuse it //
+		//									            if(app.views.planningView){
+		//									                app.views.planningView.render();
+		//									            }
+		//									            else{
+		//									                app.views.planningView = new app.Views.PlanningView();
+		//									            }
+											            app.views.planningView = new app.Views.PlanningView();
+											            self.render(app.views.planningView);
+											        },
+						                        	complete: function(){
+						                        	    app.loader('hide');
+						                        	}
+										        });
+						                    }
+					                    });
+					                }			        	
 					        	});					            				             
 				        	} 			        		
 			        	});	
@@ -540,15 +548,16 @@ app.Router = Backbone.Router.extend({
 		        	app.loader('display');
 		        	app.collections.tasks.fetch({
 		        		success: function(){
-		//			            if(app.views.tasksListView){
-		//			            	app.views.tasksListView.options.page = self.page;
-		//			                app.views.tasksListView.render();
-		//			            }
-		//			            else{
-		//			            	app.views.tasksListView = new app.Views.TasksListView({page: self.page});
-		//			            }
-		        			app.views.tasksListView = new app.Views.TasksListView({page: self.page});
-		        			self.render(app.views.tasksListView);
+				        	if(app.collections.teams == null ){
+				                app.collections.teams = new app.Collections.Teams();
+				            }
+				        
+					        app.collections.teams.fetch({
+					        	success: function(){
+				        			app.views.tasksListView = new app.Views.TasksListView({page: self.page});
+				        			self.render(app.views.tasksListView);
+				        		}
+				        	});
 			        	},
 		            	complete: function(){
 		            	    app.loader('hide');

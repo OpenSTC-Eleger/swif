@@ -32,6 +32,7 @@
 	"email"					: "email",
 	"organization" 			: "organisation",
 	"contact"				: "contact",
+	"team"					: "équipe",
 	"manager"				: "manager",
 	"width" 				: "largeur",
 	"lenght" 				: "longueur",

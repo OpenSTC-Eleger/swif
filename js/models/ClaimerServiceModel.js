@@ -21,6 +21,13 @@ app.Models.ClaimerService = Backbone.RelationalModel.extend({
 		            // 'relatedModel' is automatically set to 'Zoo'; the 'relationType' to 'HasOne'.
 		        }
             },
+//    		{
+//    			type: Backbone.HasMany,
+//    			key: 'manager_id',
+//    			relatedModel: 'app.Models.Officer',
+//    			collectionType: 'app.Collections.Officers',
+//    			includeInJSON: ['id']
+//    		},
       ],
 
 	/** Model Initialization

@@ -6,11 +6,15 @@ app.Views.EventsView = Backbone.View.extend({
 		},
 	
 	
-        initialize: function(planning,collection,officer_id){
+        initialize: function(planning,object,teamMode){
+			this.teamMode = teamMode;
 			this.planning = planning;
-			this.el = $('div#officer_'+officer_id);
-			this.collection = collection;
-			this.officer_id = officer_id;
+			
+			this.id = object.attributes.id;
+			this.initCollection(object);
+				
+			this.el = $(this.elStringId);			
+			
             _.bindAll(this); 
 
             this.collection.bind('reset', this.addAll);
@@ -19,6 +23,23 @@ app.Views.EventsView = Backbone.View.extend({
             this.collection.bind('destroy', this.destroy);
             
             this.eventView = new app.Views.EventView();            
+        },
+        
+        initCollection: function(object) {
+			if (this.teamMode) 
+			{
+				this.elStringId = 'div#team_' + object.attributes.id;
+				this.collection = object.attributes.tasks;
+			}
+			else
+			{
+				this.elStringId = 'div#officer_' + object.attributes.id;
+				var officer_json = object.toJSON();
+				var allTasks = officer_json.tasks;					
+				if( officer_json.belongsToTeam!= null && officer_json.belongsToTeam.tasks!=null )
+					allTasks = _.union(officer_json.tasks, officer_json.belongsToTeam.tasks.toJSON());	
+				this.collection = new app.Collections.Tasks(allTasks);				
+			}
         },
 
         
@@ -128,13 +149,31 @@ app.Views.EventsView = Backbone.View.extend({
 				    center: 'title',
 				    right: 'today,prev,next'
 				},
-				titleFormat:{
-				    //week: "d { [ MMM] '-' d} MMM yyyy",
-				    week: "'Semaine ' W '<small class=visible-desktop> du' d { [ MMM] 'au' d} MMM yyyy '</small>'",
+				// time formats
+				titleFormat: {
+				    month: 'MMMM yyyy',
+				    // week: "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}",
+				    week:"'Semaine du' dd [yyyy] {'au' [MMM] dd MMM yyyy}",
+				    day: 'dddd dd MMM yyyy'
 				},
+				columnFormat: {
+				    month: 'ddd',
+				    week: 'ddd dd/M',
+				    day: 'dddd dd/M' 
+				},
+				axisFormat: 'HH:mm',
+//				timeFormat: {
+//				    agenda: 'H:mm{ - h:mm}'
+//				},
+				timeFormat: 'H(:mm){ - H(:mm)}',
+
+//				titleFormat:{
+//				    //week: "d { [ MMM] '-' d} MMM yyyy",
+//				    week: "'Semaine ' W '<small class=visible-desktop> du' d { [ MMM] 'au' d} MMM yyyy '</small>'",
+//				},
 				allDayText: 'Journée entière',
-				axisFormat: 'H:mm',
-				timeFormat: 'H:mm',
+				//axisFormat: 'H:mm',
+				//timeFormat: 'H:mm',
 				slotMinutes: 30,
 				firstHour: 8,
 				minTime: 8,
@@ -193,7 +232,6 @@ app.Views.EventsView = Backbone.View.extend({
 
 
 				drop: function( date, allDay) { // this function is called when something is dropped
-				
 				    // retrieve the dropped element's stored Event Object
 				    var originalEventObject = $(this).data('eventObject');
 				
@@ -220,16 +258,56 @@ app.Views.EventsView = Backbone.View.extend({
 		    		   date_end: copiedEventObject.end,
 		               planned_hours: copiedEventObject.planned_hours,
 		               remaining_hours: copiedEventObject.planned_hours,
-		               user_id: self.officer_id
 				    };
 				    
-				    app.models.task.save(copiedEventObject.id, params, null, null, "#planning"); 
+				    if( self.teamMode)
+				    	params.team_id = self.id
+				    else
+				    	params.user_id = self.id
+				    
+				    //app.models.task.save(copiedEventObject.id, params, null, self, null); 
+				    app.models.task.saveTest(copiedEventObject.id, params, {
+				    	success: function (data) {
+					    	$.pnotify({
+					    		title: 'Tâche attribuée',
+					    		text: 'La tâche a correctement été attribué à l\'agent.'
+						    });
+					    	app.collections.tasks.fetch({ 
+					    		success: function(){					    	
+					    			app.collections.interventions.fetch({ 
+					    				success: function(){
+							    			app.collections.officers.fetch({ 
+							    				success: function(){
+											 		app.collections.teams.fetch({
+										                success: function(){				 			
+						 								    if( self.teamMode)
+						 								    	self.initCollection(app.collections.teams.get(self.id));
+						 								    else
+						 								    	self.initCollection(app.collections.officers.get(self.id));
+						 								    $(self.el).fullCalendar('refetchEvents');
+						 								    self.planning.render();
+						 								    //TODO refreh accordion
+						 								    //$('#accordionInter')
+												 		}					 
+											 		});
+										         }
+										     });
+								        }
+								   });
+							 	}					 
+					    	});
+				    	}
+				    }); 
+				    
+
+				    
 				    //self.save(copiedEventObject.id,params);
+				    
 				
-				    $.pnotify({
-				        title: 'Tâche attribuée',
-				        text: 'La tâche a correctement été attribué à l\'agent.'
-					    });
+
+				    
+				   
+				    
 				    //$(this).remove();  				    
 				},
 				
@@ -246,10 +324,10 @@ app.Views.EventsView = Backbone.View.extend({
 			$('<span class="fc-button-print">' 
 				   +'<button class="btn btn-primary btn-small no-outline " ><i class="icon-print"></i></button></span>')
 				  //+('labels', 'Print') + '</span>')
-				  .appendTo('div#officer_'+this.officer_id+' td.fc-header-right')
+				  .appendTo(self.elStringId + ' td.fc-header-right')
 				  .button()
 				  .on('click', function() {
-				    self.printCalendar();
+					    self.printCalendar();
 				  })
 				  .before('<span class="fc-header-space">');
 			
@@ -257,31 +335,112 @@ app.Views.EventsView = Backbone.View.extend({
 			$('.fc-view-agendaWeek > div > div').css('overflow-y', 'hidden'); $('.fc-agenda-gutter').css('width', 0);
 				
 			
-		},			
+		},	
+		
+		renderDate: function (o, date){
+			return date.getDate() + "-"+ ( date.getMonth()+1 ) +"-"+ date.getFullYear() +" "
+					+ date.getHours() + ":" + ( date.getMinutes()!=0?date.getMinutes():"00" );
+	
+		},
+		
+		getIntervention: function (o, intervention) {
+			return intervention.name;
+		
+		},
+		
+		renderResume: function (o, check){
+			return "<td class=\"center\"><input type=\"checkbox\"></td>";
+		},
+		
+		renderHours: function (o, check){
+			return "<td class=\"center\"><input type=\"text\" size=\"5\"/></td>";
+		},
 			
 		printCalendar: function () {
-			var printEl = this.el.clone(true);
+			var self = this;
+			var paperBoard = this.collection.toJSON();
+			var elementToPrint = $('#printContainer');
+			var worker = null
+			if ( paperBoard[0] && paperBoard[0].user_id  )
+				worker = $('#worker').val(paperBoard[0].user_id[1]);
+			else if ( paperBoard[0] && paperBoard[0].user_id  )
+				worker = $('#worker').val(paperBoard[0].team_id[1]);
+			var table = $('#paperboard');
 			
-			//printEl.css("display", "none");
-			printEl.find('.fc-agenda-days').height("800");
-			printEl.find('.fc-agenda-slots').height("100");
-			printEl.find('.fc-header-right').css("display", "none")
-			printEl.find('.fc-event-title').append("F");
-			printEl.find('.fc-event-title').append("P");
-			printEl.find('.fc-event-title').append("N");
-			//printEl.find('.fc-content').height(1000);
-			//printEl.width(500);
-			//printEl.append("COUCOUOCUCOUCOUC")
-			printEl.printElement(
-					{
-		                leaveOpen:true,
-		                printMode:'popup',
-			            overrideElementCSS:[
-			                                'fullcalendar-1.5.4.less',
-			                                { href:'fullcalendar-1.5.4.less',media:'print'}]
-					});
+			var tasks = _.filter(self.collection.toJSON(), function(task){ 
+	        	return (
+	        			task.date_start < self.el.fullCalendar('getView').visEnd &&
+	        			task.date_end > self.el.fullCalendar('getView').visStart &&
+	        			(	task.state == app.Models.Task.state[1].value ||
+	        				task.state == app.Models.Task.state[2].value
+	        			)
+	        			
+	        		); 
+	        });
+		    _.each(tasks, function(task){ 
+		    	task["done"] = "false";
+		    	task["notdone"] = "false";
+		    	task["pending"] = "false";
+		    })
+		    
+		    $('#paperboard').data('resultSet', tasks);
+		    var results = $('#paperboard').data('resultSet');
+		    self.results = results;
+		    
+			table.dataTable({
+				"bAutoWidth": false,
+				"aaData": self.results,
+			    "bJQueryUI": true,
+			    "sPaginationType": "full_numbers",
+			    "bProcessing": true,
+			    "bDeferRender": true,
+			    "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+			    "aoColumns": [
+			        {"sInter": "Inter", "mDataProp": "intervention", 'sWidth': '5%', 'sClass': "center", 'fnRender': self.getIntervention},
+			        {"sName": "Name", "mDataProp": "name", 'sWidth': '5%', 'sClass': "center"},
+			        {"sDateStart": "DateStart", "mDataProp": "date_start","sType": "date", 'sWidth': '25%', 'fnRender': self.renderDate },
+			        {"sDateEnd": "DateEnd", "mDataProp": "date_end","sType": "date", 'sWidth': '25%', 'fnRender': self.renderDate},
+			        { "sDone": "Done", "mDataProp": "done", 'sWidth': '5%','fnRender': self.renderResume},
+			        { "sNotDone": "NotDone", "mDataProp": "notdone", 'sWidth': '5%','fnRender': self.renderResume},
+			        { "sPending": "Pending", "mDataProp": "pending", 'sWidth': '5%','fnRender': self.renderResume},
+			        { "sWorkingTime": "WorkingTime", "mDataProp": "planned_hours", 'sWidth': '5%','fnRender': self.renderHours},
+			        { "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours",'sWidth': '5%','fnRender': self.renderHours}],
+			
+			    "bFilter": false,"bInfo": false,"bPaginate": false,
+			    sClass: "center",
+			    bRetrieve: true,
+			});
+
+			table.fnClearTable();
+			if (results.length)
+				table.fnAddData(results);
+			table.fnDraw();
+
+			elementToPrint.printElement(
+//				{
+//				    overrideElementCSS:[
+//				       'bootstrap.css',
+//				       { href:'bootstrap.css',media:'print'}
+//				    ]
+//				}
+			);		
 		},
 	});
+//			var printEl = this.el.clone(true);
+//			printEl.find('.fc-agenda-days').height("800");
+//			printEl.find('.fc-agenda-slots').height("100");
+//			printEl.find('.fc-header-right').css("display", "none")
+//			printEl.find('.fc-event-title').append("F");
+//			printEl.find('.fc-event-title').append("P");
+//			printEl.find('.fc-event-title').append("N");
+//			printEl.printElement(
+//					{
+//		                leaveOpen:true,
+//		                printMode:'popup',
+//			            overrideElementCSS:[
+//			                                'fullcalendar-1.5.4.less',
+//			                                { href:'fullcalendar-1.5.4.less',media:'print'}]
+//					});
 //	
 //	
 //    // save current calendar width
