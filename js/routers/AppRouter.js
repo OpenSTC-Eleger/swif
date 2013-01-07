@@ -31,7 +31,10 @@ app.Router = Backbone.Router.extend({
         'services/page:page'                    : 'services',
 
         'categories'                            : 'categories',
-        'categories/page:page'                  : 'categories'
+        'categories/page:page'                  : 'categories',
+
+        'employes-municipaux'                   : 'officers',
+        'employes-municipaux/page:page'         : 'officers'
     },
 
     
@@ -710,6 +713,42 @@ app.Router = Backbone.Router.extend({
                 success: function(){
                     app.views.categoriesView = new app.Views.CategoriesView({page: self.page});
                     self.render(app.views.categoriesView);
+                },
+                complete: function(){
+                    app.loader('hide');
+                }
+            });
+        }
+        else{
+            this.navigate('login', {trigger: true, replace: true});
+        }
+    },
+
+
+
+    /** Officers management
+    */
+    officers: function(page){      
+
+        // Check if the user is connect //
+        if(this.checkConnect()){
+            var self = this;
+
+
+            self.page = page ? parseInt(page, 10) : 1;
+
+            // Check if the collections is instantiate //
+            if(app.collections.officers == null ){
+                app.collections.officers = new app.Collections.Officers();
+            }
+
+            app.collections.officers.fetch({
+                beforeSend: function(){
+                    app.loader('display');
+                },
+                success: function(){
+                    app.views.officersView = new app.Views.OfficersView({page: self.page});
+                    self.render(app.views.officersView);
                 },
                 complete: function(){
                     app.loader('hide');
