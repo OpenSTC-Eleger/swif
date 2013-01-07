@@ -37,7 +37,8 @@ app.Views.PlanningView = Backbone.View.extend({
 
     /** Display the view
     */
-    render : function() {
+    render : function(teamMode) {
+    	this.teamMode = teamMode;
         var self = this;
         
 
@@ -104,28 +105,104 @@ app.Views.PlanningView = Backbone.View.extend({
             });
             
             interventionSorted = new app.Collections.Interventions(interventionsSortedArray);
+            
+            
+
 
             var template = _.template(templateData, {
         		lang: app.lang,
         		interventions: interventionSorted.toJSON(),
         		officers: that.agents,
         		teams: that.teams,
+        		teamMode: self.teamMode
             });
 
             $(self.el).html(template);
-            self.initAllCalendars();
+            self.initCalendar();
             self.initDragObject();
+            
+            
+//            $('[data-spy="affix"]').affix();            
+//            $('[data-spy="scroll"], .navListAgents').scrollspy();
+//            
+//            $('*[rel="tooltip"]').tooltip({placement: "left"});
+//
+//            // Animated Scroll //
+//            $('#accordion2 li a[href^="#"]').click(function(){  
+//		        var elementID = $(this).attr("href");  
+//		        $('html, body').animate({  
+//		            scrollTop:$(elementID).offset()!=null?$(elementID).offset().top -5 : 0
+//		        }, 'slow');		        	
+//		        return false;
+//		    });
+//            $('#heading-agents').click(function (e) {
+//            	e.preventDefault(); 
+//			})
+//			
+//			$('#heading-equipes').click(function (e) {
+//            	e.preventDefault();
+//			})
 
+
+
+<<<<<<< HEAD
+            $('[data-spy="affix"]').affix();            
+            $('[data-spy="scroll"], .navListAgents').scrollspy();
+            
+            $('*[rel="tooltip"]').tooltip({placement: "left"});
+
+            // Animated Scroll //
+            $('#myTabContent li a[href^="#"]').click(function(){  
+=======
             $('*[data-spy="affix"]').affix();            
             $('*[rel="tooltip"]').tooltip({placement: "left"});
+            
+           /* // Animated Scroll //
+            $('ul.nav li a[href^="#"]').click(function(){  
+>>>>>>> 89b3ad12b41e28d20db9dd22c61646ac3f9dd76d
+		        var elementID = $(this).attr("href");  
+		        $('html, body').animate({  
+		            scrollTop:$(elementID).offset()!=null?$(elementID).offset().top -5 : 0
+		        }, 'slow');
+		        
+		        return false;
+<<<<<<< HEAD
+		    });
+            
+            //$('ul.nav li.active').removeClass('active');
+            //$('ul.nav li.active').first().addClass('active');
+            
+            
+            //Pas besoin de mettre ce code si include bootstrap-responsive?? : http://jsbin.com/oxukok/1/edit
+            // https://groups.google.com/forum/?fromgroups=#!topic/twitter-bootstrap/BCW0sXdc8Ls
+            $('#listAgents a[href=#agents]').click(function (e) {
+            	e.preventDefault(); 
+            	self.render(false);
+			})
+			
+			$('#listAgents a[href=#equipes]').click(function (e) {
+            	e.preventDefault();
+            	self.render(true);
+			})
+			
+        	$('html, body').animate({  
+	            scrollTop:$(this).offset()!=null?0 : 0
+	        }, 'slow');	
+        	if ( self.teamMode )
+        		$('#myTab a:last').tab('show');
+        	else
+        		$('#myTab a:first').tab('show');
+        		
+        		
+        	
+            
+
+=======
+		    });*/
+>>>>>>> 89b3ad12b41e28d20db9dd22c61646ac3f9dd76d
 
             $('#listAgents li a').click(function(){
                 $('#listAgents li.active').removeClass('active');
-                $(this).parent('li').addClass('active');
-            })
-            
-            $('#listTeams li a').click(function(){
-                $('#listTeams li.active').removeClass('active');
                 $(this).parent('li').addClass('active');
             })
             
@@ -143,30 +220,49 @@ app.Views.PlanningView = Backbone.View.extend({
         return this;
     },    
     	
-    initAllCalendars: function() {    		
+    initCalendar: function() {    		
     		var self = this;
-    		teams = app.collections.teams;    		
     		
-			teams.each(function(t){	
-				//var team_json = t.toJSON();	
-				//var allTasks = team_json.tasks;
-				//var collection = t.attributes.tasks;
-				new app.Views.EventsView(self,t,true).render();
-			});
-
-    		officers = app.collections.officers;    		
+    		if (this.teamMode) {
+        		teams = app.collections.teams;    		
+        		
+				teams.each(function(t){	
+					var team_json = t.toJSON();	
+					var allTasks = team_json.tasks;
+					self.events = self.getEvents(allTasks);
+					var collection = t.attributes.tasks;
+					new app.Views.EventsView(self,collection,t.attributes.id,self.teamMode).render();
+				});
+    			
+    		}
     		
-			officers.each(function(o){	
-//				var officer_json = o.toJSON();
-//				var allTasks = officer_json.tasks;					
-//				if( officer_json.belongsToTeam!= null && officer_json.belongsToTeam.tasks!=null )
-//					allTasks = _.union(officer_json.tasks, officer_json.belongsToTeam.tasks.toJSON());	
-//				var collection = new app.Collections.Tasks(allTasks);
-				new app.Views.EventsView(self,o,false).render();
-			});
+    		else {
+        		officers = app.collections.officers;    		
+        		
+				officers.each(function(o){	
+					var officer_json = o.toJSON();
+					var allTasks = officer_json.tasks;					
+					if( officer_json.belongsToTeam!= null && officer_json.belongsToTeam.tasks!=null )
+						allTasks = _.union(officer_json.tasks, officer_json.belongsToTeam.tasks.toJSON());				
+					self.events = self.getEvents(allTasks);		    	
+					var collection = new app.Collections.Tasks(allTasks);
+					new app.Views.EventsView(self,collection,o.attributes.id,self.teamMode).render();
+				});
+    		}
 
 	
     },
+    
+    getEvents: function(tasks) {
+    	events = [];
+    	_.each(tasks, function (task, i){
+    		var event = { id: task.id, state: task.state, title: task.name, start: task.date_start, end: task.date_end, allDay:false};
+    		events.push(event);
+    	});
+    	return events;
+    },
+
+
 
     /** Make the external event Draggable
     */

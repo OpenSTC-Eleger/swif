@@ -27,6 +27,8 @@
 	"type" 					: "type",
 	"area" 					: "surface",
 	"phone"					: "téléphone",
+	"agents"				: "agents",
+	"teams"					: "équipes",
 	"email"					: "email",
 	"organization" 			: "organisation",
 	"contact"				: "contact",
@@ -75,6 +77,7 @@
 		"addTask"			: "nouvelle tâche",
 		"addPlace" 			: "nouveau site",
 		"addService" 		: "nouveau service",
+		"addCategorie" 		: "nouvelle catégorie",
 		"enclosePlanning" 	: "cloturer la planification",
 		"save"				: "enregistrer",
 		"cancel"			: "annuler",
@@ -107,6 +110,7 @@
     	"noRequestPlanned"		: "Aucune intervention planifiées",
     	"noSite"				: "Aucun site enregistré",
     	"noService"				: "Aucun service enregistré",
+    	"noCategorie"			: "Aucune catégorie enregistrée",
     	"noTaskForIntervention"	: "Aucune tâche pour cette intervention",
     	"noTask"      	  	  	: "Aucune tâche à pointer"
 	},
@@ -123,6 +127,7 @@
     	"planning"				 : "Planification des tâches",
     	"tasksList"				 : "Liste des tâches",
     	"placesList"			 : "Liste des sites",
-    	"servicesList"			 : "Liste des services"
+    	"servicesList"			 : "Liste des services",
+    	"categoriesList"		 : "Liste des catégories"
 	}
 }

@@ -1,29 +1,16 @@
-<div class="page-header" style="margin-top: 5px">
-	<h1 style="margin: 0;"><%= lang.viewsTitles.planning %></h1>
-</div>
+<div class="container-fluid" data-spy="scroll" data-target="#listAgents" >
+	
+	<div class="page-header">
+		<h1><%= lang.viewsTitles.planning %></h1>
+	</div>
 
 
 	<div class="row-fluid">
 
 		<!-- Interventions List -->
-		<div class="span4">
-
-			<!-- Table toolbar -->
-			<!--<div style="margin-bottom: 35px; height: 120px; overflow-y: scroll;">
-				<a href="#modalAddInter" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	
-				
-				<ul id="listInters" class="unstyled inline nav nav-list">
-					<% _.each(interventions, function (inter, i) { %>
-						<li><a href="#"><i class="icon-pushpin"></i><%= inter.name %></a></li>
-					<% }) %>
-				</ul>
-			</div>
-			-->
-			<!-- Table toolbar -->
-
-
-			<% if( _.size(interventions) > 0 ) { %>
-			<aside class="accordion" id="accordionInter" style="overflow-y: scroll; max-height: 590px; margin-bottom: 0;">
+		<div class="span3">
+			<% if( _.size(interventions) > 0 ) {%>
+			<aside class="accordion" id="accordionInter" data-spy="affix">
 				
 				<% _.each(interventions, function (inter, i) { %>
 				<div class="accordion-group">
@@ -52,7 +39,7 @@
 									_.each(inter.tasks, function (task, i) { %>
 									
 										<!-- Check if the Task is planned or not -->
-										<% if(task.date_start != null && task.date_start != 'undefined' && task.date_start != 'Invalid Date'){ %>
+										<% if(task.date_start != ""){ %>
 											<li id="task_<%= task.id %>" class="external-event disabled">
 												<i class="icon-time"></i>&nbsp;
 												<span class="<%= (task.progress == '100' ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
@@ -105,68 +92,39 @@
 		<!-- /Interventions List -->
 
 
-		
-		<div class="span8">
+		<!-- Calendar -->
+		<div class="span7">
+			<% _.each(officers, function (officer, i) { %>
+				<section id="<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>" class="calendarContainer">
+					<div id="officer_<%= officer.id %>" class="calendar thumbnail" 
+					 	data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>">
+					</div>
+				</section>
+			<% }) %>
+			
 
-			<!-- List Agents -->
-			<div id="listAgentsTeams" class="tabbable tabs-left">
-				<ul class="nav nav-tabs" id="allTabs">
-					<li class="active"><a href="#" data-target="#tab-agents" data-toggle="tab"><%= _.capitalize(lang.agents) %> &nbsp;&nbsp;<span class="badge"><%= _.size(officers) %></span></a></li>
-					<li><a href="#" data-target="#tab-teams" data-toggle="tab"><%= _.capitalize(lang.teams) %>&nbsp;&nbsp;<span class="badge"><%= _.size(teams) %></span></a></li>
-					<li><a href="#" data-target="#tab-custom-teams" data-toggle="tab">Custom</a></li>
-				</ul>
-				<div class="tab-content">
-					<div class="tab-pane active" id="tab-agents">
-						<ul id="listAgents" class="unstyled inline nav nav-list">
-							<%_.each(officers, function (officer, i) { %>
-								<li><a href="#<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>"><i class="icon-user"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
-							<% }) %>
-						</ul>
-					</div>
-					<div class="tab-pane" id="tab-teams">
-						<ul id="listTeams" class="unstyled inline nav nav-list">
-							<%_.each(teams, function (team, i) { %>
-								<li><a href="#<%= _.slugify(team.name)%>"><i class="icon-user"></i><%= team.name %></a></li>
-							<% }) %>	
-						</ul>
-					</div>
-					<div class="tab-pane" id="tab-custom-teams">
-						<p>Custom</p>
-					</div>
-			  	</div>
-			</div>
-			<!-- /List Agents -->
-			
-			<!-- Calendar -->
-			<div style="overflow: hidden; max-height: 590px;">
-			
-					<%_.each(officers, function (officer, i) { %>
-					<section id="<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>" class="calendarContainer">
-						<div id="officer_<%= officer.id %>" class="calendar thumbnail" 
-					 		data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>">
-						</div>
-					</section>
-					<% }) %>
-				
-					<%_.each(teams, function (team, j) { 	%>
-					
-				
-					<section id="<%= _.slugify(team.name)%>" class="calendarContainer">
-						<div id="team_<%= team.id %>" class="calendar thumbnail" 
-					 		data-username="<%= team.name %>">
-						</div>						
-					</section>
-					<%}); %>
-
-				
-			</div>
-			<!-- /Calendar -->
-			
-			
-			
 		</div>
+		<!-- /Calendar -->
+
+
+		<!-- List Agents -->
+		<div class="span2 navListAgents">
+			<ul class="nav nav-list well well-small" id="listAgents" data-spy="affix" data-offset-top="20">
+			  	<li class="nav-header">
+			  		<h4><i class="icon-group icon-large"></i>&nbsp;&nbsp;&nbsp;&nbsp;Agents&nbsp;&nbsp;<span class="badge pull-right"><%= _.size(officers) %></span></h4></li>
+				<li class="divider"></li>
+				
+				<%_.each(officers, function (officer, i) { %>
+					<li><a href="#<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>"><i class="icon-caret-right"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
+				<% }) %>	
+			</ul>
+		</div>
+		<!-- /List Agents -->
 
 	</div>
+
+</div>
+
 
 
 
@@ -266,66 +224,3 @@
 	    <a href="#" data-dismiss="modal">Annuler</a>
 	</div>
 </div>
-
-
-
-
-
-
-
-
-
-
-<!-- Form to print paperboard-->
-<div id="printContainer" class="hide">
-	<h1>Fiche d'intervention: <input type="text" id="worker" disabled="disabled"/></h1> 
-	<!-- <table cellpadding="0" cellspacing="0" border="0" class="bordered-table zebra-striped" id="example">  -->
-	<!--  <table  class="table table-striped table-bordered" border="1" id="example" width="100%"> -->
-    <div class="span8 offset1">
-        <table  class="table table-striped table-bordered" border="1" id="paperboard" width="100%">
-	    <thead>
-	        <tr>
-	        	<th>Intervention</th>
-	            <th>Libelle</th>
-	            <th style="width: 100px" >Date début</th>
-	            <th>Date fin</th>
-	            <th>Fait</th>
-	            <th>Pas Fait</th>
-	            <th>Non terminée</th>
-	            <th>Temps effectué</th>
-	            <th>Temps restant</th>
-	        </tr>
-	    </thead>
-	    <!--<tbody>
-		  <tr>
-		    <td class="tooltip" title="Intervention"></td>
-		    <td class="tooltip" title="Libelle"></td>
-		    <td class="tooltip" title="Date début"></td>
-		    <td class="tooltip" title="Date fin"></td>
-		    <td class="tooltip" title="Fait"></td>
-		    <td class="tooltip" title="Pas Fait"></td>
-		    <td class="tooltip" title="Non Terminé"></td>
-		  </tr>
-		</tbody>
-	      <tfoot>
-	        <tr>
-	        	<th>Intervention</th>
-	            <th>Tâche</th>
-	           	<th>Date début</th>
-	            <th>Date fin</th>
-	        </tr>
-	    </tfoot>-->
-	</table>
-	</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-

@@ -28,7 +28,10 @@ app.Router = Backbone.Router.extend({
         'sites/page:page'                       : 'places',
 
         'services'                              : 'services',
-        'services/page:page'                    : 'services'
+        'services/page:page'                    : 'services',
+
+        'categories'                            : 'categories',
+        'categories/page:page'                  : 'categories'
     },
 
     
@@ -679,8 +682,44 @@ app.Router = Backbone.Router.extend({
         else{
             this.navigate('login', {trigger: true, replace: true});
         }
-    }
+    },
 
+
+
+    /** Categories management
+    */
+    categories: function(page){      
+
+        // Check if the user is connect //
+        if(this.checkConnect()){
+            var self = this;
+
+
+            self.page = page ? parseInt(page, 10) : 1;
+
+            // Check if the collections is instantiate //
+            if(app.collections.categories == null ){
+                app.collections.categories = new app.Collections.Categories();
+            }
+
+           
+            app.collections.categories.fetch({
+                beforeSend: function(){
+                    app.loader('display');
+                },
+                success: function(){
+                    app.views.categoriesView = new app.Views.CategoriesView({page: self.page});
+                    self.render(app.views.categoriesView);
+                },
+                complete: function(){
+                    app.loader('hide');
+                }
+            });
+        }
+        else{
+            this.navigate('login', {trigger: true, replace: true});
+        }
+    }
 
 
 });

@@ -60,14 +60,24 @@ app.Views.TasksListView = Backbone.View.extend({
         		if( task.teamWorkingOn != null && task.teamWorkingOn.manager_id!=null )
 						belongsToOfficer = belongsToOfficer || (task.teamWorkingOn.manager_id[0] == officer_id);
         		
+        		var belongsToServiceManager = false;
+        		
         		var interCondition = false;
-        		if( intervention!=null )
+        		if( intervention!=null ) {
         			interCondition = intervention.state==app.Models.Intervention.state[1].value
-						|| intervention.state==app.Models.Intervention.state[2].value  
+						|| intervention.state==app.Models.Intervention.state[2].value 
+											
+					var service = intervention.service_id.toJSON()[0];
+					var userServices = app.models.user.toJSON().service_ids;
+					if ( service && userServices )
+						belongsToServiceManager = app.models.user.isManager() &&         										
+        												$.inArray(service[0], userServices)!=-1;
+						
+				}
         			
 
         		return (	//Tâches de l'agent
-        					( belongsToOfficer )
+        					( belongsToOfficer || app.models.user.isDST() || belongsToServiceManager )
         					&& 
         					(
         						//Tâches ouvertes (plannifiés) ou en cours

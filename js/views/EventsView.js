@@ -6,17 +6,15 @@ app.Views.EventsView = Backbone.View.extend({
 		},
 	
 	
-        initialize: function(planning,collection,id,teamMode){
+        initialize: function(planning,object,teamMode){
 			this.teamMode = teamMode;
 			this.planning = planning;
-			if (this.teamMode) 
-				this.elStringId = 'div#team_'+id;				
-			else
-				this.elStringId = 'div#officer_'+id;
+			
+			this.id = object.attributes.id;
+			this.initCollection(object);
 				
-			this.el = $(this.elStringId);
-			this.collection = collection;
-			this.id = id;
+			this.el = $(this.elStringId);			
+			
             _.bindAll(this); 
 
             this.collection.bind('reset', this.addAll);
@@ -25,6 +23,23 @@ app.Views.EventsView = Backbone.View.extend({
             this.collection.bind('destroy', this.destroy);
             
             this.eventView = new app.Views.EventView();            
+        },
+        
+        initCollection: function(object) {
+			if (this.teamMode) 
+			{
+				this.elStringId = 'div#team_' + object.attributes.id;
+				this.collection = object.attributes.tasks;
+			}
+			else
+			{
+				this.elStringId = 'div#officer_' + object.attributes.id;
+				var officer_json = object.toJSON();
+				var allTasks = officer_json.tasks;					
+				if( officer_json.belongsToTeam!= null && officer_json.belongsToTeam.tasks!=null )
+					allTasks = _.union(officer_json.tasks, officer_json.belongsToTeam.tasks.toJSON());	
+				this.collection = new app.Collections.Tasks(allTasks);				
+			}
         },
 
         
@@ -217,7 +232,6 @@ app.Views.EventsView = Backbone.View.extend({
 
 
 				drop: function( date, allDay) { // this function is called when something is dropped
-				
 				    // retrieve the dropped element's stored Event Object
 				    var originalEventObject = $(this).data('eventObject');
 				
@@ -251,13 +265,49 @@ app.Views.EventsView = Backbone.View.extend({
 				    else
 				    	params.user_id = self.id
 				    
-				    app.models.task.save(copiedEventObject.id, params, null, null, "#planning"); 
+				    //app.models.task.save(copiedEventObject.id, params, null, self, null); 
+				    app.models.task.saveTest(copiedEventObject.id, params, {
+				    	success: function (data) {
+					    	$.pnotify({
+					    		title: 'Tâche attribuée',
+					    		text: 'La tâche a correctement été attribué à l\'agent.'
+						    });
+					    	app.collections.tasks.fetch({ 
+					    		success: function(){					    	
+					    			app.collections.interventions.fetch({ 
+					    				success: function(){
+							    			app.collections.officers.fetch({ 
+							    				success: function(){
+											 		app.collections.teams.fetch({
+										                success: function(){				 			
+						 								    if( self.teamMode)
+						 								    	self.initCollection(app.collections.teams.get(self.id));
+						 								    else
+						 								    	self.initCollection(app.collections.officers.get(self.id));
+						 								    $(self.el).fullCalendar('refetchEvents');
+						 								    self.planning.render();
+						 								    //TODO refreh accordion
+						 								    //$('#accordionInter')
+												 		}					 
+											 		});
+										         }
+										     });
+								        }
+								   });
+							 	}					 
+					    	});
+				    	}
+				    }); 
+				    
+
+				    
 				    //self.save(copiedEventObject.id,params);
+				    
 				
-				    $.pnotify({
-				        title: 'Tâche attribuée',
-				        text: 'La tâche a correctement été attribué à l\'agent.'
-					    });
+
+				    
+				   
+				    
 				    //$(this).remove();  				    
 				},
 				
@@ -311,9 +361,9 @@ app.Views.EventsView = Backbone.View.extend({
 			var paperBoard = this.collection.toJSON();
 			var elementToPrint = $('#printContainer');
 			var worker = null
-			if ( paperBoard[0].user_id )
+			if ( paperBoard[0] && paperBoard[0].user_id  )
 				worker = $('#worker').val(paperBoard[0].user_id[1]);
-			else
+			else if ( paperBoard[0] && paperBoard[0].user_id  )
 				worker = $('#worker').val(paperBoard[0].team_id[1]);
 			var table = $('#paperboard');
 			
