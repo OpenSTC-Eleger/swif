@@ -48,4 +48,17 @@ app.Models.Team = Backbone.RelationalModel.extend({
         return response;
     },
 
+
+
+	/** Delete Team
+	*/
+	delete: function (options) {	
+		app.deleteOE( 
+			[[this.get("id")]],
+			this.model_name,
+			app.models.user.getSessionID(),
+			options
+		);
+	}
+
 });

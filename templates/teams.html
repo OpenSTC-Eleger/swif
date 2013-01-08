@@ -1,15 +1,15 @@
 <div class="page-header">
 	<h1>
-		<%= lang.viewsTitles.placesList %>
-		<sup><i class="badge"><%= nbPlaces %></i></sup>
+		<%= lang.viewsTitles.teamsList %>
+		<sup><i class="badge"><%= nbTeams %></i></sup>
 	</h1>
 </div>
 
 
 <div class="container-fluid">
 
-	<!-- Check if there is Places in the Database -->
-	<% if(places.length != 0) { %>
+	<!-- Check if there is Teams in the Database -->
+	<% if(nbTeams > 0) { %>
 
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
@@ -39,19 +39,15 @@
 			<tbody>
 			<% for (var i = startPos; i < endPos; i++) { %>
 				
-				<!-- Place row -->
-				<tr class="row-item" id="place_<%= places[i].id %>">
+				<!-- Teams row -->
+				<tr class="row-item" id="place_<%= teams[i].id %>">
 					<td>
-						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= places[i].name %>
+						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= teams[i].name %>
 						<p class="row-actions invisible">
 							<a href="#"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
 							<a href="#modalDeletePlace" class="modalDeletePlace" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</td>
-					<td><%= places[i].service[1] %></td>
-					<td><%= places[i].type[1] %></td>
-					<td><%= places[i].site_parent_id[1] %></td>
-					<td class="align-right hidden-phone"><%= _.numberFormat(places[i].surface, 0, ",", " ") %> m²</td>
 				</tr>
 
 			<% }; %>
@@ -104,7 +100,7 @@
 			<a href="#modalAddPlace" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addPlace) %></a>
 		</div><br />
 
-		<!-- No place in the Database -->
+		<!-- No team in the Database -->
 		<div class="alert alert-info">
 			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noSite %>.
 		</div>
@@ -235,7 +231,7 @@
 			<small></small>
 		</blockquote>
 
-		<p><%= lang.warningMessages.confirmDeletePlace %></p>
+		<p>Etes-vous sûr de vouloir supprimer ce site ?</p>
 	</div>
 	
 	<div class="modal-footer">

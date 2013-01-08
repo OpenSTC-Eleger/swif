@@ -111,7 +111,7 @@ app.Views.CategoriesView = Backbone.View.extend({
     */
     deleteCat: function(e){
        	var self = this;
-		this.selectedPlace[0].delete({
+		this.selectedCat[0].delete({
 			success: function(e){
 				app.collections.categories.remove(self.selectedCat[0]);
 				$('#modalDeleteCat').modal('hide');
@@ -119,7 +119,7 @@ app.Views.CategoriesView = Backbone.View.extend({
 				self.render();
 			},
 			error: function(e){
-				alert("Impossible de supprimer le site");
+				alert("Impossible de supprimer la catégorie");
 			}
 
 		});

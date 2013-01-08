@@ -43,11 +43,26 @@ app.Models.Officer = Backbone.RelationalModel.extend({
         console.log('Officer Model initialization');
         this.fetchRelated('tasks');
     },
-    
+
+
+
     /** Model Parser
-    	    */
+	*/
     parse: function(response) {
         return response;
     },
+
+	
+
+	/** Delete Officer
+	*/
+	delete: function (options) {	
+		app.deleteOE( 
+			[[this.get("id")]],
+			this.model_name,
+			app.models.user.getSessionID(),
+			options
+		);
+	}
 
 });

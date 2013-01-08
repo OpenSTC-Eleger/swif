@@ -31,8 +31,15 @@ app.Views.HeaderView = Backbone.View.extend({
                     console.log('ERROR: Unable to retrieve menu');
                 },
                 success: function (data) {
-                    console.debug(data.result.data.children);
-	                self.initHeader(data.result.data.children, activeMenu);
+                    /*console.debug(data.error);
+                    console.debug("#####################################");
+                    if(data.error.code == 100){
+                        app.models.user.logout();
+                    }
+                    else{*/
+                        console.debug(data.result.data.children);
+	                   self.initHeader(data.result.data.children, activeMenu);
+                    
                 }
             });
         }

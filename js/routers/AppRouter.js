@@ -34,7 +34,10 @@ app.Router = Backbone.Router.extend({
         'categories/page:page'                  : 'categories',
 
         'employes-municipaux'                   : 'officers',
-        'employes-municipaux/page:page'         : 'officers'
+        'employes-municipaux/page:page'         : 'officers',
+
+        'equipes'                               : 'teams',
+        'equipes/page:page'                     : 'teams'
     },
 
     
@@ -87,11 +90,11 @@ app.Router = Backbone.Router.extend({
         if (app.collections.users.length == 1){
             console.log('User in the localStorage');
             
-            app.models.user = app.collections.users.at(0);
+            //app.models.user = app.collections.users.at(0);
 
             // Check if a user has a sessionID //
             if(app.models.user.hasSessionID()){
-                console.log('User is connect')
+                console.log('User is connect');
                 return true;
             }
             else{
@@ -749,6 +752,42 @@ app.Router = Backbone.Router.extend({
                 success: function(){
                     app.views.officersView = new app.Views.OfficersView({page: self.page});
                     self.render(app.views.officersView);
+                },
+                complete: function(){
+                    app.loader('hide');
+                }
+            });
+        }
+        else{
+            this.navigate('login', {trigger: true, replace: true});
+        }
+    },
+
+
+
+    /** Teams management
+    */
+    teams: function(page){      
+
+        // Check if the user is connect //
+        if(this.checkConnect()){
+            var self = this;
+
+
+            self.page = page ? parseInt(page, 10) : 1;
+
+            // Check if the collections is instantiate //
+            if(app.collections.teams == null ){
+                app.collections.teams = new app.Collections.Teams();
+            }
+
+            app.collections.teams.fetch({
+                beforeSend: function(){
+                    app.loader('display');
+                },
+                success: function(){
+                    app.views.teamsView = new app.Views.TeamsView({page: self.page});
+                    self.render(app.views.teamsView);
                 },
                 complete: function(){
                     app.loader('hide');

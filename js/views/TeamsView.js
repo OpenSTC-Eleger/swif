@@ -1,23 +1,23 @@
 /******************************************
-* Places List View
+* Teams List View
 */
-app.Views.PlacesView = Backbone.View.extend({
+app.Views.TeamsView = Backbone.View.extend({
 
 	el : '#rowContainer',
 
-	templateHTML: 'places',
+	templateHTML: 'teams',
 
 	numberListByPage: 25,
 
-	selectedPlace : '',
+	selectedTeam : '',
 
 
     // The DOM events //
     events: {
-		'click a.modalDeletePlace'  	: 'setInfoModal',
+		'click a.modalDeleteTeam'  		: 'setInfoModal',
 
-		'submit #formAddPlace' 			: "addPlace", 
-		'click button.btnDeletePlace'	: 'deletePlace'
+		'submit #formAddTeam' 			: "addTeam", 
+		'click button.btnDeleteTeam'	: 'deleteTeam'
     },
 
 
@@ -45,13 +45,13 @@ app.Views.PlacesView = Backbone.View.extend({
         app.views.headerView.switchGridMode('fluid');
 
 
-		var places = app.collections.places.models;
-		var nbPlaces = _.size(places);
+		var teams = app.collections.teams.models;
+		var nbTeams = _.size(teams);
 
-		console.debug(places);
+		console.debug(teams);
 
 
-		var len = places.length;
+		var len = teams.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
@@ -60,9 +60,9 @@ app.Views.PlacesView = Backbone.View.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				places: app.collections.places.toJSON(),
+				teams: app.collections.teams.toJSON(),
+				nbTeams: nbTeams,
 				lang: app.lang,
-				nbPlaces: nbPlaces,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
 				pageCount: pageCount,
@@ -87,46 +87,40 @@ app.Views.PlacesView = Backbone.View.extend({
 
         var id = _(link.parents('tr').attr('id')).strRightBack('_');
 
-        this.selectedPlace = _.filter(app.collections.places.models, function(item){ return item.attributes.id == id });
-        var selectedPlaceJson = this.selectedPlace[0].toJSON();
+        this.selectedTeam = _.filter(app.collections.teams.models, function(item){ return item.attributes.id == id });
+        var selectedTeamJson = this.selectedTeam[0].toJSON();
 
-        $('#infoModalDeletePlace p').html(selectedPlaceJson.name);
-        $('#infoModalDeletePlace small').html(selectedPlaceJson.service[1]);
+        $('#infoModalDeleteTeam p').html(selectedTeamJson.name);
+        $('#infoModalDeleteTeam small').html(selectedTeamJson.service[1]);
     },
 
 
 
     /** Add a new place
     */
-    addPlace: function(e){
+    addTeam: function(e){
 		e.preventDefault();
-		alert('TODO: save the new place');
+		alert('TODO: save the new team');
 	},
 
 
 
-	/** Delete the selected place
+	/** Delete the selected team
 	*/
-	deletePlace: function(e){
+	deleteTeam: function(e){
 		var self = this;
 		this.selectedPlace[0].delete({
 			success: function(e){
-				app.collections.places.remove(self.selectedPlace[0]);
-				$('#modalDeletePlace').modal('hide');
+				app.collections.teams.remove(self.selectedTeam[0]);
+				$('#modalDeleteTeam').modal('hide');
 				app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
 				self.render();
 			},
 			error: function(e){
-				alert("Impossible de supprimer le site");
+				alert("Impossible de supprimer l'équipe");
 			}
 
 		});
-	},
-
-
-
-    preventDefault: function(event){
-    	event.preventDefault();
-    },
+	}
 
 });
