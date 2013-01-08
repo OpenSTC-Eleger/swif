@@ -7,20 +7,19 @@ app.Models.ClaimerService = Backbone.RelationalModel.extend({
 	
 	url: "/#demandeurs-services/:id",
 
-	relations: [
-            {
-				type: Backbone.HasMany,
-				key: 'asksBelongsto',
-				relatedModel: 'app.Models.Request',
-				//collectionType: 'app.Collections.Requests',
-				includeInJSON: ['id','name'],
-		        reverseRelation: {
-					type: Backbone.HasOne,
-		            key: 'belongsToService',
-		            includeInJSON: ['id','name'],
-		            // 'relatedModel' is automatically set to 'Zoo'; the 'relationType' to 'HasOne'.
-		        }
-            },
+	relations: [ {
+		type: Backbone.HasMany,
+		key: 'asksBelongsto',
+		relatedModel: 'app.Models.Request',
+		//collectionType: 'app.Collections.Requests',
+		includeInJSON: ['id','name'],
+		reverseRelation: {
+			type: Backbone.HasOne,
+			key: 'belongsToService',
+			includeInJSON: ['id','name'],
+			// 'relatedModel' is automatically set to 'Zoo'; the 'relationType' to 'HasOne'.
+		}
+	},
 //    		{
 //    			type: Backbone.HasMany,
 //    			key: 'manager_id',
@@ -30,6 +29,7 @@ app.Models.ClaimerService = Backbone.RelationalModel.extend({
 //    		},
       ],
 
+	
 	/** Model Initialization
 	*/
     initialize: function(){
@@ -37,11 +37,29 @@ app.Models.ClaimerService = Backbone.RelationalModel.extend({
         //this.fetchRelated('asksBelongsto');
         //this.fetchRelated('belongsToService');
     },
-    
-    /** Model Parser */
+
+
+    /** Model Parser
+     */
     parse: function(response) {    	
         return response;
     },
+
+
+
+	/** Destroy service
+	*/
+	destroy: function (options) {	
+		app.deleteOE( 
+			[[this.get("id")]],
+			this.model_name,
+			app.models.user.getSessionID(),
+			options
+		);
+	}
+
+
+
 
 
 });

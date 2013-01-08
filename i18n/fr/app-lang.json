@@ -118,7 +118,8 @@
     	"noTaskForIntervention"	: "Aucune tâche pour cette intervention",
     	"noTask"      	  	  	: "Aucune tâche à pointer",
     	"sixCharMin"		  	: "Six caractères minimum",
-    	"placeDeleteOk"			: "Site correctement supprimé"
+    	"placeDeleteOk"			: "Site correctement supprimé",
+    	"serviceDeleteOk"		: "Service correctement supprimé"
 	},
 
 	"viewsTitles" : {
