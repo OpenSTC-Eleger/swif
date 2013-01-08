@@ -50,9 +50,10 @@ app.Views.InterventionsView = Backbone.View.extend({
 
         // Retrieve the number of validated Interventions //
         var interventionsValidated = _.filter(interventions, function(item){ 
-        	return (item.attributes.progress_rate <= 99 &&
+        	return (item.attributes.progress_rate <= 99) 
+        			/*&&
         			item.attributes.state != app.Models.Intervention.state[0].value &&
-        			item.attributes.state != app.Models.Intervention.state[1].value); 
+        			item.attributes.state != app.Models.Intervention.state[1].value); */
         });
         var nbInterventions = _.size(interventionsValidated);
         

@@ -52,7 +52,8 @@
 									_.each(inter.tasks, function (task, i) { %>
 									
 										<!-- Check if the Task is planned or not -->
-										<% if(task.date_start != null && task.date_start != 'undefined' && task.date_start != 'Invalid Date'){ %>
+										<% console.debug(task.date_start); %>
+										<% if(task.date_start != false && task.date_start != null && task.date_start != 'undefined' && task.date_start != 'Invalid Date'){ %>
 											<li id="task_<%= task.id %>" class="external-event disabled">
 												<i class="icon-time"></i>&nbsp;
 												<span class="<%= (task.progress == '100' ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;

@@ -64,14 +64,16 @@ app.Views.TasksListView = Backbone.View.extend({
         		
         		var interCondition = false;
         		if( intervention!=null ) {
-        			interCondition = intervention.state==app.Models.Intervention.state[1].value
+        			//keep only  interventions : toscheduled ('A planifier'), scheduled('cloturée') , pending ('En cours')
+        			interCondition = intervention.state==app.Models.Intervention.state[0].value
+        				||	intervention.state==app.Models.Intervention.state[1].value
 						|| intervention.state==app.Models.Intervention.state[2].value 
 											
 					var service = intervention.service_id.toJSON()[0];
 					var userServices = app.models.user.toJSON().service_ids;
 					if ( service && userServices )
 						belongsToServiceManager = app.models.user.isManager() &&         										
-        												$.inArray(service[0], userServices)!=-1;
+        												$.inArray(service, userServices)!=-1;
 						
 				}
         			
@@ -182,7 +184,7 @@ app.Views.TasksListView = Backbone.View.extend({
     	         company_id: task.company_id[0]
     	};
 		
-		var newInterState = app.Models.Intervention.state[2].value;
+		var newInterState = app.Models.Intervention.state[0].value;
 		this.saveNewStateTask(taskParams, taskWorkParams,$('#modalTimeSpent'),newInterState);
     },
     
@@ -255,7 +257,7 @@ app.Views.TasksListView = Backbone.View.extend({
 				date_end: null,
 				date_start: null,
 		};
-		var newInterState = app.Models.Intervention.state[2].value;		
+		var newInterState = app.Models.Intervention.state[0].value;		
 		this.saveNewStateTask(taskParams,null,null,newInterState);
 
 	},
