@@ -484,38 +484,40 @@ app.Router = Backbone.Router.extend({
 			        			if(app.collections.officers == null ){
                                     app.collections.officers = new app.Collections.Officers();
                                 }
-					        
-					        	app.collections.officers.fetch({
-					        		success: function(){
-							        	if(app.collections.teams == null ){
-							                app.collections.teams = new app.Collections.Teams();
-							            }
-							        
-								        app.collections.teams.fetch({
-								        	success: function(){
-								            	if(app.collections.categories == null ){
-								            		app.collections.categories = new app.Collections.Categories();
-												}
-									            app.collections.categories.fetch({
-									            	success: function(){
-											            // If the view exist we reuse it //
-		//									            if(app.views.planningView){
-		//									                app.views.planningView.render();
-		//									            }
-		//									            else{
-		//									                app.views.planningView = new app.Views.PlanningView();
-		//									            }
-											            app.views.planningView = new app.Views.PlanningView();
-											            self.render(app.views.planningView);
-											        },
-						                        	complete: function(){
-						                        	    app.loader('hide');
-						                        	}
-										        });
-						                    }
-					                    });
-					                }			        	
-					        	});					            				             
+			        			
+                                
+			        			
+				        		if(app.collections.claimersServices == null ){
+				            		app.collections.claimersServices = new app.Collections.ClaimersServices();
+				    			}
+					            app.collections.claimersServices.fetch({
+					            	success: function(){
+							        	app.collections.officers.fetch({
+							        		success: function(){
+									        	if(app.collections.teams == null ){
+									                app.collections.teams = new app.Collections.Teams();
+									            }
+									        
+										        app.collections.teams.fetch({
+										        	success: function(){
+										            	if(app.collections.categories == null ){
+										            		app.collections.categories = new app.Collections.Categories();
+														}
+											            app.collections.categories.fetch({
+											            	success: function(){
+													            app.views.planningView = new app.Views.PlanningView();
+													            self.render(app.views.planningView);
+													        },
+								                        	complete: function(){
+								                        	    app.loader('hide');
+								                        	}
+												        });
+								                    }
+							                    });
+							                }			        	
+							        	});	
+								    }
+								});
 				        	} 			        		
 			        	});	
             		}  

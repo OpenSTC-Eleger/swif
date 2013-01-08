@@ -95,7 +95,8 @@ app.Views.PlanningView = Backbone.View.extend({
             //Keep only inetrvention not planned
             interventions = _.filter(interventions,function (intervention){    
             	var inter = intervention.toJSON();
-				return inter.state != app.Models.Intervention.state[1].value;
+				return (inter.state == app.Models.Intervention.state[0].value ||
+						inter.state == app.Models.Intervention.state[1].value)
 			});
             
            //Order by date start 

@@ -38,7 +38,10 @@ app.Views.EventsView = Backbone.View.extend({
 				var allTasks = officer_json.tasks;					
 				if( officer_json.belongsToTeam!= null && officer_json.belongsToTeam.tasks!=null )
 					allTasks = _.union(officer_json.tasks, officer_json.belongsToTeam.tasks.toJSON());	
-				this.collection = new app.Collections.Tasks(allTasks);				
+				this.collection = new app.Collections.Tasks(allTasks);
+//				this.collection = app.collections.tasks;
+//				this.collection.reset();
+//				this.collection.add( allTasks );	
 			}
         },
 
@@ -220,6 +223,7 @@ app.Views.EventsView = Backbone.View.extend({
 				    };
 				    app.models.task.save(event.id,params,null,null,'#planning');
 				    $(self.el).fullCalendar('refresh');
+				    self.planning.render();
 				    app.loader('hide');	
 				},
                 
@@ -363,7 +367,7 @@ app.Views.EventsView = Backbone.View.extend({
 			var worker = null
 			if ( paperBoard[0] && paperBoard[0].user_id  )
 				worker = $('#worker').val(paperBoard[0].user_id[1]);
-			else if ( paperBoard[0] && paperBoard[0].user_id  )
+			else if ( paperBoard[0] && paperBoard[0].team_id  )
 				worker = $('#worker').val(paperBoard[0].team_id[1]);
 			var table = $('#paperboard');
 			
