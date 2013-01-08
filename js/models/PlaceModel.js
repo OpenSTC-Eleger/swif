@@ -7,30 +7,42 @@ app.Models.Place = Backbone.RelationalModel.extend({
     
 	url: "/#places/:id",
 	
-	relations: [
-        {
-			type: Backbone.HasMany,
-			key: 'asksBelongsto',
-			relatedModel: 'app.Models.Request',
-			//includeInJSON: true,
-	        reverseRelation: {
-				type: Backbone.HasOne,
-	            key: 'belongsToSite',
-	            includeInJSON: 'id',
-	        }
-        },
-    ],
+	relations: [ {
+		type: Backbone.HasMany,
+		key: 'asksBelongsto',
+		relatedModel: 'app.Models.Request',
+		//includeInJSON: true,
+	    reverseRelation: {
+			type: Backbone.HasOne,
+			key: 'belongsToSite',
+			includeInJSON: 'id',
+		}
+	},],
+
 
 	/** Model Initialization
 	*/
     initialize: function(){
         console.log('Place Model initialization');
     },
+
     
     /** Model Parser */
     parse: function(response) {    	
         return response;
     },
+
+	
+	/** Destroy place
+	*/
+	destroy: function (options) {	
+		app.deleteOE( 
+			[[this.get("id")]],
+			this.model_name,
+			app.models.user.getSessionID(),
+			options
+		);
+	}
 
 
 });

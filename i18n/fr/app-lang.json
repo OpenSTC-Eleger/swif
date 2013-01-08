@@ -117,7 +117,8 @@
     	"noofficer"				: "Aucun employé enregistré",
     	"noTaskForIntervention"	: "Aucune tâche pour cette intervention",
     	"noTask"      	  	  	: "Aucune tâche à pointer",
-    	"sixCharMin"		  	: "Six caractères minimum"
+    	"sixCharMin"		  	: "Six caractères minimum",
+    	"placeDeleteOk"			: "Site correctement supprimé"
 	},
 
 	"viewsTitles" : {

@@ -195,7 +195,7 @@ var app = {
     */
     deleteOE : function (args,model,session_id,options) {
         this.json(this.urlOE + this.urlOE_deleteObject, {
-            'method'    : this.methodOE_delete,
+            'method'    : "unlink",
             'args'      : args, 
             'model'     : model,
             'session_id': session_id      
