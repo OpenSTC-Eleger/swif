@@ -91,10 +91,10 @@ app.Views.ServicesView = Backbone.View.extend({
         var id = _(link.parents('tr').attr('id')).strRightBack('_');
         
         this.selectedService = _.filter(app.collections.claimersServices.models, function(item){ return item.attributes.id == id });
-        this.selectedService = this.selectedService[0].toJSON();
+        var selectedServiceJson = this.selectedService[0].toJSON();
 
-        $('#infoModalDeleteService p').html(this.selectedService.name);
-        $('#infoModalDeleteService small').html(this.selectedService.code);
+        $('#infoModalDeleteService p').html(selectedServiceJson.name);
+        $('#infoModalDeleteService small').html(selectedServiceJson.code);
     },
 
 
@@ -113,9 +113,19 @@ app.Views.ServicesView = Backbone.View.extend({
     /** Delete the selected service
     */
     deleteService: function(e){
-        
-  		alert('TODO: delete service with id '+ this.selectedService.id);
+		var self = this;
+		this.selectedService[0].destroy({
+			success: function(e){
+				app.collections.claimersServices.remove(self.selectedService[0]);
+				$('#modalDeleteService').modal('hide');
+				app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.serviceDeleteOk);
+				self.render();
+			},
+			error: function(e){
+				alert("Impossible de supprimer le service");
+			}
 
+		});
     },
 
 

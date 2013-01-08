@@ -9,6 +9,7 @@
 	"help"					: "aide",
 	"about"					: "à propos",
 	"name"					: "nom",
+	"firstname"				: "prénom",
 	"label"					: "libellé",
 	"responsible"			: "responsable",
 	"description"			: "description",
@@ -45,6 +46,7 @@
 	"claimerDetails"		: "Détail du demandeur",
 	"aboutTheRequest"   	: "À propos de la demande",
 	"aboutTheTask"   		: "À propos de la tâche",
+	"aboutTheOfficer"  		: "À propos de l'employé",
 	"informationOfTheSite" 	: "Précision sur le site",
 	"serviceConcerned" 		: "Service concerné",
 	"action" 				: "actions",
@@ -78,6 +80,7 @@
 		"addPlace" 			: "nouveau site",
 		"addService" 		: "nouveau service",
 		"addCategorie" 		: "nouvelle catégorie",
+		"addOfficer" 		: "nouvel employé",
 		"enclosePlanning" 	: "cloturer la planification",
 		"save"				: "enregistrer",
 		"cancel"			: "annuler",
@@ -111,8 +114,13 @@
     	"noSite"				: "Aucun site enregistré",
     	"noService"				: "Aucun service enregistré",
     	"noCategorie"			: "Aucune catégorie enregistrée",
+    	"noofficer"				: "Aucun employé enregistré",
     	"noTaskForIntervention"	: "Aucune tâche pour cette intervention",
-    	"noTask"      	  	  	: "Aucune tâche à pointer"
+    	"noTask"      	  	  	: "Aucune tâche à pointer",
+    	"sixCharMin"		  	: "Six caractères minimum",
+    	"placeDeleteOk"			: "Site correctement supprimé",
+    	"serviceDeleteOk"		: "Service correctement supprimé",
+    	"catDeleteOk"			: "Catégorie correctement supprimée"
 	},
 
 	"viewsTitles" : {
@@ -128,6 +136,7 @@
     	"tasksList"				 : "Liste des tâches",
     	"placesList"			 : "Liste des sites",
     	"servicesList"			 : "Liste des services",
-    	"categoriesList"		 : "Liste des catégories"
+    	"categoriesList"		 : "Liste des catégories",
+    	"officersList"		 	 : "Liste des employés municipaux"
 	}
 }

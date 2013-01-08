@@ -1,0 +1,215 @@
+<div class="page-header">
+	<h1>
+		<%= lang.viewsTitles.officersList %>
+		<sup><i class="badge"><%= nbOfficers %></i></sup>
+	</h1>
+</div>
+
+
+<div class="container-fluid">
+
+	<!-- Check if there is Officers in the Database -->
+	<% if(nbOfficers > 0) { %>
+
+		<!-- Table toolbar -->
+		<div class="tableToolbar">
+			<a href="#modalAddOfficer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addOfficer) %></a>	
+
+			<form class="form-search pull-right">
+				<div class="input-append">
+					<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off">
+					<button type="submit" class="btn"><i class="icon-search icon-large"></i></button>
+				</div>
+			</form>
+		</div>
+		<!-- Table toolbar -->
+
+
+		<!-- Table Requests -->
+		<table class="table table-bordered table-hover table-striped">
+			<thead>
+				<tr>
+					<th><%= _.capitalize(lang.name) %></th>
+					<th><%= _.capitalize(lang.login) %></th>
+					<th><%= _.capitalize(lang.email) %></th>
+					<th><%= _.capitalize(lang.lastConnection) %></th>
+				</tr>
+			</thead>
+			<tbody>
+			<% for (var i = startPos; i < endPos; i++) { %>
+				
+				<!-- Officer row -->
+				<tr class="row-item" id="officer_<%= officers[i].id %>">
+					<td>
+						<%= officers[i].name +" "+ officers[i].firstname %>
+						<p class="row-actions no-margin invisible">
+							<a href="#"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
+							<a href="#modalDeleteOfficer" class="modalDeleteOfficer" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
+						</p>
+					</td>
+					<td><%= officers[i].login %></td>
+					<td><%= (officers[i].user_email != false ? officers[i].code : "") %></td>
+					<td><% 
+						if(officers[i].date != false){ %>
+							<span 
+					    		rel="tooltip"
+							    data-original-title="<%= moment(officers[i].date, 'YYYY-MM-DD HH:mm:ss').fromNow() %>">
+					    		<%= moment(officers[i].date, 'YYYY-MM-DD HH:mm:ss').format('LLL') %>
+							</span>
+						<% } %>
+					</td>
+				</tr>
+
+			<% }; %>
+			</tbody>
+		</table>
+
+
+		<!-- Table pagination -->
+		<div class="pagination pagination-right">
+			<ul>
+				<!-- First page button -->
+				<% if(page-2 >= 1){ %>
+					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#employes-municipaux/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
+				<% } %>
+				
+				<!-- Previous page button -->
+				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#employes-municipaux/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
+			
+				<!-- [...] page Button -->
+				<% 	if (page-2 > 1) { %>
+						<li class="disabled"><a href='#'>...</a></li>
+				<% } 
+						
+					for (var i=(page-2); i < (page+3); i++) {
+						if(i >= 1 && i <= pageCount){ %>
+							<li <%= (i === page ? " class='active'" : "")%>><a href='#employes-municipaux/page<%=i%>'><%= i %></a></li>
+						<% }
+
+					} %>
+					
+				<!-- [...] page Button -->
+				<% if (page+2 < pageCount) { %>
+					<li class="disabled"><a href='#'>...</a></li>
+				<% } %>
+				
+				<!-- Next page button -->
+				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#employes-municipaux/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
+				
+				<!-- Last page button -->
+				<% if(page+2 <= pageCount){ %>
+					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#employes-municipaux/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
+				<% } %>
+			</ul>
+		</div>
+		<!-- /Table pagination -->
+
+	<% }
+	else { %>
+		<div class="tableToolbar">
+			<a href="#modalAddOfficer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addOfficer) %></a>
+		</div><br />
+
+		<!-- No request in the Database -->
+		<div class="alert alert-info">
+			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noOfficer %>.
+		</div>
+
+	<% } %>
+
+</div>
+
+
+<!-- Modal Form to add a new Officer -->
+<div id="modalAddOfficer" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3><%= _.capitalize(lang.actions.addOfficer) %></h3>
+	</div>
+	
+	<div class="modal-body">
+		<form id="formAddOfficer" action="#" class="form-horizontal">
+
+			<fieldset>
+				<legend><%= lang.aboutTheOfficer %></legend>
+			
+				<!-- Officer firstname -->
+				<div class="control-group">
+					<label for="officerFirstname" class="control-label"><%= _.capitalize(lang.firstname) %>:</label>
+
+					<div class="controls">
+						<input type="text" id="officerFirstname" name="officerFirstname" required="required" />
+						<span class="help-inline"></span>
+					</div>
+				</div>
+
+				<!-- Officer name -->
+				<div class="control-group">
+					<label for="officerName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
+
+					<div class="controls">
+						<input type="text" id="officerName" name="officerName" required="required" />
+						<span class="help-inline"></span>
+					</div>
+				</div>
+
+			</fieldset>
+
+
+			<fieldset>
+				<legend><%= _.capitalize(lang.connection) %></legend>
+				
+				<!-- Officer login -->
+				<div class="control-group">
+					<label for="officerLogin" class="control-label"><%= _.capitalize(lang.login) %>:</label>
+
+					<div class="controls">
+						<input type="text" id="officerLogin" name="officerLogin" required="required" />
+						<span class="help-inline"></span>
+					</div>
+				</div>
+
+				<!-- Officer password -->
+				<div class="control-group">
+					<label for="officerPassword" class="control-label"><%= _.capitalize(lang.password) %>:</label>
+
+					<div class="controls">
+						<input type="password" id="officerPassword" name="officerPassword" pattern=".{6,}" required="required" />
+						<span class="help-inline"><%= lang.infoMessages.sixCharMin %></span>
+					</div>
+				</div>
+
+			</fieldset>
+
+		</form>
+	</div>
+	
+	<div class="modal-footer">
+		<button type="submit" form="formAddOfficer" class="btn btn-primary saveTask"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+	</div>
+</div>
+
+
+<!-- Modal Form Delete officer -->
+<div id="modalDeleteOfficer" class="modal hide fade">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3>Suppression de l'employé</h3>
+	</div>
+	
+	<div class="modal-body">
+
+		<blockquote id="infoModalDeleteOfficer" class="spaceBottom">
+			<p></p>
+			<small></small>
+		</blockquote>
+
+		<p>Etes-vous sûr de vouloir supprimer cet employé ?</p>
+	</div>
+	
+	<div class="modal-footer">
+	    <button type="button" class="btn btn-danger btnDeleteOfficer"><%= _.capitalize(lang.actions.delete) %></button>&nbsp;&nbsp;
+	    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+	</div>
+</div>

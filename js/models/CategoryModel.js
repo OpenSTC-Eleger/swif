@@ -25,11 +25,26 @@ app.Models.Category = Backbone.RelationalModel.extend({
     initialize: function(){
         console.log('Category Request Model initialization');
     },
-    
-    /** Model Parser */
+
+
+
+    /** Model Parser
+    */
     parse: function(response) {    	
         return response;
     },
 
+
+
+	/** Delete category
+	*/
+	delete: function (options) {	
+		app.deleteOE( 
+			[[this.get("id")]],
+			this.model_name,
+			app.models.user.getSessionID(),
+			options
+		);
+	}
 
 });

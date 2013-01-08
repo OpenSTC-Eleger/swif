@@ -2,11 +2,11 @@
 * Places List View
 */
 app.Views.PlacesView = Backbone.View.extend({
-	
+
 	el : '#rowContainer',
-	
+
 	templateHTML: 'places',
-	
+
 	numberListByPage: 25,
 
 	selectedPlace : '',
@@ -20,15 +20,15 @@ app.Views.PlacesView = Backbone.View.extend({
 		'click a.modalDeletePlace'  	: 'setInfoModal',
 
 		'submit #formAddPlace' 			: "addPlace", 
-		'click button.btnDeletePlace'  	: 'deletePlace'
+		'click button.btnDeletePlace'	: 'deletePlace'
     },
 
-	
+
 
 	/** View Initialization
 	*/
     initialize: function () {
-		
+
     },
 
 
@@ -59,7 +59,7 @@ app.Views.PlacesView = Backbone.View.extend({
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
 
-		
+
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
@@ -75,26 +75,26 @@ app.Views.PlacesView = Backbone.View.extend({
 		});
 
 		$(this.el).hide().fadeIn('slow');
-		
-        return this;
-    },    
+
+		return this;
+    },
 
 
 
     /** Display information in the Modal view
     */
     setInfoModal: function(e){
-        
+
         // Retrieve the ID of the intervention //
         var link = $(e.target);
 
         var id = _(link.parents('tr').attr('id')).strRightBack('_');
-        
-        this.selectedPlace = _.filter(app.collections.places.models, function(item){ return item.attributes.id == id });
-        this.selectedPlace = this.selectedPlace[0].toJSON();
 
-        $('#infoModalDeletePlace p').html(this.selectedPlace.name);
-        $('#infoModalDeletePlace small').html(this.selectedPlace.service[1]);
+        this.selectedPlace = _.filter(app.collections.places.models, function(item){ return item.attributes.id == id });
+        var selectedPlaceJson = this.selectedPlace[0].toJSON();
+
+        $('#infoModalDeletePlace p').html(selectedPlaceJson.name);
+        $('#infoModalDeletePlace small').html(selectedPlaceJson.service[1]);
     },
 
 
@@ -102,21 +102,29 @@ app.Views.PlacesView = Backbone.View.extend({
     /** Add a new place
     */
     addPlace: function(e){
-        e.preventDefault();
-
-        alert('TODO: save the new place');
-
-    },
+		e.preventDefault();
+		alert('TODO: save the new place');
+	},
 
 
 
-    /** Delete the selected place
-    */
-    deletePlace: function(e){
-        
-  		alert('TODO: delete place with id '+ this.selectedPlace.id);
+	/** Delete the selected place
+	*/
+	deletePlace: function(e){
+		var self = this;
+		this.selectedPlace[0].destroy({
+			success: function(e){
+				app.collections.places.remove(self.selectedPlace[0]);
+				$('#modalDeletePlace').modal('hide');
+				app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
+				self.render();
+			},
+			error: function(e){
+				alert("Impossible de supprimer le site");
+			}
 
-    },
+		});
+	},
 
 
 
