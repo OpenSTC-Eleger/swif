@@ -88,10 +88,10 @@ app.Views.CategoriesView = Backbone.View.extend({
         var id = _(link.parents('tr').attr('id')).strRightBack('_');
         
         this.selectedCat = _.filter(app.collections.categories.models, function(item){ return item.attributes.id == id });
-        this.selectedCat = this.selectedCat[0].toJSON();
+        var selectedCatJson = this.selectedCat[0].toJSON();
 
-        $('#infoModalDeleteCat p').html(this.selectedCat.name);
-        $('#infoModalDeleteCat small').html(this.selectedCat.code);
+        $('#infoModalDeleteCat p').html(selectedCatJson.name);
+        $('#infoModalDeleteCat small').html(selectedCatJson.code);
     },
 
 
@@ -110,9 +110,19 @@ app.Views.CategoriesView = Backbone.View.extend({
     /** Delete the selected categorie
     */
     deleteCat: function(e){
-        
-  		alert('TODO: delete categorie with id '+ this.selectedCat.id);
+       	var self = this;
+		this.selectedPlace[0].delete({
+			success: function(e){
+				app.collections.categories.remove(self.selectedCat[0]);
+				$('#modalDeleteCat').modal('hide');
+				app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.catDeleteOk);
+				self.render();
+			},
+			error: function(e){
+				alert("Impossible de supprimer le site");
+			}
 
+		});
     },
 
 

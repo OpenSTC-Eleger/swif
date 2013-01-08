@@ -119,7 +119,8 @@
     	"noTask"      	  	  	: "Aucune tâche à pointer",
     	"sixCharMin"		  	: "Six caractères minimum",
     	"placeDeleteOk"			: "Site correctement supprimé",
-    	"serviceDeleteOk"		: "Service correctement supprimé"
+    	"serviceDeleteOk"		: "Service correctement supprimé",
+    	"catDeleteOk"			: "Catégorie correctement supprimée"
 	},
 
 	"viewsTitles" : {
