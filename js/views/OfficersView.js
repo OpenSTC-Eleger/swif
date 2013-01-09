@@ -89,10 +89,10 @@ app.Views.OfficersView = Backbone.View.extend({
         var id = _(link.parents('tr').attr('id')).strRightBack('_');
         
         this.selectedOfficer = _.filter(app.collections.officers.models, function(item){ return item.attributes.id == id });
-        this.selectedOfficer = this.selectedOfficer[0].toJSON();
+        var selectedOfficerJson = this.selectedOfficer[0].toJSON();
 
-        $('#infoModalDeleteOfficer p').html(this.selectedOfficer.name+" "+this.selectedOfficer.firstname);
-        $('#infoModalDeleteOfficer small').html(this.selectedOfficer.user_email);
+        $('#infoModalDeleteOfficer p').html(selectedOfficerJson.name+" "+selectedOfficerJson.firstname);
+        $('#infoModalDeleteOfficer small').html(selectedOfficerJson.user_email);
     },
 
 
@@ -111,7 +111,19 @@ app.Views.OfficersView = Backbone.View.extend({
     /** Delete the selected officer
     */
     deleteOfficer: function(e){
-  		alert('TODO: delete officer with id '+ this.selectedOfficer.id);
+		var self = this;
+		this.selectedOfficer[0].delete({
+			success: function(e){
+				app.collections.officers.remove(self.selectedOfficer[0]);
+				$('#modalDeleteOfficer').modal('hide');
+				app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.officerDeleteOk);
+				self.render();
+			},
+			error: function(e){
+				alert("Impossible de supprimer l'employé");
+			}
+
+		});
     },
 
 

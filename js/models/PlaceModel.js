@@ -35,7 +35,7 @@ app.Models.Place = Backbone.RelationalModel.extend({
 	
 	/** Destroy place
 	*/
-	destroy: function (options) {	
+	delete: function (options) {	
 		app.deleteOE( 
 			[[this.get("id")]],
 			this.model_name,

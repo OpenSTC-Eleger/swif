@@ -106,6 +106,12 @@
 	    "sufficientRights"    : "Vous n'avez pas les droits suffisants pour éffectuer cette action"
 	},
 
+
+	"warningMessages" : {
+		"confirmDeleteAgent"	: "Êtes-vous sûr de vouloir supprimer cet agent ?",
+		"confirmDeletePlace" 	: "Etes-vous sûr de vouloir supprimer ce site ?"
+	},
+
 	"infoMessages" : {
    		"information"         	: "Information",
     	"successLogout"       	: "Vous êtes maintenant déconnecté",
@@ -120,7 +126,8 @@
     	"sixCharMin"		  	: "Six caractères minimum",
     	"placeDeleteOk"			: "Site correctement supprimé",
     	"serviceDeleteOk"		: "Service correctement supprimé",
-    	"catDeleteOk"			: "Catégorie correctement supprimée"
+    	"catDeleteOk"			: "Catégorie correctement supprimée",
+    	"officerDeleteOk"		: "Agent correctement supprimé"
 	},
 
 	"viewsTitles" : {
@@ -137,6 +144,7 @@
     	"placesList"			 : "Liste des sites",
     	"servicesList"			 : "Liste des services",
     	"categoriesList"		 : "Liste des catégories",
-    	"officersList"		 	 : "Liste des employés municipaux"
+    	"officersList"		 	 : "Liste des agents",
+    	"teamsList"			 	 : "Liste des équipes"
 	}
 }
