@@ -108,52 +108,6 @@ app.Models.Task = Backbone.RelationalModel.extend({
         return response;
     },
     
-    datesToLocalUTC: function() {
-//    	var model = this.toJSON();
-//	
-//    	var date_start = new Date(Date.parse(model.date_start));
-//    	var date_end = new Date(Date.parse(model.date_end));
-//    	
-//    	var utc_date_start = date_start.getTime() + (date_start.getTimezoneOffset() * 60000);
-//    	var new_date_start = new Date(utc_date_start + (3600000*+2));
-//    	 
-//    	var utc_date_end = date_end.getTime() + (date_end.getTimezoneOffset() * 60000);
-//    	var new_date_end= new Date(utc_date_end + (3600000*+2));
-//    	
-//    	
-//    	this.setDateStart(new_date_start);
-//    	this.setDateEnd(new_date_end);
-    	
-    },
-    
-//    reload: function(){
-//		app.collections.tasks.fetch({ 
-//			success: function(){					    	
-//				app.collections.interventions.fetch({ 
-//					success: function(){
-//				 		app.collections.teams.fetch({
-//			                success: function(){				 			
-//				 				Console.debug("Tasks reloaded")
-//					 		}					 
-//				 		});
-//			        }
-//			   });
-//		 	}					 
-//		});
-//    },
-//    
-//    saveReTest: function(id,data,options) { 
-//    	that.options = options;
-//    	var self = that
-//		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {
-//			success: function() {
-//				that.reload()
-//			}
-//			complete: function() {
-//				
-//			}
-//		});
-//	},
     
 	/** Save Model
 		*/
@@ -180,8 +134,8 @@ app.Models.Task = Backbone.RelationalModel.extend({
 						 		app.collections.interventions.fetch({
 					                success: function(){				 			
 						 				if( strRoute ) {
-											route = Backbone.history.fragment;
-											Backbone.history.loadUrl(route);
+											//route = Backbone.history.fragment;
+											Backbone.history.loadUrl(strRoute);
 										}
 										else if (view)
 											view.render();

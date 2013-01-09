@@ -30,7 +30,8 @@ app.Views.PlanningView = Backbone.View.extend({
 
     /** View Initialization
     */
-    initialize : function(user) {
+    initialize : function(agent) {
+    	this.agent = agent;
         console.log('Planning view');
     },
 
@@ -129,6 +130,16 @@ app.Views.PlanningView = Backbone.View.extend({
                 $('#listTeams li.active').removeClass('active');
                 $(this).parent('li').addClass('active');
             })
+            
+//            if( self.agent ) {
+//            	// Animated Scroll //                
+//		        var elementID = $('#listAgents li a[href="#agent/larry-billien"]').attr("href");  
+//		        
+//		        $('html, body').animate({  
+//		            scrollTop:$(elementID).offset().top -5
+//		        }, 'slow');
+//            }
+            	
             
         });
        

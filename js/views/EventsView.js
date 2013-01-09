@@ -14,10 +14,11 @@ app.Views.EventsView = Backbone.View.extend({
 			
 			this.id = object.attributes.id;
 			this.initCollection(object);
+			//this.collection = object.attributes.tasks;
 				
 			this.el = $(this.elStringId);			
 			
-//            _.bindAll(this); 
+            _.bindAll(this); 
 //            this.collection.bind('reset', this.addAll);
 //            this.collection.bind('add', this.addOne);
 //            this.collection.bind('change', this.change);            
@@ -41,13 +42,6 @@ app.Views.EventsView = Backbone.View.extend({
 				if( officer_json.belongsToTeam!= null && officer_json.belongsToTeam.tasks!=null )
 					this.filterTasks = _.union(officer_json.tasks, officer_json.belongsToTeam.tasks.toJSON());	
 
-//				this.collection = new app.Collections.Tasks(allTasks);
-//				if( allTasks.length>0 )
-//				{
-//					_.each(this.collection.models, function(task){
-//						task.datesToLocalUTC();
-//					})					
-//				}
 			}
         },
 
@@ -56,34 +50,16 @@ app.Views.EventsView = Backbone.View.extend({
         	this.initEvents();
         	this.initCalendar();          	
         },
-        		
-//        addAll: function() {
-//            this.el.fullCalendar('addEventSource', this.collection.toJSON());
-//        },
-//        addOne: function(event) {
-//            this.el.fullCalendar('renderEvent', event.toJSON());
-//        },        
-//        select: function(startDate, endDate) {
-//            this.eventView.collection = this.collection;
-//            this.eventView.model = new Event({start: startDate, end: endDate});
-//            this.eventView.render();            
-//        },
-//        eventClick: function(fcEvent, jsEvent, view) {
-//        	var self = this;
-//            this.eventView.model = this.collection.get(fcEvent.id);
-//            this.eventView.render($(jsEvent.currentTarget),this.el.fullCalendar)
-//        },
-//        change: function(event) {
-//            // Look up the underlying event in the calendar and update its details from the model
-//            var fcEvent = this.el.fullCalendar('clientEvents', event.get('id'))[0];
-//            fcEvent.planned_hours = event.get('planned_hours');
-//            fcEvent.remaining_hours = event.get('remaining_hours');
-//            //this.el.fullCalendar('updateEvent', fcEvent);           
-//        },
-//        eventDropOrResize: function(fcEvent) {
-//            // Lookup the model that has the ID of the event and update its attributes
-//            this.collection.get(fcEvent.id).save({start: fcEvent.start, end: fcEvent.end});            
-//        },
+        eventClick: function(fcEvent, jsEvent, view) {
+        	var self = this;
+            //this.eventView.model = this.collection.get(fcEvent.id);
+            this.eventView.model = app.collections.tasks.get(fcEvent.id);
+            this.eventView.render($(jsEvent.currentTarget),this.planning,this.el)
+        },
+        eventDropOrResize: function(fcEvent) {
+            // Lookup the model that has the ID of the event and update its attributes
+            this.collection.get(fcEvent.id).save({start: fcEvent.start, end: fcEvent.end});            
+        },
         
         copy: function() {
         	console.debug("Copy Event");
@@ -103,22 +79,6 @@ app.Views.EventsView = Backbone.View.extend({
         		case 'done' :
 			    	color = 'purple';
 			    	break;
-			    	
-//				case 'pending' :
-//			    	color = 'blue';
-//			    	break;
-//			    	
-//			    case 'open' :
-//			    	color = '#FFCCFF';
-//			    	break;
-//			    	
-//			    case 'cancelled' :
-//			    	color = '#CCFFCC';
-//			    	break;
-//			
-//			    case 'draft' :
-//			    	color = 'LemonChiffon';
-//			    	break;
         	}
         	return color;	
         },
@@ -197,11 +157,9 @@ app.Views.EventsView = Backbone.View.extend({
                 editable: true,
                 ignoreTimezone: false,          
                 dragRevertDuration:0,
-                eventClick: this.eventClick,
+                eventClick: self.eventClick,
                 
-				eventClick: function(calEvent, jsEvent, view) {
-					return false;
-				},
+
 
                 eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
 					app.loader('display');
@@ -211,8 +169,8 @@ app.Views.EventsView = Backbone.View.extend({
 				       date_end: event.end,
 				    };
 				    app.models.task.save(event.id,params,null,null,'#planning');	
-					//self.save(event.id,params);	
 				    $(self.el).fullCalendar('refresh');
+				    self.planning.render();
 				    app.loader('hide');	
 				},
 				
@@ -296,8 +254,6 @@ app.Views.EventsView = Backbone.View.extend({
 						 								    	self.initCollection(app.collections.officers.get(self.id));
 						 								    $(self.el).fullCalendar('refetchEvents');
 						 								    self.planning.render();
-						 								    //TODO refreh accordion
-						 								    //$('#accordionInter')
 												 		}					 
 											 		});
 										         }
@@ -319,12 +275,7 @@ app.Views.EventsView = Backbone.View.extend({
 				   
 				    
 				    //$(this).remove();  				    
-				},
-				
-//				select: function( startDate, endDate, allDay) {
-//					console.debug('Event Select');
-//				},
-				
+				},				
 				eventDragStop: function(event, jsEvent, ui, view) {				    
 				},
 

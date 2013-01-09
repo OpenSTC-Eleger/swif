@@ -13,6 +13,7 @@ app.Router = Backbone.Router.extend({
         'about'                                 : 'about',
         'interventions'                         : 'interventions',
         'planning'                         		: 'planning',
+        //'agent/:id'								: 'planning',
 
         'demandes-dinterventions'               : 'requestsList',
         'demandes-dinterventions/page:page'     : 'requestsList',
@@ -90,7 +91,7 @@ app.Router = Backbone.Router.extend({
         if (app.collections.users.length == 1){
             console.log('User in the localStorage');
             
-            //app.models.user = app.collections.users.at(0);
+            app.models.user = app.collections.users.at(0);
 
             // Check if a user has a sessionID //
             if(app.models.user.hasSessionID()){
@@ -458,7 +459,7 @@ app.Router = Backbone.Router.extend({
 
     /** Planning
     */
-    planning: function(){
+    planning: function(id){
     	
     	var self = this;
 	
@@ -481,17 +482,14 @@ app.Router = Backbone.Router.extend({
 			        
 			        	app.collections.interventions.fetch({
 			        		success: function(){
-			        			if(app.collections.officers == null ){
-                                    app.collections.officers = new app.Collections.Officers();
-                                }
-			        			
-                                
-			        			
 				        		if(app.collections.claimersServices == null ){
 				            		app.collections.claimersServices = new app.Collections.ClaimersServices();
 				    			}
 					            app.collections.claimersServices.fetch({
 					            	success: function(){
+				        				if(app.collections.officers == null ){
+				        					app.collections.officers = new app.Collections.Officers();
+				        				}
 							        	app.collections.officers.fetch({
 							        		success: function(){
 									        	if(app.collections.teams == null ){
@@ -505,7 +503,7 @@ app.Router = Backbone.Router.extend({
 														}
 											            app.collections.categories.fetch({
 											            	success: function(){
-													            app.views.planningView = new app.Views.PlanningView();
+													            app.views.planningView = new app.Views.PlanningView(id);
 													            self.render(app.views.planningView);
 													        },
 								                        	complete: function(){

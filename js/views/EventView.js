@@ -8,8 +8,9 @@ app.Views.EventView = Backbone.View.extend({
             _.bindAll(this);           
         },
         
-        render: function(event, calendar) {
+        render: function(event, planning, calendar) {
         	this.event = event;
+        	this.planning = planning;
         	this.calendar = calendar;
         	var self= this;
         	
@@ -20,38 +21,18 @@ app.Views.EventView = Backbone.View.extend({
 					task: self.model.toJSON(),
 				});
 			
-				$(self.el).html(template);
 				self.template = template;
 				event.qtip({ 
 
 	        		content: {    
-		            	title: { text: self.model.get('name'),button: true, },            	
-		            	text: self.template ,
-		            	
+		            	title: { text: self.model.get('name'),button: true, },  
+		                text: function(api) {
+		                    return self.template;
+		                }
 	        		},
-	        		//hide: {event: "mouseout"}, // Don't' hide unless we call hide()
 					events: {
 		                render: function(event, api) {
-	        			   $('#taskNote').val(self.model.get('notes'));	
-	        			   	        			   var params = {};
-	   	        			$("form",this).find(".btn").each(function(){
-							    $(this).bind('click', function(){
-	        				   
-		        				   	params = {
-								        state: app.Models.Task.state[2].value,
-										user_id: null,
-										date_end: null,
-										date_start: null,
-									};
-								    self.model.save(self.model.get('id'),params);
-								    $(this).destroy();
-								    self.calendar('removeEvent',event.id);
-								});
-	        					//event.preventDefault();
-	        				});
-	                	},
-	        			//hide: function(event, api) { api.destroy(); }
-	        			   					      
+	                	},	        			   					      
 					},
 	                position: {
 	                    at: 'top center',
@@ -74,15 +55,30 @@ app.Views.EventView = Backbone.View.extend({
 	                        blur: true // ... but don't close the tooltip when clicked
 	                    }
 	                },
-	                //hide: 'mousedown',
+	                hide: 'mousedown',
 	                style: {
-	                    classes: 'daytooltip ui-tooltip-light ui-tooltip-shadow ui-tooltip-default width400',
+	                    classes: 'daytooltip ui-tooltip-light  ui-tooltip-shadow ui-tooltip-default width400',
 	                    tip: { width: 20, height: 8 }                                                 
 	                },	
 
-				})
-	
+				})					
 			});	
+	        
+			$('.btnUnlink').live('click',function(){
+				params = {
+				        state: app.Models.Task.state[2].value,
+						user_id: null,
+						team_id: null,
+						date_end: null,
+						date_start: null,
+					};
+
+				self.model.save(self.model.get('id'),params,null,null,'#planning');
+				
+				//$(self.event).qtip("destroy");
+				$(".event-create").remove();
+
+			});
 		
 			$(this.el).hide().fadeIn('slow');
 	        return this;
