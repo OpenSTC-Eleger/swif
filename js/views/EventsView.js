@@ -1,5 +1,7 @@
 app.Views.EventsView = Backbone.View.extend({
 	
+		filterTasks: null,
+	
 		events: {
 
 			//'click .btn.printCalendar'    : 'printCalendar',
@@ -15,12 +17,11 @@ app.Views.EventsView = Backbone.View.extend({
 				
 			this.el = $(this.elStringId);			
 			
-            _.bindAll(this); 
-
-            this.collection.bind('reset', this.addAll);
-            this.collection.bind('add', this.addOne);
-            this.collection.bind('change', this.change);            
-            this.collection.bind('destroy', this.destroy);
+//            _.bindAll(this); 
+//            this.collection.bind('reset', this.addAll);
+//            this.collection.bind('add', this.addOne);
+//            this.collection.bind('change', this.change);            
+//            this.collection.bind('destroy', this.destroy);
             
             this.eventView = new app.Views.EventView();            
         },
@@ -29,19 +30,24 @@ app.Views.EventsView = Backbone.View.extend({
 			if (this.teamMode) 
 			{
 				this.elStringId = 'div#team_' + object.attributes.id;
-				this.collection = object.attributes.tasks;
+				//this.collection = object.attributes.tasks;
+				this.filterTasks = object.attributes.tasks.toJSON();
 			}
 			else
 			{
 				this.elStringId = 'div#officer_' + object.attributes.id;
 				var officer_json = object.toJSON();
-				var allTasks = officer_json.tasks;					
+				this.filterTasks = officer_json.tasks;					
 				if( officer_json.belongsToTeam!= null && officer_json.belongsToTeam.tasks!=null )
-					allTasks = _.union(officer_json.tasks, officer_json.belongsToTeam.tasks.toJSON());	
-				this.collection = new app.Collections.Tasks(allTasks);
-//				this.collection = app.collections.tasks;
-//				this.collection.reset();
-//				this.collection.add( allTasks );	
+					this.filterTasks = _.union(officer_json.tasks, officer_json.belongsToTeam.tasks.toJSON());	
+
+//				this.collection = new app.Collections.Tasks(allTasks);
+//				if( allTasks.length>0 )
+//				{
+//					_.each(this.collection.models, function(task){
+//						task.datesToLocalUTC();
+//					})					
+//				}
 			}
         },
 
@@ -51,33 +57,33 @@ app.Views.EventsView = Backbone.View.extend({
         	this.initCalendar();          	
         },
         		
-        addAll: function() {
-            this.el.fullCalendar('addEventSource', this.collection.toJSON());
-        },
-        addOne: function(event) {
-            this.el.fullCalendar('renderEvent', event.toJSON());
-        },        
-        select: function(startDate, endDate) {
-            this.eventView.collection = this.collection;
-            this.eventView.model = new Event({start: startDate, end: endDate});
-            this.eventView.render();            
-        },
-        eventClick: function(fcEvent, jsEvent, view) {
-        	var self = this;
-            this.eventView.model = this.collection.get(fcEvent.id);
-            this.eventView.render($(jsEvent.currentTarget),this.el.fullCalendar)
-        },
-        change: function(event) {
-            // Look up the underlying event in the calendar and update its details from the model
-            var fcEvent = this.el.fullCalendar('clientEvents', event.get('id'))[0];
-            fcEvent.planned_hours = event.get('planned_hours');
-            fcEvent.remaining_hours = event.get('remaining_hours');
-            //this.el.fullCalendar('updateEvent', fcEvent);           
-        },
-        eventDropOrResize: function(fcEvent) {
-            // Lookup the model that has the ID of the event and update its attributes
-            this.collection.get(fcEvent.id).save({start: fcEvent.start, end: fcEvent.end});            
-        },
+//        addAll: function() {
+//            this.el.fullCalendar('addEventSource', this.collection.toJSON());
+//        },
+//        addOne: function(event) {
+//            this.el.fullCalendar('renderEvent', event.toJSON());
+//        },        
+//        select: function(startDate, endDate) {
+//            this.eventView.collection = this.collection;
+//            this.eventView.model = new Event({start: startDate, end: endDate});
+//            this.eventView.render();            
+//        },
+//        eventClick: function(fcEvent, jsEvent, view) {
+//        	var self = this;
+//            this.eventView.model = this.collection.get(fcEvent.id);
+//            this.eventView.render($(jsEvent.currentTarget),this.el.fullCalendar)
+//        },
+//        change: function(event) {
+//            // Look up the underlying event in the calendar and update its details from the model
+//            var fcEvent = this.el.fullCalendar('clientEvents', event.get('id'))[0];
+//            fcEvent.planned_hours = event.get('planned_hours');
+//            fcEvent.remaining_hours = event.get('remaining_hours');
+//            //this.el.fullCalendar('updateEvent', fcEvent);           
+//        },
+//        eventDropOrResize: function(fcEvent) {
+//            // Lookup the model that has the ID of the event and update its attributes
+//            this.collection.get(fcEvent.id).save({start: fcEvent.start, end: fcEvent.end});            
+//        },
         
         copy: function() {
         	console.debug("Copy Event");
@@ -121,7 +127,7 @@ app.Views.EventsView = Backbone.View.extend({
         	this.events = [];
         	var self = this;
         	
-        	_.each(this.collection.toJSON(), function (task, i){
+        	_.each(this.filterTasks , function (task, i){
         		var event = { id: task.id, 
         		              state: task.state,
         		              title: task.name, 
@@ -362,16 +368,16 @@ app.Views.EventsView = Backbone.View.extend({
 			
 		printCalendar: function () {
 			var self = this;
-			var paperBoard = this.collection.toJSON();
+			var paperBoard = this.filterTasks[0];//this.collection.toJSON();
 			var elementToPrint = $('#printContainer');
 			var worker = null
-			if ( paperBoard[0] && paperBoard[0].user_id  )
-				worker = $('#worker').val(paperBoard[0].user_id[1]);
-			else if ( paperBoard[0] && paperBoard[0].team_id  )
-				worker = $('#worker').val(paperBoard[0].team_id[1]);
+			if ( paperBoard && paperBoard.user_id  )
+				worker = $('#worker').val(paperBoard.user_id[1]);
+			else if ( paperBoard && paperBoard.team_id  )
+				worker = $('#worker').val(paperBoard.team_id[1]);
 			var table = $('#paperboard');
 			
-			var tasks = _.filter(self.collection.toJSON(), function(task){ 
+			var tasks = _.filter(this.filterTasks, function(task){ 
 	        	return (
 	        			task.date_start < self.el.fullCalendar('getView').visEnd &&
 	        			task.date_end > self.el.fullCalendar('getView').visStart &&

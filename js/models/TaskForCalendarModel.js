@@ -1,12 +1,12 @@
 /******************************************
 * Request Model
 */
-app.Models.Task = Backbone.RelationalModel.extend({
+app.Models.TaskForCalendar = Backbone.RelationalModel.extend({
 
 	// Model name in the database //
 	model_name : 'project.task',	
 	
-	url: "/#taches/:id",
+	url: "/#taskForCalendar/:id",
 	
 //	currentTask:this,
 
@@ -100,30 +100,14 @@ app.Models.Task = Backbone.RelationalModel.extend({
     	 
     	var utc_date_end = date_end.getTime() + (date_end.getTimezoneOffset() * 60000);
     	var new_date_end= new Date(utc_date_end + (3600000*+2));
-
-
+    	
+    	
     	response.date_start = new_date_start;
-    	response.date_end= new_date_end;
+    	response.date_end = new_date_end;
+    	//this.setDateStart(new_date_start);
+    	//this.setDateEnd(new_date_end);
 
         return response;
-    },
-    
-    datesToLocalUTC: function() {
-//    	var model = this.toJSON();
-//	
-//    	var date_start = new Date(Date.parse(model.date_start));
-//    	var date_end = new Date(Date.parse(model.date_end));
-//    	
-//    	var utc_date_start = date_start.getTime() + (date_start.getTimezoneOffset() * 60000);
-//    	var new_date_start = new Date(utc_date_start + (3600000*+2));
-//    	 
-//    	var utc_date_end = date_end.getTime() + (date_end.getTimezoneOffset() * 60000);
-//    	var new_date_end= new Date(utc_date_end + (3600000*+2));
-//    	
-//    	
-//    	this.setDateStart(new_date_start);
-//    	this.setDateEnd(new_date_end);
-    	
     },
     
 //    reload: function(){

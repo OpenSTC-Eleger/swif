@@ -316,7 +316,8 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 				var placesFiltered = _.filter(places, function(item){ 
 					return item.attributes.service[0] == service; 
 		        });
-				app.views.selectListPlacesView.collection = new app.Collections.Tasks(placesFiltered);
+				//TODO : pkoi selectListPlacesView = new ...Tasks
+				app.views.selectListPlacesView.collection = new app.Collections.Places(placesFiltered);
 				app.views.selectListPlacesView.clearAll();
 				app.views.selectListPlacesView.addEmptyFirst();
 				app.views.selectListPlacesView.addAll();

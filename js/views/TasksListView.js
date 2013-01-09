@@ -112,11 +112,16 @@ app.Views.TasksListView = Backbone.View.extend({
 		
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-			var tasksList = new app.Collections.Tasks(tasksUser).toJSON();
+			//var tasksList = new app.Collections.Tasks(tasksUser).toJSON();
+			var taskList = []
+			_.each(tasksUser , function (task, i){
+				taskList.push(task.toJSON())
+			});
+			
 			var template = _.template(templateData, {
 				lang: app.lang,
 				nbTasks: nbTasks,
-				tasks: tasksList,
+				tasks: taskList,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
 				pageCount: pageCount,
