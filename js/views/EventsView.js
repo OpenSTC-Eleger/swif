@@ -78,7 +78,8 @@ app.Views.EventsView = Backbone.View.extend({
         getColor: function(task) {	
         	var color = 'green';
         	if ( task.team_id )
-        		color = 'grey'        	
+        		color = 'grey'      
+        			
         	switch (task.state) {        	
         		case 'done' :
 			    	color = 'purple';
