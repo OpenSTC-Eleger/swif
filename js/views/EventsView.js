@@ -337,6 +337,12 @@ app.Views.EventsView = Backbone.View.extend({
 	        			
 	        		); 
 	        });
+			
+			tasks = _.sortBy(tasks, function(item){ 
+			    return item.date_start; 
+			});
+			
+			
 		    _.each(tasks, function(task){ 
 		    	task["done"] = "false";
 		    	task["notdone"] = "false";
