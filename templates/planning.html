@@ -78,15 +78,30 @@
 							</ul>
 
 							<div class="div-actions">
-								<button class="btn btn-primary btn-small no-outline addTaskPlanning" id="<%= inter.id %>" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="right">
+								<button class="btn btn-primary btn-small no-outline addTaskPlanning" id="<%= inter.id %>" rel="tooltip" 
+									data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="left"
+									<%= ( inter.state != app.Models.Intervention.state[1].value ) ? "" : 'disabled' %>>
 									<i class="icon-plus"></i>
-								</button>
+								</button>								
 
 								<button 
 									class="btn btn-success btn-small pull-right no-outline" rel="tooltip" 
 										data-original-title="<%= _.capitalize(lang.actions.enclosePlanning) %>" 
-										data-placement="left" 
-										<%= (allPlanned && (inter.state == app.Models.Intervention.state[0].value) && _.size(inter.tasks) > 0) ? "" : 'disabled' %>>
+										data-placement="left" style="margin-right: 5px" name="enclose"
+										<%= ( (allPlanned && 
+												(	inter.state == app.Models.Intervention.state[0].value ||
+													inter.state == app.Models.Intervention.state[2].value
+												) && _.size(inter.tasks) > 0) ) ? "" : 'disabled' %>>
+									<i class="icon-check"></i>
+								</button>
+								
+								<button 
+									class="btn btn-inverse btn-small pull-right no-outline" rel="tooltip" 
+										data-original-title="<%= _.capitalize(lang.actions.openPlanning) %>" 
+										 name="reopen"
+										<%= ( (
+												(	inter.state == app.Models.Intervention.state[1].value
+												) && _.size(inter.tasks) > 0) ) ? "" : 'disabled' %>>
 									<i class="icon-check"></i>
 								</button>
 							</div>

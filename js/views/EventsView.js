@@ -14,15 +14,10 @@ app.Views.EventsView = Backbone.View.extend({
 			
 			this.id = object.attributes.id;
 			this.initCollection(object);
-			//this.collection = object.attributes.tasks;
 				
 			this.el = $(this.elStringId);			
 			
             _.bindAll(this); 
-//            this.collection.bind('reset', this.addAll);
-//            this.collection.bind('add', this.addOne);
-//            this.collection.bind('change', this.change);            
-//            this.collection.bind('destroy', this.destroy);
             
             this.eventView = new app.Views.EventView();            
         },
@@ -31,8 +26,17 @@ app.Views.EventsView = Backbone.View.extend({
 			if (this.teamMode) 
 			{
 				this.elStringId = 'div#team_' + object.attributes.id;
-				//this.collection = object.attributes.tasks;
+				var team_json = object.toJSON();
 				this.filterTasks = object.attributes.tasks.toJSON();
+				var that = this;
+				if( team_json.user_ids!= null ){
+					_.each(object.attributes.user_ids.models, function(user){
+						if( user!=null && user.attributes.tasks != null && 
+								user.attributes.tasks.models.length>0 )
+							that.filterTasks = _.union(that.filterTasks, user.attributes.tasks.toJSON());	
+					})
+				}
+				
 			}
 			else
 			{
@@ -51,8 +55,6 @@ app.Views.EventsView = Backbone.View.extend({
         	this.initCalendar();          	
         },
         eventClick: function(fcEvent, jsEvent, view) {
-        	var self = this;
-            //this.eventView.model = this.collection.get(fcEvent.id);
             this.eventView.model = app.collections.tasks.get(fcEvent.id);
             this.eventView.render($(jsEvent.currentTarget),this.planning,this.el)
         },
@@ -73,21 +75,25 @@ app.Views.EventsView = Backbone.View.extend({
         	console.debug("Edit Event");
         },
         
-        getColor: function(state) {	
+        getColor: function(task) {	
         	var color = 'green';
-        	switch (state) {        	
+        	if ( task.team_id )
+        		color = 'grey'        	
+        	switch (task.state) {        	
         		case 'done' :
 			    	color = 'purple';
 			    	break;
         	}
+        	
         	return color;	
         },
                 
         initEvents: function() {
-        	this.events = [];
+        	this.events = [];        	
         	var self = this;
         	
         	_.each(this.filterTasks , function (task, i){
+        		var actionDisabled = task.state==app.Models.Task.state[3].value || task.state==app.Models.Task.state[4].value
         		var event = { id: task.id, 
         		              state: task.state,
         		              title: task.name, 
@@ -98,7 +104,10 @@ app.Views.EventsView = Backbone.View.extend({
         		              effective_hours: task.effective_hours,
         		              remaning_hours: task.remaining_hours,
         		              allDay:false,
-        		              color: self.getColor(task.state)
+        		              color: self.getColor(task),
+        		              editable: true,
+        		              disableDragging: actionDisabled,
+        		              disableResizing: actionDisabled,
         		             };
         		self.events.push(event);
         	});
@@ -151,7 +160,7 @@ app.Views.EventsView = Backbone.View.extend({
 				dragOpacity: 0.5,
 				weekends: true,
 				droppable: true,
-				disableResizing: false,				
+				//disableResizing: false,				
                 selectable: true,
                 selectHelper: true,
                 editable: true,
@@ -263,18 +272,7 @@ app.Views.EventsView = Backbone.View.extend({
 							 	}					 
 					    	});
 				    	}
-				    }); 
-				    
-
-				    
-				    //self.save(copiedEventObject.id,params);
-				    
-				
-
-				    
-				   
-				    
-				    //$(this).remove();  				    
+				    }); 		    
 				},				
 				eventDragStop: function(event, jsEvent, ui, view) {				    
 				},

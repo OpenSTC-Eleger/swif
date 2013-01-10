@@ -96,8 +96,12 @@ app.Views.PlanningView = Backbone.View.extend({
             //Keep only inetrvention not planned
             interventions = _.filter(interventions,function (intervention){    
             	var inter = intervention.toJSON();
+            	//A planifier(toschedule), planifiée(scheduled), pending(En cours) 
+            	// Encours car des tâchespeuvent avoir fait l'objet d'une saisie de temps passé, tandis qu'elle n'a pas été
+            	// encore cloturée
 				return (inter.state == app.Models.Intervention.state[0].value ||
-						inter.state == app.Models.Intervention.state[1].value)
+						inter.state == app.Models.Intervention.state[1].value ||
+						inter.state == app.Models.Intervention.state[2].value)
 			});
             
            //Order by date start 
@@ -262,8 +266,13 @@ app.Views.PlanningView = Backbone.View.extend({
 		var id = _(intervention.parents('.accordion-body').attr('id')).strRightBack('_');
 		
 		params = {
-				state: app.Models.Intervention.state[1].value,
+			state: app.Models.Intervention.state[0].value,
 		};
+
+		if(e.currentTarget.name == "enclose")		
+			params = {
+					state: app.Models.Intervention.state[1].value,
+			};
 		
 		app.models.intervention.save(id,params,null,this);	
 	},

@@ -22,17 +22,31 @@ app.Views.EventView = Backbone.View.extend({
 				});
 			
 				self.template = template;
-				event.qtip({ 
+				var qtip =event.qtip({ 
 
 	        		content: {    
-		            	title: { text: self.model.get('name'),button: true, },  
+		            	title: { text: self.model.get('name'),button: true },  
 		                text: function(api) {
 		                    return self.template;
-		                }
+		                },
+		            	target: $('#event-create'),
 	        		},
 					events: {
-		                render: function(event, api) {
-	                	},	        			   					      
+		                render: function(event, api) {					    
+						    $( this ).on( "click", "#btnUnlinkTask", function( e ) {
+						    	console.debug(".ON");
+		        				params = {
+		        				        state: app.Models.Task.state[2].value,
+		        						user_id: null,
+		        						team_id: null,
+		        						date_end: null,
+		        						date_start: null,
+		        					};
+		
+		        				self.model.save(self.model.get('id'),params,null,null,'#planning');
+		        				$(qtip).remove();
+						    } );
+	                	},	
 					},
 	                position: {
 	                    at: 'top center',
@@ -49,67 +63,31 @@ app.Views.EventView = Backbone.View.extend({
 	                	when: 'click',
 	                	event: true,
 	                    ready: true,
-	                    modal: {
-	                        // 'true' = Make it modal (darken the rest of the page)...
-	                        on: true,                                
+	                    modal: {	                        
+	                        on: true, // 'true' = Make it modal (darken the rest of the page)...                               
 	                        blur: true // ... but don't close the tooltip when clicked
 	                    }
 	                },
-	                hide: 'mousedown',
+	                hide: {
+	                    fixed: true
+	                },
 	                style: {
 	                    classes: 'daytooltip ui-tooltip-light  ui-tooltip-shadow ui-tooltip-default width400',
-	                    tip: { width: 20, height: 8 }                                                 
+	                    tip: { width: 20, height: 8 } ,
+	                    //title: { 'font-size': 50 } ,
 	                },	
 
-				})					
+				});
 			});	
-	        
-			$('.btnUnlink').live('click',function(){
-				params = {
-				        state: app.Models.Task.state[2].value,
-						user_id: null,
-						team_id: null,
-						date_end: null,
-						date_start: null,
-					};
-
-				self.model.save(self.model.get('id'),params,null,null,'#planning');
-				
-				//$(self.event).qtip("destroy");
-				$(".event-create").remove();
-
-			});
 		
 			$(this.el).hide().fadeIn('slow');
 	        return this;
         }, 
         
-        open: function() {
-        	//this.$('#effective_hours').val(this.model.get('effective_hours'));
-            //this.$('#remaining_hours').val(this.model.get('remaining_hours'));                        
+        open: function() {                      
         }, 
         
         duplicate: function(params) {
-        	//TODO
-        	
-        },
-        
-        save: function(params) {
-
-            if (this.model.isNew()) {
-                this.collection.create(this.model, {success: this.close});
-            } else {
-                this.model.save(params,{success: this.close},false);
-            }
-            $(this.event).css('border-color', 'red');
-            //$("#myModal").modal('hide');
-        },
-        
-        
-        close: function() {
-            //this.el.dialog('close');
-        },
-        destroy: function() {
-            //this.model.destroy({success: this.close});
-        }        
+        	//TODO        	
+        },      
     });
