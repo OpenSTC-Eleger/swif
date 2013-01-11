@@ -48,6 +48,11 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
         return response;
     },
 
+    
+    /** Save Model*/
+	create: function(data,options) { 
+		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
+	},
 
 	//save method with all redondant code
 	save: function(id,data,closeModal, view, strRoute) { 
@@ -96,7 +101,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
     // Request State Initialization //
     state:  [        
     	{
-            value       : 'toscheduled',
+            value       : 'open',
             color       : 'warning',
             traduction  : '',
         },

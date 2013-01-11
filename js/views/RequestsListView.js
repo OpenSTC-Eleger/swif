@@ -222,6 +222,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 				state: app.Models.Intervention.state[0].value,
 		        date_deadline: this.model.getDeadline_date(),
 		        site1: this.model.getSite1()[0],
+		        service_id: this.model.getService()[0],
 		        ask_id: this.model.getId(),		
 		};
 		

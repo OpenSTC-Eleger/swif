@@ -21,10 +21,14 @@ app.Views.PlanningView = Backbone.View.extend({
         'click button.btnDeleteInter'  : 'deleteInter',
         'click button.btnDeleteTask'   : 'deleteTask',
         	
-        'click .btn.addTaskPlanning'    : 'displayFormAddTask',
-        'click button.saveTaskPlanning' : 'saveTask',
+        'click .btn.addTaskPlanning'    		: 'displayFormAddTask',
+        'click .btn.addInterventionPlanning'    : 'displayFormAddIntervention',
         
+        'click button.saveTaskPlanning' : 'saveTask',   
+        'click button.saveInterventionPlanning' : 'saveIntervention', 
         'click .btn.pull-right'    : 'scheduledInter',
+        
+        'change #interventionDetailService'		: 'fillDropdownService',
     },
 
 
@@ -125,23 +129,25 @@ app.Views.PlanningView = Backbone.View.extend({
             $('*[data-spy="affix"]').affix();            
             $('*[rel="tooltip"]').tooltip({placement: "left"});
 
-            $('#listAgents li a').click(function(){
-                $('#listAgents li.active').removeClass('active');
-                $(this).parent('li').addClass('active');
+            $('#listAgents li a').click(function(){            	
+        		$('#listAgents li.active').removeClass('active');
+        		$(this).parent('li').addClass('active'); 
             })
             
             $('#listTeams li a').click(function(){
-                $('#listTeams li.active').removeClass('active');
-                $(this).parent('li').addClass('active');
+        		$('#listTeams li.active').removeClass('active');
+        		$(this).parent('li').addClass('active');
             })
             
-//            if( self.agent ) {
+//            if( Backbone.history.fragment=="planning" ) { ) {
 //            	// Animated Scroll //                
-//		        var elementID = $('#listAgents li a[href="#agent/larry-billien"]').attr("href");  
+//            	var selector = "#listAgents li a[href=\"#agents/" + self.agent + "\"]";
+//		        //var elementID = $(selector); //.attr("href");  
 //		        
-//		        $('html, body').animate({  
-//		            scrollTop:$(elementID).offset().top -5
-//		        }, 'slow');
+//                $('#listTeams li.active').removeClass('active');
+//                $(selector).parent('li').addClass('active');
+//                //Backbone.history.loadUrl($(selector).attr("href"));
+//                
 //            }
             	
             
@@ -164,24 +170,14 @@ app.Views.PlanningView = Backbone.View.extend({
     		teams = app.collections.teams;    		
     		
 			teams.each(function(t){	
-				//var team_json = t.toJSON();	
-				//var allTasks = team_json.tasks;
-				//var collection = t.attributes.tasks;
 				new app.Views.EventsView(self,t,true).render();
 			});
 
     		officers = app.collections.officers;    		
     		
-			officers.each(function(o){	
-//				var officer_json = o.toJSON();
-//				var allTasks = officer_json.tasks;					
-//				if( officer_json.belongsToTeam!= null && officer_json.belongsToTeam.tasks!=null )
-//					allTasks = _.union(officer_json.tasks, officer_json.belongsToTeam.tasks.toJSON());	
-//				var collection = new app.Collections.Tasks(allTasks);
+			officers.each(function(o){
 				new app.Views.EventsView(self,o,false).render();
 			});
-
-	
     },
 
     /** Make the external event Draggable
@@ -291,20 +287,7 @@ app.Views.PlanningView = Backbone.View.extend({
 
     },
     
-    /** Display the form to add a new Task
-    */
-    displayFormAddTask: function(e){
-    	
-		app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categories})
-		app.views.selectListAssignementsView.clearAll();
-		app.views.selectListAssignementsView.addEmptyFirst();
-		app.views.selectListAssignementsView.addAll();
-        
-        // Retrieve the ID of the intervention //
-        this.pos = e.currentTarget.id;
-        $('#modalAddTask').modal();
-   },
-    
+	  
     
     /** Save the Task
     */
@@ -327,8 +310,88 @@ app.Views.PlanningView = Backbone.View.extend({
 	     
 	    app.models.task.save(0,params,$('#modalAddTask'), this, null);
    },
+    
+    /** Display the form to add a new Task
+    */
+    displayFormAddTask: function(e){
+    	
+		app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categories})
+		app.views.selectListAssignementsView.clearAll();
+		app.views.selectListAssignementsView.addEmptyFirst();
+		app.views.selectListAssignementsView.addAll();
+        
+        // Retrieve the ID of the intervention //
+        this.pos = e.currentTarget.id;
+        $('#modalAddTask').modal();
+   },
+    
+	//TODO : Abstraire le code ==> displayFormAddIntervention,renderService,fillDropdownService,saveIntervention 
+   	// déjà dans la view InterventionDetailsView 
+	
+	/** Display the form to add a new Intervention
+    */
+    displayFormAddIntervention: function(e){
+    	
+		app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#interventionDetailService"), collection: app.collections.claimersServices})
+		app.views.selectListServicesView.clearAll();
+		app.views.selectListServicesView.addEmptyFirst();
+		app.views.selectListServicesView.addAll();
+		
 
+		// Fill select Places  //
+		app.views.selectListPlacesView = new app.Views.DropdownSelectListView({el: $("#interventionPlace"), collection: app.collections.places})
+		app.views.selectListPlacesView.clearAll();
+		app.views.selectListPlacesView.addEmptyFirst();
+		app.views.selectListPlacesView.addAll();	
+        
+        // Retrieve the ID of the intervention //
+        this.pos = e.currentTarget.id;
+        $('#modalAddInter').modal();
+   },
+	
+	renderService: function ( service ) {
+		if( service!= null ) {
+			app.views.selectListServicesView.setSelectedItem( service );
+			places = app.collections.places.models;
+			var placesFiltered = _.filter(places, function(item){ 
+				return item.attributes.service[0] == service; 
+	        });
+			app.views.selectListPlacesView.collection = new app.Collections.Places(placesFiltered);
+			app.views.selectListPlacesView.clearAll();
+			app.views.selectListPlacesView.addEmptyFirst();
+			app.views.selectListPlacesView.addAll();
+			
+		}				
+	},
+	
+	fillDropdownService: function(e){
+		e.preventDefault();
+		$('#interventionPlace').val('');
+		this.renderService(e.target.selectedIndex)
+	},
+	
+	/** Save the intervention */
+    saveIntervention: function (e) {
+	     
+    	e.preventDefault();
 
-
+	     var self = this;
+	     
+	     input_service_id = null;
+	     if ( app.views.selectListServicesView )
+	    	 input_service_id = app.views.selectListServicesView.getSelected().toJSON().id;
+	     
+	     var params = {	
+		     name: this.$('#interventionName').val(),
+		     description: this.$('#interventionDescription').val(),
+		     //date_deadline: this.$('#interventionDateDeadline').val(),
+		     service_id: input_service_id,
+		     site1: this.$('#interventionPlace').val(),
+		     site_details: this.$('#interventionPlacePrecision').val(),
+	     };
+	     
+	    
+	    app.models.intervention.save(0,params,$('#modalAddInter'), this, "#planning");
+    },
 });
 

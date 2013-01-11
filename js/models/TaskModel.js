@@ -136,6 +136,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 						 				if( strRoute ) {
 											//route = Backbone.history.fragment;
 											Backbone.history.loadUrl(strRoute);
+						 					//app.Router.navigate("planning/"+Backbone.history.fragment,{trigger: true, replace: true})
 										}
 										else if (view)
 											view.render();

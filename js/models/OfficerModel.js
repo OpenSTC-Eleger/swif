@@ -20,21 +20,24 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 			relatedModel: 'app.Models.ClaimerService',
 			collectionType: 'app.Collections.ClaimersServices',
 			includeInJSON: 'id',	
-		}	
-		
+		},
 //		{
 //			type: Backbone.HasMany,
 //			key: 'team_ids',
 //			relatedModel: 'app.Models.Team',
 //			collectionType: 'app.Collections.Teams',
-//			includeInJSON: 'id',
-			//TODO : team.users_ids nécessaire ?? : team.user_ids
+//			includeInJSON: 'id',	
+//		},
+//		{
+//			type: Backbone.HasMany,
+//			key: 'works',
+//			relatedModel: 'app.Models.Work',
 //			reverseRelation: {
-//				type: Backbone.HasMany,
-//				key: 'user_ids'
-//				includeInJSON: ['id'],
-//			}		
-//		}	
+//				key: 'officer',
+//			}
+//		},
+		
+
 	],
 
 	/** Model Initialization

@@ -45,6 +45,18 @@ app.Views.EventsView = Backbone.View.extend({
 				this.filterTasks = officer_json.tasks;					
 				if( officer_json.belongsToTeam!= null && officer_json.belongsToTeam.tasks!=null )
 					this.filterTasks = _.union(officer_json.tasks, officer_json.belongsToTeam.tasks.toJSON());	
+				
+				//TODO : code below for multi-team association by agent
+
+//				this.filterTasks = object.attributes.tasks.toJSON();
+//				var that = this;
+//				if( officer_json.team_ids!= null ){
+//					_.each(object.attributes.team_ids.models, function(team){
+//						if( team!=null && team.attributes.tasks != null && 
+//								team.attributes.tasks.models.length>0 )
+//							that.filterTasks = _.union(that.filterTasks, team.attributes.tasks.toJSON());	
+//					})
+//				}
 
 			}
         },

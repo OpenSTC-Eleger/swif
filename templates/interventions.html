@@ -21,7 +21,7 @@
 
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
-			<a href="#" class="btn btn-primary"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	
+			<a href="#interventions/add" class="btn btn-primary"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	
 
 			<form class="form-search pull-right">
 				<div class="input-append">
@@ -37,8 +37,7 @@
 		<table class="table-interventions table table-bordered">
 			<thead>
 				<tr>
-					<th><%= _.capitalize(lang.label) %></th>
-					<th><%= _.capitalize(lang.responsible) %></th>					
+					<th><%= _.capitalize(lang.label) %></th>									
 					<th><%= _.capitalize(lang.plannedHours) %></th>
 					<th><%= _.capitalize(lang.spentHours) %></th>
 					<th><%= _.capitalize(lang.progressRate) %>
@@ -67,11 +66,11 @@
 							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= intervention.name %>
 						</a>
 						<p class="intervention-actions invisible">
-							<a href="#"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
+							<a href="#"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
 							<a href="#modalDeleteInter" class="modalDeleteInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</td>
-					<td><%=intervention.ask.manager_id[1]%></td>
+					
 					<td><%=intervention.planned_hours%>h</td>
 					<td><%=intervention.effective_hours%>h</td>
 					<td>
@@ -175,8 +174,9 @@
 	<% }
 	else { %>
 		<div class="tableToolbar">
-			<a href="#" class="btn btn-primary"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
+			<a href="#interventions/add" class="btn btn-primary"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
 		</div>	
+		</br>
 		<!-- No request in the Database -->
 		<div class="alert alert-info">
 			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequestPlanned %>.

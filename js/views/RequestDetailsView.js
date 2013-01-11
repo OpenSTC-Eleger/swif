@@ -295,9 +295,9 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 			app.views.selectListClaimersContactsView.clearAll();
 			app.views.selectListClaimersContactsView.addEmptyFirst();
 			app.views.selectListClaimersContactsView.addAll();
-			contact = claimer.attributes.address.toJSON()[0];
+			contact = claimer.attributes.address!=null?claimer.attributes.address.toJSON():null;
 			if( contact ) {
-				app.views.selectListClaimersContactsView.setSelectedItem( contact.id );
+				app.views.selectListClaimersContactsView.setSelectedItem( contact[0].id );
 			}
 			
 			this.renderContactDetails(contact);
@@ -316,7 +316,6 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 				var placesFiltered = _.filter(places, function(item){ 
 					return item.attributes.service[0] == service; 
 		        });
-				//TODO : pkoi selectListPlacesView = new ...Tasks
 				app.views.selectListPlacesView.collection = new app.Collections.Places(placesFiltered);
 				app.views.selectListPlacesView.clearAll();
 				app.views.selectListPlacesView.addEmptyFirst();

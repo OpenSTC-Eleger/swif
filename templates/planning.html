@@ -9,9 +9,14 @@
 		<div class="span4">
 
 			<!-- Table toolbar -->
-			<div style="margin-bottom: 35px; height: 120px; overflow-y: scroll;">
-				<a href="#modalAddInter" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	
-				<!--
+			<div style="margin-bottom: 35px; height: 120px;">
+				<button class="btn btn-primary no-outline addInterventionPlanning" rel="tooltip" 
+						data-original-title="<%= _.capitalize(lang.actions.addIntervention) %>" data-placement="right">
+							<i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %>
+				</button>
+			
+				<!--<a href="#modalAddInter" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	
+				
 				<ul id="listInters" class="unstyled inline nav nav-list">
 					<% _.each(interventions, function (inter, i) { %>
 						<li><a href="#"><i class="icon-pushpin"></i><%= inter.name %></a></li>
@@ -129,14 +134,14 @@
 			<div id="listAgentsTeams" class="tabbable tabs-left">
 				<ul class="nav nav-tabs" id="allTabs">
 					<li class="active"><a href="#" data-target="#tab-agents" data-toggle="tab"><%= _.capitalize(lang.agents) %> &nbsp;&nbsp;<span class="badge"><%= _.size(officers) %></span></a></li>
-					<li><a href="#" data-target="#tab-teams" data-toggle="tab"><%= _.capitalize(lang.teams) %>&nbsp;&nbsp;<span class="badge"><%= _.size(teams) %></span></a></li>
+					<li><a href="#" data-target="#tab-teams" data-toggle="tab"><%= _.capitalize(lang.teams) %>&nbsp;&nbsp;<sventionpan class="badge"><%= _.size(teams) %></span></a></li>
 					<li><a href="#" data-target="#tab-custom-teams" data-toggle="tab">Custom</a></li>
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="tab-agents">
-						<ul id="listAgents" class="unstyled inline nav nav-list">
+						<ul id="listAgents" class="unstyled inline nav nav-list" >
 							<%_.each(officers, function (officer, i) { %>
-								<li><a href="#<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>"><i class="icon-user"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
+								<li><a href="#agents/<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>"><i class="icon-user"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
 							<% }) %>
 						</ul>
 					</div>
@@ -158,7 +163,7 @@
 			<div style="overflow: hidden; max-height: 590px;">
 			
 					<%_.each(officers, function (officer, i) { %>
-					<section id="<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>" class="calendarContainer">
+					<section id="agents/<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>" class="calendarContainer">
 						<div id="officer_<%= officer.id %>" class="calendar thumbnail" 
 					 		data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>">
 						</div>
@@ -280,6 +285,92 @@
 	
 	<div class="modal-footer">
 	    <button type="submit" class="btn btn-primary saveTaskPlanning">Enregistrer</button>&nbsp;&nbsp;
+	    <a href="#" data-dismiss="modal">Annuler</a>
+	</div>
+</div>
+
+
+<!-- Form to add a new Intervention -->
+<div id="modalAddInter" class="modal hide fade">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3>Nouvelle intervention</h3>
+	</div>
+	
+	<div class="modal-body">
+	    <form id="formAddIntervention" action="#" class="form-horizontal">
+	    
+                <!-- intervention Name -->
+                <div class="control-group">
+                    <label for="interventionName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
+
+                    <div class="controls">
+                        <input type="text" id="interventionName" name="interventionName" value="" required="required" />
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+                
+                <!-- intervention Description -->
+                <div class="control-group">
+                    <label for="interventionDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
+
+                    <div class="controls">
+                        <textarea name="interventionDescription" id="interventionDescription" rows="5" required="required"></textarea>
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+
+                <!-- intervention DeadLine -->
+                <!-- <div class="control-group">
+                    <label class="control-label" for="interventionDateDeadline"><%= _.capitalize(lang.dateDeadline) %>:</label>
+                    <div class="controls">
+                        <input 
+                            type="text" class="datePicker" 
+                            id="interventionDateDeadline" 
+                            value="" 
+                            placeholder="dd/mm/yyyy"
+                            required="required"
+                            readonly="readonly">
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+                 -->
+                
+                <!-- intervention Contact Service -->
+                <div class="control-group">
+                    <label for="interventionDetailService" class="control-label"><%= lang.serviceConcerned %>:</label>
+
+                    <div class="controls">
+                        <select id="interventionDetailService"></select>
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+                
+                <!-- intervention Place -->
+                <div class="control-group">
+                    <label for="interventionPlace" class="control-label"><%= _.capitalize(lang.place) %>:</label>
+
+                    <div class="controls">  
+                        <select id="interventionPlace"><option value="" disabled="disabled" ></option></select>
+                        <span class="help-inline"></span>                           
+                    </div>
+                </div>
+                
+                <!-- intervention Place precision -->
+                <div class="control-group">
+                    <label for="interventionPlacePrecision" class="control-label"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
+
+                    <div class="controls">  
+                         <textarea name="interventionPlacePrecision" id="interventionPlacePrecision" rows="2"></textarea>
+                        <span class="help-inline"></span>                           
+                    </div>
+                </div>
+
+	    </form>
+	</div>
+	
+	<div class="modal-footer">
+	    <button type="submit" class="btn btn-primary saveInterventionPlanning">Enregistrer</button>&nbsp;&nbsp;
 	    <a href="#" data-dismiss="modal">Annuler</a>
 	</div>
 </div>

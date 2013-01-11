@@ -31,7 +31,16 @@ app.Models.Team = Backbone.RelationalModel.extend({
 						key: 'belongsToTeam',
 						includeInJSON: ['id','manager_id','tasks'],
 					}
-				}
+				},
+//				{
+//					type: Backbone.HasMany,
+//					key: 'workers',
+//					relatedModel: 'app.Models.Work',
+//					reverseRelation: {
+//						key: 'team',
+//					}
+//				},
+
 	
 	],
 
