@@ -33,7 +33,7 @@ app.Models.Place = Backbone.RelationalModel.extend({
     },
 
 	
-	/** Destroy place
+	/** Delete place
 	*/
 	delete: function (options) {	
 		app.deleteOE( 

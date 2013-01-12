@@ -48,10 +48,25 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
         this.fetchRelated('service_id');
     },
 
+
+
     /** Model Parser
     */
     parse: function(response) {
         return response;
     },
+
+
+	
+	/** Delete Claimer
+	*/
+	delete: function (options) {	
+		app.deleteOE( 
+			[[this.get("id")]],
+			this.model_name,
+			app.models.user.getSessionID(),
+			options
+		);
+	}
 
 });

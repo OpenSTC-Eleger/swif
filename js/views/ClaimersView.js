@@ -1,15 +1,15 @@
 /******************************************
-* Places List View
+* Claimers List View
 */
-app.Views.PlacesView = Backbone.View.extend({
+app.Views.ClaimersView = Backbone.View.extend({
 
 	el : '#rowContainer',
 
-	templateHTML: 'places',
+	templateHTML: 'claimers',
 
 	numberListByPage: 25,
 
-	selectedPlace : '',
+	selectedClaimer : '',
 
 
     // The DOM events //
@@ -17,10 +17,10 @@ app.Views.PlacesView = Backbone.View.extend({
     	'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
 
-		'click a.modalDeletePlace'  	: 'setInfoModal',
+		'click a.modalDeleteClaimer'  		: 'setInfoModal',
 
-		'submit #formAddPlace' 			: "addPlace", 
-		'click button.btnDeletePlace'	: 'deletePlace'
+		'submit #formAddClaimer' 			: "addClaimer", 
+		'click button.btnDeleteClaimer'		: 'deleteClaimer'
     },
 
 
@@ -38,7 +38,7 @@ app.Views.PlacesView = Backbone.View.extend({
 		var self = this;
 
 		// Change the page title //
-        app.router.setPageTitle(app.lang.viewsTitles.placesList);
+        app.router.setPageTitle(app.lang.viewsTitles.claimersList);
 
 
         // Change the active menu item //
@@ -48,13 +48,13 @@ app.Views.PlacesView = Backbone.View.extend({
         app.views.headerView.switchGridMode('fluid');
 
 
-		var places = app.collections.places.models;
-		var nbPlaces = _.size(places);
+		var claimers = app.collections.claimers.models;
+		var nbClaimers = _.size(claimers);
 
-		console.debug(places);
+		console.debug(claimers);
 
 
-		var len = places.length;
+		var len = claimers.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
@@ -63,9 +63,9 @@ app.Views.PlacesView = Backbone.View.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				places: app.collections.places.toJSON(),
+				claimers: app.collections.claimers.toJSON(),
 				lang: app.lang,
-				nbPlaces: nbPlaces,
+				nbClaimers: nbClaimers,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
 				pageCount: pageCount,
@@ -90,37 +90,37 @@ app.Views.PlacesView = Backbone.View.extend({
 
         var id = _(link.parents('tr').attr('id')).strRightBack('_');
 
-        this.selectedPlace = _.filter(app.collections.places.models, function(item){ return item.attributes.id == id });
-        var selectedPlaceJson = this.selectedPlace[0].toJSON();
+        this.selectedClaimer = _.filter(app.collections.claimers.models, function(item){ return item.attributes.id == id });
+        var selectedClaimerJson = this.selectedClaimer[0].toJSON();
 
-        $('#infoModalDeletePlace p').html(selectedPlaceJson.name);
-        $('#infoModalDeletePlace small').html(selectedPlaceJson.service[1]);
+        $('#infoModalDeleteClaimer p').html(selectedClaimerJson.name);
+        $('#infoModalDeleteClaimer small').html(selectedClaimerJson.type_id[1]);
     },
 
 
 
-    /** Add a new place
+    /** Add a new claimer
     */
-    addPlace: function(e){
+    addClaimer: function(e){
 		e.preventDefault();
-		alert('TODO: save the new place');
+		alert('TODO: save the new claimer');
 	},
 
 
 
-	/** Delete the selected place
+	/** Delete the selected claimer
 	*/
-	deletePlace: function(e){
+	deleteClaimer: function(e){
 		var self = this;
-		this.selectedPlace[0].delete({
+		this.selectedClaimer[0].delete({
 			success: function(e){
-				app.collections.places.remove(self.selectedPlace[0]);
-				$('#modalDeletePlace').modal('hide');
-				app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
+				app.collections.claimers.remove(self.selectedClaimer[0]);
+				$('#modalDeleteClaimer').modal('hide');
+				app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.claimerDeleteOk);
 				self.render();
 			},
 			error: function(e){
-				alert("Impossible de supprimer le site");
+				alert("Impossible de supprimer le demandeur");
 			}
 
 		});

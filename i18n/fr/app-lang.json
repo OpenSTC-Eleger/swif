@@ -84,6 +84,7 @@
 		"addService" 		: "nouveau service",
 		"addCategorie" 		: "nouvelle catégorie",
 		"addOfficer" 		: "nouvel employé",
+		"addClaimer" 		: "nouveau demandeur",
 		"enclosePlanning" 	: "cloturer la planification",
 		"openPlanning" 		: "Remettre en planification",
 		"save"				: "enregistrer",
@@ -113,7 +114,8 @@
 
 	"warningMessages" : {
 		"confirmDeleteAgent"	: "Êtes-vous sûr de vouloir supprimer cet agent ?",
-		"confirmDeletePlace" 	: "Etes-vous sûr de vouloir supprimer ce site ?"
+		"confirmDeletePlace" 	: "Etes-vous sûr de vouloir supprimer ce site ?",
+		"confirmDeleteClaimer" 	: "Etes-vous sûr de vouloir supprimer ce demandeur ?"
 	},
 
 	"infoMessages" : {
@@ -121,7 +123,8 @@
     	"successLogout"       	: "Vous êtes maintenant déconnecté",
     	"noRequest"      	  	: "Aucune intervention dans la base de données",
     	"noRequestPlanned"		: "Aucune intervention planifiées",
-    	"noSite"				: "Aucun site enregistré",
+    	"noPlace"				: "Aucun site enregistré",
+    	"noClaimer"				: "Aucun demandeur enregistré",
     	"noService"				: "Aucun service enregistré",
     	"noCategorie"			: "Aucune catégorie enregistrée",
     	"noofficer"				: "Aucun employé enregistré",
@@ -131,7 +134,8 @@
     	"placeDeleteOk"			: "Site correctement supprimé",
     	"serviceDeleteOk"		: "Service correctement supprimé",
     	"catDeleteOk"			: "Catégorie correctement supprimée",
-    	"officerDeleteOk"		: "Agent correctement supprimé"
+    	"officerDeleteOk"		: "Agent correctement supprimé",
+    	"claimerDeleteOk"		: "Demandeur correctement supprimé"
 	},
 
 	"viewsTitles" : {
@@ -151,6 +155,7 @@
     	"servicesList"			 : "Liste des services",
     	"categoriesList"		 : "Liste des catégories",
     	"officersList"		 	 : "Liste des agents",
-    	"teamsList"			 	 : "Liste des équipes"
+    	"teamsList"			 	 : "Liste des équipes",
+    	"claimersList"			 	 : "Liste des demandeurs"
 	}
 }
