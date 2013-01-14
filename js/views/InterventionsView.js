@@ -62,11 +62,27 @@ app.Views.InterventionsView = Backbone.View.extend({
         });
 
 
+        // Check the number of planned interventions //
+        var interventionsPlanned = _.filter(interventions, function(item){ 
+            return (item.attributes.state == app.Models.Intervention.state[1].value);
+        });
+        var nbInterventionsPlanned = _.size(interventionsPlanned);
+
+
+        // Check the number of pending interventions //
+        var interventionsPending = _.filter(interventions, function(item){ 
+            return (item.attributes.state == app.Models.Intervention.state[2].value);
+        });
+        var nbInterventionsPending = _.size(interventionsPending);
+
+
         // Retrieve the HTML template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
                 var template = _.template(templateData, {
                     lang: app.lang,
                     nbInterventions: nbInterventions,
+                    nbInterventionsPending: nbInterventionsPending,
+                    nbInterventionsPlanned: nbInterventionsPlanned,
                     interventionsState: app.Models.Intervention.state,
                     interventions: (new app.Collections.Interventions(interventionsValidated)).toJSON(),
                 });

@@ -38,8 +38,7 @@
 				
 				<!-- Categorie row -->
 				<tr class="row-item" id="cat_<%= cats[i].id %>">
-					<td>
-						<%= cats[i].name %>
+					<td><i class="icon-tag"></i> <%= cats[i].name %>
 						<p class="row-actions no-margin invisible">
 							<a href="#"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
 							<a href="#modalDeleteCat" class="modalDeleteCat" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
