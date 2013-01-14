@@ -510,7 +510,8 @@ app.Router = Backbone.Router.extend({
 	            app.collections.places = new app.Collections.Places();
 	        }
 	
-	        self.intervention = app.models.intervention;
+	        //self.intervention = app.models.intervention;
+	        self.intervention = app.collections.interventions.get(id);
 	
 	        app.collections.places.fetch({
 	            beforeSend: function(){

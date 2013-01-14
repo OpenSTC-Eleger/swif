@@ -66,8 +66,8 @@
 							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= intervention.name %>
 						</a>
 						<p class="intervention-actions invisible">
-							<a href="#"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
-							<a href="#modalDeleteInter" class="modalDeleteInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
+							<a href="#interventions/<%= intervention.id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
+							<!--  <a href="#modalDeleteInter" class="modalDeleteInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a> -->
 						</p>
 					</td>
 					
