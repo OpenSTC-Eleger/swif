@@ -16,7 +16,7 @@ app.Router = Backbone.Router.extend({
         'interventions/:id'    					: 'detailsIntervention',
         
         'planning'                         		: 'planning',
-        //'planning/agents/:id'					: 'planning',
+        'planning/agents/:id'					: 'planning',
 
         'demandes-dinterventions'               : 'requestsList',
         'demandes-dinterventions/page:page'     : 'requestsList',
@@ -845,13 +845,33 @@ app.Router = Backbone.Router.extend({
                 app.collections.teams = new app.Collections.Teams();
             }
 
+            // Check if the collections is instantiate //
+            if(app.collections.claimersServices == null ){
+                app.collections.claimersServices = new app.Collections.ClaimersServices();
+            }
+
+            if(app.collections.officers == null ){
+                app.collections.officers = new app.Collections.Officers();
+            }
+
+                
             app.collections.teams.fetch({
                 beforeSend: function(){
                     app.loader('display');
                 },
                 success: function(){
-                    app.views.teamsView = new app.Views.TeamsView({page: self.page});
-                    self.render(app.views.teamsView);
+                    
+                    app.collections.claimersServices.fetch({
+                        success: function(){    
+
+                            app.collections.officers.fetch({
+                                success: function(){
+                                    app.views.teamsView = new app.Views.TeamsView({page: self.page});
+                                    self.render(app.views.teamsView);
+                                }
+                            });
+                        }
+                    });
                 },
                 complete: function(){
                     app.loader('hide');

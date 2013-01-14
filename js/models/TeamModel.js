@@ -59,6 +59,14 @@ app.Models.Team = Backbone.RelationalModel.extend({
 
 
 
+	/** Save Team
+	*/
+	save: function(data,options) { 
+		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
+	},
+
+
+
 	/** Delete Team
 	*/
 	delete: function (options) {	

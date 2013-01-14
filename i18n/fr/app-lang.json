@@ -12,6 +12,7 @@
 	"firstname"				: "prénom",
 	"label"					: "libellé",
 	"responsible"			: "responsable",
+	"foreman"				: "chef d'équipe",
 	"description"			: "description",
 	"note"					: "note",
 	"status"				: "statut",
@@ -85,6 +86,7 @@
 		"addCategorie" 		: "nouvelle catégorie",
 		"addOfficer" 		: "nouvel employé",
 		"addClaimer" 		: "nouveau demandeur",
+		"addTeam" 			: "nouvelle équipe",
 		"enclosePlanning" 	: "cloturer la planification",
 		"openPlanning" 		: "Remettre en planification",
 		"save"				: "enregistrer",
@@ -115,7 +117,8 @@
 	"warningMessages" : {
 		"confirmDeleteAgent"	: "Êtes-vous sûr de vouloir supprimer cet agent ?",
 		"confirmDeletePlace" 	: "Etes-vous sûr de vouloir supprimer ce site ?",
-		"confirmDeleteClaimer" 	: "Etes-vous sûr de vouloir supprimer ce demandeur ?"
+		"confirmDeleteClaimer" 	: "Etes-vous sûr de vouloir supprimer ce demandeur ?",
+		"confirmDeleteTeam" 	: "Etes-vous sûr de vouloir supprimer cette équipe ?"
 	},
 
 	"infoMessages" : {
@@ -127,15 +130,17 @@
     	"noClaimer"				: "Aucun demandeur enregistré",
     	"noService"				: "Aucun service enregistré",
     	"noCategorie"			: "Aucune catégorie enregistrée",
-    	"noofficer"				: "Aucun employé enregistré",
+    	"noOfficer"				: "Aucun employé enregistré",
     	"noTaskForIntervention"	: "Aucune tâche pour cette intervention",
     	"noTask"      	  	  	: "Aucune tâche à pointer",
+    	"noTeam"				: "Aucune équipe enregistrée",
     	"sixCharMin"		  	: "Six caractères minimum",
     	"placeDeleteOk"			: "Site correctement supprimé",
     	"serviceDeleteOk"		: "Service correctement supprimé",
     	"catDeleteOk"			: "Catégorie correctement supprimée",
     	"officerDeleteOk"		: "Agent correctement supprimé",
-    	"claimerDeleteOk"		: "Demandeur correctement supprimé"
+    	"claimerDeleteOk"		: "Demandeur correctement supprimé",
+    	"teamDeleteOk"			: "Equipe correctement supprimée"
 	},
 
 	"viewsTitles" : {
@@ -156,6 +161,6 @@
     	"categoriesList"		 : "Liste des catégories",
     	"officersList"		 	 : "Liste des agents",
     	"teamsList"			 	 : "Liste des équipes",
-    	"claimersList"			 	 : "Liste des demandeurs"
+    	"claimersList"			 : "Liste des demandeurs"
 	}
 }

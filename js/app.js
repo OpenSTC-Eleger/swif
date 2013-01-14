@@ -61,6 +61,7 @@ var app = {
                 app.models.taskWork = new app.Models.TaskWork();
                 app.models.intervention = new app.Models.Intervention();
                 app.models.request = new app.Models.Request();
+                app.models.team = new app.Models.Team();
 
                 // Router initialization //
                 app.router = new app.Router();
