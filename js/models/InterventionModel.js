@@ -20,13 +20,13 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 				includeInJSON: ['id','name','state','tasks','service_id'],
 			},
 		},		
-		{
-			type: Backbone.HasOne,
-			key: 'service_id',
-			relatedModel: 'app.Models.ClaimerService',
-			collectionType: 'app.Collections.ClaimerServices',
-			includeInJSON: ['id']
-		}
+//		{
+//			type: Backbone.HasOne,
+//			key: 'service_id',
+//			relatedModel: 'app.Models.ClaimerService',
+//			collectionType: 'app.Collections.ClaimerServices',
+//			includeInJSON: 'id'
+//		}
 	],
 
 	/** Model Initialization

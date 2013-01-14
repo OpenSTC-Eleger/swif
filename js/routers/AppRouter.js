@@ -12,7 +12,7 @@ app.Router = Backbone.Router.extend({
         'logout'                                : 'logout',
         'about'                                 : 'about',
         'interventions'                         : 'interventions',
-        'interventions/add'           			: 'addIntervention',
+        'interventions/add'           			: 'detailsIntervention',
         'interventions/:id'    					: 'detailsIntervention',
         
         'planning'                         		: 'planning',
@@ -461,47 +461,6 @@ app.Router = Backbone.Router.extend({
         }
     },
     
-    /** Add Intervention */
-    addIntervention: function() {
-        
-        // Check if the user is connect //
-        if(this.checkConnect()){
-        	
-        	var self = this;
-           
-
-            if(app.collections.places == null ){
-                app.collections.places = new app.Collections.Places();
-            }
-
-            self.intervention = app.models.intervention;
-
-            app.collections.places.fetch({
-                beforeSend: function(){
-                    app.loader('display');
-                },
-                success: function(){                
-            		if(app.collections.claimersServices == null ){
-                		app.collections.claimersServices = new app.Collections.ClaimersServices();
-            		}
-                    app.collections.claimersServices.fetch({
-        	            success: function(){
-							app.views.interventionDetailsView = new app.Views.InterventionDetailsView( self.intervention, true);
-							self.render(app.views.interventionDetailsView);
-                		},
-                		complete: function(){
-                			app.loader('hide');
-                		}
-                    });
-				}
-			});
-        }
-        else{
-            this.navigate('login', {trigger: true, replace: true});
-        }
-    },
-    
-    
 	detailsIntervention: function(id) {
 	    // Check if the user is connect //
 	    if(this.checkConnect()){
@@ -512,8 +471,10 @@ app.Router = Backbone.Router.extend({
 	        if(app.collections.places == null ){
 	            app.collections.places = new app.Collections.Places();
 	        }
-	
-	        self.intervention = app.models.intervention;
+	        if (id)
+	        	self.intervention = app.collections.interventions.get(id);
+	        else
+	        	self.intervention = app.models.intervention;
 	
 	        app.collections.places.fetch({
 	            beforeSend: function(){
