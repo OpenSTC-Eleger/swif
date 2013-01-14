@@ -1,19 +1,19 @@
 <div class="page-header">
 	<h1>
-		<%= lang.viewsTitles.placesList %>
-		<sup><i class="badge"><%= nbPlaces %></i></sup>
+		<%= lang.viewsTitles.claimersList %>
+		<sup><i class="badge"><%= nbClaimers %></i></sup>
 	</h1>
 </div>
 
 
 <div class="container-fluid">
 
-	<!-- Check if there is Places in the Database -->
-	<% if(places.length != 0) { %>
+	<!-- Check if there is Claimers in the Database -->
+	<% if(nbClaimers > 0) { %>
 
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
-			<a href="#modalAddPlace" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addPlace) %></a>	
+			<a href="#modalAddClaimer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addClaimer) %></a>	
 
 			<form class="form-search pull-right">
 				<div class="input-append">
@@ -25,33 +25,33 @@
 		<!-- Table toolbar -->
 
 
-		<!-- Table Teams -->
+		<!-- Table Claimers -->
 		<table class="table table-bordered table-hover table-striped">
 			<thead>
 				<tr>
 					<th><%= _.capitalize(lang.name) %></th>
-					<th><%= _.capitalize(lang.service) %></th>					
 					<th><%= _.capitalize(lang.type) %></th>
-					<th><%= _.capitalize(lang.parentPlace) %></th>
-					<th class="hidden-phone"><%= _.capitalize(lang.area) %></th>
+					<th class="hidden-phone"><%= _.capitalize(lang.place) %></th>
+					<th><%= _.capitalize(lang.phone) %></th>
+					<th><%= _.capitalize(lang.email) %></th>
 				</tr>
 			</thead>
 			<tbody>
 			<% for (var i = startPos; i < endPos; i++) { %>
 				
-				<!-- Place row -->
-				<tr class="row-item" id="place_<%= places[i].id %>">
+				<!-- Claimer row -->
+				<tr class="row-item" id="claimer_<%= claimers[i].id %>">
 					<td>
-						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= places[i].name %>
+						<i class="icon-user">&nbsp;&nbsp;</i><%= claimers[i].name %>
 						<p class="row-actions invisible">
 							<a href="#"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
-							<a href="#modalDeletePlace" class="modalDeletePlace" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
+							<a href="#modalDeleteClaimer" class="modalDeleteClaimer" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</td>
-					<td><%= places[i].service[1] %></td>
-					<td><%= places[i].type[1] %></td>
-					<td><%= places[i].site_parent_id[1] %></td>
-					<td class="align-right hidden-phone"><%= _.numberFormat(places[i].surface, 0, ",", " ") %> m²</td>
+					<td><%= claimers[i].type_id[1]  %></td>
+					<td class="hidden-phone"><%= (claimers[i].technical_site_id != false ? claimers[i].technical_site_id : "") %></td>
+					<td><%= (claimers[i].phone != false ? claimers[i].phone : "") %></td>
+					<td><%= (claimers[i].email != false ? '<a href="mailto:'+claimers[i].email+'">'+claimers[i].email+'</a>' : "") %></td>
 				</tr>
 
 			<% }; %>
@@ -64,11 +64,11 @@
 			<ul>
 				<!-- First page button -->
 				<% if(page-2 >= 1){ %>
-					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#sites/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
+					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#demandeurs/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
 				<% } %>
 				
 				<!-- Previous page button -->
-				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#sites/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
+				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#demandeurs/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
 			
 				<!-- [...] page Button -->
 				<% 	if (page-2 > 1) { %>
@@ -77,7 +77,7 @@
 						
 					for (var i=(page-2); i < (page+3); i++) {
 						if(i >= 1 && i <= pageCount){ %>
-							<li <%= (i === page ? " class='active'" : "")%>><a href='#sites/page<%=i%>'><%= i %></a></li>
+							<li <%= (i === page ? " class='active'" : "")%>><a href='#demandeurs/page<%=i%>'><%= i %></a></li>
 						<% }
 
 					} %>
@@ -88,11 +88,11 @@
 				<% } %>
 				
 				<!-- Next page button -->
-				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#sites/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
+				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#demandeurs/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
 				
 				<!-- Last page button -->
 				<% if(page+2 <= pageCount){ %>
-					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#sites/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
+					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#demandeurs/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
 				<% } %>
 			</ul>
 		</div>
@@ -101,12 +101,12 @@
 	<% }
 	else { %>
 		<div class="tableToolbar">
-			<a href="#modalAddPlace" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addPlace) %></a>
+			<a href="#modalAddClaimer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addClaimer) %></a>
 		</div><br />
 
-		<!-- No place in the Database -->
+		<!-- No Claimer in the Database -->
 		<div class="alert alert-info">
-			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noPlace %>.
+			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noClaimer %>.
 		</div>
 
 	<% } %>
@@ -114,18 +114,18 @@
 </div>
 
 
-<!-- Modal Form to add a new Place -->
-<div id="modalAddPlace" class="modal hide fade">
+<!-- Modal Form to add a new Claimer -->
+<div id="modalAddClaimer" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h3><%= _.capitalize(lang.actions.addPlace) %></h3>
+		<h3><%= _.capitalize(lang.actions.addClaimer) %></h3>
 	</div>
 	
 	<div class="modal-body">
-		<form id="formAddPlace" action="#" class="form-horizontal">
+		<form id="formAddClaimer" action="#" class="form-horizontal">
 
 			<fieldset>
-				<legend><%= lang.aboutThePlace %></legend>
+				<legend><%= lang.aboutTheClaimer %></legend>
 			
 			<!-- Place name -->
 			<div class="control-group">
@@ -175,71 +175,35 @@
 
 			</fieldset>
 
-
-			<fieldset>
-				<legend><%= _.capitalize(lang.property) %></legend>
-
-			<!-- Place Width -->
-			<div class="control-group">
-				<label for="placeWidth" class="control-label"><%= _.capitalize(lang.width) %>:</label>
-
-				<div class="controls">
-					<input type="number" id="placeWidth" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
-			
-			<!-- Place Lenght -->
-			<div class="control-group">
-				<label for="placeLenght" class="control-label"><%= _.capitalize(lang.lenght) %>:</label>
-
-				<div class="controls">
-					<input type="number" id="placeLenght" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
-
-			<!-- Place Area -->
-			<div class="control-group">
-				<label for="placeArea" class="control-label"><%= _.capitalize(lang.area) %>:</label>
-
-				<div class="controls">
-					<input type="number" id="placeArea" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
-
-			</fieldset>
-
 		</form>
 	</div>
 	
 	<div class="modal-footer">
-		<button type="submit" form="formAddPlace" class="btn btn-primary saveTask"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+		<button type="submit" form="formAddClaimer" class="btn btn-primary saveTask"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
 		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>
 
 
-<!-- Modal Form Delete Place -->
-<div id="modalDeletePlace" class="modal hide fade">
+<!-- Modal Form Delete Claimer -->
+<div id="modalDeleteClaimer" class="modal hide fade">
 	<div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	    <h3>Suppression du site</h3>
+	    <h3>Suppression du demandeur</h3>
 	</div>
 	
 	<div class="modal-body">
 
-		<blockquote id="infoModalDeletePlace" class="spaceBottom">
+		<blockquote id="infoModalDeleteClaimer" class="spaceBottom">
 			<p></p>
 			<small></small>
 		</blockquote>
 
-		<p><%= lang.warningMessages.confirmDeletePlace %></p>
+		<p><%= lang.warningMessages.confirmDeleteClaimer %></p>
 	</div>
 	
 	<div class="modal-footer">
-	    <button type="button" class="btn btn-danger btnDeletePlace"><%= _.capitalize(lang.actions.delete) %></button>&nbsp;&nbsp;
+	    <button type="button" class="btn btn-danger btnDeleteClaimer"><%= _.capitalize(lang.actions.delete) %></button>&nbsp;&nbsp;
 	    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>

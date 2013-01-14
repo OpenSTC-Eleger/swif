@@ -41,7 +41,10 @@ app.Router = Backbone.Router.extend({
         'employes-municipaux/page:page'         : 'officers',
 
         'equipes'                               : 'teams',
-        'equipes/page:page'                     : 'teams'
+        'equipes/page:page'                     : 'teams',
+
+        'demandeurs'                            : 'claimers',
+        'demandeurs/page:page'                  : 'claimers'
     },
 
     
@@ -889,5 +892,41 @@ app.Router = Backbone.Router.extend({
             this.navigate('login', {trigger: true, replace: true});
         }
     },
+
+
+
+    /** Claimers management
+    */
+    claimers: function(page){      
+
+        // Check if the user is connect //
+        if(this.checkConnect()){
+            var self = this;
+
+
+            self.page = page ? parseInt(page, 10) : 1;
+
+            // Check if the collections is instantiate //
+            if(app.collections.claimers == null ){
+                app.collections.claimers = new app.Collections.Claimers();
+            }
+
+            app.collections.claimers.fetch({
+                beforeSend: function(){
+                    app.loader('display');
+                },
+                success: function(){
+                    app.views.claimersView = new app.Views.ClaimersView({page: self.page});
+                    self.render(app.views.claimersView);
+                },
+                complete: function(){
+                    app.loader('hide');
+                }
+            });
+        }
+        else{
+            this.navigate('login', {trigger: true, replace: true});
+        }
+    }
     
 });
