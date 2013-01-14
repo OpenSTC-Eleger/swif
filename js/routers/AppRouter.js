@@ -690,16 +690,26 @@ app.Router = Backbone.Router.extend({
 
            
             app.collections.places.fetch({
-                beforeSend: function(){
-                    app.loader('display');
-                },
-                success: function(){
-                    app.views.placesView = new app.Views.PlacesView({page: self.page});
-                    self.render(app.views.placesView);
-                },
-                complete: function(){
-                    app.loader('hide');
-                }
+            	success: function(){
+	                // Check if the collections is instantiate //
+	                if(app.collections.claimersServices == null ){
+	                    app.collections.claimersServices = new app.Collections.ClaimersServices();
+	                }
+	
+	                
+	                app.collections.claimersServices.fetch({
+		                beforeSend: function(){
+		                    app.loader('display');
+		                },
+		                success: function(){
+		                    app.views.placesView = new app.Views.PlacesView({page: self.page});
+		                    self.render(app.views.placesView);
+		                },
+		                complete: function(){
+		                    app.loader('hide');
+		                }
+		             });
+		         }
             });
         }
         else{

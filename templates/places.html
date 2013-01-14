@@ -13,7 +13,7 @@
 
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
-			<a href="#modalAddPlace" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addPlace) %></a>	
+			<a href="#modalSavePlace" class="btn btn-primary modalSavePlace" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addPlace) %></a>	
 
 			<form class="form-search pull-right">
 				<div class="input-append">
@@ -44,7 +44,7 @@
 					<td>
 						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= places[i].name %>
 						<p class="row-actions invisible">
-							<a href="#"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
+							<a href="#modalSavePlace" class="modalSavePlace"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
 							<a href="#modalDeletePlace" class="modalDeletePlace" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</td>
@@ -115,7 +115,7 @@
 
 
 <!-- Modal Form to add a new Place -->
-<div id="modalAddPlace" class="modal hide fade">
+<div id="modalSavePlace" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3><%= _.capitalize(lang.actions.addPlace) %></h3>

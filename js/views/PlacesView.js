@@ -17,9 +17,10 @@ app.Views.PlacesView = Backbone.View.extend({
     	'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
 
-		'click a.modalDeletePlace'  	: 'setInfoModal',
+		'click a.modalDeletePlace'  	: 'modalDeletePlace',		
+		'click a.modalSavePlace'  		: 'modalSavePlace',
 
-		'submit #formAddPlace' 			: "addPlace", 
+		'submit #formAddPlace' 			: "savePlace", 
 		'click button.btnDeletePlace'	: 'deletePlace'
     },
 
@@ -79,20 +80,18 @@ app.Views.PlacesView = Backbone.View.extend({
 		return this;
     },
 
-
+    setModel: function(e) {
+    	var link = $(e.target);
+    	var id =  _(link.parents('tr').attr('id')).strRightBack('_');
+        this.selectedPlace = _.filter(app.collections.places.models, function(item){ return item.attributes.id == id });
+        this.model = this.selectedPlace[0];
+        this.selectedPlaceJson = this.model.toJSON();
+    },
 
     /** Display information in the Modal view
     */
-    setInfoModal: function(e){
-
-        // Retrieve the ID of the intervention //
-        var link = $(e.target);
-
-        var id = _(link.parents('tr').attr('id')).strRightBack('_');
-
-        this.selectedPlace = _.filter(app.collections.places.models, function(item){ return item.attributes.id == id });
-        var selectedPlaceJson = this.selectedPlace[0].toJSON();
-
+    modalDeletePlace: function(e){    	
+        this.setModel(e);
         $('#infoModalDeletePlace p').html(selectedPlaceJson.name);
         $('#infoModalDeletePlace small').html(selectedPlaceJson.service[1]);
     },
@@ -101,9 +100,63 @@ app.Views.PlacesView = Backbone.View.extend({
 
     /** Add a new place
     */
-    addPlace: function(e){
+    modalSavePlace: function(e){
 		e.preventDefault();
 		alert('TODO: save the new place');
+		
+		this.setModel(e);
+		
+
+		
+		
+		
+		$('#modalSavePlace .placeName').html(this.selectedPlaceJson.name);
+		$('#placeType').html(this.selectedPlaceJson.type[1]);		
+		$('#placeService').html(this.selectedPlaceJson.service[1]);
+		$('#placeParentPlace').html(this.selectedPlaceJson.site_parent_id[1]?"":this.selectedPlaceJson.site_parent_id[1]);		
+		$('#placeWidth').html(this.selectedPlaceJson.width);
+		$('#placeLenght').html(this.selectedPlaceJson.lenght);
+		$('#placeArea').html(this.selectedPlaceJson.surface);
+		
+		$('#modalSavePlace').modal();
+	},
+	
+	
+	/** Save  place
+	*/
+	savePlace: function(e) {		     
+//    	e.preventDefault();
+//
+//	     var self = this;
+//	     
+//	     input_service_id = null;
+//	     if ( app.views.selectListServicesView )
+//	    	 input_service_id = app.views.selectListServicesView.getSelected().toJSON().id;
+//	     
+//	     var params = {	
+//		     name: this.$('#placeName').val(),
+//		     type: this.$('#placeType').val(),
+//		     date_deadline: this.$('#interventionDateDeadline').val(),
+//		     service_id: input_service_id,
+//		     site1: this.$('#interventionPlace').val(),
+//		     site_details: this.$('#interventionPlacePrecision').val(),
+//	     };
+//
+//	    this.model.save(params,{
+//			success: function (data) {
+//				console.log(data);
+//				if(data.error){
+//					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+//				}
+//				else{
+//					app.router.navigate('#interventions' , true);
+//					console.log('Success SAVE INTERVENTION');
+//				}
+//			},
+//			error: function () {
+//				console.log('ERROR - Unable to save the Intervention - InterventionDetailsView.js');
+//			},	     
+//		});
 	},
 
 

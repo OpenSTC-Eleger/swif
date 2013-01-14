@@ -31,6 +31,16 @@ app.Models.Place = Backbone.RelationalModel.extend({
     parse: function(response) {    	
         return response;
     },
+    
+    /** Save Model
+	*/
+	save: function(data,options) { 
+		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), {
+			success: function(){
+				app.collections.Places.add(this);
+			}
+		});
+	},
 
 	
 	/** Delete place
