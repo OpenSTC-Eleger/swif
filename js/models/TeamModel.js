@@ -25,7 +25,7 @@ app.Models.Team = Backbone.RelationalModel.extend({
 			key: 'user_ids',
 			relatedModel: 'app.Models.Officer',
 			collectionType: 'app.Collections.Officers',
-			includeInJSON: 'id',
+			includeInJSON: ['id', 'firstname', 'name'],
 			reverseRelation: {
 				type: Backbone.HasOne,
 				key: 'belongsToTeam',
