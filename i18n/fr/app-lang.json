@@ -87,6 +87,7 @@
 		"addOfficer" 		: "nouvel employé",
 		"addClaimer" 		: "nouveau demandeur",
 		"addTeam" 			: "nouvelle équipe",
+		"updateTeam" 		: "mettre à jour l'équipe",
 		"enclosePlanning" 	: "cloturer la planification",
 		"openPlanning" 		: "Remettre en planification",
 		"save"				: "enregistrer",

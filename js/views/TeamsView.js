@@ -12,48 +12,54 @@ app.Views.TeamsView = Backbone.View.extend({
 	selectedTeam : '',
 
 
-    // The DOM events //
-    events: {
+	// The DOM events //
+	events: {
 		'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
 
-		'click a.modalDeleteTeam'  		: 'setInfoModal',
+		'click a.modalDeleteTeam'  		: 'setInfoModalDelete',
+		'click a.modalUpdateTeam'  		: 'setInfoModalUpdate',
+		'click a.modalAddTeam'  		: 'setInfoModalAdd',
 
 		'submit #formAddTeam' 			: 'addTeam',
 		'click button.btnDeleteTeam'	: 'deleteTeam',
-		'click button.btnUpdateTeam'	: 'updateTeam'
+		'click button.btnUpdateTeam'	: 'updateTeam',
+
+		'click a.teamName' 				: 'displayTeamMembers'
 	},
 
 
 
 	/** View Initialization
 	*/
-    initialize: function () {
+	initialize: function () {
 
-    },
+	},
 
 
 	/** Display the view
 	*/
-    render: function () {
+	render: function () {
 		var self = this;
 
 		// Change the page title //
-        app.router.setPageTitle(app.lang.viewsTitles.teamsList);
+		app.router.setPageTitle(app.lang.viewsTitles.teamsList);
 
-
-        // Change the active menu item //
-        app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
+		// Change the active menu item //
+		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
 
 		// Change the Grid Mode of the view //
 		app.views.headerView.switchGridMode('fluid');
 
-
 		var teams = app.collections.teams.models;
 		var nbTeams = _.size(teams);
 
-		console.debug(teams);
 
+		var officersWithoutTeam = _.filter(app.collections.officers.models, function(item){
+			return item.attributes.belongsToTeam != null; 
+		});
+
+		console.debug(officersWithoutTeam);
 
 		var len = teams.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
@@ -66,6 +72,7 @@ app.Views.TeamsView = Backbone.View.extend({
 			var template = _.template(templateData, {
 				teams: app.collections.teams.toJSON(),
 				nbTeams: nbTeams,
+				officersWithoutTeam: officersWithoutTeam,
 				lang: app.lang,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
@@ -73,6 +80,11 @@ app.Views.TeamsView = Backbone.View.extend({
 			});
 
 			$(self.el).html(template);
+
+			$("#teamMembers, #officers").sortable({
+      			connectWith: "ul.sortableAgentsList",
+      	 		});
+
 
 			// Fill select Service  //
 			app.views.selectListclaimersServicesView = new app.Views.DropdownSelectListView({el: $("#teamService"), collection: app.collections.claimersServices})
@@ -85,13 +97,13 @@ app.Views.TeamsView = Backbone.View.extend({
 		$(this.el).hide().fadeIn('slow');
 
 		return this;
-    },
+	},
 
 
 
-	/** Display information in the Modal view
+	/** Display information in the delete Modal view
 	*/
-	setInfoModal: function(e){
+	setInfoModalDelete: function(e){
 
 		// Retrieve the ID of the intervention //
 		var link = $(e.target);
@@ -103,6 +115,37 @@ app.Views.TeamsView = Backbone.View.extend({
 
 		$('#infoModalDeleteTeam p').html(selectedTeamJson.name);
 		$('#infoModalDeleteTeam small').html(_.capitalize(app.lang.foreman)+": "+selectedTeamJson.manager_id[1]);
+	},
+
+
+
+	/** Display information in the update Modal view
+	*/
+	setInfoModalUpdate: function(e){
+
+		// Retrieve the ID of the intervention //
+		var link = $(e.target);
+		var id = _(link.parents('tr').attr('id')).strRightBack('_');
+
+		this.selectedTeam = _.filter(app.collections.teams.models, function(item){ return item.attributes.id == id });
+		var selectedTeamJson = this.selectedTeam[0].toJSON();
+
+		// Update the modal title //
+		$('#modalAddTeam div.modal-header h3').html(_.capitalize(app.lang.actions.updateTeam));
+
+		$('#teamName').val(selectedTeamJson.name);
+		app.views.selectListclaimersServicesView.setSelectedItem( selectedTeamJson.service_ids[0] );
+	},
+
+
+
+	/** Display information in the add Modal view
+	*/
+	setInfoModalAdd: function(e){
+		// Update the modal title //
+		$('#modalAddTeam div.modal-header h3').html(_.capitalize(app.lang.actions.addTeam));
+		$('#teamName').val('');
+		app.views.selectListclaimersServicesView.setSelectedItem(0);
 	},
 
 
@@ -168,6 +211,29 @@ app.Views.TeamsView = Backbone.View.extend({
 		});
 	},
 
+
+
+	/** Display team members
+	*/
+	displayTeamMembers: function(e){
+		e.preventDefault();
+
+		// Retrieve the ID of the intervention //
+		var link = $(e.target);
+		var id = _(link.parents('tr').attr('id')).strRightBack('_');
+
+		this.selectedTeam = _.filter(app.collections.teams.models, function(item){ return item.attributes.id == id });
+		var selectedTeamJson = this.selectedTeam[0].toJSON();
+
+		// Clear the list of the user //
+		$('#teamMembers li').remove();
+
+		_.each(selectedTeamJson.user_ids, function (member, i){
+			$('#teamMembers').append('<li><a href="#"><i class="icon-user"></i> '+ member.firstname +' '+ member.name +'</a></li>');
+		});
+
+		
+	},
 
 
 	preventDefault: function(event){

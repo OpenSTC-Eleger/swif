@@ -8,13 +8,13 @@
 
 <div class="container-fluid">
 
-	<div class="span5">
+	<div class="span6">
 		<!-- Check if there is Teams in the Database -->
 		<% if(nbTeams > 0) { %>
 
 			<!-- Table toolbar -->
 			<div class="tableToolbar">
-				<a href="#modalAddTeam" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addTeam) %></a>	
+				<a href="#modalAddTeam" class="btn btn-primary modalAddTeam" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addTeam) %></a>
 
 				<form class="form-search pull-right">
 					<div class="input-append">
@@ -31,7 +31,7 @@
 				<thead>
 					<tr>
 						<th><%= _.capitalize(lang.name) %></th>
-						<th><%= _.capitalize(lang.foreman) %></th>					
+						<th><%= _.capitalize(lang.foreman) %></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -40,9 +40,9 @@
 					<!-- Teams row -->
 					<tr class="row-item" id="team_<%= teams[i].id %>">
 						<td>
-							<i class="icon-group">&nbsp;&nbsp;</i><%= teams[i].name %>
+							<i class="icon-group">&nbsp;&nbsp;</i><a href="#<%= _.slugify(teams[i].name) %>" class="teamName"><%= teams[i].name %></a>
 							<p class="row-actions invisible">
-								<a href="#modalAddTeam" class="modalAddTeam"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
+								<a href="#modalAddTeam" class="modalUpdateTeam" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
 								<a href="#modalDeleteTeam" class="modalDeleteTeam" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 							</p>
 						</td>
@@ -96,7 +96,7 @@
 		<% }
 		else { %>
 			<div class="tableToolbar">
-				<a href="#modalAddTeam" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addTeam) %></a>
+				<a href="#modalAddTeam" class="btn btn-primary modalAddTeam" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addTeam) %></a>
 			</div><br />
 
 			<!-- No team in the Database -->
@@ -109,20 +109,32 @@
 	</div>
 
 
-	<div class="span4" style="background-color: red;">
-		
-		liste des users dans l'équipes 
+	<div class="span3">
+		<div class="widget-title">
+			<h4>Agents de l'équipe <span class="badge pull-right"></span></h4>
+		</div>
 
+		<ul id="teamMembers" class="sortableAgentsList unstyled nav nav-list">
+
+		</ul>
 	</div>
 
-	<div class="span3" style="background-color: purple;">
-		liste des autres users
+	<div class="span3">
+		<div class="widget-title">
+			<h4>Agents sans équipe <span class="badge pull-right"><%= _.size(officersWithoutTeam) %></span></h4>
+		</div>
+
+		<ul id="officers" class="sortableAgentsList unstyled nav nav-list">
+			<% _.each(officersWithoutTeam, function (officer, i){ %>
+				<li><a href="#"><i class="icon-user"></i>	<%= officer.attributes.firstname +' '+ officer.attributes.name%> </a></li>
+			<% }); %>
+		</ul>
 	</div>
 
 </div>
 
 
-<!-- Modal Form to add a new Team -->
+<!-- Modal Form to add or update a new Team -->
 <div id="modalAddTeam" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>

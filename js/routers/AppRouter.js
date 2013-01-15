@@ -98,7 +98,7 @@ app.Router = Backbone.Router.extend({
         console.log('### checkConnect Function ###');
         
         // Check if a user exist in localStorage //
-        if (app.collections.users.length >= 1){
+        if (app.collections.users.length == 1){
             //console.log('User in the localStorage');
             
             app.models.user = app.collections.users.at(0);
