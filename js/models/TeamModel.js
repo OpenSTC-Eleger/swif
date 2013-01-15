@@ -9,29 +9,29 @@ app.Models.Team = Backbone.RelationalModel.extend({
 	url: "/#teams/:id",	
 	
 	relations: [{
-					type: Backbone.HasMany,
-					key: 'tasks',
-					relatedModel: 'app.Models.Task',
-					collectionType: 'app.Collections.Tasks',
-					includeInJSON: 'id',
-					reverseRelation: {
-						type: Backbone.HasOne,
-						key: 'teamWorkingOn',
-						includeInJSON: ['id','manager_id'],
-					}
-				},
-				{
-					type: Backbone.HasMany,
-					key: 'user_ids',
-					relatedModel: 'app.Models.Officer',
-					collectionType: 'app.Collections.Officers',
-					includeInJSON: 'id',
-					reverseRelation: {
-						type: Backbone.HasOne,
-						key: 'belongsToTeam',
-						includeInJSON: ['id','manager_id','tasks'],
-					}
-				},
+			type: Backbone.HasMany,
+			key: 'tasks',
+			relatedModel: 'app.Models.Task',
+			collectionType: 'app.Collections.Tasks',
+			includeInJSON: 'id',
+			reverseRelation: {
+				type: Backbone.HasOne,
+				key: 'teamWorkingOn',
+				includeInJSON: ['id','manager_id'],
+			}
+		},
+		{
+			type: Backbone.HasMany,
+			key: 'user_ids',
+			relatedModel: 'app.Models.Officer',
+			collectionType: 'app.Collections.Officers',
+			includeInJSON: 'id',
+			reverseRelation: {
+				type: Backbone.HasOne,
+				key: 'belongsToTeam',
+				includeInJSON: ['id','manager_id','tasks'],
+			}
+		},
 //				{
 //					type: Backbone.HasMany,
 //					key: 'workers',
