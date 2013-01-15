@@ -30,6 +30,8 @@ app.Router = Backbone.Router.extend({
 
         'sites'                                 : 'places',
         'sites/page:page'                       : 'places',
+        'sites/add'           					: 'detailsPlace',
+        'sites/:id'    							: 'detailsPlace',
 
         'services'                              : 'services',
         'services/page:page'                    : 'services',
@@ -690,6 +692,9 @@ app.Router = Backbone.Router.extend({
 
            
             app.collections.places.fetch({
+                beforeSend: function(){
+                	app.loader('display');
+            	},
             	success: function(){
 	                // Check if the collections is instantiate //
 	                if(app.collections.claimersServices == null ){
@@ -698,16 +703,21 @@ app.Router = Backbone.Router.extend({
 	
 	                
 	                app.collections.claimersServices.fetch({
-		                beforeSend: function(){
-		                    app.loader('display');
-		                },
-		                success: function(){
-		                    app.views.placesView = new app.Views.PlacesView({page: self.page});
-		                    self.render(app.views.placesView);
-		                },
-		                complete: function(){
-		                    app.loader('hide');
-		                }
+	                	success: function(){
+		                	if(app.collections.placetypes == null ){
+		                        app.collections.placetypes = new app.Collections.PlaceTypes();
+		                    }
+		                	app.collections.placetypes.fetch({	
+				                success: function(){
+				                    app.views.placesView = new app.Views.PlacesView({page: self.page});
+				                    self.render(app.views.placesView);
+				                },
+				                complete: function(){
+				                    app.loader('hide');
+				                }
+					        });
+					     }
+		                
 		             });
 		         }
             });
@@ -717,6 +727,59 @@ app.Router = Backbone.Router.extend({
         }
     },
 
+    /** Places management
+    	    */
+    detailsPlace: function(id){      
+
+        // Check if the user is connect //
+        if(this.checkConnect()){
+            var self = this;
+
+            // Check if the collections is instantiate //
+            if(app.collections.places == null ){
+                app.collections.places = new app.Collections.Places();
+            }
+
+            if (id)
+	        	self.place = app.collections.places.get(id);
+	        else
+	        	self.place = app.models.place;
+           
+            app.collections.places.fetch({
+                beforeSend: function(){
+                	app.loader('display');
+            	},
+            	success: function(){
+	                // Check if the collections is instantiate //
+	                if(app.collections.claimersServices == null ){
+	                    app.collections.claimersServices = new app.Collections.ClaimersServices();
+	                }
+	
+	                
+	                app.collections.claimersServices.fetch({
+	                	success: function(){
+		                	if(app.collections.placetypes == null ){
+		                        app.collections.placetypes = new app.Collections.PlaceTypes();
+		                    }
+		                	app.collections.placetypes.fetch({	
+				                success: function(){
+				                    app.views.placeDetailsView = new app.Views.PlaceDetailsView(self.place);
+				                    self.render(app.views.placeDetailsView);
+				                },
+				                complete: function(){
+				                    app.loader('hide');
+				                }
+					        });
+					     }
+		                
+		             });
+		         }
+            });
+        }
+        else{
+            this.navigate('login', {trigger: true, replace: true});
+        }
+    },
 
 
     /** Services management
