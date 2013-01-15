@@ -35,6 +35,8 @@ app.Router = Backbone.Router.extend({
 
         'services'                              : 'services',
         'services/page:page'                    : 'services',
+        'services/add'           				: 'detailsService',
+        'services/:id'    						: 'detailsService',
 
         'categories'                            : 'categories',
         'categories/page:page'                  : 'categories',
@@ -99,7 +101,7 @@ app.Router = Backbone.Router.extend({
         if (app.collections.users.length >= 1){
             //console.log('User in the localStorage');
             
-            //app.models.user = app.collections.users.at(0);
+            app.models.user = app.collections.users.at(0);
 
             // Check if a user has a sessionID //
             if(app.models.user.hasSessionID()){
@@ -810,6 +812,51 @@ app.Router = Backbone.Router.extend({
                 complete: function(){
                     app.loader('hide');
                 }
+            });
+        }
+        else{
+            this.navigate('login', {trigger: true, replace: true});
+        }
+    },
+    
+    /** Services management
+    	    */
+    detailsService: function(id){      
+
+        // Check if the user is connect //
+        if(this.checkConnect()){
+            var self = this;
+
+
+
+            // Check if the collections is instantiate //
+            if(app.collections.claimersServices == null ){
+                app.collections.claimersServices = new app.Collections.ClaimersServices();
+            }
+            
+            if (id)
+	        	self.service = app.collections.claimersServices.get(id);
+	        else
+	        	self.service = app.models.service;
+           
+            app.collections.claimersServices.fetch({
+                beforeSend: function(){
+                    app.loader('display');
+                },                
+                success: function(){
+	                if(app.collections.officers == null ){
+	                    app.collections.officers = new app.Collections.Officers();
+	                }
+	                app.collections.officers.fetch({
+		                success: function(){
+		                    app.views.serviceDetailsView = new app.Views.ServiceDetailsView(self.service);
+		                    self.render(app.views.serviceDetailsView);
+		                },
+		                complete: function(){
+		                    app.loader('hide');
+		                }
+		            });
+	            }
             });
         }
         else{

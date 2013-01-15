@@ -1,0 +1,81 @@
+
+<% if ( service.id != null && service.id !=0 ) { %>
+    <h1><%= lang.viewsTitles.serviceDetail %> n°<%= service.id %></h1><br />
+<% } else { %>
+    <h1><%= lang.viewsTitles.newService %></h1><br />
+<% } %>
+
+
+<form id="formService" action="#services" class="form-horizontal container-fluid">
+    
+    <div class="row-fluid">        
+        
+			<fieldset>
+				<legend><%= lang.aboutTheService %></legend>
+			
+			<!-- Service name -->
+			<div class="control-group">
+				<label for="serviceName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
+
+				<div class="controls">
+					<input type="text" id="serviceName"/>
+					<span class="help-inline"></span>
+				</div>
+			</div>
+
+			<!-- Service code -->
+			<div class="control-group">
+				<label for="serviceCode" class="control-label"><%= _.capitalize(lang.code) %>:</label>
+
+				<div class="controls">
+					<input type="text" id="serviceCode"/>
+					<span class="help-inline"></span>
+				</div>
+			</div>
+
+			</fieldset>
+
+
+			<fieldset>
+				<legend><%= _.capitalize(lang.organization) %></legend>
+
+				<!-- Service Manager -->
+				<div class="control-group">
+					<label for="serviceManager" class="control-label"><%= _.capitalize(lang.manager) %>:</label>
+
+					<div class="controls">
+						<select id="serviceManager"></select>
+						<span class="help-inline"></span>
+					</div>
+				</div>
+
+				<!-- Service Parent Service -->
+				<div class="control-group">
+					<label for="serviceParentService" class="control-label"><%= _.capitalize(lang.parentService) %>:</label>
+
+					<div class="controls">
+						<select id="serviceParentService"></select>
+						<span class="help-inline"></span>
+					</div>
+				</div>
+
+				<!-- Service is Technical Service -->
+				<div class="control-group">
+					<div class="controls">
+						<label for="serviceIsTechnical" class="checkbox"><%= _.capitalize(lang.technicalService) %>
+							<input type="checkbox" id="serviceIsTechnical" />
+						</label>
+					</div>
+				</div>
+
+			</fieldset>
+    
+    </div>
+
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary save"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+        <a href="#services" class="text-info"><%= lang.actions.cancel %></a>
+    </div>
+    
+</form>

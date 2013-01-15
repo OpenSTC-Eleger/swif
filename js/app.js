@@ -62,6 +62,7 @@ var app = {
                 app.models.intervention = new app.Models.Intervention();
                 app.models.request = new app.Models.Request();
                 app.models.place = new app.Models.Place();
+                app.models.service = new app.Models.ClaimerService();
 
                 // Router initialization //
                 app.router = new app.Router();
