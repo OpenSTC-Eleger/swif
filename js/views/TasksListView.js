@@ -69,11 +69,11 @@ app.Views.TasksListView = Backbone.View.extend({
         				||	intervention.state==app.Models.Intervention.state[1].value
 						|| intervention.state==app.Models.Intervention.state[2].value 
 											
-					var serviceJSON = intervention.service_id!=null?intervention.service_id.toJSON():null;
+					var service = intervention.service_id;//!=null?intervention.service_id.toJSON():null;
 					var userServices = app.models.user.toJSON().service_ids;
-					if ( serviceJSON && userServices )
+					if ( service && userServices )
 						belongsToServiceManager = app.models.user.isManager() &&         										
-        												$.inArray(serviceJSON[0], userServices)!=-1;
+        												$.inArray(service[0], userServices)!=-1;
 						
 				}
         			
