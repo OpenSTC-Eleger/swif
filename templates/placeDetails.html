@@ -6,45 +6,41 @@
 <% } %>
 
 
-<form id="formPlace" action="#sites" class="form-horizontal container-fluid">
+<form id="formPlace" action="#" class="form-horizontal container-fluid">
     
     <div class="row-fluid">        
         
-			<fieldset>
-				<legend><%= lang.aboutThePlace %></legend>
+		<fieldset>
+			<legend><%= lang.aboutThePlace %></legend>
 			
 			<!-- Place name -->
 			<div class="control-group">
 				<label for="placeName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
 
 				<div class="controls">
-					<input type="text" id="placeName" required="required"/>
-					<span class="help-inline"></span>
+					<input type="text" id="placeName" required>
 				</div>
+				
 			</div>
 
 			<!-- Place Type -->
 			<div class="control-group">
-				<label for="placeType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
+				<label for="placeType" class="control-label" ><%= _.capitalize(lang.type) %>:</label>
 
 				<div class="controls">
-					<select id="placeType"></select>
+					<select id="placeType" required="required"></select>
 					<span class="help-inline"></span>
 				</div>
 			</div>
 
-			</fieldset>
-
-
-			<fieldset>
 				<legend><%= _.capitalize(lang.organization) %></legend>
 
 				<!-- Place Service -->
 				<div class="control-group">
-					<label for="placeService" class="control-label"><%= _.capitalize(lang.service) %>:</label>
+					<label for="placeService" class="control-label" ><%= _.capitalize(lang.service) %>:</label>
 
 					<div class="controls">
-						<select id="placeService"></select>
+						<select id="placeService" required="required"></select>
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -59,10 +55,7 @@
 					</div>
 				</div>
 
-			</fieldset>
-
-
-			<fieldset>
+	
 				<legend><%= _.capitalize(lang.property) %></legend>
 
 			<!-- Place Width -->
@@ -95,7 +88,7 @@
 				</div>
 			</div>
 
-			</fieldset>
+		</fieldset>
     
     </div>
 

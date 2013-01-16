@@ -70,13 +70,13 @@ app.Views.ServiceDetailsView = Backbone.View.extend({
 							app.views.selectListOfficersView.setSelectedItem( this.selectedServiceJson.manager_id[0] );	
 						if( this.selectedServiceJson.service_id )
 							app.views.selectListServicesView.setSelectedItem( this.selectedServiceJson.service_id[0] );	
-						
-						$('#serviceIsTechnical').val(this.selectedServiceJson.technical);		
+						if( this.selectedServiceJson.technical )
+							$('#serviceIsTechnical').attr("checked","checked");									
 					}
 					else {
 						$('#serviceName').val('');
 						$('#serviceCode').val('');
-						$('#serviceIsTechnical').val(false);
+						$('#serviceIsTechnical').attr("checked","");	
 					}
 		
 			});
@@ -96,7 +96,8 @@ app.Views.ServiceDetailsView = Backbone.View.extend({
 		/** Save the service
 		 */
 	    saveService: function (e) {
-		     
+			 e.preventDefault();
+			 
 		     var self = this;
 		     
 		     var input_manager_id = this.getIdInDopDown(app.views.selectListOfficersView);
@@ -107,7 +108,7 @@ app.Views.ServiceDetailsView = Backbone.View.extend({
 			     code: this.$('#serviceCode').val(),
 			     manager_id: input_manager_id,
 			     service_id: input_service_id,
-			     technical: this.$('#serviceIsTechnical').val(),
+			     technical: this.$('#serviceIsTechnical').is(':checked'),
 		     };		     
 		   
 		    this.model.save(params,{

@@ -115,11 +115,16 @@ app.Views.ServicesView = Backbone.View.extend({
     deleteService: function(e){
 		var self = this;
 		this.selectedService[0].destroy({
-			success: function(e){
-				app.collections.claimersServices.remove(self.selectedService[0]);
-				$('#modalDeleteService').modal('hide');
-				app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.serviceDeleteOk);
-				self.render();
+			success: function(data){
+				if(data.error){
+					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				}
+				else{
+					app.collections.claimersServices.remove(self.selectedService[0]);
+					$('#modalDeleteService').modal('hide');
+					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.serviceDeleteOk);
+					self.render();
+				}
 			},
 			error: function(e){
 				alert("Impossible de supprimer le service");

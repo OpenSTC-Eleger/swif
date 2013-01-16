@@ -108,17 +108,22 @@ app.Views.PlacesView = Backbone.View.extend({
 		//e.preventDefault();
 		var self = this;
 		this.model.delete({
-			success: function(e){
-				app.collections.places.remove(self.model);
-				$('#modalDeletePlace').modal('hide');
-				app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
-				self.render();
+			success: function(data){
+				if(data.error){
+					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				}
+				else{
+					app.collections.places.remove(self.model);
+					$('#modalDeletePlace').modal('hide');
+					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
+					self.render();
+				}
 			},
 			error: function(e){
 				alert("Impossible de supprimer le site");
 			}
 
-		});
+		});    
 	},
 
 

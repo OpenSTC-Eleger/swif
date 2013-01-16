@@ -92,6 +92,12 @@ app.Views.InterventionDetailsView = Backbone.View.extend({
 			return this;
 	    },
 	    
+	    getIdInDopDown: function(view) {
+	    	if ( view && view.getSelected() )
+	    		return view.getSelected().toJSON().id;
+	    	else 
+	    		return 0
+	    },
 
 
 		/** Save the intervention
@@ -102,9 +108,7 @@ app.Views.InterventionDetailsView = Backbone.View.extend({
 
 		     var self = this;
 		     
-		     input_service_id = null;
-		     if ( app.views.selectListServicesView )
-		    	 input_service_id = app.views.selectListServicesView.getSelected().toJSON().id;
+		     var input_service_id = this.getIdInDopDown(app.views.selectListServicesView);
 		     
 		     var params = {	
 			     name: this.$('#interventionName').val(),

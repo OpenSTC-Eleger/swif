@@ -105,7 +105,8 @@ app.Views.PlaceDetailsView = Backbone.View.extend({
 		/** Save the place
 		 */
 	    savePlace: function (e) {
-		     
+			 e.preventDefault();
+			 
 		     var self = this;
 		     
 		     var input_type_site_id = this.getIdInDopDown(app.views.selectListPlaceTypesView);
@@ -122,7 +123,7 @@ app.Views.PlaceDetailsView = Backbone.View.extend({
 			     surface: this.$('#placeArea').val(),
 		     };		     
 		   
-		    this.model.save(params,{
+		    this.model.create(params,{
 				success: function(data){
 					console.log(data);
 					if(data.error){
