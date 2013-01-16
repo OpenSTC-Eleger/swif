@@ -11,7 +11,7 @@ var app = {
     userBDD         : 'pontlabbe2',
     uniq_id_counter : 0,
     
-    urlOE                       : 'http://octm-dev.siclic:8069',
+    urlOE                       : 'http://octm-dev.siclic.fr:8069',
     urlOE_authentication        : '/web/session/authenticate',
     urlOE_versionServer         : '/web/webclient/version_info',
     urlOE_sessionDestroy        : '/web/session/destroy',
@@ -63,6 +63,7 @@ var app = {
                 app.models.request = new app.Models.Request();
                 app.models.place = new app.Models.Place();
                 app.models.service = new app.Models.ClaimerService();
+                app.models.category = new app.Models.Category();
 
                 // Router initialization //
                 app.router = new app.Router();
