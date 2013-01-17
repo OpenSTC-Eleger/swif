@@ -28,8 +28,20 @@
 				    			<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuParent.id %>"><%= menuParent.name %> <b class="caret"></b></a>
 			    				
 			    				<ul aria-labelledby="drop-menu-app-<%= menuParent.id %>" role="menu" class="dropdown-menu">
-									<% _.each(menuParent.children, function (menuChildren, i) { %>
-										<li role="menuitem"><a href="#<%= _.slugify(menuChildren.name) %>"><%= menuChildren.name %></a></li>
+									<% _.each(menuParent.children, function (menuChildren, i) { 
+										if( menuChildren.children.length>0 ) {%>
+											<li class="dropdown-submenu" id="<%= _.slugify(menuChildren.name) %>" role="menuitem">
+				    							<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuChildren.id %>"><%= menuChildren.name %> <b class="caret"></b></a>
+												<ul aria-labelledby="drop-menu-app-<%= menuChildren.id %>" role="menu" class="dropdown-menu">
+													<% _.each(menuChildren.children, function (menuChildrenLevel2, i) { 
+														console.debug(menuChildrenLevel2.name)%>
+														<li role="menuitem"><a href="#<%= _.slugify(menuChildrenLevel2.name) %>"><%= menuChildrenLevel2.name %></a></li>
+													<%}); %>
+												</ul>
+											</li>
+										<%} else {%>										
+											<li role="menuitem"><a href="#<%= _.slugify(menuChildren.name) %>"><%= menuChildren.name %></a></li>
+										<%} %>
 									<% }); %>
 								</ul>
 

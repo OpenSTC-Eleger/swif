@@ -14,11 +14,29 @@ app.Models.ClaimerType = Backbone.RelationalModel.extend({
 		relatedModel: 'app.Models.Claimer',
 		collectionType: 'app.Collections.Claimers',
 		includeInJSON: true,
-//		reverseRelation: {
-//			key: 'type_id',
-//			includeInJSON: true,
-//		}
 	}],
+	
+	defaults:{
+		id:0,
+		name: null,
+		code: null,
+	},
+      
+	getName : function() {
+        return this.get('name');
+    },
+    setName : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ name : value });
+    },  
+    
+    getCode : function() {
+        return this.get('code');
+    },
+    setCode : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ code : value });
+    }, 
 
 	/** Model Initialization
 	*/
@@ -31,5 +49,29 @@ app.Models.ClaimerType = Backbone.RelationalModel.extend({
     parse: function(response) {    	
         return response;
     },
+    
+	update: function(params) {
+		this.setName( params.name );
+		this.setCode( params.code );
+	},
+	
+	/** Save Model
+	*/
+	save: function(data,options) { 
+		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(),options);
+	},
+
+
+
+	/** Delete category
+	*/
+	delete: function (options) {	
+		app.deleteOE( 
+			[[this.get("id")]],
+			this.model_name,
+			app.models.user.getSessionID(),
+			options
+		);
+	}
 
 });

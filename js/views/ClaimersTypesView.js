@@ -1,11 +1,12 @@
 /******************************************
-* Categories List View
+* Claimers List View
 */
-app.Views.CategoriesView = Backbone.View.extend({
+app.Views.ClaimersTypesView = Backbone.View.extend({
+
 	
 	el : '#rowContainer',
 	
-	templateHTML: 'categories',
+	templateHTML: 'claimersTypes',
 	
 	numberListByPage: 25,
 
@@ -14,14 +15,14 @@ app.Views.CategoriesView = Backbone.View.extend({
 
     // The DOM events //
     events: {
-		'click li.active'				: 'preventDefault',
-		'click li.disabled'				: 'preventDefault',
+		'click li.active'									: 'preventDefault',
+		'click li.disabled'									: 'preventDefault',
 
-		'click a.modalDeleteCat'  		: 'modalDeleteCat',
-		'click a.modalSaveCat'  		: 'modalSaveCat',
+		'click a.modalDeleteClaimersTypes'  				: 'modalDeleteClaimersTypes',
+		'click a.modalSaveClaimersTypes'  					: 'modalSaveClaimersTypes',
 
-		'submit #formSaveCat' 			: "saveCat", 
-		'click button.btnDeleteCat' 	: 'deleteCat'
+		'submit #formSaveClaimersTypes' 					: "saveClaimersTypes", 
+		'click button.btnDeleteClaimersTypes' 				: 'deleteClaimersTypes'
     },
 
 	
@@ -39,7 +40,7 @@ app.Views.CategoriesView = Backbone.View.extend({
 		var self = this;
 
 		// Change the page title //
-        app.router.setPageTitle(app.lang.viewsTitles.categoriesList);
+        app.router.setPageTitle(app.lang.viewsTitles.claimersTypesList);
 
 
         // Change the active menu item //
@@ -49,13 +50,13 @@ app.Views.CategoriesView = Backbone.View.extend({
         app.views.headerView.switchGridMode('fluid');
 
 
-		var categories = app.collections.categories.models;
+		var claimersTypes = app.collections.claimersTypes.models;
 		
-	    var categoriesSortedArray = _.sortBy(categories, function(item){ 
+	    var claimersTypesSortedArray = _.sortBy(claimersTypes, function(item){ 
 	          return item.attributes.name; 
         });
 
-		var len = categoriesSortedArray.length;
+		var len = claimersTypesSortedArray.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
@@ -64,9 +65,9 @@ app.Views.CategoriesView = Backbone.View.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				cats: categoriesSortedArray,
+				claimersTypes: claimersTypesSortedArray,
 				lang: app.lang,
-				nbCats: len,
+				nbClaimersTypes: len,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
 				pageCount: pageCount,
@@ -80,51 +81,33 @@ app.Views.CategoriesView = Backbone.View.extend({
         return this;
     },
     
-	getIdInDropDown: function(view) {
-    	if ( view && view.getSelected() )
-    		var item = view.getSelected().toJSON();
-    		if( item )
-    			return [ item.id, item.name ];
-    	else 
-    		return 0
-    },
-    
     setModel: function(e) {
     	e.preventDefault();
     	var link = $(e.target);
     	var id =  _(link.parents('tr').attr('id')).strRightBack('_');
-        this.selectedCat = _.filter(app.collections.categories.models, function(item){ return item.attributes.id == id });
-        if( this.selectedCat.length>0 ) {
-        	this.model = this.selectedCat[0];
-        	this.selectedCatJson = this.model.toJSON();        
+        this.selected = _.filter(app.collections.claimersTypes.models, function(item){ return item.attributes.id == id });
+        if( this.selected.length>0 ) {
+        	this.model = this.selected[0];
+        	this.selectedJson = this.model.toJSON();        
         }
         else {
-        	app.models.category.clear();
-        	this.model = app.models.category;
-        	this.selectedCatJson = null;
+        	app.models.claimerType.clear();
+        	this.model = app.models.claimerType;
+        	this.selectedJson = null;        	
         }        
     },
 
 
     /** Add a new categorie
     */
-    modalSaveCat: function(e){       
+    modalSaveClaimersTypes: function(e){       
         this.setModel(e);	
         
-    	app.views.selectListCategoriesView = new app.Views.DropdownSelectListView({el: $("#catParent"), collection: app.collections.categories})
-		app.views.selectListCategoriesView.clearAll();
-		app.views.selectListCategoriesView.addEmptyFirst();
-		app.views.selectListCategoriesView.addAll();
-        
-        $('#catName').val('');
-		$('#catCode').val('');
-		$('#catUnit').val('');
-        if( this.selectedCatJson ) {
-			$('#catName').val(this.selectedCatJson.name);
-			$('#catCode').val(this.selectedCatJson.code);
-			$('#catUnit').val(this.selectedCatJson.unit);
-			if( this.selectedCatJson.parent_id )
-				app.views.selectListCategoriesView.setSelectedItem( this.selectedCatJson.parent_id[0] );	
+        $('#claimersTypesName').val('');
+        $('#claimersTypesCode').val('');
+        if( this.selectedJson ) {
+			$('#claimersTypesName').val(this.selectedJson.name);
+			$('#claimersTypesCode').val(this.selectedJson.name);
 			
         }       
 
@@ -133,33 +116,28 @@ app.Views.CategoriesView = Backbone.View.extend({
 
     /** Display information in the Modal view
     */
-    modalDeleteCat: function(e){
+    modalDeleteClaimersTypes: function(e){
         
         // Retrieve the ID of the categorie //
     	this.setModel(e);
 
-        $('#infoModalDeleteCat p').html(this.selectedCatJson.name);
-        $('#infoModalDeleteCat small').html(this.selectedCatJson.code);
+        $('#infoModalDeleteClaimersTypes p').html(this.selectedJson.name);
+        $('#infoModalDeleteClaimersTypes small').html(this.selectedJson.code);
     },
     
     	/** Save  place
 	*/
-	saveCat: function(e) {		     
+	saveClaimersTypes: function(e) {		     
     	e.preventDefault();
 
 	     var self = this;
 	     
-	     var parent_id = this.getIdInDropDown(app.views.selectListCategoriesView);
-	     
 	     var params = {	
-		     name: this.$('#catName').val(),
-		     code: this.$('#catCode').val(),
-		     unit: this.$('#catUnit').val(),
-		     parent_id: parent_id,
+		     name: this.$('#claimersTypesName').val(),
+		     code: this.$('#claimersTypesCode').val(),
 	     };
 	     
 	    this.model.update(params);
-	    params.parent_id =  parent_id[0]
 	    this.model.save(params,{
 			success: function(data){
 				console.log(data);
@@ -167,12 +145,12 @@ app.Views.CategoriesView = Backbone.View.extend({
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
-					if( !self.model.id && data.result && data.result.result>0 ) {
+					if( !self.model.id  && data.result && data.result.result>0 ) {
 						self.model.id = data.result.result;
 						self.model.attributes.id = data.result.result;					
 					}
-					app.collections.categories.add(self.model);
-					$('#modalSaveCat').modal('hide');
+					app.collections.claimersTypes.add(self.model);
+					$('#modalSaveClaimersTypes').modal('hide');
 					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
 					self.render();
 				}				
@@ -186,7 +164,7 @@ app.Views.CategoriesView = Backbone.View.extend({
 	
     /** Delete the selected categorie
     */
-    deleteCat: function(e){
+    deleteClaimersTypes: function(e){
     	e.preventDefault();
     	
        	var self = this;
@@ -197,8 +175,8 @@ app.Views.CategoriesView = Backbone.View.extend({
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
-					app.collections.categories.remove(self.model);
-					$('#modalDeleteCat').modal('hide');
+					app.collections.claimersTypes.remove(self.model);
+					$('#modalDeleteClaimersTypes').modal('hide');
 					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.catDeleteOk);
 					self.render();
 				}

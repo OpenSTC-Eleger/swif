@@ -64,6 +64,7 @@ var app = {
                 app.models.place = new app.Models.Place();
                 app.models.service = new app.Models.ClaimerService();
                 app.models.category = new app.Models.Category();
+                app.models.claimerType = new app.Models.ClaimerType();
 
                 // Router initialization //
                 app.router = new app.Router();

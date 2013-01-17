@@ -48,7 +48,10 @@ app.Router = Backbone.Router.extend({
         'equipes/page:page'                     : 'teams',
 
         'demandeurs'                            : 'claimers',
-        'demandeurs/page:page'                  : 'claimers'
+        'demandeurs/page:page'                  : 'claimers',
+        
+        'types'                            		: 'types',
+        'types/page:page'                  		: 'types',
     },
 
     
@@ -1027,6 +1030,42 @@ app.Router = Backbone.Router.extend({
         else{
             this.navigate('login', {trigger: true, replace: true});
         }
-    }
+    },
+    
+    
+    /** Types management
+    	    */
+    types: function(page){      
+
+        // Check if the user is connect //
+        if(this.checkConnect()){
+            var self = this;
+
+
+            self.page = page ? parseInt(page, 10) : 1;
+
+            // Check if the collections is instantiate //
+            if(app.collections.claimersTypes == null ){
+                app.collections.claimersTypes = new app.Collections.ClaimersTypes();
+            }
+
+           
+            app.collections.claimersTypes.fetch({
+                beforeSend: function(){
+                    app.loader('display');
+                },
+                success: function(){
+                    app.views.claimersTypesView = new app.Views.ClaimersTypesView({page: self.page});
+                    self.render(app.views.claimersTypesView);
+                },
+                complete: function(){
+                    app.loader('hide');
+                }
+            });
+        }
+        else{
+            this.navigate('login', {trigger: true, replace: true});
+        }
+    },
     
 });

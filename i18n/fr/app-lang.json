@@ -86,6 +86,7 @@
 		"addPlace" 			: "nouveau site",
 		"addService" 		: "nouveau service",
 		"addCategorie" 		: "nouvelle catégorie",
+		"addClaimersTypes" 	: "nouveau type de demandeur",
 		"addOfficer" 		: "nouvel employé",
 		"addClaimer" 		: "nouveau demandeur",
 		"addTeam" 			: "nouvelle équipe",
@@ -133,6 +134,7 @@
     	"noClaimer"				: "Aucun demandeur enregistré",
     	"noService"				: "Aucun service enregistré",
     	"noCategorie"			: "Aucune catégorie enregistrée",
+    	"noClaimersType"		: "Aucun type de demandeur enregistré",
     	"noOfficer"				: "Aucun employé enregistré",
     	"noTaskForIntervention"	: "Aucune tâche pour cette intervention",
     	"noTask"      	  	  	: "Aucune tâche à pointer",
@@ -167,6 +169,7 @@
     	"placesList"			 : "Liste des sites",
     	"servicesList"			 : "Liste des services",
     	"categoriesList"		 : "Liste des catégories",
+    	"claimersTypesList"		 : "Liste des Types de demandeurs",
     	"officersList"		 	 : "Liste des agents",
     	"teamsList"			 	 : "Liste des équipes",
     	"claimersList"			 : "Liste des demandeurs"
