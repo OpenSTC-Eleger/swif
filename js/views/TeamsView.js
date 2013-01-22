@@ -17,13 +17,11 @@ app.Views.TeamsView = Backbone.View.extend({
 		'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
 
-		'click a.modalDeleteTeam'  		: 'setInfoModalDelete',
-		'click a.modalUpdateTeam'  		: 'setInfoModalUpdate',
-		'click a.modalAddTeam'  		: 'setInfoModalAdd',
+		'click a.modalDeleteTeam'  		: 'modalDeleteTeam',
+		'click a.modalSaveTeam'  		: 'modalSaveTeam',
 
-		'submit #formAddTeam' 			: 'addTeam',
+		'submit #formAddTeam' 			: 'saveTeam',
 		'click button.btnDeleteTeam'	: 'deleteTeam',
-		'click button.btnUpdateTeam'	: 'updateTeam',
 
 		'click a.teamName' 				: 'displayTeamMembers'
 	},
@@ -54,9 +52,10 @@ app.Views.TeamsView = Backbone.View.extend({
 		var teams = app.collections.teams.models;
 		var nbTeams = _.size(teams);
 
+		console.debug(app.collections.officers);
 
 		var officersWithoutTeam = _.filter(app.collections.officers.models, function(item){
-			return item.attributes.belongsToTeam != null; 
+			return item.attributes.belongsToTeam == null; 
 		});
 
 		console.debug(officersWithoutTeam);
@@ -73,6 +72,7 @@ app.Views.TeamsView = Backbone.View.extend({
 				teams: app.collections.teams.toJSON(),
 				nbTeams: nbTeams,
 				officersWithoutTeam: officersWithoutTeam,
+				services: app.collections.claimersServices.toJSON(),
 				lang: app.lang,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
@@ -81,16 +81,46 @@ app.Views.TeamsView = Backbone.View.extend({
 
 			$(self.el).html(template);
 
-			$("#teamMembers, #officers").sortable({
-      			connectWith: "ul.sortableAgentsList",
-      	 		});
+			$('#teamMembers, #officersList').sortable({
+				connectWith: 'ul.sortableOfficersList',
+				dropOnEmpty: true,
+				forcePlaceholderSize: false,
+				forceHelperSize: true,
+				placeholder: 'sortablePlaceHold',
+				containment: '.officersDroppableArea',
+				cursor: 'move',
+				opacity: '.8',
+				revert: 300,
+				stop: function(event, ui){
+					console.log(this.id);
+					if(this.id == 'teamMembers'){
+						self.saveTeamsServices();
+					}
+				}
+			});
 
 
-			// Fill select Service  //
-			app.views.selectListclaimersServicesView = new app.Views.DropdownSelectListView({el: $("#teamService"), collection: app.collections.claimersServices})
-			app.views.selectListclaimersServicesView.clearAll();
-			app.views.selectListclaimersServicesView.addEmptyFirst();
-			app.views.selectListclaimersServicesView.addAll();
+			$('#teamServices, #servicesList').sortable({
+				connectWith: 'ul.sortableServicesList',
+				dropOnEmpty: true,
+				forcePlaceholderSize: true,
+				forceHelperSize: true,
+				placeholder: 'sortablePlaceHold',
+				containment: '.servicesDroppableArea',
+				cursor: 'move',
+				opacity: '.8',
+				revert: 300,
+				stop: function(event, ui){
+					
+				}
+			});
+
+
+			// Fill select Foreman  //
+			app.views.selectListOfficersView = new app.Views.DropdownSelectListView({el: $("#teamForeman"), collection: app.collections.officers})
+			app.views.selectListOfficersView.clearAll();
+			app.views.selectListOfficersView.addEmptyFirst();
+			app.views.selectListOfficersView.addAll();
 
 		});
 
@@ -101,9 +131,160 @@ app.Views.TeamsView = Backbone.View.extend({
 
 
 
+	saveTeamsServices: function(){
+		//alert($("#teamMembers").sortable('toArray'));
+	},
+
+
+	getIdInDropDown: function(view) {
+    	if ( view && view.getSelected() )
+    		var item = view.getSelected().toJSON();
+    		if( item )
+    			return [ item.id, item.name ];
+    	else 
+    		return 0
+    },
+
+
+
+	setModel: function(e) {
+		e.preventDefault();
+		var link = $(e.target);
+		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
+
+		this.selected = _.filter(app.collections.teams.models, function(item){ return item.attributes.id == id });
+
+        if( this.selected.length > 0 ) {
+			this.model = this.selected[0];
+			this.selectedJson = this.model.toJSON();
+        }
+        else {
+			app.models.team.clear();
+			this.model = app.models.team;
+			this.selectedJson = null;
+        }
+
+		console.debug(this.model);
+	},
+
+
+
+    /** Modal create/update team
+    */
+    modalSaveTeam: function(e){
+		this.setModel(e);	
+
+		$('#teamName').val('');
+		app.views.selectListOfficersView.setSelectedItem(0);
+
+		if( this.selectedJson ) {
+			$('#teamName').val(this.selectedJson.name);
+			app.views.selectListOfficersView.setSelectedItem( this.selectedJson.manager_id[0] );
+		}
+
+	},
+
+
+
+	/** Display information in the Modal view delete team
+	*/
+	modalDeleteTeam: function(e){
+        
+        // Retrieve the ID of the categorie //
+    	this.setModel(e);
+
+        $('#infoModalDeleteTeam p').html(this.selectedJson.name);
+        $('#infoModalDeleteTeam small').html(_.capitalize(app.lang.foreman) +": "+ this.selectedJson.service_ids[1]);
+    },
+
+
+
+	/** Save Claimer Type
+	*/
+	saveTeam: function(e) {		     
+    	e.preventDefault();
+
+		var self = this;
+
+		var manager_id = this.getIdInDropDown(app.views.selectListOfficersView);
+	     
+		var params = {
+			name: this.$('#teamName').val(),
+		    manager_id: manager_id
+		};
+	     
+	    this.model.update(params);
+	    params.manager_id =  manager_id[0];
+
+	    this.model.save(params,{
+			success: function(data){
+				console.log(data);
+				if(data.error){
+					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				}
+				else{
+					if( !self.model.id  && data.result && data.result.result>0 ) {
+						self.model.id = data.result.result;
+						self.model.attributes.id = data.result.result;					
+					}
+
+					app.collections.teams.add(self.model);
+					console.debug("self.model");
+					console.debug(self.model);
+
+					$('#modalSaveTeam').modal('hide');
+					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.teamSaveOk);
+					self.render();
+				}				
+			},
+			error: function(e){
+				alert("Impossible de créer ou mettre à jour l'équipe");
+			}
+		});
+	},
+
+
+
+	/** Delete the selected team
+	*/
+	deleteTeam: function(e){
+		e.preventDefault();
+    	
+		var self = this;
+		this.model.delete({
+			success: function(data){
+				console.log(data);
+				if(data.error){
+					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				}
+				else{
+					app.collections.teams.remove(self.model);
+
+					$('#modalDeleteTeam').modal('hide');
+					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.teamDeleteOk);
+					self.render();
+				}
+			},
+			error: function(e){
+				alert("Impossible de supprimer l'équipe");
+			}
+
+		});
+	},
+
+
+
+
+
+
+
+
+
+
+
 	/** Display information in the delete Modal view
 	*/
-	setInfoModalDelete: function(e){
+	/*setInfoModalDelete: function(e){
 
 		// Retrieve the ID of the intervention //
 		var link = $(e.target);
@@ -115,13 +296,13 @@ app.Views.TeamsView = Backbone.View.extend({
 
 		$('#infoModalDeleteTeam p').html(selectedTeamJson.name);
 		$('#infoModalDeleteTeam small').html(_.capitalize(app.lang.foreman)+": "+selectedTeamJson.manager_id[1]);
-	},
+	},*/
 
 
 
 	/** Display information in the update Modal view
 	*/
-	setInfoModalUpdate: function(e){
+	/*setInfoModalUpdate: function(e){
 
 		// Retrieve the ID of the intervention //
 		var link = $(e.target);
@@ -135,13 +316,13 @@ app.Views.TeamsView = Backbone.View.extend({
 
 		$('#teamName').val(selectedTeamJson.name);
 		app.views.selectListclaimersServicesView.setSelectedItem( selectedTeamJson.service_ids[0] );
-	},
+	},*/
 
 
 
 	/** Display information in the add Modal view
 	*/
-	setInfoModalAdd: function(e){
+	/*setInfoModalAdd: function(e){
 		// Update the modal title //
 		$('#modalAddTeam div.modal-header h3').html(_.capitalize(app.lang.actions.addTeam));
 		$('#teamName').val('');
@@ -152,7 +333,7 @@ app.Views.TeamsView = Backbone.View.extend({
 
 	/** Add a new team
 	*/
-	addTeam: function(e){
+	/*addTeam: function(e){
 		e.preventDefault();
 		var self = this;
 		
@@ -175,7 +356,7 @@ app.Views.TeamsView = Backbone.View.extend({
 
 	/** Delete the selected team
 	*/
-	deleteTeam: function(e){
+	/*deleteTeam: function(e){
 		var self = this;
 		this.selectedTeam[0].delete({
 			success: function(e){
@@ -195,7 +376,7 @@ app.Views.TeamsView = Backbone.View.extend({
 
 	/** Update the selected team
 	*/
-	updateTeam: function(e){
+	/*updateTeam: function(e){
 		var self = this;
 		this.selectedTeam[0].delete({
 			success: function(e){

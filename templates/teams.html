@@ -14,7 +14,7 @@
 
 			<!-- Table toolbar -->
 			<div class="tableToolbar">
-				<a href="#modalAddTeam" class="btn btn-primary modalAddTeam" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addTeam) %></a>
+				<a href="#modalSaveTeam" class="btn btn-primary modalSaveTeam" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addTeam) %></a>
 
 				<form class="form-search pull-right">
 					<div class="input-append">
@@ -42,7 +42,7 @@
 						<td>
 							<i class="icon-group">&nbsp;&nbsp;</i><a href="#<%= _.slugify(teams[i].name) %>" class="teamName"><%= teams[i].name %></a>
 							<p class="row-actions invisible">
-								<a href="#modalAddTeam" class="modalUpdateTeam" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
+								<a href="#modalSaveTeam" class="modalSaveTeam" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
 								<a href="#modalDeleteTeam" class="modalDeleteTeam" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 							</p>
 						</td>
@@ -96,7 +96,7 @@
 		<% }
 		else { %>
 			<div class="tableToolbar">
-				<a href="#modalAddTeam" class="btn btn-primary modalAddTeam" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addTeam) %></a>
+				<a href="#modalSaveTeam" class="btn btn-primary modalSaveTeam" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addTeam) %></a>
 			</div><br />
 
 			<!-- No team in the Database -->
@@ -108,39 +108,74 @@
 
 	</div>
 
+	<div class="span6">
+		
+		<!-- Officers Management -->
+		<div class="row-fluid officersDroppableArea">
 
-	<div class="span3">
-		<div class="widget-title">
-			<h4>Agents de l'équipe <span class="badge pull-right"></span></h4>
+			<div class="span6">
+				<div class="widget-title">
+					<h4>Agents de l'équipe <span class="badge pull-right"></span></h4>
+				</div>
+
+				<ul id="teamMembers" class="sortableOfficersList sortable unstyled nav nav-list">
+
+				</ul>
+			</div>
+
+			<div class="span6">
+				<div class="widget-title">
+					<h4>Agents sans équipe <span class="badge pull-right"><%= _.size(officersWithoutTeam) %></span></h4>
+				</div>
+
+				<ul id="officersList" class="sortableOfficersList sortable unstyled nav nav-list">
+					<% _.each(officersWithoutTeam, function (officer, i){ %>
+						<li id="officer_<%= officer.attributes.id %>"><a href="#"><i class="icon-user"></i>	<%= officer.attributes.firstname +' '+ officer.attributes.name%> </a></li>
+					<% }); %>
+				</ul>
+			</div>
+
 		</div>
 
-		<ul id="teamMembers" class="sortableAgentsList unstyled nav nav-list">
+		<!-- Services Management -->
+		<div class="row-fluid marginTop servicesDroppableArea">
+			
+			<div class="span6">
+				<div class="widget-title">
+					<h4>Services de l'équipe <span class="badge pull-right"></span></h4>
+				</div>
 
-		</ul>
-	</div>
+				<ul id="teamServices" class="sortableServicesList sortable unstyled nav nav-list">
 
-	<div class="span3">
-		<div class="widget-title">
-			<h4>Agents sans équipe <span class="badge pull-right"><%= _.size(officersWithoutTeam) %></span></h4>
+				</ul>
+			</div>
+
+			<div class="span6">
+				<div class="widget-title">
+					<h4>Autre services <span class="badge pull-right"><%= _.size(services) %></span></h4>
+				</div>
+
+				<ul id="servicesList" class="sortableServicesList sortable unstyled nav nav-list">
+					<% _.each(services, function (service, i){ %>
+						<li id="officer_<%= service.id %>"><a href="#"><i class="icon-sitemap"></i>	<%= service.name %> </a></li>
+					<% }); %>
+				</ul>
+			</div>
+
 		</div>
 
-		<ul id="officers" class="sortableAgentsList unstyled nav nav-list">
-			<% _.each(officersWithoutTeam, function (officer, i){ %>
-				<li><a href="#"><i class="icon-user"></i>	<%= officer.attributes.firstname +' '+ officer.attributes.name%> </a></li>
-			<% }); %>
-		</ul>
 	</div>
 
 </div>
 
 
 <!-- Modal Form to add or update a new Team -->
-<div id="modalAddTeam" class="modal hide fade">
+<div id="modalSaveTeam" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3><%= _.capitalize(lang.actions.addTeam) %></h3>
 	</div>
-	
+
 	<div class="modal-body">
 		<form id="formAddTeam" action="#" class="form-horizontal">
 
@@ -154,12 +189,12 @@
 				</div>
 			</div>
 
-			<!-- Team Service -->
+			<!-- Team Foreman -->
 			<div class="control-group">
-				<label for="teamService" class="control-label"><%= _.capitalize(lang.service) %>:</label>
+				<label for="teamForeman" class="control-label"><%= _.capitalize(lang.foreman) %>:</label>
 
 				<div class="controls">
-					<select id="teamService"></select>
+					<select id="teamForeman"></select>
 					<span class="help-inline"></span>
 				</div>
 			</div>

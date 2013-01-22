@@ -142,7 +142,9 @@ app.Views.CategoriesView = Backbone.View.extend({
         $('#infoModalDeleteCat small').html(this.selectedCatJson.code);
     },
     
-    	/** Save  place
+	
+
+	/** Save  place
 	*/
 	saveCat: function(e) {		     
     	e.preventDefault();

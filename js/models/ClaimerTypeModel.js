@@ -38,23 +38,30 @@ app.Models.ClaimerType = Backbone.RelationalModel.extend({
         this.set({ code : value });
     }, 
 
+
+
 	/** Model Initialization
 	*/
-    initialize: function(){
-        console.log('Claimer Type Model initialization');
-        this.fetchRelated('claimers');
-    },
+	initialize: function(){
+		console.log('Claimer Type Model initialization');
+		this.fetchRelated('claimers');
+	},
 
-    /** Model Parser */
-    parse: function(response) {    	
-        return response;
-    },
-    
+
+
+	/** Model Parser */
+	parse: function(response) {    	
+		return response;
+	},
+
+
 	update: function(params) {
 		this.setName( params.name );
 		this.setCode( params.code );
 	},
-	
+
+
+
 	/** Save Model
 	*/
 	save: function(data,options) { 
