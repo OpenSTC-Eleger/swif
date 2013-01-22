@@ -226,7 +226,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		        ask_id: this.model.getId(),		
 		};
 		
-		app.models.intervention.save(0,params,null, this, '#demandes-dinterventions');	
+		app.models.intervention.saveAndRoute(0,params,null, this, '#demandes-dinterventions');	
 	},
 
 	/** Change the request state to ConfirmDST

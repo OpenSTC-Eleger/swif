@@ -15,10 +15,10 @@ app.Views.PlanningView = Backbone.View.extend({
     
     // The DOM events //
     events: {
-        'click a.modalDeleteInter'  : 'setInfoModal',
+        'click a.buttonCancelInter'  : 'setInfoModal',
         'click a.modalDeleteTask'   : 'setInfoModal',
 
-        'click button.btnDeleteInter'  : 'deleteInter',
+        'submit #formCancelInter'  : 'cancelInter',
         'click button.btnDeleteTask'   : 'deleteTask',
         	
         'click .btn.addTaskPlanning'    		: 'displayFormAddTask',
@@ -229,27 +229,38 @@ app.Views.PlanningView = Backbone.View.extend({
         var link = $(e.target);
         
   
-        if(link.attr('href') == "#modalDeleteInter"){
+        if(link.attr('href') == "#modalCancelInter"){
 
             var id = _(link.parent('p').siblings('a').attr('href')).strRightBack('_');
             
-            this.selectedInter = _.filter(app.collections.interventions.models, function(item){ return item.attributes.id == id });
-            this.selectedInter = this.selectedInter[0].toJSON();
-
-            $('#infoModalDeleteInter p').html(this.selectedInter.name);
-            $('#infoModalDeleteInter small').html(this.selectedInter.description);
+            var inter = _.filter(app.collections.interventions.models, function(item){ return item.attributes.id == id });
+            
+            if( inter ) {
+            	this.selectedInter = inter[0]
+	            this.selectedInterJSON = this.selectedInter.toJSON();
+	
+	            $('#infoModalCancelInter p').html(this.selectedInterJSON.name);
+	            $('#infoModalCancelInter small').html(this.selectedInterJSON.description);
+            }
+            else{
+            	app.notify('', 'error', app.lang.errorMessages.unablePerformAction, "Annulation Intervention : non trouvée dans la liste");
+            }
         }
         else if(link.attr('href') == "#modalDeleteTask"){        
             
             var id = _(link.parent('p').parent('li').attr('id')).strRightBack('_');
 
-            this.selectedTask = _.filter(app.collections.tasks.models, function(item){ return item.attributes.id == id });
-            this.selectedTask = this.selectedTask[0].toJSON();
-
-            $('#infoModalDeleteTask p').html(this.selectedTask.name);
-            $('#infoModalDeleteTask small').html(this.selectedTask.description);
-
-            console.debug(this.selectedTask[0]);
+            var task = _.filter(app.collections.tasks.models, function(item){ return item.attributes.id == id });
+            if( task ) {
+            	this.selectedTask = task[0]
+	            this.selectedTaskJSON = this.selectedTask.toJSON();
+	
+	            $('#infoModalDeleteTask p').html(this.selectedTaskJSON.name);
+	            $('#infoModalDeleteTask small').html(this.selectedTaskJSON.description);
+            }
+            else{
+            	app.notify('', 'error', app.lang.errorMessages.unablePerformAction, "Suppression Tâche : non trouvée dans la liste");
+            }
         }
 
     },
@@ -270,20 +281,47 @@ app.Views.PlanningView = Backbone.View.extend({
 					state: app.Models.Intervention.state[1].value,
 			};
 		
-		app.models.intervention.save(id,params,null,this);	
+		app.models.intervention.saveAndRoute(id,params,null,this);	
 	},
 	
     /** Delete intervention
     */
-    deleteInter: function(e){
+    cancelInter: function(e){
         alert('TODO - Delete Intervention with ID ' + + this.selectedInter.id);
+		e.preventDefault();
+		
+		params = {
+		        state: app.Models.Intervention.state[4].value,
+		        cancel_reason: $('#motifCancel').val(),		
+		};		
+		this.saveNewState( params,$('#modalCancelInter') );
     },
 
 
     /** Delete task
     */
     deleteTask: function(e){
-        alert('TODO - Delete Task with ID ' + this.selectedTask.id);
+		var self = this;
+		this.selectedTask.destroy({
+			success: function(data){
+				if(data.error){
+					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				}
+				else{
+					app.collections.tasks.remove(self.selectedTask);
+					var inter = app.collections.interventions.get(self.selectedTaskJSON.intervention.id);					
+					inter.attributes.tasks.remove(self.selectedTaskJSON.id);
+					app.collections.interventions.add(inter);
+					$('#modalDeleteTask').modal('hide');
+					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.serviceDeleteOk);
+					self.render();
+				}
+			},
+			error: function(e){
+				alert("Impossible de supprimer la tâche");
+			}
+
+		});
 
     },
     
@@ -391,7 +429,32 @@ app.Views.PlanningView = Backbone.View.extend({
 	     };
 	     
 	    
-	    app.models.intervention.save(0,params,$('#modalAddInter'), this, "#planning");
+	    app.models.intervention.saveAndRoute(0,params,$('#modalAddInter'), this, "#planning");
     },
+    
+	saveNewState: function(params, element) {
+		var self = this;
+		self.element = element;
+		self.params = params
+		this.selectedInter.save(params, {
+				    success: function (data) {
+					        console.log(data);
+					        if(data.error){
+					    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+					        }
+					        else{					        	
+					            console.log('NEW STATE INTER SAVED');
+					            if( self.element!= null )
+					            	self.element.modal('hide');
+					            self.selectedInter.update(self.params);
+					            app.collections.interventions.add(self.selectedInter);
+					            self.render();
+					        }
+					    },
+					    error: function () {
+							console.log('ERROR - Unable to valid the Inter - InterventionView.js');
+					    },           
+					},false);
+	},
 });
 

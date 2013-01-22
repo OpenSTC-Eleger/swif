@@ -14,9 +14,16 @@ app.Views.InterventionsView = Backbone.View.extend({
     
     // The DOM events //
     events: {
-        'click .btn.addTask'                : 'displayFormAddTask',
+        'click .btn.addTask'                : 'setInfoModal',
         'click button.saveTask'             : 'saveTask',
+        
+        'click a.modalDeleteTask'   		: 'setInfoModal',
+        'click button.btnDeleteTask'   		: 'deleteTask',
+        
+        'click a.buttonCancelInter'			: 'setInfoModal',
+        'submit #formCancelInter' 			: 'cancelInter',
         'click a.accordion-intervention'    : 'tableAccordion'
+        	
     },
 
 
@@ -50,7 +57,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 
         // Retrieve the number of validated Interventions //
         var interventionsValidated = _.filter(interventions, function(item){ 
-        	return (item.attributes.progress_rate <= 99) 
+        	return true //(item.attributes.progress_rate <= 99) 
         			/*&&
         			item.attributes.state != app.Models.Intervention.state[0].value &&
         			item.attributes.state != app.Models.Intervention.state[1].value); */
@@ -138,18 +145,80 @@ app.Views.InterventionsView = Backbone.View.extend({
         }
            
     },
-
-
-
-    /** Display the form to add a new Task
-    */
-    displayFormAddTask: function(e){
+    
+    /** Display information in the Modal view
+    	    */
+    setInfoModal: function(e){
         
         // Retrieve the ID of the intervention //
-        this.pos = e.currentTarget.id;
-        $('#modalAddTask').modal();
-   },
+        var link = $(e.target);
+        var id = _(link.parents('tr').attr('id')).strRightBack('_');
+  
+        if(link.parent('a').attr('href') == "#modalCancelInter"){           
+            
+            //var inter = _.filter(app.collections.interventions.models, function(item){ return item.attributes.id == id });
+			this.inter = app.collections.interventions.get(this.pos);
+			this.interJSON = this.inter.toJSON()
+            
+            if( inter ) {
+            	this.selectedInter = inter[0]
+	            this.selectedInterJSON = this.selectedInter.toJSON();
+	
+	            $('#infoModalCancelInter p').html(this.selectedInterJSON.name);
+	            $('#infoModalCancelInter small').html(this.selectedInterJSON.description);
+            }
+            else{
+            	app.notify('', 'error', app.lang.errorMessages.unablePerformAction, "Annulation Intervention : non trouvée dans la liste");
+            }
+        }
+        else if(link.parent('a').attr('href') == "#modalAddTask"){        
+        	this.inter = app.collections.interventions.get(this.pos);
+        	this.interJSON = this.inter.toJSON()
+        	$('#modalAddTask').modal();
+        }
+        else if(link.parent('a').attr('href') == "#modalDeleteTask"){        
+        	
+            var task = _.filter(app.collections.tasks.models, function(item){ return item.attributes.id == id });
+            if( task ) {
+            	this.selectedTask = task[0]
+	            this.selectedTaskJSON = this.selectedTask.toJSON();
+	
+	            $('#infoModalDeleteTask p').html(this.selectedTaskJSON.name);
+	            $('#infoModalDeleteTask small').html(this.selectedTaskJSON.description);
+            }
+            else{
+            	app.notify('', 'error', app.lang.errorMessages.unablePerformAction, "Suppression Tâche : non trouvée dans la liste");
+            }
+        }
 
+    },
+
+//    getTarget:function(e) {    	
+//    	e.preventDefault();
+//	    // Retrieve the ID of the intervention //
+//		var link = $(e.target);
+//		this.pos =  _(link.parents('tr').attr('id')).strRightBack('_');
+//		this.inter = app.collections.interventions.get(this.pos);
+//		this.interJSON = this.inter.toJSON();
+//    },
+
+//    /** Display the form to add a new Task
+//    */
+//   displayModalAddTask: function(e){
+//        this.getTarget(e);
+//        $('#modalAddTask').modal();
+//   },
+//   
+//	displayModalDeleteTask: function(e){
+//	    this.getTarget(e);
+//	    $('#modalDeleteTask').modal();
+//	},
+//
+//   displayModalCancelInter: function(e) {
+//	   this.getTarget(e);
+//	   $('#infoModalCancelInter').children('p').html(this.interJSON.name);
+//	   $('#infoModalCancelInter').children('small').html(this.interJSON.description);
+//   },
 
     /** Save the Task
     */
@@ -171,7 +240,70 @@ app.Views.InterventionsView = Backbone.View.extend({
 	     };
 	     //TODO : test
 	     app.models.task.save(0,params,$('#modalAddTask'), null, "interventions");
-   }
+   },
+   
+    /** Delete task
+    	    */
+    deleteTask: function(e){
+		var self = this;
+		this.selectedTask.destroy({
+			success: function(data){
+				if(data.error){
+					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				}
+				else{
+					app.collections.tasks.remove(self.selectedTask);
+					var inter = app.collections.interventions.get(self.selectedTaskJSON.intervention.id);					
+					inter.attributes.tasks.remove(self.selectedTaskJSON.id);
+					app.collections.interventions.add(inter);
+					$('#modalDeleteTask').modal('hide');
+					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.serviceDeleteOk);
+					self.render();
+				}
+			},
+			error: function(e){
+				alert("Impossible de supprimer la tâche");
+			}
+
+		});
+
+    },
+   
+	cancelInter: function(e){
+		e.preventDefault();
+	
+		params = {
+		        state: app.Models.Intervention.state[4].value,
+		        cancel_reason: $('#motifCancel').val(),		
+		};		
+		this.saveNewState( params,$('#modalCancelInter') );
+	},
+	
+		
+	saveNewState: function(params, element) {
+		var self = this;
+		self.element = element;
+		self.params = params
+		this.inter.save(params, {
+				    success: function (data) {
+					        console.log(data);
+					        if(data.error){
+					    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+					        }
+					        else{					        	
+					            console.log('NEW STATE INTER SAVED');
+					            if( self.element!= null )
+					            	self.element.modal('hide');
+					            self.inter.update(self.params);
+					            app.collections.interventions.add(self.inter);
+					            self.render();
+					        }
+					    },
+					    error: function () {
+							console.log('ERROR - Unable to valid the Inter - InterventionView.js');
+					    },           
+					},false);
+	},
   
 });
 

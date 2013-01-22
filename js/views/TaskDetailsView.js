@@ -59,7 +59,7 @@ app.Views.TaskDetailsView = Backbone.View.extend({
     	intervention = task.toJSON().intervention;
     	console.debug("BINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDING");
     	
-    	app.models.intervention.save(intervention.id, {state: 'toscheduled'}, null, null, "#taches");
+    	app.models.intervention.saveAndRoute(intervention.id, {state: 'toscheduled'}, null, null, "#taches");
     	
     	
     },

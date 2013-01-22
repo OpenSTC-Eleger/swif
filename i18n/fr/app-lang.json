@@ -11,6 +11,7 @@
 	"name"					: "nom",
 	"firstname"				: "prénom",
 	"label"					: "libellé",
+	"state"					: "Etat",
 	"unit"					: "Unité",
 	"responsible"			: "responsable",
 	"foreman"				: "chef d'équipe",

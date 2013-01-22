@@ -37,7 +37,8 @@
 		<table class="table-interventions table table-bordered">
 			<thead>
 				<tr>
-					<th><%= _.capitalize(lang.label) %></th>									
+					<th><%= _.capitalize(lang.label) %></th>
+					<th><%= _.capitalize(lang.place) %></th>									
 					<th><%= _.capitalize(lang.plannedHours) %></th>
 					<th><%= _.capitalize(lang.spentHours) %></th>
 					<th><%= _.capitalize(lang.progressRate) %>
@@ -54,23 +55,49 @@
 							</ul>
 						</div>
 					</th>
+					<th><%= _.capitalize(lang.infoMessages.information) %></th>		
 				</tr>
 			</thead>
 			<tbody>
-			<% _.each(interventions, function (intervention, i) { %>
+			<% _.each(interventions, function (intervention, i) { 
+				var classColor = "success";
+				var infoMessage = "";
+				if(intervention.state == app.Models.Intervention.state[4].value) { 
+					classColor = "warning";
+					infoMessage = intervention.cancel_reason
+				}
+				else if(intervention.state == app.Models.Intervention.state[1].value) {
+					var date = null;
+					_.each(intervention.tasks, function(task){ 
+						if ( date==null )
+							date = task.date_start;
+						else if ( date>task.date_start )
+							date=task.date_start; 
+					});
+					infoMessage = "Programmé le " + date.getDate() + "-"+ ( date.getMonth()+1 ) +"-"+ date.getFullYear() +" "
+					+ date.getHours() + ":" + ( date.getMinutes()!=0?date.getMinutes():"00" ); 
+					//((date) != "" && date != null) ? moment(date, 'YYYY-MM-DD HH:mm:ss').format('LLL') : ""  ;
+				}
+				else if ( intervention.effective_hours>intervention.planned_hours ) {
+					classColor = "error";
+				}
+			
+				%>
 				
 				<!-- Intervention row -->
-				<tr class="row-intervention">
+				<tr class="row-intervention <%= classColor %>" id="inter_<%= intervention.id %>">
 					<td>
 						<a class="accordion-intervention" href="#collapse_<%= intervention.id %>">
 							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= intervention.name %>
 						</a>
-						<p class="intervention-actions invisible">
-							<a href="#interventions/<%= intervention.id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
-							<!--  <a href="#modalDeleteInter" class="modalDeleteInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a> -->
-						</p>
+						<span class="intervention-actions invisible">
+							<a href="#interventions/<%= intervention.id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a>
+							<% if( intervention.state == app.Models.Intervention.state[0].value ) { %>
+								<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.cancel) %></a> 
+							<% } %>
+						</span>
 					</td>
-					
+					<td><%=intervention.site1[1]%></td>
 					<td><%=intervention.planned_hours%>h</td>
 					<td><%=intervention.effective_hours%>h</td>
 					<td>
@@ -89,6 +116,7 @@
 							<span class="text-warning"><%= _.capitalize(lang.notBegin) %></span>
 						<% } %>
 					</td>
+					<td><%=infoMessage%></td>
 				</tr>
 
 				<!-- Tasks row -->
@@ -110,7 +138,7 @@
 								</thead>
 								<tbody>
 									<% _.each(intervention.tasks, function (task, i) { %>
-										<tr class="row-tasks <%= (task.progress == '100' ? 'success' : '') %>">
+										<tr class="row-tasks <%= (task.progress == '100' ? 'success' : '') %>" id="task_<%= task.id %>">
 											<td>
 												<% if(task.date_start != ''){ %>
 													<i 
@@ -122,12 +150,20 @@
 												<% } %>
 												<span class="<%= (task.progress == '100' ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
 												<span class="task-actions invisible">
-													<a href="#">
+													<!-- <a href="#">
 														<i class="icon-pencil displayInlineBlock" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>" data-placement="top"></i>
 													</a>&nbsp;
-													<a href="#">
-														<i class="icon-remove displayInlineBlock" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top"></i>
-													</a>
+													-->
+													<% if( task.state == app.Models.Task.state[0].value ) { %>
+														<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal">
+															<i class="icon-remove displayInlineBlock" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top">&nbsp;</i>
+														</a>
+														
+														<!--  <a href="#">
+															<i class="icon-remove displayInlineBlock" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top"></i>
+														</a>
+														-->
+													<% } %>
 												</span>
 											</td>
 											<td><%= task.user_id[1] %></td>
@@ -232,5 +268,62 @@
 	<div class="modal-footer">
 		<button type="submit" class="btn btn-primary saveTask">Enregistrer</button>&nbsp;&nbsp;
 		<a href="#" data-dismiss="modal">Annuler</a>
+	</div>
+</div>
+
+<!-- Modal Form Delete Task -->
+<div id="modalDeleteTask" class="modal hide fade">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3>Suppression de la tâche</h3>
+	</div>
+	
+	<div class="modal-body">
+
+		<blockquote id="infoModalDeleteTask" class="spaceBottom">
+			<p></p>
+			<small></small>
+		</blockquote>
+
+		<p>Etes-vous sûr de vouloir supprimer cette tâche ?</p>
+	</div>
+	
+	<div class="modal-footer">
+	    <button type="button" class="btn btn-danger btnDeleteTask">Supprimer</button>&nbsp;&nbsp;
+	    <a href="#" data-dismiss="modal">Annuler</a>
+	</div>
+</div>
+
+<!-- Modal Form Cancel Intervention -->
+<div id="modalCancelInter" class="modal hide fade">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3>Annuler l'intervention</h3>
+	</div>
+	
+	<div class="modal-body">
+
+		<blockquote id="infoModalCancelInter" class="spaceBottom">
+			<p></p>
+			<small></small>
+		</blockquote>
+
+	    <form id="formCancelInter" action="#" class="form-horizontal">
+	    
+			<!-- Request refuse motif -->
+            <div class="control-group">
+                <label for="motifCancel" class="control-label">Motif:</label>
+
+                <div class="controls">
+                    <textarea id="motifCancel" rows="5" required="required" placeholder="Entrée les motifs de l'annulation de l'intervention"></textarea>
+                    <span class="help-inline"></span>
+                </div>
+            </div>
+	    </form>
+	</div>
+	
+	<div class="modal-footer">
+	    <button type="submit" form="formCancelInter" class="btn btn-primary">Enregistrer</button>&nbsp;&nbsp;
+	    <a href="#" data-dismiss="modal">Annuler</a>
 	</div>
 </div>

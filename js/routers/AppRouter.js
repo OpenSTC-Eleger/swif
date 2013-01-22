@@ -611,8 +611,6 @@ app.Router = Backbone.Router.extend({
 		        	if(app.collections.tasks == null ){
 		                app.collections.tasks = new app.Collections.Tasks();
 		            }
-		        	
-		        	app.loader('display');
 		        	app.collections.tasks.fetch({
 		        		success: function(){
 				        	if(app.collections.teams == null ){
