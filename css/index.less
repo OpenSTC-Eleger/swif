@@ -24,6 +24,14 @@ small.badge{
 .displayInlineBlock{
 	display: inline-block;
 }
+.marginTop{
+	margin-top: 35px;
+}
+.sortablePlaceHold{
+	background-color: @wellBackground;
+	height: 28px;
+	border: thin dashed darken(@wellBackground, 65%);
+}
 
 
 
@@ -206,6 +214,20 @@ table thead th.align, .table tbody td.align{
 table thead th.align-right, .table tbody td.align-right{
 	text-align: right;
 }
+
+
+
+/* Configuration Team View
+-------------------------------------------------- */
+ul.sortableOfficersList, ul.sortableServicesList{
+	max-height: 250px; 
+	overflow-y: auto;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+
+
 
 
 

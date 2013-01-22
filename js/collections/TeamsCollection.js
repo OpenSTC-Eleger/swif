@@ -16,11 +16,15 @@ app.Collections.Teams = Backbone.Collection.extend({
     	console.log('Teams collection Initialization');
     },
 
+
+
     /** Collection Sync
     */
     sync: function(method, model, options) {
     	app.readOE( this.model_name ,  app.models.user.getSessionID(), options);
     },
+
+
 
     /** Collection Parse
     */

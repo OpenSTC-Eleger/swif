@@ -65,6 +65,7 @@ var app = {
                 app.models.service = new app.Models.ClaimerService();
                 app.models.category = new app.Models.Category();
                 app.models.claimerType = new app.Models.ClaimerType();
+                app.models.team = new app.Models.Team();
 
                 // Router initialization //
                 app.router = new app.Router();
@@ -134,9 +135,9 @@ var app = {
 
         var payload_url = $.param({r: payload_str});
 
-        if (payload_url.length > 2000) {
+        /*if (payload_url.length > 2000) {
             throw new Error("Payload is too big.");
-        }
+        }*/
         // Direct jsonp request
         ajax.data.r = payload_str;
         return $.ajax(ajax);

@@ -37,7 +37,6 @@
 	"email"					: "email",
 	"organization" 			: "organisation",
 	"contact"				: "contact",
-	"team"					: "équipe",
 	"manager"				: "manager",
 	"width" 				: "largeur",
 	"lenght" 				: "longueur",
@@ -146,7 +145,8 @@
     	"catDeleteOk"			: "Catégorie correctement supprimée",
     	"officerDeleteOk"		: "Agent correctement supprimé",
     	"claimerDeleteOk"		: "Demandeur correctement supprimé",
-    	"teamDeleteOk"			: "Equipe correctement supprimée"
+    	"teamDeleteOk"			: "Equipe correctement supprimée",
+    	"teamSaveOk"			: "Equipe correctement enregistrée"
 	},
 
 	"viewsTitles" : {

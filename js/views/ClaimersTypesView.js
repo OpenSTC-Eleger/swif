@@ -125,7 +125,9 @@ app.Views.ClaimersTypesView = Backbone.View.extend({
         $('#infoModalDeleteClaimersTypes small').html(this.selectedJson.code);
     },
     
-    	/** Save  place
+    
+
+    /** Save Claimer Type
 	*/
 	saveClaimersTypes: function(e) {		     
     	e.preventDefault();
@@ -162,7 +164,7 @@ app.Views.ClaimersTypesView = Backbone.View.extend({
 	},
 
 	
-    /** Delete the selected categorie
+    /** Delete the selected claimer type
     */
     deleteClaimersTypes: function(e){
     	e.preventDefault();

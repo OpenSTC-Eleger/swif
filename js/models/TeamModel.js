@@ -44,6 +44,38 @@ app.Models.Team = Backbone.RelationalModel.extend({
 	
 	],
 
+
+	// Team Name //
+	getName : function() {
+        return this.get('name');
+    },
+    setName : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ name : value });
+    },  
+    
+    // Team service ID //
+    getServiceId : function() {
+        return this.get('service_ids');
+    },
+    setServiceID : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ service_ids : value });
+    }, 
+
+
+    // Team manager ID //
+    getManagerId : function() {
+        return this.get('manager_id');
+    },
+    setManagerID : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ manager_id : value });
+    }, 
+
+
+
+
 	/** Model Initialization
 	*/
 	initialize: function (model) {
@@ -56,6 +88,15 @@ app.Models.Team = Backbone.RelationalModel.extend({
     parse: function(response) {
         return response;
     },
+
+
+
+	/** Update each attributes to the model
+	*/
+	update: function(params) {
+		this.setName( params.name );
+		this.setManagerID( params.manager_id );
+	},
 
 
 
