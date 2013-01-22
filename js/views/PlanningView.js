@@ -287,7 +287,6 @@ app.Views.PlanningView = Backbone.View.extend({
     /** Delete intervention
     */
     cancelInter: function(e){
-        alert('TODO - Delete Intervention with ID ' + + this.selectedInter.id);
 		e.preventDefault();
 		
 		params = {

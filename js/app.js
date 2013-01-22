@@ -8,10 +8,10 @@ var app = {
 
     // Global variables //
     appVersion      : '0.1 alpha',
-    userBDD         : 'pontlabbe2',
+    userBDD         : 'pontlabbe',
     uniq_id_counter : 0,
     
-    urlOE                       : 'http://octm-dev.siclic.fr:8069',
+    urlOE                       : 'http://localhost:8069',
     urlOE_authentication        : '/web/session/authenticate',
     urlOE_versionServer         : '/web/webclient/version_info',
     urlOE_sessionDestroy        : '/web/session/destroy',
@@ -65,7 +65,6 @@ var app = {
                 app.models.service = new app.Models.ClaimerService();
                 app.models.category = new app.Models.Category();
                 app.models.claimerType = new app.Models.ClaimerType();
-                app.models.team = new app.Models.Team();
 
                 // Router initialization //
                 app.router = new app.Router();
@@ -135,9 +134,9 @@ var app = {
 
         var payload_url = $.param({r: payload_str});
 
-        /*if (payload_url.length > 2000) {
+        if (payload_url.length > 2000) {
             throw new Error("Payload is too big.");
-        }*/
+        }
         // Direct jsonp request
         ajax.data.r = payload_str;
         return $.ajax(ajax);
