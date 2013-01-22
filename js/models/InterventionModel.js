@@ -15,9 +15,10 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 			relatedModel: 'app.Models.Task',
 			collectionType: 'app.Collections.Tasks',
 			includeInJSON: true,
+			//autoFetch: true,
 			reverseRelation: {
 				key: 'intervention',
-				includeInJSON: ['id','name','state','tasks','service_id'],
+				includeInJSON: ['id','name','state','tasks','service_id','site1'],
 			},
 		},		
 //		{
@@ -28,6 +29,28 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 //			includeInJSON: 'id'
 //		}
 	],
+	
+	 defaults:{
+		id:0,
+		state: null,
+		cancel_reason: null,
+	},
+      
+	getState : function() {
+        return this.get('state');
+    },
+    setState : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ state : value });
+    },
+    
+    getCancelReason : function() {
+        return this.get('cancel_reason');
+    },
+    setCancelReason : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ cancel_reason : value });
+    },  
 
 	/** Model Initialization
 	*/
@@ -47,15 +70,19 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
     parse: function(response) {    	
         return response;
     },
-
+    
+    update: function(params) {
+		this.setState( params.state );
+		this.setCancelReason( params.cancel_reason );
+	},
     
     /** Save Model*/
-	create: function(data,options) { 
+	save: function(data,options) { 
 		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
 	},
 
 	//save method with all redondant code
-	save: function(id,data,closeModal, view, strRoute) { 
+	saveAndRoute: function(id,data,closeModal, view, strRoute) { 
 		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {
 		    success: function (data) {
 		        console.log(data);

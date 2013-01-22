@@ -325,8 +325,12 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 		},
 		
 		renderContactDetails: function (contact) {
-			contact.phone==false?$('#requestContactPhone').val(''):$('#requestContactPhone').val(contact.phone);
-			contact.email==false?$('#requestContactEmail').val(''):$('#requestContactEmail').val(contact.email);
+			$('#requestContactPhone').val('');
+			$('#requestContactEmail').val('');
+			if( contact && contact[0] ) {
+				$('#requestContactPhone').val(contact[0].phone);
+				$('#requestContactEmail').val(contact[0].email);
+			}
 		},
 
 

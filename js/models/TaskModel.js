@@ -8,7 +8,20 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	
 	url: "/#taches/:id",
 	
-//	currentTask:this,
+//	relations: [
+//	   {
+//			type: Backbone.HasMany,
+//			key: 'works',
+//			relatedModel: 'app.Models.TaskWork',
+//			collectionType: 'app.Collections.TaskWorks',
+//			includeInJSON: true,
+//			reverseRelation: {
+//				key: 'task',
+//				includeInJSON: 'id',
+//			},
+//		},		
+//	],
+	
 
 	defaults:{
 		id:0,
@@ -21,10 +34,6 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		date_start: null,
 		currentTask: null,
 	},
-	
-//	getCurrentTask : function() {
-//        return this.get('currentTask');
-//    },
 	
     getId : function() {
         return this.get('id');
@@ -129,6 +138,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		                if(app.collections.tasks == null ){
 		                    app.collections.tasks = new app.Collections.Tasks();
 		                }	
+		                //TODO fetch tasks & interventions pê pas necessaires car elles st rechargées dans le routeur
 					 	app.collections.tasks.fetch({  
 					 		success: function(){
 						 		app.collections.interventions.fetch({

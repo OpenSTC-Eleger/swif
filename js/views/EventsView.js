@@ -320,12 +320,18 @@ app.Views.EventsView = Backbone.View.extend({
 		
 		},
 		
+		getPlace: function (o, intervention) {
+			console.debug(intervention);
+			return intervention.site1!=null?intervention.site1[1]:"";
+		
+		},
+		
 		renderResume: function (o, check){
 			return "<td class=\"center\"><input type=\"checkbox\"></td>";
 		},
 		
-		renderHours: function (o, check){
-			return "<td class=\"center\"><input type=\"text\" size=\"5\"/></td>";
+		renderHours: function (o, value){
+			return "<td class=\"center\"><input type=\"text\" size=\"5\" />";
 		},
 			
 		printCalendar: function () {
@@ -356,9 +362,14 @@ app.Views.EventsView = Backbone.View.extend({
 			
 			
 		    _.each(tasks, function(task){ 
+		    	var inter = task.intervention;
+		    	task["inter"] = ( inter!=null)?inter.name:"" ;
+		    	task["place"] = ( inter!=null && inter.site1!=null )?inter.site1[1]:"" ;
+		    	//task["effective_hours"] = "";
+		    	//task["remaining_hous"] = "";
 		    	task["done"] = "false";
-		    	task["notdone"] = "false";
-		    	task["pending"] = "false";
+		    	task["equipment"] = "";
+		    	task["oil"] = "";
 		    })
 		    
 		    $('#paperboard').data('resultSet', tasks);
@@ -374,15 +385,17 @@ app.Views.EventsView = Backbone.View.extend({
 			    "bDeferRender": true,
 			    "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
 			    "aoColumns": [
-			        {"sInter": "Inter", "mDataProp": "intervention", 'sWidth': '5%', 'sClass': "center", 'fnRender': self.getIntervention},
+			        {"sInter": "Inter", "mDataProp": "inter", 'sWidth': '5%', 'sClass': "center"},
 			        {"sName": "Name", "mDataProp": "name", 'sWidth': '5%', 'sClass': "center"},
+			        {"sPlace": "Place", "mDataProp": "place", 'sWidth': '5%', 'sClass': "center"},
 			        {"sDateStart": "DateStart", "mDataProp": "date_start","sType": "date", 'sWidth': '25%', 'fnRender': self.renderDate },
-			        {"sDateEnd": "DateEnd", "mDataProp": "date_end","sType": "date", 'sWidth': '25%', 'fnRender': self.renderDate},
+			        {"sDateEnd": "DateEnd", "mDataProp": "date_end","sType": "date", 'sWidth': '25%', 'fnRender': self.renderDate},			        
+			        { "sWorkingTime": "WorkingTime", "mDataProp": "planned_hours", 'sWidth': '5%'},
+			        { "sEffectiveTime": "EffectiveTime", "mDataProp": "effective_hours", 'sWidth': '5%','fnRender': self.renderHours},
+			        { "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours",'sWidth': '5%','fnRender': self.renderHours},
 			        { "sDone": "Done", "mDataProp": "done", 'sWidth': '5%','fnRender': self.renderResume},
-			        { "sNotDone": "NotDone", "mDataProp": "notdone", 'sWidth': '5%','fnRender': self.renderResume},
-			        { "sPending": "Pending", "mDataProp": "pending", 'sWidth': '5%','fnRender': self.renderResume},
-			        { "sWorkingTime": "WorkingTime", "mDataProp": "planned_hours", 'sWidth': '5%','fnRender': self.renderHours},
-			        { "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours",'sWidth': '5%','fnRender': self.renderHours}],
+			        { "sEquipment": "Equipment", "mDataProp": "equipment", 'sWidth': '5%','fnRender': self.renderHours},
+			        { "sOil": "oil", "mDataProp": "oil", 'sWidth': '5%', 'sWidth': '5%','fnRender': self.renderHours}],
 			
 			    "bFilter": false,"bInfo": false,"bPaginate": false,
 			    sClass: "center",

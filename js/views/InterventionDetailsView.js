@@ -119,7 +119,7 @@ app.Views.InterventionDetailsView = Backbone.View.extend({
 			     site_details: this.$('#interventionPlacePrecision').val(),
 		     };
 
-		    this.model.create(params,{
+		    this.model.save(params,{
 				success: function (data) {
 					console.log(data);
 					if(data.error){
