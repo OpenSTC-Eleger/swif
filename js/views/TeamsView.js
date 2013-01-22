@@ -132,7 +132,7 @@ app.Views.TeamsView = Backbone.View.extend({
 
 
 	saveTeamsServices: function(){
-		alert($("#teamMembers").sortable('toArray'));
+		//alert($("#teamMembers").sortable('toArray'));
 	},
 
 
