@@ -8,10 +8,10 @@ var app = {
 
     // Global variables //
     appVersion      : '0.1 alpha',
-    userBDD         : 'pontlabbe',
+    userBDD         : 'pontlabbe2',
     uniq_id_counter : 0,
     
-    urlOE                       : 'http://localhost:8069',
+    urlOE                       : 'http://octm-dev.siclic.fr:8069',
     urlOE_authentication        : '/web/session/authenticate',
     urlOE_versionServer         : '/web/webclient/version_info',
     urlOE_sessionDestroy        : '/web/session/destroy',
