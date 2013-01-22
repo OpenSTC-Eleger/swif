@@ -27,7 +27,7 @@
 
 
 			<!-- Table Teams -->
-			<table class="table table-bordered table-hover table-striped">
+			<table class="table teamsTable table-bordered table-hover table-striped">
 				<thead>
 					<tr>
 						<th><%= _.capitalize(lang.name) %></th>
@@ -157,7 +157,7 @@
 
 				<ul id="servicesList" class="sortableServicesList sortable unstyled nav nav-list">
 					<% _.each(services, function (service, i){ %>
-						<li id="officer_<%= service.id %>"><a href="#"><i class="icon-sitemap"></i>	<%= service.name %> </a></li>
+						<li id="service_<%= service.id %>"><a href="#"><i class="icon-sitemap"></i>	<%= service.name %> </a></li>
 					<% }); %>
 				</ul>
 			</div>
@@ -203,7 +203,7 @@
 	</div>
 	
 	<div class="modal-footer">
-		<button type="submit" form="formAddTeam" class="btn btn-primary saveTask"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+		<button type="submit" form="formAddTeam" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
 		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>
