@@ -16,14 +16,15 @@ app.Views.TeamsView = Backbone.View.extend({
 	events: {
 		'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
+		'click ul.sortable li'			: 'preventDefault',
 
 		'click a.modalDeleteTeam'  		: 'modalDeleteTeam',
 		'click a.modalSaveTeam'  		: 'modalSaveTeam',
 
-		'submit #formAddTeam' 			: 'saveTeam',
+		'click #formAddTeam' 			: 'saveTeam',
 		'click button.btnDeleteTeam'	: 'deleteTeam',
 
-		'click a.teamName' 				: 'displayTeamMembers'
+		'click a.teamName' 				: 'displayTeamInfos'
 	},
 
 
@@ -31,6 +32,12 @@ app.Views.TeamsView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize: function () {
+
+	},
+
+
+	selectTeam: function(){
+		alert('ok');
 
 	},
 
@@ -92,10 +99,7 @@ app.Views.TeamsView = Backbone.View.extend({
 				opacity: '.8',
 				revert: 300,
 				stop: function(event, ui){
-					console.log(this.id);
-					if(this.id == 'teamMembers'){
-						self.saveTeamsServices();
-					}
+					self.saveTeamsServices();
 				}
 			});
 
@@ -111,7 +115,7 @@ app.Views.TeamsView = Backbone.View.extend({
 				opacity: '.8',
 				revert: 300,
 				stop: function(event, ui){
-					
+					self.saveTeamsServices();
 				}
 			});
 
@@ -132,8 +136,11 @@ app.Views.TeamsView = Backbone.View.extend({
 
 
 	saveTeamsServices: function(){
-		//alert($("#teamMembers").sortable('toArray'));
+		console.log($("#teamMembers").sortable('toArray'));
+		console.log($("#teamServices").sortable('toArray'));
 	},
+
+
 
 
 	getIdInDropDown: function(view) {
@@ -151,6 +158,9 @@ app.Views.TeamsView = Backbone.View.extend({
 		e.preventDefault();
 		var link = $(e.target);
 		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
+
+		$('table.teamsTable tr.info').removeClass('info');
+		link.parents('tr').addClass('info').children('i');
 
 		this.selected = _.filter(app.collections.teams.models, function(item){ return item.attributes.id == id });
 
@@ -172,7 +182,7 @@ app.Views.TeamsView = Backbone.View.extend({
     /** Modal create/update team
     */
     modalSaveTeam: function(e){
-		this.setModel(e);	
+		this.setModel(e);
 
 		$('#teamName').val('');
 		app.views.selectListOfficersView.setSelectedItem(0);
@@ -190,7 +200,7 @@ app.Views.TeamsView = Backbone.View.extend({
 	*/
 	modalDeleteTeam: function(e){
         
-        // Retrieve the ID of the categorie //
+        // Retrieve the ID of the team //
     	this.setModel(e);
 
         $('#infoModalDeleteTeam p').html(this.selectedJson.name);
@@ -276,128 +286,12 @@ app.Views.TeamsView = Backbone.View.extend({
 
 
 
-
-
-
-
-
-
-	/** Display information in the delete Modal view
-	*/
-	/*setInfoModalDelete: function(e){
-
-		// Retrieve the ID of the intervention //
-		var link = $(e.target);
-
-		var id = _(link.parents('tr').attr('id')).strRightBack('_');
-
-		this.selectedTeam = _.filter(app.collections.teams.models, function(item){ return item.attributes.id == id });
-		var selectedTeamJson = this.selectedTeam[0].toJSON();
-
-		$('#infoModalDeleteTeam p').html(selectedTeamJson.name);
-		$('#infoModalDeleteTeam small').html(_.capitalize(app.lang.foreman)+": "+selectedTeamJson.manager_id[1]);
-	},*/
-
-
-
-	/** Display information in the update Modal view
-	*/
-	/*setInfoModalUpdate: function(e){
-
-		// Retrieve the ID of the intervention //
-		var link = $(e.target);
-		var id = _(link.parents('tr').attr('id')).strRightBack('_');
-
-		this.selectedTeam = _.filter(app.collections.teams.models, function(item){ return item.attributes.id == id });
-		var selectedTeamJson = this.selectedTeam[0].toJSON();
-
-		// Update the modal title //
-		$('#modalAddTeam div.modal-header h3').html(_.capitalize(app.lang.actions.updateTeam));
-
-		$('#teamName').val(selectedTeamJson.name);
-		app.views.selectListclaimersServicesView.setSelectedItem( selectedTeamJson.service_ids[0] );
-	},*/
-
-
-
-	/** Display information in the add Modal view
-	*/
-	/*setInfoModalAdd: function(e){
-		// Update the modal title //
-		$('#modalAddTeam div.modal-header h3').html(_.capitalize(app.lang.actions.addTeam));
-		$('#teamName').val('');
-		app.views.selectListclaimersServicesView.setSelectedItem(0);
-	},
-
-
-
-	/** Add a new team
-	*/
-	/*addTeam: function(e){
-		e.preventDefault();
-		var self = this;
-		
-		var params = {
-			name: $('#teamName').val(),
-			partner_id: app.views.selectListclaimersServicesView.getSelected().toJSON().id,
-		};
-
-
-		app.models.team.save(params,{
-			success: function (data) {
-				$('#modalAddTeam').modal('hide');
-				app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.teamDeleteOk);
-				self.render();
-			}
-		});
-	},
-
-
-
-	/** Delete the selected team
-	*/
-	/*deleteTeam: function(e){
-		var self = this;
-		this.selectedTeam[0].delete({
-			success: function(e){
-				app.collections.teams.remove(self.selectedTeam[0]);
-				$('#modalDeleteTeam').modal('hide');
-				app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.teamDeleteOk);
-				self.render();
-			},
-			error: function(e){
-				alert("Impossible de supprimer l'équipe");
-			}
-
-		});
-	},
-
-
-
-	/** Update the selected team
-	*/
-	/*updateTeam: function(e){
-		var self = this;
-		this.selectedTeam[0].delete({
-			success: function(e){
-				app.collections.teams.remove(self.selectedTeam[0]);
-				$('#modalDeleteTeam').modal('hide');
-				app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.teamDeleteOk);
-				self.render();
-			},
-			error: function(e){
-				alert("Impossible de supprimer l'équipe");
-			}
-
-		});
-	},
-
-
-
 	/** Display team members
 	*/
-	displayTeamMembers: function(e){
+	displayTeamInfos: function(e){
 		e.preventDefault();
+
+		this.setModel(e);
 
 		// Retrieve the ID of the intervention //
 		var link = $(e.target);
@@ -408,9 +302,18 @@ app.Views.TeamsView = Backbone.View.extend({
 
 		// Clear the list of the user //
 		$('#teamMembers li').remove();
+		$('#teamServices li').remove();
 
 		_.each(selectedTeamJson.user_ids, function (member, i){
 			$('#teamMembers').append('<li><a href="#"><i class="icon-user"></i> '+ member.firstname +' '+ member.name +'</a></li>');
+		});
+
+
+		console.log('""""""""""""""""""""""""""""""""""""selectedTeamJson""""""""""""""""""""""""""""""""""""');
+		console.log(selectedTeamJson);
+
+		_.each(selectedTeamJson.service_ids, function (service, i){
+			$('#teamServices').append('<li><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
 		});
 
 		
