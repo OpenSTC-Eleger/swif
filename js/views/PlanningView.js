@@ -62,7 +62,7 @@ app.Views.PlanningView = Backbone.View.extend({
         	_.each(app.models.user.attributes.service_ids,function (user_service_id){
         		var agentsKeeped = _.filter(officers, function(item,i){             	
         			var service = _.filter(item.service_ids,function (service_id){            		
-        				return service_id == user_service_id;
+        				return service_id.id == user_service_id;
         			}); 
         			return service.length != 0
         		});
@@ -79,7 +79,7 @@ app.Views.PlanningView = Backbone.View.extend({
         	_.each(app.models.user.attributes.service_ids,function (user_service_id){
         		var teamsKeeped = _.filter(teams, function(item,i){             	
         			var service = _.filter(item.service_ids,function (service_id){            		
-        				return service_id == user_service_id;
+        				return service_id.id == user_service_id;
         			}); 
         			return service.length != 0
         		});

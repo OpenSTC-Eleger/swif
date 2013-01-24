@@ -19,7 +19,7 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 			key: 'service_ids',
 			relatedModel: 'app.Models.ClaimerService',
 			collectionType: 'app.Collections.ClaimersServices',
-			includeInJSON: 'id',	
+			includeInJSON: ['id', 'name'],	
 		},
 //		{
 //			type: Backbone.HasMany,

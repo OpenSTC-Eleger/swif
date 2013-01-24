@@ -91,6 +91,11 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	   	console.log("Request task Initialization");
 	},
 
+	parseDate: function(s) {
+	  var re = /^(\d{4})-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/;
+	  var m = re.exec(s);
+	  return m ? new Date(m[1], m[2]-1, m[3], m[4], m[5], m[6]) : null;
+	},
 
 
     /** Model Parser
@@ -101,18 +106,22 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		//A la lecture on  convertit en GMT+1 : 
     	//cf- http://stackoverflow.com/questions/10456693/how-to-use-date-objects-in-local-timezone-with-backbone-js-sync
 		
-    	var date_start = new Date(Date.parse(response.date_start));
-    	var date_end = new Date(Date.parse(response.date_end));
+    	var date_start = this.parseDate(response.date_start);
+    	var date_end = this.parseDate(response.date_end);
+    	//var date_start = new Date(Date.parse(response.date_start));
+    	//var date_end = new Date(Date.parse(response.date_end));
     	
-    	var utc_date_start = date_start.getTime() + (date_start.getTimezoneOffset() * 60000);
-    	var new_date_start = new Date(utc_date_start + (3600000*+2));
-    	 
-    	var utc_date_end = date_end.getTime() + (date_end.getTimezoneOffset() * 60000);
-    	var new_date_end= new Date(utc_date_end + (3600000*+2));
-
-
-    	response.date_start = new_date_start;
-    	response.date_end= new_date_end;
+    	if( date_start ) {
+	    	var utc_date_start = date_start.getTime() + (date_start.getTimezoneOffset() * 60000);
+	    	var new_date_start = new Date(utc_date_start + (3600000*+2));
+	    	response.date_start = new_date_start; 	    
+	    }
+    	
+	    if( date_end ) {
+	    	var utc_date_end = date_end.getTime() + (date_end.getTimezoneOffset() * 60000);
+	    	var new_date_end= new Date(utc_date_end + (3600000*+2));
+	    	response.date_end= new_date_end;
+	    }
 
         return response;
     },
