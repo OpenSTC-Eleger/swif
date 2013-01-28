@@ -123,7 +123,7 @@ app.Views.CategoriesView = Backbone.View.extend({
 			$('#catUnit').val(this.selectedCatJson.unit);
 			if( this.selectedCatJson.parent_id )
 				app.views.selectListCategoriesView.setSelectedItem( this.selectedCatJson.parent_id[0] );	
-			
+	
         }       
 
     },
@@ -162,7 +162,7 @@ app.Views.CategoriesView = Backbone.View.extend({
 	    this.params.parent_id =  parent_id[0]
 	    this.modelId = this.selectedCatJson==null?0: this.selectedCatJson.id;
 	    var self = this;
-	    
+
 	    app.Models.Category.prototype.save(
 	    	this.params, 
 	    	this.modelId, {
