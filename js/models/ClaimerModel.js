@@ -13,7 +13,7 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
 	relations: [
         {
 			type: Backbone.HasMany,
-			key: 'addresses',
+			key: 'address',
 			relatedModel: 'app.Models.ClaimerContact',
 			includeInJSON: true,
 	        reverseRelation: {
