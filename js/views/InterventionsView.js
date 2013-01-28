@@ -22,7 +22,7 @@ app.Views.InterventionsView = Backbone.View.extend({
         
         'click a.buttonCancelInter'			: 'displayModalCancelInter',
         'submit #formCancelInter' 			: 'cancelInter',
-        'click a.accordion-intervention'    : 'tableAccordion'
+        'click a.accordion-object'    		: 'tableAccordion'
         	
     },
 
@@ -128,20 +128,20 @@ app.Views.InterventionsView = Backbone.View.extend({
 
         // Reset the default visibility //
         $('tr.expend').css({ display: 'none' }).removeClass('expend');
-        $('tr.row-intervention').css({ opacity: '0.5'});
-        $('tr.row-intervention > td').css({ backgroundColor: '#FFF'});
+        $('tr.row-object').css({ opacity: '0.5'});
+        $('tr.row-object > td').css({ backgroundColor: '#FFF'});
         
         // If the table row isn't already expend //       
         if(!isExpend){
             // Set the new visibility to the selected intervention //
             $('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
-            $(e.target).parents('tr.row-intervention').css({ opacity: '1'});
-            $(e.target).parents('tr.row-intervention').children('td').css({ backgroundColor: '#F5F5F5'});
+            $(e.target).parents('tr.row-object').css({ opacity: '1'});
+            $(e.target).parents('tr.row-object').children('td').css({ backgroundColor: '#F5F5F5'});
         }
         else{
-            $('tr.row-intervention').css({ opacity: '1'});
-            $('tr.row-intervention > td').css({ backgroundColor: '#FFF'});
-            $('tr.row-intervention:nth-child(4n+1) > td').css({ backgroundColor: '#F9F9F9'});
+            $('tr.row-object').css({ opacity: '1'});
+            $('tr.row-object > td').css({ backgroundColor: '#FFF'});
+            $('tr.row-object:nth-child(4n+1) > td').css({ backgroundColor: '#F9F9F9'});
         }
            
     },

@@ -40,20 +40,56 @@
 			<% for (var i = startPos; i < endPos; i++) { %>
 				
 				<!-- Claimer row -->
-				<tr class="row-item" id="claimer_<%= claimers[i].id %>">
+				<tr class="row-object" id="claimer_<%= claimers[i].id %>">
 					<td>
-						<i class="icon-user">&nbsp;&nbsp;</i><%= claimers[i].name %>
-						<p class="row-actions invisible">
-							<a href="#modalSaveClaimer" class="modalSaveClaimer" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
+						<a class="accordion-object" href="#collapse_<%= claimers[i].id %>">
+							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= claimers[i].name %>
+						</a>
+						<span class="object-actions invisible">
+							<a href="#modalSaveClaimer" class="modalSaveClaimer" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a>
 							<a href="#modalDeleteClaimer" class="modalDeleteClaimer" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
-						</p>
+						</span>
 					</td>
 					<td><%= claimers[i].type_id[1]  %></td>
 					<td class="hidden-phone"><%= (claimers[i].technical_site_id != null ? claimers[i].technical_site_id[1] : "") %></td>
 					<td><%= (claimers[i].phone != false ? claimers[i].phone : "") %></td>
 					<td><%= (claimers[i].email != false ? '<a href="mailto:'+claimers[i].email+'">'+claimers[i].email+'</a>' : "") %></td>
 				</tr>
+				<!-- Tasks row -->
+				<tr class="row-nested-objects-collapse" id="collapse_<%= claimers[i].id %>">
+					<td colspan="5">
+						<% if(claimers[i].addresses.length != 0) { %>
+							<table class="table-nested-objects table table-striped table-condensed table-hover">
+								<thead>
+									<tr>
+										<th><%= _.capitalize(lang.label) %></th>
+									</tr>
+								</thead>
+								<tbody>
+									<% _.each(claimers[i].addresses, function (address, i) { %>
+										console.debug(address);
+										<tr class="row-nested-objects" id="task_<%= address.id %>">
+											<td>
+												
+											</td>
+										</tr>
+									<% }); %>
+								</tbody>
+							</table>
+						<% } else { %>
+								<!-- No request in the Database -->
+								<div class="alert alert-info">
+									<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noAdressForPartner %>.
+								</div>
+						<% } %>
 
+							<div class="div-actions" >
+								<button class="btn btn-primary btn-small no-outline addAddress">
+									<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addAddress) %>
+								</button>
+							</div>
+					</td>
+				</tr>
 			<% }; %>
 			</tbody>
 		</table>

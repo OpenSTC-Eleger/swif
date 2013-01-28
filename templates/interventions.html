@@ -85,12 +85,12 @@
 				%>
 				
 				<!-- Intervention row -->
-				<tr class="row-intervention <%= classColor %>" id="inter_<%= intervention.id %>">
+				<tr class="row-object <%= classColor %>" id="inter_<%= intervention.id %>">
 					<td>
-						<a class="accordion-intervention" href="#collapse_<%= intervention.id %>">
+						<a class="accordion-object" href="#collapse_<%= intervention.id %>">
 							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= intervention.name %>
 						</a>
-						<span class="intervention-actions invisible">
+						<span class="object-actions invisible">
 							<a href="#interventions/<%= intervention.id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a>
 							<% if( intervention.state == app.Models.Intervention.state[0].value ) { %>
 								<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.cancel) %></a> 
@@ -120,12 +120,12 @@
 				</tr>
 
 				<!-- Tasks row -->
-				<tr class="row-tasks-collapse" id="collapse_<%= intervention.id %>">
+				<tr class="row-nested-objects-collapse" id="collapse_<%= intervention.id %>">
 					<td colspan="5">
 						
 						<!-- Check if there is some tasks -->
 						<% if(intervention.tasks.length != 0) { %>
-							<table class="table-tasks table table-striped table-condensed table-hover">
+							<table class="table-nested-objects table table-striped table-condensed table-hover">
 								<thead>
 									<tr>
 										<th><%= _.capitalize(lang.label) %></th>
@@ -138,7 +138,7 @@
 								</thead>
 								<tbody>
 									<% _.each(intervention.tasks, function (task, i) { %>
-										<tr class="row-tasks <%= (task.progress == '100' ? 'success' : '') %>" id="task_<%= task.id %>">
+										<tr class="row-nested-objects <%= (task.progress == '100' ? 'success' : '') %>" id="task_<%= task.id %>">
 											<td>
 												<% if(task.date_start != ''){ %>
 													<i 

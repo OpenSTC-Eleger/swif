@@ -168,8 +168,8 @@ div.div-actions{
 
 
 
-// Intervention Actions //
-.intervention-actions, .place-actions, .row-actions{
+// object Actions //
+.object-actions, .place-actions, .row-actions{
 	font-size: 85%;
 	width: auto;
 	margin: 0 0 0 16px;
@@ -180,12 +180,12 @@ div.div-actions{
 .task-actions{
 	font-size: 90%;
 }
-.intervention-actions a:hover i, .row-actions a:hover i, .task-actions a:hover i, a.accordion-toggle:hover i, a.accordion-intervention:hover i{
+.object-actions a:hover i, .row-actions a:hover i, .task-actions a:hover i, a.accordion-toggle:hover i, a.accordion-object:hover i{
 	text-decoration: none;
 }
 
-// Intervention Tasks //
-ul.tasks li:hover .task-actions, tr.row-item:hover .row-actions, tr.row-tasks:hover .task-actions, tr.row-intervention:hover .intervention-actions{
+// object nestedObjects //
+ul.nested-objects li:hover .task-actions, tr.row-item:hover .row-actions, tr.row-nested-objects:hover .task-actions, tr.row-object:hover .object-actions{
 	visibility: visible;
 }
 
@@ -252,24 +252,24 @@ table.teamsTable tr.info a.teamName{
 }
 
 
-/* Interventions list
+/* objects list
 -------------------------------------------------- */
-table.table-interventions tbody > tr:nth-child(4n+1){
+table.table-objects tbody > tr:nth-child(4n+1){
 	background-color: @tableBackgroundAccent;
 }
-table.table-interventions tbody tr:hover > td{
+table.table-objects tbody tr:hover > td{
 	background-color: @tableBackgroundHover;
 }
-tr.row-intervention > td, tr.row-item td{
+tr.row-object > td, tr.row-item td{
 	padding-bottom: 2px;
 }
-tr.row-tasks-collapse{
+tr.row-nested-objects-collapse{
 	display: none;
 }
-tr.row-tasks-collapse.expend:hover td[colspan="5"]{
+tr.row-nested-objects-collapse.expend:hover td[colspan="5"]{
 	background-color: @white;
 }
-tr.row-tasks-collapse td[colspan="5"]{
+tr.row-nested-objects-collapse td[colspan="5"]{
 	padding: 25px 3% 5px 3%;
 }
 
