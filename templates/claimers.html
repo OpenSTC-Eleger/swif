@@ -58,20 +58,32 @@
 				<!-- Tasks row -->
 				<tr class="row-nested-objects-collapse" id="collapse_<%= claimers[i].id %>">
 					<td colspan="5">
-						<% if(claimers[i].addresses.length != 0) { %>
+						<% if(claimers[i].address.length != 0) { %>
 							<table class="table-nested-objects table table-striped table-condensed table-hover">
 								<thead>
 									<tr>
 										<th><%= _.capitalize(lang.label) %></th>
+										<th><%= _.capitalize(lang.label) %></th>
+										<th><%= _.capitalize(lang.label) %></th>
+										<th><%= _.capitalize(lang.label) %></th>
+										<th><%= _.capitalize(lang.label) %></th>
+										<th><%= _.capitalize(lang.label) %></th>
+										<th><%= _.capitalize(lang.label) %></th>
+										<th><%= _.capitalize(lang.label) %></th>
 									</tr>
 								</thead>
 								<tbody>
-									<% _.each(claimers[i].addresses, function (address, i) { %>
-										console.debug(address);
+									<% _.each(claimers[i].address, function (address, i) { console.debug(address); %>
+										
 										<tr class="row-nested-objects" id="task_<%= address.id %>">
-											<td>
-												
-											</td>
+											<td><%= address.name %></td>
+											<td><%= address.function %></td>
+											<td><%= address.phone %></td>
+											<td><%= address.email %></td>
+											<td><%= address.mobile %></td>
+											<td><%= address.street %></td>
+											<td><%= address.city %></td>
+											<td><%= address.zip %></td>
 										</tr>
 									<% }); %>
 								</tbody>

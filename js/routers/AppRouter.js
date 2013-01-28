@@ -1035,12 +1035,20 @@ app.Router = Backbone.Router.extend({
 	    	
 	    	                        app.collections.places.fetch({
 	    	                        	success: function() {
-	    		                            app.views.claimersView = new app.Views.ClaimersView({page: self.page});
-	    		                            self.render(app.views.claimersView);
-	    		                        },
-	    		                        complete: function(){
-	    		                            app.loader('hide');
-	    		                        }
+		    	                            if(app.collections.claimersContacts == null ){
+		    	                                app.collections.claimersContacts = new app.Collections.ClaimersContacts();
+		    	                            }
+		    	                           
+		    	                            app.collections.claimersContacts.fetch({
+		    	                            	success: function() {
+			    		                            app.views.claimersView = new app.Views.ClaimersView({page: self.page});
+			    		                            self.render(app.views.claimersView);
+			    		                        },
+			    		                        complete: function(){
+			    		                            app.loader('hide');
+			    		                        }
+		    	                            });
+			    		                 }
 	    	                        });
 	                        	},
 	
