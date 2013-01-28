@@ -17,7 +17,9 @@ app.Collections.Categories = Backbone.Collection.extend({
     	console.log('Categories collection Initialization');
     },
 
-
+	getNextSequence: function(){
+    	_.max(this, function(item){ return item.id; });
+	},
 
     /** Collection Sync
     */

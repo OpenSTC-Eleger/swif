@@ -83,8 +83,8 @@ app.Models.Category = Backbone.RelationalModel.extend({
     
     /** Save Model
 	*/
-	save: function(data,options) { 
-		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(),options);
+	save: function(data, id, options) { 
+		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
 	},
 
 

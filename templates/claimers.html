@@ -13,7 +13,7 @@
 
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
-			<a href="#modalAddClaimer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addClaimer) %></a>	
+			<a href="#modalSaveClaimer" class="btn btn-primary modalSaveClaimer" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addClaimer) %></a>	
 
 			<form class="form-search pull-right">
 				<div class="input-append">
@@ -44,12 +44,12 @@
 					<td>
 						<i class="icon-user">&nbsp;&nbsp;</i><%= claimers[i].name %>
 						<p class="row-actions invisible">
-							<a href="#"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
+							<a href="#modalSaveClaimer" class="modalSaveClaimer" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
 							<a href="#modalDeleteClaimer" class="modalDeleteClaimer" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</td>
 					<td><%= claimers[i].type_id[1]  %></td>
-					<td class="hidden-phone"><%= (claimers[i].technical_site_id != false ? claimers[i].technical_site_id : "") %></td>
+					<td class="hidden-phone"><%= (claimers[i].technical_site_id != null ? claimers[i].technical_site_id[1] : "") %></td>
 					<td><%= (claimers[i].phone != false ? claimers[i].phone : "") %></td>
 					<td><%= (claimers[i].email != false ? '<a href="mailto:'+claimers[i].email+'">'+claimers[i].email+'</a>' : "") %></td>
 				</tr>
@@ -101,7 +101,7 @@
 	<% }
 	else { %>
 		<div class="tableToolbar">
-			<a href="#modalAddClaimer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addClaimer) %></a>
+			<a href="#modalSaveClaimer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addClaimer) %></a>
 		</div><br />
 
 		<!-- No Claimer in the Database -->
@@ -115,34 +115,34 @@
 
 
 <!-- Modal Form to add a new Claimer -->
-<div id="modalAddClaimer" class="modal hide fade">
+<div id="modalSaveClaimer" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3><%= _.capitalize(lang.actions.addClaimer) %></h3>
 	</div>
 	
 	<div class="modal-body">
-		<form id="formAddClaimer" action="#" class="form-horizontal">
+		<form id="formSaveClaimer" action="#" class="form-horizontal">
 
 			<fieldset>
 				<legend><%= lang.aboutTheClaimer %></legend>
 			
 			<!-- Place name -->
 			<div class="control-group">
-				<label for="placeName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
+				<label for="claimerName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
 
 				<div class="controls">
-					<input type="text" id="placeName" name="placeName" required="required" />
+					<input type="text" id="claimerName" name="claimerName" required="required" />
 					<span class="help-inline"></span>
 				</div>
 			</div>
 
 			<!-- Place Type -->
 			<div class="control-group">
-				<label for="placeType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
+				<label for="claimerType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
 
 				<div class="controls">
-					<select id="placeType"></select>
+					<select id="claimerType"></select>
 					<span class="help-inline"></span>
 				</div>
 			</div>
@@ -155,20 +155,30 @@
 
 				<!-- Place Service -->
 				<div class="control-group">
-					<label for="placeService" class="control-label"><%= _.capitalize(lang.service) %>:</label>
+					<label for="claimerService" class="control-label"><%= _.capitalize(lang.service) %>:</label>
 
 					<div class="controls">
-						<select id="placeService"></select>
+						<select id="claimerService"></select>
+						<span class="help-inline"></span>
+					</div>
+				</div>
+				
+				<!-- Technical Service concerned-->
+				<div class="control-group">
+					<label for="claimerTechnicalService" class="control-label"><%= _.capitalize(lang.technicalService) %>:</label>
+
+					<div class="controls">
+						<select id="claimerTechnicalService"></select>
 						<span class="help-inline"></span>
 					</div>
 				</div>
 
 				<!-- Place Parent Place -->
 				<div class="control-group">
-					<label for="placeParentPlace" class="control-label"><%= _.capitalize(lang.parentPlace) %>:</label>
+					<label for="claimerTechnicalSite" class="control-label"><%= _.capitalize(lang.defaultPlace) %>:</label>
 
 					<div class="controls">
-						<select id="placeParentPlace"></select>
+						<select id="claimerTechnicalSite"></select>
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -179,7 +189,7 @@
 	</div>
 	
 	<div class="modal-footer">
-		<button type="submit" form="formAddClaimer" class="btn btn-primary saveTask"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+		<button type="submit" form="formSaveClaimer" class="btn btn-primary saveClaimer"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
 		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>

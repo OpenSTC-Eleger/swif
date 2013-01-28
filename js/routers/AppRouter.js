@@ -1017,12 +1017,37 @@ app.Router = Backbone.Router.extend({
                     app.loader('display');
                 },
                 success: function(){
-                    app.views.claimersView = new app.Views.ClaimersView({page: self.page});
-                    self.render(app.views.claimersView);
+                    if(app.collections.claimersTypes == null ){
+                        app.collections.claimersTypes = new app.Collections.ClaimersTypes();
+                    }
+                   
+                    app.collections.claimersTypes.fetch({
+                    	success: function() {
+	                        if(app.collections.claimersServices == null ){
+	                            app.collections.claimersServices = new app.Collections.ClaimersServices();
+	                        }
+	
+	                        app.collections.claimersServices.fetch({
+	                        	success: function() {
+	    	                        if(app.collections.places == null ){
+	    	                            app.collections.places = new app.Collections.Places();
+	    	                        }
+	    	
+	    	                        app.collections.places.fetch({
+	    	                        	success: function() {
+	    		                            app.views.claimersView = new app.Views.ClaimersView({page: self.page});
+	    		                            self.render(app.views.claimersView);
+	    		                        },
+	    		                        complete: function(){
+	    		                            app.loader('hide');
+	    		                        }
+	    	                        });
+	                        	},
+	
+	                        });
+                    	}
+                    });
                 },
-                complete: function(){
-                    app.loader('hide');
-                }
             });
         }
         else{

@@ -96,12 +96,10 @@ app.Views.CategoriesView = Backbone.View.extend({
         this.selectedCat = _.filter(app.collections.categories.models, function(item){ return item.attributes.id == id });
         if( this.selectedCat.length>0 ) {
         	this.model = this.selectedCat[0];
-        	this.selectedCatJson = this.model.toJSON();        
+        	this.selectedCatJson = this.model.toJSON();    
         }
         else {
-        	app.models.category.clear();
-        	this.model = app.models.category;
-        	this.selectedCatJson = null;
+        	this.selectedCatJson = null;        	
         }        
     },
 
@@ -153,35 +151,39 @@ app.Views.CategoriesView = Backbone.View.extend({
 	     
 	     var parent_id = this.getIdInDropDown(app.views.selectListCategoriesView);
 	     
-	     var params = {	
+	     this.params = {	
 		     name: this.$('#catName').val(),
 		     code: this.$('#catCode').val(),
 		     unit: this.$('#catUnit').val(),
 		     parent_id: parent_id,
 	     };
 	     
-	    this.model.update(params);
-	    params.parent_id =  parent_id[0]
-	    this.model.save(params,{
-			success: function(data){
-				console.log(data);
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					if( !self.model.id && data.result && data.result.result>0 ) {
-						self.model.id = data.result.result;
-						self.model.attributes.id = data.result.result;					
+	    
+	    this.params.parent_id =  parent_id[0]
+	    this.modelId = this.selectedCatJson==null?0: this.selectedCatJson.id;
+	    var self = this;
+	    app.Models.Category.prototype.save(
+	    	this.params, 
+	    	this.modelId, {
+				success: function(data){
+					console.log(data);
+					if(data.error){
+						app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 					}
-					app.collections.categories.add(self.model);
-					$('#modalSaveCat').modal('hide');
-					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
-					self.render();
-				}				
-			},
-			error: function(e){
-				alert("Impossible de mettre à jour le site");
-			}
+					else{
+						if( self.modelId==0 )
+							self.model = new app.Models.Category({id: data.result.result}); 
+						self.params.parent_id = self.getIdInDropDown(app.views.selectListCategoriesView);
+						self.model.update(self.params);
+						app.collections.categories.add(self.model);
+						$('#modalSaveCat').modal('hide');
+						app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
+						self.render();
+					}				
+				},
+				error: function(e){
+					alert("Impossible de mettre à jour le site");
+				}
 	    });
 	},
 

@@ -17,6 +17,7 @@ app.Collections.Claimers = Backbone.Collection.extend({
     },
 
 
+
     /** Collection Sync
     */
     sync: function(method, model, options) {

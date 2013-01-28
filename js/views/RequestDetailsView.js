@@ -291,11 +291,11 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 			
 			
 			app.views.selectListClaimersContactsView = new app.Views.DropdownSelectListView(
-					{el: $("#requestContactSelect"), collection: claimer.attributes.address})
+					{el: $("#requestContactSelect"), collection: claimer.attributes.addresses})
 			app.views.selectListClaimersContactsView.clearAll();
 			app.views.selectListClaimersContactsView.addEmptyFirst();
 			app.views.selectListClaimersContactsView.addAll();
-			contact = claimer.attributes.address!=null?claimer.attributes.address.toJSON():null;
+			contact = claimer.attributes.addresses!=null?claimer.attributes.addresses.toJSON():null;
 			if( contact ) {
 				app.views.selectListClaimersContactsView.setSelectedItem( contact[0].id );
 			}

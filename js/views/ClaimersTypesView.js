@@ -88,11 +88,9 @@ app.Views.ClaimersTypesView = Backbone.View.extend({
         this.selected = _.filter(app.collections.claimersTypes.models, function(item){ return item.attributes.id == id });
         if( this.selected.length>0 ) {
         	this.model = this.selected[0];
-        	this.selectedJson = this.model.toJSON();        
+        	this.selectedJson = this.model.toJSON();  
         }
         else {
-        	app.models.claimerType.clear();
-        	this.model = app.models.claimerType;
         	this.selectedJson = null;        	
         }        
     },
@@ -132,34 +130,37 @@ app.Views.ClaimersTypesView = Backbone.View.extend({
 	saveClaimersTypes: function(e) {		     
     	e.preventDefault();
 
-	     var self = this;
 	     
-	     var params = {	
+	     
+	     this.params = {	
 		     name: this.$('#claimersTypesName').val(),
 		     code: this.$('#claimersTypesCode').val(),
 	     };
 	     
-	    this.model.update(params);
-	    this.model.save(params,{
-			success: function(data){
-				console.log(data);
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					if( !self.model.id  && data.result && data.result.result>0 ) {
-						self.model.id = data.result.result;
-						self.model.attributes.id = data.result.result;					
+	    this.modelId = this.selectedJson==null?0: this.selectedJson.id;
+	    var self = this;
+	    
+	    app.Models.ClaimerType.prototype.save(
+	    	this.params, 
+	    	this.modelId, {
+				success: function(data){
+					console.log(data);
+					if(data.error){
+						app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 					}
-					app.collections.claimersTypes.add(self.model);
-					$('#modalSaveClaimersTypes').modal('hide');
-					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
-					self.render();
-				}				
-			},
-			error: function(e){
-				alert("Impossible de mettre à jour le site");
-			}
+					else{
+						if( self.modelId==0 )
+							self.model = new app.Models.ClaimerType({id: data.result.result}); 
+						self.model.update(self.params);
+						app.collections.claimersTypes.add(self.model);
+						$('#modalSaveClaimersTypes').modal('hide');
+						app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
+						self.render();
+					}				
+				},
+				error: function(e){
+					alert("Impossible de mettre à jour le site");
+				}
 	    });
 	},
 

@@ -47,7 +47,7 @@
 							<a href="#modalDeleteCat" class="modalDeleteCat" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</td>
-					<td><%= (cat.parent_id != false ? cat.parent_id[1] : "")%></td>
+					<td><%= (cat.parent_id != null ? cat.parent_id[1] : "")%></td>
 					<td><%= (cat.code != false ? cat.code : "")%></td>
 					<td><%= (cat.unit != false ? cat.unit : "")%></td>
 				</tr>
