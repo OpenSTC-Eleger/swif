@@ -21,7 +21,7 @@ app.Views.TeamsView = Backbone.View.extend({
 		'click a.modalDeleteTeam'  		: 'modalDeleteTeam',
 		'click a.modalSaveTeam'  		: 'modalSaveTeam',
 
-		'click #formAddTeam' 			: 'saveTeam',
+		'submit #formSaveTeam' 			: 'saveTeam',
 		'click button.btnDeleteTeam'	: 'deleteTeam',
 
 		'click a.teamName' 				: 'displayTeamInfos'
@@ -87,6 +87,7 @@ app.Views.TeamsView = Backbone.View.extend({
 			});
 
 			$(self.el).html(template);
+
 
 			$('#teamMembers, #officersList').sortable({
 				connectWith: 'ul.sortableOfficersList',
@@ -162,16 +163,14 @@ app.Views.TeamsView = Backbone.View.extend({
 		$('table.teamsTable tr.info').removeClass('info');
 		link.parents('tr').addClass('info').children('i');
 
-		this.selected = _.filter(app.collections.teams.models, function(item){ return item.attributes.id == id });
+		this.selectedTeam = _.filter(app.collections.teams.models, function(item){ return item.attributes.id == id });
 
-        if( this.selected.length > 0 ) {
-			this.model = this.selected[0];
-			this.selectedJson = this.model.toJSON();
+        if( this.selectedTeam.length > 0 ) {
+			this.model = this.selectedTeam[0];
+			this.selectedTeamJson = this.model.toJSON();
         }
         else {
-			app.models.team.clear();
-			this.model = app.models.team;
-			this.selectedJson = null;
+			this.selectedTeamJson = null;
         }
 
 		console.debug(this.model);
@@ -187,9 +186,9 @@ app.Views.TeamsView = Backbone.View.extend({
 		$('#teamName').val('');
 		app.views.selectListOfficersView.setSelectedItem(0);
 
-		if( this.selectedJson ) {
-			$('#teamName').val(this.selectedJson.name);
-			app.views.selectListOfficersView.setSelectedItem( this.selectedJson.manager_id[0] );
+		if( this.selectedTeamJson ) {
+			$('#teamName').val(this.selectedTeamJson.name);
+			app.views.selectListOfficersView.setSelectedItem( this.selectedTeamJson.manager_id[0] );
 		}
 
 	},
@@ -203,8 +202,8 @@ app.Views.TeamsView = Backbone.View.extend({
         // Retrieve the ID of the team //
     	this.setModel(e);
 
-        $('#infoModalDeleteTeam p').html(this.selectedJson.name);
-        $('#infoModalDeleteTeam small').html(_.capitalize(app.lang.foreman) +": "+ this.selectedJson.service_ids[1]);
+        $('#infoModalDeleteTeam p').html(this.selectedTeamJson.name);
+        $('#infoModalDeleteTeam small').html(_.capitalize(app.lang.foreman) +": "+ this.selectedTeamJson.service_ids[1]);
     },
 
 
@@ -214,33 +213,35 @@ app.Views.TeamsView = Backbone.View.extend({
 	saveTeam: function(e) {		     
     	e.preventDefault();
 
-		var self = this;
-
 		var manager_id = this.getIdInDropDown(app.views.selectListOfficersView);
 	     
-		var params = {
+		this.params = {
 			name: this.$('#teamName').val(),
 		    manager_id: manager_id
 		};
 	     
-	    this.model.update(params);
-	    params.manager_id =  manager_id[0];
+	    this.params.manager_id =  manager_id[0];
+	    this.modelId = this.selectedTeamJson==null?0: this.selectedTeamJson.id;
 
-	    this.model.save(params,{
+		var self = this;
+
+	    app.Models.Team.prototype.save(
+	    	this.params,
+	    	this.modelId, {
 			success: function(data){
 				console.log(data);
 				if(data.error){
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
-					if( !self.model.id  && data.result && data.result.result>0 ) {
-						self.model.id = data.result.result;
-						self.model.attributes.id = data.result.result;					
+					if( self.modelId==0 ){
+						self.model = new app.Models.Team({id: data.result.result});
 					}
 
+					self.params.manager_id = self.getIdInDropDown(app.views.selectListOfficersView);
+					self.model.update(self.params);
+
 					app.collections.teams.add(self.model);
-					console.debug("self.model");
-					console.debug(self.model);
 
 					$('#modalSaveTeam').modal('hide');
 					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.teamSaveOk);
@@ -252,7 +253,7 @@ app.Views.TeamsView = Backbone.View.extend({
 			}
 		});
 	},
-
+	     
 
 
 	/** Delete the selected team
@@ -281,8 +282,6 @@ app.Views.TeamsView = Backbone.View.extend({
 
 		});
 	},
-
-
 
 
 
