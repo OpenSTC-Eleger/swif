@@ -162,6 +162,7 @@ app.Views.CategoriesView = Backbone.View.extend({
 	    this.params.parent_id =  parent_id[0]
 	    this.modelId = this.selectedCatJson==null?0: this.selectedCatJson.id;
 	    var self = this;
+	    
 	    app.Models.Category.prototype.save(
 	    	this.params, 
 	    	this.modelId, {
@@ -171,8 +172,10 @@ app.Views.CategoriesView = Backbone.View.extend({
 						app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 					}
 					else{
-						if( self.modelId==0 )
-							self.model = new app.Models.Category({id: data.result.result}); 
+						if( self.modelId==0 ){
+							self.model = new app.Models.Category({id: data.result.result});
+						}
+
 						self.params.parent_id = self.getIdInDropDown(app.views.selectListCategoriesView);
 						self.model.update(self.params);
 						app.collections.categories.add(self.model);
