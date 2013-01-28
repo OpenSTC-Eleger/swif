@@ -83,7 +83,7 @@ app.Views.TeamsView = Backbone.View.extend({
 				lang: app.lang,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
-				pageCount: pageCount,
+				pageCount: pageCount
 			});
 
 			$(self.el).html(template);
@@ -100,7 +100,7 @@ app.Views.TeamsView = Backbone.View.extend({
 				opacity: '.8',
 				revert: 300,
 				stop: function(event, ui){
-					self.saveTeamsServices();
+					self.saveServicesOfficersTeam();
 				}
 			});
 
@@ -116,7 +116,7 @@ app.Views.TeamsView = Backbone.View.extend({
 				opacity: '.8',
 				revert: 300,
 				stop: function(event, ui){
-					self.saveTeamsServices();
+					self.saveServicesOfficersTeam();
 				}
 			});
 
@@ -133,14 +133,6 @@ app.Views.TeamsView = Backbone.View.extend({
 
 		return this;
 	},
-
-
-
-	saveTeamsServices: function(){
-		console.log($("#teamMembers").sortable('toArray'));
-		console.log($("#teamServices").sortable('toArray'));
-	},
-
 
 
 
@@ -208,9 +200,9 @@ app.Views.TeamsView = Backbone.View.extend({
 
 
 
-	/** Save Claimer Type
+	/** Save Team
 	*/
-	saveTeam: function(e) {		     
+	saveTeam: function(e) {
     	e.preventDefault();
 
 		var manager_id = this.getIdInDropDown(app.views.selectListOfficersView);
@@ -244,6 +236,54 @@ app.Views.TeamsView = Backbone.View.extend({
 					app.collections.teams.add(self.model);
 
 					$('#modalSaveTeam').modal('hide');
+					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.teamSaveOk);
+					self.render();
+				}				
+			},
+			error: function(e){
+				alert("Impossible de créer ou mettre à jour l'équipe");
+			}
+		});
+	},
+
+
+
+	/** Save Officer and Services Team
+	*/
+	saveServicesOfficersTeam: function() {
+
+		var services = _.map($("#teamServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });
+		var members = _.map($("#teamMembers").sortable('toArray'), function(member){ return _(_(member).strRightBack('_')).toNumber(); });
+     
+
+		this.params = {
+			name: this.selectedTeamJson.name,
+			manager_id: this.selectedTeamJson.manager_id[0],
+			service_ids: services,
+			user_ids: members
+		};
+
+		this.modelId = this.selectedTeamJson==null?0: this.selectedTeamJson.id;
+
+		var self = this;
+
+		app.Models.Team.prototype.save(
+			this.params,
+			this.modelId, {
+			success: function(data){
+				console.log(data);
+				if(data.error){
+					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				}
+				else{
+					if( self.modelId==0 ){
+						self.model = new app.Models.Team({id: data.result.result});
+					}
+
+					self.model.update(self.params);
+
+					app.collections.teams.add(self.model);
+
 					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.teamSaveOk);
 					self.render();
 				}				
@@ -304,7 +344,7 @@ app.Views.TeamsView = Backbone.View.extend({
 		$('#teamServices li').remove();
 
 		_.each(selectedTeamJson.user_ids, function (member, i){
-			$('#teamMembers').append('<li><a href="#"><i class="icon-user"></i> '+ member.firstname +' '+ member.name +'</a></li>');
+			$('#teamMembers').append('<li id="officer_'+member.id+'"><a href="#"><i class="icon-user"></i> '+ member.firstname +' '+ member.name +'</a></li>');
 		});
 
 
@@ -312,7 +352,7 @@ app.Views.TeamsView = Backbone.View.extend({
 		console.log(selectedTeamJson);
 
 		_.each(selectedTeamJson.service_ids, function (service, i){
-			$('#teamServices').append('<li><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
+			$('#teamServices').append('<li id="service_'+service.id+'"><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
 		});
 
 		
