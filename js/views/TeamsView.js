@@ -65,7 +65,6 @@ app.Views.TeamsView = Backbone.View.extend({
 			return item.attributes.belongsToTeam == null; 
 		});
 
-		console.debug(teams);
 
 		var len = teams.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
@@ -79,7 +78,6 @@ app.Views.TeamsView = Backbone.View.extend({
 				teams: app.collections.teams.toJSON(),
 				nbTeams: nbTeams,
 				officersWithoutTeam: officersWithoutTeam,
-				services: app.collections.claimersServices.toJSON(),
 				lang: app.lang,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
@@ -154,6 +152,8 @@ app.Views.TeamsView = Backbone.View.extend({
 
 		$('table.teamsTable tr.info').removeClass('info');
 		link.parents('tr').addClass('info').children('i');
+
+		$('#teamServicesMembers').removeClass('hide');
 
 		this.selectedTeam = _.filter(app.collections.teams.models, function(item){ return item.attributes.id == id });
 
@@ -347,21 +347,33 @@ app.Views.TeamsView = Backbone.View.extend({
 		var selectedTeamJson = this.selectedTeam[0].toJSON();
 
 		// Clear the list of the user //
-		$('#teamMembers li').remove();
-		$('#teamServices li').remove();
+		$('#teamMembers li, #teamServices li, #servicesList li').remove();
 
+		
+		// Display the members of the team //
 		_.each(selectedTeamJson.user_ids, function (member, i){
 			$('#teamMembers').append('<li id="officer_'+member.id+'"><a href="#"><i class="icon-user"></i> '+ member.firstname +' '+ member.name +'</a></li>');
 		});
 
 
-		console.log('""""""""""""""""""""""""""""""""""""selectedTeamJson""""""""""""""""""""""""""""""""""""');
-		console.log(selectedTeamJson);
-
+		var teamServices = new Array();
+		// Display the services of the team //
 		_.each(selectedTeamJson.service_ids, function (service, i){
 			$('#teamServices').append('<li id="service_'+service.id+'"><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
+			teamServices[i] = service.id;
 		});
 
+
+
+		// Display the remain services //
+		_.filter(app.collections.claimersServices.toJSON(), function (service, i){ 
+			if(!_.contains(teamServices, service.id)){
+				$('#servicesList').append('<li id="service_'+service.id+'"><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
+			}
+		});
+
+		var nbRemainServices = $('#servicesList li').length;
+		$('#badgeNbServices').html(nbRemainServices);
 		
 	},
 
