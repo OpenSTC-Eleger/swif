@@ -65,6 +65,7 @@ var app = {
                 app.models.service = new app.Models.ClaimerService();
                 app.models.category = new app.Models.Category();
                 //app.models.claimer = new app.Models.Claimer();
+                app.models.claimerContact = new app.Models.ClaimerContact();
                 app.models.claimerType = new app.Models.ClaimerType();
 
                 // Router initialization //

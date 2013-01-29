@@ -60,8 +60,6 @@ app.Models.ClaimerType = Backbone.RelationalModel.extend({
 		this.setCode( params.code );
 	},
 
-
-	test:function(){console.debug("coucou")},
 	/** Save Model
 	*/
 	save: function(data, id, options) { 
