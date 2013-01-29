@@ -148,18 +148,20 @@ app.Views.TeamsView = Backbone.View.extend({
 	setModel: function(e) {
 		e.preventDefault();
 		var link = $(e.target);
+		
 		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
-
-		$('table.teamsTable tr.info').removeClass('info');
-		link.parents('tr').addClass('info').children('i');
-
-		$('#teamServicesMembers').removeClass('hide');
-
 		this.selectedTeam = _.filter(app.collections.teams.models, function(item){ return item.attributes.id == id });
 
         if( this.selectedTeam.length > 0 ) {
+		
+			$('table.teamsTable tr.info').removeClass('info');
+			link.parents('tr').addClass('info').children('i');
+
+			$('#teamServicesMembers').removeClass('hide');
+
 			this.model = this.selectedTeam[0];
 			this.selectedTeamJson = this.model.toJSON();
+
         }
         else {
 			this.selectedTeamJson = null;
@@ -195,7 +197,7 @@ app.Views.TeamsView = Backbone.View.extend({
     	this.setModel(e);
 
         $('#infoModalDeleteTeam p').html(this.selectedTeamJson.name);
-        $('#infoModalDeleteTeam small').html(_.capitalize(app.lang.foreman) +": "+ this.selectedTeamJson.service_ids[1]);
+        $('#infoModalDeleteTeam small').html(_.capitalize(app.lang.foreman) +": "+ this.selectedTeamJson.manager_id[1]);
     },
 
 
@@ -231,8 +233,11 @@ app.Views.TeamsView = Backbone.View.extend({
 					}
 
 					self.params.manager_id = self.getIdInDropDown(app.views.selectListOfficersView);
-					self.params.service_ids = self.selectedTeamJson.service_ids;
-					self.params.user_ids = self.selectedTeamJson.user_ids;
+					
+					if(self.selectedTeamJson != null){
+						self.params.service_ids = self.selectedTeamJson.service_ids;
+						self.params.user_ids = self.selectedTeamJson.user_ids;
+					}
 
 					self.model.update(self.params);
 
