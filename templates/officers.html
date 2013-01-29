@@ -13,7 +13,7 @@
 
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
-			<a href="#modalAddOfficer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addOfficer) %></a>	
+			<a href="#modalSaveOfficer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addOfficer) %></a>	
 
 			<form class="form-search pull-right">
 				<div class="input-append">
@@ -43,7 +43,7 @@
 					<td>
 						<%= officers[i].name +" "+ officers[i].firstname %>
 						<p class="row-actions no-margin invisible">
-							<a href="#"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
+							<a href="#modalSaveOfficer" class="modalSaveOfficer" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
 							<a href="#modalDeleteOfficer" class="modalDeleteOfficer" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</td>
@@ -107,7 +107,7 @@
 	<% }
 	else { %>
 		<div class="tableToolbar">
-			<a href="#modalAddOfficer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addOfficer) %></a>
+			<a href="#modalSave	Officer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addOfficer) %></a>
 		</div><br />
 
 		<!-- No request in the Database -->
@@ -121,18 +121,18 @@
 
 
 <!-- Modal Form to add a new Officer -->
-<div id="modalAddOfficer" class="modal hide fade">
+<div id="modalSaveOfficer" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3><%= _.capitalize(lang.actions.addOfficer) %></h3>
 	</div>
 	
 	<div class="modal-body">
-		<form id="formAddOfficer" action="#" class="form-horizontal">
+		<form id="formSaveOfficer" action="#" class="form-horizontal">
 
 			<fieldset>
 				<legend><%= lang.aboutTheOfficer %></legend>
-			
+
 				<!-- Officer firstname -->
 				<div class="control-group">
 					<label for="officerFirstname" class="control-label"><%= _.capitalize(lang.firstname) %>:</label>
@@ -149,6 +149,16 @@
 
 					<div class="controls">
 						<input type="text" id="officerName" name="officerName" required="required" />
+						<span class="help-inline"></span>
+					</div>
+				</div>
+
+				<!-- Officer email -->
+				<div class="control-group">
+					<label for="officerEmail" class="control-label"><%= _.capitalize(lang.email) %>:</label>
+
+					<div class="controls">
+						<input type="email" id="officerEmail" name="officerEmail" />
 						<span class="help-inline"></span>
 					</div>
 				</div>

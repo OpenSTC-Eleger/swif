@@ -9,14 +9,18 @@ app.Views.OfficersView = Backbone.View.extend({
 	
 	numberListByPage: 25,
 
-	selectedOfficer : '',
+	selectedOfficer: '',
 
 
     // The DOM events //
     events: {
-		'click a.modalDeleteOfficer'  	: 'setInfoModal',
+    	'click li.active'				: 'preventDefault',
+		'click li.disabled'				: 'preventDefault',
+		
+		'click a.modalDeleteOfficer'  	: 'modalDeleteOfficer',
+		'click a.modalSaveOfficer'  	: 'modalSaveOfficer',
 
-		'submit #formAddOfficer' 		: "addOfficer", 
+		'submit #formAddOfficer' 		: 'saveOfficer',
 		'click button.btnDeleteOfficer' : 'deleteOfficer'
     },
 
@@ -79,52 +83,126 @@ app.Views.OfficersView = Backbone.View.extend({
 
 
 
-    /** Display information in the Modal view
+	setModel: function(e) {
+		e.preventDefault();
+		var link = $(e.target);
+		
+		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
+		this.selectedOfficer = _.filter(app.collections.officers.models, function(item){ return item.attributes.id == id });
+
+        if( this.selectedOfficer.length > 0 ) {
+
+			this.model = this.selectedOfficer[0];
+			this.selectedOfficerJson = this.model.toJSON();
+        }
+        else {
+			this.selectedOfficerJson = null;
+        }
+
+		console.debug(this.model);
+	},
+
+
+
+    /** Modal create/update officer
     */
-    setInfoModal: function(e){
-        
-        // Retrieve the ID of the intervention //
-        var link = $(e.target);
+    modalSaveOfficer: function(e){
+		this.setModel(e);
 
-        var id = _(link.parents('tr').attr('id')).strRightBack('_');
-        
-        this.selectedOfficer = _.filter(app.collections.officers.models, function(item){ return item.attributes.id == id });
-        var selectedOfficerJson = this.selectedOfficer[0].toJSON();
+		$('#officerName').val('');
+		$('#officerFirstname').val('');
+		
+		// Update //
+		if( this.selectedOfficerJson ) {
+			$('#officerName').val(this.selectedOfficerJson.name);
+			$('#officerFirstname').val(this.selectedOfficerJson.firstname);
+		}
+	},
 
-        $('#infoModalDeleteOfficer p').html(selectedOfficerJson.name+" "+selectedOfficerJson.firstname);
-        $('#infoModalDeleteOfficer small').html(selectedOfficerJson.user_email);
+
+
+	/** Display information in the Modal view delete officer
+	*/	
+	modalDeleteOfficer: function(e){
+        
+        // Retrieve the ID of the officer //
+    	this.setModel(e);
+
+        $('#infoModalDeleteOfficer p').html(this.selectedOfficerJson.firstname +' '+ this.selectedOfficerJson.name);
+        $('#infoModalDeleteOfficer small').html(_.capitalize(app.lang.lastConnection) +"	 "+ moment(this.selectedOfficerJson.date, 'YYYY-MM-DD HH:mm:ss').format('LLL'));
     },
 
 
 
-    /** Add a new officer
-    */
-    addOfficer: function(e){
-        e.preventDefault();
+	/** Save Officer
+	*/
+	saveOfficer: function(e) {
+    	e.preventDefault();
 
-        alert('TODO: save the new officer');
-
-    },
-
-
-
-    /** Delete the selected officer
-    */
-    deleteOfficer: function(e){
+     
+		this.params = {
+			name: this.$('#officerName').val(),
+			firstname: this.$('#officerFirstname').val()
+		};
+	     
 		var self = this;
-		this.selectedOfficer[0].delete({
-			success: function(e){
-				app.collections.officers.remove(self.selectedOfficer[0]);
-				$('#modalDeleteOfficer').modal('hide');
-				app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.officerDeleteOk);
-				self.render();
+
+	    app.Models.Officer.prototype.save(
+	    	this.params,
+	    	this.modelId, {
+			success: function(data){
+				console.log(data);
+				if(data.error){
+					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				}
+				else{
+					if( self.modelId==0 ){
+						self.model = new app.Models.Officer({id: data.result.result});
+					}
+
+					self.model.update(self.params);
+
+					app.collections.officers.add(self.model);
+
+					$('#modalSaveOfficer').modal('hide');
+					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.officerSaveOk);
+					self.render();
+				}				
 			},
 			error: function(e){
-				alert("Impossible de supprimer l'employé");
+				alert('Impossible de créer ou mettre à jour l\'équipe');
+			}
+		});
+	},
+
+
+
+	/** Delete the selected officer
+	*/
+	deleteOfficer: function(e){
+		e.preventDefault();
+    	
+		var self = this;
+		this.model.delete({
+			success: function(data){
+				console.log(data);
+				if(data.error){
+					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				}
+				else{
+					app.collections.officers.remove(self.model);
+
+					$('#modalDeleteOfficer').modal('hide');
+					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.officerDeleteOk);
+					self.render();
+				}
+			},
+			error: function(e){
+				alert("Impossible de supprimer l'agent");
 			}
 
 		});
-    },
+	},
 
 
 

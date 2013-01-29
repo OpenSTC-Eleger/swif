@@ -151,7 +151,7 @@ app.Views.TeamsView = Backbone.View.extend({
 		
 		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
 		this.selectedTeam = _.filter(app.collections.teams.models, function(item){ return item.attributes.id == id });
-
+		
         if( this.selectedTeam.length > 0 ) {
 		
 			$('table.teamsTable tr.info').removeClass('info');
@@ -379,6 +379,8 @@ app.Views.TeamsView = Backbone.View.extend({
 
 		var nbRemainServices = $('#servicesList li').length;
 		$('#badgeNbServices').html(nbRemainServices);
+
+		$('#teamTitle').html('<i class="icon-group"></i> '+selectedTeamJson.name);
 		
 	},
 
