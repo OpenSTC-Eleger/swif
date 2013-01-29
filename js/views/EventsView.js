@@ -235,7 +235,8 @@ app.Views.EventsView = Backbone.View.extend({
 				    
 				    copiedEventObject.start = dateStart;
 				    copiedEventObject.end = new Date(dateEnd.setHours( dateEnd.getHours()+copiedEventObject.planned_hours )); 
-				    copiedEventObject.allDay = allDay;
+				    copiedEventObject.dayDelta = 10;
+				    copiedEventObject.allDay = true;
 				
 				    // render the event on the calendar
 				    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)

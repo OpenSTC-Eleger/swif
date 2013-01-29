@@ -17,14 +17,18 @@ app.Views.ClaimersView = Backbone.View.extend({
     	'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
 		
-		
-		'click a.modalDeleteClaimer'  		: 'modalDeleteClaimer',
-		'click a.modalSaveClaimer'  		: 'modalSaveClaimer',
-
+        'click a.modalSaveClaimer'  		: 'modalSaveClaimer',
 		'submit #formSaveClaimer' 			: "saveClaimer", 
+		'click a.modalDeleteClaimer'  		: 'modalDeleteClaimer',
 		'click button.btnDeleteClaimer'		: 'deleteClaimer',
+		
+		'click .btn.addAddress'                	: 'modalAddAddress',
+		'click button.saveAddress'             	: 'saveAddress',
+		'click a.modalDeleteAddress'   			: 'modalDeleteAddress',
+        'click button.btnDeleteAddress'   		: 'deleteAddress',
 			
-		'click a.accordion-object'    : 'tableAccordion'
+		'click a.accordion-object'    			: 'tableAccordion',
+		'change #claimerTechnicalService'		: 'fillDropdownTechnicalService',
 			
     },
 
@@ -56,7 +60,9 @@ app.Views.ClaimersView = Backbone.View.extend({
 		var claimers = app.collections.claimers.models;
 		var nbClaimers = _.size(claimers);
 
-		console.debug(claimers);
+		var claimersSortedArray = _.sortBy(claimers, function(item){ 
+	          return item.attributes.name; 
+        });
 
 
 		var len = claimers.length;
@@ -68,7 +74,7 @@ app.Views.ClaimersView = Backbone.View.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				claimers: app.collections.claimers.toJSON(),
+				claimers: claimersSortedArray,
 				lang: app.lang,
 				nbClaimers: nbClaimers,
 				startPos: startPos, endPos: endPos,
@@ -126,11 +132,18 @@ app.Views.ClaimersView = Backbone.View.extend({
 			return 0
 	},
 	
-	setModel: function(e) {
-		e.preventDefault();
+	getTarget:function(e) {    	
+    	e.preventDefault();
+	    // Retrieve the ID of the intervention //
 		var link = $(e.target);
-		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
-	    this.selectedClaimer = _.filter(app.collections.claimers.models, function(item){ return item.attributes.id == id });
+		this.pos =  _(link.parents('tr').attr('id')).strRightBack('_');
+		
+    },
+	
+	setModel: function(e) {
+    	this.getTarget(e);
+    	var self = this;
+	    this.selectedClaimer = _.filter(app.collections.claimers.models, function(item){ return item.attributes.id == self.pos });
 	    if( this.selectedClaimer.length>0 ) {
 	    	this.model = this.selectedClaimer[0];
 	    	this.selectedClaimerJson = this.model.toJSON();        
@@ -194,6 +207,72 @@ app.Views.ClaimersView = Backbone.View.extend({
 	    $('#infoModalDeleteClaimer p').html(this.selectedClaimerJson.name);
 	    $('#infoModalDeleteClaimer small').html(this.selectedClaimerJson.code);
 	},
+	
+    /** Display the form to add a new address
+    	    */
+    modalAddAddress: function(e){
+    	this.getTarget(e);   	
+        $('#modalAddAddress').modal();
+    },
+	
+	modalDeleteAddress: function(e){
+    	this.getTarget(e);
+	    this.selectedAddress = app.collections.claimersContacts.get(this.pos);
+		this.selectedAddressJSON = this.selectedAddress.toJSON();
+		$('#infoModalDeleteAddress').children('p').html(this.selectedAddressJSON.name);
+		$('#infoModalDeleteAddress').children('small').html(this.selectedAddressJSON.phone);	    
+	},
+	
+    /** Save the Address
+    	    */
+    saveAddress: function(e){
+    	 var self = this;
+
+		e.preventDefault();
+		
+		 
+	     var params = {
+	         partner_id: this.pos,
+	         name: this.$('#addressName').val(),
+	         function: this.$('#addressFunction').val(),
+		     phone: this.$('#addressPhone').val(),
+		     email: this.$('#addressEmail').val(),
+		     mobile: this.$('#addressMobile').val(),
+		     street: this.$('#addressStreet').val(),
+		     city: this.$('#addressCity').val(),
+		     zip: this.$('#addressZip').val(),
+	     
+	     };
+	     //TODO : test
+	     app.models.claimerContact.save(0,params,$('#modalAddAddress'), null, "demandeurs");
+   },
+   
+    /** Delete Address
+    	    */
+    deleteAddress: function(e){
+		var self = this;
+		this.selectedAddress.delete({
+			success: function(data){
+				if(data.error){
+					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				}
+				else{
+					app.collections.claimersContacts.remove(self.selectedAddress);
+					var claimer = app.collections.claimers.get(self.selectedAddressJSON.livesIn.id);					
+					claimer.attributes.address.remove(self.selectedAddressJSON.id);
+					app.collections.claimers.add(claimer);
+					$('#modalDeleteAddress').modal('hide');
+					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.addressDeleteOk);
+					self.render();
+				}
+			},
+			error: function(e){
+				alert("Impossible de supprimer le contact");
+			}
+
+		});
+
+    },	
 	
 	
 	
@@ -280,62 +359,29 @@ app.Views.ClaimersView = Backbone.View.extend({
 		});
 	},
 	
+	fillDropdownTechnicalService: function(e){
+		 e.preventDefault();
+		 $('#claimerTechnicalSite').val('');
+		 this.renderTechnicalService(e.target.selectedIndex)
+	},
+	
+	renderTechnicalService: function ( service ) {
+		if( service!= null ) {
+			app.views.selectListClaimerTechnicalServiceView.setSelectedItem( service );
+			places = app.collections.places.models;
+			var placesFiltered = _.filter(places, function(item){ 
+				return item.attributes.service[0] == service; 
+	        });
+			app.views.selectListClaimerTechnicalSiteView.collection = new app.Collections.Places(placesFiltered);
+			app.views.selectListClaimerTechnicalSiteView.clearAll();
+			app.views.selectListClaimerTechnicalSiteView.addEmptyFirst();
+			app.views.selectListClaimerTechnicalSiteView.addAll();
+			
+		}				
+	},
 	
 	preventDefault: function(event){
 		event.preventDefault();
 	},
-
-
-
-//    /** Display information in the Modal view
-//    */
-//    setInfoModal: function(e){
-//
-//        // Retrieve the ID of the intervention //
-//        var link = $(e.target);
-//
-//        var id = _(link.parents('tr').attr('id')).strRightBack('_');
-//
-//        this.selectedClaimer = _.filter(app.collections.claimers.models, function(item){ return item.attributes.id == id });
-//        var selectedClaimerJson = this.selectedClaimer[0].toJSON();
-//
-//        $('#infoModalDeleteClaimer p').html(selectedClaimerJson.name);
-//        $('#infoModalDeleteClaimer small').html(selectedClaimerJson.type_id[1]);
-//    },
-//
-//
-//
-//    /** Add a new claimer
-//    */
-//    addClaimer: function(e){
-//		e.preventDefault();
-//		alert('TODO: save the new claimer');
-//	},
-//
-//
-//
-//	/** Delete the selected claimer
-//	*/
-//	deleteClaimer: function(e){
-//		var self = this;
-//		this.selectedClaimer[0].delete({
-//			success: function(e){
-//				app.collections.claimers.remove(self.selectedClaimer[0]);
-//				$('#modalDeleteClaimer').modal('hide');
-//				app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.claimerDeleteOk);
-//				self.render();
-//			},
-//			error: function(e){
-//				alert("Impossible de supprimer le demandeur");
-//			}
-//
-//		});
-//	},
-//
-//
-//
-//    preventDefault: function(event){
-//    	event.preventDefault();
-//    },
 
 });
