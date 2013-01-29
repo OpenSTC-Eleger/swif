@@ -65,7 +65,7 @@ app.Views.TeamsView = Backbone.View.extend({
 			return item.attributes.belongsToTeam == null; 
 		});
 
-		console.debug(officersWithoutTeam);
+		console.debug(teams);
 
 		var len = teams.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
@@ -99,7 +99,7 @@ app.Views.TeamsView = Backbone.View.extend({
 				cursor: 'move',
 				opacity: '.8',
 				revert: 300,
-				stop: function(event, ui){
+				receive: function(event, ui){
 					self.saveServicesOfficersTeam();
 				}
 			});
@@ -115,7 +115,7 @@ app.Views.TeamsView = Backbone.View.extend({
 				cursor: 'move',
 				opacity: '.8',
 				revert: 300,
-				stop: function(event, ui){
+				receive: function(event, ui){
 					self.saveServicesOfficersTeam();
 				}
 			});
@@ -209,7 +209,7 @@ app.Views.TeamsView = Backbone.View.extend({
 	     
 		this.params = {
 			name: this.$('#teamName').val(),
-		    manager_id: manager_id
+			manager_id: manager_id
 		};
 	     
 	    this.params.manager_id =  manager_id[0];
@@ -231,6 +231,9 @@ app.Views.TeamsView = Backbone.View.extend({
 					}
 
 					self.params.manager_id = self.getIdInDropDown(app.views.selectListOfficersView);
+					self.params.service_ids = self.selectedTeamJson.service_ids;
+					self.params.user_ids = self.selectedTeamJson.user_ids;
+
 					self.model.update(self.params);
 
 					app.collections.teams.add(self.model);
@@ -241,7 +244,7 @@ app.Views.TeamsView = Backbone.View.extend({
 				}				
 			},
 			error: function(e){
-				alert("Impossible de créer ou mettre à jour l'équipe");
+				alert('Impossible de créer ou mettre à jour l\'équipe');
 			}
 		});
 	},
@@ -252,15 +255,15 @@ app.Views.TeamsView = Backbone.View.extend({
 	*/
 	saveServicesOfficersTeam: function() {
 
-		var services = _.map($("#teamServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });
-		var members = _.map($("#teamMembers").sortable('toArray'), function(member){ return _(_(member).strRightBack('_')).toNumber(); });
+		this.services = _.map($("#teamServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });
+		this.members = _.map($("#teamMembers").sortable('toArray'), function(member){ return _(_(member).strRightBack('_')).toNumber(); });
      
 
 		this.params = {
 			name: this.selectedTeamJson.name,
 			manager_id: this.selectedTeamJson.manager_id[0],
-			service_ids: services,
-			user_ids: members
+			service_ids: [[6, 0, this.services]],
+			user_ids: [[6, 0, this.members]]
 		};
 
 		this.modelId = this.selectedTeamJson==null?0: this.selectedTeamJson.id;
@@ -279,6 +282,10 @@ app.Views.TeamsView = Backbone.View.extend({
 					if( self.modelId==0 ){
 						self.model = new app.Models.Team({id: data.result.result});
 					}
+
+					self.params.service_ids = self.services;
+					self.params.user_ids = self.members;
+					self.params.manager_id = [self.selectedTeamJson.manager_id[0], self.selectedTeamJson.manager_id[1]];
 
 					self.model.update(self.params);
 
