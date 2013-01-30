@@ -71,7 +71,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 			var nbInterventionsInBadge = _.size(app.collections.requests);
 		}
 
-
+		this.addInfoAboutInter(app.collections.requests);
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -101,6 +101,53 @@ app.Views.RequestsListView = Backbone.View.extend({
 		$(this.el).hide().fadeIn('slow');
 		//this.setElement(this.el, true);
         return this;
+    },
+    
+    addInfoAboutInter: function(requests) {
+    	_.each(requests.models, function (request, i) {
+    		this.infoMessage = "";
+    		var self = this;
+    		_.each(request.attributes.intervention_ids.models, function (interModel, i) { 	    		
+				var classColor = "";
+				
+				var intervention = interModel.toJSON();
+				var firstDate = null;
+				var lastDate = null;
+				
+				_.each(intervention.tasks, function(task){ 
+					if ( firstDate==null )
+						firstDate = task.date_start;
+					else if ( task.date_start && firstDate>task.date_start )
+						firstDate=task.date_start; 
+					
+					if ( lastDate==null )
+						lastDate = task.date_end;
+					else if ( task.date_end && lastDate<task.date_end )
+						lastDate=task.date_end; 
+				});
+	
+			
+		    	if( firstDate ) {
+		    		if( intervention.progress_rate==0 )
+		    			self.infoMessage = "Début prévue le " + firstDate.format('LLL'); 
+					else if( lastDate )
+			    		self.infoMessage = "Fin prévue le " + lastDate.format('LLL'); 
+			    	else{
+			    		self.infoMessage = "Remis en plannification";
+			    	}
+		    	}
+		    	else{
+		    		self.infoMessage = "Non planifiée";
+		    	}
+							
+			    if( intervention.state==app.Models.Intervention.state[4].value ) 
+					infoMessage = intervention.cancel_reason
+
+				console.debug("message:" + infoMessage + ", classColor:"+ classColor);
+			});   
+				
+			request.setInfoMessage(this.infoMessage);
+    	});
     },
 
 

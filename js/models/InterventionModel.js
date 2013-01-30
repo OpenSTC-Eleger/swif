@@ -18,7 +18,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 			//autoFetch: true,
 			reverseRelation: {
 				key: 'intervention',
-				includeInJSON: ['id','name','state','tasks','service_id','site1'],
+				includeInJSON: ['id','name','state','tasks','service_id','site1','date_start', 'date_end'],
 			},
 		},		
 //		{
@@ -34,6 +34,9 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 		id:0,
 		state: null,
 		cancel_reason: null,
+		infoMessage: null,
+		classColor: null,
+		overPourcent:0,
 	},
       
 	getState : function() {
@@ -42,6 +45,30 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
     setState : function(value) {
     	if( value == 'undefined') return;
         this.set({ state : value });
+    },
+    
+    getOverPourcent : function() {
+        return this.get('overPourcent');
+    },
+    setOverPourcent : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ overPourcent : value });
+    },
+    
+    getInfoMessage : function() {
+        return this.get('infoMessage');
+    },
+    setInfoMessage : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ infoMessage : value });
+    },
+    
+    getClassColor : function() {
+        return this.get('classColor');
+    },
+    setClassColor : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ classColor : value });
     },
     
     getCancelReason : function() {

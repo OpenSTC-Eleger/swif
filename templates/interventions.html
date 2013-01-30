@@ -55,37 +55,16 @@
 							</ul>
 						</div>
 					</th>
-					<th><%= _.capitalize(lang.infoMessages.information) %></th>		
+					<!-- <th><%= _.capitalize(lang.infoMessages.information) %></th> -->		
 				</tr>
 			</thead>
 			<tbody>
-			<% _.each(interventions, function (intervention, i) { 
-				var classColor = "success";
-				var infoMessage = "";
-				if(intervention.state == app.Models.Intervention.state[4].value) { 
-					classColor = "warning";
-					infoMessage = intervention.cancel_reason
-				}
-				else if(intervention.state == app.Models.Intervention.state[1].value) {
-					var date = null;
-					_.each(intervention.tasks, function(task){ 
-						if ( date==null )
-							date = task.date_start;
-						else if ( date>task.date_start )
-							date=task.date_start; 
-					});
-					infoMessage = "Programmé le " + date.getDate() + "-"+ ( date.getMonth()+1 ) +"-"+ date.getFullYear() +" "
-					+ date.getHours() + ":" + ( date.getMinutes()!=0?date.getMinutes():"00" ); 
-					//((date) != "" && date != null) ? moment(date, 'YYYY-MM-DD HH:mm:ss').format('LLL') : ""  ;
-				}
-				else if ( intervention.effective_hours>intervention.planned_hours ) {
-					classColor = "error";
-				}
-			
+			<% _.each(interventions, function (inter, i) { 
+				var intervention = inter.toJSON();
 				%>
 				
 				<!-- Intervention row -->
-				<tr class="row-object <%= classColor %>" id="inter_<%= intervention.id %>">
+				<tr class="row-object" id="inter_<%= intervention.id %>">
 					<td>
 						<a class="accordion-object" href="#collapse_<%= intervention.id %>">
 							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= intervention.name %>
@@ -109,14 +88,20 @@
 								</div>
 							<% }else{ %>
 								<div class="progress" style="margin-bottom: 0;">
-									<div class="bar" style="width: <%= intervention.progress_rate %>%;"></div>
+									<div class="bar <%= intervention.classColor %>" style="width: <%= intervention.progress_rate %>%;"
+										rel="tooltip"
+					    				data-original-title="<%= intervention.infoMessage %>"><%= intervention.overPourcent %>								
+									</div>
 								</div>
 						<% } 
 						} else{ %>
-							<span class="text-warning"><%= _.capitalize(lang.notBegin) %></span>
+							<span class="text-warning" 
+									rel="tooltip"
+					    			data-original-title="<%= intervention.infoMessage %>">
+							<%= _.capitalize(lang.notBegin) %></span>
 						<% } %>
 					</td>
-					<td><%=infoMessage%></td>
+					<!--  <td><%= intervention.infoMessage %></td> -->
 				</tr>
 
 				<!-- Tasks row -->

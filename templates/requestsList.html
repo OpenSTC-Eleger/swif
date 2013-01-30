@@ -114,19 +114,27 @@
 					    <td>
 							<span 
 					    		rel="tooltip"
-					    		data-original-title="<%= moment(requests[i].current_date, 'YYYY-MM-DD HH:mm:ss').fromNow() %>">
-					    		<%= moment(requests[i].current_date, 'YYYY-MM-DD HH:mm:ss').format('LLL') %>
+					    		data-original-title="<%= moment(requests[i].create_date, 'YYYY-MM-DD HH:mm:ss').add('hours',1).fromNow() %>">
+					    		<%= moment(requests[i].create_date, 'YYYY-MM-DD HH:mm:ss').add('hours',1).format('LLL') %>
 					    	</span>
 					    </td>
 					    <td>
 				    		<% if(requests[i].state == app.Models.Request.state[0].value) { %> 
-				    			<span class="label label-important"><%= lang.refused %></span>
+				    			<span class="label label-important" 
+				    				rel="tooltip"
+					    			data-original-title="<%= requests[i].refusal_reason %>">
+					    			<%= lang.refused %>
+					    		</span>
 				    		<% } else if(requests[i].state == app.Models.Request.state[1].value) { %>
 				    			<span class="label label-info"><%= lang.wait %></span>
 				    		<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
 				    			<span class="label label-warning"><%= lang.confirm %></span>
 				    		<% } else if(requests[i].state == app.Models.Request.state[3].value) { %>
-				    			<span class="label label-success"><%= lang.valid %></span>
+				    			<span class="label label-success"				    				
+				    				rel="tooltip"
+					    			data-original-title="<%= requests[i].infoMessage %>">
+					    			<%= lang.valid %>
+					    		</span>
 				    		<% } else if(requests[i].state == app.Models.Request.state[4].value) { %>
 				    			<span class="label label"><%= lang.closed %></span>
 				    		<% } %>

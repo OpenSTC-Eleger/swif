@@ -62,7 +62,7 @@
 									
 										<!-- Check if the Task is planned or not -->
 										<% console.debug(task.date_start); %>
-										<% if(task.date_start != false && task.date_start != null && task.date_start != 'undefined' && task.date_start != 'Invalid Date'){ %>
+										<% if(task.date_start != '' && task.date_start != false && task.date_start != null && task.date_start != 'undefined' && task.date_start != 'Invalid Date'){ %>
 											<li id="task_<%= task.id %>" class="external-event disabled">
 												<i class="icon-time"></i>&nbsp;
 												<span class="<%= (task.progress == '100' ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
@@ -408,8 +408,9 @@
         <table  class="table table-striped table-bordered" border="1" id="paperboard" width="100%">
 	    <thead>
 	        <tr>
-	        	<th>Intervention</th>
-	            <th>Libelle</th>
+	        	<th>Libelle</th>
+	        	<th>Catégorie</th>	
+	        	<th>Intervention</th>	            
 	            <th>Site</th>
 	            <th style="width: 100px" >Date début</th>
 	            <th>Date fin</th>	         

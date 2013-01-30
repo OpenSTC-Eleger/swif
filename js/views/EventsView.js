@@ -110,8 +110,8 @@ app.Views.EventsView = Backbone.View.extend({
         		var event = { id: task.id, 
         		              state: task.state,
         		              title: task.name, 
-        		              start: task.date_start, 
-        		              end: task.date_end, 
+        		              start: task.date_start.toDate(), 
+        		              end: task.date_end.toDate(), 
         		              planned_hours: task.planned_hours,
         		              total_hours: task.total_hours,
         		              effective_hours: task.effective_hours,
@@ -234,8 +234,7 @@ app.Views.EventsView = Backbone.View.extend({
 				    
 				    
 				    copiedEventObject.start = dateStart;
-				    copiedEventObject.end = new Date(dateEnd.setHours( dateEnd.getHours()+copiedEventObject.planned_hours )); 
-				    copiedEventObject.dayDelta = 10;
+				    copiedEventObject.end = new Date(dateEnd.setHours( dateEnd.getHours()+copiedEventObject.planned_hours ));				   
 				    copiedEventObject.allDay = true;
 				
 				    // render the event on the calendar
@@ -311,8 +310,7 @@ app.Views.EventsView = Backbone.View.extend({
 		},	
 		
 		renderDate: function (o, date){
-			return date.getDate() + "-"+ ( date.getMonth()+1 ) +"-"+ date.getFullYear() +" "
-					+ date.getHours() + ":" + ( date.getMinutes()!=0?date.getMinutes():"00" );
+			return date.format('LLL');
 	
 		},
 		
@@ -348,8 +346,8 @@ app.Views.EventsView = Backbone.View.extend({
 			
 			var tasks = _.filter(this.filterTasks, function(task){ 
 	        	return (
-	        			task.date_start < self.el.fullCalendar('getView').visEnd &&
-	        			task.date_end > self.el.fullCalendar('getView').visStart &&
+	        			task.date_start.toDate() < self.el.fullCalendar('getView').visEnd &&
+	        			task.date_end.toDate() > self.el.fullCalendar('getView').visStart &&
 	        			(	task.state == app.Models.Task.state[1].value ||
 	        				task.state == app.Models.Task.state[2].value
 	        			)
@@ -365,6 +363,7 @@ app.Views.EventsView = Backbone.View.extend({
 		    _.each(tasks, function(task){ 
 		    	var inter = task.intervention;
 		    	task["inter"] = ( inter!=null)?inter.name:"" ;
+		    	task["category"] = ( task.category_id!=null )?task.category_id[1]:"" ;
 		    	task["place"] = ( inter!=null && inter.site1!=null )?inter.site1[1]:"" ;
 		    	//task["effective_hours"] = "";
 		    	//task["remaining_hous"] = "";
@@ -386,8 +385,9 @@ app.Views.EventsView = Backbone.View.extend({
 			    "bDeferRender": true,
 			    "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
 			    "aoColumns": [
-			        {"sInter": "Inter", "mDataProp": "inter", 'sWidth': '5%', 'sClass': "center"},
 			        {"sName": "Name", "mDataProp": "name", 'sWidth': '5%', 'sClass': "center"},
+			        {"sCat": "Category", "mDataProp": "category", 'sWidth': '5%', 'sClass': "center"},
+			        {"sInter": "Inter", "mDataProp": "inter", 'sWidth': '5%', 'sClass': "center"},	
 			        {"sPlace": "Place", "mDataProp": "place", 'sWidth': '5%', 'sClass': "center"},
 			        {"sDateStart": "DateStart", "mDataProp": "date_start","sType": "date", 'sWidth': '25%', 'fnRender': self.renderDate },
 			        {"sDateEnd": "DateEnd", "mDataProp": "date_end","sType": "date", 'sWidth': '25%', 'fnRender': self.renderDate},			        

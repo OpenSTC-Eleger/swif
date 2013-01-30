@@ -81,7 +81,8 @@ app.Views.InterventionsView = Backbone.View.extend({
             return (item.attributes.state == app.Models.Intervention.state[2].value);
         });
         var nbInterventionsPending = _.size(interventionsPending);
-
+      
+        this.addInfoAboutInter(interventionsValidated);        
 
         // Retrieve the HTML template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -91,7 +92,7 @@ app.Views.InterventionsView = Backbone.View.extend({
                     nbInterventionsPending: nbInterventionsPending,
                     nbInterventionsPlanned: nbInterventionsPlanned,
                     interventionsState: app.Models.Intervention.state,
-                    interventions: (new app.Collections.Interventions(interventionsValidated)).toJSON(),
+                    interventions: interventionsValidated,
                 });
 
             console.debug(interventionsValidated);
@@ -110,7 +111,53 @@ app.Views.InterventionsView = Backbone.View.extend({
         return this;
     },
     
+    addInfoAboutInter: function(inters) {
+    	_.each(inters, function (interModel, i) { 
+			var classColor = "";
+			var infoMessage = "";
+			var intervention = interModel.toJSON();
+			var firstDate = null;
+			var lastDate = null;
+			
+			_.each(intervention.tasks, function(task){ 
+				if ( firstDate==null )
+					firstDate = task.date_start;
+				else if ( task.date_start && firstDate>task.date_start )
+					firstDate=task.date_start; 
+				
+				if ( lastDate==null )
+					lastDate = task.date_end;
+				else if ( task.date_end && lastDate<task.date_end )
+					lastDate=task.date_end; 
+			});
 
+		
+	    	if( firstDate ) {
+	    		if( intervention.progress_rate==0 )
+	    			infoMessage = "Début prévue le " + firstDate.format('LLL'); 
+				else if( lastDate )
+		    		infoMessage = "Fin prévue le " + lastDate.format('LLL'); 
+	    	}
+						
+		    if( intervention.state == app.Models.Intervention.state[4].value ) {
+				infoMessage = intervention.cancel_reason
+		    }
+			
+			if ( intervention.effective_hours>intervention.planned_hours ) {
+				classColor = "bar-danger";
+			}
+
+			interModel.setInfoMessage(infoMessage); // = infoMessage;
+			interModel.setClassColor(classColor); // = classColor;
+			if( intervention.planned_hours ) {
+				interModel.setOverPourcent(
+					Math.round(100.0 * intervention.effective_hours / intervention.planned_hours));
+			}
+			else
+				interModel.setOverPourcent( 0 );
+			console.debug("message:" + infoMessage + ", classColor:"+ classColor);
+		});
+    },
 
 
 
@@ -135,13 +182,19 @@ app.Views.InterventionsView = Backbone.View.extend({
         if(!isExpend){
             // Set the new visibility to the selected intervention //
             $('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
-            $(e.target).parents('tr.row-object').css({ opacity: '1'});
-            $(e.target).parents('tr.row-object').children('td').css({ backgroundColor: '#F5F5F5'});
+            $(e.target).parents('tr.row-object').css({ opacity: '1'});  
+            $(e.target).parents('tr.row-object').children('td').css({ backgroundColor: "#F5F5F5" }); 
+            //$(e.target).parents('tr.row-object').children('td').css({ backgroundColor: "#f2dede" }); 
+            
+            //$(e.target).parents('tr.row-object').children('td').addClass( app.collections.interventions.get(id).toJSON().classColor ); //: '#F5F5F5'
         }
         else{
             $('tr.row-object').css({ opacity: '1'});
             $('tr.row-object > td').css({ backgroundColor: '#FFF'});
-            $('tr.row-object:nth-child(4n+1) > td').css({ backgroundColor: '#F9F9F9'});
+            $('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' }); 
+            
+            
+            //$('tr.row-object:nth-child(4n+1) > td').addClass( app.collections.interventions.get(id).toJSON().classColor ); //'#F9F9F9'
         }
            
     },

@@ -217,21 +217,28 @@ app.Router = Backbone.Router.extend({
 			            		app.collections.claimersServices = new app.Collections.ClaimersServices();
 			    			}
 				            app.collections.claimersServices.fetch({
-				            	success: function(){	            
-//					                if(app.views.requestsListView == null) {
-//					                    app.views.requestsListView = new app.Views.RequestsListView({page: self.page});
-//					                } 
-//					                else {
-//					                    app.views.requestsListView.options.page = self.page;
-//					                    app.views.requestsListView.render();             
-//					                }
-					                
-					                app.views.requestsListView = new app.Views.RequestsListView({page: self.page});
-					                self.render(app.views.requestsListView);
-				            	},
-	                        	complete: function(){
-	                        	    app.loader('hide');
-	                        	}
+				            	success: function(){
+						            if(app.collections.interventions == null ){
+						                app.collections.interventions = new app.Collections.Interventions();
+						            }
+						
+						            app.collections.interventions.fetch({
+						                success: function(){
+							            	if(app.collections.tasks == null ){
+							            		app.collections.tasks = new app.Collections.Tasks();        	
+							            	}
+							                app.collections.tasks.fetch({							                	
+							                		success: function(){
+										                app.views.requestsListView = new app.Views.RequestsListView({page: self.page});
+										                self.render(app.views.requestsListView);
+										            },
+						                        	complete: function(){
+						                        	    app.loader('hide');
+						                        	}
+						                     });
+						                 }
+							        });
+				            	}
 				            });
 					   }
 		            });
@@ -619,14 +626,21 @@ app.Router = Backbone.Router.extend({
 				        
 					        app.collections.teams.fetch({
 					        	success: function(){
-				        			app.views.tasksListView = new app.Views.TasksListView({page: self.page});
-				        			self.render(app.views.tasksListView);
-				        		}
+						        	if(app.collections.places == null ){
+						                app.collections.places = new app.Collections.Places();
+						            }
+						        	app.collections.places.fetch({						        						        	
+							        	success: function(){
+						        			app.views.tasksListView = new app.Views.TasksListView({page: self.page});
+						        			self.render(app.views.tasksListView);
+						        		},
+						            	complete: function(){
+						            	    app.loader('hide');
+						            	}	
+							        });
+						        }
 				        	});
-			        	},
-		            	complete: function(){
-		            	    app.loader('hide');
-		            	}			        		
+			        	}		        		
 		        	});
             	}			        		
         	});

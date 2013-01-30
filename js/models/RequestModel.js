@@ -13,7 +13,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		key: 'intervention_ids',
 		relatedModel: 'app.Models.Intervention',
 		collectionType: 'app.Collections.Interventions',
-		includeInJSON: 'id',
+		includeInJSON: true,
 		reverseRelation: {
 			type: Backbone.HasOne,
 			key: 'ask',
@@ -34,6 +34,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		note: "",
 		refusal_reason: "",
 		test: "",
+		infoMessage: null,
 		intervention_ids : []
 	},
 
@@ -52,6 +53,14 @@ app.Models.Request = Backbone.RelationalModel.extend({
     setName : function(value) {
     	if( value == 'undefined') return;
         this.set({ name : value });
+    },
+    
+    getInfoMessage : function() {
+        return this.get('infoMessage');
+    },
+    setInfoMessage : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ infoMessage : value });
     },
     
     getSite1 : function() {
