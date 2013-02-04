@@ -126,18 +126,18 @@ app.Views.RequestsListView = Backbone.View.extend({
 						lastDate=task.date_end; 
 				});
 	
-			
+				self.infoMessage = intervention.create_uid!=null? "par " + intervention.create_uid[1] + ". ": ""; 
 		    	if( firstDate ) {
 		    		if( intervention.progress_rate==0 )
-		    			self.infoMessage = "Début prévue le " + firstDate.format('LLL'); 
+		    			self.infoMessage += "Début prévue le " + firstDate.format('LLL'); 
 					else if( lastDate )
-			    		self.infoMessage = "Fin prévue le " + lastDate.format('LLL'); 
+			    		self.infoMessage += "Fin prévue le " + lastDate.format('LLL'); 
 			    	else{
-			    		self.infoMessage = "Remis en plannification";
+			    		self.infoMessage += "Remis en plannification";
 			    	}
 		    	}
 		    	else{
-		    		self.infoMessage = "Non planifiée";
+		    		self.infoMessage += "Non planifiée";
 		    	}
 							
 			    if( intervention.state==app.Models.Intervention.state[4].value ) 

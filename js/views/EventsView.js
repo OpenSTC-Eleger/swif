@@ -1,9 +1,12 @@
 app.Views.EventsView = Backbone.View.extend({
 	
 		filterTasks: null,
+		minTime: 8,
+		maxTime: 18,
+		workingTime: 8,
 	
 		events: {
-
+			//'submit #formDrop'  : 'drop',
 			//'click .btn.printCalendar'    : 'printCalendar',
 		},
 	
@@ -66,6 +69,79 @@ app.Views.EventsView = Backbone.View.extend({
         	this.initEvents();
         	this.initCalendar();          	
         },
+
+
+		drop: function( date, allDay, domObject, nbTasks, nbHours) { 
+	
+        	console.debug("nbTasks:"+nbTasks+"nbHours:"+nbHours);
+        	
+        	// this function is called when something is dropped
+		    // retrieve the dropped element's stored Event Object
+		    var originalEventObject = domObject.data('eventObject');
+		
+		    // we need to copy it, so that multiple events don't have a reference to the same object
+		    var copiedEventObject = $.extend({}, originalEventObject);
+		
+		    // assign it the date that was reported
+		    var dateStart = date;
+		    var dateEnd = new Date(date); ;
+		    
+		    
+		    copiedEventObject.start = dateStart;
+		    copiedEventObject.end = new Date(dateEnd.setHours( dateEnd.getHours()+copiedEventObject.planned_hours ));				   
+		    copiedEventObject.allDay = true;
+		
+		    // render the event on the calendar
+		    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+		    $(this.el).fullCalendar('renderEvent', copiedEventObject, true);
+		    //$(self.el).append('<button type="button" class="close" data-dismiss="close">X</button>');
+		    params = { 
+		       //id: copiedEventObject.id,
+		       state: 'open',
+		       date_start: copiedEventObject.start,
+			   date_end: copiedEventObject.end,
+		       planned_hours: copiedEventObject.planned_hours,
+		       remaining_hours: copiedEventObject.planned_hours,
+		    };
+		    
+		    if( this.teamMode)
+		    	params.team_id = this.id
+		    else
+		    	params.user_id = this.id
+		    var self = this;
+		    //app.models.task.save(copiedEventObject.id, params, null, self, null); 
+		    app.models.task.saveTest(copiedEventObject.id, params, {
+		    	success: function (data) {
+			    	$.pnotify({
+			    		title: 'Tâche attribuée',
+			    		text: 'La tâche a correctement été attribué à l\'agent.'
+				    });
+			    	app.collections.tasks.fetch({ 
+			    		success: function(){					    	
+			    			app.collections.interventions.fetch({ 
+			    				success: function(){
+					    			app.collections.officers.fetch({ 
+					    				success: function(){
+									 		app.collections.teams.fetch({
+								                success: function(){				 			
+				 								    if( self.teamMode)
+				 								    	self.initCollection(app.collections.teams.get(self.id));
+				 								    else
+				 								    	self.initCollection(app.collections.officers.get(self.id));
+				 								    $(self.el).fullCalendar('refetchEvents');
+				 								    self.planning.render();
+										 		}					 
+									 		});
+								         }
+								     });
+						        }
+						   });
+					 	}					 
+			    	});
+		    	}
+		    }); 		    
+		},	
+        
         eventClick: function(fcEvent, jsEvent, view) {
             this.eventView.model = app.collections.tasks.get(fcEvent.id);
             this.eventView.render($(jsEvent.currentTarget),this.planning,this.el)
@@ -110,8 +186,8 @@ app.Views.EventsView = Backbone.View.extend({
         		var event = { id: task.id, 
         		              state: task.state,
         		              title: task.name, 
-        		              start: task.date_start.toDate(), 
-        		              end: task.date_end.toDate(), 
+        		              start: task.date_start!=false?task.date_start.toDate():null, 
+        		              end: task.date_end!=false?task.date_end.toDate():null, 
         		              planned_hours: task.planned_hours,
         		              total_hours: task.total_hours,
         		              effective_hours: task.effective_hours,
@@ -180,8 +256,33 @@ app.Views.EventsView = Backbone.View.extend({
                 ignoreTimezone: false,          
                 dragRevertDuration:0,
                 eventClick: self.eventClick,
+                //drop: self.drop,
+				startOfLunchTime:12,
+				endOfLunchTime:14,
                 
+				start: function (event, ui){
+					$("modalDrop").modal();
+				},
 
+				drop: function( date, allDay ) {
+//					var domObject = $(this)
+//					var originalEventObject = $(this).data('eventObject');
+//					confirmModal = $("#modalDrop");
+//				    if( originalEventObject.planned_hours>=8 ){
+//				    	confirmModal.find('#okButton').click(function(event) {
+//							event.preventDefault();
+//							
+//							self.drop(date, allDay, domObject, $("#nbTasks").val(), $("#nbHours").val());
+//							confirmModal.modal('hide');
+//					    });
+//					
+//					    confirmModal.modal();
+//				        
+//				    }else{
+				    	self.drop(date, allDay, $(this));
+//				    }
+					
+				},
 
                 eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
 					app.loader('display');
@@ -219,74 +320,7 @@ app.Views.EventsView = Backbone.View.extend({
 				eventRender: function(event, element) {
 					//$(this.event).css('border-color', 'yellow');
 				},
-
-
-				drop: function( date, allDay) { // this function is called when something is dropped
-				    // retrieve the dropped element's stored Event Object
-				    var originalEventObject = $(this).data('eventObject');
-				
-				    // we need to copy it, so that multiple events don't have a reference to the same object
-				    var copiedEventObject = $.extend({}, originalEventObject);
-				
-				    // assign it the date that was reported
-				    var dateStart = date;
-				    var dateEnd = new Date(date); ;
-				    
-				    
-				    copiedEventObject.start = dateStart;
-				    copiedEventObject.end = new Date(dateEnd.setHours( dateEnd.getHours()+copiedEventObject.planned_hours ));				   
-				    copiedEventObject.allDay = true;
-				
-				    // render the event on the calendar
-				    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-				    $(self.el).fullCalendar('renderEvent', copiedEventObject, true);
-				    //$(self.el).append('<button type="button" class="close" data-dismiss="close">X</button>');
-				    params = { 
-		               //id: copiedEventObject.id,
-				       state: 'open',
-		               date_start: copiedEventObject.start,
-		    		   date_end: copiedEventObject.end,
-		               planned_hours: copiedEventObject.planned_hours,
-		               remaining_hours: copiedEventObject.planned_hours,
-				    };
-				    
-				    if( self.teamMode)
-				    	params.team_id = self.id
-				    else
-				    	params.user_id = self.id
-				    
-				    //app.models.task.save(copiedEventObject.id, params, null, self, null); 
-				    app.models.task.saveTest(copiedEventObject.id, params, {
-				    	success: function (data) {
-					    	$.pnotify({
-					    		title: 'Tâche attribuée',
-					    		text: 'La tâche a correctement été attribué à l\'agent.'
-						    });
-					    	app.collections.tasks.fetch({ 
-					    		success: function(){					    	
-					    			app.collections.interventions.fetch({ 
-					    				success: function(){
-							    			app.collections.officers.fetch({ 
-							    				success: function(){
-											 		app.collections.teams.fetch({
-										                success: function(){				 			
-						 								    if( self.teamMode)
-						 								    	self.initCollection(app.collections.teams.get(self.id));
-						 								    else
-						 								    	self.initCollection(app.collections.officers.get(self.id));
-						 								    $(self.el).fullCalendar('refetchEvents');
-						 								    self.planning.render();
-												 		}					 
-											 		});
-										         }
-										     });
-								        }
-								   });
-							 	}					 
-					    	});
-				    	}
-				    }); 		    
-				},				
+			
 				eventDragStop: function(event, jsEvent, ui, view) {				    
 				},
 

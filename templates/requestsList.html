@@ -90,14 +90,21 @@
 					else{
 						var classRow = "";
 					}
+					var description = (requests[i].description != '' ? requests[i].description : _.capitalize(lang.notKnown))
+					var createdBy = (requests[i].create_uid != ''  
+										?_.capitalize(lang.createdBy) + requests[i].create_uid[1] 
+										: "")
+					var modifydBy = (requests[i].write_uid != ''  
+										?_.capitalize(lang.modifyBy) + requests[i].write_uid[1] 
+										: "")
 					%>
 
 					<tr id="<%= i %>" class="<%= classRow %>">
 					    <td>
 					    	<a 	href="#demandes-dinterventions/<%= requests[i].id %>" 
 								rel="popover" 
-								data-content="<%= (requests[i].description != '' ? requests[i].description : _.capitalize(lang.notKnown)) %>" 
-								data-original-title="<%= _.capitalize(lang.description) %>:">
+								data-content="<%=  description + '\n(' + createdBy +')' %>"
+								data-original-title="<%= _.capitalize(lang.description)  %>:">
 								<%= requests[i].name %>
 							</a>
 						</td>
@@ -115,14 +122,14 @@
 							<span 
 					    		rel="tooltip"
 					    		data-original-title="<%= moment(requests[i].create_date, 'YYYY-MM-DD HH:mm:ss').add('hours',1).fromNow() %>">
-					    		<%= moment(requests[i].create_date, 'YYYY-MM-DD HH:mm:ss').add('hours',1).format('LLL') %>
+					    		<%= ( requests[i].create_date != null &&  requests[i].create_date != "" ) ? moment(requests[i].create_date, 'YYYY-MM-DD HH:mm:ss').add('hours',1).format('LLL'): "" %>
 					    	</span>
 					    </td>
 					    <td>
 				    		<% if(requests[i].state == app.Models.Request.state[0].value) { %> 
 				    			<span class="label label-important" 
 				    				rel="tooltip"
-					    			data-original-title="<%= requests[i].refusal_reason %>">
+					    			data-original-title="<%= requests[i].refusal_reason  +'\n('+ modifydBy +')'%>">
 					    			<%= lang.refused %>
 					    		</span>
 				    		<% } else if(requests[i].state == app.Models.Request.state[1].value) { %>
@@ -140,7 +147,8 @@
 				    		<% } %>
 					   	</td>
 					   	
-					   	<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
+					   	<% if((app.models.user.isDST() || app.models.user.isManager())
+					   			&& requests[i].intervention_ids.length == 0){ %>
 						   	<td class="align">
 
 						   		<!-- Refused State -->
@@ -192,7 +200,7 @@
 						   		<% } else if(requests[i].state == app.Models.Request.state[3].value) { %>
 						   		
 									<div class="btn-group">
-										<!--<button class="btn btn-small disabled no-outline"><i class="icon-ok text-success"></i></button>
+										<button class="btn btn-small disabled no-outline"><i class="icon-ok text-success"></i></button>
 										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
 											<span class="caret"></span>
 										</button>
@@ -201,13 +209,22 @@
 											<% if(!app.models.user.isDST()){ %>
 												<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-user"></i>&nbsp;Remonter DST</a></li>
 											<% } %>
-										</ul>
-										-->
+										</ul>										
 									</div>
 									
+						   		<% } else { %>
+					   				<span class="text-warning" >
+										<%= _.capitalize(lang.closed) %>
+									</span>
 						   		<% } %>
 						   	</td>
-						<% } %>
+							<% } else { %>
+								<td>
+				   					<span class="text-warning"> 
+										<%= _.capitalize(lang.pending) %>
+									</span>
+					   			</td>
+				   		<% } %>
 					</tr>
 				<% } %>
 			</tbody>

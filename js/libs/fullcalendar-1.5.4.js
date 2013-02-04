@@ -3101,17 +3101,24 @@ function AgendaView(element, calendar, viewName) {
 		maxd = addMinutes(cloneDate(d), maxMinute);
 		addMinutes(d, minMinute);
 		slotCnt = 0;
+		startOfLunchTime= opt("startOfLunchTime");
+		endOfLunchTime = (opt("endOfLunchTime"));
+			
 		for (i=0; d < maxd; i++) {
+			
 			minutes = d.getMinutes();
+			nonBusinessHours = (d.getHours() < startOfLunchTime || d.getHours() >= endOfLunchTime) ? "" : " fc-non-business-hours";
+			
 			s +=
-				"<tr class='fc-slot" + i + ' ' + (!minutes ? '' : 'fc-minor') + "'>" +
+				"<tr class='fc-slot" + i + ' ' + (!minutes ? '' : 'fc-minor') + nonBusinessHours + "'>" +
 				"<th class='fc-agenda-axis " + headerClass + "'>" +
 				((!slotNormal || !minutes) ? formatDate(d, opt('axisFormat')) : '&nbsp;') +
 				"</th>" +
 				"<td class='" + contentClass + "'>" +
 				"<div style='position:relative'>&nbsp;</div>" +
 				"</td>" +
-				"</tr>";
+				"</tr>";				
+
 			addMinutes(d, opt('slotMinutes'));
 			slotCnt++;
 		}
