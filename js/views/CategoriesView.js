@@ -39,21 +39,21 @@ app.Views.CategoriesView = Backbone.View.extend({
 		var self = this;
 
 		// Change the page title //
-        app.router.setPageTitle(app.lang.viewsTitles.categoriesList);
+		app.router.setPageTitle(app.lang.viewsTitles.categoriesList);
 
 
-        // Change the active menu item //
-        app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
+		// Change the active menu item //
+		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
 
-        // Change the Grid Mode of the view //
-        app.views.headerView.switchGridMode('fluid');
+		// Change the Grid Mode of the view //
+		app.views.headerView.switchGridMode('fluid');
 
 
 		var categories = app.collections.categories.models;
-		
-	    var categoriesSortedArray = _.sortBy(categories, function(item){ 
-	          return item.attributes.name; 
-        });
+
+		var categoriesSortedArray = _.sortBy(categories, function(item){ 
+			return item.attributes.name; 
+		});
 
 		var len = categoriesSortedArray.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;

@@ -214,14 +214,14 @@ app.Views.TeamsView = Backbone.View.extend({
 			manager_id: manager_id
 		};
 	     
-	    this.params.manager_id =  manager_id[0];
+		this.params.manager_id =  manager_id[0];
 	    this.modelId = this.selectedTeamJson==null?0: this.selectedTeamJson.id;
 
 		var self = this;
 
-	    app.Models.Team.prototype.save(
-	    	this.params,
-	    	this.modelId, {
+		app.Models.Team.prototype.save(
+			this.params,
+			this.modelId, {
 			success: function(data){
 				console.log(data);
 				if(data.error){
@@ -298,7 +298,7 @@ app.Views.TeamsView = Backbone.View.extend({
 
 					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.teamSaveOk);
 					self.render();
-				}				
+				}
 			},
 			error: function(e){
 				alert("Impossible de créer ou mettre à jour l'équipe");

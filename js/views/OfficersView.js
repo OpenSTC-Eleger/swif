@@ -20,17 +20,17 @@ app.Views.OfficersView = Backbone.View.extend({
 		'click a.modalDeleteOfficer'  	: 'modalDeleteOfficer',
 		'click a.modalSaveOfficer'  	: 'modalSaveOfficer',
 
-		'submit #formAddOfficer' 		: 'saveOfficer',
+		'submit #formSaveOfficer' 		: 'saveOfficer',
 		'click button.btnDeleteOfficer' : 'deleteOfficer'
-    },
+	},
 
-	
+
 
 	/** View Initialization
 	*/
-    initialize: function () {
-		
-    },
+	initialize: function () {
+
+	},
 
 
 	/** Display the view
@@ -49,9 +49,14 @@ app.Views.OfficersView = Backbone.View.extend({
         app.views.headerView.switchGridMode('fluid');
 
 
+
 		var officers = app.collections.officers.models;
 		var len = officers.length;
 
+		var officersSortedArray = _.sortBy(officers, function(item){ 
+			return item.attributes.name.toUpperCase(); 
+		});
+		
 		console.debug(officers);
 
 		var startPos = (this.options.page - 1) * this.numberListByPage;
@@ -62,7 +67,7 @@ app.Views.OfficersView = Backbone.View.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				officers: app.collections.officers.toJSON(),
+				officers: officersSortedArray,
 				nbOfficers: len,
 				lang: app.lang,
 				startPos: startPos, endPos: endPos,
@@ -104,18 +109,33 @@ app.Views.OfficersView = Backbone.View.extend({
 
 
 
-    /** Modal create/update officer
-    */
-    modalSaveOfficer: function(e){
+	/** Modal create/update officer
+	*/
+	modalSaveOfficer: function(e){
 		this.setModel(e);
 
-		$('#officerName').val('');
-		$('#officerFirstname').val('');
-		
+		// Reset the value to null //
+		$('#officerName, #officerFirstname, #officerEmail, #officerLogin, #officerPassword').val('');
+
 		// Update //
 		if( this.selectedOfficerJson ) {
 			$('#officerName').val(this.selectedOfficerJson.name);
 			$('#officerFirstname').val(this.selectedOfficerJson.firstname);
+
+			if(this.selectedOfficerJson.user_email == false){
+				$('#officerEmail').val('');
+			}
+			else{
+				$('#officerEmail').val(this.selectedOfficerJson.user_email);
+			}
+			$('#officerLogin').val(this.selectedOfficerJson.login);
+
+			// Disable the required attribute for the password because it's an update 	//
+			$('#officerPassword').removeAttr('required');
+		}
+		else{
+			// Add the required attribute for the password because it's a creation //
+			$('#officerPassword').attr('required', 'required');
 		}
 	},
 
@@ -139,13 +159,29 @@ app.Views.OfficersView = Backbone.View.extend({
 	saveOfficer: function(e) {
     	e.preventDefault();
 
-     
-		this.params = {
-			name: this.$('#officerName').val(),
-			firstname: this.$('#officerFirstname').val()
-		};
-	     
+
+
+		if( this.$('#officerPassword').val() != '' ){
+			this.params = {
+				name: this.$('#officerName').val().toUpperCase(),
+				firstname: this.$('#officerFirstname').val(),
+				user_email: this.$('#officerEmail').val(),
+				login: this.$('#officerLogin').val(),
+				new_password: this.$('#officerPassword').val()
+			};
+		}
+		else{
+			this.params = {
+				name: this.$('#officerName').val().toUpperCase(),
+				firstname: this.$('#officerFirstname').val(),
+				user_email: this.$('#officerEmail').val(),
+				login: this.$('#officerLogin').val()
+			};
+		}
+
+		     
 		var self = this;
+		this.modelId = this.selectedOfficerJson==null?0: this.selectedOfficerJson.id;
 
 	    app.Models.Officer.prototype.save(
 	    	this.params,

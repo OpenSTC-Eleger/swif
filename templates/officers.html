@@ -13,7 +13,7 @@
 
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
-			<a href="#modalSaveOfficer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addOfficer) %></a>	
+			<a href="#modalSaveOfficer" class="btn btn-primary modalSaveOfficer" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addOfficer) %></a>	
 
 			<form class="form-search pull-right">
 				<div class="input-append">
@@ -36,25 +36,27 @@
 				</tr>
 			</thead>
 			<tbody>
-			<% for (var i = startPos; i < endPos; i++) { %>
+			<% for (var i = startPos; i < endPos; i++) { 
+				var officer = officers[i].toJSON()
+			%>
 				
 				<!-- Officer row -->
 				<tr class="row-item" id="officer_<%= officers[i].id %>">
 					<td>
-						<%= officers[i].name +" "+ officers[i].firstname %>
+						<%= officer.name +" "+ officer.firstname %>
 						<p class="row-actions no-margin invisible">
 							<a href="#modalSaveOfficer" class="modalSaveOfficer" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
 							<a href="#modalDeleteOfficer" class="modalDeleteOfficer" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</td>
-					<td><%= officers[i].login %></td>
-					<td><%= (officers[i].user_email != false ? officers[i].code : "") %></td>
+					<td><%= officer.login %></td>
+					<td><%= (officer.user_email != false ? officer.user_email : "") %></td>
 					<td><% 
-						if(officers[i].date != false){ %>
+						if(officer.date != false){ %>
 							<span 
 					    		rel="tooltip"
-							    data-original-title="<%= moment(officers[i].date, 'YYYY-MM-DD HH:mm:ss').fromNow() %>">
-					    		<%= moment(officers[i].date, 'YYYY-MM-DD HH:mm:ss').format('LLL') %>
+							    data-original-title="<%= moment(officer.date, 'YYYY-MM-DD HH:mm:ss').fromNow() %>">
+					    		<%= moment(officer.date, 'YYYY-MM-DD HH:mm:ss').format('LLL') %>
 							</span>
 						<% } %>
 					</td>
@@ -120,7 +122,7 @@
 </div>
 
 
-<!-- Modal Form to add a new Officer -->
+<!-- Modal Form to Save a new Officer -->
 <div id="modalSaveOfficer" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -195,7 +197,7 @@
 	</div>
 	
 	<div class="modal-footer">
-		<button type="submit" form="formAddOfficer" class="btn btn-primary saveTask"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+		<button type="submit" form="formSaveOfficer" class="btn btn-primary saveTask"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
 		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>

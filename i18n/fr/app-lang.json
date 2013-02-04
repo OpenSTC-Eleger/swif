@@ -157,6 +157,7 @@
     	"catDeleteOk"			: "Catégorie correctement supprimée",
     	"claimerDeleteOk"		: "Demandeur correctement supprimé",
     	"officerDeleteOk"		: "Agent correctement supprimé",
+    	"officerSaveOk"			: "Agent correctement enregistré",
     	"claimerDeleteOk"		: "Demandeur correctement supprimé",
     	"teamDeleteOk"			: "Equipe correctement supprimée",
     	"teamSaveOk"			: "Equipe correctement enregistrée"

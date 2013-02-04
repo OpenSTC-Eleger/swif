@@ -115,9 +115,14 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 	*/
 	update: function(params) {
 		this.setName( params.name );
-		this.setManagerID( params.manager_id );
+		this.setFirstname( params.firstname );
+		this.setEmail( params.user_email );
+		this.setLogin( params.login );
+		this.setPassword( params.new_password );
+
+		/*this.setManagerID( params.manager_id );
 		this.setServicesID( params.service_ids );
-		this.setMembersID( params.user_ids );
+		this.setMembersID( params.user_ids );*/
 	},
 
 
