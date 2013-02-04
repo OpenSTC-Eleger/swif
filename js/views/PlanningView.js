@@ -198,6 +198,7 @@ app.Views.PlanningView = Backbone.View.extend({
 				total_hours: task.total_hours,
 				effective_hours: task.effective_hours,
 				remaining_hours: task.remaining_hours,
+				//allDay: true,
 			};
 			
 			// Store the Event Object in the DOM element so we can get to it later //
@@ -210,10 +211,13 @@ app.Views.PlanningView = Backbone.View.extend({
 			    revertDuration: 500,
 			    appendTo: '#app',
 			    opacity: 0.5,
+			    //helper: "clone",
 			    
 			    reverting: function() {
 					console.log('reverted');
 				},
+				
+
 			});
 
     	});	

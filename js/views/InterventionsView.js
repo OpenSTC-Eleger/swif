@@ -105,6 +105,10 @@ app.Views.InterventionsView = Backbone.View.extend({
 			app.views.selectListAssignementsView.addAll();
 
             $('*[rel="tooltip"]').tooltip({placement: "right"});
+            
+            $('tr.row-object').css({ opacity: '1'});
+            $('tr.row-object > td').css({ backgroundColor: '#FFF'});
+            $('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' }); 
         });
 
         $(this.el).hide().fadeIn('slow');

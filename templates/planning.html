@@ -43,7 +43,7 @@
 						</a>
 						
 						<p class="intervention-actions invisible">
-							<a href="#interventions/<%= inter.id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
+							<a href="#interventions/<%= inter.id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.up) %></a> 
 							<% if( inter.state == app.Models.Intervention.state[0].value ) { %>
 								<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.cancel) %></a>
 							<% } %> 
@@ -59,11 +59,11 @@
 									var allPlanned = true;
 
 									_.each(inter.tasks, function (task, i) { %>
-									
+										
 										<!-- Check if the Task is planned or not -->
-										<% console.debug(task.date_start); %>
-										<% if(task.date_start != '' && task.date_start != false && task.date_start != null && task.date_start != 'undefined' && task.date_start != 'Invalid Date'){ %>
-											<li id="task_<%= task.id %>" class="external-event disabled">
+										
+										<% if(task.date_start != '' && task.date_start != false && task.date_start != null && task.date_start != 'undefined' && task.date_start != 'Invalid '){ %>
+											<li id="task_<%= task.id %>" class="external-event disabled ui-widget-header">
 												<i class="icon-time"></i>&nbsp;
 												<span class="<%= (task.progress == '100' ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
 												<small class="pull-right"><%= task.planned_hours %>h</small>
@@ -77,9 +77,10 @@
 											allPlanned = false;
 										}  %>
 										<% if( task.state == app.Models.Task.state[0].value ) { %>
-											<p class="task-actions invisible">
-												<!--  <a href="#"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> -->
-												<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
+											<p class="task-actions">												
+												<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal">
+													<i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %>
+												</a>
 											</p>
 										<% } %>
 
@@ -194,6 +195,50 @@
 
 	</div>
 
+
+
+<!-- Modal Form Cancel Intervention -->
+<div id="modalDrop" class="modal hide fade">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3>Nombre d'heures a utiliser</h3>
+	</div>
+	
+	<div class="modal-body">
+
+		<blockquote id="infoModalDrop" class="spaceBottom">
+			<p></p>
+			<small></small>
+		</blockquote>
+
+	    <form id="formDrop" action="#" class="form-horizontal">
+            <div class="control-group">
+                <label for="nbTasks" class="control-label">Nombre de tâches:</label>
+
+                <div class="controls">
+                     <input type="number" id="nbTasks" name="nbTasks" required="required"/>
+                    <span class="help-inline"></span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label for="nbHours" class="control-label">Nombre d'heures par tâches:</label>
+
+                <div class="controls">
+                     <input type="number" id="nbHours" name="nbHours" required="required"/>
+                    <span class="help-inline"></span>
+                </div>
+            </div>
+
+            
+	    </form>
+	</div>
+	
+	<div class="modal-footer">
+	    <button type="submit" form="formDrop" class="btn btn-primary okButton" id="okButton">Enregistrer</button>&nbsp;&nbsp;
+	    <a href="#" data-dismiss="modal">Annuler</a>
+	</div>
+</div>
 
 
 <!-- Modal Form Cancel Intervention -->
@@ -337,11 +382,11 @@
 
                 <!-- intervention DeadLine -->
                 <!-- <div class="control-group">
-                    <label class="control-label" for="interventionDateDeadline"><%= _.capitalize(lang.dateDeadline) %>:</label>
+                    <label class="control-label" for="interventionDeadline"><%= _.capitalize(lang.Deadline) %>:</label>
                     <div class="controls">
                         <input 
-                            type="text" class="datePicker" 
-                            id="interventionDateDeadline" 
+                            type="text" class="Picker" 
+                            id="interventionDeadline" 
                             value="" 
                             placeholder="dd/mm/yyyy"
                             required="required"
@@ -412,8 +457,8 @@
 	        	<th>Catégorie</th>	
 	        	<th>Intervention</th>	            
 	            <th>Site</th>
-	            <th style="width: 100px" >Date début</th>
-	            <th>Date fin</th>	         
+	            <th style="width: 100px" > début</th>
+	            <th> fin</th>	         
 	            <th>Temps estimé</th>
 	            <th>Temps effectué</th>
 	            <th>Temps restant estimé par l'agent</th>

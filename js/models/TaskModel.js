@@ -146,6 +146,9 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	
 	save: function(id,data,closeModal, view, strRoute) { 
 		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {
+            beforeSend: function(){
+            	app.loader('display');
+        	},
 		    success: function (data) {
 		        console.log(data);
 		        if(data.error){
@@ -170,7 +173,10 @@ app.Models.Task = Backbone.RelationalModel.extend({
 										}
 										else if (view)
 											view.render();
-							 		}					 
+							 		},	            		
+						 			complete: function(){
+				            			app.loader('hide');
+				            		}					 
 						 		});
 					 		}					 
 					 	});
