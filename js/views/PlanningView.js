@@ -188,6 +188,7 @@ app.Views.PlanningView = Backbone.View.extend({
                 state: task.state,
                 id: task.id,
 				title: task.name,
+				project_id: task.project_id[0],
 				//user_id: task.user_id[0],
 				planned_hours: task.planned_hours,
 				total_hours: task.total_hours,

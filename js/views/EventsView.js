@@ -2,6 +2,8 @@ app.Views.EventsView = Backbone.View.extend({
 	
 		filterTasks: null,
 		minTime: 8,
+		startLunchTime:12,
+		stopLunchTime:14,
 		maxTime: 18,
 		workingTime: 8,
 	
@@ -110,36 +112,7 @@ app.Views.EventsView = Backbone.View.extend({
 		    	params.user_id = this.id
 		    var self = this;
 		    //app.models.task.save(copiedEventObject.id, params, null, self, null); 
-		    app.models.task.saveTest(copiedEventObject.id, params, {
-		    	success: function (data) {
-			    	$.pnotify({
-			    		title: 'Tâche attribuée',
-			    		text: 'La tâche a correctement été attribué à l\'agent.'
-				    });
-			    	app.collections.tasks.fetch({ 
-			    		success: function(){					    	
-			    			app.collections.interventions.fetch({ 
-			    				success: function(){
-					    			app.collections.officers.fetch({ 
-					    				success: function(){
-									 		app.collections.teams.fetch({
-								                success: function(){				 			
-				 								    if( self.teamMode)
-				 								    	self.initCollection(app.collections.teams.get(self.id));
-				 								    else
-				 								    	self.initCollection(app.collections.officers.get(self.id));
-				 								    $(self.el).fullCalendar('refetchEvents');
-				 								    self.planning.render();
-										 		}					 
-									 		});
-								         }
-								     });
-						        }
-						   });
-					 	}					 
-			    	});
-		    	}
-		    }); 		    
+		    
 		},	
         
         eventClick: function(fcEvent, jsEvent, view) {
@@ -207,29 +180,70 @@ app.Views.EventsView = Backbone.View.extend({
     		self.events = eventsSortedArray;
         },
         
+        updateTask : function(id,params) {
+        	var self = this;
+		    app.models.task.saveTest(id, params, {
+		    	success: function (data) {
+			    	$.pnotify({
+			    		title: 'Tâche attribuée',
+			    		text: 'La tâche a correctement été attribué à l\'agent.'
+				    });
+			    	app.collections.tasks.fetch({ 
+			    		success: function(){					    	
+			    			app.collections.interventions.fetch({ 
+			    				success: function(){
+					    			app.collections.officers.fetch({ 
+					    				success: function(){
+									 		app.collections.teams.fetch({
+								                success: function(){				 			
+				 								    if( self.teamMode)
+				 								    	self.initCollection(app.collections.teams.get(self.id));
+				 								    else
+				 								    	self.initCollection(app.collections.officers.get(self.id));
+				 								    $(self.el).fullCalendar('refetchEvents');
+				 								    self.planning.render();
+										 		}					 
+									 		});
+								         }
+								     });
+						        }
+						   });
+					 	}					 
+			    	});
+		    	}
+		    }); 
+        },
+        
+        
         calculTask: function(originalEventObject) {
         	if( originalEventObject ){
-	        	var startDate = originalEventObject.date_start;        	
+	        	var startDate = originalEventObject.start;        	
 	        	var duration = originalEventObject.planned_hours;
 	        	var endDate = null;
 	        	
 	        	if( duration>0 ) {
-	        		endDate = this.getDateEnd( originalEventObject.date_start );
+	        		endDate = this.getDateEnd( originalEventObject.start );
 	        	}
 	        	
 	        	if( endDate ) {
-	        		var tempDate = moment( originalEventObject.date_start )
-	        		duration = tempDate.subtract( endDate );
+	        		var bufferDate = moment( startDate )
+	        		duration = endDate.diff( bufferDate, 'hours', true );
 	        		//UPDATE current task : remove time
 	        		originalEventObject.planned_hours -= duration;
-	        		this.updateTask( originalEventObject );	
+	        		params = {
+	        				planned_hours : originalEventObject.planned_hours,
+	        				remaining_hours : originalEventObject.planned_hours,
+	        		}
+	        		this.updateTask( originalEventObject.id, params  );	
 	        		//Create new task 
-	        		originalEventObject.date_start = startDate;
-	        		originalEventObject.date_end = endDate;
+	        		originalEventObject.planned_hours = duration;
+	        		originalEventObject.start = startDate;
+	        		originalEventObject.end = endDate;	  
 	        		this.createTask( originalEventObject );	
 	        		//recursive calcul task
-	        		this.calculTask( originalEventObject )
+	        		//this.calculTask( originalEventObject )
 	        	}
+	        	
 	        }        	
         },
         
@@ -237,24 +251,61 @@ app.Views.EventsView = Backbone.View.extend({
         	if( startDate>=12 && startDate<=18 ) {
         		return null;
         	}
-        	
+        	startDate = moment(startDate);
         	//var newDate = //TODO underscore avec this.events;
+			var returnDate = null;
+			//this.startDate = startDate;
+			//var self = this;
+			_.each(this.events, function(event){
+				if( event.start ) {
+					var nextEventDate = moment( event.start );				
+					if ( returnDate==null )
+						returnDate = moment( nextEventDate ); 
+					
+					var diffWithNextEvent = nextEventDate.diff( returnDate )
+					var diffWithStart = nextEventDate.diff( startDate )
+					if( diffWithNextEvent<0 && diffWithStart>0 )
+						returnDate = moment( nextEventDate )						
+					
+				}					
+			});
         	
-        	if( startDate<12 ) {
-        		//newDate = //min ac moment.js (12h, newDate);
-        	}
-        	else {
-        		//newDate = //min ac moment.js (18h, newDate);
-        	}
-        	//return ( newDate-startDate )
+			if( returnDate ){
+				var startLunchTime = moment( startDate ).hours( this.startLunchTime );
+				var maxTime = moment( startDate ).hours( this.maxTime );
+				
+	        	if( startDate.hours()<this.startLunchTime ) {
+	        		//newDate = //min ac moment.js (12h, newDate);
+	        		if( returnDate.diff(startLunchTime)>0 )
+	        			returnDate = moment( startLunchTime )
+	        	}
+	        	else {
+	        		//newDate = //min ac moment.js (18h, newDate);
+	        		if( returnDate.diff( maxTime )>0 )
+	        			returnDate = moment( maxTime )
+	        	}
+	        }
+			return returnDate;
         },
         
-//        createNewTask: function (originalEventObject){
-//        	//updateTask planned_hours : soustraire la durée
-//        	//saveTask (params.id = task.id,
-//        				params.datet_start=originalEventObject.date_start
-//        },
-//        
+        createTask: function (originalEventObject){
+			 params = { 
+			    //id: copiedEventObject.id,
+			    name:  originalEventObject.title + "(copy)",
+			    project_id: originalEventObject.project_id,
+			    state: 'open',
+			    date_start: originalEventObject.start,
+				date_end: originalEventObject.end.toDate(),
+			    planned_hours: originalEventObject.planned_hours,
+			    remaining_hours: originalEventObject.planned_hours,
+			 };
+		    if( this.teamMode)
+		    	params.team_id = this.id
+		    else
+		    	params.user_id = this.id
+        	app.models.task.save(0,params,null, this.planning, null);
+        },
+        
         initCalendar: function() {
         	var self = this;
         	this.calendar = self.el.fullCalendar({
@@ -320,7 +371,8 @@ app.Views.EventsView = Backbone.View.extend({
 				drop: function( date, allDay ) {
 					var domObject = $(this)
 					var originalEventObject = $(this).data('eventObject');
-					this.calculTask(originalEventObject);
+					originalEventObject.start = date;
+					self.calculTask(originalEventObject);
 //					confirmModal = $("#modalDrop");
 //				    if( originalEventObject.planned_hours>=8 ){
 //				    	confirmModal.find('#okButton').click(function(event) {
