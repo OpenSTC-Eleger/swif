@@ -13,7 +13,7 @@
 				<button class="btn btn-primary no-outline addInterventionPlanning" rel="tooltip" 
 						data-original-title="<%= _.capitalize(lang.actions.addIntervention) %>" data-placement="right">
 							<i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %>
-				</button>
+				</button><br />
 			
 				<!--<a href="#modalAddInter" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	
 				
@@ -23,6 +23,18 @@
 					<% }) %>
 				</ul>
 				-->
+
+				<div class="btn-group" data-toggle="buttons-radio">
+    				<button type="button" class="btn">A planifier</button>
+					<button type="button" class="btn">planification cloturée</button>
+    				<button type="button" class="btn">Toutes</button>
+    			</div>
+
+    			<select>
+					<option>Toutes</option>
+    				<option>A planifier</option>
+    				<option>planification cloturée</option>
+    			</select>
 			</div>
 			
 			<!-- Table toolbar -->

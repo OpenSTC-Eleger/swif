@@ -205,9 +205,12 @@ app.Router = Backbone.Router.extend({
                 app.collections.requests = new app.Collections.Requests();
             }
             
-            app.loader('display');
+            
             app.collections.requests.fetch({
-            	success: function(){
+            	beforeSend: function(){
+                    app.loader('display');
+                },
+                success: function(){
 	            	if(app.collections.assignements == null ){
 	            		app.collections.assignements = new app.Collections.Assignements();
 					}
@@ -269,9 +272,9 @@ app.Router = Backbone.Router.extend({
            
             app.loader('display');
             app.collections.places.fetch({
-//                beforeSend: function(){
-//                    app.loader('display');
-//                },
+                beforeSend: function(){
+                    app.loader('display');
+                },
                 success: function(){                    
             		if(app.collections.claimers == null){
                 		app.collections.claimers = new app.Collections.Claimers();
@@ -345,38 +348,41 @@ app.Router = Backbone.Router.extend({
                 },
                 success: function(){
                 
-            		if(app.collections.claimersServices == null ){
+                    if(app.collections.claimersServices == null ){
                 		app.collections.claimersServices = new app.Collections.ClaimersServices();
-			}
+                    }
                     app.collections.claimersServices.fetch({
         	            success: function(){
 
             			if(app.collections.claimers == null ){
-						app.collections.claimers = new app.Collections.Claimers();
-				}
-				app.collections.claimers.fetch({
+						  app.collections.claimers = new app.Collections.Claimers();
+				        }
+				    
+                    app.collections.claimers.fetch({
 
-					success: function(){
+					   success: function(){
 
-            			if(app.collections.claimersContacts == null ){
-						app.collections.claimersContacts = new app.Collections.ClaimersContacts();
-				}
-				app.collections.claimersContacts.fetch({
+                            if(app.collections.claimersContacts == null ){
+						      app.collections.claimersContacts = new app.Collections.ClaimersContacts();
+				            }
+				            
+                            app.collections.claimersContacts.fetch({
 
-					success: function(){
+                                success: function(){
 
-            			if(app.collections.claimersTypes == null ){
-						app.collections.claimersTypes = new app.Collections.ClaimersTypes();
-				}
-				app.collections.claimersTypes.fetch({
+                                    if(app.collections.claimersTypes == null ){
+                                        app.collections.claimersTypes = new app.Collections.ClaimersTypes();
+                                    }
+				                    
+                                    app.collections.claimersTypes.fetch({
 
-					success: function(){
+					                   success: function(){
 	
 //								if(app.views.requestView != null) {          
 //	            	                app.views.requestView = null  
 //	            	            }
-								app.views.requestView = new app.Views.RequestDetailsView( self.request, true);
-								self.render(app.views.requestView);
+								            app.views.requestView = new app.Views.RequestDetailsView( self.request, true);
+							                self.render(app.views.requestView);
 
 //	            	            if(app.views.requestView == null) {          
 //	            	                app.views.requestView = new app.Views.RequestDetailsView( request, true);  
@@ -386,15 +392,15 @@ app.Router = Backbone.Router.extend({
 //	            	                app.views.requestView.initialize(request,true);
 //	            	            }
 	
-                        	},
-                        	complete: function(){
-                        	    app.loader('hide');
-                        	}
-				});
-				}
-			});
-			},
-			});
+                        	           },
+                        	           complete: function(){
+                        	               app.loader('hide');
+                        	           }
+				                    });
+				                }
+                            });
+                        },
+                    });
                     },
 	            });
             },
@@ -407,9 +413,7 @@ app.Router = Backbone.Router.extend({
 
 
 
-
-
-    /** Interventions app
+    /** Interventions list
     */
     interventions: function(){
     	
@@ -419,62 +423,67 @@ app.Router = Backbone.Router.extend({
         if(this.checkConnect()){
         	
         	
-
-        	app.loader('display');
-        	if(app.collections.tasks == null ){
-        		app.collections.tasks = new app.Collections.Tasks();        	
-        	}
+          	if(app.collections.tasks == null ){
+            		app.collections.tasks = new app.Collections.Tasks();        	
+           	}
         	
         	
             app.collections.tasks.fetch({  
             	
-            		success: function(){
+        		beforeSend: function(){
+                    app.loader('display');
+                },
+                success: function(){
 
-			            // Check if the collections is instantiate //
-			            if(app.collections.interventions == null ){
-			                app.collections.interventions = new app.Collections.Interventions();
-			            }
-			
-			            app.collections.interventions.fetch({
-			                success: function(){
-					            if(app.collections.requests == null ){
-					                app.collections.requests = new app.Collections.Requests();
-					            }
-					
-					            app.collections.requests.fetch({
-					                success: function(){
-			            	
-						            	if(app.collections.categories == null ){
-						            		app.collections.categories = new app.Collections.Categories();
-										}
-							            app.collections.categories.fetch({
-							            	success: function(){
-							                    // If the view exist we reuse it //
+		            // Check if the collections is instantiate //
+		            if(app.collections.interventions == null ){
+		                app.collections.interventions = new app.Collections.Interventions();
+		            }
+		
+		            app.collections.interventions.fetch({
+		                success: function(){
+				            if(app.collections.requests == null ){
+				                app.collections.requests = new app.Collections.Requests();
+				            }
+				
+				            app.collections.requests.fetch({
+				                success: function(){
+		            	
+					            	if(app.collections.categories == null ){
+					            		app.collections.categories = new app.Collections.Categories();
+									}
+						            app.collections.categories.fetch({
+						            	success: function(){
+						                    // If the view exist we reuse it //
 //							                    if(app.views.interventionsView){
 //							                        app.views.interventionsView.render();
 //							                    }
 //							                    else{
 //							                        app.views.interventionsView = new app.Views.InterventionsView();
 //							                    }
-							                    app.views.interventionsView = new app.Views.InterventionsView();
-							                    self.render(app.views.interventionsView);
-							                 },
-						                	complete: function(){
-						                	    app.loader('hide');
-						                	}	
-							             });
-							        }
-					            });
-			                }
-			            });
-	                }                
-	            });
+						                    app.views.interventionsView = new app.Views.InterventionsView();
+						                    self.render(app.views.interventionsView);
+						                 },
+					                	complete: function(){
+					                	    app.loader('hide');
+					                	}	
+						             });
+						        }
+				            });
+		                }
+		            });
+                }                
+            });
         }
         else{
             this.navigate('login', {trigger: true, replace: true});
         }
     },
     
+
+
+    /** Interventions details
+    */
 	detailsIntervention: function(id) {
 	    // Check if the user is connect //
 	    if(this.checkConnect()){
@@ -532,62 +541,64 @@ app.Router = Backbone.Router.extend({
         		app.collections.tasks = new app.Collections.Tasks();        	
         	}
         	
-        	app.loader('display');
+        	
             app.collections.tasks.fetch({  
-            	
-            		success: function(){
-			        	if(app.collections.interventions == null ){
-			                app.collections.interventions = new app.Collections.Interventions();
-			            }
-			        
-			        	app.collections.interventions.fetch({
-			        		success: function(){
-				        		if(app.collections.claimersServices == null ){
-				            		app.collections.claimersServices = new app.Collections.ClaimersServices();
-				    			}
-					            app.collections.claimersServices.fetch({
-					            	success: function(){
-				        				if(app.collections.officers == null ){
-				        					app.collections.officers = new app.Collections.Officers();
-				        				}
-							        	app.collections.officers.fetch({
-							        		success: function(){
-									        	if(app.collections.teams == null ){
-									                app.collections.teams = new app.Collections.Teams();
-									            }
-									        
-										        app.collections.teams.fetch({
-										        	success: function(){
-											        	if(app.collections.places == null ){
-											                app.collections.places = new app.Collections.Places();
-											            }
-											        
-											        	app.collections.places.fetch({
-											        		success: function(){
-												            	if(app.collections.categories == null ){
-												            		app.collections.categories = new app.Collections.Categories();
-																}
-													            app.collections.categories.fetch({
-													            	success: function(){
-															            app.views.planningView = new app.Views.PlanningView(id);
-															            self.render(app.views.planningView);
-															        },
-										                        	complete: function(){
-										                        	    app.loader('hide');
-										                        	}
-														        });													         
-											        		}
-										                });
-										             }
-							                    });
-							                }			        	
-							        	});	
-								    }
-								});
-				        	} 			        		
-			        	});	
-            		}  
-            	 });
+            	beforeSend: function(){
+                    app.loader('display');
+                },
+        		success: function(){
+		        	if(app.collections.interventions == null ){
+		                app.collections.interventions = new app.Collections.Interventions();
+		            }
+		        
+		        	app.collections.interventions.fetch({
+		        		success: function(){
+			        		if(app.collections.claimersServices == null ){
+			            		app.collections.claimersServices = new app.Collections.ClaimersServices();
+			    			}
+				            app.collections.claimersServices.fetch({
+				            	success: function(){
+			        				if(app.collections.officers == null ){
+			        					app.collections.officers = new app.Collections.Officers();
+			        				}
+						        	app.collections.officers.fetch({
+						        		success: function(){
+								        	if(app.collections.teams == null ){
+								                app.collections.teams = new app.Collections.Teams();
+								            }
+								        
+									        app.collections.teams.fetch({
+									        	success: function(){
+										        	if(app.collections.places == null ){
+										                app.collections.places = new app.Collections.Places();
+										            }
+										        
+										        	app.collections.places.fetch({
+										        		success: function(){
+											            	if(app.collections.categories == null ){
+											            		app.collections.categories = new app.Collections.Categories();
+															}
+												            app.collections.categories.fetch({
+												            	success: function(){
+														            app.views.planningView = new app.Views.PlanningView(id);
+														            self.render(app.views.planningView);
+														        },
+									                        	complete: function(){
+									                        	    app.loader('hide');
+									                        	}
+													        });													         
+										        		}
+									                });
+									             }
+						                    });
+						                }			        	
+						        	});	
+							    }
+							});
+			        	} 			        		
+		        	});	
+        		} 
+            });
         }
         else{
             this.navigate('login', {trigger: true, replace: true});
