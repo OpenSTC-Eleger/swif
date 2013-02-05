@@ -200,8 +200,61 @@ app.Views.EventsView = Backbone.View.extend({
         		             };
         		self.events.push(event);
         	});
+        	
+    		var eventsSortedArray = _.sortBy(self.events, function(event){ 
+    			return event.start; 
+    		});
+    		self.events = eventsSortedArray;
         },
         
+        calculTask: function(originalEventObject) {
+        	if( originalEventObject ){
+	        	var startDate = originalEventObject.date_start;        	
+	        	var duration = originalEventObject.planned_hours;
+	        	var endDate = null;
+	        	
+	        	if( duration>0 ) {
+	        		endDate = this.getDateEnd( originalEventObject.date_start );
+	        	}
+	        	
+	        	if( endDate ) {
+	        		var tempDate = moment( originalEventObject.date_start )
+	        		duration = tempDate.subtract( endDate );
+	        		//UPDATE current task : remove time
+	        		originalEventObject.planned_hours -= duration;
+	        		this.updateTask( originalEventObject );	
+	        		//Create new task 
+	        		originalEventObject.date_start = startDate;
+	        		originalEventObject.date_end = endDate;
+	        		this.createTask( originalEventObject );	
+	        		//recursive calcul task
+	        		this.calculTask( originalEventObject )
+	        	}
+	        }        	
+        },
+        
+        getDateEnd: function ( startDate ) {
+        	if( startDate>=12 && startDate<=18 ) {
+        		return null;
+        	}
+        	
+        	//var newDate = //TODO underscore avec this.events;
+        	
+        	if( startDate<12 ) {
+        		//newDate = //min ac moment.js (12h, newDate);
+        	}
+        	else {
+        		//newDate = //min ac moment.js (18h, newDate);
+        	}
+        	//return ( newDate-startDate )
+        },
+        
+//        createNewTask: function (originalEventObject){
+//        	//updateTask planned_hours : soustraire la durée
+//        	//saveTask (params.id = task.id,
+//        				params.datet_start=originalEventObject.date_start
+//        },
+//        
         initCalendar: function() {
         	var self = this;
         	this.calendar = self.el.fullCalendar({
@@ -265,8 +318,9 @@ app.Views.EventsView = Backbone.View.extend({
 				},
 
 				drop: function( date, allDay ) {
-//					var domObject = $(this)
-//					var originalEventObject = $(this).data('eventObject');
+					var domObject = $(this)
+					var originalEventObject = $(this).data('eventObject');
+					this.calculTask(originalEventObject);
 //					confirmModal = $("#modalDrop");
 //				    if( originalEventObject.planned_hours>=8 ){
 //				    	confirmModal.find('#okButton').click(function(event) {
@@ -279,7 +333,7 @@ app.Views.EventsView = Backbone.View.extend({
 //					    confirmModal.modal();
 //				        
 //				    }else{
-				    	self.drop(date, allDay, $(this));
+				    	//self.drop(date, allDay, $(this));
 //				    }
 					
 				},
