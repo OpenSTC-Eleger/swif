@@ -84,7 +84,6 @@ app.Views.RequestsListView = Backbone.View.extend({
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
 				pageCount: pageCount,
-
 			});
 
 			console.debug(requests);
