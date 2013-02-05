@@ -12,11 +12,11 @@ app.Views.OfficersView = Backbone.View.extend({
 	selectedOfficer: '',
 
 
-    // The DOM events //
-    events: {
-    	'click li.active'				: 'preventDefault',
+	// The DOM events //
+	events: {
+		'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
-		
+
 		'click a.modalDeleteOfficer'  	: 'modalDeleteOfficer',
 		'click a.modalSaveOfficer'  	: 'modalSaveOfficer',
 
@@ -35,7 +35,7 @@ app.Views.OfficersView = Backbone.View.extend({
 
 	/** Display the view
 	*/
-    render: function () {
+	render: function () {
 		var self = this;
 
 		// Change the page title //
@@ -79,12 +79,19 @@ app.Views.OfficersView = Backbone.View.extend({
 
 			// Tooltip //
 			$('*[rel="tooltip"]').tooltip({placement: "right"});
+
+
+			// Fill select Foreman  //
+			app.views.selectListGroupsView = new app.Views.DropdownSelectListView({el: $("#officerGroup"), collection: app.collections.groups})
+			app.views.selectListGroupsView.clearAll();
+			app.views.selectListGroupsView.addEmptyFirst();
+			app.views.selectListGroupsView.addAll();
 		});
 
 		$(this.el).hide().fadeIn('slow');
-		
-        return this;
-    },    
+
+		return this;
+	},
 
 
 
@@ -95,14 +102,18 @@ app.Views.OfficersView = Backbone.View.extend({
 		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
 		this.selectedOfficer = _.filter(app.collections.officers.models, function(item){ return item.attributes.id == id });
 
-        if( this.selectedOfficer.length > 0 ) {
+		if( this.selectedOfficer.length > 0 ) {
 
 			this.model = this.selectedOfficer[0];
 			this.selectedOfficerJson = this.model.toJSON();
-        }
-        else {
+
+			$('#modalSaveOfficer h3').html(_.capitalize(app.lang.actions.updateOfficer));
+		}
+		else {
 			this.selectedOfficerJson = null;
-        }
+			
+			$('#modalSaveOfficer h3').html(_.capitalize(app.lang.actions.addOfficer));
+		}
 
 		console.debug(this.model);
 	},
@@ -116,6 +127,7 @@ app.Views.OfficersView = Backbone.View.extend({
 
 		// Reset the value to null //
 		$('#officerName, #officerFirstname, #officerEmail, #officerLogin, #officerPassword').val('');
+		app.views.selectListGroupsView.setSelectedItem(0);
 
 		// Update //
 		if( this.selectedOfficerJson ) {
@@ -130,6 +142,8 @@ app.Views.OfficersView = Backbone.View.extend({
 			}
 			$('#officerLogin').val(this.selectedOfficerJson.login);
 
+			app.views.selectListGroupsView.setSelectedItem( this.selectedTeamJson.manager_id[0] );
+
 			// Disable the required attribute for the password because it's an update 	//
 			$('#officerPassword').removeAttr('required');
 		}
@@ -142,22 +156,22 @@ app.Views.OfficersView = Backbone.View.extend({
 
 
 	/** Display information in the Modal view delete officer
-	*/	
+	*/
 	modalDeleteOfficer: function(e){
-        
-        // Retrieve the ID of the officer //
-    	this.setModel(e);
 
-        $('#infoModalDeleteOfficer p').html(this.selectedOfficerJson.firstname +' '+ this.selectedOfficerJson.name);
-        $('#infoModalDeleteOfficer small').html(_.capitalize(app.lang.lastConnection) +"	 "+ moment(this.selectedOfficerJson.date, 'YYYY-MM-DD HH:mm:ss').format('LLL'));
-    },
+		// Retrieve the ID of the officer //
+		this.setModel(e);
+
+		$('#infoModalDeleteOfficer p').html(this.selectedOfficerJson.firstname +' '+ this.selectedOfficerJson.name);
+		$('#infoModalDeleteOfficer small').html(_.capitalize(app.lang.lastConnection) +"	 "+ moment(this.selectedOfficerJson.date, 'YYYY-MM-DD HH:mm:ss').format('LLL'));
+	},
 
 
 
 	/** Save Officer
 	*/
 	saveOfficer: function(e) {
-    	e.preventDefault();
+		e.preventDefault();
 
 
 
@@ -172,7 +186,7 @@ app.Views.OfficersView = Backbone.View.extend({
 		}
 		else{
 			this.params = {
-				name: this.$('#officerName').val().toUpperCase(),
+				name: this.$('#officerName').val()	.toUpperCase(),
 				firstname: this.$('#officerFirstname').val(),
 				user_email: this.$('#officerEmail').val(),
 				login: this.$('#officerLogin').val()
@@ -242,8 +256,8 @@ app.Views.OfficersView = Backbone.View.extend({
 
 
 
-    preventDefault: function(event){
+	preventDefault: function(event){
     	event.preventDefault();
-    },
+	 },
 
 });

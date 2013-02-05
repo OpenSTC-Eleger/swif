@@ -143,16 +143,16 @@ div.div-actions{
 	top: 60px;
 }
 #listAgentsTeams div.tab-content div.tab-pane{
-	max-height: 120px;
+	height: 120px;
 }
-#listAgents{
+#listAgents, #listTeams{
 	margin-bottom: 0;
 }
-#listAgents li{
+#listAgents li, #listTeams li{
 	width: 31%;
 	height: 30px;
 }
-#listAgents li a{
+#listAgents li a, #listTeams li a{
 	margin-left: 0;
 	padding-left: 5px;
 	
@@ -255,6 +255,7 @@ h4#teamTitle{
 }
 
 
+
 /* objects list
 -------------------------------------------------- */
 table.table-objects tbody > tr:nth-child(4n+1){
@@ -301,7 +302,7 @@ tr.row-nested-objects-collapse td[colspan="5"]{
 @media (max-width: 979px) {
 
   	// Planning list Agents //
-	#listAgents li{
+	#listAgents li, #listTeams li{
 		width: 45%;
 	}
 

@@ -11,87 +11,88 @@ app.Views.TasksListView = Backbone.View.extend({
 
 
     // The DOM events //
-    events: {
-    	//'click .taskDone' 		: 'taskDone',
-    	'click a.taskNotDone' 	: 'taskNotDone',
-    		
-    	'click .buttonTimeSpent'		: 'setModalTimeSpent',
-    	'submit #formTimeSpent'    		: 'saveTimeSpent',
-    	
-    	'click .buttonTaskDone'			: 'setModalTaskDone',
-    	'submit #formTaskDone'    		: 'saveTaskDone',
-    },
+	events: {
+		'click li.active'				: 'preventDefault',
+		'click li.disabled'				: 'preventDefault',
 
-	
+		//'click .taskDone' 			: 'taskDone',
+		'click a.taskNotDone' 			: 'taskNotDone',
+
+		'click .buttonTimeSpent'		: 'setModalTimeSpent',
+		'submit #formTimeSpent'    		: 'saveTimeSpent',
+    	
+		'click .buttonTaskDone'			: 'setModalTaskDone',
+		'submit #formTaskDone'    		: 'saveTaskDone',
+	},
+
+
 
 	/** View Initialization
 	*/
-    initialize: function () {
+	initialize: function () {
 		
-    },
+	},
 
 	/** Display the view
 	*/
-    render: function () {
+	render: function () {
 		var self = this;
 
 		// Change the page title //
-        app.router.setPageTitle(app.lang.viewsTitles.tasksList);
+		app.router.setPageTitle(app.lang.viewsTitles.tasksList);
 
+		// Change the active menu item //
+		app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
 
-        // Change the active menu item //
-        app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
-
-        // Change the Grid Mode of the view //
-        app.views.headerView.switchGridMode('fluid');
+		// Change the Grid Mode of the view //
+		app.views.headerView.switchGridMode('fluid');
 
 
 		var officer = app.models.user;  
 		var officer_id = officer.get('uid');
 		
 		var tasks = app.collections.tasks
-		
-		//TODO ajouter le DST et le manager du service de l'utilisateur
-        var tasksUser = _.filter(tasks.models, function(item){	
-        		var task = item.toJSON();
-        		var intervention = task.intervention; 
-        		
-        		var belongsToOfficer = (task.user_id[0] == officer_id)
-        		if( task.teamWorkingOn != null && task.teamWorkingOn.manager_id!=null )
-						belongsToOfficer = belongsToOfficer || (task.teamWorkingOn.manager_id[0] == officer_id);
-        		
-        		var belongsToServiceManager = false;
-        		
-        		var interCondition = false;
-        		if( intervention!=null ) {
-        			//keep only  interventions : toscheduled ('A planifier'), scheduled('cloturée') , pending ('En cours')
-        			interCondition = intervention.state==app.Models.Intervention.state[0].value
-        				||	intervention.state==app.Models.Intervention.state[1].value
-						|| intervention.state==app.Models.Intervention.state[2].value 
-											
-					var service = intervention.service_id;//!=null?intervention.service_id.toJSON():null;
-					var userServices = app.models.user.toJSON().service_ids;
-					if ( service && userServices )
-						belongsToServiceManager = app.models.user.isManager() &&         										
-        												$.inArray(service[0], userServices)!=-1;
-						
-				}
-        			
 
-        		return (	//Tâches de l'agent
-        					( belongsToOfficer || app.models.user.isDST() || belongsToServiceManager )
-        					&& 
-        					(
-        						//Tâches ouvertes (plannifiés) ou en cours
-        						task.state==app.Models.Task.state[1].value
-        						|| task.state==app.Models.Task.state[2].value                                                  	
-        					 )  
-        					&& 
-        					(
-        						//L'intervention de la tâche doit être planifiée ou en cours'
-        						interCondition                                                  	
-        					 )        					
-        			   ); 
+		//TODO ajouter le DST et le manager du service de l'utilisateur
+		var tasksUser = _.filter(tasks.models, function(item){	
+			var task = item.toJSON();
+			var intervention = task.intervention; 
+        		
+    		var belongsToOfficer = (task.user_id[0] == officer_id)
+    		if( task.teamWorkingOn != null && task.teamWorkingOn.manager_id!=null )
+					belongsToOfficer = belongsToOfficer || (task.teamWorkingOn.manager_id[0] == officer_id);
+    		
+    		var belongsToServiceManager = false;
+    		
+    		var interCondition = false;
+    		if( intervention!=null ) {
+    			//keep only  interventions : toscheduled ('A planifier'), scheduled('cloturée') , pending ('En cours')
+    			interCondition = intervention.state==app.Models.Intervention.state[0].value
+    				||	intervention.state==app.Models.Intervention.state[1].value
+					|| intervention.state==app.Models.Intervention.state[2].value 
+										
+				var service = intervention.service_id;//!=null?intervention.service_id.toJSON():null;
+				var userServices = app.models.user.toJSON().service_ids;
+				if ( service && userServices )
+					belongsToServiceManager = app.models.user.isManager() &&         										
+    												$.inArray(service[0], userServices)!=-1;
+			}
+
+
+    		return (	//Tâches de l'agent
+    					( belongsToOfficer || app.models.user.isDST() || belongsToServiceManager )
+    					&& 
+    					(
+    						//Tâches ouvertes (plannifiés) ou en cours
+    						task.state==app.Models.Task.state[1].value
+    						|| task.state==app.Models.Task.state[2].value                                                  	
+    					 )  
+    					&& 
+    					(
+    						//L'intervention de la tâche doit être planifiée ou en cours'
+    						interCondition
+    					 )
+    			   ); 
         });
 		
     	//var tasks = app.collections.tasks.getTasksByOfficer(officer_id);
@@ -117,7 +118,9 @@ app.Views.TasksListView = Backbone.View.extend({
 			_.each(tasksUser , function (task, i){
 				taskList.push(task.toJSON())
 			});
-			
+
+			console.log(taskList);
+
 			var template = _.template(templateData, {
 				lang: app.lang,
 				nbTasks: nbTasks,
@@ -131,29 +134,28 @@ app.Views.TasksListView = Backbone.View.extend({
 		});
 
 		$(this.el).hide().fadeIn('slow');
-		
-        return this;
-    },    
-        
+
+		return this;
+    },
+  
     getTask: function(e) {
 		var href = $(e.target);
 
 		// Retrieve the ID of the request //	
 		this.pos = href.parents('tr').attr('id');
-		this.taskId = e.currentTarget.id;
+		this.taskId = href.data('taskid');
 		this.model = app.collections.tasks.get(this.taskId);
-		
     },
     
     //Task not finished
     setModalTimeSpent: function(e) {    	
     	this.getTask(e);
     	var task = this.model.toJSON();
-    	
+
     	$('#infoModalTimeSpent').children('p').html(task.name);
 		$('#infoModalTimeSpent').children('small').html(task.notes);
 		$('.timepicker-default').timepicker({showMeridian:false});
-		
+
 		$('#eventTimeSpent').val(this.secondsToHms(task.remaining_hours*60));
 		$('#eventTimeRemaining').val("00:00");
     },
@@ -176,9 +178,9 @@ app.Views.TasksListView = Backbone.View.extend({
 			date_end: null,
 			date_start: null,
 		};
-		
+
 		var task = this.model.toJSON();
-		
+
 		taskWorkParams = {
     			 name: task.name,
     	         date: new Date(),
@@ -188,7 +190,7 @@ app.Views.TasksListView = Backbone.View.extend({
     	         team_id: task.team_id!=null?task.team_id[0]:null,
     	         company_id: task.company_id[0]
     	};
-		
+
 		var newInterState = app.Models.Intervention.state[0].value;
 		this.saveNewStateTask(taskParams, taskWorkParams,$('#modalTimeSpent'),newInterState);
     },
@@ -212,7 +214,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 		$('#eventTime').val(this.secondsToHms(task.remaining_hours*60));
     },
-    
+
     saveTaskDone: function(e) {
     	e.preventDefault();
 
@@ -254,13 +256,13 @@ app.Views.TasksListView = Backbone.View.extend({
 		e.preventDefault();
 		this.getTask(e);
 		taskParams = {
-		        state: app.Models.Task.state[1].value,		        
-		        //remaining_hours: 0,
-		        //planned_hours: 0,
-				user_id: null,
-				team_id:null,
-				date_end: null,
-				date_start: null,
+			state: app.Models.Task.state[1].value,		        
+			//remaining_hours: 0,
+			//planned_hours: 0,
+			user_id: null,
+			team_id:null,
+			date_end: null,
+			date_start: null,
 		};
 		var newInterState = app.Models.Intervention.state[0].value;		
 		this.saveNewStateTask(taskParams,null,null,newInterState);

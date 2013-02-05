@@ -67,7 +67,7 @@
 				<tr class="row-object" id="inter_<%= intervention.id %>">
 					<td>
 						<a class="accordion-object" href="#collapse_<%= intervention.id %>">
-							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= intervention.name %>
+							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(intervention.name) %>
 						</a>
 						<span class="object-actions invisible">
 							<a href="#interventions/<%= intervention.id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a>
