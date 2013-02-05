@@ -20,7 +20,7 @@
 	<h1>
 		<%= lang.viewsTitles.tasksList %>
 		<sup rel="tooltip" data-original-title="<%= actionTaskToProcess %>">
-			<i class="badge badge-<%= classColor %>" >
+			<i class="badge badge-<%= classColor %>">
 				<%= nbTasks %>
 			</i>
 		</sup>
@@ -52,13 +52,11 @@
 			<thead>
 				<tr>
 					<th><%= _.capitalize(lang.label) %></th>
-					<th class="hidden-phone"><%= _.capitalize(lang.category) %></th>
 					<th><%= _.capitalize(lang.intervention) %></th>
 					<th><%= _.capitalize(lang.place) %></th>
 					<th><%= _.capitalize(lang.dateStart) %></th>
 					<th><%= _.capitalize(lang.dateEnd) %></th>
 					<th><%= _.capitalize(lang.assignedTo) %></th>
-					<th><%= _.capitalize(lang.team) %></th>
 					<th><%= _.capitalize(lang.plannedHours) %></th> 
 					<th><%= _.capitalize(lang.remainingHours) %></th>
 					<th><%= _.capitalize(lang.progressRate) %></th>
@@ -69,28 +67,21 @@
 			<tbody>
 				<% _.each(tasks, function (task, i) { %>
 				
-
 					<tr id="<%= i %>">
-					    <td>
-					    	<a 	href="#taches/<%= task.id %>" 
-								rel="popover">
-								<%= task.name %>
-							</a>
-						</td>
-						<td><%= (task.category_id[0] != false && task.category_id[0] != null ? _(task.category_id[1].toLowerCase()).titleize() : "") %></td>
+					    <td><a 	href="#taches/<%= task.id %>"> <%= _.capitalize(task.name) %> </a></td>
 						<td class="hidden-phone"><%= task.project_id[1] %></td>
 						<td><%= task.intervention.site1[1] %></td>
 						<td><%= (task.date_start) != "" ? moment(task.date_start).format('LLL') : "" %></td>
 						<td><%= (task.date_end) != "" ? moment(task.date_end).format('LLL') : "" %></td>
-					    <td><%= task.user_id[1] %></td>
-					    <td><%= task.team_id[1] %></td>
-					    <td><%= task.planned_hours %></td>
-					    <td>
-							<span 
-					    		rel="tooltip">
-					    		<%= task.remaining_hours %>
-					    	</span>
-					    </td>
+					    
+					    <% if(task.team_id == false){ %>
+					    	<td><%= task.user_id[1] %></td>
+					    <% } else { %>
+					    	<td><%= task.team_id[1] %></td>	
+					    <% } %>
+
+					    <td><%= task.planned_hours %>h</td>
+					    <td><%= task.remaining_hours %>h</td>
 						<td>
 							<% if(task.progress != 0 || task.progress != false) {
 
@@ -121,7 +112,7 @@
 				    		<% } %>
 					   	</td>
 					   	
-					   	
+					   	<!-- Actions -->
 					   	<td class="align">
 
 					   		<!-- Tâches à saisir -->
@@ -129,13 +120,13 @@
 									|| task.state == app.Models.Task.state[2].value) { %>
 					   		
 								<div class="btn-group">
-									<button class="btn btn-small btn-success no-outline buttonTaskDone" data-toggle="modal" id="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok"></i></button>
+									<button class="btn btn-small btn-success no-outline buttonTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok"></i></button>
 									<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
 										<span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu pull-right align-left">										
-										<li><a href="#" class="taskNotDone" id="<%= task.id %>"><i class="icon-remove"></i>&nbsp;Non Fait</a></li>
-										<li><a href="#modalTimeSpent" data-toggle="modal" id="<%= task.id %>" class="buttonTimeSpent"><i class="icon-user"></i>&nbsp;Non Terminée</a></li>
+										<li><a href="#" class="taskNotDone" data-taskid="<%= task.id %>"><i class="icon-remove"></i>&nbsp;Non Fait</a></li>
+										<li><a href="#modalTimeSpent" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonTimeSpent"><i class="icon-user"></i>&nbsp;Non Terminée</a></li>
 									</ul>
 								</div>
 

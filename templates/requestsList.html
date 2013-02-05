@@ -105,7 +105,7 @@
 								rel="popover" 
 								data-content="<%=  description + '\n(' + createdBy +')' %>"
 								data-original-title="<%= _.capitalize(lang.description)  %>:">
-								<%= requests[i].name %>
+								<%= _.capitalize(requests[i].name) %>
 							</a>
 						</td>
 						<td><%= (requests[i].site1 != false ? _(requests[i].site1[1].toLowerCase()).titleize() : "") %></td>

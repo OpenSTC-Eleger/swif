@@ -36,7 +36,7 @@
 				</thead>
 				<tbody>
 				<% for (var i = startPos; i < endPos; i++) { %>
-					
+
 					<!-- Teams row -->
 					<tr class="row-item" id="team_<%= teams[i].id %>">
 						<td>
@@ -64,7 +64,7 @@
 					
 					<!-- Previous page button -->
 					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#sites/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
-				
+
 					<!-- [...] page Button -->
 					<% 	if (page-2 > 1) { %>
 							<li class="disabled"><a href='#'>...</a></li>
@@ -76,7 +76,7 @@
 							<% }
 
 						} %>
-						
+
 					<!-- [...] page Button -->
 					<% if (page+2 < pageCount) { %>
 						<li class="disabled"><a href='#'>...</a></li>
@@ -202,7 +202,7 @@
 
 		</form>
 	</div>
-	
+
 	<div class="modal-footer">
 		<button type="submit" form="formSaveTeam" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
 		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
@@ -228,7 +228,7 @@
 	</div>
 	
 	<div class="modal-footer">
-	    <button type="button" class="btn btn-danger btnDeleteTeam"><%= _.capitalize(lang.actions.delete) %></button>&nbsp;&nbsp;
-	    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+		<button type="button" class="btn btn-danger btnDeleteTeam"><%= _.capitalize(lang.actions.delete) %></button>&nbsp;&nbsp;
+		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>

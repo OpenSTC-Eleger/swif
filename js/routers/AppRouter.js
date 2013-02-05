@@ -920,7 +920,7 @@ app.Router = Backbone.Router.extend({
 
     /** Officers management
     */
-    officers: function(page){      
+    officers: function(page){
 
         // Check if the user is connect //
         if(this.checkConnect()){
@@ -934,13 +934,22 @@ app.Router = Backbone.Router.extend({
                 app.collections.officers = new app.Collections.Officers();
             }
 
+            if(app.collections.groups == null ){
+                app.collections.groups = new app.Collections.Groups();
+            }
+
             app.collections.officers.fetch({
                 beforeSend: function(){
                     app.loader('display');
                 },
                 success: function(){
-                    app.views.officersView = new app.Views.OfficersView({page: self.page});
-                    self.render(app.views.officersView);
+                    
+                    app.collections.groups.fetch({
+                        success: function(){
+                            app.views.officersView = new app.Views.OfficersView({page: self.page});
+                            self.render(app.views.officersView);
+                        }
+                    });
                 },
                 complete: function(){
                     app.loader('hide');

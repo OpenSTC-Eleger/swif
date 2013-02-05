@@ -126,7 +126,7 @@
 <div id="modalSaveOfficer" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h3><%= _.capitalize(lang.actions.addOfficer) %></h3>
+		<h3></h3>
 	</div>
 	
 	<div class="modal-body">
@@ -161,6 +161,16 @@
 
 					<div class="controls">
 						<input type="email" id="officerEmail" name="officerEmail" />
+						<span class="help-inline"></span>
+					</div>
+				</div>
+
+				<!-- Team Foreman -->
+				<div class="control-group">
+					<label for="officerGroup" class="control-label"><%= _.capitalize(lang.group) %>:</label>
+
+					<div class="controls">
+						<select id="officerGroup"></select>
 						<span class="help-inline"></span>
 					</div>
 				</div>

@@ -263,11 +263,11 @@ var app = {
 
         switch(action){
             case 'display':
-                $('#loader').fadeIn();
+                $('#loader, #modal-block').fadeIn();
             break;
 
             case 'hide':
-                $('#loader').delay(250).fadeOut('slow');
+                $('#loader, #modal-block').delay(250).fadeOut('slow');
             break;
         }   
     },
