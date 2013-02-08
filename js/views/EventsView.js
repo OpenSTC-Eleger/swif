@@ -456,6 +456,7 @@ app.Views.EventsView = Backbone.View.extend({
 					copiedEventObject.allPlanned = false;
 					self.arrayPlanifTasks = [];
 					self.arrayOnDayEvents = _.filter(self.events, function(e) {
+						if(!e.start) return false;
 						var eventDate = moment( e.start );
 						var currentDate = moment( date );
 						return ( currentDate.diff(eventDate,'days')>-1 && currentDate.diff(eventDate, 'days')<1 )
