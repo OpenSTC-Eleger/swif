@@ -86,6 +86,11 @@ app.Views.InterventionDetailsView = Backbone.View.extend({
 						self.renderSite(currentIntervention.site1[0]);
 					else
 						self.renderSite(null);
+						
+//					if( currentIntervention.state == 'template' )
+//						$('#isTemplate').attr("checked","checked");		
+//					else
+//						$('#isTemplate').attr("checked","");		
 			});
 	
 			$(this.el).hide().fadeIn('slow'); 
@@ -112,6 +117,8 @@ app.Views.InterventionDetailsView = Backbone.View.extend({
 		     
 		     var params = {	
 			     name: this.$('#interventionName').val(),
+//			     state: this.$('#isTemplate').is(':checked')?"template":"",
+//			     active: this.$('#isTemplate').is(':checked')?false:true,
 			     description: this.$('#interventionDescription').val(),
 			     date_deadline: this.$('#interventionDateDeadline').val(),
 			     service_id: input_service_id,

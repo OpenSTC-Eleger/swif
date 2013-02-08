@@ -70,32 +70,33 @@
 								<% 
 									var allPlanned = true;
 
-									_.each(inter.tasks, function (task, i) { %>
+									_.each(inter.tasks, function (task, i) { 
 										
-										<!-- Check if the Task is planned or not -->
-										
-										<% if(task.date_start != '' && task.date_start != false && task.date_start != null && task.date_start != 'undefined' && task.date_start != 'Invalid '){ %>
-											<li id="task_<%= task.id %>" class="external-event disabled ui-widget-header">
-												<i class="icon-time"></i>&nbsp;
-												<span class="<%= (task.progress == '100' ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
-												<small class="pull-right"><%= task.planned_hours %>h</small>
-										<% 
+										if( task.planned_hours > 0 ){ %>
+											<!-- Check if the Task is planned or not -->
 											
-										} else{ %>
-											<li id="task_<%= task.id %>" class="external-event">&nbsp;
-												<strong><%= task.name %></strong>
-												<small class="badge pull-right"><%= task.planned_hours %>h</small>
-										<% 										
-											allPlanned = false;
-										}  %>
-										<% if( task.state == app.Models.Task.state[0].value ) { %>
-											<p class="task-actions">												
-												<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal">
-													<i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %>
-												</a>
-											</p>
+											<% if(task.date_start != '' && task.date_start != false && task.date_start != null && task.date_start != 'undefined' && task.date_start != 'Invalid '){ %>
+												<li id="task_<%= task.id %>" class="external-event disabled ui-widget-header">
+													<i class="icon-time"></i>&nbsp;
+													<span class="<%= (task.progress == '100' ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
+													<small class="pull-right"><%= task.planned_hours %>h</small>
+											<% 
+												
+											} else{ %>
+												<li id="task_<%= task.id %>" class="external-event">&nbsp;
+													<strong><%= task.name %></strong>
+													<small class="badge pull-right"><%= task.planned_hours %>h</small>
+											<% 										
+												allPlanned = false;
+											}  %>
+											<% if( task.state == app.Models.Task.state[0].value ) { %>
+												<p class="task-actions">												
+													<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal">
+														<i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %>
+													</a>
+												</p>
+											<% } %>
 										<% } %>
-
 									<% });  %>
 							</ul>
 
@@ -212,7 +213,7 @@
 <div id="modalDrop" class="modal hide fade">
 	<div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	    <h3>Nombre d'heures a utiliser</h3>
+	    <h3>Proposition de plage horaire disponible</h3>
 	</div>
 	
 	<div class="modal-body">
@@ -224,24 +225,27 @@
 
 	    <form id="formDrop" action="#" class="form-horizontal">
             <div class="control-group">
-                <label for="nbTasks" class="control-label">Nombre de tâches:</label>
+                <label for="startHour" class="control-label">Heure de début:</label>
 
                 <div class="controls">
-                     <input type="number" id="nbTasks" name="nbTasks" required="required"/>
+                     <input type="number" id="startHour" name="startHour"/>
                     <span class="help-inline"></span>
                 </div>
-            </div>
-            
-            <div class="control-group">
-                <label for="nbHours" class="control-label">Nombre d'heures par tâches:</label>
+                
+                <label for="stopHour" class="control-label">Heure de fin:</label>
 
                 <div class="controls">
-                     <input type="number" id="nbHours" name="nbHours" required="required"/>
+                     <input type="number" id="stopHour" name="stopHour" />
                     <span class="help-inline"></span>
                 </div>
-            </div>
+                
+                <label for="remainingHours" class="control-label">Nombre d'heures restant</label>
 
-            
+                <div class="controls">
+                     <input type="number" id="remainingHours" name="remainingHours" />
+                    <span class="help-inline"></span>
+                </div>
+            </div>            
 	    </form>
 	</div>
 	
@@ -379,7 +383,17 @@
                         <input type="text" id="interventionName" name="interventionName" value="" required="required" />
                         <span class="help-inline"></span>
                     </div>
+                    
+                    <!--  <div class="controls">
+						<label for="isTemplate" class="checkbox"><%= _.capitalize(lang.template) %>
+							<input type="checkbox" id="isTemplate" />
+						</label>
+					</div> -->
                 </div>
+                
+               <div class="control-group">
+
+				</div>
                 
                 <!-- intervention Description -->
                 <div class="control-group">
@@ -481,8 +495,6 @@
 	</table>
 	</div>
 </div>
-
-
 
 
 

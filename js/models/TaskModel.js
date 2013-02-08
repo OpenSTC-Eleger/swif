@@ -25,11 +25,13 @@ app.Models.Task = Backbone.RelationalModel.extend({
 
 	defaults:{
 		id:0,
+		name: null,
 		effective_hours:0,
 		total_hours: 0,
 		remaining_hours: 0,
 		state: null,
 		user_id: null,
+		team_id: null,
 		date_end: null,
 		date_start: null,
 		currentTask: null,
@@ -42,19 +44,40 @@ app.Models.Task = Backbone.RelationalModel.extend({
     	if( value == 'undefined') return;
         this.set({ id : value });
     },
+    getName : function() {
+        return this.get('name');
+    },
+    setName: function(value) {
+    	if( value == 'undefined') return;
+        this.set({ id : value });
+    },
     getState : function() {
-        return this.get('state');
+        return this.get('name');
     },
     setState : function(value) {
     	if( value == 'undefined') return;
         this.set({ state : value });
     },    
+    getProjectId : function() {
+        return this.get('project_id');
+    },
+    setProjectId : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ project_id : value });
+    },
     getUserId : function() {
         return this.get('user_id');
     },
     setUserId : function(value) {
     	if( value == 'undefined') return;
         this.set({ user_id : value });
+    },
+    getTeamId : function() {
+        return this.get('team_id');
+    },
+    setTeamId : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ team_id : value });
     },
     getDateEnd : function() {
         return this.get('date_end');
@@ -69,6 +92,20 @@ app.Models.Task = Backbone.RelationalModel.extend({
     setDateStart : function(value) {
     	if( value == 'undefined') return;
         this.set({ date_start : value });
+    },
+    getRemainingHours : function() {
+        return this.get('remaining_hours');
+    },
+    setRemainingHours : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ remaining_hours : value });
+    },
+    getPlannedHours : function() {
+        return this.get('planned_hours');
+    },
+    setPlannedHours : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ planned_hours : value });
     },
 
 
@@ -190,8 +227,13 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	},
 	
 	update: function(params) {
+		this.setName( params.name );
+		this.setProjectId( params.project_id );
 		this.setState( params.state );
+		this.setRemainingHours( params.remaining_hours );
+		this.setPlannedHours( params.planned_hours );
 		this.setUserId( params.user_id );
+		this.setTeamId( params.team_id );
 		this.setDateEnd( params.date_end );
 		this.setDateStart( params.date_start );
 	},

@@ -421,6 +421,8 @@ app.Views.PlanningView = Backbone.View.extend({
 	     var params = {	
 		     name: this.$('#interventionName').val(),
 		     description: this.$('#interventionDescription').val(),
+//		     state: this.$('#isTemplate').is(':checked')?"template":"",
+//		     active: this.$('#isTemplate').is(':checked')?false:true,
 		     //date_deadline: this.$('#interventionDateDeadline').val(),
 		     service_id: input_service_id,
 		     site1: this.$('#interventionPlace').val(),

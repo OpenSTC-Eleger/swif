@@ -6,6 +6,8 @@ app.Views.EventsView = Backbone.View.extend({
 		stopLunchTime:14,
 		maxTime: 18,
 		workingTime: 8,
+		arrayPlanifTasks: [],
+		arrayOnDayEvents: [],
 	
 		events: {
 			//'submit #formDrop'  : 'drop',
@@ -110,9 +112,7 @@ app.Views.EventsView = Backbone.View.extend({
 		    	params.team_id = this.id
 		    else
 		    	params.user_id = this.id
-		    var self = this;
-		    //app.models.task.save(copiedEventObject.id, params, null, self, null); 
-		    
+		    this.updateTask(copiedEventObject.id, params);		    
 		},	
         
         eventClick: function(fcEvent, jsEvent, view) {
@@ -175,135 +175,214 @@ app.Views.EventsView = Backbone.View.extend({
         	});
         	
     		var eventsSortedArray = _.sortBy(self.events, function(event){ 
-    			return event.start; 
+    			return [event.start, event.end]; 
     		});
     		self.events = eventsSortedArray;
         },
         
-        updateTask : function(id,params) {
+        updateTask : function(copiedEventObject) {
         	var self = this;
-		    app.models.task.saveTest(id, params, {
-		    	success: function (data) {
-			    	$.pnotify({
-			    		title: 'Tâche attribuée',
-			    		text: 'La tâche a correctement été attribué à l\'agent.'
-				    });
-			    	app.collections.tasks.fetch({ 
-			    		success: function(){					    	
-			    			app.collections.interventions.fetch({ 
-			    				success: function(){
-					    			app.collections.officers.fetch({ 
-					    				success: function(){
-									 		app.collections.teams.fetch({
-								                success: function(){				 			
-				 								    if( self.teamMode)
-				 								    	self.initCollection(app.collections.teams.get(self.id));
-				 								    else
-				 								    	self.initCollection(app.collections.officers.get(self.id));
-				 								    $(self.el).fullCalendar('refetchEvents');
-				 								    self.planning.render();
-										 		}					 
-									 		});
-								         }
-								     });
-						        }
-						   });
-					 	}					 
-			    	});
-		    	}
-		    }); 
-        },
-        
-        
-        calculTask: function(originalEventObject) {
-        	if( originalEventObject ){
-	        	var startDate = originalEventObject.start;        	
-	        	var duration = originalEventObject.planned_hours;
-	        	var endDate = null;
-	        	
-	        	if( duration>0 ) {
-	        		endDate = this.getDateEnd( originalEventObject.start );
-	        	}
-	        	
-	        	if( endDate ) {
-	        		var bufferDate = moment( startDate )
-	        		duration = endDate.diff( bufferDate, 'hours', true );
-	        		//UPDATE current task : remove time
-	        		originalEventObject.planned_hours -= duration;
-	        		params = {
-	        				planned_hours : originalEventObject.planned_hours,
-	        				remaining_hours : originalEventObject.planned_hours,
-	        		}
-	        		this.updateTask( originalEventObject.id, params  );	
-	        		//Create new task 
-	        		originalEventObject.planned_hours = duration;
-	        		originalEventObject.start = startDate;
-	        		originalEventObject.end = endDate;	  
-	        		this.createTask( originalEventObject );	
-	        		//recursive calcul task
-	        		//this.calculTask( originalEventObject )
-	        	}
-	        	
-	        }        	
-        },
-        
-        getDateEnd: function ( startDate ) {
-        	if( startDate>=12 && startDate<=18 ) {
-        		return null;
-        	}
-        	startDate = moment(startDate);
-        	//var newDate = //TODO underscore avec this.events;
-			var returnDate = null;
-			//this.startDate = startDate;
-			//var self = this;
-			_.each(this.events, function(event){
-				if( event.start ) {
-					var nextEventDate = moment( event.start );				
-					if ( returnDate==null )
-						returnDate = moment( nextEventDate ); 
-					
-					var diffWithNextEvent = nextEventDate.diff( returnDate )
-					var diffWithStart = nextEventDate.diff( startDate )
-					if( diffWithNextEvent<0 && diffWithStart>0 )
-						returnDate = moment( nextEventDate )						
-					
-				}					
+			if(this.arrayPlanifTasks.length==0) {
+			    app.models.task.saveTest(copiedEventObject.id, copiedEventObject, {
+			    	success: function (data) {
+				    	$.pnotify({
+				    		title: 'Tâche attribuée',
+				    		text: 'La tâche a correctement été attribué à l\'agent.'
+					    });
+				    	app.collections.tasks.fetch({ 
+				    		success: function(){					    	
+				    			app.collections.interventions.fetch({ 
+				    				success: function(){
+						    			app.collections.officers.fetch({ 
+						    				success: function(){
+										 		app.collections.teams.fetch({
+									                success: function(){				 			
+					 								    if( self.teamMode)
+					 								    	self.initCollection(app.collections.teams.get(self.id));
+					 								    else
+					 								    	self.initCollection(app.collections.officers.get(self.id));
+					 								    $(self.el).fullCalendar('refetchEvents');
+					 								    self.planning.render();
+											 		}					 
+										 		});
+									         }
+									     });
+							        }
+							   });
+						 	}					 
+				    	});
+			    	}
+			    }); 			    
+			    return 1;
+			}
+			var params = this.arrayPlanifTasks[0];
+			self.params = params;
+			app.models.task.saveTest(0,params,{
+				success: function(){
+					self.arrayPlanifTasks.splice(0, 1)
+					self.updateTask( copiedEventObject );
+				}
 			});
-        	
-			if( returnDate ){
-				var startLunchTime = moment( startDate ).hours( this.startLunchTime );
-				var maxTime = moment( startDate ).hours( this.maxTime );
-				
-	        	if( startDate.hours()<this.startLunchTime ) {
-	        		//newDate = //min ac moment.js (12h, newDate);
-	        		if( returnDate.diff(startLunchTime)>0 )
-	        			returnDate = moment( startLunchTime )
-	        	}
-	        	else {
-	        		//newDate = //min ac moment.js (18h, newDate);
-	        		if( returnDate.diff( maxTime )>0 )
-	        			returnDate = moment( maxTime )
-	        	}
-	        }
-			return returnDate;
+			
+			
         },
         
-        createTask: function (originalEventObject){
-			 params = { 
-			    //id: copiedEventObject.id,
-			    name:  originalEventObject.title + "(copy)",
-			    project_id: originalEventObject.project_id,
-			    state: 'open',
-			    date_start: originalEventObject.start,
-				date_end: originalEventObject.end.toDate(),
-			    planned_hours: originalEventObject.planned_hours,
-			    remaining_hours: originalEventObject.planned_hours,
-			 };
-		    if( this.teamMode)
-		    	params.team_id = this.id
-		    else
-		    	params.user_id = this.id
-        	app.models.task.save(0,params,null, this.planning, null);
+        getEvent: function( title, startDate, endDate ){
+        	return {
+	   				title: title,
+	   				start: startDate,
+	   				end : endDate,
+	   			};
+        },
+        
+        calculTask: function(event) {
+        	if( event.allPlanned || event.planned_hours==0 ) return 1
+        	
+        	var startDate = moment(event.start);
+        	var maxTime = moment( startDate.clone() ).hours( this.maxTime );
+        	var stopWorkingEvent = this.getEvent( "stopWorkingTime", maxTime.minutes(0).toDate() );
+        	this.arrayOnDayEvents.push( stopWorkingEvent );
+        	
+			var startLunchTime = moment( startDate.clone() ).hours( this.startLunchTime );
+			var stopLunchTime = moment( startDate.clone() ).hours( this.stopLunchTime );
+			var lunchEvent = this.getEvent( "lunchTime", startLunchTime.minutes(0).toDate(), stopLunchTime.minutes(0).toDate() );
+			this.arrayOnDayEvents.push( lunchEvent );
+			
+
+			
+			
+			var self = this;
+			self.event = event;
+			
+			overlapsEvent = _.filter(this.arrayOnDayEvents, function(e){
+				return self.event.start>=e.start && self.event.end<e.end
+			});
+			
+			while( overlapsEvent.length>0 ){
+				
+				
+				overlapsEvent = _.sortBy(overlapsEvent, function(event){ 
+					return [event.start,event.end]; 
+				});
+				
+				_.each(overlapsEvent, function(e){
+					self.event.start = e.end;
+					self.event.end = e.end;
+				});	
+				
+				overlapsEvent = _.filter(this.arrayOnDayEvents, function(e){
+					return self.event.start>=e.start && self.event.end<e.end
+				});
+			}
+			
+			this.arrayOnDayEvents.push( event );
+			var eventsSortedArray = _.sortBy(this.arrayOnDayEvents, function(event){ 
+				return [event.start,event.end]; 
+			});
+			this.arrayOnDayEvents = eventsSortedArray;
+
+    		
+    		this.getEndDate( event );
+    		
+    		this.removeEvent( this.arrayOnDayEvents, stopWorkingEvent );
+    		this.removeEvent( this.arrayOnDayEvents, lunchEvent );
+    		this.removeEvent( this.arrayOnDayEvents, event );
+    		
+    		
+    		this.calculTask( event );
+        },
+        
+        removeEvent: function(array,s){
+        	var index = array.indexOf(s);
+        	if(array.indexOf(s) != -1) array.splice(index, 1);
+		},
+
+        getEndDate: function(event) {	
+        	var duration = event.planned_hours;
+        	var startDate = moment( event.start );        	
+        	var index = this.arrayOnDayEvents.indexOf( event );
+        	var size = this.arrayOnDayEvents.length;
+        	var found = false;
+        	var returnDate = null;
+        	while( index<size-1 && !found ) {
+        		var returnDate = returnDate==null?startDate.clone().add('hours', duration):returnDate;
+        		var nextEvent = this.arrayOnDayEvents[ index+1 ];
+        		if( nextEvent ) {
+	        		nextDateStart = moment( nextEvent.start ); 
+	        		nextDateEnd = moment( nextEvent.end ); 
+	        		var diff = returnDate.diff(nextDateStart, true );
+	        		if( diff>0 ) {
+	        			returnDate = moment( nextDateStart )
+	        			found = true;
+	        		}
+	        		else if ( diff==0 ) {
+	        			returnDate = moment( nextDateStart )
+	        		}
+				}
+        		index += 1;
+        	}
+        	if( index==size || !nextEvent ) event.allPlanned = true;
+        	else {
+        		this.removeEvent( this.arrayOnDayEvents, event )
+	        		
+	        	duration = returnDate.diff( startDate, 'hours', true );
+	
+	        	var title = event.title;
+	        	if( this.arrayPlanifTasks.length>0 )
+	        		title = "(copy-" + this.arrayPlanifTasks.length + ")" + title ;
+				var params=
+				{
+				    name:  title,
+				    project_id: event.project_id,
+				    state: 'open',
+				    date_start: startDate.toDate(),
+				    date_end: returnDate.toDate(),
+				    planned_hours: duration,
+				    remaining_hours: duration,
+				    team_id: this.teamMode?this.id:0,
+				    user_id: !this.teamMode?this.id:0,
+				}
+				
+				event.planned_hours -= duration;
+		    		event.remaining_hours -= duration;
+	    		
+	    		
+	    		if( event.planned_hours==0 || returnDate.hours()==18 )
+	    			event.allPlanned = true;
+	    		else if( nextDateEnd ){
+		    		event.start = nextDateEnd.toDate();
+		    		event.end = nextDateEnd.toDate();
+	    		}
+	    		
+				this.arrayPlanifTasks.push(params);				
+			}
+        	
+        	
+        	
+        	
+
+    		
+//        	confirmModal = $("#modalDrop");
+//    		$("#startHour").val( startDate.clone().hours() )
+//    		$("#stopHour").val( returnDate.hours() )
+//    		$("#remainingHours").val( event.planned_hours )
+//    		$('#infoModalDrop p').html( event.title );
+//    		$('#infoModalDrop small').html( startDate.format('LLL') + " au " + returnDate.format('LLL') );
+//    		var self= this;
+//	    	confirmModal.find('#okButton').click(function(event) {
+//				event.preventDefault();
+//				
+//				
+//
+//        		//UPDATE current task : remove time  
+//        		//recursive calcul task
+//        		//this.calculTask( originalEventObject )
+//				//self.planifTasks(event, startDate, returnDate, duration)
+//				confirmModal.modal('hide');
+//		    });					
+//		    confirmModal.modal();
+        	
+        	//return returnDate;
         },
         
         initCalendar: function() {
@@ -371,23 +450,20 @@ app.Views.EventsView = Backbone.View.extend({
 				drop: function( date, allDay ) {
 					var domObject = $(this)
 					var originalEventObject = $(this).data('eventObject');
-					originalEventObject.start = date;
-					self.calculTask(originalEventObject);
-//					confirmModal = $("#modalDrop");
-//				    if( originalEventObject.planned_hours>=8 ){
-//				    	confirmModal.find('#okButton').click(function(event) {
-//							event.preventDefault();
-//							
-//							self.drop(date, allDay, domObject, $("#nbTasks").val(), $("#nbHours").val());
-//							confirmModal.modal('hide');
-//					    });
-//					
-//					    confirmModal.modal();
-//				        
-//				    }else{
-				    	//self.drop(date, allDay, $(this));
-//				    }
-					
+					var copiedEventObject = $.extend({}, originalEventObject);
+					copiedEventObject.allDay = allDay;
+					copiedEventObject.start = date;
+					copiedEventObject.allPlanned = false;
+					self.arrayPlanifTasks = [];
+					self.arrayOnDayEvents = _.filter(self.events, function(e) {
+						var eventDate = moment( e.start );
+						var currentDate = moment( date );
+						return ( currentDate.diff(eventDate,'days')>-1 && currentDate.diff(eventDate, 'days')<1 )
+						
+					});
+					self.calculTask(copiedEventObject);
+					copiedEventObject.start = null;
+					self.updateTask(copiedEventObject);					
 				},
 
                 eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
@@ -486,8 +562,8 @@ app.Views.EventsView = Backbone.View.extend({
 			
 			var tasks = _.filter(this.filterTasks, function(task){ 
 	        	return (
-	        			task.date_start.toDate() < self.el.fullCalendar('getView').visEnd &&
-	        			task.date_end.toDate() > self.el.fullCalendar('getView').visStart &&
+	        			task.date_start && task.date_start.toDate() < self.el.fullCalendar('getView').visEnd &&
+	        			task.date_end && task.date_end.toDate() > self.el.fullCalendar('getView').visStart &&
 	        			(	task.state == app.Models.Task.state[1].value ||
 	        				task.state == app.Models.Task.state[2].value
 	        			)
@@ -504,7 +580,7 @@ app.Views.EventsView = Backbone.View.extend({
 		    	var inter = task.intervention;
 		    	task["inter"] = ( inter!=null)?inter.name:"" ;
 		    	task["category"] = ( task.category_id!=null )?task.category_id[1]:"" ;
-		    	task["place"] = ( inter!=null && inter.site1!=null )?inter.site1[1]:"" ;
+		    	task["place"] = ( inter!=null && inter.site1!=null && inter.site1[1] )?inter.site1[1]:"" ;
 		    	//task["effective_hours"] = "";
 		    	//task["remaining_hous"] = "";
 		    	task["done"] = "false";
@@ -636,4 +712,3 @@ app.Views.EventsView = Backbone.View.extend({
 //		    $printSection.appendChild(domClone);
 //		    domClone = null;
 //		    window.print();
-
