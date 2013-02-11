@@ -71,8 +71,8 @@
 									var allPlanned = true;
 
 									_.each(inter.tasks, function (task, i) { 
-										
-										if( task.planned_hours > 0 ){ %>
+									
+										if( task.planned_hours > 0 && !task.parent_id ){ %>
 											<!-- Check if the Task is planned or not -->
 											
 											<% if(task.date_start != '' && task.date_start != false && task.date_start != null && task.date_start != 'undefined' && task.date_start != 'Invalid '){ %>
