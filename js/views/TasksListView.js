@@ -70,6 +70,7 @@ app.Views.TasksListView = Backbone.View.extend({
     			interCondition = intervention.state==app.Models.Intervention.state[0].value
     				||	intervention.state==app.Models.Intervention.state[1].value
 					|| intervention.state==app.Models.Intervention.state[2].value 
+					|| intervention.state==app.Models.Intervention.state[5].value  //'template'
 										
 				var service = intervention.service_id;//!=null?intervention.service_id.toJSON():null;
 				var userServices = app.models.user.toJSON().service_ids;
