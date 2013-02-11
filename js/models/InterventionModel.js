@@ -178,6 +178,11 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
             value       : 'cancelled',
             color       : 'important',
             traduction  : '',  
+        },
+        {
+            value       : 'template',
+            color       : 'template',
+            traduction  : '',  
         }
     ]
 

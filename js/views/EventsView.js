@@ -75,45 +75,45 @@ app.Views.EventsView = Backbone.View.extend({
         },
 
 
-		drop: function( date, allDay, domObject, nbTasks, nbHours) { 
-	
-        	console.debug("nbTasks:"+nbTasks+"nbHours:"+nbHours);
-        	
-        	// this function is called when something is dropped
-		    // retrieve the dropped element's stored Event Object
-		    var originalEventObject = domObject.data('eventObject');
-		
-		    // we need to copy it, so that multiple events don't have a reference to the same object
-		    var copiedEventObject = $.extend({}, originalEventObject);
-		
-		    // assign it the date that was reported
-		    var dateStart = date;
-		    var dateEnd = new Date(date); ;
-		    
-		    
-		    copiedEventObject.start = dateStart;
-		    copiedEventObject.end = new Date(dateEnd.setHours( dateEnd.getHours()+copiedEventObject.planned_hours ));				   
-		    copiedEventObject.allDay = true;
-		
-		    // render the event on the calendar
-		    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-		    $(this.el).fullCalendar('renderEvent', copiedEventObject, true);
-		    //$(self.el).append('<button type="button" class="close" data-dismiss="close">X</button>');
-		    params = { 
-		       //id: copiedEventObject.id,
-		       state: 'open',
-		       date_start: copiedEventObject.start,
-			   date_end: copiedEventObject.end,
-		       planned_hours: copiedEventObject.planned_hours,
-		       remaining_hours: copiedEventObject.planned_hours,
-		    };
-		    
-		    if( this.teamMode)
-		    	params.team_id = this.id
-		    else
-		    	params.user_id = this.id
-		    this.updateTask(copiedEventObject.id, params);		    
-		},	
+//		drop: function( date, allDay, domObject, nbTasks, nbHours) { 
+//	
+//        	console.debug("nbTasks:"+nbTasks+"nbHours:"+nbHours);
+//        	
+//        	// this function is called when something is dropped
+//		    // retrieve the dropped element's stored Event Object
+//		    var originalEventObject = domObject.data('eventObject');
+//		
+//		    // we need to copy it, so that multiple events don't have a reference to the same object
+//		    var copiedEventObject = $.extend({}, originalEventObject);
+//		
+//		    // assign it the date that was reported
+//		    var dateStart = date;
+//		    var dateEnd = new Date(date); ;
+//		    
+//		    
+//		    copiedEventObject.start = dateStart;
+//		    copiedEventObject.end = new Date(dateEnd.setHours( dateEnd.getHours()+copiedEventObject.planned_hours ));				   
+//		    copiedEventObject.allDay = true;
+//		
+//		    // render the event on the calendar
+//		    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+//		    $(this.el).fullCalendar('renderEvent', copiedEventObject, true);
+//		    //$(self.el).append('<button type="button" class="close" data-dismiss="close">X</button>');
+//		    params = { 
+//		       //id: copiedEventObject.id,
+//		       state: 'open',
+//		       date_start: copiedEventObject.start,
+//			   date_end: copiedEventObject.end,
+//		       planned_hours: copiedEventObject.planned_hours,
+//		       remaining_hours: copiedEventObject.planned_hours,
+//		    };
+//		    
+//		    if( this.teamMode)
+//		    	params.team_id = this.id
+//		    else
+//		    	params.user_id = this.id
+//		    this.updateTask(copiedEventObject.id, params);		    
+//		},	
         
         eventClick: function(fcEvent, jsEvent, view) {
             this.eventView.model = app.collections.tasks.get(fcEvent.id);

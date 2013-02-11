@@ -380,15 +380,15 @@
                     <label for="interventionName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
 
                     <div class="controls">
-                        <input type="text" id="interventionName" name="interventionName" value="" required="required" />
+                        <input type="text" id="interventionName" name="interventionName" required="required" />
                         <span class="help-inline"></span>
                     </div>
                     
-                    <!--  <div class="controls">
+                    <div class="controls">
 						<label for="isTemplate" class="checkbox"><%= _.capitalize(lang.template) %>
 							<input type="checkbox" id="isTemplate" />
 						</label>
-					</div> -->
+					</div>
                 </div>
                 
                <div class="control-group">
@@ -455,7 +455,7 @@
 	</div>
 	
 	<div class="modal-footer">
-	    <button type="submit" class="btn btn-primary saveInterventionPlanning">Enregistrer</button>&nbsp;&nbsp;
+	    <button type="submit" form="formAddIntervention" class="btn btn-primary saveInterventionPlanning">Enregistrer</button>&nbsp;&nbsp;
 	    <a href="#" data-dismiss="modal">Annuler</a>
 	</div>
 </div>

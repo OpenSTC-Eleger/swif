@@ -22,8 +22,9 @@
 		    	<!-- Main menu application -->
 		    	<ul id="nav-menu-app" class="nav" role="menu">
 		    		
-	 				<% _.each(menus, function (menuRacine, i) { %>
-	 					<% _.each(menuRacine.children, function (menuParent, i) { %>
+	 				<% _.each(menus, function (menuRacine, i) { 
+	 					if( i<1 ) {
+	 					_.each(menuRacine.children, function (menuParent, i) {	%> 						
 				    		<li class="dropdown" id="<%= _.slugify(menuParent.name) %>" role="menuitem">
 				    			<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuParent.id %>"><%= menuParent.name %> <b class="caret"></b></a>
 			    				
@@ -43,14 +44,15 @@
 											<li role="menuitem"><a href="#<%= _.slugify(menuChildren.name) %>"><%= menuChildren.name %></a></li>
 										<%} %>
 									<% }); %>
-								</ul>
-
+								</ul>							
 		  					</li>
-		  				<% }); %>	
+		  				<% }); %>
+		  				<%} %>	
   					<% }); %>
 
-  					<li role="menuitem"><a href="#">Achat</a></li>
+  					<!--  <li role="menuitem"><a href="#">Achat</a></li>
 					<li role="menuitem"><a href="#">Véhicules</a></li>
+					-->
 		    	</ul>
 
 

@@ -25,7 +25,7 @@ app.Views.PlanningView = Backbone.View.extend({
         'click .btn.addInterventionPlanning'    : 'displayFormAddIntervention',
         
         'click button.saveTaskPlanning'         : 'saveTask',   
-        'click button.saveInterventionPlanning' : 'saveIntervention', 
+        'submit #formAddIntervention' 			: 'saveIntervention', 
         'click .btn.pull-right'                 : 'scheduledInter',
         
         'change #interventionDetailService'		: 'fillDropdownService',
@@ -104,7 +104,8 @@ app.Views.PlanningView = Backbone.View.extend({
             	// encore cloturée
 				return (inter.state == app.Models.Intervention.state[0].value ||
 						inter.state == app.Models.Intervention.state[1].value ||
-						inter.state == app.Models.Intervention.state[2].value)
+						inter.state == app.Models.Intervention.state[2].value ||
+						inter.state == app.Models.Intervention.state[5].value) //template
 			});
             
            //Order by date start 
@@ -415,13 +416,13 @@ app.Views.PlanningView = Backbone.View.extend({
 	     var self = this;
 	     
 	     input_service_id = null;
-	     if ( app.views.selectListServicesView )
+	     if ( app.views.selectListServicesView && app.views.selectListServicesView.getSelected())
 	    	 input_service_id = app.views.selectListServicesView.getSelected().toJSON().id;
 	     
 	     var params = {	
 		     name: this.$('#interventionName').val(),
 		     description: this.$('#interventionDescription').val(),
-//		     state: this.$('#isTemplate').is(':checked')?"template":"",
+		     state: this.$('#isTemplate').is(':checked')?"template":"open",
 //		     active: this.$('#isTemplate').is(':checked')?false:true,
 		     //date_deadline: this.$('#interventionDateDeadline').val(),
 		     service_id: input_service_id,
