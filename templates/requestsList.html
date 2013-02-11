@@ -30,8 +30,17 @@
 
 <div class="container-fluid">
 
-	<!-- Check if there is Request in the Database -->
-	<% if(requests.length != 0) { %>
+	<!-- Message if No Request to Display -->
+	<% if(requests.length == 0) { %>
+		<div class="tableToolbar">
+			<br>
+
+			<div class="alert alert-info">
+				<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>.
+			</div>
+		</div>
+	<% } %>
+
 
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
@@ -58,18 +67,20 @@
 					<th><%= _.capitalize(lang.dateRequest) %> <!--<a id="orderDateRequest" href="#" class="pull-right"><i class="icon-caret-down icon-large"></i></a>--></th>
 					<th>
 						<%= _.capitalize(lang.status) %> 
-						    <div class="dropdown pull-right">
-							    <a id="filterStateRequest" class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-filter icon-large muted"></i></a>
-							    
-							    <ul class="dropdown-menu" role="menu" aria-labelledby="filterStateRequest">
-									<% _.each(requestsState, function (state, i) { %>
-										<li role="menuitem">
-											<a tabindex="-1" href="#demandes-dinterventions/filter/state/<%= state.value %>"> 
-												<i class="badge <%= (state.color != '' ? 'badge-'+state.color : '') %>">&nbsp;</i>
-												&nbsp; <%= _.capitalize(state.traduction) %></a></li>
-									<% }) %>
-								</ul>
-							</div>
+						<div class="dropdown pull-right">
+						    <a id="filterStateRequest" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="icon-filter icon-large"></i></a>
+						    
+						    <ul id="filterStateRequestList" class="dropdown-menu" role="menu" aria-labelledby="filterStateRequest">
+								<% _.each(requestsState, function (state, i) { %>
+									<li role="menuitem">
+										<a tabindex="-1" href="#<%= state.value %>"> 
+											<i class="badge <%= (state.color != '' ? 'badge-'+state.color : '') %>">&nbsp;</i>
+											&nbsp; <%= _.capitalize(state.traduction) %>
+										</a>
+									</li>
+								<% }) %>
+							</ul>
+						</div>
 					</th>
 					
 					<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
@@ -77,6 +88,10 @@
 					<% } %>
 				</tr>
 			</thead>
+
+		<!-- Check if there is Request in the Database -->
+		<% if(requests.length != 0) { %>
+
 			<tbody>
 				<% for (var i = startPos; i < endPos; i++) { %>
 				
@@ -220,14 +235,16 @@
 						   	</td>
 							<% } else { %>
 								<td>
-				   					<span class="text-warning"> 
+				   					<!-- <span class="text-warning"> 
 										<%= _.capitalize(lang.pending) %>
-									</span>
+									</span> -->
 					   			</td>
 				   		<% } %>
 					</tr>
 				<% } %>
 			</tbody>
+			<% } %>
+
 		</table>
 		<!-- /Table Requests -->
 
@@ -271,18 +288,6 @@
 		</div>
 		<!-- /Table pagination -->
 
-	<% } 
-	else { %>
-		<div class="tableToolbar">
-			<a href="#demandes-dinterventions/add" class="btn btn-primary"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
-		</div>
-		<br>
-		<!-- No request in the Database -->
-		<div class="alert alert-info">
-			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>.
-		</div>
-
-	<% } %>
 
 </div>
 

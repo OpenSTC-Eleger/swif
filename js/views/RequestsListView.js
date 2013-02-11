@@ -7,6 +7,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 	
 	templateHTML: 'requestsList',
 
+	filters: 'requestsListFilter',
+
 	numberListByPage: 25,
 	
 	selectedRequest : 0,
@@ -23,7 +25,9 @@ app.Views.RequestsListView = Backbone.View.extend({
 
     	'submit #formValidRequest' 		: 'validRequest',
     	'submit #formRefuseRequest' 	: 'refuseRequest',
-    	'submit #formConfirmDSTRequest' : 'confirmDSTRequest'
+    	'submit #formConfirmDSTRequest' : 'confirmDSTRequest',
+
+    	'click #filterStateRequestList' : 'setFilter'
     },
 
  
@@ -37,21 +41,36 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 	/** Display the view
 	*/
-    render: function () {
+	render: function () {
 		//app.Views.appView.prototype.render.call(this);
 		var self = this;
-		
+
 		// Change the page title //
-        app.router.setPageTitle(app.lang.viewsTitles.requestsList);
+		app.router.setPageTitle(app.lang.viewsTitles.requestsList);
 
-        // Change the active menu item //
-        app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
+		// Change the active menu item //
+		app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
 
-        // Change the Grid Mode of the view //
-        app.views.headerView.switchGridMode('fluid');
+		// Change the Grid Mode of the view //
+		app.views.headerView.switchGridMode('fluid');
 
 
-		var requests = app.collections.requests.models;
+		var requests = app.collections.requests.toJSON();
+
+
+		// Collection Filter if not null //
+		if(sessionStorage.getItem(this.filters) != null){
+			var requests = _.filter(requests, function(item){ 
+				return item.state == sessionStorage.getItem(self.filters);
+			});
+
+			$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');			
+		}
+		else{
+			$('a.filter-buttont').removeClass('filter-active').addClass('filter-disabled');
+		}
+
+
 		var len = requests.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
 		var endPos = Math.min(startPos + this.numberListByPage, len);
@@ -60,11 +79,11 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 		// Retrieve the number Interventions due to the Group user //
 		if(app.models.user.isDST()){
-			var interventionsFilter = _.filter(requests, function(item){ return item.attributes.state == app.Models.Request.state[2].value; });
+			var interventionsFilter = _.filter(requests, function(item){ return item.state == app.Models.Request.state[2].value; });
 			var nbInterventionsInBadge = _.size(interventionsFilter);
 		}
 		else if(app.models.user.isManager()){
-			var interventionsFilter = _.filter(requests, function(item){ return item.attributes.state == app.Models.Request.state[1].value; });
+			var interventionsFilter = _.filter(requests, function(item){ return item.state == app.Models.Request.state[1].value; });
 			var nbInterventionsInBadge = _.size(interventionsFilter);
 		}
 		else {
@@ -73,13 +92,14 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 		this.addInfoAboutInter(app.collections.requests);
 
+
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 	  
 			var template = _.template(templateData, {
 				lang: app.lang,
 				nbInterventionsInBadge: nbInterventionsInBadge,
-				requests: app.collections.requests.toJSON(),
+				requests: requests,
 				requestsState: app.Models.Request.state,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
@@ -241,7 +261,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 					            self.model.update(self.params);	
 					            //TODO : la relation avec service ne fonctionnant pas on met à jour un id/nom
 					            //self.model.setService(app.views.selectServicesView.getSelected());
-					            var service = app.views.selectServicesView.getSelected().toJSON();
+					            var service = app.views.selectServicesView.getSelected().toJSON()	;
 					            self.model.setService([service.id,service.name]);
 					            self.model.setAssignement(app.views.selectAssignementsView.getSelected());
 					            app.collections.requests.models[self.pos] = self.model;
@@ -327,6 +347,22 @@ app.Views.RequestsListView = Backbone.View.extend({
 	},
 
 
+
+	/** Filter Request
+	*/
+	setFilter: function(e){
+		event.preventDefault();
+
+		var link = $(e.target);
+
+		// Set the filter in the local Storage //
+		sessionStorage.setItem(this.filters, _(link.attr('href')).strRightBack('#'));
+
+		this.render();
+	},
+
+
+
 	/** Prevent the default action
 	*/
 	preventDefault: function(event){
@@ -340,6 +376,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 //	    if (delegate !== false) this.delegateEvents();
 //	    return this;
 //	 },
+
+
 
 
 
