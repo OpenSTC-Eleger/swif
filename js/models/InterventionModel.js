@@ -153,7 +153,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 }, {
 
     // Request State Initialization //
-    state:  [        
+    state:  [
     	{
             value       : 'open',
             color       : 'warning',

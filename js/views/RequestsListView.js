@@ -379,7 +379,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		}
 
 		if(this.options.page <= 1){
-			this.render();	
+			this.render();
 		}
 		else{
 			app.router.navigate('demandes-dinterventions', {trigger: true, replace: true});
