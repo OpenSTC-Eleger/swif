@@ -158,7 +158,7 @@ app.Views.PlaceDetailsView = Backbone.View.extend({
 		fillDropdownService: function(e){
 			e.preventDefault();
 			$('#placeParentPlace').val('');
-			this.renderService(e.target.selectedIndex)
+			this.renderService($(e.target).attr('value'));
 		},
 
 

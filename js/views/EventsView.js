@@ -130,6 +130,9 @@ app.Views.EventsView = Backbone.View.extend({
         		case 'done' :
 			    	color = 'purple';
 			    	break;
+        		case 'absent' :
+        			color = 'gray';
+        			break;
         	}
         	
         	return color;	
@@ -466,7 +469,8 @@ app.Views.EventsView = Backbone.View.extend({
 					var mEndDate = moment( endDate );
 					
 		        	modalAbsentTask = $("#modalAbsentTask");
-		        	$('.timepicker-default').timepicker({showMeridian:false});
+		        	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
+		        	$('#modalAbsentTask .modal-body').css("height", "380px");
 		        	
 		        	app.views.selectListAbsentTypesView = new app.Views.DropdownSelectListView({el: $("#absentType"), collection: app.collections.absentTypes})
 					app.views.selectListAbsentTypesView.clearAll();
@@ -479,10 +483,51 @@ app.Views.EventsView = Backbone.View.extend({
 		    		$("#endHour").timepicker('setTime', mEndDate.format('LT') );
 		    		$('#infoModalAbsentTask p').html( 'Nouvelle abscence ' );
 		    		$('#infoModalAbsentTask small').html( mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
-		    		var self= this;
 		    		modalAbsentTask.find('#okButton').click(function(event) {
 						event.preventDefault();
-						modalAbsentTask.modal('hide');
+						
+						console.debug('DATE START' + new moment( $("#startDate").val(),"MM-DD-YYYY") );
+						console.debug('DATE STOP' + $("#startDate").val() );
+						console.debug('TIME START' + $("#startHour").val() );
+						console.debug('TIME STOP' + $("#endHour").val());
+						console.debug('TIME SPLIT START' + $("#startHour").val().split(":")[0] );
+						var mNewDateStart =  new moment( $("#startDate").val(),"DD-MM-YYYY")
+												.add('hours',$("#startHour").val().split(":")[0] )
+												.add('minutes',$("#startHour").val().split(":")[1] );
+						var mNewDateEnd =  new moment( $("#endDate").val(),"DD-MM-YYYY")
+												.add('hours',$("#endHour").val().split(":")[0] )
+												.add('minutes',$("#endHour").val().split(":")[1] );
+						var planned_hours = mNewDateEnd.diff(mNewDateStart, 'hours', true);
+
+						absentTypeId = null;
+						absentTypeTitle = null;
+					    if ( app.views.selectListAbsentTypesView ) {
+					    	var absentTypeSelected = app.views.selectListAbsentTypesView.getSelected()
+					    	if( absentTypeSelected ) {
+					    		absentTypeJSON = absentTypeSelected.toJSON();
+					    		absentTypeId =  absentTypeJSON.id;
+					    		absentTypeTitle = absentTypeJSON.name;
+					    	}					    	
+					    }
+
+						var params=
+							{
+							    name:  absentTypeTitle,
+							    absent_type_id: absentTypeId,
+							    state: 'absent',
+							    date_start: mNewDateStart.toDate(),
+							    date_end: mNewDateEnd.toDate(),
+							    planned_hours: planned_hours,
+							    remaining_hours: planned_hours,
+							    team_id: self.teamMode?self.id:0,
+							    user_id: !self.teamMode?self.id:0,
+							}
+							app.models.task.saveTest(0,params,{
+								success: function(){
+									self.refresh();
+								}
+							});						
+							modalAbsentTask.modal('hide');
 				    });					
 				    modalAbsentTask.modal();
 					

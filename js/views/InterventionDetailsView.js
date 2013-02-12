@@ -181,7 +181,7 @@ app.Views.InterventionDetailsView = Backbone.View.extend({
 		fillDropdownService: function(e){
 			e.preventDefault();
 			$('#interventionPlace').val('');
-			this.renderService(e.target.selectedIndex)
+			this.renderService($(e.target).attr('value'));
 		},
 
 

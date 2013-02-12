@@ -276,6 +276,11 @@ state:  [
         value       : 'cancelled',
         color       : '',
         traduction  : '',  
+    },
+    {
+        value       : 'absent',
+        color       : '',
+        traduction  : '',  
     }
 ]
 

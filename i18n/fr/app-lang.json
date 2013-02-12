@@ -83,7 +83,7 @@
 	"cancelled"				: "annulée",
 	"confirm" 				: "DST",
 	"pending"				: "en cours",
-	"template"				: "modèle",
+	"template"				: "avec tâches duplicables",
 	"notBegin"				: "non commencé",
 	"toScheduled" 			: "à planifier",
 	"planningFenced" 		: "planification cloturée",

@@ -44,6 +44,12 @@ app.Views.DropdownSelectListView = Backbone.View.extend({
 	setSelectedItem: function(id) {
 		this.selected_id = id;
 		this.dropdownListView[id].setSelected();
+//		var selectedItem = _.filter(this.dropdownListView, function(list){
+//			if (list && !list.model) return false;
+//			var item = list.model.toJSON();			
+//			return item.id == self.selected_id;
+//		});
+//		selectedItem.setSelected();
 	},
 
 	
