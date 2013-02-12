@@ -86,8 +86,9 @@
 	"template"				: "modèle",
 	"notBegin"				: "non commencé",
 	"toScheduled" 			: "à planifier",
-	"planningFenced" 		: "planification cloturée",
+	"planningFenced" 		: "planifiée",
 	"dateDeadline" 			: "date butoire",
+	"deleteFilter" 			: "supprimer filtre",
 
 
 	"actions" : {

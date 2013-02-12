@@ -2,7 +2,7 @@
 	<h1>
 		<%= lang.viewsTitles.interventionsMonitoring %>
 		<sup rel="tooltip" data-original-title="<%= lang.planningFenced %>">
-			<i class="badge badge-success" ><%= nbInterventionsPlanned %></i>
+			<i class="badge" ><%= nbInterventionsPlanned %></i>
 		</sup>
 
 		<sup rel="tooltip" data-original-title="<%= lang.pending %>">
@@ -25,8 +25,8 @@
 
 			<form class="form-search pull-right">
 				<div class="input-append">
-					<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off">
-					<button type="submit" class="btn"><i class="icon-search icon-large"></i></button>
+					<input type="search" class="input-medium search-query" disabled="disabled" placeholder="<%= lang.actions.search %>..." autocomplete="off">
+					<button type="submit" class="btn disabled"><i class="icon-search icon-large"></i></button>
 				</div>
 			</form>
 		</div>
@@ -45,13 +45,17 @@
 						<div class="dropdown pull-right">
 						    <a id="filterStateInter" class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-filter icon-large muted"></i></a>
 						    
-						    <ul class="dropdown-menu" role="menu" aria-labelledby="filterStateInter">
+						    <ul id="filterStateInterList" class="dropdown-menu" role="menu" aria-labelledby="filterStateInter">
 								<% _.each(interventionsState, function (state, i) { %>
 									<li role="menuitem">
-										<a tabindex="-1" href="#interventions/filter/state/<%= state.value %>"> 
+										<a tabindex="-1" href="#filter<%= state.value %>"> 
 											<i class="badge <%= (state.color != '' ? 'badge-'+state.color : '') %>">&nbsp;</i>
-											&nbsp; <%= _.capitalize(state.traduction) %></a></li>
+											&nbsp; <%= _.capitalize(state.traduction) %>
+										</a>
+									</li>
 								<% }) %>
+									<li class="divider"></li>
+									<li class="delete-filter disabled"><a href="#delete-filter"><%= _.capitalize(lang.deleteFilter) %></a></li>
 							</ul>
 						</div>
 					</th>

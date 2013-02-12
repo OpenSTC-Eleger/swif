@@ -19,7 +19,7 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 			'change #requestClaimerType'	: 'fillDropdownClaimerType',
 			'change #requestClaimer'		: 'fillDropdownClaimer',
 			'change #requestContactSelect'	: 'fillDropdownContact',
-			'change #requestDetailService'		: 'fillDropdownService',
+			'change #requestDetailService'	: 'fillDropdownService',
 		},
 
 
@@ -38,8 +38,8 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 	    /** Display the view
 	     */
 	    render: function () {
-			
-	
+
+
 			// Change the page title depending on the create value //
 			if(this.create){
 				app.router.setPageTitle(app.lang.viewsTitles.newRequest);
@@ -58,7 +58,12 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 			// Retrieve the template // 
 			$.get("templates/" + this.templateHTML + ".html", function(templateData){
 					
-					var template = _.template(templateData, {lang: app.lang, request: self.model.toJSON()});
+					var template = _.template(templateData, {
+						lang: app.lang,
+						request: self.model.toJSON(),
+						requestsState: app.Models.Request.state
+					});
+					
 					$(self.el).html(template);		     
 	
 
@@ -355,36 +360,36 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 
 		 },
 
-		 fillDropdownClaimer: function(e){
+		fillDropdownClaimer: function(e){
 			 e.preventDefault();
 			 claimer = app.views.selectListClaimersView.getSelected();
 			 this.renderContact(claimer);
-			 if (claimer.attributes.technical_service_id )
+			if (claimer.attributes.technical_service_id )
 				 this.renderTechnicalService(claimer.attributes.technical_service_id[0]);
-			 if (claimer.attributes.technical_site_id )
+			if (claimer.attributes.technical_site_id )
 				 this.renderTechnicalSite(claimer.attributes.technical_site_id[0]);
 
-	     },
+		},
 
-		 fillDropdownContact: function (e) {
-	    	 e.preventDefault();
-	    	contact = app.views.selectListClaimersContactsView.getSelected().toJSON();
-	    	this.renderContactDetails(contact);
-		 },
+		fillDropdownContact: function (e) {
+			e.preventDefault();
+			contact = app.views.selectListClaimersContactsView.getSelected().toJSON();
+			this.renderContactDetails(contact);
+		},
 		 
-		 fillDropdownService: function(e){
-			 e.preventDefault();
-			 $('#requestPlace').val('');
-			 this.renderTechnicalService(e.target.selectedIndex)
-		 },
+		fillDropdownService: function(e){
+			e.preventDefault();
+			$('#requestPlace').val('');
+			this.renderTechnicalService(e.target.selectedIndex)
+		},
 		 
-		 setElement: function(element, delegate) {
+		setElement: function(element, delegate) {
 		    if (this.$el) this.undelegateEvents();
 		    this.$el = (element instanceof $) ? element : $(element);
 		    this.el = this.$el[0];
 		    if (delegate !== false) this.delegateEvents();
 		    return this;
-		  },
+		},
 
 
 });

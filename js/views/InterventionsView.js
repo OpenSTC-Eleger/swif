@@ -3,37 +3,37 @@
 */
 app.Views.InterventionsView = Backbone.View.extend({
 
-    el : '#rowContainer',
+	el : '#rowContainer',
 
-    templateHTML: 'interventions',
-    
-    
-    selectedInter : '',
-    selectedTask : '',
+	templateHTML: 'interventions',
 
-    
-    // The DOM events //
-    events: {
-        'click .btn.addTask'                : 'displayModalAddTask',
-        'click button.saveTask'             : 'saveTask',
-        
-        'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
-        'click button.btnDeleteTask'   		: 'deleteTask',
-        
-        'click a.buttonCancelInter'			: 'displayModalCancelInter',
-        'submit #formCancelInter' 			: 'cancelInter',
-        'click a.accordion-object'    		: 'tableAccordion'
-        	
-    },
+	filters: 'intersListFilter',
+
+	selectedInter : '',
+	selectedTask : '',
 
 
+	// The DOM events //
+	events: {
+		'click .btn.addTask'                : 'displayModalAddTask',
+		'click button.saveTask'             : 'saveTask',
 
-    /** View Initialization
-    */
-    initialize : function() {
-        console.log('Interventions view Initialize');
-        
-        
+		'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
+		'click button.btnDeleteTask'   		: 'deleteTask',
+
+		'click a.buttonCancelInter'			: 'displayModalCancelInter',
+		'submit #formCancelInter' 			: 'cancelInter',
+		'click a.accordion-object'    		: 'tableAccordion',
+
+		'click #filterStateInterList li:not(.disabled) a' 	: 'setFilter'
+	},
+
+
+
+	/** View Initialization
+	*/
+	initialize : function() {
+		console.log('Interventions view Initialize');
     },
 
 
@@ -86,35 +86,37 @@ app.Views.InterventionsView = Backbone.View.extend({
 
         // Retrieve the HTML template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
-                var template = _.template(templateData, {
-                    lang: app.lang,
-                    nbInterventions: nbInterventions,
-                    nbInterventionsPending: nbInterventionsPending,
-                    nbInterventionsPlanned: nbInterventionsPlanned,
-                    interventionsState: app.Models.Intervention.state,
-                    interventions: interventionsValidated,
-                });
+			var template = _.template(templateData, {
+				lang: app.lang,
+				nbInterventions: nbInterventions,
+				nbInterventionsPending: nbInterventionsPending,
+				nbInterventionsPlanned: nbInterventionsPlanned,
+				interventionsState: _.initial(app.Models.Intervention.state),
+				interventions: interventionsValidated,
+			});
 
-            console.debug(interventionsValidated);
+			console.debug(interventionsValidated);
 
-            $(self.el).html(template);
+			$(self.el).html(template);
 
 			app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categories})
 			app.views.selectListAssignementsView.clearAll();
 			app.views.selectListAssignementsView.addEmptyFirst();
 			app.views.selectListAssignementsView.addAll();
 
-            $('*[rel="tooltip"]').tooltip({placement: "right"});
-            
-            $('tr.row-object').css({ opacity: '1'});
-            $('tr.row-object > td').css({ backgroundColor: '#FFF'});
-            $('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' }); 
-        });
+			$('*[rel="tooltip"]').tooltip({placement: "right"});
 
-        $(this.el).hide().fadeIn('slow');
-        return this;
+			$('tr.row-object').css({ opacity: '1'});
+			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
+			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' }); 
+		});
+
+		$(this.el).hide().fadeIn('slow');
+		return this;
     },
-    
+
+
+
     addInfoAboutInter: function(inters) {
     	_.each(inters, function (interModel, i) { 
 			var classColor = "";
@@ -161,13 +163,13 @@ app.Views.InterventionsView = Backbone.View.extend({
 				interModel.setOverPourcent( 0 );
 			console.debug("message:" + infoMessage + ", classColor:"+ classColor);
 		});
-    },
+	},
 
 
 
-    /** Fonction collapse table row
-    */
-    tableAccordion: function(e){
+	/** Fonction collapse table row
+	*/
+	tableAccordion: function(e){
 
         e.preventDefault();
         
@@ -196,14 +198,16 @@ app.Views.InterventionsView = Backbone.View.extend({
             $('tr.row-object').css({ opacity: '1'});
             $('tr.row-object > td').css({ backgroundColor: '#FFF'});
             $('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' }); 
-            
-            
+
+
             //$('tr.row-object:nth-child(4n+1) > td').addClass( app.collections.interventions.get(id).toJSON().classColor ); //'#F9F9F9'
         }
            
     },
 
-    getTarget:function(e) {    	
+
+
+	getTarget:function(e) {    	
     	e.preventDefault();
 	    // Retrieve the ID of the intervention //
 		var link = $(e.target);
@@ -211,39 +215,46 @@ app.Views.InterventionsView = Backbone.View.extend({
 		
     },
 
-    /** Display the form to add a new Task
-    */
-   displayModalAddTask: function(e){
+
+
+	/** Display the form to add a new Task
+	*/
+	displayModalAddTask: function(e){
         this.getTarget(e);
         $('#modalAddTask').modal();
-   },
+	},
    
+	
+
 	displayModalDeleteTask: function(e){
-	    this.getTarget(e);
-	    this.selectedTask = app.collections.tasks.get(this.pos);
+		this.getTarget(e);
+		this.selectedTask = app.collections.tasks.get(this.pos);
 		this.selectedTaskJSON = this.selectedTask.toJSON();
 		$('#infoModalDeleteTask').children('p').html(this.selectedTaskJSON.name);
 		$('#infoModalDeleteTask').children('small').html(this.selectedTaskJSON.description);
-	    
 	},
 
-   displayModalCancelInter: function(e) {
-	   this.getTarget(e);
-	   this.selectedInter = app.collections.interventions.get(this.pos);
-	   this.selectedInterJSON = this.selectedInter.toJSON();
-	   $('#infoModalCancelInter').children('p').html(this.selectedInterJSON.name);
-	   $('#infoModalCancelInter').children('small').html(this.selectedInterJSON.description);
-   },
+	
+
+	displayModalCancelInter: function(e) {
+		this.getTarget(e);
+		this.selectedInter = app.collections.interventions.get(this.pos);
+		this.selectedInterJSON = this.selectedInter.toJSON();
+		$('#infoModalCancelInter').children('p').html(this.selectedInterJSON.name);
+		$('#infoModalCancelInter').children('small').html(this.selectedInterJSON.description);
+   	},
+
+
 
     /** Save the Task
     */
-    saveTask: function(e){
-    	 var self = this;
+	saveTask: function(e){
+		var self = this;
 
 		e.preventDefault();
 		
 		 
-		 input_category_id = null;
+		input_category_id = null;
 	     if( app.views.selectListAssignementsView != null )
 	    	 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
 
@@ -255,11 +266,13 @@ app.Views.InterventionsView = Backbone.View.extend({
 	     };
 	     //TODO : test
 	     app.models.task.save(0,params,$('#modalAddTask'), null, "interventions");
-   },
+   	},
    
-    /** Delete task
-    	    */
-    deleteTask: function(e){
+    
+
+	/** Delete task
+	*/
+	deleteTask: function(e){
 		var self = this;
 		this.selectedTask.destroy({
 			success: function(data){
@@ -283,41 +296,72 @@ app.Views.InterventionsView = Backbone.View.extend({
 		});
 
     },
-   
+
+
+
 	cancelInter: function(e){
 		e.preventDefault();
 	
 		params = {
-		        state: app.Models.Intervention.state[4].value,
-		        cancel_reason: $('#motifCancel').val(),		
+			state: app.Models.Intervention.state[4].value,
+			cancel_reason: $('#motifCancel').val(),		
 		};		
 		this.saveNewState( params,$('#modalCancelInter') );
 	},
-	
-		
+
+
+
 	saveNewState: function(params, element) {
 		var self = this;
 		self.element = element;
 		self.params = params
 		this.selectedInter.save(params, {
-				    success: function (data) {
-					        console.log(data);
-					        if(data.error){
-					    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-					        }
-					        else{					        	
-					            console.log('NEW STATE INTER SAVED');
-					            if( self.element!= null )
-					            	self.element.modal('hide');
-					            self.selectedInter.update(self.params);
-					            app.collections.interventions.add(self.selectedInter);
-					            self.render();
-					        }
-					    },
-					    error: function () {
-							console.log('ERROR - Unable to valid the Inter - InterventionView.js');
-					    },           
-					},false);
+			success: function (data) {
+				console.log(data);
+		        if(data.error){
+		    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+		        }
+		        else{					        	
+		            console.log('NEW STATE INTER SAVED');
+					if( self.element!= null )
+						self.element.modal('hide');
+					self.selectedInter.update(self.params);
+					app.collections.interventions.add(self.selectedInter);
+					self.render();
+				}
+		    },
+		    error: function () {
+				console.log('ERROR - Unable to valid the Inter - InterventionView.js');
+		    },           
+		},false);
+	},
+
+
+
+	/** Filter Request
+	*/
+	setFilter: function(e){
+		event.preventDefault();
+
+		var link = $(e.target);
+
+		var filterValue = _(link.attr('href')).strRightBack('#');
+
+		// Set the filter in the local Storage //
+		if(filterValue != 'delete-filter'){
+			sessionStorage.setItem(this.filters, filterValue);
+		}
+		else{
+			sessionStorage.removeItem(this.filters);
+		}
+
+		if(this.options.page <= 1){
+			this.render();
+		}
+		else{
+			app.router.navigate('interventions', {trigger: true, replace: true});
+		}
+		
 	},
   
 });
