@@ -73,42 +73,68 @@ app.Views.EventsView = Backbone.View.extend({
         	this.initEvents();
         	this.initCalendar();          	
         },
-
-
-		drop: function( copiedEventObject ) { 
-        			
-		    // assign it the date that was reported
-		    var dateStart = copiedEventObject.start;
-		    var dateEnd = new Date( dateStart ); 
-		    
-		    copiedEventObject.end = new Date(dateEnd.setHours( dateEnd.getHours()+copiedEventObject.planned_hours ));				   
-		    copiedEventObject.allDay = true;
-		
-		    // render the event on the calendar
-		    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-		    $(this.el).fullCalendar('renderEvent', copiedEventObject, true);
-		    //$(self.el).append('<button type="button" class="close" data-dismiss="close">X</button>');
-		    params = { 
-		       //id: copiedEventObject.id,
-		       name: copiedEventObject.title,
-		       state: 'open',
-		       project_id: copiedEventObject.project_id,
-		       parent_id: copiedEventObject.id,
-		       date_start: copiedEventObject.start,
-			   date_end: copiedEventObject.end,
-		       planned_hours: copiedEventObject.planned_hours,
-		       remaining_hours: copiedEventObject.planned_hours,
-		    };
-		    
-		    if( this.teamMode)
-		    	params.team_id = this.id
-		    else
-		    	params.user_id = this.id
-		    	
-		     app.models.task.save(0,params,null,null,'#planning');
-		       
-		},	
         
+        refresh: function() {
+        	var self = this;
+        	app.collections.tasks.fetch({ 
+	    		success: function(){					    	
+	    			app.collections.interventions.fetch({ 
+	    				success: function(){
+			    			app.collections.officers.fetch({ 
+			    				success: function(){
+							 		app.collections.teams.fetch({
+						                success: function(){				 			
+							 				if( self.teamMode)
+										    	self.initCollection(app.collections.teams.get(self.id));
+										    else
+										    	self.initCollection(app.collections.officers.get(self.id));
+										    $(self.el).fullCalendar('refetchEvents');
+										    self.planning.render();
+								 		}					 
+							 		});
+						         }
+						     });
+				        }
+				   });
+			 	}					 
+	    	});
+        },
+
+//
+//		drop: function( copiedEventObject ) { 
+//        			
+//		    // assign it the date that was reported
+//		    var dateStart = copiedEventObject.start;
+//		    var dateEnd = new Date( dateStart ); 
+//		    
+//		    copiedEventObject.end = new Date(dateEnd.setHours( dateEnd.getHours()+copiedEventObject.planned_hours ));				   
+//		    copiedEventObject.allDay = true;
+//		
+//		    // render the event on the calendar
+//		    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+//		    $(this.el).fullCalendar('renderEvent', copiedEventObject, true);
+//		    //$(self.el).append('<button type="button" class="close" data-dismiss="close">X</button>');
+//		    params = { 
+//		       //id: copiedEventObject.id,
+//		       name: copiedEventObject.title,
+//		       state: 'open',
+//		       project_id: copiedEventObject.project_id,
+//		       parent_id: copiedEventObject.id,
+//		       date_start: copiedEventObject.start,
+//			   date_end: copiedEventObject.end,
+//		       planned_hours: copiedEventObject.planned_hours,
+//		       remaining_hours: copiedEventObject.planned_hours,
+//		    };
+//		    
+//		    if( this.teamMode)
+//		    	params.team_id = this.id
+//		    else
+//		    	params.user_id = this.id
+//		    	
+//		     app.models.task.save(0,params,null,null,'#planning');
+//		       
+//		},	
+//        
         eventClick: function(fcEvent, jsEvent, view) {
             this.eventView.model = app.collections.tasks.get(fcEvent.id);
             this.eventView.render($(jsEvent.currentTarget),this.planning,this.el)
@@ -175,45 +201,32 @@ app.Views.EventsView = Backbone.View.extend({
         },
         
         updateTask : function(copiedEventObject) {
+        	        	
+        	if( this.arrayPlanifTasks.length==0 && copiedEventObject.copy) {
+        		this.refresh();
+        		return 1;
+        	}
+        	
         	var self = this;
-			if(this.arrayPlanifTasks.length==0) {
+			if( this.arrayPlanifTasks.length==0 ) {
+				copiedEventObject.start = null;
 			    app.models.task.saveTest(copiedEventObject.id, copiedEventObject, {
 			    	success: function (data) {
 				    	$.pnotify({
 				    		title: 'Tâche attribuée',
 				    		text: 'La tâche a correctement été attribué à l\'agent.'
 					    });
-				    	app.collections.tasks.fetch({ 
-				    		success: function(){					    	
-				    			app.collections.interventions.fetch({ 
-				    				success: function(){
-						    			app.collections.officers.fetch({ 
-						    				success: function(){
-										 		app.collections.teams.fetch({
-									                success: function(){				 			
-					 								    if( self.teamMode)
-					 								    	self.initCollection(app.collections.teams.get(self.id));
-					 								    else
-					 								    	self.initCollection(app.collections.officers.get(self.id));
-					 								    $(self.el).fullCalendar('refetchEvents');
-					 								    self.planning.render();
-											 		}					 
-										 		});
-									         }
-									     });
-							        }
-							   });
-						 	}					 
-				    	});
+				    	self.refresh();
 			    	}
 			    }); 			    
 			    return 1;
 			}
+			
 			var params = this.arrayPlanifTasks[0];
 			self.params = params;
 			app.models.task.saveTest(0,params,{
 				success: function(){
-					self.arrayPlanifTasks.splice(0, 1)
+					self.arrayPlanifTasks.splice(0, 1);
 					self.updateTask( copiedEventObject );
 				}
 			});
@@ -324,10 +337,15 @@ app.Views.EventsView = Backbone.View.extend({
 	        	var title = event.title;
 	        	if( this.arrayPlanifTasks.length>0 )
 	        		title = "(copy-" + this.arrayPlanifTasks.length + ")" + title ;
+	        	
+	        	
+	        	
 				var params=
 				{
 				    name:  title,
 				    project_id: event.project_id,
+				    copy: event.copy,
+				    parent_id: event.copy?event.id:false,
 				    state: 'open',
 				    date_start: startDate.toDate(),
 				    date_end: returnDate.toDate(),
@@ -336,6 +354,7 @@ app.Views.EventsView = Backbone.View.extend({
 				    team_id: this.teamMode?this.id:0,
 				    user_id: !this.teamMode?this.id:0,
 				}
+				
 				
 				event.planned_hours -= duration;
 		    		event.remaining_hours -= duration;
@@ -450,23 +469,18 @@ app.Views.EventsView = Backbone.View.extend({
 
 					var currentInter = app.collections.interventions.get( copiedEventObject.project_id );
 					currentInter = currentInter!=null? currentInter.toJSON():null
-					if( currentInter && currentInter.state == 'template' ){
-						self.drop(copiedEventObject);
-					}
-					else {
-						copiedEventObject.allPlanned = false;
-						self.arrayPlanifTasks = [];
-						self.arrayOnDayEvents = _.filter(self.events, function(e) {
-							if(!e.start) return false;
-							var eventDate = moment( e.start );
-							var currentDate = moment( date );
-							return ( currentDate.diff(eventDate,'days')>-1 && currentDate.diff(eventDate, 'days')<1 )
-							
-						});
-						self.calculTask(copiedEventObject);
-						copiedEventObject.start = null;
-						self.updateTask(copiedEventObject);		
-					}
+					copiedEventObject.copy = ( currentInter && currentInter.state == 'template' )?true:false;
+					copiedEventObject.allPlanned = false;
+					self.arrayPlanifTasks = [];
+					self.arrayOnDayEvents = _.filter(self.events, function(e) {
+						if(!e.start) return false;
+						var eventDate = moment( e.start );
+						var currentDate = moment( date );
+						return ( currentDate.diff(eventDate,'days')>-1 && currentDate.diff(eventDate, 'days')<1 )
+						
+					});
+					self.calculTask(copiedEventObject);
+					self.updateTask(copiedEventObject);	
 				},
 
                 eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 

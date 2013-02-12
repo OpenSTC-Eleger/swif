@@ -67,7 +67,7 @@
 			<tbody>
 				<% _.each(tasks, function (task, i) { %>
 				
-					<tr id="<%= i %>">
+					<tr id="<%= task.id %>">
 					    <td><a 	href="#taches/<%= task.id %>"> <%= _.capitalize(task.name) %> </a></td>
 						<td class="hidden-phone"><%= task.project_id[1] %></td>
 						<td><%= task.intervention.site1[1] %></td>

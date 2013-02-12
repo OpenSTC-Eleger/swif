@@ -144,8 +144,8 @@ app.Views.TasksListView = Backbone.View.extend({
 
 		// Retrieve the ID of the request //	
 		this.pos = href.parents('tr').attr('id');
-		this.taskId = href.data('taskid');
-		this.model = app.collections.tasks.get(this.taskId);
+		//this.taskId = href.data('taskid');
+		this.model = app.collections.tasks.get(this.pos);
     },
     
     //Task not finished
