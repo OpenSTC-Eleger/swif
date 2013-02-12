@@ -142,8 +142,6 @@ app.Views.OfficersView = Backbone.View.extend({
 			}
 			$('#officerLogin').val(this.selectedOfficerJson.login);
 
-			app.views.selectListGroupsView.setSelectedItem( this.selectedTeamJson.manager_id[0] );
-
 			// Disable the required attribute for the password because it's an update 	//
 			$('#officerPassword').removeAttr('required');
 		}

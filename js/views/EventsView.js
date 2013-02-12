@@ -100,41 +100,6 @@ app.Views.EventsView = Backbone.View.extend({
 	    	});
         },
 
-//
-//		drop: function( copiedEventObject ) { 
-//        			
-//		    // assign it the date that was reported
-//		    var dateStart = copiedEventObject.start;
-//		    var dateEnd = new Date( dateStart ); 
-//		    
-//		    copiedEventObject.end = new Date(dateEnd.setHours( dateEnd.getHours()+copiedEventObject.planned_hours ));				   
-//		    copiedEventObject.allDay = true;
-//		
-//		    // render the event on the calendar
-//		    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-//		    $(this.el).fullCalendar('renderEvent', copiedEventObject, true);
-//		    //$(self.el).append('<button type="button" class="close" data-dismiss="close">X</button>');
-//		    params = { 
-//		       //id: copiedEventObject.id,
-//		       name: copiedEventObject.title,
-//		       state: 'open',
-//		       project_id: copiedEventObject.project_id,
-//		       parent_id: copiedEventObject.id,
-//		       date_start: copiedEventObject.start,
-//			   date_end: copiedEventObject.end,
-//		       planned_hours: copiedEventObject.planned_hours,
-//		       remaining_hours: copiedEventObject.planned_hours,
-//		    };
-//		    
-//		    if( this.teamMode)
-//		    	params.team_id = this.id
-//		    else
-//		    	params.user_id = this.id
-//		    	
-//		     app.models.task.save(0,params,null,null,'#planning');
-//		       
-//		},	
-//        
         eventClick: function(fcEvent, jsEvent, view) {
             this.eventView.model = app.collections.tasks.get(fcEvent.id);
             this.eventView.render($(jsEvent.currentTarget),this.planning,this.el)
@@ -256,6 +221,41 @@ app.Views.EventsView = Backbone.View.extend({
 			this.arrayOnDayEvents.push( lunchEvent );
 			
 
+//
+//		drop: function( copiedEventObject ) { 
+//        			
+//		    // assign it the date that was reported
+//		    var dateStart = copiedEventObject.start;
+//		    var dateEnd = new Date( dateStart ); 
+//		    
+//		    copiedEventObject.end = new Date(dateEnd.setHours( dateEnd.getHours()+copiedEventObject.planned_hours ));				   
+//		    copiedEventObject.allDay = true;
+//		
+//		    // render the event on the calendar
+//		    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+//		    $(this.el).fullCalendar('renderEvent', copiedEventObject, true);
+//		    //$(self.el).append('<button type="button" class="close" data-dismiss="close">X</button>');
+//		    params = { 
+//		       //id: copiedEventObject.id,
+//		       name: copiedEventObject.title,
+//		       state: 'open',
+//		       project_id: copiedEventObject.project_id,
+//		       parent_id: copiedEventObject.id,
+//		       date_start: copiedEventObject.start,
+//			   date_end: copiedEventObject.end,
+//		       planned_hours: copiedEventObject.planned_hours,
+//		       remaining_hours: copiedEventObject.planned_hours,
+//		    };
+//		    
+//		    if( this.teamMode)
+//		    	params.team_id = this.id
+//		    else
+//		    	params.user_id = this.id
+//		    	
+//		     app.models.task.save(0,params,null,null,'#planning');
+//		       
+//		},	
+//        
 			
 			
 			var self = this;
@@ -456,8 +456,41 @@ app.Views.EventsView = Backbone.View.extend({
 				startOfLunchTime:12,
 				endOfLunchTime:14,
                 
+				select: function( startDate, endDate, allDay, jsEvent, view) {
+
+					console.debug('START' + startDate);
+					console.debug('START' + endDate);
+					console.debug('ALLDAY' + allDay);
+	
+					var mStartDate = moment( startDate );
+					var mEndDate = moment( endDate );
+					
+		        	modalAbsentTask = $("#modalAbsentTask");
+		        	$('.timepicker-default').timepicker({showMeridian:false});
+		        	
+		        	app.views.selectListAbsentTypesView = new app.Views.DropdownSelectListView({el: $("#absentType"), collection: app.collections.absentTypes})
+					app.views.selectListAbsentTypesView.clearAll();
+					app.views.selectListAbsentTypesView.addEmptyFirst();
+					app.views.selectListAbsentTypesView.addAll();
+		        	
+		        	$("#startDate").val( moment( startDate ).format('L') );
+		        	$("#endDate").val( moment( endDate ).format('L') );
+		    		$("#startHour").timepicker( 'setTime', mStartDate.format('LT') );
+		    		$("#endHour").timepicker('setTime', mEndDate.format('LT') );
+		    		$('#infoModalAbsentTask p').html( 'Nouvelle abscence ' );
+		    		$('#infoModalAbsentTask small').html( mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
+		    		var self= this;
+		    		modalAbsentTask.find('#okButton').click(function(event) {
+						event.preventDefault();
+						modalAbsentTask.modal('hide');
+				    });					
+				    modalAbsentTask.modal();
+					
+
+				},
+
 				start: function (event, ui){
-					$("modalDrop").modal();
+					$("modalAbsentTask").modal();
 				},
 
 				drop: function( date, allDay ) {
@@ -729,3 +762,51 @@ app.Views.EventsView = Backbone.View.extend({
 //		    $printSection.appendChild(domClone);
 //		    domClone = null;
 //		    window.print();
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//		drop: function( copiedEventObject ) { 
+//        			
+//		    // assign it the date that was reported
+//		    var dateStart = copiedEventObject.start;
+//		    var dateEnd = new Date( dateStart ); 
+//		    
+//		    copiedEventObject.end = new Date(dateEnd.setHours( dateEnd.getHours()+copiedEventObject.planned_hours ));				   
+//		    copiedEventObject.allDay = true;
+//		
+//		    // render the event on the calendar
+//		    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+//		    $(this.el).fullCalendar('renderEvent', copiedEventObject, true);
+//		    //$(self.el).append('<button type="button" class="close" data-dismiss="close">X</button>');
+//		    params = { 
+//		       //id: copiedEventObject.id,
+//		       name: copiedEventObject.title,
+//		       state: 'open',
+//		       project_id: copiedEventObject.project_id,
+//		       parent_id: copiedEventObject.id,
+//		       date_start: copiedEventObject.start,
+//			   date_end: copiedEventObject.end,
+//		       planned_hours: copiedEventObject.planned_hours,
+//		       remaining_hours: copiedEventObject.planned_hours,
+//		    };
+//		    
+//		    if( this.teamMode)
+//		    	params.team_id = this.id
+//		    else
+//		    	params.user_id = this.id
+//		    	
+//		     app.models.task.save(0,params,null,null,'#planning');
+//		       
+//		},	
+//        
