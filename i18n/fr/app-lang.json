@@ -143,9 +143,9 @@
 	"infoMessages" : {
    		"information"         	: "Information",
     	"successLogout"       	: "Vous êtes maintenant déconnecté",
-    	"noRequest"      	  	: "Aucune intervention dans la base de données",
+    	"noRequest"      	  	: "Aucune intervention à afficher",
     	"noRequestPlanned"		: "Aucune intervention planifiées",
-    	"noPlace"				: "Aucun site enregistré",
+    	"noPlace"				: "Aucun site à afficher",
     	"noClaimer"				: "Aucun demandeur enregistré",
     	"noService"				: "Aucun service enregistré",
     	"noCategorie"			: "Aucune catégorie enregistrée",
