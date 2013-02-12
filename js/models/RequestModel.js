@@ -235,7 +235,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
         },
         {
             value       : 'closed',
-            color       : '',
+            color       : 'muted',
             traduction  : '',  
         }
     ]

@@ -16,18 +16,18 @@ app.Views.RequestsListView = Backbone.View.extend({
 
     // The DOM events //
     events: {
-		'click li.active'				: 'preventDefault',
-		'click li.disabled'				: 'preventDefault',
+		'click li.active'						: 'preventDefault',
+		'click li.disabled'						: 'preventDefault',
 			
-    	'click .buttonValidRequest'		: 'setInfoModal',
-    	'click .buttonRefuseRequest'	: 'setInfoModal',
-    	'click .buttonConfirmDST'		: 'setInfoModal',
+    	'click .buttonValidRequest'				: 'setInfoModal',
+    	'click .buttonRefuseRequest'			: 'setInfoModal',
+    	'click .buttonConfirmDST'				: 'setInfoModal',
 
-    	'submit #formValidRequest' 		: 'validRequest',
-    	'submit #formRefuseRequest' 	: 'refuseRequest',
-    	'submit #formConfirmDSTRequest' : 'confirmDSTRequest',
+    	'submit #formValidRequest' 				: 'validRequest',
+    	'submit #formRefuseRequest' 			: 'refuseRequest',
+    	'submit #formConfirmDSTRequest' 		: 'confirmDSTRequest',
 
-    	'click #filterStateRequestList' : 'setFilter'
+    	'click #filterStateRequestList li:not(.disabled) a' 	: 'setFilter'
     },
 
  
@@ -63,12 +63,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 			var requests = _.filter(requests, function(item){ 
 				return item.state == sessionStorage.getItem(self.filters);
 			});
-
-			$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');			
 		}
-		else{
-			$('a.filter-buttont').removeClass('filter-active').addClass('filter-disabled');
-		}
+		
 
 
 		var len = requests.length;
@@ -110,6 +106,23 @@ app.Views.RequestsListView = Backbone.View.extend({
 		
 			$(self.el).html(template);
 
+
+			// Display filter on the table //
+			if(sessionStorage.getItem(self.filters) != null){
+				$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');
+				$('li.delete-filter').removeClass('disabled');
+
+				_.each(app.Models.Request.state, function (state, i) {
+					if(state.value == sessionStorage.getItem(self.filters)){
+						$('a.filter-button').addClass('text-'+state.color);						
+					}
+				})
+			}
+			else{
+				$('a.filter-button').removeClass('filter-active ^text').addClass('filter-disabled');
+				$('li.delete-filter').addClass('disabled');
+			}
+
 			// Display the Tooltip or Popover //
 			$('*[rel="popover"]').popover({trigger: "hover"});
 			$('*[rel="tooltip"]').tooltip({placement: "right"});
@@ -126,7 +139,7 @@ app.Views.RequestsListView = Backbone.View.extend({
     	_.each(requests.models, function (request, i) {
     		this.infoMessage = "";
     		var self = this;
-    		_.each(request.attributes.intervention_ids.models, function (interModel, i) { 	    		
+    		_.each(request.attributes.intervention_ids.models, function (interModel, i) {
 				var classColor = "";
 				
 				var intervention = interModel.toJSON();
@@ -355,10 +368,23 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 		var link = $(e.target);
 
-		// Set the filter in the local Storage //
-		sessionStorage.setItem(this.filters, _(link.attr('href')).strRightBack('#'));
+		var filterValue = _(link.attr('href')).strRightBack('#');
 
-		this.render();
+		// Set the filter in the local Storage //
+		if(filterValue != 'delete-filter'){
+			sessionStorage.setItem(this.filters, filterValue);
+		}
+		else{
+			sessionStorage.removeItem(this.filters);
+		}
+
+		if(this.options.page <= 1){
+			this.render();	
+		}
+		else{
+			app.router.navigate('demandes-dinterventions', {trigger: true, replace: true});
+		}
+		
 	},
 
 
