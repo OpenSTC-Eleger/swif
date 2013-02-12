@@ -636,10 +636,13 @@ app.Router = Backbone.Router.extend({
                 app.collections.interventions = new app.Collections.Interventions();
             }
         	
-        	app.loader('display');
-        	app.collections.interventions.fetch({
-        		success: function(){
         	
+        	app.collections.interventions.fetch({
+                beforeSend: function(){
+                    app.loader('display');
+                },
+        		success: function(){
+
 		        	if(app.collections.tasks == null ){
 		                app.collections.tasks = new app.Collections.Tasks();
 		            }
@@ -648,7 +651,7 @@ app.Router = Backbone.Router.extend({
 				        	if(app.collections.teams == null ){
 				                app.collections.teams = new app.Collections.Teams();
 				            }
-				        
+
 					        app.collections.teams.fetch({
 					        	success: function(){
 						        	if(app.collections.places == null ){
@@ -661,7 +664,7 @@ app.Router = Backbone.Router.extend({
 						        		},
 						            	complete: function(){
 						            	    app.loader('hide');
-						            	}	
+						            	}
 							        });
 						        }
 				        	});

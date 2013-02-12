@@ -30,21 +30,11 @@
 
 <div class="container-fluid">
 
+
+<h3>Semaine 24, du 31 janvier au 10 février</h3>
+
 	<!-- Check if there is Request in the Database -->
 	<% if(tasks.length != 0) { %>
-
-		<!-- Table toolbar -->
-		<div class="tableToolbar">
-			<a href="#taches/add" class="btn btn-primary"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addTask) %></a>
-
-			<form class="form-search pull-right">
-    			<div class="input-append">
-					<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off">
-					<button type="submit" class="btn"><i class="icon-search icon-large"></i></button>
-				</div>
-			</form>
-		</div>
-		<!-- Table toolbar -->
 
 
 		<!-- Table Requests -->
@@ -59,7 +49,6 @@
 					<th><%= _.capitalize(lang.assignedTo) %></th>
 					<th><%= _.capitalize(lang.plannedHours) %></th> 
 					<th><%= _.capitalize(lang.remainingHours) %></th>
-					<th><%= _.capitalize(lang.progressRate) %></th>
 					<th><%= _.capitalize(lang.status) %></th>
 					<th><%= _.capitalize(lang.action) %></th>
 				</tr>
@@ -82,22 +71,6 @@
 
 					    <td><%= task.planned_hours %>h</td>
 					    <td><%= task.remaining_hours %>h</td>
-						<td>
-							<% if(task.progress != 0 || task.progress != false) {
-
-								if(task.progress == 100 ){ %>
-									<div class="progress progress-success" style="margin-bottom: 0;">
-										<div class="bar" style="width: <%= task.progress %>%;"><%= task.progress %>%</div>
-									</div>
-								<% } else{ %>
-									<div class="progress" style="margin-bottom: 0;">
-										<div class="bar" style="width: <%= task.progress %>%;"></div>
-									</div>
-								<% }
-								} else{ %>
-									<span class="text-warning"><%= _.capitalize(lang.notBegin) %></span>
-							<% } %>
-						</td>
 					    <td>
 				    		<% if(task.state == app.Models.Task.state[0].value) { %> 
 				    			<span class="label label-important"><%= lang.refused %></span>
@@ -111,7 +84,7 @@
 				    			<span class="label label"><%= lang.closed %></span>
 				    		<% } %>
 					   	</td>
-					   	
+
 					   	<!-- Actions -->
 					   	<td class="align">
 
@@ -126,7 +99,7 @@
 									</button>
 									<ul class="dropdown-menu pull-right align-left">										
 										<li><a href="#" class="taskNotDone" data-taskid="<%= task.id %>"><i class="icon-remove"></i>&nbsp;Non Fait</a></li>
-										<li><a href="#modalTimeSpent" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonTimeSpent"><i class="icon-user"></i>&nbsp;Non Terminée</a></li>
+										<li><a href="#modalTimeSpent" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonTimeSpent"><i class="icon-time"></i>&nbsp;Non Terminée</a></li>
 									</ul>
 								</div>
 
@@ -139,49 +112,16 @@
 		</table>
 		<!-- /Table Requests -->
 
+		<!-- Pagination -->
+		<ul class="pager">
+			<li class="previous"><a href="#"><i class="icon-chevron-left"></i> <%= _.capitalize(lang.actions.previousWeek) %></a></li>
+			<li class="next"><a href="#"><%= _.capitalize(lang.actions.nextWeek) %> <i class="icon-chevron-right"></i></a></li>
+    	</ul>
 
-		<!-- Table pagination -->
-		<div class="pagination pagination-right">
-			<ul>
-				<!-- First page button -->
-				<% if(page-2 >= 1){ %>
-					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#taches/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
-				<% } %>
-				
-				<!-- Previous page button -->
-				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#taches/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
-			
-				<!-- [...] page Button -->
-				<% 	if (page-2 > 1) { %>
-						<li class="disabled"><a href='#'>...</a></li>
-				<% } 
-						
-					for (var i=(page-2); i < (page+3); i++) {
-						if(i >= 1 && i <= pageCount){ %>
-							<li <%= (i === page ? " class='active'" : "")%>><a href='#taches/page<%=i%>'><%= i %></a></li>
-						<% }
-
-					} %>
-					
-				<!-- [...] page Button -->
-				<% if (page+2 < pageCount) { %>
-					<li class="disabled"><a href='#'>...</a></li>
-				<% } %>
-				
-				<!-- Next page button -->
-				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#taches/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
-				
-				<!-- Last page button -->
-				<% if(page+2 <= pageCount){ %>
-					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#taches/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
-				<% } %>
-			</ul>
-		</div>
-		<!-- /Table pagination -->
 
 	<% } 
 	else { %>
-		<!-- No request in the Database -->
+		<!-- No Task to Display -->
 		<div class="alert alert-info">
 			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTask %>.
 		</div>

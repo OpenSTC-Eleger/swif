@@ -161,7 +161,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
         },
         {
             value       : 'scheduled',
-            color       : 'success',
+            color       : '',
             traduction  : '',
         },
         {
@@ -171,7 +171,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
         },
         {
             value       : 'closing',
-            color       : '',
+            color       : 'success',
             traduction  : '',   
         },
         {

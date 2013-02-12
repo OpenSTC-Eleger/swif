@@ -51,7 +51,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		var officer = app.models.user;  
 		var officer_id = officer.get('uid');
 		
-		var tasks = app.collections.tasks
+		var tasks = app.collections.tasks;
 
 		//TODO ajouter le DST et le manager du service de l'utilisateur
 		var tasksUser = _.filter(tasks.models, function(item){	
@@ -61,9 +61,9 @@ app.Views.TasksListView = Backbone.View.extend({
     		var belongsToOfficer = (task.user_id[0] == officer_id)
     		if( task.teamWorkingOn != null && task.teamWorkingOn.manager_id!=null )
 					belongsToOfficer = belongsToOfficer || (task.teamWorkingOn.manager_id[0] == officer_id);
-    		
+
     		var belongsToServiceManager = false;
-    		
+
     		var interCondition = false;
     		if( intervention!=null ) {
     			//keep only  interventions : toscheduled ('A planifier'), scheduled('cloturée') , pending ('En cours')
@@ -71,7 +71,7 @@ app.Views.TasksListView = Backbone.View.extend({
     				||	intervention.state==app.Models.Intervention.state[1].value
 					|| intervention.state==app.Models.Intervention.state[2].value 
 					|| intervention.state==app.Models.Intervention.state[5].value  //'template'
-										
+
 				var service = intervention.service_id;//!=null?intervention.service_id.toJSON():null;
 				var userServices = app.models.user.toJSON().service_ids;
 				if ( service && userServices )
@@ -93,7 +93,7 @@ app.Views.TasksListView = Backbone.View.extend({
     						//L'intervention de la tâche doit être planifiée ou en cours'
     						interCondition
     					 )
-    			   ); 
+    			   );
         });
 		
     	//var tasks = app.collections.tasks.getTasksByOfficer(officer_id);

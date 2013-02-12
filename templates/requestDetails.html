@@ -1,10 +1,27 @@
 
 <% if ( request.id != null && request.id !=0 ) { %>
-    <h1><%= lang.viewsTitles.requestDetail %> n°<%= request.id %></h1><br />
+    <h1>
+        <%= lang.viewsTitles.requestDetail %> n°<%= request.id %>
+        
+        
+        <% _.each(requestsState, function (state, i) { 
+            if(state.value == request.state){ %>
+                <span class="label label-<%= state.color %> vertical-align-middle marginLeft"><%= state.traduction %></span>
+        <% }} ) %>
+    </h1><br />
+
 <% } else { %>
     <h1><%= lang.viewsTitles.newRequest %></h1><br />
 <% } %>
 
+
+<% if(request.state == app.Models.Request.state[0].value){ %>
+    <div class="row-fluid">
+        <div class="alert alert-error span6">
+            <strong><%= _.capitalize(lang.refusalReason) %>:</strong> <%= request.refusal_reason %>
+        </div>
+    </div>
+<% } %>
 
 <form id="formRequest" action="#" class="form-horizontal container-fluid">
     
@@ -23,7 +40,7 @@
                     <span class="help-inline"></span>
                 </div>
             </div>
-            
+
             <!-- Request Partner -->
             <div class="control-group" id="requestClaimerBlock" style="display:none">
                 <label for="requestClaimer" class="control-label"><%= _.capitalize(lang.name) %>:</label>
@@ -33,7 +50,7 @@
                     <span class="help-inline"></span>
                 </div>
             </div>
-                
+
                 <!-- Request Contact Service -->
                 <div class="control-group" id="requestContactServiceBlock" style="display:none">
                     <label for="requestContactService" class="control-label" ><%= _.capitalize(lang.service) %>:</label>
@@ -44,8 +61,8 @@
                     </div>
                 </div>
 		<br />
-            
-            
+
+
             <!-- Details about the claimer -->
             <fieldset>
                 <legend><%= lang.claimerDetails %></legend>
@@ -59,14 +76,14 @@
                             <select id="requestContactSelect" name="requestContact" disabled="disabled" style="float:left"></select>
                             <span class="help-inline"></span>
                         </div>
-			
+
                         <div id="requestContactInputBlock" style="display:inline">
                             <input type="text" id="requestContactInput" name="requestContact" readonly="readonly" style="float:left" />
                             <span class="help-inline"></span>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Request Contact Phone -->
                 <div class="control-group">
                     <label for="requestContactPhone" class="control-label"><%= _.capitalize(lang.phone) %>:</label>
@@ -76,7 +93,7 @@
                         <span class="help-inline"></span>
                     </div>
                 </div>
-                
+
                 <!-- Request Contact Email -->
                 <div class="control-group">
                     <label for="requestContactEmail" class="control-label"><%= _.capitalize(lang.email) %>:</label>
@@ -88,15 +105,15 @@
                 </div>
             
             </fieldset>
-               
+
         </fieldset>
-        
-        
+
+
         <!-- About the request -->
         <fieldset class="span6">
-           
+
             <legend><%= lang.aboutTheRequest %></legend>
-                
+
                 <!-- Request Name -->
                 <div class="control-group">
                     <label for="requestName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
@@ -106,7 +123,7 @@
                         <span class="help-inline"></span>
                     </div>
                 </div>
-                
+
                 <!-- Request Description -->
                 <div class="control-group">
                     <label for="requestDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
@@ -131,7 +148,7 @@
                         <span class="help-inline"></span>
                     </div>
                 </div>
-                
+
                 <!-- Request Contact Service -->
                 <div class="control-group">
                     <label for="requestDetailService" class="control-label"><%= lang.serviceConcerned %>:</label>
@@ -141,7 +158,7 @@
                         <span class="help-inline"></span>
                     </div>
                 </div>
-                
+
                 <!-- Request Place -->
                 <div class="control-group">
                     <label for="requestPlace" class="control-label"><%= _.capitalize(lang.place) %>:</label>
@@ -151,7 +168,7 @@
                         <span class="help-inline"></span>                           
                     </div>
                 </div>
-                
+
                 <!-- Request Place precision -->
                 <div class="control-group">
                     <label for="requestPlacePrecision" class="control-label"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
@@ -171,5 +188,5 @@
         <button type="submit" class="btn btn-primary save"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
         <a href="#" class="text-info"><%= lang.actions.cancel %></a>
     </div>
-    
+
 </form>

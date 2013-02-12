@@ -86,8 +86,10 @@
 	"template"				: "avec tâches duplicables",
 	"notBegin"				: "non commencé",
 	"toScheduled" 			: "à planifier",
-	"planningFenced" 		: "planification cloturée",
+	"planningFenced" 		: "planifiée",
 	"dateDeadline" 			: "date butoire",
+	"deleteFilter" 			: "supprimer filtre",
+	"refusalReason"			: "motif du refus",
 
 
 	"actions" : {
@@ -113,6 +115,8 @@
 		"search"			: "rechercher",
 		"previous"			: "précédent",
 		"next"				: "suivant",
+		"previousWeek" 		: "semaine précédente",
+		"nextWeek" 			: "semaine suivante",
 		"first"				: "début",
 		"end"				: "fin",
 		"previousShort"		: "préc",

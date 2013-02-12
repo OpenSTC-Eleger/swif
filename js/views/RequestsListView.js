@@ -114,7 +114,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 				_.each(app.Models.Request.state, function (state, i) {
 					if(state.value == sessionStorage.getItem(self.filters)){
-						$('a.filter-button').addClass('text-'+state.color);						
+						$('a.filter-button').addClass('text-'+state.color);
 					}
 				})
 			}
@@ -157,7 +157,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 					else if ( task.date_end && lastDate<task.date_end )
 						lastDate=task.date_end; 
 				});
-	
+
 				self.infoMessage = intervention.create_uid!=null? "par " + intervention.create_uid[1] + ". ": ""; 
 		    	if( firstDate ) {
 		    		if( intervention.progress_rate==0 )
