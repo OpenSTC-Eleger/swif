@@ -89,6 +89,7 @@
 	"planningFenced" 		: "planifiée",
 	"dateDeadline" 			: "date butoire",
 	"deleteFilter" 			: "supprimer filtre",
+	"refusalReason"			: "motif du refus",
 
 
 	"actions" : {

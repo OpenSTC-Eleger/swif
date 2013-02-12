@@ -8,13 +8,20 @@
             if(state.value == request.state){ %>
                 <span class="label label-<%= state.color %> vertical-align-middle marginLeft"><%= state.traduction %></span>
         <% }} ) %>
-
     </h1><br />
 
 <% } else { %>
     <h1><%= lang.viewsTitles.newRequest %></h1><br />
 <% } %>
 
+
+<% if(request.state == app.Models.Request.state[0].value){ %>
+    <div class="row-fluid">
+        <div class="alert alert-error span6">
+            <strong><%= _.capitalize(lang.refusalReason) %>:</strong> <%= request.refusal_reason %>
+        </div>
+    </div>
+<% } %>
 
 <form id="formRequest" action="#" class="form-horizontal container-fluid">
     
