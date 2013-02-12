@@ -114,6 +114,8 @@
 		"search"			: "rechercher",
 		"previous"			: "précédent",
 		"next"				: "suivant",
+		"previousWeek" 		: "semaine précédente",
+		"nextWeek" 			: "semaine suivante",
 		"first"				: "début",
 		"end"				: "fin",
 		"previousShort"		: "préc",
