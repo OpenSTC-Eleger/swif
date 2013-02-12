@@ -52,6 +52,9 @@ app.Router = Backbone.Router.extend({
         
         'types'                            		: 'types',
         'types/page:page'                  		: 'types',
+        
+		'types-dabscence'                       : 'absentTypes',
+		'types-dabscence/page:page'             : 'absentTypes',
     },
 
     
@@ -581,12 +584,22 @@ app.Router = Backbone.Router.extend({
 															}
 												            app.collections.categories.fetch({
 												            	success: function(){
-														            app.views.planningView = new app.Views.PlanningView(id);
-														            self.render(app.views.planningView);
-														        },
-									                        	complete: function(){
-									                        	    app.loader('hide');
-									                        	}
+													                if(app.collections.absentTypes == null ){
+													                    app.collections.absentTypes = new app.Collections.AbsentTypes();
+													                }
+	
+													               
+													                app.collections.absentTypes.fetch({
+													                	success: function(){
+													                
+																            app.views.planningView = new app.Views.PlanningView(id);
+																            self.render(app.views.planningView);
+																        },
+											                        	complete: function(){
+											                        	    app.loader('hide');
+											                        	}
+											                        });
+											                     }
 													        });													         
 										        		}
 									                });
@@ -1123,6 +1136,42 @@ app.Router = Backbone.Router.extend({
                 success: function(){
                     app.views.claimersTypesView = new app.Views.ClaimersTypesView({page: self.page});
                     self.render(app.views.claimersTypesView);
+                },
+                complete: function(){
+                    app.loader('hide');
+                }
+            });
+        }
+        else{
+            this.navigate('login', {trigger: true, replace: true});
+        }
+    },
+    
+    
+    /** Abstent types
+    	    */
+    absentTypes: function(page){      
+
+        // Check if the user is connect //
+        if(this.checkConnect()){
+            var self = this;
+
+
+            self.page = page ? parseInt(page, 10) : 1;
+
+            // Check if the collections is instantiate //
+            if(app.collections.absentTypes == null ){
+                app.collections.absentTypes = new app.Collections.AbsentTypes();
+            }
+
+           
+            app.collections.absentTypes.fetch({
+                beforeSend: function(){
+                    app.loader('display');
+                },
+                success: function(){
+                    app.views.absentTypesView = new app.Views.AbsentTypesView({page: self.page});
+                    self.render(app.views.absentTypesView);
                 },
                 complete: function(){
                     app.loader('hide');
