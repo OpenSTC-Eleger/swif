@@ -31,11 +31,17 @@
 <div class="container-fluid">
 
 
-<h3>Semaine 24, du 31 janvier au 10 février</h3>
+	<h3>Semaine <%= weekSelected %>, du <%= moment().week(weekSelected).year(yearSelected).day(1).format('LL') %> au <%= moment().week(weekSelected).year(yearSelected).day(5).format('LL') %></h3>
+
+	<!-- Pagination -->
+	<ul class="pager">
+		<li class="previous"><a href="#"><i class="icon-chevron-left"></i> <%= _.capitalize(lang.actions.previousWeek) %></a></li>
+		<li class="next"><a href="#"><%= _.capitalize(lang.actions.nextWeek) %> <i class="icon-chevron-right"></i></a></li>
+	</ul>
+
 
 	<!-- Check if there is Request in the Database -->
 	<% if(tasks.length != 0) { %>
-
 
 		<!-- Table Requests -->
 		<table class="table table-striped table-bordered table-hover">
@@ -116,7 +122,7 @@
 		<ul class="pager">
 			<li class="previous"><a href="#"><i class="icon-chevron-left"></i> <%= _.capitalize(lang.actions.previousWeek) %></a></li>
 			<li class="next"><a href="#"><%= _.capitalize(lang.actions.nextWeek) %> <i class="icon-chevron-right"></i></a></li>
-    	</ul>
+		</ul>
 
 
 	<% } 

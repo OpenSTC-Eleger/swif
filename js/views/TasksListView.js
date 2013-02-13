@@ -4,9 +4,9 @@
 app.Views.TasksListView = Backbone.View.extend({
 	
 	el : '#rowContainer',
-	
+
 	templateHTML: 'tasksListCheck',
-	
+
 	numberListByPage: 25,
 
 
@@ -30,7 +30,7 @@ app.Views.TasksListView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize: function () {
-		
+
 	},
 
 	/** Display the view
@@ -48,16 +48,35 @@ app.Views.TasksListView = Backbone.View.extend({
 		app.views.headerView.switchGridMode('fluid');
 
 
-		var officer = app.models.user;  
+		var officer = app.models.user;
 		var officer_id = officer.get('uid');
 		
 		var tasks = app.collections.tasks;
+
+
+		// Retrieve the year - If not exist in the URL set as the current year //
+		if(typeof(this.options.yearSelected) == 'undefined'){
+			yearSelected = moment().year();
+		}
+		else{
+			yearSelected = this.options.yearSelected;	
+		}
+
+		// Retrieve the week of the year - - If not exist in the URL set as the current week ////
+		if(typeof(this.options.weekSelected) == 'undefined'){
+			weekSelected = moment().week();
+		}
+		else{
+			weekSelected = this.options.weekSelected;
+		}
+		
+
 
 		//TODO ajouter le DST et le manager du service de l'utilisateur
 		var tasksUser = _.filter(tasks.models, function(item){	
 			var task = item.toJSON();
 			var intervention = task.intervention; 
-        		
+
     		var belongsToOfficer = (task.user_id[0] == officer_id)
     		if( task.teamWorkingOn != null && task.teamWorkingOn.manager_id!=null )
 					belongsToOfficer = belongsToOfficer || (task.teamWorkingOn.manager_id[0] == officer_id);
@@ -95,23 +114,17 @@ app.Views.TasksListView = Backbone.View.extend({
     					 )
     			   );
         });
-		
+
     	//var tasks = app.collections.tasks.getTasksByOfficer(officer_id);
-    	
+
         // Retrieve the number of validated Interventions //
 //        var tasksPending = _.filter(tasksUser, function(item){         		
 //        	return item.attributes.state == app.Models.Task.state[2].value; 
 //        });
         var nbTasks = _.size(tasksUser);
-        
-        
-        
-		//var tasks = app.collections.tasks.models;
-		var len = nbTasks;
-		var startPos = (this.options.page - 1) * this.numberListByPage;
-		var endPos = Math.min(startPos + this.numberListByPage, len);
-		var pageCount = Math.ceil(len / this.numberListByPage);
-		
+
+
+
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			//var tasksList = new app.Collections.Tasks(tasksUser).toJSON();
@@ -126,11 +139,10 @@ app.Views.TasksListView = Backbone.View.extend({
 				lang: app.lang,
 				nbTasks: nbTasks,
 				tasks: taskList,
-				startPos: startPos, endPos: endPos,
-				page: self.options.page, 
-				pageCount: pageCount,
-
+				yearSelected: yearSelected,
+				weekSelected: weekSelected,
 			});
+
 			$(self.el).html(template);
 		});
 
@@ -195,7 +207,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		var newInterState = app.Models.Intervention.state[0].value;
 		this.saveNewStateTask(taskParams, taskWorkParams,$('#modalTimeSpent'),newInterState);
     },
-    
+
     secondsToHms : function (d) {
 		d = Number(d);	
 		var h = Math.floor(d / 3600);

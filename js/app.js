@@ -195,7 +195,7 @@ var app = {
             'session_id': session_id
         }, options)
     },
-    
+
 
     /** Delete object from OpenERP
     */

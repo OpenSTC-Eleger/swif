@@ -24,7 +24,7 @@ app.Router = Backbone.Router.extend({
         'demandes-dinterventions/:id'           : 'detailsRequest',
 
         'taches'               					: 'tasksCheck',
-        'taches/page:page'    					: 'tasksCheck',
+        'taches/:year/:week'                    : 'tasksCheck',
         'taches/add'           					: 'addTask',
         'taches/:id'           					: 'detailsTask',
 
@@ -622,16 +622,18 @@ app.Router = Backbone.Router.extend({
 
 
 
-    tasksCheck: function(page){
+    tasksCheck: function(year, week){
 	
     	console.debug("****************tasksCheck********************");
     	
-    	        // Check if the user is connect //
+        // Check if the user is connect //
         if(this.checkConnect()){
         	var self = this;
         	
-        	self.page = page ? parseInt(page, 10) : 1;
-        	
+
+            self.yearSelected = year;
+            self.weekSelected = week;
+ 
         	if(app.collections.interventions == null ){
                 app.collections.interventions = new app.Collections.Interventions();
             }
@@ -659,7 +661,7 @@ app.Router = Backbone.Router.extend({
 						            }
 						        	app.collections.places.fetch({						        						        	
 							        	success: function(){
-						        			app.views.tasksListView = new app.Views.TasksListView({page: self.page});
+						        			app.views.tasksListView = new app.Views.TasksListView({yearSelected: self.yearSelected, weekSelected: self.weekSelected});
 						        			self.render(app.views.tasksListView);
 						        		},
 						            	complete: function(){
