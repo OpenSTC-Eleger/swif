@@ -379,6 +379,13 @@ app.Views.PlanningView = Backbone.View.extend({
     */
     displayFormAddIntervention: function(e){
     	
+   		//search no technical services
+		var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
+			return service.attributes.technical != true 
+		});
+		//remove no technical services
+		app.collections.claimersServices.remove(noTechnicalServices);
+
 		app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#interventionDetailService"), collection: app.collections.claimersServices})
 		app.views.selectListServicesView.clearAll();
 		app.views.selectListServicesView.addEmptyFirst();
@@ -415,7 +422,6 @@ app.Views.PlanningView = Backbone.View.extend({
 		e.preventDefault();
 		$('#interventionPlace').val('');
 		this.renderService($(e.target).attr('value'));
-		//this.renderService(e.target.selectedIndex)
 	},
 	
 	/** Save the intervention */

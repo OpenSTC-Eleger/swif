@@ -369,6 +369,13 @@ app.Views.TeamsView = Backbone.View.extend({
 		});
 
 
+		//search no technical services
+		var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
+			return service.attributes.technical != true 
+		});
+		//remove no technical services
+		app.collections.claimersServices.remove(noTechnicalServices);
+		app.collections.claimersServices.toJSON()
 
 		// Display the remain services //
 		_.filter(app.collections.claimersServices.toJSON(), function (service, i){ 

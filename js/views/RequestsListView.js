@@ -201,6 +201,13 @@ app.Views.RequestsListView = Backbone.View.extend({
 			$('#requestName').val(this.selectedRequest.name);
 			$('#infoModalValidRequest').children('small').html(this.selectedRequest.description);
 			
+			//search no technical services
+			var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
+				return service.attributes.technical != true 
+			});
+			//remove no technical services
+			app.collections.claimersServices.remove(noTechnicalServices);
+			
 			app.views.selectServicesView = new app.Views.DropdownSelectListView({el: $("#requestService"), collection: app.collections.claimersServices})
 			app.views.selectServicesView.clearAll();
 			app.views.selectServicesView.addEmptyFirst();

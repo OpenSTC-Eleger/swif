@@ -64,6 +64,12 @@ app.Views.InterventionDetailsView = Backbone.View.extend({
 						$('#interventionDateDeadline').val(moment().format("L"));
 					}
 
+					//search no technical services
+					var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
+						return service.attributes.technical != true 
+					});
+					//remove no technical services
+					app.collections.claimersServices.remove(noTechnicalServices);
 					
 					app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#interventionDetailService"), collection: app.collections.claimersServices})
 					app.views.selectListServicesView.clearAll();

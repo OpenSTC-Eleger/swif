@@ -79,6 +79,12 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 						$('#requestDateDeadline').val(moment().format("L"));
 					}
 
+					//search no technical services
+					var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
+						return service.attributes.technical != true 
+					});
+					//remove no technical services
+					app.collections.claimersServices.remove(noTechnicalServices);
 					
 					app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#requestDetailService"), collection: app.collections.claimersServices})
 					app.views.selectListServicesView.clearAll();
@@ -380,7 +386,7 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 		fillDropdownService: function(e){
 			e.preventDefault();
 			$('#requestPlace').val('');
-			this.renderTechnicalService(e.target.selectedIndex)
+			this.renderTechnicalService($(e.target).attr('value'))
 		},
 		 
 		setElement: function(element, delegate) {

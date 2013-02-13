@@ -163,13 +163,20 @@ app.Views.ClaimersView = Backbone.View.extend({
 		app.views.selectListClaimerTypeView.clearAll();
 		app.views.selectListClaimerTypeView.addEmptyFirst();
 		app.views.selectListClaimerTypeView.addAll();
-		
+
 		app.views.selectListClaimerServiceView = new app.Views.DropdownSelectListView({el: $("#claimerService"), collection: app.collections.claimersServices})
 		app.views.selectListClaimerServiceView.clearAll();
 		app.views.selectListClaimerServiceView.addEmptyFirst();
 		app.views.selectListClaimerServiceView.addAll();
 		
-		app.views.selectListClaimerTechnicalServiceView = new app.Views.DropdownSelectListView({el: $("#claimerTechnicalService"), collection: app.collections.claimersServices})
+		//search no technical services
+		var technicalServices = _.filter(app.collections.claimersServices.models, function(service){
+			return service.attributes.technical == true 
+		});
+		//remove no technical services
+		var technicalServicesList = new app.Collections.ClaimersServices(technicalServices);
+		
+		app.views.selectListClaimerTechnicalServiceView = new app.Views.DropdownSelectListView({el: $("#claimerTechnicalService"), collection: technicalServicesList})
 		app.views.selectListClaimerTechnicalServiceView.clearAll();
 		app.views.selectListClaimerTechnicalServiceView.addEmptyFirst();
 		app.views.selectListClaimerTechnicalServiceView.addAll();
@@ -362,7 +369,7 @@ app.Views.ClaimersView = Backbone.View.extend({
 	fillDropdownTechnicalService: function(e){
 		 e.preventDefault();
 		 $('#claimerTechnicalSite').val('');
-		 this.renderTechnicalService(e.target.selectedIndex)
+		 this.renderTechnicalService($(e.target).attr('value'))
 	},
 	
 	renderTechnicalService: function ( service ) {

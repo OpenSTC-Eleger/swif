@@ -55,6 +55,7 @@ app.Views.ServiceDetailsView = Backbone.View.extend({
 					app.views.selectListOfficersView.addEmptyFirst();
 					app.views.selectListOfficersView.addAll();
 					
+
 					app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#serviceParentService"), collection: app.collections.claimersServices})
 					app.views.selectListServicesView.clearAll();
 					app.views.selectListServicesView.addEmptyFirst();

@@ -56,6 +56,7 @@ app.Views.PlaceDetailsView = Backbone.View.extend({
 					app.views.selectListPlaceTypesView.addEmptyFirst();
 					app.views.selectListPlaceTypesView.addAll();	
 					
+
 					app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#placeService"), collection: app.collections.claimersServices})
 					app.views.selectListServicesView.clearAll();
 					app.views.selectListServicesView.addEmptyFirst();
