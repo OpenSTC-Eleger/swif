@@ -55,7 +55,7 @@
 						</a>
 						
 						<p class="intervention-actions invisible">
-							<a href="#interventions/<%= inter.id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.up) %></a> 
+							<a href="#interventions/<%= inter.id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
 							<% if( inter.state == app.Models.Intervention.state[0].value ) { %>
 								<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.cancel) %></a>
 							<% } %> 
