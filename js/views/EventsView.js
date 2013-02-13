@@ -79,6 +79,9 @@ app.Views.EventsView = Backbone.View.extend({
         	app.collections.tasks.fetch({ 
 	    		success: function(){					    	
 	    			app.collections.interventions.fetch({ 
+	    				beforeSend: function(){
+		                    app.loader('display');
+		                },
 	    				success: function(){
 			    			app.collections.officers.fetch({ 
 			    				success: function(){
@@ -92,7 +95,10 @@ app.Views.EventsView = Backbone.View.extend({
 										    self.planning.render();
 								 		}					 
 							 		});
-						         }
+						         },
+	                        	complete: function(){
+	                        	    app.loader('hide');
+	                        	}
 						     });
 				        }
 				   });
@@ -222,44 +228,7 @@ app.Views.EventsView = Backbone.View.extend({
 			var stopLunchTime = moment( startDate.clone() ).hours( this.stopLunchTime );
 			var lunchEvent = this.getEvent( "lunchTime", startLunchTime.minutes(0).toDate(), stopLunchTime.minutes(0).toDate() );
 			this.arrayOnDayEvents.push( lunchEvent );
-			
 
-//
-//		drop: function( copiedEventObject ) { 
-//        			
-//		    // assign it the date that was reported
-//		    var dateStart = copiedEventObject.start;
-//		    var dateEnd = new Date( dateStart ); 
-//		    
-//		    copiedEventObject.end = new Date(dateEnd.setHours( dateEnd.getHours()+copiedEventObject.planned_hours ));				   
-//		    copiedEventObject.allDay = true;
-//		
-//		    // render the event on the calendar
-//		    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-//		    $(this.el).fullCalendar('renderEvent', copiedEventObject, true);
-//		    //$(self.el).append('<button type="button" class="close" data-dismiss="close">X</button>');
-//		    params = { 
-//		       //id: copiedEventObject.id,
-//		       name: copiedEventObject.title,
-//		       state: 'open',
-//		       project_id: copiedEventObject.project_id,
-//		       parent_id: copiedEventObject.id,
-//		       date_start: copiedEventObject.start,
-//			   date_end: copiedEventObject.end,
-//		       planned_hours: copiedEventObject.planned_hours,
-//		       remaining_hours: copiedEventObject.planned_hours,
-//		    };
-//		    
-//		    if( this.teamMode)
-//		    	params.team_id = this.id
-//		    else
-//		    	params.user_id = this.id
-//		    	
-//		     app.models.task.save(0,params,null,null,'#planning');
-//		       
-//		},	
-//        
-			
 			
 			var self = this;
 			self.event = event;
@@ -320,7 +289,7 @@ app.Views.EventsView = Backbone.View.extend({
         		if( nextEvent ) {
 	        		nextDateStart = moment( nextEvent.start ); 
 	        		nextDateEnd = moment( nextEvent.end ); 
-	        		var diff = returnDate.diff(nextDateStart, true );
+	        		var diff = returnDate.diff(nextDateStart, 'minutes', true );
 	        		if( diff>0 ) {
 	        			returnDate = moment( nextDateStart )
 	        			found = true;
@@ -372,33 +341,6 @@ app.Views.EventsView = Backbone.View.extend({
 	    		
 				this.arrayPlanifTasks.push(params);				
 			}
-        	
-        	
-        	
-        	
-
-    		
-//        	confirmModal = $("#modalDrop");
-//    		$("#startHour").val( startDate.clone().hours() )
-//    		$("#stopHour").val( returnDate.hours() )
-//    		$("#remainingHours").val( event.planned_hours )
-//    		$('#infoModalDrop p').html( event.title );
-//    		$('#infoModalDrop small').html( startDate.format('LLL') + " au " + returnDate.format('LLL') );
-//    		var self= this;
-//	    	confirmModal.find('#okButton').click(function(event) {
-//				event.preventDefault();
-//				
-//				
-//
-//        		//UPDATE current task : remove time  
-//        		//recursive calcul task
-//        		//this.calculTask( originalEventObject )
-//				//self.planifTasks(event, startDate, returnDate, duration)
-//				confirmModal.modal('hide');
-//		    });					
-//		    confirmModal.modal();
-        	
-        	//return returnDate;
         },
         
         initCalendar: function() {
@@ -470,6 +412,9 @@ app.Views.EventsView = Backbone.View.extend({
 					
 		        	modalAbsentTask = $("#modalAbsentTask");
 		        	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
+		        	
+		        	
+		        	$(".datepicker").datepicker();
 		        	$('#modalAbsentTask .modal-body').css("height", "380px");
 		        	
 		        	app.views.selectListAbsentTypesView = new app.Views.DropdownSelectListView({el: $("#absentType"), collection: app.collections.absentTypes})
@@ -479,18 +424,23 @@ app.Views.EventsView = Backbone.View.extend({
 		        	
 		        	$("#startDate").val( moment( startDate ).format('L') );
 		        	$("#endDate").val( moment( endDate ).format('L') );
-		    		$("#startHour").timepicker( 'setTime', mStartDate.format('LT') );
-		    		$("#endHour").timepicker('setTime', mEndDate.format('LT') );
+		        	if( allDay ) {
+		        		var tempStartDate = moment( mStartDate );
+		        		tempStartDate.add('hours',self.workingTime)
+			    		$("#startHour").timepicker( 'setTime', tempStartDate.format('LT') );
+		        		var tempEndDate = moment( mEndDate );
+		        		tempEndDate.add('hours',self.maxTime)
+			    		$("#endHour").timepicker('setTime', tempEndDate.format('LT') );
+		        	}
+		        	else {
+			    		$("#startHour").timepicker( 'setTime', mStartDate.format('LT') );
+			    		$("#endHour").timepicker('setTime', mEndDate.format('LT') );
+		        	}
+
 		    		$('#infoModalAbsentTask p').html( 'Nouvelle abscence ' );
 		    		$('#infoModalAbsentTask small').html( mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
-		    		modalAbsentTask.find('#okButton').click(function(event) {
+		    		modalAbsentTask.on('submit', function(event) {
 						event.preventDefault();
-						
-						console.debug('DATE START' + new moment( $("#startDate").val(),"MM-DD-YYYY") );
-						console.debug('DATE STOP' + $("#startDate").val() );
-						console.debug('TIME START' + $("#startHour").val() );
-						console.debug('TIME STOP' + $("#endHour").val());
-						console.debug('TIME SPLIT START' + $("#startHour").val().split(":")[0] );
 						var mNewDateStart =  new moment( $("#startDate").val(),"DD-MM-YYYY")
 												.add('hours',$("#startHour").val().split(":")[0] )
 												.add('minutes',$("#startHour").val().split(":")[1] );
@@ -523,15 +473,17 @@ app.Views.EventsView = Backbone.View.extend({
 							    user_id: !self.teamMode?self.id:0,
 							}
 							app.models.task.saveTest(0,params,{
-								success: function(){
-									self.refresh();
+								success: function(data){
+									if(data.error){
+										app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.unablePerformAction);
+									}
+									else
+										self.refresh();
 								}
 							});						
 							modalAbsentTask.modal('hide');
 				    });					
 				    modalAbsentTask.modal();
-					
-
 				},
 
 				start: function (event, ui){
@@ -554,7 +506,7 @@ app.Views.EventsView = Backbone.View.extend({
 						if(!e.start) return false;
 						var eventDate = moment( e.start );
 						var currentDate = moment( date );
-						return ( currentDate.diff(eventDate,'days')>-1 && currentDate.diff(eventDate, 'days')<1 )
+						return ( currentDate.diff(eventDate, 'days', true)>-1 && currentDate.diff(eventDate, 'days', true)<1 )
 						
 					});
 					self.calculTask(copiedEventObject);

@@ -133,7 +133,9 @@ app.Views.PlanningView = Backbone.View.extend({
             $('#listAgents li a, #listTeams li a').click(function(){            	
         		$('#listAgents li.active, #listTeams li.active').removeClass('active');
         		$(this).parent('li').addClass('active'); 
-            })
+            });
+            
+            $('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 
 //            if( Backbone.history.fragment=="planning" ) { ) {
 //            	// Animated Scroll //                
@@ -336,14 +338,21 @@ app.Views.PlanningView = Backbone.View.extend({
 		
 		 
 		 input_category_id = null;
-	     if( app.views.selectListAssignementsView != null )
-	    	 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
+	     if( app.views.selectListAssignementsView != null ) {
+	    	 var selectItem = app.views.selectListAssignementsView.getSelected();
+	    	 if( selectItem ) {
+	    		 input_category_id = selectItem.toJSON().id
+	    	 }
+	     }
 
+	     var duration = $("#taskHour").val().split(":");
+	     var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] })
+	     
 	     var params = {
 	         project_id: this.pos,
 	         name: this.$('#taskName').val(),
 	         category_id: input_category_id,	         
-	         planned_hours: this.$('#taskHour').val(),
+	         planned_hours: mDuration.asHours(),
 	     };
 	     
 	    app.models.task.save(0,params,$('#modalAddTask'), this, null);
