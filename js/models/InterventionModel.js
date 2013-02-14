@@ -91,6 +91,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
         app.Models.Intervention.state[2].traduction = app.lang.pending;
         app.Models.Intervention.state[3].traduction = app.lang.closed;
         app.Models.Intervention.state[4].traduction = app.lang.cancelled;
+        app.Models.Intervention.state[5].traduction = app.lang.template;
     },
     
     /** Model Parser */
@@ -170,8 +171,8 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
             traduction  : '', 
         },
         {
-            value       : 'closing',
-            color       : 'success',
+            value       : 'closed',
+            color       : 'muted',
             traduction  : '',   
         },
         {
@@ -181,7 +182,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
         },
         {
             value       : 'template',
-            color       : 'template',
+            color       : 'muted',
             traduction  : '',  
         }
     ]

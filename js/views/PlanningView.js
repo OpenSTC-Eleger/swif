@@ -6,6 +6,7 @@ app.Views.PlanningView = Backbone.View.extend({
 
     el : '#rowContainer',
     templateHTML: 'planning', 
+    filters: 'interventionsListFilter',
     calendarView: 'agendaWeek',
     
     selectedInter : '',
@@ -29,6 +30,8 @@ app.Views.PlanningView = Backbone.View.extend({
         'click .btn.pull-right'                 : 'scheduledInter',
         
         'change #interventionDetailService'		: 'fillDropdownService',
+        
+        'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilter'
     },
 
 
@@ -53,8 +56,7 @@ app.Views.PlanningView = Backbone.View.extend({
             app.router.setPageTitle(app.lang.viewsTitles.planning);
             // Change the Grid Mode of the view //
             app.views.headerView.switchGridMode('fluid');
-
-
+            
             var that = this;
             //Filter Agents : all agents belongs to user's services
             var officers = app.collections.officers.toJSON();        	
@@ -97,16 +99,24 @@ app.Views.PlanningView = Backbone.View.extend({
             console.log(app.collections.interventions);
             
             //Keep only inetrvention not planned
-            interventions = _.filter(interventions,function (intervention){    
-            	var inter = intervention.toJSON();
-            	//A planifier(toschedule), planifiée(scheduled), pending(En cours) 
-            	// Encours car des tâchespeuvent avoir fait l'objet d'une saisie de temps passé, tandis qu'elle n'a pas été
-            	// encore cloturée
-				return (inter.state == app.Models.Intervention.state[0].value ||
-						inter.state == app.Models.Intervention.state[1].value ||
-						inter.state == app.Models.Intervention.state[2].value ||
-						inter.state == app.Models.Intervention.state[5].value) //template
-			});
+//            interventions = _.filter(interventions,function (intervention){    
+//            	var inter = intervention.toJSON();
+//            	//A planifier(toschedule), planifiée(scheduled), pending(En cours) 
+//            	// Encours car des tâchespeuvent avoir fait l'objet d'une saisie de temps passé, tandis qu'elle n'a pas été
+//            	// encore cloturée
+//				return (inter.state == app.Models.Intervention.state[0].value ||
+//						inter.state == app.Models.Intervention.state[1].value ||
+//						inter.state == app.Models.Intervention.state[2].value ||
+//						inter.state == app.Models.Intervention.state[5].value) //template
+//			});
+            
+            // Collection Filter if not null //
+			if(sessionStorage.getItem(self.filters) != null){
+				var interventions = _.filter(interventions, function(item){ 
+					var itemJSON = item.toJSON();
+					return itemJSON.state == sessionStorage.getItem(self.filters);
+				});
+			}
             
            //Order by date start 
             var interventionsSortedArray = _.sortBy(interventions, function(item){ 
@@ -117,6 +127,7 @@ app.Views.PlanningView = Backbone.View.extend({
 
             var template = _.template(templateData, {
         		lang: app.lang,
+        		interventionsState: app.Models.Intervention.state,
         		interventions: interventionSorted.toJSON(),
         		officers: that.agents,
         		teams: that.teams,
@@ -147,6 +158,22 @@ app.Views.PlanningView = Backbone.View.extend({
 //                //Backbone.history.loadUrl($(selector).attr("href"));
 //                
 //            }
+
+			// Display filter on the table //
+			if(sessionStorage.getItem(self.filters) != null){
+				$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');
+				$('li.delete-filter').removeClass('disabled');
+
+				_.each(app.Models.Intervention.state, function (state, i) {
+					if(state.value == sessionStorage.getItem(self.filters)){
+						$('a.filter-button').addClass('text-'+state.color);
+					}
+				})
+			}
+			else{
+				$('a.filter-button').removeClass('filter-active ^text').addClass('filter-disabled');
+				$('li.delete-filter').addClass('disabled');
+			}
             	
             
         });
@@ -473,6 +500,26 @@ app.Views.PlanningView = Backbone.View.extend({
 							console.log('ERROR - Unable to valid the Inter - InterventionView.js');
 					    },           
 					},false);
+	},
+	
+	
+	/** Filter Request
+		*/
+	setFilter: function(e){
+		event.preventDefault();
+
+		var link = $(e.target);
+
+		var filterValue = _(link.attr('href')).strRightBack('#');
+
+		// Set the filter in the local Storage //
+		if(filterValue != 'delete-filter'){
+			sessionStorage.setItem(this.filters, filterValue);
+		}
+		else{
+			sessionStorage.removeItem(this.filters);
+		}
+		this.render();
 	},
 });
 

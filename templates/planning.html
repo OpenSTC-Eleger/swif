@@ -24,7 +24,7 @@
 				</ul>
 				-->
 
-				<div class="btn-group" data-toggle="buttons-radio">
+				<!-- <div class="btn-group" data-toggle="buttons-radio">
     				<button type="button" class="btn">A planifier</button>
 					<button type="button" class="btn">planification cloturée</button>
     				<button type="button" class="btn">Toutes</button>
@@ -34,18 +34,41 @@
 					<option>Toutes</option>
     				<option>A planifier</option>
     				<option>planification cloturée</option>
-    			</select>
+    			</select>  -->
+    		<div class="span4">
+				  <div class="dropdown pull-right">
+					<%= _.capitalize(lang.status) %> 
+				    <a id="filterStateIntervention" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="icon-filter icon-large"></i></a>
+				    
+				    <ul id="filterStateInterventionList" class="dropdown-menu" role="menu" aria-labelledby="filterStateIntervention">
+						<% _.each(interventionsState, function (state, i) { %>
+							<li role="menuitem">
+								<a tabindex="-1" href="#<%= state.value %>"> 
+									<i class="badge <%= (state.color != '' ? 'badge-'+state.color : '') %>">&nbsp;</i>
+									&nbsp; <%= _.capitalize(state.traduction) %>
+								</a>
+							</li>
+						<% }) %>
+							<li class="divider"></li>
+							<li class="delete-filter disabled"><a href="#delete-filter"><%= _.capitalize(lang.deleteFilter) %></a></li>
+					</ul>
+				</div>
 			</div>
+
+			</div>
+			
+
 			
 			<!-- Table toolbar -->
 
 
 			<% if( _.size(interventions) > 0 ) { %>
+			
 			<aside class="accordion" id="accordionInter" style="overflow-y: scroll; max-height: 590px; margin-bottom: 0;">
-				
+
 				<% _.each(interventions, function (inter, i) { %>
 				<div class="accordion-group">
-					
+					 
 					<div class="accordion-heading">
 						<a class="accordion-toggle no-outline" data-toggle="collapse" data-parent="#accordionInter" href="#collapse_<%= inter.id %>">
 							<i class="icon-pushpin"></i>&nbsp; <strong><%= inter.name %></strong>

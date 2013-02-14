@@ -439,7 +439,7 @@ app.Views.EventsView = Backbone.View.extend({
 
 		    		$('#infoModalAbsentTask p').html( 'Nouvelle abscence ' );
 		    		$('#infoModalAbsentTask small').html( mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
-		    		modalAbsentTask.on('submit', function(event) {
+		    		modalAbsentTask.one('submit', function(event) {
 						event.preventDefault();
 						var mNewDateStart =  new moment( $("#startDate").val(),"DD-MM-YYYY")
 												.add('hours',$("#startHour").val().split(":")[0] )
