@@ -3,8 +3,8 @@
 </div>
 
 
-	<div class="row-fluid">
-		<div class="span12">
+	
+		
 		<!-- Interventions List -->
 			 <div class="row-fluid">
 	     	 	<div class="span2">
@@ -18,10 +18,12 @@
 								</button><br />
 							</div>
 							
-							<div class="span">
-								  <div class="dropdown pull-right bottomaligned" style="height: 120px;position: absolute;bottom: 0;">
+							<div class="dropdown span" style="height: 170px;">
 									
-								    <a id="filterStateIntervention" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="icon-filter icon-large"></i></a>
+								    <a id="filterStateIntervention" style="text-decoration:none;bottom:0;position:absolute"
+								    	 class="dropdown-toggle filter-button" data-toggle="dropdown" href="#">
+								   	<i class="icon-filter icon-large"> <%= _.capitalize(lang.status) %></a></i>
+								    
 								    
 								    <ul id="filterStateInterventionList" class="dropdown-menu" role="menu" aria-labelledby="filterStateIntervention">
 										<% _.each(interventionsState, function (state, i) { %>
@@ -35,8 +37,6 @@
 											<li class="divider"></li>
 											<li class="delete-filter disabled"><a href="#delete-filter"><%= _.capitalize(lang.deleteFilter) %></a></li>
 									</ul>
-									
-								</div>
 							</div>
 						
 							<!--<a href="#modalAddInter" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	
@@ -96,8 +96,8 @@
 				<!-- /List Officer/Teams -->
 			</div>
 
-			</div>	
-		<div class="span12">
+			
+		
 			<div class="row-fluid">
 	     	 	<div class="span2">
 	     	 		<!-- Table toolbar -->	
@@ -236,8 +236,8 @@
 					<!-- /Calendar -->
 	     	 	</div>	
 	    	</div>
-	    </div>
-	</div>
+	    
+	
 		
 
 
