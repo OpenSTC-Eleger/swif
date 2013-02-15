@@ -15,7 +15,7 @@
 <% } %>
 
 
-<% if(request.state == app.Models.Request.state[0].value){ %>
+<% if(request.state == app.Models.Request.state[4].value){ %>
     <div class="row-fluid">
         <div class="alert alert-error span6">
             <strong><%= _.capitalize(lang.refusalReason) %>:</strong> <%= request.refusal_reason %>

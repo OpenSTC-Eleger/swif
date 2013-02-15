@@ -25,7 +25,7 @@ app.Views.PlanningView = Backbone.View.extend({
         'click .btn.addTaskPlanning'            : 'displayFormAddTask',
         'click .btn.addInterventionPlanning'    : 'displayFormAddIntervention',
         
-        'click button.saveTaskPlanning'         : 'saveTask',   
+        'submit #formAddTask'         			: 'saveTask',   
         'submit #formAddIntervention' 			: 'saveIntervention', 
         'click .btn.pull-right'                 : 'scheduledInter',
         
@@ -38,8 +38,26 @@ app.Views.PlanningView = Backbone.View.extend({
     /** View Initialization
     */
     initialize : function(agent) {
-    	this.agent = agent;
+    	this.agent = agent;  
+    	
+    	//_.bindAll(this, 'beforeRender', 'render', 'afterRender'); 
+
+    	var self = this;
+//    	this.render = _.wrap( this.render, function(render){
+//    		self.beforeRender();
+//    		render(); //arguments[1]
+//    		self.afterRender();
+//    		return self;
+//    	} ) 
         console.log('Planning view');
+    },
+    
+    beforeRender : function()  {
+    	app.loader('display');
+    },
+    
+    afterRender : function()  {
+    	app.loader('hide');
     },
 
 
@@ -175,7 +193,7 @@ app.Views.PlanningView = Backbone.View.extend({
 				$('li.delete-filter').addClass('disabled');
 			}
             	
-            
+            app.loader('hide');
         });
        
         return this;
@@ -303,12 +321,12 @@ app.Views.PlanningView = Backbone.View.extend({
 		var id = _(intervention.parents('.accordion-body').attr('id')).strRightBack('_');
 		
 		params = {
-			state: app.Models.Intervention.state[0].value,
+			state: app.Models.Intervention.state[1].value,
 		};
 
 		if(e.currentTarget.name == "enclose")		
 			params = {
-					state: app.Models.Intervention.state[1].value,
+					state: app.Models.Intervention.state[0].value,
 			};
 		
 		app.models.intervention.saveAndRoute(id,params,null,this);	
@@ -337,13 +355,16 @@ app.Views.PlanningView = Backbone.View.extend({
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
-					app.collections.tasks.remove(self.selectedTask);
-					var inter = app.collections.interventions.get(self.selectedTaskJSON.intervention.id);					
-					inter.attributes.tasks.remove(self.selectedTaskJSON.id);
-					app.collections.interventions.add(inter);
+//					app.collections.tasks.remove(self.selectedTask);
+//					var inter = app.collections.interventions.get(self.selectedTaskJSON.intervention.id);					
+//					inter.attributes.tasks.remove(self.selectedTaskJSON.id);
+//					app.collections.interventions.add(inter);//					
+//					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.serviceDeleteOk);
+//					self.render();
+					//TODO : manque la suppression de la tâche de l'officier pour son calendrier
 					$('#modalDeleteTask').modal('hide');
-					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.serviceDeleteOk);
-					self.render();
+					route = Backbone.history.fragment;
+					Backbone.history.loadUrl(route);
 				}
 			},
 			error: function(e){
@@ -506,6 +527,7 @@ app.Views.PlanningView = Backbone.View.extend({
 	/** Filter Request
 		*/
 	setFilter: function(e){
+		
 		event.preventDefault();
 
 		var link = $(e.target);

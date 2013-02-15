@@ -251,35 +251,35 @@ app.Models.Task = Backbone.RelationalModel.extend({
 }, {
 
 // Request State Initialization //
-state:  [        
-	{
-        value       : 'draft',
-        color       : 'important',
-        traduction  : '',
-    },
+state:  [
     {
         value       : 'open',
-        color       : 'info',
+        color       : '#3a87ad',//'info',
         traduction  : '',
-    },
-    {
-        value       : 'pending',
-        color       : 'warning',
-        traduction  : '', 
     },
     {
         value       : 'done',
-        color       : 'success',
+        color       : '#468847', //'success',
         traduction  : '',   
     },
     {
+        value       : 'pending',
+        color       : '#333', //muted',
+        traduction  : '', 
+    },
+	{
+        value       : 'draft',
+        color       : '#444', //purple
+        traduction  : '',
+    },
+    {
         value       : 'cancelled',
-        color       : '',
+        color       : '#b94a48', //'//important',
         traduction  : '',  
     },
     {
         value       : 'absent',
-        color       : '',
+        color       : '#c3325f', //purple
         traduction  : '',  
     }
 ]

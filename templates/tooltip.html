@@ -34,7 +34,7 @@
             </div> 
             
             <br />
-			<% var disabledBtn = ( task.state==app.Models.Task.state[3].value || task.state==app.Models.Task.state[4].value )?"disabled=disabled":"" %>
+			<% var disabledBtn = ( task.state==app.Models.Task.state[1].value || task.state==app.Models.Task.state[4].value )?"disabled=disabled":"" %>
 			<% console.debug(disabledBtn) %>
             <div class="btn-group" id='eventState' data-toggle="buttons-radio">
 			  <button type="button" id="btnUnlinkTask" <%= disabledBtn %> >Retirer du planning</button>

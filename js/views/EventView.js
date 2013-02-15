@@ -36,7 +36,7 @@ app.Views.EventView = Backbone.View.extend({
 						    $( this ).on( "click", "#btnUnlinkTask", function( e ) {
 						    	console.debug(".ON");
 		        				params = {
-		        				        state: app.Models.Task.state[0].value,
+		        				        state: app.Models.Task.state[3].value, //draft
 		        						user_id: null,
 		        						team_id: null,
 		        						date_end: null,

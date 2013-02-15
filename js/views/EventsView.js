@@ -133,11 +133,26 @@ app.Views.EventsView = Backbone.View.extend({
         		color = 'grey'      
         			
         	switch (task.state) {        	
-        		case 'done' :
-			    	color = 'purple';
+        		case app.Models.Task.state[0].value :
+			    	color = app.Models.Task.state[0].color;
 			    	break;
-        		case 'absent' :
-        			color = 'gray';
+        		case app.Models.Task.state[1].value :
+        			color = app.Models.Task.state[1].color;
+		    		break;
+        		case app.Models.Task.state[2].value :
+        			color = app.Models.Task.state[2].color;
+	    			break;
+        		case app.Models.Task.state[3].value :
+        			color = app.Models.Task.state[3].color;
+    				break;
+        		case app.Models.Task.state[4].value :
+        			color = app.Models.Task.state[4].color;
+    				break;
+        		case app.Models.Task.state[5].value :
+        			color = app.Models.Task.state[5].color;
+    				break;
+    			default:
+        			color = app.Models.Task.state[3].color;
         			break;
         	}
         	
@@ -149,7 +164,7 @@ app.Views.EventsView = Backbone.View.extend({
         	var self = this;
         	
         	_.each(this.filterTasks , function (task, i){
-        		var actionDisabled = task.state==app.Models.Task.state[3].value || task.state==app.Models.Task.state[4].value
+        		var actionDisabled = task.state==app.Models.Task.state[1].value || task.state==app.Models.Task.state[4].value
         		var event = { id: task.id, 
         		              state: task.state,
         		              title: task.name, 
@@ -174,36 +189,58 @@ app.Views.EventsView = Backbone.View.extend({
     		self.events = eventsSortedArray;
         },
         
+//        updateInter: function(event) {
+//        	var currentInter = app.collections.interventions.get( event.project_id );
+//        	currentInter = currentInter!=null? currentInter.toJSON():null
+//        	if( currentInter && currentInter.state == app.Models.Intervention.state[0] ) {
+//        		params = 
+//        			{
+//        				state: app.Models.Intervention.state[0].value,
+//        			};
+//        				
+//        		app.models.intervention.saveAndRoute(currentInter.id,params,null,this);	
+//        	}
+//        },
+        
+        update: function(event) {
+        	var self = this;
+		    app.models.task.saveTest(event.id, event, {
+		    	success: function (data) {
+			    	$.pnotify({
+			    		title: 'Tâche attribuée',
+			    		text: 'La tâche a correctement été attribué à l\'agent.'
+				    });
+			    	//self.updateInter(event);
+			    	self.refresh();
+		    	}
+		    }); 			    
+		    return 1;
+        },
+        
         updateTask : function(copiedEventObject) {
         	        	
-        	if( this.arrayPlanifTasks.length==0 && copiedEventObject.copy) {
-        		this.refresh();
-        		return 1;
-        	}
+//        	if( this.arrayPlanifTasks.length==0 && !copiedEventObject.copy) {
+//        		this.refresh();
+//        		return 1;
+//        	}
         	
         	var self = this;
-			if( this.arrayPlanifTasks.length==0 ) {
+			if(	this.arrayPlanifTasks.length==0 && copiedEventObject.copy ) {
 				copiedEventObject.start = null;
-			    app.models.task.saveTest(copiedEventObject.id, copiedEventObject, {
-			    	success: function (data) {
-				    	$.pnotify({
-				    		title: 'Tâche attribuée',
-				    		text: 'La tâche a correctement été attribué à l\'agent.'
-					    });
-				    	self.refresh();
-			    	}
-			    }); 			    
-			    return 1;
+				this.update( copiedEventObject );
+			}else if( this.arrayPlanifTasks.length==1 && !copiedEventObject.copy ) {
+				this.arrayPlanifTasks[0].id = copiedEventObject.id;
+				this.update( this.arrayPlanifTasks[0] );
+			}else{			
+				var params = this.arrayPlanifTasks[0];
+				self.params = params;
+				app.models.task.saveTest(0,params,{
+					success: function(){
+						self.arrayPlanifTasks.splice(0, 1);
+						self.updateTask( copiedEventObject );
+					}
+				});
 			}
-			
-			var params = this.arrayPlanifTasks[0];
-			self.params = params;
-			app.models.task.saveTest(0,params,{
-				success: function(){
-					self.arrayPlanifTasks.splice(0, 1);
-					self.updateTask( copiedEventObject );
-				}
-			});
 			
 			
         },
@@ -482,7 +519,11 @@ app.Views.EventsView = Backbone.View.extend({
 								}
 							});						
 							modalAbsentTask.modal('hide');
-				    });					
+				    });	
+		    		$('#modalAbsentTask .dismiss').one('click .dismiss', function (event) {
+		    			event.preventDefault();
+		    			 $("#modalAbsentTask").unbind('submit'); 
+		    		});
 				    modalAbsentTask.modal();
 				},
 
@@ -499,7 +540,7 @@ app.Views.EventsView = Backbone.View.extend({
 
 					var currentInter = app.collections.interventions.get( copiedEventObject.project_id );
 					currentInter = currentInter!=null? currentInter.toJSON():null
-					copiedEventObject.copy = ( currentInter && currentInter.state == 'template' )?true:false;
+					copiedEventObject.copy = ( currentInter && currentInter.state == 'template' )?true:false;					
 					copiedEventObject.allPlanned = false;
 					self.arrayPlanifTasks = [];
 					self.arrayOnDayEvents = _.filter(self.events, function(e) {
@@ -567,7 +608,7 @@ app.Views.EventsView = Backbone.View.extend({
 				  .before('<span class="fc-header-space">');
 			
 			//remove vertical scrollbar (http://code.google.com/p/fullcalendar/issues/detail?id=314)
-			$('.fc-view-agendaWeek > div > div').css('overflow-y', 'hidden'); $('.fc-agenda-gutter').css('width', 0);
+			//$('.fc-view-agendaWeek > div > div').css('overflow-y', 'hidden'); $('.fc-agenda-gutter').css('width', 0);
 				
 			
 		},	
@@ -611,7 +652,7 @@ app.Views.EventsView = Backbone.View.extend({
 	        	return (
 	        			task.date_start && task.date_start.toDate() < self.el.fullCalendar('getView').visEnd &&
 	        			task.date_end && task.date_end.toDate() > self.el.fullCalendar('getView').visStart &&
-	        			(	task.state == app.Models.Task.state[1].value ||
+	        			(	task.state == app.Models.Task.state[0].value ||
 	        				task.state == app.Models.Task.state[2].value
 	        			)
 	        			

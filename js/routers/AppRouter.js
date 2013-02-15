@@ -596,7 +596,7 @@ app.Router = Backbone.Router.extend({
 																            self.render(app.views.planningView);
 																        },
 											                        	complete: function(){
-											                        	    app.loader('hide');
+											                        	    //app.loader('hide');
 											                        	}
 											                        });
 											                     }

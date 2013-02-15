@@ -101,7 +101,7 @@
 					<% if(requests[i].state == app.Models.Request.state[1].value && app.models.user.isManager()) {
 						var classRow = classColor+" bolder";
 					}
-					else if(requests[i].state == app.Models.Request.state[2].value && app.models.user.isDST()){
+					else if(requests[i].state == app.Models.Request.state[4].value && app.models.user.isDST()){
 						var classRow = classColor+" bolder";
 					}
 					else{
@@ -116,7 +116,7 @@
 										: "")
 					%>
 
-					<tr id="<%= i %>" class="<%= classRow %>">
+					<tr id="<%= requests[i].id %>" class="<%= classRow %>">
 					    <td>
 					    	<a 	href="#demandes-dinterventions/<%= requests[i].id %>" 
 								rel="popover" 
@@ -143,33 +143,77 @@
 					    	</span>
 					    </td>
 					    <td>
-				    		<% if(requests[i].state == app.Models.Request.state[0].value) { %> 
-				    			<span class="label label-important" 
-				    				rel="tooltip"
-					    			data-original-title="<%= requests[i].refusal_reason  +'\n('+ modifydBy +')'%>">
-					    			<%= lang.refused %>
-					    		</span>
-				    		<% } else if(requests[i].state == app.Models.Request.state[1].value) { %>
+				    		<% if(requests[i].state == app.Models.Request.state[0].value) { %>
 				    			<span class="label label-info"><%= lang.wait %></span>
-				    		<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
+				    		<% } else if(requests[i].state == app.Models.Request.state[1].value) { %>
 				    			<span class="label label-warning"><%= lang.confirm %></span>
-				    		<% } else if(requests[i].state == app.Models.Request.state[3].value) { %>
+				    		<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
 				    			<span class="label label-success"				    				
 				    				rel="tooltip"
 									data-original-title="<%= requests[i].infoMessage %>">
 					    			<%= lang.valid %>
 					    		</span>
-				    		<% } else if(requests[i].state == app.Models.Request.state[4].value) { %>
+				    		<% } else if(requests[i].state == app.Models.Request.state[3].value) { %>
 				    			<span class="label label"><%= lang.closed %></span>
-				    		<% } %>
+				    		<% } else if (requests[i].state == app.Models.Request.state[4].value) { %> 
+				    			<span class="label label-important" 
+				    				rel="tooltip"
+					    			data-original-title="<%= requests[i].refusal_reason  +'\n('+ modifydBy +')'%>">
+					    			<%= lang.refused %>
+					    		</span>
+				    		<% } 
+				    		%>
 					   	</td>
 					   	
 					   	<% if((app.models.user.isDST() || app.models.user.isManager())
 					   			&& requests[i].intervention_ids.length == 0){ %>
 						   	<td class="align">
-
-						   		<!-- Refused State -->
+						   		<!-- Wait state -->
 								<% if(requests[i].state == app.Models.Request.state[0].value) { %>
+						   			<div class="btn-group">
+										<button class="btn btn-small btn-success no-outline buttonValidRequest" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok buttonValidRequest"></i></button>
+										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu pull-right align-left">
+											<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
+											<% if(!app.models.user.isDST()){ %>
+												<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-user"></i>&nbsp;Remonter DST</a></li>
+											<% } %>
+										</ul>
+									</div>
+									
+								<!-- Confirm state -->
+								<%} else if(requests[i].state == app.Models.Request.state[1].value) { %>
+									
+									<div class="btn-group">
+										<button class="btn btn-small btn-success no-outline buttonValidRequest" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok buttonValidRequest"></i></button>
+										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu pull-right align-left">
+											<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
+										</ul>
+									</div>
+
+								<!-- Valid state -->
+								<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
+								
+									<div class="btn-group">
+										<button class="btn btn-small disabled no-outline"><i class="icon-ok text-success"></i></button>
+										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu pull-right align-left">
+											<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
+											<% if(!app.models.user.isDST()){ %>
+												<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-user"></i>&nbsp;Remonter DST</a></li>
+											<% } %>
+										</ul>										
+									</div> 	
+									
+								<!-- Refused State -->
+								<%} else if(requests[i].state == app.Models.Request.state[4].value) { %>
 						   		
 									<div class="btn-group">
 										<button class="btn btn-small disabled no-outline"><i class="icon-remove text-error"></i></button>
@@ -182,51 +226,6 @@
 												<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-user"></i>&nbsp;Remonter DST</a></li>
 											<% } %>
 										</ul>
-									</div>
-
-								<!-- Wait state -->
-								<% } else if(requests[i].state == app.Models.Request.state[1].value) { %>
-									
-									<div class="btn-group">
-										<button class="btn btn-small btn-success no-outline buttonValidRequest" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok buttonValidRequest"></i></button>
-										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
-											<span class="caret"></span>
-										</button>
-										<ul class="dropdown-menu pull-right align-left">
-											<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
-											<% if(!app.models.user.isDST()){ %>
-												<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-user"></i>&nbsp;Remonter DST</a></li>
-											<% } %>
-										</ul>
-									</div>
-
-								<!-- Confirm state -->
-								<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
-									
-									<div class="btn-group">
-										<button class="btn btn-small btn-success no-outline buttonValidRequest" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok buttonValidRequest"></i></button>
-										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
-											<span class="caret"></span>
-										</button>
-										<ul class="dropdown-menu pull-right align-left">
-											<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
-										</ul>
-									</div>
-
-								<!-- Valid State -->
-						   		<% } else if(requests[i].state == app.Models.Request.state[3].value) { %>
-						   		
-									<div class="btn-group">
-										<button class="btn btn-small disabled no-outline"><i class="icon-ok text-success"></i></button>
-										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
-											<span class="caret"></span>
-										</button>
-										<ul class="dropdown-menu pull-right align-left">
-											<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
-											<% if(!app.models.user.isDST()){ %>
-												<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-user"></i>&nbsp;Remonter DST</a></li>
-											<% } %>
-										</ul>										
 									</div>
 									
 						   		<% } else { %>

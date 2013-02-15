@@ -75,7 +75,7 @@
 						</a>
 						<span class="object-actions invisible">
 							<a href="#interventions/<%= intervention.id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a>
-							<% if( intervention.state == app.Models.Intervention.state[0].value ) { %>
+							<% if( intervention.state == app.Models.Intervention.state[1].value ) { %>
 								<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.cancel) %></a> 
 							<% } %>
 						</span>
@@ -216,48 +216,56 @@
 <!-- Form to add a new Task -->
 <div id="modalAddTask" class="modal hide fade">
 	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h3>Nouvelle tâche</h3>
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3>Nouvelle tâche</h3>
 	</div>
 	
-	<div class="modal-body">
-		<form id="formAddTask" action="#" class="form-horizontal">
-
+	<div class="modal-body custom-height-modal">
+	    <form id="formAddTask" action="#" class="form-horizontal">
+	    
 			<!-- Task name -->
-			<div class="control-group">
-				<label for="taskName" class="control-label">Nom:</label>
+            <div class="control-group">
+                <label for="taskName" class="control-label">Nom:</label>
 
-				<div class="controls">
-					<input type="text" id="taskName" name="taskName" />
-					<span class="help-inline"></span>
+                <div class="controls">
+                    <input type="text" id="taskName" name="taskName" required="required"/>
+                    <span class="help-inline"></span>
+                </div>
+            </div>
+            
+            <!-- Task hour -->           
+           	<div class="control-group">
+               	<label for="taskHour" class="control-label">Heures estimées:</label>
+               	<div class="controls">
+					<div class="input-append bootstrap-timepicker" >							
+					    <input type="text" value="00:00" class="timepicker-default input-small" id='taskHour' required="required">
+					    <span class="add-on">
+					        <i class="icon-time"></i>
+					    </span>
+					</div>
 				</div>
 			</div>
 
-			<!-- Task Category -->
-			<div class="control-group">
-				<label for="taskCategory" class="control-label">Catégorie:</label>
+			<br>
+			<br>
+            <!-- Task Category -->
+            <div class="control-group">
+                <label for="taskCategory" class="control-label">Catégorie:</label>
 
-				<div class="controls">
-					<select id="taskCategory"></select>
-					<span class="help-inline"></span>
-				</div>
-			</div>
+                <div class="controls">
+                     <select id="taskCategory"></select>
+                    <span class="help-inline"></span>
+                </div>
+            </div>
 
-			<!-- Task hour -->
-			<div class="control-group">
-				<label for="taskHour" class="control-label">Heures prévisionnelles:</label>
 
-				<div class="controls">
-					<input type="number" id="taskHour" name="taskHour" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
-		</form>
+
+	    </form>
 	</div>
 	
 	<div class="modal-footer">
-		<button type="submit" class="btn btn-primary saveTask">Enregistrer</button>&nbsp;&nbsp;
-		<a href="#" data-dismiss="modal">Annuler</a>
+	    <button type="submit" form="formAddTask"  class="btn btn-primary">Enregistrer</button>&nbsp;&nbsp;
+	    <a href="#" data-dismiss="modal">Annuler</a>
 	</div>
 </div>
 

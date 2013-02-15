@@ -86,10 +86,11 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
         this.fetchRelated('tasks');
 
 
-        app.Models.Intervention.state[0].traduction = app.lang.toScheduled;
-        app.Models.Intervention.state[1].traduction = app.lang.planningFenced;
-        app.Models.Intervention.state[2].traduction = app.lang.pending;
-        app.Models.Intervention.state[3].traduction = app.lang.closed;
+       
+        app.Models.Intervention.state[0].traduction = app.lang.planningFenced;
+        app.Models.Intervention.state[1].traduction = app.lang.toScheduled;        
+        app.Models.Intervention.state[2].traduction = app.lang.closed;
+        app.Models.Intervention.state[3].traduction = app.lang.pending;
         app.Models.Intervention.state[4].traduction = app.lang.cancelled;
         app.Models.Intervention.state[5].traduction = app.lang.template;
     },
@@ -155,25 +156,25 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 
     // Request State Initialization //
     state:  [
+        {
+            value       : 'scheduled',
+            color       : 'info',
+            traduction  : '',
+        },
     	{
             value       : 'open',
             color       : 'warning',
             traduction  : '',
         },
         {
-            value       : 'scheduled',
-            color       : '',
-            traduction  : '',
+            value       : 'closed',
+            color       : 'success',
+            traduction  : '',   
         },
         {
             value       : 'pending',
-            color       : 'info',
-            traduction  : '', 
-        },
-        {
-            value       : 'closed',
             color       : 'muted',
-            traduction  : '',   
+            traduction  : '', 
         },
         {
             value       : 'cancelled',
@@ -182,7 +183,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
         },
         {
             value       : 'template',
-            color       : 'muted',
+            color       : 'inverse',
             traduction  : '',  
         }
     ]

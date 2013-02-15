@@ -57,10 +57,13 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 		var requests = app.collections.requests.toJSON();
 
+		requests = _.sortBy(requests, function(item){ 
+			return item.date_start; 
+		});
 
 		// Collection Filter if not null //
 		if(sessionStorage.getItem(this.filters) != null){
-			var requests = _.filter(requests, function(item){ 
+			requests = _.filter(requests, function(item){ 
 				return item.state == sessionStorage.getItem(self.filters);
 			});
 		}
@@ -75,18 +78,22 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 		// Retrieve the number Interventions due to the Group user //
 		if(app.models.user.isDST()){
-			var interventionsFilter = _.filter(requests, function(item){ return item.state == app.Models.Request.state[2].value; });
+			var interventionsFilter = _.filter(requests, function(item){ 
+				return item.state == app.Models.Request.state[1].value; 
+			});
 			var nbInterventionsInBadge = _.size(interventionsFilter);
 		}
 		else if(app.models.user.isManager()){
-			var interventionsFilter = _.filter(requests, function(item){ return item.state == app.Models.Request.state[1].value; });
+			var interventionsFilter = _.filter(requests, function(item){ 
+				return item.state == app.Models.Request.state[0].value; 
+			});
 			var nbInterventionsInBadge = _.size(interventionsFilter);
 		}
 		else {
-			var nbInterventionsInBadge = _.size(app.collections.requests);
+			var nbInterventionsInBadge = _.size(requests);
 		}
 
-		this.addInfoAboutInter(app.collections.requests);
+		this.addInfoAboutInter(requests);
 
 
 		// Retrieve the template // 
@@ -136,13 +143,13 @@ app.Views.RequestsListView = Backbone.View.extend({
     },
     
     addInfoAboutInter: function(requests) {
-    	_.each(requests.models, function (request, i) {
+    	_.each(requests, function (request, i) {
     		this.infoMessage = "";
     		var self = this;
-    		_.each(request.attributes.intervention_ids.models, function (interModel, i) {
+    		_.each(request.intervention_ids, function (intervention, i) {
 				var classColor = "";
 				
-				var intervention = interModel.toJSON();
+				//var intervention = interModel.toJSON();
 				var firstDate = null;
 				var lastDate = null;
 				
@@ -178,7 +185,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 				console.debug("message:" + infoMessage + ", classColor:"+ classColor);
 			});   
 				
-			request.setInfoMessage(this.infoMessage);
+			request['infoMessage'] = this.infoMessage;
     	});
     },
 
@@ -192,7 +199,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 		// Retrieve the ID of the request //
 		this.pos = btn.parents('tr').attr('id');
-		this.model = app.collections.requests.models[this.pos];
+		this.model = app.collections.requests.get(this.pos);
 		this.selectedRequest = this.model.toJSON();
 		
 
@@ -259,7 +266,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		
 		e.preventDefault();
 		params = {
-				state: app.Models.Request.state[3].value,
+				state: app.Models.Request.state[2].value,
 		        description: $('#requestNote').val(),
 		        date_deadline: $('#requestDeadline').val(),
 		        intervention_assignement_id: $('#requestAssignement').val(),
@@ -284,7 +291,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 					            var service = app.views.selectServicesView.getSelected().toJSON()	;
 					            self.model.setService([service.id,service.name]);
 					            self.model.setAssignement(app.views.selectAssignementsView.getSelected());
-					            app.collections.requests.models[self.pos] = self.model;
+					            //app.collections.requests.get(self.pos).update(self.model);
 					            //TODO : quand la demande a été validée, peut la refuser pour la revalider : effacer l'inter au refus
 					            // puis la récréer à la deuxième validation . POur le moment les actions ne sont plus disponibles quand le statut est 'validé'
 //					            if( self.model.getInterventions().size()==0 )
@@ -305,7 +312,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		
 		params = {
 				name: this.model.getName(),
-				state: app.Models.Intervention.state[0].value,
+				state: app.Models.Intervention.state[1].value,
 		        date_deadline: this.model.getDeadline_date(),
 		        site1: this.model.getSite1()[0],
 		        service_id: this.model.getService()[0],
@@ -321,7 +328,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		e.preventDefault();
 
 		params = {
-		        state: app.Models.Request.state[0].value,
+		        state: app.Models.Request.state[4].value,
 		        refusal_reason: $('#motifRefuse').val(),		
 		};		
 		this.saveNewState( params,$('#modalRefuseRequest') );
@@ -334,7 +341,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 	confirmDSTRequest: function(e){
 		e.preventDefault();
 		params = {
-		        state: app.Models.Request.state[2].value,
+		        state: app.Models.Request.state[1].value,
 		        note: $('#motifDST').val(),		
 		};
 		this.saveNewState( params, $('#modalConfirmDSTRequest') );
@@ -356,7 +363,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 					            if( self.element!= null )
 					            	self.element.modal('hide');
 					            self.model.update(params);
-					            app.collections.requests.models[self.pos] = self.model;
+					            //app.collections.requests.get(self.pos).update(self.model);
 					            self.render();
 					        }
 					    },

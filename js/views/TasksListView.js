@@ -51,9 +51,13 @@ app.Views.TasksListView = Backbone.View.extend({
 		var officer = app.models.user;
 		var officer_id = officer.get('uid');
 		
-		var tasks = app.collections.tasks;
-
-
+		var tasks = app.collections.tasks.toJSON();
+		
+		tasks = _.sortBy(tasks, function(item){ 
+			return -item.date_start; 
+		});
+		
+		
 		// Retrieve the year - If not exist in the URL set as the current year //
 		if(typeof(this.options.yearSelected) == 'undefined'){
 			yearSelected = moment().year();
@@ -73,8 +77,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 
 		//TODO ajouter le DST et le manager du service de l'utilisateur
-		var tasksUser = _.filter(tasks.models, function(item){	
-			var task = item.toJSON();
+		var tasksUser = _.filter(tasks, function(task){	
 			var intervention = task.intervention; 
 
     		var belongsToOfficer = (task.user_id[0] == officer_id)
@@ -85,11 +88,9 @@ app.Views.TasksListView = Backbone.View.extend({
 
     		var interCondition = false;
     		if( intervention!=null ) {
-    			//keep only  interventions : toscheduled ('A planifier'), scheduled('cloturée') , pending ('En cours')
-    			interCondition = intervention.state==app.Models.Intervention.state[0].value
-    				||	intervention.state==app.Models.Intervention.state[1].value
-					|| intervention.state==app.Models.Intervention.state[2].value 
-					|| intervention.state==app.Models.Intervention.state[5].value  //'template'
+    			//keep only  interventions : tscheduled('cloturée') , pending ('En cours')
+//    			interCondition = intervention.state==app.Models.Intervention.state[1].value
+//    				||	intervention.state==app.Models.Intervention.state[3].value;
 
 				var service = intervention.service_id;//!=null?intervention.service_id.toJSON():null;
 				var userServices = app.models.user.toJSON().service_ids;
@@ -104,14 +105,14 @@ app.Views.TasksListView = Backbone.View.extend({
     					&& 
     					(
     						//Tâches ouvertes (plannifiés) ou en cours
-    						task.state==app.Models.Task.state[1].value
-    						|| task.state==app.Models.Task.state[2].value                                                  	
-    					 )  
-    					&& 
-    					(
-    						//L'intervention de la tâche doit être planifiée ou en cours'
-    						interCondition
-    					 )
+    						task.state!=app.Models.Task.state[3].value //pas à l'état brouillon(planification)'
+    						//|| task.state==app.Models.Task.state[2].value                                                  	
+    					)  
+//    					&& 
+//    					(
+//    						//L'intervention de la tâche doit être planifiée ou en cours'
+//    						interCondition
+//    					 )
     			   );
         });
 
@@ -130,7 +131,7 @@ app.Views.TasksListView = Backbone.View.extend({
 			//var tasksList = new app.Collections.Tasks(tasksUser).toJSON();
 			var taskList = []
 			_.each(tasksUser , function (task, i){
-				taskList.push(task.toJSON())
+				taskList.push(task)
 			});
 
 			console.log(taskList);
@@ -204,7 +205,7 @@ app.Views.TasksListView = Backbone.View.extend({
     	         company_id: task.company_id[0]
     	};
 
-		var newInterState = app.Models.Intervention.state[0].value;
+		var newInterState = app.Models.Intervention.state[2].value;
 		this.saveNewStateTask(taskParams, taskWorkParams,$('#modalTimeSpent'),newInterState);
     },
 
@@ -232,19 +233,19 @@ app.Views.TasksListView = Backbone.View.extend({
     	e.preventDefault();
 
 		var that = this;
-		that.state = app.Models.Intervention.state[3].value;		
+		that.state = app.Models.Intervention.state[2].value;		
 		var tasks = this.model.toJSON().intervention.tasks;
 		_.each(tasks.models, function (task, i) {
-			if(task.toJSON().state == app.Models.Task.state[1].value
-				 || task.toJSON().state == app.Models.Task.state[2].value)
-				that.state = app.Models.Intervention.state[2].value;	
+			if( that.model.id!= task.id && ( task.toJSON().state == app.Models.Task.state[0].value
+				 || task.toJSON().state == app.Models.Task.state[2].value) )
+				that.state = app.Models.Intervention.state[3].value;	
 		});
 		
 		var timeArray = $('#eventTime').val().split(':');
     	var hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0)
 
 		taskParams = {
-		    state: app.Models.Task.state[3].value,
+		    state: app.Models.Task.state[1].value,
 		    remaining_hours: 0,
 		};
 		
@@ -269,7 +270,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		e.preventDefault();
 		this.getTask(e);
 		taskParams = {
-			state: app.Models.Task.state[1].value,		        
+			state: app.Models.Task.state[0].value,		        
 			//remaining_hours: 0,
 			//planned_hours: 0,
 			user_id: null,
@@ -277,7 +278,7 @@ app.Views.TasksListView = Backbone.View.extend({
 			date_end: null,
 			date_start: null,
 		};
-		var newInterState = app.Models.Intervention.state[0].value;		
+		var newInterState = app.Models.Intervention.state[3].value;		
 		this.saveNewStateTask(taskParams,null,null,newInterState);
 
 	},

@@ -78,25 +78,23 @@
 					    <td><%= task.planned_hours %>h</td>
 					    <td><%= task.remaining_hours %>h</td>
 					    <td>
-				    		<% if(task.state == app.Models.Task.state[0].value) { %> 
-				    			<span class="label label-important"><%= lang.refused %></span>
-				    		<% } else if(task.state == app.Models.Task.state[1].value) { %>
+				    		<% if(task.state == app.Models.Task.state[0].value) { %>
 				    			<span class="label label-info"><%= lang.wait %></span>
+				    		<% } else if(task.state == app.Models.Task.state[1].value) { %>
+				    			<span class="label label-success"><%= lang.finished %></span>
 				    		<% } else if(task.state == app.Models.Task.state[2].value) { %>
-				    			<span class="label label-warning"><%= lang.pending %></span>
-				    		<% } else if(task.state == app.Models.Task.state[3].value) { %>
-				    			<span class="label label-success"><%= lang.valid %></span>
-				    		<% } else if(task.state == app.Models.Task.state[4].value) { %>
-				    			<span class="label label"><%= lang.closed %></span>
+				    			<span class="label label-muted"><%= lang.pending %></span>
+				    		<% } else if(task.state == app.Models.Task.state[4].value) { %> 
+				    			<span class="label label-important"><%= lang.refused %></span>
 				    		<% } %>
+				    		
 					   	</td>
 
 					   	<!-- Actions -->
 					   	<td class="align">
 
 					   		<!-- Tâches à saisir -->
-							<% if(task.state == app.Models.Task.state[1].value
-									|| task.state == app.Models.Task.state[2].value) { %>
+							<% if( task.state == app.Models.Task.state[0].value ) { %>
 					   		
 								<div class="btn-group">
 									<button class="btn btn-small btn-success no-outline buttonTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok"></i></button>
@@ -190,34 +188,32 @@
 	    <form id="formTimeSpent" action="#" class="form-horizontal">
 	    
 			<!-- Task name -->
-            <div class="control-group">
                 
-                <div class="control-group">
-                	<label for="eventTimeSpent" class="control-label">Temps travaillé:</label>
-                	<div class="controls">
-						<div class="input-append bootstrap-timepicker-component" >							
-						    <input type="text" class="timepicker-default input-small" id='eventTimeSpent'>
-						    <span class="add-on">
-						        <i class="icon-time"></i>
-						    </span>
-						</div>
-                	</div>
-				</div>
+             <div class="control-group">
+               	<label for="eventTimeSpent" class="control-label">Temps travaillé:</label>
+               	<div class="controls">
+					<div class="input-append bootstrap-timepicker" >							
+					    <input type="text" class="timepicker-default input-small" id='eventTimeSpent' required="required">
+					    <span class="add-on">
+					        <i class="icon-time"></i>
+					    </span>
+					</div>
+               	</div>
+			</div>
+			
+			
+			<div class="control-group">
+               	<label for="eventTimeRemaining" class="control-label">Temps restant:</label>
+               	<div class="controls">
+					<div class="input-append bootstrap-timepicker" >							
+					    <input type="text" class="timepicker-default input-small" id='eventTimeRemaining' required="required">
+					    <span class="add-on">
+					        <i class="icon-time"></i>
+					    </span>
+					</div>
+               	</div>
+			</div>
 				
-				
-				<div class="control-group">
-                	<label for="eventTimeRemaining" class="control-label">Temps restant:</label>
-                	<div class="controls">
-						<div class="input-append bootstrap-timepicker-component" >							
-						    <input type="text" class="timepicker-default input-small" id='eventTimeRemaining'>
-						    <span class="add-on">
-						        <i class="icon-time"></i>
-						    </span>
-						</div>
-                	</div>
-				</div>
-
-            </div>
 	    </form>
 	</div>
 	

@@ -16,7 +16,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 	// The DOM events //
 	events: {
 		'click .btn.addTask'                : 'displayModalAddTask',
-		'click button.saveTask'             : 'saveTask',
+		'submit #formAddTask'         		: 'saveTask',   
 
 		'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
 		'click button.btnDeleteTask'   		: 'deleteTask',
@@ -55,34 +55,30 @@ app.Views.InterventionsView = Backbone.View.extend({
 
         var interventions = app.collections.interventions.models;
 
-        // Retrieve the number of validated Interventions //
-        var interventionsValidated = _.filter(interventions, function(item){ 
-        	return true //(item.attributes.progress_rate <= 99) 
-        			/*&&
-        			item.attributes.state != app.Models.Intervention.state[0].value &&
-        			item.attributes.state != app.Models.Intervention.state[1].value); */
-        });
-        var nbInterventions = _.size(interventionsValidated);
         
-        interventionsValidated = _.sortBy(interventionsValidated, function(item){ 
-        	 return item.attributes.date_start; 
-        });
+        var nbInterventions = _.size(interventions);
+        
+
 
 
         // Check the number of planned interventions //
         var interventionsPlanned = _.filter(interventions, function(item){ 
-            return (item.attributes.state == app.Models.Intervention.state[1].value);
+            return (item.attributes.state == app.Models.Intervention.state[0].value);
         });
         var nbInterventionsPlanned = _.size(interventionsPlanned);
 
 
         // Check the number of pending interventions //
         var interventionsPending = _.filter(interventions, function(item){ 
-            return (item.attributes.state == app.Models.Intervention.state[2].value);
+            return (item.attributes.state == app.Models.Intervention.state[3].value);
         });
         var nbInterventionsPending = _.size(interventionsPending);
       
-        this.addInfoAboutInter(interventionsValidated);        
+        this.addInfoAboutInter(interventions);   
+        
+        interventionsValidated = _.sortBy(interventions, function(item){ 
+        	 return -item.attributes.create_date; 
+        });
 
         // Retrieve the HTML template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -91,7 +87,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 				nbInterventions: nbInterventions,
 				nbInterventionsPending: nbInterventionsPending,
 				nbInterventionsPlanned: nbInterventionsPlanned,
-				interventionsState: _.initial(app.Models.Intervention.state),
+				interventionsState: app.Models.Intervention.state,//_.initial(app.Models.Intervention.state),
 				interventions: interventionsValidated,
 			});
 
@@ -109,6 +105,8 @@ app.Views.InterventionsView = Backbone.View.extend({
 			$('tr.row-object').css({ opacity: '1'});
 			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' }); 
+			
+			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 		});
 
 		$(this.el).hide().fadeIn('slow');
@@ -257,12 +255,16 @@ app.Views.InterventionsView = Backbone.View.extend({
 		input_category_id = null;
 	     if( app.views.selectListAssignementsView != null )
 	    	 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
+	     
+	     
+	     var duration = $("#taskHour").val().split(":");
+	     var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
 
 	     var params = {
 	         project_id: this.pos,
 	         name: this.$('#taskName').val(),
 	         category_id: input_category_id,	         
-		     planned_hours: this.$('#taskHour').val(),
+		     planned_hours: mDuration.asHours(),
 	     };
 	     //TODO : test
 	     app.models.task.save(0,params,$('#modalAddTask'), null, "interventions");

@@ -204,6 +204,8 @@ app.Models.User = Backbone.Model.extend({
             // On détruit la session dans le localStorage //
             self.destroySessionID();
             self.save();
+            //Reset des filtres initialisées dans les listes
+            sessionStorage.clear();
             
             app.notify('large', 'info', app.lang.infoMessages.information, app.lang.infoMessages.successLogout);
 

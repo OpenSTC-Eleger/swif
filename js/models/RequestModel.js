@@ -155,12 +155,12 @@ app.Models.Request = Backbone.RelationalModel.extend({
 	initialize: function (model) {
 	   	console.log("Request Model Initialization");
 
-	   	// Initialization Traduction request state //
-	   	app.Models.Request.state[0].traduction = app.lang.refused;
-	   	app.Models.Request.state[1].traduction = app.lang.wait;
-	   	app.Models.Request.state[2].traduction = app.lang.confirm;
-	   	app.Models.Request.state[3].traduction = app.lang.valid;
-	   	app.Models.Request.state[4].traduction = app.lang.closed;
+	   	// Initialization Traduction request state //	   
+	   	app.Models.Request.state[0].traduction = app.lang.wait;
+	   	app.Models.Request.state[1].traduction = app.lang.confirm;
+	   	app.Models.Request.state[2].traduction = app.lang.valid;
+	   	app.Models.Request.state[3].traduction = app.lang.closed;
+		app.Models.Request.state[4].traduction = app.lang.refused;
 	   	//this.fetchRelated('service_id');
 	   	//this.fetchRelated('site1');
 	   	//this.fetchRelated(this.relations[key]);
@@ -213,11 +213,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
 
 	// Request State Initialization //
 	state:  [
-		{
-            value       : 'refused',
-            color       : 'important',
-            traduction  : '',
-        },
         {
             value       : 'wait',
             color       : 'info',
@@ -237,6 +232,11 @@ app.Models.Request = Backbone.RelationalModel.extend({
             value       : 'closed',
             color       : 'muted',
             traduction  : '',  
+        },
+		{
+            value       : 'refused',
+            color       : 'important',
+            traduction  : '',
         }
     ]
 
