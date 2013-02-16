@@ -219,19 +219,20 @@ app.Views.EventsView = Backbone.View.extend({
         
         updateTask : function(copiedEventObject) {
         	        	
-//        	if( this.arrayPlanifTasks.length==0 && !copiedEventObject.copy) {
-//        		this.refresh();
-//        		return 1;
-//        	}
+        	if( this.arrayPlanifTasks.length==0) {
+        		this.refresh();
+        		return 1;
+        	}
         	
         	var self = this;
-			if(	this.arrayPlanifTasks.length==0 && copiedEventObject.copy ) {
-				copiedEventObject.start = null;
-				this.update( copiedEventObject );
-			}else if( this.arrayPlanifTasks.length==1 && !copiedEventObject.copy ) {
+//			if(	this.arrayPlanifTasks.length==0 && copiedEventObject.copy ) {
+//				copiedEventObject.start = null;
+//				this.update( copiedEventObject );
+//			}else 
+			if( this.arrayPlanifTasks.length==1 && !copiedEventObject.copy ) {
 				this.arrayPlanifTasks[0].id = copiedEventObject.id;
 				this.update( this.arrayPlanifTasks[0] );
-			}else{			
+			}else {			
 				var params = this.arrayPlanifTasks[0];
 				self.params = params;
 				app.models.task.saveTest(0,params,{

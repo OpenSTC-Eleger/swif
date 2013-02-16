@@ -141,35 +141,44 @@
 											<!-- Loop Each Tasks -->
 											<% 
 												var allPlanned = true;
-			
-												_.each(inter.tasks, function (task, i) { 
 												
-													if( task.planned_hours > 0 && !task.parent_id  ){ %>
-														<!-- Check if the Task is planned or not -->
-														
-														<% if(task.date_start != '' && task.date_start != false && task.date_start != null && task.date_start != 'undefined' && task.date_start != 'Invalid '){ %>
-															<li id="task_<%= task.id %>" class="external-event disabled ui-widget-header">
-																<i class="icon-time"></i>&nbsp;
-																<span class="<%= (task.progress == '100' ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
-																<small class="pull-right"><%= task.planned_hours %>h</small>
-														<% 
-															
-														} else{ %>
+												if( inter.state=='template' ) { 
+														_.each(inter.tasks, function (task, i) { 
+															if( !task.parent_id){ %>
 															<li id="task_<%= task.id %>" class="external-event">&nbsp;
-																<strong><%= task.name %></strong>
-																<small class="badge pull-right"><%= task.planned_hours %>h</small>
-														<% 										
-															allPlanned = false;
-														}  %>
-														<% if( task.state == app.Models.Task.state[0].value ) { %>
-															<p class="task-actions">												
-																<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal">
-																	<i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %>
-																</a>
-															</p>
+																	<strong><%= task.name %></strong>
+																	<small class="badge pull-right"><%= task.planned_hours %>h</small>
+															<% } %>
+														<% }); %>											
+			
+												<% }else {
+													_.each(inter.tasks, function (task, i) { 
+
+														if( task.planned_hours > 0 ){
+																if(task.date_start != '' && task.date_start != false && task.date_start != null && task.date_start != 'undefined' && task.date_start != 'Invalid '){ %>
+																<li id="task_<%= task.id %>" class="external-event disabled ui-widget-header">
+																	<i class="icon-time"></i>&nbsp;
+																	<span class="<%= (task.progress == '100' ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
+																	<small class="pull-right"><%= task.planned_hours %>h</small>
+															<% 
+																
+															} else{ %>
+																<li id="task_<%= task.id %>" class="external-event">&nbsp;
+																	<strong><%= task.name %></strong>
+																	<small class="badge pull-right"><%= task.planned_hours %>h</small>
+															<% 										
+																allPlanned = false;
+															}  %>
+															<% if( task.state == app.Models.Task.state[0].value ) { %>
+																<p class="task-actions">												
+																	<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal">
+																		<i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %>
+																	</a>
+																</p>
+															<% } %>
 														<% } %>
-													<% } %>
-												<% });  %>
+													<% });  %>
+												<% } %>
 										</ul>
 			
 										<div class="div-actions">
