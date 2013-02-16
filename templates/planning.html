@@ -169,7 +169,7 @@
 															</p>
 														<% } %>
 													<% } %>
-												<% }); console.debug("ALLPLANED"+allPlanned+"STATE"+inter.state+"SIZE"+_.size(inter.tasks)) %>
+												<% });  %>
 										</ul>
 			
 										<div class="div-actions">
@@ -178,7 +178,7 @@
 												<%= ( inter.state != app.Models.Intervention.state[0].value && inter.state != app.Models.Intervention.state[2].value  ) ? "" : 'disabled' %>>
 												<i class="icon-plus"></i>
 											</button>								
-			
+
 											<button 
 												class="btn btn-success btn-small pull-right no-outline" rel="tooltip" 
 													data-original-title="<%= _.capitalize(lang.actions.enclosePlanning) %>" 

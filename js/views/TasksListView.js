@@ -54,7 +54,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		var tasks = app.collections.tasks.toJSON();
 		
 		tasks = _.sortBy(tasks, function(item){ 
-			return -item.date_start; 
+			return [-item.state,-item.date_start]; 
 		});
 		
 		
@@ -122,7 +122,9 @@ app.Views.TasksListView = Backbone.View.extend({
 //        var tasksPending = _.filter(tasksUser, function(item){         		
 //        	return item.attributes.state == app.Models.Task.state[2].value; 
 //        });
-        var nbTasks = _.size(tasksUser);
+        var nbTasks = _.size(_.filter(tasksUser, function(task){
+        	return task.state==app.Models.Task.state[0].value}
+        ));
 
 
 
@@ -142,7 +144,7 @@ app.Views.TasksListView = Backbone.View.extend({
 				tasks: taskList,
 				yearSelected: yearSelected,
 				weekSelected: weekSelected,
-			});
+			}); 
 
 			$(self.el).html(template);
 		});
@@ -165,12 +167,14 @@ app.Views.TasksListView = Backbone.View.extend({
     setModalTimeSpent: function(e) {    	
     	this.getTask(e);
     	var task = this.model.toJSON();
+    	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 
     	$('#infoModalTimeSpent').children('p').html(task.name);
 		$('#infoModalTimeSpent').children('small').html(task.notes);
 		$('.timepicker-default').timepicker({showMeridian:false});
 
 		$('#eventTimeSpent').val(this.secondsToHms(task.remaining_hours*60));
+		$('#modalTimeSpent .modal-body').css("height", "250px");
 		$('#eventTimeRemaining').val("00:00");
     },
     
@@ -221,11 +225,12 @@ app.Views.TasksListView = Backbone.View.extend({
     setModalTaskDone: function(e) {
     	this.getTask(e);
     	var task = this.model.toJSON();
+    	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
     	
     	$('#infoModalTaskDone').children('p').html(task.name);
 		$('#infoModalTaskDone').children('small').html(task.notes);
-		$('.timepicker-default').timepicker({showMeridian:false});
-
+		
+		$('#modalTaskDone .modal-body').css("height", "250px");
 		$('#eventTime').val(this.secondsToHms(task.remaining_hours*60));
     },
 

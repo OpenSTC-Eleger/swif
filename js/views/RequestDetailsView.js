@@ -68,16 +68,16 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 	
 
 					// Enable the datePicker //
-					$('.datePicker').datepicker({
-						format: 'dd/mm/yyyy',
-						weekStart: 1,
-						autoclose: true,
-						language: 'fr'
-					});
+//					$('.datePicker').datepicker({
+//						format: 'dd/mm/yyyy',
+//						weekStart: 1,
+//						autoclose: true,
+//						language: 'fr'
+//					});
 
-					if(self.create){
-						$('#requestDateDeadline').val(moment().format("L"));
-					}
+//					if(self.create){
+//						$('#requestDateDeadline').val(moment().format("L"));
+//					}
 
 					//search no technical services
 					var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
@@ -168,7 +168,7 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 		    	 people_email: this.$('#requestContactEmail').val(),	
 			     name: this.$('#requestName').val(),
 			     description: this.$('#requestDescription').val(),
-			     date_deadline: this.$('#requestDateDeadline').val(),
+			     //date_deadline: this.$('#requestDateDeadline').val(),
 			     service_id: input_service_id,
 			     site1: this.$('#requestPlace').val(),
 			     site_details: this.$('#requestPlacePrecision').val(),

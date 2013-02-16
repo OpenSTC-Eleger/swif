@@ -9,7 +9,7 @@ var app = {
     // Global variables //
     appVersion      : '0.1 alpha',
     userBDD         : 'pontlabbe2',
-    uniq_id_counter : 0,
+    uniq_id_counter : 0,	
     
     urlOE                       : 'http://octm-dev.siclic.fr:8069',
     urlOE_authentication        : '/web/session/authenticate',
