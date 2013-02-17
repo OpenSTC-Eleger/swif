@@ -117,7 +117,7 @@
 											}
 										});	
 									
-										if(inter.planned_hours != false){ %>																			
+										if( inter.planned_hours != false && inter.state!='template' ) { %>																			
 											<span class="badge <%= (color != '' ? 'badge-'+color : '') %> pull-right"><%= inter.planned_hours %>h</span>
 										<% } else {%>
 											<span class="badge <%= (color != '' ? 'badge-'+color : '') %> pull-right"><%= "Aucunes tâches" %></span>								
@@ -441,8 +441,6 @@
 				</div>
 			</div>
 
-			<br>
-			<br>
             <!-- Task Category -->
             <div class="control-group">
                 <label for="taskCategory" class="control-label">Catégorie:</label>
@@ -452,6 +450,16 @@
                     <span class="help-inline"></span>
                 </div>
             </div>
+            
+            <!-- Equipment -->
+            <div class="control-group">
+				<label for="taskEquipment" class="control-label"><%= _.capitalize(lang.equipment) %>:</label>
+
+				<div class="controls">
+					<select id="taskEquipment"></select>
+					<span class="help-inline"></span>
+				</div>
+			</div>
 
 
 

@@ -392,6 +392,14 @@ app.Views.PlanningView = Backbone.View.extend({
 	    		 input_category_id = selectItem.toJSON().id
 	    	 }
 	     }
+	     
+	     input_equipment_id = null;
+	     if( app.views.selectListEquipmentsView != null ) {
+	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
+	    	 if( selectItem ) {
+	    		 input_equipment_id = selectItem.toJSON().id
+	    	 }
+	     }
 
 	     var duration = $("#taskHour").val().split(":");
 	     var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] })
@@ -399,7 +407,8 @@ app.Views.PlanningView = Backbone.View.extend({
 	     var params = {
 	         project_id: this.pos,
 	         name: this.$('#taskName').val(),
-	         category_id: input_category_id,	         
+	         category_id: input_category_id,	
+	         equipment_id: input_equipment_id,
 	         planned_hours: mDuration.asHours(),
 	     };
 	     
@@ -414,6 +423,11 @@ app.Views.PlanningView = Backbone.View.extend({
 		app.views.selectListAssignementsView.clearAll();
 		app.views.selectListAssignementsView.addEmptyFirst();
 		app.views.selectListAssignementsView.addAll();
+		
+		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipment"), collection: app.collections.equipments})
+		app.views.selectListEquipmentsView.clearAll();
+		app.views.selectListEquipmentsView.addEmptyFirst();
+		app.views.selectListEquipmentsView.addAll();
         
         // Retrieve the ID of the intervention //
         this.pos = e.currentTarget.id;

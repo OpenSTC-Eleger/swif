@@ -94,7 +94,7 @@
 					   	<td class="align">
 
 					   		<!-- Tâches à saisir -->
-							<% if( task.state == app.Models.Task.state[0].value ) { %>
+							<% if( task.state == app.Models.Task.state[0].value && task.date_start) { %>
 					   		
 								<div class="btn-group">
 									<button class="btn btn-small btn-success no-outline buttonTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok"></i></button>

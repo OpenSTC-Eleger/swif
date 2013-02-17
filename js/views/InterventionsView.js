@@ -99,6 +99,11 @@ app.Views.InterventionsView = Backbone.View.extend({
 			app.views.selectListAssignementsView.clearAll();
 			app.views.selectListAssignementsView.addEmptyFirst();
 			app.views.selectListAssignementsView.addAll();
+			
+			app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipment"), collection: app.collections.equipments})
+			app.views.selectListEquipmentsView.clearAll();
+			app.views.selectListEquipmentsView.addEmptyFirst();
+			app.views.selectListEquipmentsView.addAll();
 
 			$('*[rel="tooltip"]').tooltip({placement: "right"});
 
@@ -252,9 +257,21 @@ app.Views.InterventionsView = Backbone.View.extend({
 		e.preventDefault();
 		
 		 
-		input_category_id = null;
-	     if( app.views.selectListAssignementsView != null )
-	    	 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
+		input_category_id = null;	    
+	    if( app.views.selectListAssignementsView != null ) {
+	    	 var selectItem = app.views.selectListAssignementsView.getSelected();
+	    	 if( selectItem ) {
+	    		 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
+	    	 }
+	    }	    	
+	     
+	     input_equipment_id = null;
+	     if( app.views.selectListEquipmentsView != null ) {
+	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
+	    	 if( selectItem ) {
+	    		 input_equipment_id = selectItem.toJSON().id
+	    	 }
+	     }
 	     
 	     
 	     var duration = $("#taskHour").val().split(":");
@@ -262,6 +279,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 
 	     var params = {
 	         project_id: this.pos,
+	         equipment_id: input_equipment_id,
 	         name: this.$('#taskName').val(),
 	         category_id: input_category_id,	         
 		     planned_hours: mDuration.asHours(),

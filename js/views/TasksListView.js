@@ -208,8 +208,16 @@ app.Views.TasksListView = Backbone.View.extend({
     	         team_id: task.team_id!=null?task.team_id[0]:null,
     	         company_id: task.company_id[0]
     	};
-
-		var newInterState = app.Models.Intervention.state[2].value;
+		
+		var newInterState = null;
+		if( this.model && this.model.intervention ) {
+			inter = this.model.intervention;
+			newInterState = inter.state;
+			if( this.model.intervention.state!=app.Models.Intervention.state[5].value ) {
+				newInterState = app.Models.Intervention.state[3].value;
+			}
+		}    		
+		
 		this.saveNewStateTask(taskParams, taskWorkParams,$('#modalTimeSpent'),newInterState);
     },
 
@@ -265,8 +273,16 @@ app.Views.TasksListView = Backbone.View.extend({
     	         team_id: task.team_id!=null?task.team_id[0]:null,
     	         company_id: task.company_id[0]
     	};
-
-		var newInterState = that.state;
+    	
+		var newInterState = null;
+		if( this.model && this.model.intervention ) {
+			inter = this.model.intervention;
+			newInterState = inter.state;
+			if( this.model.intervention.state!=app.Models.Intervention.state[5].value ) {
+				newInterState = that.state;
+			}
+		}    		
+    	
 		this.saveNewStateTask(taskParams, taskWorkParams,$('#modalTaskDone'),newInterState);
     },
     
@@ -275,7 +291,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		e.preventDefault();
 		this.getTask(e);
 		taskParams = {
-			state: app.Models.Task.state[0].value,		        
+			state: app.Models.Task.state[3].value,		        
 			//remaining_hours: 0,
 			//planned_hours: 0,
 			user_id: null,
@@ -283,7 +299,15 @@ app.Views.TasksListView = Backbone.View.extend({
 			date_end: null,
 			date_start: null,
 		};
-		var newInterState = app.Models.Intervention.state[3].value;		
+		
+		var newInterState = null;
+		if( this.model && this.model.intervention ) {
+			inter = this.model.intervention;
+			newInterState = inter.state;
+			if( this.model.intervention.state!=app.Models.Intervention.state[5].value ) {
+				newInterState = app.Models.Intervention.state[3].value;
+			}
+		}
 		this.saveNewStateTask(taskParams,null,null,newInterState);
 
 	},

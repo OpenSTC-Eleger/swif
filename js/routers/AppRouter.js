@@ -55,6 +55,11 @@ app.Router = Backbone.Router.extend({
         
 		'types-dabscence'                       : 'absentTypes',
 		'types-dabscence/page:page'             : 'absentTypes',
+		
+		'types-de-materiel'               		: 'equipments',
+		'types-de-materiele/page:page'          : 'equipments',
+		
+
     },
 
     
@@ -457,19 +462,21 @@ app.Router = Backbone.Router.extend({
 									}
 						            app.collections.categories.fetch({
 						            	success: function(){
-						                    // If the view exist we reuse it //
-//							                    if(app.views.interventionsView){
-//							                        app.views.interventionsView.render();
-//							                    }
-//							                    else{
-//							                        app.views.interventionsView = new app.Views.InterventionsView();
-//							                    }
-						                    app.views.interventionsView = new app.Views.InterventionsView();
-						                    self.render(app.views.interventionsView);
-						                 },
-					                	complete: function(){
-					                	    app.loader('hide');
-					                	}	
+						                    if(app.collections.equipments == null ){
+						                        app.collections.equipments = new app.Collections.Equipments();
+						                    }
+	
+						                   
+						                    app.collections.equipments.fetch({
+						                    	success: function(){
+								                    app.views.interventionsView = new app.Views.InterventionsView();
+								                    self.render(app.views.interventionsView);
+								                 },
+							                	complete: function(){
+							                	    app.loader('hide');
+							                	}
+							                });
+							             }
 						             });
 						        }
 				            });
@@ -591,13 +598,21 @@ app.Router = Backbone.Router.extend({
 													               
 													                app.collections.absentTypes.fetch({
 													                	success: function(){
-													                
-																            app.views.planningView = new app.Views.PlanningView(id);
-																            self.render(app.views.planningView);
-																        },
-											                        	complete: function(){
-											                        	    //app.loader('hide');
-											                        	}
+														                    if(app.collections.equipments == null ){
+														                        app.collections.equipments = new app.Collections.Equipments();
+														                    }
+	
+														                   
+														                    app.collections.equipments.fetch({
+														                    	success: function(){
+																		            app.views.planningView = new app.Views.PlanningView(id);
+																		            self.render(app.views.planningView);
+																		        },
+													                        	complete: function(){
+													                        	    //app.loader('hide');
+													                        	}
+														                    });
+													                    }
 											                        });
 											                     }
 													        });													         
@@ -1177,6 +1192,41 @@ app.Router = Backbone.Router.extend({
                 success: function(){
                     app.views.absentTypesView = new app.Views.AbsentTypesView({page: self.page});
                     self.render(app.views.absentTypesView);
+                },
+                complete: function(){
+                    app.loader('hide');
+                }
+            });
+        }
+        else{
+            this.navigate('login', {trigger: true, replace: true});
+        }
+    },
+    
+    /** equipments
+    	    */
+    equipments: function(page){      
+
+        // Check if the user is connect //
+        if(this.checkConnect()){
+            var self = this;
+
+
+            self.page = page ? parseInt(page, 10) : 1;
+
+            // Check if the collections is instantiate //
+            if(app.collections.equipments == null ){
+                app.collections.equipments = new app.Collections.Equipments();
+            }
+
+           
+            app.collections.equipments.fetch({
+                beforeSend: function(){
+                    app.loader('display');
+                },
+                success: function(){
+                    app.views.equipmentsView = new app.Views.EquipmentsView({page: self.page});
+                    self.render(app.views.equipmentsView);
                 },
                 complete: function(){
                     app.loader('hide');
