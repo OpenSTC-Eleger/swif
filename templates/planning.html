@@ -143,7 +143,9 @@
 												var allPlanned = true;
 												
 												if( inter.state=='template' ) { 
+														console.debug("INTER ID TEMPLATE:"+inter.id);
 														_.each(inter.tasks, function (task, i) { 
+															console.debug("ID TASK:"+task.id+"NAME TASK:"+task.name+"PARENT:"+task.parent_id+"HOURS"+task.planned_hours);
 															if( !task.parent_id){ %>
 															<li id="task_<%= task.id %>" class="external-event">&nbsp;
 																	<strong><%= task.name %></strong>
@@ -577,7 +579,6 @@
 	    <thead>
 	        <tr>
 	        	<th>Libelle</th>
-	        	<th>Catégorie</th>	
 	        	<th>Intervention</th>	            
 	            <th>Site</th>
 	            <th style="width: 100px" > début</th>

@@ -668,7 +668,7 @@ app.Views.EventsView = Backbone.View.extend({
 		    _.each(tasks, function(task){ 
 		    	var inter = task.intervention;
 		    	task["inter"] = ( inter!=null)?inter.name:"" ;
-		    	task["category"] = ( task.category_id!=null )?task.category_id[1]:"" ;
+		    	//task["category"] = ( task.category_id!=null )?task.category_id[1]:"" ;
 		    	task["place"] = ( inter!=null && inter.site1!=null && inter.site1[1] )?inter.site1[1]:"" ;
 		    	//task["effective_hours"] = "";
 		    	//task["remaining_hous"] = "";
@@ -691,7 +691,7 @@ app.Views.EventsView = Backbone.View.extend({
 			    "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
 			    "aoColumns": [
 			        {"sName": "Name", "mDataProp": "name", 'sWidth': '5%', 'sClass': "center"},
-			        {"sCat": "Category", "mDataProp": "category", 'sWidth': '5%', 'sClass': "center"},
+			        //{"sCat": "Category", "mDataProp": "category", 'sWidth': '5%', 'sClass': "center"},
 			        {"sInter": "Inter", "mDataProp": "inter", 'sWidth': '5%', 'sClass': "center"},	
 			        {"sPlace": "Place", "mDataProp": "place", 'sWidth': '5%', 'sClass': "center"},
 			        {"sDateStart": "DateStart", "mDataProp": "date_start","sType": "date", 'sWidth': '25%', 'fnRender': self.renderDate },
