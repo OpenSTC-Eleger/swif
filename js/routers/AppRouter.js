@@ -540,22 +540,22 @@ app.Router = Backbone.Router.extend({
         	
         	
 	
-			if(app.collections.interventions == null ){
-                app.collections.interventions = new app.Collections.Interventions();
+			if(app.collections.tasks == null ){
+                app.collections.tasks = new app.Collections.Tasks();
             }
         	
         	
-            app.collections.interventions.fetch({  
+            app.collections.tasks.fetch({  
             	beforeSend: function(){
                     app.loader('display');
                 },
         		success: function(){
-                	if(app.collections.tasks == null ){
-                		app.collections.tasks = new app.Collections.Tasks();        	
+                	if(app.collections.interventions == null ){
+                		app.collections.interventions = new app.Collections.Interventions();        	
                 	}
 
 		        
-		        	app.collections.tasks.fetch({
+		        	app.collections.interventions.fetch({
 		        		success: function(){
 			        		if(app.collections.claimersServices == null ){
 			            		app.collections.claimersServices = new app.Collections.ClaimersServices();
