@@ -10,8 +10,6 @@ app.Views.EventsView = Backbone.View.extend({
 		arrayOnDayEvents: [],
 	
 		events: {
-			//'submit #formDrop'  : 'drop',
-			//'click .btn.printCalendar'    : 'printCalendar',
 		},
 	
 	
@@ -106,6 +104,7 @@ app.Views.EventsView = Backbone.View.extend({
 	    	});
         },
 
+        //--------------------Events on calendar----------------------------------------//
         eventClick: function(fcEvent, jsEvent, view) {
             this.eventView.model = app.collections.tasks.get(fcEvent.id);
             this.eventView.render($(jsEvent.currentTarget),this.planning,this.el)
@@ -158,7 +157,7 @@ app.Views.EventsView = Backbone.View.extend({
         	
         	return color;	
         },
-                
+        
         initEvents: function() {
         	this.events = [];        	
         	var self = this;
@@ -189,198 +188,22 @@ app.Views.EventsView = Backbone.View.extend({
     		self.events = eventsSortedArray;
         },
         
-//        updateInter: function(event) {
-//        	var currentInter = app.collections.interventions.get( event.project_id );
-//        	currentInter = currentInter!=null? currentInter.toJSON():null
-//        	if( currentInter && currentInter.state == app.Models.Intervention.state[0] ) {
-//        		params = 
-//        			{
-//        				state: app.Models.Intervention.state[0].value,
-//        			};
-//        				
-//        		app.models.intervention.saveAndRoute(currentInter.id,params,null,this);	
-//        	}
-//        },
-        
-        update: function(event) {
-        	var self = this;
-		    app.models.task.saveTest(event.id, event, {
-		    	success: function (data) {
-			    	$.pnotify({
-			    		title: 'Tâche attribuée',
-			    		text: 'La tâche a correctement été attribué à l\'agent.'
-				    });
-			    	//self.updateInter(event);
-			    	self.refresh();
-		    	}
-		    }); 			    
-		    return 1;
-        },
-        
-        updateTask : function(copiedEventObject) {
-        	        	
-        	if( this.arrayPlanifTasks.length==0) {
-        		this.refresh();
-        		return 1;
-        	}
-        	
-        	var self = this;
-//			if(	this.arrayPlanifTasks.length==0 && copiedEventObject.copy ) {
-//				copiedEventObject.start = null;
-//				this.update( copiedEventObject );
-//			}else 
-			if( this.arrayPlanifTasks.length==1 && !copiedEventObject.copy ) {
-				this.arrayPlanifTasks[0].id = copiedEventObject.id;
-				this.update( this.arrayPlanifTasks[0] );
-			}else {			
-				var params = this.arrayPlanifTasks[0];
-				self.params = params;
-				app.models.task.saveTest(0,params,{
-					success: function(){
-						self.arrayPlanifTasks.splice(0, 1);
-						self.updateTask( copiedEventObject );
-					}
-				});
-			}
-			
-			
-        },
-        
-        getEvent: function( title, startDate, endDate ){
-        	return {
-	   				title: title,
-	   				start: startDate,
-	   				end : endDate,
-	   			};
-        },
-        
-        calculTask: function(event) {
-        	if( event.allPlanned || event.planned_hours==0 ) return 1
-        	
-        	var startDate = moment(event.start);
-        	var maxTime = moment( startDate.clone() ).hours( this.maxTime );
-        	var stopWorkingEvent = this.getEvent( "stopWorkingTime", maxTime.minutes(0).toDate() );
-        	this.arrayOnDayEvents.push( stopWorkingEvent );
-        	
-			var startLunchTime = moment( startDate.clone() ).hours( this.startLunchTime );
-			var stopLunchTime = moment( startDate.clone() ).hours( this.stopLunchTime );
-			var lunchEvent = this.getEvent( "lunchTime", startLunchTime.minutes(0).toDate(), stopLunchTime.minutes(0).toDate() );
-			this.arrayOnDayEvents.push( lunchEvent );
 
-			
-			var self = this;
-			self.event = event;
-			
-			overlapsEvent = _.filter(this.arrayOnDayEvents, function(e){
-				return self.event.start>=e.start && self.event.end<e.end
-			});
-			
-			while( overlapsEvent.length>0 ){
-				
-				
-				overlapsEvent = _.sortBy(overlapsEvent, function(event){ 
-					return [event.start,event.end]; 
-				});
-				
-				_.each(overlapsEvent, function(e){
-					self.event.start = e.end;
-					self.event.end = e.end;
-				});	
-				
-				overlapsEvent = _.filter(this.arrayOnDayEvents, function(e){
-					return self.event.start>=e.start && self.event.end<e.end
-				});
-			}
-			
-			this.arrayOnDayEvents.push( event );
-			var eventsSortedArray = _.sortBy(this.arrayOnDayEvents, function(event){ 
-				return [event.start,event.end]; 
-			});
-			this.arrayOnDayEvents = eventsSortedArray;
+		getEvent: function( title, startDate, endDate ){
+			return {
+						title: title,
+						start: startDate,
+						end : endDate,
+					};
+		},        
 
-    		
-    		this.getEndDate( event );
-    		
-    		this.removeEvent( this.arrayOnDayEvents, stopWorkingEvent );
-    		this.removeEvent( this.arrayOnDayEvents, lunchEvent );
-    		this.removeEvent( this.arrayOnDayEvents, event );
-    		
-    		
-    		this.calculTask( event );
-        },
-        
-        removeEvent: function(array,s){
-        	var index = array.indexOf(s);
-        	if(array.indexOf(s) != -1) array.splice(index, 1);
-		},
+		removeEvent: function(array,s){
+			var index = array.indexOf(s);
+			if(array.indexOf(s) != -1) array.splice(index, 1);
+		},		
+		//--------------------End events on calendar-------------------------//
 
-        getEndDate: function(event) {	
-        	var duration = event.planned_hours;
-        	var startDate = moment( event.start );        	
-        	var index = this.arrayOnDayEvents.indexOf( event );
-        	var size = this.arrayOnDayEvents.length;
-        	var found = false;
-        	var returnDate = null;
-        	while( index<size-1 && !found ) {
-        		var returnDate = returnDate==null?startDate.clone().add('hours', duration):returnDate;
-        		var nextEvent = this.arrayOnDayEvents[ index+1 ];
-        		if( nextEvent ) {
-	        		nextDateStart = moment( nextEvent.start ); 
-	        		nextDateEnd = moment( nextEvent.end ); 
-	        		var diff = returnDate.diff(nextDateStart, 'minutes', true );
-	        		if( diff>0 ) {
-	        			returnDate = moment( nextDateStart )
-	        			found = true;
-	        		}
-	        		else if ( diff==0 ) {
-	        			returnDate = moment( nextDateStart )
-	        		}
-				}
-        		index += 1;
-        	}
-        	if( index==size || !nextEvent ) event.allPlanned = true;
-        	else {
-        		this.removeEvent( this.arrayOnDayEvents, event )
-	        		
-	        	duration = returnDate.diff( startDate, 'hours', true );
-	
-	        	var title = event.title;
-	        	if( this.arrayPlanifTasks.length>0 )
-	        		title = "(copy-" + this.arrayPlanifTasks.length + ")" + title ;
-	        	
-	        	
-	        	
-				var params=
-				{
-				    name:  title,
-				    project_id: event.project_id,
-				    copy: event.copy,
-				    parent_id: event.copy?event.id:false,
-				    state: 'open',
-				    date_start: startDate.toDate(),
-				    date_end: returnDate.toDate(),
-				    planned_hours: duration,
-				    remaining_hours: duration,
-				    team_id: this.teamMode?this.id:0,
-				    user_id: !this.teamMode?this.id:0,
-				}
-				
-				
-				event.planned_hours -= duration;
-		    		event.remaining_hours -= duration;
-	    		
-	    		
-	    		if( event.planned_hours==0 || returnDate.hours()==18 )
-	    			event.allPlanned = true;
-	    		else if( nextDateEnd ){
-		    		event.start = nextDateEnd.toDate();
-		    		event.end = nextDateEnd.toDate();
-	    		}
-	    		
-				this.arrayPlanifTasks.push(params);				
-			}
-        },
-        
+        //--------------------Init calendar----------------------------------//
         initCalendar: function() {
         	var self = this;
         	this.calendar = self.el.fullCalendar({
@@ -552,7 +375,7 @@ app.Views.EventsView = Backbone.View.extend({
 						
 					});
 					self.calculTask(copiedEventObject);
-					self.updateTask(copiedEventObject);	
+					self.planTasks(copiedEventObject);	
 				},
 
                 eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
@@ -612,8 +435,173 @@ app.Views.EventsView = Backbone.View.extend({
 			//$('.fc-view-agendaWeek > div > div').css('overflow-y', 'hidden'); $('.fc-agenda-gutter').css('width', 0);
 				
 			
-		},	
+		},
+		// --------------------End init calendar----------------------------------------//
+        
+		//--------------------Cut dropped task on calendar-----------------------------//
+        calculTask: function(event) {
+        	if( event.allPlanned || event.planned_hours==0 ) return 1
+        	
+        	var startDate = moment(event.start);
+        	var maxTime = moment( startDate.clone() ).hours( this.maxTime );
+        	var stopWorkingEvent = this.getEvent( "stopWorkingTime", maxTime.minutes(0).toDate() );
+        	this.arrayOnDayEvents.push( stopWorkingEvent );
+        	
+			var startLunchTime = moment( startDate.clone() ).hours( this.startLunchTime );
+			var stopLunchTime = moment( startDate.clone() ).hours( this.stopLunchTime );
+			var lunchEvent = this.getEvent( "lunchTime", startLunchTime.minutes(0).toDate(), stopLunchTime.minutes(0).toDate() );
+			this.arrayOnDayEvents.push( lunchEvent );
+
+			
+			var self = this;
+			self.event = event;
+			
+			overlapsEvent = _.filter(this.arrayOnDayEvents, function(e){
+				return self.event.start>=e.start && self.event.end<e.end
+			});
+			
+			while( overlapsEvent.length>0 ){
+				
+				
+				overlapsEvent = _.sortBy(overlapsEvent, function(event){ 
+					return [event.start,event.end]; 
+				});
+				
+				_.each(overlapsEvent, function(e){
+					self.event.start = e.end;
+					self.event.end = e.end;
+				});	
+				
+				overlapsEvent = _.filter(this.arrayOnDayEvents, function(e){
+					return self.event.start>=e.start && self.event.end<e.end
+				});
+			}
+			
+			this.arrayOnDayEvents.push( event );
+			var eventsSortedArray = _.sortBy(this.arrayOnDayEvents, function(event){ 
+				return [event.start,event.end]; 
+			});
+			this.arrayOnDayEvents = eventsSortedArray;
+
+    		
+    		this.getEndDate( event );
+    		
+    		this.removeEvent( this.arrayOnDayEvents, stopWorkingEvent );
+    		this.removeEvent( this.arrayOnDayEvents, lunchEvent );
+    		this.removeEvent( this.arrayOnDayEvents, event );
+    		
+    		
+    		this.calculTask( event );
+        },
+
+
+        getEndDate: function(event) {	
+        	var duration = event.planned_hours;
+        	var startDate = moment( event.start );        	
+        	var index = this.arrayOnDayEvents.indexOf( event );
+        	var size = this.arrayOnDayEvents.length;
+        	var found = false;
+        	var returnDate = null;
+        	while( index<size-1 && !found ) {
+        		var returnDate = returnDate==null?startDate.clone().add('hours', duration):returnDate;
+        		var nextEvent = this.arrayOnDayEvents[ index+1 ];
+        		if( nextEvent ) {
+	        		nextDateStart = moment( nextEvent.start ); 
+	        		nextDateEnd = moment( nextEvent.end ); 
+	        		var diff = returnDate.diff(nextDateStart, 'minutes', true );
+	        		if( diff>0 ) {
+	        			returnDate = moment( nextDateStart )
+	        			found = true;
+	        		}
+	        		else if ( diff==0 ) {
+	        			returnDate = moment( nextDateStart )
+	        		}
+				}
+        		index += 1;
+        	}
+        	if( index==size || !nextEvent ) event.allPlanned = true;
+        	else {
+        		this.removeEvent( this.arrayOnDayEvents, event )
+	        		
+	        	duration = returnDate.diff( startDate, 'hours', true );
+	
+	        	var title = event.title;
+	        	if( this.arrayPlanifTasks.length>0 )
+	        		title = "(copy-" + this.arrayPlanifTasks.length + ")" + title ;
+	        	
+	        	
+	        	
+				var params=
+				{
+				    name:  title,
+				    project_id: event.project_id,
+				    copy: event.copy,
+				    parent_id: event.copy?event.id:false,
+				    state: 'open',
+				    date_start: startDate.toDate(),
+				    date_end: returnDate.toDate(),
+				    planned_hours: duration,
+				    remaining_hours: duration,
+				    team_id: this.teamMode?this.id:0,
+				    user_id: !this.teamMode?this.id:0,
+				}
+				
+				
+				event.planned_hours -= duration;
+		    		event.remaining_hours -= duration;
+	    		
+	    		
+	    		if( event.planned_hours==0 || returnDate.hours()==18 )
+	    			event.allPlanned = true;
+	    		else if( nextDateEnd ){
+		    		event.start = nextDateEnd.toDate();
+		    		event.end = nextDateEnd.toDate();
+	    		}
+	    		
+				this.arrayPlanifTasks.push(params);				
+			}
+        },
+        
+        planTasks : function(copiedEventObject) {
+        	        	
+        	if( this.arrayPlanifTasks.length==0) {
+        		this.refresh();
+        		return 1;
+        	}
+        	
+        	var self = this;
+			if( this.arrayPlanifTasks.length==1 && !copiedEventObject.copy ) {
+				this.arrayPlanifTasks[0].id = copiedEventObject.id;
+				this.updateTask( this.arrayPlanifTasks[0] );
+			}else {			
+				var params = this.arrayPlanifTasks[0];
+				self.params = params;
+				app.models.task.saveTest(0,params,{
+					success: function(){
+						self.arrayPlanifTasks.splice(0, 1);
+						self.planTasks( copiedEventObject );
+					}
+				});
+			}
+        },
+        
+        updateTask: function(event) {
+        	var self = this;
+		    app.models.task.saveTest(event.id, event, {
+		    	success: function (data) {
+			    	$.pnotify({
+			    		title: 'Tâche attribuée',
+			    		text: 'La tâche a correctement été attribué à l\'agent.'
+				    });
+			    	self.refresh();
+		    	}
+		    }); 			    
+		    return 1;
+        },        
+        //--------------------End cut dropped task on calendar--------------------//
 		
+        
+        //--------------------Print calendar--------------------------------------//
 		renderDate: function (o, date){
 			return date.format('LLL');
 	
@@ -673,7 +661,7 @@ app.Views.EventsView = Backbone.View.extend({
 		    	//task["effective_hours"] = "";
 		    	//task["remaining_hous"] = "";
 		    	task["done"] = "false";
-		    	task["equipment"] = "";
+		    	task["equipment"] = ( task.equipment_id!=null && task.equipment_id[1] )?task.equipment_id[1]:"";
 		    	task["oil"] = "";
 		    })
 		    
@@ -700,7 +688,7 @@ app.Views.EventsView = Backbone.View.extend({
 			        { "sEffectiveTime": "EffectiveTime", "mDataProp": "effective_hours", 'sWidth': '5%','fnRender': self.renderHours},
 			        { "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours",'sWidth': '5%','fnRender': self.renderHours},
 			        { "sDone": "Done", "mDataProp": "done", 'sWidth': '5%','fnRender': self.renderResume},
-			        { "sEquipment": "Equipment", "mDataProp": "equipment", 'sWidth': '5%','fnRender': self.renderHours},
+			        { "sEquipment": "Equipment", "mDataProp": "equipment", 'sWidth': '5%','sClass': "center"},
 			        { "sOil": "oil", "mDataProp": "oil", 'sWidth': '5%', 'sWidth': '5%','fnRender': self.renderHours}],
 			
 			    "bFilter": false,"bInfo": false,"bPaginate": false,
@@ -721,7 +709,8 @@ app.Views.EventsView = Backbone.View.extend({
 //				    ]
 //				}
 			);		
-		},
+		},		
+		//--------------------End  Print calendar----------------------------------------//
 	});
 //			var printEl = this.el.clone(true);
 //			printEl.find('.fc-agenda-days').height("800");

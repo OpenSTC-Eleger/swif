@@ -676,12 +676,21 @@ app.Router = Backbone.Router.extend({
 						            }
 						        	app.collections.places.fetch({						        						        	
 							        	success: function(){
-						        			app.views.tasksListView = new app.Views.TasksListView({yearSelected: self.yearSelected, weekSelected: self.weekSelected});
-						        			self.render(app.views.tasksListView);
-						        		},
-						            	complete: function(){
-						            	    app.loader('hide');
-						            	}
+							                if(app.collections.equipments == null ){
+							                    app.collections.equipments = new app.Collections.Equipments();
+							                }
+	
+							               
+							                app.collections.equipments.fetch({
+							                    success: function(){
+								        			app.views.tasksListView = new app.Views.TasksListView({yearSelected: self.yearSelected, weekSelected: self.weekSelected});
+								        			self.render(app.views.tasksListView);
+								        		},
+								            	complete: function(){
+								            	    app.loader('hide');
+								            	}
+								            });
+								        }
 							        });
 						        }
 				        	});

@@ -7,18 +7,16 @@
 		
 		<!-- Interventions List -->
 			 <div class="row-fluid">
-	     	 	<div class="span2">
+	     	 	<div class="span3">
 					<div class="row-fluid">
-						<!-- Table toolbar
-						<div style="margin-bottom: 35px; height: 120px;">-->
-							<div class="span">
+						<!-- Table toolbar -->
+							<div class="span6" >
 								<button class="btn btn-primary no-outline addInterventionPlanning" rel="tooltip" 
 										data-original-title="<%= _.capitalize(lang.actions.addIntervention) %>" data-placement="right">
 											<i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addIntervention) %>
 								</button><br />
 							</div>
-							
-							<div class="dropdown span" style="height: 170px;">
+							<div class="dropdown span1" style="height: 170px;">
 									
 								    <a id="filterStateIntervention" style="text-decoration:none;bottom:0;position:absolute"
 								    	 class="dropdown-toggle filter-button" data-toggle="dropdown" href="#">
@@ -63,7 +61,7 @@
 					</div>
 					
 				<!-- List Officer/Teams -->
-				<div class="span10" id="listAgentsTeams" class="tabbable tabs-left">
+				<div class="span9" id="listAgentsTeams" class="tabbable tabs-left">
 					<ul class="nav nav-tabs" id="allTabs">
 						<li class="active">
 							<a href="#" data-target="#tab-agents" data-toggle="tab" class="no-outline"><%= _.capitalize(lang.agents) %> &nbsp;&nbsp;<span class="badge"><%= _.size(officers) %></span></a>
@@ -99,7 +97,7 @@
 			
 		
 			<div class="row-fluid">
-	     	 	<div class="span2">
+	     	 	<div class="span3">
 	     	 		<!-- Table toolbar -->	
 					<% if( _.size(interventions) > 0 ) { %>				
 					<aside class="accordion" id="accordionInter" style="overflow-y: scroll; max-height: 590px; margin-bottom: 0;">
@@ -225,7 +223,7 @@
 						</div>
 					<% } %>
 	     	 	</div>	
-	     	 	<div class="span10">
+	     	 	<div class="span9">
 	     	 		<!-- Calendar -->
 					<div style="overflow: hidden; max-height: 590px;">
 					

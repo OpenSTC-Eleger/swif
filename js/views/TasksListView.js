@@ -136,7 +136,7 @@ app.Views.TasksListView = Backbone.View.extend({
 				taskList.push(task)
 			});
 
-			console.log(taskList);
+
 
 			var template = _.template(templateData, {
 				lang: app.lang,
@@ -144,7 +144,9 @@ app.Views.TasksListView = Backbone.View.extend({
 				tasks: taskList,
 				yearSelected: yearSelected,
 				weekSelected: weekSelected,
-			}); 
+			});
+
+
 
 			$(self.el).html(template);
 		});
@@ -155,6 +157,8 @@ app.Views.TasksListView = Backbone.View.extend({
     },
   
     getTask: function(e) {
+
+	
 		var href = $(e.target);
 
 		// Retrieve the ID of the request //	
@@ -176,49 +180,92 @@ app.Views.TasksListView = Backbone.View.extend({
 		$('#eventTimeSpent').val(this.secondsToHms(task.remaining_hours*60));
 		$('#modalTimeSpent .modal-body').css("height", "250px");
 		$('#eventTimeRemaining').val("00:00");
+		
+		app.views.selectListEquipmentsView2 = new app.Views.DropdownSelectListView({el: $("#taskEquipment2"), collection: app.collections.equipments})
+		app.views.selectListEquipmentsView2.clearAll();
+		app.views.selectListEquipmentsView2.addEmptyFirst();
+		app.views.selectListEquipmentsView2.addAll();
     },
+    
     
     saveTimeSpent: function(e) {
     	e.preventDefault();
     	
+    	var task = this.model.toJSON();
+
     	var timeArray = $('#eventTimeSpent').val().split(':');
     	var hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0)
+    	var newDateEnd = moment(task.date_start).add('hours', 1);	
+    	//newDateEnd.add('hours',hours,true);
     	
     	timeArray = $('#eventTimeRemaining').val().split(':');
-    	var remaining_hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0)
+    	var remaining_hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0);
     	
-		taskParams = {
-		    state: app.Models.Task.state[2].value,
-            planned_hours: remaining_hours,
-            remaining_hours: remaining_hours,
-			user_id: null,
-			team_id:null,
-			date_end: null,
-			date_start: null,
+    	input_equipment_id = null;
+	     if( app.views.selectListEquipmentsView != null ) {
+	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
+	    	 if( selectItem ) {
+	    		 input_equipment_id = selectItem.toJSON().id
+	    	 }
+	     }
+    	
+    	
+    	taskParams = {
+    	    name: task.name?task.name:0,
+    	    project_id: task.project_id!=null?task.project_id[0]:null,
+    	    parent_id: task.id,
+    	    equipment_id: input_equipment_id,
+		    state: app.Models.Task.state[1].value,
+		    effective_hours: hours,
+		    planned_hours: task.planned_hours,
+            remaining_hours: 0,
+			user_id: task.user_id?task.user_id[0]:0,
+			team_id: task.team_id?task.team_id[0]:0,
+			date_start: task.date_start.toDate(),
+			date_end: newDateEnd.toDate(),
 		};
+    	
+    	var self = this;
+    	self.task = task;
+    	self.hours = hours;
+    	self.remaining_hours = remaining_hours;
+    	app.models.task.saveTest(0,taskParams,{
+				success: function(){
+    				taskParams = {
+    		  		    state: app.Models.Task.state[2].value,
+    		            planned_hours: self.remaining_hours,
+    		            remaining_hours: self.remaining_hours,
+    		            equipment_id: input_equipment_id,
+    		  			user_id: null,
+    		  			team_id:null,
+    		  			date_end: null,
+    		  			date_start: null,
+    		  		};
 
-		var task = this.model.toJSON();
+    		  		
 
-		taskWorkParams = {
-    			 name: task.name,
-    	         date: new Date(),
-    	         task_id: task.id,
-    	         hours: hours,
-    	         user_id: task.user_id!=null?task.user_id[0]:null,
-    	         team_id: task.team_id!=null?task.team_id[0]:null,
-    	         company_id: task.company_id[0]
-    	};
-		
-		var newInterState = null;
-		if( this.model && this.model.intervention ) {
-			inter = this.model.intervention;
-			newInterState = inter.state;
-			if( this.model.intervention.state!=app.Models.Intervention.state[5].value ) {
-				newInterState = app.Models.Intervention.state[3].value;
-			}
-		}    		
-		
-		this.saveNewStateTask(taskParams, taskWorkParams,$('#modalTimeSpent'),newInterState);
+    		  		taskWorkParams = {
+    		      			 name: task.name,
+    		      	         date: new Date(),
+    		      	         task_id: task.id,
+    		      	         hours: self.hours,
+    		      	         user_id: task.user_id!=null?task.user_id[0]:null,
+    		      	         team_id: task.team_id!=null?task.team_id[0]:null,
+    		      	         company_id: task.company_id!=null?task.company_id[0]:null,
+    		      	};
+    		  		
+    		  		var newInterState = null;
+    		  		if( task && task.intervention ) {
+    		  			inter = task.intervention;
+    		  			newInterState = inter.state;
+    		  			if( task.intervention.state!=app.Models.Intervention.state[5].value ) {
+    		  				newInterState = app.Models.Intervention.state[3].value;
+    		  			}
+    		  		}    		
+    		  		
+    		  		self.saveNewStateTask(taskParams, taskWorkParams,$('#modalTimeSpent'),newInterState);
+				}
+			});
     },
 
     secondsToHms : function (d) {
@@ -240,6 +287,11 @@ app.Views.TasksListView = Backbone.View.extend({
 		
 		$('#modalTaskDone .modal-body').css("height", "250px");
 		$('#eventTime').val(this.secondsToHms(task.remaining_hours*60));
+		
+		app.views.selectListEquipmentsView1 = new app.Views.DropdownSelectListView({el: $("#taskEquipment1"), collection: app.collections.equipments})
+		app.views.selectListEquipmentsView1.clearAll();
+		app.views.selectListEquipmentsView1.addEmptyFirst();
+		app.views.selectListEquipmentsView1.addAll();
     },
 
     saveTaskDone: function(e) {
@@ -255,14 +307,25 @@ app.Views.TasksListView = Backbone.View.extend({
 		});
 		
 		var timeArray = $('#eventTime').val().split(':');
-    	var hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0)
+    	var hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0);
+    	
+    	 input_equipment_id = null;
+	     if( app.views.selectListEquipmentsView != null ) {
+	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
+	    	 if( selectItem ) {
+	    		 input_equipment_id = selectItem.toJSON().id
+	    	 }
+	     }
 
 		taskParams = {
 		    state: app.Models.Task.state[1].value,
+		    equipment_id: input_equipment_id,
 		    remaining_hours: 0,
 		};
 		
 		var task = this.model.toJSON();
+		
+		
 		
     	taskWorkParams = {
     			 name: task.name,
