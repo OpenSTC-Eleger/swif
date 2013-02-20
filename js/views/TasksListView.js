@@ -199,7 +199,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		tempEndDate.minutes(0);
 		$("#endHour").timepicker('setTime', tempEndDate.format('LT') );
 			
-		$('#modalAbsentTask .modal-body').css("height", "550px");
+		$('#modalAddTask .modal-body').css("height", "550px");
         $('#modalAddTask').modal();
 	},
 	
