@@ -269,7 +269,7 @@ state:  [
     },
 	{
         value       : 'draft',
-        color       : '#444', //purple
+        color       : 'lightgreen', //purple
         traduction  : '',
     },
     {

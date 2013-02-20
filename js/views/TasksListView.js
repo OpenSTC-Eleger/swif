@@ -14,6 +14,9 @@ app.Views.TasksListView = Backbone.View.extend({
 	events: {
 		'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
+		
+		'click .btn.addTask'            : 'displayModalAddTask',
+		'submit #formAddTask'         	: 'saveTask',   
 
 		//'click .taskDone' 			: 'taskDone',
 		'click a.taskNotDone' 			: 'taskNotDone',
@@ -102,12 +105,12 @@ app.Views.TasksListView = Backbone.View.extend({
 
     		return (	//Tâches de l'agent
     					( belongsToOfficer || app.models.user.isDST() || belongsToServiceManager )
-    					&& 
-    					(
-    						//Tâches ouvertes (plannifiés) ou en cours
-    						task.state!=app.Models.Task.state[3].value //pas à l'état brouillon(planification)'
-    						//|| task.state==app.Models.Task.state[2].value                                                  	
-    					)  
+//    					&& 
+//    					(
+//    						//Tâches ouvertes (plannifiés) ou en cours
+//    						task.state!=app.Models.Task.state[3].value //pas à l'état brouillon(planification)'
+//    						//|| task.state==app.Models.Task.state[2].value                                                  	
+//    					)  
 //    					&& 
 //    					(
 //    						//L'intervention de la tâche doit être planifiée ou en cours'
@@ -145,10 +148,21 @@ app.Views.TasksListView = Backbone.View.extend({
 				yearSelected: yearSelected,
 				weekSelected: weekSelected,
 			});
-
-
-
+			
 			$(self.el).html(template);
+			
+			app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categories})
+			app.views.selectListAssignementsView.clearAll();
+			app.views.selectListAssignementsView.addEmptyFirst();
+			app.views.selectListAssignementsView.addAll();
+			
+			app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipment"), collection: app.collections.equipments})
+			app.views.selectListEquipmentsView.clearAll();
+			app.views.selectListEquipmentsView.addEmptyFirst();
+			app.views.selectListEquipmentsView.addAll();
+			
+			$(".datepicker").datepicker();
+			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 		});
 
 		$(this.el).hide().fadeIn('slow');
@@ -166,6 +180,74 @@ app.Views.TasksListView = Backbone.View.extend({
 		//this.taskId = href.data('taskid');
 		this.model = app.collections.tasks.get(this.pos);
     },
+    
+	/** Display the form to add a new Task
+		*/
+	displayModalAddTask: function(e){
+			
+		var mStartDate = moment();
+		var mEndDate = moment();	
+			
+    	$("#startDate").val( mStartDate.format('L') );
+    	$("#endDate").val( mEndDate.format('L') );    	
+		var tempStartDate = moment( mStartDate );
+		tempStartDate.hours(8);
+		tempStartDate.minutes(0);
+		$("#startHour").timepicker( 'setTime', tempStartDate.format('LT') );
+		var tempEndDate = moment( mEndDate );
+		tempEndDate.hours(18);
+		tempEndDate.minutes(0);
+		$("#endHour").timepicker('setTime', tempEndDate.format('LT') );
+			
+		$('#modalAbsentTask .modal-body').css("height", "550px");
+        $('#modalAddTask').modal();
+	},
+	
+
+    /** Save the Task
+    */
+	saveTask: function(e){
+		var self = this;
+
+		e.preventDefault();
+		
+		var mNewDateStart =  new moment( $("#startDate").val(),"DD-MM-YYYY")
+								.add('hours',$("#startHour").val().split(":")[0] )
+								.add('minutes',$("#startHour").val().split(":")[1] );
+		var mNewDateEnd =  new moment( $("#endDate").val(),"DD-MM-YYYY")
+								.add('hours',$("#endHour").val().split(":")[0] )
+								.add('minutes',$("#endHour").val().split(":")[1] );
+		var planned_hours = mNewDateEnd.diff(mNewDateStart, 'hours', true);
+		 
+		input_category_id = null;	    
+	    if( app.views.selectListAssignementsView != null ) {
+	    	 var selectItem = app.views.selectListAssignementsView.getSelected();
+	    	 if( selectItem ) {
+	    		 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
+	    	 }
+	    }	    	
+	     
+	     input_equipment_id = null;
+	     if( app.views.selectListEquipmentsView != null ) {
+	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
+	    	 if( selectItem ) {
+	    		 input_equipment_id = selectItem.toJSON().id
+	    	 }
+	     }
+	     
+	     
+	     var params = {
+	         user_id:  app.models.user.getUID(),
+	         date_start: mNewDateStart,
+	         date_end: mNewDateEnd,
+	         equipment_id: input_equipment_id,
+	         name: this.$('#taskName').val(),
+	         category_id: input_category_id,	         
+		     planned_hours: planned_hours,
+	     };
+	     //TODO : test
+	     app.models.task.save(0,params,$('#modalAddTask'), null, "taches");
+   	},
     
     //Task not finished
     setModalTimeSpent: function(e) {    	
