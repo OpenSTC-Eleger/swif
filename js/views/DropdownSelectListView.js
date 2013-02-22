@@ -14,7 +14,8 @@ app.Views.DropdownSelectListView = Backbone.View.extend({
 		this.dropdownListView = new Array(),
 		this.selected_id = 0,
 	    _.bindAll(this, 'addOne', 'addAll');
-	    this.collection.bind('reset', this.addAll);
+	    this.collection.sort();
+	    this.collection.bind('reset', this.addAll);	   
 	},
 
 	addEmptyFirst: function(){        	
@@ -43,7 +44,8 @@ app.Views.DropdownSelectListView = Backbone.View.extend({
 
 	setSelectedItem: function(id) {
 		this.selected_id = id;
-		this.dropdownListView[id].setSelected();
+		if( id )
+			this.dropdownListView[id].setSelected();
 //		var selectedItem = _.filter(this.dropdownListView, function(list){
 //			if (list && !list.model) return false;
 //			var item = list.model.toJSON();			
@@ -60,7 +62,9 @@ app.Views.DropdownSelectListView = Backbone.View.extend({
 	
 	
 	getSelected: function() {
-		return this.dropdownListView[this.selected_id].model;
+		if( this.selected_id )
+			return this.dropdownListView[this.selected_id].model;
+		else return null;
 	},
 
 	changeSelected: function() {

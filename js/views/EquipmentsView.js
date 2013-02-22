@@ -50,13 +50,9 @@ app.Views.EquipmentsView = Backbone.View.extend({
         app.views.headerView.switchGridMode('fluid');
 
 
-		var equipments = app.collections.equipments.models;
-		
-	    var equipmentsSortedArray = _.sortBy(equipments, function(item){ 
-	          return item.attributes.name; 
-        });
+		var equipments = app.collections.equipments;
 
-		var len = equipmentsSortedArray.length;
+		var len = equipments.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
@@ -65,7 +61,7 @@ app.Views.EquipmentsView = Backbone.View.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				equipments: equipmentsSortedArray,
+				equipments: equipments.toJSON(),
 				lang: app.lang,
 				nbEquipments: len,
 				startPos: startPos, endPos: endPos,

@@ -48,11 +48,8 @@ app.Views.ServicesView = Backbone.View.extend({
         app.views.headerView.switchGridMode('fluid');
 
 
-		var services = app.collections.claimersServices.models;
+		var services = app.collections.claimersServices;
 		var nbServices = _.size(services);
-
-		console.debug(services);
-
 
 		var len = services.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
@@ -63,7 +60,7 @@ app.Views.ServicesView = Backbone.View.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				services: app.collections.claimersServices.toJSON(),
+				services: services.toJSON(),
 				lang: app.lang,
 				nbServices: nbServices,
 				startPos: startPos, endPos: endPos,

@@ -46,11 +46,8 @@ app.Views.PlacesView = Backbone.View.extend({
         app.views.headerView.switchGridMode('fluid');
 
 
-		var places = app.collections.places.models;
+		var places = app.collections.places;
 		var nbPlaces = _.size(places);
-
-		console.debug(places);
-
 
 		var len = places.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
@@ -61,7 +58,7 @@ app.Views.PlacesView = Backbone.View.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				places: app.collections.places.toJSON(),
+				places: places.toJSON(),
 				lang: app.lang,
 				nbPlaces: nbPlaces,
 				startPos: startPos, endPos: endPos,

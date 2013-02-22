@@ -51,11 +51,7 @@ app.Views.CategoriesView = Backbone.View.extend({
 
 		var categories = app.collections.categories.models;
 
-		var categoriesSortedArray = _.sortBy(categories, function(item){ 
-			return item.attributes.name; 
-		});
-
-		var len = categoriesSortedArray.length;
+		var len = categories.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
@@ -64,15 +60,31 @@ app.Views.CategoriesView = Backbone.View.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				cats: categoriesSortedArray,
+				cats: categories,
 				lang: app.lang,
 				nbCats: len,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
 				pageCount: pageCount,
 			});
+
+			$(self.el).html(template);			
+						
+			$('#catServices, #servicesList').sortable({
+				connectWith: 'ul.sortableServicesList',
+				dropOnEmpty: true,
+				forcePlaceholderSize: true,
+				forceHelperSize: true,
+				placeholder: 'sortablePlaceHold',
+				containment: '.servicesDroppableArea',
+				cursor: 'move',
+				opacity: '.8',
+				revert: 300,
+				receive: function(event, ui){
+					//self.saveServicesCategories();
+				}
+			});			
 			
-			$(self.el).html(template);
 		});
 
 		$(this.el).hide().fadeIn('slow');
@@ -91,6 +103,7 @@ app.Views.CategoriesView = Backbone.View.extend({
     
     setModel: function(e) {
     	e.preventDefault();
+    	this.displayTeamInfos(e);
     	var link = $(e.target);
     	var id =  _(link.parents('tr').attr('id')).strRightBack('_');
         this.selectedCat = _.filter(app.collections.categories.models, function(item){ return item.attributes.id == id });
@@ -124,9 +137,55 @@ app.Views.CategoriesView = Backbone.View.extend({
 			if( this.selectedCatJson.parent_id )
 				app.views.selectListCategoriesView.setSelectedItem( this.selectedCatJson.parent_id[0] );	
 	
-        }       
+        }  
+        
+        $('#modalSaveCat .modal-body').css("height", "800px");
 
     },
+    
+	/** Display category services
+		*/
+	displayTeamInfos: function(e){
+		e.preventDefault();
+
+		// Retrieve the ID of the intervention //
+		var link = $(e.target);
+		var id = _(link.parents('tr').attr('id')).strRightBack('_');
+		
+		// Clear the list of the user //
+		$('#catServices li, #servicesList li').remove();
+
+		var catServices = new Array();
+		if( id ) {
+			this.selectedCat = _.filter(app.collections.categories.models, function(item){ return item.attributes.id == id });
+			var selectedCatJson = this.selectedCat[0].toJSON();	
+			
+			// Display the services of the team //
+			_.each(selectedCatJson.service_ids, function (service, i){
+				$('#catServices').append('<li id="service_'+service.id+'"><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
+				catServices[i] = service.id;
+			});
+		};
+		
+	    //search no technical services
+		var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
+			return service.attributes.technical != true 
+		});
+		//remove no technical services
+		app.collections.claimersServices.remove(noTechnicalServices);
+		app.collections.claimersServices.toJSON()
+
+		// Display the remain services //
+		_.filter(app.collections.claimersServices.toJSON(), function (service, i){ 
+			if(!_.contains(catServices, service.id)){
+				$('#servicesList').append('<li id="service_'+service.id+'"><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
+			}
+		});
+
+		var nbRemainServices = $('#servicesList li').length;
+		$('#badgeNbServices').html(nbRemainServices);
+		
+	},
 
 
     /** Display information in the Modal view
@@ -150,12 +209,14 @@ app.Views.CategoriesView = Backbone.View.extend({
 	     var self = this;
 	     
 	     var parent_id = this.getIdInDropDown(app.views.selectListCategoriesView);
+	     this.services = _.map($("#catServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });     
 	     
 	     this.params = {	
 		     name: this.$('#catName').val(),
 		     code: this.$('#catCode').val(),
 		     unit: this.$('#catUnit').val(),
 		     parent_id: parent_id,
+		     service_ids: [[6, 0, this.services]],
 	     };
 	     
 	    
@@ -175,8 +236,10 @@ app.Views.CategoriesView = Backbone.View.extend({
 						if( self.modelId==0 ){
 							self.model = new app.Models.Category({id: data.result.result});
 						}
-
-						self.params.parent_id = self.getIdInDropDown(app.views.selectListCategoriesView);
+						
+						self.params.parent_id = self.getIdInDropDown(app.views.selectListCategoriesView);						
+						self.params.service_ids = self.services;
+						
 						self.model.update(self.params);
 						app.collections.categories.add(self.model);
 						$('#modalSaveCat').modal('hide');

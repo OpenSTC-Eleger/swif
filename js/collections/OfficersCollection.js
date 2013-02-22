@@ -29,7 +29,18 @@ app.Collections.Officers = Backbone.Collection.extend({
     /** Collection Parse
     */
     parse: function(response) {
-        return response.result.records;
-    }
+    	//Remove Administartor user
+    	res = _.filter(response.result.records, function(item){
+    		return item.id!=1;
+    	});
+        return res;
+    },
+    
+    /** Comparator for ordering collection
+     */
+    comparator: function(item) {
+    	var lastname = item.get("name");
+    	return lastname.toUpperCase();
+	},
 
 });

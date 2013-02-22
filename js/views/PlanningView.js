@@ -414,15 +414,40 @@ app.Views.PlanningView = Backbone.View.extend({
 	     
 	    app.models.task.save(0,params,$('#modalAddTask'), this, null);
    },
+   
+ 	getTarget:function(e) {    	
+    	e.preventDefault();
+	    // Retrieve the ID of the intervention //
+		var link = $(e.target);
+		this.pos =  _(link.parents('tr').attr('id')).strRightBack('_');
+		
+    },
     
     /** Display the form to add a new Task
     */
     displayFormAddTask: function(e){
+    	this.pos = e.currentTarget.id;
     	
-		app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categories})
+        //Display only categories in dropdown belongs to intervention
+        var categoriesFiltered = null;
+        var inter = app.collections.interventions.get(this.pos);
+        if( inter) {
+        	var interJSON = inter.toJSON();        	
+	        categoriesFiltered = _.filter(app.collections.categories.models, function(item){ 
+	        	var services = [];
+	        	_.each( item.attributes.service_ids.models, function(service){
+	        		services.push( service.toJSON().id );
+	        	});
+	        	return  interJSON.service_id && $.inArray(interJSON.service_id[0], services )!=-1;
+	       	});
+		}        
+		
+		app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
+			collection: categoriesFiltered==null?app.collections.categories: new app.Collections.Categories(categoriesFiltered)
+		})
 		app.views.selectListAssignementsView.clearAll();
 		app.views.selectListAssignementsView.addEmptyFirst();
-		app.views.selectListAssignementsView.addAll();
+		app.views.selectListAssignementsView.addAll();	
 		
 		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipment"), collection: app.collections.equipments})
 		app.views.selectListEquipmentsView.clearAll();

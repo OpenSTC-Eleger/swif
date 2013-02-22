@@ -230,7 +230,13 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 				$('#requestContactInputBlock').attr('style', 'display:none');
 				
 
-				app.views.selectListClaimersView = new app.Views.DropdownSelectListView({el: $("#requestClaimer"), collection: claimerType.attributes.claimers});
+				//var collection = this.getCollectionOrdered(claimerType.attributes.claimers);
+
+				var collection = claimerType.attributes.claimers; 
+				collection.comparator = function(model){
+					return model.get("name");
+				};
+				app.views.selectListClaimersView = new app.Views.DropdownSelectListView({el: $("#requestClaimer"), collection: collection});
 				app.views.selectListClaimersView.clearAll();
 				app.views.selectListClaimersView.addEmptyFirst();
 				app.views.selectListClaimersView.addAll();
@@ -300,9 +306,14 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 			$('#requestContactEmail').removeAttr('readonly');
 		
 			
-			
+			//var collection = this.getCollectionOrdered(claimer.attributes.address);
+
+			var collection = claimer.attributes.address; 
+			collection.comparator = function(model){
+				return model.get("name");
+			};
 			app.views.selectListClaimersContactsView = new app.Views.DropdownSelectListView(
-					{el: $("#requestContactSelect"), collection: claimer.attributes.address})
+					{el: $("#requestContactSelect"), collection: collection})
 			app.views.selectListClaimersContactsView.clearAll();
 			app.views.selectListClaimersContactsView.addEmptyFirst();
 			app.views.selectListClaimersContactsView.addAll();

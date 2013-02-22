@@ -18,6 +18,13 @@ app.Models.Category = Backbone.RelationalModel.extend({
 		            includeInJSON: 'id',
 		        }
             },
+			{
+				type: Backbone.HasMany,
+				key: 'service_ids',
+				relatedModel: 'app.Models.ClaimerService',
+				collectionType: 'app.Collections.ClaimersServices',
+				includeInJSON: ['id', 'name'],
+			},
       ],
       
     defaults:{
@@ -26,6 +33,7 @@ app.Models.Category = Backbone.RelationalModel.extend({
 		code: null,
 		unit: null,
 		parent_id: null,
+		service_ids: [],
 	},
       
 	getName : function() {
@@ -58,7 +66,16 @@ app.Models.Category = Backbone.RelationalModel.extend({
     setParent : function(value) {
     	if( value == 'undefined') return;
         this.set({ parent_id : value });
-    },  
+    }, 	
+	// Team services ID //
+	getServicesId: function() {
+	    return this.get('service_ids');
+	},
+	setServicesID : function(value) {
+		if( value == 'undefined') return;
+		this.set({ service_ids : value });
+	},
+	    	
 
 	/** Model Initialization
 	*/
@@ -79,6 +96,7 @@ app.Models.Category = Backbone.RelationalModel.extend({
 		this.setCode( params.code );
 		this.setUnit( params.unit );
 		this.setParent( params.parent_id );
+		this.setServicesID( params.service_ids );
 	},
     
     /** Save Model

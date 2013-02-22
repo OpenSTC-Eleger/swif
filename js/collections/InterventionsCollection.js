@@ -38,6 +38,12 @@ app.Collections.Interventions = Backbone.Collection.extend({
         return response.result.records;
     },
     
+    /** Comparator for ordering collection
+     */
+    comparator: function(item) {
+	  return -item.get("create_date");
+	},
+    
 //	getNotAssigned : function(){
 //	
 //       return _.filter(this.models, function(model){ 

@@ -299,6 +299,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 //					            else
 //					            	self.render();
 					        }
+					        self.model.sendEmail(null);
 					    },
 					    error: function () {
 							console.log('ERROR - Unable to valid the Request - RequestsListView.js');

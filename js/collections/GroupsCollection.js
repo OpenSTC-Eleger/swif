@@ -34,5 +34,10 @@ app.Collections.Groups = Backbone.Collection.extend({
         return response.result.records;
     },
 
+    /** Comparator for ordering collection
+     */
+    comparator: function(item) {
+	  return item.get("name");
+	},
 
 });

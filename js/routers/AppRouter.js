@@ -469,12 +469,20 @@ app.Router = Backbone.Router.extend({
 						                   
 						                    app.collections.equipments.fetch({
 						                    	success: function(){
-								                    app.views.interventionsView = new app.Views.InterventionsView();
-								                    self.render(app.views.interventionsView);
-								                 },
-							                	complete: function(){
-							                	    app.loader('hide');
-							                	}
+						                        
+													if(app.collections.claimersServices == null ){
+														app.collections.claimersServices = new app.Collections.ClaimersServices();
+													}
+													app.collections.claimersServices.fetch({
+													    success: function(){
+										                    app.views.interventionsView = new app.Views.InterventionsView();
+										                    self.render(app.views.interventionsView);
+										                 },
+									                	complete: function(){
+									                	    app.loader('hide');
+									                	}
+									                });
+									            }
 							                });
 							             }
 						             });
@@ -969,8 +977,15 @@ app.Router = Backbone.Router.extend({
                     app.loader('display');
                 },
                 success: function(){
-                    app.views.categoriesView = new app.Views.CategoriesView({page: self.page});
-                    self.render(app.views.categoriesView);
+	        	    if(app.collections.claimersServices == null ){
+	            		app.collections.claimersServices = new app.Collections.ClaimersServices();
+	    			}
+		            app.collections.claimersServices.fetch({
+		            	success: function(){
+		                    app.views.categoriesView = new app.Views.CategoriesView({page: self.page});
+		                    self.render(app.views.categoriesView);
+		                }
+		            });
                 },
                 complete: function(){
                     app.loader('hide');

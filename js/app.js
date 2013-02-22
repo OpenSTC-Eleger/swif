@@ -22,6 +22,7 @@ var app = {
     urlOE_createObject          : '/web/dataset/create',
     urlOE_updateObject          : '/web/dataset/save',
     urlOE_deleteObject          : '/web/dataset/call',
+    urlOE_object          		: '/web/dataset/call',
 
 
 
@@ -225,6 +226,17 @@ var app = {
                     'model'     : model,                 
                     'session_id': session_id      
            }, options);      
+    },
+    
+    /** call object method from OpenERP
+    */
+    callObjectMethodOE : function (args,model,method,session_id,options) {
+        this.json(this.urlOE + this.urlOE_object, {
+            'method'    : method,
+            'args'      : args, 
+            'model'     : model,
+            'session_id': session_id      
+       }, options);  
     },
 
 /*

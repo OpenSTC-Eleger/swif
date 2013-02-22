@@ -32,5 +32,11 @@ app.Collections.Types = Backbone.Collection.extend({
     parse: function(response) {    	
         return response.result.records;
     },
+    
+    /** Comparator for ordering collection
+     */
+    comparator: function(item) {
+	  return item.get("name");
+	},
 
 });

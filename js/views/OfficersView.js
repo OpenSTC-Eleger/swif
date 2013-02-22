@@ -50,14 +50,13 @@ app.Views.OfficersView = Backbone.View.extend({
 
 
 
-		var officers = app.collections.officers.models;
+		var officers = app.collections.officers;
 		var len = officers.length;
 
-		var officersSortedArray = _.sortBy(officers, function(item){ 
-			return item.attributes.name.toUpperCase(); 
-		});
+//		var officersSortedArray = _.sortBy(officers, function(item){ 
+//			return item.attributes.name.toUpperCase(); 
+//		});
 		
-		console.debug(officers);
 
 		var startPos = (this.options.page - 1) * this.numberListByPage;
 		var endPos = Math.min(startPos + this.numberListByPage, len);
@@ -67,7 +66,7 @@ app.Views.OfficersView = Backbone.View.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				officers: officersSortedArray,
+				officers: officers.toJSON(),
 				nbOfficers: len,
 				lang: app.lang,
 				startPos: startPos, endPos: endPos,

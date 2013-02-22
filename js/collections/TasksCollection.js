@@ -31,11 +31,17 @@ app.Collections.Tasks = Backbone.Collection.extend({
 
 
 
-    /** Collection Parse
+    /** Collection Parsename
     */
     parse: function(response) {
         return response.result.records;
     },
+    
+    /** Comparator for ordering collection
+    */
+    comparator: function(item) {
+	  return item.get("name");
+	},
     
     getTasksByOfficer: function(officer_id){    	
     	self = this;

@@ -182,6 +182,14 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
 	},
 	
+	/** Save Model
+	*/
+	sendEmail: function(data,options) { 
+		var params = {}
+		params.state = this.get("state");
+		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "send_email", app.models.user.getSessionID(), options);
+	},
+	
 	update: function(params) {
 		this.setDescription( params.description );
 		//this.setService( params.service_id );

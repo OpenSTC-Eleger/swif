@@ -37,11 +37,11 @@
 			</thead>
 			<tbody>
 			<% for (var i = startPos; i < endPos; i++) { 
-				var officer = officers[i].toJSON()
+				var officer = officers[i];
 			%>
 				
 				<!-- Officer row -->
-				<tr class="row-item" id="officer_<%= officers[i].id %>">
+				<tr class="row-item" id="officer_<%= officers.id %>">
 					<td>
 						<%= officer.name +" "+ officer.firstname %>
 						<p class="row-actions no-margin invisible">
