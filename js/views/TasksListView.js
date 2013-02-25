@@ -56,9 +56,9 @@ app.Views.TasksListView = Backbone.View.extend({
 		
 		var tasks = app.collections.tasks.toJSON();
 		
-		tasks = _.sortBy(tasks, function(item){ 
-			return [-item.state,-item.date_start]; 
-		});
+//		tasks = _.sortBy(tasks, function(item){ 
+//			return [-item.state,-item.date_start]; 
+//		});
 		
 		
 		// Retrieve the year - If not exist in the URL set as the current year //
@@ -156,10 +156,7 @@ app.Views.TasksListView = Backbone.View.extend({
 			app.views.selectListAssignementsView.addEmptyFirst();
 			app.views.selectListAssignementsView.addAll();
 			
-			app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipment"), collection: app.collections.equipments})
-			app.views.selectListEquipmentsView.clearAll();
-			app.views.selectListEquipmentsView.addEmptyFirst();
-			app.views.selectListEquipmentsView.addAll();
+
 			
 			$(".datepicker").datepicker({
     			format: 'dd/mm/yyyy',
@@ -188,6 +185,11 @@ app.Views.TasksListView = Backbone.View.extend({
 	/** Display the form to add a new Task
 		*/
 	displayModalAddTask: function(e){
+			
+		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentAdd"), collection: app.collections.equipments})
+		app.views.selectListEquipmentsView.clearAll();
+		app.views.selectListEquipmentsView.addEmptyFirst();
+		app.views.selectListEquipmentsView.addAll();
 			
 		var mStartDate = moment();
 		var mEndDate = moment();	
@@ -247,6 +249,9 @@ app.Views.TasksListView = Backbone.View.extend({
 	         state: app.Models.Task.state[1].value,
 	         equipment_id: input_equipment_id,
 	         name: this.$('#taskName').val(),
+	         km: this.$('#equipmentKmAdd').val(),
+	         oil_qtity: this.$('#equipmentOilQtityAdd').val(),
+	         oil_price: this.$('#equipmentOilPriceAdd').val(),
 	         category_id: input_category_id,	         
 		     planned_hours: planned_hours,
 		     effective_hours: planned_hours,
@@ -267,13 +272,13 @@ app.Views.TasksListView = Backbone.View.extend({
 		$('.timepicker-default').timepicker({showMeridian:false});
 
 		$('#eventTimeSpent').val(this.secondsToHms(task.remaining_hours*60));
-		$('#modalTimeSpent .modal-body').css("height", "250px");
+		$('#modalTimeSpent .modal-body').css("height", "300px");
 		$('#eventTimeRemaining').val("00:00");
 		
-		app.views.selectListEquipmentsView2 = new app.Views.DropdownSelectListView({el: $("#taskEquipment2"), collection: app.collections.equipments})
-		app.views.selectListEquipmentsView2.clearAll();
-		app.views.selectListEquipmentsView2.addEmptyFirst();
-		app.views.selectListEquipmentsView2.addAll();
+		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentSpent"), collection: app.collections.equipments})
+		app.views.selectListEquipmentsView.clearAll();
+		app.views.selectListEquipmentsView.addEmptyFirst();
+		app.views.selectListEquipmentsView.addAll();
     },
     
     
@@ -304,6 +309,9 @@ app.Views.TasksListView = Backbone.View.extend({
     	    project_id: task.project_id!=null?task.project_id[0]:null,
     	    parent_id: task.id,
     	    equipment_id: input_equipment_id,
+    	    km: this.$('#equipmentKmSpent').val(),
+	        oil_qtity: this.$('#equipmentOilQtitySpent').val(),
+	        oil_price: this.$('#equipmentOilPriceSpent').val(),
 		    state: app.Models.Task.state[1].value,
 		    effective_hours: hours,
 		    planned_hours: task.planned_hours,
@@ -374,13 +382,13 @@ app.Views.TasksListView = Backbone.View.extend({
     	$('#infoModalTaskDone').children('p').html(task.name);
 		$('#infoModalTaskDone').children('small').html(task.notes);
 		
-		$('#modalTaskDone .modal-body').css("height", "250px");
-		$('#eventTime').val(this.secondsToHms(task.remaining_hours*60));
+		$('#modalTaskDone .modal-body').css("height", "300px");
+		$('#eventTimeDone').val(this.secondsToHms(task.remaining_hours*60));
 		
-		app.views.selectListEquipmentsView1 = new app.Views.DropdownSelectListView({el: $("#taskEquipment1"), collection: app.collections.equipments})
-		app.views.selectListEquipmentsView1.clearAll();
-		app.views.selectListEquipmentsView1.addEmptyFirst();
-		app.views.selectListEquipmentsView1.addAll();
+		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentDone"), collection: app.collections.equipments})
+		app.views.selectListEquipmentsView.clearAll();
+		app.views.selectListEquipmentsView.addEmptyFirst();
+		app.views.selectListEquipmentsView.addAll();
     },
 
     saveTaskDone: function(e) {
@@ -395,7 +403,7 @@ app.Views.TasksListView = Backbone.View.extend({
 				that.state = app.Models.Intervention.state[3].value;
 		});
 		
-		var timeArray = $('#eventTime').val().split(':');
+		var timeArray = $('#eventTimeDone').val().split(':');
     	var hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0);
     	
     	 input_equipment_id = null;
@@ -410,6 +418,9 @@ app.Views.TasksListView = Backbone.View.extend({
 		    state: app.Models.Task.state[1].value,
 		    equipment_id: input_equipment_id,
 		    remaining_hours: 0,
+	        km: this.$('#equipmentKmDone').val(),
+	        oil_qtity: this.$('#equipmentOilQtityDone').val(),
+	        oil_price: this.$('#equipmentOilPriceDone').val(),
 		};
 		
 		var task = this.model.toJSON();
