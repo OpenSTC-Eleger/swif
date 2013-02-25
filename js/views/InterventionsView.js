@@ -53,7 +53,7 @@ app.Views.InterventionsView = Backbone.View.extend({
         app.views.headerView.switchGridMode('fluid');
 
 
-        var interventions = app.collections.interventions.models;
+        var interventions = app.collections.interventions;
 
         
         var nbInterventions = _.size(interventions);
@@ -62,23 +62,23 @@ app.Views.InterventionsView = Backbone.View.extend({
 
 
         // Check the number of planned interventions //
-        var interventionsPlanned = _.filter(interventions, function(item){ 
-            return (item.attributes.state == app.Models.Intervention.state[0].value);
+        var interventionsPlanned = _.filter(interventions.toJSON(), function(item){ 
+            return (item.state == app.Models.Intervention.state[0].value);
         });
         var nbInterventionsPlanned = _.size(interventionsPlanned);
 
 
         // Check the number of pending interventions //
-        var interventionsPending = _.filter(interventions, function(item){ 
-            return (item.attributes.state == app.Models.Intervention.state[3].value);
+        var interventionsPending = _.filter(interventions.toJSON(), function(item){ 
+            return (item.state == app.Models.Intervention.state[3].value);
         });
         var nbInterventionsPending = _.size(interventionsPending);
       
-        this.addInfoAboutInter(interventions);   
+        this.addInfoAboutInter(interventions.models);   
         
-        interventionsValidated = _.sortBy(interventions, function(item){ 
-        	 return -item.attributes.create_date; 
-        });
+//        interventionsValidated = _.sortBy(interventions, function(item){ 
+//        	 return -item.attributes.create_date; 
+//        });
 
         // Retrieve the HTML template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -88,10 +88,9 @@ app.Views.InterventionsView = Backbone.View.extend({
 				nbInterventionsPending: nbInterventionsPending,
 				nbInterventionsPlanned: nbInterventionsPlanned,
 				interventionsState: app.Models.Intervention.state,//_.initial(app.Models.Intervention.state),
-				interventions: interventionsValidated,
+				interventions: interventions.toJSON(),
 			});
 
-			console.debug(interventionsValidated);
 
 			$(self.el).html(template);
 

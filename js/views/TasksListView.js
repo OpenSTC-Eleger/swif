@@ -161,7 +161,11 @@ app.Views.TasksListView = Backbone.View.extend({
 			app.views.selectListEquipmentsView.addEmptyFirst();
 			app.views.selectListEquipmentsView.addAll();
 			
-			$(".datepicker").datepicker();
+			$(".datepicker").datepicker({
+    			format: 'dd/mm/yyyy',
+    			weekStart: 1,
+    			autoclose: true,
+    			language: 'fr'});
 			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 		});
 
@@ -240,10 +244,13 @@ app.Views.TasksListView = Backbone.View.extend({
 	         user_id:  app.models.user.getUID(),
 	         date_start: mNewDateStart,
 	         date_end: mNewDateEnd,
+	         state: app.Models.Task.state[1].value,
 	         equipment_id: input_equipment_id,
 	         name: this.$('#taskName').val(),
 	         category_id: input_category_id,	         
 		     planned_hours: planned_hours,
+		     effective_hours: planned_hours,
+		     remaining_hours: 0,
 	     };
 	     //TODO : test
 	     app.models.task.save(0,params,$('#modalAddTask'), null, "taches");
@@ -385,7 +392,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		_.each(tasks.models, function (task, i) {
 			if( that.model.id!= task.id && ( task.toJSON().state == app.Models.Task.state[0].value
 				 || task.toJSON().state == app.Models.Task.state[2].value) )
-				that.state = app.Models.Intervention.state[3].value;	
+				that.state = app.Models.Intervention.state[3].value;
 		});
 		
 		var timeArray = $('#eventTime').val().split(':');

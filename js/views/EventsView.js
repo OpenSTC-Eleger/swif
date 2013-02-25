@@ -275,7 +275,11 @@ app.Views.EventsView = Backbone.View.extend({
 		        	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 		        	
 		        	
-		        	$(".datepicker").datepicker();
+		        	$(".datepicker").datepicker({
+		        			format: 'dd/mm/yyyy',
+		        			weekStart: 1,
+		        			autoclose: true,
+		        			language: 'fr'});
 		        	$('#modalAbsentTask .modal-body').css("height", "380px");
 		        	
 		        	app.views.selectListAbsentTypesView = new app.Views.DropdownSelectListView({el: $("#absentType"), collection: app.collections.absentTypes})

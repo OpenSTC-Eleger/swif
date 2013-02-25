@@ -296,10 +296,11 @@ app.Views.RequestsListView = Backbone.View.extend({
 					            // puis la récréer à la deuxième validation . POur le moment les actions ne sont plus disponibles quand le statut est 'validé'
 //					            if( self.model.getInterventions().size()==0 )
 					            	self.createIntervention();
+					            	self.model.sendEmail(null);
 //					            else
 //					            	self.render();
 					        }
-					        self.model.sendEmail(null);
+					       
 					    },
 					    error: function () {
 							console.log('ERROR - Unable to valid the Request - RequestsListView.js');
@@ -366,6 +367,11 @@ app.Views.RequestsListView = Backbone.View.extend({
 					            self.model.update(params);
 					            //app.collections.requests.get(self.pos).update(self.model);
 					            self.render();
+					            
+					            //Send mail except confirm status
+					            if( self.params.state!=app.Models.Task.state[1].value) {
+					            	self.model.sendEmail(null);
+					            }
 					        }
 					    },
 					    error: function () {

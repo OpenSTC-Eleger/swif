@@ -131,9 +131,7 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 	    saveRequest: function (e) {
 		     
 	    	e.preventDefault();
-
-		     var self = this;
-		     
+		    	     
 		     partner_address_id = null;
 		     contact_name = null;
 		     contact_phone = null;
@@ -174,6 +172,8 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 			     site_details: this.$('#requestPlacePrecision').val(),
 		     };
 
+		    var self = this;
+		     
 		    this.model.save(params,{
 				success: function (data) {
 					console.log(data);
@@ -181,7 +181,7 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 						app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 					}
 					else{
-//						if ( self.model.id!=null )
+//						( self.model.id!=null )
 //							app.collections.requests.get(self.model.id) = self.model;
 //						else
 //							app.collections.requests.add(self.model);
@@ -189,6 +189,8 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 						//self.undelegateEvents();
 						//self.setElement(this.el, false);
 						//self = null;
+						self.model.set({id:data.result.result});
+						self.model.sendEmail(null);
 						app.router.navigate('#' , true);
 						console.log('Success SAVE REQUEST');
 					}
