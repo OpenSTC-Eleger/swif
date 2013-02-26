@@ -93,14 +93,11 @@ app.Views.InterventionsView = Backbone.View.extend({
 
 
 			$(self.el).html(template);
-
 			
-
-			
-			app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipment"), collection: app.collections.equipments})
-			app.views.selectListEquipmentsView.clearAll();
-			app.views.selectListEquipmentsView.addEmptyFirst();
-			app.views.selectListEquipmentsView.addAll();
+//			app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipment"), collection: app.collections.equipments})
+//			app.views.selectListEquipmentsView.clearAll();
+//			app.views.selectListEquipmentsView.addEmptyFirst();
+//			app.views.selectListEquipmentsView.addAll();
 
 			$('*[rel="tooltip"]').tooltip({placement: "right"});
 
@@ -281,13 +278,13 @@ app.Views.InterventionsView = Backbone.View.extend({
 	    	 }
 	    }	    	
 	     
-	     input_equipment_id = null;
-	     if( app.views.selectListEquipmentsView != null ) {
-	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
-	    	 if( selectItem ) {
-	    		 input_equipment_id = selectItem.toJSON().id
-	    	 }
-	     }
+//	     input_equipment_id = null;
+//	     if( app.views.selectListEquipmentsView != null ) {
+//	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
+//	    	 if( selectItem ) {
+//	    		 input_equipment_id = selectItem.toJSON().id
+//	    	 }
+//	     }
 	     
 	     
 	     var duration = $("#taskHour").val().split(":");
@@ -295,7 +292,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 
 	     var params = {
 	         project_id: this.pos,
-	         equipment_id: input_equipment_id,
+	         //equipment_id: input_equipment_id,
 	         name: this.$('#taskName').val(),
 	         category_id: input_category_id,	         
 		     planned_hours: mDuration.asHours(),

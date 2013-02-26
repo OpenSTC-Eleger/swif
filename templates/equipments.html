@@ -35,7 +35,10 @@
 					<th><%= _.capitalize(lang.type) %></th>
 					<th><%= _.capitalize(lang.cv) %></th>
 					<th><%= _.capitalize(lang.year) %></th>
-					<th><%= _.capitalize(lang.time) %></th>				
+					<th><%= _.capitalize(lang.time) %></th>	
+					<th><%= _.capitalize(lang.km) %></th>	
+					<th><%= _.capitalize(lang.technicalEquipment) %></th>	
+					<th><%= _.capitalize(lang.smallEquipment) %></th>				
 				</tr>
 			</thead>
 			<tbody>
@@ -56,6 +59,9 @@
 					<td><%= (equipment.cv != false ? equipment.cv : "")%></td>
 					<td><%= (equipment.year != false ? equipment.year : "")%></td>
 					<td><%= (equipment.time != false ? equipment.time : "")%></td>
+					<td><%= (equipment.km != false ? equipment.km : "" )%></td>
+					<td><%= (equipment.technical == true ? "<i class='icon-ok'></i>" : "")%></td>
+					<td><%= (equipment.small == true ? "<i class='icon-ok'></i>" : "")%></td>					
 				</tr>
 
 			<% }; %>
@@ -126,78 +132,124 @@
 	</div>
 	
 	<div class="modal-body">
-		<form id="formSaveEquipment" action="#" class="form-horizontal">
+		<form id="formSaveEquipment" action="#" class="form-inline">
 
+			<div class="input-append">
 			
-			<!-- Immatriculation -->
-			<div class="control-group">
-				<label for="equipmentImmat" class="control-label"><%= _.capitalize(lang.immat) %>:</label>
-
-				<div class="controls">
-					<input type="text" id="equipmentImmat" name="equipmentImmat" required="required" />
-					<span class="help-inline"></span>
+				<!-- Immatriculation -->
+				<div class="control-group">
+					<label for="equipmentImmat" class="control-label"><%= _.capitalize(lang.immat) %>:</label>
+	
+					<div class="controls">
+						<input type="text" id="equipmentImmat" name="equipmentImmat" required="required" />
+						<span class="help-inline"></span>
+					</div>
 				</div>
-			</div>
-
-			<!-- Marque -->
-			<div class="control-group">
-				<label for="equipmentMarque" class="control-label"><%= _.capitalize(lang.marque) %>:</label>
-
-				<div class="controls">
-					<input type="text" id="equipmentMarque" name="equipmentMarque" required="required" />
-					<span class="help-inline"></span>
+				
+				<!-- Usage -->
+				<div class="control-group">
+					<label for="equipmentUsage" class="control-label"><%= _.capitalize(lang.usage) %>:</label>
+	
+					<div class="controls">
+						<input type="text" id="equipmentUsage" name="equipmentUsage" required="required" />
+						<span class="help-inline"></span>
+					</div>
 				</div>
-			</div>
-			
-			<!-- Usage -->
-			<div class="control-group">
-				<label for="equipmentUsage" class="control-label"><%= _.capitalize(lang.usage) %>:</label>
+	
 
-				<div class="controls">
-					<input type="text" id="equipmentUsage" name="equipmentUsage" required="required" />
-					<span class="help-inline"></span>
-				</div>
+				
 			</div>
 			
-			
-			<!-- Type -->
-			<div class="control-group">
-				<label for="equipmentType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
-
-				<div class="controls">
-					<input type="text" id="equipmentType" name="equipmentType" required="required" />
-					<span class="help-inline"></span>
+			<div class="input-append">
+				<!-- Marque -->
+				<div class="control-group">
+					<label for="equipmentMarque" class="control-label"><%= _.capitalize(lang.marque) %>:</label>
+	
+					<div class="controls">
+						<input type="text" id="equipmentMarque" name="equipmentMarque" required="required" />
+						<span class="help-inline"></span>
+					</div>
 				</div>
-			</div>
-			
-			<!-- CV -->
-			<div class="control-group">
-				<label for="equipmentCV" class="control-label"><%= _.capitalize(lang.cv) %>:</label>
-
-				<div class="controls">
-					<input type="number" id="equipmentCV" name="equipmentCV" required="required" />
-					<span class="help-inline"></span>
+				
+				
+				<!-- Type -->
+				<div class="control-group">
+					<label for="equipmentType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
+	
+					<div class="controls">
+						<input type="text" id="equipmentType" name="equipmentType" required="required" />
+						<span class="help-inline"></span>
+					</div>
 				</div>
 			</div>
 			
-			<!-- Year -->
-			<div class="control-group">
-				<label for="equipmentYear" class="control-label"><%= _.capitalize(lang.year) %>:</label>
-
-				<div class="controls">
-					<input type="number" id="equipmentYear" name="equipmentYear" required="required" />
-					<span class="help-inline"></span>
+			<div class="input-append">
+			
+				<!-- Year -->
+				<div class="control-group">
+					<label for="equipmentYear" class="control-label"><%= _.capitalize(lang.year) %>:</label>
+	
+					<div class="controls">
+						<input type="number" id="equipmentYear" name="equipmentYear" required="required" />
+						<span class="help-inline"></span>
+					</div>
 				</div>
+				<!-- CV -->
+				<div class="control-group">
+					<label for="equipmentCV" class="control-label"><%= _.capitalize(lang.cv) %>:</label>
+	
+					<div class="controls">
+						<input type="number" id="equipmentCV" name="equipmentCV" required="required" />
+						<span class="help-inline"></span>
+					</div>
+				</div>
+				
+
 			</div>
 			
-			<!-- Time -->
-			<div class="control-group">
-				<label for="equipmentTime" class="control-label"><%= _.capitalize(lang.time) %>:</label>
-
-				<div class="controls">
-					<input type="number" id="equipmentTime" name="equipmentTime" required="required" />
-					<span class="help-inline"></span>
+			<div class="input-append">
+			
+				<!-- KM -->
+				<div class="control-group">
+					<label for="equipmentKm" class="control-label"><%= _.capitalize(lang.km) %>:</label>
+	
+					<div class="controls">
+						<input type="number" id="equipmentKm" name="equipmentKm" required="required" />
+						<span class="help-inline"></span>
+					</div>
 				</div>
+				
+				<!-- Time -->
+				<div class="control-group">
+					<label for="equipmentTime" class="control-label"><%= _.capitalize(lang.time) %>:</label>
+	
+					<div class="controls">
+						<input type="number" id="equipmentTime" name="equipmentTime" required="required" />
+						<span class="help-inline"></span>
+					</div>
+				</div>
+				
+
+			</div>
+			
+			<div class="input">
+			
+				<div class="control-group">
+					<div class="controls">
+						<label for="equipmentIsTechnical" class="checkbox"><%= _.capitalize(lang.technicalEquipment) %>
+							<input type="checkbox" id="equipmentIsTechnical" />
+						</label>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<div class="controls">
+						<label for="equipmentIsSmall" class="checkbox"><%= _.capitalize(lang.smallEquipment) %>
+							<input type="checkbox" id="equipmentIsSmall" />
+						</label>
+					</div>
+				</div>
+				
 			</div>
 
 		</form>

@@ -257,8 +257,8 @@ app.Views.TasksListView = Backbone.View.extend({
 		     effective_hours: planned_hours,
 		     remaining_hours: 0,
 	     };
-	     //TODO : test
 	     app.models.task.save(0,params,$('#modalAddTask'), null, "taches");
+	     this.saveEquipment( input_equipment_id, this.$('#equipmentKmAdd').val() )
    	},
     
     //Task not finished
@@ -361,6 +361,7 @@ app.Views.TasksListView = Backbone.View.extend({
     		  		}    		
     		  		
     		  		self.saveNewStateTask(taskParams, taskWorkParams,$('#modalTimeSpent'),newInterState);
+    		  		self.saveEquipment( input_equipment_id, self.$('#equipmentKmSpent').val() )
 				}
 			});
     },
@@ -447,6 +448,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		}    		
     	
 		this.saveNewStateTask(taskParams, taskWorkParams,$('#modalTaskDone'),newInterState);
+		this.saveEquipment( input_equipment_id, this.$('#equipmentKmDone').val() )
     },
     
     //Task not beginning
@@ -505,6 +507,20 @@ app.Views.TasksListView = Backbone.View.extend({
 						app.models.task.save(self.model.id, self.taskParams, self.element, self, "#taches");
 				}		
 			});
+	},
+	
+	saveEquipment: function(equipmentId, km) {
+		
+		var equipment = app.collections.equipments.get(equipmentId);
+		var params = {};
+		params.km = km;
+		equipment.updateKM( km );
+		equipment.save(equipment.id,params,{
+			succes: function(data){
+				console.debug(data);
+			}
+		});
+
 	},
 
     preventDefault: function(event){
