@@ -11,7 +11,31 @@
 	else{ 
 		var classColor = "";
 		var actionTaskToProcess = "";
-	} 
+	}
+%>
+
+<!-- Pagination for the Week | Display the title in smart format -->
+<%
+	var momentDatePrev = momentDate.clone().subtract('weeks', 1).day(4);
+	var momentDateNext = momentDate.clone().add('weeks', 1).day(4);
+
+
+	var firstDayOfTheWeek = momentDate.clone().day(1);
+	var lastDayOfTheWeek = momentDate.clone().day(7);
+
+
+	if(firstDayOfTheWeek.isSame(lastDayOfTheWeek, 'month')){
+		var titleFirstDay = momentDate.day(1).format('D');
+	}
+	else{
+		if(firstDayOfTheWeek.isSame(lastDayOfTheWeek, 'year')){
+			var titleFirstDay = momentDate.day(1).format('D MMM');
+		}
+		else{
+			var titleFirstDay = momentDate.day(1).format('D MMM YYYY');
+		}
+	}
+
 %>
 
 
@@ -38,44 +62,59 @@
 	</div>
 	<!-- Add task -->
 
-	<h3>Semaine <%= weekSelected %>, du <%= moment().week(weekSelected).year(yearSelected).day(1).format('LL') %> au <%= moment().week(weekSelected).year(yearSelected).day(5).format('LL') %></h3>
+	<h2 class="align-center">
+		<%= lang.week %> <%= momentDate.week() %> - 
+		<em class="muted"><%= titleFirstDay %> <%= lang.to %> <%= lastDayOfTheWeek.format('D MMM YYYY') %></em>
+	</h2>
 
 	<!-- Pagination -->
-	<ul class="pager">
-		<li class="previous"><a href="#"><i class="icon-chevron-left"></i> <%= _.capitalize(lang.actions.previousWeek) %></a></li>
-		<li class="next"><a href="#"><%= _.capitalize(lang.actions.nextWeek) %> <i class="icon-chevron-right"></i></a></li>
+	<ul class="pager noMarginTop">
+		<li class="previous">
+			<a href="#taches/<%= momentDatePrev.year()+"/"+momentDatePrev.week() %>"><i class="icon-chevron-left"></i> <%= _.capitalize(lang.actions.previousWeek) %></a>
+		</li>
+		<li class="next">
+			<a href="#taches/<%= momentDateNext.year()+"/"+momentDateNext.week() %>"><%= _.capitalize(lang.actions.nextWeek) %> <i class="icon-chevron-right"></i></a>
+		</li>
 	</ul>
 
 
 	<!-- Check if there is Request in the Database -->
-	<% if(tasks.length != 0) { %>
+	<% 	_.each(tasksPerDay, function(day, i) { %>
 
-		<!-- Table Requests -->
-		<table class="table table-striped table-bordered table-hover">
-			<thead>
-				<tr>
-					<th><%= _.capitalize(lang.label) %></th>
-					<th><%= _.capitalize(lang.intervention) %></th>
-					<th><%= _.capitalize(lang.place) %></th>
-					<th><%= _.capitalize(lang.dateStart) %></th>
-					<th><%= _.capitalize(lang.dateEnd) %></th>
-					<th><%= _.capitalize(lang.assignedTo) %></th>
-					<th><%= _.capitalize(lang.plannedHours) %></th> 
-					<th><%= _.capitalize(lang.remainingHours) %></th>
-					<th><%= _.capitalize(lang.status) %></th>
-					<th><%= _.capitalize(lang.action) %></th>
-				</tr>
-			</thead>
-			<tbody>
-				<% _.each(tasks, function (task, i) { %>
-				
+		<section class="dayTasks">
+		
+		<h4 class="table-caption"><%= _.capitalize(day.day) %> <small class="badge vertical-align-top"><%= _.size(day.tasks) %></small></h4>
+		
+		<!-- Check if there is tasks planned this day -->
+		<% if(_.size(day.tasks) != 0){ %>
+
+			<!-- Table Requests -->
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th><%= _.capitalize(lang.intervention) %></th>
+						<th><%= _.capitalize(lang.label) %></th>
+						<th><%= _.capitalize(lang.place) %></th>
+						<th><%= _.capitalize(lang.startHour) %></th>
+						<th><%= _.capitalize(lang.endHour) %></th>
+						<th><%= _.capitalize(lang.assignedTo) %></th>
+						<th><%= _.capitalize(lang.plannedHours) %></th> 
+						<th><%= _.capitalize(lang.remainingHours) %></th>
+						<th><%= _.capitalize(lang.status) %></th>
+						<th><%= _.capitalize(lang.action) %></th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				<% _.each(day.tasks, function (task, i) { %>
+
 					<tr id="<%= task.id %>">
+					    <td><%= task.project_id[1] %></td>
 					    <td><a 	href="#taches/<%= task.id %>"> <%= _.capitalize(task.name) %> </a></td>
-						<td class="hidden-phone"><%= task.project_id[1] %></td>
-						<td><%= ( task.intervention && task.intervention.site1 ) ? task.intervention.site1[1] : "" %></td>
-						<td><%= (task.date_start) != "" ? moment(task.date_start).format('LLL') : "" %></td>
-						<td><%= (task.date_end) != "" ? moment(task.date_end).format('LLL') : "" %></td>
-					    
+						<td><%= (task.intervention && task.intervention.site1 ) ? task.intervention.site1[1] : '' %></td>
+						<td><%= (task.date_start) != '' ? moment(task.date_start).format('DD/MM/YYYY') : '' %></td>
+						<td><%= (task.date_end) != '' ? moment(task.date_end).format('H[h]mm') : '' %></td>
+
 					    <% if(task.team_id == false){ %>
 					    	<td><%= task.user_id[1] %></td>
 					    <% } else { %>
@@ -119,27 +158,36 @@
 						
 					</tr>
 				<% }); %>
-			</tbody>
-		</table>
-		<!-- /Table Requests -->
+				</tbody>
+			</table>
+			<!-- /Table Requests -->
+
+		<% } else{ %>
+			<!-- No Task to Display -->
+			<div class="alert alert-info">
+				<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTask %>.
+			</div>
+		<% } %>
+
+		</section>
+	<% }); %>
+
+	
+
 
 		<!-- Pagination -->
 		<ul class="pager">
-			<li class="previous"><a href="#"><i class="icon-chevron-left"></i> <%= _.capitalize(lang.actions.previousWeek) %></a></li>
-			<li class="next"><a href="#"><%= _.capitalize(lang.actions.nextWeek) %> <i class="icon-chevron-right"></i></a></li>
+			<li class="previous">
+				<a href="#taches/<%= momentDatePrev.year()+"/"+momentDatePrev.week() %>"><i class="icon-chevron-left"></i> <%= _.capitalize(lang.actions.previousWeek) %></a>
+			</li>
+			<li class="next">
+				<a href="#taches/<%= momentDateNext.year()+"/"+momentDateNext.week() %>"><%= _.capitalize(lang.actions.nextWeek) %> <i class="icon-chevron-right"></i></a>
+			</li>
 		</ul>
 
 
-	<% } 
-	else { %>
-		<!-- No Task to Display -->
-		<div class="alert alert-info">
-			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTask %>.
-		</div>
-
-	<% } %>
-
 </div>
+
 
 <!-- Modal Form Task Done -->
 <div id="modalTaskDone" class="modal hide fade">
@@ -156,7 +204,7 @@
 		</blockquote>
 
 	    <form id="formTaskDone" action="#" class="form-horizontal">
-	    
+
     	     <div class="control-group">
                	<label for="eventTime" class="control-label">Temps travaillé:</label>
                	<div class="controls">
@@ -168,7 +216,7 @@
 					</div>
                	</div>
 			</div>
-			
+
 			<!-- Equipment -->
             <div class="control-group">
 				<label for="taskEquipment1" class="control-label"><%= _.capitalize(lang.equipment) %>:</label>
@@ -178,8 +226,7 @@
 					<span class="help-inline"></span>
 				</div>
 			</div>
-			
-			
+
 	    </form>
 	</div>
 	
@@ -190,7 +237,7 @@
 </div>
 
 
-<!-- Form to add a new Task -->
+<!-- Modal Form to Add a new Task -->
 <div id="modalAddTask" class="modal hide fade">
 	<div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -199,7 +246,7 @@
 	
 	<div class="modal-body custom-height-modal">
 	    <form id="formAddTask" action="#" class="form-inline">
-	    
+
 			<!-- Task name -->
             <div class="control-group">
                 <label for="taskName" class="control-label">Nom:</label>
@@ -209,7 +256,7 @@
                     <span class="help-inline"></span>
                 </div>
             </div>
-		
+
             <!-- Task Category -->
             <div class="control-group">
                 <label for="taskCategory" class="control-label">Catégorie:</label>
@@ -300,6 +347,7 @@
 	    <a href="#" data-dismiss="modal">Annuler</a>
 	</div>
 </div>
+
 
 <!-- Modal Form Time Spent -->
 <div id="modalTimeSpent" class="modal hide fade">
