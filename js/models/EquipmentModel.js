@@ -17,6 +17,8 @@ app.Models.Equipment = Backbone.RelationalModel.extend({
 		cv: 0,
 		year: 0,
 		time: 0,
+		technical: false,
+		small: false,
 	},
 
 	getName : function() {
@@ -59,6 +61,14 @@ app.Models.Equipment = Backbone.RelationalModel.extend({
         this.set({ cv : value });
     }, 
     
+    getKM : function() {
+        return this.get('km');
+    },
+    setKM : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ km : value });
+    }, 
+    
     getYear : function() {
         return this.get('year');
     },
@@ -73,6 +83,22 @@ app.Models.Equipment = Backbone.RelationalModel.extend({
     setTime : function(value) {
     	if( value == 'undefined') return;
         this.set({ time : value });
+    }, 
+    
+    isTechnical : function() {
+        return this.get('technical');
+    },
+    setTechnical : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ technical : value });
+    }, 
+    
+    isSmall : function() {
+        return this.get('small');
+    },
+    setSmall : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ small : value });
     }, 
 
 	/** Model Initialization
@@ -97,11 +123,18 @@ app.Models.Equipment = Backbone.RelationalModel.extend({
 		this.setCV( params.cv );
 		this.setYear( params.year );
 		this.setTime( params.time );
+		this.setTechnical( params.technical );
+		this.setSmall( params.small );
+		this.setKM( params.km );
+	},
+	
+	updateKM: function( params ){
+		this.setKM( params.km );
 	},
 
 	/** Save Model
 	*/
-	save: function(data, id, options) { 
+	save: function(id, data, options) { 
 		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
 	},
 

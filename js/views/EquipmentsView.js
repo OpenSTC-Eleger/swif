@@ -103,7 +103,10 @@ app.Views.EquipmentsView = Backbone.View.extend({
         $('#equipmentType').val('');
         $('#equipmentCV').val('');
         $('#equipmentYear').val('');
-        $('#equipmentTime').val('');
+        $('#equipmentTime').val('');      
+        $('#equipmentIsTechnical').removeAttr("checked");	
+        $('#equipmentIsSmall').removeAttr("checked");	
+        $('#equipmentKm').val('');
         if( this.selectedJson ) {
 			$('#equipmentImmat').val(this.selectedJson.name);
 			$('#equipmentMarque').val(this.selectedJson.marque);
@@ -112,7 +115,9 @@ app.Views.EquipmentsView = Backbone.View.extend({
 	        $('#equipmentCV').val(this.selectedJson.cv);
 	        $('#equipmentYear').val(this.selectedJson.year);
 	        $('#equipmentTime').val(this.selectedJson.time);
-			
+	        this.selectedJson.technical?$('#equipmentIsTechnical').attr("checked","checked"):"";
+	        this.selectedJson.small?$('#equipmentIsSmall').attr("checked","checked"):"";
+	        $('#equipmentKm').val(this.selectedJson.km);
         }       
 
     },
@@ -144,6 +149,9 @@ app.Views.EquipmentsView = Backbone.View.extend({
 	     	 cv:this.$('#equipmentCV').val(),
 	     	 year:this.$('#equipmentYear').val(),
 	     	 time:this.$('#equipmentTime').val(),
+	         technical:this.$('#equipmentIsTechnical').is(':checked'),
+	         small:this.$('#equipmentIsSmall').is(':checked'),
+	         km:this.$('#equipmentKm').val(),
 	     };
 	     
 	    this.modelId = this.selectedJson==null?0: this.selectedJson.id;

@@ -109,25 +109,10 @@ app.Views.PlanningView = Backbone.View.extend({
         		}
         	}); 
 
-        	//remove admin
-        	if ( that.agents!=null && that.agents.length > 0 )
-        		that.agents = _.without(that.agents,that.agents[0]);
-        	
+     	
             var interventions = app.collections.interventions.models;
             console.log(app.collections.interventions);
-            
-            //Keep only inetrvention not planned
-//            interventions = _.filter(interventions,function (intervention){    
-//            	var inter = intervention.toJSON();
-//            	//A planifier(toschedule), planifiée(scheduled), pending(En cours) 
-//            	// Encours car des tâchespeuvent avoir fait l'objet d'une saisie de temps passé, tandis qu'elle n'a pas été
-//            	// encore cloturée
-//				return (inter.state == app.Models.Intervention.state[0].value ||
-//						inter.state == app.Models.Intervention.state[1].value ||
-//						inter.state == app.Models.Intervention.state[2].value ||
-//						inter.state == app.Models.Intervention.state[5].value) //template
-//			});
-            
+                        
             // Collection Filter if not null //
 			if(sessionStorage.getItem(self.filters) != null){
 				var interventions = _.filter(interventions, function(item){ 
@@ -166,6 +151,7 @@ app.Views.PlanningView = Backbone.View.extend({
             
             $('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 
+            //TODO : refresh planning TEST
 //            if( Backbone.history.fragment=="planning" ) { ) {
 //            	// Animated Scroll //                
 //            	var selector = "#listAgents li a[href=\"#agents/" + self.agent + "\"]";
@@ -374,47 +360,7 @@ app.Views.PlanningView = Backbone.View.extend({
 		});
 
     },
-    
-	  
-    
-    /** Save the Task
-    */
-    saveTask: function(e){
-    	 var self = this;
 
-		 e.preventDefault();
-		
-		 
-		 input_category_id = null;
-	     if( app.views.selectListAssignementsView != null ) {
-	    	 var selectItem = app.views.selectListAssignementsView.getSelected();
-	    	 if( selectItem ) {
-	    		 input_category_id = selectItem.toJSON().id
-	    	 }
-	     }
-	     
-	     input_equipment_id = null;
-	     if( app.views.selectListEquipmentsView != null ) {
-	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
-	    	 if( selectItem ) {
-	    		 input_equipment_id = selectItem.toJSON().id
-	    	 }
-	     }
-
-	     var duration = $("#taskHour").val().split(":");
-	     var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] })
-	     
-	     var params = {
-	         project_id: this.pos,
-	         name: this.$('#taskName').val(),
-	         category_id: input_category_id,	
-	         equipment_id: input_equipment_id,
-	         planned_hours: mDuration.asHours(),
-	     };
-	     
-	    app.models.task.save(0,params,$('#modalAddTask'), this, null);
-   },
-   
  	getTarget:function(e) {    	
     	e.preventDefault();
 	    // Retrieve the ID of the intervention //
@@ -449,10 +395,10 @@ app.Views.PlanningView = Backbone.View.extend({
 		app.views.selectListAssignementsView.addEmptyFirst();
 		app.views.selectListAssignementsView.addAll();	
 		
-		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipment"), collection: app.collections.equipments})
-		app.views.selectListEquipmentsView.clearAll();
-		app.views.selectListEquipmentsView.addEmptyFirst();
-		app.views.selectListEquipmentsView.addAll();
+//		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipment"), collection: app.collections.equipments})
+//		app.views.selectListEquipmentsView.clearAll();
+//		app.views.selectListEquipmentsView.addEmptyFirst();
+//		app.views.selectListEquipmentsView.addAll();
         
         // Retrieve the ID of the intervention //
         this.pos = e.currentTarget.id;
@@ -509,7 +455,47 @@ app.Views.PlanningView = Backbone.View.extend({
 		e.preventDefault();
 		$('#interventionPlace').val('');
 		this.renderService($(e.target).attr('value'));
-	},
+	}, 
+	  
+    
+    /** Save the Task
+    */
+    saveTask: function(e){
+    	 var self = this;
+
+		 e.preventDefault();
+		
+		 
+		 input_category_id = null;
+	     if( app.views.selectListAssignementsView != null ) {
+	    	 var selectItem = app.views.selectListAssignementsView.getSelected();
+	    	 if( selectItem ) {
+	    		 input_category_id = selectItem.toJSON().id
+	    	 }
+	     }
+	     
+//	     input_equipment_id = null;
+//	     if( app.views.selectListEquipmentsView != null ) {
+//	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
+//	    	 if( selectItem ) {
+//	    		 input_equipment_id = selectItem.toJSON().id
+//	    	 }
+//	     }
+
+	     var duration = $("#taskHour").val().split(":");
+	     var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] })
+	     
+	     var params = {
+	         project_id: this.pos,
+	         name: this.$('#taskName').val(),
+	         category_id: input_category_id,	
+	         //equipment_id: input_equipment_id,
+	         planned_hours: mDuration.asHours(),
+	     };
+	     
+	    app.models.task.save(0,params,$('#modalAddTask'), this, null);
+   },
+   
 	
 	/** Save the intervention */
     saveIntervention: function (e) {

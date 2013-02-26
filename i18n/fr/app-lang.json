@@ -104,7 +104,9 @@
 	"time"					: "Heures",
 	"oilQtity"				: "Quantité carburant",
 	"oilPrice"				: "Prix Carburant",
-	"distance"				: "Kilomètres",
+	"km"					: "Kilomètres",
+	"technicalEquipment"	: "Utilitaire",
+	"smallEquipment"		: "Petit matériel",
 
 
 	"actions" : {
