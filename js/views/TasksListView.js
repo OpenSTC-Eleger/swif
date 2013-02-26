@@ -289,8 +289,8 @@ app.Views.TasksListView = Backbone.View.extend({
 	     
 	     var params = {
 	         user_id:  app.models.user.getUID(),
-	         date_start: mNewDateStart,
-	         date_end: mNewDateEnd,
+	         date_start: mNewDateStart.toDate(),
+	         date_end: mNewDateEnd.toDate(),
 	         state: app.Models.Task.state[1].value,
 	         equipment_id: input_equipment_id,
 	         name: this.$('#taskName').val(),

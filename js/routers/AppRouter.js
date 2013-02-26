@@ -743,17 +743,40 @@ app.Router = Backbone.Router.extend({
 			
 		        	if(app.collections.tasks == null ){
 		                app.collections.tasks = new app.Collections.Tasks();
-		            }
+		            }		        	
 		        	
-		        	app.loader('display');
 		        	app.collections.tasks.fetch({
 		        		success: function(){
-		        			app.views.taskDetailsView = new app.Views.TaskDetailsView(self.task, false);
-		        			self.render(app.views.taskDetailsView);
-			        	},
-		            	complete: function(){
-		            	    app.loader('hide');
-		            	}			        		
+		        		 if(app.collections.officers == null ){
+			                    app.collections.officers = new app.Collections.Officers();
+			                }
+			                app.collections.officers.fetch({
+			                	 success: function(){
+			                	 	if(app.collections.categories == null ){
+				                        app.collections.categories = new app.Collections.Categories();
+				                    }				                   
+				                    app.collections.categories.fetch({
+				                    	success: function(){	
+				                    		 if(app.collections.claimersServices == null ){
+							                    app.collections.claimersServices = new app.Collections.ClaimersServices();
+							                }
+							
+							                
+							                app.collections.claimersServices.fetch({
+							                	success: function(){
+								        			app.views.taskDetailsView = new app.Views.TaskDetailsView(self.task, false);
+								        			self.render(app.views.taskDetailsView);
+								        	   
+									        	},
+								            	complete: function(){
+								            	    app.loader('hide');
+								            	}
+							                });
+								        }
+						           });
+						        }
+				            });
+				         }
 		        	});
 		    	}			        		
 			});

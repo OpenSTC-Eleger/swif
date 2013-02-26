@@ -110,7 +110,11 @@
 
 					<tr id="<%= task.id %>">
 					    <td><%= task.project_id[1] %></td>
-					    <td><a 	href="#taches/<%= task.id %>"> <%= _.capitalize(task.name) %> </a></td>
+					    <% if( task.state == app.Models.Task.state[0].value ) { %>
+					    	<td><a href="#taches/<%= task.id %>"> <%= _.capitalize(task.name) %> </a></td>
+					    <% } else { %>
+					    	<td><%= _.capitalize(task.name) %> </td>
+					     <% } %>
 						<td><%= (task.intervention && task.intervention.site1 ) ? task.intervention.site1[1] : '' %></td>
 						<td><%= (task.date_start) != '' ? moment(task.date_start).format('DD/MM/YYYY') : '' %></td>
 						<td><%= (task.date_end) != '' ? moment(task.date_end).format('H[h]mm') : '' %></td>

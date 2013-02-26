@@ -64,6 +64,7 @@
 	"aboutTheRequest"   	: "À propos de la demande",
 	"aboutTheIntervention"  : "À propos de l'intervention",
 	"aboutTheTask"   		: "À propos de la tâche",
+	"aboutThePlanning"   	: "Planification",
 	"aboutTheOfficer"  		: "À propos de l'agent",
 	"informationOfTheSite" 	: "Précision sur le site",
 	"serviceConcerned" 		: "Service concerné",
@@ -107,6 +108,7 @@
 	"km"					: "Kilomètres",
 	"technicalEquipment"	: "Utilitaire",
 	"smallEquipment"		: "Petit matériel",
+	"officer"				: "Officier",
 
 
 	"actions" : {
