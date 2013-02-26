@@ -196,34 +196,72 @@
 	    <h3>Saisie du temps passé</h3>
 	</div>
 	
-	<div class="modal-body">
+	<div class="modal-body custom-height-modal">
 
 		<blockquote id="infoModalTaskDone" class="spaceBottom">
 			<p></p>
 			<small></small>
 		</blockquote>
 
-	    <form id="formTaskDone" action="#" class="form-horizontal">
-
-    	     <div class="control-group">
-               	<label for="eventTime" class="control-label">Temps travaillé:</label>
-               	<div class="controls">
-					<div class="input-append bootstrap-timepicker" >							
-					    <input type="text" class="timepicker-default input-small" id='eventTime'>
-					    <span class="add-on">
-					        <i class="icon-time"></i>
-					    </span>
-					</div>
-               	</div>
+	    <form id="formTaskDone" action="#" class="form-inline">
+	    	 <div class="input">
+	    	     <div class="control-group">
+	               	<label for="eventTimeDone" class="control-label">Temps travaillé:</label>
+	               	<div class="controls">
+						<div class="input-append bootstrap-timepicker" >							
+						    <input type="text" class="timepicker-default input-small" id='eventTimeDone'>
+						    <span class="add-on">
+						        <i class="icon-time"></i>
+						    </span>
+						</div>
+	               	</div>
+				</div>
+				
 			</div>
+			
+			<div class="input-append">
+				<!-- Equipment -->
+	            <div class="control-group">
+					<label for="taskEquipmentDone" class="control-label"><%= _.capitalize(lang.equipment) %>:</label>
+	
+					<div class="controls">
+						<select id="taskEquipmentDone"></select>
+						<span class="help-inline"></span>
+					</div>
+				</div>
+				
+				<!-- OIL -->
+				<div class="control-group">
+					<label for="equipmentOilQtityDone" class="control-label"><%= _.capitalize(lang.oilQtity) %>:</label>
+	
+					<div class="controls">
+						<input type="number" id="equipmentOilQtityDone" name="equipmentOilQtityDone" required="required"  min="1" />
+						<span class="help-inline"></span>
+					</div>
+				</div>	
+			
+			</div>
+			<div class="input-append">	
+								
+				<!-- KM -->
+				<div class="control-group">
+					<label for="equipmentKmDone" class="control-label"><%= _.capitalize(lang.distance) %>:</label>
+	
+					<div class="controls">
+						<input type="number" id="equipmentKmDone" name="equipmentKmDone" required="required"  min="1" />
+						<span class="help-inline"></span>
+					</div>
+				</div>	
+				
+				<!-- OIL_PRICE -->
+				<div class="control-group">
+					<label for="equipmentOilPriceDone" class="control-label"><%= _.capitalize(lang.oilPrice) %>:</label>
+	
+					<div class="controls">
+						<input type="number" id="equipmentOilPriceDone" name="equipmentOilPriceDone" required="required"  min="1" />
+						<span class="help-inline"></span>
+					</div>
 
-			<!-- Equipment -->
-            <div class="control-group">
-				<label for="taskEquipment1" class="control-label"><%= _.capitalize(lang.equipment) %>:</label>
-
-				<div class="controls">
-					<select id="taskEquipment1"></select>
-					<span class="help-inline"></span>
 				</div>
 			</div>
 
@@ -245,37 +283,76 @@
 	</div>
 	
 	<div class="modal-body custom-height-modal">
-	    <form id="formAddTask" action="#" class="form-inline">
 
-			<!-- Task name -->
-            <div class="control-group">
-                <label for="taskName" class="control-label">Nom:</label>
+	    <form id="formAddTask" action="#" class="form-inline ">
+	    
+	    	<div class="input-append">
+				<!-- Task name -->
+	            <div class="control-group">
+	                <label for="taskName" class="control-label" >Nom:</label>
+	
+	                <div class="controls">
+	                    <input type="text" id="taskName" name="taskName" required="required"/>
+	                    <span class="help-inline"></span>
+	                </div>
+	            </div>
+	            
+	            <!-- Equipment -->
+	            <div class="control-group">
+					<label for="taskEquipmentAdd" class="control-label"><%= _.capitalize(lang.equipment) %>:</label>
+	
+					<div class="controls">
+						<select id="taskEquipmentAdd"></select>
+						<span class="help-inline"></span>
+					</div>
+				</div> 
+				
+				<!-- OIL -->
+				<div class="control-group">
+					<label for="equipmentOilQtityAdd" class="control-label"><%= _.capitalize(lang.oilQtity) %>:</label>
+	
+					<div class="controls">
+						<input type="number" id="equipmentOilQtityAdd" name="equipmentOilQtityAdd" required="required"  min="1" />
+						<span class="help-inline"></span>
+					</div>
 
-                <div class="controls">
-                    <input type="text" id="taskName" name="taskName" required="required"/>
-                    <span class="help-inline"></span>
-                </div>
-            </div>
-
-            <!-- Task Category -->
-            <div class="control-group">
-                <label for="taskCategory" class="control-label">Catégorie:</label>
-
-                <div class="controls">
-                     <select id="taskCategory"></select>
-                    <span class="help-inline"></span>
-                </div>
-            </div>
-            
-            <!-- Equipment -->
-            <div class="control-group">
-				<label for="taskEquipment" class="control-label"><%= _.capitalize(lang.equipment) %>:</label>
-
-				<div class="controls">
-					<select id="taskEquipment"></select>
-					<span class="help-inline"></span>
 				</div>
+	      	</div>    
+	      
+	      	<div class="input-append">
+			
+				<!-- Task Category -->
+	            <div class="control-group">
+	                <label for="taskCategory" class="control-label">Catégorie:</label>
+	
+	                <div class="controls">
+	                     <select id="taskCategory"></select>
+	                    <span class="help-inline"></span>
+	                </div>
+	            </div>
+							
+				<!-- KM -->
+				<div class="control-group">
+					<label for="equipmentKmAdd" class="control-label"><%= _.capitalize(lang.distance) %>:</label>
+	
+					<div class="controls">
+						<input type="number" id="equipmentKmAdd" name="equipmentKmAdd" required="required"  min="1" />
+						<span class="help-inline"></span>
+					</div>
+				</div>	
+				
+				<!-- OIL_PRICE -->
+				<div class="control-group">
+					<label for="equipmentOilPriceAdd" class="control-label"><%= _.capitalize(lang.oilPrice) %>:</label>
+	
+					<div class="controls">
+						<input type="number" id="equipmentOilPriceAdd" name="equipmentOilPriceAdd" required="required"  min="1" />
+						<span class="help-inline"></span>
+					</div>
+				</div>			
+			
 			</div>
+			
 			
 			<div class="input-append">
              
@@ -356,14 +433,14 @@
 	    <h3>Saisie des temps passés</h3>
 	</div>
 	
-	<div class="modal-body">
+	<div class="modal-body custom-height-modal">
 
 		<blockquote id="infoModalTimeSpent" class="spaceBottom">
 			<p></p>
 			<small></small>
 		</blockquote>
 
-	    <form id="formTimeSpent" action="#" class="form-horizontal">
+	    <form id="formTimeSpent" action="#" class="form-inline">
 	    
 			<!-- Task name -->
              <div class="input-append">   
@@ -378,8 +455,31 @@
 						</div>
 	               	</div>
 				</div>
+
+				<!-- Equipment -->
+				<div class="control-group">
+					<label for="taskEquipmentSpent" class="control-label"><%= _.capitalize(lang.equipment) %>:</label>
+	
+					<div class="controls">
+						<select id="taskEquipmentSpent"></select>
+						<span class="help-inline"></span>
+					</div>
+				</div> 	
 				
-				
+				<!-- OIL -->
+				<div class="control-group">
+					<label for="equipmentOilQtitySpent" class="control-label"><%= _.capitalize(lang.oilQtity) %>:</label>
+	
+					<div class="controls">
+						<input type="number" id="equipmentOilQtitySpent" name="equipmentOilQtitySpent" required="required"  min="1" />
+						<span class="help-inline"></span>
+					</div>
+				</div>	
+			</div>
+			
+			
+			<div class="input-append">
+			
 				<div class="control-group">
 	               	<label for="eventTimeRemaining" class="control-label">Temps restant:</label>
 	               	<div class="controls">
@@ -390,17 +490,28 @@
 						    </span>
 						</div>
 	               	</div>
-				</div>
-			</div>
-			
-			<!-- Equipment -->
-            <div class="control-group">
-				<label for="taskEquipment2" class="control-label"><%= _.capitalize(lang.equipment) %>:</label>
-
-				<div class="controls">
-					<select id="taskEquipment2"></select>
-					<span class="help-inline"></span>
-				</div>
+				</div>	
+	
+  
+				<!-- KM -->
+				<div class="control-group">
+					<label for="equipmentKmSpent" class="control-label"><%= _.capitalize(lang.distance) %>:</label>
+	
+					<div class="controls">
+						<input type="number" id="equipmentKmSpent" name="equipmentKmSpent" required="required"  min="1" />
+						<span class="help-inline"></span>
+					</div>
+				</div>	
+				
+				<!-- OIL_PRICE -->
+				<div class="control-group">
+					<label for="equipmentOilPriceSpent" class="control-label"><%= _.capitalize(lang.oilPrice) %>:</label>
+	
+					<div class="controls">
+						<input type="number" id="equipmentOilPriceSpent" name="equipmentOilPriceSpent" required="required"  min="1" />
+						<span class="help-inline"></span>
+					</div>
+				</div>	
 			</div>
 			
 			

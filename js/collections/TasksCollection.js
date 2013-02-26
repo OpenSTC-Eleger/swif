@@ -55,7 +55,11 @@ app.Collections.Tasks = Backbone.Collection.extend({
     			self.remove(task);
     	});
     	return this;
-    }
+    },
+
+    comparator: function(item) {
+	  return -item.get("date_start");
+	},
     
     
 //	getNotAssignedTasks: function(){

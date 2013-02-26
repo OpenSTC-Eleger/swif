@@ -102,6 +102,9 @@
 	"week" 					: "Semaine",
 	"year"					: "Année",
 	"time"					: "Heures",
+	"oilQtity"				: "Quantité carburant",
+	"oilPrice"				: "Prix Carburant",
+	"distance"				: "Kilomètres",
 
 
 	"actions" : {
