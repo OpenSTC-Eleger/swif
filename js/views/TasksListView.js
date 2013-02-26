@@ -77,6 +77,8 @@ app.Views.TasksListView = Backbone.View.extend({
 			weekSelected = this.options.weekSelected;
 		}
 		
+		var momentDate = moment().year(yearSelected).week(weekSelected);
+
 
 
 		//TODO ajouter le DST et le manager du service de l'utilisateur
@@ -125,28 +127,71 @@ app.Views.TasksListView = Backbone.View.extend({
 //        var tasksPending = _.filter(tasksUser, function(item){         		
 //        	return item.attributes.state == app.Models.Task.state[2].value; 
 //        });
-        var nbTasks = _.size(_.filter(tasksUser, function(task){
-        	return task.state==app.Models.Task.state[0].value}
-        ));
 
+		// Create table for each day //
+		var mondayTasks =[]; 	var tuesdayTasks =[];
+		var wednesdayTasks =[]; var thursdayTasks =[];
+		var fridayTasks =[]; 	var saturdayTasks =[]; 
+		var sundayTasks =[];
+
+		var nbTasks = 0;
+
+
+		// Fill the tables with the tasks //
+		_.each(tasksUser, function(task, i){
+			if(momentDate.clone().isSame(task.date_start, 'week')){
+				
+				if(momentDate.clone().day(1).isSame(task.date_start, 'day')){
+					mondayTasks.push(task);
+					nbTasks++;
+				}
+				else if(momentDate.clone().day(2).isSame(task.date_start, 'day')){
+					tuesdayTasks.push(task);
+					nbTasks++;
+				}
+				else if(momentDate.clone().day(3).isSame(task.date_start, 'day')){
+					wednesdayTasks.push(task);
+					nbTasks++;
+				}
+				else if(momentDate.clone().day(4).isSame(task.date_start, 'day')){
+					thursdayTasks.push(task);
+					nbTasks++;
+				}
+				else if(momentDate.clone().day(5).isSame(task.date_start, 'day')){
+					fridayTasks.push(task);
+					nbTasks++;
+				}
+				else if(momentDate.clone().day(6).isSame(task.date_start, 'day')){
+					saturdayTasks.push(task);
+					nbTasks++;
+				}
+				else if(momentDate.clone().day(7).isSame(task.date_start, 'day')){
+					sundayTasks.push(task);
+					nbTasks++;
+				}
+			}
+		});
+
+		var tasksUserFiltered = [
+			{'day': momentDate.clone().day(1).format('dddd D MMMM'), 'tasks': mondayTasks},
+			{'day': momentDate.clone().day(2).format('dddd D MMMM'), 'tasks': tuesdayTasks},
+			{'day': momentDate.clone().day(3).format('dddd D MMMM'), 'tasks': wednesdayTasks},
+			{'day': momentDate.clone().day(4).format('dddd D MMMM'), 'tasks': thursdayTasks},
+			{'day': momentDate.clone().day(5).format('dddd D MMMM'), 'tasks': fridayTasks},
+			{'day': momentDate.clone().day(6).format('dddd D MMMM'), 'tasks': saturdayTasks},
+			{'day': momentDate.clone().day(7).format('dddd D MMMM'), 'tasks': sundayTasks}
+		];
 
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-			//var tasksList = new app.Collections.Tasks(tasksUser).toJSON();
-			var taskList = []
-			_.each(tasksUser , function (task, i){
-				taskList.push(task)
-			});
-
-
+		
 
 			var template = _.template(templateData, {
 				lang: app.lang,
 				nbTasks: nbTasks,
-				tasks: taskList,
-				yearSelected: yearSelected,
-				weekSelected: weekSelected,
+				tasksPerDay: tasksUserFiltered,
+				momentDate: momentDate
 			});
 			
 			$(self.el).html(template);
