@@ -104,19 +104,19 @@ section.calendarContainer:not(:first-child){
 
 /* Planning Task List
 -------------------------------------------------- */
-div.accordion-group{
+#accordionInter div.accordion-group{
 	border-color: darken(@grayLighter, 10%);
 }
-div.accordion-heading{
+#accordionInter div.accordion-heading{
 	min-height: 50px;
 	margin: 0;
 	padding-top: 3px;
 	padding-bottom: 3px;
 }
-div.accordion-heading a.accordion-toggle{
+#accordionInter div.accordion-heading a.accordion-toggle{
 	padding-bottom: 0px;
 }
-div.accordion-heading:hover{
+#accordionInter div.accordion-heading:hover{
 	
 	background-color: @grayLighter;
 	 p.intervention-actions{
@@ -124,10 +124,10 @@ div.accordion-heading:hover{
 	}
 }
 
-div.accordion-inner{
+#accordionInter div.accordion-inner{
 	background-color: @white;
 }
-div.accordion-body.in{
+#accordionInter div.accordion-body.in{
 
 	div.accordion-inner{
 		background-color: @grayLighter;
@@ -226,7 +226,18 @@ section.dayTasks{
 	margin: 40px 0 40px 0;
 }
 
-
+.accordion.without-border .accordion-group.dayTasks{
+	border: none;
+}
+.accordion.without-border .accordion-heading{
+	border-bottom: thin solid #e5e5e5;
+}
+.accordion.without-border .accordion-toggle{
+	padding: 1px;
+}
+.accordion.without-border .accordion-toggle:hover{
+	text-decoration: none;
+}
 
 
 /* Connection Form

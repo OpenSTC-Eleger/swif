@@ -254,7 +254,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 state:  [
     {
         value       : 'open',
-        color       : '#3a87ad',//'info',
+        color       : '#3a87ad', //'info',
         traduction  : '',
     },
     {

@@ -134,52 +134,51 @@ app.Views.TasksListView = Backbone.View.extend({
 		var fridayTasks =[]; 	var saturdayTasks =[]; 
 		var sundayTasks =[];
 
-		var nbTasks = 0;
+		var nbPendingTasks = 0;
 
 
 		// Fill the tables with the tasks //
 		_.each(tasksUser, function(task, i){
+
 			if(momentDate.clone().isSame(task.date_start, 'week')){
 				
 				if(momentDate.clone().day(1).isSame(task.date_start, 'day')){
 					mondayTasks.push(task);
-					nbTasks++;
 				}
 				else if(momentDate.clone().day(2).isSame(task.date_start, 'day')){
 					tuesdayTasks.push(task);
-					nbTasks++;
 				}
 				else if(momentDate.clone().day(3).isSame(task.date_start, 'day')){
 					wednesdayTasks.push(task);
-					nbTasks++;
 				}
 				else if(momentDate.clone().day(4).isSame(task.date_start, 'day')){
 					thursdayTasks.push(task);
-					nbTasks++;
 				}
 				else if(momentDate.clone().day(5).isSame(task.date_start, 'day')){
 					fridayTasks.push(task);
-					nbTasks++;
 				}
 				else if(momentDate.clone().day(6).isSame(task.date_start, 'day')){
 					saturdayTasks.push(task);
-					nbTasks++;
 				}
 				else if(momentDate.clone().day(7).isSame(task.date_start, 'day')){
 					sundayTasks.push(task);
-					nbTasks++;
+				}
+
+				// Retrieve the number of Open Task //
+				if(task.state == app.Models.Task.state[0].value){
+					nbPendingTasks++;
 				}
 			}
 		});
 
 		var tasksUserFiltered = [
-			{'day': momentDate.clone().day(1).format('dddd D MMMM'), 'tasks': mondayTasks},
-			{'day': momentDate.clone().day(2).format('dddd D MMMM'), 'tasks': tuesdayTasks},
-			{'day': momentDate.clone().day(3).format('dddd D MMMM'), 'tasks': wednesdayTasks},
-			{'day': momentDate.clone().day(4).format('dddd D MMMM'), 'tasks': thursdayTasks},
-			{'day': momentDate.clone().day(5).format('dddd D MMMM'), 'tasks': fridayTasks},
-			{'day': momentDate.clone().day(6).format('dddd D MMMM'), 'tasks': saturdayTasks},
-			{'day': momentDate.clone().day(7).format('dddd D MMMM'), 'tasks': sundayTasks}
+			{'day': momentDate.clone().day(1), 'tasks': mondayTasks},
+			{'day': momentDate.clone().day(2), 'tasks': tuesdayTasks},
+			{'day': momentDate.clone().day(3), 'tasks': wednesdayTasks},
+			{'day': momentDate.clone().day(4), 'tasks': thursdayTasks},
+			{'day': momentDate.clone().day(5), 'tasks': fridayTasks},
+			{'day': momentDate.clone().day(6), 'tasks': saturdayTasks},
+			{'day': momentDate.clone().day(7), 'tasks': sundayTasks}
 		];
 
 
@@ -189,7 +188,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 			var template = _.template(templateData, {
 				lang: app.lang,
-				nbTasks: nbTasks,
+				nbPendingTasks: nbPendingTasks,
 				tasksPerDay: tasksUserFiltered,
 				momentDate: momentDate
 			});
@@ -200,15 +199,17 @@ app.Views.TasksListView = Backbone.View.extend({
 			app.views.selectListAssignementsView.clearAll();
 			app.views.selectListAssignementsView.addEmptyFirst();
 			app.views.selectListAssignementsView.addAll();
-			
 
-			
+
 			$(".datepicker").datepicker({
     			format: 'dd/mm/yyyy',
     			weekStart: 1,
     			autoclose: true,
-    			language: 'fr'});
+    			language: 'fr'
+    		});
+
 			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
+			$('*[rel="tooltip"]').tooltip({placement: "right"});
 		});
 
 		$(this.el).hide().fadeIn('slow');
