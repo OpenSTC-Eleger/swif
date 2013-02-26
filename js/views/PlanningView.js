@@ -109,10 +109,7 @@ app.Views.PlanningView = Backbone.View.extend({
         		}
         	}); 
 
-        	//remove admin
-        	if ( that.agents!=null && that.agents.length > 0 )
-        		that.agents = _.without(that.agents,that.agents[0]);
-        	
+     	
             var interventions = app.collections.interventions.models;
             console.log(app.collections.interventions);
                         
