@@ -60,6 +60,16 @@ app.Views.TaskDetailsView = Backbone.View.extend({
     		});
 			
 			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
+			
+			var modelJSON = self.model.toJSON();
+			if( modelJSON.state != app.Models.Task.state[0].value) {
+				$(".inputField").attr("disabled", "disabled");
+				$(".save").attr("disabled", "disabled");
+			}else {
+				$(".inputField").removeAttr("disabled");
+				$(".save").removeAttr("disabled");
+			}
+				
 
 		});
 

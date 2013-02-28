@@ -21,7 +21,7 @@
 	                    <label for="taskName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
 	
 	                    <div class="controls">
-	                        <input type="text" id="taskName" name="taskName" value="<%= task.name %>" required="required" />
+	                        <input type="text" id="taskName" name="taskName" class="inputField" value="<%= task.name %>" required="required" />
 	                        <span class="help-inline"></span>
 	                    </div>
 	                </div>
@@ -31,7 +31,7 @@
 		                <label for="taskCategory" class="control-label">Catégorie:</label>
 		
 		                <div class="controls">
-		                     <select id="taskCategory"></select>
+		                     <select id="taskCategory" class="inputField"></select>
 		                    <span class="help-inline"></span>
 		                </div>
 		            </div>
@@ -41,7 +41,7 @@
 	                    <label for="taskOfficer" class="control-label"><%= _.capitalize(lang.officer) %>:</label>
 	
 	                    <div class="controls">  
-	                        <select id="taskOfficer"><option value="" disabled="disabled" ></option></select>
+	                        <select id="taskOfficer" class="inputField"><option value="" disabled="disabled" ></option></select>
 	                        <span class="help-inline"></span>                           
 	                    </div>
 	                </div>    
@@ -55,7 +55,7 @@
 	                    <label for="taskDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
 	
 	                    <div class="controls">
-	                        <textarea name="taskDescription" id="taskDescription" rows="5" required="required"><%= task.description %></textarea>
+	                        <textarea name="taskDescription" id="taskDescription" class="inputField" rows="5" required="required"><%= task.description %></textarea>
 	                        <span class="help-inline"></span>
 	                    </div>
 	                </div>
@@ -75,7 +75,7 @@
 	                   <div class="controls">
 	                        <input 
 	                        	type="text"
-	                            class="datepicker" 
+	                            class="datepicker inputField" 
 	                            id="startDate" 
 	                            size="20"
 	                            value="<%= task.date_start.format('L') %>" 
@@ -89,7 +89,7 @@
 	                    <div class="controls">
 	                        <input 
 	                        	type="text"
-	                            class="datepicker" 
+	                            class="datepicker inputField" 
 	                            id="endDate"
 	                            size="20" 
 	                            value="<%= task.date_end.format('L') %>" 
@@ -106,7 +106,7 @@
                 	<label for="startHour" class="control-label">@</label>
                 	<div class="controls">
 						<div class="input-append bootstrap-timepicker" >							
-						    <input type="text" class="timepicker-default input-small" value="<%= task.date_start.hours() %>:<%= task.date_start.minutes()%>" id='startHour' required="required">
+						    <input type="text" class="timepicker-default input-small inputField" value="<%= task.date_start.hours() %>:<%= task.date_start.minutes()%>" id='startHour' required="required">
 						    <span class="add-on">
 						        <i class="icon-time"></i>
 						    </span>
@@ -118,7 +118,7 @@
                 	<label for="endHour" class="control-label">@</label>
                 	<div class="controls">
 						<div class="input-append bootstrap-timepicker" >							
-						    <input type="text" class="timepicker-default input-small" value="<%= task.date_end.hours() %>:<%= task.date_end.minutes()%>" id='endHour' required="required">
+						    <input type="text" class="timepicker-default input-small inputField" value="<%= task.date_end.hours() %>:<%= task.date_end.minutes()%>" id='endHour' required="required">
 						    <span class="add-on">
 						        <i class="icon-time"></i>
 						    </span>

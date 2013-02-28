@@ -37,8 +37,7 @@
 					<th><%= _.capitalize(lang.year) %></th>
 					<th><%= _.capitalize(lang.time) %></th>	
 					<th><%= _.capitalize(lang.km) %></th>	
-					<th><%= _.capitalize(lang.technicalEquipment) %></th>	
-					<th><%= _.capitalize(lang.smallEquipment) %></th>				
+					<th><%= _.capitalize(lang.category) %></th>		
 				</tr>
 			</thead>
 			<tbody>
@@ -60,8 +59,15 @@
 					<td><%= (equipment.year != false ? equipment.year : "")%></td>
 					<td><%= (equipment.time != false ? equipment.time : "")%></td>
 					<td><%= (equipment.km != false ? equipment.km : "" )%></td>
-					<td><%= (equipment.technical == true ? "<i class='icon-ok'></i>" : "")%></td>
-					<td><%= (equipment.small == true ? "<i class='icon-ok'></i>" : "")%></td>					
+					<% if( equipment.technical_vehicle ) { %>
+						<td><%= _.capitalize(lang.technicalVehicleEquipment) %></td>
+					<% } else if ( equipment.commercial_vehicle ) { %>
+						<td><%= _.capitalize(lang.commercialVehicleEquipment) %></td>
+					<% } else if ( equipment.small_material ) { %>
+						<td><%= _.capitalize(lang.smallMaterialEquipment) %></td>
+					<% } else if ( equipment.fat_material ) { %>
+						<td><%= _.capitalize(lang.fatMaterialEquipment) %></td>
+					<% } %>										
 				</tr>
 
 			<% }; %>
@@ -199,7 +205,7 @@
 					<label for="equipmentCV" class="control-label"><%= _.capitalize(lang.cv) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentCV" name="equipmentCV" required="required" />
+						<input type="number" id="equipmentCV" name="equipmentCV" required="required" min="1" />
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -214,7 +220,7 @@
 					<label for="equipmentKm" class="control-label"><%= _.capitalize(lang.km) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentKm" name="equipmentKm" required="required" />
+						<input type="number" id="equipmentKm" name="equipmentKm" required="required" min="0"  />
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -224,7 +230,7 @@
 					<label for="equipmentTime" class="control-label"><%= _.capitalize(lang.time) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentTime" name="equipmentTime" required="required" />
+						<input type="number" id="equipmentTime" name="equipmentTime" required="required" min="0" />
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -232,23 +238,96 @@
 
 			</div>
 			
-			<div class="input">
 			
+			
+		
+			
+			<div class="input-append">
 				<div class="control-group">
+					<label class="control-label" style="width:450px"></label>
+					<div class="controls btn switch switch-four">
+						<input id="technicalVehicleEquipment" name="equipment" type="radio" checked>
+						<label for="technicalVehicleEquipment" onclick=""><%= _.capitalize(lang.technicalVehicleEquipment) %></label>
+			
+						<input id="commercialVehicleEquipment" name="equipment" type="radio">	
+						<label for="commercialVehicleEquipment" onclick=""><%= _.capitalize(lang.commercialVehicleEquipment) %></label>
+						
+						<input id="smallMaterialEquipment" name="equipment" type="radio">	
+						<label for="smallMaterialEquipment" onclick=""><%= _.capitalize(lang.smallMaterialEquipment) %></label>
+						
+						<input id="fatMaterialEquipment" name="equipment" type="radio">	
+						<label for="fatMaterialEquipment" onclick=""><%= _.capitalize(lang.fatMaterialEquipment) %></label>
+						
+						<span class="slide-button btn btn-primary"></span>
+					</div>
+				</div>
+			
+			
+				<!-- <div class="control-group">
+					<label class="checkbox toggle candy" style="width:150px">
+						<input id="vehicleEquipment" type="checkbox" />
+						<p>
+							<%= _.capitalize(lang.vehicleEquipment) %>:
+							<span><%= _.capitalize(lang.technicalVehicleEquipment) %></span>
+							<span><%= _.capitalize(lang.commercialVehicleEquipment) %></span>
+						</p>
+						
+						<a class="slide-button"></a>
+					</label>
+				
+				</div>
+				<div class="control-group">
+					<label class="checkbox toggle candy" style="width:190px">
+						<input id="materialEquipment" type="checkbox" />
+						<p>
+							<%= _.capitalize(lang.materialEquipment) %>:
+							<span><%= _.capitalize(lang.smallMaterialEquipment) %></span>
+							<span><%= _.capitalize(lang.fatMaterialEquipment) %></span>
+						</p>
+						
+						<a class="slide-button"></a>
+					</label>
+				</div>
+				 -->
+			
+				<!-- <div class="control-group">
 					<div class="controls">
-						<label for="equipmentIsTechnical" class="checkbox"><%= _.capitalize(lang.technicalEquipment) %>
+						<label for="vehicleEquipment" class="control-label"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
+						<div class="btn-group" data-toogle="button-radio" id="vehicleEquipment">
+							<button class="btn" type="button" name="technicalVehicleEquipment" value="technicalVehicleEquipment">
+								<%= _.capitalize(lang.technicalVehicleEquipment) %>
+							</button>
+							<button class="btn" type="button" name="commercialVehicleEquipment" value="commercialVehicleEquipment">
+								<%= _.capitalize(lang.commercialVehicleEquipment) %>
+							</button>
+						</div>
+						 <label for="equipmentIsTechnical" class="checkbox"><%= _.capitalize(lang.technicalEquipment) %>
 							<input type="checkbox" id="equipmentIsTechnical" />
 						</label>
+						
 					</div>
 				</div>
 				
 				<div class="control-group">
+						<label for="materialEquipment" class="control-label"><%= _.capitalize(lang.materialEquipment) %>:</label>
+						<div class="btn-group" data-toogle="button-radio" id="materialEquipment">
+							<button class="btn" type="button" name="smallMaterialEquipment" value="smallMaterialEquipment">
+								<%= _.capitalize(lang.smallMaterialEquipment) %>
+							</button>
+							<button class="btn" type="button" name="fatMaterialEquipment" value="fatMaterialEquipment">
+								<%= _.capitalize(lang.fatMaterialEquipment) %>
+							</button>
+						</div>
+						<label for="equipmentIsTechnical" class="checkbox"><%= _.capitalize(lang.technicalEquipment) %>
+							<input type="checkbox" id="equipmentIsTechnical" />
+						</label>
+					</div>
 					<div class="controls">
 						<label for="equipmentIsSmall" class="checkbox"><%= _.capitalize(lang.smallEquipment) %>
 							<input type="checkbox" id="equipmentIsSmall" />
 						</label>
 					</div>
-				</div>
+				</div> -->
 				
 			</div>
 

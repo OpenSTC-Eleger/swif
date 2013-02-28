@@ -104,8 +104,10 @@ app.Views.EquipmentsView = Backbone.View.extend({
         $('#equipmentCV').val('');
         $('#equipmentYear').val('');
         $('#equipmentTime').val('');      
-        $('#equipmentIsTechnical').removeAttr("checked");	
-        $('#equipmentIsSmall').removeAttr("checked");	
+        $('#technicalVehicleEquipment').removeAttr("checked");	
+        $('#commercialVehicleEquipment').removeAttr("checked");	          
+        $('#smallMaterialEquipment').removeAttr("checked");	
+        $('#fatMaterialEquipment').removeAttr("checked");	
         $('#equipmentKm').val('');
         if( this.selectedJson ) {
 			$('#equipmentImmat').val(this.selectedJson.name);
@@ -115,8 +117,10 @@ app.Views.EquipmentsView = Backbone.View.extend({
 	        $('#equipmentCV').val(this.selectedJson.cv);
 	        $('#equipmentYear').val(this.selectedJson.year);
 	        $('#equipmentTime').val(this.selectedJson.time);
-	        this.selectedJson.technical?$('#equipmentIsTechnical').attr("checked","checked"):"";
-	        this.selectedJson.small?$('#equipmentIsSmall').attr("checked","checked"):"";
+	        this.selectedJson.technical_vehicle?$('#technicalVehicleEquipment').attr("checked","checked"):"";
+	        this.selectedJson.commercial_vehicle?$('#commercialVehicleEquipment').attr("checked","checked"):"";
+	        this.selectedJson.small_material?$('#smallMaterialEquipment').attr("checked","checked"):"";
+	        this.selectedJson.fat_material?$('#fatMaterialEquipment').attr("checked","checked"):"";
 	        $('#equipmentKm').val(this.selectedJson.km);
         }       
 
@@ -149,8 +153,10 @@ app.Views.EquipmentsView = Backbone.View.extend({
 	     	 cv:this.$('#equipmentCV').val(),
 	     	 year:this.$('#equipmentYear').val(),
 	     	 time:this.$('#equipmentTime').val(),
-	         technical:this.$('#equipmentIsTechnical').is(':checked'),
-	         small:this.$('#equipmentIsSmall').is(':checked'),
+	     	 technical_vehicle:this.$('#technicalVehicleEquipment').is(':checked'),
+	     	 commercial_vehicle:this.$('#commercialVehicleEquipment').is(':checked'),
+	     	 small_material:this.$('#smallMaterialEquipment').is(':checked'),
+	     	 fat_material:this.$('#fatMaterialEquipment').is(':checked'),	         
 	         km:this.$('#equipmentKm').val(),
 	     };
 	     

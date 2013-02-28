@@ -85,20 +85,36 @@ app.Models.Equipment = Backbone.RelationalModel.extend({
         this.set({ time : value });
     }, 
     
-    isTechnical : function() {
-        return this.get('technical');
+    isTechnicalVehicle : function() {
+        return this.get('technical_vehicle');
     },
-    setTechnical : function(value) {
+    setTechnicalVehicle : function(value) {
     	if( value == 'undefined') return;
-        this.set({ technical : value });
+        this.set({ technical_vehicle : value });
     }, 
     
-    isSmall : function() {
-        return this.get('small');
+    isCommercialVehicle : function() {
+        return this.get('commercial_vehicle');
     },
-    setSmall : function(value) {
+    setCommercialVehicle : function(value) {
     	if( value == 'undefined') return;
-        this.set({ small : value });
+        this.set({ commercial_vehicle : value });
+    }, 
+    
+    isSmallMaterial : function() {
+        return this.get('small_material');
+    },
+    setSmallMaterial : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ small_material : value });
+    }, 
+    
+    isFatMaterial : function() {
+        return this.get('fat_material');
+    },
+    setFatMaterial : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ fat_material : value });
     }, 
 
 	/** Model Initialization
@@ -123,8 +139,10 @@ app.Models.Equipment = Backbone.RelationalModel.extend({
 		this.setCV( params.cv );
 		this.setYear( params.year );
 		this.setTime( params.time );
-		this.setTechnical( params.technical );
-		this.setSmall( params.small );
+		this.setTechnicalVehicle( params.technical_vehicle );
+		this.setCommercialVehicle( params.commercial_vehicle );
+		this.setSmallMaterial( params.small_material );
+		this.setFatMaterial( params.fat_material );
 		this.setKM( params.km );
 	},
 	
@@ -134,7 +152,7 @@ app.Models.Equipment = Backbone.RelationalModel.extend({
 
 	/** Save Model
 	*/
-	save: function(id, data, options) { 
+	save: function(data, id, options) { 
 		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
 	},
 

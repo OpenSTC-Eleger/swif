@@ -124,6 +124,14 @@ section.calendarContainer:not(:first-child){
 	}
 }
 
+/* PYF Twitter Bootstrap Accordion and button dropdown overflow issue 
+	http://stackoverflow.com/questions/10959068/twitter-bootstrap-accordion-and-button-dropdown-overflow-issue
+*/
+.accordion-body.in{
+	
+	overflow:visible;
+}
+
 #accordionInter div.accordion-inner{
 	background-color: @white;
 }
@@ -134,7 +142,7 @@ section.calendarContainer:not(:first-child){
 	}
 	border-bottom: 1px solid @grayLight;
 	border-left: 1px solid @grayLight;
-	border-right: 1px solid @grayLight;
+	border-right: 1px solid @grayLight;	
 }
 
 ul.tasks li.external-event{
@@ -275,7 +283,7 @@ table thead th.align-right, .table tbody td.align-right{
 
 /* Configuration Team View
 -------------------------------------------------- */
-ul.sortableOfficersList, ul.sortableServicesList{
+ul.sortableOfficersList, ul.sortableServicesList, ul.sortableEquipmentsList{
 	max-height: 250px; 
 	overflow-y: auto;
 	padding-top: 15px;

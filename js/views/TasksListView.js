@@ -26,6 +26,8 @@ app.Views.TasksListView = Backbone.View.extend({
     	
 		'click .buttonTaskDone'			: 'setModalTaskDone',
 		'submit #formTaskDone'    		: 'saveTaskDone',
+		
+		'change .taskEquipment'			: 'fillDropdownEquipment',
 	},
 
 
@@ -117,7 +119,7 @@ app.Views.TasksListView = Backbone.View.extend({
 //    					(
 //    						//L'intervention de la tâche doit être planifiée ou en cours'
 //    						interCondition
-//    					 )
+//    					 )var equipment
     			   );
         });
 
@@ -207,6 +209,59 @@ app.Views.TasksListView = Backbone.View.extend({
     			autoclose: true,
     			language: 'fr'
     		});
+			
+			$('#equipmentsAdd, #equipmentsListAdd').sortable({
+				connectWith: 'ul.sortableEquipmentsList',
+				dropOnEmpty: true,
+				forcePlaceholderSize: true,
+				forceHelperSize: true,
+				placeholder: 'sortablePlaceHold',
+				containment: '.equipmentsDroppableAreaAdd',
+				cursor: 'move',
+				opacity: '.8',
+				revert: 300,
+				receive: function(event, ui){
+					//self.saveServicesCategories();
+				}
+			});	
+			
+			$('#equipmentsDone, #equipmentsListDone').sortable({
+				connectWith: 'ul.sortableEquipmentsList',
+				dropOnEmpty: true,
+				forcePlaceholderSize: true,
+				forceHelperSize: true,
+				placeholder: 'sortablePlaceHold',
+				containment: '.equipmentsDroppableAreaDone',
+				cursor: 'move',
+				opacity: '.8',
+				revert: 300,
+				receive: function(event, ui){
+					//self.saveServicesCategories();
+				}
+			});
+			
+			$('#equipmentsSpent, #equipmentsListSpent').sortable({
+				connectWith: 'ul.sortableEquipmentsList',
+				dropOnEmpty: true,
+				forcePlaceholderSize: true,
+				forceHelperSize: true,
+				placeholder: 'sortablePlaceHold',
+				containment: '.equipmentsDroppableAreaSpent',
+				cursor: 'move',
+				opacity: '.8',
+				revert: 300,
+				receive: function(event, ui){
+					//self.saveServicesCategories();
+				}
+			});	
+			
+			//$('#duallistbox_demo1_helper1').bootstrapDualListbox();
+			
+//			$('.modal').validate( {
+//				rules: {
+//					number: { required: true, min: 1 }
+//				}
+//			} );
 
 			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 			$('*[rel="tooltip"]').tooltip({placement: "right"});
@@ -216,23 +271,89 @@ app.Views.TasksListView = Backbone.View.extend({
 
 		return this;
     },
+    
+	/** Display category services
+		*/
+	displayEquipmentsInfos: function(e, list, choiceList, badgeComponent){
+		e.preventDefault();
+
+		// Retrieve the ID of the intervention //
+		var link = $(e.target);
+		var id = _(link.parents('tr').attr('id')).strRightBack('_');
+		
+		// Clear the list of the user //		
+		//$('#equipmentsAdd li, #equipmentsListAdd li').remove();
+		list.empty();
+		//_.each($(list) li )
+
+		var equipmentsSelected = new Array();
+		if( id ) {
+			this.selectedTask = _.filter(app.collections.tasks.models, function(item){ return item.attributes.id == id });
+			var selectedTaskJson = this.selectedTask[0].toJSON();	
+			
+			// Display the services of the team //
+			_.each(selectedTaskJson.equipments_ids, function (equipment, i){
+				list.append('<li id="equipment_'+equipment.id+'"><a href="#"><i class="icon-sitemap"></i> '+ equipment.name +' </a></li>');
+				equipmentsSelected[i] = equipment.id;
+			});
+		};
+		
+	    //search only vehicle materials
+		var materialsEquipment = _.filter(app.collections.equipments.models, function(equipment){
+			return equipment.attributes.small_material == true || equipment.attributes.fat_material==true
+		});
+		//remove no technical services
+		//app.collections.equipments.remove(vehicleEquipment);
+		//app.collections.equipments.toJSON()
+		
+		//var materials = new app.Collections.Equipments(materialsEquipment);
+
+		// Display the remain services //
+		var nbRemainMaterials = 0;
+		_.filter(materialsEquipment, function (material, i){
+			var materialJSON = material.toJSON()
+			if(!_.contains(equipmentsSelected, materialJSON.id)){
+				nbRemainMaterials++;
+				choiceList.append('<li id="equipment_'+materialJSON.id+'"><a href="#"><i class="icon-sitemap"></i> '+ materialJSON.name +' </a></li>');
+			}
+		});
+		
+		badgeComponent.html(nbRemainMaterials);
+		
+	},
+
   
     getTask: function(e) {
 
-	
+    	this.resetModal();
 		var href = $(e.target);
 
+		
+		
 		// Retrieve the ID of the request //	
 		this.pos = href.parents('tr').attr('id');
 		//this.taskId = href.data('taskid');
 		this.model = app.collections.tasks.get(this.pos);
     },
     
+    resetModal: function() {    	
+    	$('.taskInput').val('');
+    	$('.taskSelect').val(0);
+    	//$('.equipments').val('')
+    	
+    },
+    
 	/** Display the form to add a new Task
 		*/
 	displayModalAddTask: function(e){
 			
-		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentAdd"), collection: app.collections.equipments})
+    	this.resetModal();
+    	this.displayEquipmentsInfos(e, $('#equipmentsAdd'), $('#equipmentsListAdd'), $('#badgeNbEquipmentsAdd') );
+
+    	var filteredEquipment = _.filter(app.collections.equipments.models, function(item){
+    		return item.attributes.technical_vehicle || item.attributes.commercial_vehicle;
+    	});
+		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentAdd"), collection: new app.Collections.Equipments(filteredEquipment)})
 		app.views.selectListEquipmentsView.clearAll();
 		app.views.selectListEquipmentsView.addEmptyFirst();
 		app.views.selectListEquipmentsView.addAll();
@@ -253,6 +374,36 @@ app.Views.TasksListView = Backbone.View.extend({
 			
 		$('#modalAddTask .modal-body').css("height", "550px");
         $('#modalAddTask').modal();
+	},
+	
+	fillDropdownEquipment: function(e){
+		e.preventDefault();
+		var target = $(e.target).attr('value');
+		if( target ) {
+			var equipment = app.collections.equipments.get( target );
+			if( equipment ) {
+				var km = equipment.toJSON().km ;
+				$('.equipmentKm').val( km );
+//				$('#equipmentKmAdd').each(function() {
+//			        var $this = $(this);
+//			        $(this).rules('add', {
+//			            min: km
+//			        });
+//			    });
+//				$('.modal #equipmentKmAdd').rules("add", { 
+//				  required:true,  
+//				  min: km
+//				});
+//				$(".modal").validate({
+//					  rules: {
+//					    field: {
+//					      required: true,
+//					      min: km
+//					    }
+//					  }
+//				});
+			}			
+		}
 	},
 	
 
@@ -287,13 +438,19 @@ app.Views.TasksListView = Backbone.View.extend({
 	    	 }
 	     }
 	     
+	     this.vehicule = input_equipment_id;
+	     this.equipments = _.map($("#equipmentsAdd").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
+	     this.equipments.push( input_equipment_id );
+
+	     
 	     
 	     var params = {
 	         user_id:  app.models.user.getUID(),
 	         date_start: mNewDateStart.toDate(),
 	         date_end: mNewDateEnd.toDate(),
 	         state: app.Models.Task.state[1].value,
-	         equipment_id: input_equipment_id,
+	         //equipment_id: input_equipment_id,
+	         equipment_ids: [[6, 0, this.equipments]],
 	         name: this.$('#taskName').val(),
 	         km: this.$('#equipmentKmAdd').val(),
 	         oil_qtity: this.$('#equipmentOilQtityAdd').val(),
@@ -303,13 +460,17 @@ app.Views.TasksListView = Backbone.View.extend({
 		     effective_hours: planned_hours,
 		     remaining_hours: 0,
 	     };
-	     app.models.task.save(0,params,$('#modalAddTask'), null, "taches");
-	     this.saveEquipment( input_equipment_id, this.$('#equipmentKmAdd').val() )
+	     this.saveNewStateTask(params, null, $('#modalAddTask'), null , true);
+	    // app.models.task.save(0,params,$('#modalAddTask'), null, "taches");
+	     //this.saveEquipment(  this.$('#equipmentKmAdd').val(), input_equipment_id)
+	     
+	     //this.saveEquipmentAndTask(  this.$('#equipmentKmAdd').val(), input_equipment_id, true )
    	},
     
     //Task not finished
     setModalTimeSpent: function(e) {    	
     	this.getTask(e);
+    	this.displayEquipmentsInfos(e, $('#equipmentsSpent'), $('#equipmentsListSpent'), $('#badgeNbEquipmentsSpent') );
     	var task = this.model.toJSON();
     	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 
@@ -321,7 +482,12 @@ app.Views.TasksListView = Backbone.View.extend({
 		$('#modalTimeSpent .modal-body').css("height", "300px");
 		$('#eventTimeRemaining').val("00:00");
 		
-		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentSpent"), collection: app.collections.equipments})
+		var filteredEquipment = _.filter(app.collections.equipments.models, function(item){
+    		return item.attributes.technical_vehicle || item.attributes.commercial_vehicle;
+    	});		
+		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentSpent"), 
+			collection : new app.Collections.Equipments(filteredEquipment)
+		});
 		app.views.selectListEquipmentsView.clearAll();
 		app.views.selectListEquipmentsView.addEmptyFirst();
 		app.views.selectListEquipmentsView.addAll();
@@ -349,12 +515,17 @@ app.Views.TasksListView = Backbone.View.extend({
 	    	 }
 	     }
     	
+	     this.vehicule = input_equipment_id;
+	     this.equipments = _.map($("#equipmentsSpent").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
+	     this.equipments.push( input_equipment_id );
+
     	
     	taskParams = {
     	    name: task.name?task.name:0,
     	    project_id: task.project_id!=null?task.project_id[0]:null,
     	    parent_id: task.id,
-    	    equipment_id: input_equipment_id,
+    	    //equipment_id: input_equipment_id,
+    	    equipment_ids: [[6, 0, this.equipments]],
     	    km: this.$('#equipmentKmSpent').val(),
 	        oil_qtity: this.$('#equipmentOilQtitySpent').val(),
 	        oil_price: this.$('#equipmentOilPriceSpent').val(),
@@ -378,7 +549,9 @@ app.Views.TasksListView = Backbone.View.extend({
     		  		    state: app.Models.Task.state[2].value,
     		            planned_hours: self.remaining_hours,
     		            remaining_hours: self.remaining_hours,
-    		            equipment_id: input_equipment_id,
+    		            equipment_ids: [[6, 0, self.equipments]],
+    		            km: self.$('#equipmentKmSpent').val(),
+    		            //equipment_id: input_equipment_id,
     		  			user_id: null,
     		  			team_id:null,
     		  			date_end: null,
@@ -406,8 +579,8 @@ app.Views.TasksListView = Backbone.View.extend({
     		  			}
     		  		}    		
     		  		
-    		  		self.saveNewStateTask(taskParams, taskWorkParams,$('#modalTimeSpent'),newInterState);
-    		  		self.saveEquipment( input_equipment_id, self.$('#equipmentKmSpent').val() )
+    		  		self.saveNewStateTask(taskParams, taskWorkParams,$('#modalTimeSpent'),newInterState, false);
+    		  		//self.saveEquipment(  self.$('#equipmentKmSpent').val(), input_equipment_id )
 				}
 			});
     },
@@ -423,6 +596,7 @@ app.Views.TasksListView = Backbone.View.extend({
     //Task done
     setModalTaskDone: function(e) {
     	this.getTask(e);
+    	this.displayEquipmentsInfos(e, $('#equipmentsDone'), $('#equipmentsListDone'), $('#badgeNbEquipmentsDone') );
     	var task = this.model.toJSON();
     	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
     	
@@ -432,7 +606,12 @@ app.Views.TasksListView = Backbone.View.extend({
 		$('#modalTaskDone .modal-body').css("height", "300px");
 		$('#eventTimeDone').val(this.secondsToHms(task.remaining_hours*60));
 		
-		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentDone"), collection: app.collections.equipments})
+		var filteredEquipment = _.filter(app.collections.equipments.models, function(item){
+    		return item.attributes.technical_vehicle || item.attributes.commercial_vehicle;
+    	});
+		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentDone"), 
+			collection: new app.Collections.Equipments(filteredEquipment)
+		});
 		app.views.selectListEquipmentsView.clearAll();
 		app.views.selectListEquipmentsView.addEmptyFirst();
 		app.views.selectListEquipmentsView.addAll();
@@ -460,10 +639,16 @@ app.Views.TasksListView = Backbone.View.extend({
 	    		 input_equipment_id = selectItem.toJSON().id
 	    	 }
 	     }
+	     
+	    this.vehicule = input_equipment_id;
+	    this.equipments = _.map($("#equipmentsDone").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
+	    this.equipments.push( input_equipment_id );
+
 
 		taskParams = {
 		    state: app.Models.Task.state[1].value,
-		    equipment_id: input_equipment_id,
+		    //equipment_id: input_equipment_id,
+		    equipment_ids: [[6, 0, this.equipments]],
 		    remaining_hours: 0,
 	        km: this.$('#equipmentKmDone').val(),
 	        oil_qtity: this.$('#equipmentOilQtityDone').val(),
@@ -493,8 +678,8 @@ app.Views.TasksListView = Backbone.View.extend({
 			}
 		}    		
     	
-		this.saveNewStateTask(taskParams, taskWorkParams,$('#modalTaskDone'),newInterState);
-		this.saveEquipment( input_equipment_id, this.$('#equipmentKmDone').val() )
+		this.saveNewStateTask(taskParams, taskWorkParams,$('#modalTaskDone'),newInterState, false);
+		//this.saveEquipment(  this.$('#equipmentKmDone').val(), input_equipment_id )
     },
     
     //Task not beginning
@@ -519,12 +704,12 @@ app.Views.TasksListView = Backbone.View.extend({
 				newInterState = app.Models.Intervention.state[3].value;
 			}
 		}
-		this.saveNewStateTask(taskParams,null,null,newInterState);
+		this.saveNewStateTask(taskParams,null,null,newInterState, false);
 
 	},
 
 	//Save task with new times
-	saveNewStateTask: function(taskParams, taskWorkParams, element, newInterState) {
+	saveNewStateTask: function(taskParams, taskWorkParams, element, newInterState, create) {
 		var self = this;
 		self.taskParams = taskParams;
 		self.taskWorkParams = taskWorkParams;
@@ -535,39 +720,54 @@ app.Views.TasksListView = Backbone.View.extend({
 		//TransactionRollbackError: could not serialize access due to concurrent update
 		//We must wait intervention save callback before save task
 		
-		app.models.intervention.saveWithCallback(this.model.toJSON().intervention.id, {
-			state:newInterState },
-			{
-				//TODO save task work with callback
-				success: function (data) {		
-					if( self.taskWorkParams!=null )
-					{
-						app.models.taskWork.save(0, taskWorkParams,
-						{
-							success: function (data) {
-								app.models.task.save(self.model.id, self.taskParams, self.element, self, "#taches");
-							}
-						});
-					}
-					else
-						app.models.task.save(self.model.id, self.taskParams, self.element, self, "#taches");
-				}		
-			});
-	},
-	
-	saveEquipment: function(equipmentId, km) {
-		
-		var equipment = app.collections.equipments.get(equipmentId);
+		var equipment = app.collections.equipments.get(this.vehicule);
 		var params = {};
-		params.km = km;
-		equipment.updateKM( km );
-		equipment.save(equipment.id,params,{
-			succes: function(data){
-				console.debug(data);
+		params.km = taskParams.km;
+		equipment.updateKM( taskParams.km );
+		equipment.save(this.vehicule,params,{
+			success: function(data){
+				if( create ) {
+					app.models.task.save(0,taskParams,$('#modalAddTask'), null, "taches");
+				}
+				else {
+					app.models.intervention.saveWithCallback(self.model.toJSON().intervention.id, {
+						state:newInterState },
+						{
+							//TODO save task work with callback
+							success: function (data) {		
+								if( self.taskWorkParams!=null )
+								{
+									app.models.taskWork.save(0, taskWorkParams,
+									{
+										success: function (data) {
+											app.models.task.save(self.model.id, self.taskParams, self.element, self, "#taches");
+										}
+									});
+								}
+								else
+									app.models.task.save(self.model.id, self.taskParams, self.element, self, "#taches");
+							}		
+						});
+				}
 			}
 		});
+		
 
 	},
+	
+//	saveEquipment: function( km, equipmentId ) {
+//		
+//		var equipment = app.collections.equipments.get(equipmentId);
+//		var params = {};
+//		params.km = km;
+//		equipment.updateKM( km );
+//		equipment.save(equipment.id,params,{
+//			succes: function(data){
+//				console.debug(data);
+//			}
+//		});
+//
+//	},
 
     preventDefault: function(event){
     	event.preventDefault();

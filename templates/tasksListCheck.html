@@ -43,6 +43,8 @@
 		<button class="btn btn-primary btn-small no-outline addTask">
 			<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addTask) %>
 		</button>
+		
+		
 	</div>
 	<!-- Add task -->
 
@@ -110,11 +112,7 @@
 
 						<tr id="<%= task.id %>">
 						    <td><%= task.project_id[1] %></td>
-							<% if( task.state == app.Models.Task.state[0].value ) { %>
-					    		<td><a href="#taches/<%= task.id %>"> <%= _.capitalize(task.name) %> </a></td>
-					    	<% } else { %>
-					    		<td><%= _.capitalize(task.name) %> </td>
-					     	<% } %>
+					    	<td><a href="#taches/<%= task.id %>"> <%= _.capitalize(task.name) %> </a></td>
 							<td><%= (task.intervention && task.intervention.site1 ) ? task.intervention.site1[1] : '' %></td>
 							<td><%= (task.date_start) != '' ? moment(task.date_start).format('H[h]mm') : '' %></td>
 							<td><%= (task.date_end) != '' ? moment(task.date_end).format('H[h]mm') : '' %></td>
@@ -216,7 +214,7 @@
 	               	<label for="eventTimeDone" class="control-label">Temps travaillé:</label>
 	               	<div class="controls">
 						<div class="input-append bootstrap-timepicker" >							
-						    <input type="text" class="timepicker-default input-small" id='eventTimeDone'>
+						    <input type="text" class="timepicker-default input-small taskInput" id='eventTimeDone'>
 						    <span class="add-on">
 						        <i class="icon-time"></i>
 						    </span>
@@ -232,7 +230,7 @@
 					<label for="taskEquipmentDone" class="control-label"><%= _.capitalize(lang.equipment) %>:</label>
 	
 					<div class="controls">
-						<select id="taskEquipmentDone"></select>
+						<select id="taskEquipmentDone" class="taskEquipment taskSelect taskInput"></select>
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -242,7 +240,7 @@
 					<label for="equipmentOilQtityDone" class="control-label"><%= _.capitalize(lang.oilQtity) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentOilQtityDone" name="equipmentOilQtityDone" required="required"  min="1" />
+						<input type="number" id="equipmentOilQtityDone" name="equipmentOilQtityDone" class="taskInput" required="required"  min="1" />
 						<span class="help-inline"></span>
 					</div>
 				</div>	
@@ -255,7 +253,7 @@
 					<label for="equipmentKmDone" class="control-label"><%= _.capitalize(lang.km) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentKmDone" name="equipmentKmDone" required="required"  min="1" />
+						<input type="number" id="equipmentKmDone" name="equipmentKmDone" class="equipmentKm taskInput" required="required"  min="1" />
 						<span class="help-inline"></span>
 					</div>
 				</div>	
@@ -265,11 +263,35 @@
 					<label for="equipmentOilPriceDone" class="control-label"><%= _.capitalize(lang.oilPrice) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentOilPriceDone" name="equipmentOilPriceDone" required="required"  min="1" />
+						<input type="number" id="equipmentOilPriceDone" name="equipmentOilPriceDone" class="taskInput" required="required"  min="1" />
 						<span class="help-inline"></span>
 					</div>
 
 				</div>
+			</div>
+			
+			<!-- Select Material -->
+			<div class="row-fluid marginTop equipmentsDroppableAreaDone">
+				
+				<div class="span6">
+					<div class="widget-title">
+						<h4>Matériels <span class="badge pull-right"></span></h4>
+					</div>
+	
+					<ul id="equipmentsDone" class="sortableEquipmentsList sortable unstyled nav nav-list">
+	
+					</ul>
+				</div>
+	
+				<div class="span6">
+					<div class="widget-title">
+						<h4>Autres matériels <span class="badge pull-right" id="badgeNbEquipmentsDone"></span></h4>
+					</div>
+	
+					<ul id="equipmentsListDone" class="sortableEquipmentsList sortable unstyled nav nav-list">
+					</ul>
+				</div>
+	
 			</div>
 
 	    </form>
@@ -299,7 +321,7 @@
 	                <label for="taskName" class="control-label" >Nom:</label>
 	
 	                <div class="controls">
-	                    <input type="text" id="taskName" name="taskName" required="required"/>
+	                    <input type="text" id="taskName" name="taskName" class="taskInput"  required="required"/>
 	                    <span class="help-inline"></span>
 	                </div>
 	            </div>
@@ -309,7 +331,7 @@
 					<label for="taskEquipmentAdd" class="control-label"><%= _.capitalize(lang.equipment) %>:</label>
 	
 					<div class="controls">
-						<select id="taskEquipmentAdd"></select>
+						<select id="taskEquipmentAdd" class="taskEquipment taskInput taskSelect"></select>
 						<span class="help-inline"></span>
 					</div>
 				</div> 
@@ -319,7 +341,7 @@
 					<label for="equipmentOilQtityAdd" class="control-label"><%= _.capitalize(lang.oilQtity) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentOilQtityAdd" name="equipmentOilQtityAdd" required="required"  min="1" />
+						<input type="number" id="equipmentOilQtityAdd" name="equipmentOilQtityAdd" class="taskInput"  required="required"  min="1" />
 						<span class="help-inline"></span>
 					</div>
 
@@ -333,7 +355,7 @@
 	                <label for="taskCategory" class="control-label">Catégorie:</label>
 	
 	                <div class="controls">
-	                     <select id="taskCategory"></select>
+	                     <select id="taskCategory" class="taskInput taskSelect"></select>
 	                    <span class="help-inline"></span>
 	                </div>
 	            </div>
@@ -343,7 +365,7 @@
 					<label for="equipmentKmAdd" class="control-label"><%= _.capitalize(lang.km) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentKmAdd" name="equipmentKmAdd" required="required"  min="1" />
+						<input type="number" id="equipmentKmAdd" name="equipmentKmAdd" class="equipmentKm taskInput" required="required"  />
 						<span class="help-inline"></span>
 					</div>
 				</div>	
@@ -353,7 +375,7 @@
 					<label for="equipmentOilPriceAdd" class="control-label"><%= _.capitalize(lang.oilPrice) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentOilPriceAdd" name="equipmentOilPriceAdd" required="required"  min="1" />
+						<input type="number" id="equipmentOilPriceAdd" name="equipmentOilPriceAdd" class="taskInput"  required="required"  min="1" />
 						<span class="help-inline"></span>
 					</div>
 				</div>			
@@ -368,7 +390,7 @@
                    <div class="controls">
                         <input 
                         	type="text"
-                            class="datepicker" 
+                            class="datepicker taskInput" 
                             id="startDate" 
                             size="20"
                             value="" 
@@ -382,7 +404,7 @@
                     <div class="controls">
                         <input 
                         	type="text"
-                            class="datepicker" 
+                            class="datepicker taskInput" 
                             id="endDate"
                             size="20" 
                             value="" 
@@ -400,7 +422,7 @@
                 	<label for="startHour" class="control-label">@</label>
                 	<div class="controls">
 						<div class="input-append bootstrap-timepicker" >							
-						    <input type="text" class="timepicker-default input-small" id='startHour' required="required">
+						    <input type="text" class="timepicker-default input-small taskInput" id='startHour' required="required">
 						    <span class="add-on">
 						        <i class="icon-time"></i>
 						    </span>
@@ -412,7 +434,7 @@
                 	<label for="endHour" class="control-label">@</label>
                 	<div class="controls">
 						<div class="input-append bootstrap-timepicker" >							
-						    <input type="text" class="timepicker-default input-small" id='endHour' required="required">
+						    <input type="text" class="timepicker-default input-small taskInput" id='endHour' required="required">
 						    <span class="add-on">
 						        <i class="icon-time"></i>
 						    </span>
@@ -420,9 +442,32 @@
                 	</div>
 				</div> 
 			</div> 
-
-
-
+			
+			<!-- Select Material -->
+			<div class="row-fluid marginTop equipmentsDroppableAreaAdd">
+				
+				<div class="span6">
+					<div class="widget-title">
+						<h4>Matériels <span class="badge pull-right"></span></h4>
+					</div>
+	
+					<ul id="equipmentsAdd" class="sortableEquipmentsList sortable unstyled nav nav-list">
+	
+					</ul>
+				</div>
+	
+				<div class="span6">
+					<div class="widget-title">
+						<h4>Autres matériels <span class="badge pull-right" id="badgeNbEquipmentsAdd"></span></h4>
+					</div>
+	
+					<ul id="equipmentsListAdd" class="sortableEquipmentsList sortable unstyled nav nav-list">
+					</ul>
+				</div>
+	
+			</div>
+			
+			
 	    </form>
 	</div>
 	
@@ -455,7 +500,7 @@
 	               	<label for="eventTimeSpent" class="control-label">Temps travaillé:</label>
 	               	<div class="controls">
 						<div class="input-append bootstrap-timepicker" >							
-						    <input type="text" class="timepicker-default input-small" id='eventTimeSpent' required="required">
+						    <input type="text" class="timepicker-default input-small" id='eventTimeSpent' class="taskInput" class="taskInput"  required="required">
 						    <span class="add-on">
 						        <i class="icon-time"></i>
 						    </span>
@@ -468,7 +513,7 @@
 					<label for="taskEquipmentSpent" class="control-label"><%= _.capitalize(lang.equipment) %>:</label>
 	
 					<div class="controls">
-						<select id="taskEquipmentSpent"></select>
+						<select id="taskEquipmentSpent" class="taskEquipment taskInput taskSelect" ></select>
 						<span class="help-inline"></span>
 					</div>
 				</div> 	
@@ -478,7 +523,7 @@
 					<label for="equipmentOilQtitySpent" class="control-label"><%= _.capitalize(lang.oilQtity) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentOilQtitySpent" name="equipmentOilQtitySpent" required="required"  min="1" />
+						<input type="number" id="equipmentOilQtitySpent" name="equipmentOilQtitySpent" class="taskInput" required="required"  min="1" />
 						<span class="help-inline"></span>
 					</div>
 				</div>	
@@ -491,7 +536,7 @@
 	               	<label for="eventTimeRemaining" class="control-label">Temps restant:</label>
 	               	<div class="controls">
 						<div class="input-append bootstrap-timepicker" >							
-						    <input type="text" class="timepicker-default input-small" id='eventTimeRemaining' required="required">
+						    <input type="text" class="timepicker-default input-small" id='eventTimeRemaining' class="eventInput" required="required">
 						    <span class="add-on">
 						        <i class="icon-time"></i>
 						    </span>
@@ -505,7 +550,7 @@
 					<label for="equipmentKmSpent" class="control-label"><%= _.capitalize(lang.km) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentKmSpent" name="equipmentKmSpent" required="required"  min="1" />
+						<input type="number" id="equipmentKmSpent" name="equipmentKmSpent" class="equipmentKm taskInput" required="required"  min="1" />
 						<span class="help-inline"></span>
 					</div>
 				</div>	
@@ -515,12 +560,36 @@
 					<label for="equipmentOilPriceSpent" class="control-label"><%= _.capitalize(lang.oilPrice) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentOilPriceSpent" name="equipmentOilPriceSpent" required="required"  min="1" />
+						<input type="number" id="equipmentOilPriceSpent" name="equipmentOilPriceSpent" class="taskInput" required="required"  min="1" />
 						<span class="help-inline"></span>
 					</div>
 				</div>	
 			</div>
-			
+
+
+			<!-- Select Material -->
+			<div class="row-fluid marginTop equipmentsDroppableAreaSpent">
+				
+				<div class="span6">
+					<div class="widget-title">
+						<h4>Matériels <span class="badge pull-right"></span></h4>
+					</div>
+	
+					<ul id="equipmentsSpent" class="sortableEquipmentsList sortable unstyled nav nav-list">
+	
+					</ul>
+				</div>
+	
+				<div class="span6">
+					<div class="widget-title">
+						<h4>Autres matériels <span class="badge pull-right" id="badgeNbEquipmentsSpent"></span></h4>
+					</div>
+	
+					<ul id="equipmentsListSpent" class="sortableEquipmentsList sortable unstyled nav nav-list">
+					</ul>
+				</div>
+	
+			</div>
 			
 				
 	    </form>

@@ -21,6 +21,16 @@ app.Models.Task = Backbone.RelationalModel.extend({
 //			},
 //		},		
 //	],
+
+	relations: [
+	   {
+			type: Backbone.HasMany,
+			key: 'equipments',
+			relatedModel: 'app.Models.Equipment',
+			collectionType: 'app.Collections.Equipments',
+			includeInJSON: true,
+		},	
+	  ],
 	
 
 	defaults:{

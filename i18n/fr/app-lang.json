@@ -106,9 +106,13 @@
 	"oilQtity"				: "Quantité carburant",
 	"oilPrice"				: "Prix Carburant",
 	"km"					: "Kilomètres",
-	"technicalEquipment"	: "Utilitaire",
-	"smallEquipment"		: "Petit matériel",
-	"officer"				: "Officier",
+	"vehicleEquipment"						: "Véhicule",
+	"commercialVehicleEquipment"			: "Voiture",
+	"technicalVehicleEquipment"				: "Utilitaire",
+	"materialEquipment"						: "Matériel",
+	"fatMaterialEquipment"					: "Gros matériel",
+	"smallMaterialEquipment"				: "Petit matériel",
+	"officer"								: "Officier",
 
 
 	"actions" : {

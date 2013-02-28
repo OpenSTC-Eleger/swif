@@ -31,7 +31,7 @@ app.Collections.Tasks = Backbone.Collection.extend({
 
 
 
-    /** Collection Parsename
+    /** Collection Parse name
     */
     parse: function(response) {
         return response.result.records;
