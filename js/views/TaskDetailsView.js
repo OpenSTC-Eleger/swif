@@ -90,9 +90,12 @@ app.Views.TaskDetailsView = Backbone.View.extend({
 		this.selectedTask = _.filter(app.collections.tasks.models, function(item){ return item.attributes.id == self.modelJSON.id });
 		var selectedTaskJson = this.selectedTask[0].toJSON();	
 		
+		// Clear the list //		
+		$('#equipments').empty();
+
 		// Display the services of the team //
 		_.each(selectedTaskJson.equipment_ids, function (equipment, i){
-			$('#equipments').append('<li id="equipment_'+equipment.id+'"><a href="#"><i class="icon-sitemap"></i> '+ equipment.name +' </a></li>');
+			$('#equipments').append('<li id="equipment_'+equipment.id+'"><a href="#"><i class="icon-sitemap"></i> '+ equipment.name + '-' + equipment.type + ' </a></li>');
 			nbRemainMaterials++;
 		});
 		

@@ -27,13 +27,7 @@ app.Collections.Equipments = Backbone.Collection.extend({
     /** Collection Parse
     */
     parse: function(response) {
-    	//keeps only STC materials
-    	var records = response.result.records;
-    	records = _.filter(records, function(record){    		
-    		return record.technical_vehicle || record.commercial_vehicle
-    				|| record.fat_material || record.small_material;
-    	});
-        return records;
+    	return response.result.records;
     },
     
     /** Comparator for ordering collection

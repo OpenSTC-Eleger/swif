@@ -172,10 +172,10 @@ app.Views.TasksListView = Backbone.View.extend({
 //					console.debug("SUNDAY - 7 : "+momentDate.clone().day(7).format('LLL'));
 					sundayTasks.push(task);
 				}
-				else if(momentDate.clone().day(0).isSame(task.date_start, 'day')){
+//				else if(momentDate.clone().day(0).isSame(task.date_start, 'day')){
 //					console.debug("SUNDAY - 0 : "+momentDate.clone().day(0).format('LLL'));
-					sundayTasks.push(task);
-				}
+//					sundayTasks.push(task);
+//				}
 
 				// Retrieve the number of Open Task //
 				if(task.state == app.Models.Task.state[0].value){
@@ -190,7 +190,7 @@ app.Views.TasksListView = Backbone.View.extend({
 				//Pour le dimanche Le TEST Moment.js sur la semaine (momentDate.clone().isSame(task.date_start, 'week') renvoie false.
 				//La semaine anglaise finit un samedi le calendrier 'moment.js' chargé est bien le français.
 				//BUG FIX : le test de la semain ne fonctionne pas, mais le test jour indique bien que c'est bien un dimanche'
-				if(momentDate.clone().day(7).isSame(task.date_start, 'day')){					
+				if( momentDate.clone().day(7).isSame(task.date_start, 'day') ){					
 					sundayTasks.push(task);					
 				}
 				//sundayTasks.push(task);
@@ -279,6 +279,11 @@ app.Views.TasksListView = Backbone.View.extend({
 				}
 			});	
 			
+//			$('#modalTaskDone .modal-body').css("height", "550px");
+//			$('#modalAddTask').css("height", "800px");
+//			$('#modalAddTask .modal').css("height", "800px");
+//			$('#modalTimeSpent .modal-body').css("height", "550px");
+			
 			//$('#duallistbox_demo1_helper1').bootstrapDualListbox();
 			
 //			$('.modal').validate( {
@@ -305,10 +310,9 @@ app.Views.TasksListView = Backbone.View.extend({
 		var link = $(e.target);
 		var id = _(link.parents('tr').attr('id')).strRightBack('_');
 		
-		// Clear the list of the user //		
-		//$('#equipmentsAdd li, #equipmentsListAdd li').remove();
+		// Clear the lists //		
 		list.empty();
-		//_.each($(list) li )
+		choiceList.empty();
 
 		var equipmentsSelected = new Array();
 		if( id ) {
@@ -317,7 +321,7 @@ app.Views.TasksListView = Backbone.View.extend({
 			
 			// Display the services of the team //
 			_.each(selectedTaskJson.equipments_ids, function (equipment, i){
-				list.append('<li id="equipment_'+equipment.id+'"><a href="#"><i class="icon-sitemap"></i> '+ equipment.name +' </a></li>');
+				list.append('<li id="equipment_'+equipment.id+'"><a href="#"><i class="icon-sitemap"></i> '+ equipment.name + '-' + equipment.type + '</a></li>');
 				equipmentsSelected[i] = equipment.id;
 			});
 		};
@@ -326,11 +330,6 @@ app.Views.TasksListView = Backbone.View.extend({
 		var materialsEquipment = _.filter(app.collections.equipments.models, function(equipment){
 			return equipment.attributes.small_material == true || equipment.attributes.fat_material==true
 		});
-		//remove no technical services
-		//app.collections.equipments.remove(vehicleEquipment);
-		//app.collections.equipments.toJSON()
-		
-		//var materials = new app.Collections.Equipments(materialsEquipment);
 
 		// Display the remain services //
 		var nbRemainMaterials = 0;
@@ -338,7 +337,7 @@ app.Views.TasksListView = Backbone.View.extend({
 			var materialJSON = material.toJSON()
 			if(!_.contains(equipmentsSelected, materialJSON.id)){
 				nbRemainMaterials++;
-				choiceList.append('<li id="equipment_'+materialJSON.id+'"><a href="#"><i class="icon-sitemap"></i> '+ materialJSON.name +' </a></li>');
+				choiceList.append('<li id="equipment_'+materialJSON.id+'"><a href="#"><i class="icon-sitemap"></i> '+ materialJSON.name + '-' + materialJSON.type + ' </a></li>');
 			}
 		});
 		
