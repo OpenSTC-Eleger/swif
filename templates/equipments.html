@@ -196,7 +196,7 @@
 					<label for="equipmentYear" class="control-label"><%= _.capitalize(lang.year) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentYear" name="equipmentYear" required="required" />
+						<input type="number" id="equipmentYear" name="equipmentYear" required="required" value="<%= moment().year() %>">
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -205,7 +205,7 @@
 					<label for="equipmentCV" class="control-label"><%= _.capitalize(lang.cv) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentCV" name="equipmentCV" required="required" min="1" />
+						<input type="number" id="equipmentCV" name="equipmentCV" required="required" min="0"  />
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -220,7 +220,7 @@
 					<label for="equipmentKm" class="control-label"><%= _.capitalize(lang.km) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentKm" name="equipmentKm" required="required" min="0"  />
+						<input type="number" id="equipmentKm" name="equipmentKm" required="required" min="0" value="0"/>
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -230,7 +230,7 @@
 					<label for="equipmentTime" class="control-label"><%= _.capitalize(lang.time) %>:</label>
 	
 					<div class="controls">
-						<input type="number" id="equipmentTime" name="equipmentTime" required="required" min="0" />
+						<input type="number" id="equipmentTime" name="equipmentTime" required="required" min="0" value="0" />
 						<span class="help-inline"></span>
 					</div>
 				</div>

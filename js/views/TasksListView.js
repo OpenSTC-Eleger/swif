@@ -360,8 +360,10 @@ app.Views.TasksListView = Backbone.View.extend({
     },
     
     resetModal: function() {    	
-    	$('.taskInput').val('');
+    	$('.taskInput').val( 0 );
     	$('.taskSelect').val(0);
+    	$('#taskName').val('');
+    	
     	//$('.equipments').val('')
     	
     },
@@ -407,24 +409,6 @@ app.Views.TasksListView = Backbone.View.extend({
 			if( equipment ) {
 				var km = equipment.toJSON().km ;
 				$('.equipmentKm').val( km );
-//				$('#equipmentKmAdd').each(function() {
-//			        var $this = $(this);
-//			        $(this).rules('add', {
-//			            min: km
-//			        });
-//			    });
-//				$('.modal #equipmentKmAdd').rules("add", { 
-//				  required:true,  
-//				  min: km
-//				});
-//				$(".modal").validate({
-//					  rules: {
-//					    field: {
-//					      required: true,
-//					      min: km
-//					    }
-//					  }
-//				});
 			}			
 		}
 	},

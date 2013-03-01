@@ -134,6 +134,8 @@
 					    			<span class="label label-muted"><%= lang.pending %></span>
 					    		<% } else if(task.state == app.Models.Task.state[4].value) { %> 
 					    			<span class="label label-important"><%= lang.refused %></span>
+					    		<% } else if(task.state == app.Models.Task.state[5].value) { %> 
+					    			<span class="label label-inverse"><%= lang.absent %></span>
 					    		<% } %>
 					    		
 						   	</td>

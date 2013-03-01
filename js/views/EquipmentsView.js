@@ -101,14 +101,14 @@ app.Views.EquipmentsView = Backbone.View.extend({
         $('#equipmentMarque').val('');
         $('#equipmentUsage').val('');
         $('#equipmentType').val('');
-        $('#equipmentCV').val('');
-        $('#equipmentYear').val('');
-        $('#equipmentTime').val('');      
+        $('#equipmentCV').val( 0 );
+        $('#equipmentYear').val( moment().year() );
+        $('#equipmentTime').val( 0 );      
         $('#technicalVehicleEquipment').removeAttr("checked");	
         $('#commercialVehicleEquipment').removeAttr("checked");	          
         $('#smallMaterialEquipment').removeAttr("checked");	
         $('#fatMaterialEquipment').removeAttr("checked");	
-        $('#equipmentKm').val('');
+        $('#equipmentKm').val( 0 );
         if( this.selectedJson ) {
 			$('#equipmentImmat').val(this.selectedJson.name);
 			$('#equipmentMarque').val(this.selectedJson.marque);

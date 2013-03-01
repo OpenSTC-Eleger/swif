@@ -55,7 +55,7 @@
 	                    <label for="taskDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
 	
 	                    <div class="controls">
-	                        <textarea name="taskDescription" id="taskDescription" class="inputField" rows="5" required="required"><%= task.description %></textarea>
+	                        <textarea name="taskDescription" id="taskDescription" class="inputField" rows="5" required="required"><%= task.description ? task.description : ""%></textarea>
 	                        <span class="help-inline"></span>
 	                    </div>
 	                </div>

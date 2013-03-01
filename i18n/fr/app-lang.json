@@ -86,6 +86,7 @@
 	"finished" 				: "terminée",
 	"closed" 				: "cloturée",
 	"cancelled"				: "annulée",
+	"absent"				: "congé",
 	"confirm" 				: "DST",
 	"pending"				: "en cours",
 	"template"				: "avec tâches duplicables",
