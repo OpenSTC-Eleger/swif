@@ -141,28 +141,39 @@ app.Views.TasksListView = Backbone.View.extend({
 
 		// Fill the tables with the tasks //
 		_.each(tasksUser, function(task, i){
-
+//			if( task.date_start )
+//				console.debug("START-DATE : "+task.date_start.format('LLL'));
 			if(momentDate.clone().isSame(task.date_start, 'week')){
-				
 				if(momentDate.clone().day(1).isSame(task.date_start, 'day')){
+//					console.debug("MONDAY : "+momentDate.clone().day(1).format('LLL'));
 					mondayTasks.push(task);
 				}
 				else if(momentDate.clone().day(2).isSame(task.date_start, 'day')){
+//					console.debug("TUESDAY : "+momentDate.clone().day(2).format('LLL'));
 					tuesdayTasks.push(task);
 				}
 				else if(momentDate.clone().day(3).isSame(task.date_start, 'day')){
+//					console.debug("WEDNESDAY : "+momentDate.clone().day(3).format('LLL'));
 					wednesdayTasks.push(task);
 				}
 				else if(momentDate.clone().day(4).isSame(task.date_start, 'day')){
+//					console.debug("THURSDAY : "+momentDate.clone().day(4).format('LLL'));
 					thursdayTasks.push(task);
 				}
 				else if(momentDate.clone().day(5).isSame(task.date_start, 'day')){
+//					console.debug("FRIDAY : "+momentDate.clone().day(5).format('LLL'));
 					fridayTasks.push(task);
 				}
 				else if(momentDate.clone().day(6).isSame(task.date_start, 'day')){
+//					console.debug("SATURDAY : "+momentDate.clone().day(6).format('LLL'));
 					saturdayTasks.push(task);
 				}
 				else if(momentDate.clone().day(7).isSame(task.date_start, 'day')){
+//					console.debug("SUNDAY - 7 : "+momentDate.clone().day(7).format('LLL'));
+					sundayTasks.push(task);
+				}
+				else if(momentDate.clone().day(0).isSame(task.date_start, 'day')){
+//					console.debug("SUNDAY - 0 : "+momentDate.clone().day(0).format('LLL'));
 					sundayTasks.push(task);
 				}
 
@@ -170,6 +181,19 @@ app.Views.TasksListView = Backbone.View.extend({
 				if(task.state == app.Models.Task.state[0].value){
 					nbPendingTasks++;
 				}
+			}
+			else {				
+//				console.debug("PAS PRIS EN COMPTE : ")
+//				console.debug("TEST - indice 0 : " + momentDate.clone().day(0).isSame(task.date_start, 'day'));
+//				console.debug("TEST - indice 7 : " + momentDate.clone().day(7).isSame(task.date_start, 'day'));
+				
+				//Pour le dimanche Le TEST Moment.js sur la semaine (momentDate.clone().isSame(task.date_start, 'week') renvoie false.
+				//La semaine anglaise finit un samedi le calendrier 'moment.js' chargé est bien le français.
+				//BUG FIX : le test de la semain ne fonctionne pas, mais le test jour indique bien que c'est bien un dimanche'
+				if(momentDate.clone().day(7).isSame(task.date_start, 'day')){					
+					sundayTasks.push(task);					
+				}
+				//sundayTasks.push(task);
 			}
 		});
 
@@ -272,7 +296,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		return this;
     },
     
-	/** Display category services
+	/** Display equipments
 		*/
 	displayEquipmentsInfos: function(e, list, choiceList, badgeComponent){
 		e.preventDefault();

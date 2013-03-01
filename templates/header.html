@@ -23,8 +23,11 @@
 		    	<ul id="nav-menu-app" class="nav" role="menu">
 		    		
 	 				<% _.each(menus, function (menuRacine, i) { 
-	 					if( i<1 ) {
-	 					_.each(menuRacine.children, function (menuParent, i) {	%> 						
+	 					console.debug(menuRacine);
+	 					if( menuRacine.name == 'OpenSTM' ) {			
+	 					_.each(menuRacine.children, function (menuParent, i) {	
+	 						%> 		 			
+	 											
 				    		<li class="dropdown" id="<%= _.slugify(menuParent.name) %>" role="menuitem">
 				    			<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuParent.id %>"><%= menuParent.name %> <b class="caret"></b></a>
 			    				
@@ -45,9 +48,9 @@
 										<%} %>
 									<% }); %>
 								</ul>							
-		  					</li>
+		  					</li>		  					
 		  				<% }); %>
-		  				<%} %>	
+		  				<% } %>
   					<% }); %>
 
   					<!--  <li role="menuitem"><a href="#">Achat</a></li>

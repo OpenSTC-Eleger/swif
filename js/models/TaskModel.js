@@ -7,7 +7,8 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	model_name : 'project.task',	
 	
 	url: "/#taches/:id",
-	
+
+
 //	relations: [
 //	   {
 //			type: Backbone.HasMany,
@@ -25,10 +26,10 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	relations: [
 	   {
 			type: Backbone.HasMany,
-			key: 'equipments',
+			key: 'equipment_ids',
 			relatedModel: 'app.Models.Equipment',
 			collectionType: 'app.Collections.Equipments',
-			includeInJSON: true,
+			includeInJSON: ['id','name'],
 		},	
 	  ],
 	

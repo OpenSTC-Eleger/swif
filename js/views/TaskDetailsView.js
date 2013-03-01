@@ -21,6 +21,7 @@ app.Views.TaskDetailsView = Backbone.View.extend({
 	*/
 	initialize: function (model, create) {
 	    this.model = model;
+	    this.modelJSON = model.toJSON();
 	    this.create = create;
 	    
 	    //this.model.bind('update:intervention', this.updateInter, this);
@@ -50,7 +51,7 @@ app.Views.TaskDetailsView = Backbone.View.extend({
 			$(self.el).html(template);
 			
 			self.getDropDownElements();	
-			
+			self.displayEquipmentsInfos();
 						
 			$(".datepicker").datepicker({
     			format: 'dd/mm/yyyy',
@@ -61,8 +62,8 @@ app.Views.TaskDetailsView = Backbone.View.extend({
 			
 			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 			
-			var modelJSON = self.model.toJSON();
-			if( modelJSON.state != app.Models.Task.state[0].value) {
+			
+			if( self.modelJSON.state != app.Models.Task.state[0].value) {
 				$(".inputField").attr("disabled", "disabled");
 				$(".save").attr("disabled", "disabled");
 			}else {
@@ -77,6 +78,27 @@ app.Views.TaskDetailsView = Backbone.View.extend({
 		
         return this;
     },
+    
+	/** Display  Equipments
+		*/
+	displayEquipmentsInfos: function(){
+			
+		$('#equipments').empty();
+
+		var nbRemainMaterials = 0;
+		var self = this;
+		this.selectedTask = _.filter(app.collections.tasks.models, function(item){ return item.attributes.id == self.modelJSON.id });
+		var selectedTaskJson = this.selectedTask[0].toJSON();	
+		
+		// Display the services of the team //
+		_.each(selectedTaskJson.equipment_ids, function (equipment, i){
+			$('#equipments').append('<li id="equipment_'+equipment.id+'"><a href="#"><i class="icon-sitemap"></i> '+ equipment.name +' </a></li>');
+			nbRemainMaterials++;
+		});
+		
+		$('#badgeNbEquipments').html(nbRemainMaterials);
+		
+	},
     
     getDropDownElements: function() {
 	    
