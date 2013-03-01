@@ -187,13 +187,9 @@ app.Views.TasksListView = Backbone.View.extend({
 //				console.debug("TEST - indice 0 : " + momentDate.clone().day(0).isSame(task.date_start, 'day'));
 //				console.debug("TEST - indice 7 : " + momentDate.clone().day(7).isSame(task.date_start, 'day'));
 				
-				//Pour le dimanche Le TEST Moment.js sur la semaine (momentDate.clone().isSame(task.date_start, 'week') renvoie false.
-				//La semaine anglaise finit un samedi le calendrier 'moment.js' chargé est bien le français.
-				//BUG FIX : le test de la semain ne fonctionne pas, mais le test jour indique bien que c'est bien un dimanche'
 				if( momentDate.clone().day(7).isSame(task.date_start, 'day') ){					
 					sundayTasks.push(task);					
 				}
-				//sundayTasks.push(task);
 			}
 		});
 

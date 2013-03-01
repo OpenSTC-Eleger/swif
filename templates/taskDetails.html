@@ -44,11 +44,7 @@
 	                        <select id="taskOfficer" class="inputField"><option value="" disabled="disabled" ></option></select>
 	                        <span class="help-inline"></span>                           
 	                    </div>
-	                </div>    
-	        	</div>
-                
-               
-                <div class="input-append">                 
+	                </div>                
 
 	                <!-- task Description -->
 	                <div class="control-group">
@@ -142,6 +138,28 @@
 					</ul>
 				</div>
 	
+			</div>
+			
+			<!-- OIL -->
+			<div class="input-append">
+				<!-- OIL Quantity-->
+				<div class="control-group">
+					<label for="equipmentOilQtityDone" class="control-label"><%= _.capitalize(lang.oilQtity) %>:</label>
+	
+					<div class="controls">
+						<input type="number" id="equipmentOilQtityDone" name="equipmentOilQtityDone" value="<%= task.oil_qtity %>" disabled />
+						<span class="help-inline"></span>
+					</div>
+				</div>	
+				<!-- OIL_PRICE -->
+				<div class="control-group">
+					<label for="equipmentOilPriceDone" class="control-label"><%= _.capitalize(lang.oilPrice) %>:</label>
+	
+					<div class="controls">
+						<input type="number" id="equipmentOilPriceDone" name="equipmentOilPriceDone" value="<%= task.oil_price %>" disabled>
+						<span class="help-inline"></span>
+					</div>
+				</div>
 			</div>
 
 
