@@ -161,7 +161,12 @@ app.Views.TasksListView = Backbone.View.extend({
 			else {				
 
 				if( momentDate.clone().day(7).isSame(task.date_start, 'day') ){					
-					sundayTasks.push(task);					
+					sundayTasks.push(task);
+
+					// Retrieve the number of Open Task //
+					if(task.state == app.Models.Task.state[0].value){
+						nbPendingTasks++;
+					}			
 				}
 			}
 
@@ -265,6 +270,20 @@ app.Views.TasksListView = Backbone.View.extend({
 
 			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 			$('*[rel="tooltip"]').tooltip({placement: "right"});
+
+
+
+			// Collapse border style //
+			$('.accordion-toggle').click(function(){
+				if($(this).parents('.accordion-group').hasClass('collapse-selected')){
+					$(this).parents('.accordion-group').removeClass('collapse-selected');
+				}else{
+					$(this).parents('.accordion-group').addClass('collapse-selected');	
+				}
+				
+    		})
+	
+
 		});
 
 		$(this.el).hide().fadeIn('slow');

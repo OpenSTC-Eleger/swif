@@ -63,11 +63,14 @@
 		</li>
 	</ul>
 
-	<div class="accordion without-border">
+	<div id="task-accordion" class="accordion without-border">
 	<!-- Check if there is Request in the Database -->
 	<% 	_.each(tasksPerDay, function(day, i) { %>
 
-		<section class="accordion-group dayTasks">
+		<!-- Unfold the current day -->
+		<% if(day.day.isSame(moment(), "day")){ var unfold = 'in'; var borderUnfold = 'collapse-selected'}%>	
+
+		<section class="accordion-group <%= borderUnfold %>">
 		
 			<div class="accordion-heading">
 				<a class="accordion-toggle" data-toggle="collapse" href="#accordion_<%= i %>">
@@ -79,17 +82,14 @@
 					</h4>
 				</a>
 			</div>
-			
-			
-			<!-- Unfold the current day -->
-			<% if(day.day.isSame(moment(), "day")){ var unfold = 'in'; }%>	
-						
+
+	
 			<div id="accordion_<%= i %>" class="accordion-body collapse <%= unfold %>">
 			
 			<!-- Check if there is tasks planned this day -->
 			<% if(_.size(day.tasks) != 0){ %>
 
-				
+
 				<!-- Table Requests -->
 				<table class="table table-striped table-bordered table-hover">
 					<thead>
@@ -107,25 +107,25 @@
 						</tr>
 					</thead>
 					<tbody>
-						
+
 					<% _.each(day.tasks, function (task, i) { %>
 
-						<tr id="<%= task.id %>">
-						    <td><%= task.project_id[1] %></td>
+						<tr id="<%= task.id %>" class="<%= (task.state == app.Models.Task.state[1].value ? 'success' : '') %>">
+						    <td class="<%= (task.state == app.Models.Task.state[1].value ? 'isCheck' : '') %>"><%= task.project_id[1] %></td>
 					    	<td><a href="#taches/<%= task.id %>"> <%= _.capitalize(task.name) %> </a></td>
 							<td><%= (task.intervention && task.intervention.site1 ) ? task.intervention.site1[1] : '' %></td>
 							<td><%= (task.date_start) != '' ? moment(task.date_start).format('H[h]mm') : '' %></td>
 							<td><%= (task.date_end) != '' ? moment(task.date_end).format('H[h]mm') : '' %></td>
 
-						    <% if(task.team_id == false){ %>
-						    	<td><%= task.user_id[1] %></td>
+							<% if(task.team_id == false){ %>
+								<td><%= task.user_id[1] %></td>
 						    <% } else { %>
-						    	<td><%= task.team_id[1] %></td>	
-						    <% } %>
+								<td><%= task.team_id[1] %></td>
+							<% } %>
 
-						    <td class="hidden-phone"><%= task.planned_hours %>h</td>
+							<td class="hidden-phone"><%= task.planned_hours %>h</td>
 						    <td class="hidden-phone"><%=(task.state!=app.Models.Task.state[3].value && task.state!=app.Models.Task.state[5].value)?task.remaining_hours+'h':"" %></td>
-						    <td>
+							<td>
 					    		<% if(task.state == app.Models.Task.state[0].value) { %>
 					    			<span class="label label-info"><%= lang.wait %></span>
 					    		<% } else if(task.state == app.Models.Task.state[1].value) { %>
@@ -137,7 +137,7 @@
 					    		<% } else if(task.state == app.Models.Task.state[5].value) { %> 
 					    			<span class="label label-inverse"><%= lang.absent %></span>
 					    		<% } %>
-						   	</td>
+							</td>
 
 						   	<!-- Actions -->
 						   	<td class="align">

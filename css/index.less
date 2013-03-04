@@ -230,11 +230,13 @@ ul.nested-objects li:hover .nested-objects-actions, tr.row-item:hover .row-actio
 
 /* List tasks
 -------------------------------------------------- */
-section.dayTasks{
-	margin: 40px 0 40px 0;
+.collapse-selected{
+	border-left: 5px solid @blue !important;
+	border-radius: 0px !important;
 }
-
-.accordion.without-border .accordion-group.dayTasks{
+.accordion.without-border .accordion-group{
+	margin: 40px 0 40px 0;
+	padding-left: 10px;
 	border: none;
 }
 .accordion.without-border .accordion-heading{
@@ -246,6 +248,7 @@ section.dayTasks{
 .accordion.without-border .accordion-toggle:hover{
 	text-decoration: none;
 }
+
 
 
 /* Connection Form
