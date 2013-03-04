@@ -29,7 +29,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 			key: 'equipment_ids',
 			relatedModel: 'app.Models.Equipment',
 			collectionType: 'app.Collections.Equipments',
-			includeInJSON: ['id','name','type'],
+			includeInJSON: ['id','name', 'complete_name', 'type'],
 		},	
 	  ],
 	

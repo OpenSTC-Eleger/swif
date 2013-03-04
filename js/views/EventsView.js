@@ -665,7 +665,14 @@ app.Views.EventsView = Backbone.View.extend({
 		    	//task["effective_hours"] = "";
 		    	//task["remaining_hous"] = "";
 		    	task["done"] = "false";
-		    	task["equipment"] = ( task.equipment_id!=null && task.equipment_id[1] )?task.equipment_id[1]:"";
+		    	task["equipment"] = "";
+		    	if( task.equipment_ids ) {
+			    	var allEquipments = _.each( task.equipment_ids, function( equipment ) {
+			    		return equipment.complete_name;
+			    	});
+			    	if( allEquipments )
+			    	task["equipment"] = allEquipments.toString();
+			    }
 		    	task["oil"] = "";
 		    })
 		    

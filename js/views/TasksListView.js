@@ -95,11 +95,8 @@ app.Views.TasksListView = Backbone.View.extend({
 
     		var interCondition = false;
     		if( intervention!=null ) {
-    			//keep only  interventions : tscheduled('cloturée') , pending ('En cours')
-//    			interCondition = intervention.state==app.Models.Intervention.state[1].value
-//    				||	intervention.state==app.Models.Intervention.state[3].value;
-
-				var service = intervention.service_id;//!=null?intervention.service_id.toJSON():null;
+    			
+				var service = intervention.service_id;
 				var userServices = app.models.user.toJSON().service_ids;
 				if ( service && userServices )
 					belongsToServiceManager = app.models.user.isManager() &&         										
@@ -109,17 +106,6 @@ app.Views.TasksListView = Backbone.View.extend({
 
     		return (	//Tâches de l'agent
     					( belongsToOfficer || app.models.user.isDST() || belongsToServiceManager )
-//    					&& 
-//    					(
-//    						//Tâches ouvertes (plannifiés) ou en cours
-//    						task.state!=app.Models.Task.state[3].value //pas à l'état brouillon(planification)'
-//    						//|| task.state==app.Models.Task.state[2].value                                                  	
-//    					)  
-//    					&& 
-//    					(
-//    						//L'intervention de la tâche doit être planifiée ou en cours'
-//    						interCondition
-//    					 )var equipment
     			   );
         });
 
@@ -405,6 +391,7 @@ app.Views.TasksListView = Backbone.View.extend({
 			if( equipment ) {
 				var km = equipment.toJSON().km ;
 				$('.equipmentKm').val( km );
+				$('.equipmentKm').attr('min', km )
 			}			
 		}
 	},
