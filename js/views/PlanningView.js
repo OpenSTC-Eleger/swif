@@ -172,8 +172,15 @@ app.Views.PlanningView = Backbone.View.extend({
                 // Get the planning ID //
                 var id = sessionStorage.getItem(self.sstoragePlanningSelected);
 
-                // Simule a click to the link and navigate to it //
+                // Simule a click to the link //
                 $('#'+id).click();
+
+                // Check if a Team was selected to select the Team Tab //
+                if(_.str.include(id, 'Team')){
+                    $('#allTabs a[data-target="#tab-teams"]').tab('show');
+                }
+
+                // Navigate to the link //
                 window.location.href = $('#'+id).attr('href');
             }
 
