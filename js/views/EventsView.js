@@ -333,7 +333,8 @@ app.Views.EventsView = Backbone.View.extend({
 							    date_start: mNewDateStart.toDate(),
 							    date_end: mNewDateEnd.toDate(),
 							    planned_hours: planned_hours,
-							    remaining_hours: planned_hours,
+							    effective_hours: planned_hours,
+							    remaining_hours: 0,
 							    team_id: self.teamMode?self.id:0,
 							    user_id: !self.teamMode?self.id:0,
 							}
@@ -623,14 +624,65 @@ app.Views.EventsView = Backbone.View.extend({
 		},
 		
 		renderResume: function (o, check){
-			return "<td class=\"center\"><input type=\"checkbox\"></td>";
+			if( o.state != app.Models.Task.state[5].value )
+				return "<td class=\"center\"><input type=\"checkbox\" readonly=\"readonly\" " + (check?"checked":"") + "></td>";
+			else
+				return "<td class=\"center\"></td>";
 		},
 		
 		renderHours: function (o, value){
 			return "<td class=\"center\"><input type=\"text\" size=\"5\" />";
 		},
+		
+		getDay : function(date) {
+			var momentDate = moment( this.el.fullCalendar('getView').visStart );
+			
+			if(momentDate.clone().day(1).isSame(date, 'day')){
+				return "LUNDI"
+			}
+			else if(momentDate.clone().day(2).isSame(date, 'day')){
+				return "MARDI"
+			}
+			else if(momentDate.clone().day(3).isSame(date, 'day')){
+				return "MERCREDI"
+			}
+			else if(momentDate.clone().day(4).isSame(date, 'day')){
+				return "JEUDI"
+			}
+			else if(momentDate.clone().day(5).isSame(date, 'day')){
+				return "VENDREDI"
+			}
+			else if(momentDate.clone().day(6).isSame(date, 'day')){
+				return "SAMEDI"
+			}
+			else if(momentDate.clone().day(7).isSame(date, 'day')){
+				return "DIMANCHE"
+			}
+		},
 			
 		printCalendar: function () {
+			var date = moment( this.el.fullCalendar('getView').visStart );			
+			var momentDate = moment().year(date.year()).week(date.week());
+			
+			var firstDayOfTheWeek = momentDate.clone().day(1);
+			var lastDayOfTheWeek = momentDate.clone().day(7);
+		
+		
+			if(firstDayOfTheWeek.isSame(lastDayOfTheWeek, 'month')){
+				var titleFirstDay = momentDate.day(1).format('D');
+			}
+			else{
+				if(firstDayOfTheWeek.isSame(lastDayOfTheWeek, 'year')){
+					var titleFirstDay = momentDate.day(1).format('D MMM');
+				}
+				else{
+					var titleFirstDay = momentDate.day(1).format('D MMM YYYY');
+				}
+			}
+						
+			$("#printContainer .before-muted").html( app.lang.week + " " + momentDate.week() + " - " ); 
+			$("#printContainer .muted").html( titleFirstDay + " " + app.lang.to + " " + lastDayOfTheWeek.format('D MMM YYYY')  );			
+			
 			var self = this;
 			var paperBoard = this.filterTasks[0];//this.collection.toJSON();
 			var elementToPrint = $('#printContainer');
@@ -645,8 +697,8 @@ app.Views.EventsView = Backbone.View.extend({
 	        	return (
 	        			task.date_start && task.date_start.toDate() < self.el.fullCalendar('getView').visEnd &&
 	        			task.date_end && task.date_end.toDate() > self.el.fullCalendar('getView').visStart &&
-	        			(	task.state == app.Models.Task.state[0].value ||
-	        				task.state == app.Models.Task.state[2].value
+	        			(	task.state != app.Models.Task.state[3].value &&
+	        				task.state != app.Models.Task.state[4].value
 	        			)
 	        			
 	        		); 
@@ -659,21 +711,29 @@ app.Views.EventsView = Backbone.View.extend({
 			
 		    _.each(tasks, function(task){ 
 		    	var inter = task.intervention;
+		    	
+		    	task["day"] = self.getDay(task.date_start);
+		    	
 		    	task["inter"] = ( inter!=null)?inter.name:"" ;
+		    	task["name"] = task.name;
 		    	//task["category"] = ( task.category_id!=null )?task.category_id[1]:"" ;
 		    	task["place"] = ( inter!=null && inter.site1!=null && inter.site1[1] )?inter.site1[1]:"" ;
 		    	//task["effective_hours"] = "";
 		    	//task["remaining_hous"] = "";
-		    	task["done"] = "false";
+		    	task["done"] = ( task.state == app.Models.Task.state[1].value  ? true : false );
+		    	
 		    	task["equipment"] = "";
 		    	if( task.equipment_ids ) {
-			    	var allEquipments = _.each( task.equipment_ids, function( equipment ) {
-			    		return equipment.complete_name;
+			    	_.each( task.equipment_ids, function( equipment ) {
+			    		task["equipment"] += "[" + equipment.complete_name + "]";
 			    	});
-			    	if( allEquipments )
-			    	task["equipment"] = allEquipments.toString();
 			    }
-		    	task["oil"] = "";
+		    	
+			    task["planned_hours"] =  ( task.planned_hours>0? task.planned_hours : "" ) ;
+			    task["effective_hours"] =  ( task.effective_hours>0? task.effective_hours : "" ) ;
+			    task["remaining_hours"] =  ( task.remaining_hours>0? task.remaining_hours : "" ) ;
+		    	task["oilQtity"] =  ( task.oil_qtity>0? task.oil_qtity : "" ) ;
+		    	task["oilPrice"] =  ( task.oil_price>0? task.oil_price : "" ) ;
 		    })
 		    
 		    $('#paperboard').data('resultSet', tasks);
@@ -686,26 +746,68 @@ app.Views.EventsView = Backbone.View.extend({
 			    "bJQueryUI": true,
 			    "sPaginationType": "full_numbers",
 			    "bProcessing": true,
-			    "bDeferRender": true,
-			    "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-			    "aoColumns": [
+			    "bSort": true,
+			    //"bDeferRender": true,
+			    //"sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+			    "aoColumns": [			        
+			        {"sDay": "Day", "mDataProp": "day", 'sWidth': '5%', 'sClass': "center", "bVisible": false, "sType": "day"},
+			        {"sInter": "Inter", "mDataProp": "inter", 'sWidth': '5%', 'sClass': "center"},
 			        {"sName": "Name", "mDataProp": "name", 'sWidth': '5%', 'sClass': "center"},
-			        //{"sCat": "Category", "mDataProp": "category", 'sWidth': '5%', 'sClass': "center"},
-			        {"sInter": "Inter", "mDataProp": "inter", 'sWidth': '5%', 'sClass': "center"},	
 			        {"sPlace": "Place", "mDataProp": "place", 'sWidth': '5%', 'sClass': "center"},
 			        {"sDateStart": "DateStart", "mDataProp": "date_start","sType": "date", 'sWidth': '25%', 'fnRender': self.renderDate },
 			        {"sDateEnd": "DateEnd", "mDataProp": "date_end","sType": "date", 'sWidth': '25%', 'fnRender': self.renderDate},			        
-			        { "sWorkingTime": "WorkingTime", "mDataProp": "planned_hours", 'sWidth': '5%'},
-			        { "sEffectiveTime": "EffectiveTime", "mDataProp": "effective_hours", 'sWidth': '5%','fnRender': self.renderHours},
-			        { "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours",'sWidth': '5%','fnRender': self.renderHours},
+			        { "sWorkingTime": "WorkingTime", "mDataProp": "planned_hours", 'sWidth': '5%','sClass': "center"},//'sWidth': '5%'},
+			        { "sEffectiveTime": "EffectiveTime", "mDataProp": "effective_hours", 'sWidth': '5%','sClass': "center"}, //'sWidth': '5%','fnRender': self.renderHours},
+			        { "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours", 'sWidth': '5%','sClass': "center"}, //'sWidth': '5%','fnRender': self.renderHours},
 			        { "sDone": "Done", "mDataProp": "done", 'sWidth': '5%','fnRender': self.renderResume},
 			        { "sEquipment": "Equipment", "mDataProp": "equipment", 'sWidth': '5%','sClass': "center"},
-			        { "sOil": "oil", "mDataProp": "oil", 'sWidth': '5%', 'sWidth': '5%','fnRender': self.renderHours}],
+			        { "sOilQtity": "oilQtity", "mDataProp": "oilQtity", 'sWidth': '5%', 'sClass': "center"},
+			        { "sOilPrice": "oilPrice", "mDataProp": "oilPrice", 'sWidth': '5%', 'sClass': "center"},
+			        ],
 			
-			    "bFilter": false,"bInfo": false,"bPaginate": false,
+			    "bFilter": false,"bInfo": false,"bPaginate": false,"bLengthChange": false,
 			    sClass: "center",
 			    bRetrieve: true,
-			});
+			    "fnDrawCallback": function ( oSettings ) {					
+		            if ( oSettings.aiDisplay.length == 0 )
+		            {
+		                return;
+		            }
+		             
+		            var nTrs = $('#paperboard tbody tr');
+		            var iColspan = nTrs[0].getElementsByTagName('td').length;
+		            var sLastGroup = "";
+		            for ( var i=0 ; i<nTrs.length ; i++ )
+		            {
+		                var iDisplayIndex = oSettings._iDisplayStart + i;
+		                var sGroup = oSettings.aoData[ oSettings.aiDisplay[iDisplayIndex] ]._aData["day"];
+		                if ( sGroup != sLastGroup )
+		                {
+		                    var nGroup = document.createElement( 'tr' );
+		                    var nCell = document.createElement( 'td' );
+		                    
+		                    //$(nCell).css({ backgroundColor: '#FFF'});//.css({ display: 'table-row' }).addClass('expend');
+		                    nCell.colSpan = iColspan;
+		                    nCell.className = "group";
+		                    //$(nCell).addClass("gradeA"); 
+		                    nCell.innerHTML = sGroup;
+		                    //$(nGroup).addClass("row-object");
+		                    nGroup.appendChild( nCell );
+		                    nTrs[i].parentNode.insertBefore( nGroup, nTrs[i] );
+		                    sLastGroup = sGroup;
+		                }
+		            }
+		        },
+		        "fnSort": function (x,y) {
+			          return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+			    },
+		        "aoColumnDefs": [
+		            { "bVisible": false, "aTargets": [ 0 ] }
+		        ],
+		        //"aaSortingFixed": [[ 0, 'asc' ]],
+		        "aaSorting": [[ 0, 'asc' ]],
+		        "sDom": 'lfr<"giveHeight"t>ip'
+			})
 
 			table.fnClearTable();
 			if (results.length)
@@ -713,16 +815,35 @@ app.Views.EventsView = Backbone.View.extend({
 			table.fnDraw();
 
 			elementToPrint.printElement(
-//				{
-//				    overrideElementCSS:[
-//				       'bootstrap.css',
-//				       { href:'bootstrap.css',media:'print'}
-//				    ]
-//				}
+				{
+					leaveOpen:true,
+					printMode: 'popup'
+				}
+				,{
+				    overrideElementCSS:[
+//				       'demo_table.css',
+//				       { href:'../css/demo_table.css',media:'print'}
+				       'print_table',
+				       { href:'../css/print_table',media:'print'}
+//				       'tables.less',
+//				       { href:'../css/vendors/bootstrap-2.2.2/tables.less',media:'print'}
+
+				    ]
+				}
 			);		
-		},		
+		},	
+		
+
 		//--------------------End  Print calendar----------------------------------------//
 	});
+
+jQuery.fn.dataTableExt.oSort['day-asc']  = function(x,y) {
+	var days = Array("lundi","mardi","mercredi","jeudi","vendredi","samedi");
+	var indexOfx = days.indexOf(x);
+	var indexOfy = days.indexOf(y);
+	return ((indexOfx < indexOfy) ? -1 : ((indexOfx > indexOfy) ? 1 : 0));
+};
+
 //			var printEl = this.el.clone(true);
 //			printEl.find('.fc-agenda-days').height("800");
 //			printEl.find('.fc-agenda-slots').height("100");
