@@ -18,8 +18,8 @@
 
 				<form class="form-search pull-right">
 					<div class="input-append">
-						<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off">
-						<button type="submit" class="btn"><i class="icon-search icon-large"></i></button>
+						<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off" disabled>
+						<button type="submit" class="btn disabled"><i class="icon-search icon-large"></i></button>
 					</div>
 				</form>
 			</div>
@@ -59,11 +59,11 @@
 				<ul>
 					<!-- First page button -->
 					<% if(page-2 >= 1){ %>
-						<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#sites/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
+						<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#equipes/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
 					<% } %>
 					
 					<!-- Previous page button -->
-					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#sites/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
+					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#equipes/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
 
 					<!-- [...] page Button -->
 					<% 	if (page-2 > 1) { %>
@@ -72,7 +72,7 @@
 							
 						for (var i=(page-2); i < (page+3); i++) {
 							if(i >= 1 && i <= pageCount){ %>
-								<li <%= (i === page ? " class='active'" : "")%>><a href='#sites/page<%=i%>'><%= i %></a></li>
+								<li <%= (i === page ? " class='active'" : "")%>><a href='#equipes/page<%=i%>'><%= i %></a></li>
 							<% }
 
 						} %>
@@ -83,11 +83,11 @@
 					<% } %>
 					
 					<!-- Next page button -->
-					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#sites/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
+					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#equipes/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
 					
 					<!-- Last page button -->
 					<% if(page+2 <= pageCount){ %>
-						<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#sites/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
+						<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#equipes/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
 					<% } %>
 				</ul>
 			</div>

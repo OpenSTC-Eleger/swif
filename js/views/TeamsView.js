@@ -11,6 +11,8 @@ app.Views.TeamsView = Backbone.View.extend({
 
 	selectedTeam : '',
 
+	sstorageTeamSelected: 'selectedTeam',
+
 
 	// The DOM events //
 	events: {
@@ -125,6 +127,15 @@ app.Views.TeamsView = Backbone.View.extend({
 			app.views.selectListOfficersView.addEmptyFirst();
 			app.views.selectListOfficersView.addAll();
 
+
+			// Check the Session storage to know If a Team was previously selected //
+			if(sessionStorage.getItem(self.sstorageTeamSelected) != null){
+
+				// Get the team id Value //
+				var id = sessionStorage.getItem(self.sstorageTeamSelected);
+				$('#team_'+id).children('td').children('a').click();
+			}
+
 		});
 
 		$(this.el).hide().fadeIn('slow');
@@ -135,12 +146,12 @@ app.Views.TeamsView = Backbone.View.extend({
 
 
 	getIdInDropDown: function(view) {
-    	if ( view && view.getSelected() )
-    		var item = view.getSelected().toJSON();
-    		if( item )
-    			return [ item.id, item.name ];
-    	else 
-    		return 0
+		if ( view && view.getSelected() )
+			var item = view.getSelected().toJSON();
+			if( item )
+				return [ item.id, item.name ];
+		else 
+			return 0
     },
 
 
@@ -152,7 +163,7 @@ app.Views.TeamsView = Backbone.View.extend({
 		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
 		this.selectedTeam = _.filter(app.collections.teams.models, function(item){ return item.attributes.id == id });
 		
-        if( this.selectedTeam.length > 0 ) {
+		if( this.selectedTeam.length > 0 ) {
 		
 			$('table.teamsTable tr.info').removeClass('info');
 			link.parents('tr').addClass('info').children('i');
@@ -165,7 +176,7 @@ app.Views.TeamsView = Backbone.View.extend({
         }
         else {
 			this.selectedTeamJson = null;
-        }
+		}
 
 		console.debug(this.model);
 	},
@@ -192,12 +203,12 @@ app.Views.TeamsView = Backbone.View.extend({
 	/** Display information in the Modal view delete team
 	*/
 	modalDeleteTeam: function(e){
-        
-        // Retrieve the ID of the team //
-    	this.setModel(e);
 
-        $('#infoModalDeleteTeam p').html(this.selectedTeamJson.name);
-        $('#infoModalDeleteTeam small').html(_.capitalize(app.lang.foreman) +": "+ this.selectedTeamJson.manager_id[1]);
+        // Retrieve the ID of the team //
+		this.setModel(e);
+
+		$('#infoModalDeleteTeam p').html(this.selectedTeamJson.name);
+		$('#infoModalDeleteTeam small').html(_.capitalize(app.lang.foreman) +": "+ this.selectedTeamJson.manager_id[1]);
     },
 
 
@@ -213,7 +224,7 @@ app.Views.TeamsView = Backbone.View.extend({
 			name: this.$('#teamName').val(),
 			manager_id: manager_id
 		};
-	     
+
 		this.params.manager_id =  manager_id[0];
 	    this.modelId = this.selectedTeamJson==null?0: this.selectedTeamJson.id;
 
@@ -262,7 +273,7 @@ app.Views.TeamsView = Backbone.View.extend({
 
 		this.services = _.map($("#teamServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });
 		this.members = _.map($("#teamMembers").sortable('toArray'), function(member){ return _(_(member).strRightBack('_')).toNumber(); });
-     
+
 
 		this.params = {
 			name: this.selectedTeamJson.name,
@@ -305,7 +316,7 @@ app.Views.TeamsView = Backbone.View.extend({
 			}
 		});
 	},
-	     
+
 
 
 	/** Delete the selected team
@@ -351,6 +362,10 @@ app.Views.TeamsView = Backbone.View.extend({
 		this.selectedTeam = _.filter(app.collections.teams.models, function(item){ return item.attributes.id == id });
 		var selectedTeamJson = this.selectedTeam[0].toJSON();
 
+		// Set the ID of the team in the session storage //
+		sessionStorage.setItem(this.sstorageTeamSelected, id);
+
+
 		// Clear the list of the user //
 		$('#teamMembers li, #teamServices li, #servicesList li').remove();
 
@@ -376,6 +391,7 @@ app.Views.TeamsView = Backbone.View.extend({
 		//remove no technical services
 		app.collections.claimersServices.remove(noTechnicalServices);
 		app.collections.claimersServices.toJSON()
+
 
 		// Display the remain services //
 		_.filter(app.collections.claimersServices.toJSON(), function (service, i){ 

@@ -127,56 +127,50 @@ app.Views.TasksListView = Backbone.View.extend({
 
 		// Fill the tables with the tasks //
 		_.each(tasksUser, function(task, i){
-//			if( task.date_start )
-//				console.debug("START-DATE : "+task.date_start.format('LLL'));
+
 			if(momentDate.clone().isSame(task.date_start, 'week')){
 				if(momentDate.clone().day(1).isSame(task.date_start, 'day')){
-//					console.debug("MONDAY : "+momentDate.clone().day(1).format('LLL'));
 					mondayTasks.push(task);
 				}
 				else if(momentDate.clone().day(2).isSame(task.date_start, 'day')){
-//					console.debug("TUESDAY : "+momentDate.clone().day(2).format('LLL'));
 					tuesdayTasks.push(task);
 				}
 				else if(momentDate.clone().day(3).isSame(task.date_start, 'day')){
-//					console.debug("WEDNESDAY : "+momentDate.clone().day(3).format('LLL'));
 					wednesdayTasks.push(task);
 				}
 				else if(momentDate.clone().day(4).isSame(task.date_start, 'day')){
-//					console.debug("THURSDAY : "+momentDate.clone().day(4).format('LLL'));
 					thursdayTasks.push(task);
 				}
 				else if(momentDate.clone().day(5).isSame(task.date_start, 'day')){
-//					console.debug("FRIDAY : "+momentDate.clone().day(5).format('LLL'));
 					fridayTasks.push(task);
 				}
 				else if(momentDate.clone().day(6).isSame(task.date_start, 'day')){
-//					console.debug("SATURDAY : "+momentDate.clone().day(6).format('LLL'));
 					saturdayTasks.push(task);
 				}
 				else if(momentDate.clone().day(7).isSame(task.date_start, 'day')){
-//					console.debug("SUNDAY - 7 : "+momentDate.clone().day(7).format('LLL'));
 					sundayTasks.push(task);
 				}
-//				else if(momentDate.clone().day(0).isSame(task.date_start, 'day')){
-//					console.debug("SUNDAY - 0 : "+momentDate.clone().day(0).format('LLL'));
-//					sundayTasks.push(task);
-//				}
 
 				// Retrieve the number of Open Task //
 				if(task.state == app.Models.Task.state[0].value){
 					nbPendingTasks++;
 				}
+
 			}
+			// Hack for Sunday Task //
 			else {				
-//				console.debug("PAS PRIS EN COMPTE : ")
-//				console.debug("TEST - indice 0 : " + momentDate.clone().day(0).isSame(task.date_start, 'day'));
-//				console.debug("TEST - indice 7 : " + momentDate.clone().day(7).isSame(task.date_start, 'day'));
-				
+
 				if( momentDate.clone().day(7).isSame(task.date_start, 'day') ){					
-					sundayTasks.push(task);					
+					sundayTasks.push(task);
+
+					// Retrieve the number of Open Task //
+					if(task.state == app.Models.Task.state[0].value){
+						nbPendingTasks++;
+					}			
 				}
 			}
+
+				
 		});
 
 		var tasksUserFiltered = [
@@ -276,15 +270,31 @@ app.Views.TasksListView = Backbone.View.extend({
 
 			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 			$('*[rel="tooltip"]').tooltip({placement: "right"});
+
+
+
+			// Collapse border style //
+			$('.accordion-toggle').click(function(){
+				if($(this).parents('.accordion-group').hasClass('collapse-selected')){
+					$(this).parents('.accordion-group').removeClass('collapse-selected');
+				}else{
+					$(this).parents('.accordion-group').addClass('collapse-selected');	
+				}
+				
+    		})
+	
+
 		});
 
 		$(this.el).hide().fadeIn('slow');
 
 		return this;
     },
-    
+
+
+
 	/** Display equipments
-		*/
+	*/
 	displayEquipmentsInfos: function(e, list, choiceList, badgeComponent){
 		e.preventDefault();
 
@@ -327,17 +337,18 @@ app.Views.TasksListView = Backbone.View.extend({
 		
 	},
 
+
   
+  	/** Get the Taks
+	*/
     getTask: function(e) {
 
     	this.resetModal();
 		var href = $(e.target);
-
-		
-		
+	
 		// Retrieve the ID of the request //	
 		this.pos = href.parents('tr').attr('id');
-		//this.taskId = href.data('taskid');
+
 		this.model = app.collections.tasks.get(this.pos);
     },
     

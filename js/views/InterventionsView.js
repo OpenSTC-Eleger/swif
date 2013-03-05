@@ -44,7 +44,7 @@ app.Views.InterventionsView = Backbone.View.extend({
         var self = this;
 
         // Change the page title //
-        app.router.setPageTitle(app.lang.viewsTitles.interventions);
+        app.router.setPageTitle(app.lang.viewsTitles.interventionsMonitoring);
 
         // Change the active menu item //
         app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);

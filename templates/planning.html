@@ -76,7 +76,7 @@
 						<div class="tab-pane active" id="tab-agents">
 							<ul id="listAgents" class="unstyled inline nav nav-list" >
 								<%_.each(officers, function (officer, i) { %>
-									<li><a href="#agent/<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>"><i class="icon-user"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
+									<li><a id="pOfficer_<%= officer.id %>" href="#planning/agent/<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>"><i class="icon-user"></i><%= officer.firstname %> &nbsp;<%= officer.name %></a></li>
 								<% }) %>
 							</ul>
 						</div>
@@ -85,7 +85,7 @@
 						<div class="tab-pane" id="tab-teams">
 							<ul id="listTeams" class="unstyled inline nav nav-list">
 								<%_.each(teams, function (team, i) { %>
-									<li><a href="#team/<%= _.slugify(team.name)%>"><i class="icon-group"></i><%= team.name %></a></li>
+									<li><a id="pTeam_<%= team.id %>" href="#planning/team/<%= _.slugify(team.name)%>"><i class="icon-group"></i><%= team.name %></a></li>
 								<% }) %>	
 							</ul>
 						</div>
@@ -183,12 +183,12 @@
 			
 										<div class="div-actions">
 											<button class="btn btn-primary btn-small no-outline addTaskPlanning" id="<%= inter.id %>" rel="tooltip" 
-												data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="left"
+												data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="top"
 												<%= ( inter.state != app.Models.Intervention.state[0].value && inter.state != app.Models.Intervention.state[2].value  ) ? "" : 'disabled' %>>
 												<i class="icon-plus"></i>
 											</button>								
 
-											<button 
+											<!--<button 
 												class="btn btn-success btn-small pull-right no-outline" rel="tooltip" 
 													data-original-title="<%= _.capitalize(lang.actions.enclosePlanning) %>" 
 													data-placement="left" style="margin-right: 5px" name="enclose"
@@ -207,8 +207,31 @@
 															(	inter.state == app.Models.Intervention.state[0].value
 															) && _.size(inter.tasks) > 0) ) ? "" : 'disabled' %>>
 												<i class="icon-check"></i>
-											</button>
+											</button> -->
+
+
+											<% if(_.size(inter.tasks) > 0){ %>
+												
+												<div class="switch switch-small pull-right" data-on-label="Oui" data-off-label="Non" data-on="primary" data-off="warning"  rel="tooltip" data-original-title="<%= _.capitalize(lang.planningFenced) %>" data-placement="top">
+													<input type="checkbox" <%= ( (allPlanned && 
+																(	inter.state == app.Models.Intervention.state[1].value ||
+																	inter.state == app.Models.Intervention.state[3].value
+																) && _.size(inter.tasks) > 0) ) ? "" : 'checked' %>>
+												</div>
+
+											<% } %>
+											
+
+											<!--<label class="checkbox toggle candy" style="width: 100px">
+												<input id="view" type="checkbox">
+												<p>Planification cloturées
+													<span>Oui</span>
+													<span>Non</span>
+												</p>
+												<a class="slide-button"></a>
+											</label>-->
 										</div>
+
 									</div>
 								</div>
 							<% }%>
@@ -228,7 +251,7 @@
 					<div style="overflow: hidden; max-height: 590px;">
 					
 						<%_.each(officers, function (officer, i) { %>
-							<section id="agent/<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>" class="calendarContainer">
+							<section id="planning/agent/<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>" class="calendarContainer">
 								<div id="officer_<%= officer.id %>" class="calendar thumbnail" 
 									data-username="<%= officer.firstname %> &nbsp;<%= officer.name %>">
 								</div>
@@ -236,7 +259,7 @@
 						<% }) %>
 					
 						<%_.each(teams, function (team, j) { 	%>
-							<section id="team/<%= _.slugify(team.name)%>" class="calendarContainer">
+							<section id="planning/team/<%= _.slugify(team.name)%>" class="calendarContainer">
 								<div id="team_<%= team.id %>" class="calendar thumbnail" data-username="<%= team.name %>"></div>
 							</section>
 						<%}); %>

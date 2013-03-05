@@ -5,33 +5,40 @@ app.Views.PlanningView = Backbone.View.extend({
 
 
     el : '#rowContainer',
-    templateHTML: 'planning', 
+
+    templateHTML: 'planning',
+
     filters: 'interventionsListFilter',
+
     calendarView: 'agendaWeek',
     
     selectedInter : '',
     selectedTask : '',
+
+    sstoragePlanningSelected: 'selectedPlanning',
     
     //task: app.Models.Task.getCurrentTask(),
     
     // The DOM events //
     events: {
-        'click a.buttonCancelInter'             : 'setInfoModal',
-        'click a.modalDeleteTask'               : 'setInfoModal',
+        'click a.buttonCancelInter'                     : 'setInfoModal',
+        'click a.modalDeleteTask'                       : 'setInfoModal',
 
-        'submit #formCancelInter'               : 'cancelInter',
-        'click button.btnDeleteTask'            : 'deleteTask',
+        'submit #formCancelInter'                       : 'cancelInter',
+        'click button.btnDeleteTask'                    : 'deleteTask',
         	
-        'click .btn.addTaskPlanning'            : 'displayFormAddTask',
-        'click .btn.addInterventionPlanning'    : 'displayFormAddIntervention',
+        'click .btn.addTaskPlanning'                    : 'displayFormAddTask',
+        'click .btn.addInterventionPlanning'            : 'displayFormAddIntervention',
         
-        'submit #formAddTask'         			: 'saveTask',   
-        'submit #formAddIntervention' 			: 'saveIntervention', 
-        'click .btn.pull-right'                 : 'scheduledInter',
+        'submit #formAddTask'         			        : 'saveTask',   
+        'submit #formAddIntervention' 			        : 'saveIntervention', 
+        'click .btn.pull-right'                         : 'scheduledInter',
         
-        'change #interventionDetailService'		: 'fillDropdownService',
+        'change #interventionDetailService'             : 'fillDropdownService',
         
-        'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilter'
+        'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilter',
+
+        'click #listAgents li a, #listTeams li a'       :          'selectPlanning'
     },
 
 
@@ -143,11 +150,7 @@ app.Views.PlanningView = Backbone.View.extend({
             $('*[data-spy="affix"]').affix();            
             $('*[rel="tooltip"]').tooltip({placement: "left"});
 
-            // Select officer or team //
-            $('#listAgents li a, #listTeams li a').click(function(){            	
-        		$('#listAgents li.active, #listTeams li.active').removeClass('active');
-        		$(this).parent('li').addClass('active'); 
-            });
+            $('.switch').bootstrapSwitch();
             
             $('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 
@@ -162,6 +165,25 @@ app.Views.PlanningView = Backbone.View.extend({
 //                //Backbone.history.loadUrl($(selector).attr("href"));
 //                
 //            }
+
+            // If a plannig was Selected //
+            if(sessionStorage.getItem(self.sstoragePlanningSelected) != null){
+                
+                // Get the planning ID //
+                var id = sessionStorage.getItem(self.sstoragePlanningSelected);
+
+                // Simule a click to the link //
+                $('#'+id).click();
+
+                // Check if a Team was selected to select the Team Tab //
+                if(_.str.include(id, 'Team')){
+                    $('#allTabs a[data-target="#tab-teams"]').tab('show');
+                }
+
+                // Navigate to the link //
+                window.location.href = $('#'+id).attr('href');
+            }
+
 
 			// Display filter on the table //
 			if(sessionStorage.getItem(self.filters) != null){
@@ -187,6 +209,20 @@ app.Views.PlanningView = Backbone.View.extend({
 
 
 
+    /** Select the planning to display
+    */
+    selectPlanning: function(e){
+        var link = $(e.target);
+
+        // Save the selected planning in the Session storage //
+        sessionStorage.setItem(this.sstoragePlanningSelected, link.attr('id'));
+
+        $('#listAgents li.active, #listTeams li.active').removeClass('active');
+        link.parent('li').addClass('active');
+    },
+
+
+
     /** Set a user model to the view
     */
     setModel : function(model) {
@@ -194,6 +230,10 @@ app.Views.PlanningView = Backbone.View.extend({
         return this;
     },    
     	
+
+
+    /** Calendar Initialization
+    */
     initAllCalendars: function() {    		
     		var self = this;
     		teams = app.collections.teams;    		
