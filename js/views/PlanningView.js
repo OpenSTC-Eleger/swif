@@ -150,7 +150,7 @@ app.Views.PlanningView = Backbone.View.extend({
             $('*[data-spy="affix"]').affix();            
             $('*[rel="tooltip"]').tooltip({placement: "left"});
 
-         
+            $('.switch').bootstrapSwitch();
             
             $('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 
