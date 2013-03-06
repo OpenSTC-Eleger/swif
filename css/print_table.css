@@ -1,6 +1,10 @@
 .dataTables_wrapper {
     clear: both;
     position: relative;
+    background-color: white;
+    border: 1px solid #DDDDDD;
+    text-align: center;
+    font-size: 14px;
 }
 .dataTables_processing {
     background-color: white;

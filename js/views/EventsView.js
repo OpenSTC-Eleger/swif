@@ -607,8 +607,8 @@ app.Views.EventsView = Backbone.View.extend({
 		
         
         //--------------------Print calendar--------------------------------------//
-		renderDate: function (o, date){
-			return date.format('LLL');
+		renderHours: function (o, date){
+			return date.format('H[h]mm');
 	
 		},
 		
@@ -625,39 +625,15 @@ app.Views.EventsView = Backbone.View.extend({
 		
 		renderResume: function (o, check){
 			if( o.state != app.Models.Task.state[5].value )
-				return "<td class=\"center\"><input type=\"checkbox\" readonly=\"readonly\" " + (check?"checked":"") + "></td>";
+				return "<td class=\"center\"><input type=\"checkbox\" disabled " + (check?"checked":"") + "></td>";
 			else
 				return "<td class=\"center\"></td>";
 		},
 		
-		renderHours: function (o, value){
-			return "<td class=\"center\"><input type=\"text\" size=\"5\" />";
-		},
 		
 		getDay : function(date) {
 			var momentDate = moment( this.el.fullCalendar('getView').visStart );
-			
-			if(momentDate.clone().day(1).isSame(date, 'day')){
-				return "LUNDI"
-			}
-			else if(momentDate.clone().day(2).isSame(date, 'day')){
-				return "MARDI"
-			}
-			else if(momentDate.clone().day(3).isSame(date, 'day')){
-				return "MERCREDI"
-			}
-			else if(momentDate.clone().day(4).isSame(date, 'day')){
-				return "JEUDI"
-			}
-			else if(momentDate.clone().day(5).isSame(date, 'day')){
-				return "VENDREDI"
-			}
-			else if(momentDate.clone().day(6).isSame(date, 'day')){
-				return "SAMEDI"
-			}
-			else if(momentDate.clone().day(7).isSame(date, 'day')){
-				return "DIMANCHE"
-			}
+			return date.format('dddd D MMMM');
 		},
 			
 		printCalendar: function () {
@@ -754,15 +730,15 @@ app.Views.EventsView = Backbone.View.extend({
 			        {"sInter": "Inter", "mDataProp": "inter", 'sWidth': '5%', 'sClass': "center"},
 			        {"sName": "Name", "mDataProp": "name", 'sWidth': '5%', 'sClass': "center"},
 			        {"sPlace": "Place", "mDataProp": "place", 'sWidth': '5%', 'sClass': "center"},
-			        {"sDateStart": "DateStart", "mDataProp": "date_start","sType": "date", 'sWidth': '25%', 'fnRender': self.renderDate },
-			        {"sDateEnd": "DateEnd", "mDataProp": "date_end","sType": "date", 'sWidth': '25%', 'fnRender': self.renderDate},			        
-			        { "sWorkingTime": "WorkingTime", "mDataProp": "planned_hours", 'sWidth': '5%','sClass': "center"},//'sWidth': '5%'},
-			        { "sEffectiveTime": "EffectiveTime", "mDataProp": "effective_hours", 'sWidth': '5%','sClass': "center"}, //'sWidth': '5%','fnRender': self.renderHours},
-			        { "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours", 'sWidth': '5%','sClass': "center"}, //'sWidth': '5%','fnRender': self.renderHours},
-			        { "sDone": "Done", "mDataProp": "done", 'sWidth': '5%','fnRender': self.renderResume},
-			        { "sEquipment": "Equipment", "mDataProp": "equipment", 'sWidth': '5%','sClass': "center"},
-			        { "sOilQtity": "oilQtity", "mDataProp": "oilQtity", 'sWidth': '5%', 'sClass': "center"},
-			        { "sOilPrice": "oilPrice", "mDataProp": "oilPrice", 'sWidth': '5%', 'sClass': "center"},
+			        {"sDateStart": "DateStart", "mDataProp": "date_start","sType": "date", 'sWidth': '2%', 'fnRender': self.renderHours },
+			        {"sDateEnd": "DateEnd", "mDataProp": "date_end","sType": "date", 'sWidth': '2%', 'fnRender': self.renderHours},			        
+			        { "sWorkingTime": "WorkingTime", "mDataProp": "planned_hours", 'sWidth': '1%','sClass': "center"},//'sWidth': '5%'},
+			        { "sEffectiveTime": "EffectiveTime", "mDataProp": "effective_hours", 'sWidth': '1%','sClass': "center"}, //'sWidth': '5%','fnRender': self.renderHours},
+			        { "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours", 'sWidth': '1%','sClass': "center"}, //'sWidth': '5%','fnRender': self.renderHours},
+			        { "sDone": "Done", "mDataProp": "done", 'sWidth': '2%','fnRender': self.renderResume},
+			        { "sEquipment": "Equipment", "mDataProp": "equipment", 'sWidth': '25%','sClass': "center"},
+			        { "sOilQtity": "oilQtity", "mDataProp": "oilQtity", 'sWidth': '2%', 'sClass': "center"},
+			        { "sOilPrice": "oilPrice", "mDataProp": "oilPrice", 'sWidth': '2%', 'sClass': "center"},
 			        ],
 			
 			    "bFilter": false,"bInfo": false,"bPaginate": false,"bLengthChange": false,
