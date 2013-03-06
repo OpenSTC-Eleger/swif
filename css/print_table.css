@@ -1,6 +1,10 @@
+@media screen, print, all{@page {size: landscape}}
+
 .dataTables_wrapper {
     clear: both;
-    position: relative;
+    position: absolute;
+    margin-left: 0px;
+    margin-top: 0px;
     background-color: white;
     border: 1px solid #DDDDDD;
     text-align: center;
@@ -101,7 +105,8 @@ table.display td {
     padding: 3px 10px;
 }
 table.display td.center {
-    text-align: center;
+    text-align: center; 
+    font-weight:bold;   
 }
 .sorting_asc {
     background: url("../images/sort_asc.png") no-repeat scroll right center transparent;
@@ -182,10 +187,12 @@ td.group {
     background-color: #D1CFD0;
     border-bottom: 2px solid #A19B9E;
     border-top: 2px solid #A19B9E;
+    font-weight:bold;
 }
 td.details {
     background-color: #D1CFD0;
     border: 2px solid #A19B9E;
+    font-weight:bold;
 }
 .example_alt_pagination div.dataTables_info {
     width: 40%;

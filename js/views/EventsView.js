@@ -623,8 +623,15 @@ app.Views.EventsView = Backbone.View.extend({
 		
 		},
 		
+		getStyle: function (nTd, sData, oData, iRow, iCol) {
+			if( oData.state == app.Models.Task.state[5].value )
+				$(nTd).css('font-style', 'italic');
+
+		
+		},
+		
 		renderResume: function (o, check){
-			if( o.state != app.Models.Task.state[5].value )
+			if( o.aData.state != app.Models.Task.state[5].value )
 				return "<td class=\"center\"><input type=\"checkbox\" disabled " + (check?"checked":"") + "></td>";
 			else
 				return "<td class=\"center\"></td>";
@@ -728,7 +735,7 @@ app.Views.EventsView = Backbone.View.extend({
 			    "aoColumns": [			        
 			        {"sDay": "Day", "mDataProp": "day", 'sWidth': '5%', 'sClass': "center", "bVisible": false, "sType": "day"},
 			        {"sInter": "Inter", "mDataProp": "inter", 'sWidth': '5%', 'sClass': "center"},
-			        {"sName": "Name", "mDataProp": "name", 'sWidth': '5%', 'sClass': "center"},
+			        {"sName": "Name", "mDataProp": "name", 'sWidth': '5%', 'fnCreatedCell': self.getStyle },
 			        {"sPlace": "Place", "mDataProp": "place", 'sWidth': '5%', 'sClass': "center"},
 			        {"sDateStart": "DateStart", "mDataProp": "date_start","sType": "date", 'sWidth': '2%', 'fnRender': self.renderHours },
 			        {"sDateEnd": "DateEnd", "mDataProp": "date_end","sType": "date", 'sWidth': '2%', 'fnRender': self.renderHours},			        
@@ -742,7 +749,6 @@ app.Views.EventsView = Backbone.View.extend({
 			        ],
 			
 			    "bFilter": false,"bInfo": false,"bPaginate": false,"bLengthChange": false,
-			    sClass: "center",
 			    bRetrieve: true,
 			    "fnDrawCallback": function ( oSettings ) {					
 		            if ( oSettings.aiDisplay.length == 0 )
@@ -794,6 +800,7 @@ app.Views.EventsView = Backbone.View.extend({
 				{
 					leaveOpen:true,
 					printMode: 'popup'
+					pageTitle:'PONTLABBE-STC'
 				}
 				,{
 				    overrideElementCSS:[
