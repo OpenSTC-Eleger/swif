@@ -788,7 +788,9 @@ app.Views.EventsView = Backbone.View.extend({
 		        ],
 		        //"aaSortingFixed": [[ 0, 'asc' ]],
 		        "aaSorting": [[ 0, 'asc' ]],
-		        "sDom": 'lfr<"giveHeight"t>ip'
+		        //"sDom": 'lfr<"giveHeight"t>ip',
+		         //"binfo": true,
+		         //"sDom": '<"top"i>rt<"bottom"flp><"clear">'
 			})
 
 			table.fnClearTable();
@@ -799,15 +801,15 @@ app.Views.EventsView = Backbone.View.extend({
 			elementToPrint.printElement(
 				{
 					leaveOpen:true,
-					printMode: 'popup'
+					printMode: 'popup',
 					pageTitle:'PONTLABBE-STC'
 				}
 				,{
 				    overrideElementCSS:[
 //				       'demo_table.css',
 //				       { href:'../css/demo_table.css',media:'print'}
-				       'print_table',
-				       { href:'../css/print_table',media:'print'}
+				       //'../css/print_table.css',
+				       { href:'../css/print_table.css',media:'print'}
 //				       'tables.less',
 //				       { href:'../css/vendors/bootstrap-2.2.2/tables.less',media:'print'}
 
