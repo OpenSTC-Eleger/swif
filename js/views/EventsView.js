@@ -804,17 +804,17 @@ app.Views.EventsView = Backbone.View.extend({
 					printMode: 'popup',
 					pageTitle:'PONTLABBE-STC'
 				}
-				,{
-				    overrideElementCSS:[
-//				       'demo_table.css',
-//				       { href:'../css/demo_table.css',media:'print'}
-				       //'../css/print_table.css',
-				       { href:'../css/print_table.css',media:'print'}
-//				       'tables.less',
-//				       { href:'../css/vendors/bootstrap-2.2.2/tables.less',media:'print'}
-
-				    ]
-				}
+//				,{
+//				    overrideElementCSS:[
+////				       'demo_table.css',
+////				       { href:'../css/demo_table.css',media:'print'}
+//				       'print_table.css',
+//				       { href:'print_table.css',media:'print'}
+////				       'tables.less',
+////				       { href:'../css/vendors/bootstrap-2.2.2/tables.less',media:'print'}
+//
+//				    ]
+//				}
 			);		
 		},	
 		

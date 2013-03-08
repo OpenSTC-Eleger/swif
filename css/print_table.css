@@ -1,4 +1,6 @@
-
+@media all {
+	size:landscape;
+	margin: 2cm;
 
 .dataTables_wrapper {
     clear: both;
@@ -412,4 +414,6 @@ div.box {
 }
 .search_init {
     color: #999999;
+}
+
 }
