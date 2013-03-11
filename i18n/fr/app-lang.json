@@ -228,6 +228,7 @@
     	"absentTypesList"		 : "Liste des types d'abscence",
     	"claimersTypesList"		 : "Liste des Types de demandeurs",
     	"equipmentsList"		 : "Liste des Matériels",
+    	"cartoSites"		 	 : "Interventions par site",
     	"officersList"		 	 : "Liste des agents",
     	"teamsList"			 	 : "Liste des équipes",
     	"claimersList"			 : "Liste des demandeurs"
