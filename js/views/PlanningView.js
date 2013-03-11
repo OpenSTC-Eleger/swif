@@ -32,7 +32,8 @@ app.Views.PlanningView = Backbone.View.extend({
         
         'submit #formAddTask'         			        : 'saveTask',   
         'submit #formAddIntervention' 			        : 'saveIntervention', 
-        'click .btn.pull-right'                         : 'scheduledInter',
+        'switch-change .switch'                         : 'scheduledInter',
+
         
         'change #interventionDetailService'             : 'fillDropdownService',
         
@@ -340,22 +341,23 @@ app.Views.PlanningView = Backbone.View.extend({
     },
 
 
+
+    /** Delete intervention
+    */
     scheduledInter: function(e) {
-		var self = this;
-		
+
 		var intervention = $(e.target);
 		var id = _(intervention.parents('.accordion-body').attr('id')).strRightBack('_');
-		
-		params = {
-			state: app.Models.Intervention.state[1].value,
-		};
 
-		if(e.currentTarget.name == "enclose")		
-			params = {
-					state: app.Models.Intervention.state[0].value,
-			};
-		
-		app.models.intervention.saveAndRoute(id,params,null,this);	
+        // Retrieve the new status //
+        if(intervention.bootstrapSwitch('status')){
+		  params = { state: app.Models.Intervention.state[0].value, };
+        }
+        else{
+            params = { state: app.Models.Intervention.state[1].value, };
+        }
+
+		app.models.intervention.saveAndRoute(id, params, null, this);
 	},
 	
     /** Delete intervention
