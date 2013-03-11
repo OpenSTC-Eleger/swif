@@ -6,7 +6,7 @@ https://github.com/ghinda/css-toggle-switch
 
 /* Hide by default */
 
-.switch .slide-button,
+.toggleSwitch .slide-button,
 .toggle p span {
 	display: none;
 }
@@ -87,17 +87,17 @@ https://github.com/ghinda/css-toggle-switch
 
 	/* Radio Switch
 	 */
-	.switch {
+	.toggleSwitch {
 		position: relative;
 		padding: 0;
 	}
 	
-	.switch input {
+	.toggleSwitch input {
 		position: absolute;
 		opacity: 0;
 	}
 	
-	.switch label {
+	.toggleSwitch label {
 		position: relative;
 		z-index: 2;
 		
@@ -109,7 +109,7 @@ https://github.com/ghinda/css-toggle-switch
 		text-align: center;
 	}
 
-	.switch .slide-button {
+	.toggleSwitch .slide-button {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -120,72 +120,72 @@ https://github.com/ghinda/css-toggle-switch
 		height: 100%;
 	}
 
-	.switch input:last-of-type:checked ~ .slide-button {
+	.toggleSwitch input:last-of-type:checked ~ .slide-button {
 		left: 50%;
 	}
 
 	/* Switch with 3 items */
-	.switch.switch-three label,
-	.switch.switch-three .slide-button {
+	.toggleSwitch.toggleSwitch-three label,
+	.toggleSwitch.toggleSwitch-three .slide-button {
 		width: 33.3%;
 	}
 
-	.switch.switch-three input:checked:nth-of-type(2) ~ .slide-button {	
+	.toggleSwitch.toggleSwitch-three input:checked:nth-of-type(2) ~ .slide-button {	
 		left: 33.3%;
 	}
 
-	.switch.switch-three input:checked:last-of-type ~ .slide-button {
+	.toggleSwitch.toggleSwitch-three input:checked:last-of-type ~ .slide-button {
 		left: 66.6%;
 	}
 	
 	/* Switch with 4 items */
-	.switch.switch-four label,
-	.switch.switch-four .slide-button {
+	.toggleSwitch.toggleSwitch-four label,
+	.toggleSwitch.toggleSwitch-four .slide-button {
 		width: 25%;
 	}
 
-	.switch.switch-four input:checked:nth-of-type(2) ~ .slide-button {	
+	.toggleSwitch.toggleSwitch-four input:checked:nth-of-type(2) ~ .slide-button {	
 		left: 25%;
 	}
 	
-	.switch.switch-four input:checked:nth-of-type(3) ~ .slide-button {	
+	.toggleSwitch.toggleSwitch-four input:checked:nth-of-type(3) ~ .slide-button {	
 		left: 50%;
 	}
 
-	.switch.switch-four input:checked:last-of-type ~ .slide-button {
+	.toggleSwitch.toggleSwitch-four input:checked:last-of-type ~ .slide-button {
 		left: 75%;
 	}
 	
 	/* Switch with 5 items */
-	.switch.switch-five label,
-	.switch.switch-five .slide-button {
+	.toggleSwitch.toggleSwitch-five label,
+	.toggleSwitch.toggleSwitch-five .slide-button {
 		width: 20%;
 	}
 
-	.switch.switch-five input:checked:nth-of-type(2) ~ .slide-button {	
+	.toggleSwitch.toggleSwitch-five input:checked:nth-of-type(2) ~ .slide-button {	
 		left: 20%;
 	}
 	
-	.switch.switch-five input:checked:nth-of-type(3) ~ .slide-button {	
+	.toggleSwitch.toggleSwitch-five input:checked:nth-of-type(3) ~ .slide-button {	
 		left: 40%;
 	}
 	
-	.switch.switch-five input:checked:nth-of-type(4) ~ .slide-button {	
+	.toggleSwitch.toggleSwitch-five input:checked:nth-of-type(4) ~ .slide-button {	
 		left: 60%;
 	}
 
-	.switch.switch-five input:checked:last-of-type ~ .slide-button {
+	.toggleSwitch.toggleSwitch-five input:checked:last-of-type ~ .slide-button {
 		left: 80%;
 	}
 
 	/* Shared */
 	.toggle,
-	.switch {
+	.toggleSwitch {
 		display: block;
 		height: 30px;
 	}
 	
-	.switch *,
+	.toggleSwitch *,
 	.toggle * {
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
@@ -194,7 +194,7 @@ https://github.com/ghinda/css-toggle-switch
 		box-sizing: border-box;
 	}
 	
-	.switch .slide-button,
+	.toggleSwitch .slide-button,
 	.toggle .slide-button {
 		display: block;
 		
@@ -207,7 +207,7 @@ https://github.com/ghinda/css-toggle-switch
 	
 	.toggle label,
 	.toggle p,
-	.switch label {
+	.toggleSwitch label {
 		line-height: 30px;
 		vertical-align: middle;
 	}
@@ -218,14 +218,14 @@ https://github.com/ghinda/css-toggle-switch
 	
 	/* Outline the toggles when the inputs are focused */
 	.toggle input:focus ~ .slide-button,
-	.switch input:focus + label {
+	.toggleSwitch input:focus + label {
 		outline: 1px dotted #888;
 	}
 	
 	/* Bugfix for older Webkit, including mobile Webkit. Adapted from:
 	 * http://css-tricks.com/webkit-sibling-bug/
 	 */
-	.switch, .toggle {
+	.toggleSwitch, .toggle {
 		-webkit-animation: bugfix infinite 1s;
 	}
 	
@@ -306,11 +306,11 @@ https://github.com/ghinda/css-toggle-switch
 		border: 2px solid #b6b6b6;
 	}
 
-	.android.switch {
+	.android.toggleSwitch {
 		overflow: hidden;
 	}
 		
-	.android.switch .slide-button {
+	.android.toggleSwitch .slide-button {
 		background-color: #279fca;
 		
 		-webkit-transform: skew(20deg) translateX(10px);
@@ -331,7 +331,7 @@ https://github.com/ghinda/css-toggle-switch
 		background-color: #279fca;
 	}
 
-	.android.switch input:first-of-type:checked ~ .slide-button {
+	.android.toggleSwitch input:first-of-type:checked ~ .slide-button {
 		-webkit-transform: skew(20deg) translateX(-10px);
 		-moz-transform: skew(20deg) translateX(-10px);
 		-ms-transform: skew(20deg) translateX(-10px);
@@ -347,7 +347,7 @@ https://github.com/ghinda/css-toggle-switch
 		color: #fff;
 	}
 
-	.android.switch,
+	.android.toggleSwitch,
 	.android span {
 		text-transform: uppercase;
 	}
@@ -391,13 +391,13 @@ https://github.com/ghinda/css-toggle-switch
 
 	/* Selected ON toggle */
 	.ios.toggle input:first-of-type:checked ~ p span:first-child,
-	.ios.switch input:checked + label {
+	.ios.toggleSwitch input:checked + label {
 		color: #fff;
 		text-shadow: 0 -1px 0 #1b3b6f;
 	}
 
 	.ios.toggle input:first-of-type:checked ~ .slide-button,
-	.ios.switch .slide-button {
+	.ios.toggleSwitch .slide-button {
 		background: -webkit-linear-gradient(top, #3672dc, #4085ec 50%, #4d8fef 50%, #76adfc);
 		background: -moz-linear-gradient(top, #3672dc, #4085ec 50%, #4d8fef 50%, #76adfc);
 		background: -o-linear-gradient(top, #3672dc, #4085ec 50%, #4d8fef 50%, #76adfc);

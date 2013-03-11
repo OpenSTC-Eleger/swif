@@ -111,8 +111,11 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 	},
 
 	//save method with all redondant code
-	saveAndRoute: function(id,data,closeModal, view, strRoute) { 
+	saveAndRoute: function(id,data,closeModal, view, strRoute) {
 		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {
+            beforeSend: function(){
+                app.loader('display');
+            },
 		    success: function (data) {
 		        console.log(data);
 		        if(data.error){
@@ -131,8 +134,11 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 									route = Backbone.history.fragment;
 									Backbone.history.loadUrl(route);
 								}
-								else if (view)
+								else if (view){
 									view.render();
+                                }
+
+                                app.loader('hide');
 					 		}					 
 				 		});					 	
 					}

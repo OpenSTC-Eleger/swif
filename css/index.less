@@ -65,6 +65,16 @@ a.filter-button.filter-active{
 	text-align: center;
 }
 
+/* PYF Twitter Bootstrap Accordion and button dropdown overflow issue 
+	http://stackoverflow.com/questions/10959068/twitter-bootstrap-accordion-and-button-dropdown-overflow-issue
+*/
+.accordion-body[class*="in collapse"]{ overflow:visible; }
+
+// Calendar Toggle switch button //
+.switch.calendarSwitch{
+	width: 122px;	
+}
+
 
 
 /* Calendar
@@ -122,14 +132,6 @@ section.calendarContainer:not(:first-child){
 	 p.intervention-actions{
 		visibility: visible;
 	}
-}
-
-/* PYF Twitter Bootstrap Accordion and button dropdown overflow issue 
-	http://stackoverflow.com/questions/10959068/twitter-bootstrap-accordion-and-button-dropdown-overflow-issue
-*/
-.accordion-body.in{
-	
-	overflow:visible;
 }
 
 #accordionInter div.accordion-inner{
