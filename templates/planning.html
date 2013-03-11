@@ -214,9 +214,9 @@
 												
 												<div class="switch switch-small pull-right" data-on-label="Oui" data-off-label="Non" data-on="primary" data-off="warning"  rel="tooltip" data-original-title="<%= _.capitalize(lang.planningFenced) %>" data-placement="top">
 													<input type="checkbox" <%= ( (allPlanned && 
-																(	inter.state == app.Models.Intervention.state[1].value ||
-																	inter.state == app.Models.Intervention.state[3].value
-																) && _.size(inter.tasks) > 0) ) ? "" : 'checked' %>>
+														(	inter.state == app.Models.Intervention.state[1].value ||
+															inter.state == app.Models.Intervention.state[3].value
+														) && _.size(inter.tasks) > 0) ) ? "" : 'checked' %>>
 												</div>
 
 											<% } %>
@@ -614,7 +614,7 @@
    				
     		</div>
     		<div class="dataTables_filter" id="example_filter">
-    			<img class="logo"></img>
+    			<img src="css/images/pontlabbelogo.png"></img>
     		</div>
     		<div id="example_length" class="dataTables_length">
     			<h2>
