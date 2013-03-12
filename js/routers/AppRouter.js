@@ -59,14 +59,15 @@ app.Router = Backbone.Router.extend({
 		'types-de-materiel'               		: 'equipments',
 		'types-de-materiele/page:page'          : 'equipments',
 		
-
+		'carto-sites'                         	: 'cartosites',		
     },
 
     
     mainMenus: {
         manageInterventions        : 'gestion-des-interventions',
         reporting                  : 'reporting',
-        configuration              : 'configuration'
+        configuration              : 'configuration',
+        cartographie               : 'cartographie'
     },
 
 
@@ -1296,5 +1297,37 @@ app.Router = Backbone.Router.extend({
             this.navigate('login', {trigger: true, replace: true});
         }
     },
+    
+    /** cartosites
+ 	    */
+	 cartosites: function(){      
+	
+	     // Check if the user is connect //
+	     if(this.checkConnect()){
+	         var self = this;
+	
+	         // Check if the collections is instantiate //
+	         if(app.collections.places == null ){
+	             app.collections.places = new app.Collections.Places();
+	         }
+	
+	        
+	         app.collections.places.fetch({
+	             beforeSend: function(){
+	                 app.loader('display');
+	             },
+	             success: function(){
+	                 app.views.cartoSitesView = new app.Views.CartoSitesView();
+	                 self.render(app.views.cartoSitesView);
+	             },
+	             complete: function(){
+	                 app.loader('hide');
+	             }
+	         });
+	     }
+	     else{
+	         this.navigate('login', {trigger: true, replace: true});
+	     }
+	 },
     
 });
