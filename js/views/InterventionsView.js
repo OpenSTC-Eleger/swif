@@ -55,9 +55,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 
         var interventions = app.collections.interventions;
 
-        
         var nbInterventions = _.size(interventions);
-        
 
 
 
@@ -74,20 +72,31 @@ app.Views.InterventionsView = Backbone.View.extend({
         });
         var nbInterventionsPending = _.size(interventionsPending);
       
-        this.addInfoAboutInter(interventions.models);   
-        
-//        interventionsValidated = _.sortBy(interventions, function(item){ 
-//        	 return -item.attributes.create_date; 
-//        });
+        this.addInfoAboutInter(interventions.models);
 
-        // Retrieve the HTML template // 
-        $.get("templates/" + this.templateHTML + ".html", function(templateData){
+
+        // Hack fo reverse the position of the two first elements //
+        var interventionsState = app.Models.Intervention.state;
+        var firstElements = _.first(interventionsState, 2);
+
+		_(2).times(function(n){
+			interventionsState.shift();
+		})
+
+		interventionsState =  _.union(firstElements.reverse(), interventionsState);
+
+
+
+
+
+		// Retrieve the HTML template //
+		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
 				lang: app.lang,
 				nbInterventions: nbInterventions,
 				nbInterventionsPending: nbInterventionsPending,
 				nbInterventionsPlanned: nbInterventionsPlanned,
-				interventionsState: app.Models.Intervention.state,//_.initial(app.Models.Intervention.state),
+				interventionsState: interventionsState,
 				interventions: interventions.toJSON(),
 			});
 

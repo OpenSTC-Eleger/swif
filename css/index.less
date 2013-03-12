@@ -77,6 +77,20 @@ a.filter-button.filter-active{
 
 
 
+/* New LABELS AND BADGES
+-------------------------------------------------- */
+.label, .badge {
+	// Overrun (violet)
+	&-overrun         { background-color: @purple; }
+  	&-overrun[href]   { background-color: darken(@purple, 10%); }
+  	// Template (yellow)
+  	&-template           { background-color: @yellow; }
+  	&-template[href]     { background-color: darken(@yellow, 10%); }
+}
+
+
+
+
 /* Calendar
 -------------------------------------------------- */
 section.calendarContainer{

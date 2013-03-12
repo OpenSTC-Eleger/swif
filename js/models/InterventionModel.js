@@ -189,7 +189,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
         },
         {
             value       : 'template',
-            color       : 'inverse',
+            color       : 'template',
             traduction  : '',  
         }
     ]

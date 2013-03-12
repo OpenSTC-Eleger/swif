@@ -96,6 +96,7 @@
 	"dateDeadline" 			: "date butoire",
 	"deleteFilter" 			: "supprimer filtre",
 	"refusalReason"			: "motif du refus",
+	"overrun"				: "Dépassement des heures",
 	"equipment"				: "Matériel",
 	"immat"					: "Immatriculation",
 	"marque"				: "Marque",
