@@ -79,6 +79,7 @@
 	"plannedHours"			: "Heures planifiées",
 	"remainingHours"		: "Heures restantes",
 	"spentHours"			: "Heures passées",
+	"workedTime"			: "Temps travaillé",
 	"progressRate"			: "avancement",
 	"refused" 				: "refusée",
 	"wait" 					: "en attente",
@@ -107,6 +108,8 @@
 	"time"					: "Heures",
 	"oilQtity"				: "Quantité carburant",
 	"oilPrice"				: "Prix Carburant",
+	"inLiter"				: "en litre",
+	"inEuro"				: "en €uro",
 	"km"					: "Kilomètres",
 	"vehicleEquipment"						: "Véhicule",
 	"commercialVehicleEquipment"			: "Voiture",
@@ -232,6 +235,8 @@
     	"cartoSites"		 	 : "Interventions par site",
     	"officersList"		 	 : "Liste des agents",
     	"teamsList"			 	 : "Liste des équipes",
-    	"claimersList"			 : "Liste des demandeurs"
+    	"claimersList"			 : "Liste des demandeurs",
+    	"statementTask"			 : "Relevé de la tâche",
+    	"statementEndTask"		 : "Relevé de la tâche non terminée"
 	}
 }

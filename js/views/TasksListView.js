@@ -28,6 +28,8 @@ app.Views.TasksListView = Backbone.View.extend({
 		'submit #formTaskDone'    		: 'saveTaskDone',
 		
 		'change .taskEquipment'			: 'fillDropdownEquipment',
+
+		'click a.linkRefueling'			: 'accordionRefuelingInputs'
 	},
 
 
@@ -339,7 +341,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 
   
-  	/** Get the Taks
+	/** Get the Taks
 	*/
     getTask: function(e) {
 
@@ -408,8 +410,8 @@ app.Views.TasksListView = Backbone.View.extend({
 	},
 	
 
-    /** Save the Task
-    */
+	/** Save the Task
+	*/
 	saveTask: function(e){
 		var self = this;
 
@@ -593,18 +595,24 @@ app.Views.TasksListView = Backbone.View.extend({
 		var s = Math.floor(d % 3600 % 60);
 		return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":" : "0:") + (s < 10 ? "0" : "") + s); 
 	},
-    
-    //Task done
+
+
+
+	/** Set Information in the Modal Task Done
+	*/
     setModalTaskDone: function(e) {
     	this.getTask(e);
     	this.displayEquipmentsInfos(e, $('#equipmentsDone'), $('#equipmentsListDone'), $('#badgeNbEquipmentsDone') );
+
     	var task = this.model.toJSON();
+
     	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
     	
+    	// Set Modal information about the Task //
     	$('#infoModalTaskDone').children('p').html(task.name);
-		$('#infoModalTaskDone').children('small').html(task.notes);
-		
-		$('#modalTaskDone .modal-body').css("height", "300px");
+		$('#infoModalTaskDone').children('small').html('<i class="icon-map-marker icon-large"></i> '+task.intervention.site1[1]);
+
+
 		$('#eventTimeDone').val(this.secondsToHms(task.remaining_hours*60));
 		
 		var filteredEquipment = _.filter(app.collections.equipments.models, function(item){
@@ -754,6 +762,18 @@ app.Views.TasksListView = Backbone.View.extend({
 		});
 		
 
+	},
+
+
+
+	/** Display or Hide Refueling Section (Inputs Km, Oil, Oil prize)
+	*/
+	/** Display or Hide Refueling Section (Inputs Km, Oil, Oil prize)
+	*/
+	accordionRefuelingInputs: function(e){
+		e.preventDefault();
+			
+		$('.refueling-vehicle').slideToggle();
 	},
 	
 //	saveEquipment: function( km, equipmentId ) {

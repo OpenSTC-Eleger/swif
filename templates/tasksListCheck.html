@@ -178,18 +178,16 @@
 	<% }); %>
 	</div>
 
-	
 
-
-		<!-- Pagination -->
-		<ul class="pager">
-			<li class="previous">
-				<a href="#taches/<%= momentDatePrev.year()+"/"+momentDatePrev.week() %>"><i class="icon-chevron-left"></i> <%= _.capitalize(lang.actions.previousWeek) %></a>
-			</li>
-			<li class="next">
-				<a href="#taches/<%= momentDateNext.year()+"/"+momentDateNext.week() %>"><%= _.capitalize(lang.actions.nextWeek) %> <i class="icon-chevron-right"></i></a>
-			</li>
-		</ul>
+	<!-- Pagination -->
+	<ul class="pager">
+		<li class="previous">
+			<a href="#taches/<%= momentDatePrev.year()+"/"+momentDatePrev.week() %>"><i class="icon-chevron-left"></i> <%= _.capitalize(lang.actions.previousWeek) %></a>
+		</li>
+		<li class="next">
+			<a href="#taches/<%= momentDateNext.year()+"/"+momentDateNext.week() %>"><%= _.capitalize(lang.actions.nextWeek) %> <i class="icon-chevron-right"></i></a>
+		</li>
+	</ul>
 
 
 </div>
@@ -199,7 +197,7 @@
 <div id="modalTaskDone" class="modal hide fade">
 	<div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	    <h3>Saisie du temps passé</h3>
+	    <h3><%= lang.viewsTitles.statementTask %></h3>
 	</div>
 	
 	<div class="modal-body custom-height-modal">
@@ -209,68 +207,69 @@
 			<small></small>
 		</blockquote>
 
-	    <form id="formTaskDone" action="#" class="form-inline">
-	    	 <div class="input">
-	    	     <div class="control-group">
-	               	<label for="eventTimeDone" class="control-label">Temps travaillé:</label>
-	               	<div class="controls">
-						<div class="input-append bootstrap-timepicker" >							
-						    <input type="text" class="timepicker-default input-small taskInput" id='eventTimeDone'>
-						    <span class="add-on">
-						        <i class="icon-time"></i>
-						    </span>
-						</div>
-	               	</div>
+	    <form id="formTaskDone" action="#" class="form-horizontal">
+	    	 
+			<!-- Worked Time -->
+			<div class="control-group">
+				<label for="eventTimeDone" class="control-label"><%= lang.workedTime %>:</label>
+				<div class="controls">
+					<div class="input-append bootstrap-timepicker">
+						<input type="text" class="timepicker-default input-small taskInput" id="eventTimeDone">
+						<span class="add-on"><i class="icon-time"></i></span>
+					</div>
 				</div>
-				
 			</div>
 			
-			<div class="input-append">
-				<!-- Equipment -->
-	            <div class="control-group">
-					<label for="taskEquipmentDone" class="control-label"><%= _.capitalize(lang.equipment) %>:</label>
-	
-					<div class="controls">
+			<!-- Equipment -->
+            <div class="control-group">
+				<label for="taskEquipmentDone" class="control-label"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
+
+				<div class="controls">
+					<div class="input-append">
 						<select id="taskEquipmentDone" class="taskEquipment taskSelect taskInput" required="required"></select>
-						<span class="help-inline"></span>
+						<span class="add-on"><i class="icon-tint"></i></span>
 					</div>
 				</div>
-				
-				<!-- OIL -->
-				<div class="control-group">
-					<label for="equipmentOilQtityDone" class="control-label"><%= _.capitalize(lang.oilQtity) %>:</label>
-	
-					<div class="controls">
-						<input type="number" id="equipmentOilQtityDone" name="equipmentOilQtityDone" class="taskInput" required="required"  min="1" />
-						<span class="help-inline"></span>
-					</div>
-				</div>	
-			
 			</div>
-			<div class="input-append">	
-								
+				
+
+			<!-- Refueling Vehicle -->			
+			<fieldset class="refueling-vehicle hide">
+				<legend><%= lang.aboutTheClaimer %></legend>
+
 				<!-- KM -->
 				<div class="control-group">
 					<label for="equipmentKmDone" class="control-label"><%= _.capitalize(lang.km) %>:</label>
-	
+
 					<div class="controls">
-						<input type="number" id="equipmentKmDone" name="equipmentKmDone" class="equipmentKm taskInput" required="required"  min="1" />
+						<input type="number" id="equipmentKmDone" class="equipmentKm input-small taskInput" step="any" min="1" />
 						<span class="help-inline"></span>
 					</div>
 				</div>	
-				
-				<!-- OIL_PRICE -->
+
+				<!-- Oil -->
+				<div class="control-group">
+					<label for="equipmentOilQtityDone" class="control-label"><%= _.capitalize(lang.oilQtity) %>:</label>
+
+					<div class="controls">
+						<input type="number" id="equipmentOilQtityDone"  class="taskInput input-small" step="any" min="1"/>
+						<span class="help-inline"><%= lang.inLiter %></span>
+					</div>
+				</div>	
+
+				<!-- Oil Price -->
 				<div class="control-group">
 					<label for="equipmentOilPriceDone" class="control-label"><%= _.capitalize(lang.oilPrice) %>:</label>
-	
-					<div class="controls">
-						<input type="number" id="equipmentOilPriceDone" name="equipmentOilPriceDone" class="taskInput" required="required"  min="1" />
-						<span class="help-inline"></span>
-					</div>
 
+					<div class="controls">
+						<input type="number" id="equipmentOilPriceDone" class="taskInput input-small" step="any" min="1" />
+						<span class="help-inline"><%= lang.inEuro %></span>
+					</div>
 				</div>
-			</div>
+
+			</fieldset>
 			
+
 			<!-- Select Material -->
 			<div class="row-fluid marginTop equipmentsDroppableAreaDone">
 				
