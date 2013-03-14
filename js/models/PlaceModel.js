@@ -7,17 +7,29 @@ app.Models.Place = Backbone.RelationalModel.extend({
     
 	url: "/#places/:id",
 	
-	relations: [ {
-		type: Backbone.HasMany,
-		key: 'asksBelongsto',
-		relatedModel: 'app.Models.Request',
-		//includeInJSON: true,
-	    reverseRelation: {
-			type: Backbone.HasOne,
-			key: 'belongsToSite',
-			includeInJSON: 'id',
-		}
-	},],
+	relations: 
+		[ 
+		  {
+				type: Backbone.HasMany,
+				key: 'asksBelongsto',
+				relatedModel: 'app.Models.Request',
+				//includeInJSON: true,
+			    reverseRelation: {
+					type: Backbone.HasOne,
+					key: 'belongsToSite',
+					includeInJSON: 'id',
+				}
+			},
+			{
+				type: Backbone.HasMany,
+				key: 'intervention_ids',
+				relatedModel: 'app.Models.Intervention',
+				//collectionType: 'app.Collections.Requests',
+				includeInJSON: ['id','name'],
+				
+			}
+	
+		],
 
 	
 	defaults:{

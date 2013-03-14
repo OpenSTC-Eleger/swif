@@ -1317,12 +1317,21 @@ app.Router = Backbone.Router.extend({
 	                 app.loader('display');
 	             },
 	             success: function(){
-	                 app.views.cartoSitesView = new app.Views.CartoSitesView();
-	                 self.render(app.views.cartoSitesView);
-	             },
-	             complete: function(){
-	                 app.loader('hide');
-	             }
+
+					if(app.collections.interventions == null ){
+					    app.collections.interventions = new app.Collections.Interventions();
+					}
+					
+					app.collections.interventions.fetch({
+						success: function(){
+			                 app.views.cartoSitesView = new app.Views.CartoSitesView();
+			                 self.render(app.views.cartoSitesView);
+			             },
+			             complete: function(){
+			                 app.loader('hide');
+			             }
+			        });
+			    },
 	         });
 	     }
 	     else{

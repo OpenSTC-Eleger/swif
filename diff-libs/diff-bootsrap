@@ -1,0 +1,3 @@
+#reset.less
+  /* PYF comment max-width : max-width bugs openlayers */
+  /* max-width:  100%; */ /* Part 1: Set a maxium relative to the parent */

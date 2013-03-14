@@ -26,6 +26,14 @@ a img {border:none;}
     width: 800px;
     height: 800px;
     border: 1px solid #ccc;
+    text-align: center;
+}
+
+#carto_site_popup_contentDiv {
+ background-color: #3a87ad;  
+ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 #tags {
