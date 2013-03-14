@@ -2,11 +2,11 @@
 	<h1>
 		<%= lang.viewsTitles.interventionsMonitoring %>
 		<sup rel="tooltip" data-original-title="<%= lang.planningFenced %>">
-			<i class="badge" ><%= nbInterventionsPlanned %></i>
+			<i class="badge badge-info" ><%= nbInterventionsPlanned %></i>
 		</sup>
 
 		<sup rel="tooltip" data-original-title="<%= lang.pending %>">
-			<i class="badge badge-info" >
+			<i class="badge" >
 				<%= nbInterventionsPending %>
 			</i>
 		</sup>
@@ -38,28 +38,39 @@
 			<thead>
 				<tr>
 					<th><%= _.capitalize(lang.label) %></th>
-					<th><%= _.capitalize(lang.place) %></th>									
+					<th><%= _.capitalize(lang.place) %></th>
 					<th><%= _.capitalize(lang.plannedHours) %></th>
 					<th><%= _.capitalize(lang.spentHours) %></th>
 					<th><%= _.capitalize(lang.progressRate) %>
+						<!-- Status Filter -->
 						<div class="dropdown pull-right">
-						    <a id="filterStateInter" class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-filter icon-large muted"></i></a>
-						    
-						    <ul id="filterStateInterList" class="dropdown-menu" role="menu" aria-labelledby="filterStateInter">
-								<% _.each(interventionsState, function (state, i) { %>
+							<a id="filterStateInter" class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-filter icon-large muted"></i></a>
+
+							<ul id="filterStateInterList" class="dropdown-menu" role="menu" aria-labelledby="filterStateInter">
+								<% _.each(interventionsState, function (state, i) { 
+									if(i == 5){ %>
+										<li class="divider"></li>
+								<% } %>
+									
 									<li role="menuitem">
-										<a tabindex="-1" href="#filter<%= state.value %>"> 
+										<a tabindex="-1" href="#filter_<%= state.value %>"> 
 											<i class="badge <%= (state.color != '' ? 'badge-'+state.color : '') %>">&nbsp;</i>
 											&nbsp; <%= _.capitalize(state.traduction) %>
 										</a>
 									</li>
+
 								<% }) %>
+									
+									<li role="menuitem">
+										<a href="#filter_overrun">
+										<i class="badge badge-overrun">&nbsp;</i>
+										&nbsp;<%= _.capitalize(lang.overrun) %></a>
+									</li>
 									<li class="divider"></li>
-									<li class="delete-filter disabled"><a href="#delete-filter"><%= _.capitalize(lang.deleteFilter) %></a></li>
+									<li class="delete-filter disabled"><a href="#delete-filter"> <i class="icon-remove"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
 							</ul>
 						</div>
 					</th>
-					<!-- <th><%= _.capitalize(lang.infoMessages.information) %></th> -->		
 				</tr>
 			</thead>
 			<tbody>
@@ -93,18 +104,16 @@
 								<div class="progress" style="margin-bottom: 0;">
 									<div class="bar <%= intervention.classColor %>" style="width: <%= intervention.progress_rate %>%;"
 										rel="tooltip"
-					    				data-original-title="<%= intervention.infoMessage %>"><%= intervention.overPourcent %>								
+										data-original-title="<%= intervention.infoMessage %>"><%= intervention.overPourcent %>								
 									</div>
 								</div>
 						<% } 
 						} else{ %>
-							<span class="text-warning" 
-									rel="tooltip"
-					    			data-original-title="<%= intervention.infoMessage %>">
-							<%= _.capitalize(lang.notBegin) %></span>
+							<span class="label label-warning"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
+								<%= _.capitalize(lang.toScheduled) %>
+							</span>
 						<% } %>
 					</td>
-					<!--  <td><%= intervention.infoMessage %></td> -->
 				</tr>
 
 				<!-- Tasks row -->
@@ -231,8 +240,8 @@
                     <span class="help-inline"></span>
                 </div>
             </div>
-            
-            <!-- Task hour -->           
+
+            <!-- Task hour -->
            	<div class="control-group">
                	<label for="taskHour" class="control-label">Heures estimées:</label>
                	<div class="controls">
@@ -245,16 +254,16 @@
 				</div>
 			</div>
 
-		
-            <!-- Task Category -->
-            <div class="control-group">
-                <label for="taskCategory" class="control-label">Catégorie:</label>
 
-                <div class="controls">
-                     <select id="taskCategory"></select>
-                    <span class="help-inline"></span>
-                </div>
-            </div>
+			<!-- Task Category -->
+			<div class="control-group">
+				<label for="taskCategory" class="control-label">Catégorie:</label>
+
+				<div class="controls">
+					<select id="taskCategory"></select>
+					<span class="help-inline"></span>
+				</div>
+			</div>
             
             <!-- Equipment -->
             <!--  <div class="control-group">
