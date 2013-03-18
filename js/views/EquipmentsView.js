@@ -77,6 +77,15 @@ app.Views.EquipmentsView = Backbone.View.extend({
         return this;
     },
     
+	getIdInDropDown: function(view) {
+    	if ( view && view.getSelected() )
+    		var item = view.getSelected().toJSON();
+    		if( item )
+    			return [ item.id, item.name ];
+    	else 
+    		return 0
+    },    
+
     setModel: function(e) {
     	e.preventDefault();
     	var link = $(e.target);
@@ -97,7 +106,14 @@ app.Views.EquipmentsView = Backbone.View.extend({
     modalSaveEquipment: function(e){       
         this.setModel(e);	
         
-        $('#equipmentImmat').val('');
+		app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#equipmentService"), collection: app.collections.claimersServices})
+		app.views.selectListServicesView.clearAll();
+		app.views.selectListServicesView.addEmptyFirst();
+		app.views.selectListServicesView.addAll();		
+		
+        
+        $('#equipmentName').val('');
+		$('#equipmentImmat').val('');
         $('#equipmentMarque').val('');
         $('#equipmentUsage').val('');
         $('#equipmentType').val('');
@@ -110,7 +126,10 @@ app.Views.EquipmentsView = Backbone.View.extend({
         $('#fatMaterialEquipment').removeAttr("checked");	
         $('#equipmentKm').val( 0 );
         if( this.selectedJson ) {
-			$('#equipmentImmat').val(this.selectedJson.name);
+        	if( this.selectedJson.service )
+        		app.views.selectListServicesView.setSelectedItem( this.selectedJson.service[0] );
+        	$('#equipmentName').val(this.selectedJson.name);
+			$('#equipmentImmat').val(this.selectedJson.immat);
 			$('#equipmentMarque').val(this.selectedJson.marque);
 	        $('#equipmentUsage').val(this.selectedJson.usage);
 	        $('#equipmentType').val(this.selectedJson.type);
@@ -143,10 +162,17 @@ app.Views.EquipmentsView = Backbone.View.extend({
     /** Save Claimer Type
 	*/
 	saveEquipment: function(e) {		     
-    	e.preventDefault();	     
+    	e.preventDefault();	 
+    	
+    	input_service_id = null;
+    	selectView = app.views.selectListServicesView
+		if ( selectView &&  selectView.getSelected() )
+		   input_service_id = app.views.selectListServicesView.getSelected().toJSON().id;
 	     
 	     this.params = {	
-		     name: this.$('#equipmentImmat').val(),
+	         name: this.$('#equipmentName').val(),
+		     immat: this.$('#equipmentImmat').val(),
+		     service: input_service_id,
 		     marque: this.$('#equipmentMarque').val(),
 		     usage:this.$('#equipmentUsage').val(),
 	     	 type:this.$('#equipmentType').val(),
@@ -174,6 +200,8 @@ app.Views.EquipmentsView = Backbone.View.extend({
 					else{
 						if( self.modelId==0 )
 							self.model = new app.Models.Equipment({id: data.result.result}); 
+						
+						self.params.service = self.getIdInDropDown(app.views.selectListServicesView);
 						self.model.update(self.params);
 						app.collections.equipments.add(self.model);
 						$('#modalSaveEquipment').modal('hide');

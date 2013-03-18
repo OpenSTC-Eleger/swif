@@ -139,7 +139,7 @@ app.Views.InterventionDetailsView = Backbone.View.extend({
 						app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 					}
 					else{
-						app.router.navigate('#interventions' , true);
+						app.router.navigate('#interventions' , {trigger: true, replace: true});
 						console.log('Success SAVE INTERVENTION');
 					}
 				},

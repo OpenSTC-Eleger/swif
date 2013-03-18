@@ -29,7 +29,8 @@
 		<table class="table table-bordered table-hover table-striped">
 			<thead>
 				<tr>
-					<th><%= _.capitalize(lang.immat) %></th>
+					<th><%= _.capitalize(lang.name) %></th>
+					<th><%= _.capitalize(lang.immat) %></th>					
 					<th><%= _.capitalize(lang.marque) %></th>	
 					<th><%= _.capitalize(lang.usage) %></th>
 					<th><%= _.capitalize(lang.type) %></th>
@@ -37,7 +38,8 @@
 					<th><%= _.capitalize(lang.year) %></th>
 					<th><%= _.capitalize(lang.time) %></th>	
 					<th><%= _.capitalize(lang.km) %></th>	
-					<th><%= _.capitalize(lang.category) %></th>		
+					<th><%= _.capitalize(lang.category) %></th>	
+					<th><%= _.capitalize(lang.service) %></th>			
 				</tr>
 			</thead>
 			<tbody>
@@ -52,6 +54,7 @@
 							<a href="#modalDeleteEquipment" class="modalDeleteEquipment" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</td>
+					<td><%= (equipment.immat != false ? equipment.immat : "")%></td>
 					<td><%= (equipment.marque != false ? equipment.marque : "")%></td>
 					<td><%= (equipment.usage != false ? equipment.usage : "")%></td>
 					<td><%= (equipment.type != false ? equipment.type : "")%></td>
@@ -67,7 +70,8 @@
 						<td><%= _.capitalize(lang.smallMaterialEquipment) %></td>
 					<% } else if ( equipment.fat_material ) { %>
 						<td><%= _.capitalize(lang.fatMaterialEquipment) %></td>
-					<% } %>										
+					<% } %>	
+					<td><%= (equipment.service != false ? equipment.service[1] : "" )%></td>									
 				</tr>
 
 			<% }; %>
@@ -139,15 +143,38 @@
 	
 	<div class="modal-body">
 		<form id="formSaveEquipment" action="#" class="form-inline">
-
+		
 			<div class="input-append">
 			
+				<!-- name -->
+				<div class="control-group">
+					<label for="equipmentName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
+	
+					<div class="controls">
+						<input type="text" id="equipmentName" name="equipmentName" />
+						<span class="help-inline"></span>
+					</div>
+				</div>
+				
+				<!-- Service -->
+				<div class="control-group">
+	                <label for="equipmentService" class="control-label"><%= lang.service %>:</label>
+	
+	                <div class="controls">
+	                    <select id="equipmentService" required="required" ></select>
+	                    <span class="help-inline"></span>
+	                </div>
+            	</div>
+				
+			</div>
+
+			<div class="input-append">
 				<!-- Immatriculation -->
 				<div class="control-group">
 					<label for="equipmentImmat" class="control-label"><%= _.capitalize(lang.immat) %>:</label>
 	
 					<div class="controls">
-						<input type="text" id="equipmentImmat" name="equipmentImmat" required="required" />
+						<input type="text" id="equipmentImmat" name="equipmentImmat" />
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -161,9 +188,6 @@
 						<span class="help-inline"></span>
 					</div>
 				</div>
-	
-
-				
 			</div>
 			
 			<div class="input-append">

@@ -11,6 +11,8 @@ app.Models.Equipment = Backbone.RelationalModel.extend({
 	defaults:{
 		id:0,
 		name: null,
+		immat: null,
+		service:0,
 		marque: null,
 		type: null,
 		usage: null,
@@ -27,8 +29,25 @@ app.Models.Equipment = Backbone.RelationalModel.extend({
     setName : function(value) {
     	if( value == 'undefined') return;
         this.set({ name : value });
+    }, 
+    
+    getImmat : function() {
+        return this.get('immat');
+    },
+    setImmat : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ immat : value });
     },  
     
+    
+    getService : function() {
+        return this.get('service');
+    },
+    setService : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ service : value });
+    },  
+
     getMarque : function() {
         return this.get('code');
     },
@@ -133,6 +152,8 @@ app.Models.Equipment = Backbone.RelationalModel.extend({
 
 	update: function(params) {
 		this.setName( params.name );
+		this.setImmat( params.immat );
+		this.setService( params.service );
 		this.setMarque( params.marque );
 		this.setType( params.type );
 		this.setUsage( params.usage );

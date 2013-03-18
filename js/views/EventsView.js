@@ -302,7 +302,7 @@ app.Views.EventsView = Backbone.View.extend({
 			    		$("#endHour").timepicker('setTime', mEndDate.format('LT') );
 		        	}
 
-		    		$('#infoModalAbsentTask p').html( 'Nouvelle abscence ' );
+		    		$('#infoModalAbsentTask p').html( 'Nouvelle absence ' );
 		    		$('#infoModalAbsentTask small').html( mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
 		    		modalAbsentTask.one('submit', function(event) {
 						event.preventDefault();

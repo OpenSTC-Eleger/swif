@@ -163,7 +163,7 @@ app.Views.AbsentTypesView = Backbone.View.extend({
 					}				
 				},
 				error: function(e){
-					alert("Impossible de mettre à jour le type d'abscence'");
+					alert("Impossible de mettre à jour le type d'absence'");
 				}
 	    });
 	},
@@ -189,7 +189,7 @@ app.Views.AbsentTypesView = Backbone.View.extend({
 				}
 			},
 			error: function(e){
-				alert("Impossible de supprimer le type d'abscence'");
+				alert("Impossible de supprimer le type d'absence'");
 			}
 
 		});

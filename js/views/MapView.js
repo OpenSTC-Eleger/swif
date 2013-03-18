@@ -13,87 +13,76 @@
       highlightLayer:null,
 
       initMap: function() {
-		 var map, layer, select, hover, control;
+		var map, layer, select, hover, control;
 	
+		/****************INIT MAP***********************/
 	    OpenLayers.ProxyHost= "/cgi-bin/proxy.cgi?url=";
 	    map = new OpenLayers.Map('map',{
-//	    	controls: [
-//	    	           //new OpenLayers.Control.PanZoom()
-//	    	],
 	    	projection: new OpenLayers.Projection("EPSG:900913"),
 	    	maxExtent: new OpenLayers.Bounds(-473380.08102, 6080505.27911, -464411.53979, 6089000.79602),
-	  //-470106.47140625,6082400.286713315,-465881.30984375,6085596.713286685
-	    	//-470039.1875,6083801.0,-465948.59375,6084196.0
-	    	//displayProjection: new OpenLayers.Projection("EPSG:4326")
 	    });
- 
-	    //var panel = new OpenLayers.Control.NavToolbar();
-        //map.addControl(panel);
-        
+	    //control map
+		map.addControl(new OpenLayers.Control.MousePosition({ div: document.getElementById('mapMousePosition'), numdigits: 5 }));    
+		map.addControl(new OpenLayers.Control.Scale('mapScale'));
+		map.addControl(new OpenLayers.Control.ScaleLine());
+		// display the map projection
+		document.getElementById('mapProjection').innerHTML = map.projection;
+		/****************END INIT MAP***********************/
+			
+		/****************INIT LAYERS***********************/
 	    siteLayer = new OpenLayers.Layer.WMS(
-	        "Openstc Site",
-	        "http://localhost:8080/geoserver/ows",
-	        
+	        "Statistique sites",
+	        "http://localhost:8080/geoserver/ows",	        
 	        {
 	        	layers: 'openstc:openstc_site_v', 
 	            transparent: true,
-	        	//format: 'image/gif',	  
-	        	
+	        	format: 'image/gif',
 	        },
 	         {isBaseLayer:false}
 	    );
 	    
-//	    var highlight = new OpenLayers.Layer.Vector("Highlighted Features", {
-//            displayInLayerSwitcher: false, 
-//            isBaseLayer: false 
-//        });
-	    //osmLayer = new OpenLayers.Layer.OSM();
-	    //map.addLayer(siteLayer);
+	    interLayer = new OpenLayers.Layer.WMS(
+		        "Interventions",
+		        "http://localhost:8080/geoserver/ows",		        
+		        {
+		        	layers: 'openstc:openstc_intervention', 
+		            transparent: true,
+		        	format: 'image/gif',
+		        	styleMap: this.getStyleMap(),
+		        },
+		         {isBaseLayer:false}
+		    );
 	    
         select = new OpenLayers.Layer.Vector("Selection", {styleMap: 
             new OpenLayers.Style(OpenLayers.Feature.Vector.style["select"])
         });
-//        hover = new OpenLayers.Layer.Vector("Hover");
-        osmLayer = new OpenLayers.Layer.OSM();
-        map.addLayers([siteLayer, select, osmLayer]);
-        map.setLayerIndex(siteLayer, 3)
+        select.displayInLayerSwitcher=false;
         
-//        
+        osmLayer = new OpenLayers.Layer.OSM();
+        //var osmLayer = new OpenLayers.Layer.OSM("Local Tiles", "css/openlayers/tiles/map.png", {numZoomLevels: 19, alpha: true, isBaseLayer: true});
+        //map.addLayer(newLayer);
+        
+        map.addLayers([siteLayer, interLayer, select, osmLayer]);
+        //map.setLayerIndex(siteLayer, 3)
+     
+        /****************END INIT LAYERS***********************/
+        /****************INIT LAYER CONTROLS***********************/
         control = new OpenLayers.Control.GetFeature({
             protocol: OpenLayers.Protocol.WFS.fromWMSLayer(siteLayer),
             clickTolerance: 10,
-            //box: true,
-            //hover: true,
-            //multipleKey: "shiftKey",
-            //toggleKey: "ctrlKey"
         });
-        control.events.register("featureselected", this, function(e) {     
-//        	var siteId = e.feature.attributes.id;
-//        	site = app.collections.places.get( siteId )
-//        	var nbInters = 0;
-//        	if( site ) {
-//        		var siteJSON = site.toJSON();
-//        		nbInters = siteJSON.intervention_ids.length;
-//        	}
-        	
+        control.events.register("featureselected", this, function(e) {
         	var tooltipPopup = new OpenLayers.Popup.FramedCloud(
 							            "carto_site_popup", 
 							            new OpenLayers.LonLat(e.feature.geometry.x, e.feature.geometry.y),
 							            //ou feature.geometry.getBounds().getCenterLonLat(),
 							            null,
-							            e.feature.attributes.name + ", interventions :" + e.feature.attributes.nbinters + 
+							            "Nom: " + e.feature.attributes.name + "\n\r nb inter. :" + e.feature.attributes.nbinters + 
 							            ", id : " + e.feature.attributes.id + "\n\r service : " + e.feature.attributes.service,
 							            null,
 							            true
 							    	);
-//        	tooltipPopup.contentDiv.style.backgroundColor='ffffcb';
-//            tooltipPopup.closeDiv.style.backgroundColor='ffffcb';
-//            tooltipPopup.contentDiv.style.overflow='hidden';
-//            tooltipPopup.contentDiv.style.padding='3px';
-//            tooltipPopup.contentDiv.style.margin='0';
-//            tooltipPopup.closeOnMove = true;
-//            tooltipPopup.autoSize = true;
-        	
+        	//tooltipPopup.contentDiv.style.backgroundColor='ffffcb';        	
         	map.addPopup( tooltipPopup );
             e.feature.popup = tooltipPopup;
         });
@@ -107,14 +96,77 @@
 	            tooltipPopup = null;
 	            lastFeature = null;
 	        }
-	     }); 
+	     });
+        
+	    // add the LayerSwitcher (a.k.a. Map Legend)
+        layerSwitcher = new OpenLayers.Control.LayerSwitcher();
+        layerSwitcher.ascending = false;
+        layerSwitcher.useLegendGraphics = true;
               
-        map.addControl(control);  
+        map.addControls([control, layerSwitcher]);  
         control.activate();  
-	    
-	    //map.addControl(new OpenLayers.Control.LayerSwitcher());
-	    //map.zoomToExtent(siteLayer.getMaxExtent(), 2);
-        map.setCenter(new OpenLayers.LonLat(-469028.25721, 6085169.29897), 13.4);	
+        /****************END INIT LAYERS***********************/
+        
+
+        map.setCenter(new OpenLayers.LonLat(-470000, 6084169.29897), 13);	
+      },
+      
+      getStyleMap: function() {
+		var style = new OpenLayers.Style(
+			{
+				strokeColor: "green", 
+				strokeWidth: 2, 
+				strokeOpacity: 0.5,
+			});
+	
+		var scheduledStyle = new OpenLayers.Rule({ 
+			filter: new OpenLayers.Filter.Comparison({
+			  type: OpenLayers.Filter.Comparison.EQUAL_TO,
+			  property: "state",
+			  value: 'scheduled'          
+			}),
+			symbolizer: {'fillColor': '#3a87ad'}
+		});
+		
+		var openStyle = new OpenLayers.Rule({ 
+			filter: new OpenLayers.Filter.Comparison({
+			  type: OpenLayers.Filter.Comparison.EQUAL_TO,
+			  property: "state",
+			  value: 'scheduled'          
+			}),
+			symbolizer: {'fillColor': '#f89406'}
+		});
+		
+		var closedStyle = new OpenLayers.Rule({ 
+			filter: new OpenLayers.Filter.Comparison({
+			  type: OpenLayers.Filter.Comparison.EQUAL_TO,
+			  property: "state",
+			  value: 'closed'          
+			}),
+			symbolizer: {'fillColor': '#468847'}
+		});
+		
+		var pendingStyle = new OpenLayers.Rule({ 
+			filter: new OpenLayers.Filter.Comparison({
+			  type: OpenLayers.Filter.Comparison.EQUAL_TO,
+			  property: "state",
+			  value: 'pending'          
+			}),
+			symbolizer: {'fillColor': '#999999'}
+		});
+		
+		var cancelledStyle = new OpenLayers.Rule({ 
+			filter: new OpenLayers.Filter.Comparison({
+			  type: OpenLayers.Filter.Comparison.EQUAL_TO,
+			  property: "state",
+			  value: 'cancelled'          
+			}),
+			symbolizer: {'fillColor': '#b94a48'}
+		});
+		
+		style.addRules([scheduledStyle, openStyle, closedStyle, pendingStyle, cancelledStyle]); 
+		 
+		return new OpenLayers.StyleMap({'default': style});
       },
 
       render: function(){	

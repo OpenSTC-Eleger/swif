@@ -1285,12 +1285,20 @@ app.Router = Backbone.Router.extend({
                     app.loader('display');
                 },
                 success: function(){
-                    app.views.equipmentsView = new app.Views.EquipmentsView({page: self.page});
-                    self.render(app.views.equipmentsView);
-                },
-                complete: function(){
-                    app.loader('hide');
-                }
+                    if(app.collections.claimersServices == null ){
+                        app.collections.claimersServices = new app.Collections.ClaimersServices();
+                    }
+
+                    app.collections.claimersServices.fetch({
+                    	success: function() {
+		                    app.views.equipmentsView = new app.Views.EquipmentsView({page: self.page});
+		                    self.render(app.views.equipmentsView);
+		                },
+		                complete: function(){
+		                    app.loader('hide');
+		                }
+		            });
+		        }		            
             });
         }
         else{
