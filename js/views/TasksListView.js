@@ -16,9 +16,8 @@ app.Views.TasksListView = Backbone.View.extend({
 		'click li.disabled'				: 'preventDefault',
 		
 		'click .btn.addTask'            : 'displayModalAddTask',
-		'submit #formAddTask'         	: 'saveTask',   
+		'submit #formAddTask'         	: 'saveTask',
 
-		//'click .taskDone' 			: 'taskDone',
 		'click a.taskNotDone' 			: 'taskNotDone',
 
 		'click .buttonTimeSpent'		: 'setModalTimeSpent',
@@ -378,10 +377,10 @@ app.Views.TasksListView = Backbone.View.extend({
 		app.views.selectListEquipmentsView.addAll();
 			
 		var mStartDate = moment();
-		var mEndDate = moment();	
+		var mEndDate = moment();
 			
     	$("#startDate").val( mStartDate.format('L') );
-    	$("#endDate").val( mEndDate.format('L') );    	
+    	$("#endDate").val( mEndDate.format('L') );
 		var tempStartDate = moment( mStartDate );
 		tempStartDate.hours(8);
 		tempStartDate.minutes(0);
@@ -391,7 +390,6 @@ app.Views.TasksListView = Backbone.View.extend({
 		tempEndDate.minutes(0);
 		$("#endHour").timepicker('setTime', tempEndDate.format('LT') );
 			
-		$('#modalAddTask .modal-body').css("height", "550px");
         $('#modalAddTask').modal();
 	},
 	
@@ -486,7 +484,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		
 		var filteredEquipment = _.filter(app.collections.equipments.models, function(item){
     		return item.attributes.technical_vehicle || item.attributes.commercial_vehicle;
-    	});		
+    	});
 		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentSpent"), 
 			collection : new app.Collections.Equipments(filteredEquipment)
 		});
@@ -587,12 +585,14 @@ app.Views.TasksListView = Backbone.View.extend({
 			});
     },
 
+
+
     secondsToHms : function (d) {
 		d = Number(d);	
 		var h = Math.floor(d / 3600);
 		var m = Math.floor(d % 3600 / 60);
 		var s = Math.floor(d % 3600 % 60);
-		return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":" : "0:") + (s < 10 ? "0" : "") + s); 
+		return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":" : "0:") + (s < 10 ? "0" : "") + s);
 	},
 
 

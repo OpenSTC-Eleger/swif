@@ -80,6 +80,7 @@
 	"remainingHours"		: "Heures restantes",
 	"spentHours"			: "Heures passées",
 	"workedTime"			: "Temps travaillé",
+	"remainingTime"			: "Temps restant",
 	"progressRate"			: "avancement",
 	"refused" 				: "refusée",
 	"wait" 					: "en attente",
