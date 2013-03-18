@@ -220,14 +220,16 @@
 				</div>
 			</div>
 			
-			<!-- Equipment -->
+			<!-- Vehicle -->
             <div class="control-group">
 				<label for="taskEquipmentDone" class="control-label"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
 
 				<div class="controls">
 					<div class="input-append">
 						<select id="taskEquipmentDone" class="taskEquipment taskSelect taskInput" required="required"></select>
-						<span class="add-on"><i class="icon-tint"></i></span>
+						<span class="add-on linkRefueling" rel="tooltip" data-placement="top" data-original-title="<%= _.capitalize(lang.oil) %>">
+							<i class="icon-tint"></i>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -235,14 +237,14 @@
 
 			<!-- Refueling Vehicle -->			
 			<fieldset class="refueling-vehicle hide">
-				<legend><%= lang.aboutTheClaimer %></legend>
+				<legend><i class="icon-tint"></i> <%= _.capitalize(lang.oil) %></legend>
 
 				<!-- KM -->
 				<div class="control-group">
 					<label for="equipmentKmDone" class="control-label"><%= _.capitalize(lang.km) %>:</label>
 
 					<div class="controls">
-						<input type="number" id="equipmentKmDone" class="equipmentKm input-small taskInput" step="any" min="1" />
+						<input type="text" id="equipmentKmDone" class="equipmentKm input-small taskInput" />
 						<span class="help-inline"></span>
 					</div>
 				</div>	
@@ -252,17 +254,17 @@
 					<label for="equipmentOilQtityDone" class="control-label"><%= _.capitalize(lang.oilQtity) %>:</label>
 
 					<div class="controls">
-						<input type="number" id="equipmentOilQtityDone"  class="taskInput input-small" step="any" min="1"/>
+						<input type="text" id="equipmentOilQtityDone" class="taskInput input-small" />
 						<span class="help-inline"><%= lang.inLiter %></span>
 					</div>
-				</div>	
+				</div>
 
 				<!-- Oil Price -->
 				<div class="control-group">
 					<label for="equipmentOilPriceDone" class="control-label"><%= _.capitalize(lang.oilPrice) %>:</label>
 
 					<div class="controls">
-						<input type="number" id="equipmentOilPriceDone" class="taskInput input-small" step="any" min="1" />
+						<input type="text" id="equipmentOilPriceDone" class="taskInput input-small" />
 						<span class="help-inline"><%= lang.inEuro %></span>
 					</div>
 				</div>
@@ -270,29 +272,35 @@
 			</fieldset>
 			
 
-			<!-- Select Material -->
-			<div class="row-fluid marginTop equipmentsDroppableAreaDone">
-				
-				<div class="span6">
-					<div class="widget-title">
-						<h4>Matériels <span class="badge pull-right"></span></h4>
+			<!-- Equipments -->		
+			<fieldset>
+				<legend><i class="icon-wrench"></i> <%= _.capitalize(lang.equipment) %></legend>
+
+				<!-- Select Material -->
+				<div class="row-fluid marginTop equipmentsDroppableAreaDone">
+					
+					<div class="span6">
+						<div class="widget-title">
+							<h4>Utilisé <span class="badge pull-right"></span></h4>
+						</div>
+		
+						<ul id="equipmentsDone" class="sortableEquipmentsList sortable unstyled nav nav-list">
+		
+						</ul>
 					</div>
-	
-					<ul id="equipmentsDone" class="sortableEquipmentsList sortable unstyled nav nav-list">
-	
-					</ul>
-				</div>
-	
-				<div class="span6">
-					<div class="widget-title">
-						<h4>Autres matériels <span class="badge pull-right" id="badgeNbEquipmentsDone"></span></h4>
+		
+					<div class="span6">
+						<div class="widget-title">
+							<h4>Disponible <!--<span class="badge pull-right" id="badgeNbEquipmentsDone"></span>--></h4>
+						</div>
+		
+						<ul id="equipmentsListDone" class="sortableEquipmentsList sortable unstyled nav nav-list">
+						</ul>
 					</div>
-	
-					<ul id="equipmentsListDone" class="sortableEquipmentsList sortable unstyled nav nav-list">
-					</ul>
+		
 				</div>
-	
-			</div>
+
+			</fieldset>
 
 	    </form>
 	</div>

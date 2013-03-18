@@ -106,6 +106,7 @@
 	"week" 					: "Semaine",
 	"year"					: "Année",
 	"time"					: "Heures",
+	"oil" 					: "carburant",
 	"oilQtity"				: "Quantité carburant",
 	"oilPrice"				: "Prix Carburant",
 	"inLiter"				: "en litre",
