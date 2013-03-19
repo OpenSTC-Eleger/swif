@@ -104,12 +104,17 @@ a.filter-button.filter-active{
 /* Drop Area
 -------------------------------------------------- */
 .drop-area{
+	height: 250px;
 	background-color: @infoBackground;
 	background-image: url('images/drop_zone.png');
 	background-repeat: no-repeat;
 	background-position: center;
-}
 
+
+	li > a:hover{
+		background-color: rgba(red(@infoText), green(@infoText), blue(@infoText), 0.15);
+	}
+}
 
 
 /* Calendar
