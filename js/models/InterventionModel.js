@@ -165,31 +165,37 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
         {
             value       : 'scheduled',
             color       : 'info',
+            htmlColor   : '#3a87ad',
             traduction  : '',
         },
     	{
             value       : 'open',
             color       : 'warning',
+    	    htmlColor   : '#f89406',
             traduction  : '',
         },
         {
             value       : 'closed',
             color       : 'success',
+            htmlColor   : '#468847',
             traduction  : '',   
         },
         {
             value       : 'pending',
             color       : 'muted',
+            htmlColor   : '#999999',
             traduction  : '', 
         },
         {
             value       : 'cancelled',
             color       : 'important',
+            htmlColor   : '#b94a48',
             traduction  : '',  
         },
         {
             value       : 'template',
             color       : 'template',
+            htmlColor   : '#ffc40d',
             traduction  : '',  
         }
     ]
