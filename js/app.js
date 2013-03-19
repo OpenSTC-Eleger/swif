@@ -11,6 +11,7 @@ var app = {
     userBDD         : 'pontlabbe2',
     uniq_id_counter : 0,	
     
+
 //    urlGEO_OWS                  : 'http://localhost:8080/geoserver/ows',
 //    urlGEO_WFS                  : 'http://localhost:8080/geoserver/wfs',
 //    urlGEO_NS                   : 'http://localhost:8080/openstc',
@@ -19,8 +20,9 @@ var app = {
     urlGEO_OWS                  : 'http://octm-dev.siclic.fr:8080/geoserver/ows',
     urlGEO_WFS                  : 'http://octm-dev.siclic.fr:8080/geoserver/wfs',
     urlGEO_NS                   : 'http://octm-dev.siclic.fr:8080/openstc',
-    urlOE                       : 'http://octm-dev.siclic.fr:8069',
-    
+    urlOE                       : 'http://octm-dev.siclic.fr:8069',    
+
+
     urlOE_authentication        : '/web/session/authenticate',
     urlOE_versionServer         : '/web/webclient/version_info',
     urlOE_sessionDestroy        : '/web/session/destroy',
