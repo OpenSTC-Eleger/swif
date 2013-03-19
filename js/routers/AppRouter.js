@@ -56,8 +56,8 @@ app.Router = Backbone.Router.extend({
 		'types-dabscence'                       : 'absentTypes',
 		'types-dabscence/page:page'             : 'absentTypes',
 		
-		'types-de-materiel'               		: 'equipments',
-		'types-de-materiele/page:page'          : 'equipments',
+		'materiel'               				: 'equipments',
+		'materiel/page:page'           			: 'equipments',
 		
 		'carto-sites'                         	: 'cartosites',		
     },
