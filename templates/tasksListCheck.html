@@ -240,33 +240,25 @@
 			<fieldset class="refueling-vehicle hide">
 				<legend><i class="icon-tint"></i> <%= _.capitalize(lang.oil) %></legend>
 
-				<!-- KM -->
 				<div class="control-group">
-					<label for="equipmentKmDone" class="control-label"><%= _.capitalize(lang.km) %>:</label>
+					<div class="form-inline">
+						<!-- KM -->
+						<div class="span4">
+							<label for="equipmentKmDone"><%= _.capitalize(lang.milometer) %>:</label>
+							<input type="text" id="equipmentKmDone" class="equipmentKm input-mini taskInput" placeholder="<%= lang.inKm %>" />
+						</div>
 
-					<div class="controls">
-						<input type="text" id="equipmentKmDone" class="equipmentKm input-small taskInput" />
-						<span class="help-inline"></span>
-					</div>
-				</div>	
+						<!-- Oil -->
+						<div class="span4">
+							<label for="equipmentOilQtityDone"><%= _.capitalize(lang.quantity) %>:</label>
+							<input type="text" id="equipmentOilQtityDone" class="taskInput input-mini" placeholder="<%= lang.inLiter %>" />
+						</div>
 
-				<!-- Oil -->
-				<div class="control-group">
-					<label for="equipmentOilQtityDone" class="control-label"><%= _.capitalize(lang.oilQtity) %>:</label>
-
-					<div class="controls">
-						<input type="text" id="equipmentOilQtityDone" class="taskInput input-small" />
-						<span class="help-inline"><%= lang.inLiter %></span>
-					</div>
-				</div>
-
-				<!-- Oil Price -->
-				<div class="control-group">
-					<label for="equipmentOilPriceDone" class="control-label"><%= _.capitalize(lang.oilPrice) %>:</label>
-
-					<div class="controls">
-						<input type="text" id="equipmentOilPriceDone" class="taskInput input-small" />
-						<span class="help-inline"><%= lang.inEuro %></span>
+						<!-- Oil Price -->
+						<div class="span4">
+							<label for="equipmentOilPriceDone"><%= _.capitalize(lang.price) %>:</label>
+							<input type="text" id="equipmentOilPriceDone" class="taskInput input-mini" placeholder="<%= lang.inEuro %>" />
+						</div>
 					</div>
 				</div>
 
@@ -282,7 +274,7 @@
 					
 					<div class="span6">
 						<div class="widget-title">
-							<h4>Utilisé <span class="badge pull-right"></span></h4>
+							<h4 class="noMarginTop">Utilisé <span class="badge pull-right"></span></h4>
 						</div>
 		
 						<ul id="equipmentsDone" class="sortableEquipmentsList sortable unstyled nav nav-list">
@@ -292,7 +284,7 @@
 		
 					<div class="span6">
 						<div class="widget-title">
-							<h4>Disponible <!--<span class="badge pull-right" id="badgeNbEquipmentsDone"></span>--></h4>
+							<h4 class="noMarginTop">Disponible <!--<span class="badge pull-right" id="badgeNbEquipmentsDone"></span>--></h4>
 						</div>
 		
 						<ul id="equipmentsListDone" class="sortableEquipmentsList sortable unstyled nav nav-list">
@@ -395,8 +387,8 @@
 			</div>
 
 
-            <!-- Vehicle -->
-            <div class="control-group">
+			<!-- Vehicle -->
+			<div class="control-group">
 				<label for="taskEquipmentAdd" class="control-label"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
 
 				<div class="controls">
@@ -413,36 +405,27 @@
 			<!-- Refueling Vehicle -->
 			<fieldset class="refueling-vehicle hide">
 				<legend><i class="icon-tint"></i> <%= _.capitalize(lang.oil) %></legend>
+				
 
-				<!-- KM -->
 				<div class="control-group">
-					<label for="equipmentKmAdd" class="control-label"><%= _.capitalize(lang.km) %>:</label>
+					<div class="form-inline">
+						<!-- KM -->
+						<div class="span4">
+							<label for="equipmentKmAdd"><%= _.capitalize(lang.milometer) %>:</label>
+							<input type="text" id="equipmentKmAdd" class="equipmentKm input-mini taskInput" placeholder="<%= lang.inKm %>" />
+						</div>
 
-					<div class="controls">
-						<input type="text" id="equipmentKmAdd" class="equipmentKm input-small taskInput" />
-						<span class="help-inline"></span>
-					</div>
-				</div>	
+						<!-- Oil -->
+						<div class="span4">
+							<label for="equipmentOilQtityAdd"><%= _.capitalize(lang.quantity) %>:</label>
+							<input type="text" id="equipmentOilQtityAdd" class="taskInput input-mini" placeholder="<%= lang.inLiter %>" />
+						</div>
 
-				<!-- OIL -->
-				<div class="control-group">
-					<label for="equipmentOilQtityAdd" class="control-label"><%= _.capitalize(lang.oilQtity) %>:</label>
-
-					<div class="controls">
-						<input type="text" id="equipmentOilQtityAdd" class="taskInput input-small" />
-						<span class="help-inline"><%= lang.inLiter %></span>
-					</div>
-
-				</div>
-
-
-				<!-- OIL_PRICE -->
-				<div class="control-group">
-					<label for="equipmentOilPriceAdd" class="control-label"><%= _.capitalize(lang.oilPrice) %>:</label>
-
-					<div class="controls">
-						<input type="text" id="equipmentOilPriceAdd" class="taskInput input-small" />
-						<span class="help-inline"><%= lang.inEuro %></span>
+						<!-- Oil Price -->
+						<div class="span4">
+							<label for="equipmentOilPriceAdd"><%= _.capitalize(lang.price) %>:</label>
+							<input type="text" id="equipmentOilPriceAdd" class="taskInput input-mini" placeholder="<%= lang.inEuro %>" />
+						</div>
 					</div>
 				</div>
 
@@ -458,7 +441,7 @@
 					
 					<div class="span6">
 						<div class="widget-title">
-							<h4>Utilisé <span class="badge pull-right"></span></h4>
+							<h4 class="noMarginTop">Utilisé <span class="badge pull-right"></span></h4>
 						</div>
 		
 						<ul id="equipmentsAdd" class="sortableEquipmentsList sortable unstyled nav nav-list">
@@ -468,7 +451,7 @@
 		
 					<div class="span6">
 						<div class="widget-title">
-							<h4>Disponible <!--<span class="badge pull-right" id="badgeNbEquipmentsDone"></span>--></h4>
+							<h4 class="noMarginTop">Disponible <!--<span class="badge pull-right" id="badgeNbEquipmentsDone"></span>--></h4>
 						</div>
 		
 						<ul id="equipmentsListAdd" class="sortableEquipmentsList sortable unstyled nav nav-list">
@@ -545,37 +528,29 @@
 			</div> 	
 
 			
-						<!-- Refueling Vehicle -->
+			<!-- Refueling Vehicle -->
 			<fieldset class="refueling-vehicle hide">
 				<legend><i class="icon-tint"></i> <%= _.capitalize(lang.oil) %></legend>
 
-				<!-- KM -->
 				<div class="control-group">
-					<label for="equipmentKmSpent" class="control-label"><%= _.capitalize(lang.km) %>:</label>
+					<div class="form-inline">
+						<!-- KM -->
+						<div class="span4">
+							<label for="equipmentKmSpent"><%= _.capitalize(lang.milometer) %>:</label>
+							<input type="text" id="equipmentKmSpent" class="equipmentKm input-mini taskInput" placeholder="<%= lang.inKm %>" />
+						</div>
 
-					<div class="controls">
-						<input type="text" id="equipmentKmSpent" class="equipmentKm input-small taskInput" />
-						<span class="help-inline"></span>
-					</div>
-				</div>
+						<!-- Oil -->
+						<div class="span4">
+							<label for="equipmentOilQtitySpent"><%= _.capitalize(lang.quantity) %>:</label>
+							<input type="text" id="equipmentOilQtitySpent" class="taskInput input-mini" placeholder="<%= lang.inLiter %>" />
+						</div>
 
-				<!-- OIL -->
-				<div class="control-group">
-					<label for="equipmentOilQtitySpent" class="control-label"><%= _.capitalize(lang.oilQtity) %>:</label>
-
-					<div class="controls">
-						<input type="text" id="equipmentOilQtitySpent" class="taskInput input-small" />
-						<span class="help-inline"><%= lang.inLiter %></span>
-					</div>
-				</div>	
-			
-				<!-- OIL_PRICE -->
-				<div class="control-group">
-					<label for="equipmentOilPriceSpent" class="control-label"><%= _.capitalize(lang.oilPrice) %>:</label>
-
-					<div class="controls">
-						<input type="text" id="equipmentOilPriceSpent" class="taskInput input-small" />
-						<span class="help-inline"><%= lang.inEuro %></span>
+						<!-- Oil Price -->
+						<div class="span4">
+							<label for="equipmentOilPriceSpent"><%= _.capitalize(lang.price) %>:</label>
+							<input type="text" id="equipmentOilPriceSpent" class="taskInput input-mini" placeholder="<%= lang.inEuro %>" />
+						</div>
 					</div>
 				</div>
 
@@ -591,7 +566,7 @@
 					
 					<div class="span6">
 						<div class="widget-title">
-							<h4>Utilisé <span class="badge pull-right"></span></h4>
+							<h4 class="noMarginTop">Utilisé <span class="badge pull-right"></span></h4>
 						</div>
 		
 						<ul id="equipmentsSpent" class="sortableEquipmentsList sortable unstyled nav nav-list">
@@ -601,7 +576,7 @@
 		
 					<div class="span6">
 						<div class="widget-title">
-							<h4>Disponible <!--<span class="badge pull-right" id="badgeNbEquipmentsDone"></span>--></h4>
+							<h4 class="noMarginTop">Disponible <!--<span class="badge pull-right" id="badgeNbEquipmentsDone"></span>--></h4>
 						</div>
 		
 						<ul id="equipmentsListSpent" class="sortableEquipmentsList sortable unstyled nav nav-list">
