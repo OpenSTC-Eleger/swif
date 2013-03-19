@@ -353,7 +353,7 @@ app.Views.TasksListView = Backbone.View.extend({
     },
     
     resetModal: function() {    	
-    	$('.taskInput').val( 0 );
+    	$('.taskInput').val('');
     	$('.taskSelect').val(0);
     	$('#taskName').val('');
     	
@@ -389,7 +389,8 @@ app.Views.TasksListView = Backbone.View.extend({
 		tempEndDate.hours(18);
 		tempEndDate.minutes(0);
 		$("#endHour").timepicker('setTime', tempEndDate.format('LT') );
-			
+		
+		$('#modalAddTask .modal-body').css({"height": "450px", "max-height": "450px"});
         $('#modalAddTask').modal();
 	},
 	
@@ -475,11 +476,11 @@ app.Views.TasksListView = Backbone.View.extend({
     	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 
     	$('#infoModalTimeSpent').children('p').html(task.name);
-		$('#infoModalTimeSpent').children('small').html(task.notes);
+    	$('#infoModalTimeSpent').children('small').html('<i class="icon-map-marker icon-large"></i> '+task.intervention.site1[1]);
 		$('.timepicker-default').timepicker({showMeridian:false});
 
 		$('#eventTimeSpent').val(this.secondsToHms(task.remaining_hours*60));
-		$('#modalTimeSpent .modal-body').css("height", "300px");
+		$('#modalTimeSpent .modal-body').css({"height": "450px", "max-height": "450px"});
 		$('#eventTimeRemaining').val("00:00");
 		
 		var filteredEquipment = _.filter(app.collections.equipments.models, function(item){
@@ -611,7 +612,7 @@ app.Views.TasksListView = Backbone.View.extend({
     	$('#infoModalTaskDone').children('p').html(task.name);
 		$('#infoModalTaskDone').children('small').html('<i class="icon-map-marker icon-large"></i> '+task.intervention.site1[1]);
 
-
+		$('#modalTaskDone .modal-body').css({"height": "450px", "max-height": "450px"});
 		$('#eventTimeDone').val(this.secondsToHms(task.remaining_hours*60));
 		
 		var filteredEquipment = _.filter(app.collections.equipments.models, function(item){
