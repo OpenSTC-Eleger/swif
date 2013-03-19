@@ -32,7 +32,7 @@
 		/****************INIT LAYERS***********************/
 	    siteLayer = new OpenLayers.Layer.WMS(
 	        "Statistique sites",
-	        "http://localhost:8080/geoserver/ows",	        
+	        app.urlGEO_OWS,	        
 	        {
 	        	layers: 'openstc:openstc_site_v', 
 	            transparent: true,
@@ -43,15 +43,25 @@
 	    
 	    interLayer = new OpenLayers.Layer.WMS(
 		        "Interventions",
-		        "http://localhost:8080/geoserver/ows",		        
+		        app.urlGEO_OWS,		        
 		        {
 		        	layers: 'openstc:openstc_intervention', 
 		            transparent: true,
 		        	format: 'image/gif',
-		        	styleMap: this.getStyleMap(),
 		        },
 		         {isBaseLayer:false}
 		    );
+	    
+	    var interVectorLayer = new OpenLayers.Layer.Vector("WFS", {
+		        //minScale: 15000000,
+		        strategies: [new OpenLayers.Strategy.BBOX()],
+		        protocol: new OpenLayers.Protocol.WFS({
+		            url: app.urlGEO_WFS,
+		            featureType: "openstc_intervention",
+		            featureNS: app.urlGEO_NS
+		        }),
+		        styleMap: this.getStyleMap(),
+		    })
 	    
         select = new OpenLayers.Layer.Vector("Selection", {styleMap: 
             new OpenLayers.Style(OpenLayers.Feature.Vector.style["select"])
@@ -62,7 +72,7 @@
         //var osmLayer = new OpenLayers.Layer.OSM("Local Tiles", "css/openlayers/tiles/map.png", {numZoomLevels: 19, alpha: true, isBaseLayer: true});
         //map.addLayer(newLayer);
         
-        map.addLayers([siteLayer, interLayer, select, osmLayer]);
+        map.addLayers([interVectorLayer, siteLayer, interLayer, select, osmLayer]);
         //map.setLayerIndex(siteLayer, 3)
      
         /****************END INIT LAYERS***********************/
@@ -114,9 +124,9 @@
       getStyleMap: function() {
 		var style = new OpenLayers.Style(
 			{
-				strokeColor: "green", 
-				strokeWidth: 2, 
-				strokeOpacity: 0.5,
+				'pointRadius': 10,
+				'strokeWidth': 2, 
+				'strokeOpacity': 0.5,
 			});
 	
 		var scheduledStyle = new OpenLayers.Rule({ 
@@ -132,7 +142,7 @@
 			filter: new OpenLayers.Filter.Comparison({
 			  type: OpenLayers.Filter.Comparison.EQUAL_TO,
 			  property: "state",
-			  value: 'scheduled'          
+			  value: 'open'          
 			}),
 			symbolizer: {'fillColor': '#f89406'}
 		});
@@ -166,7 +176,7 @@
 		
 		style.addRules([scheduledStyle, openStyle, closedStyle, pendingStyle, cancelledStyle]); 
 		 
-		return new OpenLayers.StyleMap({'default': style});
+		return new OpenLayers.StyleMap(style);
       },
 
       render: function(){	
