@@ -1,12 +1,12 @@
 /******************************************
 * Claimers List View
 */
-app.Views.CartoSitesView = Backbone.View.extend({
+app.Views.CartoStatView = Backbone.View.extend({
 
 	
 	el : '#rowContainer',
 	
-	templateHTML: 'cartosites',
+	templateHTML: 'cartostat',
 	
 	numberListByPage: 25,
 
@@ -53,7 +53,9 @@ app.Views.CartoSitesView = Backbone.View.extend({
 			
 			$(self.el).html(template);
 			
-			new app.Views.MapView({ el: $("#map") });
+			var map = new app.Views.MapStatView({ el: $("#map") });
+//			$('input[name^="OpenLayers.Geometry.Point_"]').addClass('mapmarker');
+//			$('input[name^="OpenLayers.Geometry.Point_"]').addClass('label-info');
 			
 		});
 

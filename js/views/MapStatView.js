@@ -1,14 +1,15 @@
 /******************************************
 * MapView 
 */
- app.Views.MapView = Backbone.View.extend({
+ app.Views.MapStatView = Backbone.View.extend({
 	 
 	  el: '#map',
-	  
+	  templateHTML: 'cartostat',
 
       initialize: function() {
           _.bindAll(this, 'initMap');
           this.initMap();
+          this.render();
       },
       
       highlightLayer:null,
@@ -27,11 +28,11 @@
 		this.map.addControl(new OpenLayers.Control.Scale('mapScale'));
 		this.map.addControl(new OpenLayers.Control.ScaleLine());
 		// display the map projection
-		document.getElementById('mapProjection').innerHTML = map.projection;
+		document.getElementById('mapProjection').innerHTML = this.map.projection;
 		/****************END INIT MAP***********************/
 			
 		/****************INIT LAYERS***********************/
-	    siteLayer = new OpenLayers.Layer.WMS(
+	    statisticLayer = new OpenLayers.Layer.WMS(
 	        "Statistique sites",
 	        app.urlGEO_OWS,	        
 	        {
@@ -42,8 +43,6 @@
 	         {isBaseLayer:false}
 	    );
 	    
-	    this.addInterLayers();
-	    
         select = new OpenLayers.Layer.Vector("Selection", {styleMap: 
             new OpenLayers.Style(OpenLayers.Feature.Vector.style["select"])
         });
@@ -53,14 +52,14 @@
         //var osmLayer = new OpenLayers.Layer.OSM("Local Tiles", "css/openlayers/tiles/map.png", {numZoomLevels: 19, alpha: true, isBaseLayer: true});
         //map.addLayer(newLayer);
         
-        this.map.addLayers([ siteLayer, select, osmLayer]);
+        this.map.addLayers([ statisticLayer, select, osmLayer ]);
         //this.map.addLayers(interLayers);
-        //map.setLayerIndex(siteLayer, 3)
+        //map.setLayerIndex(statisticLayer, 3)
      
         /****************END INIT LAYERS***********************/
         /****************INIT LAYER CONTROLS***********************/
         control = new OpenLayers.Control.GetFeature({
-            protocol: OpenLayers.Protocol.WFS.fromWMSLayer(siteLayer),
+            protocol: OpenLayers.Protocol.WFS.fromWMSLayer(statisticLayer),
             clickTolerance: 10,
         });
         control.events.register("featureselected", this, function(e) {
@@ -104,50 +103,16 @@
       },
       
 
-      
-      addInterLayers: function() {
-
-			var layers = [];
-			_.each(app.Models.Intervention.state, function( state ) {
-				var style = new OpenLayers.Style(
-				{
-					'pointRadius': 10,
-					'strokeWidth': 2, 
-					'strokeOpacity': 0.5,
-					'externalGraphic': OpenLayers.ImgPath + "marker-gold.png",
-					'backgroundGraphic': OpenLayers.ImgPath + "marker_shadow.png",
-				});
-				
-				var rule = new OpenLayers.Rule({ 
-					filter: new OpenLayers.Filter.Comparison({
-					  type: OpenLayers.Filter.Comparison.EQUAL_TO,
-					  property: "state",
-					  value: state.value          
-					}),
-					symbolizer: {'fillColor': state.htmlColor /*'label-'+state.color*/ }
-				});
-				OpenLayers.Element.addClass($(rule.symbolizer), 'mapmarker');
-				OpenLayers.Element.addClass($(rule.symbolizer), 'label-'+state.color);
-				style.addRules([rule]); 
-				
-				var styleMap = new OpenLayers.StyleMap(style);
-				var interLayer = new OpenLayers.Layer.Vector(state.traduction, {
-			        //minScale: 15000000,
-			        strategies: [new OpenLayers.Strategy.BBOX()],
-			        protocol: new OpenLayers.Protocol.WFS({
-			            url: app.urlGEO_WFS,
-			            featureType: "openstc_intervention",
-			            featureNS: app.urlGEO_NS
-			        }),
-			        styleMap: styleMap,
-				});
-				layers.push(interLayer)
-			});
-			
-			this.map.addLayers(layers);
-      },
-
       render: function(){	
+    	 $.get("templates/" + this.templateHTML + ".html", function(templateData){
+			var template = _.template(templateData);
+
+			$(self.el).html(template);
+
+			
+		});
+      
+    	
 		return this;
       },
 

@@ -59,7 +59,9 @@ app.Router = Backbone.Router.extend({
 		'materiel'               				: 'equipments',
 		'materiel/page:page'           			: 'equipments',
 		
-		'carto-sites'                         	: 'cartosites',		
+		'nouvelle-intervention'         		: 'cartoRequest',	
+		'statut-interventions'                  : 'cartoInter',
+		'statistique'                   		: 'cartoStat',
     },
 
     
@@ -1308,7 +1310,7 @@ app.Router = Backbone.Router.extend({
     
     /** cartosites
  	    */
-	 cartosites: function(){      
+	 cartoRequest: function(){      
 	
 	     // Check if the user is connect //
 	     if(this.checkConnect()){
@@ -1332,12 +1334,21 @@ app.Router = Backbone.Router.extend({
 					
 					app.collections.interventions.fetch({
 						success: function(){
-			                 app.views.cartoSitesView = new app.Views.CartoSitesView();
-			                 self.render(app.views.cartoSitesView);
-			             },
-			             complete: function(){
-			                 app.loader('hide');
-			             }
+		               		 if(app.collections.claimersServices == null ){
+			                    app.collections.claimersServices = new app.Collections.ClaimersServices();
+			                 }
+			
+			                
+			                app.collections.claimersServices.fetch({
+			                	success: function(){
+					                 app.views.cartoRequestView = new app.Views.CartoRequestView();
+					                 self.render(app.views.cartoRequestView);
+					             },
+					             complete: function(){
+					                 app.loader('hide');
+					             }
+					        });
+					    }
 			        });
 			    },
 	         });
@@ -1346,5 +1357,87 @@ app.Router = Backbone.Router.extend({
 	         this.navigate('login', {trigger: true, replace: true});
 	     }
 	 },
+	 
+    /** cartosites
+  	    */
+ 	 cartoInter: function(){      
+ 	
+ 	     // Check if the user is connect //
+ 	     if(this.checkConnect()){
+ 	         var self = this;
+ 	
+ 	         // Check if the collections is instantiate //
+ 	         if(app.collections.places == null ){
+ 	             app.collections.places = new app.Collections.Places();
+ 	         }
+ 	
+ 	        
+ 	         app.collections.places.fetch({
+ 	             beforeSend: function(){
+ 	                 app.loader('display');
+ 	             },
+ 	             success: function(){
+
+ 					if(app.collections.interventions == null ){
+ 					    app.collections.interventions = new app.Collections.Interventions();
+ 					}
+ 					
+ 					app.collections.interventions.fetch({
+ 						success: function(){
+ 			                 app.views.cartoInterView = new app.Views.CartoInterView();
+ 			                 self.render(app.views.cartoInterView);
+ 			             },
+ 			             complete: function(){
+ 			                 app.loader('hide');
+ 			             }
+ 			        });
+ 			    },
+ 	         });
+ 	     }
+ 	     else{
+ 	         this.navigate('login', {trigger: true, replace: true});
+ 	     }
+ 	 },
+ 	 
+    /** cartosites
+  	    */
+ 	 cartoStat: function(){      
+ 	
+ 	     // Check if the user is connect //
+ 	     if(this.checkConnect()){
+ 	         var self = this;
+ 	
+ 	         // Check if the collections is instantiate //
+ 	         if(app.collections.places == null ){
+ 	             app.collections.places = new app.Collections.Places();
+ 	         }
+ 	
+ 	        
+ 	         app.collections.places.fetch({
+ 	             beforeSend: function(){
+ 	                 app.loader('display');
+ 	             },
+ 	             success: function(){
+
+ 					if(app.collections.interventions == null ){
+ 					    app.collections.interventions = new app.Collections.Interventions();
+ 					}
+ 					
+ 					app.collections.interventions.fetch({
+ 						success: function(){
+ 			                 app.views.cartoStatView = new app.Views.CartoStatView();
+ 			                 self.render(app.views.cartoStatView);
+ 			             },
+ 			             complete: function(){
+ 			                 app.loader('hide');
+ 			             }
+ 			        });
+ 			    },
+ 	         });
+ 	     }
+ 	     else{
+ 	         this.navigate('login', {trigger: true, replace: true});
+ 	     }
+ 	 },
     
 });
