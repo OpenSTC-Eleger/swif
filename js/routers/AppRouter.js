@@ -1341,8 +1341,8 @@ app.Router = Backbone.Router.extend({
 			                
 			                app.collections.claimersServices.fetch({
 			                	success: function(){
-					                 app.views.cartoRequestView = new app.Views.CartoRequestView();
-					                 self.render(app.views.cartoRequestView);
+					                 app.views.mapRequestView = new app.Views.MapRequestView();
+					                 self.render(app.views.mapRequestView);
 					             },
 					             complete: function(){
 					                 app.loader('hide');
@@ -1384,8 +1384,8 @@ app.Router = Backbone.Router.extend({
  					
  					app.collections.interventions.fetch({
  						success: function(){
- 			                 app.views.cartoInterView = new app.Views.CartoInterView();
- 			                 self.render(app.views.cartoInterView);
+ 			                 app.views.mapInterView = new app.Views.MapInterView();
+ 			                 self.render(app.views.mapInterView);
  			             },
  			             complete: function(){
  			                 app.loader('hide');
@@ -1425,8 +1425,8 @@ app.Router = Backbone.Router.extend({
  					
  					app.collections.interventions.fetch({
  						success: function(){
- 			                 app.views.cartoStatView = new app.Views.CartoStatView();
- 			                 self.render(app.views.cartoStatView);
+ 			                 app.views.mapStatView = new app.Views.MapStatView();
+ 			                 self.render(app.views.mapStatView);
  			             },
  			             complete: function(){
  			                 app.loader('hide');

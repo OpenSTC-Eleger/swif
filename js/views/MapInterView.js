@@ -3,38 +3,36 @@
 */
  app.Views.MapInterView = Backbone.View.extend({
 	 
-	 el: '#map',
+	 el: '#rowContainer',
 	 templateHTML: 'cartointer',
 	
 	 initialize: function() {
 	     _.bindAll(this, 'initMap');
-	     this.initMap();
-	     this.render();
 	 },
 	 
 	 highlightLayer:null,
 	
-	 initMap: function() {
+	 initMap: function( map ) {
 		var layer, select, hover, control;
 	
 		/****************INIT MAP***********************/
 	   OpenLayers.ProxyHost= "/cgi-bin/proxy.cgi?url=";
-	   this.map = new OpenLayers.Map('map',{
+	   map = new OpenLayers.Map('map',{
 	   	projection: new OpenLayers.Projection("EPSG:900913"),
 	   	maxExtent: new OpenLayers.Bounds(-473380.08102, 6080505.27911, -464411.53979, 6089000.79602),
 	   });
 	   //control map
-		this.map.addControl(new OpenLayers.Control.MousePosition({ div: document.getElementById('mapMousePosition'), numdigits: 5 }));    
-		this.map.addControl(new OpenLayers.Control.Scale('mapScale'));
-		this.map.addControl(new OpenLayers.Control.ScaleLine());
+		map.addControl(new OpenLayers.Control.MousePosition({ div: document.getElementById('mapMousePosition'), numdigits: 5 }));    
+		map.addControl(new OpenLayers.Control.Scale('mapScale'));
+		map.addControl(new OpenLayers.Control.ScaleLine());
 		// display the map projection
-		document.getElementById('mapProjection').innerHTML = this.map.projection;
+		document.getElementById('mapProjection').innerHTML = map.projection;
 		/****************END INIT MAP***********************/
 			
 		/****************INIT LAYERS***********************/
 	
 	   
-	   this.addInterLayers();
+	   this.addInterLayers( map );
 	   
 	   select = new OpenLayers.Layer.Vector("Selection", {styleMap: 
 	       new OpenLayers.Style(OpenLayers.Feature.Vector.style["select"])
@@ -42,11 +40,12 @@
 	   select.displayInLayerSwitcher=false;
 	   
 	   osmLayer = new OpenLayers.Layer.OSM();
+	   osmLayer.displayInLayerSwitcher=false;
 	   //var osmLayer = new OpenLayers.Layer.OSM("Local Tiles", "css/openlayers/tiles/map.png", {numZoomLevels: 19, alpha: true, isBaseLayer: true});
 	   //map.addLayer(newLayer);
 	   
-	   this.map.addLayers([ select, osmLayer ]);
-	   //this.map.addLayers(interLayers);
+	   map.addLayers([ select, osmLayer ]);
+	   //map.addLayers(interLayers);
 	   //map.setLayerIndex(statisticLayer, 3)
 	
 	   /****************END INIT LAYERS***********************/
@@ -57,18 +56,24 @@
 	   layerSwitcher.ascending = false;
 	   layerSwitcher.useLegendGraphics = true;
 	         
-	   this.map.addControls([layerSwitcher]);  
+	   map.addControls([layerSwitcher]);  
 	   /****************END INIT LAYERS***********************/
 	   
 	
-	   this.map.setCenter(new OpenLayers.LonLat(-470000, 6084169.29897), 13);	
+	   map.setCenter(new OpenLayers.LonLat(-470000, 6084169.29897), 13);
+	   
+		var self = this;
+		_.each(map.layers, function( layer, index) {			
+			if( layer.styleMap && layer.styleMap.styles )
+				self.getLegend( layer, index );
+		})
 	 },
 	 
 	
 	 
-	 addInterLayers: function() {
+	 addInterLayers: function( map ) {
 	
-			var layers = [];
+			var layers = [];			
 			_.each(app.Models.Intervention.state, function( state ) {
 				var style = new OpenLayers.Style(
 				{
@@ -76,13 +81,13 @@
 					'strokeWidth': 2, 
 					'strokeOpacity': 0.5,
 	//				'externalGraphic': "icon-map-marker",
-	//				'backgroundGraphic': "icon-map-marker",
-				
+	//				'backgroundGraphic': "icon-map-marker",					
 					'externalGraphic': OpenLayers.ImgPath + state.externalGraphic,
 					//'backgroundGraphic': OpenLayers.ImgPath + "marker_shadow.png",
 				});
 				
 				var rule = new OpenLayers.Rule({ 
+					name : state.traduction,
 					filter: new OpenLayers.Filter.Comparison({
 					  type: OpenLayers.Filter.Comparison.EQUAL_TO,
 					  property: "state",
@@ -106,23 +111,91 @@
 			            featureNS: app.urlGEO_NS
 			        }),
 			        styleMap: styleMap,
-				});
+				});	
+				interLayer.displayInLayerSwitcher=false;
 				layers.push(interLayer)
 			});
 			
-			this.map.addLayers(layers);
+			map.addLayers(layers);
+			
+			
 	 },
+	 
+	 getLegend: function( layer, index ) {
+			var renderers = ['SVG', 'VML', 'Canvas'];
+		
+//			var rendererIcon = null
+//			for (var i = 0, len = renderers.length; i < len; ++i) {
+//			   var rendererClass = OpenLayers.Renderer[renderers[i]];
+//			      if (rendererClass && rendererClass.prototype.supported()) {
+//			    	 var dataLayersDiv = document.getElementsByClassName('dataLayersDiv')[0];
+//			         rendererIcon = new rendererClass(dataLayersDiv.appendChild(document.createElement("div")), null);
+//			         break;
+//			      }
+//			}
+			
+			var rendererClass = OpenLayers.Renderer[renderers[0]]
+			var dataLayersDiv = document.getElementsByClassName('dataLayersDiv')[0];
+			var newDiv = document.createElement("div");
+			newDiv.id = "svg_" + index;
+			var rendererIcon = new rendererClass(newDiv, null);
+
+//			var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+//            rendererIcon = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+			
+		    rendererIcon.map = {
+            resolution:1,
+			getResolution: (function () {
+                return this.resolution;
+            })};
+	    	rendererIcon.setSize(new OpenLayers.Size(160,50));
+	    	rendererIcon.resolution = 1;
+	    	rendererIcon.setExtent(new OpenLayers.Bounds(-20,0,20,20), true);
+	    	
+	    	var point = new OpenLayers.Geometry.Point(10, 10)
+	    	point.pointRadius = 20;
+	    	var pointFeature = new OpenLayers.Feature.Vector(point);
+	    	var feature = pointFeature;
+	    	
+	    	rendererIcon.clear();
+	    	var style = layer.styleMap.styles['default'].clone();
+	    	var styleDefault = style.defaultStyle
+	    	styleDefault.label = style.rules[0].name;
+	    	styleDefault.labelAlign ="cm"
+	    	styleDefault.pointerEvents = "visiblePainted";
+	    	styleDefault.labelOutlineColor = "white";
+	    	styleDefault.labelOutlineWidth = 3;
+	    	styleDefault.labelXOffset = 50;
+	    	styleDefault.labelYOffset = -15;
+	    	styleDefault.fontSize ="12px";
+	    	styleDefault.fontFamily = "Courier New, monospace";
+	    	styleDefault.fontWeight = "bold";
+	    	styleDefault.xOffset = -18;
+	    	//styleDefault.labelOutlineWidth = 10;
+            var pointFeature = new OpenLayers.Feature.Vector(point,null,styleDefault);
+
+            
+	        rendererIcon.drawFeature(pointFeature);
+	        dataLayersDiv.appendChild(rendererIcon.container);
+      },
 	
 	 render: function(){	
-		 $.get("templates/" + this.templateHTML + ".html", function(templateData){
-			var template = _.template(templateData);
-	
+    	 var self = this;
+    	 $.get("templates/" + this.templateHTML + ".html", function(templateData){
+			var template = _.template(templateData, {lang: app.lang});
+
 			$(self.el).html(template);
-	
+			self.initMap(self.map);			
+			
+			//document.getElementsByClassName(
+			_.each(document.getElementsByClassName('circle[name^="OpenLayers.Geometry.Point_"]'), function(element){
+				element.addClass('mapmarker');
+				element.addClass('label-info');
+			})
+			//$('input[name^="OpenLayers.Geometry.Point_"]').addClass('label-info');
 			
 		});
-	 
-		
+    	 
 		return this;
 	 },	 
 
