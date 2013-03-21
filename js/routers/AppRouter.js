@@ -1425,11 +1425,19 @@ app.Router = Backbone.Router.extend({
  					
  					app.collections.interventions.fetch({
  						success: function(){
- 			                 app.views.mapStatView = new app.Views.MapStatView();
- 			                 self.render(app.views.mapStatView);
- 			             },
- 			             complete: function(){
- 			                 app.loader('hide');
+	 						 if(app.collections.claimersServices == null ){
+	                             app.collections.claimersServices = new app.Collections.ClaimersServices();
+	                         }
+	
+	                         app.collections.claimersServices.fetch({
+	                        	 success: function(){
+		 			                 app.views.mapStatView = new app.Views.MapStatView();
+		 			                 self.render(app.views.mapStatView);
+	                        	 },
+	     			             complete: function(){
+	     			                 app.loader('hide');
+	     			             }
+	     			        });
  			             }
  			        });
  			    },

@@ -41,6 +41,7 @@
 	        },
 	         {isBaseLayer:false}
 	    );
+	    statisticLayer.displayInLayerSwitcher=false;
 	    
         select = new OpenLayers.Layer.Vector("Selection", {styleMap: 
             new OpenLayers.Style(OpenLayers.Feature.Vector.style["select"])
@@ -48,6 +49,7 @@
         select.displayInLayerSwitcher=false;
         
         osmLayer = new OpenLayers.Layer.OSM();
+        osmLayer.displayInLayerSwitcher=false;
         //var osmLayer = new OpenLayers.Layer.OSM("Local Tiles", "css/openlayers/tiles/map.png", {numZoomLevels: 19, alpha: true, isBaseLayer: true});
         //map.addLayer(newLayer);
         
@@ -99,7 +101,67 @@
         
 
         map.setCenter(new OpenLayers.LonLat(-470000, 6084169.29897), 13);	
+        
+        var services = _.first(app.collections.claimersServices.toJSON(), 7);
+        var self = this;
+        _.each(services, function( service, index ){
+        	if( service.technical && service.category_ids.length>0  )
+        		self.getLegend( service, index )
+        })
       },
+      
+      getLegend: function( service, index ) {
+		var renderers = ['SVG', 'VML', 'Canvas'];
+		
+		var rendererClass = OpenLayers.Renderer[renderers[0]]
+		var dataLayersDiv = document.getElementsByClassName('dataLayersDiv')[0];
+		var newDiv = document.createElement("div");
+		newDiv.id = "svg_" + index;
+		var rendererIcon = new rendererClass(newDiv, null);
+		
+	    rendererIcon.map = {
+        resolution:1,
+		getResolution: (function () {
+            return this.resolution;
+        })};
+    	rendererIcon.setSize(new OpenLayers.Size(160,50));
+    	rendererIcon.resolution = 1;
+    	rendererIcon.setExtent(new OpenLayers.Bounds(-20,0,20,20), true);
+    	
+    	var point = new OpenLayers.Geometry.Point(10, 10)
+    	point.pointRadius = 20;
+    	var pointFeature = new OpenLayers.Feature.Vector(point);
+    	var feature = pointFeature;
+    	
+    	rendererIcon.clear();
+    	var styleDefault = new OpenLayers.Style( {
+		    						'pointRadius': 10,
+		    						'strokeWidth': 2, 
+		    						'strokeOpacity': 0.5,
+		    				});
+        styleDefault.strokeColor = "blue";
+        styleDefault.fillColor = service.favcolor;
+        styleDefault.graphicName = "circle";
+        styleDefault.pointRadius = 10;
+        styleDefault.strokeWidth = 3;
+    	styleDefault.label = service.name;
+    	styleDefault.labelAlign ="cm"
+    	styleDefault.pointerEvents = "visiblePainted";
+    	styleDefault.labelOutlineColor = "white";
+    	styleDefault.labelOutlineWidth = 3;
+    	styleDefault.labelXOffset = 50;
+    	styleDefault.labelYOffset = -15;
+    	styleDefault.fontSize ="12px";
+    	styleDefault.fontFamily = "Courier New, monospace";
+    	styleDefault.fontWeight = "bold";
+    	styleDefault.xOffset = -18;
+    	//styleDefault.labelOutlineWidth = 10;
+        var pointFeature = new OpenLayers.Feature.Vector(point,null,styleDefault);
+
+        
+        rendererIcon.drawFeature(pointFeature);
+        dataLayersDiv.appendChild(rendererIcon.container);
+    },
       
 
 	render: function(){	
