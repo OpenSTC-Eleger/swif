@@ -31,6 +31,17 @@
 			
 		/****************INIT LAYERS***********************/
 	
+		interLayer = new OpenLayers.Layer.WMS(
+	        "Statistique sites",
+	        app.urlGEO_OWS,	        
+	        {
+	        	layers: 'openstc:openstc_intervention', 
+	            transparent: true,
+	        	format: 'image/gif',
+	        },
+	         {isBaseLayer:false}
+	    );
+		interLayer.displayInLayerSwitcher=false;
 	   
 	   this.addInterLayers( map );
 	   
@@ -51,12 +62,50 @@
 	   /****************END INIT LAYERS***********************/
 	   /****************INIT LAYER CONTROLS***********************/
 	
+	   /****************INIT LAYER CONTROLS***********************/
+        control = new OpenLayers.Control.GetFeature({
+            protocol: OpenLayers.Protocol.WFS.fromWMSLayer(interLayer),
+            clickTolerance: 15,
+        });
+        control.events.register("featureselected", self, function(e) {
+        	var strHours = "";
+        	var attributes = e.feature.attributes
+        	if( attributes.planned_hours )
+        		strHours = "Heures planifiées: " + attributes.planned_hours  + "<br>"
+        	
+        	var tooltipPopup = new OpenLayers.Popup.FramedCloud(
+							            "carto_popup", 
+							            new OpenLayers.LonLat(e.feature.geometry.x, e.feature.geometry.y),
+							            //ou feature.geometry.getBounds().getCenterLonLat(),
+							            null,
+							            "Intervention: " + e.feature.attributes.account_name  + "<br>" +
+							            "Site: " + e.feature.attributes.account_name  + "<br>" +
+							            strHours,
+							            null,
+							            true
+							    	);
+        	//tooltipPopup.contentDiv.style.backgroundColor='ffffcb';        	
+        	map.addPopup( tooltipPopup );
+            e.feature.popup = tooltipPopup;
+        });
+        	
+        control.events.register("featureunselected", self, function(e) {     
+			var feature = e.feature;
+	        if(feature != null && feature.popup != null){
+	            map.removePopup(feature.popup);
+	            feature.popup.destroy();
+	            delete feature.popup;
+	            tooltipPopup = null;
+	            lastFeature = null;
+	        }
+	     });
 	   // add the LayerSwitcher (a.k.a. Map Legend)
 	   layerSwitcher = new OpenLayers.Control.LayerSwitcher();
 	   layerSwitcher.ascending = false;
 	   layerSwitcher.useLegendGraphics = true;
 	         
-	   map.addControls([layerSwitcher]);  
+	   map.addControls([control, layerSwitcher]);   
+	   control.activate();  
 	   /****************END INIT LAYERS***********************/
 	   
 	
@@ -117,8 +166,6 @@
 			});
 			
 			map.addLayers(layers);
-			
-			
 	 },
 	 
 	 getLegend: function( layer, index ) {

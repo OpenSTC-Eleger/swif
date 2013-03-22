@@ -49,22 +49,22 @@
 		this.style = new OpenLayers.Style(
 				{
 					
-					'pointRadius': 10,
+					'pointRadius': 8,
 					'strokeWidth': 2, 
-					'strokeColor': 'green',
+					'strokeColor': '#3a87ad',
 					'fillColor': 'orange',
-					'strokeOpacity': 0.5,
+					'strokeOpacity': 0.9,
 				});
 		
 		var layer_style = OpenLayers.Util.extend({}, OpenLayers.Feature.Vector.style['default']);
-        layer_style.fillOpacity = 0.2;
+        layer_style.fillOpacity = 0.6;
         layer_style.graphicOpacity = 1;
         var style_blue = OpenLayers.Util.extend({}, layer_style);
-        style_blue.strokeColor = "blue";
+        style_blue.strokeColor = "#3a87ad";
         style_blue.fillColor = "orange";
-        style_blue.graphicName = "star";
-        style_blue.pointRadius = 10;
-        style_blue.strokeWidth = 3;
+        style_blue.graphicName = "circle";
+        style_blue.pointRadius = 8;
+        style_blue.strokeWidth = 2;
         style_blue.rotation = 45;
         style_blue.strokeLinecap = "butt";
 
@@ -105,7 +105,7 @@
 		    
 	
         
-        map.addLayers([ this.siteLayer, osmLayer /*, ign_scans, ign_orthos */ ]);
+        map.addLayers([ this.siteLayer, osmLayer /*, ign_scans, ign_orthos */  ]);
 
         /****************END INIT LAYERS***********************/
         /****************INIT LAYER CONTROLS***********************/
@@ -141,8 +141,6 @@
         map.setCenter(new OpenLayers.LonLat(-470000, 6084169.29897), 13);
         
         this.getLegend();
-        
-        //$("#map").val(map);
         
       },
 

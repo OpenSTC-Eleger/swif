@@ -61,11 +61,11 @@
         /****************INIT LAYER CONTROLS***********************/
         control = new OpenLayers.Control.GetFeature({
             protocol: OpenLayers.Protocol.WFS.fromWMSLayer(statisticLayer),
-            clickTolerance: 10,
+            clickTolerance: 15,
         });
         control.events.register("featureselected", self, function(e) {
         	var tooltipPopup = new OpenLayers.Popup.FramedCloud(
-							            "carto_site_popup", 
+							            "carto_popup", 
 							            new OpenLayers.LonLat(e.feature.geometry.x, e.feature.geometry.y),
 							            //ou feature.geometry.getBounds().getCenterLonLat(),
 							            null,
@@ -155,7 +155,6 @@
     	styleDefault.fontFamily = "Courier New, monospace";
     	styleDefault.fontWeight = "bold";
     	styleDefault.xOffset = -18;
-    	//styleDefault.labelOutlineWidth = 10;
         var pointFeature = new OpenLayers.Feature.Vector(point,null,styleDefault);
 
         
