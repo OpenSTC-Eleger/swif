@@ -209,12 +209,13 @@
 	    	var styleDefault = style.defaultStyle
 	    	styleDefault.label = style.rules[0].name;
 	    	styleDefault.labelAlign ="cm"
-	    	styleDefault.pointerEvents = "visiblePainted";
+	    	styleDefault.pointerEvents = "none";
 	    	styleDefault.labelOutlineColor = "white";
-	    	styleDefault.labelOutlineWidth = 3;
+	    	styleDefault.labelOutlineWidth = 0;
 	    	styleDefault.labelXOffset = 50;
 	    	styleDefault.labelYOffset = -15;
 	    	styleDefault.fontSize ="12px";
+	    	styleDefault.fontColor = "white"
 	    	styleDefault.fontFamily = "Courier New, monospace";
 	    	styleDefault.fontWeight = "bold";
 	    	styleDefault.xOffset = -18;

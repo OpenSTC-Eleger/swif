@@ -46,27 +46,19 @@
 //	         {isBaseLayer:false}
 //	    ); 
 
-		this.style = new OpenLayers.Style(
-				{
-					
-					'pointRadius': 8,
-					'strokeWidth': 2, 
-					'strokeColor': '#3a87ad',
-					'fillColor': 'orange',
-					'strokeOpacity': 0.9,
-				});
+		this.style = new OpenLayers.Style({});
 		
 		var layer_style = OpenLayers.Util.extend({}, OpenLayers.Feature.Vector.style['default']);
         layer_style.fillOpacity = 0.6;
         layer_style.graphicOpacity = 1;
         var style_blue = OpenLayers.Util.extend({}, layer_style);
-        style_blue.strokeColor = "#3a87ad";
-        style_blue.fillColor = "orange";
+        style_blue.strokeColor = "orange";
+        style_blue.fillColor = "#1E90FF";
         style_blue.graphicName = "circle";
         style_blue.pointRadius = 8;
         style_blue.strokeWidth = 2;
-        style_blue.rotation = 45;
-        style_blue.strokeLinecap = "butt";
+        //style_blue.rotation = 45;
+        //style_blue.strokeLinecap = "butt";
 
 	    this.siteLayer = new OpenLayers.Layer.Vector("Sites", {
 	        //minScale: 15000000,
@@ -176,16 +168,17 @@
 	    	var style = this.siteLayer.styleMap.styles['default'].clone();
 	    	var styleDefault = style.defaultStyle
 	    	styleDefault.label = "STC Sites";
-	    	styleDefault.labelAlign ="cm"
-	    	styleDefault.pointerEvents = "visiblePainted";
+	    	styleDefault.fontColor = "white"
+	    	//styleDefault.labelAlign ="cm"
+	    	styleDefault.pointerEvents = "none";
 	    	styleDefault.labelOutlineColor = "white";
-	    	styleDefault.labelOutlineWidth = 3;
+	    	styleDefault.labelOutlineWidth = 0;
 	    	styleDefault.labelXOffset = 50;
 	    	styleDefault.labelYOffset = -15;
-	    	styleDefault.fontSize ="12px";
+	    	styleDefault.fontSize ="13px";
 	    	styleDefault.fontFamily = "Courier New, monospace";
 	    	styleDefault.fontWeight = "bold";
-	    	styleDefault.xOffset = -18;
+	    	//styleDefault.xOffset = -18;
 	    	//styleDefault.labelOutlineWidth = 10;
             var pointFeature = new OpenLayers.Feature.Vector(point,null,styleDefault);
 

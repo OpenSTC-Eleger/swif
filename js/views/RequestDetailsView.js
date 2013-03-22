@@ -138,7 +138,7 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 		     contact_email = null;
 		     
 		     input_partner_address_id = null;
-		     if( app.views.selectListClaimersContactsView != null )
+		     if( app.views.selectListClaimersContactsView != null && app.views.selectListClaimersContactsView.getSelected()!=null )
 		    	 input_partner_address_id = app.views.selectListClaimersContactsView.getSelected().toJSON().id;
 //		     else {
 //		    	 input_contact_name = this.$('#requestContactInput').val();
@@ -146,15 +146,15 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 //		    	 input_contact_email = this.$('#requestContactEmail').val();		    	 
 //		     }
 		     input_partner_type = null;
-		     if ( app.views.selectListClaimersTypesView )
+		     if ( app.views.selectListClaimersTypesView && app.views.selectListClaimersTypesView.getSelected()!= null )
 		    	 input_partner_type =  app.views.selectListClaimersTypesView.getSelected().toJSON().id;
 		    	
 		     input_partner_id = null;
-		     if ( app.views.selectListClaimersView )
+		     if ( app.views.selectListClaimersView && app.views.selectListClaimersView.getSelected()!=null )
 		    	 input_partner_id = app.views.selectListClaimersView.getSelected().toJSON().id;
 		     
 		     input_service_id = null;
-		     if ( app.views.selectListServicesView )
+		     if ( app.views.selectListServicesView && app.views.selectListServicesView.getSelected()!=null )
 		    	 input_service_id = app.views.selectListServicesView.getSelected().toJSON().id;
 		     
 		     var params = {
@@ -320,7 +320,7 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 			app.views.selectListClaimersContactsView.addEmptyFirst();
 			app.views.selectListClaimersContactsView.addAll();
 			contact = claimer.attributes.address!=null?claimer.attributes.address.toJSON():null;
-			if( contact ) {
+			if( contact && contact.length>0 ) {
 				app.views.selectListClaimersContactsView.setSelectedItem( contact[0].id );
 			}
 			

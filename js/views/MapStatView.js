@@ -141,14 +141,15 @@
 		    				});
         styleDefault.strokeColor = "blue";
         styleDefault.fillColor = service.favcolor;
+        styleDefault.fontColor = "white"
         styleDefault.graphicName = "circle";
         styleDefault.pointRadius = 10;
         styleDefault.strokeWidth = 3;
     	styleDefault.label = service.name;
     	styleDefault.labelAlign ="cm"
-    	styleDefault.pointerEvents = "visiblePainted";
+    	styleDefault.pointerEvents = "none";
     	styleDefault.labelOutlineColor = "white";
-    	styleDefault.labelOutlineWidth = 3;
+    	styleDefault.labelOutlineWidth = 0;
     	styleDefault.labelXOffset = 50;
     	styleDefault.labelYOffset = -15;
     	styleDefault.fontSize ="12px";
