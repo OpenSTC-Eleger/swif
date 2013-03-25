@@ -1,0 +1,397 @@
+<div class="page-header">
+	<h1>
+		Demandes de réservations
+		<sup><i class="badge"><%= nbReservations %></i></sup>
+	</h1>
+</div>
+
+
+<div class="container-fluid">
+
+	<div class="span5">
+		<!-- Check if there is Teams in the Database -->
+		<% if(nbReservations > 0) { %>
+
+			<!-- Table toolbar -->
+			<div class="tableToolbar">
+				<a href="#modalSaveResa" class="btn btn-primary modalSaveResa" data-toggle="modal"><i class="icon-plus-sign"></i> Nouvelle réservation</a>
+
+				<form class="form-search pull-right">
+					<div class="input-append">
+						<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off" disabled>
+						<button type="submit" class="btn disabled"><i class="icon-search icon-large"></i></button>
+					</div>
+				</form>
+			</div>
+			<!-- Table toolbar -->
+
+
+			<!-- Table Teams -->
+			<table class="table reservationsTable table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+						<th><%= _.capitalize(lang.label) %></th>
+						<th><%= _.capitalize(lang.claiment) %></th>
+						<th>Date</th>
+						<th><%= _.capitalize(lang.status) %></th>
+						<th><%= _.capitalize(lang.action) %></th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Reservations row -->
+					<tr id="reservation_1">
+						<td>
+							<i class="icon-tag">&nbsp;&nbsp;</i><a class="reservation" href="#resa1">Chrono</a>
+						</td>
+						<td>Association ROULIBRE</td>
+						<td>30 mars 2013</td>
+						<td><span class="label label-info">en attente</span></td>
+						<td class="align">
+							<div class="btn-group"><button class="btn btn-small btn-success no-outline buttonValidRequest" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok buttonValidRequest"></i></button>
+								<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu pull-right align-left">
+									<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
+								</ul>
+							</div>
+						</td>
+					</tr>
+
+					<tr id="reservation_2">
+						<td>
+							<i class="icon-tag">&nbsp;&nbsp;</i><a class="reservation" href="#resa1">Fête de la musique</a>
+						</td>
+						<td>École de musique</td>
+						<td>21 juin 2013</td>
+						<td><span class="label label-info">en attente</span></td>
+						<td class="align">
+							<div class="btn-group"><button class="btn btn-small btn-success no-outline buttonValidRequest" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok buttonValidRequest"></i></button>
+								<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu pull-right align-left">
+									<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;Refuser</a></li>
+								</ul>
+							</div>
+						</td>
+					</tr>
+
+					<tr id="reservation_3">
+						<td>
+							<i class="icon-tag">&nbsp;&nbsp;</i><a class="reservation" href="#resa1">Concours de boule</a>
+						</td>
+						<td>L'amicale bouliste</td>
+						<td>26 juin 2013</td>
+						<td><span class="label label-success">validée</span></td>
+						<td class="align">
+						</td>
+					</tr>
+
+					<tr  id="reservation_4">
+						<td>
+							<i class="icon-tag">&nbsp;&nbsp;</i><a class="reservation" href="#resa1">Méchoui du club</a>
+						</td>
+						<td>Club de Foot</td>
+						<td>5 juillet 2013</td>
+						<td><span class="label label-important">refusée</span></td>
+						<td class="align"></td>
+					</tr>
+
+					<tr id="reservation_5">
+						<td>
+							<i class="icon-tag">&nbsp;&nbsp;</i><a class="reservation" href="#resa1">Vide grenier</a>
+						</td>
+						<td>Centre équestre</td>
+						<td>31 juin 2013</td>
+						<td><span class="label label-success">validée</span></td>
+						<td class="align"></td>
+					</tr>
+
+					<tr id="reservation_6">
+						<td>
+							<i class="icon-tag">&nbsp;&nbsp;</i><a class="reservation" href="#resa1">40 ans mariage</a>
+						</td>
+						<td>Mr & Mme Maurice</td>
+						<td>23 mars 2013</td>
+						<td><span class="label">cloturée</span></td>
+						<td class="align"></td>
+					</tr>
+				</tbody>
+			</table>
+
+
+			<!-- Table pagination -->
+			<div class="pagination pagination-right">
+				<ul>
+					<!-- First page button -->
+					<% if(page-2 >= 1){ %>
+						<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#equipes/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
+					<% } %>
+					
+					<!-- Previous page button -->
+					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#equipes/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
+
+					<!-- [...] page Button -->
+					<% 	if (page-2 > 1) { %>
+							<li class="disabled"><a href='#'>...</a></li>
+					<% } 
+							
+						for (var i=(page-2); i < (page+3); i++) {
+							if(i >= 1 && i <= pageCount){ %>
+								<li <%= (i === page ? " class='active'" : "")%>><a href='#equipes/page<%=i%>'><%= i %></a></li>
+							<% }
+
+						} %>
+
+					<!-- [...] page Button -->
+					<% if (page+2 < pageCount) { %>
+						<li class="disabled"><a href='#'>...</a></li>
+					<% } %>
+					
+					<!-- Next page button -->
+					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#equipes/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
+					
+					<!-- Last page button -->
+					<% if(page+2 <= pageCount){ %>
+						<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#equipes/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
+					<% } %>
+				</ul>
+			</div>
+			<!-- /Table pagination -->
+
+		<% }
+		else { %>
+			<div class="tableToolbar">
+				<a href="#modalSaveResa" class="btn btn-primary modalSaveResa" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addTeam) %></a>
+			</div><br />
+
+			<!-- No team in the Database -->
+			<div class="alert alert-info">
+				<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTeam %>.
+			</div>
+
+		<% } %>
+
+	</div>
+
+
+	<!-- Reservations Materials and Halls -->
+	<div class="span7 hide" id="resaMaterialsHalls">
+
+		<h4 class="well" id="resaTitle"></h4>
+
+		<!-- Officers Management -->
+		<div class="row-fluid">
+
+			<div class="span6">
+				<div class="widget-title">
+					<h4>Materiaux réservés <span class="badge pull-right"></span></h4>
+				</div>
+
+					<ul id="materialsReserved" class="sortable unstyled nav nav-list drop-area drop-area">
+
+				</ul>
+			</div>
+
+			<div class="span6">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#material" data-toggle="tab">Materiaux</a></li>
+					<li><a href="#halls" data-toggle="tab">Salles</a></li>
+				</ul>
+
+				<div class="tab-content">
+					<div class="tab-pane active" id="material">
+						
+						<ul id="meterialsList" class="sortable unstyled nav nav-list">
+							<li class="span4 disabled" style="background-color: #FFF;">
+								<div style="background-color: #000; opacity: 0.5; width: 8%; height: 190px; position: absolute; cursor: disabled"></div>
+								<div class="thumbnail">
+									<h4 class="align-center noMarginBottom">Barrière</h4>
+									<img alt="images" src="http://www.coll-equip.com/271-286-medium2/barriere-de-securite-.jpg">
+									<form class="form-inline"><label for="Qtable">Qté:</label> <input id="Qtable" type="number" value="1" class="input-mini"></form>
+								</div>
+							</li>
+							<li class="span4" style="background-color: #FFF;">
+								<div class="thumbnail">
+									<h4 class="align-center noMarginBottom">Table</h4>
+									<img alt="images" src="http://www.decopascher.com/show_image.php?filename=contents/tables/TABLE-MODERNE-CIPOLA.jpg&width=100">
+									<form class="form-inline"><label for="Qtable">Qté:</label> <input id="Qtable" type="number" value="1" class="input-mini"></form>
+								</div>
+							</li>
+							<li class="span4" style="background-color: #FFF;">
+								<div class="thumbnail">
+									<h4 class="align-center noMarginBottom">Chaise</h4>
+									<img alt="images" src="http://www.rolleco.fr/shop/media/products/chaise-design-coque-bois-multipli-3-s.jpg">
+									<form class="form-inline"><label for="Qtable">Qté:</label> <input id="Qtable" type="number" value="1" class="input-mini"></form>
+								</div>
+							</li>
+							<li class="span4" style="background-color: #FFF;">
+								<div class="thumbnail">
+									<h4 class="align-center noMarginBottom">Barnum</h4>
+									<img alt="images" src="http://www.brest-location-receptions.fr/pages/catalogue/products_pictures/barnum_rub.jpg">
+									<form class="form-inline"><label for="Qtable">Qté:</label> <input id="Qtable" type="number" value="1" class="input-mini"></form>
+								</div>
+							</li>
+							<li class="span4 disabled" style="background-color: #FFF;">
+								<div style="background-color: #000; opacity: 0.5; width: 8%; height: 190px; position: absolute; cursor: not-allowed !important"></div>
+								<div class="thumbnail">
+									<h4 class="align-center noMarginBottom">Banc</h4>
+									<img alt="images" src="http://images.pricerunner.com/product/100x100/506168828/HOLTA-Massivmoebel-Banc-Laurena-Hetre-massif-huile-Differentes-tailles-disponibles-Banc-Laurena-hetre-massif-160-x-35-cm-HOLTA-Massivmoebel.jpg">
+									<form class="form-inline"><label for="Qtable">Qté:</label> <input id="Qtable" type="number" value="1" class="input-mini"></form>
+								</div>
+							</li>
+							<li class="span4" style="background-color: #FFF;">
+								<div class="thumbnail">
+									<h4 class="align-center noMarginBottom">Electrogène</h4>
+									<img alt="images" src="http://i10.twenga.com/jardin-et-bricolage/groupe-electrogene/virages-groupe-electrogene-expert-tp_1711510073396162120.jpg">
+									<form class="form-inline"><label for="Qtable">Qté:</label> <input id="Qtable" type="number" value="1" class="input-mini"></form>
+								</div>
+							</li>
+							 
+						</ul>
+					</div>
+
+					<div class="tab-pane" id="halls">
+						
+						<ul id="hallsList" class="sortable unstyled nav nav-list">
+							<li class="span4" style="background-color: #FFF;">
+								<div class="thumbnail">
+									<h4 class="align-center">Salle mairie</h4>
+									<img alt="images" src="http://img.logismarket.fr/ip/ocebloc-bureau-et-salle-de-reunion-prefabrique-modulaire-bureaux-modulaires-chateauroux-769135-F70.gif">
+								</div>
+							</li>
+							
+							<li class="span4">
+								<div class="thumbnail" style="background-color: #FFF;">
+									<h4 class="align-center">Les tulipes</h4>
+									<img alt="images" src="http://www.architecte-batiments.fr/wp-content/uploads/catablog/thumbnails/batiment_carre.jpg">
+								</div>
+							</li>
+							
+							<li class="span4">
+								<div class="thumbnail" style="background-color: #FFF;">
+									<h4 class="align-center">Ecole Hugo</h4>
+									<img alt="images" src="http://a.visuels.poliris.com/carre/a/3/d/0/a3d0ae77-4569.jpg">
+								</div>
+							</li>
+
+							<li class="span4">
+								<div class="thumbnail" style="background-color: #FFF;">
+									<h4 class="align-center">Salle mairie</h4>
+									<img alt="images" src="http://s3-media4.ak.yelpcdn.com/bphoto/nRDhXzMfrsu3ZC2rTYvNHw/ms.jpg">
+								</div>
+							</li>
+
+							<li class="span4">
+								<div class="thumbnail" style="background-color: #FFF;">
+									<h4 class="align-center">Salle mairie</h4>
+									<img alt="images" src="http://a.visuels.poliris.com/carre/a/3/d/0/a3d0ae77-4569.jpg">
+								</div>
+							</li>
+
+							<li class="span4">
+								<div class="thumbnail" style="background-color: #FFF;">
+									<h4 class="align-center">Salle mairie</h4>
+									<img alt="images" src="http://a.visuels.poliris.com/carre/a/3/d/0/a3d0ae77-4569.jpg">
+								</div>
+							</li>
+
+							<li class="span4">
+								<div class="thumbnail" style="background-color: #FFF;">
+									<h4 class="align-center">Salle mairie</h4>
+									<img alt="images" src="http://a.visuels.poliris.com/carre/a/3/d/0/a3d0ae77-4569.jpg">
+								</div>
+							</li>
+
+						</ul>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+
+<!-- Modal Form to add a new reservation -->
+<div id="modalSaveResa" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Nouvelle demande de réservation</h3>
+	</div>
+
+	<div class="modal-body">
+		<form id="formSaveResa" action="#" class="form-horizontal">
+
+			<!-- Reservation name -->
+			<div class="control-group">
+				<label for="resaName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
+
+				<div class="controls">
+					<input type="text" id="resaName" required="required" />
+					<span class="help-inline"></span>
+				</div>
+			</div>
+
+			
+			<!-- Reservation Claiment -->
+			<div class="control-group">
+				<label for="resaClaiment" class="control-label"><%= _.capitalize(lang.claiment) %>:</label>
+
+				<div class="controls">
+					<select id="resaClaiment" class="taskSelect" required="required" ></select>	
+					<span class="help-inline"></span>
+				</div>
+			</div>
+
+
+			<div class="control-group">
+				<label for="resaStartDate" class="control-label">Début:</label>
+				<div class="control-group">
+					<!-- KM -->
+					<div class="controls">
+						<div class="input-append">
+							<input type="text" class="datepicker input-small" id="resaStartDate" placeholder="Date" required="required">
+							<span class="add-on"><i class="icon-calendar"></i></span>
+						</div>
+						
+						<div class="input-append bootstrap-timepicker">
+					    	<input type="text" class="timepicker-default input-mini" id='resaStartHour' placeholder="Heure" class="eventInput" required="required">
+					    	<span class="add-on"><i class="icon-time"></i></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="control-group">
+				<label for="resaEndDate" class="control-label">Fin:</label>
+				<div class="control-group">
+					<!-- KM -->
+					<div class="controls">
+						<div class="input-append">
+							<input type="text" class="datepicker taskInput input-small" id="resaEndDate" placeholder="Date" required="required">
+							<span class="add-on"><i class="icon-calendar"></i></span>
+						</div>
+						
+						<div class="input-append bootstrap-timepicker">
+					    	<input type="text" class="timepicker-default input-mini" id='resaEndDate' placeholder="Heure" class="eventInput" required="required">
+					    	<span class="add-on"><i class="icon-time"></i></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</form>
+	</div>
+
+	<div class="modal-footer">
+		<button type="submit" form="formSaveTeam" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+	</div>
+</div>

@@ -1457,8 +1457,8 @@ app.Router = Backbone.Router.extend({
     reservationRequest: function(){
         // Check if the user is connect //
         if(this.checkConnect()){
-            app.views.aboutView = new app.Views.AboutView();
-            this.render(app.views.aboutView);
+            app.views.reservationRequestsListView = new app.Views.ReservationRequestsListView();
+            this.render(app.views.reservationRequestsListView);
         }
         else{
             this.navigate('login', {trigger: true, replace: true});

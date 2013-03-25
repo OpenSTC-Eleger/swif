@@ -6,6 +6,9 @@
 .no-outline{
 	outline: none !important;
 }
+.align-center{
+	text-align: center;
+}
 .align-left{
 	text-align: left;
 }
@@ -42,6 +45,9 @@ small.badge{
 .noMarginTop{
 	margin-top: 0;
 }
+.noMarginBottom{
+	margin-bottom: 0;
+}
 .sortablePlaceHold{
 	background-color: @wellBackground;
 	height: 28px;
@@ -60,9 +66,6 @@ a.filter-button.filter-disabled{
 }
 a.filter-button.filter-active{
 	opacity: 1;
-}
-.align-center{
-	text-align: center;
 }
 
 /* PYF Twitter Bootstrap Accordion and button dropdown overflow issue 
@@ -337,7 +340,7 @@ ul.sortableOfficersList, ul.sortableServicesList, ul.sortableEquipmentsList{
 table.teamsTable tr.info a.teamName{
 	font-weight: bolder;
 }
-h4#teamTitle{
+h4#teamTitle, h4#resaTitle{
 	margin-top: 0;
 	margin-bottom: 10px;
 	padding-top: 8px;
@@ -396,6 +399,19 @@ tr.row-nested-objects-collapse td[colspan="5"]{
     border-bottom: 1px solid @tableBorder;
     margin-bottom: 10px;
 }
+
+
+
+
+/* Reservation Maquette
+-------------------------------------------------- */
+#meterialsList [class*="span"]:nth-child(3n+1), #hallsList [class*="span"]:nth-child(3n+1){
+	margin-left: 0;
+}
+
+ #meterialsList li, #hallsList li{
+ 	margin-bottom: 11px;
+ }
 
 
 /* Responsive
