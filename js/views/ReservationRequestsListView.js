@@ -56,12 +56,13 @@ app.Views.ReservationRequestsListView = Backbone.View.extend({
             $(self.el).html(template);
 
 
-            $('#materialsReserved, #meterialsList, #hallsList').sortable({
-                connectWith: 'ul.sortable',
+            $('#materialsReserved, #materialsList, #hallsList').sortable({
+                connectWith: 'ul.sortableList',
                 dropOnEmpty: true,
-                forcePlaceholderSize: true,
+                forcePlaceholderSize: false,
                 forceHelperSize: true,
-                /*placeholder: 'sortablePlaceHold',*/
+                placeholder: 'sortablePlaceHold',
+                containment: '#resaMaterialsHalls',
                 cursor: 'move',
                 opacity: '.8',
                 revert: 300,
@@ -71,6 +72,11 @@ app.Views.ReservationRequestsListView = Backbone.View.extend({
                 }
             });
 
+
+            $('input.slider').slider()
+                .on('slide', function(ev){
+                    $('#amount').html(ev.value);
+                });
 
             $('.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr' });
             $('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});

@@ -189,7 +189,7 @@
 					<h4>Materiaux réservés <span class="badge pull-right"></span></h4>
 				</div>
 
-					<ul id="materialsReserved" class="sortable unstyled nav nav-list drop-area drop-area">
+				<ul id="materialsReserved" class="sortableList sortable unstyled nav nav-list drop-area" style="max-height: 550px; overflow-y: scroll">
 
 				</ul>
 			</div>
@@ -203,8 +203,8 @@
 				<div class="tab-content">
 					<div class="tab-pane active" id="material">
 						
-						<ul id="meterialsList" class="sortable unstyled nav nav-list">
-							<li class="span4 disabled" style="background-color: #FFF;">
+						<ul id="materialsList" class="sortableList sortable unstyled nav nav-list" style="max-height: 550px; min-height: 250px;">
+							<!--<li class="span4 disabled" style="background-color: #FFF;">
 								<div style="background-color: #000; opacity: 0.5; width: 8%; height: 190px; position: absolute; cursor: disabled"></div>
 								<div class="thumbnail">
 									<h4 class="align-center noMarginBottom">Barrière</h4>
@@ -247,6 +247,84 @@
 									<img alt="images" src="http://i10.twenga.com/jardin-et-bricolage/groupe-electrogene/virages-groupe-electrogene-expert-tp_1711510073396162120.jpg">
 									<form class="form-inline"><label for="Qtable">Qté:</label> <input id="Qtable" type="number" value="1" class="input-mini"></form>
 								</div>
+							</li>-->
+							<li class="media well well-small" style="cursor: move">
+								<img class="pull-left media-object" alt="64x64" style="width: 64px; height: 64px;" src="http://www.rolleco.fr/shop/media/products/chaise-design-coque-bois-multipli-3-s.jpg">
+								<div class="media-body">
+									<div class="span9" style="border-right: thin solid #CCC;">
+										<h4 class="media-heading">Chaise</h4>
+										<small class="">Structure en hêtre teinté wengé. Assise mousse polyether recouvert de tissu 100% synthétique</small>
+									</div>
+									<div class="span2">
+										<form class="form-inline" style="margin-bottom: 0px; margin-top: 15px; margin-left: 0px; padding-left: 5px;"><input id="Qtable" type="number" value="1" class="input-mini"></form>
+									</div>
+								</div>
+							</li>
+
+							<li class="media well well-small" style="cursor: move">
+								<img class="pull-left media-object" alt="64x64" style="width: 64px; height: 64px;" src="http://i10.twenga.com/jardin-et-bricolage/groupe-electrogene/virages-groupe-electrogene-expert-tp_1711510073396162120.jpg">
+								<div class="media-body">
+									<div class="span9" style="border-right: thin solid #CCC;">
+										<h4 class="media-heading">Electrogène</h4>
+										<small class="">Structure en hêtre teinté wengé. Assise mousse polyether recouvert de tissu 100% synthétique</small>
+									</div>
+									<div class="span2">
+										<form class="form-inline" style="margin-bottom: 0px; margin-top: 15px; margin-left: 0px; padding-left: 5px;"><input id="Qtable" type="number" value="1" class="input-mini"></form>
+									</div>
+								</div>
+							</li>
+
+							<li class="media well well-small" style="cursor: move">
+								<img class="pull-left media-object" alt="64x64" style="width: 64px; height: 64px;" src="http://images.pricerunner.com/product/100x100/506168828/HOLTA-Massivmoebel-Banc-Laurena-Hetre-massif-huile-Differentes-tailles-disponibles-Banc-Laurena-hetre-massif-160-x-35-cm-HOLTA-Massivmoebel.jpg">
+								<div class="media-body">
+									<div class="span9" style="border-right: thin solid #CCC;">
+										<h4 class="media-heading">Banc</h4>
+										<small class="">Structure en hêtre teinté wengé. Assise mousse polyether recouvert de tissu 100% synthétique</small>
+									</div>
+									<div class="span2">
+										<form class="form-inline" style="margin-bottom: 0px; margin-top: 15px; margin-left: 0px; padding-left: 5px;"><input id="Qtable" type="number" value="1" class="input-mini"></form>
+									</div>
+								</div>
+							</li>
+
+							<li class="media well well-small disabled" style="cursor: not-allowed; position: relative">
+								<div style="position: absolute; top: 0; left: 0; background-color: #000; opacity: 0.75; width: 100%; height: 100%">
+									
+								</div>
+								<p class="label label-warning" style="-webkit-transform: rotate(-40deg); position: absolute; top: 30px;">Rupture de stock</p>
+
+								<img class="pull-left media-object" alt="64x64" style="width: 64px; height: 64px;" src="http://www.brest-location-receptions.fr/pages/catalogue/products_pictures/barnum_rub.jpg">
+								<div class="media-body">
+									<div class="span9" style="border-right: thin solid #CCC;">
+										<h4 class="media-heading">Barnum</h4>
+										<small class="">Structure en hêtre teinté wengé. Assise mousse polyether recouvert de tissu 100% synthétique</small>
+									</div>
+									<div class="span2" style="cursor: move">
+										<form class="form-inline" style="margin-bottom: 0px; margin-top: 15px; margin-left: 0px; padding-left: 5px;"><input id="Qtable" type="number" value="1" class="input-mini"></form>
+									</div>
+								</div>
+							</li>
+
+							<li class="media well well-small" style="cursor: move">
+								<img class="pull-left media-object" alt="64x64" style="width: 64px; height: 64px;" src="http://www.coll-equip.com/271-286-medium2/barriere-de-securite-.jpg">
+								<div class="media-body">
+									<div class="span9" style="border-right: thin solid #CCC;">
+										<h4 class="media-heading">Barrière</h4>
+										<small class="">Structure en hêtre teinté wengé. Assise mousse polyether recouvert de tissu 100% synthétique</small>
+									</div>
+									<div class="span2">
+										<form class="form-inline" style="margin-bottom: 0px; margin-top: 15px; margin-left: 0px; padding-left: 5px;"><input id="Qtable" type="number" value="1" class="input-mini"></form>
+									</div>
+								</div>
+							</li>
+
+							<li class="media well well-small" style="cursor: move">
+								<img class="pull-left media-object" alt="64x64" style="width: 64px; height: 64px;" src="http://www.coll-equip.com/271-286-medium2/barriere-de-securite-.jpg">
+								<div class="media-body">
+									<h4 class="media-heading">Barrière</h4>
+									<small class="">Structure en hêtre teinté wengé. Assise mousse polyether recouvert de tissu 100% synthétique</small><br>
+									<b>Qté</b>: 	<input type="text" class="slider" data-slider-min="1" data-slider-max="20" data-slider-step="1" data-slider-value="10" data-slider-orientation="horizontal" data-slider-selection="before" data-slider-tooltip="show" /><span id="amount">10</span>
+								</div>
 							</li>
 							 
 						</ul>
@@ -285,21 +363,21 @@
 
 							<li class="span4">
 								<div class="thumbnail" style="background-color: #FFF;">
-									<h4 class="align-center">Salle mairie</h4>
+									<h4 class="align-center">Mediathèque</h4>
 									<img alt="images" src="http://a.visuels.poliris.com/carre/a/3/d/0/a3d0ae77-4569.jpg">
 								</div>
 							</li>
 
 							<li class="span4">
 								<div class="thumbnail" style="background-color: #FFF;">
-									<h4 class="align-center">Salle mairie</h4>
+									<h4 class="align-center">Ecole Jean Jaures</h4>
 									<img alt="images" src="http://a.visuels.poliris.com/carre/a/3/d/0/a3d0ae77-4569.jpg">
 								</div>
 							</li>
 
 							<li class="span4">
 								<div class="thumbnail" style="background-color: #FFF;">
-									<h4 class="align-center">Salle mairie</h4>
+									<h4 class="align-center">Salle Lamartine</h4>
 									<img alt="images" src="http://a.visuels.poliris.com/carre/a/3/d/0/a3d0ae77-4569.jpg">
 								</div>
 							</li>
