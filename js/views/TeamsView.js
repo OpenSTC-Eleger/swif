@@ -74,6 +74,8 @@ app.Views.TeamsView = Backbone.View.extend({
 		var pageCount = Math.ceil(len / this.numberListByPage);
 
 
+		console.log(app.collections.teams.toJSON());
+
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
@@ -408,6 +410,9 @@ app.Views.TeamsView = Backbone.View.extend({
 	},
 
 
+
+    /** Display the view
+    */
 	preventDefault: function(event){
 		event.preventDefault();
 	},

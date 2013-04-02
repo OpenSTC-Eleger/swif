@@ -62,6 +62,8 @@ app.Router = Backbone.Router.extend({
 		'nouvelle-intervention'         		: 'cartoRequest',	
 		'statut-interventions'                  : 'cartoInter',
 		'statistique'                   		: 'cartoStat',
+
+        'demandes-reservations'                 : 'reservationRequest'
     },
 
     
@@ -1447,5 +1449,21 @@ app.Router = Backbone.Router.extend({
  	         this.navigate('login', {trigger: true, replace: true});
  	     }
  	 },
+
+
+
+    /** Display the Reservation request
+    */
+    reservationRequest: function(){
+        // Check if the user is connect //
+        if(this.checkConnect()){
+            app.views.reservationRequestsListView = new app.Views.ReservationRequestsListView();
+            this.render(app.views.reservationRequestsListView);
+        }
+        else{
+            this.navigate('login', {trigger: true, replace: true});
+        }
+
+     }
     
 });
