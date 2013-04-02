@@ -73,31 +73,31 @@
 	    this.siteLayer.displayInLayerSwitcher=false;
         
         osmLayer = new OpenLayers.Layer.OSM();
-        osmLayer.displayInLayerSwitcher=false;
+        //osmLayer.displayInLayerSwitcher=false;
 
-//        var my_key = "11yrz1gmpqv73xdthera3ds8";
-//        var ign_options = {
-//		    name: "IGN - cartes",
-//		    url: "http://gpp3-wxs.ign.fr/" + my_key + "/wmts",
-//		    layer: "GEOGRAPHICALGRIDSYSTEMS.MAPS",
-//		    matrixSet: "PM",
-//		    style: "normal",
-//		    numZoomLevels: 19,
-//		    group : 'IGN',
-//		    attribution: '&copy;IGN <a href="http://www.geoportail.fr/" target="_blank"><img src="http://api.ign.fr/geoportail/api/js/2.0.0beta/theme/geoportal/img/logo_gp.gif"></a> <a href="http://www.geoportail.gouv.fr/depot/api/cgu/licAPI_CGUF.pdf" alt="TOS" title="TOS" target="_blank">Terms of Service</a>'
-//		};
-//		
-//		var ign_scans = new OpenLayers.Layer.WMTS(ign_options);
-//		
-//		//Changement des options nécessaires pour l'ortho
-//		ign_options.name = "IGN - vue aérienne";
-//		ign_options.layer = "ORTHOIMAGERY.ORTHOPHOTOS";
-//		ign_options.numZoomLevels = 20;
-//		var ign_orthos = new OpenLayers.Layer.WMTS(ign_options);
+       
+        var ign_options = {
+		    name: "IGN - cartes",
+		    url: "http://gpp3-wxs.ign.fr/" + app.geoportail_key + "/wmts",
+		    layer: "GEOGRAPHICALGRIDSYSTEMS.MAPS",
+		    matrixSet: "PM",
+		    style: "normal",
+		    numZoomLevels: 19,
+		    group : 'IGN',
+		    attribution: '&copy;IGN <a href="http://www.geoportail.fr/" target="_blank"><img src="http://api.ign.fr/geoportail/api/js/2.0.0beta/theme/geoportal/img/logo_gp.gif"></a> <a href="http://www.geoportail.gouv.fr/depot/api/cgu/licAPI_CGUF.pdf" alt="TOS" title="TOS" target="_blank">Terms of Service</a>'
+		};
+		
+		var ign_scans = new OpenLayers.Layer.WMTS(ign_options);
+		
+		//Changement des options nécessaires pour l'ortho
+		ign_options.name = "IGN - vue aérienne";
+		ign_options.layer = "ORTHOIMAGERY.ORTHOPHOTOS";
+		ign_options.numZoomLevels = 20;
+		var ign_orthos = new OpenLayers.Layer.WMTS(ign_options);
 		    
 	
         
-        map.addLayers([ this.siteLayer, osmLayer /*, ign_scans, ign_orthos */  ]);
+        map.addLayers([ this.siteLayer, osmLayer , ign_scans, ign_orthos   ]);
 
         /****************END INIT LAYERS***********************/
         /****************INIT LAYER CONTROLS***********************/
@@ -128,7 +128,16 @@
         map.addControls([select, layerSwitcher]);  
         select.activate();  
         /****************END INIT LAYERS***********************/
-        
+       
+        var self = this;
+        map.events.register('changelayer', null, function(evt){
+		  if(evt.property === "visibility") {
+//		          alert(evt.layer.name + " layer visibility changed to " +
+//		        		  evt.layer.visibility );
+		          self.getLegend();
+		       }
+		   }
+		);
 
         map.setCenter(new OpenLayers.LonLat(-470000, 6084169.29897), 13);
         
