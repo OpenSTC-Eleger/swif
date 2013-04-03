@@ -93,10 +93,10 @@ app.Views.InterventionDetailsView = Backbone.View.extend({
 					else
 						self.renderSite(null);
 						
-					if( currentIntervention.state == "template" )
-						$('#isTemplate').attr("checked","checked");		
+					if( currentIntervention.state == 'template' )
+						$('#isTemplate').attr('checked', true);
 					else
-						$('#isTemplate').attr("checked","");		
+						$('#isTemplate').attr("checked", false);		
 			});
 	
 			$(this.el).hide().fadeIn('slow'); 
