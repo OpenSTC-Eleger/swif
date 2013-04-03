@@ -142,46 +142,25 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	parseDate: function(s) {
 	  var re = /^(\d{4})-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/;
 	  var m = re.exec(s);
-	  return m ? new Date(parseInt(m[1],10), parseInt(m[2]-1,10), parseInt(m[3],10), 
-		  parseInt(m[4],10), parseInt(m[5],10), parseInt(m[6],10)) : null;
+	  //PYF : using UTC time 
+	  return m ? new Date(Date.UTC(parseInt(m[1],10), parseInt(m[2]-1,10), parseInt(m[3],10), 
+		  parseInt(m[4],10), parseInt(m[5],10), parseInt(m[6],10))) : null;
 	},
 
 
     /** Model Parser
     */
     parse: function(response) {
-    	
-    	//Au moment de la sauvegarde openerp enregistre les dates en UTC
-		//A la lecture on  convertit en GMT+1 : 
-    	//cf- http://stackoverflow.com/questions/10456693/how-to-use-date-objects-in-local-timezone-with-backbone-js-sync
 		
-		if( response.date_start ) 
-			response.date_start = moment(this.parseDate(response.date_start)).add('hours', 1);		
-		
+		if( response.date_start ) {
+			//var user = app.models.user.toJSON();			
+			response.date_start = moment.utc((this.parseDate(response.date_start)));
+			//.add('hours', 1);				
+		}		
 		
 		if( response.date_end ) 
-			response.date_end = moment(this.parseDate(response.date_end)).add('hours', 1);			
-		
-		//response.date_start = moment(response.date_start,"YYYY MM DD HH:mm:ss");//.add('hours',1)
-		
-//		m = re.exec(response.date_end);
-		//response.date_end = moment(response.date_end,"YYYY MM DD HH:mm:ss");//.add('hours',1)
-
-//    	var date_start = this.parseDate(response.date_start);
-//    	var date_end = this.parseDate(response.date_end);
-//    	
-//    	if( date_start ) {
-//	    	var utc_date_start = date_start.getTime() + (date_start.getTimezoneOffset() * 60000);
-//	    	var new_date_start = new Date(utc_date_start + (3600000*+2));
-//	    	response.date_start = new_date_start; 	    
-//	    }
-//    	
-//	    if( date_end ) {
-//	    	var utc_date_end = date_end.getTime() + (date_end.getTimezoneOffset() * 60000);
-//	    	var new_date_end= new Date(utc_date_end + (3600000*+2));
-//	    	response.date_end= new_date_end;
-//	    }
-
+			response.date_end = moment.utc((this.parseDate(response.date_end)));	
+			
         return response;
     },
     

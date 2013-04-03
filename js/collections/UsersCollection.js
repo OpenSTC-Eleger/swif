@@ -12,6 +12,12 @@ app.Collections.Users = Backbone.Collection.extend({
     */
     initialize : function() {
         console.log('User collection initialize');
-    }
+    },
+    
+    /** Collection Parse name
+    */
+//    parse: function(response) {
+//        return response;
+//    },
 
 });
