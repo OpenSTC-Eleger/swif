@@ -683,10 +683,10 @@ app.Views.TasksListView = Backbone.View.extend({
     	};
     	
 		var newInterState = null;
-		if( this.model && this.model.intervention ) {
-			inter = this.model.intervention;
+		if( task && task.intervention ) {
+			inter = task.intervention;
 			newInterState = inter.state;
-			if( this.model.intervention.state!=app.Models.Intervention.state[5].value ) {
+			if( task.intervention.state!=app.Models.Intervention.state[5].value ) {
 				newInterState = that.state;
 			}
 		}    		
