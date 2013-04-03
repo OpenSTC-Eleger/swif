@@ -41,7 +41,7 @@
 			%>
 				
 				<!-- Officer row -->
-				<tr class="row-item" id="officer_<%= officers.id %>">
+				<tr class="row-item" id="officer_<%= officer.id %>">
 					<td>
 						<%= officer.name +" "+ officer.firstname %>
 						<p class="row-actions no-margin invisible">
@@ -177,7 +177,6 @@
 
 			</fieldset>
 
-
 			<fieldset>
 				<legend><%= _.capitalize(lang.connection) %></legend>
 				
@@ -202,6 +201,31 @@
 				</div>
 
 			</fieldset>
+			
+			<!-- Services Management -->
+			<div class="row-fluid marginTop servicesDroppableArea">
+				
+				<div class="span6">
+					<div class="widget-title">
+						<h4>Services de l'officier <span class="badge pull-right"></span></h4>
+					</div>
+	
+					<ul id="officerServices" class="sortableServicesList sortable unstyled nav nav-list">
+	
+					</ul>
+				</div>
+	
+				<div class="span6">
+					<div class="widget-title">
+						<h4>Autres services <span class="badge pull-right" id="badgeNbServices"></span></h4>
+					</div>
+	
+					<ul id="servicesList" class="sortableServicesList sortable unstyled nav nav-list">
+					</ul>
+				</div>
+	
+			</div>
+			
 
 		</form>
 	</div>

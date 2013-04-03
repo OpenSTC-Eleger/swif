@@ -30,14 +30,24 @@ app.Collections.Groups = Backbone.Collection.extend({
 
     /** Collection Parse
     */
-    parse: function(response) {    	
-        return response.result.records;
+    parse: function(response) { 
+    	return _.filter(response.result.records, function(record){
+    		return _.startsWith(record.name.toLowerCase(),"openstc");
+    	})
+        //return response.result.records;
     },
 
     /** Comparator for ordering collection
      */
     comparator: function(item) {
 	  return item.get("name");
+	},
+
+	
+    /** filter openstc groups
+     */
+    filter: function(item) {
+		
 	},
 
 });

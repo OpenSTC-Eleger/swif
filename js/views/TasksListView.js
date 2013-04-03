@@ -709,15 +709,17 @@ app.Views.TasksListView = Backbone.View.extend({
 			date_start: null,
 		};
 		
-		var newInterState = null;
-		if( this.model && this.model.intervention ) {
-			inter = this.model.intervention;
-			newInterState = inter.state;
-			if( this.model.intervention.state!=app.Models.Intervention.state[5].value ) {
-				newInterState = app.Models.Intervention.state[3].value;
-			}
-		}
-		this.saveNewStateTask(taskParams,null,null,newInterState, false);
+		app.models.task.save(this.model.id, taskParams, null, this, "#taches");
+
+//		var newInterState = null;
+//		if( this.model && this.model.intervention ) {
+//			inter = this.model.intervention;
+//			newInterState = inter.state;
+//			if( this.model.intervention.state!=app.Models.Intervention.state[5].value ) {
+//				newInterState = app.Models.Intervention.state[3].value;
+//			}
+//		}
+//		this.saveNewStateTask(taskParams,null,null,newInterState, false);
 
 	},
 
@@ -733,6 +735,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		//TransactionRollbackError: could not serialize access due to concurrent update
 		//We must wait intervention save callback before save task
 		
+		if( this.vehicule )
 		var equipment = app.collections.equipments.get(this.vehicule);
 		var params = {};
 		params.km = taskParams.km;

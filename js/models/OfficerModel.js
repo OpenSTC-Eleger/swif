@@ -46,7 +46,9 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 		firstname: null,
 		name: null,
 		login: null,
-		password: null
+		password: null,
+		groups_id: [],
+		service_ids: [],
 	},
 
 
@@ -91,7 +93,23 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ new_password : value });
 	},
-
+	// Group IDs //
+	getGroupsId: function() {
+	    return this.get('groups_id');
+	},
+	setGroupsID : function(value) {
+		if( value == 'undefined') return;
+		this.set({ groups_id : value });
+	},
+	// Team services ID //
+	getServicesId: function() {
+	    return this.get('service_ids');
+	},
+	setServicesID : function(value) {
+		if( value == 'undefined') return;
+		this.set({ service_ids : value });
+	},
+	    	
 
 
 	/** Model Initialization
@@ -119,7 +137,8 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 		this.setEmail( params.user_email );
 		this.setLogin( params.login );
 		this.setPassword( params.new_password );
-
+		this.setGroupsID( params.groups_id );
+		this.setServicesID( params.service_ids );
 		/*this.setManagerID( params.manager_id );
 		this.setServicesID( params.service_ids );
 		this.setMembersID( params.user_ids );*/
