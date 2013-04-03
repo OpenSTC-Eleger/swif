@@ -27,7 +27,7 @@
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.tasksList %>
-		<sup rel="tooltip" data-original-title="<%= lang.wait %>">
+		<sup rel="tooltip" data-original-title="<%= lang.wait %>" data-placement="right">
 			<i class="badge badge-info">
 				<%= nbPendingTasks %>
 			</i>
@@ -68,7 +68,10 @@
 	<% 	_.each(tasksPerDay, function(day, i) { %>
 
 		<!-- Unfold the current day -->
-		<% if(day.day.isSame(moment(), "day")){ var unfold = 'in'; var borderUnfold = 'collapse-selected'}%>	
+		<% if(day.day.isSame(moment(), "day")){ var unfold = 'in'; var borderUnfold = 'collapse-selected'} %>
+
+		<!-- Count the number of Open Task -->
+		<% 	var pendingTask = _.countBy(day.tasks, function(task){ return task.state == app.Models.Task.state[0].value; }); %>
 
 		<section class="accordion-group <%= borderUnfold %>">
 		
@@ -76,14 +79,17 @@
 				<a class="accordion-toggle" data-toggle="collapse" href="#accordion_<%= i %>">
 					<h4 class="table-caption">
 						<%= _.capitalize(day.day.format('dddd D MMMM')) %> 
-						<small class="badge badge vertical-align-top pull-right">
-							<%= _.size(day.tasks) %>
-						</small>
+						<div class="pull-right">
+							<% if(pendingTask.true > 0){ %>
+								 <small class="badge badge-info vertical-align-top" rel="tooltip" data-original-title="<%= lang.wait %>"><%= pendingTask.true %></small>
+							<% } %>
+							<small class="badge vertical-align-top"><%= _.size(day.tasks) %></small>
+						</div>
 					</h4>
 				</a>
 			</div>
 
-	
+
 			<div id="accordion_<%= i %>" class="accordion-body collapse <%= unfold %>">
 			
 			<!-- Check if there is tasks planned this day -->

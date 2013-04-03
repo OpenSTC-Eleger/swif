@@ -532,7 +532,11 @@ app.Router = Backbone.Router.extend({
 	        		}
 	                app.collections.claimersServices.fetch({
 	    	            success: function(){
-							app.views.interventionDetailsView = new app.Views.InterventionDetailsView( self.intervention, true);
+                            if(id == undefined)
+                                app.views.interventionDetailsView = new app.Views.InterventionDetailsView( self.intervention, true);
+                            else
+                                app.views.interventionDetailsView = new app.Views.InterventionDetailsView( self.intervention, false);
+
 							self.render(app.views.interventionDetailsView);
 	            		},
 	            		complete: function(){

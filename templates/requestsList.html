@@ -44,7 +44,7 @@
 
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
-			<a href="#demandes-dinterventions/add" class="btn btn-primary"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
+			<a href="#demandes-dinterventions/add" class="btn btn-primary"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
 
 			<form class="form-search pull-right">
     			<div class="input-append">
@@ -60,6 +60,7 @@
 		<table class="table table-striped table-bordered table-hover">
 			<thead>
 				<tr>
+					<th>N°</th>
 					<th><%= _.capitalize(lang.label) %></th>
 					<th class="hidden-phone"><%= _.capitalize(lang.place) %></th>
 					<th><%= _.capitalize(lang.service) %></th>
@@ -117,6 +118,7 @@
 					%>
 
 					<tr id="<%= requests[i].id %>" class="<%= classRow %>">
+					    <td><%= requests[i].id %></td>
 					    <td>
 					    	<a 	href="#demandes-dinterventions/<%= requests[i].id %>" 
 								rel="popover" 

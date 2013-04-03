@@ -38,7 +38,9 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 		classColor: null,
 		overPourcent:0,
 	},
-      
+
+
+
 	getState : function() {
         return this.get('state');
     },
@@ -79,14 +81,14 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
         this.set({ cancel_reason : value });
     },  
 
+
+
 	/** Model Initialization
 	*/
     initialize: function(){
         console.log('Intervention Model initialization');
         this.fetchRelated('tasks');
 
-
-       
         app.Models.Intervention.state[0].traduction = app.lang.planningFenced;
         app.Models.Intervention.state[1].traduction = app.lang.toScheduled;        
         app.Models.Intervention.state[2].traduction = app.lang.closed;
@@ -94,21 +96,29 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
         app.Models.Intervention.state[4].traduction = app.lang.cancelled;
         app.Models.Intervention.state[5].traduction = app.lang.template;
     },
+
+
     
     /** Model Parser */
     parse: function(response) {    	
         return response;
     },
-    
+
+
+
     update: function(params) {
 		this.setState( params.state );
 		this.setCancelReason( params.cancel_reason );
 	},
-    
+
+
+
     /** Save Model*/
 	save: function(data,options) { 
 		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
 	},
+
+
 
 	//save method with all redondant code
 	saveAndRoute: function(id,data,closeModal, view, strRoute) {
@@ -150,6 +160,8 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 		});
 	},
 	
+
+    
 	//When save intervention and just after save task (TaskListView L.187 et L.190) postgres send this error:
 	//TransactionRollbackError: could not serialize access due to concurrent update
 	//We must wait intervention save callback before save task

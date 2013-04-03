@@ -7,14 +7,14 @@
 
 
 <form id="formIntervention" action="#" class="form-horizontal container-fluid">
-    
-    <div class="row-fluid">        
-        
+
+    <div class="row-fluid">
+
         <!-- About the intervention -->
         <fieldset class="span6">
-           
+
             <legend><%= lang.aboutTheIntervention %></legend>
-                
+
                 <!-- intervention Name -->
                 <div class="control-group">
                     <label for="interventionName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
@@ -23,14 +23,14 @@
                         <input type="text" id="interventionName" name="interventionName" value="<%= intervention.name %>" required="required" />
                         <span class="help-inline"></span>
                     </div>
-                    
+
                     <div class="controls">
 						<label for="isTemplate" class="checkbox"><%= _.capitalize(lang.template) %>
-							<input type="checkbox" id="isTemplate" readonly="readonly"/>
+							<input type="checkbox" id="isTemplate" />
 						</label>
 					</div>
                 </div>
-                
+
                 <!-- intervention Description -->
                 <div class="control-group">
                     <label for="interventionDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
@@ -42,7 +42,7 @@
                 </div>
 
                 <!-- intervention DeadLine -->
-                <div class="control-group">
+                <!--<div class="control-group">
                     <label class="control-label" for="interventionDateDeadline"><%= _.capitalize(lang.dateDeadline) %>:</label>
                     <div class="controls">
                         <input 
@@ -54,8 +54,8 @@
                             readonly="readonly">
                         <span class="help-inline"></span>
                     </div>
-                </div>
-                
+                </div>-->
+
                 <!-- intervention Contact Service -->
                 <div class="control-group">
                     <label for="interventionDetailService" class="control-label" ><%= lang.serviceConcerned %>:</label>
@@ -65,7 +65,7 @@
                         <span class="help-inline"></span>
                     </div>
                 </div>
-                
+
                 <!-- intervention Place -->
                 <div class="control-group">
                     <label for="interventionPlace" class="control-label"><%= _.capitalize(lang.place) %>:</label>
@@ -75,7 +75,7 @@
                         <span class="help-inline"></span>                           
                     </div>
                 </div>
-                
+
                 <!-- intervention Place precision -->
                 <div class="control-group">
                     <label for="interventionPlacePrecision" class="control-label"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
