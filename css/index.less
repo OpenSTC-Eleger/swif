@@ -58,6 +58,9 @@ a.text-important:hover { color: darken(@errorText, 10%); }
 .text-muted        { color: @grayLight; }
 a.text-muted:hover { color: darken(@grayLight, 10%); }
 
+div.progress{
+	margin-bottom: 5px;
+}
 
 // Filter Button Table //
 a.filter-button.filter-disabled{
@@ -90,6 +93,27 @@ a.filter-button.filter-active{
   	&-template           { background-color: @yellow; }
   	&-template[href]     { background-color: darken(@yellow, 10%); }
 }
+
+
+
+/* Default Progress Bar 
+-------------------------------------------------- */
+.progress-default .bar, .progress .bar-default {
+  #gradient > .vertical(@grayLight, #888888);
+}
+.progress-default.progress-striped .bar, .progress-striped .bar-default {
+  #gradient > .striped(@grayLight);
+}
+
+.progress-overrun .bar, .progress .bar-overrun {
+  #gradient > .vertical(@purple, darken(@purple, 10%));
+}
+.progress-overrun.progress-striped .bar, .progress-striped .bar-overrun {
+  #gradient > .striped(@purple);
+}
+
+
+
 
 /* New LABELS AND BADGES
 -------------------------------------------------- */

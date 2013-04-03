@@ -95,29 +95,8 @@
 					<td><%= (intervention.effective_hours != false ? intervention.effective_hours+'h' : '') %></td>
 
 
-					<!-- ################################################################### -->
-
 					<!-- Check the state of the intervention -->
 					<td>
-						<!-- <% if(intervention.progress_rate != 0 || intervention.progress_rate != false) {
-							
-							if(intervention.progress_rate == 100 ){ %>
-								<div class="progress progress-success" style="margin-bottom: 0;">
-									<div class="bar" style="width: <%= intervention.progress_rate %>%;"><%= intervention.progress_rate %>%</div>
-								</div>
-							<% }else{ %>
-								<div class="progress" style="margin-bottom: 0;">
-									<div class="bar <%= intervention.classColor %>" style="width: <%= intervention.progress_rate %>%;"
-										rel="tooltip"
-										data-original-title="<%= intervention.infoMessage %>"><%= intervention.overPourcent %>		
-									</div>
-								</div>
-						<% } 
-						} else{ %>
-							<span class="label label-warning"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
-								<%= _.capitalize(lang.toScheduled) %>
-							</span>
-						<% } %>-->
 
 						<!-- state - To Scheduled -->
 						<% if(intervention.state == app.Models.Intervention.state[1].value){ %>
@@ -133,9 +112,21 @@
 
 						<!-- state - Pending -->
 						<% } else if(intervention.state == app.Models.Intervention.state[3].value){ %>
-							<span class="label label-<%= app.Models.Intervention.state[3].color %>"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
-								<%= _.capitalize(app.Models.Intervention.state[3].traduction) %>
-							</span>
+							<div class="progress progress-default">
+								<div class="bar" style="width: <%= intervention.progress_rate %>%"><%= intervention.progress_rate %>%</div>
+							</div>
+
+						<!-- state - Closed -->
+						<% } else if(intervention.state == app.Models.Intervention.state[2].value){ 
+							if(intervention.overPourcent > 100){ %>
+								<div class="progress progress-overrun">
+									<div class="bar" style="width: 100%"><%= intervention.overPourcent %>%</div>
+								</div>
+							<% } else { %>
+								<div class="progress progress-success">
+									<div class="bar" style="width: <%= intervention.overPourcent %>%"><%= intervention.overPourcent %>%</div>
+								</div>
+							<% } %>
 
 						<!-- state - Cancelled -->
 						<% } else if(intervention.state == app.Models.Intervention.state[4].value){ %>
@@ -145,10 +136,6 @@
 
 						<% } %>
 					</td>
-
-
-					<!-- ################################################################### -->
-
 
 				</tr>
 

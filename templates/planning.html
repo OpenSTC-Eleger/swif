@@ -192,7 +192,7 @@
 											<!-- Switch button - To Scheduled / Scheduled -->
 											<% if(_.size(inter.tasks) > 0){ %>
 												
-												<span><%= inter.state %></span>
+												<span><%= inter.state %></span>||<span><%= allPlanned %></span>
 												<div class="switch switch-small calendarSwitch pull-right" data-on-label="<%= _.capitalize(lang.planningFenced) %>" data-off-label="<%= _.capitalize(lang.toScheduled) %>" data-on="primary" data-off="warning">
 													<input type="checkbox" 
 														<% if(allPlanned == true && 
@@ -200,7 +200,9 @@
 															checked
 														<% } %>
 
-														<%= ( inter.state != app.Models.Intervention.state[0].value && inter.state != app.Models.Intervention.state[2].value  ) ? "" : 'disabled' %>
+														<% if(allPlanned == false){ %>
+														 		disabled
+														 <% } %>
 													/>
 												</div>
 
