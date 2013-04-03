@@ -85,6 +85,8 @@ app.Views.InterventionsView = Backbone.View.extend({
 		interventionsState =  _.union(firstElements.reverse(), interventionsState);
 
 
+		console.debug(interventions.toJSON());
+
 
 		// Retrieve the HTML template //
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -105,7 +107,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 //			app.views.selectListEquipmentsView.addEmptyFirst();
 //			app.views.selectListEquipmentsView.addAll();
 
-			$('*[rel="tooltip"]').tooltip({placement: "right"});
+			$('*[rel="tooltip"]').tooltip({placement: 'top'});
 
 			$('tr.row-object').css({ opacity: '1'});
 			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
