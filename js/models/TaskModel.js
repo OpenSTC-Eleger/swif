@@ -261,7 +261,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 
 }, {
 
-// Request State Initialization //
+// Task State Initialization //
 state:  [
     {
         value       : 'open',
