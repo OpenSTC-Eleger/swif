@@ -188,48 +188,23 @@
 												<i class="icon-plus"></i>
 											</button>
 
-											<!--<button 
-												class="btn btn-success btn-small pull-right no-outline" rel="tooltip" 
-													data-original-title="<%= _.capitalize(lang.actions.enclosePlanning) %>" 
-													data-placement="left" style="margin-right: 5px" name="enclose"
-													<%= ( (allPlanned && 
-															(	inter.state == app.Models.Intervention.state[1].value ||
-																inter.state == app.Models.Intervention.state[3].value
-															) && _.size(inter.tasks) > 0) ) ? "" : 'disabled' %>>
-												<i class="icon-check"></i>
-											</button>
-											
-											<button 
-												class="btn btn-inverse btn-small pull-right no-outline" rel="tooltip" 
-													data-original-title="<%= _.capitalize(lang.actions.openPlanning) %>" 
-													 name="reopen"			
-													<%= ( (
-															(	inter.state == app.Models.Intervention.state[0].value
-															) && _.size(inter.tasks) > 0) ) ? "" : 'disabled' %>>
-												<i class="icon-check"></i>
-											</button> -->
 
-
+											<!-- Switch button - To Scheduled / Scheduled -->
 											<% if(_.size(inter.tasks) > 0){ %>
 												
+												<span><%= inter.state %></span>
 												<div class="switch switch-small calendarSwitch pull-right" data-on-label="<%= _.capitalize(lang.planningFenced) %>" data-off-label="<%= _.capitalize(lang.toScheduled) %>" data-on="primary" data-off="warning">
-													<input type="checkbox" <%= ( (allPlanned && 
-														(	inter.state == app.Models.Intervention.state[1].value ||
-															inter.state == app.Models.Intervention.state[3].value
-														) && _.size(inter.tasks) > 0) ) ? "" : 'checked' %>>
+													<input type="checkbox" 
+														<% if(allPlanned == true && 
+														(inter.state == app.Models.Intervention.state[0].value || inter.state == app.Models.Intervention.state[3].value)){ %>
+															checked
+														<% } %>
+
+														<%= ( inter.state != app.Models.Intervention.state[0].value && inter.state != app.Models.Intervention.state[2].value  ) ? "" : 'disabled' %>
+													/>
 												</div>
 
 											<% } %>
-											
-
-											<!--<label class="checkbox toggle candy" style="width: 100px">
-												<input id="view" type="checkbox">
-												<p>Planification cloturées
-													<span>Oui</span>
-													<span>Non</span>
-												</p>
-												<a class="slide-button"></a>
-											</label>-->
 										</div>
 
 									</div>

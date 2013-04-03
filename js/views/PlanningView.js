@@ -136,6 +136,8 @@ app.Views.PlanningView = Backbone.View.extend({
             
             interventionSorted = new app.Collections.Interventions(interventionsSortedArray);
 
+            console.log(interventionSorted.toJSON());
+
             var template = _.template(templateData, {
         		lang: app.lang,
         		interventionsState: app.Models.Intervention.state,

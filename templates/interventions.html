@@ -1,11 +1,11 @@
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.interventionsMonitoring %>
-		<sup rel="tooltip" data-original-title="<%= lang.planningFenced %>">
+		<sup rel="tooltip" data-original-title="<%= lang.planningFenced %>" data-placement="right">
 			<i class="badge badge-info" ><%= nbInterventionsPlanned %></i>
 		</sup>
 
-		<sup rel="tooltip" data-original-title="<%= lang.pending %>">
+		<sup rel="tooltip" data-original-title="<%= lang.pending %>" data-placement="right">
 			<i class="badge" >
 				<%= nbInterventionsPending %>
 			</i>
@@ -91,10 +91,15 @@
 						</span>
 					</td>
 					<td><%=intervention.site1[1]%></td>
-					<td><%=intervention.planned_hours%>h</td>
-					<td><%=intervention.effective_hours%>h</td>
+					<td><%= (intervention.planned_hours != false ? intervention.planned_hours+'h' : '') %></td>
+					<td><%= (intervention.effective_hours != false ? intervention.effective_hours+'h' : '') %></td>
+
+
+					<!-- ################################################################### -->
+
+					<!-- Check the state of the intervention -->
 					<td>
-						<% if(intervention.progress_rate != 0 || intervention.progress_rate != false) {
+						<!-- <% if(intervention.progress_rate != 0 || intervention.progress_rate != false) {
 							
 							if(intervention.progress_rate == 100 ){ %>
 								<div class="progress progress-success" style="margin-bottom: 0;">
@@ -104,7 +109,7 @@
 								<div class="progress" style="margin-bottom: 0;">
 									<div class="bar <%= intervention.classColor %>" style="width: <%= intervention.progress_rate %>%;"
 										rel="tooltip"
-										data-original-title="<%= intervention.infoMessage %>"><%= intervention.overPourcent %>								
+										data-original-title="<%= intervention.infoMessage %>"><%= intervention.overPourcent %>		
 									</div>
 								</div>
 						<% } 
@@ -112,8 +117,39 @@
 							<span class="label label-warning"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
 								<%= _.capitalize(lang.toScheduled) %>
 							</span>
+						<% } %>-->
+
+						<!-- state - To Scheduled -->
+						<% if(intervention.state == app.Models.Intervention.state[1].value){ %>
+							<span class="label label-<%= app.Models.Intervention.state[1].color %>"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
+								<%= _.capitalize(app.Models.Intervention.state[1].traduction) %>
+							</span>
+
+						<!-- state - Scheduled -->
+						<% } else if(intervention.state == app.Models.Intervention.state[0].value){ %>
+							<span class="label label-<%= app.Models.Intervention.state[0].color %>"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
+								<%= _.capitalize(app.Models.Intervention.state[0].traduction) %>
+							</span>
+
+						<!-- state - Pending -->
+						<% } else if(intervention.state == app.Models.Intervention.state[3].value){ %>
+							<span class="label label-<%= app.Models.Intervention.state[3].color %>"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
+								<%= _.capitalize(app.Models.Intervention.state[3].traduction) %>
+							</span>
+
+						<!-- state - Cancelled -->
+						<% } else if(intervention.state == app.Models.Intervention.state[4].value){ %>
+							<span class="label label-<%= app.Models.Intervention.state[4].color %>"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
+								<%= _.capitalize(app.Models.Intervention.state[4].traduction) %>
+							</span>
+
 						<% } %>
 					</td>
+
+
+					<!-- ################################################################### -->
+
+
 				</tr>
 
 				<!-- Tasks row -->
