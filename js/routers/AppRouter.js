@@ -1055,10 +1055,17 @@ app.Router = Backbone.Router.extend({
                     
                     app.collections.groups.fetch({
                         success: function(){
-                            app.views.officersView = new app.Views.OfficersView({page: self.page});
-                            self.render(app.views.officersView);
-                        }
-                    });
+			        	    if(app.collections.claimersServices == null ){
+			            		app.collections.claimersServices = new app.Collections.ClaimersServices();
+			    			}
+				            app.collections.claimersServices.fetch({
+				            	success: function(){
+		                            app.views.officersView = new app.Views.OfficersView({page: self.page});
+		                            self.render(app.views.officersView);
+		                        }
+		                    });
+		                 }
+		            });
                 },
                 complete: function(){
                     app.loader('hide');

@@ -17,6 +17,4 @@ app.Models.Group = Backbone.RelationalModel.extend({
     parse: function(response) {    	
         return response;
     },
-
-
 });

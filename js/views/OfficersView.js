@@ -75,6 +75,20 @@ app.Views.OfficersView = Backbone.View.extend({
 			});
 
 			$(self.el).html(template);
+			
+			$('#officerServices, #servicesList').sortable({
+				connectWith: 'ul.sortableServicesList',
+				dropOnEmpty: true,
+				forcePlaceholderSize: true,
+				forceHelperSize: true,
+				placeholder: 'sortablePlaceHold',
+				containment: '.servicesDroppableArea',
+				cursor: 'move',
+				opacity: '.8',
+				revert: 300,
+				receive: function(event, ui){
+				}
+			});		
 
 			// Tooltip //
 			$('*[rel="tooltip"]').tooltip({placement: "right"});
@@ -92,10 +106,62 @@ app.Views.OfficersView = Backbone.View.extend({
 		return this;
 	},
 
-
+	getIdInDropDown: function(view) {
+    	if ( view && view.getSelected() )
+    		var item = view.getSelected().toJSON();
+    		if( item )
+    			return [ item.id, item.name ];
+    	else 
+    		return 0
+    },
+    
+	/** Display user services 
+	*/
+    displayServices: function(e){
+		e.preventDefault();
+	
+		// Retrieve the ID of the intervention //
+		var link = $(e.target);
+		var id = _(link.parents('tr').attr('id')).strRightBack('_');
+		
+		// Clear the list of the user //
+		$('#officerServices li, #servicesList li').remove();
+	
+		var officerServices = new Array();
+		if( id ) {
+			this.selectedOfficer = _.filter(app.collections.officers.models, function(item){ return item.attributes.id == id });
+			var selectedOfficerJson = this.selectedOfficer[0].toJSON();	
+			
+			// Display the services of the team //
+			_.each(selectedOfficerJson.service_ids, function (service, i){
+				$('#officerServices').append('<li id="service_'+service.id+'"><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
+				officerServices[i] = service.id;
+			});
+		};
+		
+	    //search no technical services
+		var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
+			return service.attributes.technical != true 
+		});
+		//remove no technical services
+		app.collections.claimersServices.remove(noTechnicalServices);
+		app.collections.claimersServices.toJSON()
+	
+		// Display the remain services //
+		_.filter(app.collections.claimersServices.toJSON(), function (service, i){ 
+			if(!_.contains(officerServices, service.id)){
+				$('#servicesList').append('<li id="service_'+service.id+'"><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
+			}
+		});
+	
+		var nbRemainServices = $('#servicesList li').length;
+		$('#badgeNbServices').html(nbRemainServices);
+		
+	},
 
 	setModel: function(e) {
 		e.preventDefault();
+		this.displayServices(e);
 		var link = $(e.target);
 		
 		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
@@ -123,10 +189,11 @@ app.Views.OfficersView = Backbone.View.extend({
 	*/
 	modalSaveOfficer: function(e){
 		this.setModel(e);
-
+		
 		// Reset the value to null //
 		$('#officerName, #officerFirstname, #officerEmail, #officerLogin, #officerPassword').val('');
 		app.views.selectListGroupsView.setSelectedItem(0);
+		
 
 		// Update //
 		if( this.selectedOfficerJson ) {
@@ -143,6 +210,8 @@ app.Views.OfficersView = Backbone.View.extend({
 
 			// Disable the required attribute for the password because it's an update 	//
 			$('#officerPassword').removeAttr('required');
+			if( this.selectedOfficerJson.groups_id )
+				app.views.selectListGroupsView.setSelectedItem( this.selectedOfficerJson.groups_id[0] );	
 		}
 		else{
 			// Add the required attribute for the password because it's a creation //
@@ -170,7 +239,8 @@ app.Views.OfficersView = Backbone.View.extend({
 	saveOfficer: function(e) {
 		e.preventDefault();
 
-
+		var group_id = this.getIdInDropDown(app.views.selectListGroupsView);
+		this.services = _.map($("#officerServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); }); 
 
 		if( this.$('#officerPassword').val() != '' ){
 			this.params = {
@@ -178,7 +248,9 @@ app.Views.OfficersView = Backbone.View.extend({
 				firstname: this.$('#officerFirstname').val(),
 				user_email: this.$('#officerEmail').val(),
 				login: this.$('#officerLogin').val(),
-				new_password: this.$('#officerPassword').val()
+				new_password: this.$('#officerPassword').val(),
+				groups_id:[[6, 0, [group_id[0]]]],
+				service_ids: [[6, 0, this.services]],
 			};
 		}
 		else{
@@ -186,7 +258,9 @@ app.Views.OfficersView = Backbone.View.extend({
 				name: this.$('#officerName').val()	.toUpperCase(),
 				firstname: this.$('#officerFirstname').val(),
 				user_email: this.$('#officerEmail').val(),
-				login: this.$('#officerLogin').val()
+				login: this.$('#officerLogin').val(),
+				groups_id:[[6, 0, [group_id[0]]]],
+				service_ids: [[6, 0, this.services]],
 			};
 		}
 
@@ -206,9 +280,10 @@ app.Views.OfficersView = Backbone.View.extend({
 					if( self.modelId==0 ){
 						self.model = new app.Models.Officer({id: data.result.result});
 					}
-
+					self.params.groups_id = self.getIdInDropDown(app.views.selectListGroupsView);	
+					self.params.service_ids = self.services;
 					self.model.update(self.params);
-
+					
 					app.collections.officers.add(self.model);
 
 					$('#modalSaveOfficer').modal('hide');
