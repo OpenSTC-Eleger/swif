@@ -131,17 +131,18 @@ app.Views.RequestsListView = Backbone.View.extend({
 			}
 
 			// Display the Tooltip or Popover //
-			$('*[rel="popover"]').popover({trigger: "hover"});
-			$('*[rel="tooltip"]').tooltip({placement: "right"});
+			$('*[rel="popover"]').popover({trigger: 'hover'});
+			$('*[rel="tooltip"]').tooltip({placement: 'top'});
 
 		});
 
 		
 		$(this.el).hide().fadeIn('slow');
-		//this.setElement(this.el, true);
         return this;
     },
-    
+
+
+
     addInfoAboutInter: function(requests) {
     	_.each(requests, function (request, i) {
     		this.infoMessage = "";
@@ -188,6 +189,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 			request['infoMessage'] = this.infoMessage;
     	});
     },
+
 
 
 	/** Display request information in the Modal view
@@ -321,6 +323,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 		
 	},
 
+
+
 	createIntervention: function() {
 		var self = this;
 		
@@ -335,6 +339,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 		
 		app.models.intervention.saveAndRoute(0,params,null, this, '#demandes-dinterventions');	
 	},
+
+
 
 	/** Change the request state to ConfirmDST
 	*/
@@ -361,6 +367,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 		this.saveNewState( params, $('#modalConfirmDSTRequest') );
 
 	},
+
+
 
 	saveNewState: function(params, element) {
 		var self = this;
@@ -435,10 +443,5 @@ app.Views.RequestsListView = Backbone.View.extend({
 //	    if (delegate !== false) this.delegateEvents();
 //	    return this;
 //	 },
-
-
-
-
-
 
 });
