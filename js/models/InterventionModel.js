@@ -168,6 +168,13 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 	saveWithCallback: function(id,data,options) { 
 		app.saveOE(id, data, this.model_name, app.models.user.getSessionID(), options);
 	},
+	
+	cancel: function(cancel_reason, options) {
+		var params = {}
+		params.state = app.Models.Intervention.state[4].value;
+		params.cancel_reason = cancel_reason;
+		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
+	}
 
 
 }, {

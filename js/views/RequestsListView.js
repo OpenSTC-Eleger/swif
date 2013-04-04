@@ -112,7 +112,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 			console.debug(requests);
 		
 			$(self.el).html(template);
-
+			//$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 
 			// Display filter on the table //
 			if(sessionStorage.getItem(self.filters) != null){
@@ -273,6 +273,18 @@ app.Views.RequestsListView = Backbone.View.extend({
 		        service_id: $('#requestService').val(),		
 		};
 		
+//	     var duration = $("#taskHour").val().split(":");
+//	     var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] })
+//	     
+//	     var params = {
+//	         project_id: this.pos,
+//	         name: this.$('#taskName').val(),
+//	         category_id: input_category_id,	
+//	         //equipment_id: input_equipment_id,
+//	         planned_hours: mDuration.asHours(),
+//	     };
+//	     
+//	    app.models.task.save(0,params,$('#modalAddTask'), this, null);
 		
 		var self = this;
 		self.params = params

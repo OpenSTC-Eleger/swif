@@ -307,7 +307,7 @@ app.Views.PlanningView = Backbone.View.extend({
         
   
         if(link.attr('href') == "#modalCancelInter"){
-
+        	$('#motifCancel').val('');
             var id = _(link.parent('p').siblings('a').attr('href')).strRightBack('_');
             
             var inter = _.filter(app.collections.interventions.models, function(item){ return item.attributes.id == id });
@@ -366,12 +366,15 @@ app.Views.PlanningView = Backbone.View.extend({
     */
     cancelInter: function(e){
 		e.preventDefault();
-		
-		params = {
-		        state: app.Models.Intervention.state[4].value,
-		        cancel_reason: $('#motifCancel').val(),		
-		};		
-		this.saveNewState( params,$('#modalCancelInter') );
+		this.selectedInter.cancel($('#motifCancel').val(),
+			{
+				success: function(data){
+					$('#modalCancelInter').modal('hide');
+					route = Backbone.history.fragment;
+					Backbone.history.loadUrl(route);
+				}
+			}
+		);
     },
 
 

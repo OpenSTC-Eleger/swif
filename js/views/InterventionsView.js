@@ -342,12 +342,16 @@ app.Views.InterventionsView = Backbone.View.extend({
 
 	cancelInter: function(e){
 		e.preventDefault();
-	
-		params = {
-			state: app.Models.Intervention.state[4].value,
-			cancel_reason: $('#motifCancel').val(),		
-		};		
-		this.saveNewState( params,$('#modalCancelInter') );
+		
+		this.selectedInter.cancel($('#motifCancel').val(),
+			{
+				success: function(data){
+					$('#modalCancelInter').modal('hide');
+					route = Backbone.history.fragment;
+					Backbone.history.loadUrl(route);
+				}
+			}
+		);
 	},
 
 
