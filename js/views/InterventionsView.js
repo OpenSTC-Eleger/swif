@@ -276,8 +276,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 		var self = this;
 
 		e.preventDefault();
-		
-		 
+
 		input_category_id = null;	    
 	    if( app.views.selectListAssignementsView != null ) {
 	    	 var selectItem = app.views.selectListAssignementsView.getSelected();
@@ -293,8 +292,8 @@ app.Views.InterventionsView = Backbone.View.extend({
 //	    		 input_equipment_id = selectItem.toJSON().id
 //	    	 }
 //	     }
-	     
-	     
+
+
 	     var duration = $("#taskHour").val().split(":");
 	     var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
 
@@ -308,8 +307,8 @@ app.Views.InterventionsView = Backbone.View.extend({
 	     //TODO : test
 	     app.models.task.save(0,params,$('#modalAddTask'), null, "interventions");
    	},
-   
-    
+
+
 
 	/** Delete task
 	*/

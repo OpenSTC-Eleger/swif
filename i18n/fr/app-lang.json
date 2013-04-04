@@ -92,7 +92,6 @@
 	"confirm" 				: "DST",
 	"pending"				: "en cours",
 	"template"				: "avec tâches duplicables",
-	"notBegin"				: "non commencé",
 	"toScheduled" 			: "à planifier",
 	"planningFenced" 		: "planifiée",
 	"dateDeadline" 			: "date butoire",
