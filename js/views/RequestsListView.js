@@ -2,42 +2,44 @@
 * Requests List View
 */
 app.Views.RequestsListView = Backbone.View.extend({
-	
+
 	el : '#rowContainer',
-	
+
 	templateHTML: 'requestsList',
 
 	filters: 'requestsListFilter',
 
 	numberListByPage: 25,
-	
+
 	selectedRequest : 0,
 
 
-    // The DOM events //
-    events: {
+
+	// The DOM events //
+	events: {
 		'click li.active'						: 'preventDefault',
 		'click li.disabled'						: 'preventDefault',
 			
-    	'click .buttonValidRequest'				: 'setInfoModal',
-    	'click .buttonRefuseRequest'			: 'setInfoModal',
-    	'click .buttonConfirmDST'				: 'setInfoModal',
+		'click .buttonValidRequest'				: 'setInfoModal',
+		'click .buttonRefuseRequest'			: 'setInfoModal',
+		'click .buttonConfirmDST'				: 'setInfoModal',
 
-    	'submit #formValidRequest' 				: 'validRequest',
-    	'submit #formRefuseRequest' 			: 'refuseRequest',
-    	'submit #formConfirmDSTRequest' 		: 'confirmDSTRequest',
+		'submit #formValidRequest' 				: 'validRequest',
+		'submit #formRefuseRequest' 			: 'refuseRequest',
+		'submit #formConfirmDSTRequest' 		: 'confirmDSTRequest',
 
-    	'click #filterStateRequestList li:not(.disabled) a' 	: 'setFilter'
-    },
+		'click #filterStateRequestList li:not(.disabled) a' 	: 'setFilter'
+	},
 
- 
+
 
 	/** View Initialization
 	*/
-    initialize: function () {			
+	initialize: function () {			
 		//this.render();
-    },
-    
+	},
+
+
 
 	/** Display the view
 	*/
@@ -110,7 +112,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 			});
 
 			console.debug(requests);
-		
+
 			$(self.el).html(template);
 			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 
@@ -136,10 +138,10 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 		});
 
-		
+
 		$(this.el).hide().fadeIn('slow');
-        return this;
-    },
+		return this;
+	},
 
 
 
@@ -169,17 +171,17 @@ app.Views.RequestsListView = Backbone.View.extend({
 				self.infoMessage = intervention.create_uid!=null? "par " + intervention.create_uid[1] + ". ": ""; 
 		    	if( firstDate ) {
 		    		if( intervention.progress_rate==0 )
-		    			self.infoMessage += "Début prévue le " + firstDate.format('LLL'); 
+						self.infoMessage += "Début prévue le " + firstDate.format('LLL'); 
 					else if( lastDate )
-			    		self.infoMessage += "Fin prévue le " + lastDate.format('LLL'); 
-			    	else{
+						self.infoMessage += "Fin prévue le " + lastDate.format('LLL'); 
+					else{
 			    		self.infoMessage += "Remis en plannification";
-			    	}
-		    	}
-		    	else{
-		    		self.infoMessage += "Non planifiée";
-		    	}
-							
+					}
+				}
+				else{
+					self.infoMessage += "Non planifiée";
+				}
+
 			    if( intervention.state==app.Models.Intervention.state[4].value ) 
 					infoMessage = intervention.cancel_reason
 
@@ -192,18 +194,16 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 
 
-	/** Display request information in the Modal view
+	/** Display informations about the request in the Modal view
 	*/
 	setInfoModal: function(e){
-		
-		
+
 		var btn = $(e.target);
 
 		// Retrieve the ID of the request //
 		this.pos = btn.parents('tr').attr('id');
 		this.model = app.collections.requests.get(this.pos);
 		this.selectedRequest = this.model.toJSON();
-		
 
 
 		if(btn.hasClass("buttonValidRequest")){
@@ -260,7 +260,9 @@ app.Views.RequestsListView = Backbone.View.extend({
 		
 	},
 
-	/** Change the request state to ConfirmDST
+
+
+	/** Valid the request
 	*/
 	validRequest: function(e){
 		e.preventDefault();
@@ -277,7 +279,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		        intervention_assignement_id: $('#requestAssignement').val(),
 		        service_id: $('#requestService').val(),	
 				site1: this.model.getSite1()[0],
-				planned_hours: mDuration.asHours(),				
+				planned_hours: mDuration.asHours(),
 		};
 	    
 	    this.model.valid(params,
@@ -293,7 +295,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 
 
-	/** Change the request state to ConfirmDST
+	/** Refuse the request
 	*/
 	refuseRequest: function(e){
 		e.preventDefault();
@@ -307,7 +309,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 
 
-	/** Change the request state to ConfirmDST
+	/** Set the request state to Confirm DST
 	*/
 	confirmDSTRequest: function(e){
 		e.preventDefault();
@@ -353,7 +355,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 
 
-	/** Filter Request
+	/** Filter Requests
 	*/
 	setFilter: function(e){
 		event.preventDefault();

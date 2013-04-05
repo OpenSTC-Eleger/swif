@@ -154,22 +154,24 @@
 			    		<!-- Wait state -->
 			    		<% if(requests[i].state == app.Models.Request.state[0].value) { %>
 			    			<span class="label label-<%= app.Models.Request.state[0].color %>"><%= app.Models.Request.state[0].traduction %></span>
-			    		
+
 			    		<!-- Confirm state -->
 			    		<% } else if(requests[i].state == app.Models.Request.state[1].value) { %>
 			    			<span class="label label-<%= app.Models.Request.state[1].color %>"><%= app.Models.Request.state[1].traduction %></span>
-			    		
+
 						<!-- Valid state -->
 			    		<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
 			    			<span class="label label-<%= app.Models.Request.state[2].color %>" rel="tooltip"
 								data-original-title="<%= requests[i].infoMessage %>">
 				    			<%= app.Models.Request.state[2].traduction %>
 				    		</span>
-			    		
+
 			    		<!-- Closed state -->
 			    		<% } else if(requests[i].state == app.Models.Request.state[3].value) { %>
-			    			<span class="label"><%= app.Models.Request.state[3].traduction %></span>
-			    		
+							<span class="label" rel="tooltip" data-original-title="<%= requests[i].infoMessage %>">
+				    			<%= app.Models.Request.state[3].traduction %>
+				    		</span>
+
 						<!-- Cancel state -->
 			    		<% } else if (requests[i].state == app.Models.Request.state[4].value) { %> 
 			    			<span class="label label-<%= app.Models.Request.state[4].color %>" rel="tooltip"
@@ -179,10 +181,10 @@
 
 			    		<% } %>
 				   	</td>
-				   	
+
 				   	<!-- Action column -->
 				   	<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
- 						
+
 				   	   	<td class="align">
 
 						<!-- If the request is already associated with an intervention we not displaying the action buttons -->
