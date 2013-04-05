@@ -174,7 +174,6 @@ app.Views.TasksListView = Backbone.View.extend({
 					}
 				}
 			}
-			
 		});
 
 		var tasksUserFiltered = [
@@ -192,7 +191,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-		
+
 
 			var template = _.template(templateData, {
 				lang: app.lang,
