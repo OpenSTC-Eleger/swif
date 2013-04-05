@@ -133,11 +133,21 @@ app.Models.Task = Backbone.RelationalModel.extend({
 //	}],
 	
 
+
 	/** Model Initialization
-	*///
+	*/
 	initialize: function (model) {
 	   	console.log("Request task Initialization");
+
+		// Initialization Traduction task state //
+		app.Models.Task.state[0].traduction = app.lang.planningFenced;
+	   	app.Models.Task.state[1].traduction = app.lang.finished;
+	   	app.Models.Task.state[2].traduction = app.lang.valid;
+	   	app.Models.Task.state[3].traduction = app.lang.toScheduled;
+	   	app.Models.Task.state[4].traduction = app.lang.cancelled;
 	},
+
+
 
 	parseDate: function(s) {
 	  var re = /^(\d{4})-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/;
@@ -145,9 +155,8 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	  //PYF : using UTC time 
 	  return m ? new Date(Date.UTC(parseInt(m[1],10), parseInt(m[2]-1,10), parseInt(m[3],10), 
 		  parseInt(m[4],10), parseInt(m[5],10), parseInt(m[6],10))) : null;
-//	  return m ? new Date(parseInt(m[1],10), parseInt(m[2]-1,10), parseInt(m[3],10), 
-//			  parseInt(m[4],10), parseInt(m[5],10), parseInt(m[6],10)) : null;
 	},
+
 
 
     /** Model Parser
@@ -155,22 +164,21 @@ app.Models.Task = Backbone.RelationalModel.extend({
     parse: function(response) {
 		
 		if( response.date_start ) {
-			//var user = app.models.user.toJSON();		
+			//var user = app.models.user.toJSON();			
 			response.date_start = moment(this.parseDate(response.date_start));
-			//response.date_start = moment.utc((this.parseDate(response.date_start)));
 			//.add('hours', 1);				
 		}		
 		
 		if( response.date_end ) 
 			response.date_end = moment(this.parseDate(response.date_end));	
-			//response.date_end = moment.utc((this.parseDate(response.date_end)));	
 			
         return response;
     },
     
-    
+
+
 	/** Save Model
-		*/
+	*/
 	saveTest: function(id,data,options) { 
 		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options);
 	},
@@ -219,7 +227,9 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		    }, 
 		});
 	},
-	
+
+
+
 	update: function(params) {
 		this.setName( params.name );
 		this.setProjectId( params.project_id );
@@ -232,6 +242,8 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		this.setDateStart( params.date_start );
 	},
 	
+
+
 	destroy: function (options) {	
 		app.deleteOE( 
 			[[this.get("id")]],
@@ -252,32 +264,32 @@ app.Models.Task = Backbone.RelationalModel.extend({
 state:  [
     {
         value       : 'open',
-        color       : '#3a87ad', //'info',
+        color       : 'info',
         traduction  : '',
     },
     {
         value       : 'done',
-        color       : '#468847', //'success',
+        color       : 'success',
         traduction  : '',   
     },
     {
         value       : 'pending',
-        color       : '#333', //muted',
+        color       : '',
         traduction  : '', 
     },
 	{
         value       : 'draft',
-        color       : 'lightgreen', //purple
+        color       : 'warning',
         traduction  : '',
     },
     {
         value       : 'cancelled',
-        color       : '#b94a48', //'//important',
+        color       : 'important',
         traduction  : '',  
     },
     {
         value       : 'absent',
-        color       : '#c3325f', //purple
+        color       : '#c3325f', // Congé
         traduction  : '',  
     }
 ]

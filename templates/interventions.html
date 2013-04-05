@@ -101,37 +101,37 @@
 						<!-- state - To Scheduled -->
 						<% if(intervention.state == app.Models.Intervention.state[1].value){ %>
 							<span class="label label-<%= app.Models.Intervention.state[1].color %>"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
-								<%= _.capitalize(app.Models.Intervention.state[1].traduction) %>
+								<%= app.Models.Intervention.state[1].traduction %>
 							</span>
 
 						<!-- state - Scheduled -->
 						<% } else if(intervention.state == app.Models.Intervention.state[0].value){ %>
 							<span class="label label-<%= app.Models.Intervention.state[0].color %>"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
-								<%= _.capitalize(app.Models.Intervention.state[0].traduction) %>
+								<%= app.Models.Intervention.state[0].traduction %>
 							</span>
 
 						<!-- state - Pending -->
 						<% } else if(intervention.state == app.Models.Intervention.state[3].value){ %>
 							<div class="progress progress-default" rel="tooltip" data-title="<%= intervention.infoMessage %>">
-								<div class="bar" style="width: <%= intervention.progress_rate %>%"><%= intervention.progress_rate %>%</div>
+								<div class="bar" style="width: <%= intervention.progress_rate %>%"><%= _(intervention.progress_rate).toNumber() %>%</div>
 							</div>
 
 						<!-- state - Closed -->
 						<% } else if(intervention.state == app.Models.Intervention.state[2].value){ 
 							if(intervention.overPourcent > 100){ %>
 								<div class="progress progress-overrun">
-									<div class="bar" style="width: 100%"><%= intervention.overPourcent %>%</div>
+									<div class="bar" style="width: 100%"><%= _(intervention.overPourcent).toNumber() %>%</div>
 								</div>
 							<% } else { %>
 								<div class="progress progress-success">
-									<div class="bar" style="width: <%= intervention.overPourcent %>%"><%= intervention.overPourcent %>%</div>
+									<div class="bar" style="width: <%= intervention.overPourcent %>%"><%= _(intervention.overPourcent).toNumber() %>%</div>
 								</div>
 							<% } %>
 
 						<!-- state - Cancelled -->
 						<% } else if(intervention.state == app.Models.Intervention.state[4].value){ %>
 							<span class="label label-<%= app.Models.Intervention.state[4].color %>"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
-								<%= _.capitalize(app.Models.Intervention.state[4].traduction) %>
+								<%= app.Models.Intervention.state[4].traduction %>
 							</span>
 
 						<% } %>
@@ -153,37 +153,30 @@
 										<th><%= _.capitalize(lang.plannedHours) %></th>
 										<th><%= _.capitalize(lang.spentHours) %></th>
 										<th><%= _.capitalize(lang.remainingHours) %></th>
-										<th><%= _.capitalize(lang.progressRate) %></th>
+										<th><%= _.capitalize(lang.status) %></th>
 									</tr>
 								</thead>
 								<tbody>
+									<!-- Task row -->
 									<% _.each(intervention.tasks, function (task, i) { %>
-										<tr class="row-nested-objects <%= (task.progress == '100' ? 'success' : '') %>" id="task_<%= task.id %>">
+										<tr class="row-nested-objects" id="task_<%= task.id %>">
 											<td>
+												<!-- Display a clock when the task is planned -->
 												<% if(task.date_start != ''){ %>
 													<i 
-														class="icon-time displayInlineBlock" 
-														rel="tooltip"
-														data-placement="top"
+														class="icon-time displayInlineBlock" rel="tooltip" data-placement="top"
 														data-original-title="<%= moment(task.date_start).format('LLL') %>" >
 													</i>
 												<% } %>
-												<span class="<%= (task.progress == '100' ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
+												<span class="<%= (task.state == app.Models.Task.state[1].value ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
 												<span class="nested-objects-actions invisible">
-													<!-- <a href="#">
-														<i class="icon-pencil displayInlineBlock" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>" data-placement="top"></i>
-													</a>&nbsp;
-													-->
-													<% if( task.state == app.Models.Task.state[0].value ) { %>
+													
+													<% if( task.state == app.Models.Task.state[3].value ) { %>
 													
 														<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal">
 															<i class="icon-remove displayInlineBlock" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top">&nbsp;</i>
 														</a>
-														
-														<!--  <a href="#">
-															<i class="icon-remove displayInlineBlock" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top"></i>
-														</a>
-														-->
+
 													<% } %>
 												</span>
 											</td>
@@ -191,20 +184,23 @@
 											<td><%= task.planned_hours %>h</td>
 											<td><%= task.effective_hours %>h</td>
 											<td><%= task.remaining_hours %>h</td>
+											<!-- Task state -->
 											<td>
-												<% if(task.progress != 0 || task.progress != false) {
+												<% if(task.state == app.Models.Task.state[3].value) { %>
+														<span class="label label-<%= app.Models.Task.state[3].color %>"><%= app.Models.Task.state[3].traduction %></span>
+												
+												<% } else if(task.state == app.Models.Task.state[0].value){ %>
+														<span class="label label-<%= app.Models.Task.state[0].color %>"><%= app.Models.Task.state[0].traduction %></span>
 
-													if(task.progress == 100 ){ %>
-														<div class="progress progress-success" style="margin-bottom: 0;">
-															<div class="bar" style="width: <%= task.progress %>%;"><%= task.progress %>%</div>
-														</div>
-													<% } else{ %>
-														<div class="progress" style="margin-bottom: 0;">
-															<div class="bar" style="width: <%= task.progress %>%;"></div>
-														</div>
-													<% }
-													} else{ %>
-														<span class="text-warning"><%= _.capitalize(lang.notBegin) %></span>
+												<% } else if(task.state == app.Models.Task.state[1].value){ 
+														if(task.progress == 100){ %>
+														<span class="label label-<%= app.Models.Task.state[1].color %>"><%= app.Models.Task.state[1].traduction %></span>
+														<% } else  { %>
+															<span class="label label-overrun"><%= app.Models.Task.state[1].traduction %></span>
+														<% } %>
+												
+												<% } else if(task.state == app.Models.Task.state[4].value){ %>
+														<span class="label label-<%= app.Models.Task.state[4].color %>"><%= app.Models.Task.state[4].traduction %></span>
 												<% } %>
 											</td>
 										</tr>

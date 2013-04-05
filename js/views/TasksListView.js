@@ -167,7 +167,7 @@ app.Views.TasksListView = Backbone.View.extend({
 					// Retrieve the number of Open Task //
 					if(task.state == app.Models.Task.state[0].value){
 						nbPendingTasks++;
-					}			
+					}
 				}
 			}
 
@@ -184,6 +184,8 @@ app.Views.TasksListView = Backbone.View.extend({
 			{'day': momentDate.clone().day(7), 'tasks': sundayTasks}
 		];
 
+		console.log("tasksUser");
+		console.log(tasksUser);
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){

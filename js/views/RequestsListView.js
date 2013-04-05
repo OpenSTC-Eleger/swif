@@ -131,17 +131,18 @@ app.Views.RequestsListView = Backbone.View.extend({
 			}
 
 			// Display the Tooltip or Popover //
-			$('*[rel="popover"]').popover({trigger: "hover"});
-			$('*[rel="tooltip"]').tooltip({placement: "right"});
+			$('*[rel="popover"]').popover({trigger: 'hover'});
+			$('*[rel="tooltip"]').tooltip({placement: 'top'});
 
 		});
 
 		
 		$(this.el).hide().fadeIn('slow');
-		//this.setElement(this.el, true);
         return this;
     },
-    
+
+
+
     addInfoAboutInter: function(requests) {
     	_.each(requests, function (request, i) {
     		this.infoMessage = "";
@@ -188,6 +189,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 			request['infoMessage'] = this.infoMessage;
     	});
     },
+
 
 
 	/** Display request information in the Modal view
@@ -289,68 +291,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		);
 	},
 
-	/** Change the request state to ConfirmDST
-	*/
-//	validRequest: function(e){
-//		
-//		e.preventDefault();
-//		params = {
-//				state: app.Models.Request.state[2].value,
-//		        description: $('#requestNote').val(),
-//		        date_deadline: $('#requestDeadline').val(),
-//		        intervention_assignement_id: $('#requestAssignement').val(),
-//		        service_id: $('#requestService').val(),		
-//		};
-//		
-//		var self = this;
-//		self.params = params
-//		this.model.save(params, {
-//				    success: function (data) {
-//					        console.log(data);
-//					        if(data.error){
-//					    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-//					        }
-//					        else{					        	
-//					            console.log('Success VALID REQUEST');
-//					            $('#modalValidRequest').modal('hide');
-//					            self.model.update(self.params);	
-//					            //TODO : la relation avec service ne fonctionnant pas on met à jour un id/nom
-//					            //self.model.setService(app.views.selectServicesView.getSelected());
-//					            var service = app.views.selectServicesView.getSelected().toJSON()	;
-//					            self.model.setService([service.id,service.name]);
-//					            self.model.setAssignement(app.views.selectAssignementsView.getSelected());
-//					            //app.collections.requests.get(self.pos).update(self.model);
-//					            //TODO : quand la demande a été validée, peut la refuser pour la revalider : effacer l'inter au refus
-//					            // puis la récréer à la deuxième validation . POur le moment les actions ne sont plus disponibles quand le statut est 'validé'
-////					            if( self.model.getInterventions().size()==0 )
-//					            	self.createIntervention();
-//					            	self.model.sendEmail(null);
-////					            else
-////					            	self.render();
-//					        }
-//					       
-//					    },
-//					    error: function () {
-//							console.log('ERROR - Unable to valid the Request - RequestsListView.js');
-//					    },           
-//					},false);
-//		
-//	},
-//
-//	createIntervention: function() {
-//		var self = this;
-//		
-//		params = {
-//				name: this.model.getName(),
-//				state: app.Models.Intervention.state[1].value,
-//		        date_deadline: this.model.getDeadline_date(),
-//		        site1: this.model.getSite1()[0],
-//		        service_id: this.model.getService()[0],
-//		        ask_id: this.model.getId(),		
-//		};
-//		
-//		app.models.intervention.saveAndRoute(0,params,null, this, '#demandes-dinterventions');	
-//	},
+
 
 	/** Change the request state to ConfirmDST
 	*/
@@ -377,6 +318,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 		this.saveNewState( params, $('#modalConfirmDSTRequest') );
 
 	},
+
+
 
 	saveNewState: function(params, element) {
 		var self = this;
@@ -451,10 +394,5 @@ app.Views.RequestsListView = Backbone.View.extend({
 //	    if (delegate !== false) this.delegateEvents();
 //	    return this;
 //	 },
-
-
-
-
-
 
 });

@@ -156,10 +156,10 @@ app.Models.Request = Backbone.RelationalModel.extend({
 	   	console.log("Request Model Initialization");
 
 	   	// Initialization Traduction request state //	   
-	   	app.Models.Request.state[0].traduction = app.lang.wait;
+        app.Models.Request.state[0].traduction = app.lang.wait;
 	   	app.Models.Request.state[1].traduction = app.lang.confirm;
 	   	app.Models.Request.state[2].traduction = app.lang.valid;
-	   	app.Models.Request.state[3].traduction = app.lang.closed;
+	   	app.Models.Request.state[3].traduction = app.lang.finished;
 		app.Models.Request.state[4].traduction = app.lang.refused;
 	   	//this.fetchRelated('service_id');
 	   	//this.fetchRelated('site1');
