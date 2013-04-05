@@ -85,7 +85,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 
 		//TODO ajouter le DST et le manager du service de l'utilisateur
-		var tasksUser = _.filter(tasks, function(task){	
+		var tasksUser = _.filter(tasks, function(task){
 			var intervention = task.intervention; 
 
     		var belongsToOfficer = (task.user_id[0] == officer_id)
@@ -96,7 +96,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
     		var interCondition = false;
     		if( intervention!=null ) {
-    			
+
 				var service = intervention.service_id;
 				var userServices = app.models.user.toJSON().service_ids;
 				if ( service && userServices )
@@ -129,49 +129,52 @@ app.Views.TasksListView = Backbone.View.extend({
 		// Fill the tables with the tasks //
 		_.each(tasksUser, function(task, i){
 
-			if(momentDate.clone().isSame(task.date_start, 'week')){
-				if(momentDate.clone().day(1).isSame(task.date_start, 'day')){
-					mondayTasks.push(task);
-				}
-				else if(momentDate.clone().day(2).isSame(task.date_start, 'day')){
-					tuesdayTasks.push(task);
-				}
-				else if(momentDate.clone().day(3).isSame(task.date_start, 'day')){
-					wednesdayTasks.push(task);
-				}
-				else if(momentDate.clone().day(4).isSame(task.date_start, 'day')){
-					thursdayTasks.push(task);
-				}
-				else if(momentDate.clone().day(5).isSame(task.date_start, 'day')){
-					fridayTasks.push(task);
-				}
-				else if(momentDate.clone().day(6).isSame(task.date_start, 'day')){
-					saturdayTasks.push(task);
-				}
-				else if(momentDate.clone().day(7).isSame(task.date_start, 'day')){
-					sundayTasks.push(task);
-				}
+			// Don't display the task with absent state - congé //
+			if(task.state != app.Models.Task.state[5].value){
 
-				// Retrieve the number of Open Task //
-				if(task.state == app.Models.Task.state[0].value){
-					nbPendingTasks++;
-				}
-
-			}
-			// Hack for Sunday Task //
-			else {				
-
-				if( momentDate.clone().day(7).isSame(task.date_start, 'day') ){					
-					sundayTasks.push(task);
+				if(momentDate.clone().isSame(task.date_start, 'week')){
+					if(momentDate.clone().day(1).isSame(task.date_start, 'day')){
+						mondayTasks.push(task);
+					}
+					else if(momentDate.clone().day(2).isSame(task.date_start, 'day')){
+						tuesdayTasks.push(task);
+					}
+					else if(momentDate.clone().day(3).isSame(task.date_start, 'day')){
+						wednesdayTasks.push(task);
+					}
+					else if(momentDate.clone().day(4).isSame(task.date_start, 'day')){
+						thursdayTasks.push(task);
+					}
+					else if(momentDate.clone().day(5).isSame(task.date_start, 'day')){
+						fridayTasks.push(task);
+					}
+					else if(momentDate.clone().day(6).isSame(task.date_start, 'day')){
+						saturdayTasks.push(task);
+					}
+					else if(momentDate.clone().day(7).isSame(task.date_start, 'day')){
+						sundayTasks.push(task);
+					}
 
 					// Retrieve the number of Open Task //
 					if(task.state == app.Models.Task.state[0].value){
 						nbPendingTasks++;
 					}
+
+				}
+				// Hack for Sunday Task //
+				else {				
+
+					if( momentDate.clone().day(7).isSame(task.date_start, 'day') ){					
+						sundayTasks.push(task);
+
+						// Retrieve the number of Open Task //
+						if(task.state == app.Models.Task.state[0].value){
+							nbPendingTasks++;
+						}
+					}
 				}
 			}
-
-				
+			
 		});
 
 		var tasksUserFiltered = [

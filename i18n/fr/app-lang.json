@@ -87,6 +87,8 @@
 	"wait" 					: "en attente",
 	"valid" 				: "validée",
 	"finished" 				: "terminée",
+	"notFinished" 			: "non terminée",
+	"notDone" 				: "non fait",
 	"closed" 				: "cloturée",
 	"cancelled"				: "annulée",
 	"absent"				: "congé",

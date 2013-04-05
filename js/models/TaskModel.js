@@ -141,10 +141,10 @@ app.Models.Task = Backbone.RelationalModel.extend({
 
 		// Initialization Traduction task state //
 		app.Models.Task.state[0].traduction = app.lang.planningFenced;
-	   	app.Models.Task.state[1].traduction = app.lang.finished;
-	   	app.Models.Task.state[2].traduction = app.lang.valid;
-	   	app.Models.Task.state[3].traduction = app.lang.toScheduled;
-	   	app.Models.Task.state[4].traduction = app.lang.cancelled;
+		app.Models.Task.state[1].traduction = app.lang.finished;
+		app.Models.Task.state[2].traduction = app.lang.valid;
+		app.Models.Task.state[3].traduction = app.lang.toScheduled;
+		app.Models.Task.state[4].traduction = app.lang.cancelled;
 	},
 
 
@@ -260,15 +260,16 @@ app.Models.Task = Backbone.RelationalModel.extend({
 
 }, {
 
+
 // Task State Initialization //
 state:  [
     {
-        value       : 'open',
+        value       : 'open', // Scheduled //
         color       : 'info',
         traduction  : '',
     },
     {
-        value       : 'done',
+        value       : 'done', // Finish //
         color       : 'success',
         traduction  : '',   
     },
@@ -278,18 +279,18 @@ state:  [
         traduction  : '', 
     },
 	{
-        value       : 'draft',
+        value       : 'draft', // To Schedule //
         color       : 'warning',
         traduction  : '',
     },
     {
-        value       : 'cancelled',
+        value       : 'cancelled', // cancel //
         color       : 'important',
         traduction  : '',  
     },
     {
-        value       : 'absent',
-        color       : '#c3325f', // Congé
+        value       : 'absent', // Congé //
+        color       : '#c3325f', 
         traduction  : '',  
     }
 ]
