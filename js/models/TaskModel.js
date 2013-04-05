@@ -145,6 +145,8 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	  //PYF : using UTC time 
 	  return m ? new Date(Date.UTC(parseInt(m[1],10), parseInt(m[2]-1,10), parseInt(m[3],10), 
 		  parseInt(m[4],10), parseInt(m[5],10), parseInt(m[6],10))) : null;
+//	  return m ? new Date(parseInt(m[1],10), parseInt(m[2]-1,10), parseInt(m[3],10), 
+//			  parseInt(m[4],10), parseInt(m[5],10), parseInt(m[6],10)) : null;
 	},
 
 
@@ -153,13 +155,15 @@ app.Models.Task = Backbone.RelationalModel.extend({
     parse: function(response) {
 		
 		if( response.date_start ) {
-			//var user = app.models.user.toJSON();			
-			response.date_start = moment.utc((this.parseDate(response.date_start)));
+			//var user = app.models.user.toJSON();		
+			response.date_start = moment(this.parseDate(response.date_start));
+			//response.date_start = moment.utc((this.parseDate(response.date_start)));
 			//.add('hours', 1);				
 		}		
 		
 		if( response.date_end ) 
-			response.date_end = moment.utc((this.parseDate(response.date_end)));	
+			response.date_end = moment(this.parseDate(response.date_end));	
+			//response.date_end = moment.utc((this.parseDate(response.date_end)));	
 			
         return response;
     },
@@ -235,6 +239,10 @@ app.Models.Task = Backbone.RelationalModel.extend({
 			app.models.user.getSessionID(),
 			options
 		);
+	},
+	
+	saveTaskDone: function(params, options) {
+		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "saveTaskDone", app.models.user.getSessionID(), options);
 	},
 
 
