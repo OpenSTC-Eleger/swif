@@ -294,7 +294,32 @@ var app = {
             case 'hide':
                 $('#loader, #modal-block').delay(250).fadeOut('slow');
             break;
-        }   
+        }
+    },
+
+
+
+    /** Transform Decimal number to hour:minute
+    */
+    decimalNumberToTime: function(decimalNumber){
+
+        // Check if the number is decimal //
+        if(_.str.include(decimalNumber, '.')){
+            var minutes = _.lpad(((_.rpad(_(decimalNumber).strRight('.'), 2, '0') / 100) * 60), 2, '0');
+            var hour = _(decimalNumber).strLeft('.');
+
+            if(hour == 0){
+                var date = _(minutes).toNumber()+app.lang.minuteShort;
+            }
+            else{
+                var date = hour+'h'+_(minutes).toNumber();    
+            }
+        }
+        else{
+            var date = decimalNumber+'h';
+        }
+        
+        return date;
     },
 
 

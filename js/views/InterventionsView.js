@@ -75,7 +75,7 @@ app.Views.InterventionsView = Backbone.View.extend({
         this.addInfoAboutInter(interventions.models);
 
 
-        // Hack fo reverse the position of the two first elements //
+        // Hack to reverse the position of the two first elements //
         var interventionsState = _.clone(app.Models.Intervention.state);
         var firstElements = _.first(interventionsState, 2);
 
@@ -250,6 +250,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 	},
    
 	
+
 	displayModalDeleteTask: function(e){
 		this.getTarget(e);
 		this.selectedTask = app.collections.tasks.get(this.pos);
