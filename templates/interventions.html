@@ -186,19 +186,24 @@
 											<td><%= task.remaining_hours %>h</td>
 											<!-- Task state -->
 											<td>
+												<!-- To Schedule -->
 												<% if(task.state == app.Models.Task.state[3].value) { %>
 														<span class="label label-<%= app.Models.Task.state[3].color %>"><%= app.Models.Task.state[3].traduction %></span>
 												
+												<!-- Schedule -->
 												<% } else if(task.state == app.Models.Task.state[0].value){ %>
 														<span class="label label-<%= app.Models.Task.state[0].color %>"><%= app.Models.Task.state[0].traduction %></span>
-
+												
+												<!-- Finish -->
 												<% } else if(task.state == app.Models.Task.state[1].value){ 
-														if(task.progress == 100){ %>
+														
+														if(_(task.effective_hours).toNumber(2) <= _(task.planned_hours).toNumber(2)){ %>
 														<span class="label label-<%= app.Models.Task.state[1].color %>"><%= app.Models.Task.state[1].traduction %></span>
 														<% } else  { %>
 															<span class="label label-overrun"><%= app.Models.Task.state[1].traduction %></span>
 														<% } %>
 												
+												<!-- Cancel -->
 												<% } else if(task.state == app.Models.Task.state[4].value){ %>
 														<span class="label label-<%= app.Models.Task.state[4].color %>"><%= app.Models.Task.state[4].traduction %></span>
 												<% } %>
