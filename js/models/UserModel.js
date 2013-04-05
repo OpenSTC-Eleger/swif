@@ -266,7 +266,7 @@ app.Models.User = Backbone.Model.extend({
     /** Check if the user is DST
     */
     isDST: function(){
-        if($.inArray(18, this.getGroups()) > 0){
+        if($.inArray(18, this.getGroups()) != -1){
             return true;
         }
         else{
@@ -278,7 +278,7 @@ app.Models.User = Backbone.Model.extend({
     /** Check if the user is Manager
     */
     isManager: function(){
-        if($.inArray(19, this.getGroups()) > 0){
+        if($.inArray(19, this.getGroups()) != -1){
             return true;
         }
         else{
@@ -290,12 +290,25 @@ app.Models.User = Backbone.Model.extend({
     /** Check if the user is Agent
     */
     isAgent: function(){
-        if($.inArray(17, this.getGroups()) > 0){
+        if($.inArray(17, this.getGroups()) != -1){
+            return true;
+        }
+        else{
+            return false;    
+        }
+    },
+    
+    /** Check if the user belongs to service
+    	    */
+    belongsToService: function(service){
+        if($.inArray(service, this.getServices()) != -1){
             return true;
         }
         else{
             return false;    
         }
     }
+    
+    
 });
 

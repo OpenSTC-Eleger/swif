@@ -20,7 +20,7 @@ app.Router = Backbone.Router.extend({
 
         'demandes-dinterventions'               : 'requestsList',
         'demandes-dinterventions/page:page'     : 'requestsList',
-        'demandes-dinterventions/add'           : 'addRequest',
+        'demandes-dinterventions/add'           : 'detailsRequest',
         'demandes-dinterventions/:id'           : 'detailsRequest',
 
         'taches'               					: 'tasksCheck',
@@ -275,13 +275,15 @@ app.Router = Backbone.Router.extend({
         if(this.checkConnect()){
         	
         	var self = this;
-        	var request = app.collections.requests.get(id);
 
             if(app.collections.places == null){
                 app.collections.places = new app.Collections.Places();
             }
             //load details after places list loaded
-            self.request = request;            
+          	if (id)
+	        	self.request = app.collections.requests.get(id);
+	        else
+	        	self.request = app.models.request.clear();           
            
             app.loader('display');
             app.collections.places.fetch({
@@ -309,13 +311,11 @@ app.Router = Backbone.Router.extend({
 						            		}
 						                    app.collections.claimersContacts.fetch({
 						                        success: function(){
-						                            //if(app.views.requestsDetailsView == null) {
-						                                app.views.requestsDetailsView = new app.Views.RequestDetailsView(self.request, false);
-						                                self.render(app.views.requestsDetailsView);
-//						                            } 
-//						                            else {
-//						                                app.views.requestsDetailsView.initialize(self.request, false);             
-//						                            }
+						                            if(id == undefined)
+						                                app.views.requestsDetailsView = new app.Views.RequestDetailsView(self.request,  true);
+						                            else
+						                                app.views.requestsDetailsView = new app.Views.RequestDetailsView(self.request,  false);
+						                            self.render(app.views.requestsDetailsView);
 						                        },
 						                        error: function(){
 						                            console.log('ERROR - unable to load ClaimersTypes');
@@ -339,90 +339,6 @@ app.Router = Backbone.Router.extend({
     },
     
 
-    /** Add Request
-    */
-    addRequest: function() {
-        
-        // Check if the user is connect //
-        if(this.checkConnect()){
-        	
-        	var self = this;
-           
-
-            if(app.collections.places == null ){
-                app.collections.places = new app.Collections.Places();
-            }
-
-            self.request = app.models.request;
-
-            app.collections.places.fetch({
-                beforeSend: function(){
-                    app.loader('display');
-                },
-                success: function(){
-                
-                    if(app.collections.claimersServices == null ){
-                		app.collections.claimersServices = new app.Collections.ClaimersServices();
-                    }
-                    app.collections.claimersServices.fetch({
-        	            success: function(){
-
-            			if(app.collections.claimers == null ){
-						  app.collections.claimers = new app.Collections.Claimers();
-				        }
-				    
-                    app.collections.claimers.fetch({
-
-					   success: function(){
-
-                            if(app.collections.claimersContacts == null ){
-						      app.collections.claimersContacts = new app.Collections.ClaimersContacts();
-				            }
-				            
-                            app.collections.claimersContacts.fetch({
-
-                                success: function(){
-
-                                    if(app.collections.claimersTypes == null ){
-                                        app.collections.claimersTypes = new app.Collections.ClaimersTypes();
-                                    }
-				                    
-                                    app.collections.claimersTypes.fetch({
-
-					                   success: function(){
-	
-//								if(app.views.requestView != null) {          
-//	            	                app.views.requestView = null  
-//	            	            }
-								            app.views.requestView = new app.Views.RequestDetailsView( self.request, true);
-							                self.render(app.views.requestView);
-
-//	            	            if(app.views.requestView == null) {          
-//	            	                app.views.requestView = new app.Views.RequestDetailsView( request, true);  
-//	            	            }
-//	            	            else{
-//	            	                app.views.requestView.model = request;
-//	            	                app.views.requestView.initialize(request,true);
-//	            	            }
-	
-                        	           },
-                        	           complete: function(){
-                        	               app.loader('hide');
-                        	           }
-				                    });
-				                }
-                            });
-                        },
-                    });
-                    },
-	            });
-            },
-	});
-        }
-        else{
-            this.navigate('login', {trigger: true, replace: true});
-        }
-    },
 
 
 
@@ -520,7 +436,7 @@ app.Router = Backbone.Router.extend({
 	        if (id)
 	        	self.intervention = app.collections.interventions.get(id);
 	        else
-	        	self.intervention = app.models.intervention;
+	        	self.intervention = app.models.intervention.clear();
 	
 	        app.collections.places.fetch({
 	            beforeSend: function(){

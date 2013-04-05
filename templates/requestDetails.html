@@ -1,5 +1,5 @@
 
-<% if ( request.id != null && request.id !=0 ) { %>
+<% if ( !create && request ) { %>
     <h1>
         <%= lang.viewsTitles.requestDetail %> n°<%= request.id %>
         
@@ -9,19 +9,20 @@
                 <span class="label label-<%= state.color %> vertical-align-middle marginLeft"><%= state.traduction %></span>
         <% }} ) %>
     </h1><br />
+    <% if(request.state == app.Models.Request.state[4].value){ %>
+    <div class="row-fluid">
+        <div class="alert alert-error span6">
+            <strong><%= _.capitalize(lang.refusalReason) %>:</strong> <%= request.refusal_reason %>
+        </div>
+    </div>
+	<% } %>
 
 <% } else { %>
     <h1><%= lang.viewsTitles.newRequest %></h1><br />
 <% } %>
 
 
-<% if(request.state == app.Models.Request.state[4].value){ %>
-    <div class="row-fluid">
-        <div class="alert alert-error span6">
-            <strong><%= _.capitalize(lang.refusalReason) %>:</strong> <%= request.refusal_reason %>
-        </div>
-    </div>
-<% } %>
+
 
 <form id="formRequest" action="#" class="form-horizontal container-fluid">
     
@@ -119,7 +120,7 @@
                     <label for="requestName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
 
                     <div class="controls">
-                        <input type="text" id="requestName" name="requestName" value="<%= request.name %>" required="required" />
+                        <input type="text" id="requestName" name="requestName" value="<%= request && request.name? request.name:'' %>" required="required" />
                         <span class="help-inline"></span>
                     </div>
                 </div>
@@ -129,25 +130,11 @@
                     <label for="requestDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
 
                     <div class="controls">
-                        <textarea name="requestDescription" id="requestDescription" rows="5" required="required"><%= request.description %></textarea>
+                        <textarea name="requestDescription" id="requestDescription" rows="5" required="required"><%= request && request.description? request.description:'' %></textarea>
                         <span class="help-inline"></span>
                     </div>
                 </div>
 
-                <!-- Request DeadLine -->
-                <!--  <div class="control-group">
-                    <label class="control-label" for="requestDateDeadline"><%= _.capitalize(lang.dateDeadline) %>:</label>
-                    <div class="controls">
-                        <input 
-                            type="text" class="datePicker" 
-                            id="requestDateDeadline" 
-                            value="<%= (request.date_deadline) != "" ? moment(request.date_deadline, 'YYYY-MM-DD').format('L') : "" %>" 
-                            placeholder="dd/mm/yyyy"
-                            required="required"
-                            readonly="readonly">
-                        <span class="help-inline"></span>
-                    </div>
-                </div>-->
 
                 <!-- Request Contact Service -->
                 <div class="control-group">
@@ -174,7 +161,7 @@
                     <label for="requestPlacePrecision" class="control-label"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
 
                     <div class="controls">  
-                         <textarea name="requestPlacePrecision" id="requestPlacePrecision" rows="2"><%= request.site_details!=false?request.site_details:'' %></textarea>
+                         <textarea name="requestPlacePrecision" id="requestPlacePrecision" rows="2"><%= request && request.site_details!=false?request.site_details:'' %></textarea>
                         <span class="help-inline"></span>                           
                     </div>
                 </div>
