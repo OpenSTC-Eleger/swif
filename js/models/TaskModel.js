@@ -252,6 +252,10 @@ app.Models.Task = Backbone.RelationalModel.extend({
 			options
 		);
 	},
+	
+	saveTaskDone: function(params, options) {
+		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "saveTaskDone", app.models.user.getSessionID(), options);
+	},
 
 
 }, {

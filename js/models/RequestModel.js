@@ -211,11 +211,10 @@ app.Models.Request = Backbone.RelationalModel.extend({
 			options
 		);
 	},
-
-
-
-
-
+	
+	valid: function(params, options) {
+		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "valid", app.models.user.getSessionID(), options);
+	},
 
 }, {
 

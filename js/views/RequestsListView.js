@@ -112,7 +112,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 			console.debug(requests);
 		
 			$(self.el).html(template);
-			//$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
+			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 
 			// Display filter on the table //
 			if(sessionStorage.getItem(self.filters) != null){
@@ -260,84 +260,35 @@ app.Views.RequestsListView = Backbone.View.extend({
 		
 	},
 
-
-
 	/** Change the request state to ConfirmDST
 	*/
 	validRequest: function(e){
-		
 		e.preventDefault();
+		
+	    var duration = $("#taskHour").val().split(":");
+	    var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
+	    
 		params = {
-				state: app.Models.Request.state[2].value,
+				//ask_id: this.model.getId(),	
+				request_state: app.Models.Request.state[2].value,
+				project_state: app.Models.Intervention.state[1].value,
 		        description: $('#requestNote').val(),
-		        date_deadline: $('#requestDeadline').val(),
+		        //date_deadline: $('#requestDeadline').val(),
 		        intervention_assignement_id: $('#requestAssignement').val(),
-		        service_id: $('#requestService').val(),		
+		        service_id: $('#requestService').val(),	
+				site1: this.model.getSite1()[0],
+				planned_hours: mDuration.asHours(),				
 		};
-		
-//	     var duration = $("#taskHour").val().split(":");
-//	     var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] })
-//	     
-//	     var params = {
-//	         project_id: this.pos,
-//	         name: this.$('#taskName').val(),
-//	         category_id: input_category_id,	
-//	         //equipment_id: input_equipment_id,
-//	         planned_hours: mDuration.asHours(),
-//	     };
-//	     
-//	    app.models.task.save(0,params,$('#modalAddTask'), this, null);
-		
-		var self = this;
-		self.params = params
-		this.model.save(params, {
-				    success: function (data) {
-					        console.log(data);
-					        if(data.error){
-					    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-					        }
-					        else{					        	
-					            console.log('Success VALID REQUEST');
-					            $('#modalValidRequest').modal('hide');
-					            self.model.update(self.params);	
-					            //TODO : la relation avec service ne fonctionnant pas on met à jour un id/nom
-					            //self.model.setService(app.views.selectServicesView.getSelected());
-					            var service = app.views.selectServicesView.getSelected().toJSON()	;
-					            self.model.setService([service.id,service.name]);
-					            self.model.setAssignement(app.views.selectAssignementsView.getSelected());
-					            //app.collections.requests.get(self.pos).update(self.model);
-					            //TODO : quand la demande a été validée, peut la refuser pour la revalider : effacer l'inter au refus
-					            // puis la récréer à la deuxième validation . POur le moment les actions ne sont plus disponibles quand le statut est 'validé'
-//					            if( self.model.getInterventions().size()==0 )
-					            	self.createIntervention();
-					            	self.model.sendEmail(null);
-//					            else
-//					            	self.render();
-					        }
-					       
-					    },
-					    error: function () {
-							console.log('ERROR - Unable to valid the Request - RequestsListView.js');
-					    },           
-					},false);
-		
-	},
-
-
-
-	createIntervention: function() {
-		var self = this;
-		
-		params = {
-				name: this.model.getName(),
-				state: app.Models.Intervention.state[1].value,
-		        date_deadline: this.model.getDeadline_date(),
-		        site1: this.model.getSite1()[0],
-		        service_id: this.model.getService()[0],
-		        ask_id: this.model.getId(),		
-		};
-		
-		app.models.intervention.saveAndRoute(0,params,null, this, '#demandes-dinterventions');	
+	    
+	    this.model.valid(params,
+			{
+				success: function(data){
+					$('#modalValidRequest').modal('hide');
+					route = Backbone.history.fragment;
+					Backbone.history.loadUrl(route);
+				}
+			}
+		);
 	},
 
 
