@@ -32,7 +32,7 @@
 	<% if(requests.length == 0) { %>
 		<div class="tableToolbar">
 			<div class="alert alert-info">
-				<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>
+				<i class="icon-info-sign icon-large"></i>&nbsp;<%= lang.infoMessages.noRequest %>
 			</div>
 		</div>
 	<% } %>
@@ -160,27 +160,36 @@
 			    			<span class="label label-<%= app.Models.Request.state[1].color %>"><%= app.Models.Request.state[1].traduction %></span>
 
 						<!-- Valid state -->
-			    		<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
+						<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
 			    			<span class="label label-<%= app.Models.Request.state[2].color %>" rel="tooltip"
 								data-original-title="<%= requests[i].infoMessage %>">
 				    			<%= app.Models.Request.state[2].traduction %>
-				    		</span>
+							</span>
 
-			    		<!-- Closed state -->
+						<!-- Closed state -->
 			    		<% } else if(requests[i].state == app.Models.Request.state[3].value) { %>
-							<span class="label" rel="tooltip" data-original-title="<%= requests[i].infoMessage %>">
-				    			<%= app.Models.Request.state[3].traduction %>
-				    		</span>
+							
+							<!-- Check if the Intervention is cancelled or not -->
+							<% if(requests[i].intervention_ids[0].state == app.Models.Intervention.state[2].value) { %>
+								<span class="label" rel="tooltip" data-original-title="<%= requests[i].infoMessage %>">
+									<%= app.Models.Request.state[3].traduction %>
+								</span>
+							<% } else { %>
+
+								<span class="label label-<%= app.Models.Request.state[4].color %>" rel="tooltip" data-original-title="<%= requests[i].intervention_ids[0].cancel_reason %>">
+									<%= app.Models.Request.state[3].traduction %>
+								</span>
+							<% } %>
 
 						<!-- Cancel state -->
-			    		<% } else if (requests[i].state == app.Models.Request.state[4].value) { %> 
-			    			<span class="label label-<%= app.Models.Request.state[4].color %>" rel="tooltip"
+						<% } else if (requests[i].state == app.Models.Request.state[4].value) { %> 
+							<span class="label label-<%= app.Models.Request.state[4].color %>" rel="tooltip"
 				    			data-original-title="<%= requests[i].refusal_reason  +'\n('+ modifydBy +')'%>">
 				    			<%= app.Models.Request.state[4].traduction %>
-				    		</span>
+							</span>
 
-			    		<% } %>
-				   	</td>
+						<% } %>
+					</td>
 
 				   	<!-- Action column -->
 				   	<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
