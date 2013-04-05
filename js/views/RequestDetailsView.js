@@ -57,15 +57,16 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 			var self = this;
 			// Retrieve the template // 
 			$.get("templates/" + this.templateHTML + ".html", function(templateData){
-					
+				
 					var template = _.template(templateData, {
+						create: self.create,
 						lang: app.lang,
 						request: self.model.toJSON(),
 						requestsState: app.Models.Request.state
 					});
 					
 					$(self.el).html(template);		     
-	
+
 
 					// Enable the datePicker //
 //					$('.datePicker').datepicker({

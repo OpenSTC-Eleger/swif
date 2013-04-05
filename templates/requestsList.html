@@ -186,7 +186,8 @@
 				   	   	<td class="align">
 
 						<!-- If the request is already associated with an intervention we not displaying the action buttons -->
-			   	   		<% if(requests[i].intervention_ids.length == 0){ %>
+			   	   		<% if(requests[i].intervention_ids.length == 0
+			   	   				&& app.models.user.belongsToService(requests[i].service_id[0])){ %>
 					   		
 					   		<!-- Wait state -->
 							<% if(requests[i].state == app.Models.Request.state[0].value) { %>
