@@ -46,6 +46,7 @@
 	"agent"					: "agent",
 	"agents"				: "agents",
 	"team"					: "équipe",
+	"minuteShort"			: "min",
 	"teams"					: "équipes",
 	"email"					: "email",
 	"organization" 			: "organisation",
