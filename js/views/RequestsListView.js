@@ -28,6 +28,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 		'submit #formRefuseRequest' 			: 'refuseRequest',
 		'submit #formConfirmDSTRequest' 		: 'confirmDSTRequest',
 
+		'change #createAssociatedTask' 			: 'accordionAssociatedTask',
+
 		'click #filterStateRequestList li:not(.disabled) a' 	: 'setFilter'
 	},
 
@@ -379,6 +381,19 @@ app.Views.RequestsListView = Backbone.View.extend({
 			app.router.navigate('demandes-dinterventions', {trigger: true, replace: true});
 		}
 		
+	},
+
+
+
+	/** Display or Hide Create associated Task Section
+	*/
+	accordionAssociatedTask: function(event){
+		event.preventDefault();
+
+		// Toggle Slide Create associated task section //
+		$('fieldset.associated-task').stop().slideToggle(function(){
+			$('#modalValidRequest div.modal-body').animate({scrollTop: $('#modalValidRequest div.modal-body').height()}, 400);
+		});
 	},
 
 

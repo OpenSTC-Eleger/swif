@@ -147,6 +147,7 @@
 		"updateTeam" 		: "mettre à jour l'équipe",
 		"enclosePlanning" 	: "cloturer la planification",
 		"openPlanning" 		: "Remettre en planification",
+		"createAssociatedTask" : "Créer la tâche associée",
 		"save"				: "enregistrer",
 		"reopen"			: "Réintegrer",
 		"cancel"			: "annuler",

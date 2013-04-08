@@ -398,6 +398,7 @@ app.Views.TasksListView = Backbone.View.extend({
         $('#modalAddTask').modal();
 	},
 	
+	
 	fillDropdownEquipment: function(e){
 		e.preventDefault();
 		var target = $(e.target).attr('value');

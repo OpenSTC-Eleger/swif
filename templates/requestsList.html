@@ -371,30 +371,45 @@
                 </div>
 			</div>-->
 
-			<!-- Request Note description  -->
-            <div class="control-group">
-                <label for="requestNote" class="control-label"><%= _.capitalize(lang.note) %>:</label>
-
-                <div class="controls">
-                    <textarea id="requestNote" rows="5" required="required"></textarea>
-                    <span class="help-inline"><a href="#"><i class="icon-plus"></i> Créer la tâche associée</a></span>
-                </div>
-            </div>
-
-			<!-- Estimated hour -->
+			<!-- Request Note description -->
 			<div class="control-group">
-				<label for="taskHour" class="control-label"><%= lang.estimatedHours %>:</label>
+				<label for="requestNote" class="control-label"><%= _.capitalize(lang.note) %>:</label>
+
 				<div class="controls">
-					<div class="input-append bootstrap-timepicker" >							
-						<input type="text" value="01:00" class="timepicker-default input-small" id='taskHour' required="required">
-						<span class="add-on"><i class="icon-time"></i></span>
-					</div>
+					<textarea id="requestNote" rows="5" required="required"></textarea>
+					<span class="help-inline"></span>
 				</div>
 			</div>
 
+
+			<!-- Create Associated Task Link -->
+			<div class="control-group">
+				<div class="controls">
+					<label class="checkbox" for="createAssociatedTask"><input type="checkbox" id="createAssociatedTask"> <%= lang.actions.createAssociatedTask %></label>
+				</div>
+			</div>
+
+
+			<!-- Create associate task -->
+			<fieldset class="associated-task hide">
+				<legend><%= lang.aboutTheTask %></legend>
+
+				<!-- Estimated hour -->
+				<div class="control-group">
+					<label for="taskHour" class="control-label"><%= lang.estimatedHours %>:</label>
+					<div class="controls">
+						<div class="input-append bootstrap-timepicker" >							
+							<input type="text" value="01:00" class="timepicker-default input-small" id='taskHour' required="required">
+							<span class="add-on"><i class="icon-time"></i></span>
+						</div>
+					</div>
+				</div>
+
+			</fieldset>
+
 	    </form>
 	</div>
-	
+
 	<div class="modal-footer">
 		<button type="submit" form="formValidRequest" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
 		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
