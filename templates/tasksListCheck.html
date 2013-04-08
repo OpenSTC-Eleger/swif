@@ -385,53 +385,50 @@
 			</div>
 
 
-			<!-- Start date -->
+			<!-- Start date / Start Hour -->
 			<div class="control-group">
 				<label class="control-label" for="startDate"><%= _.capitalize(lang.dateStart) %>:</label>
-               	<div class="controls">
-					<div class="input-append">
-                        <input type="text" class="datepicker taskInput input-small" id="startDate" size="20" value="" required="required">
-						<span class="add-on"><i class="icon-calendar"></i></span>
-                	</div>
+               	<div class="control-group">
+
+	               <div class="controls">
+						<!-- Start date -->
+						<div class="input-append">
+	                        <input type="text" class="datepicker taskInput input-small" id="startDate" size="20" value="" required="required">
+							<span class="add-on"><i class="icon-calendar"></i></span>
+	                	</div>
+
+						<!-- Start hour -->
+	                	<div class="input-append bootstrap-timepicker" >							
+					    	<input type="text" class="timepicker-default input-small taskInput" id='startHour' required="required">
+					    	<span class="add-on"><i class="icon-time"></i></span>
+						</div>
+	                </div>
+
                 </div>
             </div>
 
-            <!-- End date -->
+			<!-- Start date / Start Hour -->
 			<div class="control-group">
 				<label class="control-label" for="endDate"><%= _.capitalize(lang.dateEnd) %>:</label>
-				<div class="controls">
-                	<div class="input-append">
-                		<input type="text" class="datepicker taskInput input-small" id="endDate" size="20" value="" placeholder="dd/mm/yyyy" required="required">
-						<span class="add-on"><i class="icon-calendar"></i></span>
+				<div class="control-group">
+
+					<div class="controls">
+						<!-- End date -->
+						<div class="input-append">
+							<input type="text" class="datepicker taskInput input-small" id="endDate" size="20" value="" placeholder="dd/mm/yyyy" required="required">
+							<span class="add-on"><i class="icon-calendar"></i></span>
+						</div>
+						
+						<!-- End Hour -->
+						<div class="input-append bootstrap-timepicker">
+						    <input type="text" class="timepicker-default input-small taskInput" id='endHour' required="required">
+						    <span class="add-on"><i class="icon-time"></i></span>
+						</div>
+
 					</div>
+
 				</div>
 			</div>
-                
-            
-            <!-- Start Hour -->
-          	<div class="control-group">
-            	<label for="startHour" class="control-label"><%= _.capitalize(lang.startHour) %></label>
-
-            	<div class="controls">
-					<div class="input-append bootstrap-timepicker" >							
-					    <input type="text" class="timepicker-default input-small taskInput" id='startHour' required="required">
-					    <span class="add-on"><i class="icon-time"></i></span>
-					</div>
-				</div>
-			</div>
-             
-			<!-- End Hour -->
-			<div class="control-group">
-				<label for="endHour" class="control-label"><%= _.capitalize(lang.endHour) %></label>
-
-				<div class="controls">
-					<div class="input-append bootstrap-timepicker" >
-					    <input type="text" class="timepicker-default input-small taskInput" id='endHour' required="required">
-					    <span class="add-on"><i class="icon-time"></i></span>
-					</div>
-				</div>
-			</div>
-
 
 			<!-- Vehicle -->
 			<div class="control-group">
