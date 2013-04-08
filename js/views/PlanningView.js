@@ -60,13 +60,18 @@ app.Views.PlanningView = Backbone.View.extend({
         console.log('Planning view');
     },
     
+
+
     beforeRender : function()  {
     	app.loader('display');
     },
     
+
+
     afterRender : function()  {
     	app.loader('hide');
     },
+
 
 
     /** Display the view
@@ -117,10 +122,10 @@ app.Views.PlanningView = Backbone.View.extend({
         		}
         	}); 
 
-     	
+
             var interventions = app.collections.interventions.models;
             console.log(app.collections.interventions);
-                        
+
             // Collection Filter if not null //
 			if(sessionStorage.getItem(self.filters) != null){
 				var interventions = _.filter(interventions, function(item){ 
@@ -128,16 +133,17 @@ app.Views.PlanningView = Backbone.View.extend({
 					return itemJSON.state == sessionStorage.getItem(self.filters);
 				});
 			}
-            
+
            //Order by date start 
             var interventionsSortedArray = _.sortBy(interventions, function(item){ 
                     	return item.attributes.date_start; 
             });
-            
+
             interventionSorted = new app.Collections.Interventions(interventionsSortedArray);
 
             console.log(interventionSorted.toJSON());
 
+            
             var template = _.template(templateData, {
         		lang: app.lang,
         		interventionsState: app.Models.Intervention.state,
@@ -151,23 +157,13 @@ app.Views.PlanningView = Backbone.View.extend({
             self.initDragObject();
 
             $('*[data-spy="affix"]').affix();            
-            $('*[rel="tooltip"]').tooltip({placement: "left"});
+            $('*[rel="tooltip"]').tooltip({placement: 'left'});
 
             $('.switch').bootstrapSwitch();
             
             $('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 
-            //TODO : refresh planning TEST
-//            if( Backbone.history.fragment=="planning" ) { ) {
-//            	// Animated Scroll //                
-//            	var selector = "#listAgents li a[href=\"#agents/" + self.agent + "\"]";
-//		        //var elementID = $(selector); //.attr("href");  
-//		        
-//                $('#listTeams li.active').removeClass('active');
-//                $(selector).parent('li').addClass('active');
-//                //Backbone.history.loadUrl($(selector).attr("href"));
-//                
-//            }
+
 
             // If a plannig was Selected //
             if(sessionStorage.getItem(self.sstoragePlanningSelected) != null){
@@ -232,7 +228,7 @@ app.Views.PlanningView = Backbone.View.extend({
         this.model = model;
         return this;
     },    
-    	
+
 
 
     /** Calendar Initialization
@@ -251,6 +247,8 @@ app.Views.PlanningView = Backbone.View.extend({
 				new app.Views.EventsView(self,o,false).render();
 			});
     },
+
+
 
     /** Make the external event Draggable
     */
@@ -285,15 +283,14 @@ app.Views.PlanningView = Backbone.View.extend({
 			    appendTo: '#app',
 			    opacity: 0.5,
 			    //helper: "clone",
-			    
 			    reverting: function() {
 					console.log('reverted');
 				},
-				
+
 
 			});
 
-    	});	
+    	});
     },
 
 
@@ -304,8 +301,8 @@ app.Views.PlanningView = Backbone.View.extend({
         
         // Retrieve the ID of the intervention //
         var link = $(e.target);
-        
-  
+
+
         if(link.attr('href') == "#modalCancelInter"){
         	$('#motifCancel').val('');
             var id = _(link.parent('p').siblings('a').attr('href')).strRightBack('_');
@@ -361,7 +358,9 @@ app.Views.PlanningView = Backbone.View.extend({
 
 		app.models.intervention.saveAndRoute(id, params, null, this);
 	},
-	
+
+
+
     /** Delete intervention
     */
     cancelInter: function(e){
@@ -376,6 +375,7 @@ app.Views.PlanningView = Backbone.View.extend({
 			}
 		);
     },
+
 
 
     /** Delete task
@@ -408,6 +408,8 @@ app.Views.PlanningView = Backbone.View.extend({
 
     },
 
+
+
  	getTarget:function(e) {    	
     	e.preventDefault();
 	    // Retrieve the ID of the intervention //
@@ -415,7 +417,9 @@ app.Views.PlanningView = Backbone.View.extend({
 		this.pos =  _(link.parents('tr').attr('id')).strRightBack('_');
 		
     },
-    
+
+
+
     /** Display the form to add a new Task
     */
     displayFormAddTask: function(e){
@@ -433,7 +437,7 @@ app.Views.PlanningView = Backbone.View.extend({
 	        	});
 	        	return  interJSON.service_id && $.inArray(interJSON.service_id[0], services )!=-1;
 	       	});
-		}        
+		}
 		
 		app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
 			collection: categoriesFiltered==null?app.collections.categories: new app.Collections.Categories(categoriesFiltered)
@@ -441,7 +445,7 @@ app.Views.PlanningView = Backbone.View.extend({
 		app.views.selectListAssignementsView.clearAll();
 		app.views.selectListAssignementsView.addEmptyFirst();
 		app.views.selectListAssignementsView.addAll();	
-		
+
 //		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipment"), collection: app.collections.equipments})
 //		app.views.selectListEquipmentsView.clearAll();
 //		app.views.selectListEquipmentsView.addEmptyFirst();
@@ -454,11 +458,12 @@ app.Views.PlanningView = Backbone.View.extend({
     
 	//TODO : Abstraire le code ==> displayFormAddIntervention,renderService,fillDropdownService,saveIntervention 
    	// déjà dans la view InterventionDetailsView 
-	
+
+
 	/** Display the form to add a new Intervention
     */
     displayFormAddIntervention: function(e){
-    	
+
    		//search no technical services
 		var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
 			return service.attributes.technical != true 
@@ -482,29 +487,34 @@ app.Views.PlanningView = Backbone.View.extend({
         this.pos = e.currentTarget.id;
         $('#modalAddInter').modal();
    },
-	
-	renderService: function ( service ) {
+
+
+
+    renderService: function ( service ) {
 		if( service!= null ) {
 			app.views.selectListServicesView.setSelectedItem( service );
 			places = app.collections.places.models;
 			var placesFiltered = _.filter(places, function(item){ 
 				return item.attributes.service[0] == service; 
-	        });
+            });
 			app.views.selectListPlacesView.collection = new app.Collections.Places(placesFiltered);
 			app.views.selectListPlacesView.clearAll();
 			app.views.selectListPlacesView.addEmptyFirst();
 			app.views.selectListPlacesView.addAll();
 			
-		}				
+		}
 	},
-	
+
+
+
 	fillDropdownService: function(e){
 		e.preventDefault();
 		$('#interventionPlace').val('');
 		this.renderService($(e.target).attr('value'));
-	}, 
-	  
-    
+	},
+
+
+
     /** Save the Task
     */
     saveTask: function(e){
@@ -542,62 +552,65 @@ app.Views.PlanningView = Backbone.View.extend({
 	     
 	    app.models.task.save(0,params,$('#modalAddTask'), this, null);
    },
-   
-	
+
+
+
 	/** Save the intervention */
     saveIntervention: function (e) {
-	     
+
     	e.preventDefault();
 
-	     var self = this;
+        var self = this;
 	     
-	     input_service_id = null;
-	     if ( app.views.selectListServicesView && app.views.selectListServicesView.getSelected())
-	    	 input_service_id = app.views.selectListServicesView.getSelected().toJSON().id;
+        input_service_id = null;
+        if ( app.views.selectListServicesView && app.views.selectListServicesView.getSelected())
+            input_service_id = app.views.selectListServicesView.getSelected().toJSON().id;
 	     
-	     var params = {	
-		     name: this.$('#interventionName').val(),
-		     description: this.$('#interventionDescription').val(),
-		     state: this.$('#isTemplate').is(':checked')?"template":"open",
-//		     active: this.$('#isTemplate').is(':checked')?false:true,
-		     //date_deadline: this.$('#interventionDateDeadline').val(),
-		     service_id: input_service_id,
-		     site1: this.$('#interventionPlace').val(),
-		     site_details: this.$('#interventionPlacePrecision').val(),
-	     };
-	     
-	    
-	    app.models.intervention.saveAndRoute(0,params,$('#modalAddInter'), this, "#planning");
+        var params = {	
+		    name: this.$('#interventionName').val(),
+		    description: this.$('#interventionDescription').val(),
+		    state: this.$('#isTemplate').is(':checked')?"template":"open",
+            // active: this.$('#isTemplate').is(':checked')?false:true,
+            // date_deadline: this.$('#interventionDateDeadline').val(),
+            service_id: input_service_id,
+            site1: this.$('#interventionPlace').val(),
+            site_details: this.$('#interventionPlacePrecision').val(),
+        };
+
+        app.models.intervention.saveAndRoute(0,params,$('#modalAddInter'), this, "#planning");
     },
-    
+
+
+
 	saveNewState: function(params, element) {
 		var self = this;
 		self.element = element;
 		self.params = params
 		this.selectedInter.save(params, {
-				    success: function (data) {
-					        console.log(data);
-					        if(data.error){
-					    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-					        }
-					        else{					        	
-					            console.log('NEW STATE INTER SAVED');
-					            if( self.element!= null )
-					            	self.element.modal('hide');
-					            self.selectedInter.update(self.params);
-					            app.collections.interventions.add(self.selectedInter);
-					            self.render();
-					        }
-					    },
-					    error: function () {
-							console.log('ERROR - Unable to valid the Inter - InterventionView.js');
-					    },           
-					},false);
+		    success: function (data) {
+			        console.log(data);
+			        if(data.error){
+			    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+			        }
+			        else{
+			            console.log('NEW STATE INTER SAVED');
+			            if( self.element!= null )
+			            	self.element.modal('hide');
+			            self.selectedInter.update(self.params);
+			            app.collections.interventions.add(self.selectedInter);
+			            self.render();
+			        }
+			    },
+			    error: function () {
+					console.log('ERROR - Unable to valid the Inter - InterventionView.js');
+			    },           
+			},false);
 	},
-	
-	
+
+
+
 	/** Filter Request
-		*/
+    */
 	setFilter: function(e){
 		
 		event.preventDefault();
@@ -615,5 +628,6 @@ app.Views.PlanningView = Backbone.View.extend({
 		}
 		this.render();
 	},
+
 });
 

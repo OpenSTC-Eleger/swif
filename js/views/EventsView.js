@@ -240,7 +240,7 @@ app.Views.EventsView = Backbone.View.extend({
 //				    //week: "d { [ MMM] '-' d} MMM yyyy",
 //				    week: "'Semaine ' W '<small class=visible-desktop> du' d { [ MMM] 'au' d} MMM yyyy '</small>'",
 //				},
-				allDayText: 'Journée entière',
+				allDayText: 'Journée',
 				//axisFormat: 'H:mm',
 				//timeFormat: 'H:mm',
 				slotMinutes: 30,
