@@ -85,6 +85,7 @@
 				</ul>
 			</div>
 
+
 	  	</div>
 	</div>
 	<!-- /List Officer/Teams -->
@@ -112,11 +113,12 @@
 											color = state.color;
 										}
 									});	
+
 								
 									if( inter.state=='template') { %>
-										<span class="badge <%= (color != '' ? 'badge-'+color : '') %> pull-right"><%= inter.total_hours %>h</span>
+										<span class="badge <%= (color != '' ? 'badge-'+color : '') %> pull-right">cumul<%= inter.total_hours %>h</span>
 									<% } else if( inter.planned_hours != false  ) {%>
-										<span class="badge <%= (color != '' ? 'badge-'+color : '') %> pull-right">cumul <%= inter.planned_hours %>h</span>	
+										<span class="badge <%= (color != '' ? 'badge-'+color : '') %> pull-right"><%= inter.planned_hours %>h</span>	
 									<% } else {%>
 										<span class="badge <%= (color != '' ? 'badge-'+color : '') %> pull-right"><%= "Aucunes tâches" %></span>								
 									<% } 

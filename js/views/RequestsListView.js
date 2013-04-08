@@ -282,6 +282,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		        service_id: $('#requestService').val(),	
 				site1: this.model.getSite1()[0],
 				planned_hours: mDuration.asHours(),
+				create_task: $('#createAssociatedTask').is(':checked'),
 		};
 	    
 	    this.model.valid(params,
