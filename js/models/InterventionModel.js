@@ -172,6 +172,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 	cancel: function(cancel_reason, options) {
 		var params = {}
 		params.state = app.Models.Intervention.state[4].value;
+		params.email_text = app.Models.Intervention.state[4].traduction;
 		params.cancel_reason = cancel_reason;
 		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
 	}
