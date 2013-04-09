@@ -98,12 +98,129 @@
 	<!-- Interventions List -->
 	<div class="span3">
 
-	<% if( _.size(interventions) > 0 ) { %>				
-		<aside class="accordion" id="accordionInter" style="overflow-y: scroll; overflow-x: hidden; max-height: 590px; margin-bottom: 0;">
+	<% if( _.size(interventions) > 0 ) { %>
+		
+		<aside class="accordion" id="accordionInter" style="overflow-y: scroll; max-height: 590px; margin-bottom: 0;">
+
+			<% _.each(interventions, function (intervention, i) { %>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a href="#collapse_<%= intervention.id %>" class="accordion-toggle no-outline" 
+						   data-toggle="collapse" data-parent="#accordionInter"  
+						   rel="popover" data-placement="right" data-html="true" data-title="<%= intervention.name %>" 
+						   data-content="<i class='icon-map-marker'></i>&nbsp; <%= intervention.site1[1] %>" data-delay="400">
+							
+							<i class="icon-pushpin">&nbsp;&nbsp;</i><span><%= _(intervention.name).truncate(25) %></span>
+
+							<!-- state - To Scheduled -->
+							<% if(intervention.state == app.Models.Intervention.state[1].value){ %>
+								<small class="label label-<%= app.Models.Intervention.state[1].color %> pull-right">
+									<%= app.Models.Intervention.state[1].traduction %>
+								</small>
+
+							<!-- state - Scheduled -->
+							<% } else if(intervention.state == app.Models.Intervention.state[0].value){ %>
+								<small class="label label-<%= app.Models.Intervention.state[0].color %> pull-right">
+									<%= app.Models.Intervention.state[0].traduction %>
+								</small>
+
+							<!-- state - Pending -->
+							<% } else if(intervention.state == app.Models.Intervention.state[3].value){ %>
+								<small class="label label-<%= app.Models.Intervention.state[3].color %> pull-right">
+									<%= app.Models.Intervention.state[3].traduction %>
+								</small>
+
+							<!-- state - Template -->
+							<% } else if(intervention.state == app.Models.Intervention.state[5].value){ %>
+								<small class="label label-<%= app.Models.Intervention.state[5].color %> pull-right">
+									<%= app.Models.Intervention.state[5].traduction %>
+								</small>
+							<% } %>
+						</a>
+					</div>
+
+					<div id="collapse_<%= intervention.id %>" class="accordion-body collapse">
+						<div class="accordion-inner">
+
+							<!-- Check if there is some tasks -->
+							<% if(intervention.tasks.length != 0) { %>
+
+								<!-- Display all task of the Intervention -->
+								<ul class="unstyled tasks">
+								<% 
+									var allPlanned = true;
+									_.each(intervention.tasks, function (task, i) { %>
+
+										<!-- To Schedule -->
+										<% if(task.state == app.Models.Task.state[3].value) { %>
+										<li id="task_<%= task.id %>" class="external-event">
+											<i class="icon-chevron-right"></i> <%= task.name %>
+											<small class="badge badge-<%= app.Models.Task.state[3].color %> pull-right"><%= task.planned_hours %>h</small>
+										</li>
+								
+										<!-- Schedule -->
+										<% } else if(task.state == app.Models.Task.state[0].value){ %>
+										<li id="task_<%= task.id %>" class="external-event disabled">
+											<i class="icon-time" rel="tooltip" data-placement="top" data-original-title="<%= moment(task.date_start).format('LLL') %>"></i>&nbsp;
+											<%= task.name %> <small class="badge badge-<%= app.Models.Task.state[0].color %> pull-right"><%= task.planned_hours %>h</small>
+										</li>
+										<% } %>
+
+								<%	}); %>
+							<% } else { %>
+
+								<!-- No task to display -->
+								<div class="alert alert-info">
+									<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTaskForIntervention %>.
+
+								</div>
+							<% } %>
+							</ul>
+
+							<!-- Intervention Action -->
+							<div class="div-actions">
+								
+								<!-- Add Task -->
+								<button class="btn btn-primary btn-small no-outline addTaskPlanning" id="<%= intervention.id %>" rel="tooltip" 
+										data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="right"
+									<% if(intervention.state != app.Models.Intervention.state[1].value) { %>
+										disabled
+									<% } %>>
+									<i class="icon-plus"></i>
+								</button>
+
+								<!-- Switch button - To Scheduled / Scheduled -->
+								<% if(_.size(intervention.tasks) > 0){ %>
+												
+									<div class="switch switch-small calendarSwitch pull-right" data-on-label="<%= _.capitalize(lang.planningFenced) %>" data-off-label="<%= _.capitalize(lang.toScheduled) %>" data-on="primary" data-off="warning">
+										
+										<input type="checkbox" 
+											<% if(allPlanned == true && 
+												(intervention.state == app.Models.Intervention.state[0].value || intervention.state == app.Models.Intervention.state[3].value)){ %>
+												checked
+												<% } %>
+
+											<% if(allPlanned == false){ %>
+												disabled
+											 <% } %>
+											/>
+									</div>
+
+								<% } %>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			<% }) %>
+
+		</aside>
+		
+		<!--<aside class="accordion" id="accordionInter" style="overflow-y: scroll; overflow-x: hidden; max-height: 590px; margin-bottom: 0;">
 
 			<% _.each(interventions, function (inter, i) { %>
 				<div class="accordion-group">
-					<div class="accordion-heading">
+					<div class="accordion-heading" rel="popover" data-content="<h1>Coucouc</h1><br />liste des informationslol">
 						<a class="accordion-toggle no-outline" data-toggle="collapse" data-parent="#accordionInter" href="#collapse_<%= inter.id %>">
 							<i class="icon-pushpin"></i>&nbsp; <strong><%= inter.name %></strong>
 								<% 
@@ -129,9 +246,7 @@
 							<a href="#interventions/<%= inter.id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
 							<% if( inter.state == app.Models.Intervention.state[1].value ) { %>
 								<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.cancel) %></a>
-							<% } else if( inter.state == app.Models.Intervention.state[4].value ) { %>
-								<a href="#" class="buttonReopenInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.reopen) %></a>
-							<%	} %> 
+							<% } %> 
 						</p>
 
 					</div>
@@ -143,7 +258,7 @@
 							<div class="accordion-inner">
 						
 								<ul class="unstyled tasks">
-								<!-- Loop Each Tasks -->
+								<!-- Loop Each Tasks
 								<% 
 									var allPlanned = true;
 									
@@ -197,7 +312,7 @@
 											</button>
 
 
-											<!-- Switch button - To Scheduled / Scheduled -->
+											<!-- Switch button - To Scheduled / Scheduled 
 											<% if(_.size(inter.tasks) > 0){ %>
 												
 												<span><%= inter.state %></span>||<span><%= allPlanned %></span>
@@ -223,7 +338,7 @@
 						</div>
 						<% }) %>
 		
-		</aside>
+		</aside>-->
 	<% }else { %>
 
 		<!-- No interventions to display -->

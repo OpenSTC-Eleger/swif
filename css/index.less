@@ -190,34 +190,16 @@ section.calendarContainer:not(:first-child){
 #accordionInter div.accordion-group{
 	border-color: darken(@grayLighter, 10%);
 }
-#accordionInter div.accordion-heading{
-	min-height: 40px;
-	margin: 0;
-	padding-top: 3px;
-	padding-bottom: 3px;
-}
-#accordionInter div.accordion-heading a.accordion-toggle{
-	padding-bottom: 0px;
-}
 #accordionInter div.accordion-heading:hover{
-	
-	background-color: @grayLighter;
-	 p.intervention-actions{
+
+	background-color: @popoverTitleBackground;
+	p.intervention-actions{
 		visibility: visible;
 	}
 }
 
-#accordionInter div.accordion-inner{
-	background-color: @white;
-}
 #accordionInter div.accordion-body.in{
-
-	div.accordion-inner{
-		background-color: @grayLighter;
-	}
-	border-bottom: 1px solid @grayLight;
-	border-left: 1px solid @grayLight;
-	border-right: 1px solid @grayLight;	
+	border-left: 3px solid @blue;
 }
 
 ul.tasks li.external-event{
@@ -232,11 +214,8 @@ li.external-event.disabled{
 		margin-right: 5px;
 	}
 }
-li.external-event.disabled:hover{
-	background-color: @grayLighter;
-}
 li.external-event:hover{
-	background-color: @white;
+	background-color: @grayLighter;
 	.border-radius(10px);
 }
 div.div-actions{
