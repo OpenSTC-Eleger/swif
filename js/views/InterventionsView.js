@@ -186,7 +186,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 
         // Reset the default visibility //
         $('tr.expend').css({ display: 'none' }).removeClass('expend');
-        $('tr.row-object').css({ opacity: '0.5'});
+        $('tr.row-object').css({ opacity: '0.45'});
         $('tr.row-object > td').css({ backgroundColor: '#FFF'});
         
         // If the table row isn't already expend //       
@@ -195,17 +195,11 @@ app.Views.InterventionsView = Backbone.View.extend({
             $('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
             $(e.target).parents('tr.row-object').css({ opacity: '1'});  
             $(e.target).parents('tr.row-object').children('td').css({ backgroundColor: "#F5F5F5" }); 
-            //$(e.target).parents('tr.row-object').children('td').css({ backgroundColor: "#f2dede" }); 
-            
-            //$(e.target).parents('tr.row-object').children('td').addClass( app.collections.interventions.get(id).toJSON().classColor ); //: '#F5F5F5'
         }
         else{
             $('tr.row-object').css({ opacity: '1'});
             $('tr.row-object > td').css({ backgroundColor: '#FFF'});
             $('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' }); 
-
-
-            //$('tr.row-object:nth-child(4n+1) > td').addClass( app.collections.interventions.get(id).toJSON().classColor ); //'#F9F9F9'
         }
            
     },
