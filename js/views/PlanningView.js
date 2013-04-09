@@ -156,8 +156,9 @@ app.Views.PlanningView = Backbone.View.extend({
             self.initAllCalendars();
             self.initDragObject();
 
-            $('*[data-spy="affix"]').affix();            
+            $('*[data-spy="affix"]').affix();
             $('*[rel="tooltip"]').tooltip({placement: 'left'});
+            $('*[rel="popover"]').popover({trigger: 'hover'});
 
             $('.switch').bootstrapSwitch();
             
@@ -278,11 +279,15 @@ app.Views.PlanningView = Backbone.View.extend({
 			// Make the event draggable using jQuery UI //
 			el.draggable({
 			    zIndex: 9999,
-			    revert: true,
+			    revert: false,
 			    revertDuration: 500,
 			    appendTo: '#app',
 			    opacity: 0.5,
-			    //helper: "clone",
+                scroll: false,
+                cursorAt: { top: 10, left: 10 },
+			    helper: function(e){
+                    return $("<p class='well well-small'>"+eventObject.title+"</p>");
+                },
 			    reverting: function() {
 					console.log('reverted');
 				},

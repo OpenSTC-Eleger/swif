@@ -37,6 +37,7 @@
 		<table class="table-interventions table table-bordered table-hover">
 			<thead>
 				<tr>
+					<th>N°</th>
 					<th><%= _.capitalize(lang.label) %></th>
 					<th><%= _.capitalize(lang.place) %></th>
 					<th><%= _.capitalize(lang.plannedHours) %></th>
@@ -79,6 +80,7 @@
 
 				<!-- Intervention row -->
 				<tr class="row-object" id="inter_<%= intervention.id %>">
+					<td><%= intervention.id %></td>
 					<td>
 						<a class="accordion-object" href="#collapse_<%= intervention.id %>">
 							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(intervention.name) %>
@@ -90,7 +92,7 @@
 							<% } %>
 						</span>
 					</td>
-					<td><%=intervention.site1[1]%></td>
+					<td><%= intervention.site1[1] %></td>
 					<td><%= (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours) : '') %></td>
 					<td><%= (intervention.effective_hours != false ? app.decimalNumberToTime(intervention.effective_hours) : '') %></td>
 

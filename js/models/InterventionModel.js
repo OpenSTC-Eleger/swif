@@ -94,7 +94,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
         app.Models.Intervention.state[2].traduction = app.lang.closed;
         app.Models.Intervention.state[3].traduction = app.lang.pending;
         app.Models.Intervention.state[4].traduction = app.lang.cancelled;
-        app.Models.Intervention.state[5].traduction = app.lang.template;
+        app.Models.Intervention.state[5].traduction = "template"; //'app.lang.template';
     },
 
 
