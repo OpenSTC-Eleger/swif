@@ -62,6 +62,7 @@ app.Router = Backbone.Router.extend({
 		'nouvelle-intervention'         		: 'cartoRequest',	
 		'statut-interventions'                  : 'cartoInter',
 		'statistique'                   		: 'cartoStat',
+		'geoportail'                   			: 'geoportail',
 
         'demandes-reservations'                 : 'reservationRequest'
     },
@@ -1376,6 +1377,55 @@ app.Router = Backbone.Router.extend({
  	         this.navigate('login', {trigger: true, replace: true});
  	     }
  	 },
+ 	 
+    /** geoportail
+   	    */
+  	 geoportail: function(){      
+  	
+  	     // Check if the user is connect //
+  	     if(this.checkConnect()){
+  	         var self = this;
+  	
+  	         // Check if the collections is instantiate //
+  	         if(app.collections.places == null ){
+  	             app.collections.places = new app.Collections.Places();
+  	         }
+  	
+  	        
+  	         app.collections.places.fetch({
+  	             beforeSend: function(){
+  	                 app.loader('display');
+  	             },
+  	             success: function(){
+
+  					if(app.collections.interventions == null ){
+  					    app.collections.interventions = new app.Collections.Interventions();
+  					}
+  					
+  					app.collections.interventions.fetch({
+  						success: function(){
+ 	 						 if(app.collections.claimersServices == null ){
+ 	                             app.collections.claimersServices = new app.Collections.ClaimersServices();
+ 	                         }
+ 	
+ 	                         app.collections.claimersServices.fetch({
+ 	                        	 success: function(){
+ 		 			                 app.views.geoportailView = new app.Views.MapGeoportailView();
+ 		 			                 self.render(app.views.geoportailView);
+ 	                        	 },
+ 	     			             complete: function(){
+ 	     			                 app.loader('hide');
+ 	     			             }
+ 	     			        });
+  			             }
+  			        });
+  			    },
+  	         });
+  	     }
+  	     else{
+  	         this.navigate('login', {trigger: true, replace: true});
+  	     }
+  	 },
 
 
 

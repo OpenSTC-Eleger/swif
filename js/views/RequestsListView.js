@@ -275,6 +275,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		params = {
 				//ask_id: this.model.getId(),	
 				request_state: app.Models.Request.state[2].value,
+				email_text: app.Models.Request.state[2].traduction,
 				project_state: app.Models.Intervention.state[1].value,
 		        description: $('#requestNote').val(),
 		        //date_deadline: $('#requestDeadline').val(),
@@ -305,6 +306,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 		params = {
 		        state: app.Models.Request.state[4].value,
+		        email_text: app.Models.Request.state[4].traduction,
 		        refusal_reason: $('#motifRefuse').val(),		
 		};		
 		this.saveNewState( params,$('#modalRefuseRequest') );
@@ -318,6 +320,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		e.preventDefault();
 		params = {
 		        state: app.Models.Request.state[1].value,
+		        email_text: app.Models.Request.state[1].traduction,
 		        note: $('#motifDST').val(),		
 		};
 		this.saveNewState( params, $('#modalConfirmDSTRequest') );
@@ -345,9 +348,9 @@ app.Views.RequestsListView = Backbone.View.extend({
 					            self.render();
 					            
 					            //Send mail except confirm status
-					            if( self.params.state!=app.Models.Task.state[1].value) {
-					            	self.model.sendEmail(null);
-					            }
+					            //if( self.params.state!=app.Models.Task.state[1].value) {
+					            	//self.model.sendEmail(null);
+					            //}
 					        }
 					    },
 					    error: function () {
