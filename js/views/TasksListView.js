@@ -677,7 +677,8 @@ app.Views.TasksListView = Backbone.View.extend({
 		params = {
 		    //Project state
 		    project_state: newInterState,
-
+		    //email text send to partner
+		    email_text: app.Models.Request.state[3].traduction,
 		    //Task params
 			task_state: app.Models.Task.state[1].value,
 		    remaining_hours: 0,

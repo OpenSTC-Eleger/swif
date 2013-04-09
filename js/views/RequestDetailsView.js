@@ -160,6 +160,7 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 		     
 		     var params = {
 		    	 partner_type: input_partner_type,
+		    	 email_text: app.Models.Request.state[0].traduction,
 		    	 partner_id: input_partner_id,
 		    	 partner_address: input_partner_address_id,
 		    	 people_name: this.$('#requestContactInput').val(),
@@ -191,7 +192,7 @@ app.Views.RequestDetailsView = Backbone.View.extend({
 						//self.setElement(this.el, false);
 						//self = null;
 						self.model.set({id:data.result.result});
-						self.model.sendEmail(null);
+						//self.model.sendEmail(null);
 						app.router.navigate('#' , true);
 						console.log('Success SAVE REQUEST');
 					}
