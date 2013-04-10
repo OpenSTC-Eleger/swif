@@ -53,38 +53,38 @@
 		
 		<div class="accordion" id="accordionInter" style="overflow-y: scroll; max-height: 725px; margin-bottom: 0;">
 
-			<% _.each(interventions, function (intervention, i) { %>
+			<!-- State Color -  To Schedule - Scheduled - Template-->
+			<% _.each(interventions, function (intervention, i) { 
+					
+				if(intervention.state == app.Models.Intervention.state[1].value){
+					var classColor = app.Models.Intervention.state[1].color;
+					var traduction = app.Models.Intervention.state[1].traduction;
+					var informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours) : '0h');
+				}
+				else if(intervention.state == app.Models.Intervention.state[0].value){
+					var classColor = app.Models.Intervention.state[0].color;
+					var traduction = app.Models.Intervention.state[0].traduction;
+					var informationHour = app.decimalNumberToTime(intervention.planned_hours);
+				}
+				else if(intervention.state == app.Models.Intervention.state[5].value){
+					var classColor = app.Models.Intervention.state[5].color;
+					var traduction = app.Models.Intervention.state[5].traduction;
+					var informationHour = app.decimalNumberToTime(intervention.total_hours);
+				}
+			%>
 				<div class="accordion-group">
-					<div class="accordion-heading">
+					<div class="accordion-heading border-emphasize border-emphasize-<%= classColor %>">
 						<a href="#collapse_<%= intervention.id %>" class="accordion-toggle no-outline" 
 						   data-toggle="collapse" data-parent="#accordionInter"  
 						   rel="popover" data-placement="right" data-html="true" data-title="<%= intervention.name %>" 
 						   data-content="<i class='icon-map-marker'></i>&nbsp; <%= intervention.site1[1] %>" data-delay="400">
 							
 							<i class="icon-pushpin">&nbsp;&nbsp;</i><span><%= _(intervention.name).truncate(25) %></span>
-
-							<!-- state - To Scheduled -->
-							<% if(intervention.state == app.Models.Intervention.state[1].value){ %>
-								<small class="label label-<%= app.Models.Intervention.state[1].color %> pull-right">
-									<%= app.Models.Intervention.state[1].traduction %>
-								</small>
-
-							<!-- state - Scheduled -->
-							<% } else if(intervention.state == app.Models.Intervention.state[0].value){ %>
-								<small class="label label-<%= app.Models.Intervention.state[0].color %> pull-right">
-									<%= app.Models.Intervention.state[0].traduction %>
-								</small>
-
-							<!-- state - Template -->
-							<% } else if(intervention.state == app.Models.Intervention.state[5].value){ %>
-								<small class="label label-<%= app.Models.Intervention.state[5].color %> pull-right">
-									<%= app.Models.Intervention.state[5].traduction %>
-								</small>
-							<% } %>
+							<small class="badge badge-<%= classColor %> pull-right"><%= informationHour %></small>
 						</a>
 					</div>
 
-					<div id="collapse_<%= intervention.id %>" class="accordion-body collapse">
+					<div id="collapse_<%= intervention.id %>" class="accordion-body collapse border-emphasize border-emphasize-<%= classColor %>">
 						<div class="accordion-inner">
 
 							<!-- Check if there is some tasks -->

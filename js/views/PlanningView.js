@@ -286,7 +286,7 @@ app.Views.PlanningView = Backbone.View.extend({
 			    revert: false,
 			    revertDuration: 500,
 			    appendTo: '#app',
-			    opacity: 0.5,
+			    opacity: 0.7,
                 scroll: false,
                 cursorAt: { top: 10, left: 10 },
 			    helper: function(e){

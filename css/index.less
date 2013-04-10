@@ -75,6 +75,9 @@ div.page-header{
 	margin-top: 5px;
 }
 
+div.accordion-group{
+	margin-bottom: 5px;
+}
 
 /* PYF Twitter Bootstrap Accordion and button dropdown overflow issue 
 	http://stackoverflow.com/questions/10959068/twitter-bootstrap-accordion-and-button-dropdown-overflow-issue
@@ -97,6 +100,23 @@ div.page-header{
   	// Template (yellow)
   	&-template           { background-color: @yellow; }
   	&-template[href]     { background-color: darken(@yellow, 10%); }
+}
+
+
+/* Border Emphasize
+-------------------------------------------------- */
+.border-emphasize {
+	border-left-width: 4px;
+	border-left-style: solid;
+	border-left-color: @grayLight;
+}
+.border-emphasize {
+	&-info{ border-left-color: @infoText; }
+	&-important{ border-left-color: @errorText; }
+	&-warning{ border-left-color: @orange; }
+	&-success{ border-left-color: @successText; }
+	&-overrun{ border-left-color: @purple; }
+	&-template{ border-left-color: @yellow; }
 }
 
 
@@ -193,6 +213,7 @@ section.calendarContainer:not(:first-child){
 
 #accordionInter div.accordion-group{
 	border-color: darken(@grayLighter, 10%);
+	.border-radius(0);
 }
 #accordionInter div.accordion-heading:hover{
 
@@ -200,10 +221,6 @@ section.calendarContainer:not(:first-child){
 	p.intervention-actions{
 		visibility: visible;
 	}
-}
-
-#accordionInter div.accordion-body.in{
-	border-left: 3px solid @blue;
 }
 
 ul.tasks li.external-event{
