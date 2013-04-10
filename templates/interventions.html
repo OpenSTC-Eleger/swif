@@ -130,6 +130,12 @@
 								</div>
 							<% } %>
 
+						<!-- state - Template -->
+						<% } else if(intervention.state == app.Models.Intervention.state[5].value){ %>
+							<span class="label label-<%= app.Models.Intervention.state[5].color %>">
+								<%= app.Models.Intervention.state[5].traduction %>
+							</span>
+
 						<!-- state - Cancelled -->
 						<% } else if(intervention.state == app.Models.Intervention.state[4].value){ %>
 							<span class="label label-<%= app.Models.Intervention.state[4].color %>"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
