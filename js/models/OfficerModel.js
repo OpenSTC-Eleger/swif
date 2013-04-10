@@ -54,7 +54,10 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 
 	// Officer name //
 	getName : function() {
-		return this.get('name');
+		if(this.get('name') != false){
+			return this.get('name').toUpperCase();
+		}
+		else{ return ''; }
 	},
 	setName : function(value) {
 		if( value == 'undefined') return;
@@ -63,12 +66,20 @@ app.Models.Officer = Backbone.RelationalModel.extend({
     
 	// Officer firstname //
 	getFirstname : function() {
-		return this.get('firstname');
+		if(this.get('firstname') != false){
+			return _.capitalize(this.get('firstname').toLowerCase());
+		}
+		else{ return ''; }
 	},
 	setFirstname : function(value) {
 		if( value == 'undefined') return;
 		this.set({ firstname : value });
 	},
+
+	// Officer Fullname //
+	getFullname : function() {
+        return this.getFirstname()+' '+this.getName();
+    },
 
     // Officer email //
     getEmail : function() {

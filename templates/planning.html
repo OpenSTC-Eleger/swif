@@ -3,15 +3,15 @@
 </div>
 
 
-	
-		
+
+
 <!-- Interventions List -->
 <div class="row-fluid">
 
- 	
+
  	<!-- Left Column -->
  	<div class="span3">
-		
+
 
 
 		<!-- Interventions toolbar -->
@@ -27,7 +27,7 @@
 
 				<a id="filterStateIntervention" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#">
 			   		<i class="icon-filter icon-large"> <%= _.capitalize(lang.status) %></i>
-			   	</a>
+				</a>
 
 				<ul id="filterStateInterventionList" class="dropdown-menu" role="menu" aria-labelledby="filterStateIntervention">
 					<% _.each(interventionsState, function (state, i) { %>
@@ -255,16 +255,13 @@
 </div>
 
 
-   
-	
-		
 
 
 <!-- Modal Form Cancel Intervention -->
 <div id="modalAbsentTask" class="modal hide fade">
 	<div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	    <h3>Absence</h3>
+	    <h3><%= lang.viewsTitles.newAbsent %></h3>
 	</div>
 	
 	<div class="modal-body">
@@ -274,7 +271,10 @@
 			<small></small>
 		</blockquote>
 
-	    <form id="formAbsentTask" action="#" class="form-inline">
+	    <form id="formAbsentTask" action="#" class="form-horizontal">
+	    	
+
+	    	<!-- Absent Type -->
 	    	<div class="control-group">
 				<label for="absentType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
 
@@ -283,75 +283,59 @@
 					<span class="help-inline"></span>
 				</div>
 			</div>
-	    
-	    
-             <div class="input-append">
-             
-             	 <div class="control-group">
-                    <label class="control-label" for="startDate"><%= _.capitalize(lang.dateStart) %>:</label>
-                   <div class="controls">
-                        <input 
-                        	type="text"
-                            class="datepicker" 
-                            id="startDate" 
-                            size="20"
-                            value="" 
-                            required="required">
-                        <span class="add-on"><i class="icon-calendar"></i></span>
-                    </div>
-                </div>
-                
+
+
+            <!-- Absent start date / hour -->
+            <div class="control-group">
+				<label class="control-label" for="startDate"><%= _.capitalize(lang.dateStart) %>:</label>
+				<div class="control-group">
+
+					<div class="controls">
+						<!-- Start date -->
+						<div class="input-append">
+							<input  type="text" class="datepicker input-small" id="startDate" value="" required="required">
+							<span class="add-on"><i class="icon-calendar"></i></span>
+						</div>
+	                	
+						<!-- Start Hour -->
+						<div class="input-append bootstrap-timepicker" >							
+							    <input type="text" class="timepicker-default input-small" id='startHour' required="required">
+							    <span class="add-on"><i class="icon-time"></i></span>
+						</div>
+					</div>
+
+				</div>
+			</div>
+            
+
+			<!-- Absent end date / hour -->
+            <div class="control-group">
+                <label class="control-label" for="endDate"><%= _.capitalize(lang.dateEnd) %>:</label>
                 <div class="control-group">
-                    <label class="control-label" for="endDate"><%= _.capitalize(lang.dateEnd) %>:</label>
-                    <div class="controls">
-                        <input 
-                        	type="text"
-                            class="datepicker" 
-                            id="endDate"
-                            size="2à" 
-                            value="" 
-                            placeholder="dd/mm/yyyy"
-                            required="required">
-                        <span class="add-on"><i class="icon-calendar"></i></span>
-                    </div>
-                </div>
-                
-            </div>   
-            
-            <div class="input-append">
-            
-            	<div class="control-group">
-                	<label for="startHour" class="control-label">@</label>
-                	<div class="controls">
-						<div class="input-append bootstrap-timepicker" >							
-						    <input type="text" class="timepicker-default input-small" id='startHour' required="required">
-						    <span class="add-on">
-						        <i class="icon-time"></i>
-						    </span>
-						</div>
-                	</div>
-				</div>
-             
-             	<div class="control-group">
-                	<label for="endHour" class="control-label">@</label>
-                	<div class="controls">
-						<div class="input-append bootstrap-timepicker" >							
+
+	                <div class="controls">
+	            		<!-- End Date -->
+	            		<div class="input-append">
+	                        <input type="text" class="datepicker input-small" id="endDate" value=""  placeholder="dd/mm/yyyy" required="required">
+	                    	<span class="add-on"><i class="icon-calendar"></i></span>
+	                    </div>
+
+	                    <!-- End Hour -->
+	                    <div class="input-append bootstrap-timepicker" >							
 						    <input type="text" class="timepicker-default input-small" id='endHour' required="required">
-						    <span class="add-on">
-						        <i class="icon-time"></i>
-						    </span>
+						    <span class="add-on"><i class="icon-time"></i></span>
 						</div>
-                	</div>
-				</div>
-                
-            </div>  
-                               
+	                </div>
+
+            	</div>
+            </div>
+          
 	    </form>
 	</div>
 	
 	<div class="modal-footer">
-	    <button type="submit" form="formAbsentTask" class="btn btn-primary okButton" id="okButton">Enregistrer</button>&nbsp;&nbsp;
-	    <a href="#" data-dismiss="modal" class='dismiss'>Annuler</a>
+	    <button type="submit" form="formAbsentTask" class="btn btn-primary okButton" id="okButton"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+	    <a href="#" data-dismiss="modal" class='dismiss'><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>
 
