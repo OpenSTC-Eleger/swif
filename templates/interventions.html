@@ -82,9 +82,10 @@
 				<tr class="row-object" id="inter_<%= intervention.id %>">
 					<td><%= intervention.id %></td>
 					<td>
-						<a class="accordion-object" href="#collapse_<%= intervention.id %>">
+						<a class="accordion-object" href="#collapse_<%= intervention.id %>" rel="popover" data-content="<%= intervention.description %>" data-delay="160" data-title="<%= _.capitalize(lang.description) %>">
 							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(intervention.name) %>
 						</a>
+						<!-- Interventions action -->
 						<span class="object-actions invisible">
 							<a href="#interventions/<%= intervention.id %>"><i class="icon-pencil icon-large"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a>&nbsp;&nbsp;
 							<% if(intervention.state == app.Models.Intervention.state[1].value || intervention.state == app.Models.Intervention.state[0].value) { %>
