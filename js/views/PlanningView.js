@@ -124,7 +124,14 @@ app.Views.PlanningView = Backbone.View.extend({
 
 
             var interventions = app.collections.interventions.models;
+            console.log('#########################################################');
             console.log(app.collections.interventions);
+
+
+            // Filter Intervention - Just retrieve Schedule and to Schedule State //
+            var interventions = _.filter(interventions, function(item){
+                return (item.toJSON().state == app.Models.Intervention.state[0].value || item.toJSON().state == app.Models.Intervention.state[1].value || item.toJSON().state == app.Models.Intervention.state[5].value);
+            });
 
             // Collection Filter if not null //
 			if(sessionStorage.getItem(self.filters) != null){
@@ -134,13 +141,10 @@ app.Views.PlanningView = Backbone.View.extend({
 				});
 			}
 
-           //Order by date start 
-            var interventionsSortedArray = _.sortBy(interventions, function(item){ 
-                    	return item.attributes.date_start; 
-            });
 
-            interventionSorted = new app.Collections.Interventions(interventionsSortedArray);
+            interventionSorted = new app.Collections.Interventions(interventions);
 
+            console.log('#########################################################');
             console.log(interventionSorted.toJSON());
 
             

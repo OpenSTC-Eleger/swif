@@ -8,9 +8,14 @@
 <!-- Interventions List -->
 <div class="row-fluid">
 
- 	<!-- Interventions toolbar -->
+ 	
+ 	<!-- Left Column -->
  	<div class="span3">
-		<div class="row-fluid">
+		
+
+
+		<!-- Interventions toolbar -->
+		<div id="planningToolbar" class="row-fluid">
 
 			<!-- Button add intervention -->
 			<button class="btn btn-primary no-outline addInterventionPlanning pull-left">
@@ -39,68 +44,14 @@
 			</div>
 
 		</div>
-	</div>
+		<!-- /Interventions toolbar -->
 
 
-	<!-- List Officer/Teams -->
-	<div class="span9" id="listAgentsTeams">
-		<ul class="nav nav-tabs" id="allTabs">
-			<li class="active">
-				<a href="#" data-target="#tab-agents" data-toggle="tab" class="no-outline">
-					<%= _.capitalize(lang.agents) %> &nbsp;<span class="badge"><%= _.size(officers) %></span>
-				</a>
-			</li>
-			<li>
-				<a href="#" data-target="#tab-teams" data-toggle="tab" class="no-outline">
-					<%= _.capitalize(lang.teams) %> &nbsp;<span class="badge"><%= _.size(teams) %></span>
-				</a>
-			</li>
-		</ul>
 
-		<div class="tab-content">
-			
-			<!-- Officers -->
-			<div class="tab-pane active" id="tab-agents">
-				<ul id="listAgents" class="unstyled inline nav nav-list">
-					<%_.each(officers, function (officer, i) { console.log(officer); %>
-						<li>
-							<a id="pOfficer_<%= officer.id %>" href="#planning/agent/<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>">
-								<i class="icon-user"></i><%= (officer.firstname != false ? officer.firstname : '') %> &nbsp;<%= officer.name.toUpperCase() %>
-							</a>
-						</li>
-					<% }) %>
-				</ul>
-			</div>
-
-			<!-- Teams -->
-			<div class="tab-pane" id="tab-teams">
-				<ul id="listTeams" class="unstyled inline nav nav-list">
-					<%_.each(teams, function (team, i) { %>
-						<li>
-							<a id="pTeam_<%= team.id %>" href="#planning/team/<%= _.slugify(team.name)%>">
-								<i class="icon-group"></i><%= team.name %>
-							</a>
-						</li>
-					<% }) %>	
-				</ul>
-			</div>
-
-
-	  	</div>
-	</div>
-	<!-- /List Officer/Teams -->
-
-</div>
-
-
-<div class="row-fluid">
-	
-	<!-- Interventions List -->
-	<div class="span3">
-
-	<% if( _.size(interventions) > 0 ) { %>
+		<!-- Interventions List -->
+		<% if( _.size(interventions) > 0 ) { %>
 		
-		<aside class="accordion" id="accordionInter" style="overflow-y: scroll; max-height: 590px; margin-bottom: 0;">
+		<div class="accordion" id="accordionInter" style="overflow-y: scroll; max-height: 725px; margin-bottom: 0;">
 
 			<% _.each(interventions, function (intervention, i) { %>
 				<div class="accordion-group">
@@ -122,12 +73,6 @@
 							<% } else if(intervention.state == app.Models.Intervention.state[0].value){ %>
 								<small class="label label-<%= app.Models.Intervention.state[0].color %> pull-right">
 									<%= app.Models.Intervention.state[0].traduction %>
-								</small>
-
-							<!-- state - Pending -->
-							<% } else if(intervention.state == app.Models.Intervention.state[3].value){ %>
-								<small class="label label-<%= app.Models.Intervention.state[3].color %> pull-right">
-									<%= app.Models.Intervention.state[3].traduction %>
 								</small>
 
 							<!-- state - Template -->
@@ -159,7 +104,9 @@
 										</li>
 								
 										<!-- Schedule -->
-										<% } else if(task.state == app.Models.Task.state[0].value){ %>
+										<% allPlanned = false;
+											
+										} else if(task.state == app.Models.Task.state[0].value){ %>
 										<li id="task_<%= task.id %>" class="external-event disabled">
 											<i class="icon-time" rel="tooltip" data-placement="top" data-original-title="<%= moment(task.date_start).format('LLL') %>"></i>&nbsp;
 											<%= task.name %> <small class="badge badge-<%= app.Models.Task.state[0].color %> pull-right"><%= task.planned_hours %>h</small>
@@ -190,15 +137,14 @@
 								</button>
 
 								<!-- Switch button - To Scheduled / Scheduled -->
-								<% if(_.size(intervention.tasks) > 0){ %>
-												
+								<% if(_.size(intervention.tasks) > 0 && intervention.state != app.Models.Intervention.state[5].value) { %>
+
 									<div class="switch switch-small calendarSwitch pull-right" data-on-label="<%= _.capitalize(lang.planningFenced) %>" data-off-label="<%= _.capitalize(lang.toScheduled) %>" data-on="primary" data-off="warning">
-										
+
 										<input type="checkbox" 
-											<% if(allPlanned == true && 
-												(intervention.state == app.Models.Intervention.state[0].value || intervention.state == app.Models.Intervention.state[3].value)){ %>
+											<% if(intervention.state == app.Models.Intervention.state[0].value){ %>
 												checked
-												<% } %>
+											<% } %>
 
 											<% if(allPlanned == false){ %>
 												disabled
@@ -214,146 +160,77 @@
 				</div>
 			<% }) %>
 
-		</aside>
-		
-		<!--<aside class="accordion" id="accordionInter" style="overflow-y: scroll; overflow-x: hidden; max-height: 590px; margin-bottom: 0;">
-
-			<% _.each(interventions, function (inter, i) { %>
-				<div class="accordion-group">
-					<div class="accordion-heading" rel="popover" data-content="<h1>Coucouc</h1><br />liste des informationslol">
-						<a class="accordion-toggle no-outline" data-toggle="collapse" data-parent="#accordionInter" href="#collapse_<%= inter.id %>">
-							<i class="icon-pushpin"></i>&nbsp; <strong><%= inter.name %></strong>
-								<% 
-									var color = "";
-									_.each(interventionsState, function (state, i) { 
-										if( inter.state == state.value ) {
-											color = state.color;
-										}
-									});	
-
-								
-									if( inter.state=='template') { %>
-										<span class="badge <%= (color != '' ? 'badge-'+color : '') %> pull-right">cumul<%= inter.total_hours %>h</span>
-									<% } else if( inter.planned_hours != false  ) {%>
-										<span class="badge <%= (color != '' ? 'badge-'+color : '') %> pull-right"><%= inter.planned_hours %>h</span>	
-									<% } else {%>
-										<span class="badge <%= (color != '' ? 'badge-'+color : '') %> pull-right"><%= "Aucunes tâches" %></span>								
-									<% } 
-								%>
-						</a>
-
-						<p class="intervention-actions invisible">
-							<a href="#interventions/<%= inter.id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
-							<% if( inter.state == app.Models.Intervention.state[1].value ) { %>
-								<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.cancel) %></a>
-							<% } %> 
-						</p>
-
-					</div>
-					
-
-					<% if( inter.state != app.Models.Intervention.state[4].value ) { %>
-						
-						<div id="collapse_<%= inter.id %>" class="accordion-body collapse">
-							<div class="accordion-inner">
-						
-								<ul class="unstyled tasks">
-								<!-- Loop Each Tasks
-								<% 
-									var allPlanned = true;
-									
-									if( inter.state=='template' ) { 
-										console.debug("INTER ID TEMPLATE:"+inter.id);
-										_.each(inter.tasks, function (task, i) { 
-											console.debug("ID TASK:"+task.id+"NAME TASK:"+task.name+"PARENT:"+task.parent_id+"HOURS"+task.planned_hours);
-						
-											if( !task.parent_id){ %>
-												<li id="task_<%= task.id %>" class="external-event">&nbsp;
-													<strong><%= task.name %></strong>
-													<small class="badge pull-right"><%= task.planned_hours %>h</small>
-											<% } %>
-										<% }); %>											
-			
-									<% }else {
-													_.each(inter.tasks, function (task, i) { 
-
-														if( task.planned_hours > 0 ){
-																if(task.date_start != '' && task.date_start != false && task.date_start != null && task.date_start != 'undefined' && task.date_start != 'Invalid '){ %>
-																<li id="task_<%= task.id %>" class="external-event disabled ui-widget-header">
-																	<i class="icon-time"></i>&nbsp;
-																	<span class="<%= (task.progress == '100' ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
-																	<small class="pull-right"><%= task.planned_hours %>h</small>
-															<% 
-																
-															} else{ %>
-																<li id="task_<%= task.id %>" class="external-event">&nbsp;
-																	<strong><%= task.name %></strong>
-																	<small class="badge pull-right"><%= task.planned_hours %>h</small>
-															<%
-																allPlanned = false;
-															}  %>
-															<% if( task.state == app.Models.Task.state[0].value ) { %>
-																<p class="task-actions">												
-																	<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal">
-																		<i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %>
-																	</a>
-																</p>
-															<% } %>
-														<% } %>
-													<% });  %>
-												<% } %>
-										</ul>
-			
-										<div class="div-actions">
-											<button class="btn btn-primary btn-small no-outline addTaskPlanning" id="<%= inter.id %>" rel="tooltip" 
-												data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="top"
-												<%= ( inter.state != app.Models.Intervention.state[0].value && inter.state != app.Models.Intervention.state[2].value  ) ? "" : 'disabled' %>>
-												<i class="icon-plus"></i>
-											</button>
-
-
-											<!-- Switch button - To Scheduled / Scheduled 
-											<% if(_.size(inter.tasks) > 0){ %>
-												
-												<span><%= inter.state %></span>||<span><%= allPlanned %></span>
-												<div class="switch switch-small calendarSwitch pull-right" data-on-label="<%= _.capitalize(lang.planningFenced) %>" data-off-label="<%= _.capitalize(lang.toScheduled) %>" data-on="primary" data-off="warning">
-													<input type="checkbox" 
-														<% if(allPlanned == true && 
-														(inter.state == app.Models.Intervention.state[0].value || inter.state == app.Models.Intervention.state[3].value)){ %>
-															checked
-														<% } %>
-
-														<% if(allPlanned == false){ %>
-														 		disabled
-														 <% } %>
-													/>
-												</div>
-
-											<% } %>
-										</div>
-
-									</div>
-								</div>
-							<% }%>
-						</div>
-						<% }) %>
-		
-		</aside>-->
-	<% }else { %>
-
-		<!-- No interventions to display -->
-		<div class="alert alert-info">
-			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>
 		</div>
-	<% } %>
+		<% }else { %>
 
-	</div>	
+			<!-- No interventions to display -->
+			<div class="alert alert-info">
+				<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>
+			</div>
+		
+		<% } %>
+		<!-- /Interventions List -->
 
-	
+	</div>
+	<!-- /Left Column -->
 
-	<!-- Calendars-->
+
+
+
+	<!-- Right Column -->
 	<div class="span9">
-	
+
+
+		<!-- List Officer/Teams -->
+		<div id="listAgentsTeams">
+			<ul class="nav nav-tabs" id="allTabs">
+				<li class="active">
+					<a href="#" data-target="#tab-agents" data-toggle="tab" class="no-outline">
+						<%= _.capitalize(lang.agents) %> &nbsp;<span class="badge"><%= _.size(officers) %></span>
+					</a>
+				</li>
+				<li>
+					<a href="#" data-target="#tab-teams" data-toggle="tab" class="no-outline">
+						<%= _.capitalize(lang.teams) %> &nbsp;<span class="badge"><%= _.size(teams) %></span>
+					</a>
+				</li>
+			</ul>
+
+			<div class="tab-content">
+				
+				<!-- Officers -->
+				<div class="tab-pane active" id="tab-agents">
+					<ul id="listAgents" class="unstyled inline nav nav-list">
+						<%_.each(officers, function (officer, i) { console.log(officer); %>
+							<li>
+								<a id="pOfficer_<%= officer.id %>" href="#planning/agent/<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>">
+									<i class="icon-user"></i><%= (officer.firstname != false ? officer.firstname : '') %> &nbsp;<%= officer.name.toUpperCase() %>
+								</a>
+							</li>
+						<% }) %>
+					</ul>
+				</div>
+
+				<!-- Teams -->
+				<div class="tab-pane" id="tab-teams">
+					<ul id="listTeams" class="unstyled inline nav nav-list">
+						<%_.each(teams, function (team, i) { %>
+							<li>
+								<a id="pTeam_<%= team.id %>" href="#planning/team/<%= _.slugify(team.name)%>">
+									<i class="icon-group"></i><%= team.name %>
+								</a>
+							</li>
+						<% }) %>	
+					</ul>
+				</div>
+
+
+		  	</div>
+		</div>
+		<!-- /List Officer/Teams -->
+
+
+		<!-- Calendar -->
 		<div style="overflow: hidden; max-height: 590px;">
 
 			<%_.each(officers, function (officer, i) { %>
@@ -370,11 +247,15 @@
 			<%}); %>
 
 		</div>
-	</div>	
-	<!-- /Calendar -->
+		<!-- /Calendar -->
+
+
+	</div>
 
 </div>
-	    
+
+
+   
 	
 		
 
@@ -715,12 +596,3 @@
 
 	</div>
 </div>
-
-
-
-
-
-
-
-
-
