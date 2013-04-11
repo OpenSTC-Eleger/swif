@@ -29,20 +29,23 @@
 			   		<i class="icon-filter icon-large"> <%= _.capitalize(lang.status) %></i>
 				</a>
 
-				<ul id="filterStateInterventionList" class="dropdown-menu" role="menu" aria-labelledby="filterStateIntervention">
-					<% _.each(interventionsState, function (state, i) { %>
-						<li role="menuitem">
-							<a tabindex="-1" href="#<%= state.value %>"> 
+				<ul id="filterStateInterventionList" class="dropdown-menu" aria-labelledby="filterStateIntervention">
+					<% _.each(interventionsState, function (state, i) { 
+						if(state.value == app.Models.Intervention.state[0].value || state.value == app.Models.Intervention.state[1].value || state.value == app.Models.Intervention.state[5].value){
+					%>
+						<li>
+							<a tabindex="-1" href="#<%= state.value %>">
 								<i class="badge <%= (state.color != '' ? 'badge-'+state.color : '') %>">&nbsp;</i>
 								&nbsp; <%= _.capitalize(state.traduction) %>
 							</a>
 						</li>
-					<% }) %>
+					<% }
+					}) %>
 						<li class="divider"></li>
 						<li class="delete-filter disabled"><a href="#delete-filter"><%= _.capitalize(lang.deleteFilter) %></a></li>
 				</ul>
 			</div>
-
+			<br />
 		</div>
 		<!-- /Interventions toolbar -->
 
@@ -59,7 +62,7 @@
 				if(intervention.state == app.Models.Intervention.state[1].value){
 					var classColor = app.Models.Intervention.state[1].color;
 					var traduction = app.Models.Intervention.state[1].traduction;
-					var informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours) : '0h');
+					var informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours) : '--');
 				}
 				else if(intervention.state == app.Models.Intervention.state[0].value){
 					var classColor = app.Models.Intervention.state[0].color;
@@ -71,15 +74,37 @@
 					var traduction = app.Models.Intervention.state[5].traduction;
 					var informationHour = app.decimalNumberToTime(intervention.total_hours);
 				}
+
+
+				if(intervention.description != false){
+					var description = "<i class='icon-flag'></i>&nbsp; "+intervention.description+"<br />";
+				}
+				else{
+					var description = "";
+				}
+				
+				var popoverContent = description+ "<i class='icon-map-marker'></i>&nbsp; "+intervention.site1[1];
 			%>
 				<div class="accordion-group">
 					<div class="accordion-heading border-emphasize border-emphasize-<%= classColor %>">
 						<a href="#collapse_<%= intervention.id %>" class="accordion-toggle no-outline" 
 						   data-toggle="collapse" data-parent="#accordionInter"  
-						   rel="popover" data-placement="right" data-html="true" data-title="<%= intervention.name %>" 
-						   data-content="<i class='icon-map-marker'></i>&nbsp; <%= intervention.site1[1] %>" data-delay="400">
-							
+						   rel="popover" data-placement="right" data-html="true" data-title="<%= intervention.name %>" data-delay="400"
+						   data-content="<%= popoverContent %>" >
+
 							<i class="icon-pushpin">&nbsp;&nbsp;</i><span><%= _(intervention.name).truncate(25) %></span>
+
+							<!--<a href="#interventions/<%= intervention.id %>" class="displayInlineBlock"><i class="icon-pencil"></i></a>-->
+
+							<!-- Intervention Actions -->
+							<!--<p class="intervention-actions displayInlineBlock invisible">
+								
+								
+								<% if(intervention.state == app.Models.Intervention.state[1].value || intervention.state == app.Models.Intervention.state[0].value) { %>
+									<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-remove"></i></a> 
+								<% } %>
+							</p>-->
+
 							<small class="badge badge-<%= classColor %> pull-right"><%= informationHour %></small>
 						</a>
 					</div>
@@ -100,16 +125,21 @@
 										<% if(task.state == app.Models.Task.state[3].value) { %>
 										<li id="task_<%= task.id %>" class="external-event">
 											<i class="icon-chevron-right"></i> <%= task.name %>
+
+											<a href="#modalDeleteTask" class="modalDeleteTask hide" data-toggle="modal">
+												<i class="icon-remove displayInlineBlock modalDeleteTask" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top">&nbsp;</i>
+											</a>
+
 											<small class="badge badge-<%= app.Models.Task.state[3].color %> pull-right"><%= task.planned_hours %>h</small>
 										</li>
-								
+
 										<!-- Schedule -->
 										<% allPlanned = false;
-											
+
 										} else if(task.state == app.Models.Task.state[0].value){ %>
 										<li id="task_<%= task.id %>" class="external-event disabled">
-											<i class="icon-time" rel="tooltip" data-placement="top" data-original-title="<%= moment(task.date_start).format('LLL') %>"></i>&nbsp;
-											<%= task.name %> <small class="badge badge-<%= app.Models.Task.state[0].color %> pull-right"><%= task.planned_hours %>h</small>
+											<i class="icon-time" rel="tooltip" data-placement="top" data-original-title="<%= moment(task.date_start).format('LLL') %>"></i> <%= task.name %>
+											<small class="badge badge-<%= app.Models.Task.state[0].color %> pull-right"><%= task.planned_hours %>h</small>
 										</li>
 										<% } %>
 
@@ -356,7 +386,7 @@
 		</blockquote>
 
 	    <form id="formCancelInter" action="#" class="form-horizontal">
-	    
+
 			<!-- Intervention refusal reason -->
             <div class="control-group">
                 <label for="motifCancel" class="control-label"><%= _.capitalize(lang.reason) %>:</label>
@@ -380,8 +410,8 @@
 <!-- Modal Form Delete Task -->
 <div id="modalDeleteTask" class="modal hide fade">
 	<div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	    <h3><%= lang.viewsTitles.deleteTask %></h3>
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3><%= lang.viewsTitles.deleteTask %></h3>
 	</div>
 	
 	<div class="modal-body">
@@ -457,21 +487,21 @@
 <!-- Form to add a new Intervention -->
 <div id="modalAddInter" class="modal hide fade">
 	<div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	    <h3><%= _.capitalize(lang.actions.addIntervention) %></h3>
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3><%= _.capitalize(lang.actions.addIntervention) %></h3>
 	</div>
 	
 	<div class="modal-body">
-	    <form id="formAddIntervention" action="#" class="form-horizontal">
-	    
-                <!-- intervention Name -->
-                <div class="control-group">
-                    <label for="interventionName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
+		<form id="formAddIntervention" action="#" class="form-horizontal">
 
-                    <div class="controls">
-                        <input type="text" id="interventionName" name="interventionName" required="required" />
-                        <span class="help-inline"></span>
-                    </div>
+				<!-- intervention Name -->
+				<div class="control-group">
+					<label for="interventionName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
+
+					<div class="controls">
+					    <input type="text" id="interventionName" name="interventionName" required="required" />
+					    <span class="help-inline"></span>
+					</div>
                     
                     <div class="controls">
 						<label for="isTemplate" class="checkbox"><%= _.capitalize(lang.template) %>

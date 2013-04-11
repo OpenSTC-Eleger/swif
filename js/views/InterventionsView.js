@@ -16,7 +16,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 	// The DOM events //
 	events: {
 		'click .btn.addTask'                : 'displayModalAddTask',
-		'submit #formAddTask'         		: 'saveTask',   
+		'submit #formAddTask'         		: 'saveTask',
 
 		'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
 		'click button.btnDeleteTask'   		: 'deleteTask',
@@ -34,7 +34,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 	*/
 	initialize : function() {
 		console.log('Interventions view Initialize');
-    },
+	},
 
 
 

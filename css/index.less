@@ -138,6 +138,13 @@ div.accordion-group{
 }
 
 
+/* New Text Colors
+-------------------------------------------------- */
+.text-template          { color: @yellow; }
+a.text-template:hover   { color: darken(@yellow, 10%); }
+
+.text-overrun          { color: @purple; }
+a.text-overrun:hover   { color: darken(@purple, 10%); }
 
 
 /* New LABELS AND BADGES
@@ -227,13 +234,13 @@ ul.tasks li.external-event{
 	padding: 5px 5px 5px 5px;
 	cursor: move;
 }
+/* Display Task Actions */
+ul.tasks li.external-event:hover a.hide{
+	display: inline;
+}
 li.external-event.disabled{
 	color: @grayLight;
 	cursor: no-drop!important;
-
-	small{
-		margin-right: 5px;
-	}
 }
 li.external-event:hover{
 	background-color: @grayLighter;
