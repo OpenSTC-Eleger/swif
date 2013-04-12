@@ -21,8 +21,10 @@ app.Views.PlanningView = Backbone.View.extend({
     
     // The DOM events //
     events: {
-        'click a.buttonCancelInter'                     : 'setInfoModalCancelInter',
-        'click i.modalDeleteTask'                       : 'setInfoModalDeleteTask',
+        'click .buttonCancelInter'                     : 'setInfoModalCancelInter',
+        'click .modalDeleteTask'                       : 'setInfoModalDeleteTask',
+
+        'click button.linkToInter'                      : 'linkToInter',
 
         'submit #formCancelInter'                       : 'cancelInter',
         'click button.btnDeleteTask'                    : 'deleteTask',
@@ -300,7 +302,7 @@ app.Views.PlanningView = Backbone.View.extend({
 			    revert: true,
 			    revertDuration: 500,
 			    appendTo: '#app',
-			    opacity: 0.7,
+			    opacity: 0.8,
                 scroll: false,
                 cursorAt: { top: 0, left: 0 },
 			    helper: function(e){
@@ -318,6 +320,28 @@ app.Views.PlanningView = Backbone.View.extend({
 
 
 
+    /** Link to the Intervention page
+    */
+    linkToInter: function(e){
+
+        // Retrieve the ID of the intervention //
+        var link = $(e.target);
+
+        // Check if the element click is a <i> or the <button> //
+        if(link.is('i')){
+            var id = _(link.parent('button').parent('a').attr('href')).strRightBack('_');    
+        }
+        else{
+            var id = _(link.parent('a').attr('href')).strRightBack('_');       
+        }
+        
+        // Navigate to the Intervention //
+        app.router.navigate('#interventions/'+id , {trigger: true, replace: true});
+
+    },
+
+
+
     /** Display information in the Modal view
     */
     setInfoModalCancelInter: function(e){
@@ -327,7 +351,13 @@ app.Views.PlanningView = Backbone.View.extend({
 
         $('#motifCancel').val('');
 
-        var id = _(link.parent('p').siblings('a').attr('href')).strRightBack('_');
+        // Check if the element click is a <i> or the <button> //
+        if(link.is('i')){
+            var id = _(link.parent('button').parent('a').attr('href')).strRightBack('_');    
+        }
+        else{
+            var id = _(link.parent('a').attr('href')).strRightBack('_');       
+        }
 
         var inter = _.filter(app.collections.interventions.models, function(item){ return item.attributes.id == id });
 

@@ -256,7 +256,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 		$('#infoModalDeleteTask').children('small').html(this.selectedTaskJSON.description);
 	},
 
-	
+
 
 	displayModalCancelInter: function(e) {
 		this.getTarget(e);
@@ -275,13 +275,13 @@ app.Views.InterventionsView = Backbone.View.extend({
 
 		e.preventDefault();
 
-		input_category_id = null;	    
+		input_category_id = null;
 	    if( app.views.selectListAssignementsView != null ) {
 	    	 var selectItem = app.views.selectListAssignementsView.getSelected();
 	    	 if( selectItem ) {
 	    		 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
 	    	 }
-	    }	    	
+	    }
 	     
 //	     input_equipment_id = null;
 //	     if( app.views.selectListEquipmentsView != null ) {
@@ -299,7 +299,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 	         project_id: this.pos,
 	         //equipment_id: input_equipment_id,
 	         name: this.$('#taskName').val(),
-	         category_id: input_category_id,	         
+	         category_id: input_category_id,
 		     planned_hours: mDuration.asHours(),
 	     };
 	     //TODO : test
@@ -363,7 +363,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 		        if(data.error){
 		    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 		        }
-		        else{					        	
+		        else{
 		            console.log('NEW STATE INTER SAVED');
 					if( self.element!= null )
 						self.element.modal('hide');

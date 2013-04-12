@@ -82,7 +82,7 @@
 				else{
 					var description = "";
 				}
-				
+
 				var popoverContent = description+ "<i class='icon-map-marker'></i>&nbsp; "+intervention.site1[1];
 			%>
 				<div class="accordion-group">
@@ -94,16 +94,14 @@
 
 							<i class="icon-pushpin">&nbsp;&nbsp;</i><span><%= _(intervention.name).truncate(25) %></span>
 
-							<!--<a href="#interventions/<%= intervention.id %>" class="displayInlineBlock"><i class="icon-pencil"></i></a>-->
-
+							<!--<a href="#interventions/<%= intervention.id %>" class="displayInlineBlock"><i class="icon-pencil"></i></a><-->
+							
 							<!-- Intervention Actions -->
-							<!--<p class="intervention-actions displayInlineBlock invisible">
-								
-								
-								<% if(intervention.state == app.Models.Intervention.state[1].value || intervention.state == app.Models.Intervention.state[0].value) { %>
-									<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-remove"></i></a> 
-								<% } %>
-							</p>-->
+							<button class="btn btn-link invisible linkToInter" type="button"><i class="icon-pencil"></i></button>	
+							
+							<% if(intervention.state == app.Models.Intervention.state[1].value || intervention.state == app.Models.Intervention.state[0].value) { %>
+								<button data-target="#modalCancelInter" class="btn btn-link buttonCancelInter invisible" data-toggle="modal"><i class="icon-remove"></i></button>
+							<% } %>
 
 							<small class="badge badge-<%= classColor %> pull-right"><%= informationHour %></small>
 						</a>
