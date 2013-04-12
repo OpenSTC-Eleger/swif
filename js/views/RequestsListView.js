@@ -138,6 +138,12 @@ app.Views.RequestsListView = Backbone.View.extend({
 			$('*[rel="popover"]').popover({trigger: 'hover'});
 			$('*[rel="tooltip"]').tooltip({placement: 'top'});
 
+
+			// Set the focus to the first input of the form //
+			$('#modalValidRequest, #modalRefuseRequest, #modalConfirmDSTRequest').on('shown', function (e) {
+				$(this).find('input:not(:disabled), textarea').first().focus();
+			})
+
 		});
 
 

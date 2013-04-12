@@ -118,9 +118,9 @@ app.Views.InterventionsView = Backbone.View.extend({
 
 
 			// Set the focus to the first input of the form //
-            $('#modalCancelInter, #modalDeleteTask, #modalAddTask').on('shown', function (e) {
-                $(this).find('input, textarea, button').first().focus();
-            })
+			$('#modalCancelInter, #modalDeleteTask, #modalAddTask').on('shown', function (e) {
+				$(this).find('input, textarea').first().focus();
+			})
 		
 			
 		});

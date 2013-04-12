@@ -285,8 +285,13 @@ app.Views.TasksListView = Backbone.View.extend({
 				}else{
 					$(this).parents('.accordion-group').addClass('collapse-selected');	
 				}
-				
     		})
+
+
+    		// Set the focus to the first input of the form //
+			$('#modalTaskDone, #modalAddTask, #modalTimeSpent').on('shown', function (e) {
+				$(this).find('input, textarea').first().focus();
+			})
 
 		});
 
