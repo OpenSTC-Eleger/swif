@@ -102,7 +102,12 @@ app.Views.InterventionDetailsView = Backbone.View.extend({
 
 
 				// Form elements that can't be change are disable //
-				$('#isTemplate').attr('disabled', true);	
+				if(self.create){
+					$('#isTemplate').attr('disabled', false);
+				}
+				else{
+					$('#isTemplate').attr('disabled', true);	
+				}
 		});
 
 		$(this.el).hide().fadeIn('slow'); 
