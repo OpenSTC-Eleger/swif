@@ -97,10 +97,10 @@
 							<!--<a href="#interventions/<%= intervention.id %>" class="displayInlineBlock"><i class="icon-pencil"></i></a><-->
 							
 							<!-- Intervention Actions -->
-							<button class="btn btn-link invisible linkToInter" type="button"><i class="icon-pencil"></i></button>	
+							<button class="btn btn-link invisible linkToInter" type="button" data-toggle="modal" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>" data-placement="top"><i class="icon-pencil"></i></button>	
 							
 							<% if(intervention.state == app.Models.Intervention.state[1].value || intervention.state == app.Models.Intervention.state[0].value) { %>
-								<button data-target="#modalCancelInter" class="btn btn-link buttonCancelInter invisible" data-toggle="modal"><i class="icon-remove"></i></button>
+								<button data-target="#modalCancelInter" class="btn btn-link buttonCancelInter invisible" data-toggle="modal" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>" data-placement="top"><i class="icon-remove"></i></button>
 							<% } %>
 
 							<small class="badge badge-<%= classColor %> pull-right"><%= informationHour %></small>
