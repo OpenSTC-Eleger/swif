@@ -82,9 +82,10 @@
 				<tr class="row-object" id="inter_<%= intervention.id %>">
 					<td><%= intervention.id %></td>
 					<td>
-						<a class="accordion-object" href="#collapse_<%= intervention.id %>">
+						<a class="accordion-object" href="#collapse_<%= intervention.id %>" rel="popover" data-content="<%= intervention.description %>" data-delay="160" data-title="<%= _.capitalize(lang.description) %>">
 							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(intervention.name) %>
 						</a>
+						<!-- Interventions action -->
 						<span class="object-actions invisible">
 							<a href="#interventions/<%= intervention.id %>"><i class="icon-pencil icon-large"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a>&nbsp;&nbsp;
 							<% if(intervention.state == app.Models.Intervention.state[1].value || intervention.state == app.Models.Intervention.state[0].value) { %>
@@ -130,6 +131,12 @@
 								</div>
 							<% } %>
 
+						<!-- state - Template -->
+						<% } else if(intervention.state == app.Models.Intervention.state[5].value){ %>
+							<span class="label label-<%= app.Models.Intervention.state[5].color %>">
+								<%= app.Models.Intervention.state[5].traduction %>
+							</span>
+
 						<!-- state - Cancelled -->
 						<% } else if(intervention.state == app.Models.Intervention.state[4].value){ %>
 							<span class="label label-<%= app.Models.Intervention.state[4].color %>"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
@@ -143,7 +150,7 @@
 
 				<!-- Tasks row -->
 				<tr class="row-nested-objects-collapse" id="collapse_<%= intervention.id %>">
-					<td colspan="5">
+					<td colspan="6" class="nestedTD">
 
 						<!-- Check if there is some tasks -->
 						<% if(intervention.tasks.length != 0) { %>
@@ -174,7 +181,7 @@
 												<span class="nested-objects-actions invisible">
 													
 													<% if( task.state == app.Models.Task.state[3].value ) { %>
-													
+
 														<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal">
 															<i class="icon-remove displayInlineBlock" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top">&nbsp;</i>
 														</a>

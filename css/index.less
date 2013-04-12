@@ -75,6 +75,9 @@ div.page-header{
 	margin-top: 5px;
 }
 
+div.accordion-group{
+	margin-bottom: 5px;
+}
 
 /* PYF Twitter Bootstrap Accordion and button dropdown overflow issue 
 	http://stackoverflow.com/questions/10959068/twitter-bootstrap-accordion-and-button-dropdown-overflow-issue
@@ -100,6 +103,23 @@ div.page-header{
 }
 
 
+/* Border Emphasize
+-------------------------------------------------- */
+.border-emphasize {
+	border-left-width: 4px;
+	border-left-style: solid;
+	border-left-color: @grayLight;
+}
+.border-emphasize {
+	&-info{ border-left-color: @infoText; }
+	&-important{ border-left-color: @errorText; }
+	&-warning{ border-left-color: @orange; }
+	&-success{ border-left-color: @successText; }
+	&-overrun{ border-left-color: @purple; }
+	&-template{ border-left-color: @yellow; }
+}
+
+
 
 /* Default Progress Bar 
 -------------------------------------------------- */
@@ -118,6 +138,13 @@ div.page-header{
 }
 
 
+/* New Text Colors
+-------------------------------------------------- */
+.text-template          { color: @yellow; }
+a.text-template:hover   { color: darken(@yellow, 10%); }
+
+.text-overrun          { color: @purple; }
+a.text-overrun:hover   { color: darken(@purple, 10%); }
 
 
 /* New LABELS AND BADGES
@@ -187,8 +214,13 @@ section.calendarContainer:not(:first-child){
 
 /* Planning Task List
 -------------------------------------------------- */
+#planningToolbar{
+	margin-bottom: 30px;
+}
+
 #accordionInter div.accordion-group{
 	border-color: darken(@grayLighter, 10%);
+	.border-radius(0);
 }
 #accordionInter div.accordion-heading:hover{
 
@@ -198,21 +230,17 @@ section.calendarContainer:not(:first-child){
 	}
 }
 
-#accordionInter div.accordion-body.in{
-	border-left: 3px solid @blue;
-}
-
 ul.tasks li.external-event{
 	padding: 5px 5px 5px 5px;
 	cursor: move;
 }
+/* Display Task Actions */
+ul.tasks li.external-event:hover a.hide{
+	display: inline;
+}
 li.external-event.disabled{
 	color: @grayLight;
 	cursor: no-drop!important;
-
-	small{
-		margin-right: 5px;
-	}
 }
 li.external-event:hover{
 	background-color: @grayLighter;
@@ -393,10 +421,10 @@ tr.row-object > td, tr.row-item td{
 tr.row-nested-objects-collapse{
 	display: none;
 }
-tr.row-nested-objects-collapse.expend:hover td[colspan="5"]{
+tr.row-nested-objects-collapse.expend:hover td.nestedTD{
 	background-color: @white;
 }
-tr.row-nested-objects-collapse td[colspan="5"]{
+tr.row-nested-objects-collapse td.nestedTD{
 	padding: 25px 3% 5px 3%;
 }
 tr.info td:first-child{

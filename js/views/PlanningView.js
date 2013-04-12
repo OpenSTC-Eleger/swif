@@ -21,8 +21,8 @@ app.Views.PlanningView = Backbone.View.extend({
     
     // The DOM events //
     events: {
-        'click a.buttonCancelInter'                     : 'setInfoModal',
-        'click a.modalDeleteTask'                       : 'setInfoModal',
+        'click a.buttonCancelInter'                     : 'setInfoModalCancelInter',
+        'click i.modalDeleteTask'                       : 'setInfoModalDeleteTask',
 
         'submit #formCancelInter'                       : 'cancelInter',
         'click button.btnDeleteTask'                    : 'deleteTask',
@@ -83,6 +83,7 @@ app.Views.PlanningView = Backbone.View.extend({
         // Retrieve the Login template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
 
+
             // Change the page title //
             app.router.setPageTitle(app.lang.viewsTitles.planning);
             // Change the Grid Mode of the view //
@@ -124,23 +125,34 @@ app.Views.PlanningView = Backbone.View.extend({
 
 
             var interventions = app.collections.interventions.models;
+            console.log('#########################################################');
             console.log(app.collections.interventions);
 
-            // Collection Filter if not null //
+
+            // Filter Intervention - Just retrieve Schedule, to Schedule and Template State //
+            /*var interventions = _.filter(interventions, function(item){
+                return (item.toJSON().state == app.Models.Intervention.state[0].value || item.toJSON().state == app.Models.Intervention.state[1].value || item.toJSON().state == app.Models.Intervention.state[5].value);
+            });*/
+
+            
+            // Collection Filter if not null / Otherwise we display only To Schedule interventions //
 			if(sessionStorage.getItem(self.filters) != null){
 				var interventions = _.filter(interventions, function(item){ 
 					var itemJSON = item.toJSON();
 					return itemJSON.state == sessionStorage.getItem(self.filters);
 				});
 			}
+            else{
+                sessionStorage.setItem(self.filters, app.Models.Intervention.state[1].value);
+                var interventions = _.filter(interventions, function(item){ 
+                    return item.toJSON().state == app.Models.Intervention.state[1].value;
+                });
+            }
 
-           //Order by date start 
-            var interventionsSortedArray = _.sortBy(interventions, function(item){ 
-                    	return item.attributes.date_start; 
-            });
 
-            interventionSorted = new app.Collections.Interventions(interventionsSortedArray);
+            interventionSorted = new app.Collections.Interventions(interventions);
 
+            console.log('#########################################################');
             console.log(interventionSorted.toJSON());
 
             
@@ -163,6 +175,12 @@ app.Views.PlanningView = Backbone.View.extend({
             $('.switch').bootstrapSwitch();
             
             $('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
+
+
+            // Set the focus to the first input of the form //
+            $('#modalAddInter, #modalAddTask').on('shown', function (e) {
+                $(this).find('input').first().focus();
+            })
 
 
 
@@ -200,7 +218,7 @@ app.Views.PlanningView = Backbone.View.extend({
 				$('a.filter-button').removeClass('filter-active ^text').addClass('filter-disabled');
 				$('li.delete-filter').addClass('disabled');
 			}
-            	
+
             app.loader('hide');
         });
        
@@ -279,12 +297,12 @@ app.Views.PlanningView = Backbone.View.extend({
 			// Make the event draggable using jQuery UI //
 			el.draggable({
 			    zIndex: 9999,
-			    revert: false,
+			    revert: true,
 			    revertDuration: 500,
 			    appendTo: '#app',
-			    opacity: 0.5,
+			    opacity: 0.7,
                 scroll: false,
-                cursorAt: { top: 10, left: 10 },
+                cursorAt: { top: 0, left: 0 },
 			    helper: function(e){
                     return $("<p class='well well-small'>"+eventObject.title+"</p>");
                 },
@@ -302,46 +320,51 @@ app.Views.PlanningView = Backbone.View.extend({
 
     /** Display information in the Modal view
     */
-    setInfoModal: function(e){
-        
+    setInfoModalCancelInter: function(e){
+
         // Retrieve the ID of the intervention //
         var link = $(e.target);
 
+        $('#motifCancel').val('');
 
-        if(link.attr('href') == "#modalCancelInter"){
-        	$('#motifCancel').val('');
-            var id = _(link.parent('p').siblings('a').attr('href')).strRightBack('_');
-            
-            var inter = _.filter(app.collections.interventions.models, function(item){ return item.attributes.id == id });
-            
-            if( inter ) {
-            	this.selectedInter = inter[0]
-	            this.selectedInterJSON = this.selectedInter.toJSON();
-	
-	            $('#infoModalCancelInter p').html(this.selectedInterJSON.name);
-	            $('#infoModalCancelInter small').html(this.selectedInterJSON.description);
-            }
-            else{
-            	app.notify('', 'error', app.lang.errorMessages.unablePerformAction, "Annulation Intervention : non trouvée dans la liste");
-            }
+        var id = _(link.parent('p').siblings('a').attr('href')).strRightBack('_');
+
+        var inter = _.filter(app.collections.interventions.models, function(item){ return item.attributes.id == id });
+
+        if( inter ) {
+            this.selectedInter = inter[0]
+            this.selectedInterJSON = this.selectedInter.toJSON();
+
+            $('#infoModalCancelInter p').html(this.selectedInterJSON.name);
+            $('#infoModalCancelInter small').html(this.selectedInterJSON.description);
         }
-        else if(link.attr('href') == "#modalDeleteTask"){        
-            
-            var id = _(link.parent('p').parent('li').attr('id')).strRightBack('_');
-
-            var task = _.filter(app.collections.tasks.models, function(item){ return item.attributes.id == id });
-            if( task ) {
-            	this.selectedTask = task[0]
-	            this.selectedTaskJSON = this.selectedTask.toJSON();
-	
-	            $('#infoModalDeleteTask p').html(this.selectedTaskJSON.name);
-	            $('#infoModalDeleteTask small').html(this.selectedTaskJSON.description);
-            }
-            else{
-            	app.notify('', 'error', app.lang.errorMessages.unablePerformAction, "Suppression Tâche : non trouvée dans la liste");
-            }
+        else{
+            app.notify('', 'error', app.lang.errorMessages.unablePerformAction, "Annulation Intervention : non trouvée dans la liste");
         }
+    },
 
+
+
+    /** Display information in the Modal Delete Task view
+    */
+    setInfoModalDeleteTask: function(e){
+
+        // Retrieve the ID of the task //
+        var link = $(e.target);
+
+        var id = _(link.parent('a').parent('li').attr('id')).strRightBack('_');
+
+        var task = _.filter(app.collections.tasks.models, function(item){ return item.attributes.id == id });
+        if( task ) {
+            this.selectedTask = task[0]
+            this.selectedTaskJSON = this.selectedTask.toJSON();
+
+            $('#infoModalDeleteTask p').html(this.selectedTaskJSON.name);
+            $('#infoModalDeleteTask small').html(this.selectedTaskJSON.description);
+        }
+        else{
+            app.notify('', 'error', app.lang.errorMessages.unablePerformAction, "Suppression Tâche : non trouvée dans la liste");
+        }
     },
 
 
@@ -393,14 +416,13 @@ app.Views.PlanningView = Backbone.View.extend({
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
-//					app.collections.tasks.remove(self.selectedTask);
-//					var inter = app.collections.interventions.get(self.selectedTaskJSON.intervention.id);					
-//					inter.attributes.tasks.remove(self.selectedTaskJSON.id);
-//					app.collections.interventions.add(inter);//					
-//					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.serviceDeleteOk);
-//					self.render();
-					//TODO : manque la suppression de la tâche de l'officier pour son calendrier
-					$('#modalDeleteTask').modal('hide');
+					app.collections.tasks.remove(self.selectedTask);
+					var inter = app.collections.interventions.get(self.selectedTaskJSON.intervention.id);					
+					inter.attributes.tasks.remove(self.selectedTaskJSON.id);
+					app.collections.interventions.add(inter);//					
+					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.serviceDeleteOk);
+                    $('#modalDeleteTask').modal('hide');
+					// Refresh the page //
 					route = Backbone.history.fragment;
 					Backbone.history.loadUrl(route);
 				}
@@ -412,6 +434,7 @@ app.Views.PlanningView = Backbone.View.extend({
 		});
 
     },
+
 
 
 
@@ -455,7 +478,7 @@ app.Views.PlanningView = Backbone.View.extend({
 //		app.views.selectListEquipmentsView.clearAll();
 //		app.views.selectListEquipmentsView.addEmptyFirst();
 //		app.views.selectListEquipmentsView.addAll();
-        
+
         // Retrieve the ID of the intervention //
         this.pos = e.currentTarget.id;
         $('#modalAddTask').modal();
@@ -617,7 +640,7 @@ app.Views.PlanningView = Backbone.View.extend({
 	/** Filter Request
     */
 	setFilter: function(e){
-		
+
 		event.preventDefault();
 
 		var link = $(e.target);
@@ -631,7 +654,9 @@ app.Views.PlanningView = Backbone.View.extend({
 		else{
 			sessionStorage.removeItem(this.filters);
 		}
-		this.render();
+		//this.render();
+        route = Backbone.history.fragment;
+        Backbone.history.loadUrl(route);
 	},
 
 });

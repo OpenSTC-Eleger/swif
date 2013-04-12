@@ -244,7 +244,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	
 
 
-	destroy: function (options) {	
+	destroy: function (options) {
 		app.deleteOE( 
 			[[this.get("id")]],
 			this.model_name,

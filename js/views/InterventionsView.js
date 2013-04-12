@@ -16,7 +16,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 	// The DOM events //
 	events: {
 		'click .btn.addTask'                : 'displayModalAddTask',
-		'submit #formAddTask'         		: 'saveTask',   
+		'submit #formAddTask'         		: 'saveTask',
 
 		'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
 		'click button.btnDeleteTask'   		: 'deleteTask',
@@ -34,7 +34,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 	*/
 	initialize : function() {
 		console.log('Interventions view Initialize');
-    },
+	},
 
 
 
@@ -108,12 +108,15 @@ app.Views.InterventionsView = Backbone.View.extend({
 //			app.views.selectListEquipmentsView.addAll();
 
 			$('*[rel="tooltip"]').tooltip({placement: 'top'});
+			$('*[rel="popover"]').popover({trigger: 'hover'});
+			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
+
 
 			$('tr.row-object').css({ opacity: '1'});
 			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' }); 
+		
 			
-			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 		});
 
 		$(this.el).hide().fadeIn('slow');

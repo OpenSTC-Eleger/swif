@@ -1,31 +1,31 @@
 app.Views.EventsView = Backbone.View.extend({
 	
-		filterTasks: null,
-		minTime: 8,
-		startLunchTime:12,
-		stopLunchTime:14,
-		maxTime: 18,
-		workingTime: 8,
-		arrayPlanifTasks: [],
-		arrayOnDayEvents: [],
-	
-		events: {
-		},
-	
-	
-        initialize: function(planning,object,teamMode){
-			this.teamMode = teamMode;
-			this.planning = planning;
+	filterTasks		: null,
+	minTime			: 8,
+	startLunchTime 	:12,
+	stopLunchTime	:14,
+	maxTime			: 18,
+	workingTime 	: 8,
+	arrayPlanifTasks: [],
+	arrayOnDayEvents: [],
+
+	events: {
+	},
+
+
+    initialize: function(planning,object,teamMode){
+		this.teamMode = teamMode;
+		this.planning = planning;
+		
+		this.id = object.attributes.id;
+		this.initCollection(object);
 			
-			this.id = object.attributes.id;
-			this.initCollection(object);
-				
-			this.el = $(this.elStringId);			
-			
-            _.bindAll(this); 
-            
-            this.eventView = new app.Views.EventView();            
-        },
+		this.el = $(this.elStringId);			
+		
+        _.bindAll(this); 
+        
+        this.eventView = new app.Views.EventView();            
+    },
         
         initCollection: function(object) {
 			if (this.teamMode) 
@@ -115,15 +115,15 @@ app.Views.EventsView = Backbone.View.extend({
         },
         
         copy: function() {
-        	console.debug("Copy Event");
+        	console.log('Copy Event');
         },
 
         remove: function() {
-        	console.debug("Remove Event");
+        	console.log('Remove Event');
         },
 
         edit: function() {
-        	console.debug("Edit Event");
+        	console.log('Edit Event');
         },
         
         getColor: function(task) {	
@@ -267,26 +267,21 @@ app.Views.EventsView = Backbone.View.extend({
 					console.debug('START' + startDate);
 					console.debug('START' + endDate);
 					console.debug('ALLDAY' + allDay);
-	
+
 					var mStartDate = moment( startDate );
 					var mEndDate = moment( endDate );
-					
+
 		        	modalAbsentTask = $("#modalAbsentTask");
 		        	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
-		        	
-		        	
-		        	$(".datepicker").datepicker({
-		        			format: 'dd/mm/yyyy',
-		        			weekStart: 1,
-		        			autoclose: true,
-		        			language: 'fr'});
-		        	$('#modalAbsentTask .modal-body').css("height", "380px");
-		        	
+
+
+		        	$(".datepicker").datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
+
 		        	app.views.selectListAbsentTypesView = new app.Views.DropdownSelectListView({el: $("#absentType"), collection: app.collections.absentTypes})
 					app.views.selectListAbsentTypesView.clearAll();
 					app.views.selectListAbsentTypesView.addEmptyFirst();
 					app.views.selectListAbsentTypesView.addAll();
-		        	
+
 		        	$("#startDate").val( moment( startDate ).format('L') );
 		        	$("#endDate").val( moment( endDate ).format('L') );
 		        	if( allDay ) {
@@ -302,8 +297,11 @@ app.Views.EventsView = Backbone.View.extend({
 			    		$("#endHour").timepicker('setTime', mEndDate.format('LT') );
 		        	}
 
-		    		$('#infoModalAbsentTask p').html( 'Nouvelle absence ' );
-		    		$('#infoModalAbsentTask small').html( mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
+		        	// Set Modal informations //
+		        	var selectedOfficer = app.collections.officers.get(self.id);
+		    		$('#infoModalAbsentTask p').html("<i class='icon-user'></i> "+selectedOfficer.getFullname());
+		    		$('#infoModalAbsentTask small').html("Du " + mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
+
 		    		modalAbsentTask.one('submit', function(event) {
 						event.preventDefault();
 						var mNewDateStart =  new moment( $("#startDate").val(),"DD-MM-YYYY")

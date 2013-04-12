@@ -252,6 +252,7 @@
     	"newIntervention"		 : "Nouvelle intervention",
     	"newTask"				 : "Nouvelle tâche",
     	"newPlace"				 : "Nouveau site",
+    	"newAbsent"				 : "Nouvelle absence",
     	"newService"			 : "Nouveau service",
     	"planning"				 : "Planification des tâches",
     	"tasksList"				 : "Liste des tâches",
