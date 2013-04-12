@@ -280,7 +280,7 @@
 <div id="modalAddAddress" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h3>Nouvelle tâche</h3>
+		<h3>Nouveau contact</h3>
 	</div>
 	
 	<div class="modal-body">
@@ -296,69 +296,121 @@
 				</div>
 			</div>
 			
+			
+			<!-- Create Associated Account Link -->
 			<div class="control-group">
-				<label for="addressFunction" class="control-label">Fonction:</label>
-
 				<div class="controls">
-					<input type="text" id="addressFunction" name="addressFunction" />
-					<span class="help-inline"></span>
+					<label class="checkbox" for="createAssociatedAccount">
+					<input type="checkbox" id="createAssociatedAccount"> <%= lang.actions.createAssociatedAccount %></label>
 				</div>
 			</div>
 			
-			<div class="control-group">
-				<label for="addressPhone" class="control-label">Téléphone:</label>
+			<!-- Create associate Account -->
+			<fieldset class="associated-account hide">
+				<legend><%= lang.aboutTheAccount %></legend>
 
-				<div class="controls">
-					<input type="text" id="addressPhone" name="addressPhone" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
-			
-			
-			<div class="control-group">
-				<label for="addressEmail" class="control-label"><%= _.capitalize(lang.email) %>:</label>
+				<!-- Officer login -->
+				<div class="control-group">
+					<label for="partnerLogin" class="control-label"><%= _.capitalize(lang.login) %>:</label>
 
-				<div class="controls">
-					<input type="email" id="addressEmail" name="addressEmail" />
-					<span class="help-inline"></span>
+					<div class="controls">
+						<input type="text" id="partnerLogin" name="partnerLogin" required="required" />
+						<span class="help-inline"></span>
+					</div>
 				</div>
-			</div>
-			
-			<div class="control-group">
-				<label for="addressMobile" class="control-label">Portable:</label>
 
-				<div class="controls">
-					<input type="text" id="addressMobile" name="addressMobile" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
-			
-			<div class="control-group">
-				<label for="addressStreet" class="control-label">Addresse:</label>
+				<!-- Officer password -->
+				<div class="control-group">
+					<label for="partnerPassword" class="control-label"><%= _.capitalize(lang.password) %>:</label>
 
-				<div class="controls">
-					<input type="text" id="addressStreet" name="addressStreet" />
-					<span class="help-inline"></span>
+					<div class="controls">
+						<input type="password" id="partnerPassword" name="partnerPassword" pattern=".{6,}" required="required" />
+						<span class="help-inline"><%= lang.infoMessages.sixCharMin %></span>
+					</div>
 				</div>
-			</div>
-			
-			<div class="control-group">
-				<label for="addressCity" class="control-label">Ville:</label>
 
-				<div class="controls">
-					<input type="text" id="addressCity" name="addressCity" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
+			</fieldset>
 			
-			<div class="control-group">
-				<label for="addressZip" class="control-label">Code postal:</label>
+			<fieldset>
+				<legend><%= lang.aboutTheContact %></legend>
+					<div class="control-group">
+						<label for="addressEmail" class="control-label"><%= _.capitalize(lang.email) %>:</label>
+		
+						<div class="controls">
+							<input type="email" id="addressEmail" name="addressEmail" required/>
+							<span class="help-inline"></span>
+						</div>
+					</div>
+				
+					<div class="control-group">
+						<label for="addressFunction" class="control-label">Fonction:</label>
+		
+						<div class="controls">
+							<input type="text" id="addressFunction" name="addressFunction" />
+							<span class="help-inline"></span>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label for="addressPhone" class="control-label">Téléphone:</label>
+		
+						<div class="controls">
+							<input type="text" id="addressPhone" name="addressPhone" />
+							<span class="help-inline"></span>
+						</div>
+					</div>
+					
+					
 
-				<div class="controls">
-					<input type="text" id="addressZip" name="addressZip" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
+					
+					<div class="control-group">
+						<label for="addressMobile" class="control-label">Portable:</label>
+		
+						<div class="controls">
+							<input type="text" id="addressMobile" name="addressMobile" />
+							<span class="help-inline"></span>
+						</div>
+					</div>
+					
+					<!-- Associated Adress details -->
+					<div class="control-group">
+						<div class="controls">
+							<label class="checkbox" for="associatedAdress">
+							<input type="checkbox" id="associatedAdress"> <%= lang.actions.associatedAdress %></label>
+						</div>
+					</div>
+					
+			 </fieldset>		
+			 <fieldset class="associated-adress hide">
+				<legend><%= lang.aboutTheContactAdress %></legend>
+					
+					<div class="control-group">
+						<label for="addressStreet" class="control-label">Addresse:</label>
+		
+						<div class="controls">
+							<input type="text" id="addressStreet" name="addressStreet" />
+							<span class="help-inline"></span>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label for="addressCity" class="control-label">Ville:</label>
+		
+						<div class="controls">
+							<input type="text" id="addressCity" name="addressCity" />
+							<span class="help-inline"></span>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label for="addressZip" class="control-label">Code postal:</label>
+		
+						<div class="controls">
+							<input type="text" id="addressZip" name="addressZip" />
+							<span class="help-inline"></span>
+						</div>
+					</div>
+				</fieldset>
 			
 			
 		</form>

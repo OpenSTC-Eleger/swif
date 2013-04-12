@@ -60,6 +60,8 @@
 	"property"				: "proprietées",
 	"date_deadline"			: "Date butoir",
 	"aboutTheClaimer"   	: "À propos du demandeur",
+	"aboutTheContact"   	: "À propos du contact",
+	"aboutTheContactAdress"  : "Adresse du contact",
 	"aboutThePlace" 	  	: "À propos du site",
 	"aboutTheService" 	  	: "À propos du service",
 	"claimerDetails"		: "Détail du demandeur",
@@ -68,6 +70,7 @@
 	"aboutTheTask"   		: "À propos de la tâche",
 	"aboutThePlanning"   	: "Planification",
 	"aboutTheOfficer"  		: "À propos de l'agent",
+	"aboutTheAccount"   		: "À propos du compte openstc",
 	"informationOfTheSite" 	: "Précision sur le site",
 	"serviceConcerned" 		: "Service concerné",
 	"action" 				: "actions",
@@ -148,7 +151,9 @@
 		"updateTeam" 		: "mettre à jour l'équipe",
 		"enclosePlanning" 	: "cloturer la planification",
 		"openPlanning" 		: "Remettre en planification",
-		"createAssociatedTask" : "Créer la tâche associée",
+		"createAssociatedTask" 		: "Créer la tâche associée",
+		"createAssociatedAccount" 	: "Créer le compte openstc associé",
+		"associatedAdress" 	: "Adresse associée",
 		"save"				: "enregistrer",
 		"reopen"			: "Réintegrer",
 		"cancel"			: "annuler",
@@ -173,11 +178,17 @@
 	"errorMessages" : {
 		"connectionError"     : "Erreur de connexion",
 	    "loginIncorrect"      : "Identifiant ou mot de passe incorrect",
+	    "fillError" 		  : "Erreur de saisie",
 	    "unablePerformAction" : "Impossible d'effectuer l'action",
 	    "serverUnreachable"   : "Impossible d'établir la connexion avec le serveur, contactez l'administrateur",
 	    "sufficientRights"    : "Vous n'avez pas les droits suffisants pour éffectuer cette action"
 	},
 
+	"validationMessages" : {
+		"claimers" : {
+	    	"accountIncorrect"      : "Identifiant ou mot de passe du compte associé incorrect"
+	    }
+	},
 
 	"warningMessages" : {
 		"confirmDeleteAgent"	: "Êtes-vous sûr de vouloir supprimer cet agent ?",

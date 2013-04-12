@@ -29,6 +29,9 @@ app.Views.ClaimersView = Backbone.View.extend({
 			
 		'click a.accordion-object'    			: 'tableAccordion',
 		'change #claimerTechnicalService'		: 'fillDropdownTechnicalService',
+		
+		'change #createAssociatedAccount' 			: 'accordionAssociatedAccount',
+		'change #associatedAdress' 					: 'accordionAssociatedAdress',
 			
     },
 
@@ -37,7 +40,7 @@ app.Views.ClaimersView = Backbone.View.extend({
 	/** View Initialization
 	*/
     initialize: function () {
-
+		
     },
 
 
@@ -86,7 +89,7 @@ app.Views.ClaimersView = Backbone.View.extend({
 		});
 
 		$(this.el).hide().fadeIn('slow');
-
+		
 		return this;
     },
     
@@ -233,11 +236,16 @@ app.Views.ClaimersView = Backbone.View.extend({
     /** Save the Address
     	    */
     saveAddress: function(e){
-    	 var self = this;
-
 		e.preventDefault();
 		
-		 
+		if( $('#createAssociatedAccount').is(':checked') ){
+			if($('#partnerLogin').val() == '' || $('#partnerPassword').val() == ''){
+				app.notify('', 'error', 
+					app.lang.errorMessages.unablePerformAction, 
+					app.lang.validationMessages.claimers.accountIncorrect);
+					return;
+			}
+		}
 	     var params = {
 	         partner_id: this.pos,
 	         name: this.$('#addressName').val(),
@@ -252,6 +260,7 @@ app.Views.ClaimersView = Backbone.View.extend({
 	     };
 	     //TODO : test
 	     app.models.claimerContact.save(0,params,$('#modalAddAddress'), null, "demandeurs");
+		
    },
    
     /** Delete Address
@@ -385,6 +394,24 @@ app.Views.ClaimersView = Backbone.View.extend({
 			app.views.selectListClaimerTechnicalSiteView.addAll();
 			
 		}				
+	},
+	
+	/** Display or Hide Create associated Task Section
+		*/
+	accordionAssociatedAccount: function(event){
+		event.preventDefault();
+
+		// Toggle Slide Create associated task section //
+		$('fieldset.associated-account').stop().slideToggle();
+	},
+	
+	accordionAssociatedAdress: function(event){
+		event.preventDefault();
+	
+		// Toggle Slide Create associated task section //
+		$('fieldset.associated-adress').stop().slideToggle(function(){
+			$('#modalAddAddress div.modal-body').animate({scrollTop: $('#modalAddAddress div.modal-body').height()}, 400);
+		});
 	},
 	
 	preventDefault: function(event){
