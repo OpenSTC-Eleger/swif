@@ -162,7 +162,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 				}
 				// Hack for Sunday Task //
-				else {				
+				else {
 
 					if( momentDate.clone().day(7).isSame(task.date_start, 'day') ){					
 						sundayTasks.push(task);
@@ -208,12 +208,7 @@ app.Views.TasksListView = Backbone.View.extend({
 			app.views.selectListAssignementsView.addAll();
 
 
-			$(".datepicker").datepicker({
-    			format: 'dd/mm/yyyy',
-    			weekStart: 1,
-    			autoclose: true,
-    			language: 'fr'
-    		});
+			$(".datepicker").datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr' });
 			
 			$('#equipmentsAdd, #equipmentsListAdd').sortable({
 				connectWith: 'ul.sortableEquipmentsList',
@@ -336,13 +331,13 @@ app.Views.TasksListView = Backbone.View.extend({
 				choiceList.append('<li id="equipment_'+materialJSON.id+'"><a href="#"><i class="icon-wrench"></i> '+ materialJSON.name + '-' + materialJSON.type + ' </a></li>');
 			}
 		});
-		
+
 		badgeComponent.html(nbRemainMaterials);
-		
+
 	},
 
 
-  
+
 	/** Get the Taks
 	*/
     getTask: function(e) {
@@ -355,18 +350,21 @@ app.Views.TasksListView = Backbone.View.extend({
 
 		this.model = app.collections.tasks.get(this.pos);
     },
-    
-    resetModal: function() {    	
+
+
+
+    resetModal: function() {
     	$('.taskInput').val('');
     	$('.taskSelect').val(0);
     	$('#taskName').val('');
     	
     	//$('.equipments').val('')
-    	
     },
-    
+
+
+
 	/** Display the form to add a new Task
-		*/
+	*/
 	displayModalAddTask: function(e){
 			
     	this.resetModal();
@@ -397,8 +395,9 @@ app.Views.TasksListView = Backbone.View.extend({
 		$('#modalAddTask .modal-body').css({"height": "450px", "max-height": "450px"});
         $('#modalAddTask').modal();
 	},
-	
-	
+
+
+
 	fillDropdownEquipment: function(e){
 		e.preventDefault();
 		var target = $(e.target).attr('value');
@@ -411,7 +410,8 @@ app.Views.TasksListView = Backbone.View.extend({
 			}			
 		}
 	},
-	
+
+
 
 	/** Save the Task
 	*/
@@ -434,15 +434,15 @@ app.Views.TasksListView = Backbone.View.extend({
 	    	 if( selectItem ) {
 	    		 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
 	    	 }
-	    }	    	
-	     
-	     input_equipment_id = null;
-	     if( app.views.selectListEquipmentsView != null ) {
-	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
-	    	 if( selectItem ) {
-	    		 input_equipment_id = selectItem.toJSON().id
-	    	 }
-	     }
+	    }
+
+		input_equipment_id = null;
+		if( app.views.selectListEquipmentsView != null ) {
+			var selectItem = app.views.selectListEquipmentsView.getSelected();
+			if( selectItem ) {
+				input_equipment_id = selectItem.toJSON().id
+			}
+		}
 	     
 	     this.vehicule = input_equipment_id;
 	     this.equipments = _.map($("#equipmentsAdd").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
@@ -472,7 +472,9 @@ app.Views.TasksListView = Backbone.View.extend({
 	     
 	     //this.saveEquipmentAndTask(  this.$('#equipmentKmAdd').val(), input_equipment_id, true )
    	},
-    
+
+
+
     //Task not finished
     setModalTimeSpent: function(e) {    	
     	this.getTask(e);
@@ -498,7 +500,8 @@ app.Views.TasksListView = Backbone.View.extend({
 		app.views.selectListEquipmentsView.addEmptyFirst();
 		app.views.selectListEquipmentsView.addAll();
     },
-    
+
+
     
     saveTimeSpent: function(e) {
     	e.preventDefault();
@@ -528,7 +531,7 @@ app.Views.TasksListView = Backbone.View.extend({
     	
     	taskParams = {
     		name: task.name?task.name:0,
-    		parent_id: task.id,  		  	
+    		parent_id: task.id,
   		  	project_id: task.project_id!=null?task.project_id[0]:null,
   		    state: app.Models.Task.state[3].value,
 	        planned_hours: remaining_hours,
@@ -539,54 +542,53 @@ app.Views.TasksListView = Backbone.View.extend({
 			date_end: null,
 			date_start: null,
 		};
-    	
+
     	var self = this;
     	self.task = task;
     	self.newDateEnd = newDateEnd;
     	self.hours = hours;
     	self.remaining_hours = remaining_hours;
     	app.models.task.saveTest(0,taskParams,{
-				success: function(){
-    				taskParams = {
-						//equipment_id: input_equipment_id,
-						equipment_ids: [[6, 0, self.equipments]],
-						km: self.$('#equipmentKmSpent').val(),
-						oil_qtity: self.$('#equipmentOilQtitySpent').val(),
-						oil_price: self.$('#equipmentOilPriceSpent').val(),
-						state: app.Models.Task.state[1].value,
-						effective_hours: self.hours,
-						remaining_hours: 0,
-						//user_id: self.task.user_id?self.task.user_id[0]:0,
-						//team_id: self.task.team_id?self.task.team_id[0]:0,
-						//date_start: self.task.date_start.toDate(),
-						//date_end: self.newDateEnd.toDate(),
-    		  		};
+			success: function(){
+				taskParams = {
+					//equipment_id: input_equipment_id,
+					equipment_ids: [[6, 0, self.equipments]],
+					km: self.$('#equipmentKmSpent').val(),
+					oil_qtity: self.$('#equipmentOilQtitySpent').val(),
+					oil_price: self.$('#equipmentOilPriceSpent').val(),
+					state: app.Models.Task.state[1].value,
+					effective_hours: self.hours,
+					remaining_hours: 0,
+					//user_id: self.task.user_id?self.task.user_id[0]:0,
+					//team_id: self.task.team_id?self.task.team_id[0]:0,
+					//date_start: self.task.date_start.toDate(),
+					//date_end: self.newDateEnd.toDate(),
+		  		};
 
-    		  		
 
-    		  		taskWorkParams = {
-    		      			 name: task.name,
-    		      	         date: new Date(),
-    		      	         task_id: task.id,
-    		      	         hours: self.hours,
-    		      	         user_id: task.user_id!=null?task.user_id[0]:null,
-    		      	         team_id: task.team_id!=null?task.team_id[0]:null,
-    		      	         company_id: task.company_id!=null?task.company_id[0]:null,
-    		      	};
-    		  		
-    		  		var newInterState = null;
-    		  		if( task && task.intervention ) {
-    		  			inter = task.intervention;
-    		  			newInterState = inter.state;
-    		  			if( task.intervention.state!=app.Models.Intervention.state[5].value ) {
-    		  				newInterState = app.Models.Intervention.state[3].value;
-    		  			}
-    		  		}    		
-    		  		
-    		  		self.saveNewStateTask(taskParams, taskWorkParams,$('#modalTimeSpent'),newInterState, false);
-    		  		//self.saveEquipment(  self.$('#equipmentKmSpent').val(), input_equipment_id )
-				}
-			});
+		  		taskWorkParams = {
+		      			 name: task.name,
+		      	         date: new Date(),
+		      	         task_id: task.id,
+		      	         hours: self.hours,
+		      	         user_id: task.user_id!=null?task.user_id[0]:null,
+		      	         team_id: task.team_id!=null?task.team_id[0]:null,
+		      	         company_id: task.company_id!=null?task.company_id[0]:null,
+		      	};
+		  		
+		  		var newInterState = null;
+		  		if( task && task.intervention ) {
+		  			inter = task.intervention;
+		  			newInterState = inter.state;
+		  			if( task.intervention.state!=app.Models.Intervention.state[5].value ) {
+		  				newInterState = app.Models.Intervention.state[3].value;
+		  			}
+		  		}    		
+		  		
+		  		self.saveNewStateTask(taskParams, taskWorkParams,$('#modalTimeSpent'),newInterState, false);
+		  		//self.saveEquipment(  self.$('#equipmentKmSpent').val(), input_equipment_id )
+			}
+		});
     },
 
 
@@ -628,6 +630,8 @@ app.Views.TasksListView = Backbone.View.extend({
 		app.views.selectListEquipmentsView.addEmptyFirst();
 		app.views.selectListEquipmentsView.addAll();
     },
+
+
 
 	/** Update the task
 	*/
@@ -777,7 +781,9 @@ app.Views.TasksListView = Backbone.View.extend({
 //		this.saveNewStateTask(taskParams, taskWorkParams,$('#modalTaskDone'),newInterState, false);
 //		//this.saveEquipment(  this.$('#equipmentKmDone').val(), input_equipment_id )
 //    },
-    
+
+
+
     //Task not beginning
     taskNotDone: function(e) {
 		e.preventDefault();
@@ -806,7 +812,10 @@ app.Views.TasksListView = Backbone.View.extend({
 
 	},
 
-	//Save task with new times
+
+
+	/* Save task with new times
+	*/
 	saveNewStateTask: function(taskParams, taskWorkParams, element, newInterState, create) {
 		var self = this;
 		self.taskParams = taskParams;
@@ -879,6 +888,8 @@ app.Views.TasksListView = Backbone.View.extend({
 //		});
 //
 //	},
+
+
 
     preventDefault: function(event){
     	event.preventDefault();
