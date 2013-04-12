@@ -5,7 +5,7 @@ app.Collections.Users = Backbone.Collection.extend({
 
     model : app.Models.User,
 
-    localStorage : new Store("usersCollection"),
+    sessionStorage : new Store("usersCollection"),
 
 
     /** Collection Initialization

@@ -114,7 +114,13 @@ app.Views.InterventionsView = Backbone.View.extend({
 
 			$('tr.row-object').css({ opacity: '1'});
 			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' }); 
+			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
+
+
+			// Set the focus to the first input of the form //
+            $('#modalCancelInter, #modalDeleteTask, #modalAddTask').on('shown', function (e) {
+                $(this).find('input, textarea, button').first().focus();
+            })
 		
 			
 		});
