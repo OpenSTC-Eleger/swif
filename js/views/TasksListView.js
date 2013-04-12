@@ -110,13 +110,6 @@ app.Views.TasksListView = Backbone.View.extend({
     			   );
         });
 
-    	//var tasks = app.collections.tasks.getTasksByOfficer(officer_id);
-
-        // Retrieve the number of validated Interventions //
-//        var tasksPending = _.filter(tasksUser, function(item){         		
-//        	return item.attributes.state == app.Models.Task.state[2].value; 
-//        });
-
 		// Create table for each day //
 		var mondayTasks =[]; 	var tuesdayTasks =[];
 		var wednesdayTasks =[]; var thursdayTasks =[];
@@ -259,19 +252,6 @@ app.Views.TasksListView = Backbone.View.extend({
 					//self.saveServicesCategories();
 				}
 			});	
-			
-//			$('#modalTaskDone .modal-body').css("height", "550px");
-//			$('#modalAddTask').css("height", "800px");
-//			$('#modalAddTask .modal').css("height", "800px");
-//			$('#modalTimeSpent .modal-body').css("height", "550px");
-			
-			//$('#duallistbox_demo1_helper1').bootstrapDualListbox();
-			
-//			$('.modal').validate( {
-//				rules: {
-//					number: { required: true, min: 1 }
-//				}
-//			} );
 
 			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 			$('*[rel="tooltip"]').tooltip({placement: "top"});
@@ -295,7 +275,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		return this;
     },
 
-
+    /*********************************************DISPLAY UI*********************************************/
 
 	/** Display equipments
 	*/
@@ -340,30 +320,6 @@ app.Views.TasksListView = Backbone.View.extend({
 		badgeComponent.html(nbRemainMaterials);
 		
 	},
-
-
-  
-	/** Get the Taks
-	*/
-    getTask: function(e) {
-
-    	this.resetModal();
-		var href = $(e.target);
-	
-		// Retrieve the ID of the request //	
-		this.pos = href.parents('tr').attr('id');
-
-		this.model = app.collections.tasks.get(this.pos);
-    },
-    
-    resetModal: function() {    	
-    	$('.taskInput').val('');
-    	$('.taskSelect').val(0);
-    	$('#taskName').val('');
-    	
-    	//$('.equipments').val('')
-    	
-    },
     
 	/** Display the form to add a new Task
 		*/
@@ -412,6 +368,25 @@ app.Views.TasksListView = Backbone.View.extend({
 		}
 	},
 	
+	resetModal: function() {    	
+    	$('.taskInput').val('');
+    	$('.taskSelect').val(0);
+    	$('#taskName').val('');    	    	
+    },
+	
+	/** Get the Taks
+	*/
+    getTask: function(e) {
+
+    	this.resetModal();
+		var href = $(e.target);
+	
+		// Retrieve the ID of the request //	
+		this.pos = href.parents('tr').attr('id');
+
+		this.model = app.collections.tasks.get(this.pos);
+    },
+	
 
 	/** Save the Task
 	*/
@@ -455,7 +430,6 @@ app.Views.TasksListView = Backbone.View.extend({
 	         date_start: mNewDateStart.toDate(),
 	         date_end: mNewDateEnd.toDate(),
 	         state: app.Models.Task.state[1].value,
-	         //equipment_id: input_equipment_id,
 	         equipment_ids: [[6, 0, this.equipments]],
 	         name: this.$('#taskName').val(),
 	         km: this.$('#equipmentKmAdd').val(),
@@ -467,10 +441,6 @@ app.Views.TasksListView = Backbone.View.extend({
 		     remaining_hours: 0,
 	     };
 	     this.saveNewStateTask(params, null, $('#modalAddTask'), null , true);
-	    // app.models.task.save(0,params,$('#modalAddTask'), null, "taches");
-	     //this.saveEquipment(  this.$('#equipmentKmAdd').val(), input_equipment_id)
-	     
-	     //this.saveEquipmentAndTask(  this.$('#equipmentKmAdd').val(), input_equipment_id, true )
    	},
     
     //Task not finished
@@ -548,7 +518,6 @@ app.Views.TasksListView = Backbone.View.extend({
     	app.models.task.saveTest(0,taskParams,{
 				success: function(){
     				taskParams = {
-						//equipment_id: input_equipment_id,
 						equipment_ids: [[6, 0, self.equipments]],
 						km: self.$('#equipmentKmSpent').val(),
 						oil_qtity: self.$('#equipmentOilQtitySpent').val(),
@@ -556,10 +525,6 @@ app.Views.TasksListView = Backbone.View.extend({
 						state: app.Models.Task.state[1].value,
 						effective_hours: self.hours,
 						remaining_hours: 0,
-						//user_id: self.task.user_id?self.task.user_id[0]:0,
-						//team_id: self.task.team_id?self.task.team_id[0]:0,
-						//date_start: self.task.date_start.toDate(),
-						//date_end: self.newDateEnd.toDate(),
     		  		};
 
     		  		
@@ -584,7 +549,6 @@ app.Views.TasksListView = Backbone.View.extend({
     		  		}    		
     		  		
     		  		self.saveNewStateTask(taskParams, taskWorkParams,$('#modalTimeSpent'),newInterState, false);
-    		  		//self.saveEquipment(  self.$('#equipmentKmSpent').val(), input_equipment_id )
 				}
 			});
     },
@@ -688,14 +652,8 @@ app.Views.TasksListView = Backbone.View.extend({
 	        oil_qtity: this.$('#equipmentOilQtityDone').val(),
 	        oil_price: this.$('#equipmentOilPriceDone').val(),	
 	        
-		    //Task work params
-             //name: task.name,
 	        date: new Date(),
-	        //task_id: task.id,
 	        hours: hours,
-	        //user_id: task.user_id!=null?task.user_id[0]:null,
-	        //team_id: task.team_id!=null?task.team_id[0]:null,
-	        //company_id: task.company_id[0]
 	        
 		};
 	    
@@ -711,81 +669,13 @@ app.Views.TasksListView = Backbone.View.extend({
     	
     },
 
-	/** Update the task
-	*/
-//    saveTaskDone: function(e) {
-//    	e.preventDefault();
-//
-//		var that = this;
-//		that.state = app.Models.Intervention.state[2].value;		
-//		var tasks = this.model.toJSON().intervention.tasks;
-//		_.each(tasks.models, function (task, i) {
-//			if( that.model.id!= task.id && ( task.toJSON().state == app.Models.Task.state[0].value
-//				 || task.toJSON().state == app.Models.Task.state[2].value) )
-//				that.state = app.Models.Intervention.state[3].value;
-//		});
-//		
-//		var timeArray = $('#eventTimeDone').val().split(':');
-//    	var hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0);
-//    	
-//    	 input_equipment_id = null;
-//	     if( app.views.selectListEquipmentsView != null ) {
-//	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
-//	    	 if( selectItem ) {
-//	    		 input_equipment_id = selectItem.toJSON().id
-//	    	 }
-//	     }
-//	     
-//	    this.vehicule = input_equipment_id;
-//	    this.equipments = _.map($("#equipmentsDone").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
-//	    this.equipments.push( input_equipment_id );
-//
-//
-//		taskParams = {
-//		    state: app.Models.Task.state[1].value,
-//		    //equipment_id: input_equipment_id,
-//		    equipment_ids: [[6, 0, this.equipments]],
-//		    remaining_hours: 0,
-//	        km: this.$('#equipmentKmDone').val(),
-//	        oil_qtity: this.$('#equipmentOilQtityDone').val(),
-//	        oil_price: this.$('#equipmentOilPriceDone').val(),
-//		};
-//		
-//		var task = this.model.toJSON();
-//		
-//		
-//		
-//    	taskWorkParams = {
-//    			 name: task.name,
-//    	         date: new Date(),
-//    	         task_id: task.id,
-//    	         hours: hours,
-//    	         user_id: task.user_id!=null?task.user_id[0]:null,
-//    	         team_id: task.team_id!=null?task.team_id[0]:null,
-//    	         company_id: task.company_id[0]
-//    	};
-//    	
-//		var newInterState = null;
-//		if( task && task.intervention ) {
-//			inter = task.intervention;
-//			newInterState = inter.state;
-//			if( task.intervention.state!=app.Models.Intervention.state[5].value ) {
-//				newInterState = that.state;
-//			}
-//		}    		
-//    	
-//		this.saveNewStateTask(taskParams, taskWorkParams,$('#modalTaskDone'),newInterState, false);
-//		//this.saveEquipment(  this.$('#equipmentKmDone').val(), input_equipment_id )
-//    },
     
     //Task not beginning
     taskNotDone: function(e) {
 		e.preventDefault();
 		this.getTask(e);
 		taskParams = {
-			state: app.Models.Task.state[3].value,		        
-			//remaining_hours: 0,
-			//planned_hours: 0,
+			state: app.Models.Task.state[3].value,		
 			user_id: null,
 			team_id:null,
 			date_end: null,
@@ -793,17 +683,6 @@ app.Views.TasksListView = Backbone.View.extend({
 		};
 		
 		app.models.task.save(this.model.id, taskParams, null, this, "#taches");
-
-//		var newInterState = null;
-//		if( this.model && this.model.intervention ) {
-//			inter = this.model.intervention;
-//			newInterState = inter.state;
-//			if( this.model.intervention.state!=app.Models.Intervention.state[5].value ) {
-//				newInterState = app.Models.Intervention.state[3].value;
-//			}
-//		}
-//		this.saveNewStateTask(taskParams,null,null,newInterState, false);
-
 	},
 
 	//Save task with new times
@@ -812,11 +691,6 @@ app.Views.TasksListView = Backbone.View.extend({
 		self.taskParams = taskParams;
 		self.taskWorkParams = taskWorkParams;
 		self.element = element;
-		
-		// why 'saveWithCallback' and note 'save' on model
-		//When save intervention and just after save task (TaskListView L.187 et L.190) postgres send this error:
-		//TransactionRollbackError: could not serialize access due to concurrent update
-		//We must wait intervention save callback before save task
 		
 		if( this.vehicule )
 		var equipment = app.collections.equipments.get(this.vehicule);
@@ -853,9 +727,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		
 
 	},
-
-
-
+	
 	/** Display or Hide Refueling Section (Inputs Km, Oil, Oil prize)
 	*/
 	accordionRefuelingInputs: function(e){
@@ -865,20 +737,6 @@ app.Views.TasksListView = Backbone.View.extend({
 		$('.refueling-vehicle').stop().slideToggle();
 
 	},
-	
-//	saveEquipment: function( km, equipmentId ) {
-//		
-//		var equipment = app.collections.equipments.get(equipmentId);
-//		var params = {};
-//		params.km = km;
-//		equipment.updateKM( km );
-//		equipment.save(equipment.id,params,{
-//			succes: function(data){
-//				console.debug(data);
-//			}
-//		});
-//
-//	},
 
     preventDefault: function(event){
     	event.preventDefault();
