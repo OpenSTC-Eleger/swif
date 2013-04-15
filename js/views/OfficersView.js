@@ -193,6 +193,9 @@ app.Views.OfficersView = Backbone.View.extend({
 		// Reset the value to null //
 		$('#officerName, #officerFirstname, #officerEmail, #officerLogin, #officerPassword').val('');
 		app.views.selectListGroupsView.setSelectedItem(0);
+		app.views.selectListGroupsView.clearAll();
+		app.views.selectListGroupsView.addEmptyFirst();
+		app.views.selectListGroupsView.addAll();
 		
 
 		// Update //
