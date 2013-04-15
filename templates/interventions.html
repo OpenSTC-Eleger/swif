@@ -182,7 +182,7 @@
 										<tr class="row-nested-objects" id="task_<%= task.id %>">
 											<td>
 												<!-- Display a clock when the task is planned -->
-												<% if(task.date_start != ''){ console.log("###"); console.log(task); %>
+												<% if(task.date_start != ''){ %>
 													<i 
 														class="icon-time displayInlineBlock" rel="tooltip" data-placement="top"
 														data-original-title="<%= moment(task.date_start).format('LLL') %>" >
