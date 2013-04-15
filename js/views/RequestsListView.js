@@ -71,7 +71,6 @@ app.Views.RequestsListView = Backbone.View.extend({
 				return item.state == sessionStorage.getItem(self.filters);
 			});
 		}
-		
 
 
 		var len = requests.length;

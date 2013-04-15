@@ -7,10 +7,12 @@ app.Views.TasksListView = Backbone.View.extend({
 
 	templateHTML: 'tasksListCheck',
 
+	filters: 'tasksListFilter',
+
 	numberListByPage: 25,
 
 
-    // The DOM events //
+	// The DOM events //
 	events: {
 		'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
@@ -22,13 +24,15 @@ app.Views.TasksListView = Backbone.View.extend({
 
 		'click .buttonTimeSpent'		: 'setModalTimeSpent',
 		'submit #formTimeSpent'    		: 'saveTimeSpent',
-    	
+
 		'click .buttonTaskDone'			: 'setModalTaskDone',
 		'submit #formTaskDone'    		: 'saveTaskDone',
 		
 		'change .taskEquipment'			: 'fillDropdownEquipment',
 
-		'click .linkRefueling'			: 'accordionRefuelingInputs'
+		'click .linkRefueling'			: 'accordionRefuelingInputs', 
+
+		'change #filterListAgents' 		: 'setFilter'
 	},
 
 
@@ -62,8 +66,8 @@ app.Views.TasksListView = Backbone.View.extend({
 //		tasks = _.sortBy(tasks, function(item){ 
 //			return [-item.state,-item.date_start]; 
 //		});
-		
-		
+
+
 		// Retrieve the year - If not exist in the URL set as the current year //
 		if(typeof(this.options.yearSelected) == 'undefined'){
 			yearSelected = moment().year();
@@ -86,7 +90,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 		//TODO ajouter le DST et le manager du service de l'utilisateur
 		var tasksUser = _.filter(tasks, function(task){
-			var intervention = task.intervention; 
+			var intervention = task.intervention;
 
     		var belongsToOfficer = (task.user_id[0] == officer_id)
     		if( task.teamWorkingOn != null && task.teamWorkingOn.manager_id!=null )
@@ -110,12 +114,16 @@ app.Views.TasksListView = Backbone.View.extend({
     			   );
         });
 
-    	//var tasks = app.collections.tasks.getTasksByOfficer(officer_id);
+ 
 
-        // Retrieve the number of validated Interventions //
-//        var tasksPending = _.filter(tasksUser, function(item){         		
-//        	return item.attributes.state == app.Models.Task.state[2].value; 
-//        });
+
+		//  Collection Task Filter if not null //
+		if(sessionStorage.getItem(this.filters) != null){
+			tasksUser = _.filter(tasksUser, function(item){ 
+				return item.user_id[0] == sessionStorage.getItem(self.filters);
+			});
+		}
+
 
 		// Create table for each day //
 		var mondayTasks =[]; 	var tuesdayTasks =[];
@@ -162,7 +170,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 				}
 				// Hack for Sunday Task //
-				else {				
+				else {
 
 					if( momentDate.clone().day(7).isSame(task.date_start, 'day') ){					
 						sundayTasks.push(task);
@@ -189,6 +197,58 @@ app.Views.TasksListView = Backbone.View.extend({
 		console.log("tasksUser");
 		console.log(tasksUser);
 
+
+
+			
+		// Fill DropDown list Agents //
+		var officersDropDownList;
+		var displayFilter;
+
+		// If the User is DST - Don't Filter Officers Collection //
+		if(app.models.user.isDST()){
+			
+			officersDropDownList = app.collections.officers;
+			displayFilter = true;
+		}
+		// If the User is MANAGER - Filter Officers Collection with the manager service ID//
+		else if(app.models.user.isManager()){
+
+			// Retrieve User services //
+			var userServices = app.models.user.toJSON().service_ids;
+
+			// Filter on each officer //
+			officersDropDownList = _.filter(app.collections.officers.models, function(officer){
+
+				// Display only officers who are not DSL //
+				if(!officer.isDST()){
+					var thing = false;
+
+					_.each(officer.toJSON().service_ids, function(item){
+						
+						if($.inArray(item.id, userServices) != -1){
+							thing = true;
+							return;	
+						}
+					});
+
+					return thing;
+				}
+				
+			});
+
+			officersDropDownList = new app.Collections.Officers(officersDropDownList);
+			displayFilter = true;
+		}
+		else{
+			
+			console.log('Other');
+			officersDropDownList = app.collections.officers;
+			displayFilter = false;
+		}
+
+		console.log('#####################################################################');
+
+
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
@@ -197,15 +257,23 @@ app.Views.TasksListView = Backbone.View.extend({
 				lang: app.lang,
 				nbPendingTasks: nbPendingTasks,
 				tasksPerDay: tasksUserFiltered,
-				momentDate: momentDate
+				momentDate: momentDate,
+				displayFilter: displayFilter
 			});
 			
 			$(self.el).html(template);
-			
+
 			app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categories})
 			app.views.selectListAssignementsView.clearAll();
 			app.views.selectListAssignementsView.addEmptyFirst();
 			app.views.selectListAssignementsView.addAll();
+
+
+
+			app.views.selectListFilterOfficerView = new app.Views.DropdownSelectListView({el: $("#filterListAgents"), collection: officersDropDownList})
+			app.views.selectListFilterOfficerView.clearAll();
+			app.views.selectListFilterOfficerView.addEmptyFirst();
+			app.views.selectListFilterOfficerView.addAll();
 
 
 			$(".datepicker").datepicker({
@@ -286,6 +354,13 @@ app.Views.TasksListView = Backbone.View.extend({
 					$(this).parents('.accordion-group').addClass('collapse-selected');	
 				}
     		})
+
+
+    		//  DropDown Filter set Selected //
+			if(sessionStorage.getItem(self.filters) != null){
+				$('label[for="filterListAgents"]').removeClass('muted');
+				app.views.selectListFilterOfficerView.setSelectedItem(sessionStorage.getItem(self.filters));
+			}
 
 
     		// Set the focus to the first input of the form //
@@ -857,6 +932,26 @@ app.Views.TasksListView = Backbone.View.extend({
 		});
 		
 
+	},
+
+
+
+	/** Filter Tasks
+	*/
+	setFilter: function(e){
+		event.preventDefault();
+
+		var filterValue = $(e.target).attr('value');
+
+		// Set the filter in the local Storage //
+		if(filterValue != ''){
+			sessionStorage.setItem(this.filters, filterValue);
+		}
+		else{
+			sessionStorage.removeItem(this.filters);
+		}
+
+		this.render();
 	},
 
 

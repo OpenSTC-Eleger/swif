@@ -16,64 +16,75 @@
 
 <div class="container-fluid">
 
-	<!-- Check if there is Request in the Database -->
-	<% if(interventions.length != 0) { %>
-
-		<!-- Table toolbar -->
+	<!-- Message if No intervention to Display -->
+	<% if(interventions.length <= 0) { %>
 		<div class="tableToolbar">
-			<a href="#interventions/add" class="btn btn-primary"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	
-
-			<form class="form-search pull-right">
-				<div class="input-append">
-					<input type="search" class="input-medium search-query" disabled="disabled" placeholder="<%= lang.actions.search %>..." autocomplete="off">
-					<button type="submit" disabled class="btn disabled"><i class="icon-search icon-large"></i></button>
-				</div>
-			</form>
+			<div class="alert alert-info">
+				<i class="icon-info-sign icon-large"></i>&nbsp;<%= lang.infoMessages.noRequest %>
+			</div>
 		</div>
-		<!-- Table toolbar -->
+	<% } %>
 
 
-		<!-- Table Interventions -->
-		<table class="table-interventions table table-bordered table-hover">
-			<thead>
-				<tr>
-					<th>N°</th>
-					<th><%= _.capitalize(lang.label) %></th>
-					<th><%= _.capitalize(lang.place) %></th>
-					<th><%= _.capitalize(lang.plannedHours) %></th>
-					<th><%= _.capitalize(lang.spentHours) %></th>
-					<th class="span3"><%= _.capitalize(lang.progressRate) %>
-						<!-- Status Filter -->
-						<div class="dropdown pull-right">
-							<a id="filterStateInter" class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-filter icon-large muted"></i></a>
+	<!-- Table toolbar -->
+	<div class="tableToolbar">
+		<a href="#interventions/add" class="btn btn-primary"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	
 
-							<ul id="filterStateInterList" class="dropdown-menu" role="menu" aria-labelledby="filterStateInter">
-								<% _.each(interventionsState, function (state, i) { 
-									if(i == 5){ %>
-										<li class="divider"></li>
-								<% } %>
-									
-									<li role="menuitem">
-										<a tabindex="-1" href="#<%= state.value %>"> 
-											<i class="badge <%= (state.color != '' ? 'badge-'+state.color : '') %>">&nbsp;</i>
-											&nbsp; <%= _.capitalize(state.traduction) %>
-										</a>
-									</li>
+		<form class="form-search pull-right">
+			<div class="input-append">
+				<input type="search" class="input-medium search-query" disabled="disabled" placeholder="<%= lang.actions.search %>..." autocomplete="off">
+				<button type="submit" disabled class="btn disabled"><i class="icon-search icon-large"></i></button>
+			</div>
+		</form>
+	</div>
+	<!-- /Table toolbar -->
 
-								<% }) %>
 
-									<li role="menuitem">
-										<a href="#overrun">
-										<i class="badge badge-overrun">&nbsp;</i>
-										&nbsp;<%= _.capitalize(lang.overrun) %></a>
-									</li>
+	<!-- Table Interventions -->
+	<table class="table-interventions table table-bordered table-hover">
+		<thead>
+			<tr>
+				<th>N°</th>
+				<th><%= _.capitalize(lang.label) %></th>
+				<th><%= _.capitalize(lang.place) %></th>
+				<th><%= _.capitalize(lang.plannedHours) %></th>
+				<th><%= _.capitalize(lang.spentHours) %></th>
+				<th class="span3"><%= _.capitalize(lang.progressRate) %>
+					<!-- Status Filter -->
+					<div class="dropdown pull-right">
+						<a id="filterStateInter" class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-filter icon-large muted"></i></a>
+
+						<ul id="filterStateInterList" class="dropdown-menu" role="menu" aria-labelledby="filterStateInter">
+							<% _.each(interventionsState, function (state, i) { 
+								if(i == 5){ %>
 									<li class="divider"></li>
-									<li class="delete-filter disabled"><a href="#delete-filter"> <i class="icon-remove"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
-							</ul>
-						</div>
-					</th>
-				</tr>
-			</thead>
+							<% } %>
+								
+								<li role="menuitem">
+									<a tabindex="-1" href="#<%= state.value %>"> 
+										<i class="badge <%= (state.color != '' ? 'badge-'+state.color : '') %>">&nbsp;</i>
+										&nbsp; <%= _.capitalize(state.traduction) %>
+									</a>
+								</li>
+
+							<% }) %>
+
+								<li role="menuitem">
+									<a href="#overrun">
+									<i class="badge badge-overrun">&nbsp;</i>
+									&nbsp;<%= _.capitalize(lang.overrun) %></a>
+								</li>
+								<li class="divider"></li>
+								<li class="delete-filter disabled"><a href="#delete-filter"> <i class="icon-remove"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
+						</ul>
+					</div>
+				</th>
+			</tr>
+		</thead>
+
+		<!-- Check if there is Intervention to Display -->
+		<% if(interventions.length > 0) { %>
+		
 			<tbody>
 			<% _.each(interventions, function (intervention, i) { 
 				%>
@@ -240,19 +251,8 @@
 				</tr>
 			<% }); %>
 			</tbody>
-		</table>
-	<% }
-	else { %>
-		<div class="tableToolbar">
-			<a href="#interventions/add" class="btn btn-primary"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
-		</div>	
-		<br />
-		<!-- No request in the Database -->
-		<div class="alert alert-info">
-			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequestPlanned %>.
-		</div>
-
-	<% } %>
+		<% } %>
+	</table>
 
 </div>
 
