@@ -530,7 +530,7 @@ app.Views.EventsView = Backbone.View.extend({
 	
 	        	var title = event.title;
 	        	if( this.arrayPlanifTasks.length>0 )
-	        		title = "(copy-" + this.arrayPlanifTasks.length + ")" + title ;
+	        		title = "(suite-" + this.arrayPlanifTasks.length + ")" + title ;
 	        	
 	        	
 	        	
