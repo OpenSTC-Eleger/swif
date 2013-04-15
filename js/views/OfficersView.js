@@ -210,8 +210,15 @@ app.Views.OfficersView = Backbone.View.extend({
 
 			// Disable the required attribute for the password because it's an update 	//
 			$('#officerPassword').removeAttr('required');
-			if( this.selectedOfficerJson.groups_id )
-				app.views.selectListGroupsView.setSelectedItem( this.selectedOfficerJson.groups_id[0] );	
+			
+			var self = this;
+			var stc_groups = app.collections.groups;
+			_.each( stc_groups.models, function(group){	
+				var groupJSON = group.toJSON();
+				if( $.inArray(groupJSON.id, self.selectedOfficerJson.groups_id)!=-1 ) {	
+					app.views.selectListGroupsView.setSelectedItem( groupJSON.id );
+				}
+			});
 		}
 		else{
 			// Add the required attribute for the password because it's a creation //

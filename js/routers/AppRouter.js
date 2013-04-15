@@ -623,16 +623,25 @@ app.Router = Backbone.Router.extend({
 	
 								                   
 								                    app.collections.categories.fetch({
-								                        beforeSend: function(){
-								                            app.loader('display');
-								                        },
+
 								                        success: function(){
-										        			app.views.tasksListView = new app.Views.TasksListView({yearSelected: self.yearSelected, weekSelected: self.weekSelected});
-										        			self.render(app.views.tasksListView);
+										                    if(app.collections.groups == null ){
+										                        app.collections.groups = new app.Collections.Groups();
+										                    }
+										                    app.collections.groups.fetch({
+										                        beforeSend: function(){
+										                            app.loader('display');
+										                        },
+										                    	success: function(){
+												        			app.views.tasksListView = new app.Views.TasksListView({yearSelected: self.yearSelected, weekSelected: self.weekSelected});
+												        			self.render(app.views.tasksListView);
+												        		},
+												            	complete: function(){
+												            	    app.loader('hide');
+												            	},										                        
+											        		});
 										        		},
-										            	complete: function(){
-										            	    app.loader('hide');
-										            	}
+
 										            });
 										        }
 								            });
