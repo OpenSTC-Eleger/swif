@@ -15,8 +15,8 @@ app.Views.InterventionsView = Backbone.View.extend({
 
 	// The DOM events //
 	events: {
-		'click li.active'						: 'preventDefault',
-		'click li.disabled'						: 'preventDefault',
+		'click li.active'					: 'preventDefault',
+		'click li.disabled'					: 'preventDefault',
 
 		'click .btn.addTask'                : 'displayModalAddTask',
 		'submit #formAddTask'         		: 'saveTask',
@@ -77,13 +77,22 @@ app.Views.InterventionsView = Backbone.View.extend({
 
 
 		// Collection Filter if not null //
-		/*if(sessionStorage.getItem(this.filters) != null){
-			interventions = _.filter(interventions.toJSON(), function(item){ 
+		if(sessionStorage.getItem(this.filters) != null){
+			var filter = _.filter(interventions.toJSON(), function(item){ 
+				console.log(item);
 				return item.state == sessionStorage.getItem(self.filters);
 			});
-		}*/
+
+			console.log(interventions);
+			var interventionsFilters = interventions.reset(filter);
+			console.log(interventionsFilters);
+		}
+		else{
+			var interventionsFilters = interventions;
+		}
+
       
-        this.addInfoAboutInter(interventions.models);
+        this.addInfoAboutInter(interventionsFilters.models);
 
 
 
@@ -97,7 +106,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 		interventionsState =  _.union(firstElements.reverse(), interventionsState);
 
 
-		console.debug(interventions.toJSON());
+		console.debug(interventionsFilters.toJSON());
 
 
 		// Retrieve the HTML template //
@@ -108,7 +117,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 				nbInterventionsPending: nbInterventionsPending,
 				nbInterventionsPlanned: nbInterventionsPlanned,
 				interventionsState: interventionsState,
-				interventions: interventions.toJSON(),
+				interventions: interventionsFilters.toJSON(),
 			});
 
 
@@ -134,9 +143,12 @@ app.Views.InterventionsView = Backbone.View.extend({
 				$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');
 				$('li.delete-filter').removeClass('disabled');
 
-				_.each(app.Models.Request.state, function (state, i) {
+				_.each(app.Models.Intervention.state, function (state, i) {
 					if(state.value == sessionStorage.getItem(self.filters)){
 						$('a.filter-button').addClass('text-'+state.color);
+					}
+					else if(sessionStorage.getItem(self.filters) == 'overrun'){
+						$('a.filter-button').addClass('text-overrun');
 					}
 				})
 			}
@@ -432,13 +444,8 @@ app.Views.InterventionsView = Backbone.View.extend({
 			sessionStorage.removeItem(this.filters);
 		}
 
-		/*if(this.options.page <= 1){
-			this.render();
-		}
-		else{
-			app.router.navigate('interventions', {trigger: true, replace: true});
-		}*/
-		this.render();
+		route = Backbone.history.fragment;
+		Backbone.history.loadUrl(route);
 		
 	},
 

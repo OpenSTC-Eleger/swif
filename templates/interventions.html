@@ -52,7 +52,7 @@
 				<th class="span3"><%= _.capitalize(lang.progressRate) %>
 					<!-- Status Filter -->
 					<div class="dropdown pull-right">
-						<a id="filterStateInter" class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-filter icon-large muted"></i></a>
+						<a id="filterStateInter" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="icon-filter icon-large"></i></a>
 
 						<ul id="filterStateInterList" class="dropdown-menu" role="menu" aria-labelledby="filterStateInter">
 							<% _.each(interventionsState, function (state, i) { 
@@ -182,7 +182,7 @@
 										<tr class="row-nested-objects" id="task_<%= task.id %>">
 											<td>
 												<!-- Display a clock when the task is planned -->
-												<% if(task.date_start != ''){ %>
+												<% if(task.date_start != ''){ console.log("###"); console.log(task); %>
 													<i 
 														class="icon-time displayInlineBlock" rel="tooltip" data-placement="top"
 														data-original-title="<%= moment(task.date_start).format('LLL') %>" >
