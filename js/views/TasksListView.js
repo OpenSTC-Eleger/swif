@@ -273,7 +273,7 @@ app.Views.TasksListView = Backbone.View.extend({
 //				}
 //			} );
 
-			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
+			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 			$('*[rel="tooltip"]').tooltip({placement: "top"});
 
 
@@ -487,7 +487,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
     	$('#infoModalTimeSpent').children('p').html(task.name);
     	$('#infoModalTimeSpent').children('small').html('<i class="icon-map-marker icon-large"></i> '+task.intervention.site1[1]);
-		$('.timepicker-default').timepicker({showMeridian:false});
+		$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 
 		$('#eventTimeSpent').val(this.secondsToHms(task.remaining_hours*60));
 		$('#modalTimeSpent .modal-body').css({"height": "450px", "max-height": "450px"});

@@ -37,7 +37,7 @@
     _init: function() {
       var self = this;
 
-      if (this.$element.parent().hasClass('input-append') || this.$element.parent().hasClass('input-prepend')) {
+     /* if (this.$element.parent().hasClass('input-append') || this.$element.parent().hasClass('input-prepend')) {
         this.$element.parent('.input-append, .input-prepend').find('.add-on').on({
           'click.timepicker': $.proxy(this.showWidget, this)
         });
@@ -47,7 +47,7 @@
           'keydown.timepicker': $.proxy(this.elementKeydown, this),
           'blur.timepicker': $.proxy(this.blurElement, this)
         });
-      } else {
+      } else {*/
         if (this.template) {
           this.$element.on({
             'focus.timepicker': $.proxy(this.showWidget, this),
@@ -62,7 +62,7 @@
             'blur.timepicker': $.proxy(this.blurElement, this)
           });
         }
-      }
+     // }
 
       if (this.template !== false) {
         this.$widget = $(this.getTemplate()).prependTo(this.$element.parents(this.appendWidgetTo)).on('click', $.proxy(this.widgetClick, this));

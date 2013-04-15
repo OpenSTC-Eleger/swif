@@ -109,7 +109,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 
 			$('*[rel="tooltip"]').tooltip({placement: 'top'});
 			$('*[rel="popover"]').popover({trigger: 'hover'});
-			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
+			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 
 
 			$('tr.row-object').css({ opacity: '1'});

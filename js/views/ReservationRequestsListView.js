@@ -79,7 +79,7 @@ app.Views.ReservationRequestsListView = Backbone.View.extend({
                 });
 
             $('.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr' });
-            $('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
+            $('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 
         });
 

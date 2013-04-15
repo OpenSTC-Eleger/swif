@@ -59,8 +59,8 @@ app.Views.TaskDetailsView = Backbone.View.extend({
     			autoclose: true,
     			language: 'fr'
     		});
-			
-			$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
+
+			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 			
 			
 			if( self.modelJSON.state != app.Models.Task.state[0].value) {

@@ -272,7 +272,7 @@ app.Views.EventsView = Backbone.View.extend({
 					var mEndDate = moment( endDate );
 
 		        	modalAbsentTask = $("#modalAbsentTask");
-		        	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
+		        	$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 
 
 		        	$('.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});

@@ -175,8 +175,8 @@ app.Views.PlanningView = Backbone.View.extend({
             $('*[rel="popover"]').popover({trigger: 'hover'});
 
             $('.switch').bootstrapSwitch();
-            
-            $('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
+
+            $('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 
 
             // Set the focus to the first input of the form //
