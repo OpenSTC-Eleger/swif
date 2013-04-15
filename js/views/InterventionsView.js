@@ -74,8 +74,17 @@ app.Views.InterventionsView = Backbone.View.extend({
             return (item.state == app.Models.Intervention.state[3].value);
         });
         var nbInterventionsPending = _.size(interventionsPending);
+
+
+		// Collection Filter if not null //
+		/*if(sessionStorage.getItem(this.filters) != null){
+			interventions = _.filter(interventions.toJSON(), function(item){ 
+				return item.state == sessionStorage.getItem(self.filters);
+			});
+		}*/
       
         this.addInfoAboutInter(interventions.models);
+
 
 
         // Hack to reverse the position of the two first elements //
@@ -118,6 +127,23 @@ app.Views.InterventionsView = Backbone.View.extend({
 			$('tr.row-object').css({ opacity: '1'});
 			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
+
+
+			// Display filter on the table //
+			if(sessionStorage.getItem(self.filters) != null){
+				$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');
+				$('li.delete-filter').removeClass('disabled');
+
+				_.each(app.Models.Request.state, function (state, i) {
+					if(state.value == sessionStorage.getItem(self.filters)){
+						$('a.filter-button').addClass('text-'+state.color);
+					}
+				})
+			}
+			else{
+				$('a.filter-button').removeClass('filter-active ^text').addClass('filter-disabled');
+				$('li.delete-filter').addClass('disabled');
+			}
 
 
 			// Set the focus to the first input of the form //
@@ -373,7 +399,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 		    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 		        }
 		        else{
-		            console.log('NEW STATE INTER SAVED');
+					console.log('NEW STATE INTER SAVED');
 					if( self.element!= null )
 						self.element.modal('hide');
 					self.selectedInter.update(self.params);
@@ -406,12 +432,13 @@ app.Views.InterventionsView = Backbone.View.extend({
 			sessionStorage.removeItem(this.filters);
 		}
 
-		if(this.options.page <= 1){
+		/*if(this.options.page <= 1){
 			this.render();
 		}
 		else{
 			app.router.navigate('interventions', {trigger: true, replace: true});
-		}
+		}*/
+		this.render();
 		
 	},
 

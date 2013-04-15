@@ -54,7 +54,7 @@
 								<% } %>
 									
 									<li role="menuitem">
-										<a tabindex="-1" href="#filter_<%= state.value %>"> 
+										<a tabindex="-1" href="#<%= state.value %>"> 
 											<i class="badge <%= (state.color != '' ? 'badge-'+state.color : '') %>">&nbsp;</i>
 											&nbsp; <%= _.capitalize(state.traduction) %>
 										</a>
@@ -63,7 +63,7 @@
 								<% }) %>
 
 									<li role="menuitem">
-										<a href="#filter_overrun">
+										<a href="#overrun">
 										<i class="badge badge-overrun">&nbsp;</i>
 										&nbsp;<%= _.capitalize(lang.overrun) %></a>
 									</li>

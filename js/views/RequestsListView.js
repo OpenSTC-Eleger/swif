@@ -118,7 +118,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 			$(self.el).html(template);
 			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 
-			
+
 			// Display filter on the table //
 			if(sessionStorage.getItem(self.filters) != null){
 				$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');
