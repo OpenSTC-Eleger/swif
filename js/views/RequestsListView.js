@@ -412,8 +412,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 	/** Prevent the default action
 	*/
 	preventDefault: function(event){
-    	event.preventDefault();
-    },
+		event.preventDefault();
+	},
 	
 //	setElement: function(element, delegate) {
 //	    if (this.$el) this.undelegateEvents();

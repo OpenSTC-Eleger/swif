@@ -15,6 +15,9 @@ app.Views.InterventionsView = Backbone.View.extend({
 
 	// The DOM events //
 	events: {
+		'click li.active'						: 'preventDefault',
+		'click li.disabled'						: 'preventDefault',
+
 		'click .btn.addTask'                : 'displayModalAddTask',
 		'submit #formAddTask'         		: 'saveTask',
 
@@ -410,6 +413,14 @@ app.Views.InterventionsView = Backbone.View.extend({
 			app.router.navigate('interventions', {trigger: true, replace: true});
 		}
 		
+	},
+
+
+
+	/** Prevent the default action
+	*/
+	preventDefault: function(event){
+		event.preventDefault();
 	},
   
 });
