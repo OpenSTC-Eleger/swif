@@ -41,6 +41,14 @@
 		<button class="btn btn-primary no-outline addTask">
 			<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addTask) %>
 		</button>
+
+		<% if(displayFilter) { %>
+			<form class="pull-right form-inline">
+				<label for="filterListAgents" class="muted"><i class="icon-filter"></i> <%= _.capitalize(lang.agent) %>:</label>
+				<select id="filterListAgents" class="input-medium">
+				</select>
+			</form>
+		<% } %>
 	</div>
 	<!-- /Add task -->
 

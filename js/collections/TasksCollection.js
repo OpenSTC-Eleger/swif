@@ -26,7 +26,7 @@ app.Collections.Tasks = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {
-    	app.readOE( this.model_name ,  app.models.user.getSessionID(), options);
+    	app.readOE(this.model_name , app.models.user.getSessionID(), options);
     },
 
 

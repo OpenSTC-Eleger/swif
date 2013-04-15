@@ -273,7 +273,8 @@ app.Models.User = Backbone.Model.extend({
             return false;    
         }
     },
-    
+
+
 
     /** Check if the user is Manager
     */
@@ -287,6 +288,7 @@ app.Models.User = Backbone.Model.extend({
     },
 
 
+
     /** Check if the user is Agent
     */
     isAgent: function(){
@@ -297,7 +299,9 @@ app.Models.User = Backbone.Model.extend({
             return false;    
         }
     },
-    
+
+
+
     /** Check if the user belongs to service
     	    */
     belongsToService: function(service){

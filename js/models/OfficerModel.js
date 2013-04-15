@@ -165,6 +165,45 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 
 
 
+	/** Check if the user is DST
+    */
+    isDST: function(){
+        if($.inArray(18, this.getGroupsId()) != -1){
+            return true;
+        }
+        else{
+            return false;    
+        }
+    },
+
+
+
+    /** Check if the user is Manager
+    */
+    isManager: function(){
+        if($.inArray(19, this.getGroupsId()) != -1){
+            return true;
+        }
+        else{
+            return false;    
+        };
+    },
+
+
+
+    /** Check if the user is Agent
+    */
+    isAgent: function(){
+        if($.inArray(17, this.getGroupsId()) != -1){
+            return true;
+        }
+        else{
+            return false;    
+        }
+    },
+
+
+
 	/** Delete Officer
 	*/
 	delete: function (options) {	

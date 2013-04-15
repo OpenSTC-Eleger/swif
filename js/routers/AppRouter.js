@@ -625,23 +625,32 @@ app.Router = Backbone.Router.extend({
 								                    app.collections.categories.fetch({
 
 								                        success: function(){
-										                    if(app.collections.groups == null ){
-										                        app.collections.groups = new app.Collections.Groups();
-										                    }
-										                    app.collections.groups.fetch({
-										                        beforeSend: function(){
-										                            app.loader('display');
-										                        },
-										                    	success: function(){
-												        			app.views.tasksListView = new app.Views.TasksListView({yearSelected: self.yearSelected, weekSelected: self.weekSelected});
-												        			self.render(app.views.tasksListView);
-												        		},
-												            	complete: function(){
-												            	    app.loader('hide');
-												            	},										                        
-											        		});
-										        		},
 
+                                                            if(app.collections.officers == null ){
+                                                                app.collections.officers = new app.Collections.Officers();
+                                                            }
+                                                            
+                                                            app.collections.officers.fetch({
+                                                                success: function(){
+
+                                                                    if(app.collections.claimersServices == null ){
+                                                                        app.collections.claimersServices = new app.Collections.ClaimersServices();
+                                                                    }
+                                                                    
+
+                                                                    app.collections.claimersServices.fetch({
+                                                                        success: function(){
+
+    										        			           app.views.tasksListView = new app.Views.TasksListView({yearSelected: self.yearSelected, weekSelected: self.weekSelected});
+    										        			           self.render(app.views.tasksListView);
+                                                                        },
+                                                                        complete: function(){
+                                                                            app.loader('hide');
+                                                                        }
+                                                                    });
+                                                                }
+                                                            });
+                                                        }
 										            });
 										        }
 								            });
