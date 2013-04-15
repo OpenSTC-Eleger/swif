@@ -101,7 +101,7 @@ app.Views.EquipmentsView = Backbone.View.extend({
     },
 
 
-    /** Add a new categorie
+    /** Add a new equipment
     */
     modalSaveEquipment: function(e){       
         this.setModel(e);	
@@ -120,7 +120,7 @@ app.Views.EquipmentsView = Backbone.View.extend({
         $('#equipmentCV').val( 0 );
         $('#equipmentYear').val( moment().year() );
         $('#equipmentTime').val( 0 );      
-        $('#technicalVehicleEquipment').removeAttr("checked");	
+        $('#technicalVehicleEquipment').attr("checked", "checked");	
         $('#commercialVehicleEquipment').removeAttr("checked");	          
         $('#smallMaterialEquipment').removeAttr("checked");	
         $('#fatMaterialEquipment').removeAttr("checked");	
