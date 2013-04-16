@@ -98,9 +98,6 @@ app.Views.InterventionsView = Backbone.View.extend({
 
       
 
-
-
-
         // Hack to reverse the position of the two first elements //
         var interventionsState = _.clone(app.Models.Intervention.state);
         var firstElements = _.first(interventionsState, 2);

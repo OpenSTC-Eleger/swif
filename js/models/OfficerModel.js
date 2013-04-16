@@ -112,6 +112,16 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ groups_id : value });
 	},
+	
+	// Group Name //
+	setGroupSTCName : function(value) {
+		if( value == 'undefined') return;
+		this.set({ groupSTCName : value });
+	},
+	getGroupSTCName: function() {
+	    return this.get('groupSTCName');
+	},
+
 	// Team services ID //
 	getServicesId: function() {
 	    return this.get('service_ids');

@@ -62,6 +62,27 @@ app.Views.OfficersView = Backbone.View.extend({
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
 
+
+
+
+		// Set the STC groupe name for the officer //
+		_.each(officers.models, function(officer){
+			
+			var self = this;
+			self.officer = officer;
+			self.officerJSON = officer.toJSON();
+
+			_.each(app.collections.groups.models, function(group){
+
+				var groupJSON = group.toJSON();
+
+				if($.inArray(groupJSON.id, self.officerJSON.groups_id)!=-1){	
+					self.officer.setGroupSTCName(groupJSON.name);
+				}
+			});
+
+		});
+
 		
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -218,7 +239,7 @@ app.Views.OfficersView = Backbone.View.extend({
 			var stc_groups = app.collections.groups;
 			_.each( stc_groups.models, function(group){	
 				var groupJSON = group.toJSON();
-				if( $.inArray(groupJSON.id, self.selectedOfficerJson.groups_id)!=-1 ) {	
+				if($.inArray(groupJSON.id, self.selectedOfficerJson.groups_id)!=-1){	
 					app.views.selectListGroupsView.setSelectedItem( groupJSON.id );
 				}
 			});
