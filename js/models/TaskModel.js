@@ -163,15 +163,21 @@ app.Models.Task = Backbone.RelationalModel.extend({
     */
     parse: function(response) {
 		
-		if( response.date_start ) {
-			//var user = app.models.user.toJSON();			
-			response.date_start = moment(this.parseDate(response.date_start));
-			//.add('hours', 1);				
-		}		
-		
-		if( response.date_end ) 
-			response.date_end = moment(this.parseDate(response.date_end));	
+		if(!moment.isMoment(response.date_start)){
 			
+				if(response.date_start) {
+				//var user = app.models.user.toJSON();			
+				response.date_start = moment(this.parseDate(response.date_start));
+				}
+		}
+
+
+		if(!moment.isMoment(response.date_end)){
+			if(response.date_end){
+				response.date_end = moment(this.parseDate(response.date_end));
+			}
+		}
+
         return response;
     },
     
