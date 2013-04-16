@@ -31,6 +31,7 @@
 				<tr>
 					<th><%= _.capitalize(lang.name) %></th>
 					<th><%= _.capitalize(lang.login) %></th>
+					<th><%= _.capitalize(lang.group) %></th>
 					<th><%= _.capitalize(lang.email) %></th>
 					<th><%= _.capitalize(lang.lastConnection) %></th>
 				</tr>
@@ -50,6 +51,7 @@
 						</p>
 					</td>
 					<td><%= officer.login %></td>
+					<td><%= _(officer.groupSTCName).strRight('/') %></td>
 					<td><%= (officer.user_email != false ? officer.user_email : "") %></td>
 					<td><% 
 						if(officer.date != false){ %>

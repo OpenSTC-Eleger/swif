@@ -76,25 +76,27 @@ app.Views.InterventionsView = Backbone.View.extend({
         var nbInterventionsPending = _.size(interventionsPending);
 
 
+
+        // Set informations about Intervention //
+        this.addInfoAboutInter(interventions.models);
+
+
+
 		// Collection Filter if not null //
 		if(sessionStorage.getItem(this.filters) != null){
 			var filter = _.filter(interventions.toJSON(), function(item){ 
-				console.log(item);
-				return item.state == sessionStorage.getItem(self.filters);
+				if(sessionStorage.getItem(self.filters) != 'overrun'){
+					return item.state == sessionStorage.getItem(self.filters);
+				}
+				else{
+					return (item.state == app.Models.Intervention.state[2].value && item.overPourcent > 100);	
+				}
 			});
 
-			console.log(interventions);
-			var interventionsFilters = interventions.reset(filter);
-			console.log(interventionsFilters);
-		}
-		else{
-			var interventionsFilters = interventions;
+			interventions.reset(filter);
 		}
 
       
-        this.addInfoAboutInter(interventionsFilters.models);
-
-
 
         // Hack to reverse the position of the two first elements //
         var interventionsState = _.clone(app.Models.Intervention.state);
@@ -106,7 +108,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 		interventionsState =  _.union(firstElements.reverse(), interventionsState);
 
 
-		console.debug(interventionsFilters.toJSON());
+		console.debug(interventions.toJSON());
 
 
 		// Retrieve the HTML template //
@@ -117,7 +119,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 				nbInterventionsPending: nbInterventionsPending,
 				nbInterventionsPlanned: nbInterventionsPlanned,
 				interventionsState: interventionsState,
-				interventions: interventionsFilters.toJSON(),
+				interventions: interventions.toJSON(),
 			});
 
 
