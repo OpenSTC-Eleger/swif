@@ -247,7 +247,7 @@
 
 							var teamMembers = '';
 							_.each(team.user_ids, function(teamMember){
-								teamMembers += "<li>"+ (teamMember.firstname != false ? teamMember.firstname : '') +"&nbsp;"+ teamMember.name.toUpperCase() +"</li>"
+								teamMembers += "<li>"+ (teamMember.firstname != false ? teamMember.firstname.replace(' ', '&nbsp;') : '') +"&nbsp;"+ teamMember.name.toUpperCase().replace(' ', '&nbsp;') +"</li>"
 							});
 						%>
 
