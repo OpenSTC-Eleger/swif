@@ -374,6 +374,7 @@ app.Views.EventsView = Backbone.View.extend({
 						if(!e.start) return false;
 						var eventDate = moment( e.start );
 						var currentDate = moment( date );
+						if( eventDate.days() !=  currentDate.days() ) return false;
 						return ( currentDate.diff(eventDate, 'days', true)>-1 && currentDate.diff(eventDate, 'days', true)<1 )
 						
 					});
