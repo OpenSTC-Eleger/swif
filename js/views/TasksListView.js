@@ -88,7 +88,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 
 
-		//TODO ajouter le DST et le manager du service de l'utilisateur
+		// Filter on the Tasks //
 		var tasksUser = _.filter(tasks, function(task){
 			var intervention = task.intervention;
 
@@ -241,12 +241,42 @@ app.Views.TasksListView = Backbone.View.extend({
 		}
 		else{
 			
-			console.log('Other');
-			officersDropDownList = app.collections.officers;
-			displayFilter = false;
+			// Iterate all the teams to find if the connected user is a foreman //
+			var managerTeamID = [];
+			
+			_.each(app.collections.teams.models, function(team){
+
+				var teamJSON = team.toJSON();
+				
+				if(teamJSON.manager_id[0] == app.models.user.toJSON().uid){
+					managerTeamID.push(teamJSON.id);
+				}
+
+			});
+
+			// If the user is a formean display the filter //
+			if(!_.isEmpty(managerTeamID)){
+				displayFilter = true;
+
+				// Filter on each officer //
+				var officersDropDownListFilter = _.filter(app.collections.officers.models, function(officer){
+						var officerJSON = officer.toJSON();
+						if(officerJSON.belongsToTeam != null){
+							return ($.inArray(officerJSON.belongsToTeam.id, managerTeamID) != -1);
+						}
+
+				});
+
+				officersDropDownList = app.collections.officers.reset(officersDropDownListFilter);
+
+			}
+			else{
+				displayFilter = false;
+
+			}
 		}
 
-		console.log('#####################################################################');
+
 
 
 		// Retrieve the template // 
