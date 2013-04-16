@@ -58,21 +58,21 @@
 
 			<!-- State Color -  To Schedule - Scheduled - Template-->
 			<% _.each(interventions, function (intervention, i) { 
-					
+				var informationHour	= '--';
 				if(intervention.state == app.Models.Intervention.state[1].value){
 					var classColor = app.Models.Intervention.state[1].color;
 					var traduction = app.Models.Intervention.state[1].traduction;
-					var informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours) : '--');
+					informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours) : '--');
 				}
 				else if(intervention.state == app.Models.Intervention.state[0].value){
 					var classColor = app.Models.Intervention.state[0].color;
 					var traduction = app.Models.Intervention.state[0].traduction;
-					var informationHour = app.decimalNumberToTime(intervention.planned_hours);
+					informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours) : '--');
 				}
 				else if(intervention.state == app.Models.Intervention.state[5].value){
 					var classColor = app.Models.Intervention.state[5].color;
 					var traduction = app.Models.Intervention.state[5].traduction;
-					var informationHour = app.decimalNumberToTime(intervention.total_hours);
+					informationHour = (intervention.total_hours != false ? app.decimalNumberToTime(intervention.total_hours) : '--');
 				}
 
 
@@ -158,7 +158,8 @@
 								<!-- Add Task -->
 								<button class="btn btn-primary btn-small no-outline addTaskPlanning" id="<%= intervention.id %>" rel="tooltip" 
 										data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="right"
-									<% if(intervention.state != app.Models.Intervention.state[1].value) { %>
+									<% if(intervention.state != app.Models.Intervention.state[1].value &&
+										intervention.state != app.Models.Intervention.state[5].value) { %>
 										disabled
 									<% } %>>
 									<i class="icon-plus"></i>
