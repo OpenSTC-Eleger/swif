@@ -97,10 +97,10 @@
 							<!--<a href="#interventions/<%= intervention.id %>" class="displayInlineBlock"><i class="icon-pencil"></i></a><-->
 							
 							<!-- Intervention Actions -->
-							<button class="btn btn-link invisible linkToInter" type="button" data-toggle="modal" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>" data-placement="top"><i class="icon-pencil"></i></button>	
+							<button class="btn btn-link invisible linkToInter" type="button" data-toggle="modal" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>" data-placement="top" data-delay="50"><i class="icon-pencil"></i></button>	
 							
 							<% if(intervention.state == app.Models.Intervention.state[1].value || intervention.state == app.Models.Intervention.state[0].value) { %>
-								<button data-target="#modalCancelInter" class="btn btn-link buttonCancelInter invisible" data-toggle="modal" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>" data-placement="top"><i class="icon-remove"></i></button>
+								<button data-target="#modalCancelInter" class="btn btn-link buttonCancelInter invisible" data-toggle="modal" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>" data-placement="top" data-delay="50"><i class="icon-remove"></i></button>
 							<% } %>
 
 							<small class="badge badge-<%= classColor %> pull-right"><%= informationHour %></small>
@@ -125,7 +125,7 @@
 											<i class="icon-chevron-right"></i> <%= task.name %>
 
 											<a href="#modalDeleteTask" class="modalDeleteTask hide" data-toggle="modal">
-												<i class="icon-remove displayInlineBlock modalDeleteTask" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top">&nbsp;</i>
+												<i class="icon-remove displayInlineBlock modalDeleteTask" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top" data-delay="50">&nbsp;</i>
 											</a>
 
 											<small class="badge badge-<%= app.Models.Task.state[3].color %> pull-right"><%= task.planned_hours %>h</small>
@@ -243,8 +243,15 @@
 				<!-- Teams -->
 				<div class="tab-pane" id="tab-teams">
 					<ul id="listTeams" class="unstyled inline nav nav-list">
-						<%_.each(teams, function (team, i) { %>
-							<li>
+						<% _.each(teams, function (team, i) {
+
+							var teamMembers = '';
+							_.each(team.user_ids, function(teamMember){
+								teamMembers += "<li>"+ (teamMember.firstname != false ? teamMember.firstname : '') +"&nbsp;"+ teamMember.name.toUpperCase() +"</li>"
+							});
+						%>
+
+							<li rel="popover" data-original-title="Membres" data-content="<ul><%= teamMembers %></ul>" data-html="true" data-placement="left">
 								<a id="pTeam_<%= team.id %>" href="#planning/team/<%= _.slugify(team.name)%>">
 									<i class="icon-group"></i><%= team.name %>
 								</a>
