@@ -12,17 +12,17 @@ var app = {
     uniq_id_counter : 0,	
     
 
-//    urlGEO_OWS                  : 'http://localhost:8080/geoserver/ows',
-//    urlGEO_WFS                  : 'http://localhost:8080/geoserver/wfs',
-//    urlGEO_NS                   : 'http://localhost:8080/openstc',
-//    urlOE                       : 'http://localhost:8069',
-//    geoportail_key				: 'c5r5vzh6cxavj6wm90kz09i5',	
+    urlGEO_OWS                  : 'http://localhost:8080/geoserver/ows',
+    urlGEO_WFS                  : 'http://localhost:8080/geoserver/wfs',
+    urlGEO_NS                   : 'http://localhost:8080/openstc',
+    urlOE                       : 'http://localhost:8069',
+    geoportail_key				: 'c5r5vzh6cxavj6wm90kz09i5',	
     
-//    urlGEO_OWS                  : 'http://octm-dev.siclic.fr:8080/geoserver/ows',
-//    urlGEO_WFS                  : 'http://octm-dev.siclic.fr:8080/geoserver/wfs',
-//    urlGEO_NS                   : 'http://octm-dev.siclic.fr:8080/openstc',
-//    urlOE                       : 'http://octm-dev.siclic.fr:8069', 
-//    geoportail_key				: '67pp504oivujlyi0l893925n',
+////    urlGEO_OWS                  : 'http://octm-dev.siclic.fr:8080/geoserver/ows',
+////    urlGEO_WFS                  : 'http://octm-dev.siclic.fr:8080/geoserver/wfs',
+////    urlGEO_NS                   : 'http://octm-dev.siclic.fr:8080/openstc',
+////    urlOE                       : 'http://octm-dev.siclic.fr:8069', 
+////    geoportail_key				: '67pp504oivujlyi0l893925n',
 
     urlGEO_OWS                  : 'http://46.105.77.18:8080/geoserver/ows',
     urlGEO_WFS                  : 'http://46.105.77.18:8080/geoserver/wfs',

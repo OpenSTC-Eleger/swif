@@ -158,7 +158,8 @@
 								<!-- Add Task -->
 								<button class="btn btn-primary btn-small no-outline addTaskPlanning" id="<%= intervention.id %>" rel="tooltip" 
 										data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="right"
-									<% if(intervention.state != app.Models.Intervention.state[1].value) { %>
+									<% if(intervention.state != app.Models.Intervention.state[1].value &&
+										intervention.state != app.Models.Intervention.state[5].value) { %>
 										disabled
 									<% } %>>
 									<i class="icon-plus"></i>
