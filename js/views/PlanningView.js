@@ -157,6 +157,9 @@ app.Views.PlanningView = Backbone.View.extend({
             console.log('#########################################################');
             console.log(interventionSorted.toJSON());
 
+            console.log('##########------><---------###########');
+            console.log(teams);
+
             
             var template = _.template(templateData, {
         		lang: app.lang,
@@ -172,7 +175,7 @@ app.Views.PlanningView = Backbone.View.extend({
 
             $('*[data-spy="affix"]').affix();
             $('*[rel="tooltip"]').tooltip({placement: 'left'});
-            $('*[rel="popover"]').popover({trigger: 'hover'});
+            $('*[rel="popover"]').popover({trigger: 'hover', delay: { show: 500, hide: 100 }});
 
             $('.switch').bootstrapSwitch();
 
