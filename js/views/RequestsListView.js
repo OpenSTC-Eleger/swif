@@ -284,7 +284,6 @@ app.Views.RequestsListView = Backbone.View.extend({
 				email_text: app.Models.Request.state[2].traduction,
 				project_state: app.Models.Intervention.state[1].value,
 		        description: $('#requestNote').val(),
-		        //date_deadline: $('#requestDeadline').val(),
 		        intervention_assignement_id: $('#requestAssignement').val(),
 		        service_id: $('#requestService').val(),	
 				site1: this.model.getSite1()[0],

@@ -27,7 +27,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		site1:"",
 		state: "",
 		description: "",
-		date_deadline: "",
 		belongsToAssignement: "",
 		belongsToService: "",
 		service_id: [],
@@ -77,14 +76,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
     setDescription : function(value) {
     	if( value == 'undefined') return;
         this.set({ description : value });
-    },
-    
-    getDeadline_date : function() {
-        return this.get('date_deadline');
-    },
-    setDeadline_date : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ date_deadline : value });
     },
     
     setDescription : function(value) {
@@ -197,7 +188,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		this.setState( params.state );
 		this.setRefusalReason( params.refusal_reason );
 		this.setNote( params.note );
-		this.setDeadline_date( params.date_deadline);
 		//this.set({ service_id : params.service_id });
 	},
 
