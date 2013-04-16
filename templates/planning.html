@@ -58,7 +58,7 @@
 
 			<!-- State Color -  To Schedule - Scheduled - Template-->
 			<% _.each(interventions, function (intervention, i) { 
-					
+				informationHour	= '--';
 				if(intervention.state == app.Models.Intervention.state[1].value){
 					var classColor = app.Models.Intervention.state[1].color;
 					var traduction = app.Models.Intervention.state[1].traduction;
