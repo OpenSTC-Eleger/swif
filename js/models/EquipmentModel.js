@@ -167,8 +167,8 @@ app.Models.Equipment = Backbone.RelationalModel.extend({
 		this.setKM( params.km );
 	},
 	
-	updateKM: function( params ){
-		this.setKM( params.km );
+	updateKM: function( km ){
+		this.setKM( km );
 	},
 
 	/** Save Model

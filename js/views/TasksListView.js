@@ -903,7 +903,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		var params = {};
 		params.km = taskParams.km;
 		equipment.updateKM( taskParams.km );
-		equipment.save(this.vehicule,params,{
+		equipment.save(params, this.vehicule, {
 			success: function(data){
 				if( create ) {
 					app.models.task.save(0,taskParams,$('#modalAddTask'), null, "taches");
