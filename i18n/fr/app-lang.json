@@ -56,6 +56,7 @@
 	"width" 				: "largeur",
 	"lenght" 				: "longueur",
 	"reason" 				: "motif",
+	"horsepower" 			: "en chevaux fiscaux",
 	"notKnown"				: "non renseigné",
 	"property"				: "proprietées",
 	"date_deadline"			: "Date butoir",
@@ -64,6 +65,8 @@
 	"aboutTheContactAdress"  : "Adresse du contact",
 	"aboutThePlace" 	  	: "À propos du site",
 	"aboutTheService" 	  	: "À propos du service",
+	"aboutTheVehicle" 	  	: "À propos du véhicule",
+	"aboutTheEquipment" 	: "À propos du matériel",
 	"claimerDetails"		: "Détail du demandeur",
 	"aboutTheRequest"   	: "À propos de la demande",
 	"aboutTheIntervention"  : "À propos de l'intervention",
@@ -196,7 +199,8 @@
 		"confirmDeleteAddress" 	: "Etes-vous sûr de vouloir supprimer ce contact ?",
 		"confirmDeleteClaimer" 	: "Etes-vous sûr de vouloir supprimer ce demandeur ?",
 		"confirmDeleteTeam" 	: "Etes-vous sûr de vouloir supprimer cette équipe ?",
-		"confirmDeleteTask" 	: "Etes-vous sûr de vouloir supprimer cette tâche ?"
+		"confirmDeleteTask" 	: "Etes-vous sûr de vouloir supprimer cette tâche ?",
+		"confirmDeleteEquipment": "Etes-vous sûr de vouloir supprimer ce matériel ?"
 	},
 
 	"infoMessages" : {
@@ -244,6 +248,7 @@
     	"validRequest" 			 : "Validation de la demande",
     	"refuseRequest" 		 : "Refus de la demande",
     	"deleteTask"	 		 : "Suppression de la tâche",
+    	"deleteEquipment"	 	 : "Suppression du matériel",
     	"cancelIntervention" 	 : "Annulation de l'intervention",
     	"confirmChief"			 : "Remonter la demande au DST",
     	"serviceDetail"			 : "Détail du service",

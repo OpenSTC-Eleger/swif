@@ -251,7 +251,7 @@
 							});
 						%>
 
-							<li rel="popover" data-original-title="Membres" data-content="<ul><%= teamMembers %></ul>" data-html="true" data-placement="left">
+							<li rel="popover" data-original-title="<%= _.capitalize(lang.agents) %>" data-content="<ul><%= teamMembers %></ul>" data-html="true" data-placement="left">
 								<a id="pTeam_<%= team.id %>" href="#planning/team/<%= _.slugify(team.name)%>">
 									<i class="icon-group"></i><%= team.name %>
 								</a>
