@@ -266,12 +266,14 @@ app.Views.InterventionsView = Backbone.View.extend({
 		
     },
 
+
+
 	/** Display the form to add a new Task
 	*/
 	displayModalAddTask: function(e){
         this.getTarget(e);
         
-        //Display only categories in dropdown belongs to intervention
+        // Display only categories in dropdown belongs to intervention //
         var categoriesFiltered = null;
         var inter = app.collections.interventions.get(this.pos);
         if( inter) {
@@ -290,7 +292,7 @@ app.Views.InterventionsView = Backbone.View.extend({
 		})
 		app.views.selectListAssignementsView.clearAll();
 		app.views.selectListAssignementsView.addEmptyFirst();
-		app.views.selectListAssignementsView.addAll();		
+		app.views.selectListAssignementsView.addAll();	
 	        
         $('#modalAddTask').modal();
 	},

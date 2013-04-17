@@ -24,6 +24,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 		'click .buttonRefuseRequest'			: 'setInfoModal',
 		'click .buttonConfirmDST'				: 'setInfoModal',
 
+		'change #requestService' 				: 'filterCategory',
+
 		'submit #formValidRequest' 				: 'validRequest',
 		'submit #formRefuseRequest' 			: 'refuseRequest',
 		'submit #formConfirmDSTRequest' 		: 'confirmDSTRequest',
@@ -256,6 +258,9 @@ app.Views.RequestsListView = Backbone.View.extend({
 				language: 'fr'
 			});
 
+			// Filter Task category //
+			this.filterCategory();
+
 		}
 		else if(btn.hasClass("buttonRefuseRequest")){
 			$('#infoModalRefuseRequest').children('p').html(this.selectedRequest.name);
@@ -288,6 +293,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		        service_id: $('#requestService').val(),	
 				site1: this.model.getSite1()[0],
 				planned_hours: mDuration.asHours(),
+				category_id: _.($('#taskCategory').val()).toNumber(),
 				create_task: $('#createAssociatedTask').is(':checked'),
 		};
 	    
@@ -403,6 +409,34 @@ app.Views.RequestsListView = Backbone.View.extend({
 		$('fieldset.associated-task').stop().slideToggle(function(){
 			$('#modalValidRequest div.modal-body').animate({scrollTop: $('#modalValidRequest div.modal-body').height()}, 400);
 		});
+	},
+
+
+
+	/** Filter Task category
+	*/
+	filterCategory: function(e){
+	    
+	    // Retrieve the Request Intervention Service //
+	    var requestServiceID = _($('#requestService').val()).toNumber();
+
+        
+        // Display only categories in dropdown belongs to intervention //
+        var categoriesFiltered = _.filter(app.collections.categories.models, function(item){ 
+			var services = [];
+	        _.each( item.attributes.service_ids.models, function(service){
+	        	services.push( service.toJSON().id );
+	        });
+        	return ($.inArray(requestServiceID, services)!=-1);
+		});
+		
+		var collectionFilter = _.clone(app.collections.categories);
+
+		app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: collectionFilter.reset(categoriesFiltered) });			
+		app.views.selectListAssignementsView.clearAll();
+		app.views.selectListAssignementsView.addEmptyFirst();
+		app.views.selectListAssignementsView.addAll();	
+	        
 	},
 
 
