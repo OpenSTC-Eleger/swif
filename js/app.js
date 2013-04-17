@@ -24,7 +24,7 @@ var app = {
     //urlOE                       : 'http://octm-dev.siclic.fr:8069', 
     //geoportail_key				: '67pp504oivujlyi0l893925n',
 
-    urlGEO_OWS                 : 'http://46.105.77.18:8080/geoserver/ows',
+    urlGEO_OWS                  : 'http://46.105.77.18:8080/geoserver/ows',
     urlGEO_WFS                  : 'http://46.105.77.18:8080/geoserver/wfs',
     urlGEO_NS                   : 'http://46.105.77.18:8080/openstc',
     urlOE                       : 'http://46.105.77.18:8069',
