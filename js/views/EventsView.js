@@ -13,6 +13,7 @@ app.Views.EventsView = Backbone.View.extend({
 	},
 
 
+
     initialize: function(planning,object,teamMode){
 		this.teamMode = teamMode;
 		this.planning = planning;
@@ -20,38 +21,40 @@ app.Views.EventsView = Backbone.View.extend({
 		this.id = object.attributes.id;
 		this.initCollection(object);
 			
-		this.el = $(this.elStringId);			
+		this.el = $(this.elStringId);
 		
         _.bindAll(this); 
         
-        this.eventView = new app.Views.EventView();            
+        this.eventView = new app.Views.EventView();
     },
-        
-        initCollection: function(object) {
-			if (this.teamMode) 
-			{
-				this.elStringId = 'div#team_' + object.attributes.id;
-				var team_json = object.toJSON();
-				this.filterTasks = object.attributes.tasks.toJSON();
-				var that = this;
-				if( team_json.user_ids!= null ){
-					_.each(object.attributes.user_ids.models, function(user){
-						if( user!=null && user.attributes.tasks != null && 
-								user.attributes.tasks.models.length>0 )
-							that.filterTasks = _.union(that.filterTasks, user.attributes.tasks.toJSON());	
-					})
-				}
-				
+
+
+
+    initCollection: function(object) {
+		if (this.teamMode) 
+		{
+			this.elStringId = 'div#team_' + object.attributes.id;
+			var team_json = object.toJSON();
+			this.filterTasks = object.attributes.tasks.toJSON();
+			var that = this;
+			if( team_json.user_ids!= null ){
+				_.each(object.attributes.user_ids.models, function(user){
+					if( user!=null && user.attributes.tasks != null && 
+							user.attributes.tasks.models.length>0 )
+						that.filterTasks = _.union(that.filterTasks, user.attributes.tasks.toJSON());	
+				})
 			}
-			else
-			{
-				this.elStringId = 'div#officer_' + object.attributes.id;
-				var officer_json = object.toJSON();
-				this.filterTasks = officer_json.tasks;					
-				if( officer_json.belongsToTeam!= null && officer_json.belongsToTeam.tasks!=null )
-					this.filterTasks = _.union(officer_json.tasks, officer_json.belongsToTeam.tasks.toJSON());	
-				
-				//TODO : code below for multi-team association by agent
+			
+		}
+		else
+		{
+			this.elStringId = 'div#officer_' + object.attributes.id;
+			var officer_json = object.toJSON();
+			this.filterTasks = officer_json.tasks;					
+			if( officer_json.belongsToTeam!= null && officer_json.belongsToTeam.tasks!=null )
+				this.filterTasks = _.union(officer_json.tasks, officer_json.belongsToTeam.tasks.toJSON());	
+			
+			//TODO : code below for multi-team association by agent
 
 //				this.filterTasks = object.attributes.tasks.toJSON();
 //				var that = this;
@@ -63,19 +66,19 @@ app.Views.EventsView = Backbone.View.extend({
 //					})
 //				}
 
-			}
-        },
+		}
+    },
 
         
         render: function() {	
         	this.initEvents();
-        	this.initCalendar();          	
+        	this.initCalendar();
         },
         
         refresh: function() {
         	var self = this;
         	app.collections.tasks.fetch({ 
-	    		success: function(){					    	
+	    		success: function(){
 	    			app.collections.interventions.fetch({ 
 	    				beforeSend: function(){
 		                    app.loader('display');
@@ -84,14 +87,14 @@ app.Views.EventsView = Backbone.View.extend({
 			    			app.collections.officers.fetch({ 
 			    				success: function(){
 							 		app.collections.teams.fetch({
-						                success: function(){				 			
+						                success: function(){
 							 				if( self.teamMode)
 										    	self.initCollection(app.collections.teams.get(self.id));
 										    else
 										    	self.initCollection(app.collections.officers.get(self.id));
 										    $(self.el).fullCalendar('refetchEvents');
 										    self.planning.render();
-								 		}					 
+								 		}
 							 		});
 						         },
 	                        	complete: function(){
@@ -100,7 +103,7 @@ app.Views.EventsView = Backbone.View.extend({
 						     });
 				        }
 				   });
-			 	}					 
+			 	}
 	    	});
         },
 
@@ -126,12 +129,12 @@ app.Views.EventsView = Backbone.View.extend({
         	console.log('Edit Event');
         },
         
-        getColor: function(task) {	
+        getColor: function(task) {
         	var color = 'green';
         	if ( task.team_id )
-        		color = 'grey'      
+        		color = 'grey'
         			
-        	switch (task.state) {        	
+        	switch (task.state) {
         		case app.Models.Task.state[0].value :
 			    	color = app.Models.Task.state[0].color;
 			    	break;
@@ -159,7 +162,7 @@ app.Views.EventsView = Backbone.View.extend({
         },
         
         initEvents: function() {
-        	this.events = [];        	
+        	this.events = [];
         	var self = this;
         	
         	_.each(this.filterTasks , function (task, i){
@@ -207,7 +210,7 @@ app.Views.EventsView = Backbone.View.extend({
         initCalendar: function() {
         	var self = this;
         	this.calendar = self.el.fullCalendar({
-				events: function(start, end, callback) {  			   
+				events: function(start, end, callback) {
         			callback(self.events);
 				},
 				
@@ -255,7 +258,7 @@ app.Views.EventsView = Backbone.View.extend({
                 selectable: true,
                 selectHelper: true,
                 editable: true,
-                ignoreTimezone: false,          
+                ignoreTimezone: false,
                 dragRevertDuration:0,
                 eventClick: self.eventClick,
                 //drop: self.drop,
@@ -298,9 +301,16 @@ app.Views.EventsView = Backbone.View.extend({
 		        	}
 
 		        	// Set Modal informations //
-		        	var selectedOfficer = app.collections.officers.get(self.id);
-		    		$('#infoModalAbsentTask p').html("<i class='icon-user'></i> "+selectedOfficer.getFullname());
-		    		$('#infoModalAbsentTask small').html("Du " + mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
+		        	if(!self.teamMode){
+		        		var selectedOfficer = app.collections.officers.get(self.id);
+		    			$('#infoModalAbsentTask p').html("<i class='icon-user'></i> "+selectedOfficer.getFullname());
+		    			$('#infoModalAbsentTask small').html("Du " + mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
+		    		}
+		    		else{
+	    				var selectedTeam = app.collections.teams.get(self.id);
+		    			$('#infoModalAbsentTask p').html("<i class='icon-group'></i> "+selectedTeam.getName());
+		    			$('#infoModalAbsentTask small').html("Du " + mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );	
+		    		}
 
 		    		modalAbsentTask.one('submit', function(event) {
 						event.preventDefault();
@@ -320,7 +330,7 @@ app.Views.EventsView = Backbone.View.extend({
 					    		absentTypeJSON = absentTypeSelected.toJSON();
 					    		absentTypeId =  absentTypeJSON.id;
 					    		absentTypeTitle = absentTypeJSON.name;
-					    	}					    	
+					    	}
 					    }
 
 						var params=
@@ -419,7 +429,7 @@ app.Views.EventsView = Backbone.View.extend({
 					//$(this.event).css('border-color', 'yellow');
 				},
 			
-				eventDragStop: function(event, jsEvent, ui, view) {				    
+				eventDragStop: function(event, jsEvent, ui, view) {
 				},
 
 			});
@@ -499,9 +509,9 @@ app.Views.EventsView = Backbone.View.extend({
         },
 
 
-        getEndDate: function(event) {	
+        getEndDate: function(event) {
         	var duration = event.planned_hours;
-        	var startDate = moment( event.start );        	
+        	var startDate = moment( event.start );
         	var index = this.arrayOnDayEvents.indexOf( event );
         	var size = this.arrayOnDayEvents.length;
         	var found = false;
@@ -562,7 +572,7 @@ app.Views.EventsView = Backbone.View.extend({
 		    		event.end = nextDateEnd.toDate();
 	    		}
 	    		
-				this.arrayPlanifTasks.push(params);				
+				this.arrayPlanifTasks.push(params);
 			}
         },
         
