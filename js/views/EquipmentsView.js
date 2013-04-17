@@ -21,8 +21,10 @@ app.Views.EquipmentsView = Backbone.View.extend({
 		'click a.modalDeleteEquipment'  			: 'modalDeleteEquipment',
 		'click a.modalSaveEquipment'  				: 'modalSaveEquipment',
 
-		'submit #formSaveEquipment' 				: "saveEquipment", 
-		'click button.btnDeleteEquipment' 			: 'deleteEquipment'
+		'submit #formSaveEquipment' 				: 'saveEquipment', 
+		'click button.btnDeleteEquipment' 			: 'deleteEquipment',
+
+		'click #equipmentCatChoose button:not(.disabled)'			: 'accordionAddEquipmentForm'
     },
 
 	
@@ -32,6 +34,7 @@ app.Views.EquipmentsView = Backbone.View.extend({
     initialize: function () {
 		
     },
+
 
 
 	/** Display the view
@@ -76,7 +79,9 @@ app.Views.EquipmentsView = Backbone.View.extend({
 		
         return this;
     },
-    
+
+
+
 	getIdInDropDown: function(view) {
     	if ( view && view.getSelected() )
     		var item = view.getSelected().toJSON();
@@ -85,6 +90,8 @@ app.Views.EquipmentsView = Backbone.View.extend({
     	else 
     		return 0
     },    
+
+
 
     setModel: function(e) {
     	e.preventDefault();
@@ -112,22 +119,18 @@ app.Views.EquipmentsView = Backbone.View.extend({
 		app.views.selectListServicesView.addAll();		
 		
         
-        $('#equipmentName').val('');
-		$('#equipmentImmat').val('');
-        $('#equipmentMarque').val('');
-        $('#equipmentUsage').val('');
-        $('#equipmentType').val('');
-        $('#equipmentCV').val( 0 );
+        // Reset Form element //
+        $('#formSaveEquipment input').val('');
+        $('#equipmentCV, #equipmentTime, #equipmentKm').val(0);
         $('#equipmentYear').val( moment().year() );
-        $('#equipmentTime').val( 0 );      
-        $('#technicalVehicleEquipment').attr("checked", "checked");	
-        $('#commercialVehicleEquipment').removeAttr("checked");	          
-        $('#smallMaterialEquipment').removeAttr("checked");	
-        $('#fatMaterialEquipment').removeAttr("checked");	
-        $('#equipmentKm').val( 0 );
+		$('#equipmentCatChoose button').removeClass('active btn-primary');
+	
+
+        // If update set the correct information //
         if( this.selectedJson ) {
         	if( this.selectedJson.service )
         		app.views.selectListServicesView.setSelectedItem( this.selectedJson.service[0] );
+        	
         	$('#equipmentName').val(this.selectedJson.name);
 			$('#equipmentImmat').val(this.selectedJson.immat);
 			$('#equipmentMarque').val(this.selectedJson.marque);
@@ -136,11 +139,29 @@ app.Views.EquipmentsView = Backbone.View.extend({
 	        $('#equipmentCV').val(this.selectedJson.cv);
 	        $('#equipmentYear').val(this.selectedJson.year);
 	        $('#equipmentTime').val(this.selectedJson.time);
-	        this.selectedJson.technical_vehicle?$('#technicalVehicleEquipment').attr("checked","checked"):"";
-	        this.selectedJson.commercial_vehicle?$('#commercialVehicleEquipment').attr("checked","checked"):"";
-	        this.selectedJson.small_material?$('#smallMaterialEquipment').attr("checked","checked"):"";
-	        this.selectedJson.fat_material?$('#fatMaterialEquipment').attr("checked","checked"):"";
 	        $('#equipmentKm').val(this.selectedJson.km);
+
+	        if(this.selectedJson.technical_vehicle == true || this.selectedJson.commercial_vehicle == true){
+				$('#aboutEquipmentSection').hide();
+				$('#aboutVehicleSection').show();
+	        }
+	        else{
+				$('#aboutEquipmentSection').show();
+				$('#aboutVehicleSection').hide();
+	        }
+
+			// Disable all buttons if its an update //
+	        $('#equipmentCatChoose button').addClass('disabled');
+
+	        this.selectedJson.technical_vehicle ? $('#technicalVehicleEquipment').addClass('active btn-primary') : '';
+	        this.selectedJson.commercial_vehicle ? $('#commercialVehicleEquipment').addClass('active btn-primary'): '';
+	        this.selectedJson.small_material ? $('#smallMaterialEquipment').addClass('active btn-primary'): '';
+	        this.selectedJson.fat_material ? $('#fatMaterialEquipment').addClass('active btn-primary'): '';
+
+        }
+        else{
+        	$('#equipmentCatChoose button:first-child').addClass('active btn-primary');
+        	$('#equipmentCatChoose button').removeClass('disabled');
         }       
 
     },
@@ -164,26 +185,27 @@ app.Views.EquipmentsView = Backbone.View.extend({
 	saveEquipment: function(e) {		     
     	e.preventDefault();	 
     	
-    	input_service_id = null;
+		input_service_id = null;
     	selectView = app.views.selectListServicesView
 		if ( selectView &&  selectView.getSelected() )
 		   input_service_id = app.views.selectListServicesView.getSelected().toJSON().id;
 	     
-	     this.params = {	
-	         name: this.$('#equipmentName').val(),
-		     immat: this.$('#equipmentImmat').val(),
-		     service: input_service_id,
-		     marque: this.$('#equipmentMarque').val(),
-		     usage:this.$('#equipmentUsage').val(),
-	     	 type:this.$('#equipmentType').val(),
-	     	 cv:this.$('#equipmentCV').val(),
-	     	 year:this.$('#equipmentYear').val(),
-	     	 time:this.$('#equipmentTime').val(),
-	     	 technical_vehicle:this.$('#technicalVehicleEquipment').is(':checked'),
-	     	 commercial_vehicle:this.$('#commercialVehicleEquipment').is(':checked'),
-	     	 small_material:this.$('#smallMaterialEquipment').is(':checked'),
-	     	 fat_material:this.$('#fatMaterialEquipment').is(':checked'),	         
-	         km:this.$('#equipmentKm').val(),
+		this.params = {	
+			name 		: this.$('#equipmentName').val(),
+			service 	: input_service_id,
+			usage 		: this.$('#equipmentUsage').val(),
+			marque 		: this.$('#equipmentMarque').val(),
+			type 		: this.$('#equipmentType').val(),
+
+			immat 		: this.$('#equipmentImmat').val(),
+			cv 			: this.$('#equipmentCV').val(),
+			year 		: this.$('#equipmentYear').val(),
+			time 		: this.$('#equipmentTime').val(),
+			km 			: this.$('#equipmentKm').val(),
+			technical_vehicle :this.$('#technicalVehicleEquipment').hasClass('active'),
+			commercial_vehicle :this.$('#commercialVehicleEquipment').hasClass('active'),
+			small_material :this.$('#smallMaterialEquipment').hasClass('active'),
+			fat_material :this.$('#fatMaterialEquipment').hasClass('active'),    
 	     };
 	     
 	    this.modelId = this.selectedJson==null?0: this.selectedJson.id;
@@ -210,7 +232,7 @@ app.Views.EquipmentsView = Backbone.View.extend({
 					}				
 				},
 				error: function(e){
-					alert("Impossible de mettre à jour le site");
+					alert('Impossible de mettre à jour le site');
 				}
 	    });
 	},
@@ -241,6 +263,28 @@ app.Views.EquipmentsView = Backbone.View.extend({
 
 		});
     },
+
+
+
+	/**	Make visible or hide section in the for
+	*/	
+	accordionAddEquipmentForm: function(e){
+		var button = $(e.target);
+
+		$('#equipmentCatChoose button').removeClass('btn-primary');
+		button.addClass('btn-primary');
+
+		// If button has Class Vehicle //
+		if(button.hasClass('vehicule')){
+			$('#aboutEquipmentSection').slideUp();
+			$('#aboutVehicleSection').slideDown();
+		}
+		else{
+			$('#aboutVehicleSection').slideUp();
+			$('#aboutEquipmentSection').slideDown();
+		}
+	},
+
 
 
     preventDefault: function(event){
