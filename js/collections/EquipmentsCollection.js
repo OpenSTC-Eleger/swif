@@ -1,5 +1,5 @@
 /******************************************
-* Claimers Types Collection
+* Equipments Collection
 */
 app.Collections.Equipments = Backbone.Collection.extend({
 
@@ -8,7 +8,9 @@ app.Collections.Equipments = Backbone.Collection.extend({
     // Model name in the database //
     model_name : 'openstc.equipment',
 
-    url: "equipments",   
+    url: 'equipments',
+
+
 
     /** Collection Initialization
     */
@@ -24,22 +26,26 @@ app.Collections.Equipments = Backbone.Collection.extend({
     	app.readOE(this.model_name, app.models.user.getSessionID(), options);
     },
 
+
+
     /** Collection Parse
     */
     parse: function(response) {
-    	//keeps only STC materials
+    	// keeps only STC materials //
     	var records = response.result.records;
-    	records = _.filter(records, function(record){    		
+    	records = _.filter(records, function(record){
     		return record.technical_vehicle || record.commercial_vehicle
     				|| record.fat_material || record.small_material;
     	});
         return records;
     },
     
+    
+
     /** Comparator for ordering collection
-     */
+    */
     comparator: function(item) {
-	  return item.get("name");
+	  return item.get('name');
 	},
 
 });

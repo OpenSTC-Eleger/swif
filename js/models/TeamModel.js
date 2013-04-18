@@ -1,5 +1,5 @@
 /******************************************
-* Request Model
+* Team Model
 */
 app.Models.Team = Backbone.RelationalModel.extend({
 
@@ -39,15 +39,6 @@ app.Models.Team = Backbone.RelationalModel.extend({
 			collectionType: 'app.Collections.ClaimersServices',
 			includeInJSON: ['id', 'name'],
 		},
-//		{
-//			type: Backbone.HasMany,
-//			key: 'workers',
-//			relatedModel: 'app.Models.Work',
-//			reverseRelation: {
-//				key: 'team',
-//			}
-//		},
-
 	
 	],
 

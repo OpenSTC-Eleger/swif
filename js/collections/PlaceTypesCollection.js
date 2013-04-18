@@ -1,5 +1,5 @@
 /******************************************
-* Sites Collection
+* Place Type Collection
 */
 app.Collections.PlaceTypes = Backbone.Collection.extend({
 
@@ -32,6 +32,8 @@ app.Collections.PlaceTypes = Backbone.Collection.extend({
         return response.result.records;
     },
     
+
+
     /** Comparator for ordering collection
     */
     comparator: function(item) {

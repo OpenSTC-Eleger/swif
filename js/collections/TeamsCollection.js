@@ -1,5 +1,5 @@
 /******************************************
-* Sites Collection
+* Teams Collection
 */
 app.Collections.Teams = Backbone.Collection.extend({
 
@@ -8,7 +8,9 @@ app.Collections.Teams = Backbone.Collection.extend({
     // Model name in the database //
     model_name : 'openstc.team',
 
-    url: "teams",
+    url: 'teams',
+
+
 
     /** Collection Initialization
     */
@@ -32,10 +34,12 @@ app.Collections.Teams = Backbone.Collection.extend({
         return response.result.records;
     },
     
+
+
     /** Comparator for ordering collection
-     */
+    */
     comparator: function(item) {
-	  return item.get("name");
+        return item.get('name');
 	},
 
 });

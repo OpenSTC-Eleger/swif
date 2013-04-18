@@ -1,5 +1,5 @@
 /******************************************
-* Categories Collection
+* AbsentType Collection - Leave Time Type
 */
 app.Collections.AbsentTypes = Backbone.Collection.extend({
 
@@ -17,9 +17,7 @@ app.Collections.AbsentTypes = Backbone.Collection.extend({
     	console.log('Absent Types collection Initialization');
     },
 
-	getNextSequence: function(){
-    	_.max(this, function(item){ return item.id; });
-	},
+
 
     /** Collection Sync
     */
@@ -34,9 +32,11 @@ app.Collections.AbsentTypes = Backbone.Collection.extend({
     parse: function(response) {    	
         return response.result.records;
     },
+
+
     
     /** Comparator for ordering collection
-     */
+    */
     comparator: function(item) {
 	  return item.get("name");
 	},

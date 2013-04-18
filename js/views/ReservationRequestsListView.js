@@ -1,5 +1,5 @@
 /******************************************
-* Reservation Requests
+* Reservation Requests Maquette
 */
 app.Views.ReservationRequestsListView = Backbone.View.extend({
 

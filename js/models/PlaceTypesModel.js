@@ -1,5 +1,5 @@
 /******************************************
-* Place Model
+* Place Type Model
 */
 app.Models.PlaceType = Backbone.RelationalModel.extend({
 	
@@ -15,7 +15,8 @@ app.Models.PlaceType = Backbone.RelationalModel.extend({
     },
 
     
-    /** Model Parser */
+    /** Model Parser 
+    */
     parse: function(response) {    	
         return response;
     },

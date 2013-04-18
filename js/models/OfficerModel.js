@@ -1,5 +1,5 @@
 /******************************************
-* Place Model
+* Officer Model
 */
 app.Models.Officer = Backbone.RelationalModel.extend({
     
@@ -21,23 +21,6 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 			collectionType: 'app.Collections.ClaimersServices',
 			includeInJSON: ['id', 'name'],	
 		},
-//		{
-//			type: Backbone.HasMany,
-//			key: 'team_ids',
-//			relatedModel: 'app.Models.Team',
-//			collectionType: 'app.Collections.Teams',
-//			includeInJSON: 'id',	
-//		},
-//		{
-//			type: Backbone.HasMany,
-//			key: 'works',
-//			relatedModel: 'app.Models.Work',
-//			reverseRelation: {
-//				key: 'officer',
-//			}
-//		},
-		
-
 	],
 
 
@@ -160,14 +143,11 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 		this.setPassword( params.new_password );
 		this.setGroupsID( params.groups_id );
 		this.setServicesID( params.service_ids );
-		/*this.setManagerID( params.manager_id );
-		this.setServicesID( params.service_ids );
-		this.setMembersID( params.user_ids );*/
 	},
 
 
 
-	/** Save Team
+	/** Save Officer
 	*/
 	save: function(data, id, options) { 
 		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);

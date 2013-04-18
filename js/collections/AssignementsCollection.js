@@ -1,5 +1,5 @@
 /******************************************
-* Sites Collection
+* Assignements Collection - Intervention classification for budget
 */
 app.Collections.Assignements = Backbone.Collection.extend({
 
@@ -18,11 +18,13 @@ app.Collections.Assignements = Backbone.Collection.extend({
     },
 
 
+
     /** Collection Sync
     */
     sync: function(method, model, options) {
     	app.readOE( this.model_name ,  app.models.user.getSessionID(), options);
     },
+
 
 
     /** Collection Parse
@@ -31,8 +33,10 @@ app.Collections.Assignements = Backbone.Collection.extend({
         return response.result.records;
     },
     
+
+
     /** Comparator for ordering collection
-     */
+    */
     comparator: function(item) {
 	  return item.get("name");
 	},

@@ -322,10 +322,10 @@ app.Router = Backbone.Router.extend({
 						                    app.collections.claimersContacts.fetch({
 						                        success: function(){
 						                            if(id == undefined)
-						                                app.views.requestsDetailsView = new app.Views.RequestDetailsView(self.request,  true);
+						                                app.views.requestView = new app.Views.RequestView(self.request,  true);
 						                            else
-						                                app.views.requestsDetailsView = new app.Views.RequestDetailsView(self.request,  false);
-						                            self.render(app.views.requestsDetailsView);
+						                                app.views.requestView = new app.Views.RequestView(self.request,  false);
+						                            self.render(app.views.requestView);
 						                        },
 						                        error: function(){
 						                            console.log('ERROR - unable to load ClaimersTypes');
@@ -406,8 +406,8 @@ app.Router = Backbone.Router.extend({
 													}
 													app.collections.claimersServices.fetch({
 													    success: function(){
-										                    app.views.interventionsView = new app.Views.InterventionsView();
-										                    self.render(app.views.interventionsView);
+										                    app.views.interventionsListView = new app.Views.InterventionsListView();
+										                    self.render(app.views.interventionsListView);
 										                 },
 									                	complete: function(){
 									                	    app.loader('hide');
@@ -459,11 +459,11 @@ app.Router = Backbone.Router.extend({
 	                app.collections.claimersServices.fetch({
 	    	            success: function(){
                             if(id == undefined)
-                                app.views.interventionDetailsView = new app.Views.InterventionDetailsView( self.intervention, true);
+                                app.views.interventionView = new app.Views.InterventionView( self.intervention, true);
                             else
-                                app.views.interventionDetailsView = new app.Views.InterventionDetailsView( self.intervention, false);
+                                app.views.interventionView = new app.Views.InterventionView( self.intervention, false);
 
-							self.render(app.views.interventionDetailsView);
+							self.render(app.views.interventionView);
 	            		},
 	            		complete: function(){
 	            			app.loader('hide');
@@ -717,8 +717,8 @@ app.Router = Backbone.Router.extend({
 							                
 							                app.collections.claimersServices.fetch({
 							                	success: function(){
-								        			app.views.taskDetailsView = new app.Views.TaskDetailsView(self.task, false);
-								        			self.render(app.views.taskDetailsView);
+								        			app.views.taskView = new app.Views.TaskView(self.task, false);
+								        			self.render(app.views.taskView);
 								        	   
 									        	},
 								            	complete: function(){
@@ -776,8 +776,8 @@ app.Router = Backbone.Router.extend({
 		                    }
 		                	app.collections.placetypes.fetch({	
 				                success: function(){
-				                    app.views.placesView = new app.Views.PlacesView({page: self.page});
-				                    self.render(app.views.placesView);
+				                    app.views.placesListView = new app.Views.PlacesListView({page: self.page});
+				                    self.render(app.views.placesListView);
 				                },
 				                complete: function(){
 				                    app.loader('hide');
@@ -830,8 +830,8 @@ app.Router = Backbone.Router.extend({
 		                    }
 		                	app.collections.placetypes.fetch({	
 				                success: function(){
-				                    app.views.placeDetailsView = new app.Views.PlaceDetailsView(self.place);
-				                    self.render(app.views.placeDetailsView);
+				                    app.views.placeView = new app.Views.PlaceView(self.place);
+				                    self.render(app.views.placeView);
 				                },
 				                complete: function(){
 				                    app.loader('hide');
@@ -871,8 +871,8 @@ app.Router = Backbone.Router.extend({
                     app.loader('display');
                 },
                 success: function(){
-                    app.views.servicesView = new app.Views.ServicesView({page: self.page});
-                    self.render(app.views.servicesView);
+                    app.views.servicesListView = new app.Views.ServicesListView({page: self.page});
+                    self.render(app.views.servicesListView);
                 },
                 complete: function(){
                     app.loader('hide');
@@ -914,8 +914,8 @@ app.Router = Backbone.Router.extend({
 	                }
 	                app.collections.officers.fetch({
 		                success: function(){
-		                    app.views.serviceDetailsView = new app.Views.ServiceDetailsView(self.service);
-		                    self.render(app.views.serviceDetailsView);
+		                    app.views.serviceView = new app.Views.ServiceView(self.service);
+		                    self.render(app.views.serviceView);
 		                },
 		                complete: function(){
 		                    app.loader('hide');
@@ -958,8 +958,8 @@ app.Router = Backbone.Router.extend({
 	    			}
 		            app.collections.claimersServices.fetch({
 		            	success: function(){
-		                    app.views.categoriesView = new app.Views.CategoriesView({page: self.page});
-		                    self.render(app.views.categoriesView);
+		                    app.views.categoriesListView = new app.Views.CategoriesListView({page: self.page});
+		                    self.render(app.views.categoriesListView);
 		                }
 		            });
                 },
@@ -1008,8 +1008,8 @@ app.Router = Backbone.Router.extend({
 			    			}
 				            app.collections.claimersServices.fetch({
 				            	success: function(){
-		                            app.views.officersView = new app.Views.OfficersView({page: self.page});
-		                            self.render(app.views.officersView);
+		                            app.views.officersListView = new app.Views.OfficersListView({page: self.page});
+		                            self.render(app.views.officersListView);
 		                        }
 		                    });
 		                 }
@@ -1064,8 +1064,8 @@ app.Router = Backbone.Router.extend({
 
                             app.collections.officers.fetch({
                                 success: function(){
-                                    app.views.teamsView = new app.Views.TeamsView({page: self.page});
-                                    self.render(app.views.teamsView);
+                                    app.views.teamsListView = new app.Views.TeamsListView({page: self.page});
+                                    self.render(app.views.teamsListView);
                                 }
                             });
                         }
@@ -1128,8 +1128,8 @@ app.Router = Backbone.Router.extend({
 		    	                           
 		    	                            app.collections.claimersContacts.fetch({
 		    	                            	success: function() {
-			    		                            app.views.claimersView = new app.Views.ClaimersView({page: self.page});
-			    		                            self.render(app.views.claimersView);
+			    		                            app.views.claimersListView = new app.Views.ClaimersListView({page: self.page});
+			    		                            self.render(app.views.claimersListView);
 			    		                        },
 			    		                        complete: function(){
 			    		                            app.loader('hide');
@@ -1209,8 +1209,8 @@ app.Router = Backbone.Router.extend({
                     app.loader('display');
                 },
                 success: function(){
-                    app.views.absentTypesView = new app.Views.AbsentTypesView({page: self.page});
-                    self.render(app.views.absentTypesView);
+                    app.views.absentTypesListView = new app.Views.AbsentTypesListView({page: self.page});
+                    self.render(app.views.absentTypesListView);
                 },
                 complete: function(){
                     app.loader('hide');
@@ -1250,8 +1250,8 @@ app.Router = Backbone.Router.extend({
 
                     app.collections.claimersServices.fetch({
                     	success: function() {
-		                    app.views.equipmentsView = new app.Views.EquipmentsView({page: self.page});
-		                    self.render(app.views.equipmentsView);
+		                    app.views.equipmentsListView = new app.Views.EquipmentsListView({page: self.page});
+		                    self.render(app.views.equipmentsListView);
 		                },
 		                complete: function(){
 		                    app.loader('hide');

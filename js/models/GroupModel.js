@@ -1,5 +1,5 @@
 /******************************************
-* Place Model
+* Group Model - User group OpenERP
 */
 app.Models.Group = Backbone.RelationalModel.extend({
     
@@ -7,13 +7,18 @@ app.Models.Group = Backbone.RelationalModel.extend({
 	
 	url: "/groups/:id",
 
+
+
 	/** Model Initialization
 	*/
     initialize: function(){
         console.log('Intervention Model initialization');
     },
     
-    /** Model Parser */
+
+
+    /** Model Parser
+    */
     parse: function(response) {    	
         return response;
     },

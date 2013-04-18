@@ -8,28 +8,28 @@ app.Models.Place = Backbone.RelationalModel.extend({
 	url: "/#places/:id",
 	
 	relations: 
-		[ 
-		  {
-				type: Backbone.HasMany,
-				key: 'asksBelongsto',
-				relatedModel: 'app.Models.Request',
-				//includeInJSON: true,
-			    reverseRelation: {
-					type: Backbone.HasOne,
-					key: 'belongsToSite',
-					includeInJSON: 'id',
-				}
-			},
-			{
-				type: Backbone.HasMany,
-				key: 'intervention_ids',
-				relatedModel: 'app.Models.Intervention',
-				//collectionType: 'app.Collections.Requests',
-				includeInJSON: ['id','name'],
-				
+	[ 
+	  {
+			type: Backbone.HasMany,
+			key: 'asksBelongsto',
+			relatedModel: 'app.Models.Request',
+			//includeInJSON: true,
+		    reverseRelation: {
+				type: Backbone.HasOne,
+				key: 'belongsToSite',
+				includeInJSON: 'id',
 			}
-	
-		],
+		},
+		{
+			type: Backbone.HasMany,
+			key: 'intervention_ids',
+			relatedModel: 'app.Models.Intervention',
+			//collectionType: 'app.Collections.Requests',
+			includeInJSON: ['id','name'],
+			
+		}
+
+	],
 
 	
 	defaults:{
@@ -99,6 +99,8 @@ app.Models.Place = Backbone.RelationalModel.extend({
         this.set({ name : value });
     },  
 
+
+
 	/** Model Initialization
 	*/
     initialize: function(){
@@ -111,6 +113,8 @@ app.Models.Place = Backbone.RelationalModel.extend({
         return response;
     },
     
+
+
     update: function(params) {
 		this.setName( params.name );
 		this.setType( params.type );
@@ -121,12 +125,15 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		this.setSurface( params.surface );
 	},
     
+
+
     /** Save Model
 	*/
 	create: function(data,options) { 
 		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(),options);
 		//this.save(params)
 	},
+
 
 	
 	/** Delete place

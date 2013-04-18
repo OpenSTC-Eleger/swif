@@ -1,5 +1,5 @@
 /******************************************
-* Assignement Request Model
+* Category Model - Task category
 */
 app.Models.Category = Backbone.RelationalModel.extend({
     
@@ -77,6 +77,7 @@ app.Models.Category = Backbone.RelationalModel.extend({
 	},
 	    	
 
+
 	/** Model Initialization
 	*/
     initialize: function(){
@@ -90,6 +91,8 @@ app.Models.Category = Backbone.RelationalModel.extend({
     parse: function(response) {    	
         return response;
     },
+
+
     
     update: function(params) {
 		this.setName( params.name );
@@ -98,6 +101,8 @@ app.Models.Category = Backbone.RelationalModel.extend({
 		this.setParent( params.parent_id );
 		this.setServicesID( params.service_ids );
 	},
+    
+
     
     /** Save Model
 	*/

@@ -1,11 +1,11 @@
 /******************************************
-* Requests List View
+* Task List View
 */
 app.Views.TasksListView = Backbone.View.extend({
 	
 	el : '#rowContainer',
 
-	templateHTML: 'tasksListCheck',
+	templateHTML: 'tasksList',
 
 	filters: 'tasksListFilter',
 
@@ -42,6 +42,8 @@ app.Views.TasksListView = Backbone.View.extend({
 	initialize: function () {
 
 	},
+
+	
 
 	/** Display the view
 	*/

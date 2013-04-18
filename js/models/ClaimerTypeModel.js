@@ -1,5 +1,5 @@
 /******************************************
-* Place Model
+* Claimer Type Model
 */
 app.Models.ClaimerType = Backbone.RelationalModel.extend({
     
@@ -55,10 +55,13 @@ app.Models.ClaimerType = Backbone.RelationalModel.extend({
 	},
 
 
+
 	update: function(params) {
 		this.setName( params.name );
 		this.setCode( params.code );
 	},
+
+
 
 	/** Save Model
 	*/

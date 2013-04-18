@@ -1,5 +1,5 @@
 /******************************************
-* Sites Collection
+* Groups Collection - User groups for OpenERP
 */
 app.Collections.Groups = Backbone.Collection.extend({
 
@@ -37,17 +37,12 @@ app.Collections.Groups = Backbone.Collection.extend({
         //return response.result.records;
     },
 
+
+
     /** Comparator for ordering collection
      */
     comparator: function(item) {
 	  return item.get("name");
-	},
-
-	
-    /** filter openstc groups
-     */
-    filter: function(item) {
-		
-	},
+	}
 
 });

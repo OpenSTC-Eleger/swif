@@ -1,11 +1,11 @@
 /******************************************
-* Assignement Request Model
+* Absent Type Model
 */
 app.Models.AbsentType = Backbone.RelationalModel.extend({
     
 	model_name : 'openstc.absent.type',	
 	
-	url: "/#absent/:id",
+	url: '/#absent/:id',
 
       
     defaults:{
@@ -52,12 +52,16 @@ app.Models.AbsentType = Backbone.RelationalModel.extend({
         return response;
     },
     
+
+    
     update: function(params) {
 		this.setName( params.name );
 		this.setCode( params.code );
 		this.setDescription( params.description );
 	},
     
+
+
     /** Save Model
 	*/
 	save: function(data, id, options) { 

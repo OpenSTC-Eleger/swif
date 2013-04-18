@@ -1,5 +1,5 @@
 /******************************************
-* Request Model
+* Task Model
 */
 app.Models.Task = Backbone.RelationalModel.extend({
 
@@ -8,20 +8,6 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	
 	url: "/#taches/:id",
 
-
-//	relations: [
-//	   {
-//			type: Backbone.HasMany,
-//			key: 'works',
-//			relatedModel: 'app.Models.TaskWork',
-//			collectionType: 'app.Collections.TaskWorks',
-//			includeInJSON: true,
-//			reverseRelation: {
-//				key: 'task',
-//				includeInJSON: 'id',
-//			},
-//		},		
-//	],
 
 	relations: [
 	   {
@@ -118,19 +104,6 @@ app.Models.Task = Backbone.RelationalModel.extend({
     	if( value == 'undefined') return;
         this.set({ planned_hours : value });
     },
-
-
-//	relations: [
-//	{
-//		// Create a cozy, recursive, one-to-one relationship
-//		type: Backbone.HasOne,
-//		key: 'project_id',
-//		relatedModel: 'app.Models.Intervention',
-//		includeInJSON: true,
-//		reverseRelation: {
-//			key: 'tasks'
-//		}
-//	}],
 	
 
 
@@ -229,7 +202,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		        }
 		    },
 		    error: function () {
-				console.log('ERROR - Unable to save the Request - RequestDetailsView.js');
+				console.log('ERROR - Unable to save the Request - RequestView.js');
 		    }, 
 		});
 	},
@@ -258,6 +231,8 @@ app.Models.Task = Backbone.RelationalModel.extend({
 			options
 		);
 	},
+	
+
 	
 	saveTaskDone: function(params, options) {
 		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "saveTaskDone", app.models.user.getSessionID(), options);

@@ -1,5 +1,5 @@
 /******************************************
-* Sites Collection
+* Tasks Collection
 */
 app.Collections.Tasks = Backbone.Collection.extend({
 
@@ -8,12 +8,9 @@ app.Collections.Tasks = Backbone.Collection.extend({
     // Model name in the database //
     model_name : 'project.task',
 
-    url: "taches",
+    url: 'taches',
+ 
 
-//	url : function( models ) {
-//		return this.url;
-//	},
-//   
 
     /** Collection Initialization
     */
@@ -37,37 +34,18 @@ app.Collections.Tasks = Backbone.Collection.extend({
         return response.result.records;
     },
     
+
+
     /** Comparator for ordering collection
     */
-    comparator: function(item) {
-	  return item.get("name");
-	},
-    
-    getTasksByOfficer: function(officer_id){    	
-    	self = this;
-    	self.tasks = this.toJSON();
-    	_.each(self.tasks, function(task){
-    		if(task.user_id != false) {
-    			if (task.user_id[0] != officer_id)
-    				self.remove(task);
-    		}
-    		else
-    			self.remove(task);
-    	});
-    	return this;
-    },
-
-    comparator: function(item) {
-	  return -item.get("date_start");
-	},
-    
-    
-//	getNotAssignedTasks: function(){
-//	   return _.filter(this.models, function(model){ 
-//		   return model.get('user_id') === false; 
-//	   });
-//	}
+    /*comparator: function(item) {
+	  return item.get('name');
+	},*/
     
 
+
+    comparator: function(item) {
+	   return -item.get("date_start");
+	},
 
 });

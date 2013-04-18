@@ -1,5 +1,5 @@
 /******************************************
-* Place Model
+* Intervention Model
 */
 app.Models.Intervention = Backbone.RelationalModel.extend({
     
@@ -99,7 +99,8 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 
 
     
-    /** Model Parser */
+    /** Model Parser
+    */
     parse: function(response) {    	
         return response;
     },
@@ -155,7 +156,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 		        }
 		    },
 		    error: function () {
-				console.log('ERROR - Unable to save the Request - RequestDetailsView.js');
+				console.log('ERROR - Unable to save the Request - RequestView.js');
 		    }, 
 		});
 	},
@@ -169,6 +170,8 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 		app.saveOE(id, data, this.model_name, app.models.user.getSessionID(), options);
 	},
 	
+
+    
 	cancel: function(cancel_reason, options) {
 		var params = {}
 		params.state = app.Models.Intervention.state[4].value;

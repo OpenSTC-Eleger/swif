@@ -9,7 +9,6 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
 	url: "/#demandeurs/:id",
 
 
-	
 	relations: [
         {
 			type: Backbone.HasMany,
@@ -23,6 +22,7 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
 	        }
         },
     ],
+    
     
     defaults:{
 		id:0,
@@ -89,6 +89,8 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
         return response;
     },
 
+
+
     update: function( params ) {
     	this.setName(params.name);
 		this.setTypeId( params.type_id );
@@ -97,12 +99,16 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
 		this.setTechnicalSiteId( params.technical_site_id );		
 	},
 	
+
+
 	/** Save Model
 	*/
 	save: function(data,id, options) { 
 		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
 	},
 	
+
+
 	/** Delete Claimer
 	*/
 	delete: function (options) {	

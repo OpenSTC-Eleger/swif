@@ -1,5 +1,5 @@
 /******************************************
-* Login View
+* App View - @NotUsedForNow
 */
 app.Views.AppView = Backbone.View.extend({
 

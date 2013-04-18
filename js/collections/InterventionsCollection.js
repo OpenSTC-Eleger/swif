@@ -1,5 +1,5 @@
 /******************************************
-* Sites Collection
+* Interventions Collection
 */
 app.Collections.Interventions = Backbone.Collection.extend({
 
@@ -9,10 +9,6 @@ app.Collections.Interventions = Backbone.Collection.extend({
     model_name : 'project.project',
     
    	url: "demandes-dinterventions",
-//
-//	url : function( models ) {
-//		return this.url;
-//	},
 
    
 
@@ -41,56 +37,11 @@ app.Collections.Interventions = Backbone.Collection.extend({
 
 
     /** Comparator for ordering collection
-     */
+    */
     comparator: function(item) {
         var mCreateDate = moment(item.get("create_date"))
         item.set({"create_date":mCreateDate});
         return -item.get("create_date");
-	},
-    
-//	getNotAssigned : function(){
-//	
-//       return _.filter(this.models, function(model){ 
-//		   	tasks = model.get("tasks");
-//			tasksCollection = tasks.getNotAssignedTasks();
-//			if( tasksCollection.length>0 ){
-//				model.set({'tasks': tasksCollection})
-//				return true
-//			}
-//			return false;
-//	   });
-//		return _(this.filter(function(data) {
-//			tasks = data.get("tasks");
-//			tasksCollection = tasks.getNotAssignedTasks();
-//			if( tasksCollection.length>0 )
-//				return data.set({'tasks': tasksCollection})
-//		}));
-//	},
-
-//    search : function(){
-//    	var self = this;
-//    	self.list = []
-//		_.each(this.toJSON(),function(intervention) {
-//			var j = 0;
-//			toRemove = [];
-//			for ( var i=0; i< intervention.tasks.length;i++ ){
-//				
-//				if ( intervention.tasks[i].user_id != false  ){
-//					toRemove.push(intervention.tasks[i]);
-//					//intervention.tasks.pop(i);
-//					//self.models[j].attributes.tasks.remove(intervention.tasks[i]);
-//					//self.get(i).tasks = intervention.tasks;
-//				}
-//
-//			};	
-//			for (var w=0 ; w<toRemove.length ; w++) {
-//				self.models[j].attributes.tasks.remove(toRemove[w])
-//			}			
-//			if(self.models[j].attributes.tasks.length == 0)
-//				self.remove(intervention);
-//			j++;
-//		});		
-//	}
-
+	}
 
 });

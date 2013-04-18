@@ -1,5 +1,5 @@
 /******************************************
-* Sites Collection
+* Places Collection
 */
 app.Collections.Places = Backbone.Collection.extend({
 
@@ -13,7 +13,7 @@ app.Collections.Places = Backbone.Collection.extend({
     /** Collection Initialization
     */
     initialize: function (options) {
-    	console.log('Sites collection Initialization');
+    	console.log('Place collection Initialization');
     },
 
 
@@ -32,10 +32,12 @@ app.Collections.Places = Backbone.Collection.extend({
         return response.result.records;
     },
     
+    
+
     /** Comparator for ordering collection
-         */
+    */
     comparator: function(item) {
-	  return item.get("name");
+	  return item.get('name');
 	},
 
 

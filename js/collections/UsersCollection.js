@@ -1,11 +1,11 @@
 /******************************************
-* Users Collection
+* Users Collection - Person who are Log in
 */
 app.Collections.Users = Backbone.Collection.extend({
 
     model : app.Models.User,
 
-    sessionStorage : new Store("usersCollection"),
+    sessionStorage : new Store('usersCollection'),
 
 
     /** Collection Initialization
@@ -13,11 +13,5 @@ app.Collections.Users = Backbone.Collection.extend({
     initialize : function() {
         console.log('User collection initialize');
     },
-    
-    /** Collection Parse name
-    */
-//    parse: function(response) {
-//        return response;
-//    },
 
 });

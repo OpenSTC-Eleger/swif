@@ -1,5 +1,5 @@
 /******************************************
-* Requests Collection
+* Officers Collection
 */
 app.Collections.Officers = Backbone.Collection.extend({
 
@@ -36,10 +36,12 @@ app.Collections.Officers = Backbone.Collection.extend({
         return res;
     },
     
+
+
     /** Comparator for ordering collection
-     */
+    */
     comparator: function(item) {
-    	var lastname = item.get("name");
+    	var lastname = item.get('name');
     	return lastname.toUpperCase();
 	},
 

@@ -17,6 +17,7 @@ app.Models.ClaimerContact = Backbone.RelationalModel.extend({
 //	}],
 	
     
+
 	/** Model Initialization
 	*/
     initialize: function(){
@@ -24,12 +25,16 @@ app.Models.ClaimerContact = Backbone.RelationalModel.extend({
         //this.fetchRelated('partner_id');
     },
 
+
+
     /** Model Parser
     */
     parse: function(response) {
         return response;
     },
     
+
+
 	save: function(id,data,closeModal, view, strRoute) { 
 		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {
             beforeSend: function(){
@@ -67,14 +72,14 @@ app.Models.ClaimerContact = Backbone.RelationalModel.extend({
 		        }
 		    },
 		    error: function () {
-				console.log('ERROR - Unable to save the Request - RequestDetailsView.js');
+				console.log('ERROR - Unable to save the Request - RequestView.js');
 		    }, 
 		});
 	},
 
 
 
-	/** Delete category
+	/** Delete claimer contact
 	*/
 	delete: function (options) {	
 		app.deleteOE( 

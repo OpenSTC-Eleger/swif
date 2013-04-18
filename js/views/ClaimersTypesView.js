@@ -1,5 +1,5 @@
 /******************************************
-* Claimers List View
+* Claimers Tpe List View
 */
 app.Views.ClaimersTypesView = Backbone.View.extend({
 

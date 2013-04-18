@@ -1,5 +1,5 @@
 /******************************************
-* Assignement Request Model
+* Claimer Service Model
 */
 app.Models.ClaimerService = Backbone.RelationalModel.extend({
     
@@ -34,8 +34,6 @@ app.Models.ClaimerService = Backbone.RelationalModel.extend({
 	*/
     initialize: function(){
         console.log('Claimer Service Request Model initialization');
-        //this.fetchRelated('asksBelongsto');
-        //this.fetchRelated('belongsToService');
     },
 
 
@@ -45,11 +43,15 @@ app.Models.ClaimerService = Backbone.RelationalModel.extend({
         return response;
     },
 
+
+
     /** Save Model
 	*/
 	save: function(data,options) { 
 		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(),options);
 	},
+
+
 
 	/** Destroy service
 	*/
@@ -61,9 +63,5 @@ app.Models.ClaimerService = Backbone.RelationalModel.extend({
 			options
 		);
 	}
-
-
-
-
 
 });

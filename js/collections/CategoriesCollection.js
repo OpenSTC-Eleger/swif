@@ -1,5 +1,5 @@
 /******************************************
-* Categories Collection
+* Categories Collection - Task categories
 */
 app.Collections.Categories = Backbone.Collection.extend({
 
@@ -8,7 +8,8 @@ app.Collections.Categories = Backbone.Collection.extend({
     // Model name in the database //
     model_name : 'openstc.task.category',
     
-   	url: "categories",
+   	url: 'categories',
+
    
 
     /** Collection Initialization
@@ -17,9 +18,7 @@ app.Collections.Categories = Backbone.Collection.extend({
     	console.log('Categories collection Initialization');
     },
 
-	getNextSequence: function(){
-    	_.max(this, function(item){ return item.id; });
-	},
+
 
     /** Collection Sync
     */
@@ -34,11 +33,13 @@ app.Collections.Categories = Backbone.Collection.extend({
     parse: function(response) {    	
         return response.result.records;
     },
+
+
     
     /** Comparator for ordering collection
-     */
+    */
     comparator: function(item) {
-	  return item.get("name");
+	  return item.get('name');
 	},
 
 });

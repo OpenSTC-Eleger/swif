@@ -106,13 +106,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
     	if( value == 'undefined') return;
         this.set({ note : value });
     },
-    
-//    getService : function() {
-//        return this.get('belongsToService');
-//    },
-//    setService : function(value) {
-//        this.set({ belongsToService : value });
-//    },
 
     getService : function() {
         return this.get('service_id');
@@ -152,10 +145,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
 	   	app.Models.Request.state[2].traduction = app.lang.valid;
 	   	app.Models.Request.state[3].traduction = app.lang.finished;
 		app.Models.Request.state[4].traduction = app.lang.refused;
-	   	//this.fetchRelated('service_id');
-	   	//this.fetchRelated('site1');
-	   	//this.fetchRelated(this.relations[key]);
-	   	//this.fetchRelated("site1");
 	},
 
 
@@ -167,11 +156,14 @@ app.Models.Request = Backbone.RelationalModel.extend({
     },
 
 
+
 	/** Save Model
 	*/
 	save: function(data,options) { 
 		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
 	},
+
+
 	
 	/** Save Model
 	*/
@@ -181,6 +173,8 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "send_email", app.models.user.getSessionID(), options);
 	},
 	
+
+
 	update: function(params) {
 		this.setDescription( params.description );
 		//this.setService( params.service_id );
@@ -190,6 +184,8 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		this.setNote( params.note );
 		//this.set({ service_id : params.service_id });
 	},
+
+
 
 	/** Destroy Model
 	*/
@@ -202,6 +198,8 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		);
 	},
 	
+
+
 	valid: function(params, options) {
 		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "valid", app.models.user.getSessionID(), options);
 	},

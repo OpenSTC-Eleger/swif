@@ -10,11 +10,14 @@ app.Collections.ClaimersContacts = Backbone.Collection.extend({
 
     url: "demandeurs-contacts",   
     
+
+
     /** Collection Initialization
     */
     initialize : function() {
         console.log('Claimer Contact collection initialize');
     },
+
 
 
     /** Collection Sync
@@ -24,12 +27,15 @@ app.Collections.ClaimersContacts = Backbone.Collection.extend({
     },
 
 
+
     /** Collection Parse
     */
     parse: function(response) {
         return response.result.records;
     },
     
+
+
 	/** Comparator for ordering collection
      */
     comparator: function(item) {

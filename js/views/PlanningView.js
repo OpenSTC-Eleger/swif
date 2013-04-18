@@ -1,5 +1,5 @@
 /******************************************
-* Login View
+* Planning View
 */
 app.Views.PlanningView = Backbone.View.extend({
 
@@ -262,13 +262,13 @@ app.Views.PlanningView = Backbone.View.extend({
     		teams = app.collections.teams;    		
     		
 			teams.each(function(t){	
-				new app.Views.EventsView(self,t,true).render();
+				new app.Views.EventsListView(self,t,true).render();
 			});
 
     		officers = app.collections.officers;    		
     		
 			officers.each(function(o){
-				new app.Views.EventsView(self,o,false).render();
+				new app.Views.EventsListView(self,o,false).render();
 			});
     },
 
