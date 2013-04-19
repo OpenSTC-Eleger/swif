@@ -129,13 +129,10 @@
 
 			<div class="span6">
 				<div class="widget-title">
-					<h4>Agents sans équipe <span class="badge pull-right"><%= _.size(officersWithoutTeam) %></span></h4>
+					<h4>Agents sans équipe <span class="badge pull-right" id="badgeNbMembers"></span></h4>
 				</div>
 
 				<ul id="officersList" class="sortableOfficersList sortable unstyled nav nav-list">
-					<% _.each(officersWithoutTeam, function (officer, i){ %>
-						<li id="officer_<%= officer.attributes.id %>"><a href="#"><i class="icon-user"></i>	<%= officer.attributes.firstname +' '+ officer.attributes.name%> </a></li>
-					<% }); %>
 				</ul>
 			</div>
 

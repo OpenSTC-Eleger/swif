@@ -263,8 +263,10 @@ app.Views.TasksListView = Backbone.View.extend({
 				// Filter on each officer //
 				var officersDropDownListFilter = _.filter(app.collections.officers.models, function(officer){
 						var officerJSON = officer.toJSON();
-						if(officerJSON.belongsToTeam != null){
-							return ($.inArray(officerJSON.belongsToTeam.id, managerTeamID) != -1);
+						if(officerJSON.team_ids != null){
+							_.each( officerJSON.team_ids, function(team) {
+								return ($.inArray(team.id, managerTeamID) != -1);
+							});							
 						}
 
 				});

@@ -63,9 +63,10 @@ app.Views.TeamsListView = Backbone.View.extend({
 
 		console.debug(app.collections.officers);
 
-		var officersWithoutTeam = _.filter(app.collections.officers.models, function(item){
-			return item.attributes.belongsToTeam == null; 
-		});
+//		var officersWithoutTeam = _.filter(app.collections.officers.models, function(item){
+//			//PYF : TO REMOVE temporaire pour TEST many2many
+//			return true;//item.attributes.belongsToTeam == null; 
+//		});
 
 
 		var len = teams.length;
@@ -81,7 +82,6 @@ app.Views.TeamsListView = Backbone.View.extend({
 			var template = _.template(templateData, {
 				teams: app.collections.teams.toJSON(),
 				nbTeams: nbTeams,
-				officersWithoutTeam: officersWithoutTeam,
 				lang: app.lang,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
@@ -369,12 +369,13 @@ app.Views.TeamsListView = Backbone.View.extend({
 
 
 		// Clear the list of the user //
-		$('#teamMembers li, #teamServices li, #servicesList li').remove();
+		$('#teamMembers li, #teamServices li, #servicesList li, #officersList li').remove();
 
-		
+		var teamOfficers = new Array();
 		// Display the members of the team //
-		_.each(selectedTeamJson.user_ids, function (member, i){
-			$('#teamMembers').append('<li id="officer_'+member.id+'"><a href="#"><i class="icon-user"></i> '+ member.firstname +' '+ member.name +'</a></li>');
+		_.each(selectedTeamJson.user_ids, function (officer, i){
+			$('#teamMembers').append('<li id="officer_'+officer.id+'"><a href="#"><i class="icon-user"></i> '+ officer.firstname +' '+ officer.name +'</a></li>');
+			teamOfficers[i] = officer.id;
 		});
 
 
@@ -394,6 +395,13 @@ app.Views.TeamsListView = Backbone.View.extend({
 		app.collections.claimersServices.remove(noTechnicalServices);
 		app.collections.claimersServices.toJSON()
 
+		
+		// Display the remain members //
+		_.filter(app.collections.officers.toJSON(), function (officer, i){ 
+			if(!_.contains(teamOfficers, officer.id)){
+				$('#officersList').append('<li id="officer_'+officer.id+'"><a href="#"><i class="icon-user"></i> '+ officer.firstname +' '+ officer.name +'</a></li>');
+			}
+		});
 
 		// Display the remain services //
 		_.filter(app.collections.claimersServices.toJSON(), function (service, i){ 
@@ -401,6 +409,9 @@ app.Views.TeamsListView = Backbone.View.extend({
 				$('#servicesList').append('<li id="service_'+service.id+'"><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
 			}
 		});
+		
+		var nbRemainMembers = $('#officersList li').length;
+		$('#badgeNbMembers').html(nbRemainMembers);
 
 		var nbRemainServices = $('#servicesList li').length;
 		$('#badgeNbServices').html(nbRemainServices);
