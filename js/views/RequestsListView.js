@@ -374,10 +374,10 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 	/** Filter Requests
 	*/
-	setFilter: function(e){
+	setFilter: function(event){
 		event.preventDefault();
 
-		var link = $(e.target);
+		var link = $(event.target);
 
 		var filterValue = _(link.attr('href')).strRightBack('#');
 
