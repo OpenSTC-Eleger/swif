@@ -174,7 +174,7 @@ app.Views.PlanningView = Backbone.View.extend({
             self.initDragObject();
 
             $('*[data-spy="affix"]').affix();
-            $('*[rel="tooltip"]').tooltip({placement: 'left'});
+            $('*[rel="tooltip"]').tooltip();
             $('*[rel="popover"]').popover({trigger: 'hover', delay: { show: 500, hide: 100 }});
 
             $('.switch').bootstrapSwitch();
@@ -671,11 +671,11 @@ app.Views.PlanningView = Backbone.View.extend({
 
 	/** Filter Request
     */
-	setFilter: function(e){
+	setFilter: function(event){
 
 		event.preventDefault();
 
-		var link = $(e.target);
+		var link = $(event.target);
 
 		var filterValue = _(link.attr('href')).strRightBack('#');
 

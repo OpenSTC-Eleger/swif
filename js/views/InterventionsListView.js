@@ -130,7 +130,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 //			app.views.selectListEquipmentsView.addEmptyFirst();
 //			app.views.selectListEquipmentsView.addAll();
 
-			$('*[rel="tooltip"]').tooltip({placement: 'top'});
+			$('*[data-toggle="tooltip"]').tooltip();
 			$('*[rel="popover"]').popover({trigger: 'hover'});
 			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 
@@ -433,10 +433,10 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 	/** Filter Request
 	*/
-	setFilter: function(e){
+	setFilter: function(event){
 		event.preventDefault();
 
-		var link = $(e.target);
+		var link = $(event.target);
 
 		var filterValue = _(link.attr('href')).strRightBack('#');
 

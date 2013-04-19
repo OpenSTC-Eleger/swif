@@ -138,7 +138,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 			// Display the Tooltip or Popover //
 			$('*[rel="popover"]').popover({trigger: 'hover'});
-			$('*[rel="tooltip"]').tooltip({placement: 'top'});
+			$('*[data-toggle="tooltip"]').tooltip();
 
 
 			// Set the focus to the first input of the form //
@@ -374,10 +374,10 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 	/** Filter Requests
 	*/
-	setFilter: function(e){
+	setFilter: function(event){
 		event.preventDefault();
 
-		var link = $(e.target);
+		var link = $(event.target);
 
 		var filterValue = _(link.attr('href')).strRightBack('#');
 

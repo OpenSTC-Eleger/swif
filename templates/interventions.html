@@ -1,11 +1,11 @@
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.interventionsMonitoring %>
-		<sup rel="tooltip" data-original-title="<%= lang.planningFenced %>" data-placement="right">
+		<sup data-toggle="tooltip" data-original-title="<%= lang.planningFenced %>">
 			<i class="badge badge-info" ><%= nbInterventionsPlanned %></i>
 		</sup>
 
-		<sup rel="tooltip" data-original-title="<%= lang.pending %>" data-placement="right">
+		<sup data-toggle="tooltip" data-original-title="<%= lang.pending %>">
 			<i class="badge" >
 				<%= nbInterventionsPending %>
 			</i>
@@ -114,19 +114,19 @@
 
 						<!-- state - To Scheduled -->
 						<% if(intervention.state == app.Models.Intervention.state[1].value){ %>
-							<span class="label label-<%= app.Models.Intervention.state[1].color %>"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
+							<span class="label label-<%= app.Models.Intervention.state[1].color %>"  data-toggle="tooltip" data-original-title="<%= intervention.infoMessage %>">
 								<%= app.Models.Intervention.state[1].traduction %>
 							</span>
 
 						<!-- state - Scheduled -->
 						<% } else if(intervention.state == app.Models.Intervention.state[0].value){ %>
-							<span class="label label-<%= app.Models.Intervention.state[0].color %>"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
+							<span class="label label-<%= app.Models.Intervention.state[0].color %>"  data-toggle="tooltip" data-original-title="<%= intervention.infoMessage %>">
 								<%= app.Models.Intervention.state[0].traduction %>
 							</span>
 
 						<!-- state - Pending -->
 						<% } else if(intervention.state == app.Models.Intervention.state[3].value){ %>
-							<div class="progress progress-default" rel="tooltip" data-title="<%= intervention.infoMessage %>">
+							<div class="progress progress-default" data-toggle="tooltip" data-title="<%= intervention.infoMessage %>">
 								<div class="bar" style="width: <%= intervention.progress_rate %>%"><%= _(intervention.progress_rate).toNumber() %>%</div>
 							</div>
 
@@ -150,7 +150,7 @@
 
 						<!-- state - Cancelled -->
 						<% } else if(intervention.state == app.Models.Intervention.state[4].value){ %>
-							<span class="label label-<%= app.Models.Intervention.state[4].color %>"  rel="tooltip" data-original-title="<%= intervention.infoMessage %>">
+							<span class="label label-<%= app.Models.Intervention.state[4].color %>"  data-toggle="tooltip" data-original-title="<%= intervention.infoMessage %>">
 								<%= app.Models.Intervention.state[4].traduction %>
 							</span>
 
@@ -184,7 +184,7 @@
 												<!-- Display a clock when the task is planned -->
 												<% if(task.date_start != ''){ %>
 													<i 
-														class="icon-time displayInlineBlock" rel="tooltip" data-placement="top"
+														class="icon-time displayInlineBlock" data-toggle="tooltip"
 														data-original-title="<%= moment(task.date_start).format('LLL') %>" >
 													</i>
 												<% } %>
@@ -194,7 +194,7 @@
 													<% if( task.state == app.Models.Task.state[3].value ) { %>
 
 														<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal">
-															<i class="icon-remove displayInlineBlock" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top">&nbsp;</i>
+															<i class="icon-remove displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">&nbsp;</i>
 														</a>
 
 													<% } %>

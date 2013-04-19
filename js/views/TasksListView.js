@@ -376,7 +376,7 @@ app.Views.TasksListView = Backbone.View.extend({
 //			} );
 
 			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
-			$('*[rel="tooltip"]').tooltip({placement: "top"});
+			$('*[data-toggle="tooltip"]').tooltip();
 
 
 
@@ -972,10 +972,10 @@ app.Views.TasksListView = Backbone.View.extend({
 
 	/** Filter Tasks
 	*/
-	setFilter: function(e){
+	setFilter: function(event){
 		event.preventDefault();
 
-		var filterValue = $(e.target).attr('value');
+		var filterValue = $(event.target).attr('value');
 
 		// Set the filter in the local Storage //
 		if(filterValue != ''){

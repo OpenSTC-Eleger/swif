@@ -17,6 +17,7 @@ var app = {
 //    urlGEO_WFS                  : 'http://localhost:8080/geoserver/wfs',
 //    urlGEO_NS                   : 'http://localhost:8080/openstc',
 //    geoportail_key				: 'c5r5vzh6cxavj6wm90kz09i5',	
+
     
     urlGEO_OWS                  : 'http://octm-dev.siclic.fr:8080/geoserver/ows',
     urlGEO_WFS                  : 'http://octm-dev.siclic.fr:8080/geoserver/wfs',
