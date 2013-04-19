@@ -19,7 +19,7 @@
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.requestsList %>
-		<sup rel="tooltip" data-original-title="<%= actionRequestToProcess %>" data-placement="right">
+		<sup data-toggle="tooltip" data-original-title="<%= actionRequestToProcess %>">
 			<i class="badge badge-<%= classColor %>" ><%= nbInterventionsInBadge %></i>
 		</sup>
 	</h1>
@@ -131,7 +131,7 @@
 
 					<!-- Request service -->
 					<td>
-				    	<span rel="tooltip"
+				    	<span data-toggle="tooltip"
 				    		data-original-title="<%= _.capitalize(lang.toValidateBy) %> <%= (requests[i].manager_id != false ? requests[i].manager_id[1] : _.capitalize(lang.notKnown)) %>">
 				    		<%= requests[i].belongsToService!=null?requests[i].belongsToService.name:"" %>
 				    	</span>
@@ -143,7 +143,7 @@
 					<!-- Request Date -->	
 				    <td>
 						<span 
-				    		rel="tooltip"
+				    		data-toggle="tooltip"
 				    		data-original-title="<%= moment(requests[i].create_date, 'YYYY-MM-DD HH:mm:ss').add('hours',1).fromNow() %>">
 				    		<%= ( requests[i].create_date != null &&  requests[i].create_date != "" ) ? moment(requests[i].create_date, 'YYYY-MM-DD HH:mm:ss').add('hours',1).format('LLL'): "" %>
 				    	</span>
@@ -161,7 +161,7 @@
 
 						<!-- Valid state -->
 						<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
-			    			<span class="label label-<%= app.Models.Request.state[2].color %>" rel="tooltip"
+			    			<span class="label label-<%= app.Models.Request.state[2].color %>" data-toggle="tooltip"
 								data-original-title="<%= requests[i].infoMessage %>">
 				    			<%= app.Models.Request.state[2].traduction %>
 							</span>
@@ -171,19 +171,19 @@
 							
 							<!-- Check if the Intervention is cancelled or not -->
 							<% if(requests[i].intervention_ids[0].state == app.Models.Intervention.state[2].value) { %>
-								<span class="label" rel="tooltip" data-original-title="<%= requests[i].infoMessage %>">
+								<span class="label" data-toggle="tooltip" data-original-title="<%= requests[i].infoMessage %>">
 									<%= app.Models.Request.state[3].traduction %>
 								</span>
 							<% } else { %>
 
-								<span class="label label-<%= app.Models.Request.state[4].color %>" rel="tooltip" data-original-title="<%= requests[i].intervention_ids[0].cancel_reason %>">
+								<span class="label label-<%= app.Models.Request.state[4].color %>" data-toggle="tooltip" data-original-title="<%= requests[i].intervention_ids[0].cancel_reason %>">
 									<%= app.Models.Request.state[3].traduction %>
 								</span>
 							<% } %>
 
 						<!-- Cancel state -->
 						<% } else if (requests[i].state == app.Models.Request.state[4].value) { %> 
-							<span class="label label-<%= app.Models.Request.state[4].color %>" rel="tooltip"
+							<span class="label label-<%= app.Models.Request.state[4].color %>" data-toggle="tooltip"
 				    			data-original-title="<%= requests[i].refusal_reason  +'\n('+ modifydBy +')'%>">
 				    			<%= app.Models.Request.state[4].traduction %>
 							</span>

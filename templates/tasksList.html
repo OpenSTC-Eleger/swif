@@ -27,7 +27,7 @@
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.tasksList %>
-		<sup rel="tooltip" data-original-title="<%= lang.wait %>" data-placement="right">
+		<sup data-toggle="tooltip" data-original-title="<%= lang.wait %>">
 			<i class="badge badge-info"><%= nbPendingTasks %></i>
 		</sup>
 	</h1>
@@ -97,7 +97,7 @@
 						<div class="pull-right">
 							<!-- Badge pending Task -->
 							<% if(pendingTask.true > 0){ %>
-								 <small class="badge badge-info vertical-align-top" rel="tooltip" data-original-title="<%= lang.wait %>"><%= pendingTask.true %></small>
+								 <small class="badge badge-info vertical-align-top" data-toggle="tooltip" data-original-title="<%= lang.wait %>"><%= pendingTask.true %></small>
 							<% } %>
 							<small class="badge vertical-align-top"><%= _.size(day.tasks) %></small>
 						</div>
@@ -282,7 +282,7 @@
 				<div class="controls">
 					<div class="input-append">
 						<select id="taskEquipmentDone" class="taskEquipment taskSelect taskInput" required="required"></select>
-						<span class="add-on linkRefueling" rel="tooltip" data-placement="top" data-original-title="<%= _.capitalize(lang.oil) %>">
+						<span class="add-on linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
 							<i class="icon-tint"></i>
 						</span>
 					</div>
@@ -445,7 +445,7 @@
 				<div class="controls">
 					<div class="input-append">
 						<select id="taskEquipmentAdd" class="taskEquipment taskInput taskSelect" required="required"></select>
-						<span class="add-on linkRefueling" rel="tooltip" data-placement="top" data-original-title="<%= _.capitalize(lang.oil) %>">
+						<span class="add-on linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
 							<i class="icon-tint"></i>
 						</span>
 					</div>
@@ -571,7 +571,7 @@
 				<div class="controls">
 					<div class="input-append">
 						<select id="taskEquipmentSpent" class="taskEquipment taskInput taskSelect" required="required" ></select>
-						<span class="add-on linkRefueling" rel="tooltip" data-placement="top" data-original-title="<%= _.capitalize(lang.oil) %>">
+						<span class="add-on linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
 							<i class="icon-tint"></i>
 						</span>
 					</div>

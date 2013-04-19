@@ -374,7 +374,7 @@ app.Views.TasksListView = Backbone.View.extend({
 //			} );
 
 			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
-			$('*[rel="tooltip"]').tooltip({placement: "top"});
+			$('*[data-toggle="tooltip"]').tooltip();
 
 
 

@@ -138,7 +138,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 			// Display the Tooltip or Popover //
 			$('*[rel="popover"]').popover({trigger: 'hover'});
-			$('*[rel="tooltip"]').tooltip({placement: 'top'});
+			$('*[data-toggle="tooltip"]').tooltip();
 
 
 			// Set the focus to the first input of the form //

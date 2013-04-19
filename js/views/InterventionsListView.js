@@ -130,7 +130,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 //			app.views.selectListEquipmentsView.addEmptyFirst();
 //			app.views.selectListEquipmentsView.addAll();
 
-			$('*[rel="tooltip"]').tooltip({placement: 'top'});
+			$('*[data-toggle="tooltip"]').tooltip();
 			$('*[rel="popover"]').popover({trigger: 'hover'});
 			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 
