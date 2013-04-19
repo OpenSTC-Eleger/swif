@@ -4,14 +4,14 @@
 app.Views.RequestView = Backbone.View.extend({
 
 		el : '#rowContainer',
-		
+
 		templateHTML: 'requestDetails',
-		
+
 		places: app.collections.places,
 		claimersTypes: app.collections.claimersTypes,
-		
+
 		create: false,
-		
+
 		// The DOM events //
 		events: {
 			'submit #formRequest'			: 'saveRequest',
@@ -279,8 +279,10 @@ app.Views.RequestView = Backbone.View.extend({
 				currentRequest.people_name==false?$('#requestContactInput').val(''):$('#requestContactInput').val(currentRequest.people_name);
 				currentRequest.people_phone==false?$('#requestContactPhone').val(''):$('#requestContactPhone').val(currentRequest.people_phone);
 				currentRequest.people_email==false?$('#requestContactEmail').val(''):$('#requestContactEmail').val(currentRequest.people_email);
-			}			
+			}
 		},
+
+
 		
 		renderContact: function(claimer) {
 	
@@ -328,11 +330,15 @@ app.Views.RequestView = Backbone.View.extend({
 			this.renderContactDetails(contact);
 	
 		},
+
+
 		
 		renderTechnicalSite: function ( site ) {
 			if( site!=null )
 				app.views.selectListPlacesView.setSelectedItem( site );			
 		},
+
+
 		
 		renderTechnicalService: function ( service ) {
 			if( service!= null ) {
@@ -380,6 +386,8 @@ app.Views.RequestView = Backbone.View.extend({
 
 		 },
 
+
+
 		fillDropdownClaimer: function(e){
 			 e.preventDefault();
 			 claimer = app.views.selectListClaimersView.getSelected();
@@ -391,18 +399,24 @@ app.Views.RequestView = Backbone.View.extend({
 
 		},
 
-		fillDropdownContact: function (e) {
+
+
+		fillDropdownContact: function(e) {
 			e.preventDefault();
 			contact = app.views.selectListClaimersContactsView.getSelected().toJSON();
 			this.renderContactDetails(contact);
 		},
 		 
+		
+
 		fillDropdownService: function(e){
 			e.preventDefault();
 			$('#requestPlace').val('');
 			this.renderTechnicalService($(e.target).attr('value'))
 		},
-		 
+
+
+
 		setElement: function(element, delegate) {
 		    if (this.$el) this.undelegateEvents();
 		    this.$el = (element instanceof $) ? element : $(element);
@@ -410,7 +424,6 @@ app.Views.RequestView = Backbone.View.extend({
 		    if (delegate !== false) this.delegateEvents();
 		    return this;
 		},
-
 
 });
 
