@@ -55,8 +55,7 @@
 					<td><%= (officer.user_email != false ? officer.user_email : "") %></td>
 					<td><% 
 						if(officer.date != false){ %>
-							<span 
-					    		rel="tooltip"
+							<span data-toggle="tooltip"
 							    data-original-title="<%= moment(officer.date, 'YYYY-MM-DD HH:mm:ss').fromNow() %>">
 					    		<%= moment(officer.date, 'YYYY-MM-DD HH:mm:ss').format('LLL') %>
 							</span>
@@ -212,14 +211,6 @@
 						<h4>Services de l'agent <span class="badge pull-right"></span></h4>
 					</div>
 					
-					<!--  
-					<div class="widget-title">						
-						<span  rel="tooltip" 
-							data-original-title="Services sur lesquels l'agent intervient">
-							<h4>Services de l'agent</h4></span>
-					</div>
-					-->
-	
 					<ul id="officerServices" class="sortableServicesList sortable unstyled nav nav-list">
 	
 					</ul>

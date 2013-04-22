@@ -11,15 +11,6 @@ img{
 .no-outline{
 	outline: none !important;
 }
-.align-center{
-	text-align: center;
-}
-.align-left{
-	text-align: left;
-}
-.align-right{
-	text-align: right;
-}
 .spaceBottom{
 	margin-bottom: 30px;
 }
@@ -58,10 +49,8 @@ small.badge{
 	height: 28px;
 	border: thin dashed darken(@wellBackground, 65%);
 }
-.text-important        { color: @errorText; }
-a.text-important:hover { color: darken(@errorText, 10%); }
-.text-muted        { color: @grayLight; }
-a.text-muted:hover { color: darken(@grayLight, 10%); }
+
+
 
 div.progress{
 	margin-bottom: 5px;
@@ -106,6 +95,14 @@ div.accordion-group{
 
 
 
+/* New TEXT COLOR
+-------------------------------------------------- */
+.text-important        { color: @errorText; }
+a.text-important:hover { color: darken(@errorText, 10%); }
+.text-muted        { color: @grayLight; }
+a.text-muted:hover { color: darken(@grayLight, 10%); }
+
+
 /* New LABELS AND BADGES
 -------------------------------------------------- */
 .label, .badge {
@@ -136,7 +133,7 @@ div.accordion-group{
 
 
 
-/* Default Progress Bar 
+/* New PROGRESS BAR 
 -------------------------------------------------- */
 .progress-default .bar, .progress .bar-default {
   #gradient > .vertical(@grayLight, #888888);
@@ -162,7 +159,7 @@ a.text-template:hover   { color: darken(@yellow, 10%); }
 a.text-overrun:hover   { color: darken(@purple, 10%); }
 
 
-/* New LABELS AND BADGES
+/* MAP MARKERS
 -------------------------------------------------- */
 .mapmarker{
 	// Overrun (violet)
@@ -400,8 +397,6 @@ h4#teamTitle, h4#resaTitle{
 	padding-top: 8px;
 	padding-bottom: 8px;
 }
-
-
 
 
 

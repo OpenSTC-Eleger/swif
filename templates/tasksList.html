@@ -54,7 +54,7 @@
 
 	
 	<!-- Title week of the year -->
-	<h2 class="align-center">
+	<h2 class="text-center">
 		<%= lang.week %> <%= momentDate.week() %> - 
 		<em class="muted"><%= titleFirstDay %> <%= lang.to %> <%= lastDayOfTheWeek.format('D MMM YYYY') %></em>
 	</h2>
@@ -196,7 +196,7 @@
 										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
 											<span class="caret"></span>
 										</button>
-										<ul class="dropdown-menu pull-right align-left">										
+										<ul class="dropdown-menu pull-right text-left">										
 											<li>
 												<a href="#" class="taskNotDone" data-taskid="<%= task.id %>">
 													<i class="icon-remove"></i>&nbsp;<%= _.capitalize(app.lang.notDone) %>

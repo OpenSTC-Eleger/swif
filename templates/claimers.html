@@ -13,7 +13,7 @@
 
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
-			<a href="#modalSaveClaimer" class="btn btn-primary modalSaveClaimer" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addClaimer) %></a>	
+			<a href="#modalSaveClaimer" class="btn btn-primary modalSaveClaimer" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addClaimer) %></a>	
 
 			<form class="form-search pull-right">
 				<div class="input-append">
@@ -58,7 +58,7 @@
 					<td><%= (claimer.phone != false ? claimer.phone : "") %></td>
 					<td><%= (claimer.email != false ? '<a href="mailto:'+claimer.email+'">'+claimer.email+'</a>' : "") %></td>
 				</tr>
-				<!-- Tasks row -->
+				<!-- Claimer row -->
 				<tr class="row-nested-objects-collapse" id="collapse_<%= claimer.id %>">
 					<td colspan="5" class="nestedTD">
 						<% if(claimer.address.length != 0) { %>
@@ -83,7 +83,7 @@
 												<span><%= address.name %></span>&nbsp;
 												<span class="nested-objects-actions invisible">													
 													<a href="#modalDeleteAddress" class="modalDeleteAddress" data-toggle="modal">
-														<i class="icon-remove displayInlineBlock" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top">&nbsp;</i>
+														<i class="icon-remove displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">&nbsp;</i>
 													</a>
 												</span>
 											</td>
@@ -99,15 +99,15 @@
 								</tbody>
 							</table>
 						<% } else { %>
-								<!-- No request in the Database -->
+								<!-- No Claimer in the Database -->
 								<div class="alert alert-info">
-									<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noAdressForPartner %>.
+									<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noPartner %>.
 								</div>
 						<% } %>
 
 							<div class="div-actions" >
 								<button class="btn btn-primary btn-small no-outline addAddress">
-									<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addAddress) %>
+									<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addContact) %>
 								</button>
 							</div>
 					</td>
@@ -159,7 +159,7 @@
 	<% }
 	else { %>
 		<div class="tableToolbar">
-			<a href="#modalSaveClaimer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addClaimer) %></a>
+			<a href="#modalSaveClaimer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addClaimer) %></a>
 		</div><br />
 
 		<!-- No Claimer in the Database -->

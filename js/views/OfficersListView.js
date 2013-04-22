@@ -112,7 +112,7 @@ app.Views.OfficersListView = Backbone.View.extend({
 			});		
 
 			// Tooltip //
-			$('*[rel="tooltip"]').tooltip({placement: "right"});
+			$('*[data-toggle="tooltip"]').tooltip();
 
 
 			// Fill select Foreman  //
