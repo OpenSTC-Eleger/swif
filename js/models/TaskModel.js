@@ -110,7 +110,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	/** Model Initialization
 	*/
 	initialize: function (model) {
-	   	console.log("Request task Initialization");
+	   	console.log('Task Model Initialization');
 
 		// Initialization Traduction task state //
 		app.Models.Task.state[0].traduction = app.lang.planningFenced;
@@ -161,6 +161,8 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	saveTest: function(id,data,options) { 
 		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options);
 	},
+	
+
 	
 	save: function(id,data,closeModal, view, strRoute) { 
 		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {

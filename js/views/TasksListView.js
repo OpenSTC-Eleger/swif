@@ -221,7 +221,7 @@ app.Views.TasksListView = Backbone.View.extend({
 			// Filter on each officer //
 			officersDropDownList = _.filter(app.collections.officers.models, function(officer){
 
-				// Display only officers who are not DSL //
+				// Display only officers who are not DST //
 				if(!officer.isDST()){
 					var thing = false;
 
@@ -248,10 +248,13 @@ app.Views.TasksListView = Backbone.View.extend({
 			
 			_.each(app.collections.teams.models, function(team){
 
-				var teamJSON = team.toJSON();
-				
-				if(teamJSON.manager_id[0] == app.models.user.toJSON().uid){
-					managerTeamID.push(teamJSON.id);
+				if(!officer.isDST()){
+
+					var teamJSON = team.toJSON();
+					
+					if(teamJSON.manager_id[0] == app.models.user.toJSON().uid){
+						managerTeamID.push(teamJSON.id);
+					}
 				}
 
 			});
