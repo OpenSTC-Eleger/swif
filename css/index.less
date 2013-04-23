@@ -51,6 +51,14 @@ small.badge{
 }
 
 
+// pNotify compatibility with Font Awesome 3.0.2 //
+div.ui-pnotify-container{
+	.show();
+}
+div.ui-pnotify.big-icon div.icon-large div.ui-pnotify-icon{
+	.noMarginTop();
+}
+
 
 div.progress{
 	margin-bottom: 5px;
@@ -65,13 +73,25 @@ a.filter-button.filter-active{
 	.opacity(1);
 }
 
-div.page-header{
-	margin-top: 5px;
-}
 
 div.accordion-group{
 	margin-bottom: 5px;
 }
+
+
+
+/* HEADER
+-------------------------------------------------- */
+div.page-header{
+	margin-top: 5px;
+}
+#appName{
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+
+
 
 
 // List in Popover Tooltip //
