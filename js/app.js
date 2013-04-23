@@ -83,6 +83,7 @@ var app = {
                 app.collections.users = new app.Collections.Users();               
                 app.collections.users.fetch();
                 app.models.user = new app.Models.User();
+                //app.models.team = new app.Models.Team();
                 app.models.task = new app.Models.Task();
                 app.models.taskWork = new app.Models.TaskWork();
                 app.models.intervention = new app.Models.Intervention();

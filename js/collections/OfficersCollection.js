@@ -42,7 +42,8 @@ app.Collections.Officers = Backbone.Collection.extend({
     */
     comparator: function(item) {
     	var lastname = item.get('name');
-    	return lastname.toUpperCase();
+    	if ( lastname )
+    		return lastname.toUpperCase();
 	},
 
 });
