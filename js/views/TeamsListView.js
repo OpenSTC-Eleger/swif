@@ -177,6 +177,7 @@ app.Views.TeamsListView = Backbone.View.extend({
 
         }
         else {
+        	this.model = null;
 			this.selectedTeamJson = null;
 		}
 
@@ -221,14 +222,33 @@ app.Views.TeamsListView = Backbone.View.extend({
     	e.preventDefault();
 
 		var manager_id = this.getIdInDropDown(app.views.selectListOfficersView);
+		
+		this.modelId = this.selectedTeamJson==null?0: this.selectedTeamJson.id;
+		var user_ids = null;
+		if(  manager_id[0] ) {
+			if( this.selectedTeamJson ) {
+				//update agents belongs to team whith manager selected
+				user_ids = []
+				var self = this;				
+				user_ids = _.map(this.selectedTeamJson.user_ids, function(user){ return user.id; });				
+				user_ids = _.filter( user_ids, function(userId) {
+					return self.selectedTeamJson.manager_id[0] != userId; 
+				})
+				
+				user_ids.push( manager_id[0] )				
+				user_ids = [[6,0,user_ids]];	
+			}
+			else {
+				//Create team. Agents belongs to team is only the manager
+				user_ids = [[6,0,[manager_id[0]]]];
+			}
+		}
 	     
 		this.params = {
 			name: this.$('#teamName').val(),
-			manager_id: manager_id
+			manager_id: manager_id[0],
+			user_ids: user_ids,			                       
 		};
-
-		this.params.manager_id =  manager_id[0];
-	    this.modelId = this.selectedTeamJson==null?0: this.selectedTeamJson.id;
 
 		var self = this;
 
@@ -241,24 +261,33 @@ app.Views.TeamsListView = Backbone.View.extend({
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
-					if( self.modelId==0 ){
-						self.model = new app.Models.Team({id: data.result.result});
-					}
-
-					self.params.manager_id = self.getIdInDropDown(app.views.selectListOfficersView);
-					
-					if(self.selectedTeamJson != null){
-						self.params.service_ids = self.selectedTeamJson.service_ids;
-						self.params.user_ids = self.selectedTeamJson.user_ids;
-					}
-
-					self.model.update(self.params);
-
-					app.collections.teams.add(self.model);
-
+//					if( self.modelId==0 && data.result.result ){
+//						//app.models.team.clear();
+//						//self.model = app.models.team.clone();
+//						///app.models.team.destroy()
+//						self.model = new app.Models.Team({id: data.result.result})
+//						//self.model = app.models.team.clear();
+//						//self.model.id = data.result.result;
+//						//self.model.attributes.id = data.result.result;
+//						//self.model.idAttribute = data.result.result;
+//					}
+//
+//					self.params.manager_id = self.getIdInDropDown(app.views.selectListOfficersView);
+//					
+//					if(self.selectedTeamJson != null){
+//						self.params.service_ids = self.selectedTeamJson.service_ids;
+//						self.params.user_ids = self.selectedTeamJson.user_ids;
+//					}
+//
+//					self.model.update(self.params);
+//
+//					//app.collections.teams.add(self.model);	
+//					//self.model.destroy()
 					$('#modalSaveTeam').modal('hide');
 					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.teamSaveOk);
-					self.render();
+					route = Backbone.history.fragment;
+					Backbone.history.loadUrl(route);
+					//self.render();
 				}				
 			},
 			error: function(e){
