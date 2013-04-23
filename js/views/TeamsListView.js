@@ -232,15 +232,15 @@ app.Views.TeamsListView = Backbone.View.extend({
 				var self = this;				
 				user_ids = _.map(this.selectedTeamJson.user_ids, function(user){ return user.id; });				
 				user_ids = _.filter( user_ids, function(userId) {
-					return self.selectedTeamJson.manager_id[0] != userId; 
+					return self.selectedTeamJson.manager_id[0] != userId && userId!=manager_id[0]; 
 				})
 				
-				user_ids.push( manager_id[0] )				
+				//user_ids.push( manager_id[0] )				
 				user_ids = [[6,0,user_ids]];	
 			}
 			else {
 				//Create team. Agents belongs to team is only the manager
-				user_ids = [[6,0,[manager_id[0]]]];
+				//user_ids = [[6,0,[manager_id[0]]]];
 			}
 		}
 	     
@@ -261,33 +261,10 @@ app.Views.TeamsListView = Backbone.View.extend({
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
-//					if( self.modelId==0 && data.result.result ){
-//						//app.models.team.clear();
-//						//self.model = app.models.team.clone();
-//						///app.models.team.destroy()
-//						self.model = new app.Models.Team({id: data.result.result})
-//						//self.model = app.models.team.clear();
-//						//self.model.id = data.result.result;
-//						//self.model.attributes.id = data.result.result;
-//						//self.model.idAttribute = data.result.result;
-//					}
-//
-//					self.params.manager_id = self.getIdInDropDown(app.views.selectListOfficersView);
-//					
-//					if(self.selectedTeamJson != null){
-//						self.params.service_ids = self.selectedTeamJson.service_ids;
-//						self.params.user_ids = self.selectedTeamJson.user_ids;
-//					}
-//
-//					self.model.update(self.params);
-//
-//					//app.collections.teams.add(self.model);	
-//					//self.model.destroy()
 					$('#modalSaveTeam').modal('hide');
 					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.teamSaveOk);
 					route = Backbone.history.fragment;
 					Backbone.history.loadUrl(route);
-					//self.render();
 				}				
 			},
 			error: function(e){
@@ -427,8 +404,11 @@ app.Views.TeamsListView = Backbone.View.extend({
 		
 		// Display the remain members //
 		_.filter(app.collections.officers.toJSON(), function (officer, i){ 
-			if(!_.contains(teamOfficers, officer.id)){
-				$('#officersList').append('<li id="officer_'+officer.id+'"><a href="#"><i class="icon-user"></i> '+ officer.firstname +' '+ officer.name +'</a></li>');
+			if(!_.contains(teamOfficers, officer.id)  ){
+				//Manager must not present in list
+				if( selectedTeamJson.manager_id[0]!=officer.id ) 				
+					$('#officersList').append('<li id="officer_'+officer.id+'"><a href="#"><i class="icon-user"></i> '+ officer.firstname +' '+ officer.name +'</a></li>');
+				
 			}
 		});
 
