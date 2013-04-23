@@ -11,15 +11,6 @@ img{
 .no-outline{
 	outline: none !important;
 }
-.align-center{
-	text-align: center;
-}
-.align-left{
-	text-align: left;
-}
-.align-right{
-	text-align: right;
-}
 .spaceBottom{
 	margin-bottom: 30px;
 }
@@ -58,10 +49,16 @@ small.badge{
 	height: 28px;
 	border: thin dashed darken(@wellBackground, 65%);
 }
-.text-important        { color: @errorText; }
-a.text-important:hover { color: darken(@errorText, 10%); }
-.text-muted        { color: @grayLight; }
-a.text-muted:hover { color: darken(@grayLight, 10%); }
+
+
+// pNotify compatibility with Font Awesome 3.0.2 //
+div.ui-pnotify-container{
+	.show();
+}
+div.ui-pnotify.big-icon div.icon-large div.ui-pnotify-icon{
+	.noMarginTop();
+}
+
 
 div.progress{
 	margin-bottom: 5px;
@@ -69,20 +66,32 @@ div.progress{
 
 // Filter Button Table //
 a.filter-button.filter-disabled{
-	opacity: 0.4;
+	.opacity(0.4);
 	.muted;
 }
 a.filter-button.filter-active{
-	opacity: 1;
+	.opacity(1);
 }
 
-div.page-header{
-	margin-top: 5px;
-}
 
 div.accordion-group{
 	margin-bottom: 5px;
 }
+
+
+
+/* HEADER
+-------------------------------------------------- */
+div.page-header{
+	margin-top: 5px;
+}
+#appName{
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+
+
 
 
 // List in Popover Tooltip //
@@ -104,6 +113,14 @@ div.accordion-group{
 	width: 122px;
 }
 
+
+
+/* New TEXT COLOR
+-------------------------------------------------- */
+.text-important        { color: @errorText; }
+a.text-important:hover { color: darken(@errorText, 10%); }
+.text-muted        { color: @grayLight; }
+a.text-muted:hover { color: darken(@grayLight, 10%); }
 
 
 /* New LABELS AND BADGES
@@ -136,7 +153,7 @@ div.accordion-group{
 
 
 
-/* Default Progress Bar 
+/* New PROGRESS BAR 
 -------------------------------------------------- */
 .progress-default .bar, .progress .bar-default {
   #gradient > .vertical(@grayLight, #888888);
@@ -162,7 +179,7 @@ a.text-template:hover   { color: darken(@yellow, 10%); }
 a.text-overrun:hover   { color: darken(@purple, 10%); }
 
 
-/* New LABELS AND BADGES
+/* MAP MARKERS
 -------------------------------------------------- */
 .mapmarker{
 	// Overrun (violet)
@@ -286,20 +303,12 @@ div.div-actions{
 	margin-bottom: 0;
 }
 #listAgents li, #listTeams li{
-	width: 31%;
-	height: 30px;
+	.size(30px, 31%);
 }
 #listAgents li a, #listTeams li a{
 	margin-left: 0;
 	padding-left: 5px;
-	
 }
-
-#listInters li{
-	width: 47%;
-	height: 30px;
-}
-
 
 
 
@@ -367,14 +376,11 @@ ul.nested-objects li:hover .nested-objects-actions, tr.row-item:hover .row-actio
 /* Tables
 -------------------------------------------------- */
 table thead th.align, .table tbody td.align{
-	text-align: center;
-}
-table thead th.align-right, .table tbody td.align-right{
-	text-align: right;
+	.text-center();
 }
 
 .table-caption{
-	text-align: left;
+	.text-left();
 	padding: 0 0 4px 4px;
 	font-size: @fontSizeLarge;
 	font-weight: bolder;
@@ -405,12 +411,10 @@ h4#teamTitle, h4#resaTitle{
 
 
 
-
-
 /* Loader
 -------------------------------------------------- */
 #loader{
-	display: none; 
+	.hide();
 	position: fixed; 
 	top: 45%; left: 50%;
 	width: 250px; 
@@ -436,7 +440,7 @@ tr.row-object > td, tr.row-item td{
 	padding-bottom: 2px;
 }
 tr.row-nested-objects-collapse{
-	display: none;
+	.hide();
 }
 tr.row-nested-objects-collapse.expend:hover td.nestedTD{
 	background-color: @white;
@@ -470,7 +474,7 @@ tr.info td:first-child{
 }
 
 #materialsReserved li.media div.span2, #materialsReserved li.media small{
-	display: none;
+	.hide();
 }
 #materialsReserved li.media{
 	display: grid;
@@ -509,7 +513,7 @@ tr.info td:first-child{
 -------------------------------------------------- */
 @media screen {
   #printSection {
-      display: none;
+      .hide();
   }
 }
 

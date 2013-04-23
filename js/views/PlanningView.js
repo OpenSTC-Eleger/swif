@@ -173,7 +173,6 @@ app.Views.PlanningView = Backbone.View.extend({
             self.initAllCalendars();
             self.initDragObject();
 
-            $('*[data-spy="affix"]').affix();
             $('*[rel="tooltip"]').tooltip();
             $('*[rel="popover"]').popover({trigger: 'hover', delay: { show: 500, hide: 100 }});
 

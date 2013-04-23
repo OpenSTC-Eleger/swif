@@ -86,6 +86,8 @@ app.Views.ClaimersListView = Backbone.View.extend({
 			});
 
 			$(self.el).html(template);
+
+			$('*[data-toggle="tooltip"]').tooltip();
 		});
 
 		$(this.el).hide().fadeIn('slow');
