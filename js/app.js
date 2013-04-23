@@ -347,14 +347,14 @@ var app = {
                 var addClass = 'stack-bar-top big-icon';
                 var width = '50%';
                 var delay = 4500;
-                var hide = false;
+                var hide = true;
             break;
 
             default:
                 var addClass = '';
                 var width = '320px';
                 var delay = 4500;
-                var hide = false;
+                var hide = true;
             break;
 
         }
