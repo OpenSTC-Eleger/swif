@@ -73,6 +73,20 @@ app.Views.EquipmentsListView = Backbone.View.extend({
 			});
 			
 			$(self.el).html(template);
+			
+			$('#equipmentServices, #servicesList').sortable({
+				connectWith: 'ul.sortableServicesList',
+				dropOnEmpty: true,
+				forcePlaceholderSize: true,
+				forceHelperSize: true,
+				placeholder: 'sortablePlaceHold',
+				containment: '.servicesDroppableArea',
+				cursor: 'move',
+				opacity: '.8',
+				revert: 300,
+				receive: function(event, ui){
+				}
+			});		
 		});
 
 		$(this.el).hide().fadeIn('slow');
@@ -95,6 +109,7 @@ app.Views.EquipmentsListView = Backbone.View.extend({
 
     setModel: function(e) {
     	e.preventDefault();
+    	this.displayEquipmentInfos(e);
     	var link = $(e.target);
     	var id =  _(link.parents('tr').attr('id')).strRightBack('_');
         this.selected = _.filter(app.collections.equipments.models, function(item){ return item.attributes.id == id });
@@ -106,6 +121,50 @@ app.Views.EquipmentsListView = Backbone.View.extend({
         	this.selectedJson = null;        	
         }        
     },
+    
+	/** Display category services
+		*/
+	displayEquipmentInfos: function(e){
+		e.preventDefault();
+
+		// Retrieve the ID of the intervention //
+		var link = $(e.target);
+		var id = _(link.parents('tr').attr('id')).strRightBack('_');
+		
+		// Clear the list of the user //
+		$('#equipmentServices li, #servicesList li').remove();
+
+		var equipmentServices = new Array();
+		if( id ) {
+			this.selectedEquipment = _.filter(app.collections.equipments.models, function(item){ return item.attributes.id == id });
+			var selectedEquipmentJson = this.selectedEquipment[0].toJSON();	
+			
+			// Display the services of the team //
+			_.each(selectedEquipmentJson.service_ids, function (service, i){
+				$('#equipmentServices').append('<li id="service_'+service.id+'"><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
+				equipmentServices[i] = service.id;
+			});
+		};
+		
+	    //search no technical services
+		var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
+			return service.attributes.technical != true 
+		});
+		//remove no technical services
+		app.collections.claimersServices.remove(noTechnicalServices);
+		app.collections.claimersServices.toJSON()
+
+		// Display the remain services //
+		_.filter(app.collections.claimersServices.toJSON(), function (service, i){ 
+			if(!_.contains(equipmentServices, service.id)){
+				$('#servicesList').append('<li id="service_'+service.id+'"><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
+			}
+		});
+
+		var nbRemainServices = $('#servicesList li').length;
+		$('#badgeNbServices').html(nbRemainServices);
+		
+	},
 
 
     /** Add a new equipment
@@ -189,10 +248,13 @@ app.Views.EquipmentsListView = Backbone.View.extend({
     	selectView = app.views.selectListServicesView
 		if ( selectView &&  selectView.getSelected() )
 		   input_service_id = app.views.selectListServicesView.getSelected().toJSON().id;
+		
+		this.services = _.map($("#equipmentServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });     
 	     
 		this.params = {	
 			name 		: this.$('#equipmentName').val(),
-			service 	: input_service_id,
+			//service 	: input_service_id,
+			service_ids: [[6, 0, this.services]],
 			usage 		: this.$('#equipmentUsage').val(),
 			marque 		: this.$('#equipmentMarque').val(),
 			type 		: this.$('#equipmentType').val(),
