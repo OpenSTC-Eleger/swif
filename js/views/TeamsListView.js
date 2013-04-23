@@ -406,8 +406,9 @@ app.Views.TeamsListView = Backbone.View.extend({
 		_.filter(app.collections.officers.toJSON(), function (officer, i){ 
 			if(!_.contains(teamOfficers, officer.id)  ){
 				//Manager must not present in list
-				if( selectedTeamJson.manager_id && selectedTeamJson.manager_id[0]!=officer.id )
+				if( selectedTeamJson.manager_id[0]!=officer.id ) 				
 					$('#officersList').append('<li id="officer_'+officer.id+'"><a href="#"><i class="icon-user"></i> '+ officer.firstname +' '+ officer.name +'</a></li>');
+				
 			}
 		});
 
