@@ -33,6 +33,8 @@ app.Views.EventsListView = Backbone.View.extend({
 
 	initCollection: function(object) {
 		
+		this.filterTasks = null;
+
 		if (this.teamMode) {
 			
 			this.elStringId = 'div#team_' + object.attributes.id;
@@ -52,12 +54,14 @@ app.Views.EventsListView = Backbone.View.extend({
 			
 			this.elStringId = 'div#officer_' + object.attributes.id;
 			var officer_json = object.toJSON();
-			this.filterTasks = officer_json.tasks;
-			if( officer_json.team_ids!= null ) {
-				 _.each( officer_json.team_ids, function(team){
-					 this.filterTasks = _.union(this.filterTasks, team.tasks);
-				 });
-				
+
+			if( officer_json.team_ids != null ) {
+				var self = this;
+				this.filterTasks = officer_json.tasks;
+
+				_.each( officer_json.team_ids, function(team){
+					self.filterTasks = _.union(self.filterTasks, team.tasks.toJSON());
+				});
 			}
 		}
     },
@@ -211,12 +215,16 @@ app.Views.EventsListView = Backbone.View.extend({
         	var self = this;
         	
         	_.each(this.filterTasks , function (task, i){
-        		var actionDisabled = task.state==app.Models.Task.state[1].value || task.state==app.Models.Task.state[4].value
+        		var actionDisabled = task.state == app.Models.Task.state[1].value || task.state == app.Models.Task.state[4].value;
+
+        		console.log(task.date_start);
+        		console.debug(task);
+
         		var event = { id: task.id, 
         		              state: task.state,
         		              title: task.name, 
-        		              start: task.date_start!=false?task.date_start.toDate():null, 
-        		              end: task.date_end!=false?task.date_end.toDate():null, 
+        		              start: task.date_start!=false?task.date_start.toDate():null,
+        		              end: task.date_end!=false?task.date_end.toDate():null,
         		              planned_hours: task.planned_hours,
         		              total_hours: task.total_hours,
         		              effective_hours: task.effective_hours,

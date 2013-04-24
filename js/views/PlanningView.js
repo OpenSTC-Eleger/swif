@@ -713,8 +713,7 @@ app.Views.PlanningView = Backbone.View.extend({
 			sessionStorage.removeItem(this.filters);
 		}
 		//this.render();
-        route = Backbone.history.fragment;
-        Backbone.history.loadUrl(route);
+        Backbone.history.loadUrl('#planning');
 	},
 
 });
