@@ -126,6 +126,8 @@ app.Views.EventsListView = Backbone.View.extend({
             // Reset the modal Buttons //
             $('#btnRemoveTask').prop('disabled', false);
 			
+            // Retrieve the Task //
+			var task = app.collections.tasks.get(fcEvent.id);
 
 			// Set informations in the modal //
 			var taskInter = '';
@@ -425,10 +427,15 @@ app.Views.EventsListView = Backbone.View.extend({
 				    modalAbsentTask.modal();
 				},
 
+
+
 				start: function (event, ui){
 					$("modalAbsentTask").modal();
 				},
 
+
+				/** When a event is Drop on the calendar
+				*/
 				drop: function( date, allDay ) {
 					var domObject = $(this)
 					var originalEventObject = $(this).data('eventObject');
@@ -452,6 +459,8 @@ app.Views.EventsListView = Backbone.View.extend({
 					self.calculTask(copiedEventObject);
 					self.planTasks(copiedEventObject);	
 				},
+
+
 
                 eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
 					app.loader('display');

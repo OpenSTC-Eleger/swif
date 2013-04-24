@@ -14,10 +14,6 @@ app.Views.EventView = Backbone.View.extend({
     },
 
 
-    events: {
-        'click #btnRemoveTask'                          : 'removeTaskFromSchedule'
-    },
-
 
     render: function(event, planning, calendar) {
     	this.event = event;
@@ -97,10 +93,4 @@ app.Views.EventView = Backbone.View.extend({
     }, 
     
 
-
-    removeTaskFromSchedule: function(){
-        console.log('Supeerere');
-    }
-
- 
 });
