@@ -6,6 +6,16 @@ app.Models.Equipment = Backbone.RelationalModel.extend({
 	model_name : 'openstc.equipment',
 	
 	url: "/equipment/:id",
+	
+	relations: [
+        {
+			type: Backbone.HasMany,
+			key: 'service_ids',
+			relatedModel: 'app.Models.ClaimerService',
+			collectionType: 'app.Collections.ClaimersServices',
+			includeInJSON: ['id', 'name'],	
+		},
+	],
 
 	
 	defaults:{
@@ -47,6 +57,15 @@ app.Models.Equipment = Backbone.RelationalModel.extend({
     	if( value == 'undefined') return;
         this.set({ service : value });
     },  
+    
+    //service IDs //
+	getServicesId: function() {
+	    return this.get('service_ids');
+	},
+	setServicesID : function(value) {
+		if( value == 'undefined') return;
+		this.set({ service_ids : value });
+	},
 
     getMarque : function() {
         return this.get('code');
@@ -164,6 +183,7 @@ app.Models.Equipment = Backbone.RelationalModel.extend({
 		this.setCommercialVehicle( params.commercial_vehicle );
 		this.setSmallMaterial( params.small_material );
 		this.setFatMaterial( params.fat_material );
+		this.setServicesID( params.service_ids );
 		this.setKM( params.km );
 	},
 	

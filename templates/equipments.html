@@ -169,7 +169,7 @@
 			    <label for="equipmentService" class="control-label"><%= _.capitalize(lang.service) %>:</label>
 
 			    <div class="controls">
-			        <select id="equipmentService" required="required" ></select>
+			        <select id="equipmentService"></select>
 			        <span class="help-inline"></span>
 			    </div>
 			</div>
@@ -217,6 +217,11 @@
 						<input type="number" id="equipmentTime" class="input-small" required="required" min="0" value="0" />
 						<span class="help-inline"></span>
 					</div>
+					
+
+				
+
+		
 				</div>
 			</fieldset>
 
@@ -263,31 +268,32 @@
 					</div>
 				</div>
 				
-				<!-- Services Management -->
-				<div class="row-fluid marginTop servicesDroppableArea">
-					
-					<div class="span6">
-						<div class="widget-title">
-							<h4>Services du matériel <span class="badge pull-right"></span></h4>
-						</div>
-		
-						<ul id="equipmentServices" class="sortableServicesList sortable unstyled nav nav-list">
-		
-						</ul>
-					</div>
-		
-					<div class="span6">
-						<div class="widget-title">
-							<h4>Autres services <span class="badge pull-right" id="badgeNbServices"></span></h4>
-						</div>
-		
-						<ul id="servicesList" class="sortableServicesList sortable unstyled nav nav-list">
-						</ul>
-					</div>
-		
-				</div>
+	
 
 			</fieldset>
+			
+			<!-- Services Management -->
+			<div class="row-fluid marginTop servicesDroppableArea">
+			
+				<div class="span6">
+					<div class="widget-title">
+						<h4>Services du matériel <span class="badge pull-right"></span></h4>
+					</div>
+	
+					<ul id="equipmentServices" class="sortableServicesList sortable unstyled nav nav-list">
+	
+					</ul>
+				</div>
+	
+				<div class="span6">
+					<div class="widget-title">
+						<h4>Autres services <span class="badge pull-right" id="badgeNbServices"></span></h4>
+					</div>
+	
+					<ul id="servicesList" class="sortableServicesList sortable unstyled nav nav-list">
+					</ul>
+				</div>					
+			</div>
 
 		</form>
 	</div>
