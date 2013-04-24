@@ -4,17 +4,23 @@
 app.Views.EventView = Backbone.View.extend({
 	  
 
-	templateHTML: 'tooltip',
+	templateHTML: 'modalTest',
 
+    el : '#modalContainer',
+    
    
     initialize: function() {
         _.bindAll(this);           
     },
-        
+
+
+    events: {
+        'click #btnRemoveTask'                          : 'removeTaskFromSchedule'
+    },
+
+
     render: function(event, planning, calendar) {
     	this.event = event;
-    	this.planning = planning;
-    	this.calendar = calendar;
     	var self= this;
     	
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -24,8 +30,11 @@ app.Views.EventView = Backbone.View.extend({
 				task: self.model.toJSON(),
 			});
 		
-			self.template = template;
-			var qtip =event.qtip({ 
+            $(self.el).html(template);
+
+            $('#modalAboutTask').modal('show');
+			
+            /*var qtip =event.qtip({ 
 
         		content: {    
 	            	title: { text: self.model.get('name'),button: true },  
@@ -80,21 +89,18 @@ app.Views.EventView = Backbone.View.extend({
                     //title: { 'font-size': 50 } ,
                 },	
 
-			});
+			});*/
+
 		});	
 	
-		$(this.el).hide().fadeIn('slow');
         return this;
     }, 
     
 
 
-    open: function() {                      
-    }, 
-    
+    removeTaskFromSchedule: function(){
+        console.log('Supeerere');
+    }
 
-    
-    duplicate: function(params) {
-    	//TODO        	
-    },      
+ 
 });

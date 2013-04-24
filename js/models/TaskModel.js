@@ -55,12 +55,25 @@ app.Models.Task = Backbone.RelationalModel.extend({
     	if( value == 'undefined') return;
         this.set({ state : value });
     },    
-    getProjectId : function() {
-        return this.get('project_id');
+    getInterventionId : function() {
+        if(this.get('project_id')){
+        	return this.get('project_id');
+        }
+        else{
+        	return '';
+        }
     },
-    setProjectId : function(value) {
+    setInterventionId : function(value) {
     	if( value == 'undefined') return;
         this.set({ project_id : value });
+    },
+	getInterventionName : function() {
+        if(this.get('project_id') != false){
+        	return this.get('project_id')[1];
+        }
+        else{
+        	return '';
+        }
     },
     getUserId : function() {
         return this.get('user_id');
@@ -69,12 +82,18 @@ app.Models.Task = Backbone.RelationalModel.extend({
     	if( value == 'undefined') return;
         this.set({ user_id : value });
     },
+	getUserName : function() {
+        return this.get('user_id')[1];
+    },
     getTeamId : function() {
         return this.get('team_id');
     },
     setTeamId : function(value) {
     	if( value == 'undefined') return;
         this.set({ team_id : value });
+    },
+	getTeamName : function() {
+        return this.get('team_id')[1];
     },
     getDateEnd : function() {
         return this.get('date_end');
@@ -103,6 +122,12 @@ app.Models.Task = Backbone.RelationalModel.extend({
     setPlannedHours : function(value) {
     	if( value == 'undefined') return;
         this.set({ planned_hours : value });
+    },
+    getStartEndDateInformations : function(){
+		return "Du " + this.getDateStart().format('LLL') + " au " + this.getDateEnd().format('LLL');
+    },
+	getState : function() {
+        return this.get('state');
     },
 	
 
@@ -254,7 +279,7 @@ state:  [
     {
         value       : 'done', // Finish //
         color       : 'success',
-        traduction  : '',   
+        traduction  : '',
     },
     {
         value       : 'pending',

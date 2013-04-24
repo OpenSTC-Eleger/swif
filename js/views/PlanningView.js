@@ -41,7 +41,9 @@ app.Views.PlanningView = Backbone.View.extend({
         
         'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilter',
 
-        'click #listAgents li a, #listTeams li a'       :          'selectPlanning'
+        'click #listAgents li a, #listTeams li a'       :          'selectPlanning',
+
+        'click #btnRemoveTask'                          : 'removeTaskFromSchedule'
     },
 
 
@@ -467,6 +469,31 @@ app.Views.PlanningView = Backbone.View.extend({
 
     },
 
+
+
+    /** Remove the Task from the Calendar
+    */
+    removeTaskFromSchedule: function(e){
+
+        // Retrieve the Id of the Task //
+        var taskId = $('#modalAboutTask').data('taskId');
+
+        // Retrieve the Task in the collection //
+        var taskModel = app.collections.tasks.get(taskId)
+
+        params = {
+            state: app.Models.Task.state[3].value, 
+            user_id: null,
+            team_id: null,
+            date_end: null,
+            date_start: null,
+        };
+
+        // Display the Modal //
+        $("#modalAboutTask").modal('hide');
+
+        taskModel.save(taskId, params, null, null, '#planning');
+    },
 
 
 

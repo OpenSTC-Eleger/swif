@@ -176,7 +176,8 @@
 		"confirm" 			: "à confirmer",
 		"delete" 			: "supprimer",
 		"update" 			: "modifier",
-		"timeSpent"			: "Saisie des temps"
+		"timeSpent"			: "Saisie des temps",
+		"removeOfTheSchedule" : "Retirer du planning"
 	},
 
 	"errorMessages" : {

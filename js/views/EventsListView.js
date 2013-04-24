@@ -17,23 +17,23 @@ app.Views.EventsListView = Backbone.View.extend({
 
 
 
-    initialize: function(planning,object,teamMode){
+	initialize: function(planning,object,teamMode){
 		this.teamMode = teamMode;
 		this.planning = planning;
-		
+
 		this.id = object.attributes.id;
 		this.initCollection(object);
-			
+
 		this.el = $(this.elStringId);
-		
-        _.bindAll(this); 
-        
+
+		_.bindAll(this); 
+
         this.eventView = new app.Views.EventView();
-    },
+	},
 
 
 
-    initCollection: function(object) {
+	initCollection: function(object) {
 		if (this.teamMode) 
 		{
 			this.elStringId = 'div#team_' + object.attributes.id;
@@ -76,11 +76,13 @@ app.Views.EventsListView = Backbone.View.extend({
     },
 
         
-        render: function() {	
+        render: function() {
         	this.initEvents();
         	this.initCalendar();
         },
         
+
+
         refresh: function() {
         	var self = this;
         	app.collections.tasks.fetch({ 
@@ -113,27 +115,75 @@ app.Views.EventsListView = Backbone.View.extend({
 	    	});
         },
 
-        //--------------------Events on calendar----------------------------------------//
+
+
+        /** Task is click on the calendar
+        */
         eventClick: function(fcEvent, jsEvent, view) {
-            this.eventView.model = app.collections.tasks.get(fcEvent.id);
-            this.eventView.render($(jsEvent.currentTarget),this.planning,this.el)
-        },
-        eventDropOrResize: function(fcEvent) {
-            // Lookup the model that has the ID of the event and update its attributes
-            this.collection.get(fcEvent.id).save({start: fcEvent.start, end: fcEvent.end});            
-        },
+            //this.eventView.model = app.collections.tasks.get(fcEvent.id);
+            //this.eventView.render($(jsEvent.currentTarget),this.planning,this.el);
+
+            // Reset the modal Buttons //
+            $('#btnRemoveTask').prop('disabled', false);
+			
+
+			// Set informations in the modal //
+			var taskInter = '';
+			if(task.getInterventionId() != ''){ taskInter = "<i class='icon-pushpin'></i> " + task.getInterventionName() + " -"; }
+			var tasksInfo = taskInter + " " + task.getName();
+
+
+			// Check if the task is set to an officer or a team //
+			if(task.getTeamId() == false){ 
+				var assignTo = "<br /> <i class='icon-user'></i> " + task.getUserName();
+			}
+			else{
+				var assignTo = "<br /><i class='icon-group'></i> " + task.getTeamName();
+			}
+
+			$('#infoModalAboutTask p').html(tasksInfo);
+			$('#infoModalAboutTask small').html(task.getStartEndDateInformations() + assignTo);
+
+			// Disable or not the button "Remove Of The Schedule" //
+			if(task.getState() == app.Models.Task.state[1].value || task.getState() == app.Models.Task.state[2].value || task.getState() == app.Models.Task.state[4].value){
+            	$('#btnRemoveTask').prop('disabled', true);
+			}
+
+
+			// Set the ID of the Task in the DOM of the modal //
+			$('#modalAboutTask').data('taskId', task.getId());
+
+
+			// Display the Modal //
+			$("#modalAboutTask").modal('show');
+		},
+
+
+
+		eventDropOrResize: function(fcEvent) {
+			// Lookup the model that has the ID of the event and update its attributes
+			this.collection.get(fcEvent.id).save({start: fcEvent.start, end: fcEvent.end});            
+		},
         
-        copy: function() {
-        	console.log('Copy Event');
-        },
+
+
+		copy: function() {
+			console.log('Copy Event');
+		},
+
+
 
         remove: function() {
         	console.log('Remove Event');
         },
 
+
+
         edit: function() {
         	console.log('Edit Event');
         },
+
+
         
         getColor: function(task) {
         	var color = 'green';
@@ -141,22 +191,22 @@ app.Views.EventsListView = Backbone.View.extend({
         		color = 'grey'
         			
         	switch (task.state) {
-        		case app.Models.Task.state[0].value :
+        		case app.Models.Task.state[0].value:
 			    	color = app.Models.Task.state[0].color;
 			    	break;
-        		case app.Models.Task.state[1].value :
+        		case app.Models.Task.state[1].value:
         			color = app.Models.Task.state[1].color;
 		    		break;
-        		case app.Models.Task.state[2].value :
+        		case app.Models.Task.state[2].value:
         			color = app.Models.Task.state[2].color;
 	    			break;
-        		case app.Models.Task.state[3].value :
+        		case app.Models.Task.state[3].value:
         			color = app.Models.Task.state[3].color;
     				break;
-        		case app.Models.Task.state[4].value :
+        		case app.Models.Task.state[4].value:
         			color = app.Models.Task.state[4].color;
     				break;
-        		case app.Models.Task.state[5].value :
+        		case app.Models.Task.state[5].value:
         			color = app.Models.Task.state[5].color;
     				break;
     			default:
@@ -164,8 +214,10 @@ app.Views.EventsListView = Backbone.View.extend({
         			break;
         	}
         	
-        	return color;	
+        	return color;
         },
+
+
         
         initEvents: function() {
         	this.events = [];
@@ -182,8 +234,9 @@ app.Views.EventsListView = Backbone.View.extend({
         		              total_hours: task.total_hours,
         		              effective_hours: task.effective_hours,
         		              remaning_hours: task.remaining_hours,
-        		              allDay:false,
+        		              allDay: false,
         		              color: self.getColor(task),
+        		              //className: 'calendar-overrun',
         		              editable: true,
         		              disableDragging: actionDisabled,
         		              disableResizing: actionDisabled,
@@ -198,6 +251,7 @@ app.Views.EventsListView = Backbone.View.extend({
         },
         
 
+
 		getEvent: function( title, startDate, endDate ){
 			return {
 						title: title,
@@ -211,6 +265,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			if(array.indexOf(s) != -1) array.splice(index, 1);
 		},		
 		//--------------------End events on calendar-------------------------//
+
 
         //--------------------Init calendar----------------------------------//
         initCalendar: function() {
@@ -252,24 +307,24 @@ app.Views.EventsListView = Backbone.View.extend({
 				allDayText: 'Journée',
 				//axisFormat: 'H:mm',
 				//timeFormat: 'H:mm',
-				slotMinutes: 30,
-				firstHour: 8,
-				minTime: 8,
-				maxTime: 18,
-				defaultEventMinutes: 30,
-				dragOpacity: 0.5,
-				weekends: true,
-				droppable: true,
-				//disableResizing: false,				
-                selectable: true,
-                selectHelper: true,
-                editable: true,
-                ignoreTimezone: false,
-                dragRevertDuration:0,
-                eventClick: self.eventClick,
-                //drop: self.drop,
-				startOfLunchTime:12,
-				endOfLunchTime:14,
+				slotMinutes	: 30,
+				firstHour	: 8,
+				minTime		: 8,
+				maxTime		: 18,
+				defaultEventMinutes	: 30,
+				dragOpacity	: 0.5,
+				weekends	: true,
+				droppable	: true,
+				//disableResizing: false,
+				selectable	: true,
+				selectHelper: true,
+				editable	: true,
+				ignoreTimezone	: false,
+				dragRevertDuration	:0,
+				eventClick	: self.eventClick,
+				//drop: self.drop,
+				startOfLunchTime	:12,
+				endOfLunchTime	:14,
                 
 				select: function( startDate, endDate, allDay, jsEvent, view) {
 
@@ -410,7 +465,9 @@ app.Views.EventsListView = Backbone.View.extend({
 				    self.planning.render();
 				    app.loader('hide');	
 				},
-				
+
+
+
 				eventResize: function( event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) { 
 					
 					app.loader('display');
@@ -425,16 +482,22 @@ app.Views.EventsListView = Backbone.View.extend({
 				    app.models.task.save(event.id,params,null,null,'#planning');
 				    $(self.el).fullCalendar('refresh');
 				    self.planning.render();
-				    app.loader('hide');	
+				    app.loader('hide');
 				},
-                
+
+
+
 				loading: function (bool) { 
 				},
-				
+
+
+
 				eventRender: function(event, element) {
 					//$(this.event).css('border-color', 'yellow');
 				},
-			
+
+
+
 				eventDragStop: function(event, jsEvent, ui, view) {
 				},
 
@@ -547,10 +610,9 @@ app.Views.EventsListView = Backbone.View.extend({
 	
 	        	var title = event.title;
 	        	if( this.arrayPlanifTasks.length>0 )
-	        		title = "(suite-" + this.arrayPlanifTasks.length + ")" + title ;
+	        		title = "(Suite-" + this.arrayPlanifTasks.length + ")" + title ;
 	        	
-	        	
-	        	
+
 				var params=
 				{
 				    name:  title,
@@ -626,23 +688,26 @@ app.Views.EventsListView = Backbone.View.extend({
 			return date.format('H[h]mm');
 	
 		},
+
+
 		
 		getIntervention: function (o, intervention) {
 			return intervention.name;
-		
 		},
 		
+
+
 		getPlace: function (o, intervention) {
 			console.debug(intervention);
 			return intervention.site1!=null?intervention.site1[1]:"";
 		
 		},
+
+
 		
 		getStyle: function (nTd, sData, oData, iRow, iCol) {
 			if( oData.state == app.Models.Task.state[5].value )
 				$(nTd).css('font-style', 'italic');
-
-		
 		},
 		
 		renderResume: function (o, check){
@@ -691,9 +756,9 @@ app.Views.EventsListView = Backbone.View.extend({
 			var elementToPrint = $('#printContainer');
 			var worker = null
 			if ( paperBoard && paperBoard.user_id  )
-				worker = $('#worker').val(paperBoard.user_id[1]);
+				worker = $('#worker').text(paperBoard.user_id[1]);
 			else if ( paperBoard && paperBoard.team_id  )
-				worker = $('#worker').val(paperBoard.team_id[1]);
+				worker = $('#worker').text(paperBoard.team_id[1]);
 			var table = $('#paperboard');
 			
 			var tasks = _.filter(this.filterTasks, function(task){ 
