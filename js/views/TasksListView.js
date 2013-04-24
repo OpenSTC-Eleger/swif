@@ -267,9 +267,14 @@ app.Views.TasksListView = Backbone.View.extend({
 				var officersDropDownListFilter = _.filter(app.collections.officers.models, function(officer){
 						var officerJSON = officer.toJSON();
 						if(officerJSON.team_ids != null){
+							var self = this;
+							self.belongsToTeam = false
+							//compare with manager teams
 							_.each( officerJSON.team_ids, function(team) {
-								return ($.inArray(team.id, managerTeamID) != -1);
-							});							
+								self.belongsToTeam =  ($.inArray(team.id, managerTeamID) != -1);
+							});	
+							if( this.belongsToTeam )
+								return true;
 						}
 
 				});
@@ -404,8 +409,50 @@ app.Views.TasksListView = Backbone.View.extend({
 
 	/** Display equipments
 	*/
-	displayEquipmentsInfos: function(e, list, choiceList, badgeComponent){
+	displayEquipmentsInfos: function(e, list, choiceList, badgeComponent, vehicleSelect){
 		e.preventDefault();
+		
+		//Filter equipments
+		var filteredEquipment= app.collections.equipments;
+		if( this.model ) {
+			//Filter Equipment by service on intervention's  task
+			var task = this.model.toJSON();
+			var intervention = task.intervention;
+			var service = intervention.service_id;			
+			filteredEquipment = _.filter(filteredEquipment.models, function(item){	
+				var equipmentJSON = item.toJSON();
+				var services = _.map(equipmentJSON.service_ids, function(service){return service.id;});
+	    		return $.inArray(service[0], services)!=-1;
+	    	});								
+		}
+		else {
+			//When create orphan task : Filter Equipment by service on user connected
+			filteredEquipment = _.filter(filteredEquipment.models, function(item){					
+				var equipmentJSON= item.toJSON();
+				var self = this;
+				self.belongsToUserServices = false	
+				var services = _.map(equipmentJSON.service_ids, function(service){return service.id;});
+				_.each(services, function(service){
+					self.belongsToUserServices = $.inArray(service, app.models.user.toJSON().service_ids)!=-1
+				})
+				return this.belongsToUserServices;	    		
+	    	});									
+		}
+		
+		//search only vehicles
+		var filteredVehicleEquipment = _.filter(filteredEquipment, function(item){
+		    return item.attributes.technical_vehicle || item.attributes.commercial_vehicle;
+		});
+		
+		//search only materials
+		var filteredOthersEquipment = _.filter(filteredEquipment, function(item){
+		    return item.attributes.small_material || item.attributes.fat_material;
+		});
+		
+		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: vehicleSelect, collection: new app.Collections.Equipments(filteredVehicleEquipment)})
+		app.views.selectListEquipmentsView.clearAll();
+		app.views.selectListEquipmentsView.addEmptyFirst();
+		app.views.selectListEquipmentsView.addAll();
 
 		// Retrieve the ID of the intervention //
 		var link = $(e.target);
@@ -428,13 +475,13 @@ app.Views.TasksListView = Backbone.View.extend({
 		};
 		
 	    //search only vehicle materials
-		var materialsEquipment = _.filter(app.collections.equipments.models, function(equipment){
-			return equipment.attributes.small_material == true || equipment.attributes.fat_material==true
-		});
+//		var materialsEquipment = _.filter(app.collections.equipments.models, function(equipment){
+//			return equipment.attributes.small_material == true || equipment.attributes.fat_material==true
+//		});
 
 		// Display the remain services //
 		var nbRemainMaterials = 0;
-		_.filter(materialsEquipment, function (material, i){
+		_.filter(filteredOthersEquipment, function (material, i){
 			var materialJSON = material.toJSON()
 			if(!_.contains(equipmentsSelected, materialJSON.id)){
 				nbRemainMaterials++;
@@ -451,7 +498,7 @@ app.Views.TasksListView = Backbone.View.extend({
 	/** Get the Taks
 	*/
     getTask: function(e) {
-
+		
     	this.resetModal();
 		var href = $(e.target);
 	
@@ -460,16 +507,13 @@ app.Views.TasksListView = Backbone.View.extend({
 
 		this.model = app.collections.tasks.get(this.pos);
     },
-    
-    
 
-    resetModal: function() {    	
+    resetModal: function() {  
+    	this.model = null;
     	$('.taskInput').val('');
     	$('.taskSelect').val(0);
-    	$('#taskName').val('');
-    	
-    	//$('.equipments').val('')
-    	
+    	$('#taskName').val('');    	
+    	//$('.equipments').val('')    	
     },
     
 
@@ -479,15 +523,7 @@ app.Views.TasksListView = Backbone.View.extend({
 	displayModalAddTask: function(e){
 			
     	this.resetModal();
-    	this.displayEquipmentsInfos(e, $('#equipmentsAdd'), $('#equipmentsListAdd'), $('#badgeNbEquipmentsAdd') );
-
-    	var filteredEquipment = _.filter(app.collections.equipments.models, function(item){
-    		return item.attributes.technical_vehicle || item.attributes.commercial_vehicle;
-    	});
-		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentAdd"), collection: new app.Collections.Equipments(filteredEquipment)})
-		app.views.selectListEquipmentsView.clearAll();
-		app.views.selectListEquipmentsView.addEmptyFirst();
-		app.views.selectListEquipmentsView.addAll();
+    	this.displayEquipmentsInfos(e, $('#equipmentsAdd'), $('#equipmentsListAdd'), $('#badgeNbEquipmentsAdd'), $("#taskEquipmentAdd") );
 			
 		var mStartDate = moment();
 		var mEndDate = moment();
@@ -587,7 +623,7 @@ app.Views.TasksListView = Backbone.View.extend({
     //Task not finished
     setModalTimeSpent: function(e) {    	
     	this.getTask(e);
-    	this.displayEquipmentsInfos(e, $('#equipmentsSpent'), $('#equipmentsListSpent'), $('#badgeNbEquipmentsSpent') );
+    	this.displayEquipmentsInfos(e, $('#equipmentsSpent'), $('#equipmentsListSpent'), $('#badgeNbEquipmentsSpent'), $("#taskEquipmentSpent" ) );
     	var task = this.model.toJSON();
     	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 
@@ -598,16 +634,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		$('#eventTimeSpent').val(this.secondsToHms(task.remaining_hours*60));
 		$('#modalTimeSpent .modal-body').css({"height": "450px", "max-height": "450px"});
 		$('#eventTimeRemaining').val("00:00");
-		
-		var filteredEquipment = _.filter(app.collections.equipments.models, function(item){
-    		return item.attributes.technical_vehicle || item.attributes.commercial_vehicle;
-    	});
-		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentSpent"), 
-			collection : new app.Collections.Equipments(filteredEquipment)
-		});
-		app.views.selectListEquipmentsView.clearAll();
-		app.views.selectListEquipmentsView.addEmptyFirst();
-		app.views.selectListEquipmentsView.addAll();
+
     },
     
     
@@ -716,7 +743,7 @@ app.Views.TasksListView = Backbone.View.extend({
 	*/
     setModalTaskDone: function(e) {
     	this.getTask(e);
-    	this.displayEquipmentsInfos(e, $('#equipmentsDone'), $('#equipmentsListDone'), $('#badgeNbEquipmentsDone') );
+    	this.displayEquipmentsInfos(e, $('#equipmentsDone'), $('#equipmentsListDone'), $('#badgeNbEquipmentsDone'), $("#taskEquipmentDone") );
 
     	var task = this.model.toJSON();
 
@@ -728,16 +755,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 		$('#modalTaskDone .modal-body').css({"height": "450px", "max-height": "450px"});
 		$('#eventTimeDone').val(this.secondsToHms(task.remaining_hours*60));
-		
-		var filteredEquipment = _.filter(app.collections.equipments.models, function(item){
-    		return item.attributes.technical_vehicle || item.attributes.commercial_vehicle;
-    	});
-		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentDone"), 
-			collection: new app.Collections.Equipments(filteredEquipment)
-		});
-		app.views.selectListEquipmentsView.clearAll();
-		app.views.selectListEquipmentsView.addEmptyFirst();
-		app.views.selectListEquipmentsView.addAll();
+
     },
 
 	/** Update the task

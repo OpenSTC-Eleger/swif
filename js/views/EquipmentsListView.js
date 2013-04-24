@@ -252,22 +252,21 @@ app.Views.EquipmentsListView = Backbone.View.extend({
 		this.services = _.map($("#equipmentServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });     
 	     
 		this.params = {	
-			name 		: this.$('#equipmentName').val(),
-			//service 	: input_service_id,
-			service_ids: [[6, 0, this.services]],
-			usage 		: this.$('#equipmentUsage').val(),
-			marque 		: this.$('#equipmentMarque').val(),
-			type 		: this.$('#equipmentType').val(),
-
-			immat 		: this.$('#equipmentImmat').val(),
-			cv 			: this.$('#equipmentCV').val(),
-			year 		: this.$('#equipmentYear').val(),
-			time 		: this.$('#equipmentTime').val(),
-			km 			: this.$('#equipmentKm').val(),
-			technical_vehicle :this.$('#technicalVehicleEquipment').hasClass('active'),
-			commercial_vehicle :this.$('#commercialVehicleEquipment').hasClass('active'),
-			small_material :this.$('#smallMaterialEquipment').hasClass('active'),
-			fat_material :this.$('#fatMaterialEquipment').hasClass('active'),    
+			name 				: this.$('#equipmentName').val(),
+			service				: input_service_id, //#Service owner
+			service_ids			: [[6, 0, this.services]], //Service authorized for use equipment
+			usage 				: this.$('#equipmentUsage').val(),
+			marque 				: this.$('#equipmentMarque').val(),
+			type 				: this.$('#equipmentType').val(),
+			immat 				: this.$('#equipmentImmat').val(),
+			cv 					: this.$('#equipmentCV').val(),
+			year 				: this.$('#equipmentYear').val(),
+			time 				: this.$('#equipmentTime').val(),
+			km 					: this.$('#equipmentKm').val(),
+			technical_vehicle 	:this.$('#technicalVehicleEquipment').hasClass('active'),
+			commercial_vehicle 	:this.$('#commercialVehicleEquipment').hasClass('active'),
+			small_material 		:this.$('#smallMaterialEquipment').hasClass('active'),
+			fat_material 		:this.$('#fatMaterialEquipment').hasClass('active'),    
 	     };
 	     
 	    this.modelId = this.selectedJson==null?0: this.selectedJson.id;
@@ -285,6 +284,7 @@ app.Views.EquipmentsListView = Backbone.View.extend({
 						if( self.modelId==0 )
 							self.model = new app.Models.Equipment({id: data.result.result}); 
 						
+						self.params.service_ids = self.services;
 						self.params.service = self.getIdInDropDown(app.views.selectListServicesView);
 						self.model.update(self.params);
 						app.collections.equipments.add(self.model);
