@@ -17,7 +17,7 @@ app.Views.EventsListView = Backbone.View.extend({
 
 
 
-	initialize: function(planning,object,teamMode){
+	initialize: function(planning, object, teamMode){
 		this.teamMode = teamMode;
 		this.planning = planning;
 
@@ -27,15 +27,14 @@ app.Views.EventsListView = Backbone.View.extend({
 		this.el = $(this.elStringId);
 
 		_.bindAll(this); 
-
-        this.eventView = new app.Views.EventView();
 	},
 
 
 
 	initCollection: function(object) {
-		if (this.teamMode) 
-		{
+		
+		if (this.teamMode) {
+			
 			this.elStringId = 'div#team_' + object.attributes.id;
 			var team_json = object.toJSON();
 			this.filterTasks = object.attributes.tasks.toJSON();
@@ -49,29 +48,17 @@ app.Views.EventsListView = Backbone.View.extend({
 			}
 			
 		}
-		else
-		{
+		else{
+			
 			this.elStringId = 'div#officer_' + object.attributes.id;
 			var officer_json = object.toJSON();
-			this.filterTasks = officer_json.tasks;					
+			this.filterTasks = officer_json.tasks;
 			if( officer_json.team_ids!= null ) {
 				 _.each( officer_json.team_ids, function(team){
 					 this.filterTasks = _.union(this.filterTasks, team.tasks);
 				 });
 				
-			}			
-			//TODO : code below for multi-team association by agent
-
-//				this.filterTasks = object.attributes.tasks.toJSON();
-//				var that = this;
-//				if( officer_json.team_ids!= null ){
-//					_.each(object.attributes.team_ids.models, function(team){
-//						if( team!=null && team.attributes.tasks != null && 
-//								team.attributes.tasks.models.length>0 )
-//							that.filterTasks = _.union(that.filterTasks, team.attributes.tasks.toJSON());	
-//					})
-//				}
-
+			}
 		}
     },
 
@@ -120,8 +107,6 @@ app.Views.EventsListView = Backbone.View.extend({
         /** Task is click on the calendar
         */
         eventClick: function(fcEvent, jsEvent, view) {
-            //this.eventView.model = app.collections.tasks.get(fcEvent.id);
-            //this.eventView.render($(jsEvent.currentTarget),this.planning,this.el);
 
             // Reset the modal Buttons //
             $('#btnRemoveTask').prop('disabled', false);
