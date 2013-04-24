@@ -116,7 +116,7 @@ div.page-header{
 
 
 
-/* New TEXT COLOR
+/* New TEXT color
 -------------------------------------------------- */
 .text-important        { color: @errorText; }
 a.text-important:hover { color: darken(@errorText, 10%); }
@@ -150,6 +150,26 @@ a.text-muted:hover { color: darken(@grayLight, 10%); }
 	&-success{ border-left-color: @successText; }
 	&-overrun{ border-left-color: @purple; }
 	&-template{ border-left-color: @yellow; }
+}
+
+
+/* Calendar Color
+-------------------------------------------------- */
+.calendar-success.fc-event {
+	border-color: darken(@successText, 5%);
+	div.fc-event-skin, div.fc-event-inner{ background-color: @successText; border-color: darken(@successText, 5%); }
+}
+.calendar-info.fc-event {
+	border-color: darken(@infoText, 5%);
+	div.fc-event-skin, div.fc-event-inner { background-color: @infoText; border-color: darken(@infoText, 5%)}
+}
+.calendar-default.fc-event { 
+	border-color: darken(@grayLight, 5%);
+	div.fc-event-skin, div.fc-event-inner { background-color: @grayLight; border-color: darken(@grayLight, 5%)}
+}
+.calendar-absent.fc-event {
+	border-color: darken(#C3325F, 5%);
+	div.fc-event-skin, div.fc-event-inner { background-color: #C3325F; border-color: darken(#C3325F, 5%)}
 }
 
 

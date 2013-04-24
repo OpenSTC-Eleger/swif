@@ -283,8 +283,8 @@ state:  [
     },
     {
         value       : 'pending',
-        color       : '',
-        traduction  : '', 
+        color       : 'default',
+        traduction  : '',
     },
 	{
         value       : 'draft', // To Schedule //
@@ -294,12 +294,12 @@ state:  [
     {
         value       : 'cancelled', // cancel //
         color       : 'important',
-        traduction  : '',  
+        traduction  : '',
     },
     {
         value       : 'absent', // Congé //
-        color       : '#c3325f', 
-        traduction  : '',  
+        color       : 'absent',
+        traduction  : '',
     }
 ]
 

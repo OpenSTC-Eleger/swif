@@ -177,10 +177,8 @@ app.Views.EventsListView = Backbone.View.extend({
 
         
         getColor: function(task) {
-        	var color = 'green';
-        	if ( task.team_id )
-        		color = 'grey'
-        			
+        	var classColor = 'green';
+
         	switch (task.state) {
         		case app.Models.Task.state[0].value:
 			    	color = app.Models.Task.state[0].color;
@@ -204,7 +202,7 @@ app.Views.EventsListView = Backbone.View.extend({
         			color = app.Models.Task.state[3].color;
         			break;
         	}
-        	
+
         	return color;
         },
 
@@ -230,8 +228,8 @@ app.Views.EventsListView = Backbone.View.extend({
         		              effective_hours: task.effective_hours,
         		              remaning_hours: task.remaining_hours,
         		              allDay: false,
-        		              color: self.getColor(task),
-        		              //className: 'calendar-overrun',
+        		              //color: self.getColor(task),
+        		              className: 'calendar-'+self.getColor(task),
         		              editable: true,
         		              disableDragging: actionDisabled,
         		              disableResizing: actionDisabled,
