@@ -245,13 +245,14 @@
 					<ul id="listTeams" class="unstyled inline nav nav-list">
 						<% _.each(teams, function (team, i) {
 
-							var teamMembers = '';
+							var teamMembers = "<li><i class='icon-asterisk'></i> "+ team.manager_id[1] +"</li>";
+
 							_.each(team.user_ids, function(teamMember){
-								teamMembers += "<li>"+ (teamMember.firstname != false ? teamMember.firstname.replace(' ', '&nbsp;') : '') +"&nbsp;"+ teamMember.name.toUpperCase().replace(' ', '&nbsp;') +"</li>"
+								teamMembers += "<li><i class='icon-user'></i>&nbsp;"+ (teamMember.firstname != false ? teamMember.firstname.replace(' ', '&nbsp;') : '') +"&nbsp;"+ teamMember.name.toUpperCase().replace(' ', '&nbsp;') +"</li>"
 							});
 						%>
 
-							<li rel="popover" data-original-title="<%= _.capitalize(lang.agents) %>" data-content="<ul><%= teamMembers %></ul>" data-html="true" data-placement="left">
+							<li rel="popover" data-original-title="<%= _.capitalize(lang.agents) %>" data-content="<ul class='unstyled'><%= teamMembers %></ul>" data-html="true" data-placement="left">
 								<a id="pTeam_<%= team.id %>" href="#planning/team/<%= _.slugify(team.name)%>">
 									<i class="icon-group"></i><%= team.name %>
 								</a>

@@ -652,12 +652,17 @@ app.Views.EventsListView = Backbone.View.extend({
 				return "<td class=\"center\"></td>";
 		},
 		
+
 		
 		getDay : function(date) {
 			var momentDate = moment( this.el.fullCalendar('getView').visStart );
 			return date.format('dddd D MMMM');
 		},
 			
+
+
+		/** Print Calendar
+		*/
 		printCalendar: function () {
 			var date = moment( this.el.fullCalendar('getView').visStart );			
 			var momentDate = moment().year(date.year()).week(date.week());
@@ -813,24 +818,13 @@ app.Views.EventsListView = Backbone.View.extend({
 				table.fnAddData(results);
 			table.fnDraw();
 
-			elementToPrint.printElement(
-				{
-					leaveOpen:true,
-					printMode: 'popup',
-					pageTitle:'PONTLABBE-STC'
-				}
-//				,{
-//				    overrideElementCSS:[
-////				       'demo_table.css',
-////				       { href:'../css/demo_table.css',media:'print'}
-//				       'print_table.css',
-//				       { href:'print_table.css',media:'print'}
-////				       'tables.less',
-////				       { href:'../css/vendors/bootstrap-2.2.2/tables.less',media:'print'}
-//
-//				    ]
-//				}
-			);		
+			elementToPrint.printElement({
+				leaveOpen	: true,
+				printMode	: 'popup',
+				overrideElementCSS:[
+					'print_table.css.css',
+					{ href:'css/vendors/print_table.css', media: 'all'}]
+			});
 		},	
 		
 

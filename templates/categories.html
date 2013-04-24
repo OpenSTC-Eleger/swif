@@ -13,12 +13,12 @@
 
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
-			<a href="#modalSaveCat" class="btn btn-primary modalSaveCat" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addCategorie) %></a>	
+			<a href="#modalSaveCat" class="btn btn-primary modalSaveCat" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addCategorie) %></a>	
 
 			<form class="form-search pull-right">
 				<div class="input-append">
-					<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off">
-					<button type="submit" class="btn"><i class="icon-search icon-large"></i></button>
+					<input type="search" class="input-medium search-query" disabled placeholder="<%= lang.actions.search %>..." autocomplete="off">
+					<button type="submit" disabled class="btn"><i class="icon-search icon-large"></i></button>
 				</div>
 			</form>
 		</div>
@@ -99,7 +99,7 @@
 	<% }
 	else { %>
 		<div class="tableToolbar">
-			<a href="#modalSaveCat" class="btn btn-primary modalSaveCat" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addCategorie) %></a>
+			<a href="#modalSaveCat" class="btn btn-primary modalSaveCat" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addCategorie) %></a>
 		</div><br />
 
 		<!-- No request in the Database -->
@@ -172,7 +172,7 @@
 						<h4>Services de la catégorie <span class="badge pull-right"></span></h4>
 					</div>
 	
-					<ul id="catServices" class="sortableServicesList sortable unstyled nav nav-list">
+					<ul id="catServices" class="sortableServicesList drop-area sortable unstyled nav nav-list">
 	
 					</ul>
 				</div>

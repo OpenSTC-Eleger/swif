@@ -221,7 +221,7 @@ app.Views.TasksListView = Backbone.View.extend({
 			// Filter on each officer //
 			officersDropDownList = _.filter(app.collections.officers.models, function(officer){
 
-				// Display only officers who are not DSL //
+				// Display only officers who are not DST //
 				if(!officer.isDST()){
 					var thing = false;
 
@@ -248,10 +248,13 @@ app.Views.TasksListView = Backbone.View.extend({
 			
 			_.each(app.collections.teams.models, function(team){
 
-				var teamJSON = team.toJSON();
-				
-				if(teamJSON.manager_id[0] == app.models.user.toJSON().uid){
-					managerTeamID.push(teamJSON.id);
+				if(!officer.isDST()){
+
+					var teamJSON = team.toJSON();
+					
+					if(teamJSON.manager_id[0] == app.models.user.toJSON().uid){
+						managerTeamID.push(teamJSON.id);
+					}
 				}
 
 			});
@@ -367,18 +370,6 @@ app.Views.TasksListView = Backbone.View.extend({
 				}
 			});	
 			
-//			$('#modalTaskDone .modal-body').css("height", "550px");
-//			$('#modalAddTask').css("height", "800px");
-//			$('#modalAddTask .modal').css("height", "800px");
-//			$('#modalTimeSpent .modal-body').css("height", "550px");
-			
-			//$('#duallistbox_demo1_helper1').bootstrapDualListbox();
-			
-//			$('.modal').validate( {
-//				rules: {
-//					number: { required: true, min: 1 }
-//				}
-//			} );
 
 			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 			$('*[data-toggle="tooltip"]').tooltip();
@@ -516,19 +507,19 @@ app.Views.TasksListView = Backbone.View.extend({
 
 		this.model = app.collections.tasks.get(this.pos);
     },
-    
+
     resetModal: function() {  
     	this.model = null;
     	$('.taskInput').val('');
     	$('.taskSelect').val(0);
-    	$('#taskName').val('');
-    	
-    	//$('.equipments').val('')
-    	
+    	$('#taskName').val('');    	
+    	//$('.equipments').val('')    	
     },
     
+
+
 	/** Display the form to add a new Task
-		*/
+	*/
 	displayModalAddTask: function(e){
 			
     	this.resetModal();
@@ -553,6 +544,7 @@ app.Views.TasksListView = Backbone.View.extend({
 	},
 	
 	
+
 	fillDropdownEquipment: function(e){
 		e.preventDefault();
 		var target = $(e.target).attr('value');
@@ -566,6 +558,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		}
 	},
 	
+
 
 	/** Save the Task
 	*/
@@ -598,28 +591,28 @@ app.Views.TasksListView = Backbone.View.extend({
 	    	 }
 	     }
 	     
-	     this.vehicule = input_equipment_id;
-	     this.equipments = _.map($("#equipmentsAdd").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
-	     this.equipments.push( input_equipment_id );
+		this.vehicule = input_equipment_id;
+		this.equipments = _.map($("#equipmentsAdd").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
+		this.equipments.push( input_equipment_id );
 
+	    
 	     
-	     
-	     var params = {
-	         user_id:  app.models.user.getUID(),
-	         date_start: mNewDateStart.toDate(),
-	         date_end: mNewDateEnd.toDate(),
-	         state: app.Models.Task.state[1].value,
-	         //equipment_id: input_equipment_id,
-	         equipment_ids: [[6, 0, this.equipments]],
-	         name: this.$('#taskName').val(),
-	         km: this.$('#equipmentKmAdd').val(),
-	         oil_qtity: this.$('#equipmentOilQtityAdd').val(),
-	         oil_price: this.$('#equipmentOilPriceAdd').val(),
-	         category_id: input_category_id,	         
-		     planned_hours: planned_hours,
-		     effective_hours: planned_hours,
-		     remaining_hours: 0,
-	     };
+		var params = {
+			user_id:  app.models.user.getUID(),
+			date_start: mNewDateStart.toDate(),
+			date_end: mNewDateEnd.toDate(),
+			state: app.Models.Task.state[1].value,
+			//equipment_id: input_equipment_id,
+			equipment_ids: [[6, 0, this.equipments]],
+			name: this.$('#taskName').val(),
+			km: this.$('#equipmentKmAdd').val(),
+			oil_qtity: this.$('#equipmentOilQtityAdd').val().replace(',', '.'),
+			oil_price: this.$('#equipmentOilPriceAdd').val().replace(',', '.'),
+			category_id: input_category_id,	         
+			planned_hours: planned_hours,
+			effective_hours: planned_hours,
+			remaining_hours: 0,
+		};
 	     this.saveNewStateTask(params, null, $('#modalAddTask'), null , true);
 	    // app.models.task.save(0,params,$('#modalAddTask'), null, "taches");
 	     //this.saveEquipment(  this.$('#equipmentKmAdd').val(), input_equipment_id)
@@ -695,9 +688,9 @@ app.Views.TasksListView = Backbone.View.extend({
     				taskParams = {
 						//equipment_id: input_equipment_id,
 						equipment_ids: [[6, 0, self.equipments]],
-						km: self.$('#equipmentKmSpent').val(),
+						km: self.$('#equipmentKmSpent').val().replace(',', '.'),
 						oil_qtity: self.$('#equipmentOilQtitySpent').val(),
-						oil_price: self.$('#equipmentOilPriceSpent').val(),
+						oil_price: self.$('#equipmentOilPriceSpent').val().replace(',', '.'),
 						state: app.Models.Task.state[1].value,
 						effective_hours: self.hours,
 						remaining_hours: 0,
@@ -810,6 +803,7 @@ app.Views.TasksListView = Backbone.View.extend({
 	    this.equipments = _.map($("#equipmentsDone").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
 	    this.equipments.push( input_equipment_id );
 
+
 		params = {
 		    //Project state
 		    project_state: newInterState,
@@ -821,8 +815,8 @@ app.Views.TasksListView = Backbone.View.extend({
 		    equipment_ids: this.equipments,
 		    vehicule: this.vehicule,
 	        km: this.$('#equipmentKmDone').val(),
-	        oil_qtity: this.$('#equipmentOilQtityDone').val(),
-	        oil_price: this.$('#equipmentOilPriceDone').val(),	
+	        oil_qtity: this.$('#equipmentOilQtityDone').val().replace(',', '.'),
+	        oil_price: this.$('#equipmentOilPriceDone').val().replace(',', '.'),
 	        
 		    //Task work params
              //name: task.name,
