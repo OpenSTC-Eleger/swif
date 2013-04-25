@@ -98,7 +98,7 @@
 	"notDone" 				: "non fait",
 	"closed" 				: "cloturée",
 	"cancelled"				: "annulée",
-	"absent"				: "congé",
+	"away"					: "absence",
 	"confirm" 				: "DST",
 	"pending"				: "en cours",
 	"template"				: "avec tâches duplicables",

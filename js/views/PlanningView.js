@@ -462,7 +462,7 @@ app.Views.PlanningView = Backbone.View.extend({
 				}
 			},
 			error: function(e){
-				alert("Impossible de supprimer la tâche");
+				alert('Impossible de supprimer la tâche');
 			}
 
 		});

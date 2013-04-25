@@ -133,6 +133,9 @@ a.text-muted:hover { color: darken(@grayLight, 10%); }
   	// Template (yellow)
   	&-template           { background-color: @yellow; }
   	&-template[href]     { background-color: darken(@yellow, 10%); }
+	// Absent (pink)
+  	&-absent           { background-color: @pink; }
+  	&-absent[href]     { background-color: darken(@pink, 10%); }
 }
 
 
@@ -169,7 +172,7 @@ a.text-muted:hover { color: darken(@grayLight, 10%); }
 }
 .calendar-absent.fc-event {
 	border-color: darken(#C3325F, 5%);
-	div.fc-event-skin, div.fc-event-inner { background-color: #C3325F; border-color: darken(#C3325F, 5%)}
+	div.fc-event-skin, div.fc-event-inner { background-color: @pink; border-color: darken(@pink, 5%)}
 }
 
 

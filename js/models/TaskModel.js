@@ -6,7 +6,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	// Model name in the database //
 	model_name : 'project.task',	
 	
-	url: "/#taches/:id",
+	url: '/#taches/:id',
 
 
 	relations: [
@@ -129,6 +129,24 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	getState : function() {
         return this.get('state');
     },
+    getColor: function(){
+    	var self = this; var color = '';
+    	_.each(app.Models.Task.state, function(state){
+    		if(self.getState() == state.value){
+   				color = state.color;
+    		}
+    	});
+    	return color;
+    },
+	getStateTranslate: function(){
+    	var self = this; var stateTranslate = '';
+    	_.each(app.Models.Task.state, function(state){
+    		if(self.getState() == state.value){
+   				stateTranslate = state.traduction;
+    		}
+    	});
+    	return stateTranslate;
+    },
 	
 
 
@@ -143,6 +161,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		app.Models.Task.state[2].traduction = app.lang.valid;
 		app.Models.Task.state[3].traduction = app.lang.toScheduled;
 		app.Models.Task.state[4].traduction = app.lang.cancelled;
+		app.Models.Task.state[5].traduction = app.lang.away;
 	},
 
 
