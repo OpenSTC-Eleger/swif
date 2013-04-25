@@ -270,6 +270,7 @@
     	"placesList"			 : "Liste des sites",
     	"servicesList"			 : "Liste des services",
     	"categoriesTasksList"	 : "Catégories des tâches",
+    	"categoriesIntersList"	 : "Catégories des interventions",
     	"absentTypesList"		 : "Types d'absence",
     	"claimersTypesList"		 : "Types de demandeurs",
     	"equipmentsList"		 : "Liste des Matériels",

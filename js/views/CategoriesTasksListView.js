@@ -33,6 +33,7 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
     },
 
 
+
 	/** Display the view
 	*/
     render: function () {
@@ -102,15 +103,17 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
     	else 
     		return 0
     },
-    
+
 
 
     setModel: function(e) {
-    	e.preventDefault();
+       	e.preventDefault();
+
     	this.displayTeamInfos(e);
     	var link = $(e.target);
     	var id =  _(link.parents('tr').attr('id')).strRightBack('_');
         this.selectedCat = _.filter(app.collections.categoriesTasks.models, function(item){ return item.attributes.id == id });
+
         if( this.selectedCat.length>0 ) {
         	this.model = this.selectedCat[0];
         	this.selectedCatJson = this.model.toJSON();
@@ -146,17 +149,15 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 
 		
 		// Set the focus to the first input of the form //
-		$('#modalSaveCat').on('shown', function (e) {
+		$('#modalSaveCat').on('shown', function(e) {
 			$(this).find('input:not(:disabled), textarea').first().focus();
 		})
-        //$('#modalSaveCat .modal-body').css("height", "800px");
-
     },
     
 
 
 	/** Display category services
-		*/
+	*/
 	displayTeamInfos: function(e){
 		e.preventDefault();
 
@@ -266,7 +267,8 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 	    });
 	},
 
-	
+
+
     /** Delete the selected categorie
     */
     deleteCat: function(e){
@@ -292,6 +294,7 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 
 		});
     },
+
 
 
     preventDefault: function(event){

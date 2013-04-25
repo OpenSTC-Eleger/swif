@@ -38,8 +38,11 @@ app.Router = Backbone.Router.extend({
         'services/add'           				: 'detailsService',
         'services/:id'    						: 'detailsService',
 
-        'categories'                            : 'categories',
-        'categories/page:page'                  : 'categories',
+        'categories'                            : 'categoriesTasks',
+        'categories/page:page'                  : 'categoriesTasks',
+
+        'affectations'                          : 'categoriesInterventions',
+        'affectations/page:page'                : 'categoriesInterventions',
 
         'employes-municipaux'                   : 'officers',
         'employes-municipaux/page:page'         : 'officers',
@@ -931,9 +934,9 @@ app.Router = Backbone.Router.extend({
 
 
 
-    /** Categories management
+    /** Categories Tasks management
     */
-    categories: function(page){      
+    categoriesTasks: function(page){      
 
         // Check if the user is connect //
         if(this.checkConnect()){
@@ -962,6 +965,43 @@ app.Router = Backbone.Router.extend({
 		                    self.render(app.views.categoriesTasksListView);
 		                }
 		            });
+                },
+                complete: function(){
+                    app.loader('hide');
+                }
+            });
+        }
+        else{
+            this.navigate('login', {trigger: true, replace: true});
+        }
+    },
+
+
+
+    /** Categories Interventions management
+    */
+    categoriesInterventions: function(page){      
+
+        // Check if the user is connect //
+        if(this.checkConnect()){
+            var self = this;
+
+
+            self.page = page ? parseInt(page, 10) : 1;
+
+            // Check if the collections is instantiate //
+            if(app.collections.categoriesInterventions == null ){
+                app.collections.categoriesInterventions = new app.Collections.CategoriesInterventions();
+            }
+
+
+            app.collections.categoriesInterventions.fetch({
+                beforeSend: function(){
+                    app.loader('display');
+                },
+                success: function(){
+                    app.views.categoriesInterventionsListView = new app.Views.CategoriesInterventionsListView({page: self.page});
+                    self.render(app.views.categoriesInterventionsListView);
                 },
                 complete: function(){
                     app.loader('hide');

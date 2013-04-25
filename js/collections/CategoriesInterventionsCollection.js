@@ -8,13 +8,13 @@ app.Collections.CategoriesInterventions = Backbone.Collection.extend({
     // Model name in the database //
     model_name : 'openstc.intervention.assignement',
     
-   	url: 'assignement',
+   	url: 'affectation',
    
 
     /** Collection Initialization
     */
     initialize: function (options) {
-    	console.log('Request assignement collection Initialization');
+    	console.log('Categorie Intervention collection Initialization');
     },
 
 
@@ -22,7 +22,7 @@ app.Collections.CategoriesInterventions = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {
-    	app.readOE( this.model_name ,  app.models.user.getSessionID(), options);
+    	app.readOE(this.model_name, app.models.user.getSessionID(), options);
     },
 
 
