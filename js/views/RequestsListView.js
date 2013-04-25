@@ -224,7 +224,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 			var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
 				return service.attributes.technical != true 
 			});
-			//remove no technical services
+
+			// Remove no technical services //
 			app.collections.claimersServices.remove(noTechnicalServices);
 			
 			app.views.selectServicesView = new app.Views.DropdownSelectListView({el: $("#requestService"), collection: app.collections.claimersServices})
@@ -238,7 +239,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 					app.views.selectAssignementsView.setSelectedItem( this.selectedRequest.belongsToService.id );
 			}
 			
-			app.views.selectAssignementsView = new app.Views.DropdownSelectListView({el: $("#requestAssignement"), collection: app.collections.assignements})
+			app.views.selectAssignementsView = new app.Views.DropdownSelectListView({el: $("#requestAssignement"), collection: app.collections.categoriesInterventions})
 			app.views.selectAssignementsView.clearAll();
 			app.views.selectAssignementsView.addEmptyFirst();
 			app.views.selectAssignementsView.addAll();
@@ -422,7 +423,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 
         
         // Display only categories in dropdown belongs to intervention //
-        var categoriesFiltered = _.filter(app.collections.categories.models, function(item){ 
+        var categoriesTasksFiltered = _.filter(app.collections.categoriesTasks.models, function(item){ 
 			var services = [];
 	        _.each( item.attributes.service_ids.models, function(service){
 	        	services.push( service.toJSON().id );
@@ -430,9 +431,9 @@ app.Views.RequestsListView = Backbone.View.extend({
         	return ($.inArray(requestServiceID, services)!=-1);
 		});
 		
-		var collectionFilter = _.clone(app.collections.categories);
+		var collectionFilter = _.clone(app.collections.categoriesTasks);
 
-		app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: collectionFilter.reset(categoriesFiltered) });			
+		app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: collectionFilter.reset(categoriesTasksFiltered) });			
 		app.views.selectListAssignementsView.clearAll();
 		app.views.selectListAssignementsView.addEmptyFirst();
 		app.views.selectListAssignementsView.addAll();	

@@ -166,7 +166,7 @@ app.Models.User = Backbone.Model.extend({
                 self.getUserInformations();
                
                 
-                app.notify('', 'info', 'Information', 'Vous êtes connecté');
+                //app.notify('', 'info', 'Information', 'Vous êtes connecté');
                 Backbone.history.navigate(app.router.homePage, {trigger: true, replace: true});
                         
                 // Refresh the header //

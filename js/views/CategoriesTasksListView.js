@@ -1,11 +1,11 @@
 /******************************************
-* Categories List View
+* Categories Tasks List View
 */
-app.Views.CategoriesListView = Backbone.View.extend({
+app.Views.CategoriesTasksListView = Backbone.View.extend({
 	
 	el : '#rowContainer',
 	
-	templateHTML: 'categories',
+	templateHTML: 'categoriesTasks',
 	
 	numberListByPage: 25,
 
@@ -39,7 +39,7 @@ app.Views.CategoriesListView = Backbone.View.extend({
 		var self = this;
 
 		// Change the page title //
-		app.router.setPageTitle(app.lang.viewsTitles.categoriesList);
+		app.router.setPageTitle(app.lang.viewsTitles.categoriesTasksList);
 
 
 		// Change the active menu item //
@@ -49,7 +49,7 @@ app.Views.CategoriesListView = Backbone.View.extend({
 		app.views.headerView.switchGridMode('fluid');
 
 
-		var categories = app.collections.categories.models;
+		var categories = app.collections.categoriesTasks.models;
 
 		var len = categories.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
@@ -92,6 +92,8 @@ app.Views.CategoriesListView = Backbone.View.extend({
         return this;
     },
     
+
+
 	getIdInDropDown: function(view) {
     	if ( view && view.getSelected() )
     		var item = view.getSelected().toJSON();
@@ -101,15 +103,17 @@ app.Views.CategoriesListView = Backbone.View.extend({
     		return 0
     },
     
+
+
     setModel: function(e) {
     	e.preventDefault();
     	this.displayTeamInfos(e);
     	var link = $(e.target);
     	var id =  _(link.parents('tr').attr('id')).strRightBack('_');
-        this.selectedCat = _.filter(app.collections.categories.models, function(item){ return item.attributes.id == id });
+        this.selectedCat = _.filter(app.collections.categoriesTasks.models, function(item){ return item.attributes.id == id });
         if( this.selectedCat.length>0 ) {
         	this.model = this.selectedCat[0];
-        	this.selectedCatJson = this.model.toJSON();    
+        	this.selectedCatJson = this.model.toJSON();
         }
         else {
         	this.selectedCatJson = null;        	
@@ -117,12 +121,13 @@ app.Views.CategoriesListView = Backbone.View.extend({
     },
 
 
+
     /** Add a new categorie
     */
     modalSaveCat: function(e){       
         this.setModel(e);	
         
-    	app.views.selectListCategoriesView = new app.Views.DropdownSelectListView({el: $("#catParent"), collection: app.collections.categories})
+    	app.views.selectListCategoriesView = new app.Views.DropdownSelectListView({el: $("#catParent"), collection: app.collections.categoriesTasks})
 		app.views.selectListCategoriesView.clearAll();
 		app.views.selectListCategoriesView.addEmptyFirst();
 		app.views.selectListCategoriesView.addAll();
@@ -143,6 +148,8 @@ app.Views.CategoriesListView = Backbone.View.extend({
 
     },
     
+
+
 	/** Display category services
 		*/
 	displayTeamInfos: function(e){
@@ -157,7 +164,7 @@ app.Views.CategoriesListView = Backbone.View.extend({
 
 		var catServices = new Array();
 		if( id ) {
-			this.selectedCat = _.filter(app.collections.categories.models, function(item){ return item.attributes.id == id });
+			this.selectedCat = _.filter(app.collections.categoriesTasks.models, function(item){ return item.attributes.id == id });
 			var selectedCatJson = this.selectedCat[0].toJSON();	
 			
 			// Display the services of the team //
@@ -186,6 +193,7 @@ app.Views.CategoriesListView = Backbone.View.extend({
 		$('#badgeNbServices').html(nbRemainServices);
 		
 	},
+
 
 
     /** Display information in the Modal view
@@ -241,7 +249,7 @@ app.Views.CategoriesListView = Backbone.View.extend({
 						self.params.service_ids = self.services;
 						
 						self.model.update(self.params);
-						app.collections.categories.add(self.model);
+						app.collections.categoriesTasks.add(self.model);
 						$('#modalSaveCat').modal('hide');
 						app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
 						self.render();

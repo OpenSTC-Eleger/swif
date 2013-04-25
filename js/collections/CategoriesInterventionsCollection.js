@@ -1,21 +1,20 @@
 /******************************************
-* Categories Collection - Task categories
+* Intervention Categorie Collection - Intervention classification for budget
 */
-app.Collections.Categories = Backbone.Collection.extend({
+app.Collections.CategoriesInterventions = Backbone.Collection.extend({
 
-    model: app.Models.Category,
+    model: app.Models.CategoryIntervention,
 
     // Model name in the database //
-    model_name : 'openstc.task.category',
+    model_name : 'openstc.intervention.assignement',
     
-   	url: 'categories',
-
+   	url: 'assignement',
    
 
     /** Collection Initialization
     */
     initialize: function (options) {
-    	console.log('Categories collection Initialization');
+    	console.log('Request assignement collection Initialization');
     },
 
 
@@ -35,11 +34,11 @@ app.Collections.Categories = Backbone.Collection.extend({
     },
 
 
-    
+
     /** Comparator for ordering collection
     */
     comparator: function(item) {
-	  return item.get('complete_name');
+	  return item.get('name');
 	},
 
 });

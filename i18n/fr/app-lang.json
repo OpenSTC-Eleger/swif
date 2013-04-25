@@ -241,8 +241,8 @@
 	},
 
 	"viewsTitles" : {
-    	"login"					 : "OpenSTM connexion",
-    	"about"					 : "À propos d'OpenSTM",
+    	"login"					 : "OpenSTC connexion",
+    	"about"					 : "À propos d'OpenSTC",
     	"requestsList"			 : "Demandes d'interventions",
     	"requestDetail"			 : "Détail de la demande",
     	"interventionDetail"	 : "Détail de l'intervention",
@@ -266,9 +266,9 @@
     	"tasksList"				 : "Liste des tâches",
     	"placesList"			 : "Liste des sites",
     	"servicesList"			 : "Liste des services",
-    	"categoriesList"		 : "Liste des catégories",
-    	"absentTypesList"		 : "Liste des types d'absence",
-    	"claimersTypesList"		 : "Liste des Types de demandeurs",
+    	"categoriesTasksList"	 : "Catégories des tâches",
+    	"absentTypesList"		 : "Types d'absence",
+    	"claimersTypesList"		 : "Types de demandeurs",
     	"equipmentsList"		 : "Liste des Matériels",
     	"cartoSites"		 	 : "Interventions par site",
     	"officersList"		 	 : "Liste des agents",

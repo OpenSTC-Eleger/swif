@@ -337,14 +337,14 @@
 				<label for="requestName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
 
 				<div class="controls">
-					<input type="text" id="requestName" name="requestName" disabled="disabled" />
+					<input type="text" id="requestName" name="requestName" readonly />
 					<span class="help-inline"></span>
 				</div>
 			</div>
 
-			<!-- Request Assignement -->
+			<!-- Intervention Request Catégory -->
 			<div class="control-group">
-				<label for="requestAssignement" class="control-label"><%= _.capitalize(lang.assignedTo) %>:</label>
+				<label for="requestAssignement" class="control-label"><%= _.capitalize(lang.category) %>:</label>
 
 				<div class="controls">
 					<select id="requestAssignement" name="requestAssignement" required="required"></select>

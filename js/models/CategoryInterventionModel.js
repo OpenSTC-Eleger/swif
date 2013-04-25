@@ -1,11 +1,11 @@
 /******************************************
-* Assignement Request Model - Intervention classification for budget
+* Category Intervention  Model - Intervention classification for budget
 */
-app.Models.Assignement = Backbone.RelationalModel.extend({
+app.Models.CategoryIntervention = Backbone.RelationalModel.extend({
     
 	model_name : 'openstc.intervention.assignement',	
 	
-	url: "/#assignement/:id",
+	url: '/#assignement/:id',
 
 	relations: [
         {

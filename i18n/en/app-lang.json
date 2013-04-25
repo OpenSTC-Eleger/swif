@@ -22,7 +22,7 @@
 	},
 
 	"viewsTitles" : {
-    	"login": "OpenSTM connection",
-    	"about"			: "About OpenSTM"
+    	"login": "OpenSTC connection",
+    	"about"			: "About OpenSTC"
 	}
 }

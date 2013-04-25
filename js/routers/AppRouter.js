@@ -224,10 +224,10 @@ app.Router = Backbone.Router.extend({
                     app.loader('display');
                 },
                 success: function(){
-	            	if(app.collections.assignements == null ){
-	            		app.collections.assignements = new app.Collections.Assignements();
+	            	if(app.collections.categoriesInterventions == null ){
+	            		app.collections.categoriesInterventions = new app.Collections.CategoriesInterventions();
 					}
-		            app.collections.assignements.fetch({
+		            app.collections.categoriesInterventions.fetch({
 		            	success: function(){
 			        	    if(app.collections.claimersServices == null ){
 			            		app.collections.claimersServices = new app.Collections.ClaimersServices();
@@ -246,11 +246,11 @@ app.Router = Backbone.Router.extend({
 							                app.collections.tasks.fetch({							                	
 							                		success: function(){
 
-                                                        if(app.collections.categories == null ){
-                                                            app.collections.categories = new app.Collections.Categories();
+                                                        if(app.collections.categoriesTasks == null ){
+                                                            app.collections.categoriesTasks = new app.Collections.CategoriesTasks();
                                                         }
                                                         
-                                                        app.collections.categories.fetch({
+                                                        app.collections.categoriesTasks.fetch({
                                                             success: function(){
                                                                 app.views.requestsListView = new app.Views.RequestsListView({page: self.page});
                                                                 self.render(app.views.requestsListView);
@@ -388,10 +388,10 @@ app.Router = Backbone.Router.extend({
 				            app.collections.requests.fetch({
 				                success: function(){
 		            	
-					            	if(app.collections.categories == null ){
-					            		app.collections.categories = new app.Collections.Categories();
+					            	if(app.collections.categoriesTasks == null ){
+					            		app.collections.categoriesTasks = new app.Collections.CategoriesTasks();
 									}
-						            app.collections.categories.fetch({
+						            app.collections.categoriesTasks.fetch({
 						            	success: function(){
 						                    if(app.collections.equipments == null ){
 						                        app.collections.equipments = new app.Collections.Equipments();
@@ -529,10 +529,10 @@ app.Router = Backbone.Router.extend({
 										        
 										        	app.collections.places.fetch({
 										        		success: function(){
-											            	if(app.collections.categories == null ){
-											            		app.collections.categories = new app.Collections.Categories();
+											            	if(app.collections.categoriesTasks == null ){
+											            		app.collections.categoriesTasks = new app.Collections.CategoriesTasks();
 															}
-												            app.collections.categories.fetch({
+												            app.collections.categoriesTasks.fetch({
 												            	success: function(){
 													                if(app.collections.absentTypes == null ){
 													                    app.collections.absentTypes = new app.Collections.AbsentTypes();
@@ -626,12 +626,12 @@ app.Router = Backbone.Router.extend({
 							               
 							                app.collections.equipments.fetch({
 							                    success: function(){
-								                    if(app.collections.categories == null ){
-								                        app.collections.categories = new app.Collections.Categories();
+								                    if(app.collections.categoriesTasks == null ){
+								                        app.collections.categoriesTasks = new app.Collections.CategoriesTasks();
 								                    }
 	
 								                   
-								                    app.collections.categories.fetch({
+								                    app.collections.categoriesTasks.fetch({
 
 								                        success: function(){
 
@@ -705,10 +705,10 @@ app.Router = Backbone.Router.extend({
 			                }
 			                app.collections.officers.fetch({
 			                	 success: function(){
-			                	 	if(app.collections.categories == null ){
-				                        app.collections.categories = new app.Collections.Categories();
+			                	 	if(app.collections.categoriesTasks == null ){
+				                        app.collections.categoriesTasks = new app.Collections.CategoriesTasks();
 				                    }				                   
-				                    app.collections.categories.fetch({
+				                    app.collections.categoriesTasks.fetch({
 				                    	success: function(){	
 				                    		 if(app.collections.claimersServices == null ){
 							                    app.collections.claimersServices = new app.Collections.ClaimersServices();
@@ -943,12 +943,12 @@ app.Router = Backbone.Router.extend({
             self.page = page ? parseInt(page, 10) : 1;
 
             // Check if the collections is instantiate //
-            if(app.collections.categories == null ){
-                app.collections.categories = new app.Collections.Categories();
+            if(app.collections.categoriesTasks == null ){
+                app.collections.categoriesTasks = new app.Collections.CategoriesTasks();
             }
 
            
-            app.collections.categories.fetch({
+            app.collections.categoriesTasks.fetch({
                 beforeSend: function(){
                     app.loader('display');
                 },
@@ -958,8 +958,8 @@ app.Router = Backbone.Router.extend({
 	    			}
 		            app.collections.claimersServices.fetch({
 		            	success: function(){
-		                    app.views.categoriesListView = new app.Views.CategoriesListView({page: self.page});
-		                    self.render(app.views.categoriesListView);
+		                    app.views.categoriesTasksListView = new app.Views.CategoriesTasksListView({page: self.page});
+		                    self.render(app.views.categoriesTasksListView);
 		                }
 		            });
                 },
