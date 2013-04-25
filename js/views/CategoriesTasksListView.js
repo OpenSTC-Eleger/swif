@@ -143,8 +143,13 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 				app.views.selectListCategoriesView.setSelectedItem( this.selectedCatJson.parent_id[0] );	
 	
         }  
-        
-        $('#modalSaveCat .modal-body').css("height", "800px");
+
+		
+		// Set the focus to the first input of the form //
+		$('#modalSaveCat').on('shown', function (e) {
+			$(this).find('input:not(:disabled), textarea').first().focus();
+		})
+        //$('#modalSaveCat .modal-body').css("height", "800px");
 
     },
     
@@ -232,7 +237,7 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 	    this.modelId = this.selectedCatJson==null?0: this.selectedCatJson.id;
 	    var self = this;
 
-	    app.Models.Category.prototype.save(
+	    app.Models.CategoryTask.prototype.save(
 	    	this.params, 
 	    	this.modelId, {
 				success: function(data){
@@ -242,7 +247,7 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 					}
 					else{
 						if( self.modelId==0 ){
-							self.model = new app.Models.Category({id: data.result.result});
+							self.model = new app.Models.CategoryTask({id: data.result.result});
 						}
 						
 						self.params.parent_id = self.getIdInDropDown(app.views.selectListCategoriesView);						
@@ -251,7 +256,7 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 						self.model.update(self.params);
 						app.collections.categoriesTasks.add(self.model);
 						$('#modalSaveCat').modal('hide');
-						app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
+						app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.catCreateOk);
 						self.render();
 					}				
 				},
@@ -275,7 +280,7 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
-					app.collections.categories.remove(self.model);
+					app.collections.categoriesTasks.remove(self.model);
 					$('#modalDeleteCat').modal('hide');
 					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.catDeleteOk);
 					self.render();

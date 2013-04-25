@@ -43,7 +43,7 @@
 				<tr class="row-item" id="cat_<%= cat.id %>">
 					<td><i class="icon-tag"></i>&nbsp; <%= cat.name %>
 						<p class="row-actions invisible">
-							<a href="#modalSaveCat" class="modalSaveCat" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
+							<a href="#modalSaveCat" class="modalSaveCat" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
 							<a href="#modalDeleteCat" class="modalDeleteCat" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</td>
@@ -158,7 +158,7 @@
 				<label for="catUnit" class="control-label"><%= _.capitalize(lang.unit) %>:</label>
 
 				<div class="controls">
-					<input type="text" id="catUnit" maxlength="2"/>
+					<input type="text" id="catUnit" maxlength="2" class="input-mini" />
 					<span class="help-inline"></span>
 				</div>
 			</div>
