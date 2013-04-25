@@ -305,7 +305,7 @@ app.Views.TasksListView = Backbone.View.extend({
 			
 			$(self.el).html(template);
 
-			app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categories})
+			app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categoriesTasks})
 			app.views.selectListAssignementsView.clearAll();
 			app.views.selectListAssignementsView.addEmptyFirst();
 			app.views.selectListAssignementsView.addAll();
