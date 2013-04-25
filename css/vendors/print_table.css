@@ -32,27 +32,20 @@
 	border-style: none;
 }
 .dataTables_length img {
-
 	right:0px;
 	top:0px;
 	border: none 0px;
 	border-style: none;
 	background-color: white;
-	background: transparent url("images/pontlabbelogo.png") no-repeat top right;
 	text-indent: -1000em;
 }
 
 .dataTables_filter {
-	float: left;
-    width: 135px;
-    height: 100px;
+    float: right;
     border: none 0px;
 	border-style: none;
 	background-color: white;
-	background: transparent url("images/pontlabbelogo.png") no-repeat top right;
-    float: right;
     text-align: right;
-    width: 50%;
 }
 .dataTables_info {
     float: left;

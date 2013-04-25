@@ -7,7 +7,7 @@ var app = {
 	
 		
     // Global variables app //
-    appVersion      : '0.1 alpha',
+    appVersion      : '0.1.0 alpha',
     userBDD         : 'pontlabbe2',
     uniq_id_counter : 0,	
     
