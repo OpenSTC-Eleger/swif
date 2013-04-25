@@ -338,9 +338,10 @@ div.div-actions{
 
 // object Actions //
 .object-actions, .place-actions, .row-actions{
+	display: inline;
 	font-size: 85%;
 	width: auto;
-	margin: 0 0 0 16px;
+	margin: 0 0 0 15px;
 }
 .row-actions.no-margin{
 	margin: 0;	
@@ -459,9 +460,6 @@ table.table-objects tbody > tr:nth-child(4n+1){
 }
 table.table-objects tbody tr:hover > td{
 	background-color: @tableBackgroundHover;
-}
-tr.row-object > td, tr.row-item td{
-	padding-bottom: 2px;
 }
 tr.row-nested-objects-collapse{
 	.hide();

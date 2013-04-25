@@ -78,7 +78,7 @@
 	"serviceConcerned" 		: "Service concerné",
 	"action" 				: "actions",
 	"category"				: "catégorie",
-	"parentCategory"		: "catégorie parent",
+	"parentCategory"		: "catégorie parente",
 	"intervention"			: "intervention",
 	"assignedTo"			: "assigné à",
 	"startHour" 			: "Heure début",
@@ -202,7 +202,8 @@
 		"confirmDeleteClaimer" 	: "Etes-vous sûr de vouloir supprimer ce demandeur ?",
 		"confirmDeleteTeam" 	: "Etes-vous sûr de vouloir supprimer cette équipe ?",
 		"confirmDeleteTask" 	: "Etes-vous sûr de vouloir supprimer cette tâche ?",
-		"confirmDeleteEquipment": "Etes-vous sûr de vouloir supprimer ce matériel ?"
+		"confirmDeleteEquipment": "Etes-vous sûr de vouloir supprimer ce matériel ?",
+		"confirmDeleteCategory" : "Etes-vous sûr de vouloir supprimer cette catégorie ?"
 	},
 
 	"infoMessages" : {
@@ -252,6 +253,7 @@
     	"refuseRequest" 		 : "Refus de la demande",
     	"deleteTask"	 		 : "Suppression de la tâche",
     	"deleteEquipment"	 	 : "Suppression du matériel",
+    	"deleteCategory"		 : "Suppression de la catégorie",
     	"cancelIntervention" 	 : "Annulation de l'intervention",
     	"confirmChief"			 : "Remonter la demande au DST",
     	"serviceDetail"			 : "Détail du service",
