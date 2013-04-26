@@ -32,7 +32,7 @@
 					<th><%= _.capitalize(lang.name) %></th>
 					<th><%= _.capitalize(lang.immat) %></th>					
 					<th><%= _.capitalize(lang.marque) %></th>	
-					<th><%= _.capitalize(lang.usage) %></th>
+					<th class="hidden-phone"><%= _.capitalize(lang.usage) %></th>
 					<th><%= _.capitalize(lang.type) %></th>
 					<th><%= _.capitalize(lang.cv) %></th>
 					<th><%= _.capitalize(lang.year) %></th>
@@ -49,14 +49,14 @@
 				<!-- Categorie row -->
 				<tr class="row-item" id="equipment_<%= equipment.id %>">
 					<td><i class="icon-wrench"></i> <%= equipment.name %>
-						<p class="row-actions no-margin invisible">
-							<a href="#modalSaveEquipment" class="modalSaveEquipment" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
+						<p class="row-actions invisible">
+							<a href="#modalSaveEquipment" class="modalSaveEquipment" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
 							<a href="#modalDeleteEquipment" class="modalDeleteEquipment" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</td>
 					<td><%= (equipment.immat != false ? equipment.immat : "")%></td>
 					<td><%= (equipment.marque != false ? equipment.marque : "")%></td>
-					<td><%= (equipment.usage != false ? equipment.usage : "")%></td>
+					<td class="hidden-phone"><%= (equipment.usage != false ? equipment.usage : "")%></td>
 					<td><%= (equipment.type != false ? equipment.type : "")%></td>
 					<td><%= (equipment.cv != false ? equipment.cv : "")%></td>
 					<td><%= (equipment.year != false ? equipment.year : "")%></td>

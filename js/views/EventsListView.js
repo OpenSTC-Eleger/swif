@@ -123,6 +123,10 @@ app.Views.EventsListView = Backbone.View.extend({
 			if(task.getInterventionId() != ''){ taskInter = "<i class='icon-pushpin'></i> " + task.getInterventionName() + " -"; }
 			var tasksInfo = taskInter + " " + task.getName();
 
+			// Display a label with the state of the task //
+			
+			tasksInfo += '<span class="label label-'+task.getColor()+' pull-right">'+task.getStateTranslate()+'</span>';
+
 
 			// Check if the task is set to an officer or a team //
 			if(task.getTeamId() == false){ 
@@ -177,35 +181,33 @@ app.Views.EventsListView = Backbone.View.extend({
 
         
         getColor: function(task) {
-        	var color = 'green';
-        	if ( task.team_id )
-        		color = 'grey'
-        			
-        	switch (task.state) {
-        		case app.Models.Task.state[0].value:
-			    	color = app.Models.Task.state[0].color;
+        	var classColor = '';
+
+			switch (task.state) {
+				case app.Models.Task.state[0].value:
+			    	classColor = app.Models.Task.state[0].color;
 			    	break;
-        		case app.Models.Task.state[1].value:
-        			color = app.Models.Task.state[1].color;
-		    		break;
-        		case app.Models.Task.state[2].value:
-        			color = app.Models.Task.state[2].color;
-	    			break;
-        		case app.Models.Task.state[3].value:
-        			color = app.Models.Task.state[3].color;
-    				break;
-        		case app.Models.Task.state[4].value:
-        			color = app.Models.Task.state[4].color;
-    				break;
-        		case app.Models.Task.state[5].value:
-        			color = app.Models.Task.state[5].color;
-    				break;
-    			default:
-        			color = app.Models.Task.state[3].color;
-        			break;
+				case app.Models.Task.state[1].value:
+					classColor = app.Models.Task.state[1].color;
+					break;
+				case app.Models.Task.state[2].value:
+					classColor = app.Models.Task.state[2].color;
+					break;
+				case app.Models.Task.state[3].value:
+					classColor = app.Models.Task.state[3].color;
+					break;
+				case app.Models.Task.state[4].value:
+					classColor = app.Models.Task.state[4].color;
+					break;
+				case app.Models.Task.state[5].value:
+					classColor = app.Models.Task.state[5].color;
+					break;
+				default:
+					classColor = app.Models.Task.state[3].color;
+					break;
         	}
-        	
-        	return color;
+
+        	return classColor;
         },
 
 
@@ -217,25 +219,23 @@ app.Views.EventsListView = Backbone.View.extend({
         	_.each(this.filterTasks , function (task, i){
         		var actionDisabled = task.state == app.Models.Task.state[1].value || task.state == app.Models.Task.state[4].value;
 
-        		console.log(task.date_start);
-        		console.debug(task);
+        		var event = { 
+        			id: task.id, 
+					state: task.state,
+					title: task.name, 
+					start: task.date_start!=false?task.date_start.toDate():null,
+					end: task.date_end!=false?task.date_end.toDate():null,
+					planned_hours: task.planned_hours,
+					total_hours: task.total_hours,
+					effective_hours: task.effective_hours,
+					remaning_hours: task.remaining_hours,
+					allDay: false,
+					className: 'calendar-'+self.getColor(task),
+					editable: true,
+					disableDragging: actionDisabled,
+					disableResizing: actionDisabled,
+				};
 
-        		var event = { id: task.id, 
-        		              state: task.state,
-        		              title: task.name, 
-        		              start: task.date_start!=false?task.date_start.toDate():null,
-        		              end: task.date_end!=false?task.date_end.toDate():null,
-        		              planned_hours: task.planned_hours,
-        		              total_hours: task.total_hours,
-        		              effective_hours: task.effective_hours,
-        		              remaning_hours: task.remaining_hours,
-        		              allDay: false,
-        		              color: self.getColor(task),
-        		              //className: 'calendar-overrun',
-        		              editable: true,
-        		              disableDragging: actionDisabled,
-        		              disableResizing: actionDisabled,
-        		             };
         		self.events.push(event);
         	});
         	
@@ -254,6 +254,8 @@ app.Views.EventsListView = Backbone.View.extend({
 						end : endDate,
 					};
 		},        
+
+
 
 		removeEvent: function(array,s){
 			var index = array.indexOf(s);
@@ -415,7 +417,7 @@ app.Views.EventsListView = Backbone.View.extend({
 				    });	
 		    		$('#modalAbsentTask .dismiss').one('click .dismiss', function (event) {
 		    			event.preventDefault();
-		    			 $("#modalAbsentTask").unbind('submit'); 
+		    			 $('#modalAbsentTask').unbind('submit'); 
 		    		});
 				    modalAbsentTask.modal();
 				},
@@ -423,8 +425,9 @@ app.Views.EventsListView = Backbone.View.extend({
 
 
 				start: function (event, ui){
-					$("modalAbsentTask").modal();
+					$('modalAbsentTask').modal();
 				},
+
 
 
 				/** When a event is Drop on the calendar
@@ -507,7 +510,7 @@ app.Views.EventsListView = Backbone.View.extend({
     	
 			// Print button
 			$('<span class="fc-button-print">' 
-				   +'<button class="btn btn-primary btn-small no-outline " ><i class="icon-print"></i></button></span>')
+				   +'<button class="btn btn-primary btn-small no-outline"><i class="icon-print"></i></button></span>')
 				  //+('labels', 'Print') + '</span>')
 				  .appendTo(self.elStringId + ' td.fc-header-right')
 				  .button()

@@ -462,7 +462,7 @@ app.Views.PlanningView = Backbone.View.extend({
 				}
 			},
 			error: function(e){
-				alert("Impossible de supprimer la tâche");
+				alert('Impossible de supprimer la tâche');
 			}
 
 		});
@@ -513,11 +513,11 @@ app.Views.PlanningView = Backbone.View.extend({
     	this.pos = e.currentTarget.id;
     	
         //Display only categories in dropdown belongs to intervention
-        var categoriesFiltered = null;
+        var categoriesTasksFiltered = null;
         var inter = app.collections.interventions.get(this.pos);
         if( inter) {
         	var interJSON = inter.toJSON();        	
-	        categoriesFiltered = _.filter(app.collections.categories.models, function(item){ 
+	        categoriesTasksFiltered = _.filter(app.collections.categoriesTasks.models, function(item){ 
 	        	var services = [];
 	        	_.each( item.attributes.service_ids.models, function(service){
 	        		services.push( service.toJSON().id );
@@ -527,7 +527,7 @@ app.Views.PlanningView = Backbone.View.extend({
 		}
 		
 		app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
-			collection: categoriesFiltered==null?app.collections.categories: new app.Collections.Categories(categoriesFiltered)
+			collection: categoriesTasksFiltered==null?app.collections.categoriesTasks: new app.Collections.CategoriesTasks(categoriesTasksFiltered)
 		})
 		app.views.selectListAssignementsView.clearAll();
 		app.views.selectListAssignementsView.addEmptyFirst();

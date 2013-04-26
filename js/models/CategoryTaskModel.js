@@ -1,7 +1,7 @@
 /******************************************
-* Category Model - Task category
+* Category Task Model - Task category
 */
-app.Models.Category = Backbone.RelationalModel.extend({
+app.Models.CategoryTask = Backbone.RelationalModel.extend({
     
 	model_name : 'openstc.task.category',	
 	

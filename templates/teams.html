@@ -9,12 +9,12 @@
 <div class="container-fluid">
 
 	<div class="span6">
-		<!-- Check if there is Teams in the Database -->
+		<!-- Check if there is Teams to Display -->
 		<% if(nbTeams > 0) { %>
 
 			<!-- Table toolbar -->
 			<div class="tableToolbar">
-				<a href="#modalSaveTeam" class="btn btn-primary modalSaveTeam" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addTeam) %></a>
+				<a href="#modalSaveTeam" class="btn btn-primary modalSaveTeam" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addTeam) %></a>
 
 				<form class="form-search pull-right">
 					<div class="input-append">
@@ -96,12 +96,12 @@
 		<% }
 		else { %>
 			<div class="tableToolbar">
-				<a href="#modalSaveTeam" class="btn btn-primary modalSaveTeam" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addTeam) %></a>
+				<a href="#modalSaveTeam" class="btn btn-primary modalSaveTeam" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addTeam) %></a>
 			</div><br />
 
-			<!-- No team in the Database -->
+			<!-- No team to Display -->
 			<div class="alert alert-info">
-				<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTeam %>.
+				<i class="icon-info icon-large"></i> &nbsp;<%= lang.infoMessages.noTeam %>.
 			</div>
 
 		<% } %>

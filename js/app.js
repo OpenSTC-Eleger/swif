@@ -7,7 +7,7 @@ var app = {
 	
 		
     // Global variables app //
-    appVersion      : '0.1 alpha',
+    appVersion      : '0.1.0 alpha',
     userBDD         : 'pontlabbe2',
     uniq_id_counter : 0,	
     
@@ -90,8 +90,8 @@ var app = {
                 app.models.request = new app.Models.Request();
                 app.models.place = new app.Models.Place();
                 app.models.service = new app.Models.ClaimerService();
-                app.models.category = new app.Models.Category();
-                //app.models.claimer = new app.Models.Claimer();
+                app.models.categoryTask = new app.Models.CategoryTask();
+                app.models.categoryIntervention = new app.Models.CategoryIntervention();
                 app.models.claimerContact = new app.Models.ClaimerContact();
                 app.models.claimerType = new app.Models.ClaimerType();
 

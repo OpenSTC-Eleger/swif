@@ -116,7 +116,7 @@ div.page-header{
 
 
 
-/* New TEXT COLOR
+/* New TEXT color
 -------------------------------------------------- */
 .text-important        { color: @errorText; }
 a.text-important:hover { color: darken(@errorText, 10%); }
@@ -133,6 +133,9 @@ a.text-muted:hover { color: darken(@grayLight, 10%); }
   	// Template (yellow)
   	&-template           { background-color: @yellow; }
   	&-template[href]     { background-color: darken(@yellow, 10%); }
+	// Absent (pink)
+  	&-absent           { background-color: @pink; }
+  	&-absent[href]     { background-color: darken(@pink, 10%); }
 }
 
 
@@ -150,6 +153,26 @@ a.text-muted:hover { color: darken(@grayLight, 10%); }
 	&-success{ border-left-color: @successText; }
 	&-overrun{ border-left-color: @purple; }
 	&-template{ border-left-color: @yellow; }
+}
+
+
+/* Calendar Color
+-------------------------------------------------- */
+.calendar-success.fc-event {
+	border-color: darken(@successText, 5%);
+	div.fc-event-skin, div.fc-event-inner{ background-color: @successText; border-color: darken(@successText, 5%); }
+}
+.calendar-info.fc-event {
+	border-color: darken(@infoText, 5%);
+	div.fc-event-skin, div.fc-event-inner { background-color: @infoText; border-color: darken(@infoText, 5%)}
+}
+.calendar-default.fc-event { 
+	border-color: darken(@grayLight, 5%);
+	div.fc-event-skin, div.fc-event-inner { background-color: @grayLight; border-color: darken(@grayLight, 5%)}
+}
+.calendar-absent.fc-event {
+	border-color: darken(#C3325F, 5%);
+	div.fc-event-skin, div.fc-event-inner { background-color: @pink; border-color: darken(@pink, 5%)}
 }
 
 
@@ -199,10 +222,9 @@ a.text-overrun:hover   { color: darken(@purple, 10%); }
 	min-height: 250px;
 	padding: 15px;
 	background-color: @infoBackground;
-	background-image: url('images/drop_zone.png');
+	background-image: url('images/drop_area.png');
 	background-repeat: no-repeat;
 	background-position: center;
-
 
 	li:not(.media) > a:hover{
 		background-color: rgba(red(@infoText), green(@infoText), blue(@infoText), 0.15);
@@ -315,9 +337,10 @@ div.div-actions{
 
 // object Actions //
 .object-actions, .place-actions, .row-actions{
+	display: inline;
 	font-size: 85%;
 	width: auto;
-	margin: 0 0 0 16px;
+	margin: 0 0 0 15px;
 }
 .row-actions.no-margin{
 	margin: 0;	
@@ -436,9 +459,6 @@ table.table-objects tbody > tr:nth-child(4n+1){
 }
 table.table-objects tbody tr:hover > td{
 	background-color: @tableBackgroundHover;
-}
-tr.row-object > td, tr.row-item td{
-	padding-bottom: 2px;
 }
 tr.row-nested-objects-collapse{
 	.hide();
