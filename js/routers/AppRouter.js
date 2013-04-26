@@ -30,8 +30,6 @@ app.Router = Backbone.Router.extend({
 
         'sites'                                 : 'places',
         'sites/page:page'                       : 'places',
-//        'sites/add'           					: 'detailsPlace',
-//        'sites/:id'    							: 'detailsPlace',
 
         'services'                              : 'services',
         'services/page:page'                    : 'services',
