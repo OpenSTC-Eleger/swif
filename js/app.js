@@ -7,23 +7,23 @@ var app = {
 	
 		
     // Global variables app //
-    appVersion      : '0.1.0 alpha',
+    appVersion      : '0.1 alpha',
     userBDD         : 'pontlabbe2',
     uniq_id_counter : 0,	
     
 
-//    urlOE                       : 'http://localhost:8069',
-//    urlGEO_OWS                  : 'http://localhost:8080/geoserver/ows',
-//    urlGEO_WFS                  : 'http://localhost:8080/geoserver/wfs',
-//    urlGEO_NS                   : 'http://localhost:8080/openstc',
-//    geoportail_key				: 'c5r5vzh6cxavj6wm90kz09i5',	
+    urlOE                       : 'http://localhost:8069',
+    urlGEO_OWS                  : 'http://localhost:8080/geoserver/ows',
+    urlGEO_WFS                  : 'http://localhost:8080/geoserver/wfs',
+    urlGEO_NS                   : 'http://localhost:8080/openstc',
+    geoportail_key				: 'c5r5vzh6cxavj6wm90kz09i5',	
 
     
-    urlGEO_OWS                  : 'http://octm-dev.siclic.fr:8080/geoserver/ows',
-    urlGEO_WFS                  : 'http://octm-dev.siclic.fr:8080/geoserver/wfs',
-    urlGEO_NS                   : 'http://octm-dev.siclic.fr:8080/openstc',
-    urlOE                       : 'http://octm-dev.siclic.fr:8069', 
-    geoportail_key				: '67pp504oivujlyi0l893925n',
+//    urlGEO_OWS                  : 'http://octm-dev.siclic.fr:8080/geoserver/ows',
+//    urlGEO_WFS                  : 'http://octm-dev.siclic.fr:8080/geoserver/wfs',
+//    urlGEO_NS                   : 'http://octm-dev.siclic.fr:8080/openstc',
+//    urlOE                       : 'http://octm-dev.siclic.fr:8069', 
+//    geoportail_key				: '67pp504oivujlyi0l893925n',
 
 
 /*    urlOE                     : 'http://46.105.77.18:8069',
@@ -90,8 +90,8 @@ var app = {
                 app.models.request = new app.Models.Request();
                 app.models.place = new app.Models.Place();
                 app.models.service = new app.Models.ClaimerService();
-                app.models.categoryTask = new app.Models.CategoryTask();
-                app.models.categoryIntervention = new app.Models.CategoryIntervention();
+                app.models.category = new app.Models.Category();
+                //app.models.claimer = new app.Models.Claimer();
                 app.models.claimerContact = new app.Models.ClaimerContact();
                 app.models.claimerType = new app.Models.ClaimerType();
 
