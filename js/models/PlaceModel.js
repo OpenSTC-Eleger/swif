@@ -27,7 +27,14 @@ app.Models.Place = Backbone.RelationalModel.extend({
 			//collectionType: 'app.Collections.Requests',
 			includeInJSON: ['id','name'],
 			
-		}
+		},
+		{
+			type: Backbone.HasMany,
+			key: 'service_ids',
+			relatedModel: 'app.Models.ClaimerService',
+			collectionType: 'app.Collections.ClaimersServices',
+			includeInJSON: ['id', 'name'],
+		},
 
 	],
 
@@ -109,7 +116,8 @@ app.Models.Place = Backbone.RelationalModel.extend({
 
     
     /** Model Parser */
-    parse: function(response) {    	
+    parse: function(response) {  
+    	//response.name = _.swapCase( _.capitalize(response.name) ) ;
         return response;
     },
     
@@ -125,7 +133,11 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		this.setSurface( params.surface );
 	},
     
-
+    /** Save Model
+	*/
+	save: function(data, id, options) { 
+		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
+	},
 
     /** Save Model
 	*/

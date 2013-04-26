@@ -13,7 +13,7 @@
 
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
-			<a href="#sites/add" class="btn btn-primary"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addPlace) %></a>	
+			<a href="#modalSavePlace" class="btn btn-primary modalSavePlace" data-toggle="modal"><i class="icon-plus-sign"></i> <%= _.capitalize(lang.actions.addPlace) %></a>	
 
 			<form class="form-search pull-right">
 				<div class="input-append">
@@ -44,7 +44,7 @@
 					<td>
 						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= places[i].name %>
 						<p class="row-actions invisible">
-							<a href="#sites/<%= places[i].id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
+							<a href="#modalSavePlace"  class="modalSavePlace" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
 							<a href="#modalDeletePlace" class="modalDeletePlace" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</td>
@@ -122,57 +122,71 @@
 	</div>
 	
 	<div class="modal-body">
-		<form id="formAddPlace" action="#" class="form-horizontal">
+		<form id="formSavePlace" action="#" class="form-horizontal">
 
 			<fieldset>
 				<legend><%= lang.aboutThePlace %></legend>
 			
-			<!-- Place name -->
-			<div class="control-group">
-				<label for="placeName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
-
-				<div class="controls">
-					<input type="text" id="placeName" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
-
-			<!-- Place Type -->
-			<div class="control-group">
-				<label for="placeType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
-
-				<div class="controls">
-					<select id="placeType"></select>
-					<span class="help-inline"></span>
-				</div>
-			</div>
-
-			</fieldset>
-
-
-			<fieldset>
-				<legend><%= _.capitalize(lang.organization) %></legend>
-
-				<!-- Place Service -->
+				<!-- Place name -->
 				<div class="control-group">
-					<label for="placeService" class="control-label"><%= _.capitalize(lang.service) %>:</label>
-
+					<label for="placeName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
+	
 					<div class="controls">
-						<select id="placeService"></select>
+						<input type="text" id="placeName" />
+						<span class="help-inline"></span>
+					</div>
+				</div>
+	
+				<!-- Place Type -->
+				<div class="control-group">
+					<label for="placeType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
+	
+					<div class="controls">
+						<select id="placeType"></select>
 						<span class="help-inline"></span>
 					</div>
 				</div>
 
+
+			</fieldset>
+			
+			<!-- Equipments -->
+			<fieldset>
+				<legend><i class="icon-wrench"></i> <%= _.capitalize(lang.service) %></legend>
+
+				<!-- Services Management -->
+				<div class="row-fluid marginTop servicesDroppableArea">
+					
+					<div class="span6">
+						<div class="widget-title">
+							<h4>Services de l'équipe <span class="badge pull-right"></span></h4>
+						</div>
+		
+						<ul id="placeServices" class="sortableServicesList sortable unstyled nav nav-list drop-area">
+		
+						</ul>
+					</div>
+		
+					<div class="span6">
+						<div class="widget-title">
+							<h4>Autre services <span class="badge pull-right" id="badgeNbServices"></span></h4>
+						</div>
+		
+						<ul id="servicesList" class="sortableServicesList sortable unstyled nav nav-list">
+						</ul>
+					</div>
+		
+				</div>
+				
+				<legend><i class="icon-wrench"></i> <%= _.capitalize(lang.parentPlace) %></legend>
 				<!-- Place Parent Place -->
 				<div class="control-group">
-					<label for="placeParentPlace" class="control-label"><%= _.capitalize(lang.parentPlace) %>:</label>
-
 					<div class="controls">
 						<select id="placeParentPlace"></select>
 						<span class="help-inline"></span>
 					</div>
 				</div>
-
+				
 			</fieldset>
 
 
@@ -214,9 +228,10 @@
 		</form>
 	</div>
 	
+	
 	<div class="modal-footer">
-		<button type="submit" form="formAddPlace" class="btn btn-primary saveTask"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
-		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+		<button type="submit" form="formSavePlace" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+		<a href="#places" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>
 
