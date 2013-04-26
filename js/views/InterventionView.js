@@ -191,15 +191,22 @@ app.Views.InterventionView = Backbone.View.extend({
 		if( service!= null ) {
 			app.views.selectListServicesView.setSelectedItem( service );
 			places = app.collections.places.models;
-			var placesFiltered = _.filter(places, function(item){ 
-				return item.attributes.service[0] == service; 
-	        });
-			app.views.selectListPlacesView.collection = new app.Collections.Places(placesFiltered);
+			
+			//keep only places belongs to service selected
+			keepedPlaces = _.filter(places, function(item){ 
+				var placeJSON = item.toJSON();
+				var placeServices = placeJSON.service_ids;	
+				var placeServices = [];
+				_.each( item.attributes.service_ids.models, function(s){
+					placeServices.push( s.toJSON().id );
+				});				
+				return $.inArray(service, placeServices)!=-1
+			});
+			app.views.selectListPlacesView.collection = new app.Collections.Places(keepedPlaces);
 			app.views.selectListPlacesView.clearAll();
 			app.views.selectListPlacesView.addEmptyFirst();
 			app.views.selectListPlacesView.addAll();
-			
-		}				
+		}	
 	},
 
 
@@ -207,7 +214,7 @@ app.Views.InterventionView = Backbone.View.extend({
 	fillDropdownService: function(e){
 		e.preventDefault();
 		$('#interventionPlace').val('');
-		this.renderService($(e.target).attr('value'));
+		this.renderService( _($(e.target).prop('value')).toNumber() );
 	},
 
 
