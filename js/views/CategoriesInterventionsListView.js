@@ -56,6 +56,9 @@ app.Views.CategoriesInterventionsListView = Backbone.View.extend({
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
 
+		console.log("------------------------------>");
+		console.log(categories);
+
 		
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -107,9 +110,11 @@ app.Views.CategoriesInterventionsListView = Backbone.View.extend({
         
         // Reset Form //
         $('#catName').val('');
+        $('#catCode').val('');
 
         if( this.selectedCatJson ) {
 			$('#catName').val(this.selectedCatJson.name);
+			$('#catCode').val(this.selectedCatJson.code);
         }  
 
 		
@@ -129,6 +134,7 @@ app.Views.CategoriesInterventionsListView = Backbone.View.extend({
     	this.setModel(e);
 
         $('#infoModalDeleteCat p').html(this.selectedCatJson.name);
+        $('#infoModalDeleteCat small').html(this.selectedCatJson.code);
     },
     
 	
@@ -143,6 +149,7 @@ app.Views.CategoriesInterventionsListView = Backbone.View.extend({
      
 		this.params = {	
 			name: this.$('#catName').val(),
+			code: this.$('#catCode').val(),
 		};
 
      

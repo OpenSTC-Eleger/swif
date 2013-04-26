@@ -35,7 +35,16 @@ app.Models.CategoryIntervention = Backbone.RelationalModel.extend({
     setName : function(value) {
     	if( value == 'undefined') return;
         this.set({ name : value });
+    },
+
+	getCode : function() {
+        return this.get('code');
+    },
+    setCode : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ code : value });
     }, 
+
 
 
 	/** Model Initialization
@@ -55,6 +64,7 @@ app.Models.CategoryIntervention = Backbone.RelationalModel.extend({
 
     update: function(params) {
 		this.setName(params.name);
+		this.setCode(params.code);
 	},
     
 

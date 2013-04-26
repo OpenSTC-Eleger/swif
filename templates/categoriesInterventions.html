@@ -30,6 +30,7 @@
 			<thead>
 				<tr>
 					<th><%= _.capitalize(lang.name) %></th>
+					<th><%= _.capitalize(lang.code) %></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -44,6 +45,7 @@
 							<a href="#modalDeleteCat" class="modalDeleteCat" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</td>
+					<td><%= cat.code %></td>
 				</tr>
 
 			<% }; %>
@@ -123,6 +125,16 @@
 
 				<div class="controls">
 					<input type="text" id="catName" name="catName" required="required" />
+					<span class="help-inline"></span>
+				</div>
+			</div>
+
+			<!-- Categorie code -->
+			<div class="control-group">
+				<label for="catCode" class="control-label"><%= _.capitalize(lang.code) %>:</label>
+
+				<div class="controls">
+					<input type="text" id="catCode" name="catCode" required="required" class="input-small" />
 					<span class="help-inline"></span>
 				</div>
 			</div>

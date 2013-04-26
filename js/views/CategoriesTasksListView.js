@@ -69,8 +69,8 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 				pageCount: pageCount,
 			});
 
-			$(self.el).html(template);			
-						
+			$(self.el).html(template);
+
 			$('#catServices, #servicesList').sortable({
 				connectWith: 'ul.sortableServicesList',
 				dropOnEmpty: true,
@@ -84,12 +84,12 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 				receive: function(event, ui){
 					//self.saveServicesCategories();
 				}
-			});			
+			});
 			
 		});
 
 		$(this.el).hide().fadeIn('slow');
-		
+
         return this;
     },
     
@@ -119,8 +119,8 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
         	this.selectedCatJson = this.model.toJSON();
         }
         else {
-        	this.selectedCatJson = null;        	
-        }        
+        	this.selectedCatJson = null;
+        }
     },
 
 
@@ -145,7 +145,7 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 			if( this.selectedCatJson.parent_id )
 				app.views.selectListCategoriesView.setSelectedItem( this.selectedCatJson.parent_id[0] );	
 	
-        }  
+        }
 
 		
 		// Set the focus to the first input of the form //
@@ -205,7 +205,7 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
     /** Display information in the Modal view
     */
     modalDeleteCat: function(e){
-        
+
         // Retrieve the ID of the categorie //
     	this.setModel(e);
 
@@ -217,7 +217,7 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 
 	/** Save  place
 	*/
-	saveCat: function(e) {		     
+	saveCat: function(e) {
     	e.preventDefault();
 
 	     var self = this;
@@ -225,11 +225,11 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 	     var parent_id = this.getIdInDropDown(app.views.selectListCategoriesView);
 	     this.services = _.map($("#catServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });     
 	     
-	     this.params = {	
-		     name: this.$('#catName').val(),
-		     code: this.$('#catCode').val(),
-		     unit: this.$('#catUnit').val(),
-		     parent_id: parent_id,
+	     this.params = {
+			name: this.$('#catName').val(),
+			code: this.$('#catCode').val(),
+			unit: this.$('#catUnit').val(),
+			parent_id: parent_id,
 		     service_ids: [[6, 0, this.services]],
 	     };
 	     
@@ -259,7 +259,7 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 						$('#modalSaveCat').modal('hide');
 						app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.catCreateOk);
 						self.render();
-					}				
+					}
 				},
 				error: function(e){
 					alert("Impossible de mettre à jour le site");
@@ -273,7 +273,7 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
     */
     deleteCat: function(e){
     	e.preventDefault();
-    	
+
        	var self = this;
 		this.model.delete({
 			success: function(data){
