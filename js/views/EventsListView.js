@@ -45,10 +45,10 @@ app.Views.EventsListView = Backbone.View.extend({
 				_.each(object.attributes.user_ids.models, function(user){
 					if( user!=null && user.attributes.tasks != null && 
 							user.attributes.tasks.models.length>0 )
-						that.filterTasks = _.union(that.filterTasks, user.attributes.tasks.toJSON());	
+						that.filterTasks = _.union(that.filterTasks, user.attributes.tasks.toJSON());
 				})
 			}
-			
+
 		}
 		else{
 			
@@ -114,6 +114,8 @@ app.Views.EventsListView = Backbone.View.extend({
 
             // Reset the modal Buttons //
             $('#btnRemoveTask').prop('disabled', false);
+           	$('#switchWithForeman').bootstrapSwitch('setActive', true);
+            
 			
             // Retrieve the Task //
 			var task = app.collections.tasks.get(fcEvent.id);
@@ -131,9 +133,11 @@ app.Views.EventsListView = Backbone.View.extend({
 			// Check if the task is set to an officer or a team //
 			if(task.getTeamId() == false){ 
 				var assignTo = "<br /> <i class='icon-user'></i> " + task.getUserName();
+				$('#formModalAboutTask').hide();
 			}
 			else{
 				var assignTo = "<br /><i class='icon-group'></i> " + task.getTeamName();
+				$('#formModalAboutTask').show();
 			}
 
 			$('#infoModalAboutTask p').html(tasksInfo);
@@ -142,6 +146,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			// Disable or not the button "Remove Of The Schedule" //
 			if(task.getState() == app.Models.Task.state[1].value || task.getState() == app.Models.Task.state[2].value || task.getState() == app.Models.Task.state[4].value){
             	$('#btnRemoveTask').prop('disabled', true);
+            	$('#switchWithForeman').bootstrapSwitch('setActive', false);
 			}
 
 

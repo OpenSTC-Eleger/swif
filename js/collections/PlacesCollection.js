@@ -37,7 +37,7 @@ app.Collections.Places = Backbone.Collection.extend({
     /** Comparator for ordering collection
     */
     comparator: function(item) {
-	  return _.titleize( item.get('name').toLowerCase() ) ;
+	  return item.get('name');
 	},
 
 

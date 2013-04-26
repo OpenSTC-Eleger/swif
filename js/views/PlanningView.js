@@ -34,7 +34,8 @@ app.Views.PlanningView = Backbone.View.extend({
         
         'submit #formAddTask'         			        : 'saveTask',   
         'submit #formAddIntervention' 			        : 'saveIntervention', 
-        'switch-change .switch'                         : 'scheduledInter',
+        'switch-change .calendarSwitch'                 : 'scheduledInter',
+        'switch-change #switchWithForeman'              : 'setForemanInTeam',
 
         
         'change #interventionDetailService'             : 'fillDropdownService',
@@ -692,6 +693,23 @@ app.Views.PlanningView = Backbone.View.extend({
 			    },           
 			},false);
 	},
+
+
+
+    /** Set or no the Foreman in the team
+    */
+    setForemanInTeam: function(e){
+
+        var foremanState = $(e.target);
+
+        // Retrieve the new status //
+        if(foremanState.bootstrapSwitch('status')){
+            console.log('Avec le chef d"équipe');
+        }
+        else{
+            console.log('Sans le chef d"equipe');
+        }
+    },
 
 
 

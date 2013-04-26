@@ -1,0 +1,101 @@
+
+<% if ( place.id != null && place.id !=0 ) { %>
+    <h1><%= lang.viewsTitles.placeDetail %> n°<%= place.id %></h1><br />
+<% } else { %>
+    <h1><%= lang.viewsTitles.newPlace %></h1><br />
+<% } %>
+
+
+<form id="formPlace" action="#" class="form-horizontal container-fluid">
+    
+    <div class="row-fluid">        
+        
+		<fieldset>
+			<legend><%= lang.aboutThePlace %></legend>
+			
+			<!-- Place name -->
+			<div class="control-group">
+				<label for="placeName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
+
+				<div class="controls">
+					<input type="text" id="placeName" required>
+				</div>
+				
+			</div>
+
+			<!-- Place Type -->
+			<div class="control-group">
+				<label for="placeType" class="control-label" ><%= _.capitalize(lang.type) %>:</label>
+
+				<div class="controls">
+					<select id="placeType" required="required"></select>
+					<span class="help-inline"></span>
+				</div>
+			</div>
+
+				<legend><%= _.capitalize(lang.organization) %></legend>
+
+				<!-- Place Service -->
+				<div class="control-group">
+					<label for="placeService" class="control-label" ><%= _.capitalize(lang.service) %>:</label>
+
+					<div class="controls">
+						<select id="placeService" required="required"></select>
+						<span class="help-inline"></span>
+					</div>
+				</div>
+
+				<!-- Place Parent Place -->
+				<div class="control-group">
+					<label for="placeParentPlace" class="control-label"><%= _.capitalize(lang.parentPlace) %>:</label>
+
+					<div class="controls">
+						<select id="placeParentPlace"></select>
+						<span class="help-inline"></span>
+					</div>
+				</div>
+
+	
+				<legend><%= _.capitalize(lang.property) %></legend>
+
+			<!-- Place Width -->
+			<div class="control-group">
+				<label for="placeWidth" class="control-label"><%= _.capitalize(lang.width) %>:</label>
+
+				<div class="controls">
+					<input type="number" id="placeWidth" />
+					<span class="help-inline"></span>
+				</div>
+			</div>
+			
+			<!-- Place Lenght -->
+			<div class="control-group">
+				<label for="placeLenght" class="control-label"><%= _.capitalize(lang.lenght) %>:</label>
+
+				<div class="controls">
+					<input type="number" id="placeLenght" />
+					<span class="help-inline"></span>
+				</div>
+			</div>
+
+			<!-- Place Area -->
+			<div class="control-group">
+				<label for="placeArea" class="control-label"><%= _.capitalize(lang.area) %>:</label>
+
+				<div class="controls">
+					<input type="number" id="placeArea" />
+					<span class="help-inline"></span>
+				</div>
+			</div>
+
+		</fieldset>
+    
+    </div>
+
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary save"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+        <a href="#sites" class="text-info"><%= lang.actions.cancel %></a>
+    </div>
+    
+</form>
