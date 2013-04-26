@@ -16,6 +16,7 @@
 	"unit"					: "Unité",
 	"responsible"			: "responsable",
 	"foreman"				: "chef d'équipe",
+	"withForeman"			: "avec le chef d'équipe",
 	"description"			: "description ",
 	"group" 				: "groupe",
 	"note"					: "note",

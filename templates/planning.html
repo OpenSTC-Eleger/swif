@@ -154,7 +154,7 @@
 
 							<!-- Intervention Action -->
 							<div class="div-actions">
-								
+
 								<!-- Add Task -->
 								<button class="btn btn-primary btn-small no-outline addTaskPlanning" id="<%= intervention.id %>" rel="tooltip" 
 										data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="right"
@@ -257,7 +257,7 @@
 									<i class="icon-group"></i><%= team.name %>
 								</a>
 							</li>
-						<% }) %>	
+						<% }) %>
 					</ul>
 				</div>
 
@@ -309,7 +309,7 @@
 		</blockquote>
 
 	    <form id="formAbsentTask" action="#" class="form-horizontal">
-	    	
+
 
 	    	<!-- Absent Type -->
 	    	<div class="control-group">
@@ -453,14 +453,22 @@
 			<small></small>
 		</blockquote>
 
-		<!--<form class="form-inline">
-		    <label class="checkbox">
-	    		<input type="checkbox"> Avec le chef de d'équipe
-	    	</label>
-	    </form>-->
+		<form class="form-horizontal" id="formModalAboutTask">
+
+			<!-- Switch Button With Foreman -->
+			<div class="control-group">
+				<label class="control-label" for="withForeman"><%= _.capitalize(lang.withForeman) %>:</label>
+
+				<div class="controls">
+            		<div id="switchWithForeman" class="switch switch-small" data-on-label="<i class='icon-ok'></i>" data-off-label="<i class='icon-remove'></i>" data-on="success" data-off="warning">
+                		<input id="withForeman" type="checkbox" />
+            		</div>
+        		</div>
+			</div>
+	    </form>
 
 	</div>
-	
+
 	<div class="modal-footer">
 	    <button type="button" id="btnRemoveTask" class="btn btn-danger"><%= _.capitalize(lang.actions.removeOfTheSchedule) %></button>&nbsp;&nbsp;
 	    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
