@@ -40,6 +40,7 @@ app.Views.DropdownSelectListView = Backbone.View.extend({
 
 	clearAll: function(){
 		$(this.el).empty(); 
+		this.selected_id = 0;
 	},  
 
 	setSelectedItem: function(id) {

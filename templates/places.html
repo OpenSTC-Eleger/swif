@@ -30,27 +30,31 @@
 			<thead>
 				<tr>
 					<th><%= _.capitalize(lang.name) %></th>
-					<th><%= _.capitalize(lang.service) %></th>					
-					<th><%= _.capitalize(lang.type) %></th>
 					<th><%= _.capitalize(lang.parentPlace) %></th>
+					<th><%= _.capitalize(lang.service) %></th>	
+					
 					<th class="hidden-phone"><%= _.capitalize(lang.area) %></th>
 				</tr>
 			</thead>
 			<tbody>
-			<% for (var i = startPos; i < endPos; i++) { %>
-				
+			<% for (var i = startPos; i < endPos; i++) { 
+					var placeServices = [];
+					console.log()
+					_.each( places[i].service_ids, function(s){
+						placeServices.push( s.name );
+					});
+				%>
 				<!-- Place row -->
 				<tr class="row-item" id="place_<%= places[i].id %>">
 					<td>
-						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= places[i].name %>
+						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= places[i].complete_name %>
 						<p class="row-actions invisible">
 							<a href="#modalSavePlace"  class="modalSavePlace" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
 							<a href="#modalDeletePlace" class="modalDeletePlace" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</td>
-					<td><%= places[i].service[1] %></td>
-					<td><%= places[i].type[1] %></td>
 					<td><%= places[i].site_parent_id[1] %></td>
+					<td><%= _.toSentence( placeServices, ', ', ' et ' ) %></td>					
 					<td class="text-right hidden-phone"><%= _.numberFormat(places[i].surface, 0, ",", " ") %> m²</td>
 				</tr>
 
