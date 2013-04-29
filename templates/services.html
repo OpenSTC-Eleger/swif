@@ -37,16 +37,20 @@
 				</tr>
 			</thead>
 			<tbody>
-			<% for (var i = startPos; i < endPos; i++) { %>
-				
+			<% for (var i = startPos; i < endPos; i++) { 
+					var service = services[i];
+				%>
+								
 				<!-- Service row -->
-				<tr class="row-item" id="service_<%= services[i].id %>">
+				<tr class="row-object" id="service_<%= service.id %>">
 					<td>
-						<i class="icon-sitemap">&nbsp;&nbsp;</i><%= services[i].name %>
-						<p class="row-actions invisible">
-							<a href="#services/<%= services[i].id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
+						<a class="accordion-object" href="#collapse_<%= service.id %>">
+							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= service.name %>
+						</a>
+						<span class="object-actions invisible">
+							<a href="#services/<%= service.id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
 							<a href="#modalDeleteService" class="modalDeleteService" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
-						</p>
+						</span>
 					</td>
 					<td><%= services[i].code %></td>
 					<td><%= services[i].manager_id[1] %></td>
