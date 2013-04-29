@@ -52,10 +52,72 @@
 							<a href="#modalDeleteService" class="modalDeleteService" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</span>
 					</td>
-					<td><%= services[i].code %></td>
-					<td><%= services[i].manager_id[1] %></td>
-					<td><%= services[i].service_id[1] %></td>
-					<td><%= (services[i].technical == true ? "<i class='icon-ok'></i>" : "")%></td>
+					<td><%= service.code %></td>
+					<td><%= service.manager_id[1] %></td>
+					<td><%= service.service_id[1] %></td>
+					<td><%= (service.technical == true ? "<i class='icon-ok'></i>" : "")%></td>
+				</tr>
+				
+				<!-- Claimer row -->
+				<tr class="row-nested-objects-collapse" id="collapse_<%= service.id %>">
+					<td colspan="5" class="nestedTD">
+						<% if(service.user_ids.length != 0) { %>
+							<table class="table-nested-objects table table-striped table-condensed table-hover">
+								<thead>
+									<tr>
+										<th><%= _.capitalize(lang.name) %></th>
+										<th><%= _.capitalize(lang.login) %></th>
+										<th><%= _.capitalize(lang.group) %></th>
+										<th><%= _.capitalize(lang.email) %></th>
+										<th><%= _.capitalize(lang.lastConnection) %></th>
+									</tr>
+								</thead>
+								<tbody>
+									<% _.each(service.user_ids, function (user, i) { console.debug(user); 
+											console.debug( user.groups_id );
+										%>
+										
+										<tr class="row-nested-objects" id="user_<%= user.id %>">
+											<td>
+												<span><%= user.name +" "+ user.firstname %></span>&nbsp;
+												<span class="nested-objects-actions invisible">	
+													<a href="#modalSaveUser" class="modalSaveUser" data-toggle="modal">
+														<i class="icon-pencil displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>">&nbsp;</i>
+													</a>																								
+													<a href="#modalDeleteUser" class="modalDeleteUser" data-toggle="modal">
+														<i class="icon-remove displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">&nbsp;</i>
+													</a>
+												</span>
+											</td>
+											
+											<td><%= user.login %></td>
+											<td><%= user.groups_id !=false ? _(user.groups_id[0].name).strRight('/') : "" %></td>
+											<td><%= (user.user_email != false ? user.user_email : "") %></td>
+											<td><% 
+												if(user.date != false){ %>
+													<span data-toggle="tooltip"
+													    data-original-title="<%= moment(user.date, 'YYYY-MM-DD HH:mm:ss').fromNow() %>">
+											    		<%= moment(user.date, 'YYYY-MM-DD HH:mm:ss').format('LLL') %>
+													</span>
+												<% } %>
+											</td>
+										</tr>
+									<% }); %>
+								</tbody>
+							</table>
+						<% } else { %>
+								<!-- No Claimer in the Database -->
+								<div class="alert alert-info">
+									<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noPartner %>.
+								</div>
+						<% } %>
+
+							<div class="div-actions" >
+								<button class="btn btn-primary btn-small no-outline addAddress">
+									<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addContact) %>
+								</button>
+							</div>
+					</td>
 				</tr>
 
 			<% }; %>

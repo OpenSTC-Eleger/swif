@@ -872,8 +872,22 @@ app.Router = Backbone.Router.extend({
                     app.loader('display');
                 },
                 success: function(){
-                    app.views.servicesListView = new app.Views.ServicesListView({page: self.page});
-                    self.render(app.views.servicesListView);
+                	if(app.collections.officers == null ){
+ 	                    app.collections.officers = new app.Collections.Officers();
+ 	                }
+ 	                app.collections.officers.fetch({
+ 		                success: function(){
+	 	                	if(app.collections.groups == null ){
+	 	 	                    app.collections.groups = new app.Collections.Officers();
+	 	 	                }
+	 	 	                app.collections.groups.fetch({
+	 	 		                success: function(){
+				                    app.views.servicesListView = new app.Views.ServicesListView({page: self.page});
+				                    self.render(app.views.servicesListView);
+				                }
+				            });
+		                 }
+		            });
                 },
                 complete: function(){
                     app.loader('hide');

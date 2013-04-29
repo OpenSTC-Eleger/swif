@@ -20,7 +20,9 @@ app.Views.ServicesListView = Backbone.View.extend({
 		'click a.modalDeleteService'  	: 'setInfoModal',
 
 		'submit #formAddService' 		: "addService", 
-		'click button.btnDeleteService' : 'deleteService'
+		'click button.btnDeleteService' : 'deleteService',
+			
+		'click a.accordion-object'    	: 'tableAccordion',
     },
 
 	
@@ -57,6 +59,8 @@ app.Views.ServicesListView = Backbone.View.extend({
 		var pageCount = Math.ceil(len / this.numberListByPage);
 
 		
+
+
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
@@ -74,7 +78,39 @@ app.Views.ServicesListView = Backbone.View.extend({
 		$(this.el).hide().fadeIn('slow');
 		
         return this;
-    },    
+    },   
+    
+    /** Fonction collapse table row
+ 	    */
+	 tableAccordion: function(e){
+	
+	     e.preventDefault();
+	     
+	     // Retrieve the intervention ID //
+	     var id = _($(e.target).attr('href')).strRightBack('_');
+	
+	
+	     var isExpend = $('#collapse_'+id).hasClass('expend');
+	
+	     // Reset the default visibility //
+	     $('tr.expend').css({ display: 'none' }).removeClass('expend');
+	     $('tr.row-object').css({ opacity: '0.5'});
+	     $('tr.row-object > td').css({ backgroundColor: '#FFF'});
+	     
+	     // If the table row isn't already expend //       
+	     if(!isExpend){
+	         // Set the new visibility to the selected intervention //
+	         $('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
+	         $(e.target).parents('tr.row-object').css({ opacity: '1'});
+	         $(e.target).parents('tr.row-object').children('td').css({ backgroundColor: '#F5F5F5'});
+	     }
+	     else{
+	         $('tr.row-object').css({ opacity: '1'});
+	         $('tr.row-object > td').css({ backgroundColor: '#FFF'});
+	         $('tr.row-object:nth-child(4n+1) > td').css({ backgroundColor: '#F9F9F9'});
+	     }
+	        
+	 },
 
 
 
