@@ -106,8 +106,7 @@ var app = {
         });
 
     },
-
-
+    
 
     /** Load internationalization scripy
     */

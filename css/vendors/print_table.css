@@ -25,6 +25,10 @@
 }
 
 
+td.toFill{
+    background-color: #EEE;
+    border: thin dashed #777;
+}
 
 .dataTables_length {	
     width: 40%;
@@ -94,6 +98,8 @@ td.details {
     border: 2px solid #A19B9E;
     font-weight:bold;
 }
+
+
 
 div.box {
     background-color: #E5E5FF;

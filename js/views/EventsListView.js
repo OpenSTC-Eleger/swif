@@ -807,11 +807,15 @@ app.Views.EventsListView = Backbone.View.extend({
 			    	});
 			    }
 		    	
-			    task["planned_hours"] =  ( task.planned_hours>0? task.planned_hours : "" ) ;
-			    task["effective_hours"] =  ( task.effective_hours>0? task.effective_hours : "" ) ;
-			    task["remaining_hours"] =  ( task.remaining_hours>0? task.remaining_hours : "" ) ;
-		    	task["oilQtity"] =  ( task.oil_qtity>0? task.oil_qtity : "" ) ;
-		    	task["oilPrice"] =  ( task.oil_price>0? task.oil_price : "" ) ;
+			    task["planned_hours"] =  ( task.planned_hours>0? task.planned_hours : '' );
+			    task["effective_hours"] =  ( task.effective_hours>0? task.effective_hours : '' );
+			    task["remaining_hours"] =  '';//( task.remaining_hours>0? task.remaining_hours : '' );
+		    	task["oilQtity"] =  (task.oil_qtity>0? task.oil_qtity : '');
+		    	task["oilPrice"] =  (task.oil_price>0? task.oil_price : '');
+		    	task["taskHours"] = task.date_start.format('H[h]mm') + '-' + task.date_end.format('H[h]mm');
+		    	task["km"] = ''; //task.km;
+		    	task["description"] = (task.description != false ? task.description : '' );
+
 		    })
 		    
 		    $('#paperboard').data('resultSet', tasks);
@@ -831,16 +835,17 @@ app.Views.EventsListView = Backbone.View.extend({
 			        {"sDay": "Day", "mDataProp": "day", 'sWidth': '5%', 'sClass': "center", "bVisible": false, "sType": "day"},
 			        {"sInter": "Inter", "mDataProp": "inter", 'sWidth': '5%', 'sClass': "center"},
 			        {"sName": "Name", "mDataProp": "name", 'sWidth': '5%', 'fnCreatedCell': self.getStyle },
+			        {"sDescription": "Description", "mDataProp": "description", 'sWidth': '5%'},
 			        {"sPlace": "Place", "mDataProp": "place", 'sWidth': '5%', 'sClass': "center"},
-			        {"sDateStart": "DateStart", "mDataProp": "date_start","sType": "date", 'sWidth': '2%', 'fnRender': self.renderHours },
-			        {"sDateEnd": "DateEnd", "mDataProp": "date_end","sType": "date", 'sWidth': '2%', 'fnRender': self.renderHours},			        
+			        {"sDateStart": "DateStart", "mDataProp": "taskHours","sType": "date", 'sWidth': '2%'},
 			        { "sWorkingTime": "WorkingTime", "mDataProp": "planned_hours", 'sWidth': '1%','sClass': "center"},//'sWidth': '5%'},
-			        { "sEffectiveTime": "EffectiveTime", "mDataProp": "effective_hours", 'sWidth': '1%','sClass': "center"}, //'sWidth': '5%','fnRender': self.renderHours},
-			        { "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours", 'sWidth': '1%','sClass': "center"}, //'sWidth': '5%','fnRender': self.renderHours},
+			        { "sEffectiveTime": "EffectiveTime", "mDataProp": "effective_hours", 'sWidth': '1%','sClass': "center toFill"}, //'sWidth': '5%','fnRender': self.renderHours},
+			        { "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours", 'sWidth': '1%','sClass': "center toFill"}, //'sWidth': '5%','fnRender': self.renderHours},
 			        { "sDone": "Done", "mDataProp": "done", 'sWidth': '2%','fnRender': self.renderResume},
-			        { "sEquipment": "Equipment", "mDataProp": "equipment", 'sWidth': '25%','sClass': "center"},
-			        { "sOilQtity": "oilQtity", "mDataProp": "oilQtity", 'sWidth': '2%', 'sClass': "center"},
-			        { "sOilPrice": "oilPrice", "mDataProp": "oilPrice", 'sWidth': '2%', 'sClass': "center"},
+			        { "sEquipment": "Equipment", "mDataProp": "equipment", 'sWidth': '25%','sClass': "center toFill"},
+			        { "sOilQtity": "oilQtity", "mDataProp": "oilQtity", 'sWidth': '2%', 'sClass': "center toFill"},
+			        { "km": "km", "mDataProp": "km", 'sWidth': '2%', 'sClass': "center toFill"},
+			        { "sOilPrice": "oilPrice", "mDataProp": "oilPrice", 'sWidth': '2%', 'sClass': "center toFill"},
 			        ],
 			
 			    "bFilter": false,"bInfo": false,"bPaginate": false,"bLengthChange": false,
@@ -897,8 +902,8 @@ app.Views.EventsListView = Backbone.View.extend({
 				leaveOpen	: true,
 				printMode	: 'popup',
 				overrideElementCSS:[
-					'print_table.css.css',
-					{ href:'css/vendors/print_table.css', media: 'all'}]
+					{ href:'css/vendors/print_table.css', media: 'all'}
+				]
 			});
 		},	
 		
@@ -912,130 +917,3 @@ jQuery.fn.dataTableExt.oSort['day-asc']  = function(x,y) {
 	var indexOfy = days.indexOf(y);
 	return ((indexOfx < indexOfy) ? -1 : ((indexOfx > indexOfy) ? 1 : 0));
 };
-
-//			var printEl = this.el.clone(true);
-//			printEl.find('.fc-agenda-days').height("800");
-//			printEl.find('.fc-agenda-slots').height("100");
-//			printEl.find('.fc-header-right').css("display", "none")
-//			printEl.find('.fc-event-title').append("F");
-//			printEl.find('.fc-event-title').append("P");
-//			printEl.find('.fc-event-title').append("N");
-//			printEl.printElement(
-//					{
-//		                leaveOpen:true,
-//		                printMode:'popup',
-//			            overrideElementCSS:[
-//			                                'fullcalendar-1.5.4.less',
-//			                                { href:'fullcalendar-1.5.4.less',media:'print'}]
-//					});
-//	
-//	
-//    // save current calendar width
-//    w = $('div#officer_'+printObject_id).css('width');
-//
-//    // prepare calendar for printing
-//    $('div#officer_'+printObject_id).css('width', '6.5in');
-//    $('.fc-header').hide();  
-//    $('div#officer_'+printObject_id).fullCalendar('render');
-//
-//    window.print();
-//
-//    // return calendar to original, delay so the print processes the correct width
-//    window.setTimeout(function() {
-//        $('.fc-header').show();
-//        $('div#officer_'+printObject_id).css('width', w);
-//        $('div#officer_'+printObject_id).fullCalendar('render');
-//    }, 1000);
-
-    		
-//    		   $(this.el).css('width', '6.5in');
-//    $('.fc-content .fc-state-highlight').css('background', '#ccc');
-//    $(this.el).fullCalendar('render');
-//    bdhtml = window.document.body.innerHTML;
-//    sprnstr = "<!--startprint-->";
-//    eprnstr = "<!--endprint-->";
-//    prnhtml = bdhtml.substr(bdhtml.indexOf(sprnstr) + 17);
-//    prnhtml = prnhtml.substring(0, prnhtml.indexOf(eprnstr));
-//    window.document.body.innerHTML =  $(this.el).fullCalendar('render');
-//    window.print();
-	
-
-
-//		    var append = false;
-//		    var delimiter = "<hr />";
-//		    
-//		    var domClone = document.getElementById('officer_'+printObject_id).cloneNode(true);
-//		
-//		    var $printSection = document.getElementById("printSection");
-//		
-//		    if (!$printSection) {
-//		        var $printSection = document.createElement("div");
-//		        $printSection.id = "printSection";
-//		        document.body.appendChild($printSection);
-//		    }
-//		
-//		    if (append !== true) {
-//		        $printSection.innerHTML = "";
-//		    }
-//		
-//		    else if (append === true) {
-//		        if (typeof(delimiter) === "string") {
-//		            $printSection.innerHTML += delimiter;
-//		        }
-//		        else if (typeof(delimiter) === "object") {
-//		            $printSection.appendChlid(delimiter);
-//		        }
-//		    }
-//		
-//		    domClone.id = "printable";
-//		    $printSection.appendChild(domClone);
-//		    domClone = null;
-//		    window.print();
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
-//		drop: function( copiedEventObject ) { 
-//        			
-//		    // assign it the date that was reported
-//		    var dateStart = copiedEventObject.start;
-//		    var dateEnd = new Date( dateStart ); 
-//		    
-//		    copiedEventObject.end = new Date(dateEnd.setHours( dateEnd.getHours()+copiedEventObject.planned_hours ));				   
-//		    copiedEventObject.allDay = true;
-//		
-//		    // render the event on the calendar
-//		    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-//		    $(this.el).fullCalendar('renderEvent', copiedEventObject, true);
-//		    //$(self.el).append('<button type="button" class="close" data-dismiss="close">X</button>');
-//		    params = { 
-//		       //id: copiedEventObject.id,
-//		       name: copiedEventObject.title,
-//		       state: 'open',
-//		       project_id: copiedEventObject.project_id,
-//		       parent_id: copiedEventObject.id,
-//		       date_start: copiedEventObject.start,
-//			   date_end: copiedEventObject.end,
-//		       planned_hours: copiedEventObject.planned_hours,
-//		       remaining_hours: copiedEventObject.planned_hours,
-//		    };
-//		    
-//		    if( this.teamMode)
-//		    	params.team_id = this.id
-//		    else
-//		    	params.user_id = this.id
-//		    	
-//		     app.models.task.save(0,params,null,null,'#planning');
-//		       
-//		},	
-//        

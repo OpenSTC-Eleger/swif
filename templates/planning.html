@@ -616,7 +616,7 @@
     <div>
     	<div class="top">
     		<div class="dataTables_info" id="example_info">
-    			<h1>Fiche d'intervention: <em id="worker"></em></h1>	
+    			<h1>Fiche d'interventions: <em id="worker"></em></h1>	
    				
     		</div>
     		<div class="dataTables_filter" id="example_filter">
@@ -633,24 +633,25 @@
     		<div class="clear"></div>
     	</div>
 
-        <table  class="dataTables dataTables_wrapper" id="paperboard" >
-		    <thead class="top">
-		        <tr>	        	
-		        	<th>Day</th>
-		        	<th>Intervention</th>
-		        	<th>Libelle</th>
-		            <th>Site</th>
-		            <th style="width: 100px" > début</th>
-		            <th> fin</th>
-		            <th>Temps estimé</th>
-		            <th>Temps effectué</th>
-		            <th>Temps estimé restant par l'agent</th>
-		            <th>Fait</th>
-		            <th>Matériel</th>
-		            <th>Quantité Carburant</th>
-		            <th>Prix Carburant</th>
-		        </tr>
-		    </thead>
+		<table class="dataTables dataTables_wrapper" id="paperboard">
+			<thead class="top">
+				<tr>
+					<th>Day</th>
+					<th><%= _.capitalize(lang.intervention) %></th>
+					<th><%= _.capitalize(lang.label) %></th>
+					<th><%= _.capitalize(lang.description) %></th>
+					<th><%= _.capitalize(lang.place) %></th>
+					<th>Heure début fin</th>
+					<th><%= _.capitalize(lang.estimatedHours) %></th>
+					<th><%= _.capitalize(lang.spentHours) %></th>
+					<th><%= _.capitalize(lang.remainingHours) %> <!--Temps restant estimé par l'agent--></th>
+					<th><%= _.capitalize(lang.done) %></th>
+					<th><%= _.capitalize(lang.materialEquipment) %> / <%= _.capitalize(lang.vehicleEquipment) %></th>
+					<th><%= _.capitalize(lang.oilQtity) %></th>
+					<th><%= _.capitalize(lang.km) %></th>
+					<th><%= _.capitalize(lang.oilPrice) %></th>
+				</tr>
+			</thead>
 		</table>
 
 	</div>
