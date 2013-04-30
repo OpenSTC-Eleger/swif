@@ -17,13 +17,12 @@ app.Views.ServicesListView = Backbone.View.extend({
 		'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
 		'click ul.sortable li'			: 'preventDefault',
+		'click a.accordion-object'    	: 'tableAccordion',
 
-		'click a.modalDeleteService'  	: 'setInfoModal',
+		//'click a.modalDeleteService'  	: 'setInfoModal',
 
 		'submit #formAddService' 		: "addService", 
-		'click button.btnDeleteService' : 'deleteService',
-			
-		'click a.accordion-object'    	: 'tableAccordion',
+		'click button.btnDeleteService' : 'deleteService',		
 		
 		'click .btn.addOfficer'  		: 'modalSaveOfficer',
 		'click a.modalSaveOfficer'  	: 'modalSaveOfficer',		
@@ -264,6 +263,9 @@ app.Views.ServicesListView = Backbone.View.extend({
     
     /*******************************************Officer action***********************************************/
 
+    /**
+     * Set current officer model
+     */
 	setModel: function(e) {
     	this.selectedOfficer = null;
     	this.selectedOfficerJson = null;
