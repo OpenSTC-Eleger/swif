@@ -25,7 +25,7 @@ app.Models.ClaimerService = Backbone.RelationalModel.extend({
 			key: 'user_ids',
 			relatedModel: 'app.Models.Officer',
 			collectionType: 'app.Collections.Officers',
-			includeInJSON: ['id','name','firstname','login','email','date','groups_id'],	
+			includeInJSON: ['id','name','firstname','login','user_email','date','groups_id'],	
 		},
       ],
 

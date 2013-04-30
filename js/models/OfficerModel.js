@@ -28,13 +28,13 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 			collectionType: 'app.Collections.Teams',
 			includeInJSON: ['id', 'name','manager_id','tasks'],	
 		},
-		{
-			type: Backbone.HasMany,
-			key: 'groups_id',
-			relatedModel: 'app.Models.Group',
-			collectionType: 'app.Collections.Groups',
-			includeInJSON: ['id', 'name'],	
-		},
+//		{
+//			type: Backbone.HasMany,
+//			key: 'groups_id',
+//			relatedModel: 'app.Models.Group',
+//			collectionType: 'app.Collections.Groups',
+//			includeInJSON: ['id', 'name'],	
+//		},
 		
 
 	],

@@ -878,7 +878,7 @@ app.Router = Backbone.Router.extend({
  	                app.collections.officers.fetch({
  		                success: function(){
 	 	                	if(app.collections.groups == null ){
-	 	 	                    app.collections.groups = new app.Collections.Officers();
+	 	 	                    app.collections.groups = new app.Collections.Groups();
 	 	 	                }
 	 	 	                app.collections.groups.fetch({
 	 	 		                success: function(){
