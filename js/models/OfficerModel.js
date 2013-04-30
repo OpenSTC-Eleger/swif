@@ -120,7 +120,19 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ service_ids : value });
 	},
-	    	
+
+	// Teams ID// 
+	getTeamsInArray: function(){
+		jsonTeamId = this.get('team_ids');
+
+		var officerTeams = [];
+		_.each(jsonTeamId.models, function(item){
+			officerTeams.push(item.id);
+		})
+
+		return officerTeams;
+	},
+
 
 
 	/** Model Initialization
