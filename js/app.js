@@ -11,7 +11,7 @@ var app = {
     userBDD         : 'pontlabbe2',
     uniq_id_counter : 0,	
     
-
+//
 //    urlOE                       : 'http://localhost:8069',
 //    urlGEO_OWS                  : 'http://localhost:8080/geoserver/ows',
 //    urlGEO_WFS                  : 'http://localhost:8080/geoserver/wfs',

@@ -16,6 +16,7 @@ app.Views.PlacesListView = Backbone.View.extend({
     events: {
     	'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
+		'click ul.sortable li'			: 'preventDefault',
 		
 //		'change #placeService'			: 'fillDropdownService',
 
