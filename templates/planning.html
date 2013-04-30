@@ -136,7 +136,7 @@
 
 										} else if(task.state == app.Models.Task.state[0].value){ %>
 										<li id="task_<%= task.id %>" class="external-event disabled">
-											<i class="icon-time" rel="tooltip" data-placement="right" data-original-title="<%= moment(task.date_start).format('LLL') %> - <%= task.user_id[1] %>"></i> <%= task.name %>
+											<i class="icon-time" rel="tooltip" data-placement="right" data-original-title="<%= moment(task.date_start).format('LLL') %> - <%= (task.team_id == false ? task.user_id[1] : task.team_id[1]) %>"></i> <%= task.name %>
 											<small class="badge badge-<%= app.Models.Task.state[0].color %> pull-right"><%= app.decimalNumberToTime(task.planned_hours) %></small>
 										</li>
 										<% } %>
