@@ -200,7 +200,14 @@
 													<% } %>
 												</span>
 											</td>
-											<td><%= task.user_id[1] %></td>
+											<!-- Assign To -->
+											<td>
+											<% if(task.team_id == false){ %>
+												<%= task.user_id[1] %>
+										    <% } else { %>
+												<%= task.team_id[1] %>
+											<% } %>
+											</td>
 											<td><%= app.decimalNumberToTime(task.planned_hours) %></td>
 											<td><%= app.decimalNumberToTime(task.effective_hours) %></td>
 											<td><%= app.decimalNumberToTime(task.remaining_hours) %></td>

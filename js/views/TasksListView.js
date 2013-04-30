@@ -92,31 +92,52 @@ app.Views.TasksListView = Backbone.View.extend({
 
 		// Filter on the Tasks //
 		var tasksUser = _.filter(tasks, function(task){
+			
 			var intervention = task.intervention;
 
+    		// Check if the task is attribuate to the user //
     		var belongsToOfficer = (task.user_id[0] == officer_id)
-    		if( task.teamWorkingOn != null && task.teamWorkingOn.manager_id!=null )
-					belongsToOfficer = belongsToOfficer || (task.teamWorkingOn.manager_id[0] == officer_id);
+    		
+    		// Check if the user is manager of the task //
+    		if(task.teamWorkingOn != null && task.teamWorkingOn.manager_id != null){
+				belongsToOfficer = belongsToOfficer || (task.teamWorkingOn.manager_id[0] == officer_id);
+			}
 
-    		var belongsToServiceManager = false;
+			
+			
+			
+			// Display task assign to the team of the user //
+			var belongsToTeam = false;
+
+			var userConnected = app.collections.officers.get(officer_id);
+
+			if(task.teamWorkingOn != null){
+				belongsToTeam = $.inArray(task.teamWorkingOn.id, userConnected.getTeamsInArray()) != -1;
+			}
+
+
+
+			// If the task belongs to the service of the user //
+			var belongsToServiceManager = false;
 
     		var interCondition = false;
     		if( intervention!=null ) {
 
 				var service = intervention.service_id;
 				var userServices = app.models.user.toJSON().service_ids;
-				if ( service && userServices )
-					belongsToServiceManager = app.models.user.isManager() &&         										
-    												$.inArray(service[0], userServices)!=-1;
+				if(service && userServices){
+					belongsToServiceManager = app.models.user.isManager() && $.inArray(service[0], userServices)!=-1;
+				}
 			}
 
 
-    		return (	//Tâches de l'agent
-    					( belongsToOfficer || app.models.user.isDST() || belongsToServiceManager )
-    			   );
-        });
+			// Officer tasks //
+			return (
+				( belongsToOfficer || app.models.user.isDST() || belongsToServiceManager || belongsToTeam)
+			);
+		});
 
- 
+
 
 
 		//  Collection Task Filter if not null //
@@ -312,10 +333,12 @@ app.Views.TasksListView = Backbone.View.extend({
 
 
 
-			app.views.selectListFilterOfficerView = new app.Views.DropdownSelectListView({el: $("#filterListAgents"), collection: officersDropDownList})
-			app.views.selectListFilterOfficerView.clearAll();
-			app.views.selectListFilterOfficerView.addEmptyFirst();
-			app.views.selectListFilterOfficerView.addAll();
+			if(officersDropDownList != null){
+				app.views.selectListFilterOfficerView = new app.Views.DropdownSelectListView({el: $("#filterListAgents"), collection: officersDropDownList})
+				app.views.selectListFilterOfficerView.clearAll();
+				app.views.selectListFilterOfficerView.addEmptyFirst();
+				app.views.selectListFilterOfficerView.addAll();
+			}
 
 
 			$(".datepicker").datepicker({
