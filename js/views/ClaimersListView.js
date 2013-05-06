@@ -380,7 +380,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
 	fillDropdownTechnicalService: function(e){
 		 e.preventDefault();
 		 $('#claimerTechnicalSite').val('');
-		 this.renderTechnicalService($(e.target).attr('value'))
+		 this.renderTechnicalService( _($(e.target).prop('value')).toNumber() )
 	},
 	
 	renderTechnicalService: function ( service ) {
@@ -388,7 +388,13 @@ app.Views.ClaimersListView = Backbone.View.extend({
 			app.views.selectListClaimerTechnicalServiceView.setSelectedItem( service );
 			places = app.collections.places.models;
 			var placesFiltered = _.filter(places, function(item){ 
-				return item.attributes.service[0] == service; 
+				var placeJSON = item.toJSON();
+				var placeServices = placeJSON.service_ids;	
+				var placeServices = [];
+				_.each( item.attributes.service_ids.models, function(s){
+					placeServices.push( s.toJSON().id );
+				});				
+				return $.inArray(service, placeServices)!=-1
 	        });
 			app.views.selectListClaimerTechnicalSiteView.collection = new app.Collections.Places(placesFiltered);
 			app.views.selectListClaimerTechnicalSiteView.clearAll();

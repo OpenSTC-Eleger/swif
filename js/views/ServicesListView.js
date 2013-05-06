@@ -18,11 +18,14 @@ app.Views.ServicesListView = Backbone.View.extend({
 		'click li.disabled'				: 'preventDefault',
 		'click ul.sortable li'			: 'preventDefault',
 		'click a.accordion-object'    	: 'tableAccordion',
-
-		//'click a.modalDeleteService'  	: 'setInfoModal',
-
-		'submit #formAddService' 		: "addService", 
-		'click button.btnDeleteService' : 'deleteService',		
+		'change #officerService'		: 'fillDropdownService',
+		
+//		'click .btn.addService'  		: 'modalSaveService',
+//		'click a.modalSaveService'  	: 'modalSaveService',
+//		'submit #formAddService' 		: "saveService", 
+		
+		'click a.modalDeleteService'  	: 'modalDeleteSevice',
+		'click button.btnDeleteService' : 'deleteService',
 		
 		'click .btn.addOfficer'  		: 'modalSaveOfficer',
 		'click a.modalSaveOfficer'  	: 'modalSaveOfficer',		
@@ -44,8 +47,7 @@ app.Views.ServicesListView = Backbone.View.extend({
 	/** Display the view
 	*/
     render: function () {
-		var self = this;
-
+		
 		// Change the page title //
         app.router.setPageTitle(app.lang.viewsTitles.servicesList);
 
@@ -65,8 +67,27 @@ app.Views.ServicesListView = Backbone.View.extend({
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
 
-				
-
+		var technicalServicesArray = _.filter(app.collections.claimersServices.models, function(service){
+			return service.attributes.technical == true 
+		});
+		var noTechnicalServicesArray = _.filter(app.collections.claimersServices.models, function(service){
+			return service.attributes.technical != true 
+		});	
+		
+		this.technicalServices = new app.Collections.ClaimersServices(technicalServicesArray);
+		this.noTechnicalServices = new app.Collections.ClaimersServices(noTechnicalServicesArray);
+		
+//		var technicalGroupsArray = _.filter(app.collections.groups.models, function(group){
+//			return group.attributes.technical == true 
+//		});
+//		var noTechnicalGroupsArray = _.filter(app.collections.groups.models, function(group){
+//			return group.attributes.technical != true 
+//		});	
+//		
+//		this.technicalGroups = new app.Collections.ClaimersServices(technicalGroupsArray);
+//		this.noTechnicalGroups = new app.Collections.ClaimersServices(noTechnicalGroupsArray);
+	
+		var self = this;
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
@@ -86,6 +107,11 @@ app.Views.ServicesListView = Backbone.View.extend({
 			app.views.selectListGroupsView.clearAll();
 			app.views.selectListGroupsView.addEmptyFirst();
 			app.views.selectListGroupsView.addAll();
+			
+			app.views.selectListOfficerServiceView = new app.Views.DropdownSelectListView({el: $("#officerService"), collection: app.collections.claimersServices})
+			app.views.selectListOfficerServiceView.clearAll();
+			app.views.selectListOfficerServiceView.addEmptyFirst();
+			app.views.selectListOfficerServiceView.addAll();
 			
 			$('#officerServices, #servicesList').sortable({
 				connectWith: 'ul.sortableServicesList',
@@ -124,7 +150,7 @@ app.Views.ServicesListView = Backbone.View.extend({
 	
 		// Retrieve the ID of the intervention //
 		var link = $(e.target);
-		var id = _(link.parents('tr').attr('id')).strRightBack('officer_');
+		var id = _(link.parents('tr').attr('id')).strLeftBack('_');
 		
 		// Clear the list of the user //
 		$('#officerServices li, #servicesList li').remove();
@@ -142,15 +168,15 @@ app.Views.ServicesListView = Backbone.View.extend({
 		};
 		
 	    //search no technical services
-		var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
-			return service.attributes.technical != true 
-		});
-		//remove no technical services
-		app.collections.claimersServices.remove(noTechnicalServices);
-		app.collections.claimersServices.toJSON()
+//		var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
+//			return service.attributes.technical != true 
+//		});
+//		//remove no technical services
+//		app.collections.claimersServices.remove(noTechnicalServices);
+//		app.collections.claimersServices.toJSON()
 	
 		// Display the remain services //
-		_.filter(app.collections.claimersServices.toJSON(), function (service, i){ 
+		_.filter(this.technicalServices.toJSON(), function (service, i){ 
 			if(!_.contains(officerServices, service.id)){
 				$('#servicesList').append('<li id="service_'+service.id+'"><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
 			}
@@ -194,11 +220,139 @@ app.Views.ServicesListView = Backbone.View.extend({
 	        
 	 },
 
+  
+    /**
+    * Get input id fill in drop down input
+    */
+    getIdInDropDown: function(view) {
+    	if ( view && view.getSelected() )
+    		var item = view.getSelected().toJSON();
+    		if( item )
+    			return [ item.id, item.name ];
+    	else 
+    		return 0
+    },
+    
+    renderTechnicalService: function ( service ) {
+		if( service!= null ) {
+			this.selectedServiceJson.id = service;
+		}
+	},
+    
+	fillDropdownService: function(e){
+		e.preventDefault();
+		this.renderTechnicalService( _($(e.target).prop('value')).toNumber() )
+	},
 
 
+	 /*******************************************Service action***********************************************/
+	
+//	/**
+//    * Set current officer model
+//    */
+//	setServiceModel: function(e) {
+//    	this.selectedService = null;
+//    	this.selectedServiceJson = null;
+//	
+//		e.preventDefault();
+//		var link = $(e.target);
+//		
+//		var id =  _(link.parents('tr').attr('id')).strRightBack('service_');
+//		this.selectedService = _.filter(app.collections.officers.models, function(item){ return item.attributes.id == id });
+//	
+//		if( this.selectedService.length > 0 ) {
+//	
+//			this.selectedService = this.selectedService[0];
+//			this.selectedServiceJson = this.selectedService.toJSON();			
+//	
+//			$('#modalSaveService h3').html(_.capitalize(app.lang.actions.updateService));
+//		}
+//		else {
+//			this.selectedOfficerJson = null;
+//			
+//			$('#modalSaveService h3').html(_.capitalize(app.lang.actions.addService));
+//		}
+//	
+//		console.debug(this.selectedService);
+//	},
+//		 
+//	modalSaveService: function(e){
+//		this.setServiceModel(e);
+//		
+//		app.views.selectListOfficersView = new app.Views.DropdownSelectListView({el: $("#serviceManager"), collection: app.collections.officers})
+//		app.views.selectListOfficersView.clearAll();
+//		app.views.selectListOfficersView.addEmptyFirst();
+//		app.views.selectListOfficersView.addAll();
+//		
+//
+//		app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#serviceParentService"), collection: app.collections.claimersServices})
+//		app.views.selectListServicesView.clearAll();
+//		app.views.selectListServicesView.addEmptyFirst();
+//		app.views.selectListServicesView.addAll();
+//		
+//		this.selectedServiceJson = self.model.toJSON();
+//		if( this.selectedServiceJson ) {
+//			$('#serviceName').val(this.selectedServiceJson.name);
+//			$('#serviceCode').val(this.selectedServiceJson.code);
+//			
+//
+//			if( this.selectedServiceJson.manager_id )
+//				app.views.selectListOfficersView.setSelectedItem( this.selectedServiceJson.manager_id[0] );	
+//			if( this.selectedServiceJson.service_id )
+//				app.views.selectListServicesView.setSelectedItem( this.selectedServiceJson.service_id[0] );	
+//			if( this.selectedServiceJson.technical )
+//				$('#serviceIsTechnical').attr("checked","checked");									
+//		}
+//		else {
+//			$('#serviceName').val('');
+//			$('#serviceCode').val('');
+//			$('#serviceIsTechnical').attr("checked","");	
+//		}
+//		
+//	},
+//	
+//
+//    /** Add a new service
+//    */
+//    saveService: function(e){
+//		 e.preventDefault();
+//
+//         var self = this;
+//		     
+//		 var input_manager_id = this.getIdInDopDown(app.views.selectListOfficersView);
+//		 var input_service_id = this.getIdInDopDown(app.views.selectListServicesView);
+//		 
+//		 var params = {	
+//		     name: this.$('#serviceName').val(),
+//		     code: this.$('#serviceCode').val(),
+//		     manager_id: input_manager_id,
+//		     service_id: input_service_id,
+//		     technical: this.$('#serviceIsTechnical').is(':checked'),
+//		     };		     
+//		   
+//		    this.selectedService.save(params,{
+//				success: function(data){
+//					console.log(data);
+//					if(data.error){
+//						app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+//				}
+//				else{
+//					app.router.navigate('#services' , true);
+//					console.log('Success SAVE SERVICE');
+//				}
+//			},
+//			error: function () {
+//				console.log('ERROR - Unable to save the Service - ServiceDetailsView.js');
+//			},	
+//		});
+//
+//    },
+
+    	
+	
     /** Display information in the Modal view
     */
-    setInfoModal: function(e){
+    modalDeleteSevice: function(e){
         
         // Retrieve the ID of the service //
         var link = $(e.target);
@@ -211,31 +365,6 @@ app.Views.ServicesListView = Backbone.View.extend({
         $('#infoModalDeleteService p').html(selectedServiceJson.name);
         $('#infoModalDeleteService small').html(selectedServiceJson.code);
     },
-    
-    /**
-    * Get input id fill in drop down input
-    */
-    getIdInDropDown: function(view) {
-    	if ( view && view.getSelected() )
-    		var item = view.getSelected().toJSON();
-    		if( item )
-    			return [ item.id, item.name ];
-    	else 
-    		return 0
-    },
-
-
-	 /*******************************************Service action***********************************************/
-
-    /** Add a new service
-    */
-    addService: function(e){
-        e.preventDefault();
-
-        alert('TODO: save the new service');
-
-    },
-
 
 
     /** Delete the selected service
@@ -266,21 +395,31 @@ app.Views.ServicesListView = Backbone.View.extend({
     /**
      * Set current officer model
      */
-	setModel: function(e) {
+	setOfficerModel: function(e) {
     	this.selectedOfficer = null;
     	this.selectedOfficerJson = null;
+    	this.selectedService = null;
+    	this.selectedServiceJson = null;
 	
-		e.preventDefault();
-		this.displayServices(e);
+		e.preventDefault();		
 		var link = $(e.target);
 		
-		var id =  _(link.parents('tr').attr('id')).strRightBack('officer_');
-		this.selectedOfficer = _.filter(app.collections.officers.models, function(item){ return item.attributes.id == id });
+		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
+		this.selectedService = _.filter(app.collections.claimersServices.models, function(item){ return item.attributes.id == id });
 	
+		id = "";
+		id =  _(link.parents('tr').attr('id')).strLeftBack('_');
+		this.selectedOfficer = _.filter(app.collections.officers.models, function(item){ return item.attributes.id == id });
+
+		if( this.selectedService.length > 0 ) {	
+			this.selectedService = this.selectedService[0];
+			this.selectedServiceJson = this.selectedService.toJSON();			
+		}
+
 		if( this.selectedOfficer.length > 0 ) {
 	
 			this.selectedOfficer = this.selectedOfficer[0];
-			this.selectedOfficerJson = this.selectedOfficer.toJSON();
+			this.selectedOfficerJson = this.selectedOfficer.toJSON();			
 	
 			$('#modalSaveOfficer h3').html(_.capitalize(app.lang.actions.updateOfficer));
 		}
@@ -289,6 +428,8 @@ app.Views.ServicesListView = Backbone.View.extend({
 			
 			$('#modalSaveOfficer h3').html(_.capitalize(app.lang.actions.addOfficer));
 		}
+		
+		this.displayServices(e);
 	
 		console.debug(this.selectedOfficer);
 	},
@@ -298,7 +439,7 @@ app.Views.ServicesListView = Backbone.View.extend({
 	/** Modal create/update officer
 	*/
 	modalSaveOfficer: function(e){
-		this.setModel(e);
+		this.setOfficerModel(e);
 		this.displayServices(e);
 		
 		// Reset the value to null //
@@ -308,7 +449,23 @@ app.Views.ServicesListView = Backbone.View.extend({
 		app.views.selectListGroupsView.addEmptyFirst();
 		app.views.selectListGroupsView.addAll();
 		
-	
+		
+		if ( this.selectedServiceJson.technical ) {
+			app.views.selectListOfficerServiceView = new app.Views.DropdownSelectListView({el: $("#officerService"), collection: this.technicalServices})
+			app.views.selectListOfficerServiceView.clearAll();
+			app.views.selectListOfficerServiceView.addEmptyFirst();
+			app.views.selectListOfficerServiceView.addAll();
+			$('#officerService').removeAttr("disabled");			
+		}
+		else { 
+			app.views.selectListOfficerServiceView = new app.Views.DropdownSelectListView({el: $("#officerService"), collection: this.noTechnicalServices})
+			app.views.selectListOfficerServiceView.clearAll();
+			app.views.selectListOfficerServiceView.addEmptyFirst();
+			app.views.selectListOfficerServiceView.addAll();
+			$('#officerService').attr("disabled","disabled");			
+		}
+			
+
 		// Update //
 		if( this.selectedOfficerJson ) {
 			$('#officerName').val(this.selectedOfficerJson.name);
@@ -325,6 +482,10 @@ app.Views.ServicesListView = Backbone.View.extend({
 			// Disable the required attribute for the password because it's an update 	//
 			$('#officerPassword').removeAttr('required');
 			
+			if( this.selectedOfficerJson.service_id ) {
+				app.views.selectListOfficerServiceView.setSelectedItem( this.selectedOfficerJson.service_id[0] );	
+			}
+			
 			var self = this;
 			var stc_groups = app.collections.groups;
 			_.each( stc_groups.models, function(group){	
@@ -337,25 +498,13 @@ app.Views.ServicesListView = Backbone.View.extend({
 		else{
 			// Add the required attribute for the password because it's a creation //
 			$('#officerPassword').attr('required', 'required');
+			app.views.selectListOfficerServiceView.setSelectedItem( this.selectedServiceJson.id );
 		}
 		
 		 $('#modalSaveOfficer').modal();
 	},
 	
-	
-	
-	/** Display information in the Modal view delete officer
-	*/
-	modalDeleteOfficer: function(e){
-	
-		// Retrieve the ID of the officer //
-		this.setModel(e);
-	
-		$('#infoModalDeleteOfficer p').html(this.selectedOfficerJson.firstname +' '+ this.selectedOfficerJson.name);
-		$('#infoModalDeleteOfficer small').html(_.capitalize(app.lang.lastConnection) +"	 "+ moment(this.selectedOfficerJson.date, 'YYYY-MM-DD HH:mm:ss').format('LLL'));
-	},
-	
-	
+			
 	
 	/** Save Officer
 	*/
@@ -364,7 +513,7 @@ app.Views.ServicesListView = Backbone.View.extend({
 	
 		var group_id = this.getIdInDropDown(app.views.selectListGroupsView);
 		this.services = _.map($("#officerServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); }); 
-	
+		
 		if( this.$('#officerPassword').val() != '' ){
 			this.params = {
 				name: this.$('#officerName').val().toUpperCase(),
@@ -373,6 +522,8 @@ app.Views.ServicesListView = Backbone.View.extend({
 				login: this.$('#officerLogin').val(),
 				new_password: this.$('#officerPassword').val(),
 				groups_id:[[6, 0, [group_id[0]]]],
+				isManager: group_id[0]==19? true: false,
+				service_id: this.selectedServiceJson.id,
 				service_ids: [[6, 0, this.services]],
 			};
 		}
@@ -383,6 +534,8 @@ app.Views.ServicesListView = Backbone.View.extend({
 				user_email: this.$('#officerEmail').val(),
 				login: this.$('#officerLogin').val(),
 				groups_id:[[6, 0, [group_id[0]]]],
+				isManager: group_id[0]==19? true: false,
+				service_id: this.selectedServiceJson.id,
 				service_ids: [[6, 0, this.services]],
 			};
 		}
@@ -425,12 +578,24 @@ app.Views.ServicesListView = Backbone.View.extend({
 	
 	
 	
+	/** Display information in the Modal view delete officer
+	*/
+	modalDeleteOfficer: function(e){
+	
+		// Retrieve the ID of the officer //
+		this.setOfficerModel(e);
+	
+		$('#infoModalDeleteOfficer p').html(this.selectedOfficerJson.firstname +' '+ this.selectedOfficerJson.name);
+		$('#infoModalDeleteOfficer small').html(_.capitalize(app.lang.lastConnection) +"	 "+ moment(this.selectedOfficerJson.date, 'YYYY-MM-DD HH:mm:ss').format('LLL'));
+	},
+	
+	
 	/** Delete the selected officer
 	*/
 	deleteOfficer: function(e){
 		e.preventDefault();
 		var self = this;
-		this.selectedOfficer.delete({
+		this.selectedOfficer[0].delete({
 			success: function(data){
 				console.log(data);
 				if(data.error){
