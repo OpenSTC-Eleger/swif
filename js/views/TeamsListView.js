@@ -84,7 +84,7 @@ app.Views.TeamsListView = Backbone.View.extend({
 				nbTeams: nbTeams,
 				lang: app.lang,
 				startPos: startPos, endPos: endPos,
-				page: self.options.page, 
+				page: self.options.page,
 				pageCount: pageCount
 			});
 
@@ -403,12 +403,19 @@ app.Views.TeamsListView = Backbone.View.extend({
 
 		
 		// Display the remain members //
-		_.filter(app.collections.officers.toJSON(), function (officer, i){ 
-			if(!_.contains(teamOfficers, officer.id)  ){
-				//Manager must not present in list
-				if( selectedTeamJson.manager_id[0]!=officer.id ) 				
-					$('#officersList').append('<li id="officer_'+officer.id+'"><a href="#"><i class="icon-user"></i> '+ officer.firstname +' '+ officer.name +'</a></li>');
-				
+		_.filter(app.collections.officers.models, function (officer, i){
+
+			// Remove The DST From the list //
+			if(!officer.isDST()){
+
+				officer = officer.toJSON();
+
+				if(!_.contains(teamOfficers, officer.id)){
+					//Manager must not present in list
+					if( selectedTeamJson.manager_id[0]!=officer.id ) 				
+						$('#officersList').append('<li id="officer_'+officer.id+'"><a href="#"><i class="icon-user"></i> '+ officer.firstname +' '+ officer.name +'</a></li>');
+
+				}
 			}
 		});
 
@@ -418,7 +425,7 @@ app.Views.TeamsListView = Backbone.View.extend({
 				$('#servicesList').append('<li id="service_'+service.id+'"><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
 			}
 		});
-		
+
 		var nbRemainMembers = $('#officersList li').length;
 		$('#badgeNbMembers').html(nbRemainMembers);
 
@@ -426,7 +433,7 @@ app.Views.TeamsListView = Backbone.View.extend({
 		$('#badgeNbServices').html(nbRemainServices);
 
 		$('#teamTitle').html('<i class="icon-group"></i> '+selectedTeamJson.name);
-		
+
 	},
 
 
