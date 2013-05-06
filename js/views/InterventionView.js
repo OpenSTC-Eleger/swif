@@ -52,18 +52,6 @@ app.Views.InterventionView = Backbone.View.extend({
 				$(self.el).html(template);		     
 
 
-				// Enable the datePicker //
-				$('.datePicker').datepicker({
-					format: 'dd/mm/yyyy',
-					weekStart: 1,
-					autoclose: true,
-					language: 'fr'
-				});
-
-				if(self.create){
-					$('#interventionDateDeadline').val(moment().format("L"));
-				}
-
 				//search no technical services
 				var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
 					return service.attributes.technical != true 
@@ -96,17 +84,17 @@ app.Views.InterventionView = Backbone.View.extend({
 
 				// If the intervention is Template - Checked the checkbox //
 				if(currentIntervention.state == 'template')
-					$('#isTemplate').attr('checked', true);
+					$('#isTemplate').prop('checked', true);
 				else
-					$('#isTemplate').attr("checked", false);
+					$('#isTemplate').prop('checked', false);
 
 
 				// Form elements that can't be change are disable //
 				if(self.create){
-					$('#isTemplate').attr('disabled', false);
+					$('#isTemplate').prop('disabled', false);
 				}
 				else{
-					$('#isTemplate').attr('disabled', true);	
+					$('#isTemplate').prop('disabled', true);	
 				}
 		});
 

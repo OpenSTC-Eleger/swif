@@ -41,21 +41,6 @@
                     </div>
                 </div>
 
-                <!-- intervention DeadLine -->
-                <div class="control-group">
-                    <label class="control-label" for="interventionDateDeadline"><%= _.capitalize(lang.dateDeadline) %>:</label>
-                    <div class="controls">
-                        <input 
-                            type="text" class="datePicker" 
-                            id="interventionDateDeadline" 
-                            value="<%= (intervention.date_deadline) != "" ? moment(intervention.date_deadline, 'YYYY-MM-DD').format('L') : "" %>" 
-                            placeholder="dd/mm/yyyy"
-                            required="required"
-                            readonly="readonly">
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-
                 <!-- intervention Contact Service -->
                 <div class="control-group">
                     <label for="interventionDetailService" class="control-label" ><%= lang.serviceConcerned %>:</label>
