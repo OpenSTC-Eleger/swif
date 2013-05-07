@@ -92,6 +92,11 @@ app.Views.RequestView = Backbone.View.extend({
 					app.views.selectListClaimersTypesView.clearAll();
 					app.views.selectListClaimersTypesView.addEmptyFirst();
 					app.views.selectListClaimersTypesView.addAll();
+					
+					app.views.selectListClaimersView = new app.Views.DropdownSelectListView({el: $('#requestClaimer'), collection: app.collections.claimers});
+					app.views.selectListClaimersView.clearAll();
+					app.views.selectListClaimersView.addEmptyFirst();
+					app.views.selectListClaimersView.addAll();
 
 					currentRequest = self.model.toJSON()
 					if( currentRequest.partner_type ) {
@@ -113,24 +118,32 @@ app.Views.RequestView = Backbone.View.extend({
 					// Check if the user has a user claimer //
 
 					console.log(app.collections.officers.get(app.models.user.getUID()));
-
-
-					/*if(!_.isEmpty(app.collections.officers.get(app.models.user.getUID())){
+					
+					var officer = app.collections.officers.get(app.models.user.getUID());
+					var officerJSON = officer.toJSON();
+					if(!_.isEmpty(officerJSON.contact_id)){
 						$('#requestClaimerType, #requestClaimer').prop('disabled', true);
-
+						$('#requestClaimerBlock, #requestContactSelectBlock').show();
+						
 						// Get the claimer //
-						var userClaimer = app.collections.claimers.get(app.models.user.getContact()[0]);
+						var userClaimer = app.collections.claimers.get(officerJSON.contact_id[0].partner_id[0]);
 
 						// Get the claimer Type //
 						var userClaimerType = userClaimer.getClaimerType();
-						console.log(userClaimerType);
-
 
 						// Set the claimer and the claimer Type in the select Box //
 						app.views.selectListClaimersTypesView.setSelectedItem(userClaimerType[0]);
-						self.renderClaimer(app.views.selectListClaimersTypesView.getSelected(), true);
-
-					}*/
+						app.views.selectListClaimersView.setSelectedItem(officerJSON.contact_id[0].partner_id[0]);
+						self.renderContact( app.views.selectListClaimersView.getSelected() );
+						app.views.selectListClaimersContactsView.setSelectedItem( officerJSON.contact_id[0].id );
+						$('#requestContactSelect').removeProp('disabled');
+						$('#requestContactInput, #requestContactPhone, #requestContactEmail').removeProp('readonly');						
+						self.renderContactDetails(contact);						
+						
+						self.renderTechnicalService(userClaimer.toJSON().technical_service_id[0]);						
+						self.renderTechnicalSite(userClaimer.toJSON().technical_site_id[0]);						
+						self.renderContactDetails(officerJSON.contact_id[0])
+					}
 
 			});
 	
@@ -351,9 +364,9 @@ app.Views.RequestView = Backbone.View.extend({
 		renderContactDetails: function (contact) {
 			$('#requestContactPhone').val('');
 			$('#requestContactEmail').val('');
-			if( contact && contact[0] ) {
-				$('#requestContactPhone').val(contact[0].phone);
-				$('#requestContactEmail').val(contact[0].email);
+			if( contact ) {
+				$('#requestContactPhone').val(contact.phone);
+				$('#requestContactEmail').val(contact.email);
 			}
 		},
 
