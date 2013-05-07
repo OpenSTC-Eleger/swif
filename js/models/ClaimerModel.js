@@ -71,6 +71,14 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
     setTechnicalSiteId : function(value) {
     	if( value == 'undefined') return;
         this.set({ technical_site_id : value });
+    },
+
+	getClaimerType : function() {
+        return this.get('type_id');
+    },
+    setClaimerType : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ type_id : value });
     },  
 	
     

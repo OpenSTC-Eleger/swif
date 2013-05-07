@@ -3,12 +3,12 @@
     <h1>
         <%= lang.viewsTitles.requestDetail %> n°<%= request.id %>
         
-        
         <% _.each(requestsState, function (state, i) { 
             if(state.value == request.state){ %>
                 <span class="label label-<%= state.color %> vertical-align-middle marginLeft"><%= state.traduction %></span>
         <% }} ) %>
     </h1><br />
+    <!-- Display the Refusal Reason if the request is cancel -->
     <% if(request.state == app.Models.Request.state[4].value){ %>
     <div class="row-fluid">
         <div class="alert alert-error span6">
@@ -37,7 +37,7 @@
                 <label for="requestClaimerType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
 
                 <div class="controls">
-                     <select id="requestClaimerType"></select>
+                    <select id="requestClaimerType"></select>
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -47,21 +47,21 @@
                 <label for="requestClaimer" class="control-label"><%= _.capitalize(lang.name) %>:</label>
 
                 <div class="controls">
-                     <select id="requestClaimer"></select>
+                    <select id="requestClaimer"></select>
                     <span class="help-inline"></span>
                 </div>
             </div>
 
-                <!-- Request Contact Service -->
-                <div class="control-group" id="requestContactServiceBlock" style="display:none">
-                    <label for="requestContactService" class="control-label" ><%= _.capitalize(lang.service) %>:</label>
+            <!-- Request Contact Service -->
+            <div class="control-group" id="requestContactServiceBlock" style="display:none">
+                <label for="requestContactService" class="control-label" ><%= _.capitalize(lang.service) %>:</label>
 
-                    <div class="controls">
-                        <input type="text" id="requestContactService" name="requestContactService" readonly="readonly" />
-                        <span class="help-inline"></span>
-                    </div>
+                <div class="controls">
+                    <input type="text" id="requestContactService" name="requestContactService" readonly="readonly" />
+                    <span class="help-inline"></span>
                 </div>
-		<br />
+            </div>
+            <br />
 
 
             <!-- Details about the claimer -->
@@ -74,12 +74,12 @@
 
                     <div class="controls">
                         <div id="requestContactSelectBlock" style="display:none">
-                            <select id="requestContactSelect" name="requestContact" disabled="disabled" style="float:left"></select>
+                            <select id="requestContactSelect" name="requestContact" disabled="disabled"></select>
                             <span class="help-inline"></span>
                         </div>
 
                         <div id="requestContactInputBlock" style="display:inline">
-                            <input type="text" id="requestContactInput" name="requestContact" readonly="readonly" style="float:left" />
+                            <input type="text" id="requestContactInput" name="requestContact" readonly="readonly" />
                             <span class="help-inline"></span>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                         <span class="help-inline"></span>
                     </div>
                 </div>
-            
+
             </fieldset>
 
         </fieldset>
@@ -134,7 +134,6 @@
                         <span class="help-inline"></span>
                     </div>
                 </div>
-
 
                 <!-- Request Contact Service -->
                 <div class="control-group">

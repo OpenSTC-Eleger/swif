@@ -4,7 +4,7 @@
 app.Views.DropdownSelectListView = Backbone.View.extend({
 	
 	events: {
-		"change": "changeSelected"
+		'change': 'changeSelected'
 	},
 
 	
@@ -81,7 +81,7 @@ app.Views.DropdownSelectListView = Backbone.View.extend({
 */
 app.Views.DropdownSelectItemView = Backbone.View.extend({
         
-    tagName: "option",
+    tagName: 'option',
     selected: false,
 
         
@@ -104,7 +104,7 @@ app.Views.DropdownSelectItemView = Backbone.View.extend({
 			$(this.el).attr('value', '');
 		}
 		if (select)
-			$(this.el).attr('selected', 'true');      	
+			$(this.el).prop('selected', true);
 		
 		return this;
 	},
@@ -115,14 +115,18 @@ app.Views.DropdownSelectItemView = Backbone.View.extend({
     setSelected: function() {
     	this.render(true);
     },
-        
+
+
+
     hide: function() {
-	$(this.el).attr('disabled', 'disabled');
-	$(this.el).attr('style', 'display:none');
+		$(this.el).prop('disabled', true);
+		$(this.el).attr('style', 'display:none');
     },
-        
+
+
+
     show: function() {
-	$(this.el).removeAttr('disabled');
-	$(this.el).attr('style', 'display:inline');
+		$(this.el).removeProp('disabled');
+		$(this.el).attr('style', 'display:inline');
     },
 });

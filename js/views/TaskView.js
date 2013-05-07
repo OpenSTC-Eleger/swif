@@ -64,11 +64,11 @@ app.Views.TaskView = Backbone.View.extend({
 			
 			
 			if( self.modelJSON.state != app.Models.Task.state[0].value) {
-				$(".inputField").attr("disabled", "disabled");
-				$(".save").attr("disabled", "disabled");
+				$('.inputField').prop('disabled', true);
+				$('.save').prop('disabled', true);
 			}else {
-				$(".inputField").removeAttr("disabled");
-				$(".save").removeAttr("disabled");
+				$('.inputField').removeProp("disabled");
+				$('.save').removeProp("disabled");
 			}
 				
 

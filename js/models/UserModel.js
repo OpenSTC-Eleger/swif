@@ -105,6 +105,20 @@ app.Models.User = Backbone.Model.extend({
         }
     },
     
+    getService : function() {
+        return this.get('service_id');
+    },
+    setService : function(value) {
+        this.set({ service_id : value });
+    },
+
+    getContact : function() {
+        return this.get('contact_id');
+    },
+    setContact : function(value) {
+        this.set({ contact_id : value });
+    },
+
     getServices : function() {
         return this.get('service_ids');
     },
@@ -241,7 +255,7 @@ app.Models.User = Backbone.Model.extend({
         "use strict";
         var self = this;
 
-        var fields = ['firstname', 'name', 'groups', 'service_ids', 'in_group_15', 'in_group_17', 'in_group_18', 'in_group_19'];
+        var fields = ['firstname', 'name', 'groups', 'contact_id', 'service_id', 'service_ids', 'in_group_15', 'in_group_17', 'in_group_18', 'in_group_19'];
 
         app.getOE(this.model_name, fields, [self.getUID()], self.getSessionID(),
             ({
@@ -251,7 +265,10 @@ app.Models.User = Backbone.Model.extend({
     				self.setLastname(data.result[0].name);
                     self.setGroups(data.result[0].groups_id);
                     self.setServices(data.result[0].service_ids);
+                    self.setService(data.result[0].service_id);
+                    self.setContact(data.result[0].contact_id);
     				self.save();
+
     			},
                 error: function(error){
                     console.log(error);

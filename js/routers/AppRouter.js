@@ -321,19 +321,21 @@ app.Router = Backbone.Router.extend({
 						                		app.collections.claimersContacts = new app.Collections.ClaimersContacts();
 						            		}
 						                    app.collections.claimersContacts.fetch({
-						                        success: function(){
-						                            if(id == undefined)
-						                                app.views.requestView = new app.Views.RequestView(self.request,  true);
-						                            else
-						                                app.views.requestView = new app.Views.RequestView(self.request,  false);
-						                            self.render(app.views.requestView);
-						                        },
-						                        error: function(){
-						                            console.log('ERROR - unable to load ClaimersTypes');
-						                        },
-						                        complete: function(){
-						                            app.loader('hide');
-						                        }
+					                            success: function(){
+                                                if(id == undefined)
+					                                app.views.requestView = new app.Views.RequestView(self.request,  true);
+					                            else
+					                                app.views.requestView = new app.Views.RequestView(self.request,  false);
+					                            
+                                                    self.render(app.views.requestView);
+                                                },
+    					                        error: function(){
+                                                    console.log('ERROR - unable to load ClaimersTypes');
+                                                },
+                                                complete: function(){
+                                                    app.loader('hide');
+                                                }
+
 						                    });
 				                    	}
 				                   });

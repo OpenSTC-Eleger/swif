@@ -66,7 +66,6 @@ app.Views.RequestView = Backbone.View.extend({
 					$(self.el).html(template);
 
 
-
 					//search no technical services
 					var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
 						return service.attributes.technical != true 
@@ -75,7 +74,7 @@ app.Views.RequestView = Backbone.View.extend({
 					//remove no technical services
 					app.collections.claimersServices.remove(noTechnicalServices);
 					
-					app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $('#requestDetailService'), collection: app.collections.claimersServices})
+					app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#requestDetailService"), collection: app.collections.claimersServices})
 					app.views.selectListServicesView.clearAll();
 					app.views.selectListServicesView.addEmptyFirst();
 					app.views.selectListServicesView.addAll();
@@ -88,11 +87,10 @@ app.Views.RequestView = Backbone.View.extend({
 					app.views.selectListPlacesView.addAll();
 	
 					// Fill select ClaimersTypes //
-					app.views.selectListClaimersTypesView = new app.Views.DropdownSelectListView({el: $('#requestClaimerType'), collection: app.collections.claimersTypes})
+					app.views.selectListClaimersTypesView = new app.Views.DropdownSelectListView({el: $("#requestClaimerType"), collection: app.collections.claimersTypes})
 					app.views.selectListClaimersTypesView.clearAll();
 					app.views.selectListClaimersTypesView.addEmptyFirst();
 					app.views.selectListClaimersTypesView.addAll();
-
 					currentRequest = self.model.toJSON()
 					if( currentRequest.partner_type ) {
 						app.views.selectListClaimersTypesView.setSelectedItem( currentRequest.partner_type[0] );
@@ -107,29 +105,6 @@ app.Views.RequestView = Backbone.View.extend({
 						else
 							self.renderTechnicalSite(null);
 					}
-
-
-					console.log('Contact of the user:');
-					console.log(app.models.user);
-					console.log(app.models.user.getContact());
-					// Check if the user has a user claimer //
-					if(!_.isEmpty(app.models.user.getContact())){
-						$('#requestClaimerType, #requestClaimer').prop('disabled', true);
-
-						// Get the claimer //
-						var userClaimer = app.collections.claimers.get(app.models.user.getContact()[0]);
-
-						// Get the claimer Type //
-						var userClaimerType = userClaimer.getClaimerType();
-						console.log(userClaimerType);
-
-
-						// Set the claimer and the claimer Type in the select Box //
-						app.views.selectListClaimersTypesView.setSelectedItem(userClaimerType[0]);
-						self.renderClaimer(app.views.selectListClaimersTypesView.getSelected(), true);
-
-					}
-
 			});
 	
 			$(this.el).hide().fadeIn('slow'); 
@@ -139,7 +114,7 @@ app.Views.RequestView = Backbone.View.extend({
 
 
 		/** Save the request
-		*/
+		 */
 	    saveRequest: function (e) {
 		     
 	    	e.preventDefault();
@@ -209,52 +184,59 @@ app.Views.RequestView = Backbone.View.extend({
 
 		
 		renderClaimer: function(claimerType, firstInit) {
-			// Reset Form //
-			$('#requestContactSelect, #requestContactInput, #requestContactPhone, #requestContactEmail, #requestDetailService, #requestPlace').val('');
+			$('#requestContactSelect').val('');
+			$('#requestContactInput').val('');
+			$('#requestContactPhone').val('');
+			$('#requestContactEmail').val('');
+			$('#requestDetailService').val('');
+			$('#requestPlace').val('');
 			
 			if ( claimerType.attributes.claimers.length != 0) {
 	
-				$('#requestClaimerBlock, #requestContactSelectBlock').show();
-				$('#requestContactInputBlock').hide();
-
+				$('#requestClaimerBlock').attr('style', 'display:inline');
+				$('#requestContactSelectBlock').attr('style', 'display:inline');
+				$('#requestContactInputBlock').attr('style', 'display:none');
+				
 
 				//var collection = this.getCollectionOrdered(claimerType.attributes.claimers);
 
 				var collection = claimerType.attributes.claimers; 
 				collection.comparator = function(model){
-					return model.get('name');
+					return model.get("name");
 				};
-				
-				app.views.selectListClaimersView = new app.Views.DropdownSelectListView({el: $('#requestClaimer'), collection: collection});
+				app.views.selectListClaimersView = new app.Views.DropdownSelectListView({el: $("#requestClaimer"), collection: collection});
 				app.views.selectListClaimersView.clearAll();
 				app.views.selectListClaimersView.addEmptyFirst();
 				app.views.selectListClaimersView.addAll();
 				currentRequest = this.model.toJSON();
-
-
 				if( currentRequest.partner_id && firstInit) {
 					if( app.views.selectListClaimersView.hasId(currentRequest.partner_id[0]) ) {
-						app.views.selectListClaimersView.setSelectedItem(currentRequest.partner_id[0]);
+						app.views.selectListClaimersView.setSelectedItem( currentRequest.partner_id[0] );
 						this.renderContact( app.views.selectListClaimersView.getSelected() );
 						$('#requestContactSelect').removeProp('disabled');
-						$('#requestContactInput, #requestContactPhone, #requestContactEmail').removeProp('readonly');
+						$('#requestContactInput').removeProp('readonly');
+						$('#requestContactPhone').removeProp('readonly');
+						$('#requestContactEmail').removeProp('readonly');	
 					}
 				}
 				else {
 					$('#requestContactSelect').prop('disabled', true);
-					$('#requestContactInput, #requestContactPhone, #requestContactEmail').prop('readonly', true);
+					$('#requestContactInput').prop('readonly', true);
+					$('#requestContactPhone').prop('readonly', true);
+					$('#requestContactEmail').prop('readonly', true);
 				}
 			
 			} else {
 				
 			
-				$('#requestContactInputBlock').show();
-				$('#requestContactSelectBlock').hide();
-
+				$('#requestContactInputBlock').attr('style', 'display:inline');
 				$('#requestContactInput').removeProp('readonly');
-				$('#requestContactPhone, #requestContactEmail').removeProp('readonly');
+				$('#requestContactSelectBlock').attr('style', 'display:none');
 				
-				$('#requestClaimerBlock').hide();
+				$('#requestContactPhone').removeProp('readonly');
+				$('#requestContactEmail').removeProp('readonly');
+				
+				$('#requestClaimerBlock').attr('style', 'display:none');
 				if (app.views.selectListClaimersView) {
 					app.views.selectListClaimersView.clearAll();
 				}
@@ -275,32 +257,33 @@ app.Views.RequestView = Backbone.View.extend({
 			}
 		
 			if (claimer.attributes.service_id) {
-				$('#requestContactServiceBlock').show();
+				$('#requestContactServiceBlock').attr('style', 'display:inline');
 				$('#requestContactService').attr('value', claimer.attributes.service_id[1] );
 			} else {
-				$('#requestContactServiceBlock').hide();
-				$('#requestContactService').attr('value', '');
+				$('#requestContactServiceBlock').attr('style', 'display:none');
+				$('#requestContactService').attr('value', '' );
 			}
 
-			$('#requestContactPhone, #requestContactEmail').val('');
+			$('#requestContactPhone').val('');
+			$('#requestContactEmail').val('');
 		
 			app.views.selectListClaimersView.removeOne(0);
-			$('#requestContactInputBlock').hide();
-			$('#requestContactSelectBlock').show();
-
+			$('#requestContactInputBlock').attr('style', 'display:none');
 			$('#requestContactInput').prop('readonly', true);
+			$('#requestContactSelectBlock').attr('style', 'display:inline');
 			$('#requestContactSelect').removeProp('disabled');
-			$('#requestContactPhone, #requestContactEmail').removeProp('readonly');
+			$('#requestContactPhone').removeProp('readonly');
+			$('#requestContactEmail').removeProp('readonly');
 		
 			
 			//var collection = this.getCollectionOrdered(claimer.attributes.address);
 
 			var collection = claimer.attributes.address; 
 			collection.comparator = function(model){
-				return model.get('name');
+				return model.get("name");
 			};
 			app.views.selectListClaimersContactsView = new app.Views.DropdownSelectListView(
-					{el: $('#requestContactSelect'), collection: collection})
+					{el: $("#requestContactSelect"), collection: collection})
 			app.views.selectListClaimersContactsView.clearAll();
 			app.views.selectListClaimersContactsView.addEmptyFirst();
 			app.views.selectListClaimersContactsView.addAll();
@@ -315,7 +298,7 @@ app.Views.RequestView = Backbone.View.extend({
 
 
 		
-		renderTechnicalSite: function(site) {
+		renderTechnicalSite: function ( site ) {
 			if( site!=null )
 				app.views.selectListPlacesView.setSelectedItem( site );			
 		},
@@ -327,7 +310,7 @@ app.Views.RequestView = Backbone.View.extend({
 				app.views.selectListServicesView.setSelectedItem( service );
 				places = app.collections.places.models;
 				
-				// Keep only places belongs to service selected //
+				//keep only places belongs to service selected
 				keepedPlaces = _.filter(places, function(item){ 
 					var placeJSON = item.toJSON();
 					var placeServices = placeJSON.service_ids;	
@@ -362,11 +345,12 @@ app.Views.RequestView = Backbone.View.extend({
 		fillDropdownClaimerType: function(e){
 			 e.preventDefault();
 			 
-			$('#requestContactPhone, #requestContactEmail').val('');
+			$('#requestContactPhone').val('');
+			$('#requestContactEmail').val('');
 
 			app.views.selectListClaimersTypesView.removeOne(0);
-			$('#requestContactService').attr('value', '');
-			$('#requestContactServiceBlock').hide();
+			$('#requestContactService').attr('value', '' );
+			$('#requestContactServiceBlock').attr('style', 'display:none');
 
 			if(!app.collections.claimers){
 				app.collections.claimers = new app.Collections.Claimers();

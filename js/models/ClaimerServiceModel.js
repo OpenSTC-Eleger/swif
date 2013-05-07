@@ -37,6 +37,13 @@ app.Models.ClaimerService = Backbone.RelationalModel.extend({
     },
 
 
+    /** Check if the Service is a technical service
+    */
+    isTechnical: function() {
+        return this.get('technical');
+    },
+
+
     /** Model Parser
      */
     parse: function(response) {    	
