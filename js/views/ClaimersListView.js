@@ -262,8 +262,6 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		     zip: this.$('#addressZip').val(),
 	     
 	     };
-	     //TODO : test
-	     //app.models.claimerContact.save(0,params,$('#modalAddAddress'), null, "demandeurs");
 		var self = this;
 		this.modelId = this.selectedAddressJson==null?0: this.selectedAddressJson.id;
 
@@ -278,7 +276,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
 				else{
 					route = Backbone.history.fragment;
 					Backbone.history.loadUrl(route);
-					$('modalAddAddress').modal('hide');
+					$('#modalAddAddress').modal('hide');
 				}				
 			},
 			error: function(e){
