@@ -18,13 +18,13 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		'click li.disabled'				: 'preventDefault',
 		
         'click a.modalSaveClaimer'  		: 'modalSaveClaimer',
-		'submit #formSaveClaimer' 			: "saveClaimer", 
+		'submit #formSaveClaimer' 			: 'saveClaimer', 
 		'click a.modalDeleteClaimer'  		: 'modalDeleteClaimer',
 		'click button.btnDeleteClaimer'		: 'deleteClaimer',
 		
-		'click .btn.addAddress'                	: 'modalAddAddress',
+		'click .modalSaveContact'                : 'modalSaveContact',
 		'click button.saveAddress'             	: 'saveAddress',
-		'click a.modalDeleteAddress'   			: 'modalDeleteAddress',
+		'click a.modalDeleteContact'   			: 'modalDeleteContact',
         'click button.btnDeleteAddress'   		: 'deleteAddress',
 			
 		'click a.accordion-object'    			: 'tableAccordion',
@@ -88,7 +88,13 @@ app.Views.ClaimersListView = Backbone.View.extend({
 			$(self.el).html(template);
 
 			$('*[data-toggle="tooltip"]').tooltip();
+
+			// Set the focus to the first input of the form //
+			$('#modalSaveContact, #modalSaveClaimer').on('shown', function (e) {
+				$(this).find('input, textarea').first().focus();
+			})
 		});
+
 
 		$(this.el).hide().fadeIn('slow');
 		
@@ -136,7 +142,9 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		else 
 			return 0
 	},
-	
+
+
+
 	getTarget:function(e) {    	
     	e.preventDefault();
 	    // Retrieve the ID of the intervention //
@@ -209,34 +217,72 @@ app.Views.ClaimersListView = Backbone.View.extend({
 	},
 	
 	
-	/** Display information in the Modal view
+	/** Display information to the Modal for delete claimer
 	*/
 	modalDeleteClaimer: function(e){
-	    
+
 	    // Retrieve the ID of the Claimer //
 		this.setModel(e);
+
+		console.log(this.selectedClaimerJson);
 	
 	    $('#infoModalDeleteClaimer p').html(this.selectedClaimerJson.name);
-	    $('#infoModalDeleteClaimer small').html(this.selectedClaimerJson.code);
+	    $('#infoModalDeleteClaimer small').html(this.selectedClaimerJson.type_id[1]);
 	},
 	
-    /** Display the form to add a new address
-    	    */
-    modalAddAddress: function(e){
-    	this.getTarget(e);   	
-        $('#modalAddAddress').modal();
-    },
-	
-	modalDeleteAddress: function(e){
+
+
+    /** Display the form to add a new contact
+	*/
+    modalSaveContact: function(e){
+
+    	var link = $(e.target);
+
+    	// Check if it's a creation or not //
+    	if(link.data('action') == 'update'){
+
+			this.getTarget(e);
+	    	this.selectedAddress = app.collections.claimersContacts.get(this.pos);
+		    this.selectedAddressJSON = this.selectedAddress.toJSON();
+
+		    // Set Informations in the form //
+		    $('#addressName').val(this.selectedAddressJSON.name);
+		    $('#addressEmail').val(this.selectedAddressJSON.email);
+		    $('#addressFunction').val(this.selectedAddressJSON.function);
+		    if(this.selectedAddressJSON.phone != false){
+		    	$('#addressPhone').val(this.selectedAddressJSON.phone);
+		    }
+		    
+		    if(this.selectedAddressJSON.mobile != false){
+		    	$('#addressMobile').val(this.selectedAddressJSON.mobile);
+		    }
+		    
+			
+    	}
+    	else{
+    		// Reset the form //
+    		$('#modalSaveContact input').val('');
+    	}
+
+	},
+
+
+
+    /** Set informations to the Modal for delete contact
+    */
+	modalDeleteContact: function(e){
     	this.getTarget(e);
 	    this.selectedAddress = app.collections.claimersContacts.get(this.pos);
 		this.selectedAddressJSON = this.selectedAddress.toJSON();
-		$('#infoModalDeleteAddress').children('p').html(this.selectedAddressJSON.name);
-		$('#infoModalDeleteAddress').children('small').html(this.selectedAddressJSON.phone);	    
+		console.log(this.selectedAddressJSON);
+		$('#infoModalDeleteContact').children('p').html(this.selectedAddressJSON.name);
+		$('#infoModalDeleteContact').children('small').html(_.capitalize(this.selectedAddressJSON.function));
 	},
+
+
 	
     /** Save the Address
-    	    */
+    */
     saveAddress: function(e){
 		e.preventDefault();
 		
@@ -276,11 +322,11 @@ app.Views.ClaimersListView = Backbone.View.extend({
 				else{
 					route = Backbone.history.fragment;
 					Backbone.history.loadUrl(route);
-					$('#modalAddAddress').modal('hide');
+					$('#modalSaveContact').modal('hide');
 				}				
 			},
 			error: function(e){
-				alert('Impossible de créer ou mettre à jour l\'équipe');
+				alert('Impossible de créer ou mettre à jour le contact');
 			}
 		});
 	     
@@ -288,7 +334,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
    },
    
     /** Delete Address
-    	    */
+    */
     deleteAddress: function(e){
 		var self = this;
 		this.selectedAddress.delete({
