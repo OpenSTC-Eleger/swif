@@ -7,14 +7,6 @@ app.Models.ClaimerContact = Backbone.RelationalModel.extend({
 	model_name : 'res.partner.address',	
 	
 	url: "/#demandeurs-contacts/:id",
-
-//	relations: [
-//	{
-//		type: Backbone.HasMany,
-//		key: 'partner_id',
-//		relatedModel: 'app.Models.Claimer',
-//		includeInJSON: true,
-//	}],
 	
     
 
@@ -33,6 +25,8 @@ app.Models.ClaimerContact = Backbone.RelationalModel.extend({
         return response;
     },
     
+
+
     /** Save Officer
 	*/
 	save: function(data, id, options) { 

@@ -110,10 +110,12 @@ app.Views.RequestView = Backbone.View.extend({
 
 
 					console.log('Contact of the user:');
-					console.log(app.models.user);
-					console.log(app.models.user.getContact());
 					// Check if the user has a user claimer //
-					if(!_.isEmpty(app.models.user.getContact())){
+
+					console.log(app.collections.officers.get(app.models.user.getUID()));
+
+
+					/*if(!_.isEmpty(app.collections.officers.get(app.models.user.getUID())){
 						$('#requestClaimerType, #requestClaimer').prop('disabled', true);
 
 						// Get the claimer //
@@ -128,7 +130,7 @@ app.Views.RequestView = Backbone.View.extend({
 						app.views.selectListClaimersTypesView.setSelectedItem(userClaimerType[0]);
 						self.renderClaimer(app.views.selectListClaimersTypesView.getSelected(), true);
 
-					}
+					}*/
 
 			});
 	

@@ -17,6 +17,7 @@ app.Models.User = Backbone.Model.extend({
 	            includeInJSON: ['id','name'],
 	        }
         },
+
 	],
 
     defaults: {

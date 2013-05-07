@@ -322,22 +322,31 @@ app.Router = Backbone.Router.extend({
 						            		}
 						                    app.collections.claimersContacts.fetch({
 					                            success: function(){
-                                                if(id == undefined)
-					                                app.views.requestView = new app.Views.RequestView(self.request,  true);
-					                            else
-					                                app.views.requestView = new app.Views.RequestView(self.request,  false);
-					                            
-                                                    self.render(app.views.requestView);
-                                                },
-    					                        error: function(){
-                                                    console.log('ERROR - unable to load ClaimersTypes');
-                                                },
-                                                complete: function(){
-                                                    app.loader('hide');
-                                                }
+                                                    if(app.collections.officers == null ){
+                                                        app.collections.officers = new app.Collections.Officers();
+                                                    }
+                                                    app.collections.officers.fetch({
+                                                        success: function(){
+                                                            if(id == undefined)
+            					                                app.views.requestView = new app.Views.RequestView(self.request,  true);
+            					                            else 
+            					                                app.views.requestView = new app.Views.RequestView(self.request,  false);
+            					                            
+                                                            self.render(app.views.requestView);
+                                                            
+                                                        },
+            					                        error: function(){
+                                                            console.log('ERROR - unable to load ClaimersTypes');
+                                                        },
+                                                        complete: function(){
+                                                            app.loader('hide');
+                                                        }
 
-						                    });
-				                    	}
+            						                    
+            				                    	});
+                                                }
+                                            });
+                                        }
 				                   });
 		                    	},
 		                    });

@@ -56,7 +56,7 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
     	if( value == 'undefined') return;
         this.set({ service_id : value });
     },  
-    
+
     getTechnicalServiceId : function() {
         return this.get('technical_service_id');
     },
