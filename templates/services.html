@@ -64,7 +64,6 @@
 						<% if(service.user_ids.length != 0) { 
 								var self = this;
 								self.service = service; 
-								console.debug("++++++++++++" + self.service.id + "++++++++++++")
 							%>
 							<table class="table-nested-objects table table-striped table-condensed table-hover">
 								<thead>
@@ -92,7 +91,7 @@
 										<tr class="row-nested-objects" id="<%= officer.id %>_<%= service.id %>">
 											<td>
 												<span><%= officer.name +" "+ officer.firstname %></span>&nbsp;
-												<span class="nested-objects-actions invisible">	
+												<span class="nested-objects-actions invisible">
 													<a href="#modalSaveOfficer" class="modalSaveOfficer" >
 														<i class="icon-pencil displayInlineBlock" data-toggle="tooltip" 
 															data-original-title="<%= _.capitalize(lang.actions.update) %>">&nbsp;<%= _.capitalize(lang.actions.update) %></i>
@@ -120,7 +119,7 @@
 								</tbody>
 							</table>
 						<% } else { %>
-								<!-- No Claimer in the Database -->
+								<!-- No Service in to Display -->
 								<div class="alert alert-info">
 									<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noOfficer %>.
 								</div>
