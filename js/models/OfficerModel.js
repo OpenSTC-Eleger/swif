@@ -32,11 +32,8 @@ app.Models.Officer = Backbone.RelationalModel.extend({
             type: Backbone.HasMany,
             key: 'contact_id',
             relatedModel: 'app.Models.ClaimerContact',
-            reverseRelation: {
-                type: Backbone.HasOne,
-                key: 'user_id',
-                includeInJSON: 'id',
-            }
+            collectionType: 'app.Collections.ClaimersContacts',
+            includeInJSON: ['id', 'name','partner_id','phone','email'],
         },
 //		{
 //			type: Backbone.HasMany,
