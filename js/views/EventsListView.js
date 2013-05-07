@@ -533,7 +533,21 @@ app.Views.EventsListView = Backbone.View.extend({
         
 		//--------------------Cut dropped task on calendar-----------------------------//
         calculTask: function(event) {
-        	if( event.allPlanned || event.planned_hours==0 ) return 1
+        	if( event.allPlanned  ) {
+        		if( event.planned_hours!=0 ) {
+        	        var params = {
+        	                  state: app.Models.Task.state[3].value, 
+        	                  planned_hours: event.planned_hours ,
+        	                  remaining_hours: event.planned_hours ,
+        	                  user_id: null,
+        	                  team_id: null,
+        	                  date_end: null,
+        	                  date_start: null,
+        	              };
+        	        app.Models.Task.prototype.save(event.id, params, null, null, null);
+        		}
+        		return 1;
+        	}
         	
         	var startDate = moment(event.start);
         	var maxTime = moment( startDate.clone() ).hours( this.maxTime );
@@ -640,7 +654,7 @@ app.Views.EventsListView = Backbone.View.extend({
 				
 				
 				event.planned_hours -= duration;
-		    		event.remaining_hours -= duration;
+		    	event.remaining_hours -= duration;
 	    		
 	    		
 	    		if( event.planned_hours==0 || returnDate.hours()==18 )

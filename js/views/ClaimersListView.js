@@ -270,8 +270,8 @@ app.Views.ClaimersListView = Backbone.View.extend({
 	    	this.modelId, {
 			success: function(data){
 				console.log(data);
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				if(data.error && data.error.data){
+					app.notify('', 'error', data.error.data.fault_code);
 				}
 				else{
 					route = Backbone.history.fragment;
