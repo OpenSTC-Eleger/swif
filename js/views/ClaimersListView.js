@@ -248,9 +248,11 @@ app.Views.ClaimersListView = Backbone.View.extend({
 					return;
 			}
 		}
-	     var params = {
+	     this.params = {
 	         partner_id: this.pos,
 	         name: this.$('#addressName').val(),
+	         login: this.$('#partnerLogin').val(),
+	         password: this.$('#partnerPassword').val(),
 	         function: this.$('#addressFunction').val(),
 		     phone: this.$('#addressPhone').val(),
 		     email: this.$('#addressEmail').val(),
@@ -260,8 +262,28 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		     zip: this.$('#addressZip').val(),
 	     
 	     };
-	     //TODO : test
-	     app.models.claimerContact.save(0,params,$('#modalAddAddress'), null, "demandeurs");
+		var self = this;
+		this.modelId = this.selectedAddressJson==null?0: this.selectedAddressJson.id;
+
+	    app.Models.ClaimerContact.prototype.save(
+	    	this.params,
+	    	this.modelId, {
+			success: function(data){
+				console.log(data);
+				if(data.error){
+					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				}
+				else{
+					route = Backbone.history.fragment;
+					Backbone.history.loadUrl(route);
+					$('#modalAddAddress').modal('hide');
+				}				
+			},
+			error: function(e){
+				alert('Impossible de créer ou mettre à jour l\'équipe');
+			}
+		});
+	     
 		
    },
    

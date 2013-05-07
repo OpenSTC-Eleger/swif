@@ -12,7 +12,7 @@ app.Views.ServicesListView = Backbone.View.extend({
 	selectedService : '',
 
 
-    // The DOM events //
+    // The DOM events  //
     events: {
 		'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
@@ -76,16 +76,6 @@ app.Views.ServicesListView = Backbone.View.extend({
 		
 		this.technicalServices = new app.Collections.ClaimersServices(technicalServicesArray);
 		this.noTechnicalServices = new app.Collections.ClaimersServices(noTechnicalServicesArray);
-		
-//		var technicalGroupsArray = _.filter(app.collections.groups.models, function(group){
-//			return group.attributes.technical == true 
-//		});
-//		var noTechnicalGroupsArray = _.filter(app.collections.groups.models, function(group){
-//			return group.attributes.technical != true 
-//		});	
-//		
-//		this.technicalGroups = new app.Collections.ClaimersServices(technicalGroupsArray);
-//		this.noTechnicalGroups = new app.Collections.ClaimersServices(noTechnicalGroupsArray);
 	
 		var self = this;
 		// Retrieve the template // 

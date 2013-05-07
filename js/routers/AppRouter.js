@@ -36,11 +36,11 @@ app.Router = Backbone.Router.extend({
         'services/add'           				: 'detailsService',
         'services/:id'    						: 'detailsService',
 
-        'categories'                            : 'categoriesTasks',
-        'categories/page:page'                  : 'categoriesTasks',
+        'categories-des-taches'                 : 'categoriesTasks',
+        'categories-des-taches/page:page'       : 'categoriesTasks',
 
-        'affectations'                          : 'categoriesInterventions',
-        'affectations/page:page'                : 'categoriesInterventions',
+        'affectations-des-interventions'        	: 'categoriesInterventions',
+        'affectations-des-interventions/page:page'  : 'categoriesInterventions',
 
         'employes-municipaux'                   : 'officers',
         'employes-municipaux/page:page'         : 'officers',
@@ -51,8 +51,8 @@ app.Router = Backbone.Router.extend({
         'demandeurs'                            : 'claimers',
         'demandeurs/page:page'                  : 'claimers',
         
-        'types'                            		: 'types',
-        'types/page:page'                  		: 'types',
+        'types-de-demandeur'                    : 'types',
+        'types-de-demandeur/page:page'          : 'types',
         
 		'types-dabscence'                       : 'absentTypes',
 		'types-dabscence/page:page'             : 'absentTypes',
