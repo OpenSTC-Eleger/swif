@@ -237,7 +237,7 @@
 										<span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu pull-right text-left">
-										<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;_.capitalize(lang.actions.refuse)</a></li>
+										<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.refuse) %></a></li>
 										<% if(!app.models.user.isDST()){ %>
 											<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-user"></i>&nbsp;<%= _.capitalize(lang.actions.confirmChief) %></a></li>
 										<% } %>
