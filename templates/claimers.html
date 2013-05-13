@@ -70,16 +70,20 @@
 										<th><%= _.capitalize(lang.mobile) %></th>
 										<th><%= _.capitalize(lang.street) %></th>
 										<th><%= _.capitalize(lang.city) %></th>
-										<th><%= _.capitalize(lang.zip) %></th>
 									</tr>
 								</thead>
 								<tbody>
-									<% _.each(claimer.address, function (address, i) { console.log('----->');	console.log(address); %>
-										
+									<% _.each(claimer.address, function (address, i) { %>
+
 										<tr class="row-nested-objects" id="address_<%= address.id %>">
 											<td>
+												<% 
+												if(address.user_id != false){ 
+													var off = officers.get(address.user_id[0]); console.log("o_O"); console.log(off); %>
+													<i class="icon-user" data-toggle="tooltip" data-original-title="<%= off.getLogin() %>"></i>
+												<% } %>
 												<span><%= address.name %></span>&nbsp;
-												<span class="nested-objects-actions invisible">													
+												<span class="nested-objects-actions invisible">
 													<a href="#modalSaveContact" class="modalSaveContact" data-toggle="modal" data-action="update">
 														<i class="icon-pencil displayInlineBlock" data-toggle="tooltip" data-action="update" data-original-title="<%= _.capitalize(lang.actions.update) %>">&nbsp;</i>
 													</a> |
@@ -94,8 +98,7 @@
 											<td><%= address.email != false ? "<a href=mailto:"+address.email+">"+address.email+"</a>" : '' %></td>
 											<td><%= address.mobile != false ? address.mobile : '' %></td>
 											<td><%= address.street != false ? address.street : '' %></td>
-											<td><%= address.city != false ? address.city : '' %></td>
-											<td><%= address.zip != false ? address.zip : '' %></td>
+											<td><%= address.zip != false ? address.zip : '' %>&nbsp;<%= address.city != false ? address.city : '' %></td>
 										</tr>
 									<% }); %>
 								</tbody>
@@ -333,7 +336,7 @@
 				</div>
 
 			</fieldset>
-			
+
 			<fieldset>
 				<legend><%= lang.aboutTheContact %></legend>
 					<div class="control-group">

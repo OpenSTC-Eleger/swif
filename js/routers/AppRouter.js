@@ -1190,22 +1190,29 @@ app.Router = Backbone.Router.extend({
 		    	                            }
 		    	                           
 		    	                            app.collections.claimersContacts.fetch({
-		    	                            	success: function() {
-			    		                            app.views.claimersListView = new app.Views.ClaimersListView({page: self.page});
-			    		                            self.render(app.views.claimersListView);
-			    		                        },
-			    		                        complete: function(){
-			    		                            app.loader('hide');
-			    		                        }
-		    	                            });
-			    		                 }
-	    	                        });
-	                        	},
-	
-	                        });
-                    	}
+                                                success: function(){
+                                                    if(app.collections.officers == null ){
+                                                        app.collections.officers = new app.Collections.Officers();
+                                                    }
+                                                    
+                                                    app.collections.officers.fetch({
+		    	                            	        success: function() {
+			    		                                   app.views.claimersListView = new app.Views.ClaimersListView({page: self.page});
+			    		                                   self.render(app.views.claimersListView);
+                                                        },
+			    		                               complete: function(){
+			    		                                   app.loader('hide');
+			    		                               }
+                                                    });
+                                                }
+                                            });
+                                        },
+                                    });
+                                }
+                            });
+                        },
                     });
-                },
+                }
             });
         }
         else{
@@ -1467,10 +1474,12 @@ app.Router = Backbone.Router.extend({
  	         this.navigate('login', {trigger: true, replace: true});
  	     }
  	 },
- 	 
+
+
+
     /** geoportail
-   	    */
-  	 geoportail: function(){      
+   	*/
+  	geoportail: function(){      
   	
   	     // Check if the user is connect //
   	     if(this.checkConnect()){

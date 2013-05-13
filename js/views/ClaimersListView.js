@@ -73,11 +73,12 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
 
-
+		
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
 				claimers: claimersSortedArray,
+				officers: app.collections.officers,
 				lang: app.lang,
 				nbClaimers: nbClaimers,
 				startPos: startPos, endPos: endPos,
