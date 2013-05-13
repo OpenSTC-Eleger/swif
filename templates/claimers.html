@@ -74,7 +74,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<% _.each(claimer.address, function (address, i) { console.debug(address); %>
+									<% _.each(claimer.address, function (address, i) { console.log('----->');	console.log(address); %>
 										
 										<tr class="row-nested-objects" id="address_<%= address.id %>">
 											<td>
@@ -89,19 +89,19 @@
 													</a>
 												</span>
 											</td>
-											<td><%= address.function!=false?address.function:"" %></td>
-											<td><%= address.phone!=false?address.phone:"" %></td>
-											<td><%= address.email!=false?address.email:"" %></td>
-											<td><%= address.mobile!=false?address.mobile:"" %></td>
-											<td><%= address.street!=false?address.street:"" %></td>
-											<td><%= address.city!=false?address.city:"" %></td>
-											<td><%= address.zip!=false?address.zip:"" %></td>
+											<td><%= address.function!=false ? address.function : '' %></td>
+											<td><%= address.phone!=false ? address.phone : '' %></td>
+											<td><%= address.email != false ? "<a href=mailto:"+address.email+">"+address.email+"</a>" : '' %></td>
+											<td><%= address.mobile != false ? address.mobile : '' %></td>
+											<td><%= address.street != false ? address.street : '' %></td>
+											<td><%= address.city != false ? address.city : '' %></td>
+											<td><%= address.zip != false ? address.zip : '' %></td>
 										</tr>
 									<% }); %>
 								</tbody>
 							</table>
 						<% } else { %>
-								<!-- No Claimer in the Database -->
+								<!-- No Claimer to display -->
 								<div class="alert alert-info">
 									<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noPartner %>.
 								</div>
@@ -146,7 +146,7 @@
 				<% if (page+2 < pageCount) { %>
 					<li class="disabled"><a href='#'>...</a></li>
 				<% } %>
-				
+
 				<!-- Next page button -->
 				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#demandeurs/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
 				
@@ -180,13 +180,13 @@
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3><%= _.capitalize(lang.actions.addClaimer) %></h3>
 	</div>
-	
+
 	<div class="modal-body">
 		<form id="formSaveClaimer" action="#" class="form-horizontal">
 
 			<fieldset>
 				<legend><%= lang.aboutTheClaimer %></legend>
-			
+
 			<!-- Place name -->
 			<div class="control-group">
 				<label for="claimerName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
@@ -338,7 +338,7 @@
 				<legend><%= lang.aboutTheContact %></legend>
 					<div class="control-group">
 						<label for="addressEmail" class="control-label"><%= _.capitalize(lang.email) %>:</label>
-		
+
 						<div class="controls">
 							<input type="email" id="addressEmail" name="addressEmail" required />
 							<span class="help-inline"></span>
@@ -356,7 +356,7 @@
 
 					<div class="control-group">
 						<label for="addressPhone" class="control-label"><%= _.capitalize(lang.phone) %>:</label>
-		
+
 						<div class="controls">
 							<input type="text" id="addressPhone" name="addressPhone" />
 							<span class="help-inline"></span>
@@ -365,13 +365,13 @@
 
 					<div class="control-group">
 						<label for="addressMobile" class="control-label"><%= _.capitalize(lang.mobile) %>:</label>
-		
+
 						<div class="controls">
 							<input type="text" id="addressMobile" name="addressMobile" />
 							<span class="help-inline"></span>
 						</div>
 					</div>
-					
+
 					<!-- Associated Adress details -->
 					<div class="control-group">
 						<div class="controls">
@@ -387,7 +387,7 @@
 					
 				<div class="control-group">
 					<label for="addressStreet" class="control-label"><%= _.capitalize(lang.address) %>:</label>
-	
+
 					<div class="controls">
 						<input type="text" id="addressStreet" name="addressStreet" />
 						<span class="help-inline"></span>
@@ -396,7 +396,7 @@
 				
 				<div class="control-group">
 					<label for="addressCity" class="control-label"><%= _.capitalize(lang.city) %>:</label>
-	
+
 					<div class="controls">
 						<input type="text" id="addressCity" name="addressCity" />
 						<span class="help-inline"></span>
@@ -405,7 +405,7 @@
 				
 				<div class="control-group">
 					<label for="addressZip" class="control-label"><%= _.capitalize(lang.zip) %>:</label>
-	
+
 					<div class="controls">
 						<input type="text" id="addressZip" name="addressZip" />
 						<span class="help-inline"></span>
@@ -427,8 +427,8 @@
 <!-- Modal Form Delete Claimer -->
 <div id="modalDeleteContact" class="modal hide fade">
 	<div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	    <h3><%= lang.viewsTitles.deleteContact %></h3>
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3><%= lang.viewsTitles.deleteContact %></h3>
 	</div>
 	
 	<div class="modal-body">
@@ -440,9 +440,9 @@
 
 		<p><%= lang.warningMessages.confirmDeleteContact %></p>
 	</div>
-	
+
 	<div class="modal-footer">
-	    <button type="button" class="btn btn-danger btnDeleteAddress"><%= _.capitalize(lang.actions.delete) %></button>&nbsp;&nbsp;
-	    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+		<button type="button" class="btn btn-danger btnDeleteAddress"><%= _.capitalize(lang.actions.delete) %></button>&nbsp;&nbsp;
+		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>

@@ -235,7 +235,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
     /** Display the form to add a new contact
 	*/
     modalSaveContact: function(e){
-    	this.getTarget(e); 
+		this.getTarget(e);
 
     	var link = $(e.target);
 
