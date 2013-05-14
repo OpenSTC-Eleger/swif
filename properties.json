@@ -14,7 +14,7 @@
 		"backbone-relational"  : "0.6.0",
 		"bootstrap"            : "2.3.1",
 		"underscore-string"    : "2.3.0",
-		"font-awesome"   	   : "3.0.2",
+		"font-awesome"   	   : "3.1.0",
 		"fullcalendar"         : "1.5.4",
 		"jquery-dataTables"    : "1.9.4",
 		"pnotify"              : "1.2.0",
