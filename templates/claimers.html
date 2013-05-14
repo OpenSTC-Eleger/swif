@@ -79,7 +79,7 @@
 											<td>
 												<% 
 												if(address.user_id != false){ 
-													var off = officers.get(address.user_id[0]); console.log("o_O"); console.log(off); %>
+													var off = officers.get(address.user_id[0]); %>
 													<i class="icon-user" data-toggle="tooltip" data-original-title="<%= off.getLogin() %>"></i>
 												<% } %>
 												<span><%= address.name %></span>&nbsp;
@@ -375,17 +375,10 @@
 						</div>
 					</div>
 
-					<!-- Associated Adress details -->
-					<div class="control-group">
-						<div class="controls">
-							<label class="checkbox" for="associatedAdress">
-							<input type="checkbox" id="associatedAdress"><%= lang.actions.associatedAdress %></label>
-						</div>
-					</div>
-					
+				
 			 </fieldset>
 
-			<fieldset class="associated-adress hide">
+			<fieldset class="associated-adress">
 				<legend><%= lang.aboutTheContactAdress %></legend>
 					
 				<div class="control-group">

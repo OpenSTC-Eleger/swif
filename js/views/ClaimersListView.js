@@ -10,6 +10,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
 	numberListByPage: 25,
 
 	selectedClaimer : '',
+	selectedContact : '',
 
 
     // The DOM events //
@@ -22,7 +23,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		'click a.modalDeleteClaimer'  		: 'modalDeleteClaimer',
 		'click button.btnDeleteClaimer'		: 'deleteClaimer',
 		
-		'click .modalSaveContact'                : 'modalSaveContact',
+		'click .modalSaveContact'               : 'modalSaveContact',
 		'click button.saveAddress'             	: 'saveAddress',
 		'click a.modalDeleteContact'   			: 'modalDeleteContact',
         'click button.btnDeleteAddress'   		: 'deleteAddress',
@@ -30,18 +31,16 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		'click a.accordion-object'    			: 'tableAccordion',
 		'change #claimerTechnicalService'		: 'fillDropdownTechnicalService',
 		
-		'change #createAssociatedAccount' 			: 'accordionAssociatedAccount',
-		'change #associatedAdress' 					: 'accordionAssociatedAdress',
-			
+		'change #createAssociatedAccount' 			: 'accordionAssociatedAccount'
     },
 
 
 
 	/** View Initialization
 	*/
-    initialize: function () {
-		
-    },
+	initialize: function () {
+
+	},
 
 
 	/** Display the view
@@ -53,19 +52,19 @@ app.Views.ClaimersListView = Backbone.View.extend({
         app.router.setPageTitle(app.lang.viewsTitles.claimersList);
 
 
-        // Change the active menu item //
-        app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
+		// Change the active menu item //
+		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
 
-        // Change the Grid Mode of the view //
-        app.views.headerView.switchGridMode('fluid');
+		// Change the Grid Mode of the view //
+		app.views.headerView.switchGridMode('fluid');
 
 
 		var claimers = app.collections.claimers.models;
 		var nbClaimers = _.size(claimers);
 
 		var claimersSortedArray = _.sortBy(claimers, function(item){ 
-	          return item.attributes.name; 
-        });
+			return item.attributes.name; 
+		});
 
 
 		var len = claimers.length;
@@ -73,7 +72,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
 
-		
+
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
@@ -102,14 +101,18 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		return this;
     },
     
+
+
     /** Fonction collapse table row
-    	    */
+    */
     tableAccordion: function(e){
 
         e.preventDefault();
         
         // Retrieve the intervention ID //
         var id = _($(e.target).attr('href')).strRightBack('_');
+
+        this.selectedClaimer = id;
 
 
         var isExpend = $('#collapse_'+id).hasClass('expend');
@@ -240,6 +243,12 @@ app.Views.ClaimersListView = Backbone.View.extend({
 
     	var link = $(e.target);
 
+    	// Reset the form //
+    	$('#modalSaveContact input').val('');
+    	$('#createAssociatedAccount, #partnerLogin').prop('disabled', false);
+    	$('#createAssociatedAccount').prop('checked', false);
+
+
     	// Check if it's a creation or not //
     	if(link.data('action') == 'update'){
 
@@ -258,12 +267,36 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		    if(this.selectedAddressJSON.mobile != false){
 		    	$('#addressMobile').val(this.selectedAddressJSON.mobile);
 		    }
-		    
-			
+
+			if(this.selectedAddressJSON.addressStreet != false){
+				$('#addressStreet').val(this.selectedAddressJSON.street);
+			}
+			if(this.selectedAddressJSON.addressCity != false){
+				$('#addressCity').val(this.selectedAddressJSON.city);
+			}
+			if(this.selectedAddressJSON.addressZip != false){
+				$('#addressZip').val(this.selectedAddressJSON.zip);
+			}
+
+
+		    // Check if the user have an account in OpenERP //
+		    if(this.selectedAddressJSON.user_id != false){
+		    	$('#createAssociatedAccount').prop('checked', true); $('#createAssociatedAccount, #partnerLogin').prop('disabled', true);
+		    	$('fieldset.associated-account').show();
+
+		    	var off = app.collections.officers.get(this.selectedAddressJSON.user_id[0]);
+		    	$('#partnerLogin').val(off.getLogin());
+		    }
+		    else{
+				$('fieldset.associated-account').hide();
+				$('#createAssociatedAccount, #partnerLogin').prop('disabled', false);
+		    }
+
+		    $('fieldset.associated-adress').show();
     	}
     	else{
     		// Reset the form //
-    		$('#modalSaveContact input').val('');
+    		$('fieldset.associated-account').hide();
     	}
 
 	},
@@ -282,36 +315,42 @@ app.Views.ClaimersListView = Backbone.View.extend({
 	},
 
 
-	
-    /** Save the Address
-    */
+
+	/** Save the Address
+	*/
     saveAddress: function(e){
 		e.preventDefault();
 		
 		if( $('#createAssociatedAccount').is(':checked') ){
-			if($('#partnerLogin').val() == '' || $('#partnerPassword').val() == ''){
+
+			/*if($('#partnerLogin').val() == '' || $('#partnerPassword').val() == ''){
 				app.notify('', 'error', 
 					app.lang.errorMessages.unablePerformAction, 
 					app.lang.validationMessages.claimers.accountIncorrect);
 					return;
-			}
+			}*/
+     			
 		}
-	     this.params = {
-	         partner_id: this.pos,
-	         name: this.$('#addressName').val(),
-	         login: this.$('#partnerLogin').val(),
-	         password: this.$('#partnerPassword').val(),
-	         function: this.$('#addressFunction').val(),
-		     phone: this.$('#addressPhone').val(),
-		     email: this.$('#addressEmail').val(),
-		     mobile: this.$('#addressMobile').val(),
-		     street: this.$('#addressStreet').val(),
-		     city: this.$('#addressCity').val(),
-		     zip: this.$('#addressZip').val(),
+
+		this.params = {
+			partner_id: this.selectedClaimer,
+			name: this.$('#addressName').val(),
+			login: this.$('#partnerLogin').val(),
+			password: this.$('#partnerPassword').val(),
+			function: this.$('#addressFunction').val(),
+			phone: this.$('#addressPhone').val(),
+			email: this.$('#addressEmail').val(),
+			mobile: this.$('#addressMobile').val(),
+			street: this.$('#addressStreet').val(),
+			city: this.$('#addressCity').val(),
+			zip: this.$('#addressZip').val(),
+		};
+
+		console.log(this.params);
 	     
-	     };
 		var self = this;
-		this.modelId = this.selectedAddressJson==null?0: this.selectedAddressJson.id;
+		this.modelId = this.selectedAddressJSON == null ? 0 : this.selectedAddressJSON.id;
+
 
 	    app.Models.ClaimerContact.prototype.save(
 	    	this.params,
@@ -471,27 +510,22 @@ app.Views.ClaimersListView = Backbone.View.extend({
 			app.views.selectListClaimerTechnicalSiteView.addEmptyFirst();
 			app.views.selectListClaimerTechnicalSiteView.addAll();
 			
-		}				
+		}
 	},
 	
+	
+
 	/** Display or Hide Create associated Task Section
-		*/
+	*/
 	accordionAssociatedAccount: function(event){
 		event.preventDefault();
 
 		// Toggle Slide Create associated task section //
 		$('fieldset.associated-account').stop().slideToggle();
 	},
+
 	
-	accordionAssociatedAdress: function(event){
-		event.preventDefault();
-	
-		// Toggle Slide Create associated task section //
-		$('fieldset.associated-adress').stop().slideToggle(function(){
-			$('#modalAddAddress div.modal-body').animate({scrollTop: $('#modalAddAddress div.modal-body').height()}, 400);
-		});
-	},
-	
+
 	preventDefault: function(event){
 		event.preventDefault();
 	},
