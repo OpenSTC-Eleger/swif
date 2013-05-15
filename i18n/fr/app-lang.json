@@ -6,6 +6,10 @@
 	"password"				: "mot de passe",
 	"lastConnection"		: "dernière connexion le",
 	"settings"				: "paramètres",
+	"daytime"				: "journée",
+	"day"					: "jour",
+	"today"					: "Aujourd'hui",
+	"month"					: "mois",
 	"help"					: "aide",
 	"to"					: "au",
 	"about"					: "à propos",
@@ -137,6 +141,10 @@
 	"smallMaterialEquipment"				: "Petit matériel",
 	"officer"								: "Officier",
 
+	"monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+	"monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
+	"dayNames": ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+  	"dayNamesShort": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
 
 	"actions" : {
 		"logIn"				: "connectez-vous",

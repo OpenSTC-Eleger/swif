@@ -108,7 +108,7 @@ var app = {
     },
     
 
-    /** Load internationalization scripy
+    /** Load internationalization scripts
     */
     loadI18nScripts: function (lang) {
         
