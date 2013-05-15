@@ -322,14 +322,13 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		e.preventDefault();
 		
 		if( $('#createAssociatedAccount').is(':checked') ){
-
-			/*if($('#partnerLogin').val() == '' || $('#partnerPassword').val() == ''){
+			
+			if($('#partnerLogin').val() == '' || $('#partnerPassword').val() == ''){
 				app.notify('', 'error', 
 					app.lang.errorMessages.unablePerformAction, 
 					app.lang.validationMessages.claimers.accountIncorrect);
 					return;
-			}*/
-     			
+			}     			
 		}
 
 		this.params = {

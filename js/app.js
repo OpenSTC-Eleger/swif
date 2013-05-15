@@ -5,7 +5,7 @@
 var app = {
 
 	
-		
+	//test	
     // Global variables app //
     appVersion      : '0.1.0 alpha',
     userBDD         : 'pontlabbe2',
