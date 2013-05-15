@@ -436,21 +436,23 @@ app.Views.TasksListView = Backbone.View.extend({
 		e.preventDefault();
 		
 		//Filter equipments
-		var filteredEquipment= app.collections.equipments;
+		var filteredEquipment = app.collections.equipments;
+
+
 		if( this.model ) {
-			//Filter Equipment by service on intervention's  task
+			// Filter Equipment by service on intervention's  task //
 			var task = this.model.toJSON();
 			var intervention = task.intervention;
-			var service = intervention.service_id;			
+			var service = intervention.service_id;
 			filteredEquipment = _.filter(filteredEquipment.models, function(item){	
 				var equipmentJSON = item.toJSON();
 				var services = _.map(equipmentJSON.service_ids, function(service){return service.id;});
 	    		return $.inArray(service[0], services)!=-1;
-	    	});								
+	    	});
 		}
 		else {
-			//When create orphan task : Filter Equipment by service on user connected
-			filteredEquipment = _.filter(filteredEquipment.models, function(item){					
+			// When create orphan task : Filter Equipment by service on user connected //
+			filteredEquipment = _.filter(filteredEquipment.models, function(item){
 				var equipmentJSON= item.toJSON();
 				var self = this;
 				self.belongsToUserServices = false	
@@ -458,11 +460,13 @@ app.Views.TasksListView = Backbone.View.extend({
 				_.each(services, function(service){
 					self.belongsToUserServices = $.inArray(service, app.models.user.toJSON().service_ids)!=-1
 				})
-				return this.belongsToUserServices;	    		
-	    	});									
+				return this.belongsToUserServices;
+	    	});
 		}
 		
-		//search only vehicles
+
+
+		// Search only vehicles //
 		var filteredVehicleEquipment = _.filter(filteredEquipment, function(item){
 		    return item.attributes.technical_vehicle || item.attributes.commercial_vehicle;
 		});

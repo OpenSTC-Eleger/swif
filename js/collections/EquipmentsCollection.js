@@ -37,6 +37,7 @@ app.Collections.Equipments = Backbone.Collection.extend({
     		return record.technical_vehicle || record.commercial_vehicle
     				|| record.fat_material || record.small_material;
     	});
+
         return records;
     },
     

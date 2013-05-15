@@ -165,7 +165,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 
 
 	
-	/** Save Model
+	/** method not used
 	*/
 	sendEmail: function(data,options) { 
 		var params = {}

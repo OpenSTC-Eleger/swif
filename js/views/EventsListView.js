@@ -295,16 +295,17 @@ app.Views.EventsListView = Backbone.View.extend({
 				columnFormat: {
 				    month: 'ddd',
 				    week: 'ddd dd/M',
-				    day: 'dddd dd/M' 
+				    day: 'dddd dd/M'
 				},
+				firstDay: 1,
 				axisFormat: 'HH:mm',
 				timeFormat: 'H(:mm){ - H(:mm)}',
 
 				monthNames: app.lang.monthNames,
-        		monthNamesShort: app.lang.monthNamesShort,
-            	dayNames: app.lang.dayNames,
-            	dayNamesShort: app.lang.dayNamesShort,
-            	buttonText: {
+				monthNamesShort: app.lang.monthNamesShort,
+				dayNames: app.lang.dayNames,
+				dayNamesShort: app.lang.dayNamesShort,
+				buttonText: {
 				    today: app.lang.today,
 				    month: app.lang.month,
 				    week: app.lang.week,
@@ -419,7 +420,7 @@ app.Views.EventsListView = Backbone.View.extend({
 									else
 										self.refresh();
 								}
-							});						
+							});
 							modalAbsentTask.modal('hide');
 				    });	
 		    		$('#modalAbsentTask .dismiss').one('click .dismiss', function (event) {

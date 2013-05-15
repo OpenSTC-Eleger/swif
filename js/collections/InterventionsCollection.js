@@ -39,9 +39,9 @@ app.Collections.Interventions = Backbone.Collection.extend({
     /** Comparator for ordering collection
     */
     comparator: function(item) {
-        var mCreateDate = moment(item.get("create_date"))
-        item.set({"create_date":mCreateDate});
-        return -item.get("create_date");
+        var mCreateDate = moment(item.get('create_date'))
+        item.set({'create_date': mCreateDate});
+        return -item.get('create_date');
 	}
 
 });

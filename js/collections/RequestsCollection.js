@@ -21,7 +21,7 @@ app.Collections.Requests = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {	
-    	app.readOE( this.model_name , app.models.user.getSessionID(), options);
+    	app.readOE(this.model_name, app.models.user.getSessionID(), options);
     },
 
 
@@ -37,7 +37,9 @@ app.Collections.Requests = Backbone.Collection.extend({
     /** Comparator for ordering collection
     */
     comparator: function(item) {
-	  return -item.get("create_date");
+        var mCreateDate = moment(item.get('create_date'))
+        item.set({'create_date': mCreateDate});
+        return -item.get('create_date');
 	},
 
 });
