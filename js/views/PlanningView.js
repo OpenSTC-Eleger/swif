@@ -279,14 +279,13 @@ app.Views.PlanningView = Backbone.View.extend({
     */
     initAllCalendars: function() {    		
     		var self = this;
-    		teams = app.collections.teams;    		
     		
-			teams.each(function(t){	
+            teams = app.collections.teams;    		
+    		teams.each(function(t){	
 				new app.Views.EventsListView(self,t,true).render();
 			});
 
-    		officers = app.collections.officers;    		
-    		
+            officers = app.collections.officers;    		
 			officers.each(function(o){
 				new app.Views.EventsListView(self,o,false).render();
 			});

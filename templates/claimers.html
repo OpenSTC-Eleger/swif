@@ -297,7 +297,7 @@
 				<label for="addressName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
 
 				<div class="controls">
-					<input type="text" id="addressName" name="addressName" />
+					<input type="text" id="addressName" name="addressName" required="required" />
 					<span class="help-inline"></span>
 				</div>
 			</div>
@@ -320,7 +320,7 @@
 					<label for="partnerLogin" class="control-label"><%= _.capitalize(lang.login) %>:</label>
 
 					<div class="controls">
-						<input type="text" id="partnerLogin" name="partnerLogin" required="required" />
+						<input type="text" id="partnerLogin" name="partnerLogin" />
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -330,7 +330,7 @@
 					<label for="partnerPassword" class="control-label"><%= _.capitalize(lang.password) %>:</label>
 
 					<div class="controls">
-						<input type="password" id="partnerPassword" name="partnerPassword" pattern=".{6,}" required="required" />
+						<input type="password" id="partnerPassword" name="partnerPassword" pattern=".{6,}" />
 						<span class="help-inline"><%= lang.infoMessages.sixCharMin %></span>
 					</div>
 				</div>
@@ -414,7 +414,7 @@
 	</div>
 	
 	<div class="modal-footer">
-		<button type="submit" class="btn btn-primary saveAddress"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+		<button type="submit" form="formAddAddress" class="btn btn-primary saveAddress"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
 		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>

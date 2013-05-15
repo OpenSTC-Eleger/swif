@@ -24,7 +24,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		'click button.btnDeleteClaimer'		: 'deleteClaimer',
 		
 		'click .modalSaveContact'               : 'modalSaveContact',
-		'click button.saveAddress'             	: 'saveAddress',
+		'submit #formAddAddress'             	: 'saveAddress',
 		'click a.modalDeleteContact'   			: 'modalDeleteContact',
         'click button.btnDeleteAddress'   		: 'deleteAddress',
 			
@@ -322,14 +322,17 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		e.preventDefault();
 		
 		if( $('#createAssociatedAccount').is(':checked') ){
+
 			
 			if($('#partnerLogin').val() == '' || $('#partnerPassword').val() == ''){
+
 				app.notify('', 'error', 
 					app.lang.errorMessages.unablePerformAction, 
 					app.lang.validationMessages.claimers.accountIncorrect);
 					return;
-			}     			
-		}
+			}
+     	}
+
 
 		this.params = {
 			partner_id: this.selectedClaimer,
@@ -520,7 +523,15 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		event.preventDefault();
 
 		// Toggle Slide Create associated task section //
-		$('fieldset.associated-account').stop().slideToggle();
+		$('fieldset.associated-account').stop().slideToggle(function(){
+			if($(this).is(":hidden")){
+				$('#partnerLogin, #partnerPassword').prop('required', false);
+				$('#partnerLogin, #partnerPassword').val('');
+			}
+			else{
+				$('#partnerLogin, #partnerPassword').prop('required', true);
+			}
+		});
 	},
 
 	

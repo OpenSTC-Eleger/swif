@@ -272,6 +272,7 @@ app.Views.EventsListView = Backbone.View.extend({
         //--------------------Init calendar----------------------------------//
         initCalendar: function() {
         	var self = this;
+
         	this.calendar = self.el.fullCalendar({
 				events: function(start, end, callback) {
         			callback(self.events);
@@ -288,7 +289,7 @@ app.Views.EventsListView = Backbone.View.extend({
 				titleFormat: {
 				    month: 'MMMM yyyy',
 				    // week: "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}",
-				    week:"'Semaine du' dd [yyyy] {'au' [MMM] dd MMM yyyy}",
+				    week:"'Semaine 'W' du' dd [MMM] [yyyy] {'au' dd MMM yyyy}",
 				    day: 'dddd dd MMM yyyy'
 				},
 				columnFormat: {
@@ -297,18 +298,19 @@ app.Views.EventsListView = Backbone.View.extend({
 				    day: 'dddd dd/M' 
 				},
 				axisFormat: 'HH:mm',
-//				timeFormat: {
-//				    agenda: 'H:mm{ - h:mm}'
-//				},
 				timeFormat: 'H(:mm){ - H(:mm)}',
 
-//				titleFormat:{
-//				    //week: "d { [ MMM] '-' d} MMM yyyy",
-//				    week: "'Semaine ' W '<small class=visible-desktop> du' d { [ MMM] 'au' d} MMM yyyy '</small>'",
-//				},
-				allDayText: 'Journée',
-				//axisFormat: 'H:mm',
-				//timeFormat: 'H:mm',
+				monthNames: app.lang.monthNames,
+        		monthNamesShort: app.lang.monthNamesShort,
+            	dayNames: app.lang.dayNames,
+            	dayNamesShort: app.lang.dayNamesShort,
+            	buttonText: {
+				    today: app.lang.today,
+				    month: app.lang.month,
+				    week: app.lang.week,
+				    day: app.lang.day
+				},
+				allDayText: app.lang.daytime,
 				slotMinutes	: 30,
 				firstHour	: 8,
 				minTime		: 8,
@@ -470,7 +472,7 @@ app.Views.EventsListView = Backbone.View.extend({
 				       date_start: event.start,
 				       date_end: event.end,
 				    };
-				    app.models.task.save(event.id,params,null,null,'#planning');	
+				    app.models.task.save(event.id, params, null, null, '#planning');	
 				    $(self.el).fullCalendar('refresh');
 				    self.planning.render();
 				    app.loader('hide');	
@@ -513,7 +515,13 @@ app.Views.EventsListView = Backbone.View.extend({
 
 			});
     	
-			// Print button
+			var username = self.el.data('username');
+			
+			
+			$(self.el.selector + ' table td.fc-header-left').html("<img src='http://mashwork.com/blog/wp-content/uploads/2012/06/Unknown-person2.gif' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");
+
+
+			// Print button //
 			$('<span class="fc-button-print">' 
 				   +'<button class="btn btn-primary btn-small no-outline"><i class="icon-print"></i></button></span>')
 				  //+('labels', 'Print') + '</span>')
@@ -523,9 +531,6 @@ app.Views.EventsListView = Backbone.View.extend({
 					    self.printCalendar();
 				  })
 				  .before('<span class="fc-header-space">');
-			
-			//remove vertical scrollbar (http://code.google.com/p/fullcalendar/issues/detail?id=314)
-			//$('.fc-view-agendaWeek > div > div').css('overflow-y', 'hidden'); $('.fc-agenda-gutter').css('width', 0);
 				
 			
 		},
