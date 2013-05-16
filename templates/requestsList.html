@@ -65,9 +65,9 @@
 				<th>
 					<%= _.capitalize(lang.status) %>
 					<div class="dropdown pull-right">
-					    <a id="filterStateRequest" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="icon-filter icon-large"></i></a>
-					    
-					    <ul id="filterStateRequestList" class="dropdown-menu" role="menu" aria-labelledby="filterStateRequest">
+						<a id="filterStateRequest" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="icon-filter icon-large"></i></a>
+						
+						<ul id="filterStateRequestList" class="dropdown-menu" role="menu" aria-labelledby="filterStateRequest">
 							<% _.each(requestsState, function (state, i) { %>
 								<li role="menuitem">
 									<a tabindex="-1" href="#<%= state.value %>"> 
@@ -115,10 +115,10 @@
 
 				<!-- Request row -->
 				<tr id="<%= requests[i].id %>" class="<%= classRow %>">
-				    <td><%= requests[i].id %></td>
+					<td><%= requests[i].id %></td>
 
 					<td>
-				    	<a 	href="#demandes-dinterventions/<%= requests[i].id %>" rel="popover" 
+						<a 	href="#demandes-dinterventions/<%= requests[i].id %>" rel="popover" 
 							data-content="<%= description %><br /><em><%= createdBy %></em>"
 							data-html="true" data-delay="160"
 							data-original-title="<%= _.capitalize(lang.description) %>">
@@ -131,43 +131,52 @@
 
 					<!-- Request service -->
 					<td>
-				    	<span data-toggle="tooltip"
-				    		data-original-title="<%= _.capitalize(lang.toValidateBy) %> <%= (requests[i].manager_id != false ? requests[i].manager_id[1] : _.capitalize(lang.notKnown)) %>">
-				    		<%= requests[i].belongsToService!=null?requests[i].belongsToService.name:"" %>
-				    	</span>
-				    </td>
+						<span data-toggle="tooltip"
+							data-original-title="<%= _.capitalize(lang.toValidateBy) %> <%= (requests[i].manager_id != false ? requests[i].manager_id[1] : _.capitalize(lang.notKnown)) %>">
+							<%= requests[i].belongsToService!=null?requests[i].belongsToService.name:"" %>
+						</span>
+					</td>
 
 					<!-- Claimer -->
-				    <td><%= requests[i].partner_id[1] %></td>
+					<td>
+						<% if(requests[i].partner_id != false){ %>
+							<span data-toggle="tooltip" data-original-title="<%= requests[i].partner_address[1] %>"><%= requests[i].partner_id[1] %></span>
+						
+						<% } else{ %>
+							<%= requests[i].people_name %>
+						<% } %>
+					</td>
 
-					<!-- Request Date -->	
-				    <td>
+
+
+					<!-- Request Date -->
+					<td>
 						<span 
-				    		data-toggle="tooltip"
-				    		data-original-title="<%= moment(requests[i].create_date, 'YYYY-MM-DD HH:mm:ss').add('hours',1).fromNow() %>">
-				    		<%= ( requests[i].create_date != null &&  requests[i].create_date != "" ) ? moment(requests[i].create_date, 'YYYY-MM-DD HH:mm:ss').add('hours',1).format('LLL'): "" %>
-				    	</span>
-				    </td>
+							data-toggle="tooltip"
+							data-original-title="<%= moment(requests[i].create_date, 'YYYY-MM-DD HH:mm:ss').add('hours',1).fromNow() %>">
+							<%= ( requests[i].create_date != null &&  requests[i].create_date != "" ) ? moment(requests[i].create_date, 'YYYY-MM-DD HH:mm:ss').add('hours',1).format('LLL'): "" %>
+						</span>
+					</td>
 
-				    <!-- Request state -->
-				    <td>
-			    		<!-- Wait state -->
-			    		<% if(requests[i].state == app.Models.Request.state[0].value) { %>
-			    			<span class="label label-<%= app.Models.Request.state[0].color %>"><%= app.Models.Request.state[0].traduction %></span>
+					<!-- Request state -->
+					<td>
+						<!-- Wait state -->
+						<% if(requests[i].state == app.Models.Request.state[0].value) { %>
+							<span class="label label-<%= app.Models.Request.state[0].color %>"><%= app.Models.Request.state[0].traduction %></span>
 
-			    		<!-- Confirm state -->
-			    		<% } else if(requests[i].state == app.Models.Request.state[1].value) { %>
-			    			<span class="label label-<%= app.Models.Request.state[1].color %>"><%= app.Models.Request.state[1].traduction %></span>
+						<!-- Confirm state -->
+						<% } else if(requests[i].state == app.Models.Request.state[1].value) { %>
+							<span class="label label-<%= app.Models.Request.state[1].color %>"><%= app.Models.Request.state[1].traduction %></span>
 
 						<!-- Valid state -->
 						<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
-			    			<span class="label label-<%= app.Models.Request.state[2].color %>" data-toggle="tooltip"
+							<span class="label label-<%= app.Models.Request.state[2].color %>" data-toggle="tooltip"
 								data-original-title="<%= requests[i].infoMessage %>">
-				    			<%= app.Models.Request.state[2].traduction %>
+								<%= app.Models.Request.state[2].traduction %>
 							</span>
 
 						<!-- Closed state -->
-			    		<% } else if(requests[i].state == app.Models.Request.state[3].value) { %>
+						<% } else if(requests[i].state == app.Models.Request.state[3].value) { %>
 							
 							<!-- Check if the Intervention is cancelled or not -->
 							<% if(requests[i].intervention_ids[0].state == app.Models.Intervention.state[2].value) { %>
@@ -184,25 +193,25 @@
 						<!-- Cancel state -->
 						<% } else if (requests[i].state == app.Models.Request.state[4].value) { %> 
 							<span class="label label-<%= app.Models.Request.state[4].color %>" data-toggle="tooltip"
-				    			data-original-title="<%= requests[i].refusal_reason  +'\n('+ modifydBy +')'%>">
-				    			<%= app.Models.Request.state[4].traduction %>
+								data-original-title="<%= requests[i].refusal_reason  +'\n('+ modifydBy +')'%>">
+								<%= app.Models.Request.state[4].traduction %>
 							</span>
 
 						<% } %>
 					</td>
 
-				   	<!-- Action column -->
-				   	<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
+					<!-- Action column -->
+					<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
 
-				   	   	<td class="align">
+						<td class="align">
 
 						<!-- If the request is already associated with an intervention we not displaying the action buttons -->
-			   	   		<% if(requests[i].intervention_ids.length == 0
-			   	   				&& app.models.user.belongsToService(requests[i].service_id[0])){ %>
-					   		
-					   		<!-- Wait state -->
+						<% if(requests[i].intervention_ids.length == 0
+								&& app.models.user.belongsToService(requests[i].service_id[0])){ %>
+							
+							<!-- Wait state -->
 							<% if(requests[i].state == app.Models.Request.state[0].value) { %>
-					   			<div class="btn-group">
+								<div class="btn-group">
 									<button class="btn btn-small btn-success no-outline buttonValidRequest" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok buttonValidRequest"></i></button>
 									
 									<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown"><span class="caret"></span></button>
@@ -246,7 +255,7 @@
 								
 							<!-- Refused State -->
 							<%} else if(requests[i].state == app.Models.Request.state[4].value) { %>
-					   		
+							
 								<div class="btn-group">
 									<button class="btn btn-small disabled no-outline"><i class="icon-remove text-error"></i></button>
 									<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
@@ -261,13 +270,13 @@
 								</div>
 								
 							<!-- Closed State -->								
-					   		<% } else { %>
-				   				<span class="text-warning" >
+							<% } else { %>
+								<span class="text-warning" >
 									<%= _.capitalize(lang.closed) %>
 								</span>
-					   		<% } %>
-					   	<% } %>
-					   	</td>
+							<% } %>
+						<% } %>
+						</td>
 					<% } %>
 				</tr>
 			<% } %>
@@ -363,11 +372,11 @@
 			</div>
 
 			<!-- Request Deadline -->
-            <!--<div class="control-group">
-                <label class="control-label" for="requestDeadline">Date butoire:</label>
-                <div class="controls">
+			<!--<div class="control-group">
+				<label class="control-label" for="requestDeadline">Date butoire:</label>
+				<div class="controls">
 					<input class="datePicker" data-date-format="dd/mm/yyyy" id="requestDeadline" placeholder="dd/mm/yyyy" size="30" type="text" required="required">
-                </div>
+				</div>
 			</div>-->
 
 			<!-- Request Note description -->
@@ -416,7 +425,7 @@
 
 			</fieldset>
 
-	    </form>
+		</form>
 	</div>
 
 	<div class="modal-footer">
@@ -429,8 +438,8 @@
 <!-- Modal Form ton Refuse the Request -->
 <div id="modalRefuseRequest" class="modal hide fade">
 	<div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	    <h3><%= lang.viewsTitles.refuseRequest %></h3>
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3><%= lang.viewsTitles.refuseRequest %></h3>
 	</div>
 	
 	<div class="modal-body">
@@ -441,7 +450,7 @@
 		</blockquote>
 
 		<form id="formRefuseRequest" action="#" class="form-horizontal">
-	    
+		
 			<!-- Request Refuse description -->
 			<div class="control-group">
 				<label for="motifRefuse" class="control-label"><%= _.capitalize(lang.refusalReason) %>:</label>
@@ -450,13 +459,13 @@
 					<textarea id="motifRefuse" rows="5" required="required"></textarea>
 					<span class="help-inline"></span>
 				</div>
-            </div>
-	    </form>
+			</div>
+		</form>
 	</div>
 	
 	<div class="modal-footer">
-	    <button type="submit" form="formRefuseRequest" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
-	    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+		<button type="submit" form="formRefuseRequest" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>
 
@@ -464,8 +473,8 @@
 <!-- Modal Form ton submit to the DST -->
 <div id="modalConfirmDSTRequest" class="modal hide fade">
 	<div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	    <h3><%= lang.viewsTitles.confirmChief %></h3>
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3><%= lang.viewsTitles.confirmChief %></h3>
 	</div>
 	
 	<div class="modal-body">
@@ -475,22 +484,22 @@
 			<small></small>
 		</blockquote>
 
-	    <form id="formConfirmDSTRequest" action="#" class="form-horizontal">
-	    
+		<form id="formConfirmDSTRequest" action="#" class="form-horizontal">
+		
 			<!-- Request confirm DST information -->
-            <div class="control-group">
-                <label for="motifDST" class="control-label"><%= lang.infoMessages.information %>:</label>
+			<div class="control-group">
+				<label for="motifDST" class="control-label"><%= lang.infoMessages.information %>:</label>
 
-                <div class="controls">
-                    <textarea id="motifDST" rows="5" required="required"></textarea>
-                    <span class="help-inline"></span>
-                </div>
-            </div>
-	    </form>
+				<div class="controls">
+					<textarea id="motifDST" rows="5" required="required"></textarea>
+					<span class="help-inline"></span>
+				</div>
+			</div>
+		</form>
 	</div>
 	
 	<div class="modal-footer">
-	    <button type="submit" form="formConfirmDSTRequest" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
-	    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+		<button type="submit" form="formConfirmDSTRequest" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>

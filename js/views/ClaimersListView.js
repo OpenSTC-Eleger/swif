@@ -174,9 +174,12 @@ app.Views.ClaimersListView = Backbone.View.extend({
 	/** Add a new categorie
 	*/
 	modalSaveClaimer: function(e){       
-	    this.setModel(e);	
-	    
-		app.views.selectListClaimerTypeView = new app.Views.DropdownSelectListView({el: $("#claimerType"), collection: app.collections.claimersTypes})
+	    this.setModel(e);
+
+	    // Hack to remove "Administré" from the claimersTypes Collection //
+	    var claimersTypes = app.collections.claimersTypes.reset(app.collections.claimersTypes.rest());
+
+		app.views.selectListClaimerTypeView = new app.Views.DropdownSelectListView({el: $("#claimerType"), collection: claimersTypes})
 		app.views.selectListClaimerTypeView.clearAll();
 		app.views.selectListClaimerTypeView.addEmptyFirst();
 		app.views.selectListClaimerTypeView.addAll();
