@@ -28,7 +28,6 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
 		id:0,
 		name: null,
 		type_id: null,
-		service_id: null,
 		technical_service_id: null,
 		technical_site_id: null,
 	},
@@ -48,14 +47,6 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
     	if( value == 'undefined') return;
         this.set({ type_id : value });
     }, 
-    
-    getServiceId : function() {
-        return this.get('service_id');
-    },
-    setServiceId : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ service_id : value });
-    },  
 
     getTechnicalServiceId : function() {
         return this.get('technical_service_id');
@@ -102,7 +93,6 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
     update: function( params ) {
     	this.setName(params.name);
 		this.setTypeId( params.type_id );
-		this.setServiceId( params.service_id );
 		this.setTechnicalServiceId( params.technical_service_id );
 		this.setTechnicalSiteId( params.technical_site_id );		
 	},

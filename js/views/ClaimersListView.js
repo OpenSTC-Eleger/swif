@@ -181,10 +181,6 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		app.views.selectListClaimerTypeView.addEmptyFirst();
 		app.views.selectListClaimerTypeView.addAll();
 
-		app.views.selectListClaimerServiceView = new app.Views.DropdownSelectListView({el: $("#claimerService"), collection: app.collections.claimersServices})
-		app.views.selectListClaimerServiceView.clearAll();
-		app.views.selectListClaimerServiceView.addEmptyFirst();
-		app.views.selectListClaimerServiceView.addAll();
 		
 		//search no technical services
 		var technicalServices = _.filter(app.collections.claimersServices.models, function(service){
@@ -209,8 +205,6 @@ app.Views.ClaimersListView = Backbone.View.extend({
 			$('#claimerName').val(this.selectedClaimerJson.name);
 			if( this.selectedClaimerJson.type_id )
 				app.views.selectListClaimerTypeView.setSelectedItem( this.selectedClaimerJson.type_id[0] );	
-			if( this.selectedClaimerJson.service_id )
-				app.views.selectListClaimerServiceView.setSelectedItem( this.selectedClaimerJson.service_id[0] );	
 			if( this.selectedClaimerJson.technical_service_id )
 				app.views.selectListClaimerTechnicalServiceView.setSelectedItem( this.selectedClaimerJson.technical_service_id[0] );	
 			if( this.selectedClaimerJson.technical_site_id )
@@ -390,7 +384,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
 					var claimer = app.collections.claimers.get(self.selectedAddressJSON.livesIn.id);					
 					claimer.attributes.address.remove(self.selectedAddressJSON.id);
 					app.collections.claimers.add(claimer);
-					$('#modalDeleteAddress').modal('hide');
+					$('#modalDeleteContact').modal('hide');
 					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.addressDeleteOk);
 					self.render();
 				}
@@ -413,21 +407,18 @@ app.Views.ClaimersListView = Backbone.View.extend({
 	     
 	     
 	     var type_id = this.getIdInDropDown(app.views.selectListClaimerTypeView);
-	     var service_id = this.getIdInDropDown(app.views.selectListClaimerServiceView);
 	     var technical_service_id = this.getIdInDropDown(app.views.selectListClaimerTechnicalServiceView);
 	     var technical_site_id = this.getIdInDropDown(app.views.selectListClaimerTechnicalSiteView);
 	     
 	     this.params = {	
 		     name: this.$('#claimerName').val(),
-		     type_id: type_id,
-		     service_id: service_id,		     
+		     type_id: type_id,	     
 		     technical_service_id: technical_service_id,
 		     technical_site_id: technical_site_id,
 	     };
 	     
 	       
 	    this.params.type_id =  type_id[0];
-	    this.params.service_id =  service_id[0];
 	    this.params.technical_service_id =  technical_service_id[0];
 	    this.params.technical_site_id =  technical_site_id[0];
 	    this.modelId = this.selectedClaimerJson==null?0: this.selectedClaimerJson.id;
@@ -445,7 +436,6 @@ app.Views.ClaimersListView = Backbone.View.extend({
 						if( self.modelId==0 )
 							self.model = new app.Models.Claimer({id: data.result.result}); 
 						self.params.type_id =  self.getIdInDropDown(app.views.selectListClaimerTypeView);
-					    self.params.service_id =  self.getIdInDropDown(app.views.selectListClaimerServiceView);
 					    self.params.technical_service_id =  self.getIdInDropDown(app.views.selectListClaimerTechnicalServiceView);
 					    self.params.technical_site_id =  self.getIdInDropDown(app.views.selectListClaimerTechnicalSiteView);
 						self.model.update(self.params);
