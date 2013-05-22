@@ -542,6 +542,9 @@ app.Views.EventsListView = Backbone.View.extend({
         	if( event.allPlanned  ) {
         		if( event.planned_hours!=0 ) {
         	        var params = {
+        	        		  name:  event.title,
+        	                  project_id: event.project_id,
+        	                  parent_id: event.copy?event.id:false,
         	                  state: app.Models.Task.state[3].value, 
         	                  planned_hours: event.planned_hours ,
         	                  remaining_hours: event.planned_hours ,
@@ -550,7 +553,7 @@ app.Views.EventsListView = Backbone.View.extend({
         	                  date_end: null,
         	                  date_start: null,
         	              };
-        	        app.Models.Task.prototype.save(event.id, params, null, null, null);
+        	        app.Models.Task.prototype.save(0, params, null, null, null);
         		}
         		return 1;
         	}
