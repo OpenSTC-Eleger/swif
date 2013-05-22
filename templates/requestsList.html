@@ -160,124 +160,87 @@
 
 					<!-- Request state -->
 					<td>
-						<!-- Wait state -->
-						<% if(requests[i].state == app.Models.Request.state[0].value) { %>
-							<span class="label label-<%= app.Models.Request.state[0].color %>"><%= app.Models.Request.state[0].traduction %></span>
 
-						<!-- Confirm state -->
-						<% } else if(requests[i].state == app.Models.Request.state[1].value) { %>
-							<span class="label label-<%= app.Models.Request.state[1].color %>"><%= app.Models.Request.state[1].traduction %></span>
-
-						<!-- Valid state -->
-						<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
-							<span class="label label-<%= app.Models.Request.state[2].color %>" data-toggle="tooltip"
-								data-original-title="<%= requests[i].infoMessage %>">
-								<%= app.Models.Request.state[2].traduction %>
-							</span>
-
-						<!-- Closed state -->
-						<% } else if(requests[i].state == app.Models.Request.state[3].value) { %>
+						<!-- Set information for the state if the Request is Valid, Refused or cancelled -->
+						<% if(requests[i].state == app.Models.Request.status.valid.key){
+							var title = requests[i].infoMessage;
+						}
+						else if(requests[i].state == app.Models.Request.status.closed.key){
+							if(requests[i].intervention_ids[0].state == app.Models.Intervention.state[2].value){
+								var title = requests[i].infoMessage;	
+							}
+							else{
+								var title = requests[i].intervention_ids[0].cancel_reason;
+							}
 							
-							<!-- Check if the Intervention is cancelled or not -->
-							<% if(requests[i].intervention_ids[0].state == app.Models.Intervention.state[2].value) { %>
-								<span class="label" data-toggle="tooltip" data-original-title="<%= requests[i].infoMessage %>">
-									<%= app.Models.Request.state[3].traduction %>
-								</span>
-							<% } else { %>
-
-								<span class="label label-<%= app.Models.Request.state[4].color %>" data-toggle="tooltip" data-original-title="<%= requests[i].intervention_ids[0].cancel_reason %>">
-									<%= app.Models.Request.state[3].traduction %>
-								</span>
-							<% } %>
-
-						<!-- Cancel state -->
-						<% } else if (requests[i].state == app.Models.Request.state[4].value) { %> 
-							<span class="label label-<%= app.Models.Request.state[4].color %>" data-toggle="tooltip"
-								data-original-title="<%= requests[i].refusal_reason  +'\n('+ modifydBy +')'%>">
-								<%= app.Models.Request.state[4].traduction %>
-							</span>
-
-						<% } %>
+						}
+						else if(requests[i].state == app.Models.Request.status.refused.key){
+							var title = requests[i].refusal_reason  + '\n('+ modifydBy +')';
+						}
+						else{
+							var title = '';
+						}
+						
+						%>
+						<span class="label label-<%= app.Models.Request.status[requests[i].state].color %>" data-toggle="tooltip" data-original-title="<%= title %>">
+							<%= app.Models.Request.status[requests[i].state].translation %>
+						</span>
 					</td>
 
+
+
 					<!-- Action column -->
-					<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
+					<td class="align">
+					<!-- Check if the user can make action on the request -->
+					<%  var actions = requests[i].actions;
+						if(!_.isEmpty(actions)){ %>
 
-						<td class="align">
+						<!-- Create the buttons group action -->
+						<div class="btn-group">
 
-						<!-- If the request is already associated with an intervention we not displaying the action buttons -->
-						<% if(requests[i].intervention_ids.length == 0
-								&& app.models.user.belongsToService(requests[i].service_id[0])){ %>
+							<!-- Check if the request is not in waiting state -->
+							<%
 							
-							<!-- Wait state -->
-							<% if(requests[i].state == app.Models.Request.state[0].value) { %>
-								<div class="btn-group">
-									<button class="btn btn-small btn-success no-outline buttonValidRequest" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok buttonValidRequest"></i></button>
-									
-									<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown"><span class="caret"></span></button>
-									
-									<ul class="dropdown-menu pull-right text-left">
-										<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.refuse) %></a></li>
-										<% if(!app.models.user.isDST()){ %>
-											<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-level-up"></i>&nbsp;<%= _.capitalize(lang.actions.confirmChief) %></a></li>
-										<% } %>
-									</ul>
-								</div>
-								
-							<!-- Confirm state -->
-							<%} else if(requests[i].state == app.Models.Request.state[1].value) { %>
-								
-								<div class="btn-group">
-									<button class="btn btn-small btn-success no-outline buttonValidRequest" data-toggle="modal" data-target="#modalValidRequest"><i class="icon-ok buttonValidRequest"></i></button>
-									<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
-										<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu pull-right text-left">
-										<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.refuse) %></a></li>
-									</ul>
-								</div>
+							if(requests[i].state != app.Models.Request.status.wait.key){
+								var mainAction = '';
+								var mainActionIcon = app.Models.Request.actions[requests[i].state].icon;
+								var mainActionColor = app.Models.Request.actions[requests[i].state].color;
+								var mainActionDisabled = 'disabled';
+							}else{
+								var mainAction = app.Models.Request.actions.valid.key;
+								var mainActionColor = app.Models.Request.actions.valid.color;
+								var mainActionIcon = app.Models.Request.actions.valid.icon;
+								var mainActionDisabled = '';
 
-							<!-- Valid state -->
-							<% } else if(requests[i].state == app.Models.Request.state[2].value) { %>
+								/ Remove validate action from the array actions /
+								actions = _.without(actions, app.Models.Request.actions.valid.key);
+							} %>
+
+							<!-- Main action button -->
+							<button class="btn btn-small btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline button<%= _.capitalize(mainAction) %>Request" data-toggle="modal" data-target="#modal<%= _.capitalize(mainAction) %>Request">
+								<i class="<%= mainActionIcon %> icon-fixed-width button<%= _.capitalize(mainAction) %>Request"></i>
+							</button>
 							
-								<div class="btn-group">
-									<button class="btn btn-small disabled no-outline"><i class="icon-ok text-success"></i></button>
-									<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
-										<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu pull-right text-left">
-										<li><a href="#modalRefuseRequest" data-toggle="modal" class="buttonRefuseRequest"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.refuse) %></a></li>
-										<% if(!app.models.user.isDST()){ %>
-											<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-level-up"></i>&nbsp;<%= _.capitalize(lang.actions.confirmChief) %></a></li>
-										<% } %>
-									</ul>										
-								</div> 	
-								
-							<!-- Refused State -->
-							<%} else if(requests[i].state == app.Models.Request.state[4].value) { %>
+							<!-- Dropdown button action -->
+							<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+								<span class="icon-caret-down"></span>
+							</button>
 							
-								<div class="btn-group">
-									<button class="btn btn-small disabled no-outline"><i class="icon-remove text-error"></i></button>
-									<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
-										<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu pull-right text-left">
-										<li><a href="#modalValidRequest" data-toggle="modal" class="buttonValidRequest"><i class="icon-ok text-sucess"></i>&nbsp;Valider</a></li>
-										<% if(!app.models.user.isDST()){ %>
-											<li><a href="#modalConfirmDSTRequest" data-toggle="modal" class="buttonConfirmDST"><i class="icon-level-up"></i>&nbsp;<%= _.capitalize(lang.actions.confirmChief) %></a></li>
-										<% } %>
-									</ul>
-								</div>
-								
-							<!-- Closed State -->								
-							<% } else { %>
-								<span class="text-warning" >
-									<%= _.capitalize(lang.closed) %>
-								</span>
-							<% } %>
-						<% } %>
-						</td>
+							<!-- Other buttons action -->
+							<ul class="dropdown-menu pull-right text-left">
+								<% _.each(actions, function(action){ %>
+									<li>
+										<a href="#modal<%= _.capitalize(app.Models.Request.actions[action].key) %>Request" data-toggle="modal" class="button<%= _.capitalize(app.Models.Request.actions[action].key) %>Request">
+											<i class="<%= app.Models.Request.actions[action].icon %> icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.Models.Request.actions[action].translation) %>
+										</a>
+									</li>
+								<% }); %>
+							</ul>
+						</div>
+
 					<% } %>
+					</td>
+
 				</tr>
 			<% } %>
 		</tbody>
@@ -371,13 +334,6 @@
 				</div>
 			</div>
 
-			<!-- Request Deadline -->
-			<!--<div class="control-group">
-				<label class="control-label" for="requestDeadline">Date butoire:</label>
-				<div class="controls">
-					<input class="datePicker" data-date-format="dd/mm/yyyy" id="requestDeadline" placeholder="dd/mm/yyyy" size="30" type="text" required="required">
-				</div>
-			</div>-->
 
 			<!-- Request Note description -->
 			<div class="control-group">
@@ -436,7 +392,7 @@
 
 
 <!-- Modal Form ton Refuse the Request -->
-<div id="modalRefuseRequest" class="modal hide fade">
+<div id="modalRefusedRequest" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3><%= lang.viewsTitles.refuseRequest %></h3>
@@ -444,7 +400,7 @@
 	
 	<div class="modal-body">
 
-		<blockquote id="infoModalRefuseRequest" class="spaceBottom">
+		<blockquote id="infoModalRefusedRequest" class="spaceBottom">
 			<p></p>
 			<small></small>
 		</blockquote>
@@ -471,7 +427,7 @@
 
 
 <!-- Modal Form ton submit to the DST -->
-<div id="modalConfirmDSTRequest" class="modal hide fade">
+<div id="modalConfirmRequest" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3><%= lang.viewsTitles.confirmChief %></h3>

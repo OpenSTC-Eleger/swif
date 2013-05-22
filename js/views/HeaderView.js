@@ -37,8 +37,9 @@ app.Views.HeaderView = Backbone.View.extend({
                         app.models.user.logout();
                     }
                     else{*/
-                        console.debug(data.result.data.children);
-	                   self.initHeader(data.result.data.children, activeMenu);
+                    console.log('--------------------||------------------||');
+                    console.debug(data.result.data.children);
+	                self.initHeader(data.result.data.children, activeMenu);
                     
                 }
             });

@@ -21,8 +21,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 		'click li.disabled'						: 'preventDefault',
 			
 		'click .buttonValidRequest'				: 'setInfoModal',
-		'click .buttonRefuseRequest'			: 'setInfoModal',
-		'click .buttonConfirmDST'				: 'setInfoModal',
+		'click .buttonRefusedRequest'			: 'setInfoModal',
+		'click .buttonConfirmRequest'			: 'setInfoModal',
 
 		'change #requestService' 				: 'filterCategory',
 
@@ -142,7 +142,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 
 			// Set the focus to the first input of the form //
-			$('#modalValidRequest, #modalRefuseRequest, #modalConfirmDSTRequest').on('shown', function (e) {
+			$('#modalValidRequest, #modalRefusedRequest, #modalConfirmRequest').on('shown', function (e) {
 				$(this).find('input:not(:disabled), textarea').first().focus();
 			})
 
@@ -263,11 +263,11 @@ app.Views.RequestsListView = Backbone.View.extend({
 			this.filterCategory();
 
 		}
-		else if(btn.hasClass("buttonRefuseRequest")){
-			$('#infoModalRefuseRequest').children('p').html(this.selectedRequest.name);
-			$('#infoModalRefuseRequest').children('small').html(this.selectedRequest.description);
+		else if(btn.hasClass('buttonRefusedRequest')){
+			$('#infoModalRefusedRequest').children('p').html(this.selectedRequest.name);
+			$('#infoModalRefusedRequest').children('small').html(this.selectedRequest.description);
 		}
-		else if(btn.hasClass("buttonConfirmDST")){
+		else if(btn.hasClass('buttonConfirmRequest')){
 			$('#infoModalConfirmDST').children('p').html(this.selectedRequest.name);
 			$('#infoModalConfirmDST').children('small').html(this.selectedRequest.description);
 		}
@@ -321,7 +321,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		        email_text: app.Models.Request.state[4].traduction,
 		        refusal_reason: $('#motifRefuse').val(),		
 		};		
-		this.saveNewState( params,$('#modalRefuseRequest') );
+		this.saveNewState( params,$('#modalRefusedRequest') );
 	},
 
 
@@ -335,7 +335,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 		        email_text: app.Models.Request.state[1].traduction,
 		        note: $('#motifDST').val(),		
 		};
-		this.saveNewState( params, $('#modalConfirmDSTRequest') );
+		this.saveNewState( params, $('#modalConfirmRequest') );
 
 	},
 

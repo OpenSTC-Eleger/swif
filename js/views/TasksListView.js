@@ -103,9 +103,9 @@ app.Views.TasksListView = Backbone.View.extend({
 				belongsToOfficer = belongsToOfficer || (task.teamWorkingOn.manager_id[0] == officer_id);
 			}
 
-			
-			
-			
+
+
+
 			// Display task assign to the team of the user //
 			var belongsToTeam = false;
 

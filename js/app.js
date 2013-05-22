@@ -76,11 +76,13 @@ var app = {
                 
                 app.lang = data;
 
+
                 // Load internationalization scripts //
                 app.loadI18nScripts(lang);
 
+
                 // Instantiation Collections users  et user //
-                app.collections.users = new app.Collections.Users();               
+                app.collections.users = new app.Collections.Users();
                 app.collections.users.fetch();
                 app.models.user = new app.Models.User();
                 //app.models.team = new app.Models.Team();
