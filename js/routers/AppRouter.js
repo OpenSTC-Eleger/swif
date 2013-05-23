@@ -60,7 +60,7 @@ app.Router = Backbone.Router.extend({
 		'materiel'               				: 'equipments',
 		'materiel/page:page'           			: 'equipments',
 		
-		'nouvelle-intervention'         		: 'cartoRequest',	
+		'nouvelle-intervention'         		: 'cartoRequest',
 		'statut-interventions'                  : 'cartoInter',
 		'statistique'                   		: 'cartoStat',
 		'geoportail'                   			: 'geoportail',
