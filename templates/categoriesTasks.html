@@ -62,11 +62,11 @@
 			<ul>
 				<!-- First page button -->
 				<% if(page-2 >= 1){ %>
-					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#categories/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
+					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#categories-des-taches/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
 				<% } %>
 				
 				<!-- Previous page button -->
-				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#categories/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
+				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#categories-des-taches/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
 			
 				<!-- [...] page Button -->
 				<% 	if (page-2 > 1) { %>
@@ -75,7 +75,7 @@
 						
 					for (var i=(page-2); i < (page+3); i++) {
 						if(i >= 1 && i <= pageCount){ %>
-							<li <%= (i === page ? " class='active'" : "")%>><a href='#categories/page<%=i%>'><%= i %></a></li>
+							<li <%= (i === page ? " class='active'" : "")%>><a href='#categories-des-taches/page<%=i%>'><%= i %></a></li>
 						<% }
 
 					} %>
@@ -86,11 +86,11 @@
 				<% } %>
 				
 				<!-- Next page button -->
-				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#categories/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
+				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#categories-des-taches/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
 				
 				<!-- Last page button -->
 				<% if(page+2 <= pageCount){ %>
-					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#categories/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
+					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#categories-des-taches/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
 				<% } %>
 			</ul>
 		</div>
@@ -193,7 +193,7 @@
 	
 	<div class="modal-footer">
 		<button type="submit" form="formSaveCat" class="btn btn-primary saveTask"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
-		<a href="#categories" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+		<a href="#categories-des-taches" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>
 
