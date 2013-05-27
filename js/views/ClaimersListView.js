@@ -318,32 +318,36 @@ app.Views.ClaimersListView = Backbone.View.extend({
     saveAddress: function(e){
 		e.preventDefault();
 		
+		this.params = {};
+		
 		if( $('#createAssociatedAccount').is(':checked') ){
 
 			
 			if($('#partnerLogin').val() == '' || $('#partnerPassword').val() == ''){
+
 
 				app.notify('', 'error', 
 					app.lang.errorMessages.unablePerformAction, 
 					app.lang.validationMessages.claimers.accountIncorrect);
 					return;
 			}
+			else{
+				this.params.login = this.$('#partnerLogin').val();
+				this.params.password = this.$('#partnerPassword').val();
+			}
      	}
 
 
-		this.params = {
-			partner_id: this.selectedClaimer,
-			name: this.$('#addressName').val(),
-			login: this.$('#partnerLogin').val(),
-			password: this.$('#partnerPassword').val(),
-			function: this.$('#addressFunction').val(),
-			phone: this.$('#addressPhone').val(),
-			email: this.$('#addressEmail').val(),
-			mobile: this.$('#addressMobile').val(),
-			street: this.$('#addressStreet').val(),
-			city: this.$('#addressCity').val(),
-			zip: this.$('#addressZip').val(),
-		};
+		this.params.partner_id= this.selectedClaimer,
+		this.params.name= this.$('#addressName').val(),
+		this.params.function= this.$('#addressFunction').val(),
+		this.params.phone= this.$('#addressPhone').val(),
+		this.params.email= this.$('#addressEmail').val(),
+		this.params.mobile= this.$('#addressMobile').val(),
+		this.params.street= this.$('#addressStreet').val(),
+		this.params.city= this.$('#addressCity').val(),
+		this.params.zip= this.$('#addressZip').val(),
+	
 
 		console.log(this.params);
 	     
