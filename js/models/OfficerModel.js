@@ -35,13 +35,13 @@ app.Models.Officer = Backbone.RelationalModel.extend({
             collectionType: 'app.Collections.ClaimersContacts',
             includeInJSON: ['id', 'name','partner_id','phone','email'],
         },
-//		{
-//			type: Backbone.HasMany,
-//			key: 'groups_id',
-//			relatedModel: 'app.Models.Group',
-//			collectionType: 'app.Collections.Groups',
-//			includeInJSON: ['id', 'name'],	
-//		},
+		{
+			type: Backbone.HasMany,
+			key: 'groups_id',
+			relatedModel: 'app.Models.Group',
+			collectionType: 'app.Collections.Groups',
+			includeInJSON: ['id', 'name','code'],	
+		},
 		
 
 	],
@@ -55,6 +55,9 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 		password: null,
 		groups_id: [],
 		service_ids: [],
+		
+		isDST			: false,
+		isManager		: false,
 	},
 
 
@@ -148,6 +151,14 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 
 		return officerTeams;
 	},
+	
+	isDST: function(value) {
+    	return this.get('isDST');
+    },
+    
+    setDST: function(value) {
+        this.set({ isDST : value });
+    },
 
 
 
@@ -187,46 +198,6 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 	save: function(data, id, options) { 
 		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
 	},
-
-
-
-	/** Check if the user is DST
-    */
-    isDST: function(){
-        if($.inArray(18, this.getGroupsId()) != -1){
-            return true;
-        }
-        else{
-            return false;    
-        }
-    },
-
-
-
-    /** Check if the user is Manager
-    */
-    isManager: function(){
-        if($.inArray(19, this.getGroupsId()) != -1){
-            return true;
-        }
-        else{
-            return false;    
-        };
-    },
-
-
-
-    /** Check if the user is Agent
-    */
-    isAgent: function(){
-        if($.inArray(17, this.getGroupsId()) != -1){
-            return true;
-        }
-        else{
-            return false;    
-        }
-    },
-
 
 
 	/** Delete Officer

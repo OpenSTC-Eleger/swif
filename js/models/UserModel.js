@@ -29,6 +29,9 @@ app.Models.User = Backbone.Model.extend({
         lastname        : '',
         service_ids		: [],
         context			: {},
+        
+        isDST			: false,
+        isManager		: false,
     },
 
     initialize: function(){
@@ -133,6 +136,23 @@ app.Models.User = Backbone.Model.extend({
     setContext : function(value) {
         this.set({ context : value });
     },
+    
+    isManager: function(value) {
+    	return this.get('isManager');
+    },
+    
+    setManager: function(value) {
+        this.set({ isManager : value });
+    },
+    
+    isDST: function(value) {
+    	return this.get('isDST');
+    },
+    
+    setDST: function(value) {
+        this.set({ isDST : value });
+    },
+
 
 
 
@@ -173,6 +193,7 @@ app.Models.User = Backbone.Model.extend({
                 self.setUID(data.uid);
                 self.setLastConnection(moment().format("LLL"));
                 self.setContext(data.context);
+              
                 
                 // Add the user to the collection and save it to the localStorage //
                 app.collections.users.add(self);
@@ -256,7 +277,7 @@ app.Models.User = Backbone.Model.extend({
         "use strict";
         var self = this;
 
-        var fields = ['firstname', 'name', 'groups', 'contact_id', 'service_id', 'service_ids', 'in_group_15', 'in_group_17', 'in_group_18', 'in_group_19'];
+        var fields = ['firstname', 'name', 'groups', 'contact_id', 'service_id', 'service_ids', 'in_group_15', 'in_group_17', 'in_group_18', 'in_group_19', 'isDST', 'isManager'];
 
         app.getOE(this.model_name, fields, [self.getUID()], self.getSessionID(),
             ({
@@ -268,6 +289,8 @@ app.Models.User = Backbone.Model.extend({
                     self.setServices(data.result[0].service_ids);
                     self.setService(data.result[0].service_id);
                     self.setContact(data.result[0].contact_id);
+                    self.setManager(data.result[0].isManager);
+                    self.setDST(data.result[0].isDST);
     				self.save();
 
     			},
@@ -280,57 +303,6 @@ app.Models.User = Backbone.Model.extend({
     },
 
 
-
-    /** Check if the user is DST
-    */
-    isDST: function(){
-        if($.inArray(18, this.getGroups()) != -1){
-            return true;
-        }
-        else{
-            return false;    
-        }
-    },
-
-
-
-    /** Check if the user is Manager
-    */
-    isManager: function(){
-        if($.inArray(19, this.getGroups()) != -1){
-            return true;
-        }
-        else{
-            return false;    
-        };
-    },
-
-
-
-    /** Check if the user is Agent
-    */
-    isAgent: function(){
-        if($.inArray(17, this.getGroups()) != -1){
-            return true;
-        }
-        else{
-            return false;    
-        }
-    },
-
-
-
-    /** Check if the user belongs to service
-    	    */
-    belongsToService: function(service){
-        if($.inArray(service, this.getServices()) != -1){
-            return true;
-        }
-        else{
-            return false;    
-        }
-    }
-    
     
 });
 

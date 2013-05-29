@@ -480,9 +480,13 @@ app.Views.ServicesListView = Backbone.View.extend({
 			var stc_groups = app.collections.groups;
 			_.each( stc_groups.models, function(group){	
 				var groupJSON = group.toJSON();
-				if($.inArray(groupJSON.id, self.selectedOfficerJson.groups_id)!=-1){	
-					app.views.selectListGroupsView.setSelectedItem( groupJSON.id );
-				}
+				_.each(self.selectedOfficerJson.groups_id, function(officerGroup){
+					if( groupJSON.id==officerGroup.id  )
+						app.views.selectListGroupsView.setSelectedItem( groupJSON.id );
+				})
+//				if($.inArray(groupJSON.id, self.selectedOfficerJson.groups_id)!=-1){	
+//					app.views.selectListGroupsView.setSelectedItem( groupJSON.id );
+//				}
 			});
 		}
 		else{
@@ -512,7 +516,7 @@ app.Views.ServicesListView = Backbone.View.extend({
 				login: this.$('#officerLogin').val(),
 				new_password: this.$('#officerPassword').val(),
 				groups_id:[[6, 0, [group_id[0]]]],
-				isManager: group_id[0]==19? true: false,
+				//isManager: group_id[0]==19? true: false,
 				service_id: this.selectedServiceJson.id,
 				service_ids: [[6, 0, this.services]],
 			};
@@ -524,7 +528,7 @@ app.Views.ServicesListView = Backbone.View.extend({
 				user_email: this.$('#officerEmail').val(),
 				login: this.$('#officerLogin').val(),
 				groups_id:[[6, 0, [group_id[0]]]],
-				isManager: group_id[0]==19? true: false,
+				//isManager: group_id[0]==19? true: false,
 				service_id: this.selectedServiceJson.id,
 				service_ids: [[6, 0, this.services]],
 			};

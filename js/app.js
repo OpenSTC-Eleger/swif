@@ -11,12 +11,16 @@ var app = {
     userBDD         : 'pontlabbe2',
     uniq_id_counter : 0,	
     
+    startLunchTime	: 12.0,
+    stopLunchTime	: 14.0,
+    
 
 //    urlOE                       : 'http://localhost:8069',
 //    urlGEO_OWS                  : 'http://localhost:8080/geoserver/ows',
 //    urlGEO_WFS                  : 'http://localhost:8080/geoserver/wfs',
 //    urlGEO_NS                   : 'http://localhost:8080/openstc',
-//    geoportail_key				: 'c5r5vzh6cxavj6wm90kz09i5',	
+//    geoportail_key				: 'c5r5vzh6cxavj6wm90kz09i5',
+    
 
 
     urlGEO_OWS                  : 'http://octm-dev.siclic.fr:8080/geoserver/ows',

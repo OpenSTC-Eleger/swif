@@ -281,6 +281,10 @@ app.Views.TeamsListView = Backbone.View.extend({
 
 		this.services = _.map($("#teamServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });
 		this.members = _.map($("#teamMembers").sortable('toArray'), function(member){ return _(_(member).strRightBack('_')).toNumber(); });
+		
+		this.freeMembers = _.map($("#officersList").sortable('toArray'), function(member){ return _(_(member).strRightBack('_')).toNumber(); });
+		
+		
 
 
 		this.params = {
@@ -309,6 +313,7 @@ app.Views.TeamsListView = Backbone.View.extend({
 
 					self.params.service_ids = self.services;
 					self.params.user_ids = self.members;
+					self.params.free_user_ids = self.freeMembers;
 					self.params.manager_id = [self.selectedTeamJson.manager_id[0], self.selectedTeamJson.manager_id[1]];
 
 					self.model.update(self.params);
@@ -403,20 +408,25 @@ app.Views.TeamsListView = Backbone.View.extend({
 
 		
 		// Display the remain members //
-		_.filter(app.collections.officers.models, function (officer, i){
-
-			// Remove The DST From the list //
-			if(!officer.isDST()){
-
-				officer = officer.toJSON();
-
-				if(!_.contains(teamOfficers, officer.id)){
-					//Manager must not present in list
-					if( selectedTeamJson.manager_id[0]!=officer.id ) 				
-						$('#officersList').append('<li id="officer_'+officer.id+'"><a href="#"><i class="icon-user"></i> '+ officer.firstname +' '+ officer.name +'</a></li>');
-
-				}
-			}
+//		_.filter(app.collections.officers.models, function (officer, i){
+//
+//			// Remove The DST From the list //
+//			if(!officer.isBelongsGroup( app.groupDirector )){
+//
+//				officer = officer.toJSON();
+//
+//				if(!_.contains(teamOfficers, officer.id)){
+//					//Manager must not present in list
+//					if( selectedTeamJson.manager_id[0]!=officer.id ) 				
+//						$('#officersList').append('<li id="officer_'+officer.id+'"><a href="#"><i class="icon-user"></i> '+ officer.firstname +' '+ officer.name +'</a></li>');
+//
+//				}
+//			}
+//		});
+		
+		
+		_.each(selectedTeamJson.free_user_ids,function(officer){
+			$('#officersList').append('<li id="officer_'+officer.id+'"><a href="#"><i class="icon-user"></i> '+ officer.firstname +' '+ officer.name +'</a></li>');
 		});
 
 		// Display the remain services //

@@ -42,9 +42,6 @@ app.Router = Backbone.Router.extend({
         'affectations-des-interventions'        	: 'categoriesInterventions',
         'affectations-des-interventions/page:page'  : 'categoriesInterventions',
 
-        'employes-municipaux'                   : 'officers',
-        'employes-municipaux/page:page'         : 'officers',
-
         'equipes'                               : 'teams',
         'equipes/page:page'                     : 'teams',
 
@@ -1038,58 +1035,6 @@ app.Router = Backbone.Router.extend({
 
 
 
-    /** Officers management
-    */
-    officers: function(page){
-
-        // Check if the user is connect //
-        if(this.checkConnect()){
-            var self = this;
-
-
-            self.page = page ? parseInt(page, 10) : 1;
-
-            // Check if the collections is instantiate //
-            if(app.collections.officers == null ){
-                app.collections.officers = new app.Collections.Officers();
-            }
-
-            if(app.collections.groups == null ){
-                app.collections.groups = new app.Collections.Groups();
-            }
-
-            app.collections.officers.fetch({
-                beforeSend: function(){
-                    app.loader('display');
-                },
-                success: function(){
-                    
-                    app.collections.groups.fetch({
-                        success: function(){
-			        	    if(app.collections.claimersServices == null ){
-			            		app.collections.claimersServices = new app.Collections.ClaimersServices();
-			    			}
-				            app.collections.claimersServices.fetch({
-				            	success: function(){
-		                            app.views.officersListView = new app.Views.OfficersListView({page: self.page});
-		                            self.render(app.views.officersListView);
-		                        }
-		                    });
-		                 }
-		            });
-                },
-                complete: function(){
-                    app.loader('hide');
-                }
-            });
-        }
-        else{
-            this.navigate('login', {trigger: true, replace: true});
-        }
-    },
-
-
-
     /** Teams management
     */
     teams: function(page){      
@@ -1127,8 +1072,15 @@ app.Router = Backbone.Router.extend({
 
                             app.collections.officers.fetch({
                                 success: function(){
-                                    app.views.teamsListView = new app.Views.TeamsListView({page: self.page});
-                                    self.render(app.views.teamsListView);
+	    	 	                	if(app.collections.groups == null ){
+	    	 	 	                    app.collections.groups = new app.Collections.Groups();
+	    	 	 	                }
+	    	 	 	                app.collections.groups.fetch({
+	    	 	 		                success: function(){
+		                                    app.views.teamsListView = new app.Views.TeamsListView({page: self.page});
+		                                    self.render(app.views.teamsListView);
+		                                }
+		                            });
                                 }
                             });
                         }

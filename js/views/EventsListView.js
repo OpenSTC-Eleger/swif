@@ -5,8 +5,6 @@ app.Views.EventsListView = Backbone.View.extend({
 	
 	filterTasks		: null,
 	minTime			: 8,
-	startLunchTime 	:12,
-	stopLunchTime	:14,
 	maxTime			: 18,
 	workingTime 	: 8,
 	arrayPlanifTasks: [],
@@ -328,8 +326,8 @@ app.Views.EventsListView = Backbone.View.extend({
 				dragRevertDuration	:0,
 				eventClick	: self.eventClick,
 				//drop: self.drop,
-				startOfLunchTime	:12,
-				endOfLunchTime	:14,
+				startOfLunchTime	: app.startLunchTime,
+				endOfLunchTime		: app.stopLunchTime,
                 
 				select: function( startDate, endDate, allDay, jsEvent, view) {
 
@@ -563,9 +561,23 @@ app.Views.EventsListView = Backbone.View.extend({
         	var stopWorkingEvent = this.getEvent( "stopWorkingTime", maxTime.minutes(0).toDate() );
         	this.arrayOnDayEvents.push( stopWorkingEvent );
         	
-			var startLunchTime = moment( startDate.clone() ).hours( this.startLunchTime );
-			var stopLunchTime = moment( startDate.clone() ).hours( this.stopLunchTime );
-			var lunchEvent = this.getEvent( "lunchTime", startLunchTime.minutes(0).toDate(), stopLunchTime.minutes(0).toDate() );
+        	var minutes = 0;
+        	if(_.str.include(app.startLunchTime, '.')){
+        		var minutes = _.lpad(((_.rpad(_( app.startLunchTime ).strRight('.'), 2, '0') / 100) * 60), 2, '0');
+        	}
+        	var hours = _( app.startLunchTime ).strLeft('.');
+
+            
+			var startLunchTime = moment( startDate.clone() ).hours( hours ).minutes( minutes );
+			
+			var minutes = 0;
+        	if(_.str.include(app.stopLunchTime, '.')){
+        		minutes = _.lpad(((_.rpad(_( app.stopLunchTime ).strRight('.'), 2, '0') / 100) * 60), 2, '0');
+        	}
+            hours = _( app.stopLunchTime ).strLeft('.');
+			
+			var stopLunchTime = moment( startDate.clone() ).hours( hours ).minutes( minutes );
+			var lunchEvent = this.getEvent( "lunchTime", startLunchTime.toDate(), stopLunchTime.toDate() );
 			this.arrayOnDayEvents.push( lunchEvent );
 
 			

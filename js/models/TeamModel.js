@@ -34,6 +34,18 @@ app.Models.Team = Backbone.RelationalModel.extend({
 		},
 		{
 			type: Backbone.HasMany,
+			key: 'free_user_ids',
+			relatedModel: 'app.Models.Officer',
+			collectionType: 'app.Collections.Officers',
+			includeInJSON: ['id', 'firstname', 'name'],
+//			reverseRelation: {
+//				type: Backbone.HasOne,
+//				key: 'belongsToTeam',
+//				includeInJSON: ['id','manager_id','tasks'],
+//			}
+		},
+		{
+			type: Backbone.HasMany,
 			key: 'service_ids',
 			relatedModel: 'app.Models.ClaimerService',
 			collectionType: 'app.Collections.ClaimersServices',
@@ -48,6 +60,7 @@ app.Models.Team = Backbone.RelationalModel.extend({
 		name: null,
 		manager_id: null,
 		user_ids: [],
+		free_user_ids: [],
 		service_ids: []
 	},
 
@@ -96,6 +109,15 @@ app.Models.Team = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ user_ids : value });
 	},
+	
+	// Team not members ID //
+    getFreeMembersId: function() {
+        return this.get('free_user_ids');
+    },
+    setFreeMembersID : function(value) {
+		if( value == 'undefined') return;
+		this.set({ free_user_ids : value });
+	},
 
 
 	/** Model Initialization
@@ -120,6 +142,7 @@ app.Models.Team = Backbone.RelationalModel.extend({
 		this.setManagerID( params.manager_id );
 		this.setServicesID( params.service_ids );
 		this.setMembersID( params.user_ids );
+		this.setFreeMembersID( params.free_user_ids );
 	},
 
 
