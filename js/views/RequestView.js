@@ -412,6 +412,9 @@ app.Views.RequestView = Backbone.View.extend({
 				contact = app.views.selectListClaimersContactsView.getSelected().toJSON();
 				this.renderContactDetails(contact);
 			}
+			else{
+				this.renderContactDetails(null);
+			}
 		},
 		 
 		
