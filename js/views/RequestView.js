@@ -319,12 +319,11 @@ app.Views.RequestView = Backbone.View.extend({
 			app.views.selectListClaimersContactsView.clearAll();
 			app.views.selectListClaimersContactsView.addEmptyFirst();
 			app.views.selectListClaimersContactsView.addAll();
-			contact = claimer.attributes.address!=null?claimer.attributes.address.toJSON():null;
-			if( contact && contact.length>0 ) {
-				app.views.selectListClaimersContactsView.setSelectedItem( contact[0].id );
-			}
-			
-			this.renderContactDetails(contact);
+			contacts = claimer.attributes.address!=null?claimer.attributes.address.toJSON():null;
+			if( contacts && contacts.length>0 ) {
+				app.views.selectListClaimersContactsView.setSelectedItem( contacts[0].id );
+				this.renderContactDetails(contacts[0]);
+			}			
 	
 		},
 
@@ -409,8 +408,10 @@ app.Views.RequestView = Backbone.View.extend({
 
 		fillDropdownContact: function(e) {
 			e.preventDefault();
-			contact = app.views.selectListClaimersContactsView.getSelected().toJSON();
-			this.renderContactDetails(contact);
+			if( app.views.selectListClaimersContactsView.getSelected() != null ) {
+				contact = app.views.selectListClaimersContactsView.getSelected().toJSON();
+				this.renderContactDetails(contact);
+			}
 		},
 		 
 		
