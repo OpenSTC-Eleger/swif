@@ -26,6 +26,10 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 		'click a.buttonCancelInter'			: 'displayModalCancelInter',
 		'submit #formCancelInter' 			: 'cancelInter',
+
+		'click a.buttonCancelTask'			: 'displayModalCancelTask',
+		'submit #formCancelTask' 			: 'cancelTask',
+
 		'click a.accordion-object'    		: 'tableAccordion',
 
 		'click #filterStateInterList li:not(.disabled) a' 	: 'setFilter'
@@ -161,7 +165,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 
 			// Set the focus to the first input of the form //
-			$('#modalCancelInter, #modalDeleteTask, #modalAddTask').on('shown', function (e) {
+			$('#modalCancelInter, #modalDeleteTask, #modalAddTask, #modalCancelTask').on('shown', function (e) {
 				$(this).find('input, textarea').first().focus();
 			})
 		
@@ -296,8 +300,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	        
         $('#modalAddTask').modal();
 	},
-   
-	
+
+
 
 	displayModalDeleteTask: function(e){
 		this.getTarget(e);
@@ -308,14 +312,23 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	},
 
 
-
 	displayModalCancelInter: function(e) {
 		this.getTarget(e);
 		this.selectedInter = app.collections.interventions.get(this.pos);
 		this.selectedInterJSON = this.selectedInter.toJSON();
 		$('#infoModalCancelInter').children('p').html(this.selectedInterJSON.name);
 		$('#infoModalCancelInter').children('small').html(this.selectedInterJSON.description);
-   	},
+	},
+
+	displayModalCancelTask: function(e) {
+		var button = $(e.target);
+		this.selectedTask = app.collections.tasks.get(button.data('taskid'));
+		this.selectedTaskJSON = this.selectedTask.toJSON();
+
+		console.log(this.selectedTaskJSON);
+		$('#infoModalCancelTask').children('p').html(this.selectedTaskJSON.name);
+		$('#infoModalCancelTask').children('small').html('<i class="icon-pushpin"></i>&nbsp;' + this.selectedTaskJSON.intervention.name);
+	},
 
 
 
@@ -388,7 +401,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
     },
 
 
-
+    /** Cancel Intervention
+    */
 	cancelInter: function(e){
 		e.preventDefault();
 		
@@ -401,6 +415,15 @@ app.Views.InterventionsListView = Backbone.View.extend({
 				}
 			}
 		);
+	},
+
+
+	/** Cancel Task
+	*/
+	cancelTask: function(e){
+		e.preventDefault();
+		
+		alert("Merci de laisser du temps pour pouvoir développer cette fonctionnalité");
 	},
 
 
