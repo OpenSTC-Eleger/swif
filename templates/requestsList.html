@@ -177,6 +177,9 @@
 						else if(requests[i].state == app.Models.Request.status.refused.key){
 							var title = requests[i].refusal_reason  + '\n('+ modifydBy +')';
 						}
+						else if(requests[i].state == app.Models.Request.status.confirm.key){
+							var title = requests[i].note;
+						}
 						else{
 							var title = '';
 						}

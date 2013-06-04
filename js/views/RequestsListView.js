@@ -192,9 +192,6 @@ app.Views.RequestsListView = Backbone.View.extend({
 					self.infoMessage += "Non planifiée";
 				}
 
-			    if( intervention.state==app.Models.Intervention.state[4].value ) 
-					infoMessage = intervention.cancel_reason
-
 				console.debug("message:" + infoMessage + ", classColor:"+ classColor);
 			});   
 				
@@ -357,12 +354,10 @@ app.Views.RequestsListView = Backbone.View.extend({
 					            	self.element.modal('hide');
 					            self.model.update(params);
 					            //app.collections.requests.get(self.pos).update(self.model);
-					            self.render();
 					            
-					            //Send mail except confirm status
-					            //if( self.params.state!=app.Models.Task.state[1].value) {
-					            	//self.model.sendEmail(null);
-					            //}
+					            //self.render();
+					            app.router.navigate('demandes-dinterventions', {trigger: true, replace: true});
+					            
 					        }
 					    },
 					    error: function () {
