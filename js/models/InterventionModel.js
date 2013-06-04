@@ -18,7 +18,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 			//autoFetch: true,
 			reverseRelation: {
 				key: 'intervention',
-				includeInJSON: ['id','name','state','tasks','service_id','site1','date_start', 'date_end'],
+				includeInJSON: ['id','name', 'description', 'state','tasks','service_id','site1','date_start', 'date_end'],
 			},
 		},		
 //		{
