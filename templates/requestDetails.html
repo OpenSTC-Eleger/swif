@@ -8,14 +8,23 @@
                 <span class="label label-<%= state.color %> vertical-align-middle marginLeft"><%= state.traduction %></span>
         <% }} ) %>
     </h1><br />
-    <!-- Display the Refusal Reason if the request is cancel -->
+    
+
+    <!-- Display the Refusal Reason if the request is cancel or Information for the DST -->
     <% if(request.state == app.Models.Request.state[4].value){ %>
     <div class="row-fluid">
         <div class="alert alert-error span6">
             <strong><%= _.capitalize(lang.refusalReason) %>:</strong> <%= request.refusal_reason %>
         </div>
     </div>
-	<% } %>
+	<% } else if(request.state == app.Models.Request.status.confirm.key){ %>
+    <div class="row-fluid">
+        <div class="alert alert-warning span6">
+            <strong><%= _.capitalize(lang.infoMessages.information) %>:</strong> <%= request.note %>
+        </div>
+    </div>
+    <% } %>
+
 
 <% } else { %>
     <h1><%= lang.viewsTitles.newRequest %></h1><br />
