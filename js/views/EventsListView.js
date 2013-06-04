@@ -849,7 +849,15 @@ app.Views.EventsListView = Backbone.View.extend({
 		    	task["oilPrice"] =  (task.oil_price>0? task.oil_price : '');
 		    	task["taskHours"] = task.date_start.format('H[h]mm') + '-' + task.date_end.format('H[h]mm');
 		    	task["km"] = ''; //task.km;
-		    	task["description"] = (task.description != false ? task.description : '' );
+
+		    	task["description"] = '';
+		    	if(inter!=null){
+	    			task["description"] = inter.description;
+		    	}
+		    	else{
+		    		task["description"] = '';
+		    	}
+    	
 
 		    })
 		    
@@ -869,8 +877,8 @@ app.Views.EventsListView = Backbone.View.extend({
 			    "aoColumns": [			        
 			        {"sDay": "Day", "mDataProp": "day", 'sWidth': '5%', 'sClass': "center", "bVisible": false, "sType": "day"},
 			        {"sInter": "Inter", "mDataProp": "inter", 'sWidth': '5%', 'sClass': "center"},
-			        {"sName": "Name", "mDataProp": "name", 'sWidth': '5%', 'fnCreatedCell': self.getStyle },
 			        {"sDescription": "Description", "mDataProp": "description", 'sWidth': '5%'},
+			        {"sName": "Name", "mDataProp": "name", 'sWidth': '5%', 'fnCreatedCell': self.getStyle },
 			        {"sPlace": "Place", "mDataProp": "place", 'sWidth': '5%', 'sClass': "center"},
 			        {"sDateStart": "DateStart", "mDataProp": "taskHours","sType": "date", 'sWidth': '2%'},
 			        { "sWorkingTime": "WorkingTime", "mDataProp": "planned_hours", 'sWidth': '1%','sClass': "center"},//'sWidth': '5%'},
