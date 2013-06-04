@@ -30,7 +30,7 @@ var app = {
     geoportail_key				: '67pp504oivujlyi0l893925n',
 
 
-/*    urlOE                     : 'http://46.105.77.18:8069',
+    /*urlOE                     : 'http://46.105.77.18:8069',
     urlGEO_OWS                  : 'http://46.105.77.18:8080/geoserver/ows',
     urlGEO_WFS                  : 'http://46.105.77.18:8080/geoserver/wfs',
     urlGEO_NS                   : 'http://46.105.77.18:8080/openstc',

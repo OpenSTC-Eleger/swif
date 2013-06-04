@@ -269,6 +269,7 @@
     	"deleteContact"			 : "Suppression du contact",
     	"deleteClaimer"			 : "Suppression de l'organisation",
     	"cancelIntervention" 	 : "Annulation de l'intervention",
+    	"cancelTask" 	 		 : "Annulation de la tâche",
     	"confirmChief"			 : "Remonter la demande au DST",
     	"serviceDetail"			 : "Détail du service",
     	"interventionsMonitoring": "Suivi des interventions",
