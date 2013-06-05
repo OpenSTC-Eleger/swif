@@ -30,6 +30,9 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		'click a.buttonCancelTask'			: 'displayModalCancelTask',
 		'submit #formCancelTask' 			: 'cancelTask',
 
+		'click .buttonTaskDone' 	  		: 'displayModalTaskDone',
+		'submit #formTaskDone'   			: 'taskDone',
+
 		'click a.accordion-object'    		: 'tableAccordion',
 
 		'click #filterStateInterList li:not(.disabled) a' 	: 'setFilter'
@@ -128,20 +131,33 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 
 			$(self.el).html(template);
-			
-//			app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipment"), collection: app.collections.equipments})
-//			app.views.selectListEquipmentsView.clearAll();
-//			app.views.selectListEquipmentsView.addEmptyFirst();
-//			app.views.selectListEquipmentsView.addAll();
+
 
 			$('*[data-toggle="tooltip"]').tooltip();
 			$('*[rel="popover"]').popover({trigger: 'hover'});
 			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
+			$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 
 
 			$('tr.row-object').css({ opacity: '1'});
 			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
+
+
+			$('#equipmentsDone, #equipmentsListDone').sortable({
+				connectWith: 'ul.sortableEquipmentsList',
+				dropOnEmpty: true,
+				forcePlaceholderSize: true,
+				forceHelperSize: true,
+				placeholder: 'sortablePlaceHold',
+				containment: '.equipmentsDroppableAreaDone',
+				cursor: 'move',
+				opacity: '.8',
+				revert: 300,
+				receive: function(event, ui){
+					//self.saveServicesCategories();
+				}
+			});
 
 
 			// Display filter on the table //
@@ -303,6 +319,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 
 
+	/** Prepare Modals
+	*/
 	displayModalDeleteTask: function(e){
 		this.getTarget(e);
 		this.selectedTask = app.collections.tasks.get(this.pos);
@@ -325,9 +343,78 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		this.selectedTask = app.collections.tasks.get(button.data('taskid'));
 		this.selectedTaskJSON = this.selectedTask.toJSON();
 
-		console.log(this.selectedTaskJSON);
 		$('#infoModalCancelTask').children('p').html(this.selectedTaskJSON.name);
 		$('#infoModalCancelTask').children('small').html('<i class="icon-pushpin"></i>&nbsp;' + this.selectedTaskJSON.intervention.name);
+	},
+
+	displayModalTaskDone: function(e){
+		var button = $(e.target);
+
+		if(button.hasClass('btn')){
+			this.selectedTask = app.collections.tasks.get(button.data('taskid'));
+		}
+		else{
+			this.selectedTask = app.collections.tasks.get(button.parent('button').data('taskid'));	
+		}
+
+		this.selectedTaskJSON = this.selectedTask.toJSON();
+
+
+		// Fill equipment List //
+		app.views.selectListOfficersTeamsView = new app.Views.DropdownSelectListView({el: $('#selectUsersTeams'), collection: app.collections.officers})
+		app.views.selectListOfficersTeamsView.clearAll();
+		app.views.selectListOfficersTeamsView.addEmptyFirst();
+		app.views.selectListOfficersTeamsView.addAll();
+
+
+		// Set Task Informations //
+		$('#infoModalTaskDone').children('p').html(this.selectedTaskJSON.name);
+		$('#infoModalTaskDone').children('small').html('<i class="icon-pushpin"></i>&nbsp;' + this.selectedTaskJSON.intervention.name);
+
+		
+    	$("#startDate").val(  moment().format('L') );
+    	$("#endDate").val( moment().format('L') );
+
+		// Set Task Planned Hour //
+		$("#startHour").timepicker('setTime', moment().format('LT') );
+		$("#endHour").timepicker('setTime', moment().add('hour', this.selectedTaskJSON.planned_hours).format('LT') );
+
+		
+		// Filter Equipment by service on intervention's task //
+		var equipmentsCollection = app.collections.equipments;
+
+		var intervention = this.selectedTaskJSON.intervention;
+		var service = intervention.service_id;
+		filteredEquipment = _.filter(equipmentsCollection.models, function(item){	
+			var equipmentJSON = item.toJSON();
+			var services = _.map(equipmentJSON.service_ids, function(service){return service.id;});
+    		return $.inArray(service[0], services)!=-1;
+    	});
+
+    	// Search only vehicles //
+		var filteredVehicleEquipment = _.filter(filteredEquipment, function(item){
+		    return item.attributes.technical_vehicle || item.attributes.commercial_vehicle;
+		});
+
+		// Fill equipment List //
+		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentDone"), collection: equipmentsCollection.reset(filteredVehicleEquipment)})
+		app.views.selectListEquipmentsView.clearAll();
+		app.views.selectListEquipmentsView.addEmptyFirst();
+		app.views.selectListEquipmentsView.addAll();
+
+
+		// Search only materials //
+		var filteredOthersEquipment = _.filter(filteredEquipment, function(item){
+		    return item.attributes.small_material || item.attributes.fat_material;
+		});
+
+		_.each(filteredOthersEquipment, function (material, i){
+			var materialJSON = material.toJSON();
+				$('#equipmentsListDone').append('<li id="equipment_'+materialJSON.id+'"><a href="#"><i class="icon-wrench"></i> '+ materialJSON.name + '-' + materialJSON.type + ' </a></li>');
+		});
+
+		$('#badgeNbEquipmentsDone').html(_.size(filteredOthersEquipment));
+
 	},
 
 

@@ -154,8 +154,8 @@
 							<% } %>
 							</td>
 
-							<td class="hidden-phone"><%= app.decimalNumberToTime(task.planned_hours) %></td>
-						    <td class="hidden-phone"><%=(task.state!=app.Models.Task.state[3].value && task.state!=app.Models.Task.state[5].value) ? app.decimalNumberToTime(task.remaining_hours) : '' %></td>
+							<td class="hidden-phone"><%= app.decimalNumberToTime(task.planned_hours, 'human') %></td>
+						    <td class="hidden-phone"><%=(task.state!=app.Models.Task.state[3].value && task.state!=app.Models.Task.state[5].value) ? app.decimalNumberToTime(task.remaining_hours, 'human') : '' %></td>
 
 						    <!-- Task State -->
 							<td>
@@ -430,7 +430,7 @@
 	                	</div>
 
 						<!-- Start hour -->
-	                	<div class="input-append bootstrap-timepicker" >							
+	                	<div class="input-append bootstrap-timepicker" >
 					    	<input type="text" class="timepicker-default input-small taskInput" id='startHour' required="required">
 					    	<span class="add-on"><i class="icon-time"></i></span>
 						</div>
@@ -439,7 +439,7 @@
                 </div>
             </div>
 
-			<!-- Start date / Start Hour -->
+			<!-- End date / End Hour -->
 			<div class="control-group">
 				<label class="control-label" for="endDate"><%= _.capitalize(lang.dateEnd) %>:</label>
 				<div class="control-group">

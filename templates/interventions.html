@@ -105,8 +105,8 @@
 						</span>
 					</td>
 					<td><%= intervention.site1[1] %></td>
-					<td><%= (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours) : '') %></td>
-					<td><%= (intervention.effective_hours != false ? app.decimalNumberToTime(intervention.effective_hours) : '') %></td>
+					<td><%= (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours, 'human') : '') %></td>
+					<td><%= (intervention.effective_hours != false ? app.decimalNumberToTime(intervention.effective_hours, 'human') : '') %></td>
 
 
 					<!-- Check the state of the intervention -->
@@ -209,9 +209,9 @@
 												<%= task.team_id[1] %>
 											<% } %>
 											</td>
-											<td><%= app.decimalNumberToTime(task.planned_hours) %></td>
-											<td><%= app.decimalNumberToTime(task.effective_hours) %></td>
-											<td><%= app.decimalNumberToTime(task.remaining_hours) %></td>
+											<td><%= app.decimalNumberToTime(task.planned_hours, 'human') %></td>
+											<td><%= app.decimalNumberToTime(task.effective_hours, 'human') %></td>
+											<td><%= app.decimalNumberToTime(task.remaining_hours, 'human') %></td>
 											<!-- Task state -->
 											<td>
 												<!-- To Schedule -->
@@ -241,7 +241,7 @@
 												<% if(task.state == app.Models.Task.state[3].value) { %>
 														
 													<div class="btn-group">
-														<button class="btn btn-mini btn-success no-outline buttonTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok icon-fixed-width"></i>
+														<button class="btn btn-mini btn-success no-outline buttonTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok icon-fixed-width buttonTaskDone"></i>
 														</button>
 														<button class="btn btn-mini dropdown-toggle no-outline" data-toggle="dropdown">
 															<span class="caret"></span>
@@ -459,6 +459,63 @@
 		</blockquote>
 
 	    <form id="formTaskDone" action="#" class="form-horizontal">
+
+			<!-- Users or Teams -->
+			<div class="control-group">
+				<label class="control-label" for="selectUsersTeams"><%= _.capitalize(lang.carryOutBy) %>:</label>
+
+				<div class="controls">
+					<div class="input-prepend">
+						<div class="btn-group">
+						<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i>&nbsp; <span class="icon-caret-down"></span></button>
+						<ul class="dropdown-menu">
+							<li><a href=""><i class="icon-user icon-fixed-width"></i> Agents</a></li>
+							<li><a href=""><i class="icon-group icon-fixed-width"></i> Équipes</a></li>
+						</ul>
+						</div>
+						<select id="selectUsersTeams" class="input-large"></select>
+					</div>
+				</div>
+			</div>
+
+	    	<!-- Start date / Start Hour -->
+			<div class="control-group">
+				<label class="control-label" for="startDate"><%= _.capitalize(lang.dateStart) %>:</label>
+
+				<div class="controls controls-row">
+					<!-- Start date -->
+					<div class="input-append">
+						<input type="text" class="datepicker taskInput input-small" id="startDate" size="20" value="" placeholder="dd/mm/yyyy" required="required">
+						<span class="add-on"><i class="icon-calendar"></i></span>
+					</div>
+
+					<!-- Start hour -->
+					<div class="input-append bootstrap-timepicker" >							
+						<input type="text" class="timepicker-default input-mini taskInput" id='startHour' required="required">
+						<span class="add-on"><i class="icon-time"></i></span>
+					</div>
+				</div>
+			</div>
+
+			<!-- End date / End Hour -->
+			<div class="control-group">
+				<label class="control-label" for="endDate"><%= _.capitalize(lang.dateEnd) %>:</label>
+
+				<div class="controls">
+					<!-- End date -->
+					<div class="input-append">
+						<input type="text" class="datepicker taskInput input-small" id="endDate" size="20" value="" placeholder="dd/mm/yyyy" required="required">
+						<span class="add-on"><i class="icon-calendar"></i></span>
+					</div>
+					
+					<!-- End Hour -->
+					<div class="input-append bootstrap-timepicker">
+					    <input type="text" class="timepicker-default input-mini taskInput" id='endHour' required="required">
+					    <span class="add-on"><i class="icon-time"></i></span>
+					</div>
+				</div>
+			</div>
+
 	    	 
 			<!-- Worked Time -->
 			<div class="control-group">
@@ -534,7 +591,7 @@
 		
 					<div class="span6">
 						<div class="widget-title">
-							<h4 class="noMarginTop">Disponible <!--<span class="badge pull-right" id="badgeNbEquipmentsDone"></span>--></h4>
+							<h4 class="noMarginTop">Disponible <span class="badge pull-right" id="badgeNbEquipmentsDone"></span> </h4>
 						</div>
 		
 						<ul id="equipmentsListDone" class="sortableEquipmentsList sortable unstyled nav nav-list">

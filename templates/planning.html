@@ -62,17 +62,17 @@
 				if(intervention.state == app.Models.Intervention.state[1].value){
 					var classColor = app.Models.Intervention.state[1].color;
 					var traduction = app.Models.Intervention.state[1].traduction;
-					informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours) : '--');
+					informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours, 'human') : '--');
 				}
 				else if(intervention.state == app.Models.Intervention.state[0].value){
 					var classColor = app.Models.Intervention.state[0].color;
 					var traduction = app.Models.Intervention.state[0].traduction;
-					informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours) : '--');
+					informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours, 'human') : '--');
 				}
 				else if(intervention.state == app.Models.Intervention.state[5].value){
 					var classColor = app.Models.Intervention.state[5].color;
 					var traduction = app.Models.Intervention.state[5].traduction;
-					informationHour = (intervention.total_hours != false ? app.decimalNumberToTime(intervention.total_hours) : '--');
+					informationHour = (intervention.total_hours != false ? app.decimalNumberToTime(intervention.total_hours, 'human') : '--');
 				}
 
 
@@ -137,7 +137,7 @@
 										} else if(task.state == app.Models.Task.state[0].value){ %>
 										<li id="task_<%= task.id %>" class="external-event disabled">
 											<i class="icon-time" rel="tooltip" data-placement="right" data-original-title="<%= moment(task.date_start).format('LLL') %> - <%= (task.team_id == false ? task.user_id[1] : task.team_id[1]) %>"></i> <%= task.name %>
-											<small class="badge badge-<%= app.Models.Task.state[0].color %> pull-right"><%= app.decimalNumberToTime(task.planned_hours) %></small>
+											<small class="badge badge-<%= app.Models.Task.state[0].color %> pull-right"><%= app.decimalNumberToTime(task.planned_hours, 'human') %></small>
 										</li>
 										<% } %>
 
