@@ -398,7 +398,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 
 		if( this.model ) {
-			// Filter Equipment by service on intervention's  task //
+			// Filter Equipment by service on intervention's task //
 			var task = this.model.toJSON();
 			var intervention = task.intervention;
 			//If task not orphelin

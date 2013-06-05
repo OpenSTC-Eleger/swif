@@ -86,6 +86,7 @@
 	"parentCategory"		: "catégorie parente",
 	"intervention"			: "intervention",
 	"assignedTo"			: "assigné à",
+	"carryOutBy"			: "réalisé par",
 	"startHour" 			: "Heure début",
 	"endHour" 				: "Heure fin",
 	"estimatedHours"		: "Heures estimées",
