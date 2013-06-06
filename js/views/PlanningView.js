@@ -170,12 +170,12 @@ app.Views.PlanningView = Backbone.View.extend({
 					return itemJSON.state == sessionStorage.getItem(self.filters);
 				});
 			}
-//            else{
-//                sessionStorage.setItem(self.filters, app.Models.Intervention.state[1].value);
-//                var interventions = _.filter(interventions, function(item){ 
-//                    return item.toJSON().state == app.Models.Intervention.state[1].value;
-//                });
-//            }
+            else{
+                sessionStorage.setItem(self.filters, app.Models.Intervention.state[1].value);
+                var interventions = _.filter(interventions, function(item){ 
+                    return item.toJSON().state == app.Models.Intervention.state[1].value;
+                });
+            }
 
 
             interventionSorted = new app.Collections.Interventions(interventions);
