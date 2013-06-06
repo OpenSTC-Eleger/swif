@@ -1259,9 +1259,9 @@ app.Router = Backbone.Router.extend({
 		}
 	},
 	
-	
 
-	/** Equipments
+
+	/** equipments
 	*/
 	equipments: function(page){      
 

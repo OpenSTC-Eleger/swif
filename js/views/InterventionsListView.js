@@ -32,6 +32,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 		'click .buttonTaskDone' 	  		: 'displayModalTaskDone',
 		'submit #formTaskDone'   			: 'taskDone',
+		'click a.linkSelectUsersTeams'		: 'changeSelectListUsersTeams',
+		'click .linkRefueling'				: 'accordionRefuelingInputs', 
 
 		'click a.accordion-object'    		: 'tableAccordion',
 
@@ -350,18 +352,31 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	displayModalTaskDone: function(e){
 		var button = $(e.target);
 
+		// Retrieve the Task //
 		if(button.hasClass('btn')){
 			this.selectedTask = app.collections.tasks.get(button.data('taskid'));
 		}
 		else{
 			this.selectedTask = app.collections.tasks.get(button.parent('button').data('taskid'));	
 		}
-
 		this.selectedTaskJSON = this.selectedTask.toJSON();
+		var intervention = this.selectedTaskJSON.intervention;
+		var serviceInter = intervention.service_id;
 
 
-		// Fill equipment List //
-		app.views.selectListOfficersTeamsView = new app.Views.DropdownSelectListView({el: $('#selectUsersTeams'), collection: app.collections.officers})
+		var officers = app.collections.officers;
+	
+
+		// Filter officers - Display only officer who belongs to the intervention's service //
+		filteredOfficer = _.filter(officers.models, function(officer){	
+			var officerJSON = officer.toJSON();
+			
+			var services = _.map(officerJSON.service_ids, function(service){return service.id;});
+    		return $.inArray(serviceInter[0], services)!=-1;
+    	});
+
+		// Fill Officer List //
+		app.views.selectListOfficersTeamsView = new app.Views.DropdownSelectListView({el: $('#selectUsersTeams'), collection: officers.reset(filteredOfficer)})
 		app.views.selectListOfficersTeamsView.clearAll();
 		app.views.selectListOfficersTeamsView.addEmptyFirst();
 		app.views.selectListOfficersTeamsView.addAll();
@@ -371,7 +386,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		$('#infoModalTaskDone').children('p').html(this.selectedTaskJSON.name);
 		$('#infoModalTaskDone').children('small').html('<i class="icon-pushpin"></i>&nbsp;' + this.selectedTaskJSON.intervention.name);
 
-		
+
     	$("#startDate").val(  moment().format('L') );
     	$("#endDate").val( moment().format('L') );
 
@@ -383,12 +398,11 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		// Filter Equipment by service on intervention's task //
 		var equipmentsCollection = app.collections.equipments;
 
-		var intervention = this.selectedTaskJSON.intervention;
-		var service = intervention.service_id;
+
 		filteredEquipment = _.filter(equipmentsCollection.models, function(item){	
 			var equipmentJSON = item.toJSON();
 			var services = _.map(equipmentJSON.service_ids, function(service){return service.id;});
-    		return $.inArray(service[0], services)!=-1;
+    		return $.inArray(serviceInter[0], services)!=-1;
     	});
 
     	// Search only vehicles //
@@ -414,6 +428,84 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		});
 
 		$('#badgeNbEquipmentsDone').html(_.size(filteredOthersEquipment));
+	},
+
+
+
+	/** Update the <select> list of Users or Teams in the Modal Task Done
+	*/
+	changeSelectListUsersTeams: function(e){
+		e.preventDefault();
+		var link = $(e.target);
+
+		// Retrieve the item to refres - Users or Teams //
+		if(link.is('a')){ var itemToLoad = link.data('item'); }
+		else{ var itemToLoad = link.parent('a').data('item'); }
+
+		this.selectedTaskJSON = this.selectedTask.toJSON();
+		var intervention = this.selectedTaskJSON.intervention;
+		var serviceInter = intervention.service_id;
+		
+
+		if(itemToLoad == 'officers'){
+			$('#btnSelectUsersTeams > i.iconItem.icon-group').addClass('icon-user').removeClass('icon-group');
+			
+			var officers = app.collections.officers;
+			// Filter officers - Display only officer who belongs to the intervention's service //
+			filteredOfficer = _.filter(app.collections.officers.models, function(officer){	
+				var officerJSON = officer.toJSON();
+				
+				var services = _.map(officerJSON.service_ids, function(service){return service.id;});
+	    		return $.inArray(serviceInter[0], services)!=-1;
+	    	});
+
+			// Fill Officer List //
+			if(app.views.selectListOfficersTeamsView == null){
+				app.views.selectListOfficersTeamsView = new app.Views.DropdownSelectListView({el: $('#selectUsersTeams'), collection: officers.reset(filteredOfficer)})
+			}
+			else{
+				app.views.selectListOfficersTeamsView.collection = officers.reset(filteredOfficer);
+			}
+			app.views.selectListOfficersTeamsView.clearAll();
+			app.views.selectListOfficersTeamsView.addEmptyFirst();
+			app.views.selectListOfficersTeamsView.addAll();
+		}
+		else if(itemToLoad == 'teams'){
+			$('#btnSelectUsersTeams > i.iconItem.icon-user').addClass('icon-group').removeClass('icon-user');
+			
+			if(app.collections.teams == null ){
+				app.collections.teams = new app.Collections.Teams();
+			}
+
+			app.collections.teams.fetch({
+				success: function(){
+
+					var teams = app.collections.teams;
+					filteredTeams = _.filter(teams.models, function(team){	
+						var teamJSON = team.toJSON();
+						
+						var services = _.map(teamJSON.service_ids, function(service){return service.id;});
+			    		return $.inArray(serviceInter[0], services)!=-1;
+			    	});
+
+					app.views.selectListOfficersTeamsView = new app.Views.DropdownSelectListView({el: $('#selectUsersTeams'), collection: teams.reset(filteredTeams)})
+					app.views.selectListOfficersTeamsView.clearAll();
+					app.views.selectListOfficersTeamsView.addEmptyFirst();
+					app.views.selectListOfficersTeamsView.addAll();
+				}	
+			});
+		}
+
+	},
+
+
+	/** Display or Hide Refueling Section (Inputs Km, Oil, Oil prize)
+	*/
+	accordionRefuelingInputs: function(e){
+		e.preventDefault();
+
+		// Toggle Slide Refueling section //
+		$('.refueling-vehicle').stop().slideToggle();
 
 	},
 

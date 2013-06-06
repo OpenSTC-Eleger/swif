@@ -467,13 +467,13 @@
 				<div class="controls">
 					<div class="input-prepend">
 						<div class="btn-group">
-						<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i>&nbsp; <span class="icon-caret-down"></span></button>
+						<button class="btn dropdown-toggle" id="btnSelectUsersTeams" data-toggle="dropdown"><i class="icon-user icon-fixed-width iconItem"></i>&nbsp; <span class="icon-caret-down"></span></button>
 						<ul class="dropdown-menu">
-							<li><a href=""><i class="icon-user icon-fixed-width"></i> Agents</a></li>
-							<li><a href=""><i class="icon-group icon-fixed-width"></i> Équipes</a></li>
+							<li><a href="#" class="linkSelectUsersTeams" data-item="officers"><i class="icon-user icon-fixed-width"></i> <%= lang.agents %></a></li>
+							<li><a href="#" class="linkSelectUsersTeams" data-item="teams"><i class="icon-group icon-fixed-width"></i> <%= lang.teams %></a></li>
 						</ul>
 						</div>
-						<select id="selectUsersTeams" class="input-large"></select>
+						<select id="selectUsersTeams" class="input-large" required></select>
 					</div>
 				</div>
 			</div>
@@ -516,16 +516,19 @@
 				</div>
 			</div>
 
-	    	 
-			<!-- Worked Time -->
-			<div class="control-group">
-				<label for="eventTimeDone" class="control-label"><%= lang.workedTime %>:</label>
-				<div class="controls">
-					<div class="input-append bootstrap-timepicker">
-						<input type="text" class="timepicker-default input-small taskInput" id="eventTimeDone">
-						<span class="add-on"><i class="icon-time"></i></span>
+			<div id="remainingTimeSection" class="hide">
+				<hr>
+				<!-- Remaining Time -->
+				<div id="remainingTimeSection" class="control-group	">
+					<label for="eventRemainingTime" class="control-label"><%= lang.remainingTime %>:</label>
+					<div class="controls">
+						<div class="input-append bootstrap-timepicker">
+							<input type="text" class="timepicker-default input-small taskInput" id="eventRemainingTime" value="02:00">
+							<span class="add-on"><i class="icon-time"></i></span>
+						</div>
 					</div>
 				</div>
+				<hr>
 			</div>
 			
 			<!-- Vehicle -->
