@@ -443,12 +443,17 @@ app.Views.TasksListView = Backbone.View.extend({
 			// Filter Equipment by service on intervention's  task //
 			var task = this.model.toJSON();
 			var intervention = task.intervention;
-			var service = intervention.service_id;
-			filteredEquipment = _.filter(filteredEquipment.models, function(item){	
-				var equipmentJSON = item.toJSON();
-				var services = _.map(equipmentJSON.service_ids, function(service){return service.id;});
-	    		return $.inArray(service[0], services)!=-1;
-	    	});
+			//If task not orphelin
+			if( intervention!= null ) {
+				var service = intervention.service_id;
+				filteredEquipment = _.filter(filteredEquipment.models, function(item){	
+					var equipmentJSON = item.toJSON();
+					var services = _.map(equipmentJSON.service_ids, function(service){return service.id;});
+		    		return $.inArray(service[0], services)!=-1;
+		    	});			
+			}
+			else
+				filteredEquipment = filteredEquipment.models;
 		}
 		else {
 			// When create orphan task : Filter Equipment by service on user connected //
@@ -500,11 +505,6 @@ app.Views.TasksListView = Backbone.View.extend({
 				equipmentsSelected[i] = equipment.id;
 			});
 		};
-		
-	    //search only vehicle materials
-//		var materialsEquipment = _.filter(app.collections.equipments.models, function(equipment){
-//			return equipment.attributes.small_material == true || equipment.attributes.fat_material==true
-//		});
 
 		// Display the remain services //
 		var nbRemainMaterials = 0;
@@ -521,19 +521,7 @@ app.Views.TasksListView = Backbone.View.extend({
 	},
 
 
-  
-	/** Get the Taks
-	*/
-    getTask: function(e) {
-		
-    	this.resetModal();
-		var href = $(e.target);
-	
-		// Retrieve the ID of the request //	
-		this.pos = href.parents('tr').attr('id');
 
-		this.model = app.collections.tasks.get(this.pos);
-    },
 
     resetModal: function() {  
     	this.model = null;
@@ -541,6 +529,20 @@ app.Views.TasksListView = Backbone.View.extend({
     	$('.taskSelect').val(0);
     	$('#taskName').val('');    	
     	//$('.equipments').val('')    	
+    },
+    
+    /**
+     * Get Vehicle
+     */
+    getVehicule: function(e) {	
+		input_equipment_id = null;
+		if( app.views.selectListEquipmentsView != null ) {
+			var selectItem = app.views.selectListEquipmentsView.getSelected();
+			if( selectItem ) {
+				input_equipment_id = selectItem.toJSON().id
+			}
+		}    
+		return input_equipment_id;
     },
     
 
@@ -571,7 +573,9 @@ app.Views.TasksListView = Backbone.View.extend({
 	},
 	
 	
-
+	/**
+	 * Retreive Equipment  (Vehicle)
+	 */
 	fillDropdownEquipment: function(e){
 		e.preventDefault();
 		var target = $(e.target).attr('value');
@@ -585,9 +589,22 @@ app.Views.TasksListView = Backbone.View.extend({
 		}
 	},
 	
+  
+	/** Get the Task
+	*/
+    getTask: function(e) {
+		
+    	this.resetModal();
+		var href = $(e.target);
+	
+		// Retrieve the ID of the request //	
+		this.pos = href.parents('tr').attr('id');
 
+		this.model = app.collections.tasks.get(this.pos);
+    },
+	
 
-	/** Save the Task
+	/** Save New Task (Orphelin)
 	*/
 	saveTask: function(e){
 		var self = this;
@@ -608,46 +625,39 @@ app.Views.TasksListView = Backbone.View.extend({
 	    	 if( selectItem ) {
 	    		 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
 	    	 }
-	    }	    	
+	    }	 
 	     
-	     input_equipment_id = null;
-	     if( app.views.selectListEquipmentsView != null ) {
-	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
-	    	 if( selectItem ) {
-	    		 input_equipment_id = selectItem.toJSON().id
-	    	 }
-	     }
-	     
-		this.vehicule = input_equipment_id;
-		this.equipments = _.map($("#equipmentsAdd").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
-		this.equipments.push( input_equipment_id );
-
-	    
+	    this.equipments = [];	     
+		var vehicule = this.getVehicule();
+		var equipments = _.map($("#equipmentsAdd").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
+	    if( vehicule!=null )
+	    	 equipments.push( vehicule );
 	     
 		var params = {
 			user_id:  app.models.user.getUID(),
 			date_start: mNewDateStart.toDate(),
 			date_end: mNewDateEnd.toDate(),
 			state: app.Models.Task.state[1].value,
-			//equipment_id: input_equipment_id,
-			equipment_ids: [[6, 0, this.equipments]],
+			vehicule: vehicule,
+			equipment_ids: equipments,
 			name: this.$('#taskName').val(),
 			km: this.$('#equipmentKmAdd').val(),
 			oil_qtity: this.$('#equipmentOilQtityAdd').val().replace(',', '.'),
 			oil_price: this.$('#equipmentOilPriceAdd').val().replace(',', '.'),
 			category_id: input_category_id,	         
 			planned_hours: planned_hours,
-			effective_hours: planned_hours,
-			remaining_hours: 0,
+			remaining_hours: planned_hours,
+			date: new Date(),
+		    hours: planned_hours,
 		};
-	     this.saveNewStateTask(params, null, $('#modalAddTask'), null , true);
-	    // app.models.task.save(0,params,$('#modalAddTask'), null, "taches");
-	     //this.saveEquipment(  this.$('#equipmentKmAdd').val(), input_equipment_id)
-	     
-	     //this.saveEquipmentAndTask(  this.$('#equipmentKmAdd').val(), input_equipment_id, true )
+		
+		$('#modalAddTask').modal('hide');
+		app.models.task.save(0, params);
    	},
     
-    //Task not finished
+    /**
+     * Display Modal for task not finished
+     */
     setModalTimeSpent: function(e) {    	
     	this.getTask(e);
     	this.displayEquipmentsInfos(e, $('#equipmentsSpent'), $('#equipmentsListSpent'), $('#badgeNbEquipmentsSpent'), $("#taskEquipmentSpent" ) );
@@ -664,109 +674,67 @@ app.Views.TasksListView = Backbone.View.extend({
 
     },
     
-    
+    /**
+     * Save Not Finished Task
+     */
     saveTimeSpent: function(e) {
     	e.preventDefault();
     	
     	var task = this.model.toJSON();
+    	var inter = task.intervention;
+    	
+    	//Calculate new intervention state
+		var newInterState = null;
+  		if( task && task.intervention ) {
+  			inter = task.intervention;
+  			newInterState = inter.state;
+  			if( task.intervention.state!=app.Models.Intervention.state[5].value ) {
+  				newInterState = app.Models.Intervention.state[3].value;
+  			}
+  		}    
 
+  		//calculate Date and times
     	var timeArray = $('#eventTimeSpent').val().split(':');
     	var hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0)
-    	var newDateEnd = moment(task.date_start).add('hours', 1);	
-    	//newDateEnd.add('hours',hours,true);
-    	
     	timeArray = $('#eventTimeRemaining').val().split(':');
     	var remaining_hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0);
-    	
-    	input_equipment_id = null;
-	     if( app.views.selectListEquipmentsView != null ) {
-	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
-	    	 if( selectItem ) {
-	    		 input_equipment_id = selectItem.toJSON().id
-	    	 }
-	     }
-    	
-	     this.vehicule = input_equipment_id;
-	     this.equipments = _.map($("#equipmentsSpent").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
-	     this.equipments.push( input_equipment_id );
+	     
+	    var equipments = [];    	
+	    var vehicule = this.getVehicule();
+	    equipments = _.map($("#equipmentsSpent").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); });
+	    if( vehicule!=null )
+	    	equipments.push( vehicule );
 
     	
-    	taskParams = {
-    		name: task.name?task.name:0,
-    		parent_id: task.id,  		  	
-  		  	project_id: task.project_id!=null?task.project_id[0]:null,
-  		    state: app.Models.Task.state[3].value,
+    	params = {
+    	    project_state: newInterState,
+  		  	email_text: null,
+  		    task_state: app.Models.Task.state[1].value,  		  
+  		  	equipment_ids: equipments,
+  		    vehicule: vehicule,
+  		    km: self.$('#equipmentKmSpent').val().replace(',', '.'),
+			oil_qtity: self.$('#equipmentOilQtitySpent').val(),
+			oil_price: self.$('#equipmentOilPriceSpent').val().replace(',', '.'),
 	        planned_hours: remaining_hours,
-	        remaining_hours: remaining_hours,
-	        
-			user_id: null,
-			team_id:null,
-			date_end: null,
-			date_start: null,
+	        remaining_hours: hours,
+  		    date: new Date(),
+  		    hours: hours,
 		};
     	
-    	var self = this;
-    	self.task = task;
-    	self.newDateEnd = newDateEnd;
-    	self.hours = hours;
-    	self.remaining_hours = remaining_hours;
-    	app.models.task.saveTest(0,taskParams,{
-				success: function(){
-    				taskParams = {
-						//equipment_id: input_equipment_id,
-						equipment_ids: [[6, 0, self.equipments]],
-						km: self.$('#equipmentKmSpent').val().replace(',', '.'),
-						oil_qtity: self.$('#equipmentOilQtitySpent').val(),
-						oil_price: self.$('#equipmentOilPriceSpent').val().replace(',', '.'),
-						state: app.Models.Task.state[1].value,
-						effective_hours: self.hours,
-						remaining_hours: 0,
-						//user_id: self.task.user_id?self.task.user_id[0]:0,
-						//team_id: self.task.team_id?self.task.team_id[0]:0,
-						//date_start: self.task.date_start.toDate(),
-						//date_end: self.newDateEnd.toDate(),
-    		  		};
-
-    		  		
-
-    		  		taskWorkParams = {
-    		      			 name: task.name,
-    		      	         date: new Date(),
-    		      	         task_id: task.id,
-    		      	         hours: self.hours,
-    		      	         user_id: task.user_id!=null?task.user_id[0]:null,
-    		      	         team_id: task.team_id!=null?task.team_id[0]:null,
-    		      	         company_id: task.company_id!=null?task.company_id[0]:null,
-    		      	};
-    		  		
-    		  		var newInterState = null;
-    		  		if( task && task.intervention ) {
-    		  			inter = task.intervention;
-    		  			newInterState = inter.state;
-    		  			if( task.intervention.state!=app.Models.Intervention.state[5].value ) {
-    		  				newInterState = app.Models.Intervention.state[3].value;
-    		  			}
-    		  		}    		
-    		  		
-    		  		self.saveNewStateTask(taskParams, taskWorkParams,$('#modalTimeSpent'),newInterState, false);
-    		  		//self.saveEquipment(  self.$('#equipmentKmSpent').val(), input_equipment_id )
+    	this.model.saveTaskDone(params,
+			{
+				success: function(data){
+					$('#modalTimeSpent').modal('hide');
+					route = Backbone.history.fragment;
+					Backbone.history.loadUrl(route);
 				}
-			});
+			}
+		);
+
     },
 
-
-
-    secondsToHms : function (d) {
-		d = Number(d);	
-		var h = Math.floor(d / 3600);
-		var m = Math.floor(d % 3600 / 60);
-		var s = Math.floor(d % 3600 % 60);
-		return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":" : "0:") + (s < 10 ? "0" : "") + s);
-	},
-
-
-
-	/** Set Information in the Modal Task Done
+	/** 
+	 * Set Information in the Modal Task Done
 	*/
     setModalTaskDone: function(e) {
     	this.getTask(e);
@@ -785,7 +753,8 @@ app.Views.TasksListView = Backbone.View.extend({
 
     },
 
-	/** Update the task
+	/** 
+	 * Update the task as done
 	*/
     saveTaskDone: function(e) {
     	e.preventDefault();
@@ -817,18 +786,11 @@ app.Views.TasksListView = Backbone.View.extend({
 		var timeArray = $('#eventTimeDone').val().split(':');
     	var hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0);
     	
-    	//Get equipments
-    	 input_equipment_id = null;
-	     if( app.views.selectListEquipmentsView != null ) {
-	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
-	    	 if( selectItem ) {
-	    		 input_equipment_id = selectItem.toJSON().id
-	    	 }
-	     }
 	     
-	    this.vehicule = input_equipment_id;
-	    this.equipments = _.map($("#equipmentsDone").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
-	    this.equipments.push( input_equipment_id );
+	    var vehicule = this.getVehicule();
+	    var equipments = _.map($("#equipmentsDone").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
+	    if ( vehicule!=null )
+	    	equipments.push( vehicule );
 
 
 		params = {
@@ -837,22 +799,15 @@ app.Views.TasksListView = Backbone.View.extend({
 		    //email text send to partner
 		    email_text: app.Models.Request.state[3].traduction,
 		    //Task params
-			task_state: app.Models.Task.state[1].value,
-		    remaining_hours: 0,
-		    equipment_ids: this.equipments,
-		    vehicule: this.vehicule,
+			task_state: app.Models.Task.state[1].value,		   
+		    equipment_ids: equipments,
+		    vehicule: vehicule,
 	        km: this.$('#equipmentKmDone').val(),
 	        oil_qtity: this.$('#equipmentOilQtityDone').val().replace(',', '.'),
 	        oil_price: this.$('#equipmentOilPriceDone').val().replace(',', '.'),
-	        
-		    //Task work params
-             //name: task.name,
 	        date: new Date(),
-	        //task_id: task.id,
+	        remaining_hours: hours,
 	        hours: hours,
-	        //user_id: task.user_id!=null?task.user_id[0]:null,
-	        //team_id: task.team_id!=null?task.team_id[0]:null,
-	        //company_id: task.company_id[0]
 	        
 		};
 	    
@@ -867,153 +822,36 @@ app.Views.TasksListView = Backbone.View.extend({
 		);
     	
     },
-
-	/** Update the task
-	*/
-//    saveTaskDone: function(e) {
-//    	e.preventDefault();
-//
-//		var that = this;
-//		that.state = app.Models.Intervention.state[2].value;		
-//		var tasks = this.model.toJSON().intervention.tasks;
-//		_.each(tasks.models, function (task, i) {
-//			if( that.model.id!= task.id && ( task.toJSON().state == app.Models.Task.state[0].value
-//				 || task.toJSON().state == app.Models.Task.state[2].value) )
-//				that.state = app.Models.Intervention.state[3].value;
-//		});
-//		
-//		var timeArray = $('#eventTimeDone').val().split(':');
-//    	var hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0);
-//    	
-//    	 input_equipment_id = null;
-//	     if( app.views.selectListEquipmentsView != null ) {
-//	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
-//	    	 if( selectItem ) {
-//	    		 input_equipment_id = selectItem.toJSON().id
-//	    	 }
-//	     }
-//	     
-//	    this.vehicule = input_equipment_id;
-//	    this.equipments = _.map($("#equipmentsDone").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
-//	    this.equipments.push( input_equipment_id );
-//
-//
-//		taskParams = {
-//		    state: app.Models.Task.state[1].value,
-//		    //equipment_id: input_equipment_id,
-//		    equipment_ids: [[6, 0, this.equipments]],
-//		    remaining_hours: 0,
-//	        km: this.$('#equipmentKmDone').val(),
-//	        oil_qtity: this.$('#equipmentOilQtityDone').val(),
-//	        oil_price: this.$('#equipmentOilPriceDone').val(),
-//		};
-//		
-//		var task = this.model.toJSON();
-//		
-//		
-//		
-//    	taskWorkParams = {
-//    			 name: task.name,
-//    	         date: new Date(),
-//    	         task_id: task.id,
-//    	         hours: hours,
-//    	         user_id: task.user_id!=null?task.user_id[0]:null,
-//    	         team_id: task.team_id!=null?task.team_id[0]:null,
-//    	         company_id: task.company_id[0]
-//    	};
-//    	
-//		var newInterState = null;
-//		if( task && task.intervention ) {
-//			inter = task.intervention;
-//			newInterState = inter.state;
-//			if( task.intervention.state!=app.Models.Intervention.state[5].value ) {
-//				newInterState = that.state;
-//			}
-//		}    		
-//    	
-//		this.saveNewStateTask(taskParams, taskWorkParams,$('#modalTaskDone'),newInterState, false);
-//		//this.saveEquipment(  this.$('#equipmentKmDone').val(), input_equipment_id )
-//    },
     
-    //Task not beginning
+    /**
+     * Save Task as not beginning
+     */
     taskNotDone: function(e) {
 		e.preventDefault();
 		this.getTask(e);
 		taskParams = {
-			state: app.Models.Task.state[3].value,		        
-			//remaining_hours: 0,
-			//planned_hours: 0,
+			state: app.Models.Task.state[3].value,		
 			user_id: null,
 			team_id:null,
 			date_end: null,
 			date_start: null,
 		};
 		
-		app.models.task.save(this.model.id, taskParams, null, this, "#taches");
-
-//		var newInterState = null;
-//		if( this.model && this.model.intervention ) {
-//			inter = this.model.intervention;
-//			newInterState = inter.state;
-//			if( this.model.intervention.state!=app.Models.Intervention.state[5].value ) {
-//				newInterState = app.Models.Intervention.state[3].value;
-//			}
-//		}
-//		this.saveNewStateTask(taskParams,null,null,newInterState, false);
+		$('#modalAddTask').modal('hide');
+		app.models.task.save(this.model.id, taskParams);
 
 	},
-
-	//Save task with new times
-	saveNewStateTask: function(taskParams, taskWorkParams, element, newInterState, create) {
-		var self = this;
-		self.taskParams = taskParams;
-		self.taskWorkParams = taskWorkParams;
-		self.element = element;
-		
-		// why 'saveWithCallback' and note 'save' on model
-		//When save intervention and just after save task (TaskListView L.187 et L.190) postgres send this error:
-		//TransactionRollbackError: could not serialize access due to concurrent update
-		//We must wait intervention save callback before save task
-		
-		if( this.vehicule )
-		var equipment = app.collections.equipments.get(this.vehicule);
-		var params = {};
-		params.km = taskParams.km;
-		equipment.updateKM( taskParams.km );
-		equipment.save(params, this.vehicule, {
-			success: function(data){
-				if( create ) {
-					app.models.task.save(0,taskParams,$('#modalAddTask'), null, "taches");
-				}
-				else {
-					app.models.intervention.saveWithCallback(self.model.toJSON().intervention.id, {
-						state:newInterState },
-						{
-							//TODO save task work with callback
-							success: function (data) {		
-								if( self.taskWorkParams!=null )
-								{
-									app.models.taskWork.save(0, taskWorkParams,
-									{
-										success: function (data) {
-											app.models.task.save(self.model.id, self.taskParams, self.element, self, "#taches");
-										}
-									});
-								}
-								else
-									app.models.task.save(self.model.id, self.taskParams, self.element, self, "#taches");
-							}		
-						});
-				}
-			}
-		});
-		
-
+	
+	secondsToHms : function (d) {
+		d = Number(d);	
+		var h = Math.floor(d / 3600);
+		var m = Math.floor(d % 3600 / 60);
+		var s = Math.floor(d % 3600 % 60);
+		return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":" : "0:") + (s < 10 ? "0" : "") + s);
 	},
 
-
-
-	/** Filter Tasks
+	/** 
+	 * Filter Tasks
 	*/
 	setFilter: function(event){
 		event.preventDefault();
@@ -1032,7 +870,6 @@ app.Views.TasksListView = Backbone.View.extend({
 	},
 
 
-
 	/** Display or Hide Refueling Section (Inputs Km, Oil, Oil prize)
 	*/
 	accordionRefuelingInputs: function(e){
@@ -1042,20 +879,6 @@ app.Views.TasksListView = Backbone.View.extend({
 		$('.refueling-vehicle').stop().slideToggle();
 
 	},
-	
-//	saveEquipment: function( km, equipmentId ) {
-//		
-//		var equipment = app.collections.equipments.get(equipmentId);
-//		var params = {};
-//		params.km = km;
-//		equipment.updateKM( km );
-//		equipment.save(equipment.id,params,{
-//			succes: function(data){
-//				console.debug(data);
-//			}
-//		});
-//
-//	},
 
     preventDefault: function(event){
     	event.preventDefault();

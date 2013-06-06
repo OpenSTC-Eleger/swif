@@ -31,7 +31,7 @@
 
 				<ul id="filterStateInterventionList" class="dropdown-menu" aria-labelledby="filterStateIntervention">
 					<% _.each(interventionsState, function (state, i) { 
-						if(state.value == app.Models.Intervention.state[0].value || state.value == app.Models.Intervention.state[1].value || state.value == app.Models.Intervention.state[5].value){
+						if(state.value == app.Models.Intervention.state[0].value || state.value == app.Models.Intervention.state[1].value || state.value == app.Models.Intervention.state[3].value || state.value == app.Models.Intervention.state[5].value){
 					%>
 						<li>
 							<a tabindex="-1" href="#<%= state.value %>">
@@ -67,6 +67,11 @@
 				else if(intervention.state == app.Models.Intervention.state[0].value){
 					var classColor = app.Models.Intervention.state[0].color;
 					var traduction = app.Models.Intervention.state[0].traduction;
+					informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours) : '--');
+				}
+			   else if(intervention.state == app.Models.Intervention.state[3].value){
+					var classColor = app.Models.Intervention.state[3].color;
+					var traduction = app.Models.Intervention.state[3].traduction;
 					informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours) : '--');
 				}
 				else if(intervention.state == app.Models.Intervention.state[5].value){
@@ -159,6 +164,7 @@
 								<button class="btn btn-primary btn-small no-outline addTaskPlanning" id="<%= intervention.id %>" rel="tooltip" 
 										data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="right"
 									<% if(intervention.state != app.Models.Intervention.state[1].value &&
+										intervention.state != app.Models.Intervention.state[3].value &&
 										intervention.state != app.Models.Intervention.state[5].value) { %>
 										disabled
 									<% } %>>

@@ -353,8 +353,9 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	         category_id: input_category_id,
 		     planned_hours: mDuration.asHours(),
 	     };
-	     //TODO : test
-	     app.models.task.save(0,params,$('#modalAddTask'), null, "interventions");
+	     
+	     $('#modalAddTask').modal('hide');
+	     app.models.task.save(0,params);
    	},
 
 

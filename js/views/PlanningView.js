@@ -170,12 +170,12 @@ app.Views.PlanningView = Backbone.View.extend({
 					return itemJSON.state == sessionStorage.getItem(self.filters);
 				});
 			}
-            else{
-                sessionStorage.setItem(self.filters, app.Models.Intervention.state[1].value);
-                var interventions = _.filter(interventions, function(item){ 
-                    return item.toJSON().state == app.Models.Intervention.state[1].value;
-                });
-            }
+//            else{
+//                sessionStorage.setItem(self.filters, app.Models.Intervention.state[1].value);
+//                var interventions = _.filter(interventions, function(item){ 
+//                    return item.toJSON().state == app.Models.Intervention.state[1].value;
+//                });
+//            }
 
 
             interventionSorted = new app.Collections.Interventions(interventions);
@@ -510,7 +510,7 @@ app.Views.PlanningView = Backbone.View.extend({
         // Display the Modal //
         $("#modalAboutTask").modal('hide');
 
-        taskModel.save(taskId, params, null, null, '#planning');
+        taskModel.save(taskId, params);
     },
 
 
@@ -662,7 +662,8 @@ app.Views.PlanningView = Backbone.View.extend({
 	         planned_hours: mDuration.asHours(),
 	     };
 	     
-	    app.models.task.save(0,params,$('#modalAddTask'), this, null);
+	    $('#modalAddTask').modal('hide');
+	    app.models.task.save(0,params);
    },
 
 

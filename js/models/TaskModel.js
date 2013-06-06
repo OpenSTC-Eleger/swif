@@ -202,56 +202,72 @@ app.Models.Task = Backbone.RelationalModel.extend({
 
 	/** Save Model
 	*/
-	saveTest: function(id,data,options) { 
-		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options);
+	save: function(id,data, options) { 
+		if( options==null ) {
+			app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {         	
+				success: function(data){
+					Backbone.history.loadUrl(Backbone.history.fragment);
+				}
+			});
+		}
+		else {
+			app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options);
+		}
+	},
+	
+	/**
+	 * Save Model with backend method named saveTaskDone
+	 */	
+	saveTaskDone: function(params, options) {
+		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "saveTaskDone", app.models.user.getSessionID(), options);
 	},
 
 
 	
-	save: function(id,data,closeModal, view, strRoute) { 
-		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {
-            beforeSend: function(){
-            	app.loader('display');
-        	},
-		    success: function (data) {
-		        console.log(data);
-		        if(data.error){
-		    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-		        }
-		        else{
-		        	if( closeModal!= null )
-		            	closeModal.modal('hide');
-		        	if( view || strRoute ) {
-		                if(app.collections.tasks == null ){
-		                    app.collections.tasks = new app.Collections.Tasks();
-		                }	
-		                //TODO fetch tasks & interventions pê pas necessaires car elles st rechargées dans le routeur
-					 	app.collections.tasks.fetch({  
-					 		success: function(){
-						 		app.collections.interventions.fetch({
-					                success: function(){				 			
-						 				if( strRoute ) {
-											//route = Backbone.history.fragment;
-											Backbone.history.loadUrl(strRoute);
-						 					//app.Router.navigate("planning/"+Backbone.history.fragment,{trigger: true, replace: true})
-										}
-										else if (view)
-											view.render();
-							 		},	            		
-						 			complete: function(){
-				            			app.loader('hide');
-				            		}					 
-						 		});
-					 		}					 
-					 	});
-					}
-		        }
-		    },
-		    error: function () {
-				console.log('ERROR - Unable to save the Request - RequestView.js');
-		    }, 
-		});
-	},
+//	save: function(id,data,closeModal, view, strRoute) { 
+//		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {
+//            beforeSend: function(){
+//            	app.loader('display');
+//        	},
+//		    success: function (data) {
+//		        console.log(data);
+//		        if(data.error){
+//		    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+//		        }
+//		        else{
+//		        	if( closeModal!= null )
+//		            	closeModal.modal('hide');
+//		        	if( view || strRoute ) {
+//		                if(app.collections.tasks == null ){
+//		                    app.collections.tasks = new app.Collections.Tasks();
+//		                }	
+//		                //TODO fetch tasks & interventions pê pas necessaires car elles st rechargées dans le routeur
+//					 	app.collections.tasks.fetch({  
+//					 		success: function(){
+//						 		app.collections.interventions.fetch({
+//					                success: function(){				 			
+//						 				if( strRoute ) {
+//											//route = Backbone.history.fragment;
+//											Backbone.history.loadUrl(strRoute);
+//						 					//app.Router.navigate("planning/"+Backbone.history.fragment,{trigger: true, replace: true})
+//										}
+//										else if (view)
+//											view.render();
+//							 		},	            		
+//						 			complete: function(){
+//				            			app.loader('hide');
+//				            		}					 
+//						 		});
+//					 		}					 
+//					 	});
+//					}
+//		        }
+//		    },
+//		    error: function () {
+//				console.log('ERROR - Unable to save the Request - RequestView.js');
+//		    }, 
+//		});
+//	},
 
 
 
@@ -279,10 +295,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	},
 	
 
-	
-	saveTaskDone: function(params, options) {
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "saveTaskDone", app.models.user.getSessionID(), options);
-	},
+
 
 
 }, {
