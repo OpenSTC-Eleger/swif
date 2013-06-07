@@ -30,7 +30,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		'click a.buttonCancelTask'			: 'displayModalCancelTask',
 		'submit #formCancelTask' 			: 'cancelTask',
 
-		'click .buttonTaskDone' 	  		: 'displayModalTaskDone',
+		'click .buttonTaskDone, .buttonNotFinish' : 'displayModalTaskDone',
 		'submit #formTaskDone'   			: 'taskDone',
 		'click a.linkSelectUsersTeams'		: 'changeSelectListUsersTeams',
 		'click .linkRefueling'				: 'accordionRefuelingInputs', 
@@ -353,12 +353,24 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		var button = $(e.target);
 
 		// Retrieve the Task //
-		if(button.hasClass('btn')){
+		if(!button.is('i')){
 			this.selectedTask = app.collections.tasks.get(button.data('taskid'));
 		}
 		else{
-			this.selectedTask = app.collections.tasks.get(button.parent('button').data('taskid'));	
+			this.selectedTask = app.collections.tasks.get(button.parent().data('taskid'));	
 		}
+
+	
+
+		// Display or nor the Remaining Time Section //
+		if(button.hasClass('buttonNotFinish') || button.hasClass('iconButtonNotFinish')){
+			$('#remainingTimeSection').show();
+		}
+		else{
+			$('#remainingTimeSection').hide();
+		}
+
+
 		this.selectedTaskJSON = this.selectedTask.toJSON();
 		var intervention = this.selectedTaskJSON.intervention;
 		var serviceInter = intervention.service_id;
@@ -449,6 +461,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 		if(itemToLoad == 'officers'){
 			$('#btnSelectUsersTeams > i.iconItem.icon-group').addClass('icon-user').removeClass('icon-group');
+			$('#selectUsersTeams').data('item', 'officers');
 			
 			var officers = app.collections.officers;
 			// Filter officers - Display only officer who belongs to the intervention's service //
@@ -472,6 +485,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		}
 		else if(itemToLoad == 'teams'){
 			$('#btnSelectUsersTeams > i.iconItem.icon-user').addClass('icon-group').removeClass('icon-user');
+			$('#selectUsersTeams').data('item', 'teams');
 			
 			if(app.collections.teams == null ){
 				app.collections.teams = new app.Collections.Teams();
@@ -506,6 +520,70 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 		// Toggle Slide Refueling section //
 		$('.refueling-vehicle').stop().slideToggle();
+	},
+
+
+
+	taskDone: function(e){
+		e.preventDefault();
+
+
+		if($('#selectUsersTeams').data('item') == 'officers'){
+			var teamMode = false;
+
+		}
+		else{
+			var teamMode = true;
+		}
+
+		var id = $('#selectUsersTeams').val();
+
+
+		// Retrieve Start Date and Start Hour //
+		var mNewDateStart =  new moment( $("#startDate").val(),"DD-MM-YYYY")
+								.add('hours',$("#startHour").val().split(":")[0] )
+								.add('minutes',$("#startHour").val().split(":")[1] );
+
+		// Retrieve Start Date and Start Hour //
+		var mNewDateEnd =  new moment( $("#endDate").val(),"DD-MM-YYYY")
+								.add('hours',$("#endHour").val().split(":")[0] )
+								.add('minutes',$("#endHour").val().split(":")[1] );
+
+
+
+		var vehicule = $('#taskEquipmentDone').val();
+		var equipments = _.map($("#equipmentsDone").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
+	    
+	    if(vehicule != ""){
+	    	equipments.push( _(vehicule).toNumber() );
+	    }
+
+
+	    if($('#remainingTimeSection').is(':visible')){
+			var duration = $("#eventRemainingTime").val().split(":");
+			var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
+	    	var remaining_hours = mDuration.asHours();
+	    }
+	    else{
+	    	remaining_hours = 0;
+	    }
+
+		params = {
+			date_start: mNewDateStart.toDate(),
+			date_end: mNewDateEnd.toDate(),
+			team_id: teamMode ? id : 0,
+			user_id: !teamMode ? id : 0,
+			equipment_ids: equipments,
+			vehicule: vehicule,
+			km: this.$('#equipmentKmDone').val(),
+			oil_qtity: this.$('#equipmentOilQtityDone').val().replace(',', '.'),
+			oil_price: this.$('#equipmentOilPriceDone').val().replace(',', '.'),
+			remaining_hours: remaining_hours,
+		};
+
+
+		alert("TODO: Params must be send to OpenERP");
+
 
 	},
 
