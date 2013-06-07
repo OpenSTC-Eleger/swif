@@ -192,6 +192,10 @@
 												<span class="<%= (task.state == app.Models.Task.state[1].value ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
 												<span class="nested-objects-actions invisible">
 													
+													<a href="#" class="printTask">
+														<i class="icon-print displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>">&nbsp;</i>
+													</a>
+													
 													<% if( task.state == app.Models.Task.state[3].value ) { %>
 
 														<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal">
@@ -611,5 +615,76 @@
 	<div class="modal-footer">
 	    <button type="submit" form="formTaskDone" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
 	    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+	</div>
+</div>
+
+
+
+
+<!-- Form to print paperboard-->
+<div id="printTask" class="hide container-fluid printContainer" >
+
+		<div>
+		<div>
+			<h1 style="float: left;">Fiche d'interventions</h1>
+   			<img src="css/images/administration_logo.png" style="float: right" />
+   		</div>
+
+   		<hr style="clear: both;">
+
+		<fieldset style="font-size: 20px; margin-bottom: 30px; padding-top: 20px;">
+			<legend><%= lang.aboutTheIntervention %>:</legend>
+			<strong><%= _.capitalize(lang.intervention) %>:</strong> <span id="interName"></span><br />
+			<strong><%= _.capitalize(lang.description) %>:</strong> <span id="interDescription"></span><br />
+			<strong><%= _.capitalize(lang.place) %>:</strong> <span id="interPlace"></span><br />
+			<strong><%= _.capitalize(lang.informationOfTheSite) %>:</strong> <span id="interPlaceMore"></span><br />
+
+			<fieldset style="font-size: 20px; margin-top: 30px;">
+				<legend><%= lang.claimerDetails %>:</legend>
+
+				<strong><%= _.capitalize(lang.claiment) %>:</strong> <span id="claimentName"></span><br />
+				<strong><%= _.capitalize(lang.phone) %>:</strong> <span id="claimentPhone"></span><br />
+			</fieldset>
+
+		</fieldset>
+		
+
+
+		
+		<form action="#">
+			<fieldset style="font-size: 20px;">
+				<legend><%= lang.aboutTheTask %>:</legend>
+
+				<table style="width: 100%;">
+					<tr style="height: 50px;">
+						<td><strong><%= _.capitalize(lang.label) %>:</strong></td>
+						<td style="width: 80%" id="taskLabel"></td>
+					</tr>
+					<tr style="height: 50px;">
+						<td><strong><%= _.capitalize(lang.estimatedHours) %>:</strong></td>
+						<td style="width: 80%" id="taskPlannedHour"></td>
+					</tr>
+					<tr style="height: 50px;">
+						<td><strong><%= _.capitalize(lang.carryOutBy) %>:</strong></td>
+						<td class="toFill" style="width: 80%"></td>
+					</tr>
+					<tr style="height: 50px;">
+						<td><strong><%= _.capitalize(lang.dateStart) %>:</strong></td>
+						<td class="toFill" style="width: 80%"></td>
+					</tr>
+					<tr style="height: 50px;">
+						<td><strong><%= _.capitalize(lang.dateEnd) %>:</strong></td>
+						<td class="toFill" style="width: 80%"></td>
+					</tr>
+					<tr style="height: 80px;">
+						<td><strong><%= _.capitalize(lang.equipment) %>:</strong></td>
+						<td class="toFill" style="width: 80%"></td>
+					</tr>
+
+				</table>
+
+			</fieldset>
+		</form>
+
 	</div>
 </div>
