@@ -30,6 +30,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		'click a.buttonCancelTask'			: 'displayModalCancelTask',
 		'submit #formCancelTask' 			: 'cancelTask',
 
+		'click a.printTask' 				: 'printTask',
+
 		'click .buttonTaskDone, .buttonNotFinish' : 'displayModalTaskDone',
 		'submit #formTaskDone'   			: 'taskDone',
 		'click a.linkSelectUsersTeams'		: 'changeSelectListUsersTeams',
@@ -707,6 +709,44 @@ app.Views.InterventionsListView = Backbone.View.extend({
 				console.log('ERROR - Unable to valid the Inter - InterventionView.js');
 		    },           
 		},false);
+	},
+
+
+
+	/** Print a Task
+	*/
+	printTask: function(e){
+		e.preventDefault();
+
+		this.getTarget(e);
+		this.selectedTask = app.collections.tasks.get(this.pos);
+		var selectedTaskJSON = this.selectedTask.toJSON();
+
+		console.log(selectedTaskJSON);
+
+		// Get the inter of the Task //
+		var inter = app.collections.interventions.get(this.selectedTask.toJSON().intervention.id);
+		var interJSON = inter.toJSON();
+
+
+		console.log(interJSON);
+
+		$('#interName').html(interJSON.name);
+		$('#interDescription').html(interJSON.description);
+		$('#interPlace').html(interJSON.site1[1]);
+		$('#interPlaceMore').html(interJSON.site_details);
+
+		$('#taskLabel').html(selectedTaskJSON.name);
+		$('#taskPlannedHour').html(selectedTaskJSON.planned_hours);
+
+        
+		$('#printTask').printElement({
+			leaveOpen	: true,
+			printMode	: 'popup',
+			overrideElementCSS:[
+				{ href:'css/vendors/print_table.css', media: 'all'}
+			]
+		});
 	},
 
 
