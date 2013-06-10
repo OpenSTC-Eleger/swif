@@ -708,7 +708,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		    },
 		    error: function () {
 				console.log('ERROR - Unable to valid the Inter - InterventionView.js');
-		    },           
+		    },    
 		},false);
 	},
 
@@ -730,6 +730,19 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		var interJSON = inter.toJSON();
 
 
+		console.log("------------------------6>");
+		if(_.isNull(interJSON.ask)){
+			$('#claimentName').html(interJSON.create_uid[1]);
+		}else{
+			if(interJSON.ask.partner_id != false){
+				$('#claimentName').html(interJSON.ask.partner_id[1]);
+				$('#claimentPhone').html(interJSON.ask.partner_phone);
+			}
+			else{
+				$('#claimentName').html(interJSON.ask.people_name);
+				$('#claimentPhone').html(interJSON.ask.people_phone);	
+			}
+		}
 		console.log(interJSON);
 
 		$('#interName').html(interJSON.name);
@@ -738,9 +751,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		$('#interPlaceMore').html(interJSON.site_details);
 
 		$('#taskLabel').html(selectedTaskJSON.name);
-		$('#taskPlannedHour').html(selectedTaskJSON.planned_hours);
+		$('#taskPlannedHour').html(app.decimalNumberToTime(selectedTaskJSON.planned_hours, 'human'));
 
-        
 		$('#printTask').printElement({
 			leaveOpen	: true,
 			printMode	: 'popup',

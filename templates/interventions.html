@@ -191,11 +191,13 @@
 												<% } %>
 												<span class="<%= (task.state == app.Models.Task.state[1].value ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
 												<span class="nested-objects-actions invisible">
-													
-													<a href="#" class="printTask">
-														<i class="icon-print displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>">&nbsp;</i>
-													</a>
-													
+
+													<% if( task.state == app.Models.Task.state[3].value || task.state == app.Models.Task.state[0].value ) { %>
+
+															<a href="#" class="printTask">
+															<i class="icon-print displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>">&nbsp;</i>
+															</a>
+													<% } %>
 													<% if( task.state == app.Models.Task.state[3].value ) { %>
 
 														<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal">
@@ -633,17 +635,17 @@
    		<hr style="clear: both;">
 
 		<fieldset style="font-size: 20px; margin-bottom: 30px; padding-top: 20px;">
-			<legend><%= lang.aboutTheIntervention %>:</legend>
-			<strong><%= _.capitalize(lang.intervention) %>:</strong> <span id="interName"></span><br />
-			<strong><%= _.capitalize(lang.description) %>:</strong> <span id="interDescription"></span><br />
-			<strong><%= _.capitalize(lang.place) %>:</strong> <span id="interPlace"></span><br />
-			<strong><%= _.capitalize(lang.informationOfTheSite) %>:</strong> <span id="interPlaceMore"></span><br />
+			<legend><strong><%= lang.aboutTheIntervention %>:</strong></legend>
+			<em style="text-decoration:underline;"><%= _.capitalize(lang.intervention) %>:</em> <span id="interName"></span><br />
+			<em style="text-decoration:underline;"><%= _.capitalize(lang.description) %>:</em> <span id="interDescription"></span><br />
+			<em style="text-decoration:underline;"><%= _.capitalize(lang.place) %>:</em> <span id="interPlace"></span><br />
+			<em style="text-decoration:underline;"><%= _.capitalize(lang.informationOfTheSite) %>:</em> <span id="interPlaceMore"></span><br />
 
 			<fieldset style="font-size: 20px; margin-top: 30px;">
-				<legend><%= lang.claimerDetails %>:</legend>
+				<legend><strong><%= lang.claimerDetails %>:</strong></legend>
 
-				<strong><%= _.capitalize(lang.claiment) %>:</strong> <span id="claimentName"></span><br />
-				<strong><%= _.capitalize(lang.phone) %>:</strong> <span id="claimentPhone"></span><br />
+				<em style="text-decoration:underline;"><%= _.capitalize(lang.claiment) %>:</em> <span id="claimentName"></span><br />
+				<em style="text-decoration:underline;"><%= _.capitalize(lang.phone) %>:</em> <span id="claimentPhone"></span><br />
 			</fieldset>
 
 		</fieldset>
@@ -653,7 +655,7 @@
 		
 		<form action="#">
 			<fieldset style="font-size: 20px;">
-				<legend><%= lang.aboutTheTask %>:</legend>
+				<legend><strong><%= lang.aboutTheTask %>:</strong></legend>
 
 				<table style="width: 100%;">
 					<tr style="height: 50px;">
