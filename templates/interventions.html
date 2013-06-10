@@ -90,19 +90,25 @@
 				%>
 
 				<!-- Intervention row -->
-				<tr class="row-object" id="inter_<%= intervention.id %>">
+				<tr class="row-item" id="inter_<%= intervention.id %>">
 					<td><%= intervention.id %></td>
 					<td>
 						<a class="accordion-object" href="#collapse_<%= intervention.id %>" rel="popover" data-content="<%= intervention.description %>" data-delay="160" data-title="<%= _.capitalize(lang.description) %>">
 							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(intervention.name) %>
 						</a>
 						<!-- Interventions action -->
-						<span class="object-actions invisible">
-							<a href="#interventions/<%= intervention.id %>"><i class="icon-pencil icon-large"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a>&nbsp;&nbsp;
+						<p class="row-actions invisible">
+							<a href="#interventions/<%= intervention.id %>" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>">
+								<i class="icon-pencil icon-large"></i>
+							</a>&nbsp;
+							
+							<a href="#" class="printInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>">
+								<i class="icon-print icon-large">&nbsp;</i>
+							</a>
 							<% if(intervention.state == app.Models.Intervention.state[1].value || intervention.state == app.Models.Intervention.state[0].value) { %>
-								<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-ban-circle icon-large"></i>&nbsp;<%= _.capitalize(lang.actions.cancel) %></a> 
+								 &nbsp;<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-ban-circle icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
 							<% } %>
-						</span>
+						</p>
 					</td>
 					<td><%= intervention.site1[1] %></td>
 					<td><%= (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours, 'human') : '') %></td>
@@ -638,6 +644,7 @@
 			<legend><strong><%= lang.aboutTheIntervention %>:</strong></legend>
 			<em style="text-decoration:underline;"><%= _.capitalize(lang.intervention) %>:</em> <span id="interName"></span><br />
 			<em style="text-decoration:underline;"><%= _.capitalize(lang.description) %>:</em> <span id="interDescription"></span><br />
+			<em style="text-decoration:underline;"><%= _.capitalize(lang.serviceConcerned) %>:</em> <span id="interService"></span><br /><br />
 			<em style="text-decoration:underline;"><%= _.capitalize(lang.place) %>:</em> <span id="interPlace"></span><br />
 			<em style="text-decoration:underline;"><%= _.capitalize(lang.informationOfTheSite) %>:</em> <span id="interPlaceMore"></span><br />
 

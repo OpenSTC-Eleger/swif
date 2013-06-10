@@ -31,6 +31,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		'submit #formCancelTask' 			: 'cancelTask',
 
 		'click a.printTask' 				: 'printTask',
+		'click a.printInter' 				: 'printInter',
+
 
 		'click .buttonTaskDone, .buttonNotFinish' : 'displayModalTaskDone',
 		'submit #formTaskDone'   			: 'taskDone',
@@ -287,7 +289,6 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	    // Retrieve the ID of the intervention //
 		var link = $(e.target);
 		this.pos =  _(link.parents('tr').attr('id')).strRightBack('_');
-		
     },
 
 
@@ -713,6 +714,29 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 
 
+	/** Print an Intervention
+	*/
+	printInter	: function(e){
+		e.preventDefault();
+
+		this.getTarget(e);
+		this.selectedInter = app.collections.interventions.get(this.pos);
+		var selectedTaskJSON = this.selectedInter.toJSON();
+
+		console.log(selectedTaskJSON);
+
+
+		/*$('#printTask').printElement({
+			leaveOpen	: true,
+			printMode	: 'popup',
+			overrideElementCSS:[
+				{ href:'css/vendors/print_table.css', media: 'all'}
+			]
+		});*/
+	},
+
+
+
 	/** Print a Task
 	*/
 	printTask: function(e){
@@ -722,14 +746,12 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		this.selectedTask = app.collections.tasks.get(this.pos);
 		var selectedTaskJSON = this.selectedTask.toJSON();
 
-		console.log(selectedTaskJSON);
 
 		// Get the inter of the Task //
 		var inter = app.collections.interventions.get(this.selectedTask.toJSON().intervention.id);
 		var interJSON = inter.toJSON();
 
 
-		console.log("------------------------6>");
 		if(_.isNull(interJSON.ask)){
 			$('#claimentName').html(interJSON.create_uid[1]);
 		}else{
@@ -742,10 +764,10 @@ app.Views.InterventionsListView = Backbone.View.extend({
 				$('#claimentPhone').html(interJSON.ask.people_phone);	
 			}
 		}
-		console.log(interJSON);
 
 		$('#interName').html(interJSON.name);
 		$('#interDescription').html(interJSON.description);
+		$('#interService').html(interJSON.service_id[1]);
 		$('#interPlace').html(interJSON.site1[1]);
 		$('#interPlaceMore').html(interJSON.site_details);
 
