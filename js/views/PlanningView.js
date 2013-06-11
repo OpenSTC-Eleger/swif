@@ -510,7 +510,7 @@ app.Views.PlanningView = Backbone.View.extend({
         // Display the Modal //
         $("#modalAboutTask").modal('hide');
 
-        taskModel.save(taskId, params, null, null, '#planning');
+        taskModel.save(taskId, params);
     },
 
 
@@ -662,7 +662,8 @@ app.Views.PlanningView = Backbone.View.extend({
 	         planned_hours: mDuration.asHours(),
 	     };
 	     
-	    app.models.task.save(0,params,$('#modalAddTask'), this, null);
+	    $('#modalAddTask').modal('hide');
+	    app.models.task.save(0,params);
    },
 
 

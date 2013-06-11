@@ -406,11 +406,12 @@ app.Views.EventsListView = Backbone.View.extend({
 							    date_end: mNewDateEnd.toDate(),
 							    planned_hours: planned_hours,
 							    effective_hours: planned_hours,
+							    hours: planned_hours,
 							    remaining_hours: 0,
 							    team_id: self.teamMode?self.id:0,
 							    user_id: !self.teamMode?self.id:0,
 							}
-							app.models.task.saveTest(0,params,{
+							app.models.task.save(0,params,{
 								success: function(data){
 									if(data.error){
 										app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.unablePerformAction);
@@ -471,7 +472,7 @@ app.Views.EventsListView = Backbone.View.extend({
 				       date_start: event.start,
 				       date_end: event.end,
 				    };
-				    app.models.task.save(event.id, params, null, null, '#planning');	
+				    app.models.task.save(event.id, params);	
 				    $(self.el).fullCalendar('refresh');
 				    self.planning.render();
 				    app.loader('hide');	
@@ -490,7 +491,7 @@ app.Views.EventsListView = Backbone.View.extend({
 				       total_hours: (event.total_hours + (minuteDelta)/60),
 				       remaining_hours: (event.remaining_hours + (minuteDelta)/60),
 				    };
-				    app.models.task.save(event.id,params,null,null,'#planning');
+				    app.models.task.save(event.id,params);
 				    $(self.el).fullCalendar('refresh');
 				    self.planning.render();
 				    app.loader('hide');
@@ -551,7 +552,7 @@ app.Views.EventsListView = Backbone.View.extend({
         	                  date_end: null,
         	                  date_start: null,
         	              };
-        	        app.Models.Task.prototype.save(0, params, null, null, null);
+        	        app.Models.Task.prototype.save(0, params, null);
         		}
         		return 1;
         	}
@@ -703,7 +704,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			}else {			
 				var params = this.arrayPlanifTasks[0];
 				self.params = params;
-				app.models.task.saveTest(0,params,{
+				app.models.task.save(0,params,{
 					success: function(){
 						self.arrayPlanifTasks.splice(0, 1);
 						self.planTasks( copiedEventObject );
@@ -714,7 +715,7 @@ app.Views.EventsListView = Backbone.View.extend({
         
         updateTask: function(event) {
         	var self = this;
-		    app.models.task.saveTest(event.id, event, {
+		    app.models.task.save(event.id, event, {
 		    	success: function (data) {
 			    	$.pnotify({
 			    		title: 'Tâche attribuée',
