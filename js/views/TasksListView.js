@@ -531,9 +531,8 @@ app.Views.TasksListView = Backbone.View.extend({
 	},
 	
 	
-	/**
-	 * Retreive Equipment  (Vehicle)
-	 */
+	/** Retreive Equipment  (Vehicle)
+	*/
 	fillDropdownEquipment: function(e){
 		e.preventDefault();
 		var target = $(e.target).attr('value');
@@ -543,7 +542,7 @@ app.Views.TasksListView = Backbone.View.extend({
 				var km = equipment.toJSON().km ;
 				$('.equipmentKm').val( km );
 				$('.equipmentKm').attr('min', km )
-			}			
+			}
 		}
 	},
 	

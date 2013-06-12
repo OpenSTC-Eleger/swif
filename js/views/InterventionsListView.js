@@ -35,7 +35,9 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		'click .buttonTaskDone, .buttonNotFinish' : 'displayModalTaskDone',
 		'submit #formTaskDone'   			: 'taskDone',
 		'click a.linkSelectUsersTeams'		: 'changeSelectListUsersTeams',
-		'click .linkRefueling'				: 'accordionRefuelingInputs', 
+		'click .linkRefueling'				: 'accordionRefuelingInputs',
+
+		'change .taskEquipment'				: 'fillDropdownEquipment',
 
 		'click a.accordion-object'    		: 'tableAccordion',
 
@@ -443,6 +445,21 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		$('#badgeNbEquipmentsDone').html(_.size(filteredOthersEquipment));
 	},
 
+
+	/** Retreive Equipment  (Vehicle)
+	*/
+	fillDropdownEquipment: function(e){
+		e.preventDefault();
+		var target = $(e.target).attr('value');
+		if( target ) {
+			var equipment = app.collections.equipments.get( target );
+			if( equipment ) {
+				var km = equipment.toJSON().km ;
+				$('.equipmentKm').val( km );
+				$('.equipmentKm').attr('min', km )
+			}
+		}
+	},
 
 
 	/** Update the <select> list of Users or Teams in the Modal Task Done
