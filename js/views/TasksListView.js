@@ -16,6 +16,7 @@ app.Views.TasksListView = Backbone.View.extend({
 	events: {
 		'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
+		'click ul.sortable li'			: 'preventDefault',
 		
 		'click .btn.addTask'            : 'displayModalAddTask',
 		'submit #formAddTask'         	: 'saveTask',
