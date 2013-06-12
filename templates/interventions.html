@@ -289,7 +289,7 @@
 
 							<div class="div-actions" >
 								<button class="btn btn-primary btn-small no-outline addTask"
-									<% if(intervention.state != app.Models.Intervention.state[1].value) { %>
+									<% if(intervention.state != app.Models.Intervention.state[1].value && intervention.state != app.Models.Intervention.state[5].value) { %>
 										disabled
 								<% } %>>
 									<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addTask) %>
