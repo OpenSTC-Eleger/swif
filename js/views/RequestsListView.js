@@ -118,6 +118,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 			$(self.el).html(template);
 			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
+			$('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 
 
 			// Display filter on the table //
@@ -277,24 +278,25 @@ app.Views.RequestsListView = Backbone.View.extend({
 	*/
 	validRequest: function(e){
 		e.preventDefault();
-		
+
 	    var duration = $("#taskHour").val().split(":");
 	    var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
-	    
+
 		params = {
 				//ask_id: this.model.getId(),	
 				request_state: app.Models.Request.state[2].value,
 				email_text: app.Models.Request.state[2].traduction,
 				project_state: app.Models.Intervention.state[1].value,
-		        description: $('#requestNote').val(),
-		        intervention_assignement_id: $('#requestAssignement').val(),
-		        service_id: $('#requestService').val(),	
+				date_deadline: new moment($('#requestDateDeadline').val(), 'DD-MM-YYYY').toDate(),
+				description: $('#requestNote').val(),
+				intervention_assignement_id: $('#requestAssignement').val(),
+				service_id: $('#requestService').val(),	
 				site1: this.model.getSite1()[0],
 				planned_hours: mDuration.asHours(),
 				category_id: _($('#taskCategory').val()).toNumber(),
 				create_task: $('#createAssociatedTask').is(':checked'),
 		};
-	    
+
 	    this.model.valid(params,
 			{
 				success: function(data){

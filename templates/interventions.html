@@ -47,6 +47,7 @@
 				<th>N°</th>
 				<th><%= _.capitalize(lang.label) %></th>
 				<th><%= _.capitalize(lang.place) %></th>
+				<th><%= _.capitalize(lang.dateDeadline) %></th>
 				<th><%= _.capitalize(lang.plannedHours) %></th>
 				<th><%= _.capitalize(lang.spentHours) %></th>
 				<th class="span3"><%= _.capitalize(lang.progressRate) %>
@@ -111,6 +112,7 @@
 						</p>
 					</td>
 					<td><%= intervention.site1[1] %></td>
+					<td><%= (intervention.date_deadline != false ? moment(intervention.date_deadline).format('LL') : '') %></td>
 					<td><%= (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours, 'human') : '') %></td>
 					<td><%= (intervention.effective_hours != false ? app.decimalNumberToTime(intervention.effective_hours, 'human') : '') %></td>
 
@@ -167,7 +169,7 @@
 
 				<!-- Tasks row -->
 				<tr class="row-nested-objects-collapse" id="collapse_<%= intervention.id %>">
-					<td colspan="6" class="nestedTD">
+					<td colspan="7" class="nestedTD">
 
 						<!-- Check if there is some tasks -->
 						<% if(intervention.tasks.length != 0) { %>
