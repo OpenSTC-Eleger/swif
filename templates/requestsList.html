@@ -337,6 +337,22 @@
 				</div>
 			</div>
 
+			<!-- intervention DeadLine -->
+			<div class="control-group">
+				<label class="control-label" for="requestDateDeadline"><%= _.capitalize(lang.dateDeadline) %>:</label>
+				<div class="controls">
+					<div class="input-append">
+					<input 
+						type="text" class="datepicker input-small"
+						id="requestDateDeadline" 
+						value="<%= moment().add('w', 1).format('L') %>" 
+						placeholder="dd/mm/yyyy"
+						required="required">
+						<span class="add-on"><i class="icon-calendar"></i></span>
+					</div>
+					<span class="help-inline"></span>
+				</div>
+			</div>
 
 			<!-- Request Note description -->
 			<div class="control-group">

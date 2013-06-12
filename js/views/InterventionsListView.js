@@ -17,6 +17,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	events: {
 		'click li.active'					: 'preventDefault',
 		'click li.disabled'					: 'preventDefault',
+		'click ul.sortable li'				: 'preventDefault',
 
 		'click .btn.addTask'                : 'displayModalAddTask',
 		'submit #formAddTask'         		: 'saveTask',
@@ -30,14 +31,14 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		'click a.buttonCancelTask'			: 'displayModalCancelTask',
 		'submit #formCancelTask' 			: 'cancelTask',
 
-		'click a.printTask' 				: 'printTask',
-		'click a.printInter' 				: 'printInter',
-
+		'click a.printTask, a.printInter'	: 'print',
 
 		'click .buttonTaskDone, .buttonNotFinish' : 'displayModalTaskDone',
 		'submit #formTaskDone'   			: 'taskDone',
 		'click a.linkSelectUsersTeams'		: 'changeSelectListUsersTeams',
-		'click .linkRefueling'				: 'accordionRefuelingInputs', 
+		'click .linkRefueling'				: 'accordionRefuelingInputs',
+
+		'change .taskEquipment'				: 'fillDropdownEquipment',
 
 		'click a.accordion-object'    		: 'tableAccordion',
 
@@ -446,6 +447,21 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	},
 
 
+	/** Retreive Equipment  (Vehicle)
+	*/
+	fillDropdownEquipment: function(e){
+		e.preventDefault();
+		var target = $(e.target).attr('value');
+		if( target ) {
+			var equipment = app.collections.equipments.get( target );
+			if( equipment ) {
+				var km = equipment.toJSON().km ;
+				$('.equipmentKm').val( km );
+				$('.equipmentKm').attr('min', km )
+			}
+		}
+	},
+
 
 	/** Update the <select> list of Users or Teams in the Modal Task Done
 	*/
@@ -635,10 +651,12 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	         category_id: input_category_id,
 		     planned_hours: mDuration.asHours(),
 	     };
-	     
+
+
 	     $('#modalAddTask').modal('hide');
 	     app.models.task.save(0,params);
    	},
+
 
 
 
@@ -667,7 +685,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 		});
 
-    },
+	},
 
 
     /** Cancel Intervention
@@ -718,48 +736,52 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		    },
 		    error: function () {
 				console.log('ERROR - Unable to valid the Inter - InterventionView.js');
-		    },    
+		    },
 		},false);
 	},
 
 
 
-	/** Print an Intervention
+	/** Print a Task or an Intervention
 	*/
-	printInter	: function(e){
+	print: function(e){
 		e.preventDefault();
 
 		this.getTarget(e);
-		this.selectedInter = app.collections.interventions.get(this.pos);
-		var selectedTaskJSON = this.selectedInter.toJSON();
 
-		console.log(selectedTaskJSON);
+		if($(e.target).data('action') == 'inter'){
+			
+			this.selectedInter = app.collections.interventions.get(this.pos);
+			var interJSON = this.selectedInter.toJSON();
+
+			// Hide the print Inter section //
+			$('#printTask div.forTask').hide();
+			$('#printTask div.forInter').show();
+			$('#tableTasks tbody').empty();
+
+			// Display all the tasks of the inter //
+			_.each(interJSON.tasks, function(task, i){
+				$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+task.name+'</td><td>'+app.decimalNumberToTime(task.planned_hours, 'human')+'</td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td></tr>');
+			})
+		}
+		else{
+			this.selectedTask = app.collections.tasks.get(this.pos);
+			var selectedTaskJSON = this.selectedTask.toJSON();
+
+			// Get the inter of the Task //
+			var inter = app.collections.interventions.get(this.selectedTask.toJSON().intervention.id);
+			var interJSON = inter.toJSON();
+
+			// Hide the print Inter section //
+			$('#printTask div.forInter').hide();
+			$('#printTask div.forTask').show();
+			$('.field').html('');
+
+			$('#taskLabel').html(selectedTaskJSON.name + ' <em>('+selectedTaskJSON.category_id[1]+')</em>');
+			$('#taskPlannedHour').html(app.decimalNumberToTime(selectedTaskJSON.planned_hours, 'human'));
+		}
 
 
-		/*$('#printTask').printElement({
-			leaveOpen	: true,
-			printMode	: 'popup',
-			overrideElementCSS:[
-				{ href:'css/vendors/print_table.css', media: 'all'}
-			]
-		});*/
-	},
-
-
-
-	/** Print a Task
-	*/
-	printTask: function(e){
-		e.preventDefault();
-
-		this.getTarget(e);
-		this.selectedTask = app.collections.tasks.get(this.pos);
-		var selectedTaskJSON = this.selectedTask.toJSON();
-
-
-		// Get the inter of the Task //
-		var inter = app.collections.interventions.get(this.selectedTask.toJSON().intervention.id);
-		var interJSON = inter.toJSON();
 
 
 		if(_.isNull(interJSON.ask)){
@@ -771,18 +793,21 @@ app.Views.InterventionsListView = Backbone.View.extend({
 			}
 			else{
 				$('#claimentName').html(interJSON.ask.people_name);
-				$('#claimentPhone').html(interJSON.ask.people_phone);	
+				$('#claimentPhone').html(interJSON.ask.people_phone);
 			}
+
+			$('#claimentType').html(interJSON.ask.partner_type[1]);
 		}
 
 		$('#interName').html(interJSON.name);
 		$('#interDescription').html(interJSON.description);
 		$('#interService').html(interJSON.service_id[1]);
+		if(interJSON.date_deadline != false){
+			$('#interDeadline').html(moment(interJSON.date_deadline).format('LLL'));
+		}
 		$('#interPlace').html(interJSON.site1[1]);
 		$('#interPlaceMore').html(interJSON.site_details);
 
-		$('#taskLabel').html(selectedTaskJSON.name);
-		$('#taskPlannedHour').html(app.decimalNumberToTime(selectedTaskJSON.planned_hours, 'human'));
 
 		$('#printTask').printElement({
 			leaveOpen	: true,

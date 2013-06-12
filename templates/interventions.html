@@ -47,6 +47,7 @@
 				<th>N°</th>
 				<th><%= _.capitalize(lang.label) %></th>
 				<th><%= _.capitalize(lang.place) %></th>
+				<th><%= _.capitalize(lang.dateDeadline) %></th>
 				<th><%= _.capitalize(lang.plannedHours) %></th>
 				<th><%= _.capitalize(lang.spentHours) %></th>
 				<th class="span3"><%= _.capitalize(lang.progressRate) %>
@@ -101,9 +102,9 @@
 							<a href="#interventions/<%= intervention.id %>" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>">
 								<i class="icon-pencil icon-large"></i>
 							</a>&nbsp;
-							
-							<a href="#" class="printInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>">
-								<i class="icon-print icon-large">&nbsp;</i>
+
+							<a href="#" class="printInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="inter">
+								<i class="icon-print icon-large" data-action="inter">&nbsp;</i>
 							</a>
 							<% if(intervention.state == app.Models.Intervention.state[1].value || intervention.state == app.Models.Intervention.state[0].value) { %>
 								 &nbsp;<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-ban-circle icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
@@ -111,6 +112,7 @@
 						</p>
 					</td>
 					<td><%= intervention.site1[1] %></td>
+					<td><%= (intervention.date_deadline != false ? moment(intervention.date_deadline).format('LL') : '') %></td>
 					<td><%= (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours, 'human') : '') %></td>
 					<td><%= (intervention.effective_hours != false ? app.decimalNumberToTime(intervention.effective_hours, 'human') : '') %></td>
 
@@ -167,7 +169,7 @@
 
 				<!-- Tasks row -->
 				<tr class="row-nested-objects-collapse" id="collapse_<%= intervention.id %>">
-					<td colspan="6" class="nestedTD">
+					<td colspan="7" class="nestedTD">
 
 						<!-- Check if there is some tasks -->
 						<% if(intervention.tasks.length != 0) { %>
@@ -200,8 +202,8 @@
 
 													<% if( task.state == app.Models.Task.state[3].value || task.state == app.Models.Task.state[0].value ) { %>
 
-															<a href="#" class="printTask">
-															<i class="icon-print displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>">&nbsp;</i>
+															<a href="#" class="printTask" data-action="task">
+															<i class="icon-print displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="task">&nbsp;</i>
 															</a>
 													<% } %>
 													<% if( task.state == app.Models.Task.state[3].value ) { %>
@@ -328,7 +330,7 @@
            	<div class="control-group">
                	<label for="taskHour" class="control-label">Heures estimées:</label>
                	<div class="controls">
-					<div class="input-append bootstrap-timepicker" >							
+					<div class="input-append bootstrap-timepicker" >
 					    <input type="text" value="01:00" class="timepicker-default input-small" id='taskHour' required="required">
 					    <span class="add-on">
 					        <i class="icon-time"></i>
@@ -637,30 +639,34 @@
 			<h1 style="float: left;">Fiche d'interventions</h1>
    			<img src="css/images/administration_logo.png" style="float: right" />
    		</div>
-
    		<hr style="clear: both;">
+
+
 
 		<fieldset style="font-size: 20px; margin-bottom: 30px; padding-top: 20px;">
 			<legend><strong><%= lang.aboutTheIntervention %>:</strong></legend>
-			<em style="text-decoration:underline;"><%= _.capitalize(lang.intervention) %>:</em> <span id="interName"></span><br />
-			<em style="text-decoration:underline;"><%= _.capitalize(lang.description) %>:</em> <span id="interDescription"></span><br />
-			<em style="text-decoration:underline;"><%= _.capitalize(lang.serviceConcerned) %>:</em> <span id="interService"></span><br /><br />
-			<em style="text-decoration:underline;"><%= _.capitalize(lang.place) %>:</em> <span id="interPlace"></span><br />
-			<em style="text-decoration:underline;"><%= _.capitalize(lang.informationOfTheSite) %>:</em> <span id="interPlaceMore"></span><br />
+			<strong id="interService" class="field" style="float: right;"></strong><br />
+			<strong id="interDeadline" class="field" style="float: right;"></strong>
+			<div style="clear: both;">
+				<em style="text-decoration:underline;"><%= _.capitalize(lang.intervention) %>:</em> <span id="interName" class="field"></span><br />
+				<em style="text-decoration:underline;"><%= _.capitalize(lang.description) %>:</em> <span id="interDescription" class="field"></span><br />
+				<em style="text-decoration:underline;"><%= _.capitalize(lang.place) %>:</em> <span id="interPlace" class="field"></span><br />
+				<em style="text-decoration:underline;"><%= _.capitalize(lang.informationOfTheSite) %>:</em> <span id="interPlaceMore" class="field"></span><br />
+			</div>
 
 			<fieldset style="font-size: 20px; margin-top: 30px;">
 				<legend><strong><%= lang.claimerDetails %>:</strong></legend>
 
-				<em style="text-decoration:underline;"><%= _.capitalize(lang.claiment) %>:</em> <span id="claimentName"></span><br />
-				<em style="text-decoration:underline;"><%= _.capitalize(lang.phone) %>:</em> <span id="claimentPhone"></span><br />
+				<em style="text-decoration:underline;"><%= _.capitalize(lang.claiment) %>:</em> <span id="claimentName" class="field"></span><br />
+				<em style="text-decoration:underline;"><%= _.capitalize(lang.type) %>:</em> <span id="claimentType" class="field"></span><br />
+				<em style="text-decoration:underline;"><%= _.capitalize(lang.phone) %>:</em> <span id="claimentPhone" class="field"></span><br />
 			</fieldset>
 
 		</fieldset>
 		
 
 
-		
-		<form action="#">
+		<div class="forTask">
 			<fieldset style="font-size: 20px;">
 				<legend><strong><%= lang.aboutTheTask %>:</strong></legend>
 
@@ -678,22 +684,55 @@
 						<td class="toFill" style="width: 80%"></td>
 					</tr>
 					<tr style="height: 50px;">
-						<td><strong><%= _.capitalize(lang.dateStart) %>:</strong></td>
+						<td><strong><%= _.capitalize(lang.dateHourStart) %>:</strong></td>
 						<td class="toFill" style="width: 80%"></td>
 					</tr>
 					<tr style="height: 50px;">
-						<td><strong><%= _.capitalize(lang.dateEnd) %>:</strong></td>
+						<td><strong><%= _.capitalize(lang.dateHourEnd) %>:</strong></td>
 						<td class="toFill" style="width: 80%"></td>
 					</tr>
 					<tr style="height: 80px;">
-						<td><strong><%= _.capitalize(lang.equipment) %>:</strong></td>
+						<td><strong><%= _.capitalize(lang.vehiclesOrEquipments) %>:</strong></td>
+						<td class="toFill" style="width: 80%"></td>
+					</tr>
+					<tr style="height: 50px;">
+						<td><strong><%= _.capitalize(lang.oil) %> / <%= _.capitalize(lang.price) %>:</strong></td>
+						<td class="toFill" style="width: 80%"></td>
+					</tr>
+					<tr style="height: 80px;">
+						<td><strong><%= _.capitalize(lang.observations) %>:</strong></td>
 						<td class="toFill" style="width: 80%"></td>
 					</tr>
 
 				</table>
 
 			</fieldset>
-		</form>
+		</div>
+
+
+		<div class="forInter">
+			<h3 style="margin-bottom: 5px;"><%= lang.viewsTitles.tasksList %>:</h3>
+
+				<table id="tableTasks" style="width: 100%; border: thin solid gray;">
+					<thead>
+						<tr>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.label) %></strong></td>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.estimatedHours) %></strong></td>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.carryOutBy) %></strong></td>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.dateHourStart) %></strong></td>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.dateHourEnd) %></strong></td>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.vehiclesOrEquipments) %></strong></td>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.oil) %> / <%= _.capitalize(lang.price) %></strong></td>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.observations) %>:</strong></td>
+						</tr>
+					</thead>
+					
+					<tbody>
+
+					</tbody>
+				</table>
+
+		</div>
 
 	</div>
 </div>
