@@ -15,7 +15,7 @@ var app = {
     stopLunchTime	: 14.0,
     
 
-    urlOE                       : 'http://localhost:8069',
+    urlOE                       : 'http://octm-dev.siclic.fr:8069',
 
 
     urlOE_authentication        : '/web/session/authenticate',
@@ -49,9 +49,6 @@ var app = {
     /** Application initialization
     */
     init: function (lang) {
-
-        // Tell OpenLayers where the control images are //remember the trailing slash //fn
-        OpenLayers.ImgPath = 'css/vendors/openlayers/img/';
 
 
         // Retrieve Application language //
