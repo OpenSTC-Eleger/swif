@@ -570,11 +570,11 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 
 
-		var vehicule = $('#taskEquipmentDone').val();
+		var vehicule =  $('#taskEquipmentDone').val()!=""? _($('#taskEquipmentDone').val() ).toNumber() : 0;
 		var equipments = _.map($("#equipmentsDone").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
 	    
-	    if(vehicule != ""){
-	    	equipments.push( _(vehicule).toNumber() );
+	    if(vehicule >0 ){
+	    	equipments.push( vehicule );
 	    }
 
 
@@ -597,12 +597,21 @@ app.Views.InterventionsListView = Backbone.View.extend({
 			km: this.$('#equipmentKmDone').val(),
 			oil_qtity: this.$('#equipmentOilQtityDone').val().replace(',', '.'),
 			oil_price: this.$('#equipmentOilPriceDone').val().replace(',', '.'),
+			report_hours: mNewDateEnd.diff(mNewDateStart,'hours',true),
 			remaining_hours: remaining_hours,
 		};
 
 
-		alert("TODO: Params must be send to OpenERP");
-
+		//alert("TODO: Params must be send to OpenERP");
+		this.selectedTask.reportHours(params, 
+			{
+				success: function(data){	
+					$('#modalTaskDone').modal('hide');				
+					route = Backbone.history.fragment;
+					Backbone.history.loadUrl(route);
+				}
+			}
+		);
 
 	},
 
