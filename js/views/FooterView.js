@@ -7,8 +7,6 @@ app.Views.FooterView = Backbone.View.extend({
 
     templateHTML: 'footer',
 
-    data: {version: app.appVersion},
-
  
  
     /** View Initialization
@@ -25,9 +23,12 @@ app.Views.FooterView = Backbone.View.extend({
         var self = this;
 
        $.get("templates/" + this.templateHTML + ".html", function(templateData){
-         
+
             // Templating // 
-            var template = _.template(templateData, self.data);
+            var template = _.template(templateData, {
+                version: app.properties.version
+            });
+
             $(self.el).html(template);
         });
         return this;

@@ -5,19 +5,9 @@
 var app = {
 
 	
-	//test	
     // Global variables app //
-    appVersion      : '1.0.0-alpha-2',
-    userBDD         : 'pontlabbe2',
-    uniq_id_counter : 0,	
+    uniq_id_counter : 0,
     
-    startLunchTime	: 12.0,
-    stopLunchTime	: 14.0,
-    
-
-    urlOE                       : 'http://octm-dev.siclic.fr:8069',
-
-
     urlOE_authentication        : '/web/session/authenticate',
     urlOE_versionServer         : '/web/webclient/version_info',
     urlOE_sessionDestroy        : '/web/session/destroy',
@@ -31,17 +21,18 @@ var app = {
     urlOE_object          		: '/web/dataset/call',
 
 
-
     // Classes //
     Collections     : {},
     Models          : {},
     Views           : {},
 
     // Instances //
+    properties      : {},
+    configuration   : {},
+    lang            : {},
     collections     : {},
     models          : {},
     views           : {},
-    lang            : {},
     templates       : {},
 
 
@@ -51,16 +42,14 @@ var app = {
     init: function (lang) {
 
 
-        // Retrieve Application language //
-        $.ajax({
-            type: 'GET', url: 'i18n/'+lang+'/app-lang.json', dataType: 'json',
-            success: function(data, textStatus, jqXHR) {
-                
-                app.lang = data;
-
-
-                // Load internationalization scripts //
-                app.loadI18nScripts(lang);
+        // Retrieve App properties, configuration and language //
+        $.when(app.loadConfiguration('properties.json'), app.loadConfiguration('configuration.json'), app.loadI18nScripts(lang))
+            .done(function(properties_data, configuration_data, lang_data){
+            
+                // Set the app properties configuration and language //
+                app.properties = properties_data[0];
+                app.configuration = configuration_data[0];
+                app.lang = lang_data[0];
 
 
                 // Instantiation Collections users  et user //
@@ -83,34 +72,66 @@ var app = {
                 app.router = new app.Router();
                 // Listen url changes //
                 Backbone.history.start();
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log('Error: JSON value');
-            }
-        });
+            })
+            .fail(function(){
+                console.log('--->Error<---');
+            });
 
     },
+
     
 
     /** Load internationalization scripts
     */
     loadI18nScripts: function (lang) {
         
-        if(lang != 'en'){
+        return $.getJSON('i18n/'+lang+'/app-lang.json')
+            .success(function(data) {
+            
+                var script = document.createElement('script');
+                script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/moment-lang.js';
+                $('#app').append(script);
 
-            var script = document.createElement('script');
-            script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/moment-lang.js';
-            $("#app").append(script);
+                var script = document.createElement('script');
+                script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/bootstrap-datepicker-lang.js';
+                $('#app').append(script);
 
-            var script = document.createElement('script');
-            script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/bootstrap-datepicker-lang.js';
-            $("#app").append(script);
+                // I18N Moment JS //
+                moment.lang(lang);
 
-            // I18N Moment JS //
-            moment.lang(lang);
-        }
+            })
+            .fail(function(){
+                alert('Impossible de charger les fichiers de langues');
+            });
     },
 
+
+
+    /** Load application configuration
+    */
+    loadConfiguration: function(url){
+
+        return $.getJSON(url)
+            .success(function(data){
+            })
+            .fail(function(){
+                alert('Impossible de charger le fichier de configuration');
+            });
+    },
+
+
+
+    /** Load application properties
+    */
+    loadProperties: function(url){
+
+        return $.getJSON(url)
+            .success(function(data){
+            })
+            .fail(function(){
+                alert('Impossible de charger le fichier de propriétés');
+            });
+    },
 
 
 
@@ -186,7 +207,7 @@ var app = {
     /** Retrieve an object from OpenERP
     */
     getOE : function (model, fields, ids, session_id, options) {
-        this.json(this.urlOE + this.urlOE_readObject, {
+        this.json(app.configuration.openerp.url + this.urlOE_readObject, {
             'model'     : model,
             'fields'    : fields, 
             'ids'       : ids,
@@ -199,7 +220,7 @@ var app = {
     /** Retrieve a list from OpenERP
     */
     readOE : function (model, session_id, options) {
-        this.json(this.urlOE + this.urlOE_retrieveListe, {
+        this.json(app.configuration.openerp.url + this.urlOE_retrieveListe, {
             'model'     : model,
             'fields'    : [],
             'session_id': session_id
@@ -210,7 +231,7 @@ var app = {
     /** Delete object from OpenERP
     */
     deleteOE : function (args,model,session_id,options) {
-        this.json(this.urlOE + this.urlOE_deleteObject, {
+        this.json(app.configuration.openerp.url + this.urlOE_deleteObject, {
             'method'    : "unlink",
             'args'      : args, 
             'model'     : model,
@@ -223,14 +244,14 @@ var app = {
     */
     saveOE : function (id, data, model, session_id, options) {
         if(id)
-            this.json(this.urlOE + this.urlOE_updateObject, {
+            this.json(app.configuration.openerp.url + this.urlOE_updateObject, {
                 'data'      : data, 
                 'model'     : model, 
                 'id'        : id,
                 'session_id': session_id      
            },options);
         else
-            this.json(this.urlOE + this.urlOE_createObject, {
+            this.json(app.configuration.openerp.url + this.urlOE_createObject, {
                     'data'      : data, 
                     'model'     : model,                 
                     'session_id': session_id      
@@ -240,7 +261,7 @@ var app = {
     /** call object method from OpenERP
     */
     callObjectMethodOE : function (args,model,method,session_id,options) {
-        this.json(this.urlOE + this.urlOE_object, {
+        this.json(app.configuration.openerp.url + this.urlOE_object, {
             'method'    : method,
             'args'      : args, 
             'model'     : model,

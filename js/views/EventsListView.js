@@ -326,8 +326,8 @@ app.Views.EventsListView = Backbone.View.extend({
 				dragRevertDuration	:0,
 				eventClick	: self.eventClick,
 				//drop: self.drop,
-				startOfLunchTime	: app.startLunchTime,
-				endOfLunchTime		: app.stopLunchTime,
+				startOfLunchTime	: app.configuration.startLunchTime,
+				endOfLunchTime		: app.configuration.endLunchTime,
                 
 				select: function( startDate, endDate, allDay, jsEvent, view) {
 
@@ -563,22 +563,22 @@ app.Views.EventsListView = Backbone.View.extend({
         	this.arrayOnDayEvents.push( stopWorkingEvent );
         	
         	var minutes = 0;
-        	if(_.str.include(app.startLunchTime, '.')){
-        		var minutes = _.lpad(((_.rpad(_( app.startLunchTime ).strRight('.'), 2, '0') / 100) * 60), 2, '0');
+        	if(_.str.include(app.configuration.startLunchTime, '.')){
+        		var minutes = _.lpad(((_.rpad(_( app.configuration.startLunchTime ).strRight('.'), 2, '0') / 100) * 60), 2, '0');
         	}
-        	var hours = _( app.startLunchTime ).strLeft('.');
+        	var hours = _( app.configuration.startLunchTime ).strLeft('.');
 
             
 			var startLunchTime = moment( startDate.clone() ).hours( hours ).minutes( minutes );
 			
 			var minutes = 0;
-        	if(_.str.include(app.stopLunchTime, '.')){
-        		minutes = _.lpad(((_.rpad(_( app.stopLunchTime ).strRight('.'), 2, '0') / 100) * 60), 2, '0');
+        	if(_.str.include(app.configuration.endLunchTime, '.')){
+        		minutes = _.lpad(((_.rpad(_( app.configuration.endLunchTime ).strRight('.'), 2, '0') / 100) * 60), 2, '0');
         	}
-            hours = _( app.stopLunchTime ).strLeft('.');
+            hours = _( app.configuration.endLunchTime ).strLeft('.');
 			
-			var stopLunchTime = moment( startDate.clone() ).hours( hours ).minutes( minutes );
-			var lunchEvent = this.getEvent( "lunchTime", startLunchTime.toDate(), stopLunchTime.toDate() );
+			var endLunchTime = moment( startDate.clone() ).hours( hours ).minutes( minutes );
+			var lunchEvent = this.getEvent( "lunchTime", startLunchTime.toDate(), endLunchTime.toDate() );
 			this.arrayOnDayEvents.push( lunchEvent );
 
 			
