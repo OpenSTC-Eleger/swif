@@ -9,6 +9,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 	filters: 'intersListFilter',
 
+	numberListByPage: 25,
+
 	selectedInter : '',
 	selectedTask : '',
 
@@ -122,7 +124,10 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		interventionsState =  _.union(firstElements.reverse(), interventionsState);
 
 
-		console.debug(interventions.toJSON());
+		var len = nbInterventions;
+		var startPos = (this.options.page - 1) * this.numberListByPage;
+		var endPos = Math.min(startPos + this.numberListByPage, len);
+		var pageCount = Math.ceil(len / this.numberListByPage);
 
 
 		// Retrieve the HTML template //
@@ -134,6 +139,9 @@ app.Views.InterventionsListView = Backbone.View.extend({
 				nbInterventionsPlanned: nbInterventionsPlanned,
 				interventionsState: interventionsState,
 				interventions: interventions.toJSON(),
+				startPos: startPos, endPos: endPos,
+				page: self.options.page, 
+				pageCount: pageCount,
 			});
 
 

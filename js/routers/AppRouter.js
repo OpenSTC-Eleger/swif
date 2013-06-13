@@ -11,7 +11,9 @@ app.Router = Backbone.Router.extend({
 		'login'                                 : 'login',
 		'logout'                                : 'logout',
 		'about'                                 : 'about',
+
 		'interventions'                         : 'interventions',
+		'interventions/page:page'               : 'interventions',
 		'interventions/add'           			: 'detailsIntervention',
 		'interventions/:id'    					: 'detailsIntervention',
 		
@@ -363,13 +365,15 @@ app.Router = Backbone.Router.extend({
 
 	/** Interventions list
 	*/
-	interventions: function(){
+	interventions: function(page){
 		
 		var self = this;
 		
 		// Check if the user is connect //
 		if(this.checkConnect()){
 			
+
+			self.page = page ? parseInt(page, 10) : 1;
 			
 			if(app.collections.tasks == null ){
 					app.collections.tasks = new app.Collections.Tasks();        	
@@ -422,7 +426,7 @@ app.Router = Backbone.Router.extend({
 															
 															app.collections.officers.fetch({
 																success: function(){
-																	app.views.interventionsListView = new app.Views.InterventionsListView();
+																	app.views.interventionsListView = new app.Views.InterventionsListView({page: self.page});
 																	self.render(app.views.interventionsListView);
 																},
 																complete: function(){
