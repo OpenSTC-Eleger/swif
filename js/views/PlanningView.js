@@ -511,6 +511,10 @@ app.Views.PlanningView = Backbone.View.extend({
         $("#modalAboutTask").modal('hide');
 
         taskModel.save(taskId, params);
+        
+        // Refresh the page //
+        route = Backbone.history.fragment;
+        Backbone.history.loadUrl(route);
     },
 
 
