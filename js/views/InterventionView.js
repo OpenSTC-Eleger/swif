@@ -82,6 +82,9 @@ app.Views.InterventionView = Backbone.View.extend({
 					self.renderSite(null);
 
 
+				$('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
+
+
 				// If the intervention is Template - Checked the checkbox //
 				if(currentIntervention.state == 'template')
 					$('#isTemplate').prop('checked', true);
@@ -114,39 +117,40 @@ app.Views.InterventionView = Backbone.View.extend({
 
 
 	/** Save the intervention
-	 */
-    saveIntervention: function (e) {
-	     
-    	e.preventDefault();
+	*/
+	saveIntervention: function (e) {
+
+		e.preventDefault();
 
 		var self = this;
-	     
+
 		var input_service_id = this.getIdInDopDown(app.views.selectListServicesView);
-	     
-		var params = {	
+
+		var params = {
 			name: this.$('#interventionName').val(),
 			state: this.$('#isTemplate').is(':checked')?"template":"open",
-			//			     active: this.$('#isTemplate').is(':checked')?false:true,
+			//active: this.$('#isTemplate').is(':checked')?false:true,
 			description: this.$('#interventionDescription').val(),
+			date_deadline: new moment($('#interventionDateDeadline').val(), 'DD-MM-YYYY').toDate(),
 			service_id: input_service_id,
 			site1: this.$('#interventionPlace').val(),
 			site_details: this.$('#interventionPlacePrecision').val(),
 		};
 
-	    this.model.save(params,{
+		this.model.save(params,{
 			success: function (data) {
 				console.log(data);
 				if(data.error){
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
-					app.router.navigate('#interventions' , {trigger: true, replace: true});
+					app.router.navigate('#interventions', {trigger: true, replace: true});
 					console.log('Success SAVE INTERVENTION');
 				}
 			},
 			error: function () {
 				console.log('ERROR - Unable to save the Intervention - InterventionView.js');
-			},	     
+			},
 		});
 	},
 

@@ -42,12 +42,12 @@
 	<div class="tableToolbar">
 		<a href="#demandes-dinterventions/add" class="btn btn-primary"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
 
-		<form class="form-search pull-right">
+		<!--<form class="form-search pull-right">
 			<div class="input-append">
 				<input type="search" class="input-medium search-query" disabled="disabled" placeholder="<%= lang.actions.search %>..." autocomplete="off">
 				<button type="submit" disabled class="btn disabled"><i class="icon-search icon-large"></i></button>
 			</div>
-		</form>
+		</form>-->
 	</div>
 	<!-- Table toolbar -->
 
@@ -176,6 +176,9 @@
 						}
 						else if(requests[i].state == app.Models.Request.status.refused.key){
 							var title = requests[i].refusal_reason  + '\n('+ modifydBy +')';
+						}
+						else if(requests[i].state == app.Models.Request.status.confirm.key){
+							var title = requests[i].note;
 						}
 						else{
 							var title = '';
@@ -334,6 +337,22 @@
 				</div>
 			</div>
 
+			<!-- intervention DeadLine -->
+			<div class="control-group">
+				<label class="control-label" for="requestDateDeadline"><%= _.capitalize(lang.dateDeadline) %>:</label>
+				<div class="controls">
+					<div class="input-append">
+					<input 
+						type="text" class="datepicker input-small"
+						id="requestDateDeadline" 
+						value="<%= moment().add('w', 1).format('L') %>" 
+						placeholder="dd/mm/yyyy"
+						required="required">
+						<span class="add-on"><i class="icon-calendar"></i></span>
+					</div>
+					<span class="help-inline"></span>
+				</div>
+			</div>
 
 			<!-- Request Note description -->
 			<div class="control-group">

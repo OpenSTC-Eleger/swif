@@ -86,6 +86,7 @@
 	"parentCategory"		: "catégorie parente",
 	"intervention"			: "intervention",
 	"assignedTo"			: "assigné à",
+	"carryOutBy"			: "réalisé par",
 	"startHour" 			: "Heure début",
 	"endHour" 				: "Heure fin",
 	"estimatedHours"		: "Heures estimées",
@@ -122,6 +123,8 @@
 	"week" 					: "Semaine",
 	"year"					: "Année",
 	"time"					: "Heures",
+	"dateHourStart" 		: "Date / Heure début",
+	"dateHourEnd" 			: "Date / Heure fin",
 	"oil" 					: "carburant",
 	"quantity"				: "quantité",
 	"oilQtity"				: "Quantité carburant",
@@ -130,6 +133,7 @@
 	"oilPrice"				: "Prix Carburant",
 	"inLiter"				: "en litre",
 	"inEuro"				: "en €uro",
+	"observations" 			: "observations",
 	"inKm" 					: "en km",
 	"km"					: "Kilomètres",
 	"vehicleEquipment"						: "Véhicule",
@@ -139,6 +143,7 @@
 	"fatMaterialEquipment"					: "Gros matériel",
 	"smallMaterialEquipment"				: "Petit matériel",
 	"officer"								: "Officier",
+	"vehiclesOrEquipments"					: "Matériels / Véhicules",
 
 	"monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
 	"monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
@@ -188,7 +193,8 @@
 		"delete" 			: "supprimer",
 		"update" 			: "modifier",
 		"timeSpent"			: "Saisie des temps",
-		"removeOfTheSchedule" : "Retirer du planning"
+		"removeOfTheSchedule" : "Retirer du planning",
+		"print"				: "Imprimer"
 	},
 
 	"errorMessages" : {
@@ -269,6 +275,7 @@
     	"deleteContact"			 : "Suppression du contact",
     	"deleteClaimer"			 : "Suppression de l'organisation",
     	"cancelIntervention" 	 : "Annulation de l'intervention",
+    	"cancelTask" 	 		 : "Annulation de la tâche",
     	"confirmChief"			 : "Remonter la demande au DST",
     	"serviceDetail"			 : "Détail du service",
     	"interventionsMonitoring": "Suivi des interventions",

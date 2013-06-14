@@ -39,7 +39,7 @@ app.Views.AbsentTypesListView = Backbone.View.extend({
 		var self = this;
 
 		// Change the page title //
-		app.router.setPageTitle(app.lang.viewsTitles.categoriesList);
+		app.router.setPageTitle(app.lang.viewsTitles.absentTypesList);
 
 
 		// Change the active menu item //

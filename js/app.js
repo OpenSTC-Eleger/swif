@@ -6,14 +6,14 @@ var app = {
 
 	
 	//test	
-    // Global variables app //
-    appVersion      : '1.0.0-alpha-2',
-    userBDD         : 'pontlabbe2',
-    uniq_id_counter : 0,	
-    
-    startLunchTime	: 12.0,
-    stopLunchTime	: 14.0,
-    
+	// Global variables app //
+	appVersion      : '1.0.0-alpha',
+	userBDD         : 'pontlabbe2',
+	uniq_id_counter : 0,	
+	
+	startLunchTime	: 12.0,
+	stopLunchTime	: 14.0,
+	
 
     urlOE                       : 'http://octm-dev.siclic.fr:8069',
 
