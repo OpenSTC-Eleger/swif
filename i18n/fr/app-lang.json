@@ -256,7 +256,9 @@
     	"absentTypeSaveOk"		: "Type d'absence correctement enregistré",
     	"claimerDeleteOk"		: "Demandeur correctement supprimé",
     	"teamDeleteOk"			: "Equipe correctement supprimée",
-    	"teamSaveOk"			: "Equipe correctement enregistrée"
+    	"teamSaveOk"			: "Equipe correctement enregistrée",
+    	"taskDeleteOk"			: "Tâche correctement supprimée",
+    	"taskSaveOk"			: "Tâche correctement enregistrée"
 	},
 
 	"viewsTitles" : {
