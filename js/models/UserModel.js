@@ -167,9 +167,9 @@ app.Models.User = Backbone.Model.extend({
 
         var deferred = $.Deferred();
 
-        app.json(app.urlOE+app.urlOE_authentication, {
-            'base_location': app.urlOpenERP,
-            'db': app.userBDD,
+        app.json(app.configuration.openerp.url+app.urlOE_authentication, {
+            'base_location': app.configuration.openerp.url,
+            'db': app.configuration.openerp.database,
             'login': loginUser,
             'password': passUser,
             'session_id': ''
@@ -230,7 +230,7 @@ app.Models.User = Backbone.Model.extend({
 
         var deferred = $.Deferred();
 
-        app.json(app.urlOE+app.urlOE_sessionDestroy, {
+        app.json(app.configuration.openerp.url+app.urlOE_sessionDestroy, {
             'session_id': self.getSessionID()
         })
         .fail(function (){
@@ -264,7 +264,7 @@ app.Models.User = Backbone.Model.extend({
         "use strict";
         var self = this;
 
-        return app.json(app.urlOE+app.urlOE_menuUser, {
+        return app.json(app.configuration.openerp.url+app.urlOE_menuUser, {
             'session_id': self.getSessionID()
         }, options)
     },
