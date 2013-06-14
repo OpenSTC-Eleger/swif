@@ -99,13 +99,11 @@
 
 							<i class="icon-pushpin">&nbsp;&nbsp;</i><span><%= _(intervention.name).truncate(25) %></span>
 
-							<!--<a href="#interventions/<%= intervention.id %>" class="displayInlineBlock"><i class="icon-pencil"></i></a><-->
-							
 							<!-- Intervention Actions -->
 							<button class="btn btn-link invisible linkToInter" type="button" data-toggle="modal" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>" data-placement="top" data-delay="50"><i class="icon-pencil"></i></button>	
 							
 							<% if(intervention.state == app.Models.Intervention.state[1].value || intervention.state == app.Models.Intervention.state[0].value) { %>
-								<button data-target="#modalCancelInter" class="btn btn-link buttonCancelInter invisible" data-toggle="modal" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>" data-placement="top" data-delay="50"><i class="icon-remove"></i></button>
+								<button data-target="#modalCancelInter" class="btn btn-link buttonCancelInter invisible" data-toggle="modal" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>" data-placement="top" data-delay="50"><i class="icon-ban-circle"></i></button>
 							<% } %>
 
 							<small class="badge badge-<%= classColor %> pull-right"><%= informationHour %></small>
@@ -342,7 +340,7 @@
 	                	
 						<!-- Start Hour -->
 						<div class="input-append bootstrap-timepicker" >							
-							    <input type="text" class="timepicker-default input-small" id='startHour' required="required">
+							    <input type="text" class="timepicker-default input-mini" id='startHour' required="required">
 							    <span class="add-on"><i class="icon-time"></i></span>
 						</div>
 					</div>
@@ -365,7 +363,7 @@
 
 	                    <!-- End Hour -->
 	                    <div class="input-append bootstrap-timepicker" >							
-						    <input type="text" class="timepicker-default input-small" id='endHour' required="required">
+						    <input type="text" class="timepicker-default input-mini" id='endHour' required="required">
 						    <span class="add-on"><i class="icon-time"></i></span>
 						</div>
 	                </div>
@@ -459,10 +457,10 @@
 			<small></small>
 		</blockquote>
 
-		<form class="form-horizontal" id="formModalAboutTask">
+		<!--<form class="form-horizontal" id="formModalAboutTask">
 
 			<!-- Switch Button With Foreman -->
-			<div class="control-group">
+			<!--<div class="control-group">
 				<label class="control-label" for="withForeman"><%= _.capitalize(lang.withForeman) %>:</label>
 
 				<div class="controls">
@@ -471,7 +469,7 @@
             		</div>
         		</div>
 			</div>
-	    </form>
+	    </form>-->
 
 	</div>
 
@@ -509,7 +507,7 @@
 
 				<div class="controls">
 					<div class="input-append bootstrap-timepicker" >							
-						<input type="text" value="01:00" class="timepicker-default input-small" id='taskHour' required="required">
+						<input type="text" value="01:00" class="timepicker-default input-mini" id='taskHour' required="required">
 						<span class="add-on"><i class="icon-time"></i></span>
 					</div>
 				</div>

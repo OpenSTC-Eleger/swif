@@ -449,8 +449,9 @@ app.Views.PlanningView = Backbone.View.extend({
 			{
 				success: function(data){
 					$('#modalCancelInter').modal('hide');
-					route = Backbone.history.fragment;
-					Backbone.history.loadUrl(route);
+                    app.router.navigate('#planning', {trigger: true, replace: true});
+					/*route = Backbone.history.fragment;
+					Backbone.history.loadUrl(route);*/
 				}
 			}
 		);
@@ -472,11 +473,13 @@ app.Views.PlanningView = Backbone.View.extend({
 					var inter = app.collections.interventions.get(self.selectedTaskJSON.intervention.id);					
 					inter.attributes.tasks.remove(self.selectedTaskJSON.id);
 					app.collections.interventions.add(inter);//					
-					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.serviceDeleteOk);
+					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.taskDeleteOk);
                     $('#modalDeleteTask').modal('hide');
 					// Refresh the page //
-					route = Backbone.history.fragment;
-					Backbone.history.loadUrl(route);
+					
+                    /*route = Backbone.history.fragment;
+					Backbone.history.loadUrl(route);*/
+                    app.router.navigate('#planning', {trigger: true, replace: true});
 				}
 			},
 			error: function(e){
@@ -513,8 +516,9 @@ app.Views.PlanningView = Backbone.View.extend({
         taskModel.save(taskId, params);
         
         // Refresh the page //
-        route = Backbone.history.fragment;
-        Backbone.history.loadUrl(route);
+        /*route = Backbone.history.fragment;
+        Backbone.history.loadUrl(route);*/
+        app.router.navigate('#planning', {trigger: true, replace: true});
     },
 
 
@@ -538,7 +542,7 @@ app.Views.PlanningView = Backbone.View.extend({
         var categoriesTasksFiltered = null;
         var inter = app.collections.interventions.get(this.pos);
         if( inter) {
-        	var interJSON = inter.toJSON();        	
+        	var interJSON = inter.toJSON();
 	        categoriesTasksFiltered = _.filter(app.collections.categoriesTasks.models, function(item){ 
 	        	var services = [];
 	        	_.each( item.attributes.service_ids.models, function(service){
@@ -719,8 +723,8 @@ app.Views.PlanningView = Backbone.View.extend({
 			    },
 			    error: function () {
 					console.log('ERROR - Unable to valid the Inter - InterventionView.js');
-			    },           
-			},false);
+			    },
+		},false);
 	},
 
 
