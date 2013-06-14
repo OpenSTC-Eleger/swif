@@ -141,8 +141,16 @@ div.page-header{
 -------------------------------------------------- */
 .text-important        { color: @errorText; }
 a.text-important:hover { color: darken(@errorText, 10%); }
-.text-muted        { color: @grayLight; }
-a.text-muted:hover { color: darken(@grayLight, 10%); }
+
+.text-muted        		{ color: @grayLight; }
+a.text-muted:hover 		{ color: darken(@grayLight, 10%); }
+
+.text-template          { color: @yellow; }
+a.text-template:hover   { color: darken(@yellow, 10%); }
+
+.text-overrun          { color: @purple; }
+a.text-overrun:hover   { color: darken(@purple, 10%); }
+
 
 
 /* New LABELS AND BADGES
@@ -219,13 +227,6 @@ a.text-muted:hover { color: darken(@grayLight, 10%); }
 }
 
 
-/* New Text Colors
--------------------------------------------------- */
-.text-template          { color: @yellow; }
-a.text-template:hover   { color: darken(@yellow, 10%); }
-
-.text-overrun          { color: @purple; }
-a.text-overrun:hover   { color: darken(@purple, 10%); }
 
 
 /* MAP MARKERS
@@ -276,12 +277,11 @@ section.calendarContainer:not(:first-child){
 	border-color: @blueDark;
 }
 
-.fc-view
- {
+.fc-view{
    /* prevents dragging outside of widget */
    width: 100%;
    overflow: hidden;
- }
+}
 
 #accordionInterventions.affix {
 	width: 22%;
@@ -467,7 +467,7 @@ h4#teamTitle, h4#resaTitle{
 -------------------------------------------------- */
 #loader{
 	.hide();
-	position: fixed; 
+	position: fixed;
 	top: 45%; left: 50%;
 	width: 250px; 
 	height: auto;
