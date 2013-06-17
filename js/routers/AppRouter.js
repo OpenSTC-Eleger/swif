@@ -47,11 +47,11 @@ app.Router = Backbone.Router.extend({
 		'equipes'                               : 'teams',
 		'equipes/page:page'                     : 'teams',
 
-		'demandeurs'                            : 'claimers',
-		'demandeurs/page:page'                  : 'claimers',
+		'organisations'                            : 'claimers',
+		'organisations/page:page'                  : 'claimers',
 		
-		'types-de-demandeur'                    : 'types',
-		'types-de-demandeur/page:page'          : 'types',
+		'types-d-organisation'                    : 'types',
+		'types-de-organisation/page:page'          : 'types',
 		
 		'types-dabscence'                       : 'absentTypes',
 		'types-dabscence/page:page'             : 'absentTypes',
