@@ -206,8 +206,8 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		if( options==null ) {
 			app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {         	
 				success: function(data){
-					//Backbone.history.loadUrl(Backbone.history.fragment);
-                    app.router.navigate('#planning', {trigger: true, replace: true});
+					Backbone.history.loadUrl(Backbone.history.fragment);
+                    //app.router.navigate('#planning', {trigger: true, replace: true});
 				}
 			});
 		}

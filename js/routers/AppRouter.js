@@ -50,8 +50,8 @@ app.Router = Backbone.Router.extend({
 		'organisations'                            : 'claimers',
 		'organisations/page:page'                  : 'claimers',
 		
-		'types-d-organisation'                    : 'types',
-		'types-de-organisation/page:page'          : 'types',
+		'types-dorganisation'                    : 'types',
+		'types-dorganisation/page:page'          : 'types',
 		
 		'types-dabscence'                       : 'absentTypes',
 		'types-dabscence/page:page'             : 'absentTypes',
