@@ -1,14 +1,12 @@
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.interventionsMonitoring %>
-		<sup data-toggle="tooltip" data-original-title="<%= lang.planningFenced %>">
-			<i class="badge badge-info" ><%= nbInterventionsPlanned %></i>
+		<sup class="badge badge-info" data-toggle="tooltip" data-original-title="<%= lang.planningFenced %>" data-placement="bottom">
+			<%= nbInterventionsPlanned %>
 		</sup>
 
-		<sup data-toggle="tooltip" data-original-title="<%= lang.pending %>">
-			<i class="badge" >
-				<%= nbInterventionsPending %>
-			</i>
+		<sup class="badge" data-toggle="tooltip" data-original-title="<%= lang.pending %>" data-placement="bottom">
+			<%= nbInterventionsPending %>
 		</sup>
 	</h1>
 </div>
