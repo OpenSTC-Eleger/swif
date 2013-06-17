@@ -124,7 +124,7 @@ app.Views.RequestView = Backbone.View.extend({
 					if(!_.isEmpty(officerJSON.contact_id)){
 						$('#requestClaimerType, #requestClaimer').prop('disabled', true);
 						$('#requestClaimerBlock, #requestContactSelectBlock').show();
-						
+
 						// Get the claimer //
 						var userClaimer = app.collections.claimers.get(officerJSON.contact_id[0].partner_id[0]);
 
@@ -137,11 +137,11 @@ app.Views.RequestView = Backbone.View.extend({
 						self.renderContact( app.views.selectListClaimersView.getSelected() );
 						app.views.selectListClaimersContactsView.setSelectedItem( officerJSON.contact_id[0].id );
 						$('#requestContactSelect').removeProp('disabled');
-						$('#requestContactInput, #requestContactPhone, #requestContactEmail').removeProp('readonly');						
-						self.renderContactDetails(contact);						
+						$('#requestContactInput, #requestContactPhone, #requestContactEmail').removeProp('readonly');
+						self.renderContactDetails(contact);
 						
-						self.renderTechnicalService(userClaimer.toJSON().technical_service_id[0]);						
-						self.renderTechnicalSite(userClaimer.toJSON().technical_site_id[0]);						
+						self.renderTechnicalService(userClaimer.toJSON().technical_service_id[0]);
+						self.renderTechnicalSite(userClaimer.toJSON().technical_site_id[0]);
 						self.renderContactDetails(officerJSON.contact_id[0])
 					}
 
