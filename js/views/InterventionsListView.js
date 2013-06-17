@@ -810,8 +810,12 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		$('#interName').html(interJSON.name);
 		$('#interDescription').html(interJSON.description);
 		$('#interService').html(interJSON.service_id[1]);
+
+		$('#interDateCreate').html(moment(interJSON.create_date).format('LL'));
+		console.info(interJSON);
+		console.log(interJSON);
 		if(interJSON.date_deadline != false){
-			$('#interDeadline').html(moment(interJSON.date_deadline).format('LLL'));
+			$('#interDeadline').html(' / ' + moment(interJSON.date_deadline).format('LL'));
 		}
 		$('#interPlace').html(interJSON.site1[1]);
 		$('#interPlaceMore').html(interJSON.site_details);

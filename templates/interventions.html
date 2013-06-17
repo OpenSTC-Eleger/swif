@@ -1,14 +1,12 @@
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.interventionsMonitoring %>
-		<sup data-toggle="tooltip" data-original-title="<%= lang.planningFenced %>">
-			<i class="badge badge-info" ><%= nbInterventionsPlanned %></i>
+		<sup class="badge badge-info" data-toggle="tooltip" data-original-title="<%= lang.planningFenced %>" data-placement="bottom">
+			<%= nbInterventionsPlanned %>
 		</sup>
 
-		<sup data-toggle="tooltip" data-original-title="<%= lang.pending %>">
-			<i class="badge" >
-				<%= nbInterventionsPending %>
-			</i>
+		<sup class="badge" data-toggle="tooltip" data-original-title="<%= lang.pending %>" data-placement="bottom">
+			<%= nbInterventionsPending %>
 		</sup>
 	</h1>
 </div>
@@ -683,8 +681,11 @@
 
 		<fieldset style="font-size: 20px; margin-bottom: 30px; padding-top: 20px;">
 			<legend><strong><%= lang.aboutTheIntervention %>:</strong></legend>
-			<strong id="interService" class="field" style="float: right;"></strong><br />
-			<strong id="interDeadline" class="field" style="float: right;"></strong>
+			<p id="interService" class="field" style="float: right; margin: 0;"></p><br />
+			<p style="float: right; margin: 0">
+				<strong id="interDateCreate" class="field"></strong>
+				<strong id="interDeadline" class="field"></strong>
+			</p>
 			<div style="clear: both;">
 				<em style="text-decoration:underline;"><%= _.capitalize(lang.intervention) %>:</em> <span id="interName" class="field"></span><br />
 				<em style="text-decoration:underline;"><%= _.capitalize(lang.description) %>:</em> <span id="interDescription" class="field"></span><br />
