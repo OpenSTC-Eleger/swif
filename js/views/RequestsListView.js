@@ -84,13 +84,13 @@ app.Views.RequestsListView = Backbone.View.extend({
 		// Retrieve the number Interventions due to the Group user //
 		if(app.models.user.isDST()){
 			var interventionsFilter = _.filter(requests, function(item){ 
-				return item.state == app.Models.Request.state[1].value; 
+				return item.state == app.Models.Request.status.confirm.key;
 			});
 			var nbInterventionsInBadge = _.size(interventionsFilter);
 		}
 		else if(app.models.user.isManager()){
 			var interventionsFilter = _.filter(requests, function(item){ 
-				return item.state == app.Models.Request.state[0].value; 
+				return item.state == app.Models.Request.status.wait.key;
 			});
 			var nbInterventionsInBadge = _.size(interventionsFilter);
 		}
@@ -108,7 +108,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 				lang: app.lang,
 				nbInterventionsInBadge: nbInterventionsInBadge,
 				requests: requests,
-				requestsState: app.Models.Request.state,
+				requestsState: app.Models.Request.status,
 				startPos: startPos, endPos: endPos,
 				page: self.options.page, 
 				pageCount: pageCount,
@@ -126,11 +126,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 				$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');
 				$('li.delete-filter').removeClass('disabled');
 
-				_.each(app.Models.Request.state, function (state, i) {
-					if(state.value == sessionStorage.getItem(self.filters)){
-						$('a.filter-button').addClass('text-'+state.color);
-					}
-				})
+				$('a.filter-button').addClass('text-'+app.Models.Request.status[sessionStorage.getItem(self.filters)].color);
 			}
 			else{
 				$('a.filter-button').removeClass('filter-active ^text').addClass('filter-disabled');
@@ -284,8 +280,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 		params = {
 				//ask_id: this.model.getId(),	
-				request_state: app.Models.Request.state[2].value,
-				email_text: app.Models.Request.state[2].traduction,
+				request_state: app.Models.Request.status.valid.key,
+				email_text: app.Models.Request.status.valid.translation,
 				project_state: app.Models.Intervention.state[1].value,
 				date_deadline: new moment($('#requestDateDeadline').val(), 'DD-MM-YYYY').toDate(),
 				description: $('#requestNote').val(),
@@ -316,8 +312,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 		e.preventDefault();
 
 		params = {
-		        state: app.Models.Request.state[4].value,
-		        email_text: app.Models.Request.state[4].traduction,
+		        state: app.Models.Request.status.refused.key,
+		        email_text: app.Models.Request.status.refused.translation,
 		        refusal_reason: $('#motifRefuse').val(),		
 		};		
 		this.saveNewState( params,$('#modalRefusedRequest') );
@@ -330,8 +326,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 	confirmDSTRequest: function(e){
 		e.preventDefault();
 		params = {
-		        state: app.Models.Request.state[1].value,
-		        email_text: app.Models.Request.state[1].traduction,
+		        state: app.Models.Request.status.confirm.key,
+		        email_text: app.Models.Request.status.confirm.translation,
 		        note: $('#motifDST').val(),		
 		};
 		this.saveNewState( params, $('#modalConfirmRequest') );
@@ -351,7 +347,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 					    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 					        }
 					        else{					        	
-					            console.log('NEW STATE REQUEST SAVED');
+					           	console.log('NEW STATE REQUEST SAVED');
 					            if( self.element!= null )
 					            	self.element.modal('hide');
 					            self.model.update(params);

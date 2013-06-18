@@ -13,7 +13,7 @@ app.Collections.Requests = Backbone.Collection.extend({
     /** Collection Initialization
     */
     initialize: function (options) {
-    	console.log('Requests collection Initialization');
+    	//console.log('Requests collection Initialization');
     },
 
 

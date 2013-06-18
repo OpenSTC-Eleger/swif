@@ -455,7 +455,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	},
 
 
-	/** Retreive Equipment  (Vehicle)
+	/** Retrieve Equipment  (Vehicle)
 	*/
 	fillDropdownEquipment: function(e){
 		e.preventDefault();
@@ -469,6 +469,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 			}
 		}
 	},
+
 
 
 	/** Update the <select> list of Users or Teams in the Modal Task Done

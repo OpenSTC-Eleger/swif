@@ -1,11 +1,11 @@
 <!-- Check the group of the user to display element with the good color -->
 <% 
 	if(app.models.user.isDST()) { 
-		var classColor = app.Models.Request.state[1].color;
+		var classColor = app.Models.Request.status.confirm.color;
 		var actionRequestToProcess = lang.actions.confirm;
 	}
 	else if(app.models.user.isManager()){
-		var classColor = app.Models.Request.state[0].color;
+		var classColor = app.Models.Request.status.wait.color;
 		var actionRequestToProcess = lang.actions.process;
 	}
 	else{ 
@@ -70,9 +70,9 @@
 						<ul id="filterStateRequestList" class="dropdown-menu" role="menu" aria-labelledby="filterStateRequest">
 							<% _.each(requestsState, function (state, i) { %>
 								<li role="menuitem">
-									<a tabindex="-1" href="#<%= state.value %>"> 
-										<i class="badge <%= (state.color != '' ? 'badge-'+state.color : '') %>">&nbsp;</i>
-										&nbsp; <%= _.capitalize(state.traduction) %>
+									<a tabindex="-1" href="#<%= state.key %>"> 
+										<i class="badge badge-<%= state.color %>">&nbsp;</i>
+										&nbsp; <%= _.capitalize(state.translation) %>
 									</a>
 								</li>
 							<% }) %>
@@ -96,10 +96,10 @@
 			
 				<!-- Set if the table row should be hightlight and Bold -->
 				<% 
-					if(requests[i].state == app.Models.Request.state[0].value && app.models.user.isManager()) {
+					if(requests[i].state == app.Models.Request.status.wait.key && app.models.user.isManager()) {
 						var classRow = classColor+" bolder";
 					}
-					else if(requests[i].state == app.Models.Request.state[1].value && app.models.user.isDST()){
+					else if(requests[i].state == app.Models.Request.status.confirm.key && app.models.user.isDST()){
 						var classRow = classColor+" bolder";
 					}
 					else{

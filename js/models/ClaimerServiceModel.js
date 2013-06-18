@@ -33,7 +33,7 @@ app.Models.ClaimerService = Backbone.RelationalModel.extend({
 	/** Model Initialization
 	*/
     initialize: function(){
-        console.log('Claimer Service Request Model initialization');
+        //console.log('Claimer Service Request Model initialization');
     },
 
 
