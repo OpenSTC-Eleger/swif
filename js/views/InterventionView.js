@@ -131,7 +131,7 @@ app.Views.InterventionView = Backbone.View.extend({
 			state: this.$('#isTemplate').is(':checked')?"template":"open",
 			//active: this.$('#isTemplate').is(':checked')?false:true,
 			description: this.$('#interventionDescription').val(),
-			date_deadline: new moment($('#interventionDateDeadline').val(), 'DD-MM-YYYY').toDate(),
+			date_deadline: new moment($('#interventionDateDeadline').val(), 'DD-MM-YYYY HH:mm').add('hours',2).toDate(),
 			service_id: input_service_id,
 			site1: this.$('#interventionPlace').val(),
 			site_details: this.$('#interventionPlacePrecision').val(),
