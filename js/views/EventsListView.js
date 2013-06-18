@@ -465,7 +465,7 @@ app.Views.EventsListView = Backbone.View.extend({
 
 
 
-                eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
+				eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
 					app.loader('display');
 					
 				    params = { 
@@ -576,7 +576,7 @@ app.Views.EventsListView = Backbone.View.extend({
         		minutes = _.lpad(((_.rpad(_( app.configuration.endLunchTime ).strRight('.'), 2, '0') / 100) * 60), 2, '0');
         	}
             hours = _( app.configuration.endLunchTime ).strLeft('.');
-			
+
 			var endLunchTime = moment( startDate.clone() ).hours( hours ).minutes( minutes );
 			var lunchEvent = this.getEvent( "lunchTime", startLunchTime.toDate(), endLunchTime.toDate() );
 			this.arrayOnDayEvents.push( lunchEvent );

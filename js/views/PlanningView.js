@@ -64,13 +64,13 @@ app.Views.PlanningView = Backbone.View.extend({
 //    	} ) 
         console.log('Planning view');
     },
-    
+
 
 
     beforeRender : function()  {
     	app.loader('display');
     },
-    
+
 
 
     afterRender : function()  {
@@ -83,7 +83,7 @@ app.Views.PlanningView = Backbone.View.extend({
     */
     render : function() {
         var self = this;
-        
+
 
         // Retrieve the Login template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -100,13 +100,13 @@ app.Views.PlanningView = Backbone.View.extend({
 
         	_.each(app.models.user.attributes.service_ids,function (user_service_id){
         		var agentsKeeped = _.filter(officers, function(officer,i){
-                    
+
                     // Don't display the DST if the user is not the DST //
                     if(!app.models.user.isDST()){
                         if(!officer.isDST()){
                             officer = officer.toJSON();
 
-                            var service = _.filter(officer.service_ids,function (service_id){            		
+                            var service = _.filter(officer.service_ids,function (service_id){
                 				return service_id.id == user_service_id;
                 			}); 
                 			return service.length != 0
@@ -115,7 +115,7 @@ app.Views.PlanningView = Backbone.View.extend({
                     else{
                         officer = officer.toJSON();
 
-                        var service = _.filter(officer.service_ids,function (service_id){                   
+                        var service = _.filter(officer.service_ids,function (service_id){
                             return service_id.id == user_service_id;
                         }); 
                         return service.length != 0

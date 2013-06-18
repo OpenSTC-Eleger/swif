@@ -86,7 +86,7 @@ app.Views.EquipmentsListView = Backbone.View.extend({
 				revert: 300,
 				receive: function(event, ui){
 				}
-			});		
+			});
 		});
 
 		$(this.el).hide().fadeIn('slow');

@@ -59,8 +59,7 @@ app.Views.RequestView = Backbone.View.extend({
 					var template = _.template(templateData, {
 						create: self.create,
 						lang: app.lang,
-						request: self.model.toJSON(),
-						requestsState: app.Models.Request.state
+						request: self.model.toJSON()
 					});
 					
 					$(self.el).html(template);
@@ -186,7 +185,7 @@ app.Views.RequestView = Backbone.View.extend({
 		     
 		     var params = {
 		    	 partner_type: input_partner_type,
-		    	 email_text: app.Models.Request.state[0].traduction,
+		    	 email_text: app.Models.Request.status.wait.translation,
 		    	 partner_id: input_partner_id,
 		    	 partner_address: input_partner_address_id,
 		    	 people_name: this.$('#requestContactInput').val(),

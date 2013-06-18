@@ -2,16 +2,15 @@
 <% if ( !create && request ) { %>
     <h1>
         <%= lang.viewsTitles.requestDetail %> n°<%= request.id %>
-        
-        <% _.each(requestsState, function (state, i) { 
-            if(state.value == request.state){ %>
-                <span class="label label-<%= state.color %> vertical-align-middle marginLeft"><%= state.traduction %></span>
-        <% }} ) %>
+
+        <span class="label label-<%= app.Models.Request.status[request.state].color %> vertical-align-middle marginLeft">
+            <%= app.Models.Request.status[request.state].translation %>
+        </span>
     </h1><br />
     
 
     <!-- Display the Refusal Reason if the request is cancel or Information for the DST -->
-    <% if(request.state == app.Models.Request.state[4].value){ %>
+    <% if(request.state == app.Models.Request.status.refused.key){ %>
     <div class="row-fluid">
         <div class="alert alert-error span6">
             <strong><%= _.capitalize(lang.refusalReason) %>:</strong> <%= request.refusal_reason %>

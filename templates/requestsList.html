@@ -1,11 +1,11 @@
 <!-- Check the group of the user to display element with the good color -->
 <% 
 	if(app.models.user.isDST()) { 
-		var classColor = app.Models.Request.state[1].color;
+		var classColor = app.Models.Request.status.confirm.color;
 		var actionRequestToProcess = lang.actions.confirm;
 	}
 	else if(app.models.user.isManager()){
-		var classColor = app.Models.Request.state[0].color;
+		var classColor = app.Models.Request.status.wait.color;
 		var actionRequestToProcess = lang.actions.process;
 	}
 	else{ 
@@ -66,13 +66,13 @@
 					<%= _.capitalize(lang.status) %>
 					<div class="dropdown pull-right">
 						<a id="filterStateRequest" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="icon-filter icon-large"></i></a>
-						
+
 						<ul id="filterStateRequestList" class="dropdown-menu" role="menu" aria-labelledby="filterStateRequest">
 							<% _.each(requestsState, function (state, i) { %>
 								<li role="menuitem">
-									<a tabindex="-1" href="#<%= state.value %>"> 
-										<i class="badge <%= (state.color != '' ? 'badge-'+state.color : '') %>">&nbsp;</i>
-										&nbsp; <%= _.capitalize(state.traduction) %>
+									<a tabindex="-1" href="#<%= state.key %>"> 
+										<i class="badge badge-<%= state.color %>">&nbsp;</i>
+										&nbsp; <%= _.capitalize(state.translation) %>
 									</a>
 								</li>
 							<% }) %>
@@ -81,7 +81,7 @@
 						</ul>
 					</div>
 				</th>
-				
+
 				<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
 					<th class="span1"><%= _.capitalize(lang.action) %></th>
 				<% } %>
@@ -96,10 +96,10 @@
 			
 				<!-- Set if the table row should be hightlight and Bold -->
 				<% 
-					if(requests[i].state == app.Models.Request.state[0].value && app.models.user.isManager()) {
+					if(requests[i].state == app.Models.Request.status.wait.key && app.models.user.isManager()) {
 						var classRow = classColor+" bolder";
 					}
-					else if(requests[i].state == app.Models.Request.state[1].value && app.models.user.isDST()){
+					else if(requests[i].state == app.Models.Request.status.confirm.key && app.models.user.isDST()){
 						var classRow = classColor+" bolder";
 					}
 					else{
@@ -132,8 +132,9 @@
 					<!-- Request service -->
 					<td>
 						<span data-toggle="tooltip"
-							data-original-title="<%= _.capitalize(lang.toValidateBy) %> <%= (requests[i].manager_id != false ? requests[i].manager_id[1] : _.capitalize(lang.notKnown)) %>">
-							<%= requests[i].belongsToService!=null?requests[i].belongsToService.name:"" %>
+							data-original-title="<%= _.capitalize(lang.toValidateBy) %>
+							<%= (requests[i].manager_id != false ? requests[i].manager_id[1] : _.capitalize(lang.notKnown)) %>">
+								<%= requests[i].belongsToService!=null?requests[i].belongsToService.name:"" %>
 						</span>
 					</td>
 
@@ -146,7 +147,6 @@
 							<%= requests[i].people_name %>
 						<% } %>
 					</td>
-
 
 
 					<!-- Request Date -->
@@ -166,7 +166,7 @@
 							var title = requests[i].infoMessage;
 						}
 						else if(requests[i].state == app.Models.Request.status.closed.key){
-							if(requests[i].intervention_ids[0].state == app.Models.Intervention.state[2].value){
+							if(requests[i].intervention_ids[0].state == app.Models.Intervention.status.closed.key){
 								var title = requests[i].infoMessage;	
 							}
 							else{

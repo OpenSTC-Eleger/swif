@@ -132,40 +132,14 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		this.set({ intervention_ids : value });
 	},
 
-	getColor: function(){
-		var self = this; var color = '';
-		_.each(app.Models.Request.state, function(state){
-			if(self.getState() == state.value){
-				color = state.color;
-			}
-		});
-		return color;
-	},
-	getStateTranslate: function(){
-		var self = this; var stateTranslate = '';
-		_.each(app.Models.Request.state, function(state){
-			if(self.getState() == state.value){
-				stateTranslate = state.traduction;
-			}
-		});
-		return stateTranslate;
-	},
-
-
 
 
 	/** Model Initialization
 	*/
 	initialize: function (model) {
-		console.log("Request Model Initialization");
+		//console.log("Request Model Initialization");
 
-		// Initialization Traduction request state //	   
-		app.Models.Request.state[0].traduction = app.lang.wait;
-		app.Models.Request.state[1].traduction = app.lang.confirm;
-		app.Models.Request.state[2].traduction = app.lang.valid;
-		app.Models.Request.state[3].traduction = app.lang.finished;
-		app.Models.Request.state[4].traduction = app.lang.refused;
-
+		// Set the translation for the states / actions //
 		app.Models.Request.status.wait.translation = app.lang.wait;
 		app.Models.Request.status.valid.translation = app.lang.valid;
 		app.Models.Request.status.confirm.translation = app.lang.confirm;
@@ -238,35 +212,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
 
 
 }, {
-
-	// Request State Initialization //
-	state:  [
-		{
-			value       : 'wait',
-			color       : 'info',
-			traduction  : '',
-		},
-		{
-			value       : 'confirm',
-			color       : 'warning',
-			traduction  : '',
-		},
-		{
-			value       : 'valid',
-			color       : 'success',
-			traduction  : '',  
-		},
-		{
-			value       : 'closed',
-			color       : 'muted',
-			traduction  : '',  
-		},
-		{
-			value       : 'refused',
-			color       : 'important',
-			traduction  : '',
-		}
-	],
 
 	// Status of the requests //
 	status : {
