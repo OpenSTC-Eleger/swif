@@ -48,7 +48,6 @@ app.Views.RequestsListView = Backbone.View.extend({
 	/** Display the view
 	*/
 	render: function () {
-		//app.Views.appView.prototype.render.call(this);
 		var self = this;
 
 		// Change the page title //
@@ -114,7 +113,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 				pageCount: pageCount,
 			});
 
-			console.debug(requests);
+			//console.debug(requests);
 
 			$(self.el).html(template);
 			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
@@ -282,7 +281,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 				//ask_id: this.model.getId(),	
 				request_state: app.Models.Request.status.valid.key,
 				email_text: app.Models.Request.status.valid.translation,
-				project_state: app.Models.Intervention.state[1].value,
+				project_state: app.Models.Intervention.status.open.key,
 				date_deadline: new moment($('#requestDateDeadline').val(), 'DD-MM-YYYY').toDate(),
 				description: $('#requestNote').val(),
 				intervention_assignement_id: $('#requestAssignement').val(),

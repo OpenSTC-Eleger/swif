@@ -66,7 +66,7 @@
 					<%= _.capitalize(lang.status) %>
 					<div class="dropdown pull-right">
 						<a id="filterStateRequest" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="icon-filter icon-large"></i></a>
-						
+
 						<ul id="filterStateRequestList" class="dropdown-menu" role="menu" aria-labelledby="filterStateRequest">
 							<% _.each(requestsState, function (state, i) { %>
 								<li role="menuitem">
@@ -81,7 +81,7 @@
 						</ul>
 					</div>
 				</th>
-				
+
 				<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
 					<th class="span1"><%= _.capitalize(lang.action) %></th>
 				<% } %>
@@ -132,8 +132,9 @@
 					<!-- Request service -->
 					<td>
 						<span data-toggle="tooltip"
-							data-original-title="<%= _.capitalize(lang.toValidateBy) %> <%= (requests[i].manager_id != false ? requests[i].manager_id[1] : _.capitalize(lang.notKnown)) %>">
-							<%= requests[i].belongsToService!=null?requests[i].belongsToService.name:"" %>
+							data-original-title="<%= _.capitalize(lang.toValidateBy) %>
+							<%= (requests[i].manager_id != false ? requests[i].manager_id[1] : _.capitalize(lang.notKnown)) %>">
+								<%= requests[i].belongsToService!=null?requests[i].belongsToService.name:"" %>
 						</span>
 					</td>
 
@@ -146,7 +147,6 @@
 							<%= requests[i].people_name %>
 						<% } %>
 					</td>
-
 
 
 					<!-- Request Date -->
@@ -166,7 +166,7 @@
 							var title = requests[i].infoMessage;
 						}
 						else if(requests[i].state == app.Models.Request.status.closed.key){
-							if(requests[i].intervention_ids[0].state == app.Models.Intervention.state[2].value){
+							if(requests[i].intervention_ids[0].state == app.Models.Intervention.status.closed.key){
 								var title = requests[i].infoMessage;	
 							}
 							else{

@@ -54,24 +54,24 @@
 						<a id="filterStateInter" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="icon-filter icon-large"></i></a>
 
 						<ul id="filterStateInterList" class="dropdown-menu" role="menu" aria-labelledby="filterStateInter">
-							<% _.each(interventionsState, function (state, i) { 
-								if(i == 5){ %>
+							<% _.each(interventionsState, function (state, i) {
+								if(i == app.Models.Intervention.status.template.key){ %>
 									<li class="divider"></li>
 							<% } %>
 								
 								<li role="menuitem">
-									<a tabindex="-1" href="#<%= state.value %>"> 
-										<i class="badge <%= (state.color != '' ? 'badge-'+state.color : '') %>">&nbsp;</i>
-										&nbsp; <%= _.capitalize(state.traduction) %>
+									<a tabindex="-1" href="#<%= state.key %>"> 
+										<i class="badge badge-<%= state.color %>">&nbsp;</i>
+										&nbsp; <%= _.capitalize(state.translation) %>
 									</a>
 								</li>
 
 							<% }) %>
 
 								<li role="menuitem">
-									<a href="#overrun">
-									<i class="badge badge-overrun">&nbsp;</i>
-									&nbsp;<%= _.capitalize(lang.overrun) %></a>
+									<a href="#overrun"><i class="badge badge-overrun">&nbsp;</i>
+										&nbsp; <%= _.capitalize(lang.overrun) %>
+									</a>
 								</li>
 								<li class="divider"></li>
 								<li class="delete-filter disabled"><a href="#delete-filter"> <i class="icon-remove"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
@@ -103,7 +103,7 @@
 							<a href="#" class="printInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="inter">
 								<i class="icon-print icon-large" data-action="inter">&nbsp;</i>
 							</a>
-							<% if(interventions[i].state == app.Models.Intervention.state[1].value || interventions[i].state == app.Models.Intervention.state[0].value) { %>
+							<% if(interventions[i].state == app.Models.Intervention.status.open.key || interventions[i].state == app.Models.Intervention.status.scheduled.key) { %>
 								 &nbsp;<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-ban-circle icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
 							<% } %>
 						</p>
@@ -116,27 +116,19 @@
 
 					<!-- Check the state of the intervention -->
 					<td>
-
-						<!-- state - To Scheduled -->
-						<% if(interventions[i].state == app.Models.Intervention.state[1].value){ %>
-							<span class="label label-<%= app.Models.Intervention.state[1].color %>"  data-toggle="tooltip" data-original-title="<%= interventions[i].infoMessage %>">
-								<%= app.Models.Intervention.state[1].traduction %>
-							</span>
-
-						<!-- state - Scheduled -->
-						<% } else if(interventions[i].state == app.Models.Intervention.state[0].value){ %>
-							<span class="label label-<%= app.Models.Intervention.state[0].color %>"  data-toggle="tooltip" data-original-title="<%= interventions[i].infoMessage %>">
-								<%= app.Models.Intervention.state[0].traduction %>
+						<% if(interventions[i].state != app.Models.Intervention.status.pending.key && interventions[i].state != app.Models.Intervention.status.closed.key){ %>
+							<span class="label label-<%= app.Models.Intervention.status[interventions[i].state].color %>"  data-toggle="tooltip" data-original-title="<%= interventions[i].infoMessage %>">
+								<%= app.Models.Intervention.status[interventions[i].state].translation %>
 							</span>
 
 						<!-- state - Pending -->
-						<% } else if(interventions[i].state == app.Models.Intervention.state[3].value){ %>
+						<% } else if(interventions[i].state == app.Models.Intervention.status.pending.key){ %>
 							<div class="progress progress-default" data-toggle="tooltip" data-title="<%= interventions[i].infoMessage %>">
 								<div class="bar" style="width: <%= interventions[i].progress_rate %>%"><%= _(interventions[i].progress_rate).toNumber() %>%</div>
 							</div>
 
 						<!-- state - Closed -->
-						<% } else if(interventions[i].state == app.Models.Intervention.state[2].value){ 
+						<% } else if(interventions[i].state == app.Models.Intervention.status.closed.key){ 
 							if(interventions[i].overPourcent > 100){ %>
 								<div class="progress progress-overrun">
 									<div class="bar" style="width: 100%"><%= _(interventions[i].overPourcent).toNumber() %>%</div>
@@ -146,19 +138,6 @@
 									<div class="bar" style="width: <%= interventions[i].overPourcent %>%"><%= _(interventions[i].overPourcent).toNumber() %>%</div>
 								</div>
 							<% } %>
-
-						<!-- state - Template -->
-						<% } else if(interventions[i].state == app.Models.Intervention.state[5].value){ %>
-							<span class="label label-<%= app.Models.Intervention.state[5].color %>">
-								<%= app.Models.Intervention.state[5].traduction %>
-							</span>
-
-						<!-- state - Cancelled -->
-						<% } else if(interventions[i].state == app.Models.Intervention.state[4].value){ %>
-							<span class="label label-<%= app.Models.Intervention.state[4].color %>"  data-toggle="tooltip" data-original-title="<%= interventions[i].infoMessage %>">
-								<%= app.Models.Intervention.state[4].traduction %>
-							</span>
-
 						<% } %>
 					</td>
 
@@ -278,7 +257,7 @@
 								</tbody>
 							</table>
 						<% } else { %>
-								<!-- No request in the Database -->
+								<!-- No intervention to Display -->
 								<div class="alert alert-info">
 									<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTaskForIntervention %>.
 								</div>
@@ -286,7 +265,7 @@
 
 							<div class="div-actions" >
 								<button class="btn btn-primary btn-small no-outline addTask"
-									<% if(interventions[i].state != app.Models.Intervention.state[1].value && interventions[i].state != app.Models.Intervention.state[5].value) { %>
+									<% if(interventions[i].state != app.Models.Intervention.status.open.key && interventions[i].state != app.Models.Intervention.status.template.key) { %>
 										disabled
 								<% } %>>
 									<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addTask) %>

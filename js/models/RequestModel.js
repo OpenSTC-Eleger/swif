@@ -139,6 +139,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 	initialize: function (model) {
 		//console.log("Request Model Initialization");
 
+		// Set the translation for the states / actions //
 		app.Models.Request.status.wait.translation = app.lang.wait;
 		app.Models.Request.status.valid.translation = app.lang.valid;
 		app.Models.Request.status.confirm.translation = app.lang.confirm;
