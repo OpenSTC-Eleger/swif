@@ -30,13 +30,14 @@
 				</a>
 
 				<ul id="filterStateInterventionList" class="dropdown-menu" aria-labelledby="filterStateIntervention">
-					<% _.each(interventionsState, function (state, i) { 
-						if(state.value == app.Models.Intervention.state[0].value || state.value == app.Models.Intervention.state[1].value || state.value == app.Models.Intervention.state[3].value || state.value == app.Models.Intervention.state[5].value){
+
+					<% _.each(interventionsState, function (state, i) {
+						if(i == app.Models.Intervention.status.scheduled.key || i == app.Models.Intervention.status.open.key || i == app.Models.Intervention.status.pending.key || i == app.Models.Intervention.status.template.key){
 					%>
 						<li>
-							<a tabindex="-1" href="#<%= state.value %>">
-								<i class="badge <%= (state.color != '' ? 'badge-'+state.color : '') %>">&nbsp;</i>
-								&nbsp; <%= _.capitalize(state.traduction) %>
+							<a tabindex="-1" href="#<%= state.key %>">
+								<i class="badge badge-<%= state.color %>">&nbsp;</i>
+								&nbsp; <%= _.capitalize(state.translation) %>
 							</a>
 						</li>
 					<% }
@@ -58,26 +59,14 @@
 
 			<!-- State Color -  To Schedule - Scheduled - Template-->
 			<% _.each(interventions, function (intervention, i) { 
-				var informationHour	= '--';
-				if(intervention.state == app.Models.Intervention.state[1].value){
-					var classColor = app.Models.Intervention.state[1].color;
-					var traduction = app.Models.Intervention.state[1].traduction;
-					informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours, 'human') : '--');
+				var informationHour	= '';
+				var classColor = app.Models.Intervention.status[intervention.state].color;
+
+				if(intervention.state != app.Models.Intervention.status.template.key){
+					informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours, 'human') : '');
 				}
-				else if(intervention.state == app.Models.Intervention.state[0].value){
-					var classColor = app.Models.Intervention.state[0].color;
-					var traduction = app.Models.Intervention.state[0].traduction;
-					informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours, 'human') : '--');
-				}
-			   else if(intervention.state == app.Models.Intervention.state[3].value){
-					var classColor = app.Models.Intervention.state[3].color;
-					var traduction = app.Models.Intervention.state[3].traduction;
-					informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours) : '--');
-				}
-				else if(intervention.state == app.Models.Intervention.state[5].value){
-					var classColor = app.Models.Intervention.state[5].color;
-					var traduction = app.Models.Intervention.state[5].traduction;
-					informationHour = (intervention.total_hours != false ? app.decimalNumberToTime(intervention.total_hours, 'human') : '--');
+				else{
+					informationHour = (intervention.total_hours != false ? app.decimalNumberToTime(intervention.total_hours, 'human') : '');
 				}
 
 
@@ -102,7 +91,7 @@
 							<!-- Intervention Actions -->
 							<button class="btn btn-link invisible linkToInter" type="button" data-toggle="modal" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>" data-placement="top" data-delay="50"><i class="icon-pencil"></i></button>	
 							
-							<% if(intervention.state == app.Models.Intervention.state[1].value || intervention.state == app.Models.Intervention.state[0].value) { %>
+							<% if(intervention.state == app.Models.Intervention.status.open.key || intervention.state == app.Models.Intervention.status.scheduled.key) { %>
 								<button data-target="#modalCancelInter" class="btn btn-link buttonCancelInter invisible" data-toggle="modal" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>" data-placement="top" data-delay="50"><i class="icon-ban-circle"></i></button>
 							<% } %>
 

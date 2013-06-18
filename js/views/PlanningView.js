@@ -184,7 +184,7 @@ app.Views.PlanningView = Backbone.View.extend({
             // Set variables template //
             var template = _.template(templateData, {
         		lang: app.lang,
-        		interventionsState: app.Models.Intervention.state,
+        		interventionsState: app.Models.Intervention.status,
         		interventions: interventionSorted.toJSON(),
         		officers: officers,
         		teams: that.teams,
