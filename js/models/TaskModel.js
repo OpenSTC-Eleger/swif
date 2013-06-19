@@ -41,6 +41,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ id : value });
 	},
+
 	getName : function() {
 		return this.get('name');
 	},
@@ -48,13 +49,15 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ id : value });
 	},
+
 	getState : function() {
 		return this.get('name');
 	},
 	setState : function(value) {
 		if( value == 'undefined') return;
 		this.set({ state : value });
-	},    
+	},
+
 	getInterventionId : function() {
 		if(this.get('project_id')){
 			return this.get('project_id');
@@ -67,6 +70,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ project_id : value });
 	},
+
 	getInterventionName : function() {
 		if(this.get('project_id') != false){
 			return this.get('project_id')[1];
@@ -75,6 +79,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 			return '';
 		}
 	},
+
 	getUserId : function() {
 		return this.get('user_id');
 	},
@@ -85,6 +90,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	getUserName : function() {
 		return this.get('user_id')[1];
 	},
+
 	getTeamId : function() {
 		return this.get('team_id');
 	},
@@ -92,9 +98,11 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ team_id : value });
 	},
+
 	getTeamName : function() {
 		return this.get('team_id')[1];
 	},
+
 	getDateEnd : function() {
 		return this.get('date_end');
 	},
@@ -102,6 +110,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ date_end : value });
 	},
+
 	getDateStart : function() {
 		return this.get('date_start');
 	},
@@ -109,6 +118,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ date_start : value });
 	},
+
 	getRemainingHours : function() {
 		return this.get('remaining_hours');
 	},
@@ -116,6 +126,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ remaining_hours : value });
 	},
+
 	getPlannedHours : function() {
 		return this.get('planned_hours');
 	},
@@ -123,6 +134,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ planned_hours : value });
 	},
+
 	getStartEndDateInformations : function(){
 		return "Du " + this.getDateStart().format('LLL') + " au " + this.getDateEnd().format('LLL');
 	},
