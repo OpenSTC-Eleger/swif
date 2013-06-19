@@ -125,7 +125,7 @@ app.Views.EventsListView = Backbone.View.extend({
 
 			// Display a label with the state of the task //
 			
-			tasksInfo += '<span class="label label-'+task.getColor()+' pull-right">'+task.getStateTranslate()+'</span>';
+			tasksInfo += '<span class="label label-'+app.Models.Task.status[task.getState()].color+' pull-right">'+app.Models.Task.status[task.getState()].translation+'</span>';
 
 
 			// Check if the task is set to an officer or a team //
@@ -142,7 +142,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			$('#infoModalAboutTask small').html(task.getStartEndDateInformations() + assignTo);
 
 			// Disable or not the button "Remove Of The Schedule" //
-			if(task.getState() == app.Models.Task.state[1].value || task.getState() == app.Models.Task.state[2].value || task.getState() == app.Models.Task.state[4].value){
+			if(task.getState() == app.Models.Task.status.done.key || task.getState() == app.Models.Task.status.cancelled.key){
             	$('#btnRemoveTask').prop('disabled', true);
             	$('#switchWithForeman').bootstrapSwitch('setActive', false);
 			}
@@ -181,46 +181,13 @@ app.Views.EventsListView = Backbone.View.extend({
         	console.log('Edit Event');
         },
 
-
-        
-        getColor: function(task) {
-        	var classColor = '';
-
-			switch (task.state) {
-				case app.Models.Task.state[0].value:
-			    	classColor = app.Models.Task.state[0].color;
-			    	break;
-				case app.Models.Task.state[1].value:
-					classColor = app.Models.Task.state[1].color;
-					break;
-				case app.Models.Task.state[2].value:
-					classColor = app.Models.Task.state[2].color;
-					break;
-				case app.Models.Task.state[3].value:
-					classColor = app.Models.Task.state[3].color;
-					break;
-				case app.Models.Task.state[4].value:
-					classColor = app.Models.Task.state[4].color;
-					break;
-				case app.Models.Task.state[5].value:
-					classColor = app.Models.Task.state[5].color;
-					break;
-				default:
-					classColor = app.Models.Task.state[3].color;
-					break;
-        	}
-
-        	return classColor;
-        },
-
-
         
         initEvents: function() {
         	this.events = [];
         	var self = this;
         	
         	_.each(this.filterTasks , function (task, i){
-        		var actionDisabled = task.state == app.Models.Task.state[1].value || task.state == app.Models.Task.state[4].value;
+        		var actionDisabled = task.state == app.Models.Task.status.done.key || task.state == app.Models.Task.status.cancelled.key;
 
         		var event = { 
         			id: task.id, 
@@ -233,7 +200,7 @@ app.Views.EventsListView = Backbone.View.extend({
 					effective_hours: task.effective_hours,
 					remaning_hours: task.remaining_hours,
 					allDay: false,
-					className: 'calendar-'+self.getColor(task),
+					className: 'calendar-'+app.Models.Task.status[task.state].color,
 					editable: true,
 					disableDragging: actionDisabled,
 					disableResizing: actionDisabled,
@@ -286,7 +253,6 @@ app.Views.EventsListView = Backbone.View.extend({
 				// time formats
 				titleFormat: {
 				    month: 'MMMM yyyy',
-				    // week: "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}",
 				    week:"'Semaine 'W' du' dd [MMM] [yyyy] {'au' dd MMM yyyy}",
 				    day: 'dddd dd MMM yyyy'
 				},
@@ -544,9 +510,9 @@ app.Views.EventsListView = Backbone.View.extend({
         	        		  name:  event.title,
         	                  project_id: event.project_id,
         	                  parent_id: event.copy?event.id:false,
-        	                  state: app.Models.Task.state[3].value, 
-        	                  planned_hours: event.planned_hours ,
-        	                  remaining_hours: event.planned_hours ,
+        	                  state: app.Models.Task.status.draft.key,
+        	                  planned_hours: event.planned_hours,
+        	                  remaining_hours: event.planned_hours,
         	                  user_id: null,
         	                  team_id: null,
         	                  date_end: null,
@@ -752,12 +718,12 @@ app.Views.EventsListView = Backbone.View.extend({
 
 		
 		getStyle: function (nTd, sData, oData, iRow, iCol) {
-			if( oData.state == app.Models.Task.state[5].value )
+			if( oData.state == app.Models.Task.status.absent.key )
 				$(nTd).css('font-style', 'italic');
 		},
 		
 		renderResume: function (o, check){
-			if( o.aData.state != app.Models.Task.state[5].value )
+			if( o.aData.state != app.Models.Task.status.absent.key )
 				return "<td class=\"center\"><input type=\"checkbox\" disabled " + (check?"checked":"") + "></td>";
 			else
 				return "<td class=\"center\"></td>";
@@ -811,8 +777,8 @@ app.Views.EventsListView = Backbone.View.extend({
 	        	return (
 	        			task.date_start && task.date_start.toDate() < self.el.fullCalendar('getView').visEnd &&
 	        			task.date_end && task.date_end.toDate() > self.el.fullCalendar('getView').visStart &&
-	        			(	task.state != app.Models.Task.state[3].value &&
-	        				task.state != app.Models.Task.state[4].value
+	        			(	task.state != app.Models.Task.status.draft.key &&
+	        				task.state != app.Models.Task.status.cancelled.key
 	        			)
 	        			
 	        		); 
@@ -834,7 +800,7 @@ app.Views.EventsListView = Backbone.View.extend({
 		    	task["place"] = ( inter!=null && inter.site1!=null && inter.site1[1] )?inter.site1[1]:"" ;
 		    	//task["effective_hours"] = "";
 		    	//task["remaining_hous"] = "";
-		    	task["done"] = ( task.state == app.Models.Task.state[1].value  ? true : false );
+		    	task["done"] = ( task.state == app.Models.Task.status.done.key  ? true : false );
 		    	
 		    	task["equipment"] = "";
 		    	if( task.equipment_ids ) {

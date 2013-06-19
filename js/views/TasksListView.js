@@ -65,10 +65,6 @@ app.Views.TasksListView = Backbone.View.extend({
 		var officer_id = officer.get('uid');
 		
 		var tasks = app.collections.tasks.toJSON();
-		
-//		tasks = _.sortBy(tasks, function(item){ 
-//			return [-item.state,-item.date_start]; 
-//		});
 
 
 		// Retrieve the year - If not exist in the URL set as the current year //
@@ -120,7 +116,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		_.each(tasksUser, function(task, i){
 
 			// Don't display the task with absent state - congé //
-			if(task.state != app.Models.Task.state[5].value){
+			if(task.state != app.Models.Task.status.absent.key){
 
 				if(momentDate.clone().isSame(task.date_start, 'week')){
 					if(momentDate.clone().day(1).isSame(task.date_start, 'day')){
@@ -146,7 +142,7 @@ app.Views.TasksListView = Backbone.View.extend({
 					}
 
 					// Retrieve the number of Open Task //
-					if(task.state == app.Models.Task.state[0].value){
+					if(task.state == app.Models.Task.status.open.key){
 						nbPendingTasks++;
 					}
 
@@ -158,7 +154,7 @@ app.Views.TasksListView = Backbone.View.extend({
 						sundayTasks.push(task);
 
 						// Retrieve the number of Open Task //
-						if(task.state == app.Models.Task.state[0].value){
+						if(task.state == app.Models.Task.status.open.key){
 							nbPendingTasks++;
 						}
 					}
@@ -181,7 +177,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 
 
-			
+
 		// Fill DropDown list Agents //
 		var officersDropDownList;
 		var displayFilter;
@@ -264,7 +260,6 @@ app.Views.TasksListView = Backbone.View.extend({
 			}
 			else{
 				displayFilter = false;
-
 			}
 		}
 
@@ -385,7 +380,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		$(this.el).hide().fadeIn('slow');
 
 		return this;
-    },
+	},
 
 
 
@@ -409,7 +404,7 @@ app.Views.TasksListView = Backbone.View.extend({
 					var equipmentJSON = item.toJSON();
 					var services = _.map(equipmentJSON.service_ids, function(service){return service.id;});
 		    		return $.inArray(service[0], services)!=-1;
-		    	});			
+		    	});
 			}
 			else
 				filteredEquipment = filteredEquipment.models;
@@ -579,7 +574,7 @@ app.Views.TasksListView = Backbone.View.extend({
 			user_id:  app.models.user.getUID(),
 			date_start: mNewDateStart.toDate(),
 			date_end: mNewDateEnd.toDate(),
-			state: app.Models.Task.state[1].value,
+			state: app.Models.Task.status.done.key,
 			vehicule: vehicule,
 			equipment_ids: equipments,
 			name: this.$('#taskName').val(),
@@ -723,17 +718,16 @@ app.Views.TasksListView = Backbone.View.extend({
 				}
 			}
 		);
-    	
-    },
+	},
     
-    /**
-     * Save Task as not beginning
-     */
+	
+	/** Save Task as not beginning
+	*/
     taskNotDone: function(e) {
 		e.preventDefault();
 		this.getTask(e);
 		taskParams = {
-			state: app.Models.Task.state[3].value,		
+			state: app.Models.Task.status.draft.key,
 			user_id: null,
 			team_id:null,
 			date_end: null,
@@ -745,6 +739,8 @@ app.Views.TasksListView = Backbone.View.extend({
 
 	},
 	
+
+
 	secondsToHms : function (d) {
 		d = Number(d);	
 		var h = Math.floor(d / 3600);
@@ -753,8 +749,9 @@ app.Views.TasksListView = Backbone.View.extend({
 		return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":" : "0:") + (s < 10 ? "0" : "") + s);
 	},
 
-	/** 
-	 * Filter Tasks
+
+
+	/** Filter Tasks
 	*/
 	setFilter: function(event){
 		event.preventDefault();
@@ -783,8 +780,10 @@ app.Views.TasksListView = Backbone.View.extend({
 
 	},
 
-    preventDefault: function(event){
-    	event.preventDefault();
-    },
+
+
+	preventDefault: function(event){
+		event.preventDefault();
+	},
 
 });

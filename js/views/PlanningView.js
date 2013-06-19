@@ -17,8 +17,6 @@ app.Views.PlanningView = Backbone.View.extend({
 
     sstoragePlanningSelected: 'selectedPlanning',
     
-    //task: app.Models.Task.getCurrentTask(),
-    
     // The DOM events //
     events: {
         'click .buttonCancelInter'                     : 'setInfoModalCancelInter',
@@ -492,7 +490,7 @@ app.Views.PlanningView = Backbone.View.extend({
         var taskModel = app.collections.tasks.get(taskId)
 
         params = {
-            state: app.Models.Task.state[3].value, 
+            state: app.Models.Task.status.draft.key,
             user_id: null,
             team_id: null,
             date_end: null,

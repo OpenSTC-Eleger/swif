@@ -34,134 +34,115 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		currentTask: null,
 	},
 	
-    getId : function() {
-        return this.get('id');
-    },
-    setId: function(value) {
-    	if( value == 'undefined') return;
-        this.set({ id : value });
-    },
-    getName : function() {
-        return this.get('name');
-    },
-    setName: function(value) {
-    	if( value == 'undefined') return;
-        this.set({ id : value });
-    },
-    getState : function() {
-        return this.get('name');
-    },
-    setState : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ state : value });
-    },    
-    getInterventionId : function() {
-        if(this.get('project_id')){
-        	return this.get('project_id');
-        }
-        else{
-        	return '';
-        }
-    },
-    setInterventionId : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ project_id : value });
-    },
-	getInterventionName : function() {
-        if(this.get('project_id') != false){
-        	return this.get('project_id')[1];
-        }
-        else{
-        	return '';
-        }
-    },
-    getUserId : function() {
-        return this.get('user_id');
-    },
-    setUserId : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ user_id : value });
-    },
-	getUserName : function() {
-        return this.get('user_id')[1];
-    },
-    getTeamId : function() {
-        return this.get('team_id');
-    },
-    setTeamId : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ team_id : value });
-    },
-	getTeamName : function() {
-        return this.get('team_id')[1];
-    },
-    getDateEnd : function() {
-        return this.get('date_end');
-    },
-    setDateEnd : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ date_end : value });
-    },
-    getDateStart : function() {
-        return this.get('date_start');
-    },
-    setDateStart : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ date_start : value });
-    },
-    getRemainingHours : function() {
-        return this.get('remaining_hours');
-    },
-    setRemainingHours : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ remaining_hours : value });
-    },
-    getPlannedHours : function() {
-        return this.get('planned_hours');
-    },
-    setPlannedHours : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ planned_hours : value });
-    },
-    getStartEndDateInformations : function(){
-		return "Du " + this.getDateStart().format('LLL') + " au " + this.getDateEnd().format('LLL');
-    },
+	getId : function() {
+		return this.get('id');
+	},
+	setId: function(value) {
+		if( value == 'undefined') return;
+		this.set({ id : value });
+	},
+	getName : function() {
+		return this.get('name');
+	},
+	setName: function(value) {
+		if( value == 'undefined') return;
+		this.set({ id : value });
+	},
 	getState : function() {
-        return this.get('state');
-    },
-    getColor: function(){
-    	var self = this; var color = '';
-    	_.each(app.Models.Task.state, function(state){
-    		if(self.getState() == state.value){
-   				color = state.color;
-    		}
-    	});
-    	return color;
-    },
-	getStateTranslate: function(){
-    	var self = this; var stateTranslate = '';
-    	_.each(app.Models.Task.state, function(state){
-    		if(self.getState() == state.value){
-   				stateTranslate = state.traduction;
-    		}
-    	});
-    	return stateTranslate;
-    },
-	
+		return this.get('name');
+	},
+	setState : function(value) {
+		if( value == 'undefined') return;
+		this.set({ state : value });
+	},    
+	getInterventionId : function() {
+		if(this.get('project_id')){
+			return this.get('project_id');
+		}
+		else{
+			return '';
+		}
+	},
+	setInterventionId : function(value) {
+		if( value == 'undefined') return;
+		this.set({ project_id : value });
+	},
+	getInterventionName : function() {
+		if(this.get('project_id') != false){
+			return this.get('project_id')[1];
+		}
+		else{
+			return '';
+		}
+	},
+	getUserId : function() {
+		return this.get('user_id');
+	},
+	setUserId : function(value) {
+		if( value == 'undefined') return;
+		this.set({ user_id : value });
+	},
+	getUserName : function() {
+		return this.get('user_id')[1];
+	},
+	getTeamId : function() {
+		return this.get('team_id');
+	},
+	setTeamId : function(value) {
+		if( value == 'undefined') return;
+		this.set({ team_id : value });
+	},
+	getTeamName : function() {
+		return this.get('team_id')[1];
+	},
+	getDateEnd : function() {
+		return this.get('date_end');
+	},
+	setDateEnd : function(value) {
+		if( value == 'undefined') return;
+		this.set({ date_end : value });
+	},
+	getDateStart : function() {
+		return this.get('date_start');
+	},
+	setDateStart : function(value) {
+		if( value == 'undefined') return;
+		this.set({ date_start : value });
+	},
+	getRemainingHours : function() {
+		return this.get('remaining_hours');
+	},
+	setRemainingHours : function(value) {
+		if( value == 'undefined') return;
+		this.set({ remaining_hours : value });
+	},
+	getPlannedHours : function() {
+		return this.get('planned_hours');
+	},
+	setPlannedHours : function(value) {
+		if( value == 'undefined') return;
+		this.set({ planned_hours : value });
+	},
+	getStartEndDateInformations : function(){
+		return "Du " + this.getDateStart().format('LLL') + " au " + this.getDateEnd().format('LLL');
+	},
+	getState : function() {
+		return this.get('state');
+	},
+
 
 
 	/** Model Initialization
 	*/
 	initialize: function (model) {
-	   	console.log('Task Model Initialization');
+		console.log('Task Model Initialization');
 
 		// Initialization Traduction task state //
-		app.Models.Task.state[0].traduction = app.lang.planningFenced;
-		app.Models.Task.state[1].traduction = app.lang.finished;
-		app.Models.Task.state[2].traduction = app.lang.valid;
-		app.Models.Task.state[3].traduction = app.lang.toScheduled;
-		app.Models.Task.state[4].traduction = app.lang.cancelled;
-		app.Models.Task.state[5].traduction = app.lang.away;
+		app.Models.Task.status.draft.translation = app.lang.toScheduled;
+		app.Models.Task.status.open.translation = app.lang.planningFenced;
+		app.Models.Task.status.done.translation = app.lang.finished;
+		app.Models.Task.status.cancelled.translation = app.lang.cancelled;
+		app.Models.Task.status.absent.translation = app.lang.away;
 	},
 
 
@@ -176,9 +157,9 @@ app.Models.Task = Backbone.RelationalModel.extend({
 
 
 
-    /** Model Parser
-    */
-    parse: function(response) {
+	/** Model Parser
+	*/
+	parse: function(response) {
 		
 		// Check if the date is a moment() //
 		if(!moment.isMoment(response.date_start)){
@@ -196,8 +177,8 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		}
 
 		return response;
-    },
-    
+	},
+	
 
 
 	/** Save Model
@@ -207,7 +188,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 			app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {         	
 				success: function(data){
 					Backbone.history.loadUrl(Backbone.history.fragment);
-                    //app.router.navigate('#planning', {trigger: true, replace: true});
+					//app.router.navigate('#planning', {trigger: true, replace: true});
 				}
 			});
 		}
@@ -216,74 +197,29 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		}
 	},
 	
-	/**
-	 * Save Model with backend method named saveTaskDone
-	 */	
+
+
+	/** Save Model with backend method named saveTaskDone
+	*/	
 	saveTaskDone: function(params, options) {
 		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "saveTaskDone", app.models.user.getSessionID(), options);
 	},
-	
-	/**
-	 * Create orphan task in backend
-	 */	
+
+
+
+	/** Create orphan task in backend
+	*/	
 	createOrphan: function(params, options) {
 		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "createOrphan", app.models.user.getSessionID(), options);
 	},
+
+
 	
-	/**
-	 * Report hours in backend
-	 */	
+	/** Report hours in backend
+	*/	
 	reportHours: function(params, options) {
 		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "reportHours", app.models.user.getSessionID(), options);
 	},
-
-
-	
-//	save: function(id,data,closeModal, view, strRoute) { 
-//		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {
-//            beforeSend: function(){
-//            	app.loader('display');
-//        	},
-//		    success: function (data) {
-//		        console.log(data);
-//		        if(data.error){
-//		    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-//		        }
-//		        else{
-//		        	if( closeModal!= null )
-//		            	closeModal.modal('hide');
-//		        	if( view || strRoute ) {
-//		                if(app.collections.tasks == null ){
-//		                    app.collections.tasks = new app.Collections.Tasks();
-//		                }	
-//		                //TODO fetch tasks & interventions pê pas necessaires car elles st rechargées dans le routeur
-//					 	app.collections.tasks.fetch({  
-//					 		success: function(){
-//						 		app.collections.interventions.fetch({
-//					                success: function(){				 			
-//						 				if( strRoute ) {
-//											//route = Backbone.history.fragment;
-//											Backbone.history.loadUrl(strRoute);
-//						 					//app.Router.navigate("planning/"+Backbone.history.fragment,{trigger: true, replace: true})
-//										}
-//										else if (view)
-//											view.render();
-//							 		},	            		
-//						 			complete: function(){
-//				            			app.loader('hide');
-//				            		}					 
-//						 		});
-//					 		}					 
-//					 	});
-//					}
-//		        }
-//		    },
-//		    error: function () {
-//				console.log('ERROR - Unable to save the Request - RequestView.js');
-//		    }, 
-//		});
-//	},
-
 
 
 	update: function(params) {
@@ -315,39 +251,33 @@ app.Models.Task = Backbone.RelationalModel.extend({
 
 }, {
 
-
-// Task State Initialization //
-state:  [
-    {
-        value       : 'open', // Scheduled //
-        color       : 'info',
-        traduction  : '',
-    },
-    {
-        value       : 'done', // Finish //
-        color       : 'success',
-        traduction  : '',
-    },
-    {
-        value       : 'pending',
-        color       : 'default',
-        traduction  : '',
-    },
-	{
-        value       : 'draft', // To Schedule //
-        color       : 'warning',
-        traduction  : '',
-    },
-    {
-        value       : 'cancelled', // cancel //
-        color       : 'important',
-        traduction  : '',
-    },
-    {
-        value       : 'absent', // Congé //
-        color       : 'absent',
-        traduction  : '',
-    }
-]
+	// Task State Initialization //
+	status:  {
+		draft: {
+			key 			: 'draft', // To Schedule //
+			color 			: 'warning',
+			translation  	: ''
+		},
+		open: {
+			key				: 'open', // Scheduled //
+			color 			: 'info',
+			translation 	: ''
+		},
+		done: {
+			key 			: 'done', // Finish //
+			color 			: 'success',
+			translation 	: ''
+		},
+		cancelled: {
+			key 			: 'cancelled', // cancel //
+			color 			: 'important',
+			translation 	: ''
+		},
+		absent: {
+			key 			: 'absent', // Congé //
+			color 			: 'absent',
+			translation 	: ''
+		}
+	}
 
 });

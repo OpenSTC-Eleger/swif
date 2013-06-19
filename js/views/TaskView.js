@@ -63,7 +63,7 @@ app.Views.TaskView = Backbone.View.extend({
 			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 			
 			
-			if( self.modelJSON.state != app.Models.Task.state[0].value) {
+			if( self.modelJSON.state != app.Models.Task.status.open.key) {
 				$('.inputField').prop('disabled', true);
 				$('.save').prop('disabled', true);
 			}else {
@@ -190,7 +190,7 @@ app.Views.TaskView = Backbone.View.extend({
 	         user_id: input_officer_id,        
 	         date_start: mNewDateStart.toDate(),
 	         date_end: mNewDateEnd.toDate(),
-	         state: app.Models.Task.state[0].value,
+	         state: app.Models.Task.status.open.key,
 	         name: this.$('#taskName').val(),
 	         description: this.$('#taskDescription').val(),
 	         category_id: input_category_id,	         

@@ -112,7 +112,7 @@
 									_.each(intervention.tasks, function (task, i) { %>
 
 										<!-- To Schedule -->
-										<% if(task.state == app.Models.Task.state[3].value) { %>
+										<% if(task.state == app.Models.Task.status.draft.key) { %>
 										<li id="task_<%= task.id %>" class="external-event">
 											<i class="icon-chevron-right"></i> <%= task.name %>
 
@@ -120,16 +120,16 @@
 												<i class="icon-remove displayInlineBlock modalDeleteTask" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top" data-delay="50">&nbsp;</i>
 											</a>
 
-											<small class="badge badge-<%= app.Models.Task.state[3].color %> pull-right"><%= task.planned_hours %>h</small>
+											<small class="badge badge-<%= app.Models.Task.status.draft.color %> pull-right"><%= task.planned_hours %>h</small>
 										</li>
 
 										<!-- Schedule -->
 										<% allPlanned = false;
 
-										} else if(task.state == app.Models.Task.state[0].value){ %>
+										} else if(task.state == app.Models.Task.status.open.key){ %>
 										<li id="task_<%= task.id %>" class="external-event disabled">
 											<i class="icon-time" rel="tooltip" data-placement="right" data-original-title="<%= moment(task.date_start).format('LLL') %> - <%= (task.team_id == false ? task.user_id[1] : task.team_id[1]) %>"></i> <%= task.name %>
-											<small class="badge badge-<%= app.Models.Task.state[0].color %> pull-right"><%= app.decimalNumberToTime(task.planned_hours, 'human') %></small>
+											<small class="badge badge-<%= app.Models.Task.status.open.color %> pull-right"><%= app.decimalNumberToTime(task.planned_hours, 'human') %></small>
 										</li>
 										<% } %>
 

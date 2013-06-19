@@ -86,14 +86,14 @@
 		<% if(day.day.isSame(moment(), "day")){ var unfold = 'in'; var borderUnfold = 'collapse-selected'} %>
 
 		<!-- Count the number of Open Task -->
-		<% 	var pendingTask = _.countBy(day.tasks, function(task){ return task.state == app.Models.Task.state[0].value; }); %>
+		<% 	var pendingTask = _.countBy(day.tasks, function(task){ return task.state == app.Models.Task.status.open.key; }); %>
 
 		<section class="accordion-group <%= borderUnfold %>">
 		
 			<div class="accordion-heading">
 				<a class="accordion-toggle" data-toggle="collapse" href="#accordion_<%= i %>">
 					<h4 class="table-caption">
-						<%= _.capitalize(day.day.format('dddd D MMMM')) %> 
+						<%= _.capitalize(day.day.format('dddd D MMMM')) %>
 						<div class="pull-right">
 							<!-- Badge pending Task -->
 							<% if(pendingTask.true > 0){ %>
@@ -134,7 +134,7 @@
 
 						<tr id="<%= task.id %>">
 						    <!-- Intervention name -->
-						    <td class="<%= (task.state == app.Models.Task.state[1].value ? 'isCheck' : '') %>">
+						    <td class="<%= (task.state == app.Models.Task.status.done.key ? 'isCheck' : '') %>">
 						    	<!-- Check if the task is Orphan -->
 						    	<%= (task.project_id != false ? task.project_id[1] : '<i class="icon-asterisk"></i> '+task.name)  %>
 						    </td>
@@ -155,42 +155,33 @@
 							</td>
 
 							<td class="hidden-phone"><%= app.decimalNumberToTime(task.planned_hours, 'human') %></td>
-						    <td class="hidden-phone"><%=(task.state!=app.Models.Task.state[3].value && task.state!=app.Models.Task.state[5].value) ? app.decimalNumberToTime(task.remaining_hours, 'human') : '' %></td>
+						    <td class="hidden-phone"><%=(task.state != app.Models.Task.status.draft.key && task.state != app.Models.Task.status.absent.key) ? app.decimalNumberToTime(task.remaining_hours, 'human') : '' %></td>
 
 						    <!-- Task State -->
 							<td>
-					    		<!-- To Schedule -->
-								<% if(task.state == app.Models.Task.state[3].value) { %>
-									<span class="label label-<%= app.Models.Task.state[3].color %>"><%= app.Models.Task.state[3].traduction %></span>
-
-								<!-- Schedule -->
-								<% } else if(task.state == app.Models.Task.state[0].value){ %>
-									<span class="label label-<%= app.Models.Task.state[0].color %>"><%= app.Models.Task.state[0].traduction %></span>
+					    		<!-- To Schedule / Cancelled / Schedule / Absent -->
+								<% if(task.state != app.Models.Task.status.done.key) { %>
+									<span class="label label-<%= app.Models.Task.status[task.state].color %>"><%= app.Models.Task.status[task.state].translation %></span>
 
 								<!-- Finish -->
-								<% } else if(task.state == app.Models.Task.state[1].value){ 
+								<% } else { 
 														
 									if(_(task.effective_hours).toNumber(2) <= _(task.planned_hours).toNumber(2)){ %>
-										<span class="label label-<%= app.Models.Task.state[1].color %>"><%= app.Models.Task.state[1].traduction %></span>
+										<span class="label label-<%= app.Models.Task.status.done.color %>"><%= app.Models.Task.status.done.translation %></span>
 									<% } else  { %>
-										<span class="label label-overrun"><%= app.Models.Task.state[1].traduction %></span>
-									<% } %>
-
-								<!-- Cancel -->
-								<% } else if(task.state == app.Models.Task.state[4].value){ %>
-									<span class="label label-<%= app.Models.Task.state[4].color %>"><%= app.Models.Task.state[4].traduction %></span>
-								<% } else{ %>
-									<strong><%= task.state %></strong>
-								<% } %>
+										<span class="label label-overrun"><%= app.Models.Task.status.done.translation %></span>
+									<% } 
+								} %>
 							</td>
 
 						   	<!-- Actions -->
 						   	<td class="align">
 
 						   		<!-- Display Actions button if the task is schedule and the user isn't an officer -->
-								<% if(task.state == app.Models.Task.state[0].value && task.date_start) { 
+								<% if(task.state == app.Models.Task.status.open.key && task.date_start) { %>
 
-									if(displayFilter == true){ %>
+									<!-- If the user is not an Agent or is a foreman -->
+									<% if(displayFilter == true || task.team_id == false){ %>
 						   		
 									<div class="btn-group">
 										<button class="btn btn-small btn-success no-outline buttonTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok icon-fixed-width"></i>
@@ -211,30 +202,8 @@
 											</li>
 										</ul>
 									</div>
-
-								<% } else if(task.team_id == false){ %>
-									
-									<div class="btn-group">
-										<button class="btn btn-small btn-success no-outline buttonTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok icon-fixed-width"></i>
-										</button>
-										<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
-											<span class="caret"></span>
-										</button>
-										<ul class="dropdown-menu pull-right text-left">
-											<li>
-												<a href="#" class="taskNotDone" data-taskid="<%= task.id %>">
-													<i class="icon-remove icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.lang.notDone) %>
-												</a>
-											</li>
-											<li>
-												<a href="#modalTimeSpent" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonTimeSpent">
-													<i class="icon-time icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.lang.notFinished) %>
-												</a>
-											</li>
-										</ul>
-									</div>
-								<% }
-									} %>
+									<% }
+								} %>
 						   	</td>
 							
 						</tr>
