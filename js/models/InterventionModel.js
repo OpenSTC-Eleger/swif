@@ -40,7 +40,6 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 	},
 
 
-
 	getState : function() {
 		return this.get('state');
 	},
@@ -65,14 +64,6 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 		this.set({ infoMessage : value });
 	},
 	
-	getClassColor : function() {
-		return this.get('classColor');
-	},
-	setClassColor : function(value) {
-		if( value == 'undefined') return;
-		this.set({ classColor : value });
-	},
-	
 	getCancelReason : function() {
 		return this.get('cancel_reason');
 	},
@@ -88,13 +79,6 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 	initialize: function(){
 		console.log('Intervention Model initialization');
 		this.fetchRelated('tasks');
-
-		app.Models.Intervention.state[0].traduction = app.lang.planningFenced;
-		app.Models.Intervention.state[1].traduction = app.lang.toScheduled;	
-		app.Models.Intervention.state[2].traduction = app.lang.closed;
-		app.Models.Intervention.state[3].traduction = app.lang.pending;
-		app.Models.Intervention.state[4].traduction = app.lang.cancelled;
-		app.Models.Intervention.state[5].traduction = "template"; //'app.lang.template';
 
 		app.Models.Intervention.status.scheduled.translation = app.lang.planningFenced;
 		app.Models.Intervention.status.open.translation = app.lang.toScheduled;	
@@ -189,53 +173,6 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 
 
 }, {
-
-	// Request State Initialization //
-	state:  [
-		{
-			value       		: 'scheduled',
-			color       		: 'info',
-			htmlColor   		: '#3a87ad',
-			externalGraphic   	: 'marker-gold.png',
-			traduction  		: '',
-		},
-		{
-			value       		: 'open',
-			color       		: 'warning',
-			htmlColor   		: '#f89406',
-			externalGraphic   	: 'marker-green.png',
-			traduction  		: '',
-		},
-		{
-			value       		: 'closed',
-			color       		: 'success',
-			htmlColor   		: '#468847',
-			externalGraphic   	: 'marker-blue.png',
-			traduction  		: '',   
-		},
-		{
-			value       		: 'pending',
-			color       		: 'muted',
-			htmlColor   		: '#999999',
-			externalGraphic   	: 'marker.png',
-			traduction  		: '', 
-		},
-		{
-			value       		: 'cancelled',
-			color       		: 'important',
-			htmlColor   		: '#b94a48',
-			externalGraphic   	: 'marker.png',
-			traduction  		: '',  
-		},
-		{
-			value       		: 'template',
-			color       		: 'template',
-			htmlColor   		: '#ffc40d',
-			externalGraphic   	: 'marker-blue.png',
-			traduction  		: '',  
-		}
-	],
-
 
 	// Request State Initialization //
 	status : {

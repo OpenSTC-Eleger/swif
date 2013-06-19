@@ -150,21 +150,21 @@
 								<!-- Add Task -->
 								<button class="btn btn-primary btn-small no-outline addTaskPlanning" id="<%= intervention.id %>" rel="tooltip" 
 										data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="right"
-									<% if(intervention.state != app.Models.Intervention.state[1].value &&
-										intervention.state != app.Models.Intervention.state[3].value &&
-										intervention.state != app.Models.Intervention.state[5].value) { %>
+									<% if(intervention.state != app.Models.Intervention.status.open.key &&
+											intervention.state != app.Models.Intervention.status.pending.key &&
+											intervention.state != app.Models.Intervention.status.template.key) { %>
 										disabled
 									<% } %>>
 									<i class="icon-plus"></i>
 								</button>
 
 								<!-- Switch button - To Scheduled / Scheduled -->
-								<% if(_.size(intervention.tasks) > 0 && intervention.state != app.Models.Intervention.state[5].value) { %>
+								<% if(_.size(intervention.tasks) > 0 && intervention.state != app.Models.Intervention.status.template.key) { %>
 
 									<div class="switch switch-small calendarSwitch pull-right" data-on-label="<%= _.capitalize(lang.planningFenced) %>" data-off-label="<%= _.capitalize(lang.toScheduled) %>" data-on="primary" data-off="warning">
 
 										<input type="checkbox" 
-											<% if(intervention.state == app.Models.Intervention.state[0].value){ %>
+											<% if(intervention.state == app.Models.Intervention.status.scheduled.key){ %>
 												checked
 											<% } %>
 

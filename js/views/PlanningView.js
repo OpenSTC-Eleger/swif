@@ -156,12 +156,6 @@ app.Views.PlanningView = Backbone.View.extend({
 
             var interventions = app.collections.interventions.models;
 
-
-            // Filter Intervention - Just retrieve Schedule, to Schedule and Template State //
-            /*var interventions = _.filter(interventions, function(item){
-                return (item.toJSON().state == app.Models.Intervention.state[0].value || item.toJSON().state == app.Models.Intervention.state[1].value || item.toJSON().state == app.Models.Intervention.state[5].value);
-            });*/
-
             
             // Collection Filter if not null / Otherwise we display only To Schedule interventions //
 			if(sessionStorage.getItem(self.filters) != null){
@@ -171,9 +165,9 @@ app.Views.PlanningView = Backbone.View.extend({
 				});
 			}
             else{
-                sessionStorage.setItem(self.filters, app.Models.Intervention.state[1].value);
+                sessionStorage.setItem(self.filters, app.Models.Intervention.status.open.key);
                 var interventions = _.filter(interventions, function(item){ 
-                    return item.toJSON().state == app.Models.Intervention.state[1].value;
+                    return item.toJSON().state == app.Models.Intervention.status.open.key;
                 });
             }
 
@@ -232,12 +226,7 @@ app.Views.PlanningView = Backbone.View.extend({
 			if(sessionStorage.getItem(self.filters) != null){
 				$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');
 				$('li.delete-filter').removeClass('disabled');
-
-				_.each(app.Models.Intervention.state, function (state, i) {
-					if(state.value == sessionStorage.getItem(self.filters)){
-						$('a.filter-button').addClass('text-'+state.color);
-					}
-				})
+				$('a.filter-button').addClass('text-'+app.Models.Intervention.status[sessionStorage.getItem(self.filters)].color);
 			}
 			else{
 				$('a.filter-button').removeClass('filter-active ^text').addClass('filter-disabled');
@@ -430,10 +419,10 @@ app.Views.PlanningView = Backbone.View.extend({
 
         // Retrieve the new status //
         if(intervention.bootstrapSwitch('status')){
-		  params = { state: app.Models.Intervention.state[0].value, };
+		  params = { state: app.Models.Intervention.status.scheduled.key, };
         }
         else{
-            params = { state: app.Models.Intervention.state[1].value, };
+            params = { state: app.Models.Intervention.status.open.key, };
         }
 
 		app.models.intervention.saveAndRoute(id, params, null, this);
@@ -527,7 +516,7 @@ app.Views.PlanningView = Backbone.View.extend({
     	e.preventDefault();
 	    // Retrieve the ID of the intervention //
 		var link = $(e.target);
-		this.pos =  _(link.parents('tr').attr('id')).strRightBack('_');
+		this.pos = _(link.parents('tr').attr('id')).strRightBack('_');
 		
     },
 
