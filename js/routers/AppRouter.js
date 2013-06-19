@@ -125,7 +125,6 @@ app.Router = Backbone.Router.extend({
 		}
 		else{
 			console.log('User NOT in the localStorage');
-
 			return false;
 		}
 	},
