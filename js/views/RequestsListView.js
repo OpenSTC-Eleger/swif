@@ -353,7 +353,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 					            //app.collections.requests.get(self.pos).update(self.model);
 					            
 					            //self.render();
-					            app.router.navigate('demandes-dinterventions', {trigger: true, replace: true});
+					            app.router.navigate(app.routes.requestsInterventions.baseUrl, {trigger: true, replace: true});
 					            
 					        }
 					    },
@@ -386,7 +386,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 			this.render();
 		}
 		else{
-			app.router.navigate('demandes-dinterventions', {trigger: true, replace: true});
+			app.router.navigate(app.routes.requestsInterventions.baseUrl, {trigger: true, replace: true});
 		}
 		
 	},

@@ -67,16 +67,17 @@
 		"function"	: "addTask"
 	},
 
+	"detailService": {
+		"url"		: "services/:id",
+		"function"	: "detailsService"
+	},
 	"services": {
 		"url"		: "services(/page:page)",
+		"baseUrl"	: "services",
 		"function"	: "services"
 	},
 	"addService": {
 		"url"		: "services/add",
-		"function"	: "detailsService"
-	},
-	"detailService": {
-		"url"		: "services/:id",
 		"function"	: "detailsService"
 	},
 

@@ -10,8 +10,8 @@ app.Views.InterventionView = Backbone.View.extend({
 	
 	// The DOM events //
 	events: {
-		'submit #formIntervention'			: 'saveIntervention',
-		'change #interventionDetailService'		: 'fillDropdownService',
+		'submit #formIntervention'          : 'saveIntervention',
+		'change #interventionDetailService' : 'fillDropdownService',
 	},
 
 
@@ -144,7 +144,7 @@ app.Views.InterventionView = Backbone.View.extend({
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
-					app.router.navigate('#interventions', {trigger: true, replace: true});
+					app.router.navigate(app.routes.interventions.baseUrl, {trigger: true, replace: true});
 					console.log('Success SAVE INTERVENTION');
 				}
 			},

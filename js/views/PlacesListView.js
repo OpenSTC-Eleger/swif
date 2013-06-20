@@ -243,8 +243,6 @@ app.Views.PlacesListView = Backbone.View.extend({
 				}
 				else{
 					$('#modalSavePlace').modal('hide');
-					//Backbone.history.loadUrl('#sites');
-					//app.router.navigate('#sites' , true);
 					route = Backbone.history.fragment;
 					Backbone.history.loadUrl(route);
 					console.log('Success SAVE PLACE');

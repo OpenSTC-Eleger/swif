@@ -345,7 +345,7 @@ app.Views.PlanningView = Backbone.View.extend({
         }
         
         // Navigate to the Intervention //
-        app.router.navigate('#interventions/'+id , {trigger: true, replace: true});
+        app.router.navigate(app.routes.interventions.baseUrl+'/'+id , {trigger: true, replace: true});
 
     },
 
@@ -436,9 +436,7 @@ app.Views.PlanningView = Backbone.View.extend({
 			{
 				success: function(data){
 					$('#modalCancelInter').modal('hide');
-                    app.router.navigate('#planning', {trigger: true, replace: true});
-					/*route = Backbone.history.fragment;
-					Backbone.history.loadUrl(route);*/
+                    app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
 				}
 			}
 		);
@@ -462,11 +460,9 @@ app.Views.PlanningView = Backbone.View.extend({
 					app.collections.interventions.add(inter);//					
 					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.taskDeleteOk);
                     $('#modalDeleteTask').modal('hide');
-					// Refresh the page //
 					
-                    /*route = Backbone.history.fragment;
-					Backbone.history.loadUrl(route);*/
-                    app.router.navigate('#planning', {trigger: true, replace: true});
+                    // Refresh the page //
+                    app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
 				}
 			},
 			error: function(e){
@@ -503,9 +499,7 @@ app.Views.PlanningView = Backbone.View.extend({
         taskModel.save(taskId, params);
         
         // Refresh the page //
-        /*route = Backbone.history.fragment;
-        Backbone.history.loadUrl(route);*/
-        app.router.navigate('#planning', {trigger: true, replace: true});
+        app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
     },
 
 

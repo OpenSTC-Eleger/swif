@@ -108,7 +108,7 @@ app.Views.ServiceView = Backbone.View.extend({
 						app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 					}
 					else{
-						app.router.navigate('#services' , true);
+						app.router.navigate(app.routes.services.baseUrl, true);
 						console.log('Success SAVE SERVICE');
 					}
 				},
