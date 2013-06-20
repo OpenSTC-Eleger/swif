@@ -150,6 +150,10 @@
 	"dayNames": ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
   	"dayNamesShort": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
 
+  	"homePage" 				: "Page d'accueil",
+  	"notFoundCode" 			: "erreur 404",
+  	"notFoundMessage" 		: "La page que vous avez demandé n'existe pas/plus ou à été déplacée. Cliquez sur le bouton en dessous pour revenir sur la page d'accueil",
+
 	"actions" : {
 		"logIn"				: "connectez-vous",
 		"logOut"			: "déconnexion",

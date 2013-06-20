@@ -1,4 +1,9 @@
 {
+	"notFound": {
+		"url"		: "*invalidRoute",
+		"function"	: "notFound"
+	},
+
 	"home": {
 		"url" 		: "",
 		"function" 	: "requestsList"
@@ -120,4 +125,5 @@
 		"url"		: "materiel(/page:page)",
 		"function"	: "equipments"
 	}
+
 }

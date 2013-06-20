@@ -1252,5 +1252,17 @@ app.Router = Backbone.Router.extend({
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
+
+
+
+	/** 404 Not Found
+	*/
+	notFound: function(page){
+
+		console.warn('Page not Found');
+
+		app.views.notFoundView = new app.Views.NotFoundView();
+		this.render(app.views.notFoundView);
+	}
 	
 });
