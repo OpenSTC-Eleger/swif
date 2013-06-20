@@ -88,6 +88,9 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		});
 		var nbInterventionsPending = _.size(interventionsPending);
 
+		// Set informations about Intervention //
+		this.addInfoAboutInter(interventions);
+
 
 		// Collection Filter if not null //
 		if(sessionStorage.getItem(this.filters) != null){
@@ -100,9 +103,6 @@ app.Views.InterventionsListView = Backbone.View.extend({
 				}
 			});
 		}
-
-		// Set informations about Intervention //
-		this.addInfoAboutInter(interventions);
 
 
 	  	//console.log(interventions);
