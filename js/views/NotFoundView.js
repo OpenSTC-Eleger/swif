@@ -29,7 +29,7 @@ app.Views.NotFoundView = Backbone.View.extend({
         var self = this;
 
         // Change the page title //
-        app.router.setPageTitle(app.lang.viewsTitles.about);
+        app.router.setPageTitle(app.lang.viewsTitles.pageNotFound);
 
         // Change the active menu item //
         app.views.headerView.selectMenuItem('');

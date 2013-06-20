@@ -306,6 +306,7 @@
     	"teamsList"			 	 : "Liste des équipes",
     	"claimersList"			 : "Liste des organisations",
     	"statementTask"			 : "Relevé de la tâche",
-    	"statementEndTask"		 : "Relevé de la tâche non terminée"
+    	"statementEndTask"		 : "Relevé de la tâche non terminée",
+    	"pageNotFound" 			 : "Page non trouvée"
 	}
 }

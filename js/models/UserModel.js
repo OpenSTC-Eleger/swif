@@ -183,6 +183,7 @@ app.Models.User = Backbone.Model.extend({
 			//console.debug(data);
 
 			if(data.uid == false){
+				app.loader('hide');
 				app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
 			}
 			else{
