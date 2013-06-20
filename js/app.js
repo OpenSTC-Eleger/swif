@@ -53,7 +53,7 @@ var app = {
 
 
 		// Retrieve App properties, configuration and language //
-		$.when(app.loadProperties('properties.json'), app.loadConfiguration('configuration.json'), app.loadRoutes('routes.json'), app.loadI18nScripts(lang))
+		$.when(app.loadProperties('properties.json'), app.loadConfiguration('config/configuration.json'), app.loadRoutes('config/routes.json'), app.loadI18nScripts(lang))
 			.done(function(properties_data, configuration_data, routes_data, lang_data){
 			
 				// Set the app properties configuration and language //

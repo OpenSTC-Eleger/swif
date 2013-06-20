@@ -113,7 +113,7 @@ app.Views.ServiceView = Backbone.View.extend({
 					}
 				},
 				error: function () {
-					console.log('ERROR - Unable to save the Service - ServiceDetailsView.js');
+					console.error('ERROR - Unable to save the Service - ServiceDetailsView.js');
 				},	
 		    });
 	    },

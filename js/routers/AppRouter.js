@@ -68,16 +68,16 @@ app.Router = Backbone.Router.extend({
 
 			// Check if a user has a sessionID //
 			if(app.models.user.hasSessionID()){
-				console.log('User is connect');
+				console.info('User is connect');
 				return true;
 			}
 			else{
-				console.log('User is not connect');
+				console.warn('User is not connect');
 				return false;
 			}
 		}
 		else{
-			console.log('User NOT in the localStorage');
+			console.info('User NOT in the localStorage');
 			return false;
 		}
 	},
@@ -139,7 +139,7 @@ app.Router = Backbone.Router.extend({
 
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 
 	},
@@ -158,6 +158,7 @@ app.Router = Backbone.Router.extend({
 
 
 			self.page = page ? parseInt(page, 10) : 1;
+
 
 			// Check if the collections is instantiate //
 			if(app.collections.requests == null ){
@@ -217,7 +218,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
 
@@ -238,9 +239,8 @@ app.Router = Backbone.Router.extend({
 			if (id)
 				self.request = app.collections.requests.get(id);
 			else
-				self.request = app.models.request.clear();           
+				self.request = app.models.request.clear();
 
-			app.loader('display');
 			app.collections.places.fetch({
 				beforeSend: function(){
 					app.loader('display');
@@ -300,7 +300,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
 	
@@ -392,7 +392,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
 	
@@ -440,7 +440,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
 	
@@ -540,7 +540,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	   
 	},
@@ -640,7 +640,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 
 	},
@@ -704,7 +704,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
 
@@ -759,7 +759,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
 
@@ -813,7 +813,7 @@ app.Router = Backbone.Router.extend({
 //            });
 //        }
 //        else{
-//            this.navigate('login', {trigger: true, replace: true});
+//            this.navigate(app.routes.login.url, {trigger: true, replace: true});
 //        }
 //    },
 
@@ -863,7 +863,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
 	
@@ -910,7 +910,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
 
@@ -954,7 +954,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
 
@@ -991,7 +991,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
 
@@ -1054,7 +1054,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
 
@@ -1130,7 +1130,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
 
@@ -1167,7 +1167,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
 	
@@ -1204,7 +1204,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
 	
@@ -1249,7 +1249,7 @@ app.Router = Backbone.Router.extend({
 			});
 		}
 		else{
-			this.navigate('login', {trigger: true, replace: true});
+			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
 	

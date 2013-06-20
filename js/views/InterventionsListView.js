@@ -830,7 +830,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 			this.render();
 		}
 		else{
-			app.router.navigate('interventions', {trigger: true, replace: true});
+			app.router.navigate(app.routes.interventions.baseUrl, {trigger: true, replace: true});
 		}
 		
 	},

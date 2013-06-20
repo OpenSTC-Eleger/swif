@@ -16,29 +16,31 @@
 		"function"	: "about"
 	},
 
+	"detailIntervention": {
+		"url"		: "interventions/:id",
+		"function"	: "detailsIntervention"
+	},
 	"interventions": {
 		"url"		: "interventions(/page:page)",
-		"function"	: "detailsIntervention"
+		"baseUrl"   : "interventions",
+		"function"	: "interventions"
 	},
 	"addIntervention": {
 		"url"		: "interventions/add",
 		"function"	: "detailsIntervention"
 	},
-	"detailIntervention": {
-		"url"		: "interventions/:id",
-		"function"	: "detailsIntervention"
-	},
 
+	"detailRequestIntervention": {
+		"url"		: "demandes-dinterventions/:id",
+		"function"	: "detailsRequest"
+	},
 	"requestsInterventions": {
 		"url"		: "demandes-dinterventions(/page:page)",
+		"baseUrl"   : "demandes-dinterventions",
 		"function"	: "requestsList"
 	},
 	"addrequestIntervention": {
-		"url"		: "interventions/add",
-		"function"	: "detailsRequest"
-	},
-	"detailRequestIntervention": {
-		"url"		: "interventions/:id",
+		"url"		: "demandes-dinterventions/add",
 		"function"	: "detailsRequest"
 	},
 
@@ -51,17 +53,18 @@
 		"function"	: "planning"
 	},
 
+	"detailTask": {
+		"url"		: "taches/:id",
+		"function"	: "detailsTask"
+	},
 	"tasks": {
 		"url"		: "taches(/:year/:week)",
+		"baseUrl"	: "taches",
 		"function"	: "tasksCheck"
 	},
 	"addTask": {
 		"url"		: "taches/add",
 		"function"	: "addTask"
-	},
-	"detailTask": {
-		"url"		: "taches/:id",
-		"function"	: "detailsTask"
 	},
 
 	"services": {

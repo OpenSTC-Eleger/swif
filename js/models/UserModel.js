@@ -175,11 +175,12 @@ app.Models.User = Backbone.Model.extend({
 			'session_id': ''
 		})
 		.fail(function (error){
+			console.error(error);
 			app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
 		})
 		.done(function (data) {
 
-			console.debug(data);
+			//console.debug(data);
 
 			if(data.uid == false){
 				app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
@@ -242,7 +243,7 @@ app.Models.User = Backbone.Model.extend({
 			app.views.headerView.render();
 
 			// Navigate to the login Page //
-			Backbone.history.navigate('login', {trigger: true, replace: true});
+			Backbone.history.navigate(app.routes.login.url, {trigger: true, replace: true});
 			deferred.resolve();
 		});
 
@@ -288,7 +289,7 @@ app.Models.User = Backbone.Model.extend({
 
 				},
 				error: function(error){
-					console.log(error);
+					console.error(error);
 					app.notify('', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);       
 				}
 			})

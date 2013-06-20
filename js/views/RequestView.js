@@ -44,7 +44,7 @@ app.Views.RequestView = Backbone.View.extend({
 			}
 			else{
 				app.router.setPageTitle(app.lang.viewsTitles.requestDetail + 'n° ' + this.model.id);
-				console.debug(this.model);
+				console.log(this.model);
 			}
 
 			// Change the active menu item //
