@@ -7,7 +7,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 	model_name : 'openstc.ask',	
 	
 	url: "/#demandes-dinterventions/:id",
-	
+
 	relations: [{
 		type: Backbone.HasMany,
 		key: 'intervention_ids',

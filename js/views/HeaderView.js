@@ -28,7 +28,7 @@ app.Views.HeaderView = Backbone.View.extend({
             console.log("Retrieve menu");
             app.models.user.getMenus({
                 error: function (){
-                    console.log('ERROR: Unable to retrieve menu');
+                    console.error('ERROR: Unable to retrieve menu');
                 },
                 success: function (data) {
                     /*console.debug(data.error);
@@ -37,8 +37,7 @@ app.Views.HeaderView = Backbone.View.extend({
                         app.models.user.logout();
                     }
                     else{*/
-                    console.log('--------------------||------------------||');
-                    console.debug(data.result.data.children);
+                    //console.debug(data.result.data.children);
 	                self.initHeader(data.result.data.children, activeMenu);
                     
                 }

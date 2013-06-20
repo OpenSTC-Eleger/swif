@@ -156,7 +156,6 @@ app.Views.RequestsListView = Backbone.View.extend({
     		this.infoMessage = "";
     		var self = this;
     		_.each(request.intervention_ids, function (intervention, i) {
-				var classColor = "";
 				
 				//var intervention = interModel.toJSON();
 				var firstDate = null;
@@ -188,7 +187,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 					self.infoMessage += "Non planifiée";
 				}
 
-				console.debug("message:" + infoMessage + ", classColor:"+ classColor);
+				//console.debug("message:" + infoMessage + ", classColor:"+ classColor);
 			});   
 				
 			request['infoMessage'] = this.infoMessage;
@@ -359,7 +358,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 					        }
 					    },
 					    error: function () {
-							console.log('ERROR - Unable to valid the Request - RequestsListView.js');
+							console.error('ERROR - Unable to valid the Request - RequestsListView.js');
 					    },           
 					},false);
 	},

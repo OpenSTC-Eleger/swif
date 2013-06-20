@@ -35,7 +35,6 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 		state: null,
 		cancel_reason: null,
 		infoMessage: null,
-		classColor: null,
 		overPourcent: 0,
 	},
 

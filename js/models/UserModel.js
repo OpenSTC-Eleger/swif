@@ -193,21 +193,18 @@ app.Models.User = Backbone.Model.extend({
 				self.setUID(data.uid);
 				self.setLastConnection(moment().format("LLL"));
 				self.setContext(data.context);
-			  
-				
+
 				// Add the user to the collection and save it to the localStorage //
 				app.collections.users.add(self);
 
 				// Get the user Information //
 				self.getUserInformations();
-			   
-				
+
 				//app.notify('', 'info', 'Information', 'Vous êtes connecté');
-				Backbone.history.navigate(app.router.homePage, {trigger: true, replace: true});
-						
+				Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
+
 				// Refresh the header //
 				app.views.headerView.render(app.router.mainMenus.manageInterventions);
-
 			}
 			
 			deferred.resolve();

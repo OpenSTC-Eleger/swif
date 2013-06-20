@@ -3,64 +3,8 @@
 */
 app.Router = Backbone.Router.extend({
 
+	routes: {},
 
-	homePage : 'demandes-dinterventions',
-
-	routes: {
-		''                                      : 'requestsList',
-		'login'                                 : 'login',
-		'logout'                                : 'logout',
-		'about'                                 : 'about',
-
-		'interventions'                         : 'interventions',
-		'interventions/page:page'               : 'interventions',
-		'interventions/add'           			: 'detailsIntervention',
-		'interventions/:id'    					: 'detailsIntervention',
-		
-		'planning'                         		: 'planning',
-		'planning/agents/:id'					: 'planning',
-
-		'demandes-dinterventions'               : 'requestsList',
-		'demandes-dinterventions/page:page'     : 'requestsList',
-		'demandes-dinterventions/add'           : 'detailsRequest',
-		'demandes-dinterventions/:id'           : 'detailsRequest',
-
-		'taches'               					: 'tasksCheck',
-		'taches/:year/:week'                    : 'tasksCheck',
-		'taches/add'           					: 'addTask',
-		'taches/:id'           					: 'detailsTask',
-
-		'sites'                                 : 'places',
-		'sites/page:page'                       : 'places',
-
-		'services'                              : 'services',
-		'services/page:page'                    : 'services',
-		'services/add'           				: 'detailsService',
-		'services/:id'    						: 'detailsService',
-
-		'categories-des-taches'                 : 'categoriesTasks',
-		'categories-des-taches/page:page'       : 'categoriesTasks',
-
-		'affectations-des-interventions'        	: 'categoriesInterventions',
-		'affectations-des-interventions/page:page'  : 'categoriesInterventions',
-
-		'equipes'                               : 'teams',
-		'equipes/page:page'                     : 'teams',
-
-		'organisations'                            : 'claimers',
-		'organisations/page:page'                  : 'claimers',
-		
-		'types-dorganisation'                    : 'types',
-		'types-dorganisation/page:page'          : 'types',
-		
-		'types-dabscence'                       : 'absentTypes',
-		'types-dabscence/page:page'             : 'absentTypes',
-		
-		'materiel'               				: 'equipments',
-		'materiel/page:page'           			: 'equipments',
-	},
-
-	
 	mainMenus: {
 		manageInterventions        : 'gestion-des-interventions',
 		reporting                  : 'reporting',
@@ -71,7 +15,14 @@ app.Router = Backbone.Router.extend({
 
 	/** Router Initialization
 	*/
-	initialize: function () {    	
+	initialize: function () {
+		var self = this;
+
+		// Create all the Routes of the app //
+		_.each(app.routes, function(route, i){
+			self.route(route.url, route.function);
+		});
+
 		
 		// Check if the user is connect //
 		this.checkConnect();
@@ -81,6 +32,8 @@ app.Router = Backbone.Router.extend({
 		app.views.headerView = new app.Views.HeaderView();
 		app.views.footerView = new app.Views.FooterView();
 	},
+
+
 	
 	render: function (view) {
 		//Close the current view
@@ -158,7 +111,7 @@ app.Router = Backbone.Router.extend({
 			this.render(app.views.loginView);
 		}
 		else{
-			this.navigate(this.homePage, {trigger: true, replace: true});
+			this.navigate(app.routes.home.url, {trigger: true, replace: true});
 		}
 	},
 

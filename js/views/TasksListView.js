@@ -68,7 +68,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 
 		// Retrieve the year - If not exist in the URL set as the current year //
-		if(typeof(this.options.yearSelected) == 'undefined'){
+		if(_.isNull(this.options.yearSelected)){
 			yearSelected = moment().year();
 		}
 		else{
@@ -76,13 +76,13 @@ app.Views.TasksListView = Backbone.View.extend({
 		}
 
 		// Retrieve the week of the year - - If not exist in the URL set as the current week ////
-		if(typeof(this.options.weekSelected) == 'undefined'){
+		if(_.isNull(this.options.weekSelected)){
 			weekSelected = moment().week();
 		}
 		else{
 			weekSelected = this.options.weekSelected;
 		}
-		
+
 		var momentDate = moment().year(yearSelected).week(weekSelected);
 
 
@@ -91,7 +91,6 @@ app.Views.TasksListView = Backbone.View.extend({
 		var tasksUser = _.filter(tasks, function(task){			
 			return task.active == true;
 		});
-
 
 
 

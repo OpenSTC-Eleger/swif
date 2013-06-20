@@ -1,0 +1,119 @@
+{
+	"home": {
+		"url" 		: "",
+		"function" 	: "requestsList"
+	},
+	"login": {
+		"url" 		: "login",
+		"function" 	: "login"
+	},
+	"logout": {
+		"url"		: "logout",
+		"function"	: "logout"
+	},
+		"about": {
+		"url"		: "about",
+		"function"	: "about"
+	},
+
+	"interventions": {
+		"url"		: "interventions(/page:page)",
+		"function"	: "detailsIntervention"
+	},
+	"addIntervention": {
+		"url"		: "interventions/add",
+		"function"	: "detailsIntervention"
+	},
+	"detailIntervention": {
+		"url"		: "interventions/:id",
+		"function"	: "detailsIntervention"
+	},
+
+	"requestsInterventions": {
+		"url"		: "demandes-dinterventions(/page:page)",
+		"function"	: "requestsList"
+	},
+	"addrequestIntervention": {
+		"url"		: "interventions/add",
+		"function"	: "detailsRequest"
+	},
+	"detailRequestIntervention": {
+		"url"		: "interventions/:id",
+		"function"	: "detailsRequest"
+	},
+
+	"planning": {
+		"url"		: "planning",
+		"function"	: "planning"
+	},
+	"planningAgent": {
+		"url"		: "planning/agents/:id",
+		"function"	: "planning"
+	},
+
+	"tasks": {
+		"url"		: "taches(/:year/:week)",
+		"function"	: "tasksCheck"
+	},
+	"addTask": {
+		"url"		: "taches/add",
+		"function"	: "addTask"
+	},
+	"detailTask": {
+		"url"		: "taches/:id",
+		"function"	: "detailsTask"
+	},
+
+	"services": {
+		"url"		: "services(/page:page)",
+		"function"	: "services"
+	},
+	"addService": {
+		"url"		: "services/add",
+		"function"	: "detailsService"
+	},
+	"detailService": {
+		"url"		: "services/:id",
+		"function"	: "detailsService"
+	},
+
+	"places": {
+		"url"		: "sites(/page:page)",
+		"function"	: "places"
+	},
+
+	"categoriesTasks": {
+		"url"		: "categories-des-taches(/page:page)",
+		"function"	: "categoriesTasks"
+	},
+
+	"categoriesInterventions": {
+		"url"		: "affectations-des-interventions(/page:page)",
+		"function"	: "categoriesInterventions"
+	},
+
+	"teams": {
+		"url"		: "equipes(/page:page)",
+		"function"	: "teams"
+	},
+
+	"claimers": {
+		"url"		: "organisations(/page:page)",
+		"function"	: "claimers"
+	},
+
+	"claimersType": {
+		"url"		: "types-dorganisation(/page:page)",
+		"function"	: "types"
+	},
+
+	"absentTypes": {
+		"url"		: "types-dabscence(/page:page)",
+		"function"	: "absentTypes"
+	},
+
+	"equipments": {
+		"url"		: "materiel(/page:page)",
+		"function"	: "equipments"
+	}
+}
