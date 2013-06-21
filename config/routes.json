@@ -89,41 +89,49 @@
 
 	"places": {
 		"url"		: "sites(/page:page)",
+		"baseUrl"	: "sites",
 		"function"	: "places"
 	},
 
 	"categoriesTasks": {
 		"url"		: "categories-des-taches(/page:page)",
+		"baseUrl"	: "categories-des-taches",
 		"function"	: "categoriesTasks"
 	},
 
 	"categoriesInterventions": {
 		"url"		: "affectations-des-interventions(/page:page)",
+		"baseUrl"	: "affectations-des-interventions",
 		"function"	: "categoriesInterventions"
 	},
 
 	"teams": {
 		"url"		: "equipes(/page:page)",
+		"baseUrl"	: "equipes",
 		"function"	: "teams"
 	},
 
 	"claimers": {
 		"url"		: "organisations(/page:page)",
+		"baseUrl"	: "organisations",
 		"function"	: "claimers"
 	},
 
 	"claimersType": {
 		"url"		: "types-dorganisation(/page:page)",
+		"baseUrl"	: "types-dorganisation",
 		"function"	: "types"
 	},
 
 	"absentTypes": {
 		"url"		: "types-dabscence(/page:page)",
+		"baseUrl"	: "types-dabscence",
 		"function"	: "absentTypes"
 	},
 
 	"equipments": {
 		"url"		: "materiel(/page:page)",
+		"baseUrl"	: "materiel",
 		"function"	: "equipments"
 	}
 
