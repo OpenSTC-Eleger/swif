@@ -202,7 +202,9 @@ app.Models.Task = Backbone.RelationalModel.extend({
 					if(!_.str.include(Backbone.history.fragment, 'planning/')){
 						Backbone.history.loadUrl(Backbone.history.fragment);
 					}
-					app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
+					else{
+						app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
+					}
 				}
 			});
 		}

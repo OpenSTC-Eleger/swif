@@ -61,10 +61,6 @@
 			<% _.each(interventions, function (intervention, i) { 
 				var informationHour	= '';
 
-				console.log("-------------------------------------");
-				console.log(intervention.id);
-				console.log(intervention.name);
-				console.log(intervention.state);
 				var classColor = app.Models.Intervention.status[intervention.state].color;
 
 				if(intervention.state != app.Models.Intervention.status.template.key){
