@@ -406,6 +406,8 @@ app.Views.EventsListView = Backbone.View.extend({
 				/** When a event is Drop on the calendar
 				*/
 				drop: function( date, allDay ) {
+					app.loader('display');
+
 					var domObject = $(this)
 					var originalEventObject = $(this).data('eventObject');
 					var copiedEventObject = $.extend({}, originalEventObject);

@@ -4,294 +4,293 @@
 app.Views.PlanningView = Backbone.View.extend({
 
 
-    el : '#rowContainer',
+	el : '#rowContainer',
 
-    templateHTML: 'planning',
+	templateHTML: 'planning',
 
-    filters: 'interventionsListFilter',
+	filters: 'interventionsListFilter',
 
-    calendarView: 'agendaWeek',
-    
-    selectedInter : '',
-    selectedTask : '',
+	calendarView: 'agendaWeek',
+	
+	selectedInter : '',
+	selectedTask : '',
 
-    sstoragePlanningSelected: 'selectedPlanning',
-    
-    // The DOM events //
-    events: {
-        'click .buttonCancelInter'                     : 'setInfoModalCancelInter',
-        'click .modalDeleteTask'                       : 'setInfoModalDeleteTask',
+	sstoragePlanningSelected: 'selectedPlanning',
+	
+	// The DOM events //
+	events: {
+		'click .buttonCancelInter'                : 'setInfoModalCancelInter',
+		'click .modalDeleteTask'                  : 'setInfoModalDeleteTask',
 
-        'click button.linkToInter'                      : 'linkToInter',
+		'click button.linkToInter'                : 'linkToInter',
 
-        'submit #formCancelInter'                       : 'cancelInter',
-        'click button.btnDeleteTask'                    : 'deleteTask',
-        	
-        'click .btn.addTaskPlanning'                    : 'displayFormAddTask',
-        'click .btn.addInterventionPlanning'            : 'displayFormAddIntervention',
-        
-        'submit #formAddTask'         			        : 'saveTask',   
-        'submit #formAddIntervention' 			        : 'saveIntervention', 
-        'switch-change .calendarSwitch'                 : 'scheduledInter',
-        'switch-change #switchWithForeman'              : 'setForemanInTeam',
+		'submit #formCancelInter'                 : 'cancelInter',
+		'click button.btnDeleteTask'              : 'deleteTask',
 
-        
-        'change #interventionDetailService'             : 'fillDropdownService',
-        
-        'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilter',
+		'click .btn.addTaskPlanning'              : 'displayFormAddTask',
+		'click .btn.addInterventionPlanning'      : 'displayFormAddIntervention',
 
-        'click #listAgents li a, #listTeams li a'       :          'selectPlanning',
-
-        'click #btnRemoveTask'                          : 'removeTaskFromSchedule'
-    },
+		'submit #formAddTask'                     : 'saveTask',   
+		'submit #formAddIntervention'             : 'saveIntervention', 
+		'switch-change .calendarSwitch'           : 'scheduledInter',
+		'switch-change #switchWithForeman'        : 'setForemanInTeam',
 
 
-    /** View Initialization
-    */
-    initialize : function(agent) {
-    	this.agent = agent;  
-    	
-    	//_.bindAll(this, 'beforeRender', 'render', 'afterRender'); 
+		'change #interventionDetailService'       : 'fillDropdownService',
 
-    	var self = this;
-//    	this.render = _.wrap( this.render, function(render){
-//    		self.beforeRender();
-//    		render(); //arguments[1]
-//    		self.afterRender();
-//    		return self;
-//    	} ) 
-        console.log('Planning view');
-    },
+		'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilter',
+
+		'click #listAgents li a, #listTeams li a' :          'selectPlanning',
+
+		'click #btnRemoveTask'                    : 'removeTaskFromSchedule'
+	},
+
+
+	/** View Initialization
+	*/
+	initialize : function(agent) {
+		this.agent = agent;  
+		
+		//_.bindAll(this, 'beforeRender', 'render', 'afterRender'); 
+
+		var self = this;
+
+		console.log('Planning view');
+	},
 
 
 
-    beforeRender : function()  {
-    	app.loader('display');
-    },
+	beforeRender : function()  {
+		app.loader('display');
+	},
 
 
 
-    afterRender : function()  {
-    	app.loader('hide');
-    },
+	afterRender : function()  {
+		app.loader('hide');
+	},
 
 
 
-    /** Display the view
-    */
-    render : function() {
-        var self = this;
+	/** Display the view
+	*/
+	render : function() {
+		var self = this;
 
 
-        // Retrieve the Login template // 
-        $.get("templates/" + this.templateHTML + ".html", function(templateData){
+		// Retrieve the Login template // 
+		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 
-            // Change the page title //
-            app.router.setPageTitle(app.lang.viewsTitles.planning);
-            // Change the Grid Mode of the view //
-            app.views.headerView.switchGridMode('fluid');
-            
-            var that = this;
-            //Filter Agents : all agents belongs to user's services
-            var officers = app.collections.officers.models;
+			// Change the page title //
+			app.router.setPageTitle(app.lang.viewsTitles.planning);
+			// Change the Grid Mode of the view //
+			app.views.headerView.switchGridMode('fluid');
+			
+			var that = this;
+			//Filter Agents : all agents belongs to user's services
+			var officers = app.collections.officers.models;
 
-        	_.each(app.models.user.attributes.service_ids,function (user_service_id){
-        		var agentsKeeped = _.filter(officers, function(officer,i){
+			_.each(app.models.user.attributes.service_ids,function (user_service_id){
+				var agentsKeeped = _.filter(officers, function(officer,i){
 
-                    // Don't display the DST if the user is not the DST //
-                    if(!app.models.user.isDST()){
-                        if(!officer.isDST()){
-                            officer = officer.toJSON();
+					// Don't display the DST if the user is not the DST //
+					if(!app.models.user.isDST()){
+						if(!officer.isDST()){
+							officer = officer.toJSON();
 
-                            var service = _.filter(officer.service_ids,function (service_id){
-                				return service_id.id == user_service_id;
-                			}); 
-                			return service.length != 0
-                        }
-                    }
-                    else{
-                        officer = officer.toJSON();
+							var service = _.filter(officer.service_ids,function (service_id){
+								return service_id.id == user_service_id;
+							}); 
+							return service.length != 0
+						}
+					}
+					else{
+						officer = officer.toJSON();
 
-                        var service = _.filter(officer.service_ids,function (service_id){
-                            return service_id.id == user_service_id;
-                        }); 
-                        return service.length != 0
-                    }
-        		});
-        		if ( that.agents == null )
-        			that.agents = agentsKeeped;
-        		else {
-        			that.agents = _.union(that.agents, agentsKeeped);
-        		}
-        	});
-
-
-            // Transform officer model to JSON object for the template //
-            var officers = [];
-            _.each(that.agents, function(item){
-                officers.push(item.toJSON());
-            })
-
-        	
-        	//Filter Teams : all teams belongs to user's services
-        	var teams = app.collections.teams.toJSON();
-        	var that = this;
-        	_.each(app.models.user.attributes.service_ids,function (user_service_id){
-        		var teamsKeeped = _.filter(teams, function(item,i){             	
-        			var service = _.filter(item.service_ids,function (service_id){            		
-        				return service_id.id == user_service_id;
-        			}); 
-        			return service.length != 0
-        		});
-        		if ( that.teams == null )
-        			that.teams = teamsKeeped;
-        		else {
-        			that.teams = _.union(that.teams, teamsKeeped);
-        		}
-        	}); 
+						var service = _.filter(officer.service_ids,function (service_id){
+							return service_id.id == user_service_id;
+						}); 
+						return service.length != 0
+					}
+				});
+				if ( that.agents == null )
+					that.agents = agentsKeeped;
+				else {
+					that.agents = _.union(that.agents, agentsKeeped);
+				}
+			});
 
 
-            var interventions = app.collections.interventions.models;
+			// Transform officer model to JSON object for the template //
+			var officers = [];
+			_.each(that.agents, function(item){
+				officers.push(item.toJSON());
+			})
 
-            
-            // Collection Filter if not null / Otherwise we display only To Schedule interventions //
+			
+			//Filter Teams : all teams belongs to user's services
+			var teams = app.collections.teams.toJSON();
+			var that = this;
+			_.each(app.models.user.attributes.service_ids,function (user_service_id){
+				var teamsKeeped = _.filter(teams, function(item,i){             	
+					var service = _.filter(item.service_ids,function (service_id){            		
+						return service_id.id == user_service_id;
+					}); 
+					return service.length != 0
+				});
+				if ( that.teams == null )
+					that.teams = teamsKeeped;
+				else {
+					that.teams = _.union(that.teams, teamsKeeped);
+				}
+			}); 
+
+
+			var interventions = app.collections.interventions.models;
+
+			
+			// Collection Filter if not null / Otherwise we display only To Schedule interventions //
 			if(sessionStorage.getItem(self.filters) != null){
+				if(sessionStorage.getItem(self.filters) != 'notFilter'){
+					var interventions = _.filter(interventions, function(item){ 
+						var itemJSON = item.toJSON();
+						return itemJSON.state == sessionStorage.getItem(self.filters);
+					});
+				}
+			}
+			else{
+				sessionStorage.setItem(self.filters, app.Models.Intervention.status.open.key);
 				var interventions = _.filter(interventions, function(item){ 
-					var itemJSON = item.toJSON();
-					return itemJSON.state == sessionStorage.getItem(self.filters);
+					return item.toJSON().state == app.Models.Intervention.status.open.key;
 				});
 			}
-            else{
-                sessionStorage.setItem(self.filters, app.Models.Intervention.status.open.key);
-                var interventions = _.filter(interventions, function(item){ 
-                    return item.toJSON().state == app.Models.Intervention.status.open.key;
-                });
-            }
 
 
-            interventionSorted = new app.Collections.Interventions(interventions);
+			interventionSorted = new app.Collections.Interventions(interventions);
 
 
-            // Set variables template //
-            var template = _.template(templateData, {
-        		lang: app.lang,
-        		interventionsState: app.Models.Intervention.status,
-        		interventions: interventionSorted.toJSON(),
-        		officers: officers,
-        		teams: that.teams,
-            });
+			// Set variables template //
+			var template = _.template(templateData, {
+				lang: app.lang,
+				interventionsState: app.Models.Intervention.status,
+				interventions: interventionSorted.toJSON(),
+				officers: officers,
+				teams: that.teams,
+			});
 
-            $(self.el).html(template);
-            self.initAllCalendars();
-            self.initDragObject();
+			$(self.el).html(template);
+			self.initAllCalendars();
+			self.initDragObject();
 
-            $('*[rel="tooltip"]').tooltip();
-            $('*[rel="popover"]').popover({trigger: 'hover', delay: { show: 500, hide: 100 }});
+			$('*[rel="tooltip"]').tooltip();
+			$('*[rel="popover"]').popover({trigger: 'hover', delay: { show: 500, hide: 100 }});
 
-            $('.switch').bootstrapSwitch();
+			$('.switch').bootstrapSwitch();
 
-            $('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
+			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 
 
-            // Set the focus to the first input of the form //
-            $('#modalAddInter, #modalAddTask').on('shown', function (e) {
-                $(this).find('input').first().focus();
-            })
+			// Set the focus to the first input of the form //
+			$('#modalAddInter, #modalAddTask').on('shown', function (e) {
+				$(this).find('input').first().focus();
+			})
 
 
 
-            // If a plannig was Selected //
-            if(sessionStorage.getItem(self.sstoragePlanningSelected) != null){
-                
-                // Get the planning ID //
-                var id = sessionStorage.getItem(self.sstoragePlanningSelected);
+			// If a plannig was Selected //
+			if(sessionStorage.getItem(self.sstoragePlanningSelected) != null){
+				
+				// Get the planning ID //
+				var id = sessionStorage.getItem(self.sstoragePlanningSelected);
 
-                // Simule a click to the link //
-                $('#'+id).click();
+				// Simule a click to the link //
+				$('#'+id).click();
 
-                // Check if a Team was selected to select the Team Tab //
-                if(_.str.include(id, 'Team')){
-                    $('#allTabs a[data-target="#tab-teams"]').tab('show');
-                }
+				// Check if a Team was selected to select the Team Tab //
+				if(_.str.include(id, 'Team')){
+					$('#allTabs a[data-target="#tab-teams"]').tab('show');
+				}
 
-                // Navigate to the link //
-                window.location.href = $('#'+id).attr('href');
-            }
+				// Navigate to the link //
+				window.location.href = $('#'+id).attr('href');
+			}
 
 
 			// Display filter on the table //
 			if(sessionStorage.getItem(self.filters) != null){
 				$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');
 				$('li.delete-filter').removeClass('disabled');
-				$('a.filter-button').addClass('text-'+app.Models.Intervention.status[sessionStorage.getItem(self.filters)].color);
+				if(sessionStorage.getItem(self.filters) != 'notFilter'){
+					$('a.filter-button').addClass('text-'+app.Models.Intervention.status[sessionStorage.getItem(self.filters)].color);
+				}
 			}
 			else{
 				$('a.filter-button').removeClass('filter-active ^text').addClass('filter-disabled');
 				$('li.delete-filter').addClass('disabled');
 			}
 
-            app.loader('hide');
-        });
-       
-        return this;
-    },
+			app.loader('hide');
+		});
+	   
+		return this;
+	},
 
 
 
-    /** Select the planning to display
-    */
-    selectPlanning: function(e){
-        var link = $(e.target);
+	/** Select the planning to display
+	*/
+	selectPlanning: function(e){
+		var link = $(e.target);
 
-        // Save the selected planning in the Session storage //
-        sessionStorage.setItem(this.sstoragePlanningSelected, link.attr('id'));
+		// Save the selected planning in the Session storage //
+		sessionStorage.setItem(this.sstoragePlanningSelected, link.attr('id'));
 
-        $('#listAgents li.active, #listTeams li.active').removeClass('active');
-        link.parent('li').addClass('active');
-    },
-
-
-
-    /** Set a user model to the view
-    */
-    setModel : function(model) {
-        this.model = model;
-        return this;
-    },    
+		$('#listAgents li.active, #listTeams li.active').removeClass('active');
+		link.parent('li').addClass('active');
+	},
 
 
 
-    /** Calendar Initialization
-    */
-    initAllCalendars: function() {    		
-    		var self = this;
-    		
-            teams = app.collections.teams;    		
-    		teams.each(function(t){	
+	/** Set a user model to the view
+	*/
+	setModel : function(model) {
+		this.model = model;
+		return this;
+	},    
+
+
+
+	/** Calendar Initialization
+	*/
+	initAllCalendars: function() {    		
+			var self = this;
+			
+			teams = app.collections.teams;    		
+			teams.each(function(t){	
 				new app.Views.EventsListView(self,t,true).render();
 			});
 
-            officers = app.collections.officers;    		
+			officers = app.collections.officers;    		
 			officers.each(function(o){
 				new app.Views.EventsListView(self,o,false).render();
 			});
-    },
+	},
 
 
 
-    /** Make the external event Draggable
-    */
-    initDragObject: function() {
-    	tasks = app.collections.tasks.toJSON();
-    	
-        _.each(tasks, function (task, i){
+	/** Make the external event Draggable
+	*/
+	initDragObject: function() {
+		tasks = app.collections.tasks.toJSON();
+		
+		_.each(tasks, function (task, i){
 
-    		el = $('li#task_'+task.id+':not(.disabled)');
+			el = $('li#task_'+task.id+':not(.disabled)');
 
-            var eventObject = {
-                state: task.state,
-                id: task.id,
+			var eventObject = {
+				state: task.state,
+				id: task.id,
 				title: task.name,
 				project_id: task.project_id[0],
 				//user_id: task.user_id[0],
@@ -307,146 +306,146 @@ app.Views.PlanningView = Backbone.View.extend({
 			
 			// Make the event draggable using jQuery UI //
 			el.draggable({
-			    zIndex: 9999,
-			    revert: true,
-			    revertDuration: 500,
-			    appendTo: '#app',
-			    opacity: 0.8,
-                scroll: false,
-                cursorAt: { top: 0, left: 0 },
-			    helper: function(e){
-                    return $("<p class='well well-small'>"+eventObject.title+"</p>");
-                },
-			    reverting: function() {
+				zIndex: 9999,
+				revert: true,
+				revertDuration: 500,
+				appendTo: '#app',
+				opacity: 0.8,
+				scroll: false,
+				cursorAt: { top: 0, left: 0 },
+				helper: function(e){
+					return $("<p class='well well-small'>"+eventObject.title+"</p>");
+				},
+				reverting: function() {
 					console.log('reverted');
 				},
 
 
 			});
 
-    	});
-    },
+		});
+	},
 
 
 
-    /** Link to the Intervention page
-    */
-    linkToInter: function(e){
+	/** Link to the Intervention page
+	*/
+	linkToInter: function(e){
 
-        // Retrieve the ID of the intervention //
-        var link = $(e.target);
+		// Retrieve the ID of the intervention //
+		var link = $(e.target);
 
-        // Check if the element click is a <i> or the <button> //
-        if(link.is('i')){
-            var id = _(link.parent('button').parent('a').attr('href')).strRightBack('_');    
-        }
-        else{
-            var id = _(link.parent('a').attr('href')).strRightBack('_');       
-        }
-        
-        // Navigate to the Intervention //
-        app.router.navigate(app.routes.interventions.baseUrl+'/'+id , {trigger: true, replace: true});
+		// Check if the element click is a <i> or the <button> //
+		if(link.is('i')){
+			var id = _(link.parent('button').parent('a').attr('href')).strRightBack('_');    
+		}
+		else{
+			var id = _(link.parent('a').attr('href')).strRightBack('_');       
+		}
+		
+		// Navigate to the Intervention //
+		app.router.navigate(app.routes.interventions.baseUrl+'/'+id , {trigger: true, replace: true});
 
-    },
-
-
-
-    /** Display information in the Modal view
-    */
-    setInfoModalCancelInter: function(e){
-
-        // Retrieve the ID of the intervention //
-        var link = $(e.target);
-
-        $('#motifCancel').val('');
-
-        // Check if the element click is a <i> or the <button> //
-        if(link.is('i')){
-            var id = _(link.parent('button').parent('a').attr('href')).strRightBack('_');    
-        }
-        else{
-            var id = _(link.parent('a').attr('href')).strRightBack('_');       
-        }
-
-        var inter = _.filter(app.collections.interventions.models, function(item){ return item.attributes.id == id });
-
-        if( inter ) {
-            this.selectedInter = inter[0]
-            this.selectedInterJSON = this.selectedInter.toJSON();
-
-            $('#infoModalCancelInter p').html(this.selectedInterJSON.name);
-            $('#infoModalCancelInter small').html(this.selectedInterJSON.description);
-        }
-        else{
-            app.notify('', 'error', app.lang.errorMessages.unablePerformAction, "Annulation Intervention : non trouvée dans la liste");
-        }
-    },
+	},
 
 
 
-    /** Display information in the Modal Delete Task view
-    */
-    setInfoModalDeleteTask: function(e){
+	/** Display information in the Modal view
+	*/
+	setInfoModalCancelInter: function(e){
 
-        // Retrieve the ID of the task //
-        var link = $(e.target);
+		// Retrieve the ID of the intervention //
+		var link = $(e.target);
 
-        var id = _(link.parent('a').parent('li').attr('id')).strRightBack('_');
+		$('#motifCancel').val('');
 
-        var task = _.filter(app.collections.tasks.models, function(item){ return item.attributes.id == id });
-        if( task ) {
-            this.selectedTask = task[0]
-            this.selectedTaskJSON = this.selectedTask.toJSON();
+		// Check if the element click is a <i> or the <button> //
+		if(link.is('i')){
+			var id = _(link.parent('button').parent('a').attr('href')).strRightBack('_');    
+		}
+		else{
+			var id = _(link.parent('a').attr('href')).strRightBack('_');       
+		}
 
-            $('#infoModalDeleteTask p').html(this.selectedTaskJSON.name);
-            $('#infoModalDeleteTask small').html(this.selectedTaskJSON.description);
-        }
-        else{
-            app.notify('', 'error', app.lang.errorMessages.unablePerformAction, "Suppression Tâche : non trouvée dans la liste");
-        }
-    },
+		var inter = _.filter(app.collections.interventions.models, function(item){ return item.attributes.id == id });
+
+		if( inter ) {
+			this.selectedInter = inter[0]
+			this.selectedInterJSON = this.selectedInter.toJSON();
+
+			$('#infoModalCancelInter p').html(this.selectedInterJSON.name);
+			$('#infoModalCancelInter small').html(this.selectedInterJSON.description);
+		}
+		else{
+			app.notify('', 'error', app.lang.errorMessages.unablePerformAction, "Annulation Intervention : non trouvée dans la liste");
+		}
+	},
 
 
 
-    /** Delete intervention
-    */
-    scheduledInter: function(e) {
+	/** Display information in the Modal Delete Task view
+	*/
+	setInfoModalDeleteTask: function(e){
+
+		// Retrieve the ID of the task //
+		var link = $(e.target);
+
+		var id = _(link.parent('a').parent('li').attr('id')).strRightBack('_');
+
+		var task = _.filter(app.collections.tasks.models, function(item){ return item.attributes.id == id });
+		if( task ) {
+			this.selectedTask = task[0]
+			this.selectedTaskJSON = this.selectedTask.toJSON();
+
+			$('#infoModalDeleteTask p').html(this.selectedTaskJSON.name);
+			$('#infoModalDeleteTask small').html(this.selectedTaskJSON.description);
+		}
+		else{
+			app.notify('', 'error', app.lang.errorMessages.unablePerformAction, "Suppression Tâche : non trouvée dans la liste");
+		}
+	},
+
+
+
+	/** Delete intervention
+	*/
+	scheduledInter: function(e) {
 
 		var intervention = $(e.target);
 		var id = _(intervention.parents('.accordion-body').attr('id')).strRightBack('_');
 
-        // Retrieve the new status //
-        if(intervention.bootstrapSwitch('status')){
+		// Retrieve the new status //
+		if(intervention.bootstrapSwitch('status')){
 		  params = { state: app.Models.Intervention.status.scheduled.key, };
-        }
-        else{
-            params = { state: app.Models.Intervention.status.open.key, };
-        }
+		}
+		else{
+			params = { state: app.Models.Intervention.status.open.key, };
+		}
 
 		app.models.intervention.saveAndRoute(id, params, null, this);
 	},
 
 
 
-    /** Delete intervention
-    */
-    cancelInter: function(e){
+	/** Delete intervention
+	*/
+	cancelInter: function(e){
 		e.preventDefault();
 		this.selectedInter.cancel($('#motifCancel').val(),
 			{
 				success: function(data){
 					$('#modalCancelInter').modal('hide');
-                    app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
+					app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
 				}
 			}
 		);
-    },
+	},
 
 
 
-    /** Delete task
-    */
-    deleteTask: function(e){
+	/** Delete task
+	*/
+	deleteTask: function(e){
 		var self = this;
 		this.selectedTask.destroy({
 			success: function(data){
@@ -459,10 +458,10 @@ app.Views.PlanningView = Backbone.View.extend({
 					inter.attributes.tasks.remove(self.selectedTaskJSON.id);
 					app.collections.interventions.add(inter);//					
 					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.taskDeleteOk);
-                    $('#modalDeleteTask').modal('hide');
+					$('#modalDeleteTask').modal('hide');
 					
-                    // Refresh the page //
-                    app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
+					// Refresh the page //
+					app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
 				}
 			},
 			error: function(e){
@@ -471,66 +470,66 @@ app.Views.PlanningView = Backbone.View.extend({
 
 		});
 
-    },
+	},
 
 
 
-    /** Remove the Task from the Calendar
-    */
-    removeTaskFromSchedule: function(e){
+	/** Remove the Task from the Calendar
+	*/
+	removeTaskFromSchedule: function(e){
 
-        // Retrieve the Id of the Task //
-        var taskId = $('#modalAboutTask').data('taskId');
+		// Retrieve the Id of the Task //
+		var taskId = $('#modalAboutTask').data('taskId');
 
-        // Retrieve the Task in the collection //
-        var taskModel = app.collections.tasks.get(taskId)
+		// Retrieve the Task in the collection //
+		var taskModel = app.collections.tasks.get(taskId)
 
-        params = {
-            state: app.Models.Task.status.draft.key,
-            user_id: null,
-            team_id: null,
-            date_end: null,
-            date_start: null,
-        };
+		params = {
+			state: app.Models.Task.status.draft.key,
+			user_id: null,
+			team_id: null,
+			date_end: null,
+			date_start: null,
+		};
 
-        // Display the Modal //
-        $("#modalAboutTask").modal('hide');
+		// Display the Modal //
+		$("#modalAboutTask").modal('hide');
 
-        taskModel.save(taskId, params);
-        
-        // Refresh the page //
-        app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
-    },
+		taskModel.save(taskId, params);
+		
+		// Refresh the page //
+		app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
+	},
 
 
 
- 	getTarget:function(e) {    	
-    	e.preventDefault();
-	    // Retrieve the ID of the intervention //
+	getTarget:function(e) {    	
+		e.preventDefault();
+		// Retrieve the ID of the intervention //
 		var link = $(e.target);
 		this.pos = _(link.parents('tr').attr('id')).strRightBack('_');
 		
-    },
+	},
 
 
 
-    /** Display the form to add a new Task
-    */
-    displayFormAddTask: function(e){
-    	this.pos = e.currentTarget.id;
-    	
-        //Display only categories in dropdown belongs to intervention
-        var categoriesTasksFiltered = null;
-        var inter = app.collections.interventions.get(this.pos);
-        if( inter) {
-        	var interJSON = inter.toJSON();
-	        categoriesTasksFiltered = _.filter(app.collections.categoriesTasks.models, function(item){ 
-	        	var services = [];
-	        	_.each( item.attributes.service_ids.models, function(service){
-	        		services.push( service.toJSON().id );
-	        	});
-	        	return  interJSON.service_id && $.inArray(interJSON.service_id[0], services )!=-1;
-	       	});
+	/** Display the form to add a new Task
+	*/
+	displayFormAddTask: function(e){
+		this.pos = e.currentTarget.id;
+		
+		//Display only categories in dropdown belongs to intervention
+		var categoriesTasksFiltered = null;
+		var inter = app.collections.interventions.get(this.pos);
+		if( inter) {
+			var interJSON = inter.toJSON();
+			categoriesTasksFiltered = _.filter(app.collections.categoriesTasks.models, function(item){ 
+				var services = [];
+				_.each( item.attributes.service_ids.models, function(service){
+					services.push( service.toJSON().id );
+				});
+				return  interJSON.service_id && $.inArray(interJSON.service_id[0], services )!=-1;
+			});
 		}
 		
 		app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
@@ -545,20 +544,20 @@ app.Views.PlanningView = Backbone.View.extend({
 //		app.views.selectListEquipmentsView.addEmptyFirst();
 //		app.views.selectListEquipmentsView.addAll();
 
-        // Retrieve the ID of the intervention //
-        this.pos = e.currentTarget.id;
-        $('#modalAddTask').modal();
+		// Retrieve the ID of the intervention //
+		this.pos = e.currentTarget.id;
+		$('#modalAddTask').modal();
    },
-    
+	
 	//TODO : Abstraire le code ==> displayFormAddIntervention,renderService,fillDropdownService,saveIntervention 
-   	// déjà dans la view InterventionDetailsView 
+	// déjà dans la view InterventionDetailsView 
 
 
 	/** Display the form to add a new Intervention
-    */
-    displayFormAddIntervention: function(e){
+	*/
+	displayFormAddIntervention: function(e){
 
-   		//search no technical services
+		//search no technical services
 		var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
 			return service.attributes.technical != true 
 		});
@@ -576,15 +575,15 @@ app.Views.PlanningView = Backbone.View.extend({
 		app.views.selectListPlacesView.clearAll();
 		app.views.selectListPlacesView.addEmptyFirst();
 		app.views.selectListPlacesView.addAll();	
-        
-        // Retrieve the ID of the intervention //
-        this.pos = e.currentTarget.id;
-        $('#modalAddInter').modal();
+		
+		// Retrieve the ID of the intervention //
+		this.pos = e.currentTarget.id;
+		$('#modalAddInter').modal();
    },
 
 
 
-    renderService: function ( service ) {
+	renderService: function ( service ) {
 		if( service!= null ) {
 			app.views.selectListServicesView.setSelectedItem( service );
 			places = app.collections.places.models;
@@ -616,22 +615,22 @@ app.Views.PlanningView = Backbone.View.extend({
 
 
 
-    /** Save the Task
-    */
-    saveTask: function(e){
-    	 var self = this;
+	/** Save the Task
+	*/
+	saveTask: function(e){
+		 var self = this;
 
 		 e.preventDefault();
 		
 		 
 		 input_category_id = null;
-	     if( app.views.selectListAssignementsView != null ) {
-	    	 var selectItem = app.views.selectListAssignementsView.getSelected();
-	    	 if( selectItem ) {
-	    		 input_category_id = selectItem.toJSON().id
-	    	 }
-	     }
-	     
+		 if( app.views.selectListAssignementsView != null ) {
+			 var selectItem = app.views.selectListAssignementsView.getSelected();
+			 if( selectItem ) {
+				 input_category_id = selectItem.toJSON().id
+			 }
+		 }
+		 
 //	     input_equipment_id = null;
 //	     if( app.views.selectListEquipmentsView != null ) {
 //	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
@@ -640,46 +639,46 @@ app.Views.PlanningView = Backbone.View.extend({
 //	    	 }
 //	     }
 
-	     var duration = $("#taskHour").val().split(":");
-	     var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] })
-	     
-	     var params = {
-	         project_id: this.pos,
-	         name: this.$('#taskName').val(),
-	         category_id: input_category_id,	
-	         //equipment_id: input_equipment_id,
-	         planned_hours: mDuration.asHours(),
-	     };
-	     
-	    $('#modalAddTask').modal('hide');
-	    app.models.task.save(0,params);
+		 var duration = $("#taskHour").val().split(":");
+		 var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] })
+		 
+		 var params = {
+			 project_id: this.pos,
+			 name: this.$('#taskName').val(),
+			 category_id: input_category_id,	
+			 //equipment_id: input_equipment_id,
+			 planned_hours: mDuration.asHours(),
+		 };
+		 
+		$('#modalAddTask').modal('hide');
+		app.models.task.save(0,params);
    },
 
 
 
 	/** Save the intervention */
-    saveIntervention: function (e) {
+	saveIntervention: function (e) {
 
-    	e.preventDefault();
+		e.preventDefault();
 
-        var self = this;
-	     
-        input_service_id = null;
-        if ( app.views.selectListServicesView && app.views.selectListServicesView.getSelected())
-            input_service_id = app.views.selectListServicesView.getSelected().toJSON().id;
-	     
-        var params = {	
-		    name: this.$('#interventionName').val(),
-		    description: this.$('#interventionDescription').val(),
-		    state: this.$('#isTemplate').is(':checked')?"template":"open",
-            // active: this.$('#isTemplate').is(':checked')?false:true,
-            service_id: input_service_id,
-            site1: this.$('#interventionPlace').val(),
-            site_details: this.$('#interventionPlacePrecision').val(),
-        };
+		var self = this;
+		 
+		input_service_id = null;
+		if ( app.views.selectListServicesView && app.views.selectListServicesView.getSelected())
+			input_service_id = app.views.selectListServicesView.getSelected().toJSON().id;
+		 
+		var params = {	
+			name: this.$('#interventionName').val(),
+			description: this.$('#interventionDescription').val(),
+			state: this.$('#isTemplate').is(':checked')?"template":"open",
+			// active: this.$('#isTemplate').is(':checked')?false:true,
+			service_id: input_service_id,
+			site1: this.$('#interventionPlace').val(),
+			site_details: this.$('#interventionPlacePrecision').val(),
+		};
 
-        app.models.intervention.saveAndRoute(0,params,$('#modalAddInter'), this, "#planning");
-    },
+		app.models.intervention.saveAndRoute(0,params,$('#modalAddInter'), this, "#planning");
+	},
 
 
 
@@ -688,47 +687,47 @@ app.Views.PlanningView = Backbone.View.extend({
 		self.element = element;
 		self.params = params
 		this.selectedInter.save(params, {
-		    success: function (data) {
-			        console.log(data);
-			        if(data.error){
-			    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-			        }
-			        else{
-			            console.log('NEW STATE INTER SAVED');
-			            if( self.element!= null )
-			            	self.element.modal('hide');
-			            self.selectedInter.update(self.params);
-			            app.collections.interventions.add(self.selectedInter);
-			            self.render();
-			        }
-			    },
-			    error: function () {
+			success: function (data) {
+					console.log(data);
+					if(data.error){
+						app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+					}
+					else{
+						console.log('NEW STATE INTER SAVED');
+						if( self.element!= null )
+							self.element.modal('hide');
+						self.selectedInter.update(self.params);
+						app.collections.interventions.add(self.selectedInter);
+						self.render();
+					}
+				},
+				error: function () {
 					console.log('ERROR - Unable to valid the Inter - InterventionView.js');
-			    },
+				},
 		},false);
 	},
 
 
 
-    /** Set or no the Foreman in the team
-    */
-    setForemanInTeam: function(e){
+	/** Set or no the Foreman in the team
+	*/
+	setForemanInTeam: function(e){
 
-        var foremanState = $(e.target);
+		var foremanState = $(e.target);
 
-        // Retrieve the new status //
-        if(foremanState.bootstrapSwitch('status')){
-            console.log('Avec le chef d"équipe');
-        }
-        else{
-            console.log('Sans le chef d"equipe');
-        }
-    },
+		// Retrieve the new status //
+		if(foremanState.bootstrapSwitch('status')){
+			console.log('Avec le chef d"équipe');
+		}
+		else{
+			console.log('Sans le chef d"equipe');
+		}
+	},
 
 
 
 	/** Filter Request
-    */
+	*/
 	setFilter: function(event){
 
 		event.preventDefault();
@@ -742,10 +741,10 @@ app.Views.PlanningView = Backbone.View.extend({
 			sessionStorage.setItem(this.filters, filterValue);
 		}
 		else{
-			sessionStorage.removeItem(this.filters);
+			sessionStorage.setItem(this.filters, 'notFilter');
 		}
 		//this.render();
-        Backbone.history.loadUrl('#planning');
+		Backbone.history.loadUrl('#planning');
 	},
 
 });
