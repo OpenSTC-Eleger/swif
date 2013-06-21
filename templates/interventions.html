@@ -275,11 +275,11 @@
 		<ul>
 			<!-- First page button -->
 			<% if(page-2 >= 1){ %>
-				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#interventions/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
+				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#<%= app.routes.interventions.baseUrl %>/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
 			<% } %>
 			
 			<!-- Previous page button -->
-			<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#interventions/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
+			<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#<%= app.routes.interventions.baseUrl %>/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
 		
 			<!-- [...] page Button -->
 			<% 	if (page-2 > 1) { %>
@@ -288,7 +288,7 @@
 					
 				for (var i=(page-2); i < (page+3); i++) {
 					if(i >= 1 && i <= pageCount){ %>
-						<li <%= (i === page ? " class='active'" : "")%>><a href='#interventions/page<%=i%>'><%= i %></a></li>
+						<li <%= (i === page ? " class='active'" : "")%>><a href='#<%= app.routes.interventions.baseUrl %>/page<%=i%>'><%= i %></a></li>
 					<% }
 
 				} %>
@@ -299,11 +299,11 @@
 			<% } %>
 			
 			<!-- Next page button -->
-			<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#interventions/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
+			<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#<%= app.routes.interventions.baseUrl %>/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
 			
 			<!-- Last page button -->
 			<% if(page+2 <= pageCount){ %>
-				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#interventions/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
+				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#<%= app.routes.interventions.baseUrl %>/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
 			<% } %>
 		</ul>
 	</div>

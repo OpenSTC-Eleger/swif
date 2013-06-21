@@ -58,6 +58,11 @@
 		"url"		: "planning/agent/:id",
 		"function"	: "planning"
 	},
+	"planningTeam": {
+		"url"		: "planning/equipe/:id",
+		"function"	: "planning"
+	},
+
 
 	"detailTask": {
 		"url"		: "taches/:id",
