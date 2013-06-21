@@ -455,7 +455,9 @@ app.Router = Backbone.Router.extend({
 		// Check if the user is connect //
 		if(this.checkConnect()){  
 			
-			
+			// If the id exist we do nothing //
+			if(_.isUndefined(id)){
+		
 	
 			if(app.collections.tasks == null ){
 				app.collections.tasks = new app.Collections.Tasks();
@@ -512,7 +514,7 @@ app.Router = Backbone.Router.extend({
 																				app.collections.equipments = new app.Collections.Equipments();
 																			}
 	
-																		   
+
 																			app.collections.equipments.fetch({
 																				success: function(){
 																					app.views.planningView = new app.Views.PlanningView(id);
@@ -525,19 +527,20 @@ app.Router = Backbone.Router.extend({
 																		}
 																	});
 																 }
-															});													         
+															});
 														}
 													});
 												 }
 											});
-										}			        	
+										}
 									});	
 								}
 							});
-						} 			        		
+						}
 					});	
 				} 
 			});
+		}
 		}
 		else{
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});

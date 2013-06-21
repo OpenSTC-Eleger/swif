@@ -261,7 +261,7 @@
 
 
 		<!-- Calendar -->
-		<div style="overflow: hidden; max-height: 590px;">
+		<div id="calendarsContainer" style="overflow: hidden; max-height: 590px;">
 
 			<%_.each(officers, function (officer, i) { %>
 				<section id="planning/agent/<%= _.slugify(officer.firstname)%>-<%= _.slugify(officer.name)%>" class="calendarContainer">

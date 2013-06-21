@@ -49,12 +49,13 @@
 		"function"	: "detailsRequest"
 	},
 
+
 	"planning": {
 		"url"		: "planning",
 		"function"	: "planning"
 	},
 	"planningAgent": {
-		"url"		: "planning/agents/:id",
+		"url"		: "planning/agent/:id",
 		"function"	: "planning"
 	},
 
