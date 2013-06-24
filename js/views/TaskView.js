@@ -114,7 +114,7 @@ app.Views.TaskView = Backbone.View.extend({
 		if( modelJSON.intervention ) {	    	
 			//Display only categories in dropdown those who have a common service with intervention  
 			var interJSON = modelJSON.intervention;
-			categoriesFiltered = _.filter(app.collections.categories.models, function(item){ 
+			categoriesFiltered = _.filter(app.collections.categoriesTasks.models, function(item){ 
 				var services = [];
 				_.each( item.attributes.service_ids.models, function(service){
 					services.push( service.toJSON().id );
@@ -133,7 +133,7 @@ app.Views.TaskView = Backbone.View.extend({
 		}
 		
 		app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
-			collection: categoriesFiltered==null?app.collections.categories: new app.Collections.Categories(categoriesFiltered)
+			collection: categoriesFiltered==null?app.collections.categoriesTasks: new app.Collections.CategoriesTasks(categoriesFiltered)
 		})
 		app.views.selectListAssignementsView.clearAll();
 		app.views.selectListAssignementsView.addEmptyFirst();
@@ -200,7 +200,7 @@ app.Views.TaskView = Backbone.View.extend({
 			 effective_hours: 0,
 			 remaining_hours: planned_hours,
 		 };
-		 this.model.saveTest(this.model.id,params,{
+		 this.model.save(this.model.id,params,{
 			 success: function( data ) {
 				console.log(data);	     	
 				if(data.error){
