@@ -22,7 +22,9 @@ app.Collections.CategoriesInterventions = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {
-    	app.readOE(this.model_name, app.models.user.getSessionID(), options);
+        var fields = ["asksAssigned", "code", "id", "name"];
+
+    	app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
     },
 
 

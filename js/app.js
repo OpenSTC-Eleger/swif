@@ -244,10 +244,14 @@ var app = {
 
 	/** Retrieve a list from OpenERP
 	*/
-	readOE : function (model, session_id, options) {
+	readOE : function (model, session_id, options, fields) {
+
+		if(_.isUndefined(fields))
+				fields = [];
+
 		this.json(app.configuration.openerp.url + this.urlOE_retrieveListe, {
 			'model'     : model,
-			'fields'    : [],
+			'fields'    : fields,
 			'session_id': session_id
 		}, options)
 	},

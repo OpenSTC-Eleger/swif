@@ -23,7 +23,9 @@ app.Collections.ClaimersContacts = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {
-    	app.readOE(this.model_name, app.models.user.getSessionID(), options);
+        var fields = ["email", "function", "id", "livesIn", "mobile", "name", "partner_id", "phone", "street", "type", "user_id", "zip"];
+
+    	app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
     },
 
 

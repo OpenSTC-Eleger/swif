@@ -161,7 +161,7 @@ app.Router = Backbone.Router.extend({
 
 
 			// Check if the collections is instantiate //
-			if(app.collections.requests == null ){
+			if(_.isUndefined(app.collections.requests)){
 				app.collections.requests = new app.Collections.Requests();
 			}
 
@@ -587,20 +587,19 @@ app.Router = Backbone.Router.extend({
 									if(app.collections.places == null ){
 										app.collections.places = new app.Collections.Places();
 									}
-									app.collections.places.fetch({						        						        	
+									app.collections.places.fetch({
 										success: function(){
 											if(app.collections.equipments == null ){
 												app.collections.equipments = new app.Collections.Equipments();
 											}
 	
-										   
 											app.collections.equipments.fetch({
 												success: function(){
 													if(app.collections.categoriesTasks == null ){
 														app.collections.categoriesTasks = new app.Collections.CategoriesTasks();
 													}
 	
-												   
+
 													app.collections.categoriesTasks.fetch({
 
 														success: function(){
@@ -615,7 +614,7 @@ app.Router = Backbone.Router.extend({
 																	if(app.collections.claimersServices == null ){
 																		app.collections.claimersServices = new app.Collections.ClaimersServices();
 																	}
-																	
+
 
 																	app.collections.claimersServices.fetch({
 																		success: function(){
@@ -637,9 +636,9 @@ app.Router = Backbone.Router.extend({
 									});
 								}
 							});
-						}		        		
+						}
 					});
-				}			        		
+				}
 			});
 		}
 		else{

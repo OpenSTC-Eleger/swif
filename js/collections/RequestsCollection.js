@@ -3,43 +3,46 @@
 */
 app.Collections.Requests = Backbone.Collection.extend({
 
-    model: app.Models.Request,
+	model: app.Models.Request,
 
-    // Model name in the database //
-    model_name : 'openstc.ask',
-
-    
-    
-    /** Collection Initialization
-    */
-    initialize: function (options) {
-    	//console.log('Requests collection Initialization');
-    },
+	// Model name in the database //
+	model_name : 'openstc.ask',
 
 
 
-    /** Collection Sync
-    */
-    sync: function(method, model, options) {	
-    	app.readOE(this.model_name, app.models.user.getSessionID(), options);
-    },
+	/** Collection Initialization
+	*/
+	initialize: function (options) {
+		//console.log('Requests collection Initialization');
+	},
 
 
 
-    /** Collection Parse
-    */
-    parse: function(response) {
-        return response.result.records;
-    },
-    
-    
+	/** Collection Sync
+	*/
+	sync: function(method, model, options) {
+		var fields = ["actions", "belongsToAssignement", "belongsToService", "id", "name", "belongsToSite", "create_date", "create_uid", "date_deadline", "description", "id", "infoMessage", "intervention_assignement_id", "intervention_ids", "manager_id", "name", "note", "partner_address", "partner_email", "partner_id", "partner_phone", "partner_service_id", "partner_type", "partner_type_code", "people_email", "people_name", "people_phone", "refusal_reason", "service_id", "site1", "site_details", "state", "write_uid"];
 
-    /** Comparator for ordering collection
-    */
-    comparator: function(item) {
-        var mCreateDate = moment(item.get('create_date'))
-        item.set({'create_date': mCreateDate});
-        return -item.get('create_date');
+		app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
+
+	},
+
+
+
+	/** Collection Parse
+	*/
+	parse: function(response) {
+		return response.result.records;
+	},
+	
+	
+
+	/** Comparator for ordering collection
+	*/
+	comparator: function(item) {
+		var mCreateDate = moment(item.get('create_date'))
+		item.set({'create_date': mCreateDate});
+		return -item.get('create_date');
 	},
 
 });

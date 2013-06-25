@@ -88,7 +88,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 
 		// Filter on the Tasks //
-		var tasksUser = _.filter(tasks, function(task){			
+		var tasksUser = _.filter(tasks, function(task){	
 			return task.active == true;
 		});
 
