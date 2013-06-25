@@ -351,10 +351,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 					            	self.element.modal('hide');
 					            self.model.update(params);
 					            //app.collections.requests.get(self.pos).update(self.model);
-					            
-					            //self.render();
-					            app.router.navigate(app.routes.requestsInterventions.baseUrl, {trigger: true, replace: true});
-					            
+								route = Backbone.history.fragment;
+								Backbone.history.loadUrl(route);
 					        }
 					    },
 					    error: function () {
