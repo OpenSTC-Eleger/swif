@@ -76,17 +76,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<% _.each(service.user_ids, function (officer, i) { 								
-												self.officer = officer
-												self.groupName = "";
-												_.each(app.collections.groups.models, function(group){									
-													var groupJSON = group.toJSON();									
-													if($.inArray(groupJSON.id, self.officer.groups_id)!=-1){	
-														self.groupName = groupJSON.name;
-													}
-												});
-											
-										%>
+									<% _.each(service.user_ids, function (officer, i) {	%>
 										
 										<tr class="row-nested-objects" id="<%= officer.id %>_<%= service.id %>">
 											<td>
@@ -104,7 +94,7 @@
 											</td>
 											
 											<td><%= officer.login %></td>	
-											<td><%= _(this.groupName).strRight('/') %></td>										
+											<td><%= _(officer.groups_id.models[0].toJSON().name).strRightBack('/') %></td>										
 											<td><%= (officer.user_email != false ? officer.user_email : "") %></td>
 											<td><% 
 												if(officer.date != false){ %>

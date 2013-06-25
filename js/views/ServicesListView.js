@@ -318,7 +318,7 @@ app.Views.ServicesListView = Backbone.View.extend({
 		
 		this.displayServices(e);
 	
-		console.debug(this.selectedOfficer);
+		//console.debug(this.selectedOfficer);
 	},
 	
 	
@@ -439,7 +439,7 @@ app.Views.ServicesListView = Backbone.View.extend({
 	    	this.params,
 	    	this.modelId, {
 			success: function(data){
-				console.log(data);
+				
 				if(data.error){
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
@@ -488,7 +488,7 @@ app.Views.ServicesListView = Backbone.View.extend({
 		var self = this;
 		this.selectedOfficer[0].delete({
 			success: function(data){
-				console.log(data);
+				
 				if(data.error){
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
