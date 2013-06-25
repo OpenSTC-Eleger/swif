@@ -42,8 +42,6 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 			collectionType: 'app.Collections.Groups',
 			includeInJSON: ['id', 'name','code'],	
 		},
-		
-
 	],
 
 
@@ -165,7 +163,7 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 	/** Model Initialization
 	*/
     initialize: function(){
-        console.log('Officer Model initialization');
+        //console.log('Officer Model initialization');
         this.fetchRelated('tasks');
     },
 

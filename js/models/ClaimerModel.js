@@ -76,7 +76,7 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
 	/** Model Initialization
 	*/
     initialize: function(){
-        console.log('Claimer Model initialization');
+        //console.log('Claimer Model initialization');
         this.fetchRelated('service_id');
     },
 

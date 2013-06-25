@@ -15,7 +15,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 			key: 'equipment_ids',
 			relatedModel: 'app.Models.Equipment',
 			collectionType: 'app.Collections.Equipments',
-			includeInJSON: ['id','name', 'complete_name', 'type'],
+			includeInJSON: ['id', 'name', 'complete_name', 'type'],
 		},	
 	],
 	
@@ -147,7 +147,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	/** Model Initialization
 	*/
 	initialize: function (model) {
-		console.log('Task Model Initialization');
+		//console.log('Task Model Initialization');
 
 		// Initialization Traduction task state //
 		app.Models.Task.status.draft.translation = app.lang.toScheduled;

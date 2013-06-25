@@ -115,14 +115,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ service_id : value });
 	},
-	
-	getAssignement : function() {
-		return this.get('belongsToAssignement');
-	},
-	setAssignement : function(value) {
-		if( value == 'undefined') return;
-		this.set({ belongsToAssignement : value });
-	},
 
 	getInterventions : function() {
 		return this.get('intervention_ids');
@@ -183,7 +175,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
 	update: function(params) {
 		this.setDescription( params.description );
 		//this.setService( params.service_id );
-		//this.setAssignement( params.intervention_assignement_id );
 		this.setState( params.state );
 		this.setRefusalReason( params.refusal_reason );
 		this.setNote( params.note );
