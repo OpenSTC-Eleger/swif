@@ -64,6 +64,8 @@
 						<% if(service.user_ids.length != 0) { 
 								var self = this;
 								self.service = service; 
+								
+								
 							%>
 							<table class="table-nested-objects table table-striped table-condensed table-hover">
 								<thead>
@@ -76,7 +78,12 @@
 									</tr>
 								</thead>
 								<tbody>
-									<% _.each(service.user_ids, function (officer, i) {	%>
+									<% _.each(service.user_ids, function (officer, i) {	
+										var model = officer.groups_id.models[0];
+										var group = '';											
+										if(!_.isUndefined(model))
+											group = _(model.toJSON().name).strRightBack('/')
+										%>
 										
 										<tr class="row-nested-objects" id="<%= officer.id %>_<%= service.id %>">
 											<td>
@@ -94,7 +101,7 @@
 											</td>
 											
 											<td><%= officer.login %></td>	
-											<td><%= _(officer.groups_id.models[0].toJSON().name).strRightBack('/') %></td>										
+											<td><%= group %></td>										
 											<td><%= (officer.user_email != false ? officer.user_email : "") %></td>
 											<td><% 
 												if(officer.date != false){ %>
