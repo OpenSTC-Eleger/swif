@@ -160,8 +160,8 @@ app.Views.RequestsListView = Backbone.View.extend({
 				//var intervention = interModel.toJSON();
 				var firstDate = null;
 				var lastDate = null;
-				
-				_.each(intervention.tasks, function(task){ 
+
+				_.each(intervention.tasks, function(task){
 					if ( firstDate==null )
 						firstDate = task.date_start;
 					else if ( task.date_start && firstDate>task.date_start )

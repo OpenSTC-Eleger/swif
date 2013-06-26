@@ -486,7 +486,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			var username = self.el.data('username');
 			
 			
-			$(self.el.selector + ' table td.fc-header-left').html("<img src='http://mashwork.com/blog/wp-content/uploads/2012/06/Unknown-person2.gif' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");
+			$(self.el.selector + ' table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");
 
 
 			// Print button //

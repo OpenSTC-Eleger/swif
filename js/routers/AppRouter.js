@@ -184,15 +184,14 @@ app.Router = Backbone.Router.extend({
 									app.collections.interventions.fetch({
 										success: function(){
 											if(app.collections.tasks == null ){
-												app.collections.tasks = new app.Collections.Tasks();        	
+												app.collections.tasks = new app.Collections.Tasks();
 											}
-											app.collections.tasks.fetch({							                	
+											app.collections.tasks.fetch({	
 													success: function(){
 
 														if(app.collections.categoriesTasks == null ){
 															app.collections.categoriesTasks = new app.Collections.CategoriesTasks();
 														}
-														
 														app.collections.categoriesTasks.fetch({
 															success: function(){
 																app.views.requestsListView = new app.Views.RequestsListView({page: self.page});
