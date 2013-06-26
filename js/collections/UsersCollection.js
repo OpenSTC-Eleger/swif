@@ -11,7 +11,7 @@ app.Collections.Users = Backbone.Collection.extend({
     /** Collection Initialization
     */
     initialize : function() {
-        console.log('User collection initialize');
+        //console.log('User collection initialize');
     },
 
 });

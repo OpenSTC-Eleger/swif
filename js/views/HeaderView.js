@@ -25,21 +25,13 @@ app.Views.HeaderView = Backbone.View.extend({
         // If the user is connect, retrieve his menu from OpenERP //
         if(app.models.user.hasSessionID()) {
             
-            console.log("Retrieve menu");
             app.models.user.getMenus({
                 error: function (){
                     console.error('ERROR: Unable to retrieve menu');
                 },
                 success: function (data) {
-                    /*console.debug(data.error);
-                    console.debug("#####################################");
-                    if(data.error.code == 100){
-                        app.models.user.logout();
-                    }
-                    else{*/
-                    //console.debug(data.result.data.children);
 	                self.initHeader(data.result.data.children, activeMenu);
-                    
+                 
                 }
             });
         }
@@ -47,7 +39,7 @@ app.Views.HeaderView = Backbone.View.extend({
             this.initHeader('', '');
         }
 
-        console.log('---> Header Render');
+        //console.log('---> Header Render');
         return this;
     },
 

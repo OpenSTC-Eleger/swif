@@ -297,9 +297,9 @@ app.Views.EventsListView = Backbone.View.extend({
                 
 				select: function( startDate, endDate, allDay, jsEvent, view) {
 
-					console.debug('START' + startDate);
-					console.debug('START' + endDate);
-					console.debug('ALLDAY' + allDay);
+					//console.debug('START' + startDate);
+					//console.debug('START' + endDate);
+					//console.debug('ALLDAY' + allDay);
 
 					var mStartDate = moment( startDate );
 					var mEndDate = moment( endDate );
@@ -712,7 +712,7 @@ app.Views.EventsListView = Backbone.View.extend({
 
 
 		getPlace: function (o, intervention) {
-			console.debug(intervention);
+			//console.debug(intervention);
 			return intervention.site1!=null?intervention.site1[1]:"";
 		
 		},

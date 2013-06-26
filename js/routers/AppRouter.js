@@ -9,7 +9,6 @@ app.Router = Backbone.Router.extend({
 		manageInterventions        : 'gestion-des-interventions',
 		reporting                  : 'reporting',
 		configuration              : 'configuration',
-		cartographie               : 'cartographie'
 	},
 
 
@@ -23,12 +22,10 @@ app.Router = Backbone.Router.extend({
 			self.route(route.url, route.function);
 		});
 
-		
 		// Check if the user is connect //
 		this.checkConnect();
 		
 		// Header, Footer Initialize //    	
-		//app.views.app = new app.Views.app();
 		app.views.headerView = new app.Views.HeaderView();
 		app.views.footerView = new app.Views.FooterView();
 	},
@@ -104,7 +101,7 @@ app.Router = Backbone.Router.extend({
 	login: function(){
 		// Check if the user is connect //
 		if(!this.checkConnect()){
-			// If the view exist we reuse it //        	
+			// If the view exist we reuse it //
 			//if(app.views.loginView == null){
 				app.views.loginView = new app.Views.LoginView(app.models.user);
 			//}

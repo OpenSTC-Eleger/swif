@@ -15,7 +15,7 @@ app.Collections.Tasks = Backbone.Collection.extend({
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
-		console.log('Tasks collection Initialization');
+		//console.log('Tasks collection Initialization');
 	},
 
 

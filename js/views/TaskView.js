@@ -221,15 +221,5 @@ app.Views.TaskView = Backbone.View.extend({
 	preventDefault: function(event){
 		event.preventDefault();
 	},
-	
-	//    
-//    updateInter: function (task) {
-//    	intervention = task.toJSON().intervention;
-//    	console.debug("BINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDING");
-//    	
-//    	app.models.intervention.saveAndRoute(intervention.id, {state: 'toscheduled'}, null, null, "#taches");
-//    	
-//    	
-//    },
 
 });

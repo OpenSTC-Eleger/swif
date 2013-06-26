@@ -13,7 +13,7 @@ app.Collections.Places = Backbone.Collection.extend({
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
-		console.log('Place collection Initialization');
+		//console.log('Place collection Initialization');
 	},
 
 
@@ -21,7 +21,7 @@ app.Collections.Places = Backbone.Collection.extend({
 	/** Collection Sync
 	*/
 	sync: function(method, model, options) {
-		var fields = ["asksBelongsto", "code", "complete_name", "id", "intervention_ids", "lenght", "name", "service", "service_ids", "site_parent_id", "surface", "type", "width"];
+		var fields = ["code", "complete_name", "id", "lenght", "name", "service", "service_ids", "site_parent_id", "surface", "type", "width"];
 
 		app.readOE( this.model_name, app.models.user.getSessionID(), options, fields);
 	},

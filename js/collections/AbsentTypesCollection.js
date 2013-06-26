@@ -14,7 +14,7 @@ app.Collections.AbsentTypes = Backbone.Collection.extend({
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
-		console.log('Absent Types collection Initialization');
+		//console.log('Absent Types collection Initialization');
 	},
 
 

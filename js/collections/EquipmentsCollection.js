@@ -15,7 +15,7 @@ app.Collections.Equipments = Backbone.Collection.extend({
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
-		console.log('Equipment collection Initialization');
+		//console.log('Equipment collection Initialization');
 	},
 
 

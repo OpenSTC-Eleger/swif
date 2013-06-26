@@ -15,7 +15,7 @@ app.Collections.Claimers = Backbone.Collection.extend({
 	/** Collection Initialization
 	*/
 	initialize : function() {
-		console.log('Claimer collection initialize');
+		//console.log('Claimer collection initialize');
 	},
 
 

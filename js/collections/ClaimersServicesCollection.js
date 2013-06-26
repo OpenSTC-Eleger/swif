@@ -15,7 +15,7 @@ app.Collections.ClaimersServices = Backbone.Collection.extend({
 	/** Collection Initialization
 	*/
 	initialize : function() {
-		console.log('Claimer Service collection initialize');
+		//console.log('Claimer Service collection initialize');
 	},
 
 
@@ -23,7 +23,7 @@ app.Collections.ClaimersServices = Backbone.Collection.extend({
 	/** Collection Sync
 	*/
 	sync: function(method, model, options) {
-		var fields = ["asksBelongsto", "category_ids", "code", "id", "manager_id", "name", "service_id", "technical", "user_ids"];
+		var fields = ["category_ids", "code", "id", "manager_id", "name", "service_id", "technical", "user_ids"];
 
 		app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
 	},

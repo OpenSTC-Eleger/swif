@@ -119,7 +119,7 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
 	},
 
-    /** Save Model
+    /** Create Model
 	*/
 	create: function(data,options) { 
 		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(),options);

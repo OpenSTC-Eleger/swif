@@ -15,7 +15,7 @@ app.Collections.Teams = Backbone.Collection.extend({
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
-		console.log('Teams collection Initialization');
+		//console.log('Teams collection Initialization');
 	},
 
 

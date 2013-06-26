@@ -15,7 +15,7 @@ app.Collections.ClaimersTypes = Backbone.Collection.extend({
     /** Collection Initialization
     */
     initialize: function (options) {
-    	console.log('Claimer type collection Initialization');
+    	//console.log('Claimer type collection Initialization');
     },
 
 

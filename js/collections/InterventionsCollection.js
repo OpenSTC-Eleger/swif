@@ -15,7 +15,7 @@ app.Collections.Interventions = Backbone.Collection.extend({
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
-		console.log('Interventions collection Initialization');
+		//console.log('Interventions collection Initialization');
 	},
 
 

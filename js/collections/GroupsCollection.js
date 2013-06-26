@@ -15,7 +15,7 @@ app.Collections.Groups = Backbone.Collection.extend({
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
-		console.log('Groups collection Initialization');
+		//console.log('Groups collection Initialization');
 	},
 
 

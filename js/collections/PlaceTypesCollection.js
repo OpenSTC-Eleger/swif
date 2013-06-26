@@ -13,7 +13,7 @@ app.Collections.PlaceTypes = Backbone.Collection.extend({
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
-		console.log('Sites types collection Initialization');
+		//console.log('Sites types collection Initialization');
 	},
 
 

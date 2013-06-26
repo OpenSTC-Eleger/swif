@@ -15,7 +15,7 @@ app.Collections.ClaimersContacts = Backbone.Collection.extend({
     /** Collection Initialization
     */
     initialize : function() {
-        console.log('Claimer Contact collection initialize');
+        //console.log('Claimer Contact collection initialize');
     },
 
 

@@ -15,7 +15,7 @@ app.Collections.CategoriesTasks = Backbone.Collection.extend({
     /** Collection Initialization
     */
     initialize: function (options) {
-    	console.log('Categories collection Initialization');
+    	//console.log('Categories collection Initialization');
     },
 
 
@@ -23,7 +23,7 @@ app.Collections.CategoriesTasks = Backbone.Collection.extend({
     /** Collection Sync
     */
     sync: function(method, model, options) {
-        var fields = ["code", "complete_name", "id", "name", "parent_id", "service_ids", "tasksAssigned"];
+        var fields = ["code", "complete_name", "id", "name", "parent_id", "service_ids"];
 
     	app.readOE( this.model_name, app.models.user.getSessionID(), options, fields);
     },

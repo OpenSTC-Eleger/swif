@@ -226,17 +226,13 @@ app.Views.RequestsListView = Backbone.View.extend({
 			app.views.selectServicesView.addAll();
 			if( this.selectedRequest.service_id )
 				app.views.selectServicesView.setSelectedItem( this.selectedRequest.service_id[0] );
-			else {
-				if( this.selectedRequest.belongsToService )
-					app.views.selectAssignementsView.setSelectedItem( this.selectedRequest.belongsToService.id );
-			}
+
 			
 			app.views.selectAssignementsView = new app.Views.DropdownSelectListView({el: $("#requestAssignement"), collection: app.collections.categoriesInterventions})
 			app.views.selectAssignementsView.clearAll();
 			app.views.selectAssignementsView.addEmptyFirst();
 			app.views.selectAssignementsView.addAll();
-			if( this.selectedRequest.belongsToAssignement )
-				app.views.selectAssignementsView.setSelectedItem( this.selectedRequest.belongsToAssignement.id );
+
 			
 			$('#requestNote').val(this.selectedRequest.description);
 
@@ -350,11 +346,9 @@ app.Views.RequestsListView = Backbone.View.extend({
 					            if( self.element!= null )
 					            	self.element.modal('hide');
 					            self.model.update(params);
-					            //app.collections.requests.get(self.pos).update(self.model);
 					            
-					            //self.render();
-					            app.router.navigate(app.routes.requestsInterventions.baseUrl, {trigger: true, replace: true});
-					            
+					            route = Backbone.history.fragment;
+								Backbone.history.loadUrl(route);
 					        }
 					    },
 					    error: function () {
