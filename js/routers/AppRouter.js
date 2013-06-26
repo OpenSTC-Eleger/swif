@@ -159,12 +159,6 @@ app.Router = Backbone.Router.extend({
 
 	});*/
 
-
-
-
-
-
-
 			// Check if the collections is instantiate //
 			if(_.isUndefined(app.collections.requests)){
 				app.collections.requests = new app.Collections.Requests();

@@ -37,13 +37,6 @@ var app = {
 	views           : {},
 	templates       : {},
 
-		lol: {
-		"lollol": {
-			"routes": "lol",
-			"function": "riri"
-		}
-	},
-	
 
 
 
@@ -81,7 +74,7 @@ var app = {
 				// Router initialization //
 				app.router = new app.Router();
 				// Listen url changes //
-				Backbone.history.start();
+				Backbone.history.start({pushState: false});
 			})
 			.fail(function(){
 				console.error('Unable to init the app');

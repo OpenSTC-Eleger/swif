@@ -126,7 +126,7 @@ app.Views.DropdownSelectItemView = Backbone.View.extend({
 
 
     show: function() {
-		$(this.el).removeProp('disabled');
+		$(this.el).prop('disabled', false);
 		$(this.el).attr('style', 'display:inline');
     },
 });

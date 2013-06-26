@@ -69,8 +69,8 @@ app.Views.TaskView = Backbone.View.extend({
 				$('.inputField').prop('disabled', true);
 				$('.save').prop('disabled', true);
 			}else {
-				$('.inputField').removeProp("disabled");
-				$('.save').removeProp("disabled");
+				$('.inputField').prop("disabled", false);
+				$('.save').prop("disabled", false);
 			}
 				
 

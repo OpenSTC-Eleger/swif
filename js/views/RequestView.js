@@ -113,7 +113,6 @@ app.Views.RequestView = Backbone.View.extend({
 					}
 
 
-					console.log('Contact of the user:');
 					// Check if the user has a user claimer //
 
 					console.log(app.collections.officers.get(app.models.user.getUID()));
@@ -135,8 +134,8 @@ app.Views.RequestView = Backbone.View.extend({
 						app.views.selectListClaimersView.setSelectedItem(officerJSON.contact_id[0].partner_id[0]);
 						self.renderContact( app.views.selectListClaimersView.getSelected() );
 						app.views.selectListClaimersContactsView.setSelectedItem( officerJSON.contact_id[0].id );
-						$('#requestContactSelect').removeProp('disabled');
-						$('#requestContactInput, #requestContactPhone, #requestContactEmail').removeProp('readonly');
+						$('#requestContactSelect').prop('disabled', false);
+						$('#requestContactInput, #requestContactPhone, #requestContactEmail').prop('readonly', false);
 						self.renderContactDetails(contact);
 						
 						self.renderTechnicalService(userClaimer.toJSON().technical_service_id[0]);
@@ -249,8 +248,8 @@ app.Views.RequestView = Backbone.View.extend({
 					if( app.views.selectListClaimersView.hasId(currentRequest.partner_id[0]) ) {
 						app.views.selectListClaimersView.setSelectedItem(currentRequest.partner_id[0]);
 						this.renderContact( app.views.selectListClaimersView.getSelected() );
-						$('#requestContactSelect').removeProp('disabled');
-						$('#requestContactInput, #requestContactPhone, #requestContactEmail').removeProp('readonly');
+						$('#requestContactSelect').prop('disabled', false);
+						$('#requestContactInput, #requestContactPhone, #requestContactEmail').prop('readonly', false);
 					}
 				}
 				else {
@@ -264,8 +263,8 @@ app.Views.RequestView = Backbone.View.extend({
 				$('#requestContactInputBlock').show();
 				$('#requestContactSelectBlock').hide();
 
-				$('#requestContactInput').removeProp('readonly');
-				$('#requestContactPhone, #requestContactEmail').removeProp('readonly');
+				$('#requestContactInput').prop('readonly', false);
+				$('#requestContactPhone, #requestContactEmail').prop('readonly', false);
 				
 				$('#requestClaimerBlock').hide();
 				if (app.views.selectListClaimersView) {
@@ -302,8 +301,8 @@ app.Views.RequestView = Backbone.View.extend({
 			$('#requestContactSelectBlock').show();
 
 			$('#requestContactInput').prop('readonly', true);
-			$('#requestContactSelect').removeProp('disabled');
-			$('#requestContactPhone, #requestContactEmail').removeProp('readonly');
+			$('#requestContactSelect').prop('disabled', true);
+			$('#requestContactPhone, #requestContactEmail').prop('readonly', false);
 		
 			
 			//var collection = this.getCollectionOrdered(claimer.attributes.address);

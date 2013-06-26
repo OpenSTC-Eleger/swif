@@ -20,10 +20,10 @@ app.Collections.Places = Backbone.Collection.extend({
 
 	/** Collection Sync
 	*/
-	sync: function(method, model, options) {
+	sync: function(method, model, options){
 		var fields = ["code", "complete_name", "id", "lenght", "name", "service", "service_ids", "site_parent_id", "surface", "type", "width"];
 
-		app.readOE( this.model_name, app.models.user.getSessionID(), options, fields);
+		app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
 	},
 
 
