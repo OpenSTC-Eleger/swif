@@ -161,31 +161,7 @@
 					<!-- Request state -->
 					<td>
 
-						<!-- Set information for the state if the Request is Valid, Refused or cancelled -->
-						<% if(requests[i].state == app.Models.Request.status.valid.key){
-							var title = requests[i].infoMessage;
-						}
-						else if(requests[i].state == app.Models.Request.status.closed.key){
-							if(requests[i].intervention_ids[0].state == app.Models.Intervention.status.closed.key){
-								var title = requests[i].infoMessage;	
-							}
-							else{
-								var title = requests[i].intervention_ids[0].cancel_reason;
-							}
-							
-						}
-						else if(requests[i].state == app.Models.Request.status.refused.key){
-							var title = requests[i].refusal_reason  + '\n('+ modifydBy +')';
-						}
-						else if(requests[i].state == app.Models.Request.status.confirm.key){
-							var title = requests[i].note;
-						}
-						else{
-							var title = '';
-						}
-						
-						%>
-						<span class="label label-<%= app.Models.Request.status[requests[i].state].color %>" data-toggle="tooltip" data-original-title="<%= title %>">
+						<span class="label label-<%= app.Models.Request.status[requests[i].state].color %>" data-toggle="tooltip" data-original-title="<%= requests[i].tooltip %>">
 							<%= app.Models.Request.status[requests[i].state].translation %>
 						</span>
 					</td>

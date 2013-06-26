@@ -33,7 +33,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		note: "",
 		refusal_reason: "",
 		test: "",
-		infoMessage: null,
 		intervention_ids : []
 	},
 
@@ -54,15 +53,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ name : value });
 	},
-	
-	getInfoMessage : function() {
-		return this.get('infoMessage');
-	},
-	setInfoMessage : function(value) {
-		if( value == 'undefined') return;
-		this.set({ infoMessage : value });
-	},
-	
+
 	getSite1 : function() {
 		return this.get('site1');
 	},
@@ -174,11 +165,9 @@ app.Models.Request = Backbone.RelationalModel.extend({
 
 	update: function(params) {
 		this.setDescription( params.description );
-		//this.setService( params.service_id );
 		this.setState( params.state );
 		this.setRefusalReason( params.refusal_reason );
 		this.setNote( params.note );
-		//this.set({ service_id : params.service_id });
 	},
 
 

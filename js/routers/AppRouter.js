@@ -102,9 +102,7 @@ app.Router = Backbone.Router.extend({
 		// Check if the user is connect //
 		if(!this.checkConnect()){
 			// If the view exist we reuse it //
-			//if(app.views.loginView == null){
-				app.views.loginView = new app.Views.LoginView(app.models.user);
-			//}
+			app.views.loginView = new app.Views.LoginView(app.models.user);
 			this.render(app.views.loginView);
 		}
 		else{
@@ -125,15 +123,8 @@ app.Router = Backbone.Router.extend({
 	about: function(){
 		// Check if the user is connect //
 		if(this.checkConnect()){
-			// If the view exist we reuse it //
-//            if(app.views.aboutView) {
-//                app.views.aboutView.render();
-//            }
-//            else{
 				app.views.aboutView = new app.Views.AboutView();
 				this.render(app.views.aboutView);
-//            }
-
 		}
 		else{
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});
@@ -156,6 +147,23 @@ app.Router = Backbone.Router.extend({
 
 			self.page = page ? parseInt(page, 10) : 1;
 
+		/*if(_.isUndefined(app.collections.requests)){ app.collections.requests = new app.Collections.Requests(); }
+
+
+	$.when(app.collections.requests.fetch(), app.collections.categoriesInterventions.fetch(), app.collections.claimersServices.fetch(), app.collections.interventions.fetch(), app.collections.tasks.fetch(), app.collections.categoriesTasks.fetch())
+	.done(function(){
+		app.views.requestsListView = new app.Views.RequestsListView({page: self.page});
+		self.render(app.views.requestsListView);
+	})
+	.fail(function(){
+
+	});*/
+
+
+
+
+
+
 
 			// Check if the collections is instantiate //
 			if(_.isUndefined(app.collections.requests)){
@@ -177,34 +185,18 @@ app.Router = Backbone.Router.extend({
 							}
 							app.collections.claimersServices.fetch({
 								success: function(){
-									if(app.collections.interventions == null ){
-										app.collections.interventions = new app.Collections.Interventions();
+
+									if(app.collections.categoriesTasks == null ){
+										app.collections.categoriesTasks = new app.Collections.CategoriesTasks();
 									}
-
-									app.collections.interventions.fetch({
+									app.collections.categoriesTasks.fetch({
 										success: function(){
-											if(app.collections.tasks == null ){
-												app.collections.tasks = new app.Collections.Tasks();
-											}
-											app.collections.tasks.fetch({	
-													success: function(){
-
-														if(app.collections.categoriesTasks == null ){
-															app.collections.categoriesTasks = new app.Collections.CategoriesTasks();
-														}
-														app.collections.categoriesTasks.fetch({
-															success: function(){
-																app.views.requestsListView = new app.Views.RequestsListView({page: self.page});
-																self.render(app.views.requestsListView);
-															},
-															complete: function(){
-																app.loader('hide');
-															}
-														});
-													}
-
-											 });
-										 }
+											app.views.requestsListView = new app.Views.RequestsListView({page: self.page});
+											self.render(app.views.requestsListView);
+										},
+										complete: function(){
+											app.loader('hide');
+										}
 									});
 								}
 							});
@@ -275,13 +267,9 @@ app.Router = Backbone.Router.extend({
 															self.render(app.views.requestView);
 															
 														},
-														error: function(){
-															console.log('ERROR - unable to load ClaimersTypes');
-														},
 														complete: function(){
 															app.loader('hide');
 														}
-
 														
 													});
 												}
@@ -760,60 +748,6 @@ app.Router = Backbone.Router.extend({
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
-
-	/** Places management
-			*/
-//    detailsPlace: function(id){      
-//
-//        // Check if the user is connect //
-//        if(this.checkConnect()){
-//            var self = this;
-//
-//            // Check if the collections is instantiate //
-//            if(app.collections.places == null ){
-//                app.collections.places = new app.Collections.Places();
-//            }
-//
-//            if (id)
-//	        	self.place = app.collections.places.get(id);
-//	        else
-//	        	self.place = app.models.place;
-//           
-//            app.collections.places.fetch({
-//                beforeSend: function(){
-//                	app.loader('display');
-//            	},
-//            	success: function(){
-//	                // Check if the collections is instantiate //
-//	                if(app.collections.claimersServices == null ){
-//	                    app.collections.claimersServices = new app.Collections.ClaimersServices();
-//	                }
-//	
-//	                
-//	                app.collections.claimersServices.fetch({
-//	                	success: function(){
-//		                	if(app.collections.placetypes == null ){
-//		                        app.collections.placetypes = new app.Collections.PlaceTypes();
-//		                    }
-//		                	app.collections.placetypes.fetch({	
-//				                success: function(){
-//				                    app.views.placeView = new app.Views.PlaceView(self.place);
-//				                    self.render(app.views.placeView);
-//				                },
-//				                complete: function(){
-//				                    app.loader('hide');
-//				                }
-//					        });
-//					     }
-//		                
-//		             });
-//		         }
-//            });
-//        }
-//        else{
-//            this.navigate(app.routes.login.url, {trigger: true, replace: true});
-//        }
-//    },
 
 
 	/** Services management

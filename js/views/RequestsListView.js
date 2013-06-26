@@ -97,8 +97,6 @@ app.Views.RequestsListView = Backbone.View.extend({
 			var nbInterventionsInBadge = _.size(requests);
 		}
 
-		this.addInfoAboutInter(requests);
-
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -148,51 +146,6 @@ app.Views.RequestsListView = Backbone.View.extend({
 		$(this.el).hide().fadeIn('slow');
 		return this;
 	},
-
-
-
-    addInfoAboutInter: function(requests) {
-    	_.each(requests, function (request, i) {
-    		this.infoMessage = "";
-    		var self = this;
-    		_.each(request.intervention_ids, function (intervention, i) {
-				
-				//var intervention = interModel.toJSON();
-				var firstDate = null;
-				var lastDate = null;
-
-				_.each(intervention.tasks, function(task){
-					if ( firstDate==null )
-						firstDate = task.date_start;
-					else if ( task.date_start && firstDate>task.date_start )
-						firstDate=task.date_start; 
-					
-					if ( lastDate==null )
-						lastDate = task.date_end;
-					else if ( task.date_end && lastDate<task.date_end )
-						lastDate=task.date_end; 
-				});
-
-				self.infoMessage = intervention.create_uid!=null? "par " + intervention.create_uid[1] + ". ": ""; 
-		    	if( firstDate ) {
-		    		if( intervention.progress_rate==0 )
-						self.infoMessage += "Début prévue le " + firstDate.format('LLL'); 
-					else if( lastDate )
-						self.infoMessage += "Fin prévue le " + lastDate.format('LLL'); 
-					else{
-			    		self.infoMessage += "Remis en plannification";
-					}
-				}
-				else{
-					self.infoMessage += "Non planifiée";
-				}
-
-				//console.debug("message:" + infoMessage + ", classColor:"+ classColor);
-			});   
-				
-			request['infoMessage'] = this.infoMessage;
-    	});
-    },
 
 
 
