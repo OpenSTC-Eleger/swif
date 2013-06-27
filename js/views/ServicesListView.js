@@ -93,7 +93,7 @@ app.Views.ServicesListView = Backbone.View.extend({
 			
 			
 			// Fill select Foreman  //
-			app.views.selectListGroupsView = new app.Views.DropdownSelectListView({el: $("#officerGroup"), collection: app.collections.groups})
+			app.views.selectListGroupsView = new app.Views.DropdownSelectListView({el: $("#officerGroup"), collection: app.collections.stcGroups})
 			app.views.selectListGroupsView.clearAll();
 			app.views.selectListGroupsView.addEmptyFirst();
 			app.views.selectListGroupsView.addAll();
@@ -374,16 +374,14 @@ app.Views.ServicesListView = Backbone.View.extend({
 			}
 			
 			var self = this;
-			var stc_groups = app.collections.groups;
+			var stc_groups = app.collections.stcGroups;
 			_.each( stc_groups.models, function(group){	
 				var groupJSON = group.toJSON();
 				_.each(self.selectedOfficerJson.groups_id, function(officerGroup){
 					if( groupJSON.id==officerGroup.id  )
 						app.views.selectListGroupsView.setSelectedItem( groupJSON.id );
 				})
-//				if($.inArray(groupJSON.id, self.selectedOfficerJson.groups_id)!=-1){	
-//					app.views.selectListGroupsView.setSelectedItem( groupJSON.id );
-//				}
+
 			});
 		}
 		else{

@@ -30,7 +30,7 @@
 			<thead>
 				<tr>
 					<th><%= _.capitalize(lang.name) %></th>
-					<th><%= _.capitalize(lang.code) %></th>					
+					<th><%= _.capitalize(lang.code) %></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -39,10 +39,16 @@
 				
 				<!-- Categorie row -->
 				<tr class="row-item" id="claimersType_<%= claimersType.id %>">
-					<td><i class="icon-tag"></i> <%= claimersType.name %>
-						<p class="row-actions no-margin invisible">
-							<a href="#modalSaveClaimersTypes" class="modalSaveClaimersTypes" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> 
-							<a href="#modalDeleteClaimersTypes" class="modalDeleteClaimersTypes" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
+					<td>
+						<i class="icon-tag"></i> <%= claimersType.name %>
+
+						<p class="row-actions invisible">
+							<a href="#modalSaveClaimersTypes" class="modalSaveClaimersTypes" data-toggle="modal">
+								<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
+							</a>&nbsp;
+							<a href="#modalDeleteClaimersTypes" class="modalDeleteClaimersTypes" data-toggle="modal">
+								<i class="icon-remove icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+							</a>
 						</p>
 					</td>
 					<td><%= (claimersType.code != false ? claimersType.code : "")%></td>
@@ -155,7 +161,7 @@
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	    <h3>Suppression du type de demandeur</h3>
 	</div>
-	
+
 	<div class="modal-body">
 
 		<blockquote id="infoModalDeleteClaimersTypes" class="spaceBottom">
@@ -163,7 +169,7 @@
 			<small></small>
 		</blockquote>
 
-		<p>Etes-vous sûr de vouloir supprimer ce type de demandeur?</p>
+		<p>Etes-vous sûr de vouloir supprimer ce type d'organisation?</p>
 	</div>
 	
 	<div class="modal-footer">

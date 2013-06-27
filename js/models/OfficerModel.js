@@ -38,8 +38,8 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 		{
 			type: Backbone.HasMany,
 			key: 'groups_id',
-			relatedModel: 'app.Models.Group',
-			collectionType: 'app.Collections.Groups',
+			relatedModel: 'app.Models.STCGroup',
+			collectionType: 'app.Collections.STCGroups',
 			includeInJSON: ['id', 'name','code'],	
 		},
 	],

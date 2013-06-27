@@ -1,7 +1,7 @@
 /******************************************
 * Group Model - User group OpenERP
 */
-app.Models.Group = Backbone.RelationalModel.extend({
+app.Models.STCGroup = Backbone.RelationalModel.extend({
     
 	model_name : 'res.groups',	
 	
@@ -12,7 +12,7 @@ app.Models.Group = Backbone.RelationalModel.extend({
 	/** Model Initialization
 	*/
     initialize: function(){
-        console.log('Intervention Model initialization');
+        //console.log('STC Group initialization');
     },
     
 

@@ -76,7 +76,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 
 		// Check the number of planned interventions //
-		var interventionsPlanned = _.filter(interventions, function(item){ 
+		var interventionsPlanned = _.filter(interventions, function(item){
 			return (item.state == app.Models.Intervention.status.scheduled.key);
 		});
 		var nbInterventionsPlanned = _.size(interventionsPlanned);
@@ -114,15 +114,15 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		// Retrieve the HTML template //
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				lang: app.lang,
-				nbInterventions: len,
-				nbInterventionsPending: nbInterventionsPending,
-				nbInterventionsPlanned: nbInterventionsPlanned,
-				interventionsState: app.Models.Intervention.status,
-				interventions: interventions,
-				startPos: startPos, endPos: endPos,
-				page: self.options.page, 
-				pageCount: pageCount,
+				lang                   : app.lang,
+				nbInterventions        : len,
+				nbInterventionsPending : nbInterventionsPending,
+				nbInterventionsPlanned : nbInterventionsPlanned,
+				interventionsState     : app.Models.Intervention.status,
+				interventions          : interventions,
+				startPos               : startPos, endPos: endPos,
+				page                   : self.options.page, 
+				pageCount              : pageCount,
 			});
 
 

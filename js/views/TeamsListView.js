@@ -61,21 +61,12 @@ app.Views.TeamsListView = Backbone.View.extend({
 		var teams = app.collections.teams.models;
 		var nbTeams = _.size(teams);
 
-		console.debug(app.collections.officers);
-
-//		var officersWithoutTeam = _.filter(app.collections.officers.models, function(item){
-//			//PYF : TO REMOVE temporaire pour TEST many2many
-//			return true;//item.attributes.belongsToTeam == null; 
-//		});
-
 
 		var len = teams.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
 
-
-		console.log(app.collections.teams.toJSON());
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -194,7 +185,7 @@ app.Views.TeamsListView = Backbone.View.extend({
 		$('#teamName').val('');
 		app.views.selectListOfficersView.setSelectedItem(0);
 
-		if( this.selectedTeamJson ) {
+		if(this.selectedTeamJson){
 			$('#teamName').val(this.selectedTeamJson.name);
 			app.views.selectListOfficersView.setSelectedItem( this.selectedTeamJson.manager_id[0] );
 		}
@@ -402,27 +393,11 @@ app.Views.TeamsListView = Backbone.View.extend({
 		var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
 			return service.attributes.technical != true 
 		});
+
 		//remove no technical services
 		app.collections.claimersServices.remove(noTechnicalServices);
-		app.collections.claimersServices.toJSON()
+		app.collections.claimersServices.toJSON();
 
-		
-		// Display the remain members //
-//		_.filter(app.collections.officers.models, function (officer, i){
-//
-//			// Remove The DST From the list //
-//			if(!officer.isBelongsGroup( app.groupDirector )){
-//
-//				officer = officer.toJSON();
-//
-//				if(!_.contains(teamOfficers, officer.id)){
-//					//Manager must not present in list
-//					if( selectedTeamJson.manager_id[0]!=officer.id ) 				
-//						$('#officersList').append('<li id="officer_'+officer.id+'"><a href="#"><i class="icon-user"></i> '+ officer.firstname +' '+ officer.name +'</a></li>');
-//
-//				}
-//			}
-//		});
 		
 		
 		_.each(selectedTeamJson.free_user_ids,function(officer){

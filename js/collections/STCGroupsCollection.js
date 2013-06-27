@@ -1,9 +1,9 @@
 /******************************************
 * Groups Collection - User groups for OpenERP
 */
-app.Collections.Groups = Backbone.Collection.extend({
+app.Collections.STCGroups = Backbone.Collection.extend({
 
-	model: app.Models.Group,
+	model: app.Models.STCGroup,
 
 	// Model name in the database //
 	model_name : 'res.groups',
