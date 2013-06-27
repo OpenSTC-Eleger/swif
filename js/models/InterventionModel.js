@@ -25,8 +25,6 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 		id:0,
 		state: null,
 		cancel_reason: null,
-		infoMessage: null,
-		overPourcent: 0,
 	},
 
 
@@ -36,22 +34,6 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 	setState : function(value) {
 		if( value == 'undefined') return;
 		this.set({ state : value });
-	},
-	
-	getOverPourcent : function() {
-		return this.get('overPourcent');
-	},
-	setOverPourcent : function(value) {
-		if( value == 'undefined') return;
-		this.set({ overPourcent : value });
-	},
-	
-	getInfoMessage : function() {
-		return this.get('infoMessage');
-	},
-	setInfoMessage : function(value) {
-		if( value == 'undefined') return;
-		this.set({ infoMessage : value });
 	},
 	
 	getCancelReason : function() {
