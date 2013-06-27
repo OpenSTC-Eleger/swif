@@ -25,7 +25,7 @@ app.Collections.Teams = Backbone.Collection.extend({
 	sync: function(method, model, options) {
 		var fields = ["free_user_ids", "id", "manager_id", "name", "service_ids", "tasks", "user_ids"];
 
-		app.readOE( this.model_name ,  app.models.user.getSessionID(), options, fields);
+		return app.readOE( this.model_name ,  app.models.user.getSessionID(), options, fields);
 	},
 
 

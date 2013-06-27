@@ -241,7 +241,7 @@ var app = {
 		if(_.isUndefined(fields))
 				fields = [];
 
-		this.json(app.configuration.openerp.url + this.urlOE_retrieveListe, {
+		return this.json(app.configuration.openerp.url + this.urlOE_retrieveListe, {
 			'model'     : model,
 			'fields'    : fields,
 			'session_id': session_id

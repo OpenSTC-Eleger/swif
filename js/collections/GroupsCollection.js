@@ -25,7 +25,7 @@ app.Collections.Groups = Backbone.Collection.extend({
 	sync: function(method, model, options) {
 		var fields = ["code", "full_name", "id", "name"];
 
-		app.readOE( this.model_name ,  app.models.user.getSessionID(), options, fields);
+		return app.readOE( this.model_name ,  app.models.user.getSessionID(), options, fields);
 	},
 
 

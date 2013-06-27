@@ -25,7 +25,7 @@ app.Collections.ClaimersServices = Backbone.Collection.extend({
 	sync: function(method, model, options) {
 		var fields = ["category_ids", "code", "id", "manager_id", "name", "service_id", "technical", "user_ids"];
 
-		app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
+		return app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
 	},
 
 

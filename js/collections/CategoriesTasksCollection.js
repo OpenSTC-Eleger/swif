@@ -25,7 +25,7 @@ app.Collections.CategoriesTasks = Backbone.Collection.extend({
     sync: function(method, model, options) {
         var fields = ["code", "complete_name", "id", "name", "parent_id", "service_ids"];
 
-    	app.readOE( this.model_name, app.models.user.getSessionID(), options, fields);
+    	return app.readOE( this.model_name, app.models.user.getSessionID(), options, fields);
     },
 
 

@@ -9,7 +9,6 @@ app.Collections.Requests = Backbone.Collection.extend({
 	model_name : 'openstc.ask',
 
 
-
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
@@ -23,8 +22,7 @@ app.Collections.Requests = Backbone.Collection.extend({
 	sync: function(method, model, options) {
 		var fields = ["actions", "belongsToAssignement", "tooltip", "belongsToService", "id", "name", "belongsToSite", "create_date", "create_uid", "date_deadline", "description", "id", "intervention_assignement_id", "intervention_ids", "manager_id", "name", "note", "partner_address", "partner_email", "partner_id", "partner_phone", "partner_service_id", "partner_type", "partner_type_code", "people_email", "people_name", "people_phone", "refusal_reason", "service_id", "site1", "site_details", "state", "write_uid"];
 
-		app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
-
+		return app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
 	},
 
 
@@ -43,6 +41,6 @@ app.Collections.Requests = Backbone.Collection.extend({
 		var mCreateDate = moment(item.get('create_date'))
 		item.set({'create_date': mCreateDate});
 		return -item.get('create_date');
-	},
+	}
 
 });

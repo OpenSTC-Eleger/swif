@@ -25,7 +25,7 @@ app.Collections.Tasks = Backbone.Collection.extend({
 	sync: function(method, model, options) {
 		var fields = ["absent_type_id", "active", "ask_id", "belongsToCategory", "cancel_reason", "category_id", "create_date", "date_end", "date_start", "effective_hours", "equipment_ids", "id", "intervention", "intervention_assignement_id", "km", "manager_id", "name", "oil_price", "oil_qtity", "planned_hours", "project_id", "remaining_hours", "state", "teamWorkingOn", "team_id", "total_hours", "type_id", "user_id"];
 
-		app.readOE(this.model_name , app.models.user.getSessionID(), options, fields);
+		return app.readOE(this.model_name , app.models.user.getSessionID(), options, fields);
 	},
 
 

@@ -23,7 +23,7 @@ app.Collections.PlaceTypes = Backbone.Collection.extend({
 	sync: function(method, model, options) {
 		var fields = ["code", "name", "id"];
 
-		app.readOE( this.model_name, app.models.user.getSessionID(), options, fields);
+		return app.readOE( this.model_name, app.models.user.getSessionID(), options, fields);
 	},
 
 
