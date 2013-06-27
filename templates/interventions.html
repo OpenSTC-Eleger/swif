@@ -130,11 +130,11 @@
 						<!-- state - Closed -->
 						<% } else if(interventions[i].state == app.Models.Intervention.status.closed.key){ 
 							if(interventions[i].overPourcent > 100){ %>
-								<div class="progress progress-overrun">
+								<div class="progress progress-overrun" data-toggle="tooltip" data-title="<%= interventions[i].tooltip %>">
 									<div class="bar" style="width: 100%"><%= _(interventions[i].overPourcent).toNumber() %>%</div>
 								</div>
 							<% } else { %>
-								<div class="progress progress-success">
+								<div class="progress progress-success" data-toggle="tooltip" data-title="<%= interventions[i].tooltip %>">
 									<div class="bar" style="width: <%= interventions[i].overPourcent %>%"><%= _(interventions[i].overPourcent).toNumber() %>%</div>
 								</div>
 							<% } %>

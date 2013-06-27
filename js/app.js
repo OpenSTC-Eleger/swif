@@ -290,49 +290,25 @@ var app = {
 	   }, options);  
 	},
 
-/*
-	loadTemplate : function(id, callback){
 
-
-		var template = app.templates[id];
-
-		if (template) {
-		  callback(template);
-		}
-		else {
- 
-
-		// Retrieve Application language //
-		$.ajax({
-			type: 'GET', url: 'templates/' + id + '.html',
-			success: function(data, textStatus, jqXHR) {
-				var $tmpl = $(template);
-				app.templates[id] = $tmpl;
-				callback($tmpl);
-			},
-			error: function(jqXHR, textStatus, errorThrown){
-				alert('Unable to retrieve template');
-			}
-		});
-
-	   }
-	},
-
-*/
 
 	/** Page Loader
 	*/
 	loader: function(action){
 
+		var deferred = $.Deferred();
+
 		switch(action){
 			case 'display':
-				$('#loader, #modal-block').fadeIn();
+				$('#loader, #modal-block').fadeIn(deferred.resolve);
 			break;
 
 			case 'hide':
-				$('#loader, #modal-block').delay(250).fadeOut('slow');
+				$('#loader, #modal-block').delay(250).fadeOut('slow', deferred.resolve);
 			break;
 		}
+
+		return deferred.promise();
 	},
 
 

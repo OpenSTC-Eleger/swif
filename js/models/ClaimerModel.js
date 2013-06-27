@@ -2,7 +2,7 @@
 * Claimer Model
 */
 app.Models.Claimer = Backbone.RelationalModel.extend({
-    
+
 	// Model name in the database //
 	model_name : 'res.partner',	
 	
