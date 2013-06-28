@@ -18,7 +18,7 @@ app.Views.ServiceView = Backbone.View.extend({
 		/** View Initialization
 		 */
 		initialize: function (model) {
-		    this.model = model;
+			this.model = model;
 	    },
 
 
@@ -29,25 +29,24 @@ app.Views.ServiceView = Backbone.View.extend({
 			
 	
 			// Change the page title depending on the create value //
-			if(this.create){
+			if(_.isUndefined(this.model)){
 				app.router.setPageTitle(app.lang.viewsTitles.newService);
 			}
 			else{
 				app.router.setPageTitle(app.lang.viewsTitles.serviceDetail + 'n° ' + this.model.id);
-				console.debug(this.model);
 			}
-	
+
 			// Change the active menu item //
 			app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
 			
 			
-			//self.collection = this.collection;
+
 			var self = this;
 			// Retrieve the template // 
 			$.get("templates/" + this.templateHTML + ".html", function(templateData){
-					
-					var template = _.template(templateData, {lang: app.lang, service: self.model.toJSON()});
-					$(self.el).html(template);		     
+
+				var template = _.template(templateData, {lang: app.lang, service: self.model.toJSON()});
+				$(self.el).html(template);  
 				
 
 					app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#serviceParentService"), collection: app.collections.claimersServices})
@@ -63,12 +62,11 @@ app.Views.ServiceView = Backbone.View.extend({
 						if( this.selectedServiceJson.service_id )
 							app.views.selectListServicesView.setSelectedItem( this.selectedServiceJson.service_id[0] );	
 						if( this.selectedServiceJson.technical )
-							$('#serviceIsTechnical').attr("checked","checked");									
+							$('#serviceIsTechnical').prop('checked', true);
 					}
 					else {
-						$('#serviceName').val('');
-						$('#serviceCode').val('');
-						$('#serviceIsTechnical').attr("checked","");	
+						$('#serviceName; #serviceCode').val('');
+						$('#serviceIsTechnical').prop('checked', false);	
 					}
 		
 			});
@@ -78,27 +76,28 @@ app.Views.ServiceView = Backbone.View.extend({
 	    },
 	    
 
-	    getIdInDopDown: function(view) {
-	    	if ( view && view.getSelected() )
-	    		return view.getSelected().toJSON().id;
-	    	else 
-	    		return 0
-	    },
+
+		getIdInDopDown: function(view) {
+			if ( view && view.getSelected() )
+				return view.getSelected().toJSON().id;
+			else 
+				return 0
+		},
+
+
 
 		/** Save the service
-		 */
+		*/
 	    saveService: function (e) {
-			 e.preventDefault();
-			 
-		     var self = this;
-		     
-		     var input_service_id = this.getIdInDopDown(app.views.selectListServicesView);
-		     
-		     var params = {	
-			     name: this.$('#serviceName').val(),
-			     code: this.$('#serviceCode').val(),
-			     service_id: input_service_id,
-			     technical: this.$('#serviceIsTechnical').is(':checked'),
+			e.preventDefault();
+
+			var input_service_id = this.getIdInDopDown(app.views.selectListServicesView);
+
+			var params = {	
+				name       : this.$('#serviceName').val(),
+				code       : this.$('#serviceCode').val(),
+				service_id : input_service_id,
+				technical  : this.$('#serviceIsTechnical').is(':checked'),
 		     };		     
 		   
 		    this.model.save(params,{
@@ -113,9 +112,9 @@ app.Views.ServiceView = Backbone.View.extend({
 					}
 				},
 				error: function () {
-					console.error('ERROR - Unable to save the Service - ServiceDetailsView.js');
-				},	
-		    });
+					console.error('ERROR - Unable to save the Service');
+				},
+			});
 	    },
 });
 

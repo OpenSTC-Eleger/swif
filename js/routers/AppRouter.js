@@ -713,37 +713,27 @@ app.Router = Backbone.Router.extend({
 		if(this.checkConnect()){
 			var self = this;
 
-
-
 			// Check if the collections is instantiate //
-			if(app.collections.claimersServices == null ){
-				app.collections.claimersServices = new app.Collections.ClaimersServices();
-			}
-			
-			if (id)
-				self.service = app.collections.claimersServices.get(id);
-			else
-				self.service = app.models.service;
+			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
 
-			app.collections.claimersServices.fetch({
-				beforeSend: function(){
-					app.loader('display');
-				},                
-				success: function(){
-					if(app.collections.officers == null ){
-						app.collections.officers = new app.Collections.Officers();
-					}
-					app.collections.officers.fetch({
-						success: function(){
-							app.views.serviceView = new app.Views.ServiceView(self.service);
-							self.render(app.views.serviceView);
-						},
-						complete: function(){
-							app.loader('hide');
-						}
-					});
-				}
+
+			app.loader('display');
+
+			$.when(
+				app.collections.claimersServices.fetch()
+			)
+			.done(function(){
+				if(!_.isUndefined(id)){ self.service = app.collections.claimersServices.get(id); }
+				else{ self.service = app.models.service; }
+
+				app.views.serviceView = new app.Views.ServiceView(self.service);
+				self.render(app.views.serviceView);
+				app.loader('hide');
+			})
+			.fail(function(e){
+				console.error(e);
 			});
+
 		}
 		else{
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});
@@ -914,7 +904,7 @@ app.Router = Backbone.Router.extend({
 											if(app.collections.claimersContacts == null ){
 												app.collections.claimersContacts = new app.Collections.ClaimersContacts();
 											}
-										   
+
 											app.collections.claimersContacts.fetch({
 												success: function(){
 													if(app.collections.officers == null ){
@@ -923,12 +913,12 @@ app.Router = Backbone.Router.extend({
 													
 													app.collections.officers.fetch({
 														success: function() {
-														   app.views.claimersListView = new app.Views.ClaimersListView({page: self.page});
-														   self.render(app.views.claimersListView);
+															app.views.claimersListView = new app.Views.ClaimersListView({page: self.page});
+															self.render(app.views.claimersListView);
 														},
-													   complete: function(){
-														   app.loader('hide');
-													   }
+														complete: function(){
+															app.loader('hide');
+														}
 													});
 												}
 											});
@@ -979,12 +969,12 @@ app.Router = Backbone.Router.extend({
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
-	
-	
-	
+
+
+
 	/** Abstent types
 	*/
-	absentTypes: function(page){      
+	absentTypes: function(page){
 
 		// Check if the user is connect //
 		if(this.checkConnect()){
@@ -1016,12 +1006,12 @@ app.Router = Backbone.Router.extend({
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
-	
+
 
 
 	/** equipments
 	*/
-	equipments: function(page){      
+	equipments: function(page){
 
 		// Check if the user is connect //
 		if(this.checkConnect()){
@@ -1035,7 +1025,7 @@ app.Router = Backbone.Router.extend({
 				app.collections.equipments = new app.Collections.Equipments();
 			}
 
-		   
+
 			app.collections.equipments.fetch({
 				beforeSend: function(){
 					app.loader('display');
