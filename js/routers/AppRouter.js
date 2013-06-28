@@ -980,23 +980,23 @@ app.Router = Backbone.Router.extend({
 			self.page = page ? parseInt(page, 10) : 1;
 
 			// Check if the collections is instantiate //
-			if(app.collections.absentTypes == null ){
-				app.collections.absentTypes = new app.Collections.AbsentTypes();
-			}
+			if(_.isUndefined(app.collections.absentTypes)){ app.collections.absentTypes = new app.Collections.AbsentTypes(); }
 
 
-			app.collections.absentTypes.fetch({
-				beforeSend: function(){
-					app.loader('display');
-				},
-				success: function(){
-					app.views.absentTypesListView = new app.Views.AbsentTypesListView({page: self.page});
-					self.render(app.views.absentTypesListView);
-				},
-				complete: function(){
-					app.loader('hide');
-				}
+			app.loader('display');
+
+			$.when(
+				app.collections.absentTypes.fetch()
+			)
+			.done(function(){
+				app.views.absentTypesListView = new app.Views.AbsentTypesListView({page: self.page});
+				self.render(app.views.absentTypesListView);
+				app.loader('hide');
+			})
+			.fail(function(e){
+				console.error(e);
 			});
+
 		}
 		else{
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});
