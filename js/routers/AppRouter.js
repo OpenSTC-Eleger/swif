@@ -123,13 +123,12 @@ app.Router = Backbone.Router.extend({
 	about: function(){
 		// Check if the user is connect //
 		if(this.checkConnect()){
-				app.views.aboutView = new app.Views.AboutView();
-				this.render(app.views.aboutView);
+			app.views.aboutView = new app.Views.AboutView();
+			this.render(app.views.aboutView);
 		}
 		else{
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
-
 	},
 
 
@@ -185,66 +184,46 @@ app.Router = Backbone.Router.extend({
 
 			var self = this;
 
-			if(app.collections.places == null){
-				app.collections.places = new app.Collections.Places();
-			}
-			//load details after places list loaded
-			if (id)
-				self.request = app.collections.requests.get(id);
-			else
-				self.request = app.models.request.clear();
 
-			app.collections.places.fetch({
-				beforeSend: function(){
-					app.loader('display');
-				},
-				success: function(){                    
-					if(app.collections.claimers == null){
-						app.collections.claimers = new app.Collections.Claimers();
-					}
-					app.collections.claimers.fetch({
-						success: function(){
-							if(app.collections.claimersServices == null ){
-								app.collections.claimersServices = new app.Collections.ClaimersServices();
-							}
-							app.collections.claimersServices.fetch({
-								success: function(){		                    	                                          	
-									if(app.collections.claimersTypes == null){
-										app.collections.claimersTypes = new app.Collections.ClaimersTypes();
-									}
-									app.collections.claimersTypes.fetch({
-										success: function(){                    
-											if(app.collections.claimersContacts == null){
-												app.collections.claimersContacts = new app.Collections.ClaimersContacts();
-											}
-											app.collections.claimersContacts.fetch({
-												success: function(){
-													if(app.collections.officers == null ){
-														app.collections.officers = new app.Collections.Officers();
-													}
-													app.collections.officers.fetch({
-														success: function(){
-															if(id == undefined)
-																app.views.requestView = new app.Views.RequestView(self.request,  true);
-															else 
-																app.views.requestView = new app.Views.RequestView(self.request,  false);
-															
-															self.render(app.views.requestView);
-														},
-														complete: function(){
-															app.loader('hide');
-														}
-														
-													});
-												}
-											});
-										}
-								   });
-								},
-							});
-						},
+			if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
+			if(_.isUndefined(app.collections.claimers)){ app.collections.claimers = new app.Collections.Claimers(); }
+			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
+			if(_.isUndefined(app.collections.claimersTypes)){ app.collections.claimersTypes = new app.Collections.ClaimersTypes(); }
+			if(_.isUndefined(app.collections.claimersContacts)){ app.collections.claimersContacts = new app.Collections.ClaimersContacts(); }
+			if(_.isUndefined(app.collections.officers)){ app.collections.officers = new app.Collections.Officers(); }
+
+
+			app.loader('display');
+
+
+			app.collections.claimers.fetch({
+				success: function(){
+
+					$.when(
+						app.collections.claimersServices.fetch(),
+						app.collections.officers.fetch(),
+						app.collections.claimersTypes.fetch(),
+						app.collections.claimersContacts.fetch(),
+						app.collections.places.fetch()
+					)
+					.done(function(){
+						//load details after places list loaded
+						if(_.isUndefined(id)){
+							self.request = app.models.request.clear();
+							app.views.requestView = new app.Views.RequestView(self.request,  true);
+						}
+						else{
+							self.request = app.collections.requests.get(id);
+							app.views.requestView = new app.Views.RequestView(self.request,  false);
+						}
+						self.render(app.views.requestView);
+
+						app.loader('hide');
+					})
+					.fail(function(e){
+						console.error(e);
 					});
-				},
+				}
 			});
 		}
 		else{
@@ -681,10 +660,16 @@ app.Router = Backbone.Router.extend({
 				app.collections.claimersServices.fetch()
 			)
 			.done(function(){
-				if(!_.isUndefined(id)){ self.service = app.collections.claimersServices.get(id); }
-				else{ self.service = app.models.service; }
+				if(!_.isUndefined(id)){ 
+					self.service = app.collections.claimersServices.get(id);
+					var create = false;
+				}
+				else{
+				 	self.service = app.models.service;
+				 	var create = true;
+				 }
 
-				app.views.serviceView = new app.Views.ServiceView(self.service);
+				app.views.serviceView = new app.Views.ServiceView(self.service, create);
 				self.render(app.views.serviceView);
 				app.loader('hide');
 			})

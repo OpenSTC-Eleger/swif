@@ -17,8 +17,9 @@ app.Views.ServiceView = Backbone.View.extend({
 
 		/** View Initialization
 		 */
-		initialize: function (model) {
+		initialize: function (model, create) {
 			this.model = model;
+			this.create = create;
 	    },
 
 
@@ -27,9 +28,9 @@ app.Views.ServiceView = Backbone.View.extend({
 	     */
 	    render: function () {
 			
-	
+		console.log(this.model);
 			// Change the page title depending on the create value //
-			if(_.isUndefined(this.model)){
+			if(this.create){
 				app.router.setPageTitle(app.lang.viewsTitles.newService);
 			}
 			else{
