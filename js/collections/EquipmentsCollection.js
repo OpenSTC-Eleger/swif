@@ -23,7 +23,7 @@ app.Collections.Equipments = Backbone.Collection.extend({
 	/** Collection Sync
 	*/
 	sync: function(method, model, options) {
-		var fields = ["commercial_vehicle:", "complete_name", "cv", "energy_type", "fat_material", "id", "immat", "km", "manager_id", "marque", "name", "service", "service_ids", "service_technical_id", "small", "small_material", "technical", "technical_vehicle", "time", "type", "type_prod", "usage", "year"];
+		var fields = ["commercial_vehicle", "complete_name", "cv", "energy_type", "fat_material", "id", "immat", "km", "manager_id", "marque", "name", "service", "service_ids", "service_technical_id", "small", "small_material", "technical", "technical_vehicle", "time", "type", "type_prod", "usage", "year"];
 
 		return app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
 	},

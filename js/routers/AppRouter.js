@@ -1013,24 +1013,34 @@ app.Router = Backbone.Router.extend({
 		if(this.checkConnect()){
 			var self = this;
 
-
 			self.page = page ? parseInt(page, 10) : 1;
 
 			// Check if the collections is instantiate //
-			if(app.collections.equipments == null ){
-				app.collections.equipments = new app.Collections.Equipments();
-			}
+			if(_.isUndefined(app.collections.equipments)){ app.collections.equipments = new app.Collections.Equipments(); }
+			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
 
 
-			app.collections.equipments.fetch({
+			app.loader('display');
+
+			$.when(
+				app.collections.equipments.fetch(),
+				app.collections.claimersServices.fetch()
+			)
+			.done(function(){
+				app.views.equipmentsListView = new app.Views.EquipmentsListView({page: self.page});
+				self.render(app.views.equipmentsListView);
+
+				app.loader('hide');
+			})
+			.fail(function(e){
+				console.error(e);
+			});
+
+			/*app.collections.equipments.fetch({
 				beforeSend: function(){
 					app.loader('display');
 				},
 				success: function(){
-					if(app.collections.claimersServices == null ){
-						app.collections.claimersServices = new app.Collections.ClaimersServices();
-					}
-
 					app.collections.claimersServices.fetch({
 						success: function() {
 							app.views.equipmentsListView = new app.Views.EquipmentsListView({page: self.page});
@@ -1041,7 +1051,7 @@ app.Router = Backbone.Router.extend({
 						}
 					});
 				}
-			});
+			});*/
 		}
 		else{
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});
