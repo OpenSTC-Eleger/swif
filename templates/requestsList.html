@@ -171,6 +171,8 @@
 
 
 					<!-- Action column -->
+					<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
+
 					<td class="align">
 					<!-- Check if the user can make action on the request -->
 					<%  var actions = requests[i].actions;
@@ -221,6 +223,7 @@
 
 					<% } %>
 					</td>
+					<% } %>
 
 				</tr>
 			<% } %>
