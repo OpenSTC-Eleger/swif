@@ -179,6 +179,8 @@ app.Views.TasksListView = Backbone.View.extend({
 
 			var officersDropDownList = new app.Collections.Officers(app.models.user.getOfficers());
 
+			console.log(officersDropDownList);
+
 			var template = _.template(templateData, {
 				lang: app.lang,
 				nbPendingTasks: nbPendingTasks,
