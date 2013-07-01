@@ -169,7 +169,7 @@ var app = {
 		};
 
 		var ajax = _.extend({
-			type: "GET",
+			type: 'GET',
 			dataType: 'jsonp',
 			jsonp: 'jsonp',
 			//async: false,
@@ -192,6 +192,7 @@ var app = {
 		return $.ajax(ajax);
 
 	},
+
 
 
 	/** Formats a standard JSON 2.0 call
@@ -360,7 +361,7 @@ var app = {
 			break;
 
 		}
-		
+
 		$.pnotify({
 			title: title,
 			text: message,

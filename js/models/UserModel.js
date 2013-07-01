@@ -17,6 +17,12 @@ app.Models.User = Backbone.Model.extend({
 				includeInJSON: ['id','name'],
 			}
 		},
+		{
+			type: Backbone.HasMany,
+			key: 'officers',
+			relatedModel: 'app.Models.Officer',
+			includeInJSON: ['id', 'firstname', 'name'],
+		},
 
 	],
 
@@ -29,7 +35,7 @@ app.Models.User = Backbone.Model.extend({
 		lastname        : '',
 		service_ids		: [],
 		context			: {},
-		
+		officers        : [],
 		isDST			: false,
 		isManager		: false,
 	},
@@ -116,6 +122,13 @@ app.Models.User = Backbone.Model.extend({
 		this.set({ service_id : value });
 	},
 
+	getOfficers : function() {
+		return this.get('officers');
+	},
+	setOfficers : function(value) {
+		this.set({ officers : value });
+	},
+
 	getContact : function() {
 		return this.get('contact_id');
 	},
@@ -180,14 +193,13 @@ app.Models.User = Backbone.Model.extend({
 		})
 		.done(function (data) {
 
-			//console.debug(data);
 
 			if(data.uid == false){
 				app.loader('hide');
 				app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
 			}
 			else{
-				
+
 				// Set the user Informations //
 				self.setUID(data.uid)
 				self.setSessionID(data.session_id);
@@ -199,14 +211,9 @@ app.Models.User = Backbone.Model.extend({
 				// Add the user to the collection and save it to the localStorage //
 				app.collections.users.add(self);
 
-				// Get the user Information //
+				// Get the users informations //
 				self.getUserInformations();
 
-				//app.notify('', 'info', 'Information', 'Vous êtes connecté');
-				Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
-
-				// Refresh the header //
-				app.views.headerView.render(app.router.mainMenus.manageInterventions);
 			}
 			
 			deferred.resolve();
@@ -272,11 +279,15 @@ app.Models.User = Backbone.Model.extend({
 		"use strict";
 		var self = this;
 
-		var fields = ['firstname', 'name', 'groups', 'contact_id', 'service_id', 'service_ids', 'in_group_15', 'in_group_17', 'in_group_18', 'in_group_19', 'isDST', 'isManager'];
 
-		app.getOE(this.model_name, fields, [self.getUID()], self.getSessionID(),
+		var fields = ['firstname', 'name', 'groups', 'contact_id', 'service_id', 'service_ids', 'isDST', 'isManager', 'officers'];
+
+		return  app.getOE(this.model_name, fields, [self.getUID()], self.getSessionID(),
 			({
 				success: function(data){
+
+					console.log('Succeessss get user inforamtions');
+
 					// Retrieve the firstname and the lastname of the user //
 					self.setFirstname(data.result[0].firstname);
 					self.setLastname(data.result[0].name);
@@ -284,9 +295,16 @@ app.Models.User = Backbone.Model.extend({
 					self.setServices(data.result[0].service_ids);
 					self.setService(data.result[0].service_id);
 					self.setContact(data.result[0].contact_id);
+					self.setOfficers(data.result[0].officers);
 					self.setManager(data.result[0].isManager);
 					self.setDST(data.result[0].isDST);
 					self.save();
+
+					// Refresh the header //
+					app.views.headerView.render(app.router.mainMenus.manageInterventions);
+
+					// Navigate to the Home page //
+					Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
 
 				},
 				error: function(error){
@@ -297,5 +315,5 @@ app.Models.User = Backbone.Model.extend({
 		);
 	},
 
-	
+
 });

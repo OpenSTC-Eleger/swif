@@ -171,110 +171,20 @@ app.Views.TasksListView = Backbone.View.extend({
 			{'day': momentDate.clone().day(7), 'tasks': sundayTasks}
 		];
 
-		console.log("tasksUser");
-		console.log(tasksUser);
-
-
-
-
-		// Fill DropDown list Agents //
-		var officersDropDownList;
-		var displayFilter;
-
-		// If the User is DST - Don't Filter Officers Collection //
-		if(app.models.user.isDST()){
-			
-			officersDropDownList = app.collections.officers;
-			displayFilter = true;
-		}
-		// If the User is MANAGER - Filter Officers Collection with the manager service ID//
-		else if(app.models.user.isManager()){
-
-			// Retrieve User services //
-			var userServices = app.models.user.toJSON().service_ids;
-
-			// Filter on each officer //
-			officersDropDownList = _.filter(app.collections.officers.models, function(officer){
-
-				// Display only officers who are not DST //
-				if(!officer.isDST()){
-					var thing = false;
-
-					_.each(officer.toJSON().service_ids, function(item){
-						
-						if($.inArray(item.id, userServices) != -1){
-							thing = true;
-							return;	
-						}
-					});
-
-					return thing;
-				}
-				
-			});
-
-			officersDropDownList = new app.Collections.Officers(officersDropDownList);
-			displayFilter = true;
-		}
-		else{
-			
-			// Iterate all the teams to find if the connected user is a foreman //
-			var managerTeamID = [];
-			
-			_.each(app.collections.teams.models, function(team){
-
-				if(!officer.isDST()){
-
-					var teamJSON = team.toJSON();
-					
-					if(teamJSON.manager_id[0] == app.models.user.toJSON().uid){
-						managerTeamID.push(teamJSON.id);
-					}
-				}
-
-			});
-
-			// If the user is a formean display the filter //
-			if(!_.isEmpty(managerTeamID)){
-				displayFilter = true;
-
-				// Filter on each officer //
-				var officersDropDownListFilter = _.filter(app.collections.officers.models, function(officer){
-						var officerJSON = officer.toJSON();
-						if(officerJSON.team_ids != null){
-							var self = this;
-							self.belongsToTeam = false
-							//compare with manager teams
-							_.each( officerJSON.team_ids, function(team) {
-								self.belongsToTeam =  ($.inArray(team.id, managerTeamID) != -1);
-							});	
-							if( this.belongsToTeam )
-								return true;
-						}
-
-				});
-
-				officersDropDownList = app.collections.officers.reset(officersDropDownListFilter);
-
-			}
-			else{
-				displayFilter = false;
-			}
-		}
-
-
 
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 
+			var officersDropDownList = new app.Collections.Officers(app.models.user.getOfficers());
+
 			var template = _.template(templateData, {
 				lang: app.lang,
 				nbPendingTasks: nbPendingTasks,
 				tasksPerDay: tasksUserFiltered,
 				momentDate: momentDate,
-				displayFilter: displayFilter
+				displayFilter: _.size(officersDropDownList) > 0
 			});
 			
 			$(self.el).html(template);
@@ -295,12 +205,12 @@ app.Views.TasksListView = Backbone.View.extend({
 
 
 			$(".datepicker").datepicker({
-    			format: 'dd/mm/yyyy',
-    			weekStart: 1,
-    			autoclose: true,
-    			language: 'fr'
-    		});
-			
+				format: 'dd/mm/yyyy',
+				weekStart: 1,
+				autoclose: true,
+				language: 'fr'
+			});
+
 			$('#equipmentsAdd, #equipmentsListAdd').sortable({
 				connectWith: 'ul.sortableEquipmentsList',
 				dropOnEmpty: true,
@@ -315,7 +225,7 @@ app.Views.TasksListView = Backbone.View.extend({
 					//self.saveServicesCategories();
 				}
 			});	
-			
+
 			$('#equipmentsDone, #equipmentsListDone').sortable({
 				connectWith: 'ul.sortableEquipmentsList',
 				dropOnEmpty: true,
@@ -330,7 +240,7 @@ app.Views.TasksListView = Backbone.View.extend({
 					//self.saveServicesCategories();
 				}
 			});
-			
+
 			$('#equipmentsSpent, #equipmentsListSpent').sortable({
 				connectWith: 'ul.sortableEquipmentsList',
 				dropOnEmpty: true,
@@ -345,7 +255,7 @@ app.Views.TasksListView = Backbone.View.extend({
 					//self.saveServicesCategories();
 				}
 			});	
-			
+
 
 			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 			$('*[data-toggle="tooltip"]').tooltip();

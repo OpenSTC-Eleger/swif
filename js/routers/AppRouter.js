@@ -241,7 +241,7 @@ app.Router = Backbone.Router.extend({
 		
 		// Check if the user is connect //
 		if(this.checkConnect()){
-			
+
 
 			self.page = page ? parseInt(page, 10) : 1;
 
@@ -279,7 +279,7 @@ app.Router = Backbone.Router.extend({
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},
-	
+
 
 
 	/** Interventions details
@@ -346,8 +346,8 @@ app.Router = Backbone.Router.extend({
 			if(app.collections.tasks == null ){
 				app.collections.tasks = new app.Collections.Tasks();
 			}
-			
-			
+
+
 			app.collections.tasks.fetch({  
 				beforeSend: function(){
 					app.loader('display');
@@ -357,7 +357,7 @@ app.Router = Backbone.Router.extend({
 						app.collections.interventions = new app.Collections.Interventions();        	
 					}
 
-				
+
 					app.collections.interventions.fetch({
 						success: function(){
 							if(app.collections.claimersServices == null ){
@@ -465,8 +465,6 @@ app.Router = Backbone.Router.extend({
 						app.collections.interventions.fetch(),
 						app.collections.categoriesTasks.fetch(),
 						app.collections.equipments.fetch(),
-						app.collections.officers.fetch(),
-						app.collections.teams.fetch(),
 						app.collections.claimersServices.fetch()
 					)
 					.done(function(){
@@ -490,14 +488,14 @@ app.Router = Backbone.Router.extend({
 
 
 
-	detailsTask: function(id){		
+	detailsTask: function(id){
 		console.debug("****************detailsTask********************");
 		// Check if the user is connect //
 		if(this.checkConnect()){
 			var self = this;
 			var task = app.collections.tasks.get(id);
 			self.task = task;   
-			
+
 			if(app.collections.interventions == null ){
 				app.collections.interventions = new app.Collections.Interventions();
 			}
@@ -505,7 +503,7 @@ app.Router = Backbone.Router.extend({
 			app.loader('display');
 			app.collections.interventions.fetch({
 				success: function(){
-			
+
 					if(app.collections.tasks == null ){
 						app.collections.tasks = new app.Collections.Tasks();
 					}
@@ -519,7 +517,7 @@ app.Router = Backbone.Router.extend({
 								 success: function(){
 									if(app.collections.categoriesTasks == null ){
 										app.collections.categoriesTasks = new app.Collections.CategoriesTasks();
-									}				                   
+									}
 									app.collections.categoriesTasks.fetch({
 										success: function(){
 											 if(app.collections.claimersServices == null ){
