@@ -221,7 +221,11 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "saveTaskDone", app.models.user.getSessionID(), options);
 	},
 
-
+	/** get officers to filter on it
+	*/	
+	getOfficers: function(params, options) {
+		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "getOfficers", app.models.user.getSessionID(), options);
+	},
 
 	/** Create orphan task in backend
 	*/	

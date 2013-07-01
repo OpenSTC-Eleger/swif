@@ -32,6 +32,7 @@ app.Models.User = Backbone.Model.extend({
 		
 		isDST			: false,
 		isManager		: false,
+		officers	: [],
 	},
 
 	initialize: function(){
@@ -151,6 +152,13 @@ app.Models.User = Backbone.Model.extend({
 	
 	setDST: function(value) {
 		this.set({ isDST : value });
+	},
+	
+	getOfficers : function() {
+		return this.get('officers');
+	},
+	setOfficers : function(value) {
+		this.set({ officers : value });
 	},
 
 

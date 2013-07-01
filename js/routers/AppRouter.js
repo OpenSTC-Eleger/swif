@@ -619,13 +619,20 @@ app.Router = Backbone.Router.extend({
 
 																	app.collections.claimersServices.fetch({
 																		success: function(){
-
-																		   app.views.tasksListView = new app.Views.TasksListView({yearSelected: self.yearSelected, weekSelected: self.weekSelected});
-																		   self.render(app.views.tasksListView);
-																		},
-																		complete: function(){
-																			app.loader('hide');
+																			app.models.task.getOfficers(null,
+																				{
+																					success: function(data){
+																					   app.models.user.attributes.officers = data.result
+																					   app.views.tasksListView = new app.Views.TasksListView({yearSelected: self.yearSelected, weekSelected: self.weekSelected});
+																					   self.render(app.views.tasksListView);
+																					},
+																					complete: function(){
+																						app.loader('hide');
+																					}
+																				}
+																			);
 																		}
+
 																	});
 																}
 															});

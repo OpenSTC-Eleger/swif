@@ -14,6 +14,7 @@ app.Collections.Places = Backbone.Collection.extend({
     */
     initialize: function (options) {
     	console.log('Place collection Initialization');
+    	this.count();
     },
 
 
@@ -38,6 +39,17 @@ app.Collections.Places = Backbone.Collection.extend({
     */
     comparator: function(item) {
 	  return _.titleize( item.get('name').toLowerCase() ) ;
+	},
+	
+	/** count all models without restricts ( openerp search_count method call select count(*) request)
+	*/	
+	count: function() {
+		var self = this;
+		app.callObjectMethodOE([[]], this.model_name, "search_count", app.models.user.getSessionID(), {
+			success: function(data){
+				self.cpt = data.result;
+			}
+		});
 	},
 
 

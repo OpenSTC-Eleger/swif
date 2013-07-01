@@ -16,6 +16,7 @@ app.Collections.Equipments = Backbone.Collection.extend({
     */
     initialize: function (options) {
     	console.log('Equipment collection Initialization');
+    	this.count();
     },
 
 
@@ -47,6 +48,17 @@ app.Collections.Equipments = Backbone.Collection.extend({
     */
     comparator: function(item) {
 	  return item.get('name');
+	},
+	
+	/** count all models without restricts ( openerp search_count method call select count(*) request)
+	*/	
+	count: function() {
+		var self = this;
+		app.callObjectMethodOE([[]], this.model_name, "search_count", app.models.user.getSessionID(), {
+			success: function(data){
+				self.cpt = data.result;
+			}
+		});
 	},
 
 });

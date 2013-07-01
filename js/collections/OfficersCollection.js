@@ -14,6 +14,7 @@ app.Collections.Officers = Backbone.Collection.extend({
     */
     initialize: function (options) {
     	console.log('Requests collection Initialization');
+    	this.count();
     },
 
 
@@ -44,6 +45,17 @@ app.Collections.Officers = Backbone.Collection.extend({
     	var lastname = item.get('name');
     	if ( lastname )
     		return lastname.toUpperCase();
+	},
+	
+	/** count all models without restricts ( openerp search_count method call select count(*) request)
+	*/	
+	count: function() {
+		var self = this;
+		app.callObjectMethodOE([[]], this.model_name, "search_count", app.models.user.getSessionID(), {
+			success: function(data){
+				self.cpt = data.result;
+			}
+		});
 	},
 
 });

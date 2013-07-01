@@ -16,6 +16,7 @@ app.Collections.Interventions = Backbone.Collection.extend({
 	*/
 	initialize: function (options) {
 		console.log('Interventions collection Initialization');
+		this.count();
 	},
 
 
@@ -42,6 +43,17 @@ app.Collections.Interventions = Backbone.Collection.extend({
 		var mCreateDate = moment(item.get('create_date'))
 		item.set({'create_date': mCreateDate});
 		return -item.get('create_date');
-	}
+	},
+	
+	/** count all models without restricts ( openerp search_count method call select count(*) request)
+	*/	
+	count: function() {
+		var self = this;
+		app.callObjectMethodOE([[]], this.model_name, "search_count", app.models.user.getSessionID(), {
+			success: function(data){
+				self.cpt = data.result;
+			}
+		});
+	},
 
 });
