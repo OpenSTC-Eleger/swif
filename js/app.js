@@ -39,7 +39,6 @@ var app = {
 
 
 
-
 	/** Application initialization
 	*/
 	init: function (lang) {
@@ -50,9 +49,9 @@ var app = {
 			.done(function(properties_data, configuration_data, routes_data, lang_data){
 			
 				// Set the app properties configuration and language //
-				app.routes        = routes_data[0];
 				app.properties    = properties_data[0];
-				app.config = configuration_data[0];
+				app.config 		  = configuration_data[0];
+				app.routes        = routes_data[0];
 				app.lang          = lang_data[0];
 
 
@@ -172,7 +171,6 @@ var app = {
 			type: 'GET',
 			dataType: 'jsonp',
 			jsonp: 'jsonp',
-			//async: false,
 			cache: false,
 			data: data,
 			url: url
@@ -185,7 +183,7 @@ var app = {
 		var payload_url = $.param({r: payload_str});
 
 		if (payload_url.length > 2000) {
-			throw new Error("Payload is too big.");
+			throw new Error('Payload is too big.');
 		}
 		// Direct jsonp request
 		ajax.data.r = payload_str;
@@ -220,7 +218,8 @@ var app = {
 
 		return deferred;
 	},
-	
+
+
 
 	/** Retrieve an object from OpenERP
 	*/
@@ -244,6 +243,11 @@ var app = {
 			'session_id': session_id
 		}
 
+		// Limit - Offset //
+		if(!_.isUndefined(options.limitOffset)){
+		 	params.limit = options.limitOffset.limit;
+		 	params.offset = options.limitOffset.offset;
+		}
 
 		// Fields //
 		if(_.isUndefined(fields)){ 
@@ -251,15 +255,10 @@ var app = {
 		}else{
 			params.fields = fields;
 		}
-		
-		// Limit - Offset //
-		if(!_.isUndefined(options.limitOffset)){
-		 	params.limit = options.limitOffset.limit;
-		 	params.offset = options.limitOffset.offset;
-		}
 
 		return this.json(app.config.openerp.url + this.urlOE_retrieveListe, params, options)
 	},
+
 
 
 	/** Delete object from OpenERP
@@ -269,10 +268,11 @@ var app = {
 			'method'    : 'unlink',
 			'args'      : args, 
 			'model'     : model,
-			'session_id': session_id      
-	   }, options);  
+			'session_id': session_id
+		}, options);  
 	},
-		
+
+
 
 	/** Save object in OpenERP
 	*/
@@ -292,10 +292,12 @@ var app = {
 		   }, options);      
 	},
 	
+
+
 	/** call object method from OpenERP
 	*/
-	callObjectMethodOE : function (args,model,method,session_id,options) {
-		this.json(app.config.openerp.url + this.urlOE_object, {
+	callObjectMethodOE : function (args, model, method, session_id, options) {
+		return this.json(app.config.openerp.url + this.urlOE_object, {
 			'method'    : method,
 			'args'      : args, 
 			'model'     : model,

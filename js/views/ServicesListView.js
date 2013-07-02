@@ -157,13 +157,6 @@ app.Views.ServicesListView = Backbone.View.extend({
 			});
 		};
 		
-	    //search no technical services
-//		var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
-//			return service.attributes.technical != true 
-//		});
-//		//remove no technical services
-//		app.collections.claimersServices.remove(noTechnicalServices);
-//		app.collections.claimersServices.toJSON()
 	
 		// Display the remain services //
 		_.filter(this.technicalServices.toJSON(), function (service, i){ 
@@ -442,10 +435,11 @@ app.Views.ServicesListView = Backbone.View.extend({
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
+					app.models.user.getOfficers();
+
 					route = Backbone.history.fragment;
 					Backbone.history.loadUrl(route);
 					
-	
 					$('#modalSaveOfficer').modal('hide');
 				}				
 			},
@@ -485,7 +479,8 @@ app.Views.ServicesListView = Backbone.View.extend({
 					Backbone.history.loadUrl(route);
 					
 //					app.collections.officers.remove(self.model);
-//	
+
+					app.models.user.getOfficers();
 					$('#modalDeleteOfficer').modal('hide');
 					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.officerDeleteOk);
 //					self.render();

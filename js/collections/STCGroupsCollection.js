@@ -44,7 +44,7 @@ app.Collections.STCGroups = app.Collections.STCCollection.extend({
 	/** Comparator for ordering collection
 	*/
 	comparator: function(item) {
-	  return item.get("name");
+		return item.get("name");
 	}
 
 });

@@ -122,8 +122,15 @@ app.Models.User = Backbone.Model.extend({
 		this.set({ service_id : value });
 	},
 
-	getOfficers : function() {
-		return this.get('officers');
+	/** get officers to filter on it
+	*/
+	getOfficers: function() {
+		var self = this
+		app.callObjectMethodOE([[this.get("uid")],null], this.model_name, "getOfficers", self.getSessionID(), {
+			success: function(data){
+				self.setOfficers( data.result )
+			}
+		});
 	},
 	setOfficers : function(value) {
 		this.set({ officers : value });
@@ -212,6 +219,7 @@ app.Models.User = Backbone.Model.extend({
 
 				// Get the users informations //
 				self.getUserInformations();
+				self.getOfficers();
 
 			}
 			

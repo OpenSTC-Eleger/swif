@@ -3,7 +3,7 @@
 */
 app.Models.STCGroup = Backbone.RelationalModel.extend({
 	
-	model_name : 'res.groups',	
+	model_name : 'res.groups',
 	
 	url: "/groups/:id",
 
@@ -19,7 +19,7 @@ app.Models.STCGroup = Backbone.RelationalModel.extend({
 
 	/** Model Parser
 	*/
-	parse: function(response) {    	
+	parse: function(response) {
 		return response;
 	},
 });
