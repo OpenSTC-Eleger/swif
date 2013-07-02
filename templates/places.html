@@ -37,28 +37,28 @@
 				</tr>
 			</thead>
 			<tbody>
-			<% for (var i = startPos; i < endPos; i++) { 
+			<% _.each(places, function(place){
 					var placeServices = [];
-					console.log()
-					_.each( places[i].service_ids, function(s){
+					
+					_.each( place.service_ids, function(s){
 						placeServices.push( s.name );
 					});
 				%>
 				<!-- Place row -->
-				<tr class="row-item" id="place_<%= places[i].id %>">
+				<tr class="row-item" id="place_<%= place.id %>">
 					<td>
-						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= places[i].complete_name %>
+						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= place.complete_name %>
 						<p class="row-actions invisible">
 							<a href="#modalSavePlace"  class="modalSavePlace" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
 							<a href="#modalDeletePlace" class="modalDeletePlace" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
 						</p>
 					</td>
-					<td><%= places[i].site_parent_id[1] %></td>
+					<td><%= place.site_parent_id[1] %></td>
 					<td><%= _.toSentence(placeServices, ', ', ' et ') %></td>					
-					<td class="text-right hidden-phone"><%= _.numberFormat(places[i].surface, 0, ',', ' ') %> m²</td>
+					<td class="text-right hidden-phone"><%= _.numberFormat(place.surface, 0, ',', ' ') %> m²</td>
 				</tr>
 
-			<% }; %>
+			<% }); %>
 			</tbody>
 		</table>
 

@@ -54,23 +54,16 @@ app.Views.PlacesListView = Backbone.View.extend({
 
 
 		var places = app.collections.places;
-		var nbPlaces = _.size(places);
-
-		var len = places.length;
-		var startPos = (this.options.page - 1) * this.numberListByPage;
-		var endPos = Math.min(startPos + this.numberListByPage, len);
-		var pageCount = Math.ceil(len / this.numberListByPage);
 
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				places: places.toJSON(),
 				lang: app.lang,
-				nbPlaces: nbPlaces,
-				startPos: startPos, endPos: endPos,
+				places: places.toJSON(),
+				nbPlaces: app.collections.places.cpt,
 				page: self.options.page, 
-				pageCount: pageCount,
+				pageCount: Math.ceil(app.collections.places.cpt / app.config.itemsPerPage)
 			});
 			
 			$(self.el).html(template);
