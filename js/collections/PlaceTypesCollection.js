@@ -1,35 +1,43 @@
 /******************************************
 * Place Type Collection
 */
-app.Collections.PlaceTypes = Backbone.Collection.extend({
+app.Collections.PlaceTypes = app.Collections.STCCollection.extend({
 
-    model: app.Models.PlaceType,
+	model: app.Models.PlaceType,
 
-    // Model name in the database //
-    model_name : 'openstc.site.type',
-
-
-
-
-    /** Collection Sync
-    */
-    sync: function(method, model, options) {
-    	app.readOE( this.model_name, app.models.user.getSessionID(), options);
-    },
+	// Model name in the database //
+	model_name : 'openstc.site.type',
 
 
 
-    /** Collection Parse
-    */
-    parse: function(response) {
-        return response.result.records;
-    },
-    
+	/** Collection Initialization
+	*/
+	initialize: function (options) {
+		//console.log('Sites types collection Initialization');
+	},
 
 
-    /** Comparator for ordering collection
-    */
-    comparator: function(item) {
+	/** Collection Sync
+	*/
+	sync: function(method, model, options) {
+		var fields = ["code", "name", "id"];
+
+		return app.readOE( this.model_name, app.models.user.getSessionID(), options, fields);
+	},
+
+
+
+	/** Collection Parse
+	*/
+	parse: function(response) {
+		return response.result.records;
+	},
+
+
+
+	/** Comparator for ordering collection
+	*/
+	comparator: function(item) {
 	  return item.get("name");
 	},
 

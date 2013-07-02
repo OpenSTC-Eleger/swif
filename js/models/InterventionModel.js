@@ -7,35 +7,24 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 	
 	url: "/#demandes-dinterventions/:id",
 
-	
 	relations: [
-	   {
+		{
 			type: Backbone.HasMany,
 			key: 'tasks',
 			relatedModel: 'app.Models.Task',
 			collectionType: 'app.Collections.Tasks',
 			includeInJSON: true,
-			//autoFetch: true,
 			reverseRelation: {
 				key: 'intervention',
-				includeInJSON: ['id','name', 'description', 'state','tasks','service_id','site1','date_start', 'date_end'],
+				includeInJSON: ['id', 'name', 'description', 'state', 'tasks', 'service_id', 'site1' ,'date_start', 'date_end'],
 			},
 		},		
-//		{
-//			type: Backbone.HasOne,
-//			key: 'service_id',
-//			relatedModel: 'app.Models.ClaimerService',
-//			collectionType: 'app.Collections.ClaimerServices',
-//			includeInJSON: 'id'
-//		}
 	],
 	
 	defaults:{
 		id:0,
 		state: null,
 		cancel_reason: null,
-		infoMessage: null,
-		overPourcent: 0,
 	},
 
 
@@ -45,22 +34,6 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 	setState : function(value) {
 		if( value == 'undefined') return;
 		this.set({ state : value });
-	},
-	
-	getOverPourcent : function() {
-		return this.get('overPourcent');
-	},
-	setOverPourcent : function(value) {
-		if( value == 'undefined') return;
-		this.set({ overPourcent : value });
-	},
-	
-	getInfoMessage : function() {
-		return this.get('infoMessage');
-	},
-	setInfoMessage : function(value) {
-		if( value == 'undefined') return;
-		this.set({ infoMessage : value });
 	},
 	
 	getCancelReason : function() {
@@ -76,7 +49,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 	/** Model Initialization
 	*/
 	initialize: function(){
-		console.log('Intervention Model initialization');
+		//console.log('Intervention Model initialization');
 		this.fetchRelated('tasks');
 
 		app.Models.Intervention.status.scheduled.translation = app.lang.planningFenced;

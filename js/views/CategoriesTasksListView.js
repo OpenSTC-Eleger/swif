@@ -144,7 +144,6 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 			$('#catUnit').val(this.selectedCatJson.unit);
 			if( this.selectedCatJson.parent_id )
 				app.views.selectListCategoriesView.setSelectedItem( this.selectedCatJson.parent_id[0] );	
-	
         }
 
 		
@@ -226,11 +225,11 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 	     this.services = _.map($("#catServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });     
 	     
 	     this.params = {
-			name: this.$('#catName').val(),
-			code: this.$('#catCode').val(),
-			unit: this.$('#catUnit').val(),
-			parent_id: parent_id,
-		     service_ids: [[6, 0, this.services]],
+			name        : this.$('#catName').val(),
+			code        : this.$('#catCode').val(),
+			unit        : this.$('#catUnit').val(),
+			parent_id   : parent_id,
+			service_ids : [[6, 0, this.services]],
 	     };
 	     
 	    
@@ -289,7 +288,7 @@ app.Views.CategoriesTasksListView = Backbone.View.extend({
 				}
 			},
 			error: function(e){
-				alert("Impossible de supprimer la catégorie");
+				console.error("Impossible de supprimer la catégorie");
 			}
 
 		});

@@ -10,14 +10,14 @@ app.Models.Task = Backbone.RelationalModel.extend({
 
 
 	relations: [
-	   {
+		{
 			type: Backbone.HasMany,
 			key: 'equipment_ids',
 			relatedModel: 'app.Models.Equipment',
 			collectionType: 'app.Collections.Equipments',
-			includeInJSON: ['id','name', 'complete_name', 'type'],
+			includeInJSON: ['id', 'name', 'complete_name', 'type'],
 		},	
-	  ],
+	],
 	
 
 	defaults:{
@@ -147,7 +147,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	/** Model Initialization
 	*/
 	initialize: function (model) {
-		console.log('Task Model Initialization');
+		//console.log('Task Model Initialization');
 
 		// Initialization Traduction task state //
 		app.Models.Task.status.draft.translation = app.lang.toScheduled;
@@ -221,11 +221,6 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "saveTaskDone", app.models.user.getSessionID(), options);
 	},
 
-	/** get officers to filter on it
-	*/	
-	getOfficers: function(params, options) {
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "getOfficers", app.models.user.getSessionID(), options);
-	},
 
 	/** Create orphan task in backend
 	*/	

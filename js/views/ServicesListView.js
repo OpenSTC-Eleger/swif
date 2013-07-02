@@ -93,7 +93,7 @@ app.Views.ServicesListView = Backbone.View.extend({
 			
 			
 			// Fill select Foreman  //
-			app.views.selectListGroupsView = new app.Views.DropdownSelectListView({el: $("#officerGroup"), collection: app.collections.groups})
+			app.views.selectListGroupsView = new app.Views.DropdownSelectListView({el: $("#officerGroup"), collection: app.collections.stcGroups})
 			app.views.selectListGroupsView.clearAll();
 			app.views.selectListGroupsView.addEmptyFirst();
 			app.views.selectListGroupsView.addAll();
@@ -374,16 +374,14 @@ app.Views.ServicesListView = Backbone.View.extend({
 			}
 			
 			var self = this;
-			var stc_groups = app.collections.groups;
+			var stc_groups = app.collections.stcGroups;
 			_.each( stc_groups.models, function(group){	
 				var groupJSON = group.toJSON();
 				_.each(self.selectedOfficerJson.groups_id, function(officerGroup){
 					if( groupJSON.id==officerGroup.id  )
 						app.views.selectListGroupsView.setSelectedItem( groupJSON.id );
 				})
-//				if($.inArray(groupJSON.id, self.selectedOfficerJson.groups_id)!=-1){	
-//					app.views.selectListGroupsView.setSelectedItem( groupJSON.id );
-//				}
+
 			});
 		}
 		else{
@@ -447,18 +445,8 @@ app.Views.ServicesListView = Backbone.View.extend({
 					route = Backbone.history.fragment;
 					Backbone.history.loadUrl(route);
 					
-//					if( self.modelId==0 ){
-//						self.model = new app.Models.Officer({id: data.result.result});
-//					}
-//					self.params.groups_id = self.getIdInDropDown(app.views.selectListGroupsView);	
-//					self.params.service_ids = self.services;
-//					self.model.update(self.params);
-//					
-//					app.collections.officers.add(self.model);
-//	
+	
 					$('#modalSaveOfficer').modal('hide');
-//					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.officerSaveOk);
-//					self.render();
 				}				
 			},
 			error: function(e){
@@ -499,7 +487,7 @@ app.Views.ServicesListView = Backbone.View.extend({
 //					app.collections.officers.remove(self.model);
 //	
 					$('#modalDeleteOfficer').modal('hide');
-//					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.officerDeleteOk);
+					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.officerDeleteOk);
 //					self.render();
 				}
 			},

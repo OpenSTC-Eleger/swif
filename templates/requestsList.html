@@ -131,11 +131,13 @@
 
 					<!-- Request service -->
 					<td>
-						<span data-toggle="tooltip"
-							data-original-title="<%= _.capitalize(lang.toValidateBy) %>
-							<%= (requests[i].manager_id != false ? requests[i].manager_id[1] : _.capitalize(lang.notKnown)) %>">
-								<%= requests[i].belongsToService!=null?requests[i].belongsToService.name:"" %>
+						<% if(requests[i].state == app.Models.Request.status.wait.key){ %>
+						<span data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.toValidateBy) %> <%= requests[i].manager_id[1] %>">
+							<%= requests[i].service_id[1] %>
 						</span>
+						<% } else { %>
+							<%= requests[i].service_id[1] %>
+						<% } %>
 					</td>
 
 					<!-- Claimer -->
@@ -161,31 +163,7 @@
 					<!-- Request state -->
 					<td>
 
-						<!-- Set information for the state if the Request is Valid, Refused or cancelled -->
-						<% if(requests[i].state == app.Models.Request.status.valid.key){
-							var title = requests[i].infoMessage;
-						}
-						else if(requests[i].state == app.Models.Request.status.closed.key){
-							if(requests[i].intervention_ids[0].state == app.Models.Intervention.status.closed.key){
-								var title = requests[i].infoMessage;	
-							}
-							else{
-								var title = requests[i].intervention_ids[0].cancel_reason;
-							}
-							
-						}
-						else if(requests[i].state == app.Models.Request.status.refused.key){
-							var title = requests[i].refusal_reason  + '\n('+ modifydBy +')';
-						}
-						else if(requests[i].state == app.Models.Request.status.confirm.key){
-							var title = requests[i].note;
-						}
-						else{
-							var title = '';
-						}
-						
-						%>
-						<span class="label label-<%= app.Models.Request.status[requests[i].state].color %>" data-toggle="tooltip" data-original-title="<%= title %>">
+						<span class="label label-<%= app.Models.Request.status[requests[i].state].color %>" data-toggle="tooltip" data-original-title="<%= requests[i].tooltip %>">
 							<%= app.Models.Request.status[requests[i].state].translation %>
 						</span>
 					</td>
@@ -193,6 +171,8 @@
 
 
 					<!-- Action column -->
+					<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
+
 					<td class="align">
 					<!-- Check if the user can make action on the request -->
 					<%  var actions = requests[i].actions;
@@ -243,6 +223,7 @@
 
 					<% } %>
 					</td>
+					<% } %>
 
 				</tr>
 			<% } %>

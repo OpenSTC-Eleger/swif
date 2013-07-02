@@ -49,9 +49,14 @@
 				<!-- Categorie row -->
 				<tr class="row-item" id="equipment_<%= equipment.id %>">
 					<td><i class="icon-wrench"></i> <%= equipment.name %>
+						
 						<p class="row-actions invisible">
-							<a href="#modalSaveEquipment" class="modalSaveEquipment" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
-							<a href="#modalDeleteEquipment" class="modalDeleteEquipment" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
+							<a href="#modalSaveEquipment" class="modalSaveEquipment" data-toggle="modal">
+								<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
+							</a>&nbsp;
+							<a href="#modalDeleteEquipment" class="modalDeleteEquipment" data-toggle="modal">
+								<i class="icon-remove icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+							</a>
 						</p>
 					</td>
 					<td><%= (equipment.immat != false ? equipment.immat : "")%></td>

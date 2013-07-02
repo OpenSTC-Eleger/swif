@@ -43,7 +43,7 @@ app.Models.ClaimerType = Backbone.RelationalModel.extend({
 	/** Model Initialization
 	*/
 	initialize: function(){
-		console.log('Claimer Type Model initialization');
+		//console.log('Claimer Type Model initialization');
 		this.fetchRelated('claimers');
 	},
 

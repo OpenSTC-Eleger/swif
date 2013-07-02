@@ -37,13 +37,6 @@ var app = {
 	views           : {},
 	templates       : {},
 
-		lol: {
-		"lollol": {
-			"routes": "lol",
-			"function": "riri"
-		}
-	},
-	
 
 
 
@@ -59,7 +52,7 @@ var app = {
 				// Set the app properties configuration and language //
 				app.routes        = routes_data[0];
 				app.properties    = properties_data[0];
-				app.configuration = configuration_data[0];
+				app.config = configuration_data[0];
 				app.lang          = lang_data[0];
 
 
@@ -69,7 +62,6 @@ var app = {
 				app.models.user                 = new app.Models.User();
 				//app.models.team               = new app.Models.Team();
 				app.models.task                 = new app.Models.Task();
-				app.models.taskWork             = new app.Models.TaskWork();
 				app.models.intervention         = new app.Models.Intervention();
 				app.models.request              = new app.Models.Request();
 				app.models.place                = new app.Models.Place();
@@ -82,7 +74,7 @@ var app = {
 				// Router initialization //
 				app.router = new app.Router();
 				// Listen url changes //
-				Backbone.history.start();
+				Backbone.history.start({pushState: false});
 			})
 			.fail(function(){
 				console.error('Unable to init the app');
@@ -177,7 +169,7 @@ var app = {
 		};
 
 		var ajax = _.extend({
-			type: "GET",
+			type: 'GET',
 			dataType: 'jsonp',
 			jsonp: 'jsonp',
 			//async: false,
@@ -200,6 +192,7 @@ var app = {
 		return $.ajax(ajax);
 
 	},
+
 
 
 	/** Formats a standard JSON 2.0 call
@@ -232,7 +225,7 @@ var app = {
 	/** Retrieve an object from OpenERP
 	*/
 	getOE : function (model, fields, ids, session_id, options) {
-		this.json(app.configuration.openerp.url + this.urlOE_readObject, {
+		this.json(app.config.openerp.url + this.urlOE_readObject, {
 			'model'     : model,
 			'fields'    : fields, 
 			'ids'       : ids,
@@ -244,20 +237,36 @@ var app = {
 
 	/** Retrieve a list from OpenERP
 	*/
-	readOE : function (model, session_id, options) {
-		this.json(app.configuration.openerp.url + this.urlOE_retrieveListe, {
+	readOE : function (model, session_id, options, fields) {
+
+		var params = {
 			'model'     : model,
-			'fields'    : [],
 			'session_id': session_id
-		}, options)
+		}
+
+
+		// Fields //
+		if(_.isUndefined(fields)){ 
+			params.fields = [];
+		}else{
+			params.fields = fields;
+		}
+		
+		// Limit - Offset //
+		if(!_.isUndefined(options.limitOffset)){
+		 	params.limit = options.limitOffset.limit;
+		 	params.offset = options.limitOffset.offset;
+		}
+
+		return this.json(app.config.openerp.url + this.urlOE_retrieveListe, params, options)
 	},
 
 
 	/** Delete object from OpenERP
 	*/
 	deleteOE : function (args,model,session_id,options) {
-		this.json(app.configuration.openerp.url + this.urlOE_deleteObject, {
-			'method'    : "unlink",
+		this.json(app.config.openerp.url + this.urlOE_deleteObject, {
+			'method'    : 'unlink',
 			'args'      : args, 
 			'model'     : model,
 			'session_id': session_id      
@@ -269,14 +278,14 @@ var app = {
 	*/
 	saveOE : function (id, data, model, session_id, options) {
 		if(id)
-			this.json(app.configuration.openerp.url + this.urlOE_updateObject, {
+			this.json(app.config.openerp.url + this.urlOE_updateObject, {
 				'data'      : data, 
 				'model'     : model, 
 				'id'        : id,
 				'session_id': session_id      
 		   },options);
 		else
-			this.json(app.configuration.openerp.url + this.urlOE_createObject, {
+			this.json(app.config.openerp.url + this.urlOE_createObject, {
 					'data'      : data, 
 					'model'     : model,                 
 					'session_id': session_id      
@@ -286,7 +295,7 @@ var app = {
 	/** call object method from OpenERP
 	*/
 	callObjectMethodOE : function (args,model,method,session_id,options) {
-		this.json(app.configuration.openerp.url + this.urlOE_object, {
+		this.json(app.config.openerp.url + this.urlOE_object, {
 			'method'    : method,
 			'args'      : args, 
 			'model'     : model,
@@ -294,49 +303,25 @@ var app = {
 	   }, options);  
 	},
 
-/*
-	loadTemplate : function(id, callback){
 
-
-		var template = app.templates[id];
-
-		if (template) {
-		  callback(template);
-		}
-		else {
- 
-
-		// Retrieve Application language //
-		$.ajax({
-			type: 'GET', url: 'templates/' + id + '.html',
-			success: function(data, textStatus, jqXHR) {
-				var $tmpl = $(template);
-				app.templates[id] = $tmpl;
-				callback($tmpl);
-			},
-			error: function(jqXHR, textStatus, errorThrown){
-				alert('Unable to retrieve template');
-			}
-		});
-
-	   }
-	},
-
-*/
 
 	/** Page Loader
 	*/
 	loader: function(action){
 
+		var deferred = $.Deferred();
+
 		switch(action){
 			case 'display':
-				$('#loader, #modal-block').fadeIn();
+				$('#loader, #modal-block').fadeIn(deferred.resolve);
 			break;
 
 			case 'hide':
-				$('#loader, #modal-block').delay(250).fadeOut('slow');
+				$('#loader, #modal-block').delay(250).fadeOut('slow', deferred.resolve);
 			break;
 		}
+
+		return deferred.promise();
 	},
 
 
@@ -388,7 +373,7 @@ var app = {
 			break;
 
 		}
-		
+
 		$.pnotify({
 			title: title,
 			text: message,

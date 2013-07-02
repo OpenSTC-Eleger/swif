@@ -17,6 +17,12 @@ app.Models.User = Backbone.Model.extend({
 				includeInJSON: ['id','name'],
 			}
 		},
+		{
+			type: Backbone.HasMany,
+			key: 'officers',
+			relatedModel: 'app.Models.Officer',
+			includeInJSON: ['id', 'firstname', 'name'],
+		},
 
 	],
 
@@ -29,10 +35,9 @@ app.Models.User = Backbone.Model.extend({
 		lastname        : '',
 		service_ids		: [],
 		context			: {},
-		
+		officers        : [],
 		isDST			: false,
-		isManager		: false,
-		officers	: [],
+		isManager		: false
 	},
 
 	initialize: function(){
@@ -117,6 +122,13 @@ app.Models.User = Backbone.Model.extend({
 		this.set({ service_id : value });
 	},
 
+	getOfficers : function() {
+		return this.get('officers');
+	},
+	setOfficers : function(value) {
+		this.set({ officers : value });
+	},
+
 	getContact : function() {
 		return this.get('contact_id');
 	},
@@ -153,14 +165,6 @@ app.Models.User = Backbone.Model.extend({
 	setDST: function(value) {
 		this.set({ isDST : value });
 	},
-	
-	getOfficers : function() {
-		return this.get('officers');
-	},
-	setOfficers : function(value) {
-		this.set({ officers : value });
-	},
-
 
 
 
@@ -175,9 +179,9 @@ app.Models.User = Backbone.Model.extend({
 
 		var deferred = $.Deferred();
 
-		app.json(app.configuration.openerp.url+app.urlOE_authentication, {
-			'base_location': app.configuration.openerp.url,
-			'db': app.configuration.openerp.database,
+		app.json(app.config.openerp.url+app.urlOE_authentication, {
+			'base_location': app.config.openerp.url,
+			'db': app.config.openerp.database,
 			'login': loginUser,
 			'password': passUser,
 			'session_id': ''
@@ -188,14 +192,13 @@ app.Models.User = Backbone.Model.extend({
 		})
 		.done(function (data) {
 
-			//console.debug(data);
 
 			if(data.uid == false){
 				app.loader('hide');
 				app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
 			}
 			else{
-				
+
 				// Set the user Informations //
 				self.setUID(data.uid)
 				self.setSessionID(data.session_id);
@@ -207,14 +210,9 @@ app.Models.User = Backbone.Model.extend({
 				// Add the user to the collection and save it to the localStorage //
 				app.collections.users.add(self);
 
-				// Get the user Information //
+				// Get the users informations //
 				self.getUserInformations();
 
-				//app.notify('', 'info', 'Information', 'Vous êtes connecté');
-				Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
-
-				// Refresh the header //
-				app.views.headerView.render(app.router.mainMenus.manageInterventions);
 			}
 			
 			deferred.resolve();
@@ -233,7 +231,7 @@ app.Models.User = Backbone.Model.extend({
 
 		var deferred = $.Deferred();
 
-		app.json(app.configuration.openerp.url+app.urlOE_sessionDestroy, {
+		app.json(app.config.openerp.url+app.urlOE_sessionDestroy, {
 			'session_id': self.getSessionID()
 		})
 		.fail(function (){
@@ -267,7 +265,7 @@ app.Models.User = Backbone.Model.extend({
 		"use strict";
 		var self = this;
 
-		return app.json(app.configuration.openerp.url+app.urlOE_menuUser, {
+		return app.json(app.config.openerp.url+app.urlOE_menuUser, {
 			'session_id': self.getSessionID()
 		}, options)
 	},
@@ -280,11 +278,13 @@ app.Models.User = Backbone.Model.extend({
 		"use strict";
 		var self = this;
 
-		var fields = ['firstname', 'name', 'groups', 'contact_id', 'service_id', 'service_ids', 'in_group_15', 'in_group_17', 'in_group_18', 'in_group_19', 'isDST', 'isManager'];
 
-		app.getOE(this.model_name, fields, [self.getUID()], self.getSessionID(),
+		var fields = ['firstname', 'name', 'groups', 'contact_id', 'service_id', 'service_ids', 'isDST', 'isManager'];
+
+		return  app.getOE(this.model_name, fields, [self.getUID()], self.getSessionID(),
 			({
 				success: function(data){
+
 					// Retrieve the firstname and the lastname of the user //
 					self.setFirstname(data.result[0].firstname);
 					self.setLastname(data.result[0].name);
@@ -296,6 +296,12 @@ app.Models.User = Backbone.Model.extend({
 					self.setDST(data.result[0].isDST);
 					self.save();
 
+					// Refresh the header //
+					app.views.headerView.render(app.router.mainMenus.manageInterventions);
+
+					// Navigate to the Home page //
+					Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
+
 				},
 				error: function(error){
 					console.error(error);
@@ -305,5 +311,5 @@ app.Models.User = Backbone.Model.extend({
 		);
 	},
 
-	
+
 });

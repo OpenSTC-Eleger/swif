@@ -1,7 +1,7 @@
 /******************************************
 * Intervention Categorie Collection - Intervention classification for budget
 */
-app.Collections.CategoriesInterventions = Backbone.Collection.extend({
+app.Collections.CategoriesInterventions = app.Collections.STCCollection.extend({
 
     model: app.Models.CategoryIntervention,
 
@@ -9,12 +9,22 @@ app.Collections.CategoriesInterventions = Backbone.Collection.extend({
     model_name : 'openstc.intervention.assignement',
     
    	url: 'affectation',
+   
+
+    /** Collection Initialization
+    */
+    initialize: function (options) {
+    	//console.log('Categorie Intervention collection Initialization');
+    },
+
 
 
     /** Collection Sync
     */
     sync: function(method, model, options) {
-    	app.readOE(this.model_name, app.models.user.getSessionID(), options);
+        var fields = ["code", "id", "name"];
+
+    	return app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
     },
 
 

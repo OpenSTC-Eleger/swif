@@ -12,9 +12,9 @@ app.Views.PlacesListView = Backbone.View.extend({
 	selectedPlace : '',
 
 
-    // The DOM events //
-    events: {
-    	'click li.active'				: 'preventDefault',
+	// The DOM events //
+	events: {
+		'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
 		'click ul.sortable li'			: 'preventDefault',
 		
@@ -26,31 +26,31 @@ app.Views.PlacesListView = Backbone.View.extend({
 		'click a.modalSavePlace'	  	: 'modalSavePlace',
 		'submit #formSavePlace' 		: "savePlace", 
 
-    },
+	},
 
 
 
 	/** View Initialization
 	*/
-    initialize: function () {
+	initialize: function () {
 
-    },
+	},
 
 
 	/** Display the view
 	*/
-    render: function () {
+	render: function () {
 		var self = this;
 
 		// Change the page title //
-        app.router.setPageTitle(app.lang.viewsTitles.placesList);
+		app.router.setPageTitle(app.lang.viewsTitles.placesList);
 
 
-        // Change the active menu item //
-        app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
+		// Change the active menu item //
+		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
 
-        // Change the Grid Mode of the view //
-        app.views.headerView.switchGridMode('fluid');
+		// Change the Grid Mode of the view //
+		app.views.headerView.switchGridMode('fluid');
 
 
 		var places = app.collections.places;
@@ -75,8 +75,6 @@ app.Views.PlacesListView = Backbone.View.extend({
 			
 			$(self.el).html(template);
 			
-			//self.loadDropDownList();
-			
 			$('#placeServices, #servicesList').sortable({
 				connectWith: 'ul.sortableServicesList',
 				dropOnEmpty: true,
@@ -91,15 +89,16 @@ app.Views.PlacesListView = Backbone.View.extend({
 					self.updateSites( );
 				}
 			});		
-			
 		});
 
 		$(this.el).hide().fadeIn('slow');
 
 		return this;
-    },
-    
-    loadDropDownList: function() {
+	},
+
+
+
+	loadDropDownList: function() {
 		app.views.selectListPlaceTypesView = new app.Views.DropdownSelectListView({el: $("#placeType"), collection: app.collections.placetypes})
 		app.views.selectListPlaceTypesView.clearAll();
 		app.views.selectListPlaceTypesView.addEmptyFirst();
@@ -110,11 +109,13 @@ app.Views.PlacesListView = Backbone.View.extend({
 		app.views.selectListPlacesView.clearAll();
 		app.views.selectListPlacesView.addEmptyFirst();
 		app.views.selectListPlacesView.addAll();
-    },
-    
+	},
+
+
+
 	/** Display user services 
 	*/
-    displayServices: function(e){
+	displayServices: function(e){
 		e.preventDefault();
 	
 		// Retrieve the ID of the intervention //
@@ -135,8 +136,8 @@ app.Views.PlacesListView = Backbone.View.extend({
 				placeServices[i] = service.id;
 			});
 		};
-		
-	    //search no technical services
+
+		//search no technical services
 		var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
 			return service.attributes.technical != true 
 		});
@@ -155,36 +156,41 @@ app.Views.PlacesListView = Backbone.View.extend({
 		$('#badgeNbServices').html(nbRemainServices);
 		
 	},
-    
-    
-    getIdInDopDown: function(view) {
-    	if ( view && view.getSelected() )
-    		return view.getSelected().toJSON().id;
-    	else 
-    		return 0
-    },
-
-    setModel: function(e) {
 	
-    	this.model = null;
-    	this.selectedPlaceJson = null;
-    	
-    	e.preventDefault();
-    	this.displayServices(e);
-    	var link = $(e.target);
-    	var id =  _(link.parents('tr').attr('id')).strRightBack('_');
-        this.selectedPlace = _.filter(app.collections.places.models, function(item){ return item.attributes.id == id });
-        if( this.selectedPlace.length>0 ) {
-        	this.model = this.selectedPlace[0];
-        	this.selectedPlaceJson = this.model.toJSON();        
-        }        
-    },
-    
-    /** Add a new categorie
-    	    */
-    modalSavePlace: function(e){       
-        this.setModel(e);	
-        this.loadDropDownList();
+
+
+	getIdInDopDown: function(view) {
+		if ( view && view.getSelected() )
+			return view.getSelected().toJSON().id;
+		else 
+			return 0
+	},
+
+
+
+	setModel: function(e) {
+	
+		this.model = null;
+		this.selectedPlaceJson = null;
+		
+		e.preventDefault();
+		this.displayServices(e);
+		var link = $(e.target);
+		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
+		this.selectedPlace = _.filter(app.collections.places.models, function(item){ return item.attributes.id == id });
+		if( this.selectedPlace.length>0 ) {
+			this.model = this.selectedPlace[0];
+			this.selectedPlaceJson = this.model.toJSON();        
+		}
+	},
+
+
+
+	/** Add a new categorie
+	*/
+	modalSavePlace: function(e){       
+		this.setModel(e);	
+		this.loadDropDownList();
 		
 		if( this.selectedPlaceJson ) {
 			$('#placeName').val(this.selectedPlaceJson.name);
@@ -205,37 +211,39 @@ app.Views.PlacesListView = Backbone.View.extend({
 			$('#placeArea').val('');
 		}   
 
-    },
-    
-    /** Save the place
-	 */
-    savePlace: function (e) {
+	},
+
+
+
+	/** Save the place
+	*/
+	savePlace: function (e) {
 		 e.preventDefault();
 		 
-	     var self = this;
-	     
-	     var input_type_site_id = this.getIdInDopDown(app.views.selectListPlaceTypesView);
-	     var input_site_id = this.getIdInDopDown(app.views.selectListPlacesView);
-	     
-	     this.services = _.map($("#placeServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });     
+		 var self = this;
+		 
+		 var input_type_site_id = this.getIdInDopDown(app.views.selectListPlaceTypesView);
+		 var input_site_id = this.getIdInDopDown(app.views.selectListPlacesView);
+		 
+		 this.services = _.map($("#placeServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });     
 
-	     
-	     this.params = {	
-		     name: this.$('#placeName').val(),
-		     type: input_type_site_id,
-		     service_ids: [[6, 0, this.services]],
-		     site_parent_id: input_site_id,
-		     width: this.$('#placeWidth').val(),
-		     lenght: this.$('#placeLenght').val(),
-		     surface: this.$('#placeArea').val(),
-	     };		
-	    
-	    this.modelId = this.selectedPlaceJson==null?0: this.selectedPlaceJson.id;
-	    var self = this;
-	    
-	    app.Models.Place.prototype.save(
-	    	this.params, 
-	    	this.modelId, {
+		 
+		 this.params = {	
+			 name: this.$('#placeName').val(),
+			 type: input_type_site_id,
+			 service_ids: [[6, 0, this.services]],
+			 site_parent_id: input_site_id,
+			 width: this.$('#placeWidth').val(),
+			 lenght: this.$('#placeLenght').val(),
+			 surface: this.$('#placeArea').val(),
+		 };		
+		
+		this.modelId = this.selectedPlaceJson==null?0: this.selectedPlaceJson.id;
+		var self = this;
+		
+		app.Models.Place.prototype.save(
+			this.params, 
+			this.modelId, {
 			success: function(data){
 				console.log(data);
 				if(data.error){
@@ -251,20 +259,23 @@ app.Views.PlacesListView = Backbone.View.extend({
 			error: function () {
 				console.log('ERROR - Unable to save the Intervention - InterventionView.js');
 			},	
-	    });
-    },
-
-    /** Display information in the Modal view
-    */
-    modalDeletePlace: function(e){    
-    	
-        this.setModel(e);
-        $('#infoModalDeletePlace p').html(this.selectedPlaceJson.name);
-        $('#infoModalDeletePlace small').html(this.selectedPlaceJson.service[1]);
-    },
+		});
+	},
 
 
-    /** Delete the selected place
+
+	/** Display information in the Modal view
+	*/
+	modalDeletePlace: function(e){    
+		
+		this.setModel(e);
+		$('#infoModalDeletePlace p').html(this.selectedPlaceJson.name);
+		$('#infoModalDeletePlace small').html(this.selectedPlaceJson.service[1]);
+	},
+
+
+
+	/** Delete the selected place
 	*/
 	deletePlace: function(e){
 		//e.preventDefault();
@@ -288,9 +299,10 @@ app.Views.PlacesListView = Backbone.View.extend({
 		});    
 	},
 
-	/**
-	 * Update possible parent site belongs to services selected
-	 */
+
+
+	/** Update possible parent site belongs to services selected
+	*/
 	updateSites: function ( ) {
 		//Selected services in list choice
 		var services = _.map($("#placeServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber()});
@@ -307,9 +319,9 @@ app.Views.PlacesListView = Backbone.View.extend({
 				var placeJSON = item.toJSON();
 				var placeServices = placeJSON.service_ids;	
 				var placeServices = [];
-	        	_.each( item.attributes.service_ids.models, function(s){
-	        		placeServices.push( s.toJSON().id );
-	        	});				
+				_.each( item.attributes.service_ids.models, function(s){
+					placeServices.push( s.toJSON().id );
+				});				
 				return $.inArray(self.currentService, placeServices)!=-1
 			});
 			self.placesFiltered = _.union( self.placesFiltered , keepedPlaces );	
@@ -322,8 +334,10 @@ app.Views.PlacesListView = Backbone.View.extend({
 		app.views.selectListPlacesView.addAll();
 	},
 
-    preventDefault: function(event){
-    	event.preventDefault();
-    },
+
+
+	preventDefault: function(event){
+		event.preventDefault();
+	},
 
 });

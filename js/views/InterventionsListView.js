@@ -76,7 +76,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 
 		// Check the number of planned interventions //
-		var interventionsPlanned = _.filter(interventions, function(item){ 
+		var interventionsPlanned = _.filter(interventions, function(item){
 			return (item.state == app.Models.Intervention.status.scheduled.key);
 		});
 		var nbInterventionsPlanned = _.size(interventionsPlanned);
@@ -87,9 +87,6 @@ app.Views.InterventionsListView = Backbone.View.extend({
 			return (item.state == app.Models.Intervention.status.pending.key);
 		});
 		var nbInterventionsPending = _.size(interventionsPending);
-
-		// Set informations about Intervention //
-		this.addInfoAboutInter(interventions);
 
 
 		// Collection Filter if not null //
@@ -117,15 +114,15 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		// Retrieve the HTML template //
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				lang: app.lang,
-				nbInterventions: len,
-				nbInterventionsPending: nbInterventionsPending,
-				nbInterventionsPlanned: nbInterventionsPlanned,
-				interventionsState: app.Models.Intervention.status,
-				interventions: interventions,
-				startPos: startPos, endPos: endPos,
-				page: self.options.page, 
-				pageCount: pageCount,
+				lang                   : app.lang,
+				nbInterventions        : len,
+				nbInterventionsPending : nbInterventionsPending,
+				nbInterventionsPlanned : nbInterventionsPlanned,
+				interventionsState     : app.Models.Intervention.status,
+				interventions          : interventions,
+				startPos               : startPos, endPos: endPos,
+				page                   : self.options.page, 
+				pageCount              : pageCount,
 			});
 
 
@@ -189,48 +186,6 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 		$(this.el).hide().fadeIn('slow');
 		return this;
-	},
-
-
-
-	addInfoAboutInter: function(inters) {
-
-		_.each(inters, function (intervention, i) {
-
-			var infoMessage = ""; var firstDate = null; var lastDate = null;
-			
-			_.each(intervention.tasks, function(task){ 
-				if ( firstDate==null )
-					firstDate = task.date_start;
-				else if ( task.date_start && firstDate>task.date_start )
-					firstDate=task.date_start; 
-				
-				if ( lastDate==null )
-					lastDate = task.date_end;
-				else if ( task.date_end && lastDate<task.date_end )
-					lastDate=task.date_end; 
-			});
-
-		
-			if( firstDate ) {
-				if( intervention.progress_rate==0 )
-					infoMessage = "Début prévue le " + firstDate.format('LLL'); 
-				else if( lastDate )
-					infoMessage = "Fin prévue le " + lastDate.format('LLL'); 
-			}
-						
-			if( intervention.state == app.Models.Intervention.status.cancelled.key ) {
-				infoMessage = intervention.cancel_reason
-			}
-
-			intervention.infoMessage = infoMessage; // = infoMessage;
-			if( intervention.planned_hours ) {
-				intervention.overPourcent = Math.round(100.0 * intervention.effective_hours / intervention.planned_hours);
-			}
-			else{
-				intervention.overPourcent = 0;
-			}
-		});
 	},
 
 

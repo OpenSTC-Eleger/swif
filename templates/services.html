@@ -78,11 +78,13 @@
 									</tr>
 								</thead>
 								<tbody>
+
 									<% _.each(service.user_ids, function (officer, i) {	
 										var model = officer.groups_id.models[0];
 										var group = '';											
 										if(!_.isUndefined(model))
 											group = _(model.toJSON().name).strRightBack('/')
+										
 										%>
 										
 										<tr class="row-nested-objects" id="<%= officer.id %>_<%= service.id %>">

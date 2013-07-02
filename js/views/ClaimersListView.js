@@ -225,7 +225,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
 	    // Retrieve the ID of the Claimer //
 		this.setModel(e);
 
-		console.log(this.selectedClaimerJson);
+		//console.log(this.selectedClaimerJson);
 	
 	    $('#infoModalDeleteClaimer p').html(this.selectedClaimerJson.name);
 	    $('#infoModalDeleteClaimer small').html(this.selectedClaimerJson.type_id[1]);
@@ -307,7 +307,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
     	this.getTarget(e);
 	    this.selectedAddress = app.collections.claimersContacts.get(this.pos);
 		this.selectedAddressJSON = this.selectedAddress.toJSON();
-		console.log(this.selectedAddressJSON);
+		//console.log(this.selectedAddressJSON);
 		$('#infoModalDeleteContact').children('p').html(this.selectedAddressJSON.name);
 		$('#infoModalDeleteContact').children('small').html(_.capitalize(this.selectedAddressJSON.function));
 	},
@@ -339,19 +339,18 @@ app.Views.ClaimersListView = Backbone.View.extend({
      	}
 
 
-		this.params.partner_id= this.selectedClaimer,
-		this.params.name= this.$('#addressName').val(),
-		this.params.function= this.$('#addressFunction').val(),
-		this.params.phone= this.$('#addressPhone').val(),
-		this.params.email= this.$('#addressEmail').val(),
-		this.params.mobile= this.$('#addressMobile').val(),
-		this.params.street= this.$('#addressStreet').val(),
-		this.params.city= this.$('#addressCity').val(),
-		this.params.zip= this.$('#addressZip').val(),
+		this.params.partner_id= this.selectedClaimer;
+		this.params.name= this.$('#addressName').val();
+		this.params.function= this.$('#addressFunction').val();
+		this.params.phone= this.$('#addressPhone').val();
+		this.params.email= this.$('#addressEmail').val();
+		this.params.mobile= this.$('#addressMobile').val();
+		this.params.street= this.$('#addressStreet').val();
+		this.params.city= this.$('#addressCity').val();
+		this.params.zip= this.$('#addressZip').val();
 	
 
-		console.log(this.params);
-	     
+     
 		var self = this;
 		this.modelId = this.selectedAddressJSON == null ? 0 : this.selectedAddressJSON.id;
 
@@ -360,7 +359,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
 	    	this.params,
 	    	this.modelId, {
 			success: function(data){
-				console.log(data);
+				//console.log(data);
 				if(data.error && data.error.data){
 					app.notify('', 'error', data.error.data.fault_code);
 				}
@@ -371,6 +370,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
 				}				
 			},
 			error: function(e){
+				console.error(e);
 				alert('Impossible de créer ou mettre à jour le contact');
 			}
 		});
@@ -468,7 +468,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
 	   	var self = this;
 		this.model.delete({
 			success: function(data){
-				console.log(data);
+				//console.log(data);
 				if(data.error){
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
@@ -480,6 +480,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
 				}
 			},
 			error: function(e){
+				console.error(e);
 				alert("Impossible de supprimer le demandeur");
 			}
 	

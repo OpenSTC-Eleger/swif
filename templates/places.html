@@ -13,7 +13,7 @@
 
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
-			<a href="#modalSavePlace" class="btn btn-primary modalSavePlace" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addPlace) %></a>	
+			<a href="#modalSavePlace" class="btn btn-primary modalSavePlace" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addPlace) %></a>
 
 			<!--<form class="form-search pull-right">
 				<div class="input-append">
@@ -54,8 +54,8 @@
 						</p>
 					</td>
 					<td><%= places[i].site_parent_id[1] %></td>
-					<td><%= _.toSentence( placeServices, ', ', ' et ' ) %></td>					
-					<td class="text-right hidden-phone"><%= _.numberFormat(places[i].surface, 0, ",", " ") %> m²</td>
+					<td><%= _.toSentence(placeServices, ', ', ' et ') %></td>					
+					<td class="text-right hidden-phone"><%= _.numberFormat(places[i].surface, 0, ',', ' ') %> m²</td>
 				</tr>
 
 			<% }; %>
@@ -144,7 +144,7 @@
 				<!-- Place Type -->
 				<div class="control-group">
 					<label for="placeType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
-	
+
 					<div class="controls">
 						<select id="placeType"></select>
 						<span class="help-inline"></span>
@@ -170,7 +170,7 @@
 		
 						</ul>
 					</div>
-		
+
 					<div class="span6">
 						<div class="widget-title">
 							<h4>Autre services <span class="badge pull-right" id="badgeNbServices"></span></h4>
@@ -202,7 +202,7 @@
 				<label for="placeWidth" class="control-label"><%= _.capitalize(lang.width) %>:</label>
 
 				<div class="controls">
-					<input type="number" id="placeWidth" />
+					<input type="number" id="placeWidth" class="input-mini" />
 					<span class="help-inline"></span>
 				</div>
 			</div>
@@ -212,7 +212,7 @@
 				<label for="placeLenght" class="control-label"><%= _.capitalize(lang.lenght) %>:</label>
 
 				<div class="controls">
-					<input type="number" id="placeLenght" />
+					<input type="number" id="placeLenght" class="input-mini" />
 					<span class="help-inline"></span>
 				</div>
 			</div>
@@ -222,7 +222,7 @@
 				<label for="placeArea" class="control-label"><%= _.capitalize(lang.area) %>:</label>
 
 				<div class="controls">
-					<input type="number" id="placeArea" />
+					<input type="number" id="placeArea" class="input-mini" />
 					<span class="help-inline"></span>
 				</div>
 			</div>

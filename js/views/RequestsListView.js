@@ -40,7 +40,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize: function () {			
-		//this.render();
+
 	},
 
 
@@ -97,8 +97,6 @@ app.Views.RequestsListView = Backbone.View.extend({
 			var nbInterventionsInBadge = _.size(requests);
 		}
 
-		this.addInfoAboutInter(requests);
-
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -151,51 +149,6 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 
 
-    addInfoAboutInter: function(requests) {
-    	_.each(requests, function (request, i) {
-    		this.infoMessage = "";
-    		var self = this;
-    		_.each(request.intervention_ids, function (intervention, i) {
-				
-				//var intervention = interModel.toJSON();
-				var firstDate = null;
-				var lastDate = null;
-				
-				_.each(intervention.tasks, function(task){ 
-					if ( firstDate==null )
-						firstDate = task.date_start;
-					else if ( task.date_start && firstDate>task.date_start )
-						firstDate=task.date_start; 
-					
-					if ( lastDate==null )
-						lastDate = task.date_end;
-					else if ( task.date_end && lastDate<task.date_end )
-						lastDate=task.date_end; 
-				});
-
-				self.infoMessage = intervention.create_uid!=null? "par " + intervention.create_uid[1] + ". ": ""; 
-		    	if( firstDate ) {
-		    		if( intervention.progress_rate==0 )
-						self.infoMessage += "Début prévue le " + firstDate.format('LLL'); 
-					else if( lastDate )
-						self.infoMessage += "Fin prévue le " + lastDate.format('LLL'); 
-					else{
-			    		self.infoMessage += "Remis en plannification";
-					}
-				}
-				else{
-					self.infoMessage += "Non planifiée";
-				}
-
-				//console.debug("message:" + infoMessage + ", classColor:"+ classColor);
-			});   
-				
-			request['infoMessage'] = this.infoMessage;
-    	});
-    },
-
-
-
 	/** Display informations about the request in the Modal view
 	*/
 	setInfoModal: function(e){
@@ -226,17 +179,13 @@ app.Views.RequestsListView = Backbone.View.extend({
 			app.views.selectServicesView.addAll();
 			if( this.selectedRequest.service_id )
 				app.views.selectServicesView.setSelectedItem( this.selectedRequest.service_id[0] );
-			else {
-				if( this.selectedRequest.belongsToService )
-					app.views.selectAssignementsView.setSelectedItem( this.selectedRequest.belongsToService.id );
-			}
+
 			
 			app.views.selectAssignementsView = new app.Views.DropdownSelectListView({el: $("#requestAssignement"), collection: app.collections.categoriesInterventions})
 			app.views.selectAssignementsView.clearAll();
 			app.views.selectAssignementsView.addEmptyFirst();
 			app.views.selectAssignementsView.addAll();
-			if( this.selectedRequest.belongsToAssignement )
-				app.views.selectAssignementsView.setSelectedItem( this.selectedRequest.belongsToAssignement.id );
+
 			
 			$('#requestNote').val(this.selectedRequest.description);
 
@@ -340,25 +289,25 @@ app.Views.RequestsListView = Backbone.View.extend({
 		self.element = element;
 		self.params = params
 		this.model.save(params, {
-				    success: function (data) {
-					        console.log(data);
-					        if(data.error){
-					    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-					        }
-					        else{					        	
-					           	console.log('NEW STATE REQUEST SAVED');
-					            if( self.element!= null )
-					            	self.element.modal('hide');
-					            self.model.update(params);
-					            //app.collections.requests.get(self.pos).update(self.model);
-								route = Backbone.history.fragment;
-								Backbone.history.loadUrl(route);
-					        }
-					    },
-					    error: function () {
-							console.error('ERROR - Unable to valid the Request - RequestsListView.js');
-					    },           
-					},false);
+		    success: function (data) {
+			        console.log(data);
+			        if(data.error){
+			    		app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+			        }
+			        else{
+			           	console.log('NEW STATE REQUEST SAVED');
+			            if( self.element!= null )
+			            	self.element.modal('hide');
+			            self.model.update(params);
+
+			            route = Backbone.history.fragment;
+						Backbone.history.loadUrl(route);
+			        }
+			    },
+			    error: function () {
+					console.error('ERROR - Unable to valid the Request - RequestsListView.js');
+			    },           
+			},false);
 	},
 
 

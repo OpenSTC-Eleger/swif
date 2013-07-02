@@ -17,7 +17,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		reverseRelation: {
 			type: Backbone.HasOne,
 			key: 'ask',
-			includeInJSON: ['id','manager_id','people_name','people_phone','people_email', 'partner_id','partner_type','partner_phone','partner_email', 'intervention_assignement_id'],
+			includeInJSON: ['id', 'manager_id', 'people_name', 'people_phone', 'people_email', 'partner_id', 'partner_type', 'partner_phone', 'partner_email', 'intervention_assignement_id'],
 		}
 	}],
 	
@@ -33,7 +33,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		note: "",
 		refusal_reason: "",
 		test: "",
-		infoMessage: null,
 		intervention_ids : []
 	},
 
@@ -54,15 +53,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ name : value });
 	},
-	
-	getInfoMessage : function() {
-		return this.get('infoMessage');
-	},
-	setInfoMessage : function(value) {
-		if( value == 'undefined') return;
-		this.set({ infoMessage : value });
-	},
-	
+
 	getSite1 : function() {
 		return this.get('site1');
 	},
@@ -115,14 +106,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		if( value == 'undefined') return;
 		this.set({ service_id : value });
 	},
-	
-	getAssignement : function() {
-		return this.get('belongsToAssignement');
-	},
-	setAssignement : function(value) {
-		if( value == 'undefined') return;
-		this.set({ belongsToAssignement : value });
-	},
 
 	getInterventions : function() {
 		return this.get('intervention_ids');
@@ -172,7 +155,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 	
 	/** method not used
 	*/
-	sendEmail: function(data,options) { 
+	sendEmail: function(data,options) {
 		var params = {}
 		params.state = this.get("state");
 		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "send_email", app.models.user.getSessionID(), options);
@@ -182,12 +165,9 @@ app.Models.Request = Backbone.RelationalModel.extend({
 
 	update: function(params) {
 		this.setDescription( params.description );
-		//this.setService( params.service_id );
-		//this.setAssignement( params.intervention_assignement_id );
 		this.setState( params.state );
 		this.setRefusalReason( params.refusal_reason );
 		this.setNote( params.note );
-		//this.set({ service_id : params.service_id });
 	},
 
 

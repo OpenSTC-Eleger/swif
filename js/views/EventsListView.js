@@ -292,14 +292,14 @@ app.Views.EventsListView = Backbone.View.extend({
 				dragRevertDuration	:0,
 				eventClick	: self.eventClick,
 				//drop: self.drop,
-				startOfLunchTime	: app.configuration.startLunchTime,
-				endOfLunchTime		: app.configuration.endLunchTime,
+				startOfLunchTime	: app.config.startLunchTime,
+				endOfLunchTime		: app.config.endLunchTime,
                 
 				select: function( startDate, endDate, allDay, jsEvent, view) {
 
-					console.debug('START' + startDate);
-					console.debug('START' + endDate);
-					console.debug('ALLDAY' + allDay);
+					//console.debug('START' + startDate);
+					//console.debug('START' + endDate);
+					//console.debug('ALLDAY' + allDay);
 
 					var mStartDate = moment( startDate );
 					var mEndDate = moment( endDate );
@@ -486,7 +486,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			var username = self.el.data('username');
 			
 			
-			$(self.el.selector + ' table td.fc-header-left').html("<img src='http://mashwork.com/blog/wp-content/uploads/2012/06/Unknown-person2.gif' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");
+			$(self.el.selector + ' table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");
 
 
 			// Print button //
@@ -531,19 +531,19 @@ app.Views.EventsListView = Backbone.View.extend({
         	this.arrayOnDayEvents.push( stopWorkingEvent );
         	
         	var minutes = 0;
-        	if(_.str.include(app.configuration.startLunchTime, '.')){
-        		var minutes = _.lpad(((_.rpad(_( app.configuration.startLunchTime ).strRight('.'), 2, '0') / 100) * 60), 2, '0');
+        	if(_.str.include(app.config.startLunchTime, '.')){
+        		var minutes = _.lpad(((_.rpad(_( app.config.startLunchTime ).strRight('.'), 2, '0') / 100) * 60), 2, '0');
         	}
-        	var hours = _( app.configuration.startLunchTime ).strLeft('.');
+        	var hours = _( app.config.startLunchTime ).strLeft('.');
 
             
 			var startLunchTime = moment( startDate.clone() ).hours( hours ).minutes( minutes );
 			
 			var minutes = 0;
-        	if(_.str.include(app.configuration.endLunchTime, '.')){
-        		minutes = _.lpad(((_.rpad(_( app.configuration.endLunchTime ).strRight('.'), 2, '0') / 100) * 60), 2, '0');
+        	if(_.str.include(app.config.endLunchTime, '.')){
+        		minutes = _.lpad(((_.rpad(_( app.config.endLunchTime ).strRight('.'), 2, '0') / 100) * 60), 2, '0');
         	}
-            hours = _( app.configuration.endLunchTime ).strLeft('.');
+            hours = _( app.config.endLunchTime ).strLeft('.');
 
 			var endLunchTime = moment( startDate.clone() ).hours( hours ).minutes( minutes );
 			var lunchEvent = this.getEvent( "lunchTime", startLunchTime.toDate(), endLunchTime.toDate() );
@@ -712,7 +712,7 @@ app.Views.EventsListView = Backbone.View.extend({
 
 
 		getPlace: function (o, intervention) {
-			console.debug(intervention);
+			//console.debug(intervention);
 			return intervention.site1!=null?intervention.site1[1]:"";
 		
 		},

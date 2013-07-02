@@ -1,7 +1,7 @@
 /******************************************
 * Claimers Types Collection
 */
-app.Collections.ClaimersTypes = Backbone.Collection.extend({
+app.Collections.ClaimersTypes = app.Collections.STCCollection.extend({
 
     model: app.Models.ClaimerType,
 
@@ -11,11 +11,20 @@ app.Collections.ClaimersTypes = Backbone.Collection.extend({
     url: 'type-demandeurs',
 
 
+    /** Collection Initialization
+    */
+    initialize: function (options) {
+    	//console.log('Claimer type collection Initialization');
+    },
+
+
 
     /** Collection Sync
     */
     sync: function(method, model, options) {
-    	app.readOE(this.model_name, app.models.user.getSessionID(), options);
+        var fields = ["claimers", "code", "id", "name"];
+
+    	return app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
     },
 
 

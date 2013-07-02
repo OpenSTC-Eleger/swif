@@ -117,24 +117,24 @@
 					<!-- Check the state of the intervention -->
 					<td>
 						<% if(interventions[i].state != app.Models.Intervention.status.pending.key && interventions[i].state != app.Models.Intervention.status.closed.key){ %>
-							<span class="label label-<%= app.Models.Intervention.status[interventions[i].state].color %>"  data-toggle="tooltip" data-original-title="<%= interventions[i].infoMessage %>">
+							<span class="label label-<%= app.Models.Intervention.status[interventions[i].state].color %>"  data-toggle="tooltip" data-original-title="<%= interventions[i].tooltip %>">
 								<%= app.Models.Intervention.status[interventions[i].state].translation %>
 							</span>
 
 						<!-- state - Pending -->
 						<% } else if(interventions[i].state == app.Models.Intervention.status.pending.key){ %>
-							<div class="progress progress-default" data-toggle="tooltip" data-title="<%= interventions[i].infoMessage %>">
+							<div class="progress progress-default" data-toggle="tooltip" data-title="<%= interventions[i].tooltip %>">
 								<div class="bar" style="width: <%= interventions[i].progress_rate %>%"><%= _(interventions[i].progress_rate).toNumber() %>%</div>
 							</div>
 
 						<!-- state - Closed -->
 						<% } else if(interventions[i].state == app.Models.Intervention.status.closed.key){ 
 							if(interventions[i].overPourcent > 100){ %>
-								<div class="progress progress-overrun">
+								<div class="progress progress-overrun" data-toggle="tooltip" data-title="<%= interventions[i].tooltip %>">
 									<div class="bar" style="width: 100%"><%= _(interventions[i].overPourcent).toNumber() %>%</div>
 								</div>
 							<% } else { %>
-								<div class="progress progress-success">
+								<div class="progress progress-success" data-toggle="tooltip" data-title="<%= interventions[i].tooltip %>">
 									<div class="bar" style="width: <%= interventions[i].overPourcent %>%"><%= _(interventions[i].overPourcent).toNumber() %>%</div>
 								</div>
 							<% } %>

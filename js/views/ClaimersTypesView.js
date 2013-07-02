@@ -13,8 +13,8 @@ app.Views.ClaimersTypesView = Backbone.View.extend({
 	selectedCat : '',
 
 
-    // The DOM events //
-    events: {
+	// The DOM events //
+	events: {
 		'click li.active'									: 'preventDefault',
 		'click li.disabled'									: 'preventDefault',
 
@@ -23,38 +23,35 @@ app.Views.ClaimersTypesView = Backbone.View.extend({
 
 		'submit #formSaveClaimersTypes' 					: "saveClaimersTypes", 
 		'click button.btnDeleteClaimersTypes' 				: 'deleteClaimersTypes'
-    },
+	},
 
 	
 
 	/** View Initialization
 	*/
-    initialize: function () {
+	initialize: function () {
 		
-    },
+	},
 
 
 	/** Display the view
 	*/
-    render: function () {
+	render: function () {
 		var self = this;
 
 		// Change the page title //
-        app.router.setPageTitle(app.lang.viewsTitles.claimersTypesList);
+		app.router.setPageTitle(app.lang.viewsTitles.claimersTypesList);
+
+		// Change the active menu item //
+		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
+
+		// Change the Grid Mode of the view //
+		app.views.headerView.switchGridMode('fluid');
 
 
-        // Change the active menu item //
-        app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
-
-        // Change the Grid Mode of the view //
-        app.views.headerView.switchGridMode('fluid');
-
-
-		var claimersTypes = app.collections.claimersTypes.models;
-		
-	    var claimersTypesSortedArray = _.sortBy(claimersTypes, function(item){ 
-	          return item.attributes.name; 
-        });
+		var claimersTypesSortedArray = _.sortBy(app.collections.claimersTypes.models, function(item){ 
+			return item.attributes.name; 
+		});
 
 		var len = claimersTypesSortedArray.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
@@ -74,75 +71,79 @@ app.Views.ClaimersTypesView = Backbone.View.extend({
 			});
 			
 			$(self.el).html(template);
+
+			$('*[data-toggle="tooltip"]').tooltip();
 		});
 
 		$(this.el).hide().fadeIn('slow');
 		
-        return this;
-    },
-    
-    setModel: function(e) {
-    	e.preventDefault();
-    	var link = $(e.target);
-    	var id =  _(link.parents('tr').attr('id')).strRightBack('_');
-        this.selected = _.filter(app.collections.claimersTypes.models, function(item){ return item.attributes.id == id });
-        if( this.selected.length>0 ) {
-        	this.model = this.selected[0];
-        	this.selectedJson = this.model.toJSON();  
-        }
-        else {
-        	this.selectedJson = null;        	
-        }        
-    },
+		return this;
+	},
+
+	
+	
+	setModel: function(e) {
+		e.preventDefault();
+		var link = $(e.target);
+		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
+		this.selected = _.filter(app.collections.claimersTypes.models, function(item){ return item.attributes.id == id });
+		if( this.selected.length>0 ) {
+			this.model = this.selected[0];
+			this.selectedJson = this.model.toJSON();  
+		}
+		else {
+			this.selectedJson = null;
+		}
+	},
 
 
-    /** Add a new categorie
-    */
-    modalSaveClaimersTypes: function(e){       
-        this.setModel(e);	
-        
-        $('#claimersTypesName').val('');
-        $('#claimersTypesCode').val('');
-        if( this.selectedJson ) {
+
+	/** Add a new categorie
+	*/
+	modalSaveClaimersTypes: function(e){
+		this.setModel(e);	
+		
+		$('#claimersTypesName, #claimersTypesCode').val('');
+
+		if( this.selectedJson ) {
 			$('#claimersTypesName').val(this.selectedJson.name);
-			$('#claimersTypesCode').val(this.selectedJson.name);
-			
-        }       
+			$('#claimersTypesCode').val(this.selectedJson.code);
+		}       
 
-    },
+	},
 
 
-    /** Display information in the Modal view
-    */
-    modalDeleteClaimersTypes: function(e){
-        
-        // Retrieve the ID of the categorie //
-    	this.setModel(e);
 
-        $('#infoModalDeleteClaimersTypes p').html(this.selectedJson.name);
-        $('#infoModalDeleteClaimersTypes small').html(this.selectedJson.code);
-    },
-    
-    
+	/** Display information in the Modal view
+	*/
+	modalDeleteClaimersTypes: function(e){
+		
+		// Retrieve the ID of the categorie //
+		this.setModel(e);
 
-    /** Save Claimer Type
+		$('#infoModalDeleteClaimersTypes p').html(this.selectedJson.name);
+		$('#infoModalDeleteClaimersTypes small').html(this.selectedJson.code);
+	},
+	
+	
+
+	/** Save Claimer Type
 	*/
 	saveClaimersTypes: function(e) {		     
-    	e.preventDefault();
+		e.preventDefault();
 
-	     
-	     
-	     this.params = {	
-		     name: this.$('#claimersTypesName').val(),
-		     code: this.$('#claimersTypesCode').val(),
-	     };
-	     
-	    this.modelId = this.selectedJson==null?0: this.selectedJson.id;
-	    var self = this;
-	    
-	    app.Models.ClaimerType.prototype.save(
-	    	this.params, 
-	    	this.modelId, {
+		 
+		this.params = {	
+			name: this.$('#claimersTypesName').val(),
+			code: this.$('#claimersTypesCode').val(),
+		 };
+
+		this.modelId = this.selectedJson == null ? 0 : this.selectedJson.id;
+		var self = this;
+
+		app.Models.ClaimerType.prototype.save(
+			this.params, 
+			this.modelId, {
 				success: function(data){
 					console.log(data);
 					if(data.error){
@@ -150,27 +151,28 @@ app.Views.ClaimersTypesView = Backbone.View.extend({
 					}
 					else{
 						if( self.modelId==0 )
-							self.model = new app.Models.ClaimerType({id: data.result.result}); 
+						self.model = new app.Models.ClaimerType({id: data.result.result}); 
 						self.model.update(self.params);
 						app.collections.claimersTypes.add(self.model);
 						$('#modalSaveClaimersTypes').modal('hide');
 						app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
 						self.render();
-					}				
+					}
 				},
 				error: function(e){
 					alert("Impossible de mettre à jour le site");
 				}
-	    });
+		});
 	},
 
-	
-    /** Delete the selected claimer type
-    */
-    deleteClaimersTypes: function(e){
-    	e.preventDefault();
-    	
-       	var self = this;
+
+
+	/** Delete the selected claimer type
+	*/
+	deleteClaimersTypes: function(e){
+		e.preventDefault();
+		
+		var self = this;
 		this.model.delete({
 			success: function(data){
 				console.log(data);
@@ -189,11 +191,11 @@ app.Views.ClaimersTypesView = Backbone.View.extend({
 			}
 
 		});
-    },
+	},
 
 
-    preventDefault: function(event){
-    	event.preventDefault();
-    },
+	preventDefault: function(event){
+		event.preventDefault();
+	},
 
 });

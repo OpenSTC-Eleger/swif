@@ -26,11 +26,6 @@ app.Models.Team = Backbone.RelationalModel.extend({
 			relatedModel: 'app.Models.Officer',
 			collectionType: 'app.Collections.Officers',
 			includeInJSON: ['id', 'firstname', 'name'],
-//			reverseRelation: {
-//				type: Backbone.HasOne,
-//				key: 'belongsToTeam',
-//				includeInJSON: ['id','manager_id','tasks'],
-//			}
 		},
 		{
 			type: Backbone.HasMany,
@@ -38,11 +33,6 @@ app.Models.Team = Backbone.RelationalModel.extend({
 			relatedModel: 'app.Models.Officer',
 			collectionType: 'app.Collections.Officers',
 			includeInJSON: ['id', 'firstname', 'name'],
-//			reverseRelation: {
-//				type: Backbone.HasOne,
-//				key: 'belongsToTeam',
-//				includeInJSON: ['id','manager_id','tasks'],
-//			}
 		},
 		{
 			type: Backbone.HasMany,
@@ -123,7 +113,7 @@ app.Models.Team = Backbone.RelationalModel.extend({
 	/** Model Initialization
 	*/
 	initialize: function (model) {
-		console.log("Request task Initialization");
+		//console.log("Request task Initialization");
 	},
 
 

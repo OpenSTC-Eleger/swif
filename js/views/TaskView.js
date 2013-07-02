@@ -23,8 +23,6 @@ app.Views.TaskView = Backbone.View.extend({
 		this.model = model;
 		this.modelJSON = model.toJSON();
 		this.create = create;
-		
-		//this.model.bind('update:intervention', this.updateInter, this);
 	},
 
 
@@ -69,8 +67,8 @@ app.Views.TaskView = Backbone.View.extend({
 				$('.inputField').prop('disabled', true);
 				$('.save').prop('disabled', true);
 			}else {
-				$('.inputField').removeProp("disabled");
-				$('.save').removeProp("disabled");
+				$('.inputField').prop("disabled", false);
+				$('.save').prop("disabled", false);
 			}
 				
 
@@ -81,8 +79,10 @@ app.Views.TaskView = Backbone.View.extend({
 		return this;
 	},
 	
+
+
 	/** Display  Equipments
-		*/
+	*/
 	displayEquipmentsInfos: function(){
 			
 		$('#equipments').empty();
@@ -105,6 +105,8 @@ app.Views.TaskView = Backbone.View.extend({
 		
 	},
 	
+
+
 	getDropDownElements: function() {
 		
 		var categoriesFiltered = null;	
@@ -156,8 +158,10 @@ app.Views.TaskView = Backbone.View.extend({
 
 	},
 	
+
+
 	/** Save the request
-	 */
+	*/
 	saveTask: function (e) {
 		 
 		e.preventDefault();
@@ -177,7 +181,7 @@ app.Views.TaskView = Backbone.View.extend({
 			 if( selectItem ) {
 				 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
 			 }
-		}	    	
+		}
 		 
 		 input_officer_id = null;
 		 if( app.views.selectListOfficersView != null ) {
@@ -189,16 +193,16 @@ app.Views.TaskView = Backbone.View.extend({
 		 
 		 
 		 var params = {	
-			 user_id: input_officer_id,        
-			 date_start: mNewDateStart.toDate(),
-			 date_end: mNewDateEnd.toDate(),
-			 state: app.Models.Task.status.open.key,
-			 name: this.$('#taskName').val(),
-			 description: this.$('#taskDescription').val(),
-			 category_id: input_category_id,	         
-			 planned_hours: planned_hours,
-			 effective_hours: 0,
-			 remaining_hours: planned_hours,
+				user_id         : input_officer_id,
+				date_start      : mNewDateStart.toDate(),
+				date_end        : mNewDateEnd.toDate(),
+				state           : app.Models.Task.status.open.key,
+				name            : this.$('#taskName').val(),
+				description     : this.$('#taskDescription').val(),
+				category_id     : input_category_id,
+				planned_hours   : planned_hours,
+				effective_hours : 0,
+				remaining_hours : planned_hours,
 		 };
 		 this.model.save(this.model.id,params,{
 			 success: function( data ) {
@@ -221,15 +225,5 @@ app.Views.TaskView = Backbone.View.extend({
 	preventDefault: function(event){
 		event.preventDefault();
 	},
-	
-	//    
-//    updateInter: function (task) {
-//    	intervention = task.toJSON().intervention;
-//    	console.debug("BINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDINGBINDING");
-//    	
-//    	app.models.intervention.saveAndRoute(intervention.id, {state: 'toscheduled'}, null, null, "#taches");
-//    	
-//    	
-//    },
 
 });

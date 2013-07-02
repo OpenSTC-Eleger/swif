@@ -158,7 +158,7 @@ app.Models.Equipment = Backbone.RelationalModel.extend({
 	/** Model Initialization
 	*/
 	initialize: function(){
-		console.log('Equipment Model initialization');
+		//console.log('Equipment Model initialization');
 	},
 
 

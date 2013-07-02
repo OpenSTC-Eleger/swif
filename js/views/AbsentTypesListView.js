@@ -12,8 +12,8 @@ app.Views.AbsentTypesListView = Backbone.View.extend({
 	selectedAbsent : '',
 
 
-    // The DOM events //
-    events: {
+	// The DOM events //
+	events: {
 		'click li.active'						: 'preventDefault',
 		'click li.disabled'						: 'preventDefault',
 
@@ -22,25 +22,24 @@ app.Views.AbsentTypesListView = Backbone.View.extend({
 
 		'submit #formSaveAbsentType' 			: "saveAbsentType", 
 		'click button.btnDeleteAbsentType' 		: 'deleteAbsentType'
-    },
+	},
 
 	
 
 	/** View Initialization
 	*/
-    initialize: function () {
+	initialize: function () {
 		
-    },
+	},
 
 
 	/** Display the view
 	*/
-    render: function () {
+	render: function () {
 		var self = this;
 
 		// Change the page title //
 		app.router.setPageTitle(app.lang.viewsTitles.absentTypesList);
-
 
 		// Change the active menu item //
 		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
@@ -54,6 +53,7 @@ app.Views.AbsentTypesListView = Backbone.View.extend({
 		var absentTypesSortedArray = _.sortBy(absentTypes, function(item){ 
 			return item.attributes.name; 
 		});
+
 
 		var len = absentTypesSortedArray.length;
 		var startPos = (this.options.page - 1) * this.numberListByPage;
@@ -77,74 +77,75 @@ app.Views.AbsentTypesListView = Backbone.View.extend({
 
 		$(this.el).hide().fadeIn('slow');
 		
-        return this;
-    },
-    
-    setModel: function(e) {
-    	e.preventDefault();
-    	var link = $(e.target);
-    	var id =  _(link.parents('tr').attr('id')).strRightBack('_');
-        this.selectedAbsent = _.filter(app.collections.absentTypes.models, function(item){ return item.attributes.id == id });
-        if( this.selectedAbsent.length>0 ) {
-        	this.model = this.selectedAbsent[0];
-        	this.selectedAbsentJson = this.model.toJSON();    
-        }
-        else {
-        	this.selectedAbsentJson = null;        	
-        }        
-    },
+		return this;
+	},
+	
 
 
-    /** Add a new categorie
-    */
-    modalSaveAbsentType: function(e){       
-        this.setModel(e);	
-        
-        $('#absentTypeName').val('');
-		$('#absentTypeCode').val('');
-		$('#absentTypeDescription').val('');
-        if( this.selectedAbsentJson ) {
+	setModel: function(e) {
+		e.preventDefault();
+		var link = $(e.target);
+		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
+		this.selectedAbsent = _.filter(app.collections.absentTypes.models, function(item){ return item.attributes.id == id });
+		if( this.selectedAbsent.length>0 ) {
+			this.model = this.selectedAbsent[0];
+			this.selectedAbsentJson = this.model.toJSON();    
+		}
+		else {
+			this.selectedAbsentJson = null;        	
+		}        
+	},
+
+
+	/** Add a new categorie
+	*/
+	modalSaveAbsentType: function(e){       
+		this.setModel(e);	
+
+		$('#absentTypeName, #absentTypeCode, #absentTypeDescription').val('');
+
+		if( this.selectedAbsentJson ) {
 			$('#absentTypeName').val(this.selectedAbsentJson.name);
 			$('#absentTypeCode').val(this.selectedAbsentJson.code);
 			$('#absentTypeDescription').val(this.selectedAbsentJson.description);	
-        }       
+		}
 
-    },
+	},
 
 
-    /** Display information in the Modal view
-    */
-    modalDeleteAbsentType: function(e){
-        
-        // Retrieve the ID of the categorie //
-    	this.setModel(e);
+	/** Display information in the Modal view
+	*/
+	modalDeleteAbsentType: function(e){
+		
+		// Retrieve the ID of the categorie //
+		this.setModel(e);
 
-        $('#infoModalDeleteAbsentType p').html(this.selectedAbsentJson.name);
-        $('#infoModalDeleteAbsentType small').html(this.selectedAbsentJson.code);
-    },
-    
+		$('#infoModalDeleteAbsentType p').html(this.selectedAbsentJson.name);
+		$('#infoModalDeleteAbsentType small').html(this.selectedAbsentJson.code);
+	},
+	
 	
 
 	/** Save  place
 	*/
 	saveAbsentType: function(e) {		     
-    	e.preventDefault();
+		e.preventDefault();
 
-	     var self = this;
-	     
-	     this.params = {	
-		     name: this.$('#absentTypeName').val(),
-		     code: this.$('#absentTypeCode').val(),
-		     description: this.$('#absentTypeDescription').val(),
-	     };
-	     
-	    
-	    this.modelId = this.selectedAbsentJson==null?0: this.selectedAbsentJson.id;
-	    var self = this;
+		 var self = this;
+		 
+		 this.params = {	
+			 name: this.$('#absentTypeName').val(),
+			 code: this.$('#absentTypeCode').val(),
+			 description: this.$('#absentTypeDescription').val(),
+		 };
+		 
+		
+		this.modelId = this.selectedAbsentJson==null?0: this.selectedAbsentJson.id;
+		var self = this;
 
-	    app.Models.AbsentType.prototype.save(
-	    	this.params, 
-	    	this.modelId, {
+		app.Models.AbsentType.prototype.save(
+			this.params, 
+			this.modelId, {
 				success: function(data){
 					console.log(data);
 					if(data.error){
@@ -165,16 +166,17 @@ app.Views.AbsentTypesListView = Backbone.View.extend({
 				error: function(e){
 					alert("Impossible de mettre à jour le type d'absence'");
 				}
-	    });
+		});
 	},
 
+
 	
-    /** Delete the selected categorie
-    */
-    deleteAbsentType: function(e){
-    	e.preventDefault();
-    	
-       	var self = this;
+	/** Delete the selected categorie
+	*/
+	deleteAbsentType: function(e){
+		e.preventDefault();
+		
+		var self = this;
 		this.model.delete({
 			success: function(data){
 				console.log(data);
@@ -193,11 +195,11 @@ app.Views.AbsentTypesListView = Backbone.View.extend({
 			}
 
 		});
-    },
+	},
 
 
-    preventDefault: function(event){
-    	event.preventDefault();
-    },
+	preventDefault: function(event){
+		event.preventDefault();
+	},
 
 });
