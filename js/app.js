@@ -52,7 +52,7 @@ var app = {
 				// Set the app properties configuration and language //
 				app.routes        = routes_data[0];
 				app.properties    = properties_data[0];
-				app.configuration = configuration_data[0];
+				app.config = configuration_data[0];
 				app.lang          = lang_data[0];
 
 
@@ -225,7 +225,7 @@ var app = {
 	/** Retrieve an object from OpenERP
 	*/
 	getOE : function (model, fields, ids, session_id, options) {
-		this.json(app.configuration.openerp.url + this.urlOE_readObject, {
+		this.json(app.config.openerp.url + this.urlOE_readObject, {
 			'model'     : model,
 			'fields'    : fields, 
 			'ids'       : ids,
@@ -239,22 +239,34 @@ var app = {
 	*/
 	readOE : function (model, session_id, options, fields) {
 
-		if(_.isUndefined(fields))
-				fields = [];
-
-		return this.json(app.configuration.openerp.url + this.urlOE_retrieveListe, {
+		var params = {
 			'model'     : model,
-			'fields'    : fields,
 			'session_id': session_id
-		}, options)
+		}
+
+
+		// Fields //
+		if(_.isUndefined(fields)){ 
+			params.fields = [];
+		}else{
+			params.fields = fields;
+		}
+		
+		// Limit - Offset //
+		if(!_.isUndefined(options.limitOffset)){
+		 	params.limit = options.limitOffset.limit;
+		 	params.offset = options.limitOffset.offset;
+		}
+
+		return this.json(app.config.openerp.url + this.urlOE_retrieveListe, params, options)
 	},
 
 
 	/** Delete object from OpenERP
 	*/
 	deleteOE : function (args,model,session_id,options) {
-		this.json(app.configuration.openerp.url + this.urlOE_deleteObject, {
-			'method'    : "unlink",
+		this.json(app.config.openerp.url + this.urlOE_deleteObject, {
+			'method'    : 'unlink',
 			'args'      : args, 
 			'model'     : model,
 			'session_id': session_id      
@@ -266,14 +278,14 @@ var app = {
 	*/
 	saveOE : function (id, data, model, session_id, options) {
 		if(id)
-			this.json(app.configuration.openerp.url + this.urlOE_updateObject, {
+			this.json(app.config.openerp.url + this.urlOE_updateObject, {
 				'data'      : data, 
 				'model'     : model, 
 				'id'        : id,
 				'session_id': session_id      
 		   },options);
 		else
-			this.json(app.configuration.openerp.url + this.urlOE_createObject, {
+			this.json(app.config.openerp.url + this.urlOE_createObject, {
 					'data'      : data, 
 					'model'     : model,                 
 					'session_id': session_id      
@@ -283,7 +295,7 @@ var app = {
 	/** call object method from OpenERP
 	*/
 	callObjectMethodOE : function (args,model,method,session_id,options) {
-		this.json(app.configuration.openerp.url + this.urlOE_object, {
+		this.json(app.config.openerp.url + this.urlOE_object, {
 			'method'    : method,
 			'args'      : args, 
 			'model'     : model,

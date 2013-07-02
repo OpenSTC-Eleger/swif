@@ -180,9 +180,9 @@ app.Models.User = Backbone.Model.extend({
 
 		var deferred = $.Deferred();
 
-		app.json(app.configuration.openerp.url+app.urlOE_authentication, {
-			'base_location': app.configuration.openerp.url,
-			'db': app.configuration.openerp.database,
+		app.json(app.config.openerp.url+app.urlOE_authentication, {
+			'base_location': app.config.openerp.url,
+			'db': app.config.openerp.database,
 			'login': loginUser,
 			'password': passUser,
 			'session_id': ''
@@ -232,7 +232,7 @@ app.Models.User = Backbone.Model.extend({
 
 		var deferred = $.Deferred();
 
-		app.json(app.configuration.openerp.url+app.urlOE_sessionDestroy, {
+		app.json(app.config.openerp.url+app.urlOE_sessionDestroy, {
 			'session_id': self.getSessionID()
 		})
 		.fail(function (){
@@ -266,7 +266,7 @@ app.Models.User = Backbone.Model.extend({
 		"use strict";
 		var self = this;
 
-		return app.json(app.configuration.openerp.url+app.urlOE_menuUser, {
+		return app.json(app.config.openerp.url+app.urlOE_menuUser, {
 			'session_id': self.getSessionID()
 		}, options)
 	},
@@ -285,8 +285,6 @@ app.Models.User = Backbone.Model.extend({
 		return  app.getOE(this.model_name, fields, [self.getUID()], self.getSessionID(),
 			({
 				success: function(data){
-
-					console.log('Succeessss get user inforamtions');
 
 					// Retrieve the firstname and the lastname of the user //
 					self.setFirstname(data.result[0].firstname);

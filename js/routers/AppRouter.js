@@ -535,8 +535,10 @@ app.Router = Backbone.Router.extend({
 
 			app.loader('display');
 
+			// {limitOffset: {limit: app.config.itemsPerPage, offset: 0} }
+
 			$.when(
-				app.collections.places.fetch(), 
+				app.collections.places.fetch(),
 				app.collections.claimersServices.fetch(),
 				app.collections.placetypes.fetch()
 			)
