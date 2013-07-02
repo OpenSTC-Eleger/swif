@@ -1,6 +1,6 @@
 {
     "openerp": {
-    	"url" 		: "http://localhost:8069",
+    	"url" 		: "http://octm-dev.siclic.fr:8069",
     	"database" 	: "pontlabbe2"
     },
     "startLunchTime"	: 12.0,
