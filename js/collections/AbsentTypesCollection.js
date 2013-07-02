@@ -9,15 +9,6 @@ app.Collections.AbsentTypes = Backbone.Collection.extend({
     model_name : 'openstc.absent.type',
     
    	url: "absent",
-   
-
-    /** Collection Initialization
-    */
-    initialize: function (options) {
-    	console.log('Absent Types collection Initialization');
-    	this.count();
-    },
-
 
 
     /** Collection Sync
@@ -40,17 +31,6 @@ app.Collections.AbsentTypes = Backbone.Collection.extend({
     */
     comparator: function(item) {
 	  return item.get("name");
-	},
-	
-	/** count all models without restricts ( openerp search_count method call select count(*) request)
-	*/	
-	count: function() {
-		var self = this;
-		app.callObjectMethodOE([[]], this.model_name, "search_count", app.models.user.getSessionID(), {
-			success: function(data){
-				self.cpt = data.result;
-			}
-		});
 	},
 
 });

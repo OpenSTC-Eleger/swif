@@ -8,14 +8,6 @@ app.Collections.PlaceTypes = Backbone.Collection.extend({
     // Model name in the database //
     model_name : 'openstc.site.type',
 
-   
-
-    /** Collection Initialization
-    */
-    initialize: function (options) {
-    	console.log('Sites types collection Initialization');
-    	this.count();
-    },
 
 
 
@@ -39,17 +31,6 @@ app.Collections.PlaceTypes = Backbone.Collection.extend({
     */
     comparator: function(item) {
 	  return item.get("name");
-	},
-
-	/** count all models without restricts ( openerp search_count method call select count(*) request)
-	*/	
-	count: function() {
-		var self = this;
-		app.callObjectMethodOE([[]], this.model_name, "search_count", app.models.user.getSessionID(), {
-			success: function(data){
-				self.cpt = data.result;
-			}
-		});
 	},
 
 });

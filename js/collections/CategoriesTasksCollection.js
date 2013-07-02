@@ -10,16 +10,6 @@ app.Collections.CategoriesTasks = Backbone.Collection.extend({
     
    	url: 'categories',
 
-   
-
-    /** Collection Initialization
-    */
-    initialize: function (options) {
-    	console.log('Categories collection Initialization');
-    	this.count();
-    },
-
-
 
     /** Collection Sync
     */
@@ -41,17 +31,6 @@ app.Collections.CategoriesTasks = Backbone.Collection.extend({
     */
     comparator: function(item) {
 	  return item.get('complete_name');
-	},
-	
-	/** count all models without restricts ( openerp search_count method call select count(*) request)
-	*/	
-	count: function() {
-		var self = this;
-		app.callObjectMethodOE([[]], this.model_name, "search_count", app.models.user.getSessionID(), {
-			success: function(data){
-				self.cpt = data.result;
-			}
-		});
 	},
 
 });

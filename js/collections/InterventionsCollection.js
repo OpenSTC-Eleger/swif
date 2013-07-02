@@ -1,7 +1,7 @@
 /******************************************
 * Interventions Collection
 */
-app.Collections.Interventions = Backbone.Collection.extend({
+app.Collections.Interventions = app.Collections.STCCollection.extend({
 
 	model: app.Models.Intervention,
 
@@ -12,19 +12,10 @@ app.Collections.Interventions = Backbone.Collection.extend({
 
 
 
-	/** Collection Initialization
-	*/
-	initialize: function (options) {
-		console.log('Interventions collection Initialization');
-		this.count();
-	},
-
-
-
 	/** Collection Sync
 	*/
 	sync: function(method, model, options) {
-		app.readOE( this.model_name ,  app.models.user.getSessionID(), options);
+		app.readOE( this.model_name ,  app.models.user.getSessionID(), options);		
 	},
 
 
@@ -43,17 +34,7 @@ app.Collections.Interventions = Backbone.Collection.extend({
 		var mCreateDate = moment(item.get('create_date'))
 		item.set({'create_date': mCreateDate});
 		return -item.get('create_date');
-	},
-	
-	/** count all models without restricts ( openerp search_count method call select count(*) request)
-	*/	
-	count: function() {
-		var self = this;
-		app.callObjectMethodOE([[]], this.model_name, "search_count", app.models.user.getSessionID(), {
-			success: function(data){
-				self.cpt = data.result;
-			}
-		});
-	},
+	},	
+
 
 });
