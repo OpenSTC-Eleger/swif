@@ -177,7 +177,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 
-			var officersDropDownList = new app.Collections.Officers(app.models.user.getOfficers());
+			var officersDropDownList = new app.Collections.Officers( app.models.user.attributes.officers );
 
 			console.log(officersDropDownList);
 
