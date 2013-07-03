@@ -249,6 +249,14 @@ var app = {
 		 	params.offset = options.limitOffset.offset;
 		}
 
+		// Limit - Offset //
+		if(!_.isUndefined(options.sortBy)){
+			params.sort = options.sortBy;
+		}
+		else{
+			params.sort = 'id DESC';
+		}
+
 		// Fields //
 		if(_.isUndefined(fields)){ 
 			params.fields = [];

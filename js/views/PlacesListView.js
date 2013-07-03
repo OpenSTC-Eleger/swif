@@ -7,8 +7,6 @@ app.Views.PlacesListView = Backbone.View.extend({
 
 	templateHTML: 'places',
 
-	numberListByPage: 25,
-
 	selectedPlace : '',
 
 
@@ -17,6 +15,8 @@ app.Views.PlacesListView = Backbone.View.extend({
 		'click li.active'				: 'preventDefault',
 		'click li.disabled'				: 'preventDefault',
 		'click ul.sortable li'			: 'preventDefault',
+
+		'change #goToPage'				: 'goToPage',
 		
 //		'change #placeService'			: 'fillDropdownService',
 
@@ -45,7 +45,6 @@ app.Views.PlacesListView = Backbone.View.extend({
 		// Change the page title //
 		app.router.setPageTitle(app.lang.viewsTitles.placesList);
 
-
 		// Change the active menu item //
 		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
 
@@ -63,10 +62,12 @@ app.Views.PlacesListView = Backbone.View.extend({
 				places: places.toJSON(),
 				nbPlaces: app.collections.places.cpt,
 				page: self.options.page, 
-				pageCount: Math.ceil(app.collections.places.cpt / app.config.itemsPerPage)
+				nbPage: Math.ceil(app.collections.places.cpt / app.config.itemsPerPage)
 			});
 			
 			$(self.el).html(template);
+
+			$('*[data-toggle="tooltip"]').tooltip();
 			
 			$('#placeServices, #servicesList').sortable({
 				connectWith: 'ul.sortableServicesList',
@@ -327,6 +328,13 @@ app.Views.PlacesListView = Backbone.View.extend({
 		app.views.selectListPlacesView.addAll();
 	},
 
+
+
+	goToPage: function(e){
+		var page = $('#goToPage option:selected').val();
+		
+		app.router.navigate(app.routes.places.baseUrl+'/page'+page, {trigger: true, replace: true});
+	},
 
 
 	preventDefault: function(event){

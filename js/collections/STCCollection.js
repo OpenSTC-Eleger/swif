@@ -18,4 +18,12 @@ app.Collections.STCCollection = Backbone.Collection.extend({
 		});
 	}
 
+
+	/** Comparator for ordering collection
+	*/
+	/*comparator: function(item) {
+		return _.titleize( item.get('name').toLowerCase() ) ;
+	},*/
+
+
 });

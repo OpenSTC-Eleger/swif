@@ -39,7 +39,7 @@
 			<tbody>
 			<% _.each(places, function(place){
 					var placeServices = [];
-					
+
 					_.each( place.service_ids, function(s){
 						placeServices.push( s.name );
 					});
@@ -47,15 +47,19 @@
 				<!-- Place row -->
 				<tr class="row-item" id="place_<%= place.id %>">
 					<td>
-						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= place.complete_name %>
+						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= _.titleize(place.complete_name.toLowerCase()) %>
+
 						<p class="row-actions invisible">
-							<a href="#modalSavePlace"  class="modalSavePlace" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a> |
-							<a href="#modalDeletePlace" class="modalDeletePlace" data-toggle="modal"><i class="icon-remove"></i>&nbsp;<%= _.capitalize(lang.actions.delete) %></a>
+							<a href="#modalSavePlace"  class="modalSavePlace" data-toggle="modal">
+								<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i></a>&nbsp;
+							<a href="#modalDeletePlace" class="modalDeletePlace" data-toggle="modal">
+								<i class="icon-remove icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+							</a>
 						</p>
 					</td>
-					<td><%= place.site_parent_id[1] %></td>
-					<td><%= _.toSentence(placeServices, ', ', ' et ') %></td>					
-					<td class="text-right hidden-phone"><%= _.numberFormat(place.surface, 0, ',', ' ') %> m²</td>
+					<td><%= (!_.isUndefined(place.site_parent_id[1]) ? _.titleize(place.site_parent_id[1].toLowerCase())  : '') %></td>
+					<td><%= _.toSentence(placeServices, ', ', ' '+lang.and+' ') %></td>	
+					<td class="text-right hidden-phone"><%= (place.surface != 0 ? _.numberFormat(place.surface, 0, ',', ' ') +'m²' : '') %></td>
 				</tr>
 
 			<% }); %>
@@ -77,28 +81,36 @@
 				<!-- [...] page Button -->
 				<% 	if (page-2 > 1) { %>
 						<li class="disabled"><a href='#'>...</a></li>
-				<% } 
-						
-					for (var i=(page-2); i < (page+3); i++) {
-						if(i >= 1 && i <= pageCount){ %>
-							<li <%= (i === page ? " class='active'" : "")%>><a href='#<%= app.routes.places.baseUrl %>/page<%=i%>'><%= i %></a></li>
-						<% }
+				<% } %>
 
-					} %>
+				<!-- Pages buttons -->
+				<% for (var i=(page-2); i < (page+3); i++) {
+					if(i >= 1 && i <= nbPage){ %>
+						<li <%= (i === page ? " class='active'" : "")%>><a href='#<%= app.routes.places.baseUrl %>/page<%=i%>'><%= i %></a></li>
+					<% }
+				} %>
 					
 				<!-- [...] page Button -->
-				<% if (page+2 < pageCount) { %>
+				<% if (page+2 < nbPage) { %>
 					<li class="disabled"><a href='#'>...</a></li>
 				<% } %>
 				
 				<!-- Next page button -->
-				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#<%= app.routes.places.baseUrl %>/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
+				<li <%= ((page + 1) > nbPage ? " class='disabled'" : "")%>><a href='#<%= app.routes.places.baseUrl %>/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
 				
 				<!-- Last page button -->
-				<% if(page+2 <= pageCount){ %>
-					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#<%= app.routes.places.baseUrl %>/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
+				<% if(page+2 <= nbPage){ %>
+					<li <%= ((page + 1) > nbPage ? " class='disabled'" : "")%>><a href='#<%= app.routes.places.baseUrl %>/page<%= nbPage %>'><%= _.capitalize(lang.actions.end) %></a></li>
 				<% } %>
+
+				<!-- Go to the page button -->
+				<select class="input-mini" name="goToPage" id="goToPage">
+					<% for (var i=1; i <= nbPage; i++) { %>
+						<option <%= (i === page ? 'selected' : '')%> value="<%= i %>"><%= i %></option>
+					<% } %>
+				</select>
 			</ul>
+
 		</div>
 		<!-- /Table pagination -->
 
@@ -128,33 +140,37 @@
 	<div class="modal-body">
 		<form id="formSavePlace" action="#" class="form-horizontal">
 
-			<fieldset>
-				<legend><%= lang.aboutThePlace %></legend>
-			
-				<!-- Place name -->
-				<div class="control-group">
-					<label for="placeName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
-	
-					<div class="controls">
-						<input type="text" id="placeName" />
-						<span class="help-inline"></span>
-					</div>
+
+			<!-- Place name -->
+			<div class="control-group">
+				<label for="placeName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
+
+				<div class="controls">
+					<input type="text" id="placeName" />
+					<span class="help-inline"></span>
 				</div>
-	
-				<!-- Place Type -->
-				<div class="control-group">
-					<label for="placeType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
+			</div>
 
-					<div class="controls">
-						<select id="placeType"></select>
-						<span class="help-inline"></span>
-					</div>
+			<!-- Place Type -->
+			<div class="control-group">
+				<label for="placeType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
+
+				<div class="controls">
+					<select id="placeType"></select>
+					<span class="help-inline"></span>
 				</div>
+			</div>
 
+			<div class="control-group">
+				<label for="placeType" class="control-label"><%= _.capitalize(lang.parentPlace) %>:</label>
+				<div class="controls">
+					<select id="placeParentPlace"></select>
+					<span class="help-inline"></span>
+				</div>
+			</div>
 
-			</fieldset>
 			
-			<!-- Equipments -->
+			<!-- Services -->
 			<fieldset>
 				<legend><i class="icon-wrench"></i> <%= _.capitalize(lang.service) %></legend>
 
@@ -182,14 +198,6 @@
 		
 				</div>
 				
-				<legend><i class="icon-wrench"></i> <%= _.capitalize(lang.parentPlace) %></legend>
-				<!-- Place Parent Place -->
-				<div class="control-group">
-					<div class="controls">
-						<select id="placeParentPlace"></select>
-						<span class="help-inline"></span>
-					</div>
-				</div>
 				
 			</fieldset>
 

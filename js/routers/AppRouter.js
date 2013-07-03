@@ -63,7 +63,7 @@ app.Router = Backbone.Router.extend({
 		}
 		else{
 			paginate.page = parseInt(page, 10);
-			paginate.offset = (self.page - 1) * app.config.itemsPerPage;
+			paginate.offset = (paginate.page - 1) * app.config.itemsPerPage;
 		}
 
 		return paginate;
@@ -553,7 +553,7 @@ app.Router = Backbone.Router.extend({
 			app.loader('display');
 
 			$.when(
-				app.collections.places.fetch({limitOffset: {limit: app.config.itemsPerPage, offset: paginate.offset} }),
+				app.collections.places.fetch({limitOffset: {limit: app.config.itemsPerPage, offset: paginate.offset}, sortBy: 'name ASC' }),
 				app.collections.claimersServices.fetch(),
 				app.collections.placetypes.fetch()
 			)
