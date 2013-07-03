@@ -119,10 +119,10 @@
 
 					<td>
 						<a 	href="#demandes-dinterventions/<%= requests[i].id %>" rel="popover" 
-							data-content="<%= description %><br /><em><%= createdBy %></em>"
+							data-content="<%= _(description).escapeHTML() %><br /><em><%= createdBy %></em>"
 							data-html="true" data-delay="160"
 							data-original-title="<%= _.capitalize(lang.description) %>">
-							<%= _.capitalize(requests[i].name) %>
+							<%= _.capitalize(_(requests[i].name).escapeHTML()) %>
 						</a>
 					</td>
 
@@ -332,7 +332,7 @@
 				<label for="requestService" class="control-label"><%= lang.serviceConcerned %>:</label>
 
 				<div class="controls">
-					<select id="requestService" name="requestService"></select>
+					<select id="requestService" name="requestService" required="required"></select>
 					<span class="help-inline"></span>
 				</div>
 			</div>

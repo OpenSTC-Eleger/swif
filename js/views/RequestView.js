@@ -208,7 +208,7 @@ app.Views.RequestView = Backbone.View.extend({
 					}
 					else{
 
-						self.model.set({id:data.result.result});
+						//self.model.set({id:data.result.result});
 						app.router.navigate(app.routes.requestsInterventions.baseUrl, true);
 						console.log('Success SAVE REQUEST');
 					}
