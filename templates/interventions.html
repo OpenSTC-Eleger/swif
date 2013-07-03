@@ -91,8 +91,8 @@
 				<tr class="row-item" id="inter_<%= interventions[i].id %>">
 					<td><%= interventions[i].id %></td>
 					<td>
-						<a class="accordion-object" href="#collapse_<%= interventions[i].id %>" rel="popover" data-content="<%= interventions[i].description %>" data-delay="160" data-title="<%= _.capitalize(lang.description) %>">
-							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(interventions[i].name) %>
+						<a class="accordion-object" href="#collapse_<%= interventions[i].id %>" rel="popover" data-content="<%= _(interventions[i].description).escapeHTML() %>" data-delay="160" data-title="<%= _.capitalize(lang.description) %>">
+							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(_(interventions[i].name).escapeHTML()) %>
 						</a>
 						<!-- Interventions action -->
 						<p class="row-actions invisible">
