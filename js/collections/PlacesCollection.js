@@ -3,11 +3,11 @@
 */
 app.Collections.Places = app.Collections.STCCollection.extend({
 
-	model: app.Models.Place,
-
+	model      : app.Models.Place,
+	
 	model_name : 'openstc.site',
-
-	fields : ["code", "complete_name", "id", "lenght", "name", "service", "service_ids", "site_parent_id", "surface", "type", "width"],
+	
+	fields     : ["code", "complete_name", "id", "lenght", "name", "service", "service_ids", "site_parent_id", "surface", "type", "width"],
 
 
 	/** Collection Initialization

@@ -12,12 +12,9 @@ app.Views.PlacesListView = Backbone.View.extend({
 
 	// The DOM events //
 	events: {
-		'click li.active'				: 'preventDefault',
-		'click li.disabled'				: 'preventDefault',
 		'click ul.sortable li'			: 'preventDefault',
 
-		'change #goToPage'				: 'goToPage',
-		
+	
 //		'change #placeService'			: 'fillDropdownService',
 
 		'click a.modalDeletePlace'  	: 'modalDeletePlace',
@@ -61,8 +58,6 @@ app.Views.PlacesListView = Backbone.View.extend({
 				lang: app.lang,
 				places: places.toJSON(),
 				nbPlaces: app.collections.places.cpt,
-				page: self.options.page, 
-				nbPage: Math.ceil(app.collections.places.cpt / app.config.itemsPerPage)
 			});
 			
 			$(self.el).html(template);
@@ -82,7 +77,15 @@ app.Views.PlacesListView = Backbone.View.extend({
 				receive: function(event, ui){
 					self.updateSites( );
 				}
-			});		
+			});
+
+			app.views.paginationView = new app.Views.PaginationView({ 
+				route  : app.routes.places.baseUrl,
+				page   : self.options.page,
+				nbPage : Math.ceil(app.collections.places.cpt / app.config.itemsPerPage) 
+			})
+			app.views.paginationView.render();
+
 		});
 
 		$(this.el).hide().fadeIn('slow');
@@ -326,14 +329,6 @@ app.Views.PlacesListView = Backbone.View.extend({
 		app.views.selectListPlacesView.clearAll();
 		app.views.selectListPlacesView.addEmptyFirst();
 		app.views.selectListPlacesView.addAll();
-	},
-
-
-
-	goToPage: function(e){
-		var page = $('#goToPage option:selected').val();
-		
-		app.router.navigate(app.routes.places.baseUrl+'/page'+page, {trigger: true, replace: true});
 	},
 
 
