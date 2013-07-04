@@ -41,5 +41,4 @@ app.Collections.Places = app.Collections.STCCollection.extend({
 	},
 
 
-
 });

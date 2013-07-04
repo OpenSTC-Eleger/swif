@@ -28,8 +28,8 @@ app.Views.PaginationView = Backbone.View.extend({
 	render: function() {
 		var self = this;
 
-		// Retrieve the template // 
-		$.get("templates/" + this.templateHTML + ".html", function(templateData){
+		// Retrieve the template //
+		$.get('templates/' + this.templateHTML + '.html', function(templateData){
 			var template = _.template(templateData, {
 				lang   : app.lang,
 				route  : self.options.route,
@@ -37,7 +37,7 @@ app.Views.PaginationView = Backbone.View.extend({
 				nbPage : self.options.nbPage
 			});
 			
-			$(self.el).html(template);
+			self.$el.html(template);
 		});
 
 		return this;

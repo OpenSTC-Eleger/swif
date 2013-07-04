@@ -59,7 +59,7 @@
 					</td>
 					<td><%= (!_.isUndefined(place.site_parent_id[1]) ? _.titleize(place.site_parent_id[1].toLowerCase())  : '') %></td>
 					<td><%= _.toSentence(placeServices, ', ', ' '+lang.and+' ') %></td>	
-					<td class="text-right hidden-phone"><%= (place.surface != 0 ? _.numberFormat(place.surface, 0, ',', ' ') +'m²' : '') %></td>
+					<td class="text-right hidden-phone"><%= (place.surface != 0 ? _.numberFormat(place.surface, 0, ',', ' ') +' m²' : '') %></td>
 				</tr>
 
 			<% }); %>
@@ -126,6 +126,34 @@
 				</div>
 			</div>
 
+
+			<fieldset>
+				<legend><%= _.capitalize(lang.property) %></legend>
+				<div class="control-group">
+					<div class="form-inline">
+						
+						<!-- Place width -->
+						<div class="span4">
+							<label for="placeWidth"><%= _.capitalize(lang.width) %>:</label>
+							<input type="number" id="placeWidth" class="input-mini" />
+						</div>
+
+						<!-- Place Lenght -->
+						<div class="span4">
+							<label for="placeLenght"><%= _.capitalize(lang.lenght) %>:</label>
+							<input type="number" id="placeLenght" class="input-mini" />
+						</div>
+
+						<!-- Place Area -->
+						<div class="span4">
+							<label for="placeArea"><%= _.capitalize(lang.area) %>:</label>
+							<input type="number" id="placeArea" class="input-mini" />
+						</div>
+
+					</div>
+				</div>
+			</fieldset>
+
 			
 			<!-- Services -->
 			<fieldset>
@@ -156,42 +184,6 @@
 				</div>
 				
 				
-			</fieldset>
-
-
-			<fieldset>
-				<legend><%= _.capitalize(lang.property) %></legend>
-
-			<!-- Place Width -->
-			<div class="control-group">
-				<label for="placeWidth" class="control-label"><%= _.capitalize(lang.width) %>:</label>
-
-				<div class="controls">
-					<input type="number" id="placeWidth" class="input-mini" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
-			
-			<!-- Place Lenght -->
-			<div class="control-group">
-				<label for="placeLenght" class="control-label"><%= _.capitalize(lang.lenght) %>:</label>
-
-				<div class="controls">
-					<input type="number" id="placeLenght" class="input-mini" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
-
-			<!-- Place Area -->
-			<div class="control-group">
-				<label for="placeArea" class="control-label"><%= _.capitalize(lang.area) %>:</label>
-
-				<div class="controls">
-					<input type="number" id="placeArea" class="input-mini" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
-
 			</fieldset>
 
 		</form>

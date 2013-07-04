@@ -3,9 +3,9 @@
 */
 app.Views.PlacesListView = Backbone.View.extend({
 
-	el : '#rowContainer',
+	el            : '#rowContainer',
 
-	templateHTML: 'places',
+	templateHTML  : 'places',
 
 	selectedPlace : '',
 
@@ -14,15 +14,11 @@ app.Views.PlacesListView = Backbone.View.extend({
 	events: {
 		'click ul.sortable li'			: 'preventDefault',
 
-	
-//		'change #placeService'			: 'fillDropdownService',
-
 		'click a.modalDeletePlace'  	: 'modalDeletePlace',
 		'click button.btnDeletePlace'	: 'deletePlace',
 			
 		'click a.modalSavePlace'	  	: 'modalSavePlace',
-		'submit #formSavePlace' 		: "savePlace", 
-
+		'submit #formSavePlace' 		: "savePlace"
 	},
 
 
@@ -59,7 +55,7 @@ app.Views.PlacesListView = Backbone.View.extend({
 				places: places.toJSON(),
 				nbPlaces: app.collections.places.cpt,
 			});
-			
+
 			$(self.el).html(template);
 
 			$('*[data-toggle="tooltip"]').tooltip();
@@ -79,6 +75,7 @@ app.Views.PlacesListView = Backbone.View.extend({
 				}
 			});
 
+			// Pagination view //
 			app.views.paginationView = new app.Views.PaginationView({ 
 				route  : app.routes.places.baseUrl,
 				page   : self.options.page,
@@ -330,6 +327,7 @@ app.Views.PlacesListView = Backbone.View.extend({
 		app.views.selectListPlacesView.addEmptyFirst();
 		app.views.selectListPlacesView.addAll();
 	},
+
 
 
 	preventDefault: function(event){
