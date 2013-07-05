@@ -85,21 +85,13 @@ var app = {
 	/** Load internationalization scripts
 	*/
 	loadI18nScripts: function (lang) {
+
+		var langFiles = ['moment-lang.js', 'bootstrap-datepicker-lang.js', 'select2-lang.js'];
 		
 		return $.getJSON('i18n/'+lang+'/app-lang.json')
 			.success(function(data) {
 			
-				var script = document.createElement('script');
-				script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/moment-lang.js';
-				$('#app').append(script);
-
-				var script = document.createElement('script');
-				script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/bootstrap-datepicker-lang.js';
-				$('#app').append(script);
-
-				var script = document.createElement('script');
-				script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/select2-lang.js';
-				$('#app').append(script);
+			
 
 				// I18N Moment JS //
 				moment.lang(lang);
