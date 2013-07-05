@@ -97,6 +97,10 @@ var app = {
 				script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/bootstrap-datepicker-lang.js';
 				$('#app').append(script);
 
+				var script = document.createElement('script');
+				script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/select2-lang.js';
+				$('#app').append(script);
+
 				// I18N Moment JS //
 				moment.lang(lang);
 
@@ -248,6 +252,7 @@ var app = {
 		 	params.limit = options.limitOffset.limit;
 		 	params.offset = options.limitOffset.offset;
 		}
+
 
 		// Limit - Offset //
 		if(!_.isUndefined(options.sortBy)){

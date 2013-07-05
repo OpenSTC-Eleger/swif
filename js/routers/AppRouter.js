@@ -548,14 +548,12 @@ app.Router = Backbone.Router.extend({
 			// Check if the collections is instantiate //
 			if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
 			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
-			if(_.isUndefined(app.collections.placetypes)){ app.collections.placetypes = new app.Collections.PlaceTypes(); }
 
 			app.loader('display');
 
 			$.when(
 				app.collections.places.fetch({limitOffset: {limit: app.config.itemsPerPage, offset: paginate.offset}, sortBy: 'name ASC' }),
-				app.collections.claimersServices.fetch(),
-				app.collections.placetypes.fetch()
+				app.collections.claimersServices.fetch()
 			)
 			.done(function(){
 				app.views.placesListView = new app.Views.PlacesListView({page: paginate.page});

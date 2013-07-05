@@ -75,6 +75,88 @@ app.Views.PlacesListView = Backbone.View.extend({
 				}
 			});
 
+			$("#placeParentPlace").select2({
+				allowClear  : true,
+				placeholder : "Sélectionner un site",
+				minimumInputLength: 2,
+				query: function(query){
+
+					var params = [query.term, [], 'ilike', {}, 10];
+
+					app.callObjectMethodOE(params, 'openstc.site', 'name_search', app.models.user.getSessionID(), {
+						success: function(data){
+
+							var returnData = {results: []};
+
+							_.each(data.result, function(item, index){
+								returnData.results.push({
+									id: item[0],
+									text: item[1]
+								});
+							});
+
+							query.callback(returnData)
+						}
+					});
+				},
+  
+			});
+
+
+
+			$("#placeType").select2({
+				allowClear  : true,
+				placeholder : "Sélectinner un type de site",
+				query: function(query){
+
+					var params = [query.term, [], 'ilike', {}, 100];
+
+					app.callObjectMethodOE(params, 'openstc.site.type', 'name_search', app.models.user.getSessionID(), {
+						success: function(data){
+
+							var returnData = {results: []};
+
+							_.each(data.result, function(item, index){
+								returnData.results.push({
+									id: item[0],
+									text: item[1]
+								});
+							});
+
+							query.callback(returnData)
+						}
+					});
+				},
+				sortResults: function(results, container, query) {
+					// If no term was enter, results are Alphabetic //
+					if(_.isEmpty(query.term)){
+						var sortResults = _.sortBy(results, function(result){ 
+							return result.text;
+						})
+					}
+					// Display results begin with the term enter and after the rest of the result //
+					else{
+						var otherResults = [];
+						var beginWithResults = _.filter(results, function(result){
+							if(_(result.text.toUpperCase()).startsWith(query.term.toUpperCase())){
+								return result;
+							}else{
+								otherResults.push(result);
+							}
+						})
+
+						var sortResults = _.union(beginWithResults, otherResults);
+					}
+
+					return sortResults;
+				}
+  
+			});
+
+
+
+
+
 			// Pagination view //
 			app.views.paginationView = new app.Views.PaginationView({ 
 				route  : app.routes.places.baseUrl,
@@ -93,11 +175,6 @@ app.Views.PlacesListView = Backbone.View.extend({
 
 
 	loadDropDownList: function() {
-		app.views.selectListPlaceTypesView = new app.Views.DropdownSelectListView({el: $("#placeType"), collection: app.collections.placetypes})
-		app.views.selectListPlaceTypesView.clearAll();
-		app.views.selectListPlaceTypesView.addEmptyFirst();
-		app.views.selectListPlaceTypesView.addAll();	
-
 		
 		app.views.selectListPlacesView = new app.Views.DropdownSelectListView({el: $("#placeParentPlace"), collection: app.collections.places})
 		app.views.selectListPlacesView.clearAll();
@@ -182,7 +259,7 @@ app.Views.PlacesListView = Backbone.View.extend({
 
 	/** Add a new categorie
 	*/
-	modalSavePlace: function(e){       
+	modalSavePlace: function(e){  
 		this.setModel(e);	
 		this.loadDropDownList();
 		
@@ -190,9 +267,9 @@ app.Views.PlacesListView = Backbone.View.extend({
 			$('#placeName').val(this.selectedPlaceJson.name);
 			
 			if( this.selectedPlaceJson.type )
-				app.views.selectListPlaceTypesView.setSelectedItem( this.selectedPlaceJson.type[0] );
+				$("#placeType").select2('data', {id: this.selectedPlaceJson.type[0], text: this.selectedPlaceJson.type[1]})
 			if( this.selectedPlaceJson.site_parent_id )
-				app.views.selectListPlacesView.setSelectedItem( this.selectedPlaceJson.site_parent_id[0] );
+				$("#placeParentPlace").select2('data', {id: this.selectedPlaceJson.site_parent_id[0], text: this.selectedPlaceJson.site_parent_id[1]})
 			
 			$('#placeWidth').val(this.selectedPlaceJson.width);
 			$('#placeLenght').val(this.selectedPlaceJson.lenght);
@@ -203,6 +280,8 @@ app.Views.PlacesListView = Backbone.View.extend({
 			$('#placeWidth').val('');
 			$('#placeLenght').val('');
 			$('#placeArea').val('');
+			$("#placeParentPlace").val('');
+			$("#placeType").val('');
 		}   
 
 	},
@@ -212,21 +291,26 @@ app.Views.PlacesListView = Backbone.View.extend({
 	/** Save the place
 	*/
 	savePlace: function (e) {
+
+
 		 e.preventDefault();
+
+
+		 console.log($("#placeParentPlace").val());
+
+		 /*
 		 
 		 var self = this;
 		 
-		 var input_type_site_id = this.getIdInDopDown(app.views.selectListPlaceTypesView);
-		 var input_site_id = this.getIdInDopDown(app.views.selectListPlacesView);
-		 
+	 
 		 this.services = _.map($("#placeServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });     
 
 		 
 		 this.params = {	
 			 name: this.$('#placeName').val(),
-			 type: input_type_site_id,
+			 type: $("#placeType").val(),
 			 service_ids: [[6, 0, this.services]],
-			 site_parent_id: input_site_id,
+			 site_parent_id: $("#placeParentPlace").val(),
 			 width: this.$('#placeWidth').val(),
 			 lenght: this.$('#placeLenght').val(),
 			 surface: this.$('#placeArea').val(),
@@ -253,7 +337,7 @@ app.Views.PlacesListView = Backbone.View.extend({
 			error: function () {
 				console.log('ERROR - Unable to save the Intervention - InterventionView.js');
 			},	
-		});
+		});*/
 	},
 
 

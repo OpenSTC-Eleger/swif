@@ -15,10 +15,15 @@ app.Views.PaginationView = Backbone.View.extend({
 
 
 
+
 	/** View Initialization
 	*/
-	initialize: function () {
-
+	initialize: function() {
+		/** Parameters
+			route  : route to the page
+			page   : the current page
+			nbPage : The total number of page
+		*/
 	},
 
 
