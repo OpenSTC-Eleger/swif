@@ -435,7 +435,7 @@ app.Views.ServicesListView = Backbone.View.extend({
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
-					app.models.user.getOfficers();
+					app.models.user.getTeamsAndOfficers();
 
 					route = Backbone.history.fragment;
 					Backbone.history.loadUrl(route);
@@ -480,7 +480,7 @@ app.Views.ServicesListView = Backbone.View.extend({
 					
 //					app.collections.officers.remove(self.model);
 
-					app.models.user.getOfficers();
+					app.models.user.getTeamsAndOfficers();
 					$('#modalDeleteOfficer').modal('hide');
 					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.officerDeleteOk);
 //					self.render();

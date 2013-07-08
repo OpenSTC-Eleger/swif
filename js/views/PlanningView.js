@@ -86,65 +86,6 @@ app.Views.PlanningView = Backbone.View.extend({
 			app.router.setPageTitle(app.lang.viewsTitles.planning);
 			// Change the Grid Mode of the view //
 			app.views.headerView.switchGridMode('fluid');
-			
-			var that = this;
-			//Filter Agents : all agents belongs to user's services
-			var officers = app.collections.officers.models;
-
-			_.each(app.models.user.attributes.service_ids,function (user_service_id){
-				var agentsKeeped = _.filter(officers, function(officer,i){
-
-					// Don't display the DST if the user is not the DST //
-					if(!app.models.user.isDST()){
-						if(!officer.isDST()){
-							officer = officer.toJSON();
-
-							var service = _.filter(officer.service_ids,function (service_id){
-								return service_id.id == user_service_id;
-							}); 
-							return service.length != 0
-						}
-					}
-					else{
-						officer = officer.toJSON();
-
-						var service = _.filter(officer.service_ids,function (service_id){
-							return service_id.id == user_service_id;
-						}); 
-						return service.length != 0
-					}
-				});
-				if ( that.agents == null )
-					that.agents = agentsKeeped;
-				else {
-					that.agents = _.union(that.agents, agentsKeeped);
-				}
-			});
-
-
-			// Transform officer model to JSON object for the template //
-			var officers = [];
-			_.each(that.agents, function(item){
-				officers.push(item.toJSON());
-			})
-
-			
-			//Filter Teams : all teams belongs to user's services
-			var teams = app.collections.teams.toJSON();
-			var that = this;
-			_.each(app.models.user.attributes.service_ids,function (user_service_id){
-				var teamsKeeped = _.filter(teams, function(item,i){             	
-					var service = _.filter(item.service_ids,function (service_id){            		
-						return service_id.id == user_service_id;
-					}); 
-					return service.length != 0
-				});
-				if ( that.teams == null )
-					that.teams = teamsKeeped;
-				else {
-					that.teams = _.union(that.teams, teamsKeeped);
-				}
-			}); 
 
 
 			var interventions = app.collections.interventions.models;
@@ -175,8 +116,8 @@ app.Views.PlanningView = Backbone.View.extend({
 				lang: app.lang,
 				interventionsState: app.Models.Intervention.status,
 				interventions: interventionSorted.toJSON(),
-				officers: officers,
-				teams: that.teams,
+				officers: app.models.user.getOfficers(),
+				teams: app.models.user.getTeams(),
 			});
 
 			$(self.el).html(template);

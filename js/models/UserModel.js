@@ -36,6 +36,7 @@ app.Models.User = Backbone.Model.extend({
 		service_ids		: [],
 		context			: {},
 		officers        : [],
+		teams			: [],
 		isDST			: false,
 		isManager		: false
 	},
@@ -121,19 +122,20 @@ app.Models.User = Backbone.Model.extend({
 	setService : function(value) {
 		this.set({ service_id : value });
 	},
-
-	/** get officers to filter on it
-	*/
+	
 	getOfficers: function() {
-		var self = this
-		app.callObjectMethodOE([[this.get("uid")],null], this.model_name, "getOfficers", self.getSessionID(), {
-			success: function(data){
-				self.setOfficers( data.result )
-			}
-		});
+		return this.get('officers');
 	},
+
 	setOfficers : function(value) {
 		this.set({ officers : value });
+	},	
+	
+	getTeams: function() {
+		return this.get('teams');
+	},
+	setTeams : function(value) {
+		this.set({ teams : value });
 	},
 
 	getContact : function() {
@@ -173,6 +175,20 @@ app.Models.User = Backbone.Model.extend({
 		this.set({ isDST : value });
 	},
 
+		
+
+	/** get, by calling server, officers and teams to filter on it in tasks/planning screens
+	*/
+	getTeamsAndOfficers: function() {
+		var self = this
+		app.callObjectMethodOE([[this.get("uid")],null], this.model_name, "getTeamsAndOfficers", self.getSessionID(), {
+			success: function(data){
+				self.setOfficers( data.result.officers )
+				self.setTeams( data.result.teams )
+				self.save();
+			}
+		});
+	},
 
 
 	/** Login function
@@ -219,7 +235,7 @@ app.Models.User = Backbone.Model.extend({
 
 				// Get the users informations //
 				self.getUserInformations();
-				self.getOfficers();
+				self.getTeamsAndOfficers();
 
 			}
 			
