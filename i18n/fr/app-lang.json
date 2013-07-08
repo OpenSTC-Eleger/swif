@@ -199,7 +199,9 @@
 		"update" 			: "modifier",
 		"timeSpent"			: "Saisie des temps",
 		"removeOfTheSchedule" : "Retirer du planning",
-		"print"				: "Imprimer"
+		"print"				: "Imprimer",
+		"selectAPlace"		: "Sélectionner un site",
+		"selectAPlaceType"	: "Sélectionner un type de site"
 	},
 
 	"errorMessages" : {

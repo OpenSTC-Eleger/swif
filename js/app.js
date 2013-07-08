@@ -91,7 +91,11 @@ var app = {
 		return $.getJSON('i18n/'+lang+'/app-lang.json')
 			.success(function(data) {
 			
-			
+				_.each(langFiles, function(file){
+					var script = document.createElement('script');
+					script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/'+file;
+					$('#app').append(script);
+				});
 
 				// I18N Moment JS //
 				moment.lang(lang);

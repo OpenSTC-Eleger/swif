@@ -103,7 +103,7 @@
 				<label for="placeName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
 
 				<div class="controls">
-					<input type="text" id="placeName" />
+					<input type="text" id="placeName" required />
 					<span class="help-inline"></span>
 				</div>
 			</div>
@@ -113,7 +113,7 @@
 				<label for="placeType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
 
 				<div class="controls">
-					<input type="hidden" id="placeType" style="width: 66%" />
+					<input id="placeType" style="width: 66%" required="required" data-placeholder="<%= lang.actions.selectAPlaceType %>" />
 					<span class="help-inline"></span>
 				</div>
 			</div>
@@ -121,7 +121,7 @@
 			<div class="control-group">
 				<label for="placeParentPlace" class="control-label"><%= _.capitalize(lang.parentPlace) %>:</label>
 				<div class="controls">
-					<input type="hidden" id="placeParentPlace" style="width: 66%" />
+					<input id="placeParentPlace" style="width: 66%" data-placeholder="<%= lang.actions.selectAPlace %>" data-minimum-input-length="2" />
 					<span class="help-inline"></span>
 				</div>
 			</div>
@@ -215,7 +215,7 @@
 	</div>
 	
 	<div class="modal-footer">
-	    <button type="button" class="btn btn-danger btnDeletePlace"><%= _.capitalize(lang.actions.delete) %></button>&nbsp;&nbsp;
-	    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+		<button type="button" class="btn btn-danger btnDeletePlace"><%= _.capitalize(lang.actions.delete) %></button>&nbsp;&nbsp;
+		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>

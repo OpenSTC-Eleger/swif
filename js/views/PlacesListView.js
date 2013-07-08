@@ -75,85 +75,13 @@ app.Views.PlacesListView = Backbone.View.extend({
 				}
 			});
 
-			$("#placeParentPlace").select2({
-				allowClear  : true,
-				placeholder : "Sélectionner un site",
-				minimumInputLength: 2,
-				query: function(query){
 
-					var params = [query.term, [], 'ilike', {}, 10];
+			// Advance Select List View //
+			app.views.advancedSelectBoxPlaceTypeView = new app.Views.AdvancedSelectBoxView({el: $("#placeType"), model: app.Models.PlaceType.prototype.model_name })
+			app.views.advancedSelectBoxPlaceTypeView.render();
 
-					app.callObjectMethodOE(params, 'openstc.site', 'name_search', app.models.user.getSessionID(), {
-						success: function(data){
-
-							var returnData = {results: []};
-
-							_.each(data.result, function(item, index){
-								returnData.results.push({
-									id: item[0],
-									text: item[1]
-								});
-							});
-
-							query.callback(returnData)
-						}
-					});
-				},
-  
-			});
-
-
-
-			$("#placeType").select2({
-				allowClear  : true,
-				placeholder : "Sélectinner un type de site",
-				query: function(query){
-
-					var params = [query.term, [], 'ilike', {}, 100];
-
-					app.callObjectMethodOE(params, 'openstc.site.type', 'name_search', app.models.user.getSessionID(), {
-						success: function(data){
-
-							var returnData = {results: []};
-
-							_.each(data.result, function(item, index){
-								returnData.results.push({
-									id: item[0],
-									text: item[1]
-								});
-							});
-
-							query.callback(returnData)
-						}
-					});
-				},
-				sortResults: function(results, container, query) {
-					// If no term was enter, results are Alphabetic //
-					if(_.isEmpty(query.term)){
-						var sortResults = _.sortBy(results, function(result){ 
-							return result.text;
-						})
-					}
-					// Display results begin with the term enter and after the rest of the result //
-					else{
-						var otherResults = [];
-						var beginWithResults = _.filter(results, function(result){
-							if(_(result.text.toUpperCase()).startsWith(query.term.toUpperCase())){
-								return result;
-							}else{
-								otherResults.push(result);
-							}
-						})
-
-						var sortResults = _.union(beginWithResults, otherResults);
-					}
-
-					return sortResults;
-				}
-  
-			});
-
-
+			app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#placeParentPlace"), model: app.Models.Place.prototype.model_name })
+			app.views.advancedSelectBoxPlaceParentView.render();
 
 
 
@@ -172,15 +100,6 @@ app.Views.PlacesListView = Backbone.View.extend({
 		return this;
 	},
 
-
-
-	loadDropDownList: function() {
-		
-		app.views.selectListPlacesView = new app.Views.DropdownSelectListView({el: $("#placeParentPlace"), collection: app.collections.places})
-		app.views.selectListPlacesView.clearAll();
-		app.views.selectListPlacesView.addEmptyFirst();
-		app.views.selectListPlacesView.addAll();
-	},
 
 
 
@@ -227,7 +146,7 @@ app.Views.PlacesListView = Backbone.View.extend({
 		$('#badgeNbServices').html(nbRemainServices);
 		
 	},
-	
+
 
 
 	getIdInDopDown: function(view) {
@@ -261,27 +180,23 @@ app.Views.PlacesListView = Backbone.View.extend({
 	*/
 	modalSavePlace: function(e){  
 		this.setModel(e);	
-		this.loadDropDownList();
 		
 		if( this.selectedPlaceJson ) {
 			$('#placeName').val(this.selectedPlaceJson.name);
 			
 			if( this.selectedPlaceJson.type )
-				$("#placeType").select2('data', {id: this.selectedPlaceJson.type[0], text: this.selectedPlaceJson.type[1]})
+				app.views.advancedSelectBoxPlaceTypeView.setSelectedItem(this.selectedPlaceJson.type);
 			if( this.selectedPlaceJson.site_parent_id )
-				$("#placeParentPlace").select2('data', {id: this.selectedPlaceJson.site_parent_id[0], text: this.selectedPlaceJson.site_parent_id[1]})
+				app.views.advancedSelectBoxPlaceParentView.setSelectedItem(this.selectedPlaceJson.site_parent_id);
 			
 			$('#placeWidth').val(this.selectedPlaceJson.width);
 			$('#placeLenght').val(this.selectedPlaceJson.lenght);
 			$('#placeArea').val(this.selectedPlaceJson.surface);			
 		}
 		else {
-			$('#placeName').val('');
-			$('#placeWidth').val('');
-			$('#placeLenght').val('');
-			$('#placeArea').val('');
-			$("#placeParentPlace").val('');
-			$("#placeType").val('');
+			$('#placeName, #placeWidth, #placeLenght, #placeArea').val('');
+			app.views.advancedSelectBoxPlaceTypeView.reset();
+			app.views.advancedSelectBoxPlaceParentView.reset();
 		}   
 
 	},
@@ -293,29 +208,25 @@ app.Views.PlacesListView = Backbone.View.extend({
 	savePlace: function (e) {
 
 
-		 e.preventDefault();
+		e.preventDefault();
 
 
-		 console.log($("#placeParentPlace").val());
+		var self = this;
 
-		 /*
-		 
-		 var self = this;
-		 
 	 
-		 this.services = _.map($("#placeServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });     
+		this.services = _.map($("#placeServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });     
 
-		 
-		 this.params = {	
-			 name: this.$('#placeName').val(),
-			 type: $("#placeType").val(),
-			 service_ids: [[6, 0, this.services]],
-			 site_parent_id: $("#placeParentPlace").val(),
-			 width: this.$('#placeWidth').val(),
-			 lenght: this.$('#placeLenght').val(),
-			 surface: this.$('#placeArea').val(),
-		 };		
-		
+
+		this.params = {	
+			name: this.$('#placeName').val(),
+			service_ids: [[6, 0, this.services]],
+			type: app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(),
+			site_parent_id: app.views.advancedSelectBoxPlaceParentView.getSelectedItem(),
+			width: this.$('#placeWidth').val(),
+			lenght: this.$('#placeLenght').val(),
+			surface: this.$('#placeArea').val(),
+		};
+
 		this.modelId = this.selectedPlaceJson==null?0: this.selectedPlaceJson.id;
 		var self = this;
 		
@@ -335,20 +246,21 @@ app.Views.PlacesListView = Backbone.View.extend({
 				}
 			},
 			error: function () {
-				console.log('ERROR - Unable to save the Intervention - InterventionView.js');
+				console.log('ERROR - Unable to save the Place');
 			},	
-		});*/
+		});
 	},
 
 
 
 	/** Display information in the Modal view
 	*/
-	modalDeletePlace: function(e){    
-		
+	modalDeletePlace: function(e){
+
 		this.setModel(e);
+
 		$('#infoModalDeletePlace p').html(this.selectedPlaceJson.name);
-		$('#infoModalDeletePlace small').html(this.selectedPlaceJson.service[1]);
+		$('#infoModalDeletePlace small').html(this.selectedPlaceJson.type[1]);
 	},
 
 
@@ -404,12 +316,7 @@ app.Views.PlacesListView = Backbone.View.extend({
 			});
 			self.placesFiltered = _.union( self.placesFiltered , keepedPlaces );	
 		});
-		
-		//fill in list for parent site input
-		app.views.selectListPlacesView.collection = new app.Collections.Places(this.placesFiltered);
-		app.views.selectListPlacesView.clearAll();
-		app.views.selectListPlacesView.addEmptyFirst();
-		app.views.selectListPlacesView.addAll();
+
 	},
 
 
