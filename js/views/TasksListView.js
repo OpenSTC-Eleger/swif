@@ -399,7 +399,7 @@ app.Views.TasksListView = Backbone.View.extend({
 	*/
 	fillDropdownEquipment: function(e){
 		e.preventDefault();
-		var target = $(e.target).attr('value');
+		var target = $(e.target).val();
 		if( target ) {
 			var equipment = app.collections.equipments.get( target );
 			if( equipment ) {
