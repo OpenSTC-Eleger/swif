@@ -29,11 +29,14 @@ app.Collections.ClaimersTypes = app.Collections.STCCollection.extend({
 
 
 
-    /** Collection Parse
-    */
-    parse: function(response) {
-        return response.result.records;
-    },
+	/** Collection Parse
+	*/
+	parse: function(response) { 
+		return response.result.records;
+//		return _.reject(response.result.records, function(record){
+//			return record.code == "ADMINISTRE";
+//		})
+	},
 
 
 

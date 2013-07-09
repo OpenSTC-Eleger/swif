@@ -799,7 +799,7 @@ app.Router = Backbone.Router.extend({
 				success: function(){
 
 					$.when(
-						app.collections.claimersTypes.fetch(),
+						app.collections.claimersTypes.fetch({domain: [['code','<>','ADMINISTRE']]}),
 						app.collections.claimersServices.fetch(),
 						app.collections.places.fetch(),
 						app.collections.claimersContacts.fetch(),
