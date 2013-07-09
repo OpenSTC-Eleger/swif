@@ -14,7 +14,7 @@ app.Views.DropdownSelectListView = Backbone.View.extend({
 		this.dropdownListView = new Array(),
 		this.selected_id = 0,
 	    _.bindAll(this, 'addOne', 'addAll');
-	    this.collection.sort();
+	    //this.collection.sort();
 	    this.collection.bind('reset', this.addAll);	   
 	},
 

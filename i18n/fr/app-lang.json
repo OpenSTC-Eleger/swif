@@ -63,7 +63,7 @@
 	"reason" 				: "motif",
 	"horsepower" 			: "en chevaux fiscaux",
 	"notKnown"				: "non renseigné",
-	"property"				: "proprietées",
+	"property"				: "propriétés",
 	"date_deadline"			: "Date butoir",
 	"aboutTheClaimer"   	: "À propos de l'organisation",
 	"aboutTheContact"   	: "À propos du contact",
@@ -136,6 +136,7 @@
 	"observations" 			: "observations",
 	"inKm" 					: "en km",
 	"km"					: "Kilomètres",
+	"and" 					: "et",
 	"vehicleEquipment"						: "Véhicule",
 	"commercialVehicleEquipment"			: "Voiture",
 	"technicalVehicleEquipment"				: "Utilitaire",
@@ -198,7 +199,9 @@
 		"update" 			: "modifier",
 		"timeSpent"			: "Saisie des temps",
 		"removeOfTheSchedule" : "Retirer du planning",
-		"print"				: "Imprimer"
+		"print"				: "Imprimer",
+		"selectAPlace"		: "Sélectionner un site",
+		"selectAPlaceType"	: "Sélectionner un type de site"
 	},
 
 	"errorMessages" : {

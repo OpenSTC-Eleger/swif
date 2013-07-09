@@ -51,6 +51,26 @@ app.Router = Backbone.Router.extend({
 
 
 
+	/** Calcul the page and the offset
+	*/
+	calculPageOffset: function(page){
+
+		var paginate = {};
+
+		if(_.isNull(page)){
+			paginate.page = 1;
+			paginate.offset = 0;
+		}
+		else{
+			paginate.page = parseInt(page, 10);
+			paginate.offset = (paginate.page - 1) * app.config.itemsPerPage;
+		}
+
+		return paginate;
+	},
+
+
+
 	/** Check if the User is connect
 	*/
 	checkConnect: function(){
@@ -518,32 +538,26 @@ app.Router = Backbone.Router.extend({
 
 	/** Places management
 	*/
-	places: function(page){      
+	places: function(page){
 
-		// Check if the user is connect //
 		if(this.checkConnect()){
-			var self = this;
 
-
-			self.page = page ? parseInt(page, 10) : 1;
+			// Check if the user is connect //
+			var paginate = this.calculPageOffset(page);
 
 			// Check if the collections is instantiate //
 			if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
 			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
-			if(_.isUndefined(app.collections.placetypes)){ app.collections.placetypes = new app.Collections.PlaceTypes(); }
 
 			app.loader('display');
 
-			// {limitOffset: {limit: app.config.itemsPerPage, offset: 0} }
-
 			$.when(
-				app.collections.places.fetch(),
-				app.collections.claimersServices.fetch(),
-				app.collections.placetypes.fetch()
+				app.collections.places.fetch({limitOffset: {limit: app.config.itemsPerPage, offset: paginate.offset}, sortBy: 'name ASC' }),
+				app.collections.claimersServices.fetch()
 			)
 			.done(function(){
-				app.views.placesListView = new app.Views.PlacesListView({page: self.page});
-				self.render(app.views.placesListView);
+				app.views.placesListView = new app.Views.PlacesListView({page: paginate.page});
+				app.views.placesListView.render();
 				app.loader('hide');
 			})
 			.fail(function(e){

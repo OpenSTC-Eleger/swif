@@ -85,17 +85,17 @@ var app = {
 	/** Load internationalization scripts
 	*/
 	loadI18nScripts: function (lang) {
+
+		var langFiles = ['moment-lang.js', 'bootstrap-datepicker-lang.js', 'select2-lang.js'];
 		
 		return $.getJSON('i18n/'+lang+'/app-lang.json')
 			.success(function(data) {
 			
-				var script = document.createElement('script');
-				script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/moment-lang.js';
-				$('#app').append(script);
-
-				var script = document.createElement('script');
-				script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/bootstrap-datepicker-lang.js';
-				$('#app').append(script);
+				_.each(langFiles, function(file){
+					var script = document.createElement('script');
+					script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/'+file;
+					$('#app').append(script);
+				});
 
 				// I18N Moment JS //
 				moment.lang(lang);
@@ -247,6 +247,15 @@ var app = {
 		if(!_.isUndefined(options.limitOffset)){
 		 	params.limit = options.limitOffset.limit;
 		 	params.offset = options.limitOffset.offset;
+		}
+
+
+		// Limit - Offset //
+		if(!_.isUndefined(options.sortBy)){
+			params.sort = options.sortBy;
+		}
+		else{
+			params.sort = 'id DESC';
 		}
 
 		// Fields //

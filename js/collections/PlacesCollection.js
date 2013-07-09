@@ -3,10 +3,11 @@
 */
 app.Collections.Places = app.Collections.STCCollection.extend({
 
-	model: app.Models.Place,
-
-	// Model name in the database //
+	model      : app.Models.Place,
+	
 	model_name : 'openstc.site',
+	
+	fields     : ["code", "complete_name", "id", "lenght", "name", "service", "service_ids", "site_parent_id", "surface", "type", "width"],
 
 
 	/** Collection Initialization
@@ -20,10 +21,15 @@ app.Collections.Places = app.Collections.STCCollection.extend({
 	/** Collection Sync
 	*/
 	sync: function(method, model, options){
-		var fields = ["code", "complete_name", "id", "lenght", "name", "service", "service_ids", "site_parent_id", "surface", "type", "width"];
 
-		this.count();
-		return app.readOE(this.model_name, app.models.user.getSessionID(), options, fields, options.limitOffset);
+		var deferred = $.Deferred();
+
+		$.when(this.count(), app.readOE(this.model_name, app.models.user.getSessionID(), options, this.fields))
+		.done(function(){
+			deferred.resolve();
+		})
+
+		return  deferred;
 	},
 
 
@@ -32,14 +38,6 @@ app.Collections.Places = app.Collections.STCCollection.extend({
 	*/
 	parse: function(response) {
 		return response.result.records;
-	},
-
-
-
-	/** Comparator for ordering collection
-	*/
-	comparator: function(item) {
-	  return _.titleize( item.get('name').toLowerCase() ) ;
 	},
 
 
