@@ -399,7 +399,7 @@ app.Views.TasksListView = Backbone.View.extend({
 	*/
 	fillDropdownEquipment: function(e){
 		e.preventDefault();
-		var target = $(e.target).attr('value');
+		var target = $(e.target).val();
 		if( target ) {
 			var equipment = app.collections.equipments.get( target );
 			if( equipment ) {
@@ -667,7 +667,7 @@ app.Views.TasksListView = Backbone.View.extend({
 	setFilter: function(event){
 		event.preventDefault();
 
-		var filterValue = $(event.target).attr('value');
+		var filterValue = $(event.target).val();
 
 		// Set the filter in the local Storage //
 		if(filterValue != ''){
