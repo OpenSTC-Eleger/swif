@@ -17,7 +17,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		reverseRelation: {
 			type: Backbone.HasOne,
 			key: 'ask',
-			includeInJSON: ['id', 'manager_id', 'people_name', 'people_phone', 'people_email', 'partner_id', 'partner_type', 'partner_phone', 'partner_email', 'intervention_assignement_id'],
+			includeInJSON: ['id', 'manager_id', 'people_name', 'people_phone', 'partner_address', 'people_email', 'partner_id', 'partner_type', 'partner_phone', 'partner_email', 'intervention_assignement_id'],
 		}
 	}],
 	

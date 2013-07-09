@@ -354,7 +354,7 @@ app.Views.RequestView = Backbone.View.extend({
 				app.views.selectListPlacesView.addAll();
 			}
 		},
-		
+
 
 
 		renderContactDetails: function (contact) {

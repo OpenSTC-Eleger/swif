@@ -730,7 +730,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 			$('#claimentName').html(interJSON.create_uid[1]);
 		}else{
 			if(interJSON.ask.partner_id != false){
-				$('#claimentName').html(interJSON.ask.partner_id[1]);
+				$('#claimentName').html(interJSON.ask.partner_id[1]+' - '+interJSON.ask.partner_address[1]);
 				$('#claimentPhone').html(interJSON.ask.partner_phone);
 			}
 			else{
