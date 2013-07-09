@@ -66,18 +66,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 			return item.date_start; 
 		});
 
-		// Collection Filter if not null //
-		if(sessionStorage.getItem(this.filters) != null){
-			requests = _.filter(requests, function(item){ 
-				return item.state == sessionStorage.getItem(self.filters);
-			});
-		}
 
-
-		var len = requests.length;
-		var startPos = (this.options.page - 1) * this.numberListByPage;
-		var endPos = Math.min(startPos + this.numberListByPage, len);
-		var pageCount = Math.ceil(len / this.numberListByPage);
 
 
 		// Retrieve the number Interventions due to the Group user //
@@ -96,6 +85,20 @@ app.Views.RequestsListView = Backbone.View.extend({
 		else {
 			var nbInterventionsInBadge = _.size(requests);
 		}
+
+
+		// Collection Filter if not null //
+		if(sessionStorage.getItem(this.filters) != null){
+			requests = _.filter(requests, function(item){ 
+				return item.state == sessionStorage.getItem(self.filters);
+			});
+		}
+
+		
+		var len = requests.length;
+		var startPos = (this.options.page - 1) * this.numberListByPage;
+		var endPos = Math.min(startPos + this.numberListByPage, len);
+		var pageCount = Math.ceil(len / this.numberListByPage);
 
 
 		// Retrieve the template // 
