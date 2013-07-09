@@ -301,7 +301,7 @@ app.Views.RequestView = Backbone.View.extend({
 			$('#requestContactSelectBlock').show();
 
 			$('#requestContactInput').prop('readonly', true);
-			$('#requestContactSelect').prop('disabled', true);
+			$('#requestContactSelect').prop('disabled', false);
 			$('#requestContactPhone, #requestContactEmail').prop('readonly', false);
 		
 			

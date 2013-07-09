@@ -690,6 +690,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		this.getTarget(e);
 
 		if($(e.target).data('action') == 'inter'){
+
+			console.log(this.selectedInter);
 			
 			this.selectedInter = app.collections.interventions.get(this.pos);
 			var interJSON = this.selectedInter.toJSON();
