@@ -97,11 +97,11 @@ app.Views.DropdownSelectItemView = Backbone.View.extend({
 	render: function(select){
 		if (this.model) {
 			if( this.model.get('complete_name') )
-				$(this.el).attr('value', this.model.get('id')).html(this.model.get('complete_name'));
+				$(this.el).val(this.model.get('id')).html(this.model.get('complete_name'));
 			else 
-				$(this.el).attr('value', this.model.get('id')).html(this.model.get('name'));
+				$(this.el).val(this.model.get('id')).html(this.model.get('name'));
 		} else  {
-			$(this.el).attr('value', '');
+			$(this.el).val('');
 		}
 		if (select)
 			$(this.el).prop('selected', true);
