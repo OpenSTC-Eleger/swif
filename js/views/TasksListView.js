@@ -667,7 +667,7 @@ app.Views.TasksListView = Backbone.View.extend({
 	setFilter: function(event){
 		event.preventDefault();
 
-		var filterValue = $(event.target).attr('value');
+		var filterValue = $(event.target).val();
 
 		// Set the filter in the local Storage //
 		if(filterValue != ''){
