@@ -33,6 +33,7 @@ app.Router = Backbone.Router.extend({
 
 
 	render: function (view) {
+
 		//Close the current view
 		if (this.currentView) {
 			if (this.currentView.$el) this.currentView.undelegateEvents();
@@ -541,6 +542,7 @@ app.Router = Backbone.Router.extend({
 	places: function(page){
 
 		if(this.checkConnect()){
+			var self = this;
 
 			// Check if the user is connect //
 			var paginate = this.calculPageOffset(page);
@@ -557,7 +559,7 @@ app.Router = Backbone.Router.extend({
 			)
 			.done(function(){
 				app.views.placesListView = new app.Views.PlacesListView({page: paginate.page});
-				app.views.placesListView.render();
+				self.render(app.views.placesListView);
 				app.loader('hide');
 			})
 			.fail(function(e){
