@@ -236,6 +236,26 @@ a.text-overrun:hover   { color: darken(@purple, 10%); }
 
 
 
+/* New TABLE PROPERTIES
+-------------------------------------------------- */
+.table-sorter{
+	thead {
+		th[data-column] {
+			cursor: pointer;
+			&:hover{
+				background-color: darken(@tableBackgroundAccent, 5%);
+				i{
+					.text-muted;
+				}
+			}
+			i.active{
+				.text-success;
+			}
+		}
+	}
+}
+
+
 /* MAP MARKERS
 -------------------------------------------------- */
 .mapmarker{

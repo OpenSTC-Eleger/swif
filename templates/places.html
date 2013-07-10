@@ -26,14 +26,14 @@
 
 
 		<!-- Table Teams -->
-		<table class="table table-bordered table-hover table-striped">
+		<table class="table table-bordered table-hover table-striped table-sorter">
 			<thead>
 				<tr>
-					<th><%= _.capitalize(lang.name) %></th>
+					<th data-column="name"><%= _.capitalize(lang.name) %> <i class="icon-sort icon-large icon-muted pull-right"></i></th>
 					<th><%= _.capitalize(lang.parentPlace) %></th>
 					<th><%= _.capitalize(lang.service) %></th>	
 					
-					<th class="hidden-phone"><%= _.capitalize(lang.area) %></th>
+					<th class="hidden-phone" data-column="surface"><%= _.capitalize(lang.area) %> <i class="icon-sort icon-large icon-muted pull-right"></i></th>
 				</tr>
 			</thead>
 			<tbody>

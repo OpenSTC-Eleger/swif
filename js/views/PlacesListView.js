@@ -14,6 +14,8 @@ app.Views.PlacesListView = Backbone.View.extend({
 	events: {
 		'click ul.sortable li'			: 'preventDefault',
 
+		'click table.table-sorter th[data-column]' : 'sort',
+
 		'click a.modalDeletePlace'  	: 'modalDeletePlace',
 		'click button.btnDeletePlace'	: 'deletePlace',
 			
@@ -87,7 +89,6 @@ app.Views.PlacesListView = Backbone.View.extend({
 
 			// Pagination view //
 			app.views.paginationView = new app.Views.PaginationView({ 
-				route  : app.routes.places.baseUrl,
 				page   : self.options.page,
 				nbPage : Math.ceil(app.collections.places.cpt / app.config.itemsPerPage) 
 			})
@@ -317,6 +318,32 @@ app.Views.PlacesListView = Backbone.View.extend({
 			self.placesFiltered = _.union( self.placesFiltered , keepedPlaces );	
 		});
 
+	},
+
+
+
+	sort: function(e){
+
+		var sortBy = $(e.target).data('column');
+
+		var currentSort = this.options.sort;
+
+		
+		// Calcul the sort Order //
+		var sortOrder = '';
+		if(sortBy == currentSort.by){
+			if(currentSort.order == 'ASC'){
+				sortOrder = 'DESC';
+			}
+			else{
+				sortOrder = 'ASC';
+			}
+		}
+		else{
+			sortOrder = 'ASC';
+		}
+
+		app.router.navigate(app.routes.places.baseUrl+'/sort/'+sortBy+'-'+sortOrder, {trigger: true, replace: true});
 	},
 
 

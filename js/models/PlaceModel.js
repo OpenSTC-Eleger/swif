@@ -20,14 +20,14 @@ app.Models.Place = Backbone.RelationalModel.extend({
 
 	
 	defaults:{
-		id:0,
-		name: null,
-		type: 0,
-		service: 0,
-		site_parent_id: 0,
-		width: null,
-		lenght: null,
-		surface: null,
+		id             : 0,
+		name           : null,
+		type           : 0,
+		service        : 0,
+		site_parent_id : 0,
+		width          : null,
+		lenght         : null,
+		surface        : null,
 	},
 	
 	getSurface : function() {

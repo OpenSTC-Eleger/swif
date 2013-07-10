@@ -72,6 +72,26 @@ app.Router = Backbone.Router.extend({
 
 
 
+	/** Calcul the sort column and the order
+	*/
+	calculPageSort: function(sort){
+
+		var sorter = {};
+
+		if(_.isNull(sort)){
+			sorter.by = 'name';
+			sorter.order = 'ASC';
+		}
+		else{
+			sorter.by = _(sort).strLeft('-');
+			sorter.order = _(sort).strRight('-');
+		}
+
+		return sorter;
+	},
+
+
+
 	/** Check if the User is connect
 	*/
 	checkConnect: function(){
@@ -539,13 +559,15 @@ app.Router = Backbone.Router.extend({
 
 	/** Places management
 	*/
-	places: function(page){
+	places: function(sort, page){
 
 		if(this.checkConnect()){
 			var self = this;
 
 			// Check if the user is connect //
 			var paginate = this.calculPageOffset(page);
+			var sort = this.calculPageSort(sort);
+
 
 			// Check if the collections is instantiate //
 			if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
@@ -554,12 +576,13 @@ app.Router = Backbone.Router.extend({
 			app.loader('display');
 
 			$.when(
-				app.collections.places.fetch({limitOffset: {limit: app.config.itemsPerPage, offset: paginate.offset}, sortBy: 'name ASC' }),
+				app.collections.places.fetch({limitOffset: {limit: app.config.itemsPerPage, offset: paginate.offset}, sortBy: sort.by+' '+sort.order}),
 				app.collections.claimersServices.fetch()
 			)
 			.done(function(){
-				app.views.placesListView = new app.Views.PlacesListView({page: paginate.page});
+				app.views.placesListView = new app.Views.PlacesListView({page: paginate.page, sort: sort});
 				self.render(app.views.placesListView);
+
 				app.loader('hide');
 			})
 			.fail(function(e){

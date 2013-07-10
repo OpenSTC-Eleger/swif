@@ -329,11 +329,11 @@ var app = {
 
 		switch(action){
 			case 'display':
-				$('#loader, #modal-block').fadeIn(deferred.resolve);
+				$('#loader, #modal-block').fadeIn(250, deferred.resolve);
 			break;
 
 			case 'hide':
-				$('#loader, #modal-block').delay(250).fadeOut('slow', deferred.resolve);
+				$('#loader, #modal-block').fadeOut(450, deferred.resolve);
 			break;
 		}
 

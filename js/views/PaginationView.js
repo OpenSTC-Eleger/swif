@@ -7,6 +7,8 @@ app.Views.PaginationView = Backbone.View.extend({
 	
 	templateHTML : 'pagination',
 
+	currentRoute : null,
+
 
 	// The DOM events //
 	events: {
@@ -15,15 +17,14 @@ app.Views.PaginationView = Backbone.View.extend({
 
 
 
-
 	/** View Initialization
 	*/
 	initialize: function() {
 		/** Parameters
-			route  : route to the page
 			page   : the current page
 			nbPage : The total number of page
 		*/
+		this.currentRoute = Backbone.history.fragment;
 	},
 
 
@@ -37,7 +38,7 @@ app.Views.PaginationView = Backbone.View.extend({
 		$.get('templates/' + this.templateHTML + '.html', function(templateData){
 			var template = _.template(templateData, {
 				lang   : app.lang,
-				route  : self.options.route,
+				route  : _(self.currentRoute).strLeftBack('/page'),
 				page   : self.options.page,
 				nbPage : self.options.nbPage
 			});
@@ -53,9 +54,18 @@ app.Views.PaginationView = Backbone.View.extend({
 	/** Go to the page
 	*/
 	goToPage: function(e){
-		var page = $('#goToPage option:selected').val();
-		
-		app.router.navigate(this.options.route+'/page'+page, {trigger: true, replace: true});
+		var page = $(this.el).find('option:selected').val();
+
+
+		// Navigate to the page - Check if we are on a page //
+		if(_.str.include(_(this.currentRoute).strRightBack('/'), 'page')){
+			navigateTo = _(this.currentRoute).strLeftBack('page')+'page'+page;
+		}
+		else{
+			navigateTo = this.currentRoute+'/page'+page;
+		}
+
+		app.router.navigate(navigateTo, {trigger: true, replace: true});
 	},
 
 });

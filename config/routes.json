@@ -93,7 +93,7 @@
 	},
 
 	"places": {
-		"url"		: "sites(/page:page)",
+		"url"		: "sites(/sort/:sort)(/page:page)",
 		"baseUrl"	: "sites",
 		"function"	: "places"
 	},
