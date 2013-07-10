@@ -100,7 +100,13 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 	*/
 	getSelectedItem: function(){
 
-		return this.select2.select2('data').id;
+		if(!_.isNull(this.select2.select2('data'))){
+			var returnId = this.select2.select2('data').id;
+		}
+		else{
+			var returnId = '';
+		}
+		return returnId;
 	},
 
 
