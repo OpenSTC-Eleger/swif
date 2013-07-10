@@ -24,7 +24,6 @@ app.Views.EventsListView = Backbone.View.extend({
 
 		this.el = $(this.elStringId);
 
-		_.bindAll(this); 
 	},
 
 

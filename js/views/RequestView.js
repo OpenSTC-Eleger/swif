@@ -132,7 +132,7 @@ app.Views.RequestView = Backbone.View.extend({
 						// Set the claimer and the claimer Type in the select Box //
 						app.views.selectListClaimersTypesView.setSelectedItem(userClaimerType[0]);
 						app.views.selectListClaimersView.setSelectedItem(officerJSON.contact_id[0].partner_id[0]);
-						self.renderContact( app.views.selectListClaimersView.getSelected() );
+						self.renderContact( app.views.selectListClaimersView.getSelected(), null );
 						app.views.selectListClaimersContactsView.setSelectedItem( officerJSON.contact_id[0].id );
 						$('#requestContactSelect').prop('disabled', false);
 						$('#requestContactInput, #requestContactPhone, #requestContactEmail').prop('readonly', false);
@@ -247,7 +247,7 @@ app.Views.RequestView = Backbone.View.extend({
 				if( currentRequest.partner_id && firstInit) {
 					if( app.views.selectListClaimersView.hasId(currentRequest.partner_id[0]) ) {
 						app.views.selectListClaimersView.setSelectedItem(currentRequest.partner_id[0]);
-						this.renderContact( app.views.selectListClaimersView.getSelected() );
+						this.renderContact( app.views.selectListClaimersView.getSelected(), currentRequest.partner_address );
 						$('#requestContactSelect').prop('disabled', false);
 						$('#requestContactInput, #requestContactPhone, #requestContactEmail').prop('readonly', false);
 					}
@@ -279,7 +279,7 @@ app.Views.RequestView = Backbone.View.extend({
 
 
 		
-		renderContact: function(claimer) {
+		renderContact: function(claimer, contact) {
 	
 	
 			if(!app.collections.claimersServices){
@@ -307,6 +307,7 @@ app.Views.RequestView = Backbone.View.extend({
 			
 			//var collection = this.getCollectionOrdered(claimer.attributes.address);
 
+			
 			var collection = claimer.attributes.address; 
 			collection.comparator = function(model){
 				return model.get('name');
@@ -316,10 +317,20 @@ app.Views.RequestView = Backbone.View.extend({
 			app.views.selectListClaimersContactsView.clearAll();
 			app.views.selectListClaimersContactsView.addEmptyFirst();
 			app.views.selectListClaimersContactsView.addAll();
-			contacts = claimer.attributes.address!=null?claimer.attributes.address.toJSON():null;
-			if( contacts && contacts.length>0 ) {
-				app.views.selectListClaimersContactsView.setSelectedItem( contacts[0].id );
-				this.renderContactDetails(contacts[0]);
+			if( contact == null){
+				contacts = claimer.attributes.address!=null?claimer.attributes.address.toJSON():null;
+				if( contacts && contacts.length>0 ) {
+					app.views.selectListClaimersContactsView.setSelectedItem( contacts[0].id );
+					this.renderContactDetails(contacts[0]);
+				}	
+			}
+			else{
+				if( contact[0] > 0) {
+					app.views.selectListClaimersContactsView.setSelectedItem( contact[0]);
+					contact = collection.get(contact[0])
+					if(contact!= null)
+						this.renderContactDetails(contact.toJSON());
+				}
 			}			
 	
 		},
@@ -393,7 +404,7 @@ app.Views.RequestView = Backbone.View.extend({
 		fillDropdownClaimer: function(e){
 			 e.preventDefault();
 			 claimer = app.views.selectListClaimersView.getSelected();
-			 this.renderContact(claimer);
+			 this.renderContact(claimer, null);
 			if (claimer.attributes.technical_service_id )
 				 this.renderTechnicalService(claimer.attributes.technical_service_id[0]);
 			if (claimer.attributes.technical_site_id )

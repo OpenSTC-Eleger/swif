@@ -257,6 +257,11 @@ var app = {
 		else{
 			params.sort = 'id DESC';
 		}
+		
+		// args - domain //
+		if(!_.isUndefined(options.domain)){
+			params.domain = options.domain;
+		}
 
 		// Fields //
 		if(_.isUndefined(fields)){ 

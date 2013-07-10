@@ -241,7 +241,7 @@
 
 							var teamMembers = "<li><i class='icon-asterisk'></i> "+ team.manager_id[1] +"</li>";
 
-							_.each(team.user_ids, function(teamMember){
+							_.each(team.members, function(teamMember){
 								teamMembers += "<li><i class='icon-user'></i>&nbsp;"+ (teamMember.firstname != false ? teamMember.firstname.replace(' ', '&nbsp;') : '') +"&nbsp;"+ teamMember.name.toUpperCase().replace(' ', '&nbsp;') +"</li>"
 							});
 						%>
