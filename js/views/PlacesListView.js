@@ -12,15 +12,17 @@ app.Views.PlacesListView = Backbone.View.extend({
 
 	// The DOM events //
 	events: {
-		'click ul.sortable li'			: 'preventDefault',
-
+		'click ul.sortable li'                     : 'preventDefault',
+		
 		'click table.table-sorter th[data-column]' : 'sort',
-
-		'click a.modalDeletePlace'  	: 'modalDeletePlace',
-		'click button.btnDeletePlace'	: 'deletePlace',
-			
-		'click a.modalSavePlace'	  	: 'modalSavePlace',
-		'submit #formSavePlace' 		: "savePlace"
+		
+		'click a.modalDeletePlace'                 : 'modalDeletePlace',
+		'click button.btnDeletePlace'              : 'deletePlace',
+		
+		'click a.modalSavePlace'                   : 'modalSavePlace',
+		'submit #formSavePlace'                    : "savePlace",
+		
+		'change #placeWidth, #placeLenght'         : 'calculArea'
 	},
 
 
@@ -100,6 +102,12 @@ app.Views.PlacesListView = Backbone.View.extend({
 				nbPage : Math.ceil(app.collections.places.cpt / app.config.itemsPerPage) 
 			})
 			app.views.paginationView.render();
+
+
+			// Set the focus to the first input of the form //
+			$('#modalSavePlace, #modalDeletePlace').on('shown', function (e) {
+				$(this).find('input, textarea').first().focus();
+			})
 
 		});
 
@@ -301,7 +309,7 @@ app.Views.PlacesListView = Backbone.View.extend({
 
 	/** Update possible parent site belongs to services selected
 	*/
-	updateSites: function ( ) {
+	updateSites: function () {
 		//Selected services in list choice
 		var services = _.map($("#placeServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber()});
 		
@@ -319,7 +327,7 @@ app.Views.PlacesListView = Backbone.View.extend({
 				var placeServices = [];
 				_.each( item.attributes.service_ids.models, function(s){
 					placeServices.push( s.toJSON().id );
-				});				
+				});	
 				return $.inArray(self.currentService, placeServices)!=-1
 			});
 			self.placesFiltered = _.union( self.placesFiltered , keepedPlaces );	
@@ -328,7 +336,21 @@ app.Views.PlacesListView = Backbone.View.extend({
 	},
 
 
+	/** Calcul the area of the place
+	*/
+	calculArea: function (e) {
 
+		var area = $('#placeWidth').val() * $('#placeLenght').val();
+
+		console.log(area);
+		
+		$('#placeArea').val(area);
+	},
+
+
+
+	/** Sort the row of the table
+	*/
 	sort: function(e){
 
 		if(!$(e.target).is('i')){
