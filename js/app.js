@@ -250,18 +250,17 @@ var app = {
 		}
 
 
-		// Limit - Offset //
-		if(!_.isUndefined(options.sortBy)){
-			params.sort = options.sortBy;
-		}
-		else{
-			params.sort = 'id DESC';
-		}
-		
 		// args - domain //
 		if(!_.isUndefined(options.domain)){
 			params.domain = options.domain;
 		}
+
+
+		// Sort by / Order //
+		if(!_.isUndefined(options.sortBy)){
+			params.sort = options.sortBy;
+		}
+
 
 		// Fields //
 		if(_.isUndefined(fields)){ 
@@ -269,6 +268,9 @@ var app = {
 		}else{
 			params.fields = fields;
 		}
+
+console.log('---------------------');
+		console.log(params);
 
 		return this.json(app.config.openerp.url + this.urlOE_retrieveListe, params, options)
 	},

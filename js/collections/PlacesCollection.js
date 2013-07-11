@@ -24,7 +24,8 @@ app.Collections.Places = app.Collections.STCCollection.extend({
 
 		var deferred = $.Deferred();
 
-		$.when(this.count(), app.readOE(this.model_name, app.models.user.getSessionID(), options, this.fields))
+		
+		$.when(this.count(options), app.readOE(this.model_name, app.models.user.getSessionID(), options, this.fields))
 		.done(function(){
 			deferred.resolve();
 		})
