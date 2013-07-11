@@ -3,6 +3,9 @@
 */
 app.Views.EventsListView = Backbone.View.extend({
 	
+	//el : "#officer",
+	templateHTML : 'teamsAndOfficers',
+	
 	filterTasks		: null,
 	minTime			: 8,
 	maxTime			: 18,
@@ -15,92 +18,63 @@ app.Views.EventsListView = Backbone.View.extend({
 
 
 
-	initialize: function(planning, object, teamMode){
-		this.teamMode = teamMode;
-		this.planning = planning;
-
-		this.id = object.attributes.id;
-		this.initCollection(object);
-
-		this.el = $(this.elStringId);
-
+	initialize: function(){
+		this.id = this.options.currentObject.id;
+		this.initCollection();
 	},
 
 
 
-	initCollection: function(object) {
-		
-		this.filterTasks = null;
-
-		if (this.teamMode) {
-			
-			this.elStringId = 'div#team_' + object.attributes.id;
-			var team_json = object.toJSON();
-			this.filterTasks = object.attributes.tasks.toJSON();
-			var that = this;
-			if( team_json.user_ids!= null ){
-				_.each(object.attributes.user_ids.models, function(user){
-					if( user!=null && user.attributes.tasks != null && 
-							user.attributes.tasks.models.length>0 )
-						that.filterTasks = _.union(that.filterTasks, user.attributes.tasks.toJSON());
-				})
+	initCollection: function() {		
+		this.filterTasks = null;		
+		this.elStringId = 'div#object_' + this.id;
+		var self = this;
+		app.collections.tasks.fetch({domain: self.options.domain,
+			success: function(data){
+				self.filterTasks = data.toJSON()
+				self.render();
 			}
-
-		}
-		else{
-			
-			this.elStringId = 'div#officer_' + object.attributes.id;
-			var officer_json = object.toJSON();
-
-			if( officer_json.team_ids != null ) {
-				var self = this;
-				this.filterTasks = officer_json.tasks;
-
-				_.each( officer_json.team_ids, function(team){
-					self.filterTasks = _.union(self.filterTasks, team.tasks.toJSON());
-				});
-			}
-		}
+		});
     },
 
-        
-        render: function() {
-        	this.initEvents();
-        	this.initCalendar();
-        },
-        
+    
+	/** Display the view
+	*/
+	render: function() {
+		var self = this;
+
+		// Retrieve the template //
+		$.get('templates/' + this.templateHTML + '.html', function(templateData){
+			var template = _.template(templateData, {
+				currentObject   : self.options.currentObject,
+			});
+			
+			self.$el.html(template);
+        	self.initEvents();
+        	self.initCalendar();
+		});
+
+		return this;
+	},
 
 
         refresh: function() {
-        	var self = this;
-        	app.collections.tasks.fetch({ 
+			var self = this;
+            app.collections.tasks.fetch({ 
 	    		success: function(){
 	    			app.collections.interventions.fetch({ 
 	    				beforeSend: function(){
 		                    app.loader('display');
 		                },
 	    				success: function(){
-			    			app.collections.officers.fetch({ 
-			    				success: function(){
-							 		app.collections.teams.fetch({
-						                success: function(){
-							 				if( self.teamMode)
-										    	self.initCollection(app.collections.teams.get(self.id));
-										    else
-										    	self.initCollection(app.collections.officers.get(self.id));
-										    $(self.el).fullCalendar('refetchEvents');
-										    self.planning.render();
-								 		}
-							 		});
-						         },
-	                        	complete: function(){
-	                        	    app.loader('hide');
-	                        	}
-						     });
-				        }
-				   });
-			 	}
-	    	});
+        					self.options.planning.render();
+        				},
+        				complete: function(){
+	                    	app.loader('hide');
+	                    }
+	               });
+	           }
+	        });
         },
 
 
@@ -186,6 +160,7 @@ app.Views.EventsListView = Backbone.View.extend({
         	var self = this;
         	
         	_.each(this.filterTasks , function (task, i){
+        		//task = task.toJSON()
         		var actionDisabled = task.state == app.Models.Task.status.done.key || task.state == app.Models.Task.status.cancelled.key;
 
         		var event = { 
@@ -237,12 +212,12 @@ app.Views.EventsListView = Backbone.View.extend({
         initCalendar: function() {
         	var self = this;
 
-        	this.calendar = self.el.fullCalendar({
+        	this.calendar = $(this.elStringId).fullCalendar({
 				events: function(start, end, callback) {
         			callback(self.events);
 				},
 				
-				defaultView: self.planning.calendarView,
+				defaultView: self.options.planning.calendarView,
 				aspectRatio: 1.30,
 				header: {
 				    left: 'infosUser',
@@ -330,7 +305,7 @@ app.Views.EventsListView = Backbone.View.extend({
 		        	}
 
 		        	// Set Modal informations //
-		        	if(!self.teamMode){
+		        	if(!self.options.teamMode){
 		        		var selectedOfficer = app.collections.officers.get(self.id);
 		    			$('#infoModalAbsentTask p').html("<i class='icon-user'></i> "+selectedOfficer.getFullname());
 		    			$('#infoModalAbsentTask small').html("Du " + mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
@@ -373,8 +348,8 @@ app.Views.EventsListView = Backbone.View.extend({
 							    effective_hours: planned_hours,
 							    hours: planned_hours,
 							    remaining_hours: 0,
-							    team_id: self.teamMode?self.id:0,
-							    user_id: !self.teamMode?self.id:0,
+							    team_id: self.options.teamMode?self.id:0,
+							    user_id: !self.options.teamMode?self.id:0,
 							}
 							app.models.task.save(0,params,{
 								success: function(data){
@@ -440,8 +415,8 @@ app.Views.EventsListView = Backbone.View.extend({
 				       date_end: event.end,
 				    };
 				    app.models.task.save(event.id, params);	
-				    $(self.el).fullCalendar('refresh');
-				    self.planning.render();
+				    $(this.elStringId).fullCalendar('refresh');
+				    self.options.planning.render();
 				    app.loader('hide');	
 				},
 
@@ -459,8 +434,8 @@ app.Views.EventsListView = Backbone.View.extend({
 				       remaining_hours: (event.remaining_hours + (minuteDelta)/60),
 				    };
 				    app.models.task.save(event.id,params);
-				    $(self.el).fullCalendar('refresh');
-				    self.planning.render();
+				    $(this.elStringId).fullCalendar('refresh');
+				    self.options.planning.render();
 				    app.loader('hide');
 				},
 
@@ -482,10 +457,10 @@ app.Views.EventsListView = Backbone.View.extend({
 
 			});
     	
-			var username = self.el.data('username');
+			var username = $(this.elStringId).data('username');
 			
 			
-			$(self.el.selector + ' table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");
+			$('table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");
 
 
 			// Print button //
@@ -637,8 +612,8 @@ app.Views.EventsListView = Backbone.View.extend({
 				    date_end: returnDate.toDate(),
 				    planned_hours: duration,
 				    remaining_hours: duration,
-				    team_id: this.teamMode?this.id:0,
-				    user_id: !this.teamMode?this.id:0,
+				    team_id: this.options.teamMode?this.id:0,
+				    user_id: !this.options.teamMode?this.id:0,
 				}
 				
 				
@@ -733,7 +708,7 @@ app.Views.EventsListView = Backbone.View.extend({
 
 		
 		getDay : function(date) {
-			var momentDate = moment( this.el.fullCalendar('getView').visStart );
+			var momentDate = moment( $(this.elStringId).fullCalendar('getView').visStart );
 			return date.format('dddd D MMMM');
 		},
 			
@@ -742,7 +717,7 @@ app.Views.EventsListView = Backbone.View.extend({
 		/** Print Calendar
 		*/
 		printCalendar: function () {
-			var date = moment( this.el.fullCalendar('getView').visStart );			
+			var date = moment( $(this.elStringId).fullCalendar('getView').visStart );			
 			var momentDate = moment().year(date.year()).week(date.week());
 			
 			var firstDayOfTheWeek = momentDate.clone().day(1);
@@ -765,6 +740,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			$("#printContainer .muted").html( titleFirstDay + " " + app.lang.to + " " + lastDayOfTheWeek.format('D MMM YYYY')  );			
 			
 			var self = this;
+			
 			var paperBoard = this.filterTasks[0];//this.collection.toJSON();
 			var elementToPrint = $('#printContainer');
 			var worker = null
@@ -775,9 +751,10 @@ app.Views.EventsListView = Backbone.View.extend({
 			var table = $('#paperboard');
 			
 			var tasks = _.filter(this.filterTasks, function(task){ 
+				//var task = task.toJSON()
 	        	return (
-	        			task.date_start && task.date_start.toDate() < self.el.fullCalendar('getView').visEnd &&
-	        			task.date_end && task.date_end.toDate() > self.el.fullCalendar('getView').visStart &&
+	        			task.date_start && task.date_start.toDate() < $(self.elStringId).fullCalendar('getView').visEnd &&
+	        			task.date_end && task.date_end.toDate() > $(self.elStringId).fullCalendar('getView').visStart &&
 	        			(	task.state != app.Models.Task.status.draft.key &&
 	        				task.state != app.Models.Task.status.cancelled.key
 	        			)
@@ -791,6 +768,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			
 			
 		    _.each(tasks, function(task){ 
+		    	//var task = task.toJSON()
 		    	var inter = task.intervention;
 		    	
 		    	task["day"] = self.getDay(task.date_start);
@@ -824,11 +802,10 @@ app.Views.EventsListView = Backbone.View.extend({
 		    	}
 		    	else{
 		    		task["description"] = '';
-		    	}
-    	
+		    	}			    
 
 		    })
-		    
+			
 		    $('#paperboard').data('resultSet', tasks);
 		    var results = $('#paperboard').data('resultSet');
 		    self.results = results;
