@@ -76,7 +76,7 @@ app.Views.PlanningView = Backbone.View.extend({
 	*/
 	render : function() {
 		var self = this;
-
+		
 
 		// Retrieve the Login template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -109,20 +109,22 @@ app.Views.PlanningView = Backbone.View.extend({
 
 
 			interventionSorted = new app.Collections.Interventions(interventions);
-
-
+			
+			
+			
 			// Set variables template //
 			var template = _.template(templateData, {
 				lang: app.lang,
 				interventionsState: app.Models.Intervention.status,
 				interventions: interventionSorted.toJSON(),
 				officers: app.models.user.getOfficers(),
-				teams: app.models.user.getTeams(),
+				teams: app.models.user.getTeams(),				
 			});
 
 			$(self.el).html(template);
-			self.initAllCalendars();
 			self.initDragObject();
+			//self.initAllCalendars(false,app.Models.Officer.prototype.model_name );
+			
 
 			$('*[rel="tooltip"]').tooltip();
 			$('*[rel="popover"]').popover({trigger: 'hover', delay: { show: 500, hide: 100 }});
@@ -155,6 +157,10 @@ app.Views.PlanningView = Backbone.View.extend({
 
 				// Navigate to the link //
 				window.location.href = $('#'+id).attr('href');
+			}else{
+				self.currentObject = app.models.user.getOfficers()[0];
+				$('#pOfficer_'+self.currentObject.id).click();
+				window.location.href = $('#pOfficer_'+self.currentObject.id).attr('href');
 			}
 
 
@@ -170,7 +176,7 @@ app.Views.PlanningView = Backbone.View.extend({
 				$('a.filter-button').removeClass('filter-active ^text').addClass('filter-disabled');
 				$('li.delete-filter').addClass('disabled');
 			}
-
+			
 			app.loader('hide');
 		});
 	   
@@ -182,13 +188,43 @@ app.Views.PlanningView = Backbone.View.extend({
 	/** Select the planning to display
 	*/
 	selectPlanning: function(e){
+		
 		var link = $(e.target);
 
 		// Save the selected planning in the Session storage //
 		sessionStorage.setItem(this.sstoragePlanningSelected, link.attr('id'));
+		var self = this;
+		
+		tab = []
+		teamMode = false;
+		model = app.Models.Officer.prototype.model_name; 
+		self.objectId = _(_(link.attr('id')).strRight('_')).toNumber();
+		domain = [['user_id','=',self.objectId]];
+		if( _.str.include( _(link.attr('id')).strLeft('_').toLowerCase(),"officer" ) ){
+			tab = app.models.user.getOfficers();
+		}
+		else{
+			tab = app.models.user.getTeams();
+			teamMode = true;
+			model = app.Models.Team.prototype.model_name 
+			domain = [['team_id','=',self.objectId]];
+		}
+		this.currentObject = _.find(tab, function (o) { 
+				return o.id==self.objectId
+		});
+
 
 		$('#listAgents li.active, #listTeams li.active').removeClass('active');
 		link.parent('li').addClass('active');
+		var self = this;
+		app.views.eventsListView = new app.Views.EventsListView({
+			planning : self,
+			el: $("#teamsAndOfficers"), 
+			currentObject: self.currentObject,
+			teamMode : teamMode,
+			model: model,
+			domain: domain
+		})
 	},
 
 
@@ -202,21 +238,7 @@ app.Views.PlanningView = Backbone.View.extend({
 
 
 
-	/** Calendar Initialization
-	*/
-	initAllCalendars: function() {    		
-			var self = this;
-			
-			teams = app.collections.teams;    		
-			teams.each(function(t){	
-				new app.Views.EventsListView(self,t,true).render();
-			});
 
-			officers = app.collections.officers;    		
-			officers.each(function(o){
-				new app.Views.EventsListView(self,o,false).render();
-			});
-	},
 
 
 
