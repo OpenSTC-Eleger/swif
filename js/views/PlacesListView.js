@@ -86,6 +86,13 @@ app.Views.PlacesListView = Backbone.View.extend({
 			app.views.advancedSelectBoxPlaceParentView.render();
 
 
+			// Display sort icon if there is a sort //
+			if(self.options.sort.order == 'ASC'){ var newIcon = "icon-sort-up"; }else{ var newIcon = "icon-sort-down"; }
+			$("th[data-column='"+self.options.sort.by+"'] > i").removeClass('icon-sort icon-muted')
+			.addClass('active ' + newIcon);
+
+
+
 
 			// Pagination view //
 			app.views.paginationView = new app.Views.PaginationView({ 
@@ -331,7 +338,7 @@ app.Views.PlacesListView = Backbone.View.extend({
 			var sortBy = $(e.target).parent('th').data('column');	
 		}
 
-
+		// Retrieve the current Sort //
 		var currentSort = this.options.sort;
 
 
