@@ -269,8 +269,6 @@ var app = {
 			params.fields = fields;
 		}
 
-console.log('---------------------');
-		console.log(params);
 
 		return this.json(app.config.openerp.url + this.urlOE_retrieveListe, params, options)
 	},

@@ -324,11 +324,17 @@ app.Views.PlacesListView = Backbone.View.extend({
 
 	sort: function(e){
 
-		var sortBy = $(e.target).data('column');
+		if(!$(e.target).is('i')){
+			var sortBy = $(e.target).data('column');
+		}
+		else{
+			var sortBy = $(e.target).parent('th').data('column');	
+		}
+
 
 		var currentSort = this.options.sort;
 
-		
+
 		// Calcul the sort Order //
 		var sortOrder = '';
 		if(sortBy == currentSort.by){
