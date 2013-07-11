@@ -118,12 +118,11 @@ app.Views.PlanningView = Backbone.View.extend({
 				interventionsState: app.Models.Intervention.status,
 				interventions: interventionSorted.toJSON(),
 				officers: app.models.user.getOfficers(),
-				teams: app.models.user.getTeams(),				
+				teams: app.models.user.getTeams(),
 			});
 
 			$(self.el).html(template);
 			self.initDragObject();
-			//self.initAllCalendars(false,app.Models.Officer.prototype.model_name );
 			
 
 			$('*[rel="tooltip"]').tooltip();
