@@ -301,8 +301,7 @@ app.Router = Backbone.Router.extend({
 					$.when(
 						app.collections.interventions.fetch(),
 						app.collections.categoriesTasks.fetch(),
-						app.collections.equipments.fetch(),
-						app.collections.officers.fetch()
+						app.collections.equipments.fetch()
 					)
 					.done(function(){
 						app.views.interventionsListView = new app.Views.InterventionsListView({page: self.page});
