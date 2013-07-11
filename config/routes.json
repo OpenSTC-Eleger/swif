@@ -55,11 +55,11 @@
 		"function"	: "planning"
 	},
 	"planningAgent": {
-		"url"		: "planning/agent/:id",
+		"url"		: "planning/:id",
 		"function"	: "planning"
 	},
 	"planningTeam": {
-		"url"		: "planning/equipe/:id",
+		"url"		: "planning/:id",
 		"function"	: "planning"
 	},
 
