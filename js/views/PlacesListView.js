@@ -14,7 +14,9 @@ app.Views.PlacesListView = Backbone.View.extend({
 	events: {
 		'click ul.sortable li'                     : 'preventDefault',
 		
+		'submit form.form-search' 				   : 'search',
 		'click table.table-sorter th[data-column]' : 'sort',
+
 		
 		'click a.modalDeletePlace'                 : 'modalDeletePlace',
 		'click button.btnDeletePlace'              : 'deletePlace',
@@ -342,8 +344,6 @@ app.Views.PlacesListView = Backbone.View.extend({
 
 		var area = $('#placeWidth').val() * $('#placeLenght').val();
 
-		console.log(area);
-		
 		$('#placeArea').val(area);
 	},
 
@@ -379,6 +379,18 @@ app.Views.PlacesListView = Backbone.View.extend({
 		}
 
 		app.router.navigate(app.routes.places.baseUrl+'/sort/'+sortBy+'-'+sortOrder, {trigger: true, replace: true});
+	},
+
+
+	/** Perform a search on the sites
+	*/
+	search: function(e){
+		e.preventDefault();
+
+		var query = $("form.form-search input").val();
+
+		app.router.navigate(app.routes.places.baseUrl+'/search/'+query, {trigger: true, replace: true});
+
 	},
 
 

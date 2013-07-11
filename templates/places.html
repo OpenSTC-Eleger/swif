@@ -8,22 +8,24 @@
 
 <div class="container-fluid">
 
+
+	<!-- Table toolbar -->
+	<div class="tableToolbar">
+		<a href="#modalSavePlace" class="btn btn-primary modalSavePlace" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addPlace) %></a>
+
+		<form class="form-search pull-right">
+			<div class="input-append">
+				<input type="search" class="input-medium search-query" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off" required>
+				<button type="submit" class="btn"><i class="icon-search text-info icon-large"></i></button>
+			</div>
+		</form>
+	</div>
+	<!-- Table toolbar -->
+
+
+
 	<!-- Check if there is any Places in the Database  -->
 	<% if(places.length != 0) { %>
-
-		<!-- Table toolbar -->
-		<div class="tableToolbar">
-			<a href="#modalSavePlace" class="btn btn-primary modalSavePlace" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addPlace) %></a>
-
-			<form class="form-search pull-right">
-				<div class="input-append">
-					<input type="search" class="input-medium search-query" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
-					<button type="submit" class="btn"><i class="icon-search icon-large"></i></button>
-				</div>
-			</form>
-		</div>
-		<!-- Table toolbar -->
-
 
 		<!-- Table Teams -->
 		<table class="table table-bordered table-hover table-striped table-sorter">
@@ -73,9 +75,6 @@
 
 	<% }
 	else { %>
-		<div class="tableToolbar">
-			<a href="#modalSavePlace" class="btn btn-primary modalSavePlace" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addPlace) %></a>
-		</div><br />
 
 		<!-- No place in the Database -->
 		<div class="alert alert-info">
