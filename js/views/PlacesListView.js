@@ -9,6 +9,8 @@ app.Views.PlacesListView = Backbone.View.extend({
 
 	selectedPlace : '',
 
+	urlParemers : ['search', 'sort'],
+
 
 	// The DOM events //
 	events: {
@@ -422,11 +424,8 @@ app.Views.PlacesListView = Backbone.View.extend({
 		var url = app.routes.places.baseUrl;
 
 
-		var urlParemers =  ['search', 'sort'];
-
-
 		// Iterate all urlParameters //
-		_.each(urlParemers, function(value, item){
+		_.each(this.urlParemers, function(value, item){
 			
 			// Check if the options parameter aren't undefined or null //
 			if(!_.isUndefined(self.options[value]) && !_.isNull(self.options[value])){
