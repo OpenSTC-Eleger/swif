@@ -96,7 +96,7 @@ app.Router = Backbone.Router.extend({
 	*/
 	calculSearch: function(search){
 
-		var search = [["name", "ilike", search]];
+		var search = ['|', ["name", "ilike", search], ["surface", "=", _(search).toNumber()]];
 
 		return search;
 	},
@@ -602,7 +602,7 @@ app.Router = Backbone.Router.extend({
 				app.collections.claimersServices.fetch()
 			)
 			.done(function(){
-				app.views.placesListView = new app.Views.PlacesListView({page: paginate.page, sort: sort});
+				app.views.placesListView = new app.Views.PlacesListView({page: paginate.page, sort: sort, search: search});
 				self.render(app.views.placesListView);
 
 				app.loader('hide');

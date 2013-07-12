@@ -38,6 +38,7 @@ app.Collections.Places = app.Collections.STCCollection.extend({
 	/** Collection Parse
 	*/
 	parse: function(response) {
+		this.reset(response);
 		return response.result.records;
 	},
 

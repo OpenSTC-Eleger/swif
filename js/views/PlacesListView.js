@@ -13,7 +13,7 @@ app.Views.PlacesListView = Backbone.View.extend({
 	// The DOM events //
 	events: {
 		'click ul.sortable li'                     : 'preventDefault',
-		
+
 		'submit form.form-search' 				   : 'search',
 		'click table.table-sorter th[data-column]' : 'sort',
 
@@ -96,6 +96,12 @@ app.Views.PlacesListView = Backbone.View.extend({
 			.addClass('active ' + newIcon);
 
 
+			// Rewrite the research in the form //
+			if(!_.isUndefined(self.options.search)){
+				$("form.form-search input").val(self.options.search);
+			}
+
+			
 
 
 			// Pagination view //
@@ -378,8 +384,12 @@ app.Views.PlacesListView = Backbone.View.extend({
 			sortOrder = 'ASC';
 		}
 
-		app.router.navigate(app.routes.places.baseUrl+'/sort/'+sortBy+'-'+sortOrder, {trigger: true, replace: true});
+		this.options.sort.by = sortBy;
+		this.options.sort.order = sortOrder;
+
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 	},
+
 
 
 	/** Perform a search on the sites
@@ -389,8 +399,60 @@ app.Views.PlacesListView = Backbone.View.extend({
 
 		var query = $("form.form-search input").val();
 
-		app.router.navigate(app.routes.places.baseUrl+'/search/'+query, {trigger: true, replace: true});
+		if(_.isEmpty(query)){
+			delete this.options.search;
+		}
+		else{
+			this.options.search = query
+		}
 
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+
+
+	},
+
+	
+
+	/** Build the url with the parameters
+	*/
+	urlBuilder: function(){
+		var self = this;
+
+		// Retrieve the baseurl of the view //
+		var url = app.routes.places.baseUrl;
+
+
+		var urlParemers =  ['search', 'sort'];
+
+
+		// Iterate all urlParameters //
+		_.each(urlParemers, function(value, item){
+			
+			// Check if the options parameter aren't undefined or null //
+			if(!_.isUndefined(self.options[value]) && !_.isNull(self.options[value])){
+				
+				// Check if the value of the parameter is not an object //
+				if(!_.isObject(self.options[value])){
+					url += '/'+value+'/'+self.options[value];
+				}
+				else{
+					var params = '';
+					_.each(self.options[value], function(value, item){
+						if(!_.isEmpty(params)){
+							params += '-'+value;
+						}
+						else{
+							params += value;
+						}
+					})
+
+					url += '/'+value+'/'+params;
+				}
+			}
+
+		})
+
+		return url;
 	},
 
 
