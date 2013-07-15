@@ -40,12 +40,12 @@ app.Models.Place = Backbone.RelationalModel.extend({
 	},
 
 	getName : function() {
-		return this.get('name');
+		return _.titleize(this.get('name').toLowerCase());
 	},
 	setName : function(value) {
 		if(_.isUndefined(value)) return;
 		this.set({ name : value });
-	}, 
+	},
 
 	getLenght : function() {
 		return this.get('lenght');

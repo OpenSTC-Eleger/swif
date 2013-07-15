@@ -34,6 +34,7 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 		this.select2.select2({
 			allowClear  : true,
 			placeholder : placeholder,
+			multiple	: false, 
 			minimumInputLength: minimumInputLength,
 			query: function(query){
 

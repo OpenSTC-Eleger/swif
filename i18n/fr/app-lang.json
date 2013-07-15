@@ -285,6 +285,7 @@
     	"deleteContact"			 : "Suppression du contact",
     	"deleteClaimer"			 : "Suppression de l'organisation",
     	"deleteAbsentType"		 : "Suppression du type d'absence",
+    	"deletePlace"		 	 : "Suppression du site",
     	"cancelIntervention" 	 : "Annulation de l'intervention",
     	"cancelTask" 	 		 : "Annulation de la tâche",
     	"confirmChief"			 : "Remonter la demande au DST",

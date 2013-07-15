@@ -19,9 +19,7 @@ app.Views.PlacesListView = Backbone.View.extend({
 		'submit form.form-search' 				   : 'search',
 		'click table.table-sorter th[data-column]' : 'sort',
 
-		
 		'click a.modalDeletePlace'                 : 'modalDeletePlace',
-		'click button.btnDeletePlace'              : 'deletePlace',
 		
 		'click a.modalSavePlace'                   : 'modalSavePlace',
 		'submit #formSavePlace'                    : "savePlace",
@@ -283,36 +281,19 @@ app.Views.PlacesListView = Backbone.View.extend({
 	*/
 	modalDeletePlace: function(e){
 
-		this.setModel(e);
+		e.preventDefault();
 
-		$('#infoModalDeletePlace p').html(this.selectedPlaceJson.name);
-		$('#infoModalDeletePlace small').html(this.selectedPlaceJson.type[1]);
-	},
+		var link = $(e.target);
+		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
+
+		var model = app.collections.places.get(id);
 
 
-
-	/** Delete the selected place
-	*/
-	deletePlace: function(e){
-		//e.preventDefault();
-		var self = this;
-		this.model.delete({
-			success: function(data){
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					app.collections.places.remove(self.model);
-					$('#modalDeletePlace').modal('hide');
-					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
-					self.render();
-				}
-			},
-			error: function(e){
-				alert("Impossible de supprimer le site");
-			}
-
-		});    
+		app.views.modalDeleteView = new app.Views.ModalDeleteView({
+			el    : '#modalDeletePlace',
+			model : model
+		});
+		app.views.modalDeleteView.render();
 	},
 
 
@@ -344,6 +325,7 @@ app.Views.PlacesListView = Backbone.View.extend({
 		});
 
 	},
+
 
 
 	/** Calcul the area of the place
@@ -409,8 +391,6 @@ app.Views.PlacesListView = Backbone.View.extend({
 		}
 
 		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-
-
 	},
 
 	
