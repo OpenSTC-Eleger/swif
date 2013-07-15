@@ -9,18 +9,22 @@ app.Views.PlacesListView = Backbone.View.extend({
 
 	selectedPlace : '',
 
+	urlParemers : ['search', 'sort'],
+
 
 	// The DOM events //
 	events: {
-		'click ul.sortable li'			: 'preventDefault',
+		'click ul.sortable li'                     : 'preventDefault',
 
+		'submit form.form-search' 				   : 'search',
 		'click table.table-sorter th[data-column]' : 'sort',
 
-		'click a.modalDeletePlace'  	: 'modalDeletePlace',
-		'click button.btnDeletePlace'	: 'deletePlace',
-			
-		'click a.modalSavePlace'	  	: 'modalSavePlace',
-		'submit #formSavePlace' 		: "savePlace"
+		'click a.modalDeletePlace'                 : 'modalDeletePlace',
+		
+		'click a.modalSavePlace'                   : 'modalSavePlace',
+		'submit #formSavePlace'                    : "savePlace",
+		
+		'change #placeWidth, #placeLenght'         : 'calculArea'
 	},
 
 
@@ -62,21 +66,6 @@ app.Views.PlacesListView = Backbone.View.extend({
 
 			$('*[data-toggle="tooltip"]').tooltip();
 			
-			$('#placeServices, #servicesList').sortable({
-				connectWith: 'ul.sortableServicesList',
-				dropOnEmpty: true,
-				forcePlaceholderSize: true,
-				forceHelperSize: true,
-				placeholder: 'sortablePlaceHold',
-				containment: '.servicesDroppableArea',
-				cursor: 'move',
-				opacity: '.8',
-				revert: 300,
-				receive: function(event, ui){
-					self.updateSites( );
-				}
-			});
-
 
 			// Advance Select List View //
 			app.views.advancedSelectBoxPlaceTypeView = new app.Views.AdvancedSelectBoxView({el: $("#placeType"), model: app.Models.PlaceType.prototype.model_name })
@@ -85,7 +74,23 @@ app.Views.PlacesListView = Backbone.View.extend({
 			app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#placeParentPlace"), model: app.Models.Place.prototype.model_name })
 			app.views.advancedSelectBoxPlaceParentView.render();
 
+			app.views.advancedSelectBoxPlaceServices = new app.Views.AdvancedSelectBoxView({el: $("#placeServices"), model: app.Models.ClaimerService.prototype.model_name })
+			app.views.advancedSelectBoxPlaceServices.render();
 
+
+			
+			// Display sort icon if there is a sort //
+			if(self.options.sort.order == 'ASC'){ var newIcon = "icon-sort-up"; }else{ var newIcon = "icon-sort-down"; }
+			$("th[data-column='"+self.options.sort.by+"'] > i").removeClass('icon-sort icon-muted')
+			.addClass('active ' + newIcon);
+
+
+			// Rewrite the research in the form //
+			if(!_.isUndefined(self.options.search)){
+				$("form.form-search input").val(self.options.search);
+			}
+
+			
 
 			// Pagination view //
 			app.views.paginationView = new app.Views.PaginationView({ 
@@ -93,6 +98,12 @@ app.Views.PlacesListView = Backbone.View.extend({
 				nbPage : Math.ceil(app.collections.places.cpt / app.config.itemsPerPage) 
 			})
 			app.views.paginationView.render();
+
+
+			// Set the focus to the first input of the form //
+			$('#modalSavePlace, #modalDeletePlace').on('shown', function (e) {
+				$(this).find('input, textarea').first().focus();
+			})
 
 		});
 
@@ -104,68 +115,12 @@ app.Views.PlacesListView = Backbone.View.extend({
 
 
 
-	/** Display user services 
-	*/
-	displayServices: function(e){
-		e.preventDefault();
-	
-		// Retrieve the ID of the intervention //
-		var link = $(e.target);
-		var id = _(link.parents('tr').attr('id')).strRightBack('_');
-		
-		// Clear the list of the user //
-		$('#placeServices li, #servicesList li').remove();
-	
-		var placeServices = new Array();
-		if( id ) {
-			this.selectedPlace = _.filter(app.collections.places.models, function(item){ return item.attributes.id == id });
-			var selectedPlaceJson = this.selectedPlace[0].toJSON();	
-			
-			// Display the services of the team //
-			_.each(selectedPlaceJson.service_ids, function (service, i){
-				$('#placeServices').append('<li id="service_'+service.id+'"><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
-				placeServices[i] = service.id;
-			});
-		};
-
-		//search no technical services
-		var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
-			return service.attributes.technical != true 
-		});
-		//remove no technical services
-		app.collections.claimersServices.remove(noTechnicalServices);
-		app.collections.claimersServices.toJSON()
-	
-		// Display the remain services //
-		_.filter(app.collections.claimersServices.toJSON(), function (service, i){ 
-			if(!_.contains(placeServices, service.id)){
-				$('#servicesList').append('<li id="service_'+service.id+'"><a href="#"><i class="icon-sitemap"></i> '+ service.name +' </a></li>');
-			}
-		});
-	
-		var nbRemainServices = $('#servicesList li').length;
-		$('#badgeNbServices').html(nbRemainServices);
-		
-	},
-
-
-
-	getIdInDopDown: function(view) {
-		if ( view && view.getSelected() )
-			return view.getSelected().toJSON().id;
-		else 
-			return 0
-	},
-
-
-
 	setModel: function(e) {
 	
 		this.model = null;
 		this.selectedPlaceJson = null;
 		
 		e.preventDefault();
-		this.displayServices(e);
 		var link = $(e.target);
 		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
 		this.selectedPlace = _.filter(app.collections.places.models, function(item){ return item.attributes.id == id });
@@ -180,25 +135,34 @@ app.Views.PlacesListView = Backbone.View.extend({
 	/** Add a new categorie
 	*/
 	modalSavePlace: function(e){  
-		this.setModel(e);	
+		this.setModel(e);
+
+
+		// Reset the form //
+		$('#placeName, #placeWidth, #placeLenght, #placeArea').val('');
+		app.views.advancedSelectBoxPlaceTypeView.reset();
+		app.views.advancedSelectBoxPlaceParentView.reset();
+		app.views.advancedSelectBoxPlaceServices.reset();
+
 		
+		// If it's an update //
 		if( this.selectedPlaceJson ) {
 			$('#placeName').val(this.selectedPlaceJson.name);
-			
-			if( this.selectedPlaceJson.type )
+
+			if( this.selectedPlaceJson.type ){
 				app.views.advancedSelectBoxPlaceTypeView.setSelectedItem(this.selectedPlaceJson.type);
-			if( this.selectedPlaceJson.site_parent_id )
+			}
+			if( this.selectedPlaceJson.site_parent_id ){
 				app.views.advancedSelectBoxPlaceParentView.setSelectedItem(this.selectedPlaceJson.site_parent_id);
-			
+			}
+			if(!_.isEmpty(this.selectedPlaceJson.service_ids)){
+				app.views.advancedSelectBoxPlaceServices.setSelectedItems(this.selectedPlaceJson.service_ids);
+			}
+
 			$('#placeWidth').val(this.selectedPlaceJson.width);
 			$('#placeLenght').val(this.selectedPlaceJson.lenght);
 			$('#placeArea').val(this.selectedPlaceJson.surface);			
 		}
-		else {
-			$('#placeName, #placeWidth, #placeLenght, #placeArea').val('');
-			app.views.advancedSelectBoxPlaceTypeView.reset();
-			app.views.advancedSelectBoxPlaceParentView.reset();
-		}   
 
 	},
 
@@ -215,12 +179,9 @@ app.Views.PlacesListView = Backbone.View.extend({
 		var self = this;
 
 	 
-		this.services = _.map($("#placeServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); });     
-
-
 		this.params = {	
 			name: this.$('#placeName').val(),
-			service_ids: [[6, 0, this.services]],
+			service_ids: [[6, 0, app.views.advancedSelectBoxPlaceServices.getSelectedItems()]],
 			type: app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(),
 			site_parent_id: app.views.advancedSelectBoxPlaceParentView.getSelectedItem(),
 			width: this.$('#placeWidth').val(),
@@ -258,77 +219,49 @@ app.Views.PlacesListView = Backbone.View.extend({
 	*/
 	modalDeletePlace: function(e){
 
-		this.setModel(e);
+		e.preventDefault();
 
-		$('#infoModalDeletePlace p').html(this.selectedPlaceJson.name);
-		$('#infoModalDeletePlace small').html(this.selectedPlaceJson.type[1]);
-	},
+		var link = $(e.target);
+		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
 
-
-
-	/** Delete the selected place
-	*/
-	deletePlace: function(e){
-		//e.preventDefault();
-		var self = this;
-		this.model.delete({
-			success: function(data){
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					app.collections.places.remove(self.model);
-					$('#modalDeletePlace').modal('hide');
-					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
-					self.render();
-				}
-			},
-			error: function(e){
-				alert("Impossible de supprimer le site");
-			}
-
-		});    
-	},
+		var model = app.collections.places.get(id);
 
 
-
-	/** Update possible parent site belongs to services selected
-	*/
-	updateSites: function ( ) {
-		//Selected services in list choice
-		var services = _.map($("#placeServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber()});
-		
-		var self = this;
-		this.placesFiltered = []
-		places = app.collections.places.models;
-		
-		//for each selected service
-		_.each(services, function( service ) {
-			//keep only places belongs to service
-			self.currentService = service;		
-			keepedPlaces = _.filter(places, function(item){ 
-				var placeJSON = item.toJSON();
-				var placeServices = placeJSON.service_ids;	
-				var placeServices = [];
-				_.each( item.attributes.service_ids.models, function(s){
-					placeServices.push( s.toJSON().id );
-				});				
-				return $.inArray(self.currentService, placeServices)!=-1
-			});
-			self.placesFiltered = _.union( self.placesFiltered , keepedPlaces );	
+		app.views.modalDeleteView = new app.Views.ModalDeleteView({
+			el    : '#modalDeletePlace',
+			model : model
 		});
-
+		app.views.modalDeleteView.render();
 	},
 
 
 
+	/** Calcul the area of the place
+	*/
+	calculArea: function (e) {
+
+		var area = $('#placeWidth').val() * $('#placeLenght').val();
+
+		$('#placeArea').val(area);
+	},
+
+
+
+	/** Sort the row of the table
+	*/
 	sort: function(e){
 
-		var sortBy = $(e.target).data('column');
+		if(!$(e.target).is('i')){
+			var sortBy = $(e.target).data('column');
+		}
+		else{
+			var sortBy = $(e.target).parent('th').data('column');	
+		}
 
+		// Retrieve the current Sort //
 		var currentSort = this.options.sort;
 
-		
+
 		// Calcul the sort Order //
 		var sortOrder = '';
 		if(sortBy == currentSort.by){
@@ -343,7 +276,70 @@ app.Views.PlacesListView = Backbone.View.extend({
 			sortOrder = 'ASC';
 		}
 
-		app.router.navigate(app.routes.places.baseUrl+'/sort/'+sortBy+'-'+sortOrder, {trigger: true, replace: true});
+		this.options.sort.by = sortBy;
+		this.options.sort.order = sortOrder;
+
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+	},
+
+
+
+	/** Perform a search on the sites
+	*/
+	search: function(e){
+		e.preventDefault();
+
+		var query = $("form.form-search input").val();
+
+		if(_.isEmpty(query)){
+			delete this.options.search;
+		}
+		else{
+			this.options.search = query
+		}
+
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+	},
+
+	
+
+	/** Build the url with the parameters
+	*/
+	urlBuilder: function(){
+		var self = this;
+
+		// Retrieve the baseurl of the view //
+		var url = app.routes.places.baseUrl;
+
+
+		// Iterate all urlParameters //
+		_.each(this.urlParemers, function(value, item){
+			
+			// Check if the options parameter aren't undefined or null //
+			if(!_.isUndefined(self.options[value]) && !_.isNull(self.options[value])){
+				
+				// Check if the value of the parameter is not an object //
+				if(!_.isObject(self.options[value])){
+					url += '/'+value+'/'+self.options[value];
+				}
+				else{
+					var params = '';
+					_.each(self.options[value], function(value, item){
+						if(!_.isEmpty(params)){
+							params += '-'+value;
+						}
+						else{
+							params += value;
+						}
+					})
+
+					url += '/'+value+'/'+params;
+				}
+			}
+
+		})
+
+		return url;
 	},
 
 

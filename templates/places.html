@@ -8,22 +8,24 @@
 
 <div class="container-fluid">
 
+
+	<!-- Table toolbar -->
+	<div class="tableToolbar">
+		<a href="#modalSavePlace" class="btn btn-primary modalSavePlace" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addPlace) %></a>
+
+		<form class="form-search pull-right">
+			<div class="input-append">
+				<input type="search" class="input-medium search-query" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+				<button type="submit" class="btn"><i class="icon-search text-info icon-large"></i></button>
+			</div>
+		</form>
+	</div>
+	<!-- Table toolbar -->
+
+
+
 	<!-- Check if there is any Places in the Database  -->
 	<% if(places.length != 0) { %>
-
-		<!-- Table toolbar -->
-		<div class="tableToolbar">
-			<a href="#modalSavePlace" class="btn btn-primary modalSavePlace" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addPlace) %></a>
-
-			<!--<form class="form-search pull-right">
-				<div class="input-append">
-					<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off">
-					<button type="submit" class="btn"><i class="icon-search icon-large"></i></button>
-				</div>
-			</form>-->
-		</div>
-		<!-- Table toolbar -->
-
 
 		<!-- Table Teams -->
 		<table class="table table-bordered table-hover table-striped table-sorter">
@@ -47,12 +49,12 @@
 				<!-- Place row -->
 				<tr class="row-item" id="place_<%= place.id %>">
 					<td>
-						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= _.titleize(place.complete_name.toLowerCase()) %>
+						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= place.complete_name %>
 
 						<p class="row-actions invisible">
 							<a href="#modalSavePlace"  class="modalSavePlace" data-toggle="modal">
 								<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i></a>&nbsp;
-							<a href="#modalDeletePlace" class="modalDeletePlace" data-toggle="modal">
+							<a href="#" class="modalDeletePlace">
 								<i class="icon-remove icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
 							</a>
 						</p>
@@ -73,9 +75,6 @@
 
 	<% }
 	else { %>
-		<div class="tableToolbar">
-			<a href="#modalSavePlace" class="btn btn-primary modalSavePlace" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addPlace) %></a>
-		</div><br />
 
 		<!-- No place in the Database -->
 		<div class="alert alert-info">
@@ -127,6 +126,15 @@
 			</div>
 
 
+			<div class="control-group">
+				<label for="placeServices" class="control-label"><%= _.capitalize(lang.associatedServices) %>:</label>
+				<div class="controls">
+					<input id="placeServices" style="width: 230px" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="true" />
+					<span class="help-inline"></span>
+				</div>
+			</div>
+
+
 			<fieldset>
 				<legend><%= _.capitalize(lang.property) %></legend>
 				<div class="control-group">
@@ -154,38 +162,6 @@
 				</div>
 			</fieldset>
 
-			
-			<!-- Services -->
-			<fieldset>
-				<legend><i class="icon-wrench"></i> <%= _.capitalize(lang.service) %></legend>
-
-				<!-- Services Management -->
-				<div class="row-fluid marginTop servicesDroppableArea">
-					
-					<div class="span6">
-						<div class="widget-title">
-							<h4>Services de l'équipe <span class="badge pull-right"></span></h4>
-						</div>
-		
-						<ul id="placeServices" class="sortableServicesList sortable unstyled nav nav-list drop-area">
-		
-						</ul>
-					</div>
-
-					<div class="span6">
-						<div class="widget-title">
-							<h4>Autre services <span class="badge pull-right" id="badgeNbServices"></span></h4>
-						</div>
-		
-						<ul id="servicesList" class="sortableServicesList sortable unstyled nav nav-list">
-						</ul>
-					</div>
-		
-				</div>
-				
-				
-			</fieldset>
-
 		</form>
 	</div>
 	
@@ -198,24 +174,4 @@
 
 
 <!-- Modal Form Delete Place -->
-<div id="modalDeletePlace" class="modal hide fade">
-	<div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	    <h3>Suppression du site</h3>
-	</div>
-	
-	<div class="modal-body">
-
-		<blockquote id="infoModalDeletePlace" class="spaceBottom">
-			<p></p>
-			<small></small>
-		</blockquote>
-
-		<p><%= lang.warningMessages.confirmDeletePlace %></p>
-	</div>
-	
-	<div class="modal-footer">
-		<button type="button" class="btn btn-danger btnDeletePlace"><%= _.capitalize(lang.actions.delete) %></button>&nbsp;&nbsp;
-		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
-	</div>
-</div>
+<div id="modalDeletePlace" class="modal hide fade"></div>

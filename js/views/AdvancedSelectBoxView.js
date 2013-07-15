@@ -30,11 +30,17 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 		if(!_.isUndefined(this.select2.data('minimum-input-length'))){ var minimumInputLength = this.select2.data('minimum-input-length'); }
 		else{ var minimumInputLength = 0; }
 
+		// Retrieve multiple attribute //
+		if(!_.isUndefined(this.select2.data('multiple'))){ var multiple = this.select2.data('multiple'); }
+		else{ var multiple = false; }
+
 
 		this.select2.select2({
-			allowClear  : true,
-			placeholder : placeholder,
-			minimumInputLength: minimumInputLength,
+			allowClear         : true,
+			placeholder        : placeholder,
+			multiple           : multiple, 
+			minimumInputLength : minimumInputLength,
+			width: 'resolve',
 			query: function(query){
 
 				// [The query, [], comparator, {}, the limit ] //
@@ -68,6 +74,7 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 				else{
 					var otherResults = [];
 					var beginWithResults = _.filter(results, function(result){
+						console.log(result);
 						if(_(result.text.toUpperCase()).startsWith(query.term.toUpperCase())){
 							return result;
 						}else{
@@ -90,8 +97,22 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 	/** Set an item as selected
 	*/
 	setSelectedItem: function(item){
-
 		this.select2.select2('data', {id: item[0], text: item[1]});
+	},
+
+
+
+	/** Set somes items as selected
+	*/
+	setSelectedItems: function(items){
+		var data = [];
+
+		_.each(items, function(item){
+			var itemData = {id: item.id, text: item.name};
+			data.push(itemData);
+		})
+
+		this.select2.select2('data', data);
 	},
 
 
@@ -111,12 +132,31 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 
 
 
+	/** Get the values of the selected item
+	*/
+	getSelectedItems: function(){
+
+		var returnIds = [];
+
+		if(!_.isEmpty(this.select2.select2('data'))){
+			
+			_.each(this.select2.select2('data'), function(item){
+				returnIds.push(item.id);
+			})
+		}
+
+		return returnIds;
+	},
+
+
+
+
 	/** Reset the selectBox Value
 	*/
 	reset: function(){
 
 		this.select2.select2('data', null);
-	}
+	},
 
 
 });

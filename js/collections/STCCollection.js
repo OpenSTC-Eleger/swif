@@ -8,11 +8,22 @@ app.Collections.STCCollection = Backbone.Collection.extend({
 	
 	/** count all models without restricts ( openerp search_count method call select count(*) request)
 	*/
-	count: function() {
+	count: function(options) {
 		var self = this;
 
-		return app.callObjectMethodOE([[]], this.model_name, 'search_count', app.models.user.getSessionID(), {
+		// Check if a search are perform //
+		var domain = null;
+		if(_.isUndefined(options.search)){
+			domain = [[]];
+		}
+		else{
+			domain = [options.search]
+		}
+
+
+		return app.callObjectMethodOE(domain, this.model_name, 'search_count', app.models.user.getSessionID(), {
 			success: function(data){
+				console.log(data);
 				self.cpt = data.result;
 			}
 		});

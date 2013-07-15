@@ -250,18 +250,17 @@ var app = {
 		}
 
 
-		// Limit - Offset //
+		// args - domain //
+		if(!_.isUndefined(options.search)){
+			params.domain = options.search;
+		}
+
+
+		// Sort by / Order //
 		if(!_.isUndefined(options.sortBy)){
 			params.sort = options.sortBy;
 		}
-		else{
-			params.sort = 'id DESC';
-		}
-		
-		// args - domain //
-		if(!_.isUndefined(options.domain)){
-			params.domain = options.domain;
-		}
+
 
 		// Fields //
 		if(_.isUndefined(fields)){ 
@@ -269,6 +268,7 @@ var app = {
 		}else{
 			params.fields = fields;
 		}
+
 
 		return this.json(app.config.openerp.url + this.urlOE_retrieveListe, params, options)
 	},
