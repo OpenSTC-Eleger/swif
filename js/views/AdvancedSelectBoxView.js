@@ -74,7 +74,7 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 				else{
 					var otherResults = [];
 					var beginWithResults = _.filter(results, function(result){
-						console.log(result);
+
 						if(_(result.text.toUpperCase()).startsWith(query.term.toUpperCase())){
 							return result;
 						}else{

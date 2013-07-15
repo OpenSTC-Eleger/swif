@@ -11,7 +11,11 @@ app.Views.ModalDeleteView = Backbone.View.extend({
 	
 	// The DOM events //
 	events: {
-	   'click .btnDelete' : 'delete'
+		'click .btnDelete' : 'deleteModel',
+		
+		'show'             : 'show',
+		
+		'hide'             : 'hide'
 	},
 
 
@@ -20,7 +24,7 @@ app.Views.ModalDeleteView = Backbone.View.extend({
 	*/
 	initialize : function(user) {
 		modal = $(this.el);
-   },
+	},
 
 
 
@@ -42,12 +46,29 @@ app.Views.ModalDeleteView = Backbone.View.extend({
 		});
 
 		return this;
-
 	},
 
 
 
-	delete: function(e){
+	/** Trigger when the modal is show
+	*/
+	show: function(){
+		this.delegateEvents(this.events);
+	},
+
+
+
+	/** Trigger when the modal is hide
+	*/
+	hide: function(){
+		this.undelegateEvents(this.events);
+	},
+
+
+
+	/** Delete the model pass in the view
+	*/
+	deleteModel: function(e){
 		var self = this;
 
 		this.model.delete({
@@ -65,14 +86,9 @@ app.Views.ModalDeleteView = Backbone.View.extend({
 				alert("Impossible de contacter le serveur");
 			}
 
-		});  
+		});
 	}
 
 
 
-  
 });
-
-
-
-
