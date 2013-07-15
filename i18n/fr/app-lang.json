@@ -39,6 +39,7 @@
 	"modifyBy" 				: "modifié par ",
 	"toValidateBy" 			: "à valider par ",
 	"service" 				: "service",
+	"associatedServices" 	: "services associés",
 	"code" 					: "code",
 	"type" 					: "type",
 	"area" 					: "surface",
@@ -202,7 +203,8 @@
 		"removeOfTheSchedule" : "Retirer du planning",
 		"print"				: "Imprimer",
 		"selectAPlace"		: "Sélectionner un site",
-		"selectAPlaceType"	: "Sélectionner un type de site"
+		"selectAPlaceType"	: "Sélectionner un type de site",
+		"selectServices"	: "Sélectionner des services"
 	},
 
 	"errorMessages" : {

@@ -126,6 +126,15 @@
 			</div>
 
 
+			<div class="control-group">
+				<label for="placeServices" class="control-label"><%= _.capitalize(lang.associatedServices) %>:</label>
+				<div class="controls">
+					<input id="placeServices" style="width: 230px" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="true" />
+					<span class="help-inline"></span>
+				</div>
+			</div>
+
+
 			<fieldset>
 				<legend><%= _.capitalize(lang.property) %></legend>
 				<div class="control-group">
@@ -151,38 +160,6 @@
 
 					</div>
 				</div>
-			</fieldset>
-
-			
-			<!-- Services -->
-			<fieldset>
-				<legend><i class="icon-wrench"></i> <%= _.capitalize(lang.service) %></legend>
-
-				<!-- Services Management -->
-				<div class="row-fluid marginTop servicesDroppableArea">
-					
-					<div class="span6">
-						<div class="widget-title">
-							<h4>Services de l'équipe <span class="badge pull-right"></span></h4>
-						</div>
-		
-						<ul id="placeServices" class="sortableServicesList sortable unstyled nav nav-list drop-area">
-		
-						</ul>
-					</div>
-
-					<div class="span6">
-						<div class="widget-title">
-							<h4>Autre services <span class="badge pull-right" id="badgeNbServices"></span></h4>
-						</div>
-		
-						<ul id="servicesList" class="sortableServicesList sortable unstyled nav nav-list">
-						</ul>
-					</div>
-		
-				</div>
-				
-				
 			</fieldset>
 
 		</form>
