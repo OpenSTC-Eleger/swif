@@ -251,8 +251,8 @@ var app = {
 
 
 		// args - domain //
-		if(!_.isUndefined(options.domain)){
-			params.domain = options.domain;
+		if(!_.isUndefined(options.search)){
+			params.domain = options.search;
 		}
 
 

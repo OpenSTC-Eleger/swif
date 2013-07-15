@@ -586,7 +586,7 @@ app.Router = Backbone.Router.extend({
 			};
 
 			if(!_.isNull(search)){
-				fetchParams.domain = this.calculSearch(search);
+				fetchParams.search = this.calculSearch(search);
 			}
 
 
@@ -846,7 +846,7 @@ app.Router = Backbone.Router.extend({
 				success: function(){
 
 					$.when(
-						app.collections.claimersTypes.fetch({domain: [['code','<>','ADMINISTRE']]}),
+						app.collections.claimersTypes.fetch({search: [['code','<>','ADMINISTRE']]}),
 						app.collections.claimersServices.fetch(),
 						app.collections.places.fetch(),
 						app.collections.claimersContacts.fetch(),

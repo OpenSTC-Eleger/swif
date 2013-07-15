@@ -13,11 +13,11 @@ app.Collections.STCCollection = Backbone.Collection.extend({
 
 		// Check if a search are perform //
 		var domain = null;
-		if(_.isUndefined(options.domain)){
+		if(_.isUndefined(options.search)){
 			domain = [[]];
 		}
 		else{
-			domain = [options.domain]
+			domain = [options.search]
 		}
 
 
