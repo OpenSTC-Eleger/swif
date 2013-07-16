@@ -10,7 +10,7 @@ app.Views.PlanningView = Backbone.View.extend({
 
 	filters: 'interventionsListFilter',
 
-	calendarView: 'agendaWeek',
+	
 	
 	selectedInter : '',
 	selectedTask : '',
@@ -48,28 +48,8 @@ app.Views.PlanningView = Backbone.View.extend({
 
 	/** View Initialization
 	*/
-	initialize : function(agent) {
-		this.agent = agent;  
-		
-		//_.bindAll(this, 'beforeRender', 'render', 'afterRender'); 
-
-		var self = this;
-
-		console.log('Planning view');
+	initialize : function() {
 	},
-
-
-
-	beforeRender : function()  {
-		app.loader('display');
-	},
-
-
-
-	afterRender : function()  {
-		app.loader('hide');
-	},
-
 
 
 	/** Display the view
@@ -192,38 +172,23 @@ app.Views.PlanningView = Backbone.View.extend({
 		var link = $(e.target);
 
 		// Save the selected planning in the Session storage //
-		sessionStorage.setItem(this.sstoragePlanningSelected, link.attr('id'));
-		var self = this;
-		
-		tab = []
-		teamMode = false;
-		model = app.Models.Officer.prototype.model_name; 
-		self.objectId = _(_(link.attr('id')).strRight('_')).toNumber();
-		domain = [['user_id','=',self.objectId]];
-		if( _.str.include( _(link.attr('id')).strLeft('_').toLowerCase(),"officer" ) ){
-			tab = app.models.user.getOfficers();
-		}
-		else{
-			tab = app.models.user.getTeams();
-			teamMode = true;
-			model = app.Models.Team.prototype.model_name 
-			domain = [['team_id','=',self.objectId]];
-		}
-		this.currentObject = _.find(tab, function (o) { 
-				return o.id==self.objectId
-		});
 
+		var linkId = link.attr('id')
+		sessionStorage.setItem(this.sstoragePlanningSelected, linkId);
+		
+		//Calculates calendar selected (team or officer)
+		teamMode = _.str.include( _(linkId).strLeft('_').toLowerCase(),"officer" )?false:true;	
+		calendarId = _(_(linkId).strRight('_')).toNumber();		
 
 		$('#listAgents li.active, #listTeams li.active').removeClass('active');
 		link.parent('li').addClass('active');
-		var self = this;
+		
+		//Initialize calendar view
 		app.views.eventsListView = new app.Views.EventsListView({
-			planning : self,
-			el: $("#teamsAndOfficers"), 
-			currentObject: self.currentObject,
+			planning : this,
+			el: $("#calendar"), 
+			calendarId : calendarId,
 			teamMode : teamMode,
-			model: model,
-			domain: domain
 		})
 	},
 
@@ -234,12 +199,7 @@ app.Views.PlanningView = Backbone.View.extend({
 	setModel : function(model) {
 		this.model = model;
 		return this;
-	},    
-
-
-
-
-
+	},   
 
 
 	/** Make the external event Draggable
