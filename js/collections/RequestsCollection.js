@@ -1,7 +1,7 @@
 /******************************************
 * Requests Collection
 */
-app.Collections.Requests = app.Collections.STCCollection.extend({
+app.Collections.Requests = app.Collections.GenericCollection.extend({
 
 	model: app.Models.Request,
 

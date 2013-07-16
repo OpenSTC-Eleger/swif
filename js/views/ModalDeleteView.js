@@ -4,7 +4,7 @@
 app.Views.ModalDeleteView = Backbone.View.extend({
 
 
-	templateHTML: 'modalDelete',
+	templateHTML: 'modals/modalDelete',
 
 	modal : null,
 

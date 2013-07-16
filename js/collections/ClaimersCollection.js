@@ -1,7 +1,7 @@
 /******************************************
 * Claimers Collection
 */
-app.Collections.Claimers = app.Collections.STCCollection.extend({
+app.Collections.Claimers = app.Collections.GenericCollection.extend({
 
 	model : app.Models.Claimer,
 

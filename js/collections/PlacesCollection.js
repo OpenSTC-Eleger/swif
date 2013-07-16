@@ -1,7 +1,7 @@
 /******************************************
 * Places Collection
 */
-app.Collections.Places = app.Collections.STCCollection.extend({
+app.Collections.Places = app.Collections.GenericCollection.extend({
 
 	model      : app.Models.Place,
 

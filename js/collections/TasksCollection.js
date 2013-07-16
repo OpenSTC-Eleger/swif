@@ -1,7 +1,7 @@
 /******************************************
 * Tasks Collection
 */
-app.Collections.Tasks = app.Collections.STCCollection.extend({
+app.Collections.Tasks = app.Collections.GenericCollection.extend({
 
 	model: app.Models.Task,
 

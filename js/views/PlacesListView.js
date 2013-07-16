@@ -4,25 +4,25 @@
 app.Views.PlacesListView = Backbone.View.extend({
 
 	el            : '#rowContainer',
-
+	
 	templateHTML  : 'places',
-
+	
 	selectedPlace : '',
-
-	urlParemers : ['search', 'sort'],
+	
+	urlParemers   : ['search', 'sort'],
 
 
 	// The DOM events //
 	events: {
 		'click ul.sortable li'                     : 'preventDefault',
 
-		'submit form.form-search' 				   : 'search',
+		'submit form.form-search'                  : 'search',
 		'click table.table-sorter th[data-column]' : 'sort',
 
 		'click a.modalDeletePlace'                 : 'modalDeletePlace',
 		
 		'click a.modalSavePlace'                   : 'modalSavePlace',
-		'submit #formSavePlace'                    : "savePlace",
+		'submit #formSavePlace'                    : 'savePlace',
 		
 		'change #placeWidth, #placeLenght'         : 'calculArea'
 	},

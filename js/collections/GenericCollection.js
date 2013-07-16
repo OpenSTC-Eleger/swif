@@ -1,7 +1,7 @@
 /******************************************
 * STC Collection
 */
-app.Collections.STCCollection = Backbone.Collection.extend({
+app.Collections.GenericCollection = Backbone.Collection.extend({
     
     cpt : 0,    
     

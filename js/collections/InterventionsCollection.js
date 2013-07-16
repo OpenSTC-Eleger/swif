@@ -1,7 +1,7 @@
 /******************************************
 * Interventions Collection
 */
-app.Collections.Interventions = app.Collections.STCCollection.extend({
+app.Collections.Interventions = app.Collections.GenericCollection.extend({
 
 	model: app.Models.Intervention,
 

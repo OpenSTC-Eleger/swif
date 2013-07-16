@@ -1,7 +1,7 @@
 /******************************************
 * Intervention Categorie Collection - Intervention classification for budget
 */
-app.Collections.CategoriesInterventions = app.Collections.STCCollection.extend({
+app.Collections.CategoriesInterventions = app.Collections.GenericCollection.extend({
 
     model: app.Models.CategoryIntervention,
 
