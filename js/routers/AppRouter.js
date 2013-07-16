@@ -401,7 +401,7 @@ app.Router = Backbone.Router.extend({
 						app.collections.absentTypes.fetch()
 					)
 					.done(function(){
-						app.views.planningView = new app.Views.PlanningView(id);
+						app.views.planningView = new app.Views.PlanningView();
 						self.render(app.views.planningView);
 						app.loader('hide');
 					})
