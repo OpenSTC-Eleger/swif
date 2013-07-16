@@ -108,8 +108,15 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		this.set({ service_ids : value });
 	},
 
-	getType : function() {
-		return this.get('type');
+	getType : function(type) {
+		switch (type){ 
+			case 'id': 
+				return this.get('type')[0];
+			break;
+			default:
+				return this.get('type')[1];
+			break;
+		}
 	},
 	setType : function(value) {
 		if(_.isUndefined(value)) return;

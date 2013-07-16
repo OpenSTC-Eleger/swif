@@ -15,15 +15,15 @@ app.Views.ModalDeleteView = Backbone.View.extend({
 		
 		'show'             : 'show',
 		
-		'hide'             : 'hide'
+		'hide'             : 'hide',
 	},
 
 
 
 	/** View Initialization
 	*/
-	initialize : function(user) {
-		modal = $(this.el);
+	initialize : function() {
+		this.modal = $(this.el);
 	},
 
 
@@ -41,8 +41,8 @@ app.Views.ModalDeleteView = Backbone.View.extend({
 				model : self.options.model
 			});
 
-			modal.html(template);
-			modal.modal('show');
+			self.modal.html(template);
+			self.modal.modal('show');
 		});
 
 		return this;
@@ -77,7 +77,7 @@ app.Views.ModalDeleteView = Backbone.View.extend({
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
-					modal.modal('hide');
+					self.modal.modal('hide');
 					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
 					Backbone.history.loadUrl(Backbone.history.fragment);
 				}
@@ -88,7 +88,5 @@ app.Views.ModalDeleteView = Backbone.View.extend({
 
 		});
 	}
-
-
 
 });
