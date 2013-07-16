@@ -4,6 +4,8 @@
     	"database" 	: "pontlabbe2"
     },
     "itemsPerPage"		: 20,
+    "startWorkTime"		: 8.0,
+    "endWorkTime"		: 18.0,
     "startLunchTime"	: 12.0,
     "endLunchTime"		: 14.0
 }
