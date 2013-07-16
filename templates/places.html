@@ -25,7 +25,7 @@
 
 
 	<!-- Check if there is any Places in the Database  -->
-	<% if(places.length != 0) { %>
+	<% if(!_.isEmpty(places)) { %>
 
 		<!-- Table Teams -->
 		<table class="table table-bordered table-hover table-striped table-sorter">
@@ -34,22 +34,16 @@
 					<th data-column="name"><%= _.capitalize(lang.name) %> <i class="icon-sort icon-large icon-muted pull-right"></i></th>
 					<th><%= _.capitalize(lang.parentPlace) %></th>
 					<th><%= _.capitalize(lang.service) %></th>	
-					
 					<th class="hidden-phone" data-column="surface"><%= _.capitalize(lang.area) %> <i class="icon-sort icon-large icon-muted pull-right"></i></th>
 				</tr>
 			</thead>
 			<tbody>
-			<% _.each(places, function(place){
-					var placeServices = [];
+			<% places.each(function(place){ %>
 
-					_.each( place.service_ids, function(s){
-						placeServices.push( s.name );
-					});
-				%>
 				<!-- Place row -->
 				<tr class="row-item" id="place_<%= place.id %>">
 					<td>
-						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= place.complete_name %>
+						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= place.getCompleteName() %>
 
 						<p class="row-actions invisible">
 							<a href="#modalSavePlace"  class="modalSavePlace" data-toggle="modal">
@@ -59,9 +53,9 @@
 							</a>
 						</p>
 					</td>
-					<td><%= (!_.isUndefined(place.site_parent_id[1]) ? _.titleize(place.site_parent_id[1].toLowerCase())  : '') %></td>
-					<td><%= _.toSentence(placeServices, ', ', ' '+lang.and+' ') %></td>	
-					<td class="text-right hidden-phone"><%= (place.surface != 0 ? _.numberFormat(place.surface, 0, ',', ' ') +' m²' : '') %></td>
+					<td><%= place.getParentPlace() %></td>
+					<td><%= place.getServices('string') %></td>	
+					<td class="text-right hidden-phone"><%= place.getSurface(true) %></td>
 				</tr>
 
 			<% }); %>

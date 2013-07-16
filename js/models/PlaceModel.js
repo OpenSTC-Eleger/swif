@@ -47,6 +47,75 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		this.set({ name : value });
 	},
 
+	getCompleteName : function() {
+		return _.titleize(this.get('complete_name').toLowerCase());
+	},
+	setCompleteName : function(value) {
+		if(_.isUndefined(value)) return;
+		this.set({ complete_name : value });
+	},
+
+	getParentPlace : function(type) {
+
+		// Check if the place have a parent place //
+		if(this.get('site_parent_id')){
+			var id = this.get('site_parent_id')[0];
+			var name = _.titleize(this.get('site_parent_id')[1].toLowerCase());
+		}
+		else{
+			var id, name = '';
+		}
+
+		switch (type){ 
+			case 'id': 
+				return id;
+			break; 
+			default: 
+				return name;
+			break; 
+		}
+
+	},
+	setParentPlace : function(value) {
+		if(_.isUndefined(value)) return;
+		this.set({ site_parent_id : value });
+	},
+
+	getServices : function(type) {
+		
+		var placeServices = [];
+
+		_.each(this.get('service_ids').models, function(s){
+			switch (type){ 
+				case 'id': 
+					placeServices.push(s.attributes.id);
+				break;
+				default:
+					placeServices.push(s.attributes.name);
+				break;
+			}
+		});
+
+		if(type == 'string'){
+			return _.toSentence(placeServices, ', ', ' '+app.lang.and+' ')
+		}
+		else{
+			return placeServices;
+		}
+	},
+	setServices : function(value) {
+		if(_.isUndefined(value)) return;
+		this.set({ service_ids : value });
+	},
+
+	getType : function() {
+		return this.get('type');
+	},
+	setType : function(value) {
+		if(_.isUndefined(value)) return;
+		this.set({ type : value });
+	},
+
 	getLenght : function() {
 		return this.get('lenght');
 	},
@@ -63,28 +132,17 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		this.set({ width : value });
 	},
 
-	getSurface : function() {
-		return this.get('surface');
+	getSurface : function(human) {
+		if(human){
+			return (this.get('surface') != 0 ? _.numberFormat(this.get('surface'), 0, ',', ' ') +' m²' : '');
+		}
+		else{
+			return this.get('surface');
+		}
 	},
 	setSurface : function(value) {
 		if(_.isUndefined(value)) return;
 		this.set({ surface : value });
-	},
-
-	getParent : function() {
-		return this.get('site_parent_id');
-	},
-	setParent : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ site_parent_id : value });
-	},
-
-	getType : function() {
-		return this.get('type');
-	},
-	setType : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ type : value });
 	},
 
 

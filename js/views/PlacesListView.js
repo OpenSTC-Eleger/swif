@@ -58,7 +58,7 @@ app.Views.PlacesListView = Backbone.View.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
 				lang: app.lang,
-				places: places.toJSON(),
+				places: places,
 				nbPlaces: app.collections.places.cpt,
 			});
 
