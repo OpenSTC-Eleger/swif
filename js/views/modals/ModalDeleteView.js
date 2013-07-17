@@ -1,5 +1,5 @@
 /******************************************
-* About View
+* Modal Delete View
 */
 app.Views.ModalDeleteView = Backbone.View.extend({
 
@@ -14,8 +14,7 @@ app.Views.ModalDeleteView = Backbone.View.extend({
 		'click .btnDelete' : 'deleteModel',
 		
 		'show'             : 'show',
-		
-		'hide'             : 'hide',
+		'hidden'           : 'hidden',
 	},
 
 
@@ -54,14 +53,18 @@ app.Views.ModalDeleteView = Backbone.View.extend({
 	*/
 	show: function(){
 		this.delegateEvents(this.events);
+
+		console.log('Japparait Modal delte');
 	},
 
 
 
-	/** Trigger when the modal is hide
+	/** Trigger when the modal is hidden
 	*/
-	hide: function(){
+	hidden: function(){
 		this.undelegateEvents(this.events);
+
+		console.log('je disparait Modal delete HIDDEN');
 	},
 
 

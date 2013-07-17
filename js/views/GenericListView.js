@@ -1,5 +1,5 @@
 /******************************************
-* Places List View
+* Generic List View
 */
 app.Views.GenericListView = Backbone.View.extend({
 
@@ -20,11 +20,13 @@ app.Views.GenericListView = Backbone.View.extend({
 	*/
 	render: function (opts) {
 
+		// Set the Tooltip //
+		$('*[data-toggle="tooltip"]').tooltip();
+
 		// Display sort icon if there is a sort //
 		if(opts.sort.order == 'ASC'){ var newIcon = "icon-sort-up"; }else{ var newIcon = "icon-sort-down"; }
 		$("th[data-column='"+opts.sort.by+"'] > i").removeClass('icon-sort icon-muted')
 		.addClass('active ' + newIcon);
-
 
 		// Rewrite the research in the form //
 		if(!_.isUndefined(opts.search)){

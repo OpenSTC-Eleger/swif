@@ -14,9 +14,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	events: function(){
     	return _.defaults({
 			'click a.modalDeletePlace'                 : 'modalDeletePlace',
-			
 			'click a.modalSavePlace'                   : 'modalSavePlace',
-			'submit #formSavePlace'                    : 'savePlace',
 			
 			'change #placeWidth, #placeLenght'         : 'calculArea'
     	}, 
@@ -61,18 +59,6 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 			// Call the render Generic View //
 			app.Views.GenericListView.prototype.render(self.options);
 
-			$('*[data-toggle="tooltip"]').tooltip();
-			
-
-			// Advance Select List View //
-			app.views.advancedSelectBoxPlaceTypeView = new app.Views.AdvancedSelectBoxView({el: $("#placeType"), model: app.Models.PlaceType.prototype.model_name })
-			app.views.advancedSelectBoxPlaceTypeView.render();
-
-			app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#placeParentPlace"), model: app.Models.Place.prototype.model_name })
-			app.views.advancedSelectBoxPlaceParentView.render();
-
-			app.views.advancedSelectBoxPlaceServices = new app.Views.AdvancedSelectBoxView({el: $("#placeServices"), model: app.Models.ClaimerService.prototype.model_name })
-			app.views.advancedSelectBoxPlaceServices.render();
 
 
 			// Pagination view //
@@ -82,11 +68,6 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 			})
 			app.views.paginationView.render();
 
-
-			// Set the focus to the first input of the form //
-			$('#modalSavePlace, #modalDeletePlace').on('shown', function (e) {
-				$(this).find('input, textarea').first().focus();
-			})
 
 		});
 
@@ -118,7 +99,26 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	/** Add a new categorie
 	*/
 	modalSavePlace: function(e){  
-		this.setModel(e);
+		
+		e.preventDefault();
+
+		var link = $(e.target);
+		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
+
+		var model = app.collections.places.get(id);
+
+
+		//console.log(model);
+
+
+		app.views.modalPlaceView = new app.Views.ModalPlaceView({
+			el    : '#modalSavePlace',
+			model : model
+		});
+		app.views.modalPlaceView.render();
+
+
+		/*this.setModel(e);
 
 
 		// Reset the form //
@@ -145,7 +145,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 			$('#placeWidth').val(this.selectedPlaceJson.width);
 			$('#placeLenght').val(this.selectedPlaceJson.lenght);
 			$('#placeArea').val(this.selectedPlaceJson.surface);			
-		}
+		}*/
 
 	},
 

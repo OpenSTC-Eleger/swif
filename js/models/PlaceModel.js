@@ -15,7 +15,6 @@ app.Models.Place = Backbone.RelationalModel.extend({
 			collectionType: 'app.Collections.ClaimersServices',
 			includeInJSON: ['id', 'name'],
 		},
-
 	],
 
 	
@@ -69,12 +68,16 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		switch (type){ 
 			case 'id': 
 				return id;
-			break; 
+			break;
+			case 'all':
+				return this.get('site_parent_id');
+			break;
+			case 'json':
+				return {id: id, name: name};
+			break;
 			default: 
 				return name;
-			break; 
 		}
-
 	},
 	setParentPlace : function(value) {
 		if(_.isUndefined(value)) return;
@@ -86,13 +89,15 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		var placeServices = [];
 
 		_.each(this.get('service_ids').models, function(s){
-			switch (type){ 
+			switch (type){
 				case 'id': 
 					placeServices.push(s.attributes.id);
 				break;
+				case 'json': 
+					placeServices.push({id: s.attributes.id, name: s.attributes.name});
+				break;
 				default:
 					placeServices.push(s.attributes.name);
-				break;
 			}
 		});
 
@@ -113,9 +118,11 @@ app.Models.Place = Backbone.RelationalModel.extend({
 			case 'id': 
 				return this.get('type')[0];
 			break;
+			case 'json':
+				return {id: this.get('type')[0], name: this.get('type')[1]};
+			break;
 			default:
 				return this.get('type')[1];
-			break;
 		}
 	},
 	setType : function(value) {
