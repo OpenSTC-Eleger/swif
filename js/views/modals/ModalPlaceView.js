@@ -8,14 +8,15 @@ app.Views.ModalPlaceView = Backbone.View.extend({
 
 	modal : null,
 
-	
+
 	// The DOM events //
 	events: {
-		'submit #formSavePlace' : 'saveModel',
+		'change #placeWidth, #placeLenght' : 'calculPlaceArea',
+		'submit #formSavePlace'            : 'savePlaceModel',
 		
-		'show'                  : 'show',
-		'shown'                 : 'shown',
-		'hidden' 				: 'hidden'
+		'show'                             : 'show',
+		'shown'                            : 'shown',
+		'hidden'                           : 'hidden'
 	},
 
 
@@ -71,6 +72,7 @@ app.Views.ModalPlaceView = Backbone.View.extend({
 	},
 
 
+
 	/** Trigger when the modal is shown
 	*/
 	shown: function(){
@@ -91,13 +93,58 @@ app.Views.ModalPlaceView = Backbone.View.extend({
 
 	/** Delete the model pass in the view
 	*/
-	saveModel: function(e){
+	savePlaceModel: function(e){
 		e.preventDefault();
 
 		var self = this;
 
-		console.log('Model Save lol');
-		
+
+		var params = {	
+			name: this.$('#placeName').val(),
+			service_ids: [[6, 0, app.views.advancedSelectBoxPlaceServices.getSelectedItems()]],
+			type: app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(),
+			site_parent_id: app.views.advancedSelectBoxPlaceParentView.getSelectedItem(),
+			width: this.$('#placeWidth').val(),
+			lenght: this.$('#placeLenght').val(),
+			surface: this.$('#placeArea').val(),
+		};
+
+		// If it's a create pass 0 as ID //
+		if(_.isUndefined(this.options.model)){
+			var id = 0;
+		}
+		else{
+			var id = this.options.model.getId();
+			console.log(id);
+		}
+
+		app.Models.Place.prototype.save(
+			params,
+			id, {
+			success: function(data){
+				console.log(data);
+				if(data.error){
+					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				}
+				else{
+					self.modal.modal('hide');
+					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeSaveOk);
+					Backbone.history.loadUrl(Backbone.history.fragment);
+				}
+			},
+			error: function () {
+				alert("Impossible de contacter le serveur");
+			},	
+		});
+
+	},
+
+
+
+	/** Calcul the area of the place
+	*/
+	calculPlaceArea: function (e) {
+		$('#placeArea').val($('#placeWidth').val() * $('#placeLenght').val());
 	}
 
 });

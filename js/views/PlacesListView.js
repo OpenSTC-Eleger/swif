@@ -15,8 +15,6 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
     	return _.defaults({
 			'click a.modalDeletePlace'                 : 'modalDeletePlace',
 			'click a.modalSavePlace'                   : 'modalSavePlace',
-			
-			'change #placeWidth, #placeLenght'         : 'calculArea'
     	}, 
     		app.Views.GenericListView.prototype.events
     	);
@@ -78,7 +76,6 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 
 
 
-
 	setModel: function(e) {
 	
 		this.model = null;
@@ -108,91 +105,12 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		var model = app.collections.places.get(id);
 
 
-		//console.log(model);
-
-
 		app.views.modalPlaceView = new app.Views.ModalPlaceView({
 			el    : '#modalSavePlace',
 			model : model
 		});
 		app.views.modalPlaceView.render();
 
-
-		/*this.setModel(e);
-
-
-		// Reset the form //
-		$('#placeName, #placeWidth, #placeLenght, #placeArea').val('');
-		app.views.advancedSelectBoxPlaceTypeView.reset();
-		app.views.advancedSelectBoxPlaceParentView.reset();
-		app.views.advancedSelectBoxPlaceServices.reset();
-
-		
-		// If it's an update //
-		if( this.selectedPlaceJson ) {
-			$('#placeName').val(this.selectedPlaceJson.name);
-
-			if( this.selectedPlaceJson.type ){
-				app.views.advancedSelectBoxPlaceTypeView.setSelectedItem(this.selectedPlaceJson.type);
-			}
-			if( this.selectedPlaceJson.site_parent_id ){
-				app.views.advancedSelectBoxPlaceParentView.setSelectedItem(this.selectedPlaceJson.site_parent_id);
-			}
-			if(!_.isEmpty(this.selectedPlaceJson.service_ids)){
-				app.views.advancedSelectBoxPlaceServices.setSelectedItems(this.selectedPlaceJson.service_ids);
-			}
-
-			$('#placeWidth').val(this.selectedPlaceJson.width);
-			$('#placeLenght').val(this.selectedPlaceJson.lenght);
-			$('#placeArea').val(this.selectedPlaceJson.surface);			
-		}*/
-
-	},
-
-
-
-	/** Save the place
-	*/
-	savePlace: function (e) {
-
-		e.preventDefault();
-
-
-		var self = this;
-
-	 
-		this.params = {	
-			name: this.$('#placeName').val(),
-			service_ids: [[6, 0, app.views.advancedSelectBoxPlaceServices.getSelectedItems()]],
-			type: app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(),
-			site_parent_id: app.views.advancedSelectBoxPlaceParentView.getSelectedItem(),
-			width: this.$('#placeWidth').val(),
-			lenght: this.$('#placeLenght').val(),
-			surface: this.$('#placeArea').val(),
-		};
-
-		this.modelId = this.selectedPlaceJson==null?0: this.selectedPlaceJson.id;
-		var self = this;
-		
-		app.Models.Place.prototype.save(
-			this.params, 
-			this.modelId, {
-			success: function(data){
-				console.log(data);
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					$('#modalSavePlace').modal('hide');
-					route = Backbone.history.fragment;
-					Backbone.history.loadUrl(route);
-					console.log('Success SAVE PLACE');
-				}
-			},
-			error: function () {
-				console.log('ERROR - Unable to save the Place');
-			},	
-		});
 	},
 
 
@@ -214,17 +132,6 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 			model : model
 		});
 		app.views.modalDeleteView.render();
-	},
-
-
-
-	/** Calcul the area of the place
-	*/
-	calculArea: function (e) {
-
-		var area = $('#placeWidth').val() * $('#placeLenght').val();
-
-		$('#placeArea').val(area);
-	},
+	}
 
 });
