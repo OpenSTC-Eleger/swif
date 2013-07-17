@@ -1,7 +1,7 @@
 /******************************************
 * Officers Collection
 */
-app.Collections.Officers = app.Collections.STCCollection.extend({
+app.Collections.Officers = app.Collections.GenericCollection.extend({
 
 	model: app.Models.Officer,
 

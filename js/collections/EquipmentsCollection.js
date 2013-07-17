@@ -1,7 +1,7 @@
 /******************************************
 * Equipments Collection
 */
-app.Collections.Equipments = app.Collections.STCCollection.extend({
+app.Collections.Equipments = app.Collections.GenericCollection.extend({
 
 	model: app.Models.Equipment,
 

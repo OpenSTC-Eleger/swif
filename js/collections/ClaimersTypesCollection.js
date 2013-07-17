@@ -1,7 +1,7 @@
 /******************************************
 * Claimers Types Collection
 */
-app.Collections.ClaimersTypes = app.Collections.STCCollection.extend({
+app.Collections.ClaimersTypes = app.Collections.GenericCollection.extend({
 
     model: app.Models.ClaimerType,
 

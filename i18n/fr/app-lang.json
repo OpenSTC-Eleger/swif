@@ -39,6 +39,7 @@
 	"modifyBy" 				: "modifié par ",
 	"toValidateBy" 			: "à valider par ",
 	"service" 				: "service",
+	"associatedServices" 	: "services associés",
 	"code" 					: "code",
 	"type" 					: "type",
 	"area" 					: "surface",
@@ -135,6 +136,7 @@
 	"inEuro"				: "en €uro",
 	"observations" 			: "observations",
 	"inKm" 					: "en km",
+	"inMeter" 				: "en mètre",
 	"km"					: "Kilomètres",
 	"and" 					: "et",
 	"vehicleEquipment"						: "Véhicule",
@@ -201,7 +203,8 @@
 		"removeOfTheSchedule" : "Retirer du planning",
 		"print"				: "Imprimer",
 		"selectAPlace"		: "Sélectionner un site",
-		"selectAPlaceType"	: "Sélectionner un type de site"
+		"selectAPlaceType"	: "Sélectionner un type de site",
+		"selectServices"	: "Sélectionner des services"
 	},
 
 	"errorMessages" : {
@@ -284,6 +287,7 @@
     	"deleteContact"			 : "Suppression du contact",
     	"deleteClaimer"			 : "Suppression de l'organisation",
     	"deleteAbsentType"		 : "Suppression du type d'absence",
+    	"deletePlace"		 	 : "Suppression du site",
     	"cancelIntervention" 	 : "Annulation de l'intervention",
     	"cancelTask" 	 		 : "Annulation de la tâche",
     	"confirmChief"			 : "Remonter la demande au DST",

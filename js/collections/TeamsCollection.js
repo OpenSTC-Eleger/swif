@@ -1,7 +1,7 @@
 /******************************************
 * Teams Collection
 */
-app.Collections.Teams = app.Collections.STCCollection.extend({
+app.Collections.Teams = app.Collections.GenericCollection.extend({
 
 	model: app.Models.Team,
 

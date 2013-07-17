@@ -72,7 +72,7 @@ app.Router = Backbone.Router.extend({
 
 
 
-	/** Calcul the sort column and the order
+	/** Calcul the sort By column and the order
 	*/
 	calculPageSort: function(sort){
 
@@ -88,6 +88,17 @@ app.Router = Backbone.Router.extend({
 		}
 
 		return sorter;
+	},
+
+
+
+	/** Calcul the search argument of the patge
+	*/
+	calculSearch: function(search){
+
+		var search = ['|', ["name", "ilike", search], ["surface", "=", _(search).toNumber()]];
+
+		return search;
 	},
 
 
@@ -558,7 +569,7 @@ app.Router = Backbone.Router.extend({
 
 	/** Places management
 	*/
-	places: function(sort, page){
+	places: function(search, sort, page){
 
 		if(this.checkConnect()){
 			var self = this;
@@ -568,6 +579,17 @@ app.Router = Backbone.Router.extend({
 			var sort = this.calculPageSort(sort);
 
 
+			var fetchParams = {
+				limitOffset : {limit: app.config.itemsPerPage, offset: paginate.offset},
+				sortBy      : sort.by+' '+sort.order
+			};
+
+			if(!_.isNull(search)){
+				fetchParams.search = this.calculSearch(search);
+			}
+
+
+
 			// Check if the collections is instantiate //
 			if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
 			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
@@ -575,11 +597,11 @@ app.Router = Backbone.Router.extend({
 			app.loader('display');
 
 			$.when(
-				app.collections.places.fetch({limitOffset: {limit: app.config.itemsPerPage, offset: paginate.offset}, sortBy: sort.by+' '+sort.order}),
+				app.collections.places.fetch(fetchParams),
 				app.collections.claimersServices.fetch()
 			)
 			.done(function(){
-				app.views.placesListView = new app.Views.PlacesListView({page: paginate.page, sort: sort});
+				app.views.placesListView = new app.Views.PlacesListView({page: paginate.page, sort: sort, search: search});
 				self.render(app.views.placesListView);
 
 				app.loader('hide');
@@ -823,7 +845,7 @@ app.Router = Backbone.Router.extend({
 				success: function(){
 
 					$.when(
-						app.collections.claimersTypes.fetch({domain: [['code','<>','ADMINISTRE']]}),
+						app.collections.claimersTypes.fetch({search: [['code','<>','ADMINISTRE']]}),
 						app.collections.claimersServices.fetch(),
 						app.collections.places.fetch(),
 						app.collections.claimersContacts.fetch(),

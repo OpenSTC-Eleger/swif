@@ -1,7 +1,7 @@
 /******************************************
 * AbsentType Collection - Leave Time Type
 */
-app.Collections.AbsentTypes = app.Collections.STCCollection.extend({
+app.Collections.AbsentTypes = app.Collections.GenericCollection.extend({
 
 	model: app.Models.AbsentType,
 

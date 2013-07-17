@@ -1,7 +1,7 @@
 /******************************************
 * Claimers Contacts Collection
 */
-app.Collections.ClaimersContacts = app.Collections.STCCollection.extend({
+app.Collections.ClaimersContacts = app.Collections.GenericCollection.extend({
 
 	model : app.Models.ClaimerContact,
 

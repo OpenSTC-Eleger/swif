@@ -1,7 +1,7 @@
 /******************************************
 * Groups Collection - User groups for OpenERP
 */
-app.Collections.STCGroups = app.Collections.STCCollection.extend({
+app.Collections.STCGroups = app.Collections.GenericCollection.extend({
 
 	model: app.Models.STCGroup,
 
