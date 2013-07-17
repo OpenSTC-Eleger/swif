@@ -235,6 +235,15 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	reportHours: function(params, options) {
 		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "reportHours", app.models.user.getSessionID(), options);
 	},
+	
+	/** Report hours in backend
+	*/	
+	cancel: function(cancel_reason, options) {
+		var params = {}
+		params.state = app.Models.Task.status.cancelled.key;
+		params.cancel_reason = cancel_reason;
+		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
+	},
 
 
 	update: function(params) {
