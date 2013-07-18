@@ -12,12 +12,12 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 
 	// The DOM events //
 	events: function(){
-    	return _.defaults({
+		return _.defaults({
 			'click a.modalDeletePlace'                 : 'modalDeletePlace',
 			'click a.modalSavePlace'                   : 'modalSavePlace',
-    	}, 
-    		app.Views.GenericListView.prototype.events
-    	);
+		}, 
+			app.Views.GenericListView.prototype.events
+		);
 	},
 
 

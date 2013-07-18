@@ -1,7 +1,7 @@
 /******************************************
 * Place Modal View
 */
-app.Views.ModalPlaceView = Backbone.View.extend({
+app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 
 	templateHTML: 'modals/modalPlace',
@@ -10,13 +10,13 @@ app.Views.ModalPlaceView = Backbone.View.extend({
 
 
 	// The DOM events //
-	events: {
-		'change #placeWidth, #placeLenght' : 'calculPlaceArea',
-		'submit #formSavePlace'            : 'savePlaceModel',
-		
-		'show'                             : 'show',
-		'shown'                            : 'shown',
-		'hidden'                           : 'hidden'
+	events: function(){
+		return _.defaults({
+			'change #placeWidth, #placeLenght' : 'calculPlaceArea',
+			'submit #formSavePlace'            : 'savePlaceModel'
+		}, 
+			app.Views.GenericModalView.prototype.events
+		);
 	},
 
 
@@ -65,14 +65,6 @@ app.Views.ModalPlaceView = Backbone.View.extend({
 
 
 
-	/** Trigger when the modal is show
-	*/
-	show: function(){
-		this.delegateEvents(this.events);
-	},
-
-
-
 	/** Trigger when the modal is shown
 	*/
 	shown: function(){
@@ -83,21 +75,12 @@ app.Views.ModalPlaceView = Backbone.View.extend({
 
 
 
-	/** Trigger when the modal is hide
-	*/
-	hidden: function(){
-		this.undelegateEvents(this.events);
-	},
-
-
-
 	/** Delete the model pass in the view
 	*/
 	savePlaceModel: function(e){
 		e.preventDefault();
 
 		var self = this;
-
 
 		var params = {	
 			name: this.$('#placeName').val(),
