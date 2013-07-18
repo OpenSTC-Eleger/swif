@@ -102,9 +102,7 @@ app.Views.PlanningView = Backbone.View.extend({
 			});
 
 			$(self.el).html(template);
-			self.initDragObject();
-			//self.initAllCalendars(false,app.Models.Officer.prototype.model_name );
-			
+			self.initDragObject();			
 
 			$('*[rel="tooltip"]').tooltip();
 			$('*[rel="popover"]').popover({trigger: 'hover', delay: { show: 500, hide: 100 }});
