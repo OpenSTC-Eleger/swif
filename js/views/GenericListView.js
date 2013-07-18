@@ -3,6 +3,8 @@
 */
 app.Views.GenericListView = Backbone.View.extend({
 
+	el            : '#rowContainer',
+
 	urlParameters : ['search', 'sort'],
 	
 	searchForm    : 'form.form-search input',
@@ -10,8 +12,9 @@ app.Views.GenericListView = Backbone.View.extend({
 
 	// The DOM events //
 	events: {
+		'click form.form-search input'             : 'selectSearchInput',
 		'submit form.form-search'                  : 'search',
-		'click table.table-sorter th[data-column]' : 'sort',
+		'click table.table-sorter th[data-column]' : 'sort'
 	},
 
 
@@ -32,6 +35,33 @@ app.Views.GenericListView = Backbone.View.extend({
 		if(!_.isUndefined(opts.search)){
 			$(this.searchForm).val(opts.search);
 		}
+	},
+
+
+
+	/** Select the value in the search input when it is focus
+	*/
+	selectSearchInput: function(e){
+		$(e.target).select();
+	},
+
+
+
+	/** Perform a search on the sites
+	*/
+	search: function(e){
+		e.preventDefault();
+
+		var query = $(this.searchForm).val();
+
+		if(_.isEmpty(query)){
+			delete this.options.search;
+		}
+		else{
+			this.options.search = query
+		}
+
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 	},
 
 
@@ -67,25 +97,6 @@ app.Views.GenericListView = Backbone.View.extend({
 
 		this.options.sort.by = sortBy;
 		this.options.sort.order = sortOrder;
-
-		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-	},
-
-
-
-	/** Perform a search on the sites
-	*/
-	search: function(e){
-		e.preventDefault();
-
-		var query = $(this.searchForm).val();
-
-		if(_.isEmpty(query)){
-			delete this.options.search;
-		}
-		else{
-			this.options.search = query
-		}
 
 		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 	},

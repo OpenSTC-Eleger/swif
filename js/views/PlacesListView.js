@@ -3,10 +3,8 @@
 */
 app.Views.PlacesListView = app.Views.GenericListView.extend({
 
-	el            : '#rowContainer',
-	
 	templateHTML  : 'places',
-	
+
 	selectedPlace : '',
 	
 
@@ -72,23 +70,6 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		$(this.el).hide().fadeIn('slow');
 
 		return this;
-	},
-
-
-
-	setModel: function(e) {
-	
-		this.model = null;
-		this.selectedPlaceJson = null;
-		
-		e.preventDefault();
-		var link = $(e.target);
-		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
-		this.selectedPlace = _.filter(app.collections.places.models, function(item){ return item.attributes.id == id });
-		if( this.selectedPlace.length>0 ) {
-			this.model = this.selectedPlace[0];
-			this.selectedPlaceJson = this.model.toJSON();        
-		}
 	},
 
 
