@@ -234,7 +234,7 @@
 	},
 
 	"infoMessages" : {
-			"information"         	: "Information",
+		"information"         	: "Information",
 		"successLogout"       	: "Vous êtes maintenant déconnecté",
 		"noRequest"      	  	: "Aucune intervention à afficher",
 		"noRequestPlanned"		: "Aucune intervention planifiées",
@@ -298,6 +298,7 @@
 		"newIntervention"		 : "Nouvelle intervention",
 		"newTask"				 : "Nouvelle tâche",
 		"newPlace"				 : "Nouveau site",
+		"editPlace"				 : "Édition du site",
 		"newAbsent"				 : "Nouvelle absence",
 		"newService"			 : "Nouveau service",
 		"newContact"			 : "Nouveau contact",
