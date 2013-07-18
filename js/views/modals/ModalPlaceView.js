@@ -93,14 +93,10 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		};
 
 		// If it's a create pass 0 as ID //
-		if(_.isUndefined(this.options.model)){
-			var id = 0;
-		}
-		else{
-			var id = this.options.model.getId();
-			console.log(id);
-		}
+		if(_.isUndefined(this.options.model)){ var id = 0; }
+		else{ var id = this.options.model.getId(); }
 
+		
 		app.Models.Place.prototype.save(
 			params,
 			id, {
@@ -111,7 +107,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 				}
 				else{
 					self.modal.modal('hide');
-					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeSaveOk);
+					app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.placeSaveOk);
 					Backbone.history.loadUrl(Backbone.history.fragment);
 				}
 			},

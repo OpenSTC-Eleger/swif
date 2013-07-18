@@ -108,6 +108,9 @@ app.Models.Place = Backbone.RelationalModel.extend({
 			return placeServices;
 		}
 	},
+	getServicesName : function(){
+		return this.get('service_names');
+	},
 	setServices : function(value) {
 		if(_.isUndefined(value)) return;
 		this.set({ service_ids : value });

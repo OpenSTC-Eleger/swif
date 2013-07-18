@@ -211,10 +211,10 @@ app.Models.User = Backbone.Model.extend({
 		})
 		.fail(function (error){
 			console.error(error);
+			app.loader('hide');
 			app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
 		})
 		.done(function (data) {
-
 
 			if(data.uid == false){
 				app.loader('hide');

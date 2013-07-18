@@ -35,6 +35,9 @@ app.Views.GenericListView = Backbone.View.extend({
 		if(!_.isUndefined(opts.search)){
 			$(this.searchForm).val(opts.search);
 		}
+
+		// Set the focus to the search form //
+		$('form.form-search input').focus();
 	},
 
 

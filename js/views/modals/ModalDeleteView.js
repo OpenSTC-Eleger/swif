@@ -61,7 +61,7 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 				}
 				else{
 					self.modal.modal('hide');
-					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
+					app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
 					Backbone.history.loadUrl(Backbone.history.fragment);
 				}
 			},
