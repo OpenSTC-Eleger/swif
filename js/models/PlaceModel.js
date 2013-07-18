@@ -7,17 +7,7 @@ app.Models.Place = Backbone.RelationalModel.extend({
 	
 	url: "/#places/:id",
 	
-	relations: [ 
-		{
-			type: Backbone.HasMany,
-			key: 'service_ids',
-			relatedModel: 'app.Models.ClaimerService',
-			collectionType: 'app.Collections.ClaimersServices',
-			includeInJSON: ['id', 'name'],
-		},
-	],
 
-	
 	defaults:{
 		id             : 0,
 		name           : null,
@@ -27,7 +17,6 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		lenght         : 0,
 		surface        : 0,
 	},
-
 
 
 	getId : function() {
@@ -83,21 +72,20 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		if(_.isUndefined(value)) return;
 		this.set({ site_parent_id : value });
 	},
+	getServices : function(type){
 
-	getServices : function(type) {
-		
 		var placeServices = [];
 
-		_.each(this.get('service_ids').models, function(s){
+		_.each(this.get('service_names'), function(s){
 			switch (type){
 				case 'id': 
-					placeServices.push(s.attributes.id);
+					placeServices.push(s[0]);
 				break;
 				case 'json': 
-					placeServices.push({id: s.attributes.id, name: s.attributes.name});
+					placeServices.push({id: s[0], name: s[1]});
 				break;
 				default:
-					placeServices.push(s.attributes.name);
+					placeServices.push(s[1]);
 			}
 		});
 
@@ -107,9 +95,6 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		else{
 			return placeServices;
 		}
-	},
-	getServicesName : function(){
-		return this.get('service_names');
 	},
 	setServices : function(value) {
 		if(_.isUndefined(value)) return;
