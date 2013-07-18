@@ -159,6 +159,12 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		this.set({ surface : value });
 	},
 
+	/** Get Informations of the model
+	*/
+	getInformations : function(){
+		return [this.getName(), this.getType()];
+	},
+
 
 
 	/** Model Initialization
@@ -167,7 +173,8 @@ app.Models.Place = Backbone.RelationalModel.extend({
 
 	},
 
-	
+
+
 	/** Model Parser 
 	*/
 	parse: function(response) {
@@ -187,7 +194,8 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		this.setLenght( params.lenght );
 		this.setSurface( params.surface );
 	},
-	
+
+
 
 	/** Save Model
 	*/
@@ -196,17 +204,10 @@ app.Models.Place = Backbone.RelationalModel.extend({
 	},
 
 
-	/** Create Model
-	*/
-	create: function(data, options) { 
-		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
-	},
 
-
-	
 	/** Delete place
 	*/
-	delete: function (options) {	
+	delete: function (options) {
 		app.deleteOE( 
 			[[this.get('id')]],
 			this.model_name,
