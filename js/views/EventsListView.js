@@ -28,7 +28,17 @@ app.Views.EventsListView = Backbone.View.extend({
 		//get officers or teams list  
 		var collection = this.teamMode?app.models.user.getTeams():app.models.user.getOfficers();
 		//Set domain to fetch according the mode (team or officer mode)
-		this.domain = this.teamMode?[['team_id','=',this.options.calendarId]]:[['user_id','=',this.options.calendarId]];		
+		
+		if( this.teamMode ) {
+			this.domain = ['|',	['team_id','=',this.options.calendarId],
+			               		['user_id','in',app.models.user.getOfficerIdsByTeamId(this.options.calendarId)]
+			               ];
+		}
+		else{			
+			this.domain = ['|',	['user_id','=',this.options.calendarId],
+			               		['team_id','in',app.models.user.getTeamIdsByOfficerId(this.options.calendarId)]
+			               ];
+		}	
 		
 		//set team or officer model
 		this.model = _.find(collection, function (o) { 
@@ -37,8 +47,7 @@ app.Views.EventsListView = Backbone.View.extend({
 		
 		//Set dom element of calendar
 		this.divCalendar = 'div#calendar_' + this.model.id;		
-		this.initCollection();
-		
+		this.initCollection();		
 
 	},
 
@@ -163,10 +172,22 @@ app.Views.EventsListView = Backbone.View.extend({
     		//task = task.toJSON()
     		var actionDisabled = task.state == app.Models.Task.status.done.key || task.state == app.Models.Task.status.cancelled.key;
 
+    		var title = task.name;
+    		if( self.teamMode ) {
+    			if( task.user_id ) {
+    				title += "(" + task.user_id[1] + ")"
+    			}   				
+    		}
+    		else{
+    			if( task.team_id ) {
+    				title += "(" + task.team_id[1] + ")"
+    			}    
+    		}
+    		
     		var event = { 
     			id: task.id, 
 				state: task.state,
-				title: task.name, 
+				title: title, 
 				start: task.date_start!=false?task.date_start.toDate():null,
 				end: task.date_end!=false?task.date_end.toDate():null,
 				planned_hours: task.planned_hours,
@@ -269,11 +290,10 @@ app.Views.EventsListView = Backbone.View.extend({
 			startOfLunchTime	: app.config.startLunchTime,
 			endOfLunchTime		: app.config.endLunchTime,
             
+			/**
+			 * Open leave time
+			 */
 			select: function( startDate, endDate, allDay, jsEvent, view) {
-
-				//console.debug('START' + startDate);
-				//console.debug('START' + endDate);
-				//console.debug('ALLDAY' + allDay);
 
 				var mStartDate = moment( startDate );
 				var mEndDate = moment( endDate );
@@ -303,18 +323,11 @@ app.Views.EventsListView = Backbone.View.extend({
 		    		$("#startHour").timepicker( 'setTime', mStartDate.format('LT') );
 		    		$("#endHour").timepicker('setTime', mEndDate.format('LT') );
 	        	}
-
-	        	// Set Modal informations //
-	        	if(!self.teamMode){
-	        		var selectedOfficer = app.collections.officers.get(this.model.id);
-	    			$('#infoModalAbsentTask p').html("<i class='icon-user'></i> "+selectedOfficer.getFullname());
-	    			$('#infoModalAbsentTask small').html("Du " + mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
-	    		}
-	    		else{
-    				var selectedTeam = app.collections.teams.get(this.model.id);
-	    			$('#infoModalAbsentTask p').html("<i class='icon-group'></i> "+selectedTeam.getName());
-	    			$('#infoModalAbsentTask small').html("Du " + mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );	
-	    		}
+	        	
+	        	// Set Modal informations 
+	        	var icon = self.teamMode?'group':'user' 
+	        	$('#infoModalAbsentTask p').html("<i class='icon-" + icon +"'></i> " + self.model.name );
+	    		$('#infoModalAbsentTask small').html("Du " + mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
 
 	    		modalAbsentTask.one('submit', function(event) {
 					event.preventDefault();
@@ -348,8 +361,8 @@ app.Views.EventsListView = Backbone.View.extend({
 						    effective_hours: planned_hours,
 						    hours: planned_hours,
 						    remaining_hours: 0,
-						    team_id: self.teamMode?this.model.id:0,
-						    user_id: !self.teamMode?this.model.id:0,
+						    team_id: self.teamMode?self.model.id:0,
+						    user_id: !self.teamMode?self.model.id:0,
 						}
 						app.models.task.save(0,params,{
 							success: function(data){
@@ -370,11 +383,12 @@ app.Views.EventsListView = Backbone.View.extend({
 			},
 
 
-
+			/**
+			 * Open modal to fill leave
+			 */
 			start: function (event, ui){
 				$('modalAbsentTask').modal();
 			},
-
 
 
 			/** When a event is Drop on the calendar
@@ -406,7 +420,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			},
 
 
-
+			//Drop event from time slot to another
 			eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
 				app.loader('display');
 				
@@ -421,7 +435,9 @@ app.Views.EventsListView = Backbone.View.extend({
 			},
 
 
-
+			/**
+			 * Resize event
+			 */
 			eventResize: function( event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) { 
 				
 				app.loader('display');
@@ -440,17 +456,20 @@ app.Views.EventsListView = Backbone.View.extend({
 			},
 		});
 	
+    	/**
+    	 * Get calendar name
+    	 */
 		var username = $(this.divCalendar).data('username');
 		
-		
+		/**
+		 * Add personal icon for officer on calendar 
+		 */
 		$('table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");
 
-
-
-		
-		
 						
-		//Initialize Print calendar view
+		/**
+		 * Initialize Print calendar view
+		 */
 		app.views.printingCalendarView = new app.Views.PrintingCalendarView({
 			calendar : this,
 			el: $("#printingCalendar"), 

@@ -2,16 +2,8 @@
  * Service Details View
  */
 app.Views.PrintingCalendarView = Backbone.View.extend({
-
-	//el : '#printingCalendar',
 	
 	templateHTML: 'printingCalendar',
-
-	
-	// The DOM events //
-	events: {
-	},
-
 
 
 	/** View Initialization
@@ -21,7 +13,6 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 		this.events = this.options.events;
 		this.render();
     },
-
 
 
     /** Display the view
@@ -49,53 +40,6 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 		});
 		return this;
     },
-
-
-
-	
-    
-    //--------------------Print calendar--------------------------------------//
-	renderHours: function (o, date){
-		return date.format('H[h]mm');
-
-	},
-
-
-	
-	getIntervention: function (o, intervention) {
-		return intervention.name;
-	},
-	
-
-
-	getPlace: function (o, intervention) {
-		//console.debug(intervention);
-		return intervention.site1!=null?intervention.site1[1]:"";
-	
-	},
-
-
-	
-	getStyle: function (nTd, sData, oData, iRow, iCol) {
-		if( oData.state == app.Models.Task.status.absent.key )
-			$(nTd).css('font-style', 'italic');
-	},
-	
-	renderResume: function (o, check){
-		if( o.aData.state != app.Models.Task.status.absent.key )
-			return "<td class=\"center\"><input type=\"checkbox\" disabled " + (check?"checked":"") + "></td>";
-		else
-			return "<td class=\"center\"></td>";
-	},
-	
-
-	
-	getDay : function(date) {
-		var momentDate = moment( $(this.divCalendar).fullCalendar('getView').visStart );
-		return date.format('dddd D MMMM');
-	},
-		
-
 
 	/** Print Calendar
 	*/
@@ -277,9 +221,42 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 			]
 		});
 	},	
-	
-
 	//--------------------End  Print calendar----------------------------------------//
+
+	
+    
+    //--------------------Getter--------------------------------------//
+	renderHours: function (o, date){
+		return date.format('H[h]mm');
+	},
+	
+	getIntervention: function (o, intervention) {
+		return intervention.name;
+	},	
+
+	getPlace: function (o, intervention) {
+		//console.debug(intervention);
+		return intervention.site1!=null?intervention.site1[1]:"";
+	
+	},
+	
+	getStyle: function (nTd, sData, oData, iRow, iCol) {
+		if( oData.state == app.Models.Task.status.absent.key )
+			$(nTd).css('font-style', 'italic');
+	},
+	
+	renderResume: function (o, check){
+		if( o.aData.state != app.Models.Task.status.absent.key )
+			return "<td class=\"center\"><input type=\"checkbox\" disabled " + (check?"checked":"") + "></td>";
+		else
+			return "<td class=\"center\"></td>";
+	},
+	
+	getDay : function(date) {
+		var momentDate = moment( $(this.divCalendar).fullCalendar('getView').visStart );
+		return date.format('dddd D MMMM');
+	},
+	
 });
 
 jQuery.fn.dataTableExt.oSort['day-asc']  = function(x,y) {

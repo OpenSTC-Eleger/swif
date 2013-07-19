@@ -1,6 +1,6 @@
 {
     "openerp": {
-    	"url" 		: "http://localhost:8069",
+    	"url" 		: "http://ostc-dev.siclic.fr:8069",
     	"database" 	: "pontlabbe2"
     },
     "itemsPerPage"		: 20,
