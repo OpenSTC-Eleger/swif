@@ -174,7 +174,60 @@ app.Models.User = Backbone.Model.extend({
 	setDST: function(value) {
 		this.set({ isDST : value });
 	},
+	
+	/**
+	 * Get Officer By Id
+	 */
+	getOfficerById: function(id){
+		return _.find(this.getOfficers(), function(officer){
+			return officer.id == id
+		});
+	},
 
+	/**
+	 * Get officer's teams list selected in planning
+	 */
+	getOfficerIdsByTeamId: function(id) {
+		var self = this;
+		var officers = []
+		               
+		var team = _.find(this.getTeams(), function(team){
+			return team.id == id
+		});
+		if(_.isUndefined(team)) return officers;
+		
+		_.each(team.members, function(member){			
+			officers.push(member.id);
+		});
+		return officers;	
+	},
+	
+	/**
+	 * Get Officer By Id
+	 */
+	getTeamById: function(id){
+		return _.find(this.getTeams(), function(team){
+			return team.id == id
+		});
+	},
+
+	/**
+	 * Get team's officers list selected in planning
+	 */
+	getTeamIdsByOfficerId: function(id) {
+		var self = this;
+		var teams = []
+		               
+		var officer = _.find(this.getOfficers(), function(officer){
+			return officer.id == id
+		});
+		if(_.isUndefined(officer)) return teams;
+		
+		_.each(officer.teams, function(team){			
+			teams.push(team);
+		});
+		return teams;	
+	},
 		
 
 	/** get, by calling server, officers and teams to filter on it in tasks/planning screens

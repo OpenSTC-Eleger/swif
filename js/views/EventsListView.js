@@ -28,7 +28,17 @@ app.Views.EventsListView = Backbone.View.extend({
 		//get officers or teams list  
 		var collection = this.teamMode?app.models.user.getTeams():app.models.user.getOfficers();
 		//Set domain to fetch according the mode (team or officer mode)
-		this.domain = this.teamMode?[['team_id','=',this.options.calendarId]]:[['user_id','=',this.options.calendarId]];		
+		
+		if( this.teamMode ) {
+			this.domain = ['|',	['team_id','=',this.options.calendarId],
+			               		['user_id','in',app.models.user.getOfficerIdsByTeamId(this.options.calendarId)]
+			               ];
+		}
+		else{			
+			this.domain = ['|',	['user_id','=',this.options.calendarId],
+			               		['team_id','in',app.models.user.getTeamIdsByOfficerId(this.options.calendarId)]
+			               ];
+		}	
 		
 		//set team or officer model
 		this.model = _.find(collection, function (o) { 
@@ -37,7 +47,8 @@ app.Views.EventsListView = Backbone.View.extend({
 		
 		//Set dom element of calendar
 		this.divCalendar = 'div#calendar_' + this.model.id;		
-		this.initCollection();
+		this.initCollection();		
+
 	},
 
 	initCollection: function() {
@@ -46,7 +57,7 @@ app.Views.EventsListView = Backbone.View.extend({
 		this.filterTasks = null;
 		//fetch tasks of officer or team to display events in calendar
 		collection = new app.Collections.Tasks();
-		collection.fetch({domain: self.domain,
+		collection.fetch({search: self.domain,
 			success: function(data){
 				self.filterTasks = data.toJSON()
 				self.render();
@@ -153,25 +164,6 @@ app.Views.EventsListView = Backbone.View.extend({
 		this.collection.get(fcEvent.id).save({start: fcEvent.start, end: fcEvent.end});            
 	},
     
-
-
-	copy: function() {
-		console.log('Copy Event');
-	},
-
-
-
-    remove: function() {
-    	console.log('Remove Event');
-    },
-
-
-
-    edit: function() {
-    	console.log('Edit Event');
-    },
-
-    
     initEvents: function() {
     	this.events = [];
     	var self = this;
@@ -180,10 +172,22 @@ app.Views.EventsListView = Backbone.View.extend({
     		//task = task.toJSON()
     		var actionDisabled = task.state == app.Models.Task.status.done.key || task.state == app.Models.Task.status.cancelled.key;
 
+    		var title = task.name;
+    		if( self.teamMode ) {
+    			if( task.user_id ) {
+    				title += "(" + task.user_id[1] + ")"
+    			}   				
+    		}
+    		else{
+    			if( task.team_id ) {
+    				title += "(" + task.team_id[1] + ")"
+    			}    
+    		}
+    		
     		var event = { 
     			id: task.id, 
 				state: task.state,
-				title: task.name, 
+				title: title, 
 				start: task.date_start!=false?task.date_start.toDate():null,
 				end: task.date_end!=false?task.date_end.toDate():null,
 				planned_hours: task.planned_hours,
@@ -286,11 +290,10 @@ app.Views.EventsListView = Backbone.View.extend({
 			startOfLunchTime	: app.config.startLunchTime,
 			endOfLunchTime		: app.config.endLunchTime,
             
+			/**
+			 * Open leave time
+			 */
 			select: function( startDate, endDate, allDay, jsEvent, view) {
-
-				//console.debug('START' + startDate);
-				//console.debug('START' + endDate);
-				//console.debug('ALLDAY' + allDay);
 
 				var mStartDate = moment( startDate );
 				var mEndDate = moment( endDate );
@@ -320,18 +323,11 @@ app.Views.EventsListView = Backbone.View.extend({
 		    		$("#startHour").timepicker( 'setTime', mStartDate.format('LT') );
 		    		$("#endHour").timepicker('setTime', mEndDate.format('LT') );
 	        	}
-
-	        	// Set Modal informations //
-	        	if(!self.teamMode){
-	        		var selectedOfficer = app.collections.officers.get(this.model.id);
-	    			$('#infoModalAbsentTask p').html("<i class='icon-user'></i> "+selectedOfficer.getFullname());
-	    			$('#infoModalAbsentTask small').html("Du " + mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
-	    		}
-	    		else{
-    				var selectedTeam = app.collections.teams.get(this.model.id);
-	    			$('#infoModalAbsentTask p').html("<i class='icon-group'></i> "+selectedTeam.getName());
-	    			$('#infoModalAbsentTask small').html("Du " + mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );	
-	    		}
+	        	
+	        	// Set Modal informations 
+	        	var icon = self.teamMode?'group':'user' 
+	        	$('#infoModalAbsentTask p').html("<i class='icon-" + icon +"'></i> " + self.model.name );
+	    		$('#infoModalAbsentTask small').html("Du " + mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
 
 	    		modalAbsentTask.one('submit', function(event) {
 					event.preventDefault();
@@ -365,8 +361,8 @@ app.Views.EventsListView = Backbone.View.extend({
 						    effective_hours: planned_hours,
 						    hours: planned_hours,
 						    remaining_hours: 0,
-						    team_id: self.teamMode?this.model.id:0,
-						    user_id: !self.teamMode?this.model.id:0,
+						    team_id: self.teamMode?self.model.id:0,
+						    user_id: !self.teamMode?self.model.id:0,
 						}
 						app.models.task.save(0,params,{
 							success: function(data){
@@ -387,11 +383,12 @@ app.Views.EventsListView = Backbone.View.extend({
 			},
 
 
-
+			/**
+			 * Open modal to fill leave
+			 */
 			start: function (event, ui){
 				$('modalAbsentTask').modal();
 			},
-
 
 
 			/** When a event is Drop on the calendar
@@ -423,7 +420,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			},
 
 
-
+			//Drop event from time slot to another
 			eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
 				app.loader('display');
 				
@@ -438,7 +435,9 @@ app.Views.EventsListView = Backbone.View.extend({
 			},
 
 
-
+			/**
+			 * Resize event
+			 */
 			eventResize: function( event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) { 
 				
 				app.loader('display');
@@ -455,41 +454,27 @@ app.Views.EventsListView = Backbone.View.extend({
 			    self.options.planning.render();
 			    app.loader('hide');
 			},
-
-
-
-			loading: function (bool) { 
-			},
-
-
-
-			eventRender: function(event, element) {
-				//$(this.event).css('border-color', 'yellow');
-			},
-
-
-
-			eventDragStop: function(event, jsEvent, ui, view) {
-			},
-
 		});
 	
+    	/**
+    	 * Get calendar name
+    	 */
 		var username = $(this.divCalendar).data('username');
 		
-		
+		/**
+		 * Add personal icon for officer on calendar 
+		 */
 		$('table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");
 
-
-		// Print button //
-		$('<span class="fc-button-print">' 
-			   +'<button class="btn btn-primary btn-small no-outline"><i class="icon-print"></i></button></span>')
-			  //+('labels', 'Print') + '</span>')
-			  .appendTo(self.divCalendar + ' td.fc-header-right')
-			  .button()
-			  .on('click', function() {
-				    self.printCalendar();
-			  })
-			  .before('<span class="fc-header-space">');
+						
+		/**
+		 * Initialize Print calendar view
+		 */
+		app.views.printingCalendarView = new app.Views.PrintingCalendarView({
+			calendar : this,
+			el: $("#printingCalendar"), 
+			events : self.filterTasks,
+		})
 			
 		
 	},
@@ -686,239 +671,6 @@ app.Views.EventsListView = Backbone.View.extend({
 	    return 1;
     },        
     //--------------------End cut dropped task on calendar--------------------//
-	
-    
-    //--------------------Print calendar--------------------------------------//
-	renderHours: function (o, date){
-		return date.format('H[h]mm');
 
-	},
-
-
-	
-	getIntervention: function (o, intervention) {
-		return intervention.name;
-	},
-	
-
-
-	getPlace: function (o, intervention) {
-		//console.debug(intervention);
-		return intervention.site1!=null?intervention.site1[1]:"";
-	
-	},
-
-
-	
-	getStyle: function (nTd, sData, oData, iRow, iCol) {
-		if( oData.state == app.Models.Task.status.absent.key )
-			$(nTd).css('font-style', 'italic');
-	},
-	
-	renderResume: function (o, check){
-		if( o.aData.state != app.Models.Task.status.absent.key )
-			return "<td class=\"center\"><input type=\"checkbox\" disabled " + (check?"checked":"") + "></td>";
-		else
-			return "<td class=\"center\"></td>";
-	},
-	
-
-	
-	getDay : function(date) {
-		var momentDate = moment( $(this.divCalendar).fullCalendar('getView').visStart );
-		return date.format('dddd D MMMM');
-	},
-		
-
-
-	/** Print Calendar
-	*/
-	printCalendar: function () {
-		var date = moment( $(this.divCalendar).fullCalendar('getView').visStart );			
-		var momentDate = moment().year(date.year()).week(date.week());
-		
-		var firstDayOfTheWeek = momentDate.clone().day(1);
-		var lastDayOfTheWeek = momentDate.clone().day(7);
-	
-	
-		if(firstDayOfTheWeek.isSame(lastDayOfTheWeek, 'month')){
-			var titleFirstDay = momentDate.day(1).format('D');
-		}
-		else{
-			if(firstDayOfTheWeek.isSame(lastDayOfTheWeek, 'year')){
-				var titleFirstDay = momentDate.day(1).format('D MMM');
-			}
-			else{
-				var titleFirstDay = momentDate.day(1).format('D MMM YYYY');
-			}
-		}
-					
-		$("#printContainer .before-muted").html( app.lang.week + " " + momentDate.week() + " - " ); 
-		$("#printContainer .muted").html( titleFirstDay + " " + app.lang.to + " " + lastDayOfTheWeek.format('D MMM YYYY')  );			
-		
-		var self = this;
-		
-		var paperBoard = this.filterTasks[0];//this.collection.toJSON();
-		var elementToPrint = $('#printContainer');
-		var worker = null
-		if ( paperBoard && paperBoard.user_id  )
-			worker = $('#worker').text(paperBoard.user_id[1]);
-		else if ( paperBoard && paperBoard.team_id  )
-			worker = $('#worker').text(paperBoard.team_id[1]);
-		var table = $('#paperboard');
-		
-		var tasks = _.filter(this.filterTasks, function(task){ 
-			//var task = task.toJSON()
-        	return (
-        			task.date_start && task.date_start.toDate() < $(self.divCalendar).fullCalendar('getView').visEnd &&
-        			task.date_end && task.date_end.toDate() > $(self.divCalendar).fullCalendar('getView').visStart &&
-        			(	task.state != app.Models.Task.status.draft.key &&
-        				task.state != app.Models.Task.status.cancelled.key
-        			)
-        			
-        		); 
-        });
-		
-		tasks = _.sortBy(tasks, function(item){ 
-		    return item.date_start; 
-		});
-		
-		
-	    _.each(tasks, function(task){ 
-	    	//var task = task.toJSON()
-	    	var inter = task.intervention;
-	    	
-	    	task["day"] = self.getDay(task.date_start);
-	    	
-	    	task["inter"] = ( inter!=null)?inter.name:"" ;
-	    	task["name"] = task.name;
-	    	//task["category"] = ( task.category_id!=null )?task.category_id[1]:"" ;
-	    	task["place"] = ( inter!=null && inter.site1!=null && inter.site1[1] )?inter.site1[1]:"" ;
-	    	//task["effective_hours"] = "";
-	    	//task["remaining_hous"] = "";
-	    	task["done"] = ( task.state == app.Models.Task.status.done.key  ? true : false );
-	    	
-	    	task["equipment"] = "";
-	    	if( task.equipment_ids ) {
-		    	_.each( task.equipment_ids, function( equipment ) {
-		    		task["equipment"] += "[" + equipment.complete_name + "]";
-		    	});
-		    }
-	    	
-		    task["planned_hours"] =  ( task.planned_hours>0? task.planned_hours : '' );
-		    task["effective_hours"] =  ( task.effective_hours>0? task.effective_hours : '' );
-		    task["remaining_hours"] =  '';//( task.remaining_hours>0? task.remaining_hours : '' );
-	    	task["oilQtity"] =  (task.oil_qtity>0? task.oil_qtity : '');
-	    	task["oilPrice"] =  (task.oil_price>0? task.oil_price : '');
-	    	task["taskHours"] = task.date_start.format('H[h]mm') + '-' + task.date_end.format('H[h]mm');
-	    	task["km"] = ''; //task.km;
-
-	    	task["description"] = '';
-	    	if(inter!=null){
-    			task["description"] = inter.description;
-	    	}
-	    	else{
-	    		task["description"] = '';
-	    	}			    
-
-	    })
-		
-	    $('#paperboard').data('resultSet', tasks);
-	    var results = $('#paperboard').data('resultSet');
-	    self.results = results;
-	    
-		table.dataTable({
-			"bAutoWidth": false,
-			"aaData": self.results,
-		    "bJQueryUI": true,
-		    "sPaginationType": "full_numbers",
-		    "bProcessing": true,
-		    "bSort": true,
-		    //"bDeferRender": true,
-		    //"sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-		    "aoColumns": [			        
-		        {"sDay": "Day", "mDataProp": "day", 'sWidth': '5%', 'sClass': "center", "bVisible": false, "sType": "day"},
-		        {"sInter": "Inter", "mDataProp": "inter", 'sWidth': '5%', 'sClass': "center"},
-		        {"sDescription": "Description", "mDataProp": "description", 'sWidth': '5%'},
-		        {"sName": "Name", "mDataProp": "name", 'sWidth': '5%', 'fnCreatedCell': self.getStyle },
-		        {"sPlace": "Place", "mDataProp": "place", 'sWidth': '5%', 'sClass': "center"},
-		        {"sDateStart": "DateStart", "mDataProp": "taskHours","sType": "date", 'sWidth': '2%'},
-		        { "sWorkingTime": "WorkingTime", "mDataProp": "planned_hours", 'sWidth': '1%','sClass': "center"},//'sWidth': '5%'},
-		        { "sEffectiveTime": "EffectiveTime", "mDataProp": "effective_hours", 'sWidth': '1%','sClass': "center toFill"}, //'sWidth': '5%','fnRender': self.renderHours},
-		        { "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours", 'sWidth': '1%','sClass': "center toFill"}, //'sWidth': '5%','fnRender': self.renderHours},
-		        { "sDone": "Done", "mDataProp": "done", 'sWidth': '2%','fnRender': self.renderResume},
-		        { "sEquipment": "Equipment", "mDataProp": "equipment", 'sWidth': '25%','sClass': "center toFill"},
-		        { "sOilQtity": "oilQtity", "mDataProp": "oilQtity", 'sWidth': '2%', 'sClass': "center toFill"},
-		        { "km": "km", "mDataProp": "km", 'sWidth': '2%', 'sClass': "center toFill"},
-		        { "sOilPrice": "oilPrice", "mDataProp": "oilPrice", 'sWidth': '2%', 'sClass': "center toFill"},
-		        ],
-		
-		    "bFilter": false,"bInfo": false,"bPaginate": false,"bLengthChange": false,
-		    bRetrieve: true,
-		    "fnDrawCallback": function ( oSettings ) {					
-	            if ( oSettings.aiDisplay.length == 0 )
-	            {
-	                return;
-	            }
-	             
-	            var nTrs = $('#paperboard tbody tr');
-	            var iColspan = nTrs[0].getElementsByTagName('td').length;
-	            var sLastGroup = "";
-	            for ( var i=0 ; i<nTrs.length ; i++ )
-	            {
-	                var iDisplayIndex = oSettings._iDisplayStart + i;
-	                var sGroup = oSettings.aoData[ oSettings.aiDisplay[iDisplayIndex] ]._aData["day"];
-	                if ( sGroup != sLastGroup )
-	                {
-	                    var nGroup = document.createElement( 'tr' );
-	                    var nCell = document.createElement( 'td' );
-	                    
-	                    //$(nCell).css({ backgroundColor: '#FFF'});//.css({ display: 'table-row' }).addClass('expend');
-	                    nCell.colSpan = iColspan;
-	                    nCell.className = "group";
-	                    //$(nCell).addClass("gradeA"); 
-	                    nCell.innerHTML = sGroup;
-	                    //$(nGroup).addClass("row-object");
-	                    nGroup.appendChild( nCell );
-	                    nTrs[i].parentNode.insertBefore( nGroup, nTrs[i] );
-	                    sLastGroup = sGroup;
-	                }
-	            }
-	        },
-	        "fnSort": function (x,y) {
-		          return ((x < y) ? -1 : ((x > y) ?  1 : 0));
-		    },
-	        "aoColumnDefs": [
-	            { "bVisible": false, "aTargets": [ 0 ] }
-	        ],
-	        //"aaSortingFixed": [[ 0, 'asc' ]],
-	        "aaSorting": [[ 0, 'asc' ]],
-	        //"sDom": 'lfr<"giveHeight"t>ip',
-	         //"binfo": true,
-	         //"sDom": '<"top"i>rt<"bottom"flp><"clear">'
-		})
-
-		table.fnClearTable();
-		if (results.length)
-			table.fnAddData(results);
-		table.fnDraw();
-
-		elementToPrint.printElement({
-			leaveOpen	: true,
-			printMode	: 'popup',
-			overrideElementCSS:[
-				{ href:'css/vendors/print_table.css', media: 'all'}
-			]
-		});
-	},	
-	
-
-	//--------------------End  Print calendar----------------------------------------//
 });
 
-jQuery.fn.dataTableExt.oSort['day-asc']  = function(x,y) {
-	var days = Array("lundi","mardi","mercredi","jeudi","vendredi","samedi");
-	var indexOfx = days.indexOf(x);
-	var indexOfy = days.indexOf(y);
-	return ((indexOfx < indexOfy) ? -1 : ((indexOfx > indexOfy) ? 1 : 0));
-};
