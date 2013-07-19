@@ -30,7 +30,7 @@
 			<label for="placeType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
 
 			<div class="controls">
-				<input id="placeType" style="width: 66%" required="required" data-placeholder="<%= lang.actions.selectAPlaceType %>"
+				<input id="placeType" class="select2" style="width: 66%" required="required" data-placeholder="<%= lang.actions.selectAPlaceType %>"
 
 					<% if(!_.isUndefined(place)){
 						if(!_.isUndefined(place.getType('id'))) { %>
@@ -45,7 +45,7 @@
 		<div class="control-group">
 			<label for="placeParentPlace" class="control-label"><%= _.capitalize(lang.parentPlace) %>:</label>
 			<div class="controls">
-				<input id="placeParentPlace" style="width: 66%" data-placeholder="<%= lang.actions.selectAPlace %>" data-minimum-input-length="2" 
+				<input id="placeParentPlace" class="select2" style="width: 66%" ddata-placeholder="<%= lang.actions.selectAPlace %>" data-minimum-input-length="2" 
 
 					<% if(!_.isUndefined(place)){
 						if(!_.isUndefined(place.getParentPlace('id'))) { %>
@@ -60,7 +60,7 @@
 		<div class="control-group">
 			<label for="placeServices" class="control-label"><%= _.capitalize(lang.associatedServices) %>:</label>
 			<div class="controls">
-				<input id="placeServices" style="width: 230px" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="true" 
+				<input id="placeServices" class="select2" style="width: 230px" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="true" 
 
 					<% if(!_.isUndefined(place)){
 						if(!_.isEmpty(place.getServices())) { %>

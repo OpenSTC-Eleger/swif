@@ -24,8 +24,8 @@
 
 
 
-	<!-- Check if there is any Places in the Database  -->
-	<% if(!_.isEmpty(places)) { %>
+	<!-- Check if there is any Places to display -->
+	<% if(nbPlaces > 0) { %>
 
 		<!-- Table Teams -->
 		<table class="table table-bordered table-hover table-striped table-sorter">
@@ -37,28 +37,8 @@
 					<th class="hidden-phone span2" data-column="surface"><%= _.capitalize(lang.area) %> <i class="icon-sort icon-large icon-muted pull-right"></i></th>
 				</tr>
 			</thead>
-			<tbody>
-			<% places.each(function(place){ %>
+			<tbody id="rows-items">
 
-				<!-- Place row -->
-				<tr class="row-item" id="place_<%= place.id %>">
-					<td>
-						<i class="icon-map-marker">&nbsp;&nbsp;</i><%= place.getCompleteName() %>
-
-						<p class="row-actions invisible">
-							<a href="#"  class="modalSavePlace">
-								<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i></a>&nbsp;
-							<a href="#" class="modalDeletePlace">
-								<i class="icon-remove icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
-							</a>
-						</p>
-					</td>
-					<td><%= place.getParentPlace() %></td>
-					<td><%= place.getServices('string') %></td>	
-					<td class="text-right hidden-phone"><%= place.getSurface(true) %></td>
-				</tr>
-
-			<% }); %>
 			</tbody>
 		</table>
 
@@ -70,7 +50,7 @@
 	<% }
 	else { %>
 
-		<!-- No place in the Database -->
+		<!-- No place to display -->
 		<div class="alert alert-info">
 			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noPlace %>.
 		</div>

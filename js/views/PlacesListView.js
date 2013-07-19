@@ -11,8 +11,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'click a.modalDeletePlace'                 : 'modalDeletePlace',
-			'click a.modalSavePlace'                   : 'modalSavePlace',
+			'click a.modalSavePlace'                   : 'modalAddPlace',
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -46,8 +45,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
 				lang: app.lang,
-				places: app.collections.places,
-				nbPlaces: app.collections.places.cpt,
+				nbPlaces: app.collections.places.cpt
 			});
 
 			$(self.el).html(template);
@@ -55,6 +53,16 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 			// Call the render Generic View //
 			app.Views.GenericListView.prototype.render(self.options);
 
+
+
+			// Create  //
+			_.each(app.collections.places.models, function(place, i){
+
+				
+				app.views.lol = new app.Views.ItemPlaceView({model: place});
+
+				$('#rows-items').append(app.views.lol.render().el);
+			});
 
 
 			// Pagination view //
@@ -67,7 +75,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 
 		});
 
-		$(this.el).hide().fadeIn('slow');
+		$(this.el).hide().fadeIn();
 
 		return this;
 	},
@@ -76,43 +84,15 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 
 	/** Add a new categorie
 	*/
-	modalSavePlace: function(e){  
-		
+	modalAddPlace: function(e){
 		e.preventDefault();
-
-		var link = $(e.target);
-		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
-
-		var model = app.collections.places.get(id);
-
-
+		
 		app.views.modalPlaceView = new app.Views.ModalPlaceView({
-			el    : '#modalSavePlace',
-			model : model
+			el    : '#modalSavePlace'
 		});
+
 		app.views.modalPlaceView.render();
 
 	},
-
-
-
-	/** Display information in the Modal view
-	*/
-	modalDeletePlace: function(e){
-
-		e.preventDefault();
-
-		var link = $(e.target);
-		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
-
-		var model = app.collections.places.get(id);
-
-
-		app.views.modalDeleteView = new app.Views.ModalDeleteView({
-			el    : '#modalDeletePlace',
-			model : model
-		});
-		app.views.modalDeleteView.render();
-	}
 
 });
