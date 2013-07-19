@@ -68,13 +68,8 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 		
 		var self = this;
 		
-		var paperBoard = this.events[0];//this.collection.toJSON();
 		var elementToPrint = $('#printingCalendar');
-		var worker = null
-		if ( paperBoard && paperBoard.user_id  )
-			worker = $('#worker').text(paperBoard.user_id[1]);
-		else if ( paperBoard && paperBoard.team_id  )
-			worker = $('#worker').text(paperBoard.team_id[1]);
+		var	worker = $('#worker').text(this.calendar.model.name);
 		var table = $('#paperboard');
 		
 		var tasks = _.filter(this.events, function(task){ 

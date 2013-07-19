@@ -592,13 +592,11 @@ app.Router = Backbone.Router.extend({
 
 			// Check if the collections is instantiate //
 			if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
-			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
 
 			app.loader('display');
 
 			$.when(
-				app.collections.places.fetch(fetchParams),
-				app.collections.claimersServices.fetch()
+				app.collections.places.fetch(fetchParams)
 			)
 			.done(function(){
 				app.views.placesListView = new app.Views.PlacesListView({page: paginate.page, sort: sort, search: search});

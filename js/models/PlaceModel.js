@@ -7,18 +7,7 @@ app.Models.Place = Backbone.RelationalModel.extend({
 	
 	url: "/#places/:id",
 	
-	relations: [ 
-		{
-			type: Backbone.HasMany,
-			key: 'service_ids',
-			relatedModel: 'app.Models.ClaimerService',
-			collectionType: 'app.Collections.ClaimersServices',
-			includeInJSON: ['id', 'name'],
-		},
 
-	],
-
-	
 	defaults:{
 		id             : 0,
 		name           : null,
@@ -28,7 +17,6 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		lenght         : 0,
 		surface        : 0,
 	},
-
 
 
 	getId : function() {
@@ -69,30 +57,35 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		switch (type){ 
 			case 'id': 
 				return id;
-			break; 
+			break;
+			case 'all':
+				return this.get('site_parent_id');
+			break;
+			case 'json':
+				return {id: id, name: name};
+			break;
 			default: 
 				return name;
-			break; 
 		}
-
 	},
 	setParentPlace : function(value) {
 		if(_.isUndefined(value)) return;
 		this.set({ site_parent_id : value });
 	},
+	getServices : function(type){
 
-	getServices : function(type) {
-		
 		var placeServices = [];
 
-		_.each(this.get('service_ids').models, function(s){
-			switch (type){ 
+		_.each(this.get('service_names'), function(s){
+			switch (type){
 				case 'id': 
-					placeServices.push(s.attributes.id);
+					placeServices.push(s[0]);
+				break;
+				case 'json': 
+					placeServices.push({id: s[0], name: s[1]});
 				break;
 				default:
-					placeServices.push(s.attributes.name);
-				break;
+					placeServices.push(s[1]);
 			}
 		});
 
@@ -113,9 +106,11 @@ app.Models.Place = Backbone.RelationalModel.extend({
 			case 'id': 
 				return this.get('type')[0];
 			break;
+			case 'json':
+				return {id: this.get('type')[0], name: this.get('type')[1]};
+			break;
 			default:
 				return this.get('type')[1];
-			break;
 		}
 	},
 	setType : function(value) {
@@ -152,6 +147,12 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		this.set({ surface : value });
 	},
 
+	/** Get Informations of the model
+	*/
+	getInformations : function(){
+		return [this.getName(), this.getType()];
+	},
+
 
 
 	/** Model Initialization
@@ -160,7 +161,8 @@ app.Models.Place = Backbone.RelationalModel.extend({
 
 	},
 
-	
+
+
 	/** Model Parser 
 	*/
 	parse: function(response) {
@@ -180,7 +182,8 @@ app.Models.Place = Backbone.RelationalModel.extend({
 		this.setLenght( params.lenght );
 		this.setSurface( params.surface );
 	},
-	
+
+
 
 	/** Save Model
 	*/
@@ -189,17 +192,10 @@ app.Models.Place = Backbone.RelationalModel.extend({
 	},
 
 
-	/** Create Model
-	*/
-	create: function(data, options) { 
-		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
-	},
 
-
-	
 	/** Delete place
 	*/
-	delete: function (options) {	
+	delete: function (options) {
 		app.deleteOE( 
 			[[this.get('id')]],
 			this.model_name,
