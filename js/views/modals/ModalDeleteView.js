@@ -53,6 +53,7 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 	deleteModel: function(e){
 		var self = this;
 
+		console.log('delete Model');
 
 		this.model.delete({
 			success: function(data){
@@ -60,9 +61,9 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
+					app.collections.places.remove(self.options.model);
 					self.modal.modal('hide');
-					app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
-					Backbone.history.loadUrl(Backbone.history.fragment);
+					//Backbone.history.loadUrl(Backbone.history.fragment);
 				}
 			},
 			error: function(e){

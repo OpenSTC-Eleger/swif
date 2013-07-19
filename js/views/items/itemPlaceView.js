@@ -21,8 +21,25 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize : function() {
+		var self = this;
 
+		var place = this.options.model;
+
+		console.log(place);
+		
+		place.bind('remove', function(){
+			console.log('Bind Remove');
+		
+			/*self.unbind();
+			self.remove();
+			self.onClose();*/
+		
+			app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
+			app.collections.places.cpt--;
+			app.views.placesListView.partialRender();
+		}, this);
 	},
+
 
 
 
@@ -80,3 +97,13 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 
 });
+
+
+Backbone.View.prototype.close = function(){
+	console.log('Youpiiiiiiiiiiiiiiiiii');
+  this.remove();
+  this.unbind();
+  if (this.onClose){
+    this.onClose();
+  }
+}

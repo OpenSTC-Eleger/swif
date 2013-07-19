@@ -11,7 +11,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'click a.modalSavePlace'                   : 'modalAddPlace',
+			'click a.modalSavePlace' : 'modalAddPlace',
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -28,7 +28,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 
 	/** Display the view
 	*/
-	render: function () {
+	render: function (type) {
 		var self = this;
 
 		// Change the page title //
@@ -54,21 +54,17 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 			app.Views.GenericListView.prototype.render(self.options);
 
 
-
-			// Create  //
+			// Create item place view //
 			_.each(app.collections.places.models, function(place, i){
-
-				
-				app.views.lol = new app.Views.ItemPlaceView({model: place});
-
-				$('#rows-items').append(app.views.lol.render().el);
+				var itemPlaceView  = new app.Views.ItemPlaceView({model: place});
+				$('#rows-items').append(itemPlaceView.render().el);
 			});
-
+		
 
 			// Pagination view //
 			app.views.paginationView = new app.Views.PaginationView({ 
-				page   : self.options.page,
-				nbPage : Math.ceil(app.collections.places.cpt / app.config.itemsPerPage) 
+				page       : self.options.page,
+				collection : app.collections.places
 			})
 			app.views.paginationView.render();
 
@@ -78,6 +74,14 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		$(this.el).hide().fadeIn();
 
 		return this;
+	},
+
+
+	/** Partial Render of the view
+	*/
+	partialRender: function (type) {
+		app.views.paginationView.render();
+		$('#bagdeNbPlaces').text(app.collections.places.cpt);
 	},
 
 
