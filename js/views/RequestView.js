@@ -353,10 +353,10 @@ app.Views.RequestView = Backbone.View.extend({
 				keepedPlaces = _.filter(places, function(item){ 
 					var placeJSON = item.toJSON();
 					var placeServices = placeJSON.service_ids;	
-					var placeServices = [];
-					_.each( item.attributes.service_ids.models, function(s){
-						placeServices.push( s.toJSON().id );
-					});				
+					// var placeServices = [];
+					// _.each( item.attributes.service_ids.models, function(s){
+					// 	placeServices.push( s.toJSON().id );
+					// });				
 					return $.inArray(service, placeServices)!=-1
 				});
 				app.views.selectListPlacesView.collection = new app.Collections.Places(keepedPlaces);
