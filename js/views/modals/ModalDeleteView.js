@@ -55,6 +55,11 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 
 		console.log('delete Model');
 
+		
+		// Set the button in loading State //
+		$(e.target).button('loading');
+
+		// Delete the Model //
 		this.model.delete({
 			success: function(data){
 				if(data.error){
@@ -65,6 +70,10 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 					self.modal.modal('hide');
 					//Backbone.history.loadUrl(Backbone.history.fragment);
 				}
+			},
+			complete: function(){
+				// Reset the button state //
+				$(e.target).button('reset');
 			},
 			error: function(e){
 				alert("Impossible de contacter le serveur");

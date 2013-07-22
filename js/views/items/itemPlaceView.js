@@ -23,23 +23,27 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 	initialize : function() {
 		var self = this;
 
-		var place = this.options.model;
-
-		console.log(place);
-		
-		place.bind('remove', function(){
+		this.model.bind('remove', function(){
 			console.log('Bind Remove');
-		
-			/*self.unbind();
+
+			self.unbind();
 			self.remove();
-			self.onClose();*/
-		
+
+
 			app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
 			app.collections.places.cpt--;
 			app.views.placesListView.partialRender();
 		}, this);
-	},
 
+
+		this.model.bind('change', function(){
+			console.log('Bind change');
+
+			self.render();
+
+		}, this);
+
+	},
 
 
 
@@ -53,7 +57,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 		 
 			var template = _.template(templateData, {
 				lang  : app.lang,
-				place : self.options.model
+				place : self.model
 			});
 
 			$(self.el).html(template);
@@ -70,15 +74,14 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 	/** Display Modal form to add/sav a new place
 	*/
 	modalSavePlace: function(e){  
-		e.preventDefault();
+		e.preventDefault(); e.stopPropagation();
 
 		app.views.modalPlaceView = new app.Views.ModalPlaceView({
 			el      : '#modalSavePlace',
-			model   : this.options.model,
+			model   : this.model,
 			elFocus : $(e.target).data('form-id')
 		});
 		app.views.modalPlaceView.render();
-
 	},
 
 
@@ -90,20 +93,10 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 		app.views.modalDeleteView = new app.Views.ModalDeleteView({
 			el    : '#modalDeletePlace',
-			model : this.options.model
+			model : this.model
 		});
 		app.views.modalDeleteView.render();
 	}
 
 
 });
-
-
-Backbone.View.prototype.close = function(){
-	console.log('Youpiiiiiiiiiiiiiiiiii');
-  this.remove();
-  this.unbind();
-  if (this.onClose){
-    this.onClose();
-  }
-}
