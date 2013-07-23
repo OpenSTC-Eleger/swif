@@ -53,8 +53,6 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 	deleteModel: function(e){
 		var self = this;
 
-		console.log('delete Model');
-
 		
 		// Set the button in loading State //
 		$(e.target).button('loading');
