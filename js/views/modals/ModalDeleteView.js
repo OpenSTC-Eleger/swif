@@ -53,17 +53,25 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 	deleteModel: function(e){
 		var self = this;
 
+		
+		// Set the button in loading State //
+		$(e.target).button('loading');
 
+		// Delete the Model //
 		this.model.delete({
 			success: function(data){
 				if(data.error){
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
+					app.collections.places.remove(self.options.model);
 					self.modal.modal('hide');
-					app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
-					Backbone.history.loadUrl(Backbone.history.fragment);
+					//Backbone.history.loadUrl(Backbone.history.fragment);
 				}
+			},
+			complete: function(){
+				// Reset the button state //
+				$(e.target).button('reset');
 			},
 			error: function(e){
 				alert("Impossible de contacter le serveur");

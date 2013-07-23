@@ -139,6 +139,8 @@
 	"inMeter" 				: "en mètre",
 	"km"					: "Kilomètres",
 	"and" 					: "et",
+	"deleteInProgress"	    : "Suppression",
+	"saveInProgress"        : "Enregistrement",
 	"vehicleEquipment"						: "Véhicule",
 	"commercialVehicleEquipment"			: "Voiture",
 	"technicalVehicleEquipment"				: "Utilitaire",

@@ -92,6 +92,10 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 		var self = this;
 
+		// Set the button in loading State //
+		$(this.el).find("button[type=submit]").button('loading');
+
+
 		var params = {	
 			name: this.$('#placeName').val(),
 			service_ids: [[6, 0, app.views.advancedSelectBoxPlaceServices.getSelectedItems()]],
@@ -120,6 +124,10 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 					app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.placeSaveOk);
 					Backbone.history.loadUrl(Backbone.history.fragment);
 				}
+			},
+			complete: function(){
+				// Reset the button state //
+				$(self.el).find("button[type=submit]").button('reset');
 			},
 			error: function () {
 				alert("Impossible de contacter le serveur");
