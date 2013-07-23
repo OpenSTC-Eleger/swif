@@ -234,7 +234,7 @@ app.Models.User = Backbone.Model.extend({
 	*/
 	getTeamsAndOfficers: function() {
 		var self = this
-		app.callObjectMethodOE([[this.get("uid")],null], this.model_name, "getTeamsAndOfficers", self.getSessionID(), {
+		app.callObjectMethodOE([[this.get("uid")]], this.model_name, "getTeamsAndOfficers", self.getSessionID(), {
 			success: function(data){
 				self.setOfficers( data.result.officers )
 				self.setTeams( data.result.teams )
@@ -264,10 +264,10 @@ app.Models.User = Backbone.Model.extend({
 		})
 		.fail(function (error){
 			console.error(error);
+			app.loader('hide');
 			app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
 		})
 		.done(function (data) {
-
 
 			if(data.uid == false){
 				app.loader('hide');

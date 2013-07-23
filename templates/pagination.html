@@ -65,11 +65,13 @@
 
 		<!-- Go to the page button -->
 		<% if(nbPage >= 5) { %>
-			<select class="input-mini" name="goToPage" id="goToPage">
-				<% for (var i=1; i <= nbPage; i++) { %>
-					<option <%= (i === page ? 'selected' : '')%> value="<%= i %>"><%= i %></option>
-				<% } %>
-			</select>
+			<li class="pagination-select">
+				<select class="input-mini" name="goToPage" id="goToPage">
+					<% for (var i=1; i <= nbPage; i++) { %>
+						<option <%= (i === page ? 'selected' : '')%> value="<%= i %>"><%= i %></option>
+					<% } %>
+				</select>
+			</li>
 		<% } %>
 	</ul>
 

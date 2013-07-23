@@ -1,7 +1,9 @@
 /******************************************
-* Places List View
+* Generic List View
 */
 app.Views.GenericListView = Backbone.View.extend({
+
+	el            : '#rowContainer',
 
 	urlParameters : ['search', 'sort'],
 	
@@ -10,8 +12,9 @@ app.Views.GenericListView = Backbone.View.extend({
 
 	// The DOM events //
 	events: {
+		'click form.form-search input'             : 'selectSearchInput',
 		'submit form.form-search'                  : 'search',
-		'click table.table-sorter th[data-column]' : 'sort',
+		'click table.table-sorter th[data-column]' : 'sort'
 	},
 
 
@@ -20,16 +23,48 @@ app.Views.GenericListView = Backbone.View.extend({
 	*/
 	render: function (opts) {
 
+		// Set the Tooltip //
+		$('*[data-toggle="tooltip"]').tooltip();
+
 		// Display sort icon if there is a sort //
 		if(opts.sort.order == 'ASC'){ var newIcon = "icon-sort-up"; }else{ var newIcon = "icon-sort-down"; }
 		$("th[data-column='"+opts.sort.by+"'] > i").removeClass('icon-sort icon-muted')
 		.addClass('active ' + newIcon);
 
-
 		// Rewrite the research in the form //
 		if(!_.isUndefined(opts.search)){
 			$(this.searchForm).val(opts.search);
 		}
+
+		// Set the focus to the search form //
+		$('form.form-search input').focus();
+	},
+
+
+
+	/** Select the value in the search input when it is focus
+	*/
+	selectSearchInput: function(e){
+		$(e.target).select();
+	},
+
+
+
+	/** Perform a search on the sites
+	*/
+	search: function(e){
+		e.preventDefault();
+
+		var query = $(this.searchForm).val();
+
+		if(_.isEmpty(query)){
+			delete this.options.search;
+		}
+		else{
+			this.options.search = query
+		}
+
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 	},
 
 
@@ -65,25 +100,6 @@ app.Views.GenericListView = Backbone.View.extend({
 
 		this.options.sort.by = sortBy;
 		this.options.sort.order = sortOrder;
-
-		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-	},
-
-
-
-	/** Perform a search on the sites
-	*/
-	search: function(e){
-		e.preventDefault();
-
-		var query = $(this.searchForm).val();
-
-		if(_.isEmpty(query)){
-			delete this.options.search;
-		}
-		else{
-			this.options.search = query
-		}
 
 		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 	},

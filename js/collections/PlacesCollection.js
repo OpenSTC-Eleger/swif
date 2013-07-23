@@ -7,7 +7,7 @@ app.Collections.Places = app.Collections.GenericCollection.extend({
 
 	model_name : 'openstc.site',
 
-	fields     : ["id", "name", "complete_name", "type", "service_ids", "site_parent_id", "width", "lenght", "surface"],
+	fields     : ["id", "name", "complete_name", "type", "service_ids", "service_names", "site_parent_id", "width", "lenght", "surface"],
 
 
 	/** Collection Initialization

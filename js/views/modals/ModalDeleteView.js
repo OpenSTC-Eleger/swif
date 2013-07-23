@@ -1,21 +1,19 @@
 /******************************************
-* About View
+* Modal Delete View
 */
-app.Views.ModalDeleteView = Backbone.View.extend({
+app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 
 
 	templateHTML: 'modals/modalDelete',
 
-	modal : null,
-
 	
 	// The DOM events //
-	events: {
-		'click .btnDelete' : 'deleteModel',
-		
-		'show'             : 'show',
-		
-		'hide'             : 'hide',
+	events: function(){
+		return _.defaults({
+			'click .btnDelete' : 'deleteModel',
+		}, 
+			app.Views.GenericModalView.prototype.events
+		);
 	},
 
 
@@ -50,26 +48,11 @@ app.Views.ModalDeleteView = Backbone.View.extend({
 
 
 
-	/** Trigger when the modal is show
-	*/
-	show: function(){
-		this.delegateEvents(this.events);
-	},
-
-
-
-	/** Trigger when the modal is hide
-	*/
-	hide: function(){
-		this.undelegateEvents(this.events);
-	},
-
-
-
 	/** Delete the model pass in the view
 	*/
 	deleteModel: function(e){
 		var self = this;
+
 
 		this.model.delete({
 			success: function(data){
@@ -78,7 +61,7 @@ app.Views.ModalDeleteView = Backbone.View.extend({
 				}
 				else{
 					self.modal.modal('hide');
-					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
+					app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
 					Backbone.history.loadUrl(Backbone.history.fragment);
 				}
 			},

@@ -102,7 +102,8 @@ app.Views.PlanningView = Backbone.View.extend({
 			});
 
 			$(self.el).html(template);
-			self.initDragObject();			
+			self.initDragObject();
+
 
 			$('*[rel="tooltip"]').tooltip();
 			$('*[rel="popover"]').popover({trigger: 'hover', delay: { show: 500, hide: 100 }});
@@ -161,8 +162,6 @@ app.Views.PlanningView = Backbone.View.extend({
 		return this;
 	},
 
-
-
 	/** Select the planning to display
 	*/
 	selectPlanning: function(e){
@@ -190,15 +189,12 @@ app.Views.PlanningView = Backbone.View.extend({
 		})
 	},
 
-
-
 	/** Set a user model to the view
 	*/
 	setModel : function(model) {
 		this.model = model;
 		return this;
-	},   
-
+	},
 
 	/** Make the external event Draggable
 	*/

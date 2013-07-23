@@ -90,6 +90,20 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 
 		});
 
+
+		// Set data as Selected //
+		if(!_.isUndefined(this.select2.data('selected-value'))){
+			selectedJSON = this.select2.data('selected-value');
+
+			// Check if the select is a Multiple //
+			if(_.isArray(selectedJSON)){
+				this.setSelectedItems(selectedJSON);
+			}
+			else{
+				this.setSelectedItem([selectedJSON.id, selectedJSON.name]);
+			}
+		}
+
 	},
 
 
