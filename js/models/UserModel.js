@@ -108,8 +108,8 @@ app.Models.User = Backbone.Model.extend({
         this.setSessionID('');
     },
 
-    hasSessionID: function () {
-        if (this.getSessionID() != '') {
+    hasAuthToken: function () {
+        if (this.get('authToken') != '') {
             return true;
         }
         else {
