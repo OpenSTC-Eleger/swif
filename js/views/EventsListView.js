@@ -528,6 +528,7 @@ app.Views.EventsListView = Backbone.View.extend({
 		
 		var self = this;
 		self.event = event;
+		self.event.end = self.event.start
 		
 		overlapsEvent = _.filter(this.arrayOnDayEvents, function(e){
 			return self.event.start>=e.start && self.event.end<e.end
@@ -592,7 +593,10 @@ app.Views.EventsListView = Backbone.View.extend({
 			}
     		index += 1;
     	}
-    	if( index==size || !nextEvent ) event.allPlanned = true;
+    	if( index==size || !nextEvent ) {
+    		event.allPlanned = true;
+    		event.planned_hours = 0;
+    	}
     	else {
     		this.removeEvent( this.arrayOnDayEvents, event )
         		
