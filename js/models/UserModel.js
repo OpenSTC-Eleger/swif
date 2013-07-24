@@ -320,8 +320,7 @@ app.Models.User = Backbone.Model.extend({
 
 		var fields = ['firstname', 'name', 'groups', 'contact_id', 'service_id', 'service_ids', 'isDST', 'isManager'];
 
-		return  app.getOE(this.model_name, fields, [self.getUID()], self.getSessionID(),
-			$.ajax({
+		return $.ajax({
 				url: app.config.barakafrites.url + '/api/open_object/users/' + self.getUID(),
 				data: fields,
 				headers: {Authorization: 'Token token=' + self.get('authToken')},
@@ -349,7 +348,6 @@ app.Models.User = Backbone.Model.extend({
 				}
 			})
 
-		);
-	}
+		}
 
 });
