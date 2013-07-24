@@ -319,19 +319,14 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		var serviceInter = intervention.service_id;
 
 
-		var officers = app.collections.officers;
-	
+		if( _.isUndefined(this.officersDropDownList) )
+			this.officersDropDownList = new app.Collections.Officers( app.models.user.attributes.officers );
+		if( _.isUndefined(this.teamsDropDownList) )
+			this.teamsDropDownList = new app.Collections.Teams( app.models.user.attributes.teams );
 
-		// Filter officers - Display only officer who belongs to the intervention's service //
-		filteredOfficer = _.filter(officers.models, function(officer){	
-			var officerJSON = officer.toJSON();
-			
-			var services = _.map(officerJSON.service_ids, function(service){return service.id;});
-			return $.inArray(serviceInter[0], services)!=-1;
-		});
 
 		// Fill Officer List //
-		app.views.selectListOfficersTeamsView = new app.Views.DropdownSelectListView({el: $('#selectUsersTeams'), collection: officers.reset(filteredOfficer)})
+		app.views.selectListOfficersTeamsView = new app.Views.DropdownSelectListView({el: $('#selectUsersTeams'), collection: this.officersDropDownList})
 		app.views.selectListOfficersTeamsView.clearAll();
 		app.views.selectListOfficersTeamsView.addEmptyFirst();
 		app.views.selectListOfficersTeamsView.addAll();
@@ -421,23 +416,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		if(itemToLoad == 'officers'){
 			$('#btnSelectUsersTeams > i.iconItem.icon-group').addClass('icon-user').removeClass('icon-group');
 			$('#selectUsersTeams').data('item', 'officers');
-			
-			var officers = app.collections.officers;
-			// Filter officers - Display only officer who belongs to the intervention's service //
-			filteredOfficer = _.filter(app.collections.officers.models, function(officer){	
-				var officerJSON = officer.toJSON();
-				
-				var services = _.map(officerJSON.service_ids, function(service){return service.id;});
-				return $.inArray(serviceInter[0], services)!=-1;
-			});
 
-			// Fill Officer List //
-			if(app.views.selectListOfficersTeamsView == null){
-				app.views.selectListOfficersTeamsView = new app.Views.DropdownSelectListView({el: $('#selectUsersTeams'), collection: officers.reset(filteredOfficer)})
-			}
-			else{
-				app.views.selectListOfficersTeamsView.collection = officers.reset(filteredOfficer);
-			}
+			app.views.selectListOfficersTeamsView.collection = this.officersDropDownList;
 			app.views.selectListOfficersTeamsView.clearAll();
 			app.views.selectListOfficersTeamsView.addEmptyFirst();
 			app.views.selectListOfficersTeamsView.addAll();
@@ -445,30 +425,11 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		else if(itemToLoad == 'teams'){
 			$('#btnSelectUsersTeams > i.iconItem.icon-user').addClass('icon-group').removeClass('icon-user');
 			$('#selectUsersTeams').data('item', 'teams');
-			
-			if(app.collections.teams == null ){
-				app.collections.teams = new app.Collections.Teams();
-			}
-
-			app.collections.teams.fetch({
-				success: function(){
-
-					var teams = app.collections.teams;
-					filteredTeams = _.filter(teams.models, function(team){	
-						var teamJSON = team.toJSON();
-						
-						var services = _.map(teamJSON.service_ids, function(service){return service.id;});
-						return $.inArray(serviceInter[0], services)!=-1;
-					});
-
-					app.views.selectListOfficersTeamsView = new app.Views.DropdownSelectListView({el: $('#selectUsersTeams'), collection: teams.reset(filteredTeams)})
-					app.views.selectListOfficersTeamsView.clearAll();
-					app.views.selectListOfficersTeamsView.addEmptyFirst();
-					app.views.selectListOfficersTeamsView.addAll();
-				}	
-			});
+			app.views.selectListOfficersTeamsView.collection = this.teamsDropDownList;			
+			app.views.selectListOfficersTeamsView.clearAll();
+			app.views.selectListOfficersTeamsView.addEmptyFirst();
+			app.views.selectListOfficersTeamsView.addAll();
 		}
-
 	},
 
 

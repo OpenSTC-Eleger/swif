@@ -277,7 +277,6 @@ app.Models.User = Backbone.Model.extend({
 		return deferred;
 	},
 
-
 	/** Logout fonction
 	 */
 	logout: function (options) {
