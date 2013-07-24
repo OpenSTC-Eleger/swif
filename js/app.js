@@ -73,25 +73,21 @@ var app = {
                 app.router = new app.Router();
                 // Listen url changes //
                 Backbone.history.start({pushState: false});
+
+
+
             })
             .fail(function () {
                 console.error('Unable to init the app');
             });
 
-        // Set global hook for 401
-        $.ajaxSetup({
-            contentType: "application/json",
-            //dataType: 'JSON',
-            statusCode: {
-                401: function () {
-                    // Redirect the to the login page.
-                    app.Router.navigate(app.routes.login.url, {trigger: true, replace: true});
 
-                }
-            }
-        })
+
     },
 
+    current_user_token: function() {
+      return localStorage.getItem('currentUserAuthToken');
+    },
 
     /** Load internationalization scripts
      */
@@ -118,14 +114,13 @@ var app = {
             });
     },
 
-
     loadStaticFile: function (url) {
 
         return $.getJSON(url)
             .success(function (data) {
             })
             .fail(function () {
-                alert('Impossible de charger le fichier')+url;
+                alert('Impossible de charger le fichier') + url;
             });
     },
 
@@ -390,6 +385,16 @@ _.mixin(_.str.exports());
  */
 $(document).ready(function () {
     app.init('fr');
+    $.ajaxSetup({
+        contentType: "application/json",
+        headers: {Authorization: 'Token token=' + app.current_user_token()},
+        statusCode: {
+            401: function () {
+                // Redirect the to the login page.
+                app.Router.navigate(app.routes.login.url, {trigger: true, replace: true});
+            }
+        }
+    });
 });
 
 

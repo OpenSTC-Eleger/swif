@@ -180,6 +180,10 @@ app.Models.User = Backbone.Model.extend({
         this.set({menu: menu});
     },
 
+    getMenus: function () {
+        return this.get('menu')
+    },
+
 
     /** get, by calling server, officers and teams to filter on it in tasks/planning screens
      */
@@ -225,6 +229,7 @@ app.Models.User = Backbone.Model.extend({
             {
                 url: app.config.barakafrites.url + '/sessions',
                 type: "POST",
+                contentType: 'application/json',
                 data: JSON.stringify(login_data)
             }
         )
@@ -240,6 +245,7 @@ app.Models.User = Backbone.Model.extend({
                     app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
                 }
                 else {
+                    localStorage.setItem('currentUserAuthToken',data.token)
                     self.set({authToken: data.token});
                     self.setMenu(data.menu);
 
@@ -307,16 +313,6 @@ app.Models.User = Backbone.Model.extend({
     },
 
 
-    /** Get the menu of the user
-     */
-    getMenus: function (options) {
-        "use strict";
-        var self = this;
-
-        return app.json(app.config.openerp.url + app.urlOE_menuUser, {
-            'session_id': self.getSessionID()
-        }, options)
-    },
 
 
     /** Get the informations of the user
