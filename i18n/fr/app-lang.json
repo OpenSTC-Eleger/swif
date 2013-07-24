@@ -255,6 +255,7 @@
 		"sixCharMin"		  	: "Six caractères minimum",
 		"placeDeleteOk"			: "Site correctement supprimé",
 		"placeSaveOk"			: "Site correctement enregistrée",
+		"placeUpdateOk"			: "Site correctement mis à jour",
 		"equipmentDeleteOk"		: "Matériel correctement supprimé",
 		"equipmentCreateOk"		: "Matériel correctement enregistré",
 		"addressDeleteOk"		: "Contact correctement supprimé",

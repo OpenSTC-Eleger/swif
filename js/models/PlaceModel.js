@@ -6,6 +6,8 @@ app.Models.Place = Backbone.RelationalModel.extend({
 	model_name : 'openstc.site',
 	
 	url: "/#places/:id",
+
+	fields     : ["id", "name", "complete_name", "type", "service_ids", "service_names", "site_parent_id", "width", "lenght", "surface"],
 	
 
 	defaults:{
@@ -165,7 +167,7 @@ app.Models.Place = Backbone.RelationalModel.extend({
 
 	/** Model Parser 
 	*/
-	parse: function(response) {
+	parse: function(response, options) {
 		response.complete_name = _.titleize(response.complete_name.toLowerCase());
 
 		return response;
@@ -202,7 +204,32 @@ app.Models.Place = Backbone.RelationalModel.extend({
 			app.models.user.getSessionID(),
 			options
 		);
-	}
+	},
+
+
+
+	/** Sync the Model
+	*/
+	sync: function(method, model, options){
+		var self = this;
+
+		var deferred = $.Deferred();
+
+		app.getOE(this.model_name, this.fields, [this.getId()], app.models.user.getSessionID(),({
+				success: function(data){
+					self.set(data.result[0]);
+
+					deferred.resolve();
+				},
+				error: function(e){
+					console.log(e);
+				}
+			})
+		)
+
+		return  deferred;
+	},
+
 
 
 });

@@ -13,7 +13,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 	events: function(){
 		return _.defaults({
 			'change #placeWidth, #placeLenght' : 'calculPlaceArea',
-			'submit #formSavePlace'            : 'savePlaceModel'
+			'submit #formSavePlace'            : 'savePlace'
 		}, 
 			app.Views.GenericModalView.prototype.events
 		);
@@ -87,7 +87,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 	/** Delete the model pass in the view
 	*/
-	savePlaceModel: function(e){
+	savePlace: function(e){
 		e.preventDefault();
 
 		var self = this;
@@ -121,8 +121,15 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 				}
 				else{
 					self.modal.modal('hide');
-					app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.placeSaveOk);
-					Backbone.history.loadUrl(Backbone.history.fragment);
+
+					// Create Place //
+					if(_.isUndefined(self.options.model)){ 
+						Backbone.history.loadUrl(Backbone.history.fragment);
+					}
+					// Update Place //
+					else{
+						self.options.model.fetch();
+					}
 				}
 			},
 			complete: function(){
@@ -143,5 +150,6 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 	calculPlaceArea: function (e) {
 		$('#placeArea').val($('#placeWidth').val() * $('#placeLenght').val());
 	}
+
 
 });

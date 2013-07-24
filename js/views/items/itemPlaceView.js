@@ -23,24 +23,25 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 	initialize : function() {
 		var self = this;
 
+
+		// When the model are update //
+		this.model.bind('change', function(){
+			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
+			self.render();
+		}, this);
+
+
+
+		// When the model are remove //
 		this.model.bind('remove', function(){
 			console.log('Bind Remove');
 
 			self.unbind();
 			self.remove();
 
-
-			app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
+			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeDeleteOk);
 			app.collections.places.cpt--;
 			app.views.placesListView.partialRender();
-		}, this);
-
-
-		this.model.bind('change', function(){
-			console.log('Bind change');
-
-			self.render();
-
 		}, this);
 
 	},
