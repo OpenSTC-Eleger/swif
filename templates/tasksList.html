@@ -178,7 +178,7 @@
 						   	<td class="align">
 
 						   		<!-- Display Actions button if the task is schedule and the user isn't an officer -->
-								<% if(task.state == app.Models.Task.status.open.key && task.date_start) { %>
+								<% if(task.actions.indexOf("normal_mode_finished") > -1 && task.date_start) { %>
 
 									<!-- If the user is not an Agent or is a foreman -->
 									<% if(displayFilter == true || task.team_id == false){ %>
@@ -190,6 +190,7 @@
 											<span class="caret"></span>
 										</button>
 										<ul class="dropdown-menu pull-right text-left">
+											<% if(task.actions.indexOf("normal_mode_unfinished") > -1){%>
 											<li>
 												<a href="#" class="taskNotDone" data-taskid="<%= task.id %>">
 													<i class="icon-remove icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.lang.notDone) %>
@@ -200,6 +201,7 @@
 													<i class="icon-time icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.lang.notFinished) %>
 												</a>
 											</li>
+											<% } %>
 										</ul>
 									</div>
 									<% }
