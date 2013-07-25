@@ -40,7 +40,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		 
 			var template = _.template(templateData, {
 				lang  : app.lang,
-				place : self.options.model
+				place : self.model
 			});
 
 			self.modal.html(template);
@@ -90,6 +90,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 	savePlace: function(e){
 		e.preventDefault();
 
+	
 		var self = this;
 
 		// Set the button in loading State //
@@ -107,15 +108,14 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		};
 
 		// If it's a create pass 0 as ID //
-		if(_.isUndefined(this.options.model)){ var id = 0; }
-		else{ var id = this.options.model.getId(); }
+		if(_.isUndefined(this.model)){ var id = 0; }
+		else{ var id = this.model.getId(); }
 
 		
 		app.Models.Place.prototype.save(
 			params,
 			id, {
 			success: function(data){
-				console.log(data);
 				if(data.error){
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
@@ -123,12 +123,17 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 					self.modal.modal('hide');
 
 					// Create Place //
-					if(_.isUndefined(self.options.model)){ 
-						Backbone.history.loadUrl(Backbone.history.fragment);
+					if(_.isUndefined(self.model)){
+						var newPlace = new app.Models.Place({ id: data.result.result });
+
+						// Fetch the new model //
+						newPlace.fetch().done(function(){
+							app.collections.places.add(newPlace);
+						})
 					}
 					// Update Place //
 					else{
-						self.options.model.fetch();
+						self.model.fetch();
 					}
 				}
 			},

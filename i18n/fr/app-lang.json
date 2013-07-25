@@ -254,7 +254,7 @@
 		"noTeam"				: "Aucune équipe enregistrée",
 		"sixCharMin"		  	: "Six caractères minimum",
 		"placeDeleteOk"			: "Site correctement supprimé",
-		"placeSaveOk"			: "Site correctement enregistrée",
+		"placeCreateOk"			: "Site correctement enregistrée",
 		"placeUpdateOk"			: "Site correctement mis à jour",
 		"equipmentDeleteOk"		: "Matériel correctement supprimé",
 		"equipmentCreateOk"		: "Matériel correctement enregistré",

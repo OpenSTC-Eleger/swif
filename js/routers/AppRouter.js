@@ -599,7 +599,7 @@ app.Router = Backbone.Router.extend({
 				app.collections.places.fetch(fetchParams)
 			)
 			.done(function(){
-				app.views.placesListView = new app.Views.PlacesListView({page: paginate.page, sort: sort, search: search});
+				app.views.placesListView = new app.Views.PlacesListView({collection: app.collections.places, page: paginate.page, sort: sort, search: search});
 				self.render(app.views.placesListView);
 
 				app.loader('hide');

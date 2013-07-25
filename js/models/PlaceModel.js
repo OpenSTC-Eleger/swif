@@ -215,21 +215,15 @@ app.Models.Place = Backbone.RelationalModel.extend({
 
 		var deferred = $.Deferred();
 
-		app.getOE(this.model_name, this.fields, [this.getId()], app.models.user.getSessionID(),({
-				success: function(data){
-					self.set(data.result[0]);
 
-					deferred.resolve();
-				},
-				error: function(e){
-					console.log(e);
-				}
-			})
-		)
+		$.when(app.getOE(this.model_name, this.fields, [this.getId()], app.models.user.getSessionID()))
+		.done(function(getOE_data){
+			self.set(getOE_data[0]);
+			deferred.resolve();
+		})
 
-		return  deferred;
+		return deferred;
 	},
-
 
 
 });

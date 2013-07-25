@@ -622,3 +622,58 @@ tr.info td:first-child{
     top:0;
   }
 }
+
+
+
+
+/* Highlight Animation
+-------------------------------------------------- */
+// WebKit
+@-webkit-keyframes highlight {
+	0%   { background-color: none }
+	25%  { background-color: lighten(@pink, 50%) }
+	50%  { background-color: lighten(@pink, 25%) }
+	100% { background-color: lighten(@pink, 50%) }
+}
+
+// Firefox
+@-moz-keyframes highlight {
+	0%   { background-color: none }
+	25%  { background-color: lighten(@pink, 50%) }
+	50%  { background-color: lighten(@pink, 25%) }
+	100% { background-color: lighten(@pink, 50%) }
+}
+
+// IE9
+@-ms-keyframes highlight {
+	0%   { background-color: none }
+	25%  { background-color: lighten(@pink, 50%) }
+	50%  { background-color: lighten(@pink, 25%) }
+	100% { background-color: lighten(@pink, 50%) }
+}
+
+// Opera
+@-o-keyframes highlight {
+	0%   { background-color: none }
+	25%  { background-color: lighten(@pink, 50%) }
+	50%  { background-color: lighten(@pink, 25%) }
+	100% { background-color: lighten(@pink, 50%) }
+}
+
+// Spec
+@keyframes highlight {
+	0%   { background-color: none }
+	25%  { background-color: lighten(@pink, 50%) }
+	50%  { background-color: lighten(@pink, 25%) }
+	100% { background-color: lighten(@pink, 50%) }
+}
+
+
+// Call animation for the active one
+tr.highlight td{
+  -webkit-animation: highlight 1s linear 1.5;
+     -moz-animation: highlight 1s linear 1.5;
+      -ms-animation: highlight 1s linear 1.5;
+       -o-animation: highlight 1s linear 1.5;
+          animation: highlight 1s linear 1.5;
+}

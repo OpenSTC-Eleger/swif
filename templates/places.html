@@ -25,7 +25,14 @@
 
 
 	<!-- Check if there is any Places to display -->
-	<% if(nbPlaces > 0) { %>
+	<% if(nbPlaces <= 0) { %>
+
+		<!-- No place to display -->
+		<div class="alert alert-info">
+			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noPlace %>.
+		</div>
+
+	<% } %>
 
 		<!-- Table Teams -->
 		<table class="table table-bordered table-hover table-striped table-sorter">
@@ -46,16 +53,6 @@
 		<!-- Table pagination -->
 		<div id="pagination"></div>
 		<!-- /Table pagination -->
-
-	<% }
-	else { %>
-
-		<!-- No place to display -->
-		<div class="alert alert-info">
-			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noPlace %>.
-		</div>
-
-	<% } %>
 
 </div>
 

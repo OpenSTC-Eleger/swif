@@ -224,7 +224,7 @@ var app = {
 	/** Retrieve an object from OpenERP
 	*/
 	getOE : function (model, fields, ids, session_id, options) {
-		this.json(app.config.openerp.url + this.urlOE_readObject, {
+		return this.json(app.config.openerp.url + this.urlOE_readObject, {
 			'model'     : model,
 			'fields'    : fields, 
 			'ids'       : ids,
