@@ -23,7 +23,7 @@ app.Collections.Interventions = app.Collections.GenericCollection.extend({
 	/** Collection Sync
 	*/
 	sync: function(method, model, options) {
-		var fields = ["active", "ask", "cancel_reason", "complete_name", "contact_id", "create_date", "create_uid", "overPourcent", "tooltip", "date_deadline", "date_start", "description", "effective_hours", "id", "name", "partner_id", "planned_hours", "progress_rate", "service_id", "site1", "site_details", "state", "tasks", "total_hours", "user_id"];
+		var fields = ["actions","active", "ask", "cancel_reason", "complete_name", "contact_id", "create_date", "create_uid", "overPourcent", "tooltip", "date_deadline", "date_start", "description", "effective_hours", "id", "name", "partner_id", "planned_hours", "progress_rate", "service_id", "site1", "site_details", "state", "tasks", "total_hours", "user_id"];
 		
 		return app.readOE( this.model_name ,  app.models.user.getSessionID(), options, fields);
 	},

@@ -103,7 +103,7 @@
 							<a href="#" class="printInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="inter">
 								<i class="icon-print icon-large" data-action="inter">&nbsp;</i>
 							</a>
-							<% if(interventions[i].state == app.Models.Intervention.status.open.key || interventions[i].state == app.Models.Intervention.status.scheduled.key) { %>
+							<% if(interventions[i].actions.indexOf("cancel") > -1 ) { %>
 								 &nbsp;<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-ban-circle icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
 							<% } %>
 						</p>
@@ -176,13 +176,13 @@
 												<span class="<%= (task.state == app.Models.Task.status.done.key ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
 												<span class="nested-objects-actions invisible">
 
-													<% if( task.state == app.Models.Task.status.draft.key || task.state == app.Models.Task.status.open.key ) { %>
+													<% if( task.actions.indexOf("print")>-1) { %>
 
 															<a href="#" class="printTask" data-action="task">
 															<i class="icon-print displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="task">&nbsp;</i>
 															</a>
 													<% } %>
-													<% if( task.state == app.Models.Task.status.draft.key ) { %>
+													<% if( task.actions.indexOf("delete")>-1) { %>
 
 														<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal">
 															<i class="icon-remove displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">&nbsp;</i>
@@ -220,7 +220,7 @@
 											</td>
 											<!-- Actions Button -->
 											<td>
-												<% if(task.state == app.Models.Task.status.draft.key) { %>
+												<% if(task.actions.indexOf("light_mode_finished") > -1) { %>
 														
 													<div class="btn-group">
 														<button class="btn btn-mini btn-success no-outline buttonTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok icon-fixed-width"></i>
@@ -229,16 +229,20 @@
 															<span class="caret"></span>
 														</button>
 														<ul class="dropdown-menu pull-right text-left">
-															<li>
-																<a href="#modalTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonNotFinish">
-																	<i class="icon-time icon-fixed-width iconButtonNotFinish"></i>&nbsp;<%= _.capitalize(lang.notFinished) %>
-																</a>
-															</li>
-															<li>
-																<a href="#modalCancelTask" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonCancelTask">
-																	<i class="icon-ban-circle icon-fixed-width"></i>&nbsp;<%= _.capitalize(lang.actions.cancel) %>
-																</a>
-															</li>
+															<% if(task.actions.indexOf("light_mode_unfinished") > -1) { %>
+																<li>
+																	<a href="#modalTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonNotFinish">
+																		<i class="icon-time icon-fixed-width iconButtonNotFinish"></i>&nbsp;<%= _.capitalize(lang.notFinished) %>
+																	</a>
+																</li>
+															<%}%>
+															<% if(task.actions.indexOf("cancel") > -1) { %>
+																<li>
+																	<a href="#modalCancelTask" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonCancelTask">
+																		<i class="icon-ban-circle icon-fixed-width"></i>&nbsp;<%= _.capitalize(lang.actions.cancel) %>
+																	</a>
+																</li>
+															<%}%>
 														</ul>
 													</div>
 												<% } %>
@@ -257,7 +261,7 @@
 
 							<div class="div-actions" >
 								<button class="btn btn-primary btn-small no-outline addTask"
-									<% if(interventions[i].state != app.Models.Intervention.status.open.key && interventions[i].state != app.Models.Intervention.status.template.key) { %>
+									<% if(interventions[i].actions.indexOf("add_task") == -1) { %>
 										disabled
 								<% } %>>
 									<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addTask) %>
