@@ -92,7 +92,7 @@
 							<!-- Intervention Actions -->
 							<button class="btn btn-link invisible linkToInter" type="button" data-toggle="modal" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>" data-placement="top" data-delay="50"><i class="icon-pencil"></i></button>	
 							
-							<% if(intervention.state == app.Models.Intervention.status.open.key || intervention.state == app.Models.Intervention.status.scheduled.key) { %>
+							<% if(intervention.actions.indexOf("cancel") > -1) { %>
 								<button data-target="#modalCancelInter" class="btn btn-link buttonCancelInter invisible" data-toggle="modal" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>" data-placement="top" data-delay="50"><i class="icon-ban-circle"></i></button>
 							<% } %>
 
@@ -104,19 +104,20 @@
 						<div class="accordion-inner">
 
 							<!-- Check if there is some tasks -->
-							<% if(intervention.tasks.length != 0) { %>
+							<% var hasTasks = intervention.tasks.length != 0;
+							if(hasTasks) { %>
 
 								<!-- Display all task of the Intervention -->
 								<ul class="unstyled tasks">
 								<% 
-									var allPlanned = true;
+									//var allPlanned = true;
 									_.each(intervention.tasks, function (task, i) { %>
 
 										<!-- To Schedule -->
 										<% if(task.state == app.Models.Task.status.draft.key) { %>
 										<li id="task_<%= task.id %>" class="external-event">
 											<i class="icon-chevron-right"></i> <%= task.name %>
-
+											<%if(task.actions.indexOf("delete") > -1){ %>
 											<a href="#modalDeleteTask" class="modalDeleteTask hide" data-toggle="modal">
 												<i class="icon-remove displayInlineBlock modalDeleteTask" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top" data-delay="50">&nbsp;</i>
 											</a>
@@ -125,7 +126,7 @@
 										</li>
 
 										<!-- Schedule -->
-										<% allPlanned = false;
+										<% //allPlanned = false;
 
 										} else if(task.state == app.Models.Task.status.open.key){ %>
 										<li id="task_<%= task.id %>" class="external-event disabled">
@@ -151,16 +152,14 @@
 								<!-- Add Task -->
 								<button class="btn btn-primary btn-small no-outline addTaskPlanning" id="<%= intervention.id %>" rel="tooltip" 
 										data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="right"
-									<% if(intervention.state != app.Models.Intervention.status.open.key &&
-											intervention.state != app.Models.Intervention.status.pending.key &&
-											intervention.state != app.Models.Intervention.status.template.key) { %>
+									<% if(intervention.actions.indexOf("add_task") == -1) { %>
 										disabled
 									<% } %>>
 									<i class="icon-plus"></i>
 								</button>
 
 								<!-- Switch button - To Scheduled / Scheduled -->
-								<% if(_.size(intervention.tasks) > 0 && intervention.state != app.Models.Intervention.status.template.key) { %>
+								<% if(hasTasks && intervention.state != app.Models.Intervention.status.template.key) { %>
 
 									<div class="switch switch-small calendarSwitch pull-right" data-on-label="<%= _.capitalize(lang.planningFenced) %>" data-off-label="<%= _.capitalize(lang.toScheduled) %>" data-on="primary" data-off="warning">
 
@@ -169,7 +168,7 @@
 												checked
 											<% } %>
 
-											<% if(allPlanned == false){ %>
+											<% if(intervention.actions.indexOf("plan_unplan") == -1){ %>
 												disabled
 											 <% } %>
 											/>
