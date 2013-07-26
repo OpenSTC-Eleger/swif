@@ -53,7 +53,7 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 	deleteModel: function(e){
 		var self = this;
 
-		
+
 		// Set the button in loading State //
 		$(e.target).button('loading');
 
@@ -64,8 +64,8 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
-					app.collections.places.remove(self.options.model);
 					self.modal.modal('hide');
+					app.collections.places.remove(self.options.model);
 					//Backbone.history.loadUrl(Backbone.history.fragment);
 				}
 			},

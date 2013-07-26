@@ -21,28 +21,40 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize : function() {
+
+		// When the model are updated //
+		this.listenTo(this.model, 'change', this.change);
+
+		// When the model are removed //
+		this.listenTo(this.model,'remove', this.remove);
+	},
+
+
+
+	/** When the model ara updated //
+	*/
+	change: function(e){
+		this.render();
+		this.highlight();
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
+	},
+
+
+
+	/** When the model ara removed //
+	*/
+	remove: function(e){
 		var self = this;
+		
+		this.stopListening(this.model);
 
-		this.model.bind('remove', function(){
-			console.log('Bind Remove');
+		this.highlight().done(function(){
+			$(self.el).remove();
+		});
 
-			self.unbind();
-			self.remove();
-
-
-			app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
-			app.collections.places.cpt--;
-			app.views.placesListView.partialRender();
-		}, this);
-
-
-		this.model.bind('change', function(){
-			console.log('Bind change');
-
-			self.render();
-
-		}, this);
-
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeDeleteOk);
+		app.collections.places.cpt--;
+		app.views.placesListView.partialRender();
 	},
 
 
@@ -96,6 +108,26 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 			model : this.model
 		});
 		app.views.modalDeleteView.render();
+	},
+
+
+	/** Highlight the row item
+	*/
+	highlight: function(){
+		var self = this;
+
+		$(this.el).addClass('highlight');
+
+		var deferred = $.Deferred();
+
+		// Once the CSS3 animation are end the class are removed //
+		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
+    		function(e) {
+    	    $(self.el).removeClass('highlight');
+    	    deferred.resolve();
+    	});
+
+    	return deferred;
 	}
 
 

@@ -13,7 +13,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 	events: function(){
 		return _.defaults({
 			'change #placeWidth, #placeLenght' : 'calculPlaceArea',
-			'submit #formSavePlace'            : 'savePlaceModel'
+			'submit #formSavePlace'            : 'savePlace'
 		}, 
 			app.Views.GenericModalView.prototype.events
 		);
@@ -40,7 +40,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		 
 			var template = _.template(templateData, {
 				lang  : app.lang,
-				place : self.options.model
+				place : self.model
 			});
 
 			self.modal.html(template);
@@ -87,9 +87,10 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 	/** Delete the model pass in the view
 	*/
-	savePlaceModel: function(e){
+	savePlace: function(e){
 		e.preventDefault();
 
+	
 		var self = this;
 
 		// Set the button in loading State //
@@ -107,22 +108,33 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		};
 
 		// If it's a create pass 0 as ID //
-		if(_.isUndefined(this.options.model)){ var id = 0; }
-		else{ var id = this.options.model.getId(); }
+		if(_.isUndefined(this.model)){ var id = 0; }
+		else{ var id = this.model.getId(); }
 
 		
 		app.Models.Place.prototype.save(
 			params,
 			id, {
 			success: function(data){
-				console.log(data);
 				if(data.error){
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
 					self.modal.modal('hide');
-					app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.placeSaveOk);
-					Backbone.history.loadUrl(Backbone.history.fragment);
+
+					// Create Place //
+					if(_.isUndefined(self.model)){
+						var newPlace = new app.Models.Place({ id: data.result.result });
+
+						// Fetch the new model //
+						newPlace.fetch().done(function(){
+							app.collections.places.add(newPlace);
+						})
+					}
+					// Update Place //
+					else{
+						self.model.fetch();
+					}
 				}
 			},
 			complete: function(){
@@ -143,5 +155,6 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 	calculPlaceArea: function (e) {
 		$('#placeArea').val($('#placeWidth').val() * $('#placeLenght').val());
 	}
+
 
 });

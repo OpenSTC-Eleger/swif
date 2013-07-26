@@ -646,6 +646,11 @@ app.Router = Backbone.Router.extend({
 			app.loader('display');
 
 			$.when(
+				app.collections.places.fetch(fetchParams)
+			)
+			.done(function(){
+				app.views.placesListView = new app.Views.PlacesListView({collection: app.collections.places, page: paginate.page, sort: sort, search: search});
+				self.render(app.views.placesListView);
 					app.collections.places.fetch({data: $.param(fetchParams)})
 				)
 				.done(function () {

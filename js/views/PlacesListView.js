@@ -23,7 +23,34 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	*/
 	initialize: function () {
 
+		// When the model are add in the collection //
+		this.listenTo(this.collection, 'add', this.add);
+
+		this.listenTo(this.collection, 'reset', this.stopListen);
 	},
+
+
+	stopListen: function(){
+		this.stopListening(this.collection);
+	},
+
+
+
+	/** When the model ara updated //
+	*/
+	add: function(model){
+
+		console.log('Bind Add');
+
+		var itemPlaceView  = new app.Views.ItemPlaceView({model: model});
+		$('#rows-items').prepend(itemPlaceView.render().el);
+		itemPlaceView.highlight();
+
+		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.placeCreateOk);
+		app.collections.places.cpt++;
+		app.views.placesListView.partialRender();
+	},
+
 
 
 	/** Display the view

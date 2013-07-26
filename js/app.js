@@ -73,13 +73,10 @@ var app = {
 				app.router = new app.Router();
 				// Listen url changes //
 				Backbone.history.start({pushState: false});
-
-
 			})
 			.fail(function () {
 				console.error('Unable to init the app');
 			});
-
 
 	},
 
@@ -113,12 +110,24 @@ var app = {
 	},
 
 	loadStaticFile: function (url) {
-
 		return $.getJSON(url)
 			.success(function (data) {
 			})
 			.fail(function () {
 				alert('Impossible de charger le fichier') + url;
+			});
+	},
+
+
+	/** Load application configuration
+	*/
+	loadConfiguration: function(url){
+
+		return $.getJSON(url)
+			.success(function(data){
+			})
+			.fail(function(){
+				alert('Impossible de charger le fichier de configuration');
 			});
 	},
 
@@ -191,6 +200,12 @@ var app = {
 
 
 	/** Retrieve an object from OpenERP
+	*/
+	getOE : function (model, fields, ids, session_id, options) {
+		return this.json(app.config.openerp.url + this.urlOE_readObject, {
+			'model'     : model,
+			'fields'    : fields, 
+			'ids'       : ids,
 	 */
 	getOE: function (model, fields, ids, session_id, options) {
 		this.json(app.config.openerp.url + this.urlOE_readObject, {
