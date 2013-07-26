@@ -580,6 +580,7 @@ app.Router = Backbone.Router.extend({
 
 
 			var fetchParams = {
+				silent      : true,
 				limitOffset : {limit: app.config.itemsPerPage, offset: paginate.offset},
 				sortBy      : sort.by+' '+sort.order
 			};
@@ -599,6 +600,9 @@ app.Router = Backbone.Router.extend({
 				app.collections.places.fetch(fetchParams)
 			)
 			.done(function(){
+				/*if(!_.isUndefined(app.views.placesListView)){
+					app.views.placesListView.stopListening();
+				}*/
 				app.views.placesListView = new app.Views.PlacesListView({collection: app.collections.places, page: paginate.page, sort: sort, search: search});
 				self.render(app.views.placesListView);
 

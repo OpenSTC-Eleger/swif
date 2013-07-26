@@ -7,7 +7,7 @@ app.Models.Place = Backbone.RelationalModel.extend({
 	
 	url: "/#places/:id",
 
-	fields     : ["id", "name", "complete_name", "type", "service_ids", "service_names", "site_parent_id", "width", "lenght", "surface"],
+	fields     : ["id", "complete_name", "name", "type", "service_names", "site_parent_id", "width", "lenght", "surface"],
 	
 
 	defaults:{
@@ -152,7 +152,7 @@ app.Models.Place = Backbone.RelationalModel.extend({
 	/** Get Informations of the model
 	*/
 	getInformations : function(){
-		return [this.getName(), this.getType()];
+		return [this.getCompleteName(), this.getServices('string')];
 	},
 
 
@@ -215,10 +215,12 @@ app.Models.Place = Backbone.RelationalModel.extend({
 
 		var deferred = $.Deferred();
 
+		// Check if a silent param exist //
+		if(_.isUndefined(options.silent)){ options.silent = false; }
 
 		$.when(app.getOE(this.model_name, this.fields, [this.getId()], app.models.user.getSessionID()))
 		.done(function(getOE_data){
-			self.set(getOE_data[0]);
+			self.set(getOE_data[0], {silent: options.silent});
 			deferred.resolve();
 		})
 

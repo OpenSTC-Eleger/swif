@@ -11,7 +11,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'click a.modalSavePlace' : 'modalAddPlace',
+			'click a.modalSavePlace' : 'modalCreatePlace',
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -22,16 +22,10 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	/** View Initialization
 	*/
 	initialize: function () {
+		this.collection.off();
 
 		// When the model are add in the collection //
-		this.listenTo(this.collection, 'add', this.add);
-
-		this.listenTo(this.collection, 'reset', this.stopListen);
-	},
-
-
-	stopListen: function(){
-		this.stopListening(this.collection);
+		this.listenTo(this.collection, 'add', this.add);	
 	},
 
 
@@ -41,6 +35,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	add: function(model){
 
 		console.log('Bind Add');
+		console.log(model);
 
 		var itemPlaceView  = new app.Views.ItemPlaceView({model: model});
 		$('#rows-items').prepend(itemPlaceView.render().el);
@@ -113,16 +108,14 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 
 
 
-	/** Add a new categorie
+	/** Modal form to create a new Place
 	*/
-	modalAddPlace: function(e){
+	modalCreatePlace: function(e){
 		e.preventDefault();
 		
 		app.views.modalPlaceView = new app.Views.ModalPlaceView({
 			el    : '#modalSavePlace'
 		});
-
-		app.views.modalPlaceView.render();
 
 	},
 
