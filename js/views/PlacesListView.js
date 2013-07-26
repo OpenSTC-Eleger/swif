@@ -22,9 +22,10 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	/** View Initialization
 	*/
 	initialize: function () {
+		this.collection.off();
 
 		// When the model are add in the collection //
-		this.listenTo(this.collection, 'add', this.add);
+		this.listenTo(this.collection, 'add', this.add);	
 	},
 
 
