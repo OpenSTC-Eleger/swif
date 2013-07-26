@@ -8,6 +8,8 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 	modal : null,
 
+	createMode : false,
+
 
 	// The DOM events //
 	events: function(){
@@ -24,24 +26,41 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 	/** View Initialization
 	*/
 	initialize : function() {
+		var self = this;
+
 		this.modal = $(this.el);
+
+		
+		// Check if it's a create or an update //
+		if(_.isUndefined(this.model)){
+			this.createMode = true;
+			this.render();
+		}
+		else{
+			self.model.fetch({silent: true}).done(function(){
+				self.render(true);
+			});
+		}
+
 	},
 
 
 
 	/** Display the view
 	*/
-	render : function() {
+	render : function(action) {
 		var self = this;
 
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 		 
+
 			var template = _.template(templateData, {
-				lang  : app.lang,
-				place : self.model
-			});
+					lang  : app.lang,
+					place : self.model
+			});	
+			
 
 			self.modal.html(template);
 
@@ -122,8 +141,10 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 				else{
 					self.modal.modal('hide');
 
+					console.log('Success Create or Update');
+
 					// Create Place //
-					if(_.isUndefined(self.model)){
+					if(self.createMode){
 						var newPlace = new app.Models.Place({ id: data.result.result });
 
 						// Fetch the new model //
