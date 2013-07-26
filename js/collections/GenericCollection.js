@@ -12,29 +12,24 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 		var self = this;
 
 		// Check if a search are perform //
-		var domain = null;
+		var search = null;
 		if(_.isUndefined(options.search)){
-			domain = [[]];
+			search = [[]];
 		}
 		else{
-			domain = [options.search]
+			search = [options.search]
 		}
 
-
-		return app.callObjectMethodOE(domain, this.model_name, 'search_count', app.models.user.getSessionID(), {
-			success: function(data){
-				console.log(data);
-				self.cpt = data.result;
+		return $.ajax({
+			url: this.url,
+			method: "HEAD",
+			data: {filters: search},
+			success: function(data,status,request){
+				var contentRange = request.getResponseHeader("Content-Range")
+				self.cpt = contentRange.match(/\d+$/);
 			}
 		});
 	}
-
-
-	/** Comparator for ordering collection
-	*/
-	/*comparator: function(item) {
-		return _.titleize( item.get('name').toLowerCase() ) ;
-	},*/
 
 
 });
