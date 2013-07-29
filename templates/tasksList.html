@@ -181,7 +181,7 @@
 								<% if(task.actions.indexOf("normal_mode_finished") > -1 && task.date_start) { %>
 
 									<!-- If the user is not an Agent or is a foreman -->
-									<% if(displayFilter == true || task.team_id == false){ %>
+									<%// if(displayFilter == true || task.team_id == false){ %>
 						   		
 									<div class="btn-group">
 										<button class="btn btn-small btn-success no-outline buttonTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok icon-fixed-width"></i>
@@ -204,7 +204,7 @@
 											<% } %>
 										</ul>
 									</div>
-									<% }
+									<% //}
 								} %>
 						   	</td>
 							
