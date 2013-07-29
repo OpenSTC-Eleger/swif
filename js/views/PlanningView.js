@@ -506,14 +506,8 @@ app.Views.PlanningView = Backbone.View.extend({
 			places = app.collections.places.models;
 			
 			//keep only places belongs to service selected
-			keepedPlaces = _.filter(places, function(item){ 
-				var placeJSON = item.toJSON();
-				var placeServices = placeJSON.service_ids;	
-				var placeServices = [];
-				_.each( item.attributes.service_ids.models, function(s){
-					placeServices.push( s.toJSON().id );
-				});				
-				return $.inArray(service, placeServices)!=-1
+			keepedPlaces = _.filter(places, function(item){
+				return $.inArray(service, item.toJSON().service_ids)!=-1
 			});
 			app.views.selectListPlacesView.collection = new app.Collections.Places(keepedPlaces);
 			app.views.selectListPlacesView.clearAll();

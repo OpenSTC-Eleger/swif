@@ -391,7 +391,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			},
 
 
-			/** When a event is Drop on the calendar
+			/** When a event is Drop on the calendar : plan in backend
 			*/
 			drop: function( date, allDay ) {
 				app.loader('display');
@@ -400,23 +400,31 @@ app.Views.EventsListView = Backbone.View.extend({
 				var originalEventObject = $(this).data('eventObject');
 				var copiedEventObject = $.extend({}, originalEventObject);
 				copiedEventObject.allDay = allDay;
-				copiedEventObject.start = date;
-
-				var currentInter = app.collections.interventions.get( copiedEventObject.project_id );
-				currentInter = currentInter!=null? currentInter.toJSON():null
-				copiedEventObject.copy = ( currentInter && currentInter.state == 'template' )?true:false;					
-				copiedEventObject.allPlanned = false;
-				self.arrayPlanifTasks = [];
-				self.arrayOnDayEvents = _.filter(self.events, function(e) {
-					if(!e.start) return false;
-					var eventDate = moment( e.start );
-					var currentDate = moment( date );
-					if( eventDate.days() !=  currentDate.days() ) return false;
-					return ( currentDate.diff(eventDate, 'days', true)>-1 && currentDate.diff(eventDate, 'days', true)<1 )
-					
-				});
-				self.calculTask(copiedEventObject);
-				self.planTasks(copiedEventObject);	
+				copiedEventObject.start = date; //$.fullCalendar.formatDate(date, 'yyyy-MM-dd HH:mm:ss');
+				
+				var params = {
+						startWorkingTime : app.config.startWorkTime,
+						endWorkingTime : app.config.endWorkTime,
+				        startLunchTime : app.config.startLunchTime,
+				        endLunchTime : app.config.endLunchTime,
+				        startDt: copiedEventObject.start,
+				        teamMode : self.teamMode,
+				        calendarId : self.model.id,
+				}
+				
+				app.Models.Task.prototype.planTasks(copiedEventObject.id, 
+					params, {
+						success: function (data){
+							if( !_.isUndefined(data.error) ){
+								app.loader('hide');	
+								app.notify('', 'error', app.lang.errorMessages.unablePerformAction, data.error.data.fault_code);
+							}
+							else{
+								self.refresh();
+							}							
+						},
+					}
+				);
 			},
 
 
@@ -480,201 +488,7 @@ app.Views.EventsListView = Backbone.View.extend({
 	},
 	// --------------------End init calendar----------------------------------------//
     
-	//--------------------Cut dropped task on calendar-----------------------------//
-    calculTask: function(event) {
-    	if( event.allPlanned  ) {
-    		if( event.planned_hours!=0 ) {
-    	        var params = {
-    	        		  name:  event.title,
-    	                  project_id: event.project_id,
-    	                  parent_id: event.copy?event.id:false,
-    	                  state: app.Models.Task.status.draft.key,
-    	                  planned_hours: event.planned_hours,
-    	                  remaining_hours: event.planned_hours,
-    	                  user_id: null,
-    	                  team_id: null,
-    	                  date_end: null,
-    	                  date_start: null,
-    	              };
-    	        app.Models.Task.prototype.save(0, params, null);
-    		}
-    		return 1;
-    	}
-    	
-    	var startDate = moment(event.start);
-    	var maxTime = moment( startDate.clone() ).hours( app.config.endWorkTime );
-    	var stopWorkingEvent = this.getEvent( "stopWorkingTime", maxTime.minutes(0).toDate() );
-    	this.arrayOnDayEvents.push( stopWorkingEvent );
-    	
-    	var minutes = 0;
-    	if(_.str.include(app.config.startLunchTime, '.')){
-    		var minutes = _.lpad(((_.rpad(_( app.config.startLunchTime ).strRight('.'), 2, '0') / 100) * 60), 2, '0');
-    	}
-    	var hours = _( app.config.startLunchTime ).strLeft('.');
 
-        
-		var startLunchTime = moment( startDate.clone() ).hours( hours ).minutes( minutes );
-		
-		var minutes = 0;
-    	if(_.str.include(app.config.endLunchTime, '.')){
-    		minutes = _.lpad(((_.rpad(_( app.config.endLunchTime ).strRight('.'), 2, '0') / 100) * 60), 2, '0');
-    	}
-        hours = _( app.config.endLunchTime ).strLeft('.');
-
-		var endLunchTime = moment( startDate.clone() ).hours( hours ).minutes( minutes );
-		var lunchEvent = this.getEvent( "lunchTime", startLunchTime.toDate(), endLunchTime.toDate() );
-		this.arrayOnDayEvents.push( lunchEvent );
-
-		
-		var self = this;
-		self.event = event;
-		self.event.end = self.event.start
-		
-		overlapsEvent = _.filter(this.arrayOnDayEvents, function(e){
-			return self.event.start>=e.start && self.event.end<e.end
-		});
-		
-		while( overlapsEvent.length>0 ){
-			
-			
-			overlapsEvent = _.sortBy(overlapsEvent, function(event){ 
-				return [event.start,event.end]; 
-			});
-			
-			_.each(overlapsEvent, function(e){
-				self.event.start = e.end;
-				self.event.end = e.end;
-			});	
-			
-			overlapsEvent = _.filter(this.arrayOnDayEvents, function(e){
-				return self.event.start>=e.start && self.event.end<e.end
-			});
-		}
-		
-		this.arrayOnDayEvents.push( event );
-		var eventsSortedArray = _.sortBy(this.arrayOnDayEvents, function(event){ 
-			return [event.start,event.end]; 
-		});
-		this.arrayOnDayEvents = eventsSortedArray;
-
-		
-		this.getEndDate( event );
-		
-		this.removeEvent( this.arrayOnDayEvents, stopWorkingEvent );
-		this.removeEvent( this.arrayOnDayEvents, lunchEvent );
-		this.removeEvent( this.arrayOnDayEvents, event );
-		
-		
-		this.calculTask( event );
-    },
-
-
-    getEndDate: function(event) {
-    	var duration = event.planned_hours;
-    	var startDate = moment( event.start );
-    	var index = this.arrayOnDayEvents.indexOf( event );
-    	var size = this.arrayOnDayEvents.length;
-    	var found = false;
-    	var returnDate = null;
-    	while( index<size-1 && !found ) {
-    		var returnDate = returnDate==null?startDate.clone().add('hours', duration):returnDate;
-    		var nextEvent = this.arrayOnDayEvents[ index+1 ];
-    		if( nextEvent ) {
-        		nextDateStart = moment( nextEvent.start ); 
-        		nextDateEnd = moment( nextEvent.end ); 
-        		var diff = returnDate.diff(nextDateStart, 'minutes', true );
-        		if( diff>0 ) {
-        			returnDate = moment( nextDateStart )
-        			found = true;
-        		}
-        		else if ( diff==0 ) {
-        			returnDate = moment( nextDateStart )
-        		}
-			}
-    		index += 1;
-    	}
-    	if( index==size || !nextEvent ) {
-    		event.allPlanned = true;
-    		event.planned_hours = 0;
-    	}
-    	else {
-    		this.removeEvent( this.arrayOnDayEvents, event )
-        		
-        	duration = returnDate.diff( startDate, 'hours', true );
-
-        	var title = event.title;
-        	if( this.arrayPlanifTasks.length>0 )
-        		title = "(Suite-" + this.arrayPlanifTasks.length + ")" + title ;
-        	
-
-			var params=
-			{
-			    name:  title,
-			    project_id: event.project_id,
-			    copy: event.copy,
-			    parent_id: event.copy?event.id:false,
-			    state: 'open',
-			    date_start: startDate.toDate(),
-			    date_end: returnDate.toDate(),
-			    planned_hours: duration,
-			    remaining_hours: duration,
-			    team_id: this.teamMode?this.model.id:0,
-			    user_id: !this.teamMode?this.model.id:0,
-			}
-			
-			
-			event.planned_hours -= duration;
-	    	event.remaining_hours -= duration;
-    		
-    		
-    		if( event.planned_hours==0 || returnDate.hours()==18 )
-    			event.allPlanned = true;
-    		else if( nextDateEnd ){
-	    		event.start = nextDateEnd.toDate();
-	    		event.end = nextDateEnd.toDate();
-    		}
-    		
-			this.arrayPlanifTasks.push(params);
-		}
-    },
-    
-    planTasks : function(copiedEventObject) {
-    	        	
-    	if( this.arrayPlanifTasks.length==0) {
-    		this.refresh();
-    		return 1;
-    	}
-    	
-    	var self = this;
-		if( this.arrayPlanifTasks.length==1 && !copiedEventObject.copy ) {
-			this.arrayPlanifTasks[0].id = copiedEventObject.id;
-			this.updateTask( this.arrayPlanifTasks[0] );
-		}else {			
-			var params = this.arrayPlanifTasks[0];
-			self.params = params;
-			app.Models.Task.prototype.save(0,params,{
-				success: function(){
-					self.arrayPlanifTasks.splice(0, 1);
-					self.planTasks( copiedEventObject );
-				}
-			});
-		}
-    },
-    
-    updateTask: function(event) {
-    	var self = this;
-    	app.Models.Task.prototype.save(event.id, event, {
-	    	success: function (data) {
-		    	$.pnotify({
-		    		title: 'Tâche attribuée',
-		    		text: 'La tâche a correctement été attribué à l\'agent.'
-			    });
-		    	self.refresh();
-	    	}
-	    }); 			    
-	    return 1;
-    },        
-    //--------------------End cut dropped task on calendar--------------------//
 
 });
 
