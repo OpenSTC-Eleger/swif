@@ -227,6 +227,12 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	createOrphan: function(params, options) {
 		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "createOrphan", app.models.user.getSessionID(), options);
 	},
+	
+	/** Plan tasks in backend
+	*/	
+	planTasks: function(id, params, options) {		
+		app.callObjectMethodOE([[id],params], this.model_name, "planTasks", app.models.user.getSessionID(), options);
+	},
 
 
 	
