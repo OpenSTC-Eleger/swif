@@ -21,7 +21,7 @@ app.Views.GenericListView = Backbone.View.extend({
 
 	/** View Initialization
 	*/
-	render: function (opts) {
+	render: function(opts) {
 
 		// Set the Tooltip //
 		$('*[data-toggle="tooltip"]').tooltip();
@@ -49,7 +49,6 @@ app.Views.GenericListView = Backbone.View.extend({
 	},
 
 
-
 	/** Perform a search on the sites
 	*/
 	search: function(e){
@@ -63,6 +62,7 @@ app.Views.GenericListView = Backbone.View.extend({
 		else{
 			this.options.search = query
 		}
+
 
 		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 	},
@@ -117,10 +117,12 @@ app.Views.GenericListView = Backbone.View.extend({
 
 		// Iterate all urlParameters //
 		_.each(this.urlParameters, function(value, item){
+
 			
 			// Check if the options parameter aren't undefined or null //
 			if(!_.isUndefined(self.options[value]) && !_.isNull(self.options[value])){
-				
+
+
 				// Check if the value of the parameter is not an object //
 				if(!_.isObject(self.options[value])){
 					url += '/'+value+'/'+self.options[value];

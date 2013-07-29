@@ -149,7 +149,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 						// Fetch the new model //
 						newPlace.fetch().done(function(){
-							app.collections.places.add(newPlace);
+							app.views.placesListView.collection.add(newPlace);
 						})
 					}
 					// Update Place //

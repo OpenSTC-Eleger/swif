@@ -4,7 +4,7 @@
 
 var app = {
 
-	
+
 	// Global variables app //
 	uniq_id_counter : 0,
 	
@@ -363,6 +363,57 @@ var app = {
 		}
 		
 		return date;
+	},
+
+
+
+		/** Calcul the page and the offset
+	*/
+	calculPageOffset: function(page){
+
+		var paginate = {};
+
+		if(_.isUndefined(page)){
+			paginate.page = 1;
+			paginate.offset = 0;
+		}
+		else{
+			paginate.page = parseInt(page, 10);
+			paginate.offset = (paginate.page - 1) * app.config.itemsPerPage;
+		}
+
+		return paginate;
+	},
+
+
+
+	/** Calcul the sort By column and the order
+	*/
+	calculPageSort: function(sort){
+
+		var sorter = {};
+
+		if(_.isUndefined(sort)){
+			sorter.by = 'name';
+			sorter.order = 'ASC';
+		}
+		else{
+			sorter.by = _(sort).strLeft('-');
+			sorter.order = _(sort).strRight('-');
+		}
+
+		return sorter;
+	},
+
+
+
+	/** Calcul the search argument of the page
+	*/
+	calculSearch: function(searchQuery){
+
+		var search = ['|', ["name", "ilike", searchQuery], ["surface", "=", _(searchQuery).toNumber()]];
+
+		return search;
 	},
 
 

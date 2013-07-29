@@ -22,15 +22,20 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	/** View Initialization
 	*/
 	initialize: function () {
-		this.collection.off();
+		var self = this;
 
-		// When the model are add in the collection //
-		this.listenTo(this.collection, 'add', this.add);	
+		this.initCollection().done(function(){
+			// Unbind & bind the collection //
+			self.collection.off();
+			self.listenTo(self.collection, 'add', self.add);
+
+			app.router.render(self);
+		});
 	},
 
 
 
-	/** When the model ara updated //
+	/** When the model ara created //
 	*/
 	add: function(model){
 
@@ -42,7 +47,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		itemPlaceView.highlight();
 
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.placeCreateOk);
-		app.collections.places.cpt++;
+		this.collection.cpt++;
 		app.views.placesListView.partialRender();
 	},
 
@@ -67,7 +72,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
 				lang: app.lang,
-				nbPlaces: app.collections.places.cpt
+				nbPlaces: self.collection.cpt
 			});
 
 			$(self.el).html(template);
@@ -77,7 +82,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 
 
 			// Create item place view //
-			_.each(app.collections.places.models, function(place, i){
+			_.each(self.collection.models, function(place, i){
 				var itemPlaceView  = new app.Views.ItemPlaceView({model: place});
 				$('#rows-items').append(itemPlaceView.render().el);
 			});
@@ -85,8 +90,8 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 
 			// Pagination view //
 			app.views.paginationView = new app.Views.PaginationView({ 
-				page       : self.options.page,
-				collection : app.collections.places
+				page       : self.options.page.page,
+				collection : self.collection
 			})
 			app.views.paginationView.render();
 
@@ -103,7 +108,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	*/
 	partialRender: function (type) {
 		app.views.paginationView.render();
-		$('#bagdeNbPlaces').text(app.collections.places.cpt);
+		$('#bagdeNbPlaces').text(this.collection.cpt);
 	},
 
 
@@ -118,5 +123,53 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		});
 
 	},
+
+
+
+	initCollection: function(){
+		var self = this;
+
+		
+		this.options.sort = app.calculPageSort(this.options.sort);
+		this.options.page = app.calculPageOffset(this.options.page);
+
+
+
+		// Check if the collections is instantiate //
+		if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
+		this.collection = app.collections.places;
+
+		
+		// Create Fetch params //
+		var fetchParams = {
+			silent      : true,
+			limitOffset : {limit: app.config.itemsPerPage, offset: this.options.page.offset},
+			sortBy      : this.options.sort.by+' '+this.options.sort.order
+		};
+		if(!_.isUndefined(this.options.search)){
+			fetchParams.search = app.calculSearch(this.options.search);
+		}
+
+
+		var deferred = $.Deferred();
+		
+		// Fetch the collections //
+		app.loader('display');
+		$.when(
+			self.collection.fetch(fetchParams)
+		)
+		.done(function(){
+			deferred.resolve();
+		})
+		.fail(function(e){
+			console.error(e);
+		})
+		.always(function(){
+			app.loader('hide');
+		});
+
+		return deferred;
+
+	}
 
 });

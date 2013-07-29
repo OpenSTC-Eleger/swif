@@ -52,56 +52,6 @@ app.Router = Backbone.Router.extend({
 
 
 
-	/** Calcul the page and the offset
-	*/
-	calculPageOffset: function(page){
-
-		var paginate = {};
-
-		if(_.isNull(page)){
-			paginate.page = 1;
-			paginate.offset = 0;
-		}
-		else{
-			paginate.page = parseInt(page, 10);
-			paginate.offset = (paginate.page - 1) * app.config.itemsPerPage;
-		}
-
-		return paginate;
-	},
-
-
-
-	/** Calcul the sort By column and the order
-	*/
-	calculPageSort: function(sort){
-
-		var sorter = {};
-
-		if(_.isNull(sort)){
-			sorter.by = 'name';
-			sorter.order = 'ASC';
-		}
-		else{
-			sorter.by = _(sort).strLeft('-');
-			sorter.order = _(sort).strRight('-');
-		}
-
-		return sorter;
-	},
-
-
-
-	/** Calcul the search argument of the patge
-	*/
-	calculSearch: function(search){
-
-		var search = ['|', ["name", "ilike", search], ["surface", "=", _(search).toNumber()]];
-
-		return search;
-	},
-
-
 
 	/** Check if the User is connect
 	*/
@@ -572,45 +522,14 @@ app.Router = Backbone.Router.extend({
 	places: function(search, sort, page){
 
 		if(this.checkConnect()){
-			var self = this;
 
-			// Check if the user is connect //
-			var paginate = this.calculPageOffset(page);
-			var sort = this.calculPageSort(sort);
+			var params = {};
 
+			if(!_.isNull(search)){ params.search = search; }
+			if(!_.isNull(sort))  { params.sort = sort; }
+			if(!_.isNull(page))  { params.page = page; }
 
-			var fetchParams = {
-				silent      : true,
-				limitOffset : {limit: app.config.itemsPerPage, offset: paginate.offset},
-				sortBy      : sort.by+' '+sort.order
-			};
-
-			if(!_.isNull(search)){
-				fetchParams.search = this.calculSearch(search);
-			}
-
-
-
-			// Check if the collections is instantiate //
-			if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
-
-			app.loader('display');
-
-			$.when(
-				app.collections.places.fetch(fetchParams)
-			)
-			.done(function(){
-				/*if(!_.isUndefined(app.views.placesListView)){
-					app.views.placesListView.stopListening();
-				}*/
-				app.views.placesListView = new app.Views.PlacesListView({collection: app.collections.places, page: paginate.page, sort: sort, search: search});
-				self.render(app.views.placesListView);
-
-				app.loader('hide');
-			})
-			.fail(function(e){
-				console.error(e);
-			});
+			app.views.placesListView = new app.Views.PlacesListView(params);
 		}
 		else{
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});
