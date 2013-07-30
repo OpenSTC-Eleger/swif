@@ -36,8 +36,6 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 	*/
 	change: function(e){
 
-		console.log('Bind Change');
-
 		this.render();
 		this.highlight();
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
@@ -50,8 +48,6 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 	destroy: function(e){
 		var self = this;
 		
-		console.log('Bind remove');
-
 		this.highlight().done(function(){
 			self.remove();
 		});

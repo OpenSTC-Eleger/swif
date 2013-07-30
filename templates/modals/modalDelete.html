@@ -7,8 +7,10 @@
 <div class="modal-body">
 
 	<blockquote class="spaceBottom">
-		<p><%= model.getInformations()[0] %></p>
-		<small><%= model.getInformations()[1] %></small>
+		<p><%= model.getInformations().name %></p>
+		<% if(!_.isUndefined(model.getInformations().infos)) { %>
+			<small><strong><%= model.getInformations().infos.key %> : </strong><%= model.getInformations().infos.value %></small>
+		<% } %>
 	</blockquote>
 
 	<p><%= lang.warningMessages.confirmDeletePlace %></p>

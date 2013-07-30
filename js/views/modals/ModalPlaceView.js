@@ -116,7 +116,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		$(this.el).find("button[type=submit]").button('loading');
 
 
-		var params = {	
+		var params = {
 			name: this.$('#placeName').val(),
 			service_ids: [[6, 0, app.views.advancedSelectBoxPlaceServices.getSelectedItems()]],
 			type: app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(),
@@ -140,8 +140,6 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 				}
 				else{
 					self.modal.modal('hide');
-
-					console.log('Success Create or Update');
 
 					// Create Place //
 					if(self.createMode){

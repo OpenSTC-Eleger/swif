@@ -39,9 +39,6 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	*/
 	add: function(model){
 
-		console.log('Bind Add');
-		console.log(model);
-
 		var itemPlaceView  = new app.Views.ItemPlaceView({model: model});
 		$('#rows-items').prepend(itemPlaceView.render().el);
 		itemPlaceView.highlight();

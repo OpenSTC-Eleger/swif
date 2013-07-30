@@ -152,7 +152,17 @@ app.Models.Place = Backbone.RelationalModel.extend({
 	/** Get Informations of the model
 	*/
 	getInformations : function(){
-		return [this.getCompleteName(), this.getServices('string')];
+		var informations = {};
+
+		informations.name = this.getCompleteName();
+
+		if(!_.isEmpty(this.getServices())){
+			informations.infos = {};
+			informations.infos.key = _.capitalize(app.lang.associatedServices);
+			informations.infos.value = this.getServices();
+		}
+
+		return informations;
 	},
 
 
@@ -163,16 +173,6 @@ app.Models.Place = Backbone.RelationalModel.extend({
 
 	},
 
-
-
-	/** Model Parser 
-	*/
-	parse: function(response, options) {
-		response.complete_name = _.titleize(response.complete_name.toLowerCase());
-
-		return response;
-	},
-	
 
 
 	update: function(params) {
