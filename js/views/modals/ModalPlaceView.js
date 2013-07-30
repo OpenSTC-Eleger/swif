@@ -37,8 +37,10 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 			this.render();
 		}
 		else{
-			self.model.fetch({silent: true}).done(function(){
-				self.render(true);
+			// Render with loader //
+			this.render(true);
+			this.model.fetch({silent: true}).done(function(){
+				self.render();
 			});
 		}
 
@@ -48,18 +50,18 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 	/** Display the view
 	*/
-	render : function(action) {
+	render : function(loader) {
 		var self = this;
 
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 		 
-
 			var template = _.template(templateData, {
-					lang  : app.lang,
-					place : self.model
-			});	
+				lang  : app.lang,
+				place : self.model,
+				loader: loader
+			});
 			
 
 			self.modal.html(template);
@@ -127,7 +129,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		};
 
 		// If it's a create pass 0 as ID //
-		if(_.isUndefined(this.model)){ var id = 0; }
+		if(this.createMode){ var id = 0; }
 		else{ var id = this.model.getId(); }
 
 		

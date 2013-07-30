@@ -26,7 +26,7 @@ app.Models.Place = Backbone.RelationalModel.extend({
 	},
 	setId : function(value) {
 		if(_.isUndefined(value)) return;
-		this.set({ id : value });
+		this.set({ id : value }, {silent: true});
 	},
 
 	getName : function() {
