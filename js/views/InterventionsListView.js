@@ -243,23 +243,34 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		var inter = app.collections.interventions.get(this.pos);
 		if( inter) {
 			var interJSON = inter.toJSON();
-			categoriesFiltered = _.filter(app.collections.categoriesTasks.models, function(item){
-				var services = [];
-				_.each( item.attributes.service_ids.models, function(service){
-					services.push( service.toJSON().id );
+				app.callObjectMethodOE([inter.id],"project.project","get_task_categ_authorized",app.models.user.getSessionID(),{
+					success: function(data){
+						app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
+						collection: new app.Collections.CategoriesTasks(data.result)})
+						app.views.selectListAssignementsView.clearAll();
+						app.views.selectListAssignementsView.addEmptyFirst();
+						app.views.selectListAssignementsView.addAll();
+					}
 				});
-				return  interJSON.service_id && $.inArray( interJSON.service_id[0], services )!=-1;
-			});
-		}        
+			}
+//			categoriesFiltered = _.filter(app.collections.categoriesTasks.models, function(item){
+//				var services = [];
+//				_.each( item.attributes.service_ids.models, function(service){
+//					services.push( service.toJSON().id );
+//				});
+//				return  interJSON.service_id && $.inArray( interJSON.service_id[0], services )!=-1;
+//			});
+//		}        
+//		
+//		app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
+//			collection: categoriesFiltered==null?app.collections.categories: new app.Collections.CategoriesTasks(categoriesFiltered)
+//		})
+//		app.views.selectListAssignementsView.clearAll();
+//		app.views.selectListAssignementsView.addEmptyFirst();
+//		app.views.selectListAssignementsView.addAll();	
 		
-		app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
-			collection: categoriesFiltered==null?app.collections.categories: new app.Collections.CategoriesTasks(categoriesFiltered)
-		})
-		app.views.selectListAssignementsView.clearAll();
-		app.views.selectListAssignementsView.addEmptyFirst();
-		app.views.selectListAssignementsView.addAll();	
-			
 		$('#modalAddTask').modal();
+		
 	},
 
 
