@@ -345,39 +345,58 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		$("#endHour").timepicker('setTime', moment().add('hour', this.selectedTaskJSON.planned_hours).format('LT') );
 
 		
-		// Filter Equipment by service on intervention's task //
 		var equipmentsCollection = app.collections.equipments;
-
-
-		filteredEquipment = _.filter(equipmentsCollection.models, function(item){	
-			var equipmentJSON = item.toJSON();
-			var services = _.map(equipmentJSON.service_ids, function(service){return service.id;});
-			return $.inArray(serviceInter[0], services)!=-1;
-		});
-
+//		// Filter Equipment by service on intervention's task //
+//
+//
+//		filteredEquipment = _.filter(equipmentsCollection.models, function(item){	
+//			var equipmentJSON = item.toJSON();
+//			var services = _.map(equipmentJSON.service_ids, function(service){return service.id;});
+//			return $.inArray(serviceInter[0], services)!=-1;
+//		});
+		
+		var task_id = this.selectedTask.id
+		
 		// Search only vehicles //
-		var filteredVehicleEquipment = _.filter(filteredEquipment, function(item){
-			return item.attributes.technical_vehicle || item.attributes.commercial_vehicle;
+		app.callObjectMethodOE([task_id],"project.task","get_vehicules_authorized",app.models.user.getSessionID(),{
+			success: function(data){
+				// Fill equipment List //
+				app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentDone"), collection: equipmentsCollection.reset(data.result)})
+				app.views.selectListEquipmentsView.clearAll();
+				app.views.selectListEquipmentsView.addEmptyFirst();
+				app.views.selectListEquipmentsView.addAll();
+			}
 		});
-
-		// Fill equipment List //
-		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentDone"), collection: equipmentsCollection.reset(filteredVehicleEquipment)})
-		app.views.selectListEquipmentsView.clearAll();
-		app.views.selectListEquipmentsView.addEmptyFirst();
-		app.views.selectListEquipmentsView.addAll();
-
-
+//		var filteredVehicleEquipment = _.filter(filteredEquipment, function(item){
+//			return item.attributes.technical_vehicle || item.attributes.commercial_vehicle;
+//		});
+		
 		// Search only materials //
-		var filteredOthersEquipment = _.filter(filteredEquipment, function(item){
-			return item.attributes.small_material || item.attributes.fat_material;
+		$('#equipmentsListDone').empty();
+		app.callObjectMethodOE([task_id],"project.task","get_materials_authorized",app.models.user.getSessionID(),{
+			success: function(data){
+				// Display the remain services //
+				var nbRemainMaterials = 0;
+				for(i in data.result){
+					
+					nbRemainMaterials++;
+					$('#equipmentsListDone').append('<li id="equipment_'+data.result[i].id+'"><a href="#"><i class="icon-wrench"></i> '+ data.result[i].name + '-' + data.result[i].type + ' </a></li>');
+				}
+				$('#badgeNbEquipmentsDone').html(nbRemainMaterials);			
+			}
 		});
+		
 
-		_.each(filteredOthersEquipment, function (material, i){
-			var materialJSON = material.toJSON();
-				$('#equipmentsListDone').append('<li id="equipment_'+materialJSON.id+'"><a href="#"><i class="icon-wrench"></i> '+ materialJSON.name + '-' + materialJSON.type + ' </a></li>');
-		});
-
-		$('#badgeNbEquipmentsDone').html(_.size(filteredOthersEquipment));
+//		var filteredOthersEquipment = _.filter(filteredEquipment, function(item){
+//			return item.attributes.small_material || item.attributes.fat_material;
+//		});
+//
+//		_.each(filteredOthersEquipment, function (material, i){
+//			var materialJSON = material.toJSON();
+//				$('#equipmentsListDone').append('<li id="equipment_'+materialJSON.id+'"><a href="#"><i class="icon-wrench"></i> '+ materialJSON.name + '-' + materialJSON.type + ' </a></li>');
+//		});
+//
+//		$('#badgeNbEquipmentsDone').html(_.size(filteredOthersEquipment));
 	},
 
 
