@@ -67,15 +67,17 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 			self.modal.html(template);
 
 
-			// Advance Select List View //
-			app.views.advancedSelectBoxPlaceTypeView = new app.Views.AdvancedSelectBoxView({el: $("#placeType"), model: app.Models.PlaceType.prototype.model_name })
-			app.views.advancedSelectBoxPlaceTypeView.render();
+			if(!loader){
+				// Advance Select List View //
+				app.views.advancedSelectBoxPlaceTypeView = new app.Views.AdvancedSelectBoxView({el: $("#placeType"), model: app.Models.PlaceType.prototype.model_name })
+				app.views.advancedSelectBoxPlaceTypeView.render();
 
-			app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#placeParentPlace"), model: app.Models.Place.prototype.model_name })
-			app.views.advancedSelectBoxPlaceParentView.render();
+				app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#placeParentPlace"), model: app.Models.Place.prototype.model_name })
+				app.views.advancedSelectBoxPlaceParentView.render();
 
-			app.views.advancedSelectBoxPlaceServices = new app.Views.AdvancedSelectBoxView({el: $("#placeServices"), model: app.Models.ClaimerService.prototype.model_name })
-			app.views.advancedSelectBoxPlaceServices.render();
+				app.views.advancedSelectBoxPlaceServices = new app.Views.AdvancedSelectBoxView({el: $("#placeServices"), model: app.Models.ClaimerService.prototype.model_name })
+				app.views.advancedSelectBoxPlaceServices.render();
+			}
 
 
 			self.modal.modal('show');
