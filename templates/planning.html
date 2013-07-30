@@ -121,7 +121,7 @@
 											<a href="#modalDeleteTask" class="modalDeleteTask hide" data-toggle="modal">
 												<i class="icon-remove displayInlineBlock modalDeleteTask" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top" data-delay="50">&nbsp;</i>
 											</a>
-
+											<% } %>
 											<small class="badge badge-<%= app.Models.Task.status.draft.color %> pull-right"><%= task.planned_hours %>h</small>
 										</li>
 
