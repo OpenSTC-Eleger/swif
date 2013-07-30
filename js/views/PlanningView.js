@@ -10,7 +10,7 @@ app.Views.PlanningView = Backbone.View.extend({
 
 	filters: 'interventionsListFilter',
 
-	calendarView: 'agendaWeek',
+	
 	
 	selectedInter : '',
 	selectedTask : '',
@@ -48,35 +48,15 @@ app.Views.PlanningView = Backbone.View.extend({
 
 	/** View Initialization
 	*/
-	initialize : function(agent) {
-		this.agent = agent;  
-		
-		//_.bindAll(this, 'beforeRender', 'render', 'afterRender'); 
-
-		var self = this;
-
-		console.log('Planning view');
+	initialize : function() {
 	},
-
-
-
-	beforeRender : function()  {
-		app.loader('display');
-	},
-
-
-
-	afterRender : function()  {
-		app.loader('hide');
-	},
-
 
 
 	/** Display the view
 	*/
 	render : function() {
 		var self = this;
-
+		
 
 		// Retrieve the Login template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -109,20 +89,21 @@ app.Views.PlanningView = Backbone.View.extend({
 
 
 			interventionSorted = new app.Collections.Interventions(interventions);
-
-
+			
+			
+			
 			// Set variables template //
 			var template = _.template(templateData, {
 				lang: app.lang,
 				interventionsState: app.Models.Intervention.status,
 				interventions: interventionSorted.toJSON(),
 				officers: app.models.user.getOfficers(),
-				teams: app.models.user.getTeams(),
+				teams: app.models.user.getTeams(),				
 			});
 
 			$(self.el).html(template);
-			self.initAllCalendars();
 			self.initDragObject();
+
 
 			$('*[rel="tooltip"]').tooltip();
 			$('*[rel="popover"]').popover({trigger: 'hover', delay: { show: 500, hide: 100 }});
@@ -155,6 +136,10 @@ app.Views.PlanningView = Backbone.View.extend({
 
 				// Navigate to the link //
 				window.location.href = $('#'+id).attr('href');
+			}else{
+				self.currentObject = app.models.user.getOfficers()[0];
+				$('#pOfficer_'+self.currentObject.id).click();
+				window.location.href = $('#pOfficer_'+self.currentObject.id).attr('href');
 			}
 
 
@@ -170,55 +155,46 @@ app.Views.PlanningView = Backbone.View.extend({
 				$('a.filter-button').removeClass('filter-active ^text').addClass('filter-disabled');
 				$('li.delete-filter').addClass('disabled');
 			}
-
+			
 			app.loader('hide');
 		});
 	   
 		return this;
 	},
 
-
-
 	/** Select the planning to display
 	*/
 	selectPlanning: function(e){
+		
 		var link = $(e.target);
 
 		// Save the selected planning in the Session storage //
-		sessionStorage.setItem(this.sstoragePlanningSelected, link.attr('id'));
+
+		var linkId = link.attr('id')
+		sessionStorage.setItem(this.sstoragePlanningSelected, linkId);
+		
+		//Calculates calendar selected (team or officer)
+		teamMode = _.str.include( _(linkId).strLeft('_').toLowerCase(),"officer" )?false:true;	
+		calendarId = _(_(linkId).strRight('_')).toNumber();		
 
 		$('#listAgents li.active, #listTeams li.active').removeClass('active');
 		link.parent('li').addClass('active');
+		
+		//Initialize calendar view
+		app.views.eventsListView = new app.Views.EventsListView({
+			planning : this,
+			el: $("#calendar"), 
+			calendarId : calendarId,
+			teamMode : teamMode,
+		})
 	},
-
-
 
 	/** Set a user model to the view
 	*/
 	setModel : function(model) {
 		this.model = model;
 		return this;
-	},    
-
-
-
-	/** Calendar Initialization
-	*/
-	initAllCalendars: function() {    		
-			var self = this;
-			
-			teams = app.collections.teams;    		
-			teams.each(function(t){	
-				new app.Views.EventsListView(self,t,true).render();
-			});
-
-			officers = app.collections.officers;    		
-			officers.each(function(o){
-				new app.Views.EventsListView(self,o,false).render();
-			});
 	},
-
-
 
 	/** Make the external event Draggable
 	*/
@@ -530,14 +506,8 @@ app.Views.PlanningView = Backbone.View.extend({
 			places = app.collections.places.models;
 			
 			//keep only places belongs to service selected
-			keepedPlaces = _.filter(places, function(item){ 
-				var placeJSON = item.toJSON();
-				var placeServices = placeJSON.service_ids;	
-				var placeServices = [];
-				_.each( item.attributes.service_ids.models, function(s){
-					placeServices.push( s.toJSON().id );
-				});				
-				return $.inArray(service, placeServices)!=-1
+			keepedPlaces = _.filter(places, function(item){
+				return $.inArray(service, item.toJSON().service_ids)!=-1
 			});
 			app.views.selectListPlacesView.collection = new app.Collections.Places(keepedPlaces);
 			app.views.selectListPlacesView.clearAll();
