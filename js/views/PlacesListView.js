@@ -3,7 +3,7 @@
 */
 app.Views.PlacesListView = app.Views.GenericListView.extend({
 
-	templateHTML  : 'places',
+	templateHTML  : 'placesList',
 
 
 	// The DOM events //
@@ -113,7 +113,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		e.preventDefault();
 		
 		app.views.modalPlaceView = new app.Views.ModalPlaceView({
-			el    : '#modalSavePlace'
+			el  : '#modalSavePlace'
 		});
 
 	},
@@ -147,7 +147,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 			sortBy      : this.options.sort.by+' '+this.options.sort.order
 		};
 		if(!_.isUndefined(this.options.search)){
-			fetchParams.search = app.calculSearch(this.options.search);
+			fetchParams.search = app.calculSearch(this.options.search, app.Models.Place.prototype.searchable_fields);
 		}
 
 

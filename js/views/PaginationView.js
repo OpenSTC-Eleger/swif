@@ -38,7 +38,7 @@ app.Views.PaginationView = Backbone.View.extend({
 				page   : self.options.page,
 				nbPage : Math.ceil(self.collection.cpt / app.config.itemsPerPage)
 			});
-			
+
 			self.$el.html(template);
 		});
 

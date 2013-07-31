@@ -36,6 +36,18 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		intervention_ids : []
 	},
 
+
+	searchable_fields: [
+		{
+			key  : 'id',
+			type : 'numeric'
+		},
+		{
+			key  : 'name', 
+			type : 'text'
+		}
+	],
+
 	
 	
 	getId : function() {

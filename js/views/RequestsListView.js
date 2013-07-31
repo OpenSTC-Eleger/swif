@@ -358,7 +358,7 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 			sortBy      : this.options.sort.by+' '+this.options.sort.order
 		};
 		if(!_.isUndefined(this.options.search)){
-			fetchParams.search = app.calculSearch(this.options.search);
+			fetchParams.search = app.calculSearch(this.options.search, app.Models.Request.prototype.searchable_fields);
 		}
 
 

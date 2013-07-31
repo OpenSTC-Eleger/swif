@@ -12,9 +12,9 @@ app.Views.GenericListView = Backbone.View.extend({
 
 	// The DOM events //
 	events: {
-		'click form.form-search input'             : 'selectSearchInput',
-		'submit form.form-search'                  : 'search',
-		'click table.table-sorter th[data-column]' : 'sort'
+		'click form.form-search input'                  : 'selectSearchInput',
+		'submit form.form-search'                       : 'search',
+		'click table.table-sorter th[data-sort-column]' : 'sort'
 	},
 
 
@@ -26,9 +26,13 @@ app.Views.GenericListView = Backbone.View.extend({
 		// Set the Tooltip //
 		$('*[data-toggle="tooltip"]').tooltip();
 
+		
+		// Set the sort icon //
+		$('th[data-sort-column]').append('<i class="icon-sort icon-large icon-muted pull-right">');
+
 		// Display sort icon if there is a sort //
 		if(opts.sort.order == 'ASC'){ var newIcon = "icon-sort-up"; }else{ var newIcon = "icon-sort-down"; }
-		$("th[data-column='"+opts.sort.by+"'] > i").removeClass('icon-sort icon-muted')
+		$("th[data-sort-column='"+opts.sort.by+"'] > i").removeClass('icon-sort icon-muted')
 		.addClass('active ' + newIcon);
 
 		// Rewrite the research in the form //
@@ -74,7 +78,7 @@ app.Views.GenericListView = Backbone.View.extend({
 	sort: function(e){
 
 		if(!$(e.target).is('i')){
-			var sortBy = $(e.target).data('column');
+			var sortBy = $(e.target).data('sort-column');
 		}
 		else{
 			var sortBy = $(e.target).parent('th').data('column');	
@@ -112,7 +116,7 @@ app.Views.GenericListView = Backbone.View.extend({
 		var self = this;
 
 		// Retrieve the baseurl of the view //
-		var url = app.routes.places.baseUrl;
+		var url = _(Backbone.history.fragment).strLeft('/');
 
 
 		// Iterate all urlParameters //

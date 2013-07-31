@@ -367,7 +367,7 @@ var app = {
 
 
 
-		/** Calcul the page and the offset
+	/** Calcul the page and the offset
 	*/
 	calculPageOffset: function(page){
 
@@ -403,9 +403,35 @@ var app = {
 
 	/** Calcul the search argument of the page
 	*/
-	calculSearch: function(searchQuery){
+	calculSearch: function(searchQuery, searchableFields){
 
-		var search = ['|', ["name", "ilike", searchQuery], ["surface", "=", _(searchQuery).toNumber()]];
+		//['|', ["name", "ilike", searchQuery], ["surface", "=", _(searchQuery).toNumber()]];
+		var search = [];
+
+		// Remplace the type By the search type for OpenERP //
+		_.each(searchableFields, function(item, index){
+			switch(item.type){
+				case 'numeric':
+					item.type = '=';
+					break;
+				case 'text':
+					item.type = 'ilike';
+					break;
+			}
+		})
+
+
+		// Search on several fields //
+		if(_.size(searchableFields) > 1){
+			search[0] = '|';
+			_.each(searchableFields, function(item, index){
+				if(item.type == '='){var term = _(searchQuery).toNumber(); }else{ var term = searchQuery}
+				search[index+1] = [item.key, item.type, term];
+			});
+		}
+		else{
+			search[0] = [searchableFields[0].key, searchableFields[0].type, searchQuery];
+		}
 
 		return search;
 	},
