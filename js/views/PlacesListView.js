@@ -5,8 +5,6 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 
 	templateHTML  : 'places',
 
-	selectedPlace : '',
-	
 
 	// The DOM events //
 	events: function(){
@@ -125,14 +123,21 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	initCollection: function(){
 		var self = this;
 
-
-		this.options.sort = app.calculPageSort(this.options.sort);
-		this.options.page = app.calculPageOffset(this.options.page);
-
-
 		// Check if the collections is instantiate //
 		if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
 		this.collection = app.collections.places;
+
+
+		// Check the parameters //
+
+		if(_.isUndefined(this.options.sort)){
+			this.options.sort = this.collection.default_sort;
+		}
+		else{
+			this.options.sort = app.calculPageSort(this.options.sort);	
+		}
+		this.options.page = app.calculPageOffset(this.options.page);
+
 
 		
 		// Create Fetch params //

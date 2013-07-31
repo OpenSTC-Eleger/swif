@@ -393,14 +393,8 @@ var app = {
 
 		var sorter = {};
 
-		if(_.isUndefined(sort)){
-			sorter.by = 'name';
-			sorter.order = 'ASC';
-		}
-		else{
-			sorter.by = _(sort).strLeft('-');
-			sorter.order = _(sort).strRight('-');
-		}
+		sorter.by = _(sort).strLeft('-');
+		sorter.order = _(sort).strRight('-');
 
 		return sorter;
 	},

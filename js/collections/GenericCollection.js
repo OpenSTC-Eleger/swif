@@ -23,7 +23,6 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 
 		return app.callObjectMethodOE(domain, this.model_name, 'search_count', app.models.user.getSessionID(), {
 			success: function(data){
-				console.log(data);
 				self.cpt = data.result;
 			}
 		});

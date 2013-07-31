@@ -333,17 +333,24 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 	initCollection: function(){
 		var self = this;
 
-		
-		this.options.sort = app.calculPageSort(this.options.sort);
-		this.options.page = app.calculPageOffset(this.options.page);
-
-
-
 		// Check if the collections is instantiate //
 		if(_.isUndefined(app.collections.requests)){ app.collections.requests = new app.Collections.Requests(); }
 		this.collection = app.collections.requests;
 
-		
+
+		// Check the parameters //
+
+		if(_.isUndefined(this.options.sort)){
+			this.options.sort = this.collection.default_sort;
+		}
+		else{
+			this.options.sort = app.calculPageSort(this.options.sort);	
+		}
+
+		this.options.page = app.calculPageOffset(this.options.page);
+
+
+
 		// Create Fetch params //
 		var fetchParams = {
 			silent      : true,
