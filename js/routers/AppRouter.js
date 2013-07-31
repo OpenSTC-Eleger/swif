@@ -51,62 +51,6 @@ app.Router = Backbone.Router.extend({
 	},
 
 
-
-	/** Calcul the page and the offset
-	*/
-	calculPageOffset: function(page){
-
-		var paginate = {};
-
-		if (_.isNull(page)) {
-			paginate.page = 1;
-			paginate.offset = 0;
-		}
-		else {
-			paginate.page = parseInt(page, 10);
-			paginate.offset = (paginate.page - 1) * app.config.itemsPerPage;
-		}
-
-		return paginate;
-	},
-
-
-	/** Calcul the sort By column and the order
-	 */
-	calculPageSort: function (sort) {
-
-		var sorter = {};
-
-		if (_.isNull(sort)) {
-			sorter.by = 'name';
-			sorter.order = 'ASC';
-		}
-		else {
-			sorter.by = _(sort).strLeft('-');
-			sorter.order = _(sort).strRight('-');
-		}
-
-		return sorter;
-	},
-
-
-	/** Calcul the search argument of the patge
-	 */
-	calculSearch: function (search) {
-
-		var name_search = [
-			{field: "name", operator: "ilike", value: search}
-		]
-
-		if (!isNaN(_(search).toNumber())) {
-			name_search.unshift({condition: '|'})
-			name_search.push({ field: "surface", operator: "=", value: _(search).toNumber() });
-		}
-		var filters = $.extend({}, name_search);
-		return filters;
-	},
-
-
 	/** Check if the User is connect
 	 */
 	checkConnect: function () {

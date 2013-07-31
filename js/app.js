@@ -356,7 +356,6 @@ var app = {
 	},
 
 
-
 	/** Calcul the sort By column and the order
 	*/
 	calculPageSort: function(sort){
@@ -379,11 +378,18 @@ var app = {
 
 	/** Calcul the search argument of the page
 	*/
-	calculSearch: function(searchQuery){
+	calculSearch: function (search) {
 
-		var search = ['|', ["name", "ilike", searchQuery], ["surface", "=", _(searchQuery).toNumber()]];
+		var name_search = [
+			{field: "name", operator: "ilike", value: search}
+		]
 
-		return search;
+		if (!isNaN(_(search).toNumber())) {
+			name_search.unshift({condition: '|'})
+			name_search.push({ field: "surface", operator: "=", value: _(search).toNumber() });
+		}
+		var filters = $.extend({}, name_search);
+		return filters;
 	},
 
 
