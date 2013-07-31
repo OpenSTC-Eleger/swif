@@ -224,7 +224,7 @@ app.Router = Backbone.Router.extend({
 
 	/** Planning
 	*/
-	planning: function(id){
+	planning: function(id,week){
 		
 		var self = this;
 	
@@ -233,7 +233,9 @@ app.Router = Backbone.Router.extend({
 			
 			// If the id exist we do nothing //
 			if(_.isUndefined(id)){
-		
+			
+			//self.calendarId = 152;
+			//self.weekSelected = week;
 	
 				// Check if the collections is instantiate //
 			if(_.isUndefined(app.collections.tasks)){ app.collections.tasks = new app.Collections.Tasks(); }
@@ -263,7 +265,8 @@ app.Router = Backbone.Router.extend({
 						app.collections.absentTypes.fetch()
 					)
 					.done(function(){
-						app.views.planningView = new app.Views.PlanningView(id);
+						//{calendarId: self.calendarId, weekSelected: self.weekSelected}
+						app.views.planningView = new app.Views.PlanningView();
 						self.render(app.views.planningView);
 						app.loader('hide');
 					})
