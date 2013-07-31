@@ -5,7 +5,19 @@ app.Views.ItemRequestView = Backbone.View.extend({
 
 	tagName: 'tr',
 
-	className: 'row-item',
+	className: function(){
+
+		var classRow = '';
+
+		if(this.model.getState() == app.Models.Request.status.wait.key && app.models.user.isManager()) {
+			classRow = app.Models.Request.status.wait.color + ' bolder';
+		}
+		else if(this.model.getState() == app.Models.Request.status.confirm.key && app.models.user.isDST()){
+			classRow = app.Models.Request.status.confirm.color + ' bolder';
+		}
+
+		return classRow;
+	},
 
 	templateHTML: 'items/itemRequest',
 
