@@ -17,6 +17,8 @@ app.Views.EventsListView = Backbone.View.extend({
 	calendarView: 'agendaWeek',
 	arrayPlanifTasks: [],
 	arrayOnDayEvents: [],
+	
+	weekSelected	:null,
 
 	events: {
 	},
@@ -24,21 +26,11 @@ app.Views.EventsListView = Backbone.View.extend({
 	initialize: function(){	
 	
 		var self = this;
-		this.teamMode = this.options.teamMode
+		this.teamMode = this.options.teamMode;
 		//get officers or teams list  
 		var collection = this.teamMode?app.models.user.getTeams():app.models.user.getOfficers();
-		//Set domain to fetch according the mode (team or officer mode)
-		
-		if( this.teamMode ) {
-			this.domain = ['|',	['team_id','=',this.options.calendarId],
-			               		['user_id','in',app.models.user.getOfficerIdsByTeamId(this.options.calendarId)]
-			               ];
-		}
-		else{			
-			this.domain = ['|',	['user_id','=',this.options.calendarId],
-			               		['team_id','in',app.models.user.getTeamIdsByOfficerId(this.options.calendarId)]
-			               ];
-		}	
+		//Set domain to fetch according the mode (team or officer mode)		
+
 		
 		//set team or officer model
 		this.model = _.find(collection, function (o) { 
@@ -46,24 +38,9 @@ app.Views.EventsListView = Backbone.View.extend({
 		});
 		
 		//Set dom element of calendar
-		this.divCalendar = 'div#calendar_' + this.model.id;		
-		this.initCollection();		
-
+		this.divCalendar = 'div#calendar_' + this.model.id;	
+		this.render();
 	},
-
-	initCollection: function() {
-	
-		var self = this;
-		this.filterTasks = null;
-		//fetch tasks of officer or team to display events in calendar
-		collection = new app.Collections.Tasks();
-		collection.fetch({search: self.domain,
-			success: function(data){
-				self.filterTasks = data.toJSON()
-				self.render();
-			}
-		});
-    },
 
     
 	/** Display the view
@@ -77,8 +54,7 @@ app.Views.EventsListView = Backbone.View.extend({
 				calendar   : self.model,
 			});
 			
-			self.$el.html(template);
-        	self.initEvents();
+			self.$el.html(template);	
         	self.initCalendar();
 		});
 
@@ -86,28 +62,7 @@ app.Views.EventsListView = Backbone.View.extend({
 	},
 
 
-    refresh: function() {
-		var self = this;
-        app.collections.tasks.fetch({ 
-    		success: function(){
-    			app.collections.interventions.fetch({ 
-    				beforeSend: function(){
-	                    app.loader('display');
-	                },
-    				success: function(){
-    					self.options.planning.render();
-    				},
-    				complete: function(){
-                    	app.loader('hide');
-                    }
-               });
-           }
-        });
-    },
-
-
-
-    /** Task is click on the calendar
+     /** Task is click on the calendar
     */
     eventClick: function(fcEvent, jsEvent, view) {
 
@@ -164,11 +119,11 @@ app.Views.EventsListView = Backbone.View.extend({
 		this.collection.get(fcEvent.id).save({start: fcEvent.start, end: fcEvent.end});            
 	},
     
-    initEvents: function() {
+    fetchEvents: function(tasks) {
     	this.events = [];
     	var self = this;
     	
-    	_.each(this.filterTasks , function (task, i){
+    	_.each(tasks , function (task, i){
     		//task = task.toJSON()
     		var actionDisabled = task.state == app.Models.Task.status.done.key || task.state == app.Models.Task.status.cancelled.key;
 
@@ -204,28 +159,11 @@ app.Views.EventsListView = Backbone.View.extend({
     		self.events.push(event);
     	});
     	
-		var eventsSortedArray = _.sortBy(self.events, function(event){ 
+		return eventsSortedArray = _.sortBy(self.events, function(event){ 
 			return [event.start, event.end]; 
 		});
-		self.events = eventsSortedArray;
     },
-    
-
-
-	getEvent: function( title, startDate, endDate ){
-		return {
-					title: title,
-					start: startDate,
-					end : endDate,
-				};
-	},        
-
-
-
-	removeEvent: function(array,s){
-		var index = array.indexOf(s);
-		if(array.indexOf(s) != -1) array.splice(index, 1);
-	},		
+    	
 	//--------------------End events on calendar-------------------------//
 
 
@@ -235,7 +173,31 @@ app.Views.EventsListView = Backbone.View.extend({
 
     	this.calendar = $(this.divCalendar).fullCalendar({
 			events: function(start, end, callback) {
-    			callback(self.events);
+    			var domain = []
+	    		if( self.teamMode ) {
+	    			domain = [	'&',['date_start', '>', moment(start).format('YYYY-MM-DD HH:mm:ss') ],
+	    			            '&',['date_end', '<', moment(end).format('YYYY-MM-DD HH:mm:ss') ],
+	    			            '|',['team_id','=',self.options.calendarId],
+    			               		['user_id','in',app.models.user.getOfficerIdsByTeamId(self.options.calendarId)],
+	    			          ];
+	    		}
+	    		else{			
+	    			domain = [	'&',['date_start', '>', moment(start).format('YYYY-MM-DD HH:mm:ss') ],
+	    			            '&',['date_end', '<', moment(end).format('YYYY-MM-DD HH:mm:ss') ],
+	    			            '|',['user_id','=',self.options.calendarId],
+    			               		['team_id','in',app.models.user.getTeamIdsByOfficerId(self.options.calendarId)],
+	    			          ];
+	    		}	
+	    		
+	    		collection = new app.Collections.Tasks();
+				collection.fetch({search: domain,
+					success: function(data){
+						var events = self.fetchEvents(data.toJSON());
+						callback(events);
+					}
+				});
+    		
+    			
 			},
 			
 			defaultView: self.calendarView,
@@ -290,10 +252,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			startOfLunchTime	: app.config.startLunchTime,
 			endOfLunchTime		: app.config.endLunchTime,
 			
-			viewDisplay: function(view) {
-		        self.options.weekSelected = moment(view.start).year() + '-' + moment(view.start).week();
-		    },
-            
+
 			/**
 			 * Open leave time
 			 */
@@ -374,7 +333,9 @@ app.Views.EventsListView = Backbone.View.extend({
 									app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.unablePerformAction);
 								}
 								else
-									self.refresh();
+									$(self.divCalendar).fullCalendar( 'refetchEvents' )
+									//self.options.planning.render();
+									app.loader('hide');	
 							}
 						});
 						modalAbsentTask.modal('hide');
@@ -416,6 +377,8 @@ app.Views.EventsListView = Backbone.View.extend({
 				        calendarId : self.model.id,
 				}
 				
+				
+				
 				app.Models.Task.prototype.planTasks(copiedEventObject.id, 
 					params, {
 						success: function (data){
@@ -424,13 +387,15 @@ app.Views.EventsListView = Backbone.View.extend({
 								app.notify('', 'error', app.lang.errorMessages.unablePerformAction, data.error.data.fault_code);
 							}
 							else{
-								self.refresh();
+								$(self.divCalendar).fullCalendar( 'refetchEvents' )
+								 self.options.planning.partialRender();
+								//self.options.planning.render();
+								app.loader('hide');	
 							}							
 						},
 					}
 				);
 			},
-
 
 			//Drop event from time slot to another
 			eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
@@ -441,8 +406,9 @@ app.Views.EventsListView = Backbone.View.extend({
 			       date_end: event.end,
 			    };
 			    app.Models.Task.prototype.save(event.id, params);	
-			    $(this.divCalendar).fullCalendar('refresh');
-			    self.options.planning.render();
+			    $(this.divCalendar).fullCalendar( 'refetchEvents' )			   
+			   // $(this.divCalendar).fullCalendar('refresh');
+			    //self.options.planning.render();
 			    app.loader('hide');	
 			},
 
@@ -462,8 +428,9 @@ app.Views.EventsListView = Backbone.View.extend({
 			       remaining_hours: (event.remaining_hours + (minuteDelta)/60),
 			    };
 			    app.Models.Task.prototype.save(event.id,params);
-			    $(this.divCalendar).fullCalendar('refresh');
-			    self.options.planning.render();
+			    $(this.divCalendar).fullCalendar( 'refetchEvents' )
+			    //$(this.divCalendar).fullCalendar('refresh');
+			    //self.options.planning.render();
 			    app.loader('hide');
 			},
 		});
@@ -477,19 +444,17 @@ app.Views.EventsListView = Backbone.View.extend({
 		 * Add personal icon for officer on calendar 
 		 */
 		$('table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");
-
-		if(_.isNull(this.options.weekSelected)){
-			yearSelected = moment().year();
-			weekSelected = moment().week();
-		}
-		else{
-			yearSelected = _(this.options.weekSelected).strLeft('-');	
-			weekSelected = _(this.options.weekSelected).strRight('-');	
-		}
 		
-		var date = moment().year(yearSelected)
-		date = date.week(weekSelected)
-		$(this.divCalendar).fullCalendar('gotopage', date.year(), date.month(), date.date());
+		if(sessionStorage.getItem("week") != null){
+			var weekSelected = sessionStorage.getItem("week");
+			yearSelected = _(this.weekSelected).strLeft('-');	
+			weekSelected = _(this.weekSelected).strRight('-');	
+			
+			var date = moment().year(yearSelected)
+			date = date.week(weekSelected)
+			$(this.divCalendar).fullCalendar('gotopage', date.year(), date.month(), date.date());	
+			
+		}
 		
 						
 		/**
