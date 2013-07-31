@@ -22,6 +22,8 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 	*/
 	initialize : function() {
 		this.modal = $(this.el);
+
+		this.render();
 	},
 
 
@@ -36,7 +38,7 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 		 
 			var template = _.template(templateData, {
 				lang  : app.lang,
-				model : self.options.model
+				model : self.model
 			});
 
 			self.modal.html(template);
@@ -65,8 +67,7 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 				}
 				else{
 					self.modal.modal('hide');
-					app.collections.places.remove(self.options.model);
-					//Backbone.history.loadUrl(Backbone.history.fragment);
+					self.collection.remove(self.model);
 				}
 			},
 			complete: function(){

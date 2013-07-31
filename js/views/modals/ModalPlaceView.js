@@ -8,6 +8,8 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 	modal : null,
 
+	createMode : false,
+
 
 	// The DOM events //
 	events: function(){
@@ -24,14 +26,31 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 	/** View Initialization
 	*/
 	initialize : function() {
+		var self = this;
+
 		this.modal = $(this.el);
+
+		
+		// Check if it's a create or an update //
+		if(_.isUndefined(this.model)){
+			this.createMode = true;
+			this.render();
+		}
+		else{
+			// Render with loader //
+			this.render(true);
+			this.model.fetch({silent: true}).done(function(){
+				self.render();
+			});
+		}
+
 	},
 
 
 
 	/** Display the view
 	*/
-	render : function() {
+	render : function(loader) {
 		var self = this;
 
 
@@ -40,21 +59,25 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		 
 			var template = _.template(templateData, {
 				lang  : app.lang,
-				place : self.model
+				place : self.model,
+				loader: loader
 			});
+			
 
 			self.modal.html(template);
 
 
-			// Advance Select List View //
-			app.views.advancedSelectBoxPlaceTypeView = new app.Views.AdvancedSelectBoxView({el: $("#placeType"), model: app.Models.PlaceType.prototype.model_name })
-			app.views.advancedSelectBoxPlaceTypeView.render();
+			if(!loader){
+				// Advance Select List View //
+				app.views.advancedSelectBoxPlaceTypeView = new app.Views.AdvancedSelectBoxView({el: $("#placeType"), model: app.Models.PlaceType.prototype.model_name })
+				app.views.advancedSelectBoxPlaceTypeView.render();
 
-			app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#placeParentPlace"), model: app.Models.Place.prototype.model_name })
-			app.views.advancedSelectBoxPlaceParentView.render();
+				app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#placeParentPlace"), model: app.Models.Place.prototype.model_name })
+				app.views.advancedSelectBoxPlaceParentView.render();
 
-			app.views.advancedSelectBoxPlaceServices = new app.Views.AdvancedSelectBoxView({el: $("#placeServices"), model: app.Models.ClaimerService.prototype.model_name })
-			app.views.advancedSelectBoxPlaceServices.render();
+				app.views.advancedSelectBoxPlaceServices = new app.Views.AdvancedSelectBoxView({el: $("#placeServices"), model: app.Models.ClaimerService.prototype.model_name })
+				app.views.advancedSelectBoxPlaceServices.render();
+			}
 
 
 			self.modal.modal('show');
@@ -97,7 +120,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		$(this.el).find("button[type=submit]").button('loading');
 
 
-		var params = {	
+		var params = {
 			name: this.$('#placeName').val(),
 			service_ids: [[6, 0, app.views.advancedSelectBoxPlaceServices.getSelectedItems()]],
 			type: app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(),
@@ -108,7 +131,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		};
 
 		// If it's a create pass 0 as ID //
-		if(_.isUndefined(this.model)){ var id = 0; }
+		if(this.createMode){ var id = 0; }
 		else{ var id = this.model.getId(); }
 
 		
@@ -123,12 +146,12 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 					self.modal.modal('hide');
 
 					// Create Place //
-					if(_.isUndefined(self.model)){
+					if(self.createMode){
 						var newPlace = new app.Models.Place({ id: data.result.result });
 
 						// Fetch the new model //
 						newPlace.fetch().done(function(){
-							app.collections.places.add(newPlace);
+							app.views.placesListView.collection.add(newPlace);
 						})
 					}
 					// Update Place //

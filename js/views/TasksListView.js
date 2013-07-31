@@ -301,7 +301,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		e.preventDefault();
 		
 		//Filter equipments
-		var filteredEquipment = app.collections.equipments;
+/*		var filteredEquipment = app.collections.equipments;
 
 
 		if( this.model ) {
@@ -345,11 +345,21 @@ app.Views.TasksListView = Backbone.View.extend({
 		var filteredOthersEquipment = _.filter(filteredEquipment, function(item){
 		    return item.attributes.small_material || item.attributes.fat_material;
 		});
+*/		
+		//get equipments authorized from backend
+		var task_id = [false]
+		if(this.model){
+			task_id = [this.model.get("id")]
+		}
 		
-		app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: vehicleSelect, collection: new app.Collections.Equipments(filteredVehicleEquipment)})
-		app.views.selectListEquipmentsView.clearAll();
-		app.views.selectListEquipmentsView.addEmptyFirst();
-		app.views.selectListEquipmentsView.addAll();
+		app.callObjectMethodOE(task_id,"project.task","get_vehicules_authorized",app.models.user.getSessionID(),{
+			success: function(data){
+				app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: vehicleSelect, collection: new app.Collections.Equipments(data.result)})
+				app.views.selectListEquipmentsView.clearAll();
+				app.views.selectListEquipmentsView.addEmptyFirst();
+				app.views.selectListEquipmentsView.addAll();
+			}
+		});
 
 		// Retrieve the ID of the intervention //
 		var link = $(e.target);
@@ -358,6 +368,19 @@ app.Views.TasksListView = Backbone.View.extend({
 		// Clear the lists //		
 		list.empty();
 		choiceList.empty();
+		
+		app.callObjectMethodOE(task_id,"project.task","get_materials_authorized",app.models.user.getSessionID(),{
+			success: function(data){
+				// Display the remain services //
+				var nbRemainMaterials = 0;
+				for(i in data.result){
+					
+					nbRemainMaterials++;
+					choiceList.append('<li id="equipment_'+data.result[i].id+'"><a href="#"><i class="icon-wrench"></i> '+ data.result[i].name + '-' + data.result[i].type + ' </a></li>');
+				}
+				badgeComponent.html(nbRemainMaterials);			
+			}
+		});
 
 		var equipmentsSelected = new Array();
 		if( id ) {
@@ -369,20 +392,7 @@ app.Views.TasksListView = Backbone.View.extend({
 				list.append('<li id="equipment_'+equipment.id+'"><a href="#"><i class="icon-wrench"></i> '+ equipment.name + '-' + equipment.type + '</a></li>');
 				equipmentsSelected[i] = equipment.id;
 			});
-		};
-
-		// Display the remain services //
-		var nbRemainMaterials = 0;
-		_.filter(filteredOthersEquipment, function (material, i){
-			var materialJSON = material.toJSON()
-			if(!_.contains(equipmentsSelected, materialJSON.id)){
-				nbRemainMaterials++;
-				choiceList.append('<li id="equipment_'+materialJSON.id+'"><a href="#"><i class="icon-wrench"></i> '+ materialJSON.name + '-' + materialJSON.type + ' </a></li>');
-			}
-		});
-		
-		badgeComponent.html(nbRemainMaterials);
-		
+		};		
 	},
 
 

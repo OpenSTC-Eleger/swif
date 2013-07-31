@@ -5,7 +5,7 @@ app.Collections.Places = app.Collections.GenericCollection.extend({
 
 	model      : app.Models.Place,
 
-	fields     : ["id", "name", "complete_name", "type", "service_ids", "service_names", "site_parent_id", "width", "lenght", "surface"],
+	fields     : ["id", "complete_name", "service_ids", "service_names", "site_parent_id", "surface"],
 
 
 	url: '/api/openstc/sites',

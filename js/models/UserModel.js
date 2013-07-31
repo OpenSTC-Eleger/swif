@@ -1,6 +1,6 @@
 /******************************************
- * User Model
- */
+* User Model
+*/
 app.Models.User = Backbone.Model.extend({
 
 	// Model name in the database //
@@ -15,7 +15,7 @@ app.Models.User = Backbone.Model.extend({
 			reverseRelation: {
 				type: Backbone.HasMany,
 				key: 'users',
-				includeInJSON: ['id', 'name'],
+				includeInJSON: ['id','name'],
 			}
 		},
 		{
@@ -28,83 +28,83 @@ app.Models.User = Backbone.Model.extend({
 	],
 
 	defaults: {
-		uid: '',
-		login: '',
-		sessionID: '',
-		lastConnection: '',
-		firstname: '',
-		lastname: '',
-		service_ids: [],
-		context: {},
-		officers: [],
-		teams: [],
-		isDST: false,
-		isManager: false
+		uid             : '',
+		login           : '',
+		sessionID       : '',
+		lastConnection  : '',
+		firstname       : '',
+		lastname        : '',
+		service_ids		: [],
+		context			: {},
+		officers        : [],
+		teams			: [],
+		isDST			: false,
+		isManager		: false
 	},
 
-	initialize: function () {
+	initialize: function(){
 		console.log('User initialize: ' + this.getLogin());
 	},
-
+	
 	/** Model Parser */
-	parse: function (response) {
+	parse: function(response) {    	
 		return response;
 	},
 
-	getUID: function () {
+	getUID : function() {
 		return this.get('uid');
 	},
-	setUID: function (value) {
-		this.set({ uid: value });
+	setUID : function(value) {
+		this.set({ uid : value });
 	},
-
-	getGroups: function () {
+	
+	getGroups : function() {
 		return this.get('groupsID');
 	},
-	setGroups: function (value) {
-		this.set({ groupsID: value });
+	setGroups : function(value) {
+		this.set({ groupsID : value });
 	},
 
-	getLogin: function () {
+	getLogin : function() {
 		return this.get('login');
 	},
-	setLogin: function (value) {
-		this.set({ login: value });
+	setLogin : function(value) {
+		this.set({ login : value });
 	},
 
-	getFirstname: function () {
+	getFirstname : function() {
 		return this.get('firstname');
 	},
-	setFirstname: function (value) {
-		this.set({ firstname: _.capitalize(value) });
+	setFirstname : function(value) {
+		this.set({ firstname : _.capitalize(value) });
 	},
 
-	getLastname: function () {
+	getLastname : function() {
 		return this.get('lastname');
 	},
-	setLastname: function (value) {
-		this.set({ lastname: value.toUpperCase() });
+	setLastname : function(value) {
+		this.set({ lastname : value.toUpperCase() });
 	},
 
-	getFullname: function () {
-		return this.get('firstname') + ' ' + this.get('lastname');
+	getFullname : function() {
+		return this.get('firstname')+' '+this.get('lastname');
 	},
 
-	getSessionID: function () {
+	getSessionID : function() {
 		return this.get('sessionID');
 	},
-	setSessionID: function (value) {
-		this.set({ sessionID: value });
+	setSessionID : function(value) {
+		this.set({ sessionID : value });
 	},
 
-	getLastConnection: function () {
+	getLastConnection : function() {
 		return this.get('lastConnection');
 	},
-	setLastConnection: function (value) {
-		this.set({ lastConnection: value });
+	setLastConnection : function(value) {
+		this.set({ lastConnection : value });
 	},
 
-	destroySessionID: function () {
+	destroySessionID: function(){
 		this.setSessionID('');
 	},
 
@@ -116,69 +116,123 @@ app.Models.User = Backbone.Model.extend({
 			return false;
 		}
 	},
-
-	getService: function () {
+	
+	getService : function() {
 		return this.get('service_id');
 	},
-	setService: function (value) {
-		this.set({ service_id: value });
+	setService : function(value) {
+		this.set({ service_id : value });
 	},
-
-	getOfficers: function () {
+	
+	getOfficers: function() {
 		return this.get('officers');
 	},
 
-	setOfficers: function (value) {
-		this.set({ officers: value });
-	},
-
-	getTeams: function () {
+	setOfficers : function(value) {
+		this.set({ officers : value });
+	},	
+	
+	getTeams: function() {
 		return this.get('teams');
 	},
-	setTeams: function (value) {
-		this.set({ teams: value });
+	setTeams : function(value) {
+		this.set({ teams : value });
 	},
 
-	getContact: function () {
+	getContact : function() {
 		return this.get('contact_id');
 	},
-	setContact: function (value) {
-		this.set({ contact_id: value });
+	setContact : function(value) {
+		this.set({ contact_id : value });
 	},
 
-	getServices: function () {
+	getServices : function() {
 		return this.get('service_ids');
 	},
-	setServices: function (value) {
-		this.set({ service_ids: value });
+	setServices : function(value) {
+		this.set({ service_ids : value });
 	},
-
-	getContext: function () {
+	
+	getContext : function() {
 		return this.get('context');
 	},
-	setContext: function (value) {
-		this.set({ context: value });
+	setContext : function(value) {
+		this.set({ context : value });
 	},
-
-	isManager: function (value) {
+	
+	isManager: function(value) {
 		return this.get('isManager');
 	},
-
-	setManager: function (value) {
-		this.set({ isManager: value });
+	
+	setManager: function(value) {
+		this.set({ isManager : value });
 	},
-
-	isDST: function (value) {
+	
+	isDST: function(value) {
 		return this.get('isDST');
 	},
-
-	setDST: function (value) {
-		this.set({ isDST: value });
+	
+	setDST: function(value) {
+		this.set({ isDST : value });
+	},
+	
+	/**
+	 * Get Officer By Id
+	 */
+	getOfficerById: function(id){
+		return _.find(this.getOfficers(), function(officer){
+			return officer.id == id
+		});
 	},
 
 	setMenu: function (menu) {
 		this.set({menu: menu});
 	},
+	/**
+	 * Get officer's teams list selected in planning
+	 */
+	getOfficerIdsByTeamId: function(id) {
+		var self = this;
+		var officers = []
+		               
+		var team = _.find(this.getTeams(), function(team){
+			return team.id == id
+		});
+		if(_.isUndefined(team)) return officers;
+		
+		_.each(team.members, function(member){			
+			officers.push(member.id);
+		});
+		return officers;	
+	},
+	
+	/**
+	 * Get Officer By Id
+	 */
+	getTeamById: function(id){
+		return _.find(this.getTeams(), function(team){
+			return team.id == id
+		});
+	},
+
+	/**
+	 * Get team's officers list selected in planning
+	 */
+	getTeamIdsByOfficerId: function(id) {
+		var self = this;
+		var teams = []
+		               
+		var officer = _.find(this.getOfficers(), function(officer){
+			return officer.id == id
+		});
+		if(_.isUndefined(officer)) return teams;
+		
+		_.each(officer.teams, function(team){			
+			teams.push(team);
+		});
+		return teams;	
+	},
+		
 
 	getMenus: function () {
 		return this.get('menu')
@@ -210,8 +264,8 @@ app.Models.User = Backbone.Model.extend({
 
 
 	/** Login function
-	 */
-	login: function (loginUser, passUser) {
+	*/
+	login: function(loginUser, passUser){
 
 		"use strict";
 		var self = this;
@@ -278,43 +332,57 @@ app.Models.User = Backbone.Model.extend({
 	},
 
 	/** Logout fonction
-	 */
-	logout: function (options) {
+	*/
+	logout: function(options){
 		"use strict";
 		var self = this;
 
 		var deferred = $.Deferred();
 
-		app.json(app.config.openerp.url + app.urlOE_sessionDestroy, {
+		app.json(app.config.openerp.url+app.urlOE_sessionDestroy, {
 			'session_id': self.getSessionID()
 		})
-			.fail(function () {
-				app.notify('', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
-			})
-			.done(function (data) {
-				// On détruit la session dans le localStorage //
-				self.destroySessionID();
-				self.save();
-				// Reset des filtres initialisées dans les listes //
-				sessionStorage.clear();
+		.fail(function (){
+			app.notify('', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
+		})
+		.done(function (data) {
+			// On détruit la session dans le localStorage //
+			self.destroySessionID();
+			self.save();
+			// Reset des filtres initialisées dans les listes //
+			sessionStorage.clear();
+			
+			app.notify('large', 'info', app.lang.infoMessages.information, app.lang.infoMessages.successLogout);
 
-				app.notify('large', 'info', app.lang.infoMessages.information, app.lang.infoMessages.successLogout);
+			// Refresh the header //
+			app.views.headerView.render();
 
-				// Refresh the header //
-				app.views.headerView.render();
+			// Navigate to the login Page //
+			Backbone.history.navigate(app.routes.login.url, {trigger: true, replace: true});
+			deferred.resolve();
+		});
 
-				// Navigate to the login Page //
-				Backbone.history.navigate(app.routes.login.url, {trigger: true, replace: true});
-				deferred.resolve();
-			});
-
-		return deferred;
+	   return deferred;
 	},
 
 
+
+	/** Get the menu of the user
+	*/
+	getMenus: function(options){
+		"use strict";
+		var self = this;
+
+		return app.json(app.config.openerp.url+app.urlOE_menuUser, {
+			'session_id': self.getSessionID()
+		}, options)
+	},
+
+
+
 	/** Get the informations of the user
-	 */
-	getUserInformations: function (options) {
+	*/
+	getUserInformations: function(options){
 		"use strict";
 		var self = this;
 
