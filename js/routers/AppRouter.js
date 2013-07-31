@@ -8,7 +8,7 @@ app.Router = Backbone.Router.extend({
 	mainMenus: {
 		manageInterventions: 'gestion-des-interventions',
 		reporting: 'reporting',
-		configuration: 'configuration',
+		configuration: 'configuration'
 	},
 
 
@@ -650,11 +650,6 @@ app.Router = Backbone.Router.extend({
 			)
 			.done(function(){
 				app.views.placesListView = new app.Views.PlacesListView({collection: app.collections.places, page: paginate.page, sort: sort, search: search});
-				self.render(app.views.placesListView);
-					app.collections.places.fetch({data: $.param(fetchParams)})
-				)
-				.done(function () {
-					app.views.placesListView = new app.Views.PlacesListView({page: paginate.page, sort: sort, search: search});
 					self.render(app.views.placesListView);
 
 					app.loader('hide');
