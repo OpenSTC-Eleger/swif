@@ -289,6 +289,10 @@ app.Views.EventsListView = Backbone.View.extend({
 			//drop: self.drop,
 			startOfLunchTime	: app.config.startLunchTime,
 			endOfLunchTime		: app.config.endLunchTime,
+			
+			viewDisplay: function(view) {
+		        self.options.weekSelected = moment(view.start).year() + '-' + moment(view.start).week();
+		    },
             
 			/**
 			 * Open leave time
@@ -474,6 +478,19 @@ app.Views.EventsListView = Backbone.View.extend({
 		 */
 		$('table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");
 
+		if(_.isNull(this.options.weekSelected)){
+			yearSelected = moment().year();
+			weekSelected = moment().week();
+		}
+		else{
+			yearSelected = _(this.options.weekSelected).strLeft('-');	
+			weekSelected = _(this.options.weekSelected).strRight('-');	
+		}
+		
+		var date = moment().year(yearSelected)
+		date = date.week(weekSelected)
+		$(this.divCalendar).fullCalendar('gotopage', date.year(), date.month(), date.date());
+		
 						
 		/**
 		 * Initialize Print calendar view
