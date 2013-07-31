@@ -40,7 +40,7 @@
 		"function"	: "detailsRequest"
 	},
 	"requestsInterventions": {
-		"url"		: "demandes-dinterventions(/page:page)",
+		"url"		: "demandes-dinterventions(/search/:search)(/sort/:sort)(/page:page)",
 		"baseUrl"   : "demandes-dinterventions",
 		"function"	: "requestsList"
 	},

@@ -92,7 +92,6 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 			})
 			app.views.paginationView.render();
 
-
 		});
 
 		$(this.el).hide().fadeIn();
@@ -126,10 +125,9 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	initCollection: function(){
 		var self = this;
 
-		
+
 		this.options.sort = app.calculPageSort(this.options.sort);
 		this.options.page = app.calculPageOffset(this.options.page);
-
 
 
 		// Check if the collections is instantiate //
