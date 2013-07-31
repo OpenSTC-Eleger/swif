@@ -205,17 +205,8 @@ var app = {
 		return this.json(app.config.openerp.url + this.urlOE_readObject, {
 			'model'     : model,
 			'fields'    : fields, 
-			'ids'       : ids,
-	 */
-	getOE: function (model, fields, ids, session_id, options) {
-		this.json(app.config.openerp.url + this.urlOE_readObject, {
-			'model': model,
-			'fields': fields,
-			'ids': ids,
-			'session_id': session_id
-		}, options)
-
-	},
+			'ids'       : ids
+		}, options)},
 
 
 	/** Retrieve a list from OpenERP
