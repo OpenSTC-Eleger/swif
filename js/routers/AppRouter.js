@@ -646,7 +646,7 @@ app.Router = Backbone.Router.extend({
 			app.loader('display');
 
 			$.when(
-				app.collections.places.fetch(fetchParams)
+				app.collections.places.fetch({data:fetchParams})
 			)
 			.done(function(){
 				app.views.placesListView = new app.Views.PlacesListView({collection: app.collections.places, page: paginate.page, sort: sort, search: search});
