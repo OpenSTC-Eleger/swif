@@ -6,7 +6,7 @@
 
 	"home": {
 		"url" 		: "",
-		"function" 	: "requestsList"
+		"function" 	: "homePageRedirect"
 	},
 	"login": {
 		"url" 		: "login",

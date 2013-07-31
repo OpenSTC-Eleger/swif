@@ -98,6 +98,11 @@ app.Router = Backbone.Router.extend({
 
 	/************* Generiq ****************/
 
+	homePageRedirect: function(){
+		this.navigate(app.routes.requestsInterventions.baseUrl, {trigger: true, replace: true});
+	},
+
+
 	/** Display the login View
 	*/
 	login: function(){

@@ -41,7 +41,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 	getId : function() {
 		return this.get('id');
 	},
-	setName : function(value) {
+	setId : function(value) {
 		if( value == 'undefined') return;
 		this.set({ id : value });
 	},
@@ -121,13 +121,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		this.set({ service_id : value });
 	},
 
-	getInterventions : function() {
-		return this.get('intervention_ids');
-	},
-	setInterventions : function(value) {
-		if( value == 'undefined') return;
-		this.set({ intervention_ids : value });
-	},
 
 	// Claimer of the resquest //
 	getClaimer: function(type){
@@ -211,30 +204,11 @@ app.Models.Request = Backbone.RelationalModel.extend({
 
 
 
-	/** Model Parser
-	*/
-	parse: function(response) {
-		return response;
-	},
-
-
-
 	/** Save Model
 	*/
 	save: function(data,options) { 
 		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
 	},
-
-
-	
-	/** method not used
-	*/
-	sendEmail: function(data,options) {
-		var params = {}
-		params.state = this.get("state");
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "send_email", app.models.user.getSessionID(), options);
-	},
-	
 
 
 	update: function(params) {
@@ -244,19 +218,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		this.setNote( params.note );
 	},
 
-
-
-	/** Destroy Model
-	*/
-	destroy: function (options) {	
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
-	},
-	
 
 
 	valid: function(params, options) {
