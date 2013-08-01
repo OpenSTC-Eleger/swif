@@ -51,7 +51,25 @@
 				<th><%= _.capitalize(lang.service) %></th>
 				<th><%= _.capitalize(lang.claiment) %></th>
 				<th data-sort-column="create_date"><%= _.capitalize(lang.createDate) %></th>
-				<th><%= _.capitalize(lang.status) %></th>
+				<th>
+					<%= _.capitalize(lang.status) %>
+					<div class="dropdown pull-right">
+						<a id="filterStateRequest" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="icon-filter icon-large"></i></a>
+
+						<ul id="filterStateRequestList" class="dropdown-menu" role="menu" aria-labelledby="filterStateRequest">
+							<% _.each(requestsState, function (state, i) { %>
+								<li role="menuitem">
+									<a tabindex="-1" href="#<%= state.key %>"> 
+										<i class="badge badge-<%= state.color %>">&nbsp;</i>
+										&nbsp; <%= _.capitalize(state.translation) %>
+									</a>
+								</li>
+							<% }) %>
+								<li class="divider" role="menuitem"></li>
+								<li class="delete-filter disabled" role="menuitem"><a href="#delete-filter"><i class="icon-remove"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
+						</ul>
+					</div>
+				</th>
 
 				<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
 					<th class="span1"><%= _.capitalize(lang.action) %></th>

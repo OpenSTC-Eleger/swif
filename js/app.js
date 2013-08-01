@@ -401,11 +401,28 @@ var app = {
 
 
 
+	/** Calcul the Filter By
+	*/
+	calculPageFilter: function(filter){
+
+		var filt = {};
+
+		filt.by = _(filter).strLeft('-');
+		filt.value = _(filter).strRight('-');
+
+		return filt;
+	},
+
+
+
 	/** Calcul the search argument of the page
 	*/
 	calculSearch: function(searchQuery, searchableFields){
 
+
 		//['|', ["name", "ilike", searchQuery], ["surface", "=", _(searchQuery).toNumber()]];
+		//['&', ["state", "ilike", 'valid'], '|', ["name", "ilike", 'demande'], ["id", "=", _('demande').toNumber()]];
+		
 		var search = [];
 
 		// Remplace the type By the search type for OpenERP //
@@ -420,17 +437,26 @@ var app = {
 			}
 		})
 
-
-		// Search on several fields //
-		if(_.size(searchableFields) > 1){
-			search[0] = '|';
-			_.each(searchableFields, function(item, index){
-				if(item.type == '='){var term = _(searchQuery).toNumber(); }else{ var term = searchQuery}
-				search[index+1] = [item.key, item.type, term];
-			});
+		// Check if there is a filter //
+		if(!_.isUndefined(searchQuery.filter)){
+			if(!_.isUndefined(searchQuery.search)){ search.push('&'); }
+			search.push([searchQuery.filter.by, 'ilike', searchQuery.filter.value]);
 		}
-		else{
-			search[0] = [searchableFields[0].key, searchableFields[0].type, searchQuery];
+
+
+		// Check if there is a Search //
+		if(!_.isUndefined(searchQuery.search)){
+			// Search on several fields //
+			if(_.size(searchableFields) > 1){
+				search.push('|');
+				_.each(searchableFields, function(item, index){
+					if(item.type == '='){var term = _(searchQuery.search).toNumber(); }else{ var term = searchQuery.search }
+					search.push([item.key, item.type, term]);
+				});
+			}
+			else{
+				search.push([searchableFields[0].key, searchableFields[0].type, searchQuery]);
+			}
 		}
 
 		return search;
@@ -458,7 +484,6 @@ var app = {
 				var delay = 4500;
 				var hide = true;
 			break;
-
 		}
 
 		$.pnotify({

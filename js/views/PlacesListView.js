@@ -146,7 +146,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 			sortBy      : this.options.sort.by+' '+this.options.sort.order
 		};
 		if(!_.isUndefined(this.options.search)){
-			fetchParams.search = app.calculSearch(this.options.search, app.Models.Place.prototype.searchable_fields);
+			fetchParams.search = app.calculSearch({search: this.options.search}, app.Models.Place.prototype.searchable_fields);
 		}
 
 

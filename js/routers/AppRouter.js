@@ -142,16 +142,17 @@ app.Router = Backbone.Router.extend({
 
 	/** Requests List
 	*/
-	requestsList: function(search, sort, page) {
+	requestsList: function(search, filter, sort, page) {
 
 		// Check if the user is connect //
 		if(this.checkConnect()){
 
 			var params = {};
 
-			if(!_.isNull(search)){ params.search = search; }
-			if(!_.isNull(sort))  { params.sort = sort; }
-			if(!_.isNull(page))  { params.page = page; }
+			if(!_.isNull(search))  { params.search = search; }
+			if(!_.isNull(filter))  { params.filter = filter; }
+			if(!_.isNull(sort))    { params.sort = sort; }
+			if(!_.isNull(page))    { params.page = page; }
 
 			app.views.requestsListView = new app.Views.RequestsListView(params);
 

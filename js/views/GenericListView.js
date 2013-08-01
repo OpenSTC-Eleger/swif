@@ -5,7 +5,7 @@ app.Views.GenericListView = Backbone.View.extend({
 
 	el            : '#rowContainer',
 
-	urlParameters : ['search', 'sort'],
+	urlParameters : ['search', 'filter', 'sort'],
 	
 	searchForm    : 'form.form-search input',
 
@@ -81,7 +81,7 @@ app.Views.GenericListView = Backbone.View.extend({
 			var sortBy = $(e.target).data('sort-column');
 		}
 		else{
-			var sortBy = $(e.target).parent('th').data('column');	
+			var sortBy = $(e.target).parent('th').data('sort-column');	
 		}
 
 		// Retrieve the current Sort //

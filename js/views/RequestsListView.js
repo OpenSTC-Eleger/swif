@@ -20,7 +20,7 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 
 			'change #createAssociatedTask' 			: 'accordionAssociatedTask',
 
-			'click #filterStateRequestList li:not(.disabled) a' 	: 'setFilter'
+			'click #filterStateRequestList li a' 	: 'setFilterState'
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -64,7 +64,8 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 
 			var template = _.template(templateData, {
 				lang: app.lang,
-				nbRequests: self.collection.cpt
+				nbRequests: self.collection.cpt,
+				requestsState: app.Models.Request.status,
 			});
 
 			$(self.el).html(template);
@@ -84,9 +85,23 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 			// Pagination view //
 			app.views.paginationView = new app.Views.PaginationView({ 
 				page       : self.options.page.page,
-				collection : app.collections.requests
+				collection : self.collection
 			})
 			app.views.paginationView.render();
+
+
+			
+			// Render Filter Link on the Table //
+			if(!_.isUndefined(self.options.filter)){
+				$('#filterStateRequest').removeClass('filter-disabled');
+				$('#filterStateRequestList li.delete-filter').removeClass('disabled');
+
+				$('a.filter-button').addClass('text-'+app.Models.Request.status[self.options.filter.value].color);
+			}
+			else{
+				$('#filterStateRequest').addClass('filter-disabled');
+				$('#filterStateRequestList li.delete-filter').addClass('disabled');
+			}
 
 		});
 
@@ -260,30 +275,22 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 
 
 
-	/** Filter Requests
+	/** Filter Requests on the State
 	*/
-	setFilter: function(event){
-		event.preventDefault();
+	setFilterState: function(e){
+		e.preventDefault();
 
-		var link = $(event.target);
+		var filterValue = _($(e.target).attr('href')).strRightBack('#');
 
-		var filterValue = _(link.attr('href')).strRightBack('#');
-
-		// Set the filter in the local Storage //
+		// Set the filter value in the options of the view //
 		if(filterValue != 'delete-filter'){
-			sessionStorage.setItem(this.filters, filterValue);
+			this.options.filter = { by: 'state', value: filterValue};
 		}
 		else{
-			sessionStorage.removeItem(this.filters);
-		}
-
-		if(this.options.page <= 1){
-			this.render();
-		}
-		else{
-			app.router.navigate(app.routes.requestsInterventions.baseUrl, {trigger: true, replace: true});
+			delete this.options.filter;
 		}
 		
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 	},
 
 
@@ -334,8 +341,7 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		var self = this;
 
 		// Check if the collections is instantiate //
-		if(_.isUndefined(app.collections.requests)){ app.collections.requests = new app.Collections.Requests(); }
-		this.collection = app.collections.requests;
+		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.Requests(); }
 
 
 		// Check the parameters //
@@ -347,18 +353,31 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 			this.options.sort = app.calculPageSort(this.options.sort);	
 		}
 
+		if(!_.isUndefined(this.options.filter)){
+			this.options.filter = app.calculPageFilter(this.options.filter);
+		}
+
 		this.options.page = app.calculPageOffset(this.options.page);
 
 
-
+	
 		// Create Fetch params //
 		var fetchParams = {
 			silent      : true,
 			limitOffset : {limit: app.config.itemsPerPage, offset: this.options.page.offset},
 			sortBy      : this.options.sort.by+' '+this.options.sort.order
 		};
+
+		var globalSearch = {};
 		if(!_.isUndefined(this.options.search)){
-			fetchParams.search = app.calculSearch(this.options.search, app.Models.Request.prototype.searchable_fields);
+			globalSearch.search = this.options.search;
+		}
+		if(!_.isUndefined(this.options.filter)){
+			globalSearch.filter = this.options.filter;
+		}
+
+		if(!_.isEmpty(globalSearch)){
+			fetchParams.search = app.calculSearch(globalSearch, app.Models.Request.prototype.searchable_fields);
 		}
 
 
