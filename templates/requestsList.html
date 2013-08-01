@@ -1,7 +1,13 @@
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.requestsList %>
-		<sup class="badge" data-toggle="tooltip" data-original-title="action" data-placement="bottom">
+
+		<% if(app.models.user.isDST()) { var classColor = app.Models.Request.status.confirm.color; var actionToProcess = lang.actions.confirm; }
+		   else if(app.models.user.isManager()){ var classColor = app.Models.Request.status.wait.color; var actionToProcess = lang.actions.process; }
+		   else{ var classColor = ''; var actionToProcess = ''}
+		%>
+
+		<sup class="badge badge-<%= classColor %>" data-toggle="tooltip" data-original-title="<%= actionToProcess %>" data-placement="bottom">
 			<%= nbRequests %>
 		</sup>
 	</h1>
