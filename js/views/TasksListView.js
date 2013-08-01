@@ -60,13 +60,9 @@ app.Views.TasksListView = Backbone.View.extend({
 		// Change the Grid Mode of the view //
 		app.views.headerView.switchGridMode('fluid');
 
-
-		var officer = app.models.user;
-		var officer_id = officer.get('uid');
+		//var officer = app.models.user.getUID();
+		var officer_id = app.models.user.getUID();
 		
-		var tasks = app.collections.tasks.toJSON();
-
-
 		// Retrieve the year - If not exist in the URL set as the current year //
 		if(_.isNull(this.options.yearSelected)){
 			yearSelected = moment().year();
@@ -85,210 +81,226 @@ app.Views.TasksListView = Backbone.View.extend({
 
 		var momentDate = moment().year(yearSelected).week(weekSelected);
 
-
-
+		//get only tasks on the current week
+		var filter = [['date_start','>=',momentDate.clone().weekday(1).format('YYYY-MM-DD 00:00:00')],['date_start','<=',momentDate.clone().weekday(6).format('YYYY-MM-DD 23:59:59')]];
+		
 		// Filter on the Tasks //
-		var tasksUser = _.filter(tasks, function(task){	
-			return task.active == true;
-		});
-
-
-
+		filter.push(['active','=',true]);
+		
 		//  Collection Task Filter if not null //
 		if(sessionStorage.getItem(this.filters) != null){
-			tasksUser = _.filter(tasksUser, function(item){ 
-				return item.user_id[0] == sessionStorage.getItem(self.filters);
-			});
+			filter.push(['state','=',sessionStorage.getItem(self.filters)]);
 		}
-
-
-		// Create table for each day //
-		var mondayTasks =[]; 	var tuesdayTasks =[];
-		var wednesdayTasks =[]; var thursdayTasks =[];
-		var fridayTasks =[]; 	var saturdayTasks =[]; 
-		var sundayTasks =[];
-
-		var nbPendingTasks = 0;
-
-
-		// Fill the tables with the tasks //
-		_.each(tasksUser, function(task, i){
-
-			// Don't display the task with absent state - congé //
-			if(task.state != app.Models.Task.status.absent.key){
-
-				if(momentDate.clone().isSame(task.date_start, 'week')){
-					if(momentDate.clone().day(1).isSame(task.date_start, 'day')){
-						mondayTasks.push(task);
-					}
-					else if(momentDate.clone().day(2).isSame(task.date_start, 'day')){
-						tuesdayTasks.push(task);
-					}
-					else if(momentDate.clone().day(3).isSame(task.date_start, 'day')){
-						wednesdayTasks.push(task);
-					}
-					else if(momentDate.clone().day(4).isSame(task.date_start, 'day')){
-						thursdayTasks.push(task);
-					}
-					else if(momentDate.clone().day(5).isSame(task.date_start, 'day')){
-						fridayTasks.push(task);
-					}
-					else if(momentDate.clone().day(6).isSame(task.date_start, 'day')){
-						saturdayTasks.push(task);
-					}
-					else if(momentDate.clone().day(7).isSame(task.date_start, 'day')){
-						sundayTasks.push(task);
-					}
-
-					// Retrieve the number of Open Task //
-					if(task.state == app.Models.Task.status.open.key){
-						nbPendingTasks++;
-					}
-
-				}
-				// Hack for Sunday Task //
-				else {
-
-					if( momentDate.clone().day(7).isSame(task.date_start, 'day') ){					
-						sundayTasks.push(task);
-
-						// Retrieve the number of Open Task //
-						if(task.state == app.Models.Task.status.open.key){
-							nbPendingTasks++;
+		// Don't display the task with absent state - congé //
+		filter.push(['state','!=','absent']);
+		
+		app.loader('display');
+		
+		//get taskUser filtered on current week and with optional filter in sessionStorage
+		app.collections.tasks = new app.Collections.Tasks();
+		app.collections.tasks.fetch({
+			search: filter,
+			success: function(){
+				if(_.isUndefined(app.collections.equipments)){ app.collections.equipments = new app.Collections.Equipments(); }
+				if(_.isUndefined(app.collections.categoriesTasks)){ app.collections.categoriesTasks = new app.Collections.CategoriesTasks(); }
+				$.when(
+					app.collections.equipments.fetch(),
+					app.collections.categoriesTasks.fetch()
+				)
+				.done(function(){
+					app.loader('hide');
+				
+					// Create table for each day //
+					var mondayTasks =[]; 	var tuesdayTasks =[];
+					var wednesdayTasks =[]; var thursdayTasks =[];
+					var fridayTasks =[]; 	var saturdayTasks =[]; 
+					var sundayTasks =[];
+	
+					var nbPendingTasks = 0;
+	
+					// Fill the tables with the tasks //
+					_.each(app.collections.tasks.toJSON(), function(task, i){
+						if(momentDate.clone().isSame(task.date_start, 'week')){
+							if(momentDate.clone().day(1).isSame(task.date_start, 'day')){
+								mondayTasks.push(task);
+							}
+							else if(momentDate.clone().day(2).isSame(task.date_start, 'day')){
+								tuesdayTasks.push(task);
+							}
+							else if(momentDate.clone().day(3).isSame(task.date_start, 'day')){
+								wednesdayTasks.push(task);
+							}
+							else if(momentDate.clone().day(4).isSame(task.date_start, 'day')){
+								thursdayTasks.push(task);
+							}
+							else if(momentDate.clone().day(5).isSame(task.date_start, 'day')){
+								fridayTasks.push(task);
+							}
+							else if(momentDate.clone().day(6).isSame(task.date_start, 'day')){
+								saturdayTasks.push(task);
+							}
+							else if(momentDate.clone().day(7).isSame(task.date_start, 'day')){
+								sundayTasks.push(task);
+							}
+	
+							// Retrieve the number of Open Task //
+							if(task.state == app.Models.Task.status.open.key){
+								nbPendingTasks++;
+							}
+	
 						}
-					}
-				}
+						// Hack for Sunday Task //
+						else {
+	
+							if( momentDate.clone().day(7).isSame(task.date_start, 'day') ){					
+								sundayTasks.push(task);
+	
+								// Retrieve the number of Open Task //
+								if(task.state == app.Models.Task.status.open.key){
+									nbPendingTasks++;
+								}
+							}
+						}
+					});
+		
+					var tasksUserFiltered = [
+						{'day': momentDate.clone().day(1), 'tasks': mondayTasks},
+						{'day': momentDate.clone().day(2), 'tasks': tuesdayTasks},
+						{'day': momentDate.clone().day(3), 'tasks': wednesdayTasks},
+						{'day': momentDate.clone().day(4), 'tasks': thursdayTasks},
+						{'day': momentDate.clone().day(5), 'tasks': fridayTasks},
+						{'day': momentDate.clone().day(6), 'tasks': saturdayTasks},
+						{'day': momentDate.clone().day(7), 'tasks': sundayTasks}
+					];
+	
+	
+	
+					// Retrieve the template // 
+					$.get("templates/" + self.templateHTML + ".html", function(templateData){
+	
+	
+						var officersDropDownList = new app.Collections.Officers( app.models.user.attributes.officers );
+	
+						console.log(officersDropDownList);
+	
+						var template = _.template(templateData, {
+							lang: app.lang,
+							nbPendingTasks: nbPendingTasks,
+							tasksPerDay: tasksUserFiltered,
+							momentDate: momentDate,
+							displayFilter: _.size(officersDropDownList) > 0
+						});
+						
+						$(self.el).html(template);
+	
+						app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categoriesTasks})
+						app.views.selectListAssignementsView.clearAll();
+						app.views.selectListAssignementsView.addEmptyFirst();
+						app.views.selectListAssignementsView.addAll();
+	
+	
+	
+						if(officersDropDownList != null){
+							app.views.selectListFilterOfficerView = new app.Views.DropdownSelectListView({el: $("#filterListAgents"), collection: officersDropDownList})
+							app.views.selectListFilterOfficerView.clearAll();
+							app.views.selectListFilterOfficerView.addEmptyFirst();
+							app.views.selectListFilterOfficerView.addAll();
+						}
+	
+	
+						$(".datepicker").datepicker({
+							format: 'dd/mm/yyyy',
+							weekStart: 1,
+							autoclose: true,
+							language: 'fr'
+						});
+	
+						$('#equipmentsAdd, #equipmentsListAdd').sortable({
+							connectWith: 'ul.sortableEquipmentsList',
+							dropOnEmpty: true,
+							forcePlaceholderSize: true,
+							forceHelperSize: true,
+							placeholder: 'sortablePlaceHold',
+							containment: '.equipmentsDroppableAreaAdd',
+							cursor: 'move',
+							opacity: '.8',
+							revert: 300,
+							receive: function(event, ui){
+								//self.saveServicesCategories();
+							}
+						});	
+	
+						$('#equipmentsDone, #equipmentsListDone').sortable({
+							connectWith: 'ul.sortableEquipmentsList',
+							dropOnEmpty: true,
+							forcePlaceholderSize: true,
+							forceHelperSize: true,
+							placeholder: 'sortablePlaceHold',
+							containment: '.equipmentsDroppableAreaDone',
+							cursor: 'move',
+							opacity: '.8',
+							revert: 300,
+							receive: function(event, ui){
+								//self.saveServicesCategories();
+							}
+						});
+	
+						$('#equipmentsSpent, #equipmentsListSpent').sortable({
+							connectWith: 'ul.sortableEquipmentsList',
+							dropOnEmpty: true,
+							forcePlaceholderSize: true,
+							forceHelperSize: true,
+							placeholder: 'sortablePlaceHold',
+							containment: '.equipmentsDroppableAreaSpent',
+							cursor: 'move',
+							opacity: '.8',
+							revert: 300,
+							receive: function(event, ui){
+								//self.saveServicesCategories();
+							}
+						});	
+	
+	
+						$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
+						$('*[data-toggle="tooltip"]').tooltip();
+	
+	
+	
+						// Collapse border style //
+						$('.accordion-toggle').click(function(){
+							if($(this).parents('.accordion-group').hasClass('collapse-selected')){
+								$(this).parents('.accordion-group').removeClass('collapse-selected');
+							}else{
+								$(this).parents('.accordion-group').addClass('collapse-selected');	
+							}
+			    		})
+	
+	
+			    		//  DropDown Filter set Selected //
+						if(sessionStorage.getItem(self.filters) != null){
+							$('label[for="filterListAgents"]').removeClass('muted');
+							app.views.selectListFilterOfficerView.setSelectedItem(sessionStorage.getItem(self.filters));
+						}
+	
+	
+			    		// Set the focus to the first input of the form //
+						$('#modalTaskDone, #modalAddTask, #modalTimeSpent').on('shown', function (e) {
+							$(this).find('input, textarea').first().focus();
+						})
+	
+					});
+				})
+				.fail(function(e){
+					app.loader('hide');
+					console.error(e);
+				});
+				
+					$(self.el).hide().fadeIn('slow');
+				
 			}
 		});
-
-		var tasksUserFiltered = [
-			{'day': momentDate.clone().day(1), 'tasks': mondayTasks},
-			{'day': momentDate.clone().day(2), 'tasks': tuesdayTasks},
-			{'day': momentDate.clone().day(3), 'tasks': wednesdayTasks},
-			{'day': momentDate.clone().day(4), 'tasks': thursdayTasks},
-			{'day': momentDate.clone().day(5), 'tasks': fridayTasks},
-			{'day': momentDate.clone().day(6), 'tasks': saturdayTasks},
-			{'day': momentDate.clone().day(7), 'tasks': sundayTasks}
-		];
-
-
-
-		// Retrieve the template // 
-		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-
-
-			var officersDropDownList = new app.Collections.Officers( app.models.user.attributes.officers );
-
-			console.log(officersDropDownList);
-
-			var template = _.template(templateData, {
-				lang: app.lang,
-				nbPendingTasks: nbPendingTasks,
-				tasksPerDay: tasksUserFiltered,
-				momentDate: momentDate,
-				displayFilter: _.size(officersDropDownList) > 0
-			});
-			
-			$(self.el).html(template);
-
-			app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categoriesTasks})
-			app.views.selectListAssignementsView.clearAll();
-			app.views.selectListAssignementsView.addEmptyFirst();
-			app.views.selectListAssignementsView.addAll();
-
-
-
-			if(officersDropDownList != null){
-				app.views.selectListFilterOfficerView = new app.Views.DropdownSelectListView({el: $("#filterListAgents"), collection: officersDropDownList})
-				app.views.selectListFilterOfficerView.clearAll();
-				app.views.selectListFilterOfficerView.addEmptyFirst();
-				app.views.selectListFilterOfficerView.addAll();
-			}
-
-
-			$(".datepicker").datepicker({
-				format: 'dd/mm/yyyy',
-				weekStart: 1,
-				autoclose: true,
-				language: 'fr'
-			});
-
-			$('#equipmentsAdd, #equipmentsListAdd').sortable({
-				connectWith: 'ul.sortableEquipmentsList',
-				dropOnEmpty: true,
-				forcePlaceholderSize: true,
-				forceHelperSize: true,
-				placeholder: 'sortablePlaceHold',
-				containment: '.equipmentsDroppableAreaAdd',
-				cursor: 'move',
-				opacity: '.8',
-				revert: 300,
-				receive: function(event, ui){
-					//self.saveServicesCategories();
-				}
-			});	
-
-			$('#equipmentsDone, #equipmentsListDone').sortable({
-				connectWith: 'ul.sortableEquipmentsList',
-				dropOnEmpty: true,
-				forcePlaceholderSize: true,
-				forceHelperSize: true,
-				placeholder: 'sortablePlaceHold',
-				containment: '.equipmentsDroppableAreaDone',
-				cursor: 'move',
-				opacity: '.8',
-				revert: 300,
-				receive: function(event, ui){
-					//self.saveServicesCategories();
-				}
-			});
-
-			$('#equipmentsSpent, #equipmentsListSpent').sortable({
-				connectWith: 'ul.sortableEquipmentsList',
-				dropOnEmpty: true,
-				forcePlaceholderSize: true,
-				forceHelperSize: true,
-				placeholder: 'sortablePlaceHold',
-				containment: '.equipmentsDroppableAreaSpent',
-				cursor: 'move',
-				opacity: '.8',
-				revert: 300,
-				receive: function(event, ui){
-					//self.saveServicesCategories();
-				}
-			});	
-
-
-			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
-			$('*[data-toggle="tooltip"]').tooltip();
-
-
-
-			// Collapse border style //
-			$('.accordion-toggle').click(function(){
-				if($(this).parents('.accordion-group').hasClass('collapse-selected')){
-					$(this).parents('.accordion-group').removeClass('collapse-selected');
-				}else{
-					$(this).parents('.accordion-group').addClass('collapse-selected');	
-				}
-    		})
-
-
-    		//  DropDown Filter set Selected //
-			if(sessionStorage.getItem(self.filters) != null){
-				$('label[for="filterListAgents"]').removeClass('muted');
-				app.views.selectListFilterOfficerView.setSelectedItem(sessionStorage.getItem(self.filters));
-			}
-
-
-    		// Set the focus to the first input of the form //
-			$('#modalTaskDone, #modalAddTask, #modalTimeSpent').on('shown', function (e) {
-				$(this).find('input, textarea').first().focus();
-			})
-
-		});
-
-		$(this.el).hide().fadeIn('slow');
+	
+		
 
 		return this;
 	},

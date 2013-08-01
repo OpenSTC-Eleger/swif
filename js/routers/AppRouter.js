@@ -381,40 +381,41 @@ app.Router = Backbone.Router.extend({
 
 			self.yearSelected = year;
 			self.weekSelected = week;
+			app.views.tasksListView = new app.Views.TasksListView({yearSelected: self.yearSelected, weekSelected: self.weekSelected});
+			self.render(app.views.tasksListView);
 
-
-			if(_.isUndefined(app.collections.interventions)){ app.collections.interventions = new app.Collections.Interventions(); }
-			if(_.isUndefined(app.collections.tasks)){ app.collections.tasks = new app.Collections.Tasks(); }
-			if(_.isUndefined(app.collections.equipments)){ app.collections.equipments = new app.Collections.Equipments(); }
-			if(_.isUndefined(app.collections.categoriesTasks)){ app.collections.categoriesTasks = new app.Collections.CategoriesTasks(); }
-			if(_.isUndefined(app.collections.officers)){ app.collections.officers = new app.Collections.Officers(); }
-			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
-
-
-
-			app.loader('display');
-
-			app.collections.tasks.fetch({
-				success: function(){
-
-					$.when(
-						app.collections.interventions.fetch(),
-						app.collections.officers.fetch(),
-						app.collections.categoriesTasks.fetch(),
-						app.collections.equipments.fetch(),
-						app.collections.claimersServices.fetch()
-					)
-					.done(function(){
-						app.views.tasksListView = new app.Views.TasksListView({yearSelected: self.yearSelected, weekSelected: self.weekSelected});
-						self.render(app.views.tasksListView);
-
-						app.loader('hide');
-					})
-					.fail(function(e){
-						console.error(e);
-					});
-				}
-			});
+//			if(_.isUndefined(app.collections.interventions)){ app.collections.interventions = new app.Collections.Interventions(); }
+//			if(_.isUndefined(app.collections.tasks)){ app.collections.tasks = new app.Collections.Tasks(); }
+//			if(_.isUndefined(app.collections.equipments)){ app.collections.equipments = new app.Collections.Equipments(); }
+//			if(_.isUndefined(app.collections.categoriesTasks)){ app.collections.categoriesTasks = new app.Collections.CategoriesTasks(); }
+//			if(_.isUndefined(app.collections.officers)){ app.collections.officers = new app.Collections.Officers(); }
+//			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
+//
+//
+//
+//			app.loader('display');
+//
+//			app.collections.tasks.fetch({
+//				success: function(){
+//
+//					$.when(
+//						app.collections.interventions.fetch(),
+//						app.collections.officers.fetch(),
+//						app.collections.categoriesTasks.fetch(),
+//						app.collections.equipments.fetch(),
+//						app.collections.claimersServices.fetch()
+//					)
+//					.done(function(){
+//						app.views.tasksListView = new app.Views.TasksListView({yearSelected: self.yearSelected, weekSelected: self.weekSelected});
+//						self.render(app.views.tasksListView);
+//
+//						app.loader('hide');
+//					})
+//					.fail(function(e){
+//						console.error(e);
+//					});
+//				}
+//			});
 		}
 		else{
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});
