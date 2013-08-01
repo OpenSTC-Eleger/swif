@@ -7,7 +7,7 @@
 
 		
 		<!-- Display the menu if user is logged -->
-		<% if (user.fields.sessionID != ''){ %>
+		<% if (user.fields.authToken != ''){ %>
 
 		    <!-- Navbar button (display on smarthphone and touchpad)-->
 		    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -15,44 +15,37 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 		    </a>
-		   
+
 		   	<!-- Elements (display on large screen) -->
 		    <div class="nav-collapse">
 			    	
 		    	<!-- Main menu application -->
 		    	<ul id="nav-menu-app" class="nav" role="menu">
-		    		
-	 				<% _.each(menus, function (menuRacine, i) { 
-	 					console.debug(menuRacine);
-	 					if( menuRacine.name == 'Interventions' ) {
-	 					_.each(menuRacine.children, function (menuParent, i) {	
-	 						%> 		 			
-	 											
-				    		<li class="dropdown" id="<%= _.slugify(menuParent.name) %>" role="menuitem">
-				    			<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuParent.id %>"><%= menuParent.name %> <b class="caret"></b></a>
-			    				
-			    				<ul aria-labelledby="drop-menu-app-<%= menuParent.id %>" role="menu" class="dropdown-menu">
-									<% _.each(menuParent.children, function (menuChildren, i) { 
-										if( menuChildren.children.length>0 ) {%>
-											<li class="dropdown-submenu" id="<%= _.slugify(menuChildren.name) %>" role="menuitem">
-				    							<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuChildren.id %>"><%= menuChildren.name %> <b class="caret"></b></a>
-												<ul aria-labelledby="drop-menu-app-<%= menuChildren.id %>" role="menu" class="dropdown-menu">
-													<% _.each(menuChildren.children, function (menuChildrenLevel2, i) { 
-														console.debug(menuChildrenLevel2.name)%>
-														<li role="menuitem"><a href="#<%= _.slugify(menuChildrenLevel2.name) %>"><%= menuChildrenLevel2.name %></a></li>
-													<%}); %>
-												</ul>
-											</li>
-										<%} else {%>										
-											<li role="menuitem"><a href="#<%= _.slugify(menuChildren.name) %>"><%= menuChildren.name %></a></li>
-										<%} %>
-									<% }); %>
-								</ul>							
-		  					</li>		  					
-		  				<% }); %>
-		  				<% } %>
-  					<% }); %>
-						
+	 				<% _.each(menus.submenu, function (menuRacine, i) { %>
+                        <li class="dropdown" id="<%= _.slugify(menuRacine.name) %>" role="menuitem">
+                        <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuRacine.id %>"><%= menuRacine.name %> <b class="caret"></b></a>
+                            <ul aria-labelledby="drop-menu-app-<%= menuRacine.id %>" role="menu" class="dropdown-menu">
+                                <% _.each(menuRacine.submenu, function (menuItem, i) { %>
+                                    <% if (menuItem.submenu.length > 0) { %>
+                                        <li role="menuitem" class="dropdown-submenu">
+                                            <a tabindex="-1" href="#"><%= menuItem.name %></a>
+                                            <ul class="dropdown-menu">
+                                                <% _.each(menuItem.submenu, function( subMenuItem, i ){%>
+                                                    <li>
+                                                        <a href="#<%= _.slugify(subMenuItem.name) %>" tabindex="-1"><%= subMenuItem.name %></a>
+                                                    </li>
+                                                <% }); %>
+                                            </ul>
+                                        </li>
+                                    <% } else { %>
+                                        <li role="menuitem">
+                                            <a href="#<%= _.slugify(menuItem.name) %>"><%= menuItem.name %></a>
+                                        </li>
+                                    <% }; %>
+                                <% }); %>
+                            </ul>
+                        </li>
+                    <% }); %>
 		    	</ul>
 
 
@@ -73,7 +66,7 @@
 				</ul>
 
 			</div>
-		<% } %>
+		<% }; %>
 
 	</div>
 </div>
