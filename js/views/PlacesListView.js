@@ -124,8 +124,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		var self = this;
 
 		// Check if the collections is instantiate //
-		if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
-		this.collection = app.collections.places;
+		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.Places(); }
 
 
 		// Check the parameters //
