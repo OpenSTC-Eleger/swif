@@ -315,7 +315,7 @@ var app = {
 			'method'    : method,
 			'args'      : args, 
 			'model'     : model,
-			'session_id': session_id      
+			'session_id': session_id
 	   }, options);  
 	},
 

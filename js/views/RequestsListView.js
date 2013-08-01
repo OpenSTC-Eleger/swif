@@ -12,15 +12,15 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'change #requestService' 				: 'filterCategory',
+			'click #filterStateRequestList li a' 	: 'setFilterState',
+			'click #badgeActions[data-filter!=""]'  : 'badgeFilter',
 
 			'submit #formValidRequest' 				: 'validRequest',
 			'submit #formRefuseRequest' 			: 'refuseRequest',
 			'submit #formConfirmDSTRequest' 		: 'confirmDSTRequest',
+			'change #requestService' 				: 'filterCategory',
 
-			'change #createAssociatedTask' 			: 'accordionAssociatedTask',
-
-			'click #filterStateRequestList li a' 	: 'setFilterState'
+			'change #createAssociatedTask' 			: 'accordionAssociatedTask'
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -58,13 +58,12 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		// Change the Grid Mode of the view //
 		app.views.headerView.switchGridMode('fluid');
 
-
 		// Retrieve the template //
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 			var template = _.template(templateData, {
 				lang: app.lang,
-				nbRequests: self.collection.cpt,
+				nbRequests: self.collection.specialCpt,
 				requestsState: app.Models.Request.status,
 			});
 
@@ -290,6 +289,22 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 			delete this.options.filter;
 		}
 		
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+	},
+
+
+
+	/** Filter Requests on the State of the Badge
+	*/
+	badgeFilter: function(e){
+
+		var filterValue = $(e.target).data('filter');
+
+		// Set the filter value in the options of the view //
+		if(filterValue != ''){
+			this.options.filter = { by: 'state', value: filterValue};
+		}
+
 		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 	},
 

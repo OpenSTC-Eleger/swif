@@ -44,7 +44,7 @@ app.Collections.Interventions = app.Collections.GenericCollection.extend({
 		var mCreateDate = moment(item.get('create_date'))
 		item.set({'create_date': mCreateDate});
 		return -item.get('create_date');
-	},	
+	},
 
 
 });

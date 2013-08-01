@@ -26,7 +26,7 @@ app.Collections.Requests = app.Collections.GenericCollection.extend({
 
 		var deferred = $.Deferred();
 
-		$.when(this.count(options), app.readOE(this.model_name, app.models.user.getSessionID(), options, this.fields))
+		$.when(this.count(options), this.specialCount(this.model_name), app.readOE(this.model_name, app.models.user.getSessionID(), options, this.fields))
 		.done(function(){
 			deferred.resolve();
 		})

@@ -2,12 +2,19 @@
 	<h1>
 		<%= lang.viewsTitles.requestsList %>
 
-		<% if(app.models.user.isDST()) { var classColor = app.Models.Request.status.confirm.color; var actionToProcess = lang.actions.confirm; }
-		   else if(app.models.user.isManager()){ var classColor = app.Models.Request.status.wait.color; var actionToProcess = lang.actions.process; }
-		   else{ var classColor = ''; var actionToProcess = ''}
+		<% if(app.models.user.isDST()) { 
+				var classColor = app.Models.Request.status.confirm.color;
+				var filterValue = app.Models.Request.status.confirm.key;
+				var actionToProcess = lang.actions.confirm; 
+			}
+		   else if(app.models.user.isManager()){ 
+		   		var classColor = app.Models.Request.status.wait.color;
+		   		var filterValue = app.Models.Request.status.wait.key;
+		   		var actionToProcess = lang.actions.process; }
+		   else{ var classColor = ''; var actionToProcess = ''; var filterValue = ''; }
 		%>
 
-		<sup class="badge badge-<%= classColor %>" data-toggle="tooltip" data-original-title="<%= actionToProcess %>" data-placement="bottom">
+		<sup id="badgeActions" class="badge badge-<%= classColor %>" data-filter="<%= filterValue %>" data-toggle="tooltip" data-original-title="<%= actionToProcess %>" data-placement="bottom">
 			<%= nbRequests %>
 		</sup>
 	</h1>
