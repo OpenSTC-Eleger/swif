@@ -3,8 +3,6 @@
 */
 app.Models.User = Backbone.Model.extend({
 
-	// Model name in the database //
-	model_name: 'res.users',
 	url: '/api/open_object/users',
 
 	relations: [
@@ -221,114 +219,119 @@ app.Models.User = Backbone.Model.extend({
 	getTeamIdsByOfficerId: function(id) {
 		var self = this;
 		var teams = []
-		               
+
 		var officer = _.find(this.getOfficers(), function(officer){
 			return officer.id == id
 		});
 		if(_.isUndefined(officer)) return teams;
-		
-		_.each(officer.teams, function(team){			
+
+		_.each(officer.teams, function(team){
 			teams.push(team);
 		});
-		return teams;	
+		return teams;
 	},
-		
+
 
 	getMenus: function () {
 		return this.get('menu')
 	},
 
 
-	/** get, by calling server, officers and teams to filter on it in tasks/planning screens
+	/**
+	 * Retrieve teams than current user can manage and stores them in user's data
 	 */
-	getTeamsAndOfficers: function () {
-		var self = this
-
+	queryManagableTeams: function () {
+		var user = this;
 		$.ajax({
-			url: app.config.barakafrites.url + self.url + '/' + this.get("uid") + '/manageable_teams',
-			headers: {Authorization: 'Token token=' + self.get('authToken')},
+			url: app.config.barakafrites.url + this.url + '/' + this.get("uid") + '/manageable_teams',
+			headers: {Authorization: 'Token token=' + this.get('authToken')},
 			success: function (data) {
-				self.setTeams(data)
+				user.setTeams(data);
 			}
 		});
 
-		$.ajax({
-			url: app.config.barakafrites.url + self.url + '/' + this.get("uid") + '/manageable_officers',
-			headers: {Authorization: 'Token token=' + self.get('authToken')},
-			success: function (data) {
-				self.setOfficers(data)
-			}
-		})
-		self.save();
 	},
 
+	/**
+	 * Retrieve officers than current user can manage and stores them in user's data
+	 */
+	queryManagableOfficers: function() {
+		var user = this;
+		$.ajax({
+			url: app.config.barakafrites.url + this.url + '/' + this.get("uid") + '/manageable_officers',
+			headers: {Authorization: 'Token token=' + this.get('authToken')},
+			success: function (data) {
+				user.setOfficers(data);
+			}
+		});
+
+	},
 
 	/** Login function
 	*/
-	login: function(loginUser, passUser){
+	login: function (loginUser, passUser) {
 
 		"use strict";
 		var self = this;
 
 		console.log('Login User: ' + loginUser + ' - ' + passUser);
 
-		var deferred = $.Deferred();
 		var login_data = {
-			'dbname': app.config.openerp.database,
-			'login': loginUser,
+			'dbname'  : app.config.openerp.database,
+			'login'   : loginUser,
 			'password': passUser,
 		};
 
 		$.ajax(
 			{
-				url: app.config.barakafrites.url + '/sessions',
-				type: "POST",
+				url        : app.config.barakafrites.url + '/sessions',
+				type       : "POST",
 				contentType: 'application/json',
-				data: JSON.stringify(login_data)
+				data       : JSON.stringify(login_data),
+				error      : function (error) {
+					console.error(error);
+					app.loader('hide');
+					app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
+				},
+				success    : function (data) {
+
+					if (data.token == false) {
+						app.loader('hide');
+						app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
+					}
+					else {
+						self.populateUserData(self,data);
+						app.views.headerView.render(app.router.mainMenus.manageInterventions);
+						Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
+
+					}
+				}
+
 			}
 		)
-			.fail(function (error) {
-				console.error(error);
-				app.loader('hide');
-				app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
-			})
-			.done(function (data) {
+	},
 
-				if (data.token == false) {
-					app.loader('hide');
-					app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
-				}
-				else {
-					localStorage.setItem('currentUserAuthToken', data.token)
-					self.set({authToken: data.token});
-					self.setMenu(data.menu);
+	populateUserData: function (user,data) {
+		localStorage.setItem('currentUserAuthToken', data.token)
+		user.set({authToken: data.token});
+		user.setMenu(data.menu);
+		user.setUID(data.user.id)
+		user.setLogin(loginUser);
+		user.setLastConnection(moment().format("LLL"));
+		user.setContext({tz: data.user.context_tz, lang: data.user.context_lang});
+		user.setFirstname(data.user.firstname);
+		user.setLastname(data.user.name);
+		user.setGroups(data.user.groups_id);
+		user.setServices(data.user.service_ids);
+		user.setService(data.user.service_id);
+		user.setContact(data.user.contact_id);
+		user.setManager(data.user.isManager);
+		user.setDST(data.user.isDST);
+		user.queryManagableTeams();
+		user.queryManagableOfficers();
 
-					// Set the user Informations //
-					self.setUID(data.user.id)
-					self.setLogin(loginUser);
-					self.setLastConnection(moment().format("LLL"));
-					self.setContext({tz: data.user.context_tz, lang: data.user.context_lang});
-					self.setFirstname(data.user.firstname);
-					self.setLastname(data.user.name);
-					self.setGroups(data.user.groups_id);
-					self.setServices(data.user.service_ids);
-					self.setService(data.user.service_id);
-					self.setContact(data.user.contact_id);
-					self.setManager(data.user.isManager);
-					self.setDST(data.user.isDST);
-
-					// Add the user to the collection and save it to the localStorage //
-					app.collections.users.add(self);
-
-					// Get the users informations //
-					self.getTeamsAndOfficers();
-
-				}
-
-				deferred.resolve();
-			})
-
-		return deferred;
+		app.collections.users.add(user);
+		user.save()
 	},
 
 	/** Logout fonction
@@ -364,21 +367,6 @@ app.Models.User = Backbone.Model.extend({
 
 	   return deferred;
 	},
-
-
-
-	/** Get the menu of the user
-	*/
-	getMenus: function(options){
-		"use strict";
-		var self = this;
-
-		return app.json(app.config.openerp.url+app.urlOE_menuUser, {
-			'session_id': self.getSessionID()
-		}, options)
-	},
-
-
 
 	/** Get the informations of the user
 	*/

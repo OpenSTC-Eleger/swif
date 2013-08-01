@@ -515,7 +515,6 @@ app.Router = Backbone.Router.extend({
 	places: function(search, sort, page){
 
 		if (this.checkConnect()) {
-			var self = this;
 
 			var params = {};
 
@@ -523,36 +522,6 @@ app.Router = Backbone.Router.extend({
 			if(!_.isNull(sort))  { params.sort = sort; }
 			if(!_.isNull(page))  { params.page = page; }
 
-			var fetchParams = {
-				limit: app.config.itemsPerPage,
-				offset: paginate.offset,
-				sortBy: sort.by + ' ' + sort.order
-			};
-
-			if (!_.isNull(search)) {
-				fetchParams.filters = this.calculSearch(search);
-			}
-
-
-			// Check if the collections is instantiate //
-			if (_.isUndefined(app.collections.places)) {
-				app.collections.places = new app.Collections.Places();
-			}
-
-			app.loader('display');
-
-			$.when(
-				app.collections.places.fetch({data:fetchParams})
-			)
-			.done(function(){
-				app.views.placesListView = new app.Views.PlacesListView({collection: app.collections.places, page: paginate.page, sort: sort, search: search});
-					self.render(app.views.placesListView);
-
-					app.loader('hide');
-				})
-				.fail(function (e) {
-					console.error(e);
-				});
 			app.views.placesListView = new app.Views.PlacesListView(params);
 		}
 		else {

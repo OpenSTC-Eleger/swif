@@ -140,11 +140,14 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		// Create Fetch params //
 		var fetchParams = {
 			silent      : true,
-			limitOffset : {limit: app.config.itemsPerPage, offset: this.options.page.offset},
-			sortBy      : this.options.sort.by+' '+this.options.sort.order
+			data: {
+				limit: app.config.itemsPerPage,
+				offset: this.options.page.offset,
+				sort: this.options.sort.by+' '+this.options.sort.order
+			}
 		};
 		if(!_.isUndefined(this.options.search)){
-			fetchParams.search = app.calculSearch(this.options.search);
+			fetchParams.data.search = app.calculSearch(this.options.search);
 		}
 
 
