@@ -76,17 +76,31 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 
 		// Check the number of planned interventions //
-		var interventionsPlanned = _.filter(interventions, function(item){
-			return (item.state == app.Models.Intervention.status.scheduled.key);
+		var nbInterventionsPlanned = 0;
+		app.callObjectMethodOE([[['state','=','scheduled']]],"project.project","search_count",app.models.user.getSessionID(),{
+			success: function(data){
+				$('.page-header sup[class="badge badge-info"]').html(data.result)
+			}
 		});
-		var nbInterventionsPlanned = _.size(interventionsPlanned);
+
+//		var interventionsPlanned = _.filter(interventions, function(item){
+//			return (item.state == app.Models.Intervention.status.scheduled.key);
+//		});
+//		var nbInterventionsPlanned = _.size(interventionsPlanned);
 
 
 		// Check the number of pending interventions //
-		var interventionsPending = _.filter(interventions, function(item){ 
-			return (item.state == app.Models.Intervention.status.pending.key);
+		var nbInterventionsPending = 0;
+		app.callObjectMethodOE([[['state','=','pending']]],"project.project","search_count",app.models.user.getSessionID(),{
+			success: function(data){
+				$('.page-header sup[class="badge"]').html(data.result)
+			}
 		});
-		var nbInterventionsPending = _.size(interventionsPending);
+//		var interventionsPending = _.filter(interventions, function(item){ 
+//			return (item.state == app.Models.Intervention.status.pending.key);
+//		});
+//		var nbInterventionsPending = _.size(interventionsPending);
+
 
 
 		// Collection Filter if not null //
