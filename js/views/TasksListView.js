@@ -84,31 +84,30 @@ app.Views.TasksListView = Backbone.View.extend({
 		//get only tasks on the current week
 		var filter = [['date_start','>=',momentDate.clone().weekday(1).format('YYYY-MM-DD 00:00:00')],['date_start','<=',momentDate.clone().weekday(6).format('YYYY-MM-DD 23:59:59')]];
 		
-		// Filter on the Tasks //
-		filter.push(['active','=',true]);
 		
 		//  Collection Task Filter if not null //
 		if(sessionStorage.getItem(this.filters) != null){
 			filter.push(['state','=',sessionStorage.getItem(self.filters)]);
 		}
-		// Don't display the task with absent state - congé //
-		filter.push(['state','!=','absent']);
 		
-		app.loader('display');
+		//app.loader('display');
 		
 		//get taskUser filtered on current week and with optional filter in sessionStorage
+		app.collections.equipments = new app.Collections.Equipments();
+		app.collections.categoriesTasks = new app.Collections.CategoriesTasks();		
 		app.collections.tasks = new app.Collections.Tasks();
-		app.collections.tasks.fetch({
-			search: filter,
-			success: function(){
-				if(_.isUndefined(app.collections.equipments)){ app.collections.equipments = new app.Collections.Equipments(); }
-				if(_.isUndefined(app.collections.categoriesTasks)){ app.collections.categoriesTasks = new app.Collections.CategoriesTasks(); }
+		
+		app.callObjectMethodOE([filter, app.collections.tasks.fieldsOE],"project.task","getUserTasksList",app.models.user.getSessionID(),{
+		//app.collections.tasks.fetch({
+			success: function(data){
+				app.collections.tasks = new app.Collections.Tasks(data.result.records);
+				var inter_ids = _.filter()
 				$.when(
 					app.collections.equipments.fetch(),
 					app.collections.categoriesTasks.fetch()
 				)
 				.done(function(){
-					app.loader('hide');
+					//app.loader('hide');
 				
 					// Create table for each day //
 					var mondayTasks =[]; 	var tuesdayTasks =[];
@@ -287,15 +286,15 @@ app.Views.TasksListView = Backbone.View.extend({
 						$('#modalTaskDone, #modalAddTask, #modalTimeSpent').on('shown', function (e) {
 							$(this).find('input, textarea').first().focus();
 						})
-	
+						$(self.el).hide().fadeIn('slow');
 					});
 				})
 				.fail(function(e){
-					app.loader('hide');
+					//app.loader('hide');
+					$(self.el).hide().fadeIn('slow');
 					console.error(e);
 				});
 				
-					$(self.el).hide().fadeIn('slow');
 				
 			}
 		});
@@ -541,7 +540,7 @@ app.Views.TasksListView = Backbone.View.extend({
     	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
 
     	$('#infoModalTimeSpent').children('p').html(task.name);
-    	$('#infoModalTimeSpent').children('small').html('<i class="icon-map-marker icon-large"></i> '+task.intervention.site1[1]);
+    	$('#infoModalTimeSpent').children('small').html('<i class="icon-map-marker icon-large"></i> '+task.site1[1]);
 		$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 
 		$('#eventTimeSpent').val(this.secondsToHms(task.remaining_hours*60));
@@ -606,7 +605,7 @@ app.Views.TasksListView = Backbone.View.extend({
     	
     	// Set Modal information about the Task //
     	$('#infoModalTaskDone').children('p').html(task.name);
-		$('#infoModalTaskDone').children('small').html('<i class="icon-map-marker icon-large"></i> '+task.intervention.site1[1]);
+		$('#infoModalTaskDone').children('small').html('<i class="icon-map-marker icon-large"></i> '+task.site1[1]);
 
 		$('#modalTaskDone .modal-body').css({"height": "450px", "max-height": "450px"});
 		$('#eventTimeDone').val(this.secondsToHms(task.remaining_hours*60));

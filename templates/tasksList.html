@@ -141,7 +141,7 @@
 
 						    <!-- Task Name -->
 					    	<td><a href="#taches/<%= task.id %>"> <%= _.capitalize(task.name) %> </a></td>
-							<td><%= (task.intervention && task.intervention.site1 ) ? task.intervention.site1[1] : '' %></td>
+							<td><%= (task.site1 !== false) ? task.site1[1] : '' %></td>
 							<td><%= (task.date_start) != '' ? moment(task.date_start).format('H[h]mm') : '' %></td>
 							<td><%= (task.date_end) != '' ? moment(task.date_end).format('H[h]mm') : '' %></td>
 
