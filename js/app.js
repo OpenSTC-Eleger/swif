@@ -399,8 +399,17 @@ var app = {
 		
 		var search = [];
 
+		var searchableFieldsFilter = _.filter(searchableFields, function (field, index) {
+			if (field.type != 'numeric') {
+				return field;
+			} else if (field.type == 'numeric' && _.isNumber(_(searchQuery.search).toNumber())) {
+				return field;
+			}
+		});
+
+
 		// Remplace the type By the search type for OpenERP //
-		_.each(searchableFields, function(item, index){
+		_.each(searchableFieldsFilter, function(item, index){
 			switch(item.type){
 				case 'numeric':
 					item.type = '=';
@@ -421,15 +430,21 @@ var app = {
 		// Check if there is a Search //
 		if(!_.isUndefined(searchQuery.search)){
 			// Search on several fields //
-			if(_.size(searchableFields) > 1){
+			if(_.size(searchableFieldsFilter) > 1){
 				search.push('|');
-				_.each(searchableFields, function(item, index){
-					if(item.type == '='){var term = _(searchQuery.search).toNumber(); }else{ var term = searchQuery.search }
-					search.push({field: item.key, operator: item.type,value: term});
+				_.each(searchableFieldsFilter, function(item, index){
+					if(item.type == '=' && _.isNumber(_(searchQuery.search).toNumber())){
+						var term = _(searchQuery.search).toNumber();
+					} else {
+						var term = searchQuery.search;
+
+					}
+					search.push({field: item.key, operator: item.type, value: term});
 				});
 			}
 			else{
-				search.push({field: searchableFields[0].key, operator: searchableFields[0].type, value: searchQuery});
+				console.log(searchableFieldsFilter)
+				search.push({field: searchableFieldsFilter[0].key, operator: searchableFieldsFilter[0].type, value: searchQuery.search});
 			}
 		}
 

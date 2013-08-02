@@ -25,7 +25,7 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 		return $.ajax({
 			url: this.url,
 			method: "HEAD",
-			data: {filters: search},
+			data: {filters: self.domain},
 			success: function(data,status,request){
 				var contentRange = request.getResponseHeader("Content-Range")
 				self.cpt = contentRange.match(/\d+$/);
