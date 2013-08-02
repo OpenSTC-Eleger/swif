@@ -5,7 +5,8 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 	
 	templateHTML: 'printingCalendar',
 
-
+	events:	[],
+	
 	/** View Initialization
 	 */
 	initialize: function () {
@@ -218,6 +219,9 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 	},	
 	//--------------------End  Print calendar----------------------------------------//
 
+	close : function() {		
+		$('span').remove('.fc-button-print')
+	},
 	
     
     //--------------------Getter--------------------------------------//

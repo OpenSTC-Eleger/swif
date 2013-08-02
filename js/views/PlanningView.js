@@ -93,7 +93,7 @@ app.Views.PlanningView = Backbone.View.extend({
 			//Initialize inter panel view
 			app.views.planningInterPanelView = new app.Views.PlanningInterPanelView().render()
 				
-			app.loader('hide');
+			
 		});
 	   
 		return this;
@@ -102,7 +102,7 @@ app.Views.PlanningView = Backbone.View.extend({
 	/** Select the planning to display
 	*/
 	selectPlanning: function(e){
-		
+		app.loader('display');
 		var link = $(e.target);
 
 		// Save the selected planning in the Session storage //
@@ -128,8 +128,21 @@ app.Views.PlanningView = Backbone.View.extend({
 
 	/** Partial Render of the view
 		*/
-	partialRender: function (type) {
-		app.views.planningInterPanelView.render();
+	partialRender: function (type) {		
+		app.collections.tasks.fetch({
+			success: function(){
+				$.when(
+					app.collections.interventions.fetch()
+				)
+				.done(function(){
+					app.views.planningInterPanelView.render();					
+				})
+				.fail(function(e){
+					console.error(e);
+				});
+			}
+		});		
+		
 	},
 
 });

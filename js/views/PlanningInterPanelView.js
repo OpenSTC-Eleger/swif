@@ -8,6 +8,9 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 	templateHTML : 'planningInterPanel',
 
 	currentRoute : null,
+	
+	taskCollection:	null,
+	interCollection: null,
 
 
 	// The DOM events //
@@ -43,9 +46,53 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize: function() {
+		
+		var self = this;
+
+		this.initTaskCollection().done(function(){
+			// Unbind & bind the collection //
+			self.taskCollection.off();
+			self.listenTo(self.taskCollection, 'change', self.updateTask);
+			self.listenTo(self.taskCollection, 'add', self.updateTask);
+
+			//app.router.render(self);
+		});
+		
+//		this.initInterCollection().done(function(){
+//			// Unbind & bind the collection //
+//			self.interCollection.off();
+//			self.listenTo(self.interCollection, 'change', self.updateInter);
+//
+//			//app.router.render(self);
+//		});
 	},
 
-
+	updateTask: function(model) {
+		var self = this
+		app.collections.tasks.add(model);
+		var interModel = app.collections.interventions.get(model.getInterventionId()[0])
+		this.updateInter(interModel)
+//		var inter = app.collections.interventions.get()
+//		inter.fetch().done(
+//			function(){
+//				app.collections.interventions.add(inter);
+//				self.render();
+//			}
+//		)
+		
+	},
+	
+		
+	updateInter: function(model) {
+		var self = this	
+		
+		model.fetch().done(
+			function(){
+				app.collections.interventions.add(model);
+				self.render();
+			}
+		);
+	},
 
 	/** Display the view
 	*/
@@ -569,6 +616,73 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 			//this.render();
 			Backbone.history.loadUrl('#planning');
 		},
+		
+		
+		initTaskCollection: function(){
+			var self = this;
+			
+			// Check if the collections is instantiate //
+			if(_.isUndefined(app.collections.tasks)){ app.collections.places = new app.Collections.Tasks(); }
+			this.taskCollection = app.collections.tasks;
+		
+			
+			// Create Fetch params //
+			var fetchParams = {};
+
+		
+			var deferred = $.Deferred();
+			
+			// Fetch the collections //
+			app.loader('display');
+			$.when(
+				self.taskCollection.fetch(fetchParams)
+			)
+			.done(function(){
+				deferred.resolve();
+			})
+			.fail(function(e){
+				console.error(e);
+			})
+			.always(function(){
+				app.loader('hide');
+			});
+		
+			return deferred;
+		
+		},
+
+		initInterCollection: function(){
+			var self = this;
+			
+			// Check if the collections is instantiate //
+			if(_.isUndefined(app.collections.interventions)){ app.collections.interventions = new app.Collections.Tasks(); }
+			this.interCollection = app.collections.interventions;
+		
+			
+			// Create Fetch params //
+			var fetchParams = {};
+
+		
+			var deferred = $.Deferred();
+			
+			// Fetch the collections //
+			app.loader('display');
+			$.when(
+				self.interCollection.fetch(fetchParams)
+			)
+			.done(function(){
+				deferred.resolve();
+			})
+			.fail(function(e){
+				console.error(e);
+			})
+			.always(function(){
+				app.loader('hide');
+			});
+		
+			return deferred;
+		
+		}
 
 
 

@@ -302,14 +302,18 @@ app.Models.Task = Backbone.Model.extend({
 
 	update: function(params) {
 		this.setName( params.name );
-		this.setProjectId( params.project_id );
-		this.setState( params.state );
-		this.setRemainingHours( params.remaining_hours );
 		this.setPlannedHours( params.planned_hours );
-		this.setUserId( params.user_id );
+		this.setRemainingHours( params.remaining_hours );
 		this.setTeamId( params.team_id );
+		this.setUserId( params.user_id );
 		this.setDateEnd( params.date_end );
 		this.setDateStart( params.date_start );
+		this.setState( params.state );
+		this.setInterventionId( params.project_id );
+	},
+	
+	test: function() {
+		this.setName( 'test' );
 	},
 
 }, {
