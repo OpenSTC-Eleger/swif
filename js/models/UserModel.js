@@ -284,7 +284,7 @@ app.Models.User = Backbone.Model.extend({
 
 		$.ajax(
 			{
-				url        : app.config.barakafrites.url + '/sessions',
+				url        : '/sessions',
 				type       : "POST",
 				contentType: 'application/json',
 				data       : JSON.stringify(login_data),
@@ -340,21 +340,15 @@ app.Models.User = Backbone.Model.extend({
 		"use strict";
 		var self = this;
 
-		var deferred = $.Deferred();
-
-		app.json(app.config.openerp.url+app.urlOE_sessionDestroy, {
-			'session_id': self.getSessionID()
+		$.ajax({
+			url: '/sessions/'+ app.current_user_token(),
+			method: 'DELETE'
 		})
 		.fail(function (){
 			app.notify('', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
 		})
 		.done(function (data) {
-			// On détruit la session dans le localStorage //
-			self.destroySessionID();
-			self.save();
-			// Reset des filtres initialisées dans les listes //
-			sessionStorage.clear();
-			
+
 			app.notify('large', 'info', app.lang.infoMessages.information, app.lang.infoMessages.successLogout);
 
 			// Refresh the header //
@@ -362,10 +356,13 @@ app.Models.User = Backbone.Model.extend({
 
 			// Navigate to the login Page //
 			Backbone.history.navigate(app.routes.login.url, {trigger: true, replace: true});
-			deferred.resolve();
-		});
+		}).always(function () {
+				self.set({authToken:''});
+				sessionStorage.clear();
+				localStorage.clear();
+			});
 
-	   return deferred;
+
 	},
 
 	/** Get the informations of the user
