@@ -1,11 +1,25 @@
+/* Import
+-------------------------------------------------- */
+
+@import 'variables';
+
+// Customizing components //
+@import 'progress-bars';
+@import 'labels-badges';
+@import 'pagination';
+@import 'coponent-animations';
+@import 'tables';
+@import 'types';
+
+@import 'calendar';
+@import 'drop-area';
+@import 'loader';
+
+
+
+
 /* Generic
 -------------------------------------------------- */
-img{
-	/* PYF comment max-width : max-width bugs openlayers */
-	max-width: none !important;
-}
-
-
 .popover-title, .bolder{
 	font-weight: bolder;
 }
@@ -15,17 +29,11 @@ img{
 .spaceBottom{
 	margin-bottom: 30px;
 }
-.spaceBottomBig{
-	margin-bottom: 45px;
-}
 .vertical-align-middle{
 	vertical-align: middle;
 }
 .vertical-align-top{
 	vertical-align: top;
-}
-small.badge{
-	font-size: @fontSizeMini;
 }
 .isCheck{
 	text-decoration: line-through;
@@ -55,9 +63,9 @@ small.badge{
 ::selection { background: lighten(@pink, 20%); color: @white; }
 ::-moz-selection { background: lighten(@pink, 20%); color: @white; }
 
+
 // <sup> Badge //
-sup.badge{ top: -1.5em; }
-span[data-toggle="tooltip"]:not([data-original-title='']), sup[data-toggle="tooltip"]:not([data-original-title='']){ cursor: help;}
+*[data-toggle="tooltip"]:not([data-original-title='']) { cursor: help; }
 
 
 // Table Toolbar //
@@ -65,19 +73,6 @@ span[data-toggle="tooltip"]:not([data-original-title='']), sup[data-toggle="tool
 	margin-bottom: 15px;
 }
 
-
-// Full Calendar Update //
-.fc-slot8, .fc-slot9, .fc-slot10, .fc-slot11 {
-	background-color: @grayLighter;
-}
-.fc-header{
-	margin-bottom: 5px;
-	height: 90px;
-}
-.fc-header-title h2{
-	margin-top: 5px;
-	font-size: @baseFontSize*1.8;
-}
 
 
 // pNotify compatibility with Font Awesome 3.0.2 //
@@ -90,16 +85,13 @@ div.ui-pnotify.big-icon div.icon-large div.ui-pnotify-icon{
 
 
 div.progress{
-	margin-bottom: 5px;
+	.noMarginBottom();
 }
 
 // Filter Button Table //
 a.filter-button.filter-disabled{
 	.opacity(40);
 	.muted;
-}
-a.filter-button.filter-active{
-	.opacity(100);
 }
 
 
@@ -118,6 +110,7 @@ form legend{
 div.page-header{
 	margin-top: 5px;
 }
+
 #appName{
 	padding-top: 6px;
 	padding-bottom: 6px;
@@ -142,42 +135,6 @@ div.page-header{
 */
 .accordion-body[class*="in collapse"]{ overflow:visible; }
 
-// Calendar Toggle switch button //
-.switch.calendarSwitch{
-	width: 122px;
-}
-
-
-
-/* New TEXT color
--------------------------------------------------- */
-.text-important        { color: @errorText; }
-a.text-important:hover { color: darken(@errorText, 10%); }
-
-.text-muted        		{ color: @grayLight; }
-a.text-muted:hover 		{ color: darken(@grayLight, 10%); }
-
-.text-template          { color: @yellow; }
-a.text-template:hover   { color: darken(@yellow, 10%); }
-
-.text-overrun          { color: @purple; }
-a.text-overrun:hover   { color: darken(@purple, 10%); }
-
-
-
-/* New LABELS AND BADGES
--------------------------------------------------- */
-.label, .badge {
-	// Overrun (violet)
-	&-overrun         { background-color: @purple; }
-  	&-overrun[href]   { background-color: darken(@purple, 10%); }
-  	// Template (yellow)
-  	&-template           { background-color: @yellow; }
-  	&-template[href]     { background-color: darken(@yellow, 10%); }
-	// Absent (pink)
-  	&-absent           { background-color: @pink; }
-  	&-absent[href]     { background-color: darken(@pink, 10%); }
-}
 
 
 /* Border Emphasize
@@ -197,121 +154,12 @@ a.text-overrun:hover   { color: darken(@purple, 10%); }
 }
 
 
-/* Calendar Color
--------------------------------------------------- */
-.calendar-success.fc-event {
-	border-color: darken(@successText, 5%);
-	background-color: @successText;
-	div.fc-event-inner div.fc-event-time{ background-color: darken(@successText, 5%); }
-}
-.calendar-info.fc-event {
-	border-color: darken(@infoText, 5%);
-	background-color: @infoText;
-	div.fc-event-inner div.fc-event-time{ background-color: darken(@infoText, 5%); }
-}
-.calendar-default.fc-event {
-	border-color: darken(@grayLight, 5%);
-	background-color: @grayLight;
-	div.fc-event-inner div.fc-event-time{ background-color: darken(@grayLight, 5%); }
-}
-.calendar-absent.fc-event {
-	border-color: darken(@pink, 5%);
-	background-color: @pink;
-	div.fc-event-inner div.fc-event-time{ background-color: darken(@pink, 5%); }
-}
-
-
-
-/* New PROGRESS BAR 
--------------------------------------------------- */
-.progress-default .bar, .progress .bar-default {
-  #gradient > .vertical(@grayLight, #888888);
-}
-.progress-default.progress-striped .bar, .progress-striped .bar-default {
-  #gradient > .striped(@grayLight);
-}
-
-.progress-overrun .bar, .progress .bar-overrun {
-  #gradient > .vertical(@purple, darken(@purple, 10%));
-}
-.progress-overrun.progress-striped .bar, .progress-striped .bar-overrun {
-  #gradient > .striped(@purple);
-}
-
-
-
-/* New TABLE PROPERTIES
--------------------------------------------------- */
-.table-sorter{
-	thead {
-		th[data-sort-column] {
-			cursor: pointer;
-			&:hover{
-				background-color: darken(@tableBackgroundAccent, 5%);
-				i{
-					.text-muted;
-				}
-			}
-			i.active{
-				.text-success;
-			}
-		}
-	}
-}
-table th.span1{
-	min-width: 55px;
-}
-
-
-/* MAP MARKERS
--------------------------------------------------- */
-.mapmarker{
-	// Overrun (violet)
-	&-info         { fill: @infoText; }
-	&-warning      { fill: @warningText; }
-	&-success      { fill: @successText; }
-	&-muted        { fill: @grayLight; }
-	&-important    { fill: @errorText; }
-	&-template     { fill: @yellow; }
-}
-
-
-/* Drop Area
--------------------------------------------------- */
-.drop-area{
-	min-height: 250px;
-	padding: 15px;
-	background-color: @infoBackground;
-	background-image: url('images/drop_area.png');
-	background-repeat: no-repeat;
-	background-position: center;
-
-	li:not(.media) > a:hover{
-		background-color: rgba(red(@infoText), green(@infoText), blue(@infoText), 0.15);
-	}
-}
-
-
-
-/* Pagination Improvements
--------------------------------------------------- */
-.pagination ul li.pagination-select select{
-	.border-left-radius(0);
-	border-left-width: 0;
-	margin-bottom : 0;
-}
-
-
 
 /* Calendar
 -------------------------------------------------- */
 section.calendarContainer{
 	//min-width: 770px;
 	margin-bottom: 2px;
-}
-section.calendarContainer:not(:first-child){
-	//padding-top: 50px
-
 }
 
 
@@ -327,13 +175,6 @@ section.calendarContainer:not(:first-child){
    width: 100%;
    overflow: hidden;
 }
-
-#accordionInterventions.affix {
-	width: 22%;
-}
-
-
-
 
 
 
@@ -406,7 +247,7 @@ div.div-actions{
 
 
 // object Actions //
-.object-actions, .place-actions, .row-actions{
+.object-actions, .row-actions{
 	display: inline;
 	font-size: 85%;
 	width: auto;
@@ -507,45 +348,8 @@ h4#teamTitle, h4#resaTitle{
 
 
 
-
-
-/* Loader
--------------------------------------------------- */
-#loader{
-	.hide();
-	position: fixed;
-	top: 45%; left: 50%;
-	width: 250px; 
-	height: auto;
-	z-index: 99999;
-	margin-left: -6%;
-	margin-top: -5%;
-	border-width: 1px;
-	border-color: @grayLight;
-}
-
-/* Modal Loader
--------------------------------------------------- */
-.modal-loader {
-	.pull-right;
-	.input-medium;
-	margin: 5px 20px 0 0;
-
-	.bar{
-		width: 100%;	
-	}
-}
-
-
-
 /* objects list
 -------------------------------------------------- */
-table.table-objects tbody > tr:nth-child(4n+1){
-	background-color: red;
-}
-table.table-objects tbody tr:hover > td{
-	background-color: red;
-}
 tr.row-nested-objects-collapse{
 	.hide();
 }
@@ -561,13 +365,10 @@ tr.info td:first-child{
 
 
 
-
-
 .widget-title {
     border-bottom: 1px solid @tableBorder;
     margin-bottom: 10px;
 }
-
 
 
 
@@ -586,8 +387,6 @@ tr.info td:first-child{
 #materialsReserved li.media{
 	display: grid;
 }
-
-
 
 
 
@@ -611,84 +410,4 @@ tr.info td:first-child{
 		width: 45%;
 	}
 
-}
-
-
-
-
-/* Print
--------------------------------------------------- */
-@media screen {
-  #printSection {
-      .hide();
-  }
-}
-
-@media print {
-  body * {
-    visibility:hidden;
-  }
-  #printSection, #printSection * {
-    visibility:visible;
-  }
-  #printSection {
-    position:absolute;
-    left:0;
-    top:0;
-  }
-}
-
-
-
-
-/* Highlight Animation
--------------------------------------------------- */
-// WebKit
-@-webkit-keyframes highlight {
-	0%   { background-color: none }
-	25%  { background-color: lighten(@pink, 50%) }
-	50%  { background-color: lighten(@pink, 25%) }
-	100% { background-color: lighten(@pink, 50%) }
-}
-
-// Firefox
-@-moz-keyframes highlight {
-	0%   { background-color: none }
-	25%  { background-color: lighten(@pink, 50%) }
-	50%  { background-color: lighten(@pink, 25%) }
-	100% { background-color: lighten(@pink, 50%) }
-}
-
-// IE9
-@-ms-keyframes highlight {
-	0%   { background-color: none }
-	25%  { background-color: lighten(@pink, 50%) }
-	50%  { background-color: lighten(@pink, 25%) }
-	100% { background-color: lighten(@pink, 50%) }
-}
-
-// Opera
-@-o-keyframes highlight {
-	0%   { background-color: none }
-	25%  { background-color: lighten(@pink, 50%) }
-	50%  { background-color: lighten(@pink, 25%) }
-	100% { background-color: lighten(@pink, 50%) }
-}
-
-// Spec
-@keyframes highlight {
-	0%   { background-color: none }
-	25%  { background-color: lighten(@pink, 50%) }
-	50%  { background-color: lighten(@pink, 25%) }
-	100% { background-color: lighten(@pink, 50%) }
-}
-
-
-// Call animation for the active one
-tr.highlight td{
-  -webkit-animation: highlight 1s linear 1.5;
-     -moz-animation: highlight 1s linear 1.5;
-      -ms-animation: highlight 1s linear 1.5;
-       -o-animation: highlight 1s linear 1.5;
-          animation: highlight 1s linear 1.5;
 }

@@ -1,0 +1,19 @@
+/* New PROGRESS BAR 
+-------------------------------------------------- */
+
+// Default (gray)
+.progress-default .bar, .progress .bar-default {
+  #gradient > .vertical(@grayLight, #888888);
+}
+.progress-default.progress-striped .bar, .progress-striped .bar-default {
+  #gradient > .striped(@grayLight);
+}
+
+// Overrun (purple)
+.progress-overrun .bar, .progress .bar-overrun {
+  #gradient > .vertical(@purple, darken(@purple, 10%));
+}
+.progress-overrun.progress-striped .bar, .progress-striped .bar-overrun {
+  #gradient > .striped(@purple);
+}
+
