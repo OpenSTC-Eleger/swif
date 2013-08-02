@@ -42,15 +42,7 @@
 			var informationHour	= '';
 
 			var classColor = app.Models.Intervention.status[intervention.state].color;
-
-			if(intervention.state != app.Models.Intervention.status.template.key){
-				informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours, 'human') : '');
-			}
-			else{
-				informationHour = (intervention.total_hours != false ? app.decimalNumberToTime(intervention.total_hours, 'human') : '');
-			}
-
-
+			informationHour = (intervention.total_hours != false ? app.decimalNumberToTime(intervention.total_hours, 'human') : '');
 			if(intervention.description != false){
 				var description = "<i class='icon-flag'></i>&nbsp; "+intervention.description+"<br />";
 			}
