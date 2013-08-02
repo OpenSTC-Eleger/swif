@@ -268,7 +268,7 @@ app.Router = Backbone.Router.extend({
 						//{calendarId: self.calendarId, weekSelected: self.weekSelected}
 						app.views.planningView = new app.Views.PlanningView();
 						self.render(app.views.planningView);
-						app.loader('hide');
+						//app.loader('hide');
 					})
 					.fail(function(e){
 						console.error(e);

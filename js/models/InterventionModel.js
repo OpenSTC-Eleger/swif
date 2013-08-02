@@ -31,8 +31,8 @@ app.Models.Intervention = Backbone.Model.extend({
 	getId : function() {
 		return this.get('id');
 	},
-	setId: function(value) {
-		if( value == 'undefined') return;
+	setId : function(value) {
+		if(_.isUndefined(value)) return;
 		this.set({ id : value });
 	},
 
@@ -43,7 +43,7 @@ app.Models.Intervention = Backbone.Model.extend({
 		if( value == 'undefined') return;
 		this.set({ id : value });
 	},
-
+	
 	getState : function() {
 		return this.get('state');
 	},
@@ -82,6 +82,25 @@ app.Models.Intervention = Backbone.Model.extend({
 	*/
 	parse: function(response) {    	
 		return response;
+	},
+	
+	/** Sync the Model
+		*/
+	sync: function(method, model, options){
+		var self = this;
+
+		var deferred = $.Deferred();
+
+		// Check if a silent param exist //
+		if(_.isUndefined(options.silent)){ options.silent = false; }
+
+		$.when(app.getOE(this.model_name, this.fields, [this.getId()], app.models.user.getSessionID()))
+		.done(function(getOE_data){
+			self.set(getOE_data[0], {silent: options.silent});
+			deferred.resolve();
+		})
+
+		return deferred;
 	},
 
 

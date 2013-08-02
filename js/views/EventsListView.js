@@ -165,14 +165,34 @@ app.Views.EventsListView = Backbone.View.extend({
     },
     	
 	//--------------------End events on calendar-------------------------//
-
+    		/**
+		 * Initialize Print calendar view
+		 */
+	initPrintView: function(events){
+			 
+		
+		if ( _.isUndefined(app.views.printingCalendarView) ){
+			app.views.printingCalendarView = new app.Views.PrintingCalendarView({
+				calendar : this,
+				el: $("#printingCalendar"), 
+				events : events,
+			})
+		}
+		else {
+			app.views.printingCalendarView.close();
+			app.views.printingCalendarView.calendar = this
+			app.views.printingCalendarView.events = events			
+			app.views.printingCalendarView.render();
+		}
+	},
 
     //--------------------Init calendar----------------------------------//
     initCalendar: function() {
     	var self = this;
 
-    	this.calendar = $(this.divCalendar).fullCalendar({
-			events: function(start, end, callback) {
+    	this.calendar = $(this.divCalendar).fullCalendar({    		
+			events: function(start, end, callback) {   
+    			app.loader('display');
     			var domain = []
 	    		if( self.teamMode ) {
 	    			domain = [	'&',['date_start', '>', moment(start).format('YYYY-MM-DD HH:mm:ss') ],
@@ -193,11 +213,11 @@ app.Views.EventsListView = Backbone.View.extend({
 				collection.fetch({search: domain,
 					success: function(data){
 						var events = self.fetchEvents(data.toJSON());
+						self.initPrintView(data.toJSON());
+						app.loader('hide');
 						callback(events);
 					}
 				});
-    		
-    			
 			},
 			
 			defaultView: self.calendarView,
@@ -388,9 +408,13 @@ app.Views.EventsListView = Backbone.View.extend({
 							}
 							else{
 								$(self.divCalendar).fullCalendar( 'refetchEvents' )
-								 self.options.planning.partialRender();
-								//self.options.planning.render();
-								app.loader('hide');	
+								var taskModel = new app.Models.Task({ id: data.result.id });
+								taskModel.fetch().done(function(){
+									app.collections.tasks.add(taskModel);
+								})
+								app.collections.tasks.add(data)
+								//app.collections.tasks.get(copiedEventObject.id).update(data.result); 
+								//app.collections.tasks.add(self.model,{merge: true});								
 							}							
 						},
 					}
@@ -444,28 +468,7 @@ app.Views.EventsListView = Backbone.View.extend({
 		 * Add personal icon for officer on calendar 
 		 */
 		$('table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");
-		
-		if(sessionStorage.getItem("week") != null){
-			var weekSelected = sessionStorage.getItem("week");
-			yearSelected = _(this.weekSelected).strLeft('-');	
-			weekSelected = _(this.weekSelected).strRight('-');	
-			
-			var date = moment().year(yearSelected)
-			date = date.week(weekSelected)
-			$(this.divCalendar).fullCalendar('gotopage', date.year(), date.month(), date.date());	
-			
-		}
-		
-						
-		/**
-		 * Initialize Print calendar view
-		 */
-		app.views.printingCalendarView = new app.Views.PrintingCalendarView({
-			calendar : this,
-			el: $("#printingCalendar"), 
-			events : self.filterTasks,
-		})
-			
+
 		
 	},
 	// --------------------End init calendar----------------------------------------//
