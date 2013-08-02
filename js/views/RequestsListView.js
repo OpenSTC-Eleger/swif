@@ -188,7 +188,7 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 	    var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
 
 		params = {
-				//ask_id: this.model.getId(),	
+				//ask_id: this.model.getId(),
 
 				request_state: app.Models.Request.status.valid.key,
 				email_text: app.Models.Request.status.valid.translation,
