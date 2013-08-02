@@ -22,10 +22,13 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 			domain = [options.search]
 		}
 
-
-		return app.callObjectMethodOE(domain, this.model_name, 'search_count', app.models.user.getSessionID(), {
-			success: function(data){
-				self.cpt = data.result;
+		return $.ajax({
+			url: this.url,
+			method: "HEAD",
+			data: {filters: search},
+			success: function(data,status,request){
+				var contentRange = request.getResponseHeader("Content-Range")
+				self.cpt = contentRange.match(/\d+$/);
 			}
 		});
 	},
@@ -45,9 +48,4 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 	}
 
 
-	/** Comparator for ordering collection
-	*/
-	/*comparator: function(item) {
-		return _.titleize( item.get('name').toLowerCase() ) ;
-	},*/
 });

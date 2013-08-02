@@ -6,20 +6,19 @@ var app = {
 
 
 	// Global variables app //
-	uniq_id_counter : 0,
-	
-	urlOE_authentication        : '/web/session/authenticate',
-	urlOE_versionServer         : '/web/webclient/version_info',
-	urlOE_sessionDestroy        : '/web/session/destroy',
-	urlOE_sessionInformation    : '/web/session/get_session_info',
-	urlOE_menuUser              : '/web/menu/load',
-	urlOE_retrieveListe         : '/web/dataset/search_read',
-	urlOE_readObject            : '/web/dataset/get',
-	urlOE_createObject          : '/web/dataset/create',
-	urlOE_updateObject          : '/web/dataset/save',
-	urlOE_deleteObject          : '/web/dataset/call',
-	urlOE_object          		: '/web/dataset/call',
+	uniq_id_counter: 0,
 
+	urlOE_authentication: '/sessions',
+	urlOE_versionServer: '/web/webclient/version_info',
+	urlOE_sessionDestroy: '/web/session/destroy',
+	urlOE_sessionInformation: '/web/session/get_session_info',
+	urlOE_menuUser: '/web/menu/load',
+	urlOE_retrieveListe: '/web/dataset/search_read',
+	urlOE_readObject: '/web/dataset/get',
+	urlOE_createObject: '/web/dataset/create',
+	urlOE_updateObject: '/web/dataset/save',
+	urlOE_deleteObject: '/web/dataset/call',
+	urlOE_object: '/web/dataset/call',
 
 
 	// Classes //
@@ -45,9 +44,9 @@ var app = {
 
 
 		// Retrieve App properties, configuration and language //
-		$.when(app.loadProperties('properties.json'), app.loadConfiguration('config/configuration.json'), app.loadRoutes('config/routes.json'), app.loadI18nScripts(lang))
-			.done(function(properties_data, configuration_data, routes_data, lang_data){
-			
+		$.when(app.loadStaticFile('properties.json'), app.loadStaticFile('config/configuration.json'), app.loadStaticFile('config/routes.json'), app.loadI18nScripts(lang))
+			.done(function (properties_data, configuration_data, routes_data, lang_data) {
+
 				// Set the app properties configuration and language //
 				app.properties    = properties_data[0];
 				app.config 		  = configuration_data[0];
@@ -82,6 +81,10 @@ var app = {
 	},
 	
 
+	current_user_token: function () {
+		return localStorage.getItem('currentUserAuthToken');
+	},
+
 	/** Load internationalization scripts
 	*/
 	loadI18nScripts: function (lang) {
@@ -93,7 +96,8 @@ var app = {
 			
 				_.each(langFiles, function(file){
 					var script = document.createElement('script');
-					script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/'+file;
+					script.type = 'text/javascript';
+					script.src = 'i18n/' + lang + '/' + file;
 					$('#app').append(script);
 				});
 
@@ -106,6 +110,14 @@ var app = {
 			});
 	},
 
+	loadStaticFile: function (url) {
+		return $.getJSON(url)
+			.success(function (data) {
+			})
+			.fail(function () {
+				alert('Impossible de charger le fichier') + url;
+			});
+	},
 
 
 	/** Load application configuration
@@ -119,37 +131,6 @@ var app = {
 				alert('Impossible de charger le fichier de configuration');
 			});
 	},
-
-
-
-	/** Load application properties
-	*/
-	loadProperties: function(url){
-
-		return $.getJSON(url)
-			.success(function(data){
-			})
-			.fail(function(){
-				alert('Impossible de charger le fichier de propriétés');
-			});
-	},
-	
-
-
-	/** Load application properties
-	*/
-	loadRoutes: function(url){
-
-		return $.getJSON(url)
-			.success(function(data){
-			})
-			.fail(function(){
-				alert('Impossible de charger le fichier de routes');
-			});
-	},
-
-
-
 
 	/******************************************
 	* GENERIC FUNCTION FOR JSON/AJAX
@@ -227,11 +208,8 @@ var app = {
 		return this.json(app.config.openerp.url + this.urlOE_readObject, {
 			'model'     : model,
 			'fields'    : fields, 
-			'ids'       : ids,
-			'session_id': session_id
-		}, options)
-
-	},
+			'ids'       : ids
+		}, options)},
 
 
 	/** Retrieve a list from OpenERP
@@ -274,7 +252,6 @@ var app = {
 	},
 
 
-
 	/** Delete object from OpenERP
 	*/
 	deleteOE : function (args,model,session_id,options) {
@@ -285,7 +262,6 @@ var app = {
 			'session_id': session_id
 		}, options);  
 	},
-
 
 
 	/** Save object in OpenERP
@@ -305,7 +281,6 @@ var app = {
 					'session_id': session_id      
 		   }, options);      
 	},
-	
 
 
 	/** call object method from OpenERP
@@ -315,10 +290,9 @@ var app = {
 			'method'    : method,
 			'args'      : args, 
 			'model'     : model,
-			'session_id': session_id
+			'session_id': session_id      
 	   }, options);  
 	},
-
 
 
 	/** Page Loader
@@ -339,7 +313,6 @@ var app = {
 
 		return deferred.promise();
 	},
-
 
 
 	/** Transform Decimal number to hour:minute
@@ -386,7 +359,6 @@ var app = {
 	},
 
 
-
 	/** Calcul the sort By column and the order
 	*/
 	calculPageSort: function(sort){
@@ -399,6 +371,9 @@ var app = {
 		return sorter;
 	},
 
+	objectifyFilters: function (filterArray) {
+		return $.extend({},filterArray);
+	},
 
 
 	/** Calcul the Filter By
@@ -417,9 +392,19 @@ var app = {
 
 	/** Calcul the search argument of the page
 	*/
+	calculSearch: function (search) {
 	calculSearch: function(searchQuery, searchableFields){
 
+		var name_search = [
+			{field: "name", operator: "ilike", value: search}
+		]
 
+		if (!isNaN(_(search).toNumber())) {
+			name_search.unshift({condition: '|'})
+			name_search.push({ field: "surface", operator: "=", value: _(search).toNumber() });
+		}
+
+		return app.objectifyFilters(name_search);
 		//['|', ["name", "ilike", searchQuery], ["surface", "=", _(searchQuery).toNumber()]];
 		//['&', ["state", "ilike", 'valid'], '|', ["name", "ilike", 'demande'], ["id", "=", _('demande').toNumber()]];
 		
@@ -484,6 +469,7 @@ var app = {
 				var delay = 4500;
 				var hide = true;
 			break;
+
 		}
 
 		$.pnotify({
@@ -512,12 +498,21 @@ var app = {
 _.mixin(_.str.exports());
 
 
-
 /******************************************
 * AFTER THE LOADING OF THE PAGE
 */
 $(document).ready(function () {	
 	app.init('fr');
+	$.ajaxSetup({
+		contentType: "application/json",
+		headers: {Authorization: 'Token token=' + app.current_user_token()},
+		statusCode: {
+			401: function () {
+				// Redirect the to the login page.
+				app.Router.navigate(app.routes.login.url, {trigger: true, replace: true});
+			}
+		}
+	});
 });
 
 

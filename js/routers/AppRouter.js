@@ -51,31 +51,24 @@ app.Router = Backbone.Router.extend({
 	},
 
 
-
-
 	/** Check if the User is connect
-	*/
-	checkConnect: function(){
-
+	 */
+	checkConnect: function () {
 		console.log('### checkConnect Function ###');
-		
 		// Check if a user exist in localStorage //
-		if ( app.collections.users.length ){
-			//console.log('User in the localStorage');
-			
+		if (app.collections.users.length) {
 			app.models.user = app.collections.users.at(0);
 
-			// Check if a user has a sessionID //
-			if(app.models.user.hasSessionID()){
-				console.info('User is connect');
+			if (app.models.user.hasAuthToken()) {
+				console.info('User has auth token');
 				return true;
 			}
-			else{
-				console.warn('User is not connect');
+			else {
+				console.warn('User has no auth token');
 				return false;
 			}
 		}
-		else{
+		else {
 			console.info('User NOT in the localStorage');
 			return false;
 		}
@@ -345,8 +338,8 @@ app.Router = Backbone.Router.extend({
 			if(_.isUndefined(app.collections.tasks)){ app.collections.tasks = new app.Collections.Tasks(); }
 			if(_.isUndefined(app.collections.interventions)){ app.collections.interventions = new app.Collections.Interventions(); }
 			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
-			//if(_.isUndefined(app.collections.officers)){ app.collections.officers = new app.Collections.Officers(); }
-			//if(_.isUndefined(app.collections.teams)){ app.collections.teams = new app.Collections.Teams(); }
+			if(_.isUndefined(app.collections.officers)){ app.collections.officers = new app.Collections.Officers(); }
+			if(_.isUndefined(app.collections.teams)){ app.collections.teams = new app.Collections.Teams(); }
 			if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
 			if(_.isUndefined(app.collections.categoriesTasks)){ app.collections.categoriesTasks = new app.Collections.CategoriesTasks(); }
 			if(_.isUndefined(app.collections.absentTypes)){ app.collections.absentTypes = new app.Collections.AbsentTypes(); }
@@ -361,15 +354,15 @@ app.Router = Backbone.Router.extend({
 					$.when(
 						app.collections.interventions.fetch(),
 						app.collections.claimersServices.fetch(),
-						//app.collections.officers.fetch(),
-						//app.collections.teams.fetch(),
+						app.collections.officers.fetch(),
+						app.collections.teams.fetch(),
 						app.collections.equipments.fetch(),
 						app.collections.places.fetch(),
 						app.collections.categoriesTasks.fetch(),
 						app.collections.absentTypes.fetch()
 					)
 					.done(function(){
-						app.views.planningView = new app.Views.PlanningView();
+						app.views.planningView = new app.Views.PlanningView(id);
 						self.render(app.views.planningView);
 						app.loader('hide');
 					})
@@ -508,7 +501,7 @@ app.Router = Backbone.Router.extend({
 	*/
 	places: function(search, sort, page){
 
-		if(this.checkConnect()){
+		if (this.checkConnect()) {
 
 			var params = {};
 
@@ -518,7 +511,7 @@ app.Router = Backbone.Router.extend({
 
 			app.views.placesListView = new app.Views.PlacesListView(params);
 		}
-		else{
+		else {
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});
 		}
 	},

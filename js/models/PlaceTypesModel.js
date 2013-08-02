@@ -3,10 +3,6 @@
 */
 app.Models.PlaceType = Backbone.RelationalModel.extend({
 	
-	model_name : 'openstc.site.type',	
-    
-	url: "/#placeTypes/:id",
-
 
 	/** Model Initialization
 	*/
@@ -21,6 +17,5 @@ app.Models.PlaceType = Backbone.RelationalModel.extend({
         return response;
     },
     
-
 
 });

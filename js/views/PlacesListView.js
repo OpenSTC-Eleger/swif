@@ -137,37 +137,27 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		}
 		this.options.page = app.calculPageOffset(this.options.page);
 
-
 		
 		// Create Fetch params //
 		var fetchParams = {
 			silent      : true,
-			limitOffset : {limit: app.config.itemsPerPage, offset: this.options.page.offset},
-			sortBy      : this.options.sort.by+' '+this.options.sort.order
+			data: {
+				limit: app.config.itemsPerPage,
+				offset: this.options.page.offset,
+				sort: this.options.sort.by+' '+this.options.sort.order
+			}
 		};
 		if(!_.isUndefined(this.options.search)){
-			fetchParams.search = app.calculSearch({search: this.options.search}, app.Models.Place.prototype.searchable_fields);
+			fetchParams.data.search = app.calculSearch({search: this.options.search});
 		}
 
-
-		var deferred = $.Deferred();
-		
-		// Fetch the collections //
-		app.loader('display');
-		$.when(
-			self.collection.fetch(fetchParams)
-		)
-		.done(function(){
-			deferred.resolve();
-		})
-		.fail(function(e){
-			console.error(e);
-		})
-		.always(function(){
-			app.loader('hide');
-		});
-
-		return deferred;
+		return self.collection.fetch(fetchParams)
+			.fail(function(e){
+				console.error(e);
+			})
+			.always(function(){
+				app.loader('hide');
+			});
 
 	}
 

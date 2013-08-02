@@ -20,25 +20,12 @@ app.Views.HeaderView = Backbone.View.extend({
 	/** Display the view
 	*/
 	render: function (activeMenu) {
-		var self = this;
-
-		// If the user is connect, retrieve his menu from OpenERP //
-		if(app.models.user.hasSessionID()) {
-			
-			app.models.user.getMenus({
-				error: function (){
-					console.error('ERROR: Unable to retrieve menu');
-				},
-				success: function (data) {
-					self.initHeader(data.result.data.children, activeMenu);
-				 
-				}
-			});
+		if(app.models.user.hasAuthToken()) {
+			this.initHeader(app.models.user.getMenus(), activeMenu)
 		}
 		else{
 			this.initHeader('', '');
 		}
-
 		return this;
 	},
 

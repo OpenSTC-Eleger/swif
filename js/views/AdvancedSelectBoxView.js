@@ -10,7 +10,7 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize: function(){
-
+		this.collection_url = this.options.collection_url;
 		this.select2 = $(this.el);
 	},
 
@@ -20,7 +20,7 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 	*/
 	render: function(){
 		var self = this;
-
+		console.log(self.collection_url)
 
 		// Retrieve placeholder attribute //
 		if(!_.isUndefined(this.select2.data('placeholder'))){ var placeholder = this.select2.data('placeholder'); }
@@ -46,22 +46,33 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 				// [The query, [], comparator, {}, the limit ] //
 				var params = [query.term, [], 'ilike', {}, 9999];
 
-				app.callObjectMethodOE(params, self.model, 'name_search', app.models.user.getSessionID(), {
-					success: function(data){
+				$.ajax({
+					url: self.collection_url,
+					method: 'get',
+					data: {
+						fields: ['id','name'],
+						filters: app.objectifyFilters([{
+							field: 'name',
+							operator:'ilike',
+							value:query.term
+						}])
+					}
+
+				}).done(function(data){
 
 						var returnData = {results: []};
 
-						_.each(data.result, function(item, index){
+						_.each(data, function(item, index){
 							returnData.results.push({
-								id: item[0],
-								text: _.titleize(item[1].toLowerCase())
+								id: item.id,
+								text: _.titleize(item.name.toLowerCase())
 							});
 						});
 
 						// Return the query //
 						query.callback(returnData)
-					}
-				});
+					});
+
 			},
 			sortResults: function(results, container, query) {
 				// If no term was enter, results are Alphabetic //

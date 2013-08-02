@@ -1,6 +1,9 @@
 /******************************************
 * Categories Collection - Task categories
 */
+
+// fields = ["code", "complete_name", "id", "name", "parent_id", "service_ids"]
+
 app.Collections.CategoriesTasks = app.Collections.GenericCollection.extend({
 
 	model: app.Models.CategoryTask,
@@ -8,7 +11,7 @@ app.Collections.CategoriesTasks = app.Collections.GenericCollection.extend({
 	// Model name in the database //
 	model_name : 'openstc.task.category',
 	
-	url: 'categories',
+	url: '/api/openstc/task_categories',
 
 
 
@@ -18,26 +21,6 @@ app.Collections.CategoriesTasks = app.Collections.GenericCollection.extend({
 		//console.log('Categories collection Initialization');
 	},
 
-
-
-	/** Collection Sync
-	*/
-	sync: function(method, model, options) {
-		var fields = ["code", "complete_name", "id", "name", "parent_id", "service_ids"];
-
-		return app.readOE( this.model_name, app.models.user.getSessionID(), options, fields);
-	},
-
-
-
-	/** Collection Parse
-	*/
-	parse: function(response) {    	
-		return response.result.records;
-	},
-
-
-	
 	/** Comparator for ordering collection
 	*/
 	comparator: function(item) {

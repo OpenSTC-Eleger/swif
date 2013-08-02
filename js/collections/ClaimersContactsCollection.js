@@ -1,42 +1,20 @@
 /******************************************
 * Claimers Contacts Collection
 */
+
+// fields = ["email", "function", "id", "livesIn", "mobile", "name", "partner_id", "phone", "street", "type", "user_id", "zip"]
+
 app.Collections.ClaimersContacts = app.Collections.GenericCollection.extend({
 
 	model : app.Models.ClaimerContact,
 
-	// Model name in the database //
-	model_name : 'res.partner.address',
-
-	url: "demandeurs-contacts",   
-
-
+	url: "/api/open_object/partner_addresses",
 
 	/** Collection Initialization
 	*/
 	initialize : function() {
 		//console.log('Claimer Contact collection initialize');
 	},
-
-
-
-	/** Collection Sync
-	*/
-	sync: function(method, model, options) {
-		var fields = ["email", "function", "id", "livesIn", "mobile", "name", "partner_id", "phone", "street", "type", "user_id", "zip"];
-
-		return app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
-	},
-
-
-
-	/** Collection Parse
-	*/
-	parse: function(response) {
-		return response.result.records;
-	},
-	
-
 
 	/** Comparator for ordering collection
 	 */

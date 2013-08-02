@@ -1,0 +1,14 @@
+{
+    "openerp": {
+    	"url" 		: "http://localhost",
+    	"database" 	: "pontlabbe2"
+    },
+    "itemsPerPage"		: 20,
+    "startLunchTime"	: 12.0,
+    "endLunchTime"		: 14.0,
+
+    "barakafrites" :{
+        "url" : "http://localhost"
+    }
+
+}
