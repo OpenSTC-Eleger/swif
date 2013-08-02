@@ -392,19 +392,8 @@ var app = {
 
 	/** Calcul the search argument of the page
 	*/
-	calculSearch: function (search) {
 	calculSearch: function(searchQuery, searchableFields){
 
-		var name_search = [
-			{field: "name", operator: "ilike", value: search}
-		]
-
-		if (!isNaN(_(search).toNumber())) {
-			name_search.unshift({condition: '|'})
-			name_search.push({ field: "surface", operator: "=", value: _(search).toNumber() });
-		}
-
-		return app.objectifyFilters(name_search);
 		//['|', ["name", "ilike", searchQuery], ["surface", "=", _(searchQuery).toNumber()]];
 		//['&', ["state", "ilike", 'valid'], '|', ["name", "ilike", 'demande'], ["id", "=", _('demande').toNumber()]];
 		
@@ -436,15 +425,15 @@ var app = {
 				search.push('|');
 				_.each(searchableFields, function(item, index){
 					if(item.type == '='){var term = _(searchQuery.search).toNumber(); }else{ var term = searchQuery.search }
-					search.push([item.key, item.type, term]);
+					search.push({field: item.key, operator: item.type,value: term});
 				});
 			}
 			else{
-				search.push([searchableFields[0].key, searchableFields[0].type, searchQuery]);
+				search.push({field: searchableFields[0].key, operator: searchableFields[0].type, value: searchQuery});
 			}
 		}
 
-		return search;
+		return app.objectifyFilters(search);
 	},
 
 
