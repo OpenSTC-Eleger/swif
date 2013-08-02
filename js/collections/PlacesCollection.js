@@ -17,17 +17,4 @@ app.Collections.Places = app.Collections.GenericCollection.extend({
 	},
 
 
-
-	/** Collection Sync
-	*/
-	sync: function(method, model, options){
-		var deferred = $.Deferred();
-		$.when(this.count(options), Backbone.sync.call(this,method,this,options))
-		.done(function(){
-			deferred.resolve();
-		});
-		return  deferred;
-	},
-
-
 });

@@ -69,13 +69,13 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 			if(!loader){
 				// Advance Select List View //
-				app.views.advancedSelectBoxPlaceTypeView = new app.Views.AdvancedSelectBoxView({el: $("#placeType"), model: app.Models.PlaceType.prototype.model_name })
+				app.views.advancedSelectBoxPlaceTypeView = new app.Views.AdvancedSelectBoxView({el: $("#placeType"), collection_url: app.Collections.PlaceTypes.prototype.url })
 				app.views.advancedSelectBoxPlaceTypeView.render();
 
-				app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#placeParentPlace"), model: app.Models.Place.prototype.model_name })
+				app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#placeParentPlace"), collection_url: app.Collections.Places.prototype.url })
 				app.views.advancedSelectBoxPlaceParentView.render();
 
-				app.views.advancedSelectBoxPlaceServices = new app.Views.AdvancedSelectBoxView({el: $("#placeServices"), model: app.Models.ClaimerService.prototype.model_name })
+				app.views.advancedSelectBoxPlaceServices = new app.Views.AdvancedSelectBoxView({el: $("#placeServices"), collection_url: app.Collections.ClaimersServices.prototype.url })
 				app.views.advancedSelectBoxPlaceServices.render();
 			}
 
@@ -134,43 +134,25 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		if(this.createMode){ var id = 0; }
 		else{ var id = this.model.getId(); }
 
-		
-		app.Models.Place.prototype.save(
-			params,
-			id, {
-			success: function(data){
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+		self.model.save(params)
+			.done(function (data) {
+				self.modal.modal('hide');
+				if (self.createMode) {
+					var newPlace = new app.Models.Place({ id: data.result.result });
+					newPlace.fetch().done(function () {
+						app.views.placesListView.collection.add(newPlace);
+					})
+				} else {
+					self.model.fetch();
 				}
-				else{
-					self.modal.modal('hide');
-
-					// Create Place //
-					if(self.createMode){
-						var newPlace = new app.Models.Place({ id: data.result.result });
-
-						// Fetch the new model //
-						newPlace.fetch().done(function(){
-							app.views.placesListView.collection.add(newPlace);
-						})
-					}
-					// Update Place //
-					else{
-						self.model.fetch();
-					}
-				}
-			},
-			complete: function(){
-				// Reset the button state //
-				$(self.el).find("button[type=submit]").button('reset');
-			},
-			error: function () {
+			})
+			.fail(function () {
 				alert("Impossible de contacter le serveur");
-			},	
-		});
-
+			})
+			.always(function () {
+				$(self.el).find("button[type=submit]").button('reset');
+			});
 	},
-
 
 
 	/** Calcul the area of the place
@@ -178,6 +160,5 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 	calculPlaceArea: function (e) {
 		$('#placeArea').val($('#placeWidth').val() * $('#placeLenght').val());
 	}
-
 
 });

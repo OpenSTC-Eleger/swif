@@ -150,25 +150,13 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 			fetchParams.data.search = app.calculSearch(this.options.search);
 		}
 
-
-		var deferred = $.Deferred();
-		
-		// Fetch the collections //
-		app.loader('display');
-		$.when(
-			self.collection.fetch(fetchParams)
-		)
-		.done(function(){
-			deferred.resolve();
-		})
-		.fail(function(e){
-			console.error(e);
-		})
-		.always(function(){
-			app.loader('hide');
-		});
-
-		return deferred;
+		return self.collection.fetch(fetchParams)
+			.fail(function(e){
+				console.error(e);
+			})
+			.always(function(){
+				app.loader('hide');
+			});
 
 	}
 

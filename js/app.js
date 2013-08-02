@@ -374,7 +374,9 @@ var app = {
 		return sorter;
 	},
 
-
+	objectifyFilters: function (filterArray) {
+		return $.extend({},filterArray);
+	},
 
 	/** Calcul the search argument of the page
 	*/
@@ -388,9 +390,11 @@ var app = {
 			name_search.unshift({condition: '|'})
 			name_search.push({ field: "surface", operator: "=", value: _(search).toNumber() });
 		}
-		var filters = $.extend({}, name_search);
-		return filters;
+
+		return app.objectifyFilters(name_search);
 	},
+
+
 
 
 	/** Notification Message
