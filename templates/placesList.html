@@ -38,10 +38,10 @@
 		<table class="table table-bordered table-hover table-striped table-sorter">
 			<thead>
 				<tr>
-					<th data-column="name"><%= _.capitalize(lang.name) %> <i class="icon-sort icon-large icon-muted pull-right"></i></th>
+					<th data-sort-column="name"><%= _.capitalize(lang.name) %></th>
 					<th><%= _.capitalize(lang.parentPlace) %></th>
 					<th><%= _.capitalize(lang.associatedServices) %></th>	
-					<th class="hidden-phone span2" data-column="surface"><%= _.capitalize(lang.area) %> <i class="icon-sort icon-large icon-muted pull-right"></i></th>
+					<th class="hidden-phone span2" data-sort-column="surface"><%= _.capitalize(lang.area) %></th>
 				</tr>
 			</thead>
 			<tbody id="rows-items">

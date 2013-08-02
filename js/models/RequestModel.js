@@ -36,12 +36,24 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		intervention_ids : []
 	},
 
+
+	searchable_fields: [
+		{
+			key  : 'id',
+			type : 'numeric'
+		},
+		{
+			key  : 'name', 
+			type : 'text'
+		}
+	],
+
 	
 	
 	getId : function() {
 		return this.get('id');
 	},
-	setName : function(value) {
+	setId : function(value) {
 		if( value == 'undefined') return;
 		this.set({ id : value });
 	},
@@ -54,26 +66,33 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		this.set({ name : value });
 	},
 
-	getSite1 : function() {
-		return this.get('site1');
+	getSite : function(type) {
+		if(this.get('site1')){
+
+			switch(type){
+				case 'id': 
+					return this.get('site1')[0];
+				break;
+				default:
+					return _.titleize(this.get('site1')[1].toLowerCase());
+			}
+		}
 	},
-	setSite1 : function(value) {
+	setSite : function(value) {
 		if( value == 'undefined') return;
 		this.set({ site1 : value });
 	},
 
 	getDescription : function() {
-		return this.get('description');
+		if(this.get('description')){
+			return this.get('description');
+		}
 	},
 	setDescription : function(value) {
 		if( value == 'undefined') return;
 		this.set({ description : value });
 	},
 	
-	setDescription : function(value) {
-		if( value == 'undefined') return;
-		this.set({ deadline_date : value });
-	},
 	
 	getRefusalReason : function() {
 		return this.get('refusal_reason');
@@ -91,6 +110,7 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		this.set({ state : value });
 	},
 	
+	// Note for the DST //
 	getNote : function() {
 		return this.get('note');
 	},
@@ -99,20 +119,79 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		this.set({ note : value });
 	},
 
-	getService : function() {
-		return this.get('service_id');
+	getService : function(type) {
+		switch(type){
+			case 'id': 
+				return this.get('service_id')[0];
+			break;
+			default:
+				return _.capitalize(this.get('service_id')[1].toLowerCase());
+		}
 	},
 	setService : function(value) {
 		if( value == 'undefined') return;
 		this.set({ service_id : value });
 	},
 
-	getInterventions : function() {
-		return this.get('intervention_ids');
+
+	// Claimer of the resquest //
+	getClaimer: function(type){
+		var claimer = {}
+
+		claimer.type = this.get('partner_type')[1]
+
+		// Check if the claimer is a partner //
+		if(this.get('partner_id')){
+			claimer.id =  this.get('partner_id')[0];
+			claimer.name = _.capitalize(this.get('partner_id')[1].toLowerCase());
+
+			claimer.person = _.capitalize(this.get('partner_address')[1]);
+		}
+		// It's an Administré //
+		else{
+			claimer.name = _.capitalize(this.get('people_name'));
+		}
+
+		return claimer;
 	},
-	setInterventions : function(value) {
-		if( value == 'undefined') return;
-		this.set({ intervention_ids : value });
+
+	getManager: function(type){
+		switch(type){
+			case 'id': 
+				return this.get('manager_id')[0];
+			break;
+			default:
+				return _.capitalize(this.get('manager_id')[1]);
+		}
+	},
+
+	getCreateDate: function(type){
+
+		switch(type){
+			case 'fromNow': 
+				return moment(this.get('create_date'), 'YYYY-MM-DD HH:mm:ss').add('hours',1).fromNow();
+			break;
+			default:
+				return moment(this.get('create_date'), 'YYYY-MM-DD HH:mm:ss').add('hours',1).format('LLL');
+		}
+	},
+
+	getCreateAuthor: function(type){
+		switch(type){
+			case 'id': 
+				return this.get('create_uid')[0];
+			break;
+			default:
+				return _.capitalize(this.get('create_uid')[1]);
+		}
+	},
+
+	getInformations: function(){
+		return this.get('tooltip');
+	},
+
+	getActions: function(){
+		return this.get('actions');
 	},
 
 
@@ -137,30 +216,11 @@ app.Models.Request = Backbone.RelationalModel.extend({
 
 
 
-	/** Model Parser
-	*/
-	parse: function(response) {
-		return response;
-	},
-
-
-
 	/** Save Model
 	*/
 	save: function(data,options) { 
 		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
 	},
-
-
-	
-	/** method not used
-	*/
-	sendEmail: function(data,options) {
-		var params = {}
-		params.state = this.get("state");
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "send_email", app.models.user.getSessionID(), options);
-	},
-	
 
 
 	update: function(params) {
@@ -170,19 +230,6 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		this.setNote( params.note );
 	},
 
-
-
-	/** Destroy Model
-	*/
-	destroy: function (options) {	
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
-	},
-	
 
 
 	valid: function(params, options) {

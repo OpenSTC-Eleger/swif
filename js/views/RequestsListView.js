@@ -1,46 +1,45 @@
 /******************************************
 * Requests List View
 */
-app.Views.RequestsListView = Backbone.View.extend({
-
-	el : '#rowContainer',
+app.Views.RequestsListView = app.Views.GenericListView.extend({
 
 	templateHTML: 'requestsList',
 
 	filters: 'requestsListFilter',
 
-	numberListByPage: 25,
-
-	selectedRequest : 0,
-
 
 
 	// The DOM events //
-	events: {
-		'click li.active'						: 'preventDefault',
-		'click li.disabled'						: 'preventDefault',
-			
-		'click .buttonValidRequest'				: 'setInfoModal',
-		'click .buttonRefusedRequest'			: 'setInfoModal',
-		'click .buttonConfirmRequest'			: 'setInfoModal',
+	events: function(){
+		return _.defaults({
+			'click #filterStateRequestList li a' 	: 'setFilterState',
+			'click #badgeActions[data-filter!=""]'  : 'badgeFilter',
 
-		'change #requestService' 				: 'filterCategory',
+			'submit #formValidRequest' 				: 'validRequest',
+			'submit #formRefuseRequest' 			: 'refuseRequest',
+			'submit #formConfirmDSTRequest' 		: 'confirmDSTRequest',
+			'change #requestService' 				: 'filterCategory',
 
-		'submit #formValidRequest' 				: 'validRequest',
-		'submit #formRefuseRequest' 			: 'refuseRequest',
-		'submit #formConfirmDSTRequest' 		: 'confirmDSTRequest',
-
-		'change #createAssociatedTask' 			: 'accordionAssociatedTask',
-
-		'click #filterStateRequestList li:not(.disabled) a' 	: 'setFilter'
+			'change #createAssociatedTask' 			: 'accordionAssociatedTask'
+		}, 
+			app.Views.GenericListView.prototype.events
+		);
 	},
 
 
 
 	/** View Initialization
 	*/
-	initialize: function () {			
+	initialize: function () {
+		var self = this;
 
+		this.initCollection().done(function(){
+			// Unbind & bind the collection //
+			self.collection.off();
+			self.listenTo(self.collection, 'add', self.add);
+
+			app.router.render(self);
+		});
 	},
 
 
@@ -59,94 +58,54 @@ app.Views.RequestsListView = Backbone.View.extend({
 		// Change the Grid Mode of the view //
 		app.views.headerView.switchGridMode('fluid');
 
-
-		var requests = app.collections.requests.toJSON();
-
-		requests = _.sortBy(requests, function(item){ 
-			return item.date_start; 
-		});
-
-
-
-
-		// Retrieve the number Interventions due to the Group user //
-		if(app.models.user.isDST()){
-			var interventionsFilter = _.filter(requests, function(item){ 
-				return item.state == app.Models.Request.status.confirm.key;
-			});
-			var nbInterventionsInBadge = _.size(interventionsFilter);
-		}
-		else if(app.models.user.isManager()){
-			var interventionsFilter = _.filter(requests, function(item){ 
-				return item.state == app.Models.Request.status.wait.key;
-			});
-			var nbInterventionsInBadge = _.size(interventionsFilter);
-		}
-		else {
-			var nbInterventionsInBadge = _.size(requests);
-		}
-
-
-		// Collection Filter if not null //
-		if(sessionStorage.getItem(this.filters) != null){
-			requests = _.filter(requests, function(item){ 
-				return item.state == sessionStorage.getItem(self.filters);
-			});
-		}
-
-		
-		var len = requests.length;
-		var startPos = (this.options.page - 1) * this.numberListByPage;
-		var endPos = Math.min(startPos + this.numberListByPage, len);
-		var pageCount = Math.ceil(len / this.numberListByPage);
-
-
-		// Retrieve the template // 
+		// Retrieve the template //
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-	  
+
 			var template = _.template(templateData, {
 				lang: app.lang,
-				nbInterventionsInBadge: nbInterventionsInBadge,
-				requests: requests,
+				nbRequests: self.collection.specialCpt,
 				requestsState: app.Models.Request.status,
-				startPos: startPos, endPos: endPos,
-				page: self.options.page, 
-				pageCount: pageCount,
 			});
 
-			//console.debug(requests);
-
 			$(self.el).html(template);
-			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
-			$('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 
 
-			// Display filter on the table //
-			if(sessionStorage.getItem(self.filters) != null){
-				$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');
-				$('li.delete-filter').removeClass('disabled');
+			// Call the render Generic View //
+			app.Views.GenericListView.prototype.render(self.options);
 
-				$('a.filter-button').addClass('text-'+app.Models.Request.status[sessionStorage.getItem(self.filters)].color);
+
+			// Create item request view //
+			_.each(self.collection.models, function(request, i){
+				var itemRequestView = new app.Views.ItemRequestView({model: request});
+				$('#rows-items').append(itemRequestView.render().el);
+			});
+
+
+			// Pagination view //
+			app.views.paginationView = new app.Views.PaginationView({ 
+				page       : self.options.page.page,
+				collection : self.collection
+			})
+			app.views.paginationView.render();
+
+
+			
+			// Render Filter Link on the Table //
+			if(!_.isUndefined(self.options.filter)){
+				$('#filterStateRequest').removeClass('filter-disabled');
+				$('#filterStateRequestList li.delete-filter').removeClass('disabled');
+
+				$('a.filter-button').addClass('text-'+app.Models.Request.status[self.options.filter.value].color);
 			}
 			else{
-				$('a.filter-button').removeClass('filter-active ^text').addClass('filter-disabled');
-				$('li.delete-filter').addClass('disabled');
+				$('#filterStateRequest').addClass('filter-disabled');
+				$('#filterStateRequestList li.delete-filter').addClass('disabled');
 			}
-
-			// Display the Tooltip or Popover //
-			$('*[rel="popover"]').popover({trigger: 'hover'});
-			$('*[data-toggle="tooltip"]').tooltip();
-
-
-			// Set the focus to the first input of the form //
-			$('#modalValidRequest, #modalRefusedRequest, #modalConfirmRequest').on('shown', function (e) {
-				$(this).find('input:not(:disabled), textarea').first().focus();
-			})
 
 		});
 
+		$(this.el).hide().fadeIn();
 
-		$(this.el).hide().fadeIn('slow');
 		return this;
 	},
 
@@ -229,7 +188,7 @@ app.Views.RequestsListView = Backbone.View.extend({
 	    var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
 
 		params = {
-				//ask_id: this.model.getId(),	
+				//ask_id: this.model.getId(),
 
 				request_state: app.Models.Request.status.valid.key,
 				email_text: app.Models.Request.status.valid.translation,
@@ -315,30 +274,38 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 
 
-	/** Filter Requests
+	/** Filter Requests on the State
 	*/
-	setFilter: function(event){
-		event.preventDefault();
+	setFilterState: function(e){
+		e.preventDefault();
 
-		var link = $(event.target);
+		var filterValue = _($(e.target).attr('href')).strRightBack('#');
 
-		var filterValue = _(link.attr('href')).strRightBack('#');
-
-		// Set the filter in the local Storage //
+		// Set the filter value in the options of the view //
 		if(filterValue != 'delete-filter'){
-			sessionStorage.setItem(this.filters, filterValue);
+			this.options.filter = { by: 'state', value: filterValue};
 		}
 		else{
-			sessionStorage.removeItem(this.filters);
-		}
-
-		if(this.options.page <= 1){
-			this.render();
-		}
-		else{
-			app.router.navigate(app.routes.requestsInterventions.baseUrl, {trigger: true, replace: true});
+			delete this.options.filter;
 		}
 		
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+	},
+
+
+
+	/** Filter Requests on the State of the Badge
+	*/
+	badgeFilter: function(e){
+
+		var filterValue = $(e.target).data('filter');
+
+		// Set the filter value in the options of the view //
+		if(filterValue != ''){
+			this.options.filter = { by: 'state', value: filterValue};
+		}
+
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 	},
 
 
@@ -384,18 +351,70 @@ app.Views.RequestsListView = Backbone.View.extend({
 
 
 
-	/** Prevent the default action
-	*/
-	preventDefault: function(event){
-		event.preventDefault();
-	},
+
+	initCollection: function(){
+		var self = this;
+
+		// Check if the collections is instantiate //
+		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.Requests(); }
+
+
+		// Check the parameters //
+
+		if(_.isUndefined(this.options.sort)){
+			this.options.sort = this.collection.default_sort;
+		}
+		else{
+			this.options.sort = app.calculPageSort(this.options.sort);	
+		}
+
+		if(!_.isUndefined(this.options.filter)){
+			this.options.filter = app.calculPageFilter(this.options.filter);
+		}
+
+		this.options.page = app.calculPageOffset(this.options.page);
+
+
 	
-//	setElement: function(element, delegate) {
-//	    if (this.$el) this.undelegateEvents();
-//	    this.$el = (element instanceof $) ? element : $(element);
-//	    this.el = this.$el[0];
-//	    if (delegate !== false) this.delegateEvents();
-//	    return this;
-//	 },
+		// Create Fetch params //
+		var fetchParams = {
+			silent      : true,
+			limitOffset : {limit: app.config.itemsPerPage, offset: this.options.page.offset},
+			sortBy      : this.options.sort.by+' '+this.options.sort.order
+		};
+
+		var globalSearch = {};
+		if(!_.isUndefined(this.options.search)){
+			globalSearch.search = this.options.search;
+		}
+		if(!_.isUndefined(this.options.filter)){
+			globalSearch.filter = this.options.filter;
+		}
+
+		if(!_.isEmpty(globalSearch)){
+			fetchParams.search = app.calculSearch(globalSearch, app.Models.Request.prototype.searchable_fields);
+		}
+
+
+		var deferred = $.Deferred();
+
+		// Fetch the collections //
+		app.loader('display');
+		$.when(
+			self.collection.fetch(fetchParams)
+		)
+		.done(function(){
+			deferred.resolve();
+		})
+		.fail(function(e){
+			console.error(e);
+		})
+		.always(function(){
+			app.loader('hide');
+		});
+
+		return deferred;
+
+	},
 
 });

@@ -31,7 +31,7 @@
 	"parentService" 		: "service parent",
 	"technicalService" 		: "service technique associé par défaut",
 	"claiment" 				: "demandeur",
-	"dateRequest" 			: "date de début",
+	"createDate" 			: "date de création",
 	"dateStart" 			: "date de début",
 	"dateEnd" 				: "date de fin",
 	"validateBy" 			: "validé par",
@@ -238,7 +238,7 @@
 	"infoMessages" : {
 		"information"         	: "Information",
 		"successLogout"       	: "Vous êtes maintenant déconnecté",
-		"noRequest"      	  	: "Aucune intervention à afficher",
+		"noRequest"      	  	: "Aucune demande d'intervention à afficher",
 		"noRequestPlanned"		: "Aucune intervention planifiées",
 		"noPlace"				: "Aucun site à afficher",
 		"noClaimer"				: "Aucune organisation enregistré",

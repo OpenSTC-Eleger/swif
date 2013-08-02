@@ -57,7 +57,7 @@ small.badge{
 
 // <sup> Badge //
 sup.badge{ top: -1.5em; }
-span[data-toggle="tooltip"], sup[data-toggle="tooltip"]{ cursor: help;}
+span[data-toggle="tooltip"]:not([data-original-title='']), sup[data-toggle="tooltip"]:not([data-original-title='']){ cursor: help;}
 
 
 // Table Toolbar //
@@ -244,7 +244,7 @@ a.text-overrun:hover   { color: darken(@purple, 10%); }
 -------------------------------------------------- */
 .table-sorter{
 	thead {
-		th[data-column] {
+		th[data-sort-column] {
 			cursor: pointer;
 			&:hover{
 				background-color: darken(@tableBackgroundAccent, 5%);
@@ -257,6 +257,9 @@ a.text-overrun:hover   { color: darken(@purple, 10%); }
 			}
 		}
 	}
+}
+table th.span1{
+	min-width: 55px;
 }
 
 
@@ -689,6 +692,3 @@ tr.highlight td{
        -o-animation: highlight 1s linear 1.5;
           animation: highlight 1s linear 1.5;
 }
-
-
-

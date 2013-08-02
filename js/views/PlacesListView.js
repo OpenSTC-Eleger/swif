@@ -3,10 +3,8 @@
 */
 app.Views.PlacesListView = app.Views.GenericListView.extend({
 
-	templateHTML  : 'places',
+	templateHTML  : 'placesList',
 
-	selectedPlace : '',
-	
 
 	// The DOM events //
 	events: function(){
@@ -92,7 +90,6 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 			})
 			app.views.paginationView.render();
 
-
 		});
 
 		$(this.el).hide().fadeIn();
@@ -116,7 +113,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		e.preventDefault();
 		
 		app.views.modalPlaceView = new app.Views.ModalPlaceView({
-			el    : '#modalSavePlace'
+			el  : '#modalSavePlace'
 		});
 
 	},
@@ -126,15 +123,20 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	initCollection: function(){
 		var self = this;
 
-		
-		this.options.sort = app.calculPageSort(this.options.sort);
+		// Check if the collections is instantiate //
+		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.Places(); }
+
+
+		// Check the parameters //
+
+		if(_.isUndefined(this.options.sort)){
+			this.options.sort = this.collection.default_sort;
+		}
+		else{
+			this.options.sort = app.calculPageSort(this.options.sort);	
+		}
 		this.options.page = app.calculPageOffset(this.options.page);
 
-
-
-		// Check if the collections is instantiate //
-		if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
-		this.collection = app.collections.places;
 
 		
 		// Create Fetch params //
@@ -144,7 +146,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 			sortBy      : this.options.sort.by+' '+this.options.sort.order
 		};
 		if(!_.isUndefined(this.options.search)){
-			fetchParams.search = app.calculSearch(this.options.search);
+			fetchParams.search = app.calculSearch({search: this.options.search}, app.Models.Place.prototype.searchable_fields);
 		}
 
 

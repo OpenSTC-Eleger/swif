@@ -3,7 +3,9 @@
 */
 app.Collections.GenericCollection = Backbone.Collection.extend({
     
-    cpt : 0,    
+	cpt        : 0,
+	
+	specialCpt : 0,
     
 	
 	/** count all models without restricts ( openerp search_count method call select count(*) request)
@@ -23,9 +25,22 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 
 		return app.callObjectMethodOE(domain, this.model_name, 'search_count', app.models.user.getSessionID(), {
 			success: function(data){
-				console.log(data);
 				self.cpt = data.result;
 			}
+		});
+	},
+
+
+	specialCount: function(modelName){
+		var self = this;
+
+		return app.callObjectMethodOE([[app.models.user.getUID()]], modelName, "getNbRequestsTodo", app.models.user.getSessionID(),{
+    	
+	    	//forme de data.result (dans le callback success) : {user_id: nbActions}
+	    	success: function(data){
+
+		        self.specialCpt = data.result[app.models.user.getUID()];
+	    	}
 		});
 	}
 
@@ -35,6 +50,4 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 	/*comparator: function(item) {
 		return _.titleize( item.get('name').toLowerCase() ) ;
 	},*/
-
-
 });

@@ -1,26 +1,21 @@
-<!-- Check the group of the user to display element with the good color -->
-<% 
-	if(app.models.user.isDST()) { 
-		var classColor = app.Models.Request.status.confirm.color;
-		var actionRequestToProcess = lang.actions.confirm;
-	}
-	else if(app.models.user.isManager()){
-		var classColor = app.Models.Request.status.wait.color;
-		var actionRequestToProcess = lang.actions.process;
-	}
-	else{ 
-		var classColor = '';
-		var actionRequestToProcess = '';
-	} 
-%>
-
-
-
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.requestsList %>
-		<sup class="badge badge-<%= classColor %>" data-toggle="tooltip" data-original-title="<%= actionRequestToProcess %>" data-placement="bottom">
-			<%= nbInterventionsInBadge %>
+
+		<% if(app.models.user.isDST()) { 
+				var classColor = app.Models.Request.status.confirm.color;
+				var filterValue = app.Models.Request.status.confirm.key;
+				var actionToProcess = lang.actions.confirm; 
+			}
+		   else if(app.models.user.isManager()){ 
+		   		var classColor = app.Models.Request.status.wait.color;
+		   		var filterValue = app.Models.Request.status.wait.key;
+		   		var actionToProcess = lang.actions.process; }
+		   else{ var classColor = ''; var actionToProcess = ''; var filterValue = ''; }
+		%>
+
+		<sup id="badgeActions" class="badge badge-<%= classColor %>" data-filter="<%= filterValue %>" data-toggle="tooltip" data-original-title="<%= actionToProcess %>" data-placement="bottom">
+			<%= nbRequests %>
 		</sup>
 	</h1>
 </div>
@@ -28,8 +23,23 @@
 
 <div class="container-fluid">
 
+
+	<!-- Table toolbar -->
+	<div class="tableToolbar">
+		<a href="#demandes-dinterventions/add" class="btn btn-primary"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
+
+		<form class="form-search pull-right">
+			<div class="input-append">
+				<input type="search" class="input-medium search-query" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+				<button type="submit" class="btn"><i class="icon-search text-info icon-large"></i></button>
+			</div>
+		</form>
+	</div>
+	<!-- Table toolbar -->
+
+
 	<!-- Message if No Request to Display -->
-	<% if(requests.length == 0) { %>
+	<% if(nbRequests <= 0) { %>
 		<div class="tableToolbar">
 			<div class="alert alert-info">
 				<i class="icon-info-sign icon-large"></i>&nbsp;<%= lang.infoMessages.noRequest %>
@@ -38,30 +48,16 @@
 	<% } %>
 
 
-	<!-- Table toolbar -->
-	<div class="tableToolbar">
-		<a href="#demandes-dinterventions/add" class="btn btn-primary"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
-
-		<!--<form class="form-search pull-right">
-			<div class="input-append">
-				<input type="search" class="input-medium search-query" disabled="disabled" placeholder="<%= lang.actions.search %>..." autocomplete="off">
-				<button type="submit" disabled class="btn disabled"><i class="icon-search icon-large"></i></button>
-			</div>
-		</form>-->
-	</div>
-	<!-- Table toolbar -->
-
-
 	<!-- Table Requests -->
-	<table class="table table-striped table-bordered table-hover">
+	<table class="table table-striped table-bordered table-hover table-sorter">
 		<thead>
 			<tr>
-				<th>N°</th>
-				<th><%= _.capitalize(lang.label) %></th>
-				<th class="hidden-phone"><%= _.capitalize(lang.place) %></th>
+				<th data-sort-column="id" class="span1">N°</th>
+				<th data-sort-column="name" class="span6"><%= _.capitalize(lang.label) %></th>
+				<th class="hidden-phone span5"><%= _.capitalize(lang.place) %></th>
 				<th><%= _.capitalize(lang.service) %></th>
 				<th><%= _.capitalize(lang.claiment) %></th>
-				<th><%= _.capitalize(lang.dateRequest) %></th>
+				<th data-sort-column="create_date"><%= _.capitalize(lang.createDate) %></th>
 				<th>
 					<%= _.capitalize(lang.status) %>
 					<div class="dropdown pull-right">
@@ -76,8 +72,8 @@
 									</a>
 								</li>
 							<% }) %>
-								<li class="divider"></li>
-								<li class="delete-filter disabled"><a href="#delete-filter"><i class="icon-remove"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
+								<li class="divider" role="menuitem"></li>
+								<li class="delete-filter disabled" role="menuitem"><a href="#delete-filter"><i class="icon-remove"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
 						</ul>
 					</div>
 				</th>
@@ -87,193 +83,60 @@
 				<% } %>
 			</tr>
 		</thead>
-
-	<!-- Check if there is Request in the Database -->
-	<% if(requests.length != 0) { %>
-
-		<tbody>
-			<% for (var i = startPos; i < endPos; i++) { %>
+		<tbody id="rows-items">
 			
-				<!-- Set if the table row should be hightlight and Bold -->
-				<% 
-					if(requests[i].state == app.Models.Request.status.wait.key && app.models.user.isManager()) {
-						var classRow = classColor+" bolder";
-					}
-					else if(requests[i].state == app.Models.Request.status.confirm.key && app.models.user.isDST()){
-						var classRow = classColor+" bolder";
-					}
-					else{
-						var classRow = "";
-					}
-					var createdBy = (requests[i].create_uid != '' ?_.capitalize(lang.createdBy) + requests[i].create_uid[1]: "");
-
-					var description = (requests[i].description != '' ? requests[i].description : _.capitalize(lang.notKnown));
-
-					var modifydBy = (requests[i].write_uid != '' ?_.capitalize(lang.modifyBy) + requests[i].write_uid[1] : "");
-				%>
-
-
-				<!-- Request row -->
-				<tr id="<%= requests[i].id %>" class="<%= classRow %>">
-					<td><%= requests[i].id %></td>
-
-					<td>
-						<a 	href="#demandes-dinterventions/<%= requests[i].id %>" rel="popover" 
-							data-content="<%= _(description).escapeHTML() %><br /><em><%= createdBy %></em>"
-							data-html="true" data-delay="160"
-							data-original-title="<%= _.capitalize(lang.description) %>">
-							<%= _.capitalize(_(requests[i].name).escapeHTML()) %>
-						</a>
-					</td>
-
-					<!-- Request site -->
-					<td class="hidden-phone"><%= (requests[i].site1 != false ? _(requests[i].site1[1].toLowerCase()).titleize() : "") %></td>
-
-					<!-- Request service -->
-					<td>
-						<% if(requests[i].state == app.Models.Request.status.wait.key){ %>
-						<span data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.toValidateBy) %> <%= requests[i].manager_id[1] %>">
-							<%= requests[i].service_id[1] %>
-						</span>
-						<% } else { %>
-							<%= requests[i].service_id[1] %>
-						<% } %>
-					</td>
-
-					<!-- Claimer -->
-					<td>
-						<% if(requests[i].partner_id != false){ %>
-							<span data-toggle="tooltip" data-original-title="<%= requests[i].partner_address[1] %>"><%= requests[i].partner_id[1] %></span>
-						
-						<% } else{ %>
-							<%= requests[i].people_name %>
-						<% } %>
-					</td>
-
-
-					<!-- Request Date -->
-					<td>
-						<span 
-							data-toggle="tooltip"
-							data-original-title="<%= moment(requests[i].create_date, 'YYYY-MM-DD HH:mm:ss').add('hours',1).fromNow() %>">
-							<%= ( requests[i].create_date != null &&  requests[i].create_date != "" ) ? moment(requests[i].create_date, 'YYYY-MM-DD HH:mm:ss').add('hours',1).format('LLL'): "" %>
-						</span>
-					</td>
-
-					<!-- Request state -->
-					<td>
-
-						<span class="label label-<%= app.Models.Request.status[requests[i].state].color %>" data-toggle="tooltip" data-original-title="<%= requests[i].tooltip %>">
-							<%= app.Models.Request.status[requests[i].state].translation %>
-						</span>
-					</td>
-
-
-
-					<!-- Action column -->
-					<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
-
-					<td class="align">
-					<!-- Check if the user can make action on the request -->
-					<%  var actions = requests[i].actions;
-						if(!_.isEmpty(actions)){ %>
-
-						<!-- Create the buttons group action -->
-						<div class="btn-group">
-
-							<!-- Check if the request is not in waiting state -->
-							<%
-							
-							if(requests[i].state != app.Models.Request.status.wait.key){
-								var mainAction = '';
-								var mainActionIcon = app.Models.Request.actions[requests[i].state].icon;
-								var mainActionColor = app.Models.Request.actions[requests[i].state].color;
-								var mainActionDisabled = 'disabled';
-							}else{
-								var mainAction = app.Models.Request.actions.valid.key;
-								var mainActionColor = app.Models.Request.actions.valid.color;
-								var mainActionIcon = app.Models.Request.actions.valid.icon;
-								var mainActionDisabled = '';
-
-								/ Remove validate action from the array actions /
-								actions = _.without(actions, app.Models.Request.actions.valid.key);
-							} %>
-
-							<!-- Main action button -->
-							<button class="btn btn-small btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline button<%= _.capitalize(mainAction) %>Request" data-toggle="modal" data-target="#modal<%= _.capitalize(mainAction) %>Request">
-								<i class="<%= mainActionIcon %> icon-fixed-width button<%= _.capitalize(mainAction) %>Request"></i>
-							</button>
-							
-							<!-- Dropdown button action -->
-							<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
-								<span class="icon-caret-down"></span>
-							</button>
-							
-							<!-- Other buttons action -->
-							<ul class="dropdown-menu pull-right text-left">
-								<% _.each(actions, function(action){ %>
-									<li>
-										<a href="#modal<%= _.capitalize(app.Models.Request.actions[action].key) %>Request" data-toggle="modal" class="button<%= _.capitalize(app.Models.Request.actions[action].key) %>Request">
-											<i class="<%= app.Models.Request.actions[action].icon %> icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.Models.Request.actions[action].translation) %>
-										</a>
-									</li>
-								<% }); %>
-							</ul>
-						</div>
-
-					<% } %>
-					</td>
-					<% } %>
-
-				</tr>
-			<% } %>
 		</tbody>
-		<% } %>
 
 	</table>
 	<!-- /Table Requests -->
 
 
 	<!-- Table pagination -->
-	<div class="pagination pagination-right">
-		<ul>
-			<!-- First page button -->
-			<% if(page-2 >= 1){ %>
-				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#<%= app.routes.requestsInterventions.baseUrl %>/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
-			<% } %>
-			
-			<!-- Previous page button -->
-			<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#<%= app.routes.requestsInterventions.baseUrl %>/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
-		
-			<!-- [...] page Button -->
-			<% 	if (page-2 > 1) { %>
-					<li class="disabled"><a href='#'>...</a></li>
-			<% } 
-					
-				for (var i=(page-2); i < (page+3); i++) {
-					if(i >= 1 && i <= pageCount){ %>
-						<li <%= (i === page ? " class='active'" : "")%>><a href='#<%= app.routes.requestsInterventions.baseUrl %>/page<%=i%>'><%= i %></a></li>
-					<% }
-
-				} %>
-				
-			<!-- [...] page Button -->
-			<% if (page+2 < pageCount) { %>
-				<li class="disabled"><a href='#'>...</a></li>
-			<% } %>
-			
-			<!-- Next page button -->
-			<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#<%= app.routes.requestsInterventions.baseUrl %>/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
-			
-			<!-- Last page button -->
-			<% if(page+2 <= pageCount){ %>
-				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#<%= app.routes.requestsInterventions.baseUrl %>/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
-			<% } %>
-		</ul>
-	</div>
+	<div id="pagination"></div>
 	<!-- /Table pagination -->
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

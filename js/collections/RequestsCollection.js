@@ -3,10 +3,13 @@
 */
 app.Collections.Requests = app.Collections.GenericCollection.extend({
 
-	model: app.Models.Request,
+	model        : app.Models.Request,
 
-	// Model name in the database //
-	model_name : 'openstc.ask',
+	model_name   : 'openstc.ask',
+
+	fields       : ["id", "name", "actions", "tooltip", "create_date", "create_uid", "date_deadline", "description", "manager_id", "note", "partner_address", "partner_id", "partner_phone", "partner_service_id", "partner_type", "partner_type_code", "people_name", "people_email", "people_phone", "refusal_reason", "service_id", "site1", "site_details", "state"],
+
+	default_sort : { by: 'id', order: 'DESC' },
 
 
 	/** Collection Initialization
@@ -19,28 +22,25 @@ app.Collections.Requests = app.Collections.GenericCollection.extend({
 
 	/** Collection Sync
 	*/
-	sync: function(method, model, options) {
-		var fields = ["actions", "belongsToAssignement", "tooltip", "belongsToService", "id", "name", "belongsToSite", "create_date", "create_uid", "date_deadline", "description", "id", "intervention_assignement_id", "intervention_ids", "manager_id", "name", "note", "partner_address", "partner_email", "partner_id", "partner_phone", "partner_service_id", "partner_type", "partner_type_code", "people_email", "people_name", "people_phone", "refusal_reason", "service_id", "site1", "site_details", "state", "write_uid"];
+	sync: function(method, model, options){
 
-		return app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
+		var deferred = $.Deferred();
+
+		$.when(this.count(options), this.specialCount(this.model_name), app.readOE(this.model_name, app.models.user.getSessionID(), options, this.fields))
+		.done(function(){
+			deferred.resolve();
+		})
+
+		return  deferred;
 	},
 
 
 
 	/** Collection Parse
 	*/
-	parse: function(response) {
+	parse: function(response, options){
+		this.reset(response);
 		return response.result.records;
 	},
-	
-	
-
-	/** Comparator for ordering collection
-	*/
-	comparator: function(item) {
-		var mCreateDate = moment(item.get('create_date'))
-		item.set({'create_date': mCreateDate});
-		return -item.get('create_date');
-	}
 
 });

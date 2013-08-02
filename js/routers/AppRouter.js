@@ -98,6 +98,11 @@ app.Router = Backbone.Router.extend({
 
 	/************* Generiq ****************/
 
+	homePageRedirect: function(){
+		this.navigate(app.routes.requestsInterventions.baseUrl, {trigger: true, replace: true});
+	},
+
+
 	/** Display the login View
 	*/
 	login: function(){
@@ -135,40 +140,22 @@ app.Router = Backbone.Router.extend({
 
 
 
-	/************* Request ****************/
-	
 	/** Requests List
 	*/
-	requestsList: function(page) {
-		var self = this;
+	requestsList: function(search, filter, sort, page) {
 
 		// Check if the user is connect //
 		if(this.checkConnect()){
 
+			var params = {};
 
-			self.page = page ? parseInt(page, 10) : 1;
+			if(!_.isNull(search))  { params.search = search; }
+			if(!_.isNull(filter))  { params.filter = filter; }
+			if(!_.isNull(sort))    { params.sort = sort; }
+			if(!_.isNull(page))    { params.page = page; }
 
-			if(_.isUndefined(app.collections.requests)){ app.collections.requests = new app.Collections.Requests(); }
-			if(_.isUndefined(app.collections.categoriesInterventions)){ app.collections.categoriesInterventions = new app.Collections.CategoriesInterventions(); }
-			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
-			if(_.isUndefined(app.collections.categoriesTasks)){ app.collections.categoriesTasks = new app.Collections.CategoriesTasks(); }
+			app.views.requestsListView = new app.Views.RequestsListView(params);
 
-			app.loader('display');
-
-			$.when(
-				app.collections.requests.fetch(), 
-				app.collections.categoriesInterventions.fetch(), 
-				app.collections.claimersServices.fetch(), 
-				app.collections.categoriesTasks.fetch()
-			)
-			.done(function(){
-				app.views.requestsListView = new app.Views.RequestsListView({page: self.page});
-				self.render(app.views.requestsListView);
-				app.loader('hide');
-			})
-			.fail(function(e){
-				console.error(e);
-			});
 		}
 		else{
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});

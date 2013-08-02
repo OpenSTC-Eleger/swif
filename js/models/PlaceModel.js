@@ -21,6 +21,18 @@ app.Models.Place = Backbone.RelationalModel.extend({
 	},
 
 
+	searchable_fields: [
+		{
+			key  : 'surface',
+			type : 'numeric'
+		},
+		{
+			key  : 'name', 
+			type : 'text'
+		}
+	],
+
+
 	getId : function() {
 		return this.get('id');
 	},

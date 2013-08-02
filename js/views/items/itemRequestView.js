@@ -1,19 +1,32 @@
 /******************************************
-* Row Place View
+* Row Request View
 */
-app.Views.ItemPlaceView = Backbone.View.extend({
+app.Views.ItemRequestView = Backbone.View.extend({
 
 	tagName: 'tr',
 
-	className: 'row-item',
+	className: function(){
 
-	templateHTML: 'items/itemPlace',
+		var classRow = '';
+
+		if(this.model.getState() == app.Models.Request.status.wait.key && app.models.user.isManager()) {
+			classRow = app.Models.Request.status.wait.color + ' bolder';
+		}
+		else if(this.model.getState() == app.Models.Request.status.confirm.key && app.models.user.isDST()){
+			classRow = app.Models.Request.status.confirm.color + ' bolder';
+		}
+
+		return classRow;
+	},
+
+	templateHTML: 'items/itemRequest',
 
 
 	// The DOM events //
 	events: {
-		'click '                   : 'modalUpdatePlace',
-		'click a.modalDeletePlace' : 'modalDeletePlace'
+		'click .buttonValidRequest'				: 'setInfoModal',
+		'click .buttonRefusedRequest'			: 'setInfoModal',
+		'click .buttonConfirmRequest'			: 'setInfoModal'
 	},
 
 
@@ -43,22 +56,6 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 
 
-	/** When the model ara removed //
-	*/
-	destroy: function(e){
-		var self = this;
-		
-		this.highlight().done(function(){
-			self.remove();
-		});
-
-		app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.placeDeleteOk);
-		app.views.placesListView.collection.cpt--;
-		app.views.placesListView.partialRender();
-	},
-
-
-
 	/** Display the view
 	*/
 	render : function() {
@@ -69,13 +66,15 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 		 
 			var template = _.template(templateData, {
 				lang  : app.lang,
-				place : self.model
+				request : self.model
 			});
 
 			$(self.el).html(template);
 
-			// Set the Tooltip //
+			// Set the Tooltip / Popover //
 			$('*[data-toggle="tooltip"]').tooltip();
+			$('*[data-toggle="popover"]').popover({trigger: 'hover'});
+
 		});
 
 		return this;
@@ -85,7 +84,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 	/** Display Modal form to add/sav a new place
 	*/
-	modalUpdatePlace: function(e){  
+	modalCreatePlace: function(e){  
 		e.preventDefault(); e.stopPropagation();
 
 		app.views.modalPlaceView = new app.Views.ModalPlaceView({

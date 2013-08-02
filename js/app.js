@@ -315,7 +315,7 @@ var app = {
 			'method'    : method,
 			'args'      : args, 
 			'model'     : model,
-			'session_id': session_id      
+			'session_id': session_id
 	   }, options);  
 	},
 
@@ -367,7 +367,7 @@ var app = {
 
 
 
-		/** Calcul the page and the offset
+	/** Calcul the page and the offset
 	*/
 	calculPageOffset: function(page){
 
@@ -393,25 +393,71 @@ var app = {
 
 		var sorter = {};
 
-		if(_.isUndefined(sort)){
-			sorter.by = 'name';
-			sorter.order = 'ASC';
-		}
-		else{
-			sorter.by = _(sort).strLeft('-');
-			sorter.order = _(sort).strRight('-');
-		}
+		sorter.by = _(sort).strLeft('-');
+		sorter.order = _(sort).strRight('-');
 
 		return sorter;
 	},
 
 
 
+	/** Calcul the Filter By
+	*/
+	calculPageFilter: function(filter){
+
+		var filt = {};
+
+		filt.by = _(filter).strLeft('-');
+		filt.value = _(filter).strRight('-');
+
+		return filt;
+	},
+
+
+
 	/** Calcul the search argument of the page
 	*/
-	calculSearch: function(searchQuery){
+	calculSearch: function(searchQuery, searchableFields){
 
-		var search = ['|', ["name", "ilike", searchQuery], ["surface", "=", _(searchQuery).toNumber()]];
+
+		//['|', ["name", "ilike", searchQuery], ["surface", "=", _(searchQuery).toNumber()]];
+		//['&', ["state", "ilike", 'valid'], '|', ["name", "ilike", 'demande'], ["id", "=", _('demande').toNumber()]];
+		
+		var search = [];
+
+		// Remplace the type By the search type for OpenERP //
+		_.each(searchableFields, function(item, index){
+			switch(item.type){
+				case 'numeric':
+					item.type = '=';
+					break;
+				case 'text':
+					item.type = 'ilike';
+					break;
+			}
+		})
+
+		// Check if there is a filter //
+		if(!_.isUndefined(searchQuery.filter)){
+			if(!_.isUndefined(searchQuery.search)){ search.push('&'); }
+			search.push([searchQuery.filter.by, 'ilike', searchQuery.filter.value]);
+		}
+
+
+		// Check if there is a Search //
+		if(!_.isUndefined(searchQuery.search)){
+			// Search on several fields //
+			if(_.size(searchableFields) > 1){
+				search.push('|');
+				_.each(searchableFields, function(item, index){
+					if(item.type == '='){var term = _(searchQuery.search).toNumber(); }else{ var term = searchQuery.search }
+					search.push([item.key, item.type, term]);
+				});
+			}
+			else{
+				search.push([searchableFields[0].key, searchableFields[0].type, searchQuery]);
+			}
+		}
 
 		return search;
 	},
@@ -438,7 +484,6 @@ var app = {
 				var delay = 4500;
 				var hide = true;
 			break;
-
 		}
 
 		$.pnotify({
