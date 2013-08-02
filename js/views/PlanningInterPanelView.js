@@ -8,9 +8,6 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 	templateHTML : 'planningInterPanel',
 
 	currentRoute : null,
-	
-	taskCollection:	null,
-	interCollection: null,
 
 
 	// The DOM events //
@@ -38,7 +35,7 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 	
 		'click #listAgents li a, #listTeams li a' :          'selectPlanning',
 	
-		'click #btnRemoveTask'                    : 'removeTaskFromSchedule'
+		
 	},
 
 
@@ -49,50 +46,23 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 		
 		var self = this;
 
-		this.initTaskCollection().done(function(){
+		//this.initCollection().done(function(){
 			// Unbind & bind the collection //
-			self.taskCollection.off();
-			self.listenTo(self.taskCollection, 'change', self.updateTask);
-			self.listenTo(self.taskCollection, 'add', self.updateTask);
-
+		this.collection = app.collections.tasks;
+		this.collection.off();	
+		this.listenTo(self.collection, 'change', self.updateTask);
+		//self.listenTo(self.taskCollection, 'add', self.updateTask);
+		self.render()
 			//app.router.render(self);
-		});
-		
-//		this.initInterCollection().done(function(){
-//			// Unbind & bind the collection //
-//			self.interCollection.off();
-//			self.listenTo(self.interCollection, 'change', self.updateInter);
-//
-//			//app.router.render(self);
-//		});
+		//});
+
 	},
 
 	updateTask: function(model) {
-		var self = this
-		app.collections.tasks.add(model);
-		var interModel = app.collections.interventions.get(model.getInterventionId()[0])
-		this.updateInter(interModel)
-//		var inter = app.collections.interventions.get()
-//		inter.fetch().done(
-//			function(){
-//				app.collections.interventions.add(inter);
-//				self.render();
-//			}
-//		)
-		
+		this.collection.add(model);
+		this.render();	
 	},
-	
-		
-	updateInter: function(model) {
-		var self = this	
-		
-		model.fetch().done(
-			function(){
-				app.collections.interventions.add(model);
-				self.render();
-			}
-		);
-	},
+
 
 	/** Display the view
 	*/
@@ -350,33 +320,6 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 
 
 
-		/** Remove the Task from the Calendar
-		*/
-		removeTaskFromSchedule: function(e){
-
-			// Retrieve the Id of the Task //
-			var taskId = $('#modalAboutTask').data('taskId');
-
-			// Retrieve the Task in the collection //
-			var taskModel = app.collections.tasks.get(taskId)
-
-			params = {
-				state: app.Models.Task.status.draft.key,
-				user_id: null,
-				team_id: null,
-				date_end: null,
-				date_start: null,
-			};
-
-			// Display the Modal //
-			$("#modalAboutTask").modal('hide');
-
-			taskModel.save(taskId, params);
-			
-			// Refresh the page //
-			app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
-		},
-
 
 
 		getTarget:function(e) {    	
@@ -618,12 +561,12 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 		},
 		
 		
-		initTaskCollection: function(){
+		initCollection: function(){
 			var self = this;
 			
 			// Check if the collections is instantiate //
-			if(_.isUndefined(app.collections.tasks)){ app.collections.places = new app.Collections.Tasks(); }
-			this.taskCollection = app.collections.tasks;
+			if(_.isUndefined(app.collections.tasks)){ app.collections.tasks = new app.Collections.Tasks(); }
+			this.collection = app.collections.tasks;
 		
 			
 			// Create Fetch params //
@@ -635,7 +578,7 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 			// Fetch the collections //
 			app.loader('display');
 			$.when(
-				self.taskCollection.fetch(fetchParams)
+				self.collection.fetch(fetchParams)
 			)
 			.done(function(){
 				deferred.resolve();
@@ -651,38 +594,6 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 		
 		},
 
-		initInterCollection: function(){
-			var self = this;
-			
-			// Check if the collections is instantiate //
-			if(_.isUndefined(app.collections.interventions)){ app.collections.interventions = new app.Collections.Tasks(); }
-			this.interCollection = app.collections.interventions;
-		
-			
-			// Create Fetch params //
-			var fetchParams = {};
-
-		
-			var deferred = $.Deferred();
-			
-			// Fetch the collections //
-			app.loader('display');
-			$.when(
-				self.interCollection.fetch(fetchParams)
-			)
-			.done(function(){
-				deferred.resolve();
-			})
-			.fail(function(e){
-				console.error(e);
-			})
-			.always(function(){
-				app.loader('hide');
-			});
-		
-			return deferred;
-		
-		}
 
 
 

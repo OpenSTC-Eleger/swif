@@ -91,7 +91,7 @@ app.Views.PlanningView = Backbone.View.extend({
 			}
 			
 			//Initialize inter panel view
-			app.views.planningInterPanelView = new app.Views.PlanningInterPanelView().render()
+			app.views.planningInterPanelView = new app.Views.PlanningInterPanelView({planning : this}).render()
 				
 			
 		});
@@ -128,21 +128,15 @@ app.Views.PlanningView = Backbone.View.extend({
 
 	/** Partial Render of the view
 		*/
-	partialRender: function (type) {		
-		app.collections.tasks.fetch({
-			success: function(){
-				$.when(
-					app.collections.interventions.fetch()
-				)
-				.done(function(){
-					app.views.planningInterPanelView.render();					
-				})
-				.fail(function(e){
-					console.error(e);
-				});
+	partialRender: function (interId) {	
+		var self = this
+		var interModel = app.collections.interventions.get(interId)
+		interModel.fetch().done(
+			function(){				
+				app.collections.interventions.add(interModel);
+				app.views.planningInterPanelView.render();
 			}
-		});		
-		
+		)		
 	},
 
 });

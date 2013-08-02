@@ -182,7 +182,6 @@
 </div>
 
 
-
 <!-- Modal Form Cancel Intervention -->
 <div id="modalCancelInter" class="modal hide fade">
 	<div class="modal-header">
@@ -238,44 +237,6 @@
 	
 	<div class="modal-footer">
 	    <button type="button" class="btn btn-danger btnDeleteTask"><%= _.capitalize(lang.actions.delete) %></button>&nbsp;&nbsp;
-	    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
-	</div>
-</div>
-
-
-
-<!-- Modal About the Task -->
-<div id="modalAboutTask" class="modal hide fade">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h3><%= lang.aboutTheTask %></h3>
-	</div>
-	
-	<div class="modal-body">
-
-		<blockquote id="infoModalAboutTask" class="spaceBottom">
-			<p></p>
-			<small></small>
-		</blockquote>
-
-		<!--<form class="form-horizontal" id="formModalAboutTask">
-
-			<!-- Switch Button With Foreman -->
-			<!--<div class="control-group">
-				<label class="control-label" for="withForeman"><%= _.capitalize(lang.withForeman) %>:</label>
-
-				<div class="controls">
-            		<div id="switchWithForeman" class="switch switch-small" data-on-label="<i class='icon-ok'></i>" data-off-label="<i class='icon-remove'></i>" data-on="success" data-off="warning">
-                		<input id="withForeman" type="checkbox" />
-            		</div>
-        		</div>
-			</div>
-	    </form>-->
-
-	</div>
-
-	<div class="modal-footer">
-	    <button type="button" id="btnRemoveTask" class="btn btn-danger"><%= _.capitalize(lang.actions.removeOfTheSchedule) %></button>&nbsp;&nbsp;
 	    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>
