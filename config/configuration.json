@@ -6,9 +6,9 @@
     "itemsPerPage"		: 20,
     "startLunchTime"	: 12.0,
     "endLunchTime"		: 14.0,
-
-    "barakafrites" :{
+    
+        "barakafrites" :{
         "url" : "http://localhost"
     }
-
+    
 }
