@@ -4,11 +4,11 @@
 app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 
-	templateHTML: 'modals/modalPlace',
+	templateHTML : 'modals/modalPlace',
 
-	modal : null,
+	modal        : null,
 
-	createMode : false,
+	createMode   : false,
 
 
 	// The DOM events //
@@ -35,6 +35,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		if(_.isUndefined(this.model)){
 			this.createMode = true;
 			this.render();
+			this.model = new app.Models.Place();
 		}
 		else{
 			// Render with loader //
@@ -65,7 +66,6 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 			
 
 			self.modal.html(template);
-
 
 			if(!loader){
 				// Advance Select List View //
@@ -113,7 +113,6 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 	savePlace: function(e){
 		e.preventDefault();
 
-	
 		var self = this;
 
 		// Set the button in loading State //
@@ -121,24 +120,24 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 
 		var params = {
-			name: this.$('#placeName').val(),
-			service_ids: [[6, 0, app.views.advancedSelectBoxPlaceServices.getSelectedItems()]],
-			type: app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(),
-			site_parent_id: app.views.advancedSelectBoxPlaceParentView.getSelectedItem(),
-			width: this.$('#placeWidth').val(),
-			lenght: this.$('#placeLenght').val(),
-			surface: this.$('#placeArea').val(),
+			name           : this.$('#placeName').val(),
+			service_ids    : [[6, 0, app.views.advancedSelectBoxPlaceServices.getSelectedItems()]],
+			type           : app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(),
+			site_parent_id : app.views.advancedSelectBoxPlaceParentView.getSelectedItem(),
+			width          : this.$('#placeWidth').val(),
+			lenght         : this.$('#placeLenght').val(),
+			surface        : this.$('#placeArea').val(),
 		};
 
 		// If it's a create pass 0 as ID //
 		if(this.createMode){ var id = 0; }
 		else{ var id = this.model.getId(); }
 
-		self.model.save(params)
+		this.model.save(params)
 			.done(function (data) {
 				self.modal.modal('hide');
 				if (self.createMode) {
-					var newPlace = new app.Models.Place({ id: data.result.result });
+					this.model.setId(data.result.result);
 					newPlace.fetch().done(function () {
 						app.views.placesListView.collection.add(newPlace);
 					})

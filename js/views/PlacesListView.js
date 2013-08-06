@@ -128,7 +128,6 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 
 
 		// Check the parameters //
-
 		if(_.isUndefined(this.options.sort)){
 			this.options.sort = this.collection.default_sort;
 		}
@@ -140,16 +139,18 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		
 		// Create Fetch params //
 		var fetchParams = {
-			silent      : true,
-			data: {
-				limit: app.config.itemsPerPage,
-				offset: this.options.page.offset,
-				sort: this.options.sort.by+' '+this.options.sort.order
+			silent : true,
+			data   : {
+				limit  : app.config.itemsPerPage,
+				offset : this.options.page.offset,
+				sort   : this.options.sort.by+' '+this.options.sort.order
 			}
 		};
 		if(!_.isUndefined(this.options.search)){
 			fetchParams.data.filters = app.calculSearch({search: this.options.search }, app.Models.Place.prototype.searchable_fields);
 		}
+
+		app.loader('display');
 
 		return self.collection.fetch(fetchParams)
 			.fail(function(e){

@@ -145,7 +145,7 @@ var app = {
 			headers: {Authorization: 'Token token=' + app.models.user.getAuthToken()},
 			statusCode: {
 				401: function () {
-					console.error('---> Ajax Setp Up 401, redirect to the home page <---');
+					console.error('---> Ajax Setp Up 401, redirect to the login page <---');
 					// Redirect the to the login page //
 					app.router.navigate(app.routes.login.url, {trigger: true, replace: true});
 				},
@@ -424,7 +424,7 @@ var app = {
 
 
 	/** Calcul the search argument of the page
-	 */
+	*/
 	calculSearch: function (searchQuery, searchableFields) {
 
 		//['|', ["name", "ilike", searchQuery], ["surface", "=", _(searchQuery).toNumber()]];

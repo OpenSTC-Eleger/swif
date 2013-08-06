@@ -20,7 +20,6 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 	*/
 	render: function(){
 		var self = this;
-		console.log(self.collection_url)
 
 		// Retrieve placeholder attribute //
 		if(!_.isUndefined(this.select2.data('placeholder'))){ var placeholder = this.select2.data('placeholder'); }
@@ -175,11 +174,9 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 
 
 
-
 	/** Reset the selectBox Value
 	*/
 	reset: function(){
-
 		this.select2.select2('data', null);
 	},
 

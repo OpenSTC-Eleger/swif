@@ -398,6 +398,8 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 
 		var deferred = $.Deferred();
 
+		console.log('je dois passer dedans 1');
+
 		// Fetch the collections //
 		app.loader('display');
 		$.when(
@@ -410,8 +412,9 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 			console.error(e);
 		})
 		.always(function(){
-			app.loader('hide');
+			
 		});
+		app.loader('hide');
 
 		return deferred;
 

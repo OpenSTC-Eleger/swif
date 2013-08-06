@@ -9,7 +9,7 @@ app.Collections.Places = app.Collections.GenericCollection.extend({
 
 	default_sort : { by: 'name', order: 'ASC' },
 
-	url: '/api/openstc/sites',
+	url          : '/api/openstc/sites',
 
 
 
@@ -26,13 +26,14 @@ app.Collections.Places = app.Collections.GenericCollection.extend({
 	sync: function(method, model, options){
 		var deferred = $.Deferred();
 
-		$.when(this.count(options), Backbone.sync.call(this,method,this,options))
+		$.when(this.count(options), Backbone.sync.call(this, method, this, options))
 		.done(function(){
 			deferred.resolve();
 		});
 
 		return  deferred;
 	},
+
 
 
 	/** Collection Parse

@@ -13,19 +13,17 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 	count: function(options) {
 		var self = this;
 
+
+		var paramFilter = {};
 		// Check if a search are perform //
-		var domain = null;
-		if(_.isUndefined(options.search)){
-			domain = {};
-		}
-		else{
-			domain = options.search
+		if(!_.isUndefined(options.data.filters)){
+			paramFilter.filters = options.data.filters;
 		}
 
 		return $.ajax({
-			url: this.url,
-			method: "HEAD",
-			data: {filters: domain},
+			url    : this.url,
+			method : "HEAD",
+			data   : paramFilter,
 			success: function(data,status,request){
 				var contentRange = request.getResponseHeader("Content-Range")
 				self.cpt = contentRange.match(/\d+$/);
@@ -41,7 +39,6 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
     	
 	    	//forme de data.result (dans le callback success) : {user_id: nbActions}
 	    	success: function(data){
-
 		        self.specialCpt = data.result[app.models.user.getUID()];
 	    	}
 		});

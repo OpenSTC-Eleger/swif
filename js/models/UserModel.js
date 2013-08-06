@@ -28,6 +28,7 @@ app.Models.User = Backbone.Model.extend({
 	defaults: {
 		uid             : '',
 		login           : '',
+		authToken       : null,
 		lastConnection  : '',
 		firstname       : '',
 		lastname        : '',
@@ -95,7 +96,7 @@ app.Models.User = Backbone.Model.extend({
 	},
 
 	hasAuthToken: function () {
-		if(!_.isEmpty(this.get('authToken'))) {
+		if(!_.isNull(this.get('authToken'))) {
 			return true;
 		}
 		else {
@@ -343,8 +344,10 @@ app.Models.User = Backbone.Model.extend({
 
 		}).always(function () {
 			// Delete the Auth token of the user //
-			self.setAuthToken('');
+			self.setAuthToken(null);
 			self.save();
+
+			app.setAjaxSetup();
 
 			// Refresh the header //
 			app.views.headerView.render();

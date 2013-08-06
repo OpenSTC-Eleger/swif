@@ -1,7 +1,7 @@
 /******************************************
 * Place Model
 */
-app.Models.Place = Backbone.RelationalModel.extend({
+app.Models.Place = Backbone.Model.extend({
 	
 
 	fields     : ["id", "complete_name", "name", "type", "service_names", "site_parent_id", "width", "lenght", "surface"],
