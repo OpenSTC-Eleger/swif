@@ -20,14 +20,38 @@ app.Collections.Requests = app.Collections.GenericCollection.extend({
 	initialize: function (options) {
 		//console.log('Requests collection Initialization');
 	},
-
-
-
+	
+	//override to customize method for this collection
+	specialCount: function(modelName){
+		var self = this;
+		
+		//to keep value of cpt, because count method override this value at each call
+		var cptSave = self.cpt;
+		
+		//construct a domain accrding to user group
+		var domain = {};
+		if(app.models.user.isDST()){
+			domain = {'field':'state','operator':'=','value':'confirm'};
+		}
+		else if(app.models.user.isManager()){
+			domain = {'field':'state','operator':'=','value':'wait'};
+		}
+		//use count method to retrieve values according to domain
+		$.when(
+			self.count({search: app.objectifyFilters([domain])})
+		)
+		.done(function(){
+			self.specialCpt = self.cpt;
+			self.cpt = cptSave;
+		})
+		
+	},
+	
 	/** Collection Sync
 	*/
 	sync: function(method, model, options){
 		var deferred = $.Deferred();
-		$.when(this.count(options), Backbone.sync.call(this,method,this,options))
+		$.when(this.specialCount(model), this.count(options), Backbone.sync.call(this,method,this,options))
 		.done(function(){
 			deferred.resolve();
 		});
