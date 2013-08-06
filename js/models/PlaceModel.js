@@ -4,9 +4,6 @@
 app.Models.Place = Backbone.RelationalModel.extend({
 	
 
-	
-	//url: "/api/openstc/sites/:id",
-
 	fields     : ["id", "complete_name", "name", "type", "service_names", "site_parent_id", "width", "lenght", "surface"],
 	
 

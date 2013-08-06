@@ -58,8 +58,15 @@ var app = {
 				// Instantiation of UsersCollections & UserModel //
 				app.collections.users           = new app.Collections.Users();
 				app.collections.users.fetch();
-				app.models.user                 = new app.Models.User();
-
+				
+				if(_.isEmpty(app.collections.users.models)){
+					app.models.user = new app.Models.User();
+					app.collections.users.add(app.models.user);
+				}
+				else{
+					app.models.user = app.collections.users.at(0);	
+				}
+				
 
 				//app.models.team               = new app.Models.Team();
 				app.models.task                 = new app.Models.Task();
@@ -141,6 +148,10 @@ var app = {
 					console.error('---> Ajax Setp Up 401, redirect to the home page <---');
 					// Redirect the to the login page //
 					app.router.navigate(app.routes.login.url, {trigger: true, replace: true});
+				},
+				500: function(){
+					// Server unreachable //
+					app.notify('large', 'error', app.lang.errorMessages.serverError, '');
 				},
 				502: function(){
 					// Server unreachable //

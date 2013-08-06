@@ -57,24 +57,14 @@ app.Router = Backbone.Router.extend({
 	checkConnect: function () {
 		console.info('############ checkConnect Function ############');
 
-		// Check if a user exist in localStorage //
-		if(!_.isEmpty(app.collections.users.models)) {
-			app.models.user = app.collections.users.at(0);
-
-			if (app.models.user.hasAuthToken()) {
-				console.info('User has an authToken');
-				return true;
-			}
-			else {
-				console.info('User has no auth token');
-				return false;
-			}
+		if (app.models.user.hasAuthToken()) {
+			console.info('User has an authToken');
+			return true;
 		}
 		else {
-			console.info('User NOT in the localStorage');
+			console.info('User has no auth token');
 			return false;
 		}
-		return false;
 	},
 
 

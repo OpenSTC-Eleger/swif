@@ -302,7 +302,6 @@ app.Models.User = Backbone.Model.extend({
 				self.queryManagableOfficers();
 
 				// Add the user to the collection and save it to the localStorage //
-				app.collections.users.add(self);
 				self.save();
 
 				app.setAjaxSetup();
@@ -337,12 +336,6 @@ app.Models.User = Backbone.Model.extend({
 			if(data){
 
 				app.notify('large', 'info', app.lang.infoMessages.information, app.lang.infoMessages.successLogout);
-
-				// Refresh the header //
-				app.views.headerView.render();
-
-				// Navigate to the login Page //
-				Backbone.history.navigate(app.routes.login.url, {trigger: true, replace: true});
 			}
 			else{
 				app.notify('', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
@@ -352,6 +345,12 @@ app.Models.User = Backbone.Model.extend({
 			// Delete the Auth token of the user //
 			self.setAuthToken('');
 			self.save();
+
+			// Refresh the header //
+			app.views.headerView.render();
+
+			// Navigate to the login Page //
+			Backbone.history.navigate(app.routes.login.url, {trigger: true, replace: true});
 		});
 
 	}

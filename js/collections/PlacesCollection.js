@@ -37,10 +37,10 @@ app.Collections.Places = app.Collections.GenericCollection.extend({
 
 	/** Collection Parse
 	*/
-	/*parse: function(response, options) {
+	parse: function(response, options) {
 		this.reset(response);
-		return response.result.records;
-	},*/
+		return response;
+	}
 
 
 });

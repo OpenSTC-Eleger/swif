@@ -212,6 +212,7 @@
 
 	"errorMessages" : {
 		"connectionError"     : "Erreur de connexion",
+		"serverError"         : "Erreur interne du serveur",
 		"loginIncorrect"      : "Identifiant ou mot de passe incorrect",
 		"fillError" 		  : "Erreur de saisie",
 		"unablePerformAction" : "Impossible d'effectuer l'action",
