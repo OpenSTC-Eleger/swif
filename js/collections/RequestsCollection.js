@@ -38,7 +38,7 @@ app.Collections.Requests = app.Collections.GenericCollection.extend({
 		}
 		//use count method to retrieve values according to domain
 		$.when(
-			self.count({search: app.objectifyFilters([domain])})
+			self.count({data: {filters: app.objectifyFilters([domain])}})
 		)
 		.done(function(){
 			self.specialCpt = self.cpt;
