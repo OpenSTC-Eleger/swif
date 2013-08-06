@@ -4,17 +4,11 @@
 app.Models.Place = Backbone.Model.extend({
 	
 
-	fields     : ["id", "complete_name", "name", "type", "service_names", "site_parent_id", "width", "lenght", "surface"],
+	fields     : ["id", "name", "complete_name", "type", "service_names", "site_parent_id", "width", "length", "surface"],
 	
 
 	defaults:{
-		id             : 0,
-		name           : null,
-		type           : 0,
-		site_parent_id : 0,
-		width          : 0,
-		lenght         : 0,
-		surface        : 0,
+		id : null,
 	},
 
 

@@ -33,14 +33,15 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		
 		// Check if it's a create or an update //
 		if(_.isUndefined(this.model)){
+			
 			this.createMode = true;
-			this.render();
 			this.model = new app.Models.Place();
+			this.render();
 		}
 		else{
 			// Render with loader //
 			this.render(true);
-			this.model.fetch({silent: true}).done(function(){
+			this.model.fetch({silent: true, data : {fields : this.model.fields}}).done(function(){
 				self.render();
 			});
 		}
@@ -54,6 +55,8 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 	render : function(loader) {
 		var self = this;
 
+		console.log('---------------------------------------------');
+		console.log(this.model);
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){

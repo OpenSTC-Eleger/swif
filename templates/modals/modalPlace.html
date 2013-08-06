@@ -2,7 +2,7 @@
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	<h3>
 		<i class="icon-edit"></i>&nbsp;
-		<% if(_.isUndefined(place)){ %>
+		<% if(_.isNull(place.getId())){ %>
 			<%= _.capitalize(lang.viewsTitles.newPlace) %>
 		<% } else{ %>
 			<%= _.capitalize(lang.viewsTitles.editPlace) %>
@@ -30,7 +30,7 @@
 			<label for="placeName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
 
 			<div class="controls">
-				<input type="text" id="placeName" required value="<%= (_.isUndefined(place) ? '' : place.getName())%>"/>
+				<input type="text" id="placeName" required value="<%= (_.isNull(place.getId()) ? '' : place.getName())%>"/>
 				<span class="help-inline"></span>
 			</div>
 		</div>
@@ -42,7 +42,7 @@
 			<div class="controls">
 				<input id="placeType" class="select2" style="width: 66%" required="required" data-placeholder="<%= lang.actions.selectAPlaceType %>"
 
-					<% if(!_.isUndefined(place)){
+					<% if(!_.isNull(place.getId())){
 						if(!_.isUndefined(place.getType('id'))) { %>
 						data-selected-value='<%= JSON.stringify(place.getType('json')) %>'
 					<% } } %>
@@ -57,7 +57,7 @@
 			<div class="controls">
 				<input id="placeParentPlace" class="select2" style="width: 66%" data-placeholder="<%= lang.actions.selectAPlace %>" data-minimum-input-length="2" 
 
-					<% if(!_.isUndefined(place)){
+					<% if(!_.isNull(place.getId())){
 						if(!_.isUndefined(place.getParentPlace('id'))) { %>
 						data-selected-value='<%= JSON.stringify(place.getParentPlace('json')) %>'
 					<% } } %>
@@ -72,7 +72,7 @@
 			<div class="controls">
 				<input id="placeServices" class="select2" style="width: 230px" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="true" 
 
-					<% if(!_.isUndefined(place)){
+					<% if(!_.isNull(place.getId())){
 						if(!_.isEmpty(place.getServices())) { %>
 						data-selected-value='<%= JSON.stringify(place.getServices('json')) %>'
 					<% } } %>
@@ -90,19 +90,19 @@
 					<!-- Place width -->
 					<div class="span4">
 						<label for="placeWidth"><%= _.capitalize(lang.width) %>:</label>
-						<input type="number" id="placeWidth" class="input-mini" value="<%= (_.isUndefined(place) ? '' : place.getWidth()) %>" />
+						<input type="number" id="placeWidth" class="input-mini" value="<%= (_.isNull(place.getId()) ? '' : place.getWidth()) %>" />
 					</div>
 
 					<!-- Place Lenght -->
 					<div class="span4">
 						<label for="placeLenght"><%= _.capitalize(lang.lenght) %>:</label>
-						<input type="number" id="placeLenght" class="input-mini" value="<%= (_.isUndefined(place) ? '' : place.getLenght())%>" />
+						<input type="number" id="placeLenght" class="input-mini" value="<%= (_.isNull(place.getId()) ? '' : place.getLenght())%>" />
 					</div>
 
 					<!-- Place Area -->
 					<div class="span4">
 						<label for="placeArea"><%= _.capitalize(lang.area) %>:</label>
-						<input type="number" id="placeArea" class="input-mini" value="<%= (_.isUndefined(place) ? '' : place.getSurface())%>" />
+						<input type="number" id="placeArea" class="input-mini" value="<%= (_.isNull(place.getId()) ? '' : place.getSurface())%>" />
 					</div>
 
 				</div>
