@@ -143,6 +143,7 @@ var app = {
 					app.router.navigate(app.routes.login.url, {trigger: true, replace: true});
 				},
 				502: function(){
+					// Server unreachable //
 					app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
 				}
 			}
