@@ -23,7 +23,7 @@ app.Router = Backbone.Router.extend({
 		});
 
 		// Check if the user is connect //
-		this.checkConnect();
+		//this.checkConnect();
 		
 		// Header, Footer Initialize //    	
 		app.views.headerView = new app.Views.HeaderView();
@@ -34,37 +34,39 @@ app.Router = Backbone.Router.extend({
 
 	render: function (view) {
 
-		//Close the current view
+		// Close the current view //
 		if (this.currentView) {
 			if (this.currentView.$el) this.currentView.undelegateEvents();
 			this.currentView.$el = (this.currentView.el instanceof $) ? this.currentView.el : $(this.currentView.el);
 			this.currentView.el = this.currentView.$el[0];
 		}
 
-		//render the new view
+		// render the new view //
 		view.render();
 
-		//Set the current view
+		//Set the current view //
 		this.currentView = view;
 
 		return this;
 	},
 
 
+
 	/** Check if the User is connect
-	 */
+	*/
 	checkConnect: function () {
 		console.log('### checkConnect Function ###');
+
 		// Check if a user exist in localStorage //
-		if (app.collections.users.length) {
+		if(!_.isEmpty(app.collections.users.models)) {
 			app.models.user = app.collections.users.at(0);
 
 			if (app.models.user.hasAuthToken()) {
-				console.info('User has auth token');
+				console.info('User has an authToken');
 				return true;
 			}
 			else {
-				console.warn('User has no auth token');
+				console.info('User has no auth token');
 				return false;
 			}
 		}
@@ -72,6 +74,7 @@ app.Router = Backbone.Router.extend({
 			console.info('User NOT in the localStorage');
 			return false;
 		}
+		return false;
 	},
 
 
@@ -101,8 +104,7 @@ app.Router = Backbone.Router.extend({
 	login: function(){
 		// Check if the user is connect //
 		if(!this.checkConnect()){
-			// If the view exist we reuse it //
-			app.views.loginView = new app.Views.LoginView(app.models.user);
+			app.views.loginView = new app.Views.LoginView({ model: app.models.user });
 			this.render(app.views.loginView);
 		}
 		else{
@@ -138,7 +140,6 @@ app.Router = Backbone.Router.extend({
 	requestsList: function(search, filter, sort, page) {
 
 		// Check if the user is connect //
-		if(this.checkConnect()){
 
 			var params = {};
 
@@ -149,10 +150,7 @@ app.Router = Backbone.Router.extend({
 
 			app.views.requestsListView = new app.Views.RequestsListView(params);
 
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
+		
 	},
 
 
@@ -501,19 +499,13 @@ app.Router = Backbone.Router.extend({
 	*/
 	places: function(search, sort, page){
 
-		if (this.checkConnect()) {
+		var params = {};
 
-			var params = {};
+		if(!_.isNull(search)){ params.search = search; }
+		if(!_.isNull(sort))  { params.sort = sort; }
+		if(!_.isNull(page))  { params.page = page; }
 
-			if(!_.isNull(search)){ params.search = search; }
-			if(!_.isNull(sort))  { params.sort = sort; }
-			if(!_.isNull(page))  { params.page = page; }
-
-			app.views.placesListView = new app.Views.PlacesListView(params);
-		}
-		else {
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
+		app.views.placesListView = new app.Views.PlacesListView(params);
 	},
 
 

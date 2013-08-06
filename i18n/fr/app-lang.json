@@ -1,5 +1,6 @@
 {
 	"applicationName"		: "OpenSTC",
+	"applicationTag"        : "Services Techniques Communaux",
 
 	"connection"			: "connexion",
 	"login"					: "identifiant",

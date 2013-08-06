@@ -3,36 +3,37 @@
 */
 app.Views.FooterView = Backbone.View.extend({
 
-    el: '#footer-navbar',
+	el           : '#footer-navbar',
 
-    templateHTML: 'footer',
+	templateHTML : 'footer',
 
  
  
-    /** View Initialization
-    */
-    initialize: function () {
-        this.render();
-    },
+	/** View Initialization
+	*/
+	initialize: function () {
+		this.render();
+	},
 
-    
+	
 
-    /** Display the view
-    */
-    render: function () {
-        var self = this;
+	/** Display the view
+	*/
+	render: function () {
+		var self = this;
 
-       $.get("templates/" + this.templateHTML + ".html", function(templateData){
+	   $.get("templates/" + this.templateHTML + ".html", function(templateData){
 
-            // Templating // 
-            var template = _.template(templateData, {
-                version: app.properties.version
-            });
+			// Templating // 
+			var template = _.template(templateData, {
+				app  : app.properties,
+				lang : app.lang
+			});
 
-            $(self.el).html(template);
-        });
-        return this;
-    }
+			$(self.el).html(template);
+		});
+		return this;
+	}
 
 
 });

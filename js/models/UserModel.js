@@ -3,7 +3,7 @@
 */
 app.Models.User = Backbone.Model.extend({
 
-	url: '/api/open_object/users',
+	urlA: '/api/open_object/users',
 
 	relations: [
 		{
@@ -44,10 +44,6 @@ app.Models.User = Backbone.Model.extend({
 		console.log('User initialize: ' + this.getLogin());
 	},
 	
-	/** Model Parser */
-	parse: function(response) {    	
-		return response;
-	},
 
 	getUID : function() {
 		return this.get('uid');
@@ -107,12 +103,18 @@ app.Models.User = Backbone.Model.extend({
 	},
 
 	hasAuthToken: function () {
-		if (this.get('authToken') != '') {
+		if(!_.isEmpty(this.get('authToken'))) {
 			return true;
 		}
 		else {
 			return false;
 		}
+	},
+	getAuthToken : function() {
+		return this.get('authToken');
+	},
+	setAuthToken : function(value) {
+		this.set({ authToken : value });
 	},
 	
 	getService : function() {
@@ -174,9 +176,8 @@ app.Models.User = Backbone.Model.extend({
 		this.set({ isDST : value });
 	},
 	
-	/**
-	 * Get Officer By Id
-	 */
+	/** Get Officer By Id
+	*/
 	getOfficerById: function(id){
 		return _.find(this.getOfficers(), function(officer){
 			return officer.id == id
@@ -186,9 +187,9 @@ app.Models.User = Backbone.Model.extend({
 	setMenu: function (menu) {
 		this.set({menu: menu});
 	},
-	/**
-	 * Get officer's teams list selected in planning
-	 */
+	
+	/** Get officer's teams list selected in planning
+	*/
 	getOfficerIdsByTeamId: function(id) {
 		var self = this;
 		var officers = []
@@ -204,18 +205,16 @@ app.Models.User = Backbone.Model.extend({
 		return officers;	
 	},
 	
-	/**
-	 * Get Officer By Id
-	 */
+	/** Get Officer By Id
+	*/
 	getTeamById: function(id){
 		return _.find(this.getTeams(), function(team){
 			return team.id == id
 		});
 	},
 
-	/**
-	 * Get team's officers list selected in planning
-	 */
+	/** Get team's officers list selected in planning
+	*/
 	getTeamIdsByOfficerId: function(id) {
 		var self = this;
 		var teams = []
@@ -237,13 +236,12 @@ app.Models.User = Backbone.Model.extend({
 	},
 
 
-	/**
-	 * Retrieve teams than current user can manage and stores them in user's data
-	 */
+	/** Retrieve teams than current user can manage and stores them in user's data
+	*/
 	queryManagableTeams: function () {
 		var user = this;
 		$.ajax({
-			url: app.config.barakafrites.url + this.url + '/' + this.get("uid") + '/manageable_teams',
+			url: app.config.barakafrites.url + this.urlA + '/' + this.get("uid") + '/manageable_teams',
 			headers: {Authorization: 'Token token=' + this.get('authToken')},
 			success: function (data) {
 				user.setTeams(data);
@@ -252,13 +250,13 @@ app.Models.User = Backbone.Model.extend({
 
 	},
 
-	/**
-	 * Retrieve officers than current user can manage and stores them in user's data
-	 */
+
+	/** Retrieve officers than current user can manage and stores them in user's data
+	*/
 	queryManagableOfficers: function() {
 		var user = this;
 		$.ajax({
-			url: app.config.barakafrites.url + this.url + '/' + this.get("uid") + '/manageable_officers',
+			url: app.config.barakafrites.url + this.urlA + '/' + this.get("uid") + '/manageable_officers',
 			headers: {Authorization: 'Token token=' + this.get('authToken')},
 			success: function (data) {
 				user.setOfficers(data);
@@ -267,11 +265,12 @@ app.Models.User = Backbone.Model.extend({
 
 	},
 
+
+
 	/** Login function
 	*/
 	login: function (loginUser, passUser) {
 
-		"use strict";
 		var self = this;
 
 		console.log('Login User: ' + loginUser + ' - ' + passUser);
@@ -282,57 +281,56 @@ app.Models.User = Backbone.Model.extend({
 			'password': passUser,
 		};
 
-		$.ajax(
-			{
-				url        : '/sessions',
-				type       : "POST",
-				contentType: 'application/json',
-				data       : JSON.stringify(login_data),
-				error      : function (error) {
-					console.error(error);
-					app.loader('hide');
-					app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
-				},
-				success    : function (data) {
+		$.ajax({
+			url        : app.url_authentication,
+			type       : 'POST',
+			dataType   : 'json',
+			data       :  JSON.stringify(login_data),
+			beforeSend : function(){
+				app.loader('display');
+			},
+			success    : function (data) {
+				//self.populateUserData(data);
 
-					if (data.token == false) {
-						app.loader('hide');
-						app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
-					}
-					else {
-						self.populateUserData(self,data);
-						app.views.headerView.render(app.router.mainMenus.manageInterventions);
-						Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
+				// Set all attributes to the user //
+				self.setAuthToken(data.token);
+				self.setMenu(data.menu);
+				self.setUID(data.user.id)
+				self.setLogin(loginUser);
+				self.setLastConnection(moment());
+				self.setContext({tz: data.user.context_tz, lang: data.user.context_lang});
+				self.setFirstname(data.user.firstname);
+				self.setLastname(data.user.name);
+				self.setGroups(data.user.groups_id);
+				self.setServices(data.user.service_ids);
+				self.setService(data.user.service_id);
+				self.setContact(data.user.contact_id);
+				self.setManager(data.user.isManager);
+				self.setDST(data.user.isDST);
+				self.queryManagableTeams();
+				self.queryManagableOfficers();
 
-					}
+				// Add the user to the collection and save it to the localStorage //
+				app.collections.users.add(self);
+				self.save();
+
+				app.setAjaxSetup();
+
+				app.views.headerView.render(app.router.mainMenus.manageInterventions);
+				Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
+			},
+			statusCode : {
+				401: function () {
+					app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
 				}
-
-			}
-		)
+			},
+			complete   : function(){
+				app.loader('hide');
+			},
+		})
 	},
 
-	populateUserData: function (user,data) {
-		localStorage.setItem('currentUserAuthToken', data.token)
-		user.set({authToken: data.token});
-		user.setMenu(data.menu);
-		user.setUID(data.user.id)
-		user.setLogin(loginUser);
-		user.setLastConnection(moment().format("LLL"));
-		user.setContext({tz: data.user.context_tz, lang: data.user.context_lang});
-		user.setFirstname(data.user.firstname);
-		user.setLastname(data.user.name);
-		user.setGroups(data.user.groups_id);
-		user.setServices(data.user.service_ids);
-		user.setService(data.user.service_id);
-		user.setContact(data.user.contact_id);
-		user.setManager(data.user.isManager);
-		user.setDST(data.user.isDST);
-		user.queryManagableTeams();
-		user.queryManagableOfficers();
 
-		app.collections.users.add(user);
-		user.save()
-	},
 
 	/** Logout fonction
 	*/
@@ -364,6 +362,8 @@ app.Models.User = Backbone.Model.extend({
 
 
 	},
+
+
 
 	/** Get the informations of the user
 	*/

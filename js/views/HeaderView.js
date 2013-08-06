@@ -3,10 +3,15 @@
 */
 app.Views.HeaderView = Backbone.View.extend({
 
-	el: '#header-navbar',
+	el           : '#header-navbar',
 
-	templateHTML: 'header',
+	templateHTML : 'header',
 
+
+	// The DOM events //
+	events: {
+		'click li.disabled' : 'preventDefault'
+	},
 
 
 	/** View Initialization
@@ -15,11 +20,11 @@ app.Views.HeaderView = Backbone.View.extend({
 		this.render();
 	},
 
-	
+
 
 	/** Display the view
 	*/
-	render: function (activeMenu) {
+	/*render: function (activeMenu) {
 		if(app.models.user.hasAuthToken()) {
 			this.initHeader(app.models.user.getMenus(), activeMenu)
 		}
@@ -27,27 +32,46 @@ app.Views.HeaderView = Backbone.View.extend({
 			this.initHeader('', '');
 		}
 		return this;
-	},
+	},*/
 
 
 
 	/** Retrieve the Header template
 	*/
-	initHeader: function(menus, activeMenu){
+	/*initHeader: function(menus, activeMenu){
 		var self = this;
 		
 		$.get("templates/" + this.templateHTML + ".html", function(templateData) {
 
 			var template = _.template(templateData, {
-				lang: app.lang,
-				menus: menus,
-				user: {fullname: app.models.user.getFullname(), fields: app.models.user.toJSON()}
+				lang  : app.lang,
+				menus : menus,
+				user  : {fullname: app.models.user.getFullname(), fields: app.models.user.toJSON()}
 			});
 
 			$(self.el).html(template);
 
 			self.selectMenuItem(activeMenu);
 		});
+	},*/
+
+
+	/** Display the view
+	*/
+	render: function(){
+		var self = this;
+
+		$.get("templates/" + this.templateHTML + ".html", function(templateData) {
+
+			var template = _.template(templateData, {
+				lang  : app.lang,
+				user  : app.models.user
+			});
+
+			$(self.el).html(template);
+
+		});
+
 	},
 
 
@@ -56,17 +80,18 @@ app.Views.HeaderView = Backbone.View.extend({
 	*/
 	selectMenuItem: function (menuItem) {
 		$('#nav-menu-app li').removeClass('active');
-		
-		if (menuItem) {
+
+		if(menuItem){
 			$('#' + menuItem).addClass('active');
-		}        
+		}
 	},
-	
+
+
 
 	/** Change the Grid view of the page
 	*/
 	switchGridMode: function(type){
-		
+
 		switch(type){
 
 			case 'fluid' :
@@ -79,6 +104,14 @@ app.Views.HeaderView = Backbone.View.extend({
 				$('#container').removeClass('container-fluid').addClass('container');
 			break;
 		}
-	}
+	},
+
+
+	preventDefault: function(event){
+		console.log('Youpi');
+		event.preventDefault();
+	},
+
+
 
 });

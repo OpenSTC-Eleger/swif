@@ -8,17 +8,17 @@ var app = {
 	// Global variables app //
 	uniq_id_counter: 0,
 
-	urlOE_authentication: '/sessions',
-	urlOE_versionServer: '/web/webclient/version_info',
-	urlOE_sessionDestroy: '/web/session/destroy',
-	urlOE_sessionInformation: '/web/session/get_session_info',
-	urlOE_menuUser: '/web/menu/load',
-	urlOE_retrieveListe: '/web/dataset/search_read',
-	urlOE_readObject: '/web/dataset/get',
-	urlOE_createObject: '/web/dataset/create',
-	urlOE_updateObject: '/web/dataset/save',
-	urlOE_deleteObject: '/web/dataset/call',
-	urlOE_object: '/web/dataset/call',
+	url_authentication     	 : '/sessions',
+	urlOE_versionServer      : '/web/webclient/version_info',
+	urlOE_sessionDestroy     : '/web/session/destroy',
+	urlOE_sessionInformation : '/web/session/get_session_info',
+	urlOE_menuUser           : '/web/menu/load',
+	urlOE_retrieveListe      : '/web/dataset/search_read',
+	urlOE_readObject         : '/web/dataset/get',
+	urlOE_createObject       : '/web/dataset/create',
+	urlOE_updateObject       : '/web/dataset/save',
+	urlOE_deleteObject       : '/web/dataset/call',
+	urlOE_object             : '/web/dataset/call',
 
 
 	// Classes //
@@ -41,6 +41,7 @@ var app = {
 	/** Application initialization
 	*/
 	init: function (lang) {
+		var self = this;
 
 
 		// Retrieve App properties, configuration and language //
@@ -54,10 +55,13 @@ var app = {
 				app.lang          = lang_data[0];
 
 
-				// Instantiation Collections users  et user //
+				// Instantiation of UsersCollections & UserModel //
 				app.collections.users           = new app.Collections.Users();
 				app.collections.users.fetch();
 				app.models.user                 = new app.Models.User();
+				
+
+
 				//app.models.team               = new app.Models.Team();
 				app.models.task                 = new app.Models.Task();
 				app.models.intervention         = new app.Models.Intervention();
@@ -69,8 +73,12 @@ var app = {
 				app.models.claimerContact       = new app.Models.ClaimerContact();
 				app.models.claimerType          = new app.Models.ClaimerType();
 
+
+				self.setAjaxSetup();
+
 				// Router initialization //
 				app.router = new app.Router();
+
 				// Listen url changes //
 				Backbone.history.start({pushState: false});
 			})
@@ -84,6 +92,8 @@ var app = {
 	current_user_token: function () {
 		return localStorage.getItem('currentUserAuthToken');
 	},
+
+
 
 	/** Load internationalization scripts
 	*/
@@ -110,6 +120,10 @@ var app = {
 			});
 	},
 
+
+
+	/** Load Static file
+	*/
 	loadStaticFile: function (url) {
 		return $.getJSON(url)
 			.success(function (data) {
@@ -120,17 +134,25 @@ var app = {
 	},
 
 
-	/** Load application configuration
-	*/
-	loadConfiguration: function(url){
 
-		return $.getJSON(url)
-			.success(function(data){
-			})
-			.fail(function(){
-				alert('Impossible de charger le fichier de configuration');
-			});
+	setAjaxSetup: function(){
+
+		// Set The Ajax Config //
+		$.ajaxSetup({
+			contentType: "application/json",
+			headers: {Authorization: 'Token token=' + app.models.user.getAuthToken()},
+			statusCode: {
+				401: function () {
+					console.log('Ajax Setp Up 401 -------------------');
+					// Redirect the to the login page //
+					app.router.navigate(app.routes.login.url, {trigger: true, replace: true});
+				}
+			}
+		});
+
 	},
+
+
 
 	/******************************************
 	* GENERIC FUNCTION FOR JSON/AJAX
@@ -505,18 +527,6 @@ _.mixin(_.str.exports());
 /******************************************
 * AFTER THE LOADING OF THE PAGE
 */
-$(document).ready(function () {	
+$(document).ready(function () {
 	app.init('fr');
-	$.ajaxSetup({
-		contentType: "application/json",
-		headers: {Authorization: 'Token token=' + app.current_user_token()},
-		statusCode: {
-			401: function () {
-				// Redirect the to the login page.
-				app.Router.navigate(app.routes.login.url, {trigger: true, replace: true});
-			}
-		}
-	});
 });
-
-

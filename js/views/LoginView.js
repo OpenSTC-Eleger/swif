@@ -4,92 +4,84 @@
 app.Views.LoginView = Backbone.View.extend({
 
 
-   el: '#rowContainer',
+	el: '#rowContainer',
 
-    templateHTML: 'login',
+	templateHTML: 'login',
 
-    
-    // The DOM events //
-    events: {
-        'submit #formConnection'    :    'login',
-        'keypress #loginUser'       :    'hideLastConnection'
-    },
-
-
-
-    /** View Initialization
-    */
-    initialize: function(user) {
-        console.log('Login view Initialize');
-        this.setModel(user).render();
-    },
+	
+	// The DOM events //
+	events: {
+		'submit #formConnection'    :    'login',
+		'keypress #loginUser'       :    'hideLastConnection'
+	},
 
 
 
-    /** Display the view
-    */
-    render: function() {
-        var self = this;
-
-        // Change the page title //
-        app.router.setPageTitle(app.lang.viewsTitles.login);
-
-        // Retrieve the Login template // 
-        $.get("templates/" + this.templateHTML + ".html", function(templateData){
-         
-            var template = _.template(templateData, {lang: app.lang, user: self.model.toJSON()});
-            $(self.el).html(template);
-
-            // Set the focus to the login input //
-            $('#loginUser').focus();
-        });
+	/** View Initialization
+	*/
+	initialize: function(user) {
+		console.log('Login view Initialize');
+	},
 
 
 
-        $(this.el).hide().fadeIn('slow');
-        return this;
-    },
+	/** Display the view
+	*/
+	render: function() {
+		var self = this;
+
+		// Change the page title //
+		app.router.setPageTitle(app.lang.viewsTitles.login);
+
+		// Retrieve the Login template // 
+		$.get("templates/" + this.templateHTML + ".html", function(templateData){
+
+			var template = _.template(templateData, {
+				lang: app.lang, 
+				user: self.model
+			});
+
+			$(self.el).html(template);
+
+			// Set the focus to the login input //
+			$('#loginUser').focus();
+		});
 
 
 
-    /** Set a user model to the view
-    */
-    setModel: function(model) {
-        this.model = model;
-        return this;
-    },
+		$(this.el).hide().fadeIn('slow');
+		return this;
+	},
 
 
 
-    /** Login Function
-    */
-    login: function(e){
-        e.preventDefault();
+	/** Login Function
+	*/
+	login: function(e){
+		e.preventDefault();
 
-        // Retrieve data from the form //
-        var login = $('#loginUser').val();
-        var pass = $('#passUser').val();
-
-
-        // Execution user login function //
-        app.loader('display');
-        app.models.user.login(login, pass);
-        
-        $('#passUser').val('');
-    },
+		// Retrieve data from the form //
+		var login = $('#loginUser').val();
+		var pass = $('#passUser').val();
 
 
+		// Execution user login function //
+		this.model.login(login, pass);
 
-    /** Hide the last connection information if the user change
-    */
-    hideLastConnection: function(){
-        var infoLastConnection = $('#lastConnection');
-        if(infoLastConnection.length != 0){
-            infoLastConnection.fadeOut();
-        }
-    },
+		$('#passUser').val('');
+	},
 
 
-  
+
+	/** Hide the last connection information if the user change
+	*/
+	hideLastConnection: function(){
+		var infoLastConnection = $('#lastConnection');
+		if(infoLastConnection.length != 0){
+			infoLastConnection.fadeOut();
+		}
+	},
+
+
+ 
 });
-

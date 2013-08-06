@@ -66,7 +66,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-		 
+
 			var template = _.template(templateData, {
 				lang  : app.lang,
 				place : self.model

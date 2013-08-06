@@ -9,7 +9,7 @@
 		<div class="control-group">
 			<label class="control-label" for="loginUser"><%= _.capitalize(lang.login) %></label>
 			<div class="controls">
-				<input type="text" id="loginUser" name="loginUser" required="required" placeholder="<%= _.capitalize(lang.login) %>" autocomplete="off" autofocus="autofocus" value="<%= user.login %>">
+				<input type="text" id="loginUser" name="loginUser" required="required" placeholder="<%= _.capitalize(lang.login) %>" autocomplete="off" autofocus="autofocus" value="<%= user.getLogin() %>">
 			</div>
 		</div>
 
@@ -24,7 +24,7 @@
 			<button type="submit" class="btn btn-primary pull-right"><i class="icon-signin icon-large"></i> &nbsp;<%= _.capitalize(lang.actions.logIn) %></button>
 		</div>
 
-		<% if (user.lastConnection != ''){ %>
+		<% if(user.getLastConnection() != ''){ %>
 			<small class="muted" id="lastConnection"><%= _.capitalize(lang.lastConnection) %>  <%= user.lastConnection %></small>
 		<% } %>
 
