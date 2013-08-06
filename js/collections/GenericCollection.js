@@ -16,8 +16,11 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 
 		var paramFilter = {};
 		// Check if a search are perform //
-		if(!_.isUndefined(options.data.filters)){
-			paramFilter.filters = options.data.filters;
+		//Test if data is present in options and if filters is present is data
+		if(!_.isUndefined(options.data)){
+			if(!_.isUndefined(options.data.filters)){
+				paramFilter.filters = options.data.filters;
+			}
 		}
 
 		return $.ajax({
