@@ -2,7 +2,7 @@
 * STC Collection
 */
 app.Collections.GenericCollection = Backbone.Collection.extend({
-    
+
 	cpt        : 0,
 	
 	specialCpt : 0,

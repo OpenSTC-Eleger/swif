@@ -4,15 +4,15 @@
 app.Views.LoginView = Backbone.View.extend({
 
 
-	el: '#rowContainer',
+	el           : '#rowContainer',
 
-	templateHTML: 'login',
+	templateHTML : 'login',
 
 	
 	// The DOM events //
 	events: {
-		'submit #formConnection'    :    'login',
-		'keypress #loginUser'       :    'hideLastConnection'
+		'submit #formConnection'  :    'login',
+		'change #loginUser'       :    'hideLastConnection'
 	},
 
 
@@ -76,12 +76,7 @@ app.Views.LoginView = Backbone.View.extend({
 	/** Hide the last connection information if the user change
 	*/
 	hideLastConnection: function(){
-		var infoLastConnection = $('#lastConnection');
-		if(infoLastConnection.length != 0){
-			infoLastConnection.fadeOut();
-		}
+		$('#lastConnection').fadeOut();
 	},
 
-
- 
 });

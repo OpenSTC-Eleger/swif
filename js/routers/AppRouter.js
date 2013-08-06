@@ -55,7 +55,7 @@ app.Router = Backbone.Router.extend({
 	/** Check if the User is connect
 	*/
 	checkConnect: function () {
-		console.log('### checkConnect Function ###');
+		console.info('############ checkConnect Function ############');
 
 		// Check if a user exist in localStorage //
 		if(!_.isEmpty(app.collections.users.models)) {
@@ -92,11 +92,13 @@ app.Router = Backbone.Router.extend({
 	* ROUTE FUNCTION
 	*/
 
-	/************* Generiq ****************/
 
+	/** Redirect to the home page
+	*/
 	homePageRedirect: function(){
 		this.navigate(app.routes.requestsInterventions.baseUrl, {trigger: true, replace: true});
 	},
+
 
 
 	/** Display the login View
@@ -113,11 +115,13 @@ app.Router = Backbone.Router.extend({
 	},
 
 
+
 	/** Logout the user
 	*/
 	logout: function(){
 		app.models.user.logout();
 	},
+
 
 
 	/** About app
@@ -149,8 +153,6 @@ app.Router = Backbone.Router.extend({
 			if(!_.isNull(page))    { params.page = page; }
 
 			app.views.requestsListView = new app.Views.RequestsListView(params);
-
-		
 	},
 
 

@@ -59,7 +59,6 @@ var app = {
 				app.collections.users           = new app.Collections.Users();
 				app.collections.users.fetch();
 				app.models.user                 = new app.Models.User();
-				
 
 
 				//app.models.team               = new app.Models.Team();
@@ -74,6 +73,7 @@ var app = {
 				app.models.claimerType          = new app.Models.ClaimerType();
 
 
+				// Set the Ajax Setup //
 				self.setAjaxSetup();
 
 				// Router initialization //
@@ -86,11 +86,6 @@ var app = {
 				console.error('Unable to init the app');
 			});
 
-	},
-	
-
-	current_user_token: function () {
-		return localStorage.getItem('currentUserAuthToken');
 	},
 
 
@@ -143,9 +138,12 @@ var app = {
 			headers: {Authorization: 'Token token=' + app.models.user.getAuthToken()},
 			statusCode: {
 				401: function () {
-					console.log('Ajax Setp Up 401 -------------------');
+					console.error('---> Ajax Setp Up 401, redirect to the home page <---');
 					// Redirect the to the login page //
 					app.router.navigate(app.routes.login.url, {trigger: true, replace: true});
+				},
+				502: function(){
+					app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
 				}
 			}
 		});
@@ -231,7 +229,9 @@ var app = {
 			'model'     : model,
 			'fields'    : fields, 
 			'ids'       : ids
-		}, options)},
+		}, options
+	)},
+
 
 
 	/** Retrieve a list from OpenERP
@@ -411,62 +411,72 @@ var app = {
 	},
 
 
-
 	/** Calcul the search argument of the page
-	*/
-	calculSearch: function(searchQuery, searchableFields){
+	 */
+	calculSearch: function (searchQuery, searchableFields) {
 
 		//['|', ["name", "ilike", searchQuery], ["surface", "=", _(searchQuery).toNumber()]];
 		//['&', ["state", "ilike", 'valid'], '|', ["name", "ilike", 'demande'], ["id", "=", _('demande').toNumber()]];
-		
+
 		var search = [];
 
-		var searchableFieldsFilter = _.filter(searchableFields, function (field, index) {
-			if (field.type != 'numeric') {
-				return field;
-			} else if (field.type == 'numeric' && _.isNumber(_(searchQuery.search).toNumber())) {
-				return field;
-			}
-		});
+		function isNumber(n) {
+			return !isNaN(parseFloat(n)) && isFinite(n);
+		};
 
+		function convertFieldFilters(fieldsFilters) {
+			var convertedFilters = [];
 
-		// Remplace the type By the search type for OpenERP //
-		_.each(searchableFieldsFilter, function(item, index){
-			switch(item.type){
-				case 'numeric':
-					item.type = '=';
-					break;
-				case 'text':
-					item.type = 'ilike';
-					break;
-			}
-		})
+			function convertFilter(filter, operator) {
+				return {key:filter.key, type: operator};
+			};
+
+			_.each(fieldsFilters, function (filter, index) {
+				switch (filter.type) {
+					case 'numeric':
+						if (isNumber(searchQuery.search)) {
+							convertedFilters.push(convertFilter(filter, '='));
+						}
+						break;
+					case 'text':
+						convertedFilters.push(convertFilter(filter, 'ilike'));
+						break;
+				}
+			});
+			return convertedFilters;
+		};
+
+		var filteredAndConvertedFilters = convertFieldFilters(searchableFields);
+
+		function buildFilterObject(field,operator,value) {
+			return {field: field, operator:operator, value:value}
+		};
 
 		// Check if there is a filter //
-		if(!_.isUndefined(searchQuery.filter)){
-			if(!_.isUndefined(searchQuery.search)){ search.push('&'); }
-			search.push([searchQuery.filter.by, 'ilike', searchQuery.filter.value]);
+		if (!_.isUndefined(searchQuery.filter)) {
+			if (!_.isUndefined(searchQuery.search)) {
+				search.push('&');
+			}
+			search.push( buildFilterObject(searchQuery.filter.by,'ilike',searchQuery.filter.value));
 		}
 
-
 		// Check if there is a Search //
-		if(!_.isUndefined(searchQuery.search)){
+		if (!_.isUndefined(searchQuery.search)) {
 			// Search on several fields //
-			if(_.size(searchableFieldsFilter) > 1){
+			if (_.size(filteredAndConvertedFilters) > 1) {
 				search.push('|');
-				_.each(searchableFieldsFilter, function(item, index){
-					if(item.type == '=' && _.isNumber(_(searchQuery.search).toNumber())){
+				_.each(filteredAndConvertedFilters, function (item, index) {
+					if (item.type == '=' && isNumber(searchQuery.search)) {
 						var term = _(searchQuery.search).toNumber();
 					} else {
 						var term = searchQuery.search;
 
 					}
-					search.push({field: item.key, operator: item.type, value: term});
+					search.push(buildFilterObject(item.key,item.type,term));
 				});
 			}
-			else{
-				console.log(searchableFieldsFilter)
-				search.push({field: searchableFieldsFilter[0].key, operator: searchableFieldsFilter[0].type, value: searchQuery.search});
+			else {
+				search.push( buildFilterObject(filteredAndConvertedFilters[0].key,filteredAndConvertedFilters[0].type,searchQuery.search));
 			}
 		}
 

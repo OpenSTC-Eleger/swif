@@ -25,7 +25,7 @@
 		</div>
 
 		<% if(user.getLastConnection() != ''){ %>
-			<small class="muted" id="lastConnection"><%= _.capitalize(lang.lastConnection) %>  <%= user.lastConnection %></small>
+			<small class="muted" id="lastConnection"><%= _.capitalize(lang.lastConnection) %>  <%= moment(user.getLastConnection()).format("LLL") %></small>
 		<% } %>
 
 	</fieldset>

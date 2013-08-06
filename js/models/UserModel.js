@@ -28,7 +28,6 @@ app.Models.User = Backbone.Model.extend({
 	defaults: {
 		uid             : '',
 		login           : '',
-		sessionID       : '',
 		lastConnection  : '',
 		firstname       : '',
 		lastname        : '',
@@ -82,13 +81,6 @@ app.Models.User = Backbone.Model.extend({
 
 	getFullname : function() {
 		return this.get('firstname')+' '+this.get('lastname');
-	},
-
-	getSessionID : function() {
-		return this.get('sessionID');
-	},
-	setSessionID : function(value) {
-		this.set({ sessionID : value });
 	},
 
 	getLastConnection : function() {
@@ -282,7 +274,7 @@ app.Models.User = Backbone.Model.extend({
 		};
 
 		$.ajax({
-			url        : app.url_authentication,
+			url        :  app.url_authentication,
 			type       : 'POST',
 			dataType   : 'json',
 			data       :  JSON.stringify(login_data),
@@ -290,7 +282,6 @@ app.Models.User = Backbone.Model.extend({
 				app.loader('display');
 			},
 			success    : function (data) {
-				//self.populateUserData(data);
 
 				// Set all attributes to the user //
 				self.setAuthToken(data.token);
@@ -335,72 +326,34 @@ app.Models.User = Backbone.Model.extend({
 	/** Logout fonction
 	*/
 	logout: function(options){
-		"use strict";
 		var self = this;
 
 		$.ajax({
-			url: '/sessions/'+ app.current_user_token(),
-			method: 'DELETE'
-		})
-		.fail(function (){
-			app.notify('', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
+			url    : app.url_authentication +'/'+ self.getAuthToken(),
+			method : 'DELETE',
 		})
 		.done(function (data) {
 
-			app.notify('large', 'info', app.lang.infoMessages.information, app.lang.infoMessages.successLogout);
+			if(data){
 
-			// Refresh the header //
-			app.views.headerView.render();
+				app.notify('large', 'info', app.lang.infoMessages.information, app.lang.infoMessages.successLogout);
 
-			// Navigate to the login Page //
-			Backbone.history.navigate(app.routes.login.url, {trigger: true, replace: true});
+				// Refresh the header //
+				app.views.headerView.render();
+
+				// Navigate to the login Page //
+				Backbone.history.navigate(app.routes.login.url, {trigger: true, replace: true});
+			}
+			else{
+				app.notify('', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
+			}
+
 		}).always(function () {
-				self.set({authToken:''});
-				sessionStorage.clear();
-				localStorage.clear();
-			});
+			// Delete the Auth token of the user //
+			self.setAuthToken('');
+			self.save();
+		});
 
-
-	},
-
-
-
-	/** Get the informations of the user
-	*/
-	getUserInformations: function(options){
-		"use strict";
-		var self = this;
-
-		var fields = ['firstname', 'name', 'groups', 'contact_id', 'service_id', 'service_ids', 'isDST', 'isManager'];
-
-		return $.ajax({
-				url: app.config.barakafrites.url + '/api/open_object/users/' + self.getUID(),
-				data: fields,
-				headers: {Authorization: 'Token token=' + self.get('authToken')},
-				success: function (data) {
-
-					self.setFirstname(data.user.firstname);
-					self.setLastname(data.user.name);
-					self.setGroups(data.user.groups_id);
-					self.setServices(data.user.service_ids);
-					self.setService(data.user.service_id);
-					self.setContact(data.user.contact_id);
-					self.setManager(data.user.isManager);
-					self.setDST(data.user.isDST);
-
-					// Refresh the header //
-					app.views.headerView.render(app.router.mainMenus.manageInterventions);
-
-					// Navigate to the Home page //
-					Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
-
-				},
-				error: function (error) {
-					console.error(error);
-					app.notify('', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
-				}
-			})
-
-		}
+	}
 
 });
