@@ -82,33 +82,33 @@ app.Views.TasksListView = Backbone.View.extend({
 		var momentDate = moment().year(yearSelected).week(weekSelected);
 
 		//get only tasks on the current week
-		var filter = [['date_start','>=',momentDate.clone().weekday(1).format('YYYY-MM-DD 00:00:00')],['date_start','<=',momentDate.clone().weekday(6).format('YYYY-MM-DD 23:59:59')]];
+		var filter = [{'field':'date_start','operator':'>=','value':momentDate.clone().weekday(1).format('YYYY-MM-DD 00:00:00')},{'field':'date_start','operator':'<=','value':momentDate.clone().weekday(6).format('YYYY-MM-DD 23:59:59')}];
 		
 		
 		//  Collection Task Filter if not null //
 		if(sessionStorage.getItem(this.filters) != null){
-			filter.push(['state','=',sessionStorage.getItem(self.filters)]);
+			filter.push({'field':'state','operator':'=','value':sessionStorage.getItem(self.filters)});
 		}
 		
-		//app.loader('display');
-		
-		//get taskUser filtered on current week and with optional filter in sessionStorage
 		app.collections.equipments = new app.Collections.Equipments();
 		app.collections.categoriesTasks = new app.Collections.CategoriesTasks();		
 		app.collections.tasks = new app.Collections.Tasks();
 		
-		app.callObjectMethodOE([filter, app.collections.tasks.fieldsOE],"project.task","getUserTasksList",app.models.user.getSessionID(),{
-		//app.collections.tasks.fetch({
+		
+		//get taskUser filtered on current week and with optional filter in sessionStorage
+		//@TODELETE app.callObjectMethodOE([filter, app.collections.tasks.fieldsOE],"project.task","getUserTasksList",app.models.user.getSessionID(),{
+		$.ajax({
+			url: '/api/open_object/users/' + app.models.user.getUID().toString() + '/scheduled_tasks',
+			type:'GET',
+			data: app.objectifyFilters({'filters':app.objectifyFilters(filter),'fields':app.collections.tasks.fieldsOE}),	
 			success: function(data){
-				app.collections.tasks = new app.Collections.Tasks(data.result.records);
-				var inter_ids = _.filter()
+				app.collections.tasks = new app.Collections.Tasks(data);
 				$.when(
-					app.collections.equipments.fetch(),
+					//app.collections.equipments.fetch(),
 					app.collections.categoriesTasks.fetch()
 				)
 				.done(function(){
-					//app.loader('hide');
-				
+					
 					// Create table for each day //
 					var mondayTasks =[]; 	var tuesdayTasks =[];
 					var wednesdayTasks =[]; var thursdayTasks =[];
@@ -296,11 +296,12 @@ app.Views.TasksListView = Backbone.View.extend({
 				});
 				
 				
+			},
+			error: function(code){
+				
 			}
 		});
 	
-		
-
 		return this;
 	},
 
@@ -310,62 +311,23 @@ app.Views.TasksListView = Backbone.View.extend({
 	*/
 	displayEquipmentsInfos: function(e, list, choiceList, badgeComponent, vehicleSelect){
 		e.preventDefault();
-		
-		//Filter equipments
-/*		var filteredEquipment = app.collections.equipments;
 
-
-		if( this.model ) {
-			// Filter Equipment by service on intervention's task //
-			var task = this.model.toJSON();
-			var intervention = task.intervention;
-			//If task not orphelin
-			if( intervention!= null ) {
-				var service = intervention.service_id;
-				filteredEquipment = _.filter(filteredEquipment.models, function(item){	
-					var equipmentJSON = item.toJSON();
-					var services = _.map(equipmentJSON.service_ids, function(service){return service.id;});
-		    		return $.inArray(service[0], services)!=-1;
-		    	});
-			}
-			else
-				filteredEquipment = filteredEquipment.models;
-		}
-		else {
-			// When create orphan task : Filter Equipment by service on user connected //
-			filteredEquipment = _.filter(filteredEquipment.models, function(item){
-				var equipmentJSON= item.toJSON();
-				var self = this;
-				self.belongsToUserServices = false	
-				var services = _.map(equipmentJSON.service_ids, function(service){return service.id;});
-				_.each(services, function(service){
-					self.belongsToUserServices = $.inArray(service, app.models.user.toJSON().service_ids)!=-1
-				})
-				return this.belongsToUserServices;
-	    	});
-		}
-		
-
-
-		// Search only vehicles //
-		var filteredVehicleEquipment = _.filter(filteredEquipment, function(item){
-		    return item.attributes.technical_vehicle || item.attributes.commercial_vehicle;
-		});
-		
-		//search only materials
-		var filteredOthersEquipment = _.filter(filteredEquipment, function(item){
-		    return item.attributes.small_material || item.attributes.fat_material;
-		});
-*/		
-		//get equipments authorized from backend
-		var task_id = [false]
+		//retrieve url according to task, if orphan, use url from user ressource, else use url from tasks ressource
+		var task_id = false
+		var base_url = '/api/open_object/users/' + app.models.user.getUID().toString();
 		if(this.model){
-			task_id = [this.model.get("id")]
+			task_id = this.model.get("id");
+			base_url = '/api/openstc/tasks/' + task_id.toString();
 		}
+		var vehicles_url = base_url + '/available_vehicles';
+		var materials_url = base_url + '/available_equipments';
 		
-		app.callObjectMethodOE(task_id,"project.task","get_vehicules_authorized",app.models.user.getSessionID(),{
+		//get vehicles authorized from backend
+		$.ajax({
+			url: vehicles_url,
+			type: "GET",
 			success: function(data){
-				app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: vehicleSelect, collection: new app.Collections.Equipments(data.result)})
+				app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: vehicleSelect, collection: new app.Collections.Equipments(data)})
 				app.views.selectListEquipmentsView.clearAll();
 				app.views.selectListEquipmentsView.addEmptyFirst();
 				app.views.selectListEquipmentsView.addAll();
@@ -380,14 +342,17 @@ app.Views.TasksListView = Backbone.View.extend({
 		list.empty();
 		choiceList.empty();
 		
-		app.callObjectMethodOE(task_id,"project.task","get_materials_authorized",app.models.user.getSessionID(),{
+		$.ajax({
+			url: materials_url,
+			type: "GET",
+			data: app.objectifyFilters({'id':task_id}),
 			success: function(data){
 				// Display the remain services //
 				var nbRemainMaterials = 0;
-				for(i in data.result){
+				for(i in data){
 					
 					nbRemainMaterials++;
-					choiceList.append('<li id="equipment_'+data.result[i].id+'"><a href="#"><i class="icon-wrench"></i> '+ data.result[i].name + '-' + data.result[i].type + ' </a></li>');
+					choiceList.append('<li id="equipment_'+data[i].id+'"><a href="#"><i class="icon-wrench"></i> '+ data[i].name + '-' + data[i].type + ' </a></li>');
 				}
 				badgeComponent.html(nbRemainMaterials);			
 			}
