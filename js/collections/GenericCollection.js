@@ -16,16 +16,16 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 		// Check if a search are perform //
 		var domain = null;
 		if(_.isUndefined(options.search)){
-			domain = [[]];
+			domain = {};
 		}
 		else{
-			domain = [options.search]
+			domain = options.search
 		}
 
 		return $.ajax({
 			url: this.url,
 			method: "HEAD",
-			data: {filters: self.domain},
+			data: {filters: domain},
 			success: function(data,status,request){
 				var contentRange = request.getResponseHeader("Content-Range")
 				self.cpt = contentRange.match(/\d+$/);
@@ -36,7 +36,7 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 
 	specialCount: function(modelName){
 		var self = this;
-
+		
 		return app.callObjectMethodOE([[app.models.user.getUID()]], modelName, "getNbRequestsTodo", app.models.user.getSessionID(),{
     	
 	    	//forme de data.result (dans le callback success) : {user_id: nbActions}
