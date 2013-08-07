@@ -55,18 +55,16 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 	render : function(loader) {
 		var self = this;
 
-		console.log('---------------------------------------------');
-		console.log(this.model);
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-		 
+
 			var template = _.template(templateData, {
 				lang  : app.lang,
 				place : self.model,
 				loader: loader
 			});
-			
+
 
 			self.modal.html(template);
 
@@ -132,20 +130,22 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 			surface        : this.$('#placeArea').val(),
 		};
 
-		// If it's a create pass 0 as ID //
-		if(this.createMode){ var id = 0; }
-		else{ var id = this.model.getId(); }
 
 		this.model.save(params)
-			.done(function (data) {
+			.done(function(data) {
 				self.modal.modal('hide');
+
+				// Create mode //
 				if (self.createMode) {
-					this.model.setId(data.result.result);
-					newPlace.fetch().done(function () {
-						app.views.placesListView.collection.add(newPlace);
+					console.log('------------------------- je vais un create');
+					self.model.setId(data);
+					self.model.fetch({silent: true, data : {fields : self.model.fields} }).done(function(){
+						app.views.placesListView.collection.add(self.model);
 					})
+				// Update mode //
 				} else {
-					self.model.fetch();
+					console.log('------------------------- je vais un update');
+					self.model.fetch({ data : {fields : self.model.fields} });
 				}
 			})
 			.fail(function () {

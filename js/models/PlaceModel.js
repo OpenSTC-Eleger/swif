@@ -6,6 +6,8 @@ app.Models.Place = Backbone.Model.extend({
 
 	fields     : ["id", "name", "complete_name", "type", "service_names", "site_parent_id", "width", "length", "surface"],
 	
+	urlRoot        : '/api/openstc/sites',
+
 
 	defaults:{
 		id : null,
@@ -168,24 +170,9 @@ app.Models.Place = Backbone.Model.extend({
 		return informations;
 	},
 
-
-
-	/** Model Initialization
-	*/
-	initialize: function(){
-
+	getActions : function(){
+		return this.get('actions');
 	},
 
-
-
-	update: function(params) {
-		this.setName( params.name );
-		this.setType( params.type );
-		this.setService( params.service );
-		this.setParent( params.site_parent_id );
-		this.setWidth( params.width );
-		this.setLenght( params.lenght );
-		this.setSurface( params.surface );
-	},
 
 });

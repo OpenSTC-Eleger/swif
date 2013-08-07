@@ -20,15 +20,17 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	/** View Initialization
 	*/
 	initialize: function () {
+
 		var self = this;
 
 		this.initCollection().done(function(){
+
 			// Unbind & bind the collection //
 			self.collection.off();
 			self.listenTo(self.collection, 'add', self.add);
 
 			app.router.render(self);
-		});
+		})
 	},
 
 
@@ -37,7 +39,10 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	*/
 	add: function(model){
 
-		var itemPlaceView  = new app.Views.ItemPlaceView({model: model});
+		console.log('------------------------ Add du model');
+		console.log(model);
+
+		var itemPlaceView  = new app.Views.ItemPlaceView({ model: model });
 		$('#rows-items').prepend(itemPlaceView.render().el);
 		itemPlaceView.highlight();
 
@@ -76,6 +81,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 			app.Views.GenericListView.prototype.render(self.options);
 
 
+			console.log(self.collection.models);
 			// Create item place view //
 			_.each(self.collection.models, function(place, i){
 				var itemPlaceView  = new app.Views.ItemPlaceView({model: place});
@@ -150,16 +156,12 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 			fetchParams.data.filters = app.calculSearch({search: this.options.search }, app.Models.Place.prototype.searchable_fields);
 		}
 
-		app.loader('display');
 
+		app.loader('display');
 		return self.collection.fetch(fetchParams)
-			.fail(function(e){
-				console.error(e);
-			})
 			.always(function(){
 				app.loader('hide');
 			});
-
 	}
 
 });

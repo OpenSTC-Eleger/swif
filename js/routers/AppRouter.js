@@ -22,9 +22,7 @@ app.Router = Backbone.Router.extend({
 			self.route(route.url, route.function);
 		});
 
-		// Check if the user is connect //
-		//this.checkConnect();
-		
+
 		// Header, Footer Initialize //    	
 		app.views.headerView = new app.Views.HeaderView();
 		app.views.footerView = new app.Views.FooterView();
@@ -133,16 +131,14 @@ app.Router = Backbone.Router.extend({
 	*/
 	requestsList: function(search, filter, sort, page) {
 
-		// Check if the user is connect //
+		var params = {};
 
-			var params = {};
+		if(!_.isNull(search))  { params.search = search; }
+		if(!_.isNull(filter))  { params.filter = filter; }
+		if(!_.isNull(sort))    { params.sort = sort; }
+		if(!_.isNull(page))    { params.page = page; }
 
-			if(!_.isNull(search))  { params.search = search; }
-			if(!_.isNull(filter))  { params.filter = filter; }
-			if(!_.isNull(sort))    { params.sort = sort; }
-			if(!_.isNull(page))    { params.page = page; }
-
-			app.views.requestsListView = new app.Views.RequestsListView(params);
+		app.views.requestsListView = new app.Views.RequestsListView(params);
 	},
 
 

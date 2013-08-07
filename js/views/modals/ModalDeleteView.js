@@ -6,7 +6,7 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 
 	templateHTML: 'modals/modalDelete',
 
-	
+
 	// The DOM events //
 	events: function(){
 		return _.defaults({
@@ -60,25 +60,17 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 		$(e.target).button('loading');
 
 		// Delete the Model //
-		this.model.delete({
-			success: function(data){
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					self.modal.modal('hide');
-					self.collection.remove(self.model);
-				}
-			},
-			complete: function(){
-				// Reset the button state //
-				$(e.target).button('reset');
-			},
-			error: function(e){
-				alert("Impossible de contacter le serveur");
-			}
-
-		});
+		this.model.destroy()
+		.done(function(data){
+			self.modal.modal('hide');
+		})
+		.always(function(){
+			// Reset the button state //
+			$(e.target).button('reset');
+		})
+		.fail(function(){
+			app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+		})
 	}
 
 });

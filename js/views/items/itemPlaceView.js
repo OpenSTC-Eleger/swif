@@ -27,7 +27,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 		this.listenTo(this.model, 'change', this.change);
 
 		// When the model are removed //
-		this.listenTo(this.model,'remove', this.destroy);
+		this.listenTo(this.model,'destroy', this.destroy);
 	},
 
 
@@ -47,7 +47,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 	*/
 	destroy: function(e){
 		var self = this;
-		
+
 		this.highlight().done(function(){
 			self.remove();
 		});
@@ -104,8 +104,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 		app.views.modalDeleteView = new app.Views.ModalDeleteView({
 			el         : '#modalDeletePlace',
-			model      : this.model,
-			collection : app.collections.places
+			model      : this.model
 		});
 	},
 
@@ -122,11 +121,11 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 		// Once the CSS3 animation are end the class are removed //
 		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
 			function(e) {
-		    $(self.el).removeClass('highlight');
-		    deferred.resolve();
+			$(self.el).removeClass('highlight');
+			deferred.resolve();
 		});
 
-    	return deferred;
+		return deferred;
 	}
 
 
