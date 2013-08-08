@@ -96,7 +96,6 @@ app.Views.TasksListView = Backbone.View.extend({
 		
 		
 		//get taskUser filtered on current week and with optional filter in sessionStorage
-		//@TODELETE app.callObjectMethodOE([filter, app.collections.tasks.fieldsOE],"project.task","getUserTasksList",app.models.user.getSessionID(),{
 		$.ajax({
 			url: '/api/open_object/users/' + app.models.user.getUID().toString() + '/scheduled_tasks',
 			type:'GET',

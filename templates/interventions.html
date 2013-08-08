@@ -163,7 +163,9 @@
 								</thead>
 								<tbody>
 									<!-- Task row -->
-									<% _.each(interventions[i].tasks, function (task, i) { %>
+									<% var task = null;
+									_.each(interventions[i].tasks, function (task_id, i) { %>
+										<% task = tasksFromInter.get(task_id).toJSON(); %>
 										<tr class="row-nested-objects" id="task_<%= task.id %>">
 											<td>
 												<!-- Display a clock when the task is planned -->
