@@ -24,16 +24,10 @@ app.Collections.Places = app.Collections.GenericCollection.extend({
 	/** Collection Sync
 	*/
 	sync: function(method, model, options){
-		var deferred = $.Deferred();
 
 		options.data.fields = this.fields;
 
-		return $.when(this.count(options), Backbone.sync.call(this, method, this, options))
-		.then(function(){
-			deferred.resolve();
-		});
-
-		return deferred;
+		return $.when(this.count(options), Backbone.sync.call(this, method, this, options));
 	},
 
 

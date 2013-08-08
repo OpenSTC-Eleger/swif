@@ -7,12 +7,12 @@ app.Collections.Requests = app.Collections.GenericCollection.extend({
 
 	url          : '/api/openstc/intervention_requests',
 
-	fields       : ["id", "name", "actions", "tooltip", "create_date", "create_uid", "date_deadline", "description", "manager_id", "note", "partner_address", "partner_id", "partner_phone", "partner_service_id", "partner_type", "partner_type_code", "people_name", "people_email", "people_phone", "refusal_reason", "service_id", "site1", "site_details", "state"],
-
-	// Model name in the database //
-	model_name   : 'openstc.ask',
+	fields       : ['id', 'name', 'actions', 'tooltip', 'create_date', 'create_uid', 'date_deadline', 'description', 'manager_id', 'note', 'partner_address', 'partner_id', 'partner_service_id', 'partner_type', 'partner_type_code', 'people_name', 'refusal_reason', 'service_id', 'site1', 'site_details', 'state'],
 
 	default_sort : { by: 'id', order: 'DESC' },
+
+	specialCpt : 0,
+
 
 
 	/** Collection Initialization
@@ -20,42 +20,50 @@ app.Collections.Requests = app.Collections.GenericCollection.extend({
 	initialize: function (options) {
 		//console.log('Requests collection Initialization');
 	},
+
+
 	
-	//override to customize method for this collection
-	specialCount: function(modelName){
+	/** Get the number of Request that the user have to deal
+	*/
+	specialCount: function(){
 		var self = this;
-		
-		//to keep value of cpt, because count method override this value at each call
-		var cptSave = self.cpt;
-		
+
 		//construct a domain accrding to user group
-		var domain = {};
+		var domain = { field : 'state', operator : '=' };
 		if(app.models.user.isDST()){
-			domain = {'field':'state','operator':'=','value':'confirm'};
+			domain.value = app.Models.Request.status.confirm.key;
 		}
 		else if(app.models.user.isManager()){
-			domain = {'field':'state','operator':'=','value':'wait'};
+			domain.value = app.Models.Request.status.wait.key;
 		}
-		//use count method to retrieve values according to domain
-		$.when(
-			self.count({data: {filters: app.objectifyFilters([domain])}})
-		)
-		.done(function(){
-			self.specialCpt = self.cpt;
-			self.cpt = cptSave;
-		})
+
+
+		return $.ajax({
+			url      : this.url,
+			method   : 'HEAD',
+			dataType : 'text',
+			data     : {filters: {0: domain}},
+			success  : function(data, status, request){
+				var contentRange = request.getResponseHeader("Content-Range")
+				self.specialCpt = contentRange.match(/\d+$/);
+			}
+		});
 		
 	},
 	
+
+
 	/** Collection Sync
 	*/
 	sync: function(method, model, options){
-		var deferred = $.Deferred();
-		$.when(this.specialCount(model), this.count(options), Backbone.sync.call(this,method,this,options))
-		.done(function(){
-			deferred.resolve();
-		});
-		return  deferred;
+
+		options.data.fields = this.fields;
+
+		return $.when(
+			this.count(options),
+			(app.models.user.isDST() || app.models.user.isManager() ? this.specialCount() : ''),
+			Backbone.sync.call(this,method,this,options)
+		);
 	}
 
 });

@@ -62,9 +62,10 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 			var template = _.template(templateData, {
-				lang: app.lang,
-				nbRequests: self.collection.specialCpt,
-				requestsState: app.Models.Request.status,
+				lang             : app.lang,
+				nbRequests       : self.collection.cpt,
+				nbRequestsToDeal : self.collection.specialCpt,
+				requestsState    : app.Models.Request.status,
 			});
 
 			$(self.el).html(template);
@@ -399,27 +400,15 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		}
 
 
-		var deferred = $.Deferred();
-
-		console.log('je dois passer dedans 1');
-
 		// Fetch the collections //
 		app.loader('display');
-		$.when(
-			self.collection.fetch(fetchParams)
-		)
-		.done(function(){
-			deferred.resolve();
-		})
-		.fail(function(e){
-			console.error(e);
+		return $.when(self.collection.fetch(fetchParams))
+		.fail(function(){
+			console.log(e);
 		})
 		.always(function(){
-			
+			app.loader('hide');	
 		});
-		app.loader('hide');
-
-		return deferred;
 
 	},
 

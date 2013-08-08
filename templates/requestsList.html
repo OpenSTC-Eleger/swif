@@ -2,21 +2,31 @@
 	<h1>
 		<%= lang.viewsTitles.requestsList %>
 
-		<% if(app.models.user.isDST()) { 
-				var classColor = app.Models.Request.status.confirm.color;
-				var filterValue = app.Models.Request.status.confirm.key;
+		<% if(app.models.user.isDST() || app.models.user.isManager()){
+		 
+		  if(app.models.user.isDST()) { 
+				var classColor      = app.Models.Request.status.confirm.color;
+				var filterValue     = app.Models.Request.status.confirm.key;
 				var actionToProcess = lang.actions.confirm; 
 			}
-		   else if(app.models.user.isManager()){ 
-		   		var classColor = app.Models.Request.status.wait.color;
-		   		var filterValue = app.Models.Request.status.wait.key;
+			else if(app.models.user.isManager()){ 
+		   		var classColor      = app.Models.Request.status.wait.color;
+		   		var filterValue     = app.Models.Request.status.wait.key;
 		   		var actionToProcess = lang.actions.process; }
-		   else{ var classColor = ''; var actionToProcess = ''; var filterValue = ''; }
+			else{ 
+		   		var classColor      = '';
+		   		var actionToProcess = '';
+		   		var filterValue     = ''; 
+			}
 		%>
-
+		
 		<sup id="badgeActions" class="badge badge-<%= classColor %>" data-filter="<%= filterValue %>" data-toggle="tooltip" data-original-title="<%= actionToProcess %>" data-placement="bottom">
-			<%= nbRequests %>
+			<%= nbRequestsToDeal %>
 		</sup>
+
+		<% } %>
+
+		<sup class="badge"> <%= nbRequests %></sup>
 	</h1>
 </div>
 

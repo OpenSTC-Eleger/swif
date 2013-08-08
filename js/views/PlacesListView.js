@@ -138,7 +138,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		}
 		this.options.page = app.calculPageOffset(this.options.page);
 
-		
+
 		// Create Fetch params //
 		var fetchParams = {
 			silent : true,
@@ -155,9 +155,13 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 
 		app.loader('display');
 		return $.when(self.collection.fetch(fetchParams))
+			.fail(function(e){
+				console.log(e);
+			})
 			.always(function(){
 				app.loader('hide');
 			});
+
 	}
 
 });
