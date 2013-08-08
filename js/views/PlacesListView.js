@@ -39,9 +39,6 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	*/
 	add: function(model){
 
-		console.log('------------------------ Add du model');
-		console.log(model);
-
 		var itemPlaceView  = new app.Views.ItemPlaceView({ model: model });
 		$('#rows-items').prepend(itemPlaceView.render().el);
 		itemPlaceView.highlight();
@@ -81,7 +78,6 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 			app.Views.GenericListView.prototype.render(self.options);
 
 
-			console.log(self.collection.models);
 			// Create item place view //
 			_.each(self.collection.models, function(place, i){
 				var itemPlaceView  = new app.Views.ItemPlaceView({model: place});
@@ -158,7 +154,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 
 
 		app.loader('display');
-		return self.collection.fetch(fetchParams)
+		return $.when(self.collection.fetch(fetchParams))
 			.always(function(){
 				app.loader('hide');
 			});

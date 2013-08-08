@@ -8,8 +8,6 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 	modal        : null,
 
-	createMode   : false,
-
 
 	// The DOM events //
 	events: function(){
@@ -34,7 +32,6 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		// Check if it's a create or an update //
 		if(_.isUndefined(this.model)){
 			
-			this.createMode = true;
 			this.model = new app.Models.Place();
 			this.render();
 		}
@@ -80,7 +77,6 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 				app.views.advancedSelectBoxPlaceServices.render();
 			}
 
-
 			self.modal.modal('show');
 		});
 
@@ -119,32 +115,29 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		// Set the button in loading State //
 		$(this.el).find("button[type=submit]").button('loading');
 
+		
+		// Set the properties of the model //
+		this.model.setName(this.$('#placeName').val(), true);
+		this.model.setServices(app.views.advancedSelectBoxPlaceServices.getSelectedItems(), true);
+		this.model.setType(app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(), true);
+		this.model.setParentPlace(app.views.advancedSelectBoxPlaceParentView.getSelectedItem(), true);
+		this.model.setWidth(this.$('#placeWidth').val(), true);
+		this.model.setLenght(this.$('#placeLenght').val(), true);
+		this.model.setSurface(this.$('#placeArea').val(), true);
 
-		var params = {
-			name           : this.$('#placeName').val(),
-			service_ids    : [[6, 0, app.views.advancedSelectBoxPlaceServices.getSelectedItems()]],
-			type           : app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(),
-			site_parent_id : app.views.advancedSelectBoxPlaceParentView.getSelectedItem(),
-			width          : this.$('#placeWidth').val(),
-			lenght         : this.$('#placeLenght').val(),
-			surface        : this.$('#placeArea').val(),
-		};
 
-
-		this.model.save(params)
+		this.model.save()
 			.done(function(data) {
 				self.modal.modal('hide');
 
 				// Create mode //
-				if (self.createMode) {
-					console.log('------------------------- je vais un create');
+				if(self.model.isNew()) {
 					self.model.setId(data);
 					self.model.fetch({silent: true, data : {fields : self.model.fields} }).done(function(){
 						app.views.placesListView.collection.add(self.model);
 					})
 				// Update mode //
 				} else {
-					console.log('------------------------- je vais un update');
 					self.model.fetch({ data : {fields : self.model.fields} });
 				}
 			})
@@ -155,6 +148,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 				$(self.el).find("button[type=submit]").button('reset');
 			});
 	},
+
 
 
 	/** Calcul the area of the place

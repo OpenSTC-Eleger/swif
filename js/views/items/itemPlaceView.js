@@ -3,11 +3,11 @@
 */
 app.Views.ItemPlaceView = Backbone.View.extend({
 
-	tagName: 'tr',
+	tagName      : 'tr',
 
-	className: 'row-item',
+	className    : 'row-item',
 
-	templateHTML: 'items/itemPlace',
+	templateHTML : 'items/itemPlace',
 
 
 	// The DOM events //
@@ -26,13 +26,13 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 		// When the model are updated //
 		this.listenTo(this.model, 'change', this.change);
 
-		// When the model are removed //
+		// When the model are destroy //
 		this.listenTo(this.model,'destroy', this.destroy);
 	},
 
 
 
-	/** When the model ara updated //
+	/** When the model is updated //
 	*/
 	change: function(e){
 
@@ -43,7 +43,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 
 
-	/** When the model ara removed //
+	/** When the model is destroy //
 	*/
 	destroy: function(e){
 		var self = this;

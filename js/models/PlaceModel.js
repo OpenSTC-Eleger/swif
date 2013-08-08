@@ -2,11 +2,11 @@
 * Place Model
 */
 app.Models.Place = Backbone.Model.extend({
-	
+
 
 	fields     : ["id", "name", "complete_name", "type", "service_names", "site_parent_id", "width", "length", "surface"],
 	
-	urlRoot        : '/api/openstc/sites',
+	urlRoot    : '/api/openstc/sites',
 
 
 	defaults:{
@@ -29,25 +29,19 @@ app.Models.Place = Backbone.Model.extend({
 	getId : function() {
 		return this.get('id');
 	},
-	setId : function(value) {
-		if(_.isUndefined(value)) return;
+	setId : function(value, silent) {
 		this.set({ id : value }, {silent: true});
 	},
 
 	getName : function() {
 		return _.titleize(this.get('name').toLowerCase());
 	},
-	setName : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ name : value });
+	setName : function(value, silent) {
+		this.set({ name : value }, {silent: silent});
 	},
 
 	getCompleteName : function() {
 		return _.titleize(this.get('complete_name').toLowerCase());
-	},
-	setCompleteName : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ complete_name : value });
 	},
 
 	getParentPlace : function(type) {
@@ -75,9 +69,8 @@ app.Models.Place = Backbone.Model.extend({
 				return name;
 		}
 	},
-	setParentPlace : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ site_parent_id : value });
+	setParentPlace : function(value, silent) {
+		this.set({ site_parent_id : value }, {silent: silent});
 	},
 	getServices : function(type){
 
@@ -103,9 +96,8 @@ app.Models.Place = Backbone.Model.extend({
 			return placeServices;
 		}
 	},
-	setServices : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ service_ids : value });
+	setServices : function(value, silent) {
+		this.set({ service_ids : [[6, 0, value]] }, {silent: silent});
 	},
 
 	getType : function(type) {
@@ -120,25 +112,22 @@ app.Models.Place = Backbone.Model.extend({
 				return this.get('type')[1];
 		}
 	},
-	setType : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ type : value });
+	setType : function(value, silent) {
+		this.set({ type : value }, {silent: silent});
 	},
 
 	getLenght : function() {
 		return this.get('lenght');
 	},
-	setLenght : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ lenght : value });
+	setLenght : function(value, silent) {
+		this.set({ lenght : value }, {silent: silent});
 	},  
 	
 	getWidth : function() {
 		return this.get('width');
 	},
-	setWidth : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ width : value });
+	setWidth : function(value, silent) {
+		this.set({ width : value }, {silent: silent});
 	},
 
 	getSurface : function(human) {
@@ -149,9 +138,8 @@ app.Models.Place = Backbone.Model.extend({
 			return this.get('surface');
 		}
 	},
-	setSurface : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ surface : value });
+	setSurface : function(value, silent) {
+		this.set({ surface : value }, {silent: silent});
 	},
 
 	/** Get Informations of the model
