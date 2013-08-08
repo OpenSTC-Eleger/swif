@@ -1,39 +1,16 @@
 /******************************************
 * Request Model
 */
-app.Models.Request = Backbone.RelationalModel.extend({
-
-	// Model name in the database //
-	model_name : 'openstc.ask',	
+app.Models.Request = Backbone.Model.extend({
 	
-	url: "/#demandes-dinterventions/:id",
 
-	relations: [{
-		type: Backbone.HasMany,
-		key: 'intervention_ids',
-		relatedModel: 'app.Models.Intervention',
-		collectionType: 'app.Collections.Interventions',
-		includeInJSON: true,
-		reverseRelation: {
-			type: Backbone.HasOne,
-			key: 'ask',
-			includeInJSON: ['id', 'manager_id', 'people_name', 'people_phone', 'partner_address', 'people_email', 'partner_id', 'partner_type', 'partner_phone', 'partner_email', 'intervention_assignement_id'],
-		}
-	}],
-	
+	fields     : ['id', 'name', 'actions', 'tooltip', 'create_date', 'create_uid', 'date_deadline', 'description', 'manager_id', 'note', 'partner_address', 'partner_id', 'partner_phone', 'partner_service_id', 'partner_type', 'partner_type_code', 'people_name', 'people_email', 'people_phone', 'refusal_reason', 'service_id', 'site1', 'site_details', 'state'],
+
+	urlRoot    : '/api/openstc/intervention_requests',
+
+
 	defaults: {
-		id: 0,
-		name: "",
-		site1:"",
-		state: "",
-		description: "",
-		belongsToAssignement: "",
-		belongsToService: "",
-		service_id: [],
-		note: "",
-		refusal_reason: "",
-		test: "",
-		intervention_ids : []
+		id : null,
 	},
 
 
@@ -53,9 +30,8 @@ app.Models.Request = Backbone.RelationalModel.extend({
 	getId : function() {
 		return this.get('id');
 	},
-	setId : function(value) {
-		if( value == 'undefined') return;
-		this.set({ id : value });
+	setId : function(value, silent) {
+		this.set({ id : value }, {silent: true});
 	},
 
 	getName : function() {

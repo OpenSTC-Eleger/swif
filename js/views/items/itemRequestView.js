@@ -3,9 +3,9 @@
 */
 app.Views.ItemRequestView = Backbone.View.extend({
 
-	tagName: 'tr',
+	tagName     : 'tr',
 
-	className: function(){
+	className   : function(){
 
 		var classRow = '';
 
@@ -19,11 +19,11 @@ app.Views.ItemRequestView = Backbone.View.extend({
 		return classRow;
 	},
 
-	templateHTML: 'items/itemRequest',
+	templateHTML : 'items/itemRequest',
 
 
 	// The DOM events //
-	events: {
+	events       : {
 		'click .buttonValidRequest'				: 'setInfoModal',
 		'click .buttonRefusedRequest'			: 'setInfoModal',
 		'click .buttonConfirmRequest'			: 'setInfoModal'
@@ -38,9 +38,6 @@ app.Views.ItemRequestView = Backbone.View.extend({
 
 		// When the model are updated //
 		this.listenTo(this.model, 'change', this.change);
-
-		// When the model are removed //
-		this.listenTo(this.model,'remove', this.destroy);
 	},
 
 
@@ -65,7 +62,7 @@ app.Views.ItemRequestView = Backbone.View.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 		 
 			var template = _.template(templateData, {
-				lang  : app.lang,
+				lang    : app.lang,
 				request : self.model
 			});
 

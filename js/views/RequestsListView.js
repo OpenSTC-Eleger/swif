@@ -70,7 +70,6 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 
 			$(self.el).html(template);
 
-
 			// Call the render Generic View //
 			app.Views.GenericListView.prototype.render(self.options);
 
@@ -369,9 +368,9 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 			this.options.sort = app.calculPageSort(this.options.sort);	
 		}
 
-		/*if(!_.isUndefined(this.options.filter)){
+		if(!_.isUndefined(this.options.filter)){
 			this.options.filter = app.calculPageFilter(this.options.filter);
-		}*/
+		}
 
 		this.options.page = app.calculPageOffset(this.options.page);
 

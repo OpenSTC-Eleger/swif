@@ -5,7 +5,7 @@ app.Models.Place = Backbone.Model.extend({
 
 
 	fields     : ["id", "name", "complete_name", "type", "service_names", "site_parent_id", "width", "length", "surface"],
-	
+
 	urlRoot    : '/api/openstc/sites',
 
 
