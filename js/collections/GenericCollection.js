@@ -7,7 +7,7 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 	
 	specialCpt : 0,
 
-	
+
 	/** count all models without restricts ( openerp search_count method call select count(*) request)
 	*/
 	count: function(options) {
@@ -24,10 +24,11 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 		}
 
 		return $.ajax({
-			url    : this.url,
-			method : "HEAD",
-			data   : paramFilter,
-			success: function(data,status,request){
+			url      : this.url,
+			method   : 'HEAD',
+			dataType : 'text',
+			data     : paramFilter,
+			success  : function(data,status,request){
 				var contentRange = request.getResponseHeader("Content-Range")
 				self.cpt = contentRange.match(/\d+$/);
 			}
@@ -38,7 +39,7 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 	specialCount: function(modelName){
 		var self = this;
 		
-		return app.callObjectMethodOE([[app.models.user.getUID()]], modelName, "getNbRequestsTodo", app.models.user.getSessionID(),{
+		return app.callObjectMethodOE([[app.models.user.getUID()]], modelName, 'getNbRequestsTodo', app.models.user.getSessionID(),{
     	
 	    	//forme de data.result (dans le callback success) : {user_id: nbActions}
 	    	success: function(data){
