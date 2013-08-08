@@ -20,7 +20,7 @@ app.Views.LoginView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize: function(user) {
-		console.log('Login view Initialize');
+		//console.log('Login view Initialize');
 	},
 
 
@@ -43,13 +43,19 @@ app.Views.LoginView = Backbone.View.extend({
 
 			$(self.el).html(template);
 
-			// Set the focus to the login input //
-			$('#loginUser').focus();
+			
+			// Set the focus to the login or password input //
+			if(!_.isNull(self.model.getUID())){
+				$('#passUser').focus();
+			}
+			else{
+				$('#loginUser').focus();
+			}
+
 		});
 
 
-
-		$(this.el).hide().fadeIn('slow');
+		$(this.el).hide().fadeIn();
 		return this;
 	},
 

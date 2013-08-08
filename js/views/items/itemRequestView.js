@@ -24,9 +24,9 @@ app.Views.ItemRequestView = Backbone.View.extend({
 
 	// The DOM events //
 	events       : {
-		'click .buttonValidRequest'				: 'setInfoModal',
-		'click .buttonRefusedRequest'			: 'setInfoModal',
-		'click .buttonConfirmRequest'			: 'setInfoModal'
+		'click .buttonValidRequest'	      : 'modalValidRequest',
+		'click .buttonRefusedRequest'	  : 'setInfoModal',
+		'click .buttonConfirmRequest'	  : 'setInfoModal'
 	},
 
 
@@ -81,7 +81,7 @@ app.Views.ItemRequestView = Backbone.View.extend({
 
 	/** Display Modal form to add/sav a new place
 	*/
-	modalCreatePlace: function(e){  
+	modalValidRequest: function(e){  
 		e.preventDefault(); e.stopPropagation();
 
 		app.views.modalPlaceView = new app.Views.ModalPlaceView({

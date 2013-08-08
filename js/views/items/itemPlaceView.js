@@ -12,7 +12,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 	// The DOM events //
 	events: {
-		'click '                   : 'modalUpdatePlace',
+		'click'                    : 'modalUpdatePlace',
 		'click a.modalDeletePlace' : 'modalDeletePlace'
 	},
 

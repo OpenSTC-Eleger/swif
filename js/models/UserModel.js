@@ -26,16 +26,12 @@ app.Models.User = Backbone.Model.extend({
 	],
 
 	defaults: {
-		uid             : '',
+		uid             : null,
 		login           : '',
 		authToken       : null,
 		lastConnection  : '',
 		firstname       : '',
 		lastname        : '',
-		service_ids		: [],
-		context			: {},
-		officers        : [],
-		teams			: [],
 		isDST			: false,
 		isManager		: false
 	},
