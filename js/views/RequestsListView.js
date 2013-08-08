@@ -368,9 +368,9 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 			this.options.sort = app.calculPageSort(this.options.sort);	
 		}
 
-		if(!_.isUndefined(this.options.filter)){
+		/*if(!_.isUndefined(this.options.filter)){
 			this.options.filter = app.calculPageFilter(this.options.filter);
-		}
+		}*/
 
 		this.options.page = app.calculPageOffset(this.options.page);
 
@@ -379,8 +379,11 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		// Create Fetch params //
 		var fetchParams = {
 			silent      : true,
-			limitOffset : {limit: app.config.itemsPerPage, offset: this.options.page.offset},
-			sortBy      : this.options.sort.by+' '+this.options.sort.order
+			data:  {
+				limit  : app.config.itemsPerPage,
+				offset : this.options.page.offset,
+				sort   : this.options.sort.by+' '+this.options.sort.order
+			}
 		};
 
 		var globalSearch = {};

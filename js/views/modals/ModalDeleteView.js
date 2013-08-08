@@ -64,13 +64,14 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 		.done(function(data){
 			self.modal.modal('hide');
 		})
+		.fail(function(){
+			app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+		})
 		.always(function(){
 			// Reset the button state //
 			$(e.target).button('reset');
 		})
-		.fail(function(){
-			app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-		})
+
 	}
 
 });

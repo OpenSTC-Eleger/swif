@@ -148,8 +148,8 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 					self.model.fetch({ data : {fields : self.model.fields} });
 				}
 			})
-			.fail(function () {
-				alert("Impossible de contacter le serveur");
+			.fail(function (e) {
+				console.log(e);
 			})
 			.always(function () {
 				$(self.el).find("button[type=submit]").button('reset');

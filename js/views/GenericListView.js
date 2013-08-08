@@ -53,6 +53,7 @@ app.Views.GenericListView = Backbone.View.extend({
 	},
 
 
+
 	/** Perform a search on the sites
 	*/
 	search: function(e){
@@ -60,15 +61,18 @@ app.Views.GenericListView = Backbone.View.extend({
 
 		var query = $(this.searchForm).val();
 
-		if(_.isEmpty(query)){
-			delete this.options.search;
-		}
-		else{
-			this.options.search = query
-		}
+		// Check if the query is valid //
+		if(this.isQueryValid(query)){
 
+			if(_.isEmpty(query)){
+				delete this.options.search;
+			}
+			else{
+				this.options.search = query
+			}
 
-		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+		}
 	},
 
 
@@ -150,5 +154,22 @@ app.Views.GenericListView = Backbone.View.extend({
 
 		return url;
 	},
+
+
+
+	isQueryValid: function(query){
+		var forbiddenChars = ['/', '%'];
+
+		var result = true;
+
+		_.each(forbiddenChars, function(itemChar, index){
+
+			if(_.str.include(query, itemChar)){
+				result = false;
+			}
+		})
+	
+		return result;
+	}
 
 });
