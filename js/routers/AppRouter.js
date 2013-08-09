@@ -203,47 +203,10 @@ app.Router = Backbone.Router.extend({
 	/** Interventions list
 	*/
 	interventions: function(page){
+		var params = {};
+		if(!_.isNull(page)){params.page = page}
+		app.views.interventions = new app.Views.InterventionsListView(params);
 		
-		var self = this;
-		
-		// Check if the user is connect //
-		if(this.checkConnect()){
-
-
-			self.page = page ? parseInt(page, 10) : 1;
-
-			
-			if(_.isUndefined(app.collections.tasks)){ app.collections.tasks = new app.Collections.Tasks(); }
-			if(_.isUndefined(app.collections.interventions)){ app.collections.interventions = new app.Collections.Interventions(); }
-			if(_.isUndefined(app.collections.categoriesTasks)){ app.collections.categoriesTasks = new app.Collections.CategoriesTasks(); }
-			if(_.isUndefined(app.collections.equipments)){ app.collections.equipments = new app.Collections.Equipments(); }
-			if(_.isUndefined(app.collections.officers)){ app.collections.officers = new app.Collections.Officers(); }
-
-
-			app.loader('display');
-
-			app.collections.tasks.fetch({
-				success: function(){
-
-					$.when(
-						app.collections.interventions.fetch(),
-						app.collections.categoriesTasks.fetch(),
-						app.collections.equipments.fetch()
-					)
-					.done(function(){
-						app.views.interventionsListView = new app.Views.InterventionsListView({page: self.page});
-						self.render(app.views.interventionsListView);
-						app.loader('hide');
-					})
-					.fail(function(e){
-						console.error(e);
-					});
-				}
-			});
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
 	},
 
 
