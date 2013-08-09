@@ -85,7 +85,8 @@
 		<% if(interventions.length > 0) { %>
 		
 			<tbody>
-			<% for (var i = startPos; i < endPos; i++) { %>
+			<% //for (var i = startPos; i < endPos; i++) 
+			for(i=0;i<interventions.length;i++){ %>
 
 				<!-- Intervention row -->
 				<tr class="row-item" id="inter_<%= interventions[i].id %>">
@@ -164,6 +165,7 @@
 								<tbody>
 									<!-- Task row -->
 									<% var task = null;
+									if(tasksFromInter.length > 0){
 									_.each(interventions[i].tasks, function (task_id, i) { %>
 										<% task = tasksFromInter.get(task_id).toJSON(); %>
 										<tr class="row-nested-objects" id="task_<%= task.id %>">
@@ -251,7 +253,9 @@
 											</td>
 
 										</tr>
-									<% }); %>
+									<% });
+									//ToRemove, for tests only
+									} %>
 								</tbody>
 							</table>
 						<% } else { %>
