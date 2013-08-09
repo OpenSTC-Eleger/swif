@@ -142,6 +142,7 @@
 	"and" 					: "et",
 	"deleteInProgress"	    : "Suppression",
 	"saveInProgress"        : "Enregistrement",
+	"validInProgress"       : "Validation",
 	"vehicleEquipment"						: "Véhicule",
 	"commercialVehicleEquipment"			: "Voiture",
 	"technicalVehicleEquipment"				: "Utilitaire",
@@ -207,7 +208,9 @@
 		"print"				: "Imprimer",
 		"selectAPlace"		: "Sélectionner un site",
 		"selectAPlaceType"	: "Sélectionner un type de site",
-		"selectServices"	: "Sélectionner des services"
+		"selectServices"	: "Sélectionner des services",
+		"selectAService"	: "Sélectionner un service",
+		"selectACategory"	: "Sélectionner une catégorie"
 	},
 
 	"errorMessages" : {

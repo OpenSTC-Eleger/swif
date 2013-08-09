@@ -1,17 +1,15 @@
 /******************************************
 * Claimers Services Collection
 */
-
-// fields = ["category_ids", "code", "id", "manager_id", "name", "service_id", "technical", "user_ids"]
-
 app.Collections.ClaimersServices = app.Collections.GenericCollection.extend({
 
-	model : app.Models.ClaimerService,
+	model        : app.Models.ClaimerService,
 
-	// Model name in the database //
-	model_name : 'openstc.service',
+	fields       : ['id', 'category_ids', 'code', 'manager_id', 'name', 'service_id', 'technical', 'user_ids'],
 
-	url: '/api/openstc/departments',
+	default_sort : { by: 'name', order: 'ASC' },
+
+	url          : '/api/openstc/departments',
 
 
 
@@ -19,12 +17,6 @@ app.Collections.ClaimersServices = app.Collections.GenericCollection.extend({
 	*/
 	initialize : function() {
 		//console.log('Claimer Service collection initialize');
-	},
-
-	/** Comparator for ordering collection
-	*/
-	comparator: function(item) {
-		return item.get('name');
 	},
 
 });

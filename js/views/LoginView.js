@@ -31,7 +31,7 @@ app.Views.LoginView = Backbone.View.extend({
 		var self = this;
 
 		// Change the page title //
-		app.router.setPageTitle(app.lang.viewsTitles.login);
+		app.router.setPageTitle(app.lang.applicationName +' '+ app.lang.viewsTitles.login);
 
 		// Retrieve the Login template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){

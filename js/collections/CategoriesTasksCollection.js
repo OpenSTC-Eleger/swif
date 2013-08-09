@@ -1,17 +1,13 @@
 /******************************************
-* Categories Collection - Task categories
+* Categories Tasks collection
 */
-
-// fields = ["code", "complete_name", "id", "name", "parent_id", "service_ids"]
-
 app.Collections.CategoriesTasks = app.Collections.GenericCollection.extend({
 
-	model: app.Models.CategoryTask,
-
-	// Model name in the database //
-	model_name : 'openstc.task.category',
+	model  : app.Models.CategoryTask,
 	
-	url: '/api/openstc/task_categories',
+	fields : ['id', 'name', 'code', 'complete_name', 'parent_id', 'service_ids'],
+
+	url    : '/api/openstc/task_categories',
 
 
 
@@ -21,10 +17,15 @@ app.Collections.CategoriesTasks = app.Collections.GenericCollection.extend({
 		//console.log('Categories collection Initialization');
 	},
 
-	/** Comparator for ordering collection
+
+
+	/** Collection Sync
 	*/
-	comparator: function(item) {
-		return item.get('complete_name');
+	sync: function(method, model, options){
+
+		options.data.fields = this.fields;
+
+		return $.when(this.count(options), Backbone.sync.call(this, method, this, options));
 	},
 
 });

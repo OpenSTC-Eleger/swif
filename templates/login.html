@@ -24,7 +24,7 @@
 			<button type="submit" class="btn btn-primary pull-right"><i class="icon-signin icon-large"></i> &nbsp;<%= _.capitalize(lang.actions.logIn) %></button>
 		</div>
 
-		<% if(user.getLastConnection() != ''){ %>
+		<% if(!_.isNull(user.getUID())){ %>
 			<small class="muted" id="lastConnection"><%= _.capitalize(lang.lastConnection) %>  <%= moment(user.getLastConnection()).format("LLL") %></small>
 		<% } %>
 

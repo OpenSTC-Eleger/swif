@@ -1,29 +1,24 @@
 /******************************************
-* Category Task Model - Task category
+* Category Task Model
 */
 app.Models.CategoryTask = Backbone.RelationalModel.extend({
 	
-	model_name : 'openstc.task.category',	
+	fields  : ['id', 'name', 'code', 'complete_name', 'parent_id', 'service_ids'],
 	
-	url: "/#category/:id",
+	urlRoot : '/api/openstc/task_categories',
 
-	relations: [
-		{
-			type: Backbone.HasMany,
-			key: 'service_ids',
-			relatedModel: 'app.Models.ClaimerService',
-			collectionType: 'app.Collections.ClaimersServices',
-			includeInJSON: ['id', 'name'],
-		},
-	  ],
 
 	defaults:{
-		id:0,
-		name: null,
-		code: null,
-		unit: null,
-		parent_id: null,
-		service_ids: [],
+		id : null,
+	},
+
+
+
+	getId : function() {
+		return this.get('id');
+	},
+	setId : function(value, silent) {
+		this.set({ id : value }, {silent: silent});
 	},
 
 	getName : function() {
@@ -73,15 +68,6 @@ app.Models.CategoryTask = Backbone.RelationalModel.extend({
 	initialize: function(){
 		//console.log('Category Request Model initialization');
 	},
-
-
-
-	/** Model Parser
-	*/
-	parse: function(response) {    	
-		return response;
-	},
-
 
 	
 	update: function(params) {

@@ -31,15 +31,14 @@ app.Models.Request = Backbone.Model.extend({
 		return this.get('id');
 	},
 	setId : function(value, silent) {
-		this.set({ id : value }, {silent: true});
+		this.set({ id : value }, {silent: silent});
 	},
 
 	getName : function() {
-		return this.get('name');
+		return _.titleize(this.get('name').toLowerCase());
 	},
-	setName : function(value) {
-		if( value == 'undefined') return;
-		this.set({ name : value });
+	setName : function(value, silent) {
+		this.set({ name : value }, {silent: silent});
 	},
 
 	getSite : function(type) {
@@ -54,9 +53,8 @@ app.Models.Request = Backbone.Model.extend({
 			}
 		}
 	},
-	setSite : function(value) {
-		if( value == 'undefined') return;
-		this.set({ site1 : value });
+	setSite : function(value, silent) {
+		this.set({ site1 : value }, {silent: silent});
 	},
 
 	getDescription : function() {
@@ -64,48 +62,48 @@ app.Models.Request = Backbone.Model.extend({
 			return this.get('description');
 		}
 	},
-	setDescription : function(value) {
-		if( value == 'undefined') return;
-		this.set({ description : value });
+	setDescription : function(value, silent) {
+		this.set({ description : value }, {silent: silent});
 	},
-	
 	
 	getRefusalReason : function() {
 		return this.get('refusal_reason');
 	},
-	setRefusalReason  : function(value) {
-		if( value == 'undefined') return;
-		this.set({ refusal_reason : value });
+	setRefusalReason  : function(value, silent) {
+		this.set({ refusal_reason : value }, {silent: silent});
 	},
-	
+
 	getState : function() {
 		return this.get('state');
 	},
-	setState : function(value) {
-		if( value == 'undefined') return;
-		this.set({ state : value });
+	setState : function(value, silent) {
+		this.set({ state : value }, {silent: silent});
 	},
-	
+
 	// Note for the DST //
 	getNote : function() {
 		return this.get('note');
 	},
 	setNote : function(value) {
-		if( value == 'undefined') return;
 		this.set({ note : value });
 	},
 
 	getService : function(type) {
+		var id = this.get('service_id')[0];
+		var name = _.titleize(this.get('service_id')[1].toLowerCase());
+
 		switch(type){
 			case 'id': 
-				return this.get('service_id')[0];
+				return id;
+			break;
+			case 'json':
+				return {id: id, name: name};
 			break;
 			default:
-				return _.capitalize(this.get('service_id')[1].toLowerCase());
+				return name;
 		}
 	},
 	setService : function(value) {
-		if( value == 'undefined') return;
 		this.set({ service_id : value });
 	},
 
@@ -178,41 +176,17 @@ app.Models.Request = Backbone.Model.extend({
 		//console.log("Request Model Initialization");
 
 		// Set the translation for the states / actions //
-		app.Models.Request.status.wait.translation = app.lang.wait;
-		app.Models.Request.status.valid.translation = app.lang.valid;
-		app.Models.Request.status.confirm.translation = app.lang.confirm;
-		app.Models.Request.status.refused.translation = app.lang.refused;
-		app.Models.Request.status.closed.translation = app.lang.finished;
+		app.Models.Request.status.wait.translation     = app.lang.wait;
+		app.Models.Request.status.valid.translation    = app.lang.valid;
+		app.Models.Request.status.confirm.translation  = app.lang.confirm;
+		app.Models.Request.status.refused.translation  = app.lang.refused;
+		app.Models.Request.status.closed.translation   = app.lang.finished;
 
-		app.Models.Request.actions.valid.translation = app.lang.actions.validate;
+		app.Models.Request.actions.valid.translation   = app.lang.actions.validate;
 		app.Models.Request.actions.confirm.translation = app.lang.actions.confirmChief;
 		app.Models.Request.actions.refused.translation = app.lang.actions.refuse;
 
 	},
-
-
-
-	/** Save Model
-	*/
-	save: function(data,options) { 
-		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
-	},
-
-
-	update: function(params) {
-		this.setDescription( params.description );
-		this.setState( params.state );
-		this.setRefusalReason( params.refusal_reason );
-		this.setNote( params.note );
-	},
-
-
-
-	valid: function(params, options) {
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "valid", app.models.user.getSessionID(), options);
-	},
-
-
 
 }, {
 

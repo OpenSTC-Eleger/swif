@@ -27,11 +27,7 @@ app.Models.User = Backbone.Model.extend({
 
 	defaults: {
 		uid             : null,
-		login           : '',
 		authToken       : null,
-		lastConnection  : '',
-		firstname       : '',
-		lastname        : '',
 		isDST			: false,
 		isManager		: false
 	},
@@ -310,10 +306,7 @@ app.Models.User = Backbone.Model.extend({
 				401: function () {
 					app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
 				}
-			},
-			complete   : function(){
-				app.loader('hide');
-			},
+			}
 		})
 	},
 

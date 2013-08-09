@@ -30,7 +30,7 @@ app.Models.Place = Backbone.Model.extend({
 		return this.get('id');
 	},
 	setId : function(value, silent) {
-		this.set({ id : value }, {silent: true});
+		this.set({ id : value }, {silent: silent});
 	},
 
 	getName : function() {

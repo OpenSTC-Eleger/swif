@@ -40,7 +40,7 @@
 			<label for="placeType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
 
 			<div class="controls">
-				<input id="placeType" class="select2" style="width: 66%" required="required" data-placeholder="<%= lang.actions.selectAPlaceType %>"
+				<input id="placeType" class="select2" style="width: 66%" required data-placeholder="<%= lang.actions.selectAPlaceType %>"
 
 					<% if(!_.isNull(place.getId())){
 						if(!_.isUndefined(place.getType('id'))) { %>
@@ -121,5 +121,6 @@
 	>
 		<%= _.capitalize(lang.actions.save) %>
 	</button>&nbsp;&nbsp;
+
 	<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
 </div>

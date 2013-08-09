@@ -5,7 +5,7 @@ app.Collections.Places = app.Collections.GenericCollection.extend({
 
 	model        : app.Models.Place,
 
-	fields       : ['id', 'actions', 'complete_name', 'service_names', 'site_parent_id', 'surface'],
+	fields       : ['id', 'actions', 'name', 'complete_name', 'service_names', 'site_parent_id', 'surface'],
 
 	default_sort : { by: 'name', order: 'ASC' },
 
@@ -29,15 +29,5 @@ app.Collections.Places = app.Collections.GenericCollection.extend({
 
 		return $.when(this.count(options), Backbone.sync.call(this, method, this, options));
 	},
-
-
-
-	/** Collection Parse
-	*/
-	parse: function(response, options) {
-		this.reset(response);
-		return response;
-	}
-
 
 });

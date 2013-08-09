@@ -75,7 +75,6 @@ var app = {
 				app.models.place                = new app.Models.Place();
 				app.models.service              = new app.Models.ClaimerService();
 				app.models.categoryTask         = new app.Models.CategoryTask();
-				app.models.categoryIntervention = new app.Models.CategoryIntervention();
 				app.models.claimerContact       = new app.Models.ClaimerContact();
 				app.models.claimerType          = new app.Models.ClaimerType();
 

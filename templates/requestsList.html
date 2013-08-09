@@ -109,6 +109,14 @@
 
 
 
+<!-- Modal form to valid a request -->
+<div id="modalValidRequest" class="modal hide fade"></div>
+
+<!-- Modal form to refuse a request -->
+<div id="modalRefuseRequest" class="modal hide fade" data-backdrop="static"></div>
+
+<!-- Modal form to Confirm a request -->
+<div id="modalRefusedRequest" class="modal hide fade" data-backdrop="static"></div>
 
 
 
@@ -126,146 +134,10 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- Modal Form to validate the Request -->
-<div id="modalValidRequest" class="modal hide fade">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h3><%= lang.viewsTitles.validRequest %></h3>
-	</div>
-
-	<div class="modal-body">
-
-		<form id="formValidRequest" action="#" class="form-horizontal">
-
-			<!-- Request name -->
-			<div class="control-group">
-				<label for="requestName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
-
-				<div class="controls">
-					<input type="text" id="requestName" name="requestName" readonly />
-					<span class="help-inline"></span>
-				</div>
-			</div>
-
-			<!-- Intervention Request Catégory -->
-			<div class="control-group">
-				<label for="requestAssignement" class="control-label"><%= _.capitalize(lang.category) %>:</label>
-
-				<div class="controls">
-					<select id="requestAssignement" name="requestAssignement" required="required"></select>
-					<span class="help-inline"></span>
-				</div>
-			</div>
-
-			<!-- Request Service -->
-			<div class="control-group">
-				<label for="requestService" class="control-label"><%= lang.serviceConcerned %>:</label>
-
-				<div class="controls">
-					<select id="requestService" name="requestService" required="required"></select>
-					<span class="help-inline"></span>
-				</div>
-			</div>
-
-			<!-- intervention DeadLine -->
-			<div class="control-group">
-				<label class="control-label" for="requestDateDeadline"><%= _.capitalize(lang.dateDeadline) %>:</label>
-				<div class="controls">
-					<div class="input-append">
-					<input 
-						type="text" class="datepicker input-small"
-						id="requestDateDeadline" 
-						value="<%= moment().add('w', 1).format('L') %>" 
-						placeholder="dd/mm/yyyy"
-						required="required">
-						<span class="add-on"><i class="icon-calendar"></i></span>
-					</div>
-					<span class="help-inline"></span>
-				</div>
-			</div>
-
-			<!-- Request Note description -->
-			<div class="control-group">
-				<label for="requestNote" class="control-label"><%= _.capitalize(lang.note) %>:</label>
-
-				<div class="controls">
-					<textarea id="requestNote" rows="5" required="required"></textarea>
-					<span class="help-inline"></span>
-				</div>
-			</div>
-
-
-			<!-- Create Associated Task Link -->
-			<div class="control-group">
-				<div class="controls">
-					<label class="checkbox" for="createAssociatedTask"><input type="checkbox" id="createAssociatedTask"> <%= lang.actions.createAssociatedTask %></label>
-				</div>
-			</div>
-
-
-			<!-- Create associate task -->
-			<fieldset class="associated-task hide">
-				<legend><%= lang.aboutTheTask %></legend>
-
-				<!-- Estimated hour -->
-				<div class="control-group">
-					<label for="taskHour" class="control-label"><%= lang.estimatedHours %>:</label>
-					<div class="controls">
-						<div class="input-append bootstrap-timepicker" >							
-							<input type="text" value="01:00" class="timepicker-default input-small" id='taskHour' required="required">
-							<span class="add-on"><i class="icon-time"></i></span>
-						</div>
-					</div>
-				</div>
-
-				<!-- Task Category -->
-				<div class="control-group">
-					<label for="taskCategory" class="control-label"><%= _.capitalize(lang.category) %>:</label>
-
-					<div class="controls">
-						<select id="taskCategory"></select>
-						<span class="help-inline"></span>
-					</div>
-				</div>
-
-			</fieldset>
-
-		</form>
-	</div>
-
-	<div class="modal-footer">
-		<button type="submit" form="formValidRequest" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
-		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
-	</div>
-</div>
 
 
 <!-- Modal Form ton Refuse the Request -->
-<div id="modalRefusedRequest" class="modal hide fade">
+<div id="modalRefufrfsedRequest" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3><%= lang.viewsTitles.refuseRequest %></h3>
@@ -300,7 +172,7 @@
 
 
 <!-- Modal Form ton submit to the DST -->
-<div id="modalConfirmRequest" class="modal hide fade">
+<div id="modalConfirmRefrquest" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3><%= lang.viewsTitles.confirmChief %></h3>

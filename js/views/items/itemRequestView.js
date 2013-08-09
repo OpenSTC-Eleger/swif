@@ -25,8 +25,8 @@ app.Views.ItemRequestView = Backbone.View.extend({
 	// The DOM events //
 	events       : {
 		'click .buttonValidRequest'	      : 'modalValidRequest',
-		'click .buttonRefusedRequest'	  : 'setInfoModal',
-		'click .buttonConfirmRequest'	  : 'setInfoModal'
+		'click .buttonRefusedRequest'	  : 'modalRefusedRequest',
+		'click .buttonConfirmRequest'	  : 'modalConfirmRequest'
 	},
 
 
@@ -81,29 +81,15 @@ app.Views.ItemRequestView = Backbone.View.extend({
 
 	/** Display Modal form to add/sav a new place
 	*/
-	modalValidRequest: function(e){  
+	modalValidRequest: function(e){
 		e.preventDefault(); e.stopPropagation();
 
-		app.views.modalPlaceView = new app.Views.ModalPlaceView({
-			el      : '#modalSavePlace',
-			model   : this.model,
-			elFocus : $(e.target).data('form-id')
+		app.views.modalValidRequestView = new app.Views.ModalValidRequestView({
+			el      : '#modalValidRequest',
+			model   : this.model
 		});
 	},
 
-
-
-	/** Modal to remove a place
-	*/
-	modalDeletePlace: function(e){
-		e.preventDefault(); e.stopPropagation();
-
-		app.views.modalDeleteView = new app.Views.ModalDeleteView({
-			el         : '#modalDeletePlace',
-			model      : this.model,
-			collection : app.collections.places
-		});
-	},
 
 
 	/** Highlight the row item

@@ -2,22 +2,13 @@
 * Claimer Service Model
 */
 app.Models.ClaimerService = Backbone.RelationalModel.extend({
-    
-	model_name : 'openstc.service',	
-	
-	url: "/#demandeurs-services/:id",
+ 
 
-	relations: [ 
-		{
-			type: Backbone.HasMany,
-			key: 'user_ids',
-			relatedModel: 'app.Models.Officer',
-			collectionType: 'app.Collections.Officers',
-			includeInJSON: ['id', 'name', 'firstname', 'login', 'user_email', 'date', 'groups_id'],	
-		},
-      ],
-
+	fields   : ['id', 'actions', 'name', 'complete_name', 'service_names', 'site_parent_id', 'surface'],
 	
+	urlRoot  : '/api/openstc/sites',
+
+		
 	/** Model Initialization
 	*/
     initialize: function(){

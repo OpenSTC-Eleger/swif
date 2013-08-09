@@ -9,13 +9,13 @@
 		data-original-title="<%= _.capitalize(lang.about) %>"
 		data-delay="160"
 		data-content="<%= _(request.getDescription()).escapeHTML() %><hr /><%= app.lang.createdBy %>: <%= request.getCreateAuthor() %>">
-		<%= _.capitalize(request.getName()) %>
+		<%= request.getName() %>
 	</a>
 </td>
 
 
 <!-- Place -->
-<td class="hidden-phone"><%= _.capitalize(request.getSite()) %></td>
+<td class="hidden-phone"><%= request.getSite() %></td>
 
 <!-- Service -->
 <td>
@@ -100,7 +100,7 @@
 			<ul class="dropdown-menu pull-right text-left">
 				<% _.each(actions, function(action){ %>
 					<li>
-						<a href="#modal<%= _.capitalize(app.Models.Request.actions[action].key) %>Request" data-toggle="modal" class="button<%= _.capitalize(app.Models.Request.actions[action].key) %>Request">
+						<a href="#" class="button<%= _.capitalize(app.Models.Request.actions[action].key) %>Request">
 							<i class="<%= app.Models.Request.actions[action].icon %> icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.Models.Request.actions[action].translation) %>
 						</a>
 					</li>

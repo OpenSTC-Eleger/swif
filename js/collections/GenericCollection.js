@@ -5,6 +5,8 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 
 	cpt        : 0,
 
+	default_sort : { by: 'id', order: 'DESC' },
+
 
 	/** count all models without restricts ( openerp search_count method call select count(*) request)
 	*/

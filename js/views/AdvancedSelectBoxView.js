@@ -4,7 +4,9 @@
 app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 	
 
-	select2: null,
+	select2      : null,
+
+	searchParams : [],
 
 
 	/** View Initialization
@@ -39,32 +41,33 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 			placeholder        : placeholder,
 			multiple           : multiple, 
 			minimumInputLength : minimumInputLength,
-			width: 'resolve',
+			width              : 'resolve',
 			query: function(query){
 
-				// [The query, [], comparator, {}, the limit ] //
-				var params = [query.term, [], 'ilike', {}, 9999];
+				var params = [];
+				params.push({ field : 'name', operator : 'ilike', value : query.term});
+				// Set all the search params in the params for the query //
+				if(!_.isEmpty(self.searchParams)){
+					_.each(self.searchParams, function(query, index){
+						params.push(query);
+					})
+				}
 
 				$.ajax({
 					url: self.collection_url,
-					method: 'get',
+					method: 'GET',
 					data: {
-						fields: ['id','name'],
-						filters: app.objectifyFilters([{
-							field: 'name',
-							operator:'ilike',
-							value:query.term
-						}])
+						fields  : ['id', 'name'],
+						filters : app.objectifyFilters(params)
 					}
-
 				}).done(function(data){
 
 						var returnData = {results: []};
 
 						_.each(data, function(item, index){
 							returnData.results.push({
-								id: item.id,
-								text: _.titleize(item.name.toLowerCase())
+								id   : item.id,
+								text : _.titleize(item.name.toLowerCase())
 							});
 						});
 
@@ -180,5 +183,25 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 		this.select2.select2('data', null);
 	},
 
+
+
+	/** Set a search params
+	*/
+	setSearchParam: function(query, reset){
+		if(reset){
+			this.resetSearchParams();
+			console.log('je reset les params');
+		}
+
+		this.searchParams.push(query);
+	},
+
+
+
+	/** Reset the search Params
+	*/
+	resetSearchParams: function(){
+		this.searchParams = [];
+	}
 
 });

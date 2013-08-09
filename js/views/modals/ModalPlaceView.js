@@ -85,26 +85,6 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 
 
-	/** Trigger when the modal is shown
-	*/
-	shown: function(){
-
-		// Set the focus to the first input of the form if elFocus is undefined //
-		if(_.isUndefined(this.options.elFocus)){
-			this.modal.find('input, textarea').first().focus();
-		}
-		else{
-			if($('#'+this.options.elFocus).hasClass('select2')){
-				$('#'+this.options.elFocus).select2('open');	
-			}
-			else{
-				this.modal.find('#'+this.options.elFocus).focus();	
-			}
-		}
-	},
-
-
-
 	/** Delete the model pass in the view
 	*/
 	savePlace: function(e){
