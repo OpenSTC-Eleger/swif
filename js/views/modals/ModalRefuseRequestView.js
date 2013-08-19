@@ -64,11 +64,15 @@ app.Views.ModalRefuseRequestView = app.Views.GenericModalView.extend({
 		// Set the button in loading State //
 		$(this.el).find("button[type=submit]").button('loading');
 
-/*
-		// Set the properties of the model //
-		this.model.setRefusalReason(this.$('#motifRefuse').val(), true);
 
-		this.model.save()
+		var params = {
+			refusal_reason : $('#motifRefuse').val(),
+			state          : app.Models.Request.status.refused.key
+		}
+
+
+		// Save Only the params //
+		this.model.save(params, {patch: true, silent: true})
 			.done(function(data) {
 				self.modal.modal('hide');
 				self.model.fetch({ data : {fields : self.model.fields} });
@@ -78,10 +82,7 @@ app.Views.ModalRefuseRequestView = app.Views.GenericModalView.extend({
 			})
 			.always(function () {
 				$(self.el).find("button[type=submit]").button('reset');
-			});*/
-
-
-		alert('TODO');
-	},
+			});
+	}
 
 });

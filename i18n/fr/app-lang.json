@@ -278,7 +278,8 @@
 		"teamDeleteOk"			: "Equipe correctement supprimée",
 		"teamSaveOk"			: "Equipe correctement enregistrée",
 		"taskDeleteOk"			: "Tâche correctement supprimée",
-		"taskSaveOk"			: "Tâche correctement enregistrée"
+		"taskSaveOk"			: "Tâche correctement enregistrée",
+		"requestRefuseOk"       : "Demande d'intervention refusée"
 	},
 
 	"viewsTitles" : {

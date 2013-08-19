@@ -94,7 +94,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		// Set the button in loading State //
 		$(this.el).find("button[type=submit]").button('loading');
 
-		
+
 		// Set the properties of the model //
 		this.model.setName(this.$('#placeName').val(), true);
 		this.model.setServices(app.views.advancedSelectBoxPlaceServices.getSelectedItems(), true);

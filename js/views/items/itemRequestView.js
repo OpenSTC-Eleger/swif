@@ -48,7 +48,7 @@ app.Views.ItemRequestView = Backbone.View.extend({
 
 		this.render();
 		this.highlight();
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.requestRefuseOk);
 	},
 
 
@@ -130,11 +130,11 @@ app.Views.ItemRequestView = Backbone.View.extend({
 		// Once the CSS3 animation are end the class are removed //
 		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
 			function(e) {
-		    $(self.el).removeClass('highlight');
-		    deferred.resolve();
+				$(self.el).removeClass('highlight');
+				deferred.resolve();
 		});
 
-    	return deferred;
+		return deferred;
 	}
 
 
