@@ -431,10 +431,13 @@ var app = {
 
 		var search = [];
 
+		// Is Number //
 		function isNumber(n) {
 			return !isNaN(parseFloat(n)) && isFinite(n);
 		};
 
+		
+		// Convert Field Filters //
 		function convertFieldFilters(fieldsFilters) {
 			var convertedFilters = [];
 

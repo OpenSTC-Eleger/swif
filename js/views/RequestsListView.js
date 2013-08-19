@@ -13,10 +13,7 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 	events: function(){
 		return _.defaults({
 			'click #filterStateRequestList li a' 	: 'setFilterState',
-			'click #badgeActions[data-filter!=""]'  : 'badgeFilter',
-
-			'submit #formRefuseRequest' 			: 'refuseRequest',
-			'submit #formConfirmDSTRequest' 		: 'confirmDSTRequest',
+			'click #badgeActions[data-filter!=""]'  : 'badgeFilter'
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -85,9 +82,11 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 			app.views.paginationView.render();
 
 
+
 			
 			// Render Filter Link on the Table //
 			if(!_.isUndefined(self.options.filter)){
+
 				$('#filterStateRequest').removeClass('filter-disabled');
 				$('#filterStateRequestList li.delete-filter').removeClass('disabled');
 
@@ -136,6 +135,7 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		// Set the filter value in the options of the view //
 		if(filterValue != ''){
 			this.options.filter = { by: 'state', value: filterValue};
+			delete this.options.search;
 		}
 
 		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
@@ -160,14 +160,13 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 			this.options.sort = app.calculPageSort(this.options.sort);	
 		}
 
+		this.options.page = app.calculPageOffset(this.options.page);
+
 		if(!_.isUndefined(this.options.filter)){
 			this.options.filter = app.calculPageFilter(this.options.filter);
 		}
 
-		this.options.page = app.calculPageOffset(this.options.page);
-
-
-	
+			
 		// Create Fetch params //
 		var fetchParams = {
 			silent     : true,
@@ -187,14 +186,15 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		}
 
 		if(!_.isEmpty(globalSearch)){
-			fetchParams.search = app.calculSearch(globalSearch, app.Models.Request.prototype.searchable_fields);
+			fetchParams.data.filters = app.calculSearch(globalSearch, app.Models.Request.prototype.searchable_fields);
 		}
+
 
 
 		// Fetch the collections //
 		app.loader('display');
 		return $.when(self.collection.fetch(fetchParams))
-		.fail(function(){
+		.fail(function(e){
 			console.log(e);
 		})
 		.always(function(){
