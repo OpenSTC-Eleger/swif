@@ -25,6 +25,9 @@ app.Collections.Places = app.Collections.GenericCollection.extend({
 	*/
 	sync: function(method, model, options){
 
+		if (typeof options.data === "undefined") {
+			options.data = {};
+		}
 		options.data.fields = this.fields;
 
 		return $.when(this.count(options), Backbone.sync.call(this, method, this, options));
