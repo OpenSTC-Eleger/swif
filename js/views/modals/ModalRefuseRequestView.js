@@ -10,7 +10,7 @@ app.Views.ModalRefuseRequestView = app.Views.GenericModalView.extend({
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'submit #formRefuseRequest'     : 'refuseRequest'
+			'submit #formRefuseRequest'   : 'refuseRequest'
 		}, 
 			app.Views.GenericModalView.prototype.events
 		);
@@ -66,8 +66,8 @@ app.Views.ModalRefuseRequestView = app.Views.GenericModalView.extend({
 
 
 		var params = {
-			refusal_reason : $('#motifRefuse').val(),
-			state          : app.Models.Request.status.refused.key
+			state          : app.Models.Request.status.refused.key,
+			refusal_reason : $('#motifRefuse').val()
 		}
 
 

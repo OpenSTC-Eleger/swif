@@ -28,21 +28,24 @@ app.Collections.Requests = app.Collections.GenericCollection.extend({
 	specialCount: function(){
 		var self = this;
 
-		//construct a domain accrding to user group
-		var domain = { field : 'state', operator : '=' };
+		// Construct a domain accrding to user group //
 		if(app.models.user.isDST()){
-			domain.value = app.Models.Request.status.confirm.key;
+			var domain = [
+				{ field : 'state', operator : '=', value : app.Models.Request.status.confirm.key }
+			];
 		}
 		else if(app.models.user.isManager()){
-			domain.value = app.Models.Request.status.wait.key;
+			var domain = [
+				{ field : 'state', operator : '=', value : app.Models.Request.status.wait.key },
+				{ field : 'service_id.id', operator : 'in', value : app.models.user.getServices() }
+			];
 		}
-
 
 		return $.ajax({
 			url      : this.url,
 			method   : 'HEAD',
 			dataType : 'text',
-			data     : {filters: {0: domain}},
+			data     : {filters: app.objectifyFilters(domain)},
 			success  : function(data, status, request){
 				var contentRange = request.getResponseHeader("Content-Range")
 				self.specialCpt = contentRange.match(/\d+$/);

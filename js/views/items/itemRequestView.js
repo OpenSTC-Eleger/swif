@@ -9,7 +9,7 @@ app.Views.ItemRequestView = Backbone.View.extend({
 
 		var classRow = '';
 
-		if(this.model.getState() == app.Models.Request.status.wait.key && app.models.user.isManager()) {
+		if(this.model.getState() == app.Models.Request.status.wait.key && app.models.user.isManager() && _.contains(app.models.user.getServices(), this.model.getService('id'))) {
 			classRow = app.Models.Request.status.wait.color + ' bolder';
 		}
 		else if(this.model.getState() == app.Models.Request.status.confirm.key && app.models.user.isDST()){
@@ -44,11 +44,21 @@ app.Views.ItemRequestView = Backbone.View.extend({
 
 	/** When the model ara updated //
 	*/
-	change: function(e){
+	change: function(model){
 
 		this.render();
 		this.highlight();
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.requestRefuseOk);
+
+
+		// Set the info message for the notification //
+		if(model.getState() == app.Models.Request.status.refused.key){
+			var infoMessage = app.lang.infoMessages.requestRefuseOk;
+		}
+		else if(model.getState() == app.Models.Request.status.confirm.key){
+			var infoMessage = app.lang.infoMessages.requestConfirmOk;
+		}
+
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+infoMessage);
 	},
 
 

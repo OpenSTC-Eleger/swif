@@ -279,7 +279,8 @@
 		"teamSaveOk"			: "Equipe correctement enregistrée",
 		"taskDeleteOk"			: "Tâche correctement supprimée",
 		"taskSaveOk"			: "Tâche correctement enregistrée",
-		"requestRefuseOk"       : "Demande d'intervention refusée"
+		"requestRefuseOk"       : "Demande d'intervention refusée",
+		"requestConfirmOk"      : "Demande d'intervention remontée au DST"
 	},
 
 	"viewsTitles" : {
