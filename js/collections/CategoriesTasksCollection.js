@@ -3,18 +3,20 @@
 */
 app.Collections.CategoriesTasks = app.Collections.GenericCollection.extend({
 
-	model  : app.Models.CategoryTask,
-	
-	fields : ['id', 'name', 'code', 'complete_name', 'parent_id', 'service_ids'],
+	model        : app.Models.CategoryTask,
 
-	url    : '/api/openstc/task_categories',
+	fields       : ['id', 'name', 'code', 'complete_name', 'parent_id', 'service_ids'],
+
+	default_sort : { by: 'name', order: 'ASC' },
+
+	url          : '/api/openstc/task_categories',
 
 
 
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
-		//console.log('Categories collection Initialization');
+		//console.log('Categories Tasks Collection Initialization');
 	},
 
 

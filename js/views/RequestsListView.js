@@ -170,8 +170,8 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 	
 		// Create Fetch params //
 		var fetchParams = {
-			silent      : true,
-			data:  {
+			silent     : true,
+			data       : {
 				limit  : app.config.itemsPerPage,
 				offset : this.options.page.offset,
 				sort   : this.options.sort.by+' '+this.options.sort.order

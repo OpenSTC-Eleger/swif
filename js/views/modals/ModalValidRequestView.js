@@ -148,7 +148,7 @@ app.Views.ModalValidRequestView = app.Views.GenericModalView.extend({
 				$(self.el).find("button[type=submit]").button('reset');
 			});*/
 
-		console.log('TODO');
+		alert('TODO');
 	},
 
 
@@ -165,7 +165,7 @@ app.Views.ModalValidRequestView = app.Views.GenericModalView.extend({
 
 		// Set the search params for the Task Category //
 		if(app.views.advancedSelectBoxRequestServiceView.getSelectedItem() != ''){
-			app.views.advancedSelectBoxTaskcategoryView.setSearchParam({ field : 'service_ids', operator : '=', value : app.views.advancedSelectBoxRequestServiceView.getSelectedItem()}, true);
+			app.views.advancedSelectBoxTaskcategoryView.setSearchParam({ field : 'service_ids.id', operator : '=', value : app.views.advancedSelectBoxRequestServiceView.getSelectedItem()}, true);
 		}
 	},
 
@@ -176,8 +176,7 @@ app.Views.ModalValidRequestView = app.Views.GenericModalView.extend({
 	filterTaskCategories: function(e){
 
 		if(app.views.advancedSelectBoxRequestServiceView.getSelectedItem() != ''){
-			app.views.advancedSelectBoxTaskcategoryView.reset();
-			app.views.advancedSelectBoxTaskcategoryView.setSearchParam({ field : 'service_ids', operator : '=', value : app.views.advancedSelectBoxRequestServiceView.getSelectedItem()}, true);
+			app.views.advancedSelectBoxTaskcategoryView.setSearchParam({ field : 'service_ids.id', operator : '=', value : app.views.advancedSelectBoxRequestServiceView.getSelectedItem()}, true);
 		}
 	}
 

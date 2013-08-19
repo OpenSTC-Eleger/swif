@@ -190,7 +190,6 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 	setSearchParam: function(query, reset){
 		if(reset){
 			this.resetSearchParams();
-			console.log('je reset les params');
 		}
 
 		this.searchParams.push(query);
