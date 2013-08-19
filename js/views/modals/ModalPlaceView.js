@@ -6,7 +6,6 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 	templateHTML : 'modals/modalPlace',
 
-	modal        : null,
 
 
 	// The DOM events //

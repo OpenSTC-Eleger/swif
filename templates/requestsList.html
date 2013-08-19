@@ -116,7 +116,7 @@
 <div id="modalRefuseRequest" class="modal hide fade" data-backdrop="static"></div>
 
 <!-- Modal form to Confirm a request -->
-<div id="modalRefusedRequest" class="modal hide fade" data-backdrop="static"></div>
+<div id="modalConfirmRequest" class="modal hide fade" data-backdrop="static"></div>
 
 
 
@@ -133,46 +133,10 @@
 
 
 
-
-
-
-<!-- Modal Form ton Refuse the Request -->
-<div id="modalRefufrfsedRequest" class="modal hide fade">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h3><%= lang.viewsTitles.refuseRequest %></h3>
-	</div>
-	
-	<div class="modal-body">
-
-		<blockquote id="infoModalRefusedRequest" class="spaceBottom">
-			<p></p>
-			<small></small>
-		</blockquote>
-
-		<form id="formRefuseRequest" action="#" class="form-horizontal">
-		
-			<!-- Request Refuse description -->
-			<div class="control-group">
-				<label for="motifRefuse" class="control-label"><%= _.capitalize(lang.refusalReason) %>:</label>
-
-				<div class="controls">
-					<textarea id="motifRefuse" rows="5" required="required"></textarea>
-					<span class="help-inline"></span>
-				</div>
-			</div>
-		</form>
-	</div>
-	
-	<div class="modal-footer">
-		<button type="submit" form="formRefuseRequest" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
-		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
-	</div>
-</div>
 
 
 <!-- Modal Form ton submit to the DST -->
-<div id="modalConfirmRefrquest" class="modal hide fade">
+<div id="modalConfirmRdfgefrquest" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3><%= lang.viewsTitles.confirmChief %></h3>

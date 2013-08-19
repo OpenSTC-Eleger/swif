@@ -4,7 +4,7 @@
 app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 
 
-	templateHTML: 'modals/modalDelete',
+	templateHTML : 'modals/modalDelete',
 
 
 	// The DOM events //

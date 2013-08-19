@@ -25,7 +25,7 @@ app.Views.ItemRequestView = Backbone.View.extend({
 	// The DOM events //
 	events       : {
 		'click .buttonValidRequest'	      : 'modalValidRequest',
-		'click .buttonRefusedRequest'	  : 'modalRefusedRequest',
+		'click .buttonRefusedRequest'	  : 'modalRefuseRequest',
 		'click .buttonConfirmRequest'	  : 'modalConfirmRequest'
 	},
 
@@ -79,13 +79,26 @@ app.Views.ItemRequestView = Backbone.View.extend({
 
 
 
-	/** Display Modal form to add/sav a new place
+	/** Display Modal form to valid an Intervention Request
 	*/
 	modalValidRequest: function(e){
 		e.preventDefault(); e.stopPropagation();
 
 		app.views.modalValidRequestView = new app.Views.ModalValidRequestView({
 			el      : '#modalValidRequest',
+			model   : this.model
+		});
+	},
+
+
+
+	/** Display Modal form to Refuse an Intervention Request
+	*/
+	modalRefuseRequest: function(e){
+		e.preventDefault(); e.stopPropagation();
+
+		app.views.modalRefuseRequestView = new app.Views.ModalRefuseRequestView({
+			el      : '#modalRefuseRequest',
 			model   : this.model
 		});
 	},

@@ -6,8 +6,6 @@ app.Views.ModalValidRequestView = app.Views.GenericModalView.extend({
 
 	templateHTML : 'modals/modalValidRequest',
 
-	modal        : null,
-
 
 	// The DOM events //
 	events: function(){
@@ -98,7 +96,7 @@ app.Views.ModalValidRequestView = app.Views.GenericModalView.extend({
 				date_deadline: new moment($('#requestDateDeadline').val(), 'DD-MM-YYYY').add('hours',2).toDate(),
 				description: $('#requestNote').val(),
 				intervention_assignement_id: $('#requestAssignement').val(),
-				service_id: $('#requestService').val(),	
+				service_id: $('#requestService').val(),
 				site1: this.model.getSite1()[0],
 				planned_hours: mDuration.asHours(),
 				category_id: _($('#taskCategory').val()).toNumber(),
@@ -117,7 +115,7 @@ app.Views.ModalValidRequestView = app.Views.GenericModalView.extend({
 
 		/*
 		// Set the properties of the model //
-		this.model.setName(this.$('#placeName').val(), true);
+		this.model.setRefusalReason(this.$('#placeName').val(), true);
 		this.model.setServices(app.views.advancedSelectBoxPlaceServices.getSelectedItems(), true);
 		this.model.setType(app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(), true);
 		this.model.setParentPlace(app.views.advancedSelectBoxPlaceParentView.getSelectedItem(), true);

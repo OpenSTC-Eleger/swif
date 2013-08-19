@@ -109,6 +109,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 	},
 
 
+
 	/** Highlight the row item
 	*/
 	highlight: function(){
