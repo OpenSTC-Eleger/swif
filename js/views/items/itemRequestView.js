@@ -105,6 +105,19 @@ app.Views.ItemRequestView = Backbone.View.extend({
 
 
 
+	/** Display Modal form to Confirm an Intervention Request
+	*/
+	modalConfirmRequest: function(e){
+		e.preventDefault(); e.stopPropagation();
+
+		app.views.modalConfirmRequestView = new app.Views.ModalConfirmRequestView({
+			el      : '#modalConfirmRequest',
+			model   : this.model
+		});
+	},
+
+
+
 	/** Highlight the row item
 	*/
 	highlight: function(){
