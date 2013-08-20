@@ -508,34 +508,34 @@ var app = {
 		switch(notifyModel){
 			case 'large' :
 				var addClass = 'stack-bar-top big-icon';
-				var width = '50%';
-				var delay = 4500;
-				var hide = true;
+				var width    = '50%';
+				var delay    = 4500;
+				var hide     = true;
 			break;
 
 			default:
 				var addClass = '';
-				var width = '320px';
-				var delay = 4500;
-				var hide = true;
+				var width    = '320px';
+				var delay    = 4500;
+				var hide     = true;
 			break;
 
 		}
 
 		$.pnotify({
-			title: title,
-			text: message,
-			addclass: addClass,
-			width: width,
-			type: type,
-			hide: hide,
+			title        : title,
+			text         : message,
+			addclass     : addClass,
+			width        : width,
+			type         : type,
+			hide         : hide,
 			animate_speed: 'normal',
-			opacity: .9,
-			icon: true,
-			animation: 'slide',
-			closer: true,
-			closer_hover: false,
-			delay: delay
+			opacity      : .9,
+			icon         : true,
+			animation    : 'slide',
+			closer       : true,
+			closer_hover : false,
+			delay        : delay
 		});
 	}
 

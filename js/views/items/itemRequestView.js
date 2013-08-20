@@ -45,9 +45,14 @@ app.Views.ItemRequestView = Backbone.View.extend({
 	/** When the model ara updated //
 	*/
 	change: function(model){
+		var self = this;
 
 		this.render();
-		this.highlight();
+
+		// Highlight the Row and recalculate the className //
+		this.highlight().done(function(){
+			self.$el.attr('class', _.result(self, 'className'));
+		});
 
 
 		// Set the info message for the notification //
@@ -59,6 +64,9 @@ app.Views.ItemRequestView = Backbone.View.extend({
 		}
 
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+infoMessage);
+
+		// Partial Render //
+		app.views.requestsListView.partialRender();
 	},
 
 
@@ -68,8 +76,10 @@ app.Views.ItemRequestView = Backbone.View.extend({
 	render : function() {
 		var self = this;
 
+
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
+
 		 
 			var template = _.template(templateData, {
 				lang    : app.lang,
@@ -81,7 +91,6 @@ app.Views.ItemRequestView = Backbone.View.extend({
 			// Set the Tooltip / Popover //
 			$('*[data-toggle="tooltip"]').tooltip();
 			$('*[data-toggle="popover"]').popover({trigger: 'hover'});
-
 		});
 
 		return this;
