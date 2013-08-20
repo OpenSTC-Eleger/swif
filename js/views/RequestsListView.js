@@ -124,7 +124,11 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 	setFilterState: function(e){
 		e.preventDefault();
 
-		var filterValue = _($(e.target).attr('href')).strRightBack('#');
+		if($(e.target).is('i')){
+			var filterValue = _($(e.target).parent().attr('href')).strRightBack('#');
+		}else{
+			var filterValue = _($(e.target).attr('href')).strRightBack('#');
+		}
 
 		// Set the filter value in the options of the view //
 		if(filterValue != 'delete-filter'){
