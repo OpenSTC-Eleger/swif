@@ -3,12 +3,13 @@
 */
 app.Collections.Teams = app.Collections.GenericCollection.extend({
 
-	model: app.Models.Team,
+	model        : app.Models.Team,
 
-	// Model name in the database //
-	model_name : 'openstc.team',
+	fields       : ['id', 'name', 'actions', 'free_user_ids', 'manager_id', 'service_ids', 'tasks', 'user_ids'],
 
-	url: 'teams',
+	default_sort : { by: 'name', order: 'ASC' },
+
+	url          : '/api/openstc/teams',
 
 
 
@@ -22,26 +23,14 @@ app.Collections.Teams = app.Collections.GenericCollection.extend({
 
 	/** Collection Sync
 	*/
-	sync: function(method, model, options) {
-		var fields = ["free_user_ids", "id", "manager_id", "name", "service_ids", "tasks", "user_ids"];
+	sync: function(method, model, options){
 
-		return app.readOE( this.model_name ,  app.models.user.getSessionID(), options, fields);
-	},
+		if(_.isUndefined(options.data)) {
+			options.data = {};
+		}
+		//options.data.fields = this.fields;
 
-
-
-	/** Collection Parse
-	*/
-	parse: function(response) {
-		return response.result.records;
-	},
-
-
-
-	/** Comparator for ordering collection
-	*/
-	comparator: function(item) {
-		return item.get('name');
+		return $.when(this.count(options), Backbone.sync.call(this, method, this, options));
 	},
 
 });

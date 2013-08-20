@@ -257,7 +257,7 @@
 		"noOfficer"				: "Aucun agent enregistré",
 		"noTaskForIntervention"	: "Aucune tâche pour cette intervention",
 		"noTask"      	  	  	: "Aucune tâche à pointer",
-		"noTeam"				: "Aucune équipe enregistrée",
+		"noTeam"				: "Aucune équipe à afficher",
 		"sixCharMin"		  	: "Six caractères minimum",
 		"placeDeleteOk"			: "Site correctement supprimé",
 		"placeCreateOk"			: "Site correctement enregistrée",

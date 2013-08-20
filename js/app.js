@@ -68,17 +68,6 @@ var app = {
 				}
 				
 
-				//app.models.team               = new app.Models.Team();
-				app.models.task                 = new app.Models.Task();
-				app.models.intervention         = new app.Models.Intervention();
-				app.models.request              = new app.Models.Request();
-				app.models.place                = new app.Models.Place();
-				app.models.service              = new app.Models.ClaimerService();
-				app.models.categoryTask         = new app.Models.CategoryTask();
-				app.models.claimerContact       = new app.Models.ClaimerContact();
-				app.models.claimerType          = new app.Models.ClaimerType();
-
-
 				// Set the Ajax Setup //
 				self.setAjaxSetup();
 

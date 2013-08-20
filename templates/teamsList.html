@@ -1,0 +1,219 @@
+<div class="page-header">
+	<h1>
+		<%= lang.viewsTitles.teamsList %>
+		<sup class="badge"><%= nbTeams %></sup>
+	</h1>
+</div>
+
+
+<div class="container-fluid">
+
+	<div class="span5">
+
+		<!-- Table toolbar -->
+		<div class="tableToolbar">
+			<a href="#" class="btn btn-primary modalSaveTeam"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addTeam) %></a>
+
+			<form class="form-search pull-right">
+				<div class="input-append">
+					<input type="search" class="input-medium search-query" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+					<button type="submit" class="btn"><i class="icon-search text-info icon-large"></i></button>
+				</div>
+			</form>
+		</div>
+		<!-- Table toolbar -->
+
+
+		<!-- Check if there is any Places to display -->
+		<% if(nbTeams <= 0) { %>
+
+			<!-- No place to display -->
+			<div class="alert alert-info">
+				<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTeam %>.
+			</div>
+
+		<% } %>
+
+
+		<!-- Table Teams -->
+		<table class="table table-bordered table-hover table-striped table-sorter">
+			<thead>
+				<tr>
+					<th data-sort-column="name" class="span7"><%= _.capitalize(lang.name) %></th>
+					<th class="span5"><%= _.capitalize(lang.foreman) %></th>
+				</tr>
+			</thead>
+			<tbody id="rows-items">
+
+			</tbody>
+		</table>
+
+
+		<!-- Table pagination -->
+		<div id="pagination"></div>
+		<!-- /Table pagination -->
+
+	</div>
+
+
+	<!-- Team Services and members -->
+	<div class="span7 hide" id="teamServicesMembers">
+
+		<h4 class="well" id="teamTitle"></h4>
+
+		<!-- Officers Management -->
+		<div class="row-fluid officersDroppableArea">
+
+			<div class="span6">
+				<div class="widget-title">
+					<h4>Agents de l'équipe <span class="badge pull-right"></span></h4>
+				</div>
+
+				<ul id="teamMembers" class="sortableOfficersList sortable unstyled nav nav-list drop-area drop-area">
+
+				</ul>
+			</div>
+
+			<div class="span6">
+				<div class="widget-title">
+					<h4>Agents sans équipe <span class="badge pull-right" id="badgeNbMembers"></span></h4>
+				</div>
+
+				<ul id="officersList" class="sortableOfficersList sortable unstyled nav nav-list">
+				</ul>
+			</div>
+
+		</div>
+
+		<!-- Services Management -->
+		<div class="row-fluid marginTop servicesDroppableArea">
+			
+			<div class="span6">
+				<div class="widget-title">
+					<h4>Services de l'équipe <span class="badge pull-right"></span></h4>
+				</div>
+
+				<ul id="teamServices" class="sortableServicesList sortable unstyled nav nav-list drop-area">
+
+				</ul>
+			</div>
+
+			<div class="span6">
+				<div class="widget-title">
+					<h4>Autre services <span class="badge pull-right" id="badgeNbServices"></span></h4>
+				</div>
+
+				<ul id="servicesList" class="sortableServicesList sortable unstyled nav nav-list">
+				</ul>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal Form to add or update a new Team -->
+<div id="modalSaveTeamAA" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3><%= _.capitalize(lang.actions.addTeam) %></h3>
+	</div>
+
+	<div class="modal-body">
+		<form id="formSaveTeam" action="#" class="form-horizontal">
+
+			<!-- Team name -->
+			<div class="control-group">
+				<label for="teamName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
+
+				<div class="controls">
+					<input type="text" id="teamName" name="teamName" required="required" />
+					<span class="help-inline"></span>
+				</div>
+			</div>
+
+			<!-- Team Foreman -->
+			<div class="control-group">
+				<label for="teamForeman" class="control-label"><%= _.capitalize(lang.foreman) %>:</label>
+
+				<div class="controls">
+					<select id="teamForeman"></select>
+					<span class="help-inline"></span>
+				</div>
+			</div>
+
+		</form>
+	</div>
+
+	<div class="modal-footer">
+		<button type="submit" form="formSaveTeam" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+	</div>
+</div>
+
+
+<!-- Modal Form Delete Team -->
+<div id="modalDeleteTeamAA" class="modal hide fade">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3>Suppression de l'équipe</h3>
+	</div>
+	
+	<div class="modal-body">
+
+		<blockquote id="infoModalDeleteTeam" class="spaceBottom">
+			<p></p>
+			<small></small>
+		</blockquote>
+
+		<p><%= lang.warningMessages.confirmDeleteTeam %></p>
+	</div>
+	
+	<div class="modal-footer">
+		<button type="button" class="btn btn-danger btnDeleteTeam"><%= _.capitalize(lang.actions.delete) %></button>&nbsp;&nbsp;
+		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+	</div>
+</div>

@@ -3,65 +3,53 @@
 */
 app.Models.Team = Backbone.RelationalModel.extend({
 
-	// Model name in the database //
-	model_name : 'openstc.team',	
+
+	fields     : ['id', 'name', 'manager_id'],
+
+	urlRoot    : '/api/openstc/sites',
 	
-	url: "/#teams/:id",	
-	
-	relations: [{
-			type: Backbone.HasMany,
-			key: 'tasks',
-			relatedModel: 'app.Models.Task',
-			collectionType: 'app.Collections.Tasks',
-			includeInJSON: 'id',
-			reverseRelation: {
-				type: Backbone.HasOne,
-				key: 'teamWorkingOn',
-				includeInJSON: ['id','manager_id'],
-			}
-		},
+
+	defaults:{
+		id :null,
+	},
+
+
+	searchable_fields: [
 		{
-			type: Backbone.HasMany,
-			key: 'user_ids',
-			relatedModel: 'app.Models.Officer',
-			collectionType: 'app.Collections.Officers',
-			includeInJSON: ['id', 'firstname', 'name'],
-		},
-		{
-			type: Backbone.HasMany,
-			key: 'free_user_ids',
-			relatedModel: 'app.Models.Officer',
-			collectionType: 'app.Collections.Officers',
-			includeInJSON: ['id', 'firstname', 'name'],
-		},
-		{
-			type: Backbone.HasMany,
-			key: 'service_ids',
-			relatedModel: 'app.Models.ClaimerService',
-			collectionType: 'app.Collections.ClaimersServices',
-			includeInJSON: ['id', 'name'],
-		},
-	
+			key  : 'name', 
+			type : 'text'
+		}
 	],
 
 
-	defaults:{
-		id:0,
-		name: null,
-		manager_id: null,
-		user_ids: [],
-		free_user_ids: [],
-		service_ids: []
+	getId : function() {
+		return this.get('id');
+	},
+	setId : function(value, silent) {
+		this.set({ id : value }, {silent: silent});
 	},
 
-
-	// Team Name //
 	getName : function() {
-		return this.get('name');
+		return _.titleize(this.get('name').toLowerCase());
 	},
-	setName : function(value) {
-		if( value == 'undefined') return;
-		this.set({ name : value });
+	setName : function(value, silent) {
+		this.set({ name : value }, {silent: silent});
+	},
+
+	getManager : function(type) {
+		switch (type){ 
+			case 'id': 
+				return this.get('manager_id')[0];
+			break;
+			case 'json':
+				return {id: this.get('manager_id')[0], name: this.get('manager_id')[1]};
+			break;
+			default:
+				return this.get('manager_id')[1];
+		}
+	},
+	setManager : function(value, silent) {
+		this.set({ manager_id : value }, {silent: silent});
 	},
     
 	// Team service ID //
@@ -73,14 +61,6 @@ app.Models.Team = Backbone.RelationalModel.extend({
 		this.set({ service_ids : value });
 	},
 
-    // Team manager ID //
-    getManagerId : function() {
-        return this.get('manager_id');
-    },
-    setManagerID : function(value) {
-		if( value == 'undefined') return;
-		this.set({ manager_id : value });
-	},
 
     // Team services ID //
     getServicesId: function() {
@@ -109,51 +89,15 @@ app.Models.Team = Backbone.RelationalModel.extend({
 		this.set({ free_user_ids : value });
 	},
 
+	getActions : function(){
+		return this.get('actions');
+	},
+
 
 	/** Model Initialization
 	*/
 	initialize: function (model) {
 		//console.log("Request task Initialization");
 	},
-
-
-	/** Model Parser
-	*/
-	parse: function(response) {
-		return response;
-	},
-
-
-
-	/** Update each attributes to the model
-	*/
-	update: function(params) {
-		this.setName( params.name );
-		this.setManagerID( params.manager_id );
-		this.setServicesID( params.service_ids );
-		this.setMembersID( params.user_ids );
-		this.setFreeMembersID( params.free_user_ids );
-	},
-
-
-
-	/** Save Team
-	*/
-	save: function(data, id, options) { 
-		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
-	},
-
-
-
-	/** Delete Team
-	*/
-	delete: function (options) {	
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
-	}
 
 });
