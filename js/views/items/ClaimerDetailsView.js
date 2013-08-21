@@ -4,7 +4,7 @@ app.Views.ClaimerAddressView = Backbone.View.extend({
 
 	className    : 'row-item row-nested-objects-collapse',
 
-	templateHTML : 'items/expandedClaimer',
+	templateHTML : 'items/claimerAddress',
 
 	id: function () {
 		return 'collapse_' + this.model.id

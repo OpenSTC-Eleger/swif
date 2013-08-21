@@ -231,6 +231,7 @@
 	},
 
 	"warningMessages" : {
+		"confirmDeleteElement"	: "Êtes-vous sûr de vouloir supprimer cet élément ?",
 		"confirmDeleteAgent"	: "Êtes-vous sûr de vouloir supprimer cet agent ?",
 		"confirmDeletePlace" 	: "Etes-vous sûr de vouloir supprimer ce site ?",
 		"confirmDeleteContact" 	: "Etes-vous sûr de vouloir supprimer ce contact ?",
@@ -257,7 +258,7 @@
 		"noOfficer"				: "Aucun agent enregistré",
 		"noTaskForIntervention"	: "Aucune tâche pour cette intervention",
 		"noTask"      	  	  	: "Aucune tâche à pointer",
-		"noTeam"				: "Aucune équipe enregistrée",
+		"noTeam"				: "Aucune équipe à afficher",
 		"sixCharMin"		  	: "Six caractères minimum",
 		"placeDeleteOk"			: "Site correctement supprimé",
 		"placeCreateOk"			: "Site correctement enregistrée",
@@ -279,6 +280,7 @@
 		"teamSaveOk"			: "Equipe correctement enregistrée",
 		"taskDeleteOk"			: "Tâche correctement supprimée",
 		"taskSaveOk"			: "Tâche correctement enregistrée",
+		"requestValidOk"        : "Demande d'intervention validée",
 		"requestRefuseOk"       : "Demande d'intervention refusée",
 		"requestConfirmOk"      : "Demande d'intervention remontée au DST"
 	},
@@ -293,10 +295,12 @@
 		"placeDetail"			 : "Détail du site",
 		"validRequest" 			 : "Validation de la demande",
 		"refuseRequest" 		 : "Refus de la demande",
+		"deleteElement"          : "Suppression de l'élément",
 		"deleteTask"	 		 : "Suppression de la tâche",
 		"deleteEquipment"	 	 : "Suppression du matériel",
 		"deleteCategory"		 : "Suppression de la catégorie",
 		"deleteContact"			 : "Suppression du contact",
+		"deleteTeam"             : "Suppression de l'équipe",
 		"deleteClaimer"			 : "Suppression de l'organisation",
 		"deleteAbsentType"		 : "Suppression du type d'absence",
 		"deletePlace"		 	 : "Suppression du site",

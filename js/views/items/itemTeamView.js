@@ -1,19 +1,18 @@
 /******************************************
-* Row Place View
+* Row Team View
 */
-app.Views.ItemPlaceView = Backbone.View.extend({
+app.Views.ItemTeamView = Backbone.View.extend({
 
 	tagName      : 'tr',
 
 	className    : 'row-item',
 
-	templateHTML : 'items/itemPlace',
+	templateHTML : 'items/itemTeam',
 
 
 	// The DOM events //
 	events: {
-		'click'                    : 'modalUpdatePlace',
-		'click a.modalDeletePlace' : 'modalDeletePlace'
+		'click a.modalDeleteTeam'  : 'modalDeleteTeam'
 	},
 
 
@@ -52,7 +51,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 			self.remove();
 		});
 
-		app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.placeDeleteOk);
+		app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.placeDeleteOk);
 		app.views.placesListView.collection.cpt--;
 		app.views.placesListView.partialRender();
 	},
@@ -69,7 +68,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 			var template = _.template(templateData, {
 				lang  : app.lang,
-				place : self.model
+				team : self.model
 			});
 
 			$(self.el).html(template);
@@ -88,25 +87,25 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 	modalUpdatePlace: function(e){  
 		e.preventDefault(); e.stopPropagation();
 
-		app.views.modalPlaceView = new app.Views.ModalPlaceView({
+		/*app.views.modalPlaceView = new app.Views.ModalPlaceView({
 			el      : '#modalSavePlace',
 			model   : this.model,
 			elFocus : $(e.target).data('form-id')
-		});
+		});*/
 	},
 
 
 
 	/** Modal to remove a place
 	*/
-	modalDeletePlace: function(e){
+	modalDeleteTeam: function(e){
 		e.preventDefault(); e.stopPropagation();
 
 		app.views.modalDeleteView = new app.Views.ModalDeleteView({
-			el           : '#modalDeletePlace',
+			el           : '#modalDeleteTeam',
 			model        : this.model,
-			modalTitle   : app.lang.viewsTitles.deletePlace,
-			modalConfirm : app.lang.warningMessages.confirmDeletePlace
+			modalTitle   : app.lang.viewsTitles.deleteTeam,
+			modalConfirm : app.lang.warningMessages.confirmDeleteTeam
 		});
 	},
 

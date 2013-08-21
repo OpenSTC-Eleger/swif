@@ -1,32 +1,26 @@
 /******************************************
 * Teams List View
 */
-app.Views.TeamsListView = Backbone.View.extend({
+app.Views.TeamsListView = app.Views.GenericListView.extend({
 
-	el : '#rowContainer',
-
-	templateHTML: 'teams',
-
-	numberListByPage: 25,
-
-	selectedTeam : '',
-
-	sstorageTeamSelected: 'selectedTeam',
+	templateHTML: 'teamsList',
 
 
 	// The DOM events //
-	events: {
-		'click li.active'				: 'preventDefault',
-		'click li.disabled'				: 'preventDefault',
-		'click ul.sortable li'			: 'preventDefault',
+	events: function(){
+		return _.defaults({
+			'click ul.sortable li'			: 'preventDefault',
 
-		'click a.modalDeleteTeam'  		: 'modalDeleteTeam',
-		'click a.modalSaveTeam'  		: 'modalSaveTeam',
+			'click a.modalDeleteTeam'  		: 'modalDeleteTeam',
+			'click a.modalSaveTeam'  		: 'modalSaveTeam',
 
-		'submit #formSaveTeam' 			: 'saveTeam',
-		'click button.btnDeleteTeam'	: 'deleteTeam',
+			'submit #formSaveTeam' 			: 'saveTeam',
+			'click button.btnDeleteTeam'	: 'deleteTeam',
 
-		'click a.teamName' 				: 'displayTeamInfos'
+			'click a.teamName' 				: 'displayTeamInfos'
+		}, 
+			app.Views.GenericListView.prototype.events
+		);
 	},
 
 
@@ -35,13 +29,18 @@ app.Views.TeamsListView = Backbone.View.extend({
 	*/
 	initialize: function () {
 
+		var self = this;
+
+		this.initCollection().done(function(){
+
+			// Unbind & bind the collection //
+			self.collection.off();
+			self.listenTo(self.collection, 'add', self.add);
+
+			app.router.render(self);
+		})
 	},
 
-
-	selectTeam: function(){
-		alert('ok');
-
-	},
 
 
 	/** Display the view
@@ -58,28 +57,34 @@ app.Views.TeamsListView = Backbone.View.extend({
 		// Change the Grid Mode of the view //
 		app.views.headerView.switchGridMode('fluid');
 
-		var teams = app.collections.teams.models;
-		var nbTeams = _.size(teams);
-
-
-		var len = teams.length;
-		var startPos = (this.options.page - 1) * this.numberListByPage;
-		var endPos = Math.min(startPos + this.numberListByPage, len);
-		var pageCount = Math.ceil(len / this.numberListByPage);
-
-
+	
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				teams: app.collections.teams.toJSON(),
-				nbTeams: nbTeams,
-				lang: app.lang,
-				startPos: startPos, endPos: endPos,
-				page: self.options.page,
-				pageCount: pageCount
+				nbTeams: self.collection.cpt,
+				lang   : app.lang
 			});
 
 			$(self.el).html(template);
+
+
+			// Call the render Generic View //
+			app.Views.GenericListView.prototype.render(self.options);
+
+
+			// Create item place view //
+			_.each(self.collection.models, function(team, i){
+				var itemTeamView  = new app.Views.ItemTeamView({model: team});
+				$('#rows-items').append(itemTeamView.render().el);
+			});
+
+
+			// Pagination view //
+			app.views.paginationView = new app.Views.PaginationView({ 
+				page       : self.options.page.page,
+				collection : self.collection
+			})
+			app.views.paginationView.render();
 
 
 			$('#teamMembers, #officersList').sortable({
@@ -114,96 +119,12 @@ app.Views.TeamsListView = Backbone.View.extend({
 			});
 
 
-			// Fill select Foreman  //
-			app.views.selectListOfficersView = new app.Views.DropdownSelectListView({el: $("#teamForeman"), collection: app.collections.officers})
-			app.views.selectListOfficersView.clearAll();
-			app.views.selectListOfficersView.addEmptyFirst();
-			app.views.selectListOfficersView.addAll();
-
-
-			// Check the Session storage to know If a Team was previously selected //
-			if(sessionStorage.getItem(self.sstorageTeamSelected) != null){
-
-				// Get the team id Value //
-				var id = sessionStorage.getItem(self.sstorageTeamSelected);
-				$('#team_'+id).children('td').children('a').click();
-			}
-
 		});
 
-		$(this.el).hide().fadeIn('slow');
+		$(this.el).hide().fadeIn();
 
 		return this;
 	},
-
-
-
-	getIdInDropDown: function(view) {
-		if ( view && view.getSelected() )
-			var item = view.getSelected().toJSON();
-			if( item )
-				return [ item.id, item.name ];
-		else 
-			return 0
-    },
-
-
-
-	setModel: function(e) {
-		e.preventDefault();
-		var link = $(e.target);
-		
-		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
-		this.selectedTeam = _.filter(app.collections.teams.models, function(item){ return item.attributes.id == id });
-		
-		if( this.selectedTeam.length > 0 ) {
-		
-			$('table.teamsTable tr.info').removeClass('info');
-			link.parents('tr').addClass('info').children('i');
-
-			$('#teamServicesMembers').removeClass('hide');
-
-			this.model = this.selectedTeam[0];
-			this.selectedTeamJson = this.model.toJSON();
-
-        }
-        else {
-        	this.model = null;
-			this.selectedTeamJson = null;
-		}
-
-		console.debug(this.model);
-	},
-
-
-
-    /** Modal create/update team
-    */
-    modalSaveTeam: function(e){
-		this.setModel(e);
-
-		$('#teamName').val('');
-		app.views.selectListOfficersView.setSelectedItem(0);
-
-		if(this.selectedTeamJson){
-			$('#teamName').val(this.selectedTeamJson.name);
-			app.views.selectListOfficersView.setSelectedItem( this.selectedTeamJson.manager_id[0] );
-		}
-
-	},
-
-
-
-	/** Display information in the Modal view delete team
-	*/
-	modalDeleteTeam: function(e){
-
-        // Retrieve the ID of the team //
-		this.setModel(e);
-
-		$('#infoModalDeleteTeam p').html(this.selectedTeamJson.name);
-		$('#infoModalDeleteTeam small').html(_.capitalize(app.lang.foreman) +": "+ this.selectedTeamJson.manager_id[1]);
-    },
 
 
 
@@ -423,10 +344,45 @@ app.Views.TeamsListView = Backbone.View.extend({
 
 
 
-    /** Display the view
-    */
-	preventDefault: function(event){
-		event.preventDefault();
-	},
+	initCollection: function(){
+		var self = this;
 
+		// Check if the collections is instantiate //
+		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.Teams(); }
+
+
+		// Check the parameters //
+		if(_.isUndefined(this.options.sort)){
+			this.options.sort = this.collection.default_sort;
+		}
+		else{
+			this.options.sort = app.calculPageSort(this.options.sort);	
+		}
+		this.options.page = app.calculPageOffset(this.options.page);
+
+
+		// Create Fetch params //
+		var fetchParams = {
+			silent : true,
+			data   : {
+				limit  : app.config.itemsPerPage,
+				offset : this.options.page.offset,
+				sort   : this.options.sort.by+' '+this.options.sort.order
+			}
+		};
+		if(!_.isUndefined(this.options.search)){
+			fetchParams.data.filters = app.calculSearch({search: this.options.search }, app.Models.Place.prototype.searchable_fields);
+		}
+
+
+		app.loader('display');
+		return $.when(self.collection.fetch(fetchParams))
+			.fail(function(e){
+				console.log(e);
+			})
+			.always(function(){
+				app.loader('hide');
+			});
+
+	}
 });

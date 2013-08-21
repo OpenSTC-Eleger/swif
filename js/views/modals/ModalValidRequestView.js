@@ -83,70 +83,30 @@ app.Views.ModalValidRequestView = app.Views.GenericModalView.extend({
 		$(this.el).find("button[type=submit]").button('loading');
 
 
-		/*
-		var duration = $("#taskHour").val().split(":");
-	    var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
-
-		params = {
-				//ask_id: this.model.getId(),
-
-				request_state: app.Models.Request.status.valid.key,
-				email_text: app.Models.Request.status.valid.translation,
-				project_state: app.Models.Intervention.status.open.key,
-				date_deadline: new moment($('#requestDateDeadline').val(), 'DD-MM-YYYY').add('hours',2).toDate(),
-				description: $('#requestNote').val(),
-				intervention_assignement_id: $('#requestAssignement').val(),
-				service_id: $('#requestService').val(),
-				site1: this.model.getSite1()[0],
-				planned_hours: mDuration.asHours(),
-				category_id: _($('#taskCategory').val()).toNumber(),
-				create_task: $('#createAssociatedTask').is(':checked'),
+		var params = {
+			state   : app.Models.Request.status.valid.key,
+			intervention_assignement_id : app.views.advancedSelectBoxCategoryRequestView.getSelectedItem(),
+			service_id : app.views.advancedSelectBoxRequestServiceView.getSelectedItem(),
+			date_deadline : moment($('#requestDateDeadline').val(), 'DD/MM/YYYY').format('YYYY-MM-DD'),
+			description: $('#requestDescription').val(),
+			
+			create_task: $('#createAssociatedTask').is(':checked'),
+			planned_hours: moment.duration({ hours: _($("#taskHour").val()).strLeft(':'), minutes: _($("#taskHour").val()).strRight(':') }).asHours(),
+			category_id : app.views.advancedSelectBoxTaskcategoryView.getSelectedItem()
 		};
 
-	    this.model.valid(params,
-			{
-				success: function(data){
-					$('#modalValidRequest').modal('hide');
-					route = Backbone.history.fragment;
-					Backbone.history.loadUrl(route);
-				}
-			}
-		);*/
 
-		/*
-		// Set the properties of the model //
-		this.model.setRefusalReason(this.$('#placeName').val(), true);
-		this.model.setServices(app.views.advancedSelectBoxPlaceServices.getSelectedItems(), true);
-		this.model.setType(app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(), true);
-		this.model.setParentPlace(app.views.advancedSelectBoxPlaceParentView.getSelectedItem(), true);
-		this.model.setWidth(this.$('#placeWidth').val(), true);
-		this.model.setLenght(this.$('#placeLenght').val(), true);
-		this.model.setSurface(this.$('#placeArea').val(), true);
-
-
-		this.model.save()
+		this.model.save(params, {patch: true, silent: true})
 			.done(function(data) {
 				self.modal.modal('hide');
-
-				// Create mode //
-				if(self.model.isNew()) {
-					self.model.setId(data);
-					self.model.fetch({silent: true, data : {fields : self.model.fields} }).done(function(){
-						app.views.placesListView.collection.add(self.model);
-					})
-				// Update mode //
-				} else {
-					self.model.fetch({ data : {fields : self.model.fields} });
-				}
+				self.model.fetch({ data : {fields : self.model.fields} });
 			})
 			.fail(function (e) {
 				console.log(e);
 			})
 			.always(function () {
 				$(self.el).find("button[type=submit]").button('reset');
-			});*/
-
-		alert('TODO');
+			});
 	},
 
 
@@ -164,6 +124,14 @@ app.Views.ModalValidRequestView = app.Views.GenericModalView.extend({
 		// Set the search params for the Task Category //
 		if(app.views.advancedSelectBoxRequestServiceView.getSelectedItem() != ''){
 			app.views.advancedSelectBoxTaskcategoryView.setSearchParam({ field : 'service_ids.id', operator : '=', value : app.views.advancedSelectBoxRequestServiceView.getSelectedItem()}, true);
+		}
+
+		// Set field as required //
+		if($('#createAssociatedTask').is(':checked')){
+			$('#taskHour, #taskCategory').prop('required', true);
+		}
+		else{
+			$('#taskHour, #taskCategory').prop('required', false);
 		}
 	},
 

@@ -68,7 +68,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				lang: app.lang,
+				lang    : app.lang,
 				nbPlaces: self.collection.cpt
 			});
 
@@ -83,7 +83,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 				var itemPlaceView  = new app.Views.ItemPlaceView({model: place});
 				$('#rows-items').append(itemPlaceView.render().el);
 			});
-		
+
 
 			// Pagination view //
 			app.views.paginationView = new app.Views.PaginationView({ 

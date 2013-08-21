@@ -7,7 +7,7 @@
 
 	<blockquote class="spaceBottom">
 		<p><%= request.getName() %></p>
-		<small><i class="icon-map-marker"></i>&nbsp; <%= request.getSite() %></small>
+		<small><strong><i class="icon-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong>&nbsp;&nbsp; <%= request.getSite() %></small>
 	</blockquote>
 
 
@@ -55,10 +55,10 @@
 
 		<!-- Request description -->
 		<div class="control-group">
-			<label for="requestNote" class="control-label"><%= _.capitalize(lang.description) %>:</label>
+			<label for="requestDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
 
 			<div class="controls">
-				<textarea id="requestNote" rows="5" required><%= request.getDescription() %></textarea>
+				<textarea id="requestDescription" rows="5" required><%= request.getDescription() %></textarea>
 				<span class="help-inline"></span>
 			</div>
 		</div>
@@ -81,8 +81,8 @@
 			<div class="control-group">
 				<label for="taskHour" class="control-label"><%= lang.estimatedHours %>:</label>
 				<div class="controls">
-					<div class="input-append bootstrap-timepicker" >							
-						<input type="text" class="timepicker input-small" value="02:00" id='taskHour' required>
+					<div class="input-append bootstrap-timepicker" >
+						<input type="text" class="timepicker input-small" value="02:00" id='taskHour' />
 						<span class="add-on"><i class="icon-time"></i></span>
 					</div>
 				</div>
@@ -93,13 +93,12 @@
 				<label for="taskCategory" class="control-label"><%= _.capitalize(lang.category) %>:</label>
 
 				<div class="controls">
-					<input id="taskCategory" class="select2" style="width: 66%" data-placeholder="<%= lang.actions.selectACategory %>" required />
+					<input id="taskCategory" class="select2" style="width: 66%" data-placeholder="<%= lang.actions.selectACategory %>" />
 					<span class="help-inline"></span>
 				</div>
 			</div>
 
 		</fieldset>
-
 	</form>
 
 </div>

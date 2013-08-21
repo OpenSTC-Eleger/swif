@@ -68,17 +68,6 @@ var app = {
 				}
 				
 
-				//app.models.team               = new app.Models.Team();
-				app.models.task                 = new app.Models.Task();
-				app.models.intervention         = new app.Models.Intervention();
-				app.models.request              = new app.Models.Request();
-				app.models.place                = new app.Models.Place();
-				app.models.service              = new app.Models.ClaimerService();
-				app.models.categoryTask         = new app.Models.CategoryTask();
-				app.models.claimerContact       = new app.Models.ClaimerContact();
-				app.models.claimerType          = new app.Models.ClaimerType();
-
-
 				// Set the Ajax Setup //
 				self.setAjaxSetup();
 
@@ -508,34 +497,34 @@ var app = {
 		switch(notifyModel){
 			case 'large' :
 				var addClass = 'stack-bar-top big-icon';
-				var width = '50%';
-				var delay = 4500;
-				var hide = true;
+				var width    = '50%';
+				var delay    = 4500;
+				var hide     = true;
 			break;
 
 			default:
 				var addClass = '';
-				var width = '320px';
-				var delay = 4500;
-				var hide = true;
+				var width    = '320px';
+				var delay    = 4500;
+				var hide     = true;
 			break;
 
 		}
 
 		$.pnotify({
-			title: title,
-			text: message,
-			addclass: addClass,
-			width: width,
-			type: type,
-			hide: hide,
+			title        : title,
+			text         : message,
+			addclass     : addClass,
+			width        : width,
+			type         : type,
+			hide         : hide,
 			animate_speed: 'normal',
-			opacity: .9,
-			icon: true,
-			animation: 'slide',
-			closer: true,
-			closer_hover: false,
-			delay: delay
+			opacity      : .9,
+			icon         : true,
+			animation    : 'slide',
+			closer       : true,
+			closer_hover : false,
+			delay        : delay
 		});
 	}
 

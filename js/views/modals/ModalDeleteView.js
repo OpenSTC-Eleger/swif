@@ -23,6 +23,16 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 	initialize : function() {
 		this.modal = $(this.el);
 
+
+		// If the text for the modal wasn't set //
+		if(_.isUndefined(this.options.modalTitle)){
+			this.options.modalTitle = app.lang.viewsTitles.deleteElement;
+		}
+		if(_.isUndefined(this.options.modalConfirm)){
+			this.options.modalConfirm = app.lang.warningMessages.confirmDeleteElement;
+		}
+
+
 		this.render();
 	},
 
@@ -37,8 +47,10 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 		 
 			var template = _.template(templateData, {
-				lang  : app.lang,
-				model : self.model
+				lang         : app.lang,
+				modalTitle   : self.options.modalTitle,
+				modalConfirm : self.options.modalConfirm,
+				model        : self.model
 			});
 
 			self.modal.html(template);

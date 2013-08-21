@@ -3,9 +3,7 @@
 */
 app.Views.RequestsListView = app.Views.GenericListView.extend({
 
-	templateHTML: 'requestsList',
-
-	filters: 'requestsListFilter',
+	templateHTML : 'requestsList',
 
 
 
@@ -27,9 +25,10 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		var self = this;
 
 		this.initCollection().done(function(){
+
 			// Unbind & bind the collection //
-			self.collection.off();
-			self.listenTo(self.collection, 'add', self.add);
+			/*self.collection.off();
+			self.listenTo(self.collection, 'change', self.addA);*/
 
 			app.router.render(self);
 		});
@@ -106,12 +105,30 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 
 
 
+	/** Partial Render of the view
+	*/
+	partialRender: function() {
+		var self = this;
+
+		app.views.paginationView.render();
+
+		this.collection.specialCount().done(function(){
+			$('#badgeActions').html(self.collection.specialCpt);
+		});
+	},
+
+
+
 	/** Filter Requests on the State
 	*/
 	setFilterState: function(e){
 		e.preventDefault();
 
-		var filterValue = _($(e.target).attr('href')).strRightBack('#');
+		if($(e.target).is('i')){
+			var filterValue = _($(e.target).parent().attr('href')).strRightBack('#');
+		}else{
+			var filterValue = _($(e.target).attr('href')).strRightBack('#');
+		}
 
 		// Set the filter value in the options of the view //
 		if(filterValue != 'delete-filter'){
@@ -193,7 +210,7 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 
 		// Fetch the collections //
 		app.loader('display');
-		return $.when(self.collection.fetch(fetchParams))
+		return $.when(this.collection.fetch(fetchParams))
 		.fail(function(e){
 			console.log(e);
 		})
