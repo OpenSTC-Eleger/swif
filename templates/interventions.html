@@ -166,8 +166,8 @@
 									<!-- Task row -->
 									<% var task = null;
 									if(tasksFromInter.length > 0){
-									_.each(interventions[i].tasks, function (task_id, i) { %>
-										<% task = tasksFromInter.get(task_id).toJSON(); %>
+									for(j=0;j<interventions[i].tasks.length; j++) { %>
+										<% task = tasksFromInter.get(interventions[i].tasks[j]).toJSON(); %>
 										<tr class="row-nested-objects" id="task_<%= task.id %>">
 											<td>
 												<!-- Display a clock when the task is planned -->
@@ -253,7 +253,7 @@
 											</td>
 
 										</tr>
-									<% });
+									<% }
 									//ToRemove, for tests only
 									} %>
 								</tbody>
