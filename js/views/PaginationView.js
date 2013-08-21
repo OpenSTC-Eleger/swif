@@ -9,6 +9,8 @@ app.Views.PaginationView = Backbone.View.extend({
 
 	currentRoute : null,
 
+	itemsPerPage : 0,
+
 
 	// The DOM events //
 	events: {
@@ -21,6 +23,13 @@ app.Views.PaginationView = Backbone.View.extend({
 	*/
 	initialize: function() {
 		this.currentRoute = Backbone.history.fragment;
+
+		if(!_.isUndefined(this.options.itemsPerPage)){
+			this.itemsPerPage = this.options.itemsPerPage;
+		}
+		else{
+			this.itemsPerPage = app.config.itemsPerPage;
+		}
 	},
 
 
@@ -36,7 +45,7 @@ app.Views.PaginationView = Backbone.View.extend({
 				lang   : app.lang,
 				route  : _(self.currentRoute).strLeftBack('/page'),
 				page   : self.options.page,
-				nbPage : Math.ceil(self.collection.cpt / app.config.itemsPerPage)
+				nbPage : Math.ceil(self.collection.cpt / self.itemsPerPage)
 			});
 
 			self.$el.html(template);

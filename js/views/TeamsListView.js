@@ -3,21 +3,15 @@
 */
 app.Views.TeamsListView = app.Views.GenericListView.extend({
 
-	templateHTML: 'teamsList',
+	templateHTML : 'teamsList',
+
+	itemsPerPage : 10,
 
 
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'click ul.sortable li'			: 'preventDefault',
-
-			'click a.modalDeleteTeam'  		: 'modalDeleteTeam',
-			'click a.modalSaveTeam'  		: 'modalSaveTeam',
-
-			'submit #formSaveTeam' 			: 'saveTeam',
-			'click button.btnDeleteTeam'	: 'deleteTeam',
-
-			'click a.teamName' 				: 'displayTeamInfos'
+			'click a.modalCreateTeam'  : 'modalCreateTeam',
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -39,6 +33,21 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 
 			app.router.render(self);
 		})
+	},
+
+
+
+	/** When the model ara created //
+	*/
+	add: function(model){
+
+		var itemTeamView  = new app.Views.ItemTeamView({ model: model });
+		$('#rows-items').prepend(itemTeamView.render().el);
+		itemTeamView.highlight();
+
+		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.teamCreateOk);
+		
+		this.partialRender();
 	},
 
 
@@ -81,8 +90,9 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 
 			// Pagination view //
 			app.views.paginationView = new app.Views.PaginationView({ 
-				page       : self.options.page.page,
-				collection : self.collection
+				page         : self.options.page.page,
+				collection   : self.collection,
+				itemsPerPage : self.itemsPerPage
 			})
 			app.views.paginationView.render();
 
@@ -124,6 +134,31 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 		$(this.el).hide().fadeIn();
 
 		return this;
+	},
+
+
+
+	/** Partial Render of the view
+	*/
+	partialRender: function (type) {
+		var self = this; 
+
+		this.collection.count().done(function(){
+			$('#bagdeNbTeams').html(self.collection.cpt);
+			app.views.paginationView.render();
+		});
+	},
+
+
+
+	/** Modal form to create a new Team
+	*/
+	modalCreateTeam: function(e){
+		e.preventDefault();
+		
+		app.views.modalTeamView = new app.Views.ModalTeamView({
+			el  : '#modalSaveTeam'
+		});
 	},
 
 
@@ -358,14 +393,14 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 		else{
 			this.options.sort = app.calculPageSort(this.options.sort);	
 		}
-		this.options.page = app.calculPageOffset(this.options.page);
+		this.options.page = app.calculPageOffset(this.options.page, this.itemsPerPage);
 
 
 		// Create Fetch params //
 		var fetchParams = {
 			silent : true,
 			data   : {
-				limit  : app.config.itemsPerPage,
+				limit  : (!_.isUndefined(this.itemsPerPage) ? this.itemsPerPage : app.config.itemsPerPage),
 				offset : this.options.page.offset,
 				sort   : this.options.sort.by+' '+this.options.sort.order
 			}

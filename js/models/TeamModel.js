@@ -1,12 +1,12 @@
 /******************************************
 * Team Model
 */
-app.Models.Team = Backbone.RelationalModel.extend({
+app.Models.Team = Backbone.Model.extend({
 
 
-	fields     : ['id', 'name', 'manager_id'],
+	fields     : ['id', 'name', 'manager_id', 'actions'],
 
-	urlRoot    : '/api/openstc/sites',
+	urlRoot    : '/api/openstc/teams',
 	
 
 	defaults:{
@@ -52,14 +52,8 @@ app.Models.Team = Backbone.RelationalModel.extend({
 		this.set({ manager_id : value }, {silent: silent});
 	},
     
-	// Team service ID //
-	getServiceId : function() {
-		return this.get('service_ids');
-	},
-	setServiceID : function(value) {
-		if( value == 'undefined') return;
-		this.set({ service_ids : value });
-	},
+
+
 
 
     // Team services ID //

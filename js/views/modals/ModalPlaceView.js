@@ -112,7 +112,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 				// Create mode //
 				if(self.model.isNew()) {
 					self.model.setId(data);
-					self.model.fetch({silent: true, data : {fields : self.model.fields} }).done(function(){
+					self.model.fetch({silent: true, data : {fields : app.Collections.Places.prototype.fields} }).done(function(){
 						app.views.placesListView.collection.add(self.model);
 					})
 				// Update mode //

@@ -12,7 +12,8 @@ app.Views.ItemTeamView = Backbone.View.extend({
 
 	// The DOM events //
 	events: {
-		'click a.modalDeleteTeam'  : 'modalDeleteTeam'
+		'click a.modalDeleteTeam'  : 'modalDeleteTeam',
+		'click a.modalUpdateTeam'  : 'modalUpdateTeam'
 	},
 
 
@@ -37,7 +38,7 @@ app.Views.ItemTeamView = Backbone.View.extend({
 
 		this.render();
 		this.highlight();
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.teamUpdateOk);
 	},
 
 
@@ -51,9 +52,8 @@ app.Views.ItemTeamView = Backbone.View.extend({
 			self.remove();
 		});
 
-		app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.placeDeleteOk);
-		app.views.placesListView.collection.cpt--;
-		app.views.placesListView.partialRender();
+		app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.teamDeleteOk);
+		app.views.teamsListView.partialRender();
 	},
 
 
@@ -84,14 +84,13 @@ app.Views.ItemTeamView = Backbone.View.extend({
 
 	/** Display Modal form to add/sav a new place
 	*/
-	modalUpdatePlace: function(e){  
+	modalUpdateTeam: function(e){  
 		e.preventDefault(); e.stopPropagation();
 
-		/*app.views.modalPlaceView = new app.Views.ModalPlaceView({
-			el      : '#modalSavePlace',
+		app.views.modalTeamView = new app.Views.ModalTeamView({
+			el      : '#modalSaveTeam',
 			model   : this.model,
-			elFocus : $(e.target).data('form-id')
-		});*/
+		});
 	},
 
 
