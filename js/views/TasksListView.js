@@ -34,9 +34,9 @@ app.Views.TasksListView = Backbone.View.extend({
 		'click .linkRefueling'			: 'accordionRefuelingInputs', 
 
 		'change #filterListAgents' 		: 'setFilter'
+
+
 	},
-
-
 
 	/** View Initialization
 	*/
@@ -44,7 +44,6 @@ app.Views.TasksListView = Backbone.View.extend({
 
 	},
 
-	
 
 	/** Display the view
 	*/
@@ -293,18 +292,16 @@ app.Views.TasksListView = Backbone.View.extend({
 					$(self.el).hide().fadeIn('slow');
 					console.error(e);
 				});
-				
-				
+                               
+                              
 			},
 			error: function(code){
-				
+
 			}
 		});
-	
+
 		return this;
-	},
-
-
+	},		
 
 	/** Display equipments
 	*/
@@ -395,7 +392,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		}
 	},
 	
-  
+
 	/** Get the Task
 	*/
     getTask: function(e) {
@@ -435,7 +432,6 @@ app.Views.TasksListView = Backbone.View.extend({
         $('#modalAddTask').modal();
 	},
 	
-
 	/** Save New Task (Orphan)
 	*/
 	saveTask: function(e){
@@ -479,21 +475,31 @@ app.Views.TasksListView = Backbone.View.extend({
 			oil_price: this.$('#equipmentOilPriceAdd').val().replace(',', '.'),
 			category_id: input_category_id,	         
 			planned_hours: planned_hours,
-			remaining_hours: planned_hours,
+			remaining_hours: 0,
 		    report_hours: planned_hours,
 		};
 		
-		app.models.task.createOrphan(params,
-			{
-				success: function(data){
-					$('#modalAddTask').modal('hide');
-					route = Backbone.history.fragment;
-					Backbone.history.loadUrl(route);
-				}
-			}
-		);
-   	},
-    
+		// app.models.task.createOrphan(params,
+		var task_model = new app.Models.Task(params);
+
+		task_model.save().done(function(data) {
+			// add task to collection
+			task_model.setId(data);
+			task_model.fetch({
+				silent : true
+			}).done(function() {
+				app.collections.tasks.add(task_model);
+				$('#modalAddTask').modal('hide');
+				route = Backbone.history.fragment;
+				Backbone.history.loadUrl(route);
+			}).fail(function(e) {
+				console.log(e)
+			})
+		}).fail(function(e) {
+			console.log(e)
+		})
+	},
+
     /**
      * Display Modal for task not finished
      */
@@ -512,13 +518,14 @@ app.Views.TasksListView = Backbone.View.extend({
 		$('#eventTimeRemaining').val("00:00");
 
     },
+
     
     /**
      * Save Not Finished Task
      */
     saveTimeSpent: function(e) {
     	e.preventDefault();
-    	
+    	var self = this;
 
   		//calculate Date and times
     	var timeArray = $('#eventTimeSpent').val().split(':');
@@ -543,48 +550,53 @@ app.Views.TasksListView = Backbone.View.extend({
 			report_hours: report_hours,
 	        remaining_hours: remaining_hours,
 		};
-    	
-    	this.model.reportHours(params,
-			{
-				success: function(data){
+
+		// this.model.reportHours(params,
+		if(_.isUndefined(this.model)){this.getTask(e)}
+		this.model.save(params, {silent: true, patch: true})
+			.done(function(data) {
+				self.model.fetch().done(function(){
 					$('#modalTimeSpent').modal('hide');
 					route = Backbone.history.fragment;
 					Backbone.history.loadUrl(route);
-				}
-			}
-		);
+				})
+				.fail(function(e){
+					console.log(e)
+				})
+			}).fail(function(e) {
+				console.log(e)
+			});
 
-    },
+	},
 
 	/** 
 	 * Set Information in the Modal Task Done
 	*/
-    setModalTaskDone: function(e) {
-    	this.getTask(e);
-    	this.displayEquipmentsInfos(e, $('#equipmentsDone'), $('#equipmentsListDone'), $('#badgeNbEquipmentsDone'), $("#taskEquipmentDone") );
-
-    	var task = this.model.toJSON();
+	setModalTaskDone: function(e) {
+		this.getTask(e);
+		this.displayEquipmentsInfos(e, $('#equipmentsDone'), $('#equipmentsListDone'), $('#badgeNbEquipmentsDone'), $("#taskEquipmentDone") );
+	
+		var task = this.model.toJSON();
 
     	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
-    	
+
     	// Set Modal information about the Task //
     	$('#infoModalTaskDone').children('p').html(task.name);
 		$('#infoModalTaskDone').children('small').html('<i class="icon-map-marker icon-large"></i> '+task.site1[1]);
-
 		$('#modalTaskDone .modal-body').css({"height": "450px", "max-height": "450px"});
 		$('#eventTimeDone').val(this.secondsToHms(task.remaining_hours*60));
 
-    },
+	},
 
-	/** 
+	/**
 	 * Update the task as done
-	*/
-    saveTaskDone: function(e) {
-    	e.preventDefault();
-    	
-
+	 */
+	saveTaskDone : function(e) {
+		e.preventDefault();
+		var self = this;
 		//Get time spent to done task
 		var timeArray = $('#eventTimeDone').val().split(':');
+		var report_hours = parseInt(timeArray[0])
     	var report_hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0);
     	
 	    var vehicule =  $('#taskEquipmentDone').val()!=""? _($('#taskEquipmentDone').val() ).toNumber() : 0;
@@ -593,7 +605,6 @@ app.Views.TasksListView = Backbone.View.extend({
 	    if(vehicule >0 ){
 	    	equipments.push( vehicule );
 	    }
-
 
 		params = {   
 		    equipment_ids: equipments,
@@ -604,25 +615,32 @@ app.Views.TasksListView = Backbone.View.extend({
 	        report_hours: report_hours,
 	        remaining_hours: 0,	        
 		};
-	    
-	    this.model.reportHours(params,
-			{
-				success: function(data){
+		
+		if(_.isUndefined(this.model)){this.getTask(e)}
+			
+		this.model.save(params, {silent: true, patch: true})
+			.done(function(data){
+				self.model.fetch().done(function(){
 					$('#modalTaskDone').modal('hide');
 					route = Backbone.history.fragment;
-					Backbone.history.loadUrl(route);
-				}
-			}
-		);
+					Backbone.history.loadUrl(route);	
+				})
+				.fail(function(e){
+					console.log(e)
+				})
+			})
+			.fail(function(e) {
+				console.log(e)
+			});
 	},
-    
-	
+
 	/** Save Task as not beginning
 	*/
     taskNotDone: function(e) {
+    	var self = this;
 		e.preventDefault();
 		this.getTask(e);
-		taskParams = {
+		var taskParams = {
 			state: app.Models.Task.status.draft.key,
 			user_id: null,
 			team_id:null,
@@ -631,11 +649,15 @@ app.Views.TasksListView = Backbone.View.extend({
 		};
 		
 		$('#modalAddTask').modal('hide');
-		app.models.task.save(this.model.id, taskParams);
-
-	},
-	
-
+			//app.models.task.save(this.model.id, taskParams);
+		this.model.save(taskParams, {patch: true, silent: true})
+		.done(function(){
+			self.render()
+		})
+		.fail(function(e){
+			console.log(e)
+		});
+		},
 
 	secondsToHms : function (d) {
 		d = Number(d);	
@@ -665,10 +687,10 @@ app.Views.TasksListView = Backbone.View.extend({
 		this.render();
 	},
 
-
-	/** Display or Hide Refueling Section (Inputs Km, Oil, Oil prize)
-	*/
-	accordionRefuelingInputs: function(e){
+	/**
+	 * Display or Hide Refueling Section (Inputs Km, Oil, Oil prize)
+	 */
+	accordionRefuelingInputs : function(e) {
 		e.preventDefault();
 
 		// Toggle Slide Refueling section //
@@ -676,9 +698,7 @@ app.Views.TasksListView = Backbone.View.extend({
 
 	},
 
-
-
-	preventDefault: function(event){
+	preventDefault : function(event) {
 		event.preventDefault();
 	},
 
