@@ -5,13 +5,23 @@ app.Views.ItemTeamView = Backbone.View.extend({
 
 	tagName      : 'tr',
 
-	className    : 'row-item',
+	className    : function(){
+
+		if(this.model.getId() == app.views.teamsListView.options.id) {
+			return 'info bolder row-item';
+		}
+		else{
+			return 'row-item';
+		}
+
+	},
 
 	templateHTML : 'items/itemTeam',
 
 
 	// The DOM events //
 	events: {
+		'click'                    : 'selectTeam',
 		'click a.modalDeleteTeam'  : 'modalDeleteTeam',
 		'click a.modalUpdateTeam'  : 'modalUpdateTeam'
 	},
@@ -106,6 +116,23 @@ app.Views.ItemTeamView = Backbone.View.extend({
 			modalTitle   : app.lang.viewsTitles.deleteTeam,
 			modalConfirm : app.lang.warningMessages.confirmDeleteTeam
 		});
+	},
+
+
+
+	/** Select a team
+	*/
+	selectTeam: function(e){
+		e.preventDefault();
+
+		// Set the new route //
+		app.views.teamsListView.options.id = this.model.getId();
+		app.router.navigate(app.views.teamsListView.urlBuilder(), {trigger: false, replace: false});
+
+		$('tr.row-item.info').removeClass('info bolder');
+		$(this.el).addClass('info bolder');
+
+		app.views.teamsListView.displayTeamMembersAndServices(this.model);
 	},
 
 

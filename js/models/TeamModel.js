@@ -4,7 +4,7 @@
 app.Models.Team = Backbone.Model.extend({
 
 
-	fields     : ['id', 'name', 'manager_id', 'actions'],
+	fields     : ['id', 'name', 'manager_id', 'actions', 'service_ids', 'user_ids'],
 
 	urlRoot    : '/api/openstc/teams',
 	
@@ -51,36 +51,25 @@ app.Models.Team = Backbone.Model.extend({
 	setManager : function(value, silent) {
 		this.set({ manager_id : value }, {silent: silent});
 	},
-    
 
 
 
-
-    // Team services ID //
-    getServicesId: function() {
-        return this.get('service_ids');
-    },
-    setServicesID : function(value) {
+	// Team services ID //
+	getServicesId: function() {
+		return this.get('service_ids');
+	},
+	setServicesID : function(value) {
 		if( value == 'undefined') return;
-		this.set({ service_ids : value });
+			this.set({ service_ids : value });
 	},
 
 	// Team members ID //
-    getMembersId: function() {
-        return this.get('user_ids');
-    },
+	getMembersId: function() {
+		return this.get('user_ids');
+	},
     setMembersID : function(value) {
 		if( value == 'undefined') return;
 		this.set({ user_ids : value });
-	},
-	
-	// Team not members ID //
-    getFreeMembersId: function() {
-        return this.get('free_user_ids');
-    },
-    setFreeMembersID : function(value) {
-		if( value == 'undefined') return;
-		this.set({ free_user_ids : value });
 	},
 
 	

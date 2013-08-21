@@ -663,10 +663,11 @@ app.Router = Backbone.Router.extend({
 
 	/** Teams management
 	*/
-	teams: function(search, sort, page){
+	teams: function(id, search, sort, page){
 
 		var params = {};
 
+		if(!_.isNull(id))    { params.id = id; }
 		if(!_.isNull(search)){ params.search = search; }
 		if(!_.isNull(sort))  { params.sort = sort; }
 		if(!_.isNull(page))  { params.page = page; }

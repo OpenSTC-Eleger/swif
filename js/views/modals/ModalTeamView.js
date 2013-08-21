@@ -29,14 +29,10 @@ app.Views.ModalTeamView = app.Views.GenericModalView.extend({
 		
 		// Check if it's a create or an update //
 		if(_.isUndefined(this.model)){
-			
 			this.model = new app.Models.Team();
-			this.render();
-		}
-		else{
-			self.render();
 		}
 
+		self.render();
 	},
 
 
@@ -58,9 +54,9 @@ app.Views.ModalTeamView = app.Views.GenericModalView.extend({
 
 			self.modal.html(template);
 
-				// Advance Select List View //
-				app.views.advancedSelectBoxForemanView = new app.Views.AdvancedSelectBoxView({el: $("#teamForeman"), collection_url: app.Collections.Officers.prototype.url })
-				app.views.advancedSelectBoxForemanView.render();
+			// Advance Select List View //
+			app.views.advancedSelectBoxForemanView = new app.Views.AdvancedSelectBoxView({el: $("#teamForeman"), collection_url: app.Collections.Officers.prototype.url })
+			app.views.advancedSelectBoxForemanView.render();
 
 			self.modal.modal('show');
 		});
