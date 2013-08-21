@@ -103,8 +103,10 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 		e.preventDefault(); e.stopPropagation();
 
 		app.views.modalDeleteView = new app.Views.ModalDeleteView({
-			el         : '#modalDeletePlace',
-			model      : this.model
+			el           : '#modalDeletePlace',
+			model        : this.model,
+			modalTitle   : app.lang.viewsTitles.deletePlace,
+			modalConfirm : app.lang.warningMessages.confirmDeletePlace
 		});
 	},
 

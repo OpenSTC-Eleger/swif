@@ -102,9 +102,10 @@ app.Views.ItemTeamView = Backbone.View.extend({
 		e.preventDefault(); e.stopPropagation();
 
 		app.views.modalDeleteView = new app.Views.ModalDeleteView({
-			el         : '#modalDeleteTeam',
-			model      : this.model,
-			modalTitle : app.lang.viewsTitles.deleteTeam
+			el           : '#modalDeleteTeam',
+			model        : this.model,
+			modalTitle   : app.lang.viewsTitles.deleteTeam,
+			modalConfirm : app.lang.warningMessages.confirmDeleteTeam
 		});
 	},
 

@@ -56,12 +56,18 @@ app.Views.ItemRequestView = Backbone.View.extend({
 
 
 		// Set the info message for the notification //
-		if(model.getState() == app.Models.Request.status.refused.key){
-			var infoMessage = app.lang.infoMessages.requestRefuseOk;
+		switch(model.getState()){
+			case app.Models.Request.status.refused.key: 
+				var infoMessage = app.lang.infoMessages.requestRefuseOk;
+			break;
+			case app.Models.Request.status.confirm.key:
+				var infoMessage = app.lang.infoMessages.requestConfirmOk;
+			break;
+			case app.Models.Request.status.valid.key:
+				var infoMessage = app.lang.infoMessages.requestValidOk;
+			break;
 		}
-		else if(model.getState() == app.Models.Request.status.confirm.key){
-			var infoMessage = app.lang.infoMessages.requestConfirmOk;
-		}
+
 
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+infoMessage);
 

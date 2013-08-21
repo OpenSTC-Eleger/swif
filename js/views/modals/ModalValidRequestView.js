@@ -90,25 +90,10 @@ app.Views.ModalValidRequestView = app.Views.GenericModalView.extend({
 			date_deadline : moment($('#requestDateDeadline').val(), 'DD/MM/YYYY').format('YYYY-MM-DD'),
 			description: $('#requestDescription').val(),
 			
-
 			create_task: $('#createAssociatedTask').is(':checked'),
 			planned_hours: moment.duration({ hours: _($("#taskHour").val()).strLeft(':'), minutes: _($("#taskHour").val()).strRight(':') }).asHours(),
 			category_id : app.views.advancedSelectBoxTaskcategoryView.getSelectedItem()
-
-
 		};
-
-		console.log(params);
-
-
-		/*
-		// Set the properties of the model //
-		this.model.setServices(app.views.advancedSelectBoxCategoryRequestView.getSelectedItems(), true);
-		this.model.setType(app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(), true);
-		this.model.setParentPlace(app.views.advancedSelectBoxPlaceParentView.getSelectedItem(), true);
-		this.model.setWidth(this.$('#placeWidth').val(), true);
-		this.model.setLenght(this.$('#placeLenght').val(), true);
-		this.model.setSurface(this.$('#placeArea').val(), true);*/
 
 
 		this.model.save(params, {patch: true, silent: true})
@@ -139,6 +124,14 @@ app.Views.ModalValidRequestView = app.Views.GenericModalView.extend({
 		// Set the search params for the Task Category //
 		if(app.views.advancedSelectBoxRequestServiceView.getSelectedItem() != ''){
 			app.views.advancedSelectBoxTaskcategoryView.setSearchParam({ field : 'service_ids.id', operator : '=', value : app.views.advancedSelectBoxRequestServiceView.getSelectedItem()}, true);
+		}
+
+		// Set field as required //
+		if($('#createAssociatedTask').is(':checked')){
+			$('#taskHour, #taskCategory').prop('required', true);
+		}
+		else{
+			$('#taskHour, #taskCategory').prop('required', false);
 		}
 	},
 
