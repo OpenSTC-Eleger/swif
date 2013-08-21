@@ -1,0 +1,106 @@
+<div class="modal-header">
+	<% if ( intervention.id != null && intervention.id !=0 ) { %>
+		<h3><%= lang.viewsTitles.interventionDetail %> n°<%= intervention.id %></h3><br />
+	<% } else { %>
+		<h3><%= lang.viewsTitles.newIntervention %></h3><br />
+	<% } %>
+</div>
+
+
+<div class="modal-body">
+	<form id="formIntervention" action="#" class="form-horizontal container-fluid">
+	
+		<div class="row-fluid">
+	
+			<!-- About the intervention -->
+			<fieldset class="span6">
+	
+				<legend><%= lang.aboutTheIntervention %></legend>
+	
+					<!-- intervention Name -->
+					<div class="control-group">
+						<label for="interventionName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
+	
+						<div class="controls">
+							<input type="text" id="interventionName" name="interventionName" value="<%= intervention.name %>" required="required" />
+							<span class="help-inline"></span>
+						</div>
+	
+						<div class="controls">
+							<label for="isTemplate" class="checkbox"><%= _.capitalize(lang.template) %>
+								<input type="checkbox" id="isTemplate" />
+							</label>
+						</div>
+					</div>
+	
+					<!-- intervention Description -->
+					<div class="control-group">
+						<label for="interventionDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
+	
+						<div class="controls">
+							<textarea name="interventionDescription" id="interventionDescription" rows="5" required="required"><%= intervention.description %></textarea>
+							<span class="help-inline"></span>
+						</div>
+					</div>
+	
+					<!-- intervention DeadLine -->
+					<div class="control-group">
+						<label class="control-label" for="interventionDateDeadline"><%= _.capitalize(lang.dateDeadline) %>:</label>
+						<div class="controls">
+							<div class="input-append">
+							<input 
+								type="text" class="datepicker input-small"
+								id="interventionDateDeadline" 
+								value="<%= (intervention.date_deadline) != null ? moment(intervention.date_deadline, 'YYYY-MM-DD').format('L') : moment().add('w', 1).format('L') %>" 
+								placeholder="dd/mm/yyyy"
+								required="required">
+								<span class="add-on"><i class="icon-calendar"></i></span>
+							</div>
+							<span class="help-inline"></span>
+						</div>
+					</div>
+	
+	
+					<!-- intervention Contact Service -->
+					<div class="control-group">
+						<label for="interventionDetailService" class="control-label" ><%= lang.serviceConcerned %>:</label>
+	
+						<div class="controls">
+							<select id="interventionDetailService" required="required"></select>
+							<span class="help-inline"></span>
+						</div>
+					</div>
+	
+					<!-- intervention Place -->
+					<div class="control-group">
+						<label for="interventionPlace" class="control-label"><%= _.capitalize(lang.place) %>:</label>
+	
+						<div class="controls">  
+							<select id="interventionPlace"><option value="" disabled="disabled" ></option></select>
+							<span class="help-inline"></span>                           
+						</div>
+					</div>
+	
+					<!-- intervention Place precision -->
+					<div class="control-group">
+						<label for="interventionPlacePrecision" class="control-label"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
+	
+						<div class="controls">  
+							 <textarea name="interventionPlacePrecision" id="interventionPlacePrecision" rows="2"><%= intervention.site_details!=false?intervention.site_details:'' %></textarea>
+							<span class="help-inline"></span>                           
+						</div>
+					</div>
+	
+			</fieldset>
+		
+		</div>
+	</form>
+
+
+</div>
+
+<div class="modal-footer">
+	<button type="submit" class="btn btn-primary save"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+		
+	<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+</div>

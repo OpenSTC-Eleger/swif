@@ -214,58 +214,60 @@ app.Router = Backbone.Router.extend({
 	/** Interventions details
 	*/
 	detailsIntervention: function(id) {
-		// Check if the user is connect //
-		if(this.checkConnect()){
+		app.views.interventionView = new app.Views.InterventionView( self.intervention, false);
 
-			var self = this;
-
-			if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
-			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
-
-
-			app.loader('display');
-
-			$.when(
-				app.collections.places.fetch(),
-				app.collections.claimersServices.fetch()
-			)
-			.done(function(){
-				if(_.isUndefined(id)){
-					self.intervention = app.models.intervention.clear();
-					app.views.interventionView = new app.Views.InterventionView( self.intervention, true);
-					self.render(app.views.interventionView);
-					app.loader('hide');
-				}
-				else{
-					if(!_.isUndefined(app.collections.interventions)){
-						self.intervention = app.collections.interventions.get(id);
-						app.views.interventionView = new app.Views.InterventionView( self.intervention, false);
-						self.render(app.views.interventionView);
-						app.loader('hide');
-					}
-					else{
-						app.collections.interventions = new app.Collections.Interventions();
-
-						app.collections.interventions.fetch({
-							success: function(){
-								self.intervention = app.collections.interventions.get(id);
-								app.views.interventionView = new app.Views.InterventionView( self.intervention, false);
-								self.render(app.views.interventionView);
-								app.loader('hide');
-							}
-						})
-					}
-				}
-
-			})
-			.fail(function(e){
-				console.error(e);
-			});
-
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
+//		// Check if the user is connect //
+//		if(this.checkConnect()){
+//
+//			var self = this;
+//
+//			if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
+//			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
+//
+//
+//			app.loader('display');
+//
+//			$.when(
+//				app.collections.places.fetch(),
+//				app.collections.claimersServices.fetch()
+//			)
+//			.done(function(){
+//				if(_.isUndefined(id)){
+//					self.intervention = app.models.intervention.clear();
+//					app.views.interventionView = new app.Views.InterventionView( self.intervention, true);
+//					self.render(app.views.interventionView);
+//					app.loader('hide');
+//				}
+//				else{
+//					if(!_.isUndefined(app.collections.interventions)){
+//						self.intervention = app.collections.interventions.get(id);
+//						app.views.interventionView = new app.Views.InterventionView( self.intervention, false);
+//						self.render(app.views.interventionView);
+//						app.loader('hide');
+//					}
+//					else{
+//						app.collections.interventions = new app.Collections.Interventions();
+//
+//						app.collections.interventions.fetch({
+//							success: function(){
+//								self.intervention = app.collections.interventions.get(id);
+//								app.views.interventionView = new app.Views.InterventionView( self.intervention, false);
+//								self.render(app.views.interventionView);
+//								app.loader('hide');
+//							}
+//						})
+//					}
+//				}
+//
+//			})
+//			.fail(function(e){
+//				console.error(e);
+//			});
+//
+//		}
+//		else{
+//			this.navigate(app.routes.login.url, {trigger: true, replace: true});
+//		}
 	},
 
 
