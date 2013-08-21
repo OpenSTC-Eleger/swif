@@ -261,7 +261,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		this.selectedTaskJSON = this.selectedTask.toJSON();
 
 		$('#infoModalCancelTask').children('p').html(this.selectedTaskJSON.name);
-		$('#infoModalCancelTask').children('small').html('<i class="icon-pushpin"></i>&nbsp;' + this.selectedTaskJSON.intervention.name);
+		$('#infoModalCancelTask').children('small').html('<i class="icon-pushpin"></i>&nbsp;' + this.selectedTaskJSON.project_id[1]);
 	},
 
 	displayModalTaskDone: function(e){
@@ -287,8 +287,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 
 		this.selectedTaskJSON = this.selectedTask.toJSON();
-		var intervention = this.selectedTaskJSON.intervention;
-		var serviceInter = intervention.service_id;
+		//var intervention = this.collections.interventions.get(this.selectedTaskJSON.project_id[0]).toJSON();
+		//var serviceInter = intervention.service_id;
 
 
 		if( _.isUndefined(this.officersDropDownList) )
@@ -306,7 +306,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 		// Set Task Informations //
 		$('#infoModalTaskDone').children('p').html(this.selectedTaskJSON.name);
-		$('#infoModalTaskDone').children('small').html('<i class="icon-pushpin"></i>&nbsp;' + this.selectedTaskJSON.intervention.name);
+		$('#infoModalTaskDone').children('small').html('<i class="icon-pushpin"></i>&nbsp;' + this.selectedTaskJSON.project_id[1]);
 
 
 		$("#startDate").val(  moment().format('L') );
@@ -380,8 +380,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		else{ var itemToLoad = link.parent('a').data('item'); }
 
 		this.selectedTaskJSON = this.selectedTask.toJSON();
-		var intervention = this.selectedTaskJSON.intervention;
-		var serviceInter = intervention.service_id;
+		//var intervention = this.selectedTaskJSON.intervention;
+		//var serviceInter = intervention.service_id;
 		
 
 		if(itemToLoad == 'officers'){
@@ -417,7 +417,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 	taskDone: function(e){
 		e.preventDefault();
-
+		var self = this;
 
 		if($('#selectUsersTeams').data('item') == 'officers'){
 			var teamMode = false;
@@ -475,15 +475,21 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 
 		//alert("TODO: Params must be send to OpenERP");
-		this.selectedTask.reportHours(params, 
-			{
-				success: function(data){	
+		//this.selectedTask.reportHours(params, 
+		this.selectedTask.save(params, {silent: true, patch: true})
+			.done(function(){
+				self.selectedTask.fetch().done(function(){
 					$('#modalTaskDone').modal('hide');				
 					route = Backbone.history.fragment;
 					Backbone.history.loadUrl(route);
-				}
-			}
-		);
+					})
+					.fail(function(e){
+						console.log(e)
+					})
+			})
+			.fail(function(e){
+				console.log(e)
+			});
 
 	},
 
@@ -582,15 +588,15 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	cancelTask: function(e){
 		e.preventDefault();
 		
-		this.selectedTask.cancel($('#motifCancelTask').val(),
-			{
-				success: function(data){
-					$('#modalCancelTask').modal('hide');
-					route = Backbone.history.fragment;
-					Backbone.history.loadUrl(route);
-				}
-			}
-		);
+		this.selectedTask.cancel($('#motifCancelTask').val())
+			.done(function(){
+				$('#modalCancelTask').modal('hide');
+				route = Backbone.history.fragment;
+				Backbone.history.loadUrl(route);
+			})
+			.fail(function(e){
+				console.log(e)
+			})
 		//alert("Merci de laisser du temps pour pouvoir développer cette fonctionnalité");
 	},
 
