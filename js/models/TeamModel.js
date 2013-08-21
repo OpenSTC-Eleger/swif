@@ -89,15 +89,23 @@ app.Models.Team = Backbone.RelationalModel.extend({
 		this.set({ free_user_ids : value });
 	},
 
+	
+	/** Get Informations of the model
+	*/
+	getInformations : function(){
+		var informations = {};
+
+		informations.name = this.getName();
+
+		informations.infos = {};
+		informations.infos.key = _.capitalize(app.lang.foreman);
+		informations.infos.value = this.getManager();
+
+		return informations;
+	},
+
 	getActions : function(){
 		return this.get('actions');
-	},
-
-
-	/** Model Initialization
-	*/
-	initialize: function (model) {
-		//console.log("Request task Initialization");
-	},
+	}
 
 });

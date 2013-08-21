@@ -12,8 +12,7 @@ app.Views.ItemTeamView = Backbone.View.extend({
 
 	// The DOM events //
 	events: {
-		'click'                    : 'modalUpdatePlace',
-		'click a.modalDeletePlace' : 'modalDeletePlace'
+		'click a.modalDeleteTeam'  : 'modalDeleteTeam'
 	},
 
 
@@ -99,12 +98,13 @@ app.Views.ItemTeamView = Backbone.View.extend({
 
 	/** Modal to remove a place
 	*/
-	modalDeletePlace: function(e){
+	modalDeleteTeam: function(e){
 		e.preventDefault(); e.stopPropagation();
 
 		app.views.modalDeleteView = new app.Views.ModalDeleteView({
-			el         : '#modalDeletePlace',
-			model      : this.model
+			el         : '#modalDeleteTeam',
+			model      : this.model,
+			modalTitle : app.lang.viewsTitles.deleteTeam
 		});
 	},
 

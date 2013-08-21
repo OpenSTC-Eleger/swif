@@ -7,7 +7,7 @@
 
 	<blockquote class="spaceBottom">
 		<p><%= request.getName() %></p>
-		<small><i class="icon-map-marker"></i>&nbsp; <%= request.getSite() %></small>
+		<small><strong><i class="icon-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong></i>&nbsp;&nbsp; <%= request.getSite() %></small>
 	</blockquote>
 
 

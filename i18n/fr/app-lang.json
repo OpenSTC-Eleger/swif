@@ -297,6 +297,7 @@
 		"deleteEquipment"	 	 : "Suppression du matériel",
 		"deleteCategory"		 : "Suppression de la catégorie",
 		"deleteContact"			 : "Suppression du contact",
+		"deleteTeam"             : "Suppression de l'équipe",
 		"deleteClaimer"			 : "Suppression de l'organisation",
 		"deleteAbsentType"		 : "Suppression du type d'absence",
 		"deletePlace"		 	 : "Suppression du site",

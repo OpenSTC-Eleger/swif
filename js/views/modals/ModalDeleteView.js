@@ -37,8 +37,9 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 		 
 			var template = _.template(templateData, {
-				lang  : app.lang,
-				model : self.model
+				lang       : app.lang,
+				modalTitle : self.options.modalTitle,
+				model      : self.model
 			});
 
 			self.modal.html(template);
