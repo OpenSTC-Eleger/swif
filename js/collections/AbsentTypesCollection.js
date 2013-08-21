@@ -9,7 +9,7 @@ app.Collections.AbsentTypes = app.Collections.GenericCollection.extend({
 	// Model name in the database //
 	model_name : 'openstc.absent.type',
 	
-	url: "absent",
+	url: "/absent",
 
 
 	/** Collection Initialization

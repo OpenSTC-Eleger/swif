@@ -8,7 +8,7 @@ app.Collections.STCGroups = app.Collections.GenericCollection.extend({
 	// Model name in the database //
 	model_name : 'res.groups',
 
-	url: "groups",
+	url: "/groups",
 
 
 
