@@ -66,7 +66,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	*/
 	render : function() {
 		var self = this;
-
+		console.log('-----------Interventions list view rendering--------------');
 		// Change the page title //
 		app.router.setPageTitle(app.lang.viewsTitles.interventionsMonitoring);
 
@@ -218,15 +218,16 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		var inter = this.collections.interventions.get(this.pos);
 		if( inter) {
 			var interJSON = inter.toJSON();
-				app.callObjectMethodOE([inter.id],"project.project","get_task_categ_authorized",app.models.user.getSessionID(),{
-					success: function(data){
-						app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
-						collection: new app.Collections.CategoriesTasks(data)})
-						app.views.selectListAssignementsView.clearAll();
-						app.views.selectListAssignementsView.addEmptyFirst();
-						app.views.selectListAssignementsView.addAll();
-					}
-				});
+				
+//				app.callObjectMethodOE([inter.id],"project.project","get_task_categ_authorized",app.models.user.getSessionID(),{
+//				success: function(data){
+//						app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
+//						collection: new app.Collections.CategoriesTasks(data)})
+//						app.views.selectListAssignementsView.clearAll();
+//						app.views.selectListAssignementsView.addEmptyFirst();
+//						app.views.selectListAssignementsView.addAll();
+//					}
+//				});
 			}
 		
 		$('#modalAddTask').modal();
@@ -265,7 +266,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 	displayModalTaskDone: function(e){
 		var button = $(e.target);
-
+		var self = this;
 		// Retrieve the Task //
 		if(!button.is('i')){
 			this.selectedTask = this.collections.tasks.get(button.data('taskid'));
@@ -325,8 +326,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 			
 			success: function(data){
 				// Fill equipment List //
-				this.collections.vehicles = new app.Collections.Equipments(data);
-				app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentDone"), collection: this.collections.vehicles})
+				self.collections.vehicles = new app.Collections.Equipments(data);
+				app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentDone"), collection: self.collections.vehicles})
 				app.views.selectListEquipmentsView.clearAll();
 				app.views.selectListEquipmentsView.addEmptyFirst();
 				app.views.selectListEquipmentsView.addAll();
@@ -789,13 +790,13 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		//retrieve interventions and tasks associated (use domain ('project_id','in',[...] to retrieve tasks associated)
 		this.collections.interventions.fetch(fetchParams)
 		.done(function(){
-//			self.collections.tasks.fetch({silent: true,data: {filters: {0:{'field':'project_id','operator':'in','value':self.collections.interventions.pluck('id')}}}})
-//			.done(function(){
+			self.collections.tasks.fetch({silent: true,data: {filters: {0:{'field':'project_id.id','operator':'in','value':self.collections.interventions.pluck('id')}}}})
+			.done(function(){
 				deferred.resolve();
-//			})
-//			.fail(function(e){
-//				console.error(e);
-//			})
+			})
+			.fail(function(e){
+				console.error(e);
+			})
 		})
 		.fail(function(e){
 			console.error(e);
