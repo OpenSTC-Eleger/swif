@@ -281,7 +281,8 @@ app.Models.Task = Backbone.Model.extend({
 		var params = {}
 		params.state = app.Models.Task.status.cancelled.key;
 		params.cancel_reason = cancel_reason;
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
+		//app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
+		return this.save(params, {silent: true, patch: true})
 	},
 
 
