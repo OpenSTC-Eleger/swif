@@ -21,6 +21,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		'click li.disabled'					: 'preventDefault',
 		'click ul.sortable li'				: 'preventDefault',
 
+		'click a.modalSaveInter'			: 'displayModalSaveInter',
+		
 		'click .btn.addTask'                : 'displayModalAddTask',
 		'submit #formAddTask'         		: 'saveTask',
 
@@ -203,11 +205,26 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		e.preventDefault();
 		// Retrieve the ID of the intervention //
 		var link = $(e.target);
-		this.pos =  _(link.parents('tr').attr('id')).strRightBack('_');
+		if(link.parents('tr').length > 0){
+			this.pos =  _(link.parents('tr').attr('id')).strRightBack('_');
+		}
+		else{
+			this.pos = -1;
+		}
+		},
+
+
+	/** Display the form to add / update an intervention
+	*/
+	displayModalSaveInter: function(e){
+		this.getTarget(e);
+		var params = {el:'#modalSaveInter'}
+		if(this.pos > -1){
+			params.model = this.collections.interventions.get(this.pos);
+		}
+		new app.Views.ModalInterventionView(params);
 	},
-
-
-
+	
 	/** Display the form to add a new Task
 	*/
 	displayModalAddTask: function(e){
@@ -633,7 +650,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	*/
 	print: function(e){
 		e.preventDefault();
-
+		var self = this;
 		this.getTarget(e);
 
 		if($(e.target).data('action') == 'inter'){
@@ -650,7 +667,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 			// Display all the tasks of the inter //
 			_.each(interJSON.tasks, function(task, i){
-				$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+task.name+'</td><td>'+app.decimalNumberToTime(task.planned_hours, 'human')+'</td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td></tr>');
+				var taskJSON = self.collections.tasks.get(task);
+				$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+taskJSON.name+'</td><td>'+app.decimalNumberToTime(taskJSON.planned_hours, 'human')+'</td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td></tr>');
 			})
 		}
 		else{
@@ -658,7 +676,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 			var selectedTaskJSON = this.selectedTask.toJSON();
 
 			// Get the inter of the Task //
-			var inter = this.collections.interventions.get(this.selectedTask.toJSON().intervention.id);
+			var inter = this.collections.interventions.get(this.selectedTask.toJSON().project_id[0]);
 			var interJSON = inter.toJSON();
 
 			// Hide the print Inter section //

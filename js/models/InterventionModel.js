@@ -1,28 +1,12 @@
 /******************************************
 * Intervention Model
 */
-app.Models.Intervention = Backbone.RelationalModel.extend({
+app.Models.Intervention = Backbone.Model.extend({
 	
-	model_name : 'project.project',	
-	
-	url: "/#demandes-dinterventions/:id",
-
-//	relations: [
-//		{
-//			type: Backbone.HasMany,
-//			key: 'tasks',
-//			relatedModel: 'app.Models.Task',
-//			collectionType: 'app.Collections.Tasks',
-//			includeInJSON: true,
-//			reverseRelation: {
-//				key: 'intervention',
-//				includeInJSON: ['id', 'name', 'description', 'state', 'tasks', 'service_id', 'site1' ,'date_start', 'date_end'],
-//			},
-//		},		
-//	],
+	urlRoot: "api/openstc/interventions",
 	
 	defaults:{
-		id:0,
+		id:null,
 		state: null,
 		cancel_reason: null,
 	},
@@ -50,7 +34,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 	*/
 	initialize: function(){
 		//console.log('Intervention Model initialization');
-		this.fetchRelated('tasks');
+		//this.fetchRelated('tasks');
 
 		app.Models.Intervention.status.scheduled.translation = app.lang.planningFenced;
 		app.Models.Intervention.status.open.translation = app.lang.toScheduled;	
