@@ -1,0 +1,56 @@
+<td colspan="5" class="nestedTD">
+    <% if(claimer.addresses.length != 0) { %>
+    <table class="table-nested-objects table table-striped table-condensed table-hover">
+        <thead>
+        <tr>
+            <th><%= _.capitalize(lang.name) %></th>
+            <th><%= _.capitalize(lang.function) %></th>
+            <th><%= _.capitalize(lang.phone) %></th>
+            <th><%= _.capitalize(lang.email) %></th>
+            <th><%= _.capitalize(lang.mobile) %></th>
+            <th><%= _.capitalize(lang.street) %></th>
+            <th><%= _.capitalize(lang.city) %></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% _.each(claimer.addresses, function (address, i) { %>
+
+        <tr class="row-nested-objects" id="address_<%= address.id %>">
+            <td>
+                <% if(address.user_login){
+                    <i class="icon-user" data-toggle="tooltip" data-original-title="<%= address.user_login %>"></i>
+                <% } %>
+                <span><%= address.name %></span>&nbsp;
+												<span class="nested-objects-actions invisible">
+													<a href="#modalSaveContact" class="modalSaveContact" data-toggle="modal" data-action="update">
+                                                        <i class="icon-pencil displayInlineBlock" data-toggle="tooltip" data-action="update" data-original-title="<%= _.capitalize(lang.actions.update) %>">&nbsp;</i>
+                                                    </a> |
+
+													<a href="#modalDeleteContact" class="modalDeleteContact" data-toggle="modal">
+                                                        <i class="icon-remove displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">&nbsp;</i>
+                                                    </a>
+												</span>
+            </td>
+            <td><%= address.function!=false ? address.function : '' %></td>
+            <td><%= address.phone!=false ? address.phone : '' %></td>
+            <td><%= address.email != false ? "<a href=mailto:"+address.email+">"+address.email+"</a>" : '' %></td>
+            <td><%= address.mobile != false ? address.mobile : '' %></td>
+            <td><%= address.street != false ? address.street : '' %></td>
+            <td><%= address.zip != false ? address.zip : '' %>&nbsp;<%= address.city != false ? address.city : '' %></td>
+        </tr>
+        <% }); %>
+        </tbody>
+    </table>
+    <% } else { %>
+    <!-- No Claimer to display -->
+    <div class="alert alert-info">
+        <i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noPartner %>.
+    </div>
+    <% } %>
+
+    <div class="div-actions" >
+        <button class="btn btn-primary btn-small no-outline modalSaveContact" data-action="create" data-toggle="modal" data-target="#modalSaveContact">
+            <i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addContact) %>
+        </button>
+    </div>
+</td>

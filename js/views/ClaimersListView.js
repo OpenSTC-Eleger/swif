@@ -1,13 +1,11 @@
 /******************************************
 * Claimers List View
 */
-app.Views.ClaimersListView = Backbone.View.extend({
+app.Views.ClaimersListView = app.Views.GenericListView.extend({
 
 	el : '#rowContainer',
 
 	templateHTML: 'claimers',
-
-	numberListByPage: 25,
 
 	selectedClaimer : '',
 	selectedContact : '',
@@ -39,6 +37,11 @@ app.Views.ClaimersListView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize: function () {
+		var self = this;
+		this.initCollection().done(function () {
+			self.collection.off()
+			self.listenTo(self.collection, 'add', self.add);
+		})
 
 	},
 
@@ -59,7 +62,7 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		app.views.headerView.switchGridMode('fluid');
 
 
-		var claimers = app.collections.claimers.models;
+		var claimers = app.collections.claimers.models
 		var nbClaimers = _.size(claimers);
 
 		var claimersSortedArray = _.sortBy(claimers, function(item){ 
@@ -72,22 +75,32 @@ app.Views.ClaimersListView = Backbone.View.extend({
 		var endPos = Math.min(startPos + this.numberListByPage, len);
 		var pageCount = Math.ceil(len / this.numberListByPage);
 
-
 		// Retrieve the template // 
-		$.get("templates/" + this.templateHTML + ".html", function(templateData){
+		$.get("templates/" + this.templateHTML + ".html", function (templateData) {
 			var template = _.template(templateData, {
-				claimers: claimersSortedArray,
-				officers: app.collections.officers,
-				lang: app.lang,
+				claimers  : claimersSortedArray,
+				officers  : app.collections.officers,
+				lang      : app.lang,
 				nbClaimers: nbClaimers,
-				startPos: startPos, endPos: endPos,
-				page: self.options.page, 
-				pageCount: pageCount,
+				startPos  : startPos, endPos: endPos,
+				page      : self.options.page,
+				pageCount : pageCount,
 			});
 
 			$(self.el).html(template);
 
 			$('*[data-toggle="tooltip"]').tooltip();
+
+			_.each(app.collections.claimers.models, function (claimer, i) {
+				$('#claimersList').append(
+					new app.Views.ClaimerView({model: claimer}).render().el
+				);
+				_.each(claimer.getAddresses, function(address,i) {
+						$('#claimerList').append(
+							new app.Views.ClaimerAddressView({model: address}).render().el
+						);
+				});
+			});
 
 			// Set the focus to the first input of the form //
 			$('#modalSaveContact, #modalSaveClaimer').on('shown', function (e) {
@@ -95,15 +108,13 @@ app.Views.ClaimersListView = Backbone.View.extend({
 			})
 		});
 
-
 		$(this.el).hide().fadeIn('slow');
-		
+
 		return this;
-    },
-    
+	},
 
 
-    /** Fonction collapse table row
+	/** Fonction collapse table row
     */
     tableAccordion: function(e){
 

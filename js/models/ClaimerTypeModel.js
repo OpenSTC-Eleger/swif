@@ -1,20 +1,20 @@
 /******************************************
 * Claimer Type Model
 */
-app.Models.ClaimerType = Backbone.RelationalModel.extend({
+app.Models.ClaimerType = Backbone.Model.extend({
     
 	model_name : 'openstc.partner.type',
 	
 	url: "/type-demandeurs/:id",
 
-
-	relations: [{
-		type: Backbone.HasMany,
-		key: 'claimers',
-		relatedModel: 'app.Models.Claimer',
-		collectionType: 'app.Collections.Claimers',
-		includeInJSON: true,
-	}],
+// TODO remove
+//	relations: [{
+//		type: Backbone.HasMany,
+//		key: 'claimers',
+//		relatedModel: 'app.Models.Claimer',
+//		collectionType: 'app.Collections.Claimers',
+//		includeInJSON: true,
+//	}],
 	
 	defaults:{
 		id:0,
@@ -44,7 +44,8 @@ app.Models.ClaimerType = Backbone.RelationalModel.extend({
 	*/
 	initialize: function(){
 		//console.log('Claimer Type Model initialization');
-		this.fetchRelated('claimers');
+		// TODO remove
+		// this.fetchRelated('claimers');
 	},
 
 

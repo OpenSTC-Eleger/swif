@@ -36,88 +36,8 @@
 					<th><%= _.capitalize(lang.email) %></th>
 				</tr>
 			</thead>
-			<tbody>
-			<% for (var i = startPos; i < endPos; i++) { 
-				var claimer = claimers[i].toJSON()
-				console.debug(claimer);
-				%>
-				
-				<!-- Claimer row -->
-				<tr class="row-object" id="claimer_<%= claimer.id %>">
-					<td>
-						<a class="accordion-object" href="#collapse_<%= claimer.id %>"><i class="icon-pushpin">&nbsp;&nbsp;</i><%= claimer.name %></a>
-						<span class="object-actions invisible">
-							<a href="#modalSaveClaimer" class="modalSaveClaimer" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a>
+			<tbody id="claimersList">
 
-						</span>
-					</td>
-					<td><%= claimer.type_id[1]  %></td>
-					<td class="hidden-phone"><%= (claimer.technical_site_id != null ? claimer.technical_site_id[1] : "") %></td>
-					<td><%= (claimer.phone != false ? claimer.phone : "") %></td>
-					<td><%= (claimer.email != false ? '<a href="mailto:'+claimer.email+'">'+claimer.email+'</a>' : "") %></td>
-				</tr>
-				<!-- Claimer row -->
-				<tr class="row-nested-objects-collapse" id="collapse_<%= claimer.id %>">
-					<td colspan="5" class="nestedTD">
-						<% if(claimer.address.length != 0) { %>
-							<table class="table-nested-objects table table-striped table-condensed table-hover">
-								<thead>
-									<tr>
-										<th><%= _.capitalize(lang.name) %></th>
-										<th><%= _.capitalize(lang.function) %></th>
-										<th><%= _.capitalize(lang.phone) %></th>
-										<th><%= _.capitalize(lang.email) %></th>
-										<th><%= _.capitalize(lang.mobile) %></th>
-										<th><%= _.capitalize(lang.street) %></th>
-										<th><%= _.capitalize(lang.city) %></th>
-									</tr>
-								</thead>
-								<tbody>
-									<% _.each(claimer.address, function (address, i) { %>
-
-										<tr class="row-nested-objects" id="address_<%= address.id %>">
-											<td>
-												<% 
-												if(address.user_id != false){ 
-													var off = officers.get(address.user_id[0]); %>
-													<i class="icon-user" data-toggle="tooltip" data-original-title="<%= off.getLogin() %>"></i>
-												<% } %>
-												<span><%= address.name %></span>&nbsp;
-												<span class="nested-objects-actions invisible">
-													<a href="#modalSaveContact" class="modalSaveContact" data-toggle="modal" data-action="update">
-														<i class="icon-pencil displayInlineBlock" data-toggle="tooltip" data-action="update" data-original-title="<%= _.capitalize(lang.actions.update) %>">&nbsp;</i>
-													</a> |
-
-													<a href="#modalDeleteContact" class="modalDeleteContact" data-toggle="modal">
-														<i class="icon-remove displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">&nbsp;</i>
-													</a>
-												</span>
-											</td>
-											<td><%= address.function!=false ? address.function : '' %></td>
-											<td><%= address.phone!=false ? address.phone : '' %></td>
-											<td><%= address.email != false ? "<a href=mailto:"+address.email+">"+address.email+"</a>" : '' %></td>
-											<td><%= address.mobile != false ? address.mobile : '' %></td>
-											<td><%= address.street != false ? address.street : '' %></td>
-											<td><%= address.zip != false ? address.zip : '' %>&nbsp;<%= address.city != false ? address.city : '' %></td>
-										</tr>
-									<% }); %>
-								</tbody>
-							</table>
-						<% } else { %>
-								<!-- No Claimer to display -->
-								<div class="alert alert-info">
-									<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noPartner %>.
-								</div>
-						<% } %>
-
-							<div class="div-actions" >
-								<button class="btn btn-primary btn-small no-outline modalSaveContact" data-action="create" data-toggle="modal" data-target="#modalSaveContact">
-									<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addContact) %>
-								</button>
-							</div>
-					</td>
-				</tr>
-			<% }; %>
 			</tbody>
 		</table>
 

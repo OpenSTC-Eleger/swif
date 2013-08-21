@@ -1,28 +1,28 @@
 /******************************************
 * Claimer Model
 */
-app.Models.Claimer = Backbone.RelationalModel.extend({
+app.Models.Claimer = Backbone.Model.extend({
 
 	// Model name in the database //
 	model_name : 'res.partner',	
 	
 	url: "/#organisation/:id",
 
-
-	relations: [
-        {
-			type: Backbone.HasMany,
-			key: 'address',
-			relatedModel: 'app.Models.ClaimerContact',
-			includeInJSON: true,
-	        reverseRelation: {
-				type: Backbone.HasOne,
-	            key: 'livesIn',
-	            includeInJSON: true,
-	        }
-        },
-    ],
-    
+//TODO remove this
+//	relations: [
+//        {
+//			type: Backbone.HasMany,
+//			key: 'address',
+//			relatedModel: 'app.Models.ClaimerContact',
+//			includeInJSON: true,
+//	        reverseRelation: {
+//				type: Backbone.HasOne,
+//	            key: 'livesIn',
+//	            includeInJSON: true,
+//	        }
+//        },
+//    ],
+//
     
     defaults:{
 		id:0,
@@ -67,27 +67,37 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
 	getClaimerType : function() {
         return this.get('type_id');
     },
+
     setClaimerType : function(value) {
     	if( value == 'undefined') return;
         this.set({ type_id : value });
-    },  
-	
-    
+    },
+
+	// Returns JSON addresses this is used in view to serialize object before template
+	getAddresses: function () {
+		return _.map(this.get('address'), function (address_id) {
+			return app.collections.claimersContacts.get(address_id)
+		});
+	},
+
+
 	/** Model Initialization
 	*/
     initialize: function(){
+
+	//TODO remove this
         //console.log('Claimer Model initialization');
-        this.fetchRelated('service_id');
+	//        this.fetchRelated('service_id');
     },
 
 
-
-    /** Model Parser
-    */
-    parse: function(response) {
-        return response;
-    },
-
+//TODO remove this
+//    /** Model Parser
+//    */
+//    parse: function(response) {
+//        return response;
+//    },
+//
 
 
     update: function( params ) {
@@ -96,26 +106,27 @@ app.Models.Claimer = Backbone.RelationalModel.extend({
 		this.setTechnicalServiceId( params.technical_service_id );
 		this.setTechnicalSiteId( params.technical_site_id );		
 	},
+
+
+
+//TODO remove this
+//	/** Save Model
+//	*/
+//	save: function(data,id, options) {
+//		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
+//	},
 	
 
-
-	/** Save Model
-	*/
-	save: function(data,id, options) { 
-		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
-	},
-	
-
-
-	/** Delete Claimer
-	*/
-	delete: function (options) {	
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
-	}
+//TODO remove this
+//	/** Delete Claimer
+//	*/
+//	delete: function (options) {
+//		app.deleteOE(
+//			[[this.get("id")]],
+//			this.model_name,
+//			app.models.user.getSessionID(),
+//			options
+//		);
+//	}
 
 });
