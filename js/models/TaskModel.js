@@ -100,6 +100,7 @@ app.Models.Task = Backbone.Model.extend({
 			break;
 			default:
 				return this.get('user_id')[1];
+			}
 		}
 		return false;
 	},
@@ -204,22 +205,22 @@ app.Models.Task = Backbone.Model.extend({
 	/** Model Parser
 	*/
 	parse: function(response) {
-		
-		// Check if the date is a moment() //
-		if(!moment.isMoment(response.date_start)){
-			if(response.date_start) {
-			//var user = app.models.user.toJSON();			
-			response.date_start = moment(this.parseDate(response.date_start));
+		if(!_.isNull(response)){
+			// Check if the date is a moment() //
+			if(!moment.isMoment(response.date_start)){
+				if(response.date_start) {
+				//var user = app.models.user.toJSON();			
+				response.date_start = moment(this.parseDate(response.date_start));
+				}
+			}
+	
+			// Check if the date is a moment() //
+			if(!moment.isMoment(response.date_end)){
+				if(response.date_end){
+					response.date_end = moment(this.parseDate(response.date_end));
+				}
 			}
 		}
-
-		// Check if the date is a moment() //
-		if(!moment.isMoment(response.date_end)){
-			if(response.date_end){
-				response.date_end = moment(this.parseDate(response.date_end));
-			}
-		}
-
 		return response;
 	},
 	
