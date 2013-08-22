@@ -1,0 +1,27 @@
+<h4 class="well well-small noMarginTop"><i class="icon-group icon-fixed-width"></i>&nbsp;<%= team.getName() %></h4>
+
+<div class="row-fluid">
+
+	<!-- Team Members -->
+	<div class="span6">
+
+		<div class="widget-title">
+			<h4><%= lang.teamMembers %> <span class="badge pull-right"><%= _.size(team.getMembers()) %></span></h4>
+		</div>
+		<input type="text" id="searchMembers" class="input-block-level" data-multiple='true' data-placeholder="<%= lang.actions.selectAgents %>"
+			data-selected-value='<%= JSON.stringify(team.getMembers('json')) %>'
+		>
+	</div>
+
+	<!-- Team Services -->
+	<div class="span6">
+		
+		<div class="widget-title">
+			<h4><%= lang.teamServices %> <span class="badge pull-right"><%= _.size(team.getServices()) %></span></h4>
+		</div>
+		<input type="text" id="searchServices" class="input-block-level" data-multiple='true' data-placeholder="<%= lang.actions.selectServices %>"
+			data-selected-value='<%= JSON.stringify(team.getServices('json')) %>'
+		>
+	</div>
+
+</div>

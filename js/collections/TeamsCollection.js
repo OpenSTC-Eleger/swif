@@ -5,7 +5,7 @@ app.Collections.Teams = app.Collections.GenericCollection.extend({
 
 	model        : app.Models.Team,
 
-	fields       : ['id', 'name', 'actions', 'free_user_ids', 'manager_id', 'service_ids', 'tasks', 'user_ids'],
+	fields       : ['id', 'name', 'actions', 'manager_id', 'service_names', 'user_names'],
 
 	default_sort : { by: 'name', order: 'ASC' },
 
@@ -28,7 +28,7 @@ app.Collections.Teams = app.Collections.GenericCollection.extend({
 		if(_.isUndefined(options.data)) {
 			options.data = {};
 		}
-		//options.data.fields = this.fields;
+		options.data.fields = this.fields;
 
 		return $.when(this.count(options), Backbone.sync.call(this, method, this, options));
 	},

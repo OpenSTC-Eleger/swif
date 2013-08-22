@@ -5,7 +5,7 @@ app.Views.GenericListView = Backbone.View.extend({
 
 	el            : '#rowContainer',
 
-	urlParameters : ['search', 'filter', 'sort'],
+	urlParameters : ['id', 'search', 'filter', 'sort', 'page'],
 	
 	searchForm    : 'form.form-search input',
 
@@ -70,6 +70,10 @@ app.Views.GenericListView = Backbone.View.extend({
 			else{
 				this.options.search = query
 			}
+			
+			// Delete parameters //
+			delete this.options.id;
+			delete this.options.page;
 
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 		}
@@ -106,6 +110,11 @@ app.Views.GenericListView = Backbone.View.extend({
 			sortOrder = 'ASC';
 		}
 
+		// Delete parameter //
+		delete this.options.id;
+		delete this.options.page;
+
+
 		this.options.sort.by = sortBy;
 		this.options.sort.order = sortOrder;
 
@@ -124,7 +133,7 @@ app.Views.GenericListView = Backbone.View.extend({
 
 
 		// Iterate all urlParameters //
-		_.each(this.urlParameters, function(value, item){
+		_.each(this.urlParameters, function(value, index){
 
 			
 			// Check if the options parameter aren't undefined or null //
@@ -133,20 +142,29 @@ app.Views.GenericListView = Backbone.View.extend({
 
 				// Check if the value of the parameter is not an object //
 				if(!_.isObject(self.options[value])){
+
 					url += '/'+value+'/'+self.options[value];
 				}
 				else{
-					var params = '';
-					_.each(self.options[value], function(value, item){
-						if(!_.isEmpty(params)){
-							params += '-'+value;
-						}
-						else{
-							params += value;
-						}
-					})
 
-					url += '/'+value+'/'+params;
+					// Check if the value is the page //
+					if(value == 'page'){
+						url += '/'+value+self.options[value].page;
+					}
+					else{
+
+						var params = '';
+						_.each(self.options[value], function(value, item){
+							if(!_.isEmpty(params)){
+								params += '-'+value;
+							}
+							else{
+								params += value;
+							}
+						})
+
+						url += '/'+value+'/'+params;
+					}
 				}
 			}
 

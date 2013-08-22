@@ -44,8 +44,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		itemPlaceView.highlight();
 
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.placeCreateOk);
-		this.collection.cpt++;
-		app.views.placesListView.partialRender();
+		this.partialRender();
 	},
 
 
@@ -103,8 +102,12 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	/** Partial Render of the view
 	*/
 	partialRender: function (type) {
-		app.views.paginationView.render();
-		$('#bagdeNbPlaces').text(this.collection.cpt);
+		var self = this; 
+
+		this.collection.count().done(function(){
+			$('#bagdeNbPlaces').html(self.collection.cpt);
+			app.views.paginationView.render();
+		});
 	},
 
 
@@ -117,7 +120,6 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		app.views.modalPlaceView = new app.Views.ModalPlaceView({
 			el  : '#modalSavePlace'
 		});
-
 	},
 
 

@@ -5,14 +5,25 @@ app.Views.ItemTeamView = Backbone.View.extend({
 
 	tagName      : 'tr',
 
-	className    : 'row-item',
+	className    : function(){
+
+		if(this.model.getId() == app.views.teamsListView.options.id) {
+			return 'info bolder row-item selectable';
+		}
+		else{
+			return 'row-item selectable';
+		}
+
+	},
 
 	templateHTML : 'items/itemTeam',
 
 
 	// The DOM events //
 	events: {
-		'click a.modalDeleteTeam'  : 'modalDeleteTeam'
+		'click'                    : 'selectTeam',
+		'click a.modalDeleteTeam'  : 'modalDeleteTeam',
+		'click a.modalUpdateTeam'  : 'modalUpdateTeam'
 	},
 
 
@@ -35,9 +46,11 @@ app.Views.ItemTeamView = Backbone.View.extend({
 	*/
 	change: function(e){
 
+		console.log('Trigger change');
+
 		this.render();
 		this.highlight();
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.teamUpdateOk);
 	},
 
 
@@ -51,9 +64,14 @@ app.Views.ItemTeamView = Backbone.View.extend({
 			self.remove();
 		});
 
-		app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.placeDeleteOk);
-		app.views.placesListView.collection.cpt--;
-		app.views.placesListView.partialRender();
+		app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.teamDeleteOk);
+		app.views.teamsListView.partialRender();
+
+		if(_.isEqual(this.model, app.views.teamMembersAndServices.model)){
+			app.views.teamMembersAndServices.hide();
+		}
+		delete app.views.teamsListView.options.id;
+		app.router.navigate(app.views.teamsListView.urlBuilder(), {trigger: false, replace: false});
 	},
 
 
@@ -84,14 +102,13 @@ app.Views.ItemTeamView = Backbone.View.extend({
 
 	/** Display Modal form to add/sav a new place
 	*/
-	modalUpdatePlace: function(e){  
+	modalUpdateTeam: function(e){  
 		e.preventDefault(); e.stopPropagation();
 
-		/*app.views.modalPlaceView = new app.Views.ModalPlaceView({
-			el      : '#modalSavePlace',
+		app.views.modalTeamView = new app.Views.ModalTeamView({
+			el      : '#modalSaveTeam',
 			model   : this.model,
-			elFocus : $(e.target).data('form-id')
-		});*/
+		});
 	},
 
 
@@ -107,6 +124,23 @@ app.Views.ItemTeamView = Backbone.View.extend({
 			modalTitle   : app.lang.viewsTitles.deleteTeam,
 			modalConfirm : app.lang.warningMessages.confirmDeleteTeam
 		});
+	},
+
+
+
+	/** Select a team
+	*/
+	selectTeam: function(e){
+		e.preventDefault();
+
+		// Set the new route //
+		app.views.teamsListView.options.id = this.model.getId();
+		app.router.navigate(app.views.teamsListView.urlBuilder(), {trigger: false, replace: false});
+
+		$('tr.row-item.info').removeClass('info bolder');
+		$(this.el).addClass('info bolder');
+
+		app.views.teamsListView.displayTeamMembersAndServices(this.model);
 	},
 
 

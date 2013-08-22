@@ -110,7 +110,7 @@
 	},
 
 	"teams": {
-		"url"		: "equipes(/search/:search)(/sort/:sort)(/page:page)",
+		"url"		: "equipes(/id/:id)(/search/:search)(/sort/:sort)(/page:page)",
 		"function"	: "teams"
 	},
 

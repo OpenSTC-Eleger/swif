@@ -53,7 +53,6 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 		});
 
 		app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.placeDeleteOk);
-		app.views.placesListView.collection.cpt--;
 		app.views.placesListView.partialRender();
 	},
 

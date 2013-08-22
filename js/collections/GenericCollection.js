@@ -3,9 +3,9 @@
 */
 app.Collections.GenericCollection = Backbone.Collection.extend({
 
-	cpt        : 0,
+	cpt         : 0,
 
-	default_sort : { by: 'id', order: 'DESC' },
+	default_sort: { by: 'id', order: 'DESC' },
 
 
 	/** count all models without restricts ( openerp search_count method call select count(*) request)
@@ -16,7 +16,7 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 		var paramFilter = {};
 		// Check if a search are perform //
 		//Test if data is present in options and if filters is present is data
-		if(!_.isUndefined(options.data)){
+		if(!_.isUndefined(options)){
 			if(!_.isUndefined(options.data.filters)){
 				paramFilter.filters = options.data.filters;
 			}

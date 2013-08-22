@@ -364,7 +364,7 @@ var app = {
 
 	/** Calcul the page and the offset
 	*/
-	calculPageOffset: function(page){
+	calculPageOffset: function(page, itemsPerPage){
 
 		var paginate = {};
 
@@ -374,7 +374,7 @@ var app = {
 		}
 		else{
 			paginate.page = parseInt(page, 10);
-			paginate.offset = (paginate.page - 1) * app.config.itemsPerPage;
+			paginate.offset = (paginate.page - 1) * (!_.isUndefined(itemsPerPage) ? itemsPerPage : app.config.itemsPerPage);
 		}
 
 		return paginate;
