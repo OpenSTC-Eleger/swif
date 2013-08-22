@@ -3,7 +3,7 @@
 */
 app.Models.Intervention = Backbone.Model.extend({
 	
-	urlRoot: "api/openstc/interventions",
+	urlRoot: "/api/openstc/interventions",
 	
 	defaults:{
 		id:null,
@@ -11,6 +11,21 @@ app.Models.Intervention = Backbone.Model.extend({
 		cancel_reason: null,
 	},
 
+	getId : function() {
+		return this.get('id');
+	},
+	setId: function(value) {
+		if( value == 'undefined') return;
+		this.set({ id : value });
+	},
+
+	getName : function() {
+		return this.get('name');
+	},
+	setName: function(value) {
+		if( value == 'undefined') return;
+		this.set({ id : value });
+	},
 
 	getState : function() {
 		return this.get('state');
