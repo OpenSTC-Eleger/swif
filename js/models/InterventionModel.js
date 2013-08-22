@@ -61,13 +61,6 @@ app.Models.Intervention = Backbone.Model.extend({
 
 
 
-	/** Save Model*/
-	save: function(data,options) { 
-		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
-	},
-
-
-
 	//save method with all redondant code
 	saveAndRoute: function(id,data,closeModal, view, strRoute) {
 		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {

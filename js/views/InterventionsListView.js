@@ -231,21 +231,26 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		this.getTarget(e);
 		
 		// Display only categories in dropdown belongs to intervention //
-		var categoriesFiltered = null;
+		var categoriesFiltered = new app.Collections.CategoriesTasks();
 		var inter = this.collections.interventions.get(this.pos);
+		var options = {};
 		if( inter) {
 			var interJSON = inter.toJSON();
-				
-//				app.callObjectMethodOE([inter.id],"project.project","get_task_categ_authorized",app.models.user.getSessionID(),{
-//				success: function(data){
-//						app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
-//						collection: new app.Collections.CategoriesTasks(data)})
-//						app.views.selectListAssignementsView.clearAll();
-//						app.views.selectListAssignementsView.addEmptyFirst();
-//						app.views.selectListAssignementsView.addAll();
-//					}
-//				});
+			if(interJSON.service_id.length > 0){
+				var domain = {0:{field:'service_ids.id',operator:'=','value':interJSON.service_id[0]}};
 			}
+			options.data = {filters: domain};
+		}
+		categoriesFiltered.fetch(options).done(function(){
+			app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
+					collection: categoriesFiltered});
+			app.views.selectListAssignementsView.clearAll();
+			app.views.selectListAssignementsView.addEmptyFirst();
+			app.views.selectListAssignementsView.addAll();
+		})
+		.fail(function(e){
+			console.log(e);
+		})
 		
 		$('#modalAddTask').modal();
 		
