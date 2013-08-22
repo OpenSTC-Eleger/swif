@@ -8,10 +8,10 @@ app.Views.ItemTeamView = Backbone.View.extend({
 	className    : function(){
 
 		if(this.model.getId() == app.views.teamsListView.options.id) {
-			return 'info bolder row-item';
+			return 'info bolder row-item selectable';
 		}
 		else{
-			return 'row-item';
+			return 'row-item selectable';
 		}
 
 	},
@@ -46,6 +46,8 @@ app.Views.ItemTeamView = Backbone.View.extend({
 	*/
 	change: function(e){
 
+		console.log('Trigger change');
+
 		this.render();
 		this.highlight();
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.teamUpdateOk);
@@ -64,6 +66,12 @@ app.Views.ItemTeamView = Backbone.View.extend({
 
 		app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.teamDeleteOk);
 		app.views.teamsListView.partialRender();
+
+		if(_.isEqual(this.model, app.views.teamMembersAndServices.model)){
+			app.views.teamMembersAndServices.hide();
+		}
+		delete app.views.teamsListView.options.id;
+		app.router.navigate(app.views.teamsListView.urlBuilder(), {trigger: false, replace: false});
 	},
 
 

@@ -4,7 +4,7 @@
 app.Models.Team = Backbone.Model.extend({
 
 
-	fields     : ['id', 'name', 'manager_id', 'actions', 'service_ids', 'user_ids'],
+	fields     : ['id', 'name', 'manager_id', 'actions', 'service_names', 'user_names'],
 
 	urlRoot    : '/api/openstc/teams',
 	
@@ -55,10 +55,7 @@ app.Models.Team = Backbone.Model.extend({
 	getMembers: function(type) {
 		var teamMembers = [];
 
-		/*console.log(this.get('user_ids'));
-		console.log('----------');*/
-
-		_.each(this.get('user_ids'), function(s){
+		_.each(this.get('user_names'), function(s){
 			switch (type){
 				case 'id': 
 					teamMembers.push(s[0]);
@@ -84,14 +81,10 @@ app.Models.Team = Backbone.Model.extend({
 
 
 	// Team services ID //
-	getServices: function() {
-		return this.get('service_ids');
+	getServices: function(type) {
 		var teamServices = [];
 
-		/*console.log(this.get('user_ids'));
-		console.log('----------');*/
-
-		_.each(this.get('service_ids'), function(s){
+		_.each(this.get('service_names'), function(s){
 			switch (type){
 				case 'id': 
 					teamServices.push(s[0]);

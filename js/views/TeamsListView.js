@@ -97,9 +97,20 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 			app.views.paginationView.render();
 
 
-			// If an ID is selected //
+			// If an ID is selected display the "Team members, services view" //
 			if(!_.isUndefined(self.options.id)){
-				self.displayTeamMembersAndServices(self.collection.get(self.options.id));
+
+				// Check if the model was load in the collection //
+				if(!_.isUndefined(self.collection.get(self.options.id))){
+					self.displayTeamMembersAndServices(self.collection.get(self.options.id));
+				}
+				else{
+					self.displayTeamMembersAndServices(self.options.id);	
+				}
+			}
+			// If there is only One result on the collection display the "Team members, services view" //
+			else if(_.size(self.collection) == 1){
+				self.displayTeamMembersAndServices(_.first(self.collection.models));
 			}
 	
 

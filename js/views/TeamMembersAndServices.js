@@ -11,8 +11,7 @@ app.Views.TeamMembersAndServices = Backbone.View.extend({
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'change #searchMembers, #searchServices' : 'changer',
-			'select2-removed #searchMembers, #searchServices' : 'remove',
+			'change #searchMembers, #searchServices' : 'change',
 		}, 
 			app.Views.GenericModalView.prototype.events
 		);
@@ -23,7 +22,24 @@ app.Views.TeamMembersAndServices = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize : function() {
-		this.render();
+		var self = this;
+
+
+		// Check if the model is loaded
+		if(_.isObject(this.model)){
+			this.render();
+		}
+		else{
+			var id = this.model;
+			this.model = new app.Models.Team();
+			this.model.setId(id);
+			
+			this.model.fetch().done(function(){
+				self.render();		
+			}).fail(function(){
+				console.error('Unable to load the team');
+			})
+		}
 	},
 
 
@@ -57,18 +73,31 @@ app.Views.TeamMembersAndServices = Backbone.View.extend({
 	},
 
 
-	changer: function(e){
 
-		console.log(e);
+	/* Save the model when a service or a member is set, remove 
+	*/
+	change: function(e){
 
-		console.log('youpiiiiiiiiiiiiiii');
+		this.model.setMembers(app.views.advancedSelectBoxTeamMembersView.getSelectedItems(), true);
+		this.model.setServices(app.views.advancedSelectBoxPlaceParentView.getSelectedItems(), true);
+		this.model.setManager(this.model.getManager('id'), true);
+
+
+		this.model.save({silent: true})
+			.done(function(data) {
+				console.log('okiiiiiiiiiiiii');
+			})
+			.fail(function (e) {
+				console.log(e);
+			})
 
 	},
 
-	remove: function(e){
-		console.log(e);
-		console.log('remove bloum');
-	},
 
+	/* Hide the view
+	*/
+	hide: function(){
+		$(this.el).addClass('hide');
+	}
 
 });

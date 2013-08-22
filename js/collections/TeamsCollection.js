@@ -5,7 +5,7 @@ app.Collections.Teams = app.Collections.GenericCollection.extend({
 
 	model        : app.Models.Team,
 
-	fields       : ['id', 'name', 'actions', 'manager_id', 'service_ids', 'user_ids'],
+	fields       : ['id', 'name', 'actions', 'manager_id', 'service_names', 'user_names'],
 
 	default_sort : { by: 'name', order: 'ASC' },
 
