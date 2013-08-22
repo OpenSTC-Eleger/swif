@@ -75,17 +75,22 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 				app.views.selectListPlacesView.clearAll();
 				app.views.selectListPlacesView.addEmptyFirst();
 				app.views.selectListPlacesView.addAll();	
-				currentIntervention = self.model.toJSON()
-				if( currentIntervention.service_id.length > 0 ) {
+				currentIntervention = self.model.toJSON();
+				
+				if(!self.create && currentIntervention.service_id.length > 0 ) {
 					self.renderService(currentIntervention.service_id[0]);
 				}
-				else
+				else{
 					self.renderService(null);
-				if( currentIntervention.site1.length > 0 )
+				}
+				
+				if(!self.create && currentIntervention.site1.length > 0 ){
 					self.renderSite(currentIntervention.site1[0]);
-				else
-					self.renderSite(null);
-
+				}
+				else{
+					self.renderSite(null)
+				}
+			
 
 				$('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 
