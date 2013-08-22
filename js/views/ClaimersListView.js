@@ -25,8 +25,7 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 		'submit #formAddAddress'             	: 'saveAddress',
 		'click a.modalDeleteContact'   			: 'modalDeleteContact',
         'click button.btnDeleteAddress'   		: 'deleteAddress',
-			
-		'click a.accordion-object'    			: 'tableAccordion',
+
 		'change #claimerTechnicalService'		: 'fillDropdownTechnicalService',
 		
 		'change #createAssociatedAccount' 			: 'accordionAssociatedAccount'
@@ -39,9 +38,48 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 	initialize: function () {
 		var self = this;
 		this.initCollection().done(function () {
-			self.collection.off()
+			self.collection.off();
 			self.listenTo(self.collection, 'add', self.add);
+
+			app.router.render(self);
 		})
+	},
+
+
+	initCollection: function () {
+		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.Claimers(); }
+
+		if(_.isUndefined(this.options.sort)){
+			this.options.sort = this.collection.default_sort;
+		}
+		else{
+			this.options.sort = app.calculPageSort(this.options.sort);
+		}
+		this.options.page = app.calculPageOffset(this.options.page);
+
+
+		// Create Fetch params //
+		var fetchParams = {
+			silent : true,
+			data   : {
+				limit  : app.config.itemsPerPage,
+				offset : this.options.page.offset,
+				sort   : this.options.sort.by+' '+this.options.sort.order
+			}
+		};
+		if(!_.isUndefined(this.options.search)){
+			fetchParams.data.filters = app.calculSearch({search: this.options.search }, app.Models.Claimer.prototype.searchable_fields);
+		}
+
+
+		app.loader('display');
+		return $.when(this.collection.fetch(fetchParams))
+			.fail(function(e){
+				console.log(e);
+			})
+			.always(function(){
+				app.loader('hide');
+			});
 
 	},
 
@@ -61,51 +99,38 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 		// Change the Grid Mode of the view //
 		app.views.headerView.switchGridMode('fluid');
 
-
-		var claimers = app.collections.claimers.models
-		var nbClaimers = _.size(claimers);
-
-		var claimersSortedArray = _.sortBy(claimers, function(item){ 
-			return item.attributes.name; 
-		});
-
-
-		var len = claimers.length;
-		var startPos = (this.options.page - 1) * this.numberListByPage;
-		var endPos = Math.min(startPos + this.numberListByPage, len);
-		var pageCount = Math.ceil(len / this.numberListByPage);
-
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function (templateData) {
 			var template = _.template(templateData, {
-				claimers  : claimersSortedArray,
-				officers  : app.collections.officers,
 				lang      : app.lang,
-				nbClaimers: nbClaimers,
-				startPos  : startPos, endPos: endPos,
-				page      : self.options.page,
-				pageCount : pageCount,
+				nbClaimers: self.collection.cpt,
 			});
 
 			$(self.el).html(template);
+			app.Views.GenericListView.prototype.render(self.options);
+
 
 			$('*[data-toggle="tooltip"]').tooltip();
 
-			_.each(app.collections.claimers.models, function (claimer, i) {
-				$('#claimersList').append(
-					new app.Views.ClaimerView({model: claimer}).render().el
-				);
-				_.each(claimer.getAddresses, function(address,i) {
-						$('#claimerList').append(
-							new app.Views.ClaimerAddressView({model: address}).render().el
-						);
-				});
+			_.each(self.collection.models, function (claimer, i) {
+				var simpleView = new app.Views.ClaimerView({model: claimer})
+				var detailedView = new app.Views.ClaimerDetailsView({model: claimer})
+				$('#claimersList').append( simpleView.render().el );
+				$('#claimersList').append(detailedView.render().el);
+				simpleView.detailedView = detailedView;
 			});
 
 			// Set the focus to the first input of the form //
 			$('#modalSaveContact, #modalSaveClaimer').on('shown', function (e) {
 				$(this).find('input, textarea').first().focus();
 			})
+
+			app.views.paginationView = new app.Views.PaginationView({
+				page       : self.options.page.page,
+				collection : self.collection
+			})
+			app.views.paginationView.render();
+
 		});
 
 		$(this.el).hide().fadeIn('slow');
@@ -114,40 +139,7 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 	},
 
 
-	/** Fonction collapse table row
-    */
-    tableAccordion: function(e){
 
-        e.preventDefault();
-        
-        // Retrieve the intervention ID //
-        var id = _($(e.target).attr('href')).strRightBack('_');
-
-        this.selectedClaimer = id;
-
-
-        var isExpend = $('#collapse_'+id).hasClass('expend');
-
-        // Reset the default visibility //
-        $('tr.expend').css({ display: 'none' }).removeClass('expend');
-        $('tr.row-object').css({ opacity: '0.5'});
-        $('tr.row-object > td').css({ backgroundColor: '#FFF'});
-        
-        // If the table row isn't already expend //       
-        if(!isExpend){
-            // Set the new visibility to the selected intervention //
-            $('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
-            $(e.target).parents('tr.row-object').css({ opacity: '1'});
-            $(e.target).parents('tr.row-object').children('td').css({ backgroundColor: '#F5F5F5'});
-        }
-        else{
-            $('tr.row-object').css({ opacity: '1'});
-            $('tr.row-object > td').css({ backgroundColor: '#FFF'});
-            $('tr.row-object:nth-child(4n+1) > td').css({ backgroundColor: '#F9F9F9'});
-        }
-           
-    },
-    
     
 	getIdInDropDown: function(view) {
 		if ( view && view.getSelected() )

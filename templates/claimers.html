@@ -41,46 +41,6 @@
 			</tbody>
 		</table>
 
-
-		<!-- Table pagination -->
-		<div class="pagination pagination-right">
-			<ul>
-				<!-- First page button -->
-				<% if(page-2 >= 1){ %>
-					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#<%= app.routes.claimers.baseUrl %>/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
-				<% } %>
-				
-				<!-- Previous page button -->
-				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#<%= app.routes.claimers.baseUrl %>/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
-			
-				<!-- [...] page Button -->
-				<% 	if (page-2 > 1) { %>
-						<li class="disabled"><a href='#'>...</a></li>
-				<% } 
-						
-					for (var i=(page-2); i < (page+3); i++) {
-						if(i >= 1 && i <= pageCount){ %>
-							<li <%= (i === page ? " class='active'" : "")%>><a href='#<%= app.routes.claimers.baseUrl %>/page<%=i%>'><%= i %></a></li>
-						<% }
-
-					} %>
-					
-				<!-- [...] page Button -->
-				<% if (page+2 < pageCount) { %>
-					<li class="disabled"><a href='#'>...</a></li>
-				<% } %>
-
-				<!-- Next page button -->
-				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#<%= app.routes.claimers.baseUrl %>/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
-				
-				<!-- Last page button -->
-				<% if(page+2 <= pageCount){ %>
-					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#<%= app.routes.claimers.baseUrl %>/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
-				<% } %>
-			</ul>
-		</div>
-		<!-- /Table pagination -->
-
 	<% }
 	else { %>
 		<div class="tableToolbar">

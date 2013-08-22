@@ -24,4 +24,5 @@ app.Collections.Claimers = app.Collections.GenericCollection.extend({
 	  return item.get("name");
 	},
 
+
 });

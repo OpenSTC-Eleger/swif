@@ -6,7 +6,8 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 	model_name: "res.users",
 	
 	url: "/#officers/:id",
-	
+	urlRoot: "/api/open_object/users",
+
 	relations: [{
 			type: Backbone.HasMany,
 			key: 'tasks',

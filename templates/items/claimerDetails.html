@@ -1,5 +1,5 @@
 <td colspan="5" class="nestedTD">
-    <% if(claimer.addresses.length != 0) { %>
+    <% if(claimer.address.length != 0) { %>
     <table class="table-nested-objects table table-striped table-condensed table-hover">
         <thead>
         <tr>
@@ -12,33 +12,8 @@
             <th><%= _.capitalize(lang.city) %></th>
         </tr>
         </thead>
-        <tbody>
-        <% _.each(claimer.addresses, function (address, i) { %>
+        <tbody id="claimerContactsList_<%= claimer.id %>">
 
-        <tr class="row-nested-objects" id="address_<%= address.id %>">
-            <td>
-                <% if(address.user_login){
-                    <i class="icon-user" data-toggle="tooltip" data-original-title="<%= address.user_login %>"></i>
-                <% } %>
-                <span><%= address.name %></span>&nbsp;
-												<span class="nested-objects-actions invisible">
-													<a href="#modalSaveContact" class="modalSaveContact" data-toggle="modal" data-action="update">
-                                                        <i class="icon-pencil displayInlineBlock" data-toggle="tooltip" data-action="update" data-original-title="<%= _.capitalize(lang.actions.update) %>">&nbsp;</i>
-                                                    </a> |
-
-													<a href="#modalDeleteContact" class="modalDeleteContact" data-toggle="modal">
-                                                        <i class="icon-remove displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">&nbsp;</i>
-                                                    </a>
-												</span>
-            </td>
-            <td><%= address.function!=false ? address.function : '' %></td>
-            <td><%= address.phone!=false ? address.phone : '' %></td>
-            <td><%= address.email != false ? "<a href=mailto:"+address.email+">"+address.email+"</a>" : '' %></td>
-            <td><%= address.mobile != false ? address.mobile : '' %></td>
-            <td><%= address.street != false ? address.street : '' %></td>
-            <td><%= address.zip != false ? address.zip : '' %>&nbsp;<%= address.city != false ? address.city : '' %></td>
-        </tr>
-        <% }); %>
         </tbody>
     </table>
     <% } else { %>

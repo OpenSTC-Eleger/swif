@@ -1,10 +1,10 @@
-app.Views.ClaimerAddressView = Backbone.View.extend({
+app.Views.ClaimerDetailsView = Backbone.View.extend({
 
 	tagName      : 'tr',
 
 	className    : 'row-item row-nested-objects-collapse',
 
-	templateHTML : 'items/claimerAddress',
+	templateHTML : 'items/claimerDetails',
 
 	id: function () {
 		return 'collapse_' + this.model.id
@@ -48,9 +48,7 @@ app.Views.ClaimerAddressView = Backbone.View.extend({
 		var addresses = claimer.getAddresses();
 		_.each(addresses, function (address) {
 			console.log(address)
-			if (address.user_id != false) {
-				address.set('user_login', app.collections.officers.get(address.user_id[0]).get('login'));
-			}
+
 		})
 		claimer.set('addresses',addresses);
 		return claimer
@@ -73,12 +71,12 @@ app.Views.ClaimerAddressView = Backbone.View.extend({
 
 	render: function () {
 		var self = this;
-		var claimer_details = this.serializeClaimer(this.model);
+
 		$.get("templates/" + this.templateHTML + ".html", function (templateData) {
 
 			var template = _.template(templateData, {
 				lang   : app.lang,
-				claimer: claimer_details.toJSON()
+				claimer: self.model.toJSON()
 			});
 
 			$(self.el).html(template);
@@ -88,6 +86,22 @@ app.Views.ClaimerAddressView = Backbone.View.extend({
 		});
 
 		return this;
+	},
+
+	fetchDetails: function () {
+		var self = this;
+		var addresses = self.model.getAddresses()
+		$(('#claimerContactsList_' + self.model.id)).empty();
+		self.listenTo(addresses, 'fetchDone', function () {
+			var user_ids = _.filter(addresses.pluck('user_id'), function (e) {return e != false; });
+			user_ids = _.map(user_ids,function (e) {return e[0]});
+			console.log(user_ids);
+			_.each(addresses.models, function (address) {
+				$(('#claimerContactsList_' + self.model.id)).append(
+					new app.Views.ClaimerContactView({model: address, user_ids:user_ids}).render().el
+				)
+			})
+		});
 	},
 
 
@@ -136,6 +150,5 @@ app.Views.ClaimerAddressView = Backbone.View.extend({
 
 		return deferred;
 	}
-
 
 });

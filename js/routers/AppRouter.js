@@ -678,52 +678,15 @@ app.Router = Backbone.Router.extend({
 
 	/** Claimers management
 	*/
-	claimers: function(page){      
+	claimers: function(search, sort, page){
 
-		// Check if the user is connect //
-		if(this.checkConnect()){
-			var self = this;
+		var params = {};
 
+		if(!_.isNull(search)){ params.search = search; }
+		if(!_.isNull(sort))  { params.sort = sort; }
+		if(!_.isNull(page))  { params.page = page; }
 
-			self.page = page ? parseInt(page, 10) : 1;
-
-			// Check if the collections is instantiate //
-			if(_.isUndefined(app.collections.claimers)){ app.collections.claimers = new app.Collections.Claimers(); }
-			if(_.isUndefined(app.collections.claimersTypes)){ app.collections.claimersTypes = new app.Collections.ClaimersTypes(); }
-			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
-			if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
-			if(_.isUndefined(app.collections.claimersContacts)){ app.collections.claimersContacts = new app.Collections.ClaimersContacts(); }
-			if(_.isUndefined(app.collections.officers)){ app.collections.officers = new app.Collections.Officers(); }
-
-
-
-			app.loader('display');
-
-			app.collections.claimers.fetch({
-				success: function(){
-
-					$.when(
-						app.collections.claimersTypes.fetch({search: [['code','<>','ADMINISTRE']]}),
-						app.collections.claimersServices.fetch(),
-						app.collections.places.fetch(),
-						app.collections.claimersContacts.fetch(),
-						app.collections.officers.fetch()
-					)
-					.done(function(){
-						app.views.claimersListView = new app.Views.ClaimersListView({page: self.page});
-						self.render(app.views.claimersListView);
-
-						app.loader('hide');
-					})
-					.fail(function(e){
-						console.error(e);
-					});
-				}
-			});
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
+		app.views.claimersListView = new app.Views.ClaimersListView(params);
 	},
 
 

@@ -75,9 +75,22 @@ app.Models.Claimer = Backbone.Model.extend({
 
 	// Returns JSON addresses this is used in view to serialize object before template
 	getAddresses: function () {
-		return _.map(this.get('address'), function (address_id) {
-			return app.collections.claimersContacts.get(address_id)
-		});
+		var address_ids = this.get('address');
+		var collection = new app.Collections.ClaimersContacts
+		if (address_ids == false) {
+			return collection;
+		} else {
+
+			collection.fetch({
+					data   : {filters: {0: {field: 'id', operator: 'in', value: this.get('address')}}},
+					reset : true
+				}
+			).done( function () {
+					collection.trigger('fetchDone');
+				})
+			return collection;
+		}
+
 	},
 
 
