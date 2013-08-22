@@ -4,7 +4,8 @@
 app.Models.Intervention = Backbone.Model.extend({
 	
 	urlRoot: "/api/openstc/interventions",
-	
+	fieldsOE: ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid','ask_id'],
+
 	defaults:{
 		id:null,
 		state: null,
@@ -130,9 +131,10 @@ app.Models.Intervention = Backbone.Model.extend({
 	cancel: function(cancel_reason, options) {
 		var params = {}
 		params.state = app.Models.Intervention.status.cancelled.key;
-		params.email_text = app.Models.Intervention.status.cancelled.translation;
+		//params.email_text = app.Models.Intervention.status.cancelled.translation;
 		params.cancel_reason = cancel_reason;
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
+		//app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
+		return this.save(params,{patch:true})
 	}
 
 
