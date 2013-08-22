@@ -11,7 +11,8 @@ app.Views.TeamMembersAndServices = Backbone.View.extend({
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'change #placeWidth, #placeLenght' : 'calculPlaceArea',
+			'change #searchMembers, #searchServices' : 'changer',
+			'select2-removed #searchMembers, #searchServices' : 'remove',
 		}, 
 			app.Views.GenericModalView.prototype.events
 		);
@@ -22,9 +23,7 @@ app.Views.TeamMembersAndServices = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize : function() {
-		var self = this;
-
-		self.render();
+		this.render();
 	},
 
 
@@ -55,6 +54,20 @@ app.Views.TeamMembersAndServices = Backbone.View.extend({
 		});
 
 		return this;
+	},
+
+
+	changer: function(e){
+
+		console.log(e);
+
+		console.log('youpiiiiiiiiiiiiiii');
+
+	},
+
+	remove: function(e){
+		console.log(e);
+		console.log('remove bloum');
 	},
 
 

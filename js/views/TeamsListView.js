@@ -143,7 +143,8 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 		$('#teamMembersAndServices').removeClass('hide');
 
 		app.views.teamMembersAndServices = new app.Views.TeamMembersAndServices({
-			el  : '#teamMembersAndServices'
+			el    : '#teamMembersAndServices',
+			model : model 
 		});
 		
 	},

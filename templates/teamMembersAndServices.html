@@ -1,4 +1,4 @@
-<h4 class="well well-small"></h4>
+<h4 class="well well-small noMarginTop"><%= team.getName() %></h4>
 
 <div class="row-fluid">
 
@@ -6,18 +6,18 @@
 	<div class="span6">
 
 		<div class="widget-title">
-			<h4>Agents de l'équipe <span class="badge pull-right"></span></h4>
+			<h4><%= lang.teamMembers %> <span class="badge pull-right"></span></h4>
 		</div>
-		<input type="text" id="searchMembers" class="input-block-level" data-multiple='true'>
+		<input type="text" id="searchMembers" class="input-block-level" data-multiple='true' data-placeholder="<%= lang.actions.selectAgents %>">
 	</div>
 
 	<!-- Team Services -->
 	<div class="span6">
 		
 		<div class="widget-title">
-			<h4>Services de l'équipe <span class="badge pull-right"></span></h4>
+			<h4><%= lang.teamServices %> <span class="badge pull-right"></span></h4>
 		</div>
-		<input type="text" id="searchServices" class="input-block-level" data-multiple='true'>
+		<input type="text" id="searchServices" class="input-block-level" data-multiple='true' data-placeholder="<%= lang.actions.selectServices %>">
 	</div>
 
 </div>

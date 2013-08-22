@@ -9,8 +9,8 @@ app.Models.Team = Backbone.Model.extend({
 	urlRoot    : '/api/openstc/teams',
 	
 
-	defaults:{
-		id :null,
+	defaults: {
+		id : null,
 	},
 
 
@@ -52,24 +52,67 @@ app.Models.Team = Backbone.Model.extend({
 		this.set({ manager_id : value }, {silent: silent});
 	},
 
+	getMembers: function(type) {
+		var teamMembers = [];
+
+		/*console.log(this.get('user_ids'));
+		console.log('----------');*/
+
+		_.each(this.get('user_ids'), function(s){
+			switch (type){
+				case 'id': 
+					teamMembers.push(s[0]);
+				break;
+				case 'json': 
+					teamMembers.push({id: s[0], name: s[1]});
+				break;
+				default:
+					teamMembers.push(s[1]);
+			}
+		});
+
+		if(type == 'string'){
+			return _.toSentence(teamMembers, ', ', ' '+app.lang.and+' ')
+		}
+		else{
+			return teamMembers;
+		}
+	},
+    setMembers : function(value, silent) {
+		this.set({ user_ids : [[6, 0, value]] }, {silent: silent});
+	},
 
 
 	// Team services ID //
-	getServicesId: function() {
+	getServices: function() {
 		return this.get('service_ids');
-	},
-	setServicesID : function(value) {
-		if( value == 'undefined') return;
-			this.set({ service_ids : value });
-	},
+		var teamServices = [];
 
-	// Team members ID //
-	getMembersId: function() {
-		return this.get('user_ids');
+		/*console.log(this.get('user_ids'));
+		console.log('----------');*/
+
+		_.each(this.get('service_ids'), function(s){
+			switch (type){
+				case 'id': 
+					teamServices.push(s[0]);
+				break;
+				case 'json': 
+					teamServices.push({id: s[0], name: s[1]});
+				break;
+				default:
+					teamServices.push(s[1]);
+			}
+		});
+
+		if(type == 'string'){
+			return _.toSentence(teamServices, ', ', ' '+app.lang.and+' ')
+		}
+		else{
+			return teamServices;
+		}
 	},
-    setMembersID : function(value) {
-		if( value == 'undefined') return;
-		this.set({ user_ids : value });
+	setServices : function(value, silent) {
+		this.set({ service_ids : [[6, 0, value]] }, {silent: silent});
 	},
 
 	
