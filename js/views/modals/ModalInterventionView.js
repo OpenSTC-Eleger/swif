@@ -28,9 +28,13 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 //		this.model = model;
 //	    this.create = create;
 	    this.modal = $(this.el);
-	    this.initCollections().done(function(){
-	    	self.render();
-	    })
+		if(_.isUndefined(this.model)){
+			this.model = new app.Models.Intervention();
+			this.create = true
+		}
+	    //this.initCollections().done(function(){
+    	self.render();
+	    //})
 	    
     },
 
@@ -64,28 +68,34 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 				self.modal.html(template);
 				self.modal.modal('show');
 
-				app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#interventionDetailService"), collection: self.collections.technicalServices})
-				app.views.selectListServicesView.clearAll();
-				app.views.selectListServicesView.addEmptyFirst();
-				app.views.selectListServicesView.addAll();
+				app.views.advancedSelectBoxInterventionServicesView = new app.Views.AdvancedSelectBoxView({el: $("#interventionDetailService"), collection_url: app.Collections.ClaimersServices.prototype.url}) 
+				app.views.advancedSelectBoxInterventionServicesView.setSearchParam({field:'technical',operator:'=',value:'True'},true)
+				app.views.advancedSelectBoxInterventionServicesView.render();
+//				app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#interventionDetailService"), collection: self.collections.technicalServices})
+//				app.views.selectListServicesView.clearAll();
+//				app.views.selectListServicesView.addEmptyFirst();
+//				app.views.selectListServicesView.addAll();
 
-
+				
 				// Fill select Places  //
-				app.views.selectListPlacesView = new app.Views.DropdownSelectListView({el: $("#interventionPlace"), collection: self.collections.places})
-				app.views.selectListPlacesView.clearAll();
-				app.views.selectListPlacesView.addEmptyFirst();
-				app.views.selectListPlacesView.addAll();	
+				app.views.advancedSelectBoxInterventionPlacesView = new app.Views.AdvancedSelectBoxView({el: $("#interventionPlace"), collection_url: app.Collections.Places.prototype.url });
+				app.views.advancedSelectBoxInterventionPlacesView.render();
+//				app.views.selectListPlacesView = new app.Views.DropdownSelectListView({el: $("#interventionPlace"), collection: self.collections.places})
+//				app.views.selectListPlacesView.clearAll();
+//				app.views.selectListPlacesView.addEmptyFirst();
+//				app.views.selectListPlacesView.addAll();	
+				
 				currentIntervention = self.model.toJSON();
 				
 				if(!self.create && currentIntervention.service_id.length > 0 ) {
-					self.renderService(currentIntervention.service_id[0]);
+					self.renderService(currentIntervention.service_id);
 				}
 				else{
 					self.renderService(null);
 				}
 				
 				if(!self.create && currentIntervention.site1.length > 0 ){
-					self.renderSite(currentIntervention.site1[0]);
+					self.renderSite(currentIntervention.site1);
 				}
 				else{
 					self.renderSite(null)
@@ -133,7 +143,7 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 
 		var self = this;
 
-		var input_service_id = this.getIdInDopDown(app.views.selectListServicesView);
+//		var input_service_id = this.getIdInDopDown(app.views.selectListServicesView);
 
 		var params = {
 			name: this.$('#interventionName').val(),
@@ -141,25 +151,25 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 			//active: this.$('#isTemplate').is(':checked')?false:true,
 			description: this.$('#interventionDescription').val(),
 			date_deadline: new moment($('#interventionDateDeadline').val(), 'DD-MM-YYYY HH:mm').add('hours',2).toDate(),
-			service_id: input_service_id,
-			site1: this.$('#interventionPlace').val(),
+			service_id: app.views.advancedSelectBoxInterventionServicesView.getSelectedItem(),
+			//site1: this.$('#interventionPlace').val(),
+			site1: app.views.advancedSelectBoxInterventionPlacesView.getSelectedItem(),
 			site_details: this.$('#interventionPlacePrecision').val(),
 		};
 
-		this.model.save(params,{
-			success: function (data) {
-				console.log(data);
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					app.router.navigate(app.routes.interventions.baseUrl, {trigger: true, replace: true});
-					console.log('Success SAVE INTERVENTION');
-				}
-			},
-			error: function () {
-				console.log('ERROR - Unable to save the Intervention - InterventionView.js');
-			},
+		this.model.save(params,{patch:!this.create}).done(function(data){
+			self.modal.modal('hide');
+			console.log(data);
+			self.model.setId(data);
+			console.log('Success SAVE INTERVENTION');
+			self.model.fetch()
+			.fail(function(e){
+				console.log(e);
+			});
+
+		})
+		.fail(function(e){
+			console.log(e);
 		});
 	},
 
@@ -183,28 +193,16 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 
 	renderSite: function ( site ) {
 		if( site!=null )
-			app.views.selectListPlacesView.setSelectedItem( site );			
+			//app.views.selectListPlacesView.setSelectedItem( site );
+			app.views.advancedSelectBoxInterventionPlacesView.setSelectedItem(site);
 	},
 
 
 
 	renderService: function ( service ) {
-		if( service!= null ) {
-			app.views.selectListServicesView.setSelectedItem( service );
-			places = this.collections.places.models;
-			
-			//keep only places belongs to service selected
-			keepedPlaces = _.filter(places, function(item){ 
-//				var placeServices = [];
-//				_.each( item.attributes.service_ids.models, function(s){
-//					placeServices.push( s.toJSON().id );
-//				});				
-				return $.inArray(service, item.getServices('id'))!=-1;
-			});
-			app.views.selectListPlacesView.collection = new app.Collections.Places(keepedPlaces);
-			app.views.selectListPlacesView.clearAll();
-			app.views.selectListPlacesView.addEmptyFirst();
-			app.views.selectListPlacesView.addAll();
+		if(service != null){
+			app.views.advancedSelectBoxInterventionServicesView.setSelectedItem(service);
+			app.views.advancedSelectBoxInterventionPlacesView.setSearchParam({field:'service_ids.id',operator:'=',value:service[0]},true);
 		}	
 	},
 
@@ -212,42 +210,45 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 
 	fillDropdownService: function(e){
 		e.preventDefault();
-		$('#interventionPlace').val('');
-		this.renderService( _($(e.target).prop('value')).toNumber() );
-	},
-	initCollections: function(){
-		var self = this; 
-		
-		if(_.isUndefined(this.collections)){this.collections = {}}
-		if(_.isUndefined(this.collections.technicalServices)){this.collections.technicalServices = new app.Collections.ClaimersServices()}
-		if(_.isUndefined(this.collections.places)){this.collections.places = new app.Collections.Places()}
-		
-		this.create = false;
-		if(_.isUndefined(this.model)){
-			this.model = new app.Models.Intervention();
-			this.create = true
+		var service = app.views.advancedSelectBoxInterventionServicesView.getSelectedItem();
+		app.views.advancedSelectBoxInterventionPlacesView.resetSearchParams();
+		if(service != '' && service > 0){
+			app.views.advancedSelectBoxInterventionPlacesView.setSearchParam({field:'service_ids.id',operator:'=',value:service},true);
 		}
-		var deferred = $.Deferred();
-		var domain = [{field: 'technical',operator: '=', value: 'True'}]
-		
-		this.collections.technicalServices.fetch({data: {filters: app.objectifyFilters(domain)}, silent:true}).done(function(){
-			var domainPlaces = [{field: 'service_ids', operator: 'in', value: self.collections.technicalServices.pluck('id')}]
-			$.when(self.collections.places.fetch({data: {filters: app.objectifyFilters(domainPlaces)}}))
-			.done(function(){
-				deferred.resolve();
-			})
-			.fail(function(e){
-				console.log(e)
-			})
-		})
-		.fail(function(e){
-			console.log(e)
-		})
-		return deferred;
-		//search no technical services
-		//get places according to technicalServices of the user
-		
-	}
+	},
+//	initCollections: function(){
+//		var self = this; 
+//		
+//		if(_.isUndefined(this.collections)){this.collections = {}}
+//		if(_.isUndefined(this.collections.technicalServices)){this.collections.technicalServices = new app.Collections.ClaimersServices()}
+//		if(_.isUndefined(this.collections.places)){this.collections.places = new app.Collections.Places()}
+//		
+//		this.create = false;
+//		if(_.isUndefined(this.model)){
+//			this.model = new app.Models.Intervention();
+//			this.create = true
+//		}
+//		var deferred = $.Deferred();
+//		var domain = [{field: 'technical',operator: '=', value: 'True'}]
+//		
+//		this.collections.technicalServices.fetch({data: {filters: app.objectifyFilters(domain)}, silent:true}).done(function(){
+//			var domainPlaces = [{field: 'service_ids', operator: 'in', value: self.collections.technicalServices.pluck('id')}]
+//			$.when(self.collections.places.fetch({data: {filters: app.objectifyFilters(domainPlaces)}}))
+//			.done(function(){
+//				deferred.resolve();
+//			})
+//			.fail(function(e){
+//				console.log(e)
+//			})
+//		})
+//		.fail(function(e){
+//			console.log(e)
+//		})
+//		return deferred;
+//		//search no technical services
+//		//get places according to technicalServices of the user
+//		
+//	}
 
 });
 

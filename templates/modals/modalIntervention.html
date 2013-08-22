@@ -66,7 +66,8 @@
 						<label for="interventionDetailService" class="control-label" ><%= lang.serviceConcerned %>:</label>
 	
 						<div class="controls">
-							<select id="interventionDetailService" required="required"></select>
+							<input id="interventionDetailService" class="select2" style="width: 100%" 
+							required data-placeholder="<%= lang.actions.selectAService %>" data-selected-value=''/>
 							<span class="help-inline"></span>
 						</div>
 					</div>
@@ -76,8 +77,9 @@
 						<label for="interventionPlace" class="control-label"><%= _.capitalize(lang.place) %>:</label>
 	
 						<div class="controls">  
-							<select id="interventionPlace"><option value="" disabled="disabled" ></option></select>
-							<span class="help-inline"></span>                           
+							<input id="interventionPlace" class="select2" style="width: 100%" 
+							required data-placeholder="<%= lang.actions.selectAPlace %>" data-selected-value=''/>
+							<span class="help-inline"></span>                 
 						</div>
 					</div>
 	
