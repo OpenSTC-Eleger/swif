@@ -596,15 +596,11 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	cancelInter: function(e){
 		e.preventDefault();
 		
-		this.selectedInter.cancel($('#motifCancel').val(),
-			{
-				success: function(data){
-					$('#modalCancelInter').modal('hide');
-					route = Backbone.history.fragment;
-					Backbone.history.loadUrl(route);
-				}
-			}
-		);
+		this.selectedInter.cancel($('#motifCancel').val()).done(function(data){
+			$('#modalCancelInter').modal('hide');
+			route = Backbone.history.fragment;
+			Backbone.history.loadUrl(route);
+		})
 	},
 
 
@@ -660,7 +656,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		e.preventDefault();
 		var self = this;
 		this.getTarget(e);
-
+		
 		if($(e.target).data('action') == 'inter'){
 
 			console.log(this.selectedInter);
@@ -675,7 +671,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 			// Display all the tasks of the inter //
 			_.each(interJSON.tasks, function(task, i){
-				var taskJSON = self.collections.tasks.get(task);
+				var taskJSON = self.collections.tasks.get(task).toJSON();
 				$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+taskJSON.name+'</td><td>'+app.decimalNumberToTime(taskJSON.planned_hours, 'human')+'</td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td></tr>');
 			})
 		}
@@ -695,46 +691,59 @@ app.Views.InterventionsListView = Backbone.View.extend({
 			$('#taskLabel').html(selectedTaskJSON.name + ' <em>('+selectedTaskJSON.category_id[1]+')</em>');
 			$('#taskPlannedHour').html(app.decimalNumberToTime(selectedTaskJSON.planned_hours, 'human'));
 		}
+		var deferred = $.Deferred();
+		deferred.always(function(){
+			$('#interName').html(interJSON.name);
+			$('#interDescription').html(interJSON.description);
+			$('#interService').html(!interJSON.service_id?'':interJSON.service_id[1]);
 
-
-
-
-		if(_.isNull(interJSON.ask)){
-			$('#claimentName').html(interJSON.create_uid[1]);
-		}else{
-			if(interJSON.ask.partner_id != false){
-				$('#claimentName').html(interJSON.ask.partner_id[1]+' - '+interJSON.ask.partner_address[1]);
-				$('#claimentPhone').html(interJSON.ask.partner_phone);
+			$('#interDateCreate').html(moment(interJSON.create_date).format('LL'));
+			console.info(interJSON);
+			console.log(interJSON);
+			if(interJSON.date_deadline != false){
+				$('#interDeadline').html(' / ' + moment(interJSON.date_deadline).format('LL'));
 			}
-			else{
-				$('#claimentName').html(interJSON.ask.people_name);
-				$('#claimentPhone').html(interJSON.ask.people_phone);
-			}
+			$('#interPlace').html(interJSON.site1[1]);
+			$('#interPlaceMore').html(interJSON.site_details);
 
-			$('#claimentType').html(interJSON.ask.partner_type[1]);
-		}
-
-		$('#interName').html(interJSON.name);
-		$('#interDescription').html(interJSON.description);
-		$('#interService').html(interJSON.service_id[1]);
-
-		$('#interDateCreate').html(moment(interJSON.create_date).format('LL'));
-		console.info(interJSON);
-		console.log(interJSON);
-		if(interJSON.date_deadline != false){
-			$('#interDeadline').html(' / ' + moment(interJSON.date_deadline).format('LL'));
-		}
-		$('#interPlace').html(interJSON.site1[1]);
-		$('#interPlaceMore').html(interJSON.site_details);
-
-
-		$('#printTask').printElement({
-			leaveOpen	: true,
-			printMode	: 'popup',
-			overrideElementCSS:[
-				{ href:'css/vendors/print_table.css', media: 'all'}
-			]
+			$('#printTask').printElement({
+				leaveOpen	: true,
+				printMode	: 'popup',
+				overrideElementCSS:[
+					{ href:'css/vendors/print_table.css', media: 'all'}
+				]
+			});
 		});
+		if(!interJSON.ask_id){
+			
+			$('#claimentName').html(interJSON.create_uid[1]);
+			deferred.resolve();
+		}else{
+			//retrieve ask associated, if exist
+			var ask = new app.Models.Request();
+			ask.setId(interJSON.ask_id[0]);
+			ask.fetch().done(function(){
+				var askJSON = ask.toJSON();
+				if(askJSON.partner_id != false){
+					$('#claimentName').html(askJSON.partner_id[1]+' - '+ !askJSON.partner_address?'':askJSON.partner_address[1]);
+					$('#claimentPhone').html(askJSON.partner_phone);
+					
+				}
+				else{
+					$('#claimentName').html(askJSON.people_name);
+					$('#claimentPhone').html(askJSON.people_phone);
+				}
+	
+				$('#claimentType').html(askJSON.partner_type[1]);
+				deferred.resolve();
+			})
+			.fail(function(e){
+				console.log(e);
+				deferred.reject();
+			});
+		}
+		
+
 	},
 
 
@@ -815,7 +824,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		// Check if the collections is instantiate //
 		if(_.isUndefined(this.collections.tasks)){ this.collections.tasks = new app.Collections.Tasks(); }
 		if(_.isUndefined(this.collections.interventions)){this.collections.interventions = new app.Collections.Interventions();}
-
+		fetchParams.data.fields = this.collections.interventions.fieldsOE;
 		app.loader('display');
 		
 		var deferred = $.Deferred();
