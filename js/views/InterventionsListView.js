@@ -8,9 +8,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	templateHTML: 'interventions',
 
 	filters: 'intersListFilter',
-
+	
 	numberListByPage: 25,
-
 	selectedInter : '',
 	selectedTask : '',
 	collections:  {},
@@ -160,7 +159,6 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		
 			
 		});
-
 		$(this.el).hide().fadeIn('slow');
 		return this;
 	},
@@ -172,7 +170,6 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	tableAccordion: function(e){
 
 		e.preventDefault();
-		
 		// Retrieve the intervention ID //
 		var id = _($(e.target).attr('href')).strRightBack('_');
 
@@ -552,9 +549,15 @@ app.Views.InterventionsListView = Backbone.View.extend({
 			 planned_hours: mDuration.asHours(),
 		 };
 
-
-		 $('#modalAddTask').modal('hide');
-		 app.models.task.save(0,params);
+		 var taskModel = new app.Models.Task(params);
+		 taskModel.save().done(function(data){
+			$('#modalAddTask').modal('hide');
+			route = Backbone.history.fragment;
+			Backbone.history.loadUrl(route);
+		 })
+		 .fail(function(e){
+			 console.log(e);
+		 });
 	},
 
 
