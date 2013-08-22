@@ -6,10 +6,10 @@
 	<div class="span6">
 
 		<div class="widget-title">
-			<h4><%= lang.teamMembers %> <span class="badge pull-right"><%= _.size(team.getMembers()) %></span></h4>
+			<h4><%= lang.teamMembers %> <span id="nbMembers" class="badge pull-right"><%= _.size(team.getMembers()) %></span></h4>
 		</div>
-		<input type="text" id="searchMembers" class="input-block-level" data-multiple='true' data-placeholder="<%= lang.actions.selectAgents %>"
-			data-selected-value='<%= JSON.stringify(team.getMembers('json')) %>'
+		<input type="text" id="searchMembers" style="width: 99%" data-multiple='true' data-placeholder="<%= lang.actions.selectAgents %>"
+			data-selected-value='<%= JSON.stringify(team.getMembers('json')) %>' data-tag-large="true"
 		>
 	</div>
 
@@ -17,10 +17,10 @@
 	<div class="span6">
 		
 		<div class="widget-title">
-			<h4><%= lang.teamServices %> <span class="badge pull-right"><%= _.size(team.getServices()) %></span></h4>
+			<h4><%= lang.teamServices %> <span id="nbServices" class="badge pull-right"><%= _.size(team.getServices()) %></span></h4>
 		</div>
-		<input type="text" id="searchServices" class="input-block-level" data-multiple='true' data-placeholder="<%= lang.actions.selectServices %>"
-			data-selected-value='<%= JSON.stringify(team.getServices('json')) %>'
+		<input type="text" id="searchServices" style="width: 99%" data-multiple='true' data-placeholder="<%= lang.actions.selectServices %>"
+			data-selected-value='<%= JSON.stringify(team.getServices('json')) %>' data-tag-large="true"
 		>
 	</div>
 

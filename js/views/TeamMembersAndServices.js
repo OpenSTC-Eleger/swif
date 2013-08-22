@@ -35,7 +35,7 @@ app.Views.TeamMembersAndServices = Backbone.View.extend({
 			this.model.setId(id);
 			
 			this.model.fetch().done(function(){
-				self.render();		
+				self.render();
 			}).fail(function(){
 				console.error('Unable to load the team');
 			})
@@ -50,6 +50,7 @@ app.Views.TeamMembersAndServices = Backbone.View.extend({
 		var self = this;
 
 
+
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
@@ -60,7 +61,10 @@ app.Views.TeamMembersAndServices = Backbone.View.extend({
 
 			$(self.el).html(template);
 
-
+			
+			self.off(self.events());
+			self.delegateEvents(self.events());
+			
 			// Advance Select List View //
 			app.views.advancedSelectBoxTeamMembersView = new app.Views.AdvancedSelectBoxView({el: $("#searchMembers"), collection_url: app.Collections.Officers.prototype.url })
 			app.views.advancedSelectBoxTeamMembersView.render();
@@ -74,23 +78,34 @@ app.Views.TeamMembersAndServices = Backbone.View.extend({
 
 
 
+	/** Partial Render of the view
+	*/
+	partialRender: function(){
+		$('#nbMembers').html(_.size(this.model.getMembers()));
+		$('#nbServices').html(_.size(this.model.getServices()));
+	},
+
+
+
 	/* Save the model when a service or a member is set, remove 
 	*/
 	change: function(e){
+		var self = this;
 
-		this.model.setMembers(app.views.advancedSelectBoxTeamMembersView.getSelectedItems(), true);
-		this.model.setServices(app.views.advancedSelectBoxPlaceParentView.getSelectedItems(), true);
-		this.model.setManager(this.model.getManager('id'), true);
+		var params = {
+			user_ids   : [[6, 0, app.views.advancedSelectBoxTeamMembersView.getSelectedItems()]],
+			service_ids: [[6, 0, app.views.advancedSelectBoxPlaceParentView.getSelectedItems()]]
+		}
 
-
-		this.model.save({silent: true})
+		this.model.save(params, {patch: true, silent: true})
 			.done(function(data) {
-				console.log('okiiiiiiiiiiiii');
+				self.model.fetch({ data : {fields : self.model.fields}, silent: true }).done(function(){
+					self.partialRender();
+				});
 			})
 			.fail(function (e) {
-				console.log(e);
+				console.error('Unable to save');
 			})
-
 	},
 
 

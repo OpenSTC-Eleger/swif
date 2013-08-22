@@ -46,8 +46,6 @@ app.Views.ItemTeamView = Backbone.View.extend({
 	*/
 	change: function(e){
 
-		console.log('Trigger change');
-
 		this.render();
 		this.highlight();
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.teamUpdateOk);
@@ -137,8 +135,7 @@ app.Views.ItemTeamView = Backbone.View.extend({
 		app.views.teamsListView.options.id = this.model.getId();
 		app.router.navigate(app.views.teamsListView.urlBuilder(), {trigger: false, replace: false});
 
-		$('tr.row-item.info').removeClass('info bolder');
-		$(this.el).addClass('info bolder');
+		this.setSelected();
 
 		app.views.teamsListView.displayTeamMembersAndServices(this.model);
 	},
@@ -162,6 +159,14 @@ app.Views.ItemTeamView = Backbone.View.extend({
 		});
 
 		return deferred;
+	},
+
+
+	/** Set the row as selected
+	*/
+	setSelected: function(){
+		$('tr.row-item.info').removeClass('info bolder');
+		$(this.el).addClass('info bolder');
 	}
 
 

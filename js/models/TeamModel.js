@@ -11,6 +11,8 @@ app.Models.Team = Backbone.Model.extend({
 
 	defaults: {
 		id : null,
+		user_ids : [],
+		service_ids : []
 	},
 
 

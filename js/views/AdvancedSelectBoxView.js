@@ -41,7 +41,7 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 			placeholder        : placeholder,
 			multiple           : multiple, 
 			minimumInputLength : minimumInputLength,
-			width              : 'resolve',
+			//width              : 'resolve',
 			query: function(query){
 
 				var params = [];
@@ -99,6 +99,11 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 				}
 
 				return sortResults;
+			},
+			containerCssClass: function(){
+				if(!_.isUndefined(self.select2.data('tag-large'))){ 
+					return 'tag-large';
+				}
 			}
 
 		});

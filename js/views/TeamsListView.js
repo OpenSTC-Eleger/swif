@@ -43,11 +43,17 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 
 		var itemTeamView  = new app.Views.ItemTeamView({ model: model });
 		$('#rows-items').prepend(itemTeamView.render().el);
-		itemTeamView.highlight();
+		itemTeamView.highlight().done(function(){
+			itemTeamView.setSelected();
+		});
 
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.teamCreateOk);
 		
 		this.partialRender();
+
+		this.displayTeamMembersAndServices(model);
+		this.options.id = model.getId();
+		app.router.navigate(app.views.teamsListView.urlBuilder(), {trigger: false, replace: false});
 	},
 
 
@@ -153,15 +159,18 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 	displayTeamMembersAndServices: function(model){
 		$('#teamMembersAndServices').removeClass('hide');
 
+		// Undelegate the events of the view //
+		if(!_.isUndefined(app.views.teamMembersAndServices)){ app.views.teamMembersAndServices.undelegateEvents(); }
 		app.views.teamMembersAndServices = new app.Views.TeamMembersAndServices({
 			el    : '#teamMembersAndServices',
 			model : model 
 		});
-		
 	},
 
 
 
+	/** Collection Initialisation
+	*/
 	initCollection: function(){
 
 		// Check if the collections is instantiate //
