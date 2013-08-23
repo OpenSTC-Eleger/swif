@@ -50,13 +50,13 @@ app.Views.ModalValidRequestView = app.Views.GenericModalView.extend({
 			self.modal.html(template);
 
 			// Advance Select List View //
-			app.views.advancedSelectBoxCategoryRequestView = new app.Views.AdvancedSelectBoxView({el: $("#requestCategory"), collection_url: app.Collections.CategoriesRequests.prototype.url })
+			app.views.advancedSelectBoxCategoryRequestView = new app.Views.AdvancedSelectBoxView({el: $("#requestCategory"), collection: app.Collections.CategoriesRequests.prototype })
 			app.views.advancedSelectBoxCategoryRequestView.render();
 
-			app.views.advancedSelectBoxRequestServiceView = new app.Views.AdvancedSelectBoxView({el: $("#requestService"), collection_url: app.Collections.ClaimersServices.prototype.url })
+			app.views.advancedSelectBoxRequestServiceView = new app.Views.AdvancedSelectBoxView({el: $("#requestService"), collection: app.Collections.ClaimersServices.prototype })
 			app.views.advancedSelectBoxRequestServiceView.render();
 
-			app.views.advancedSelectBoxTaskcategoryView = new app.Views.AdvancedSelectBoxView({el: $("#taskCategory"), collection_url: app.Collections.CategoriesTasks.prototype.url })
+			app.views.advancedSelectBoxTaskcategoryView = new app.Views.AdvancedSelectBoxView({el: $("#taskCategory"), collection: app.Collections.CategoriesTasks.prototype })
 			app.views.advancedSelectBoxTaskcategoryView.render();
 
 			// Enable the datePicker //

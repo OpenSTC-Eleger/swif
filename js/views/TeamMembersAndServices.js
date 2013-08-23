@@ -66,10 +66,10 @@ app.Views.TeamMembersAndServices = Backbone.View.extend({
 			self.delegateEvents(self.events());
 			
 			// Advance Select List View //
-			app.views.advancedSelectBoxTeamMembersView = new app.Views.AdvancedSelectBoxView({el: $("#searchMembers"), collection_url: app.Collections.Officers.prototype.url })
+			app.views.advancedSelectBoxTeamMembersView = new app.Views.AdvancedSelectBoxView({el: $("#searchMembers"), collection: app.Collections.Officers.prototype })
 			app.views.advancedSelectBoxTeamMembersView.render();
 
-			app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#searchServices"), collection_url: app.Collections.ClaimersServices.prototype.url })
+			app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#searchServices"), collection: app.Collections.ClaimersServices.prototype })
 			app.views.advancedSelectBoxPlaceParentView.render();
 		});
 
