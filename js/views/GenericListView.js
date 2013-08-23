@@ -176,7 +176,7 @@ app.Views.GenericListView = Backbone.View.extend({
 
 
 	isQueryValid: function(query){
-		var forbiddenChars = ['/', '%'];
+		var forbiddenChars = ['/', '%', '$'];
 
 		var result = true;
 

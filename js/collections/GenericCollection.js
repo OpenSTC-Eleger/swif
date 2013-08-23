@@ -13,6 +13,7 @@ app.Collections.GenericCollection = Backbone.Collection.extend({
 	count: function(options) {
 		var self = this;
 
+
 		var paramFilter = {};
 		// Check if a search are perform //
 		//Test if data is present in options and if filters is present is data
