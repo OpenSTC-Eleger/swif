@@ -8,7 +8,7 @@ app.Models.Intervention = Backbone.Model.extend({
 
 	searchable_fields: [
 		{
-			key  : 'site1.name',
+			key  : 'site1.complete_name',
 			type : 'text'
 		}
 		,
