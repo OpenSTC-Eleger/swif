@@ -46,11 +46,12 @@ app.Views.ItemTeamView = Backbone.View.extend({
 	*/
 	change: function(e){
 
-		console.log('Trigger change');
-
 		this.render();
 		this.highlight();
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.teamUpdateOk);
+
+		app.views.teamsListView.displayTeamMembersAndServices(this.model);
+		this.setSelected();
 	},
 
 
@@ -62,13 +63,16 @@ app.Views.ItemTeamView = Backbone.View.extend({
 
 		this.highlight().done(function(){
 			self.remove();
+			app.views.teamsListView.partialRender();
 		});
 
 		app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.teamDeleteOk);
-		app.views.teamsListView.partialRender();
-
-		if(_.isEqual(this.model, app.views.teamMembersAndServices.model)){
-			app.views.teamMembersAndServices.hide();
+		
+		
+		if(!_.isUndefined(app.views.teamMembersAndServices)){
+			if(_.isEqual(this.model, app.views.teamMembersAndServices.model)){
+				app.views.teamMembersAndServices.hide();
+			}
 		}
 		delete app.views.teamsListView.options.id;
 		app.router.navigate(app.views.teamsListView.urlBuilder(), {trigger: false, replace: false});
@@ -137,8 +141,7 @@ app.Views.ItemTeamView = Backbone.View.extend({
 		app.views.teamsListView.options.id = this.model.getId();
 		app.router.navigate(app.views.teamsListView.urlBuilder(), {trigger: false, replace: false});
 
-		$('tr.row-item.info').removeClass('info bolder');
-		$(this.el).addClass('info bolder');
+		this.setSelected();
 
 		app.views.teamsListView.displayTeamMembersAndServices(this.model);
 	},
@@ -162,6 +165,14 @@ app.Views.ItemTeamView = Backbone.View.extend({
 		});
 
 		return deferred;
+	},
+
+
+	/** Set the row as selected
+	*/
+	setSelected: function(){
+		$('tr.row-item.info').removeClass('info bolder');
+		$(this.el).addClass('info bolder');
 	}
 
 

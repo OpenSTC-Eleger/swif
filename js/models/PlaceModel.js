@@ -20,7 +20,7 @@ app.Models.Place = Backbone.Model.extend({
 			type : 'numeric'
 		},
 		{
-			key  : 'name', 
+			key  : 'complete_name', 
 			type : 'text'
 		}
 	],

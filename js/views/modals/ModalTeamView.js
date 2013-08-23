@@ -55,7 +55,7 @@ app.Views.ModalTeamView = app.Views.GenericModalView.extend({
 			self.modal.html(template);
 
 			// Advance Select List View //
-			app.views.advancedSelectBoxForemanView = new app.Views.AdvancedSelectBoxView({el: $("#teamForeman"), collection_url: app.Collections.Officers.prototype.url })
+			app.views.advancedSelectBoxForemanView = new app.Views.AdvancedSelectBoxView({el: $("#teamForeman"), collection: app.Collections.Officers.prototype })
 			app.views.advancedSelectBoxForemanView.render();
 
 			self.modal.modal('show');

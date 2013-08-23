@@ -11,9 +11,13 @@
 @import 'tables';
 @import 'types';
 
+// Customizing plugin //
+@import 'select2';
+
 @import 'calendar';
 @import 'drop-area';
 @import 'loader';
+
 
 
 
@@ -336,26 +340,6 @@ table thead th.align, .table tbody td.align{
 
 
 
-/* Configuration Team View
--------------------------------------------------- */
-ul.sortableOfficersList, ul.sortableServicesList, ul.sortableEquipmentsList{
-	max-height: 250px; 
-	overflow-y: auto;
-	padding-top: 15px;
-	padding-bottom: 15px;
-}
-table.teamsTable tr.info a.teamName{
-	font-weight: bolder;
-}
-h4#teamTitle, h4#resaTitle{
-	margin-top: 0;
-	margin-bottom: 10px;
-	padding-top: 8px;
-	padding-bottom: 8px;
-}
-
-
-
 /* objects list
 -------------------------------------------------- */
 tr.row-nested-objects-collapse{
@@ -377,25 +361,6 @@ tr.info td:first-child{
     border-bottom: 1px solid @tableBorder;
     margin-bottom: 10px;
 }
-
-
-
-/* Reservation Maquette
--------------------------------------------------- */
-#materialsList [class*="span"]:nth-child(3n+1), #hallsList [class*="span"]:nth-child(3n+1){
-	margin-left: 0;
-}
-#materialsList li, #hallsList li{
- 	margin-bottom: 11px;
-}
-
-#materialsReserved li.media div.span2, #materialsReserved li.media small{
-	.hide();
-}
-#materialsReserved li.media{
-	display: grid;
-}
-
 
 
 

@@ -50,10 +50,11 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 		this.highlight().done(function(){
 			self.remove();
+			app.views.placesListView.partialRender();
 		});
 
 		app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.placeDeleteOk);
-		app.views.placesListView.partialRender();
+		
 	},
 
 

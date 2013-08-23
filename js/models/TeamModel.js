@@ -9,7 +9,7 @@ app.Models.Team = Backbone.Model.extend({
 	urlRoot    : '/api/openstc/teams',
 	
 
-	defaults: {
+	defaults   : {
 		id : null,
 	},
 

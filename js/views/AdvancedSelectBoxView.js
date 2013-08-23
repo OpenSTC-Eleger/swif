@@ -12,7 +12,6 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize: function(){
-		this.collection_url = this.options.collection_url;
 		this.select2 = $(this.el);
 	},
 
@@ -36,28 +35,48 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 		else{ var multiple = false; }
 
 
+		// Check if the collection have a complete Name //
+		if(_.contains(this.collection.fields, 'complete_name')){
+			var fields = ['id', 'complete_name'];
+		}
+		else{
+			var fields = ['id', 'name'];
+		}
+		
+
+
 		this.select2.select2({
 			allowClear         : true,
 			placeholder        : placeholder,
 			multiple           : multiple, 
 			minimumInputLength : minimumInputLength,
-			width              : 'resolve',
+			//width              : 'resolve',
 			query: function(query){
 
+				// SEARCH PARAMS //
 				var params = [];
-				params.push({ field : 'name', operator : 'ilike', value : query.term});
+				
+				if(_.contains(fields, 'complete_name')){
+					params.push({ field : 'complete_name', operator : 'ilike', value : query.term});
+				}
+				else{
+					params.push({ field : 'name', operator : 'ilike', value : query.term});	
+				}
+
 				// Set all the search params in the params for the query //
 				if(!_.isEmpty(self.searchParams)){
 					_.each(self.searchParams, function(query, index){
 						params.push(query);
 					})
 				}
+				// / SEARCH PARAMS //
+
 
 				$.ajax({
-					url: self.collection_url,
+					url: self.collection.url,
 					method: 'GET',
 					data: {
-						fields  : ['id', 'name'],
+						fields  : fields,
 						filters : app.objectifyFilters(params)
 					}
 				}).done(function(data){
@@ -67,7 +86,7 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 						_.each(data, function(item, index){
 							returnData.results.push({
 								id   : item.id,
-								text : _.titleize(item.name.toLowerCase())
+								text : (_.isUndefined(item.complete_name) ? _.titleize(item.name.toLowerCase()) : _.titleize(item.complete_name.toLowerCase()))
 							});
 						});
 
@@ -99,6 +118,11 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 				}
 
 				return sortResults;
+			},
+			containerCssClass: function(){
+				if(!_.isUndefined(self.select2.data('tag-large'))){ 
+					return 'tag-large';
+				}
 			}
 
 		});

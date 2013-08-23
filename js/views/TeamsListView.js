@@ -43,11 +43,18 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 
 		var itemTeamView  = new app.Views.ItemTeamView({ model: model });
 		$('#rows-items').prepend(itemTeamView.render().el);
-		itemTeamView.highlight();
+		itemTeamView.highlight().done(function(){
+			itemTeamView.setSelected();
+		});
 
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.teamCreateOk);
 		
 		this.partialRender();
+
+		// Display the team members and services View //
+		this.displayTeamMembersAndServices(model);
+		this.options.id = model.getId();
+		app.router.navigate(app.views.teamsListView.urlBuilder(), {trigger: false, replace: false});
 	},
 
 
@@ -126,9 +133,9 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 	/** Partial Render of the view
 	*/
 	partialRender: function (type) {
-		var self = this; 
+		var self = this;
 
-		this.collection.count().done(function(){
+		this.collection.count(this.fetchParams).done(function(){
 			$('#bagdeNbTeams').html(self.collection.cpt);
 			app.views.paginationView.render();
 		});
@@ -153,15 +160,18 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 	displayTeamMembersAndServices: function(model){
 		$('#teamMembersAndServices').removeClass('hide');
 
+		// Undelegate the events of the view //
+		if(!_.isUndefined(app.views.teamMembersAndServices)){ app.views.teamMembersAndServices.undelegateEvents(); }
 		app.views.teamMembersAndServices = new app.Views.TeamMembersAndServices({
 			el    : '#teamMembersAndServices',
 			model : model 
 		});
-		
 	},
 
 
 
+	/** Collection Initialisation
+	*/
 	initCollection: function(){
 
 		// Check if the collections is instantiate //
@@ -181,7 +191,7 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 
 
 		// Create Fetch params //
-		var fetchParams = {
+		this.fetchParams = {
 			silent : true,
 			data   : {
 				limit  : (!_.isUndefined(this.itemsPerPage) ? this.itemsPerPage : app.config.itemsPerPage),
@@ -190,12 +200,12 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 			}
 		};
 		if(!_.isUndefined(this.options.search)){
-			fetchParams.data.filters = app.calculSearch({search: this.options.search }, app.Models.Place.prototype.searchable_fields);
+			this.fetchParams.data.filters = app.calculSearch({search: this.options.search }, app.Models.Team.prototype.searchable_fields);
 		}
 
 
 		app.loader('display');
-		return $.when(this.collection.fetch(fetchParams))
+		return $.when(this.collection.fetch(this.fetchParams))
 			.fail(function(e){
 				console.log(e);
 			})
