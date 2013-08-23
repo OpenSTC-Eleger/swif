@@ -1,24 +1,20 @@
 /******************************************
-* Category Intervention  Model - Intervention classification for budget
+* Category Request  Model - Intervention classification for budget
 */
 app.Models.CategoryRequest = Backbone.RelationalModel.extend({
 	
 
-	fields       : ['id', 'name', 'code'],
+	fields     : ['id', 'name', 'code', 'actions'],
 	
 	urlRoot    : '/api/openstc/intervention_categories',
 
 
-	defaults:{
+	defaults :{
 		id : null,
 	},
 	  
 
 	searchable_fields: [
-		{
-			key  : 'id',
-			type : 'numeric'
-		},
 		{
 			key  : 'name', 
 			type : 'text'
@@ -30,56 +26,43 @@ app.Models.CategoryRequest = Backbone.RelationalModel.extend({
 	],
 
 
+	getId : function() {
+		return this.get('id');
+	},
+	setId : function(value, silent) {
+		this.set({ id : value }, {silent: silent});
+	},
 
 	getName : function() {
-		return this.get('name');
+		return _.titleize(this.get('name').toLowerCase());
 	},
-	setName : function(value) {
-		this.set({ name : value });
+	setName : function(value, silent) {
+		this.set({ name : value }, {silent: silent});
 	},
 
 	getCode : function() {
 		return this.get('code');
 	},
-	setCode : function(value) {
-		if( value == 'undefined') return;
-		this.set({ code : value });
-	}, 
-
-
-
-	/** Model Initialization
-	*/
-	initialize: function(){
-		//console.log('Category Intervention Model initialization');
-	},
-	
-
-
-	update: function(params) {
-		this.setName(params.name);
-		this.setCode(params.code);
-	},
-	
-
-	
-	/** Save Model
-	*/
-	save: function(data, id, options) { 
-		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(), options);
+	setCode : function(value, silent) {
+		this.set({ code : value }, {silent: silent});
 	},
 
-
-
-	/** Delete category
+	/** Get Informations of the model
 	*/
-	delete: function (options) {
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
+	getInformations : function(){
+		var informations = {};
+
+		informations.name = this.getName();
+
+		informations.infos = {};
+		informations.infos.key = _.capitalize(app.lang.code);
+		informations.infos.value = this.getCode();
+
+		return informations;
+	},
+
+	getActions : function(){
+		return this.get('actions');
 	}
 
 });

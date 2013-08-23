@@ -626,37 +626,15 @@ app.Router = Backbone.Router.extend({
 
 	/** Categories Interventions management
 	*/
-	categoriesInterventions: function(page){
+	categoriesRequests: function(search, sort, page){
 
-		// Check if the user is connect //
-		if(this.checkConnect()){
-			var self = this;
+		var params = {};
 
+		if(!_.isNull(search)){ params.search = search; }
+		if(!_.isNull(sort))  { params.sort = sort; }
+		if(!_.isNull(page))  { params.page = page; }
 
-			self.page = page ? parseInt(page, 10) : 1;
-
-			// Check if the collections is instantiate //
-			if(_.isUndefined(app.collections.categoriesInterventions)){ app.collections.categoriesInterventions = new app.Collections.CategoriesInterventions(); }
-
-
-			app.loader('display');
-
-			$.when(
-				app.collections.categoriesInterventions.fetch()
-			)
-			.done(function(){
-				app.views.categoriesInterventionsListView = new app.Views.CategoriesInterventionsListView({page: self.page});
-				self.render(app.views.categoriesInterventionsListView);
-
-				app.loader('hide');
-			})
-			.fail(function(e){
-				console.error(e);
-			});
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
+		app.views.categoriesRequestsListView = new app.Views.CategoriesRequestsListView(params);
 	},
 
 

@@ -1,5 +1,5 @@
 /******************************************
-* Intervention Categorie Collection - Intervention classification for budget
+* Request Categorie Collection - Intervention classification for budget
 */
 app.Collections.CategoriesRequests = app.Collections.GenericCollection.extend({
 
@@ -7,7 +7,7 @@ app.Collections.CategoriesRequests = app.Collections.GenericCollection.extend({
 
 	url          : '/api/openstc/intervention_categories',
 
-	fields       : ['id', 'name', 'code'],
+	fields       : ['id', 'name', 'code', 'actions'],
 
 	default_sort : { by: 'name', order: 'ASC' },
 
