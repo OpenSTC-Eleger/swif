@@ -1,9 +1,7 @@
 /******************************************
 * Interventions List View
 */
-app.Views.InterventionsListView = Backbone.View.extend({
-
-	el : '#rowContainer',
+app.Views.InterventionsListView = app.Views.GenericListView.extend({
 
 	templateHTML: 'interventions',
 
@@ -15,37 +13,41 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	collections:  {},
 
 	// The DOM events //
-	events: {
-		'click li.active'					: 'preventDefault',
-		'click li.disabled'					: 'preventDefault',
-		'click ul.sortable li'				: 'preventDefault',
+	events: function(){
+		return _.defaults({
+			'click li.active'					: 'preventDefault',
+			'click li.disabled'					: 'preventDefault',
+			'click ul.sortable li'				: 'preventDefault',
 
-		'click a.modalSaveInter'			: 'displayModalSaveInter',
-		
-		'click .btn.addTask'                : 'displayModalAddTask',
-		'submit #formAddTask'         		: 'saveTask',
+			'click a.modalSaveInter'			: 'displayModalSaveInter',
+			
+			'click .btn.addTask'                : 'displayModalAddTask',
+			'submit #formAddTask'         		: 'saveTask',
 
-		'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
-		'click button.btnDeleteTask'   		: 'deleteTask',
+			'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
+			'click button.btnDeleteTask'   		: 'deleteTask',
 
-		'click a.buttonCancelInter'			: 'displayModalCancelInter',
-		'submit #formCancelInter' 			: 'cancelInter',
+			'click a.buttonCancelInter'			: 'displayModalCancelInter',
+			'submit #formCancelInter' 			: 'cancelInter',
 
-		'click a.buttonCancelTask'			: 'displayModalCancelTask',
-		'submit #formCancelTask' 			: 'cancelTask',
+			'click a.buttonCancelTask'			: 'displayModalCancelTask',
+			'submit #formCancelTask' 			: 'cancelTask',
 
-		'click a.printTask, a.printInter'	: 'print',
+			'click a.printTask, a.printInter'	: 'print',
 
-		'click .buttonTaskDone, .buttonNotFinish' : 'displayModalTaskDone',
-		'submit #formTaskDone'   			: 'taskDone',
-		'click a.linkSelectUsersTeams'		: 'changeSelectListUsersTeams',
-		'click .linkRefueling'				: 'accordionRefuelingInputs',
+			'click .buttonTaskDone, .buttonNotFinish' : 'displayModalTaskDone',
+			'submit #formTaskDone'   			: 'taskDone',
+			'click a.linkSelectUsersTeams'		: 'changeSelectListUsersTeams',
+			'click .linkRefueling'				: 'accordionRefuelingInputs',
 
-		'change .taskEquipment'				: 'fillDropdownEquipment',
+			'change .taskEquipment'				: 'fillDropdownEquipment',
 
-		'click a.accordion-object'    		: 'tableAccordion',
+			'click a.accordion-object'    		: 'tableAccordion',
 
-		'click #filterStateInterList li:not(.disabled) a' 	: 'setFilter'
+			'click #filterStateInterList li:not(.disabled) a' 	: 'setFilter'
+		}, 
+			app.Views.GenericListView.prototype.events
+		);
 	},
 
 
@@ -567,25 +569,20 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	*/
 	deleteTask: function(e){
 		var self = this;
-		this.selectedTask.destroy({
-			success: function(data){
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					this.collections.tasks.remove(self.selectedTask);
-					var inter = this.collections.interventions.get(self.selectedTaskJSON.intervention.id);					
-					inter.attributes.tasks.remove(self.selectedTaskJSON.id);
-					this.collections.interventions.add(inter);
-					$('#modalDeleteTask').modal('hide');
-					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.serviceDeleteOk);
-					self.render();
-				}
-			},
-			error: function(e){
-				alert("Impossible de supprimer la tâche");
-			}
-
+		this.selectedTask.destroy().done(function(data){
+//			this.collections.tasks.remove(self.selectedTask);
+//			var inter = this.collections.interventions.get(self.selectedTaskJSON.intervention.id);					
+//			inter.attributes.tasks.remove(self.selectedTaskJSON.id);
+//			this.collections.interventions.add(inter);
+			$('#modalDeleteTask').modal('hide');
+			app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.serviceDeleteOk);
+			//self.render();
+			route = Backbone.history.fragment;
+			Backbone.history.loadUrl(route);
+		})
+		.fail(function(e){
+			console.log(e)
+			alert("Impossible de supprimer la tâche");
 		});
 
 	},
@@ -759,19 +756,21 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 		// Set the filter in the local Storage //
 		if(filterValue != 'delete-filter'){
-			sessionStorage.setItem(this.filters, filterValue);
+//			sessionStorage.setItem(this.filters, filterValue);
+			this.options.filter = {by: 'state', value:filterValue};
 		}
 		else{
-			sessionStorage.removeItem(this.filters);
+			delete this.options.filter;
 		}
 
-		if(this.options.page <= 1){
-			this.render();
-		}
-		else{
-			app.router.navigate(app.routes.interventions.baseUrl, {trigger: true, replace: true});
-		}
-		
+//		if(this.options.page <= 1){
+//			this.render();
+//		}
+//		else{
+//			app.router.navigate(app.routes.interventions.baseUrl, {trigger: true, replace: true});
+//		}
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+
 	},
 
 
@@ -787,19 +786,29 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		
 		// Construction of the domain
 		var domain = [];
-		// Collection Filter if not null //
-		if(sessionStorage.getItem(this.filters) != null){
+		var optionSearch = {};
+		//Retrieve search domain given by search box and / or by filter
+		if(!_.isUndefined(this.options.search)){
+			// Collection Filter if not null //
+			optionSearch.search = this.options.search;
+		}
+		if(!_.isUndefined(this.options.filter) && !_.isNull(this.options.filter)){
 			//interventions = _.filter(interventions, function(item){ 
-			if(sessionStorage.getItem(self.filters) != 'overrun'){
-				//return item.state == sessionStorage.getItem(self.filters);
-				domain.push({'field':'state','operator':'=','value':self.filters})
+			if(this.options.filter.value == 'overrun'){
+				//return (item.state == app.Models.Intervention.status.closed.key && item.overPourcent > 100);
+				domain.push({field:'state',operator:'=',value:'closed'});
+				domain.push({field:'overPourcent',operator:'>',value:'100.0'});
 			}
 			else{
-				//return (item.state == app.Models.Intervention.status.closed.key && item.overPourcent > 100);
-				domain.push({'field':'state','operator':'=','value':'closed'});
-				domain.push({'field':'overPourcent','operator':'>','value':'100.0'});
+				optionSearch.filter = this.options.filter;
 			}
 		}
+		//'Unbuild' domain objectify to be able to add other filters (and objectify when all filters are added
+		var searchDomain = app.calculSearch(optionSearch, app.Models.Intervention.prototype.searchable_fields);
+		_.each(searchDomain,function(item, index){
+			domain.push(item);
+		});	
+		
 		
 		this.options.page = app.calculPageOffset(this.options.page);
 		
@@ -816,10 +825,12 @@ app.Views.InterventionsListView = Backbone.View.extend({
 			data   : {
 				limit  : app.config.itemsPerPage,
 				offset : this.options.page.offset,
-				//sort   : this.options.sort.by+' '+this.options.sort.order,
 				filters: app.objectifyFilters(domain)
 			}
 		};
+		if(!_.isUndefined(this.options.sort)){
+			fetchParams.data.sort = this.options.sort.by+' '+this.options.sort.order;
+		}
 		
 		// Check if the collections is instantiate //
 		if(_.isUndefined(this.collections.tasks)){ this.collections.tasks = new app.Collections.Tasks(); }
