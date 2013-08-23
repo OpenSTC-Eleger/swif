@@ -51,6 +51,7 @@ app.Views.ItemTeamView = Backbone.View.extend({
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.teamUpdateOk);
 
 		app.views.teamsListView.displayTeamMembersAndServices(this.model);
+		this.setSelected();
 	},
 
 
