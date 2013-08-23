@@ -297,21 +297,6 @@ app.Models.Task = Backbone.Model.extend({
 		this.setDateEnd( params.date_end );
 		this.setDateStart( params.date_start );
 	},
-	
-
-
-	destroy: function (options) {
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
-	},
-	
-
-
-
 
 }, {
 
