@@ -11,7 +11,7 @@ app.Collections.Interventions = app.Collections.GenericCollection.extend({
 	url: "/api/openstc/interventions",
 
 	fieldsOE: ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid','ask_id'],
-
+	default_sort : { by: 'id', order: 'DESC' },
 	
 	pendingInterventions: 0,
 	plannedInterventions: 0,
@@ -55,25 +55,4 @@ app.Collections.Interventions = app.Collections.GenericCollection.extend({
 			});
 			return  deferred;
 		},
-		
-//
-//
-//
-//	/** Collection Parse
-//	*/
-//	parse: function(response) {    	
-//		return response.result.records;
-//	},
-
-
-
-	/** Comparator for ordering collection
-	*/
-	comparator: function(item) {
-		var mCreateDate = moment(item.get('create_date'))
-		item.set({'create_date': mCreateDate});
-		return -item.get('create_date');
-	}
-
-
 });

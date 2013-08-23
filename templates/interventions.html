@@ -39,11 +39,11 @@
 
 
 	<!-- Table Interventions -->
-	<table class="table-interventions table table-bordered table-hover">
+	<table class="table-interventions table table-bordered table-hover table-sorter table-striped">
 		<thead>
 			<tr>
-				<th>N°</th>
-				<th><%= _.capitalize(lang.label) %></th>
+				<th data-sort-column="id">N°</th>
+				<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
 				<th><%= _.capitalize(lang.place) %></th>
 				<th><%= _.capitalize(lang.dateDeadline) %></th>
 				<th><%= _.capitalize(lang.plannedHours) %></th>

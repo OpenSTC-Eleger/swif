@@ -135,14 +135,14 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 
 
 			// Display filter on the table //
-			if(sessionStorage.getItem(self.filters) != null){
+			if(!_.isUndefined(self.options.filter)){
 				$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');
 				$('li.delete-filter').removeClass('disabled');
 
-				var applyFilter = sessionStorage.getItem(self.filters);
+				var applyFilter = self.options.filter;
 
-				if(applyFilter != 'overrun') {
-					$('a.filter-button').addClass('text-'+app.Models.Intervention.status[applyFilter].color);
+				if(applyFilter.value != 'overrun') {
+					$('a.filter-button').addClass('text-'+app.Models.Intervention.status[applyFilter.value].color);
 				}
 				else{
 					$('a.filter-button').addClass('text-overrun');
@@ -158,7 +158,9 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 			$('#modalCancelInter, #modalDeleteTask, #modalAddTask, #modalCancelTask').on('shown', function (e) {
 				$(this).find('input, textarea').first().focus();
 			})
-		
+			
+			// Call the render Generic View //
+			app.Views.GenericListView.prototype.render(self.options);
 			
 		});
 		$(this.el).hide().fadeIn('slow');
@@ -784,7 +786,20 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 	initCollections: function(){
 		var self = this;
 		
-		// Construction of the domain
+		// Check if the collections are instantiated //
+		if(_.isUndefined(this.collections.tasks)){ this.collections.tasks = new app.Collections.Tasks(); }
+		if(_.isUndefined(this.collections.interventions)){this.collections.interventions = new app.Collections.Interventions();}
+		
+		//check sort parameter
+		if(_.isUndefined(this.options.sort)){
+			this.options.sort = this.collections.interventions.default_sort;
+		}
+		else{
+			this.options.sort = app.calculPageSort(this.options.sort);	
+		}
+		
+		
+		// Construction of the domain (filter and search, special domain if filter == overrun)
 		var domain = [];
 		var optionSearch = {};
 		//Retrieve search domain given by search box and / or by filter
@@ -793,6 +808,8 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 			optionSearch.search = this.options.search;
 		}
 		if(!_.isUndefined(this.options.filter) && !_.isNull(this.options.filter)){
+			this.options.filter = app.calculPageFilter(this.options.filter);
+
 			//interventions = _.filter(interventions, function(item){ 
 			if(this.options.filter.value == 'overrun'){
 				//return (item.state == app.Models.Intervention.status.closed.key && item.overPourcent > 100);
@@ -809,16 +826,8 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 			domain.push(item);
 		});	
 		
-		
 		this.options.page = app.calculPageOffset(this.options.page);
-		
-//		var len = _.size(this.intervention);
-//		var startPos = (this.options.page - 1) * app.config.itemsPerPage;
-//		var endPos = Math.min(startPos + app.config.itemsPerPage, len);
-//		var pageCount = Math.ceil(len / app.config.itemsPerPage);
-		
-		
-		
+
 		// Create Fetch params //
 		var fetchParams = {
 			silent : true,
@@ -832,9 +841,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 			fetchParams.data.sort = this.options.sort.by+' '+this.options.sort.order;
 		}
 		
-		// Check if the collections is instantiate //
-		if(_.isUndefined(this.collections.tasks)){ this.collections.tasks = new app.Collections.Tasks(); }
-		if(_.isUndefined(this.collections.interventions)){this.collections.interventions = new app.Collections.Interventions();}
 		fetchParams.data.fields = this.collections.interventions.fieldsOE;
 		app.loader('display');
 		
@@ -842,13 +848,18 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		//retrieve interventions and tasks associated (use domain ('project_id','in',[...] to retrieve tasks associated)
 		this.collections.interventions.fetch(fetchParams)
 		.done(function(){
-			self.collections.tasks.fetch({silent: true,data: {filters: {0:{'field':'project_id.id','operator':'in','value':self.collections.interventions.pluck('id')}}}})
-			.done(function(){
+			if(self.collections.interventions.cpt > 0){
+				self.collections.tasks.fetch({silent: true,data: {filters: {0:{'field':'project_id.id','operator':'in','value':self.collections.interventions.pluck('id')}}}})
+				.done(function(){
+					deferred.resolve();
+				})
+				.fail(function(e){
+					console.error(e);
+				})
+			}
+			else{
 				deferred.resolve();
-			})
-			.fail(function(e){
-				console.error(e);
-			})
+			}
 		})
 		.fail(function(e){
 			console.error(e);
@@ -856,6 +867,7 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		.always(function(){
 			app.loader('hide');
 		});
+		
 		return deferred;
 	}
   
