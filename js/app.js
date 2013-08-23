@@ -466,8 +466,11 @@ var app = {
 		// Check if there is a Search //
 		if (!_.isUndefined(searchQuery.search)) {
 			// Search on several fields //
-			if (_.size(filteredAndConvertedFilters) > 1) {
-				search.push('|');
+//			if (_.size(filteredAndConvertedFilters) > 1) {
+				for(var i=1;i < _.size(filteredAndConvertedFilters);i++){
+					search.push('|');
+				}
+				
 				_.each(filteredAndConvertedFilters, function (item, index) {
 					if (item.type == '=' && isNumber(searchQuery.search)) {
 						var term = _(searchQuery.search).toNumber();
@@ -481,7 +484,6 @@ var app = {
 			else {
 				search.push( buildFilterObject(filteredAndConvertedFilters[0].key,filteredAndConvertedFilters[0].type,searchQuery.search));
 			}
-		}
 
 		return app.objectifyFilters(search);
 	},
