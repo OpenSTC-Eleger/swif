@@ -202,8 +202,11 @@ app.Router = Backbone.Router.extend({
 
 	/** Interventions list
 	*/
-	interventions: function(page){
+	interventions: function(search, filter, sort, page){
 		var params = {};
+		if(!_.isNull(search)){params.search = search}
+		if(!_.isNull(filter)){params.filter = filter}
+		if(!_.isNull(sort)){params.sort = sort}
 		if(!_.isNull(page)){params.page = page}
 		app.views.interventions = new app.Views.InterventionsListView(params);
 		

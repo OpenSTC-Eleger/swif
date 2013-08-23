@@ -26,7 +26,7 @@
 		"function"	: "detailsIntervention"
 	},
 	"interventions": {
-		"url"		: "interventions(/page:page)",
+		"url"		: "interventions(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"baseUrl"   : "interventions",
 		"function"	: "interventions"
 	},
