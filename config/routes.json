@@ -115,7 +115,7 @@
 	},
 
 	"claimers": {
-		"url"		: "organisations(/page:page)",
+		"url"		: "organisations(/search/:search)(/sort/:sort)(/page:page)",
 		"baseUrl"	: "organisations",
 		"function"	: "claimers"
 	},

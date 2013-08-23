@@ -12,25 +12,34 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 
 
     // The DOM events //
-    events: {
-    	'click li.active'				: 'preventDefault',
-		'click li.disabled'				: 'preventDefault',
-		
-        'click a.modalSaveClaimer'  		: 'modalSaveClaimer',
-		'submit #formSaveClaimer' 			: 'saveClaimer', 
-		'click a.modalDeleteClaimer'  		: 'modalDeleteClaimer',
-		'click button.btnDeleteClaimer'		: 'deleteClaimer',
-		
-		'click .modalSaveContact'               : 'modalSaveContact',
-		'submit #formAddAddress'             	: 'saveAddress',
-		'click a.modalDeleteContact'   			: 'modalDeleteContact',
-        'click button.btnDeleteAddress'   		: 'deleteAddress',
+    events: function(){
+		return _.defaults({
+				'click a.modalSaveClaimer'  		: 'modalSaveClaimer',
+			},
+			app.Views.GenericListView.prototype.events
+		);
+	},
 
-		'change #claimerTechnicalService'		: 'fillDropdownTechnicalService',
-		
-		'change #createAssociatedAccount' 			: 'accordionAssociatedAccount'
-    },
-
+//
+//	{
+//    	'click li.active'				: 'preventDefault',
+//		'click li.disabled'				: 'preventDefault',
+//
+//
+//		'submit #formSaveClaimer' 			: 'saveClaimer',
+//		'click a.modalDeleteClaimer'  		: 'modalDeleteClaimer',
+//		'click button.btnDeleteClaimer'		: 'deleteClaimer',
+//
+//		'click .modalSaveContact'               : 'modalSaveContact',
+//		'submit #formAddAddress'             	: 'saveAddress',
+//		'click a.modalDeleteContact'   			: 'modalDeleteContact',
+//        'click button.btnDeleteAddress'   		: 'deleteAddress',
+//
+//		'change #claimerTechnicalService'		: 'fillDropdownTechnicalService',
+//
+//		'change #createAssociatedAccount' 			: 'accordionAssociatedAccount'
+//    },
+//
 
 
 	/** View Initialization
@@ -172,53 +181,16 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 	    	this.selectedClaimerJson = null;
 	    }        
 	},
-	
-	
-	/** Add a new categorie
-	*/
-	modalSaveClaimer: function(e){       
-	    this.setModel(e);
 
-	    // Hack to remove "Administré" from the claimersTypes Collection //
-	    //var claimersTypes = app.collections.claimersTypes.reset(app.collections.claimersTypes.rest());
 
-		app.views.selectListClaimerTypeView = new app.Views.DropdownSelectListView({el: $("#claimerType"), collection: app.collections.claimersTypes})
-		app.views.selectListClaimerTypeView.clearAll();
-		app.views.selectListClaimerTypeView.addEmptyFirst();
-		app.views.selectListClaimerTypeView.addAll();
+	modalSaveClaimer: function(e){
+		e.preventDefault();
 
-		
-		//search no technical services
-		var technicalServices = _.filter(app.collections.claimersServices.models, function(service){
-			return service.attributes.technical == true 
+		app.views.modalClaimerView = new app.Views.ModalsClaimerEdit({
+			el  : '#modalSaveClaimer'
 		});
-		//remove no technical services
-		var technicalServicesList = new app.Collections.ClaimersServices(technicalServices);
-		
-		app.views.selectListClaimerTechnicalServiceView = new app.Views.DropdownSelectListView({el: $("#claimerTechnicalService"), collection: technicalServicesList})
-		app.views.selectListClaimerTechnicalServiceView.clearAll();
-		app.views.selectListClaimerTechnicalServiceView.addEmptyFirst();
-		app.views.selectListClaimerTechnicalServiceView.addAll();
-		
-		app.views.selectListClaimerTechnicalSiteView = new app.Views.DropdownSelectListView({el: $("#claimerTechnicalSite"), collection: app.collections.places})
-		app.views.selectListClaimerTechnicalSiteView.clearAll();
-		app.views.selectListClaimerTechnicalSiteView.addEmptyFirst();
-		app.views.selectListClaimerTechnicalSiteView.addAll();
-		
-	    
-	    $('#claimerName').val('');
-	    if( this.selectedClaimerJson ) {
-			$('#claimerName').val(this.selectedClaimerJson.name);
-			if( this.selectedClaimerJson.type_id )
-				app.views.selectListClaimerTypeView.setSelectedItem( this.selectedClaimerJson.type_id[0] );	
-			if( this.selectedClaimerJson.technical_service_id )
-				app.views.selectListClaimerTechnicalServiceView.setSelectedItem( this.selectedClaimerJson.technical_service_id[0] );	
-			if( this.selectedClaimerJson.technical_site_id )
-				app.views.selectListClaimerTechnicalSiteView.setSelectedItem( this.selectedClaimerJson.technical_site_id[0] );	
-			
-	    }       
-	
 	},
+
 	
 	
 	/** Display information to the Modal for delete claimer
@@ -409,59 +381,7 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
     },	
 	
 	
-	
-	/** Save  place
-	*/
-	saveClaimer: function(e) {		     
-		e.preventDefault();
-	
-	     
-	     
-	     var type_id = this.getIdInDropDown(app.views.selectListClaimerTypeView);
-	     var technical_service_id = this.getIdInDropDown(app.views.selectListClaimerTechnicalServiceView);
-	     var technical_site_id = this.getIdInDropDown(app.views.selectListClaimerTechnicalSiteView);
-	     
-	     this.params = {	
-		     name: this.$('#claimerName').val(),
-		     type_id: type_id,	     
-		     technical_service_id: technical_service_id,
-		     technical_site_id: technical_site_id,
-	     };
-	     
-	       
-	    this.params.type_id =  type_id[0];
-	    this.params.technical_service_id =  technical_service_id[0];
-	    this.params.technical_site_id =  technical_site_id[0];
-	    this.modelId = this.selectedClaimerJson==null?0: this.selectedClaimerJson.id;
-	    var self = this;
-	    app.Models.Claimer.prototype.save(
-	    	this.params, 
-	    	this.modelId,
-	    	{
-				success: function(data){
-					console.log(data);
-					if(data.error){
-						app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-					}
-					else{
-						if( self.modelId==0 )
-							self.model = new app.Models.Claimer({id: data.result.result}); 
-						self.params.type_id =  self.getIdInDropDown(app.views.selectListClaimerTypeView);
-					    self.params.technical_service_id =  self.getIdInDropDown(app.views.selectListClaimerTechnicalServiceView);
-					    self.params.technical_site_id =  self.getIdInDropDown(app.views.selectListClaimerTechnicalSiteView);
-						self.model.update(self.params);
-						app.collections.claimers.add(self.model);
-						$('#modalSaveClaimer').modal('hide');
-						app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.placeDeleteOk);
-						self.render();
-					}				
-				},
-				error: function(e){
-					alert("Impossible de mettre à jour le demandeur");
-				}
-	    });
-	},
-	
+
 	
 	/** Delete the selected claimer
 	*/

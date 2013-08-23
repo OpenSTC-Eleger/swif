@@ -8,22 +8,15 @@ app.Models.Claimer = Backbone.Model.extend({
 	
 	url: "/#organisation/:id",
 
-//TODO remove this
-//	relations: [
-//        {
-//			type: Backbone.HasMany,
-//			key: 'address',
-//			relatedModel: 'app.Models.ClaimerContact',
-//			includeInJSON: true,
-//	        reverseRelation: {
-//				type: Backbone.HasOne,
-//	            key: 'livesIn',
-//	            includeInJSON: true,
-//	        }
-//        },
-//    ],
-//
-    
+	searchable_fields: [
+
+		{
+			key  : 'name',
+			type : 'text'
+		}
+	],
+
+
     defaults:{
 		id:0,
 		name: null,

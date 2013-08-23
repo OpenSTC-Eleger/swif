@@ -18,11 +18,4 @@ app.Collections.Claimers = app.Collections.GenericCollection.extend({
 		//console.log('Claimer collection initialize');
 	},
 
-	/** Comparator for ordering collection
-	*/
-	comparator: function(item) {
-	  return item.get("name");
-	},
-
-
 });
