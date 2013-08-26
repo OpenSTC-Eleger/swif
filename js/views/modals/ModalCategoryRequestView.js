@@ -1,17 +1,17 @@
 /******************************************
-* Team Modal View
+* Category Request Modal View
 */
-app.Views.ModalTeamView = app.Views.GenericModalView.extend({
+app.Views.ModalCategoryRequestView = app.Views.GenericModalView.extend({
 
 
-	templateHTML : 'modals/modalTeam',
+	templateHTML : 'modals/modalCategoryRequest',
 
 
 
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'submit #formSaveTeam'   : 'saveTeam'
+			'submit #formSaveCat'  : 'saveCat'
 		}, 
 			app.Views.GenericModalView.prototype.events
 		);
@@ -22,13 +22,12 @@ app.Views.ModalTeamView = app.Views.GenericModalView.extend({
 	/** View Initialization
 	*/
 	initialize : function() {
-	
+
 		this.modal = $(this.el);
 
-		
 		// Check if it's a create or an update //
 		if(_.isUndefined(this.model)){
-			this.model = new app.Models.Team();
+			this.model = new app.Models.CategoryRequest();
 		}
 
 		this.render();
@@ -47,15 +46,10 @@ app.Views.ModalTeamView = app.Views.GenericModalView.extend({
 
 			var template = _.template(templateData, {
 				lang  : app.lang,
-				team  : self.model
+				cat   : self.model
 			});
 
-
 			self.modal.html(template);
-
-			// Advance Select List View //
-			app.views.advancedSelectBoxForemanView = new app.Views.AdvancedSelectBoxView({el: $("#teamForeman"), collection: app.Collections.Officers.prototype })
-			app.views.advancedSelectBoxForemanView.render();
 
 			self.modal.modal('show');
 		});
@@ -67,7 +61,7 @@ app.Views.ModalTeamView = app.Views.GenericModalView.extend({
 
 	/** Delete the model pass in the view
 	*/
-	saveTeam: function(e){
+	saveCat: function(e){
 		e.preventDefault();
 
 		var self = this;
@@ -77,19 +71,23 @@ app.Views.ModalTeamView = app.Views.GenericModalView.extend({
 
 
 		// Set the properties of the model //
-		this.model.setName(this.$('#teamName').val(), true);
-		this.model.setManager(app.views.advancedSelectBoxForemanView.getSelectedItem(), true);
+		/*this.model.setName(this.$('#catName').val(), false);
+		this.model.setCode(this.$('#catCode').val(), false);*/
+		var params = {
+			name: this.$('#catName').val(),
+			code: this.$('#catCode').val()
+		};	
 
 
-		this.model.save()
+		this.model.save(params)
 			.done(function(data) {
 				self.modal.modal('hide');
 
 				// Create mode //
 				if(self.model.isNew()) {
 					self.model.setId(data);
-					self.model.fetch({silent: true, data : {fields : app.Collections.Teams.prototype.fields} }).done(function(){
-						app.views.teamsListView.collection.add(self.model);
+					self.model.fetch({silent: true, data : {fields : app.Collections.CategoriesRequests.prototype.fields} }).done(function(){
+						app.views.categoriesRequestsListView.collection.add(self.model);
 					})
 				// Update mode //
 				} else {

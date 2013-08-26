@@ -20,17 +20,4 @@ app.Collections.Teams = app.Collections.GenericCollection.extend({
 	},
 
 
-
-	/** Collection Sync
-	*/
-	sync: function(method, model, options){
-
-		if(_.isUndefined(options.data)) {
-			options.data = {};
-		}
-		options.data.fields = this.fields;
-
-		return $.when(this.count(options), Backbone.sync.call(this, method, this, options));
-	},
-
 });

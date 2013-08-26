@@ -207,7 +207,6 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		}
 
 
-
 		// Fetch the collections //
 		app.loader('display');
 		return $.when(this.collection.fetch(fetchParams))

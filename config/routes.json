@@ -103,10 +103,9 @@
 		"function"	: "categoriesTasks"
 	},
 
-	"categoriesInterventions": {
-		"url"		: "affectations-des-interventions(/page:page)",
-		"baseUrl"	: "affectations-des-interventions",
-		"function"	: "categoriesInterventions"
+	"categoriesRequests": {
+		"url"		: "affectations-des-interventions(/search/:search)(/sort/:sort)(/page:page)",
+		"function"	: "categoriesRequests"
 	},
 
 	"teams": {

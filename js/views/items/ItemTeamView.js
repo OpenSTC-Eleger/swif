@@ -104,7 +104,7 @@ app.Views.ItemTeamView = Backbone.View.extend({
 
 
 
-	/** Display Modal form to add/sav a new place
+	/** Display Modal form to add/sav a new Team
 	*/
 	modalUpdateTeam: function(e){  
 		e.preventDefault(); e.stopPropagation();
@@ -117,7 +117,7 @@ app.Views.ItemTeamView = Backbone.View.extend({
 
 
 
-	/** Modal to remove a place
+	/** Modal to remove a Team
 	*/
 	modalDeleteTeam: function(e){
 		e.preventDefault(); e.stopPropagation();

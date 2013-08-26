@@ -24,40 +24,6 @@ app.Views.HeaderView = Backbone.View.extend({
 
 	/** Display the view
 	*/
-	/*render: function (activeMenu) {
-		if(app.models.user.hasAuthToken()) {
-			this.initHeader(app.models.user.getMenus(), activeMenu)
-		}
-		else{
-			this.initHeader('', '');
-		}
-		return this;
-	},*/
-
-
-
-	/** Retrieve the Header template
-	*/
-	/*initHeader: function(menus, activeMenu){
-		var self = this;
-		
-		$.get("templates/" + this.templateHTML + ".html", function(templateData) {
-
-			var template = _.template(templateData, {
-				lang  : app.lang,
-				menus : menus,
-				user  : {fullname: app.models.user.getFullname(), fields: app.models.user.toJSON()}
-			});
-
-			$(self.el).html(template);
-
-			self.selectMenuItem(activeMenu);
-		});
-	},*/
-
-
-	/** Display the view
-	*/
 	render: function(){
 		var self = this;
 
