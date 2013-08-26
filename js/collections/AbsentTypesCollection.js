@@ -9,7 +9,7 @@ app.Collections.AbsentTypes = app.Collections.GenericCollection.extend({
 	// Model name in the database //
 	model_name : 'openstc.absent.type',
 	
-	url: "/absent",
+	url: "/api/openstc/absence_categories",
 
 
 	/** Collection Initialization
@@ -23,9 +23,9 @@ app.Collections.AbsentTypes = app.Collections.GenericCollection.extend({
 	/** Collection Sync
 	*/
 	sync: function(method, model, options) {
-		var fields = ["id", "code", "name", "description"];
-
-		return app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
+//		var fields = ["id", "code", "name", "description"];
+//
+//		return app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
 	},
 
 
