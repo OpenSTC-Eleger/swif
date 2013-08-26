@@ -19,7 +19,7 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 			'click li.disabled'					: 'preventDefault',
 			'click ul.sortable li'				: 'preventDefault',
 
-			'click a.modalSaveInter'			: 'displayModalSaveInter',
+			'click a.modalCreateInter'			: 'displayModalSaveInter',
 			
 //			'click .btn.addTask'                : 'displayModalAddTask',
 //			'submit #formAddTask'         		: 'saveTask',
@@ -227,11 +227,12 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 	/** Display the form to add / update an intervention
 	*/
 	displayModalSaveInter: function(e){
-		this.getTarget(e);
+		//this.getTarget(e);
+		e.preventDefault();
 		var params = {el:'#modalSaveInter'}
-		if(this.pos > -1){
-			params.model = this.collections.interventions.get(this.pos);
-		}
+//		if(this.pos > -1){
+//			params.model = this.collections.interventions.get(this.pos);
+//		}
 		new app.Views.ModalInterventionView(params);
 	},
 	

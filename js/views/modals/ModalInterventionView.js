@@ -68,7 +68,7 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 				self.modal.html(template);
 				self.modal.modal('show');
 
-				app.views.advancedSelectBoxInterventionServicesView = new app.Views.AdvancedSelectBoxView({el: $("#interventionDetailService"), collection_url: app.Collections.ClaimersServices.prototype.url}) 
+				app.views.advancedSelectBoxInterventionServicesView = new app.Views.AdvancedSelectBoxView({el: $("#interventionDetailService"), collection: app.Collections.ClaimersServices.prototype}) 
 				app.views.advancedSelectBoxInterventionServicesView.setSearchParam({field:'technical',operator:'=',value:'True'},true)
 				app.views.advancedSelectBoxInterventionServicesView.render();
 //				app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#interventionDetailService"), collection: self.collections.technicalServices})
@@ -78,7 +78,7 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 
 				
 				// Fill select Places  //
-				app.views.advancedSelectBoxInterventionPlacesView = new app.Views.AdvancedSelectBoxView({el: $("#interventionPlace"), collection_url: app.Collections.Places.prototype.url });
+				app.views.advancedSelectBoxInterventionPlacesView = new app.Views.AdvancedSelectBoxView({el: $("#interventionPlace"), collection: app.Collections.Places.prototype});
 				app.views.advancedSelectBoxInterventionPlacesView.render();
 //				app.views.selectListPlacesView = new app.Views.DropdownSelectListView({el: $("#interventionPlace"), collection: self.collections.places})
 //				app.views.selectListPlacesView.clearAll();
@@ -160,7 +160,10 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 		this.model.save(params,{patch:!this.create}).done(function(data){
 			self.modal.modal('hide');
 			console.log(data);
-			self.model.setId(data);
+			if(self.create){
+				self.model.setId(data);
+				
+			}
 			console.log('Success SAVE INTERVENTION');
 			self.model.fetch()
 			.fail(function(e){
