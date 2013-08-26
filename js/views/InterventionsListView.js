@@ -163,8 +163,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 				_.each(inter.toJSON().tasks,function(item,i){
 					tasks.push(self.collections.tasks.get(item));
 				});
-				console.log('---------------------')
-				console.log(tasks);
 				var itemInterventionView = new app.Views.ItemInterventionView({model: inter});
 				$('#inter-items').append(itemInterventionView.render().el);
 				var itemInterventionTaskListView = new app.Views.ItemInterventionTaskListView({inter: inter, tasks: tasks});

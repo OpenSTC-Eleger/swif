@@ -7,19 +7,7 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 
 	templateHTML : 'items/itemIntervention',
 	
-	className   : function(){
-
-		var classRow = '';
-
-		if(this.model.getState() == app.Models.Request.status.wait.key && app.models.user.isManager() && _.contains(app.models.user.getServices(), this.model.getService('id'))) {
-			classRow = app.Models.Request.status.wait.color + ' bolder';
-		}
-		else if(this.model.getState() == app.Models.Request.status.confirm.key && app.models.user.isDST()){
-			classRow = app.Models.Request.status.confirm.color + ' bolder';
-		}
-
-		return classRow;
-	},
+	className   : 'row-item',
 
 	// The DOM events //
 	events       : {
