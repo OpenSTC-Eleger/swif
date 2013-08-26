@@ -9,7 +9,6 @@
         <fieldset>
             <legend><%= lang.aboutTheClaimer %></legend>
 
-            <!-- Place name -->
             <div class="control-group">
                 <label for="claimerName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
 
@@ -19,12 +18,16 @@
                 </div>
             </div>
 
-            <!-- Place Type -->
+
             <div class="control-group">
                 <label for="claimerType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
 
                 <div class="controls">
-                    <select id="claimerType"></select>
+                    <input id="claimerType" class="select2" style="width: 66%" required data-placeholder="<%= lang.actions.selectACategory %>"
+                        <% if(!claimer.isNew() && !_.isUndefined(claimer.get('type_id'))){ %>
+                            data-selected-value='<%= JSON.stringify(claimer.get('type_id')) %>'
+                        <% }  %>
+                    />
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -35,23 +38,30 @@
         <fieldset>
             <legend><%= _.capitalize(lang.organization) %></legend>
 
-
-            <!-- Technical Service concerned-->
             <div class="control-group">
                 <label for="claimerTechnicalService" class="control-label"><%= _.capitalize(lang.technicalService) %>:</label>
 
                 <div class="controls">
-                    <select id="claimerTechnicalService"></select>
+                    <input id="claimerTechnicalService" class="select2" style="width: 66%" required
+                           data-placeholder="<%= lang.actions.selectAService %>"
+                            <% if(!claimer.isNew() && !_.isUndefined(claimer.get('technical_service_id'))) { %>
+                                data-selected-value='<%= JSON.stringify(claimer.get('technical_service_id')) %>'
+                           <% } %>
+                    />
                     <span class="help-inline"></span>
                 </div>
             </div>
 
-            <!-- Place Parent Place -->
             <div class="control-group">
                 <label for="claimerTechnicalSite" class="control-label"><%= _.capitalize(lang.defaultPlace) %>:</label>
 
                 <div class="controls">
-                    <select id="claimerTechnicalSite"></select>
+                    <input id="claimerTechnicalSite" class="select2" style="width: 66%" required
+                           data-placeholder="<%= lang.actions.selectAPlace %>"
+                    <% if(!claimer.isNew() && !_.isUndefined(claimer.get('technical_site_id'))) { %>
+                    data-selected-value='<%= JSON.stringify(claimer.get('technical_site_id')) %>'
+                    <% } %>
+                    /
                     <span class="help-inline"></span>
                 </div>
             </div>

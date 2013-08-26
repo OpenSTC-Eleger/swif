@@ -18,7 +18,6 @@ app.Models.Claimer = Backbone.Model.extend({
 
 
     defaults:{
-		id:0,
 		name: null,
 		type_id: null,
 		technical_service_id: null,

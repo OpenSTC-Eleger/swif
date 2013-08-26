@@ -46,15 +46,16 @@ app.Views.ModalsClaimerEdit = app.Views.GenericModalView.extend({
 				app.views.selectListClaimerTypeView = new app.Views.AdvancedSelectBoxView({el: $("#claimerType"), collection: app.Collections.ClaimersTypes.prototype})
 				app.views.selectListClaimerTypeView.render();
 
-				app.views.selectListClaimerTechnicalServiceView = new app.Views.AdvancedSelectBoxView({el: $("#claimerTechnicalService"), collection: app.Collections.ClaimersTypes.prototype})
+				app.views.selectListClaimerTechnicalServiceView = new app.Views.AdvancedSelectBoxView({el: $("#claimerTechnicalService"), collection: app.Collections.ClaimersServices.prototype})
 				app.views.selectListClaimerTechnicalServiceView.render();
 
 				app.views.selectListClaimerTechnicalSiteView = new app.Views.AdvancedSelectBoxView({el: $("#claimerTechnicalSite"), collection: app.Collections.Places.prototype})
 				app.views.selectListClaimerTechnicalSiteView.render();
 
 			}
-
+			console.log("--------in loader--------------")
 			self.modal.modal('show');
+
 		});
 
 		return this;
