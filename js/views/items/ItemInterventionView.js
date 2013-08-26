@@ -17,6 +17,7 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 		'click a.buttonCancelInter'			: 'displayModalCancelInter',
 		'submit #formCancelInter' 			: 'cancelInter',
 		'click a.accordion-object'    		: 'tableAccordion',
+		'click a.modalSaveInter'			: 'displayModalSaveInter',
 	},
 
 
@@ -36,31 +37,22 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 	*/
 	change: function(model){
 		var self = this;
+		model.fetch({silent: true, data: {fields: app.views.interventions.collections.interventions.fields}})
+		.done(function(){
+			self.render();
 
-		this.render();
+			// Highlight the Row and recalculate the className //
+			self.highlight().done(function(){
+//				self.$el.attr('class', _.result(self, 'className'));
+			});
 
-		// Highlight the Row and recalculate the className //
-		this.highlight().done(function(){
-//			self.$el.attr('class', _.result(self, 'className'));
+			app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
+
+		})
+		.fail(function(e){
+			console.log(e);
 		});
-
-
-		// Set the info message for the notification //
-//		switch(model.getState()){
-//			case app.Models.Request.status.refused.key: 
-//				var infoMessage = app.lang.infoMessages.requestRefuseOk;
-//			break;
-//			case app.Models.Request.status.confirm.key:
-//				var infoMessage = app.lang.infoMessages.requestConfirmOk;
-//			break;
-//			case app.Models.Request.status.valid.key:
-//				var infoMessage = app.lang.infoMessages.requestValidOk;
-//			break;
-//		}
-
-
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+infoMessage);
-
+		
 		// Partial Render //
 		app.views.interventions.partialRender();
 	},
@@ -135,7 +127,16 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 		this.expendAccordion();
 		   
 	},
-
+	
+	/** Display the form to add / update an intervention
+	*/
+	displayModalSaveInter: function(e){
+		e.preventDefault();
+		var params = {el:'#modalSaveInter'}
+		params.model = this.model;
+		new app.Views.ModalInterventionView(params);
+	},
+	
 	/** Highlight the row item
 	*/
 	highlight: function(){

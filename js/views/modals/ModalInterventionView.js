@@ -157,9 +157,8 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 			site_details: this.$('#interventionPlacePrecision').val(),
 		};
 
-		this.model.save(params,{patch:!this.create}).done(function(data){
+		this.model.save(params,{patch:!this.create, wait: true}).done(function(data){
 			self.modal.modal('hide');
-			console.log(data);
 			if(self.create){
 				self.model.setId(data);
 				self.model.fetch({silent: true, data: {fields: app.views.interventions.collections.interventions.fields}})
@@ -168,11 +167,9 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 				});
 				
 			}
-			console.log('Success SAVE INTERVENTION');
-			self.model.fetch()
-			.fail(function(e){
-				console.log(e);
-			});
+			else{
+
+			}
 
 		})
 		.fail(function(e){
