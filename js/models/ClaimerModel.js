@@ -3,11 +3,7 @@
 */
 app.Models.Claimer = Backbone.Model.extend({
 
-	// Model name in the database //
-	model_name : 'res.partner',	
-	
-	url: "/#organisation/:id",
-
+	urlRoot: "/api/open_object/partners",
 	searchable_fields: [
 
 		{
@@ -90,20 +86,7 @@ app.Models.Claimer = Backbone.Model.extend({
 	*/
     initialize: function(){
 
-	//TODO remove this
-        //console.log('Claimer Model initialization');
-	//        this.fetchRelated('service_id');
     },
-
-
-//TODO remove this
-//    /** Model Parser
-//    */
-//    parse: function(response) {
-//        return response;
-//    },
-//
-
 
     update: function( params ) {
     	this.setName(params.name);
@@ -112,15 +95,6 @@ app.Models.Claimer = Backbone.Model.extend({
 		this.setTechnicalSiteId( params.technical_site_id );		
 	},
 
-
-
-//TODO remove this
-//	/** Save Model
-//	*/
-//	save: function(data,id, options) {
-//		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
-//	},
-	
 
 //TODO remove this
 //	/** Delete Claimer

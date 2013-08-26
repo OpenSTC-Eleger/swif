@@ -64,7 +64,7 @@ app.Views.ModalsClaimerEdit = app.Views.GenericModalView.extend({
 	// toggle loading style for submit button
 	toggleLoadingOnSubmitButton : function () {
 		var submit_button = $(this.el).find("button[type=submit]")
-		if (submit_button.attr('disabled' == 'disabled')) {
+		if (submit_button.attr('disabled') == 'disabled') {
 			submit_button.button('reset');
 		}else {
 			submit_button.button('loading');
@@ -73,18 +73,19 @@ app.Views.ModalsClaimerEdit = app.Views.GenericModalView.extend({
 
 	// Set model given form's values
 	setModelPropertiesFromForm: function () {
+		self = this;
 		function readFormValue (attribute) {
-			return this.$(('#' + attribute)).val()
+			return self.$(('#' + attribute)).val()
 		};
 
 		function setAttribute(attribute, value) {
-			this.model.set(attribute,value,{silent:true})
+			self.model.set(attribute,value,{silent:true})
 		};
 
 		setAttribute('name', readFormValue('claimerName'));
 		setAttribute('type_id', app.views.selectListClaimerTypeView.getSelectedItem());
 		setAttribute('technical_service_id', app.views.selectListClaimerTechnicalServiceView.getSelectedItem());
-		setAttribute('technical_site_id', app.views.selectListClaimerTechnicalSiteView);
+		setAttribute('technical_site_id', app.views.selectListClaimerTechnicalSiteView.getSelectedItem());
 
 	},
 
@@ -93,13 +94,13 @@ app.Views.ModalsClaimerEdit = app.Views.GenericModalView.extend({
 		var self = this;
 		self.toggleLoadingOnSubmitButton();
 		self.setModelPropertiesFromForm();
-
-		this.model.save()
+		console.log("Before save ------->")
+		console.log(self.model)
+		self.model.save()
 			.done(function(data) {
 				self.modal.modal('hide');
-				// Create mode //
 				if(self.model.isNew()) {
-					self.model.setId(data);
+					self.model.set('id',data);
 					self.model.fetch({silent: true, data : {fields : app.Collections.Claimers.prototype.fields} }).done(function(){
 						app.views.claimersListView.collection.add(self.model);
 					})

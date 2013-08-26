@@ -148,8 +148,17 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 	},
 
 
+	add: function(model){
+		var claimerView  = new app.Views.ClaimerView({ model: model });
+		$('#claimersList').prepend(claimerView.render().el);
+		claimerView.highlight();
 
-    
+		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.placeCreateOk);
+		this.partialRender();
+	},
+
+
+
 	getIdInDropDown: function(view) {
 		if ( view && view.getSelected() )
 			var item = view.getSelected().toJSON();
