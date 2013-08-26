@@ -25,6 +25,7 @@ var app = {
 	Collections     : {},
 	Models          : {},
 	Views           : {},
+	Helpers         : {},
 
 	// Instances //
 	properties      : {},

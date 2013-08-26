@@ -31,6 +31,7 @@ app.Models.Claimer = Backbone.Model.extend({
 	getTypeId : function() {
         return this.get('type_id');
     },
+
     setTypeId : function(value) {
     	if( value == 'undefined') return;
         this.set({ type_id : value });
@@ -65,6 +66,7 @@ app.Models.Claimer = Backbone.Model.extend({
 	getAddresses: function () {
 		var address_ids = this.get('address');
 		var collection = new app.Collections.ClaimersContacts
+		console.log(address_ids)
 		if (address_ids == false) {
 			return collection;
 		} else {
@@ -81,12 +83,21 @@ app.Models.Claimer = Backbone.Model.extend({
 
 	},
 
+	objectifiedTypeId : function () {
+		return app.Helpers.Main.many2oneObjectify(this.get('type_id'))
+	},
+	objectifiedTechnicalServiceId : function () {
+		return app.Helpers.Main.many2oneObjectify(this.get('technical_service_id'))
+	},
+	objectifiedTechnicalSiteId : function () {
+		return app.Helpers.Main.many2oneObjectify(this.get('technical_site_id'))
+	},
 
 	/** Model Initialization
 	*/
     initialize: function(){
 
-    },
+	},
 
     update: function( params ) {
     	this.setName(params.name);

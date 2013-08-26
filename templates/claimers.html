@@ -9,7 +9,7 @@
 <div class="container-fluid">
     <% if(nbClaimers > 0) { %>
     <div class="tableToolbar">
-        <a href="#modalSaveClaimer" class="btn btn-primary modalSaveClaimer" data-toggle="modal"><i
+        <a href="#modalNewClaimer" class="btn btn-primary modalNewClaimer" data-toggle="modal"><i
                 class="icon-plus"></i> <%= _.capitalize(lang.actions.addClaimer) %></a>
 
         <form class="form-search pull-right">
@@ -38,7 +38,7 @@
 
     <% } else { %>
     <div class="tableToolbar">
-        <a href="#modalSaveClaimer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus"></i> <%=
+        <a href="#modalNewClaimer" class="btn btn-primary" data-toggle="modal"><i class="icon-plus"></i> <%=
             _.capitalize(lang.actions.addClaimer) %></a>
     </div>
     <br/>
@@ -53,7 +53,7 @@
 
 </div>
 
-<div id="modalSaveClaimer" class="modal hide fade"></div>
+<div id="modalEditClaimer" class="modal hide fade"></div>
 
 <div id="modalDeleteClaimer" class="modal hide fade"></div>
 

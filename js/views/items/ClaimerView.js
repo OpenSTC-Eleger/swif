@@ -8,6 +8,7 @@ app.Views.ClaimerView = Backbone.View.extend({
 
 	events: {
 		'click a.accordion-object'  : 'toggleAccordion',
+		'click a.modalEditClaimer' : 'showEditModal'
 	},
 
 
@@ -99,21 +100,13 @@ app.Views.ClaimerView = Backbone.View.extend({
 		app.views.claimersListView.partialRender();
 	},
 
-
-
-	/** Display the view
-	 */
-
-
-
-
 	/** Display Modal form to add/sav a new claimer
 	 */
-	modalUpdateClaimer: function(e){
+	showEditModal: function(e){
 		e.preventDefault(); e.stopPropagation();
 
 		app.views.modalClaimerEdit = new app.Views.ModalsClaimerEdit({
-			el      : '#modalSaveClaimer',
+			el      : '#modalEditClaimer',
 			model   : this.model,
 			elFocus : $(e.target).data('form-id')
 		});

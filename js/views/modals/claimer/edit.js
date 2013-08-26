@@ -4,7 +4,8 @@ app.Views.ModalsClaimerEdit = app.Views.GenericModalView.extend({
 
 	events: function(){
 		return _.defaults({
-				'submit #formSaveClaimer'            : 'saveClaimer'
+				'submit #formSaveClaimer'            : 'saveClaimer',
+				'click a.modalEditClaimer' : 'showEditModal'
 			},
 			app.Views.GenericModalView.prototype.events
 		);
@@ -14,7 +15,6 @@ app.Views.ModalsClaimerEdit = app.Views.GenericModalView.extend({
 		var self = this;
 
 		this.modal = $(this.el);
-
 
 		// Check if it's a create or an update //
 		if(_.isUndefined(this.model)){
@@ -53,7 +53,6 @@ app.Views.ModalsClaimerEdit = app.Views.GenericModalView.extend({
 				app.views.selectListClaimerTechnicalSiteView.render();
 
 			}
-			console.log("--------in loader--------------")
 			self.modal.modal('show');
 
 		});
@@ -73,20 +72,21 @@ app.Views.ModalsClaimerEdit = app.Views.GenericModalView.extend({
 
 	// Set model given form's values
 	setModelPropertiesFromForm: function () {
-		self = this;
+		var self = this;
+		var updatedAttributes = {};
 		function readFormValue (attribute) {
 			return self.$(('#' + attribute)).val()
 		};
 
 		function setAttribute(attribute, value) {
-			self.model.set(attribute,value,{silent:true})
+			updatedAttributes[attribute] = value;
 		};
 
 		setAttribute('name', readFormValue('claimerName'));
 		setAttribute('type_id', app.views.selectListClaimerTypeView.getSelectedItem());
 		setAttribute('technical_service_id', app.views.selectListClaimerTechnicalServiceView.getSelectedItem());
 		setAttribute('technical_site_id', app.views.selectListClaimerTechnicalSiteView.getSelectedItem());
-
+		this.model.set(updatedAttributes, {silent:true});
 	},
 
 	saveClaimer: function(e){
@@ -94,27 +94,41 @@ app.Views.ModalsClaimerEdit = app.Views.GenericModalView.extend({
 		var self = this;
 		self.toggleLoadingOnSubmitButton();
 		self.setModelPropertiesFromForm();
-		console.log("Before save ------->")
-		console.log(self.model)
-		self.model.save()
-			.done(function(data) {
-				self.modal.modal('hide');
-				if(self.model.isNew()) {
-					self.model.set('id',data);
-					self.model.fetch({silent: true, data : {fields : app.Collections.Claimers.prototype.fields} }).done(function(){
+		self.persistClaimer().fail(function (e) {
+					console.log(e);
+				}).
+				always(function () {
+					self.toggleLoadingOnSubmitButton();
+					self.modal.modal('hide');
+				});
+	},
+
+	persistClaimer: function () {
+		if (this.model.isNew()) {
+			return this.createClaimer()
+		} else {
+			return this.updateClaimer()
+		}
+	},
+
+	updateClaimer: function () {
+		var self = this;
+		return self.model.save(this.model.changedAttributes(),{patch :true}).
+			done(function () {
+				self.model.fetch({ data : {fields : self.model.fields} });
+			})
+	},
+
+	createClaimer: function () {
+		var self = this;
+		return self.model.save().
+			done( function (data) {
+				self.model.set(id,data);
+				self.model.fetch({silent: true, data : {fields : app.Collections.Claimers.prototype.fields} }).
+					done( function () {
 						app.views.claimersListView.collection.add(self.model);
 					})
-					// Update mode //
-				} else {
-					self.model.fetch({ data : {fields : self.model.fields} });
-				}
 			})
-			.fail(function (e) {
-				console.log(e);
-			})
-			.always(function () {
-				self.toggleLoadingOnSubmitButton()
-			});
-	},
+	}
 
 });

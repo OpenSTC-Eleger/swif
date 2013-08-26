@@ -95,7 +95,6 @@ app.Views.ClaimerDetailsView = Backbone.View.extend({
 		self.listenTo(addresses, 'fetchDone', function () {
 			var user_ids = _.filter(addresses.pluck('user_id'), function (e) {return e != false; });
 			user_ids = _.map(user_ids,function (e) {return e[0]});
-			console.log(user_ids);
 			_.each(addresses.models, function (address) {
 				$(('#claimerContactsList_' + self.model.id)).append(
 					new app.Views.ClaimerContactView({model: address, user_ids:user_ids}).render().el

@@ -14,7 +14,7 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
     // The DOM events //
     events: function(){
 		return _.defaults({
-				'click a.modalSaveClaimer'  		: 'modalSaveClaimer',
+				'click a.modalNewClaimer' : 'modalNewClaimer'
 			},
 			app.Views.GenericListView.prototype.events
 		);
@@ -192,11 +192,10 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 	},
 
 
-	modalSaveClaimer: function(e){
+	modalNewClaimer: function(e){
 		e.preventDefault();
-
 		app.views.modalClaimerView = new app.Views.ModalsClaimerEdit({
-			el  : '#modalSaveClaimer'
+			el  : '#modalEditClaimer'
 		});
 	},
 

@@ -13,7 +13,7 @@
                 <label for="claimerName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
 
                 <div class="controls">
-                    <input type="text" id="claimerName" name="claimerName" required="required" />
+                    <input type="text" id="claimerName" name="claimerName" required="required" value="<%= claimer.get('name') %>" />
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -24,8 +24,8 @@
 
                 <div class="controls">
                     <input id="claimerType" class="select2" style="width: 66%" required data-placeholder="<%= lang.actions.selectACategory %>"
-                        <% if(!claimer.isNew() && !_.isUndefined(claimer.get('type_id'))){ %>
-                            data-selected-value='<%= JSON.stringify(claimer.get('type_id')) %>'
+                        <% if(!claimer.isNew() && !_.isNull(claimer.get('type_id'))){ %>
+                            data-selected-value='<%= JSON.stringify(claimer.objectifiedTypeId()) %>'
                         <% }  %>
                     />
                     <span class="help-inline"></span>
@@ -44,8 +44,8 @@
                 <div class="controls">
                     <input id="claimerTechnicalService" class="select2" style="width: 66%" required
                            data-placeholder="<%= lang.actions.selectAService %>"
-                            <% if(!claimer.isNew() && !_.isUndefined(claimer.get('technical_service_id'))) { %>
-                                data-selected-value='<%= JSON.stringify(claimer.get('technical_service_id')) %>'
+                            <% if(!claimer.isNew() && !_.isNull(claimer.get('technical_service_id'))) { %>
+                                data-selected-value='<%= JSON.stringify(claimer.objectifiedTechnicalServiceId()) %>'
                            <% } %>
                     />
                     <span class="help-inline"></span>
@@ -58,8 +58,8 @@
                 <div class="controls">
                     <input id="claimerTechnicalSite" class="select2" style="width: 66%" required
                            data-placeholder="<%= lang.actions.selectAPlace %>"
-                    <% if(!claimer.isNew() && !_.isUndefined(claimer.get('technical_site_id'))) { %>
-                    data-selected-value='<%= JSON.stringify(claimer.get('technical_site_id')) %>'
+                    <% if(!claimer.isNew() && !_.isNull(claimer.get('technical_site_id'))) { %>
+                    data-selected-value='<%= JSON.stringify(claimer.objectifiedTechnicalSiteId()) %>'
                     <% } %>
                     /
                     <span class="help-inline"></span>
