@@ -21,28 +21,28 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 
 			'click a.modalSaveInter'			: 'displayModalSaveInter',
 			
-			'click .btn.addTask'                : 'displayModalAddTask',
-			'submit #formAddTask'         		: 'saveTask',
+//			'click .btn.addTask'                : 'displayModalAddTask',
+//			'submit #formAddTask'         		: 'saveTask',
+//
+//			'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
+//			'click button.btnDeleteTask'   		: 'deleteTask',
+//
+//			'click a.buttonCancelInter'			: 'displayModalCancelInter',
+//			'submit #formCancelInter' 			: 'cancelInter',
+//
+//			'click a.buttonCancelTask'			: 'displayModalCancelTask',
+//			'submit #formCancelTask' 			: 'cancelTask',
+//
+//			'click a.printTask, a.printInter'	: 'print',
+//
+//			'click .buttonTaskDone, .buttonNotFinish' : 'displayModalTaskDone',
+//			'submit #formTaskDone'   			: 'taskDone',
+//			'click a.linkSelectUsersTeams'		: 'changeSelectListUsersTeams',
+//			'click .linkRefueling'				: 'accordionRefuelingInputs',
+//
+//			'change .taskEquipment'				: 'fillDropdownEquipment',
 
-			'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
-			'click button.btnDeleteTask'   		: 'deleteTask',
-
-			'click a.buttonCancelInter'			: 'displayModalCancelInter',
-			'submit #formCancelInter' 			: 'cancelInter',
-
-			'click a.buttonCancelTask'			: 'displayModalCancelTask',
-			'submit #formCancelTask' 			: 'cancelTask',
-
-			'click a.printTask, a.printInter'	: 'print',
-
-			'click .buttonTaskDone, .buttonNotFinish' : 'displayModalTaskDone',
-			'submit #formTaskDone'   			: 'taskDone',
-			'click a.linkSelectUsersTeams'		: 'changeSelectListUsersTeams',
-			'click .linkRefueling'				: 'accordionRefuelingInputs',
-
-			'change .taskEquipment'				: 'fillDropdownEquipment',
-
-			'click a.accordion-object'    		: 'tableAccordion',
+//			'click a.accordion-object'    		: 'tableAccordion',
 
 			'click #filterStateInterList li:not(.disabled) a' 	: 'setFilter'
 		}, 
@@ -84,8 +84,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		var len = this.collections.interventions.cpt;
 		var pageCount = Math.ceil(len / app.config.itemsPerPage);
 
-	  	//console.log(interventions);
-		//@TOREMOVE
 		var startPos = (this.options.page.page - 1) * app.config.itemsPerPage;
 		var endPos = startPos + app.config.itemsPerPage;
 		// Retrieve the HTML template //
@@ -97,7 +95,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 				nbInterventionsPlanned : self.collections.interventions.plannedInterventions,
 				interventionsState     : app.Models.Intervention.status,
 				interventions          : interventions,
-				tasksFromInter		   : self.collections.tasks,
 				startPos               : startPos, endPos: endPos,
 				page                   : self.options.page.page, 
 				pageCount              : pageCount,
@@ -105,34 +102,32 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 
 
 			$(self.el).html(template);
-
-
-			$('*[data-toggle="tooltip"]').tooltip();
-			$('*[rel="popover"]').popover({trigger: 'hover'});
-			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
-			$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
-
-
-			$('tr.row-object').css({ opacity: '1'});
-			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
-
-
-			$('#equipmentsDone, #equipmentsListDone').sortable({
-				connectWith: 'ul.sortableEquipmentsList',
-				dropOnEmpty: true,
-				forcePlaceholderSize: true,
-				forceHelperSize: true,
-				placeholder: 'sortablePlaceHold',
-				containment: '.equipmentsDroppableAreaDone',
-				cursor: 'move',
-				opacity: '.8',
-				revert: 300,
-				receive: function(event, ui){
-					//self.saveServicesCategories();
-				}
-			});
-
+//
+//
+//			$('*[data-toggle="tooltip"]').tooltip();
+//			$('*[rel="popover"]').popover({trigger: 'hover'});
+//			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
+//			$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
+//
+//
+//			$('tr.row-object').css({ opacity: '1'});
+//			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
+//			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
+//
+//
+//			$('#equipmentsDone, #equipmentsListDone').sortable({
+//				connectWith: 'ul.sortableEquipmentsList',
+//				dropOnEmpty: true,
+//				forcePlaceholderSize: true,
+//				forceHelperSize: true,
+//				placeholder: 'sortablePlaceHold',
+//				containment: '.equipmentsDroppableAreaDone',
+//				cursor: 'move',
+//				opacity: '.8',
+//				revert: 300,
+//				receive: function(event, ui){
+//					//self.saveServicesCategories();
+//				}
 
 			// Display filter on the table //
 			if(!_.isUndefined(self.options.filter)){
@@ -154,16 +149,32 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 			}
 
 
-			// Set the focus to the first input of the form //
-			$('#modalCancelInter, #modalDeleteTask, #modalAddTask, #modalCancelTask').on('shown', function (e) {
-				$(this).find('input, textarea').first().focus();
-			})
+//			// Set the focus to the first input of the form //
+//			$('#modalCancelInter, #modalDeleteTask, #modalAddTask, #modalCancelTask').on('shown', function (e) {
+//				$(this).find('input, textarea').first().focus();
+//			})
 			
 			// Call the render Generic View //
 			app.Views.GenericListView.prototype.render(self.options);
 			
+			// Create item intervention view //
+			_.each(self.collections.interventions.models, function(inter, i){
+				var tasks = [];
+				_.each(inter.toJSON().tasks,function(item,i){
+					tasks.push(self.collections.tasks.get(item));
+				});
+				console.log('---------------------')
+				console.log(tasks);
+				var itemInterventionView = new app.Views.ItemInterventionView({model: inter});
+				$('#inter-items').append(itemInterventionView.render().el);
+				var itemInterventionTaskListView = new app.Views.ItemInterventionTaskListView({inter: inter, tasks: tasks});
+				$('#inter-items').append(itemInterventionTaskListView.render().el);
+				
+			});
+
+			
 		});
-		$(this.el).hide().fadeIn('slow');
+		$(this.el).hide().fadeIn();
 		return this;
 	},
 
@@ -171,34 +182,34 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 
 	/** Fonction collapse table row
 	*/
-	tableAccordion: function(e){
-
-		e.preventDefault();
-		// Retrieve the intervention ID //
-		var id = _($(e.target).attr('href')).strRightBack('_');
-
-
-		var isExpend = $('#collapse_'+id).hasClass('expend');
-
-		// Reset the default visibility //
-		$('tr.expend').css({ display: 'none' }).removeClass('expend');
-		$('tr.row-object').css({ opacity: '0.45'});
-		$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-		
-		// If the table row isn't already expend //       
-		if(!isExpend){
-			// Set the new visibility to the selected intervention //
-			$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
-			$(e.target).parents('tr.row-object').css({ opacity: '1'});  
-			$(e.target).parents('tr.row-object').children('td').css({ backgroundColor: "#F5F5F5" }); 
-		}
-		else{
-			$('tr.row-object').css({ opacity: '1'});
-			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
-		}
-		   
-	},
+//	tableAccordion: function(e){
+//
+//		e.preventDefault();
+//		// Retrieve the intervention ID //
+//		var id = _($(e.target).attr('href')).strRightBack('_');
+//
+//
+//		var isExpend = $('#collapse_'+id).hasClass('expend');
+//
+//		// Reset the default visibility //
+//		$('tr.expend').css({ display: 'none' }).removeClass('expend');
+//		$('tr.row-object').css({ opacity: '0.45'});
+//		$('tr.row-object > td').css({ backgroundColor: '#FFF'});
+//		
+//		// If the table row isn't already expend //       
+//		if(!isExpend){
+//			// Set the new visibility to the selected intervention //
+//			$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
+//			$(e.target).parents('tr.row-object').css({ opacity: '1'});  
+//			$(e.target).parents('tr.row-object').children('td').css({ backgroundColor: "#F5F5F5" }); 
+//		}
+//		else{
+//			$('tr.row-object').css({ opacity: '1'});
+//			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
+//			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
+//		}
+//		   
+//	},
 
 
 
