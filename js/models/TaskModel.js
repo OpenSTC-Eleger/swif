@@ -1,27 +1,27 @@
 /******************************************
 * Task Model
 */
-app.Models.Task = Backbone.RelationalModel.extend({
+app.Models.Task = Backbone.Model.extend({
 
 	// Model name in the database //
 	model_name : 'project.task',	
 	
-	url: '/#taches/:id',
+	urlRoot: '/api/openstc/tasks',
 
 
-	relations: [
-		{
-			type: Backbone.HasMany,
-			key: 'equipment_ids',
-			relatedModel: 'app.Models.Equipment',
-			collectionType: 'app.Collections.Equipments',
-			includeInJSON: ['id', 'name', 'complete_name', 'type'],
-		},	
-	],
+//	relations: [
+//		{
+//			type: Backbone.HasMany,
+//			key: 'equipment_ids',
+//			relatedModel: 'app.Models.Equipment',
+//			collectionType: 'app.Collections.Equipments',
+//			includeInJSON: ['id', 'name', 'complete_name', 'type'],
+//		},	
+//	],
 	
 
 	defaults:{
-		id:0,
+		id:null,
 		name: null,
 		effective_hours:0,
 		total_hours: 0,
@@ -58,9 +58,18 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		this.set({ state : value });
 	},
 
-	getInterventionId : function() {
+	getInterventionId : function(type) {
 		if(this.get('project_id')){
-			return this.get('project_id');
+			switch(type){
+			case 'id':
+				return this.get('project_id')[0]
+			break;
+			case 'json':
+				return {id: this.get('project_id')[0], name: this.get('project_id')[1]} 
+			break;
+			default:
+				return this.get('project_id')[1];
+			}
 		}
 		else{
 			return '';
@@ -80,8 +89,20 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		}
 	},
 
-	getUserId : function() {
-		return this.get('user_id');
+	getUserId : function(type) {
+		if(this.get('user_id')){
+			switch(type){
+			case 'id':
+				return this.get('user_id')[0]
+			break;
+			case 'json':
+				return {id: this.get('user_id')[0], name: this.get('user_id')[1]} 
+			break;
+			default:
+				return this.get('user_id')[1];
+			}
+		}
+		return false;
 	},
 	setUserId : function(value) {
 		if( value == 'undefined') return;
@@ -92,7 +113,19 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	},
 
 	getTeamId : function() {
-		return this.get('team_id');
+		if(this.get('team_id')){
+			switch(type){
+			case 'id':
+				return this.get('user_id')[0]
+			break;
+			case 'json':
+				return {id: this.get('user_id')[0], name: this.get('user_id')[1]} 
+			break;
+			default:
+				return this.get('user_id')[1];	
+			}
+		}
+		return false;
 	},
 	setTeamId : function(value) {
 		if( value == 'undefined') return;
@@ -172,22 +205,22 @@ app.Models.Task = Backbone.RelationalModel.extend({
 	/** Model Parser
 	*/
 	parse: function(response) {
-		
-		// Check if the date is a moment() //
-		if(!moment.isMoment(response.date_start)){
-			if(response.date_start) {
-			//var user = app.models.user.toJSON();			
-			response.date_start = moment(this.parseDate(response.date_start));
+		if(!_.isNull(response)){
+			// Check if the date is a moment() //
+			if(!moment.isMoment(response.date_start)){
+				if(response.date_start) {
+				//var user = app.models.user.toJSON();			
+				response.date_start = moment(this.parseDate(response.date_start));
+				}
+			}
+	
+			// Check if the date is a moment() //
+			if(!moment.isMoment(response.date_end)){
+				if(response.date_end){
+					response.date_end = moment(this.parseDate(response.date_end));
+				}
 			}
 		}
-
-		// Check if the date is a moment() //
-		if(!moment.isMoment(response.date_end)){
-			if(response.date_end){
-				response.date_end = moment(this.parseDate(response.date_end));
-			}
-		}
-
 		return response;
 	},
 	
@@ -195,23 +228,23 @@ app.Models.Task = Backbone.RelationalModel.extend({
 
 	/** Save Model
 	*/
-	save: function(id,data, options) { 
-		if( options==null ) {
-			app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {         	
-				success: function(data){
-					if(!_.str.include(Backbone.history.fragment, 'planning/')){
-						Backbone.history.loadUrl(Backbone.history.fragment);
-					}
-					else{
-						app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
-					}
-				}
-			});
-		}
-		else {
-			app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options);
-		}
-	},
+//	save: function(id,data, options) { 
+//		if( options==null ) {
+//			app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {         	
+//				success: function(data){
+//					if(!_.str.include(Backbone.history.fragment, 'planning/')){
+//						Backbone.history.loadUrl(Backbone.history.fragment);
+//					}
+//					else{
+//						app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
+//					}
+//				}
+//			});
+//		}
+//		else {
+//			app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options);
+//		}
+//	},
 	
 
 
@@ -248,7 +281,8 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		var params = {}
 		params.state = app.Models.Task.status.cancelled.key;
 		params.cancel_reason = cancel_reason;
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
+		//app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
+		return this.save(params, {silent: true, patch: true})
 	},
 
 
@@ -263,21 +297,6 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		this.setDateEnd( params.date_end );
 		this.setDateStart( params.date_start );
 	},
-	
-
-
-	destroy: function (options) {
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
-	},
-	
-
-
-
 
 }, {
 

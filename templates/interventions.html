@@ -26,24 +26,24 @@
 
 	<!-- Table toolbar -->
 	<div class="tableToolbar">
-		<a href="#<%= app.routes.addIntervention.url %>" class="btn btn-primary"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>	
-
-		<!--<form class="form-search pull-right">
+		<!--<a href="#<%= app.routes.addIntervention.url %>" class="btn btn-primary"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>-->	
+		<a href="#" class="btn btn-primary modalCreateInter"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
+		<form class="form-search pull-right">
 			<div class="input-append">
-				<input type="search" class="input-medium search-query" disabled="disabled" placeholder="<%= lang.actions.search %>..." autocomplete="off">
+				<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off">
 				<button type="submit" disabled class="btn disabled"><i class="icon-search icon-large"></i></button>
 			</div>
-		</form>-->
+		</form>
 	</div>
 	<!-- /Table toolbar -->
 
 
 	<!-- Table Interventions -->
-	<table class="table-interventions table table-bordered table-hover">
+	<table class="table-interventions table table-bordered table-hover table-sorter table-striped">
 		<thead>
 			<tr>
-				<th>N°</th>
-				<th><%= _.capitalize(lang.label) %></th>
+				<th data-sort-column="id">N°</th>
+				<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
 				<th><%= _.capitalize(lang.place) %></th>
 				<th><%= _.capitalize(lang.dateDeadline) %></th>
 				<th><%= _.capitalize(lang.plannedHours) %></th>
@@ -80,198 +80,11 @@
 				</th>
 			</tr>
 		</thead>
-
-		<!-- Check if there is Intervention to Display -->
-		<% if(interventions.length > 0) { %>
 		
-			<tbody>
-			<% for (var i = startPos; i < endPos; i++) { %>
-
-				<!-- Intervention row -->
-				<tr class="row-item" id="inter_<%= interventions[i].id %>">
-					<td><%= interventions[i].id %></td>
-					<td>
-						<a class="accordion-object" href="#collapse_<%= interventions[i].id %>" rel="popover" data-content="<%= _(interventions[i].description).escapeHTML() %>" data-delay="160" data-title="<%= _.capitalize(lang.description) %>">
-							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(_(interventions[i].name).escapeHTML()) %>
-						</a>
-						<!-- Interventions action -->
-						<p class="row-actions invisible">
-							<a href="#interventions/<%= interventions[i].id %>" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>">
-								<i class="icon-pencil icon-large"></i>
-							</a>&nbsp;
-
-							<a href="#" class="printInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="inter">
-								<i class="icon-print icon-large" data-action="inter">&nbsp;</i>
-							</a>
-							<% if(interventions[i].actions.indexOf("cancel") > -1 ) { %>
-								 &nbsp;<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-ban-circle icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
-							<% } %>
-						</p>
-					</td>
-					<td><%= interventions[i].site1[1] %></td>
-					<td><%= (interventions[i].date_deadline != false ? moment(interventions[i].date_deadline).format('LL') : '') %></td>
-					<td><%= (interventions[i].planned_hours != false ? app.decimalNumberToTime(interventions[i].planned_hours, 'human') : '') %></td>
-					<td><%= (interventions[i].effective_hours != false ? app.decimalNumberToTime(interventions[i].effective_hours, 'human') : '') %></td>
-
-
-					<!-- Check the state of the intervention -->
-					<td>
-						<% if(interventions[i].state != app.Models.Intervention.status.pending.key && interventions[i].state != app.Models.Intervention.status.closed.key){ %>
-							<span class="label label-<%= app.Models.Intervention.status[interventions[i].state].color %>"  data-toggle="tooltip" data-original-title="<%= interventions[i].tooltip %>">
-								<%= app.Models.Intervention.status[interventions[i].state].translation %>
-							</span>
-
-						<!-- state - Pending -->
-						<% } else if(interventions[i].state == app.Models.Intervention.status.pending.key){ %>
-							<div class="progress progress-default" data-toggle="tooltip" data-title="<%= interventions[i].tooltip %>">
-								<div class="bar" style="width: <%= interventions[i].progress_rate %>%"><%= _(interventions[i].progress_rate).toNumber() %>%</div>
-							</div>
-
-						<!-- state - Closed -->
-						<% } else if(interventions[i].state == app.Models.Intervention.status.closed.key){ 
-							if(interventions[i].overPourcent > 100){ %>
-								<div class="progress progress-overrun" data-toggle="tooltip" data-title="<%= interventions[i].tooltip %>">
-									<div class="bar" style="width: 100%"><%= _(interventions[i].overPourcent).toNumber() %>%</div>
-								</div>
-							<% } else { %>
-								<div class="progress progress-success" data-toggle="tooltip" data-title="<%= interventions[i].tooltip %>">
-									<div class="bar" style="width: <%= interventions[i].overPourcent %>%"><%= _(interventions[i].overPourcent).toNumber() %>%</div>
-								</div>
-							<% } %>
-						<% } %>
-					</td>
-
-				</tr>
-
-				<!-- Tasks row -->
-				<tr class="row-nested-objects-collapse" id="collapse_<%= interventions[i].id %>">
-					<td colspan="7" class="nestedTD">
-
-						<!-- Check if there is some tasks -->
-						<% if(interventions[i].tasks.length != 0) { %>
-							<table class="table-nested-objects table table-striped table-condensed table-hover">
-								<thead>
-									<tr>
-										<th><%= _.capitalize(lang.label) %></th>
-										<th><%= _.capitalize(lang.assignedTo) %></th>									
-										<th><%= _.capitalize(lang.plannedHours) %></th>
-										<th><%= _.capitalize(lang.spentHours) %></th>
-										<th><%= _.capitalize(lang.remainingHours) %></th>
-										<th><%= _.capitalize(lang.status) %></th>
-										<th class="span1"><%= _.capitalize(lang.action) %></th>
-									</tr>
-								</thead>
-								<tbody>
-									<!-- Task row -->
-									<% _.each(interventions[i].tasks, function (task, i) { %>
-										<tr class="row-nested-objects" id="task_<%= task.id %>">
-											<td>
-												<!-- Display a clock when the task is planned -->
-												<% if(task.date_start != ''){ %>
-													<i 
-														class="icon-time displayInlineBlock" data-toggle="tooltip"
-														data-original-title="<%= moment(task.date_start).format('LLL') %>" >
-													</i>
-												<% } %>
-												<span class="<%= (task.state == app.Models.Task.status.done.key ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
-												<span class="nested-objects-actions invisible">
-
-													<% if( task.actions.indexOf("print")>-1) { %>
-
-															<a href="#" class="printTask" data-action="task">
-															<i class="icon-print displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="task">&nbsp;</i>
-															</a>
-													<% } %>
-													<% if( task.actions.indexOf("delete")>-1) { %>
-
-														<a href="#modalDeleteTask" class="modalDeleteTask" data-toggle="modal">
-															<i class="icon-remove displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">&nbsp;</i>
-														</a>
-
-													<% } %>
-												</span>
-											</td>
-											<!-- Assign To -->
-											<td>
-											<% if(task.team_id == false){ %>
-												<%= task.user_id[1] %>
-										    <% } else { %>
-												<%= task.team_id[1] %>
-											<% } %>
-											</td>
-											<td><%= app.decimalNumberToTime(task.planned_hours, 'human') %></td>
-											<td><%= app.decimalNumberToTime(task.effective_hours, 'human') %></td>
-											<td><%= app.decimalNumberToTime(task.remaining_hours, 'human') %></td>
-											<!-- Task state -->
-											<td>
-												<!-- To Schedule / Cancelled / Schedule / Absent -->
-												<% if(task.state != app.Models.Task.status.done.key) { %>
-													<span class="label label-<%= app.Models.Task.status[task.state].color %>"><%= app.Models.Task.status[task.state].translation %></span>
-
-												<!-- Finish -->
-												<% } else { 
-																		
-													if(_(task.effective_hours).toNumber(2) <= _(task.planned_hours).toNumber(2)){ %>
-														<span class="label label-<%= app.Models.Task.status.done.color %>"><%= app.Models.Task.status.done.translation %></span>
-													<% } else  { %>
-														<span class="label label-overrun"><%= app.Models.Task.status.done.translation %></span>
-													<% } 
-												} %>
-											</td>
-											<!-- Actions Button -->
-											<td>
-												<% if(task.actions.indexOf("light_mode_finished") > -1) { %>
-														
-													<div class="btn-group">
-														<button class="btn btn-mini btn-success no-outline buttonTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok icon-fixed-width"></i>
-														</button>
-														<button class="btn btn-mini dropdown-toggle no-outline" data-toggle="dropdown">
-															<span class="caret"></span>
-														</button>
-														<ul class="dropdown-menu pull-right text-left">
-															<% if(task.actions.indexOf("light_mode_unfinished") > -1) { %>
-																<li>
-																	<a href="#modalTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonNotFinish">
-																		<i class="icon-time icon-fixed-width iconButtonNotFinish"></i>&nbsp;<%= _.capitalize(lang.notFinished) %>
-																	</a>
-																</li>
-															<%}%>
-															<% if(task.actions.indexOf("cancel") > -1) { %>
-																<li>
-																	<a href="#modalCancelTask" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonCancelTask">
-																		<i class="icon-ban-circle icon-fixed-width"></i>&nbsp;<%= _.capitalize(lang.actions.cancel) %>
-																	</a>
-																</li>
-															<%}%>
-														</ul>
-													</div>
-												<% } %>
-											</td>
-
-										</tr>
-									<% }); %>
-								</tbody>
-							</table>
-						<% } else { %>
-								<!-- No intervention to Display -->
-								<div class="alert alert-info">
-									<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTaskForIntervention %>.
-								</div>
-						<% } %>
-
-							<div class="div-actions" >
-								<button class="btn btn-primary btn-small no-outline addTask"
-									<% if(interventions[i].actions.indexOf("add_task") == -1) { %>
-										disabled
-								<% } %>>
-									<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addTask) %>
-								</button>
-							</div>
-					</td>
-				</tr>
-			<% } %>
-			</tbody>
-		<% } %>
+		<tbody id="inter-items">
+		<!-- Inter rows -->
+		
+		</tbody>
 	</table>
 
 	<!-- Table pagination -->
@@ -750,3 +563,6 @@
 
 	</div>
 </div>
+
+<!-- Modal Form to add/update a Place -->
+<div id="modalSaveInter" class="modal hide fade"></div>

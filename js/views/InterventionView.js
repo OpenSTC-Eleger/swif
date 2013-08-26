@@ -18,9 +18,15 @@ app.Views.InterventionView = Backbone.View.extend({
 
 	/** View Initialization
 	 */
-	initialize: function (model, create) {
-	    this.model = model;
-	    this.create = create;
+	initialize: function () {
+	    var self = this;
+	    console.log("Intervention Details view intialization")
+//		this.model = model;
+//	    this.create = create;
+	    this.initCollections().done(function(){
+	    	app.router.render(self);
+	    })
+	    
     },
 
 
@@ -52,21 +58,21 @@ app.Views.InterventionView = Backbone.View.extend({
 				$(self.el).html(template);		     
 
 
-				//search no technical services
-				var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
-					return service.attributes.technical != true 
-				});
-				//remove no technical services
-				app.collections.claimersServices.remove(noTechnicalServices);
+//				//search no technical services
+//				var noTechnicalServices = _.filter(app.collections.claimersServices.models, function(service){
+//					return service.attributes.technical != true 
+//				});
+//				//remove no technical services
+//				app.collections.claimersServices.remove(noTechnicalServices);
 
-				app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#interventionDetailService"), collection: app.collections.claimersServices})
+				app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#interventionDetailService"), collection: self.collections.technicalServices})
 				app.views.selectListServicesView.clearAll();
 				app.views.selectListServicesView.addEmptyFirst();
 				app.views.selectListServicesView.addAll();
 
 
 				// Fill select Places  //
-				app.views.selectListPlacesView = new app.Views.DropdownSelectListView({el: $("#interventionPlace"), collection: app.collections.places})
+				app.views.selectListPlacesView = new app.Views.DropdownSelectListView({el: $("#interventionPlace"), collection: self.collections.places})
 				app.views.selectListPlacesView.clearAll();
 				app.views.selectListPlacesView.addEmptyFirst();
 				app.views.selectListPlacesView.addAll();	
@@ -182,17 +188,15 @@ app.Views.InterventionView = Backbone.View.extend({
 	renderService: function ( service ) {
 		if( service!= null ) {
 			app.views.selectListServicesView.setSelectedItem( service );
-			places = app.collections.places.models;
+			places = this.collections.places.models;
 			
 			//keep only places belongs to service selected
 			keepedPlaces = _.filter(places, function(item){ 
-				var placeJSON = item.toJSON();
-				var placeServices = placeJSON.service_ids;	
-				var placeServices = [];
-				_.each( item.attributes.service_ids.models, function(s){
-					placeServices.push( s.toJSON().id );
-				});				
-				return $.inArray(service, placeServices)!=-1
+//				var placeServices = [];
+//				_.each( item.attributes.service_ids.models, function(s){
+//					placeServices.push( s.toJSON().id );
+//				});				
+				return $.inArray(service, item.getServices('id'))!=-1;
 			});
 			app.views.selectListPlacesView.collection = new app.Collections.Places(keepedPlaces);
 			app.views.selectListPlacesView.clearAll();
@@ -208,7 +212,39 @@ app.Views.InterventionView = Backbone.View.extend({
 		$('#interventionPlace').val('');
 		this.renderService( _($(e.target).prop('value')).toNumber() );
 	},
-
+	initCollections: function(){
+		var self = this; 
+		
+		if(_.isUndefined(this.collections)){this.collections = {}}
+		if(_.isUndefined(this.collections.technicalServices)){this.collections.technicalServices = new app.Collections.ClaimersServices()}
+		if(_.isUndefined(this.collections.places)){this.collections.places = new app.Collections.Places()}
+		
+		this.create = false;
+		if(_.isUndefined(this.model)){
+			this.model = new app.Models.Intervention();
+			this.create = true
+		}
+		var deferred = $.Deferred();
+		var domain = [{field: 'technical',operator: '=', value: 'True'}]
+		
+		this.collections.technicalServices.fetch({data: {filters: app.objectifyFilters(domain)}, silent:true}).done(function(){
+			var domainPlaces = [{field: 'service_ids', operator: 'in', value: self.collections.technicalServices.pluck('id')}]
+			$.when(self.collections.places.fetch({data: {filters: app.objectifyFilters(domainPlaces)}}))
+			.done(function(){
+				deferred.resolve();
+			})
+			.fail(function(e){
+				console.log(e)
+			})
+		})
+		.fail(function(e){
+			console.log(e)
+		})
+		return deferred;
+		//search no technical services
+		//get places according to technicalServices of the user
+		
+	}
 
 });
 

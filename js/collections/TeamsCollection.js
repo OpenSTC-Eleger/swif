@@ -7,8 +7,6 @@ app.Collections.Teams = app.Collections.GenericCollection.extend({
 
 	fields       : ['id', 'name', 'actions', 'manager_id', 'service_names', 'user_names'],
 
-	default_sort : { by: 'name', order: 'ASC' },
-
 	url          : '/api/openstc/teams',
 
 

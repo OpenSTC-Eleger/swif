@@ -202,48 +202,14 @@ app.Router = Backbone.Router.extend({
 
 	/** Interventions list
 	*/
-	interventions: function(page){
+	interventions: function(search, filter, sort, page){
+		var params = {};
+		if(!_.isNull(search)){params.search = search}
+		if(!_.isNull(filter)){params.filter = filter}
+		if(!_.isNull(sort)){params.sort = sort}
+		if(!_.isNull(page)){params.page = page}
+		app.views.interventions = new app.Views.InterventionsListView(params);
 		
-		var self = this;
-		
-		// Check if the user is connect //
-		if(this.checkConnect()){
-
-
-			self.page = page ? parseInt(page, 10) : 1;
-
-			
-			if(_.isUndefined(app.collections.tasks)){ app.collections.tasks = new app.Collections.Tasks(); }
-			if(_.isUndefined(app.collections.interventions)){ app.collections.interventions = new app.Collections.Interventions(); }
-			if(_.isUndefined(app.collections.categoriesTasks)){ app.collections.categoriesTasks = new app.Collections.CategoriesTasks(); }
-			if(_.isUndefined(app.collections.equipments)){ app.collections.equipments = new app.Collections.Equipments(); }
-			if(_.isUndefined(app.collections.officers)){ app.collections.officers = new app.Collections.Officers(); }
-
-
-			app.loader('display');
-
-			app.collections.tasks.fetch({
-				success: function(){
-
-					$.when(
-						app.collections.interventions.fetch(),
-						app.collections.categoriesTasks.fetch(),
-						app.collections.equipments.fetch()
-					)
-					.done(function(){
-						app.views.interventionsListView = new app.Views.InterventionsListView({page: self.page});
-						self.render(app.views.interventionsListView);
-						app.loader('hide');
-					})
-					.fail(function(e){
-						console.error(e);
-					});
-				}
-			});
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
 	},
 
 
@@ -251,58 +217,7 @@ app.Router = Backbone.Router.extend({
 	/** Interventions details
 	*/
 	detailsIntervention: function(id) {
-		// Check if the user is connect //
-		if(this.checkConnect()){
-
-			var self = this;
-
-			if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
-			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
-
-
-			app.loader('display');
-
-			$.when(
-				app.collections.places.fetch(),
-				app.collections.claimersServices.fetch()
-			)
-			.done(function(){
-				if(_.isUndefined(id)){
-					self.intervention = app.models.intervention.clear();
-					app.views.interventionView = new app.Views.InterventionView( self.intervention, true);
-					self.render(app.views.interventionView);
-					app.loader('hide');
-				}
-				else{
-					if(!_.isUndefined(app.collections.interventions)){
-						self.intervention = app.collections.interventions.get(id);
-						app.views.interventionView = new app.Views.InterventionView( self.intervention, false);
-						self.render(app.views.interventionView);
-						app.loader('hide');
-					}
-					else{
-						app.collections.interventions = new app.Collections.Interventions();
-
-						app.collections.interventions.fetch({
-							success: function(){
-								self.intervention = app.collections.interventions.get(id);
-								app.views.interventionView = new app.Views.InterventionView( self.intervention, false);
-								self.render(app.views.interventionView);
-								app.loader('hide');
-							}
-						})
-					}
-				}
-
-			})
-			.fail(function(e){
-				console.error(e);
-			});
-
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
+		app.views.interventionView = new app.Views.InterventionView( self.intervention, false);
 	},
 
 
@@ -373,45 +288,11 @@ app.Router = Backbone.Router.extend({
 		// Check if the user is connect //
 		if(this.checkConnect()){
 			var self = this;
-
-
+			
 			self.yearSelected = year;
 			self.weekSelected = week;
 			app.views.tasksListView = new app.Views.TasksListView({yearSelected: self.yearSelected, weekSelected: self.weekSelected});
 			self.render(app.views.tasksListView);
-
-//			if(_.isUndefined(app.collections.interventions)){ app.collections.interventions = new app.Collections.Interventions(); }
-//			if(_.isUndefined(app.collections.tasks)){ app.collections.tasks = new app.Collections.Tasks(); }
-//			if(_.isUndefined(app.collections.equipments)){ app.collections.equipments = new app.Collections.Equipments(); }
-//			if(_.isUndefined(app.collections.categoriesTasks)){ app.collections.categoriesTasks = new app.Collections.CategoriesTasks(); }
-//			if(_.isUndefined(app.collections.officers)){ app.collections.officers = new app.Collections.Officers(); }
-//			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
-//
-//
-//
-//			app.loader('display');
-//
-//			app.collections.tasks.fetch({
-//				success: function(){
-//
-//					$.when(
-//						app.collections.interventions.fetch(),
-//						app.collections.officers.fetch(),
-//						app.collections.categoriesTasks.fetch(),
-//						app.collections.equipments.fetch(),
-//						app.collections.claimersServices.fetch()
-//					)
-//					.done(function(){
-//						app.views.tasksListView = new app.Views.TasksListView({yearSelected: self.yearSelected, weekSelected: self.weekSelected});
-//						self.render(app.views.tasksListView);
-//
-//						app.loader('hide');
-//					})
-//					.fail(function(e){
-//						console.error(e);
-//					});
-//				}
-//			});
 		}
 		else{
 			this.navigate(app.routes.login.url, {trigger: true, replace: true});

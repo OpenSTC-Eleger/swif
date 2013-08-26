@@ -1,32 +1,48 @@
 /******************************************
 * Intervention Model
 */
-app.Models.Intervention = Backbone.RelationalModel.extend({
+app.Models.Intervention = Backbone.Model.extend({
 	
-	model_name : 'project.project',	
-	
-	url: "/#demandes-dinterventions/:id",
+	urlRoot: "/api/openstc/interventions",
+	fieldsOE: ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid','ask_id'],
 
-	relations: [
+	searchable_fields: [
 		{
-			type: Backbone.HasMany,
-			key: 'tasks',
-			relatedModel: 'app.Models.Task',
-			collectionType: 'app.Collections.Tasks',
-			includeInJSON: true,
-			reverseRelation: {
-				key: 'intervention',
-				includeInJSON: ['id', 'name', 'description', 'state', 'tasks', 'service_id', 'site1' ,'date_start', 'date_end'],
-			},
-		},		
+			key  : 'site1.complete_name',
+			type : 'text'
+		}
+		,
+		{
+			key  : 'service_id.name',
+			type : 'text'
+		},
+		{
+			key  : 'name', 
+			type : 'text'
+		}
 	],
 	
 	defaults:{
-		id:0,
+		id:null,
 		state: null,
 		cancel_reason: null,
 	},
 
+	getId : function() {
+		return this.get('id');
+	},
+	setId: function(value) {
+		if( value == 'undefined') return;
+		this.set({ id : value });
+	},
+
+	getName : function() {
+		return this.get('name');
+	},
+	setName: function(value) {
+		if( value == 'undefined') return;
+		this.set({ id : value });
+	},
 
 	getState : function() {
 		return this.get('state');
@@ -50,7 +66,7 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 	*/
 	initialize: function(){
 		//console.log('Intervention Model initialization');
-		this.fetchRelated('tasks');
+		//this.fetchRelated('tasks');
 
 		app.Models.Intervention.status.scheduled.translation = app.lang.planningFenced;
 		app.Models.Intervention.status.open.translation = app.lang.toScheduled;	
@@ -73,13 +89,6 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 	update: function(params) {
 		this.setState( params.state );
 		this.setCancelReason( params.cancel_reason );
-	},
-
-
-
-	/** Save Model*/
-	save: function(data,options) { 
-		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
 	},
 
 
@@ -138,9 +147,10 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 	cancel: function(cancel_reason, options) {
 		var params = {}
 		params.state = app.Models.Intervention.status.cancelled.key;
-		params.email_text = app.Models.Intervention.status.cancelled.translation;
+		//params.email_text = app.Models.Intervention.status.cancelled.translation;
 		params.cancel_reason = cancel_reason;
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
+		//app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
+		return this.save(params,{patch:true})
 	}
 
 

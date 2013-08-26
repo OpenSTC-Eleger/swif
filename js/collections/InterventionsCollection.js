@@ -8,9 +8,13 @@ app.Collections.Interventions = app.Collections.GenericCollection.extend({
 	// Model name in the database //
 	model_name : 'project.project',
 	
-	url: "demandes-dinterventions",
+	url: "/api/openstc/interventions",
 
-
+	fieldsOE: ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid','ask_id'],
+	default_sort : { by: 'id', order: 'DESC' },
+	
+	pendingInterventions: 0,
+	plannedInterventions: 0,
 
 	/** Collection Initialization
 	*/
@@ -18,33 +22,37 @@ app.Collections.Interventions = app.Collections.GenericCollection.extend({
 		//console.log('Interventions collection Initialization');
 	},
 
-
+	pendingInterventionsCount: function(){
+		var self = this;
+		$.when(
+			self.count({data: {filters: app.objectifyFilters([{'field':'state','operator':'=','value':'pending'}])}})
+		)
+		.done(function(data){
+			self.pendingInterventions = parseInt(self.cpt)
+		})
+	},
+	
+	plannedInterventionsCount: function(){
+		var self = this;
+		$.when(
+			self.count({data: {filters: app.objectifyFilters([{'field':'state','operator':'=','value':'scheduled'}])}})
+		)
+		.done(function(data){
+			self.plannedInterventions = parseInt(self.cpt)
+		})
+	},
 
 	/** Collection Sync
 	*/
-	sync: function(method, model, options) {
-		var fields = ["actions","active", "ask", "cancel_reason", "complete_name", "contact_id", "create_date", "create_uid", "overPourcent", "tooltip", "date_deadline", "date_start", "description", "effective_hours", "id", "name", "partner_id", "planned_hours", "progress_rate", "service_id", "site1", "site_details", "state", "tasks", "total_hours", "user_id"];
-		
-		return app.readOE( this.model_name ,  app.models.user.getSessionID(), options, fields);
-	},
-
-
-
-	/** Collection Parse
-	*/
-	parse: function(response) {    	
-		return response.result.records;
-	},
-
-
-
-	/** Comparator for ordering collection
-	*/
-	comparator: function(item) {
-		var mCreateDate = moment(item.get('create_date'))
-		item.set({'create_date': mCreateDate});
-		return -item.get('create_date');
-	},
-
-
+		sync: function(method, model, options){
+			var self = this;
+			var deferred = $.Deferred();
+			$.when(this.pendingInterventionsCount(), this.plannedInterventionsCount(), Backbone.sync.call(this,method,this,options))
+			.done(function(){
+				$.when(self.count(options)).done(function(){
+					deferred.resolve();
+				})
+			});
+			return  deferred;
+		},
 });

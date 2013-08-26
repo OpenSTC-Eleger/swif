@@ -1,0 +1,52 @@
+<td><%= intervention.id %></td>
+<td>
+	<a class="accordion-object" href="#collapse_<%= intervention.id %>" rel="popover" data-content="<%= _(intervention.description).escapeHTML() %>" data-delay="160" data-title="<%= _.capitalize(lang.description) %>">
+		<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(_(intervention.name).escapeHTML()) %>
+	</a>
+	<!-- Interventions action -->
+	<p class="row-actions invisible">
+		<!--<a href="#interventions/<%= intervention.id %>" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>">-->
+		<a href="#" class="modalSaveInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>">
+			<i class="icon-pencil icon-large"></i>
+		</a>&nbsp;
+
+		<a href="#" class="printInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="inter">
+			<i class="icon-print icon-large" data-action="inter">&nbsp;</i>
+		</a>
+		<% if(intervention.actions.indexOf("cancel") > -1 ) { %>
+			 &nbsp;<a href="#modalCancelInter" class="buttonCancelInter" data-toggle="modal"><i class="icon-ban-circle icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
+		<% } %>
+	</p>
+</td>
+<td><%= intervention.site1[1] %></td>
+<td><%= (intervention.date_deadline != false ? moment(intervention.date_deadline).format('LL') : '') %></td>
+<td><%= (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours, 'human') : '') %></td>
+<td><%= (intervention.effective_hours != false ? app.decimalNumberToTime(intervention.effective_hours, 'human') : '') %></td>
+
+
+<!-- Check the state of the intervention -->
+<td>
+	<% if(intervention.state != app.Models.Intervention.status.pending.key && intervention.state != app.Models.Intervention.status.closed.key){ %>
+		<span class="label label-<%= app.Models.Intervention.status[intervention.state].color %>"  data-toggle="tooltip" data-original-title="<%= intervention.tooltip %>">
+			<%= app.Models.Intervention.status[intervention.state].translation %>
+		</span>
+
+	<!-- state - Pending -->
+	<% } else if(intervention.state == app.Models.Intervention.status.pending.key){ %>
+		<div class="progress progress-default" data-toggle="tooltip" data-title="<%= intervention.tooltip %>">
+			<div class="bar" style="width: <%= intervention.progress_rate %>%"><%= _(intervention.progress_rate).toNumber() %>%</div>
+		</div>
+
+	<!-- state - Closed -->
+	<% } else if(intervention.state == app.Models.Intervention.status.closed.key){ 
+		if(intervention.overPourcent > 100){ %>
+			<div class="progress progress-overrun" data-toggle="tooltip" data-title="<%= intervention.tooltip %>">
+				<div class="bar" style="width: 100%"><%= _(intervention.overPourcent).toNumber() %>%</div>
+			</div>
+		<% } else { %>
+			<div class="progress progress-success" data-toggle="tooltip" data-title="<%= intervention.tooltip %>">
+				<div class="bar" style="width: <%= intervention.overPourcent %>%"><%= _(intervention.overPourcent).toNumber() %>%</div>
+			</div>
+		<% } %>
+	<% } %>
+</td>

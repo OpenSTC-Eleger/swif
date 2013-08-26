@@ -1,50 +1,53 @@
 /******************************************
 * Interventions List View
 */
-app.Views.InterventionsListView = Backbone.View.extend({
-
-	el : '#rowContainer',
+app.Views.InterventionsListView = app.Views.GenericListView.extend({
 
 	templateHTML: 'interventions',
 
 	filters: 'intersListFilter',
-
+	
 	numberListByPage: 25,
-
 	selectedInter : '',
 	selectedTask : '',
-
+	collections:  {},
 
 	// The DOM events //
-	events: {
-		'click li.active'					: 'preventDefault',
-		'click li.disabled'					: 'preventDefault',
-		'click ul.sortable li'				: 'preventDefault',
+	events: function(){
+		return _.defaults({
+			'click li.active'					: 'preventDefault',
+			'click li.disabled'					: 'preventDefault',
+			'click ul.sortable li'				: 'preventDefault',
 
-		'click .btn.addTask'                : 'displayModalAddTask',
-		'submit #formAddTask'         		: 'saveTask',
+			'click a.modalCreateInter'			: 'displayModalSaveInter',
+			
+//			'click .btn.addTask'                : 'displayModalAddTask',
+//			'submit #formAddTask'         		: 'saveTask',
+//
+//			'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
+//			'click button.btnDeleteTask'   		: 'deleteTask',
+//
+//			'click a.buttonCancelInter'			: 'displayModalCancelInter',
+//			'submit #formCancelInter' 			: 'cancelInter',
+//
+//			'click a.buttonCancelTask'			: 'displayModalCancelTask',
+//			'submit #formCancelTask' 			: 'cancelTask',
+//
+//			'click a.printTask, a.printInter'	: 'print',
+//
+//			'click .buttonTaskDone, .buttonNotFinish' : 'displayModalTaskDone',
+//			'submit #formTaskDone'   			: 'taskDone',
+//			'click a.linkSelectUsersTeams'		: 'changeSelectListUsersTeams',
+//			'click .linkRefueling'				: 'accordionRefuelingInputs',
+//
+//			'change .taskEquipment'				: 'fillDropdownEquipment',
 
-		'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
-		'click button.btnDeleteTask'   		: 'deleteTask',
+//			'click a.accordion-object'    		: 'tableAccordion',
 
-		'click a.buttonCancelInter'			: 'displayModalCancelInter',
-		'submit #formCancelInter' 			: 'cancelInter',
-
-		'click a.buttonCancelTask'			: 'displayModalCancelTask',
-		'submit #formCancelTask' 			: 'cancelTask',
-
-		'click a.printTask, a.printInter'	: 'print',
-
-		'click .buttonTaskDone, .buttonNotFinish' : 'displayModalTaskDone',
-		'submit #formTaskDone'   			: 'taskDone',
-		'click a.linkSelectUsersTeams'		: 'changeSelectListUsersTeams',
-		'click .linkRefueling'				: 'accordionRefuelingInputs',
-
-		'change .taskEquipment'				: 'fillDropdownEquipment',
-
-		'click a.accordion-object'    		: 'tableAccordion',
-
-		'click #filterStateInterList li:not(.disabled) a' 	: 'setFilter'
+			'click #filterStateInterList li:not(.disabled) a' 	: 'setFilter'
+		}, 
+			app.Views.GenericListView.prototype.events
+		);
 	},
 
 
@@ -52,7 +55,12 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize : function() {
+		var self = this;
 		console.log('Interventions view Initialize');
+		this.initCollections().done(function(){
+			app.router.render(self);
+
+		});
 	},
 
 
@@ -61,7 +69,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	*/
 	render : function() {
 		var self = this;
-
+		console.log('-----------Interventions list view rendering--------------');
 		// Change the page title //
 		app.router.setPageTitle(app.lang.viewsTitles.interventionsMonitoring);
 
@@ -72,113 +80,64 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		app.views.headerView.switchGridMode('fluid');
 
 
-		var interventions = app.collections.interventions.toJSON();
+		var interventions = this.collections.interventions.toJSON();
+		var len = this.collections.interventions.cpt;
+		var pageCount = Math.ceil(len / app.config.itemsPerPage);
 
-
-		// Check the number of planned interventions //
-		var nbInterventionsPlanned = 0;
-		app.callObjectMethodOE([[['state','=','scheduled']]],"project.project","search_count",app.models.user.getSessionID(),{
-			success: function(data){
-				$('.page-header sup[class="badge badge-info"]').html(data.result)
-			}
-		});
-
-//		var interventionsPlanned = _.filter(interventions, function(item){
-//			return (item.state == app.Models.Intervention.status.scheduled.key);
-//		});
-//		var nbInterventionsPlanned = _.size(interventionsPlanned);
-
-
-		// Check the number of pending interventions //
-		var nbInterventionsPending = 0;
-		app.callObjectMethodOE([[['state','=','pending']]],"project.project","search_count",app.models.user.getSessionID(),{
-			success: function(data){
-				$('.page-header sup[class="badge"]').html(data.result)
-			}
-		});
-//		var interventionsPending = _.filter(interventions, function(item){ 
-//			return (item.state == app.Models.Intervention.status.pending.key);
-//		});
-//		var nbInterventionsPending = _.size(interventionsPending);
-
-
-
-		// Collection Filter if not null //
-		if(sessionStorage.getItem(this.filters) != null){
-			interventions = _.filter(interventions, function(item){ 
-				if(sessionStorage.getItem(self.filters) != 'overrun'){
-					return item.state == sessionStorage.getItem(self.filters);
-				}
-				else{
-					return (item.state == app.Models.Intervention.status.closed.key && item.overPourcent > 100);	
-				}
-			});
-		}
-
-
-	  	//console.log(interventions);
-
-
-		var len = _.size(interventions);
-		var startPos = (this.options.page - 1) * this.numberListByPage;
-		var endPos = Math.min(startPos + this.numberListByPage, len);
-		var pageCount = Math.ceil(len / this.numberListByPage);
-
-
+		var startPos = (this.options.page.page - 1) * app.config.itemsPerPage;
+		var endPos = startPos + app.config.itemsPerPage;
 		// Retrieve the HTML template //
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
 				lang                   : app.lang,
 				nbInterventions        : len,
-				nbInterventionsPending : nbInterventionsPending,
-				nbInterventionsPlanned : nbInterventionsPlanned,
+				nbInterventionsPending : self.collections.interventions.pendingInterventions,
+				nbInterventionsPlanned : self.collections.interventions.plannedInterventions,
 				interventionsState     : app.Models.Intervention.status,
 				interventions          : interventions,
 				startPos               : startPos, endPos: endPos,
-				page                   : self.options.page, 
+				page                   : self.options.page.page, 
 				pageCount              : pageCount,
 			});
 
 
 			$(self.el).html(template);
-
-
-			$('*[data-toggle="tooltip"]').tooltip();
-			$('*[rel="popover"]').popover({trigger: 'hover'});
-			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
-			$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
-
-
-			$('tr.row-object').css({ opacity: '1'});
-			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
-
-
-			$('#equipmentsDone, #equipmentsListDone').sortable({
-				connectWith: 'ul.sortableEquipmentsList',
-				dropOnEmpty: true,
-				forcePlaceholderSize: true,
-				forceHelperSize: true,
-				placeholder: 'sortablePlaceHold',
-				containment: '.equipmentsDroppableAreaDone',
-				cursor: 'move',
-				opacity: '.8',
-				revert: 300,
-				receive: function(event, ui){
-					//self.saveServicesCategories();
-				}
-			});
-
+//
+//
+//			$('*[data-toggle="tooltip"]').tooltip();
+//			$('*[rel="popover"]').popover({trigger: 'hover'});
+//			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
+//			$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
+//
+//
+//			$('tr.row-object').css({ opacity: '1'});
+//			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
+//			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
+//
+//
+//			$('#equipmentsDone, #equipmentsListDone').sortable({
+//				connectWith: 'ul.sortableEquipmentsList',
+//				dropOnEmpty: true,
+//				forcePlaceholderSize: true,
+//				forceHelperSize: true,
+//				placeholder: 'sortablePlaceHold',
+//				containment: '.equipmentsDroppableAreaDone',
+//				cursor: 'move',
+//				opacity: '.8',
+//				revert: 300,
+//				receive: function(event, ui){
+//					//self.saveServicesCategories();
+//				}
 
 			// Display filter on the table //
-			if(sessionStorage.getItem(self.filters) != null){
+			if(!_.isUndefined(self.options.filter)){
 				$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');
 				$('li.delete-filter').removeClass('disabled');
 
-				var applyFilter = sessionStorage.getItem(self.filters);
+				var applyFilter = self.options.filter;
 
-				if(applyFilter != 'overrun') {
-					$('a.filter-button').addClass('text-'+app.Models.Intervention.status[applyFilter].color);
+				if(applyFilter.value != 'overrun') {
+					$('a.filter-button').addClass('text-'+app.Models.Intervention.status[applyFilter.value].color);
 				}
 				else{
 					$('a.filter-button').addClass('text-overrun');
@@ -190,15 +149,30 @@ app.Views.InterventionsListView = Backbone.View.extend({
 			}
 
 
-			// Set the focus to the first input of the form //
-			$('#modalCancelInter, #modalDeleteTask, #modalAddTask, #modalCancelTask').on('shown', function (e) {
-				$(this).find('input, textarea').first().focus();
-			})
-		
+//			// Set the focus to the first input of the form //
+//			$('#modalCancelInter, #modalDeleteTask, #modalAddTask, #modalCancelTask').on('shown', function (e) {
+//				$(this).find('input, textarea').first().focus();
+//			})
+			
+			// Call the render Generic View //
+			app.Views.GenericListView.prototype.render(self.options);
+			
+			// Create item intervention view //
+			_.each(self.collections.interventions.models, function(inter, i){
+				var tasks = [];
+				_.each(inter.toJSON().tasks,function(item,i){
+					tasks.push(self.collections.tasks.get(item));
+				});
+				var itemInterventionView = new app.Views.ItemInterventionView({model: inter});
+				$('#inter-items').append(itemInterventionView.render().el);
+				var itemInterventionTaskListView = new app.Views.ItemInterventionTaskListView({inter: inter, tasks: tasks});
+				$('#inter-items').append(itemInterventionTaskListView.render().el);
+				
+			});
+
 			
 		});
-
-		$(this.el).hide().fadeIn('slow');
+		$(this.el).hide().fadeIn();
 		return this;
 	},
 
@@ -206,35 +180,34 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 	/** Fonction collapse table row
 	*/
-	tableAccordion: function(e){
-
-		e.preventDefault();
-		
-		// Retrieve the intervention ID //
-		var id = _($(e.target).attr('href')).strRightBack('_');
-
-
-		var isExpend = $('#collapse_'+id).hasClass('expend');
-
-		// Reset the default visibility //
-		$('tr.expend').css({ display: 'none' }).removeClass('expend');
-		$('tr.row-object').css({ opacity: '0.45'});
-		$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-		
-		// If the table row isn't already expend //       
-		if(!isExpend){
-			// Set the new visibility to the selected intervention //
-			$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
-			$(e.target).parents('tr.row-object').css({ opacity: '1'});  
-			$(e.target).parents('tr.row-object').children('td').css({ backgroundColor: "#F5F5F5" }); 
-		}
-		else{
-			$('tr.row-object').css({ opacity: '1'});
-			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
-		}
-		   
-	},
+//	tableAccordion: function(e){
+//
+//		e.preventDefault();
+//		// Retrieve the intervention ID //
+//		var id = _($(e.target).attr('href')).strRightBack('_');
+//
+//
+//		var isExpend = $('#collapse_'+id).hasClass('expend');
+//
+//		// Reset the default visibility //
+//		$('tr.expend').css({ display: 'none' }).removeClass('expend');
+//		$('tr.row-object').css({ opacity: '0.45'});
+//		$('tr.row-object > td').css({ backgroundColor: '#FFF'});
+//		
+//		// If the table row isn't already expend //       
+//		if(!isExpend){
+//			// Set the new visibility to the selected intervention //
+//			$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
+//			$(e.target).parents('tr.row-object').css({ opacity: '1'});  
+//			$(e.target).parents('tr.row-object').children('td').css({ backgroundColor: "#F5F5F5" }); 
+//		}
+//		else{
+//			$('tr.row-object').css({ opacity: '1'});
+//			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
+//			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
+//		}
+//		   
+//	},
 
 
 
@@ -242,46 +215,53 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		e.preventDefault();
 		// Retrieve the ID of the intervention //
 		var link = $(e.target);
-		this.pos =  _(link.parents('tr').attr('id')).strRightBack('_');
+		if(link.parents('tr').length > 0){
+			this.pos =  _(link.parents('tr').attr('id')).strRightBack('_');
+		}
+		else{
+			this.pos = -1;
+		}
+		},
+
+
+	/** Display the form to add / update an intervention
+	*/
+	displayModalSaveInter: function(e){
+		//this.getTarget(e);
+		e.preventDefault();
+		var params = {el:'#modalSaveInter'}
+//		if(this.pos > -1){
+//			params.model = this.collections.interventions.get(this.pos);
+//		}
+		new app.Views.ModalInterventionView(params);
 	},
-
-
-
+	
 	/** Display the form to add a new Task
 	*/
 	displayModalAddTask: function(e){
 		this.getTarget(e);
 		
 		// Display only categories in dropdown belongs to intervention //
-		var categoriesFiltered = null;
-		var inter = app.collections.interventions.get(this.pos);
+		var categoriesFiltered = new app.Collections.CategoriesTasks();
+		var inter = this.collections.interventions.get(this.pos);
+		var options = {};
 		if( inter) {
 			var interJSON = inter.toJSON();
-				app.callObjectMethodOE([inter.id],"project.project","get_task_categ_authorized",app.models.user.getSessionID(),{
-					success: function(data){
-						app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
-						collection: new app.Collections.CategoriesTasks(data.result)})
-						app.views.selectListAssignementsView.clearAll();
-						app.views.selectListAssignementsView.addEmptyFirst();
-						app.views.selectListAssignementsView.addAll();
-					}
-				});
+			if(interJSON.service_id.length > 0){
+				var domain = {0:{field:'service_ids.id',operator:'=','value':interJSON.service_id[0]}};
 			}
-//			categoriesFiltered = _.filter(app.collections.categoriesTasks.models, function(item){
-//				var services = [];
-//				_.each( item.attributes.service_ids.models, function(service){
-//					services.push( service.toJSON().id );
-//				});
-//				return  interJSON.service_id && $.inArray( interJSON.service_id[0], services )!=-1;
-//			});
-//		}        
-//		
-//		app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
-//			collection: categoriesFiltered==null?app.collections.categories: new app.Collections.CategoriesTasks(categoriesFiltered)
-//		})
-//		app.views.selectListAssignementsView.clearAll();
-//		app.views.selectListAssignementsView.addEmptyFirst();
-//		app.views.selectListAssignementsView.addAll();	
+			options.data = {filters: domain};
+		}
+		categoriesFiltered.fetch(options).done(function(){
+			app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
+					collection: categoriesFiltered});
+			app.views.selectListAssignementsView.clearAll();
+			app.views.selectListAssignementsView.addEmptyFirst();
+			app.views.selectListAssignementsView.addAll();
+		})
+		.fail(function(e){
+			console.log(e);
+		})
 		
 		$('#modalAddTask').modal();
 		
@@ -293,7 +273,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	*/
 	displayModalDeleteTask: function(e){
 		this.getTarget(e);
-		this.selectedTask = app.collections.tasks.get(this.pos);
+		this.selectedTask = this.collections.tasks.get(this.pos);
 		this.selectedTaskJSON = this.selectedTask.toJSON();
 		$('#infoModalDeleteTask').children('p').html(this.selectedTaskJSON.name);
 		$('#infoModalDeleteTask').children('small').html(this.selectedTaskJSON.description);
@@ -302,7 +282,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 	displayModalCancelInter: function(e) {
 		this.getTarget(e);
-		this.selectedInter = app.collections.interventions.get(this.pos);
+		this.selectedInter = this.collections.interventions.get(this.pos);
 		this.selectedInterJSON = this.selectedInter.toJSON();
 		$('#infoModalCancelInter').children('p').html(this.selectedInterJSON.name);
 		$('#infoModalCancelInter').children('small').html(this.selectedInterJSON.description);
@@ -310,22 +290,22 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 	displayModalCancelTask: function(e) {
 		var button = $(e.target);
-		this.selectedTask = app.collections.tasks.get(button.data('taskid'));
+		this.selectedTask = this.collections.tasks.get(button.data('taskid'));
 		this.selectedTaskJSON = this.selectedTask.toJSON();
 
 		$('#infoModalCancelTask').children('p').html(this.selectedTaskJSON.name);
-		$('#infoModalCancelTask').children('small').html('<i class="icon-pushpin"></i>&nbsp;' + this.selectedTaskJSON.intervention.name);
+		$('#infoModalCancelTask').children('small').html('<i class="icon-pushpin"></i>&nbsp;' + this.selectedTaskJSON.project_id[1]);
 	},
 
 	displayModalTaskDone: function(e){
 		var button = $(e.target);
-
+		var self = this;
 		// Retrieve the Task //
 		if(!button.is('i')){
-			this.selectedTask = app.collections.tasks.get(button.data('taskid'));
+			this.selectedTask = this.collections.tasks.get(button.data('taskid'));
 		}
 		else{
-			this.selectedTask = app.collections.tasks.get(button.parent().data('taskid'));	
+			this.selectedTask = this.collections.tasks.get(button.parent().data('taskid'));	
 		}
 
 	
@@ -340,8 +320,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 
 		this.selectedTaskJSON = this.selectedTask.toJSON();
-		var intervention = this.selectedTaskJSON.intervention;
-		var serviceInter = intervention.service_id;
+		//var intervention = this.collections.interventions.get(this.selectedTaskJSON.project_id[0]).toJSON();
+		//var serviceInter = intervention.service_id;
 
 
 		if( _.isUndefined(this.officersDropDownList) )
@@ -359,7 +339,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 		// Set Task Informations //
 		$('#infoModalTaskDone').children('p').html(this.selectedTaskJSON.name);
-		$('#infoModalTaskDone').children('small').html('<i class="icon-pushpin"></i>&nbsp;' + this.selectedTaskJSON.intervention.name);
+		$('#infoModalTaskDone').children('small').html('<i class="icon-pushpin"></i>&nbsp;' + this.selectedTaskJSON.project_id[1]);
 
 
 		$("#startDate").val(  moment().format('L') );
@@ -370,58 +350,38 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		$("#endHour").timepicker('setTime', moment().add('hour', this.selectedTaskJSON.planned_hours).format('LT') );
 
 		
-		var equipmentsCollection = app.collections.equipments;
 //		// Filter Equipment by service on intervention's task //
-//
-//
-//		filteredEquipment = _.filter(equipmentsCollection.models, function(item){	
-//			var equipmentJSON = item.toJSON();
-//			var services = _.map(equipmentJSON.service_ids, function(service){return service.id;});
-//			return $.inArray(serviceInter[0], services)!=-1;
-//		});
-		
-		var task_id = this.selectedTask.id
+		var task_id = this.selectedTask.id;
 		
 		// Search only vehicles //
-		app.callObjectMethodOE([task_id],"project.task","get_vehicules_authorized",app.models.user.getSessionID(),{
+		$.ajax({
+			url: '/api/openstc/tasks/' + task_id.toString() + '/available_vehicles',
+			
 			success: function(data){
 				// Fill equipment List //
-				app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentDone"), collection: equipmentsCollection.reset(data.result)})
+				self.collections.vehicles = new app.Collections.Equipments(data);
+				app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentDone"), collection: self.collections.vehicles})
 				app.views.selectListEquipmentsView.clearAll();
 				app.views.selectListEquipmentsView.addEmptyFirst();
 				app.views.selectListEquipmentsView.addAll();
 			}
 		});
-//		var filteredVehicleEquipment = _.filter(filteredEquipment, function(item){
-//			return item.attributes.technical_vehicle || item.attributes.commercial_vehicle;
-//		});
 		
 		// Search only materials //
 		$('#equipmentsListDone').empty();
-		app.callObjectMethodOE([task_id],"project.task","get_materials_authorized",app.models.user.getSessionID(),{
+		$.ajax({
+			url: '/api/openstc/tasks/' + task_id.toString() + '/available_equipments',
 			success: function(data){
-				// Display the remain services //
+				// Display the remain materials //
 				var nbRemainMaterials = 0;
-				for(i in data.result){
+				for(i in data){
 					
 					nbRemainMaterials++;
-					$('#equipmentsListDone').append('<li id="equipment_'+data.result[i].id+'"><a href="#"><i class="icon-wrench"></i> '+ data.result[i].name + '-' + data.result[i].type + ' </a></li>');
+					$('#equipmentsListDone').append('<li id="equipment_'+data[i].id+'"><a href="#"><i class="icon-wrench"></i> '+ data[i].name + '-' + data[i].type + ' </a></li>');
 				}
 				$('#badgeNbEquipmentsDone').html(nbRemainMaterials);			
 			}
 		});
-		
-
-//		var filteredOthersEquipment = _.filter(filteredEquipment, function(item){
-//			return item.attributes.small_material || item.attributes.fat_material;
-//		});
-//
-//		_.each(filteredOthersEquipment, function (material, i){
-//			var materialJSON = material.toJSON();
-//				$('#equipmentsListDone').append('<li id="equipment_'+materialJSON.id+'"><a href="#"><i class="icon-wrench"></i> '+ materialJSON.name + '-' + materialJSON.type + ' </a></li>');
-//		});
-//
-//		$('#badgeNbEquipmentsDone').html(_.size(filteredOthersEquipment));
 	},
 
 
@@ -431,7 +391,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		e.preventDefault();
 		var target = $(e.target).val();
 		if( target ) {
-			var equipment = app.collections.equipments.get( target );
+			var equipment = this.collections.vehicles.get( target );
 			if( equipment ) {
 				var km = equipment.toJSON().km ;
 				$('.equipmentKm').val( km );
@@ -453,8 +413,8 @@ app.Views.InterventionsListView = Backbone.View.extend({
 		else{ var itemToLoad = link.parent('a').data('item'); }
 
 		this.selectedTaskJSON = this.selectedTask.toJSON();
-		var intervention = this.selectedTaskJSON.intervention;
-		var serviceInter = intervention.service_id;
+		//var intervention = this.selectedTaskJSON.intervention;
+		//var serviceInter = intervention.service_id;
 		
 
 		if(itemToLoad == 'officers'){
@@ -490,7 +450,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 	taskDone: function(e){
 		e.preventDefault();
-
+		var self = this;
 
 		if($('#selectUsersTeams').data('item') == 'officers'){
 			var teamMode = false;
@@ -548,15 +508,21 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 
 		//alert("TODO: Params must be send to OpenERP");
-		this.selectedTask.reportHours(params, 
-			{
-				success: function(data){	
+		//this.selectedTask.reportHours(params, 
+		this.selectedTask.save(params, {silent: true, patch: true})
+			.done(function(){
+				self.selectedTask.fetch().done(function(){
 					$('#modalTaskDone').modal('hide');				
 					route = Backbone.history.fragment;
 					Backbone.history.loadUrl(route);
-				}
-			}
-		);
+					})
+					.fail(function(e){
+						console.log(e)
+					})
+			})
+			.fail(function(e){
+				console.log(e)
+			});
 
 	},
 
@@ -597,9 +563,15 @@ app.Views.InterventionsListView = Backbone.View.extend({
 			 planned_hours: mDuration.asHours(),
 		 };
 
-
-		 $('#modalAddTask').modal('hide');
-		 app.models.task.save(0,params);
+		 var taskModel = new app.Models.Task(params);
+		 taskModel.save().done(function(data){
+			$('#modalAddTask').modal('hide');
+			route = Backbone.history.fragment;
+			Backbone.history.loadUrl(route);
+		 })
+		 .fail(function(e){
+			 console.log(e);
+		 });
 	},
 
 
@@ -609,25 +581,20 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	*/
 	deleteTask: function(e){
 		var self = this;
-		this.selectedTask.destroy({
-			success: function(data){
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					app.collections.tasks.remove(self.selectedTask);
-					var inter = app.collections.interventions.get(self.selectedTaskJSON.intervention.id);					
-					inter.attributes.tasks.remove(self.selectedTaskJSON.id);
-					app.collections.interventions.add(inter);
-					$('#modalDeleteTask').modal('hide');
-					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.serviceDeleteOk);
-					self.render();
-				}
-			},
-			error: function(e){
-				alert("Impossible de supprimer la tâche");
-			}
-
+		this.selectedTask.destroy().done(function(data){
+//			this.collections.tasks.remove(self.selectedTask);
+//			var inter = this.collections.interventions.get(self.selectedTaskJSON.intervention.id);					
+//			inter.attributes.tasks.remove(self.selectedTaskJSON.id);
+//			this.collections.interventions.add(inter);
+			$('#modalDeleteTask').modal('hide');
+			app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.serviceDeleteOk);
+			//self.render();
+			route = Backbone.history.fragment;
+			Backbone.history.loadUrl(route);
+		})
+		.fail(function(e){
+			console.log(e)
+			alert("Impossible de supprimer la tâche");
 		});
 
 	},
@@ -638,15 +605,11 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	cancelInter: function(e){
 		e.preventDefault();
 		
-		this.selectedInter.cancel($('#motifCancel').val(),
-			{
-				success: function(data){
-					$('#modalCancelInter').modal('hide');
-					route = Backbone.history.fragment;
-					Backbone.history.loadUrl(route);
-				}
-			}
-		);
+		this.selectedInter.cancel($('#motifCancel').val()).done(function(data){
+			$('#modalCancelInter').modal('hide');
+			route = Backbone.history.fragment;
+			Backbone.history.loadUrl(route);
+		})
 	},
 
 
@@ -655,15 +618,15 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	cancelTask: function(e){
 		e.preventDefault();
 		
-		this.selectedTask.cancel($('#motifCancelTask').val(),
-			{
-				success: function(data){
-					$('#modalCancelTask').modal('hide');
-					route = Backbone.history.fragment;
-					Backbone.history.loadUrl(route);
-				}
-			}
-		);
+		this.selectedTask.cancel($('#motifCancelTask').val())
+			.done(function(){
+				$('#modalCancelTask').modal('hide');
+				route = Backbone.history.fragment;
+				Backbone.history.loadUrl(route);
+			})
+			.fail(function(e){
+				console.log(e)
+			})
 		//alert("Merci de laisser du temps pour pouvoir développer cette fonctionnalité");
 	},
 
@@ -684,7 +647,7 @@ app.Views.InterventionsListView = Backbone.View.extend({
 					if( self.element!= null )
 						self.element.modal('hide');
 					self.selectedInter.update(self.params);
-					app.collections.interventions.add(self.selectedInter);
+					this.collections.interventions.add(self.selectedInter);
 					self.render();
 				}
 			},
@@ -700,14 +663,14 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	*/
 	print: function(e){
 		e.preventDefault();
-
+		var self = this;
 		this.getTarget(e);
-
+		
 		if($(e.target).data('action') == 'inter'){
 
 			console.log(this.selectedInter);
 			
-			this.selectedInter = app.collections.interventions.get(this.pos);
+			this.selectedInter = this.collections.interventions.get(this.pos);
 			var interJSON = this.selectedInter.toJSON();
 
 			// Hide the print Inter section //
@@ -717,15 +680,16 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 			// Display all the tasks of the inter //
 			_.each(interJSON.tasks, function(task, i){
-				$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+task.name+'</td><td>'+app.decimalNumberToTime(task.planned_hours, 'human')+'</td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td></tr>');
+				var taskJSON = self.collections.tasks.get(task).toJSON();
+				$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+taskJSON.name+'</td><td>'+app.decimalNumberToTime(taskJSON.planned_hours, 'human')+'</td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td></tr>');
 			})
 		}
 		else{
-			this.selectedTask = app.collections.tasks.get(this.pos);
+			this.selectedTask = this.collections.tasks.get(this.pos);
 			var selectedTaskJSON = this.selectedTask.toJSON();
 
 			// Get the inter of the Task //
-			var inter = app.collections.interventions.get(this.selectedTask.toJSON().intervention.id);
+			var inter = this.collections.interventions.get(this.selectedTask.toJSON().project_id[0]);
 			var interJSON = inter.toJSON();
 
 			// Hide the print Inter section //
@@ -736,46 +700,59 @@ app.Views.InterventionsListView = Backbone.View.extend({
 			$('#taskLabel').html(selectedTaskJSON.name + ' <em>('+selectedTaskJSON.category_id[1]+')</em>');
 			$('#taskPlannedHour').html(app.decimalNumberToTime(selectedTaskJSON.planned_hours, 'human'));
 		}
+		var deferred = $.Deferred();
+		deferred.always(function(){
+			$('#interName').html(interJSON.name);
+			$('#interDescription').html(interJSON.description);
+			$('#interService').html(!interJSON.service_id?'':interJSON.service_id[1]);
 
-
-
-
-		if(_.isNull(interJSON.ask)){
-			$('#claimentName').html(interJSON.create_uid[1]);
-		}else{
-			if(interJSON.ask.partner_id != false){
-				$('#claimentName').html(interJSON.ask.partner_id[1]+' - '+interJSON.ask.partner_address[1]);
-				$('#claimentPhone').html(interJSON.ask.partner_phone);
+			$('#interDateCreate').html(moment(interJSON.create_date).format('LL'));
+			console.info(interJSON);
+			console.log(interJSON);
+			if(interJSON.date_deadline != false){
+				$('#interDeadline').html(' / ' + moment(interJSON.date_deadline).format('LL'));
 			}
-			else{
-				$('#claimentName').html(interJSON.ask.people_name);
-				$('#claimentPhone').html(interJSON.ask.people_phone);
-			}
+			$('#interPlace').html(interJSON.site1[1]);
+			$('#interPlaceMore').html(interJSON.site_details);
 
-			$('#claimentType').html(interJSON.ask.partner_type[1]);
-		}
-
-		$('#interName').html(interJSON.name);
-		$('#interDescription').html(interJSON.description);
-		$('#interService').html(interJSON.service_id[1]);
-
-		$('#interDateCreate').html(moment(interJSON.create_date).format('LL'));
-		console.info(interJSON);
-		console.log(interJSON);
-		if(interJSON.date_deadline != false){
-			$('#interDeadline').html(' / ' + moment(interJSON.date_deadline).format('LL'));
-		}
-		$('#interPlace').html(interJSON.site1[1]);
-		$('#interPlaceMore').html(interJSON.site_details);
-
-
-		$('#printTask').printElement({
-			leaveOpen	: true,
-			printMode	: 'popup',
-			overrideElementCSS:[
-				{ href:'css/vendors/print_table.css', media: 'all'}
-			]
+			$('#printTask').printElement({
+				leaveOpen	: true,
+				printMode	: 'popup',
+				overrideElementCSS:[
+					{ href:'css/vendors/print_table.css', media: 'all'}
+				]
+			});
 		});
+		if(!interJSON.ask_id){
+			
+			$('#claimentName').html(interJSON.create_uid[1]);
+			deferred.resolve();
+		}else{
+			//retrieve ask associated, if exist
+			var ask = new app.Models.Request();
+			ask.setId(interJSON.ask_id[0]);
+			ask.fetch().done(function(){
+				var askJSON = ask.toJSON();
+				if(askJSON.partner_id != false){
+					$('#claimentName').html(askJSON.partner_id[1]+' - '+ !askJSON.partner_address?'':askJSON.partner_address[1]);
+					$('#claimentPhone').html(askJSON.partner_phone);
+					
+				}
+				else{
+					$('#claimentName').html(askJSON.people_name);
+					$('#claimentPhone').html(askJSON.people_phone);
+				}
+	
+				$('#claimentType').html(askJSON.partner_type[1]);
+				deferred.resolve();
+			})
+			.fail(function(e){
+				console.log(e);
+				deferred.reject();
+			});
+		}
+		
+
 	},
 
 
@@ -791,19 +768,21 @@ app.Views.InterventionsListView = Backbone.View.extend({
 
 		// Set the filter in the local Storage //
 		if(filterValue != 'delete-filter'){
-			sessionStorage.setItem(this.filters, filterValue);
+//			sessionStorage.setItem(this.filters, filterValue);
+			this.options.filter = {by: 'state', value:filterValue};
 		}
 		else{
-			sessionStorage.removeItem(this.filters);
+			delete this.options.filter;
 		}
 
-		if(this.options.page <= 1){
-			this.render();
-		}
-		else{
-			app.router.navigate(app.routes.interventions.baseUrl, {trigger: true, replace: true});
-		}
-		
+//		if(this.options.page <= 1){
+//			this.render();
+//		}
+//		else{
+//			app.router.navigate(app.routes.interventions.baseUrl, {trigger: true, replace: true});
+//		}
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+
 	},
 
 
@@ -813,6 +792,94 @@ app.Views.InterventionsListView = Backbone.View.extend({
 	preventDefault: function(event){
 		event.preventDefault();
 	},
+	
+	initCollections: function(){
+		var self = this;
+		
+		// Check if the collections are instantiated //
+		if(_.isUndefined(this.collections.tasks)){ this.collections.tasks = new app.Collections.Tasks(); }
+		if(_.isUndefined(this.collections.interventions)){this.collections.interventions = new app.Collections.Interventions();}
+		
+		//check sort parameter
+		if(_.isUndefined(this.options.sort)){
+			this.options.sort = this.collections.interventions.default_sort;
+		}
+		else{
+			this.options.sort = app.calculPageSort(this.options.sort);	
+		}
+		
+		
+		// Construction of the domain (filter and search, special domain if filter == overrun)
+		var domain = [];
+		var optionSearch = {};
+		//Retrieve search domain given by search box and / or by filter
+		if(!_.isUndefined(this.options.search)){
+			// Collection Filter if not null //
+			optionSearch.search = this.options.search;
+		}
+		if(!_.isUndefined(this.options.filter) && !_.isNull(this.options.filter)){
+			this.options.filter = app.calculPageFilter(this.options.filter);
+
+			//interventions = _.filter(interventions, function(item){ 
+			if(this.options.filter.value == 'overrun'){
+				//return (item.state == app.Models.Intervention.status.closed.key && item.overPourcent > 100);
+				domain.push({field:'state',operator:'=',value:'closed'});
+				domain.push({field:'overPourcent',operator:'>',value:'100.0'});
+			}
+			else{
+				optionSearch.filter = this.options.filter;
+			}
+		}
+		//'Unbuild' domain objectify to be able to add other filters (and objectify when all filters are added
+		var searchDomain = app.calculSearch(optionSearch, app.Models.Intervention.prototype.searchable_fields);
+		_.each(searchDomain,function(item, index){
+			domain.push(item);
+		});	
+		
+		this.options.page = app.calculPageOffset(this.options.page);
+
+		// Create Fetch params //
+		var fetchParams = {
+			silent : true,
+			data   : {
+				limit  : app.config.itemsPerPage,
+				offset : this.options.page.offset,
+				filters: app.objectifyFilters(domain)
+			}
+		};
+		if(!_.isUndefined(this.options.sort)){
+			fetchParams.data.sort = this.options.sort.by+' '+this.options.sort.order;
+		}
+		
+		fetchParams.data.fields = this.collections.interventions.fieldsOE;
+		app.loader('display');
+		
+		var deferred = $.Deferred();
+		//retrieve interventions and tasks associated (use domain ('project_id','in',[...] to retrieve tasks associated)
+		this.collections.interventions.fetch(fetchParams)
+		.done(function(){
+			if(self.collections.interventions.cpt > 0){
+				self.collections.tasks.fetch({silent: true,data: {filters: {0:{'field':'project_id.id','operator':'in','value':self.collections.interventions.pluck('id')}}}})
+				.done(function(){
+					deferred.resolve();
+				})
+				.fail(function(e){
+					console.error(e);
+				})
+			}
+			else{
+				deferred.resolve();
+			}
+		})
+		.fail(function(e){
+			console.error(e);
+		})
+		.always(function(){
+			app.loader('hide');
+		});
+		
+		return deferred;
+	}
   
 });
 
