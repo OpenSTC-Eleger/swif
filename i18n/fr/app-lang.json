@@ -288,7 +288,8 @@
 		"taskSaveOk"			: "Tâche correctement enregistrée",
 		"requestValidOk"        : "Demande d'intervention validée",
 		"requestRefuseOk"       : "Demande d'intervention refusée",
-		"requestConfirmOk"      : "Demande d'intervention remontée au DST"
+		"requestConfirmOk"      : "Demande d'intervention remontée au DST",
+		"interventionSaveOK"	: "Intervention correctement enregistrée"
 	},
 
 	"viewsTitles" : {

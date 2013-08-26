@@ -162,6 +162,10 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 			console.log(data);
 			if(self.create){
 				self.model.setId(data);
+				self.model.fetch({silent: true, data: {fields: app.views.interventions.collections.interventions.fields}})
+				.done(function(){
+					app.views.interventions.collections.interventions.add(self.model);
+				});
 				
 			}
 			console.log('Success SAVE INTERVENTION');

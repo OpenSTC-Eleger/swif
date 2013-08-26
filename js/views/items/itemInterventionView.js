@@ -103,9 +103,7 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 		return this;
 	},
 
-	tableAccordion: function(e){
-
-		e.preventDefault();
+	expendAccordion: function(){
 		// Retrieve the intervention ID //
 		//var id = _($(e.target).attr('href')).strRightBack('_');
 		var id = this.model.toJSON().id.toString();
@@ -121,14 +119,20 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 		if(!isExpend){
 			// Set the new visibility to the selected intervention //
 			$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
-			$(e.target).parents('tr.row-object').css({ opacity: '1'});  
-			$(e.target).parents('tr.row-object').children('td').css({ backgroundColor: "#F5F5F5" }); 
+			$(this.el).parents('tr.row-object').css({ opacity: '1'});  
+			$(this.el).parents('tr.row-object').children('td').css({ backgroundColor: "#F5F5F5" }); 
 		}
 		else{
 			$('tr.row-object').css({ opacity: '1'});
 			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 		}
+	},
+	
+	tableAccordion: function(e){
+
+		e.preventDefault();
+		this.expendAccordion();
 		   
 	},
 

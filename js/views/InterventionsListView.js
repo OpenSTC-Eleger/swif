@@ -59,12 +59,46 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		console.log('Interventions view Initialize');
 		this.initCollections().done(function(){
 			app.router.render(self);
-
+			// Unbind & bind the collection //
+			self.collections.interventions.off();
+			self.listenTo(self.collections.interventions, 'add',self.add);
 		});
 	},
 
+	add: function(model){
+		var itemInterView  = new app.Views.ItemInterventionView({ model: model });
+		var itemInterTaskListView = new app.Views.ItemInterventionTaskListView({ inter: model, tasks: [] });
+		$('#inter-items').prepend(itemInterTaskListView.render().el);
+		$('#inter-items').prepend(itemInterView.render().el);
+		itemInterView.highlight().done(function(){
+			itemInterView.expendAccordion();
+		});
 
+		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.interventionSaveOK);
+		
+		this.partialRender();
 
+		//this.options.id = model.getId();
+		app.router.navigate(app.views.interventions.urlBuilder(), {trigger: false, replace: false});
+	},
+
+	/** Partial Render of the view
+	*/
+	partialRender: function (type) {
+		var self = this;
+		$.when(self.collections.interventions.pendingInterventionsCount(),
+				self.collections.interventions.plannedInterventionsCount()).done(function(){
+			$('#nbInterPlanned').html(self.collections.interventions.plannedInterventions);
+			$('#nbInterPending').html(self.collections.interventions.pendingInterventions);
+		});
+		//@TODO: update view to use paginationView
+		
+		//this.collection.count(this.fetchParams).done(function(){
+			//$('#bagdeNbTeams').html(self.collection.cpt);
+			//app.views.paginationView.render();
+		//});
+	},
+	
 	/** Display the view
 	*/
 	render : function() {
@@ -851,7 +885,7 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 			fetchParams.data.sort = this.options.sort.by+' '+this.options.sort.order;
 		}
 		
-		fetchParams.data.fields = this.collections.interventions.fieldsOE;
+		fetchParams.data.fields = this.collections.interventions.fields;
 		app.loader('display');
 		
 		var deferred = $.Deferred();

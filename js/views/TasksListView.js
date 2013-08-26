@@ -98,7 +98,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		$.ajax({
 			url: '/api/open_object/users/' + app.models.user.getUID().toString() + '/scheduled_tasks',
 			type:'GET',
-			data: app.objectifyFilters({'filters':app.objectifyFilters(filter),'fields':app.collections.tasks.fieldsOE}),	
+			data: app.objectifyFilters({'filters':app.objectifyFilters(filter),'fields':app.collections.tasks.fields}),	
 			success: function(data){
 				app.collections.tasks = new app.Collections.Tasks(data);
 				$.when(
