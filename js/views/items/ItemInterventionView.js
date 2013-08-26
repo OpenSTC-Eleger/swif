@@ -95,6 +95,84 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 		return this;
 	},
 
+	/** Print a Task or an Intervention
+	*/
+	print: function(e){
+		e.preventDefault();
+		var self = this;
+		
+		
+		var interJSON = this.model.toJSON();
+
+		// Hide the print Inter section //
+		$('#printTask div.forTask').hide();
+		$('#printTask div.forInter').show();
+		$('#tableTasks tbody').empty();
+
+		// Display all the tasks of the inter //
+		_.each(interJSON.tasks, function(task, i){
+			var taskJSON = app.views.interventions.collections.tasks.get(task).toJSON();
+			$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+taskJSON.name+'</td><td>'+app.decimalNumberToTime(taskJSON.planned_hours, 'human')+'</td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td></tr>');
+		})
+
+		var deferred = $.Deferred();
+		deferred.always(function(){
+			$('#interName').html(interJSON.name);
+			$('#interDescription').html(interJSON.description);
+			$('#interService').html(!interJSON.service_id?'':interJSON.service_id[1]);
+
+			$('#interDateCreate').html(moment(interJSON.create_date).format('LL'));
+			console.info(interJSON);
+			console.log(interJSON);
+			if(interJSON.date_deadline != false){
+				$('#interDeadline').html(' / ' + moment(interJSON.date_deadline).format('LL'));
+			}
+			$('#interPlace').html(interJSON.site1[1]);
+			$('#interPlaceMore').html(interJSON.site_details);
+
+			$('#printTask').printElement({
+				leaveOpen	: true,
+				printMode	: 'popup',
+				overrideElementCSS:[
+					{ href:'css/vendors/print_table.css', media: 'all'}
+				]
+			});
+		});
+		if(!interJSON.ask_id){
+			
+			$('#claimentName').html(interJSON.create_uid[1]);
+			deferred.resolve();
+		}else{
+			//retrieve ask associated, if exist
+			var ask = new app.Models.Request();
+			ask.setId(interJSON.ask_id[0]);
+			ask.fetch().done(function(){
+				var askJSON = ask.toJSON();
+				if(askJSON.partner_id != false){
+					$('#claimentName').html(askJSON.partner_id[1]+' - '+ !askJSON.partner_address?'':askJSON.partner_address[1]);
+					$('#claimentPhone').html(askJSON.partner_phone);
+					
+				}
+				else{
+					$('#claimentName').html(askJSON.people_name);
+					$('#claimentPhone').html(askJSON.people_phone);
+				}
+	
+				$('#claimentType').html(askJSON.partner_type[1]);
+				deferred.resolve();
+			})
+			.fail(function(e){
+				console.log(e);
+				deferred.reject();
+			});
+		}
+		
+
+	},
+
+
+
+	
 	expendAccordion: function(){
 		// Retrieve the intervention ID //
 		//var id = _($(e.target).attr('href')).strRightBack('_');

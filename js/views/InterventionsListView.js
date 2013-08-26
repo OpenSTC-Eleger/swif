@@ -193,9 +193,9 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 			
 			// Create item intervention view //
 			_.each(self.collections.interventions.models, function(inter, i){
-				var tasks = [];
+				var tasks = new app.Collections.Tasks();
 				_.each(inter.toJSON().tasks,function(item,i){
-					tasks.push(self.collections.tasks.get(item));
+					tasks.add(self.collections.tasks.get(item));
 				});
 				var itemInterventionView = new app.Views.ItemInterventionView({model: inter});
 				$('#inter-items').append(itemInterventionView.render().el);
@@ -209,40 +209,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		$(this.el).hide().fadeIn();
 		return this;
 	},
-
-
-
-	/** Fonction collapse table row
-	*/
-//	tableAccordion: function(e){
-//
-//		e.preventDefault();
-//		// Retrieve the intervention ID //
-//		var id = _($(e.target).attr('href')).strRightBack('_');
-//
-//
-//		var isExpend = $('#collapse_'+id).hasClass('expend');
-//
-//		// Reset the default visibility //
-//		$('tr.expend').css({ display: 'none' }).removeClass('expend');
-//		$('tr.row-object').css({ opacity: '0.45'});
-//		$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-//		
-//		// If the table row isn't already expend //       
-//		if(!isExpend){
-//			// Set the new visibility to the selected intervention //
-//			$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
-//			$(e.target).parents('tr.row-object').css({ opacity: '1'});  
-//			$(e.target).parents('tr.row-object').children('td').css({ backgroundColor: "#F5F5F5" }); 
-//		}
-//		else{
-//			$('tr.row-object').css({ opacity: '1'});
-//			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-//			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
-//		}
-//		   
-//	},
-
 
 
 	getTarget:function(e) {    	
@@ -270,36 +236,7 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		new app.Views.ModalInterventionView(params);
 	},
 	
-	/** Display the form to add a new Task
-	*/
-	displayModalAddTask: function(e){
-		this.getTarget(e);
-		
-		// Display only categories in dropdown belongs to intervention //
-		var categoriesFiltered = new app.Collections.CategoriesTasks();
-		var inter = this.collections.interventions.get(this.pos);
-		var options = {};
-		if( inter) {
-			var interJSON = inter.toJSON();
-			if(interJSON.service_id.length > 0){
-				var domain = {0:{field:'service_ids.id',operator:'=','value':interJSON.service_id[0]}};
-			}
-			options.data = {filters: domain};
-		}
-		categoriesFiltered.fetch(options).done(function(){
-			app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
-					collection: categoriesFiltered});
-			app.views.selectListAssignementsView.clearAll();
-			app.views.selectListAssignementsView.addEmptyFirst();
-			app.views.selectListAssignementsView.addAll();
-		})
-		.fail(function(e){
-			console.log(e);
-		})
-		
-		$('#modalAddTask').modal();
-		
-	},
+
 
 
 
@@ -562,54 +499,7 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 
 
 
-	/** Save the Task
-	*/
-	saveTask: function(e){
-		var self = this;
-
-		e.preventDefault();
-
-		input_category_id = null;
-		if( app.views.selectListAssignementsView != null ) {
-			 var selectItem = app.views.selectListAssignementsView.getSelected();
-			 if( selectItem ) {
-				 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
-			 }
-		}
-		 
-//	     input_equipment_id = null;
-//	     if( app.views.selectListEquipmentsView != null ) {
-//	    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
-//	    	 if( selectItem ) {
-//	    		 input_equipment_id = selectItem.toJSON().id
-//	    	 }
-//	     }
-
-
-		 var duration = $("#taskHour").val().split(":");
-		 var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
-
-		 var params = {
-			 project_id: this.pos,
-			 //equipment_id: input_equipment_id,
-			 name: this.$('#taskName').val(),
-			 category_id: input_category_id,
-			 planned_hours: mDuration.asHours(),
-		 };
-
-		 var taskModel = new app.Models.Task(params);
-		 taskModel.save().done(function(data){
-			$('#modalAddTask').modal('hide');
-			route = Backbone.history.fragment;
-			Backbone.history.loadUrl(route);
-		 })
-		 .fail(function(e){
-			 console.log(e);
-		 });
-	},
-
-
-
+	
 
 	/** Delete task
 	*/
@@ -691,103 +581,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		},false);
 	},
 
-
-
-	/** Print a Task or an Intervention
-	*/
-	print: function(e){
-		e.preventDefault();
-		var self = this;
-		this.getTarget(e);
-		
-		if($(e.target).data('action') == 'inter'){
-
-			console.log(this.selectedInter);
-			
-			this.selectedInter = this.collections.interventions.get(this.pos);
-			var interJSON = this.selectedInter.toJSON();
-
-			// Hide the print Inter section //
-			$('#printTask div.forTask').hide();
-			$('#printTask div.forInter').show();
-			$('#tableTasks tbody').empty();
-
-			// Display all the tasks of the inter //
-			_.each(interJSON.tasks, function(task, i){
-				var taskJSON = self.collections.tasks.get(task).toJSON();
-				$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+taskJSON.name+'</td><td>'+app.decimalNumberToTime(taskJSON.planned_hours, 'human')+'</td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td></tr>');
-			})
-		}
-		else{
-			this.selectedTask = this.collections.tasks.get(this.pos);
-			var selectedTaskJSON = this.selectedTask.toJSON();
-
-			// Get the inter of the Task //
-			var inter = this.collections.interventions.get(this.selectedTask.toJSON().project_id[0]);
-			var interJSON = inter.toJSON();
-
-			// Hide the print Inter section //
-			$('#printTask div.forInter').hide();
-			$('#printTask div.forTask').show();
-			$('.field').html('');
-
-			$('#taskLabel').html(selectedTaskJSON.name + ' <em>('+selectedTaskJSON.category_id[1]+')</em>');
-			$('#taskPlannedHour').html(app.decimalNumberToTime(selectedTaskJSON.planned_hours, 'human'));
-		}
-		var deferred = $.Deferred();
-		deferred.always(function(){
-			$('#interName').html(interJSON.name);
-			$('#interDescription').html(interJSON.description);
-			$('#interService').html(!interJSON.service_id?'':interJSON.service_id[1]);
-
-			$('#interDateCreate').html(moment(interJSON.create_date).format('LL'));
-			console.info(interJSON);
-			console.log(interJSON);
-			if(interJSON.date_deadline != false){
-				$('#interDeadline').html(' / ' + moment(interJSON.date_deadline).format('LL'));
-			}
-			$('#interPlace').html(interJSON.site1[1]);
-			$('#interPlaceMore').html(interJSON.site_details);
-
-			$('#printTask').printElement({
-				leaveOpen	: true,
-				printMode	: 'popup',
-				overrideElementCSS:[
-					{ href:'css/vendors/print_table.css', media: 'all'}
-				]
-			});
-		});
-		if(!interJSON.ask_id){
-			
-			$('#claimentName').html(interJSON.create_uid[1]);
-			deferred.resolve();
-		}else{
-			//retrieve ask associated, if exist
-			var ask = new app.Models.Request();
-			ask.setId(interJSON.ask_id[0]);
-			ask.fetch().done(function(){
-				var askJSON = ask.toJSON();
-				if(askJSON.partner_id != false){
-					$('#claimentName').html(askJSON.partner_id[1]+' - '+ !askJSON.partner_address?'':askJSON.partner_address[1]);
-					$('#claimentPhone').html(askJSON.partner_phone);
-					
-				}
-				else{
-					$('#claimentName').html(askJSON.people_name);
-					$('#claimentPhone').html(askJSON.people_phone);
-				}
-	
-				$('#claimentType').html(askJSON.partner_type[1]);
-				deferred.resolve();
-			})
-			.fail(function(e){
-				console.log(e);
-				deferred.reject();
-			});
-		}
-		
-
-	},
 
 
 

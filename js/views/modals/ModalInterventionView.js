@@ -71,19 +71,11 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 				app.views.advancedSelectBoxInterventionServicesView = new app.Views.AdvancedSelectBoxView({el: $("#interventionDetailService"), collection: app.Collections.ClaimersServices.prototype}) 
 				app.views.advancedSelectBoxInterventionServicesView.setSearchParam({field:'technical',operator:'=',value:'True'},true)
 				app.views.advancedSelectBoxInterventionServicesView.render();
-//				app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#interventionDetailService"), collection: self.collections.technicalServices})
-//				app.views.selectListServicesView.clearAll();
-//				app.views.selectListServicesView.addEmptyFirst();
-//				app.views.selectListServicesView.addAll();
 
 				
 				// Fill select Places  //
 				app.views.advancedSelectBoxInterventionPlacesView = new app.Views.AdvancedSelectBoxView({el: $("#interventionPlace"), collection: app.Collections.Places.prototype});
-				app.views.advancedSelectBoxInterventionPlacesView.render();
-//				app.views.selectListPlacesView = new app.Views.DropdownSelectListView({el: $("#interventionPlace"), collection: self.collections.places})
-//				app.views.selectListPlacesView.clearAll();
-//				app.views.selectListPlacesView.addEmptyFirst();
-//				app.views.selectListPlacesView.addAll();	
+				app.views.advancedSelectBoxInterventionPlacesView.render();	
 				
 				currentIntervention = self.model.toJSON();
 				
@@ -220,39 +212,5 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 			app.views.advancedSelectBoxInterventionPlacesView.setSearchParam({field:'service_ids.id',operator:'=',value:service},true);
 		}
 	},
-//	initCollections: function(){
-//		var self = this; 
-//		
-//		if(_.isUndefined(this.collections)){this.collections = {}}
-//		if(_.isUndefined(this.collections.technicalServices)){this.collections.technicalServices = new app.Collections.ClaimersServices()}
-//		if(_.isUndefined(this.collections.places)){this.collections.places = new app.Collections.Places()}
-//		
-//		this.create = false;
-//		if(_.isUndefined(this.model)){
-//			this.model = new app.Models.Intervention();
-//			this.create = true
-//		}
-//		var deferred = $.Deferred();
-//		var domain = [{field: 'technical',operator: '=', value: 'True'}]
-//		
-//		this.collections.technicalServices.fetch({data: {filters: app.objectifyFilters(domain)}, silent:true}).done(function(){
-//			var domainPlaces = [{field: 'service_ids', operator: 'in', value: self.collections.technicalServices.pluck('id')}]
-//			$.when(self.collections.places.fetch({data: {filters: app.objectifyFilters(domainPlaces)}}))
-//			.done(function(){
-//				deferred.resolve();
-//			})
-//			.fail(function(e){
-//				console.log(e)
-//			})
-//		})
-//		.fail(function(e){
-//			console.log(e)
-//		})
-//		return deferred;
-//		//search no technical services
-//		//get places according to technicalServices of the user
-//		
-//	}
-
 });
 

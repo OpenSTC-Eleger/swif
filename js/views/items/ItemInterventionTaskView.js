@@ -11,8 +11,7 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 
 	// The DOM events //
 	events       : {
-		'click .btn.addTask'                : 'displayModalAddTask',
-		'submit #formAddTask'         		: 'saveTask',
+
 
 		'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
 		'click button.btnDeleteTask'   		: 'deleteTask',
@@ -131,6 +130,81 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 	},
 
 
+	/** Print a Task or an Intervention
+	*/
+	print: function(e){
+		e.preventDefault();
+		var self = this;
+		
+		var selectedTaskJSON = this.model.toJSON();
+
+		// Get the inter of the Task //
+		var inter = app.views.interventions.collections.interventions.get(selectedTaskJSON.project_id[0]);
+		var interJSON = inter.toJSON();
+
+		// Hide the print Inter section //
+		$('#printTask div.forInter').hide();
+		$('#printTask div.forTask').show();
+		$('.field').html('');
+
+		$('#taskLabel').html(selectedTaskJSON.name + ' <em>('+selectedTaskJSON.category_id[1]+')</em>');
+		$('#taskPlannedHour').html(app.decimalNumberToTime(selectedTaskJSON.planned_hours, 'human'));
+		
+		var deferred = $.Deferred();
+		deferred.always(function(){
+			$('#interName').html(interJSON.name);
+			$('#interDescription').html(interJSON.description);
+			$('#interService').html(!interJSON.service_id?'':interJSON.service_id[1]);
+
+			$('#interDateCreate').html(moment(interJSON.create_date).format('LL'));
+			console.info(interJSON);
+			console.log(interJSON);
+			if(interJSON.date_deadline != false){
+				$('#interDeadline').html(' / ' + moment(interJSON.date_deadline).format('LL'));
+			}
+			$('#interPlace').html(interJSON.site1[1]);
+			$('#interPlaceMore').html(interJSON.site_details);
+
+			$('#printTask').printElement({
+				leaveOpen	: true,
+				printMode	: 'popup',
+				overrideElementCSS:[
+					{ href:'css/vendors/print_table.css', media: 'all'}
+				]
+			});
+		});
+		if(!interJSON.ask_id){
+			
+			$('#claimentName').html(interJSON.create_uid[1]);
+			deferred.resolve();
+		}else{
+			//retrieve ask associated, if exist
+			var ask = new app.Models.Request();
+			ask.setId(interJSON.ask_id[0]);
+			ask.fetch().done(function(){
+				var askJSON = ask.toJSON();
+				if(askJSON.partner_id != false){
+					$('#claimentName').html(askJSON.partner_id[1]+' - '+ !askJSON.partner_address?'':askJSON.partner_address[1]);
+					$('#claimentPhone').html(askJSON.partner_phone);
+					
+				}
+				else{
+					$('#claimentName').html(askJSON.people_name);
+					$('#claimentPhone').html(askJSON.people_phone);
+				}
+	
+				$('#claimentType').html(askJSON.partner_type[1]);
+				deferred.resolve();
+			})
+			.fail(function(e){
+				console.log(e);
+				deferred.reject();
+			});
+		}
+		
+
+	},
+	
 
 	/** Highlight the row item
 	*/

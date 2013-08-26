@@ -24,44 +24,33 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 	// The DOM events //
 	events       : {
 		
-		'click a.printInter'				: 'print',
 		'change .taskEquipment'				: 'fillDropdownEquipment',
-		'click a.buttonCancelInter'			: 'displayModalCancelInter',
-		'submit #formCancelInter' 			: 'cancelInter',
+		'click .btn.addTask'                : 'displayModalAddTask',
 	},
 
 
 
+	
 	/** View Initialization
 	*/
 	initialize : function() {
-//		this.model.off();
-//
-//		// When the model are updated //
-//		this.listenTo(this.model, 'change', this.change);
+		this.options.tasks.off();
+		this.listenTo(this.options.tasks, 'add', this.add);
 	},
 
 
 
-	/** When the model ara updated //
-	*/
-	change: function(model){
-		var self = this;
+	add: function(model){
+		var itemTaskView  = new app.Views.ItemInterventionTaskView({ model: model });
+		$(this.el).find('#row-nested-objects').append(itemTaskView.render().el);
+		itemTaskView.highlight();
+		
+		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.inteventionAddTaskOK);
+		
+		app.views.interventions.partialRender();
 
-		this.render();
-
-		// Highlight the Row and recalculate the className //
-		this.highlight().done(function(){
-//			self.$el.attr('class', _.result(self, 'className'));
-		});
-
-		//app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+infoMessage);
-
-		// Partial Render //
-		//app.views.interventions.partialRender();
+		app.router.navigate(app.views.interventions.urlBuilder(), {trigger: false, replace: false});
 	},
-
-
 
 	/** Display the view
 	*/
@@ -88,7 +77,7 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 
 			//Create item task for each one associated to inter
-			_.each(self.options.tasks, function(task, i){
+			_.each(self.options.tasks.models, function(task, i){
 				var itemInterventionTaskView = new app.Views.ItemInterventionTaskView({model: task});
 				$(self.el).find('#row-nested-objects').append(itemInterventionTaskView.render().el);
 			});
@@ -96,8 +85,13 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 		});
 		return this;
 	},
-
-
+	
+	displayModalAddTask: function(e){
+		e.preventDefault();
+		var self = this;
+		new app.Views.ModalInterventionAddTaskView({el: '#modalAddTask', inter: self.options.inter, tasks: self.options.tasks});
+		
+	},
 
 	/** Highlight the row item
 	*/

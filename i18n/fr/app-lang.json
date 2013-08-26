@@ -290,7 +290,8 @@
 		"requestRefuseOk"       : "Demande d'intervention refusée",
 		"requestConfirmOk"      : "Demande d'intervention remontée au DST",
 		"interventionSaveOK"	: "Intervention correctement enregistrée",
-		"interventionUpdateOK"	: "Intervention correctement mise à jour"
+		"interventionUpdateOK"	: "Intervention correctement mise à jour",
+		"inteventionAddTaskOK" : "Tâche correctement associée à l'intervention"
 		
 	},
 
