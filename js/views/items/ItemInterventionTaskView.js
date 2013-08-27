@@ -42,12 +42,19 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 
 	destroyTask: function(model){
 		var self = this;
-		this.highlight().done(function(){
-			self.remove();
-		})
+		this.inter.fetch().done(function(){
+			if(self.inter.toJSON().tasks.length > 0){
+				self.highlight().always(function(){
+					self.remove();
+				})
+			}
+			else{
+				self.remove();
+			}
+		});
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.taskDeleteOk);
 		
-		this.inter.fetch();
+		
 
 	},
 
