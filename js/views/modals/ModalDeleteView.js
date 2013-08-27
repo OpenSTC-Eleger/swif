@@ -72,7 +72,7 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 		$(e.target).button('loading');
 
 		// Delete the Model //
-		this.model.destroy()
+		this.model.destroy({wait: true})
 		.done(function(data){
 			self.modal.modal('hide');
 		})
