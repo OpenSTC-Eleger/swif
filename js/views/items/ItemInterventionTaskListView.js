@@ -36,7 +36,6 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 	initialize : function() {
 		this.options.tasks.off();
 		this.listenTo(this.options.tasks, 'add', this.add);
-		this.listenTo(this.options.tasks, 'remove', this.destroyTask);
 	},
 
 
@@ -47,7 +46,8 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 		itemTaskView.highlight();
 		this.updateList();
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.inteventionAddTaskOK);
-		
+		//@TOCHECK: repercute task creation to main tasks collection to be usable by other itemViews
+		app.views.interventions.collections.tasks.add(model);
 		app.views.interventions.partialRender();
 
 		app.router.navigate(app.views.interventions.urlBuilder(), {trigger: false, replace: false});
