@@ -20,29 +20,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 			'click ul.sortable li'				: 'preventDefault',
 
 			'click a.modalCreateInter'			: 'displayModalSaveInter',
-			
-//			'click .btn.addTask'                : 'displayModalAddTask',
-//			'submit #formAddTask'         		: 'saveTask',
-//
-//			'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
-//			'click button.btnDeleteTask'   		: 'deleteTask',
-//
-//			'click a.buttonCancelInter'			: 'displayModalCancelInter',
-//			'submit #formCancelInter' 			: 'cancelInter',
-//
-//			'click a.buttonCancelTask'			: 'displayModalCancelTask',
-//			'submit #formCancelTask' 			: 'cancelTask',
-//
-//			'click a.printTask, a.printInter'	: 'print',
-//
-//			'click .buttonTaskDone, .buttonNotFinish' : 'displayModalTaskDone',
-//			'submit #formTaskDone'   			: 'taskDone',
-//			'click a.linkSelectUsersTeams'		: 'changeSelectListUsersTeams',
-//			'click .linkRefueling'				: 'accordionRefuelingInputs',
-//
-//			'change .taskEquipment'				: 'fillDropdownEquipment',
-
-//			'click a.accordion-object'    		: 'tableAccordion',
 
 			'click #filterStateInterList li:not(.disabled) a' 	: 'setFilter'
 		}, 
@@ -67,7 +44,7 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 
 	add: function(model){
 		var itemInterView  = new app.Views.ItemInterventionView({ model: model });
-		var itemInterTaskListView = new app.Views.ItemInterventionTaskListView({ inter: model, tasks: [] });
+		var itemInterTaskListView = new app.Views.ItemInterventionTaskListView({ inter: model, tasks: new app.Collections.Tasks() });
 		$('#inter-items').prepend(itemInterTaskListView.render().el);
 		$('#inter-items').prepend(itemInterView.render().el);
 		itemInterView.highlight().done(function(){
@@ -136,32 +113,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 
 
 			$(self.el).html(template);
-//
-//
-//			$('*[data-toggle="tooltip"]').tooltip();
-//			$('*[rel="popover"]').popover({trigger: 'hover'});
-//			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
-//			$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
-//
-//
-//			$('tr.row-object').css({ opacity: '1'});
-//			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-//			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
-//
-//
-//			$('#equipmentsDone, #equipmentsListDone').sortable({
-//				connectWith: 'ul.sortableEquipmentsList',
-//				dropOnEmpty: true,
-//				forcePlaceholderSize: true,
-//				forceHelperSize: true,
-//				placeholder: 'sortablePlaceHold',
-//				containment: '.equipmentsDroppableAreaDone',
-//				cursor: 'move',
-//				opacity: '.8',
-//				revert: 300,
-//				receive: function(event, ui){
-//					//self.saveServicesCategories();
-//				}
 
 			// Display filter on the table //
 			if(!_.isUndefined(self.options.filter)){
@@ -182,12 +133,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 				$('li.delete-filter').addClass('disabled');
 			}
 
-
-//			// Set the focus to the first input of the form //
-//			$('#modalCancelInter, #modalDeleteTask, #modalAddTask, #modalCancelTask').on('shown', function (e) {
-//				$(this).find('input, textarea').first().focus();
-//			})
-			
 			// Call the render Generic View //
 			app.Views.GenericListView.prototype.render(self.options);
 			
@@ -234,16 +179,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 //			params.model = this.collections.interventions.get(this.pos);
 //		}
 		new app.Views.ModalInterventionView(params);
-	},
-	
-
-
-	displayModalCancelInter: function(e) {
-		this.getTarget(e);
-		this.selectedInter = this.collections.interventions.get(this.pos);
-		this.selectedInterJSON = this.selectedInter.toJSON();
-		$('#infoModalCancelInter').children('p').html(this.selectedInterJSON.name);
-		$('#infoModalCancelInter').children('small').html(this.selectedInterJSON.description);
 	},
 
 	displayModalCancelTask: function(e) {
@@ -395,25 +330,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 			});
 
 	},
-
-
-
-	
-
-	
-
-	/** Cancel Intervention
-	*/
-	cancelInter: function(e){
-		e.preventDefault();
-		
-		this.selectedInter.cancel($('#motifCancel').val()).done(function(data){
-			$('#modalCancelInter').modal('hide');
-			route = Backbone.history.fragment;
-			Backbone.history.loadUrl(route);
-		})
-	},
-
 
 	/** Cancel Task
 	*/

@@ -36,6 +36,7 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 	initialize : function() {
 		this.options.tasks.off();
 		this.listenTo(this.options.tasks, 'add', this.add);
+		this.listenTo(this.options.tasks, 'remove', this.destroyTask);
 	},
 
 
@@ -44,14 +45,30 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 		var itemTaskView  = new app.Views.ItemInterventionTaskView({ model: model, inter: this.options.inter});
 		$(this.el).find('#row-nested-objects').append(itemTaskView.render().el);
 		itemTaskView.highlight();
-		
+		this.updateList();
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.inteventionAddTaskOK);
 		
 		app.views.interventions.partialRender();
 
 		app.router.navigate(app.views.interventions.urlBuilder(), {trigger: false, replace: false});
 	},
+	
+	destroyTask: function(model){
+		//check if there is tasks, if not, display message infos instead of table
+		this.updateList();
+	},
 
+	updateList: function(){
+		if(this.options.tasks.length == 0){
+			$(this.el).find('.noTask').css({display:'block'});
+			$(this.el).find('.table-nested-objects').css({display: 'none'});
+		}
+		else{
+			$(this.el).find('.noTask').css({display: 'none'});
+			$(this.el).find('.table-nested-objects').css({display: 'table'});
+		}
+	},
+	
 	/** Display the view
 	*/
 	render : function() {
@@ -76,8 +93,12 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 
+			//check if there is tasks, if not, display message infos instead of table
+			self.updateList();
+			
 			//Create item task for each one associated to inter
 			_.each(self.options.tasks.models, function(task, i){
+				self.options.tasks.listenTo(task, 'destroy', this.destroyTask);
 				var itemInterventionTaskView = new app.Views.ItemInterventionTaskView({model: task, inter: self.options.inter});
 				$(self.el).find('#row-nested-objects').append(itemInterventionTaskView.render().el);
 			});

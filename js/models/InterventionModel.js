@@ -150,7 +150,7 @@ app.Models.Intervention = Backbone.Model.extend({
 		//params.email_text = app.Models.Intervention.status.cancelled.translation;
 		params.cancel_reason = cancel_reason;
 		//app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
-		return this.save(params,{patch:true})
+		return this.save(params,{patch:true, wait: true})
 	}
 
 

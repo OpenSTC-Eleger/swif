@@ -287,6 +287,7 @@
 		"teamCreateOk"			: "Equipe correctement enregistrée",
 		"taskDeleteOk"			: "Tâche correctement supprimée",
 		"taskSaveOk"			: "Tâche correctement enregistrée",
+		"taskUpdateOk"			: "Tâche correctement mise à jour",
 		"requestValidOk"        : "Demande d'intervention validée",
 		"requestRefuseOk"       : "Demande d'intervention refusée",
 		"requestConfirmOk"      : "Demande d'intervention remontée au DST",

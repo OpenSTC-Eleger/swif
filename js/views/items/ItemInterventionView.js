@@ -15,7 +15,6 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 		'click a.printInter'				: 'print',
 		'change .taskEquipment'				: 'fillDropdownEquipment',
 		'click a.buttonCancelInter'			: 'displayModalCancelInter',
-		'submit #formCancelInter' 			: 'cancelInter',
 		'click a.accordion-object'    		: 'tableAccordion',
 		'click a.modalSaveInter'			: 'displayModalSaveInter',
 	},
@@ -214,6 +213,14 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 		params.model = this.model;
 		new app.Views.ModalInterventionView(params);
 	},
+	
+
+
+	displayModalCancelInter: function(e) {
+		e.preventDefault();
+		new app.Views.ModalCancelInterventionView({el: '#modalCancelInter', model: this.model});
+	},
+
 	
 	/** Highlight the row item
 	*/

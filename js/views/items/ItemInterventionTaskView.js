@@ -32,7 +32,7 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize : function() {
-		this.model.off();
+		//this.model.off();
 
 		// When the model are updated //
 		this.listenTo(this.model, 'change', this.change);
@@ -58,30 +58,10 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 
 		this.render();
 
-		// Highlight the Row and recalculate the className //
-		this.highlight().done(function(){
-//			self.$el.attr('class', _.result(self, 'className'));
-		});
+		this.highlight().done();
 
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.taskUpdateOk);
 
-		// Set the info message for the notification //
-//		switch(model.getState()){
-//			case app.Models.Request.status.refused.key: 
-//				var infoMessage = app.lang.infoMessages.requestRefuseOk;
-//			break;
-//			case app.Models.Request.status.confirm.key:
-//				var infoMessage = app.lang.infoMessages.requestConfirmOk;
-//			break;
-//			case app.Models.Request.status.valid.key:
-//				var infoMessage = app.lang.infoMessages.requestValidOk;
-//			break;
-//		}
-
-
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+infoMessage);
-
-		// Partial Render //
-		app.views.interventions.partialRender();
 	},
 
 
