@@ -175,7 +175,20 @@ app.Models.Task = Backbone.Model.extend({
 		return this.get('state');
 	},
 
-
+	getInformations: function(){
+		var ret = {};
+		ret.name = this.getName();
+		ret.infos = {};
+		ret.infos.key = app.lang.associatedPlace;
+		if(!_.isUndefined(this.site1)){
+			ret.infos.value = this.site1[1];
+		}
+		else{
+			ret.infos.value = '';
+		}
+		
+		return ret;
+	},
 
 	/** Model Initialization
 	*/

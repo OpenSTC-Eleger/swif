@@ -29,6 +29,7 @@
 	"place" 				: "site",
 	"defaultPlace" 			: "site par défaut",
 	"parentPlace" 			: "site parent",
+	"associatedPlace"	 	: "Site associé",
 	"parentService" 		: "service parent",
 	"technicalService" 		: "service technique associé par défaut",
 	"claiment" 				: "demandeur",

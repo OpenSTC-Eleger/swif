@@ -14,7 +14,6 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 
 
 		'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
-		'click button.btnDeleteTask'   		: 'deleteTask',
 		
 		'click a.buttonCancelTask'			: 'displayModalCancelTask',
 		'submit #formCancelTask' 			: 'cancelTask',
@@ -37,9 +36,20 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 
 		// When the model are updated //
 		this.listenTo(this.model, 'change', this.change);
+		this.listenTo(this.model, 'destroy', this.destroyTask);
+		this.inter = this.options.inter;
 	},
 
+	destroyTask: function(model){
+		var self = this;
+		this.highlight().done(function(){
+			self.remove();
+		})
+		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.taskDeleteOk);
+		
+		this.inter.fetch();
 
+	},
 
 	/** When the model ara updated //
 	*/
@@ -204,7 +214,103 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 		
 
 	},
+
+	/** Prepare Modals
+	*/
+	displayModalDeleteTask: function(e){
+		e.preventDefault();
+		var name = this.model.toJSON().name;
+		new app.Views.ModalDeleteView({el: '#modalDeleteTask', model: this.model, modalTitle: app.lang.viewsTitles.deleteTask, modalConfirm: app.lang.warningMessages.confirmDeleteTask});
+	},
+
+	displayModalTaskDone: function(e){
+		var button = $(e.target);
+		var self = this;
+		// Retrieve the Task //
+		if(!button.is('i')){
+			this.selectedTask = this.collections.tasks.get(button.data('taskid'));
+		}
+		else{
+			this.selectedTask = this.collections.tasks.get(button.parent().data('taskid'));	
+		}
+
 	
+
+		// Display or nor the Remaining Time Section //
+		if(button.hasClass('buttonNotFinish') || button.hasClass('iconButtonNotFinish')){
+			$('#remainingTimeSection').show();
+		}
+		else{
+			$('#remainingTimeSection').hide();
+		}
+
+
+		this.selectedTaskJSON = this.selectedTask.toJSON();
+		//var intervention = this.collections.interventions.get(this.selectedTaskJSON.project_id[0]).toJSON();
+		//var serviceInter = intervention.service_id;
+
+
+		if( _.isUndefined(this.officersDropDownList) )
+			this.officersDropDownList = new app.Collections.Officers( app.models.user.attributes.officers );
+		if( _.isUndefined(this.teamsDropDownList) )
+			this.teamsDropDownList = new app.Collections.Teams( app.models.user.attributes.teams );
+
+
+		// Fill Officer List //
+		app.views.selectListOfficersTeamsView = new app.Views.DropdownSelectListView({el: $('#selectUsersTeams'), collection: this.officersDropDownList})
+		app.views.selectListOfficersTeamsView.clearAll();
+		app.views.selectListOfficersTeamsView.addEmptyFirst();
+		app.views.selectListOfficersTeamsView.addAll();
+
+
+		// Set Task Informations //
+		$('#infoModalTaskDone').children('p').html(this.selectedTaskJSON.name);
+		$('#infoModalTaskDone').children('small').html('<i class="icon-pushpin"></i>&nbsp;' + this.selectedTaskJSON.project_id[1]);
+
+
+		$("#startDate").val(  moment().format('L') );
+		$("#endDate").val( moment().format('L') );
+
+		// Set Task Planned Hour //
+		$("#startHour").timepicker('setTime', moment().format('LT') );
+		$("#endHour").timepicker('setTime', moment().add('hour', this.selectedTaskJSON.planned_hours).format('LT') );
+
+		
+//		// Filter Equipment by service on intervention's task //
+		var task_id = this.selectedTask.id;
+		
+		// Search only vehicles //
+		$.ajax({
+			url: '/api/openstc/tasks/' + task_id.toString() + '/available_vehicles',
+			
+			success: function(data){
+				// Fill equipment List //
+				self.collections.vehicles = new app.Collections.Equipments(data);
+				app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentDone"), collection: self.collections.vehicles})
+				app.views.selectListEquipmentsView.clearAll();
+				app.views.selectListEquipmentsView.addEmptyFirst();
+				app.views.selectListEquipmentsView.addAll();
+			}
+		});
+		
+		// Search only materials //
+		$('#equipmentsListDone').empty();
+		$.ajax({
+			url: '/api/openstc/tasks/' + task_id.toString() + '/available_equipments',
+			success: function(data){
+				// Display the remain materials //
+				var nbRemainMaterials = 0;
+				for(i in data){
+					
+					nbRemainMaterials++;
+					$('#equipmentsListDone').append('<li id="equipment_'+data[i].id+'"><a href="#"><i class="icon-wrench"></i> '+ data[i].name + '-' + data[i].type + ' </a></li>');
+				}
+				$('#badgeNbEquipmentsDone').html(nbRemainMaterials);			
+			}
+		});
+	},
+
+
 
 	/** Highlight the row item
 	*/
