@@ -26,7 +26,12 @@ app.Views.PlanningView = Backbone.View.extend({
 
 	/** View Initialization
 	*/
-	initialize : function() {
+	initialize : function() {		
+		var self = this;
+	    console.log("Planing Details view intialization")
+	    this.initCollections().done(function(){
+	    	app.router.render(self);
+	    })
 	},
 
 
@@ -49,12 +54,11 @@ app.Views.PlanningView = Backbone.View.extend({
 			var template = _.template(templateData, {
 				lang: app.lang,
 				officers: app.models.user.getOfficers(),
-				teams: app.models.user.getTeams(),				
+				teams:  app.models.user.getTeams(),				
 			});
 
 			$(self.el).html(template);
 
-			// If a plannig was Selected //
 			if(sessionStorage.getItem(self.sstoragePlanningSelected) != null){
 				
 				// Get the planning ID //
@@ -91,7 +95,7 @@ app.Views.PlanningView = Backbone.View.extend({
 			}
 			
 			//Initialize inter panel view
-			app.views.planningInterPanelView = new app.Views.PlanningInterPanelView({planning : this}).render()
+			app.views.planningInterListView = new app.Views.PlanningInterListView({planning : this}).render()
 				
 			
 		});
@@ -134,10 +138,46 @@ app.Views.PlanningView = Backbone.View.extend({
 		interModel.fetch().done(
 			function(){				
 				app.collections.interventions.add(interModel);
-				app.views.planningInterPanelView.render();
+				app.views.planningInterListView.render();
 			}
 		)		
 	},
+	
+	
+	initCollections: function(){
+			
+		// Check if the collections is instantiate //	
+		if(_.isUndefined(this.collections)){this.collections = {}}
+		if(_.isUndefined(this.collections.interventions)){this.collections.interventions = new app.Collections.Interventions();}
+		if(_.isUndefined(this.collections.tasks)){ this.collections.tasks = new app.Collections.Tasks(); }
+		if(_.isUndefined(this.collections.officers)){this.collections.officers = new app.Collections.Officers()}
+		if(_.isUndefined(this.collections.teams)){this.collections.teams = new app.Collections.Teams()}
+		
+		
+		var self = this;
+		
+		// Fetch the collections //
+		app.loader('display');
+		
+		return $.when(app.models.user.queryManagableOfficers())
+		.done(function(){
+			$.when(app.models.user.queryManagableTeams())
+//				.done(function(){
+//				})
+				.fail(function(e){
+					console.log(e);
+				})
+				.always(function(){
+					app.loader('hide');	
+				});	
+				
+		})
+		.fail(function(e){
+			console.log(e);
+		})
+		
+
+	}
 
 });
 

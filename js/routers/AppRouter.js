@@ -241,8 +241,8 @@ app.Router = Backbone.Router.extend({
 			if(_.isUndefined(app.collections.tasks)){ app.collections.tasks = new app.Collections.Tasks(); }
 			if(_.isUndefined(app.collections.interventions)){ app.collections.interventions = new app.Collections.Interventions(); }
 			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
-			if(_.isUndefined(app.collections.officers)){ app.collections.officers = new app.Collections.Officers(); }
-			if(_.isUndefined(app.collections.teams)){ app.collections.teams = new app.Collections.Teams(); }
+			//if(_.isUndefined(app.collections.officers)){ app.collections.officers = new app.Collections.Officers(); }
+			//if(_.isUndefined(app.collections.teams)){ app.collections.teams = new app.Collections.Teams(); }
 			if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
 			if(_.isUndefined(app.collections.categoriesTasks)){ app.collections.categoriesTasks = new app.Collections.CategoriesTasks(); }
 			if(_.isUndefined(app.collections.absentTypes)){ app.collections.absentTypes = new app.Collections.AbsentTypes(); }
@@ -257,8 +257,8 @@ app.Router = Backbone.Router.extend({
 					$.when(
 						app.collections.interventions.fetch(),
 						app.collections.claimersServices.fetch(),
-						app.collections.officers.fetch(),
-						app.collections.teams.fetch(),
+						//app.collections.officers.fetch(),
+						//app.collections.teams.fetch(),
 						app.collections.equipments.fetch(),
 						app.collections.places.fetch(),
 						app.collections.categoriesTasks.fetch(),
@@ -267,7 +267,7 @@ app.Router = Backbone.Router.extend({
 					.done(function(){
 						//{calendarId: self.calendarId, weekSelected: self.weekSelected}
 						app.views.planningView = new app.Views.PlanningView();
-						self.render(app.views.planningView);
+						//self.render(app.views.planningView);
 						//app.loader('hide');
 					})
 					.fail(function(e){

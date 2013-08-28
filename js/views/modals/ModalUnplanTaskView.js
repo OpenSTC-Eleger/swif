@@ -10,12 +10,15 @@ app.Views.ModalUnplanTaskView =  Backbone.View.extend({
 
 	createMode : false,
 
-
+	
 	// The DOM events //
 	events: function(){
-		'click #btnRemoveTask'      : 'removeTaskFromSchedule'
+		return _.defaults({
+			'click #btnRemoveTask'      : 'removeTaskFromSchedule'
+		}, 
+			app.Views.GenericModalView.prototype.events
+		);
 	},
-
 
 
 	/** View Initialization

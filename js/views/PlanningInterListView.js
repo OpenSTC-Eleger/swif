@@ -1,40 +1,35 @@
 /******************************************
 * Pagination View
 */
-app.Views.PlanningInterPanelView = Backbone.View.extend({
+app.Views.PlanningInterListView = Backbone.View.extend({
 
-	el           : '#planningInterPanel',
+	el           : '#planningInters',
 	
-	templateHTML : 'planningInterPanel',
+	templateHTML : 'planningInters',
 
 	currentRoute : null,
 
 
 	// The DOM events //
 	events: {
-		'click .buttonCancelInter'                : 'setInfoModalCancelInter',
-		'click .modalDeleteTask'                  : 'setInfoModalDeleteTask',
-	
-		'click button.linkToInter'                : 'linkToInter',
-	
-		'submit #formCancelInter'                 : 'cancelInter',
-		'click button.btnDeleteTask'              : 'deleteTask',
-	
-		'click .btn.addTaskPlanning'              : 'displayFormAddTask',
+		//'click .buttonCancelInter'                : 'setInfoModalCancelInter',
+		//'click button.linkToInter'                : 'linkToInter',
+		//'submit #formCancelInter'                 : 'cancelInter',
 		'click .btn.addInterventionPlanning'      : 'displayFormAddIntervention',
-	
-		'submit #formAddTask'                     : 'saveTask',   
 		'submit #formAddIntervention'             : 'saveIntervention', 
+		
+		'click .modalDeleteTask'                  : 'setInfoModalDeleteTask',
+		'click button.btnDeleteTask'              : 'deleteTask',
+		//'click .btn.addTaskPlanning'              : 'displayFormAddTask',
+		//'submit #formAddTask'                     : 'saveTask', 
+		
 		'switch-change .calendarSwitch'           : 'scheduledInter',
 		'switch-change #switchWithForeman'        : 'setForemanInTeam',
 	
 	
-		'change #interventionDetailService'       : 'fillDropdownService',
-	
-		'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilter',
-	
-		'click #listAgents li a, #listTeams li a' :          'selectPlanning',
-	
+		'change #interventionDetailService'       : 'fillDropdownService',	
+		'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilter',	
+		'click #listAgents li a, #listTeams li a' :          'selectPlanning',	
 		
 	},
 
@@ -45,21 +40,26 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 	initialize: function() {
 		
 		var self = this;
-
+		console.log("Planing Inter panel view intialization")
+	    this.initCollections().done(function(){
+	    	self.collections.tasks.off();	
+			self.listenTo(self.collections.tasks, 'change', self.updateTask);
+	    	app.router.render(self);
+	    })
 		//this.initCollection().done(function(){
 			// Unbind & bind the collection //
-		this.collection = app.collections.tasks;
-		this.collection.off();	
-		this.listenTo(self.collection, 'change', self.updateTask);
-		//self.listenTo(self.taskCollection, 'add', self.updateTask);
-		self.render()
+//		this.collection = this.options.planning.collections.tasks;
+//		this.collection.off();	
+//		this.listenTo(self.collection, 'change', self.updateTask);
+//		//self.listenTo(self.taskCollection, 'add', self.updateTask);
+//		self.render()
 			//app.router.render(self);
 		//});
 
 	},
 
 	updateTask: function(model) {
-		this.collection.add(model);
+		this.collections.tasks.add(model);
 		this.render();	
 	},
 
@@ -69,7 +69,7 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 	render: function() {
 		var self = this;
 		
-		var interventions = app.collections.interventions.models;
+		var interventions = this.collections.interventions.models;
 
 		
 		// Collection Filter if not null / Otherwise we display only To Schedule interventions //
@@ -113,7 +113,19 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 				$(this).find('input').first().focus();
 			})
 			
-			self.initDragObject();
+			_.each(self.collections.interventions.models, function(inter, i){
+				var tasks = [];
+				_.each(inter.toJSON().tasks,function(item,i){ 
+					tasks.push(self.collections.tasks.get(item));
+				});
+				var itemPlaningInterView = new app.Views.ItemPlanningInterView({model: inter});
+				$('#inter-items').append(itemPlaningInterView.render().el);
+				var itemPlanningInterTaskListView = new app.Views.ItemPlanningInterTaskListView({inter: inter, tasks: tasks});
+				$('#inter-items').append(itemPlanningInterTaskListView.render().el);
+				
+			});
+			
+			//self.initDragObject();
 		});
 		return this;
 	},
@@ -128,7 +140,7 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 		/** Make the external event Draggable
 		*/
 		initDragObject: function() {
-			tasks = app.collections.tasks.toJSON();
+			tasks = self.collections.tasks.toJSON();
 			
 			_.each(tasks, function (task, i){
 
@@ -561,27 +573,44 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 		},
 		
 		
-		initCollection: function(){
+		initCollections: function(){
 			var self = this;
 			
 			// Check if the collections is instantiate //
-			if(_.isUndefined(app.collections.tasks)){ app.collections.tasks = new app.Collections.Tasks(); }
-			this.collection = app.collections.tasks;
+			if(_.isUndefined(this.collections)){this.collections = {}}
+			if(_.isUndefined(this.collections.interventions)){this.collections.interventions = new app.Collections.Interventions();}
+			if(_.isUndefined(this.collections.tasks)){ this.collections.tasks = new app.Collections.Tasks(); }
 		
 			
-			// Create Fetch params //
-			var fetchParams = {};
-
-		
-			var deferred = $.Deferred();
 			
 			// Fetch the collections //
 			app.loader('display');
-			$.when(
-				self.collection.fetch(fetchParams)
-			)
+
+			var deferred = $.Deferred();
+			//retrieve interventions and tasks associated (use domain ('project_id','in',[...] to retrieve tasks associated)
+			
+			// Create Fetch params //
+			fetchParams = {
+				silent : true,
+				data   : {
+					limit  : 5,
+				}
+			};
+			
+			this.collections.interventions.fetch(fetchParams)
 			.done(function(){
-				deferred.resolve();
+				if(self.collections.interventions.cpt > 0){
+					self.collections.tasks.fetch({silent: true,data: {filters: {0:{'field':'project_id.id','operator':'in','value':self.collections.interventions.pluck('id')}}}})
+					.done(function(){
+						deferred.resolve();
+					})
+					.fail(function(e){
+						console.error(e);
+					})
+				}
+				else{
+					deferred.resolve();
+				}
 			})
 			.fail(function(e){
 				console.error(e);
@@ -589,7 +618,7 @@ app.Views.PlanningInterPanelView = Backbone.View.extend({
 			.always(function(){
 				app.loader('hide');
 			});
-		
+			
 			return deferred;
 		
 		},
