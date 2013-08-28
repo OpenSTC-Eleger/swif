@@ -37,6 +37,7 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 		this.options.tasks.off();
 		this.listenTo(this.options.tasks, 'add', this.add);
 		this.listenTo(this.options.tasks, 'remove', this.destroyTask);
+		this.listenTo(this.options.inter,'change',this.changeInter);
 		
 	},
 
@@ -46,7 +47,7 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 		var itemTaskView  = new app.Views.ItemInterventionTaskView({ model: model, inter: this.options.inter, tasks:this.options.tasks});
 		$(this.el).find('#row-nested-objects').append(itemTaskView.render().el);
 		itemTaskView.highlight();
-		this.updateList();
+		this.partialRender();
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.inteventionAddTaskOK);
 		//@TOCHECK: repercute task creation to main tasks collection to be usable by other itemViews
 		app.views.interventions.collections.tasks.add(model);
@@ -55,9 +56,13 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 		app.router.navigate(app.views.interventions.urlBuilder(), {trigger: false, replace: false});
 	},
 	
+	changeInter: function(model){
+		this.partialRender();
+	},
+	
 	destroyTask: function(model){
 		//check if there is tasks, if not, display message infos instead of table
-		this.updateList();
+		this.partialRender();
 	},
 
 	updateList: function(){
@@ -73,6 +78,14 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 	
 	/** Display the view
 	*/
+	
+	partialRender: function(){
+		this.updateList();
+		if(this.options.inter.toJSON().actions.indexOf('add_task') == -1){
+			$('button.addTask').attr('disabled','disabled');
+		}
+	},
+	
 	render : function() {
 		var self = this;
 
