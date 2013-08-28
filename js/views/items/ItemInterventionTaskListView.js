@@ -43,7 +43,7 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 
 
 	add: function(model){
-		var itemTaskView  = new app.Views.ItemInterventionTaskView({ model: model, inter: this.options.inter});
+		var itemTaskView  = new app.Views.ItemInterventionTaskView({ model: model, inter: this.options.inter, tasks:this.options.tasks});
 		$(this.el).find('#row-nested-objects').append(itemTaskView.render().el);
 		itemTaskView.highlight();
 		this.updateList();
@@ -101,7 +101,7 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 			//Create item task for each one associated to inter
 			_.each(self.options.tasks.models, function(task, i){
 				self.options.tasks.listenTo(task, 'destroy', self.options.tasks.remove);
-				var itemInterventionTaskView = new app.Views.ItemInterventionTaskView({model: task, inter: self.options.inter});
+				var itemInterventionTaskView = new app.Views.ItemInterventionTaskView({model: task, inter: self.options.inter, tasks: self.options.tasks});
 				$(self.el).find('#row-nested-objects').append(itemInterventionTaskView.render().el);
 			});
 			

@@ -210,13 +210,16 @@
 		"timeSpent"			: "Saisie des temps",
 		"removeOfTheSchedule" : "Retirer du planning",
 		"print"				: "Imprimer",
+		"selectAAgentShort" : "Un agent...",
 		"selectAAgent"		: "Sélectionner un agent",
 		"selectAgents"		: "Sélectionner des agents",
+		"selectATeamShort"	: "Une équipe...",
 		"selectAPlace"		: "Sélectionner un site",
 		"selectAPlaceType"	: "Sélectionner un type de site",
 		"selectServices"	: "Sélectionner des services",
 		"selectAService"	: "Sélectionner un service",
-		"selectACategory"	: "Sélectionner une catégorie"
+		"selectACategory"	: "Sélectionner une catégorie",
+		"selectAVehicle"	: "Sélectionner un véhicule"
 	},
 
 	"errorMessages" : {

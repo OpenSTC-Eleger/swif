@@ -64,14 +64,14 @@
 			<ul class="dropdown-menu pull-right text-left">
 				<% if(task.actions.indexOf("light_mode_unfinished") > -1) { %>
 					<li>
-						<a href="#modalTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonNotFinish">
+						<a href="#" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonNotFinish">
 							<i class="icon-time icon-fixed-width iconButtonNotFinish"></i>&nbsp;<%= _.capitalize(lang.notFinished) %>
 						</a>
 					</li>
 				<%}%>
 				<% if(task.actions.indexOf("cancel") > -1) { %>
 					<li>
-						<a href="#modalCancelTask" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonCancelTask">
+						<a href="#" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonCancelTask">
 							<i class="icon-ban-circle icon-fixed-width"></i>&nbsp;<%= _.capitalize(lang.actions.cancel) %>
 						</a>
 					</li>
