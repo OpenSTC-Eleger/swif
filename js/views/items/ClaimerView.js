@@ -105,7 +105,7 @@ app.Views.ClaimerView = Backbone.View.extend({
 	showEditModal: function(e){
 		e.preventDefault(); e.stopPropagation();
 
-		app.views.modalClaimerEdit = new app.Views.ModalsClaimerEdit({
+		app.views.modalClaimerEdit = new app.Views.ModalClaimerEdit({
 			el      : '#modalEditClaimer',
 			model   : this.model,
 			elFocus : $(e.target).data('form-id')

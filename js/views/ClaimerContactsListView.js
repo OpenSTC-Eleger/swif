@@ -1,10 +1,14 @@
-app.Views.ClaimerDetailsView = Backbone.View.extend({
+app.Views.ClaimerContactsListView = Backbone.View.extend({
 
 	tagName      : 'tr',
 
 	className    : 'row-item row-nested-objects-collapse',
 
-	templateHTML : 'items/claimerDetails',
+	templateHTML : 'claimerContactsList',
+
+	events : {
+		'click button.modalNewContact' : 'showNewContactModal'
+	},
 
 	id: function () {
 		return 'collapse_' + this.model.id
@@ -104,12 +108,13 @@ app.Views.ClaimerDetailsView = Backbone.View.extend({
 	},
 
 
+
 	/** Display Modal form to add/sav a new claimer
 	 */
 	modalUpdateClaimer: function(e){
 		e.preventDefault(); e.stopPropagation();
 
-		app.views.modalClaimerEdit = new app.Views.ModalsClaimerEdit({
+		app.views.modalClaimerEdit = new app.Views.ModalClaimerEdit({
 			el      : '#modalSaveClaimer',
 			model   : this.model,
 			elFocus : $(e.target).data('form-id')
@@ -127,6 +132,18 @@ app.Views.ClaimerDetailsView = Backbone.View.extend({
 			el         : '#modalDeleteClaimer',
 			model      : this.model
 		});
+	},
+
+
+	showNewContactModal: function (e) {
+		var self = this;
+		e.preventDefault(); e.stopPropagation();
+		var new_contact = new app.Models.ClaimerContact;
+		new app.Views.ModalContactEdit({
+			el : "#modalEditContact",
+			model : new_contact,
+			claimersContactsListView: self
+		}).render();
 	},
 
 

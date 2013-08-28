@@ -1,6 +1,6 @@
-app.Views.ModalsClaimerEdit = app.Views.GenericModalView.extend({
+app.Views.ModalClaimerEdit = app.Views.GenericModalView.extend({
 
-	templateHTML : 'modals/claimer/edit',
+	templateHTML : 'modals/claimer/claimerEdit',
 
 	events: function(){
 		return _.defaults({

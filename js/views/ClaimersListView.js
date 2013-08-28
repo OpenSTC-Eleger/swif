@@ -123,7 +123,7 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 
 			_.each(self.collection.models, function (claimer, i) {
 				var simpleView = new app.Views.ClaimerView({model: claimer})
-				var detailedView = new app.Views.ClaimerDetailsView({model: claimer})
+				var detailedView = new app.Views.ClaimerContactsListView({model: claimer})
 				$('#claimersList').append( simpleView.render().el );
 				$('#claimersList').append(detailedView.render().el);
 				simpleView.detailedView = detailedView;
@@ -194,7 +194,7 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 
 	modalNewClaimer: function(e){
 		e.preventDefault();
-		app.views.modalClaimerView = new app.Views.ModalsClaimerEdit({
+		app.views.modalClaimerView = new app.Views.ModalClaimerEdit({
 			el  : '#modalEditClaimer'
 		});
 	},
@@ -216,178 +216,6 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 	
 
 
-    /** Display the form to add a new contact
-	*/
-    modalSaveContact: function(e){
-		this.selectedAddressJSON = null;
-		this.getTarget(e);
-
-    	var link = $(e.target);
-
-    	// Reset the form //
-    	$('#modalSaveContact input').val('');
-    	$('#createAssociatedAccount, #partnerLogin').prop('disabled', false);
-    	$('#createAssociatedAccount').prop('checked', false);
-
-
-    	// Check if it's a creation or not //
-    	if(link.data('action') == 'update'){
-
-			this.getTarget(e);
-	    	this.selectedAddress = app.collections.claimersContacts.get(this.pos);
-		    this.selectedAddressJSON = this.selectedAddress.toJSON();
-
-		    // Set Informations in the form //
-		    $('#addressName').val(this.selectedAddressJSON.name);
-		    $('#addressEmail').val(this.selectedAddressJSON.email);
-		    $('#addressFunction').val(this.selectedAddressJSON.function);
-		    if(this.selectedAddressJSON.phone != false){
-		    	$('#addressPhone').val(this.selectedAddressJSON.phone);
-		    }
-		    
-		    if(this.selectedAddressJSON.mobile != false){
-		    	$('#addressMobile').val(this.selectedAddressJSON.mobile);
-		    }
-
-			if(this.selectedAddressJSON.addressStreet != false){
-				$('#addressStreet').val(this.selectedAddressJSON.street);
-			}
-			if(this.selectedAddressJSON.addressCity != false){
-				$('#addressCity').val(this.selectedAddressJSON.city);
-			}
-			if(this.selectedAddressJSON.addressZip != false){
-				$('#addressZip').val(this.selectedAddressJSON.zip);
-			}
-
-
-		    // Check if the user have an account in OpenERP //
-		    if(this.selectedAddressJSON.user_id != false){
-		    	$('#createAssociatedAccount').prop('checked', true); $('#createAssociatedAccount, #partnerLogin').prop('disabled', true);
-		    	$('fieldset.associated-account').show();
-
-		    	var off = app.collections.officers.get(this.selectedAddressJSON.user_id[0]);
-		    	$('#partnerLogin').val(off.getLogin());
-		    }
-		    else{
-				$('fieldset.associated-account').hide();
-				$('#createAssociatedAccount, #partnerLogin').prop('disabled', false);
-		    }
-
-		    $('fieldset.associated-adress').show();
-    	}
-    	else{
-    		// Reset the form //
-    		$('fieldset.associated-account').hide();
-    	}
-
-	},
-
-
-
-    /** Set informations to the Modal for delete contact
-    */
-	modalDeleteContact: function(e){
-    	this.getTarget(e);
-	    this.selectedAddress = app.collections.claimersContacts.get(this.pos);
-		this.selectedAddressJSON = this.selectedAddress.toJSON();
-		//console.log(this.selectedAddressJSON);
-		$('#infoModalDeleteContact').children('p').html(this.selectedAddressJSON.name);
-		$('#infoModalDeleteContact').children('small').html(_.capitalize(this.selectedAddressJSON.function));
-	},
-
-
-
-	/** Save the Address
-	*/
-    saveAddress: function(e){
-		e.preventDefault();
-		
-		this.params = {};
-		
-		if( $('#createAssociatedAccount').is(':checked') ){
-
-			
-			if($('#partnerLogin').val() == '' || $('#partnerPassword').val() == ''){
-
-
-				app.notify('', 'error', 
-					app.lang.errorMessages.unablePerformAction, 
-					app.lang.validationMessages.claimers.accountIncorrect);
-					return;
-			}
-			else{
-				this.params.login = this.$('#partnerLogin').val();
-				this.params.password = this.$('#partnerPassword').val();
-			}
-     	}
-
-
-		this.params.partner_id= this.selectedClaimer;
-		this.params.name= this.$('#addressName').val();
-		this.params.function= this.$('#addressFunction').val();
-		this.params.phone= this.$('#addressPhone').val();
-		this.params.email= this.$('#addressEmail').val();
-		this.params.mobile= this.$('#addressMobile').val();
-		this.params.street= this.$('#addressStreet').val();
-		this.params.city= this.$('#addressCity').val();
-		this.params.zip= this.$('#addressZip').val();
-	
-
-     
-		var self = this;
-		this.modelId = this.selectedAddressJSON == null ? 0 : this.selectedAddressJSON.id;
-
-
-	    app.Models.ClaimerContact.prototype.save(
-	    	this.params,
-	    	this.modelId, {
-			success: function(data){
-				//console.log(data);
-				if(data.error && data.error.data){
-					app.notify('', 'error', data.error.data.fault_code);
-				}
-				else{
-					route = Backbone.history.fragment;
-					Backbone.history.loadUrl(route);
-					$('#modalSaveContact').modal('hide');
-				}				
-			},
-			error: function(e){
-				console.error(e);
-				alert('Impossible de créer ou mettre à jour le contact');
-			}
-		});
-	     
-		
-   },
-   
-    /** Delete Address
-    */
-    deleteAddress: function(e){
-		var self = this;
-		this.selectedAddress.delete({
-			success: function(data){
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					app.collections.claimersContacts.remove(self.selectedAddress);
-					var claimer = app.collections.claimers.get(self.selectedAddressJSON.livesIn.id);					
-					claimer.attributes.address.remove(self.selectedAddressJSON.id);
-					app.collections.claimers.add(claimer);
-					$('#modalDeleteContact').modal('hide');
-					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.addressDeleteOk);
-					self.render();
-				}
-			},
-			error: function(e){
-				alert("Impossible de supprimer le contact");
-			}
-
-		});
-
-    },	
-	
 	
 
 	
