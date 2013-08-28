@@ -1,0 +1,20 @@
+<% if(task.state == app.Models.Task.status.draft.key) { %>
+	<li id="task_<%= task.id %>" class="external-event">
+		<i class="icon-chevron-right"></i> <%= task.name %>
+		<%if(task.actions.indexOf("delete") > -1){ %>
+		<a href="#modalDeleteTask" class="modalDeleteTask hide" data-toggle="modal">
+			<i class="icon-remove displayInlineBlock modalDeleteTask" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top" data-delay="50">&nbsp;</i>
+		</a>
+		<% } %>
+		<small class="badge badge-<%= app.Models.Task.status.draft.color %> pull-right"><%= task.planned_hours %>h</small>
+	</li>
+
+	<!-- Schedule -->
+	<% //allPlanned = false;
+
+	} else if(task.state == app.Models.Task.status.open.key){ %>
+	<li id="task_<%= task.id %>" class="external-event disabled">
+		<i class="icon-time" rel="tooltip" data-placement="right"></i> <%= task.name %>
+		<small class="badge badge-<%= app.Models.Task.status.open.color %> pull-right"><%= app.decimalNumberToTime(task.planned_hours, 'human') %></small>
+	</li>
+<% } %>

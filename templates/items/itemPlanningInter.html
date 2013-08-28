@@ -1,0 +1,6 @@
+<td>
+	<a class="accordion-object" href="#collapse_<%= intervention.id %>" rel="popover" data-content="<%= _(intervention.description).escapeHTML() %>" data-delay="160" data-title="<%= _.capitalize(lang.description) %>">
+		<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(_(intervention.name).escapeHTML()) %>
+	</a>
+</td>
+<td><%= (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours, 'human') : '') %></td>
