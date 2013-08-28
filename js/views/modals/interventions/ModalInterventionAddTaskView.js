@@ -57,7 +57,7 @@ app.Views.ModalInterventionAddTaskView = app.Views.GenericModalView.extend({
 			var interJSON = self.options.inter.toJSON();
 			app.views.advancedSelectBoxCategoriesInterventionAddTaskView = new app.Views.AdvancedSelectBoxView({el: $("#taskCategory"), collection: app.Collections.CategoriesTasks.prototype}) 
 			if(interJSON.service_id.length > 0){
-				app.views.advancedSelectBoxCategoriesInterventionAddTaskView.setSearchParam({field:'service_ids.id',operator:'=','value':interJSON.service_id[0]});
+				app.views.advancedSelectBoxCategoriesInterventionAddTaskView.setSearchParam({field:'service_ids.id',operator:'=','value':interJSON.service_id[0]}, true);
 			}
 
 			app.views.advancedSelectBoxCategoriesInterventionAddTaskView.render();
