@@ -4,11 +4,9 @@
 app.Models.Intervention = Backbone.Model.extend({
 	
 	urlRoot: "/api/openstc/interventions",
-<<<<<<< HEAD
-	fields: ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid','ask_id'],
-=======
+
 	fieldsOE: ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid','ask_id'],
->>>>>>> décomposition des vues et des templates pour le bandeau de gauche des inter dans le planning
+
 
 	searchable_fields: [
 		{
