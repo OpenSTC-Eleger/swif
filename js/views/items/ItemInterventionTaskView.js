@@ -16,14 +16,10 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 		'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
 		
 		'click a.buttonCancelTask'			: 'displayModalCancelTask',
-		'submit #formCancelTask' 			: 'cancelTask',
 
 		'click a.printTask'					: 'print',
 
 		'click .buttonTaskDone, .buttonNotFinish' : 'displayModalTaskDone',
-		'submit #formTaskDone'   			: 'taskDone',
-		'click a.linkSelectUsersTeams'		: 'changeSelectListUsersTeams',
-		'click .linkRefueling'				: 'accordionRefuelingInputs',
 
 	},
 
@@ -94,25 +90,7 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 			// Set the Tooltip / Popover //$(self.el).html(template);
 			$('*[data-toggle="tooltip"]').tooltip();
 			$('*[rel="popover"]').popover({trigger: 'hover'});
-			
-			//Ask update modals
-			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
-			$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
-			$('#equipmentsDone, #equipmentsListDone').sortable({
-				connectWith: 'ul.sortableEquipmentsList',
-				dropOnEmpty: true,
-				forcePlaceholderSize: true,
-				forceHelperSize: true,
-				placeholder: 'sortablePlaceHold',
-				containment: '.equipmentsDroppableAreaDone',
-				cursor: 'move',
-				opacity: '.8',
-				revert: 300,
-				receive: function(event, ui){
-					//self.saveServicesCategories();
-				}
 
-			});
 			// Set the focus to the first input of the form //
 			$('#modalDeleteTask, #modalAddTask, #modalCancelTask').on('shown', function (e) {
 				$(this).find('input, textarea').first().focus();
@@ -211,92 +189,25 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 	},
 
 	displayModalTaskDone: function(e){
+		e.preventDefault();
 		var button = $(e.target);
 		var self = this;
-		// Retrieve the Task //
-		if(!button.is('i')){
-			this.selectedTask = this.collections.tasks.get(button.data('taskid'));
-		}
-		else{
-			this.selectedTask = this.collections.tasks.get(button.parent().data('taskid'));	
-		}
-
-	
-
+		var taskDone = false;
 		// Display or nor the Remaining Time Section //
 		if(button.hasClass('buttonNotFinish') || button.hasClass('iconButtonNotFinish')){
-			$('#remainingTimeSection').show();
+//			$('#remainingTimeSection').show();
 		}
 		else{
-			$('#remainingTimeSection').hide();
+			taskDone = true
+//			$('#remainingTimeSection').hide();
 		}
-
-
-		this.selectedTaskJSON = this.selectedTask.toJSON();
-		//var intervention = this.collections.interventions.get(this.selectedTaskJSON.project_id[0]).toJSON();
-		//var serviceInter = intervention.service_id;
-
-
-		if( _.isUndefined(this.officersDropDownList) )
-			this.officersDropDownList = new app.Collections.Officers( app.models.user.attributes.officers );
-		if( _.isUndefined(this.teamsDropDownList) )
-			this.teamsDropDownList = new app.Collections.Teams( app.models.user.attributes.teams );
-
-
-		// Fill Officer List //
-		app.views.selectListOfficersTeamsView = new app.Views.DropdownSelectListView({el: $('#selectUsersTeams'), collection: this.officersDropDownList})
-		app.views.selectListOfficersTeamsView.clearAll();
-		app.views.selectListOfficersTeamsView.addEmptyFirst();
-		app.views.selectListOfficersTeamsView.addAll();
-
-
-		// Set Task Informations //
-		$('#infoModalTaskDone').children('p').html(this.selectedTaskJSON.name);
-		$('#infoModalTaskDone').children('small').html('<i class="icon-pushpin"></i>&nbsp;' + this.selectedTaskJSON.project_id[1]);
-
-
-		$("#startDate").val(  moment().format('L') );
-		$("#endDate").val( moment().format('L') );
-
-		// Set Task Planned Hour //
-		$("#startHour").timepicker('setTime', moment().format('LT') );
-		$("#endHour").timepicker('setTime', moment().add('hour', this.selectedTaskJSON.planned_hours).format('LT') );
-
-		
-//		// Filter Equipment by service on intervention's task //
-		var task_id = this.selectedTask.id;
-		
-		// Search only vehicles //
-		$.ajax({
-			url: '/api/openstc/tasks/' + task_id.toString() + '/available_vehicles',
-			
-			success: function(data){
-				// Fill equipment List //
-				self.collections.vehicles = new app.Collections.Equipments(data);
-				app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipmentDone"), collection: self.collections.vehicles})
-				app.views.selectListEquipmentsView.clearAll();
-				app.views.selectListEquipmentsView.addEmptyFirst();
-				app.views.selectListEquipmentsView.addAll();
-			}
-		});
-		
-		// Search only materials //
-		$('#equipmentsListDone').empty();
-		$.ajax({
-			url: '/api/openstc/tasks/' + task_id.toString() + '/available_equipments',
-			success: function(data){
-				// Display the remain materials //
-				var nbRemainMaterials = 0;
-				for(i in data){
-					
-					nbRemainMaterials++;
-					$('#equipmentsListDone').append('<li id="equipment_'+data[i].id+'"><a href="#"><i class="icon-wrench"></i> '+ data[i].name + '-' + data[i].type + ' </a></li>');
-				}
-				$('#badgeNbEquipmentsDone').html(nbRemainMaterials);			
-			}
-		});
+		new app.Views.ModalTaskDoneView({el:'#modalTaskDone', model: this.model, inter: this.inter, taskDone: taskDone, tasks: self.options.tasks});
 	},
-
+	
+	displayModalCancelTask: function(e) {
+		e.preventDefault();
+		new app.Views.ModalCancelTaskView({el: '#modalCancelTask', model: this.model, inter: this.options.inter});
+	},
 
 
 	/** Highlight the row item
