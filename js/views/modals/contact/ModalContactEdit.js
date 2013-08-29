@@ -1,6 +1,6 @@
 app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 
-	templateHTML : 'modals/contact/edit',
+	templateHTML : 'modals/contact/contactEdit',
 	el : "#modalEditContact",
 	events: function(){
 		return _.defaults({

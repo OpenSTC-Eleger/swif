@@ -101,7 +101,6 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 		// Change the page title //
         app.router.setPageTitle(app.lang.viewsTitles.claimersList);
 
-
 		// Change the active menu item //
 		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
 
@@ -245,33 +244,33 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 	
 		});
 	},
-	
-	fillDropdownTechnicalService: function(e){
-		 e.preventDefault();
-		 $('#claimerTechnicalSite').val('');
-		 this.renderTechnicalService( _($(e.target).prop('value')).toNumber() )
-	},
-	
-	renderTechnicalService: function ( service ) {
-		if( service!= null ) {
-			app.views.selectListClaimerTechnicalServiceView.setSelectedItem( service );
-			places = app.collections.places.models;
-			var placesFiltered = _.filter(places, function(item){ 
-				var placeJSON = item.toJSON();
-				var placeServices = placeJSON.service_ids;	
-				var placeServices = [];
-				_.each( item.attributes.service_ids.models, function(s){
-					placeServices.push( s.toJSON().id );
-				});				
-				return $.inArray(service, placeServices)!=-1
-	        });
-			app.views.selectListClaimerTechnicalSiteView.collection = new app.Collections.Places(placesFiltered);
-			app.views.selectListClaimerTechnicalSiteView.clearAll();
-			app.views.selectListClaimerTechnicalSiteView.addEmptyFirst();
-			app.views.selectListClaimerTechnicalSiteView.addAll();
-			
-		}
-	},
+//
+//	fillDropdownTechnicalService: function(e){
+//		 e.preventDefault();
+//		 $('#claimerTechnicalSite').val('');
+//		 this.renderTechnicalService( _($(e.target).prop('value')).toNumber() )
+//	},
+//
+//	renderTechnicalService: function ( service ) {
+//		if( service!= null ) {
+//			app.views.selectListClaimerTechnicalServiceView.setSelectedItem( service );
+//			places = app.collections.places.models;
+//			var placesFiltered = _.filter(places, function(item){
+//				var placeJSON = item.toJSON();
+//				var placeServices = placeJSON.service_ids;
+//				var placeServices = [];
+//				_.each( item.attributes.service_ids.models, function(s){
+//					placeServices.push( s.toJSON().id );
+//				});
+//				return $.inArray(service, placeServices)!=-1
+//	        });
+//			app.views.selectListClaimerTechnicalSiteView.collection = new app.Collections.Places(placesFiltered);
+//			app.views.selectListClaimerTechnicalSiteView.clearAll();
+//			app.views.selectListClaimerTechnicalSiteView.addEmptyFirst();
+//			app.views.selectListClaimerTechnicalSiteView.addAll();
+//
+//		}
+//	},
 	
 	
 

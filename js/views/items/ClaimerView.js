@@ -27,14 +27,10 @@ app.Views.ClaimerView = Backbone.View.extend({
 
 
 	toggleAccordion: function(e){
-
 		e.preventDefault();
-
-
 		var id = _($(e.target).attr('href')).strRightBack('_');
-
 		this.selectedClaimer = id;
-
+		var self = this;
 
 		var isExpend = $('#collapse_'+id).hasClass('expend');
 
@@ -46,7 +42,11 @@ app.Views.ClaimerView = Backbone.View.extend({
 		// If the table row isn't already expend //
 		if(!isExpend){
 			// Set the new visibility to the selected intervention //
-			this.detailedView.fetchDetails();
+			this.detailedView.fetchData().done(function () {
+				console.log("-------------accordion expend---------")
+				self.detailedView.render();
+			});
+
 			$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
 			$(e.target).parents('tr.row-object').css({ opacity: '1'});
 			$(e.target).parents('tr.row-object').children('td').css({ backgroundColor: '#F5F5F5'});
@@ -62,6 +62,7 @@ app.Views.ClaimerView = Backbone.View.extend({
 
 
 	render : function() {
+		console.log("------------in claimer render-------------")
 		var self = this;
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
@@ -78,7 +79,7 @@ app.Views.ClaimerView = Backbone.View.extend({
 	/** When the model is updated //
 	 */
 	change: function(e){
-
+		console.log("---------In claimer change--------------")
 		this.render();
 		this.highlight();
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.claimerUpdateOk);

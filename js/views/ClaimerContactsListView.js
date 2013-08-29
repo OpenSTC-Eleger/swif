@@ -14,36 +14,10 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 		return 'collapse_' + this.model.id
 	},
 
-//
-//	// The DOM events //
-//	events: {
-//		'click'                    : 'modalUpdateclaimer',
-//		'click a.modalDeleteclaimer' : 'modalDeleteclaimer'
-//	},
-//
-
-
 	/** View Initialization
 	 */
 	initialize : function() {
-		this.model.off();
-
-		// When the model are updated //
-		this.listenTo(this.model, 'change', this.change);
-
-		// When the model are destroy //
-		this.listenTo(this.model,'destroy', this.destroy);
-	},
-
-
-
-	/** When the model is updated //
-	 */
-	change: function(e){
-
-		this.render();
-		this.highlight();
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.claimerUpdateOk);
+		console.log("------------in claimer contact list init-------------")
 	},
 
 
@@ -52,7 +26,6 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 		var addresses = claimer.getAddresses();
 		_.each(addresses, function (address) {
 			console.log(address)
-
 		})
 		claimer.set('addresses',addresses);
 		return claimer
@@ -68,13 +41,16 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 			self.remove();
 		});
 
-		app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.claimerDeleteOk);
+		app.notify('', 'success', app.lang.infoMessatages.information, e.getCompleteName()+' : '+app.lang.infoMessages.claimerDeleteOk);
 		app.views.claimersListView.collection.cpt--;
 		app.views.claimersListView.partialRender();
 	},
 
 	render: function () {
+		console.log("------------in claimer contact list render-------------")
+
 		var self = this;
+
 
 		$.get("templates/" + this.templateHTML + ".html", function (templateData) {
 
@@ -85,29 +61,71 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 
 			$(self.el).html(template);
 
+			if (!_.isUndefined(self.contactsCollection)) {
+				$(('#claimerContactsList_' + self.model.id)).empty();
+				_.each(self.contactsCollection.models, function (address) {
+					if (!_.isUndefined(address.user_id)) {
+						var user = self.usersCollection.find(address.user_id);
+					} else {
+						var user = undefined;
+					}
+
+					$(('#claimerContactsList_' + self.model.id)).append(
+						new app.Views.ClaimerContactView({model: address, user: user}).render().el
+					)
+				})
+			};
+
 			// Set the Tooltip //
 			$('*[data-toggle="tooltip"]').tooltip();
 		});
 
+
+
 		return this;
 	},
 
-	fetchDetails: function () {
+	fetchContacts: function () {
 		var self = this;
-		var addresses = self.model.getAddresses()
-		$(('#claimerContactsList_' + self.model.id)).empty();
-		self.listenTo(addresses, 'fetchDone', function () {
-			var user_ids = _.filter(addresses.pluck('user_id'), function (e) {return e != false; });
-			user_ids = _.map(user_ids,function (e) {return e[0]});
-			_.each(addresses.models, function (address) {
-				$(('#claimerContactsList_' + self.model.id)).append(
-					new app.Views.ClaimerContactView({model: address, user_ids:user_ids}).render().el
-				)
-			})
-		});
+		self.contactsCollection = self.model.getAddresses();
 	},
 
 
+
+
+	// Fetch users in self.address collection. Should only be launched on contactCollections 'fetchDone' event.
+	fetchUsers : function () {
+		var self = this;
+		var user_ids = _.filter(self.contactsCollection.pluck('user_id'), function (e) {return e != false; });
+		user_ids = _.map(user_ids,function (e) {return e[0]});
+		self.usersCollection = new app.Collections.Officers()
+		if (user_ids.length > 0 ) {
+			self.usersCollection.fetch(
+				{
+					data: {filters: {0:{field:'id',operator:'in',value: user_ids}}}
+				}
+			)
+		};
+		return self.usersCollection;
+	},
+
+
+	fetchData : function () {
+		var self = this;
+		var deferred = jQuery.Deferred( function () {
+
+				self.fetchContacts()
+				self.listenTo(self.contactsCollection,'sync', function () {
+					self.fetchUsers()
+					self.listenTo(self.usersCollection, 'sync', function () {
+						deferred.resolve();
+					} )
+				})
+			}
+		)
+		return deferred
+
+	},
 
 	/** Display Modal form to add/sav a new claimer
 	 */

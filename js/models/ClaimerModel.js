@@ -62,7 +62,7 @@ app.Models.Claimer = Backbone.Model.extend({
         this.set({ type_id : value });
     },
 
-	// Returns JSON addresses this is used in view to serialize object before template
+	// Returns addresses collection fetched this is used in view to serialize object before template
 	getAddresses: function () {
 		var address_ids = this.get('address');
 		var collection = new app.Collections.ClaimersContacts
@@ -82,6 +82,8 @@ app.Models.Claimer = Backbone.Model.extend({
 		}
 
 	},
+
+
 
 	objectifiedTypeId : function () {
 		return app.Helpers.Main.many2oneObjectify(this.get('type_id'))
