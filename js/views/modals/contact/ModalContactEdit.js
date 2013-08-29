@@ -14,8 +14,11 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 		var self = this;
 		this.el = this.options.el;
 		this.modal = $(this.el);
-		this.claimersContactsListView = this.options.claimersContactsListView;
-		this.currentClaimer = this.claimersContactsListView.model;
+		if (!_.isUndefined(this.options.claimersContactsListView)) {
+			this.claimersContactsListView = this.options.claimersContactsListView;
+			this.currentClaimer = this.claimersContactsListView.model;
+		}
+
 	},
 
 	render : function(loader) {
@@ -24,7 +27,7 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 
 			var template = _.template(templateData, {
 				lang  : app.lang,
-				contact : self.model,
+				contact : self.model.toJSON(),
 				loader: loader
 			});
  			self.modal.html(template);
@@ -55,8 +58,11 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 			updatedAttributes[attribute] = value;
 		};
 
+		if (self.model.isNew()) {
+			setAttribute('partner_id', self.currentClaimer.get('id'));
+		}
+
 		setAttribute('name', readFormValue('contactName'));
-		setAttribute('partner_id', self.currentClaimer.get('id'));
 		setAttribute('function', readFormValue('contactFunction'));
 		setAttribute('phone', readFormValue('contactPhone'));
 		setAttribute('email', readFormValue('contactEmail'));
@@ -108,6 +114,7 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 		return self.model.save(this.model.changedAttributes(),{patch :true}).
 			done(function () {
 				self.model.fetch({ data : {fields : self.model.fields} });
+				self.model.trigger('updateSuccess')
 			})
 	},
 

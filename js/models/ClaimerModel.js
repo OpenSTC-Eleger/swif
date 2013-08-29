@@ -66,7 +66,6 @@ app.Models.Claimer = Backbone.Model.extend({
 	getAddresses: function () {
 		var address_ids = this.get('address');
 		var collection = new app.Collections.ClaimersContacts
-		console.log(address_ids)
 		if (address_ids == false) {
 			return collection;
 		} else {
@@ -82,9 +81,13 @@ app.Models.Claimer = Backbone.Model.extend({
 		}
 
 	},
+	getInformations: function () {
+		return {name: this.get('name')};
+	},
 
 
 
+	// Returns the many2one id fields in form of an object {name:'name',id:'id'}
 	objectifiedTypeId : function () {
 		return app.Helpers.Main.many2oneObjectify(this.get('type_id'))
 	},
@@ -106,19 +109,6 @@ app.Models.Claimer = Backbone.Model.extend({
 		this.setTypeId( params.type_id );
 		this.setTechnicalServiceId( params.technical_service_id );
 		this.setTechnicalSiteId( params.technical_site_id );		
-	},
-
-
-//TODO remove this
-//	/** Delete Claimer
-//	*/
-//	delete: function (options) {
-//		app.deleteOE(
-//			[[this.get("id")]],
-//			this.model_name,
-//			app.models.user.getSessionID(),
-//			options
-//		);
-//	}
+	}
 
 });

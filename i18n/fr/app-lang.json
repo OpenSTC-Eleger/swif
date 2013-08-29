@@ -284,7 +284,6 @@
 		"officerSaveOk"			: "Agent correctement enregistré",
 		"absentTypeDeleteOk"	: "Type d'absence correctement supprimé",
 		"absentTypeSaveOk"		: "Type d'absence correctement enregistré",
-		"claimerDeleteOk"		: "Demandeur correctement supprimé",
 		"teamDeleteOk"			: "Equipe correctement supprimée",
 		"teamUpdateOk"			: "Equipe correctement mise à jour",
 		"teamCreateOk"			: "Equipe correctement enregistrée",
@@ -296,7 +295,8 @@
 		"requestConfirmOk"      : "Demande d'intervention remontée au DST",
 		"interventionSaveOK"	: "Intervention correctement enregistrée",
 		"interventionUpdateOK"	: "Intervention correctement mise à jour",
-		"inteventionAddTaskOK" : "Tâche correctement associée à l'intervention"
+		"inteventionAddTaskOK" : "Tâche correctement associée à l'intervention",
+		"claimerContactUpdateOk": "Contact correcement enregistré"
 		
 	},
 

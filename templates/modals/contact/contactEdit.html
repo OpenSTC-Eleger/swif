@@ -11,7 +11,7 @@
             <label for="contactName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
 
             <div class="controls">
-                <input type="text" id="contactName" name="contactName" required="required" />
+                <input type="text" id="contactName" name="contactName" required="required" value="<%= contact.name %>"/>
                 <span class="help-inline"></span>
             </div>
         </div>
@@ -57,7 +57,7 @@
                 <label for="contactEmail" class="control-label"><%= _.capitalize(lang.email) %>:</label>
 
                 <div class="controls">
-                    <input type="email" id="contactEmail" name="contactEmail" required />
+                    <input type="email" id="contactEmail" name="contactEmail" required="required" value="<%= contact.email %>"/>
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                 <label for="contactFunction" class="control-label"><%= _.capitalize(lang.function) %>:</label>
 
                 <div class="controls">
-                    <input type="text" id="contactFunction" name="functionFunction" />
+                    <input type="text" id="contactFunction" name="functionFunction" value="<%= contact.function %>" />
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                 <label for="contactPhone" class="control-label"><%= _.capitalize(lang.phone) %>:</label>
 
                 <div class="controls">
-                    <input type="text" id="contactPhone" name="contactPhone" />
+                    <input type="text" id="contactPhone" name="contactPhone" value="<%= contact.phone %>"/>
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                 <label for="contactMobile" class="control-label"><%= _.capitalize(lang.mobile) %>:</label>
 
                 <div class="controls">
-                    <input type="text" id="contactMobile" name="contactMobile" />
+                    <input type="text" id="contactMobile" name="contactMobile" value="<%= contact.mobile %>"/>
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -99,7 +99,7 @@
                 <label for="addressStreet" class="control-label"><%= _.capitalize(lang.address) %>:</label>
 
                 <div class="controls">
-                    <input type="text" id="addressStreet" name="addressStreet" />
+                    <input type="text" id="addressStreet" name="addressStreet" value="<%= contact.street %>" />
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -108,7 +108,7 @@
                 <label for="addressCity" class="control-label"><%= _.capitalize(lang.city) %>:</label>
 
                 <div class="controls">
-                    <input type="text" id="addressCity" name="addressCity" />
+                    <input type="text" id="addressCity" name="addressCity" value="<%= contact.city %>" />
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -117,7 +117,7 @@
                 <label for="addressZip" class="control-label"><%= _.capitalize(lang.zip) %>:</label>
 
                 <div class="controls">
-                    <input type="text" id="addressZip" name="addressZip" />
+                    <input type="text" id="addressZip" name="addressZip" value="<%= contact.zip %>" />
                     <span class="help-inline"></span>
                 </div>
             </div>

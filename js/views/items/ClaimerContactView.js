@@ -4,9 +4,9 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 	className   : 'row-nested-objects',
 	templateHTML: 'items/claimerContact',
 
-	event : {
-		'click a.modalEditContact' : 'showEditModal',
-		'click .modalDeleteContact' : 'showModalDelete'
+	events: {
+		'click a.modalEditContact'  : 'showEditModal',
+		'click a.modalDeleteContact': 'showDeleteModal',
 	},
 
 	id: function () {
@@ -15,6 +15,7 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 
 	initialize: function () {
 		this.user = this.options.user;
+		this.listenTo(this.model, 'updateSuccess', this.changed())
 	},
 
 	render: function () {
@@ -39,20 +40,34 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 	},
 
 
-	showEditModal: function () {
-		new app.Views.ModalContactEdit({model:this.model, el: "#modalEditContact"}).render()
+	changed: function () {
+		this.render();
+		this.highlight();
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.get('name') + ' : ' + app.lang.infoMessages.placeUpdateOk);
+	},
+
+	showEditModal: function (e) {
+		e.preventDefault();
+		new app.Views.ModalContactEdit({model: this.model, el: "#modalEditContact"}).render()
+	},
+
+	showDeleteModal: function (e) {
+		e.preventDefault();
+		new app.Views.ModalDeleteView({id: '#modalDeleteClaimerContact', model: this.model,
+			modalTitle: app.lang.viewsTitles.deleteClaimerContact, confirm: app.lang.warningMessages.confirmDelete
+		})
 	},
 
 	/** Delete Address
 	 */
-	deleteAddress: function(e){
+	deleteAddress: function (e) {
 		var self = this;
 		this.selectedAddress.delete({
-			success: function(data){
-				if(data.error){
+			success: function (data) {
+				if (data.error) {
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
-				else{
+				else {
 					app.collections.claimersContacts.remove(self.selectedAddress);
 					var claimer = app.collections.claimers.get(self.selectedAddressJSON.livesIn.id);
 					claimer.attributes.address.remove(self.selectedAddressJSON.id);
@@ -62,7 +77,7 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 					self.render();
 				}
 			},
-			error: function(e){
+			error  : function (e) {
 				alert("Impossible de supprimer le contact");
 			}
 
@@ -70,20 +85,20 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 
 	},
 
-
-
+	highlight: function () {
+		app.Helpers.Main.highlight(this.$el);
+	},
 
 
 	/** Set informations to the Modal for delete contact
 	 */
-	modalDeleteContact: function(e){
+	modalDeleteContact: function (e) {
 		this.getTarget(e);
 		this.selectedAddress = app.collections.claimersContacts.get(this.pos);
 		this.selectedAddressJSON = this.selectedAddress.toJSON();
 		$('#infoModalDeleteContact').children('p').html(this.selectedAddressJSON.name);
 		$('#infoModalDeleteContact').children('small').html(_.capitalize(this.selectedAddressJSON.function));
 	},
-
 
 
 });
