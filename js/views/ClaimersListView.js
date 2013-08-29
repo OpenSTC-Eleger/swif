@@ -84,7 +84,7 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 		app.loader('display');
 		return $.when(this.collection.fetch(fetchParams))
 			.fail(function(e){
-				console.log(e);
+				console.error(e);
 			})
 			.always(function(){
 				app.loader('hide');
@@ -207,8 +207,7 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 	    // Retrieve the ID of the Claimer //
 		this.setModel(e);
 
-		//console.log(this.selectedClaimerJson);
-	
+
 	    $('#infoModalDeleteClaimer p').html(this.selectedClaimerJson.name);
 	    $('#infoModalDeleteClaimer small').html(this.selectedClaimerJson.type_id[1]);
 	},
@@ -226,7 +225,6 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 	   	var self = this;
 		this.model.delete({
 			success: function(data){
-				//console.log(data);
 				if(data.error){
 					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}

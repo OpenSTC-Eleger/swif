@@ -5,7 +5,7 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 	templateHTML: 'items/claimerContact',
 
 	event : {
-		'click .modalEditContact' : 'showEditModal',
+		'click a.modalEditContact' : 'showEditModal',
 		'click .modalDeleteContact' : 'showModalDelete'
 	},
 
@@ -15,11 +15,9 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 
 	initialize: function () {
 		this.user = this.options.user;
-		console.log("------------in claimer contact init-------------")
 	},
 
 	render: function () {
-		console.log("------------in claimer contact render-------------")
 		var self = this;
 		this.serialize();
 		$.get("templates/" + self.templateHTML + ".html", function (templateData) {
@@ -42,9 +40,7 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 
 
 	showEditModal: function () {
-		console.log("show edit")
 		new app.Views.ModalContactEdit({model:this.model, el: "#modalEditContact"}).render()
-
 	},
 
 	/** Delete Address
@@ -84,7 +80,6 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 		this.getTarget(e);
 		this.selectedAddress = app.collections.claimersContacts.get(this.pos);
 		this.selectedAddressJSON = this.selectedAddress.toJSON();
-		//console.log(this.selectedAddressJSON);
 		$('#infoModalDeleteContact').children('p').html(this.selectedAddressJSON.name);
 		$('#infoModalDeleteContact').children('small').html(_.capitalize(this.selectedAddressJSON.function));
 	},

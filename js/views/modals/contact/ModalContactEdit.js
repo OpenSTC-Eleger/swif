@@ -87,7 +87,7 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 		self.toggleLoadingOnSubmitButton();
 		self.setModelPropertiesFromForm();
 		self.persistContact().fail(function (e) {
-			console.log(e);
+			console.error(e);
 		}).
 			always(function () {
 				self.toggleLoadingOnSubmitButton();

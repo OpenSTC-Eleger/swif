@@ -43,7 +43,6 @@ app.Views.ClaimerView = Backbone.View.extend({
 		if(!isExpend){
 			// Set the new visibility to the selected intervention //
 			this.detailedView.fetchData().done(function () {
-				console.log("-------------accordion expend---------")
 				self.detailedView.render();
 			});
 
@@ -62,7 +61,6 @@ app.Views.ClaimerView = Backbone.View.extend({
 
 
 	render : function() {
-		console.log("------------in claimer render-------------")
 		var self = this;
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
@@ -79,7 +77,6 @@ app.Views.ClaimerView = Backbone.View.extend({
 	/** When the model is updated //
 	 */
 	change: function(e){
-		console.log("---------In claimer change--------------")
 		this.render();
 		this.highlight();
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.claimerUpdateOk);

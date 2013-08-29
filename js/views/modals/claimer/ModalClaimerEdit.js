@@ -95,7 +95,7 @@ app.Views.ModalClaimerEdit = app.Views.GenericModalView.extend({
 		self.toggleLoadingOnSubmitButton();
 		self.setModelPropertiesFromForm();
 		self.persistClaimer().fail(function (e) {
-					console.log(e);
+					console.error(e);
 				}).
 				always(function () {
 					self.toggleLoadingOnSubmitButton();

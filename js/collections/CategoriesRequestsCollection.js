@@ -16,7 +16,6 @@ app.Collections.CategoriesRequests = app.Collections.GenericCollection.extend({
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
-		//console.log('Categorie Intervention collection Initialization');
 	},
 
 });

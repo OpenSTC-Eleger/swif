@@ -15,7 +15,6 @@ app.Collections.AbsentTypes = app.Collections.GenericCollection.extend({
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
-		//console.log('Absent Types collection Initialization');
 	},
 
 

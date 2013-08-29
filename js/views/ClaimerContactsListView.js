@@ -17,7 +17,6 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 	/** View Initialization
 	 */
 	initialize : function() {
-		console.log("------------in claimer contact list init-------------")
 	},
 
 
@@ -25,7 +24,6 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 	serializeClaimer: function (claimer) {
 		var addresses = claimer.getAddresses();
 		_.each(addresses, function (address) {
-			console.log(address)
 		})
 		claimer.set('addresses',addresses);
 		return claimer
@@ -47,7 +45,6 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 	},
 
 	render: function () {
-		console.log("------------in claimer contact list render-------------")
 
 		var self = this;
 

@@ -15,7 +15,6 @@ app.Collections.Claimers = app.Collections.GenericCollection.extend({
 	/** Collection Initialization
 	*/
 	initialize : function() {
-		//console.log('Claimer collection initialize');
 	},
 
 });

@@ -16,7 +16,6 @@ app.Collections.CategoriesTasks = app.Collections.GenericCollection.extend({
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
-		//console.log('Categories Tasks Collection Initialization');
 	},
 
 

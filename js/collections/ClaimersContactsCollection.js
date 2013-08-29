@@ -13,7 +13,6 @@ app.Collections.ClaimersContacts = app.Collections.GenericCollection.extend({
 	/** Collection Initialization
 	*/
 	initialize : function() {
-		//console.log('Claimer Contact collection initialize');
 	},
 
 	/** Comparator for ordering collection
