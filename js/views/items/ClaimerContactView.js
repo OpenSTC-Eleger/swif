@@ -15,7 +15,9 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 
 	initialize: function () {
 		this.user = this.options.user;
-		this.listenTo(this.model, 'updateSuccess', this.changed())
+		this.model.off();
+		this.listenTo(this.model, 'updateSuccess', this.changed);
+		this.listenTo(this.model,'destroy', this.destroyed);
 	},
 
 	render: function () {
@@ -53,9 +55,9 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 
 	showDeleteModal: function (e) {
 		e.preventDefault();
-		new app.Views.ModalDeleteView({id: '#modalDeleteClaimerContact', model: this.model,
-			modalTitle: app.lang.viewsTitles.deleteClaimerContact, confirm: app.lang.warningMessages.confirmDelete
-		})
+		new app.Views.ModalDeleteView({el: '#modalDeleteClaimerContact', model: this.model,
+			modalTitle: app.lang.viewsTitles.deleteContact, modalConfirm: app.lang.warningMessages.confirmDeleteContact
+		});
 	},
 
 	/** Delete Address
@@ -86,7 +88,7 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 	},
 
 	highlight: function () {
-		app.Helpers.Main.highlight(this.$el);
+		return app.Helpers.Main.highlight(this.$el);
 	},
 
 
@@ -100,5 +102,14 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 		$('#infoModalDeleteContact').children('small').html(_.capitalize(this.selectedAddressJSON.function));
 	},
 
+	destroyed: function (e) {
+		var self = this;
+
+		this.highlight().done(function(){
+			self.$el.remove();
+		});
+
+		app.notify('', 'success', app.lang.infoMessages.information, self.model.get('name')+' : '+app.lang.infoMessages.contactDeleteOk);
+	}
 
 });
