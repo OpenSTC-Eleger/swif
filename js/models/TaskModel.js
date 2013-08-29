@@ -241,8 +241,8 @@ app.Models.Task = Backbone.Model.extend({
 
 	/** Save Model
 	*/
-	save: function(id,data, options) {
-		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options)
+//	save: function(id,data, options) {
+//		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options)
 //		if( options==null ) {
 //			app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {         	
 //				success: function(data){
@@ -258,7 +258,7 @@ app.Models.Task = Backbone.Model.extend({
 //		else {
 //			app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options);
 //		}
-	},
+//	},
 	
 
 
