@@ -37,7 +37,7 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 //
 //		'change #claimerTechnicalService'		: 'fillDropdownTechnicalService',
 //
-//		'change #createAssociatedAccount' 			: 'accordionAssociatedAccount'
+//
 //    },
 //
 
@@ -167,8 +167,6 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 			return 0
 	},
 
-
-
 	getTarget:function(e) {    	
     	e.preventDefault();
 	    // Retrieve the ID of the intervention //
@@ -190,7 +188,6 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 	    }        
 	},
 
-
 	modalNewClaimer: function(e){
 		e.preventDefault();
 		app.views.modalClaimerView = new app.Views.ModalClaimerEdit({
@@ -211,12 +208,7 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 	    $('#infoModalDeleteClaimer p').html(this.selectedClaimerJson.name);
 	    $('#infoModalDeleteClaimer small').html(this.selectedClaimerJson.type_id[1]);
 	},
-	
 
-
-	
-
-	
 	/** Delete the selected claimer
 	*/
 	deleteClaimer: function(e){
@@ -242,54 +234,6 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 	
 		});
 	},
-//
-//	fillDropdownTechnicalService: function(e){
-//		 e.preventDefault();
-//		 $('#claimerTechnicalSite').val('');
-//		 this.renderTechnicalService( _($(e.target).prop('value')).toNumber() )
-//	},
-//
-//	renderTechnicalService: function ( service ) {
-//		if( service!= null ) {
-//			app.views.selectListClaimerTechnicalServiceView.setSelectedItem( service );
-//			places = app.collections.places.models;
-//			var placesFiltered = _.filter(places, function(item){
-//				var placeJSON = item.toJSON();
-//				var placeServices = placeJSON.service_ids;
-//				var placeServices = [];
-//				_.each( item.attributes.service_ids.models, function(s){
-//					placeServices.push( s.toJSON().id );
-//				});
-//				return $.inArray(service, placeServices)!=-1
-//	        });
-//			app.views.selectListClaimerTechnicalSiteView.collection = new app.Collections.Places(placesFiltered);
-//			app.views.selectListClaimerTechnicalSiteView.clearAll();
-//			app.views.selectListClaimerTechnicalSiteView.addEmptyFirst();
-//			app.views.selectListClaimerTechnicalSiteView.addAll();
-//
-//		}
-//	},
-	
-	
-
-	/** Display or Hide Create associated Task Section
-	*/
-	accordionAssociatedAccount: function(event){
-		event.preventDefault();
-
-		// Toggle Slide Create associated task section //
-		$('fieldset.associated-account').stop().slideToggle(function(){
-			if($(this).is(":hidden")){
-				$('#partnerLogin, #partnerPassword').prop('required', false);
-				$('#partnerLogin, #partnerPassword').val('');
-			}
-			else{
-				$('#partnerLogin, #partnerPassword').prop('required', true);
-			}
-		});
-	},
-
-	
 
 	preventDefault: function(event){
 		event.preventDefault();

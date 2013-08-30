@@ -29,6 +29,9 @@ app.Views.ModalClaimerEdit = app.Views.GenericModalView.extend({
 				self.render();
 			});
 		}
+		this.$el.on('shown', function (e) {
+			$(this).find('input, textarea').first().focus();
+		})
 
 	},
 

@@ -9,24 +9,10 @@ app.Collections.Officers = app.Collections.GenericCollection.extend({
 
 	url: '/api/open_object/users',
 
-	// Model name in the database //
-
-	
-	
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
 		//console.log('Requests collection Initialization');
-	},
-
-
-	/** Comparator for ordering collection
-	*/
-	comparator: function(item) {
-		var lastname = item.get('name');
-		if ( lastname )
-			return lastname.toUpperCase();
-	},
-	
+	}
 
 });

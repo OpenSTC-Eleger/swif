@@ -2,10 +2,7 @@
 * Officer Model
 */
 app.Models.Officer = Backbone.RelationalModel.extend({
-    
-	model_name: "res.users",
-	
-	url: "/#officers/:id",
+
 	urlRoot: "/api/open_object/users",
 
 	relations: [{
@@ -47,7 +44,7 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 
 
 	defaults:{
-		id:0,
+		//id:0,
 		firstname: null,
 		name: null,
 		login: null,
@@ -188,14 +185,6 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 		this.setPassword( params.new_password );
 		this.setGroupsID( params.groups_id );
 		this.setServicesID( params.service_ids );
-	},
-
-
-
-	/** Save Officer
-	*/
-	save: function(data, id, options) { 
-		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
 	},
 
 

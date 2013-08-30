@@ -6,7 +6,7 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 
 	events: {
 		'click a.modalEditContact'  : 'showEditModal',
-		'click a.modalDeleteContact': 'showDeleteModal',
+		'click a.modalDeleteContact': 'showDeleteModal'
 	},
 
 	id: function () {
@@ -15,12 +15,12 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 
 	initialize: function () {
 		this.user = this.options.user;
-//		this.model.off();
 		this.listenTo(this.model, 'updateSuccess', this.changed);
 		this.listenTo(this.model,'destroy', this.destroyed);
 	},
 
 	render: function () {
+		console.log('in render')
 		var self = this;
 		this.serialize();
 		$.get("templates/" + self.templateHTML + ".html", function (templateData) {
@@ -37,9 +37,12 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 
 	serialize: function () {
 		if (!_.isUndefined(this.user)) {
-			this.model.set('user_login', this.officers.get(this.model.get('user_id')[0]).get('login'));
+			tpl_data = self.model.toJSON()
+			$.extend(tpl_data, {user_login: this.user.login})
+
 		}
 	},
+
 
 	changed: function () {
 		this.render();
@@ -49,7 +52,14 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 
 	showEditModal: function (e) {
 		e.preventDefault();
-		new app.Views.ModalContactEdit({model: this.model, el: "#modalEditContact"}).render()
+		e.stopPropagation();
+		if (_.isUndefined(this.user)) {
+			var edit_user = new app.Models.Officer()
+		} else {
+			var edit_user = this.user
+		}
+
+		new app.Views.ModalContactEdit({model: this.model, el:"#modalEditContact",user: edit_user}).render()
 	},
 
 	showDeleteModal: function (e) {

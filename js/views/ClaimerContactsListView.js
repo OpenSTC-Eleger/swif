@@ -1,13 +1,13 @@
 app.Views.ClaimerContactsListView = Backbone.View.extend({
 
-	tagName      : 'tr',
+	tagName: 'tr',
 
-	className    : 'row-item row-nested-objects-collapse',
+	className: 'row-item row-nested-objects-collapse',
 
-	templateHTML : 'claimerContactsList',
+	templateHTML: 'claimerContactsList',
 
-	events : {
-		'click button.modalNewContact' : 'showNewContactModal'
+	events: {
+		'click button.modalNewContact': 'showNewContactModal'
 	},
 
 	id: function () {
@@ -16,7 +16,8 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 
 	/** View Initialization
 	 */
-	initialize : function() {
+	initialize      : function () {
+
 	},
 
 
@@ -25,21 +26,21 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 		var addresses = claimer.getAddresses();
 		_.each(addresses, function (address) {
 		})
-		claimer.set('addresses',addresses);
+		claimer.set('addresses', addresses);
 		return claimer
 	},
 
 
 	/** When the model is destroy //
 	 */
-	destroy: function(e){
+	destroy: function (e) {
 		var self = this;
 
-		this.highlight().done(function(){
+		this.highlight().done(function () {
 			self.remove();
 		});
 
-		app.notify('', 'success', app.lang.infoMessatages.information, e.getCompleteName()+' : '+app.lang.infoMessages.claimerDeleteOk);
+		app.notify('', 'success', app.lang.infoMessatages.information, e.getCompleteName() + ' : ' + app.lang.infoMessages.claimerDeleteOk);
 		app.views.claimersListView.collection.cpt--;
 		app.views.claimersListView.partialRender();
 	},
@@ -71,12 +72,12 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 						new app.Views.ClaimerContactView({model: address, user: user}).render().el
 					)
 				})
-			};
+			}
+			;
 
 			// Set the Tooltip //
 			$('*[data-toggle="tooltip"]').tooltip();
 		});
-
 
 
 		return this;
@@ -85,38 +86,41 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 	fetchContacts: function () {
 		var self = this;
 		self.contactsCollection = self.model.getAddresses();
+
 	},
 
 
-
-
 	// Fetch users in self.address collection. Should only be launched on contactCollections 'fetchDone' event.
-	fetchUsers : function () {
+	fetchUsers   : function () {
 		var self = this;
-		var user_ids = _.filter(self.contactsCollection.pluck('user_id'), function (e) {return e != false; });
-		user_ids = _.map(user_ids,function (e) {return e[0]});
 		self.usersCollection = new app.Collections.Officers()
-		if (user_ids.length > 0 ) {
+		if (this.getUserIds().length > 0) {
 			self.usersCollection.fetch(
 				{
-					data: {filters: {0:{field:'id',operator:'in',value: user_ids}}}
+					data: {filters: {0: {field: 'id', operator: 'in', value: this.getUserIds()}}}
 				}
 			)
-		};
+		}
+		;
 		return self.usersCollection;
 	},
 
 
-	fetchData : function () {
+	fetchData: function () {
 		var self = this;
-		var deferred = jQuery.Deferred( function () {
+		var deferred = jQuery.Deferred(function () {
 
 				self.fetchContacts()
-				self.listenTo(self.contactsCollection,'sync', function () {
-					self.fetchUsers()
-					self.listenTo(self.usersCollection, 'sync', function () {
+				self.listenTo(self.contactsCollection, 'sync', function () {
+					if (this.getUserIds().length > 0) {
+						self.fetchUsers();
+						self.listenTo(self.usersCollection, 'sync', function () {
+							deferred.resolve();
+						})
+					} else {
 						deferred.resolve();
-					} )
+					}
+
 				})
 			}
 		)
@@ -124,62 +128,58 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 
 	},
 
-	/** Display Modal form to add/sav a new claimer
-	 */
-	modalUpdateClaimer: function(e){
-		e.preventDefault(); e.stopPropagation();
-
-		app.views.modalClaimerEdit = new app.Views.ModalClaimerEdit({
-			el      : '#modalSaveClaimer',
-			model   : this.model,
-			elFocus : $(e.target).data('form-id')
+	getUserIds: function () {
+		var self = this;
+		var user_ids = _.filter(self.contactsCollection.pluck('user_id'), function (e) {
+		return e != false;
 		});
+		user_ids = _.map(user_ids, function (e) {
+			return e[0]
+		});
+		return user_ids
 	},
 
+	/** Display Modal form to add/sav a new claimer
+	 */
+	modalUpdateClaimer: function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		app.views.modalClaimerEdit = new app.Views.ModalClaimerEdit({
+			el     : '#modalSaveClaimer',
+			model  : this.model,
+			elFocus: $(e.target).data('form-id')
+		});
+	},
 
 
 	/** Modal to remove a claimer
 	 */
-	modalDeleteClaimer: function(e){
-		e.preventDefault(); e.stopPropagation();
+	modalDeleteClaimer: function (e) {
+		e.preventDefault();
+		e.stopPropagation();
 
 		app.views.modalDeleteView = new app.Views.ModalDeleteView({
-			el         : '#modalDeleteClaimer',
-			model      : this.model
+			el   : '#modalDeleteClaimer',
+			model: this.model
 		});
 	},
 
-
 	showNewContactModal: function (e) {
 		var self = this;
-		e.preventDefault(); e.stopPropagation();
+		e.preventDefault();
+		e.stopPropagation();
 		var new_contact = new app.Models.ClaimerContact;
 		new app.Views.ModalContactEdit({
-			el : "#modalEditContact",
-			model : new_contact,
-			claimersContactsListView: self
+			el                      : "#modalEditContact",
+			model                   : new_contact,
+			claimersContactsListView: self,
+			user: new app.Models.Officer()
 		}).render();
 	},
 
-
-
-	/** Highlight the row item
-	 */
-	highlight: function(){
-		var self = this;
-
-		$(this.el).addClass('highlight');
-
-		var deferred = $.Deferred();
-
-		// Once the CSS3 animation are end the class are removed //
-		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
-			function(e) {
-				$(self.el).removeClass('highlight');
-				deferred.resolve();
-			});
-
-		return deferred;
+	highlight: function () {
+		app.Helpers.Main.highlight(this.$el)
 	}
 
 });

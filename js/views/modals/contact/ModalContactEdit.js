@@ -1,23 +1,28 @@
 app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 
 	templateHTML : 'modals/contact/contactEdit',
-	el : "#modalEditContact",
 	events: function(){
 		return _.defaults({
 				'submit #formContact'            : 'saveContact',
+				'change #createAssociatedAccount' 			: 'accordionAssociatedAccount'
 			},
 			app.Views.GenericModalView.prototype.events
 		);
 	},
 
+
+
 	initialize : function() {
 		var self = this;
-		this.el = this.options.el;
+		this.user = this.options.user
 		this.modal = $(this.el);
 		if (!_.isUndefined(this.options.claimersContactsListView)) {
 			this.claimersContactsListView = this.options.claimersContactsListView;
 			this.currentClaimer = this.claimersContactsListView.model;
 		}
+//		this.$el.on('shown', function (e) {
+//			$(this).find('input, textarea').first().focus();
+//		})
 
 	},
 
@@ -79,29 +84,37 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 				return;
 			}
 			else{
-				this.params.login = readFormValue('userLogin');
-				this.params.password = readFormValue('userPassword');
+				this.user.set({
+					login: readFormValue('userLogin'),
+					password: readFormValue('userPassword') ,
+					name: readFormValue('contactName')})
 			}
 		}
 		this.model.set(updatedAttributes, {silent:true});
 
 	},
 
-	saveContact: function(e){
+	saveContact: function (e) {
 		e.preventDefault();
 		var self = this;
 		self.toggleLoadingOnSubmitButton();
 		self.setModelPropertiesFromForm();
-		self.persistContact().fail(function (e) {
-			console.error(e);
-		}).
-			always(function () {
-				self.toggleLoadingOnSubmitButton();
-				self.modal.modal('hide');
-			});
+		self.persistUser()
+			.done(function () {
+				self.persistContact()
+					.fail(function (e) {
+					console.error(e);
+				}).
+					always(function () {
+						self.toggleLoadingOnSubmitButton();
+						self.modal.modal('hide');
+					});
+			}
+		);
 	},
 
 	persistContact: function () {
+
 		if (this.model.isNew()) {
 			return this.createContact()
 		} else {
@@ -111,15 +124,25 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 
 	updateContact: function () {
 		var self = this;
-		return self.model.save(this.model.changedAttributes(),{patch :true}).
+		var patch_data = this.model.changedAttributes();
+		if (!_.isUndefined(self.user.id)) {
+			$.extend(patch_data, {user_id: self.user.id})
+		}
+		return self.model.save(patch_data,{patch :true}).
 			done(function () {
+
 				self.model.fetch({ data : {fields : self.model.fields} });
 				self.model.trigger('updateSuccess')
 			})
 	},
 
+
+
 	createContact: function () {
 		var self = this;
+		if (!_.isUndefined(self.user.id)) {
+			self.set('user_id', this.user.id)
+		}
 		return self.model.save().
 			done( function (data) {
 				self.model.set('id',data);
@@ -130,6 +153,50 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 						)
 					})
 			})
+	},
+
+	persistUser: function () {
+		var self = this;
+					if (self.user.isNew()) {
+						return self.createUser()
+					} else if (self.user.changedAttributes()) {
+						return self.updateUser()
+					}
+	},
+
+	createUser: function () {
+		var self = this;
+		return self.user.save().done(function (data) {
+			self.user.set('id',data)
+		})
+	},
+
+	updateUser: function () {
+		var self = this;
+		return self.user.save({password:self.user.password, name: self.user.name},{patch:true})
+	},
+
+	accordionAssociatedAccount: function(event){
+		event.preventDefault();
+
+		// Toggle Slide Create associated task section //
+		$('fieldset.associated-account').stop().slideToggle(function(){
+			if($(this).is(":hidden")){
+				$('#partnerLogin, #partnerPassword').prop('required', false);
+				$('#partnerLogin, #partnerPassword').val('');
+			}
+			else{
+				$('#partnerLogin, #partnerPassword').prop('required', true);
+			}
+		});
+	},
+
+	userIsValid: function (user) {
+		if (!_.isUndefined(user.get('login')) && user.get('password').length > 5) {
+			return true
+		} else {
+			return false
+		}
 	}
 
 });
