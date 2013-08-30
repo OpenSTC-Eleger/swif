@@ -2,6 +2,10 @@
  * Service Details View
  */
 app.Views.PrintingCalendarView = Backbone.View.extend({
+//	el           : '#printingCalendar',
+//
+//templateHTML : 'printingCalendar',
+
 	
 	templateHTML: 'printingCalendar',
 
@@ -26,7 +30,8 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 			var template = _.template(templateData,{
 				lang: app.lang,
 			});
-			self.$el.html(template);
+			//self.$el.html(template);
+			$(self.el).html(template);
 
 			// Print button //
 			$('<span class="fc-button-print">' 
@@ -74,14 +79,9 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 		var table = $('#paperboard');
 		
 		var tasks = _.filter(this.events, function(task){ 
-			//var task = task.toJSON()
         	return (
-        			task.date_start && task.date_start.toDate() < $(self.calendar.divCalendar).fullCalendar('getView').visEnd &&
-        			task.date_end && task.date_end.toDate() > $(self.calendar.divCalendar).fullCalendar('getView').visStart &&
-        			(	task.state != app.Models.Task.status.draft.key &&
-        				task.state != app.Models.Task.status.cancelled.key
-        			)
-        			
+        				task.state != app.Models.Task.status.draft.key &&
+        				task.state != app.Models.Task.status.cancelled.key        			
         		); 
         });
 		
@@ -91,17 +91,12 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 		
 		
 	    _.each(tasks, function(task){ 
-	    	//var task = task.toJSON()
 	    	var inter = task.intervention;
 	    	
-	    	task["day"] = self.getDay(task.date_start);
-	    	
+	    	task["day"] = self.getDay(task.date_start);	    	
 	    	task["inter"] = ( inter!=null)?inter.name:"" ;
 	    	task["name"] = task.name;
-	    	//task["category"] = ( task.category_id!=null )?task.category_id[1]:"" ;
 	    	task["place"] = ( inter!=null && inter.site1!=null && inter.site1[1] )?inter.site1[1]:"" ;
-	    	//task["effective_hours"] = "";
-	    	//task["remaining_hous"] = "";
 	    	task["done"] = ( task.state == app.Models.Task.status.done.key  ? true : false );
 	    	
 	    	task["equipment"] = "";

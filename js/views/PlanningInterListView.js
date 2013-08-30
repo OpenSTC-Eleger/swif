@@ -1,7 +1,7 @@
 /******************************************
 * Pagination View
 */
-app.Views.PlanningInterListView = Backbone.View.extend({
+app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 
 	el           : '#planningInters',
 	
@@ -9,28 +9,31 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 
 	currentRoute : null,
 
-
+	
 	// The DOM events //
-	events: {
-		//'click .buttonCancelInter'                : 'setInfoModalCancelInter',
-		//'click button.linkToInter'                : 'linkToInter',
-		//'submit #formCancelInter'                 : 'cancelInter',
-		'click .btn.addInterventionPlanning'      : 'displayFormAddIntervention',
-		'submit #formAddIntervention'             : 'saveIntervention', 
+	events: function(){
+		return _.defaults({
+			//'click .buttonCancelInter'                : 'setInfoModalCancelInter',
+			//'click button.linkToInter'                : 'linkToInter',
+			//'submit #formCancelInter'                 : 'cancelInter',
+			'click .btn.addInterventionPlanning'      : 'displayFormAddIntervention',
+			'submit #formAddIntervention'             : 'saveIntervention', 
+			
+			'click .modalDeleteTask'                  : 'setInfoModalDeleteTask',
+			'click button.btnDeleteTask'              : 'deleteTask',
+			//'click .btn.addTaskPlanning'              : 'displayFormAddTask',
+			//'submit #formAddTask'                     : 'saveTask', 
+			
+			'switch-change .calendarSwitch'           : 'scheduledInter',
+			'switch-change #switchWithForeman'        : 'setForemanInTeam',
 		
-		'click .modalDeleteTask'                  : 'setInfoModalDeleteTask',
-		'click button.btnDeleteTask'              : 'deleteTask',
-		//'click .btn.addTaskPlanning'              : 'displayFormAddTask',
-		//'submit #formAddTask'                     : 'saveTask', 
 		
-		'switch-change .calendarSwitch'           : 'scheduledInter',
-		'switch-change #switchWithForeman'        : 'setForemanInTeam',
-	
-	
-		'change #interventionDetailService'       : 'fillDropdownService',	
-		'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilter',	
-		'click #listAgents li a, #listTeams li a' :          'selectPlanning',	
-		
+			'change #interventionDetailService'       : 'fillDropdownService',	
+			'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilter',	
+			//'click #listAgents li a, #listTeams li a' :          'selectPlanning',	
+		}, 
+			app.Views.GenericListView.prototype.events
+		);
 	},
 
 
@@ -44,7 +47,9 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 	    this.initCollections().done(function(){
 	    	self.collections.tasks.off();	
 			self.listenTo(self.collections.tasks, 'change', self.updateTask);
+			//self.render();
 	    	app.router.render(self);
+	    	
 	    })
 		//this.initCollection().done(function(){
 			// Unbind & bind the collection //
@@ -70,7 +75,6 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 		var self = this;
 		
 		var interventions = this.collections.interventions.models;
-
 		
 		// Collection Filter if not null / Otherwise we display only To Schedule interventions //
 		if(sessionStorage.getItem(self.filters) != null){
@@ -100,6 +104,9 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 			
 			$(self.el).html(template);
 			
+			// Call the render Generic View //
+			app.Views.GenericListView.prototype.render(self.options);
+			
 			$('*[rel="tooltip"]').tooltip();
 			$('*[rel="popover"]').popover({trigger: 'hover', delay: { show: 500, hide: 100 }});
 
@@ -112,9 +119,9 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 			$('#modalAddInter, #modalAddTask').on('shown', function (e) {
 				$(this).find('input').first().focus();
 			})
-			
+						
 			_.each(self.collections.interventions.models, function(inter, i){
-				var tasks = [];
+				var tasks = new app.Collections.Tasks();
 				_.each(inter.toJSON().tasks,function(item,i){ 
 					tasks.push(self.collections.tasks.get(item));
 				});
@@ -123,11 +130,30 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 				var itemPlanningInterTaskListView = new app.Views.ItemPlanningInterTaskListView({inter: inter, tasks: tasks});
 				$('#inter-items').append(itemPlanningInterTaskListView.render().el);
 				
-			});
+			});	
 			
-			//self.initDragObject();
+			// Pagination view //
+			app.views.paginationView = new app.Views.PaginationView({ 
+				page       : self.options.page.page,
+				collection : self.collections.interventions
+			})
+			app.views.paginationView.render();
+			
 		});
 		return this;
+	},
+	
+		
+	/** Partial Render of the view
+	*/
+	partialRender: function () {
+		this.initialize();
+//		var self = this;
+//		$.when(self.collections.interventions.pendingInterventionsCount(),
+//				self.collections.interventions.plannedInterventionsCount()).done(function(){
+//			$('#nbInterPlanned').html(self.collections.interventions.plannedInterventions);
+//			$('#nbInterPending').html(self.collections.interventions.pendingInterventions);
+//		});
 	},
 
 		/** Set a user model to the view
@@ -136,54 +162,6 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 			this.model = model;
 			return this;
 		},
-
-		/** Make the external event Draggable
-		*/
-		initDragObject: function() {
-			tasks = self.collections.tasks.toJSON();
-			
-			_.each(tasks, function (task, i){
-
-				el = $('li#task_'+task.id+':not(.disabled)');
-
-				var eventObject = {
-					state: task.state,
-					id: task.id,
-					title: task.name,
-					project_id: task.project_id[0],
-					//user_id: task.user_id[0],
-					planned_hours: task.planned_hours,
-					total_hours: task.total_hours,
-					effective_hours: task.effective_hours,
-					remaining_hours: task.remaining_hours,
-					//allDay: true,
-				};
-				
-				// Store the Event Object in the DOM element so we can get to it later //
-				el.data('eventObject', eventObject);
-				
-				// Make the event draggable using jQuery UI //
-				el.draggable({
-					zIndex: 9999,
-					revert: true,
-					revertDuration: 500,
-					appendTo: '#app',
-					opacity: 0.8,
-					scroll: false,
-					cursorAt: { top: 0, left: 0 },
-					helper: function(e){
-						return $("<p class='well well-small'>"+eventObject.title+"</p>");
-					},
-					reverting: function() {
-						console.log('reverted');
-					},
-
-
-				});
-
-			});
-		},
-
 
 
 		/** Link to the Intervention page
@@ -344,44 +322,6 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 
 
 
-		/** Display the form to add a new Task
-		*/
-		displayFormAddTask: function(e){
-			this.pos = e.currentTarget.id;
-			
-			//Display only categories in dropdown belongs to intervention
-			var categoriesTasksFiltered = null;
-			var inter = app.collections.interventions.get(this.pos);
-			if( inter) {
-				var interJSON = inter.toJSON();
-				categoriesTasksFiltered = _.filter(app.collections.categoriesTasks.models, function(item){ 
-					var services = [];
-					_.each( item.attributes.service_ids.models, function(service){
-						services.push( service.toJSON().id );
-					});
-					return  interJSON.service_id && $.inArray(interJSON.service_id[0], services )!=-1;
-				});
-			}
-			
-			app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), 
-				collection: categoriesTasksFiltered==null?app.collections.categoriesTasks: new app.Collections.CategoriesTasks(categoriesTasksFiltered)
-			})
-			app.views.selectListAssignementsView.clearAll();
-			app.views.selectListAssignementsView.addEmptyFirst();
-			app.views.selectListAssignementsView.addAll();	
-
-//			app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: $("#taskEquipment"), collection: app.collections.equipments})
-//			app.views.selectListEquipmentsView.clearAll();
-//			app.views.selectListEquipmentsView.addEmptyFirst();
-//			app.views.selectListEquipmentsView.addAll();
-
-			// Retrieve the ID of the intervention //
-			this.pos = e.currentTarget.id;
-			$('#modalAddTask').modal();
-	   },
-		
-		//TODO : Abstraire le code ==> displayFormAddIntervention,renderService,fillDropdownService,saveIntervention 
-		// déjà dans la view InterventionDetailsView 
 
 
 		/** Display the form to add a new Intervention
@@ -439,45 +379,6 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 		},
 
 
-
-		/** Save the Task
-		*/
-		saveTask: function(e){
-			 var self = this;
-
-			 e.preventDefault();
-			
-			 
-			 input_category_id = null;
-			 if( app.views.selectListAssignementsView != null ) {
-				 var selectItem = app.views.selectListAssignementsView.getSelected();
-				 if( selectItem ) {
-					 input_category_id = selectItem.toJSON().id
-				 }
-			 }
-			 
-//		     input_equipment_id = null;
-//		     if( app.views.selectListEquipmentsView != null ) {
-//		    	 var selectItem = app.views.selectListEquipmentsView.getSelected();
-//		    	 if( selectItem ) {
-//		    		 input_equipment_id = selectItem.toJSON().id
-//		    	 }
-//		     }
-
-			 var duration = $("#taskHour").val().split(":");
-			 var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] })
-			 
-			 var params = {
-				 project_id: this.pos,
-				 name: this.$('#taskName').val(),
-				 category_id: input_category_id,	
-				 //equipment_id: input_equipment_id,
-				 planned_hours: mDuration.asHours(),
-			 };
-			 
-			$('#modalAddTask').modal('hide');
-			app.models.task.save(0,params);
-	   },
 
 
 
@@ -583,26 +484,40 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 		
 			
 			
-			// Fetch the collections //
-			app.loader('display');
 
 			var deferred = $.Deferred();
 			//retrieve interventions and tasks associated (use domain ('project_id','in',[...] to retrieve tasks associated)
 			
+			// Check the parameters //
+			if(_.isUndefined(this.options.sort)){
+				this.options.sort = this.collections.interventions.default_sort;
+			}
+			else{
+				this.options.sort = app.calculPageSort(this.options.sort);	
+			}
+			this.options.page = app.calculPageOffset(this.options.page);
+	
+	
 			// Create Fetch params //
-			fetchParams = {
+			this.fetchParams = {
 				silent : true,
 				data   : {
-					limit  : 5,
+					limit  : app.config.itemsPerPage,
+					offset : this.options.page.offset,
+					sort   : this.options.sort.by+' '+this.options.sort.order
 				}
 			};
+			if(!_.isUndefined(this.options.search)){
+				this.fetchParams.data.filters = app.calculSearch({search: this.options.search }, app.Models.Intervention.prototype.searchable_fields);
+			}
 			
-			this.collections.interventions.fetch(fetchParams)
+			this.collections.interventions.fetch(this.fetchParams)
 			.done(function(){
 				if(self.collections.interventions.cpt > 0){
 					self.collections.tasks.fetch({silent: true,data: {filters: {0:{'field':'project_id.id','operator':'in','value':self.collections.interventions.pluck('id')}}}})
 					.done(function(){
-						deferred.resolve();
+						app.loader('hide');
+						deferred.resolve();						
 					})
 					.fail(function(e){
 						console.error(e);
@@ -615,9 +530,6 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 			.fail(function(e){
 				console.error(e);
 			})
-			.always(function(){
-				app.loader('hide');
-			});
 			
 			return deferred;
 		

@@ -10,39 +10,15 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 	// The DOM events //
 	events       : {
 		'click .btn.addTask'		              : 'displayModalAddTask',
-		'submit #formAddTask'                     : 'saveTask', 
 	},
-
-
-
+	
 	/** View Initialization
 	*/
 	initialize : function() {
-//		this.model.off();
-//
-//		// When the model are updated //
-//		this.listenTo(this.model, 'change', this.change);
+		this.options.tasks.off();
+		this.listenTo(this.options.tasks, 'add', this.add);
 	},
 
-
-
-	/** When the model ara updated //
-	*/
-	change: function(model){
-		var self = this;
-
-		this.render();
-
-		// Highlight the Row and recalculate the className //
-		this.highlight().done(function(){
-//			self.$el.attr('class', _.result(self, 'className'));
-		});
-
-		//app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+infoMessage);
-
-		// Partial Render //
-		//app.views.interventions.partialRender();
-	},
 
 
 
@@ -71,7 +47,7 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 
 			//Create item task for each one associated to inter
-			_.each(self.options.tasks, function(task, i){
+			_.each(self.options.tasks.models, function(task, i){
 				//var itemInterventionTaskView = new app.Views.ItemInterventionTaskView({model: task, templateHTML:"items/itemPlanningTask"});
 				var itemPlanningInterTaskView = new app.Views.ItemPlanningInterTaskView({model: task});
 				$(self.el).find('#row-nested-objects').append(itemPlanningInterTaskView.render().el);
@@ -81,25 +57,14 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 		return this;
 	},
 
-
-
-	/** Highlight the row item
-	*/
-	highlight: function(){
-		var self = this;
-
-		$(this.el).addClass('highlight');
-
-		var deferred = $.Deferred();
-
-		// Once the CSS3 animation are end the class are removed //
-		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
-			function(e) {
-				$(self.el).removeClass('highlight');
-				deferred.resolve();
-		});
-
-		return deferred;
+	add: function(model){
+		var itemPlanningInterTaskView  = new app.Views.ItemPlanningInterTaskView({ model: model, inter: this.options.inter, tasks:this.options.tasks});
+		$(this.el).find('#row-nested-objects').append(itemPlanningInterTaskView.render().el);		
+		//this.partialRender();
+		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.inteventionAddTaskOK);
+		//@TOCHECK: repercute task creation to main tasks collection to be usable by other itemViews
+		app.view.planningInterListView.collections.tasks.add(model);
+	
 	},
 	
 	displayModalAddTask: function(e){

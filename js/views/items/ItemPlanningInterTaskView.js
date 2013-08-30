@@ -51,26 +51,6 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 
 		this.render();
 
-		// Highlight the Row and recalculate the className //
-		//this.highlight().done(function(){
-//			self.$el.attr('class', _.result(self, 'className'));
-		//});
-
-
-		// Set the info message for the notification //
-//		switch(model.getState()){
-//			case app.Models.Request.status.refused.key: 
-//				var infoMessage = app.lang.infoMessages.requestRefuseOk;
-//			break;
-//			case app.Models.Request.status.confirm.key:
-//				var infoMessage = app.lang.infoMessages.requestConfirmOk;
-//			break;
-//			case app.Models.Request.status.valid.key:
-//				var infoMessage = app.lang.infoMessages.requestValidOk;
-//			break;
-//		}
-
-
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+infoMessage);
 
 		// Partial Render //
@@ -168,27 +148,6 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 		});
 		return this;
 	},
-
-
-//
-//	/** Highlight the row item
-//	*/
-//	highlight: function(){
-//		var self = this;
-//
-//		$(this.el).addClass('highlight');
-//
-//		var deferred = $.Deferred();
-//
-//		// Once the CSS3 animation are end the class are removed //
-//		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
-//			function(e) {
-//				$(self.el).removeClass('highlight');
-//				deferred.resolve();
-//		});
-//
-//		return deferred;
-//	}
 
 
 });

@@ -50,7 +50,7 @@
 					<ul id="listAgents" class="unstyled inline nav nav-list">
 						<%_.each(officers, function (officer, i) { console.log(officer); %>
 							<li>
-								<a id="pOfficer_<%= officer.id %>" href="#planning/<%= _.slugify(officer.name)%>">
+								<a id="pOfficer_<%= officer.id %>" href="#planning/officer/<%= _.slugify(officer.name).toUpperCase()%>">
 									<i class="icon-user"></i><%= (officer.firstname != false ? officer.firstname : '') %> &nbsp;<%= officer.name.toUpperCase() %>
 								</a>
 							</li>
@@ -71,7 +71,7 @@
 						%>
 
 							<li rel="popover" data-original-title="<%= _.capitalize(lang.agents) %>" data-content="<ul class='unstyled'><%= teamMembers %></ul>" data-html="true" data-placement="left">
-								<a id="pTeam_<%= team.id %>" href="#planning/<%= _.slugify(team.name)%>">
+								<a id="pTeam_<%= team.id %>" href="#planning/team/<%= _.slugify(team.name).toUpperCase()%>">
 									<i class="icon-group"></i><%= team.name %>
 								</a>
 							</li>
