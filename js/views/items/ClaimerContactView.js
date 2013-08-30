@@ -15,7 +15,7 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 
 	initialize: function () {
 		this.user = this.options.user;
-		this.model.off();
+//		this.model.off();
 		this.listenTo(this.model, 'updateSuccess', this.changed);
 		this.listenTo(this.model,'destroy', this.destroyed);
 	},
@@ -40,7 +40,6 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 			this.model.set('user_login', this.officers.get(this.model.get('user_id')[0]).get('login'));
 		}
 	},
-
 
 	changed: function () {
 		this.render();
@@ -89,17 +88,6 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 
 	highlight: function () {
 		return app.Helpers.Main.highlight(this.$el);
-	},
-
-
-	/** Set informations to the Modal for delete contact
-	 */
-	modalDeleteContact: function (e) {
-		this.getTarget(e);
-		this.selectedAddress = app.collections.claimersContacts.get(this.pos);
-		this.selectedAddressJSON = this.selectedAddress.toJSON();
-		$('#infoModalDeleteContact').children('p').html(this.selectedAddressJSON.name);
-		$('#infoModalDeleteContact').children('small').html(_.capitalize(this.selectedAddressJSON.function));
 	},
 
 	destroyed: function (e) {
