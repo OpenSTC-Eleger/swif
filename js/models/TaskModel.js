@@ -236,30 +236,6 @@ app.Models.Task = Backbone.Model.extend({
 		}
 		return response;
 	},
-	
-
-
-	/** Save Model
-	*/
-//	save: function(id,data, options) {
-//		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options)
-//		if( options==null ) {
-//			app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {         	
-//				success: function(data){
-//					if(!_.str.include(Backbone.history.fragment, 'planning/')){
-//						Backbone.history.loadUrl(Backbone.history.fragment);
-//					}
-//					else{
-//						app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
-//					}
-//				}
-//			});
-//		}
-//		else {
-//			app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options);
-//		}
-//	},
-	
 
 
 	/** Save Model with backend method named saveTaskDone

@@ -36,19 +36,17 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 	*/
 	change: function(model){
 		var self = this;
-
-		this.render();
-
-		// Highlight the Row and recalculate the className //
-		this.highlight().done(function(){
-//			self.$el.attr('class', _.result(self, 'className'));
+		model.fetch({silent: true, data: {fields: app.views.planningInterListView.collections.interventions.fields}})
+		.done(function(){
+			self.render();
+			app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
+		})
+		.fail(function(e){
+			console.log(e);
 		});
-
-
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+infoMessage);
-
+		
 		// Partial Render //
-		//app.views.interventions.partialRender();
+		app.views.planningInterListView.partialRender();
 	},
 
 

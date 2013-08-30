@@ -51,17 +51,10 @@
 
 
 	"planning": {
-		"url"		: "planning",
+		"url"		: "planning(/officer/:officer)(/team/:team)(/week/:week)(/page:page)",
 		"function"	: "planning"
 	},
-	"planningAgent": {
-		"url"		: "planning/:id",
-		"function"	: "planning"
-	},
-	"planningTeam": {
-		"url"		: "planning/:id",
-		"function"	: "planning"
-	},
+
 
 
 	"detailTask": {
