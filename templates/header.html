@@ -21,25 +21,25 @@
 			    	
 		    	<!-- Main menu application -->
 		    	<ul id="nav-menu-app" class="nav" role="menu">
-	 				<% _.each(user.getMenus().submenu, function (menuRacine, i) { %>
-                        <li class="dropdown" id="<%= _.slugify(menuRacine.name) %>" role="menuitem">
+	 				<% _.each(user.getMenus().content[0].children, function (menuRacine, i) {%>
+                        <li class="dropdown" id="<%= _.slugify(menuRacine.tag) %>" role="menuitem">
                         <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuRacine.id %>"><%= menuRacine.name %> <b class="caret"></b></a>
                             <ul aria-labelledby="drop-menu-app-<%= menuRacine.id %>" role="menu" class="dropdown-menu">
-                                <% _.each(menuRacine.submenu, function (menuItem, i) { %>
-                                    <% if (menuItem.submenu.length > 0) { %>
+                                <% _.each(menuRacine.children, function (menuItem, i) {%>
+                                    <% if (menuItem.children.length > 0) { %>
                                         <li role="menuitem" class="dropdown-submenu">
                                             <a tabindex="-1" href="#"><%= menuItem.name %></a>
                                             <ul class="dropdown-menu">
-                                                <% _.each(menuItem.submenu, function( subMenuItem, i ){%>
+                                                <% _.each(menuItem.children, function( subMenuItem, i ){%>
                                                     <li>
-                                                        <a href="#<%= _.slugify(subMenuItem.name) %>" tabindex="-1"><%= subMenuItem.name %></a>
+                                                        <a href="#<%= _.slugify(subMenuItem.tag) %>" tabindex="-1"><%= subMenuItem.name %></a>
                                                     </li>
                                                 <% }); %>
                                             </ul>
                                         </li>
                                     <% } else { %>
                                         <li role="menuitem">
-                                            <a href="#<%= _.slugify(menuItem.name) %>"><%= menuItem.name %></a>
+                                            <a href="#<%= _.slugify(menuItem.tag) %>"><%= menuItem.name %></a>
                                         </li>
                                     <% }; %>
                                 <% }); %>
