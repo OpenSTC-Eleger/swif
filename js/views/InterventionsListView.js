@@ -148,6 +148,13 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 				$('#inter-items').append(itemInterventionTaskListView.render().el);
 				
 			});
+			
+			// Pagination view //
+			app.views.paginationView = new app.Views.PaginationView({ 
+				page       : self.options.page.page,
+				collection : self.collections.interventions
+			})
+			app.views.paginationView.render();
 
 			
 		});
