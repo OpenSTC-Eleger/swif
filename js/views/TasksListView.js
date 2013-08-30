@@ -86,7 +86,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		
 		//  Collection Task Filter if not null //
 		if(sessionStorage.getItem(this.filters) != null){
-			filter.push({'field':'state','operator':'=','value':sessionStorage.getItem(self.filters)});
+			filter.push({'field':'user_id.id','operator':'=','value':sessionStorage.getItem(self.filters)});
 		}
 		
 		app.collections.equipments = new app.Collections.Equipments();
