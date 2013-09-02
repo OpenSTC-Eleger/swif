@@ -63,12 +63,15 @@ app.Views.PlanningView = Backbone.View.extend({
 			// Check if a Team was selected to select the Team Tab 
 			if(!_.isUndefined(self.options.team))
 				$('#allTabs a[data-target="#tab-teams"]').tab('show');
+			// Select team was selected
+			if(!_.isUndefined(self.options.team))
+				$("a[href$="+self.options.team+"]").parent().addClass('active');
 			// Select officer was selected
-			if(!_.isUndefined(self.options.officer))
-				$("a[href*="+self.options.officer+"]").parent().addClass('active');
-			// Select tea mwas selected
-			else if(!_.isUndefined(self.options.team))
-				$("a[href*="+self.options.team+"]").parent().addClass('active');
+			else if(!_.isUndefined(self.options.officer))
+				$("a[href$="+self.options.officer+"]").parent().addClass('active');
+			// Select first officer
+			else
+				$("#listAgents li:first").addClass('active');
 			
 			$('#calendar').append( new app.Views.EventsListView(self.options).render().el );
 			// Display filter on the table //
