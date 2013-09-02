@@ -62,12 +62,11 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 			if (!_.isUndefined(self.contactsCollection)) {
 				$(('#claimerContactsList_' + self.model.id)).empty();
 				_.each(self.contactsCollection.models, function (address) {
-					if (!_.isUndefined(address.user_id)) {
-						var user = self.usersCollection.find(address.user_id);
+					if (!_.isUndefined(address.get('user_id')[0])) {
+						var user = self.usersCollection.get(address.get('user_id')[0]);
 					} else {
 						var user = undefined;
 					}
-
 					$(('#claimerContactsList_' + self.model.id)).append(
 						new app.Views.ClaimerContactView({model: address, user: user}).render().el
 					)

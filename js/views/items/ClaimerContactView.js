@@ -22,11 +22,11 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 	render: function () {
 		console.log('in render')
 		var self = this;
-		this.serialize();
+
 		$.get("templates/" + self.templateHTML + ".html", function (templateData) {
 			var template = _.template(templateData, {
 				lang   : app.lang,
-				address: self.model.toJSON()
+				address: self.serializeContact()
 			});
 
 			$(self.el).html(template);
@@ -35,12 +35,13 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 		return this;
 	},
 
-	serialize: function () {
+	serializeContact: function () {
+		var tpl_data = this.model.toJSON()
 		if (!_.isUndefined(this.user)) {
-			tpl_data = self.model.toJSON()
 			$.extend(tpl_data, {user_login: this.user.login})
-
 		}
+
+		return tpl_data
 	},
 
 
