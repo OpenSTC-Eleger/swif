@@ -108,10 +108,10 @@ app.Views.TasksListView = Backbone.View.extend({
 				.done(function(){
 					
 					// Create table for each day //
-					var mondayTasks =[]; 	var tuesdayTasks =[];
-					var wednesdayTasks =[]; var thursdayTasks =[];
-					var fridayTasks =[]; 	var saturdayTasks =[]; 
-					var sundayTasks =[];
+					var mondayTasks = new app.Collections.Tasks(); 	var tuesdayTasks =new app.Collections.Tasks();
+					var wednesdayTasks = new app.Collections.Tasks(); var thursdayTasks =new app.Collections.Tasks();
+					var fridayTasks = new app.Collections.Tasks(); 	var saturdayTasks =new app.Collections.Tasks(); 
+					var sundayTasks =new app.Collections.Tasks();
 	
 					var nbPendingTasks = 0;
 	
@@ -119,25 +119,25 @@ app.Views.TasksListView = Backbone.View.extend({
 					_.each(app.collections.tasks.toJSON(), function(task, i){
 						if(momentDate.clone().isSame(task.date_start, 'week')){
 							if(momentDate.clone().day(1).isSame(task.date_start, 'day')){
-								mondayTasks.push(task);
+								mondayTasks.add(task);
 							}
 							else if(momentDate.clone().day(2).isSame(task.date_start, 'day')){
-								tuesdayTasks.push(task);
+								tuesdayTasks.add(task);
 							}
 							else if(momentDate.clone().day(3).isSame(task.date_start, 'day')){
-								wednesdayTasks.push(task);
+								wednesdayTasks.add(task);
 							}
 							else if(momentDate.clone().day(4).isSame(task.date_start, 'day')){
-								thursdayTasks.push(task);
+								thursdayTasks.add(task);
 							}
 							else if(momentDate.clone().day(5).isSame(task.date_start, 'day')){
-								fridayTasks.push(task);
+								fridayTasks.add(task);
 							}
 							else if(momentDate.clone().day(6).isSame(task.date_start, 'day')){
-								saturdayTasks.push(task);
+								saturdayTasks.add(task);
 							}
 							else if(momentDate.clone().day(7).isSame(task.date_start, 'day')){
-								sundayTasks.push(task);
+								sundayTasks.add(task);
 							}
 	
 							// Retrieve the number of Open Task //
@@ -150,7 +150,7 @@ app.Views.TasksListView = Backbone.View.extend({
 						else {
 	
 							if( momentDate.clone().day(7).isSame(task.date_start, 'day') ){					
-								sundayTasks.push(task);
+								sundayTasks.add(task);
 	
 								// Retrieve the number of Open Task //
 								if(task.state == app.Models.Task.status.open.key){
@@ -183,13 +183,17 @@ app.Views.TasksListView = Backbone.View.extend({
 						var template = _.template(templateData, {
 							lang: app.lang,
 							nbPendingTasks: nbPendingTasks,
-							tasksPerDay: tasksUserFiltered,
 							momentDate: momentDate,
 							displayFilter: _.size(officersDropDownList) > 0
 						});
 						
 						$(self.el).html(template);
-	
+						
+						//display all seven days of the selected week
+						_.each(tasksUserFiltered, function(dayTasks, i){
+							$('#task-accordion').append(new app.Views.ItemTaskDayListView({day: dayTasks.day, tasks: dayTasks.tasks}).render().el);
+						});
+						
 						app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categoriesTasks})
 						app.views.selectListAssignementsView.clearAll();
 						app.views.selectListAssignementsView.addEmptyFirst();

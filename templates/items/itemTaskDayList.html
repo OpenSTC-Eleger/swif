@@ -1,0 +1,53 @@
+<!-- Unfold the current day -->
+<!-- Count the number of Open Task -->
+
+<section class="accordion-group">
+
+	<div class="accordion-heading">
+		<a class="accordion-toggle" data-toggle="collapse" href="#accordion_<%= day.day() %>">
+			<h4 class="table-caption">
+				<%= _.capitalize(day.format('dddd D MMMM')) %>
+				<div class="pull-right">
+					<!-- Badge pending Tasks -->
+					<small class="badge pendingTasks badge-info vertical-align-top" data-toggle="tooltip" data-original-title="<%= lang.wait %>"></small>
+					<!-- Badge nb of Tasks-->
+					<small class="badge nbTasks vertical-align-top"></small>
+				</div>
+			</h4>
+		</a>
+	</div>
+
+
+	<div id="accordion_<%= day.day() %>" class="accordion-body collapse">
+
+		<!-- Table Tasks -->
+		<table class="table table-striped table-bordered table-hover noMarginBottom">
+			<thead>
+				<tr>
+					<th><%= _.capitalize(lang.intervention) %></th>
+					<th><%= _.capitalize(lang.label) %></th>
+					<th><%= _.capitalize(lang.place) %></th>
+					<th><%= _.capitalize(lang.startHour) %></th>
+					<th><%= _.capitalize(lang.endHour) %></th>
+					<th><%= _.capitalize(lang.assignedTo) %></th>
+					<th class="hidden-phone"><%= _.capitalize(lang.plannedHours) %></th> 
+					<th class="hidden-phone"><%= _.capitalize(lang.remainingHours) %></th>
+					<th><%= _.capitalize(lang.status) %></th>
+					<th class="span1"><%= _.capitalize(lang.action) %></th>
+				</tr>
+			</thead>
+			<tbody>
+
+			
+			</tbody>
+		</table>
+
+		<!-- /Table Requests -->
+
+		<!-- No Task to Display -->
+		<div class="alert alert-info noMarginBottom">
+			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTask %>.
+		</div>
+	</div>
+
+</section>
