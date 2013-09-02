@@ -4,66 +4,46 @@
 app.Views.EventsListView = Backbone.View.extend({
 	
 	//template name
-	templateHTML : 'calendar',	
-	//domain for task search
-	domain:	[[]],
+	templateHTML 	: 'calendar',	
 	//Dom element for calendar
-	divCalendar: null,
-	
-	//tasks : calendar's events 
-	filterTasks		: null,
-	
-	//fullcalendar options : week
-	calendarView: 'agendaWeek',
-	arrayPlanifTasks: [],
-	arrayOnDayEvents: [],
+	divCalendar: 	null,
+		
+	calendarView: 	'agendaWeek',	
+	teamMode:		 false,
 
 	events: {
 	},
 
+	/**
+	 * Initialize calendar view
+	 */
 	initialize: function(){	
 	
 		var self = this;
-		this.teamMode = this.options.teamMode
-		//get officers or teams list  
-		var collection = this.teamMode?app.models.user.getTeams():app.models.user.getOfficers();
-		//Set domain to fetch according the mode (team or officer mode)
+		var collection = null;
 		
-		if( this.teamMode ) {
-			this.domain = ['|',	['team_id','=',this.options.calendarId],
-			               		['user_id','in',app.models.user.getOfficerIdsByTeamId(this.options.calendarId)]
-			               ];
-		}
-		else{			
-			this.domain = ['|',	['user_id','=',this.options.calendarId],
-			               		['team_id','in',app.models.user.getTeamIdsByOfficerId(this.options.calendarId)]
-			               ];
-		}	
-		
-		//set team or officer model
-		this.model = _.find(collection, function (o) { 
-				return o.id == self.options.calendarId
-		});
-		
-		//Set dom element of calendar
-		this.divCalendar = 'div#calendar_' + this.model.id;		
-		this.initCollection();		
-
-	},
-
-	initCollection: function() {
-	
-		var self = this;
-		this.filterTasks = null;
-		//fetch tasks of officer or team to display events in calendar
-		collection = new app.Collections.Tasks();
-		collection.fetch({search: self.domain,
-			success: function(data){
-				self.filterTasks = data.toJSON()
-				self.render();
+		if(!_.isUndefined(this.options.team)) {
+			//get team model selected on calendar
+			this.teamMode = true;
+			collection = app.models.user.getTeams();
+			this.model = _.find(collection, function (o) { 
+				return _.slugify(o.name).toUpperCase() == self.options.team
+			});
+		} else {
+			//get officer model selected on calendar
+			collection = app.models.user.getOfficers(); 
+			if(_.isUndefined(this.options.officer)) {
+				this.model = collection[0]
 			}
-		});
-    },
+			else{
+				this.model = _.find(collection, function (o) { 
+					return _.slugify(o.name).toUpperCase() == self.options.officer.toUpperCase()
+				});				
+			}
+		}
+		//DOM element id for calendar with model
+		this.divCalendar = 'div#calendar_' + this.model.id;	
+	},
 
     
 	/** Display the view
@@ -77,8 +57,7 @@ app.Views.EventsListView = Backbone.View.extend({
 				calendar   : self.model,
 			});
 			
-			self.$el.html(template);
-        	self.initEvents();
+			self.$el.html(template);	
         	self.initCalendar();
 		});
 
@@ -86,158 +65,15 @@ app.Views.EventsListView = Backbone.View.extend({
 	},
 
 
-    refresh: function() {
-		var self = this;
-        app.collections.tasks.fetch({ 
-    		success: function(){
-    			app.collections.interventions.fetch({ 
-    				beforeSend: function(){
-	                    app.loader('display');
-	                },
-    				success: function(){
-    					self.options.planning.render();
-    				},
-    				complete: function(){
-                    	app.loader('hide');
-                    }
-               });
-           }
-        });
-    },
-
-
-
-    /** Task is click on the calendar
+   /**
+    * Init fullcallendar
     */
-    eventClick: function(fcEvent, jsEvent, view) {
-
-        // Reset the modal Buttons //
-        $('#btnRemoveTask').prop('disabled', false);
-       	$('#switchWithForeman').bootstrapSwitch('setActive', true);
-        
-		
-        // Retrieve the Task //
-		var task = app.collections.tasks.get(fcEvent.id);
-
-		// Set informations in the modal //
-		var taskInter = '';
-		if(task.getInterventionId() != ''){ taskInter = "<i class='icon-pushpin'></i> " + task.getInterventionName() + " -"; }
-		var tasksInfo = taskInter + " " + task.getName();
-
-		// Display a label with the state of the task //
-		
-		tasksInfo += '<span class="label label-'+app.Models.Task.status[task.getState()].color+' pull-right">'+app.Models.Task.status[task.getState()].translation+'</span>';
-
-
-		// Check if the task is set to an officer or a team //
-		if(task.getTeamId() == false){ 
-			var assignTo = "<br /> <i class='icon-user'></i> " + task.getUserName();
-			$('#formModalAboutTask').hide();
-		}
-		else{
-			var assignTo = "<br /><i class='icon-group'></i> " + task.getTeamName();
-			$('#formModalAboutTask').show();
-		}
-
-		$('#infoModalAboutTask p').html(tasksInfo);
-		$('#infoModalAboutTask small').html(task.getStartEndDateInformations() + assignTo);
-
-		// Disable or not the button "Remove Of The Schedule" //
-		if(task.getState() == app.Models.Task.status.done.key || task.getState() == app.Models.Task.status.cancelled.key){
-        	$('#btnRemoveTask').prop('disabled', true);
-        	$('#switchWithForeman').bootstrapSwitch('setActive', false);
-		}
-
-
-		// Set the ID of the Task in the DOM of the modal //
-		$('#modalAboutTask').data('taskId', task.getId());
-
-
-		// Display the Modal //
-		$("#modalAboutTask").modal('show');
-	},
-
-
-
-	eventDropOrResize: function(fcEvent) {
-		// Lookup the model that has the ID of the event and update its attributes
-		this.collection.get(fcEvent.id).save({start: fcEvent.start, end: fcEvent.end});            
-	},
-    
-    initEvents: function() {
-    	this.events = [];
-    	var self = this;
-    	
-    	_.each(this.filterTasks , function (task, i){
-    		//task = task.toJSON()
-    		var actionDisabled = task.state == app.Models.Task.status.done.key || task.state == app.Models.Task.status.cancelled.key;
-
-    		var title = task.name;
-    		if( self.teamMode ) {
-    			if( task.user_id ) {
-    				title += "(" + task.user_id[1] + ")"
-    			}   				
-    		}
-    		else{
-    			if( task.team_id ) {
-    				title += "(" + task.team_id[1] + ")"
-    			}    
-    		}
-    		
-    		var event = { 
-    			id: task.id, 
-				state: task.state,
-				title: title, 
-				start: task.date_start!=false?task.date_start.toDate():null,
-				end: task.date_end!=false?task.date_end.toDate():null,
-				planned_hours: task.planned_hours,
-				total_hours: task.total_hours,
-				effective_hours: task.effective_hours,
-				remaning_hours: task.remaining_hours,
-				allDay: false,
-				className: 'calendar-'+app.Models.Task.status[task.state].color,
-				editable: true,
-				disableDragging: actionDisabled,
-				disableResizing: actionDisabled,
-			};
-
-    		self.events.push(event);
-    	});
-    	
-		var eventsSortedArray = _.sortBy(self.events, function(event){ 
-			return [event.start, event.end]; 
-		});
-		self.events = eventsSortedArray;
-    },
-    
-
-
-	getEvent: function( title, startDate, endDate ){
-		return {
-					title: title,
-					start: startDate,
-					end : endDate,
-				};
-	},        
-
-
-
-	removeEvent: function(array,s){
-		var index = array.indexOf(s);
-		if(array.indexOf(s) != -1) array.splice(index, 1);
-	},		
-	//--------------------End events on calendar-------------------------//
-
-
-    //--------------------Init calendar----------------------------------//
     initCalendar: function() {
     	var self = this;
 
     	this.calendar = $(this.divCalendar).fullCalendar({
-			events: function(start, end, callback) {
-    			callback(self.events);
-			},
-			
+    		
+    		/** Full calendar attributes **/			
 			defaultView: self.calendarView,
 			aspectRatio: 1.30,
 			header: {
@@ -279,17 +115,67 @@ app.Views.EventsListView = Backbone.View.extend({
 			dragOpacity	: 0.5,
 			weekends	: true,
 			droppable	: true,
-			//disableResizing: false,
 			selectable	: true,
 			selectHelper: true,
 			editable	: true,
 			ignoreTimezone	: false,
 			dragRevertDuration	:0,
 			eventClick	: self.eventClick,
-			//drop: self.drop,
 			startOfLunchTime	: app.config.startLunchTime,
 			endOfLunchTime		: app.config.endLunchTime,
-            
+	
+    		/**
+    		 * Calculates events to display on calendar for officer (or team) on week selected
+    		 */    		
+			events: function(start, end, callback) {   
+    			//app.loader('display');
+    			var fetchParams={
+					silent : true,
+					data   : {}
+				};
+
+    				
+    			var domain = [
+    			              	{ 'field' : 'date_start', 'operator' : '>', 'value' : moment(start).format('YYYY-MM-DD HH:mm:ss') },
+    			              	{ 'field' : 'date_end', 'operator' : '<', 'value' : moment(end).format('YYYY-MM-DD HH:mm:ss')  },    			              	
+    			             ]
+    			
+    			if(self.teamMode){
+        			var users = app.models.user.getOfficerIdsByTeamId(self.model.id)
+        			if( users.length>0 )
+        				domain.push(		'|',
+        								   { 'field' : 'team_id.id', 'operator' : '=', 'value' : self.model.id },
+        				                   { 'field' : 'user_id.id', 'operator' : 'in', 'value' : users  }
+        				               )
+        			else
+        				domain.push({ 'field' : 'user_id.id', 'operator' : '=', 'value' : self.model.id })
+    			}
+    			else{
+        			var teams = app.models.user.getTeamIdsByOfficerId(self.model.id)
+        			if( teams.length>0 )
+        				domain.push(		'|',
+        								   { 'field' : 'user_id.id', 'operator' : '=', 'value' : self.model.id },
+        				                   { 'field' : 'team_id.id', 'operator' : 'in', 'value' : teams  }
+        				               )
+        			else
+        				domain.push({ 'field' : 'user_id.id', 'operator' : '=', 'value' : self.model.id })
+    			}
+
+	    		fetchParams.data.filters    = app.objectifyFilters(domain),
+	    		self.collection = new app.Collections.Tasks();
+	    		//Get tasks for domain
+				self.collection.fetch(fetchParams).done(function(data){
+					//Transforms tasks in events for fullcalendar
+					self.events = self.fetchEvents();
+					self.initPrintView();
+					//app.loader('hide');
+					//Display events on calendar
+					callback(self.events);
+				});
+			},
+
+			
+
 			/**
 			 * Open leave time
 			 */
@@ -370,7 +256,8 @@ app.Views.EventsListView = Backbone.View.extend({
 									app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.unablePerformAction);
 								}
 								else
-									self.refresh();
+									$(self.divCalendar).fullCalendar( 'refetchEvents' )
+									app.loader('hide');	
 							}
 						});
 						modalAbsentTask.modal('hide');
@@ -401,7 +288,7 @@ app.Views.EventsListView = Backbone.View.extend({
 				var copiedEventObject = $.extend({}, originalEventObject);
 				copiedEventObject.allDay = allDay;
 				copiedEventObject.start = date; //$.fullCalendar.formatDate(date, 'yyyy-MM-dd HH:mm:ss');
-				
+			
 				var params = {
 						startWorkingTime : app.config.startWorkTime,
 						endWorkingTime : app.config.endWorkTime,
@@ -412,6 +299,7 @@ app.Views.EventsListView = Backbone.View.extend({
 				        calendarId : self.model.id,
 				}
 				
+				
 				app.Models.Task.prototype.planTasks(copiedEventObject.id, 
 					params, {
 						success: function (data){
@@ -420,13 +308,13 @@ app.Views.EventsListView = Backbone.View.extend({
 								app.notify('', 'error', app.lang.errorMessages.unablePerformAction, data.error.data.fault_code);
 							}
 							else{
-								self.refresh();
+								$(self.divCalendar).fullCalendar( 'refetchEvents' )
+								//self.planning.partialRender(data.result.project_id)						
 							}							
 						},
 					}
 				);
 			},
-
 
 			//Drop event from time slot to another
 			eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
@@ -437,8 +325,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			       date_end: event.end,
 			    };
 			    app.Models.Task.prototype.save(event.id, params);	
-			    $(this.divCalendar).fullCalendar('refresh');
-			    self.options.planning.render();
+			    $(this.divCalendar).fullCalendar( 'refetchEvents' )
 			    app.loader('hide');	
 			},
 
@@ -458,8 +345,8 @@ app.Views.EventsListView = Backbone.View.extend({
 			       remaining_hours: (event.remaining_hours + (minuteDelta)/60),
 			    };
 			    app.Models.Task.prototype.save(event.id,params);
-			    $(this.divCalendar).fullCalendar('refresh');
-			    self.options.planning.render();
+			    $(this.divCalendar).fullCalendar( 'refetchEvents' )
+			    //$(this.divCalendar).fullCalendar('refresh');
 			    app.loader('hide');
 			},
 		});
@@ -472,23 +359,101 @@ app.Views.EventsListView = Backbone.View.extend({
 		/**
 		 * Add personal icon for officer on calendar 
 		 */
-		$('table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");
-
-						
-		/**
-		 * Initialize Print calendar view
-		 */
-		app.views.printingCalendarView = new app.Views.PrintingCalendarView({
-			calendar : this,
-			el: $("#printingCalendar"), 
-			events : self.filterTasks,
-		})
-			
-		
+		$('table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");		
 	},
-	// --------------------End init calendar----------------------------------------//
-    
+	// -------------------- End fullcalendar initialization -------------------- //
+	
+	/**
+	 * Transforms tasks in events for fullcalendar
+	 */	    
+    fetchEvents: function() {
+    	this.events = [];
+    	var self = this;
+    	
+    	_.each(this.collection.toJSON() , function (task, i){
+    		var actionDisabled = task.state == app.Models.Task.status.done.key || task.state == app.Models.Task.status.cancelled.key;
 
+    		var title = task.name;
+    		if( self.teamMode ) {
+    			if( task.user_id ) {
+    				title += "(" + task.user_id[1] + ")"
+    			}   				
+    		}
+    		else{
+    			if( task.team_id ) {
+    				title += "(" + task.team_id[1] + ")"
+    			}    
+    		}
+    		
+    		var event = { 
+    			id: task.id, 
+				state: task.state,
+				title: title, 
+				start: task.date_start!=false?task.date_start.toDate():null,
+				end: task.date_end!=false?task.date_end.toDate():null,
+				planned_hours: task.planned_hours,
+				total_hours: task.total_hours,
+				effective_hours: task.effective_hours,
+				remaning_hours: task.remaining_hours,
+				allDay: false,
+				className: 'calendar-'+app.Models.Task.status[task.state].color,
+				editable: true,
+				disableDragging: actionDisabled,
+				disableResizing: actionDisabled,
+			};
+
+    		self.events.push(event);
+    	});
+    	
+		return eventsSortedArray = _.sortBy(self.events, function(event){ 
+			return [event.start, event.end]; 
+		});
+    },
+    
+	/**
+	 * Initialize Print calendar view
+	 */
+	initPrintView: function(){
+		//if ( _.isUndefined(app.views.printingCalendarView) ){
+			app.views.printingCalendarView = new app.Views.PrintingCalendarView({
+				calendar : this,
+				el: $("#printingCalendar"), 
+				events : this.collection.toJSON(),
+			})
+//		}
+//		else {
+//			app.views.printingCalendarView.close();
+//			app.views.printingCalendarView.calendar = this;
+//			app.views.printingCalendarView.events = this.collection.toJSON();			
+//			app.views.printingCalendarView.render();
+//		}
+	},
+	
+//initPrintView: function(){
+//	app.views.printingCalendarView = new app.Views.PlanningInterListView({
+//			calendar : this,
+//			events : this.collection.toJSON(),
+//		}) 
+//	$('#printingCalendar').append( app.views.printingCalendarView.render().el );
+//},
+
+    /** Task is click on the calendar : display unplan task modal
+    */
+    eventClick: function(fcEvent, jsEvent, view) {	
+		
+		app.views.modalUnplanTaskView = new app.Views.ModalUnplanTaskView({
+			el    : '#modalUnplanTask',
+			eventId : fcEvent.id
+		});
+	},
+
+	/**
+	 * ????
+	 */
+	eventDropOrResize: function(fcEvent) {
+		// Lookup the model that has the ID of the event and update its attributes
+		this.collection.get(fcEvent.id).save({start: fcEvent.start, end: fcEvent.end});            
+	},
 
 });
 

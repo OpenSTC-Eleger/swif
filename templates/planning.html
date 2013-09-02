@@ -10,193 +10,18 @@
 
 
  	<!-- Left Column -->
- 	<div class="span3">
+ 	
 
 
 
-		<!-- Interventions toolbar -->
-		<div id="planningToolbar" class="row-fluid">
+	<!-- Interventions toolbar -->
 
-			<!-- Button add intervention -->
-			<button class="btn btn-primary no-outline addInterventionPlanning pull-left">
-				<i class="icon-plus"></i> <%= _.capitalize(lang.actions.addIntervention) %>
-			</button>
+	<!-- /Interventions toolbar -->
 
-			<!-- Filter -->
-			<div class="dropdown span5 offset1">
+	<!-- Interventions List -->
+	<div id="planningInters" class="span3"></div>
 
-				<a id="filterStateIntervention" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#">
-			   		<i class="icon-filter icon-large"> <%= _.capitalize(lang.status) %></i>
-				</a>
-
-				<ul id="filterStateInterventionList" class="dropdown-menu" aria-labelledby="filterStateIntervention">
-
-					<% _.each(interventionsState, function (state, i) {
-						if(i == app.Models.Intervention.status.scheduled.key || i == app.Models.Intervention.status.open.key || i == app.Models.Intervention.status.pending.key || i == app.Models.Intervention.status.template.key){
-					%>
-						<li>
-							<a tabindex="-1" href="#<%= state.key %>">
-								<i class="badge badge-<%= state.color %>">&nbsp;</i>
-								&nbsp; <%= _.capitalize(state.translation) %>
-							</a>
-						</li>
-					<% }
-					}) %>
-						<li class="divider"></li>
-						<li class="delete-filter disabled"><a href="#delete-filter"><%= _.capitalize(lang.deleteFilter) %></a></li>
-				</ul>
-			</div>
-			<br />
-		</div>
-		<!-- /Interventions toolbar -->
-
-
-
-		<!-- Interventions List -->
-		<% if( _.size(interventions) > 0 ) { %>
-		
-		<div class="accordion" id="accordionInter" style="overflow-y: scroll; max-height: 725px; margin-bottom: 0;">
-
-			<!-- State Color -  To Schedule - Scheduled - Template-->
-			<% _.each(interventions, function (intervention, i) { 
-				var informationHour	= '';
-
-				var classColor = app.Models.Intervention.status[intervention.state].color;
-
-				if(intervention.state != app.Models.Intervention.status.template.key){
-					informationHour = (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours, 'human') : '');
-				}
-				else{
-					informationHour = (intervention.total_hours != false ? app.decimalNumberToTime(intervention.total_hours, 'human') : '');
-				}
-
-
-				if(intervention.description != false){
-					var description = "<i class='icon-flag'></i>&nbsp; "+intervention.description+"<br />";
-				}
-				else{
-					var description = "";
-				}
-
-				var popoverContent = description+ "<i class='icon-map-marker'></i>&nbsp; "+intervention.site1[1];
-			%>
-				<div class="accordion-group">
-					<div class="accordion-heading border-emphasize border-emphasize-<%= classColor %>">
-						<a href="#collapse_<%= intervention.id %>" class="accordion-toggle no-outline" 
-						   data-toggle="collapse" data-parent="#accordionInter"  
-						   rel="popover" data-placement="right" data-html="true" data-title="<%= intervention.name %>"
-						   data-content="<%= popoverContent %>" >
-
-							<i class="icon-pushpin">&nbsp;&nbsp;</i><span><%= _(intervention.name).truncate(25) %></span>
-
-							<!-- Intervention Actions -->
-							<button class="btn btn-link invisible linkToInter" type="button" data-toggle="modal" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>" data-placement="top" data-delay="50"><i class="icon-pencil"></i></button>	
-							
-							<% if(intervention.actions.indexOf("cancel") > -1) { %>
-								<button data-target="#modalCancelInter" class="btn btn-link buttonCancelInter invisible" data-toggle="modal" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>" data-placement="top" data-delay="50"><i class="icon-ban-circle"></i></button>
-							<% } %>
-
-							<small class="badge badge-<%= classColor %> pull-right"><%= informationHour %></small>
-						</a>
-					</div>
-
-					<div id="collapse_<%= intervention.id %>" class="accordion-body collapse border-emphasize border-emphasize-<%= classColor %>">
-						<div class="accordion-inner">
-
-							<!-- Check if there is some tasks -->
-							<% var hasTasks = intervention.tasks.length != 0;
-							if(hasTasks) { %>
-
-								<!-- Display all task of the Intervention -->
-								<ul class="unstyled tasks">
-								<% 
-									//var allPlanned = true;
-									_.each(intervention.tasks, function (task, i) { %>
-
-										<!-- To Schedule -->
-										<% if(task.state == app.Models.Task.status.draft.key) { %>
-										<li id="task_<%= task.id %>" class="external-event">
-											<i class="icon-chevron-right"></i> <%= task.name %>
-											<%if(task.actions.indexOf("delete") > -1){ %>
-											<a href="#modalDeleteTask" class="modalDeleteTask hide" data-toggle="modal">
-												<i class="icon-remove displayInlineBlock modalDeleteTask" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top" data-delay="50">&nbsp;</i>
-											</a>
-											<% } %>
-											<small class="badge badge-<%= app.Models.Task.status.draft.color %> pull-right"><%= task.planned_hours %>h</small>
-										</li>
-
-										<!-- Schedule -->
-										<% //allPlanned = false;
-
-										} else if(task.state == app.Models.Task.status.open.key){ %>
-										<li id="task_<%= task.id %>" class="external-event disabled">
-											<i class="icon-time" rel="tooltip" data-placement="right" data-original-title="<%= moment(task.date_start).format('LLL') %> - <%= (task.team_id == false ? task.user_id[1] : task.team_id[1]) %>"></i> <%= task.name %>
-											<small class="badge badge-<%= app.Models.Task.status.open.color %> pull-right"><%= app.decimalNumberToTime(task.planned_hours, 'human') %></small>
-										</li>
-										<% } %>
-
-								<%	}); %>
-							<% } else { %>
-
-								<!-- No task to display -->
-								<div class="alert alert-info">
-									<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTaskForIntervention %>.
-
-								</div>
-							<% } %>
-							</ul>
-
-							<!-- Intervention Action -->
-							<div class="div-actions">
-
-								<!-- Add Task -->
-								<button class="btn btn-primary btn-small no-outline addTaskPlanning" id="<%= intervention.id %>" rel="tooltip" 
-										data-original-title="<%= _.capitalize(lang.actions.addTask) %>" data-placement="right"
-									<% if(intervention.actions.indexOf("add_task") == -1) { %>
-										disabled
-									<% } %>>
-									<i class="icon-plus"></i>
-								</button>
-
-								<!-- Switch button - To Scheduled / Scheduled -->
-								<% if(hasTasks && intervention.state != app.Models.Intervention.status.template.key) { %>
-
-									<div class="switch switch-small calendarSwitch pull-right" data-on-label="<%= _.capitalize(lang.planningFenced) %>" data-off-label="<%= _.capitalize(lang.toScheduled) %>" data-on="primary" data-off="warning">
-
-										<input type="checkbox" 
-											<% if(intervention.state == app.Models.Intervention.status.scheduled.key){ %>
-												checked
-											<% } %>
-
-											<% if(intervention.actions.indexOf("plan_unplan") == -1){ %>
-												disabled
-											 <% } %>
-											/>
-									</div>
-
-								<% } %>
-							</div>
-
-						</div>
-					</div>
-				</div>
-			<% }) %>
-
-		</div>
-		<% }else { %>
-
-			<!-- No interventions to display -->
-			<div class="alert alert-info">
-				<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>
-			</div>
-		
-		<% } %>
-		<!-- /Interventions List -->
-
-	</div>
-	<!-- /Left Column -->
-
-
+  
 
 
 	<!-- Right Column -->
@@ -225,7 +50,7 @@
 					<ul id="listAgents" class="unstyled inline nav nav-list">
 						<%_.each(officers, function (officer, i) { console.log(officer); %>
 							<li>
-								<a id="pOfficer_<%= officer.id %>" href="#planning/<%= _.slugify(officer.name)%>">
+								<a id="pOfficer_<%= officer.id %>" href="#planning/officer/<%= _.slugify(officer.name).toUpperCase()%>">
 									<i class="icon-user"></i><%= (officer.firstname != false ? officer.firstname : '') %> &nbsp;<%= officer.name.toUpperCase() %>
 								</a>
 							</li>
@@ -246,7 +71,7 @@
 						%>
 
 							<li rel="popover" data-original-title="<%= _.capitalize(lang.agents) %>" data-content="<ul class='unstyled'><%= teamMembers %></ul>" data-html="true" data-placement="left">
-								<a id="pTeam_<%= team.id %>" href="#planning/<%= _.slugify(team.name)%>">
+								<a id="pTeam_<%= team.id %>" href="#planning/team/<%= _.slugify(team.name).toUpperCase()%>">
 									<i class="icon-group"></i><%= team.name %>
 								</a>
 							</li>
@@ -357,7 +182,6 @@
 </div>
 
 
-
 <!-- Modal Form Cancel Intervention -->
 <div id="modalCancelInter" class="modal hide fade">
 	<div class="modal-header">
@@ -413,44 +237,6 @@
 	
 	<div class="modal-footer">
 	    <button type="button" class="btn btn-danger btnDeleteTask"><%= _.capitalize(lang.actions.delete) %></button>&nbsp;&nbsp;
-	    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
-	</div>
-</div>
-
-
-
-<!-- Modal About the Task -->
-<div id="modalAboutTask" class="modal hide fade">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h3><%= lang.aboutTheTask %></h3>
-	</div>
-	
-	<div class="modal-body">
-
-		<blockquote id="infoModalAboutTask" class="spaceBottom">
-			<p></p>
-			<small></small>
-		</blockquote>
-
-		<!--<form class="form-horizontal" id="formModalAboutTask">
-
-			<!-- Switch Button With Foreman -->
-			<!--<div class="control-group">
-				<label class="control-label" for="withForeman"><%= _.capitalize(lang.withForeman) %>:</label>
-
-				<div class="controls">
-            		<div id="switchWithForeman" class="switch switch-small" data-on-label="<i class='icon-ok'></i>" data-off-label="<i class='icon-remove'></i>" data-on="success" data-off="warning">
-                		<input id="withForeman" type="checkbox" />
-            		</div>
-        		</div>
-			</div>
-	    </form>-->
-
-	</div>
-
-	<div class="modal-footer">
-	    <button type="button" id="btnRemoveTask" class="btn btn-danger"><%= _.capitalize(lang.actions.removeOfTheSchedule) %></button>&nbsp;&nbsp;
 	    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 	</div>
 </div>

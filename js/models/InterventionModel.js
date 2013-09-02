@@ -4,7 +4,9 @@
 app.Models.Intervention = Backbone.Model.extend({
 	
 	urlRoot: "/api/openstc/interventions",
-	fields: ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid','ask_id'],
+
+	fieldsOE: ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid','ask_id'],
+
 
 	searchable_fields: [
 		{
@@ -31,8 +33,8 @@ app.Models.Intervention = Backbone.Model.extend({
 	getId : function() {
 		return this.get('id');
 	},
-	setId: function(value) {
-		if( value == 'undefined') return;
+	setId : function(value) {
+		if(_.isUndefined(value)) return;
 		this.set({ id : value });
 	},
 
@@ -43,7 +45,7 @@ app.Models.Intervention = Backbone.Model.extend({
 		if( value == 'undefined') return;
 		this.set({ id : value });
 	},
-
+	
 	getState : function() {
 		return this.get('state');
 	},
@@ -83,8 +85,7 @@ app.Models.Intervention = Backbone.Model.extend({
 	parse: function(response) {    	
 		return response;
 	},
-
-
+	
 
 	update: function(params) {
 		this.setState( params.state );

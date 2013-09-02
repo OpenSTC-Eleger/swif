@@ -10,7 +10,9 @@ app.Collections.Interventions = app.Collections.GenericCollection.extend({
 	
 	url: "/api/openstc/interventions",
 
-	fields: ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid','ask_id'],
+
+	fieldsOE: ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid','ask_id'],
+
 	default_sort : { by: 'id', order: 'DESC' },
 	
 	pendingInterventions: 0,

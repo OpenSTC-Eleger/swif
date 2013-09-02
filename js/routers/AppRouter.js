@@ -224,61 +224,18 @@ app.Router = Backbone.Router.extend({
 
 	/** Planning
 	*/
-	planning: function(id){
+	planning: function(officer, team, week, page){
 		
-		var self = this;
-	
-		// Check if the user is connect //
-		if(this.checkConnect()){  
-			
-			// If the id exist we do nothing //
-			if(_.isUndefined(id)){
+		var params = {};
+//		if(!_.isNull(search)){params.search = search}
+//		if(!_.isNull(filter)){params.filter = filter}
+//		if(!_.isNull(sort)){params.sort = sort}
 		
-	
-				// Check if the collections is instantiate //
-			if(_.isUndefined(app.collections.tasks)){ app.collections.tasks = new app.Collections.Tasks(); }
-			if(_.isUndefined(app.collections.interventions)){ app.collections.interventions = new app.Collections.Interventions(); }
-			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
-			if(_.isUndefined(app.collections.officers)){ app.collections.officers = new app.Collections.Officers(); }
-			if(_.isUndefined(app.collections.teams)){ app.collections.teams = new app.Collections.Teams(); }
-			if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
-			if(_.isUndefined(app.collections.categoriesTasks)){ app.collections.categoriesTasks = new app.Collections.CategoriesTasks(); }
-			if(_.isUndefined(app.collections.absentTypes)){ app.collections.absentTypes = new app.Collections.AbsentTypes(); }
-			if(_.isUndefined(app.collections.equipments)){ app.collections.equipments = new app.Collections.Equipments(); }
-
-
-			app.loader('display');
-
-			app.collections.tasks.fetch({
-				success: function(){
-
-					$.when(
-						app.collections.interventions.fetch(),
-						app.collections.claimersServices.fetch(),
-						app.collections.officers.fetch(),
-						app.collections.teams.fetch(),
-						app.collections.equipments.fetch(),
-						app.collections.places.fetch(),
-						app.collections.categoriesTasks.fetch(),
-						app.collections.absentTypes.fetch()
-					)
-					.done(function(){
-						app.views.planningView = new app.Views.PlanningView(id);
-						self.render(app.views.planningView);
-						app.loader('hide');
-					})
-					.fail(function(e){
-						console.error(e);
-					});
-				}
-			});
-
-		}
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
-	   
+		if(!_.isNull(officer)){params.officer = officer}
+		if(!_.isNull(team)){params.team = team}
+		if(!_.isNull(week)){params.week = week}
+		if(!_.isNull(page)){params.page = page}
+		app.views.planning = new app.Views.PlanningView(params);	   
 	},
 
 
