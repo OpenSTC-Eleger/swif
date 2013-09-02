@@ -41,7 +41,7 @@ app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
 
 		var itemCategoryRequestView  = new app.Views.ItemCategoryRequestView({ model: model });
 		$('#rows-items').prepend(itemCategoryRequestView.render().el);
-		itemCategoryRequestView.highlight();
+		app.Helpers.Main.highlight(itemCategoryRequestView);
 
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.catCreateOk);
 		this.partialRender();
