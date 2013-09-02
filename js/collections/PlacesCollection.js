@@ -17,6 +17,6 @@ app.Collections.Places = app.Collections.GenericCollection.extend({
 	*/
 	initialize: function (options) {
 		//console.log('Place collection Initialization');
-	},
+	}
 
 });

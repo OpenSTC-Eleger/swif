@@ -5,7 +5,7 @@ app.Collections.CategoriesTasks = app.Collections.GenericCollection.extend({
 
 	model        : app.Models.CategoryTask,
 
-	fields       : ['id', 'name', 'code', 'complete_name', 'parent_id', 'service_ids'],
+	fields       : ['id', 'name', 'code', 'parent_id', 'service_names', 'actions'],
 
 	default_sort : { by: 'name', order: 'ASC' },
 
@@ -16,18 +16,7 @@ app.Collections.CategoriesTasks = app.Collections.GenericCollection.extend({
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
-	},
-
-
-
-	/** Collection Sync
-	*/
-	sync: function(method, model, options){
-
-		if(_.isUndefined(options.data)){options.data = {}}
-		options.data.fields = this.fields;
-
-		return $.when(this.count(options), Backbone.sync.call(this, method, this, options));
-	},
+		//console.log('Categories Tasks Initialization');
+	}
 
 });

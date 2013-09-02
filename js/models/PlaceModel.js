@@ -160,7 +160,6 @@ app.Models.Place = Backbone.Model.extend({
 
 	getActions : function(){
 		return this.get('actions');
-	},
-
+	}
 
 });

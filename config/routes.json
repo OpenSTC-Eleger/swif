@@ -91,8 +91,7 @@
 	},
 
 	"categoriesTasks": {
-		"url"		: "categories-des-taches(/page:page)",
-		"baseUrl"	: "categories-des-taches",
+		"url"		: "categories-des-taches(/search/:search)(/sort/:sort)(/page:page)",
 		"function"	: "categoriesTasks"
 	},
 

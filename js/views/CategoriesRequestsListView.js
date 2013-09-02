@@ -6,7 +6,7 @@ app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
 	templateHTML: 'categoriesRequestsList',
 	
 
-   	// The DOM events //
+	// The DOM events //
 	events: function(){
 		return _.defaults({
 			'click a.modalCreateCat' : 'modalCreateCat',
@@ -19,9 +19,9 @@ app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
 
 	/** View Initialization
 	*/
-    initialize: function () {
+	initialize: function () {
 
-    	var self = this;
+		var self = this;
 
 		this.initCollection().done(function(){
 
@@ -31,7 +31,7 @@ app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
 
 			app.router.render(self);
 		})
-    },
+	},
 
 
 
@@ -41,7 +41,7 @@ app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
 
 		var itemCategoryRequestView  = new app.Views.ItemCategoryRequestView({ model: model });
 		$('#rows-items').prepend(itemCategoryRequestView.render().el);
-		app.Helpers.Main.highlight(itemCategoryRequestView);
+		app.Helpers.Main.highlight($(itemCategoryRequestView.el));
 
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.catCreateOk);
 		this.partialRender();
