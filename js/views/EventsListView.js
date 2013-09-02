@@ -414,28 +414,19 @@ app.Views.EventsListView = Backbone.View.extend({
 	 * Initialize Print calendar view
 	 */
 	initPrintView: function(){
-		//if ( _.isUndefined(app.views.printingCalendarView) ){
+		if ( _.isUndefined(app.views.printingCalendarView) ){
 			app.views.printingCalendarView = new app.Views.PrintingCalendarView({
 				calendar : this,
-				el: $("#printingCalendar"), 
 				events : this.collection.toJSON(),
 			})
-//		}
-//		else {
-//			app.views.printingCalendarView.close();
-//			app.views.printingCalendarView.calendar = this;
-//			app.views.printingCalendarView.events = this.collection.toJSON();			
-//			app.views.printingCalendarView.render();
-//		}
+		}
+		else {
+			app.views.printingCalendarView.close();
+			app.views.printingCalendarView.calendar = this;
+			app.views.printingCalendarView.events = this.collection.toJSON();
+		}
+		$('#printingCalendar').html(app.views.printingCalendarView.render().el);
 	},
-	
-//initPrintView: function(){
-//	app.views.printingCalendarView = new app.Views.PlanningInterListView({
-//			calendar : this,
-//			events : this.collection.toJSON(),
-//		}) 
-//	$('#printingCalendar').append( app.views.printingCalendarView.render().el );
-//},
 
     /** Task is click on the calendar : display unplan task modal
     */

@@ -80,9 +80,7 @@ app.Views.PlanningView = Backbone.View.extend({
 			
 			app.views.planningInterListView = new app.Views.PlanningInterListView(self.options)
 			$('#planningInters').append( app.views.planningInterListView.render().el );
-			//Initialize inter panel view
-			
-			
+					
 			
 		});
 		$(this.el).hide().fadeIn('slow');

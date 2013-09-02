@@ -2,10 +2,7 @@
  * Service Details View
  */
 app.Views.PrintingCalendarView = Backbone.View.extend({
-//	el           : '#printingCalendar',
-//
-//templateHTML : 'printingCalendar',
-
+	el           : '#printingCalendar',
 	
 	templateHTML: 'printingCalendar',
 
@@ -16,7 +13,6 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 	initialize: function () {
 		this.calendar = this.options.calendar;
 		this.events = this.options.events;
-		this.render();
     },
 
 
