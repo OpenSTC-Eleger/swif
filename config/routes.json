@@ -51,7 +51,7 @@
 
 
 	"planning": {
-		"url"		: "planning(/officer/:officer)(/team/:team)(/week/:week)(/page:page)",
+		"url"		: "planning(/officer/:officer)(/team/:team)(/year/:year)(/week/:week)(/page:page)",
 		"function"	: "planning"
 	},
 

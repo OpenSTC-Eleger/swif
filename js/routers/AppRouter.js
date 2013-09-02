@@ -224,7 +224,7 @@ app.Router = Backbone.Router.extend({
 
 	/** Planning
 	*/
-	planning: function(officer, team, week, page){
+	planning: function(officer, team, year, week, page){
 		
 		var params = {};
 //		if(!_.isNull(search)){params.search = search}
@@ -233,6 +233,7 @@ app.Router = Backbone.Router.extend({
 		
 		if(!_.isNull(officer)){params.officer = officer}
 		if(!_.isNull(team)){params.team = team}
+		if(!_.isNull(year)){params.year = year}
 		if(!_.isNull(week)){params.week = week}
 		if(!_.isNull(page)){params.page = page}
 		app.views.planning = new app.Views.PlanningView(params);	   

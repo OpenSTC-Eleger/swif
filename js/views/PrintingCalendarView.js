@@ -210,6 +210,9 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 	},	
 	//--------------------End  Print calendar----------------------------------------//
 
+	/**
+	 * Remove print button on close calendar
+	 */
 	close : function() {		
 		$('span').remove('.fc-button-print')
 	},

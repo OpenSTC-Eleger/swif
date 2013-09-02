@@ -10,9 +10,14 @@ app.Views.EventsListView = Backbone.View.extend({
 		
 	calendarView: 	'agendaWeek',	
 	teamMode:		 false,
+	initialized: false,
 
 	events: {
+		'click .fc-button-prev'                  : 'previousDate',
+		'click .fc-button-next'                  : 'nextDate',		
 	},
+	
+	urlParameters : ['officer','team','year','week'],
 
 	/**
 	 * Initialize calendar view
@@ -33,7 +38,9 @@ app.Views.EventsListView = Backbone.View.extend({
 			//get officer model selected on calendar
 			collection = app.models.user.getOfficers(); 
 			if(_.isUndefined(this.options.officer)) {
-				this.model = collection[0]
+				this.model = collection[0];
+				// Initialize first officer in tab if no officer passed in url
+				this.options.officer = _.slugify(this.model.name).toUpperCase()
 			}
 			else{
 				this.model = _.find(collection, function (o) { 
@@ -41,6 +48,13 @@ app.Views.EventsListView = Backbone.View.extend({
 				});				
 			}
 		}
+		
+		// Initialize year,week parameters if not yet in url with current year/week (for prev/next button on calendar)
+		if(_.isUndefined(this.options.year)) {
+			this.options.year = moment().year();
+			this.options.week = moment().week();
+		}
+		
 		//DOM element id for calendar with model
 		this.divCalendar = 'div#calendar_' + this.model.id;	
 	},
@@ -58,12 +72,51 @@ app.Views.EventsListView = Backbone.View.extend({
 			});
 			
 			self.$el.html(template);	
+			// Init calendar
         	self.initCalendar();
+
+    		// Go to week selected	
+        	var momentDate = moment().year(self.options.year).week(self.options.week);			
+			self.calendar.fullCalendar( 'gotoDate', momentDate.year(), momentDate.month(), momentDate.date());			
+        	
 		});
 
 		return this;
 	},
+	
+	/**
+	 * Go to next week
+	 */
+	nextDate: function(e) {
+		this.options.week = String(parseInt(this.options.week)+1);
+		app.router.navigate(this.urlBuilder(), {trigger: false, replace: false});
+	},
 
+	/**
+	 * Go to previous week
+	 */
+	previousDate: function(e) {
+		this.options.week = String(parseInt(this.options.week)-1);
+		app.router.navigate(this.urlBuilder(), {trigger: false, replace: false});
+	},
+	
+
+	/**
+	 * Constructs url for planning
+	 */
+	urlBuilder: function() {
+		var self = this;
+		var url = _(Backbone.history.fragment).strLeft('/');
+
+		// Iterate all urlParameters //
+		_.each(this.urlParameters, function(value, index){		
+			// Check if the options parameter aren't undefined or null //
+			if(!_.isUndefined(self.options[value]) && !_.isNull(self.options[value])){	
+					url += '/'+value+'/'+self.options[value];					
+			}
+		});				
+		return url;		
+	},
 
    /**
     * Init fullcallendar
@@ -127,7 +180,15 @@ app.Views.EventsListView = Backbone.View.extend({
     		/**
     		 * Calculates events to display on calendar for officer (or team) on week selected
     		 */    		
-			events: function(start, end, callback) {   
+			events: function(start, end, callback) { 
+    			 
+
+
+				if( !self.initialized ) {
+					self.initialized = true;
+					return;
+				}
+			
     			//app.loader('display');
     			var fetchParams={
 					silent : true,
@@ -168,8 +229,7 @@ app.Views.EventsListView = Backbone.View.extend({
 					//Transforms tasks in events for fullcalendar
 					self.events = self.fetchEvents();
 					self.initPrintView();
-					//app.loader('hide');
-					//Display events on calendar
+					//Display events on calendar					
 					callback(self.events);
 				});
 			},
