@@ -1,0 +1,20 @@
+<td>
+	<i class="icon-tag">&nbsp;&nbsp;</i><%= cat.getName() %>
+
+	<p class="row-actions invisible">
+		<% if(_.contains(cat.getActions(), 'update')){ %>
+		<a href="#"  class="modalUpdateCat">
+			<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
+		</a>&nbsp;
+		<% } %>
+
+		<% if(_.contains(cat.getActions(), 'delete')){ %>
+		<a href="#" class="modalDeleteCat">
+			<i class="icon-trash icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+		</a>
+		<% } %>
+	</p>
+</td>
+<td data-form-id="catCode"><%= cat.getCode() %></td>
+<td data-form-id="catParentCat"><%= cat.getParentCat() %></td>
+<td data-form-id="catServices"><%= cat.getServices('string') %></td>

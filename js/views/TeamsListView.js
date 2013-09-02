@@ -43,7 +43,7 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 
 		var itemTeamView  = new app.Views.ItemTeamView({ model: model });
 		$('#rows-items').prepend(itemTeamView.render().el);
-		itemTeamView.highlight().done(function(){
+		app.Helpers.Main.highlight($(itemTeamView.el)).done(function(){
 			itemTeamView.setSelected();
 		});
 

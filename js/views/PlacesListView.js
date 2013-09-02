@@ -41,7 +41,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 
 		var itemPlaceView  = new app.Views.ItemPlaceView({ model: model });
 		$('#rows-items').prepend(itemPlaceView.render().el);
-		itemPlaceView.highlight();
+		app.Helpers.Main.highlight($(itemPlaceView.el))
 
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.placeCreateOk);
 		this.partialRender();

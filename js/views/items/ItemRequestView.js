@@ -50,7 +50,7 @@ app.Views.ItemRequestView = Backbone.View.extend({
 		this.render();
 
 		// Highlight the Row and recalculate the className //
-		this.highlight().done(function(){
+		app.Helpers.Main.highlight($(this.el)).done(function(){
 			self.$el.attr('class', _.result(self, 'className'));
 		});
 

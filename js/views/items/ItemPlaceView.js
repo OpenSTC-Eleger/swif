@@ -37,7 +37,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 	change: function(e){
 
 		this.render();
-		this.highlight();
+		app.Helpers.Main.highlight($(this.el));
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
 	},
 
@@ -48,7 +48,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 	destroy: function(e){
 		var self = this;
 
-		this.highlight().done(function(){
+		app.Helpers.Main.highlight($(this.el)).done(function(){
 			self.remove();
 			app.views.placesListView.partialRender();
 		});
@@ -109,27 +109,5 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 			modalConfirm : app.lang.warningMessages.confirmDeletePlace
 		});
 	},
-
-
-
-	/** Highlight the row item
-	*/
-	highlight: function(){
-		var self = this;
-
-		$(this.el).addClass('highlight');
-
-		var deferred = $.Deferred();
-
-		// Once the CSS3 animation are end the class are removed //
-		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
-			function(e) {
-			$(self.el).removeClass('highlight');
-			deferred.resolve();
-		});
-
-		return deferred;
-	}
-
 
 });

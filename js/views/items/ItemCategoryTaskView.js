@@ -1,18 +1,18 @@
 /******************************************
-* Row Category Request View
+* Row Category Task View
 */
-app.Views.ItemCategoryRequestView = Backbone.View.extend({
+app.Views.ItemCategoryTaskView = Backbone.View.extend({
 
 	tagName      : 'tr',
 
 	className    : 'row-item',
 
-	templateHTML : 'items/itemCategoryRequest',
+	templateHTML : 'items/itemCategoryTask',
 
 
 	// The DOM events //
 	events: {
-		'click a.modalUpdateCat' : 'modalUpdateCat',
+		'click' 				 : 'modalUpdateCat',
 		'click a.modalDeleteCat' : 'modalDeleteCat'
 	},
 
@@ -50,7 +50,7 @@ app.Views.ItemCategoryRequestView = Backbone.View.extend({
 
 		app.Helpers.Main.highlight($(this.el)).done(function(){
 			self.remove();
-			app.views.categoriesRequestsListView.partialRender();
+			app.views.categoriesTasksListView.partialRender();
 		});
 
 		app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.catDeleteOk);
@@ -88,9 +88,10 @@ app.Views.ItemCategoryRequestView = Backbone.View.extend({
 	modalUpdateCat: function(e){  
 		e.preventDefault(); e.stopPropagation();
 
-		app.views.modalCategoryRequestView = new app.Views.ModalCategoryRequestView({
+		app.views.modalCategoryTaskView = new app.Views.ModalCategoryTaskView({
 			el      : '#modalSaveCat',
 			model   : this.model,
+			elFocus : $(e.target).data('form-id')
 		});
 	},
 
