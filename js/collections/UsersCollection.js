@@ -3,9 +3,7 @@
 */
 app.Collections.Users = Backbone.Collection.extend({
 
-	model : app.Models.User,
-
-	//localStorage : new Store('usersCollection'),
+	model       : app.Models.User,
 
 	localStorage: new Backbone.LocalStorage('users-collection'),
 

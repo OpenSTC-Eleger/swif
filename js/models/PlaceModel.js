@@ -116,11 +116,11 @@ app.Models.Place = Backbone.Model.extend({
 		this.set({ type : value }, {silent: silent});
 	},
 
-	getLenght : function() {
-		return this.get('lenght');
+	getLength : function() {
+		return this.get('length');
 	},
-	setLenght : function(value, silent) {
-		this.set({ lenght : value }, {silent: silent});
+	setLength : function(value, silent) {
+		this.set({ length : value }, {silent: silent});
 	},  
 	
 	getWidth : function() {
