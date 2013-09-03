@@ -239,15 +239,16 @@
 	},
 
 	"warningMessages" : {
-		"confirmDeleteElement"	: "Êtes-vous sûr de vouloir supprimer cet élément ?",
-		"confirmDeleteAgent"	: "Êtes-vous sûr de vouloir supprimer cet agent ?",
-		"confirmDeletePlace" 	: "Etes-vous sûr de vouloir supprimer ce site ?",
-		"confirmDeleteContact" 	: "Etes-vous sûr de vouloir supprimer ce contact ?",
-		"confirmDeleteClaimer" 	: "Etes-vous sûr de vouloir supprimer cette organisation ?",
-		"confirmDeleteTeam" 	: "Etes-vous sûr de vouloir supprimer cette équipe ?",
-		"confirmDeleteTask" 	: "Etes-vous sûr de vouloir supprimer cette tâche ?",
-		"confirmDeleteEquipment": "Etes-vous sûr de vouloir supprimer ce matériel ?",
-		"confirmDeleteCategory" : "Etes-vous sûr de vouloir supprimer cette catégorie ?"
+		"confirmDeleteElement"	  : "Êtes-vous sûr de vouloir supprimer cet élément ?",
+		"confirmDeleteAgent"	  : "Êtes-vous sûr de vouloir supprimer cet agent ?",
+		"confirmDeletePlace" 	  : "Etes-vous sûr de vouloir supprimer ce site ?",
+		"confirmDeleteContact" 	  : "Etes-vous sûr de vouloir supprimer ce contact ?",
+		"confirmDeleteClaimer" 	  : "Etes-vous sûr de vouloir supprimer cette organisation ?",
+		"confirmDeleteTeam" 	  : "Etes-vous sûr de vouloir supprimer cette équipe ?",
+		"confirmDeleteTask" 	  : "Etes-vous sûr de vouloir supprimer cette tâche ?",
+		"confirmDeleteEquipment"  : "Etes-vous sûr de vouloir supprimer ce matériel ?",
+		"confirmDeleteCategory"   : "Etes-vous sûr de vouloir supprimer cette catégorie ?",
+		"confirmDeleteAbsentType" : "Etes-vous sûr de vouloir supprimer ce type d'absence?"
 	},
 
 	"infoMessages" : {
@@ -259,7 +260,7 @@
 		"noClaimer"				: "Aucune organisation enregistré",
 		"noPartner" 			: "Aucun contact enregistré. Ajouter des contacts.",
 		"noService"				: "Aucun service à afficher",
-		"noAbstentType"			: "Aucun type d'absence",
+		"noAbsentType"			: "Aucun type d'absence à afficher",
 		"noCategorie"			: "Aucune catégorie à afficher",
 		"noClaimersType"		: "Aucun type d'organisation enregistré",
 		"noEquipment"			: "Aucun matériel enregistré",
@@ -279,6 +280,9 @@
 		"catDeleteOk"			: "Catégorie correctement supprimée",
 		"catCreateOk"			: "Catégorie correctement enregistrée",
 		"catUpdateOk"			: "Catégorie correctement mise à jour",
+		"absentTypeDeleteOk"    : "Type d'absence correctement supprimé",
+		"absentTypeCreateOk"	: "Type d'absence correctement enregistré",
+		"absentTypeUpdateOk"	: "Type d'absence correctement mis à jour",
 		"claimerDeleteOk"		: "Demandeur correctement supprimé",
 		"officerDeleteOk"		: "Agent correctement supprimé",
 		"officerSaveOk"			: "Agent correctement enregistré",
@@ -329,6 +333,8 @@
 		"newTask"				 : "Nouvelle tâche",
 		"newPlace"				 : "Nouveau site",
 		"editPlace"				 : "Édition du site",
+		"newAbsentType"			 : "Nouveau type d'absence",
+		"editAbsentType"		 : "Édition du type d'absence",
 		"newTeam"				 : "Nouvelle équipe",
 		"editTeam"				 : "Édition de l'équipe",
 		"newCat"				 : "Nouvelle catégorie",

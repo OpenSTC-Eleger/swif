@@ -3,44 +3,21 @@
 */
 app.Collections.AbsentTypes = app.Collections.GenericCollection.extend({
 
-	model: app.Models.AbsentType,
+	model       : app.Models.AbsentType,
 
+	fields      : ['id', 'name', 'code', 'description', 'actions'],
 
-	// Model name in the database //
-	model_name : 'openstc.absent.type',
-	
-	url: "/api/openstc/absence_categories",
+	default_sort: { by: 'name', order: 'ASC' },
+
+	url         : "/api/openstc/absence_categories",
+
 
 
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
+		//console.log('Place collection Initialization');
 	},
 
-
-
-	/** Collection Sync
-	*/
-	sync: function(method, model, options) {
-//		var fields = ["id", "code", "name", "description"];
-//
-//		return app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
-	},
-
-
-
-	/** Collection Parse
-	*/
-	parse: function(response) {
-		return response.result.records;
-	},
-
-
-	
-	/** Comparator for ordering collection
-	*/
-	comparator: function(item) {
-	  return item.get("name");
-	},
 
 });

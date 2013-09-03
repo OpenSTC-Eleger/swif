@@ -107,7 +107,6 @@
 
 	"claimers": {
 		"url"		: "organisations(/search/:search)(/sort/:sort)(/page:page)",
-		"baseUrl"	: "organisations",
 		"function"	: "claimers"
 	},
 
@@ -118,14 +117,12 @@
 	},
 
 	"absentTypes": {
-		"url"		: "types-dabscence(/page:page)",
-		"baseUrl"	: "types-dabscence",
+		"url"		: "types-dabscence(/search/:search)(/sort/:sort)(/page:page)",
 		"function"	: "absentTypes"
 	},
 
 	"equipments": {
 		"url"		: "materiel(/page:page)",
-		"baseUrl"	: "materiel",
 		"function"	: "equipments"
 	}
 

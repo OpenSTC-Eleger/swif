@@ -93,14 +93,14 @@ app.Views.CategoriesTasksListView = app.Views.GenericListView.extend({
 			
 		});
 
-		$(this.el).hide().fadeIn('slow');
+		$(this.el).hide().fadeIn();
 
-        return this;
-    },
-    
+		return this;
+	},
 
 
-    /** Partial Render of the view
+
+	/** Partial Render of the view
 	*/
 	partialRender: function (type) {
 		var self = this; 
@@ -127,7 +127,7 @@ app.Views.CategoriesTasksListView = app.Views.GenericListView.extend({
 
 	/** Collection Initialisation
 	*/
-    initCollection: function(){
+	initCollection: function(){
 		var self = this;
 
 		// Check if the collections is instantiate //

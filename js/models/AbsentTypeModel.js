@@ -1,84 +1,80 @@
 /******************************************
 * Absent Type Model
 */
-app.Models.AbsentType = Backbone.RelationalModel.extend({
+app.Models.AbsentType = Backbone.Model.extend({
+
     
-	model_name : 'openstc.absent.type',	
-	
-	url: '/#absent/:id',
+    fields  : ['id', 'name', 'code', 'description', 'actions'],
+    
+    urlRoot : '/api/openstc/absence_categories',
 
       
     defaults:{
-		id:0,
-		name: null,
-		code: null,
+		id : null,
 	},
+
+
+    searchable_fields: [
+        {
+            key  : 'name', 
+            type : 'text'
+        },
+        {
+            key  : 'code', 
+            type : 'text'
+        }
+    ],
+
+
       
-	getName : function() {
-        return this.get('name');
+    getId : function() {
+        return this.get('id');
     },
-    setName : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ name : value });
-    },  
+    setId : function(value, silent) {
+        this.set({ id : value }, {silent: silent});
+    },
+
+    getName : function() {
+        return _.titleize(this.get('name').toLowerCase());
+    },
+    setName : function(value, silent) {
+        this.set({ name : value }, {silent: silent});
+    },
     
     getCode : function() {
         return this.get('code');
     },
-    setCode : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ code : value });
-    }, 
+    setCode : function(value, silent) {
+        this.set({ code : value }, {silent: silent});
+    },
     
     getDescription : function() {
         return this.get('description');
     },
-    setDescription : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ description : value });
-    }, 
-
-	/** Model Initialization
-	*/
-    initialize: function(){
-        console.log('Absent type Request Model initialization');
+    setDescription : function(value, silent) {
+        this.set({ description : value }, {silent: silent});
     },
 
 
-
-    /** Model Parser
+    /** Get Informations of the model
     */
-    parse: function(response) {    	
-        return response;
+    getInformations : function(){
+        var informations = {};
+
+        informations.name = this.getName();
+
+        if(!_.isEmpty(this.getCode())){
+            informations.infos = {};
+            informations.infos.key = _.capitalize(app.lang.code);
+            informations.infos.value = this.getCode();
+        }
+
+        return informations;
     },
-    
 
-    
-    update: function(params) {
-		this.setName( params.name );
-		this.setCode( params.code );
-		this.setDescription( params.description );
-	},
-    
+    getActions : function(){
+        return this.get('actions');
+    }
 
-
-    /** Save Model
-	*/
-	save: function(data, id, options) { 
-		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
-	},
-
-
-
-	/** Delete category
-	*/
-	delete: function (options) {	
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
-	}
 
 });

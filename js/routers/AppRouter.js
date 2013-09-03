@@ -520,37 +520,15 @@ app.Router = Backbone.Router.extend({
 
 	/** Abstent types
 	*/
-	absentTypes: function(page){
+	absentTypes: function(search, sort, page){
 
-		// Check if the user is connect //
-		if(this.checkConnect()){
-			var self = this;
+		var params = {};
 
+		if(!_.isNull(search)){ params.search = search; }
+		if(!_.isNull(sort))  { params.sort = sort; }
+		if(!_.isNull(page))  { params.page = page; }
 
-			self.page = page ? parseInt(page, 10) : 1;
-
-			// Check if the collections is instantiate //
-			if(_.isUndefined(app.collections.absentTypes)){ app.collections.absentTypes = new app.Collections.AbsentTypes(); }
-
-
-			app.loader('display');
-
-			$.when(
-				app.collections.absentTypes.fetch()
-			)
-			.done(function(){
-				app.views.absentTypesListView = new app.Views.AbsentTypesListView({page: self.page});
-				self.render(app.views.absentTypesListView);
-				app.loader('hide');
-			})
-			.fail(function(e){
-				console.error(e);
-			});
-
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
+		app.views.absentTypesListView = new app.Views.AbsentTypesListView(params);
 	},
 
 

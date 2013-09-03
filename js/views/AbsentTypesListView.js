@@ -1,27 +1,18 @@
 /******************************************
 * Absent Type View - Configuration
 */
-app.Views.AbsentTypesListView = Backbone.View.extend({
+app.Views.AbsentTypesListView = app.Views.GenericListView.extend({
 	
-	el : '#rowContainer',
+	templateHTML: 'absentTypesList',
 	
-	templateHTML: 'absents',
-	
-	numberListByPage: 25,
-
-	selectedAbsent : '',
-
 
 	// The DOM events //
-	events: {
-		'click li.active'						: 'preventDefault',
-		'click li.disabled'						: 'preventDefault',
-
-		'click a.modalDeleteAbsentType'  		: 'modalDeleteAbsentType',
-		'click a.modalSaveAbsentType'  			: 'modalSaveAbsentType',
-
-		'submit #formSaveAbsentType' 			: "saveAbsentType", 
-		'click button.btnDeleteAbsentType' 		: 'deleteAbsentType'
+	events: function(){
+		return _.defaults({
+			'click a.modalCreateAbsentType' : 'modalCreateAbsentType',
+		}, 
+			app.Views.GenericListView.prototype.events
+		);
 	},
 
 	
@@ -29,8 +20,33 @@ app.Views.AbsentTypesListView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize: function () {
-		
+
+		var self = this;
+
+		this.initCollection().done(function(){
+
+			// Unbind & bind the collection //
+			self.collection.off();
+			self.listenTo(self.collection, 'add', self.add);
+
+			app.router.render(self);
+		})
 	},
+
+
+
+	/** When the model ara created //
+	*/
+	add: function(model){
+
+		var itemAbsentTypeView  = new app.Views.ItemAbsentTypeView({ model: model });
+		$('#rows-items').prepend(itemAbsentTypeView.render().el);
+		app.Helpers.Main.highlight($(itemAbsentTypeView.el));
+
+		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.absentTypeCreateOk);
+		this.partialRender();
+	},
+
 
 
 	/** Display the view
@@ -47,159 +63,110 @@ app.Views.AbsentTypesListView = Backbone.View.extend({
 		// Change the Grid Mode of the view //
 		app.views.headerView.switchGridMode('fluid');
 
-
-		var absentTypes = app.collections.absentTypes.models;
-
-		var absentTypesSortedArray = _.sortBy(absentTypes, function(item){ 
-			return item.attributes.name; 
-		});
-
-
-		var len = absentTypesSortedArray.length;
-		var startPos = (this.options.page - 1) * this.numberListByPage;
-		var endPos = Math.min(startPos + this.numberListByPage, len);
-		var pageCount = Math.ceil(len / this.numberListByPage);
-
 		
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				absentTypes: absentTypesSortedArray,
-				lang: app.lang,
-				nbAbsentTypes: len,
-				startPos: startPos, endPos: endPos,
-				page: self.options.page, 
-				pageCount: pageCount,
+				lang         : app.lang,
+				nbAbsentTypes: self.collection.cpt
 			});
 			
 			$(self.el).html(template);
+
+			// Call the render Generic View //
+			app.Views.GenericListView.prototype.render(self.options);
+
+
+			// Create item category request view //
+			_.each(self.collection.models, function(absentType, i){
+				var itemAbsentTypeView  = new app.Views.ItemAbsentTypeView({model: absentType});
+				$('#rows-items').append(itemAbsentTypeView.render().el);
+			});
+
+
+			// Pagination view //
+			app.views.paginationView = new app.Views.PaginationView({ 
+				page       : self.options.page.page,
+				collection : self.collection
+			})
+			app.views.paginationView.render();
+
 		});
 
-		$(this.el).hide().fadeIn('slow');
+		$(this.el).hide().fadeIn();
 		
 		return this;
 	},
 	
 
 
-	setModel: function(e) {
-		e.preventDefault();
-		var link = $(e.target);
-		var id =  _(link.parents('tr').attr('id')).strRightBack('_');
-		this.selectedAbsent = _.filter(app.collections.absentTypes.models, function(item){ return item.attributes.id == id });
-		if( this.selectedAbsent.length>0 ) {
-			this.model = this.selectedAbsent[0];
-			this.selectedAbsentJson = this.model.toJSON();    
-		}
-		else {
-			this.selectedAbsentJson = null;        	
-		}        
-	},
-
-
-	/** Add a new categorie
+	/** Partial Render of the view
 	*/
-	modalSaveAbsentType: function(e){       
-		this.setModel(e);	
+	partialRender: function (type) {
+		var self = this; 
 
-		$('#absentTypeName, #absentTypeCode, #absentTypeDescription').val('');
-
-		if( this.selectedAbsentJson ) {
-			$('#absentTypeName').val(this.selectedAbsentJson.name);
-			$('#absentTypeCode').val(this.selectedAbsentJson.code);
-			$('#absentTypeDescription').val(this.selectedAbsentJson.description);	
-		}
-
-	},
-
-
-	/** Display information in the Modal view
-	*/
-	modalDeleteAbsentType: function(e){
-		
-		// Retrieve the ID of the categorie //
-		this.setModel(e);
-
-		$('#infoModalDeleteAbsentType p').html(this.selectedAbsentJson.name);
-		$('#infoModalDeleteAbsentType small').html(this.selectedAbsentJson.code);
-	},
-	
-	
-
-	/** Save  place
-	*/
-	saveAbsentType: function(e) {		     
-		e.preventDefault();
-
-		 var self = this;
-		 
-		 this.params = {	
-			 name: this.$('#absentTypeName').val(),
-			 code: this.$('#absentTypeCode').val(),
-			 description: this.$('#absentTypeDescription').val(),
-		 };
-		 
-		
-		this.modelId = this.selectedAbsentJson==null?0: this.selectedAbsentJson.id;
-		var self = this;
-
-		app.Models.AbsentType.prototype.save(
-			this.params, 
-			this.modelId, {
-				success: function(data){
-					console.log(data);
-					if(data.error){
-						app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-					}
-					else{
-						if( self.modelId==0 ){
-							self.model = new app.Models.AbsentType({id: data.result.result});
-						}
-
-						self.model.update(self.params);
-						app.collections.absentTypes.add(self.model);
-						$('#modalSaveAbsentType').modal('hide');
-						app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.absentTypeSaveOk);
-						self.render();
-					}				
-				},
-				error: function(e){
-					alert("Impossible de mettre à jour le type d'absence'");
-				}
+		this.collection.count(this.fetchParams).done(function(){
+			$('#badgeNbAbsentTypes').html(self.collection.cpt);
+			app.views.paginationView.render();
 		});
 	},
 
 
-	
-	/** Delete the selected categorie
+
+	/** Modal form to create a new Cat
 	*/
-	deleteAbsentType: function(e){
+	modalCreateAbsentType: function(e){
 		e.preventDefault();
 		
+		app.views.modalAbsentTypeView = new app.Views.ModalAbsentTypeView({
+			el  : '#modalSaveAbsentType'
+		});
+	},
+
+
+
+	/** Collection Initialisation
+	*/
+    initCollection: function(){
 		var self = this;
-		this.model.delete({
-			success: function(data){
-				console.log(data);
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					app.collections.absentTypes.remove(self.model);
-					$('#modalDeleteAbsentType').modal('hide');
-					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.absentTypeDeleteOk);
-					self.render();
-				}
-			},
-			error: function(e){
-				alert("Impossible de supprimer le type d'absence'");
+
+		// Check if the collections is instantiate //
+		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.AbsentTypes(); }
+
+
+		// Check the parameters //
+		if(_.isUndefined(this.options.sort)){
+			this.options.sort = this.collection.default_sort;
+		}
+		else{
+			this.options.sort = app.calculPageSort(this.options.sort);	
+		}
+		this.options.page = app.calculPageOffset(this.options.page);
+
+
+		// Create Fetch params //
+		this.fetchParams = {
+			silent : true,
+			data   : {
+				limit  : app.config.itemsPerPage,
+				offset : this.options.page.offset,
+				sort   : this.options.sort.by+' '+this.options.sort.order
 			}
+		};
+		if(!_.isUndefined(this.options.search)){
+			this.fetchParams.data.filters = app.calculSearch({search: this.options.search }, app.Models.AbsentType.prototype.searchable_fields);
+		}
 
-		});
-	},
 
+		app.loader('display');
+		return $.when(self.collection.fetch(this.fetchParams))
+			.fail(function(e){
+				console.log(e);
+			})
+			.always(function(){
+				app.loader('hide');
+			});
 
-	preventDefault: function(event){
-		event.preventDefault();
-	},
+	}
 
 });

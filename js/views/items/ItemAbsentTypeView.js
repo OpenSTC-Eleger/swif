@@ -1,19 +1,19 @@
 /******************************************
-* Row Category Task View
+* Row Absent Type View
 */
-app.Views.ItemCategoryTaskView = Backbone.View.extend({
+app.Views.ItemAbsentTypeView = Backbone.View.extend({
 
 	tagName      : 'tr',
 
 	className    : 'row-item',
 
-	templateHTML : 'items/itemCategoryTask',
+	templateHTML : 'items/itemAbsentType',
 
 
 	// The DOM events //
 	events: {
-		'click'                  : 'modalUpdateCat',
-		'click a.modalDeleteCat' : 'modalDeleteCat'
+		'click'                         : 'modalUpdateAbsentType',
+		'click a.modalDeleteAbsentType' : 'modalDeleteAbsentType'
 	},
 
 
@@ -38,7 +38,7 @@ app.Views.ItemCategoryTaskView = Backbone.View.extend({
 
 		this.render();
 		app.Helpers.Main.highlight($(this.el));
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.catUpdateOk);
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.absentTypeUpdateOk);
 	},
 
 
@@ -50,10 +50,10 @@ app.Views.ItemCategoryTaskView = Backbone.View.extend({
 
 		app.Helpers.Main.highlight($(this.el)).done(function(){
 			self.remove();
-			app.views.categoriesTasksListView.partialRender();
+			app.views.absentTypesListView.partialRender();
 		});
 
-		app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.catDeleteOk);
+		app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.absentTypeDeleteOk);
 	},
 
 
@@ -67,14 +67,15 @@ app.Views.ItemCategoryTaskView = Backbone.View.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 			var template = _.template(templateData, {
-				lang : app.lang,
-				cat  : self.model
+				lang        : app.lang,
+				absentType  : self.model
 			});
 
 			$(self.el).html(template);
 
 			// Set the Tooltip //
 			$('*[data-toggle="tooltip"]').tooltip();
+
 		});
 
 		return this;
@@ -82,13 +83,13 @@ app.Views.ItemCategoryTaskView = Backbone.View.extend({
 
 
 
-	/** Display Modal form to add/sav a new Category
+	/** Display Modal form to add/sav a new Absent type
 	*/
-	modalUpdateCat: function(e){  
+	modalUpdateAbsentType: function(e){  
 		e.preventDefault(); e.stopPropagation();
 
-		app.views.modalCategoryTaskView = new app.Views.ModalCategoryTaskView({
-			el      : '#modalSaveCat',
+		app.views.modalAbsentTypeView = new app.Views.ModalAbsentTypeView({
+			el      : '#modalSaveAbsentType',
 			model   : this.model,
 			elFocus : $(e.target).data('form-id')
 		});
@@ -96,16 +97,16 @@ app.Views.ItemCategoryTaskView = Backbone.View.extend({
 
 
 
-	/** Modal to remove a Category
+	/** Modal to remove an Absent Type
 	*/
-	modalDeleteCat: function(e){
+	modalDeleteAbsentType: function(e){
 		e.preventDefault(); e.stopPropagation();
 
 		app.views.modalDeleteView = new app.Views.ModalDeleteView({
-			el           : '#modalDeleteCat',
+			el           : '#modalDeleteAbsentType',
 			model        : this.model,
-			modalTitle   : app.lang.viewsTitles.deleteCategory,
-			modalConfirm : app.lang.warningMessages.confirmDeleteCategory
+			modalTitle   : app.lang.viewsTitles.deleteAbsentType,
+			modalConfirm : app.lang.warningMessages.confirmDeleteAbsentType
 		});
 	},
 

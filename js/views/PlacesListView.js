@@ -105,7 +105,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 		var self = this; 
 
 		this.collection.count(this.fetchParams).done(function(){
-			$('#bagdeNbPlaces').html(self.collection.cpt);
+			$('#badgeNbPlaces').html(self.collection.cpt);
 			app.views.paginationView.render();
 		});
 	},
