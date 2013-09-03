@@ -43,7 +43,7 @@ app.Views.ClaimersTypesListView = app.Views.GenericListView.extend({
 		$('#rows-items').prepend(itemClaimerTypeView.render().el);
 		app.Helpers.Main.highlight($(itemClaimerTypeView.el));
 
-		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.absentTypeCreateOk);
+		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.claimerTypeCreateOk);
 		this.partialRender();
 	},
 
