@@ -2,85 +2,70 @@
 * Claimer Type Model
 */
 app.Models.ClaimerType = Backbone.Model.extend({
-    
-	model_name : 'openstc.partner.type',
-	
-	url: "/type-demandeurs/:id",
 
-// TODO remove
-//	relations: [{
-//		type: Backbone.HasMany,
-//		key: 'claimers',
-//		relatedModel: 'app.Models.Claimer',
-//		collectionType: 'app.Collections.Claimers',
-//		includeInJSON: true,
-//	}],
-	
+
+	fields  : ['id', 'name', 'code', 'actions'],
+
+	urlRoot : '/api/open_object/partner_types',
+
+
 	defaults:{
-		id:0,
-		name: null,
-		code: null,
+		id : null,
 	},
-      
+
+
+	searchable_fields: [
+		{
+			key  : 'name', 
+			type : 'text'
+		},
+		{
+			key  : 'code', 
+			type : 'text'
+		}
+	],
+
+
+	getId : function() {
+		return this.get('id');
+	},
+	setId : function(value, silent) {
+		this.set({ id : value }, {silent: silent});
+	},
+
 	getName : function() {
-        return this.get('name');
-    },
-    setName : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ name : value });
-    },  
-    
-    getCode : function() {
-        return this.get('code');
-    },
-    setCode : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ code : value });
-    }, 
+		return _.titleize(this.get('name').toLowerCase());
+	},
+	setName : function(value, silent) {
+		this.set({ name : value }, {silent: silent});
+	},
+	
+	getCode : function() {
+		return this.get('code');
+	},
+	setCode : function(value, silent) {
+		this.set({ code : value }, {silent: silent});
+	},
 
 
-
-	/** Model Initialization
+	/** Get Informations of the model
 	*/
-	initialize: function(){
-		//console.log('Claimer Type Model initialization');
-		// TODO remove
-		// this.fetchRelated('claimers');
+	getInformations : function(){
+		var informations = {};
+
+		informations.name = this.getName();
+
+		if(!_.isEmpty(this.getCode())){
+			informations.infos = {};
+			informations.infos.key = _.capitalize(app.lang.code);
+			informations.infos.value = this.getCode();
+		}
+
+		return informations;
 	},
 
-
-
-	/** Model Parser */
-	parse: function(response) {    	
-		return response;
-	},
-
-
-
-	update: function(params) {
-		this.setName( params.name );
-		this.setCode( params.code );
-	},
-
-
-
-	/** Save Model
-	*/
-	save: function(data, id, options) { 
-		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
-	},
-
-
-
-	/** Delete category
-	*/
-	delete: function (options) {	
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
+	getActions : function(){
+		return this.get('actions');
 	}
 
 });

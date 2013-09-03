@@ -3,7 +3,6 @@
 */
 app.Router = Backbone.Router.extend({
 
-	routes: {},
 
 	mainMenus: {
 		manageInterventions        : 'gestion-des-interventions',
@@ -484,37 +483,19 @@ app.Router = Backbone.Router.extend({
 
 
 
-	/** Types management
+	/** Claimer Type
 	*/
-	types: function(page){      
+	claimerTypes: function(search, sort, page){
 
-		// Check if the user is connect //
-		if(this.checkConnect()){
-			var self = this;
+		var params = {};
 
-			self.page = page ? parseInt(page, 10) : 1;
+		if(!_.isNull(search)){ params.search = search; }
+		if(!_.isNull(sort))  { params.sort = sort; }
+		if(!_.isNull(page))  { params.page = page; }
 
-			if(_.isUndefined(app.collections.claimersTypes)){ app.collections.claimersTypes = new app.Collections.ClaimersTypes(); }
-
-			app.loader('display');
-
-			$.when(
-				app.collections.claimersTypes.fetch()
-			)
-			.done(function(){
-				app.views.claimersTypesView = new app.Views.ClaimersTypesView({page: self.page});
-				self.render(app.views.claimersTypesView);
-				app.loader('hide');
-			})
-			.fail(function(e){
-				console.error(e);
-			});
-
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
+		app.views.claimersTypesListView = new app.Views.ClaimersTypesListView(params);
 	},
+
 
 
 

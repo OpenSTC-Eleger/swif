@@ -111,9 +111,8 @@
 	},
 
 	"claimersType": {
-		"url"		: "types-dorganisation(/page:page)",
-		"baseUrl"	: "types-dorganisation",
-		"function"	: "types"
+		"url"		: "types-dorganisation(/search/:search)(/sort/:sort)(/page:page)",
+		"function"	: "claimerTypes"
 	},
 
 	"absentTypes": {

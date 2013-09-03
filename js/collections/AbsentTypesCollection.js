@@ -19,5 +19,4 @@ app.Collections.AbsentTypes = app.Collections.GenericCollection.extend({
 		//console.log('Place collection Initialization');
 	},
 
-
 });

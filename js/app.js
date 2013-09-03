@@ -132,6 +132,7 @@ var app = {
 				502: function(){
 					// Server unreachable //
 					app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
+					app.loader('hide');
 				}
 			}
 		});
