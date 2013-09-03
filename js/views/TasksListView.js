@@ -19,20 +19,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		'click ul.sortable li'			: 'preventDefault',
 		
 		'click .btn.addTask'            : 'displayModalAddTask',
-		'submit #formAddTask'         	: 'saveTask',
-
-		'click a.taskNotDone' 			: 'taskNotDone',
-
-		'click .buttonTimeSpent'		: 'setModalTimeSpent',
-		'submit #formTimeSpent'    		: 'saveTimeSpent',
-
-		'click .buttonTaskDone'			: 'setModalTaskDone',
-		'submit #formTaskDone'    		: 'saveTaskDone',
 		
-		'change .taskEquipment'			: 'fillDropdownEquipment',
-
-		'click .linkRefueling'			: 'accordionRefuelingInputs', 
-
 		'change #filterListAgents' 		: 'setFilter'
 
 
@@ -43,7 +30,43 @@ app.Views.TasksListView = Backbone.View.extend({
 	initialize: function () {
 
 	},
+	
+	partialRender: function(){
+		
+		var pendingTasks = 0;
+		_.each(this.collections.tasks.models, function(task, i){
+			if(task.toJSON().state == app.Models.Task.status.open.key){
+				pendingTasks++;
+			}
+		});
+		$('#globalBagePendingTask').html(pendingTasks.toString());
 
+	},
+	
+	//listener to dispatch newly created task to corresponding Day
+	addTask: function(model){
+		var self = this;
+		var modelJSON = model.toJSON();
+		//get the moment() date_start of the new task
+		var momentDateStart = moment(modelJSON.date_start);
+		_.each(this.tasksUserFiltered, function(item, i){
+			//if date_start match a corresponding day of current week, add it to collection
+			if(item.day.week() == momentDateStart.week() && item.day.day() == momentDateStart.day()){
+				item.tasks.add(model);
+				self.partialRender();
+			}
+		});
+	},
+	
+	//listener to dispatch newly created task to corresponding Day
+	removeTask: function(model){
+		this.partialRender();
+	},
+	
+	//listener to dispatch newly created task to corresponding Day
+	changeTask: function(model){
+		this.partialRender();
+	},
 
 	/** Display the view
 	*/
@@ -89,21 +112,23 @@ app.Views.TasksListView = Backbone.View.extend({
 			filter.push({'field':'user_id.id','operator':'=','value':sessionStorage.getItem(self.filters)});
 		}
 		
-		app.collections.equipments = new app.Collections.Equipments();
-		app.collections.categoriesTasks = new app.Collections.CategoriesTasks();		
-		app.collections.tasks = new app.Collections.Tasks();
+		self.collections = {};
+		self.collections.tasks = new app.Collections.Tasks();
 		
 		
 		//get taskUser filtered on current week and with optional filter in sessionStorage
 		$.ajax({
 			url: '/api/open_object/users/' + app.models.user.getUID().toString() + '/scheduled_tasks',
 			type:'GET',
-			data: app.objectifyFilters({'filters':app.objectifyFilters(filter),'fields':app.collections.tasks.fields}),	
+			data: app.objectifyFilters({'filters':app.objectifyFilters(filter),'fields':self.collections.tasks.fields}),	
 			success: function(data){
-				app.collections.tasks = new app.Collections.Tasks(data);
+				self.collections.tasks = new app.Collections.Tasks(data);
+				self.listenTo(self.collections.tasks, 'add', self.addTask);
+				self.listenTo(self.collections.tasks, 'remove', self.removeTask);
+				self.listenTo(self.collections.tasks, 'change', self.changeTask);
 				$.when(
 					//app.collections.equipments.fetch(),
-					app.collections.categoriesTasks.fetch()
+					//app.collections.categoriesTasks.fetch()
 				)
 				.done(function(){
 					
@@ -116,7 +141,7 @@ app.Views.TasksListView = Backbone.View.extend({
 					var nbPendingTasks = 0;
 	
 					// Fill the tables with the tasks //
-					_.each(app.collections.tasks.toJSON(), function(task, i){
+					_.each(self.collections.tasks.toJSON(), function(task, i){
 						if(momentDate.clone().isSame(task.date_start, 'week')){
 							if(momentDate.clone().day(1).isSame(task.date_start, 'day')){
 								mondayTasks.add(task);
@@ -160,7 +185,7 @@ app.Views.TasksListView = Backbone.View.extend({
 						}
 					});
 		
-					var tasksUserFiltered = [
+					self.tasksUserFiltered = [
 						{'day': momentDate.clone().day(1), 'tasks': mondayTasks},
 						{'day': momentDate.clone().day(2), 'tasks': tuesdayTasks},
 						{'day': momentDate.clone().day(3), 'tasks': wednesdayTasks},
@@ -177,9 +202,7 @@ app.Views.TasksListView = Backbone.View.extend({
 	
 	
 						var officersDropDownList = new app.Collections.Officers( app.models.user.attributes.officers );
-	
-						console.log(officersDropDownList);
-	
+		
 						var template = _.template(templateData, {
 							lang: app.lang,
 							nbPendingTasks: nbPendingTasks,
@@ -190,16 +213,9 @@ app.Views.TasksListView = Backbone.View.extend({
 						$(self.el).html(template);
 						
 						//display all seven days of the selected week
-						_.each(tasksUserFiltered, function(dayTasks, i){
-							$('#task-accordion').append(new app.Views.ItemTaskDayListView({day: dayTasks.day, tasks: dayTasks.tasks}).render().el);
+						_.each(self.tasksUserFiltered, function(dayTasks, i){
+							$('#task-accordion').append(new app.Views.ItemTaskDayListView({day: dayTasks.day, tasks: dayTasks.tasks, parentListView: self}).render().el);
 						});
-						
-						app.views.selectListAssignementsView = new app.Views.DropdownSelectListView({el: $("#taskCategory"), collection: app.collections.categoriesTasks})
-						app.views.selectListAssignementsView.clearAll();
-						app.views.selectListAssignementsView.addEmptyFirst();
-						app.views.selectListAssignementsView.addAll();
-	
-	
 	
 						if(officersDropDownList != null){
 							app.views.selectListFilterOfficerView = new app.Views.DropdownSelectListView({el: $("#filterListAgents"), collection: officersDropDownList})
@@ -207,65 +223,6 @@ app.Views.TasksListView = Backbone.View.extend({
 							app.views.selectListFilterOfficerView.addEmptyFirst();
 							app.views.selectListFilterOfficerView.addAll();
 						}
-	
-	
-						$(".datepicker").datepicker({
-							format: 'dd/mm/yyyy',
-							weekStart: 1,
-							autoclose: true,
-							language: 'fr'
-						});
-	
-						$('#equipmentsAdd, #equipmentsListAdd').sortable({
-							connectWith: 'ul.sortableEquipmentsList',
-							dropOnEmpty: true,
-							forcePlaceholderSize: true,
-							forceHelperSize: true,
-							placeholder: 'sortablePlaceHold',
-							containment: '.equipmentsDroppableAreaAdd',
-							cursor: 'move',
-							opacity: '.8',
-							revert: 300,
-							receive: function(event, ui){
-								//self.saveServicesCategories();
-							}
-						});	
-	
-						$('#equipmentsDone, #equipmentsListDone').sortable({
-							connectWith: 'ul.sortableEquipmentsList',
-							dropOnEmpty: true,
-							forcePlaceholderSize: true,
-							forceHelperSize: true,
-							placeholder: 'sortablePlaceHold',
-							containment: '.equipmentsDroppableAreaDone',
-							cursor: 'move',
-							opacity: '.8',
-							revert: 300,
-							receive: function(event, ui){
-								//self.saveServicesCategories();
-							}
-						});
-	
-						$('#equipmentsSpent, #equipmentsListSpent').sortable({
-							connectWith: 'ul.sortableEquipmentsList',
-							dropOnEmpty: true,
-							forcePlaceholderSize: true,
-							forceHelperSize: true,
-							placeholder: 'sortablePlaceHold',
-							containment: '.equipmentsDroppableAreaSpent',
-							cursor: 'move',
-							opacity: '.8',
-							revert: 300,
-							receive: function(event, ui){
-								//self.saveServicesCategories();
-							}
-						});	
-	
-	
-						$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
-						$('*[data-toggle="tooltip"]').tooltip();
-	
-	
 	
 						// Collapse border style //
 						$('.accordion-toggle').click(function(){
@@ -307,371 +264,12 @@ app.Views.TasksListView = Backbone.View.extend({
 		return this;
 	},		
 
-	/** Display equipments
-	*/
-	displayEquipmentsInfos: function(e, list, choiceList, badgeComponent, vehicleSelect){
-		e.preventDefault();
-
-		//retrieve url according to task, if orphan, use url from user ressource, else use url from tasks ressource
-		var task_id = false
-		var base_url = '/api/open_object/users/' + app.models.user.getUID().toString();
-		if(this.model){
-			task_id = this.model.get("id");
-			base_url = '/api/openstc/tasks/' + task_id.toString();
-		}
-		var vehicles_url = base_url + '/available_vehicles';
-		var materials_url = base_url + '/available_equipments';
-		
-		//get vehicles authorized from backend
-		$.ajax({
-			url: vehicles_url,
-			type: "GET",
-			success: function(data){
-				app.views.selectListEquipmentsView = new app.Views.DropdownSelectListView({el: vehicleSelect, collection: new app.Collections.Equipments(data)})
-				app.views.selectListEquipmentsView.clearAll();
-				app.views.selectListEquipmentsView.addEmptyFirst();
-				app.views.selectListEquipmentsView.addAll();
-			}
-		});
-
-		// Retrieve the ID of the intervention //
-		var link = $(e.target);
-		var id = _(link.parents('tr').attr('id')).strRightBack('_');
-		
-		// Clear the lists //		
-		list.empty();
-		choiceList.empty();
-		
-		$.ajax({
-			url: materials_url,
-			type: "GET",
-			data: app.objectifyFilters({'id':task_id}),
-			success: function(data){
-				// Display the remain services //
-				var nbRemainMaterials = 0;
-				for(i in data){
-					
-					nbRemainMaterials++;
-					choiceList.append('<li id="equipment_'+data[i].id+'"><a href="#"><i class="icon-wrench"></i> '+ data[i].name + '-' + data[i].type + ' </a></li>');
-				}
-				badgeComponent.html(nbRemainMaterials);			
-			}
-		});
-
-		var equipmentsSelected = new Array();
-		if( id ) {
-			this.selectedTask = _.filter(app.collections.tasks.models, function(item){ return item.attributes.id == id });
-			var selectedTaskJson = this.selectedTask[0].toJSON();	
-			
-			// Display the services of the team //
-			_.each(selectedTaskJson.equipments_ids, function (equipment, i){
-				list.append('<li id="equipment_'+equipment.id+'"><a href="#"><i class="icon-wrench"></i> '+ equipment.name + '-' + equipment.type + '</a></li>');
-				equipmentsSelected[i] = equipment.id;
-			});
-		};		
-	},
-
-
-    resetModal: function() {  
-    	this.model = null;
-    	$('.taskInput').val('');
-    	$('.taskSelect').val(0);
-    	$('#taskName').val('');    	
-    	//$('.equipments').val('')    	
-    },
-	
-	
-	/** Retreive Equipment  (Vehicle)
-	*/
-	fillDropdownEquipment: function(e){
-		e.preventDefault();
-		var target = $(e.target).val();
-		if( target ) {
-			var equipment = app.collections.equipments.get( target );
-			if( equipment ) {
-				var km = equipment.toJSON().km ;
-				$('.equipmentKm').val( km );
-				$('.equipmentKm').attr('min', km )
-			}
-		}
-	},
-	
-
-	/** Get the Task
-	*/
-    getTask: function(e) {
-		
-    	this.resetModal();
-		var href = $(e.target);
-	
-		// Retrieve the ID of the request //	
-		this.pos = href.parents('tr').attr('id');
-
-		this.model = app.collections.tasks.get(this.pos);
-    },
-    
-
 	/** Display the form to add a new Task
 	*/
 	displayModalAddTask: function(e){
-			
-    	this.resetModal();
-    	this.displayEquipmentsInfos(e, $('#equipmentsAdd'), $('#equipmentsListAdd'), $('#badgeNbEquipmentsAdd'), $("#taskEquipmentAdd") );
-			
-		var mStartDate = moment();
-		var mEndDate = moment();
-			
-    	$("#startDate").val( mStartDate.format('L') );
-    	$("#endDate").val( mEndDate.format('L') );
-		var tempStartDate = moment( mStartDate );
-		tempStartDate.hours(8);
-		tempStartDate.minutes(0);
-		$("#startHour").timepicker( 'setTime', tempStartDate.format('LT') );
-		var tempEndDate = moment( mEndDate );
-		tempEndDate.hours(18);
-		tempEndDate.minutes(0);
-		$("#endHour").timepicker('setTime', tempEndDate.format('LT') );
-		
-		$('#modalAddTask .modal-body').css({"height": "450px", "max-height": "450px"});
-        $('#modalAddTask').modal();
-	},
-	
-	/** Save New Task (Orphan)
-	*/
-	saveTask: function(e){
-		var self = this;
-
-		e.preventDefault();
-		
-		var mNewDateStart =  new moment( $("#startDate").val(),"DD-MM-YYYY")
-								.add('hours',$("#startHour").val().split(":")[0] )
-								.add('minutes',$("#startHour").val().split(":")[1] );
-		var mNewDateEnd =  new moment( $("#endDate").val(),"DD-MM-YYYY")
-								.add('hours',$("#endHour").val().split(":")[0] )
-								.add('minutes',$("#endHour").val().split(":")[1] );
-		var planned_hours = mNewDateEnd.diff(mNewDateStart, 'hours', true);
-		 
-		input_category_id = null;	    
-	    if( app.views.selectListAssignementsView != null ) {
-	    	 var selectItem = app.views.selectListAssignementsView.getSelected();
-	    	 if( selectItem ) {
-	    		 input_category_id = app.views.selectListAssignementsView.getSelected().toJSON().id;
-	    	 }
-	    }	 
-
-	    var vehicule =  $('#taskEquipmentAdd').val()!=""? _($('#taskEquipmentAdd').val() ).toNumber() : 0;
-		var equipments = _.map($("#equipmentsAdd").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
-	    
-	    if(vehicule >0 ){
-	    	equipments.push( vehicule );
-	    }
-	     
-		var params = {
-			user_id:  app.models.user.getUID(),
-			date_start: mNewDateStart.toDate(),
-			date_end: mNewDateEnd.toDate(),
-			state: app.Models.Task.status.done.key,
-			vehicule: vehicule,
-			equipment_ids: equipments,
-			name: this.$('#taskName').val(),
-			km: this.$('#equipmentKmAdd').val(),
-			oil_qtity: this.$('#equipmentOilQtityAdd').val().replace(',', '.'),
-			oil_price: this.$('#equipmentOilPriceAdd').val().replace(',', '.'),
-			category_id: input_category_id,	         
-			planned_hours: planned_hours,
-			remaining_hours: 0,
-		    report_hours: planned_hours,
-		};
-		
-		// app.models.task.createOrphan(params,
-		var task_model = new app.Models.Task(params);
-
-		task_model.save().done(function(data) {
-			// add task to collection
-			task_model.setId(data);
-			task_model.fetch({
-				silent : true
-			}).done(function() {
-				app.collections.tasks.add(task_model);
-				$('#modalAddTask').modal('hide');
-				route = Backbone.history.fragment;
-				Backbone.history.loadUrl(route);
-			}).fail(function(e) {
-				console.log(e)
-			})
-		}).fail(function(e) {
-			console.log(e)
-		})
-	},
-
-    /**
-     * Display Modal for task not finished
-     */
-    setModalTimeSpent: function(e) {    	
-    	this.getTask(e);
-    	this.displayEquipmentsInfos(e, $('#equipmentsSpent'), $('#equipmentsListSpent'), $('#badgeNbEquipmentsSpent'), $("#taskEquipmentSpent" ) );
-    	var task = this.model.toJSON();
-    	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
-
-    	$('#infoModalTimeSpent').children('p').html(task.name);
-    	$('#infoModalTimeSpent').children('small').html('<i class="icon-map-marker icon-large"></i> '+task.site1[1]);
-		$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
-
-		$('#eventTimeSpent').val(this.secondsToHms(task.remaining_hours*60));
-		$('#modalTimeSpent .modal-body').css({"height": "450px", "max-height": "450px"});
-		$('#eventTimeRemaining').val("00:00");
-
-    },
-
-    
-    /**
-     * Save Not Finished Task
-     */
-    saveTimeSpent: function(e) {
-    	e.preventDefault();
-    	var self = this;
-
-  		//calculate Date and times
-    	var timeArray = $('#eventTimeSpent').val().split(':');
-    	var report_hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0)
-    	timeArray = $('#eventTimeRemaining').val().split(':');
-    	var remaining_hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0);
-
-	    
-	    var vehicule =  $('#taskEquipmentSpent').val()!=""? _($('#taskEquipmentSpent').val() ).toNumber() : 0;
-		var equipments = _.map($("#equipmentsSpent").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
-	    
-	    if(vehicule >0 ){
-	    	equipments.push( vehicule );
-	    }
-    	
-    	params = {		  
-  		  	equipment_ids: equipments,
-  		    vehicule: vehicule,
-  		    km: self.$('#equipmentKmSpent').val().replace(',', '.'),
-			oil_qtity: self.$('#equipmentOilQtitySpent').val(),
-			oil_price: self.$('#equipmentOilPriceSpent').val().replace(',', '.'),
-			report_hours: report_hours,
-	        remaining_hours: remaining_hours,
-		};
-
-		// this.model.reportHours(params,
-		if(_.isUndefined(this.model)){this.getTask(e)}
-		this.model.save(params, {silent: true, patch: true})
-			.done(function(data) {
-				self.model.fetch().done(function(){
-					$('#modalTimeSpent').modal('hide');
-					route = Backbone.history.fragment;
-					Backbone.history.loadUrl(route);
-				})
-				.fail(function(e){
-					console.log(e)
-				})
-			}).fail(function(e) {
-				console.log(e)
-			});
+		new app.Views.ModalAddTaskView({el:'#modalAddTask',tasks: this.collections.tasks});
 
 	},
-
-	/** 
-	 * Set Information in the Modal Task Done
-	*/
-	setModalTaskDone: function(e) {
-		this.getTask(e);
-		this.displayEquipmentsInfos(e, $('#equipmentsDone'), $('#equipmentsListDone'), $('#badgeNbEquipmentsDone'), $("#taskEquipmentDone") );
-	
-		var task = this.model.toJSON();
-
-    	$('.timepicker-default').timepicker({showMeridian:false, modalBackdrop:true});
-
-    	// Set Modal information about the Task //
-    	$('#infoModalTaskDone').children('p').html(task.name);
-		$('#infoModalTaskDone').children('small').html('<i class="icon-map-marker icon-large"></i> '+task.site1[1]);
-		$('#modalTaskDone .modal-body').css({"height": "450px", "max-height": "450px"});
-		$('#eventTimeDone').val(this.secondsToHms(task.remaining_hours*60));
-
-	},
-
-	/**
-	 * Update the task as done
-	 */
-	saveTaskDone : function(e) {
-		e.preventDefault();
-		var self = this;
-		//Get time spent to done task
-		var timeArray = $('#eventTimeDone').val().split(':');
-		var report_hours = parseInt(timeArray[0])
-    	var report_hours = parseInt(timeArray[0]) + (timeArray[1]!="00" ? parseInt(timeArray[1])/60 : 0);
-    	
-	    var vehicule =  $('#taskEquipmentDone').val()!=""? _($('#taskEquipmentDone').val() ).toNumber() : 0;
-		var equipments = _.map($("#equipmentsDone").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
-	    
-	    if(vehicule >0 ){
-	    	equipments.push( vehicule );
-	    }
-
-		params = {   
-		    equipment_ids: equipments,
-		    vehicule: vehicule,
-	        km: this.$('#equipmentKmDone').val(),
-	        oil_qtity: this.$('#equipmentOilQtityDone').val().replace(',', '.'),
-	        oil_price: this.$('#equipmentOilPriceDone').val().replace(',', '.'),	        
-	        report_hours: report_hours,
-	        remaining_hours: 0,	        
-		};
-		
-		if(_.isUndefined(this.model)){this.getTask(e)}
-			
-		this.model.save(params, {silent: true, patch: true})
-			.done(function(data){
-				self.model.fetch().done(function(){
-					$('#modalTaskDone').modal('hide');
-					route = Backbone.history.fragment;
-					Backbone.history.loadUrl(route);	
-				})
-				.fail(function(e){
-					console.log(e)
-				})
-			})
-			.fail(function(e) {
-				console.log(e)
-			});
-	},
-
-	/** Save Task as not beginning
-	*/
-    taskNotDone: function(e) {
-    	var self = this;
-		e.preventDefault();
-		this.getTask(e);
-		var taskParams = {
-			state: app.Models.Task.status.draft.key,
-			user_id: null,
-			team_id:null,
-			date_end: null,
-			date_start: null,
-		};
-		
-		$('#modalAddTask').modal('hide');
-			//app.models.task.save(this.model.id, taskParams);
-		this.model.save(taskParams, {patch: true, silent: true})
-		.done(function(){
-			self.render()
-		})
-		.fail(function(e){
-			console.log(e)
-		});
-		},
-
-	secondsToHms : function (d) {
-		d = Number(d);	
-		var h = Math.floor(d / 3600);
-		var m = Math.floor(d % 3600 / 60);
-		var s = Math.floor(d % 3600 % 60);
-		return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":" : "0:") + (s < 10 ? "0" : "") + s);
-	},
-
-
 
 	/** Filter Tasks
 	*/
@@ -689,17 +287,6 @@ app.Views.TasksListView = Backbone.View.extend({
 		}
 
 		this.render();
-	},
-
-	/**
-	 * Display or Hide Refueling Section (Inputs Km, Oil, Oil prize)
-	 */
-	accordionRefuelingInputs : function(e) {
-		e.preventDefault();
-
-		// Toggle Slide Refueling section //
-		$('.refueling-vehicle').stop().slideToggle();
-
 	},
 
 	preventDefault : function(event) {

@@ -23,16 +23,35 @@ app.Views.ItemTaskDayListView = Backbone.View.extend({
 
 		// When the model are updated //
 		this.listenTo(this.options.tasks, 'change', this.change);
+		this.listenTo(this.options.tasks, 'add', this.add);
+		this.listenTo(this.options.tasks, 'remove', this.remove);
+		
 	},
 	
+	initTask: function(model){
+		return new app.Views.ItemTaskDayView({parentDayView: this, model: model, tasks: this.options.tasks});
+	},
+	
+	//Add new model with other tasks of this day
+	add: function(model){
+		var newTaskView = this.initTask(model);
+		this.accordion.find('tbody').append(newTaskView.render().el);
+		newTaskView.highlight();
+		this.partialRender();
+	},
+	//update global collection and do partialRender of this view
+	remove: function(model){
+		this.options.parentListView.collections.tasks.remove(model);
+		this.partialRender();
+	},
+	//update global collection and do partialRender of this view	
 	change: function(model){
+		this.options.parentListView.collections.tasks.add(model, {merge: true});
 		this.partialRender();
 	},
 	
 	displayTodayAccordion: function(){
 		$(this.el).addClass('collapse-selected');
-		//@TODO: Perhaps need another name for day data ;)
-
 		this.accordion.addClass('in');
 	},
 	
@@ -57,6 +76,9 @@ app.Views.ItemTaskDayListView = Backbone.View.extend({
 		//If there is pending Tasks, we display it with badge, else, we let badge without html content (making it hidden)
 		if(pendingTasks>0){
 			$(this.el).find('.badge.pendingTasks').html(pendingTasks.toString());
+		}
+		else{
+			$(this.el).find('.badge.pendingTasks').html('');
 		}
 		$(this.el).find('.badge.nbTasks').html(this.options.tasks.length.toString());
 		
@@ -86,7 +108,7 @@ app.Views.ItemTaskDayListView = Backbone.View.extend({
 			
 			//create itemTaskDay for each task of the day
 			_.each(self.options.tasks.models, function(task, i){
-				self.accordion.find('tbody').append(new app.Views.ItemTaskDayView({parent: self, model: task}).render().el);
+				self.accordion.find('tbody').append(self.initTask(task).render().el);
 			});
 			
 			self.partialRender();
@@ -101,24 +123,6 @@ app.Views.ItemTaskDayListView = Backbone.View.extend({
 		return this;
 	},
 
-	/** Highlight the row item
-	*/
-	highlight: function(){
-		var self = this;
-
-		$(this.el).addClass('highlight');
-
-		var deferred = $.Deferred();
-
-		// Once the CSS3 animation are end the class are removed //
-		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
-			function(e) {
-				$(self.el).removeClass('highlight');
-				deferred.resolve();
-		});
-
-		return deferred;
-	}
 
 
 });
