@@ -12,7 +12,7 @@ app.Views.ItemCategoryRequestView = Backbone.View.extend({
 
 	// The DOM events //
 	events: {
-		'click a.modalUpdateCat' : 'modalUpdateCat',
+		'click'                  : 'modalUpdateCat',
 		'click a.modalDeleteCat' : 'modalDeleteCat'
 	},
 
@@ -91,6 +91,7 @@ app.Views.ItemCategoryRequestView = Backbone.View.extend({
 		app.views.modalCategoryRequestView = new app.Views.ModalCategoryRequestView({
 			el      : '#modalSaveCat',
 			model   : this.model,
+			elFocus : $(e.target).data('form-id')
 		});
 	},
 
