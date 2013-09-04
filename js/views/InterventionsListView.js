@@ -181,7 +181,7 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 	displayModalSaveInter: function(e){
 		//this.getTarget(e);
 		e.preventDefault();
-		var params = {el:'#modalSaveInter'}
+		var params = {el:'#modalSaveInter',collection: this.collections.interventions}
 //		if(this.pos > -1){
 //			params.model = this.collections.interventions.get(this.pos);
 //		}

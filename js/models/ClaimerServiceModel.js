@@ -1,7 +1,7 @@
 /******************************************
 * Claimer Service Model
 */
-app.Models.ClaimerService = Backbone.RelationalModel.extend({
+app.Models.ClaimerService = Backbone.Model.extend({
  
 
 	fields   : ['id', 'actions', 'name', 'complete_name', 'service_names', 'site_parent_id', 'surface'],

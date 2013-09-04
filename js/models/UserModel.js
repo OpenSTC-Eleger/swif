@@ -307,6 +307,7 @@ app.Models.User = Backbone.Model.extend({
 			statusCode : {
 				401: function () {
 					app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
+					app.loader('hide');
 				}
 			}
 		})

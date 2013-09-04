@@ -63,7 +63,7 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 		//this.partialRender();
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.inteventionAddTaskOK);
 		//@TOCHECK: repercute task creation to main tasks collection to be usable by other itemViews
-		app.view.planningInterListView.collections.tasks.add(model);
+		app.views.planningInterListView.collections.tasks.add(model);
 	
 	},
 	

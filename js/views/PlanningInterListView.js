@@ -16,8 +16,8 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 			//'click .buttonCancelInter'                : 'setInfoModalCancelInter',
 			//'click button.linkToInter'                : 'linkToInter',
 			//'submit #formCancelInter'                 : 'cancelInter',
-			'click .btn.addInterventionPlanning'      : 'displayFormAddIntervention',
-			'submit #formAddIntervention'             : 'saveIntervention', 
+			//'click .btn.addInterventionPlanning'      : 'displayFormAddIntervention',
+			//'submit #formAddIntervention'             : 'saveIntervention', 
 			
 			'click .modalDeleteTask'                  : 'setInfoModalDeleteTask',
 			'click button.btnDeleteTask'              : 'deleteTask',
@@ -30,6 +30,7 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		
 			'change #interventionDetailService'       : 'fillDropdownService',	
 			'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilterState',	
+			'click a.modalCreateInter'			: 'displayModalSaveInter',
 			//'click #listAgents li a, #listTeams li a' :          'selectPlanning',	
 		}, 
 			app.Views.GenericListView.prototype.events
@@ -45,18 +46,14 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		var self = this;
 		console.log("Planing Inter panel view intialization")
 	    this.initCollections().done(function(){
-	    	self.collections.tasks.off();	
-			self.listenTo(self.collections.tasks, 'change', self.updateTask);
+	    	self.collections.tasks.off();
+	    	self.collections.interventions.off();
+	    	self.listenTo(self.collections.interventions, 'add', self.render());
+			self.listenTo(self.collections.tasks, 'add',self.render());
 	    	app.router.render(self);
 	    	
 	    })
 	},
-
-	updateTask: function(model) {
-		this.collections.tasks.add(model);
-		this.render();	
-	},
-
 
 	/** Display the view
 	*/
@@ -135,6 +132,14 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		return this;
 	},
 	
+
+	/** Display the form to add / update an intervention
+	*/
+	displayModalSaveInter: function(e){
+		e.preventDefault();
+		var params = {el:'#modalSaveInter',collection: this.collections.interventions}
+		new app.Views.ModalInterventionView(params);
+	},
 		
 	/** Partial Render of the view
 	*/
