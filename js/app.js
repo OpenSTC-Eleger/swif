@@ -5,10 +5,6 @@
 var app = {
 
 
-	// Global variables app //
-	url_authentication     	 : '/sessions',
-
-
 	// Classes //
 	Collections     : {},
 	Models          : {},
@@ -55,7 +51,6 @@ var app = {
 					app.models.user = app.collections.users.at(0);	
 				}
 				
-
 				// Set the Ajax Setup //
 				self.setAjaxSetup();
 
@@ -160,31 +155,6 @@ var app = {
 		}
 
 		return deferred.promise();
-	},
-
-
-
-	/** Transform Decimal number to hour:minute
-	*/
-	decimalNumberToTime: function(decimalNumber){
-
-		// Check if the number is decimal //
-		if(_.str.include(decimalNumber, '.')){
-			var minutes = _.lpad(((_.rpad(_(decimalNumber).strRight('.'), 2, '0') / 100) * 60), 2, '0');
-			var hour = _(decimalNumber).strLeft('.');
-
-			if(hour == 0){
-				var date = _(minutes).toNumber()+app.lang.minuteShort;
-			}
-			else{
-				var date = hour+'h'+_(minutes).toNumber();    
-			}
-		}
-		else{
-			var date = decimalNumber+'h';
-		}
-		
-		return date;
 	},
 
 

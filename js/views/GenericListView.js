@@ -6,7 +6,7 @@ app.Views.GenericListView = Backbone.View.extend({
 	el            : '#rowContainer',
 
 	urlParameters : ['id', 'officer', 'team', 'year', 'week', 'filter', 'sort', 'page', 'search'],
-	
+
 	searchForm    : 'form.form-search input',
 
 

@@ -124,7 +124,7 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 		$('.field').html('');
 
 		$('#taskLabel').html(selectedTaskJSON.name + ' <em>('+selectedTaskJSON.category_id[1]+')</em>');
-		$('#taskPlannedHour').html(app.decimalNumberToTime(selectedTaskJSON.planned_hours, 'human'));
+		$('#taskPlannedHour').html(app.Helpers.Main.decimalNumberToTime(selectedTaskJSON.planned_hours, 'human'));
 		
 		var deferred = $.Deferred();
 		deferred.always(function(){

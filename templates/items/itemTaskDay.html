@@ -19,8 +19,8 @@
 <% } %>
 </td>
 
-<td class="hidden-phone"><%= app.decimalNumberToTime(task.planned_hours, 'human') %></td>
-<td class="hidden-phone"><%=(task.state != app.Models.Task.status.draft.key && task.state != app.Models.Task.status.absent.key) ? app.decimalNumberToTime(task.remaining_hours, 'human') : '' %></td>
+<td class="hidden-phone"><%= app.Helpers.Main.decimalNumberToTime(task.planned_hours, 'human') %></td>
+<td class="hidden-phone"><%=(task.state != app.Models.Task.status.draft.key && task.state != app.Models.Task.status.absent.key) ? app.Helpers.Main.decimalNumberToTime(task.remaining_hours, 'human') : '' %></td>
 
 <!-- Task State -->
 <td>

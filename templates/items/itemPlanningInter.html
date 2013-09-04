@@ -4,4 +4,4 @@
 		<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(_(intervention.name).escapeHTML()) %>
 	</a>
 </td>
-<td><%= (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours, 'human') : '') %></td>
+<td><%= (intervention.planned_hours != false ? app.Helpers.Main.decimalNumberToTime(intervention.planned_hours, 'human') : '') %></td>

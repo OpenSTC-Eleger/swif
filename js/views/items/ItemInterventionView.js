@@ -111,7 +111,7 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 		// Display all the tasks of the inter //
 		_.each(interJSON.tasks, function(task, i){
 			var taskJSON = app.views.interventions.collections.tasks.get(task).toJSON();
-			$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+taskJSON.name+'</td><td>'+app.decimalNumberToTime(taskJSON.planned_hours, 'human')+'</td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td></tr>');
+			$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+taskJSON.name+'</td><td>'+app.Helpers.Main.decimalNumberToTime(taskJSON.planned_hours, 'human')+'</td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td></tr>');
 		})
 
 		var deferred = $.Deferred();

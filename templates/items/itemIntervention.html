@@ -20,8 +20,8 @@
 </td>
 <td><%= intervention.site1[1] %></td>
 <td><%= (intervention.date_deadline != false ? moment(intervention.date_deadline).format('LL') : '') %></td>
-<td><%= (intervention.planned_hours != false ? app.decimalNumberToTime(intervention.planned_hours, 'human') : '') %></td>
-<td><%= (intervention.effective_hours != false ? app.decimalNumberToTime(intervention.effective_hours, 'human') : '') %></td>
+<td><%= (intervention.planned_hours != false ? app.Helpers.Main.decimalNumberToTime(intervention.planned_hours, 'human') : '') %></td>
+<td><%= (intervention.effective_hours != false ? app.Helpers.Main.decimalNumberToTime(intervention.effective_hours, 'human') : '') %></td>
 
 
 <!-- Check the state of the intervention -->
