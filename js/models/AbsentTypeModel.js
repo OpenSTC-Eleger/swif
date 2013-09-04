@@ -1,84 +1,80 @@
 /******************************************
 * Absent Type Model
 */
-app.Models.AbsentType = Backbone.RelationalModel.extend({
-    
-	model_name : 'openstc.absent.type',	
-	
-	url: '/#absent/:id',
+app.Models.AbsentType = Backbone.Model.extend({
 
-      
-    defaults:{
-		id:0,
-		name: null,
-		code: null,
+
+	fields  : ['id', 'name', 'code', 'description', 'actions'],
+
+	urlRoot : '/api/openstc/absence_categories',
+
+
+	defaults:{
+		id : null,
 	},
-      
+
+
+	searchable_fields: [
+		{
+			key  : 'name', 
+			type : 'text'
+		},
+		{
+			key  : 'code', 
+			type : 'text'
+		}
+	],
+
+
+
+	getId : function() {
+		return this.get('id');
+	},
+	setId : function(value, silent) {
+		this.set({ id : value }, {silent: silent});
+	},
+
 	getName : function() {
-        return this.get('name');
-    },
-    setName : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ name : value });
-    },  
-    
-    getCode : function() {
-        return this.get('code');
-    },
-    setCode : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ code : value });
-    }, 
-    
-    getDescription : function() {
-        return this.get('description');
-    },
-    setDescription : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ description : value });
-    }, 
-
-	/** Model Initialization
-	*/
-    initialize: function(){
-        console.log('Absent type Request Model initialization');
-    },
-
-
-
-    /** Model Parser
-    */
-    parse: function(response) {    	
-        return response;
-    },
-    
-
-    
-    update: function(params) {
-		this.setName( params.name );
-		this.setCode( params.code );
-		this.setDescription( params.description );
+		return _.titleize(this.get('name').toLowerCase());
 	},
-    
-
-
-    /** Save Model
-	*/
-	save: function(data, id, options) { 
-		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
+	setName : function(value, silent) {
+		this.set({ name : value }, {silent: silent});
+	},
+	
+	getCode : function() {
+		return this.get('code');
+	},
+	setCode : function(value, silent) {
+		this.set({ code : value }, {silent: silent});
+	},
+	
+	getDescription : function() {
+		return this.get('description');
+	},
+	setDescription : function(value, silent) {
+		this.set({ description : value }, {silent: silent});
 	},
 
 
-
-	/** Delete category
+	/** Get Informations of the model
 	*/
-	delete: function (options) {	
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
+	getInformations : function(){
+		var informations = {};
+
+		informations.name = this.getName();
+
+		if(!_.isEmpty(this.getCode())){
+			informations.infos = {};
+			informations.infos.key = _.capitalize(app.lang.code);
+			informations.infos.value = this.getCode();
+		}
+
+		return informations;
+	},
+
+	getActions : function(){
+		return this.get('actions');
 	}
+
 
 });

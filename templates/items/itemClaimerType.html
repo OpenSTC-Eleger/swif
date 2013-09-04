@@ -1,19 +1,18 @@
 <td>
-	<i class="icon-tag"></i>&nbsp; <%= cat.getName() %>
+	<i class="icon-tag">&nbsp;&nbsp;</i><%= claimerType.getName() %>
 
 	<p class="row-actions invisible">
-		<% if(_.contains(cat.getActions(), 'update')){ %>
-		<a href="#"  class="modalUpdateCat">
+		<% if(_.contains(claimerType.getActions(), 'update')){ %>
+		<a href="#"  class="modalUpdateClaimerType">
 			<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
 		</a>&nbsp;
 		<% } %>
 
-		<% if(_.contains(cat.getActions(), 'delete')){ %>
-		<a href="#" class="modalDeleteCat">
+		<% if(_.contains(claimerType.getActions(), 'delete')){ %>
+		<a href="#" class="modalDeleteClaimerType">
 			<i class="icon-trash icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
 		</a>
 		<% } %>
 	</p>
 </td>
-
-<td data-form-id="catCode"><%= cat.getCode() %></td>
+<td data-form-id="claimerTypeCode"><%= claimerType.getCode() %></td>

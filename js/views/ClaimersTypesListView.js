@@ -1,15 +1,15 @@
 /******************************************
-* Absent Type View - Configuration
+* Claimers Type List View
 */
-app.Views.AbsentTypesListView = app.Views.GenericListView.extend({
-	
-	templateHTML: 'absentTypesList',
+app.Views.ClaimersTypesListView = app.Views.GenericListView.extend({
+
+	templateHTML: 'claimersTypesList',
 	
 
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'click a.modalCreateAbsentType' : 'modalCreateAbsentType',
+			'click a.modalCreateClaimerType' : 'modalCreateClaimerType',
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -39,11 +39,11 @@ app.Views.AbsentTypesListView = app.Views.GenericListView.extend({
 	*/
 	add: function(model){
 
-		var itemAbsentTypeView  = new app.Views.ItemAbsentTypeView({ model: model });
-		$('#rows-items').prepend(itemAbsentTypeView.render().el);
-		app.Helpers.Main.highlight($(itemAbsentTypeView.el));
+		var itemClaimerTypeView  = new app.Views.ItemClaimerTypeView({ model: model });
+		$('#rows-items').prepend(itemClaimerTypeView.render().el);
+		app.Helpers.Main.highlight($(itemClaimerTypeView.el));
 
-		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.absentTypeCreateOk);
+		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.claimerTypeCreateOk);
 		this.partialRender();
 	},
 
@@ -55,7 +55,7 @@ app.Views.AbsentTypesListView = app.Views.GenericListView.extend({
 		var self = this;
 
 		// Change the page title //
-		app.router.setPageTitle(app.lang.viewsTitles.absentTypesList);
+		app.router.setPageTitle(app.lang.viewsTitles.claimersTypesList);
 
 		// Change the active menu item //
 		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
@@ -67,8 +67,8 @@ app.Views.AbsentTypesListView = app.Views.GenericListView.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				lang         : app.lang,
-				nbAbsentTypes: self.collection.cpt
+				lang           : app.lang,
+				nbClaimersTypes: self.collection.cpt
 			});
 			
 			$(self.el).html(template);
@@ -78,9 +78,9 @@ app.Views.AbsentTypesListView = app.Views.GenericListView.extend({
 
 
 			// Create item category request view //
-			_.each(self.collection.models, function(absentType, i){
-				var itemAbsentTypeView  = new app.Views.ItemAbsentTypeView({model: absentType});
-				$('#rows-items').append(itemAbsentTypeView.render().el);
+			_.each(self.collection.models, function(claimerType, i){
+				var itemClaimerTypeView  = new app.Views.ItemClaimerTypeView({model: claimerType});
+				$('#rows-items').append(itemClaimerTypeView.render().el);
 			});
 
 
@@ -97,7 +97,7 @@ app.Views.AbsentTypesListView = app.Views.GenericListView.extend({
 		
 		return this;
 	},
-	
+
 
 
 	/** Partial Render of the view
@@ -106,7 +106,7 @@ app.Views.AbsentTypesListView = app.Views.GenericListView.extend({
 		var self = this; 
 
 		this.collection.count(this.fetchParams).done(function(){
-			$('#badgeNbAbsentTypes').html(self.collection.cpt);
+			$('#badgeNbClaimerTypes').html(self.collection.cpt);
 			app.views.paginationView.render();
 		});
 	},
@@ -115,11 +115,11 @@ app.Views.AbsentTypesListView = app.Views.GenericListView.extend({
 
 	/** Modal form to create a new Cat
 	*/
-	modalCreateAbsentType: function(e){
+	modalCreateClaimerType: function(e){
 		e.preventDefault();
 		
-		app.views.modalAbsentTypeView = new app.Views.ModalAbsentTypeView({
-			el  : '#modalSaveAbsentType'
+		app.views.modalClaimerTypeView = new app.Views.ModalClaimerTypeView({
+			el  : '#modalSaveClaimerType'
 		});
 	},
 
@@ -131,7 +131,7 @@ app.Views.AbsentTypesListView = app.Views.GenericListView.extend({
 		var self = this;
 
 		// Check if the collections is instantiate //
-		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.AbsentTypes(); }
+		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.ClaimersTypes(); }
 
 
 		// Check the parameters //
@@ -154,7 +154,7 @@ app.Views.AbsentTypesListView = app.Views.GenericListView.extend({
 			}
 		};
 		if(!_.isUndefined(this.options.search)){
-			this.fetchParams.data.filters = app.calculSearch({search: this.options.search }, app.Models.AbsentType.prototype.searchable_fields);
+			this.fetchParams.data.filters = app.calculSearch({search: this.options.search }, app.Models.ClaimerType.prototype.searchable_fields);
 		}
 
 

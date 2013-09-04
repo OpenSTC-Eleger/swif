@@ -1,19 +1,19 @@
 /******************************************
-* Row Category Request View
+* Row Claimer Type View
 */
-app.Views.ItemCategoryRequestView = Backbone.View.extend({
+app.Views.ItemClaimerTypeView = Backbone.View.extend({
 
 	tagName      : 'tr',
 
 	className    : 'row-item',
 
-	templateHTML : 'items/itemCategoryRequest',
+	templateHTML : 'items/itemClaimerType',
 
 
 	// The DOM events //
 	events: {
-		'click'                  : 'modalUpdateCat',
-		'click a.modalDeleteCat' : 'modalDeleteCat'
+		'click'                          : 'modalUpdateClaimerType',
+		'click a.modalDeleteClaimerType' : 'modalDeleteClaimerType'
 	},
 
 
@@ -38,7 +38,7 @@ app.Views.ItemCategoryRequestView = Backbone.View.extend({
 
 		this.render();
 		app.Helpers.Main.highlight($(this.el));
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.catUpdateOk);
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.claimerTypeUpdateOk);
 	},
 
 
@@ -50,11 +50,10 @@ app.Views.ItemCategoryRequestView = Backbone.View.extend({
 
 		app.Helpers.Main.highlight($(this.el)).done(function(){
 			self.remove();
-			app.views.categoriesRequestsListView.partialRender();
+			app.views.claimerTypesListView.partialRender();
 		});
 
-		app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.catDeleteOk);
-		
+		app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.claimerTypeDeleteOk);
 	},
 
 
@@ -68,14 +67,15 @@ app.Views.ItemCategoryRequestView = Backbone.View.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 			var template = _.template(templateData, {
-				lang : app.lang,
-				cat  : self.model
+				lang        : app.lang,
+				claimerType : self.model
 			});
 
 			$(self.el).html(template);
 
 			// Set the Tooltip //
 			$('*[data-toggle="tooltip"]').tooltip();
+
 		});
 
 		return this;
@@ -83,13 +83,13 @@ app.Views.ItemCategoryRequestView = Backbone.View.extend({
 
 
 
-	/** Display Modal form to add/sav a new Category
+	/** Display Modal form to add/sav a new Claimer type
 	*/
-	modalUpdateCat: function(e){  
+	modalUpdateClaimerType: function(e){  
 		e.preventDefault(); e.stopPropagation();
 
-		app.views.modalCategoryRequestView = new app.Views.ModalCategoryRequestView({
-			el      : '#modalSaveCat',
+		app.views.modalClaimerTypeView = new app.Views.ModalClaimerTypeView({
+			el      : '#modalSaveClaimerType',
 			model   : this.model,
 			elFocus : $(e.target).data('form-id')
 		});
@@ -97,18 +97,17 @@ app.Views.ItemCategoryRequestView = Backbone.View.extend({
 
 
 
-	/** Modal to remove a Category
+	/** Modal to remove an Claimer Type
 	*/
-	modalDeleteCat: function(e){
+	modalDeleteClaimerType: function(e){
 		e.preventDefault(); e.stopPropagation();
 
 		app.views.modalDeleteView = new app.Views.ModalDeleteView({
-			el           : '#modalDeleteCat',
+			el           : '#modalDeleteClaimerType',
 			model        : this.model,
-			modalTitle   : app.lang.viewsTitles.deleteCategory,
-			modalConfirm : app.lang.warningMessages.confirmDeleteCategory
+			modalTitle   : app.lang.viewsTitles.deleteClaimerType,
+			modalConfirm : app.lang.warningMessages.confirmDeleteClaimerType
 		});
 	},
-
 
 });

@@ -12,7 +12,7 @@ app.Views.ItemCategoryTaskView = Backbone.View.extend({
 
 	// The DOM events //
 	events: {
-		'click' 				 : 'modalUpdateCat',
+		'click'                  : 'modalUpdateCat',
 		'click a.modalDeleteCat' : 'modalDeleteCat'
 	},
 
@@ -54,7 +54,6 @@ app.Views.ItemCategoryTaskView = Backbone.View.extend({
 		});
 
 		app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.catDeleteOk);
-		
 	},
 
 
@@ -109,6 +108,5 @@ app.Views.ItemCategoryTaskView = Backbone.View.extend({
 			modalConfirm : app.lang.warningMessages.confirmDeleteCategory
 		});
 	},
-
 
 });

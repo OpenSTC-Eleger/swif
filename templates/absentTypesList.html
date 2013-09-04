@@ -1,17 +1,17 @@
 <div class="page-header">
 	<h1>
-		<%= lang.viewsTitles.placesList %>
-		<sup id="badgeNbPlaces" class="badge"><%= nbPlaces %></sup>
+		<%= lang.viewsTitles.absentTypesList %>
+		<sup id="badgeNbAbsentTypes" class="badge"><%= nbAbsentTypes %></sup>
 	</h1>
 </div>
 
 
 <div class="container-fluid">
 
-
+	
 	<!-- Table toolbar -->
 	<div class="tableToolbar">
-		<a href="#" class="btn btn-primary modalCreatePlace"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addPlace) %></a>
+		<a href="#" class="btn btn-primary modalCreateAbsentType"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addAbsentType) %></a>
 
 		<form class="form-search pull-right">
 			<div class="input-append">
@@ -23,25 +23,24 @@
 	<!-- Table toolbar -->
 
 
+	<!-- Check if there is any Categories to display -->
+	<% if(nbAbsentTypes <= 0) { %>
 
-	<!-- Check if there is any Places to display -->
-	<% if(nbPlaces <= 0) { %>
-
-		<!-- No place to display -->
+		<!-- No Absent Type to display -->
 		<div class="alert alert-info">
-			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noPlace %>.
+			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noAbsentType %>.
 		</div>
 
 	<% } %>
 
-	<!-- Table Teams -->
+
+	<!-- Table Categories -->
 	<table class="table table-bordered table-hover table-striped table-sorter">
 		<thead>
 			<tr>
 				<th data-sort-column="name"><%= _.capitalize(lang.name) %></th>
-				<th><%= _.capitalize(lang.parentPlace) %></th>
-				<th><%= _.capitalize(lang.associatedServices) %></th>	
-				<th class="hidden-phone span2" data-sort-column="surface"><%= _.capitalize(lang.area) %></th>
+				<th data-sort-column="code" class="span2"><%= _.capitalize(lang.code) %></th>
+				<th><%= _.capitalize(lang.description) %></th>
 			</tr>
 		</thead>
 		<tbody id="rows-items">
@@ -54,11 +53,12 @@
 	<div id="pagination"></div>
 	<!-- /Table pagination -->
 
+
 </div>
 
 
-<!-- Modal Form to add/update a Place -->
-<div id="modalSavePlace" class="modal hide fade"></div>
+<!-- Modal Form to add/update a Cat -->
+<div id="modalSaveAbsentType" class="modal hide fade"></div>
 
-<!-- Modal Form Delete Place -->
-<div id="modalDeletePlace" class="modal hide fade" data-backdrop="static"></div>
+<!-- Modal Form Delete Cat -->
+<div id="modalDeleteAbsentType" class="modal hide fade" data-backdrop="static"></div>

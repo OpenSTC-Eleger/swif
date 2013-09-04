@@ -11,7 +11,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'change #placeWidth, #placeLenght' : 'calculPlaceArea',
+			'change #placeWidth, #placeLength' : 'calculPlaceArea',
 			'submit #formSavePlace'            : 'savePlace'
 		}, 
 			app.Views.GenericModalView.prototype.events
@@ -101,7 +101,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		this.model.setType(app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(), true);
 		this.model.setParentPlace(app.views.advancedSelectBoxPlaceParentView.getSelectedItem(), true);
 		this.model.setWidth(this.$('#placeWidth').val(), true);
-		this.model.setLenght(this.$('#placeLenght').val(), true);
+		this.model.setLength(this.$('#placeLength').val(), true);
 		this.model.setSurface(this.$('#placeArea').val(), true);
 
 
@@ -133,7 +133,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 	/** Calcul the area of the place
 	*/
 	calculPlaceArea: function (e) {
-		$('#placeArea').val($('#placeWidth').val() * $('#placeLenght').val());
+		$('#placeArea').val($('#placeWidth').val() * $('#placeLength').val());
 	}
 
 });

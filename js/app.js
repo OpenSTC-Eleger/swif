@@ -6,19 +6,7 @@ var app = {
 
 
 	// Global variables app //
-	uniq_id_counter: 0,
-
 	url_authentication     	 : '/sessions',
-	urlOE_versionServer      : '/web/webclient/version_info',
-	urlOE_sessionDestroy     : '/web/session/destroy',
-	urlOE_sessionInformation : '/web/session/get_session_info',
-	urlOE_menuUser           : '/web/menu/load',
-	urlOE_retrieveListe      : '/web/dataset/search_read',
-	urlOE_readObject         : '/web/dataset/get',
-	urlOE_createObject       : '/web/dataset/create',
-	urlOE_updateObject       : '/web/dataset/save',
-	urlOE_deleteObject       : '/web/dataset/call',
-	urlOE_object             : '/web/dataset/call',
 
 
 	// Classes //
@@ -35,7 +23,6 @@ var app = {
 	collections     : {},
 	models          : {},
 	views           : {},
-	templates       : {},
 
 
 
@@ -145,6 +132,7 @@ var app = {
 				502: function(){
 					// Server unreachable //
 					app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
+					app.loader('hide');
 				}
 			}
 		});
@@ -152,170 +140,6 @@ var app = {
 	},
 
 
-
-	/******************************************
-	* GENERIC FUNCTION FOR JSON/AJAX
-	*/
-
-	/** Formats an AJAX response to wrap JSON.
-	*/
-	rpc_jsonp: function(url, payload, options) {
-
-		"use strict";
-
-		// Extracted from payload to set on the url //
-		var data = {
-			session_id: '',
-			id: payload.id
-		};
-
-		var ajax = _.extend({
-			type: 'GET',
-			dataType: 'jsonp',
-			jsonp: 'jsonp',
-			cache: false,
-			data: data,
-			url: url
-		}, options);
-
-
-		var payload_str = JSON.stringify(payload);
-		console.debug(payload);
-
-		var payload_url = $.param({r: payload_str});
-
-		if (payload_url.length > 2000) {
-			throw new Error('Payload is too big.');
-		}
-		// Direct jsonp request
-		ajax.data.r = payload_str;
-		return $.ajax(ajax);
-
-	},
-
-
-
-	/** Formats a standard JSON 2.0 call
-	*/
-	json: function (url, params, options) {
-
-		"use strict";
-
-		var deferred = $.Deferred();
-
-		app.uniq_id_counter += 1;
-		var payload = {
-			'jsonrpc' : '2.0',
-			'method'  : 'call',
-			'params'  : params,
-			'id'      : ("r" + app.uniq_id_counter)
-		};
-
-		app.rpc_jsonp(url, payload, options).then(function (data, textStatus, jqXHR) {
-			if (data.error) {
-				deferred.reject(data.error);
-			}
-			deferred.resolve(data.result, textStatus, jqXHR);
-		});
-
-		return deferred;
-	},
-
-
-
-	/** Retrieve an object from OpenERP
-	*/
-	getOE : function (model, fields, ids, session_id, options) {
-		return this.json(app.config.openerp.url + this.urlOE_readObject, {
-			'model'     : model,
-			'fields'    : fields, 
-			'ids'       : ids
-		}, options
-	)},
-
-
-
-	/** Retrieve a list from OpenERP
-	*/
-	readOE : function (model, session_id, options, fields) {
-
-		var params = {
-			'model'     : model,
-			'session_id': session_id
-		}
-
-		// Limit - Offset //
-		if(!_.isUndefined(options.limitOffset)){
-		 	params.limit = options.limitOffset.limit;
-		 	params.offset = options.limitOffset.offset;
-		}
-
-
-		// args - domain //
-		if(!_.isUndefined(options.search)){
-			params.domain = options.search;
-		}
-
-
-		// Sort by / Order //
-		if(!_.isUndefined(options.sortBy)){
-			params.sort = options.sortBy;
-		}
-
-
-		// Fields //
-		if(_.isUndefined(fields)){ 
-			params.fields = [];
-		}else{
-			params.fields = fields;
-		}
-
-
-		return this.json(app.config.openerp.url + this.urlOE_retrieveListe, params, options)
-	},
-
-
-	/** Delete object from OpenERP
-	*/
-	deleteOE : function (args,model,session_id,options) {
-		this.json(app.config.openerp.url + this.urlOE_deleteObject, {
-			'method'    : 'unlink',
-			'args'      : args, 
-			'model'     : model,
-			'session_id': session_id
-		}, options);  
-	},
-
-
-	/** Save object in OpenERP
-	*/
-	saveOE : function (id, data, model, session_id, options) {
-		if(id)
-			this.json(app.config.openerp.url + this.urlOE_updateObject, {
-				'data'      : data, 
-				'model'     : model, 
-				'id'        : id,
-				'session_id': session_id      
-		   },options);
-		else
-			this.json(app.config.openerp.url + this.urlOE_createObject, {
-					'data'      : data, 
-					'model'     : model,                 
-					'session_id': session_id      
-		   }, options);      
-	},
-
-
-	/** call object method from OpenERP
-	*/
-	callObjectMethodOE : function (args, model, method, session_id, options) {
-		return this.json(app.config.openerp.url + this.urlOE_object, {
-			'method'    : method,
-			'args'      : args, 
-			'model'     : model,
-			'session_id': session_id      
-	   }, options);  
-	},
 
 
 	/** Page Loader
@@ -336,6 +160,7 @@ var app = {
 
 		return deferred.promise();
 	},
+
 
 
 	/** Transform Decimal number to hour:minute
