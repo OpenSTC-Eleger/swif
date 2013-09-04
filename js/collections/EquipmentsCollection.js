@@ -3,9 +3,11 @@
 */
 app.Collections.Equipments = app.Collections.GenericCollection.extend({
 
-	model: app.Models.Equipment,
+	model       : app.Models.Equipment,
 	
-	url  : '/api/openstc/equipments',
+	url         : '/api/openstc/equipments',
+	
+	default_sort: { by: 'name', order: 'ASC' },
 
 
 	/** Collection Initialization
