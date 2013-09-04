@@ -61,14 +61,10 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 		}
 
 
-		app.loader('display');
 		return $.when(this.collection.fetch(fetchParams))
 			.fail(function(e){
 				console.error(e);
 			})
-			.always(function(){
-				app.loader('hide');
-			});
 
 	},
 

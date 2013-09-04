@@ -114,6 +114,12 @@ var app = {
 		$.ajaxSetup({
 			contentType: "application/json",
 			headers: {Authorization: 'Token token=' + app.models.user.getAuthToken()},
+			beforeSend: function(){
+				NProgress.start();
+			},
+			complete: function(){
+				NProgress.done();
+			},
 			statusCode: {
 				401: function () {
 					console.error('---> Ajax Setp Up 401, redirect to the login page <---');
@@ -124,6 +130,7 @@ var app = {
 				500: function(){
 					// Server unreachable //
 					app.notify('large', 'error', app.lang.errorMessages.serverError, '');
+					app.loader('hide');
 				},
 				502: function(){
 					// Server unreachable //
@@ -132,9 +139,7 @@ var app = {
 				}
 			}
 		});
-
 	},
-
 
 
 

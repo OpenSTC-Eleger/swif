@@ -204,14 +204,9 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 		}
 
 
-		app.loader('display');
 		return $.when(this.collection.fetch(this.fetchParams))
 			.fail(function(e){
 				console.log(e);
 			})
-			.always(function(){
-				app.loader('hide');
-			});
-
 	}
 });

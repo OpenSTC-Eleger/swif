@@ -245,12 +245,10 @@ app.Views.TasksListView = Backbone.View.extend({
 						$('#modalTaskDone, #modalAddTask, #modalTimeSpent').on('shown', function (e) {
 							$(this).find('input, textarea').first().focus();
 						})
-						$(self.el).hide().fadeIn('slow');
+						$(self.el).hide().fadeIn();
 					});
 				})
 				.fail(function(e){
-					//app.loader('hide');
-					$(self.el).hide().fadeIn('slow');
 					console.error(e);
 				});
                                

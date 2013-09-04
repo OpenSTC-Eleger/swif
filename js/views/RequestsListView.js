@@ -208,14 +208,13 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 
 
 		// Fetch the collections //
-		app.loader('display');
 		return $.when(this.collection.fetch(fetchParams))
-		.fail(function(e){
-			console.log(e);
-		})
-		.always(function(){
-			app.loader('hide');	
-		});
+			.fail(function(e){
+				console.log(e);
+			})
+			.always(function(){
+				app.loader('hide');	
+			});
 
 	}
 

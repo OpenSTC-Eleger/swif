@@ -328,7 +328,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		}
 		
 		fetchParams.data.fields = this.collections.interventions.fields;
-		app.loader('display');
 		
 		var deferred = $.Deferred();
 		//retrieve interventions and tasks associated (use domain ('project_id','in',[...] to retrieve tasks associated)
@@ -350,9 +349,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		.fail(function(e){
 			console.error(e);
 		})
-		.always(function(){
-			app.loader('hide');
-		});
 		
 		return deferred;
 	}

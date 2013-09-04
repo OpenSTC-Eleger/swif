@@ -206,40 +206,9 @@ app.Router = Backbone.Router.extend({
 	*/
 	services: function(page){      
 
-		// Check if the user is connect //
-		if(this.checkConnect()){
-			var self = this;
+		alert('TODO');
 
-
-			self.page = page ? parseInt(page, 10) : 1;
-
-
-			// Check if the collections is instantiate //
-			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
-			if(_.isUndefined(app.collections.officers)){ app.collections.officers = new app.Collections.Officers(); }
-			if(_.isUndefined(app.collections.stcGroups)){ app.collections.stcGroups = new app.Collections.STCGroups(); }
-
-
-			app.loader('display');
-
-			$.when(
-				app.collections.claimersServices.fetch(),
-				app.collections.officers.fetch(),
-				app.collections.stcGroups.fetch()
-			)
-			.done(function(){
-				app.views.servicesListView = new app.Views.ServicesListView({page: self.page});
-				self.render(app.views.servicesListView);
-				app.loader('hide');
-			})
-			.fail(function(e){
-				console.error(e);
-			});
-
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
+		app.views.servicesListView = new app.Views.ServicesListView({page: self.page});
 	},
 	
 	
@@ -339,36 +308,10 @@ app.Router = Backbone.Router.extend({
 	*/
 	equipments: function(page){
 
-		// Check if the user is connect //
-		if(this.checkConnect()){
-			var self = this;
 
-			self.page = page ? parseInt(page, 10) : 1;
+		alert('TODO');
 
-			// Check if the collections is instantiate //
-			if(_.isUndefined(app.collections.equipments)){ app.collections.equipments = new app.Collections.Equipments(); }
-			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
-
-
-			app.loader('display');
-
-			$.when(
-				app.collections.equipments.fetch(),
-				app.collections.claimersServices.fetch()
-			)
-			.done(function(){
-				app.views.equipmentsListView = new app.Views.EquipmentsListView({page: self.page});
-				self.render(app.views.equipmentsListView);
-
-				app.loader('hide');
-			})
-			.fail(function(e){
-				console.error(e);
-			});
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
+		app.views.equipmentsListView = new app.Views.EquipmentsListView({page: self.page});
 	},
 
 
