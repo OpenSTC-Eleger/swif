@@ -29,7 +29,7 @@ app.Views.ItemTaskDayView = Backbone.View.extend({
 	//Update the model in the collection, it's not expected that this model is new in the collection and must no trigger 'add' event
 	change: function(model){
 		this.render();
-		this.highlight();
+		app.Helpers.Main.highlight($(this.el));
 		this.options.tasks.add(model,{merge:true});
 	},
 	
@@ -72,7 +72,7 @@ app.Views.ItemTaskDayView = Backbone.View.extend({
 			//app.models.task.save(this.model.id, taskParams);
 		this.model.save(taskParams, {patch: true, wait: true, silent: true})
 		.done(function(){
-			self.highlight().done(function(){
+			app.Helpers.Main.highlight($(self.el)).done(function(){
 				self.remove();
 			});
 			self.options.tasks.remove(self.model);
@@ -92,25 +92,6 @@ app.Views.ItemTaskDayView = Backbone.View.extend({
 		e.preventDefault();
 		new app.Views.ModalTaskDayDoneView({el:'#modalTaskDone', model: this.model, taskDone: true, tasks: this.options.tasks});
 	},
-	
-	/** Highlight the row item
-	*/
-	highlight: function(){
-		var self = this;
-
-		$(this.el).addClass('highlight');
-
-		var deferred = $.Deferred();
-
-		// Once the CSS3 animation are end the class are removed //
-		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
-			function(e) {
-				$(self.el).removeClass('highlight');
-				deferred.resolve();
-		});
-
-		return deferred;
-	}
 
 
 });

@@ -46,7 +46,7 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 	add: function(model){
 		var itemTaskView  = new app.Views.ItemInterventionTaskView({ model: model, inter: this.options.inter, tasks:this.options.tasks});
 		$(this.el).find('#row-nested-objects').append(itemTaskView.render().el);
-		itemTaskView.highlight();
+		app.Helpers.Main.highlight($(itemTaskView.el));
 		this.partialRender();
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.inteventionAddTaskOK);
 		//@TOCHECK: repercute task creation to main tasks collection to be usable by other itemViews
@@ -128,25 +128,5 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 		new app.Views.ModalInterventionAddTaskView({el: '#modalAddTask', inter: self.options.inter, tasks: self.options.tasks});
 		
 	},
-
-	/** Highlight the row item
-	*/
-	highlight: function(){
-		var self = this;
-
-		$(this.el).addClass('highlight');
-
-		var deferred = $.Deferred();
-
-		// Once the CSS3 animation are end the class are removed //
-		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
-			function(e) {
-				$(self.el).removeClass('highlight');
-				deferred.resolve();
-		});
-
-		return deferred;
-	}
-
 
 });

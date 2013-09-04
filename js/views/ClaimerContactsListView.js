@@ -36,7 +36,7 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 	destroy: function (e) {
 		var self = this;
 
-		this.highlight().done(function () {
+		app.Helpers.Main.highlight($(this.el)).done(function () {
 			self.remove();
 		});
 
@@ -177,8 +177,5 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 		}).render();
 	},
 
-	highlight: function () {
-		app.Helpers.Main.highlight(this.$el)
-	}
 
 });

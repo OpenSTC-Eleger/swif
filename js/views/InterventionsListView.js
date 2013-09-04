@@ -47,7 +47,7 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		var itemInterTaskListView = new app.Views.ItemInterventionTaskListView({ inter: model, tasks: new app.Collections.Tasks() });
 		$('#inter-items').prepend(itemInterTaskListView.render().el);
 		$('#inter-items').prepend(itemInterView.render().el);
-		itemInterView.highlight().done(function(){
+		app.Helpers.Main.highlight($(itemInterView.el)).done(function(){
 			itemInterView.expendAccordion();
 		});
 
