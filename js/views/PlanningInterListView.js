@@ -69,7 +69,7 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 		
 		this.partialRender();
 	
-		app.router.navigate(app.views.planningInterListView.urlBuilder(), {trigger: false, replace: false});
+		//app.router.navigate(app.views.planningInterListView.urlBuilder(), {trigger: false, replace: false});
 	},
 
 	/** Display the view

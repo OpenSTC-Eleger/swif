@@ -90,7 +90,7 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 		
 		app.views.planningInterListView.partialRender();
 
-		app.router.navigate(app.views.planningInterListView.urlBuilder(), {trigger: false, replace: false});
+		//app.router.navigate(app.views.planningInterListView.urlBuilder(), {trigger: false, replace: false});
 	
 	},
 	
