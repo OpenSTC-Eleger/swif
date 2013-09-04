@@ -2,23 +2,20 @@
 <td colspan="7" class="nestedTD">
 
 	<!-- Check if there is some tasks -->
-	<% if(intervention.tasks.length > 0) { %>
-		<table class="table-nested-objects table table-striped table-condensed table-hover">
-			<thead>
-				<tr>
-				</tr>
-			</thead>
-			<tbody id="row-nested-objects">
-			</tbody>
-		</table>
-	<% }
-	else { %>
-			<!-- No Task to Display -->
-			<div class="alert alert-info">
-				<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTaskForIntervention %>.
-			</div>
+	<table class="table-nested-objects table table-striped table-condensed table-hover">
+		<thead>
+			<tr>
+			</tr>
+		</thead>
+		<tbody id="row-nested-objects">
+		</tbody>
+	</table>
+	<% if(intervention.tasks.length == 0) { %>
+	<!-- No Task to Display -->
+	<div class="alert alert-info noTask">
+		<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTaskForIntervention %>.
+	</div>
 	<% } %>
-
 	<div class="div-actions" >
 		<button class="btn btn-primary btn-small no-outline addTask"
 			<% if(intervention.actions.indexOf("add_task") == -1) { %>
@@ -27,5 +24,6 @@
 			<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addTask) %>
 		</button>
 	</div>
+	
 </td>
 </tr>

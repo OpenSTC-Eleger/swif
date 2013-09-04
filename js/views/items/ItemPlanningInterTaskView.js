@@ -50,6 +50,8 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 		var self = this;
 
 		this.render();
+		
+		this.highlight().done();
 
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+infoMessage);
 
@@ -148,6 +150,25 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 		});
 		return this;
 	},
+	
+	/** Highlight the row item
+		*/
+	highlight: function(){
+		var self = this;
+
+		$(this.el).addClass('highlight');
+
+		var deferred = $.Deferred();
+
+		// Once the CSS3 animation are end the class are removed //
+		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
+			function(e) {
+				$(self.el).removeClass('highlight');
+				deferred.resolve();
+		});
+
+		return deferred;
+	}
 
 
 });
