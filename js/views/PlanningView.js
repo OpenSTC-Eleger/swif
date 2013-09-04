@@ -89,7 +89,6 @@ app.Views.PlanningView = Backbone.View.extend({
 			
 			//interventions left panel
 			app.views.planningInterListView = new app.Views.PlanningInterListView(self.options)
-			$('#planningInters').append( app.views.planningInterListView.render().el );
 					
 			
 		});

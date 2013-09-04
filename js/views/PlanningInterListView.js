@@ -29,7 +29,7 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		
 		
 			'change #interventionDetailService'       : 'fillDropdownService',	
-			'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilter',	
+			'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilterState',	
 			//'click #listAgents li a, #listTeams li a' :          'selectPlanning',	
 		}, 
 			app.Views.GenericListView.prototype.events
@@ -47,20 +47,9 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 	    this.initCollections().done(function(){
 	    	self.collections.tasks.off();	
 			self.listenTo(self.collections.tasks, 'change', self.updateTask);
-			//self.render();
 	    	app.router.render(self);
 	    	
 	    })
-		//this.initCollection().done(function(){
-			// Unbind & bind the collection //
-//		this.collection = this.options.planning.collections.tasks;
-//		this.collection.off();	
-//		this.listenTo(self.collection, 'change', self.updateTask);
-//		//self.listenTo(self.taskCollection, 'add', self.updateTask);
-//		self.render()
-			//app.router.render(self);
-		//});
-
 	},
 
 	updateTask: function(model) {
@@ -72,34 +61,14 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 	/** Display the view
 	*/
 	render: function() {
-		var self = this;
-		
-		var interventions = this.collections.interventions.models;
-		
-		// Collection Filter if not null / Otherwise we display only To Schedule interventions //
-		if(sessionStorage.getItem(self.filters) != null){
-			if(sessionStorage.getItem(self.filters) != 'notFilter'){
-				var interventions = _.filter(interventions, function(item){ 
-					var itemJSON = item.toJSON();
-					return itemJSON.state == sessionStorage.getItem(self.filters);
-				});
-			}
-		}
-		else{
-			sessionStorage.setItem(self.filters, app.Models.Intervention.status.open.key);
-			var interventions = _.filter(interventions, function(item){ 
-				return item.toJSON().state == app.Models.Intervention.status.open.key;
-			});
-		}
-
-		interventionSorted = new app.Collections.Interventions(interventions);		
-		
+		var self = this;		
+	
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			// Set variables template //
 			var template = _.template(templateData, {
 				lang: app.lang,
 				interventionsState: app.Models.Intervention.status,
-				interventions: interventionSorted.toJSON(),		
+				interventions: self.collections.interventions.toJSON(),		
 			});
 			
 			$(self.el).html(template);
@@ -138,6 +107,29 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 				collection : self.collections.interventions
 			})
 			app.views.paginationView.render();
+			
+			
+			// Render Filter Link //
+			if(_.isUndefined(self.options.filter)){
+				// set status information on open intervention
+				$('#filterStateIntervention').removeClass('filter-disabled');
+				$('#filterStateInterventionList li.delete-filter').removeClass('disabled');
+
+				$('a.filter-button').addClass('text-'+app.Models.Intervention.status.open.color);
+			}
+			else if(self.options.filter.value=='notFilter'){
+				// set status information on no filter
+				$('#filterStateIntervention').addClass('filter-disabled');
+				$('#filterStateInterventionList li.delete-filter').addClass('disabled');
+				
+			}
+			else{
+				// set status information on filter selected
+				$('#filterStateIntervention').removeClass('filter-disabled');
+				$('#filterStateInterventionList li.delete-filter').removeClass('disabled');
+
+				$('a.filter-button').addClass('text-'+app.Models.Intervention.status[self.options.filter.value].color);
+			}
 			
 		});
 		return this;
@@ -452,28 +444,47 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 
 
 
-		/** Filter Request
+		/** Filter Intervention by status
 		*/
-		setFilter: function(event){
+		setFilterState: function(e){
 
-			event.preventDefault();
+			e.preventDefault();
 
-			var link = $(event.target);
-
-			var filterValue = _(link.attr('href')).strRightBack('#');
-
-			// Set the filter in the local Storage //
+			if($(e.target).is('i')){
+				var filterValue = _($(e.target).parent().attr('href')).strRightBack('#');
+			}else{
+				var filterValue = _($(e.target).attr('href')).strRightBack('#');
+			}
+			
+			// Set the filter value in the options of the view //
+			var globalSearch = {};
 			if(filterValue != 'delete-filter'){
-				sessionStorage.setItem(this.filters, filterValue);
+				//globalSearch.filter = { by: 'state', value: filterValue};	
+				this.options.filter =  { by: 'state', value: filterValue};	
 			}
 			else{
-				sessionStorage.setItem(this.filters, 'notFilter');
+				this.options.filter = null;
 			}
-			//this.render();
-			Backbone.history.loadUrl('#planning');
+			
+			if(_.isUndefined(this.options.sort)){
+				this.options.sort = this.collections.interventions.default_sort;
+			}
+			
+			this.fetchParams.data.filters = this.options.filter;
+
+			// Create Fetch params //
+			this.fetchParams.data.sort = this.options.sort.by+' '+this.options.sort.order
+			
+			this.options.page = '1';
+			this.options.page = app.calculPageOffset(this.options.page);
+			
+			// routing with new url			
+			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});	
 		},
 		
-		
+		/**
+		 * Init intervention and task collections
+		 */
 		initCollections: function(){
 			var self = this;
 			
@@ -481,12 +492,7 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 			if(_.isUndefined(this.collections)){this.collections = {}}
 			if(_.isUndefined(this.collections.interventions)){this.collections.interventions = new app.Collections.Interventions();}
 			if(_.isUndefined(this.collections.tasks)){ this.collections.tasks = new app.Collections.Tasks(); }
-		
 			
-			
-
-			var deferred = $.Deferred();
-			//retrieve interventions and tasks associated (use domain ('project_id','in',[...] to retrieve tasks associated)
 			
 			// Check the parameters //
 			if(_.isUndefined(this.options.sort)){
@@ -496,7 +502,10 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 				this.options.sort = app.calculPageSort(this.options.sort);	
 			}
 			this.options.page = app.calculPageOffset(this.options.page);
-	
+
+			if(!_.isUndefined(this.options.filter)){
+				this.options.filter = app.calculPageFilter(this.options.filter);
+			}
 	
 			// Create Fetch params //
 			this.fetchParams = {
@@ -507,10 +516,29 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 					sort   : this.options.sort.by+' '+this.options.sort.order
 				}
 			};
+			
+			var globalSearch = {};
 			if(!_.isUndefined(this.options.search)){
-				this.fetchParams.data.filters = app.calculSearch({search: this.options.search }, app.Models.Intervention.prototype.searchable_fields);
+				globalSearch.search = this.options.search;
+			}
+			if(!_.isUndefined(this.options.filter) && this.options.filter.value!='notFilter' ){
+				globalSearch.filter = this.options.filter;
+			}
+			else{
+				globalSearch.filter = { by: 'state', value: app.Models.Intervention.status.open.key};
+			}
+	
+			if(!_.isEmpty(globalSearch)){
+				this.fetchParams.data.filters = app.calculSearch(globalSearch, app.Models.Intervention.prototype.searchable_fields);
 			}
 			
+			return this.fetchCollections();
+		
+		},
+		
+		fetchCollections : function(){
+			var self = this;
+			var deferred = $.Deferred();
 			this.collections.interventions.fetch(this.fetchParams)
 			.done(function(){
 				if(self.collections.interventions.cpt > 0){
@@ -532,10 +560,6 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 			})
 			
 			return deferred;
-		
-		},
-
-
-
+		}
 
 });
