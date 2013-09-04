@@ -1,22 +1,12 @@
 /******************************************
 * Equipment Model
 */
-app.Models.Equipment = Backbone.RelationalModel.extend({
+app.Models.Equipment = Backbone.Model.extend({
     
 	model_name : 'openstc.equipment',
 	
 	url: "/equipment/:id",
 	
-	relations: [
-        {
-			type: Backbone.HasMany,
-			key: 'service_ids',
-			relatedModel: 'app.Models.ClaimerService',
-			collectionType: 'app.Collections.ClaimersServices',
-			includeInJSON: ['id', 'name'],	
-		},
-	],
-
 	
 	defaults:{
 		id:0,

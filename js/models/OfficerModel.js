@@ -1,47 +1,9 @@
 /******************************************
 * Officer Model
 */
-app.Models.Officer = Backbone.RelationalModel.extend({
+app.Models.Officer = Backbone.Model.extend({
 
 	urlRoot: "/api/open_object/users",
-
-	relations: [{
-			type: Backbone.HasMany,
-			key: 'tasks',
-			relatedModel: 'app.Models.Task',
-			collectionType: 'app.Collections.Tasks',
-			includeInJSON: true,
-		},
-		{
-			type: Backbone.HasMany,
-			key: 'service_ids',
-			relatedModel: 'app.Models.ClaimerService',
-			collectionType: 'app.Collections.ClaimersServices',
-			includeInJSON: ['id', 'name'],	
-		},
-		{
-			type: Backbone.HasMany,
-			key: 'team_ids',
-			relatedModel: 'app.Models.Team',
-			collectionType: 'app.Collections.Teams',
-			includeInJSON: ['id', 'name','manager_id','tasks'],	
-		},
-		{
-            type: Backbone.HasMany,
-            key: 'contact_id',
-            relatedModel: 'app.Models.ClaimerContact',
-            collectionType: 'app.Collections.ClaimersContacts',
-            includeInJSON: ['id', 'name','partner_id','phone','email'],
-        },
-		{
-			type: Backbone.HasMany,
-			key: 'groups_id',
-			relatedModel: 'app.Models.STCGroup',
-			collectionType: 'app.Collections.STCGroups',
-			includeInJSON: ['id', 'name','code'],	
-		},
-	],
-
 
 	defaults:{
 		//id:0,
@@ -156,47 +118,5 @@ app.Models.Officer = Backbone.RelationalModel.extend({
         this.set({ isDST : value });
     },
 
-
-
-	/** Model Initialization
-	*/
-    initialize: function(){
-        //console.log('Officer Model initialization');
-        this.fetchRelated('tasks');
-    },
-
-
-
-    /** Model Parser
-	*/
-    parse: function(response) {
-        return response;
-    },
-
-
-
-	/** Update each attributes to the model
-	*/
-	update: function(params) {
-		this.setName( params.name );
-		this.setFirstname( params.firstname );
-		this.setEmail( params.user_email );
-		this.setLogin( params.login );
-		this.setPassword( params.new_password );
-		this.setGroupsID( params.groups_id );
-		this.setServicesID( params.service_ids );
-	},
-
-
-	/** Delete Officer
-	*/
-	delete: function (options) {	
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
-	}
 
 });

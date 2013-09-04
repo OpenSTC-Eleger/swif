@@ -124,6 +124,7 @@ var app = {
 					console.error('---> Ajax Setp Up 401, redirect to the login page <---');
 					// Redirect the to the login page //
 					app.router.navigate(app.routes.login.url, {trigger: true, replace: true});
+					app.loader('hide');
 				},
 				500: function(){
 					// Server unreachable //

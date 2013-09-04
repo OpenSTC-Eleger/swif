@@ -8,81 +8,45 @@
 		"url" 		: "",
 		"function" 	: "homePageRedirect"
 	},
+
 	"login": {
 		"url" 		: "login",
 		"function" 	: "login"
 	},
+
 	"logout": {
 		"url"		: "logout",
 		"function"	: "logout"
 	},
-		"about": {
+
+	"about": {
 		"url"		: "about",
 		"function"	: "about"
 	},
 
-	"detailIntervention": {
-		"url"		: "interventions/:id",
-		"function"	: "detailsIntervention"
-	},
-	"interventions": {
-		"url"		: "interventions(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
-		"baseUrl"   : "interventions",
-		"function"	: "interventions"
-	},
-	"addIntervention": {
-		"url"		: "interventions/add",
-		"function"	: "detailsIntervention"
-	},
-
-	"detailRequestIntervention": {
-		"url"		: "demandes-dinterventions/:id",
-		"function"	: "detailsRequest"
-	},
 	"requestsInterventions": {
 		"url"		: "demandes-dinterventions(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
-		"baseUrl"   : "demandes-dinterventions",
 		"function"	: "requestsList"
 	},
-	"addrequestIntervention": {
-		"url"		: "demandes-dinterventions/add",
-		"function"	: "detailsRequest"
-	},
 
+	"interventions": {
+		"url"		: "interventions(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"function"	: "interventions"
+	},
 
 	"planning": {
 		"url"		: "planning(/officer/:officer)(/team/:team)(/year/:year)(/week/:week)(/page:page)",
 		"function"	: "planning"
 	},
 
-
-
-	"detailTask": {
-		"url"		: "taches/:id",
-		"function"	: "detailsTask"
-	},
 	"tasks": {
 		"url"		: "taches(/:year/:week)",
-		"baseUrl"	: "taches",
 		"function"	: "tasksCheck"
 	},
-	"addTask": {
-		"url"		: "taches/add",
-		"function"	: "addTask"
-	},
 
-	"detailService": {
-		"url"		: "services/:id",
-		"function"	: "detailsService"
-	},
 	"services": {
 		"url"		: "services(/page:page)",
-		"baseUrl"	: "services",
 		"function"	: "services"
-	},
-	"addService": {
-		"url"		: "services/add",
-		"function"	: "detailsService"
 	},
 
 	"places": {

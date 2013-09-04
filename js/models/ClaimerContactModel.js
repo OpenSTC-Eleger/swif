@@ -1,7 +1,7 @@
 /******************************************
 * Claimer Contact Model
 */
-app.Models.ClaimerContact = Backbone.RelationalModel.extend({
+app.Models.ClaimerContact = Backbone.Model.extend({
 
 	urlRoot: "/api/open_object/partner_addresses",
 

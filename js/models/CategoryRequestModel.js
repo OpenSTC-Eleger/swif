@@ -1,7 +1,7 @@
 /******************************************
 * Category Request  Model - Intervention classification for budget
 */
-app.Models.CategoryRequest = Backbone.RelationalModel.extend({
+app.Models.CategoryRequest = Backbone.Model.extend({
 	
 
 	fields     : ['id', 'name', 'code', 'actions'],

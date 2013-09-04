@@ -11,6 +11,10 @@ app.Router = Backbone.Router.extend({
 	},
 
 
+	/******************************************
+	* GENERIC FUNCTION
+	*/
+
 	/** Router Initialization
 	*/
 	initialize: function () {
@@ -28,7 +32,8 @@ app.Router = Backbone.Router.extend({
 	},
 
 
-
+	/** Render a view by undelegating all Event
+	*/
 	render: function (view) {
 
 		// Close the current view //
@@ -52,14 +57,13 @@ app.Router = Backbone.Router.extend({
 	/** Check if the User is connect
 	*/
 	checkConnect: function () {
-		console.info('############ checkConnect Function ############');
 
 		if (app.models.user.hasAuthToken()) {
-			console.info('User has an authToken');
+			console.info('#### User has an authToken ####');
 			return true;
 		}
 		else {
-			console.info('User has no auth token');
+			console.info('#### User has no authToken ####');
 			return false;
 		}
 	},
@@ -76,19 +80,18 @@ app.Router = Backbone.Router.extend({
 
 
 	/******************************************
-	* ROUTE FUNCTION
+	* ROUTES FUNCTION
 	*/
-
 
 	/** Redirect to the home page
 	*/
 	homePageRedirect: function(){
-		this.navigate(app.routes.requestsInterventions.baseUrl, {trigger: true, replace: true});
+		this.navigate(_.strLeft(app.routes.requestsInterventions.url, '('), {trigger: true, replace: true});
 	},
 
 
 
-	/** Display the login View
+	/** Login View
 	*/
 	login: function(){
 		// Check if the user is connect //
@@ -111,17 +114,11 @@ app.Router = Backbone.Router.extend({
 
 
 
-	/** About app
+	/** About the App
 	*/
 	about: function(){
-		// Check if the user is connect //
-		if(this.checkConnect()){
-			app.views.aboutView = new app.Views.AboutView();
-			this.render(app.views.aboutView);
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
+		app.views.aboutView = new app.Views.AboutView();
+		this.render(app.views.aboutView);
 	},
 
 
@@ -142,81 +139,18 @@ app.Router = Backbone.Router.extend({
 
 
 
-	/** Request Details
-	*/
-	detailsRequest: function (id) {
-
-		// Check if the user is connect //
-		if(this.checkConnect()){
-
-			var self = this;
-
-
-			if(_.isUndefined(app.collections.places)){ app.collections.places = new app.Collections.Places(); }
-			if(_.isUndefined(app.collections.claimers)){ app.collections.claimers = new app.Collections.Claimers(); }
-			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
-			if(_.isUndefined(app.collections.claimersTypes)){ app.collections.claimersTypes = new app.Collections.ClaimersTypes(); }
-			if(_.isUndefined(app.collections.claimersContacts)){ app.collections.claimersContacts = new app.Collections.ClaimersContacts(); }
-			if(_.isUndefined(app.collections.officers)){ app.collections.officers = new app.Collections.Officers(); }
-
-
-			app.loader('display');
-
-			app.collections.claimers.fetch({
-				success: function(){
-
-					$.when(
-						app.collections.claimersServices.fetch(),
-						app.collections.officers.fetch(),
-						app.collections.claimersTypes.fetch(),
-						app.collections.claimersContacts.fetch(),
-						app.collections.places.fetch()
-					)
-					.done(function(){
-						//load details after places list loaded
-						if(_.isUndefined(id)){
-							self.request = app.models.request.clear();
-							app.views.requestView = new app.Views.RequestView(self.request,  true);
-						}
-						else{
-							self.request = app.collections.requests.get(id);
-							app.views.requestView = new app.Views.RequestView(self.request,  false);
-						}
-						self.render(app.views.requestView);
-
-						app.loader('hide');
-					})
-					.fail(function(e){
-						console.error(e);
-					});
-				}
-			});
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
-	},
-	
-
-
 	/** Interventions list
 	*/
 	interventions: function(search, filter, sort, page){
+
 		var params = {};
+
 		if(!_.isNull(search)){params.search = search}
 		if(!_.isNull(filter)){params.filter = filter}
 		if(!_.isNull(sort)){params.sort = sort}
 		if(!_.isNull(page)){params.page = page}
+
 		app.views.interventions = new app.Views.InterventionsListView(params);
-		
-	},
-
-
-
-	/** Interventions details
-	*/
-	detailsIntervention: function(id) {
-		app.views.interventionView = new app.Views.InterventionView( self.intervention, false);
 	},
 
 
@@ -240,89 +174,20 @@ app.Router = Backbone.Router.extend({
 
 
 
+	/** Tasks List 
+	*/
 	tasksCheck: function(year, week){
 	
-		// Check if the user is connect //
-		if(this.checkConnect()){
-			var self = this;
-			
-			self.yearSelected = year;
-			self.weekSelected = week;
-			app.views.tasksListView = new app.Views.TasksListView({yearSelected: self.yearSelected, weekSelected: self.weekSelected});
-			self.render(app.views.tasksListView);
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
+		var yearSelected = year;
+		var weekSelected = week;
 
+		app.views.tasksListView = new app.Views.TasksListView({yearSelected: yearSelected, weekSelected: weekSelected});
+		this.render(app.views.tasksListView);
 	},
 
 
 
-	detailsTask: function(id){
-		console.debug("****************detailsTask********************");
-		// Check if the user is connect //
-		if(this.checkConnect()){
-			var self = this;
-			var task = app.collections.tasks.get(id);
-			self.task = task;   
-
-			if(app.collections.interventions == null ){
-				app.collections.interventions = new app.Collections.Interventions();
-			}
-			
-			app.loader('display');
-			app.collections.interventions.fetch({
-				success: function(){
-
-					if(app.collections.tasks == null ){
-						app.collections.tasks = new app.Collections.Tasks();
-					}
-
-					app.collections.tasks.fetch({
-						success: function(){
-						 if(app.collections.officers == null ){
-								app.collections.officers = new app.Collections.Officers();
-							}
-							app.collections.officers.fetch({
-								 success: function(){
-									if(app.collections.categoriesTasks == null ){
-										app.collections.categoriesTasks = new app.Collections.CategoriesTasks();
-									}
-									app.collections.categoriesTasks.fetch({
-										success: function(){
-											 if(app.collections.claimersServices == null ){
-												app.collections.claimersServices = new app.Collections.ClaimersServices();
-											}
-
-
-											app.collections.claimersServices.fetch({
-												success: function(){
-													app.views.taskView = new app.Views.TaskView(self.task, false);
-													self.render(app.views.taskView);
-											   
-												},
-												complete: function(){
-													app.loader('hide');
-												}
-											});
-										}
-								   });
-								}
-							});
-						 }
-					});
-				}
-			});
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
-	},
-
-
-
-	/** Places management
+	/** Places List
 	*/
 	places: function(search, sort, page){
 
@@ -379,50 +244,7 @@ app.Router = Backbone.Router.extend({
 	
 	
 
-	/** Services management
-	*/
-	detailsService: function(id){      
-
-		// Check if the user is connect //
-		if(this.checkConnect()){
-			var self = this;
-
-			// Check if the collections is instantiate //
-			if(_.isUndefined(app.collections.claimersServices)){ app.collections.claimersServices = new app.Collections.ClaimersServices(); }
-
-
-			app.loader('display');
-
-			$.when(
-				app.collections.claimersServices.fetch()
-			)
-			.done(function(){
-				if(!_.isUndefined(id)){ 
-					self.service = app.collections.claimersServices.get(id);
-					var create = false;
-				}
-				else{
-				 	self.service = app.models.service;
-				 	var create = true;
-				 }
-
-				app.views.serviceView = new app.Views.ServiceView(self.service, create);
-				self.render(app.views.serviceView);
-				app.loader('hide');
-			})
-			.fail(function(e){
-				console.error(e);
-			});
-
-		}
-		else{
-			this.navigate(app.routes.login.url, {trigger: true, replace: true});
-		}
-	},
-
-
-
-	/** Categories Tasks management
+	/** Categories Tasks List
 	*/
 	categoriesTasks: function(search, sort, page){      
 
@@ -437,7 +259,7 @@ app.Router = Backbone.Router.extend({
 
 
 
-	/** Categories Interventions management
+	/** Categories Request List
 	*/
 	categoriesRequests: function(search, sort, page){
 
@@ -452,7 +274,7 @@ app.Router = Backbone.Router.extend({
 
 
 
-	/** Teams management
+	/** Teams List
 	*/
 	teams: function(id, search, sort, page){
 
@@ -468,7 +290,7 @@ app.Router = Backbone.Router.extend({
 
 
 
-	/** Claimers management
+	/** Claimers List
 	*/
 	claimers: function(search, sort, page){
 
@@ -483,7 +305,7 @@ app.Router = Backbone.Router.extend({
 
 
 
-	/** Claimer Type
+	/** Claimer Type List
 	*/
 	claimerTypes: function(search, sort, page){
 
@@ -498,8 +320,7 @@ app.Router = Backbone.Router.extend({
 
 
 
-
-	/** Abstent types
+	/** Abstent types List
 	*/
 	absentTypes: function(search, sort, page){
 
@@ -514,7 +335,7 @@ app.Router = Backbone.Router.extend({
 
 
 
-	/** equipments
+	/** Equipments List
 	*/
 	equipments: function(page){
 
@@ -561,5 +382,5 @@ app.Router = Backbone.Router.extend({
 		app.views.notFoundView = new app.Views.NotFoundView();
 		this.render(app.views.notFoundView);
 	}
-	
+
 });
