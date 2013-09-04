@@ -3,27 +3,8 @@
 */
 app.Models.User = Backbone.Model.extend({
 
-	urlA: '/api/open_object/users',
-
-	relations: [
-		{
-			type: Backbone.HasMany,
-			key: 'service_ids',
-			relatedModel: 'app.Models.ClaimerService',
-			reverseRelation: {
-				type: Backbone.HasMany,
-				key: 'users',
-				includeInJSON: ['id','name'],
-			}
-		},
-		{
-			type: Backbone.HasMany,
-			key: 'officers',
-			relatedModel: 'app.Models.Officer',
-			includeInJSON: ['id', 'firstname', 'name'],
-		},
-
-	],
+	urlA             : '/api/open_object/users',
+	urlAuthentication: '/sessions',
 
 	defaults: {
 		uid             : null,
@@ -35,7 +16,7 @@ app.Models.User = Backbone.Model.extend({
 	initialize: function(){
 		console.log('User initialize: ' + this.getLogin());
 	},
-	
+
 
 	getUID : function() {
 		return this.get('uid');
@@ -269,7 +250,7 @@ app.Models.User = Backbone.Model.extend({
 		};
 
 		$.ajax({
-			url        :  app.url_authentication,
+			url        :  self.urlAuthentication,
 			type       : 'POST',
 			dataType   : 'json',
 			data       :  JSON.stringify(login_data),
@@ -321,7 +302,7 @@ app.Models.User = Backbone.Model.extend({
 		var self = this;
 
 		$.ajax({
-			url    : app.url_authentication +'/'+ self.getAuthToken(),
+			url    : self.urlAuthentication +'/'+ self.getAuthToken(),
 			method : 'DELETE',
 		})
 		.done(function (data) {

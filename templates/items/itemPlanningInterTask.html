@@ -15,6 +15,6 @@
 	} else if(task.state == app.Models.Task.status.open.key){ %>
 	<li id="task_<%= task.id %>" class="external-event disabled">
 		<i class="icon-time" rel="tooltip" data-placement="right"></i> <%= task.name %>
-		<small class="badge badge-<%= app.Models.Task.status.open.color %> pull-right"><%= app.decimalNumberToTime(task.planned_hours, 'human') %></small>
+		<small class="badge badge-<%= app.Models.Task.status.open.color %> pull-right"><%= app.Helpers.Main.decimalNumberToTime(task.planned_hours, 'human') %></small>
 	</li>
 <% } %>

@@ -32,9 +32,9 @@
 	<%= task.team_id[1] %>
 <% } %>
 </td>
-<td><%= app.decimalNumberToTime(task.planned_hours, 'human') %></td>
-<td><%= app.decimalNumberToTime(task.effective_hours, 'human') %></td>
-<td><%= app.decimalNumberToTime(task.remaining_hours, 'human') %></td>
+<td><%= app.Helpers.Main.decimalNumberToTime(task.planned_hours, 'human') %></td>
+<td><%= app.Helpers.Main.decimalNumberToTime(task.effective_hours, 'human') %></td>
+<td><%= app.Helpers.Main.decimalNumberToTime(task.remaining_hours, 'human') %></td>
 <!-- Task state -->
 <td>
 	<!-- To Schedule / Cancelled / Schedule / Absent -->

@@ -93,48 +93,6 @@ app.Models.Intervention = Backbone.Model.extend({
 	},
 
 
-
-	//save method with all redondant code
-	saveAndRoute: function(id,data,closeModal, view, strRoute) {
-		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {
-			beforeSend: function(){
-				app.loader('display');
-			},
-			success: function (data) {
-				console.log(data);
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					if( closeModal!= null )
-						closeModal.modal('hide');
-					if( view ) {
-						if(app.collections.interventions == null ){
-							app.collections.interventions = new app.Collections.Interventions();
-						}		        		
-						app.collections.interventions.fetch({
-							success: function(){				 			
-								if( strRoute ) {
-									route = Backbone.history.fragment;
-									Backbone.history.loadUrl(route);
-								}
-								else if (view){
-									view.render();
-								}
-
-								app.loader('hide');
-							}					 
-						});					 	
-					}
-				}
-			},
-			error: function () {
-				console.log('ERROR - Unable to save the Request - RequestView.js');
-			}, 
-		});
-	},
-	
-
 	
 	//When save intervention and just after save task (TaskListView L.187 et L.190) postgres send this error:
 	//TransactionRollbackError: could not serialize access due to concurrent update

@@ -189,7 +189,6 @@ app.Views.EventsListView = Backbone.View.extend({
 					return;
 				}
 			
-    			//app.loader('display');
     			var fetchParams={
 					silent : true,
 					data   : {}
@@ -317,7 +316,7 @@ app.Views.EventsListView = Backbone.View.extend({
 								}
 								else
 									$(self.divCalendar).fullCalendar( 'refetchEvents' )
-									app.loader('hide');	
+										
 							}
 						});
 						modalAbsentTask.modal('hide');
@@ -341,7 +340,6 @@ app.Views.EventsListView = Backbone.View.extend({
 			/** When a event is Drop on the calendar : plan in backend
 			*/
 			drop: function( date, allDay ) {
-				app.loader('display');
 
 				var domObject = $(this)
 				var originalEventObject = $(this).data('eventObject');
@@ -364,7 +362,6 @@ app.Views.EventsListView = Backbone.View.extend({
 					params, {
 						success: function (data){
 							if( !_.isUndefined(data.error) ){
-								app.loader('hide');	
 								app.notify('', 'error', app.lang.errorMessages.unablePerformAction, data.error.data.fault_code);
 							}
 							else{
@@ -378,7 +375,6 @@ app.Views.EventsListView = Backbone.View.extend({
 
 			//Drop event from time slot to another
 			eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
-				app.loader('display');
 				
 			    params = { 
 			       date_start: event.start,
@@ -386,7 +382,6 @@ app.Views.EventsListView = Backbone.View.extend({
 			    };
 			    app.Models.Task.prototype.save(event.id, params);	
 			    $(this.divCalendar).fullCalendar( 'refetchEvents' )
-			    app.loader('hide');	
 			},
 
 
@@ -395,8 +390,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			 */
 			eventResize: function( event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) { 
 				
-				app.loader('display');
-				
+			
 			    params = { 
 			       date_start: event.start,
 			       date_end: event.end,
@@ -407,7 +401,6 @@ app.Views.EventsListView = Backbone.View.extend({
 			    app.Models.Task.prototype.save(event.id,params);
 			    $(this.divCalendar).fullCalendar( 'refetchEvents' )
 			    //$(this.divCalendar).fullCalendar('refresh');
-			    app.loader('hide');
 			},
 		});
 	

@@ -20,26 +20,6 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 		);
 	},
 
-//
-//	{
-//    	'click li.active'				: 'preventDefault',
-//		'click li.disabled'				: 'preventDefault',
-//
-//
-//		'submit #formSaveClaimer' 			: 'saveClaimer',
-//		'click a.modalDeleteClaimer'  		: 'modalDeleteClaimer',
-//		'click button.btnDeleteClaimer'		: 'deleteClaimer',
-//
-//		'click .modalSaveContact'               : 'modalSaveContact',
-//		'submit #formAddAddress'             	: 'saveAddress',
-//		'click a.modalDeleteContact'   			: 'modalDeleteContact',
-//        'click button.btnDeleteAddress'   		: 'deleteAddress',
-//
-//		'change #claimerTechnicalService'		: 'fillDropdownTechnicalService',
-//
-//
-//    },
-//
 
 
 	/** View Initialization
@@ -81,14 +61,10 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 		}
 
 
-		app.loader('display');
 		return $.when(this.collection.fetch(fetchParams))
 			.fail(function(e){
 				console.error(e);
 			})
-			.always(function(){
-				app.loader('hide');
-			});
 
 	},
 
@@ -150,7 +126,7 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 	add: function(model){
 		var claimerView  = new app.Views.ClaimerView({ model: model });
 		$('#claimersList').prepend(claimerView.render().el);
-		claimerView.highlight();
+		app.Helpers.Main.highlight($(claimerView.el));
 
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.placeCreateOk);
 		this.partialRender();

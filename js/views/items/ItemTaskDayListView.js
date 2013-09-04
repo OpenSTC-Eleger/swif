@@ -36,7 +36,7 @@ app.Views.ItemTaskDayListView = Backbone.View.extend({
 	add: function(model){
 		var newTaskView = this.initTask(model);
 		this.accordion.find('tbody').append(newTaskView.render().el);
-		newTaskView.highlight();
+		app.Helpers.Main.highlight($(newTaskView.el))
 		this.partialRender();
 	},
 	//update global collection and do partialRender of this view

@@ -47,7 +47,7 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 
 	changed: function () {
 		this.render();
-		this.highlight();
+		app.Helpers.Main.highlight($(this.el));
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.get('name') + ' : ' + app.lang.infoMessages.placeUpdateOk);
 	},
 
@@ -97,14 +97,10 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 
 	},
 
-	highlight: function () {
-		return app.Helpers.Main.highlight(this.$el);
-	},
-
 	destroyed: function (e) {
 		var self = this;
 
-		this.highlight().done(function(){
+		app.Helpers.Main.highlight($(this.el)).done(function(){
 			self.$el.remove();
 		});
 

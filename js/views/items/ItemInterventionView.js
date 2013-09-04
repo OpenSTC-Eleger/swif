@@ -41,7 +41,7 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 			self.render();
 
 			// Highlight the Row and recalculate the className //
-			self.highlight().done(function(){
+			app.Helpers.Main.highlight($(self.el)).done(function(){
 //				self.$el.attr('class', _.result(self, 'className'));
 			});
 
@@ -111,7 +111,7 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 		// Display all the tasks of the inter //
 		_.each(interJSON.tasks, function(task, i){
 			var taskJSON = app.views.interventions.collections.tasks.get(task).toJSON();
-			$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+taskJSON.name+'</td><td>'+app.decimalNumberToTime(taskJSON.planned_hours, 'human')+'</td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td></tr>');
+			$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+taskJSON.name+'</td><td>'+app.Helpers.Main.decimalNumberToTime(taskJSON.planned_hours, 'human')+'</td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td></tr>');
 		})
 
 		var deferred = $.Deferred();
@@ -220,26 +220,5 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 		e.preventDefault();
 		new app.Views.ModalCancelInterventionView({el: '#modalCancelInter', model: this.model});
 	},
-
-	
-	/** Highlight the row item
-	*/
-	highlight: function(){
-		var self = this;
-
-		$(this.el).addClass('highlight');
-
-		var deferred = $.Deferred();
-
-		// Once the CSS3 animation are end the class are removed //
-		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
-			function(e) {
-				$(self.el).removeClass('highlight');
-				deferred.resolve();
-		});
-
-		return deferred;
-	}
-
 
 });

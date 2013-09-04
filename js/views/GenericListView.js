@@ -5,8 +5,8 @@ app.Views.GenericListView = Backbone.View.extend({
 
 	el            : '#rowContainer',
 
-	urlParameters : ['id', 'officer', 'team', 'year', 'week', 'filter', 'sort', 'page', 'search'],
-	
+	urlParameters : ['id', 'search', 'filter', 'sort', 'page'],
+
 	searchForm    : 'form.form-search input',
 
 
@@ -135,7 +135,7 @@ app.Views.GenericListView = Backbone.View.extend({
 		// Iterate all urlParameters //
 		_.each(this.urlParameters, function(value, index){
 
-			
+
 			// Check if the options parameter aren't undefined or null //
 			if(!_.isUndefined(self.options[value]) && !_.isNull(self.options[value])){
 

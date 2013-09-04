@@ -47,7 +47,7 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		var itemInterTaskListView = new app.Views.ItemInterventionTaskListView({ inter: model, tasks: new app.Collections.Tasks() });
 		$('#inter-items').prepend(itemInterTaskListView.render().el);
 		$('#inter-items').prepend(itemInterView.render().el);
-		itemInterView.highlight().done(function(){
+		app.Helpers.Main.highlight($(itemInterView.el)).done(function(){
 			itemInterView.expendAccordion();
 		});
 
@@ -328,7 +328,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		}
 		
 		fetchParams.data.fields = this.collections.interventions.fields;
-		app.loader('display');
 		
 		var deferred = $.Deferred();
 		//retrieve interventions and tasks associated (use domain ('project_id','in',[...] to retrieve tasks associated)
@@ -350,9 +349,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		.fail(function(e){
 			console.error(e);
 		})
-		.always(function(){
-			app.loader('hide');
-		});
 		
 		return deferred;
 	}

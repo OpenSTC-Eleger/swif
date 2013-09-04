@@ -567,7 +567,6 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 				if(self.collections.interventions.cpt > 0){
 					self.collections.tasks.fetch({silent: true,data: {filters: {0:{'field':'project_id.id','operator':'in','value':self.collections.interventions.pluck('id')}}}})
 					.done(function(){
-						app.loader('hide');
 						deferred.resolve();						
 					})
 					.fail(function(e){

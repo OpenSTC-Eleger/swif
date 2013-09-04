@@ -107,7 +107,6 @@ app.Views.PlanningView = Backbone.View.extend({
 	initCollections: function(){			
 	
 		var self = this;		
-		app.loader('display');
 		return $.when(app.models.user.queryManagableOfficers())
 		.done(function(){
 			$.when(app.models.user.queryManagableTeams())

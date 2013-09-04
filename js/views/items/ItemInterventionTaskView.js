@@ -40,9 +40,10 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 		var self = this;
 		this.inter.fetch().done(function(){
 			if(self.inter.toJSON().tasks.length > 0){
-				self.highlight().always(function(){
+				app.Helpers.Main.highlight($(self.el)).always(function(){
 					self.remove();
 				})
+
 			}
 			else{
 				self.remove();
@@ -61,7 +62,7 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 
 		this.render();
 
-		this.highlight().done();
+		app.Helpers.Main.highlight($(this.el))
 
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.taskUpdateOk);
 
@@ -123,7 +124,7 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 		$('.field').html('');
 
 		$('#taskLabel').html(selectedTaskJSON.name + ' <em>('+selectedTaskJSON.category_id[1]+')</em>');
-		$('#taskPlannedHour').html(app.decimalNumberToTime(selectedTaskJSON.planned_hours, 'human'));
+		$('#taskPlannedHour').html(app.Helpers.Main.decimalNumberToTime(selectedTaskJSON.planned_hours, 'human'));
 		
 		var deferred = $.Deferred();
 		deferred.always(function(){
@@ -208,26 +209,5 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 		e.preventDefault();
 		new app.Views.ModalCancelTaskView({el: '#modalCancelTask', model: this.model, inter: this.options.inter});
 	},
-
-
-	/** Highlight the row item
-	*/
-	highlight: function(){
-		var self = this;
-
-		$(this.el).addClass('highlight');
-
-		var deferred = $.Deferred();
-
-		// Once the CSS3 animation are end the class are removed //
-		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
-			function(e) {
-				$(self.el).removeClass('highlight');
-				deferred.resolve();
-		});
-
-		return deferred;
-	}
-
 
 });
