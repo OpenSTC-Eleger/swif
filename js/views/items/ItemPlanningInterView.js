@@ -39,6 +39,7 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 		model.fetch({silent: true, data: {fields: app.views.planningInterListView.collections.interventions.fields}})
 		.done(function(){
 			self.render();
+			self.highlight().done();
 			app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
 		})
 		.fail(function(e){
@@ -87,15 +88,13 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 		return this;
 	},
 	
-	tableAccordion: function(e){
-	
-		e.preventDefault();
+	expendAccordion: function(){
 		// Retrieve the intervention ID //
 		//var id = _($(e.target).attr('href')).strRightBack('_');
 		var id = this.model.toJSON().id.toString();
-		
+	
 		var isExpend = $('#collapse_'+id).hasClass('expend');
-		
+	
 		// Reset the default visibility //
 		$('tr.expend').css({ display: 'none' }).removeClass('expend');
 		$('tr.row-object').css({ opacity: '0.45'});
@@ -105,16 +104,41 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 		if(!isExpend){
 			// Set the new visibility to the selected intervention //
 			$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
-			$(e.target).parents('tr.row-object').css({ opacity: '1'});  
-			$(e.target).parents('tr.row-object').children('td').css({ backgroundColor: "#F5F5F5" }); 
+			$(this.el).parents('tr.row-object').css({ opacity: '1'});  
+			$(this.el).parents('tr.row-object').children('td').css({ backgroundColor: "#F5F5F5" }); 
 		}
 		else{
 			$('tr.row-object').css({ opacity: '1'});
 			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 		}
-	   
 	},
+	
+	tableAccordion: function(e){
+	
+		e.preventDefault();
+		this.expendAccordion();
+		   
+	},
+	
+	/** Highlight the row item
+		*/
+	highlight: function(){
+		var self = this;
+
+		$(this.el).addClass('highlight');
+
+		var deferred = $.Deferred();
+
+		// Once the CSS3 animation are end the class are removed //
+		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
+			function(e) {
+				$(self.el).removeClass('highlight');
+				deferred.resolve();
+		});
+
+		return deferred;
+	}
 
 
 });

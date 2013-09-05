@@ -1,7 +1,7 @@
 /******************************************
 * Pagination View
 */
-app.Views.PlanningInterListView = app.Views.GenericListView.extend({
+app.Views.PlanningInterListView = Backbone.View.extend({
 
 	el           : '#planningInters',
 	
@@ -46,13 +46,30 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		var self = this;
 		console.log("Planing Inter panel view intialization")
 	    this.initCollections().done(function(){
-	    	self.collections.tasks.off();
-	    	self.collections.interventions.off();
-	    	self.listenTo(self.collections.interventions, 'add', self.render());
-			self.listenTo(self.collections.tasks, 'add',self.render());
+	    	//self.collections.tasks.off();
 	    	app.router.render(self);
+	    	self.collections.interventions.off();
+	    	self.listenTo(self.collections.interventions, 'add', self.addInter);
+			//self.listenTo(self.collections.tasks, 'add',self.adTask);
+	    	
 	    	
 	    })
+	},
+	
+	addInter: function(model){
+		var itemPlanningInterView  = new app.Views.ItemPlanningInterView({ model: model });
+		var itemPlanningInterTaskListView = new app.Views.ItemPlanningInterTaskListView({ inter: model, tasks: new app.Collections.Tasks() });		
+		$('#inter-items').prepend(itemPlanningInterTaskListView.render().el);
+		$('#inter-items').prepend(itemPlanningInterView.render().el);
+		itemPlanningInterView.highlight().done(function(){
+			itemPlanningInterView.expendAccordion();
+		});
+	
+		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.interventionSaveOK);
+		
+		this.partialRender();
+	
+		//app.router.navigate(app.views.planningInterListView.urlBuilder(), {trigger: false, replace: false});
 	},
 
 	/** Display the view
@@ -91,19 +108,19 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 				_.each(inter.toJSON().tasks,function(item,i){ 
 					tasks.push(self.collections.tasks.get(item));
 				});
-				var itemPlaningInterView = new app.Views.ItemPlanningInterView({model: inter});
-				$('#inter-items').append(itemPlaningInterView.render().el);
+				var itemPlanningInterView = new app.Views.ItemPlanningInterView({model: inter});
+				$('#inter-items').append(itemPlanningInterView.render().el);
 				var itemPlanningInterTaskListView = new app.Views.ItemPlanningInterTaskListView({inter: inter, tasks: tasks});
 				$('#inter-items').append(itemPlanningInterTaskListView.render().el);
 				
 			});	
 			
 			// Pagination view //
-			app.views.paginationView = new app.Views.PaginationView({ 
-				page       : self.options.page.page,
-				collection : self.collections.interventions
-			})
-			app.views.paginationView.render();
+//			app.views.paginationView = new app.Views.PaginationView({ 
+//				page       : self.options.page.page,
+//				collection : self.collections.interventions
+//			})
+//			app.views.paginationView.render();
 			
 			
 			// Render Filter Link //
@@ -114,12 +131,12 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 
 				$('a.filter-button').addClass('text-'+app.Models.Intervention.status.open.color);
 			}
-			else if(self.options.filter.value=='notFilter'){
-				// set status information on no filter
-				$('#filterStateIntervention').addClass('filter-disabled');
-				$('#filterStateInterventionList li.delete-filter').addClass('disabled');
-				
-			}
+//			else if(self.options.filter.value=='notFilter'){
+//				// set status information on no filter
+//				$('#filterStateIntervention').addClass('filter-disabled');
+//				$('#filterStateInterventionList li.delete-filter').addClass('disabled');
+//				
+//			}
 			else{
 				// set status information on filter selected
 				$('#filterStateIntervention').removeClass('filter-disabled');
@@ -137,14 +154,13 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 	*/
 	displayModalSaveInter: function(e){
 		e.preventDefault();
-		var params = {el:'#modalSaveInter',collection: this.collections.interventions}
+		var params = {el:'#modalSaveInter',interventions: this.collections.interventions}
 		new app.Views.ModalInterventionView(params);
 	},
 		
 	/** Partial Render of the view
 	*/
 	partialRender: function () {
-		this.initialize();
 //		var self = this;
 //		$.when(self.collections.interventions.pendingInterventionsCount(),
 //				self.collections.interventions.plannedInterventionsCount()).done(function(){
@@ -468,23 +484,25 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 				this.options.filter =  { by: 'state', value: filterValue};	
 			}
 			else{
-				this.options.filter = null;
+				//this.options.filter = "noFilter"
+				delete this.options.filter;
 			}
 			
-			if(_.isUndefined(this.options.sort)){
-				this.options.sort = this.collections.interventions.default_sort;
-			}
+//			if(_.isUndefined(this.options.sort)){
+//				this.options.sort = this.collections.interventions.default_sort;
+//			}
+//			
+//			this.fetchParams.data.filters = this.options.filter;
+//
+//			// Create Fetch params //
+//			this.fetchParams.data.sort = this.options.sort.by+' '+this.options.sort.order
+//			
+//			this.options.page = '1';
+//			this.options.page = app.calculPageOffset(this.options.page);
 			
-			this.fetchParams.data.filters = this.options.filter;
-
-			// Create Fetch params //
-			this.fetchParams.data.sort = this.options.sort.by+' '+this.options.sort.order
-			
-			this.options.page = '1';
-			this.options.page = app.calculPageOffset(this.options.page);
-			
-			// routing with new url			
-			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});	
+			// routing with new url		
+			var urlParameters = ['id', 'officer', 'team', 'year', 'week', 'filter', 'sort', 'page', 'search']
+			app.router.navigate(app.Helpers.Main.urlBuilder(urlParameters, this.options), {trigger: true, replace: true});	
 		},
 		
 		/**

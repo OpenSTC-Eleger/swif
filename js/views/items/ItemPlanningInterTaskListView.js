@@ -56,14 +56,41 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 		});
 		return this;
 	},
+	
+	
+	updateList: function(){
+		if(this.options.tasks.length == 0){
+			$(this.el).find('.noTask').css({display:'block'});
+			$(this.el).find('.table-nested-objects').css({display: 'none'});
+		}
+		else{
+			$(this.el).find('.noTask').css({display: 'none'});
+			$(this.el).find('.table-nested-objects').css({display: 'table'});
+		}
+	},
+	
+	/** Display the view
+	*/
+	
+	partialRender: function(){
+		this.updateList();
+		if(this.options.inter.toJSON().actions.indexOf('add_task') == -1){
+			$('button.addTask').attr('disabled','disabled');
+		}
+	},
 
 	add: function(model){
 		var itemPlanningInterTaskView  = new app.Views.ItemPlanningInterTaskView({ model: model, inter: this.options.inter, tasks:this.options.tasks});
 		$(this.el).find('#row-nested-objects').append(itemPlanningInterTaskView.render().el);		
-		//this.partialRender();
+		itemPlanningInterTaskView.highlight();
+		this.partialRender();
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.inteventionAddTaskOK);
 		//@TOCHECK: repercute task creation to main tasks collection to be usable by other itemViews
 		app.views.planningInterListView.collections.tasks.add(model);
+		
+		app.views.planningInterListView.partialRender();
+
+		//app.router.navigate(app.views.planningInterListView.urlBuilder(), {trigger: false, replace: false});
 	
 	},
 	
