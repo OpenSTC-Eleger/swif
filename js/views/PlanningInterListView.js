@@ -498,7 +498,7 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 //			this.fetchParams.data.sort = this.options.sort.by+' '+this.options.sort.order
 //			
 //			this.options.page = '1';
-//			this.options.page = app.calculPageOffset(this.options.page);
+//			this.options.page = app.Helpers.Main.calculPageOffset(this.options.page);
 			
 			// routing with new url		
 			var urlParameters = ['id', 'officer', 'team', 'year', 'week', 'filter', 'sort', 'page', 'search']
@@ -522,12 +522,12 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 				this.options.sort = this.collections.interventions.default_sort;
 			}
 			else{
-				this.options.sort = app.calculPageSort(this.options.sort);	
+				this.options.sort = app.Helpers.Main.calculPageSort(this.options.sort);	
 			}
-			this.options.page = app.calculPageOffset(this.options.page);
+			this.options.page = app.Helpers.Main.calculPageOffset(this.options.page);
 
 			if(!_.isUndefined(this.options.filter)){
-				this.options.filter = app.calculPageFilter(this.options.filter);
+				this.options.filter = app.Helpers.Main.calculPageFilter(this.options.filter);
 			}
 	
 			// Create Fetch params //
@@ -552,7 +552,7 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 			}
 	
 			if(!_.isEmpty(globalSearch)){
-				this.fetchParams.data.filters = app.calculSearch(globalSearch, app.Models.Intervention.prototype.searchable_fields);
+				this.fetchParams.data.filters = app.Helpers.Main.calculSearch(globalSearch, app.Models.Intervention.prototype.searchable_fields);
 			}
 			
 			return this.fetchCollections();
