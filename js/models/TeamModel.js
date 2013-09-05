@@ -1,7 +1,7 @@
 /******************************************
 * Team Model
 */
-app.Models.Team = Backbone.Model.extend({
+app.Models.Team = app.Models.GenericModel.extend({
 
 
 	fields     : ['id', 'name', 'manager_id', 'actions', 'service_names', 'user_names'],
@@ -9,32 +9,6 @@ app.Models.Team = Backbone.Model.extend({
 	urlRoot    : '/api/openstc/teams',
 
 
-	defaults   : {
-		id : null,
-	},
-
-
-	searchable_fields: [
-		{
-			key  : 'name', 
-			type : 'text'
-		}
-	],
-
-
-	getId : function() {
-		return this.get('id');
-	},
-	setId : function(value, silent) {
-		this.set({ id : value }, {silent: silent});
-	},
-
-	getName : function() {
-		return _.titleize(this.get('name').toLowerCase());
-	},
-	setName : function(value, silent) {
-		this.set({ name : value }, {silent: silent});
-	},
 
 	getManager : function(type) {
 		switch (type){ 
@@ -122,9 +96,5 @@ app.Models.Team = Backbone.Model.extend({
 
 		return informations;
 	},
-
-	getActions : function(){
-		return this.get('actions');
-	}
 
 });

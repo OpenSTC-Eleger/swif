@@ -1,15 +1,15 @@
 /******************************************
-* Claimers Type List View
+* Categories Requests List View
 */
-app.Views.ClaimersTypesListView = app.Views.GenericListView.extend({
-
-	templateHTML: 'claimersTypesList',
+app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
+	
+	templateHTML: 'categoriesRequestsList',
 	
 
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'click a.modalCreateClaimerType' : 'modalCreateClaimerType',
+			'click a.modalCreateCat' : 'modalCreateCat',
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -35,15 +35,15 @@ app.Views.ClaimersTypesListView = app.Views.GenericListView.extend({
 
 
 
-	/** When the model ara created //
+    /** When the model ara created //
 	*/
 	add: function(model){
 
-		var itemClaimerTypeView  = new app.Views.ItemClaimerTypeView({ model: model });
-		$('#rows-items').prepend(itemClaimerTypeView.render().el);
-		app.Helpers.Main.highlight($(itemClaimerTypeView.el));
+		var itemCategoryRequestView  = new app.Views.ItemCategoryRequestView({ model: model });
+		$('#rows-items').prepend(itemCategoryRequestView.render().el);
+		app.Helpers.Main.highlight($(itemCategoryRequestView.el));
 
-		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.claimerTypeCreateOk);
+		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.catCreateOk);
 		this.partialRender();
 	},
 
@@ -51,11 +51,11 @@ app.Views.ClaimersTypesListView = app.Views.GenericListView.extend({
 
 	/** Display the view
 	*/
-	render: function () {
+    render: function () {
 		var self = this;
 
 		// Change the page title //
-		app.router.setPageTitle(app.lang.viewsTitles.claimersTypesList);
+		app.router.setPageTitle(app.lang.viewsTitles.categoriesIntersList);
 
 		// Change the active menu item //
 		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
@@ -67,10 +67,10 @@ app.Views.ClaimersTypesListView = app.Views.GenericListView.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				lang           : app.lang,
-				nbClaimersTypes: self.collection.cpt
+				lang   : app.lang,
+				nbCats : self.collection.cpt
 			});
-			
+
 			$(self.el).html(template);
 
 			// Call the render Generic View //
@@ -78,9 +78,9 @@ app.Views.ClaimersTypesListView = app.Views.GenericListView.extend({
 
 
 			// Create item category request view //
-			_.each(self.collection.models, function(claimerType, i){
-				var itemClaimerTypeView  = new app.Views.ItemClaimerTypeView({model: claimerType});
-				$('#rows-items').append(itemClaimerTypeView.render().el);
+			_.each(self.collection.models, function(catRequest, i){
+				var itemCategoryRequestView  = new app.Views.ItemCategoryRequestView({model: catRequest});
+				$('#rows-items').append(itemCategoryRequestView.render().el);
 			});
 
 
@@ -90,23 +90,23 @@ app.Views.ClaimersTypesListView = app.Views.GenericListView.extend({
 				collection : self.collection
 			})
 			app.views.paginationView.render();
-
+			
 		});
 
-		$(this.el).hide().fadeIn();
+		$(this.el).hide().fadeIn('slow');
 		
-		return this;
-	},
+        return this;
+    },
 
 
 
-	/** Partial Render of the view
+    /** Partial Render of the view
 	*/
 	partialRender: function (type) {
 		var self = this; 
 
 		this.collection.count(this.fetchParams).done(function(){
-			$('#badgeNbClaimerTypes').html(self.collection.cpt);
+			$('#bagdeNbCats').html(self.collection.cpt);
 			app.views.paginationView.render();
 		});
 	},
@@ -115,11 +115,11 @@ app.Views.ClaimersTypesListView = app.Views.GenericListView.extend({
 
 	/** Modal form to create a new Cat
 	*/
-	modalCreateClaimerType: function(e){
+	modalCreateCat: function(e){
 		e.preventDefault();
 		
-		app.views.modalClaimerTypeView = new app.Views.ModalClaimerTypeView({
-			el  : '#modalSaveClaimerType'
+		app.views.modalCategoryRequestView = new app.Views.ModalCategoryRequestView({
+			el  : '#modalSaveCat'
 		});
 	},
 
@@ -131,7 +131,7 @@ app.Views.ClaimersTypesListView = app.Views.GenericListView.extend({
 		var self = this;
 
 		// Check if the collections is instantiate //
-		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.ClaimersTypes(); }
+		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.CategoriesRequests(); }
 
 
 		// Check the parameters //
@@ -139,9 +139,9 @@ app.Views.ClaimersTypesListView = app.Views.GenericListView.extend({
 			this.options.sort = this.collection.default_sort;
 		}
 		else{
-			this.options.sort = app.calculPageSort(this.options.sort);	
+			this.options.sort = app.Helpers.Main.calculPageSort(this.options.sort);	
 		}
-		this.options.page = app.calculPageOffset(this.options.page);
+		this.options.page = app.Helpers.Main.calculPageOffset(this.options.page);
 
 
 		// Create Fetch params //
@@ -154,7 +154,7 @@ app.Views.ClaimersTypesListView = app.Views.GenericListView.extend({
 			}
 		};
 		if(!_.isUndefined(this.options.search)){
-			this.fetchParams.data.filters = app.calculSearch({search: this.options.search }, app.Models.ClaimerType.prototype.searchable_fields);
+			this.fetchParams.data.filters = app.Helpers.Main.calculSearch({search: this.options.search }, app.Models.CategoryRequest.prototype.searchable_fields);
 		}
 
 

@@ -14,7 +14,7 @@ app.Models.User = Backbone.Model.extend({
 	},
 
 	initialize: function(){
-		console.log('User initialize: ' + this.getLogin());
+		//console.log('User initialize: ' + this.getLogin());
 	},
 
 
@@ -308,7 +308,6 @@ app.Models.User = Backbone.Model.extend({
 		.done(function (data) {
 
 			if(data){
-
 				app.notify('large', 'info', app.lang.infoMessages.information, app.lang.infoMessages.successLogout);
 			}
 			else{

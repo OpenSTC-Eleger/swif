@@ -1,36 +1,18 @@
 /******************************************
 * Officer Model
 */
-app.Models.Officer = Backbone.Model.extend({
+app.Models.Officer = app.Models.GenericModel.extend({
 
-	urlRoot: "/api/open_object/users",
+	urlRoot : "/api/open_object/users",
 
 	defaults:{
-		//id:0,
-		firstname: null,
-		name: null,
-		login: null,
-		password: null,
-		groups_id: [],
-		service_ids: [],
-		
-		isDST			: false,
-		isManager		: false,
+		id       :null,
+		isDST    : false,
+		isManager: false,
 	},
 
 
-	// Officer name //
-	getName : function() {
-		if(this.get('name') != false){
-			return this.get('name').toUpperCase();
-		}
-		else{ return ''; }
-	},
-	setName : function(value) {
-		if( value == 'undefined') return;
-		this.set({ name : value });
-	},
-    
+   
 	// Officer firstname //
 	getFirstname : function() {
 		if(this.get('firstname') != false){
@@ -39,7 +21,6 @@ app.Models.Officer = Backbone.Model.extend({
 		else{ return ''; }
 	},
 	setFirstname : function(value) {
-		if( value == 'undefined') return;
 		this.set({ firstname : value });
 	},
 
@@ -53,7 +34,6 @@ app.Models.Officer = Backbone.Model.extend({
         return this.get('user_email');
     },
     setEmail : function(value) {
-		if( value == 'undefined') return;
 		this.set({ user_email : value });
 	},
 
@@ -68,7 +48,6 @@ app.Models.Officer = Backbone.Model.extend({
 
 	// Officer password //
     setPassword : function(value) {
-		if( value == 'undefined') return;
 		this.set({ new_password : value });
 	},
 	// Group IDs //
@@ -76,13 +55,11 @@ app.Models.Officer = Backbone.Model.extend({
 	    return this.get('groups_id');
 	},
 	setGroupsID : function(value) {
-		if( value == 'undefined') return;
 		this.set({ groups_id : value });
 	},
 	
 	// Group Name //
 	setGroupSTCName : function(value) {
-		if( value == 'undefined') return;
 		this.set({ groupSTCName : value });
 	},
 	getGroupSTCName: function() {
@@ -94,7 +71,6 @@ app.Models.Officer = Backbone.Model.extend({
 	    return this.get('service_ids');
 	},
 	setServicesID : function(value) {
-		if( value == 'undefined') return;
 		this.set({ service_ids : value });
 	},
 
@@ -113,7 +89,6 @@ app.Models.Officer = Backbone.Model.extend({
 	isDST: function(value) {
     	return this.get('isDST');
     },
-    
     setDST: function(value) {
         this.set({ isDST : value });
     },

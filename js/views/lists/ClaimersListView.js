@@ -42,9 +42,9 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 			this.options.sort = this.collection.default_sort;
 		}
 		else{
-			this.options.sort = app.calculPageSort(this.options.sort);
+			this.options.sort = app.Helpers.Main.calculPageSort(this.options.sort);
 		}
-		this.options.page = app.calculPageOffset(this.options.page);
+		this.options.page = app.Helpers.Main.calculPageOffset(this.options.page);
 
 
 		// Create Fetch params //
@@ -57,7 +57,7 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 			}
 		};
 		if(!_.isUndefined(this.options.search)){
-			fetchParams.data.filters = app.calculSearch({search: this.options.search }, app.Models.Claimer.prototype.searchable_fields);
+			fetchParams.data.filters = app.Helpers.Main.calculSearch({search: this.options.search }, app.Models.Claimer.prototype.searchable_fields);
 		}
 
 

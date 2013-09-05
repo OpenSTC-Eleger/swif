@@ -1,10 +1,10 @@
 /******************************************
-* Categories Requests List View
+* Categories Tasks List View
 */
-app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
+app.Views.CategoriesTasksListView = app.Views.GenericListView.extend({
 	
-	templateHTML: 'categoriesRequestsList',
-	
+	templateHTML: 'categoriesTasksList',
+
 
 	// The DOM events //
 	events: function(){
@@ -35,13 +35,13 @@ app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
 
 
 
-    /** When the model ara created //
+	/** When the model ara created //
 	*/
 	add: function(model){
 
-		var itemCategoryRequestView  = new app.Views.ItemCategoryRequestView({ model: model });
-		$('#rows-items').prepend(itemCategoryRequestView.render().el);
-		app.Helpers.Main.highlight($(itemCategoryRequestView.el));
+		var itemCategoryTaskView  = new app.Views.ItemCategoryTaskView({ model: model });
+		$('#rows-items').prepend(itemCategoryTaskView.render().el);
+		app.Helpers.Main.highlight($(itemCategoryTaskView.el));
 
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.catCreateOk);
 		this.partialRender();
@@ -51,11 +51,11 @@ app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
 
 	/** Display the view
 	*/
-    render: function () {
+	render: function () {
 		var self = this;
 
 		// Change the page title //
-		app.router.setPageTitle(app.lang.viewsTitles.categoriesIntersList);
+		app.router.setPageTitle(app.lang.viewsTitles.categoriesTasksList);
 
 		// Change the active menu item //
 		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
@@ -63,12 +63,12 @@ app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
 		// Change the Grid Mode of the view //
 		app.views.headerView.switchGridMode('fluid');
 
-		
+
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				lang   : app.lang,
-				nbCats : self.collection.cpt
+				lang  : app.lang,
+				nbCats: self.collection.cpt
 			});
 
 			$(self.el).html(template);
@@ -78,9 +78,9 @@ app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
 
 
 			// Create item category request view //
-			_.each(self.collection.models, function(catRequest, i){
-				var itemCategoryRequestView  = new app.Views.ItemCategoryRequestView({model: catRequest});
-				$('#rows-items').append(itemCategoryRequestView.render().el);
+			_.each(self.collection.models, function(catTask, i){
+				var itemCategoryTaskView  = new app.Views.ItemCategoryTaskView({model: catTask});
+				$('#rows-items').append(itemCategoryTaskView.render().el);
 			});
 
 
@@ -93,14 +93,14 @@ app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
 			
 		});
 
-		$(this.el).hide().fadeIn('slow');
-		
-        return this;
-    },
+		$(this.el).hide().fadeIn();
+
+		return this;
+	},
 
 
 
-    /** Partial Render of the view
+	/** Partial Render of the view
 	*/
 	partialRender: function (type) {
 		var self = this; 
@@ -118,7 +118,7 @@ app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
 	modalCreateCat: function(e){
 		e.preventDefault();
 		
-		app.views.modalCategoryRequestView = new app.Views.ModalCategoryRequestView({
+		app.views.modalCategoryTaskView = new app.Views.ModalCategoryTaskView({
 			el  : '#modalSaveCat'
 		});
 	},
@@ -127,11 +127,11 @@ app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
 
 	/** Collection Initialisation
 	*/
-    initCollection: function(){
+	initCollection: function(){
 		var self = this;
 
 		// Check if the collections is instantiate //
-		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.CategoriesRequests(); }
+		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.CategoriesTasks(); }
 
 
 		// Check the parameters //
@@ -139,9 +139,9 @@ app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
 			this.options.sort = this.collection.default_sort;
 		}
 		else{
-			this.options.sort = app.calculPageSort(this.options.sort);	
+			this.options.sort = app.Helpers.Main.calculPageSort(this.options.sort);	
 		}
-		this.options.page = app.calculPageOffset(this.options.page);
+		this.options.page = app.Helpers.Main.calculPageOffset(this.options.page);
 
 
 		// Create Fetch params //
@@ -154,7 +154,7 @@ app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
 			}
 		};
 		if(!_.isUndefined(this.options.search)){
-			this.fetchParams.data.filters = app.calculSearch({search: this.options.search }, app.Models.CategoryRequest.prototype.searchable_fields);
+			this.fetchParams.data.filters = app.Helpers.Main.calculSearch({search: this.options.search }, app.Models.CategoryTask.prototype.searchable_fields);
 		}
 
 
@@ -164,5 +164,6 @@ app.Views.CategoriesRequestsListView = app.Views.GenericListView.extend({
 			})
 
 	}
+
 
 });

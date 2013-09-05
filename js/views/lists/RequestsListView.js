@@ -25,11 +25,6 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		var self = this;
 
 		this.initCollection().done(function(){
-
-			// Unbind & bind the collection //
-			/*self.collection.off();
-			self.listenTo(self.collection, 'change', self.addA);*/
-
 			app.router.render(self);
 		});
 	},
@@ -174,13 +169,13 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 			this.options.sort = this.collection.default_sort;
 		}
 		else{
-			this.options.sort = app.calculPageSort(this.options.sort);	
+			this.options.sort = app.Helpers.Main.calculPageSort(this.options.sort);	
 		}
 
-		this.options.page = app.calculPageOffset(this.options.page);
+		this.options.page = app.Helpers.Main.calculPageOffset(this.options.page);
 
 		if(!_.isUndefined(this.options.filter)){
-			this.options.filter = app.calculPageFilter(this.options.filter);
+			this.options.filter = app.Helpers.Main.calculPageFilter(this.options.filter);
 		}
 
 			
@@ -203,7 +198,7 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		}
 
 		if(!_.isEmpty(globalSearch)){
-			fetchParams.data.filters = app.calculSearch(globalSearch, app.Models.Request.prototype.searchable_fields);
+			fetchParams.data.filters = app.Helpers.Main.calculSearch(globalSearch, app.Models.Request.prototype.searchable_fields);
 		}
 
 

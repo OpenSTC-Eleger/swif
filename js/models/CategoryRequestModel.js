@@ -1,18 +1,13 @@
 /******************************************
 * Category Request  Model - Intervention classification for budget
 */
-app.Models.CategoryRequest = Backbone.Model.extend({
-	
+app.Models.CategoryRequest = app.Models.GenericModel.extend({
+
 
 	fields     : ['id', 'name', 'code', 'actions'],
 	
 	urlRoot    : '/api/openstc/intervention_categories',
 
-
-	defaults :{
-		id : null,
-	},
-	  
 
 	searchable_fields: [
 		{
@@ -26,26 +21,13 @@ app.Models.CategoryRequest = Backbone.Model.extend({
 	],
 
 
-	getId : function() {
-		return this.get('id');
-	},
-	setId : function(value, silent) {
-		this.set({ id : value }, {silent: silent});
-	},
-
-	getName : function() {
-		return _.titleize(this.get('name').toLowerCase());
-	},
-	setName : function(value, silent) {
-		this.set({ name : value }, {silent: silent});
-	},
-
 	getCode : function() {
 		return this.get('code');
 	},
 	setCode : function(value, silent) {
 		this.set({ code : value }, {silent: silent});
 	},
+
 
 	/** Get Informations of the model
 	*/
@@ -60,9 +42,5 @@ app.Models.CategoryRequest = Backbone.Model.extend({
 
 		return informations;
 	},
-
-	getActions : function(){
-		return this.get('actions');
-	}
 
 });

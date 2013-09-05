@@ -281,7 +281,7 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 			this.options.sort = this.collections.interventions.default_sort;
 		}
 		else{
-			this.options.sort = app.calculPageSort(this.options.sort);	
+			this.options.sort = app.Helpers.Main.calculPageSort(this.options.sort);	
 		}
 		
 		
@@ -294,7 +294,7 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 			optionSearch.search = this.options.search;
 		}
 		if(!_.isUndefined(this.options.filter) && !_.isNull(this.options.filter)){
-			this.options.filter = app.calculPageFilter(this.options.filter);
+			this.options.filter = app.Helpers.Main.calculPageFilter(this.options.filter);
 
 			//interventions = _.filter(interventions, function(item){ 
 			if(this.options.filter.value == 'overrun'){
@@ -307,12 +307,12 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 			}
 		}
 		//'Unbuild' domain objectify to be able to add other filters (and objectify when all filters are added
-		var searchDomain = app.calculSearch(optionSearch, app.Models.Intervention.prototype.searchable_fields);
+		var searchDomain = app.Helpers.Main.calculSearch(optionSearch, app.Models.Intervention.prototype.searchable_fields);
 		_.each(searchDomain,function(item, index){
 			domain.push(item);
 		});	
 		
-		this.options.page = app.calculPageOffset(this.options.page);
+		this.options.page = app.Helpers.Main.calculPageOffset(this.options.page);
 
 		// Create Fetch params //
 		var fetchParams = {

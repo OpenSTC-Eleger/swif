@@ -1,66 +1,48 @@
 /******************************************
 * Claimer Model
 */
-app.Models.Claimer = Backbone.Model.extend({
+app.Models.Claimer = app.Models.GenericModel.extend({
 
-	urlRoot: "/api/open_object/partners",
-	searchable_fields: [
+	urlRoot : "/api/open_object/partners",
 
-		{
-			key  : 'name',
-			type : 'text'
-		}
-	],
-
-
-    defaults:{
+	defaults:{
 		name: null,
 		type_id: null,
 		technical_service_id: null,
 		technical_site_id: null,
 	},
 	
-	getName : function() {
-        return this.get('name');
-    },
-    setName : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ name : value });
-    },  
 	
 	getTypeId : function() {
-        return this.get('type_id');
-    },
+		return this.get('type_id');
+	},
 
-    setTypeId : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ type_id : value });
-    }, 
+	setTypeId : function(value) {
+		if( value == 'undefined') return;
+		this.set({ type_id : value });
+	}, 
 
-    getTechnicalServiceId : function() {
-        return this.get('technical_service_id');
-    },
-    setTechnicalServiceId : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ technical_service_id : value });
-    }, 
-    
-    getTechnicalSiteId : function() {
-        return this.get('technical_site_id');
-    },
-    setTechnicalSiteId : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ technical_site_id : value });
-    },
+	getTechnicalServiceId : function() {
+		return this.get('technical_service_id');
+	},
+	setTechnicalServiceId : function(value) {
+		this.set({ technical_service_id : value });
+	}, 
+	
+	getTechnicalSiteId : function() {
+		return this.get('technical_site_id');
+	},
+	setTechnicalSiteId : function(value) {
+		this.set({ technical_site_id : value });
+	},
 
 	getClaimerType : function() {
-        return this.get('type_id');
-    },
+		return this.get('type_id');
+	},
 
-    setClaimerType : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ type_id : value });
-    },
+	setClaimerType : function(value) {
+		this.set({ type_id : value });
+	},
 
 	// Returns addresses collection fetched this is used in view to serialize object before template
 	getAddresses: function () {
@@ -97,18 +79,5 @@ app.Models.Claimer = Backbone.Model.extend({
 	objectifiedTechnicalSiteId : function () {
 		return app.Helpers.Main.many2oneObjectify(this.get('technical_site_id'))
 	},
-
-	/** Model Initialization
-	*/
-    initialize: function(){
-
-	},
-
-    update: function( params ) {
-    	this.setName(params.name);
-		this.setTypeId( params.type_id );
-		this.setTechnicalServiceId( params.technical_service_id );
-		this.setTechnicalSiteId( params.technical_site_id );		
-	}
 
 });

@@ -89,7 +89,7 @@ var app = {
 
 			})
 			.fail(function(){
-				alert('Impossible de charger les fichiers de langues');
+				alert('Unable to load the language files');
 			});
 	},
 
@@ -102,7 +102,7 @@ var app = {
 			.success(function (data) {
 			})
 			.fail(function () {
-				alert('Impossible de charger le fichier') + url;
+				alert('Unable to load the file : ') + url;
 			});
 	},
 
@@ -164,130 +164,8 @@ var app = {
 
 
 
-	/** Calcul the page and the offset
-	*/
-	calculPageOffset: function(page, itemsPerPage){
-
-		var paginate = {};
-
-		if(_.isUndefined(page)){
-			paginate.page = 1;
-			paginate.offset = 0;
-		}
-		else{
-			paginate.page = parseInt(page, 10);
-			paginate.offset = (paginate.page - 1) * (!_.isUndefined(itemsPerPage) ? itemsPerPage : app.config.itemsPerPage);
-		}
-
-		return paginate;
-	},
-
-
-	/** Calcul the sort By column and the order
-	*/
-	calculPageSort: function(sort){
-
-		var sorter = {};
-
-		sorter.by = _(sort).strLeft('-');
-		sorter.order = _(sort).strRight('-');
-
-		return sorter;
-	},
-
 	objectifyFilters: function (filterArray) {
 		return $.extend({},filterArray);
-	},
-
-
-	/** Calcul the Filter By
-	*/
-	calculPageFilter: function(filter){
-
-		var filt = {};
-
-		filt.by = _(filter).strLeft('-');
-		filt.value = _(filter).strRight('-');
-
-		return filt;
-	},
-
-
-	/** Calcul the search argument of the page
-	*/
-	calculSearch: function (searchQuery, searchableFields) {
-
-		//['|', ["name", "ilike", searchQuery], ["surface", "=", _(searchQuery).toNumber()]];
-		//['&', ["state", "ilike", 'valid'], '|', ["name", "ilike", 'demande'], ["id", "=", _('demande').toNumber()]];
-
-		var search = [];
-
-		// Is Number //
-		function isNumber(n) {
-			return !isNaN(parseFloat(n)) && isFinite(n);
-		};
-
-		
-		// Convert Field Filters //
-		function convertFieldFilters(fieldsFilters) {
-			var convertedFilters = [];
-
-			function convertFilter(filter, operator) {
-				return {key:filter.key, type: operator};
-			};
-
-			_.each(fieldsFilters, function (filter, index) {
-				switch (filter.type) {
-					case 'numeric':
-						if (isNumber(searchQuery.search)) {
-							convertedFilters.push(convertFilter(filter, '='));
-						}
-						break;
-					case 'text':
-						convertedFilters.push(convertFilter(filter, 'ilike'));
-						break;
-				}
-			});
-			return convertedFilters;
-		};
-
-		var filteredAndConvertedFilters = convertFieldFilters(searchableFields);
-
-		function buildFilterObject(field,operator,value) {
-			return {field: field, operator:operator, value:value}
-		};
-
-		// Check if there is a filter //
-		if (!_.isUndefined(searchQuery.filter)) {
-			if (!_.isUndefined(searchQuery.search)) {
-				search.push('&');
-			}
-			search.push( buildFilterObject(searchQuery.filter.by,'ilike',searchQuery.filter.value));
-		}
-
-		// Check if there is a Search //
-		if (!_.isUndefined(searchQuery.search)) {
-			// Search on several fields //
-			for(var i=1;i < _.size(filteredAndConvertedFilters);i++){
-				search.push('|');
-			}
-
-			if (_.size(filteredAndConvertedFilters) > 1) {
-				_.each(filteredAndConvertedFilters, function (item, index) {
-					if (item.type == '=' && isNumber(searchQuery.search)) {
-						var term = _(searchQuery.search).toNumber();
-					} else {
-						var term = searchQuery.search;
-	
-					}
-					search.push(buildFilterObject(item.key,item.type,term));
-				});
-			}
-			else {
-				search.push( buildFilterObject(filteredAndConvertedFilters[0].key,filteredAndConvertedFilters[0].type,searchQuery.search));
-			}
-		}
-		return app.objectifyFilters(search);
 	},
 
 

@@ -183,10 +183,10 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 			this.options.sort = this.collection.default_sort;
 		}
 		else{
-			this.options.sort = app.calculPageSort(this.options.sort);	
+			this.options.sort = app.Helpers.Main.calculPageSort(this.options.sort);	
 		}
 
-		this.options.page = app.calculPageOffset(this.options.page, this.itemsPerPage);
+		this.options.page = app.Helpers.Main.calculPageOffset(this.options.page, this.itemsPerPage);
 
 
 
@@ -200,7 +200,7 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 			}
 		};
 		if(!_.isUndefined(this.options.search)){
-			this.fetchParams.data.filters = app.calculSearch({search: this.options.search }, app.Models.Team.prototype.searchable_fields);
+			this.fetchParams.data.filters = app.Helpers.Main.calculSearch({search: this.options.search }, app.Models.Team.prototype.searchable_fields);
 		}
 
 
