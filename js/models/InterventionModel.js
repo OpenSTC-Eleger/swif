@@ -1,11 +1,11 @@
 /******************************************
 * Intervention Model
 */
-app.Models.Intervention = Backbone.Model.extend({
+app.Models.Intervention = app.Models.GenericModel.extend({
 	
 	urlRoot: "/api/openstc/interventions",
-
-	fieldsOE: ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid','ask_id'],
+	
+	fields : ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid','ask_id'],
 
 
 	searchable_fields: [
@@ -24,44 +24,20 @@ app.Models.Intervention = Backbone.Model.extend({
 		}
 	],
 	
-	defaults:{
-		id:null,
-		state: null,
-		cancel_reason: null,
-	},
 
-	getId : function() {
-		return this.get('id');
-	},
-	setId : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ id : value });
-	},
-
-	getName : function() {
-		return this.get('name');
-	},
-	setName: function(value) {
-		if( value == 'undefined') return;
-		this.set({ id : value });
-	},
-	
 	getState : function() {
 		return this.get('state');
 	},
-	setState : function(value) {
-		if( value == 'undefined') return;
-		this.set({ state : value });
+	setState : function(value, silent) {
+		this.set({ state : value }, {silent: silent});
 	},
 	
 	getCancelReason : function() {
 		return this.get('cancel_reason');
 	},
-	setCancelReason : function(value) {
-		if( value == 'undefined') return;
-		this.set({ cancel_reason : value });
+	setCancelReason : function(value, silent) {
+		this.set({ cancel_reason : value }, {silent: silent});
 	},  
-
 
 
 	/** Model Initialization
@@ -78,31 +54,7 @@ app.Models.Intervention = Backbone.Model.extend({
 		app.Models.Intervention.status.template.translation = "template"; //'app.lang.template';
 	},
 
-
-	
-	/** Model Parser
-	*/
-	parse: function(response) {    	
-		return response;
-	},
-	
-
-	update: function(params) {
-		this.setState( params.state );
-		this.setCancelReason( params.cancel_reason );
-	},
-
-
-	
-	//When save intervention and just after save task (TaskListView L.187 et L.190) postgres send this error:
-	//TransactionRollbackError: could not serialize access due to concurrent update
-	//We must wait intervention save callback before save task
-	saveWithCallback: function(id,data,options) { 
-		app.saveOE(id, data, this.model_name, app.models.user.getSessionID(), options);
-	},
-	
-
-	
+		
 	cancel: function(cancel_reason, options) {
 		var params = {}
 		params.state = app.Models.Intervention.status.cancelled.key;

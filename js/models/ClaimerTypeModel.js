@@ -1,17 +1,12 @@
 /******************************************
 * Claimer Type Model
 */
-app.Models.ClaimerType = Backbone.Model.extend({
+app.Models.ClaimerType = app.Models.GenericModel.extend({
 
 
 	fields  : ['id', 'name', 'code', 'actions'],
 
 	urlRoot : '/api/open_object/partner_types',
-
-
-	defaults:{
-		id : null,
-	},
 
 
 	searchable_fields: [
@@ -25,20 +20,6 @@ app.Models.ClaimerType = Backbone.Model.extend({
 		}
 	],
 
-
-	getId : function() {
-		return this.get('id');
-	},
-	setId : function(value, silent) {
-		this.set({ id : value }, {silent: silent});
-	},
-
-	getName : function() {
-		return _.titleize(this.get('name').toLowerCase());
-	},
-	setName : function(value, silent) {
-		this.set({ name : value }, {silent: silent});
-	},
 	
 	getCode : function() {
 		return this.get('code');
@@ -62,10 +43,6 @@ app.Models.ClaimerType = Backbone.Model.extend({
 		}
 
 		return informations;
-	},
-
-	getActions : function(){
-		return this.get('actions');
 	}
 
 });

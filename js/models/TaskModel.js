@@ -1,54 +1,10 @@
 /******************************************
 * Task Model
 */
-app.Models.Task = Backbone.Model.extend({
-
-	// Model name in the database //
-	model_name : 'project.task',	
+app.Models.Task = app.Models.GenericModel.extend({
 	
 	urlRoot: '/api/openstc/tasks',
 
-
-//	relations: [
-//		{
-//			type: Backbone.HasMany,
-//			key: 'equipment_ids',
-//			relatedModel: 'app.Models.Equipment',
-//			collectionType: 'app.Collections.Equipments',
-//			includeInJSON: ['id', 'name', 'complete_name', 'type'],
-//		},	
-//	],
-	
-
-	defaults:{
-		id:null,
-		name: null,
-		effective_hours:0,
-		total_hours: 0,
-		remaining_hours: 0,
-		state: null,
-		user_id: null,
-		team_id: null,
-		date_end: null,
-		date_start: null,
-		currentTask: null,
-	},
-	
-	getId : function() {
-		return this.get('id');
-	},
-	setId: function(value) {
-		if( value == 'undefined') return;
-		this.set({ id : value });
-	},
-
-	getName : function() {
-		return this.get('name');
-	},
-	setName: function(value) {
-		if( value == 'undefined') return;
-		this.set({ id : value });
-	},
 
 	getState : function() {
 		return this.get('name');
@@ -204,66 +160,6 @@ app.Models.Task = Backbone.Model.extend({
 	},
 
 
-
-	parseDate: function(s) {
-	  var re = /^(\d{4})-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/;
-	  var m = re.exec(s);
-	  //PYF : using UTC time 
-	  return m ? new Date(Date.UTC(parseInt(m[1],10), parseInt(m[2]-1,10), parseInt(m[3],10), 
-		  parseInt(m[4],10), parseInt(m[5],10), parseInt(m[6],10))) : null;
-	},
-
-
-
-	/** Model Parser
-	*/
-	parse: function(response) {
-		if(!_.isNull(response)){
-			// Check if the date is a moment() //
-			if(!moment.isMoment(response.date_start)){
-				if(response.date_start) {
-				//var user = app.models.user.toJSON();			
-				response.date_start = moment(this.parseDate(response.date_start));
-				}
-			}
-	
-			// Check if the date is a moment() //
-			if(!moment.isMoment(response.date_end)){
-				if(response.date_end){
-					response.date_end = moment(this.parseDate(response.date_end));
-				}
-			}
-		}
-		return response;
-	},
-
-
-	/** Save Model with backend method named saveTaskDone
-	*/	
-	saveTaskDone: function(params, options) {
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "saveTaskDone", app.models.user.getSessionID(), options);
-	},
-
-
-	/** Create orphan task in backend
-	*/	
-	createOrphan: function(params, options) {
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "createOrphan", app.models.user.getSessionID(), options);
-	},
-	
-	/** Plan tasks in backend
-	*/	
-	planTasks: function(id, params, options) {		
-		app.callObjectMethodOE([[id],params], this.model_name, "planTasks", app.models.user.getSessionID(), options);
-	},
-
-
-	
-	/** Report hours in backend
-	*/	
-	reportHours: function(params, options) {
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "reportHours", app.models.user.getSessionID(), options);
-	},
 	
 	/** Report hours in backend
 	*/	
@@ -275,22 +171,6 @@ app.Models.Task = Backbone.Model.extend({
 		return this.save(params, {silent: true, patch: true})
 	},
 
-
-	update: function(params) {
-		this.setName( params.name );
-		this.setPlannedHours( params.planned_hours );
-		this.setRemainingHours( params.remaining_hours );
-		this.setTeamId( params.team_id );
-		this.setUserId( params.user_id );
-		this.setDateEnd( params.date_end );
-		this.setDateStart( params.date_start );
-		this.setState( params.state );
-		this.setInterventionId( params.project_id );
-	},
-	
-	test: function() {
-		this.setName( 'test' );
-	},
 
 }, {
 

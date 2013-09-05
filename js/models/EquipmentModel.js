@@ -1,35 +1,13 @@
 /******************************************
 * Equipment Model
 */
-app.Models.Equipment = Backbone.Model.extend({
+app.Models.Equipment = app.Models.GenericModel.extend({
     
 	model_name : 'openstc.equipment',
 	
 	url: "/equipment/:id",
-	
-	
-	defaults:{
-		id:0,
-		name: null,
-		immat: null,
-		service:0,
-		marque: null,
-		type: null,
-		usage: null,
-		cv: 0,
-		year: 0,
-		time: 0,
-		technical: false,
-		small: false,
-	},
 
-	getName : function() {
-        return this.get('name');
-    },
-    setName : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ name : value });
-    }, 
+	
     
     getImmat : function() {
         return this.get('immat');
@@ -151,53 +129,5 @@ app.Models.Equipment = Backbone.Model.extend({
 		//console.log('Equipment Model initialization');
 	},
 
-
-
-	/** Model Parser */
-	parse: function(response) {    	
-		return response;
-	},
-
-
-	update: function(params) {
-		this.setName( params.name );
-		this.setImmat( params.immat );
-		this.setService( params.service );
-		this.setMarque( params.marque );
-		this.setType( params.type );
-		this.setUsage( params.usage );
-		this.setCV( params.cv );
-		this.setYear( params.year );
-		this.setTime( params.time );
-		this.setTechnicalVehicle( params.technical_vehicle );
-		this.setCommercialVehicle( params.commercial_vehicle );
-		this.setSmallMaterial( params.small_material );
-		this.setFatMaterial( params.fat_material );
-		this.setServicesID( params.service_ids );
-		this.setKM( params.km );
-	},
-	
-	updateKM: function( km ){
-		this.setKM( km );
-	},
-
-	/** Save Model
-	*/
-	save: function(data, id, options) { 
-		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
-	},
-
-
-
-	/** Delete category
-	*/
-	delete: function (options) {	
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
-	}
 
 });

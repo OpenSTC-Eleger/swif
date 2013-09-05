@@ -1,17 +1,12 @@
 /******************************************
 * Place Model
 */
-app.Models.Place = Backbone.Model.extend({
+app.Models.Place = app.Models.GenericModel.extend({
 
 
 	fields     : ['id', 'name', 'complete_name', 'type', 'service_names', 'site_parent_id', 'width', 'length', 'surface'],
 
 	urlRoot    : '/api/openstc/sites',
-
-
-	defaults:{
-		id : null,
-	},
 
 
 	searchable_fields: [
@@ -25,20 +20,6 @@ app.Models.Place = Backbone.Model.extend({
 		}
 	],
 
-
-	getId : function() {
-		return this.get('id');
-	},
-	setId : function(value, silent) {
-		this.set({ id : value }, {silent: silent});
-	},
-
-	getName : function() {
-		return _.titleize(this.get('name').toLowerCase());
-	},
-	setName : function(value, silent) {
-		this.set({ name : value }, {silent: silent});
-	},
 
 	getCompleteName : function() {
 		return _.titleize(this.get('complete_name').toLowerCase());
@@ -156,10 +137,6 @@ app.Models.Place = Backbone.Model.extend({
 		}
 
 		return informations;
-	},
-
-	getActions : function(){
-		return this.get('actions');
 	}
 
 });

@@ -1,17 +1,12 @@
 /******************************************
 * Request Model
 */
-app.Models.Request = Backbone.Model.extend({
+app.Models.Request = app.Models.GenericModel.extend({
 
 
 	fields     : ['id', 'name', 'actions', 'tooltip', 'create_date', 'create_uid', 'date_deadline', 'description', 'manager_id', 'note', 'partner_address', 'partner_id', 'partner_phone', 'partner_service_id', 'partner_type', 'partner_type_code', 'people_name', 'people_email', 'people_phone', 'refusal_reason', 'service_id', 'site1', 'site_details', 'state', 'intervention_assignement_id'],
 
 	urlRoot    : '/api/openstc/intervention_requests',
-
-
-	defaults : {
-		id : null,
-	},
 
 
 	searchable_fields: [
@@ -25,21 +20,6 @@ app.Models.Request = Backbone.Model.extend({
 		}
 	],
 
-
-
-	getId : function() {
-		return this.get('id');
-	},
-	setId : function(value, silent) {
-		this.set({ id : value }, {silent: silent});
-	},
-
-	getName : function() {
-		return _.titleize(this.get('name').toLowerCase());
-	},
-	setName : function(value, silent) {
-		this.set({ name : value }, {silent: silent});
-	},
 
 	getSite : function(type) {
 		if(this.get('site1')){
@@ -163,11 +143,6 @@ app.Models.Request = Backbone.Model.extend({
 	getInformations: function(){
 		return this.get('tooltip');
 	},
-
-	getActions: function(){
-		return this.get('actions');
-	},
-
 
 
 	/** Model Initialization
