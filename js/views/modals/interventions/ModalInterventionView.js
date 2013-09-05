@@ -153,9 +153,10 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 			self.modal.modal('hide');
 			if(self.create){
 				self.model.setId(data);
-				self.model.fetch({silent: true, data: {fields: self.options.interventions.fields}})
+				self.model.fetch({silent: true, data: {fields: app.Collections.Interventions.fields}})
 				.done(function(){
-					self.options.interventions.add(self.model);
+					if(! _.isUndefined(self.options.interventions) )
+						self.options.interventions.add(self.model);
 				});
 				
 			}

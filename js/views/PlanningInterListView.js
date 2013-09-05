@@ -14,13 +14,10 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 	events: function(){
 		return _.defaults({
 			//'click .buttonCancelInter'                : 'setInfoModalCancelInter',
-			//'click button.linkToInter'                : 'linkToInter',
 			//'submit #formCancelInter'                 : 'cancelInter',
 			//'click .btn.addInterventionPlanning'      : 'displayFormAddIntervention',
 			//'submit #formAddIntervention'             : 'saveIntervention', 
 			
-			'click .modalDeleteTask'                  : 'setInfoModalDeleteTask',
-			'click button.btnDeleteTask'              : 'deleteTask',
 			//'click .btn.addTaskPlanning'              : 'displayFormAddTask',
 			//'submit #formAddTask'                     : 'saveTask', 
 			
@@ -108,7 +105,7 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 				_.each(inter.toJSON().tasks,function(item,i){ 
 					tasks.push(self.collections.tasks.get(item));
 				});
-				var itemPlanningInterView = new app.Views.ItemPlanningInterView({model: inter});
+				var itemPlanningInterView = new app.Views.ItemPlanningInterView({model: inter, tasks: tasks});
 				$('#inter-items').append(itemPlanningInterView.render().el);
 				var itemPlanningInterTaskListView = new app.Views.ItemPlanningInterTaskListView({inter: inter, tasks: tasks});
 				$('#inter-items').append(itemPlanningInterTaskListView.render().el);
@@ -169,93 +166,6 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 //		});
 	},
 
-		/** Set a user model to the view
-		*/
-		setModel : function(model) {
-			this.model = model;
-			return this;
-		},
-
-
-		/** Link to the Intervention page
-		*/
-		linkToInter: function(e){
-
-			// Retrieve the ID of the intervention //
-			var link = $(e.target);
-
-			// Check if the element click is a <i> or the <button> //
-			if(link.is('i')){
-				var id = _(link.parent('button').parent('a').attr('href')).strRightBack('_');    
-			}
-			else{
-				var id = _(link.parent('a').attr('href')).strRightBack('_');       
-			}
-			
-			// Navigate to the Intervention //
-			app.router.navigate(app.routes.interventions.baseUrl+'/'+id , {trigger: true, replace: true});
-
-		},
-
-
-
-		/** Display information in the Modal view
-		*/
-		setInfoModalCancelInter: function(e){
-
-			// Retrieve the ID of the intervention //
-			var link = $(e.target);
-
-			$('#motifCancel').val('');
-
-			// Check if the element click is a <i> or the <button> //
-			if(link.is('i')){
-				var id = _(link.parent('button').parent('a').attr('href')).strRightBack('_');    
-			}
-			else{
-				var id = _(link.parent('a').attr('href')).strRightBack('_');       
-			}
-
-			var inter = _.filter(app.collections.interventions.models, function(item){ return item.attributes.id == id });
-
-			if( inter ) {
-				this.selectedInter = inter[0]
-				this.selectedInterJSON = this.selectedInter.toJSON();
-
-				$('#infoModalCancelInter p').html(this.selectedInterJSON.name);
-				$('#infoModalCancelInter small').html(this.selectedInterJSON.description);
-			}
-			else{
-				app.notify('', 'error', app.lang.errorMessages.unablePerformAction, "Annulation Intervention : non trouvée dans la liste");
-			}
-		},
-
-
-
-		/** Display information in the Modal Delete Task view
-		*/
-		setInfoModalDeleteTask: function(e){
-
-			// Retrieve the ID of the task //
-			var link = $(e.target);
-
-			var id = _(link.parent('a').parent('li').attr('id')).strRightBack('_');
-
-			var task = _.filter(app.collections.tasks.models, function(item){ return item.attributes.id == id });
-			if( task ) {
-				this.selectedTask = task[0]
-				this.selectedTaskJSON = this.selectedTask.toJSON();
-
-				$('#infoModalDeleteTask p').html(this.selectedTaskJSON.name);
-				$('#infoModalDeleteTask small').html(this.selectedTaskJSON.description);
-			}
-			else{
-				app.notify('', 'error', app.lang.errorMessages.unablePerformAction, "Suppression Tâche : non trouvée dans la liste");
-			}
-		},
-
-
-
 		/** Delete intervention
 		*/
 		scheduledInter: function(e) {
@@ -273,67 +183,6 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 
 			app.models.intervention.saveAndRoute(id, params, null, this);
 		},
-
-
-
-		/** Delete intervention
-		*/
-		cancelInter: function(e){
-			e.preventDefault();
-			this.selectedInter.cancel($('#motifCancel').val(),
-				{
-					success: function(data){
-						$('#modalCancelInter').modal('hide');
-						app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
-					}
-				}
-			);
-		},
-
-
-
-		/** Delete task
-		*/
-		deleteTask: function(e){
-			var self = this;
-			this.selectedTask.destroy({
-				success: function(data){
-					if(data.error){
-						app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-					}
-					else{
-						app.collections.tasks.remove(self.selectedTask);
-						var inter = app.collections.interventions.get(self.selectedTaskJSON.intervention.id);					
-						inter.attributes.tasks.remove(self.selectedTaskJSON.id);
-						app.collections.interventions.add(inter);//					
-						app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.taskDeleteOk);
-						$('#modalDeleteTask').modal('hide');
-						
-						// Refresh the page //
-						app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
-					}
-				},
-				error: function(e){
-					alert('Impossible de supprimer la tâche');
-				}
-
-			});
-
-		},
-
-
-
-
-
-		getTarget:function(e) {    	
-			e.preventDefault();
-			// Retrieve the ID of the intervention //
-			var link = $(e.target);
-			this.pos = _(link.parents('tr').attr('id')).strRightBack('_');
-			
-		},
-
-
 
 
 

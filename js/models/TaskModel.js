@@ -9,17 +9,6 @@ app.Models.Task = Backbone.Model.extend({
 	urlRoot: '/api/openstc/tasks',
 
 
-//	relations: [
-//		{
-//			type: Backbone.HasMany,
-//			key: 'equipment_ids',
-//			relatedModel: 'app.Models.Equipment',
-//			collectionType: 'app.Collections.Equipments',
-//			includeInJSON: ['id', 'name', 'complete_name', 'type'],
-//		},	
-//	],
-	
-
 	defaults:{
 		id:null,
 		name: null,
@@ -208,7 +197,7 @@ app.Models.Task = Backbone.Model.extend({
 	parseDate: function(s) {
 	  var re = /^(\d{4})-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/;
 	  var m = re.exec(s);
-	  //PYF : using UTC time 
+	  //using UTC time 
 	  return m ? new Date(Date.UTC(parseInt(m[1],10), parseInt(m[2]-1,10), parseInt(m[3],10), 
 		  parseInt(m[4],10), parseInt(m[5],10), parseInt(m[6],10))) : null;
 	},

@@ -1,20 +1,25 @@
-<% if(task.state == app.Models.Task.status.draft.key) { %>
-	<li id="task_<%= task.id %>" class="external-event">
-		<i class="icon-chevron-right"></i> <%= task.name %>
-		<%if(task.actions.indexOf("delete") > -1){ %>
-		<a href="#modalDeleteTask" class="modalDeleteTask hide" data-toggle="modal">
-			<i class="icon-remove displayInlineBlock modalDeleteTask" rel="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>" data-placement="top" data-delay="50">&nbsp;</i>
-		</a>
+
+<li id="task_<%= task.id %>" class="external-event <%= ( app.Models.Task.status[task.state].key == app.Models.Task.status.draft.key ? '' : 'disabled') %>">
+	<% var taskClass =''
+		if( task.state == app.Models.Task.status.done.draft ) taskClass = 'icon-chevron-right';
+		else if( task.state == app.Models.Task.status.done.open ) taskClass = 'icon-time';
+		else taskClass ='';		
+	%>
+	<i class=" <%= taskClass %> " rel="tooltip" data-placement="right"></i> <%= task.name %>
+	
+	<small class="nested-objects-actions invisible">
+		<% if( task.actions.indexOf("delete")>-1) { %>
+
+			<a href="#" class="modalDeleteTask" data-toggle="modal">
+				<i class="icon-remove displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">&nbsp;</i>
+			</a>
+
 		<% } %>
-		<small class="badge badge-<%= app.Models.Task.status.draft.color %> pull-right"><%= task.planned_hours %>h</small>
-	</li>
-
-	<!-- Schedule -->
-	<% //allPlanned = false;
-
-	} else if(task.state == app.Models.Task.status.open.key){ %>
-	<li id="task_<%= task.id %>" class="external-event disabled">
-		<i class="icon-time" rel="tooltip" data-placement="right"></i> <%= task.name %>
-		<small class="badge badge-<%= app.Models.Task.status.open.color %> pull-right"><%= app.Helpers.Main.decimalNumberToTime(task.planned_hours, 'human') %></small>
-	</li>
-<% } %>
+		<% if(task.actions.indexOf("cancel") > -1) { %>
+				<a href="#" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonCancelTask">
+					<i class="icon-ban-circle icon-fixed-width">&nbsp;</i>
+				</a>
+		<%}%>
+	</small>	
+	<small class="badge badge-<%= app.Models.Task.status[task.state].color %> pull-right"><%= app.Helpers.Main.decimalNumberToTime(task.planned_hours, 'human') %></small>	
+</li>

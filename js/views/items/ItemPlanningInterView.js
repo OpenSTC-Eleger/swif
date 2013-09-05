@@ -10,13 +10,11 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 	className   : 'row-item',
 
 	// The DOM events //
-	events       : {
-		
-//		'click .buttonCancelInter'                : 'setInfoModalCancelInter',
-//		'click button.linkToInter'                : 'linkToInter',
-//		'submit #formCancelInter'                 : 'cancelInter', 
-		
+	events       : {		
 		'click a.accordion-object'    		: 'tableAccordion',
+		'click a.modalSaveInter'			: 'displayModalSaveInter',
+		'click a.printInter'				: 'print',
+		'click a.buttonCancelInter'			: 'displayModalCancelInter',
 	},
 
 
@@ -138,7 +136,21 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 		});
 
 		return deferred;
-	}
+	},
+	
+	/** Display the form to add / update an intervention
+		*/
+	displayModalSaveInter: function(e){
+		e.preventDefault();
+		var params = {el:'#modalSaveInter'}
+		params.model = this.model;
+		new app.Views.ModalInterventionView(params);
+	},
+	
+	displayModalCancelInter: function(e) {
+		e.preventDefault();
+		new app.Views.ModalCancelInterventionView({el: '#modalCancelInter', model: this.model, tasks: this.options.tasks });
+	},
 
 
 });

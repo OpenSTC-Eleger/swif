@@ -10,22 +10,10 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 	className   : 'row-nested-objects',
 
 	// The DOM events //
-	events       : {
-		'click .btn.addTask'                : 'displayModalAddTask',
-		'submit #formAddTask'         		: 'saveTask',
+	events       : {		
 
-		'click a.modalDeleteTask'   		: 'displayModalDeleteTask',
-		'click button.btnDeleteTask'   		: 'deleteTask',
-		
+		'click a.modalDeleteTask'   		: 'displayModalDeleteTask',		
 		'click a.buttonCancelTask'			: 'displayModalCancelTask',
-		'submit #formCancelTask' 			: 'cancelTask',
-
-		'click a.printTask'					: 'print',
-
-		'click .buttonTaskDone, .buttonNotFinish' : 'displayModalTaskDone',
-		'submit #formTaskDone'   			: 'taskDone',
-		'click a.linkSelectUsersTeams'		: 'changeSelectListUsersTeams',
-		'click .linkRefueling'				: 'accordionRefuelingInputs',
 
 	},
 
@@ -35,14 +23,26 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 	*/
 	initialize : function() {
 		this.model.off();
-//		if(!_.isUndefined(this.options.templateHTML))
-//			this.templateHTML = this.options.templateHTML;
-
-		// When the model are updated //
+		
 		this.listenTo(this.model, 'change', this.change);
+		this.listenTo(this.model, 'destroy', this.destroyTask);
 	},
-
-
+	
+	destroyTask: function(model){
+		var self = this;
+		this.options.inter.fetch().done(function(){
+			if(self.options.inter.toJSON().tasks.length > 0){
+				//app.Helpers.Main.highlight($(self.el)).always(function(){
+					self.remove();
+				//})
+	
+			}
+			else{
+				self.remove();
+			}
+		});
+		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.taskDeleteOk);	
+	},
 
 	/** When the model ara updated //
 	*/
@@ -51,9 +51,9 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 
 		this.render();
 		
-		this.highlight().done();
+		app.Helpers.Main.highlight($(this.el))
 
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+infoMessage);
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.taskUpdateOk);
 
 		// Partial Render //
 		//app.views.interventions.partialRender();
@@ -168,7 +168,20 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 		});
 
 		return deferred;
-	}
+	},
+	
+/** Prepare Modals
+	*/
+	displayModalDeleteTask: function(e){
+		e.preventDefault();
+		var name = this.model.toJSON().name;
+		new app.Views.ModalDeleteView({el: '#modalDeleteTask', model: this.model, modalTitle: app.lang.viewsTitles.deleteTask, modalConfirm: app.lang.warningMessages.confirmDeleteTask});
+	},
+	
+	displayModalCancelTask: function(e) {
+		e.preventDefault();
+		new app.Views.ModalCancelTaskView({el: '#modalCancelTask', model: this.model, inter: this.options.inter});
+	},
 
 
 });

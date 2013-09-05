@@ -49,7 +49,7 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 			//Create item task for each one associated to inter
 			_.each(self.options.tasks.models, function(task, i){
 				//var itemInterventionTaskView = new app.Views.ItemInterventionTaskView({model: task, templateHTML:"items/itemPlanningTask"});
-				var itemPlanningInterTaskView = new app.Views.ItemPlanningInterTaskView({model: task});
+				var itemPlanningInterTaskView = new app.Views.ItemPlanningInterTaskView({model: task, inter: self.options.inter});
 				$(self.el).find('#row-nested-objects').append(itemPlanningInterTaskView.render().el);
 			});
 			
