@@ -129,26 +129,6 @@
 
             <legend><%= lang.aboutTheRequest %></legend>
 
-                <!-- Request Name -->
-                <div class="control-group">
-                    <label for="requestName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
-
-                    <div class="controls">
-                        <input type="text" id="requestName" name="requestName" value="<%= request && request.name? request.name:'' %>" required="required" />
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-
-                <!-- Request Description -->
-                <div class="control-group">
-                    <label for="requestDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
-
-                    <div class="controls">
-                        <textarea name="requestDescription" id="requestDescription" rows="5" required="required"><%= request && request.description? request.description:'' %></textarea>
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-
                 <!-- Request Patrimoine -->
                 <div class="control-group">
                     <label for="requestPlace" class="control-label"><%= _.capitalize(lang.placeOrEquipment) %>:</label>
@@ -199,6 +179,27 @@
                         <span class="help-inline"></span>
                     </div>
                 </div>
+                
+                <!-- Request Name -->
+                <div class="control-group">
+                    <label for="requestName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
+
+                    <div class="controls">
+                        <input type="text" id="requestName" name="requestName" value="<%= request && request.name? request.name:'' %>" required="required" />
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+
+                <!-- Request Description -->
+                <div class="control-group">
+                    <label for="requestDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
+
+                    <div class="controls">
+                        <textarea name="requestDescription" id="requestDescription" rows="5" required="required"><%= request && request.description? request.description:'' %></textarea>
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+                
 
         </fieldset>
     

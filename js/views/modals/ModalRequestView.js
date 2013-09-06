@@ -389,6 +389,9 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 						 self.displayClaimerServiceSelect(true);
 						 $('#requestContactService').val(claimerJSON.service_id[1]);
 					 }
+					 else{
+						 self.displayClaimerServiceSelect(false);
+					 }
 				 });
 				 self.selectListClaimersContactsView.setSearchParam({field:'partner_id.id',operator:'=',value:value},true)
 			 }
