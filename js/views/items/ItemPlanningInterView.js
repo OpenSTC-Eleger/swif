@@ -13,7 +13,6 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 	events       : {		
 		'click a.accordion-object'    		: 'tableAccordion',
 		'click a.modalSaveInter'			: 'displayModalSaveInter',
-		'click a.printInter'				: 'print',
 		'click a.buttonCancelInter'			: 'displayModalCancelInter',
 	},
 
@@ -66,8 +65,8 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 				intervention          : self.model.toJSON(),
 			});
 
-			$(self.el).html(template);
-			
+			$(self.el).html(template);	
+
 			// Set the Tooltip / Popover //$(self.el).html(template);
 			$('*[data-toggle="tooltip"]').tooltip();
 			$('*[rel="popover"]').popover({trigger: 'hover'});
@@ -137,6 +136,7 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 
 		return deferred;
 	},
+		
 	
 	/** Display the form to add / update an intervention
 		*/

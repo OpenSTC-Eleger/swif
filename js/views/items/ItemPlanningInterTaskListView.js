@@ -9,6 +9,7 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 
 	// The DOM events //
 	events       : {
+		'switch-change .calendarSwitch'     : 'scheduledInter',		
 		'click .btn.addTask'		              : 'displayModalAddTask',
 	},
 	
@@ -17,6 +18,7 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 	initialize : function() {
 		this.options.tasks.off();
 		this.listenTo(this.options.tasks, 'add', this.add);
+		this.model = this.options.inter;
 	},
 
 
@@ -31,13 +33,16 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
-		 
+			
 			var template = _.template(templateData, {
 				lang                   : app.lang,
 				intervention			: self.options.inter.toJSON(),
 			});
 
 			$(self.el).html(template);
+			
+			$('#switch-'+self.options.inter.id).bootstrapSwitch();
+
 			//<tr class="" id="collapse_<%= intervention.id %>">
 			//$(self.el).addClass('row-nested-objects-collapse').addId('collapse_' + self.options.inter.toJSON().id);
 			$(self.el).addClass('row-nested-objects-collapse').attr('id','collapse_' + self.options.inter.toJSON().id);
@@ -92,6 +97,28 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 
 		//app.router.navigate(app.views.planningInterListView.urlBuilder(), {trigger: false, replace: false});
 	
+	},	
+		
+	scheduledInter: function(e) {
+		var self = this;
+		
+		var intervention = $(e.target);
+		var id = _(intervention.parents('.accordion-body').attr('id')).strRightBack('_');
+
+		// Retrieve the new status //
+		if(intervention.bootstrapSwitch('status')){
+			params = { state: app.Models.Intervention.status.scheduled.key, };
+		}
+		else{
+			params = { state: app.Models.Intervention.status.open.key, };
+		}
+
+		this.model.save(params,{patch:true, wait: true}).done(function(data){
+			//self.model.fetch();
+		})
+		.fail(function(e){
+			console.log(e);
+		});
 	},
 	
 	displayModalAddTask: function(e){

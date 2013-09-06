@@ -21,7 +21,7 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 			//'click .btn.addTaskPlanning'              : 'displayFormAddTask',
 			//'submit #formAddTask'                     : 'saveTask', 
 			
-			'switch-change .calendarSwitch'           : 'scheduledInter',
+			
 			'switch-change #switchWithForeman'        : 'setForemanInTeam',
 		
 			'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilterState',	
@@ -45,9 +45,6 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 	    	app.router.render(self);
 	    	self.collections.interventions.off();
 	    	self.listenTo(self.collections.interventions, 'add', self.addInter);
-			//self.listenTo(self.collections.tasks, 'add',self.adTask);
-	    	
-	    	
 	    })
 	},
 	
@@ -88,8 +85,7 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 			$('*[rel="tooltip"]').tooltip();
 			$('*[rel="popover"]').popover({trigger: 'hover', delay: { show: 500, hide: 100 }});
 
-			$('.switch').bootstrapSwitch();
-
+			
 			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 
 
@@ -109,6 +105,8 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 				$('#inter-items').append(itemPlanningInterTaskListView.render().el);
 				
 			});	
+			
+			
 			
 			// Pagination view //
 //			app.views.paginationView = new app.Views.PaginationView({ 
@@ -164,23 +162,23 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 //		});
 	},
 
-		/** Delete intervention
-		*/
-		scheduledInter: function(e) {
-
-			var intervention = $(e.target);
-			var id = _(intervention.parents('.accordion-body').attr('id')).strRightBack('_');
-
-			// Retrieve the new status //
-			if(intervention.bootstrapSwitch('status')){
-			  params = { state: app.Models.Intervention.status.scheduled.key, };
-			}
-			else{
-				params = { state: app.Models.Intervention.status.open.key, };
-			}
-
-			app.models.intervention.saveAndRoute(id, params, null, this);
-		},
+//		/** Delete intervention
+//		*/
+//		scheduledInter: function(e) {
+//
+//			var intervention = $(e.target);
+//			var id = _(intervention.parents('.accordion-body').attr('id')).strRightBack('_');
+//
+//			// Retrieve the new status //
+//			if(intervention.bootstrapSwitch('status')){
+//			  params = { state: app.Models.Intervention.status.scheduled.key, };
+//			}
+//			else{
+//				params = { state: app.Models.Intervention.status.open.key, };
+//			}
+//
+//			app.models.intervention.saveAndRoute(id, params, null, this);
+//		},
 
 
 
