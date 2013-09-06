@@ -149,27 +149,34 @@
                     </div>
                 </div>
 
-                <!-- Request Contact Service -->
+                <!-- Request Patrimoine -->
                 <div class="control-group">
-                    <label for="requestDetailService" class="control-label"><%= lang.serviceConcerned %>:</label>
+                    <label for="requestPlace" class="control-label"><%= _.capitalize(lang.placeOrEquipment) %>:</label>
 
                     <div class="controls">
-    					<input id="requestDetailService" class="select2" style="width: 100%" 
-							required data-placeholder="<%= lang.actions.selectAClaimerType %>"/>
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-
-                <!-- Request Place -->
-                <div class="control-group">
-                    <label for="requestPlace" class="control-label"><%= _.capitalize(lang.place) %>:</label>
-
-                    <div class="controls">  
-    					<input id="requestPlace" class="select2" style="width: 100%" 
-							required data-placeholder="<%= lang.actions.selectAClaimerType %>"/>
+						<div class="btn-group">
+							<button class="btn dropdown-toggle" id="btnSelectPlaceEquipment" data-toggle="dropdown"><i class="icon-map-marker icon-fixed-width iconItem"></i>&nbsp; <span class="icon-caret-down"></span></button>
+							<ul class="dropdown-menu">
+								<li><a href="#" class="linkSelectPlaceEquipment" data-item="place"><i class="icon-map-marker icon-fixed-width"></i> <%= lang.place %></a></li>
+								<li><a href="#" class="linkSelectPlaceEquipment" data-item="equipment"><i class="icon-wrench icon-fixed-width"></i> <%= lang.equipment %></a></li>
+							</ul>
+						</div>
+    					<input id="requestPlaceEquipment" class="select2" style="width: 70%" 
+							required data-placeholder="<%= lang.actions.selectAPlaceShort %>"/>
                         <span class="help-inline"></span>                           
                     </div>
                 </div>
+
+	            <!-- Request Place (if Equipment) -->
+	            <div class="control-group" id="requestPlaceIfEquipmentBlock">
+	                <label for="requestPlaceIfEquipment" class="control-label"><%= _.capitalize(lang.location) %>:</label>
+	
+	                <div class="controls">
+						<input id="requestPlaceIfEquipment" class="select2" style="width: 100%" 
+							data-placeholder="<%= lang.actions.selectAPlace %>"/>
+	                    <span class="help-inline"></span>
+	                </div>
+	            </div>
 
                 <!-- Request Place precision -->
                 <div class="control-group">
@@ -178,6 +185,18 @@
                     <div class="controls">  
                          <textarea name="requestPlacePrecision" id="requestPlacePrecision" rows="2"><%= request && request.site_details!=false?request.site_details:'' %></textarea>
                         <span class="help-inline"></span>                           
+                    </div>
+                </div>
+
+				
+                <!-- Request Contact Service -->
+                <div class="control-group">
+                    <label for="requestDetailService" class="control-label"><%= lang.serviceConcerned %>:</label>
+
+                    <div class="controls">
+    					<input id="requestDetailService" class="select2" style="width: 100%" 
+							required data-placeholder="<%= lang.actions.selectAService %>"/>
+                        <span class="help-inline"></span>
                     </div>
                 </div>
 

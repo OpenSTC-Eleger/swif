@@ -14,6 +14,7 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 				'change #requestClaimer'		: 'fillDropdownClaimer',
 				'change #requestContactSelect'	: 'fillDropdownContact',
 				'change #requestDetailService'	: 'fillDropdownService',
+				'click a.linkSelectPlaceEquipment': 'changeSelectPlaceEquipment',
 			},
 			app.Views.GenericModalView.prototype.events);
 			
@@ -66,9 +67,12 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 					self.selectListServicesView = new app.Views.AdvancedSelectBoxView({el: $('#requestDetailService'), collection: app.Collections.ClaimersServices.prototype})
 					self.selectListServicesView.render();
 					
-					// Fill select Places  //
-					self.selectListPlacesView = new app.Views.AdvancedSelectBoxView({el: $("#requestPlace"), collection: app.Collections.Places.prototype})
-					self.selectListPlacesView.render();
+					// Fill select Places/Equipments //
+					self.selectListPlacesEquipmentsView = new app.Views.AdvancedSelectBoxView({el: $("#requestPlaceEquipment"), collection: app.Collections.Places.prototype})
+					self.selectListPlacesEquipmentsView.render();
+					
+					self.selectListPlaceView = new app.Views.AdvancedSelectBoxView({el:'#requestPlaceIfEquipment', collection: app.Collections.Places.prototype});
+					self.selectListPlaceView.render(); 
 					
 					// Fill select ClaimersTypes //
 					self.selectListClaimersTypesView = new app.Views.AdvancedSelectBoxView({el: $('#requestClaimerType'), collection: app.Collections.ClaimersTypes.prototype})
@@ -201,6 +205,48 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 			});
 	    },
 
+	    //when clicking on site or equipment select filter, update selectBox collection if data-item change
+	    changeSelectPlaceEquipment: function(e){
+	    	e.preventDefault();
+	    	var link = $(e.target);
+	    	var item = '';
+	    	if(link.is('a')){item = link.data('item')}
+	    	else{item = link.parent('a').data('item')}
+	    	
+	    	var itemSelectedBefore = $('#btnSelectPlaceEquipment').data('item');
+	    	//if user wants to change type of collection, we update selectBox, else, do nothing
+	    	if(item != itemSelectedBefore){
+	    		//if user wants to switch to equipment, we display place selectBox too, else, we hide it
+	    		this.displaySiteIfEquipment(item != 'place');
+	    		//get parameters of the select2 to keep trace of its state
+	    		var collection = null;
+	    		var searchParams = this.selectListPlacesEquipmentsView.searchParams;
+	    		var el = this.selectListPlacesEquipmentsView.el;
+	    		if(item == 'place'){
+	    			$('#requestPlaceEquipment').attr('data-placeholder',app.lang.actions.selectAPlaceShort);
+	    			collection = app.Collections.Places.prototype;
+	    			$('#btnSelectPlaceEquipment').data('item', 'place');
+	    			$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('icon-wrench');
+	    			$('#btnSelectPlaceEquipment').find('.iconItem').addClass('icon-map-marker');
+	    		}
+	    		else{
+	    			$('#requestPlaceEquipment').attr('data-placeholder',app.lang.actions.selectAnEquipmentShort);
+	    			collection = app.Collections.Equipments.prototype;	    			
+	    			$('#btnSelectPlaceEquipment').data('item', 'equipment');
+	    			$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('icon-map-marker');
+	    			$('#btnSelectPlaceEquipment').find('.iconItem').addClass('icon-wrench');
+	    		}
+	    		this.selectListPlacesEquipmentsView.reset();
+	    		this.selectListPlacesEquipmentsView = new app.Views.AdvancedSelectBoxView({el:el, collection:collection});
+    			this.selectListPlacesEquipmentsView.resetSearchParams();
+    			_.each(searchParams,function(filter,i){
+    				this.selectListPlacesEquipmentsView.setSearchParam(filter);
+    			});
+    			this.selectListPlacesEquipmentsView.render();
+	    	}
+	    },
+	    
+	    
 	    /**
 	     * used to initialize boxes or to reset them to their init state
 	     */
@@ -212,7 +258,7 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 			
 			//reset claimer contact infos
 			$('#requestContactInput, #requestContactPhone, #requestContactEmail').prop('readonly', true);
-			$('#requestContactInput').css({display:'inline-block'});
+			$('#requestContactInputBlock').css({display:'inline-block'});
 			$('#requestContactInput, #requestContactPhone, #requestContactEmail').val('');
 			
 			//reset claimer infos
@@ -220,6 +266,11 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 			this.selectListClaimersContactsView.reset();
 			$('#requestContactSelectBlock').css({display:'none'});
 			$('#requestClaimerBlock').css({display:'none'});
+			
+			//reset placeIfEquipment
+			this.selectListPlaceView.reset();
+			this.selectListPlaceView.resetSearchParams();
+			$('#requestPlaceIfEquipmentBlock').css({display: 'none'});
 	    },
 	    
 	    /**
@@ -227,6 +278,16 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 	     */
 	    unlockClaimerInfos: function(){
 			$('#requestContactInput, #requestContactPhone, #requestContactEmail').prop('readonly', false);
+	    },
+	    
+	    displaySiteIfEquipment: function(display){
+	    	if(display){
+	    		this.selectListPlaceView.reset();
+	    		$('#requestPlaceIfEquipmentBlock').css({display:'block'});
+	    	}
+	    	else{
+	    		$('#requestPlaceIfEquipmentBlock').css({display:'none'});
+	    	}
 	    },
 	    
 	    /**

@@ -155,6 +155,8 @@
 	"smallMaterialEquipment"				: "Petit matériel",
 	"officer"								: "Officier",
 	"vehiclesOrEquipments"					: "Matériels / Véhicules",
+	"placeOrEquipment"						: "Site / Equipement",
+	"location"								: "Emplacement",
 
 	"monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
 	"monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
@@ -215,6 +217,8 @@
 		"selectAgents"		: "Sélectionner des agents",
 		"selectATeamShort"	: "Une équipe...",
 		"selectAPlace"		: "Sélectionner un site",
+		"selectAPlaceShort"	: "Un site...",
+		"selectAnEquipmentShort"	: "Un équipement...",
 		"selectAPlaceType"	: "Sélectionner un type de site",
 		"selectServices"	: "Sélectionner des services",
 		"selectAService"	: "Sélectionner un service",
