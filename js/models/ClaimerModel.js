@@ -11,7 +11,23 @@ app.Models.Claimer = app.Models.GenericModel.extend({
 		technical_service_id: null,
 		technical_site_id: null,
 	},
+
+	getId: function(){
+		return this.get('id');
+	},
 	
+	setId: function(value){
+		if( value == 'undefined') return;
+        this.set({ id : value });
+	},
+	
+	getName : function() {
+        return this.get('name');
+    },
+    setName : function(value) {
+    	if( value == 'undefined') return;
+        this.set({ name : value });
+    },  
 	
 	getTypeId : function() {
 		return this.get('type_id');

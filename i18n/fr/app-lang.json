@@ -221,6 +221,8 @@
 		"selectACategory"	: "Sélectionner une catégorie",
 		"selectAVehicle"	: "Sélectionner un véhicule",
 		"selectAbsentType"	: "Sélectionner un type d'absence"
+		"selectAClaimerType": "Sélectionner un type de demandeur"
+		
 	},
 
 	"errorMessages" : {

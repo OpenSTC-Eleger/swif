@@ -1,5 +1,6 @@
+<div class="modal-header">
 
-<% if ( !create && request ) { %>
+<% if (request.id != null && request.id != 0 ) { %>
     <h1>
         <%= lang.viewsTitles.requestDetail %> n°<%= request.id %>
 
@@ -29,8 +30,9 @@
     <h1><%= lang.viewsTitles.newRequest %></h1><br />
 <% } %>
 
+</div>
 
-
+<div class="modal-body">
 
 <form id="formRequest" action="#" class="form-horizontal container-fluid">
     
@@ -45,27 +47,30 @@
                 <label for="requestClaimerType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
 
                 <div class="controls">
-                    <select id="requestClaimerType"></select>
+					<input id="requestClaimerType" class="select2" style="width: 100%" 
+						required data-placeholder="<%= lang.actions.selectAClaimerType %>"/>
                     <span class="help-inline"></span>
                 </div>
             </div>
 
             <!-- Request Partner -->
-            <div class="control-group" id="requestClaimerBlock" style="display:none">
+            <div class="control-group" id="requestClaimerBlock">
                 <label for="requestClaimer" class="control-label"><%= _.capitalize(lang.name) %>:</label>
 
                 <div class="controls">
-                    <select id="requestClaimer"></select>
+					<input id="requestClaimer" class="select2" style="width: 100%" 
+						data-placeholder="<%= lang.actions.selectAClaimerType %>"/>
                     <span class="help-inline"></span>
                 </div>
             </div>
 
             <!-- Request Contact Service -->
-            <div class="control-group" id="requestContactServiceBlock" style="display:none">
+            <div class="control-group" id="requestContactServiceBlock">
                 <label for="requestContactService" class="control-label" ><%= _.capitalize(lang.service) %>:</label>
 
                 <div class="controls">
-                    <input type="text" id="requestContactService" name="requestContactService" readonly="readonly" />
+	                <input id="requestContactService" class="select2" style="width: 100%" 
+						data-placeholder="<%= lang.actions.selectAClaimerType %>"/>
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -81,13 +86,14 @@
                     <label for="requestContact" class="control-label"><%= _.capitalize(lang.contact) %>:</label>
 
                     <div class="controls">
-                        <div id="requestContactSelectBlock" style="display:none">
-                            <select id="requestContactSelect" name="requestContact" disabled="disabled"></select>
+                        <div id="requestContactSelectBlock">
+	    	                <input id="requestContactSelect" class="select2" style="width: 100%" 
+								data-placeholder="<%= lang.actions.selectAClaimerType %>"/>
                             <span class="help-inline"></span>
                         </div>
 
-                        <div id="requestContactInputBlock" style="display:inline">
-                            <input type="text" id="requestContactInput" name="requestContact" readonly="readonly" />
+                        <div id="requestContactInputBlock">
+                            <input type="text" id="requestContactInput" name="requestContact"/>
                             <span class="help-inline"></span>
                         </div>
                     </div>
@@ -98,7 +104,7 @@
                     <label for="requestContactPhone" class="control-label"><%= _.capitalize(lang.phone) %>:</label>
 
                     <div class="controls">
-                         <input type="tel" id="requestContactPhone" name="requestContactPhone" readonly="readonly" />
+                         <input type="tel" id="requestContactPhone" name="requestContactPhone" />
                         <span class="help-inline"></span>
                     </div>
                 </div>
@@ -108,7 +114,7 @@
                     <label for="requestContactEmail" class="control-label"><%= _.capitalize(lang.email) %>:</label>
 
                     <div class="controls">
-                         <input type="email" id="requestContactEmail" name="requestContactEmail" readonly="readonly" />
+                         <input type="email" id="requestContactEmail" name="requestContactEmail" />
                         <span class="help-inline"></span>
                     </div>
                 </div>
@@ -148,7 +154,8 @@
                     <label for="requestDetailService" class="control-label"><%= lang.serviceConcerned %>:</label>
 
                     <div class="controls">
-                        <select id="requestDetailService" required="required"></select>
+    					<input id="requestDetailService" class="select2" style="width: 100%" 
+							required data-placeholder="<%= lang.actions.selectAClaimerType %>"/>
                         <span class="help-inline"></span>
                     </div>
                 </div>
@@ -158,7 +165,8 @@
                     <label for="requestPlace" class="control-label"><%= _.capitalize(lang.place) %>:</label>
 
                     <div class="controls">  
-                        <select id="requestPlace" required="required"><option value="" disabled="disabled" ></option></select>
+    					<input id="requestPlace" class="select2" style="width: 100%" 
+							required data-placeholder="<%= lang.actions.selectAClaimerType %>"/>
                         <span class="help-inline"></span>                           
                     </div>
                 </div>
@@ -176,11 +184,13 @@
         </fieldset>
     
     </div>
+</div>
 
+<div class="modal-footer">
 
     <div class="form-actions">
         <button type="submit" class="btn btn-primary save"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
         <a href="#<%= app.routes.requestsInterventions.baseUrl %>" class="text-info"><%= lang.actions.cancel %></a>
     </div>
-
+</div>
 </form>

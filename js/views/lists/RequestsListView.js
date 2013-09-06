@@ -11,7 +11,8 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 	events: function(){
 		return _.defaults({
 			'click #filterStateRequestList li a' 	: 'setFilterState',
-			'click #badgeActions[data-filter!=""]'  : 'badgeFilter'
+			'click #badgeActions[data-filter!=""]'  : 'badgeFilter',
+			'click #buttonAddRequest'				: 'displayModalAddRequest'
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -154,7 +155,10 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 	},
 
 
-
+	displayModalAddRequest: function(e){
+		e.preventDefault();
+		new app.Views.ModalRequestView({el:'#modalAddRequest'});
+	},
 
 	initCollection: function(){
 		var self = this;
