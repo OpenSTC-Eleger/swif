@@ -207,6 +207,7 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 	    resetBoxes: function(){
 	    	//reset claimer service infos
 			$('#requestContactService').attr('value', '');
+			$('#requestContactService').prop('readonly', true);
 			$('#requestContactServiceBlock').hide();
 			
 			//reset claimer contact infos
@@ -325,6 +326,7 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 					 //if partner has service_id, display it in box and apply filter on patirmonyList
 					 if(claimerJSON.service_id){
 						 self.displayClaimerServiceSelect(true);
+						 $('#requestContactService').val(claimerJSON.service_id[1]);
 					 }
 				 });
 				 self.selectListClaimersContactsView.setSearchParam({field:'partner_id.id',operator:'=',value:value},true)
