@@ -1,34 +1,29 @@
-<!-- Container form connection -->
-<!--<div class="span12">-->
+<!-- Connection Form -->
+<form id="formConnection" class="form-horizontal well" role="form">
+<fieldset>
+	<legend><i class="icon-user icon-large"></i> &nbsp;<%= _.capitalize(lang.connection) %></legend>
 
-	<!-- Connection Form -->
-	<form id="formConnection" action="#" class="form-horizontal well">
-	<fieldset>
-		<legend><i class="icon-user icon-large"></i> &nbsp;<%= _.capitalize(lang.connection) %></legend>
-
-		<div class="control-group">
-			<label class="control-label" for="loginUser"><%= _.capitalize(lang.login) %></label>
-			<div class="controls">
-				<input type="text" id="loginUser" name="loginUser" required="required" placeholder="<%= _.capitalize(lang.login) %>" autocomplete="off" autofocus="autofocus" value="<%= user.getLogin() %>">
-			</div>
+	<div class="form-group">
+		<label class="control-label col-sm-3" for="loginUser"><%= _.capitalize(lang.login) %></label>
+		<div class="col-sm-9">
+			<input type="text" id="loginUser" class="form-control" required placeholder="<%= _.capitalize(lang.login) %>" autocomplete="off" value="<%= user.getLogin() %>">
 		</div>
+	</div>
 
-		<div class="control-group" >
-			<label class="control-label" for="passUser"><%= _.capitalize(lang.password) %></label>
-			<div class="controls">
-				<input type="password" id="passUser" name="passUser" required="required" placeholder="•••••••••••••">
-			</div>
+	<div class="form-group" >
+		<label class="control-label col-sm-3" for="passUser"><%= _.capitalize(lang.password) %></label>
+		<div class="col-sm-9">
+			<input type="password" class="form-control" id="passUser" required placeholder="•••••••••••••">
 		</div>
+	</div>
 
-		<div class="form-actions">
-			<button type="submit" class="btn btn-primary pull-right"><i class="icon-signin icon-large"></i> &nbsp;<%= _.capitalize(lang.actions.logIn) %></button>
-		</div>
+	<div class="form-group">
+		<button type="submit" class="btn btn-primary pull-right"><i class="icon-signin icon-large"></i> &nbsp;<%= _.capitalize(lang.actions.logIn) %></button>
+	</div>
 
-		<% if(!_.isNull(user.getUID())){ %>
-			<small class="muted" id="lastConnection"><%= _.capitalize(lang.lastConnection) %>  <%= moment(user.getLastConnection()).format("LLL") %></small>
-		<% } %>
+	<% if(!_.isNull(user.getUID())){ %>
+		<small class="text-muted" id="lastConnection"><%= _.capitalize(lang.lastConnection) %>  <%= moment(user.getLastConnection()).format("LLL") %></small>
+	<% } %>
 
-	</fieldset>
-	</form>
-	
-<!--</div>-->
+</fieldset>
+</form>

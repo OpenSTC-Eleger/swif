@@ -66,11 +66,11 @@
 	%>
 
 		<!-- Create the buttons group action -->
-		<div class="btn-group">
+		<div class="btn-group btn-group-sm">
 
 			<!-- Check if the request is not in waiting state -->
 			<%
-			
+
 			if(request.getState() != app.Models.Request.status.wait.key){
 				var mainAction = '';
 				var mainActionIcon = app.Models.Request.actions[request.getState()].icon;
@@ -87,12 +87,12 @@
 			} %>
 
 			<!-- Main action button -->
-			<button class="btn btn-small btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline button<%= _.capitalize(mainAction) %>Request">
+			<button class="btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline button<%= _.capitalize(mainAction) %>Request">
 				<i class="<%= mainActionIcon %> icon-fixed-width button<%= _.capitalize(mainAction) %>Request"></i>
 			</button>
 			
 			<!-- Dropdown button action -->
-			<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+			<button class="btn dropdown-toggle no-outline" data-toggle="dropdown">
 				<span class="icon-caret-down"></span>
 			</button>
 			
