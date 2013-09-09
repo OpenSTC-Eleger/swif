@@ -117,9 +117,7 @@ app.Views.ModalValidRequestView = app.Views.GenericModalView.extend({
 		e.preventDefault();
 
 		// Toggle Slide Create associated task section //
-		$('fieldset.associated-task').stop().slideToggle('fast', function(){
-			$('#modalValidRequest div.modal-body').animate({scrollTop: $('#modalValidRequest div.modal-body').height()}, 400);
-		})
+		$('fieldset.associated-task').stop().slideToggle('fast');
 
 		// Set the search params for the Task Category //
 		if(app.views.advancedSelectBoxRequestServiceView.getSelectedItem() != ''){

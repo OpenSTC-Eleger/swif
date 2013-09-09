@@ -8,10 +8,10 @@ app.Views.GenericModalView = Backbone.View.extend({
 	
 	// The DOM events //
 	events: {
-		'show'   : 'show',
-		'shown'  : 'shown',
-		'hide'   : 'hide',
-		'hidden' : 'hidden',
+		'show.bs.modal'  : 'show',
+		'shown.bs.modal' : 'shown',
+		'hidde.bs.modal' : 'hide',
+		'hidden.bs.modal': 'hidden',
 	},
 
 
