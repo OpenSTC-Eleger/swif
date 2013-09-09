@@ -3,7 +3,7 @@
 		<%= lang.viewsTitles.requestsList %>
 
 		<% if(app.models.user.isDST() || app.models.user.isManager()){
-		 
+
 		  if(app.models.user.isDST()) { 
 				var classColor      = app.Models.Request.status.confirm.color;
 				var filterValue     = app.Models.Request.status.confirm.key;
@@ -44,7 +44,7 @@
 			<div class="input-group">
 				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
 				<span class="input-group-btn">
-					<button type="submit" class="btn"><i class="icon-search text-info icon-large"></i></button>
+					<button type="submit" class="btn btn-primary"><i class="icon-search icon-large"></i></button>
 				</span>
 			</div>
 		</form>
@@ -119,10 +119,10 @@
 <div id="modalAddRequest" class="modal hide fade"></div>
 
 <!-- Modal form to valid a request -->
-<div id="modalValidRequest" class="modal hide fade"></div>
+<div id="modalValidRequest" class="modal fade" role="dialog" aria-hidden="true"></div>
 
 <!-- Modal form to refuse a request -->
-<div id="modalRefuseRequest" class="modal hide fade" data-backdrop="static"></div>
+<div id="modalRefuseRequest" class="modal fade" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 
 <!-- Modal form to Confirm a request -->
-<div id="modalConfirmRequest" class="modal hide fade"></div>
+<div id="modalConfirmRequest" class="modal fade" role="dialog" aria-hidden="true"></div>

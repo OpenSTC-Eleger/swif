@@ -8,11 +8,6 @@ app.Views.NotFoundView = Backbone.View.extend({
     templateHTML: '404',
 
     
-    // The DOM events //
-    events: {
-       
-    },
-
 
 
     /** View Initialization
@@ -34,10 +29,7 @@ app.Views.NotFoundView = Backbone.View.extend({
         // Change the active menu item //
         app.views.headerView.selectMenuItem('');
 
-        // Change the Grid Mode of the view //
-        app.views.headerView.switchGridMode('default');
-
-        
+       
         // Retrieve the Login template // 
         $.get("templates/" + this.templateHTML + ".html", function(templateData){
          
@@ -51,7 +43,3 @@ app.Views.NotFoundView = Backbone.View.extend({
 
  
 });
-
-
-
-
