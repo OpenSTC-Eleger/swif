@@ -220,7 +220,7 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 	    		this.displaySiteIfEquipment(item != 'place');
 	    		//get parameters of the select2 to keep trace of its state
 	    		var collection = null;
-	    		var searchParams = this.selectListPlacesEquipmentsView.searchParams;
+//	    		var searchParams = this.selectListPlacesEquipmentsView.searchParams;
 	    		var el = this.selectListPlacesEquipmentsView.el;
 	    		if(item == 'place'){
 	    			$('#requestPlaceEquipment').attr('data-placeholder',app.lang.actions.selectAPlaceShort);
@@ -236,12 +236,13 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 	    			$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('icon-map-marker');
 	    			$('#btnSelectPlaceEquipment').find('.iconItem').addClass('icon-wrench');
 	    		}
-	    		this.selectListPlacesEquipmentsView.reset();
+//	    		this.selectListPlacesEquipmentsView.reset();
 	    		this.selectListPlacesEquipmentsView = new app.Views.AdvancedSelectBoxView({el:el, collection:collection});
-    			this.selectListPlacesEquipmentsView.resetSearchParams();
-    			_.each(searchParams,function(filter,i){
-    				this.selectListPlacesEquipmentsView.setSearchParam(filter);
-    			});
+//    			this.selectListPlacesEquipmentsView.resetSearchParams();
+    			this.setParamOnSitesEquipments(null);
+//    			_.each(searchParams,function(filter,i){
+//    				this.selectListPlacesEquipmentsView.setSearchParam(filter);
+//    			});
     			this.selectListPlacesEquipmentsView.render();
 	    	}
 	    },
@@ -253,6 +254,7 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 	    resetBoxes: function(){
 	    	//reset claimer service infos
 			$('#requestContactService').attr('value', '');
+			$('#requestContactService').data('id', '');
 			$('#requestContactService').prop('readonly', true);
 			$('#requestContactServiceBlock').hide();
 			
@@ -317,7 +319,7 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 	     * if display: filter patrimony with esrvice_id
 	     * else: remove service_id filter from patrimony list (assuming that it's the only one filter)
 	     */
-	    displayClaimerServiceSelect: function(display){
+	    displayClaimerServiceSelect: function(display){	    	
 	    	if(display){
 	    		$('#requestContactServiceBlock').show();
 	    		$('#requestContactService').show();
@@ -328,6 +330,25 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 	    		$('#requestContactServiceBlock').hide();
 	    		$('#requestContactService').val('');
 	    		$('#requestContactService').hide();
+	    		$('#requestContactService').data('id','');
+	    	}
+	    },
+	    
+	    /**
+	     * Used to update filter of 'places/equipments' select2, reset value and last filters
+	     */
+	    setParamOnSitesEquipments: function(service_id){
+	    	if(service_id == null){
+	    		service_id = $('#requestContactService').data('id');
+	    	}
+	    	this.selectListPlacesEquipmentsView.reset();
+	    	this.selectListPlacesEquipmentsView.resetSearchParams();
+	    	if(service_id != '' && service_id){
+	    		this.selectListPlacesEquipmentsView.setSearchParam({field:'service_ids.id', operator:'=', value:service_id});
+	    	}
+	    	//if it's an equipment, check too if boolean 'internal_user' is True
+	    	if($("#btnSelectPlaceEquipment").data('item') == 'equipment'){
+	    		this.selectListPlacesEquipmentsView.setSearchParam({field:'internal_use', operator:'=', value:true});
 	    	}
 	    },
 	    
@@ -369,29 +390,32 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 			 e.preventDefault();
 			 var self = this;
 			  var value = this.selectListClaimersView.getSelectedItem();
-			 if(value != '' && value > 0){
-				 var claimer = new app.Models.Claimer();
-				 claimer.setId(value);
-				 claimer.fetch({data:{fields:['name','address','service_id']}}).done(function(){
+			if(value != '' && value > 0){
+				var claimer = new app.Models.Claimer();
+				claimer.setId(value);
+				claimer.fetch({data:{fields:['name','address','service_id']}}).done(function(){
 					var claimerJSON = claimer.toJSON();
-					 //if partner has addresses, display first one in contact list
+					//if partner has addresses, display first one in contact list
 					 if(claimerJSON.address.length > 0){
-						 var address = new app.Models.ClaimerContact();
-						 address.set('id',claimerJSON.address[0]);
-						 address.fetch({data:{fields:['name']}}).done(function(){
-							 self.selectListClaimersContactsView.setSelectedItem([address.toJSON().id, address.toJSON().name]);
-							 self.fillDropdownContact(e);
-						 });
+						var address = new app.Models.ClaimerContact();
+						address.set('id',claimerJSON.address[0]);
+						address.fetch({data:{fields:['name']}}).done(function(){
+							self.selectListClaimersContactsView.setSelectedItem([address.toJSON().id, address.toJSON().name]);
+							self.fillDropdownContact(e);
+						});
 						 
-					 }
+					}
 					 //if partner has service_id, display it in box and apply filter on patirmonyList
-					 if(claimerJSON.service_id){
-						 self.displayClaimerServiceSelect(true);
-						 $('#requestContactService').val(claimerJSON.service_id[1]);
-					 }
-					 else{
-						 self.displayClaimerServiceSelect(false);
-					 }
+					if(claimerJSON.service_id){
+						self.displayClaimerServiceSelect(true);
+						$('#requestContactService').val(claimerJSON.service_id[1]);
+						$('#requestContactService').data('id', claimerJSON.service_id[0]);
+						
+						self.setParamOnSitesEquipments(claimerJSON.service_id[0]);
+					}
+					else{
+						self.displayClaimerServiceSelect(false);
+					}
 				 });
 				 self.selectListClaimersContactsView.setSearchParam({field:'partner_id.id',operator:'=',value:value},true)
 			 }
