@@ -5,7 +5,8 @@
 
 // Customizing components //
 @import 'progress-bars';
-@import 'labels-badges';
+@import 'labels';
+@import 'badges';
 @import 'pagination';
 @import 'coponent-animations';
 @import 'tables';
@@ -23,6 +24,15 @@
 
 /* Generic
 -------------------------------------------------- */
+body{
+	padding-top: 55px;
+	padding-bottom: 50px;
+}
+.navbar-brand{
+	height: 20px;
+}
+
+
 .popover-title, .bolder{
 	font-weight: bolder;
 }
@@ -94,17 +104,18 @@ div.progress{
 
 // Filter Button Table //
 a.filter-button.filter-disabled{
-	.opacity(40);
-	.muted;
+	.opacity(.4);
+	.text-muted();
+
+	&:hover{
+		.opacity(1);
+		color: none;
+	}
 }
 
 
 div.accordion-group{
 	margin-bottom: 5px;
-}
-
-form legend{
-	margin-bottom: 0px;
 }
 
 
@@ -114,12 +125,6 @@ form legend{
 div.page-header{
 	margin-top: 5px;
 }
-
-#appName{
-	padding-top: 6px;
-	padding-bottom: 6px;
-}
-
 
 
 
@@ -178,7 +183,7 @@ section.calendarContainer{
 	border-color: @grayLight;
 }
 .calendar.thumbnail:hover{
-	border-color: @blueDark;
+	//border-color: @blueDark;
 }
 
 .fc-view{
@@ -201,7 +206,7 @@ section.calendarContainer{
 }
 #accordionInter div.accordion-heading:hover{
 
-	background-color: @popoverTitleBackground;
+	background-color: @popover-title-bg;
 	
 	.invisible{
 		visibility: visible;
@@ -314,13 +319,10 @@ ul.nested-objects li:hover .nested-objects-actions, tr.row-item:hover .row-actio
 	.box-shadow(0 1px 10px rgba(50,50,0,0.5));
 	max-width: 500px; 
 	margin: 10% auto;
-	padding-bottom: 10px;
-	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-top: 8px;
 }
-#formConnection .form-actions{
-	margin: 0;
-	padding-bottom: 0;
-}
+
 
 
 /* Tables
@@ -357,7 +359,7 @@ tr.info td:first-child{
 
 
 .widget-title {
-    border-bottom: 1px solid @tableBorder;
+    border-bottom: 1px solid @table-bg;
     margin-bottom: 10px;
 }
 
@@ -365,16 +367,6 @@ tr.info td:first-child{
 
 /* Responsive
 -------------------------------------------------- */
-@media (max-width: 767px) {
-
-}
-
-@media (min-width: 980px) {
-  	// To make the container go all the way to the bottom of the topbar //
-  	body{ padding-top: 60px; padding-bottom: 60px;}
-
-}
-
 @media (max-width: 979px) {
 
   	// Planning list Agents //

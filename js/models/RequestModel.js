@@ -184,12 +184,12 @@ app.Models.Request = app.Models.GenericModel.extend({
 		},
 		refused: {
 			key 		: 'refused',
-			color 		: 'important',
+			color 		: 'danger',
 			translation : ''
 		},
 		closed: {
 			key 		: 'closed',
-			color 		: 'muted',
+			color 		: 'default',
 			translation : ''
 		}
 	},
