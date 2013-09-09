@@ -57,6 +57,7 @@ app.Views.EventsListView = Backbone.View.extend({
 		
 		//DOM element id for calendar with model
 		this.divCalendar = 'div#calendar_' + this.model.id;	
+		
 	},
 
     
@@ -173,7 +174,6 @@ app.Views.EventsListView = Backbone.View.extend({
 			editable	: true,
 			ignoreTimezone	: false,
 			dragRevertDuration	:0,
-			eventClick	: self.eventClick,
 			startOfLunchTime	: app.config.startLunchTime,
 			endOfLunchTime		: app.config.endLunchTime,
 	
@@ -226,7 +226,8 @@ app.Views.EventsListView = Backbone.View.extend({
 	    		//Get tasks for domain
 				self.collection.fetch(fetchParams).done(function(data){
 					//Transforms tasks in events for fullcalendar
-					self.events = self.fetchEvents();
+					self.events = self.fetchEvents();	
+					self.listenTo(self.collection, 'change', self.change);
 					self.initPrintView();
 					//Display events on calendar					
 					callback(self.events);
@@ -240,8 +241,13 @@ app.Views.EventsListView = Backbone.View.extend({
 			 */
 			select: function( startDate, endDate, allDay, jsEvent, view) {
 
-				var mStartDate = moment( startDate );
-				var mEndDate = moment( endDate );
+
+				
+				app.views.modalAbsentTaskView = new app.Views.ModalUnplanTaskView({
+    				el    	: '#modalAbsentTask',
+    				startDt : moment( startDate ),	
+    				endDt	: moment( endDate ),
+    			});
 
 	        	modalAbsentTask = $("#modalAbsentTask");
 	        	$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
@@ -357,6 +363,23 @@ app.Views.EventsListView = Backbone.View.extend({
 				        calendarId : self.model.id,
 				}
 				
+//				var model = new app.Models.Task(params);
+//				
+//				model.save(params,{
+//					 success: function( data ) {
+//						console.log(data);	     	
+//						if(data.error){
+//							app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+//						}
+//						else{
+//							$(self.divCalendar).fullCalendar( 'refetchEvents' )
+//						}				
+//					},
+//					error: function(e){
+//						alert("Impossible de mettre à jour la tâche'");
+//					}
+//				 });
+				
 				
 				app.Models.Task.prototype.planTasks(copiedEventObject.id, 
 					params, {
@@ -365,7 +388,7 @@ app.Views.EventsListView = Backbone.View.extend({
 								app.notify('', 'error', app.lang.errorMessages.unablePerformAction, data.error.data.fault_code);
 							}
 							else{
-								$(self.divCalendar).fullCalendar( 'refetchEvents' )
+								
 								//self.planning.partialRender(data.result.project_id)						
 							}							
 						},
@@ -375,33 +398,50 @@ app.Views.EventsListView = Backbone.View.extend({
 
 			//Drop event from time slot to another
 			eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
-				
+				var model = self.collection.get(event.id)
+			
 			    params = { 
 			       date_start: event.start,
 			       date_end: event.end,
 			    };
-			    app.Models.Task.prototype.save(event.id, params);	
-			    $(this.divCalendar).fullCalendar( 'refetchEvents' )
+			    
+				model.save(params, {patch: true, silent: true})
+				.fail(function (e) {
+					console.log(e);
+				})
 			},
 
 
 			/**
 			 * Resize event
 			 */
-			eventResize: function( event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) { 
+			eventResize: function( event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) { 			    
+			    
+			    var model = self.collection.get(event.id)
 				
-			
-			    params = { 
-			       date_start: event.start,
+			    params = {
+				   date_start: event.start,
 			       date_end: event.end,
 			       planned_hours: (event.planned_hours + (minuteDelta)/60),
 			       total_hours: (event.total_hours + (minuteDelta)/60),
 			       remaining_hours: (event.remaining_hours + (minuteDelta)/60),
-			    };
-			    app.Models.Task.prototype.save(event.id,params);
-			    $(this.divCalendar).fullCalendar( 'refetchEvents' )
-			    //$(this.divCalendar).fullCalendar('refresh');
+				};
+		
+			   
+				model.save(params, {patch: true, silent: true})
+					.fail(function (e) {
+						console.log(e);
+					})
 			},
+			
+			/** Task is click on the calendar : display unplan task modal
+    	    */
+    	    eventClick: function(fcEvent, jsEvent, view) {
+    			app.views.modalUnplanTaskView = new app.Views.ModalUnplanTaskView({
+    				el    : '#modalUnplanTask',
+    				model : self.collection.get(fcEvent.id)
+    			});
+    		},
 		});
 	
     	/**
@@ -442,8 +482,8 @@ app.Views.EventsListView = Backbone.View.extend({
     			id: task.id, 
 				state: task.state,
 				title: title, 
-				start: task.date_start!=false?task.date_start.toDate():null,
-				end: task.date_end!=false?task.date_end.toDate():null,
+				start: task.date_start!=false?task.date_start:null,
+				end: task.date_end!=false?task.date_end:null,
 				planned_hours: task.planned_hours,
 				total_hours: task.total_hours,
 				effective_hours: task.effective_hours,
@@ -481,14 +521,11 @@ app.Views.EventsListView = Backbone.View.extend({
 		$('#printingCalendar').html(app.views.printingCalendarView.render().el);
 	},
 
-    /** Task is click on the calendar : display unplan task modal
-    */
-    eventClick: function(fcEvent, jsEvent, view) {	
-		
-		app.views.modalUnplanTaskView = new app.Views.ModalUnplanTaskView({
-			el    : '#modalUnplanTask',
-			eventId : fcEvent.id
-		});
+	/** When the model ara updated //
+	*/
+	change: function(model){
+		$(this.divCalendar).fullCalendar( 'refetchEvents' )
+		app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.taskUpdateOk);
 	},
 
 	/**

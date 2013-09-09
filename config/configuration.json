@@ -6,7 +6,7 @@
 		"url" : "http://localhost"
 	},
 
-	"itemsPerPage"      : 20,
+	"itemsPerPage"      : 2,
 	"startWorkTime"     : 8.0,
 	"endWorkTime"       : 18.0,
 	"startLunchTime"    : 12.0,

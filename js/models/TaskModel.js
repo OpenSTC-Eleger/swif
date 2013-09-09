@@ -6,7 +6,7 @@ app.Models.Task = app.Models.GenericModel.extend({
 	urlRoot: '/api/openstc/tasks',
 
 	getState : function() {
-		return this.get('name');
+		return this.get('state');
 	},
 	setState : function(value) {
 		if( value == 'undefined') return;
@@ -124,7 +124,7 @@ app.Models.Task = app.Models.GenericModel.extend({
 	},
 
 	getStartEndDateInformations : function(){
-		return "Du " + this.getDateStart().format('LLL') + " au " + this.getDateEnd().format('LLL');
+		return "Du " + this.getDateStart() + " au " + this.getDateEnd();
 	},
 
 	getInformations: function(){

@@ -1,7 +1,7 @@
 /******************************************
 * Place Modal View
 */
-app.Views.ModalUnplanTaskView =  Backbone.View.extend({
+app.Views.ModalUnplanTaskView =  app.Views.GenericModalView.extend({
 
 
 	templateHTML: 'modals/modalUnplanTask',
@@ -44,56 +44,55 @@ app.Views.ModalUnplanTaskView =  Backbone.View.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 		 
 
-			var template = _.template(templateData, {});	
+			var template = _.template(templateData, {lang: app.lang});	
 			
 
 			self.modal.html(template);
-
+			
 			
 	        // Reset the modal Buttons //
 	        $('#btnRemoveTask').prop('disabled', false);
 	       	$('#switchWithForeman').bootstrapSwitch('setActive', true);
 	        
 			
-	        // Retrieve the Task //
-			var task = app.collections.tasks.get(self.options.fcEvent);
+	       
 	
 			// Set informations in the modal //
 			var taskInter = '';
-			if(task.getInterventionId() != ''){ taskInter = "<i class='icon-pushpin'></i> " + task.getInterventionName() + " -"; }
-			var tasksInfo = taskInter + " " + task.getName();
+			if(self.model.getInterventionId() != ''){ taskInter = "<i class='icon-pushpin'></i> " + self.model.getInterventionName() + " -"; }
+			var tasksInfo = taskInter + " " + self.model.getName();
 	
 			// Display a label with the state of the task //
 			
-			tasksInfo += '<span class="label label-'+app.Models.Task.status[task.getState()].color+' pull-right">'+app.Models.Task.status[task.getState()].translation+'</span>';
+			tasksInfo += '<span class="label label-'+app.Models.Task.status[self.model.getState()].color+' pull-right">'+app.Models.Task.status[self.model.getState()].translation+'</span>';
 	
 	
 			// Check if the task is set to an officer or a team //
-			if(task.getTeamId() == false){ 
-				var assignTo = "<br /> <i class='icon-user'></i> " + task.getUserName();
+			if(self.model.getTeamId() == false){ 
+				var assignTo = "<br /> <i class='icon-user'></i> " + self.model.getUserName();
 				$('#formModalAboutTask').hide();
 			}
 			else{
-				var assignTo = "<br /><i class='icon-group'></i> " + task.getTeamName();
+				var assignTo = "<br /><i class='icon-group'></i> " + self.model.getTeamName();
 				$('#formModalAboutTask').show();
 			}
 	
 			$('#infoModalAboutTask p').html(tasksInfo);
-			$('#infoModalAboutTask small').html(task.getStartEndDateInformations() + assignTo);
+			$('#infoModalAboutTask small').html(self.model.getStartEndDateInformations() + assignTo);
 	
 			// Disable or not the button "Remove Of The Schedule" //
-			if(task.getState() == app.Models.Task.status.done.key || task.getState() == app.Models.Task.status.cancelled.key){
+			if(self.model.getState() == app.Models.Task.status.done.key || self.model.getState() == app.Models.Task.status.cancelled.key){
 	        	$('#btnRemoveTask').prop('disabled', true);
 	        	$('#switchWithForeman').bootstrapSwitch('setActive', false);
 			}
 	
 	
 			// Set the ID of the Task in the DOM of the modal //
-			$('#modalAboutTask').data('taskId', task.getId());
+			$('#modalAboutTask').data('taskId', self.model.getId());
 	
 	
 			// Display the Modal //
-			$("#modalAboutTask").modal('show');
+			//$("#modalAboutTask").modal('show');
 
 
 			self.modal.modal('show');
@@ -108,27 +107,25 @@ app.Views.ModalUnplanTaskView =  Backbone.View.extend({
 	*/
 	removeTaskFromSchedule: function(e){
 
-		// Retrieve the Id of the Task //
-		var taskId = $('#modalAboutTask').data('taskId');
-
-		// Retrieve the Task in the collection //
-		var taskModel = app.collections.tasks.get(taskId)
-
+		var self = this;
+		
 		params = {
 			state: app.Models.Task.status.draft.key,
-			user_id: null,
-			team_id: null,
-			date_end: null,
-			date_start: null,
+			user_id: false,
+			team_id: false,
+			date_end: false,
+			date_start: false,
 		};
 
-		// Display the Modal //
-		$("#modalAboutTask").modal('hide');
-
-		taskModel.save(taskId, params);
+		this.model.save(params, {patch: true, silent: true})
+			.done(function(data) {
+				self.modal.modal('hide');
+				self.model.fetch({ data : {fields : self.model.fields} });
+			})
+			.fail(function (e) {
+				console.log(e);
+			})
 		
-		// Refresh the page //
-		app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
 	},
 
 
