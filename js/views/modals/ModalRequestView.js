@@ -141,67 +141,85 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 		/** Save the request
 		*/
 	    saveRequest: function (e) {
-		     
+	    	//private function used to check data: if no value, return false
+		    function evalField(fieldValue){
+		    	if(fieldValue == '' || _.isUndefined(fieldValue) || fieldValue == null){
+		    		return false;
+		    	}
+		    	return fieldValue;
+		    }
+		    
 	    	e.preventDefault();
 	    	var self = this;
-		     partner_address_id = null;
-		     contact_name = null;
-		     contact_phone = null;
-		     contact_email = null;
-		     
-		     input_partner_address_id = null;
-		     if( self.selectListClaimersContactsView != null && self.selectListClaimersContactsView.getSelected()!=null )
-		    	 input_partner_address_id = self.selectListClaimersContactsView.getSelected().toJSON().id;
-//		     else {
-//		    	 input_contact_name = this.$('#requestContactInput').val();
-//		    	 input_contact_phone = this.$('#requestContactPhone').val()
-//		    	 input_contact_email = this.$('#requestContactEmail').val();
-//		     }
-		     input_partner_type = null;
-		     if ( self.selectListClaimersTypesView && self.selectListClaimersTypesView.getSelected()!= null )
-		    	 input_partner_type =  self.selectListClaimersTypesView.getSelected().toJSON().id;
-		    	
-		     input_partner_id = null;
-		     if ( self.selectListClaimersView && self.selectListClaimersView.getSelected()!=null )
-		    	 input_partner_id = self.selectListClaimersView.getSelected().toJSON().id;
-		     
-		     input_service_id = null;
-		     if ( self.selectListServicesView && self.selectListServicesView.getSelected()!=null )
-		    	 input_service_id = self.selectListServicesView.getSelected().toJSON().id;
-		     
-		     var params = {
-		    	 partner_type: input_partner_type,
+//		     partner_address_id = null;
+//		     contact_name = null;
+//		     contact_phone = null;
+//		     contact_email = null;
+//		     
+//		     input_partner_address_id = null;
+//		     if( self.selectListClaimersContactsView != null && self.selectListClaimersContactsView.getSelected()!=null )
+//		    	 input_partner_address_id = self.selectListClaimersContactsView.getSelected().toJSON().id;
+////		     else {
+////		    	 input_contact_name = this.$('#requestContactInput').val();
+////		    	 input_contact_phone = this.$('#requestContactPhone').val()
+////		    	 input_contact_email = this.$('#requestContactEmail').val();
+////		     }
+//		     input_partner_type = null;
+//		     if ( self.selectListClaimersTypesView && self.selectListClaimersTypesView.getSelected()!= null )
+//		    	 input_partner_type =  self.selectListClaimersTypesView.getSelected().toJSON().id;
+//		    	
+//		     input_partner_id = null;
+//		     if ( self.selectListClaimersView && self.selectListClaimersView.getSelected()!=null )
+//		    	 input_partner_id = self.selectListClaimersView.getSelected().toJSON().id;
+//		     
+//		     input_service_id = null;
+//		     if ( self.selectListServicesView && self.selectListServicesView.getSelected()!=null )
+//		    	 input_service_id = self.selectListServicesView.getSelected().toJSON().id;
+		    
+	    	
+		    var params = {
+		    	 partner_type: evalField(this.selectListClaimersTypesView.getSelectedItem()),
 		    	 email_text: app.Models.Request.status.wait.translation,
-		    	 partner_id: input_partner_id,
-		    	 partner_address: input_partner_address_id,
+		    	 partner_id: evalField(this.selectListClaimersView.getSelectedItem()),
+		    	 partner_address: evalField(this.selectListClaimersContactsView.getSelectedItem()),
 		    	 people_name: this.$('#requestContactInput').val(),
 		    	 people_phone: this.$('#requestContactPhone').val(),
 		    	 people_email: this.$('#requestContactEmail').val(),	
 			     name: this.$('#requestName').val(),
 			     description: this.$('#requestDescription').val(),
-			     service_id: input_service_id,
-			     site1: this.$('#requestPlace').val(),
+			     service_id: evalField(this.selectListServicesView.getSelectedItem()),
+//			     site1: evalField(this.selectListPlaceView.getSelectedItem()),
 			     site_details: this.$('#requestPlacePrecision').val(),
-		     };
-
+		    };
+		    
+		    //adapt data mapping if intervention according that intervention belongs to a place or an equipment
+		    if($('#btnSelectPlaceEquipment').data('item') == 'place'){
+		    	params.site1 = evalField(this.selectListPlacesEquipmentsView.getSelectedItem());
+		    	params.has_equipment = false;
+	    	}
+	    	else{
+	    		params.site1 = evalField(this.selectListPlaceView.getSelectedItem()); 
+	    		params.equipment_id = evalField(this.selectListPlacesEquipmentsView.getSelectedItem());
+	    		params.has_equipment = true;
+	    	}
+	    	
 		    var self = this;
 		     
-		    this.model.save(params,{
-				success: function (data) {
-					console.log(data);
-					if(data.error){
-						app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-					}
-					else{
-
-						//self.model.set({id:data.result.result});
-						app.router.navigate(app.routes.requestsInterventions.baseUrl, true);
-						console.log('Success SAVE REQUEST');
-					}
-				},
-				error: function () {
-					console.log('ERROR - Unable to save the Request - RequestView.js');
-				},	     
+		    this.model.save(params).done(function (data) {
+	    		if(self.create){
+					self.model.set('id', data);
+				}
+	    		//get all data of the current model (newly created or updated) and apply changes on the collection
+	    		//we 'merge' the model on the collection if it's an update, else it's a basic 'add'
+	    		self.model.fetch().done(function(){
+	    			self.modal.modal('hide');
+	    			self.options.requests.add(self.model, {merge: !self.create});
+	    		});
+				console.log('Success SAVE REQUEST');
+			})
+			.fail(function (e) {
+				app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				console.log(e);
 			});
 	    },
 
@@ -270,9 +288,9 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 			$('#requestClaimerBlock').css({display:'none'});
 			
 			//reset placeIfEquipment
-			this.selectListPlaceView.reset();
-			this.selectListPlaceView.resetSearchParams();
-			$('#requestPlaceIfEquipmentBlock').css({display: 'none'});
+//			this.selectListPlaceView.reset();
+//			this.selectListPlaceView.resetSearchParams();
+//			$('#requestPlaceIfEquipmentBlock').css({display: 'none'});
 	    },
 	    
 	    /**
@@ -301,15 +319,19 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 
 	    	if(display){
 	    		$('#requestClaimerBlock').show();
+	    		$('#requestClaimer').prop('required','required');
 	    		$('#requestContactSelectBlock').show();
+	    		$('#requestContactSelectBlock').prop('required','required');
 	    		$('#requestContactInputBlock').val('');
 	    		$('#requestContactInputBlock').hide();
 	    	}
 	    	else{
 	    		this.selectListClaimersContactsView.reset();
 	    		$('#requestContactSelectBlock').hide();
+	    		$('#requestContactSelectBlock').removeAttr('required');
 	    		this.selectListClaimersView.reset();
 	    		$('#requestClaimerBlock').hide();
+	    		$('#requestClaimer').removeAttr('required');
 	    		$('#requestContactInputBlock').show();
 	    	}
 	    },
@@ -445,11 +467,11 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 				$('#requestContactInput, #requestContactPhone, #requestContactEmail').val('');
 			}
 		},
-		 
-		fillDropdownService: function(e){
-			e.preventDefault();
-			$('#requestPlace').val('');
-			this.renderTechnicalService( _($(e.target).prop('value')).toNumber() )
-		},
+//		 
+//		fillDropdownService: function(e){
+//			e.preventDefault();
+//			$('#requestPlace').val('');
+//			this.renderTechnicalService( _($(e.target).prop('value')).toNumber() )
+//		},
 
 });

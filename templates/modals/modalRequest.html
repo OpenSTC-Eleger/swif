@@ -58,8 +58,8 @@
                 <label for="requestClaimer" class="control-label"><%= _.capitalize(lang.name) %>:</label>
 
                 <div class="controls">
-					<input id="requestClaimer" class="select2" style="width: 100%" 
-						data-placeholder="<%= lang.actions.selectAClaimerType %>"/>
+					<input id="requestClaimer" class="select2" style="width: 100%"
+						data-placeholder="<%= lang.actions.selectAClaimer %>"/>
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -135,7 +135,7 @@
 
                     <div class="controls">
 						<div class="btn-group">
-							<button class="btn dropdown-toggle" id="btnSelectPlaceEquipment" data-toggle="dropdown"><i class="icon-map-marker icon-fixed-width iconItem"></i>&nbsp; <span class="icon-caret-down"></span></button>
+							<button class="btn dropdown-toggle" id="btnSelectPlaceEquipment" data-item="place" data-toggle="dropdown"><i class="icon-map-marker icon-fixed-width iconItem"></i>&nbsp; <span class="icon-caret-down"></span></button>
 							<ul class="dropdown-menu">
 								<li><a href="#" class="linkSelectPlaceEquipment" data-item="place"><i class="icon-map-marker icon-fixed-width"></i> <%= lang.place %></a></li>
 								<li><a href="#" class="linkSelectPlaceEquipment" data-item="equipment"><i class="icon-wrench icon-fixed-width"></i> <%= lang.equipment %></a></li>
@@ -148,7 +148,7 @@
                 </div>
 
 	            <!-- Request Place (if Equipment) -->
-	            <div class="control-group" id="requestPlaceIfEquipmentBlock">
+	            <div class="control-group" id="requestPlaceIfEquipmentBlock" style="display: none;">
 	                <label for="requestPlaceIfEquipment" class="control-label"><%= _.capitalize(lang.location) %>:</label>
 	
 	                <div class="controls">
@@ -209,7 +209,7 @@
 <div class="modal-footer">
 
     <div class="form-actions">
-        <button type="submit" class="btn btn-primary save"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+        <button type="submit" form="formRequest" class="btn btn-primary save"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
         <a href="#<%= app.routes.requestsInterventions.baseUrl %>" class="text-info"><%= lang.actions.cancel %></a>
     </div>
 </div>
