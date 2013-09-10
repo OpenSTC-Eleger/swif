@@ -352,7 +352,7 @@
 						if(this.isInline) return;
 			var zIndex = parseInt(this.element.parents().filter(function() {
 							return $(this).css('z-index') != 'auto';
-						}).first().css('z-index'))+10;
+						}).first().css('z-index'))+1080;
 			var offset = this.component ? this.component.parent().offset() : this.element.offset();
 			var height = this.component ? this.component.outerHeight(true) : this.element.outerHeight(true);
 			this.picker.css({

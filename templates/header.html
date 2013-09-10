@@ -24,22 +24,10 @@
 	            <ul aria-labelledby="drop-menu-app-<%= menuRacine.id %>" role="menu" class="dropdown-menu">
 	                <% _.each(menuRacine.children, function (menuItem, i) {%>
 
-	                    <% if (menuItem.children.length > 0) { %>
-							<li role="menuitem" class="dropdown-submenu">
-								<a data-toggle="dropdown" class="dropdown-toggle" tabindex="-1" href="#"><%= menuItem.name %></a>
-								<ul class="dropdown-menu">
-									<% _.each(menuItem.children, function( subMenuItem, i ){%>
-										<li>
-											<a href="#<%= _.slugify(subMenuItem.tag) %>" tabindex="-1"><%= subMenuItem.name %></a>
-										</li>
-									<% }); %>
-								</ul>
-							</li>
-	                    <% } else { %>
-							<li role="menuitem">
-								<a href="#<%= _.slugify(menuItem.tag) %>"><%= menuItem.name %></a>
-							</li>
-						<% }; %>
+						<li role="menuitem">
+							<a href="#<%= _.slugify(menuItem.tag) %>"><%= menuItem.name %></a>
+						</li>
+
 					<% }); %>
 				</ul>
 			</li>

@@ -145,12 +145,20 @@ var app = {
 
 	/** Page Loader
 	*/
-	loader: function(action){
+	loader: function(action, message){
 
 		var deferred = $.Deferred();
 
+		console.log(message);
+
 		switch(action){
 			case 'display':
+				if(_.isUndefined(message)){ 
+					$('#loaderMessage').html(app.lang.loadingInProgress);
+				}
+				else{
+					$('#loaderMessage').html(message);
+				}
 				$('#loader, #modal-block').fadeIn(250, deferred.resolve);
 			break;
 

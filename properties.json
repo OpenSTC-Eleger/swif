@@ -10,7 +10,7 @@
 		"jQuery-ui"            : "1.10.3",
 		"jQuery-printElement"  : "2.0.0",
 		"Backbone-localstorage": "1.1.6",
-		"Bootstrap"            : "2.3.2",
+		"Bootstrap"            : "3.0.0",
 		"Underscore-string"    : "2.3.0",
 		"Font-awesome"         : "3.2.1",
 		"Fullcalendar"         : "1.6.1",
