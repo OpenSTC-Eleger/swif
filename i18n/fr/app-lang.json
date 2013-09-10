@@ -147,6 +147,8 @@
 	"saveInProgress"        : "Enregistrement",
 	"validInProgress"       : "Validation",
 	"refuseInProgress"		: "Refus",
+	"loadingInProgress"     : "Chargement en cours...",
+	"connectionInProgress"  : "Connexion en cours...",
 	"vehicleEquipment"						: "Véhicule",
 	"commercialVehicleEquipment"			: "Voiture",
 	"technicalVehicleEquipment"				: "Utilitaire",

@@ -79,13 +79,13 @@ fieldset{
 }
 
 .sortablePlaceHold{
-	background-color: @wellBackground;
+	background-color: @well-bg;
 	height: 28px;
-	border: thin dashed darken(@wellBackground, 65%);
+	border: thin dashed darken(@well-bg, 65%);
 }
 
-::selection { background: lighten(@pink, 20%); color: @white; }
-::-moz-selection { background: lighten(@pink, 20%); color: @white; }
+::selection { background: lighten(@pink, 20%); color: #FFF; }
+::-moz-selection { background: lighten(@pink, 20%); color: #FFF; }
 
 
 // <sup> Badge //
@@ -169,13 +169,13 @@ div.page-header{
 .border-emphasize {
 	border-left-width: 4px;
 	border-left-style: solid;
-	border-left-color: @grayLight;
+	border-left-color: @gray-light;
 }
 .border-emphasize {
-	&-info{ border-left-color: @infoText; }
-	&-important{ border-left-color: @errorText; }
-	&-warning{ border-left-color: @orange; }
-	&-success{ border-left-color: @successText; }
+	&-info{ border-left-color: @brand-info; }
+	&-important{ border-left-color: @brand-danger; }
+	&-warning{ border-left-color: @brand-warning; }
+	&-success{ border-left-color: @brand-success; }
 	&-overrun{ border-left-color: @purple; }
 	&-template{ border-left-color: @yellow; }
 }
@@ -191,7 +191,7 @@ section.calendarContainer{
 
 
 .calendar.thumbnail{
-	border-color: @grayLight;
+	border-color: @gray-light;
 }
 .calendar.thumbnail:hover{
 	//border-color: @blueDark;
@@ -212,7 +212,7 @@ section.calendarContainer{
 }
 
 #accordionInter div.accordion-group{
-	border-color: darken(@grayLighter, 10%);
+	border-color: darken(@gray-lighter, 10%);
 	.border-radius(0);
 }
 #accordionInter div.accordion-heading:hover{
@@ -233,16 +233,16 @@ ul.tasks li.external-event:hover a.hide{
 	display: inline;
 }
 li.external-event.disabled{
-	color: @grayLight;
+	color: @gray-light;
 	cursor: no-drop!important;
 }
 li.external-event:hover{
-	background-color: @grayLighter;
+	background-color: @gray-lighter;
 	.border-radius(10px);
 }
 div.div-actions{
 	font-size: 85%;
-	border-top: 1px solid @grayLight;
+	border-top: 1px solid @gray-light;
 	padding: 5px;
 }
 
@@ -303,24 +303,9 @@ ul.nested-objects li:hover .nested-objects-actions, tr.row-item:hover .row-actio
 /* List tasks
 -------------------------------------------------- */
 .collapse-selected{
-	border-left: 5px solid @blue !important;
+	border-left: 5px solid @brand-info !important;
 	border-radius: 0px !important;
 }
-.accordion.without-border .accordion-group{
-	margin: 40px 0 40px 0;
-	padding-left: 10px;
-	border: none;
-}
-.accordion.without-border .accordion-heading{
-	border-bottom: thin solid #e5e5e5;
-}
-.accordion.without-border .accordion-toggle{
-	padding: 1px;
-}
-.accordion.without-border .accordion-toggle:hover{
-	text-decoration: none;
-}
-
 
 
 
@@ -345,7 +330,7 @@ table thead th.align, .table tbody td.align{
 .table-caption{
 	.text-left();
 	padding: 0 0 4px 4px;
-	font-size: @fontSizeLarge;
+	font-size: @font-size-large;
 	font-weight: bolder;
 	margin: 0;
 }

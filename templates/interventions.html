@@ -12,9 +12,27 @@
 </div>
 
 
-<div class="container-fluid">
 
-	<!-- Message if No intervention to Display -->
+	<!-- Table toolbar -->
+	<div class="tableToolbar row">
+		<div class="col-xs-7 col-md-9 col-lg-10">
+			<a href="#" class="btn btn-primary modalCreateInter"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
+		</div>
+
+		<form class=" form-search pull-right col-xs-5 col-md-3 col-lg-2">
+			<div class="input-group">
+				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+				<span class="input-group-btn">
+					<button type="submit" class="btn btn-primary"><i class="icon-search icon-large"></i></button>
+				</span>
+			</div>
+		</form>
+	</div>
+	<!-- /Table toolbar -->
+
+
+
+		<!-- Message if No intervention to Display -->
 	<% if(interventions.length <= 0) { %>
 		<div class="tableToolbar">
 			<div class="alert alert-info">
@@ -24,21 +42,9 @@
 	<% } %>
 
 
-	<!-- Table toolbar -->
-	<div class="tableToolbar">
-		
-		<a href="#" class="btn btn-primary modalCreateInter"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
-		<form class="form-search pull-right">
-			<div class="input-append">
-				<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off">
-				<button type="submit" disabled class="btn disabled"><i class="icon-search icon-large"></i></button>
-			</div>
-		</form>
-	</div>
-	<!-- /Table toolbar -->
-
 
 	<!-- Table Interventions -->
+	<div class="table-responsive">
 	<table class="table-interventions table table-bordered table-hover table-sorter table-striped">
 		<thead>
 			<tr>
@@ -48,7 +54,7 @@
 				<th><%= _.capitalize(lang.dateDeadline) %></th>
 				<th><%= _.capitalize(lang.plannedHours) %></th>
 				<th><%= _.capitalize(lang.spentHours) %></th>
-				<th class="span3"><%= _.capitalize(lang.progressRate) %>
+				<th><%= _.capitalize(lang.progressRate) %>
 					<!-- Status Filter -->
 					<div class="dropdown pull-right">
 						<a id="filterStateInter" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="icon-filter icon-large"></i></a>
@@ -86,30 +92,34 @@
 		
 		</tbody>
 	</table>
+	</div>
 
 	<!-- Table pagination -->
-	<div id="pagination"></div>
+	<div id="pagination" class="pull-right"></div>
 	<!-- /Table pagination -->
 
-</div>
+
+
 
 <!-- Modal Form to add a new Task to Inter -->
-<div id="modalAddTask" class="modal hide fade"></div>
+<div id="modalAddTask" class="modal fade" role="dialog" aria-hidden="true"></div>
 
 <!-- Modal Form Delete Task -->
-<div id="modalDeleteTask" class="modal hide fade"></div>
+<div id="modalDeleteTask" class="modal fade" role="dialog" aria-hidden="true"></div>
 
 <!-- Modal Form Cancel Intervention -->
-<div id="modalCancelInter" class="modal hide fade"></div>
+<div id="modalCancelInter" class="modal fade" role="dialog" aria-hidden="true"></div>
 
 <!-- Modal Form Task Done -->
-<div id="modalTaskDone" class="modal hide fade"></div>
+<div id="modalTaskDone" class="modal fade" role="dialog" aria-hidden="true"></div>
 
 <!-- Modal Form Cancel Task -->
-<div id="modalCancelTask" class="modal hide fade"></div>
+<div id="modalCancelTask" class="modal fade" role="dialog" aria-hidden="true"></div>
 
 <!-- Modal Form to add/update an inter -->
-<div id="modalSaveInter" class="modal hide fade"></div>
+<div id="modalSaveInter" class="modal fade" role="dialog" aria-hidden="true"></div>
+
+
 
 <!-- Form to print paperboard-->
 <div id="printTask" class="hide container-fluid printContainer" >

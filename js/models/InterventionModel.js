@@ -72,37 +72,31 @@ app.Models.Intervention = app.Models.GenericModel.extend({
 		open: {
 			key                 : 'open',
 			color               : 'warning',
-			htmlColor           : '#F89406',
 			translation         : ''
 		},
 		scheduled: {
 			key                 : 'scheduled',
 			color               : 'info',
-			htmlColor           : '#3A87AD',
 			translation         : ''
 		},
 		closed: {
 			key                 : 'closed',
 			color               : 'success',
-			htmlColor           : '#468847',
 			translation         : ''
 		},
 		pending: {
 			key                 : 'pending',
 			color               : 'muted',
-			htmlColor           : '#999999',
 			translation         : ''
 		},
 		cancelled: {
 			key                 : 'cancelled',
-			color               : 'important',
-			htmlColor           : '#B94A48',
+			color               : 'danger',
 			translation         : ''
 		},
 		template: {
 			key               	: 'template',
 			color               : 'template',
-			htmlColor           : '#FFC40D',
 			translation         : ''
 		}
 	}

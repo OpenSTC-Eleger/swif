@@ -255,7 +255,7 @@ app.Models.User = Backbone.Model.extend({
 			dataType   : 'json',
 			data       :  JSON.stringify(login_data),
 			beforeSend : function(){
-				app.loader('display');
+				app.loader('display', app.lang.connectionInProgress);
 			},
 			success    : function (data) {
 
