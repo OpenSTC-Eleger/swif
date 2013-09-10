@@ -38,6 +38,18 @@ body{
 
 
 
+@media (min-width: @screen-xl-desktop) {
+  .container {
+    max-width: @container-xl-desktop;
+  }
+ }
+
+
+fieldset{
+	margin-top: @line-height-computed*1.5;
+}
+
+
 .popover-title, .bolder{
 	font-weight: bolder;
 }
@@ -354,14 +366,6 @@ tr.row-nested-objects-collapse td.nestedTD{
 tr.info td:first-child{
 	font-weight: bolder;
 }
-
-
-
-.widget-title {
-    border-bottom: 1px solid @table-bg;
-    margin-bottom: 10px;
-}
-
 
 
 /* Responsive
