@@ -15,6 +15,7 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 				'change #requestContactSelect'	: 'fillDropdownContact',
 				'change #requestDetailService'	: 'fillDropdownService',
 				'click a.linkSelectPlaceEquipment': 'changeSelectPlaceEquipment',
+//				'click #modalTabs a'			: 'displayTab'
 			},
 			app.Views.GenericModalView.prototype.events);
 			
@@ -133,6 +134,12 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 			return this;
 	    },
 
+//	    displayTab: function(e){
+//	    	e.preventDefault();
+//	    	console.log($(e.target));
+//	    	$(e.target).tab('show');
+//	    },
+	    
 		/** Save the request
 		*/
 	    saveRequest: function (e) {

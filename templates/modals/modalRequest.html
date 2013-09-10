@@ -33,14 +33,17 @@
 </div>
 
 <div class="modal-body">
-
+<ul id="modalTabs" class="nav nav-tabs">
+	<li class="active"><a href="#" data-target="#aboutClaimer" data-toggle="tab"><%= lang.aboutTheClaimer %></a></li>
+	<li><a href="#" data-target="#aboutRequest" data-toggle="tab"><%= lang.aboutTheRequest %></a></li>
+</ul>
 <form id="formRequest" action="#" class="form-horizontal container-fluid">
     
-    <div class="row-fluid">
+    <div class="tab-content">
     
         <!-- About the claimer -->
-        <fieldset class="span6">
-            <legend><%= lang.aboutTheClaimer %></legend>
+        <fieldset class="tab-pane fade in active" id="aboutClaimer" style="width:50%">
+            <!--<legend><%= lang.aboutTheClaimer %></legend>-->
             
             <!-- Request Partner Type -->
             <div class="control-group">
@@ -73,7 +76,6 @@
                     <span class="help-inline"></span>
                 </div>
             </div>
-            <br />
 
 
             <!-- Details about the claimer -->
@@ -124,9 +126,9 @@
 
 
         <!-- About the request -->
-        <fieldset class="span6">
+        <fieldset class="tab-pane fade" id="aboutRequest" style="width:50%">
 
-            <legend><%= lang.aboutTheRequest %></legend>
+            <!--<legend><%= lang.aboutTheRequest %></legend>-->
 
                 <!-- Request Patrimoine -->
                 <div class="control-group">
