@@ -266,46 +266,26 @@ app.Views.EventsListView = Backbone.View.extend({
 				copiedEventObject.start = date; //$.fullCalendar.formatDate(date, 'yyyy-MM-dd HH:mm:ss');
 			
 				var params = {
-						startWorkingTime : app.config.startWorkTime,
-						endWorkingTime : app.config.endWorkTime,
-				        startLunchTime : app.config.startLunchTime,
-				        endLunchTime : app.config.endLunchTime,
-				        startDt: copiedEventObject.start,
-				        teamMode : self.teamMode,
-				        calendarId : self.model.id,
+				        task_id	: copiedEventObject.id,	
+						start_working_time : app.config.startWorkTime,
+						end_working_time : app.config.endWorkTime,
+						start_lunch_time : app.config.startLunchTime,
+						end_lunch_time : app.config.endLunchTime,
+						start_dt: copiedEventObject.start ,
+						team_mode : self.teamMode,
+						calendar_id : self.model.id,
 				}
 				
-//				var model = new app.Models.Task(params);
-//				
-//				model.save(params,{
-//					 success: function( data ) {
-//						console.log(data);	     	
-//						if(data.error){
-//							app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-//						}
-//						else{
-//							$(self.divCalendar).fullCalendar( 'refetchEvents' )
-//						}				
-//					},
-//					error: function(e){
-//						alert("Impossible de mettre à jour la tâche'");
-//					}
-//				 });
 				
+				var model = new app.Models.TaskSchedules();
 				
-				app.Models.Task.prototype.planTasks(copiedEventObject.id, 
-					params, {
-						success: function (data){
-							if( !_.isUndefined(data.error) ){
-								app.notify('', 'error', app.lang.errorMessages.unablePerformAction, data.error.data.fault_code);
-							}
-							else{
-								
-								//self.planning.partialRender(data.result.project_id)						
-							}							
-						},
-					}
-				);
+				model.save(params, {patch: false, silent: true})
+					.done(function(data) {
+						self.change();
+					})
+					.fail(function (e) {
+						console.log(e);
+					})
 			},
 
 			//Drop event from time slot to another
@@ -439,9 +419,10 @@ app.Views.EventsListView = Backbone.View.extend({
 
 	/** When the model ara updated //
 	*/
-	change: function(model){
+	change: function(){
 		$(this.divCalendar).fullCalendar( 'refetchEvents' )
 		app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.taskUpdateOk);
+		//app.views.planningInterListView.render();
 	},
 
 	/**
