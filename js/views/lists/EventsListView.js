@@ -184,10 +184,11 @@ app.Views.EventsListView = Backbone.View.extend({
     			 
 
 
-				if( !self.initialized ) {
-					self.initialized = true;
-					return;
-				}
+//				if( !self.initialized ) {
+//					self.initialized = true;
+//				}else{
+//					return;
+//				}
 			
     			var fetchParams={
 					silent : true,
@@ -237,109 +238,20 @@ app.Views.EventsListView = Backbone.View.extend({
 			
 
 			/**
-			 * Open leave time
+			 * Open leave time modal
 			 */
 			select: function( startDate, endDate, allDay, jsEvent, view) {
-
-
-				
-				app.views.modalAbsentTaskView = new app.Views.ModalUnplanTaskView({
-    				el    	: '#modalAbsentTask',
-    				startDt : moment( startDate ),	
-    				endDt	: moment( endDate ),
+				 
+				app.views.modalAbsentTaskView = new app.Views.ModalAbsentTaskView({
+    				el    		: '#modalAbsentTask',
+    				model		: self.model,
+    				collection 	: self.collection,
+    				startDate 	: startDate ,	
+    				endDate		: endDate ,
+    				teamMode	: self.teamMode,
+    				allDay  	: allDay,
     			});
 
-	        	modalAbsentTask = $("#modalAbsentTask");
-	        	$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
-
-
-	        	$('.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
-
-	        	app.views.selectListAbsentTypesView = new app.Views.DropdownSelectListView({el: $("#absentType"), collection: app.collections.absentTypes})
-				app.views.selectListAbsentTypesView.clearAll();
-				app.views.selectListAbsentTypesView.addEmptyFirst();
-				app.views.selectListAbsentTypesView.addAll();
-
-	        	$("#startDate").val( moment( startDate ).format('L') );
-	        	$("#endDate").val( moment( endDate ).format('L') );
-	        	if( allDay ) {
-	        		var tempStartDate = moment( mStartDate );
-	        		tempStartDate.add('hours', (app.config.endWorkTime - app.config.startWorkTime))
-		    		$("#startHour").timepicker( 'setTime', tempStartDate.format('LT') );
-	        		var tempEndDate = moment( mEndDate );
-	        		tempEndDate.add('hours',app.config.endWorkTime)
-		    		$("#endHour").timepicker('setTime', tempEndDate.format('LT') );
-	        	}
-	        	else {
-		    		$("#startHour").timepicker( 'setTime', mStartDate.format('LT') );
-		    		$("#endHour").timepicker('setTime', mEndDate.format('LT') );
-	        	}
-	        	
-	        	// Set Modal informations 
-	        	var icon = self.teamMode?'group':'user' 
-	        	$('#infoModalAbsentTask p').html("<i class='icon-" + icon +"'></i> " + self.model.name );
-	    		$('#infoModalAbsentTask small').html("Du " + mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
-
-	    		modalAbsentTask.one('submit', function(event) {
-					event.preventDefault();
-					var mNewDateStart =  new moment( $("#startDate").val(),"DD-MM-YYYY")
-											.add('hours',$("#startHour").val().split(":")[0] )
-											.add('minutes',$("#startHour").val().split(":")[1] );
-					var mNewDateEnd =  new moment( $("#endDate").val(),"DD-MM-YYYY")
-											.add('hours',$("#endHour").val().split(":")[0] )
-											.add('minutes',$("#endHour").val().split(":")[1] );
-					var planned_hours = mNewDateEnd.diff(mNewDateStart, 'hours', true);
-
-					absentTypeId = null;
-					absentTypeTitle = null;
-				    if ( app.views.selectListAbsentTypesView ) {
-				    	var absentTypeSelected = app.views.selectListAbsentTypesView.getSelected()
-				    	if( absentTypeSelected ) {
-				    		absentTypeJSON = absentTypeSelected.toJSON();
-				    		absentTypeId =  absentTypeJSON.id;
-				    		absentTypeTitle = absentTypeJSON.name;
-				    	}
-				    }
-
-					var params=
-						{
-						    name:  absentTypeTitle,
-						    absent_type_id: absentTypeId,
-						    state: 'absent',
-						    date_start: mNewDateStart.toDate(),
-						    date_end: mNewDateEnd.toDate(),
-						    planned_hours: planned_hours,
-						    effective_hours: planned_hours,
-						    hours: planned_hours,
-						    remaining_hours: 0,
-						    team_id: self.teamMode?self.model.id:0,
-						    user_id: !self.teamMode?self.model.id:0,
-						}
-						app.Models.Task.prototype.save(0,params,{
-							success: function(data){
-								if(data.error){
-									app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.unablePerformAction);
-								}
-								else
-									$(self.divCalendar).fullCalendar( 'refetchEvents' )
-										
-							}
-						});
-						modalAbsentTask.modal('hide');
-			    });	
-	    		$('#modalAbsentTask .dismiss').one('click .dismiss', function (event) {
-	    			event.preventDefault();
-	    			 $('#modalAbsentTask').unbind('submit'); 
-	    		});
-			    modalAbsentTask.modal();
-			},
-
-
-			/**
-			 * Open modal to fill leave
-			 */
-			start: function (event, ui){
-				$('modalAbsentTask').modal();
 			},
 
 

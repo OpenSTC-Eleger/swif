@@ -20,13 +20,13 @@
 	    	<!-- Absent Type -->
 	    	<div class="control-group">
 				<label for="absentType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
-
+				
 				<div class="controls">
-					<select id="absentType" required="required"></select>
+					<input id="absentType" class="select2" style="width: 66%" 
+						required data-placeholder="<%= lang.actions.selectAbsentType %>"/>
 					<span class="help-inline"></span>
 				</div>
 			</div>
-
 
             <!-- Absent start date / hour -->
             <div class="control-group">
@@ -77,9 +77,8 @@
 </div>
 
 <div class="modal-footer">
-	<button type="submit" form="formSaveAbsentType" class="btn btn-primary"
-		data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>"
-	>
+	<button type="submit" form="formAbsentTask" class="btn btn-primary"
+		data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>">
 		<%= _.capitalize(lang.actions.save) %>
 	</button>&nbsp;&nbsp;
 	

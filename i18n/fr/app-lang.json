@@ -219,7 +219,8 @@
 		"selectServices"	: "Sélectionner des services",
 		"selectAService"	: "Sélectionner un service",
 		"selectACategory"	: "Sélectionner une catégorie",
-		"selectAVehicle"	: "Sélectionner un véhicule"
+		"selectAVehicle"	: "Sélectionner un véhicule",
+		"selectAbsentType"	: "Sélectionner un type d'absence"
 	},
 
 	"errorMessages" : {
