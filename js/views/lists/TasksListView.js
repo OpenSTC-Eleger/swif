@@ -104,7 +104,7 @@ app.Views.TasksListView = Backbone.View.extend({
 		var momentDate = moment().year(yearSelected).week(weekSelected);
 
 		//get only tasks on the current week
-		var filter = [{'field':'date_start','operator':'>=','value':momentDate.clone().weekday(1).format('YYYY-MM-DD 00:00:00')},{'field':'date_start','operator':'<=','value':momentDate.clone().weekday(6).format('YYYY-MM-DD 23:59:59')}];
+		var filter = [{'field':'date_start','operator':'>=','value':momentDate.clone().weekday(0).format('YYYY-MM-DD 00:00:00')},{'field':'date_start','operator':'<=','value':momentDate.clone().weekday(6).format('YYYY-MM-DD 23:59:59')}];
 		
 		
 		//  Collection Task Filter if not null //
