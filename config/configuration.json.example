@@ -10,5 +10,6 @@
 	"startWorkTime"     : 8.0,
 	"endWorkTime"       : 18.0,
 	"startLunchTime"    : 12.0,
-	"endLunchTime"      : 14.0
+	"endLunchTime"      : 14.0,
+	"logo_path": "logo/administration_logo.png"
 }
