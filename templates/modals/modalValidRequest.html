@@ -16,7 +16,7 @@
 			</blockquote>
 
 
-			<form id="formValidRequest" action="#" role="form" class="form-horizontal">
+			<form id="formValidRequest" action="#" class="form-horizontal" role="form">
 
 
 				<!-- Category Request -->
@@ -24,7 +24,7 @@
 					<label for="requestCategory" class="col-sm-3 control-label"><%= _.capitalize(lang.category) %>:</label>
 
 					<div class="col-sm-9">
-						<input id="requestCategory" class="select2" style="width: 100%" data-placeholder="<%= lang.actions.selectACategory %>" required />
+						<input id="requestCategory" class="select2" data-placeholder="<%= lang.actions.selectACategory %>" required />
 					</div>
 				</div>
 
@@ -33,7 +33,7 @@
 					<label for="requestService" class="col-sm-3 control-label"><%= lang.serviceConcerned %>:</label>
 
 					<div class="col-sm-9">
-						<input id="requestService" class="select2" style="width: 100%" data-placeholder="<%= lang.actions.selectAService %>" required 
+						<input id="requestService" class="select2" data-placeholder="<%= lang.actions.selectAService %>" required 
 							data-selected-value='<%= JSON.stringify(request.getService('json')) %>'
 						/>
 					</div>
@@ -42,7 +42,7 @@
 				<!-- Intervention DeadLine -->
 				<div class="form-group">
 					<label for="requestDateDeadline" class="control-label col-sm-3"><%= _.capitalize(lang.dateDeadline) %>:</label>
-					<div class="col-sm-9">
+					<div class="col-sm-4">
 						<div class="input-group">
 						<input 
 							type="text" class="datepicker form-control"
@@ -84,7 +84,7 @@
 
 						<div class="col-sm-4">
 							<div class="input-group bootstrap-timepicker">
-								<input id='taskHour' type="text" class="timepicker form-control col-sm-4" value="02:00" />
+								<input id='taskHour' type="text" class="timepicker form-control" value="02:00" />
 								<span class="input-group-addon"><i class="icon-time"></i></span>
 							</div>
 						</div>
@@ -95,7 +95,7 @@
 						<label for="taskCategory" class="control-label col-sm-3"><%= _.capitalize(lang.category) %>:</label>
 
 						<div class="col-sm-9">
-							<input id="taskCategory" class="select2" style="width: 100%" data-placeholder="<%= lang.actions.selectACategory %>" />
+							<input id="taskCategory" class="select2" data-placeholder="<%= lang.actions.selectACategory %>" />
 						</div>
 					</div>
 

@@ -1,25 +1,25 @@
-<h4 class="well well-small noMarginTop"><i class="icon-group icon-fixed-width"></i>&nbsp;<%= team.getName() %></h4>
+<h4 class="well well-sm noMarginTop"><i class="icon-group icon-fixed-width"></i>&nbsp;<%= team.getName() %></h4>
 
-<div class="row-fluid">
+<div class="row">
 
 	<!-- Team Members -->
-	<div class="span6">
+	<div class="col-sm-6">
 
 		<div class="widget-title">
 			<h4><%= lang.teamMembers %> <span id="nbMembers" class="badge pull-right"><%= _.size(team.getMembers()) %></span></h4>
 		</div>
-		<input type="text" id="searchMembers" style="width: 99%" data-multiple='true' data-placeholder="<%= lang.actions.selectAgents %>"
+		<input type="text" id="searchMembers" style="width: 100%" data-multiple='true' data-placeholder="<%= lang.actions.selectAgents %>"
 			data-selected-value='<%= JSON.stringify(team.getMembers('json')) %>' data-tag-large="true"
 		>
 	</div>
 
 	<!-- Team Services -->
-	<div class="span6">
+	<div class="col-sm-6">
 		
 		<div class="widget-title">
 			<h4><%= lang.teamServices %> <span id="nbServices" class="badge pull-right"><%= _.size(team.getServices()) %></span></h4>
 		</div>
-		<input type="text" id="searchServices" style="width: 99%" data-multiple='true' data-placeholder="<%= lang.actions.selectServices %>"
+		<input type="text" id="searchServices" style="width: 100%" data-multiple='true' data-placeholder="<%= lang.actions.selectServices %>"
 			data-selected-value='<%= JSON.stringify(team.getServices('json')) %>' data-tag-large="true"
 		>
 	</div>
