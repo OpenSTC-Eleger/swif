@@ -671,9 +671,24 @@ app.Views.InterventionsListView = Backbone.View.extend({
 			$('#printTask div.forInter').show();
 			$('#tableTasks tbody').empty();
 
+
+
+
 			// Display all the tasks of the inter //
 			_.each(interJSON.tasks, function(task, i){
-				$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+task.name+'</td><td>'+app.decimalNumberToTime(task.planned_hours, 'human')+'</td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td></tr>');
+
+				if(task.user_id != false){var doneBy = task.user_id[1]; }else{var doneBy = '';}
+				if(task.user_id != false){var dateStart = moment(task.date_start).format('LLL'); }else{var dateStart = '';}
+				if(task.user_id != false){var dateEnd = moment(task.date_end).format('LLL'); }else{var dateEnd = '';}
+				if(task.user_id != false){
+					var equipement = '';
+					_.each(task.equipment_ids, function(equipementID, i){
+						equipement += equipementID.name + ', '
+					})
+					
+				}else{var equipement = '';}
+
+				$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+task.name+'</td><td>'+app.decimalNumberToTime(task.planned_hours, 'human')+'</td><td class="toFill">'+doneBy+'</td><td class="toFill">'+dateStart+'</td><td class="toFill">'+dateEnd+'</td><td class="toFill">'+equipement+'</td><td class="toFill"></td><td class="toFill"></td></tr>');
 			})
 		}
 		else{
