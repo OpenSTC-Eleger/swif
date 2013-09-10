@@ -129,6 +129,7 @@ app.Views.EventsListView = Backbone.View.extend({
     		
     		/** Full calendar attributes **/			
 			defaultView: self.calendarView,
+    		ignoreTimezone: false,
 			aspectRatio: 1.30,
 			header: {
 			    left: 'infosUser',
@@ -172,7 +173,6 @@ app.Views.EventsListView = Backbone.View.extend({
 			selectable	: true,
 			selectHelper: true,
 			editable	: true,
-			ignoreTimezone	: false,
 			dragRevertDuration	:0,
 			startOfLunchTime	: app.config.startLunchTime,
 			endOfLunchTime		: app.config.endLunchTime,
@@ -390,12 +390,16 @@ app.Views.EventsListView = Backbone.View.extend({
     			}    
     		}
     		
+    		
+    		var dtStart = task.date_start!=false ? moment( task.date_start ).tz(app.models.user.getContext().tz) : null
+    		var dtEnd = task.date_end!=false ? moment( task.date_end ).tz(app.models.user.getContext().tz) : null		    		
+    		
     		var event = { 
     			id: task.id, 
 				state: task.state,
-				title: title, 
-				start: task.date_start!=false?task.date_start:null,
-				end: task.date_end!=false?task.date_end:null,
+				title: title,
+				start: dtStart.add('minutes',-dtStart.zone()).format(),
+				end: dtEnd.add('minutes',-dtStart.zone()).format(),
 				planned_hours: task.planned_hours,
 				total_hours: task.total_hours,
 				effective_hours: task.effective_hours,
