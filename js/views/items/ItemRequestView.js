@@ -147,7 +147,7 @@ app.Views.ItemRequestView = Backbone.View.extend({
 
 	displayModalUpdateRequest: function(e){
 		e.preventDefault();
-		new app.Views.ModalRequestView({el:'#modalAddRequest', requests: null, model: this.model});
+		new app.Views.ModalRequestView({el:'#modalAddRequest', requests: app.views.requestsListView.collection, model: this.model});
 
 	},
 	

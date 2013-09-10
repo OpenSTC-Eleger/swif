@@ -274,7 +274,10 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		
 		// Check if the collections are instantiated //
 		if(_.isUndefined(this.collections.tasks)){ this.collections.tasks = new app.Collections.Tasks(); }
+		else{this.collections.tasks.reset();}
+		
 		if(_.isUndefined(this.collections.interventions)){this.collections.interventions = new app.Collections.Interventions();}
+		else{this.collections.interventions.reset();}
 		
 		//check sort parameter
 		if(_.isUndefined(this.options.sort)){

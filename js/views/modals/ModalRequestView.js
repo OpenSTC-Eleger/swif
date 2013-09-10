@@ -174,9 +174,9 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 	    	
 		    var self = this;
 		     
-		    this.model.save(params).done(function (data) {
+		    this.model.save(params, {patch:!self.create, silent: true, wait:true}).done(function (data) {
 	    		if(self.create){
-					self.model.set('id', data);
+					self.model.set('id', data, {silent:true});
 				}
 	    		//get all data of the current model (newly created or updated) and apply changes on the collection
 	    		//we 'merge' the model on the collection if it's an update, else it's a basic 'add'
