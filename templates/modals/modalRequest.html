@@ -69,8 +69,7 @@
                 <label for="requestContactService" class="control-label" ><%= _.capitalize(lang.service) %>:</label>
 
                 <div class="controls">
-	                <input id="requestContactService" class="select2" style="width: 100%" 
-						data-placeholder="<%= lang.actions.selectAClaimerType %>"/>
+	                <input id="requestContactService" class="select2" style="width: 100%" />
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -88,7 +87,7 @@
                     <div class="controls">
                         <div id="requestContactSelectBlock">
 	    	                <input id="requestContactSelect" class="select2" style="width: 100%" 
-								data-placeholder="<%= lang.actions.selectAClaimerType %>"/>
+								data-placeholder="<%= lang.actions.selectAContact %>"/>
                             <span class="help-inline"></span>
                         </div>
 
@@ -104,7 +103,7 @@
                     <label for="requestContactPhone" class="control-label"><%= _.capitalize(lang.phone) %>:</label>
 
                     <div class="controls">
-                         <input type="tel" id="requestContactPhone" name="requestContactPhone" />
+                         <input type="tel" id="requestContactPhone" name="requestContactPhone" value="<%= request ? request.people_phone :''%>"/>
                         <span class="help-inline"></span>
                     </div>
                 </div>
@@ -114,7 +113,7 @@
                     <label for="requestContactEmail" class="control-label"><%= _.capitalize(lang.email) %>:</label>
 
                     <div class="controls">
-                         <input type="email" id="requestContactEmail" name="requestContactEmail" />
+                         <input type="email" id="requestContactEmail" name="requestContactEmail" value="<%= request ? request.people_email :''%>"/>
                         <span class="help-inline"></span>
                     </div>
                 </div>

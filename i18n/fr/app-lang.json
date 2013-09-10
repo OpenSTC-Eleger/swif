@@ -225,6 +225,8 @@
 		"selectACategory"	: "Sélectionner une catégorie",
 		"selectAVehicle"	: "Sélectionner un véhicule",
 		"selectAbsentType"	: "Sélectionner un type d'absence"
+		"selectAContact"	: "Sélectionner un contact",
+		"selectAClaimer"	: "Sélectionner un demandeur",
 		"selectAClaimerType": "Sélectionner un type de demandeur"
 		
 	},
@@ -308,6 +310,7 @@
 		"requestValidOk"        : "Demande d'intervention validée",
 		"requestRefuseOk"       : "Demande d'intervention refusée",
 		"requestConfirmOk"      : "Demande d'intervention remontée au DST",
+		"requestUpdateOk"		: "Demande d'intervention correctement mise à jour",
 		"interventionSaveOK"	: "Intervention correctement enregistrée",
 		"interventionUpdateOK"	: "Intervention correctement mise à jour",
 		"inteventionAddTaskOK" : "Tâche correctement associée à l'intervention",

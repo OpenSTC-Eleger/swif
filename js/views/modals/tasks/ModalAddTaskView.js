@@ -117,56 +117,56 @@ app.Views.ModalAddTaskView = app.Views.GenericModalView.extend({
 	*/
 	saveTask: function(e){
 
-var self = this;
+		var self = this;
 
-	e.preventDefault();
+		e.preventDefault();
+		
+		var mNewDateStart =  new moment( $("#startDate").val(),"DD-MM-YYYY")
+								.add('hours',$("#startHour").val().split(":")[0] )
+								.add('minutes',$("#startHour").val().split(":")[1] );
+		var mNewDateEnd =  new moment( $("#endDate").val(),"DD-MM-YYYY")
+								.add('hours',$("#endHour").val().split(":")[0] )
+								.add('minutes',$("#endHour").val().split(":")[1] );
+		var planned_hours = mNewDateEnd.diff(mNewDateStart, 'hours', true);
 	
-	var mNewDateStart =  new moment( $("#startDate").val(),"DD-MM-YYYY")
-							.add('hours',$("#startHour").val().split(":")[0] )
-							.add('minutes',$("#startHour").val().split(":")[1] );
-	var mNewDateEnd =  new moment( $("#endDate").val(),"DD-MM-YYYY")
-							.add('hours',$("#endHour").val().split(":")[0] )
-							.add('minutes',$("#endHour").val().split(":")[1] );
-	var planned_hours = mNewDateEnd.diff(mNewDateStart, 'hours', true);
-
-    var vehicle =  self.selectListEquipmentsView.getSelectedItem();
-	var equipments = _.map($("#equipmentsAdd").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
-    
-    if(vehicle && vehicle >0 ){
-    	equipments.push( vehicle );
-    }
-     
-	var params = {
-		user_id:  app.models.user.getUID(),
-		date_start: mNewDateStart.toDate(),
-		date_end: mNewDateEnd.toDate(),
-		state: app.Models.Task.status.done.key,
-		vehicule: vehicle,
-		equipment_ids: equipments,
-		name: this.$('#taskName').val(),
-		km: this.$('#equipmentKmAdd').val(),
-		oil_qtity: this.$('#equipmentOilQtityAdd').val().replace(',', '.'),
-		oil_price: this.$('#equipmentOilPriceAdd').val().replace(',', '.'),
-		category_id: self.advancedSelectBoxCategoriesInterventionAddTaskView.getSelectedItem(),	         
-		planned_hours: planned_hours,
-		remaining_hours: 0,
-	    report_hours: planned_hours,
-	};
+	    var vehicle =  self.selectListEquipmentsView.getSelectedItem();
+		var equipments = _.map($("#equipmentsAdd").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
+	    
+	    if(vehicle && vehicle >0 ){
+	    	equipments.push( vehicle );
+	    }
+	     
+		var params = {
+			user_id:  app.models.user.getUID(),
+			date_start: mNewDateStart.toDate(),
+			date_end: mNewDateEnd.toDate(),
+			state: app.Models.Task.status.done.key,
+			vehicule: vehicle,
+			equipment_ids: equipments,
+			name: this.$('#taskName').val(),
+			km: this.$('#equipmentKmAdd').val(),
+			oil_qtity: this.$('#equipmentOilQtityAdd').val().replace(',', '.'),
+			oil_price: this.$('#equipmentOilPriceAdd').val().replace(',', '.'),
+			category_id: self.advancedSelectBoxCategoriesInterventionAddTaskView.getSelectedItem(),	         
+			planned_hours: planned_hours,
+			remaining_hours: 0,
+		    report_hours: planned_hours,
+		};
+		
+		var task_model = new app.Models.Task(params);
 	
-	var task_model = new app.Models.Task(params);
-
-	task_model.save().done(function(data) {
-		// add task to collection
-		task_model.setId(data);
-		task_model.fetch({silent : true}).done(function() {
-			self.options.tasks.add(task_model);
-			self.modal.modal('hide');
+		task_model.save().done(function(data) {
+			// add task to collection
+			task_model.setId(data);
+			task_model.fetch({silent : true}).done(function() {
+				self.options.tasks.add(task_model);
+				self.modal.modal('hide');
+			}).fail(function(e) {
+				console.log(e)
+			})
 		}).fail(function(e) {
 			console.log(e)
 		})
-	}).fail(function(e) {
-		console.log(e)
-	})
 	},
 	
 	/** Display or Hide Refueling Section (Inputs Km, Oil, Oil prize)
