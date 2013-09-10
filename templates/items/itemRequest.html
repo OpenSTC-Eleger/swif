@@ -15,8 +15,13 @@
 </td>
 
 
-<!-- Place -->
-<td class="hidden-phone"><%= request.getSite() %></td>
+<!-- Place/Equipment -->
+<td class="hidden-phone">
+<span data-toggle="tooltip" data-original-title="<%= request.toJSON().has_equipment ? lang.location + ' : ' + request.getSite():''%>">
+<% if(request.toJSON().has_equipment){%><i class="icon-wrench icon-fixed-width" style="text-align:center;"></i><%= request.toJSON().equipment_id[1]%>
+<%}else{%><i class="icon-map-marker icon-fixed-width" style="text-align:center;"></i><%= request.getSite()%><% }%>
+<span>
+</td>
 
 <!-- Service -->
 <td>
