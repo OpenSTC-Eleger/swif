@@ -11,7 +11,8 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 	events: function(){
 		return _.defaults({
 			'click #filterStateRequestList li a' 	: 'setFilterState',
-			'click #badgeActions[data-filter!=""]'  : 'badgeFilter'
+			'click #badgeActions[data-filter!=""]'  : 'badgeFilter',
+			'click #buttonAddRequest'				: 'displayModalAddRequest'
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -25,10 +26,18 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		var self = this;
 
 		this.initCollection().done(function(){
+			// Unbind & bind the collection //
+			self.collection.off();
+			self.listenTo(self.collection, 'add', self.add);
 			app.router.render(self);
 		});
 	},
-
+	
+	add: function(model){
+		var itemRequestView = new app.Views.ItemRequestView({model: model});
+		$('#rows-items').prepend(itemRequestView.render().el);
+		itemRequestView.highlight();
+	},
 
 
 	/** Display the view
@@ -154,7 +163,10 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 	},
 
 
-
+	displayModalAddRequest: function(e){
+		e.preventDefault();
+		new app.Views.ModalRequestView({el:'#modalAddRequest', requests: this.collection});
+	},
 
 	initCollection: function(){
 		var self = this;

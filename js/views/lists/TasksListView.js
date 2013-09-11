@@ -1,7 +1,7 @@
 /******************************************
 * Task List View
 */
-app.Views.TasksListView = Backbone.View.extend({
+app.Views.TasksListView = app.Views.GenericListView.extend({
 	
 	el : '#rowContainer',
 
@@ -11,17 +11,24 @@ app.Views.TasksListView = Backbone.View.extend({
 
 	numberListByPage: 25,
 
-
+	urlParameters: _.union(app.Views.GenericListView.prototype.urlParameters, ['year','week']),
+	
 	// The DOM events //
-	events: {
-		'click li.active'				: 'preventDefault',
-		'click li.disabled'				: 'preventDefault',
-		'click ul.sortable li'			: 'preventDefault',
-		
-		'click .btn.addTask'            : 'displayModalAddTask',
-		
-		'change #filterListAgents' 		: 'setFilter'
+	events: function(){
+		return _.defaults({
+			'click li.active'				: 'preventDefault',
+			'click li.disabled'				: 'preventDefault',
+			'click ul.sortable li'			: 'preventDefault',
+			
+			'click .btn.addTask'            : 'displayModalAddTask',
+			
+			'change #filterListAgents' 		: 'setFilter',
+			'click a.linkPreviousWeek'		: 'goToPreviousWeek',
+			'click a.linkNextWeek'			: 'goToNextWeek'
 
+		}, 
+			app.Views.GenericListView.prototype.events
+		);
 
 	},
 
@@ -86,37 +93,47 @@ app.Views.TasksListView = Backbone.View.extend({
 		var officer_id = app.models.user.getUID();
 		
 		// Retrieve the year - If not exist in the URL set as the current year //
-		if(_.isNull(this.options.yearSelected)){
-			yearSelected = moment().year();
+		if(_.isUndefined(this.options.year)){
+			year = moment().year();
 		}
 		else{
-			yearSelected = this.options.yearSelected;	
+			year = this.options.year;	
 		}
 
 		// Retrieve the week of the year - - If not exist in the URL set as the current week ////
-		if(_.isNull(this.options.weekSelected)){
-			weekSelected = moment().week();
+		if(_.isUndefined(this.options.week)){
+			week = moment().week();
 		}
 		else{
-			weekSelected = this.options.weekSelected;
+			week = this.options.week;
 		}
 
-		var momentDate = moment().year(yearSelected).week(weekSelected);
-
-		//get only tasks on the current week
-		var filter = [{'field':'date_start','operator':'>=','value':momentDate.clone().weekday(1).format('YYYY-MM-DD 00:00:00')},{'field':'date_start','operator':'<=','value':momentDate.clone().weekday(6).format('YYYY-MM-DD 23:59:59')}];
+		var momentDate = moment().year(year).week(week);
 		
+		//get only tasks on the current week
+		var filter = [{'field':'date_start','operator':'>=','value':momentDate.clone().weekday(0).format('YYYY-MM-DD 00:00:00')},{'field':'date_start','operator':'<=','value':momentDate.clone().weekday(6).format('YYYY-MM-DD 23:59:59')}];
 		
 		//  Collection Task Filter if not null //
-		if(sessionStorage.getItem(this.filters) != null){
-			filter.push({'field':'user_id.id','operator':'=','value':sessionStorage.getItem(self.filters)});
+		if(!_.isUndefined(self.options.filter)){
+			self.options.filter = app.Helpers.Main.calculPageFilter(this.options.filter);
+			if(self.options.filter.value != false && self.options.filter.value > 0){
+				filter.push({field: 'user_id.id', operator: '=', value: self.options.filter.value});
+			}
 		}
+		
+		//check sort parameter
+		if(_.isUndefined(this.options.sort)){
+			this.options.sort = app.Collections.Tasks.prototype.default_sort;
+		}
+//		else{
+//			this.options.sort = app.Helpers.Main.calculPageSort(this.options.sort);	
+//		}
 		
 		self.collections = {};
 		self.collections.tasks = new app.Collections.Tasks();
 		
 		
-		//get taskUser filtered on current week and with optional filter in sessionStorage
+		//get taskUser filtered on current week and with optional filter
 		$.ajax({
 			url: '/api/open_object/users/' + app.models.user.getUID().toString() + '/scheduled_tasks',
 			type:'GET',
@@ -126,11 +143,6 @@ app.Views.TasksListView = Backbone.View.extend({
 				self.listenTo(self.collections.tasks, 'add', self.addTask);
 				self.listenTo(self.collections.tasks, 'remove', self.removeTask);
 				self.listenTo(self.collections.tasks, 'change', self.changeTask);
-				$.when(
-					//app.collections.equipments.fetch(),
-					//app.collections.categoriesTasks.fetch()
-				)
-				.done(function(){
 					
 					// Create table for each day //
 					var mondayTasks = new app.Collections.Tasks(); 	var tuesdayTasks =new app.Collections.Tasks();
@@ -212,17 +224,16 @@ app.Views.TasksListView = Backbone.View.extend({
 						
 						$(self.el).html(template);
 						
+						// Call the render Generic View //
+						app.Views.GenericListView.prototype.render(self.options);
+						
 						//display all seven days of the selected week
 						_.each(self.tasksUserFiltered, function(dayTasks, i){
 							$('#task-accordion').append(new app.Views.ItemTaskDayListView({day: dayTasks.day, tasks: dayTasks.tasks, parentListView: self}).render().el);
 						});
 	
-						if(officersDropDownList != null){
-							app.views.selectListFilterOfficerView = new app.Views.DropdownSelectListView({el: $("#filterListAgents"), collection: officersDropDownList})
-							app.views.selectListFilterOfficerView.clearAll();
-							app.views.selectListFilterOfficerView.addEmptyFirst();
-							app.views.selectListFilterOfficerView.addAll();
-						}
+						self.selectListFilterOfficerView = new app.Views.AdvancedSelectBoxView({el: $("#filterListAgents"), collection: app.Collections.Officers.prototype})
+						self.selectListFilterOfficerView.render();
 	
 						// Collapse border style //
 						$('.accordion-toggle').click(function(){
@@ -235,9 +246,13 @@ app.Views.TasksListView = Backbone.View.extend({
 	
 	
 			    		//  DropDown Filter set Selected //
-						if(sessionStorage.getItem(self.filters) != null){
+						if(!_.isUndefined(self.options.filter)){
 							$('label[for="filterListAgents"]').removeClass('muted');
-							app.views.selectListFilterOfficerView.setSelectedItem(sessionStorage.getItem(self.filters));
+							var modelUser = new app.Models.Officer();
+							modelUser.set('id', self.options.filter.value);
+							modelUser.fetch({silent:true, fields: ['name']}).done(function(){
+								self.selectListFilterOfficerView.setSelectedItem([modelUser.toJSON().id, modelUser.toJSON().name]);
+							});
 						}
 	
 	
@@ -247,11 +262,6 @@ app.Views.TasksListView = Backbone.View.extend({
 						})
 						$(self.el).hide().fadeIn();
 					});
-				})
-				.fail(function(e){
-					console.error(e);
-				});
-                               
                               
 			},
 			error: function(code){
@@ -269,26 +279,72 @@ app.Views.TasksListView = Backbone.View.extend({
 
 	},
 
-	/** Filter Tasks
+	/** Filter Request
 	*/
 	setFilter: function(event){
 		event.preventDefault();
 
-		var filterValue = $(event.target).val();
+		var link = $(event.target);
+
+		var filterValue = this.selectListFilterOfficerView.getSelectedItem();
 
 		// Set the filter in the local Storage //
 		if(filterValue != ''){
-			sessionStorage.setItem(this.filters, filterValue);
+//			sessionStorage.setItem(this.filters, filterValue);
+			this.options.filter = {by: 'agent', value:filterValue};
 		}
 		else{
-			sessionStorage.removeItem(this.filters);
+			delete this.options.filter;
 		}
 
-		this.render();
-	},
+//		if(this.options.page <= 1){
+//			this.render();
+//		}
+//		else{
+//			app.router.navigate(app.routes.interventions.baseUrl, {trigger: true, replace: true});
+//		}
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 
-	preventDefault : function(event) {
+	},
+	
+	goToPreviousWeek: function(event){
 		event.preventDefault();
-	},
+		//get currentDate and substract week by 1 (use moment to manage cases when we must change the year)
+		var year = this.options.year;
+		if(_.isUndefined(this.options.year)){
+			year = moment().year();
+		}
+		var week = this.options.week;
+		if(_.isUndefined(this.options.week)){
+			week = moment().week();
+		}
+		//apply year and week changes to options and launch urlBuid to update view
+		var momentDate = moment().year(year).week(week).subtract('weeks',1);
+		this.options.year = momentDate.year();
+		this.options.week = momentDate.week();
+		
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 
+	},
+	
+	goToNextWeek: function(event){
+		event.preventDefault();
+		//get currentDate and substract week by 1 (use moment to manage cases when we must change the year)
+		var year = this.options.year;
+		if(_.isUndefined(this.options.year)){
+			year = moment().year();
+		}
+		var week = this.options.week;
+		if(_.isUndefined(this.options.week)){
+			week = moment().week();
+		}
+		//apply year and week changes to options and launch urlBuid to update view
+		var momentDate = moment().year(year).week(week).add('weeks',1);
+		this.options.year = momentDate.year();
+		this.options.week = momentDate.week();
+		
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+
+	},
+	
 });

@@ -26,7 +26,8 @@ app.Views.ItemRequestView = Backbone.View.extend({
 	events       : {
 		'click .buttonValidRequest'	      : 'modalValidRequest',
 		'click .buttonRefusedRequest'	  : 'modalRefuseRequest',
-		'click .buttonConfirmRequest'	  : 'modalConfirmRequest'
+		'click .buttonConfirmRequest'	  : 'modalConfirmRequest',
+		'click .requestDetails'				: 'displayModalUpdateRequest',
 	},
 
 
@@ -65,6 +66,9 @@ app.Views.ItemRequestView = Backbone.View.extend({
 			break;
 			case app.Models.Request.status.valid.key:
 				var infoMessage = app.lang.infoMessages.requestValidOk;
+			break;
+			default:
+				var infoMessage = app.lang.infoMessages.requestUpdateOk;
 			break;
 		}
 
@@ -141,7 +145,12 @@ app.Views.ItemRequestView = Backbone.View.extend({
 		});
 	},
 
+	displayModalUpdateRequest: function(e){
+		e.preventDefault();
+		new app.Views.ModalRequestView({el:'#modalAddRequest', requests: app.views.requestsListView.collection, model: this.model});
 
+	},
+	
 
 	/** Highlight the row item
 	*/

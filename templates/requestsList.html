@@ -36,7 +36,7 @@
 
 	<!-- Table toolbar -->
 	<div class="tableToolbar">
-		<a href="#demandes-dinterventions/add" class="btn btn-primary"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
+		<a href="#" id="buttonAddRequest" class="btn btn-primary"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
 
 		<form class="form-search pull-right">
 			<div class="input-append">
@@ -64,7 +64,7 @@
 			<tr>
 				<th data-sort-column="id" class="span1">N°</th>
 				<th data-sort-column="name" class="span6"><%= _.capitalize(lang.label) %></th>
-				<th class="hidden-phone span5"><%= _.capitalize(lang.place) %></th>
+				<th class="hidden-phone span5"><i class="icon-map-marker icon-fixed-width" style="text-align:center;"></i><%= _.capitalize(lang.place) + ' - '%><i class="icon-wrench icon-fixed-width" style="text-align:center;"></i><%= _.capitalize(lang.equipment) %></th>
 				<th><%= _.capitalize(lang.service) %></th>
 				<th><%= _.capitalize(lang.claiment) %></th>
 				<th data-sort-column="create_date"><%= _.capitalize(lang.createDate) %></th>
@@ -108,6 +108,8 @@
 </div>
 
 
+<!-- Modal form to add a request -->
+<div id="modalAddRequest" class="modal hide fade"></div>
 
 <!-- Modal form to valid a request -->
 <div id="modalValidRequest" class="modal hide fade"></div>
