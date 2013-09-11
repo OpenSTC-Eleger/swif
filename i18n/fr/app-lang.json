@@ -224,7 +224,7 @@
 		"selectAService"	: "Sélectionner un service",
 		"selectACategory"	: "Sélectionner une catégorie",
 		"selectAVehicle"	: "Sélectionner un véhicule",
-		"selectAbsentType"	: "Sélectionner un type d'absence"
+		"selectAbsentType"	: "Sélectionner un type d'absence",
 		"selectAContact"	: "Sélectionner un contact",
 		"selectAClaimer"	: "Sélectionner un demandeur",
 		"selectAClaimerType": "Sélectionner un type de demandeur"
