@@ -29,10 +29,11 @@ app.Views.PlanningView = Backbone.View.extend({
 	initialize : function() {		
 		var self = this;
 	    console.log("Planning Details view intialization")
-	    this.initCollections().done(function(){
-	    	app.router.render(self);
-	    	//self.render();
-	    })
+	    this.initCalendarCollections().done(function(){
+	    	self.initPanelCollections().done(function(){
+	    		app.router.render(self);
+	    	});	    		
+	    });
 	},
 
 
@@ -51,11 +52,16 @@ app.Views.PlanningView = Backbone.View.extend({
 			// Change the Grid Mode of the view //
 			app.views.headerView.switchGridMode('fluid');
 			
+			var options = self.options
+			self.collections.officers = app.models.user.getOfficers();
+			self.collections.teams = app.models.user.getTeams();
+			options.collections = self.collections;
+
 			// Set variables template //
 			var template = _.template(templateData, {
 				lang: app.lang,
-				officers: app.models.user.getOfficers(),
-				teams:  app.models.user.getTeams(),				
+				officers: self.collections.officers,
+				teams:  self.collections.teams,				
 			});
 
 			$(self.el).html(template);
@@ -73,6 +79,8 @@ app.Views.PlanningView = Backbone.View.extend({
 			else
 				$("#listAgents li:first").addClass('active');
 			
+
+
 			$('#calendar').append( new app.Views.EventsListView(self.options).render().el );
 			// Display filter on the table //
 			if(sessionStorage.getItem(self.filters) != null){
@@ -88,6 +96,7 @@ app.Views.PlanningView = Backbone.View.extend({
 			}
 			
 			//interventions left panel
+
 			app.views.planningInterListView = new app.Views.PlanningInterListView(self.options)
 					
 			
@@ -104,7 +113,7 @@ app.Views.PlanningView = Backbone.View.extend({
 	},
 	
 	
-	initCollections: function(){			
+	initCalendarCollections: function(){			
 	
 		var self = this;		
 		return $.when(app.models.user.queryManagableOfficers())
@@ -120,8 +129,86 @@ app.Views.PlanningView = Backbone.View.extend({
 		.fail(function(e){
 			console.log(e);
 		})
+	},
+	
+	
+	/**
+	 * Init intervention and task collections
+	 */
+	initPanelCollections: function(){
+		var self = this;
 		
+		// Check if the collections is instantiate //
+		if(_.isUndefined(this.collections)){this.collections = {}}
+		if(_.isUndefined(this.collections.interventions)){this.collections.interventions = new app.Collections.Interventions();}
+		if(_.isUndefined(this.collections.tasks)){ this.collections.tasks = new app.Collections.Tasks(); }
+		
+		
+		// Check the parameters //
+		if(_.isUndefined(this.options.sort)){
+			this.options.sort = this.collections.interventions.default_sort;
+		}
+		else{
+			this.options.sort = app.Helpers.Main.calculPageSort(this.options.sort);	
+		}
+		this.options.page = app.Helpers.Main.calculPageOffset(this.options.page);
 
+		if(!_.isUndefined(this.options.filter)){
+			this.options.filter = app.Helpers.Main.calculPageFilter(this.options.filter);
+		}
+
+		// Create Fetch params //
+		this.fetchParams = {
+			silent : true,
+			data   : {
+				limit  : app.config.itemsPerPage,
+				offset : this.options.page.offset,
+				sort   : this.options.sort.by+' '+this.options.sort.order
+			}
+		};
+		
+		var globalSearch = {};
+		if(!_.isUndefined(this.options.search)){
+			globalSearch.search = this.options.search;
+		}
+		if(!_.isUndefined(this.options.filter) && this.options.filter.value!='notFilter' ){
+			globalSearch.filter = this.options.filter;
+		}
+		else{
+			globalSearch.filter = { by: 'state', value: app.Models.Intervention.status.open.key};
+		}
+
+		if(!_.isEmpty(globalSearch)){
+			this.fetchParams.data.filters = app.Helpers.Main.calculSearch(globalSearch, app.Models.Intervention.prototype.searchable_fields);
+		}
+		
+		return this.fetchPanelCollections();
+	
+	},
+	
+	fetchPanelCollections : function(){
+		var self = this;
+		var deferred = $.Deferred();
+		this.collections.interventions.fetch(this.fetchParams)
+		.done(function(){
+			if(self.collections.interventions.cpt > 0){
+				self.collections.tasks.fetch({silent: true,data: {filters: {0:{'field':'project_id.id','operator':'in','value':self.collections.interventions.pluck('id')}}}})
+				.done(function(){
+					deferred.resolve();						
+				})
+				.fail(function(e){
+					console.error(e);
+				})
+			}
+			else{
+				deferred.resolve();
+			}
+		})
+		.fail(function(e){
+			console.error(e);
+		})
+		
+		return deferred;
 	}
 
 });

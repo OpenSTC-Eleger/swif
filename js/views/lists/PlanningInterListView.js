@@ -40,12 +40,16 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 		
 		var self = this;
 		console.log("Planing Inter panel view intialization")
-	    this.initCollections().done(function(){
-	    	//self.collections.tasks.off();
-	    	app.router.render(self);
-	    	self.collections.interventions.off();
-	    	self.listenTo(self.collections.interventions, 'add', self.addInter);
-	    })
+		this.collections = this.options.collections;
+//	    this.initCollections().done(function(){
+//	    	//self.collections.tasks.off();
+//	    	app.router.render(self);
+//	    	self.collections.interventions.off();
+//	    	self.listenTo(self.collections.interventions, 'add', self.addInter);
+//	    })
+	    app.router.render(this);
+	    this.collections.interventions.off();
+	    this.listenTo(self.collections.interventions, 'add', this.addInter);
 	},
 	
 	addInter: function(model){
@@ -153,7 +157,7 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 		
 	/** Partial Render of the view
 	*/
-	partialRender: function () {
+	partialRender: function (model) {		
 //		var self = this;
 //		$.when(self.collections.interventions.pendingInterventionsCount(),
 //				self.collections.interventions.plannedInterventionsCount()).done(function(){
@@ -161,6 +165,12 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 //			$('#nbInterPending').html(self.collections.interventions.pendingInterventions);
 //		});
 	},
+	
+//	panelRender: function (model) {
+//		var model = this.collections.tasks.findWhere({id:model.id});	
+//		model.setId(model.id);
+//		model.fetch({silent: true, data: {fields: app.Collections.Tasks.fields}});	
+//	},
 
 //		/** Delete intervention
 //		*/
@@ -239,83 +249,6 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 			app.router.navigate(app.Helpers.Main.urlBuilder(urlParameters, this.options), {trigger: true, replace: true});	
 		},
 		
-		/**
-		 * Init intervention and task collections
-		 */
-		initCollections: function(){
-			var self = this;
-			
-			// Check if the collections is instantiate //
-			if(_.isUndefined(this.collections)){this.collections = {}}
-			if(_.isUndefined(this.collections.interventions)){this.collections.interventions = new app.Collections.Interventions();}
-			if(_.isUndefined(this.collections.tasks)){ this.collections.tasks = new app.Collections.Tasks(); }
-			
-			
-			// Check the parameters //
-			if(_.isUndefined(this.options.sort)){
-				this.options.sort = this.collections.interventions.default_sort;
-			}
-			else{
-				this.options.sort = app.Helpers.Main.calculPageSort(this.options.sort);	
-			}
-			this.options.page = app.Helpers.Main.calculPageOffset(this.options.page);
 
-			if(!_.isUndefined(this.options.filter)){
-				this.options.filter = app.Helpers.Main.calculPageFilter(this.options.filter);
-			}
-	
-			// Create Fetch params //
-			this.fetchParams = {
-				silent : true,
-				data   : {
-					limit  : app.config.itemsPerPage,
-					offset : this.options.page.offset,
-					sort   : this.options.sort.by+' '+this.options.sort.order
-				}
-			};
-			
-			var globalSearch = {};
-			if(!_.isUndefined(this.options.search)){
-				globalSearch.search = this.options.search;
-			}
-			if(!_.isUndefined(this.options.filter) && this.options.filter.value!='notFilter' ){
-				globalSearch.filter = this.options.filter;
-			}
-			else{
-				globalSearch.filter = { by: 'state', value: app.Models.Intervention.status.open.key};
-			}
-	
-			if(!_.isEmpty(globalSearch)){
-				this.fetchParams.data.filters = app.Helpers.Main.calculSearch(globalSearch, app.Models.Intervention.prototype.searchable_fields);
-			}
-			
-			return this.fetchCollections();
-		
-		},
-		
-		fetchCollections : function(){
-			var self = this;
-			var deferred = $.Deferred();
-			this.collections.interventions.fetch(this.fetchParams)
-			.done(function(){
-				if(self.collections.interventions.cpt > 0){
-					self.collections.tasks.fetch({silent: true,data: {filters: {0:{'field':'project_id.id','operator':'in','value':self.collections.interventions.pluck('id')}}}})
-					.done(function(){
-						deferred.resolve();						
-					})
-					.fail(function(e){
-						console.error(e);
-					})
-				}
-				else{
-					deferred.resolve();
-				}
-			})
-			.fail(function(e){
-				console.error(e);
-			})
-			
-			return deferred;
-		}
 
 });

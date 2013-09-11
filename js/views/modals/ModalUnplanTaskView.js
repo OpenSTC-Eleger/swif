@@ -25,7 +25,8 @@ app.Views.ModalUnplanTaskView =  app.Views.GenericModalView.extend({
 	*/
 	initialize : function() {
 		var self = this;
-
+		this.calendarModel = this.options.calendarModel;
+		this.panelModel = this.options.panelModel;
 		this.modal = $(this.el);
 		this.render();
 
@@ -59,36 +60,36 @@ app.Views.ModalUnplanTaskView =  app.Views.GenericModalView.extend({
 	
 			// Set informations in the modal //
 			var taskInter = '';
-			if(self.model.getInterventionId() != ''){ taskInter = "<i class='icon-pushpin'></i> " + self.model.getInterventionName() + " -"; }
-			var tasksInfo = taskInter + " " + self.model.getName();
+			if(self.calendarModel.getInterventionId() != ''){ taskInter = "<i class='icon-pushpin'></i> " + self.calendarModel.getInterventionName() + " -"; }
+			var tasksInfo = taskInter + " " + self.calendarModel.getName();
 	
 			// Display a label with the state of the task //
 			
-			tasksInfo += '<span class="label label-'+app.Models.Task.status[self.model.getState()].color+' pull-right">'+app.Models.Task.status[self.model.getState()].translation+'</span>';
+			tasksInfo += '<span class="label label-'+app.Models.Task.status[self.calendarModel.getState()].color+' pull-right">'+app.Models.Task.status[self.calendarModel.getState()].translation+'</span>';
 	
 	
 			// Check if the task is set to an officer or a team //
-			if(self.model.getTeamId() == false){ 
-				var assignTo = "<br /> <i class='icon-user'></i> " + self.model.getUserName();
+			if(self.calendarModel.getTeamId() == false){ 
+				var assignTo = "<br /> <i class='icon-user'></i> " + self.calendarModel.getUserName();
 				$('#formModalAboutTask').hide();
 			}
 			else{
-				var assignTo = "<br /><i class='icon-group'></i> " + self.model.getTeamName();
+				var assignTo = "<br /><i class='icon-group'></i> " + self.calendarModel.getTeamName();
 				$('#formModalAboutTask').show();
 			}
 	
 			$('#infoModalAboutTask p').html(tasksInfo);
-			$('#infoModalAboutTask small').html(self.model.getStartEndDateInformations() + assignTo);
+			$('#infoModalAboutTask small').html(self.calendarModel.getStartEndDateInformations() + assignTo);
 	
 			// Disable or not the button "Remove Of The Schedule" //
-			if(self.model.getState() == app.Models.Task.status.done.key || self.model.getState() == app.Models.Task.status.cancelled.key){
+			if(self.calendarModel.getState() == app.Models.Task.status.done.key || self.calendarModel.getState() == app.Models.Task.status.cancelled.key){
 	        	$('#btnRemoveTask').prop('disabled', true);
 	        	$('#switchWithForeman').bootstrapSwitch('setActive', false);
 			}
 	
 	
 			// Set the ID of the Task in the DOM of the modal //
-			$('#modalAboutTask').data('taskId', self.model.getId());
+			$('#modalAboutTask').data('taskId', self.calendarModel.getId());
 	
 	
 			// Display the Modal //
@@ -117,10 +118,12 @@ app.Views.ModalUnplanTaskView =  app.Views.GenericModalView.extend({
 			date_start: false,
 		};
 
-		this.model.save(params, {patch: true, silent: true})
+		this.calendarModel.save(params, {patch: true, silent: false})
 			.done(function(data) {
 				self.modal.modal('hide');
-				self.model.fetch({ data : {fields : self.model.fields} });
+				if(!_.isUndefined(self.panelModel))
+					self.panelModel.fetch({ data : {fields : self.panelModel.fields} });
+				self.calendarModel.fetch({ data : {fields : self.calendarModel.fields} });
 			})
 			.fail(function (e) {
 				console.log(e);

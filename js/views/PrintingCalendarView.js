@@ -107,7 +107,7 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 		    task["remaining_hours"] =  '';//( task.remaining_hours>0? task.remaining_hours : '' );
 	    	task["oilQtity"] =  (task.oil_qtity>0? task.oil_qtity : '');
 	    	task["oilPrice"] =  (task.oil_price>0? task.oil_price : '');
-	    	task["taskHours"] = task.date_start.format('H[h]mm') + '-' + task.date_end.format('H[h]mm');
+	    	task["taskHours"] = moment( task.date_start ).format('H[h]mm') + '-' + moment( task.date_end ).format('H[h]mm');
 	    	task["km"] = ''; //task.km;
 
 	    	task["description"] = '';
@@ -246,8 +246,7 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 	},
 	
 	getDay : function(date) {
-		var momentDate = moment( $(this.divCalendar).fullCalendar('getView').visStart );
-		return date.format('dddd D MMMM');
+		return moment(date).format('dddd D MMMM')
 	},
 	
 });

@@ -25,25 +25,25 @@ app.Views.EventsListView = Backbone.View.extend({
 	initialize: function(){	
 	
 		var self = this;
+		this.collections = this.options.collections;
+		
 		var collection = null;
 		
 		if(!_.isUndefined(this.options.team)) {
 			//get team model selected on calendar
-			this.teamMode = true;
-			collection = app.models.user.getTeams();
-			this.model = _.find(collection, function (o) { 
+			this.teamMode = true;			
+			this.model = _.find(this.collections.teams, function (o) { 
 				return _.slugify(o.name).toUpperCase() == self.options.team
 			});
 		} else {
 			//get officer model selected on calendar
-			collection = app.models.user.getOfficers(); 
 			if(_.isUndefined(this.options.officer)) {
-				this.model = collection[0];
+				this.model = this.collections.officers[0];
 				// Initialize first officer in tab if no officer passed in url
 				this.options.officer = _.slugify(this.model.name).toUpperCase()
 			}
 			else{
-				this.model = _.find(collection, function (o) { 
+				this.model = _.find(this.collections.officers, function (o) { 
 					return _.slugify(o.name).toUpperCase() == self.options.officer.toUpperCase()
 				});				
 			}
@@ -228,7 +228,7 @@ app.Views.EventsListView = Backbone.View.extend({
 				self.collection.fetch(fetchParams).done(function(data){
 					//Transforms tasks in events for fullcalendar
 					self.events = self.fetchEvents();	
-					self.listenTo(self.collection, 'change', self.change);
+					self.listenTo(self.collection, 'change', self.refreshEvents);
 					self.initPrintView();
 					//Display events on calendar					
 					callback(self.events);
@@ -280,8 +280,31 @@ app.Views.EventsListView = Backbone.View.extend({
 				var model = new app.Models.TaskSchedules();
 				
 				model.save(params, {patch: false, silent: true})
-					.done(function(data) {
-						self.change();
+					.done(function(ids) {
+						console.log(ids);
+						var task = self.collections.tasks.get(ids[0]);
+//						_.each(ids, function(id){
+//							var task = self.collections.tasks.get(id);
+						self.collections.interventions.get(task.attributes.project_id[0]).fetch();
+//							if( _.isUndefined(task) ){
+//								var task = new app.Models.Task();
+//								task.setId(id);
+//								 task.fetch().done(function(){
+//									 self.collections.tasks.add(task);
+//									 self.collections.interventions.get(task.attributes.project_id[0]).fetch();
+//								 });
+//								
+//							}
+//							else {
+//								var task = self.collections.tasks.get(id)
+//								task.fetch({ data : {fields : app.Models.Task.fields} }).done(function(){
+//									self.collections.interventions.get(task.attributes.project_id[0]).fetch();
+//								});
+//							}
+//							
+//							
+//						})
+						self.refreshEvents();
 					})
 					.fail(function (e) {
 						console.log(e);
@@ -330,8 +353,9 @@ app.Views.EventsListView = Backbone.View.extend({
     	    */
     	    eventClick: function(fcEvent, jsEvent, view) {
     			app.views.modalUnplanTaskView = new app.Views.ModalUnplanTaskView({
-    				el    : '#modalUnplanTask',
-    				model : self.collection.get(fcEvent.id)
+    				el    			: '#modalUnplanTask',
+    				calendarModel 	: self.collection.get(fcEvent.id),
+    				panelModel 		: self.collections.tasks.get(fcEvent.id)
     			});
     		},
 		});
@@ -419,10 +443,9 @@ app.Views.EventsListView = Backbone.View.extend({
 
 	/** When the model ara updated //
 	*/
-	change: function(){
+	refreshEvents: function(model){
 		$(this.divCalendar).fullCalendar( 'refetchEvents' )
 		app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.taskUpdateOk);
-		//app.views.planningInterListView.render();
 	},
 
 	/**

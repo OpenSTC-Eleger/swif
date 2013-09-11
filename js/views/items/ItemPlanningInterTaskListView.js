@@ -10,7 +10,7 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 	// The DOM events //
 	events       : {
 		'switch-change .calendarSwitch'     : 'scheduledInter',		
-		'click .btn.addTask'		              : 'displayModalAddTask',
+		'click .btn.addTask'		        : 'displayModalAddTask',
 	},
 	
 	/** View Initialization
@@ -19,10 +19,24 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 		this.options.tasks.off();
 		this.listenTo(this.options.tasks, 'add', this.add);
 		this.model = this.options.inter;
+		this.listenTo(this.model, 'change', this.change);
 	},
 
 
+	/** When the model has updated //
+	*/
+	change: function(model){
+		var self = this;
 
+		this.render();
+		
+		app.Helpers.Main.highlight($(this.el))
+
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.interventionUpdateOk);
+
+		// Partial Render //
+		//app.views.interventions.partialRender();
+	},
 
 	/** Display the view
 	*/
@@ -52,10 +66,22 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 
 			//Create item task for each one associated to inter
-			_.each(self.options.tasks.models, function(task, i){
-				//var itemInterventionTaskView = new app.Views.ItemInterventionTaskView({model: task, templateHTML:"items/itemPlanningTask"});
-				var itemPlanningInterTaskView = new app.Views.ItemPlanningInterTaskView({model: task, inter: self.options.inter});
-				$(self.el).find('#row-nested-objects').append(itemPlanningInterTaskView.render().el);
+			_.each(self.options.inter.attributes.tasks, function(taskId, i){				
+				var task = self.options.tasks.get(task);
+				if( _.isUndefined(task) ){
+					var task = new app.Models.Task();
+					task.setId(taskId);
+					task.fetch().done(function(){
+						var itemPlanningInterTaskView = new app.Views.ItemPlanningInterTaskView({model: task, inter: self.options.inter});
+						$(self.el).find('#row-nested-objects').append(itemPlanningInterTaskView.render().el);
+					});
+					
+				}
+				else {
+					//var itemInterventionTaskView = new app.Views.ItemInterventionTaskView({model: task, templateHTML:"items/itemPlanningTask"});
+					var itemPlanningInterTaskView = new app.Views.ItemPlanningInterTaskView({model: self.options.tasks.get(task), inter: self.options.inter});
+					$(self.el).find('#row-nested-objects').append(itemPlanningInterTaskView.render().el);
+				}
 			});
 			
 		});
