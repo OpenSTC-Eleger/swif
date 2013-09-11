@@ -1,11 +1,13 @@
 <!-- Application name -->
 <div class="navbar-header">
+	<% if(user.hasAuthToken()){ %>
 	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-	<span class="sr-only">Toggle navigation</span>
-	<span class="icon-bar"></span>
-	<span class="icon-bar"></span>
-	<span class="icon-bar"></span>
+		<span class="sr-only">Toggle navigation</span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
 	</button>
+	<% } %>
 	<a class="navbar-brand" href="#"><i class="icon-truck icon-large"></i> <%= lang.applicationName %> </a>
 </div>
 
@@ -17,21 +19,21 @@
 
 	<!-- Main menu application -->
 	<ul id="nav-menu-app" class="nav navbar-nav" role="menu">
-			<% _.each(user.getMenus().content[0].children, function (menuRacine, i) {%>
+		<% _.each(user.getMenus().content[0].children, function (menuRacine, i) {%>
 
-			<li class="dropdown" id="<%= _.slugify(menuRacine.tag) %>" role="menuitem">
-			<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuRacine.id %>"><%= menuRacine.name %> <b class="caret"></b></a>
-	            <ul aria-labelledby="drop-menu-app-<%= menuRacine.id %>" role="menu" class="dropdown-menu">
-	                <% _.each(menuRacine.children, function (menuItem, i) {%>
+		<li class="dropdown" id="<%= _.slugify(menuRacine.tag) %>" role="menuitem">
+		<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuRacine.id %>"><%= menuRacine.name %> <b class="caret"></b></a>
+            <ul aria-labelledby="drop-menu-app-<%= menuRacine.id %>" role="menu" class="dropdown-menu">
+                <% _.each(menuRacine.children, function (menuItem, i) {%>
 
-						<li role="menuitem">
-							<a href="#<%= _.slugify(menuItem.tag) %>"><%= menuItem.name %></a>
-						</li>
+					<li role="menuitem">
+						<a href="#<%= _.slugify(menuItem.tag) %>"><%= menuItem.name %></a>
+					</li>
 
-					<% }); %>
-				</ul>
-			</li>
-		<% }); %>
+				<% }); %>
+			</ul>
+		</li>
+	<% }); %>
 	</ul>
 
 
