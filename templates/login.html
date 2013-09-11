@@ -1,33 +1,34 @@
 <!-- Connection Form -->
-<div class="container">
+<div class="container well" id="formConnectionContainer">
 
-	<form id="formConnection" class="form-horizontal well" role="form">
-	<fieldset>
-		<legend><i class="icon-user icon-large"></i> &nbsp;<%= _.capitalize(lang.connection) %></legend>
 
-		<div class="form-group">
-			<label class="control-label col-sm-3" for="loginUser"><%= _.capitalize(lang.login) %></label>
-			<div class="col-sm-9">
-				<input type="text" id="loginUser" class="form-control" required placeholder="<%= _.capitalize(lang.login) %>" autocomplete="off" value="<%= user.getLogin() %>">
+	<h3 class="formHeading"><%= _.capitalize(lang.connection) %></h3>
+
+	<form id="formConnection" role="form">
+		<fieldset class="noMarginTop">
+	
+			<!-- Login -->
+			<div class="form-group">
+				<div class="input-group input-group-lg">
+					<label for="loginUser" class="input-group-addon"><i class="icon-user"></i></label>
+					<input type="text" id="loginUser" class="form-control" required placeholder="<%= _.capitalize(lang.login) %>" autocomplete="off" value="<%= user.getLogin() %>">
+				</div>
 			</div>
-		</div>
 
-		<div class="form-group" >
-			<label class="control-label col-sm-3" for="passUser"><%= _.capitalize(lang.password) %></label>
-			<div class="col-sm-9">
-				<input type="password" class="form-control" id="passUser" required placeholder="•••••••••••••">
+			<!-- Password -->
+			<div class="form-group">
+				<div class="input-group input-group-lg">
+					<label for="passUser" class="input-group-addon"><i class="icon-lock"></i></label>
+					<input type="password" id="passUser" class="form-control" required placeholder="<%= _.capitalize(lang.password) %>">
+				</div>
+				<% if(!_.isNull(user.getUID())){ %>
+					<p class="help-block" id="lastConnection"><%= _.capitalize(lang.lastConnection) %>  <%= moment(user.getLastConnection()).format('LLL') %></p>
+				<% } %>
 			</div>
-		</div>
 
-		<div class="form-group">
-			<button type="submit" class="btn btn-primary pull-right"><i class="icon-signin icon-large"></i> &nbsp;<%= _.capitalize(lang.actions.logIn) %></button>
-		</div>
+				<button type="submit" class="btn btn-primary btn-block btn-lg" data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.connectionInProgress %>"><%= _.capitalize(lang.actions.logIn) %></button>
 
-		<% if(!_.isNull(user.getUID())){ %>
-			<small class="text-muted" id="lastConnection"><%= _.capitalize(lang.lastConnection) %>  <%= moment(user.getLastConnection()).format("LLL") %></small>
-		<% } %>
-
-	</fieldset>
+		</fieldset>
 	</form>
 
 </div>

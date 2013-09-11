@@ -66,14 +66,11 @@ app.Views.LoginView = Backbone.View.extend({
 	login: function(e){
 		e.preventDefault();
 
-		// Retrieve data from the form //
-		var login = $('#loginUser').val();
-		var pass = $('#passUser').val();
-
-
 		// Execution user login function //
-		this.model.login(login, pass);
+		this.model.login($('#loginUser').val(), $('#passUser').val());
 
+		
+		// Reset password value //
 		$('#passUser').val('');
 	},
 
