@@ -1,77 +1,83 @@
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3><%= _.capitalize(lang.actions.addClaimer) %></h3>
-</div>
+<div class="modal-dialog">
+	<div class="modal-content">
 
-<div class="modal-body">
-    <form id="formSaveClaimer" action="#" class="form-horizontal">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 class="modal-title"><%= _.capitalize(lang.actions.addClaimer) %></h3>
+		</div>
 
-        <fieldset>
-            <legend><%= lang.aboutTheClaimer %></legend>
+		<div class="modal-body">
+			<form id="formSaveClaimer" action="#" class="form-horizontal" role="form">
 
-            <div class="control-group">
-                <label for="claimerName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
+				<fieldset>
+					<legend><%= lang.aboutTheClaimer %></legend>
 
-                <div class="controls">
-                    <input type="text" id="claimerName" name="claimerName" required="required" value="<%= claimer.get('name') %>" />
-                    <span class="help-inline"></span>
-                </div>
-            </div>
+					<div class="form-group">
+						<label for="claimerName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 
-
-            <div class="control-group">
-                <label for="claimerType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
-
-                <div class="controls">
-                    <input id="claimerType" class="select2" style="width: 66%" required data-placeholder="<%= lang.actions.selectACategory %>"
-                        <% if(!claimer.isNew() && !_.isNull(claimer.get('type_id'))){ %>
-                            data-selected-value='<%= JSON.stringify(claimer.objectifiedTypeId()) %>'
-                        <% }  %>
-                    />
-                    <span class="help-inline"></span>
-                </div>
-            </div>
-
-        </fieldset>
+						<div class="col-sm-9">
+							<input type="text" id="claimerName" name="claimerName" required="required" value="<%= claimer.get('name') %>" />
+							<span class="help-inline"></span>
+						</div>
+					</div>
 
 
-        <fieldset>
-            <legend><%= _.capitalize(lang.organization) %></legend>
+					<div class="form-group">
+						<label for="claimerType" class="control-label col-sm-3"><%= _.capitalize(lang.type) %>:</label>
 
-            <div class="control-group">
-                <label for="claimerTechnicalService" class="control-label"><%= _.capitalize(lang.technicalService) %>:</label>
+						<div class="col-sm-9">
+							<input id="claimerType" class="select2" required data-placeholder="<%= lang.actions.selectACategory %>"
+								<% if(!claimer.isNew() && !_.isNull(claimer.get('type_id'))){ %>
+									data-selected-value='<%= JSON.stringify(claimer.objectifiedTypeId()) %>'
+								<% }  %>
+							/>
+							<span class="help-inline"></span>
+						</div>
+					</div>
 
-                <div class="controls">
-                    <input id="claimerTechnicalService" class="select2" style="width: 66%" required
-                           data-placeholder="<%= lang.actions.selectAService %>"
-                            <% if(!claimer.isNew() && !_.isNull(claimer.get('technical_service_id'))) { %>
-                                data-selected-value='<%= JSON.stringify(claimer.objectifiedTechnicalServiceId()) %>'
-                           <% } %>
-                    />
-                    <span class="help-inline"></span>
-                </div>
-            </div>
+				</fieldset>
 
-            <div class="control-group">
-                <label for="claimerTechnicalSite" class="control-label"><%= _.capitalize(lang.defaultPlace) %>:</label>
 
-                <div class="controls">
-                    <input id="claimerTechnicalSite" class="select2" style="width: 66%" required
-                           data-placeholder="<%= lang.actions.selectAPlace %>"
-                    <% if(!claimer.isNew() && !_.isNull(claimer.get('technical_site_id'))) { %>
-                    data-selected-value='<%= JSON.stringify(claimer.objectifiedTechnicalSiteId()) %>'
-                    <% } %>
-                    /
-                    <span class="help-inline"></span>
-                </div>
-            </div>
+				<fieldset>
+					<legend><%= _.capitalize(lang.organization) %></legend>
 
-        </fieldset>
+					<div class="form-group">
+						<label for="claimerTechnicalService" class="control-label col-sm-3"><%= _.capitalize(lang.technicalService) %>:</label>
 
-    </form>
-</div>
+						<div class="col-sm-9">
+							<input id="claimerTechnicalService" class="select2" required
+								   data-placeholder="<%= lang.actions.selectAService %>"
+									<% if(!claimer.isNew() && !_.isNull(claimer.get('technical_service_id'))) { %>
+										data-selected-value='<%= JSON.stringify(claimer.objectifiedTechnicalServiceId()) %>'
+								   <% } %>
+							/>
+							<span class="help-inline"></span>
+						</div>
+					</div>
 
-<div class="modal-footer">
-    <button type="submit" form="formSaveClaimer" class="btn btn-primary saveClaimer"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
-    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+					<div class="form-group">
+						<label for="claimerTechnicalSite" class="control-label col-sm-3"><%= _.capitalize(lang.defaultPlace) %>:</label>
+
+						<div class="col-sm-9">
+							<input id="claimerTechnicalSite" class="select2" required
+								   data-placeholder="<%= lang.actions.selectAPlace %>"
+							<% if(!claimer.isNew() && !_.isNull(claimer.get('technical_site_id'))) { %>
+							data-selected-value='<%= JSON.stringify(claimer.objectifiedTechnicalSiteId()) %>'
+							<% } %>
+							/
+							<span class="help-inline"></span>
+						</div>
+					</div>
+
+				</fieldset>
+
+			</form>
+		</div>
+
+		<div class="modal-footer">
+			<button type="submit" form="formSaveClaimer" class="btn btn-primary saveClaimer"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+			<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+
+	</div>
 </div>

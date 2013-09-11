@@ -55,10 +55,10 @@
 <td>
 	<% if(task.actions.indexOf("light_mode_finished") > -1) { %>
 			
-		<div class="btn-group">
-			<button class="btn btn-mini btn-success no-outline buttonTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok icon-fixed-width"></i>
+		<div class="btn-group btn-group-xs">
+			<button class="btn btn-success buttonTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok icon-fixed-width"></i>
 			</button>
-			<button class="btn btn-mini dropdown-toggle no-outline" data-toggle="dropdown">
+			<button class="btn dropdown-toggle no-outline" data-toggle="dropdown">
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu pull-right text-left">
