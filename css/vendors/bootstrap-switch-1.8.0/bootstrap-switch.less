@@ -1,10 +1,19 @@
 /* ============================================================
- * bootstrapSwitch v1.3 by Larentis Mattia @spiritualGuru
+ * bootstrapSwitch v1.8 by Larentis Mattia @SpiritualGuru
+ * http://www.larentis.eu/
+ *
+ * Enhanced for radiobuttons by Stein, Peter @BdMdesigN
+ * http://www.bdmdesign.org/
+ *
+ * Project site:
  * http://www.larentis.eu/switch/
  * ============================================================
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  * ============================================================ */
+
+@import "deps/variables";
+@import "deps/mixins";
 
 .has-switch {
   display: inline-block;
@@ -17,13 +26,22 @@
   overflow: hidden;
   line-height: 8px;
   .user-select(none);
+  vertical-align: middle;
 
   min-width: 100px;
 
   &.switch-mini {
     min-width: 72px;
   }
-
+  &.switch-mini i.switch-mini-icons {
+    height: 1.20em;
+    line-height: 9px;
+    vertical-align: text-top;
+    text-align: center;
+    transform: scale(0.6);
+    margin-top: -1px;
+    margin-bottom: -1px;
+  }
   &.switch-small {
     min-width: 80px;
   }
@@ -55,6 +73,7 @@
       left: 0%;
     }
   }
+  input[type=radio],
   input[type=checkbox] {
     //debug
     display: none;
@@ -107,7 +126,7 @@
     border-left: 1px solid @btnBorder;
     border-right: 1px solid @btnBorder;
 
-    .buttonBackground(@btnBackground, @btnBackgroundHighlight);
+    .buttonBackground(@btnBackground, @btnBackgroundHighlight, @grayDark);
 
     i {
       color: #000;
@@ -148,6 +167,10 @@
 
     &.switch-danger {
       .buttonBackground(@btnDangerBackgroundHighlight, @btnDangerBackground);
+    }
+
+    &.switch-default {
+      .buttonBackground(@btnBackgroundHighlight, @btnBackground, @grayDark, 0 1px 1px rgba(255,255,255,.75));
     }
   }
 }

@@ -126,6 +126,7 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		// Set the filter value in the options of the view //
 		if(filterValue != 'delete-filter'){
 			this.options.filter = { by: 'state', value: filterValue};
+			delete this.options.page;
 		}
 		else{
 			delete this.options.filter;
@@ -146,6 +147,7 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		if(filterValue != ''){
 			this.options.filter = { by: 'state', value: filterValue};
 			delete this.options.search;
+			delete this.options.page;
 		}
 
 		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
