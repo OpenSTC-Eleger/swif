@@ -38,6 +38,18 @@ app.Models.Intervention = app.Models.GenericModel.extend({
 	setCancelReason : function(value, silent) {
 		this.set({ cancel_reason : value }, {silent: silent});
 	},  
+	
+	getSite : function(type) {
+		if(this.get('site1')){
+			switch(type){
+				case 'id': 
+					return this.get('site1')[0];
+				break;
+				default:
+					return _.titleize(this.get('site1')[1].toLowerCase());
+			}
+		}
+	},
 
 	/** Model Initialization
 	*/

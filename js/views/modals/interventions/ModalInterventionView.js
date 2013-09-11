@@ -13,6 +13,8 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 		return _.defaults({
 		'submit #formIntervention'          : 'saveIntervention',
 		'change #interventionDetailService' : 'fillDropdownService',
+		'click a.linkSelectPlaceEquipment'	: 'changeSelectPlaceEquipment',
+
 		},
 		app.Views.GenericModalView.prototype.events);
 		
@@ -72,12 +74,23 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 				app.views.advancedSelectBoxInterventionServicesView.setSearchParam({field:'technical',operator:'=',value:'True'},true)
 				app.views.advancedSelectBoxInterventionServicesView.render();
 
+				currentIntervention = self.model.toJSON();
+				
+				//display equipment collection os place collection according to 'has_equipment'
+				if(currentIntervention.has_equipment){
+					self.advancedSelectBoxInterventionPlaceOrEquipment = new app.Views.AdvancedSelectBoxView({el:'#interventionPlaceEquipment', collection: app.Collections.Equipments.prototype});
+				}
+				else{
+					self.advancedSelectBoxInterventionPlaceOrEquipment = new app.Views.AdvancedSelectBoxView({el:'#interventionPlaceEquipment', collection: app.Collections.Places.prototype});
+
+				}
+				self.advancedSelectBoxInterventionPlaceOrEquipment.render();
+
 				
 				// Fill select Places  //
-				app.views.advancedSelectBoxInterventionPlacesView = new app.Views.AdvancedSelectBoxView({el: $("#interventionPlace"), collection: app.Collections.Places.prototype});
+				app.views.advancedSelectBoxInterventionPlacesView = new app.Views.AdvancedSelectBoxView({el: $("#interventionPlaceIfEquipment"), collection: app.Collections.Places.prototype});
 				app.views.advancedSelectBoxInterventionPlacesView.render();	
 				
-				currentIntervention = self.model.toJSON();
 				
 				if(!self.create && currentIntervention.service_id.length > 0 ) {
 					self.renderService(currentIntervention.service_id);
@@ -85,15 +98,25 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 				else{
 					self.renderService(null);
 				}
+				if(!self.create){
+					if(currentIntervention.has_equipment){
+						self.setSelectPlaceEquipment('equipment');
+						self.renderSiteOrEquipment(currentIntervention.equipment_id);
+						if(currentIntervention.site1){
+							self.renderSite(currentIntervention.site1);
+						}					
+					}
+					else{
+						self.setSelectPlaceEquipment('place');
+						if(currentIntervention.site1.length > 0 ){
+							self.renderSiteOrEquipment(currentIntervention.site1);
+						}
+						else{
+							self.renderSite(null);
+						}
+					}
+				}
 				
-				if(!self.create && currentIntervention.site1.length > 0 ){
-					self.renderSite(currentIntervention.site1);
-				}
-				else{
-					self.renderSite(null)
-				}
-			
-
 				$('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 
 
@@ -130,7 +153,13 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 	/** Save the intervention
 	*/
 	saveIntervention: function (e) {
-
+    	//private function used to check data: if no value, return false
+	    function evalField(fieldValue){
+	    	if(fieldValue == '' || _.isUndefined(fieldValue) || fieldValue == null){
+	    		return false;
+	    	}
+	    	return fieldValue;
+	    }
 		e.preventDefault();
 
 		var self = this;
@@ -140,14 +169,23 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 		var params = {
 			name: this.$('#interventionName').val(),
 			state: this.$('#isTemplate').is(':checked')?"template":"open",
-			//active: this.$('#isTemplate').is(':checked')?false:true,
 			description: this.$('#interventionDescription').val(),
 			date_deadline: new moment($('#interventionDateDeadline').val(), 'DD-MM-YYYY HH:mm').add('hours',2).toDate(),
 			service_id: app.views.advancedSelectBoxInterventionServicesView.getSelectedItem(),
-			//site1: this.$('#interventionPlace').val(),
-			site1: app.views.advancedSelectBoxInterventionPlacesView.getSelectedItem(),
+//			site1: app.views.advancedSelectBoxInterventionPlacesView.getSelectedItem(),
 			site_details: this.$('#interventionPlacePrecision').val(),
 		};
+		
+	    //adapt data mapping if intervention according that intervention belongs to a place or an equipment
+	    if($('#btnSelectPlaceEquipment').data('item') == 'place'){
+	    	params.site1 = evalField(this.advancedSelectBoxInterventionPlaceOrEquipment.getSelectedItem());
+	    	params.has_equipment = false;
+    	}
+    	else{
+    		params.site1 = evalField(app.views.advancedSelectBoxInterventionPlacesView.getSelectedItem()); 
+    		params.equipment_id = evalField(this.advancedSelectBoxInterventionPlaceOrEquipment.getSelectedItem());
+    		params.has_equipment = true;
+    	}
 
 		this.model.save(params,{patch:!this.create, wait: true}).done(function(data){
 			self.modal.modal('hide');
@@ -194,12 +232,14 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 			app.views.advancedSelectBoxInterventionPlacesView.setSelectedItem(site);
 	},
 
-
+	renderSiteOrEquipment: function(valueM2o){
+		this.advancedSelectBoxInterventionPlaceOrEquipment.setSelectedItem(valueM2o);
+	},
 
 	renderService: function ( service ) {
 		if(service != null){
 			app.views.advancedSelectBoxInterventionServicesView.setSelectedItem(service);
-			app.views.advancedSelectBoxInterventionPlacesView.setSearchParam({field:'service_ids.id',operator:'=',value:service[0]},true);
+			this.setParamOnSitesEquipments(service);
 		}	
 	},
 
@@ -208,10 +248,76 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 	fillDropdownService: function(e){
 		e.preventDefault();
 		var service = app.views.advancedSelectBoxInterventionServicesView.getSelectedItem();
-		app.views.advancedSelectBoxInterventionPlacesView.resetSearchParams();
-		if(service != '' && service > 0){
-			app.views.advancedSelectBoxInterventionPlacesView.setSearchParam({field:'service_ids.id',operator:'=',value:service},true);
-		}
+		this.setParamOnSitesEquipments(service);
 	},
+	
+    /**
+     * Used to update filter of 'places/equipments' select2, reset value and last filters
+     */
+    setParamOnSitesEquipments: function(service_id){
+    	if(service_id == null){
+    		service_id = app.views.advancedSelectBoxInterventionServicesView.getSelectedItem();
+    	}
+    	this.advancedSelectBoxInterventionPlaceOrEquipment.reset();
+    	this.advancedSelectBoxInterventionPlaceOrEquipment.resetSearchParams();
+    	if(service_id != '' && service_id){
+    		this.advancedSelectBoxInterventionPlaceOrEquipment.setSearchParam({field:'service_ids.id', operator:'=', value:service_id});
+    	}
+    	//if it's an equipment, check too if boolean 'internal_user' is True
+    	if($("#btnSelectPlaceEquipment").data('item') == 'equipment'){
+    		this.advancedSelectBoxInterventionPlaceOrEquipment.setSearchParam({field:'internal_use', operator:'=', value:true});
+    	}
+    },
+	
+    displaySiteIfEquipment: function(display){
+    	if(display){
+    		app.views.advancedSelectBoxInterventionPlacesView.reset();
+    		$('#interventionPlaceIfEquipmentBlock').css({display:'block'});
+    	}
+    	else{
+    		$('#interventionPlaceIfEquipmentBlock').css({display:'none'});
+    	}
+    },
+	
+    //when clicking on site or equipment select filter, update selectBox collection if data-item change
+    setSelectPlaceEquipment: function(item){
+    	var itemSelectedBefore = $('#btnSelectPlaceEquipment').data('item');
+    	//if user wants to change type of collection, we update selectBox, else, do nothing
+    	if(item != itemSelectedBefore){
+    		//if user wants to switch to equipment, we display place selectBox too, else, we hide it
+    		this.displaySiteIfEquipment(item != 'place');
+    		//get parameters of the select2 to keep trace of its state
+    		var collection = null;
+    		var el = this.advancedSelectBoxInterventionPlaceOrEquipment.el;
+    		if(item == 'place'){
+    			$('#interventionPlaceEquipment').attr('data-placeholder',app.lang.actions.selectAPlaceShort);
+    			collection = app.Collections.Places.prototype;
+    			$('#btnSelectPlaceEquipment').data('item', 'place');
+    			$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('icon-wrench');
+    			$('#btnSelectPlaceEquipment').find('.iconItem').addClass('icon-map-marker');
+    		}
+    		else{
+    			$('#interventionPlaceEquipment').attr('data-placeholder',app.lang.actions.selectAnEquipmentShort);
+    			collection = app.Collections.Equipments.prototype;	    			
+    			$('#btnSelectPlaceEquipment').data('item', 'equipment');
+    			$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('icon-map-marker');
+    			$('#btnSelectPlaceEquipment').find('.iconItem').addClass('icon-wrench');
+    		}
+    		this.advancedSelectBoxInterventionPlaceOrEquipment = new app.Views.AdvancedSelectBoxView({el:el, collection:collection});
+			this.setParamOnSitesEquipments();
+			this.advancedSelectBoxInterventionPlaceOrEquipment.render();
+    	}
+    },
+	
+    changeSelectPlaceEquipment: function(e){
+    	if(e != null){
+    		e.preventDefault();
+    	}
+    	var link = $(e.target);
+    	var item = '';
+    	if(link.is('a')){item = link.data('item')}
+    	else{item = link.parent('a').data('item')}
+    	this.setSelectPlaceEquipment(item);
+    },
 });
 

@@ -18,7 +18,10 @@
 		<% } %>
 	</p>
 </td>
-<td><%= intervention.site1[1] %></td>
+<td><span data-toggle="tooltip" data-original-title="<%= intervention.has_equipment && intervention.site1 ? lang.location + ' : ' + intervention.site1[1]:''%>">
+<% if(intervention.has_equipment){%><i class="icon-wrench icon-fixed-width" style="text-align:center;"></i><%= intervention.equipment_id[1]%>
+<%}else{%><i class="icon-map-marker icon-fixed-width" style="text-align:center;"></i><%= intervention.site1[1]%><% }%>
+<span></td>
 <td><%= (intervention.date_deadline != false ? moment(intervention.date_deadline).format('LL') : '') %></td>
 <td><%= (intervention.planned_hours != false ? app.Helpers.Main.decimalNumberToTime(intervention.planned_hours, 'human') : '') %></td>
 <td><%= (intervention.effective_hours != false ? app.Helpers.Main.decimalNumberToTime(intervention.effective_hours, 'human') : '') %></td>
