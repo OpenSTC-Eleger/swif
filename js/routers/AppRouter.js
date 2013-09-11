@@ -176,12 +176,16 @@ app.Router = Backbone.Router.extend({
 
 	/** Tasks List 
 	*/
-	tasksCheck: function(year, week){
-	
-		var yearSelected = year;
-		var weekSelected = week;
-
-		app.views.tasksListView = new app.Views.TasksListView({yearSelected: yearSelected, weekSelected: weekSelected});
+	tasksCheck: function(search, filter, sort, page, year, week){
+		var params = {};
+		if(!_.isNull(search)){params.search = search}
+		if(!_.isNull(filter)){params.filter = filter}
+		if(!_.isNull(sort)){params.sort = sort}
+		if(!_.isNull(page)){params.page = page}
+		if(!_.isNull(year)){params.year = year}
+		if(!_.isNull(week)){params.week = week}
+		
+		app.views.tasksListView = new app.Views.TasksListView(params);
 		this.render(app.views.tasksListView);
 	},
 
