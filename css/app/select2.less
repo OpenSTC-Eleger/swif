@@ -1,5 +1,17 @@
 /* Plugin SELECT2
 -------------------------------------------------- */
+.select2{
+	width: 100%;
+
+	.select2-choice{
+  		height: @input-height-base; // Make inputs at least the height of their button counterpart (base line-height + padding + border)
+  		padding-top: 3px;
+  		padding-left: 10px;
+	}
+}
+
+
+// Select2 Large //
 div.select2-container.tag-large ul.select2-choices{
 
 	background-image: none;
@@ -26,8 +38,4 @@ div.select2-container.tag-large ul.select2-choices{
 			left: 5px;
 		}
 	}
-}
-
-.select2{
-	width: 100%;
 }
