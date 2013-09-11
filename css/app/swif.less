@@ -36,46 +36,18 @@ body{
 	display: none	
 }
 
-
-
-@media (min-width: @screen-xl-desktop) {
-  .container {
-    max-width: @container-xl-desktop;
-  }
- }
-
-
 fieldset{
 	margin-top: @line-height-computed*1.5;
 }
 
-
-div.datepicker{
-	z-index: @zindex-modal+1 !important;
-}
-
-
 .popover-title, .bolder{
 	font-weight: bolder;
 }
-.no-outline{
-	outline: none !important;
-}
-.spaceBottom{
-	margin-bottom: 30px;
-}
+
 .isCheck{
 	text-decoration: line-through;
 }
-.displayInlineBlock{
-	display: inline-block;
-}
-.marginTop{
-	margin-top: 35px;
-}
-.marginLeft{
-	margin-left: 15px;
-}
+
 .noMarginTop{
 	margin-top: 0;
 }
@@ -83,19 +55,45 @@ div.datepicker{
 	margin-bottom: 0 !important;
 }
 
+
+
+/* XL Grid
+-------------------------------------------------- */
+@media (min-width: @screen-xl-desktop) {
+  .container {
+    max-width: @container-xl-desktop;
+  }
+}
+
+
+
+/* Hack for DatePicker
+-------------------------------------------------- */
+div.datepicker{
+	z-index: @zindex-modal+1 !important;
+}
+
+
+
+/* Selection Color
+-------------------------------------------------- */
+::selection { background: lighten(@pink, 20%); color: #FFF; }
+::-moz-selection { background: lighten(@pink, 20%); color: #FFF; }
+
+
+
+/* Tooltip element cursor
+-------------------------------------------------- */
+*:not(i)[data-toggle="tooltip"]:not([data-original-title='']) { cursor: help; }
+
+
+
+
 .sortablePlaceHold{
 	background-color: @well-bg;
 	height: 28px;
 	border: thin dashed darken(@well-bg, 65%);
 }
-
-::selection { background: lighten(@pink, 20%); color: #FFF; }
-::-moz-selection { background: lighten(@pink, 20%); color: #FFF; }
-
-
-// <sup> Badge //
-*:not(i)[data-toggle="tooltip"]:not([data-original-title='']) { cursor: help; }
-
 
 
 // Table Toolbar //
@@ -104,8 +102,8 @@ div.datepicker{
 }
 
 
-
-// pNotify compatibility with Font Awesome 3.0.2 //
+/* pNotify compatibility with Font Awesome 3.0.2
+-------------------------------------------------- */
 div.ui-pnotify-container{
 	.show();
 }
@@ -113,10 +111,6 @@ div.ui-pnotify.big-icon div.icon-large div.ui-pnotify-icon{
 	.noMarginTop();
 }
 
-
-div.progress{
-	.noMarginBottom();
-}
 
 // Filter Button Table //
 a.filter-button.filter-disabled{
@@ -127,11 +121,6 @@ a.filter-button.filter-disabled{
 		.opacity(1);
 		color: none;
 	}
-}
-
-
-div.accordion-group{
-	margin-bottom: 5px;
 }
 
 
@@ -358,16 +347,4 @@ tr.row-nested-objects-collapse td.nestedTD{
 }
 tr.info td:first-child{
 	font-weight: bolder;
-}
-
-
-/* Responsive
--------------------------------------------------- */
-@media (max-width: 979px) {
-
-  	// Planning list Agents //
-	#listAgents li, #listTeams li{
-		width: 45%;
-	}
-
 }
