@@ -149,8 +149,6 @@ var app = {
 
 		var deferred = $.Deferred();
 
-		console.log(message);
-
 		switch(action){
 			case 'display':
 				if(_.isUndefined(message)){ 

@@ -94,7 +94,7 @@ Version: 3.4.2 Timestamp: Mon Aug 12 15:04:12 PDT 2013
     height: 12px;
     position: absolute;
     right: 24px;
-    top: 7px;
+    top: 9px;
 
     font-size: 1px;
     text-decoration: none;
@@ -553,7 +553,7 @@ disabled look for disabled choices in the results dropdown
     height: 13px;
     position: absolute;
     right: 3px;
-    top: 3px;
+    top: 9px;
 
     font-size: 1px;
     outline: none;
