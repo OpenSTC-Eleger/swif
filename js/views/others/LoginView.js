@@ -11,8 +11,11 @@ app.Views.LoginView = Backbone.View.extend({
 	
 	// The DOM events //
 	events: {
-		'submit #formConnection'  :    'login',
-		'change #loginUser'       :    'hideLastConnection'
+		'submit #formConnection'          : 'login',
+		'change #loginUser'               : 'hideLastConnection',
+
+		'mousedown #toggelDisplayPassword': 'displayPassword',
+		'mouseup #toggelDisplayPassword'  : 'hidePassword'
 	},
 
 
@@ -43,7 +46,10 @@ app.Views.LoginView = Backbone.View.extend({
 
 			$(self.el).html(template);
 
-			
+			// Set the Tooltip //
+			$('*[data-toggle="tooltip"]').tooltip();
+
+
 			// Set the focus to the login or password input //
 			if(!_.isNull(self.model.getUID())){
 				$('#passUser').focus();
@@ -81,5 +87,19 @@ app.Views.LoginView = Backbone.View.extend({
 	hideLastConnection: function(){
 		$('#lastConnection').fadeOut();
 	},
+
+
+
+	/** Display the password
+	*/
+	displayPassword: function(){
+		$('#passUser').prop('type', 'text');
+	},
+
+	/** Hide the password
+	*/
+	hidePassword: function(){
+		$('#passUser').prop('type', 'password');
+	}
 
 });
