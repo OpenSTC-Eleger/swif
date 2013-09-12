@@ -113,11 +113,11 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 			
 			
 			// Pagination view //
-//			app.views.paginationView = new app.Views.PaginationView({ 
-//				page       : self.options.page.page,
-//				collection : self.collections.interventions
-//			})
-//			app.views.paginationView.render();
+			app.views.paginationView = new app.Views.PaginationView({ 
+				page       : self.options.page.page,
+				collection : self.collections.interventions
+			})
+			app.views.paginationView.render();
 			
 			
 			// Render Filter Link //

@@ -1,3 +1,5 @@
+	
+	<!-- Interventions toolbar -->	
 	<div id="planningToolbar" class="row-fluid">
 		<!-- href add intervention -->
 		<a href="#" class="btn btn-primary no-outline  modalCreateInter"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
@@ -29,6 +31,10 @@
 		</div>
 		<br />
 	</div>
+	<!-- /Interventions toolbar -->
+	
+	
+	<!-- Intervention panel -->
 	<% if( _.size(interventions) > 0 ) { %>
 		<table class="table-interventions table table-bordered table-hover table-sorter table-striped">
 				<thead>
@@ -51,6 +57,6 @@
 		<!-- No interventions to display -->
 		<div class="alert alert-info">
 			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>
-		</div>
-	
+		</div>	
 	<% } %>
+	<!-- /Intervention panel -->
