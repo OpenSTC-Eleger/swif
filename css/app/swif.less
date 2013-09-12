@@ -11,6 +11,7 @@
 @import 'coponent-animations';
 @import 'tables';
 @import 'types';
+@import 'form';
 
 // Customizing plugin //
 @import 'select2';
@@ -55,6 +56,16 @@ fieldset{
 	margin-bottom: 0 !important;
 }
 
+.tableToolbar{
+	margin-bottom: 15px;
+}
+
+.popover-content hr{
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+
 
 
 /* XL Grid
@@ -63,6 +74,13 @@ fieldset{
   .container {
     max-width: @container-xl-desktop;
   }
+}
+
+
+/* HEADER
+-------------------------------------------------- */
+div.page-header{
+	margin-top: 5px;
 }
 
 
@@ -88,25 +106,8 @@ div.datepicker{
 
 
 
-/* Input group addons Innter
+/* Sortable PlaceHolder
 -------------------------------------------------- */
-.input-group-addon-inner{
-	height: 45px;
-	position: absolute;
-	padding: @padding-large-vertical @padding-large-horizontal;
-	right: @padding-large-horizontal/2;
-	margin-top: 2px;
-
-	i{
-		cursor: pointer;
-		.text-muted();
-	}
-
-}
-
-
-
-
 .sortablePlaceHold{
 	background-color: @well-bg;
 	height: 28px;
@@ -125,7 +126,9 @@ div.ui-pnotify.big-icon div.icon-large div.ui-pnotify-icon{
 }
 
 
-// Filter Button Table //
+
+/* Filter Button Table
+-------------------------------------------------- */
 a.filter-button.filter-disabled{
 	.opacity(.4);
 	.text-muted();
@@ -138,34 +141,15 @@ a.filter-button.filter-disabled{
 
 
 
-/* HEADER
--------------------------------------------------- */
-div.page-header{
-	margin-top: 5px;
-}
-
-// Table Toolbar //
-.tableToolbar{
-	margin-bottom: 15px;
-}
 
 
-// List in Popover Tooltip //
-.tooltip-inner ul li, .popover-content ul{
-	margin-left: 0;
-}
-.tooltip-inner ul li, .popover-content ul li{
-	height: 20px !important;
-	width: auto !important;
-}
-.popover-content hr{
-	margin-top: 8px;
-	margin-bottom: 8px;
-}
+
+
 
 
 /* PYF Twitter Bootstrap Accordion and button dropdown overflow issue 
 	http://stackoverflow.com/questions/10959068/twitter-bootstrap-accordion-and-button-dropdown-overflow-issue
+	TODO
 */
 .accordion-body[class*="in collapse"]{ overflow:visible; }
 
