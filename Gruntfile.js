@@ -3,14 +3,23 @@ module.exports = function (grunt) {
 		pkg   : grunt.file.readJSON('package.json'),
 		uglify: {
 			build: {
-				src : 'src/<%= pkg.name %>.js',
-				dest: 'build/<%= pkg.name %>.min.js'
+				files: {
+					'js/swif.min.js': ['js/**/*.js','!js/lib/**', '!js/**.min.js']
+				}
+			},
+			options: {
+				compress: true
 			}
 		},
 		less: {
 			options: {
 				compress: true,
 				yuicompress: true
+			},
+			build: {
+				files: {
+					"css/swif.css": "css/startup.less"
+				}
 			}
 
 		}
