@@ -12,9 +12,7 @@ app.Views.TasksListView = app.Views.GenericListView.extend({
 	// The DOM events //
 	events: {
 		'click .btn.addTask'            : 'displayModalAddTask',
-		
 		'change #filterListAgents' 		: 'setFilter'
-
 	},
 
 	/** View Initialization
