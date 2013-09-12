@@ -229,8 +229,8 @@
 		"selectAbsentType"	: "Sélectionner un type d'absence",
 		"selectAContact"	: "Sélectionner un contact",
 		"selectAClaimer"	: "Sélectionner un demandeur",
-		"selectAClaimerType": "Sélectionner un type de demandeur"
-		
+		"selectAClaimerType": "Sélectionner un type de demandeur",
+		"displayPassword"   : "Afficher le mot de passe",
 	},
 
 	"errorMessages" : {

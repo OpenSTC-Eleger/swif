@@ -20,6 +20,8 @@
 				<div class="input-group input-group-lg">
 					<label for="passUser" class="input-group-addon"><i class="icon-lock"></i></label>
 					<input type="password" id="passUser" class="form-control" required placeholder="<%= _.capitalize(lang.password) %>">
+					<span class="input-group-addon-inner"><i id="toggelDisplayPassword" class="icon-eye-open icon-large" data-toggle="tooltip" data-original-title="<%= lang.actions.displayPassword %>"></i>
+					</span>
 				</div>
 				<% if(!_.isNull(user.getUID())){ %>
 					<p class="help-block" id="lastConnection"><%= _.capitalize(lang.lastConnection) %>  <%= moment(user.getLastConnection()).format('LLL') %></p>
