@@ -1,119 +1,125 @@
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3><%= lang.viewsTitles.statementTask %></h3>
-</div>
+<div class="modal-dialog">
+	<div class="modal-content">
 
-<div class="modal-body custom-height-modal">
-
-	<blockquote id="infoModalTaskDone" class="spaceBottom">
-		<p><%=task.name%></p>
-		<small><%= task.project_id[1]%></small>
-	</blockquote>
-
-    <form id="formTaskDone" action="#" class="form-horizontal">
-	
-		<div>
-			<hr>
-			<div id="timeSpentSection" class="control-group	">
-				<label for="eventTimeSpent" class="control-label"><%= lang.spentHours %>:</label>			
-				<div class="input-append bootstrap-timepicker">
-					<input type="text" class="timepicker-default input-mini taskInput" id="eventTimeSpent" value="<%=timeSpentDefault%>">
-					<span class="add-on"><i class="icon-time"></i></span>
-				</div>
-
-			</div>
-			<!-- Remaining Time -->
-			<div id="remainingTimeSection" class="control-group	">
-				<label for="eventRemainingTime" class="control-label"><%= lang.remainingHours %>:</label>
-				<div class="controls">
-					<div class="input-append bootstrap-timepicker">
-						<input type="text" class="timepicker-default input-mini taskInput" id="eventRemainingTime" value="02:00">
-						<span class="add-on"><i class="icon-time"></i></span>
-					</div>
-				</div>
-			</div>
-			<hr>
-		</div>
-		
-		<!-- Vehicle -->
-		<div class="control-group">
-			<label for="taskEquipmentDone" class="control-label"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
-
-			<div class="controls">
-				<!--<div class="input-append">-->
-					<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect taskInput" style="width: 66%" 
-						data-placeholder="<%= lang.actions.selectAVehicle %>"/>
-					<span class="add-on linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
-						<i class="icon-tint"></i>
-					</span>
-				<!--</div>-->
-			</div>
+		<div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		    <h3 class="modal-title"><%= lang.viewsTitles.statementTask %></h3>
 		</div>
 
+		<div class="modal-body">
 
-		<!-- Refueling Vehicle -->
-		<fieldset class="refueling-vehicle hide">
-			<legend><i class="icon-tint"></i> <%= _.capitalize(lang.oil) %></legend>
+			<blockquote>
+				<p><%=task.name%></p>
+				<small><%= task.project_id[1]%></small>
+			</blockquote>
 
-			<div class="control-group">
-				<div class="form-inline">
-					<!-- KM -->
-					<div class="span4">
-						<label for="equipmentKmDone"><%= _.capitalize(lang.milometer) %>:</label>
-						<input type="number" id="equipmentKmDone" class="equipmentKm input-mini taskInput" placeholder="<%= lang.inKm %>" />
+		    <form id="formTaskDone" action="#" class="form-horizontal" role="form">
+			
+				<div>
+					<hr>
+					<div id="timeSpentSection" class="form-group">
+						<label for="eventTimeSpent" class="control-label"><%= lang.spentHours %>:</label>			
+						<div class="input-append bootstrap-timepicker">
+							<input type="text" class="timepicker-default input-mini taskInput" id="eventTimeSpent" value="<%=timeSpentDefault%>">
+							<span class="add-on"><i class="icon-time"></i></span>
+						</div>
+
 					</div>
-
-					<!-- Oil -->
-					<div class="span4">
-						<label for="equipmentOilQtityDone"><%= _.capitalize(lang.quantity) %>:</label>
-						<input type="text" id="equipmentOilQtityDone" class="taskInput input-mini" placeholder="<%= lang.inLiter %>" />
+					<!-- Remaining Time -->
+					<div id="remainingTimeSection" class="control-group	">
+						<label for="eventRemainingTime" class="control-label"><%= lang.remainingHours %>:</label>
+						<div class="controls">
+							<div class="input-append bootstrap-timepicker">
+								<input type="text" class="timepicker-default input-mini taskInput" id="eventRemainingTime" value="02:00">
+								<span class="add-on"><i class="icon-time"></i></span>
+							</div>
+						</div>
 					</div>
-
-					<!-- Oil Price -->
-					<div class="span4">
-						<label for="equipmentOilPriceDone"><%= _.capitalize(lang.price) %>:</label>
-						<input type="text" id="equipmentOilPriceDone" class="taskInput input-mini" placeholder="<%= lang.inEuro %>" />
-					</div>
+					<hr>
 				</div>
-			</div>
-
-		</fieldset>
-		
-
-		<!-- Equipments -->
-		<fieldset>
-			<legend><i class="icon-wrench"></i> <%= _.capitalize(lang.equipment) %></legend>
-
-			<!-- Select Material -->
-			<div class="row-fluid marginTop equipmentsDroppableAreaDone">
 				
-				<div class="span6">
-					<div class="widget-title">
-						<h4 class="noMarginTop">Utilisé <span class="badge pull-right"></span></h4>
+				<!-- Vehicle -->
+				<div class="form-group">
+					<label for="taskEquipmentDone" class="control-label"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
+
+					<div class="controls">
+						<!--<div class="input-append">-->
+							<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect taskInput" style="width: 66%" 
+								data-placeholder="<%= lang.actions.selectAVehicle %>"/>
+							<span class="add-on linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
+								<i class="icon-tint"></i>
+							</span>
+						<!--</div>-->
 					</div>
-	
-					<ul id="equipmentsDone" class="sortableEquipmentsList sortable unstyled nav nav-list drop-area">
-	
-					</ul>
 				</div>
-	
-				<div class="span6">
-					<div class="widget-title">
-						<h4 class="noMarginTop">Disponible <span class="badge pull-right" id="badgeNbEquipmentsDone"></span> </h4>
+
+
+				<!-- Refueling Vehicle -->
+				<fieldset class="refueling-vehicle hide">
+					<legend><i class="icon-tint"></i> <%= _.capitalize(lang.oil) %></legend>
+
+					<div class="form-group">
+						<div class="form-inline">
+							<!-- KM -->
+							<div class="span4">
+								<label for="equipmentKmDone"><%= _.capitalize(lang.milometer) %>:</label>
+								<input type="number" id="equipmentKmDone" class="equipmentKm input-mini taskInput" placeholder="<%= lang.inKm %>" />
+							</div>
+
+							<!-- Oil -->
+							<div class="span4">
+								<label for="equipmentOilQtityDone"><%= _.capitalize(lang.quantity) %>:</label>
+								<input type="text" id="equipmentOilQtityDone" class="taskInput input-mini" placeholder="<%= lang.inLiter %>" />
+							</div>
+
+							<!-- Oil Price -->
+							<div class="span4">
+								<label for="equipmentOilPriceDone"><%= _.capitalize(lang.price) %>:</label>
+								<input type="text" id="equipmentOilPriceDone" class="taskInput input-mini" placeholder="<%= lang.inEuro %>" />
+							</div>
+						</div>
 					</div>
-	
-					<ul id="equipmentsListDone" class="sortableEquipmentsList sortable unstyled nav nav-list">
-					</ul>
-				</div>
-	
-			</div>
 
-		</fieldset>
+				</fieldset>
+				
 
-    </form>
-</div>
+				<!-- Equipments -->
+				<fieldset>
+					<legend><i class="icon-wrench"></i> <%= _.capitalize(lang.equipment) %></legend>
 
-<div class="modal-footer">
-    <button type="submit" form="formTaskDone" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
-    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+					<!-- Select Material -->
+					<div class="row-fluid marginTop equipmentsDroppableAreaDone">
+						
+						<div class="span6">
+							<div class="widget-title">
+								<h4 class="noMarginTop">Utilisé <span class="badge pull-right"></span></h4>
+							</div>
+			
+							<ul id="equipmentsDone" class="sortableEquipmentsList sortable unstyled nav nav-list drop-area">
+			
+							</ul>
+						</div>
+			
+						<div class="span6">
+							<div class="widget-title">
+								<h4 class="noMarginTop">Disponible <span class="badge pull-right" id="badgeNbEquipmentsDone"></span> </h4>
+							</div>
+			
+							<ul id="equipmentsListDone" class="sortableEquipmentsList sortable unstyled nav nav-list">
+							</ul>
+						</div>
+			
+					</div>
+
+				</fieldset>
+
+		    </form>
+		</div>
+
+		<div class="modal-footer">
+		    <button type="submit" form="formTaskDone" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+		    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+
+	</div>
 </div>

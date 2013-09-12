@@ -1,19 +1,26 @@
 /* New PROGRESS BAR 
 -------------------------------------------------- */
-
 // Default (gray)
-.progress-default .bar, .progress .bar-default {
-  #gradient > .vertical(@grayLight, #888888);
-}
-.progress-default.progress-striped .bar, .progress-striped .bar-default {
-  #gradient > .striped(@grayLight);
+.progress-bar-default {
+  .progress-bar-variant(@gray-light);
 }
 
 // Overrun (purple)
-.progress-overrun .bar, .progress .bar-overrun {
-  #gradient > .vertical(@purple, darken(@purple, 10%));
+.progress-bar-overrun {
+  .progress-bar-variant(@purple);
 }
-.progress-overrun.progress-striped .bar, .progress-striped .bar-overrun {
-  #gradient > .striped(@purple);
+
+
+
+// No margin bottom when the progress bar is in a table //
+td .progress{
+	.noMarginBottom();
+}
+
+// Progress Value //
+.progress-bar{
+	.progress-value	{
+		padding-top: 2px;
+	}
 }
 

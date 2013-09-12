@@ -51,8 +51,6 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		// Change the active menu item //
 		app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
 
-		// Change the Grid Mode of the view //
-		app.views.headerView.switchGridMode('fluid');
 
 		// Retrieve the template //
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -137,6 +135,7 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		// Set the filter value in the options of the view //
 		if(filterValue != 'delete-filter'){
 			this.options.filter = { by: 'state', value: filterValue};
+			delete this.options.page;
 		}
 		else{
 			delete this.options.filter;
@@ -157,6 +156,7 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		if(filterValue != ''){
 			this.options.filter = { by: 'state', value: filterValue};
 			delete this.options.search;
+			delete this.options.page;
 		}
 
 		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});

@@ -9,27 +9,10 @@ app.Views.TasksListView = app.Views.GenericListView.extend({
 
 	filters: 'tasksListFilter',
 
-	numberListByPage: 25,
-
-	urlParameters: _.union(app.Views.GenericListView.prototype.urlParameters, ['year','week']),
-	
 	// The DOM events //
-	events: function(){
-		return _.defaults({
-			'click li.active'				: 'preventDefault',
-			'click li.disabled'				: 'preventDefault',
-			'click ul.sortable li'			: 'preventDefault',
-			
-			'click .btn.addTask'            : 'displayModalAddTask',
-			
-			'change #filterListAgents' 		: 'setFilter',
-			'click a.linkPreviousWeek'		: 'goToPreviousWeek',
-			'click a.linkNextWeek'			: 'goToNextWeek'
-
-		}, 
-			app.Views.GenericListView.prototype.events
-		);
-
+	events: {
+		'click .btn.addTask'            : 'displayModalAddTask',
+		'change #filterListAgents' 		: 'setFilter'
 	},
 
 	/** View Initialization

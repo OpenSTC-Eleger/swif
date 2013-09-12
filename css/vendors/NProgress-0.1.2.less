@@ -5,10 +5,10 @@
 }
 
 #nprogress .bar {
-  background: @blue;
+  background: @label-info-bg;
 
   position: fixed;
-  z-index: @zindexFixedNavbar+1;
+  z-index: @zindex-modal;
   top: 0px;
   left: 0;
   width: 100%;
@@ -36,14 +36,14 @@
 #nprogress .spinner {
   display: block;
   position: fixed;
-  z-index: @zindexModalBackdrop;
-  top: 12px;
+  z-index: 10;
+  top: 60px;
   right: 8px;
 }
 
 #nprogress .spinner-icon {
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
 
   border:  solid 2px transparent;
   border-top-color:  #29d;

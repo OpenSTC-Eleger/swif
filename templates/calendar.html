@@ -17,7 +17,7 @@
 		
 		<!-- Officers -->
 		<div class="tab-pane active" id="tab-agents">
-			<ul id="listAgents" class="unstyled inline nav nav-list">
+			<ul id="listAgents" class="list-inline">
 				<%_.each(officers, function (officer, i) { console.log(officer); %>
 					<li>
 						<a id="pOfficer_<%= officer.id %>" href="#planning/officer/<%= _.slugify(officer.name).toUpperCase()%>">
@@ -30,7 +30,7 @@
 
 		<!-- Teams -->
 		<div class="tab-pane" id="tab-teams">
-			<ul id="listTeams" class="unstyled inline nav nav-list">
+			<ul id="listTeams" class="list-inline">
 				<% _.each(teams, function (team, i) {
 
 					var teamMembers = "<li><i class='icon-asterisk'></i> "+ team.manager_id[1] +"</li>";
@@ -67,5 +67,5 @@
 
 
 <!-- Modal Form to add a new Place -->
-<div id="modalUnplanTask" class="modal hide fade"></div>
-<div id="modalAbsentTask" class="modal hide fade"></div>
+<div id="modalUnplanTask" class="modal fade"></div>
+<div id="modalAbsentTask" class="modal fade"></div>

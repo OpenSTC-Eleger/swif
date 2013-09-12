@@ -5,7 +5,7 @@
 		th[data-sort-column] {
 			cursor: pointer;
 			&:hover{
-				background-color: darken(@tableBackgroundAccent, 5%);
+				background-color: darken(@table-bg-hover, 5%);
 				i{
 					.text-muted;
 				}
@@ -23,3 +23,6 @@ table th.span1{
 tr.row-item.selectable{
 	cursor: pointer;
 }
+
+// New color //
+.table-row-variant(info; @state-info-bg; @state-info-border);

@@ -34,30 +34,27 @@
 </div>
 
 
-<div class="container-fluid">
-
-	<!-- Add task -->
+	<!-- Toolbar -->
 	<div class="tableToolbar">
-		<button class="btn btn-primary no-outline addTask">
+		<button class="btn btn-primary addTask">
 			<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addTask) %>
 		</button>
 
 		<% if(displayFilter) { %>
 			<form class="pull-right form-inline">
 				<label for="filterListAgents" class="muted"><i class="icon-filter"></i> <%= _.capitalize(lang.agent) %>:</label>
-			    <input id="filterListAgents" class="select2 input-medium" 
-					data-placeholder="<%= lang.actions.selectAAgent %>"/>
-				</select>
+			    <input id="filterListAgents" class="select2 input-medium"  data-placeholder="<%= lang.actions.selectAAgent %>"/>
+
 			</form>
 		<% } %>
 	</div>
-	<!-- /Add task -->
+	<!-- /Toolbar -->
 
 
 	<!-- Title week of the year -->
 	<h2 class="text-center">
 		<%= lang.week %> <%= momentDate.week() %> - 
-		<em class="muted"><%= titleFirstDay %> <%= lang.to %> <%= lastDayOfTheWeek.format('D MMM YYYY') %></em>
+		<em class="text-muted"><%= titleFirstDay %> <%= lang.to %> <%= lastDayOfTheWeek.format('D MMM YYYY') %></em>
 	</h2>
 	<!-- /Title week of the year -->
 
@@ -65,23 +62,17 @@
 	<!-- Pagination -->
 	<ul class="pager noMarginTop">
 		<li class="previous">
-			<a href="#" class="linkPreviousWeek">
-				<i class="icon-chevron-left"></i> <%= _.capitalize(lang.actions.previousWeek) %>
-			</a>
+			<a href="#taches/<%= momentDatePrev.year()+"/"+momentDatePrev.week() %>"><i class="icon-chevron-left"></i> <%= _.capitalize(lang.actions.previousWeek) %></a>
 		</li>
 		<li class="next">
-			<a href="#" class="linkNextWeek">
-				<%= _.capitalize(lang.actions.nextWeek) %> <i class="icon-chevron-right"></i>
-			</a>
+			<a href="#taches/<%= momentDateNext.year()+"/"+momentDateNext.week() %>"><%= _.capitalize(lang.actions.nextWeek) %> <i class="icon-chevron-right"></i></a>
 		</li>
 	</ul>
 	<!-- /Pagination -->
 
 
 
-	<div id="task-accordion" class="accordion without-border">
-	
-
+	<div id="task-accordion" class="panel-group">
 	</div>
 
 
@@ -96,13 +87,10 @@
 	</ul>
 
 
-</div>
-
-
 
 <!-- Modal Form Task Done -->
-<div id="modalTaskDone" class="modal hide fade"></div>
+<div id="modalTaskDone" class="modal fade"></div>
 
 
 <!-- Modal Form to Add a new Task -->
-<div id="modalAddTask" class="modal hide fade"></div>
+<div id="modalAddTask" class="modal fade"></div>

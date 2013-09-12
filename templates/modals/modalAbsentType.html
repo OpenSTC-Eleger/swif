@@ -1,58 +1,62 @@
-<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h3>
-		<i class="icon-edit"></i>&nbsp;
-		<% if(_.isNull(absentType.getId())){ %>
-			<%= _.capitalize(lang.viewsTitles.newAbsentType) %>
-		<% } else{ %>
-			<%= _.capitalize(lang.viewsTitles.editAbsentType) %>
-		<% } %>
-	</h3>
-</div>
+<div class="modal-dialog">
+	<div class="modal-content">
 
-<div class="modal-body">
-	<form id="formSaveAbsentType" action="#" class="form-horizontal">
-
-		
-		<!-- Absent Type name -->
-		<div class="control-group">
-			<label for="absentTypeName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
-
-			<div class="controls">
-				<input type="text" id="absentTypeName" required value="<%= (_.isNull(absentType.getId()) ? '' : absentType.getName())%>" />
-				<span class="help-inline"></span>
-			</div>
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 class="modal-title">
+				<i class="icon-edit"></i>&nbsp;
+				<% if(_.isNull(absentType.getId())){ %>
+					<%= _.capitalize(lang.viewsTitles.newAbsentType) %>
+				<% } else{ %>
+					<%= _.capitalize(lang.viewsTitles.editAbsentType) %>
+				<% } %>
+			</h3>
 		</div>
 
-		<!-- Absent Type code -->
-		<div class="control-group">
-			<label for="absentTypeCode" class="control-label"><%= _.capitalize(lang.code) %>:</label>
+		<div class="modal-body">
+			<form id="formSaveAbsentType" action="#" class="form-horizontal">
 
-			<div class="controls">
-				<input type="text" id="absentTypeCode" required value="<%= (_.isNull(absentType.getId()) ? '' : absentType.getCode())%>" />
-				<span class="help-inline"></span>
-			</div>
+				
+				<!-- Absent Type name -->
+				<div class="form-group">
+					<label for="absentTypeName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
+
+					<div class="col-sm-9">
+						<input type="text" id="absentTypeName" class="form-control" required value="<%= (_.isNull(absentType.getId()) ? '' : absentType.getName())%>" />
+					</div>
+				</div>
+
+				<!-- Absent Type code -->
+				<div class="form-group">
+					<label for="absentTypeCode" class="control-label col-sm-3"><%= _.capitalize(lang.code) %>:</label>
+
+					<div class="col-sm-3">
+						<input type="text" id="absentTypeCode" class="form-control" required value="<%= (_.isNull(absentType.getId()) ? '' : absentType.getCode())%>" />
+					</div>
+				</div>
+				
+				<!-- Absent Type Description -->
+				<div class="form-group">
+					<label for="absentTypeDescription" class="control-label col-sm-3"><%= _.capitalize(lang.description) %>:</label>
+
+					<div class="col-sm-9">
+					 	<textarea id="absentTypeDescription" class="form-control" rows="2"><%= (_.isNull(absentType.getId()) ? '' : absentType.getDescription())%></textarea>
+					</div>
+				</div>
+
+			</form>
 		</div>
-		
-		<!-- Absent Type Description -->
-		<div class="control-group">
-			<label for="absentTypeDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
 
-			<div class="controls">
-			 	<textarea id="absentTypeDescription" rows="2"><%= (_.isNull(absentType.getId()) ? '' : absentType.getDescription())%></textarea>
-				<span class="help-inline"></span>
-			</div>
+		<div class="modal-footer">
+			<button type="submit" form="formSaveAbsentType" class="btn btn-primary"
+				data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>"
+			>
+				<%= _.capitalize(lang.actions.save) %>
+			</button>&nbsp;&nbsp;
+			
+			<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
 		</div>
 
-	</form>
-</div>
 
-<div class="modal-footer">
-	<button type="submit" form="formSaveAbsentType" class="btn btn-primary"
-		data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>"
-	>
-		<%= _.capitalize(lang.actions.save) %>
-	</button>&nbsp;&nbsp;
-	
-	<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+	</div>
 </div>

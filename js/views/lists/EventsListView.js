@@ -124,7 +124,8 @@ app.Views.EventsListView = Backbone.View.extend({
 	selectPlanning: function(e) {
 		e.preventDefault();
 		
-		var linkId = $(e.target).attr('id');		
+		var link = $(e.target);
+		var linkId = link.attr('id')	
 		
 		this.teamMode = _.str.include( _(linkId).strLeft('_').toLowerCase(),"officer" )?false:true;			
 		var calendarName = _(link.attr('href')).strRightBack('/')
