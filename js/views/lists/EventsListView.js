@@ -80,16 +80,20 @@ app.Views.EventsListView = Backbone.View.extend({
 			// Init calendar
         	self.initCalendar();
         	
-        	// Check if a Team was selected to select the Team Tab 
-			if(!_.isUndefined(self.options.team))
+        	
+			if(!_.isUndefined(self.options.team)) {
+				// Check if a Team was selected to select the Team Tab 
 				$('#allTabs a[data-target="#tab-teams"]').tab('show');
-			// Select team was selected
-			if(!_.isUndefined(self.options.team))
-				$("a[href$="+self.options.team+"]").parent().addClass('active');
+				// Select team was selected
+				$("a[href$="+self.options.team+"]").parent().addClass('active');				
+			}
 			// Select officer was selected
-			else if(!_.isUndefined(self.options.officer))
+			else if(!_.isUndefined(self.options.officer)) {
+				// Check if a Team was selected to select the Team Tab 
+				$('#allTabs a[data-target="#tab-agents"]').tab('show');
+				// Select first officer
 				$("a[href$="+self.options.officer+"]").parent().addClass('active');
-			// Select first officer
+			}
 			else
 				$("#listAgents li:first").addClass('active');
 

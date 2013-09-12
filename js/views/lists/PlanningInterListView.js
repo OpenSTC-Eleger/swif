@@ -12,42 +12,25 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 	
 	// The DOM events //
 	events: function(){
-		return _.defaults({
-			//'click .buttonCancelInter'                : 'setInfoModalCancelInter',
-			//'submit #formCancelInter'                 : 'cancelInter',
-			//'click .btn.addInterventionPlanning'      : 'displayFormAddIntervention',
-			//'submit #formAddIntervention'             : 'saveIntervention', 
-			
-			//'click .btn.addTaskPlanning'              : 'displayFormAddTask',
-			//'submit #formAddTask'                     : 'saveTask', 
-			
-			
-			'switch-change #switchWithForeman'        : 'setForemanInTeam',
-		
+		return _.defaults({			
+			//'switch-change #switchWithForeman'        : 'setForemanInTeam',		
 			'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilterState',	
 			'click a.modalCreateInter'			: 'displayModalSaveInter',
-			//'click #listAgents li a, #listTeams li a' :          'selectPlanning',	
+			//'click #pagination ul a'			: 'goToPage',
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
 	},
 
 
-
 	/** View Initialization
 	*/
-	initialize: function() {
-		
+	initialize: function() {		
 		var self = this;
-		console.log("Planing Inter panel view intialization")
+		
 		this.collections = this.options.collections;
-//	    this.initCollections().done(function(){
-//	    	//self.collections.tasks.off();
-//	    	app.router.render(self);
-//	    	self.collections.interventions.off();
-//	    	self.listenTo(self.collections.interventions, 'add', self.addInter);
-//	    })
 	    app.router.render(this);
+	    
 	    this.collections.interventions.off();
 	    this.listenTo(self.collections.interventions, 'add', this.addInter);
 	},
@@ -172,66 +155,46 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 //		model.fetch({silent: true, data: {fields: app.Collections.Tasks.fields}});	
 //	},
 
-//		/** Delete intervention
-//		*/
-//		scheduledInter: function(e) {
-//
-//			var intervention = $(e.target);
-//			var id = _(intervention.parents('.accordion-body').attr('id')).strRightBack('_');
-//
-//			// Retrieve the new status //
-//			if(intervention.bootstrapSwitch('status')){
-//			  params = { state: app.Models.Intervention.status.scheduled.key, };
-//			}
-//			else{
-//				params = { state: app.Models.Intervention.status.open.key, };
-//			}
-//
-//			app.models.intervention.saveAndRoute(id, params, null, this);
-//		},
+
+	/** Set or no the Foreman in the team
+	*/
+	setForemanInTeam: function(e){
+
+		var foremanState = $(e.target);
+
+		// Retrieve the new status //
+		if(foremanState.bootstrapSwitch('status')){
+			console.log('Avec le chef d"équipe');
+		}
+		else{
+			console.log('Sans le chef d"equipe');
+		}
+	},
 
 
+	/** Filter Intervention by status
+	*/
+	setFilterState: function(e){
 
-		/** Set or no the Foreman in the team
-		*/
-		setForemanInTeam: function(e){
+		e.preventDefault();
 
-			var foremanState = $(e.target);
-
-			// Retrieve the new status //
-			if(foremanState.bootstrapSwitch('status')){
-				console.log('Avec le chef d"équipe');
-			}
-			else{
-				console.log('Sans le chef d"equipe');
-			}
-		},
-
-
-
-		/** Filter Intervention by status
-		*/
-		setFilterState: function(e){
-
-			e.preventDefault();
-
-			if($(e.target).is('i')){
-				var filterValue = _($(e.target).parent().attr('href')).strRightBack('#');
-			}else{
-				var filterValue = _($(e.target).attr('href')).strRightBack('#');
-			}
-			
-			// Set the filter value in the options of the view //
-			var globalSearch = {};
-			if(filterValue != 'delete-filter'){
-				//globalSearch.filter = { by: 'state', value: filterValue};	
-				this.options.filter =  { by: 'state', value: filterValue};	
-			}
-			else{
-				//this.options.filter = "noFilter"
-				delete this.options.filter;
-			}
-			
+		if($(e.target).is('i')){
+			var filterValue = _($(e.target).parent().attr('href')).strRightBack('#');
+		}else{
+			var filterValue = _($(e.target).attr('href')).strRightBack('#');
+		}
+		
+		// Set the filter value in the options of the view //
+		var globalSearch = {};
+		if(filterValue != 'delete-filter'){
+			//globalSearch.filter = { by: 'state', value: filterValue};	
+			this.options.filter =  { by: 'state', value: filterValue};	
+		}
+		else{
+			//this.options.filter = "noFilter"
+			delete this.options.filter;
+		}
+		
 //			if(_.isUndefined(this.options.sort)){
 //				this.options.sort = this.collections.interventions.default_sort;
 //			}
@@ -243,12 +206,45 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 //			
 //			this.options.page = '1';
 //			this.options.page = app.Helpers.Main.calculPageOffset(this.options.page);
-			
-			// routing with new url		
-			var urlParameters = ['id', 'officer', 'team', 'year', 'week', 'filter', 'sort', 'page', 'search']
-			app.router.navigate(app.Helpers.Main.urlBuilder(urlParameters, this.options), {trigger: true, replace: true});	
-		},
 		
+		// routing with new url		
+		var urlParameters = ['id', 'officer', 'team', 'year', 'week', 'filter', 'sort', 'page', 'search']
+		app.router.navigate(app.Helpers.Main.urlBuilder(urlParameters, this.options), {trigger: true, replace: true});	
+	},	
+	
+//	goToPage: function(e){
+//		e.preventDefault()
+//		
+//		var self = this;
+//		
+//		var link = $(e.target);
+//		
+//		this.options.page.page = _(link.attr('href')).strRightBack('/page')
+//		
+//		app.router.navigate(this.urlBuilder(), {trigger: false, replace: true});
+//		app.views.planning.fetchPanelCollections().done(function(){
+//			self.options.collections.interventions = app.views.planning.collections.interventions;
+//			self.render();
+//		});
+//		
+//	},
+//	
+//	/**
+//	 * Constructs url for planning
+//	 */
+//	urlBuilder: function() {
+//		var self = this;
+//		var url = _(Backbone.history.fragment).strLeft('/');
+//
+//		// Iterate all urlParameters //
+//		_.each(this.urlParameters, function(value, index){		
+//			// Check if the options parameter aren't undefined or null //
+//			if(!_.isUndefined(self.options[value]) && !_.isNull(self.options[value])){	
+//					url += '/'+value+'/'+self.options[value];					
+//			}
+//		});				
+//		return url;		
+//	},
 
 
 });
