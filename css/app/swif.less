@@ -98,7 +98,8 @@ div.datepicker{
 	margin-top: 2px;
 
 	i{
-		cursor: pointer;	
+		cursor: pointer;
+		.text-muted();
 	}
 
 }
@@ -162,9 +163,6 @@ div.page-header{
 .popover-content hr{
 	margin-top: 8px;
 	margin-bottom: 8px;
-}
-.popover-content{
-	font-weight: normal;
 }
 
 
@@ -285,7 +283,7 @@ div.div-actions{
 
 
 // object Actions //
-.object-actions, .row-actions{
+.row-actions{
 	display: inline;
 	font-size: 85%;
 	width: auto;
@@ -297,12 +295,12 @@ div.div-actions{
 .nested-objects-actions{
 	font-size: 90%;
 }
-.object-actions a:hover i, .row-actions a:hover i, .nested-objects-actions a:hover i, a.accordion-toggle:hover i, a.accordion-object:hover i{
+.row-actions a:hover i, .nested-objects-actions a:hover i, a.accordion-toggle:hover i, a.accordion-object:hover i{
 	text-decoration: none;
 }
 
 // object nestedObjects //
-ul.nested-objects li:hover .nested-objects-actions, tr.row-item:hover .row-actions, tr.row-nested-objects:hover .nested-objects-actions, tr.row-object:hover .object-actions{
+ul.nested-objects li:hover .nested-objects-actions, tr.row-item:hover .row-actions, tr.row-nested-objects:hover .nested-objects-actions{
 	visibility: visible;
 	a:hover{
 		text-decoration: none;

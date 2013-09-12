@@ -100,6 +100,7 @@ app.Views.LoginView = Backbone.View.extend({
 	*/
 	hidePassword: function(){
 		$('#passUser').prop('type', 'password');
+		$('#passUser').focus();
 	}
 
 });

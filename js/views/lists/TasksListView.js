@@ -9,6 +9,7 @@ app.Views.TasksListView = app.Views.GenericListView.extend({
 
 	filters: 'tasksListFilter',
 
+<<<<<<< HEAD
 	numberListByPage: 25,
 
 	urlParameters: _.union(app.Views.GenericListView.prototype.urlParameters, ['year','week']),
@@ -30,6 +31,14 @@ app.Views.TasksListView = app.Views.GenericListView.extend({
 			app.Views.GenericListView.prototype.events
 		);
 
+=======
+
+	// The DOM events //
+	events: {
+		'click .btn.addTask'            : 'displayModalAddTask',
+		
+		'change #filterListAgents' 		: 'setFilter'
+>>>>>>> Migration BS3
 	},
 
 	/** View Initialization

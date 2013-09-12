@@ -16,7 +16,6 @@
 
 					<div class="col-sm-9">
 						<input type="text" id="contactName" class="form-control" required value="<%= contact.name %>"/>
-						<span class="help-inline"></span>
 					</div>
 				</div>
 
@@ -39,7 +38,6 @@
 
 						<div class="col-sm-9">
 							<input type="text" id="userLogin" class="form-control" />
-							<span class="help-inline"></span>
 						</div>
 					</div>
 
@@ -49,7 +47,7 @@
 
 						<div class="col-sm-9">
 							<input type="password" id="userPassword" name="userPassword" pattern=".{6,}" />
-							<span class="help-inline"><%= lang.infoMessages.sixCharMin %></span>
+							<p class="help-block"><%= lang.infoMessages.sixCharMin %></p>
 						</div>
 					</div>
 
@@ -62,7 +60,6 @@
 
 						<div class="col-sm-9">
 							<input type="email" id="contactEmail" class="form-control" required value="<%= contact.email %>"/>
-							<span class="help-inline"></span>
 						</div>
 					</div>
 
@@ -71,7 +68,6 @@
 
 						<div class="col-sm-9">
 							<input type="text" id="contactFunction" class="form-control" value="<%= contact.function %>" />
-							<span class="help-inline"></span>
 						</div>
 					</div>
 
@@ -80,7 +76,6 @@
 
 						<div class="col-sm-9">
 							<input type="text" id="contactPhone" class="form-control" value="<%= contact.phone %>"/>
-							<span class="help-inline"></span>
 						</div>
 					</div>
 
@@ -89,7 +84,6 @@
 
 						<div class="col-sm-9">
 							<input type="text" id="contactMobile" class="form-control" value="<%= contact.mobile %>"/>
-							<span class="help-inline"></span>
 						</div>
 					</div>
 
@@ -104,7 +98,6 @@
 
 						<div class="col-sm-9">
 							<input type="text" id="addressStreet" class="form-control" value="<%= contact.street %>" />
-							<span class="help-inline"></span>
 						</div>
 					</div>
 
@@ -113,7 +106,6 @@
 
 						<div class="col-sm-9">
 							<input type="text" id="addressCity" class="form-control" value="<%= contact.city %>" />
-							<span class="help-inline"></span>
 						</div>
 					</div>
 
@@ -122,7 +114,6 @@
 
 						<div class="col-sm-9">
 							<input type="text" id="addressZip" class="form-control" value="<%= contact.zip %>" />
-							<span class="help-inline"></span>
 						</div>
 					</div>
 				</fieldset>
