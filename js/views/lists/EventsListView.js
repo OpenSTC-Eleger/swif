@@ -13,8 +13,9 @@ app.Views.EventsListView = Backbone.View.extend({
 	initialized: false,
 
 	events: {
-		'click .fc-button-prev'                  : 'previousDate',
-		'click .fc-button-next'                  : 'nextDate',		
+		'click .fc-button-prev'                  	: 'previousDate',
+		'click .fc-button-next'                  	: 'nextDate',
+		'click #listAgents li a, #listTeams li a' 	: 'selectPlanning',
 	},
 	
 	urlParameters : ['officer','team','year','week'],
@@ -69,12 +70,28 @@ app.Views.EventsListView = Backbone.View.extend({
 		// Retrieve the template //
 		$.get('templates/' + this.templateHTML + '.html', function(templateData){
 			var template = _.template(templateData, {
-				calendar   : self.model,
+				lang: app.lang,		
+				calendar   	: self.model,
+				officers	: self.collections.officers,
+				teams		: self.collections.teams,	
 			});
 			
 			self.$el.html(template);	
 			// Init calendar
         	self.initCalendar();
+        	
+        	// Check if a Team was selected to select the Team Tab 
+			if(!_.isUndefined(self.options.team))
+				$('#allTabs a[data-target="#tab-teams"]').tab('show');
+			// Select team was selected
+			if(!_.isUndefined(self.options.team))
+				$("a[href$="+self.options.team+"]").parent().addClass('active');
+			// Select officer was selected
+			else if(!_.isUndefined(self.options.officer))
+				$("a[href$="+self.options.officer+"]").parent().addClass('active');
+			// Select first officer
+			else
+				$("#listAgents li:first").addClass('active');
 
     		// Go to week selected	
         	var momentDate = moment().year(self.options.year).week(self.options.week);			
@@ -99,6 +116,31 @@ app.Views.EventsListView = Backbone.View.extend({
 	previousDate: function(e) {
 		this.options.week = String(parseInt(this.options.week)-1);
 		app.router.navigate(this.urlBuilder(), {trigger: false, replace: false});
+	},
+	
+	/**
+	 * Go to planning selected
+	 */
+	selectPlanning: function(e) {
+		e.preventDefault();
+		
+		var link = $(e.target);
+		var linkId = link.attr('id')	
+		
+		this.teamMode = _.str.include( _(linkId).strLeft('_').toLowerCase(),"officer" )?false:true;			
+		var calendarName = _(link.attr('href')).strRightBack('/')
+
+		if(this.teamMode) {
+			this.options.team = calendarName;
+			delete this.options.officer; 
+		} else {
+			this.options.officer = calendarName;
+			delete this.options.team;
+		}
+		
+		app.router.navigate(this.urlBuilder(), {trigger: false, replace: true});
+		this.initialize();
+		this.render();
 	},
 	
 
@@ -181,15 +223,7 @@ app.Views.EventsListView = Backbone.View.extend({
     		 * Calculates events to display on calendar for officer (or team) on week selected
     		 */    		
 			events: function(start, end, callback) { 
-    			 
-
-
-//				if( !self.initialized ) {
-//					self.initialized = true;
-//				}else{
-//					return;
-//				}
-			
+    	
     			var fetchParams={
 					silent : true,
 					data   : {}
