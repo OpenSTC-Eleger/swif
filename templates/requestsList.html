@@ -31,17 +31,16 @@
 </div>
 
 
-<div class="row">
 
 
 	<!-- Table toolbar -->
 	<div class="tableToolbar row">
-		<div class="col-sm-9 col-xs-8">
+		<div class="col-xs-7 col-md-9 col-lg-10">
 			<a href="#demandes-dinterventions/add" id="buttonAddRequest" class="btn btn-primary"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
 		</div>
 
 
-		<form class=" form-search pull-right col-sm-3 col-xs-4">
+		<form class="form-search pull-right col-xs-5 col-md-3 col-lg-2">
 			<div class="input-group">
 				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
 				<span class="input-group-btn">
@@ -113,11 +112,9 @@
 	<div id="pagination" class="pull-right"></div>
 	<!-- /Table pagination -->
 
-</div>
-
 
 <!-- Modal form to add a request -->
-<div id="modalAddRequest" class="modal hide fade"></div>
+<div id="modalAddRequest" class="modal fade"></div>
 
 <!-- Modal form to valid a request -->
 <div id="modalValidRequest" class="modal fade" role="dialog" aria-hidden="true"></div>

@@ -5,27 +5,14 @@
 
 
 
-<!-- Interventions List -->
-<div class="row-fluid">
-
-
- 	<!-- Left Column -->
- 	
-
-
-
-	<!-- Interventions toolbar -->
-
-	<!-- /Interventions toolbar -->
-
 	<!-- Interventions List -->
-	<div id="planningInters" class="span3"></div>
+	<div id="planningInters" class="col-sm-3"></div>
 
   
 
 
 	<!-- Right Column -->
-	<div class="span9">
+	<div class="col-sm-9">
 
 
 		<!-- List Officer/Teams -->
@@ -47,7 +34,7 @@
 				
 				<!-- Officers -->
 				<div class="tab-pane active" id="tab-agents">
-					<ul id="listAgents" class="unstyled inline nav nav-list">
+					<ul id="listAgents" class="list-inline list-inline">
 						<%_.each(officers, function (officer, i) { console.log(officer); %>
 							<li>
 								<a id="pOfficer_<%= officer.id %>" href="#planning/officer/<%= _.slugify(officer.name).toUpperCase()%>">
@@ -94,21 +81,20 @@
 
 	</div>
 
-</div>
 
 <!-- Modal Form to add a new Task to Inter -->
-<div id="modalAddTask" class="modal hide fade"></div>
+<div id="modalAddTask" class="modal fade"></div>
 
 <!-- Modal Form Delete Task -->
-<div id="modalDeleteTask" class="modal hide fade"></div>
+<div id="modalDeleteTask" class="modal fade"></div>
 
 <!-- Modal Form Cancel Task -->
-<div id="modalCancelTask" class="modal hide fade"></div>
+<div id="modalCancelTask" class="modal fade"></div>
 
 <!-- Modal Form to add/update an inter -->
-<div id="modalSaveInter" class="modal hide fade"></div>
+<div id="modalSaveInter" class="modal fade"></div>
 
 <!-- Modal Form Cancel Intervention -->
-<div id="modalCancelInter" class="modal hide fade"></div>
+<div id="modalCancelInter" class="modal fade"></div>
 
 <div id="printingCalendar"></div>
