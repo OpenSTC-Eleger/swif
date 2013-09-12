@@ -206,7 +206,7 @@ app.Router = Backbone.Router.extend({
 	*/
 	services: function(page){      
 
-		alert('TODO');
+		alert('Page en construction');
 
 		app.views.servicesListView = new app.Views.ServicesListView({page: self.page});
 	},
@@ -309,7 +309,7 @@ app.Router = Backbone.Router.extend({
 	equipments: function(page){
 
 
-		alert('TODO');
+		alert('Page en construction');
 
 		app.views.equipmentsListView = new app.Views.EquipmentsListView({page: self.page});
 	},
@@ -319,8 +319,6 @@ app.Router = Backbone.Router.extend({
 	/** 404 Not Found
 	*/
 	notFound: function(page){
-
-		console.warn('Page not Found');
 
 		app.views.notFoundView = new app.Views.NotFoundView();
 		this.render(app.views.notFoundView);

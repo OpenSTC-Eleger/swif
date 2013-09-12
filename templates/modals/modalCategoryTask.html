@@ -25,7 +25,6 @@
 
 					<div class="col-sm-9">
 						<input type="text" id="catName" class="form-control" required value="<%= (_.isNull(cat.getId()) ? '' : cat.getName())%>" />
-						<span class="help-inline"></span>
 					</div>
 				</div>
 
@@ -35,7 +34,6 @@
 
 					<div class="col-sm-3">
 						<input type="text" id="catCode" class="form-control" required value="<%= (_.isNull(cat.getId()) ? '' : cat.getCode())%>" />
-						<span class="help-inline"></span>
 					</div>
 				</div>
 				
@@ -50,7 +48,6 @@
 								data-selected-value='<%= JSON.stringify(cat.getParentCat('json')) %>'
 							<% } } %>
 						/>
-						<span class="help-inline"></span>
 					</div>
 				</div>
 				
@@ -66,7 +63,6 @@
 								data-selected-value='<%= JSON.stringify(cat.getServices('json')) %>'
 							<% } } %>
 						/>
-						<span class="help-inline"></span>
 					</div>
 				</div>
 

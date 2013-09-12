@@ -16,8 +16,7 @@
 						<label for="claimerName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 
 						<div class="col-sm-9">
-							<input type="text" id="claimerName" name="claimerName" required="required" value="<%= claimer.get('name') %>" />
-							<span class="help-inline"></span>
+							<input type="text" id="claimerName" name="claimerName" required value="<%= claimer.get('name') %>" />
 						</div>
 					</div>
 
@@ -31,7 +30,6 @@
 									data-selected-value='<%= JSON.stringify(claimer.objectifiedTypeId()) %>'
 								<% }  %>
 							/>
-							<span class="help-inline"></span>
 						</div>
 					</div>
 
@@ -51,7 +49,6 @@
 										data-selected-value='<%= JSON.stringify(claimer.objectifiedTechnicalServiceId()) %>'
 								   <% } %>
 							/>
-							<span class="help-inline"></span>
 						</div>
 					</div>
 
@@ -65,7 +62,6 @@
 							data-selected-value='<%= JSON.stringify(claimer.objectifiedTechnicalSiteId()) %>'
 							<% } %>
 							/
-							<span class="help-inline"></span>
 						</div>
 					</div>
 

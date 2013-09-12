@@ -9,20 +9,12 @@ app.Views.TasksListView = Backbone.View.extend({
 
 	filters: 'tasksListFilter',
 
-	numberListByPage: 25,
-
 
 	// The DOM events //
 	events: {
-		'click li.active'				: 'preventDefault',
-		'click li.disabled'				: 'preventDefault',
-		'click ul.sortable li'			: 'preventDefault',
-		
 		'click .btn.addTask'            : 'displayModalAddTask',
 		
 		'change #filterListAgents' 		: 'setFilter'
-
-
 	},
 
 	/** View Initialization
