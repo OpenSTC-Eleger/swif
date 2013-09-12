@@ -281,29 +281,8 @@ app.Views.EventsListView = Backbone.View.extend({
 				
 				model.save(params, {patch: false, silent: true})
 					.done(function(ids) {
-						console.log(ids);
 						var task = self.collections.tasks.get(ids[0]);
-//						_.each(ids, function(id){
-//							var task = self.collections.tasks.get(id);
 						self.collections.interventions.get(task.attributes.project_id[0]).fetch();
-//							if( _.isUndefined(task) ){
-//								var task = new app.Models.Task();
-//								task.setId(id);
-//								 task.fetch().done(function(){
-//									 self.collections.tasks.add(task);
-//									 self.collections.interventions.get(task.attributes.project_id[0]).fetch();
-//								 });
-//								
-//							}
-//							else {
-//								var task = self.collections.tasks.get(id)
-//								task.fetch({ data : {fields : app.Models.Task.fields} }).done(function(){
-//									self.collections.interventions.get(task.attributes.project_id[0]).fetch();
-//								});
-//							}
-//							
-//							
-//						})
 						self.refreshEvents();
 					})
 					.fail(function (e) {

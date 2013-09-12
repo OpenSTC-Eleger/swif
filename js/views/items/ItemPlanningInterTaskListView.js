@@ -66,22 +66,13 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 
 			//Create item task for each one associated to inter
-			_.each(self.options.inter.attributes.tasks, function(taskId, i){				
-				var task = self.options.tasks.get(task);
-				if( _.isUndefined(task) ){
-					var task = new app.Models.Task();
-					task.setId(taskId);
-					task.fetch().done(function(){
-						var itemPlanningInterTaskView = new app.Views.ItemPlanningInterTaskView({model: task, inter: self.options.inter});
-						$(self.el).find('#row-nested-objects').append(itemPlanningInterTaskView.render().el);
-					});
-					
-				}
-				else {
-					//var itemInterventionTaskView = new app.Views.ItemInterventionTaskView({model: task, templateHTML:"items/itemPlanningTask"});
-					var itemPlanningInterTaskView = new app.Views.ItemPlanningInterTaskView({model: self.options.tasks.get(task), inter: self.options.inter});
+			_.each(self.options.inter.attributes.tasks, function(taskId, i){	
+				var task = new app.Models.Task();
+				task.setId(taskId);
+				task.fetch().done(function(){
+					var itemPlanningInterTaskView = new app.Views.ItemPlanningInterTaskView({model: task, inter: self.options.inter});
 					$(self.el).find('#row-nested-objects').append(itemPlanningInterTaskView.render().el);
-				}
+				});
 			});
 			
 		});
