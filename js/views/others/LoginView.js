@@ -71,13 +71,37 @@ app.Views.LoginView = Backbone.View.extend({
 	*/
 	login: function(e){
 		e.preventDefault();
+		var self = this;
+
+
+		// Set the button in loading State //
+		$('#formConnection').find('fiedset').prop('disabled', true);
+		$(this.el).find("button[type=submit]").button('loading');
 
 		// Execution user login function //
-		this.model.login($('#loginUser').val(), $('#passUser').val());
+		var checkLogin = this.model.login($('#loginUser').val(), $('#passUser').val());
 
 		
-		// Reset password value //
-		$('#passUser').val('');
+		checkLogin.done(function(data){
+			// Set user data and Save it //
+			app.models.user.setUserData(data);
+			app.models.user.save();
+
+			app.setAjaxSetup();
+
+			app.views.headerView.render(app.router.mainMenus.manageInterventions);
+			Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
+		});
+		checkLogin.fail(function(){
+   	        $('#passUser').parents('.form-group').addClass('has-error');
+   	        $('#errorLogin').removeClass('hide');
+   	        $('#passUser').focus();
+   	        //app.notify('large', 'danger', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
+
+   	        // Reset password value //
+			$(self.el).find("button[type=submit]").button('reset');
+			$('#passUser').val('');
+    	});
 	},
 
 

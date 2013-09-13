@@ -147,7 +147,7 @@ app.Views.InterventionView = Backbone.View.extend({
 			success: function (data) {
 				console.log(data);
 				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+					app.notify('', 'danger', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 				}
 				else{
 					app.router.navigate(app.routes.interventions.baseUrl, {trigger: true, replace: true});

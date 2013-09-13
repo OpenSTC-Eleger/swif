@@ -22,7 +22,7 @@ app.Views.FooterView = Backbone.View.extend({
 	render: function () {
 		var self = this;
 
-	   $.get("templates/" + this.templateHTML + ".html", function(templateData){
+		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 			// Templating // 
 			var template = _.template(templateData, {

@@ -159,6 +159,7 @@
 	"vehiclesOrEquipments"					: "Matériels / Véhicules",
 	"placeOrEquipment"						: "Site / Equipement",
 	"location"								: "Emplacement",
+	"developBy" 							: "développé par",
 
 	"monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
 	"monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],

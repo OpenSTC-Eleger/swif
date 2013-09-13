@@ -116,13 +116,16 @@ div.datepicker{
 
 
 
-/* pNotify compatibility with Font Awesome 3.0.2
+/* pNotify compatibility with Font Awesome 3.0.2 and Bootstrap 3.0.0
 -------------------------------------------------- */
 div.ui-pnotify-container{
 	.show();
 }
 div.ui-pnotify.big-icon div.icon-large div.ui-pnotify-icon{
 	.noMarginTop();
+}
+.alert-error {
+  .alert-danger();
 }
 
 
@@ -138,20 +141,6 @@ a.filter-button.filter-disabled{
 		color: none;
 	}
 }
-
-
-
-
-
-
-
-
-
-/* PYF Twitter Bootstrap Accordion and button dropdown overflow issue 
-	http://stackoverflow.com/questions/10959068/twitter-bootstrap-accordion-and-button-dropdown-overflow-issue
-	TODO
-*/
-.accordion-body[class*="in collapse"]{ overflow:visible; }
 
 
 
@@ -173,56 +162,52 @@ a.filter-button.filter-disabled{
 
 
 
-/* Calendar
+/* Connection Form
 -------------------------------------------------- */
-section.calendarContainer{
-	//min-width: 770px;
-	margin-bottom: 2px;
+#formConnectionContainer{
+	max-width: 500px;
+	.box-shadow(0 1px 10px rgba(50, 50, 0, 0.5));
+	margin-top: 12%;
+
+	.formHeading{
+		.noMarginTop();
+		margin-bottom: 20px;
+	}
 }
 
 
+
+
+
+/*--------------------------------------------------
+/* TO REVIEW OR CONFIRM DELETE 
+-------------------------------------------------- */
+
+
+/* Calendar
+-------------------------------------------------- */
 .calendar.thumbnail{
 	border-color: @gray-light;
 }
-.calendar.thumbnail:hover{
-	//border-color: @blueDark;
-}
 
-.fc-view{
-   /* prevents dragging outside of widget */
-   width: 100%;
-   overflow: hidden;
-}
+
+/* PYF Twitter Bootstrap Accordion and button dropdown overflow issue 
+	http://stackoverflow.com/questions/10959068/twitter-bootstrap-accordion-and-button-dropdown-overflow-issue
+	TODO
+*/
+.accordion-body[class*="in collapse"]{ overflow:visible; }
+
+
 
 
 
 /* Planning Task List
 -------------------------------------------------- */
-#planningToolbar{
-	margin-bottom: 30px;
-}
-
-#accordionInter div.accordion-group{
-	border-color: darken(@gray-lighter, 10%);
-	.border-radius(0);
-}
-#accordionInter div.accordion-heading:hover{
-
-	background-color: @popover-title-bg;
-	
-	.invisible{
-		visibility: visible;
-	}
-}
-
 ul.tasks li.external-event{
 	padding: 5px 5px 5px 5px;
 	cursor: move;
 }
-/* Display Task Actions */
-ul.tasks li.external-event:hover a.hide{
-	display: inline;
-}
+
 li.external-event.disabled{
 	color: @gray-light;
 	cursor: no-drop!important;
@@ -246,9 +231,6 @@ div.div-actions{
 	font-size: 85%;
 	width: auto;
 	margin: 0 0 0 15px;
-}
-.row-actions.no-margin{
-	margin: 0;	
 }
 .nested-objects-actions{
 	font-size: 90%;
@@ -276,34 +258,7 @@ ul.nested-objects li:hover .nested-objects-actions, tr.row-item:hover .row-actio
 
 
 
-/* Connection Form
--------------------------------------------------- */
-#formConnectionContainer{
-	max-width: 500px;
-	.box-shadow(0 1px 10px rgba(50, 50, 0, 0.5));
-	margin-top: 12%;
 
-	.formHeading{
-		.noMarginTop();
-		margin-bottom: 20px;
-	}
-}
-
-
-
-/* Tables
--------------------------------------------------- */
-table thead th.align, .table tbody td.align{
-	.text-center();
-}
-
-.table-caption{
-	.text-left();
-	padding: 0 0 4px 4px;
-	font-size: @font-size-large;
-	font-weight: bolder;
-	margin: 0;
-}
 
 
 
