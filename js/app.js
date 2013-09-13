@@ -129,12 +129,12 @@ var app = {
 				},
 				500: function(){
 					// Server unreachable //
-					app.notify('large', 'error', app.lang.errorMessages.serverError, '');
+					app.notify('large', 'danger', app.lang.errorMessages.serverError, '');
 					app.loader('hide');
 				},
 				502: function(){
 					// Server unreachable //
-					app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
+					app.notify('large', 'danger', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
 					app.loader('hide');
 				}
 			}
@@ -196,8 +196,9 @@ var app = {
 				var delay    = 4500;
 				var hide     = true;
 			break;
-
 		}
+
+		if(type == 'danger'){ type = 'error'; }
 
 		$.pnotify({
 			title        : title,

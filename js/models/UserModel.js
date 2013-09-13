@@ -235,13 +235,36 @@ app.Models.User = Backbone.Model.extend({
 
 
 
+	/** Set all attributes to the user after login
+	*/
+	setUserData: function(data){
+		
+		this.setLogin(data.user.login);
+		this.setUID(data.user.id)
+		this.setAuthToken(data.token);
+		this.setMenu(data.menu);
+		this.setLastConnection(moment());
+		this.setContext({tz: data.user.context_tz, lang: data.user.context_lang});
+		this.setFirstname(data.user.firstname);
+		this.setLastname(data.user.name);
+		this.setGroups(data.user.groups_id);
+		this.setServices(data.user.service_ids);
+		this.setService(data.user.service_id);
+		this.setContact(data.user.contact_id);
+		this.setManager(data.user.isManager);
+		this.setDST(data.user.isDST);
+
+		this.queryManagableTeams();
+		this.queryManagableOfficers();
+	},
+
+
+
 	/** Login function
 	*/
 	login: function (loginUser, passUser) {
 
 		var self = this;
-
-		console.log('Login User: ' + loginUser + ' - ' + passUser);
 
 		var login_data = {
 			'dbname'  : app.config.openerp.database,
@@ -249,48 +272,11 @@ app.Models.User = Backbone.Model.extend({
 			'password': passUser,
 		};
 
-		$.ajax({
+		return $.ajax({
 			url        :  self.urlAuthentication,
 			type       : 'POST',
 			dataType   : 'json',
-			data       :  JSON.stringify(login_data),
-			beforeSend : function(){
-				app.loader('display', app.lang.connectionInProgress);
-			},
-			success    : function (data) {
-
-				// Set all attributes to the user //
-				self.setAuthToken(data.token);
-				self.setMenu(data.menu);
-				self.setUID(data.user.id)
-				self.setLogin(loginUser);
-				self.setLastConnection(moment());
-				self.setContext({tz: data.user.context_tz, lang: data.user.context_lang});
-				self.setFirstname(data.user.firstname);
-				self.setLastname(data.user.name);
-				self.setGroups(data.user.groups_id);
-				self.setServices(data.user.service_ids);
-				self.setService(data.user.service_id);
-				self.setContact(data.user.contact_id);
-				self.setManager(data.user.isManager);
-				self.setDST(data.user.isDST);
-				self.queryManagableTeams();
-				self.queryManagableOfficers();
-
-				// Add the user to the collection and save it to the localStorage //
-				self.save();
-
-				app.setAjaxSetup();
-
-				app.views.headerView.render(app.router.mainMenus.manageInterventions);
-				Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
-			},
-			statusCode : {
-				401: function () {
-					app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
-					app.loader('hide');
-				}
-			}
+			data       :  JSON.stringify(login_data)
 		})
 	},
 
@@ -305,16 +291,7 @@ app.Models.User = Backbone.Model.extend({
 			url    : self.urlAuthentication +'/'+ self.getAuthToken(),
 			method : 'DELETE',
 		})
-		.done(function (data) {
-
-			if(data){
-				app.notify('large', 'info', app.lang.infoMessages.information, app.lang.infoMessages.successLogout);
-			}
-			else{
-				app.notify('', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
-			}
-
-		}).always(function () {
+		.always(function () {
 			// Delete the Auth token of the user //
 			self.setAuthToken(null);
 			self.save();

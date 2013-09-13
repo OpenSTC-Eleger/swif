@@ -77,7 +77,7 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 			self.modal.modal('hide');
 		})
 		.fail(function(){
-			app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+			app.notify('', 'danger', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 		})
 		.always(function(){
 			// Reset the button state //
