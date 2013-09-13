@@ -40,7 +40,7 @@
 	},
 
 	"tasks": {
-		"url"		: "taches(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)(/year/:year)(/week/:week)",
+		"url"		: "taches(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)(/:year)(/:week)",
 		"function"	: "tasksCheck"
 	},
 
