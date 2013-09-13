@@ -1,9 +1,0 @@
-OpenSTC By Siclic http://www.siclic.fr
-
-Compile less stylesheets :
-
-$: grunt less
-
-Minify and Uglify JS
-
-$: grunt uglyfi
