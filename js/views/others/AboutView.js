@@ -28,9 +28,6 @@ app.Views.AboutView = Backbone.View.extend({
 		// Change the active menu item //
 		app.views.headerView.selectMenuItem('');
 
-		// Change the Grid Mode of the view //
-		app.views.headerView.switchGridMode('default');
-
 		
 		// Retrieve the Login template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){

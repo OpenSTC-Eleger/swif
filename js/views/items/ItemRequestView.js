@@ -7,16 +7,15 @@ app.Views.ItemRequestView = Backbone.View.extend({
 
 	className   : function(){
 
-		var classRow = '';
-
 		if(this.model.getState() == app.Models.Request.status.wait.key && app.models.user.isManager() && _.contains(app.models.user.getServices(), this.model.getService('id'))) {
 			classRow = app.Models.Request.status.wait.color + ' bolder';
+			return classRow;
 		}
 		else if(this.model.getState() == app.Models.Request.status.confirm.key && app.models.user.isDST()){
 			classRow = app.Models.Request.status.confirm.color + ' bolder';
+			return classRow;
 		}
-
-		return classRow;
+		
 	},
 
 	templateHTML : 'items/itemRequest',
@@ -147,7 +146,7 @@ app.Views.ItemRequestView = Backbone.View.extend({
 
 	displayModalUpdateRequest: function(e){
 		e.preventDefault();
-		new app.Views.ModalRequestView({el:'#modalAddRequest', requests: app.views.requestsListView.collection, model: this.model});
+		new app.Views.ModalRequestView({el:'#modalSaveRequest', requests: app.views.requestsListView.collection, model: this.model});
 
 	},
 	

@@ -3,7 +3,7 @@
 		<%= lang.viewsTitles.requestsList %>
 
 		<% if(app.models.user.isDST() || app.models.user.isManager()){
-		 
+
 		  if(app.models.user.isDST()) { 
 				var classColor      = app.Models.Request.status.confirm.color;
 				var filterValue     = app.Models.Request.status.confirm.key;
@@ -31,21 +31,25 @@
 </div>
 
 
-<div class="container-fluid">
 
 
 	<!-- Table toolbar -->
-	<div class="tableToolbar">
-		<a href="#" id="buttonAddRequest" class="btn btn-primary"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
+	<div class="tableToolbar row">
+		<div class="col-xs-7 col-md-9 col-lg-10">
+			<a href="#" class="btn btn-primary createRequest"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
+		</div>
 
-		<form class="form-search pull-right">
-			<div class="input-append">
-				<input type="search" class="input-medium search-query" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
-				<button type="submit" class="btn"><i class="icon-search text-info icon-large"></i></button>
+		<form class="form-search pull-right col-xs-5 col-md-3 col-lg-2">
+			<div class="input-group">
+				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+				<span class="input-group-btn">
+					<button type="submit" class="btn btn-primary"><i class="icon-search icon-large"></i></button>
+				</span>
 			</div>
 		</form>
 	</div>
 	<!-- Table toolbar -->
+
 
 
 	<!-- Message if No Request to Display -->
@@ -59,11 +63,12 @@
 
 
 	<!-- Table Requests -->
+	<div class="table-responsive ">
 	<table class="table table-striped table-bordered table-hover table-sorter">
 		<thead>
 			<tr>
-				<th data-sort-column="id" class="span1">N°</th>
-				<th data-sort-column="name" class="span6"><%= _.capitalize(lang.label) %></th>
+				<th data-sort-column="id">N°</th>
+				<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
 				<th class="hidden-phone span5"><i class="icon-map-marker icon-fixed-width" style="text-align:center;"></i><%= _.capitalize(lang.place) + ' - '%><i class="icon-wrench icon-fixed-width" style="text-align:center;"></i><%= _.capitalize(lang.equipment) %></th>
 				<th><%= _.capitalize(lang.service) %></th>
 				<th><%= _.capitalize(lang.claiment) %></th>
@@ -89,7 +94,7 @@
 				</th>
 
 				<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
-					<th class="span1"><%= _.capitalize(lang.action) %></th>
+					<th><%= _.capitalize(lang.action) %></th>
 				<% } %>
 			</tr>
 		</thead>
@@ -98,24 +103,24 @@
 		</tbody>
 
 	</table>
+	</div>
 	<!-- /Table Requests -->
 
 
 	<!-- Table pagination -->
-	<div id="pagination"></div>
+	<div id="pagination" class="pull-right"></div>
 	<!-- /Table pagination -->
 
-</div>
 
 
 <!-- Modal form to add a request -->
-<div id="modalAddRequest" class="modal hide fade"></div>
+<div id="modalSaveRequest" class="modal fade" aria-hidden="true"></div>
 
 <!-- Modal form to valid a request -->
-<div id="modalValidRequest" class="modal hide fade"></div>
+<div id="modalValidRequest" class="modal fade" role="dialog" aria-hidden="true"></div>
 
 <!-- Modal form to refuse a request -->
-<div id="modalRefuseRequest" class="modal hide fade" data-backdrop="static"></div>
+<div id="modalRefuseRequest" class="modal fade" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 
 <!-- Modal form to Confirm a request -->
-<div id="modalConfirmRequest" class="modal hide fade"></div>
+<div id="modalConfirmRequest" class="modal fade" role="dialog" aria-hidden="true"></div>

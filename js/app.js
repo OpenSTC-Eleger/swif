@@ -129,12 +129,12 @@ var app = {
 				},
 				500: function(){
 					// Server unreachable //
-					app.notify('large', 'error', app.lang.errorMessages.serverError, '');
+					app.notify('large', 'danger', app.lang.errorMessages.serverError, '');
 					app.loader('hide');
 				},
 				502: function(){
 					// Server unreachable //
-					app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
+					app.notify('large', 'danger', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
 					app.loader('hide');
 				}
 			}
@@ -145,12 +145,18 @@ var app = {
 
 	/** Page Loader
 	*/
-	loader: function(action){
+	loader: function(action, message){
 
 		var deferred = $.Deferred();
 
 		switch(action){
 			case 'display':
+				if(_.isUndefined(message)){ 
+					$('#loaderMessage').html(app.lang.loadingInProgress);
+				}
+				else{
+					$('#loaderMessage').html(message);
+				}
 				$('#loader, #modal-block').fadeIn(250, deferred.resolve);
 			break;
 
@@ -190,8 +196,9 @@ var app = {
 				var delay    = 4500;
 				var hide     = true;
 			break;
-
 		}
+
+		if(type == 'danger'){ type = 'error'; }
 
 		$.pnotify({
 			title        : title,

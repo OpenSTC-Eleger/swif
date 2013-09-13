@@ -5,11 +5,13 @@
 
 // Customizing components //
 @import 'progress-bars';
-@import 'labels-badges';
+@import 'labels';
+@import 'badges';
 @import 'pagination';
 @import 'coponent-animations';
 @import 'tables';
 @import 'types';
+@import 'form';
 
 // Customizing plugin //
 @import 'select2';
@@ -23,33 +25,30 @@
 
 /* Generic
 -------------------------------------------------- */
+body{
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+.navbar-brand{
+	height: 20px;
+}
+
+.hide-soft{
+	display: none	
+}
+
+fieldset{
+	margin-top: @line-height-computed*1.5;
+}
+
 .popover-title, .bolder{
 	font-weight: bolder;
 }
-.no-outline{
-	outline: none !important;
-}
-.spaceBottom{
-	margin-bottom: 30px;
-}
-.vertical-align-middle{
-	vertical-align: middle;
-}
-.vertical-align-top{
-	vertical-align: top;
-}
+
 .isCheck{
 	text-decoration: line-through;
 }
-.displayInlineBlock{
-	display: inline-block;
-}
-.marginTop{
-	margin-top: 35px;
-}
-.marginLeft{
-	margin-left: 15px;
-}
+
 .noMarginTop{
 	margin-top: 0;
 }
@@ -57,56 +56,25 @@
 	margin-bottom: 0 !important;
 }
 
-.sortablePlaceHold{
-	background-color: @wellBackground;
-	height: 28px;
-	border: thin dashed darken(@wellBackground, 65%);
-}
-
-::selection { background: lighten(@pink, 20%); color: @white; }
-::-moz-selection { background: lighten(@pink, 20%); color: @white; }
-
-
-// <sup> Badge //
-*:not(i)[data-toggle="tooltip"]:not([data-original-title='']) { cursor: help; }
-
-
-
-// Table Toolbar //
 .tableToolbar{
 	margin-bottom: 15px;
 }
 
-
-
-// pNotify compatibility with Font Awesome 3.0.2 //
-div.ui-pnotify-container{
-	.show();
-}
-div.ui-pnotify.big-icon div.icon-large div.ui-pnotify-icon{
-	.noMarginTop();
+.popover-content hr{
+	margin-top: 8px;
+	margin-bottom: 8px;
 }
 
 
-div.progress{
-	.noMarginBottom();
+
+
+/* XL Grid
+-------------------------------------------------- */
+@media (min-width: @screen-xl-desktop) {
+  .container {
+    max-width: @container-xl-desktop;
+  }
 }
-
-// Filter Button Table //
-a.filter-button.filter-disabled{
-	.opacity(40);
-	.muted;
-}
-
-
-div.accordion-group{
-	margin-bottom: 5px;
-}
-
-form legend{
-	margin-bottom: 0px;
-}
-
 
 
 /* HEADER
@@ -115,36 +83,64 @@ div.page-header{
 	margin-top: 5px;
 }
 
-#appName{
-	padding-top: 6px;
-	padding-bottom: 6px;
+
+
+/* Hack for DatePicker
+-------------------------------------------------- */
+div.datepicker{
+	z-index: @zindex-modal+1 !important;
 }
 
 
 
+/* Selection Color
+-------------------------------------------------- */
+::selection { background: lighten(@pink, 20%); color: #FFF; }
+::-moz-selection { background: lighten(@pink, 20%); color: #FFF; }
 
 
-// List in Popover Tooltip //
-.tooltip-inner ul li, .popover-content ul{
-	margin-left: 0;
-}
-.tooltip-inner ul li, .popover-content ul li{
-	height: 20px !important;
-	width: auto !important;
-}
-.popover-content hr{
-	margin-top: 8px;
-	margin-bottom: 8px;
-}
-.popover-content{
-	font-weight: normal;
+
+/* Tooltip element cursor
+-------------------------------------------------- */
+*:not(i)[data-toggle="tooltip"]:not([data-original-title='']) { cursor: help; }
+
+
+
+/* Sortable PlaceHolder
+-------------------------------------------------- */
+.sortablePlaceHold{
+	background-color: @well-bg;
+	height: 28px;
+	border: thin dashed darken(@well-bg, 65%);
 }
 
 
-/* PYF Twitter Bootstrap Accordion and button dropdown overflow issue 
-	http://stackoverflow.com/questions/10959068/twitter-bootstrap-accordion-and-button-dropdown-overflow-issue
-*/
-.accordion-body[class*="in collapse"]{ overflow:visible; }
+
+/* pNotify compatibility with Font Awesome 3.0.2 and Bootstrap 3.0.0
+-------------------------------------------------- */
+div.ui-pnotify-container{
+	.show();
+}
+div.ui-pnotify.big-icon div.icon-large div.ui-pnotify-icon{
+	.noMarginTop();
+}
+.alert-error {
+  .alert-danger();
+}
+
+
+
+/* Filter Button Table
+-------------------------------------------------- */
+a.filter-button.filter-disabled{
+	.opacity(.4);
+	.text-muted();
+
+	&:hover{
+		.opacity(1);
+		color: none;
+	}
+}
 
 
 
@@ -153,129 +149,98 @@ div.page-header{
 .border-emphasize {
 	border-left-width: 4px;
 	border-left-style: solid;
-	border-left-color: @grayLight;
+	border-left-color: @gray-light;
 }
 .border-emphasize {
-	&-info{ border-left-color: @infoText; }
-	&-important{ border-left-color: @errorText; }
-	&-warning{ border-left-color: @orange; }
-	&-success{ border-left-color: @successText; }
+	&-info{ border-left-color: @brand-info; }
+	&-important{ border-left-color: @brand-danger; }
+	&-warning{ border-left-color: @brand-warning; }
+	&-success{ border-left-color: @brand-success; }
 	&-overrun{ border-left-color: @purple; }
 	&-template{ border-left-color: @yellow; }
 }
 
 
 
+/* Connection Form
+-------------------------------------------------- */
+#formConnectionContainer{
+	max-width: 500px;
+	.box-shadow(0 1px 10px rgba(50, 50, 0, 0.5));
+	margin-top: 12%;
+
+	.formHeading{
+		.noMarginTop();
+		margin-bottom: 20px;
+	}
+}
+
+
+
+
+
+/*--------------------------------------------------
+/* TO REVIEW OR CONFIRM DELETE 
+-------------------------------------------------- */
+
+
 /* Calendar
 -------------------------------------------------- */
-section.calendarContainer{
-	//min-width: 770px;
-	margin-bottom: 2px;
-}
-
-
 .calendar.thumbnail{
-	border-color: @grayLight;
-}
-.calendar.thumbnail:hover{
-	border-color: @blueDark;
+	border-color: @gray-light;
 }
 
-.fc-view{
-   /* prevents dragging outside of widget */
-   width: 100%;
-   overflow: hidden;
-}
+
+/* PYF Twitter Bootstrap Accordion and button dropdown overflow issue 
+	http://stackoverflow.com/questions/10959068/twitter-bootstrap-accordion-and-button-dropdown-overflow-issue
+	TODO
+*/
+.accordion-body[class*="in collapse"]{ overflow:visible; }
+
+
 
 
 
 /* Planning Task List
 -------------------------------------------------- */
-#planningToolbar{
-	margin-bottom: 30px;
-}
-
-#accordionInter div.accordion-group{
-	border-color: darken(@grayLighter, 10%);
-	.border-radius(0);
-}
-#accordionInter div.accordion-heading:hover{
-
-	background-color: @popoverTitleBackground;
-	
-	.invisible{
-		visibility: visible;
-	}
-}
-
 ul.tasks li.external-event{
 	padding: 5px 5px 5px 5px;
 	cursor: move;
 }
-/* Display Task Actions */
-ul.tasks li.external-event:hover a.hide{
-	display: inline;
-}
+
 li.external-event.disabled{
-	color: @grayLight;
+	color: @gray-light;
 	cursor: no-drop!important;
 }
 li.external-event:hover{
-	background-color: @grayLighter;
+	background-color: @gray-lighter;
 	.border-radius(10px);
 }
 div.div-actions{
 	font-size: 85%;
-	border-top: 1px solid @grayLight;
+	border-top: 1px solid @gray-light;
 	padding: 5px;
 }
 
 
 
-/* Planning List Agents
--------------------------------------------------- */
-#listAgentsTeams{
-	margin-bottom: 15px;
-	overflow-y: hidden;
-}
-#listAgentsTeams.affix{
-	top: 60px;
-}
-#listAgentsTeams div.tab-content div.tab-pane{
-	height: 120px;
-}
-#listAgents, #listTeams{
-	margin-bottom: 0;
-}
-#listAgents li, #listTeams li{
-	.size(30px, 31%);
-}
-#listAgents li a, #listTeams li a{
-	margin-left: 0;
-	padding-left: 5px;
-}
-
-
 
 // object Actions //
-.object-actions, .row-actions{
+.row-actions{
 	display: inline;
 	font-size: 85%;
 	width: auto;
 	margin: 0 0 0 15px;
 }
-.row-actions.no-margin{
-	margin: 0;	
-}
 .nested-objects-actions{
 	font-size: 90%;
 }
-.object-actions a:hover i, .row-actions a:hover i, .nested-objects-actions a:hover i, a.accordion-toggle:hover i, a.accordion-object:hover i{
+.row-actions a:hover i, .nested-objects-actions a:hover i, a.accordion-toggle:hover i, a.accordion-object:hover i{
 	text-decoration: none;
 }
 
 // object nestedObjects //
-ul.nested-objects li:hover .nested-objects-actions, tr.row-item:hover .row-actions, tr.row-nested-objects:hover .nested-objects-actions, tr.row-object:hover .object-actions{
+ul.nested-objects li:hover .nested-objects-actions, tr.row-item:hover .row-actions, tr.row-nested-objects:hover .nested-objects-actions{
 	visibility: visible;
 	a:hover{
 		text-decoration: none;
@@ -287,99 +252,24 @@ ul.nested-objects li:hover .nested-objects-actions, tr.row-item:hover .row-actio
 /* List tasks
 -------------------------------------------------- */
 .collapse-selected{
-	border-left: 5px solid @blue !important;
+	border-left: 5px solid @brand-info !important;
 	border-radius: 0px !important;
 }
-.accordion.without-border .accordion-group{
-	margin: 40px 0 40px 0;
-	padding-left: 10px;
-	border: none;
-}
-.accordion.without-border .accordion-heading{
-	border-bottom: thin solid #e5e5e5;
-}
-.accordion.without-border .accordion-toggle{
-	padding: 1px;
-}
-.accordion.without-border .accordion-toggle:hover{
-	text-decoration: none;
-}
 
 
 
 
-/* Connection Form
--------------------------------------------------- */
-#formConnection{
-	.box-shadow(0 1px 10px rgba(50,50,0,0.5));
-	max-width: 500px; 
-	margin: 10% auto;
-	padding-bottom: 10px;
-	padding-top: 5px;
-}
-#formConnection .form-actions{
-	margin: 0;
-	padding-bottom: 0;
-}
-
-
-/* Tables
--------------------------------------------------- */
-table thead th.align, .table tbody td.align{
-	.text-center();
-}
-
-.table-caption{
-	.text-left();
-	padding: 0 0 4px 4px;
-	font-size: @fontSizeLarge;
-	font-weight: bolder;
-	margin: 0;
-}
 
 
 
 /* objects list
 -------------------------------------------------- */
 tr.row-nested-objects-collapse{
-	.hide();
+	.hide-soft();
 }
 tr.row-nested-objects-collapse.expend:hover td.nestedTD{
 	background-color: @white;
 }
 tr.row-nested-objects-collapse td.nestedTD{
 	padding: 25px 3% 5px 3%;
-}
-tr.info td:first-child{
-	font-weight: bolder;
-}
-
-
-
-.widget-title {
-    border-bottom: 1px solid @tableBorder;
-    margin-bottom: 10px;
-}
-
-
-
-/* Responsive
--------------------------------------------------- */
-@media (max-width: 767px) {
-
-}
-
-@media (min-width: 980px) {
-  	// To make the container go all the way to the bottom of the topbar //
-  	body{ padding-top: 60px; padding-bottom: 60px;}
-
-}
-
-@media (max-width: 979px) {
-
-  	// Planning list Agents //
-	#listAgents li, #listTeams li{
-		width: 45%;
-	}
-
 }

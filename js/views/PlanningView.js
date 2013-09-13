@@ -18,9 +18,7 @@ app.Views.PlanningView = Backbone.View.extend({
 	sstoragePlanningSelected: 'selectedPlanning',
 	
 	// The DOM events //
-	events: {
-
-		'click #listAgents li a, #listTeams li a' :          'selectPlanning',
+	events: {		
 	},
 
 
@@ -59,27 +57,10 @@ app.Views.PlanningView = Backbone.View.extend({
 
 			// Set variables template //
 			var template = _.template(templateData, {
-				lang: app.lang,
-				officers: self.collections.officers,
-				teams:  self.collections.teams,				
+				lang: app.lang,			
 			});
 
 			$(self.el).html(template);
-
-			// Check if a Team was selected to select the Team Tab 
-			if(!_.isUndefined(self.options.team))
-				$('#allTabs a[data-target="#tab-teams"]').tab('show');
-			// Select team was selected
-			if(!_.isUndefined(self.options.team))
-				$("a[href$="+self.options.team+"]").parent().addClass('active');
-			// Select officer was selected
-			else if(!_.isUndefined(self.options.officer))
-				$("a[href$="+self.options.officer+"]").parent().addClass('active');
-			// Select first officer
-			else
-				$("#listAgents li:first").addClass('active');
-			
-
 
 			$('#calendar').append( new app.Views.EventsListView(self.options).render().el );
 			// Display filter on the table //
@@ -96,7 +77,6 @@ app.Views.PlanningView = Backbone.View.extend({
 			}
 			
 			//interventions left panel
-
 			app.views.planningInterListView = new app.Views.PlanningInterListView(self.options)
 					
 			
@@ -108,8 +88,11 @@ app.Views.PlanningView = Backbone.View.extend({
 
 	/** Partial Render of the view
 		*/
-	partialRender: function (interId) {	
-
+	partialRender: function () {	
+		var self = this;
+		this.initPanelCollections().done(function(){
+			app.views.planningInterListView = new app.Views.PlanningInterListView(self.options)
+	    });	    		
 	},
 	
 	

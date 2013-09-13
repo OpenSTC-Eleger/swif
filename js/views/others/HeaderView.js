@@ -74,10 +74,8 @@ app.Views.HeaderView = Backbone.View.extend({
 
 
 	preventDefault: function(event){
-		console.log('Youpi');
 		event.preventDefault();
 	},
-
 
 
 });

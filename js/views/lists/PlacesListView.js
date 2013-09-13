@@ -89,7 +89,6 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 				page       : self.options.page.page,
 				collection : self.collection
 			})
-			app.views.paginationView.render();
 
 		});
 

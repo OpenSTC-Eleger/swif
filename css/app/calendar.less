@@ -1,6 +1,6 @@
 // Full Calendar Update //
 .fc-slot8, .fc-slot9, .fc-slot10, .fc-slot11 {
-	background-color: @grayLighter;
+	background-color: @gray-lighter;
 }
 .fc-header{
 	margin-bottom: 5px;
@@ -8,10 +8,9 @@
 
 	h2{
 		margin-top: 20px;
-		font-size: @baseFontSize*1.8;
+		font-size: @font-size-base*1.8;
 	}
 }
-
 
 
 
@@ -21,23 +20,23 @@
 
 // Success (green)
 .calendar-success.fc-event {
-	border-color: darken(@successText, 5%);
-	background-color: @successText;
-	div.fc-event-inner div.fc-event-time{ background-color: darken(@successText, 5%); }
+	border-color: darken(@label-success-bg, 5%);
+	background-color: @label-success-bg;
+	div.fc-event-inner div.fc-event-time{ background-color: darken(@label-success-bg, 5%); }
 }
 
 // Info (blue)
 .calendar-info.fc-event {
-	border-color: darken(@infoText, 5%);
-	background-color: @infoText;
-	div.fc-event-inner div.fc-event-time{ background-color: darken(@infoText, 5%); }
+	border-color: darken(@label-info-bg, 5%);
+	background-color: @label-info-bg;
+	div.fc-event-inner div.fc-event-time{ background-color: darken(@label-info-bg, 5%); }
 }
 
 // Default (gray)
 .calendar-default.fc-event {
-	border-color: darken(@grayLight, 5%);
-	background-color: @grayLight;
-	div.fc-event-inner div.fc-event-time{ background-color: darken(@grayLight, 5%); }
+	border-color: darken(@label-default-bg, 5%);
+	background-color: @label-default-bg;
+	div.fc-event-inner div.fc-event-time{ background-color: darken(@label-default-bg, 5%); }
 }
 
 // Absent (pink)

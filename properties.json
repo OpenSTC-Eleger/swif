@@ -10,7 +10,7 @@
 		"jQuery-ui"            : "1.10.3",
 		"jQuery-printElement"  : "2.0.0",
 		"Backbone-localstorage": "1.1.6",
-		"Bootstrap"            : "2.3.2",
+		"Bootstrap"            : "3.0.0",
 		"Underscore-string"    : "2.3.0",
 		"Font-awesome"         : "3.2.1",
 		"Fullcalendar"         : "1.6.1",
@@ -19,7 +19,7 @@
 		"Moment JS"            : "2.1.0",
 		"Bootstrap-datepicker" : "1.1.1",
 		"Bootstrap-timepicker" : "0.2.3",
-		"Bootstrap-switch"     : "1.3.0",
+		"Bootstrap-switch"     : "1.8.0",
 		"Select2"              : "3.4.2",
 		"NProgress"            : "0.1.2"
 	}

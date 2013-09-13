@@ -15,10 +15,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'click li.active'					: 'preventDefault',
-			'click li.disabled'					: 'preventDefault',
-			'click ul.sortable li'				: 'preventDefault',
-
 			'click a.modalCreateInter'			: 'displayModalSaveInter',
 
 			'click #filterStateInterList li:not(.disabled) a' 	: 'setFilter'
@@ -179,12 +175,9 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 	/** Display the form to add / update an intervention
 	*/
 	displayModalSaveInter: function(e){
-		//this.getTarget(e);
 		e.preventDefault();
+		
 		var params = {el:'#modalSaveInter',interventions: this.collections.interventions}
-//		if(this.pos > -1){
-//			params.model = this.collections.interventions.get(this.pos);
-//		}
 		new app.Views.ModalInterventionView(params);
 	},
 
