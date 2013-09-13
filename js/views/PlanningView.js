@@ -24,8 +24,12 @@ app.Views.PlanningView = Backbone.View.extend({
 
 	/** View Initialization
 	*/
-	initialize : function() {		
+	initialize : function() {
+		//By default display open intervention (intervention to schedule)
+		this.options.filter = 'state-open';
 		var self = this;
+		
+		
 	    console.log("Planning Details view intialization")
 	    this.initCalendarCollections().done(function(){
 	    	self.initPanelCollections().done(function(){
@@ -64,19 +68,19 @@ app.Views.PlanningView = Backbone.View.extend({
 
 			$('#calendar').append( new app.Views.EventsListView(self.options).render().el );
 			// Display filter on the table //
-			if(sessionStorage.getItem(self.filters) != null){
-				$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');
-				$('li.delete-filter').removeClass('disabled');
-				if(sessionStorage.getItem(self.filters) != 'notFilter'){
-					$('a.filter-button').addClass('text-'+app.Models.Intervention.status[sessionStorage.getItem(self.filters)].color);
-				}
-			}
-			else{
-				$('a.filter-button').removeClass('filter-active ^text').addClass('filter-disabled');
-				$('li.delete-filter').addClass('disabled');
-			}
+//			if(sessionStorage.getItem(self.filters) != null){
+//				$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');
+//				$('li.delete-filter').removeClass('disabled');
+//				if(sessionStorage.getItem(self.filters) != 'notFilter'){
+//					$('a.filter-button').addClass('text-'+app.Models.Intervention.status[sessionStorage.getItem(self.filters)].color);
+//				}
+//			}
+//			else{
+//				$('a.filter-button').removeClass('filter-active ^text').addClass('filter-disabled');
+//				$('li.delete-filter').addClass('disabled');
+//			}
 			
-			//interventions left panel
+			//interventions left panel			
 			app.views.planningInterListView = new app.Views.PlanningInterListView(self.options)
 					
 			
@@ -91,7 +95,7 @@ app.Views.PlanningView = Backbone.View.extend({
 	partialRender: function () {	
 		var self = this;
 		this.initPanelCollections().done(function(){
-			app.views.planningInterListView = new app.Views.PlanningInterListView(self.options)
+			app.views.planningInterListView.render();
 	    });	    		
 	},
 	
@@ -154,11 +158,8 @@ app.Views.PlanningView = Backbone.View.extend({
 		if(!_.isUndefined(this.options.search)){
 			globalSearch.search = this.options.search;
 		}
-		if(!_.isUndefined(this.options.filter) && this.options.filter.value!='notFilter' ){
+		if( !_.isUndefined(this.options.filter) ){
 			globalSearch.filter = this.options.filter;
-		}
-		else{
-			globalSearch.filter = { by: 'state', value: app.Models.Intervention.status.open.key};
 		}
 
 		if(!_.isEmpty(globalSearch)){

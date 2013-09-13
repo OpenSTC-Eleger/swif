@@ -150,7 +150,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 				page       : self.options.page.page,
 				collection : self.collections.interventions
 			})
-			app.views.paginationView.render();
 
 			
 		});
