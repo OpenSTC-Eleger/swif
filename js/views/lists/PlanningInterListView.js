@@ -16,7 +16,7 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 			//'switch-change #switchWithForeman'        : 'setForemanInTeam',		
 			'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilterState',	
 			'click a.modalCreateInter'			: 'displayModalSaveInter',
-			//'click #pagination ul a'			: 'goToPage',
+			'click #pagination ul a'			: 'goToPage',
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -212,39 +212,38 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 		app.router.navigate(app.Helpers.Main.urlBuilder(urlParameters, this.options), {trigger: true, replace: true});	
 	},	
 	
-//	goToPage: function(e){
-//		e.preventDefault()
-//		
-//		var self = this;
-//		
-//		var link = $(e.target);
-//		
-//		this.options.page.page = _(link.attr('href')).strRightBack('/page')
-//		
-//		app.router.navigate(this.urlBuilder(), {trigger: false, replace: true});
-//		app.views.planning.fetchPanelCollections().done(function(){
-//			self.options.collections.interventions = app.views.planning.collections.interventions;
-//			self.render();
-//		});
-//		
-//	},
-//	
-//	/**
-//	 * Constructs url for planning
-//	 */
-//	urlBuilder: function() {
-//		var self = this;
-//		var url = _(Backbone.history.fragment).strLeft('/');
-//
-//		// Iterate all urlParameters //
-//		_.each(this.urlParameters, function(value, index){		
-//			// Check if the options parameter aren't undefined or null //
-//			if(!_.isUndefined(self.options[value]) && !_.isNull(self.options[value])){	
-//					url += '/'+value+'/'+self.options[value];					
-//			}
-//		});				
-//		return url;		
-//	},
+	goToPage: function(e){
+		e.preventDefault()
+		
+		var self = this;
+		
+		var link = $(e.target);
+		
+		this.options.page = _(link.attr('href')).strRightBack('/page')
+		delete this.options.sort;
+		
+		app.router.navigate(this.urlBuilder(), {trigger: false, replace: true});
+		
+		app.views.planning.partialRender();
+		
+	},
+	
+	/**
+	 * Constructs url for planning
+	 */
+	urlBuilder: function() {
+		var self = this;
+		var url = _(Backbone.history.fragment).strLeft('/');
+
+		// Iterate all urlParameters //
+		_.each(this.urlParameters, function(value, index){		
+			// Check if the options parameter aren't undefined or null //
+			if(!_.isUndefined(self.options[value]) && !_.isNull(self.options[value])){	
+					url += '/'+value+'/'+self.options[value];					
+			}
+		});				
+		return url;		
+	},
 
 
 });

@@ -88,8 +88,11 @@ app.Views.PlanningView = Backbone.View.extend({
 
 	/** Partial Render of the view
 		*/
-	partialRender: function (interId) {	
-
+	partialRender: function () {	
+		var self = this;
+		this.initPanelCollections().done(function(){
+			app.views.planningInterListView = new app.Views.PlanningInterListView(self.options)
+	    });	    		
 	},
 	
 	
