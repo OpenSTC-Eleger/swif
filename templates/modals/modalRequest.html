@@ -115,76 +115,69 @@
 				<fieldset class="tab-pane fade" id="aboutRequest">
 
 
-						<!-- Request Patrimoine -->
-						<div class="control-group">
-							<label for="requestPlace" class="control-label"><%= _.capitalize(lang.placeOrEquipment) %>:</label>
+					<!-- Request Patrimoine -->
+					<div class="form-group">
+						<label for="requestPlace" class="control-label"><%= _.capitalize(lang.placeOrEquipment) %>:</label>
 
-							<div class="controls">
-								<div class="btn-group">
-									<button class="btn dropdown-toggle" id="btnSelectPlaceEquipment" data-item="place" data-toggle="dropdown"><i class="icon-map-marker icon-fixed-width iconItem"></i>&nbsp; <span class="icon-caret-down"></span></button>
-									<ul class="dropdown-menu">
-										<li><a href="#" class="linkSelectPlaceEquipment" data-item="place"><i class="icon-map-marker icon-fixed-width"></i> <%= lang.place %></a></li>
-										<li><a href="#" class="linkSelectPlaceEquipment" data-item="equipment"><i class="icon-wrench icon-fixed-width"></i> <%= lang.equipment %></a></li>
-									</ul>
-								</div>
-								<input id="requestPlaceEquipment" class="select2" style="width: 70%" 
-									required data-placeholder="<%= lang.actions.selectAPlaceShort %>"/>
-								<span class="help-inline"></span>                           
+						<div class="controls">
+							<div class="btn-group">
+								<button class="btn dropdown-toggle" id="btnSelectPlaceEquipment" data-item="place" data-toggle="dropdown"><i class="icon-map-marker icon-fixed-width iconItem"></i>&nbsp; <span class="icon-caret-down"></span></button>
+								<ul class="dropdown-menu">
+									<li><a href="#" class="linkSelectPlaceEquipment" data-item="place"><i class="icon-map-marker icon-fixed-width"></i> <%= lang.place %></a></li>
+									<li><a href="#" class="linkSelectPlaceEquipment" data-item="equipment"><i class="icon-wrench icon-fixed-width"></i> <%= lang.equipment %></a></li>
+								</ul>
 							</div>
+							<input id="requestPlaceEquipment" class="select2" required data-placeholder="<%= lang.actions.selectAPlaceShort %>"/>
+							<span class="help-inline"></span>                           
 						</div>
+					</div>
 
-						<!-- Request Place (if Equipment) -->
-						<div class="control-group" id="requestPlaceIfEquipmentBlock" style="display: none;">
-							<label for="requestPlaceIfEquipment" class="control-label"><%= _.capitalize(lang.location) %>:</label>
-			
-							<div class="controls">
-								<input id="requestPlaceIfEquipment" class="select2" style="width: 100%" 
-									data-placeholder="<%= lang.actions.selectAPlace %>"/>
-								<span class="help-inline"></span>
-							</div>
+					<!-- Request Place (if Equipment) -->
+					<div class="form-group" id="requestPlaceIfEquipmentBlock" style="display: none;">
+						<label for="requestPlaceIfEquipment" class="control-label"><%= _.capitalize(lang.location) %>:</label>
+		
+						<div class="controls">
+							<input id="requestPlaceIfEquipment" class="select2" data-placeholder="<%= lang.actions.selectAPlace %>"/>
 						</div>
+					</div>
 
-						<!-- Request Place precision -->
-						<div class="control-group">
-							<label for="requestPlacePrecision" class="control-label"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
+					<!-- Request Place precision -->
+					<div class="form-group">
+						<label for="requestPlacePrecision" class="control-label"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
 
-							<div class="controls">  
-								 <textarea name="requestPlacePrecision" id="requestPlacePrecision" rows="2"><%= request && request.site_details!=false?request.site_details:'' %></textarea>
-								<span class="help-inline"></span>                           
-							</div>
+						<div class="controls">  
+							 <textarea name="requestPlacePrecision" class="form-control" id="requestPlacePrecision" rows="2"><%= request && request.site_details!=false?request.site_details:'' %></textarea>
 						</div>
+					</div>
 
-						
-						<!-- Request Contact Service -->
-						<div class="control-group">
-							<label for="requestDetailService" class="control-label"><%= lang.serviceConcerned %>:</label>
+					
+					<!-- Request Contact Service -->
+					<div class="form-group">
+						<label for="requestDetailService" class="control-label"><%= lang.serviceConcerned %>:</label>
 
-							<div class="controls">
-								<input id="requestDetailService" class="select2" style="width: 100%" 
-									required data-placeholder="<%= lang.actions.selectAService %>"/>
-								<span class="help-inline"></span>
-							</div>
+						<div class="controls">
+							<input id="requestDetailService" class="select2" required data-placeholder="<%= lang.actions.selectAService %>"/>
 						</div>
-						
-						<!-- Request Name -->
-						<div class="control-group">
-							<label for="requestName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
+					</div>
+					
+					<!-- Request Name -->
+					<div class="form-group">
+						<label for="requestName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
 
-							<div class="controls">
-								<input type="text" id="requestName" name="requestName" value="<%= request && request.name? request.name:'' %>" required="required" />
-								<span class="help-inline"></span>
-							</div>
+						<div class="controls">
+							<input type="text" id="requestName"value="<%= request && request.name? request.name:'' %>" required />
+							<span class="help-inline"></span>
 						</div>
+					</div>
 
-						<!-- Request Description -->
-						<div class="control-group">
-							<label for="requestDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
+					<!-- Request Description -->
+					<div class="form-group">
+						<label for="requestDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
 
-							<div class="controls">
-								<textarea name="requestDescription" id="requestDescription" rows="5" required="required"><%= request && request.description? request.description:'' %></textarea>
-								<span class="help-inline"></span>
-							</div>
+						<div class="controls">
+							<textarea id="requestDescription" rows="5" class="form-control" required><%= request && request.description? request.description:'' %></textarea>
 						</div>
+					</div>
 						
 
 				</fieldset>
