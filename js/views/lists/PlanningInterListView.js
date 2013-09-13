@@ -1,7 +1,7 @@
 /******************************************
 * Pagination View
 */
-app.Views.PlanningInterListView = Backbone.View.extend({
+app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 
 	el           : '#planningInters',
 	
@@ -9,6 +9,7 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 
 	currentRoute : null,
 
+	urlParameters : ['id', 'officer', 'team', 'year', 'week', 'filter', 'sort', 'page', 'search'],
 	
 	// The DOM events //
 	events: function(){
@@ -27,6 +28,8 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 	*/
 	initialize: function() {		
 		var self = this;
+		
+		this.filterValue = 'state-open';
 		
 		this.collections = this.options.collections;
 	    app.router.render(this);
@@ -105,28 +108,25 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 			
 			// Render Filter Link //
 			if(_.isUndefined(self.options.filter)){
-				// set status information on open intervention
-				$('#filterStateIntervention').removeClass('filter-disabled');
-				$('#filterStateInterventionList li.delete-filter').removeClass('disabled');
-
-				$('a.filter-button').addClass('text-'+app.Models.Intervention.status.open.color);
+				
+				$('#filterStateIntervention').addClass('filter-disabled');
+				$('#filterStateInterventionList li.delete-filter').addClass('disabled');
 			}
-//			else if(self.options.filter.value=='notFilter'){
-//				// set status information on no filter
-//				$('#filterStateIntervention').addClass('filter-disabled');
-//				$('#filterStateInterventionList li.delete-filter').addClass('disabled');
-//				
-//			}
 			else{
 				// set status information on filter selected
 				$('#filterStateIntervention').removeClass('filter-disabled');
 				$('#filterStateInterventionList li.delete-filter').removeClass('disabled');
-
-				$('a.filter-button').addClass('text-'+app.Models.Intervention.status[self.options.filter.value].color);
+				if( !_.isUndefined( app.Models.Intervention.status[self.options.filter.value] ) ) 
+					$('a.filter-button').addClass('text-'+app.Models.Intervention.status[self.options.filter.value].color);
 			}
 			
 		});
 		return this;
+	},
+	
+	paginationRender : function() {
+		app.views.paginationView.initialize();
+		app.views.paginationView.render();
 	},
 	
 
@@ -137,23 +137,6 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 		var params = {el:'#modalSaveInter',interventions: this.collections.interventions}
 		new app.Views.ModalInterventionView(params);
 	},
-		
-	/** Partial Render of the view
-	*/
-	partialRender: function (model) {		
-//		var self = this;
-//		$.when(self.collections.interventions.pendingInterventionsCount(),
-//				self.collections.interventions.plannedInterventionsCount()).done(function(){
-//			$('#nbInterPlanned').html(self.collections.interventions.plannedInterventions);
-//			$('#nbInterPending').html(self.collections.interventions.pendingInterventions);
-//		});
-	},
-	
-//	panelRender: function (model) {
-//		var model = this.collections.tasks.findWhere({id:model.id});	
-//		model.setId(model.id);
-//		model.fetch({silent: true, data: {fields: app.Collections.Tasks.fields}});	
-//	},
 
 
 	/** Set or no the Foreman in the team
@@ -177,72 +160,50 @@ app.Views.PlanningInterListView = Backbone.View.extend({
 	setFilterState: function(e){
 
 		e.preventDefault();
+		
+		delete this.options.page;
+		delete this.options.sort;
+		delete this.options.filter;
 
 		if($(e.target).is('i')){
 			var filterValue = _($(e.target).parent().attr('href')).strRightBack('#');
 		}else{
 			var filterValue = _($(e.target).attr('href')).strRightBack('#');
 		}
+
 		
 		// Set the filter value in the options of the view //
 		var globalSearch = {};
 		if(filterValue != 'delete-filter'){
-			//globalSearch.filter = { by: 'state', value: filterValue};	
-			this.options.filter =  { by: 'state', value: filterValue};	
+			this.options.filter =  'state-' + filterValue; //{ by: 'state', value: filterValue};
 		}
 		else{
-			//this.options.filter = "noFilter"
 			delete this.options.filter;
 		}
 		
-//			if(_.isUndefined(this.options.sort)){
-//				this.options.sort = this.collections.interventions.default_sort;
-//			}
-//			
-//			this.fetchParams.data.filters = this.options.filter;
-//
-//			// Create Fetch params //
-//			this.fetchParams.data.sort = this.options.sort.by+' '+this.options.sort.order
-//			
-//			this.options.page = '1';
-//			this.options.page = app.Helpers.Main.calculPageOffset(this.options.page);
+		this.filterValue = this.options.filter;
 		
-		// routing with new url		
-		var urlParameters = ['id', 'officer', 'team', 'year', 'week', 'filter', 'sort', 'page', 'search']
-		app.router.navigate(app.Helpers.Main.urlBuilder(urlParameters, this.options), {trigger: true, replace: true});	
+		app.router.navigate(this.urlBuilder(), {trigger: false, replace: true});
+		app.views.planning.partialRender();
+
 	},	
 	
 	goToPage: function(e){
 		e.preventDefault()
 		
-		var self = this;
-		
+		delete this.options.page;
+		delete this.options.sort;
+		delete this.options.filter;
+
+		this.options.filter =   this.filterValue;		
+				
 		var link = $(e.target);
 		
-		this.options.page = _(link.attr('href')).strRightBack('/page')
-		delete this.options.sort;
+		this.options.page = _(link.attr('href')).strRightBack('/page');		
 		
-		app.router.navigate(this.urlBuilder(), {trigger: false, replace: true});
-		
+		app.router.navigate($(e.target).attr('href'), {trigger: false, replace: true});		
 		app.views.planning.partialRender();
 		
-	},
-	
-	/**
-	 * Constructs url for planning
-	 */
-	urlBuilder: function() {
-		var self = this;
-		var url = _(Backbone.history.fragment).strLeft('/');
-
-		// Iterate all urlParameters //
-		_.each(this.urlParameters, function(value, index){		
-			// Check if the options parameter aren't undefined or null //
-			if(!_.isUndefined(self.options[value]) && !_.isNull(self.options[value])){	
-					url += '/'+value+'/'+self.options[value];					
-			}
-		});				
-		return url;		
 	},
 
 

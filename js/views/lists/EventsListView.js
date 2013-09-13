@@ -19,7 +19,6 @@ app.Views.EventsListView = Backbone.View.extend({
 	},
 	
 	urlParameters : ['officer','team','year','week'],
-
 	/**
 	 * Initialize calendar view
 	 */
@@ -112,6 +111,7 @@ app.Views.EventsListView = Backbone.View.extend({
 	nextDate: function(e) {
 		this.options.week = String(parseInt(this.options.week)+1);
 		app.router.navigate(this.urlBuilder(), {trigger: false, replace: false});
+		app.views.planningInterListView.paginationRender();
 	},
 
 	/**
@@ -120,6 +120,7 @@ app.Views.EventsListView = Backbone.View.extend({
 	previousDate: function(e) {
 		this.options.week = String(parseInt(this.options.week)-1);
 		app.router.navigate(this.urlBuilder(), {trigger: false, replace: false});
+		app.views.planningInterListView.paginationRender();
 	},
 	
 	/**
@@ -145,6 +146,9 @@ app.Views.EventsListView = Backbone.View.extend({
 		app.router.navigate(this.urlBuilder(), {trigger: false, replace: true});
 		this.initialize();
 		this.render();
+		
+		app.views.planningInterListView.paginationRender();
+		
 	},
 	
 
