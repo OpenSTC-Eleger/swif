@@ -75,7 +75,7 @@ app.Views.LoginView = Backbone.View.extend({
 
 
 		// Set the button in loading State //
-		$('#formConnection').find('fiedset').prop('disabled', true);
+		$('#formConnection').find('fieldset').prop('disabled', true);
 		$(this.el).find("button[type=submit]").button('loading');
 
 		// Execution user login function //
@@ -95,6 +95,7 @@ app.Views.LoginView = Backbone.View.extend({
 		checkLogin.fail(function(){
    	        $('#passUser').parents('.form-group').addClass('has-error');
    	        $('#errorLogin').removeClass('hide');
+   	        $('#formConnection').find('fieldset').prop('disabled', false);
    	        $('#passUser').focus();
    	        //app.notify('large', 'danger', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
 

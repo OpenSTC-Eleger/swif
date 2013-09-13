@@ -12,7 +12,7 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 		return _.defaults({
 			'click #filterStateRequestList li a' 	: 'setFilterState',
 			'click #badgeActions[data-filter!=""]'  : 'badgeFilter',
-			'click #buttonAddRequest'				: 'displayModalAddRequest'
+			'click a.createRequest'		            : 'modalCreateRequest'
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -29,15 +29,22 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 			// Unbind & bind the collection //
 			self.collection.off();
 			self.listenTo(self.collection, 'add', self.add);
+			
 			app.router.render(self);
 		});
 	},
 	
+
+
+	/** When the model ara created //
+	*/
 	add: function(model){
-		var itemRequestView = new app.Views.ItemRequestView({model: model});
+		var itemRequestView = new app.Views.ItemRequestView({ model: model });
 		$('#rows-items').prepend(itemRequestView.render().el);
-		itemRequestView.highlight();
+		
+		app.Helpers.Main.highlight($(itemRequestView.el))
 	},
+
 
 
 	/** Display the view
@@ -80,9 +87,6 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 				page       : self.options.page.page,
 				collection : self.collection
 			})
-			app.views.paginationView.render();
-
-
 
 			
 			// Render Filter Link on the Table //
@@ -163,10 +167,21 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 	},
 
 
-	displayModalAddRequest: function(e){
+
+
+	/** Modal form to create a new Request
+	*/
+	modalCreateRequest: function(e){
 		e.preventDefault();
-		new app.Views.ModalRequestView({el:'#modalAddRequest', requests: this.collection});
+
+		console.log('bouùmmmmmmmmmmmmmmmmmmm');
+
+		new app.Views.ModalRequestView({
+			el : '#modalSaveRequest'
+		});
 	},
+
+
 
 	initCollection: function(){
 		var self = this;
@@ -216,12 +231,9 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 
 		// Fetch the collections //
 		return $.when(this.collection.fetch(fetchParams))
-			.fail(function(e){
-				console.log(e);
-			})
-			.always(function(){
-				app.loader('hide');	
-			});
+		.fail(function(e){
+			console.log(e);
+		});
 
 	}
 
