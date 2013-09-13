@@ -1,70 +1,77 @@
 /******************************************
- * Requests Details View
- */
+* Requests Details View
+*/
 app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 
-		templateHTML: 'modals/modalRequest',
 
-		// The DOM events //
-		events: function() {
-			return _.defaults({
-				'submit #formRequest'			: 'saveRequest',
-		
-				'change #requestClaimerType'	: 'fillDropdownClaimerType',
-				'change #requestClaimer'		: 'fillDropdownClaimer',
-				'change #requestContactSelect'	: 'fillDropdownContact',
-				'change #requestDetailService'	: 'fillDropdownService',
-				'click a.linkSelectPlaceEquipment': 'changeSelectPlaceEquipment',
-//				'click #modalTabs a'			: 'displayTab'
-			},
-			app.Views.GenericModalView.prototype.events);
-			
+	templateHTML : 'modals/modalRequest',
+
+
+
+	// The DOM events //
+	events: function() {
+		return _.defaults({
+			'submit #formRequest'			: 'saveRequest',
+	
+			'change #requestClaimerType'	: 'fillDropdownClaimerType',
+			'change #requestClaimer'		: 'fillDropdownClaimer',
+			'change #requestContactSelect'	: 'fillDropdownContact',
+			'change #requestDetailService'	: 'fillDropdownService',
+			'click a.linkSelectPlaceEquipment': 'changeSelectPlaceEquipment',
 		},
+			app.Views.GenericModalView.prototype.events
+		);
+		
+	},
 
 
-		/** View Initialization
-		*/
-		initialize: function () {
-			this.create = false;
-			if(_.isUndefined(this.model)){
-		    	this.model = new app.Models.Request();
-		    	this.create = true;
-		    }
-			this.modal = $(this.el);
+
+	/** View Initialization
+	*/
+	initialize : function() {
+		var self = this;
+
+		this.modal = $(this.el);
+
+		
+		// Check if it's a create or an update //
+		if(_.isUndefined(this.model)){
+			
+			this.model = new app.Models.Request();
 			this.render();
-	    },
+		}
+		else{
+			// Render with loader //
+			this.render(true);
+			this.model.fetch({silent: true, data : {fields : this.model.fields}}).done(function(){
+				self.render();
+			});
+		}
+
+	},
 
 
 
-		/** Display the view
-		*/
-		render: function () {
+	/** Display the view
+	*/
+	render: function(loader) {
 
-			// Change the page title depending on the create value //
-			if(this.create){
-				app.router.setPageTitle(app.lang.viewsTitles.newRequest);
-			}
-			else{
-				app.router.setPageTitle(app.lang.viewsTitles.requestDetail + 'n° ' + this.model.toJSON().id);
-				console.log(this.model);
-			}
+		var self = this;
 
-			// Change the active menu item //
-			app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
+		// Retrieve the template //
+		$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			
+			var template = _.template(templateData, {
+				lang   : app.lang,
+				request: self.model,
+				loader : loader
+			});
+			
+			self.modal.html(template);
+			self.modal.modal('show');
+			
 
-			var self = this;
-
-			// Retrieve the template //
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
-				
-				var template = _.template(templateData, {
-					lang: app.lang,
-					request: self.model.toJSON()
-				});
-				
-				self.modal.html(template);
-				self.modal.modal('show');
-				
+			if(!loader){
 				self.selectListServicesView = new app.Views.AdvancedSelectBoxView({el: $('#requestDetailService'), collection: app.Collections.ClaimersServices.prototype})
 				self.selectListServicesView.render();
 				
@@ -86,6 +93,8 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 				self.selectListClaimersContactsView.render();
 				
 				self.resetBoxes();
+
+				
 				if(!self.create){
 					var currentRequest = self.model.toJSON();
 					
@@ -128,17 +137,19 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 						});
 					});
 				}
-			});
-	
-			$(this.el).hide().fadeIn('slow'); 
-			return this;
-	    },
+			}
+		});
 
-//	    displayTab: function(e){
-//	    	e.preventDefault();
-//	    	console.log($(e.target));
-//	    	$(e.target).tab('show');
-//	    },
+		$(this.el).hide().fadeIn('slow'); 
+		return this;
+    },
+
+
+
+
+
+
+
 	    
 		/** Save the request
 		*/

@@ -1,217 +1,214 @@
-<div class="modal-header">
-
-<% if (request.id != null && request.id != 0 ) { %>
-    <h1>
-        <%= lang.viewsTitles.requestDetail %> n°<%= request.id %>
-
-        <span class="label label-<%= app.Models.Request.status[request.state].color %> vertical-align-middle marginLeft">
-            <%= app.Models.Request.status[request.state].translation %>
-        </span>
-    </h1><br />
-    
-
-    <!-- Display the Refusal Reason if the request is cancel or Information for the DST -->
-    <% if(request.state == app.Models.Request.status.refused.key){ %>
-    <div class="row-fluid">
-        <div class="alert alert-error span6">
-            <strong><%= _.capitalize(lang.refusalReason) %>:</strong> <%= request.refusal_reason %>
-        </div>
-    </div>
-	<% } else if(request.state == app.Models.Request.status.confirm.key){ %>
-    <div class="row-fluid">
-        <div class="alert alert-warning span6">
-            <strong><%= _.capitalize(lang.infoMessages.information) %>:</strong> <%= request.note %>
-        </div>
-    </div>
-    <% } %>
+<div class="modal-dialog">
+	<div class="modal-content">
 
 
-<% } else { %>
-    <h1><%= lang.viewsTitles.newRequest %></h1><br />
-<% } %>
-
-</div>
-
-<div class="modal-body">
-<ul id="modalTabs" class="nav nav-tabs">
-	<li class="active"><a href="#" data-target="#aboutClaimer" data-toggle="tab"><%= lang.aboutTheClaimer %></a></li>
-	<li><a href="#" data-target="#aboutRequest" data-toggle="tab"><%= lang.aboutTheRequest %></a></li>
-</ul>
-<form id="formRequest" action="#" class="form-horizontal container-fluid">
-    
-    <div class="tab-content">
-    
-        <!-- About the claimer -->
-        <fieldset class="tab-pane fade in active" id="aboutClaimer" style="width:50%">
-            <!--<legend><%= lang.aboutTheClaimer %></legend>-->
-            
-            <!-- Request Partner Type -->
-            <div class="control-group">
-                <label for="requestClaimerType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
-
-                <div class="controls">
-					<input id="requestClaimerType" class="select2" style="width: 100%" 
-						required data-placeholder="<%= lang.actions.selectAClaimerType %>"/>
-                    <span class="help-inline"></span>
-                </div>
-            </div>
-
-            <!-- Request Partner -->
-            <div class="control-group" id="requestClaimerBlock">
-                <label for="requestClaimer" class="control-label"><%= _.capitalize(lang.name) %>:</label>
-
-                <div class="controls">
-					<input id="requestClaimer" class="select2" style="width: 100%"
-						data-placeholder="<%= lang.actions.selectAClaimer %>"/>
-                    <span class="help-inline"></span>
-                </div>
-            </div>
-
-            <!-- Request Contact Service -->
-            <div class="control-group" id="requestContactServiceBlock">
-                <label for="requestContactService" class="control-label" ><%= _.capitalize(lang.service) %>:</label>
-
-                <div class="controls">
-	                <input id="requestContactService" class="select2" style="width: 100%" />
-                    <span class="help-inline"></span>
-                </div>
-            </div>
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 class="modal-title">
+				<i class="icon-edit"></i>&nbsp;
+				<% if(_.isNull(request.getId())){ %>
+					<%= _.capitalize(lang.viewsTitles.newRequest) %>
+				<% } else{ %>
+					<%= lang.viewsTitles.requestDetail %> n°<%= request.id %>
+				<% } %>
 
 
-            <!-- Details about the claimer -->
-            <fieldset>
-                <legend><%= lang.claimerDetails %></legend>
-                        
-                <!-- Request Contact -->
-                <div class="control-group">
-                    <label for="requestContact" class="control-label"><%= _.capitalize(lang.contact) %>:</label>
-
-                    <div class="controls">
-                        <div id="requestContactSelectBlock">
-	    	                <input id="requestContactSelect" class="select2" style="width: 100%" 
-								data-placeholder="<%= lang.actions.selectAContact %>"/>
-                            <span class="help-inline"></span>
-                        </div>
-
-                        <div id="requestContactInputBlock">
-                            <input type="text" id="requestContactInput" name="requestContact"/>
-                            <span class="help-inline"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Request Contact Phone -->
-                <div class="control-group">
-                    <label for="requestContactPhone" class="control-label"><%= _.capitalize(lang.phone) %>:</label>
-
-                    <div class="controls">
-                         <input type="tel" id="requestContactPhone" name="requestContactPhone" value="<%= request ? request.people_phone :''%>"/>
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-
-                <!-- Request Contact Email -->
-                <div class="control-group">
-                    <label for="requestContactEmail" class="control-label"><%= _.capitalize(lang.email) %>:</label>
-
-                    <div class="controls">
-                         <input type="email" id="requestContactEmail" name="requestContactEmail" value="<%= request ? request.people_email :''%>"/>
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-
-            </fieldset>
-
-        </fieldset>
+				<% if(!_.isUndefined(loader)) { %>
+				<div class="modal-loader progress progress-striped active">
+					<div class="progress-bar" role="progressbar"></div>
+				</div>
+				<% } %>
+			</h3>
+		</div>
 
 
-        <!-- About the request -->
-        <fieldset class="tab-pane fade" id="aboutRequest" style="width:50%">
 
-            <!--<legend><%= lang.aboutTheRequest %></legend>-->
+		<!-- Modal Body  -->
+		<div class="modal-body">
 
-                <!-- Request Patrimoine -->
-                <div class="control-group">
-                    <label for="requestPlace" class="control-label"><%= _.capitalize(lang.placeOrEquipment) %>:</label>
+			<!-- Tabs -->
+			<ul id="modalTabs" class="nav nav-tabs nav-justified">
+				<li class="active"><a href="#" data-target="#aboutClaimer" data-toggle="tab"><%= lang.aboutTheClaimer %></a></li>
+				<li><a href="#" data-target="#aboutRequest" data-toggle="tab"><%= lang.aboutTheRequest %></a></li>
+			</ul>
 
-                    <div class="controls">
-						<div class="btn-group">
-							<button class="btn dropdown-toggle" id="btnSelectPlaceEquipment" data-item="place" data-toggle="dropdown"><i class="icon-map-marker icon-fixed-width iconItem"></i>&nbsp; <span class="icon-caret-down"></span></button>
-							<ul class="dropdown-menu">
-								<li><a href="#" class="linkSelectPlaceEquipment" data-item="place"><i class="icon-map-marker icon-fixed-width"></i> <%= lang.place %></a></li>
-								<li><a href="#" class="linkSelectPlaceEquipment" data-item="equipment"><i class="icon-wrench icon-fixed-width"></i> <%= lang.equipment %></a></li>
-							</ul>
+
+			<form id="formRequest" action="#" class="form-horizontal" role="form">
+
+				<div class="tab-content">
+			
+				<!-- About the claimer -->
+				<fieldset class="tab-pane fade in active" id="aboutClaimer">
+
+					<!-- Request Partner Type -->
+					<div class="form-group">
+						<label for="requestClaimerType" class="control-label col-sm-3"><%= _.capitalize(lang.type) %>:</label>
+
+						<div class="col-sm-9">
+							<input id="requestClaimerType" class="select2" required data-placeholder="<%= lang.actions.selectAClaimerType %>" />
 						</div>
-    					<input id="requestPlaceEquipment" class="select2" style="width: 70%" 
-							required data-placeholder="<%= lang.actions.selectAPlaceShort %>"/>
-                        <span class="help-inline"></span>                           
-                    </div>
-                </div>
+					</div>
 
-	            <!-- Request Place (if Equipment) -->
-	            <div class="control-group" id="requestPlaceIfEquipmentBlock" style="display: none;">
-	                <label for="requestPlaceIfEquipment" class="control-label"><%= _.capitalize(lang.location) %>:</label>
-	
-	                <div class="controls">
-						<input id="requestPlaceIfEquipment" class="select2" style="width: 100%" 
-							data-placeholder="<%= lang.actions.selectAPlace %>"/>
-	                    <span class="help-inline"></span>
-	                </div>
-	            </div>
+					<!-- Request Partner -->
+					<div class="form-group" id="requestClaimerBlock">
+						<label for="requestClaimer" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 
-                <!-- Request Place precision -->
-                <div class="control-group">
-                    <label for="requestPlacePrecision" class="control-label"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
+						<div class="col-sm-9">
+							<input id="requestClaimer" class="select2" data-placeholder="<%= lang.actions.selectAClaimer %>" />
+						</div>
+					</div>
 
-                    <div class="controls">  
-                         <textarea name="requestPlacePrecision" id="requestPlacePrecision" rows="2"><%= request && request.site_details!=false?request.site_details:'' %></textarea>
-                        <span class="help-inline"></span>                           
-                    </div>
-                </div>
+					<!-- Request Contact Service -->
+					<div class="form-group" id="requestContactServiceBlock">
+						<label for="requestContactService" class="control-label" ><%= _.capitalize(lang.service) %>:</label>
 
-				
-                <!-- Request Contact Service -->
-                <div class="control-group">
-                    <label for="requestDetailService" class="control-label"><%= lang.serviceConcerned %>:</label>
+						<div class="col-sm-9">
+							<input id="requestContactService" class="select2" />
+						</div>
+					</div>
 
-                    <div class="controls">
-    					<input id="requestDetailService" class="select2" style="width: 100%" 
-							required data-placeholder="<%= lang.actions.selectAService %>"/>
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-                
-                <!-- Request Name -->
-                <div class="control-group">
-                    <label for="requestName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
 
-                    <div class="controls">
-                        <input type="text" id="requestName" name="requestName" value="<%= request && request.name? request.name:'' %>" required="required" />
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
+					<!-- Details about the claimer -->
+					<fieldset>
+						<legend><%= lang.claimerDetails %></legend>
+								
+						<!-- Request Contact -->
+						<div class="form-group">
+							<label for="requestContact" class="control-label"><%= _.capitalize(lang.contact) %>:</label>
 
-                <!-- Request Description -->
-                <div class="control-group">
-                    <label for="requestDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
+							<div class="col-sm-9">
+								<div id="requestContactSelectBlock">
+									<input id="requestContactSelect" class="select2" data-placeholder="<%= lang.actions.selectAContact %>"/>
+								</div>
 
-                    <div class="controls">
-                        <textarea name="requestDescription" id="requestDescription" rows="5" required="required"><%= request && request.description? request.description:'' %></textarea>
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-                
+								<div id="requestContactInputBlock">
+									<input type="text" id="requestContactInput" name="requestContact"/>
+								</div>
+							</div>
+						</div>
 
-        </fieldset>
-    
-    </div>
+						<!-- Request Contact Phone -->
+						<div class="form-group">
+							<label for="requestContactPhone" class="control-label col-sm-3"><%= _.capitalize(lang.phone) %>:</label>
+
+							<div class="col-sm-9">
+								 <input type="tel" id="requestContactPhone" value="<%= request ? request.people_phone :''%>" />
+							</div>
+						</div>
+
+						<!-- Request Contact Email -->
+						<div class="form-group">
+							<label for="requestContactEmail" class="control-label col-sm-3"><%= _.capitalize(lang.email) %>:</label>
+
+							<div class="col-sm-9">
+								 <input type="email" id="requestContactEmail" value="<%= request ? request.people_email :''%>" />
+							</div>
+						</div>
+
+					</fieldset>
+
+				</fieldset>
+				<!-- / About the claimer -->
+
+
+				<!-- About the request -->
+				<fieldset class="tab-pane fade" id="aboutRequest">
+
+
+						<!-- Request Patrimoine -->
+						<div class="control-group">
+							<label for="requestPlace" class="control-label"><%= _.capitalize(lang.placeOrEquipment) %>:</label>
+
+							<div class="controls">
+								<div class="btn-group">
+									<button class="btn dropdown-toggle" id="btnSelectPlaceEquipment" data-item="place" data-toggle="dropdown"><i class="icon-map-marker icon-fixed-width iconItem"></i>&nbsp; <span class="icon-caret-down"></span></button>
+									<ul class="dropdown-menu">
+										<li><a href="#" class="linkSelectPlaceEquipment" data-item="place"><i class="icon-map-marker icon-fixed-width"></i> <%= lang.place %></a></li>
+										<li><a href="#" class="linkSelectPlaceEquipment" data-item="equipment"><i class="icon-wrench icon-fixed-width"></i> <%= lang.equipment %></a></li>
+									</ul>
+								</div>
+								<input id="requestPlaceEquipment" class="select2" style="width: 70%" 
+									required data-placeholder="<%= lang.actions.selectAPlaceShort %>"/>
+								<span class="help-inline"></span>                           
+							</div>
+						</div>
+
+						<!-- Request Place (if Equipment) -->
+						<div class="control-group" id="requestPlaceIfEquipmentBlock" style="display: none;">
+							<label for="requestPlaceIfEquipment" class="control-label"><%= _.capitalize(lang.location) %>:</label>
+			
+							<div class="controls">
+								<input id="requestPlaceIfEquipment" class="select2" style="width: 100%" 
+									data-placeholder="<%= lang.actions.selectAPlace %>"/>
+								<span class="help-inline"></span>
+							</div>
+						</div>
+
+						<!-- Request Place precision -->
+						<div class="control-group">
+							<label for="requestPlacePrecision" class="control-label"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
+
+							<div class="controls">  
+								 <textarea name="requestPlacePrecision" id="requestPlacePrecision" rows="2"><%= request && request.site_details!=false?request.site_details:'' %></textarea>
+								<span class="help-inline"></span>                           
+							</div>
+						</div>
+
+						
+						<!-- Request Contact Service -->
+						<div class="control-group">
+							<label for="requestDetailService" class="control-label"><%= lang.serviceConcerned %>:</label>
+
+							<div class="controls">
+								<input id="requestDetailService" class="select2" style="width: 100%" 
+									required data-placeholder="<%= lang.actions.selectAService %>"/>
+								<span class="help-inline"></span>
+							</div>
+						</div>
+						
+						<!-- Request Name -->
+						<div class="control-group">
+							<label for="requestName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
+
+							<div class="controls">
+								<input type="text" id="requestName" name="requestName" value="<%= request && request.name? request.name:'' %>" required="required" />
+								<span class="help-inline"></span>
+							</div>
+						</div>
+
+						<!-- Request Description -->
+						<div class="control-group">
+							<label for="requestDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
+
+							<div class="controls">
+								<textarea name="requestDescription" id="requestDescription" rows="5" required="required"><%= request && request.description? request.description:'' %></textarea>
+								<span class="help-inline"></span>
+							</div>
+						</div>
+						
+
+				</fieldset>
+				<!-- / About the request -->
+			
+				</div>
+
+			</form>
+		</div>
+		<!-- / Modal Body  -->
+
+
+
+		<div class="modal-footer">
+			<button type="submit" form="formSavePlace" class="btn btn-primary" 
+				data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>"
+				<%= (_.isUndefined(loader) ? '' : 'disabled') %>
+			>
+				<%= _.capitalize(lang.actions.save) %>
+			</button>&nbsp;&nbsp;
+
+			<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+
+
+	</div>
 </div>
-
-<div class="modal-footer">
-
-    <div class="form-actions">
-        <button type="submit" form="formRequest" class="btn btn-primary save"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
-    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
-    </div>
-</div>
-</form>

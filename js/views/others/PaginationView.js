@@ -30,6 +30,8 @@ app.Views.PaginationView = Backbone.View.extend({
 		else{
 			this.itemsPerPage = app.config.itemsPerPage;
 		}
+
+		app.router.render(this);
 	},
 
 

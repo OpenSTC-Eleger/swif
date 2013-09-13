@@ -254,8 +254,8 @@ app.Models.User = Backbone.Model.extend({
 		this.setManager(data.user.isManager);
 		this.setDST(data.user.isDST);
 
-		this.queryManagableTeams();
-		this.queryManagableOfficers();
+		//this.queryManagableTeams();
+		//this.queryManagableOfficers();
 	},
 
 
