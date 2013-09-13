@@ -1,39 +1,43 @@
 /******************************************
 * Equipments List View
 */
-app.Views.EquipmentsListView = Backbone.View.extend({
+app.Views.EquipmentsListView = app.Views.GenericListView.extend({
 
 
-	el : '#rowContainer',
 	
 	templateHTML: 'equipments',
 	
-	numberListByPage: 25,
-
-	selectedEquipment : '',
-
 
 	// The DOM events //
-	events: {
-		'click li.active'							: 'preventDefault',
-		'click li.disabled'							: 'preventDefault',
-		'click ul.sortable li'						: 'preventDefault',
+	events: function(){
+		return _.defaults({
+			'click li.active'							: 'preventDefault',
+			'click li.disabled'							: 'preventDefault',
+			'click ul.sortable li'						: 'preventDefault',
 
-		'click a.modalDeleteEquipment'  			: 'modalDeleteEquipment',
-		'click a.modalSaveEquipment'  				: 'modalSaveEquipment',
+			'click a.modalAddEquipment'  				: 'modalSaveEquipment',
 
-		'submit #formSaveEquipment' 				: 'saveEquipment', 
-		'click button.btnDeleteEquipment' 			: 'deleteEquipment',
 
-		'click #equipmentCatChoose button:not(.disabled)'			: 'accordionAddEquipmentForm'
+			'submit #formSaveEquipment' 				: 'saveEquipment', 
+			'click button.btnDeleteEquipment' 			: 'deleteEquipment',
+
+			'click #equipmentCatChoose button:not(.disabled)'			: 'accordionAddEquipmentForm'
+		}, 
+			app.Views.GenericListView.prototype.events
+		);
 	},
-
-
 
 	/** View Initialization
 	*/
 	initialize: function () {
-		
+		var self = this;
+		console.log('Equipments List view Initialize');
+		this.initCollections().done(function(){
+			app.router.render(self);
+			// Unbind & bind the collection //
+			self.collections.equipments.off();
+			self.listenTo(self.collections.equipments, 'add',self.add);
+		});
 	},
 
 
@@ -51,28 +55,29 @@ app.Views.EquipmentsListView = Backbone.View.extend({
 		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
 
 
-
-		var equipments = app.collections.equipments;
-
-		var len = equipments.length;
-		var startPos = (this.options.page - 1) * this.numberListByPage;
-		var endPos = Math.min(startPos + this.numberListByPage, len);
-		var pageCount = Math.ceil(len / this.numberListByPage);
-
-
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			var template = _.template(templateData, {
-				equipments: equipments.toJSON(),
 				lang: app.lang,
-				nbEquipments: len,
-				startPos: startPos, endPos: endPos,
-				page: self.options.page, 
-				pageCount: pageCount,
+				nbEquipments: self.collections.equipments.length
+			});
+			$(self.el).html(template);
+			//create ItemView for each equipment in the collection
+			_.each(self.collections.equipments.models, function(item ,i){
+				var itemView = new app.Views.ItemEquipmentView({model:item});
+				$('#row-items').append(itemView.render().el);
 			});
 			
-			$(self.el).html(template);
-
+			// Call the render Generic View //
+			app.Views.GenericListView.prototype.render(self.options);
+			
+			// Pagination view //
+			app.views.paginationView = new app.Views.PaginationView({ 
+				page       : self.options.page.page,
+				collection : self.collections.equipments
+			});
+			app.views.paginationView.render();
+			
 			$('*[data-toggle="tooltip"]').tooltip();
 			
 			$('#equipmentServices, #servicesList').sortable({
@@ -172,60 +177,62 @@ app.Views.EquipmentsListView = Backbone.View.extend({
 
 	/** Add a new equipment
 	*/
-	modalSaveEquipment: function(e){       
-		this.setModel(e);	
-		
-		app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#equipmentService"), collection: app.collections.claimersServices})
-		app.views.selectListServicesView.clearAll();
-		app.views.selectListServicesView.addEmptyFirst();
-		app.views.selectListServicesView.addAll();		
-		
-		
-		// Reset Form element //
-		$('#formSaveEquipment input').val('');
-		$('#equipmentCV, #equipmentTime, #equipmentKm').val(0);
-		$('#equipmentYear').val( moment().year() );
-		$('#equipmentCatChoose button').removeClass('active btn-primary');
-	
+	modalSaveEquipment: function(e){
+		e.preventDefault();
+		new app.Views.ModalEquipmentView({el:'#modalSaveEquipment'});
 
-		// If update set the correct information //
-		if( this.selectedJson ) {
-			if( this.selectedJson.service )
-				app.views.selectListServicesView.setSelectedItem( this.selectedJson.service[0] );
-
-			$('#equipmentName').val(this.selectedJson.name);
-			$('#equipmentImmat').val(this.selectedJson.immat);
-			$('#equipmentMarque').val(this.selectedJson.marque);
-			$('#equipmentUsage').val(this.selectedJson.usage);
-			$('#equipmentType').val(this.selectedJson.type);
-			$('#equipmentCV').val(this.selectedJson.cv);
-			$('#equipmentYear').val(this.selectedJson.year);
-			$('#equipmentTime').val(this.selectedJson.time);
-			$('#equipmentKm').val(this.selectedJson.km);
-
-			if(this.selectedJson.technical_vehicle == true || this.selectedJson.commercial_vehicle == true){
-				$('#aboutEquipmentSection').hide();
-				$('#aboutVehicleSection').show();
-			}
-			else{
-				$('#aboutEquipmentSection').show();
-				$('#aboutVehicleSection').hide();
-			}
-
-			// Disable all buttons if its an update //
-			$('#equipmentCatChoose button').addClass('disabled');
-
-			this.selectedJson.technical_vehicle ? $('#technicalVehicleEquipment').addClass('active btn-primary') : '';
-			this.selectedJson.commercial_vehicle ? $('#commercialVehicleEquipment').addClass('active btn-primary'): '';
-			this.selectedJson.small_material ? $('#smallMaterialEquipment').addClass('active btn-primary'): '';
-			this.selectedJson.fat_material ? $('#fatMaterialEquipment').addClass('active btn-primary'): '';
-
-		}
-		else{
-			$('#equipmentCatChoose button:first-child').addClass('active btn-primary');
-			$('#equipmentCatChoose button').removeClass('disabled');
-		}       
-
+//		this.setModel(e);	
+//		
+//		app.views.selectListServicesView = new app.Views.DropdownSelectListView({el: $("#equipmentService"), collection: app.collections.claimersServices})
+//		app.views.selectListServicesView.clearAll();
+//		app.views.selectListServicesView.addEmptyFirst();
+//		app.views.selectListServicesView.addAll();		
+//		
+//		
+//		// Reset Form element //
+//		$('#formSaveEquipment input').val('');
+//		$('#equipmentCV, #equipmentTime, #equipmentKm').val(0);
+//		$('#equipmentYear').val( moment().year() );
+//		$('#equipmentCatChoose button').removeClass('active btn-primary');
+//	
+//
+//		// If update set the correct information //
+//		if( this.selectedJson ) {
+//			if( this.selectedJson.service )
+//				app.views.selectListServicesView.setSelectedItem( this.selectedJson.service[0] );
+//
+//			$('#equipmentName').val(this.selectedJson.name);
+//			$('#equipmentImmat').val(this.selectedJson.immat);
+//			$('#equipmentMarque').val(this.selectedJson.marque);
+//			$('#equipmentUsage').val(this.selectedJson.usage);
+//			$('#equipmentType').val(this.selectedJson.type);
+//			$('#equipmentCV').val(this.selectedJson.cv);
+//			$('#equipmentYear').val(this.selectedJson.year);
+//			$('#equipmentTime').val(this.selectedJson.time);
+//			$('#equipmentKm').val(this.selectedJson.km);
+//
+//			if(this.selectedJson.technical_vehicle == true || this.selectedJson.commercial_vehicle == true){
+//				$('#aboutEquipmentSection').hide();
+//				$('#aboutVehicleSection').show();
+//			}
+//			else{
+//				$('#aboutEquipmentSection').show();
+//				$('#aboutVehicleSection').hide();
+//			}
+//
+//			// Disable all buttons if its an update //
+//			$('#equipmentCatChoose button').addClass('disabled');
+//
+//			this.selectedJson.technical_vehicle ? $('#technicalVehicleEquipment').addClass('active btn-primary') : '';
+//			this.selectedJson.commercial_vehicle ? $('#commercialVehicleEquipment').addClass('active btn-primary'): '';
+//			this.selectedJson.small_material ? $('#smallMaterialEquipment').addClass('active btn-primary'): '';
+//			this.selectedJson.fat_material ? $('#fatMaterialEquipment').addClass('active btn-primary'): '';
+//
+//		}
+//		else{
+//			$('#equipmentCatChoose button:first-child').addClass('active btn-primary');
+//			$('#equipmentCatChoose button').removeClass('disabled');
+//		}       
 	},
 
 
@@ -356,6 +363,41 @@ app.Views.EquipmentsListView = Backbone.View.extend({
 
 	preventDefault: function(event){
 		event.preventDefault();
+	},
+	
+	initCollections: function(){
+		if(_.isUndefined(this.collections)){this.collections = {};}
+		if(_.isUndefined(this.collections.equipments)){this.collections.equipments = new app.Collections.Equipments();}
+		else{this.collections.equipments.reset();}
+		
+		// Check the parameters //
+		if(_.isUndefined(this.options.sort)){
+			this.options.sort = this.collections.equipments.default_sort;
+		}
+		else{
+			this.options.sort = app.Helpers.Main.calculPageSort(this.options.sort);	
+		}
+		this.options.page = app.Helpers.Main.calculPageOffset(this.options.page);
+
+
+		// Create Fetch params //
+		this.fetchParams = {
+			silent : true,
+			data   : {
+				limit  : app.config.itemsPerPage,
+				offset : this.options.page.offset,
+				sort   : this.options.sort.by+' '+this.options.sort.order
+			}
+		};
+		if(!_.isUndefined(this.options.search)){
+			this.fetchParams.data.filters = app.Helpers.Main.calculSearch({search: this.options.search }, app.Models.Place.prototype.searchable_fields);
+		}
+		
+		return $.when(this.collections.equipments.fetch(this.fetchParams))
+		.fail(function(e){
+			console.log(e)
+		});
+		
 	},
 
 });

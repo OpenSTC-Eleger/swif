@@ -306,12 +306,14 @@ app.Router = Backbone.Router.extend({
 
 	/** Equipments List
 	*/
-	equipments: function(page){
 
-
-		alert('Page en construction');
-
-		app.views.equipmentsListView = new app.Views.EquipmentsListView({page: self.page});
+	equipments: function(search, filter, sort, page){
+		var params = {};
+		if(!_.isNull(search)){params.search = search}
+		if(!_.isNull(filter)){params.filter = filter}
+		if(!_.isNull(sort)){params.sort = sort}
+		if(!_.isNull(page)){params.page = page}
+		app.views.equipmentsListView = new app.Views.EquipmentsListView(params);
 	},
 
 

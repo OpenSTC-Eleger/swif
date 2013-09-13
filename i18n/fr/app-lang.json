@@ -161,6 +161,18 @@
 	"placeOrEquipment"						: "Site / Equipement",
 	"location"								: "Emplacement",
 	"developBy" 							: "développé par",
+	"detailsEquipment"						: "Détails",
+	"baseEquipment"							: "Général",
+	"financesEquipment"						: "Finances",
+	"equipmentInternalUse"					: "utilisé par",
+	"maintenanceServices"					: "Services mainteneurs",
+	"lengthAmort"							: "Durée d'amortissement",
+	"purchasePrice"							: "Prix d'achat",
+	"hourPrice"								: "Coût horaire",
+	"warranty"								: "Garantie",
+	"attaches"								: "Pièces jointes",
+	"productLogo"							: "Photo",
+	"missingproductLogo"					: "Insérez ici l'image de votre équipement",
 
 	"monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
 	"monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
@@ -232,7 +244,9 @@
 		"selectAContact"	: "Sélectionner un contact",
 		"selectAClaimer"	: "Sélectionner un demandeur",
 		"selectAClaimerType": "Sélectionner un type de demandeur",
-		"displayPassword"   : "Afficher le mot de passe"
+		"displayPassword"   : "Afficher le mot de passe",
+		"addAttach"			: "Ajouter une pièce jointe"
+		
 	},
 
 	"errorMessages" : {
@@ -281,6 +295,7 @@
 		"noOfficer"				: "Aucun agent enregistré",
 		"noTaskForIntervention"	: "Aucune tâche pour cette intervention",
 		"noTask"      	  	  	: "Aucune tâche à pointer",
+		"noAttachForIntervention":"Aucune pièce jointe à afficher",
 		"noTeam"				: "Aucune équipe à afficher",
 		"sixCharMin"		  	: "Six caractères minimum",
 		"placeDeleteOk"			: "Site correctement supprimé",
@@ -371,6 +386,7 @@
 		"categoriesIntersList"	 : "Catégories des interventions",
 		"absentTypesList"		 : "Types d'absences",
 		"claimersTypesList"		 : "Types d'organisations",
+		"newEquipment"			 : "Nouvel Matériel",
 		"equipmentsList"		 : "Liste des Matériels",
 		"cartoSites"		 	 : "Interventions par site",
 		"officersList"		 	 : "Liste des agents",

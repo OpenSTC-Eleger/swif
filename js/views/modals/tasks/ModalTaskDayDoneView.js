@@ -77,8 +77,8 @@ app.Views.ModalTaskDayDoneView = app.Views.GenericModalView.extend({
 			var task_id = self.selectedTaskJSON.id;
 
 			var interAssociated = new app.Models.Intervention();
-				interAssociated.setId(self.selectedTaskJSON.project_id[0]);
-				interAssociated.fetch({silent: true}).done(function(){
+			interAssociated.setId(self.selectedTaskJSON.project_id[0]);
+			interAssociated.fetch({silent: true}).done(function(){
 				app.views.selectListEquipmentsView = new app.Views.AdvancedSelectBoxView({el:'#taskEquipmentDone', collection:app.Collections.Equipments.prototype});
 				
 				app.views.selectListEquipmentsView.setSearchParam('&', true);

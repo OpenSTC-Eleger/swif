@@ -9,11 +9,11 @@
 <div class="container-fluid">
 
 	<!-- Check if there is Claimers Types in the Database -->
-	<% if(equipments.length != 0) { %>
+	<% if(nbEquipments != 0) { %>
 
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
-			<a href="#modalSaveEquipment" class="btn btn-primary modalSaveEquipment" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addEquipment) %></a>	
+			<a href="#" class="btn btn-primary modalAddEquipment" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addEquipment) %></a>	
 
 			<!--<form class="form-search pull-right">
 				<div class="input-append">
@@ -32,97 +32,16 @@
 					<th><%= _.capitalize(lang.name) %></th>
 					<th><%= _.capitalize(lang.immat) %></th>					
 					<th><%= _.capitalize(lang.marque) %></th>	
-					<th class="hidden-phone"><%= _.capitalize(lang.usage) %></th>
-					<th><%= _.capitalize(lang.type) %></th>
-					<th><%= _.capitalize(lang.cv) %></th>
 					<th><%= _.capitalize(lang.year) %></th>
 					<th><%= _.capitalize(lang.time) %></th>	
 					<th><%= _.capitalize(lang.km) %></th>	
 					<th><%= _.capitalize(lang.category) %></th>	
-					<th><%= _.capitalize(lang.service) %></th>			
 				</tr>
 			</thead>
-			<tbody>
-			<% for (var i = startPos; i < endPos; i++){  
-				var equipment = equipments[i] %>
-				
+			<tbody id="row-items">		
 				<!-- Categorie row -->
-				<tr class="row-item" id="equipment_<%= equipment.id %>">
-					<td><i class="icon-wrench"></i> <%= equipment.name %>
-						
-						<p class="row-actions invisible">
-							<a href="#modalSaveEquipment" class="modalSaveEquipment" data-toggle="modal">
-								<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
-							</a>&nbsp;
-							<a href="#modalDeleteEquipment" class="modalDeleteEquipment" data-toggle="modal">
-								<i class="icon-remove icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
-							</a>
-						</p>
-					</td>
-					<td><%= (equipment.immat != false ? equipment.immat : "")%></td>
-					<td><%= (equipment.marque != false ? equipment.marque : "")%></td>
-					<td class="hidden-phone"><%= (equipment.usage != false ? equipment.usage : "")%></td>
-					<td><%= (equipment.type != false ? equipment.type : "")%></td>
-					<td><%= (equipment.cv != false ? equipment.cv : "")%></td>
-					<td><%= (equipment.year != false ? equipment.year : "")%></td>
-					<td><%= (equipment.time != false ? equipment.time : "")%></td>
-					<td><%= (equipment.km != false ? equipment.km : "" )%></td>
-					<% if( equipment.technical_vehicle ) { %>
-						<td><%= _.capitalize(lang.technicalVehicleEquipment) %></td>
-					<% } else if ( equipment.commercial_vehicle ) { %>
-						<td><%= _.capitalize(lang.commercialVehicleEquipment) %></td>
-					<% } else if ( equipment.small_material ) { %>
-						<td><%= _.capitalize(lang.smallMaterialEquipment) %></td>
-					<% } else if ( equipment.fat_material ) { %>
-						<td><%= _.capitalize(lang.fatMaterialEquipment) %></td>
-					<% } %>	
-					<td><%= (equipment.service != false ? equipment.service[1] : "" )%></td>									
-				</tr>
-
-			<% }; %>
 			</tbody>
 		</table>
-
-
-		<!-- Table pagination -->
-		<div class="pagination pagination-right">
-			<ul>
-				<!-- First page button -->
-				<% if(page-2 >= 1){ %>
-					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#<%= app.routes.equipments.baseUrl %>/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
-				<% } %>
-				
-				<!-- Previous page button -->
-				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#<%= app.routes.equipments.baseUrl %>/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
-			
-				<!-- [...] page Button -->
-				<% 	if (page-2 > 1) { %>
-						<li class="disabled"><a href='#'>...</a></li>
-				<% } 
-						
-					for (var i=(page-2); i < (page+3); i++) {
-						if(i >= 1 && i <= pageCount){ %>
-							<li <%= (i === page ? " class='active'" : "")%>><a href='#<%= app.routes.equipments.baseUrl %>/page<%=i%>'><%= i %></a></li>
-						<% }
-
-					} %>
-					
-				<!-- [...] page Button -->
-				<% if (page+2 < pageCount) { %>
-					<li class="disabled"><a href='#'>...</a></li>
-				<% } %>
-				
-				<!-- Next page button -->
-				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#<%= app.routes.equipments.baseUrl %>/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
-				
-				<!-- Last page button -->
-				<% if(page+2 <= pageCount){ %>
-					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#<%= app.routes.equipments.baseUrl %>/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
-				<% } %>
-			</ul>
-		</div>
-		<!-- /Table pagination -->
-
 	<% }
 	else { %>
 		<div class="tableToolbar">
