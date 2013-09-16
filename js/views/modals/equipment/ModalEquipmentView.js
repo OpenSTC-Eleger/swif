@@ -12,7 +12,8 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 	events: function(){
 		return _.defaults({
 				'change #equipmentInternalUse' : 'fillEquipmentInternalUse',
-				'submit #formSaveEquipment'		: 'saveEquipment'
+				'submit #formSaveEquipment'		: 'saveEquipment',
+				'change #equipmentCategory'			: 'fillEquipmentCategory'
 		}, 
 			app.Views.GenericModalView.prototype.events
 		);
@@ -83,13 +84,43 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 				
 				self.selectEquipmentServicesInternalUse.setSelectedItems(service_names);
 				self.selectEquipmentMaintenanceServices.setSelectedItems(maintenance_service_names);
-				
+				if(modelJSON.categ_id){
+					self.changeEquipmentCategory(modelJSON.categ_id[0]);
+				}
 			}
 
 			self.modal.modal('show');
 		});
 
 		return this;
+	},
+	
+	/**
+	 * if equipment category refers to an equipment or a vehicle, adapt labels of km, energy_type and immat
+	 */
+	changeEquipmentCategory: function(categ_id){
+		var equipmentCateg = new app.Models.EquipmentType();
+		equipmentCateg.set('id', categ_id);
+		equipmentCateg.fetch({silent:true}).done(function(){
+			if(equipmentCateg.toJSON().is_equipment){
+				$('#equipmentKmBlock').css({display:'none'});
+				$('#equipmentEnergyLabel').html(app.lang.energy + ':');
+				$('#equipmentImmatLabel').html(app.lang.serialNumber + ':');
+			}
+			else{
+				$('#equipmentKmBlock').css({display:'block'});
+				$('#equipmentEnergyLabel').html(app.lang.oil + ':');
+				$('#equipmentImmatLabel').html(app.lang.immat + ':');
+
+			}
+		})
+		.fail(function(e){
+			console.log(e);
+		});
+	},
+	
+	fillEquipmentCategory: function(e){
+		this.changeEquipmentCategory(this.selectEquipmentCategory.getSelectedItem());
 	},
 	
 	changeEquipmentInternalUse: function(value){

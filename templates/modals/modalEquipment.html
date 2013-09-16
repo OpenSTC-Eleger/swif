@@ -23,7 +23,7 @@
 		<li class="active"><a href="#" data-toggle="tab" data-target="#formEquipmentBase"><%=lang.baseEquipment%></a></li>
 		<li><a href="#" data-toggle="tab" data-target="#formEquipmentDetails"><%=lang.detailsEquipment%></a></li>
 		<li><a href="#" data-toggle="tab" data-target="#formEquipmentFinances"><%=lang.financesEquipment%></a></li>
-		<li><a href="#" data-toggle="tab" data-target="#formEquipmentAttaches"><%=lang.attaches%></a></li>
+		<!--<li><a href="#" data-toggle="tab" data-target="#formEquipmentAttaches"><%=lang.attaches%></a></li>-->
 		
 	</ul>
 
@@ -56,7 +56,7 @@
 					<label for="equipmentCode" class="control-label"><%= _.capitalize(lang.code) %>:</label>
 					<div class="controls">		
 						<!-- Equipment code -->
-						<input type="text" id="equipmentCode" value="<%= (createMode ? '' : equipment.default_code)%>" />
+						<input type="text" id="equipmentCode" value="<%= (equipment.default_code ? equipment.default_code : '')%>" />
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -87,9 +87,9 @@
 			<div class="tab-pane fade" id="formEquipmentDetails">
 				<!-- Equipment Immat -->
 				<div class="control-group">
-					<label for="equipmentImmat" class="control-label"><%= _.capitalize(lang.immat) %>:</label>
+					<label for="equipmentImmat" id="equipmentImmatLabel" class="control-label"><%= _.capitalize(lang.immat) %>:</label>
 					<div class="controls">
-						<input type="text" id="equipmentImmat" value="<%= (createMode ? '' : equipment.immat)%>" />
+						<input type="text" id="equipmentImmat" value="<%= (equipment.immat ? equipment.immat : '')%>" />
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -97,23 +97,23 @@
 				<div class="control-group">
 					<label for="equipmentMarque" class="control-label"><%= _.capitalize(lang.marque) %>:</label>
 					<div class="controls">
-						<input type="text" id="equipmentMarque" value="<%= (createMode ? '' : equipment.marque)%>" />
+						<input type="text" id="equipmentMarque" value="<%= (equipment.marque ? equipment.marque : '')%>" />
 						<span class="help-inline"></span>
 					</div>
 				</div>	
 				<!-- Equipment km -->
-				<div class="control-group">
+				<div class="control-group" id="equipmentKmBlock">
 					<label for="equipmentKm" class="control-label"><%= _.capitalize(lang.km) %>:</label>
 					<div class="controls">
-						<input type="text" id="equipmentKm" value="<%= (createMode ? '' : equipment.km)%>" />
+						<input type="text" id="equipmentKm" value="<%= (equipment.km ? equipment.km : '')%>" />
 						<span class="help-inline"></span>
 					</div>
 				</div>		
 				<!-- Equipment energy -->
 				<div class="control-group">
-					<label for="equipmentEnergy" class="control-label"><%= _.capitalize(lang.oil) %>:</label>
+					<label for="equipmentEnergy" id="equipmentEnergyLabel" class="control-label"><%= _.capitalize(lang.oil) %>:</label>
 					<div class="controls">
-						<input type="text" id="equipmentEnergy" value="<%= (createMode ? '' : equipment.enegry_type)%>" />
+						<input type="text" id="equipmentEnergy" value="<%= (equipment.energy_type ? equipment.energy_type : '')%>" />
 						<span class="help-inline"></span>
 					</div>
 				</div>	
@@ -121,7 +121,7 @@
 				<div class="control-group">
 					<label for="equipmentYear" class="control-label"><%= _.capitalize(lang.year) %>:</label>
 					<div class="controls">
-						<input type="text" id="equipmentYear" value="<%= (createMode ? '' : equipment.year)%>" />
+						<input type="text" id="equipmentYear" value="<%= (equipment.year ? equipment.year : '')%>" />
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -129,7 +129,7 @@
 				<div class="control-group">
 					<label for="equipmentTime" class="control-label"><%= _.capitalize(lang.time) %>:</label>
 					<div class="controls">
-						<input type="text" id="equipmentTime" value="<%= (createMode ? '' : equipment.time)%>" />
+						<input type="text" id="equipmentTime" value="<%= (equipment.time ? equipment.time : '')%>" />
 						<span class="help-inline"></span>
 					</div>
 				</div>	
@@ -141,7 +141,7 @@
 				<div class="control-group">
 					<label for="equipmentLengthAmort" class="control-label"><%= _.capitalize(lang.lengthAmort) %>:</label>
 					<div class="controls">
-						<input type="text" id="equipmentLengthAmort" value="<%= (createMode ? '' : equipment.length_amort)%>" />
+						<input type="text" id="equipmentLengthAmort" value="<%= (equipment.length_amort ? equipment.length_amort : '')%>" />
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -149,7 +149,7 @@
 				<div class="control-group">
 					<label for="equipmentPurchasePrice" class="control-label"><%= _.capitalize(lang.purchasePrice) %>:</label>
 					<div class="controls">
-						<input type="text" id="equipmentPurchasePrice" value="<%= (createMode ? '' : equipment.purchase_price)%>" />
+						<input type="text" id="equipmentPurchasePrice" value="<%= (equipment.purchase_price ? equipment.purchase_price : '')%>" />
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -157,21 +157,21 @@
 				<div class="control-group">
 					<label for="equipmentHourPrice" class="control-label"><%= _.capitalize(lang.hourPrice) %>:</label>
 					<div class="controls">
-						<input type="text" id="equipmentHourPrice" value="<%= (createMode ? '' : equipment.hour_price)%>" />
+						<input type="text" id="equipmentHourPrice" value="<%= (equipment.hour_price ? equipment.hour_price : '')%>" />
 						<span class="help-inline"></span>
 					</div>
 				</div>
 				<div class="control-group">
 					<label for="equipmentWarranty" class="control-label"><%= _.capitalize(lang.warranty) %>:</label>
 					<div class="controls">
-						<input type="text" id="equipmentWarranty" value="<%= (createMode ? '' : equipment.warranty)%>" />
+						<input type="text" id="equipmentWarranty" value="<%= (equipment.warranty ? equipment.warranty : '')%>" />
 						<span class="help-inline"></span>
 					</div>
 				</div>
 			</div>
 			
 			
-			<div class="tab-pane fade" id="formEquipmentAttaches">
+		<!--<div class="tab-pane fade" id="formEquipmentAttaches">
 				<a href="#" style="display:block;margin:10px;width:220px;"><img id="equipmentLogo" src="" alt="<%=lang.missingproductLogo%>" style="width:220px;height:220px;"/></a>
 				<div style="padding:10px;">
 					<table id="equipementAttaches" class="table table-bordered table-hover table-striped">
@@ -184,7 +184,7 @@
 						<tbody>
 						</tbody>
 					</table>
-					<!-- No attach to Display -->
+
 					<div class="alert alert-info nbAttach">
 						<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noAttachForIntervention %>.
 					</div>
@@ -192,7 +192,7 @@
 					<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addAttach) %>
 				</button>
 				</div>
-			</div>
+			</div>-->
 		</div>
 	</form>
 </div>

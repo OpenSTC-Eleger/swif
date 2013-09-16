@@ -5,7 +5,7 @@ app.Models.EquipmentType = app.Models.GenericModel.extend({
     
 	model_name : 'product.category',
 	
-	url: "/api/openstc/equipment_categories",
+	urlRoot: "/api/openstc/equipment_categories",
 
 	/** Model Initialization
 	*/
