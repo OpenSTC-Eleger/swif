@@ -16,12 +16,16 @@
 
 
 <!-- Place/Equipment -->
-<td class="hidden-phone">
-<span data-toggle="tooltip" data-original-title="<%= request.toJSON().has_equipment ? lang.location + ' : ' + request.getSite():''%>">
-<% if(request.toJSON().has_equipment){%><i class="icon-wrench icon-fixed-width" style="text-align:center;"></i><%= request.toJSON().equipment_id[1]%>
-<%}else{%><i class="icon-map-marker icon-fixed-width" style="text-align:center;"></i><%= request.getSite()%><% }%>
-<span>
+<td>
+	<% if(request.onEquipment()){ %>
+		<i class="icon-wrench icon-fixed-width"></i>&nbsp;<%= request.getEquipment() %> <small class="text-muted">(<%= request.getSite() %>)</small>
+	<% }else if(request.getSite()){ %>
+		<i class="icon-map-marker icon-fixed-width"></i>&nbsp;<%= request.getSite() %>
+	<% }%>
+	
+	<span>
 </td>
+
 
 <!-- Service -->
 <td>
@@ -33,6 +37,7 @@
 	</span>
 </td>
 
+
 <!-- Claimer -->
 <td>
 	<span 
@@ -43,14 +48,12 @@
 	</span>
 </td>
 
+
 <!-- Request Date -->
 <td>
-	<span
-		data-toggle="tooltip"
-		data-original-title="<%= request.getCreateDate('fromNow') %>">
-		<%= request.getCreateDate() %>
-	</span>
+	<span data-toggle="tooltip" data-original-title="<%= request.getCreateDate('fromNow') %>"> <%= request.getCreateDate() %></span>
 </td>
+
 
 <!-- Request State -->
 <td>
@@ -61,6 +64,7 @@
 		<%= app.Models.Request.status[request.getState()].translation %>
 	</span>
 </td>
+
 
 <!-- Request Action -->
 <% if(app.models.user.isDST() || app.models.user.isManager()){ %>
