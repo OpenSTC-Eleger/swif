@@ -13,7 +13,6 @@ app.Views.ItemEquipmentView = Backbone.View.extend({
 	events       : {
 		'click a.modalDeleteEquipment'  			: 'modalDeleteEquipment',
 		'click a.modalSaveEquipment'  				: 'modalSaveEquipment',
-		'click button.btnDeleteEquipment' 			: 'deleteEquipment',
 
 	},
 
@@ -32,8 +31,11 @@ app.Views.ItemEquipmentView = Backbone.View.extend({
 
 	destroy: function(model){
 		var self = this;
-		app.Helpers.Main.highlight($(this.el)).alaways(function(){
+		app.Helpers.Main.highlight($(this.el)).always(function(){
+			self.options.equipments.remove(model);
 			self.remove();
+			app.views.equipmentsListView.partialRender();
+
 		});
 		
 	},
@@ -43,27 +45,8 @@ app.Views.ItemEquipmentView = Backbone.View.extend({
 	change: function(model){
 		this.render();
 		app.Helpers.Main.highlight($(this.el));
-//		var self = this;
-//		model.fetch({silent: true, data: {fields: app.views.interventions.collections.interventions.fields}})
-//		.done(function(){
-//			self.render();
-//
-//			// Highlight the Row and recalculate the className //
-//			app.Helpers.Main.highlight($(self.el)).done(function(){
-////				self.$el.attr('class', _.result(self, 'className'));
-//			});
-//
-//			app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
-//
-//		})
-//		.fail(function(e){
-//			console.log(e);
-//		});
-//		
-//		// Partial Render //
-//		app.views.interventions.partialRender();
-	},
 
+	},
 
 
 	/** Display the view
@@ -135,9 +118,8 @@ app.Views.ItemEquipmentView = Backbone.View.extend({
 		   
 	},
 	
-	deleteEquipment: function(e){
-		e.preventDefault();
-		this.model.destroy();
+	modalDeleteEquipment: function(e){
+		new app.Views.ModalDeleteView({model:this.model, el:'#modalDeleteEquipment'});
 	},
 	
 	modalSaveEquipment: function(e){

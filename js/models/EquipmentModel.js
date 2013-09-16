@@ -123,6 +123,10 @@ app.Models.Equipment = app.Models.GenericModel.extend({
         this.set({ fat_material : value });
     }, 
 
+    getInformations: function(){
+    	return {name: this.get('name')}
+    },
+    
 	/** Model Initialization
 	*/
 	initialize: function(){

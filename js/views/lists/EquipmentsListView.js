@@ -33,19 +33,25 @@ app.Views.EquipmentsListView = app.Views.GenericListView.extend({
 			// Unbind & bind the collection //
 			self.collections.equipments.off();
 			self.listenTo(self.collections.equipments, 'add',self.add);
+
 		});
 	},
 
 	add: function(model){
 		var itemView = this.initModel(model);
 		$('#row-items').prepend(itemView.render().el);
-		app.Helpers.Main.highlight($(this.el));
+		app.Helpers.Main.highlight($(itemView.el));
+		this.partialRender();
 	},
-	
+
 	initModel: function(model){
 		return new app.Views.ItemEquipmentView({model:model, equipments: this.collections.equipments});
 	},
 
+	partialRender: function(){
+		$('#badgeNbEquipments').html(this.collections.equipments.length);
+	},
+	
 	/** Display the view
 	*/
 	render: function () {
@@ -74,6 +80,8 @@ app.Views.EquipmentsListView = app.Views.GenericListView.extend({
 			
 			// Call the render Generic View //
 			app.Views.GenericListView.prototype.render(self.options);
+			
+			self.partialRender();
 			
 			// Pagination view //
 			app.views.paginationView = new app.Views.PaginationView({ 

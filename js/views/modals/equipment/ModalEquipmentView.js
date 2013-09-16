@@ -165,7 +165,9 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 		this.model.save(params,{patch:!this.create, silent:true, wait:true}).done(function(data){
 			if(self.create){
 				self.model.set('id', data, {silent:true});
-				self.options.equipments.add(self.model);
+				self.model.fetch().done(function(){
+					self.options.equipments.add(self.model);
+				});
 			}
 			else{
 				self.model.fetch();
