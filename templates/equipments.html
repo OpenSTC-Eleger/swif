@@ -9,8 +9,6 @@
 <div class="container-fluid">
 
 	<!-- Check if there is Claimers Types in the Database -->
-	<% if(nbEquipments != 0) { %>
-
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
 			<a href="#" class="btn btn-primary modalAddEquipment" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addEquipment) %></a>	
@@ -24,7 +22,7 @@
 		</div>
 		<!-- Table toolbar -->
 
-
+	<% if(nbEquipments != 0) { %>
 		<!-- Table Requests -->
 		<table class="table table-bordered table-hover table-striped">
 			<thead>
@@ -44,13 +42,9 @@
 		</table>
 	<% }
 	else { %>
-		<div class="tableToolbar">
-			<a href="#modalSaveEquipment" class="btn btn-primary modalSaveEquipment" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addEquipment) %></a>
-		</div><br />
-
 		<!-- No request in the Database -->
 		<div class="alert alert-info">
-			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noEquipmentType %>.
+			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noEquipment %>.
 		</div>
 
 	<% } %>
