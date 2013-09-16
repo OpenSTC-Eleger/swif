@@ -110,7 +110,7 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 		//@TOCHECK: repercute task creation to main tasks collection to be usable by other itemViews
 		app.views.planningInterListView.collections.tasks.add(model);
 		
-		app.views.planningInterListView.partialRender();
+		//app.views.planningInterListView.partialRender();
 
 		//app.router.navigate(app.views.planningInterListView.urlBuilder(), {trigger: false, replace: false});
 	

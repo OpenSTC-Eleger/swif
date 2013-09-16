@@ -1,8 +1,7 @@
 /******************************************
  * Service Details View
  */
-app.Views.PrintingCalendarView = Backbone.View.extend({
-	el           : '#printingCalendar',
+app.Views.PrintingCalendarView =  Backbone.View.extend({
 	
 	templateHTML: 'printingCalendar',
 
@@ -26,13 +25,11 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 			var template = _.template(templateData,{
 				lang: app.lang,
 			});
-			//self.$el.html(template);
 			$(self.el).html(template);
 
 			// Print button //
 			$('<span class="fc-button-print">' 
 				   +'<button class="btn btn-primary btn-small no-outline"><i class="icon-print"></i></button></span>')
-				  //+('labels', 'Print') + '</span>')
 				  .appendTo(self.calendar.divCalendar + ' td.fc-header-right')
 				  .button()
 				  .on('click', function() {
@@ -213,8 +210,9 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 	/**
 	 * Remove print button on close calendar
 	 */
-	close : function() {		
-		$('span').remove('.fc-button-print')
+	close : function() {	
+		$('span').remove('.fc-button-print');
+		$('span').remove('.fc-header-space');
 	},
 	
     

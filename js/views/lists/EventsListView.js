@@ -77,7 +77,8 @@ app.Views.EventsListView = Backbone.View.extend({
 			
 			self.$el.html(template);	
 			// Init calendar
-        	self.initCalendar();
+			var momentDate = moment().year(self.options.year).week(self.options.week);			
+        	self.initCalendar(momentDate);
         	
         	
 			if(!_.isUndefined(self.options.team)) {
@@ -97,8 +98,8 @@ app.Views.EventsListView = Backbone.View.extend({
 				$("#listAgents li:first").addClass('active');
 
     		// Go to week selected	
-        	var momentDate = moment().year(self.options.year).week(self.options.week);			
-			self.calendar.fullCalendar( 'gotoDate', momentDate.year(), momentDate.month(), momentDate.date());			
+        	//var momentDate = moment().year(self.options.year).week(self.options.week);			
+			//self.calendar.fullCalendar( 'gotoDate', momentDate.year(), momentDate.month(), momentDate.date());			
         	
 		});
 
@@ -172,12 +173,15 @@ app.Views.EventsListView = Backbone.View.extend({
    /**
     * Init fullcallendar
     */
-    initCalendar: function() {
+    initCalendar: function(date) {
     	var self = this;
 
     	this.calendar = $(this.divCalendar).fullCalendar({
     		
-    		/** Full calendar attributes **/			
+    		/** Full calendar attributes **/
+    		month:	date.month(),
+    		year:	date.year(),
+    		date: 	date.date(),
 			defaultView: self.calendarView,
     		ignoreTimezone: false,
 			aspectRatio: 1.30,
