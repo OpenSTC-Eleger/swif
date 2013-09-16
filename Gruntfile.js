@@ -47,7 +47,7 @@ module.exports = function (grunt) {
 		copy      : {
 			dist: {
 				files: {
-					'dist/': ['js/libs/**.js','i18n/**', 'templates/**','config/*', 'properties.json', 'font/*']
+					'dist/': ['js/libs/**.js','i18n/**', 'templates/**','config/*', 'properties.json', 'font/*','css/vendors/*.css', 'css/images/**']
 				}
 			}
 		}
