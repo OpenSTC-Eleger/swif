@@ -3,9 +3,9 @@
 */
 app.Models.Equipment = app.Models.GenericModel.extend({
     
-	model_name : 'openstc.equipment',
+	model_name : 'openstc.equipments',
 	
-	url: "/equipment/:id",
+	urlRoot: "/api/openstc/equipments",
 
 	
     

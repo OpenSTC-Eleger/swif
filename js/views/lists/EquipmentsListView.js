@@ -17,10 +17,6 @@ app.Views.EquipmentsListView = app.Views.GenericListView.extend({
 
 			'click a.modalAddEquipment'  				: 'modalSaveEquipment',
 
-
-			'submit #formSaveEquipment' 				: 'saveEquipment', 
-			'click button.btnDeleteEquipment' 			: 'deleteEquipment',
-
 			'click #equipmentCatChoose button:not(.disabled)'			: 'accordionAddEquipmentForm'
 		}, 
 			app.Views.GenericListView.prototype.events
@@ -40,7 +36,15 @@ app.Views.EquipmentsListView = app.Views.GenericListView.extend({
 		});
 	},
 
-
+	add: function(model){
+		var itemView = this.initModel(model);
+		$('#row-items').prepend(itemView.render().el);
+		app.Helpers.Main.highlight($(this.el));
+	},
+	
+	initModel: function(model){
+		return new app.Views.ItemEquipmentView({model:model, equipments: this.collections.equipments});
+	},
 
 	/** Display the view
 	*/
@@ -64,7 +68,7 @@ app.Views.EquipmentsListView = app.Views.GenericListView.extend({
 			$(self.el).html(template);
 			//create ItemView for each equipment in the collection
 			_.each(self.collections.equipments.models, function(item ,i){
-				var itemView = new app.Views.ItemEquipmentView({model:item});
+				var itemView = self.initModel(item);
 				$('#row-items').append(itemView.render().el);
 			});
 			
@@ -179,7 +183,7 @@ app.Views.EquipmentsListView = app.Views.GenericListView.extend({
 	*/
 	modalSaveEquipment: function(e){
 		e.preventDefault();
-		new app.Views.ModalEquipmentView({el:'#modalSaveEquipment'});
+		new app.Views.ModalEquipmentView({el:'#modalSaveEquipment', equipments: this.collections.equipments});
 
 //		this.setModel(e);	
 //		
