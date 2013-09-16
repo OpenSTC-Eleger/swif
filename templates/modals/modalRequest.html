@@ -27,7 +27,7 @@
 		<div class="modal-body">
 
 			<!-- Tabs -->
-			<ul id="modalTabs" class="nav nav-tabs nav-justified">
+			<ul class="nav nav-tabs nav-justified">
 				<li class="active"><a href="#" data-target="#aboutClaimer" data-toggle="tab"><%= lang.aboutTheClaimer %></a></li>
 				<li><a href="#" data-target="#aboutRequest" data-toggle="tab"><%= lang.aboutTheRequest %></a></li>
 			</ul>
@@ -60,7 +60,7 @@
 
 					<!-- Request Contact Service -->
 					<div class="form-group" id="requestContactServiceBlock">
-						<label for="requestContactService" class="control-label" ><%= _.capitalize(lang.service) %>:</label>
+						<label for="requestContactService" class="control-label col-sm-3"><%= _.capitalize(lang.service) %>:</label>
 
 						<div class="col-sm-9">
 							<input id="requestContactService" class="select2" />
@@ -74,7 +74,7 @@
 								
 						<!-- Request Contact -->
 						<div class="form-group">
-							<label for="requestContact" class="control-label"><%= _.capitalize(lang.contact) %>:</label>
+							<label for="requestContact" class="control-label col-sm-3"><%= _.capitalize(lang.contact) %>:</label>
 
 							<div class="col-sm-9">
 								<div id="requestContactSelectBlock">
@@ -82,7 +82,7 @@
 								</div>
 
 								<div id="requestContactInputBlock">
-									<input type="text" id="requestContactInput" name="requestContact"/>
+									<input type="text" id="requestContactInput" class="form-control" name="requestContact"/>
 								</div>
 							</div>
 						</div>
@@ -92,7 +92,7 @@
 							<label for="requestContactPhone" class="control-label col-sm-3"><%= _.capitalize(lang.phone) %>:</label>
 
 							<div class="col-sm-9">
-								 <input type="tel" id="requestContactPhone" value="<%= request ? request.people_phone :''%>" />
+								 <input type="tel" id="requestContactPhone" class="form-control" value="<%= request ? request.people_phone :''%>" />
 							</div>
 						</div>
 
@@ -101,7 +101,7 @@
 							<label for="requestContactEmail" class="control-label col-sm-3"><%= _.capitalize(lang.email) %>:</label>
 
 							<div class="col-sm-9">
-								 <input type="email" id="requestContactEmail" value="<%= request ? request.people_email :''%>" />
+								 <input type="email" id="requestContactEmail" class="form-control" value="<%= request ? request.people_email :''%>" />
 							</div>
 						</div>
 
@@ -117,35 +117,39 @@
 
 					<!-- Request Patrimoine -->
 					<div class="form-group">
-						<label for="requestPlace" class="control-label"><%= _.capitalize(lang.placeOrEquipment) %>:</label>
+						<label for="requestPlace" class="control-label col-sm-3"><%= _.capitalize(lang.placeOrEquipment) %>:</label>
 
-						<div class="controls">
-							<div class="btn-group">
-								<button class="btn dropdown-toggle" id="btnSelectPlaceEquipment" data-item="place" data-toggle="dropdown"><i class="icon-map-marker icon-fixed-width iconItem"></i>&nbsp; <span class="icon-caret-down"></span></button>
-								<ul class="dropdown-menu">
-									<li><a href="#" class="linkSelectPlaceEquipment" data-item="place"><i class="icon-map-marker icon-fixed-width"></i> <%= lang.place %></a></li>
-									<li><a href="#" class="linkSelectPlaceEquipment" data-item="equipment"><i class="icon-wrench icon-fixed-width"></i> <%= lang.equipment %></a></li>
-								</ul>
+						<div class="col-sm-9">
+							<div class="input-group">
+								<div class="input-group-btn">
+
+									<button class="btn btn-default dropdown-toggle" id="btnSelectPlaceEquipment" data-item="place" data-toggle="dropdown"><i class="icon-map-marker icon-fixed-width iconItem"></i>&nbsp; <span class="icon-caret-down"></span></button>
+									<ul class="dropdown-menu">
+										<li><a href="#" class="linkSelectPlaceEquipment" data-item="place"><i class="icon-map-marker icon-fixed-width"></i> <%= lang.place %></a></li>
+										<li><a href="#" class="linkSelectPlaceEquipment" data-item="equipment"><i class="icon-wrench icon-fixed-width"></i> <%= lang.equipment %></a></li>
+									</ul>
+								</div>
+								<input id="requestPlaceEquipment" class="select2" required data-placeholder="<%= lang.actions.selectAPlaceShort %>"/>
 							</div>
-							<input id="requestPlaceEquipment" class="select2" required data-placeholder="<%= lang.actions.selectAPlaceShort %>"/>
-							<span class="help-inline"></span>                           
 						</div>
 					</div>
 
+
+
 					<!-- Request Place (if Equipment) -->
-					<div class="form-group" id="requestPlaceIfEquipmentBlock" style="display: none;">
-						<label for="requestPlaceIfEquipment" class="control-label"><%= _.capitalize(lang.location) %>:</label>
+					<div class="form-group" id="requestPlaceIfEquipmentBlock">
+						<label for="requestPlaceIfEquipment" class="control-label col-sm-3"><%= _.capitalize(lang.location) %>:</label>
 		
-						<div class="controls">
+						<div class="col-sm-9">
 							<input id="requestPlaceIfEquipment" class="select2" data-placeholder="<%= lang.actions.selectAPlace %>"/>
 						</div>
 					</div>
 
 					<!-- Request Place precision -->
 					<div class="form-group">
-						<label for="requestPlacePrecision" class="control-label"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
+						<label for="requestPlacePrecision" class="control-label col-sm-3"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
 
-						<div class="controls">  
+						<div class="col-sm-9">  
 							 <textarea name="requestPlacePrecision" class="form-control" id="requestPlacePrecision" rows="2"><%= request && request.site_details!=false?request.site_details:'' %></textarea>
 						</div>
 					</div>
@@ -153,28 +157,27 @@
 					
 					<!-- Request Contact Service -->
 					<div class="form-group">
-						<label for="requestDetailService" class="control-label"><%= lang.serviceConcerned %>:</label>
+						<label for="requestDetailService" class="control-label col-sm-3"><%= lang.serviceConcerned %>:</label>
 
-						<div class="controls">
+						<div class="col-sm-9">
 							<input id="requestDetailService" class="select2" required data-placeholder="<%= lang.actions.selectAService %>"/>
 						</div>
 					</div>
 					
 					<!-- Request Name -->
 					<div class="form-group">
-						<label for="requestName" class="control-label"><%= _.capitalize(lang.label) %>:</label>
+						<label for="requestName" class="control-label col-sm-3"><%= _.capitalize(lang.label) %>:</label>
 
-						<div class="controls">
-							<input type="text" id="requestName"value="<%= request && request.name? request.name:'' %>" required />
-							<span class="help-inline"></span>
+						<div class="col-sm-9">
+							<input type="text" id="requestName" class="form-control" value="<%= request && request.name? request.name:'' %>" required />
 						</div>
 					</div>
 
 					<!-- Request Description -->
 					<div class="form-group">
-						<label for="requestDescription" class="control-label"><%= _.capitalize(lang.description) %>:</label>
+						<label for="requestDescription" class="control-label col-sm-3"><%= _.capitalize(lang.description) %>:</label>
 
-						<div class="controls">
+						<div class="col-sm-9">
 							<textarea id="requestDescription" rows="5" class="form-control" required><%= request && request.description? request.description:'' %></textarea>
 						</div>
 					</div>

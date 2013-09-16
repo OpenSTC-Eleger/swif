@@ -50,8 +50,6 @@ app.Views.EquipmentsListView = Backbone.View.extend({
 		// Change the active menu item //
 		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
 
-		// Change the Grid Mode of the view //
-		app.views.headerView.switchGridMode('fluid');
 
 
 		var equipments = app.collections.equipments;

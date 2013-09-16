@@ -8,17 +8,17 @@
 	<link rel="icon" type="image/png" href="css/images/favicon/favicon.png" />
 	<!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="css/images/favicon/favicon.ico" /><![endif]-->
 
-    <!--dist style sheet-->
-    <!--(if target dist)>
-    <link rel="stylesheet" type="text/css" href="css/swif.css" />
-    <!(endif)-->
+	<!--dist style sheet-->
+	<!--(if target dist)>
+	<link rel="stylesheet" type="text/css" href="css/swif.css" />
+	<!(endif)-->
 
-    <!--(if target dev)><!-->
-    <link rel="stylesheet/less" type="text/css" href="css/startup.less"/>
-    <!--<!(endif)-->
+	<!--(if target dev)><!-->
+	<link rel="stylesheet/less" type="text/css" href="css/startup.less"/>
+	<!--<!(endif)-->
 
 
-    <!-- Common Libraries -->
+	<!-- Common Libraries -->
   
 	<!-- Javascript -->
 		<!-- Libraries -->
@@ -44,173 +44,172 @@
 		<script src="js/libs/NProgress-0.1.2.js"></script>
 
 
-    <!--dist environment-->
+	<!--dist environment-->
 
-    <!--(if target dist)>
-    <script src="js/app.min.js"></script>
-    <script src="js/generics.min.js"></script>
-    <script src="js/models.min.js"></script>
-    <script src="js/collections.min.js"></script>
-    <script src="js/helpers.min.js"></script>
-    <script src="js/views.min.js"></script>
-    <script src="js/models.min.js"></script>
-    <script src="js/routers.min.js"></script>
-    <script type="text/javascript">
-      (function(callback) {
-        (function(callback) {
-            var ab = document.createElement('script');
-            ab.type = 'text/javascript'; ab.async = true;
-            ab.onload = ab.onreadystatechange = callback;
-            ab.src = (("https:" == document.location.protocol) ? "https://ssljscdn" : "http://jscdn") + ".airbrake.io/notifier.min.js";
-            var p = document.getElementsByTagName('script')[0];
-            p.parentNode.insertBefore(ab, p);
-        }(function () {
-            Airbrake.setRequestType('GET');
-            Airbrake.setGuessFunctionName(false);
-            Airbrake.setHost('monitor.siclic.fr:3000');
-            Airbrake.setKey('730161f0e43d7a81910a3d3fbb298cc1');
-            Airbrake.setEnvironment('dev');
-            Airbrake.setErrorDefaults({
-                url: document.URL
-                // Ajouter des variables a renvoyer içi
-            });
-        }));
-    </script>
+	<!--(if target dist)>
+	<script src="js/app.min.js"></script>
+	<script src="js/generics.min.js"></script>
+	<script src="js/models.min.js"></script>
+	<script src="js/collections.min.js"></script>
+	<script src="js/helpers.min.js"></script>
+	<script src="js/views.min.js"></script>
+	<script src="js/models.min.js"></script>
+	<script src="js/routers.min.js"></script>
+	<script type="text/javascript">
+	  (function(callback) {
+		(function(callback) {
+			var ab = document.createElement('script');
+			ab.type = 'text/javascript'; ab.async = true;
+			ab.onload = ab.onreadystatechange = callback;
+			ab.src = (("https:" == document.location.protocol) ? "https://ssljscdn" : "http://jscdn") + ".airbrake.io/notifier.min.js";
+			var p = document.getElementsByTagName('script')[0];
+			p.parentNode.insertBefore(ab, p);
+		}(function () {
+			Airbrake.setRequestType('GET');
+			Airbrake.setGuessFunctionName(false);
+			Airbrake.setHost('monitor.siclic.fr:3000');
+			Airbrake.setKey('730161f0e43d7a81910a3d3fbb298cc1');
+			Airbrake.setEnvironment('dev');
+			Airbrake.setErrorDefaults({
+				url: document.URL
+				// Ajouter des variables a renvoyer içi
+			});
+		}));
+	</script>
 
-    <!(endif)-->
-
-
-    <!--development environment-->
-
-    <!--(if target dev)><!-->
-    <!--Application-->
-    <script src="js/libs/less-1.4.1-min.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/helpers/main.js"></script>
-
-    <!-- Models -->
-    <script src="js/models/GenericModel.js"></script>
-    <script src="js/models/AbsentTypeModel.js"></script>
-    <script src="js/models/CategoryRequestModel.js"></script>
-    <script src="js/models/CategoryTaskModel.js"></script>
-    <script src="js/models/ClaimerContactModel.js"></script>
-    <script src="js/models/ClaimerModel.js"></script>
-    <script src="js/models/ClaimerServiceModel.js"></script>
-    <script src="js/models/ClaimerTypeModel.js"></script>
-    <script src="js/models/EquipmentModel.js"></script>
-    <script src="js/models/InterventionModel.js"></script>
-    <script src="js/models/OfficerModel.js"></script>
-    <script src="js/models/PlaceModel.js"></script>
-    <script src="js/models/RequestModel.js"></script>
-    <script src="js/models/TaskModel.js"></script>
-    <script src="js/models/TaskSchedulesModel.js"></script>
-    <script src="js/models/TeamModel.js"></script>
-    <script src="js/models/UserModel.js"></script>
+	<!(endif)-->
 
 
-    <!-- Collections -->
-    <script src="js/collections/GenericCollection.js"></script>
-    <script src="js/collections/STCGroupsCollection.js"></script>
-    <script src="js/collections/UsersCollection.js"></script>
-    <script src="js/collections/RequestsCollection.js"></script>
-    <script src="js/collections/PlacesCollection.js"></script>
-    <script src="js/collections/ClaimersCollection.js"></script>
-    <script src="js/collections/InterventionsCollection.js"></script>
-    <script src="js/collections/OfficersCollection.js"></script>
-    <script src="js/collections/TasksCollection.js"></script>
-    <script src="js/collections/ClaimersTypesCollection.js"></script>
-    <script src="js/collections/ClaimersServicesCollection.js"></script>
-    <script src="js/collections/CategoriesRequestsCollection.js"></script>
-    <script src="js/collections/ClaimersContactsCollection.js"></script>
-    <script src="js/collections/AbsentTypesCollection.js"></script>
-    <script src="js/collections/CategoriesTasksCollection.js"></script>
-    <script src="js/collections/TeamsCollection.js"></script>
-    <script src="js/collections/PlaceTypesCollection.js"></script>
-    <script src="js/collections/EquipmentsCollection.js"></script>
+	<!--development environment-->
+
+	<!--(if target dev)><!-->
+	<!--Application-->
+	<script src="js/libs/less-1.4.1-min.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/helpers/main.js"></script>
+
+	<!-- Models -->
+	<script src="js/models/GenericModel.js"></script>
+	<script src="js/models/AbsentTypeModel.js"></script>
+	<script src="js/models/CategoryRequestModel.js"></script>
+	<script src="js/models/CategoryTaskModel.js"></script>
+	<script src="js/models/ClaimerContactModel.js"></script>
+	<script src="js/models/ClaimerModel.js"></script>
+	<script src="js/models/ClaimerServiceModel.js"></script>
+	<script src="js/models/ClaimerTypeModel.js"></script>
+	<script src="js/models/EquipmentModel.js"></script>
+	<script src="js/models/InterventionModel.js"></script>
+	<script src="js/models/OfficerModel.js"></script>
+	<script src="js/models/PlaceModel.js"></script>
+	<script src="js/models/RequestModel.js"></script>
+	<script src="js/models/TaskModel.js"></script>
+	<script src="js/models/TaskSchedulesModel.js"></script>
+	<script src="js/models/TeamModel.js"></script>
+	<script src="js/models/UserModel.js"></script>
 
 
-    <!-- Views -->
-    <script src="js/views/PlanningView.js"></script>
-    <script src="js/views/TaskView.js"></script>
-    <script src="js/views/ServiceView.js"></script>
-    <script src="js/views/PrintingCalendarView.js"></script>
-
-    <!-- List Views -->
-    <script src="js/views/lists/GenericListView.js"></script>
-    <script src="js/views/lists/AbsentTypesListView.js"></script>
-    <script src="js/views/lists/CategoriesRequestsListView.js"></script>
-    <script src="js/views/lists/CategoriesTasksListView.js"></script>
-    <script src="js/views/lists/ClaimerContactsListView.js"></script>
-    <script src="js/views/lists/ClaimersListView.js"></script>
-    <script src="js/views/lists/ClaimersTypesListView.js"></script>
-    <script src="js/views/lists/EquipmentsListView.js"></script>
-    <script src="js/views/lists/EventsListView.js"></script>
-    <script src="js/views/lists/InterventionsListView.js"></script>
-    <script src="js/views/lists/PlacesListView.js"></script>
-    <script src="js/views/lists/PlanningInterListView.js"></script>
-    <script src="js/views/lists/RequestsListView.js"></script>
-    <script src="js/views/lists/ServicesListView.js"></script>
-    <script src="js/views/lists/TasksListView.js"></script>
-    <script src="js/views/lists/TeamsListView.js"></script>
-
-    <!-- Item Views -->
-    <script src="js/views/items/ItemPlaceView.js"></script>
-    <script src="js/views/items/ItemRequestView.js"></script>
-    <script src="js/views/items/ClaimerView.js"></script>
-    <script src="js/views/items/ClaimerContactView.js"></script>
-    <script src="js/views/items/ItemTeamView.js"></script>
-    <script src="js/views/items/ItemCategoryRequestView.js"></script>
-    <script src="js/views/items/ItemInterventionView.js"></script>
-    <script src="js/views/items/ItemInterventionTaskView.js"></script>
-    <script src="js/views/items/ItemInterventionTaskListView.js"></script>
-    <script src="js/views/items/ItemPlanningInterView.js"></script>
-    <script src="js/views/items/ItemPlanningInterTaskListView.js"></script>
-    <script src="js/views/items/ItemPlanningInterTaskView.js"></script>
-    <script src="js/views/items/ItemCategoryTaskView.js"></script>
-    <script src="js/views/items/ItemAbsentTypeView.js"></script>
-    <script src="js/views/items/ItemClaimerTypeView.js"></script>
-    <script src="js/views/items/ItemTaskDayListView.js"></script>
-    <script src="js/views/items/ItemTaskDayView.js"></script>
-
-    <!-- Modal Views -->
-    <script src="js/views/modals/GenericModalView.js"></script>
-    <script src="js/views/modals/ModalDeleteView.js"></script>
-    <script src="js/views/modals/ModalPlaceView.js"></script>
-    <script src="js/views/modals/ModalTeamView.js"></script>
-    <script src="js/views/modals/ModalValidRequestView.js"></script>
-    <script src="js/views/modals/ModalRefuseRequestView.js"></script>
-    <script src="js/views/modals/ModalConfirmRequestView.js"></script>
-    <script src="js/views/modals/ModalRequestView.js"></script>
-    <script src="js/views/modals/claimer/ModalClaimerEdit.js"></script>
-    <script src="js/views/modals/ModalCategoryRequestView.js"></script>
-    <script src="js/views/modals/ModalCategoryTaskView.js"></script>
-    <script src="js/views/modals/contact/ModalContactEdit.js"></script>
-    <script src="js/views/modals/interventions/ModalInterventionView.js"></script>
-    <script src="js/views/modals/interventions/ModalInterventionAddTaskView.js"></script>
-    <script src="js/views/modals/interventions/ModalCancelInterventionView.js"></script>
-    <script src="js/views/modals/interventions/ModalTaskDoneView.js"></script>
-    <script src="js/views/modals/interventions/ModalCancelTaskView.js"></script>
-    <script src="js/views/modals/ModalUnplanTaskView.js"></script>
-    <script src="js/views/modals/ModalAbsentTypeView.js"></script>
-    <script src="js/views/modals/ModalClaimerTypeView.js"></script>
-    <script src="js/views/modals/tasks/ModalTaskDayDoneView.js"></script>
-    <script src="js/views/modals/tasks/ModalAddTaskView.js"></script>
-    <script src="js/views/modals/tasks/ModalAbsentTaskView.js"></script>
-
-    <!-- Other Views -->
-    <script src="js/views/others/AboutView.js"></script>
-    <script src="js/views/others/AdvancedSelectBoxView.js"></script>
-    <script src="js/views/others/FooterView.js"></script>
-    <script src="js/views/others/HeaderView.js"></script>
-    <script src="js/views/others/LoginView.js"></script>
-    <script src="js/views/others/NotFoundView.js"></script>
-    <script src="js/views/others/PaginationView.js"></script>
-    <script src="js/views/others/TeamMembersAndServices.js"></script>
+	<!-- Collections -->
+	<script src="js/collections/GenericCollection.js"></script>
+	<script src="js/collections/STCGroupsCollection.js"></script>
+	<script src="js/collections/UsersCollection.js"></script>
+	<script src="js/collections/RequestsCollection.js"></script>
+	<script src="js/collections/PlacesCollection.js"></script>
+	<script src="js/collections/ClaimersCollection.js"></script>
+	<script src="js/collections/InterventionsCollection.js"></script>
+	<script src="js/collections/OfficersCollection.js"></script>
+	<script src="js/collections/TasksCollection.js"></script>
+	<script src="js/collections/ClaimersTypesCollection.js"></script>
+	<script src="js/collections/ClaimersServicesCollection.js"></script>
+	<script src="js/collections/CategoriesRequestsCollection.js"></script>
+	<script src="js/collections/ClaimersContactsCollection.js"></script>
+	<script src="js/collections/AbsentTypesCollection.js"></script>
+	<script src="js/collections/CategoriesTasksCollection.js"></script>
+	<script src="js/collections/TeamsCollection.js"></script>
+	<script src="js/collections/PlaceTypesCollection.js"></script>
+	<script src="js/collections/EquipmentsCollection.js"></script>
 
 
-    <!-- Routers -->
-    <script src="js/routers/AppRouter.js"></script>
-    <!--<!(endif)-->
+	<!-- Views -->
+	<script src="js/views/PlanningView.js"></script>
+	<script src="js/views/ServiceView.js"></script>
+	<script src="js/views/PrintingCalendarView.js"></script>
+
+	<!-- List Views -->
+	<script src="js/views/lists/GenericListView.js"></script>
+	<script src="js/views/lists/AbsentTypesListView.js"></script>
+	<script src="js/views/lists/CategoriesRequestsListView.js"></script>
+	<script src="js/views/lists/CategoriesTasksListView.js"></script>
+	<script src="js/views/lists/ClaimerContactsListView.js"></script>
+	<script src="js/views/lists/ClaimersListView.js"></script>
+	<script src="js/views/lists/ClaimersTypesListView.js"></script>
+	<script src="js/views/lists/EquipmentsListView.js"></script>
+	<script src="js/views/lists/EventsListView.js"></script>
+	<script src="js/views/lists/InterventionsListView.js"></script>
+	<script src="js/views/lists/PlacesListView.js"></script>
+	<script src="js/views/lists/PlanningInterListView.js"></script>
+	<script src="js/views/lists/RequestsListView.js"></script>
+	<script src="js/views/lists/ServicesListView.js"></script>
+	<script src="js/views/lists/TasksListView.js"></script>
+	<script src="js/views/lists/TeamsListView.js"></script>
+
+	<!-- Item Views -->
+	<script src="js/views/items/ItemPlaceView.js"></script>
+	<script src="js/views/items/ItemRequestView.js"></script>
+	<script src="js/views/items/ClaimerView.js"></script>
+	<script src="js/views/items/ClaimerContactView.js"></script>
+	<script src="js/views/items/ItemTeamView.js"></script>
+	<script src="js/views/items/ItemCategoryRequestView.js"></script>
+	<script src="js/views/items/ItemInterventionView.js"></script>
+	<script src="js/views/items/ItemInterventionTaskView.js"></script>
+	<script src="js/views/items/ItemInterventionTaskListView.js"></script>
+	<script src="js/views/items/ItemPlanningInterView.js"></script>
+	<script src="js/views/items/ItemPlanningInterTaskListView.js"></script>
+	<script src="js/views/items/ItemPlanningInterTaskView.js"></script>
+	<script src="js/views/items/ItemCategoryTaskView.js"></script>
+	<script src="js/views/items/ItemAbsentTypeView.js"></script>
+	<script src="js/views/items/ItemClaimerTypeView.js"></script>
+	<script src="js/views/items/ItemTaskDayListView.js"></script>
+	<script src="js/views/items/ItemTaskDayView.js"></script>
+
+	<!-- Modal Views -->
+	<script src="js/views/modals/GenericModalView.js"></script>
+	<script src="js/views/modals/ModalDeleteView.js"></script>
+	<script src="js/views/modals/ModalPlaceView.js"></script>
+	<script src="js/views/modals/ModalTeamView.js"></script>
+	<script src="js/views/modals/ModalValidRequestView.js"></script>
+	<script src="js/views/modals/ModalRefuseRequestView.js"></script>
+	<script src="js/views/modals/ModalConfirmRequestView.js"></script>
+	<script src="js/views/modals/ModalRequestView.js"></script>
+	<script src="js/views/modals/claimer/ModalClaimerEdit.js"></script>
+	<script src="js/views/modals/ModalCategoryRequestView.js"></script>
+	<script src="js/views/modals/ModalCategoryTaskView.js"></script>
+	<script src="js/views/modals/contact/ModalContactEdit.js"></script>
+	<script src="js/views/modals/interventions/ModalInterventionView.js"></script>
+	<script src="js/views/modals/interventions/ModalInterventionAddTaskView.js"></script>
+	<script src="js/views/modals/interventions/ModalCancelInterventionView.js"></script>
+	<script src="js/views/modals/interventions/ModalTaskDoneView.js"></script>
+	<script src="js/views/modals/interventions/ModalCancelTaskView.js"></script>
+	<script src="js/views/modals/ModalUnplanTaskView.js"></script>
+	<script src="js/views/modals/ModalAbsentTypeView.js"></script>
+	<script src="js/views/modals/ModalClaimerTypeView.js"></script>
+	<script src="js/views/modals/tasks/ModalTaskDayDoneView.js"></script>
+	<script src="js/views/modals/tasks/ModalAddTaskView.js"></script>
+	<script src="js/views/modals/tasks/ModalAbsentTaskView.js"></script>
+
+	<!-- Other Views -->
+	<script src="js/views/others/AboutView.js"></script>
+	<script src="js/views/others/AdvancedSelectBoxView.js"></script>
+	<script src="js/views/others/FooterView.js"></script>
+	<script src="js/views/others/HeaderView.js"></script>
+	<script src="js/views/others/LoginView.js"></script>
+	<script src="js/views/others/NotFoundView.js"></script>
+	<script src="js/views/others/PaginationView.js"></script>
+	<script src="js/views/others/TeamMembersAndServices.js"></script>
+
+
+	<!-- Routers -->
+	<script src="js/routers/AppRouter.js"></script>
+	<!--<!(endif)-->
 
 </head>
 <body id="app">
@@ -220,7 +219,7 @@
 	<nav id="header-navbar"class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
 	</nav>
 	<!-- /Header NavBar -->
-	
+
 
 	<!-- Page Content -->
 	 <div class="container" id="rowContainer">

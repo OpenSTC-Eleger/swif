@@ -7,7 +7,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 
 	filters: 'intersListFilter',
 	
-	numberListByPage: 25,
 	selectedInter : '',
 	selectedTask : '',
 	collections:  {},
@@ -82,9 +81,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 
 		// Change the active menu item //
 		app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
-
-		// Change the Grid Mode of the view //
-		app.views.headerView.switchGridMode('fluid');
 
 
 		var interventions = this.collections.interventions.toJSON();

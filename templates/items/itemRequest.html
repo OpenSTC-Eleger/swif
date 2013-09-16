@@ -64,7 +64,7 @@
 
 <!-- Request Action -->
 <% if(app.models.user.isDST() || app.models.user.isManager()){ %>
-	<td class="align">
+	<td class="text-center">
 
 	<!-- Check if the user can make action on the request -->
 	<% if(!_.isEmpty(request.getActions())){ 
@@ -98,7 +98,7 @@
 			</button>
 			
 			<!-- Dropdown button action -->
-			<button class="btn dropdown-toggle no-outline" data-toggle="dropdown">
+			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 				<span class="icon-caret-down"></span>
 			</button>
 			
