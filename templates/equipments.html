@@ -13,12 +13,14 @@
 		<div class="tableToolbar">
 			<a href="#" class="btn btn-primary modalAddEquipment" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addEquipment) %></a>	
 
-			<form class="form-search pull-right">
-				<div class="input-append">
-					<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off">
-					<button type="submit" class="btn"><i class="icon-search icon-large"></i></button>
-				</div>
-			</form>
+		<form class="form-search pull-right col-xs-5 col-md-3 col-lg-2">
+			<div class="input-group">
+				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+				<span class="input-group-btn">
+					<button type="submit" class="btn btn-primary"><i class="icon-search icon-large"></i></button>
+				</span>
+			</div>
+		</form>
 		</div>
 		<!-- Table toolbar -->
 
@@ -52,12 +54,12 @@
 </div>
 
 	<!-- Table pagination -->
-	<div id="pagination"></div>
+	<div id="pagination" class="pull-right"></div>
 	<!-- /Table pagination -->
 
 <!-- Modal Form to add a new Equipment -->
-<div id="modalSaveEquipment" class="modal hide fade"></div>
+<div id="modalSaveEquipment" role="dialog" aria-hidden="true" class="modal fade"></div>
 
 
 <!-- Modal Form Delete Equipment -->
-<div id="modalDeleteEquipment" class="modal hide fade"></div>
+<div id="modalDeleteEquipment" role="dialog" aria-hidden="true" class="modal fade"></div>

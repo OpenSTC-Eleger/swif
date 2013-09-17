@@ -1,208 +1,214 @@
-<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h3>
-		<i class="icon-edit"></i>&nbsp;
-		<% if(createMode){ %>
-			<%= _.capitalize(lang.viewsTitles.newEquipment) %>
-		<% } else{ %>
-			<%= _.capitalize(lang.viewsTitles.editEquipment) %>
-		<% } %>
+<div class="modal-dialog">
+	<div class="modal-content">
 
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3>
+				<i class="icon-edit"></i>&nbsp;
+				<% if(createMode){ %>
+					<%= _.capitalize(lang.viewsTitles.newEquipment) %>
+				<% } else{ %>
+					<%= _.capitalize(lang.viewsTitles.editEquipment) %>
+				<% } %>
 		
-		<% if(!_.isUndefined(loader)) { %>
-			<!--<span class="modal-loader progress progress-striped active">
-				<span class="bar"></span>
-			</span>-->
-		<% } %>
-	</h3>
-</div>
-
-<div class="modal-body">
-
-	<ul class="nav nav-tabs">
-		<li class="active"><a href="#" data-toggle="tab" data-target="#formEquipmentBase"><%=lang.baseEquipment%></a></li>
-		<li><a href="#" data-toggle="tab" data-target="#formEquipmentDetails"><%=lang.detailsEquipment%></a></li>
-		<li><a href="#" data-toggle="tab" data-target="#formEquipmentFinances"><%=lang.financesEquipment%></a></li>
-		<!--<li><a href="#" data-toggle="tab" data-target="#formEquipmentAttaches"><%=lang.attaches%></a></li>-->
-		
-	</ul>
-
-	<form id="formSaveEquipment" action="#" class="form-horizontal">
-		<div class="tab-content">
-			
-			<div id="formEquipmentBase" class="tab-pane fade in active">
-				<!-- Equipment name -->
-				<div class="control-group">
-					<label for="equipmentName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
-					<div class="controls">
-						<input type="text" id="equipmentName" required value="<%= (createMode ? '' : equipment.name)%>" />
-						<span class="help-inline"></span>
-					</div>
-				</div>		
-				<!-- Equipment Category -->
-				<div class="control-group">
-					<label for="equipmentCategory" class="control-label"><%= _.capitalize(lang.category) %>:</label>
-					<div class="controls">
-						<input id="equipmentCategory" class="select2" style="width: 66%" data-placeholder="<%= lang.actions.selectACategory %>" 
-							<% if(createMode){
-								if(equipment.categ_id) { %>
-								data-selected-value='<%= JSON.stringify(equipment.categ_id[1]) %>'
-							<% } } %>
-						/>
-						<span class="help-inline"></span>
-					</div>
-				</div>
-				<div class="control-group">
-					<label for="equipmentCode" class="control-label"><%= _.capitalize(lang.code) %>:</label>
-					<div class="controls">		
-						<!-- Equipment code -->
-						<input type="text" id="equipmentCode" value="<%= (equipment.default_code ? equipment.default_code : '')%>" />
-						<span class="help-inline"></span>
-					</div>
-				</div>
-				<!-- Equipment Services authorized for internal use -->
-				<div class="control-group">
-					<div class="control-label">
-						<input id="equipmentInternalUse" type="checkbox" name="equipmentInternalUse" value="1" style="margin:0px;"/>
-					
-					<label id="labelForEquipmentServicesInternalUse" style="text-decoration:line-through;display:inline-block;" for="equipmentInternalUse"><%= _.capitalize(lang.equipmentInternalUse) %>:</label>
-					</div>
-					<div class="controls">
-						<input id="equipmentServicesInternalUse" style="width: 230px" disabled class="select2" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="multiple"/>
-						<span class="help-inline"></span>
-					</div>
-				</div>
-			
-				<!-- Equipment Maintenance Services -->		
-				<div class="control-group">
-					<label for="equipmentMaintenanceServices" class="control-label"><%= _.capitalize(lang.maintenanceServices) %>:</label>
-					<div class="controls">		
-						<input type="text" id="equipmentMaintenanceServices" style="width: 230px" data-multiple="multiple" data-placeholder="<%=lang.actions.selectServices%>"/>
-						<span class="help-inline"></span>
-					</div>
-				</div>
-			</div>
-			
-			
-			<div class="tab-pane fade" id="formEquipmentDetails">
-				<!-- Equipment Immat -->
-				<div class="control-group">
-					<label for="equipmentImmat" id="equipmentImmatLabel" class="control-label"><%= _.capitalize(lang.immat) %>:</label>
-					<div class="controls">
-						<input type="text" id="equipmentImmat" value="<%= (equipment.immat ? equipment.immat : '')%>" />
-						<span class="help-inline"></span>
-					</div>
-				</div>
-				<!-- Equipment marque -->
-				<div class="control-group">
-					<label for="equipmentMarque" class="control-label"><%= _.capitalize(lang.marque) %>:</label>
-					<div class="controls">
-						<input type="text" id="equipmentMarque" value="<%= (equipment.marque ? equipment.marque : '')%>" />
-						<span class="help-inline"></span>
-					</div>
-				</div>	
-				<!-- Equipment km -->
-				<div class="control-group" id="equipmentKmBlock">
-					<label for="equipmentKm" class="control-label"><%= _.capitalize(lang.km) %>:</label>
-					<div class="controls">
-						<input type="text" id="equipmentKm" value="<%= (equipment.km ? equipment.km : '')%>" />
-						<span class="help-inline"></span>
-					</div>
-				</div>		
-				<!-- Equipment energy -->
-				<div class="control-group">
-					<label for="equipmentEnergy" id="equipmentEnergyLabel" class="control-label"><%= _.capitalize(lang.oil) %>:</label>
-					<div class="controls">
-						<input type="text" id="equipmentEnergy" value="<%= (equipment.energy_type ? equipment.energy_type : '')%>" />
-						<span class="help-inline"></span>
-					</div>
-				</div>	
-				<!-- Equipment year -->
-				<div class="control-group">
-					<label for="equipmentYear" class="control-label"><%= _.capitalize(lang.year) %>:</label>
-					<div class="controls">
-						<input type="text" id="equipmentYear" value="<%= (equipment.year ? equipment.year : '')%>" />
-						<span class="help-inline"></span>
-					</div>
-				</div>
-				<!-- Equipment time of use -->
-				<div class="control-group">
-					<label for="equipmentTime" class="control-label"><%= _.capitalize(lang.time) %>:</label>
-					<div class="controls">
-						<input type="text" id="equipmentTime" value="<%= (equipment.time ? equipment.time : '')%>" />
-						<span class="help-inline"></span>
-					</div>
-				</div>	
-			</div>
-			
-			
-			<div id="formEquipmentFinances" class="tab-pane fade">
-				<!-- Equipment Lenght of Amort. -->
-				<div class="control-group">
-					<label for="equipmentLengthAmort" class="control-label"><%= _.capitalize(lang.lengthAmort) %>:</label>
-					<div class="controls">
-						<input type="text" id="equipmentLengthAmort" value="<%= (equipment.length_amort ? equipment.length_amort : '')%>" />
-						<span class="help-inline"></span>
-					</div>
-				</div>
-				<!-- Equipment purchase price -->
-				<div class="control-group">
-					<label for="equipmentPurchasePrice" class="control-label"><%= _.capitalize(lang.purchasePrice) %>:</label>
-					<div class="controls">
-						<input type="text" id="equipmentPurchasePrice" value="<%= (equipment.purchase_price ? equipment.purchase_price : '')%>" />
-						<span class="help-inline"></span>
-					</div>
-				</div>
-				<!-- Equipment hour price -->
-				<div class="control-group">
-					<label for="equipmentHourPrice" class="control-label"><%= _.capitalize(lang.hourPrice) %>:</label>
-					<div class="controls">
-						<input type="text" id="equipmentHourPrice" value="<%= (equipment.hour_price ? equipment.hour_price : '')%>" />
-						<span class="help-inline"></span>
-					</div>
-				</div>
-				<div class="control-group">
-					<label for="equipmentWarranty" class="control-label"><%= _.capitalize(lang.warranty) %>:</label>
-					<div class="controls">
-						<input type="text" id="equipmentWarranty" value="<%= (equipment.warranty ? equipment.warranty : '')%>" />
-						<span class="help-inline"></span>
-					</div>
-				</div>
-			</div>
-			
-			
-		<!--<div class="tab-pane fade" id="formEquipmentAttaches">
-				<a href="#" style="display:block;margin:10px;width:220px;"><img id="equipmentLogo" src="" alt="<%=lang.missingproductLogo%>" style="width:220px;height:220px;"/></a>
-				<div style="padding:10px;">
-					<table id="equipementAttaches" class="table table-bordered table-hover table-striped">
-						<theader>
-							<tr>
-								<td><%= lang.attaches%></td>
-								<td><%= lang.action%></td>
-							</tr>
-						<theader>
-						<tbody>
-						</tbody>
-					</table>
-
-					<div class="alert alert-info nbAttach">
-						<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noAttachForIntervention %>.
-					</div>
-					<button class="btn btn-primary btn-small no-outline addAttach">
-					<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addAttach) %>
-				</button>
-				</div>
-			</div>-->
+				
+				<% if(!_.isUndefined(loader)) { %>
+					<!--<span class="modal-loader progress progress-striped active">
+						<span class="bar"></span>
+					</span>-->
+				<% } %>
+			</h3>
 		</div>
-	</form>
-</div>
-
-
-<div class="modal-footer">
-	<button type="submit" form="formSaveEquipment" class="btn btn-primary" 
-		data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>">
-		<%= _.capitalize(lang.actions.save) %>
-	</button>&nbsp;&nbsp;
-
-	<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+		
+		<div class="modal-body">
+		
+			<ul class="nav nav-tabs nav-justified">
+				<li class="active"><a href="#" data-toggle="tab" data-target="#formEquipmentBase"><%=lang.baseEquipment%></a></li>
+				<li><a href="#" data-toggle="tab" data-target="#formEquipmentDetails"><%=lang.detailsEquipment%></a></li>
+				<li><a href="#" data-toggle="tab" data-target="#formEquipmentFinances"><%=lang.financesEquipment%></a></li>
+				<!--<li><a href="#" data-toggle="tab" data-target="#formEquipmentAttaches"><%=lang.attaches%></a></li>-->
+				
+			</ul>
+		
+			<form id="formSaveEquipment" action="#" class="form-horizontal" role="form">
+				<div class="tab-content">
+					
+					<fieldset id="formEquipmentBase" class="tab-pane fade in active">
+						<!-- Equipment name -->
+						<div class="form-group">
+							<label for="equipmentName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
+							<div class="form-controls col-sm-9">
+								<input type="text" class="form-control" id="equipmentName" required value="<%= (createMode ? '' : equipment.name)%>" />
+								<span class="help-inline"></span>
+							</div>
+						</div>		
+						<!-- Equipment Category -->
+						<div class="form-group">
+							<label for="equipmentCategory" class="control-label col-sm-3"><%= _.capitalize(lang.category) %>:</label>
+							<div class="form-controls col-sm-9">
+								<input id="equipmentCategory" class="select2" data-placeholder="<%= lang.actions.selectACategory %>" 
+									<% if(createMode){
+										if(equipment.categ_id) { %>
+										data-selected-value='<%= JSON.stringify(equipment.categ_id[1]) %>'
+									<% } } %>
+								/>
+								<span class="help-inline"></span>
+							</div>
+						</div>
+						<!--Equipment Code -->
+						<div class="form-group">
+							<label for="equipmentCode" class="control-label col-sm-3"><%= _.capitalize(lang.code) %>:</label>
+							<div class="form-controls col-sm-9">		
+								<!-- Equipment code -->
+								<input type="text" id="equipmentCode" class="form-control" value="<%= (equipment.default_code ? equipment.default_code : '')%>" />
+								<span class="help-inline"></span>
+							</div>
+						</div>
+						<!-- Equipment Services authorized for internal use -->
+						<div class="form-group">
+							<div class="control-label col-sm-3">
+								<input id="equipmentInternalUse" type="checkbox" name="equipmentInternalUse" value="1" style="margin:0px;"/>
+							
+							<label id="labelForEquipmentServicesInternalUse" style="text-decoration:line-through;display:inline-block;" for="equipmentInternalUse"><%= _.capitalize(lang.equipmentInternalUse) %>:</label>
+							</div>
+							<div class="form-controls col-sm-9">
+								<input id="equipmentServicesInternalUse" disabled class="select2" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="multiple"/>
+								<span class="help-inline"></span>
+							</div>
+						</div>
+					
+						<!-- Equipment Maintenance Services -->		
+						<div class="form-group">
+							<label for="equipmentMaintenanceServices" class="control-label col-sm-3"><%= _.capitalize(lang.maintenanceServices) %>:</label>
+							<div class="form-controls col-sm-9">		
+								<input type="text" id="equipmentMaintenanceServices" class="select2" data-multiple="multiple" data-placeholder="<%=lang.actions.selectServices%>"/>
+								<span class="help-inline"></span>
+							</div>
+						</div>
+					</fieldset>
+					
+					
+					<fieldset class="tab-pane fade" id="formEquipmentDetails">
+						<!-- Equipment Immat -->
+						<div class="form-group">
+							<label for="equipmentImmat" id="equipmentImmatLabel" class="control-label col-sm-3"><%= _.capitalize(lang.immat) %>:</label>
+							<div class="form-controls col-sm-9">
+								<input type="text" class="form-control" id="equipmentImmat" value="<%= (equipment.immat ? equipment.immat : '')%>" />
+								<span class="help-inline"></span>
+							</div>
+						</div>
+						<!-- Equipment marque -->
+						<div class="form-group">
+							<label for="equipmentMarque" class="control-label col-sm-3"><%= _.capitalize(lang.marque) %>:</label>
+							<div class="form-controls col-sm-9">
+								<input type="text" class="form-control" id="equipmentMarque" value="<%= (equipment.marque ? equipment.marque : '')%>" />
+								<span class="help-inline"></span>
+							</div>
+						</div>	
+						<!-- Equipment km -->
+						<div class="form-group" id="equipmentKmBlock">
+							<label for="equipmentKm" class="control-label col-sm-3"><%= _.capitalize(lang.km) %>:</label>
+							<div class="form-controls col-sm-9">
+								<input type="text" class="form-control" id="equipmentKm" value="<%= (equipment.km ? equipment.km : '')%>" />
+								<span class="help-inline"></span>
+							</div>
+						</div>		
+						<!-- Equipment energy -->
+						<div class="form-group">
+							<label for="equipmentEnergy" id="equipmentEnergyLabel" class="control-label col-sm-3"><%= _.capitalize(lang.oil) %>:</label>
+							<div class="form-controls col-sm-9">
+								<input type="text" class="form-control" id="equipmentEnergy" value="<%= (equipment.energy_type ? equipment.energy_type : '')%>" />
+								<span class="help-inline"></span>
+							</div>
+						</div>	
+						<!-- Equipment year -->
+						<div class="form-group">
+							<label for="equipmentYear" class="control-label col-sm-3"><%= _.capitalize(lang.year) %>:</label>
+							<div class="form-controls col-sm-9">
+								<input type="text" class="form-control" id="equipmentYear" value="<%= (equipment.year ? equipment.year : '')%>" />
+								<span class="help-inline"></span>
+							</div>
+						</div>
+						<!-- Equipment time of use -->
+						<div class="form-group">
+							<label for="equipmentTime" class="control-label col-sm-3"><%= _.capitalize(lang.time) %>:</label>
+							<div class="form-controls col-sm-9">
+								<input type="text" class="form-control" id="equipmentTime" value="<%= (equipment.time ? equipment.time : '')%>" />
+								<span class="help-inline"></span>
+							</div>
+						</div>	
+					</fieldset>
+					
+					
+					<fieldset id="formEquipmentFinances" class="tab-pane fade">
+						<!-- Equipment Lenght of Amort. -->
+						<div class="form-group">
+							<label for="equipmentLengthAmort" class="control-label col-sm-3"><%= _.capitalize(lang.lengthAmort) %>:</label>
+							<div class="form-controls col-sm-9">
+								<input type="text" class="form-control" id="equipmentLengthAmort" value="<%= (equipment.length_amort ? equipment.length_amort : '')%>" />
+								<span class="help-inline"></span>
+							</div>
+						</div>
+						<!-- Equipment purchase price -->
+						<div class="form-group">
+							<label for="equipmentPurchasePrice" class="control-label col-sm-3"><%= _.capitalize(lang.purchasePrice) %>:</label>
+							<div class="form-controls col-sm-9">
+								<input type="text" class="form-control" id="equipmentPurchasePrice" value="<%= (equipment.purchase_price ? equipment.purchase_price : '')%>" />
+								<span class="help-inline"></span>
+							</div>
+						</div>
+						<!-- Equipment hour price -->
+						<div class="form-group">
+							<label for="equipmentHourPrice" class="control-label col-sm-3"><%= _.capitalize(lang.hourPrice) %>:</label>
+							<div class="form-controls col-sm-9">
+								<input type="text" class="form-control" id="equipmentHourPrice" value="<%= (equipment.hour_price ? equipment.hour_price : '')%>" />
+								<span class="help-inline"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="equipmentWarranty" class="control-label col-sm-3"><%= _.capitalize(lang.warranty) %>:</label>
+							<div class="form-controls col-sm-9">
+								<input type="text" class="form-control" id="equipmentWarranty" value="<%= (equipment.warranty ? equipment.warranty : '')%>" />
+								<span class="help-inline"></span>
+							</div>
+						</div>
+					</fieldset>
+					
+					
+				<!--<div class="tab-pane fade" id="formEquipmentAttaches">
+						<a href="#" style="display:block;margin:10px;width:220px;"><img id="equipmentLogo" src="" alt="<%=lang.missingproductLogo%>" style="width:220px;height:220px;"/></a>
+						<div style="padding:10px;">
+							<table id="equipementAttaches" class="table table-bordered table-hover table-striped">
+								<theader>
+									<tr>
+										<td><%= lang.attaches%></td>
+										<td><%= lang.action%></td>
+									</tr>
+								<theader>
+								<tbody>
+								</tbody>
+							</table>
+		
+							<div class="alert alert-info nbAttach">
+								<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noAttachForIntervention %>.
+							</div>
+							<button class="btn btn-primary btn-small no-outline addAttach">
+							<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addAttach) %>
+						</button>
+						</div>
+					</div>-->
+				</div>
+			</form>
+		</div>
+		
+		
+		<div class="modal-footer">
+			<button type="submit" form="formSaveEquipment" class="btn btn-primary" 
+				data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>">
+				<%= _.capitalize(lang.actions.save) %>
+			</button>&nbsp;&nbsp;
+		
+			<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+	</div>
 </div>
