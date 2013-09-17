@@ -80,8 +80,7 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 		// Change the active menu item //
 		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
 
-		// Change the Grid Mode of the view //
-		app.views.headerView.switchGridMode('fluid');
+
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function (templateData) {

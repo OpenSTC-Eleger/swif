@@ -3,3 +3,4 @@
 *.project
 config/configuration.json
 logo/
+dist/

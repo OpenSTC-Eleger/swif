@@ -4,7 +4,7 @@
 app.Models.Request = app.Models.GenericModel.extend({
 
 
-	fields     : ['id', 'name', 'actions', 'tooltip', 'create_date', 'create_uid', 'date_deadline', 'description', 'manager_id', 'note', 'partner_address', 'partner_id', 'partner_phone', 'partner_service_id', 'partner_type', 'partner_type_code', 'people_name', 'people_email', 'people_phone', 'refusal_reason', 'service_id', 'site1', 'site_details', 'state', 'intervention_assignement_id'],
+	fields     : ['id', 'name', 'actions', 'tooltip', 'create_date', 'create_uid', 'date_deadline', 'description', 'manager_id', 'note', 'partner_address', 'partner_id', 'partner_phone', 'partner_service_id', 'partner_type', 'partner_type_code', 'people_name', 'people_email', 'people_phone', 'refusal_reason', 'service_id', 'site1', 'site_details', 'state', 'intervention_assignement_id', 'has_equipment', 'equipment_id'],
 
 	urlRoot    : '/api/openstc/intervention_requests',
 
@@ -32,9 +32,31 @@ app.Models.Request = app.Models.GenericModel.extend({
 					return _.titleize(this.get('site1')[1].toLowerCase());
 			}
 		}
+		else{
+			return false;
+		}
 	},
 	setSite : function(value, silent) {
 		this.set({ site1 : value }, {silent: silent});
+	},
+
+	getEquipment : function(type) {
+
+		if(this.onEquipment()){
+			switch(type){
+				case 'id': 
+					return this.get('equipment_id')[0];
+				break;
+				default:
+					return _.titleize(this.get('equipment_id')[1].toLowerCase());
+			}
+		}
+		else{
+			return false;
+		}
+	},
+	setEquipment : function(value, silent) {
+		this.set({ equipment_id : value }, {silent: silent});
 	},
 
 	getDescription : function() {
@@ -138,6 +160,10 @@ app.Models.Request = app.Models.GenericModel.extend({
 			default:
 				return _.capitalize(this.get('create_uid')[1]);
 		}
+	},
+
+	onEquipment: function(){
+		return this.get('has_equipment');
 	},
 
 	getInformations: function(){
