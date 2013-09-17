@@ -44,7 +44,7 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 		});
 		
 		// Partial Render //
-		app.views.planningInterListView.partialRender();
+		//app.views.planningInterListView.partialRender();
 	},
 
 

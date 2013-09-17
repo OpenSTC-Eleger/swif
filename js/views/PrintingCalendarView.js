@@ -1,8 +1,7 @@
 /******************************************
  * Service Details View
  */
-app.Views.PrintingCalendarView = Backbone.View.extend({
-	el           : '#printingCalendar',
+app.Views.PrintingCalendarView =  Backbone.View.extend({
 	
 	templateHTML: 'printingCalendar',
 
@@ -26,13 +25,11 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 			var template = _.template(templateData,{
 				lang: app.lang,
 			});
-			//self.$el.html(template);
 			$(self.el).html(template);
 
 			// Print button //
 			$('<span class="fc-button-print">' 
 				   +'<button class="btn btn-primary btn-small no-outline"><i class="icon-print"></i></button></span>')
-				  //+('labels', 'Print') + '</span>')
 				  .appendTo(self.calendar.divCalendar + ' td.fc-header-right')
 				  .button()
 				  .on('click', function() {
@@ -96,9 +93,9 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 	    	task["done"] = ( task.state == app.Models.Task.status.done.key  ? true : false );
 	    	
 	    	task["equipment"] = "";
-	    	if( task.equipment_ids ) {
-		    	_.each( task.equipment_ids, function( equipment ) {
-		    		task["equipment"] += "[" + equipment.complete_name + "]";
+	    	if( task.equipment_names ) {
+		    	_.each( task.equipment_names, function( equipment_name ) {
+		    		task["equipment"] += "[" + equipment_name[1] + "]";
 		    	});
 		    }
 	    	
@@ -213,8 +210,9 @@ app.Views.PrintingCalendarView = Backbone.View.extend({
 	/**
 	 * Remove print button on close calendar
 	 */
-	close : function() {		
-		$('span').remove('.fc-button-print')
+	close : function() {	
+		$('span').remove('.fc-button-print');
+		$('span').remove('.fc-header-space');
 	},
 	
     
