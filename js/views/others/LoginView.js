@@ -92,9 +92,14 @@ app.Views.LoginView = Backbone.View.extend({
 			app.views.headerView.render(app.router.mainMenus.manageInterventions);
 			Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
 		});
-		checkLogin.fail(function(){
-   	        $('#passUser').parents('.form-group').addClass('has-error');
-   	        $('#errorLogin').removeClass('hide');
+		checkLogin.fail(function(e){
+   	        
+   	        if(e.status == 401){
+   	        	$('#passUser').parents('.form-group').addClass('has-error');
+   	        	$('#errorLogin').removeClass('hide');
+   	        }
+   	        
+
    	        $('#formConnection').find('fieldset').prop('disabled', false);
    	        $('#passUser').focus();
    	        //app.notify('large', 'danger', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
@@ -117,15 +122,17 @@ app.Views.LoginView = Backbone.View.extend({
 
 	/** Display the password
 	*/
-	displayPassword: function(){
+	displayPassword: function(e){
 		$('#passUser').prop('type', 'text');
+		$(e.target).removeClass('icon-eye-open').addClass('icon-eye-close');
 	},
 
 	/** Hide the password
 	*/
-	hidePassword: function(){
+	hidePassword: function(e){
 		$('#passUser').prop('type', 'password');
 		$('#passUser').focus();
+		$(e.target).removeClass('icon-eye-close').addClass('icon-eye-open');
 	}
 
 });

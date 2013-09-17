@@ -8,16 +8,15 @@ app.Models.Task = app.Models.GenericModel.extend({
 	getState : function() {
 		return this.get('state');
 	},
-	setState : function(value) {
-		if( value == 'undefined') return;
-		this.set({ state : value });
+	setState : function(value, silent) {
+		this.set({ state : value }, {silent: silent});
 	},
-	
-	getInterventionId : function(type) {
+
+	getIntervention : function(type) {
 		if(this.get('project_id')){
 			switch(type){
 			case 'id':
-				return this.get('project_id')[0]
+				return this.get('project_id')[0];
 			break;
 			case 'json':
 				return {id: this.get('project_id')[0], name: this.get('project_id')[1]} 
@@ -27,28 +26,28 @@ app.Models.Task = app.Models.GenericModel.extend({
 			}
 		}
 		else{
-			return '';
+			return false;
 		}
 	},
-	setInterventionId : function(value) {
-		if( value == 'undefined') return;
-		this.set({ project_id : value });
-	},
-
-	getInterventionName : function() {
-		if(this.get('project_id') != false){
-			return this.get('project_id')[1];
-		}
-		else{
-			return '';
-		}
+	setIntervention : function(value) {
+		this.set({ state : project_id }, {silent: silent});
 	},
 
-	getUserId : function(type) {
+
+	affectedOnTeam: function(){
+		if(this.get('team_id') == false){
+			return false;
+		}else{
+			return true;
+		}
+	},
+
+
+	getUser : function(type) {
 		if(this.get('user_id')){
 			switch(type){
 			case 'id':
-				return this.get('user_id')[0]
+				return this.get('user_id')[0];
 			break;
 			case 'json':
 				return {id: this.get('user_id')[0], name: this.get('user_id')[1]} 
@@ -57,90 +56,84 @@ app.Models.Task = app.Models.GenericModel.extend({
 				return this.get('user_id')[1];
 			}
 		}
-		return false;
+		else{
+			return false;	
+		}
 	},
-	setUserId : function(value) {
-		if( value == 'undefined') return;
-		this.set({ user_id : value });
-	},
-	getUserName : function() {
-		return this.get('user_id')[1];
+	setUser : function(value) {
+		this.set({ state : user_id }, {silent: silent});
 	},
 
-	getTeamId : function() {
+	getTeam : function(type) {
 		if(this.get('team_id')){
 			switch(type){
 			case 'id':
-				return this.get('user_id')[0]
+				return this.get('team_id')[0];
 			break;
 			case 'json':
-				return {id: this.get('user_id')[0], name: this.get('user_id')[1]} 
+				return {id: this.get('team_id')[0], name: this.get('team_id')[1]} 
 			break;
 			default:
-				return this.get('user_id')[1];	
+				return this.get('team_id')[1];	
 			}
 		}
-		return false;
+		else{
+			return false;
+		}
 	},
-	setTeamId : function(value) {
-		if( value == 'undefined') return;
-		this.set({ team_id : value });
+	setTeam : function(value, silent) {
+		this.set({ state : team_id }, {silent: silent});
 	},
 
-	getTeamName : function() {
-		return this.get('team_id')[1];
-	},
+
 
 	getDateEnd : function() {
 		return this.get('date_end');
 	},
-	setDateEnd : function(value) {
-		if( value == 'undefined') return;
-		this.set({ date_end : value });
+	setDateEnd : function(value, silent) {
+		this.set({ date_end : value }, {silent: silent});
 	},
 
 	getDateStart : function() {
 		return this.get('date_start');
 	},
-	setDateStart : function(value) {
-		if( value == 'undefined') return;
-		this.set({ date_start : value });
+	setDateStart : function(value, silent) {
+		this.set({ date_start : value }, {silent: silent});
 	},
 
 	getRemainingHours : function() {
 		return this.get('remaining_hours');
 	},
-	setRemainingHours : function(value) {
-		if( value == 'undefined') return;
-		this.set({ remaining_hours : value });
+	setRemainingHours : function(value, silent) {
+		this.set({ remaining_hours : team_id }, {silent: silent});
 	},
 
 	getPlannedHours : function() {
 		return this.get('planned_hours');
 	},
-	setPlannedHours : function(value) {
-		if( value == 'undefined') return;
-		this.set({ planned_hours : value });
+	setPlannedHours : function(value, silent) {
+		this.set({ planned_hours : team_id }, {silent: silent});
 	},
 
-	getStartEndDateInformations : function(){
-		return "Du " + this.getDateStart() + " au " + this.getDateEnd();
+
+
+	/** Get Informations of the model
+	*/
+	getInformations : function(){
+		var informations = {};
+
+		informations.name = this.getName();
+
+		if(!_.isEmpty(this.getIntervention())){
+			informations.infos = {};
+			informations.infos.key = _.capitalize(app.lang.intervention);
+			informations.infos.value = this.getIntervention();
+		}
+
+		return informations;
 	},
 
-	getInformations: function(){
-		var ret = {};
-		ret.name = this.getName();
-		ret.infos = {};
-		ret.infos.key = app.lang.associatedPlace;
-		if(!_.isUndefined(this.site1)){
-			ret.infos.value = this.site1[1];
-		}
-		else{
-			ret.infos.value = '';
-		}
-		
-		return ret;
-	},
+
 
 	/** Model Initialization
 	*/
@@ -154,7 +147,9 @@ app.Models.Task = app.Models.GenericModel.extend({
 		app.Models.Task.status.cancelled.translation = app.lang.cancelled;
 		app.Models.Task.status.absent.translation = app.lang.away;
 	},
-	
+
+
+
 	/** Report hours in backend
 	*/	
 	cancel: function(cancel_reason, options) {
@@ -164,6 +159,7 @@ app.Models.Task = app.Models.GenericModel.extend({
 		//app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
 		return this.save(params, {silent: true, patch: true})
 	},
+
 
 }, {
 

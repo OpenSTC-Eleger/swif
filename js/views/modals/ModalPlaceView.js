@@ -27,7 +27,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 		this.modal = $(this.el);
 
-		
+
 		// Check if it's a create or an update //
 		if(_.isUndefined(this.model)){
 			

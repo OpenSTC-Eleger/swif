@@ -377,9 +377,9 @@ app.Views.EventsListView = Backbone.View.extend({
     	    */
     	    eventClick: function(fcEvent, jsEvent, view) {
     			app.views.modalUnplanTaskView = new app.Views.ModalUnplanTaskView({
-    				el    			: '#modalUnplanTask',
-    				calendarModel 	: self.collection.get(fcEvent.id),
-    				//panelModel 		: self.collections.tasks.get(fcEvent.id)
+    				el    		: '#modalUnplanTask',
+    				model 	    : self.collection.get(fcEvent.id),
+    				panelModel 	: self.collections.tasks.get(fcEvent.id)
     			});
     		},
 		});
