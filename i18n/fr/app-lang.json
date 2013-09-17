@@ -237,6 +237,8 @@
 		"selectAPlace"		: "Sélectionner un site",
 		"selectAPlaceShort"	: "Un site...",
 		"selectAnEquipmentShort"	: "Un équipement...",
+		"selectAnEquipment"	: "Sélectionner un équipement",
+		"selectEquipments"  : "Sélectionner des équipments",
 		"selectAPlaceType"	: "Sélectionner un type de site",
 		"selectServices"	: "Sélectionner des services",
 		"selectAService"	: "Sélectionner un service",
