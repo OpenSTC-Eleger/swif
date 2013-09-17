@@ -3,13 +3,17 @@
 */
 app.Views.PaginationView = Backbone.View.extend({
 
-	el           : '#pagination',
+	el              : '#pagination',
 	
-	templateHTML : 'pagination',
+	templateHTML    : 'pagination',
 
-	currentRoute : null,
+	currentRoute    : null,
 
-	itemsPerPage : 0,
+	itemsPerPage    : 0,
+
+	size            : '',
+
+	displayGoToPage : true,
 
 
 	// The DOM events //
@@ -24,6 +28,19 @@ app.Views.PaginationView = Backbone.View.extend({
 	initialize: function() {
 		this.currentRoute = Backbone.history.fragment;
 
+		
+		// Display Go To Page //
+		if(!_.isUndefined(this.options.displayGoToPage)){
+			this.displayGoToPage = this.options.displayGoToPage;
+		}
+
+		// Size //
+		if(!_.isUndefined(this.options.size)){
+			this.size = this.options.size;
+		}
+
+
+		// Item per Page //
 		if(!_.isUndefined(this.options.itemsPerPage)){
 			this.itemsPerPage = this.options.itemsPerPage;
 		}
@@ -44,10 +61,12 @@ app.Views.PaginationView = Backbone.View.extend({
 		// Retrieve the template //
 		$.get('templates/' + this.templateHTML + '.html', function(templateData){
 			var template = _.template(templateData, {
-				lang   : app.lang,
-				route  : _(self.currentRoute).strLeftBack('/page'),
-				page   : self.options.page,
-				nbPage : Math.ceil(self.collection.cpt / self.itemsPerPage)
+				lang    : app.lang,
+				route   : _(self.currentRoute).strLeftBack('/page'),
+				page    : self.options.page,
+				nbPage  : Math.ceil(self.collection.cpt / self.itemsPerPage),
+				goToPage: self.displayGoToPage,
+				size    : self.size
 			});
 
 			self.$el.html(template);

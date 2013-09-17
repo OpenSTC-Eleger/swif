@@ -1,4 +1,7 @@
-<ul class="pagination noMarginTop">
+<!-- Pagination Size -->
+<% if(size == 'lg'){ pSize = 'pagination-lg'; } else if(size == 'sm'){ pSize = 'pagination-sm'; } else{pSize = '';} %>
+
+<ul class="pagination noMarginTop <%= pSize %>">
 	<!-- First page button -->
 	<% if(page-3 >= 1){ %>
 		<li><a href='#<%= route %>/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
@@ -63,7 +66,7 @@
 
 
 	<!-- Go to the page button -->
-	<% if(nbPage >= 5) { %>
+	<% if(nbPage >= 5 && goToPage == true) { %>
 		<li class="pagination-select">
 			<select class="form-control" name="goToPage" id="goToPage">
 				<% for (var i=1; i <= nbPage; i++) { %>

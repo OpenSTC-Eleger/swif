@@ -1,10 +1,24 @@
 /* Pagination Improvements
 -------------------------------------------------- */
-ul.pagination li.pagination-select select{
-	width: 70px;
-	display: inline;
+ul.pagination{
 
-	.border-left-radius(0);
-	border-left-width: 0;
-	margin-bottom : 0;
+	&.pagination-lg{
+		li.pagination-select select{
+			height: 47px;
+		}
+	}
+	&.pagination-sm{
+		li.pagination-select select{
+			height: 29px;
+		}
+	}
+
+	li.pagination-select select{
+		width: 70px;
+		display: inline;
+
+		.border-left-radius(0);
+		border-left-width: 0;
+		margin-bottom : 0;
+	}
 }

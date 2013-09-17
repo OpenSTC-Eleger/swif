@@ -2,12 +2,12 @@
 <div id="listAgentsTeams">
 	<ul class="nav nav-tabs" id="allTabs">
 		<li class="active">
-			<a href="#" data-target="#tab-agents" data-toggle="tab" class="no-outline">
+			<a href="#" data-target="#tab-agents" data-toggle="tab">
 				<%= _.capitalize(lang.agents) %> &nbsp;<span class="badge"><%= _.size(officers) %></span>
 			</a>
 		</li>
 		<li>
-			<a href="#" data-target="#tab-teams" data-toggle="tab" class="no-outline">
+			<a href="#" data-target="#tab-teams" data-toggle="tab">
 				<%= _.capitalize(lang.teams) %> &nbsp;<span class="badge"><%= _.size(teams) %></span>
 			</a>
 		</li>
@@ -21,7 +21,7 @@
 				<%_.each(officers, function (officer, i) { console.log(officer); %>
 					<li>
 						<a id="pOfficer_<%= officer.id %>" href="#planning/officer/<%= _.slugify(officer.name).toUpperCase()%>">
-							<i class="icon-user"></i><%= (officer.firstname != false ? officer.firstname : '') %> &nbsp;<%= officer.name.toUpperCase() %>
+							<i class="icon-user icon-fixed-width"></i>&nbsp; <%= officer.name.toUpperCase() %> &nbsp; <%= (officer.firstname != false ? officer.firstname : '') %>
 						</a>
 					</li>
 				<% }) %>

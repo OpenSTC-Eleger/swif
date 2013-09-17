@@ -92,9 +92,14 @@ app.Views.LoginView = Backbone.View.extend({
 			app.views.headerView.render(app.router.mainMenus.manageInterventions);
 			Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
 		});
-		checkLogin.fail(function(){
-   	        $('#passUser').parents('.form-group').addClass('has-error');
-   	        $('#errorLogin').removeClass('hide');
+		checkLogin.fail(function(e){
+   	        
+   	        if(e.status == 401){
+   	        	$('#passUser').parents('.form-group').addClass('has-error');
+   	        	$('#errorLogin').removeClass('hide');
+   	        }
+   	        
+
    	        $('#formConnection').find('fieldset').prop('disabled', false);
    	        $('#passUser').focus();
    	        //app.notify('large', 'danger', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
