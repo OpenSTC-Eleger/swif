@@ -71,7 +71,7 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 			var template = _.template(templateData, {
 				lang                   : app.lang,
 				interventionsState     : app.Models.Intervention.status,
-				intervention          : self.model.toJSON(),
+				intervention          : self.model,
 			});
 
 			$(self.el).html(template);
