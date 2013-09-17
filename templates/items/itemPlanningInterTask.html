@@ -20,6 +20,6 @@
 					<i class="icon-ban-circle icon-fixed-width">&nbsp;</i>
 				</a>
 		<%}%>
-	</small>	
+	</small>
 	<small class="badge badge-<%= app.Models.Task.status[task.state].color %> pull-right"><%= app.Helpers.Main.decimalNumberToTime(task.planned_hours, 'human') %></small>	
 </li>
