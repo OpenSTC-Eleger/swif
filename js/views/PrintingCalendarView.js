@@ -93,9 +93,9 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 	    	task["done"] = ( task.state == app.Models.Task.status.done.key  ? true : false );
 	    	
 	    	task["equipment"] = "";
-	    	if( task.equipment_ids ) {
-		    	_.each( task.equipment_ids, function( equipment ) {
-		    		task["equipment"] += "[" + equipment.complete_name + "]";
+	    	if( task.equipment_names ) {
+		    	_.each( task.equipment_names, function( equipment_name ) {
+		    		task["equipment"] += "[" + equipment_name[1] + "]";
 		    	});
 		    }
 	    	
