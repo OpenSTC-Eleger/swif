@@ -39,7 +39,6 @@ app.Models.Intervention = app.Models.GenericModel.extend({
 		this.set({ cancel_reason : value }, {silent: silent});
 	},  
 
-
 	/** Model Initialization
 	*/
 	initialize: function(){

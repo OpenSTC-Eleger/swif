@@ -12,7 +12,7 @@ app.Models.Task = app.Models.GenericModel.extend({
 		if( value == 'undefined') return;
 		this.set({ state : value });
 	},
-
+	
 	getInterventionId : function(type) {
 		if(this.get('project_id')){
 			switch(type){

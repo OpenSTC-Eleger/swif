@@ -16,8 +16,6 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize : function() {
-		this.options.tasks.off();
-		this.listenTo(this.options.tasks, 'add', this.add);
 		this.model = this.options.inter;
 		this.listenTo(this.model, 'change', this.change);
 	},
@@ -27,15 +25,20 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 	*/
 	change: function(model){
 		var self = this;
-
-		this.render();
-		
+		this.fetchData().done(function(){
+			self.render();
+		})
+//		$(self.el).find('#row-nested-objects').empty();
+//		_.each(model.attributes.tasks, function(taskId, i){	
+//			var task = new app.Models.Task();
+//			task.setId(taskId);
+//			task.fetch().done(function(){
+//				var itemPlanningInterTaskView = new app.Views.ItemPlanningInterTaskView({model: task, inter: self.options.inter});
+//				$(self.el).find('#row-nested-objects').append(itemPlanningInterTaskView.render().el);
+//			});
+//		});
 		app.Helpers.Main.highlight($(this.el))
-
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.interventionUpdateOk);
-
-		// Partial Render //
-		//app.views.interventions.partialRender();
 	},
 
 	/** Display the view
@@ -66,18 +69,38 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 
 			//Create item task for each one associated to inter
-			_.each(self.options.inter.attributes.tasks, function(taskId, i){	
-				var task = new app.Models.Task();
-				task.setId(taskId);
-				task.fetch().done(function(){
-					var itemPlanningInterTaskView = new app.Views.ItemPlanningInterTaskView({model: task, inter: self.options.inter});
+//			_.each(self.options.tasks.models, function(task, i){
+//				//var itemInterventionTaskView = new app.Views.ItemInterventionTaskView({model: task, templateHTML:"items/itemPlanningTask"});
+//				var itemPlanningInterTaskView = new app.Views.ItemPlanningInterTaskView({model: task, inter: self.options.inter});
+//				$(self.el).find('#row-nested-objects').append(itemPlanningInterTaskView.render().el);
+//			});
+			
+			if (!_.isUndefined(self.tasksCollection)) {
+				$('#row-nested-objects').empty();
+				_.each(self.tasksCollection.models, function (task) {
+					var itemPlanningInterTaskView = new app.Views.ItemPlanningInterTaskView({model: task});
 					$(self.el).find('#row-nested-objects').append(itemPlanningInterTaskView.render().el);
-				});
-			});
+				})
+			};
 			
 		});
 		return this;
 	},
+
+
+
+	fetchData: function () {
+		var self = this;
+		var deferred = $.Deferred();
+		self.tasksCollection = new app.Collections.Tasks();
+		if( self.model.get('tasks')!= false ) {
+			self.tasksCollection.fetch({silent: true,data: {filters: {0: {'field': 'id', 'operator': 'in', 'value': self.model.get('tasks')}}}}).done(function(){
+				deferred.resolve();
+			});
+		}
+		return deferred
+	},
+
 	
 	
 	updateList: function(){
@@ -101,20 +124,6 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 		}
 	},
 
-	add: function(model){
-		var itemPlanningInterTaskView  = new app.Views.ItemPlanningInterTaskView({ model: model, inter: this.options.inter, tasks:this.options.tasks});
-		$(this.el).find('#row-nested-objects').append(itemPlanningInterTaskView.render().el);		
-		itemPlanningInterTaskView.highlight();
-		this.partialRender();
-		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.inteventionAddTaskOK);
-		//@TOCHECK: repercute task creation to main tasks collection to be usable by other itemViews
-		app.views.planningInterListView.collections.tasks.add(model);
-		
-		//app.views.planningInterListView.partialRender();
-
-		//app.router.navigate(app.views.planningInterListView.urlBuilder(), {trigger: false, replace: false});
-	
-	},	
 		
 	scheduledInter: function(e) {
 		var self = this;
@@ -141,7 +150,7 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 	displayModalAddTask: function(e){
 		e.preventDefault();
 		var self = this;
-		new app.Views.ModalInterventionAddTaskView({el: '#modalAddTask', inter: self.options.inter, tasks: self.options.tasks});
+		new app.Views.ModalInterventionAddTaskView({el: '#modalAddTask', inter: self.options.inter});
 		
 	},
 

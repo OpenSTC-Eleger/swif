@@ -89,6 +89,7 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 		// Retrieve the intervention ID //
 		//var id = _($(e.target).attr('href')).strRightBack('_');
 		var id = this.model.toJSON().id.toString();
+		var self = this;
 	
 		var isExpend = $('#collapse_'+id).hasClass('expend');
 	
@@ -99,6 +100,11 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 		
 		// If the table row isn't already expend //       
 		if(!isExpend){
+			// Set the new visibility to the selected intervention //
+			this.detailedView.fetchData().done(function () {
+				self.detailedView.render();
+			});
+			
 			// Set the new visibility to the selected intervention //
 			$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
 			$(this.el).parents('tr.row-object').css({ opacity: '1'});  
@@ -149,7 +155,7 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 	
 	displayModalCancelInter: function(e) {
 		e.preventDefault();
-		new app.Views.ModalCancelInterventionView({el: '#modalCancelInter', model: this.model, tasks: this.options.tasks });
+		new app.Views.ModalCancelInterventionView({el: '#modalCancelInter', model: this.model, tasks: this.detailedView.tasksCollection });
 	},
 
 

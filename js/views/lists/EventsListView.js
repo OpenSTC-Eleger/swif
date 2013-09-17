@@ -327,8 +327,7 @@ app.Views.EventsListView = Backbone.View.extend({
 				
 				model.save(params, {patch: false, silent: true})
 					.done(function(ids) {
-						var task = self.collections.tasks.get(ids[0]);
-						self.collections.interventions.get(task.attributes.project_id[0]).fetch();
+						self.collections.interventions.get(copiedEventObject.project_id).fetch();
 						self.refreshEvents();
 					})
 					.fail(function (e) {
@@ -380,7 +379,7 @@ app.Views.EventsListView = Backbone.View.extend({
     			app.views.modalUnplanTaskView = new app.Views.ModalUnplanTaskView({
     				el    			: '#modalUnplanTask',
     				calendarModel 	: self.collection.get(fcEvent.id),
-    				panelModel 		: self.collections.tasks.get(fcEvent.id)
+    				//panelModel 		: self.collections.tasks.get(fcEvent.id)
     			});
     		},
 		});

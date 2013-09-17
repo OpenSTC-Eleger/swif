@@ -31,10 +31,8 @@ app.Views.PlanningView = Backbone.View.extend({
 		
 		
 	    console.log("Planning Details view intialization")
-	    this.initCalendarCollections().done(function(){
-	    	self.initPanelCollections().done(function(){
-	    		app.router.render(self);
-	    	});	    		
+	    this.initCollections().done(function(){	    	
+	    	app.router.render(self);		
 	    });
 	},
 
@@ -94,35 +92,29 @@ app.Views.PlanningView = Backbone.View.extend({
 		*/
 	partialRender: function () {	
 		var self = this;
-		this.initPanelCollections().done(function(){
+		this.initCollections().done(function(){
 			app.views.planningInterListView.render();
 	    });	    		
 	},
 	
 	
-	initCalendarCollections: function(){			
-	
-		var self = this;		
-		return $.when(app.models.user.queryManagableOfficers())
-		.done(function(){
-			$.when(app.models.user.queryManagableTeams())
-//				.done(function(){
+//	initCalendarCollections: function(){			
+//	
+//		var self = this;		
+//		return $.when(app.models.user.queryManagableOfficers(), app.models.user.queryManagableTeams())
+////				.done(function(){
+////				})
+//				.fail(function(e){
+//					console.log(e);
 //				})
-				.fail(function(e){
-					console.log(e);
-				})
-				
-		})
-		.fail(function(e){
-			console.log(e);
-		})
-	},
-	
+//
+//	},
+//	
 	
 	/**
 	 * Init intervention and task collections
 	 */
-	initPanelCollections: function(){
+	initCollections: function(){
 		var self = this;
 		
 		// Check if the collections is instantiate //
@@ -166,33 +158,35 @@ app.Views.PlanningView = Backbone.View.extend({
 			this.fetchParams.data.filters = app.Helpers.Main.calculSearch(globalSearch, app.Models.Intervention.prototype.searchable_fields);
 		}
 		
-		return this.fetchPanelCollections();
+		return this.fetchCollections();
 	
 	},
 	
-	fetchPanelCollections : function(){
+	fetchCollections : function(){
 		var self = this;
-		var deferred = $.Deferred();
-		this.collections.interventions.fetch(this.fetchParams)
-		.done(function(){
-			if(self.collections.interventions.cpt > 0){
-				self.collections.tasks.fetch({silent: true,data: {filters: {0:{'field':'project_id.id','operator':'in','value':self.collections.interventions.pluck('id')}}}})
-				.done(function(){
-					deferred.resolve();						
-				})
-				.fail(function(e){
-					console.error(e);
-				})
-			}
-			else{
-				deferred.resolve();
-			}
-		})
+
+		return $.when(
+			app.models.user.queryManagableOfficers(), 
+			app.models.user.queryManagableTeams(),
+			this.collections.interventions.fetch(this.fetchParams)
+//				.done(function(){
+//					if(self.collections.interventions.cpt > 0){
+//						self.collections.tasks.fetch({silent: true,data: {filters: {0:{'field':'project_id.id','operator':'in','value':self.collections.interventions.pluck('id')}}}})
+//						.done(function(){
+//							deferred.resolve();						
+//						})
+//						.fail(function(e){
+//							console.error(e);
+//						})
+//					}
+//					else{
+//						deferred.resolve();
+//					}
+//				})
+		)
 		.fail(function(e){
 			console.error(e);
 		})
-		
-		return deferred;
 	}
 
 });
