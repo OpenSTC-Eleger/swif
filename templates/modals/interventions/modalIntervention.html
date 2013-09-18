@@ -68,6 +68,34 @@
 									</div>
 								</div>
 							</div>
+		
+			
+							<!-- intervention Contact Service -->
+							<div class="form-group">
+								<label for="interventionDetailService" class="control-label col-sm-3" ><%= lang.serviceConcerned %>:</label>
+			
+								<div class="col-sm-9">
+									<input id="interventionDetailService" class="select2" required data-placeholder="<%= lang.actions.selectAService %>"/>
+								</div>
+							</div>
+			
+							<!-- intervention Place -->
+							<div class="form-group">
+								<label for="interventionPlace" class="control-label col-sm-3"><%= _.capitalize(lang.place) %>:</label>
+			
+								<div class="col-sm-9">  
+									<input id="interventionPlace" class="select2" required data-placeholder="<%= lang.actions.selectAPlace %>"/>
+								</div>
+							</div>
+			
+							<!-- intervention Place precision -->
+							<div class="form-group">
+								<label for="interventionPlacePrecision" class="control-label col-sm-3"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
+			
+								<div class="col-sm-9">  
+									 <textarea id="interventionPlacePrecision" class="form-control" rows="2"><%= intervention.site_details!=false?intervention.site_details:'' %></textarea>
+								</div>
+							</div>
 			
 					</fieldset>
 				

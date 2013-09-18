@@ -48,8 +48,6 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		});
 	
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.interventionSaveOK);
-		
-		this.partialRender();
 	},
 
 	/** Display the view
@@ -189,7 +187,7 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		
 		this.options.page = _(link.attr('href')).strRightBack('/page');		
 		
-		app.router.navigate($(e.target).attr('href'), {trigger: false, replace: true});		
+		//app.router.navigate($(e.target).attr('href'), {trigger: false, replace: true});		
 		app.views.planning.partialRender();		
 	},
 

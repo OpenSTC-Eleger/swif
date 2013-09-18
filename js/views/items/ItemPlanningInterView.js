@@ -125,10 +125,12 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 		
 		// If the table row isn't already expend //       
 		if(!isExpend){
-			// Set the new visibility to the selected intervention //
-			this.detailedView.fetchData().done(function () {
-				self.detailedView.render();
-			});
+			// Fetch tasks
+			if(!_.isUndefined(this.detailedView)){
+				this.detailedView.fetchData().done(function () {
+					self.detailedView.render();
+				});
+			}
 			
 			// Set the new visibility to the selected intervention //
 			$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');

@@ -157,7 +157,7 @@ app.Router = Backbone.Router.extend({
 
 	/** Planning
 	*/
-	planning: function(officer, team, year, week, search, filter, sort, page ){
+	planning: function(officer, team, year, week){
 		
 		var params = {};
 		if(!_.isNull(officer)){params.officer = officer}
