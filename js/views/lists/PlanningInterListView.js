@@ -85,14 +85,21 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 			})
 						
 			_.each(self.collections.interventions.models, function(inter, i){
-				var tasks = new app.Collections.Tasks();
-				_.each(inter.toJSON().tasks,function(item,i){ 
-					tasks.push(self.collections.tasks.get(item));
-				});
-				var itemPlanningInterView = new app.Views.ItemPlanningInterView({model: inter, tasks: tasks});
-				$('#inter-items').append(itemPlanningInterView.render().el);
-				var itemPlanningInterTaskListView = new app.Views.ItemPlanningInterTaskListView({inter: inter, tasks: tasks});
-				$('#inter-items').append(itemPlanningInterTaskListView.render().el);
+//				var tasks = new app.Collections.Tasks();
+//				_.each(inter.toJSON().tasks,function(item,i){ 
+//					tasks.push(self.collections.tasks.get(item));
+//				});
+
+				var simpleView = new app.Views.ItemPlanningInterView({model: inter});
+				var detailedView =new app.Views.ItemPlanningInterTaskListView({inter: inter});
+				$('#inter-items').append( simpleView.render().el );
+				$('#inter-items').append(detailedView.render().el);
+				simpleView.detailedView = detailedView;
+				
+//				var itemPlanningInterView = new app.Views.ItemPlanningInterView({model: inter, tasks: tasks});
+//				$('#inter-items').append(itemPlanningInterView.render().el);
+//				var itemPlanningInterTaskListView = new app.Views.ItemPlanningInterTaskListView({inter: inter, tasks: tasks});
+//				$('#inter-items').append(itemPlanningInterTaskListView.render().el);
 				
 			});	
 			
@@ -138,21 +145,6 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		new app.Views.ModalInterventionView(params);
 	},
 
-
-	/** Set or no the Foreman in the team
-	*/
-	setForemanInTeam: function(e){
-
-		var foremanState = $(e.target);
-
-		// Retrieve the new status //
-		if(foremanState.bootstrapSwitch('status')){
-			console.log('Avec le chef d"équipe');
-		}
-		else{
-			console.log('Sans le chef d"equipe');
-		}
-	},
 
 
 	/** Filter Intervention by status

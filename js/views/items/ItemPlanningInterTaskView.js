@@ -24,7 +24,7 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 	initialize : function() {
 		this.model.off();
 		
-		this.listenTo(this.model, 'change', this.change);
+		//this.listenTo(this.model, 'change', this.change);
 		this.listenTo(this.model, 'destroy', this.destroyTask);
 	},
 	
