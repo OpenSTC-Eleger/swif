@@ -198,6 +198,18 @@ a.filter-button.filter-disabled{
 .accordion-body[class*="in collapse"]{ overflow:visible; }
 
 
+.tab-pane-planning{
+	max-height: 160px;
+	overflow-y: scroll;
+	margin-top: @line-height-computed/2;
+	margin-bottom: @line-height-computed/2;
+
+	li{
+		width: 33%
+	}
+}
+
+
 
 
 
@@ -215,11 +227,6 @@ li.external-event.disabled{
 li.external-event:hover{
 	background-color: @gray-lighter;
 	.border-radius(10px);
-}
-div.div-actions{
-	font-size: 85%;
-	border-top: 1px solid @gray-light;
-	padding: 5px;
 }
 
 
