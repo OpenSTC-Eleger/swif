@@ -19,60 +19,60 @@
 
 			<form id="formAbsentTask" action="#" class="form-horizontal" role="form">
 
-				
+
 			    	<!-- Absent Type -->
 			    	<div class="form-group">
-						<label for="absentType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
+						<label for="absentType" class="control-label col-sm-3"><%= _.capitalize(lang.type) %>:</label>
 						
-						<div class="controls">
+						<div class="col-sm-9">
 							<input id="absentType" class="select2" required data-placeholder="<%= lang.actions.selectAbsentType %>"/>
-							<span class="help-inline"></span>
 						</div>
 					</div>
 
-		            <!-- Absent start date / hour -->
-		            <div class="form-group">
-						<label class="control-label" for="startDate"><%= _.capitalize(lang.dateStart) %>:</label>
-						<div class="form-group">
+					<!-- Absent start date / hour -->
+					<div class="form-group">
+						<label for="startDate" class="control-label col-sm-3"><%= _.capitalize(lang.dateStart) %>:</label>
 
-							<div class="controls">
-								<!-- Start date -->
-								<div class="input-append">
-									<input  type="text" class="datepicker input-small" id="startDate" value="" required>
-									<span class="add-on"><i class="icon-calendar"></i></span>
-								</div>
-			                	
-								<!-- Start Hour -->
-								<div class="input-append bootstrap-timepicker">							
-									    <input type="text" class="timepicker-default" id='startHour' required>
-									    <span class="add-on"><i class="icon-time"></i></span>
-								</div>
+						<!-- Start date -->
+						<div class="form-inline">
+						<div class="col-sm-4">
+							<div class="input-group">
+								<input  type="text" class="datepicker form-control" id="startDate" required>
+								<span class="input-group-addon"><i class="icon-calendar"></i></span>
 							</div>
+						</div>
 
+						<!-- Start Hour -->
+						<div class="col-sm-3">
+							<div class="input-group bootstrap-timepicker">
+							    <input type="text" class="timepicker-default form-control" id='startHour' required>
+							    <span class="input-group-addon"><i class="icon-time"></i></span>
+							</div>
+						</div>
 						</div>
 					</div>
 		            
 
 					<!-- Absent end date / hour -->
 		            <div class="form-group">
-		                <label class="control-label" for="endDate"><%= _.capitalize(lang.dateEnd) %>:</label>
-		                <div class="form-group">
+		                <label for="endDate" class="control-label col-sm-3"><%= _.capitalize(lang.dateEnd) %>:</label>
 
-			                <div class="controls">
-			            		<!-- End Date -->
-			            		<div class="input-append">
-			                        <input type="text" class="datepicker input-small" id="endDate" placeholder="dd/mm/yyyy" required>
-			                    	<span class="add-on"><i class="icon-calendar"></i></span>
-			                    </div>
+						<!-- End Date -->
+						<div class="col-sm-4">
+							<div class="input-group">
+						        <input type="text" class="datepicker form-control" id="endDate" placeholder="dd/mm/yyyy" required>
+					    		<span class="input-group-addon"><i class="icon-calendar"></i></span>
+					    	</div>
+					    </div>
 
-			                    <!-- End Hour -->
-			                    <div class="input-append bootstrap-timepicker" >							
-								    <input type="text" class="timepicker-default input-mini" id='endHour' required>
-								    <span class="add-on"><i class="icon-time"></i></span>
-								</div>
-			                </div>
+					    <!-- End Hour -->
+					    <div class="col-sm-3">
+						    <div class="input-group bootstrap-timepicker" >							
+						    	<input type="text" class="timepicker-default form-control" id='endHour' required>
+						    	<span class="input-group-addon"><i class="icon-time"></i></span>
+							</div>
+						</div>
 
-		            	</div>
 		            </div>
 
 			</form>
