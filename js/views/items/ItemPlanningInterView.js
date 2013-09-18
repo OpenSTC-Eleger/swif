@@ -7,7 +7,10 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 
 	templateHTML : 'items/itemPlanningInter',
 	
-	className   : 'row-item',
+	className   : function(){
+		this.classColor = app.Models.Intervention.status[this.model.getState()].color;
+		return "row-item border-emphasize border-emphasize-" + this.classColor;	
+	},
 
 	// The DOM events //
 	events       : {		
@@ -53,11 +56,23 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
-		 
+			var modelJSON = self.model.toJSON();
+			var informationHour = '';
+			//var classColor = app.Models.Intervention.status[modelJSON.state].color;
+			
+			if( modelJSON.state != app.Models.Intervention.status.template.key  ){
+				informationHour = (modelJSON.planned_hours != false ? app.Helpers.Main.decimalNumberToTime(modelJSON.planned_hours, 'human') : '');
+			}
+			else{
+				informationHour = (modelJSON.total_hours != false ? app.Helpers.Main.decimalNumberToTime(modelJSON.total_hours, 'human') : '');
+			}
+
 			var template = _.template(templateData, {
-				lang                   : app.lang,
-				interventionsState     : app.Models.Intervention.status,
-				intervention          : self.model.toJSON(),
+				lang                   	: app.lang,
+				interventionsState     	: app.Models.Intervention.status,
+				intervention          	: modelJSON,
+				informationHour			: informationHour,
+				classColor 				: self.classColor
 			});
 
 			$(self.el).html(template);	

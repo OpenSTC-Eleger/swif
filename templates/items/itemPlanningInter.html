@@ -15,5 +15,7 @@
 		<% } %>
 	</p>
 	
+	
+	
 </td>
-<td><%= (intervention.planned_hours != false ? app.Helpers.Main.decimalNumberToTime(intervention.planned_hours, 'human') : '') %></td>
+<td><small class="badge badge-<%= classColor %> pull-right"><%= informationHour %></small>

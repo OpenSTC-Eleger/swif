@@ -182,7 +182,7 @@ app.Models.Task = app.Models.GenericModel.extend({
 		},
 		cancelled: {
 			key 			: 'cancelled', // cancel //
-			color 			: 'important',
+			color 			: 'danger',
 			translation 	: ''
 		},
 		absent: {
