@@ -207,7 +207,7 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 	
 	displayModalCancelTask: function(e) {
 		e.preventDefault();
-		new app.Views.ModalCancelTaskView({el: '#modalCancelTask', model: this.model, inter: this.options.inter});
+		new app.Views.ModalCancelTaskView({el: '#modalCancelTask', model: this.model});
 	},
 
 });

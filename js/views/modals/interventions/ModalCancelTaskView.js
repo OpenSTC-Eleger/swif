@@ -58,7 +58,7 @@ app.Views.ModalCancelTaskView = app.Views.GenericModalView.extend({
 		var self = this;
 		this.model.cancel($('#motifCancelTask').val())
 			.done(function(){
-				$.when(self.model.fetch(),self.options.inter.fetch())
+				$.when(self.model.fetch({silent:false}))
 				.fail(function(e){
 					console.log(e)}
 				);

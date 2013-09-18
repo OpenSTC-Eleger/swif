@@ -17,8 +17,6 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 
 	},
 
-
-
 	/** View Initialization
 	*/
 	initialize : function() {
@@ -28,19 +26,9 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 		this.listenTo(this.model, 'destroy', this.destroyTask);
 	},
 	
-	destroyTask: function(model){
-		var self = this;
-		this.options.inter.fetch().done(function(){
-			if(self.options.inter.toJSON().tasks.length > 0){
-				//app.Helpers.Main.highlight($(self.el)).always(function(){
-					self.remove();
-				//})
-	
-			}
-			else{
-				self.remove();
-			}
-		});
+	destroyTask: function(model){	
+		//remove model
+		this.remove();		
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.taskDeleteOk);	
 	},
 
@@ -54,11 +42,7 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 		app.Helpers.Main.highlight($(this.el))
 
 		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.taskUpdateOk);
-
-		// Partial Render //
-		//app.views.interventions.partialRender();
 	},
-
 
 
 	/** Display the view
@@ -110,6 +94,8 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 			
+			
+			//Add draggable task
 			el = $('li#task_'+model.id+':not(.disabled)');
 
 				var eventObject = {
@@ -117,12 +103,10 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 					id: model.id,
 					title: model.name,
 					project_id: model.project_id[0],
-					//user_id: model.user_id[0],
 					planned_hours: model.planned_hours,
 					total_hours: model.total_hours,
 					effective_hours: model.effective_hours,
 					remaining_hours: model.remaining_hours,
-					//allDay: true,
 				};
 				
 				// Store the Event Object in the DOM element so we can get to it later //
@@ -146,7 +130,6 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 
 
 				});
-
 		});
 		return this;
 	},
@@ -170,7 +153,8 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 		return deferred;
 	},
 	
-/** Prepare Modals
+	/** 
+	 * Display modal Add to delete task
 	*/
 	displayModalDeleteTask: function(e){
 		e.preventDefault();
@@ -178,9 +162,12 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 		new app.Views.ModalDeleteView({el: '#modalDeleteTask', model: this.model, modalTitle: app.lang.viewsTitles.deleteTask, modalConfirm: app.lang.warningMessages.confirmDeleteTask});
 	},
 	
+	/**
+	 * Display modal Add to cancel task
+	 */
 	displayModalCancelTask: function(e) {
 		e.preventDefault();
-		new app.Views.ModalCancelTaskView({el: '#modalCancelTask', model: this.model, inter: this.options.inter});
+		new app.Views.ModalCancelTaskView({el: '#modalCancelTask', model: this.model});
 	},
 
 

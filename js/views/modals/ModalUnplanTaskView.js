@@ -26,7 +26,7 @@ app.Views.ModalUnplanTaskView =  app.Views.GenericModalView.extend({
 		this.modal = $(this.el);
 
 		// Intervention Model in the Left column //
-		this.panelModel = this.options.panelModel;
+		this.interModel = this.options.interModel;
 
 		this.render();
 	},
@@ -75,11 +75,15 @@ app.Views.ModalUnplanTaskView =  app.Views.GenericModalView.extend({
 		};
 
 		this.model.save(params, {patch: true, silent: false})
-			.done(function(data) {
-				self.modal.modal('hide');
-				if(!_.isUndefined(self.panelModel))
-					self.panelModel.fetch({ data : {fields : self.panelModel.fields} });
-				self.model.fetch({ data : {fields : self.model.fields} });
+			.done(function(data) {				
+				$.when(  self.model.fetch({ data : {fields : self.model.fields} }) )
+				.done(function(e){
+					self.modal.modal('hide');
+				})
+				.fail(function(e){
+					console.error(e);
+				});
+				
 			})
 			.always(function(){
 				// Reset the button state //
