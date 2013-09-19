@@ -26,7 +26,7 @@ app.Views.ItemRequestView = Backbone.View.extend({
 		'click .buttonValidRequest'	      : 'modalValidRequest',
 		'click .buttonRefusedRequest'	  : 'modalRefuseRequest',
 		'click .buttonConfirmRequest'	  : 'modalConfirmRequest',
-		'click .requestDetails'				: 'displayModalUpdateRequest',
+		'click .requestDetails'			  : 'displayModalUpdateRequest',
 	},
 
 
@@ -145,6 +145,9 @@ app.Views.ItemRequestView = Backbone.View.extend({
 	},
 
 	displayModalUpdateRequest: function(e){
+
+		console.log(this.model);
+
 		e.preventDefault();
 		new app.Views.ModalRequestView({el:'#modalSaveRequest', requests: app.views.requestsListView.collection, model: this.model});
 

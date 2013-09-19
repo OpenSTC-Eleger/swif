@@ -50,7 +50,7 @@
 			<tr>
 				<th data-sort-column="id">N°</th>
 				<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
-				<th><%= _.capitalize(lang.place) %></th>
+				<th><i class="icon-map-marker icon-fixed-width" style="text-align:center;"></i><%= _.capitalize(lang.place) + ' - '%><i class="icon-wrench icon-fixed-width" style="text-align:center;"></i><%= _.capitalize(lang.equipment) %></th>
 				<th><%= _.capitalize(lang.dateDeadline) %></th>
 				<th><%= _.capitalize(lang.plannedHours) %></th>
 				<th><%= _.capitalize(lang.spentHours) %></th>
@@ -143,7 +143,8 @@
 			<div style="clear: both;">
 				<em style="text-decoration:underline;"><%= _.capitalize(lang.intervention) %>:</em> <span id="interName" class="field"></span><br />
 				<em style="text-decoration:underline;"><%= _.capitalize(lang.description) %>:</em> <span id="interDescription" class="field"></span><br />
-				<em style="text-decoration:underline;"><%= _.capitalize(lang.place) %>:</em> <span id="interPlace" class="field"></span><br />
+				<em style="text-decoration:underline;" id="printPlaceOrEquipmentLabel"><%= _.capitalize(lang.place) %>:</em> <span id="interPlaceOrEquipment" class="field"></span><br />
+				<em style="text-decoration:underline;" id="printPlaceLabel"><%= _.capitalize(lang.place) %>:</em> <span id="interPlace" class="field"></span><br />
 				<em style="text-decoration:underline;"><%= _.capitalize(lang.informationOfTheSite) %>:</em> <span id="interPlaceMore" class="field"></span><br />
 			</div>
 

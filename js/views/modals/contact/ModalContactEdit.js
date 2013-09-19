@@ -33,10 +33,12 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 			var template = _.template(templateData, {
 				lang  : app.lang,
 				contact : self.model.toJSON(),
+				user: self.user,
 				loader: loader
 			});
  			self.modal.html(template);
 			self.modal.modal('show');
+			self.accordionAssociatedAccount();
 		});
 		return this;
 	},
@@ -185,7 +187,12 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 	},
 
 	accordionAssociatedAccount: function(event){
-		event.preventDefault();
+		if (!_.isUndefined(event)) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+
+		console.log('checked event')
 
 		// Toggle Slide Create associated task section //
 		$('fieldset.associated-account').stop().slideToggle(function(){
@@ -205,6 +212,8 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 		} else {
 			return false
 		}
-	}
+	},
+
+
 
 });

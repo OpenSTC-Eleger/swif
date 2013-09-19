@@ -62,6 +62,9 @@ app.Views.ModalCancelTaskView = app.Views.GenericModalView.extend({
 				.fail(function(e){
 					console.log(e)}
 				);
+				if(!_.isUndefined(self.options.inter)){
+					self.options.inter.fetch().fail(function(e){console.log(e)});
+				}
 				self.modal.modal('hide');
 			})
 			.fail(function(e){

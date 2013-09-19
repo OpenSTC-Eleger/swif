@@ -49,10 +49,6 @@ app.Views.ModalTaskDoneView = app.Views.GenericModalView.extend({
 
 			self.selectedTaskJSON = self.model.toJSON();
 
-			app.views.selectListOfficersTeamsView = new app.Views.AdvancedSelectBoxView({el:$('#selectUsersTeams'), collection: app.Collections.Officers.prototype});
-			app.views.selectListOfficersTeamsView.render();
-
-
 			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 			$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 			
@@ -71,54 +67,37 @@ app.Views.ModalTaskDoneView = app.Views.GenericModalView.extend({
 				$('#remainingTimeSection').hide();
 			}
 			
-			$('#equipmentsDone, #equipmentsListDone').sortable({
-				connectWith: 'ul.sortableEquipmentsList',
-				dropOnEmpty: true,
-				forcePlaceholderSize: true,
-				forceHelperSize: true,
-				placeholder: 'sortablePlaceHold',
-				containment: '.equipmentsDroppableAreaDone',
-				cursor: 'move',
-				opacity: '.8',
-				revert: 300,
-				receive: function(event, ui){
-				}
-
-			});
-			
-//			// Filter Equipment by service on intervention's task //
+//			// Filter Equipment and user/team by service on intervention's task //
 			var task_id = self.selectedTaskJSON.id;
 
 			var hasService = (self.options.inter.toJSON().service_id && !_.isUndefined(self.options.inter.toJSON().service_id));
 			
-			app.views.selectListEquipmentsView = new app.Views.AdvancedSelectBoxView({el:'#taskEquipmentDone', collection:app.Collections.Equipments.prototype});
+			app.views.selectListOfficersTeamsView = new app.Views.AdvancedSelectBoxView({el:$('#selectUsersTeams'), collection: app.Collections.Officers.prototype});
+			
+			self.selectVehicleView = new app.Views.AdvancedSelectBoxView({el:'#taskEquipmentDone', collection:app.Collections.Equipments.prototype});
+			self.selectListEquipmentsView = new app.Views.AdvancedSelectBoxView({el:'#taskEquipmentListDone', collection:app.Collections.Equipments.prototype});
+			
+			self.selectVehicleView.setSearchParam({field:'categ_id.is_vehicle', operator:'=', value:'True'}, true);
+			self.selectListEquipmentsView.setSearchParam({field:'categ_id.is_equipment', operator:'=', value:'True'}, true);
+			self.selectVehicleView.setSearchParam({field:'internal_use', operator:'=', value:'True'});
+			self.selectListEquipmentsView.setSearchParam({field:'internal_use', operator:'=', value:'True'});
+
 			if(hasService){
-				app.views.selectListEquipmentsView.setSearchParam('&', true);
-			}
-			app.views.selectListEquipmentsView.setSearchParam('|');
-			app.views.selectListEquipmentsView.setSearchParam({field:'technical_vehicle',operator:'=',value:'True'});
-			app.views.selectListEquipmentsView.setSearchParam({field:'commercial_vehicle',operator:'=',value:'True'});
-			if(hasService){
-				app.views.selectListEquipmentsView.setSearchParam({field:'service_ids.id',operator:'=',value:self.options.inter.toJSON().service_id[0]});
+
+				app.views.selectListOfficersTeamsView.setSearchParam({field:'service_ids.id',operator:'=',value:self.options.inter.toJSON().service_id[0]}, true);
+				
+				self.selectVehicleView.setSearchParam('|');
+				self.selectVehicleView.setSearchParam({field:'service_ids',operator:'=?',value:'False'});
+				self.selectVehicleView.setSearchParam({field:'service_ids.id',operator:'=',value:self.options.inter.toJSON().service_id[0]});
+
+				self.selectListEquipmentsView.setSearchParam('|');
+				self.selectListEquipmentsView.setSearchParam({field:'service_ids',operator:'=?',value:'False'});
+				self.selectListEquipmentsView.setSearchParam({field:'service_ids.id',operator:'=',value:self.options.inter.toJSON().service_id[0]});
 			}
 			
-			app.views.selectListEquipmentsView.render();
-			
-			// Search only materials //
-			$('#equipmentsListDone').empty();
-			$.ajax({
-				url: '/api/openstc/tasks/' + task_id.toString() + '/available_equipments',
-				success: function(data){
-					// Display the remain materials //
-					var nbRemainMaterials = 0;
-					for(i in data){
-						
-						nbRemainMaterials++;
-						$('#equipmentsListDone').append('<li id="equipment_'+data[i].id+'"><a href="#"><i class="icon-wrench"></i> '+ data[i].name + '-' + data[i].type + ' </a></li>');
-					}
-					$('#badgeNbEquipmentsDone').html(nbRemainMaterials);			
-				}
-			});
+			self.selectVehicleView.render();
+			self.selectListEquipmentsView.render();
+			app.views.selectListOfficersTeamsView.render();
 			
 		});
  
@@ -155,13 +134,13 @@ app.Views.ModalTaskDoneView = app.Views.GenericModalView.extend({
 
 
 
-		var vehicule =  app.views.selectListEquipmentsView.getSelectedItem();
-		var equipments = _.map($("#equipmentsDone").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
+		var vehicule =  this.selectVehicleView.getSelectedItem();
+		var equipments = this.selectListEquipmentsView.getSelectedItems();
 		
 		if(vehicule >0 ){
 			equipments.push( vehicule );
 		}
-
+		equipments = [[6,0,equipments]];
 
 		if($('#remainingTimeSection').is(':visible')){
 			var duration = $("#eventRemainingTime").val().split(":");

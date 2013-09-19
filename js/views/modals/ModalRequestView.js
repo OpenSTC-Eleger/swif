@@ -11,13 +11,18 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 	// The DOM events //
 	events: function() {
 		return _.defaults({
-			'submit #formRequest'			: 'saveRequest',
-	
-			'change #requestClaimerType'	: 'fillDropdownClaimerType',
-			'change #requestClaimer'		: 'fillDropdownClaimer',
-			'change #requestContactSelect'	: 'fillDropdownContact',
-			'change #requestDetailService'	: 'fillDropdownService',
-			'click a.linkSelectPlaceEquipment': 'changeSelectPlaceEquipment',
+			'submit #formSaveRequest'            : 'saveRequest',
+			
+			'switch-change #switchCitizen'       : 'switchCitizen',
+			'switch-change #switchPlaceEquipment': 'switchPlaceEquipment',
+			
+			'change #requestClaimerType'         : 'changeClaimerType',
+			'change #requestClaimer'             : 'changeClaimer',
+			'change #requestContact'             : 'changeContact',
+			
+			'click #menuSelectPlaceEquipement li': 'changeSelectPlaceEquipment',
+			
+			'change #requestDetailService'       : 'fillDropdownService',
 		},
 			app.Views.GenericModalView.prototype.events
 		);
@@ -60,91 +65,269 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 
 		// Retrieve the template //
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-			
+
 			var template = _.template(templateData, {
 				lang   : app.lang,
 				request: self.model,
 				loader : loader
 			});
-			
+
 			self.modal.html(template);
-			self.modal.modal('show');
-			
+
 
 			if(!loader){
-				self.selectListServicesView = new app.Views.AdvancedSelectBoxView({el: $('#requestDetailService'), collection: app.Collections.ClaimersServices.prototype})
-				self.selectListServicesView.render();
-				
-				// Fill select Places/Equipments //
-				self.selectListPlacesEquipmentsView = new app.Views.AdvancedSelectBoxView({el: $("#requestPlaceEquipment"), collection: app.Collections.Places.prototype})
-				self.selectListPlacesEquipmentsView.render();
-				
-				self.selectListPlaceView = new app.Views.AdvancedSelectBoxView({el:'#requestPlaceIfEquipment', collection: app.Collections.Places.prototype});
-				self.selectListPlaceView.render(); 
-				
+				$('.make-switch').bootstrapSwitch();
+
 				// Fill select ClaimersTypes //
-				self.selectListClaimersTypesView = new app.Views.AdvancedSelectBoxView({el: $('#requestClaimerType'), collection: app.Collections.ClaimersTypes.prototype})
-				self.selectListClaimersTypesView.render();
-				
-				self.selectListClaimersView = new app.Views.AdvancedSelectBoxView({el: $('#requestClaimer'), collection: app.Collections.Claimers.prototype});
-				self.selectListClaimersView.render();
-				
-				self.selectListClaimersContactsView = new app.Views.AdvancedSelectBoxView({el: $('#requestContactSelect'), collection: app.Collections.ClaimersContacts.prototype});
-				self.selectListClaimersContactsView.render();
-				
-				
+				app.views.selectListClaimersTypesView = new app.Views.AdvancedSelectBoxView({el: $('#requestClaimerType'), collection: app.Collections.ClaimersTypes.prototype})
+				app.views.selectListClaimersTypesView.render();
 
+				// Request Claimer //
+				app.views.selectListClaimersView = new app.Views.AdvancedSelectBoxView({el: $('#requestClaimer'), collection: app.Collections.Claimers.prototype});
+				app.views.selectListClaimersView.render();
 
-				/*self.resetBoxes();
+				// Request Contact //
+				app.views.selectListClaimersContactsView = new app.Views.AdvancedSelectBoxView({el: $('#requestContact'), collection: app.Collections.ClaimersContacts.prototype});
+				app.views.selectListClaimersContactsView.render();
 
-				
-				if(!self.create){
-					var currentRequest = self.model.toJSON();
-					
-					//fill partner_type value and launch 'onchange' treatment
-					self.selectListClaimersTypesView.setSelectedItem(currentRequest.partner_type);
-					self.setDropdownClaimerType(currentRequest.partner_type[0]).done(function(){
-						//fill partner value and launch 'onchange' treatment
-						var deferred = $.Deferred();
-						if(currentRequest.partner_id != false){
-							self.selectListClaimersView.setSelectedItem(currentRequest.partner_id);
-							deferred = self.setDropdownClaimer(currentRequest.partner_id[0]);
-						}
-						else{
-							deferred.resolve();
-						}
-						deferred.done(function(){
-							//fill contact value and launch 'onchange' treatment
-							if(currentRequest.partner_address != false){
-								self.selectListClaimersContactsView.setSelectedItem(currentRequest.partner_address);
-								self.fillDropdownContact(null);
-							}
-							//if no contact is stored in db, means that there is a people_name
-							else{
-								$('#requestContactInput').val(currentRequest.people_name);
-							}
-											
-							//fill service_id
-							self.selectListServicesView.setSelectedItem(currentRequest.service_id);
-							
-							//fill the place/equipment select2 and dropdown button according to has_equipment
-							if(currentRequest.has_equipment){
-								self.setSelectPlaceEquipment('equipment');
-								self.selectListPlaceView.setSelectedItem(currentRequest.site1);
-								self.selectListPlacesEquipmentsView.setSelectedItem(currentRequest.equipment_id);
-							}
-							else{
-								self.setSelectPlaceEquipment('place');
-								self.selectListPlacesEquipmentsView.setSelectedItem(currentRequest.site1);
-							}
-						});
-					});
-				}*/
+				// Fill select Places/Equipments //
+				app.views.selectListEquipmentsView = new app.Views.AdvancedSelectBoxView({el: $("#requestEquipment"), collection: app.Collections.Equipments.prototype})
+				app.views.selectListEquipmentsView.render();
+
+				app.views.selectListPlacesView = new app.Views.AdvancedSelectBoxView({el: $('#requestPlace'), collection: app.Collections.Places.prototype});
+				app.views.selectListPlacesView.render();
+
+				app.views.selectListServicesView = new app.Views.AdvancedSelectBoxView({el: $('#requestDetailService'), collection: app.Collections.ClaimersServices.prototype})
+				app.views.selectListServicesView.render();
 			}
+
+			self.modal.modal('show');
 		});
 
 		return this;
     },
+
+
+	
+	/** Swith if the resquest is from a citizen or not
+	*/
+	switchCitizen: function(event, data){
+
+		// From a citizen //
+		if(data.value){
+			$('.hide-citizen').fadeOut(function(){
+				$('.hide-no-citizen').fadeIn();
+				$('.readonly-no-citizen').prop('readonly', false);
+
+			});
+		}
+		else{
+			$('.hide-no-citizen').fadeOut(function(){
+				$('.hide-citizen').fadeIn();
+				$('.readonly-no-citizen').prop('readonly', true);
+			});
+		}
+	},
+
+
+
+	/** When the SelectBox ClaimerType change
+	*/
+	changeClaimerType: function(event){
+		this.resetFormInput();
+
+		// Reset the Claimers et Contact Box view //
+		app.views.selectListClaimersView.reset();
+		app.views.selectListClaimersContactsView.reset();
+
+
+		var claimerTypeId = app.views.selectListClaimersTypesView.getSelectedItem();
+
+		if(!_.isNumber(claimerTypeId)){
+			app.views.selectListClaimersView.resetSearchParams();
+		}
+		else{
+
+			var searchParam = {
+				field    : 'type_id.id',
+				operator : '=',
+				value    : claimerTypeId
+			}
+
+			app.views.selectListClaimersView.setSearchParam(searchParam , true);
+		}
+	},
+
+
+
+	/** When the SelectBox Claimer change
+	*/
+	changeClaimer: function(event){
+		var self = this;
+	
+		// Reset the Claimers et Contact Box view //
+		this.resetFormInput();
+		app.views.selectListClaimersContactsView.reset();
+
+		var claimerId = app.views.selectListClaimersView.getSelectedItem();
+
+		if(!_.isNumber(claimerId)){
+			app.views.selectListClaimersContactsView.resetSearchParams();
+		}
+		else{
+
+			// Set the Contact //
+			var searchParam = { field : 'partner_id.id', operator : '=', value : claimerId };
+			app.views.selectListClaimersContactsView.setSearchParam(searchParam , true);
+
+			
+			// Fetch the organisation to know the Associated place and Service //
+			this.organisation = new app.Models.Claimer({id: claimerId});
+			this.organisation.fetch({ data : {fields : ['technical_service_id', 'technical_site_id']} })
+				.done(function(data){
+
+					// Set the Associated place of the Claimer //
+					if(self.organisation.getTechnicalService()){
+						app.views.selectListServicesView.setSelectedItem([self.organisation.getTechnicalService('id'), self.organisation.getTechnicalService()]);
+					}
+
+					// Set the Associated Service of the Claimer //
+					if(self.organisation.getTechnicalSite()){
+						app.views.selectListPlacesView.setSelectedItem([self.organisation.getTechnicalSite('id'), self.organisation.getTechnicalSite()]);
+					}
+				});
+		}
+	},
+
+
+
+	/** When the SelectBox Contact change
+	*/
+	changeContact: function(event){
+		this.resetFormInput();
+
+		var contactId = app.views.selectListClaimersContactsView.getSelectedItem();
+		this.contact = new app.Models.ClaimerContact({id: contactId});
+
+		this.contact.fetch({ data : {fields : ['phone', 'email']} })
+			.done(function(data){
+				$('#requestContactPhone').val(data.phone);
+				$('#requestContactEmail').val(data.email);
+			});
+	},
+
+
+
+	/** Delete the value of the input form
+	*/
+	resetFormInput: function(){
+		$('#requestContactPhone').val('');
+		$('#requestContactEmail').val('');
+	},
+
+
+
+	/** Swith if the resquest is on a Place or Equipment
+	*/
+	switchPlaceEquipment: function(event, data){
+
+		// From a citizen //
+		if(data.value){
+			$('.hide-no-place').fadeOut();
+		}
+		else{
+			$('.hide-no-place').fadeIn();
+		}
+	},
+
+
+
+	/** Save the new request
+	*/
+	saveRequest: function(e){
+		e.preventDefault();
+
+		var self = this;
+
+		// Set the button in loading State //
+		$(this.el).find("button[type=submit]").button('loading');
+
+		// Set the properties of the model //
+		this.model.setName($('#requestName').val(), true);
+		this.model.setSite(app.views.selectListPlacesView.getSelectedItem(), true);
+		this.model.setService(app.views.selectListServicesView.getSelectedItem(), true);
+		this.model.setDescription($('#requestDescription').val(), true);
+		this.model.setPlaceDetails($('#requestPlacePrecision').val(), true);
+
+		
+		// On Place //
+		if($('#switchPlaceEquipment').bootstrapSwitch('status')){
+			this.model.setOnEquipment(false, true);
+		}
+		else{
+			this.model.setOnEquipment(true, true);
+			this.model.setEquipment(app.views.selectListEquipmentsView.getSelectedItem(), true);
+		}
+
+		// From Citizen //
+		if($('#switchCitizen').bootstrapSwitch('status')){
+			this.model.setFromCitizen(true, true);
+
+			// Set the citizen //
+			this.model.setCitizenName($('#requestContactName').val(), true);
+			this.model.setCitizenPhone($('#requestContactPhone').val(), true);
+			this.model.setCitizenEmail($('#requestContactEmail').val(), true);
+		}
+		else{
+			this.model.setFromCitizen(false, true);
+			// Set the contact //
+			this.model.setClaimerType(app.views.selectListClaimersTypesView.getSelectedItem(), true);
+			this.model.setClaimer(app.views.selectListClaimersView.getSelectedItem(), true);
+			this.model.setClaimerContact(app.views.selectListClaimersContactsView.getSelectedItem(), true);
+		}
+
+
+		this.model.save()
+			.done(function(data) {
+				self.modal.modal('hide');
+
+				// Create mode //
+				if(self.model.isNew()) {
+					self.model.setId(data);
+					self.model.fetch({silent: true, data : {fields : app.Collections.Requests.prototype.fields} }).done(function(){
+						app.views.requestsListView.collection.add(self.model);
+					})
+				// Update mode //
+				} else {
+					self.model.fetch({ data : {fields : self.model.fields} });
+				}
+			})
+			.fail(function (e) {
+				console.log(e);
+			})
+			.always(function () {
+				$(self.el).find("button[type=submit]").button('reset');
+			});
+	},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -155,7 +338,7 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 	    
 	/** Save the request
 	*/
-	saveRequest: function (e) {
+	saveRequerrqqqqqst: function (e) {
 
 		//private function used to check data: if no value, return false
 	    function evalField(fieldValue){
@@ -215,91 +398,6 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 
 
 
-	//when clicking on site or equipment select filter, update selectBox collection if data-item change
-	setSelectPlaceEquipment: function(item){
-		var itemSelectedBefore = $('#btnSelectPlaceEquipment').data('item');
-		//if user wants to change type of collection, we update selectBox, else, do nothing
-		if(item != itemSelectedBefore){
-			//if user wants to switch to equipment, we display place selectBox too, else, we hide it
-			this.displaySiteIfEquipment(item != 'place');
-			//get parameters of the select2 to keep trace of its state
-			var collection = null;
-			var el = this.selectListPlacesEquipmentsView.el;
-			if(item == 'place'){
-				$('#requestPlaceEquipment').attr('data-placeholder',app.lang.actions.selectAPlaceShort);
-				collection = app.Collections.Places.prototype;
-				$('#btnSelectPlaceEquipment').data('item', 'place');
-				$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('icon-wrench');
-				$('#btnSelectPlaceEquipment').find('.iconItem').addClass('icon-map-marker');
-			}
-			else{
-				$('#requestPlaceEquipment').attr('data-placeholder',app.lang.actions.selectAnEquipmentShort);
-				collection = app.Collections.Equipments.prototype;	    			
-				$('#btnSelectPlaceEquipment').data('item', 'equipment');
-				$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('icon-map-marker');
-				$('#btnSelectPlaceEquipment').find('.iconItem').addClass('icon-wrench');
-			}
-			this.selectListPlacesEquipmentsView = new app.Views.AdvancedSelectBoxView({el:el, collection:collection});
-			this.setParamOnSitesEquipments(null);
-			this.selectListPlacesEquipmentsView.render();
-		}
-	},
-	    
-
-	changeSelectPlaceEquipment: function(e){
-		if(e != null){
-			e.preventDefault();
-		}
-		var link = $(e.target);
-		var item = '';
-		if(link.is('a')){item = link.data('item')}
-		else{item = link.parent('a').data('item')}
-		this.setSelectPlaceEquipment(item);
-	},
-
-
-
-	/**
-	 * used to initialize boxes or to reset them to their init state
-	 */
-	resetBoxes: function(){
-		//reset claimer service infos
-		$('#requestContactService').attr('value', '');
-		$('#requestContactService').data('id', '');
-		$('#requestContactService').prop('readonly', true);
-		$('#requestContactServiceBlock').hide();
-		
-		//reset claimer contact infos
-		$('#requestContactInput, #requestContactPhone, #requestContactEmail').prop('readonly', true);
-		$('#requestContactInputBlock').css({display:'inline-block'});
-		$('#requestContactInput, #requestContactPhone, #requestContactEmail').val('');
-		
-		//reset claimer infos
-		this.selectListClaimersView.reset();
-		this.selectListClaimersContactsView.reset();
-		$('#requestContactSelectBlock').css({display:'none'});
-		$('#requestClaimerBlock').css({display:'none'});
-	},
-
-	/**
-	 * used to remove readonly attribute to claimer infos text inputs
-	 */
-	unlockClaimerInfos: function(){
-		$('#requestContactInput, #requestContactPhone, #requestContactEmail').prop('readonly', false);
-	},
-
-
-	displaySiteIfEquipment: function(display){
-		if(display){
-			this.selectListPlaceView.reset();
-			$('#requestPlaceIfEquipmentBlock').css({display:'block'});
-		}
-		else{
-			$('#requestPlaceIfEquipmentBlock').css({display:'none'});
-		}
-	},
-	    
-
 
 	/**
 	 * used to display or not claimer selectBox (according to 'display' bool parameter)
@@ -350,161 +448,5 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 	    
 
 
-	/**
-	 * Used to update filter of 'places/equipments' select2, reset value and last filters
-	 */
-	setParamOnSitesEquipments: function(service_id){
-		if(service_id == null){
-			service_id = $('#requestContactService').data('id');
-		}
-		this.selectListPlacesEquipmentsView.reset();
-		this.selectListPlacesEquipmentsView.resetSearchParams();
-		if(service_id != '' && service_id){
-			this.selectListPlacesEquipmentsView.setSearchParam({field:'service_ids.id', operator:'=', value:service_id});
-		}
-		//if it's an equipment, check too if boolean 'internal_user' is True
-		if($("#btnSelectPlaceEquipment").data('item') == 'equipment'){
-			this.selectListPlacesEquipmentsView.setSearchParam({field:'internal_use', operator:'=', value:true});
-		}
-	},
-	    
-		/** Fill the dropdown select list claimer
-		 * if partner type is reset by user, put boxes to their initial state
-		 * else, remove readonly attribute from claimer infos (name, mail, phone)
-		 * and if partner type has claimers associated, 
-		 * display selectBox for claimers and claimersContact instead of text input
-		 */
-	    
-	setDropdownClaimerType: function(value){
-		var self = this;
-		var deferred = $.Deferred();
-		if(value != '' && value > 0){
-			var claimerType = new app.Models.ClaimerType();
-			claimerType.setId(value);
-			claimerType.fetch().done(function(){
-				var claimerTypeJSON = claimerType.toJSON();
-				self.displayClaimerSelect(claimerTypeJSON.claimers.length > 0);
-		    	self.selectListClaimersView.reset();
-		    	self.setDropdownClaimer(0);
-		    	deferred.resolve();
-			});
-			this.selectListClaimersView.setSearchParam({fields:'type_id.id',operator:'=', value:value},true);
-			
-			this.unlockClaimerInfos();
-
-		}
-		else{
-			this.resetBoxes();
-			deferred.resolve();
-		}
-		return deferred;
-	},
-	    
-	fillDropdownClaimerType: function(e){
-		if(e!=null){
-			e.preventDefault();
-		}
-		var self = this;
-		var value = this.selectListClaimersTypesView.getSelectedItem();
-		this.setDropdownClaimerType(value);
-
-	 },
-
-
-
-	/**
-	 * if partner is filled by user: filter contact selectBox with partner_id 
-	 * 		and if partner has service_id: display it in readonly selectBox and filter patrimony selectBox
-	 * else: remove filters from contact selectBox and patrimony selectBox  and hide service_id selectBox infos
-	 */
-	 setDropdownClaimer: function(value){
-		 var self = this;
-		 var deferred = $.Deferred();
-		 if(value != '' && value > 0){
-			var claimer = new app.Models.Claimer();
-			claimer.setId(value);
-			claimer.fetch({data:{fields:['name','address','service_id']}}).done(function(){
-				var claimerJSON = claimer.toJSON();
-				//if partner has addresses, display first one in contact list
-				if(claimerJSON.address.length > 0){
-					var address = new app.Models.ClaimerContact();
-					address.set('id',claimerJSON.address[0]);
-					address.fetch({data:{fields:['name']}}).done(function(){
-						self.selectListClaimersContactsView.setSelectedItem([address.toJSON().id, address.toJSON().name]);
-						self.setDropdownContact(address.toJSON().id);
-						deferred.resolve();
-					});
-					 
-				}
-				else{
-					deferred.resolve();
-				}
-				 //if partner has service_id, display it in box and apply filter on patirmonyList
-				if(claimerJSON.service_id){
-					self.displayClaimerServiceSelect(true);
-					$('#requestContactService').val(claimerJSON.service_id[1]);
-					$('#requestContactService').data('id', claimerJSON.service_id[0]);
-					
-					self.setParamOnSitesEquipments(claimerJSON.service_id[0]);
-				}
-				else{
-					self.displayClaimerServiceSelect(false);
-				}
-			 });
-			 self.selectListClaimersContactsView.setSearchParam({field:'partner_id.id',operator:'=',value:value},true)
-		 }
-		 else{
-			 this.displayClaimerServiceSelect(false);
-			 this.selectListClaimersContactsView.reset();
-			 this.setDropdownContact(0);
-			 deferred.resolve();
-		 }
-		 return deferred;
-
-	 },
-		 
-	fillDropdownClaimer: function(e){
-		if(e!=null){
-			e.preventDefault();
-		}
-		var self = this;
-		var value = this.selectListClaimersView.getSelectedItem();
-		this.setDropdownClaimer(value);
-	},
-
-
-
-	/**
-	 * if user reset contact value: reset the claimer infos
-	 * else: bubble claimer contact infos to text inputs
-	 */
-	setDropdownContact: function(value){
-		var self = this;
-		var deferred = $.Deferred();
-		if(value != '' && value > 0){
-			var address = new app.Models.ClaimerContact();
-			address.set('id',value);
-			address.fetch({data:{fields:['name','phone','email']}}).done(function(){
-				$('#requestContactPhone').val(address.toJSON().phone.toString());
-				$('#requestContactEmail').val(address.toJSON().email);
-				deferred.resolve();
-			});
-		}
-		else{
-			$('#requestContactInput, #requestContactPhone, #requestContactEmail').val('');
-			deferred.resolve();
-		}
-		return deferred;
-	},
-
-
-
-	fillDropdownContact: function(e) {
-		if(e!=null){
-			e.preventDefault();
-		}
-		value = this.selectListClaimersContactsView.getSelectedItem();
-		this.setDropdownContact(value);
-	},
 
 });

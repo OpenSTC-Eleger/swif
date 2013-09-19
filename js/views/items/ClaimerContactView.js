@@ -38,7 +38,7 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 	serializeContact: function () {
 		var tpl_data = this.model.toJSON()
 		if (!_.isUndefined(this.user)) {
-			$.extend(tpl_data, {user_login: this.user.login})
+			tpl_data = $.extend(tpl_data, {user_login: this.user.get('login')})
 		}
 
 		return tpl_data

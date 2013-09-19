@@ -19,7 +19,7 @@
 					</div>
 				</div>
 
-
+                <% if (_.isNull(user.get('id'))) { %>
 				<!-- Create Associated Account Link -->
 				<div class="form-group">
 					<div class="col-sm-9">
@@ -27,9 +27,21 @@
 							<input type="checkbox" id="createAssociatedAccount"><%= lang.actions.createAssociatedAccount %></label>
 					</div>
 				</div>
+                <% }else{ %>
+                <fieldset>
+                    <legend><%= lang.aboutTheAccount %></legend>
+                    <div class="row">
+                        <div class=" col-sm-3">
+                            <i class="icon-user"></i> <%= _.capitalize(lang.login) %>
+                        </div>
+                        <div class="col-sm-9">
+                            <%= user.get('login')%>
+                        </div>
+                    </div>
+                <% } %>
 
 				<!-- Create associate Account -->
-				<fieldset class="associated-account hide">
+				<fieldset class="associated-account">
 					<legend><%= lang.aboutTheAccount %></legend>
 
 					<!-- Officer login -->

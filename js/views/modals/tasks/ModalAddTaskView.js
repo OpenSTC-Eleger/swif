@@ -12,6 +12,9 @@ app.Views.ModalAddTaskView = app.Views.GenericModalView.extend({
 	events: function() {
 		return _.defaults({
 		'submit #formAddTask'          : 'saveTask',
+		'click .linkRefueling'			: 'accordionRefuelingInputs',
+		'change #taskSelectUsersTeams'	: 'fillOfficerTeam',
+		'click a.linkSelectUsersTeams'	: 'changeSelectListUsersTeams',
 		},
 		app.Views.GenericModalView.prototype.events);
 		
@@ -22,11 +25,15 @@ app.Views.ModalAddTaskView = app.Views.GenericModalView.extend({
 	/** View Initialization
 	 */
 	initialize: function () {
-	    var self = this;
-	    console.log("Daily Add Task view intialization")
+	    console.log("Daily Add Task view intialization");
+	    this.create = false;
 	    this.modal = $(this.el);
-		this.model = new app.Models.Task();
-    	self.render();    
+	    if(_.isUndefined(this.model)){
+			this.model = new app.Models.Task();
+			this.create = true;
+	    }
+	    
+    	this.render();    
     },
 
 
@@ -45,9 +52,19 @@ app.Views.ModalAddTaskView = app.Views.GenericModalView.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			
 			var template = _.template(templateData, {lang: app.lang});
+			var modelJSON = self.model.toJSON();
 			
 			self.modal.html(template);
 			self.modal.modal('show');
+			if(self.create){
+				$(self.modal).find('input').prop('readonly',false);
+				$(self.modal).find('button').prop('disabled',false);
+			}
+			else{
+				$(self.modal).find('input').prop('readonly',true);
+				$(self.modal).find('button').prop('disabled',true);
+			}
+			
 			$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 
 			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
@@ -57,57 +74,91 @@ app.Views.ModalAddTaskView = app.Views.GenericModalView.extend({
 
 			self.advancedSelectBoxCategoriesInterventionAddTaskView.render();
 			//Initialize Vehicle select2 box
-			self.selectListEquipmentsView = new app.Views.AdvancedSelectBoxView({el:'#taskEquipmentAdd', collection:app.Collections.Equipments.prototype});
-			self.selectListEquipmentsView.setSearchParam('|', true);
-			self.selectListEquipmentsView.setSearchParam({field:'technical_vehicle',operator:'=',value:'True'});
-			self.selectListEquipmentsView.setSearchParam({field:'commercial_vehicle',operator:'=',value:'True'});
-			self.selectListEquipmentsView.render();
+			self.selectListVehicleView = new app.Views.AdvancedSelectBoxView({el:'#taskEquipmentAdd', collection:app.Collections.Equipments.prototype});
+			self.selectListVehicleView.render();
+		
+			self.taskEquipmentAddList = new app.Views.AdvancedSelectBoxView({el:'#taskEquipmentAddList', collection:app.Collections.Equipments.prototype});
+			self.taskEquipmentAddList.render();
 			
-			// Initialize equipment draggable list //
-			$('#equipmentsAdd, #equipmentsListAdd').sortable({
-				connectWith: 'ul.sortableEquipmentsList',
-				dropOnEmpty: true,
-				forcePlaceholderSize: true,
-				forceHelperSize: true,
-				placeholder: 'sortablePlaceHold',
-				containment: '.equipmentsDroppableAreaAdd',
-				cursor: 'move',
-				opacity: '.8',
-				revert: 300,
-				receive: function(event, ui){
-				}
-
-			});
+			self.selectListOfficersTeamsView = new app.Views.AdvancedSelectBoxView({el:'#taskSelectUsersTeams', collection: app.Collections.Officers.prototype});
+			self.selectListOfficersTeamsView.render();
 			
-			$('#equipmentsListAdd').empty();
-			$.ajax({
-				url: '/api/open_object/users/' + app.models.user.getUID().toString() + '/available_equipments',
-				success: function(data){
-					// Display the remain materials //
-					var nbRemainMaterials = 0;
-					$('#equipmentsAdd').empty();
-					for(i in data){
-						
-						nbRemainMaterials++;
-						$('#equipmentsListAdd').append('<li id="equipment_'+data[i].id+'"><a href="#"><i class="icon-wrench"></i> '+ data[i].name + '-' + data[i].type + ' </a></li>');
-					}
-					$('#badgeNbEquipmentsAdd').html(nbRemainMaterials);			
-				}
-			});
+			self.initSearchParams();
 			
 			var mStartDate = moment();
 			var mEndDate = moment();
+			if(self.create){
+				//init datetimes values with user timezone
+				$("#startDate").val( mStartDate.format('L') );
+		    	$("#endDate").val( mEndDate.format('L') );
+				var tempStartDate = moment( mStartDate );
+				tempStartDate.hours(8);
+				tempStartDate.minutes(0);
+				$("#startHour").timepicker( 'setTime', tempStartDate.format('LT') );
+				var tempEndDate = moment( mEndDate );
+				tempEndDate.hours(18);
+				tempEndDate.minutes(0);
+				$("#endHour").timepicker('setTime', tempEndDate.format('LT') );
+			}
+			else{
+
+				
+				$('#taskName').val(modelJSON.name);
+				//init datetimes values with user timezone
+				var mStartDate = moment.utc(modelJSON.date_start).tz(app.models.user.getContext().tz);
+				var mEndDate = moment.utc(modelJSON.date_end).tz(app.models.user.getContext().tz);
 			
-			$("#startDate").val( mStartDate.format('L') );
-	    	$("#endDate").val( mEndDate.format('L') );
-			var tempStartDate = moment( mStartDate );
-			tempStartDate.hours(8);
-			tempStartDate.minutes(0);
-			$("#startHour").timepicker( 'setTime', tempStartDate.format('LT') );
-			var tempEndDate = moment( mEndDate );
-			tempEndDate.hours(18);
-			tempEndDate.minutes(0);
-			$("#endHour").timepicker('setTime', tempEndDate.format('LT') );
+				$("#startDate").val( mStartDate.format('L') );
+		    	$("#endDate").val( mEndDate.format('L') );
+		    	$("#startHour").timepicker( 'setTime', mStartDate.format('LT') );
+		    	$("#endHour").timepicker('setTime', mEndDate.format('LT') );
+
+		    	//init AdvancedSelectBox values
+		    	self.advancedSelectBoxCategoriesInterventionAddTaskView.setSelectedItem(modelJSON.category_id);
+		    	//equipments and vehicle values need to be retrieved separately
+		    	if(modelJSON.equipment_ids.length>0){
+			    	var vehicle = new app.Collections.Equipments();
+			    	var filter_ids = {field:'id', operator:'in', value:modelJSON.equipment_ids};
+			    	var filter_type = {field:'categ_id.is_vehicle', operator:'=', value:'True'};
+					var equipment_names = modelJSON.equipment_names.slice();
+
+					//get vehicle, if present, in equipment_ids (first equipment described as vehicle)
+					vehicle.fetch({data:{filters:{0:filter_ids,1:filter_type}}}).done(function(){
+						if(vehicle.models.length>0){
+							var vehicle_id = vehicle.models[0].get('id');
+							var vehicle_names = null;
+							_.each(equipment_names, function(item,i){
+								if(item[0] == vehicle_id){
+									//DEBUG
+									if(vehicle_names != null){
+										console.log('Error: There is more than one vehicle linked to the task');
+									}
+									vehicle_names = equipment_names.splice(i,1)[0];
+								}
+							});
+				    		self.selectListVehicleView.setSelectedItem(vehicle_names);
+						}
+						_.each(equipment_names, function(item,i){
+							equipment_names[i] = {id:item[0],name: item[1]};
+						});
+			    		self.taskEquipmentAddList.setSelectedItems(equipment_names);
+			    	})
+			    	.fail(function(e){
+			    		console.log(e);
+			    	});
+		    	}
+				var itemToLoad = modelJSON.team_id != false ? 'teams' : 'officers';
+				self.updateSelectListUsersTeams(itemToLoad);
+				if(modelJSON.team_id != false){
+			    	self.selectListOfficersTeamsView.setSelectedItem(modelJSON.team_id);
+			    	self.changeOfficerTeam(modelJSON.team_id[0]);
+		    	}
+		    	else{
+		    		self.selectListOfficersTeamsView.setSelectedItem(modelJSON.user_id);
+		    		self.changeOfficerTeam(modelJSON.user_id[0]);
+		    	}
+		    	
+			}
 		});
  
 		return this;
@@ -129,15 +180,15 @@ app.Views.ModalAddTaskView = app.Views.GenericModalView.extend({
 								.add('minutes',$("#endHour").val().split(":")[1] );
 		var planned_hours = mNewDateEnd.diff(mNewDateStart, 'hours', true);
 	
-	    var vehicle =  self.selectListEquipmentsView.getSelectedItem();
-		var equipments = _.map($("#equipmentsAdd").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
+	    var vehicle =  self.selectListVehicleView.getSelectedItem();
+		var equipments = self.taskEquipmentAddList.getSelectedItems(); 
 	    
 	    if(vehicle && vehicle >0 ){
 	    	equipments.push( vehicle );
 	    }
-	     
+	    equipments = [[6,0,equipments]];
+	    
 		var params = {
-			user_id:  app.models.user.getUID(),
 			date_start: mNewDateStart.toDate(),
 			date_end: mNewDateEnd.toDate(),
 			state: app.Models.Task.status.done.key,
@@ -152,6 +203,15 @@ app.Views.ModalAddTaskView = app.Views.GenericModalView.extend({
 			remaining_hours: 0,
 		    report_hours: planned_hours,
 		};
+
+	    if($('#taskSelectUsersTeams').data('item') == 'teams'){
+	    	params.user_id = false;
+	    	params.team_id = this.selectListOfficersTeamsView.getSelectedItem();
+	    }
+	    else{
+	    	params.user_id = this.selectListOfficersTeamsView.getSelectedItem();
+	    	params.team_id = false;
+	    }
 		
 		var task_model = new app.Models.Task(params);
 	
@@ -168,6 +228,89 @@ app.Views.ModalAddTaskView = app.Views.GenericModalView.extend({
 			console.log(e)
 		})
 	},
+	
+	initSearchParams: function(){
+		this.selectListVehicleView.setSearchParam({field:'categ_id.is_vehicle',operator:'=',value:'True'},true);
+		this.selectListVehicleView.setSearchParam({field:'internal_use',operator:'=',value:'True'});
+		
+		this.taskEquipmentAddList.setSearchParam({field:'categ_id.is_equipment', operator:'=', value:'True'}, true);
+		this.taskEquipmentAddList.setSearchParam({field:'internal_use',operator:'=',value:'True'});
+	},
+	
+	/**
+	 * Update filters on equipments and taskCategories according to officer / team selected
+	 */
+	changeOfficerTeam: function(value){
+		var self = this;
+		this.initSearchParams();
+		if(value){
+			var item = $('#taskSelectUsersTeams').data('item');
+			var model = null;
+			if(item == 'teams'){
+				model = new app.Models.Team();
+			}
+			else{
+				model = new app.Models.Officer();
+			}
+			model.set('id',value);
+			model.fetch().done(function(){
+				//base filter for equipments
+				var filterEquipment = {field: 'service_ids', operator:'=?', value:'False'};
+				if(model.get('service_ids').length>0){
+					var filter = {field: 'service_ids.id', operator:'in', value:model.get('service_ids')};
+					self.selectListVehicleView.setSearchParam('|');
+					self.selectListVehicleView.setSearchParam(filter);
+
+					self.taskEquipmentAddList.setSearchParam('|');
+					self.taskEquipmentAddList.setSearchParam(filter);
+
+					self.advancedSelectBoxCategoriesInterventionAddTaskView.setSearchParam(filter,true);
+				}
+				self.selectListVehicleView.setSearchParam(filterEquipment);
+				self.taskEquipmentAddList.setSearchParam(filterEquipment);
+
+			});
+		}
+	},
+	
+	fillOfficerTeam: function(e){
+		this.changeOfficerTeam(this.selectListOfficersTeamsView.getSelectedItem());
+	},
+	
+	updateSelectListUsersTeams: function(itemToLoad){
+		if(itemToLoad == 'officers'){
+			$('#btnSelectUsersTeams > i.iconItem.icon-group').addClass('icon-user').removeClass('icon-group');
+			$('#taskSelectUsersTeams').data('item', 'officers');
+			$('#taskSelectUsersTeams').attr('data-placeholder', app.lang.actions.selectAAgentShort);
+			
+			this.selectListOfficersTeamsView.collection = app.Collections.Officers.prototype;
+			this.selectListOfficersTeamsView.reset();
+			this.selectListOfficersTeamsView.render();
+		}
+		else if(itemToLoad == 'teams'){
+			$('#btnSelectUsersTeams > i.iconItem.icon-user').addClass('icon-group').removeClass('icon-user');
+			$('#taskSelectUsersTeams').data('item', 'teams');
+			$('#taskSelectUsersTeams').attr('data-placeholder', app.lang.actions.selectATeamShort);
+
+			this.selectListOfficersTeamsView.collection = app.Collections.Teams.prototype;
+			this.selectListOfficersTeamsView.reset();
+			this.selectListOfficersTeamsView.render();
+		}
+	},
+	
+	/** Update the <select> list of Users or Teams in the Modal Task Done
+	*/
+	changeSelectListUsersTeams: function(e){
+		e.preventDefault();
+		var link = $(e.target);
+
+		// Retrieve the item to refresh - Users or Teams //
+		if(link.is('a')){ var itemToLoad = link.data('item'); }
+		else{ var itemToLoad = link.parent('a').data('item'); }
+		
+		this.updateSelectListUsersTeams(itemToLoad);
+	},
+	
 	
 	/** Display or Hide Refueling Section (Inputs Km, Oil, Oil prize)
 	*/

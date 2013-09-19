@@ -28,42 +28,43 @@
 
 			<!-- Tabs -->
 			<ul class="nav nav-tabs nav-justified">
-				<li class="active"><a href="#" data-target="#aboutClaimer" data-toggle="tab"><%= lang.aboutTheClaimer %></a></li>
+				<li class="active"><a href="#" data-target="#aboutClaimer" data-toggle="tab"><%= lang.aboutTheRequestClaimer %></a></li>
 				<li><a href="#" data-target="#aboutRequest" data-toggle="tab"><%= lang.aboutTheRequest %></a></li>
 			</ul>
 
 
-			<form id="formRequest" action="#" class="form-horizontal" role="form">
+			<form id="formSaveRequest" action="#" class="form-horizontal" role="form">
 
 				<div class="tab-content">
 			
 				<!-- About the claimer -->
 				<fieldset class="tab-pane fade in active" id="aboutClaimer">
 
-					<!-- Request Partner Type -->
+					<!-- is Citizen ? -->
 					<div class="form-group">
+						<label class="control-label col-sm-3" for="isCitizen"><%= _.capitalize(lang.citizen) %></label>
+						<div class="col-sm-9">
+							<div class="make-switch" id="switchCitizen" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
+								<input id="isCitizen" type="checkbox">
+							</div>
+						</div>
+					</div>
+
+					<!-- Request Partner Type -->
+					<div class="form-group hide-citizen">
 						<label for="requestClaimerType" class="control-label col-sm-3"><%= _.capitalize(lang.type) %>:</label>
 
 						<div class="col-sm-9">
-							<input id="requestClaimerType" class="select2" required data-placeholder="<%= lang.actions.selectAClaimerType %>" />
+							<input id="requestClaimerType" class="select2" data-placeholder="<%= lang.actions.selectAClaimerType %>" />
 						</div>
 					</div>
 
 					<!-- Request Partner -->
-					<div class="form-group" id="requestClaimerBlock">
-						<label for="requestClaimer" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
+					<div class="form-group hide-citizen">
+						<label for="requestClaimer" class="control-label col-sm-3"><%= _.capitalize(lang.organization) %>:</label>
 
 						<div class="col-sm-9">
 							<input id="requestClaimer" class="select2" data-placeholder="<%= lang.actions.selectAClaimer %>" />
-						</div>
-					</div>
-
-					<!-- Request Contact Service -->
-					<div class="form-group" id="requestContactServiceBlock">
-						<label for="requestContactService" class="control-label col-sm-3"><%= _.capitalize(lang.service) %>:</label>
-
-						<div class="col-sm-9">
-							<input id="requestContactService" class="select2" />
 						</div>
 					</div>
 
@@ -71,19 +72,22 @@
 					<!-- Details about the claimer -->
 					<fieldset>
 						<legend><%= lang.claimerDetails %></legend>
-								
+
 						<!-- Request Contact -->
-						<div class="form-group">
+						<div class="form-group hide-citizen">
 							<label for="requestContact" class="control-label col-sm-3"><%= _.capitalize(lang.contact) %>:</label>
 
 							<div class="col-sm-9">
-								<div id="requestContactSelectBlock">
-									<input id="requestContactSelect" class="select2" data-placeholder="<%= lang.actions.selectAContact %>"/>
-								</div>
+								<input id="requestContact" class="select2" data-placeholder="<%= lang.actions.selectAContact %>"/>
+							</div>
+						</div>
 
-								<div id="requestContactInputBlock">
-									<input type="text" id="requestContactInput" class="form-control" name="requestContact"/>
-								</div>
+						<!-- Request Contact Name -->
+						<div class="form-group hide-no-citizen hide-soft">
+							<label for="requestContactName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
+
+							<div class="col-sm-9">
+								 <input type="tel" id="requestContactName" class="form-control" value="" />
 							</div>
 						</div>
 
@@ -92,7 +96,7 @@
 							<label for="requestContactPhone" class="control-label col-sm-3"><%= _.capitalize(lang.phone) %>:</label>
 
 							<div class="col-sm-9">
-								 <input type="tel" id="requestContactPhone" class="form-control" value="<%= request ? request.people_phone :''%>" />
+								 <input type="tel" id="requestContactPhone" class="form-control readonly-no-citizen" readonly value="" />
 							</div>
 						</div>
 
@@ -101,7 +105,7 @@
 							<label for="requestContactEmail" class="control-label col-sm-3"><%= _.capitalize(lang.email) %>:</label>
 
 							<div class="col-sm-9">
-								 <input type="email" id="requestContactEmail" class="form-control" value="<%= request ? request.people_email :''%>" />
+								 <input type="email" id="requestContactEmail" class="form-control readonly-no-citizen" readonly value="" />
 							</div>
 						</div>
 
@@ -114,34 +118,43 @@
 				<!-- About the request -->
 				<fieldset class="tab-pane fade" id="aboutRequest">
 
-
-					<!-- Request Patrimoine -->
+					<!-- Request Label -->
 					<div class="form-group">
-						<label for="requestPlace" class="control-label col-sm-3"><%= _.capitalize(lang.placeOrEquipment) %>:</label>
+						<label for="requestName" class="control-label col-sm-3"><%= _.capitalize(lang.label) %>:</label>
 
 						<div class="col-sm-9">
-							<div class="input-group">
-								<div class="input-group-btn">
+							<input type="text" id="requestName" class="form-control" required />
+						</div>
+					</div>
 
-									<button class="btn btn-default dropdown-toggle" id="btnSelectPlaceEquipment" data-item="place" data-toggle="dropdown"><i class="icon-map-marker icon-fixed-width iconItem"></i>&nbsp; <span class="icon-caret-down"></span></button>
-									<ul class="dropdown-menu">
-										<li><a href="#" class="linkSelectPlaceEquipment" data-item="place"><i class="icon-map-marker icon-fixed-width"></i> <%= lang.place %></a></li>
-										<li><a href="#" class="linkSelectPlaceEquipment" data-item="equipment"><i class="icon-wrench icon-fixed-width"></i> <%= lang.equipment %></a></li>
-									</ul>
-								</div>
-								<input id="requestPlaceEquipment" class="select2" required data-placeholder="<%= lang.actions.selectAPlaceShort %>"/>
+
+					<!-- Place / Equipment -->
+					<div class="form-group">
+						<label class="control-label col-sm-3" for="onEquipment"><%= _.capitalize(lang.placeOrEquipment) %></label>
+						<div class="col-sm-9">
+							<div class="make-switch" id="switchPlaceEquipment" data-on="default" data-on-label="<i class='icon-map-marker icon-large icon-fixed-width'>" data-off-label="<i class='icon-wrench icon-large icon-fixed-width'>" tabindex="0">
+								<input id="onEquipment" type="checkbox" checked>
 							</div>
 						</div>
 					</div>
 
 
-
-					<!-- Request Place (if Equipment) -->
-					<div class="form-group" id="requestPlaceIfEquipmentBlock">
-						<label for="requestPlaceIfEquipment" class="control-label col-sm-3"><%= _.capitalize(lang.location) %>:</label>
+					<!-- Request Equipment -->
+					<div class="form-group hide-no-place hide-soft">
+						<label for="requestEquipment" class="control-label col-sm-3"><%= _.capitalize(lang.equipment) %>:</label>
 		
 						<div class="col-sm-9">
-							<input id="requestPlaceIfEquipment" class="select2" data-placeholder="<%= lang.actions.selectAPlace %>"/>
+							<input id="requestEquipment" class="select2" data-placeholder="<%= lang.actions.selectAnEquipment %>"/>
+						</div>
+					</div>
+
+
+					<!-- Request Place (if Equipment) -->
+					<div class="form-group">
+						<label for="requestPlace" class="control-label col-sm-3"><%= _.capitalize(lang.location) %>:</label>
+		
+						<div class="col-sm-9">
+							<input id="requestPlace" class="select2" data-placeholder="<%= lang.actions.selectAPlace %>"/>
 						</div>
 					</div>
 
@@ -150,7 +163,7 @@
 						<label for="requestPlacePrecision" class="control-label col-sm-3"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
 
 						<div class="col-sm-9">  
-							 <textarea name="requestPlacePrecision" class="form-control" id="requestPlacePrecision" rows="2"><%= request && request.site_details!=false?request.site_details:'' %></textarea>
+							 <textarea  class="form-control" id="requestPlacePrecision" rows="2"></textarea>
 						</div>
 					</div>
 
@@ -163,29 +176,21 @@
 							<input id="requestDetailService" class="select2" required data-placeholder="<%= lang.actions.selectAService %>"/>
 						</div>
 					</div>
-					
-					<!-- Request Name -->
-					<div class="form-group">
-						<label for="requestName" class="control-label col-sm-3"><%= _.capitalize(lang.label) %>:</label>
 
-						<div class="col-sm-9">
-							<input type="text" id="requestName" class="form-control" value="<%= request && request.name? request.name:'' %>" required />
-						</div>
-					</div>
 
 					<!-- Request Description -->
 					<div class="form-group">
 						<label for="requestDescription" class="control-label col-sm-3"><%= _.capitalize(lang.description) %>:</label>
 
 						<div class="col-sm-9">
-							<textarea id="requestDescription" rows="5" class="form-control" required><%= request && request.description? request.description:'' %></textarea>
+							<textarea id="requestDescription" rows="5" class="form-control" required></textarea>
 						</div>
 					</div>
 						
 
 				</fieldset>
 				<!-- / About the request -->
-			
+
 				</div>
 
 			</form>
@@ -195,7 +200,7 @@
 
 
 		<div class="modal-footer">
-			<button type="submit" form="formSavePlace" class="btn btn-primary" 
+			<button type="submit" form="formSaveRequest" class="btn btn-primary" 
 				data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>"
 				<%= (_.isUndefined(loader) ? '' : 'disabled') %>
 			>

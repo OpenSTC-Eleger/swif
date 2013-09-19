@@ -23,8 +23,75 @@ app.Models.Intervention = app.Models.GenericModel.extend({
 			type : 'text'
 		}
 	],
-	
 
+	getId: function(){
+		return this.get('id');
+	},
+
+	getName: function(){
+		return this.get('name');
+	},
+	
+	getDateDeadline: function(type){
+		if(this.get('date_deadline') != false){
+			switch(type){
+				case 'human':	
+					return moment(this.get('date_deadline')).format('LL');
+				break;
+				default:
+					return this.get('date_deadline');
+				break;
+			}
+		}
+		else{
+			return '';
+		}
+	},
+	
+	getPlannedHours: function(type){
+		if(this.get('planned_hours') != false){
+			switch(type){
+				case 'human':
+					return app.Helpers.Main.decimalNumberToTime(this.get('planned_hours'), 'human');
+				break;
+				default:
+					return this.get('planned_hours');
+				break;
+			}
+		}
+		else{
+			return '';
+		}
+	},
+	
+	getEffectiveHours: function(type){
+		if(this.get('effective_hours') != false){
+			switch(type){
+				case 'human':
+					return app.Helpers.Main.decimalNumberToTime(this.get('effective_hours'), 'human');
+				break;
+				default:
+					return this.get('effective_hours');
+				break;
+			}
+		}
+		else{
+			return '';
+		}
+	},
+	
+	getTooltip: function(){
+		return this.get('tooltip');
+	},
+	
+	getProgressRate: function(){
+		return this.get('progress_rate');
+	},
+	
+	getOverPourcent: function(){
+		return this.get('overPourcent');
+	},
+	
 	getState : function() {
 		return this.get('state');
 	},
@@ -37,8 +104,51 @@ app.Models.Intervention = app.Models.GenericModel.extend({
 	},
 	setCancelReason : function(value, silent) {
 		this.set({ cancel_reason : value }, {silent: silent});
-	},  
+	},
+	
+	getSite : function(type) {
+		if(this.get('site1')){
+			switch(type){
+				case 'id': 
+					return this.get('site1')[0];
+				break;
+				default:
+					return _.titleize(this.get('site1')[1].toLowerCase());
+			}
+		}
+	},
+	
+	getEquipment : function(type) {
 
+		if(this.onEquipment()){
+			switch(type){
+				case 'id': 
+					return this.get('equipment_id')[0];
+				break;
+				default:
+					return _.titleize(this.get('equipment_id')[1].toLowerCase());
+			}
+		}
+		else{
+			return false;
+		}
+	},
+	setEquipment : function(value, silent) {
+		this.set({ equipment_id : value }, {silent: silent});
+	},
+	
+	onEquipment: function(){
+		return this.get('has_equipment');
+	},
+
+	getActions: function(){
+		return this.get('actions');
+	},
+	
+	hasActions: function(action){
+		return this.getActions().indexOf(action) > -1;
+	},
+	
 	/** Model Initialization
 	*/
 	initialize: function(){

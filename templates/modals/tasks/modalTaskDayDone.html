@@ -15,67 +15,65 @@
 
 		    <form id="formTaskDone" action="#" class="form-horizontal" role="form">
 			
-				<div>
+				<fieldset>
 					<hr>
 					<div id="timeSpentSection" class="form-group">
-						<label for="eventTimeSpent" class="control-label"><%= lang.spentHours %>:</label>			
-						<div class="input-append bootstrap-timepicker">
-							<input type="text" class="timepicker-default input-mini taskInput" id="eventTimeSpent" value="<%=timeSpentDefault%>">
-							<span class="add-on"><i class="icon-time"></i></span>
+						<label for="eventTimeSpent" class="control-label col-sm-3"><%= lang.spentHours %>:</label>			
+						<div class="input-group form-controls bootstrap-timepicker col-sm-4">
+							<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventTimeSpent" value="<%=timeSpentDefault%>">
+							<span class="input-group-addon"><i class="icon-time"></i></span>
 						</div>
 
 					</div>
 					<!-- Remaining Time -->
-					<div id="remainingTimeSection" class="control-group	">
-						<label for="eventRemainingTime" class="control-label"><%= lang.remainingHours %>:</label>
-						<div class="controls">
-							<div class="input-append bootstrap-timepicker">
-								<input type="text" class="timepicker-default input-mini taskInput" id="eventRemainingTime" value="02:00">
-								<span class="add-on"><i class="icon-time"></i></span>
+					<div id="remainingTimeSection" class="form-group">
+						<label for="eventRemainingTime" class="control-label col-sm-3"><%= lang.remainingHours %>:</label>
+						<div class="input-group form-controls bootstrap-timepicker col-sm-4">
+								<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventRemainingTime" value="02:00">
+								<span class="input-group-addon"><i class="icon-time"></i></span>
+						</div>
+					</div>
+				</fieldset>
+				
+				<!-- Vehicle -->
+				<fieldset>
+					<div class="form-group">
+						<label for="taskEquipmentDone" class="linkRefueling control-label col-sm-3"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
+	
+						<div class="form-controls">
+							<div class="input-group col-sm-9">
+								<span class="input-group-addon linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
+									<i class="icon-tint"></i>
+								</span>
+								<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect taskInput"
+									data-placeholder="<%= lang.actions.selectAVehicle %>"/>
 							</div>
 						</div>
 					</div>
-					<hr>
-				</div>
-				
-				<!-- Vehicle -->
-				<div class="form-group">
-					<label for="taskEquipmentDone" class="control-label"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
-
-					<div class="controls">
-						<!--<div class="input-append">-->
-							<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect taskInput" style="width: 66%" 
-								data-placeholder="<%= lang.actions.selectAVehicle %>"/>
-							<span class="add-on linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
-								<i class="icon-tint"></i>
-							</span>
-						<!--</div>-->
-					</div>
-				</div>
-
+				</fieldset>
 
 				<!-- Refueling Vehicle -->
-				<fieldset class="refueling-vehicle hide">
+				<fieldset class="refueling-vehicle hide-soft">
 					<legend><i class="icon-tint"></i> <%= _.capitalize(lang.oil) %></legend>
 
 					<div class="form-group">
 						<div class="form-inline">
 							<!-- KM -->
-							<div class="span4">
+							<div class="col-sm-4">
 								<label for="equipmentKmDone"><%= _.capitalize(lang.milometer) %>:</label>
-								<input type="number" id="equipmentKmDone" class="equipmentKm input-mini taskInput" placeholder="<%= lang.inKm %>" />
+								<input type="number" id="equipmentKmDone" class="equipmentKm input-mini taskInput form-control" placeholder="<%= lang.inKm %>" />
 							</div>
 
 							<!-- Oil -->
-							<div class="span4">
+							<div class="col-sm-4">
 								<label for="equipmentOilQtityDone"><%= _.capitalize(lang.quantity) %>:</label>
-								<input type="text" id="equipmentOilQtityDone" class="taskInput input-mini" placeholder="<%= lang.inLiter %>" />
+								<input type="text" id="equipmentOilQtityDone" class="taskInput input-mini form-control" placeholder="<%= lang.inLiter %>" />
 							</div>
 
 							<!-- Oil Price -->
-							<div class="span4">
+							<div class="col-sm-4">
 								<label for="equipmentOilPriceDone"><%= _.capitalize(lang.price) %>:</label>
-								<input type="text" id="equipmentOilPriceDone" class="taskInput input-mini" placeholder="<%= lang.inEuro %>" />
+								<input type="text" id="equipmentOilPriceDone" class="taskInput input-mini form-control" placeholder="<%= lang.inEuro %>" />
 							</div>
 						</div>
 					</div>
@@ -85,32 +83,13 @@
 
 				<!-- Equipments -->
 				<fieldset>
-					<legend><i class="icon-wrench"></i> <%= _.capitalize(lang.equipment) %></legend>
-
-					<!-- Select Material -->
-					<div class="row-fluid marginTop equipmentsDroppableAreaDone">
-						
-						<div class="span6">
-							<div class="widget-title">
-								<h4 class="noMarginTop">Utilisé <span class="badge pull-right"></span></h4>
-							</div>
-			
-							<ul id="equipmentsDone" class="sortableEquipmentsList sortable unstyled nav nav-list drop-area">
-			
-							</ul>
+					<div class="form-group">
+						<label for="equipmentListDone" class="control-label col-sm-3"><%= _.capitalize(lang.equipment) %>:</label>
+						<div class="form-controls col-sm-9">
+							<input id="taskEquipmentListDone" class="select2 taskEquipment taskSelect taskInput"
+								data-placeholder="<%= lang.actions.selectEquipments %>" data-multiple="multiple"/>
 						</div>
-			
-						<div class="span6">
-							<div class="widget-title">
-								<h4 class="noMarginTop">Disponible <span class="badge pull-right" id="badgeNbEquipmentsDone"></span> </h4>
-							</div>
-			
-							<ul id="equipmentsListDone" class="sortableEquipmentsList sortable unstyled nav nav-list">
-							</ul>
-						</div>
-			
 					</div>
-
 				</fieldset>
 
 		    </form>

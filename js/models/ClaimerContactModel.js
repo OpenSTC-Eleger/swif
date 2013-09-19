@@ -9,4 +9,5 @@ app.Models.ClaimerContact = app.Models.GenericModel.extend({
 	getInformations: function () {
 		return this.getName();
 	}
+
 });
