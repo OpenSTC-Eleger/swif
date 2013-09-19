@@ -110,7 +110,6 @@ app.Views.EventsListView = Backbone.View.extend({
 		app.router.navigate(this.urlBuilder(), {trigger: false, replace: false});
 		//Add new url in pagination for intervention panel 
 		app.views.planningInterListView.paginationRender();
-		//app.loader('hide');
 	},
 
 	/**
@@ -121,7 +120,6 @@ app.Views.EventsListView = Backbone.View.extend({
 		app.router.navigate(this.urlBuilder(), {trigger: false, replace: false});
 		//Add new url in pagination for intervention panel 
 		app.views.planningInterListView.paginationRender();
-		//app.loader('hide');
 	},
 	
 	/**

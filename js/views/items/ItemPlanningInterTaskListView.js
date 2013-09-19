@@ -31,8 +31,7 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 		.done(function(e){
 			self.render();	
 		})
-		app.Helpers.Main.highlight($(this.el))
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.interventionUpdateOk);
+		app.Helpers.Main.highlight($(this.el));
 	},
 
 	/** Display the view
