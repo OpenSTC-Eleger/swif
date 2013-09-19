@@ -269,10 +269,13 @@ app.Views.EventsListView = Backbone.View.extend({
 	    		fetchParams.data.filters    = app.objectifyFilters(domain),
 	    		self.collection = new app.Collections.Tasks();
 	    		//Get tasks for domain
-				self.collection.fetch(fetchParams).done(function(data){
+				self.collection.fetch(fetchParams).done(function(data){					
 					//Transforms tasks in events for fullcalendar
 					self.events = self.fetchEvents();	
+					self.collection.off();
 					self.listenTo(self.collection, 'change', self.refreshEvents);
+					self.listenTo(self.collection, 'remove', self.refreshEvents);
+					
 					self.initPrintView();
 					//Display events on calendar					
 					callback(self.events);
@@ -375,7 +378,7 @@ app.Views.EventsListView = Backbone.View.extend({
     	    eventClick: function(fcEvent, jsEvent, view) {
     	    	var taskModel = self.collection.get(fcEvent.id);
     	    	var taskModelJSON = taskModel.toJSON();
-    	    	if( taskModelJSON.project_id!=false );
+    	    	if( taskModelJSON.project_id!=false )
     	    		interModel = self.collections.interventions.get(taskModelJSON.project_id[0]); 
     			app.views.modalUnplanTaskView = new app.Views.ModalUnplanTaskView({
     				el    		: '#modalUnplanTask',

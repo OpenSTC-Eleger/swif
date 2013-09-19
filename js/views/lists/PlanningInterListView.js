@@ -165,7 +165,6 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		
 		this.filterValue = this.options.filter;
 		
-		app.router.navigate(this.urlBuilder(), {trigger: false, replace: true});
 		app.views.planning.partialRender();
 		app.views.paginationView.render();
 
@@ -186,8 +185,7 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		var link = $(e.target);
 		
 		this.options.page = _(link.attr('href')).strRightBack('/page');		
-		
-		//app.router.navigate($(e.target).attr('href'), {trigger: false, replace: true});		
+			
 		app.views.planning.partialRender();		
 	},
 

@@ -56,39 +56,64 @@ app.Views.ModalUnplanTaskView =  app.Views.GenericModalView.extend({
 	},
 
 
-
 	/** Remove the Task from the Calendar
 	*/
 	removeTaskFromSchedule: function(e){
 
-		var self = this;
-
+		var self = this;		
 		// Set the button in loading State //
 		$(e.target).button('loading');
 		
-		params = {
-			state     : app.Models.Task.status.draft.key,
-			user_id   : false,
-			team_id   : false,
-			date_end  : false,
-			date_start: false,
-		};
-
-		this.model.save(params, {patch: true, silent: false})
-			.done(function(data) {				
-				$.when(  self.model.fetch({ data : {fields : self.model.fields} }) )
-				.done(function(e){
-					self.modal.modal('hide');
+		//Template task unplanned
+		if(	!_.isUndefined(this.interModel) && 
+				( app.Models.Intervention.status[this.interModel.toJSON().state].key == 
+				app.Models.Intervention.status.template.key ) )
+		{
+			//remove template task
+			this.model.destroy({wait: true})
+				.done(function(data){
+					//re-fetch intervention
+					$.when(  self.interModel.fetch() )
+						.done(function(e){
+							self.modal.modal('hide');
+						})
 				})
-				.fail(function(e){
+				.fail(function(){
 					console.error(e);
-				});
-				
-			})
-			.always(function(){
-				// Reset the button state //
-				$(e.target).button('reset');
-			})
+				})
+				.always(function(){
+					// Reset the button state //
+					$(e.target).button('reset');
+				})
+		} 
+		//Normal task unplanned
+		else 
+		{
+			//Set Task fields 
+			params = {
+				state     : app.Models.Task.status.draft.key,
+				user_id   : false,
+				team_id   : false,
+				date_end  : false,
+				date_start: false,
+			};
+			//Update task
+			this.model.save(params, {patch: true, silent: false})
+				.done(function(data) {				
+					$.when(  self.model.fetch({ data : {fields : self.model.fields} } ), self.interModel.fetch() )
+					.done(function(e){
+						self.modal.modal('hide');
+					})
+					.fail(function(e){
+						console.error(e);
+					});
+					
+				})
+				.always(function(){
+					// Reset the button state //
+					$(e.target).button('reset');
+				})
+		}
 	}
 
 

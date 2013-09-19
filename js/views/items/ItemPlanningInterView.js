@@ -25,7 +25,7 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 		this.model.off();
 
 		// When the model are updated //
-		this.listenTo(this.model, 'change', this.change);
+		this.listenTo(this.model, 'change', this.change);		
 	},
 
 	/** When the model ara updated //
