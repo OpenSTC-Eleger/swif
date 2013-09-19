@@ -13,7 +13,7 @@ app.Views.ItemTaskDayView = Backbone.View.extend({
 		'click a.taskNotDone' 			: 'taskNotDone',
 		'click .buttonTaskDayTimeSpent'		: 'setModalTimeSpent',
 		'click .buttonTaskDayDone'			: 'setModalTaskDone',
-		
+		'click .updateTask' 				: 'displayModalUpdateTask',
 	},
 
 
@@ -38,14 +38,17 @@ app.Views.ItemTaskDayView = Backbone.View.extend({
 	render : function() {
 		var self = this;
 
-
+		var date_start = moment.utc(this.model.toJSON().date_start).tz(app.models.user.getContext().tz);
+		var date_end = moment.utc(this.model.toJSON().date_end).tz(app.models.user.getContext().tz);
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 		 
 			var template = _.template(templateData, {
 				lang                   : app.lang,
-				task					: self.model.toJSON()
+				task					: self.model.toJSON(),
+				date_start				: date_start,
+				date_end				: date_end
 			});
 			$(self.el).attr('id', self.model.toJSON().id);
 			$(self.el).html(template);
@@ -92,6 +95,10 @@ app.Views.ItemTaskDayView = Backbone.View.extend({
 		e.preventDefault();
 		new app.Views.ModalTaskDayDoneView({el:'#modalTaskDone', model: this.model, taskDone: true, tasks: this.options.tasks});
 	},
-
+	
+	displayModalUpdateTask: function(e){
+		e.preventDefault();
+		new app.Views.ModalAddTaskView({el:'#modalAddTask', model:this.model});
+	},
 
 });

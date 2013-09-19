@@ -96,12 +96,14 @@ app.Views.ModalTaskDayDoneView = app.Views.GenericModalView.extend({
 		var self = this;
 
 		var vehicule =  this.selectListVehicleView.getSelectedItem();
-		var equipments = [[6,0,this.selectListEquipmentsDoneView.getSelectedItems()]]; 
+		var equipments = this.selectListEquipmentsDoneView.getSelectedItems(); 
 		
 		if(vehicule >0 ){
 			equipments.push( vehicule );
 		}
-
+		
+		equipments = [[6,0,equipments]];
+		
 		if($('#remainingTimeSection').is(':visible')){
 			var duration = $("#eventRemainingTime").val().split(":");
 			var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
