@@ -41,8 +41,10 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 	add: function(model){
 		var itemRequestView = new app.Views.ItemRequestView({ model: model });
 		$('#rows-items').prepend(itemRequestView.render().el);
-		
 		app.Helpers.Main.highlight($(itemRequestView.el))
+
+		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.requestCreateOk);
+		this.partialRender();
 	},
 
 
@@ -120,6 +122,7 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 
 		this.collection.specialCount().done(function(){
 			$('#badgeActions').html(self.collection.specialCpt);
+			$('#bagdeCpt').html(self.collection.cpt);
 		});
 	},
 
@@ -174,9 +177,9 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 	modalCreateRequest: function(e){
 		e.preventDefault();
 
-		console.log('bouùmmmmmmmmmmmmmmmmmmm');
+		console.log('Affichage de la modal ');
 
-		new app.Views.ModalRequestView({
+		app.views.modalRequestView = new app.Views.ModalRequestView({
 			el : '#modalSaveRequest'
 		});
 	},

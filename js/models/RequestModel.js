@@ -4,7 +4,7 @@
 app.Models.Request = app.Models.GenericModel.extend({
 
 
-	fields     : ['id', 'name', 'actions', 'tooltip', 'create_date', 'create_uid', 'date_deadline', 'description', 'manager_id', 'note', 'partner_address', 'partner_id', 'partner_phone', 'partner_service_id', 'partner_type', 'partner_type_code', 'people_name', 'people_email', 'people_phone', 'refusal_reason', 'service_id', 'site1', 'site_details', 'state', 'intervention_assignement_id', 'has_equipment', 'equipment_id'],
+	fields     : ['id', 'name', 'actions', 'tooltip', 'create_date', 'create_uid', 'date_deadline', 'description', 'manager_id', 'note', 'partner_address', 'partner_id', 'partner_phone', 'partner_service_id', 'partner_type', 'partner_type_code', 'people_name', 'people_email', 'people_phone', 'refusal_reason', 'service_id', 'site1', 'site_details', 'state', 'intervention_assignement_id', 'has_equipment', 'equipment_id', 'is_citizen'],
 
 	urlRoot    : '/api/openstc/intervention_requests',
 
@@ -105,8 +105,8 @@ app.Models.Request = app.Models.GenericModel.extend({
 				return name;
 		}
 	},
-	setService : function(value) {
-		this.set({ service_id : value });
+	setService : function(value, silent) {
+		this.set({ service_id : value }, {silent: silent});
 	},
 
 
@@ -114,21 +114,39 @@ app.Models.Request = app.Models.GenericModel.extend({
 	getClaimer: function(type){
 		var claimer = {}
 
-		claimer.type = this.get('partner_type')[1]
+		// Request From Citizen //
+		if(this.fromCitizen()){
 
-		// Check if the claimer is a partner //
-		if(this.get('partner_id')){
-			claimer.id =  this.get('partner_id')[0];
-			claimer.name = _.capitalize(this.get('partner_id')[1].toLowerCase());
-
-			claimer.person = _.capitalize(this.get('partner_address')[1]);
+			claimer.type = app.lang.citizen;
+			claimer.name = this.getCitizenName();
 		}
-		// It's an Administré //
 		else{
-			claimer.name = _.capitalize(this.get('people_name'));
+
+			if(!_.isUndefined(this.get('partner_type'))){
+				claimer.type = this.get('partner_type')[1];	
+			}
+			if(!_.isUndefined(this.get('partner_id')) || this.get('partner_id') != false){
+
+				claimer.id =  this.get('partner_id')[0];
+				claimer.name = _.capitalize(this.get('partner_id')[1]);
+			}
+			if(!_.isUndefined(this.get('partner_address'))){
+				claimer.person = _.capitalize(this.get('partner_address')[1]);
+			}
 		}
 
 		return claimer;
+
+	},
+
+	setClaimerType: function(value, silent){
+		this.set({ partner_type : value }, {silent: silent});
+	},
+	setClaimer: function(value, silent){
+		this.set({ partner_id : value }, {silent: silent});
+	},
+	setClaimerContact: function(value, silent){
+		this.set({ partner_address : value }, {silent: silent});
 	},
 
 	getManager: function(type){
@@ -165,6 +183,52 @@ app.Models.Request = app.Models.GenericModel.extend({
 	onEquipment: function(){
 		return this.get('has_equipment');
 	},
+	setOnEquipment : function(value, silent) {
+		this.set({ has_equipment : value }, {silent: silent});
+	},
+
+	fromCitizen: function(){
+		return this.get('is_citizen');
+	},
+	setFromCitizen: function(value, silent){
+		this.set({ is_citizen : value }, {silent: silent});
+	},
+
+
+	getCitizenName: function(){
+		if(this.fromCitizen()){
+			return this.get('people_name');
+		}
+	},
+	setCitizenName: function(value, silent){
+		this.set({ people_name : value }, {silent: silent});
+	},
+
+	getCitizenPhone: function(){
+		if(this.fromCitizen()){
+			return this.get('people_phone');
+		}
+	},
+	setCitizenPhone: function(value, silent){
+		this.set({ people_phone : value }, {silent: silent});
+	},
+	getCitizenEmail: function(){
+		if(this.fromCitizen()){
+			return this.get('people_email');
+		}
+	},
+	setCitizenEmail: function(value, silent){
+		this.set({ people_email : value }, {silent: silent});
+	},
+
+
+	getPlaceDetails: function(){
+		return this.get('site_details');
+	},
+	setPlaceDetails: function(value, silent) {
+		this.set({ site_details : value }, {silent: silent});
+	},
+
 
 	getInformations: function(){
 		return this.get('tooltip');

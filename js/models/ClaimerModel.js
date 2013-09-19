@@ -38,17 +38,47 @@ app.Models.Claimer = app.Models.GenericModel.extend({
 		this.set({ type_id : value });
 	}, 
 
-	getTechnicalServiceId : function() {
-		return this.get('technical_service_id');
+	getTechnicalService : function(type) {
+		if(this.get('technical_service_id')){
+
+			switch (type){ 
+				case 'id': 
+					return this.get('technical_service_id')[0];
+				break;
+				case 'json':
+					return {id: this.get('technical_service_id')[0], name: this.get('technical_service_id')[1]};
+				break;
+				default:
+					return this.get('technical_service_id')[1];
+			}
+		}
+		else{
+			return false;
+		}
 	},
-	setTechnicalServiceId : function(value) {
+	setTechnicalService : function(value) {
 		this.set({ technical_service_id : value });
 	}, 
 	
-	getTechnicalSiteId : function() {
-		return this.get('technical_site_id');
+	getTechnicalSite : function(type) {
+		if(this.get('technical_site_id')){
+
+			switch (type){ 
+				case 'id': 
+					return this.get('technical_site_id')[0];
+				break;
+				case 'json':
+					return {id: this.get('technical_site_id')[0], name: this.get('technical_site_id')[1]};
+				break;
+				default:
+					return this.get('technical_site_id')[1];
+			}
+		}
+		else{
+			return false;
+		}
 	},
-	setTechnicalSiteId : function(value) {
+	setTechnicalSite : function(value) {
 		this.set({ technical_site_id : value });
 	},
 
