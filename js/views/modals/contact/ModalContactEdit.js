@@ -74,7 +74,7 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 		setAttribute('mobile', readFormValue('contactMobile'));
 		setAttribute('street', readFormValue('addressStreet'));
 		setAttribute('city', readFormValue('addressCity'));
-		setAttribute('zip', readFormValue('addressCity'));
+		setAttribute('zip', readFormValue('addressZip'));
 
 		if( $('#createAssociatedAccount').is(':checked') ){
 			if(readFormValue('userLogin') == '' || readFormValue('userPassword') == ''){
@@ -141,7 +141,7 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 	createContact: function () {
 		var self = this;
 		if (!_.isUndefined(self.user.id)) {
-			self.set('user_id', this.user.id)
+			self.model.set('user_id', this.user.id)
 		}
 		return self.model.save().
 			done( function (data) {
@@ -157,11 +157,19 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 
 	persistUser: function () {
 		var self = this;
-					if (self.user.isNew()) {
-						return self.createUser()
-					} else if (self.user.changedAttributes()) {
-						return self.updateUser()
-					}
+		if( $('#createAssociatedAccount').is(':checked') ) {
+			if (self.user.isNew()) {
+				return self.createUser()
+			} else if (self.user.changedAttributes()) {
+				return self.updateUser()
+			}
+		} else {
+			var fkdfd = $.Deferred();
+			fkdfd.resolve();
+			return fkdfd;
+		}
+
+
 	},
 
 	createUser: function () {
