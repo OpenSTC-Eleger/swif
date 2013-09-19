@@ -99,7 +99,9 @@ app.Views.ModalInterventionAddTaskView = app.Views.GenericModalView.extend({
 		 this.model.save(params, {silent: true}).done(function(data){
 			 self.model.setId(data);
 			 self.model.fetch().done(function(){
-				 //self.options.tasks.add(self.model);
+				 if(!_.isUndefined(self.options.tasks)){
+					 self.options.tasks.add(self.model);
+				 }
 			 });
 			 //force re-calculation asynchronously of intervention to update functional fields (planned_hours for example)
 			 self.options.inter.fetch();
