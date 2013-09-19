@@ -33,10 +33,12 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 			var template = _.template(templateData, {
 				lang  : app.lang,
 				contact : self.model.toJSON(),
+				user: self.user,
 				loader: loader
 			});
  			self.modal.html(template);
 			self.modal.modal('show');
+			self.accordionAssociatedAccount();
 		});
 		return this;
 	},
@@ -74,7 +76,7 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 		setAttribute('mobile', readFormValue('contactMobile'));
 		setAttribute('street', readFormValue('addressStreet'));
 		setAttribute('city', readFormValue('addressCity'));
-		setAttribute('zip', readFormValue('addressCity'));
+		setAttribute('zip', readFormValue('addressZip'));
 
 		if( $('#createAssociatedAccount').is(':checked') ){
 			if(readFormValue('userLogin') == '' || readFormValue('userPassword') == ''){
@@ -141,7 +143,7 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 	createContact: function () {
 		var self = this;
 		if (!_.isUndefined(self.user.id)) {
-			self.set('user_id', this.user.id)
+			self.model.set('user_id', this.user.id)
 		}
 		return self.model.save().
 			done( function (data) {
@@ -157,11 +159,19 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 
 	persistUser: function () {
 		var self = this;
-					if (self.user.isNew()) {
-						return self.createUser()
-					} else if (self.user.changedAttributes()) {
-						return self.updateUser()
-					}
+		if( $('#createAssociatedAccount').is(':checked') ) {
+			if (self.user.isNew()) {
+				return self.createUser()
+			} else if (self.user.changedAttributes()) {
+				return self.updateUser()
+			}
+		} else {
+			var fkdfd = $.Deferred();
+			fkdfd.resolve();
+			return fkdfd;
+		}
+
+
 	},
 
 	createUser: function () {
@@ -177,7 +187,12 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 	},
 
 	accordionAssociatedAccount: function(event){
-		event.preventDefault();
+		if (!_.isUndefined(event)) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+
+		console.log('checked event')
 
 		// Toggle Slide Create associated task section //
 		$('fieldset.associated-account').stop().slideToggle(function(){
@@ -197,6 +212,8 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 		} else {
 			return false
 		}
-	}
+	},
+
+
 
 });

@@ -58,57 +58,31 @@ app.Views.ModalTaskDayDoneView = app.Views.GenericModalView.extend({
 				$('#remainingTimeSection').hide();
 			}
 			
-			$('#equipmentsDone, #equipmentsListDone').sortable({
-				connectWith: 'ul.sortableEquipmentsList',
-				dropOnEmpty: true,
-				forcePlaceholderSize: true,
-				forceHelperSize: true,
-				placeholder: 'sortablePlaceHold',
-				containment: '.equipmentsDroppableAreaDone',
-				cursor: 'move',
-				opacity: '.8',
-				revert: 300,
-				receive: function(event, ui){
-				}
-
-			});
-			
-//			// Filter Equipment by service on intervention's task //
+			// Filter Equipments / Vehicle by service of task's intervention
 			var task_id = self.selectedTaskJSON.id;
 
 			var interAssociated = new app.Models.Intervention();
-				interAssociated.setId(self.selectedTaskJSON.project_id[0]);
-				interAssociated.fetch({silent: true}).done(function(){
-				app.views.selectListEquipmentsView = new app.Views.AdvancedSelectBoxView({el:'#taskEquipmentDone', collection:app.Collections.Equipments.prototype});
+			interAssociated.setId(self.selectedTaskJSON.project_id[0]);
+			interAssociated.fetch({silent: true}).done(function(){
 				
-				app.views.selectListEquipmentsView.setSearchParam('&', true);
-				app.views.selectListEquipmentsView.setSearchParam('|');
-				app.views.selectListEquipmentsView.setSearchParam({field:'technical_vehicle',operator:'=',value:'True'});
-				app.views.selectListEquipmentsView.setSearchParam({field:'commercial_vehicle',operator:'=',value:'True'});
-				app.views.selectListEquipmentsView.setSearchParam({field:'service_ids.id',operator:'=',value:interAssociated.toJSON().service_id[0]});
+				self.selectListVehicleView = new app.Views.AdvancedSelectBoxView({el:'#taskEquipmentDone', collection:app.Collections.Equipments.prototype});
+				self.selectListVehicleView.setSearchParam({field:'categ_id.is_vehicle',operator:'=',value:'True'},true);
+				self.selectListVehicleView.setSearchParam({field:'internal_use',operator:'=',value:'True'});
+				self.selectListVehicleView.setSearchParam('|');
+				self.selectListVehicleView.setSearchParam({field:'service_ids',operator:'=?',value:'False'});
+				self.selectListVehicleView.setSearchParam({field:'service_ids.id',operator:'=',value:interAssociated.toJSON().service_id[0]});
 				
-				app.views.selectListEquipmentsView.render();
-			});
+				self.selectListVehicleView.render();
 			
+				self.selectListEquipmentsDoneView = new app.Views.AdvancedSelectBoxView({el:'#taskEquipmentListDone', collection:app.Collections.Equipments.prototype});
+				self.selectListEquipmentsDoneView.setSearchParam({field:'categ_id.is_equipment', operator:'=', value:'True'}, true);
+				self.selectListEquipmentsDoneView.setSearchParam({field:'internal_use',operator:'=',value:'True'});
+				self.selectListEquipmentsDoneView.setSearchParam('|');
+				self.selectListEquipmentsDoneView.setSearchParam({field:'service_ids',operator:'=?',value: 'False'});
+				self.selectListEquipmentsDoneView.setSearchParam({field:'service_ids.id',operator:'=',value:interAssociated.toJSON().service_id[0]});
 			
-			
-			// Search only materials //
-			$('#equipmentsListDone').empty();
-			$.ajax({
-				url: '/api/openstc/tasks/' + task_id.toString() + '/available_equipments',
-				success: function(data){
-					// Display the remain materials //
-					var nbRemainMaterials = 0;
-					$('#equipmentsListDone').empty();
-					for(i in data){
-						
-						nbRemainMaterials++;
-						$('#equipmentsListDone').append('<li id="equipment_'+data[i].id+'"><a href="#"><i class="icon-wrench"></i> '+ data[i].name + '-' + data[i].type + ' </a></li>');
-					}
-					$('#badgeNbEquipmentsDone').html(nbRemainMaterials);			
-				}
-			});
-			
+				self.selectListEquipmentsDoneView.render();
+			});		
 		});
  
 		return this;
@@ -121,13 +95,15 @@ app.Views.ModalTaskDayDoneView = app.Views.GenericModalView.extend({
 		e.preventDefault();
 		var self = this;
 
-		var vehicule =  app.views.selectListEquipmentsView.getSelectedItem();
-		var equipments = _.map($("#equipmentsDone").sortable('toArray'), function(equipment){ return _(_(equipment).strRightBack('_')).toNumber(); }); 
+		var vehicule =  this.selectListVehicleView.getSelectedItem();
+		var equipments = this.selectListEquipmentsDoneView.getSelectedItems(); 
 		
 		if(vehicule >0 ){
 			equipments.push( vehicule );
 		}
-
+		
+		equipments = [[6,0,equipments]];
+		
 		if($('#remainingTimeSection').is(':visible')){
 			var duration = $("#eventRemainingTime").val().split(":");
 			var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });

@@ -57,11 +57,13 @@ app.Views.ModalCancelInterventionView = app.Views.GenericModalView.extend({
 		var self = this;
 		//cancel the intervention and fetch all tasks associated to display there new state
 		this.model.cancel($('#motifCancel').val()).done(function(data){
-			_.each(self.model.toJSON().tasks, function(task_id, i){
-				var task = self.options.tasks.get(task_id);
-				task.fetch();
-				self.modal.modal('hide');
-			});
+			self.modal.modal('hide');
+			if(!_.isUndefined(self.options.tasks)){
+				_.each(self.model.toJSON().tasks, function(taskId, i){
+					var task = self.options.tasks.get(taskId);
+					task.fetch();
+				});
+			}
 		});
 	},
 

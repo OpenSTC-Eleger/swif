@@ -19,6 +19,7 @@ app.Views.EventsListView = Backbone.View.extend({
 	},
 	
 	urlParameters : ['officer','team','year','week'],
+	
 	/**
 	 * Initialize calendar view
 	 */
@@ -96,11 +97,6 @@ app.Views.EventsListView = Backbone.View.extend({
 			}
 			else
 				$("#listAgents li:first").addClass('active');
-
-    		// Go to week selected	
-        	//var momentDate = moment().year(self.options.year).week(self.options.week);			
-			//self.calendar.fullCalendar( 'gotoDate', momentDate.year(), momentDate.month(), momentDate.date());			
-        	
 		});
 
 		return this;
@@ -112,6 +108,7 @@ app.Views.EventsListView = Backbone.View.extend({
 	nextDate: function(e) {
 		this.options.week = String(parseInt(this.options.week)+1);
 		app.router.navigate(this.urlBuilder(), {trigger: false, replace: false});
+		//Add new url in pagination for intervention panel 
 		app.views.planningInterListView.paginationRender();
 	},
 
@@ -121,6 +118,7 @@ app.Views.EventsListView = Backbone.View.extend({
 	previousDate: function(e) {
 		this.options.week = String(parseInt(this.options.week)-1);
 		app.router.navigate(this.urlBuilder(), {trigger: false, replace: false});
+		//Add new url in pagination for intervention panel 
 		app.views.planningInterListView.paginationRender();
 	},
 	
@@ -148,6 +146,7 @@ app.Views.EventsListView = Backbone.View.extend({
 		this.initialize();
 		this.render();
 		
+		//Add new url in pagination for intervention panel 
 		app.views.planningInterListView.paginationRender();
 		
 	},
@@ -240,7 +239,6 @@ app.Views.EventsListView = Backbone.View.extend({
 					silent : true,
 					data   : {}
 				};
-
     				
     			var domain = [
     			              	{ 'field' : 'date_start', 'operator' : '>', 'value' : moment(start).format('YYYY-MM-DD HH:mm:ss') },
@@ -271,17 +269,18 @@ app.Views.EventsListView = Backbone.View.extend({
 	    		fetchParams.data.filters    = app.objectifyFilters(domain),
 	    		self.collection = new app.Collections.Tasks();
 	    		//Get tasks for domain
-				self.collection.fetch(fetchParams).done(function(data){
+				self.collection.fetch(fetchParams).done(function(data){					
 					//Transforms tasks in events for fullcalendar
 					self.events = self.fetchEvents();	
+					self.collection.off();
 					self.listenTo(self.collection, 'change', self.refreshEvents);
+					self.listenTo(self.collection, 'remove', self.refreshEvents);
+					
 					self.initPrintView();
 					//Display events on calendar					
 					callback(self.events);
 				});
-			},
-
-			
+			},			
 
 			/**
 			 * Open leave time modal
@@ -299,7 +298,6 @@ app.Views.EventsListView = Backbone.View.extend({
     			});
 
 			},
-
 
 			/** When a event is Drop on the calendar : plan in backend
 			*/
@@ -335,7 +333,9 @@ app.Views.EventsListView = Backbone.View.extend({
 					})
 			},
 
-			//Drop event from time slot to another
+			/**
+			 * Drop event from time slot to another
+			 */
 			eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
 				var model = self.collection.get(event.id)
 			
@@ -376,10 +376,14 @@ app.Views.EventsListView = Backbone.View.extend({
 			/** Task is click on the calendar : display unplan task modal
     	    */
     	    eventClick: function(fcEvent, jsEvent, view) {
+    	    	var taskModel = self.collection.get(fcEvent.id);
+    	    	var taskModelJSON = taskModel.toJSON();
+    	    	if( taskModelJSON.project_id!=false )
+    	    		interModel = self.collections.interventions.get(taskModelJSON.project_id[0]); 
     			app.views.modalUnplanTaskView = new app.Views.ModalUnplanTaskView({
     				el    		: '#modalUnplanTask',
-    				model 	    : self.collection.get(fcEvent.id),
-    				panelModel 	: self.collections.tasks.get(fcEvent.id)
+    				model 	    : taskModel,
+    				interModel	: interModel,
     			});
     		},
 		});
@@ -470,14 +474,6 @@ app.Views.EventsListView = Backbone.View.extend({
 	refreshEvents: function(model){
 		$(this.divCalendar).fullCalendar( 'refetchEvents' )
 		app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.taskUpdateOk);
-	},
-
-	/**
-	 * ????
-	 */
-	eventDropOrResize: function(fcEvent) {
-		// Lookup the model that has the ID of the event and update its attributes
-		this.collection.get(fcEvent.id).save({start: fcEvent.start, end: fcEvent.end});            
 	},
 
 });

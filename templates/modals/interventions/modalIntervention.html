@@ -40,8 +40,7 @@
 										<input type="checkbox" id="isTemplate" />
 									</label>
 								</div>
-							</div>
-							
+							</div>							
 			
 							<!-- intervention Description -->
 							<div class="form-group">
@@ -68,11 +67,60 @@
 									</div>
 								</div>
 							</div>
+		
 			
-					</fieldset>
-				
-			</form>
+							<!-- intervention Contact Service -->
+							<div class="form-group">
+								<label for="interventionDetailService" class="control-label col-sm-3" ><%= lang.serviceConcerned %>:</label>
+			
+								<div class="col-sm-9">
+									<input id="interventionDetailService" class="select2" required data-placeholder="<%= lang.actions.selectAService %>"/>
+								</div>
+							</div>
 
+					<!-- intervention Patrimoine -->
+	                <div class="form-group">
+	                    <label for="interventionPlaceEquipment" class="control-label col-sm-3"><%= _.capitalize(lang.placeOrEquipment) %>:</label>
+	
+	                    <div class="form-controls">
+	                    	<div class="col-sm-9 input-group">
+								<div class="input-group-btn">
+									<button class="btn dropdown-toggle" id="btnSelectPlaceEquipment" data-item="place" data-toggle="dropdown"><i class="icon-map-marker icon-fixed-width iconItem"></i>&nbsp; <span class="icon-caret-down"></span></button>
+									<ul class="dropdown-menu">
+										<li><a href="#" class="linkSelectPlaceEquipment" data-item="place"><i class="icon-map-marker icon-fixed-width"></i> <%= lang.place %></a></li>
+										<li><a href="#" class="linkSelectPlaceEquipment" data-item="equipment"><i class="icon-wrench icon-fixed-width"></i> <%= lang.equipment %></a></li>
+									</ul>
+								</div>
+									<input id="interventionPlaceEquipment" class="select2"
+									required data-placeholder="<%= lang.actions.selectAPlaceShort %>"/>
+		                        <span class="help-inline"></span>
+		                    </div>
+	                    </div>
+	                </div>
+	
+		            <!-- Request Place (if Equipment) -->
+		            <div class="form-group" id="interventionPlaceIfEquipmentBlock" style="display: none;">
+		                <label for="interventionPlaceIfEquipment" class="control-label col-sm-3"><%= _.capitalize(lang.location) %>:</label>
+		
+		                <div class="form-controls col-sm-9">
+							<input id="interventionPlaceIfEquipment" class="select2" style="width: 100%" 
+								data-placeholder="<%= lang.actions.selectAPlace %>"/>
+		                    <span class="help-inline"></span>
+		                </div>
+		            </div>
+	            
+					<!-- intervention Place precision -->
+					<div class="form-group">
+						<label for="interventionPlacePrecision" class="control-label col-sm-3"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
+	
+						<div class="form-controls col-sm-9">  
+							 <textarea name="interventionPlacePrecision" class="form-control" id="interventionPlacePrecision" rows="2"><%= intervention.site_details!=false?intervention.site_details:'' %></textarea>
+							<span class="help-inline"></span>                           
+						</div>
+					</div>
+	
+				</fieldset>
+			</form>		
 		</div>
 		<!-- / Modal Body -->
 

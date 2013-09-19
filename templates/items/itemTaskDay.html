@@ -5,10 +5,10 @@
 </td>
 
 <!-- Task Name -->
-<td><a href="#taches/<%= task.id %>"> <%= _.capitalize(task.name) %> </a></td>
+<td><a href="#" class="updateTask"> <%= _.capitalize(task.name) %> </a></td>
 <td><%= (task.site1 !== false) ? task.site1[1] : '' %></td>
-<td><%= (task.date_start) != '' ? moment(task.date_start).format('H[h]mm') : '' %></td>
-<td><%= (task.date_end) != '' ? moment(task.date_end).format('H[h]mm') : '' %></td>
+<td><%= (date_start) != '' ? date_start.format('H[h]mm') : '' %></td>
+<td><%= (date_end) != '' ? date_end.format('H[h]mm') : '' %></td>
 
 <!-- Assign To -->
 <td>

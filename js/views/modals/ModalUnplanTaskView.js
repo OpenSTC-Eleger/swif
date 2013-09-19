@@ -26,7 +26,7 @@ app.Views.ModalUnplanTaskView =  app.Views.GenericModalView.extend({
 		this.modal = $(this.el);
 
 		// Intervention Model in the Left column //
-		this.panelModel = this.options.panelModel;
+		this.interModel = this.options.interModel;
 
 		this.render();
 	},
@@ -56,35 +56,64 @@ app.Views.ModalUnplanTaskView =  app.Views.GenericModalView.extend({
 	},
 
 
-
 	/** Remove the Task from the Calendar
 	*/
 	removeTaskFromSchedule: function(e){
 
-		var self = this;
-
+		var self = this;		
 		// Set the button in loading State //
 		$(e.target).button('loading');
 		
-		params = {
-			state     : app.Models.Task.status.draft.key,
-			user_id   : false,
-			team_id   : false,
-			date_end  : false,
-			date_start: false,
-		};
-
-		this.model.save(params, {patch: true, silent: false})
-			.done(function(data) {
-				self.modal.modal('hide');
-				if(!_.isUndefined(self.panelModel))
-					self.panelModel.fetch({ data : {fields : self.panelModel.fields} });
-				self.model.fetch({ data : {fields : self.model.fields} });
-			})
-			.always(function(){
-				// Reset the button state //
-				$(e.target).button('reset');
-			})
+		//Template task unplanned
+		if(	!_.isUndefined(this.interModel) && 
+				( app.Models.Intervention.status[this.interModel.toJSON().state].key == 
+				app.Models.Intervention.status.template.key ) )
+		{
+			//remove template task
+			this.model.destroy({wait: true})
+				.done(function(data){
+					//re-fetch intervention
+					$.when(  self.interModel.fetch() )
+						.done(function(e){
+							self.modal.modal('hide');
+						})
+				})
+				.fail(function(){
+					console.error(e);
+				})
+				.always(function(){
+					// Reset the button state //
+					$(e.target).button('reset');
+				})
+		} 
+		//Normal task unplanned
+		else 
+		{
+			//Set Task fields 
+			params = {
+				state     : app.Models.Task.status.draft.key,
+				user_id   : false,
+				team_id   : false,
+				date_end  : false,
+				date_start: false,
+			};
+			//Update task
+			this.model.save(params, {patch: true, silent: false})
+				.done(function(data) {				
+					$.when(  self.model.fetch({ data : {fields : self.model.fields} } ), self.interModel.fetch() )
+					.done(function(e){
+						self.modal.modal('hide');
+					})
+					.fail(function(e){
+						console.error(e);
+					});
+					
+				})
+				.always(function(){
+					// Reset the button state //
+					$(e.target).button('reset');
+				})
+		}
 	}
 
 

@@ -63,21 +63,8 @@ app.Views.PlanningView = Backbone.View.extend({
 			});
 
 			$(self.el).html(template);
-
-			$('#calendar').append( new app.Views.EventsListView(self.options).render().el );
-			// Display filter on the table //
-//			if(sessionStorage.getItem(self.filters) != null){
-//				$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');
-//				$('li.delete-filter').removeClass('disabled');
-//				if(sessionStorage.getItem(self.filters) != 'notFilter'){
-//					$('a.filter-button').addClass('text-'+app.Models.Intervention.status[sessionStorage.getItem(self.filters)].color);
-//				}
-//			}
-//			else{
-//				$('a.filter-button').removeClass('filter-active ^text').addClass('filter-disabled');
-//				$('li.delete-filter').addClass('disabled');
-//			}
-			
+			//calendar panel
+			$('#calendar').append( new app.Views.EventsListView(self.options).render().el );	
 			//interventions left panel			
 			app.views.planningInterListView = new app.Views.PlanningInterListView(self.options)
 					
@@ -96,20 +83,6 @@ app.Views.PlanningView = Backbone.View.extend({
 			app.views.planningInterListView.render();
 	    });	    		
 	},
-	
-	
-//	initCalendarCollections: function(){			
-//	
-//		var self = this;		
-//		return $.when(app.models.user.queryManagableOfficers(), app.models.user.queryManagableTeams())
-////				.done(function(){
-////				})
-//				.fail(function(e){
-//					console.log(e);
-//				})
-//
-//	},
-//	
 	
 	/**
 	 * Init intervention and task collections
@@ -162,27 +135,16 @@ app.Views.PlanningView = Backbone.View.extend({
 	
 	},
 	
+	/**
+	 * Fetch collections
+	 */
 	fetchCollections : function(){
 		var self = this;
-
+		//Fetch officers, teams, and interventions collections
 		return $.when(
 			app.models.user.queryManagableOfficers(), 
 			app.models.user.queryManagableTeams(),
 			this.collections.interventions.fetch(this.fetchParams)
-//				.done(function(){
-//					if(self.collections.interventions.cpt > 0){
-//						self.collections.tasks.fetch({silent: true,data: {filters: {0:{'field':'project_id.id','operator':'in','value':self.collections.interventions.pluck('id')}}}})
-//						.done(function(){
-//							deferred.resolve();						
-//						})
-//						.fail(function(e){
-//							console.error(e);
-//						})
-//					}
-//					else{
-//						deferred.resolve();
-//					}
-//				})
 		)
 		.fail(function(e){
 			console.error(e);

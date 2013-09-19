@@ -89,13 +89,11 @@
 				<div class="form-group">
 					<label for="taskEquipmentDone" class="control-label col-sm-3"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
 
-					<div class="col-sm-9">
-						<!--<div class="input-append">-->
-							<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect" data-placeholder="<%= lang.actions.selectAVehicle %>"/>
-							<span class="add-on linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
-								<i class="icon-tint"></i>
-							</span>
-						<!--</div>-->
+					<div class="col-sm-9 input-group">
+						<span class="input-group-addon linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
+							<i class="icon-tint"></i>
+						</span>
+						<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect" data-placeholder="<%= lang.actions.selectAVehicle %>"/>						
 					</div>
 				</div>
 
@@ -131,32 +129,13 @@
 
 				<!-- Equipments -->
 				<fieldset>
-					<legend><i class="icon-wrench"></i> <%= _.capitalize(lang.equipment) %></legend>
-
-					<!-- Select Material -->
-					<div class="row-fluid marginTop equipmentsDroppableAreaDone">
-						
-						<div class="span6">
-							<div class="widget-title">
-								<h4 class="noMarginTop">Utilisé <span class="badge pull-right"></span></h4>
-							</div>
-			
-							<ul id="equipmentsDone" class="sortableEquipmentsList sortable unstyled nav nav-list drop-area">
-			
-							</ul>
+					<div class="form-group">
+						<label for="taskEquipmentListDone" class="control-label col-sm-3"><%= _.capitalize(lang.equipment) %>:</label>
+						<div class="form-controls col-sm-9">
+							<input id="taskEquipmentListDone" class="select2 taskEquipment taskSelect taskInput"
+								data-placeholder="<%= lang.actions.selectEquipments %>" data-multiple="multiple"/>
 						</div>
-			
-						<div class="span6">
-							<div class="widget-title">
-								<h4 class="noMarginTop">Disponible <span class="badge pull-right" id="badgeNbEquipmentsDone"></span> </h4>
-							</div>
-			
-							<ul id="equipmentsListDone" class="sortableEquipmentsList sortable unstyled nav nav-list">
-							</ul>
-						</div>
-			
 					</div>
-
 				</fieldset>
 
 		    </form>

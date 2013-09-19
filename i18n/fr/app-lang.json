@@ -123,6 +123,7 @@
 	"overrun"				: "Dépassement des heures",
 	"equipment"				: "Matériel",
 	"immat"					: "Immatriculation",
+	"serialNumber"			: "Numéro de série",
 	"marque"				: "Marque",
 	"usage"					: "usage",
 	"cv"					: "Puissance",
@@ -132,6 +133,7 @@
 	"dateHourStart" 		: "Date / Heure début",
 	"dateHourEnd" 			: "Date / Heure fin",
 	"oil" 					: "carburant",
+	"energy"				: "Energie",
 	"quantity"				: "quantité",
 	"teamMembers"           : "Agents de l'équipe",
 	"teamServices"          : "Services de l'équipe",
@@ -165,6 +167,19 @@
 	"location"								: "Emplacement",
 	"developBy" 							: "développé par",
 	"citizen"                               : "administré",
+
+	"detailsEquipment"						: "Détails",
+	"baseEquipment"							: "Général",
+	"financesEquipment"						: "Finances",
+	"equipmentInternalUse"					: "utilisé par",
+	"maintenanceServices"					: "Services mainteneurs",
+	"lengthAmort"							: "Durée d'amortissement",
+	"purchasePrice"							: "Prix d'achat",
+	"hourPrice"								: "Coût horaire",
+	"warranty"								: "Garantie",
+	"attaches"								: "Pièces jointes",
+	"productLogo"							: "Photo",
+	"missingproductLogo"					: "Insérez ici l'image de votre équipement",
 
 	"monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
 	"monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
@@ -224,7 +239,8 @@
 		"selectAAgent"		: "Sélectionner un agent",
 		"selectAgents"		: "Sélectionner des agents",
 		"selectAPlace"		: "Sélectionner un site",
-		"selectAEquipment"  : "Sélectionner un matériel",
+		"selectAnEquipment"	: "Sélectionner un équipement",
+		"selectEquipments"  : "Sélectionner des équipments",
 		"selectAPlaceType"	: "Sélectionner un type de site",
 		"selectServices"	: "Sélectionner des services",
 		"selectAService"	: "Sélectionner un service",
@@ -234,7 +250,9 @@
 		"selectAContact"	: "Sélectionner un contact",
 		"selectAClaimer"	: "Sélectionner un demandeur",
 		"selectAClaimerType": "Sélectionner un type de demandeur",
-		"displayPassword"   : "Afficher le mot de passe"
+		"displayPassword"   : "Afficher le mot de passe",
+		"addAttach"			: "Ajouter une pièce jointe"
+		
 	},
 
 	"errorMessages" : {
@@ -283,6 +301,7 @@
 		"noOfficer"				: "Aucun agent enregistré",
 		"noTaskForIntervention"	: "Aucune tâche pour cette intervention",
 		"noTask"      	  	  	: "Aucune tâche à pointer",
+		"noAttachForIntervention":"Aucune pièce jointe à afficher",
 		"noTeam"				: "Aucune équipe à afficher",
 		"sixCharMin"		  	: "Six caractères minimum",
 		"placeDeleteOk"			: "Site correctement supprimé",
@@ -374,6 +393,8 @@
 		"categoriesIntersList"	 : "Catégories des interventions",
 		"absentTypesList"		 : "Types d'absences",
 		"claimersTypesList"		 : "Types d'organisations",
+		"newEquipment"			 : "Nouvel Matériel",
+		"editEquipment"			 : "Edition d'un Matériel",
 		"equipmentsList"		 : "Liste des Matériels",
 		"cartoSites"		 	 : "Interventions par site",
 		"officersList"		 	 : "Liste des agents",

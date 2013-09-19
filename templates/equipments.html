@@ -1,7 +1,7 @@
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.equipmentsList %>
-		<sup class="badge"><%= nbEquipments %></sup>
+		<sup class="badge" id="badgeNbEquipments"></sup>
 	</h1>
 </div>
 
@@ -9,22 +9,22 @@
 <div class="container-fluid">
 
 	<!-- Check if there is Claimers Types in the Database -->
-	<% if(equipments.length != 0) { %>
-
 		<!-- Table toolbar -->
 		<div class="tableToolbar">
-			<a href="#modalSaveEquipment" class="btn btn-primary modalSaveEquipment" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addEquipment) %></a>	
+			<a href="#" class="btn btn-primary modalAddEquipment" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addEquipment) %></a>	
 
-			<!--<form class="form-search pull-right">
-				<div class="input-append">
-					<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off">
-					<button type="submit" class="btn"><i class="icon-search icon-large"></i></button>
-				</div>
-			</form>-->
+		<form class="form-search pull-right col-xs-5 col-md-3 col-lg-2">
+			<div class="input-group">
+				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+				<span class="input-group-btn">
+					<button type="submit" class="btn btn-primary"><i class="icon-search icon-large"></i></button>
+				</span>
+			</div>
+		</form>
 		</div>
 		<!-- Table toolbar -->
 
-
+	<% if(nbEquipments != 0) { %>
 		<!-- Table Requests -->
 		<table class="table table-bordered table-hover table-striped">
 			<thead>
@@ -32,303 +32,34 @@
 					<th><%= _.capitalize(lang.name) %></th>
 					<th><%= _.capitalize(lang.immat) %></th>					
 					<th><%= _.capitalize(lang.marque) %></th>	
-					<th class="hidden-phone"><%= _.capitalize(lang.usage) %></th>
-					<th><%= _.capitalize(lang.type) %></th>
-					<th><%= _.capitalize(lang.cv) %></th>
 					<th><%= _.capitalize(lang.year) %></th>
 					<th><%= _.capitalize(lang.time) %></th>	
 					<th><%= _.capitalize(lang.km) %></th>	
 					<th><%= _.capitalize(lang.category) %></th>	
-					<th><%= _.capitalize(lang.service) %></th>			
 				</tr>
 			</thead>
-			<tbody>
-			<% for (var i = startPos; i < endPos; i++){  
-				var equipment = equipments[i] %>
-				
+			<tbody id="row-items">		
 				<!-- Categorie row -->
-				<tr class="row-item" id="equipment_<%= equipment.id %>">
-					<td><i class="icon-wrench"></i> <%= equipment.name %>
-						
-						<p class="row-actions invisible">
-							<a href="#modalSaveEquipment" class="modalSaveEquipment" data-toggle="modal">
-								<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
-							</a>&nbsp;
-							<a href="#modalDeleteEquipment" class="modalDeleteEquipment" data-toggle="modal">
-								<i class="icon-remove icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
-							</a>
-						</p>
-					</td>
-					<td><%= (equipment.immat != false ? equipment.immat : "")%></td>
-					<td><%= (equipment.marque != false ? equipment.marque : "")%></td>
-					<td class="hidden-phone"><%= (equipment.usage != false ? equipment.usage : "")%></td>
-					<td><%= (equipment.type != false ? equipment.type : "")%></td>
-					<td><%= (equipment.cv != false ? equipment.cv : "")%></td>
-					<td><%= (equipment.year != false ? equipment.year : "")%></td>
-					<td><%= (equipment.time != false ? equipment.time : "")%></td>
-					<td><%= (equipment.km != false ? equipment.km : "" )%></td>
-					<% if( equipment.technical_vehicle ) { %>
-						<td><%= _.capitalize(lang.technicalVehicleEquipment) %></td>
-					<% } else if ( equipment.commercial_vehicle ) { %>
-						<td><%= _.capitalize(lang.commercialVehicleEquipment) %></td>
-					<% } else if ( equipment.small_material ) { %>
-						<td><%= _.capitalize(lang.smallMaterialEquipment) %></td>
-					<% } else if ( equipment.fat_material ) { %>
-						<td><%= _.capitalize(lang.fatMaterialEquipment) %></td>
-					<% } %>	
-					<td><%= (equipment.service != false ? equipment.service[1] : "" )%></td>									
-				</tr>
-
-			<% }; %>
 			</tbody>
 		</table>
-
-
-		<!-- Table pagination -->
-		<div class="pagination pagination-right">
-			<ul>
-				<!-- First page button -->
-				<% if(page-2 >= 1){ %>
-					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#<%= app.routes.equipments.baseUrl %>/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
-				<% } %>
-				
-				<!-- Previous page button -->
-				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#<%= app.routes.equipments.baseUrl %>/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
-			
-				<!-- [...] page Button -->
-				<% 	if (page-2 > 1) { %>
-						<li class="disabled"><a href='#'>...</a></li>
-				<% } 
-						
-					for (var i=(page-2); i < (page+3); i++) {
-						if(i >= 1 && i <= pageCount){ %>
-							<li <%= (i === page ? " class='active'" : "")%>><a href='#<%= app.routes.equipments.baseUrl %>/page<%=i%>'><%= i %></a></li>
-						<% }
-
-					} %>
-					
-				<!-- [...] page Button -->
-				<% if (page+2 < pageCount) { %>
-					<li class="disabled"><a href='#'>...</a></li>
-				<% } %>
-				
-				<!-- Next page button -->
-				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#<%= app.routes.equipments.baseUrl %>/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
-				
-				<!-- Last page button -->
-				<% if(page+2 <= pageCount){ %>
-					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#<%= app.routes.equipments.baseUrl %>/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
-				<% } %>
-			</ul>
-		</div>
-		<!-- /Table pagination -->
-
 	<% }
 	else { %>
-		<div class="tableToolbar">
-			<a href="#modalSaveEquipment" class="btn btn-primary modalSaveEquipment" data-toggle="modal"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addEquipment) %></a>
-		</div><br />
-
 		<!-- No request in the Database -->
 		<div class="alert alert-info">
-			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noEquipmentType %>.
+			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noEquipment %>.
 		</div>
 
 	<% } %>
 
 </div>
 
+	<!-- Table pagination -->
+	<div id="pagination" class="pull-right"></div>
+	<!-- /Table pagination -->
 
 <!-- Modal Form to add a new Equipment -->
-<div id="modalSaveEquipment" class="modal hide fade">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h3><%= _.capitalize(lang.actions.addEquipment) %></h3>
-	</div>
-	
-	<div class="modal-body">
-		<form id="formSaveEquipment" action="#" class="form-horizontal">
-		
-		<div class="text-center spaceBottom">
-		   	<div id="equipmentCatChoose" class="btn-group" data-toggle="buttons-radio">
-				<button id="technicalVehicleEquipment" type="button" class="btn vehicule"><%= _.capitalize(lang.technicalVehicleEquipment) %></button>
-				<button id="commercialVehicleEquipment" type="button" class="btn vehicule"><%= _.capitalize(lang.commercialVehicleEquipment) %></button>
-				<button id="smallMaterialEquipment" type="button" class="btn"><%= _.capitalize(lang.smallMaterialEquipment) %></button>
-				<button id="fatMaterialEquipment" type="button" class="btn"><%= _.capitalize(lang.fatMaterialEquipment) %></button>
-			</div>
-		</div>
-
-			
-			<!-- Name -->
-			<div class="control-group">
-				<label for="equipmentName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
-
-				<div class="controls">
-					<input type="text" id="equipmentName" name="equipmentName" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
-
-			<!-- Service -->
-			<div class="control-group">
-			    <label for="equipmentService" class="control-label"><%= _.capitalize(lang.service) %>:</label>
-
-			    <div class="controls">
-			        <select id="equipmentService"></select>
-			        <span class="help-inline"></span>
-			    </div>
-			</div>
-
-		
-			<!-- Usage -->
-			<div class="control-group">
-				<label for="equipmentUsage" class="control-label"><%= _.capitalize(lang.usage) %>:</label>
-
-				<div class="controls">
-					<input type="text" id="equipmentUsage" name="equipmentUsage" required="required" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
-			
-			<!-- Marque -->
-			<div class="control-group">
-				<label for="equipmentMarque" class="control-label"><%= _.capitalize(lang.marque) %>:</label>
-
-				<div class="controls">
-					<input type="text" id="equipmentMarque" name="equipmentMarque" required="required" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
-
-			<!-- Type -->
-			<div class="control-group">
-				<label for="equipmentType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
-
-				<div class="controls">
-					<input type="text" id="equipmentType" name="equipmentType" required="required" />
-					<span class="help-inline"></span>
-				</div>
-			</div>
-			
-
-			<fieldset class="hide" id="aboutEquipmentSection">
-				<legend><%= lang.aboutTheEquipment %></legend>
-				
-				<!-- Time -->
-				<div class="control-group">
-					<label for="equipmentTime" class="control-label"><%= _.capitalize(lang.time) %>:</label>
-
-					<div class="controls">
-						<input type="number" id="equipmentTime" class="input-small" required="required" min="0" value="0" />
-						<span class="help-inline"></span>
-					</div>
-					
-
-				
-
-		
-				</div>
-			</fieldset>
-
-			<fieldset id="aboutVehicleSection">
-				<legend><%= lang.aboutTheVehicle %></legend>
-
-				<!-- Immatriculation -->
-				<div class="control-group">
-					<label for="equipmentImmat" class="control-label"><%= _.capitalize(lang.immat) %>:</label>
-
-					<div class="controls">
-						<input type="text" id="equipmentImmat" class="input-small" />
-						<span class="help-inline"></span>
-					</div>
-				</div>
-
-				<!-- Year -->
-				<div class="control-group">
-					<label for="equipmentYear" class="control-label"><%= _.capitalize(lang.year) %>:</label>
-
-					<div class="controls">
-						<input type="number" id="equipmentYear" class="input-small" required="required" value="<%= moment().year() %>">
-						<span class="help-inline"></span>
-					</div>
-				</div>
-
-				<!-- CV -->
-				<div class="control-group">
-					<label for="equipmentCV" class="control-label"><%= _.capitalize(lang.cv) %>:</label>
-
-					<div class="controls">
-						<input type="number" id="equipmentCV" class="input-small" required="required" min="0"  />
-						<span class="help-inline"><%= lang.horsepower %></span>
-					</div>
-				</div>
-
-				<!-- KM -->
-				<div class="control-group">
-					<label for="equipmentKm" class="control-label"><%= _.capitalize(lang.km) %>:</label>
-
-					<div class="controls">
-						<input type="number" id="equipmentKm" class="input-small" required="required" min="0" value="0"/>
-						<span class="help-inline"></span>
-					</div>
-				</div>
-				
-	
-
-			</fieldset>
-			
-			<!-- Services Management -->
-			<div class="row-fluid marginTop servicesDroppableArea">
-			
-				<div class="span6">
-					<div class="widget-title">
-						<h4>Services du matériel <span class="badge pull-right"></span></h4>
-					</div>
-	
-					<ul id="equipmentServices" class="sortableServicesList sortable unstyled nav nav-list">
-	
-					</ul>
-				</div>
-	
-				<div class="span6">
-					<div class="widget-title">
-						<h4>Autres services <span class="badge pull-right" id="badgeNbServices"></span></h4>
-					</div>
-	
-					<ul id="servicesList" class="sortableServicesList sortable unstyled nav nav-list">
-					</ul>
-				</div>					
-			</div>
-
-		</form>
-	</div>
-	
-	<div class="modal-footer">
-		<button type="submit" form="formSaveEquipment" class="btn btn-primary saveEquipment"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
-		<a href="#equipments" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
-	</div>
-</div>
+<div id="modalSaveEquipment" role="dialog" aria-hidden="true" class="modal fade"></div>
 
 
 <!-- Modal Form Delete Equipment -->
-<div id="modalDeleteEquipment" class="modal hide fade">
-	<div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	    <h3><%= lang.viewsTitles.deleteEquipment %></h3>
-	</div>
-	
-	<div class="modal-body">
-
-		<blockquote id="infoModalDeleteEquipment" class="spaceBottom">
-			<p></p>
-			<small></small>
-		</blockquote>
-
-		<p><%= lang.warningMessages.confirmDeleteEquipment %></p>
-	</div>
-	
-	<div class="modal-footer">
-	    <button type="button" class="btn btn-danger btnDeleteEquipment"><%= _.capitalize(lang.actions.delete) %></button>&nbsp;&nbsp;
-	    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
-	</div>
-</div>
+<div id="modalDeleteEquipment" role="dialog" aria-hidden="true" class="modal fade"></div>

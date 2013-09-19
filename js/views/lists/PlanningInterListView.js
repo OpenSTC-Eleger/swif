@@ -48,10 +48,6 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		});
 	
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.interventionSaveOK);
-		
-		this.partialRender();
-	
-		//app.router.navigate(app.views.planningInterListView.urlBuilder(), {trigger: false, replace: false});
 	},
 
 	/** Display the view
@@ -85,22 +81,11 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 			})
 						
 			_.each(self.collections.interventions.models, function(inter, i){
-//				var tasks = new app.Collections.Tasks();
-//				_.each(inter.toJSON().tasks,function(item,i){ 
-//					tasks.push(self.collections.tasks.get(item));
-//				});
-
 				var simpleView = new app.Views.ItemPlanningInterView({model: inter});
 				var detailedView =new app.Views.ItemPlanningInterTaskListView({inter: inter});
 				$('#inter-items').append( simpleView.render().el );
 				$('#inter-items').append(detailedView.render().el);
-				simpleView.detailedView = detailedView;
-				
-//				var itemPlanningInterView = new app.Views.ItemPlanningInterView({model: inter, tasks: tasks});
-//				$('#inter-items').append(itemPlanningInterView.render().el);
-//				var itemPlanningInterTaskListView = new app.Views.ItemPlanningInterTaskListView({inter: inter, tasks: tasks});
-//				$('#inter-items').append(itemPlanningInterTaskListView.render().el);
-				
+				simpleView.detailedView = detailedView;				
 			});	
 			
 			
@@ -108,7 +93,10 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 			// Pagination view //
 			app.views.paginationView = new app.Views.PaginationView({ 
 				page       : self.options.page.page,
-				collection : self.collections.interventions
+				collection : self.collections.interventions,
+				size		: 'sm',
+				displayGoToPage : false,
+				
 			})
 			app.views.paginationView.render();
 			
@@ -131,6 +119,9 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		return this;
 	},
 	
+	/**
+	 * Re calculate pagination 
+	 */
 	paginationRender : function() {
 		app.views.paginationView.initialize();
 		app.views.paginationView.render();
@@ -144,7 +135,6 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		var params = {el:'#modalSaveInter',interventions: this.collections.interventions}
 		new app.Views.ModalInterventionView(params);
 	},
-
 
 
 	/** Filter Intervention by status
@@ -175,11 +165,14 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		
 		this.filterValue = this.options.filter;
 		
-		app.router.navigate(this.urlBuilder(), {trigger: false, replace: true});
 		app.views.planning.partialRender();
+		app.views.paginationView.render();
 
 	},	
 	
+	/**
+	 * Go to page
+	 */
 	goToPage: function(e){
 		e.preventDefault()
 		
@@ -192,11 +185,8 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		var link = $(e.target);
 		
 		this.options.page = _(link.attr('href')).strRightBack('/page');		
-		
-		app.router.navigate($(e.target).attr('href'), {trigger: false, replace: true});		
-		app.views.planning.partialRender();
-		
+			
+		app.views.planning.partialRender();		
 	},
-
 
 });
