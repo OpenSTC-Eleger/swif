@@ -11,7 +11,7 @@ app.Views.ModalAbsentTaskView = app.Views.GenericModalView.extend({
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'submit #formAbsentTask'  : 'saveAbsentTask'
+			'click #btnAddAbsentTask'     : 'saveAbsentTask'
 		}, 
 			app.Views.GenericModalView.prototype.events
 		);
@@ -93,7 +93,7 @@ app.Views.ModalAbsentTaskView = app.Views.GenericModalView.extend({
 		var self = this;
 		
 		// Set the button in loading State //
-		$(this.el).find("button[type=submit]").button('loading');
+		$(e.target).button('loading');
 		
 		var mNewDateStart =  new moment( $("#startDate").val(),"DD-MM-YYYY")
 								.add('hours',$("#startHour").val().split(":")[0] )
@@ -120,17 +120,21 @@ app.Views.ModalAbsentTaskView = app.Views.GenericModalView.extend({
 		this.model = new app.Models.Task();
 
 		this.model.save(params, {patch: false, silent: true})
-			.done(function(data) {
-				self.modal.modal('hide');
-				self.model.fetch({ data : {fields : self.model.fields} });
-				self.options.collection.add(self.model);
+			.done(function(data) {				
+				self.model.fetch({ data : {fields : self.model.fields} })
+					.done(function(data) {
+						self.modal.modal('hide');				
+						self.options.collection.add(self.model);
+					})
+					.always(function () {
+						// Reset the button state //
+						$(e.target).button('reset');
+					});
 			})
 			.fail(function (e) {
 				console.log(e);
 			})
-			.always(function () {
-				$(self.el).find("button[type=submit]").button('reset');
-			});
+
 	},
 
 });

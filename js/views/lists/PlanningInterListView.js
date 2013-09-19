@@ -40,7 +40,7 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 	
 	addInter: function(model){
 		var itemPlanningInterView  = new app.Views.ItemPlanningInterView({ model: model });
-		var itemPlanningInterTaskListView = new app.Views.ItemPlanningInterTaskListView({ inter: model, tasks: new app.Collections.Tasks() });		
+		var itemPlanningInterTaskListView = new app.Views.ItemPlanningInterTaskListView({ model : model });		
 		$('#inter-items').prepend(itemPlanningInterTaskListView.render().el);
 		$('#inter-items').prepend(itemPlanningInterView.render().el);
 		itemPlanningInterView.highlight().done(function(){
@@ -82,7 +82,7 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 						
 			_.each(self.collections.interventions.models, function(inter, i){
 				var simpleView = new app.Views.ItemPlanningInterView({model: inter});
-				var detailedView =new app.Views.ItemPlanningInterTaskListView({inter: inter});
+				var detailedView =new app.Views.ItemPlanningInterTaskListView({model: inter});
 				$('#inter-items').append( simpleView.render().el );
 				$('#inter-items').append(detailedView.render().el);
 				simpleView.detailedView = detailedView;				
@@ -157,7 +157,7 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		// Set the filter value in the options of the view //
 		var globalSearch = {};
 		if(filterValue != 'delete-filter'){
-			this.options.filter =  'state-' + filterValue; //{ by: 'state', value: filterValue};
+			this.options.filter =  'state-' + filterValue;
 		}
 		else{
 			delete this.options.filter;

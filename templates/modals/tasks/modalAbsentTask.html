@@ -77,15 +77,13 @@
 
 			</form>
 		</div>
-
+		
 		<div class="modal-footer">
-			<button type="submit" form="formAbsentTask" class="btn btn-primary"
-				data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>">
-				<%= _.capitalize(lang.actions.save) %>
-			</button>&nbsp;&nbsp;
-			
-			<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+		    <button type="button" id="btnAddAbsentTask" class="btn btn-danger" data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>">
+		    	<%= _.capitalize(lang.actions.save) %>
+		    </button>&nbsp;&nbsp;
+		    
+		    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 		</div>
-
 	</div>
 </div>

@@ -110,6 +110,7 @@ app.Views.EventsListView = Backbone.View.extend({
 		app.router.navigate(this.urlBuilder(), {trigger: false, replace: false});
 		//Add new url in pagination for intervention panel 
 		app.views.planningInterListView.paginationRender();
+		//app.loader('hide');
 	},
 
 	/**
@@ -120,6 +121,7 @@ app.Views.EventsListView = Backbone.View.extend({
 		app.router.navigate(this.urlBuilder(), {trigger: false, replace: false});
 		//Add new url in pagination for intervention panel 
 		app.views.planningInterListView.paginationRender();
+		//app.loader('hide');
 	},
 	
 	/**
@@ -234,7 +236,6 @@ app.Views.EventsListView = Backbone.View.extend({
     		 * Calculates events to display on calendar for officer (or team) on week selected
     		 */    		
 			events: function(start, end, callback) { 
-    	
     			var fetchParams={
 					silent : true,
 					data   : {}
@@ -273,6 +274,7 @@ app.Views.EventsListView = Backbone.View.extend({
 					//Transforms tasks in events for fullcalendar
 					self.events = self.fetchEvents();	
 					self.collection.off();
+					self.listenTo(self.collection, 'add', self.refreshEvents);
 					self.listenTo(self.collection, 'change', self.refreshEvents);
 					self.listenTo(self.collection, 'remove', self.refreshEvents);
 					
@@ -283,7 +285,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			},			
 
 			/**
-			 * Open leave time modal
+			 * Open leave time modal (Absent task)
 			 */
 			select: function( startDate, endDate, allDay, jsEvent, view) {
 				 
@@ -378,6 +380,7 @@ app.Views.EventsListView = Backbone.View.extend({
     	    eventClick: function(fcEvent, jsEvent, view) {
     	    	var taskModel = self.collection.get(fcEvent.id);
     	    	var taskModelJSON = taskModel.toJSON();
+    	    	var interModel = null;
     	    	if( taskModelJSON.project_id!=false )
     	    		interModel = self.collections.interventions.get(taskModelJSON.project_id[0]); 
     			app.views.modalUnplanTaskView = new app.Views.ModalUnplanTaskView({
@@ -411,21 +414,27 @@ app.Views.EventsListView = Backbone.View.extend({
     		var actionDisabled = task.state == app.Models.Task.status.done.key || task.state == app.Models.Task.status.cancelled.key;
 
     		var title = task.name;
+    		//team mode
     		if( self.teamMode ) {
+    			//Add officer information about task
     			if( task.user_id ) {
     				title += "(" + task.user_id[1] + ")"
     			}   				
-    		}
-    		else{
+    		}  
+    		//officer mode
+    		else
+    		{    			
     			if( task.team_id ) {
+    				//Add team information about task
     				title += "(" + task.team_id[1] + ")"
     			}    
-    		}
+    		}    		
     		
-    		
+    		//Apply user's 'timezone on dates
     		var dtStart = task.date_start!=false ? moment( task.date_start ).tz(app.models.user.getContext().tz) : null
     		var dtEnd = task.date_end!=false ? moment( task.date_end ).tz(app.models.user.getContext().tz) : null		    		
     		
+    		//prepare event for calendar
     		var event = { 
     			id: task.id, 
 				state: task.state,
@@ -443,9 +452,11 @@ app.Views.EventsListView = Backbone.View.extend({
 				disableResizing: actionDisabled,
 			};
 
+    		//Add event in array
     		self.events.push(event);
     	});
     	
+    	//order events list by date and return
 		return eventsSortedArray = _.sortBy(self.events, function(event){ 
 			return [event.start, event.end]; 
 		});
