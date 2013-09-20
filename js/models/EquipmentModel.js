@@ -3,17 +3,25 @@
 */
 app.Models.Equipment = app.Models.GenericModel.extend({
 	
-	model_name : 'openstc.equipments',
-
 	urlRoot: "/api/openstc/equipments",
 
+
+	searchable_fields: [
+		{
+			key  : 'name',
+			type : 'text'
+		},
+		{
+			key  : 'immat', 
+			type : 'text'
+		}
+	],
 
 
 	getImmat : function() {
 		return this.get('immat');
 	},
 	setImmat : function(value) {
-		if( value == 'undefined') return;
 		this.set({ immat : value });
 	},  
 
@@ -22,7 +30,6 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		return this.get('service');
 	},
 	setService : function(value) {
-		if( value == 'undefined') return;
 		this.set({ service : value });
 	},  
 
@@ -31,7 +38,6 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		return this.get('service_ids');
 	},
 	setServicesID : function(value) {
-		if( value == 'undefined') return;
 		this.set({ service_ids : value });
 	},
 
@@ -39,7 +45,6 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		return this.get('code');
 	},
 	setMarque : function(value) {
-		if( value == 'undefined') return;
 		this.set({ marque : value });
 	}, 
 
@@ -47,7 +52,6 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		return this.get('type');
 	},
 	setType : function(value) {
-		if( value == 'undefined') return;
 		this.set({ type : value });
 	}, 
 
@@ -55,7 +59,6 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		return this.get('usage');
 	},
 	setUsage : function(value) {
-		if( value == 'undefined') return;
 		this.set({ usage : value });
 	}, 
 
@@ -63,7 +66,6 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		return this.get('usage');
 	},
 	setCV : function(value) {
-		if( value == 'undefined') return;
 		this.set({ cv : value });
 	}, 
 
@@ -71,7 +73,6 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		return this.get('km');
 	},
 	setKM : function(value) {
-		if( value == 'undefined') return;
 		this.set({ km : value });
 	}, 
 
@@ -79,7 +80,6 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		return this.get('year');
 	},
 	setYear : function(value) {
-		if( value == 'undefined') return;
 		this.set({ year : value });
 	}, 
 
@@ -87,7 +87,6 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		return this.get('time');
 	},
 	setTime : function(value) {
-		if( value == 'undefined') return;
 		this.set({ time : value });
 	}, 
 	
@@ -95,7 +94,6 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		return this.get('technical_vehicle');
 	},
 	setTechnicalVehicle : function(value) {
-		if( value == 'undefined') return;
 		this.set({ technical_vehicle : value });
 	}, 
 	
@@ -103,7 +101,6 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		return this.get('commercial_vehicle');
 	},
 	setCommercialVehicle : function(value) {
-		if( value == 'undefined') return;
 		this.set({ commercial_vehicle : value });
 	}, 
 	
@@ -111,7 +108,6 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		return this.get('small_material');
 	},
 	setSmallMaterial : function(value) {
-		if( value == 'undefined') return;
 		this.set({ small_material : value });
 	}, 
 	
@@ -119,12 +115,24 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		return this.get('fat_material');
 	},
 	setFatMaterial : function(value) {
-		if( value == 'undefined') return;
 		this.set({ fat_material : value });
 	}, 
 
-	getInformations: function(){
-		return {name: this.get('name')}
+
+	/** Get Informations of the model
+	*/
+	getInformations : function(){
+		var informations = {};
+
+		informations.name = this.getName();
+
+		if(!_.isEmpty(this.getImmat())){
+			informations.infos = {};
+			informations.infos.key = _.capitalize(app.lang.immat);
+			informations.infos.value = this.getImmat();
+		}
+
+		return informations;
 	},
 
 
