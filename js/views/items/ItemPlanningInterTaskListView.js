@@ -16,8 +16,9 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize : function() {
-		this.model = this.options.inter;
+		//this.model.off();
 		this.listenTo(this.model, 'change', this.change);
+		//this.listenTo(this.model, 'add', this.change);
 	},
 
 
@@ -28,10 +29,9 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 		//Update model and his tasks
 		$.when( self.fetchData(), self.model.fetch({ data : {fields : self.model.fields} }) )
 		.done(function(e){
-			self.render();
+			self.render();	
 		})
-		app.Helpers.Main.highlight($(this.el))
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.interventionUpdateOk);
+		app.Helpers.Main.highlight($(this.el));
 	},
 
 	/** Display the view
@@ -46,14 +46,14 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 			
 			var template = _.template(templateData, {
 				lang                   	: app.lang,
-				intervention			: self.options.inter.toJSON(),
+				intervention			: self.model.toJSON(),
 			});
 
 			$(self.el).html(template);
 			
-			$('#switch-'+self.options.inter.id).bootstrapSwitch();
+			$('#switch-'+self.model.id).bootstrapSwitch();
 
-			$(self.el).addClass('row-nested-objects-collapse').attr('id','collapse_' + self.options.inter.toJSON().id);
+			$(self.el).addClass('row-nested-objects-collapse').attr('id','collapse_' + self.model.toJSON().id);
 			
 			$('tr.row-object').css({ opacity: '1'});
 			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
@@ -70,6 +70,10 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 				});
 				
 			};
+			
+			if(self.model.toJSON().actions.indexOf('add_task') == -1){
+				$('button.addTask').attr('disabled','disabled');
+			}
 			
 		});
 		return this;
@@ -121,7 +125,7 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 	displayModalAddTask: function(e){
 		e.preventDefault();
 		var self = this;
-		new app.Views.ModalInterventionAddTaskView({el: '#modalAddTask', inter: self.options.inter});		
+		new app.Views.ModalInterventionAddTaskView({el: '#modalAddTask', inter: self.model});		
 	},
 
 });

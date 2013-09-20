@@ -64,8 +64,24 @@ app.Views.ModalUnplanTaskView =  app.Views.GenericModalView.extend({
 		// Set the button in loading State //
 		$(e.target).button('loading');
 		
+		//Cancel absent task (no intervention)
+		if(( app.Models.Task.status[this.model.toJSON().state].key == 
+				app.Models.Task.status.absent.key ) ) 
+		{
+				this.model.destroy({wait: true})
+				.done(function(data){				
+					self.modal.modal('hide');
+				})
+				.fail(function(){
+					console.error(e);
+				})
+				.always(function(){
+					// Reset the button state //
+					$(e.target).button('reset');
+				})			
+		}
 		//Template task unplanned
-		if(	!_.isUndefined(this.interModel) && 
+		else if(	!_.isNull(this.interModel) && 
 				( app.Models.Intervention.status[this.interModel.toJSON().state].key == 
 				app.Models.Intervention.status.template.key ) )
 		{
@@ -86,7 +102,7 @@ app.Views.ModalUnplanTaskView =  app.Views.GenericModalView.extend({
 					$(e.target).button('reset');
 				})
 		} 
-		//Normal task unplanned
+		//others tasks to unplanned
 		else 
 		{
 			//Set Task fields 

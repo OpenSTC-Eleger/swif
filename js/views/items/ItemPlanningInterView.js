@@ -7,6 +7,7 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 
 	templateHTML : 'items/itemPlanningInter',
 	
+		
 	className   : function(){
 		this.classColor = app.Models.Intervention.status[this.model.getState()].color;
 		return "row-item border-emphasize border-emphasize-" + this.classColor;	
@@ -22,10 +23,9 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize : function() {
-		this.model.off();
-
+		//this.model.off();		
 		// When the model are updated //
-		this.listenTo(this.model, 'change', this.change);		
+		this.listenTo(this.model, 'change', this.change);	
 	},
 
 	/** When the model ara updated //
@@ -34,11 +34,24 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 		var self = this;
 		model.fetch({silent: true, data: {fields: app.views.planningInterListView.collections.interventions.fields}})
 		.done(function(){
-			self.render();
-			//Just expand accodion (no fold up that)
-			self.expendAccordion(false);
-			self.highlight().done();
-			app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
+			//Intervention has cancelled
+			if(	self.model.toJSON().state==app.Models.Intervention.status.cancelled.key
+					&& ! _.isUndefined( app.views.planningInterListView.filterValue )
+					&& app.views.planningInterListView.filterValue!='state-cancelled') {
+				//Unexpend inter
+				$('tr.expend').css({ display: 'none' }).removeClass('expend');
+				//remove inter
+				self.remove();
+			}
+			else
+			{
+				self.model = model;
+				self.$el.removeAttr("class").addClass(self.className());			
+				self.render();				
+				self.highlight().done();
+				app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
+			}
+
 		})
 		.fail(function(e){
 			console.log(e);
@@ -101,13 +114,13 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 	tableAccordion: function(e){	
 		e.preventDefault();
 		//fold up current accordion and expand 
-		this.expendAccordion(true);		   
+		this.expendAccordion();		   
 	},
 	
 	/**
 	 * Expan accordion
 	 */
-	expendAccordion: function(foldUp){
+	expendAccordion: function(){
 		// Retrieve the intervention ID //
 		//var id = _($(e.target).attr('href')).strRightBack('_');
 		var id = this.model.toJSON().id.toString();
@@ -115,13 +128,11 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 	
 		var isExpend = $('#collapse_'+id).hasClass('expend');
 	
-		//fold up current accordion
-		if(foldUp) {
-			// Reset the default visibility //
-			$('tr.expend').css({ display: 'none' }).removeClass('expend');
-			$('tr.row-object').css({ opacity: '0.45'});
-			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-		}
+		// Reset the default visibility //
+		$('tr.expend').css({ display: 'none' }).removeClass('expend');
+		$('tr.row-object').css({ opacity: '0.45'});
+		$('tr.row-object > td').css({ backgroundColor: '#FFF'});
+		
 		
 		// If the table row isn't already expend //       
 		if(!isExpend){
