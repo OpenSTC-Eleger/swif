@@ -41,7 +41,9 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 		}
 
 	},
-	
+
+
+
 	/** Display the view
 	*/
 	render : function(loader) {
