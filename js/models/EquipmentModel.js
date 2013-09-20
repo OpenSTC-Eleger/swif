@@ -4,6 +4,8 @@
 app.Models.Equipment = app.Models.GenericModel.extend({
 	
 	urlRoot: "/api/openstc/equipments",
+	
+	fields : ['id', 'name', 'maintenance_service_ids', 'internal_use', 'service_ids', 'immat', 'marque', 'usage', 'type', 'cv', 'year', 'time', 'km', 'energy_type', 'length_amort', 'purchase_price', 'default_code', 'categ_id', 'service_names', 'maintenance_service_names', 'complete_name', 'warranty', 'hour_price'],
 
 
 	searchable_fields: [
@@ -53,7 +55,11 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 	},
 	setType : function(value) {
 		this.set({ type : value });
-	}, 
+	},
+
+	getEnergy: function(){
+		return this.get('energy_type');
+	},
 
 	getUsage : function() {
 		return this.get('usage');
@@ -62,6 +68,19 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		this.set({ usage : value });
 	}, 
 
+	getCategory : function(type) {
+		switch (type){ 
+			case 'id': 
+				return this.get('categ_id')[0];
+			break;
+			case 'json':
+				return {id: this.get('categ_id')[0], name: this.get('categ_id')[1]};
+			break;
+			default:
+				return this.get('categ_id')[1];
+		}
+	},
+
 	getCV : function() {
 		return this.get('usage');
 	},
@@ -69,19 +88,28 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		this.set({ cv : value });
 	}, 
 
-	getKM : function() {
+	getKm : function() {
 		return this.get('km');
 	},
-	setKM : function(value) {
+	setKm : function(value) {
 		this.set({ km : value });
 	}, 
 
 	getYear : function() {
-		return this.get('year');
+		if(this.get('year') != 0){
+			return this.get('year');
+		}
+		else{
+			return '';
+		}
 	},
 	setYear : function(value) {
 		this.set({ year : value });
-	}, 
+	},
+
+	getWarranty: function(){
+		return this.get('warranty');
+	},
 
 	getTime : function() {
 		return this.get('time');
@@ -116,7 +144,11 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 	},
 	setFatMaterial : function(value) {
 		this.set({ fat_material : value });
-	}, 
+	},
+
+	getPurchasePrice: function(){
+		return this.get('purchase_price');
+	}
 
 
 	/** Get Informations of the model

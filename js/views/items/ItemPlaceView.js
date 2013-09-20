@@ -90,8 +90,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 		app.views.modalPlaceView = new app.Views.ModalPlaceView({
 			el      : '#modalSavePlace',
-			model   : this.model,
-			elFocus : $(e.target).data('form-id')
+			model   : this.model
 		});
 	},
 
@@ -105,8 +104,8 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 		app.views.modalDeleteView = new app.Views.ModalDeleteView({
 			el           : '#modalDeletePlace',
 			model        : this.model,
-			modalTitle   : app.lang.viewsTitles.deletePlace,
-			modalConfirm : app.lang.warningMessages.confirmDeletePlace
+			modalTitle   : app.lang.viewsTitles.deleteEquipment,
+			modalConfirm : app.lang.warningMessages.confirmDeleteEquipment
 		});
 	},
 

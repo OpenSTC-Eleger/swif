@@ -84,7 +84,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 
 
-	/** Delete the model pass in the view
+	/** Save the model pass in the view
 	*/
 	savePlace: function(e){
 		e.preventDefault();

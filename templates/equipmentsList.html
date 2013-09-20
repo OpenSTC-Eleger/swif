@@ -1,7 +1,7 @@
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.equipmentsList %>
-		<sup class="badge" id="badgeNbEquipments"></sup>
+		<sup class="badge" id="badgeNbEquipments"><%= nbEquipments %></sup>
 	</h1>
 </div>
 
@@ -41,8 +41,8 @@
 				<th><%= _.capitalize(lang.immat) %></th>					
 				<th><%= _.capitalize(lang.marque) %></th>	
 				<th><%= _.capitalize(lang.year) %></th>
-				<th><%= _.capitalize(lang.time) %></th>	
-				<th><%= _.capitalize(lang.km) %></th>	
+				<th data-sort-column="<time></time>"><%= _.capitalize(lang.time) %></th>	
+				<th data-sort-column="km"><%= _.capitalize(lang.km) %></th>	
 				<th><%= _.capitalize(lang.category) %></th>	
 			</tr>
 		</thead>

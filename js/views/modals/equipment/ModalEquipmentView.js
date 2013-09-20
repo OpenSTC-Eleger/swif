@@ -11,9 +11,9 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-				'change #equipmentInternalUse' : 'fillEquipmentInternalUse',
-				'submit #formSaveEquipment'		: 'saveEquipment',
-				'change #equipmentCategory'			: 'fillEquipmentCategory'
+			'submit #formSaveEquipment'   : 'saveEquipment',
+			'change #equipmentInternalUse': 'fillEquipmentInternalUse',
+			'change #equipmentCategory'   : 'fillEquipmentCategory'
 		}, 
 			app.Views.GenericModalView.prototype.events
 		);
@@ -28,16 +28,19 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 
 		this.modal = $(this.el);
 
-		
+
 		// Check if it's a create or an update //
 		if(_.isUndefined(this.model)){
-			this.create = true;
+
 			this.model = new app.Models.Equipment();
 			this.render();
 		}
 		else{
 			// Render with loader //
 			this.render(true);
+			this.model.fetch({silent: true, data : {fields : this.model.fields}}).done(function(){
+				self.render();
+			});
 		}
 
 	},
@@ -53,50 +56,34 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 			var template = _.template(templateData, {
-				lang  : app.lang,
-				equipment : self.model.toJSON(),
-				loader: loader,
-				createMode: self.create
+				lang     : app.lang,
+				equipment: self.model,
+				loader   : loader
 			});
 
 			self.modal.html(template);
-			self.selectEquipmentCategory = new app.Views.AdvancedSelectBoxView({el:'#equipmentCategory', collection: app.Collections.EquipmentsTypes.prototype});
-			self.selectEquipmentCategory.render();
-			
-			self.selectEquipmentServicesInternalUse = new app.Views.AdvancedSelectBoxView({el:'#equipmentServicesInternalUse', collection: app.Collections.ClaimersServices.prototype});
-			self.selectEquipmentServicesInternalUse.render();
-			
-			self.selectEquipmentMaintenanceServices = new app.Views.AdvancedSelectBoxView({el:'#equipmentMaintenanceServices', collection: app.Collections.ClaimersServices.prototype});
-			self.selectEquipmentMaintenanceServices.render();
-			if(!self.create){
-				var modelJSON = self.model.toJSON();
-				self.selectEquipmentCategory.setSelectedItem(modelJSON.categ_id);
-				
-				$('#equipmentInternalUse').prop('checked', modelJSON.internal_use);
-				self.changeEquipmentInternalUse(modelJSON.internal_use);
-				var service_names = [];
-				_.each(modelJSON.service_names, function(service, i){
-					service_names.push({id:service[0], name:service[1]});
-				});
-				var maintenance_service_names = []; 
-				_.each(modelJSON.maintenance_service_names, function(service, i){
-					maintenance_service_names.push({id:service[0], name:service[1]});
-				});
-				
-				
-				self.selectEquipmentServicesInternalUse.setSelectedItems(service_names);
-				self.selectEquipmentMaintenanceServices.setSelectedItems(maintenance_service_names);
-				if(modelJSON.categ_id){
-					self.changeEquipmentCategory(modelJSON.categ_id[0]);
-				}
+
+
+			if(!loader){
+				self.selectEquipmentCategory = new app.Views.AdvancedSelectBoxView({el:'#equipmentCategory', collection: app.Collections.EquipmentsTypes.prototype});
+				self.selectEquipmentCategory.render();
+
+				self.selectEquipmentServicesInternalUse = new app.Views.AdvancedSelectBoxView({el:'#equipmentServicesInternalUse', collection: app.Collections.ClaimersServices.prototype});
+				self.selectEquipmentServicesInternalUse.render();
+
+				self.selectEquipmentMaintenanceServices = new app.Views.AdvancedSelectBoxView({el:'#equipmentMaintenanceServices', collection: app.Collections.ClaimersServices.prototype});
+				self.selectEquipmentMaintenanceServices.render();
 			}
 
 			self.modal.modal('show');
+
 		});
 
 		return this;
 	},
 	
+
+
 	/**
 	 * if equipment category refers to an equipment or a vehicle, adapt labels of km, energy_type and immat
 	 */
@@ -142,6 +129,11 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 		this.changeEquipmentInternalUse($(e.target).is(':checked'));
 	},
 	
+
+
+
+	/** Save the model pass in the view
+	*/
 	saveEquipment: function(e){
 		e.preventDefault();
 		var self = this;
@@ -164,6 +156,7 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 //				hour_price: $('#equipmentHourPrice').val(),
 //				warranty: $('#equipmentWarranty').val(),
 		}
+
 		this.model.save(params,{patch:!this.create, silent:true, wait:true}).done(function(data){
 			if(self.create){
 				self.model.set('id', data, {silent:true});
@@ -180,7 +173,6 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 			console.log(e);
 		});
 		
-		
-	},
+	}
 	
 });
