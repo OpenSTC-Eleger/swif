@@ -72,7 +72,7 @@ app.Views.ModalTaskDoneView = app.Views.GenericModalView.extend({
 
 			var hasService = (self.options.inter.toJSON().service_id && !_.isUndefined(self.options.inter.toJSON().service_id));
 			
-			app.views.selectListOfficersTeamsView = new app.Views.AdvancedSelectBoxView({el:$('#selectUsersTeams'), collection: app.Collections.Officers.prototype});
+			self.selectListOfficersTeamsView = new app.Views.AdvancedSelectBoxView({el:$('#selectUsersTeams'), collection: app.Collections.Officers.prototype});
 			
 			self.selectVehicleView = new app.Views.AdvancedSelectBoxView({el:'#taskEquipmentDone', collection:app.Collections.Equipments.prototype});
 			self.selectListEquipmentsView = new app.Views.AdvancedSelectBoxView({el:'#taskEquipmentListDone', collection:app.Collections.Equipments.prototype});
@@ -84,7 +84,8 @@ app.Views.ModalTaskDoneView = app.Views.GenericModalView.extend({
 
 			if(hasService){
 
-				app.views.selectListOfficersTeamsView.setSearchParam({field:'service_ids.id',operator:'=',value:self.options.inter.toJSON().service_id[0]}, true);
+				self.setSearchParamsOnUsersTeams();
+				self.selectListOfficersTeamsView.setSearchParam({field:'id', operator:'>', value:'1'});
 				
 				self.selectVehicleView.setSearchParam('|');
 				self.selectVehicleView.setSearchParam({field:'service_ids',operator:'=?',value:'False'});
@@ -97,13 +98,18 @@ app.Views.ModalTaskDoneView = app.Views.GenericModalView.extend({
 			
 			self.selectVehicleView.render();
 			self.selectListEquipmentsView.render();
-			app.views.selectListOfficersTeamsView.render();
+			self.selectListOfficersTeamsView.render();
 			
 		});
  
 		return this;
     },
 
+    setSearchParamsOnUsersTeams: function(){
+    	if(this.options.inter.toJSON().service_id && !_.isUndefined(this.options.inter.toJSON().service_id)){
+    		this.selectListOfficersTeamsView.setSearchParam({field:'service_ids.id',operator:'=',value:this.options.inter.toJSON().service_id[0]}, true);
+    	}
+	},
     
     /** Save Task as Done (create another one if timeRemaining set)
      */
@@ -120,7 +126,7 @@ app.Views.ModalTaskDoneView = app.Views.GenericModalView.extend({
 		}
 
 		//var id = $('#selectUsersTeams').val();
-		var id = app.views.selectListOfficersTeamsView.getSelectedItem();
+		var id = this.selectListOfficersTeamsView.getSelectedItem();
 
 		// Retrieve Start Date and Start Hour //
 		var mNewDateStart =  new moment( $("#startDate").val(),"DD-MM-YYYY")
@@ -198,25 +204,31 @@ app.Views.ModalTaskDoneView = app.Views.GenericModalView.extend({
 		else{ var itemToLoad = link.parent('a').data('item'); }
 
 		this.selectedTaskJSON = this.model.toJSON();
-		
+		var filters = this.selectListOfficersTeamsView.searchParams;
+		//first, re-init filters with default ones
+		this.setSearchParamsOnUsersTeams();
+		//update Advanced selectBox Params (placeholder, collection and filters) according to itemToLoad
 		if(itemToLoad == 'officers'){
 			$('#btnSelectUsersTeams > i.iconItem.icon-group').addClass('icon-user').removeClass('icon-group');
 			$('#selectUsersTeams').data('item', 'officers');
 			$('#selectUsersTeams').attr('data-placeholder', app.lang.actions.selectAAgentShort);
 			
-			app.views.selectListOfficersTeamsView.collection = app.Collections.Officers.prototype;
-			app.views.selectListOfficersTeamsView.reset();
-			app.views.selectListOfficersTeamsView.render();
+			this.selectListOfficersTeamsView.collection = app.Collections.Officers.prototype;
+			//filter to remove administrator record
+			this.selectListOfficersTeamsView.setSearchParam({field:'id', operator:'>',value:'1'});
+			this.selectListOfficersTeamsView.reset();
+			this.selectListOfficersTeamsView.render();
 		}
 		else if(itemToLoad == 'teams'){
 			$('#btnSelectUsersTeams > i.iconItem.icon-user').addClass('icon-group').removeClass('icon-user');
 			$('#selectUsersTeams').data('item', 'teams');
 			$('#selectUsersTeams').attr('data-placeholder', app.lang.actions.selectATeamShort);
 
-			app.views.selectListOfficersTeamsView.collection = app.Collections.Teams.prototype;
-			app.views.selectListOfficersTeamsView.reset();
-			app.views.selectListOfficersTeamsView.render();
+			this.selectListOfficersTeamsView.collection = app.Collections.Teams.prototype;
+			this.selectListOfficersTeamsView.reset();
+			this.selectListOfficersTeamsView.render();
 		}
+
 	},
 	
 
