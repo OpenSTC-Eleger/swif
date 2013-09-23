@@ -45,7 +45,7 @@
 	},
 
 	"services": {
-		"url"		: "services(/page:page)",
+		"url"		: "services(/search/:search)(/sort/:sort)(/page:page)",
 		"function"	: "services"
 	},
 
