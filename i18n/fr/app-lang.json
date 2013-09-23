@@ -237,6 +237,7 @@
 		"timeSpent"			: "Saisie des temps",
 		"removeOfTheSchedule" : "Retirer du planning",
 		"print"				: "Imprimer",
+		"selectATeamShort" : "Une équipe...",
 		"selectAAgentShort" : "Un agent...",
 		"selectAAgent"		: "Sélectionner un agent",
 		"selectAgents"		: "Sélectionner des agents",
