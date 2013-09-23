@@ -357,6 +357,10 @@ app.Views.EventsListView = Backbone.View.extend({
 			eventResize: function( event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) { 			    
 			    
 			    var model = self.collection.get(event.id)
+			    
+			    newEvent = self.events.filter(function (element) { 
+				    return element.id == event.id;
+				})[0];
 				
 			    params = {
 				   date_start: event.start,
@@ -365,9 +369,20 @@ app.Views.EventsListView = Backbone.View.extend({
 			       total_hours: (event.total_hours + (minuteDelta)/60),
 			       remaining_hours: (event.remaining_hours + (minuteDelta)/60),
 				};
-		
+			    
+
+			    newEvent.date_start = event.start;
+			    newEvent.date_end = event.end;
+			    newEvent.planned_hours = (event.planned_hours + (minuteDelta)/60);
+			    newEvent.total_hours = (event.total_hours + (minuteDelta)/60);
+			    newEvent.remaining_hours =  (event.remaining_hours + (minuteDelta)/60);
 			   
 				model.save(params, {patch: true, silent: true})
+					.done(function(ids) {
+						//If task has intervention (absent task has no intervention)
+						if( model.toJSON().project_id != false )
+							self.collections.interventions.get(model.toJSON().project_id[0]).fetch();
+					})
 					.fail(function (e) {
 						console.log(e);
 					})

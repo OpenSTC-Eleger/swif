@@ -104,7 +104,11 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 		    task["remaining_hours"] =  '';//( task.remaining_hours>0? task.remaining_hours : '' );
 	    	task["oilQtity"] =  (task.oil_qtity>0? task.oil_qtity : '');
 	    	task["oilPrice"] =  (task.oil_price>0? task.oil_price : '');
-	    	task["taskHours"] = moment( task.date_start ).format('H[h]mm') + '-' + moment( task.date_end ).format('H[h]mm');
+	    	var startDt = task.date_start!=false ? moment( task.date_start ).tz(app.models.user.getContext().tz) : null
+	    	var endDt = task.date_end!=false ? moment( task.date_end ).tz(app.models.user.getContext().tz) : null
+	    	var startHour = startDt!=null ? startDt.add('minutes',-startDt.zone()).format('H[h]mm') : ''
+	    	var endHour = endDt!=null ? endDt.add('minutes',-endDt.zone()).format('H[h]mm') : ''
+	    	task["taskHours"] = startHour + '-' + endHour;
 	    	task["km"] = ''; //task.km;
 
 	    	task["description"] = '';
@@ -128,8 +132,6 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 		    "sPaginationType": "full_numbers",
 		    "bProcessing": true,
 		    "bSort": true,
-		    //"bDeferRender": true,
-		    //"sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
 		    "aoColumns": [			        
 		        {"sDay": "Day", "mDataProp": "day", 'sWidth': '5%', 'sClass': "center", "bVisible": false, "sType": "day"},
 		        {"sInter": "Inter", "mDataProp": "inter", 'sWidth': '5%', 'sClass': "center"},
@@ -137,9 +139,9 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 		        {"sName": "Name", "mDataProp": "name", 'sWidth': '5%', 'fnCreatedCell': self.getStyle },
 		        {"sPlace": "Place", "mDataProp": "place", 'sWidth': '5%', 'sClass': "center"},
 		        {"sDateStart": "DateStart", "mDataProp": "taskHours","sType": "date", 'sWidth': '2%'},
-		        { "sWorkingTime": "WorkingTime", "mDataProp": "planned_hours", 'sWidth': '1%','sClass': "center"},//'sWidth': '5%'},
-		        { "sEffectiveTime": "EffectiveTime", "mDataProp": "effective_hours", 'sWidth': '1%','sClass': "center toFill"}, //'sWidth': '5%','fnRender': self.renderHours},
-		        { "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours", 'sWidth': '1%','sClass': "center toFill"}, //'sWidth': '5%','fnRender': self.renderHours},
+		        { "sWorkingTime": "WorkingTime", "mDataProp": "planned_hours", 'sWidth': '1%','sClass': "center"},
+		        { "sEffectiveTime": "EffectiveTime", "mDataProp": "effective_hours", 'sWidth': '1%','sClass': "center toFill"}, 
+		        { "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours", 'sWidth': '1%','sClass': "center toFill"}, 
 		        { "sDone": "Done", "mDataProp": "done", 'sWidth': '2%','fnRender': self.renderResume},
 		        { "sEquipment": "Equipment", "mDataProp": "equipment", 'sWidth': '25%','sClass': "center toFill"},
 		        { "sOilQtity": "oilQtity", "mDataProp": "oilQtity", 'sWidth': '2%', 'sClass': "center toFill"},
@@ -167,12 +169,9 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 	                    var nGroup = document.createElement( 'tr' );
 	                    var nCell = document.createElement( 'td' );
 	                    
-	                    //$(nCell).css({ backgroundColor: '#FFF'});//.css({ display: 'table-row' }).addClass('expend');
 	                    nCell.colSpan = iColspan;
 	                    nCell.className = "group";
-	                    //$(nCell).addClass("gradeA"); 
 	                    nCell.innerHTML = sGroup;
-	                    //$(nGroup).addClass("row-object");
 	                    nGroup.appendChild( nCell );
 	                    nTrs[i].parentNode.insertBefore( nGroup, nTrs[i] );
 	                    sLastGroup = sGroup;
@@ -185,11 +184,7 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 	        "aoColumnDefs": [
 	            { "bVisible": false, "aTargets": [ 0 ] }
 	        ],
-	        //"aaSortingFixed": [[ 0, 'asc' ]],
 	        "aaSorting": [[ 0, 'asc' ]],
-	        //"sDom": 'lfr<"giveHeight"t>ip',
-	         //"binfo": true,
-	         //"sDom": '<"top"i>rt<"bottom"flp><"clear">'
 		})
 
 		table.fnClearTable();
@@ -217,19 +212,6 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 	
     
     //--------------------Getter--------------------------------------//
-	renderHours: function (o, date){
-		return date.format('H[h]mm');
-	},
-	
-	getIntervention: function (o, intervention) {
-		return intervention.name;
-	},	
-
-	getPlace: function (o, intervention) {
-		//console.debug(intervention);
-		return intervention.site1!=null?intervention.site1[1]:"";
-	
-	},
 	
 	getStyle: function (nTd, sData, oData, iRow, iCol) {
 		if( oData.state == app.Models.Task.status.absent.key )

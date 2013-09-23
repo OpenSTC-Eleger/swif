@@ -81,7 +81,7 @@ app.Views.ModalUnplanTaskView =  app.Views.GenericModalView.extend({
 				})			
 		}
 		//Template task unplanned
-		else if(	!_.isNull(this.interModel) && 
+		else if(	!_.isNull(this.interModel) && !_.isUndefined(this.interModel)  &&
 				( app.Models.Intervention.status[this.interModel.toJSON().state].key == 
 				app.Models.Intervention.status.template.key ) )
 		{

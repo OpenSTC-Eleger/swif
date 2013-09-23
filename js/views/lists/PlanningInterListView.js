@@ -14,8 +14,8 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 	// The DOM events //
 	events: function(){
 		return _.defaults({			
-			//'switch-change #switchWithForeman'        : 'setForemanInTeam',		
-			'click #filterStateInterventionList li:not(.disabled) a' 	: 'setFilterState',	
+			//'switch-change #switchWithForeman'        : 'setForemanInTeam',	
+			'click #filterStateInterventionList li a' 	: 'setFilterState',	
 			'click a.modalCreateInter'			: 'displayModalSaveInter',
 			'click #pagination ul a'			: 'goToPage',
 		}, 
@@ -39,14 +39,16 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 	},
 	
 	addInter: function(model){
-		var itemPlanningInterView  = new app.Views.ItemPlanningInterView({ model: model });
-		var itemPlanningInterTaskListView = new app.Views.ItemPlanningInterTaskListView({ model : model });		
-		$('#inter-items').prepend(itemPlanningInterTaskListView.render().el);
-		$('#inter-items').prepend(itemPlanningInterView.render().el);
-		itemPlanningInterView.highlight().done(function(){
-			itemPlanningInterView.expendAccordion();
-		});
-	
+		//If filter is on 'all state' or 'scheduled' add item view in panel
+		if( _.isUndefined(this.filterValue) || _(this.filterValue).strRight('-') == model.toJSON().state ) {
+			var itemPlanningInterTaskListView = new app.Views.ItemPlanningInterTaskListView({ model : model });	
+			var itemPlanningInterView  = new app.Views.ItemPlanningInterView({ model: model, detailedView:itemPlanningInterTaskListView });
+			$('#inter-items').prepend(itemPlanningInterTaskListView.render().el);
+			$('#inter-items').prepend(itemPlanningInterView.render().el);
+			itemPlanningInterView.highlight().done(function(){
+				itemPlanningInterView.expendAccordion();
+			});
+		}	
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.interventionSaveOK);
 	},
 
@@ -81,8 +83,9 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 			})
 						
 			_.each(self.collections.interventions.models, function(inter, i){
-				var simpleView = new app.Views.ItemPlanningInterView({model: inter});
+				
 				var detailedView =new app.Views.ItemPlanningInterTaskListView({model: inter});
+				var simpleView = new app.Views.ItemPlanningInterView({model: inter, detailedView:detailedView});
 				$('#inter-items').append( simpleView.render().el );
 				$('#inter-items').append(detailedView.render().el);
 				simpleView.detailedView = detailedView;				
@@ -142,17 +145,14 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 	setFilterState: function(e){
 
 		e.preventDefault();
+		if($(e.target).parent().hasClass('disabled')) return;
+		
 		
 		delete this.options.page;
 		delete this.options.sort;
 		delete this.options.filter;
 
-		if($(e.target).is('i')){
-			var filterValue = _($(e.target).parent().attr('href')).strRightBack('#');
-		}else{
-			var filterValue = _($(e.target).attr('href')).strRightBack('#');
-		}
-
+		var filterValue = _($(e.target).attr('href')).strRightBack('#');
 		
 		// Set the filter value in the options of the view //
 		var globalSearch = {};

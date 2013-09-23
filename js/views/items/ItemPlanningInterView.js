@@ -23,7 +23,9 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize : function() {
-		//this.model.off();		
+		this.detailedView = this.options.detailedView;
+		
+		this.model.off();		
 		// When the model are updated //
 		this.listenTo(this.model, 'change', this.change);	
 	},
@@ -31,31 +33,29 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 	/** When the model ara updated //
 	*/
 	change: function(model){
-		var self = this;
-		model.fetch({silent: true, data: {fields: app.views.planningInterListView.collections.interventions.fields}})
-		.done(function(){
-			//Intervention has cancelled
-			if(	self.model.toJSON().state==app.Models.Intervention.status.cancelled.key
-					&& ! _.isUndefined( app.views.planningInterListView.filterValue )
-					&& app.views.planningInterListView.filterValue!='state-cancelled') {
+		
+		var self = this;		
+
+		self.detailedView.model = self.model;
+		if(	this.itemIsToRemove( model ) ) {
 				//Unexpend inter
 				$('tr.expend').css({ display: 'none' }).removeClass('expend');
 				//remove inter
 				self.remove();
+				self.detailedView.remove();
+		}
+		else {
+			self.$el.removeAttr("class").addClass(self.className());	
+			self.render();
+			if(!_.isUndefined(self.detailedView)){
+				self.detailedView.fetchData().done(function () {
+					self.detailedView.render();
+				});
 			}
-			else
-			{
-				self.model = model;
-				self.$el.removeAttr("class").addClass(self.className());			
-				self.render();				
-				self.highlight().done();
-				app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
-			}
+			self.highlight().done();
+		}
+		app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);	
 
-		})
-		.fail(function(e){
-			console.log(e);
-		});		
 	},
 
 
@@ -106,6 +106,20 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 		});
 		$(this.el).hide().fadeIn('slow'); 
 		return this;
+	},
+	
+    itemIsToRemove: function(model){
+		var state = model.toJSON().state;
+		if( !_.isUndefined( app.views.planningInterListView.filterValue ) ){
+			var filter = _(app.views.planningInterListView.filterValue).strRight('-');
+			if( state!=filter )	{
+				if ( 	state==app.Models.Intervention.status.cancelled.key ||
+						state==app.Models.Intervention.status.scheduled.key ||
+						state==app.Models.Intervention.status.open.key )
+					return true;						
+			}
+		}
+		return false;
 	},
 	
 	/**

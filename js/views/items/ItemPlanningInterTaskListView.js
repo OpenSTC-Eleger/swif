@@ -16,9 +16,6 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize : function() {
-		//this.model.off();
-		this.listenTo(this.model, 'change', this.change);
-		//this.listenTo(this.model, 'add', this.change);
 	},
 
 
@@ -26,11 +23,8 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 	*/
 	change: function(model){
 		var self = this;
-		//Update model and his tasks
-		$.when( self.fetchData(), self.model.fetch({ data : {fields : self.model.fields} }) )
-		.done(function(e){
-			self.render();	
-		})
+		//Update Inter model
+		self.model.fetch();
 		app.Helpers.Main.highlight($(this.el));
 	},
 
@@ -65,6 +59,7 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 				_.each(self.tasksCollection.models, function (task) {
 					var itemPlanningInterTaskView = new app.Views.ItemPlanningInterTaskView({model: task});
 					$(self.el).find('#row-nested-objects').append(itemPlanningInterTaskView.render().el);
+					self.tasksCollection.off();
 					self.listenTo(task, 'destroy', self.change);
 					self.listenTo(task, 'change', self.change);
 				});
@@ -72,6 +67,10 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 			};
 			
 			if(self.model.toJSON().actions.indexOf('add_task') == -1){
+				$('button.addTask').attr('disabled','disabled');
+			}
+			
+			if(self.model.toJSON().actions.indexOf('plan_unplan') == -1){
 				$('button.addTask').attr('disabled','disabled');
 			}
 			
@@ -91,7 +90,7 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 				deferred.resolve();
 			});
 		}
-		return deferred
+		return deferred;
 	},
 		
 	/**

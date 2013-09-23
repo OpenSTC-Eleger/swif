@@ -27,9 +27,9 @@
 		<!-- Switch button - To Scheduled / Scheduled -->
 		<% if(intervention.tasks.length != 0 && intervention.state != app.Models.Intervention.status.template.key) { %>
 
-			<div class="switch switch-small calendarSwitch pull-right" data-on-label="    <%= "  " + _.capitalize(lang.planningFenced) %>" 
+			<div class="calendarSwitch pull-right make-switch " data-text-label="<%=_.capitalize(lang.actions.validate) %>" 
 				id="switch-<%= intervention.id %>"
-				data-off-label="<%= _.capitalize(lang.toScheduled) %>" data-on="primary" data-off="warning">
+				data-on-label="<i class='icon-ok icon-white'></i>" data-off-label="<i class='icon-remove icon-white'></i>">
 
 				<input type="checkbox" 
 					<% if(intervention.state == app.Models.Intervention.status.scheduled.key){ %>
