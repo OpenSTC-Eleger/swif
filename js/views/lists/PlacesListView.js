@@ -51,7 +51,7 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 
 	/** Display the view
 	*/
-	render: function (type) {
+	render: function () {
 		var self = this;
 
 		// Change the page title //

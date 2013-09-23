@@ -1,19 +1,19 @@
 /******************************************
-* Row Place View
+* Row Service View
 */
-app.Views.ItemPlaceView = Backbone.View.extend({
+app.Views.ItemServiceView = Backbone.View.extend({
 
 	tagName      : 'tr',
 
 	className    : 'row-item',
 
-	templateHTML : 'items/itemPlace',
+	templateHTML : 'items/itemService',
 
 
 	// The DOM events //
 	events: {
-		'click'                    : 'modalUpdatePlace',
-		'click a.modalDeletePlace' : 'modalDeletePlace'
+		'click'                      : 'modalUpdateService',
+		'click a.modalDeleteService' : 'modalDeleteService'
 	},
 
 
@@ -38,7 +38,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 		this.render();
 		app.Helpers.Main.highlight($(this.el));
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.serviceUpdateOk);
 	},
 
 
@@ -50,10 +50,10 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 		app.Helpers.Main.highlight($(this.el)).done(function(){
 			self.remove();
-			app.views.placesListView.partialRender();
+			app.views.servicesListView.partialRender();
 		});
 
-		app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.placeDeleteOk);
+		app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.serviceDeleteOk);
 		
 	},
 
@@ -68,8 +68,8 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 			var template = _.template(templateData, {
-				lang  : app.lang,
-				place : self.model
+				lang    : app.lang,
+				service : self.model
 			});
 
 			$(self.el).html(template);
@@ -83,29 +83,29 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 
 
-	/** Display Modal form to add/sav a new place
+	/** Display Modal form to add/sav a new service
 	*/
-	modalUpdatePlace: function(e){  
+	modalUpdateService: function(e){  
 		e.preventDefault(); e.stopPropagation();
 
-		app.views.modalPlaceView = new app.Views.ModalPlaceView({
-			el      : '#modalSavePlace',
+		app.views.modalServiceView = new app.Views.ModalServiceView({
+			el      : '#modalSaveService',
 			model   : this.model
 		});
 	},
 
 
 
-	/** Modal to remove a place
+	/** Modal to remove a service
 	*/
-	modalDeletePlace: function(e){
+	modalDeleteService: function(e){
 		e.preventDefault(); e.stopPropagation();
 
 		app.views.modalDeleteView = new app.Views.ModalDeleteView({
-			el           : '#modalDeletePlace',
+			el           : '#modalDeleteService',
 			model        : this.model,
-			modalTitle   : app.lang.viewsTitles.deleteEquipment,
-			modalConfirm : app.lang.warningMessages.confirmDeleteEquipment
+			modalTitle   : app.lang.viewsTitles.deleteService,
+			modalConfirm : app.lang.warningMessages.confirmDeleteService
 		});
 	},
 

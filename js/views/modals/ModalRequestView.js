@@ -16,7 +16,6 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 			'switch-change #switchCitizen'       : 'switchCitizen',
 			'switch-change #switchPlaceEquipment': 'switchPlaceEquipment',
 			
-			'change #requestClaimerType'         : 'changeClaimerType',
 			'change #requestClaimer'             : 'changeClaimer',
 			'change #requestContact'             : 'changeContact',
 			
@@ -78,10 +77,6 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 			if(!loader){
 				$('.make-switch').bootstrapSwitch();
 
-				// Fill select ClaimersTypes //
-				app.views.selectListClaimersTypesView = new app.Views.AdvancedSelectBoxView({el: $('#requestClaimerType'), collection: app.Collections.ClaimersTypes.prototype})
-				app.views.selectListClaimersTypesView.render();
-
 				// Request Claimer //
 				app.views.selectListClaimersView = new app.Views.AdvancedSelectBoxView({el: $('#requestClaimer'), collection: app.Collections.Claimers.prototype});
 				app.views.selectListClaimersView.render();
@@ -117,44 +112,21 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 		if(data.value){
 			$('.hide-citizen').fadeOut(function(){
 				$('.hide-no-citizen').fadeIn();
-				$('.readonly-no-citizen').prop('readonly', false);
 
+				app.views.selectListClaimersView.reset();
+				app.views.selectListClaimersContactsView.reset();
+
+				$('#requestContactName').focus();
 			});
 		}
 		else{
 			$('.hide-no-citizen').fadeOut(function(){
+			
+				// Reset the form input //
+				$('#requestContactName, #requestContactPhone, #requestContactEmail').val('');
+
 				$('.hide-citizen').fadeIn();
-				$('.readonly-no-citizen').prop('readonly', true);
 			});
-		}
-	},
-
-
-
-	/** When the SelectBox ClaimerType change
-	*/
-	changeClaimerType: function(event){
-		this.resetFormInput();
-
-		// Reset the Claimers et Contact Box view //
-		app.views.selectListClaimersView.reset();
-		app.views.selectListClaimersContactsView.reset();
-
-
-		var claimerTypeId = app.views.selectListClaimersTypesView.getSelectedItem();
-
-		if(!_.isNumber(claimerTypeId)){
-			app.views.selectListClaimersView.resetSearchParams();
-		}
-		else{
-
-			var searchParam = {
-				field    : 'type_id.id',
-				operator : '=',
-				value    : claimerTypeId
-			}
-
-			app.views.selectListClaimersView.setSearchParam(searchParam , true);
 		}
 	},
 
@@ -162,12 +134,13 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 
 	/** When the SelectBox Claimer change
 	*/
-	changeClaimer: function(event){
+	changeClaimer: function(reset){
 		var self = this;
-	
+
 		// Reset the Claimers et Contact Box view //
-		this.resetFormInput();
-		app.views.selectListClaimersContactsView.reset();
+		if(reset){
+			app.views.selectListClaimersContactsView.reset();
+		}
 
 		var claimerId = app.views.selectListClaimersView.getSelectedItem();
 
@@ -204,26 +177,32 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 	/** When the SelectBox Contact change
 	*/
 	changeContact: function(event){
-		this.resetFormInput();
+		var self = this;
 
 		var contactId = app.views.selectListClaimersContactsView.getSelectedItem();
-		this.contact = new app.Models.ClaimerContact({id: contactId});
 
-		this.contact.fetch({ data : {fields : ['phone', 'email']} })
-			.done(function(data){
-				$('#requestContactPhone').val(data.phone);
-				$('#requestContactEmail').val(data.email);
-			});
+
+		if(!_.isNumber(contactId)){
+			$('#claimerDetails').fadeOut();
+		}
+		else{
+
+			this.contact = new app.Models.ClaimerContact({id: contactId});
+			this.contact.fetch({ data : {fields : ['phone', 'email', 'function', 'partner_id']} })
+				.done(function(data){
+					
+					// Set Information about the claimer //
+					$('#claimerFunction span').html(data.function);
+					$('#claimerPhone span').html(data.phone);
+					$('#claimerEmail span').html(data.email);
+					app.views.selectListClaimersView.setSelectedItem(data.partner_id);
+					self.changeClaimer(false);
+
+					$('#claimerDetails').fadeIn();
+				});
+		}
 	},
 
-
-
-	/** Delete the value of the input form
-	*/
-	resetFormInput: function(){
-		$('#requestContactPhone').val('');
-		$('#requestContactEmail').val('');
-	},
 
 
 
@@ -281,7 +260,6 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 		else{
 			this.model.setFromCitizen(false, true);
 			// Set the contact //
-			this.model.setClaimerType(app.views.selectListClaimersTypesView.getSelectedItem(), true);
 			this.model.setClaimer(app.views.selectListClaimersView.getSelectedItem(), true);
 			this.model.setClaimerContact(app.views.selectListClaimersContactsView.getSelectedItem(), true);
 		}
@@ -309,143 +287,6 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 				$(self.el).find("button[type=submit]").button('reset');
 			});
 	},
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	    
-	/** Save the request
-	*/
-	saveRequerrqqqqqst: function (e) {
-
-		//private function used to check data: if no value, return false
-	    function evalField(fieldValue){
-	    	if(fieldValue == '' || _.isUndefined(fieldValue) || fieldValue == null){
-	    		return false;
-	    	}
-	    	return fieldValue;
-	    }
-	    
-		e.preventDefault();
-		var self = this;
-
-	    var params = {
-	    	 partner_type: evalField(this.selectListClaimersTypesView.getSelectedItem()),
-	    	 email_text: app.Models.Request.status.wait.translation,
-	    	 partner_id: evalField(this.selectListClaimersView.getSelectedItem()),
-	    	 partner_address: evalField(this.selectListClaimersContactsView.getSelectedItem()),
-	    	 people_name: this.$('#requestContactInput').val(),
-	    	 people_phone: this.$('#requestContactPhone').val(),
-	    	 people_email: this.$('#requestContactEmail').val(),	
-		     name: this.$('#requestName').val(),
-		     description: this.$('#requestDescription').val(),
-		     service_id: evalField(this.selectListServicesView.getSelectedItem()),
-		     site_details: this.$('#requestPlacePrecision').val(),
-	    };
-	    
-	    //adapt data mapping if intervention according that intervention belongs to a place or an equipment
-	    if($('#btnSelectPlaceEquipment').data('item') == 'place'){
-	    	params.site1 = evalField(this.selectListPlacesEquipmentsView.getSelectedItem());
-	    	params.has_equipment = false;
-		}
-		else{
-			params.site1 = evalField(this.selectListPlaceView.getSelectedItem()); 
-			params.equipment_id = evalField(this.selectListPlacesEquipmentsView.getSelectedItem());
-			params.has_equipment = true;
-		}
-		
-	    var self = this;
-	     
-	    this.model.save(params, {patch:!self.create, silent: true, wait:true}).done(function (data) {
-			if(self.create){
-				self.model.set('id', data, {silent:true});
-			}
-			//get all data of the current model (newly created or updated) and apply changes on the collection
-			//we 'merge' the model on the collection if it's an update, else it's a basic 'add'
-			self.model.fetch().done(function(){
-				self.modal.modal('hide');
-				self.options.requests.add(self.model, {merge: !self.create});
-			});
-			console.log('Success SAVE REQUEST');
-		})
-		.fail(function (e) {
-			app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-			console.log(e);
-		});
-	},
-
-
-
-
-	/**
-	 * used to display or not claimer selectBox (according to 'display' bool parameter)
-	 * if display: display claimerContact selectBox too and hide text input
-	 * else: display claimerContact text input and hide selectBox
-	 */
-	displayClaimerSelect: function(display){
-
-		if(display){
-			$('#requestClaimerBlock').show();
-			$('#requestClaimer').prop('required','required');
-			$('#requestContactSelectBlock').show();
-			$('#requestContactSelectBlock').prop('required','required');
-			$('#requestContactInputBlock').val('');
-			$('#requestContactInputBlock').hide();
-		}
-		else{
-			this.selectListClaimersContactsView.reset();
-			$('#requestContactSelectBlock').hide();
-			$('#requestContactSelectBlock').removeAttr('required');
-			this.selectListClaimersView.reset();
-			$('#requestClaimerBlock').hide();
-			$('#requestClaimer').removeAttr('required');
-			$('#requestContactInputBlock').show();
-		}
-	},
-	    
-
-	/**
-	 * used to display or not claimer service infos (accordng to 'display' parameter)
-	 * if display: filter patrimony with esrvice_id
-	 * else: remove service_id filter from patrimony list (assuming that it's the only one filter)
-	 */
-	displayClaimerServiceSelect: function(display){	    	
-		if(display){
-			$('#requestContactServiceBlock').show();
-			$('#requestContactService').show();
-			//@TODO: apply filter to patrimonyList
-		}
-		else{
-			$('#requestContactServiceBlock').val('');
-			$('#requestContactServiceBlock').hide();
-			$('#requestContactService').val('');
-			$('#requestContactService').hide();
-			$('#requestContactService').data('id','');
-		}
-	},
-	    
 
 
 

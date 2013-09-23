@@ -45,7 +45,7 @@
 	},
 
 	"services": {
-		"url"		: "services(/page:page)",
+		"url"		: "services(/search/:search)(/sort/:sort)(/page:page)",
 		"function"	: "services"
 	},
 
@@ -85,7 +85,7 @@
 	},
 
 	"equipments": {
-		"url"		: "materiel(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"url"		: "materiels(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"	: "equipments"
 	}
 

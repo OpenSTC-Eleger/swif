@@ -40,6 +40,7 @@
 				<!-- About the claimer -->
 				<fieldset class="tab-pane fade in active" id="aboutClaimer">
 
+
 					<!-- is Citizen ? -->
 					<div class="form-group">
 						<label class="control-label col-sm-3" for="isCitizen"><%= _.capitalize(lang.citizen) %></label>
@@ -50,15 +51,17 @@
 						</div>
 					</div>
 
-					<!-- Request Partner Type -->
+
+					<!-- Request Contact -->
 					<div class="form-group hide-citizen">
-						<label for="requestClaimerType" class="control-label col-sm-3"><%= _.capitalize(lang.type) %>:</label>
+						<label for="requestContact" class="control-label col-sm-3"><%= _.capitalize(lang.contact) %>:</label>
 
 						<div class="col-sm-9">
-							<input id="requestClaimerType" class="select2" data-placeholder="<%= lang.actions.selectAClaimerType %>" />
+							<input id="requestContact" class="select2" data-placeholder="<%= lang.actions.selectAContact %>" data-minimum-input-length="2"/>
 						</div>
 					</div>
 
+					
 					<!-- Request Partner -->
 					<div class="form-group hide-citizen">
 						<label for="requestClaimer" class="control-label col-sm-3"><%= _.capitalize(lang.organization) %>:</label>
@@ -67,49 +70,47 @@
 							<input id="requestClaimer" class="select2" data-placeholder="<%= lang.actions.selectAClaimer %>" />
 						</div>
 					</div>
+	
 
-
-					<!-- Details about the claimer -->
-					<fieldset>
-						<legend><%= lang.claimerDetails %></legend>
-
-						<!-- Request Contact -->
-						<div class="form-group hide-citizen">
-							<label for="requestContact" class="control-label col-sm-3"><%= _.capitalize(lang.contact) %>:</label>
-
-							<div class="col-sm-9">
-								<input id="requestContact" class="select2" data-placeholder="<%= lang.actions.selectAContact %>"/>
-							</div>
+					<!-- Claimer Details -->
+					<div id="claimerDetails" class="panel panel-default hide-citizen hide-soft">
+						<div class="panel-heading">
+							<h3 class="panel-title"><%= lang.claimerDetails %></h3>
 						</div>
+						<ul class="list-group">
+							<li id="claimerFunction" class="list-group-item"><i class="icon-user icon-fixed-width"></i><span></span></li>
+							<li id="claimerPhone" class="list-group-item"><i class="icon-phone icon-fixed-width"></i><span></span></li>
+							<li id="claimerEmail" class="list-group-item"><i class="icon-envelope icon-fixed-width"></i><span></span></li>
+						</ul>
+					</div>
 
-						<!-- Request Contact Name -->
-						<div class="form-group hide-no-citizen hide-soft">
-							<label for="requestContactName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
+					<!-- Request Contact Name -->
+					<div class="form-group hide-no-citizen hide-soft">
+						<label for="requestContactName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 
-							<div class="col-sm-9">
-								 <input type="tel" id="requestContactName" class="form-control" value="" />
-							</div>
+						<div class="col-sm-9">
+							 <input type="tel" id="requestContactName" class="form-control" value="" />
 						</div>
+					</div>
 
-						<!-- Request Contact Phone -->
-						<div class="form-group">
-							<label for="requestContactPhone" class="control-label col-sm-3"><%= _.capitalize(lang.phone) %>:</label>
+					<!-- Request Contact Phone -->
+					<div class="form-group hide-no-citizen hide-soft">
+						<label for="requestContactPhone" class="control-label col-sm-3"><%= _.capitalize(lang.phone) %>:</label>
 
-							<div class="col-sm-9">
-								 <input type="tel" id="requestContactPhone" class="form-control readonly-no-citizen" readonly value="" />
-							</div>
+						<div class="col-sm-9">
+							 <input type="tel" id="requestContactPhone" class="form-control readonly-no-citizen" value="" />
 						</div>
+					</div>
 
-						<!-- Request Contact Email -->
-						<div class="form-group">
-							<label for="requestContactEmail" class="control-label col-sm-3"><%= _.capitalize(lang.email) %>:</label>
+					<!-- Request Contact Email -->
+					<div class="form-group hide-no-citizen hide-soft">
+						<label for="requestContactEmail" class="control-label col-sm-3"><%= _.capitalize(lang.email) %>:</label>
 
-							<div class="col-sm-9">
-								 <input type="email" id="requestContactEmail" class="form-control readonly-no-citizen" readonly value="" />
-							</div>
+						<div class="col-sm-9">
+							 <input type="email" id="requestContactEmail" class="form-control readonly-no-citizen" value="" />
 						</div>
+					</div>
 
-					</fieldset>
 
 				</fieldset>
 				<!-- / About the claimer -->

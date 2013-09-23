@@ -1,199 +1,95 @@
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.servicesList %>
-		<sup class="badge"><%= nbServices %></sup>
+		<sup id="badgeNbServices" class="badge"><%= nbServices %></sup>
 	</h1>
 </div>
 
 
-<div class="container-fluid">
 
-	<!-- Check if there is Services in the Database -->
-	<% if(services.length != 0) { %>
-
-		<!-- Table toolbar -->
-		<div class="tableToolbar">
-			<a href="#services/add" class="btn btn-primary"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addService) %></a>	
-
-			<!--<form class="form-search pull-right">
-				<div class="input-append">
-					<input type="search" class="input-medium search-query" placeholder="<%= lang.actions.search %>..." autocomplete="off">
-					<button type="submit" class="btn"><i class="icon-search icon-large"></i></button>
-				</div>
-			</form>-->
+	<!-- Table toolbar -->
+	<div class="tableToolbar row">
+		<div class="col-xs-7 col-md-9 col-lg-10">
+			<a href="#" class="btn btn-primary modalCreateService"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addService) %></a>
 		</div>
-		<!-- Table toolbar -->
+
+		<form class=" form-search pull-right col-xs-5 col-md-3 col-lg-2">
+			<div class="input-group">
+				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+				<span class="input-group-btn">
+					<button type="submit" class="btn btn-primary"><i class="icon-search icon-large"></i></button>
+				</span>
+			</div>
+		</form>
+	</div>
+	<!-- Table toolbar -->
 
 
-		<!-- Table Requests -->
-		<table class="table table-bordered table-hover table-striped">
-			<thead>
-				<tr>
-					<th><%= _.capitalize(lang.name) %></th>
-					<th><%= _.capitalize(lang.code) %></th>					
-					<th><%= _.capitalize(lang.manager) %></th>
-					<th><%= _.capitalize(lang.parentService) %></th>
-					<th><%= _.capitalize(lang.technicalService) %></th>
-				</tr>
-			</thead>
-			<tbody>
-			<% for (var i = startPos; i < endPos; i++) { 
-					var service = services[i];
-				%>
-								
-				<!-- Service row -->
-				<tr class="row-object" id="service_<%= service.id %>">
-					<td>
-						<a class="accordion-object" href="#collapse_<%= service.id %>">
-							<i class="icon-pushpin">&nbsp;&nbsp;</i><%= service.name %>
-						</a>
-						<span class="object-actions invisible">
-							<a href="#services/<%= service.id %>"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a>
-							
-						</span>
-					</td>
-					<td><%= service.code %></td>
-					<td><%= service.manager_id[1] %></td>
-					<td><%= service.service_id[1] %></td>
-					<td><%= (service.technical == true ? "<i class='icon-ok'></i>" : "")%></td>
-				</tr>
-				
-				<!-- Claimer row -->
-				<tr class="row-nested-objects-collapse" id="collapse_<%= service.id %>">
-					<td colspan="5" class="nestedTD">
-						<% if(service.user_ids.length != 0) { 
-								var self = this;
-								self.service = service; 
-								
-								
-							%>
-							<table class="table-nested-objects table table-striped table-condensed table-hover">
-								<thead>
-									<tr>
-										<th><%= _.capitalize(lang.name) %></th>
-										<th><%= _.capitalize(lang.login) %></th>
-										<th><%= _.capitalize(lang.group) %></th>
-										<th><%= _.capitalize(lang.email) %></th>
-										<th><%= _.capitalize(lang.lastConnection) %></th>
-									</tr>
-								</thead>
-								<tbody>
 
-									<% _.each(service.user_ids, function (officer, i) {	
-										var model = officer.groups_id.models[0];
-										var group = '';											
-										if(!_.isUndefined(model))
-											group = _(model.toJSON().name).strRightBack('/')
-										
-										%>
-										
-										<tr class="row-nested-objects" id="<%= officer.id %>_<%= service.id %>">
-											<td>
-												<span><%= officer.name +" "+ officer.firstname %></span>&nbsp;
-												<span class="nested-objects-actions invisible">
-													<a href="#modalSaveOfficer" class="modalSaveOfficer" >
-														<i class="icon-pencil displayInlineBlock" data-toggle="tooltip" 
-															data-original-title="<%= _.capitalize(lang.actions.update) %>">&nbsp;<%= _.capitalize(lang.actions.update) %></i>
-													</a> |																								
-													<a href="#modalDeleteOfficer" class="modalDeleteOfficer" data-toggle="modal">
-														<i class="icon-remove displayInlineBlock" data-toggle="tooltip" 
-															data-original-title="<%= _.capitalize(lang.actions.delete) %>">&nbsp;<%= _.capitalize(lang.actions.delete) %></i>
-													</a>
-												</span>
-											</td>
-											
-											<td><%= officer.login %></td>	
-											<td><%= group %></td>										
-											<td><%= (officer.user_email != false ? officer.user_email : "") %></td>
-											<td><% 
-												if(officer.date != false){ %>
-													<span data-toggle="tooltip"
-													    data-original-title="<%= moment(officer.date, 'YYYY-MM-DD HH:mm:ss').fromNow() %>">
-											    		<%= moment(officer.date, 'YYYY-MM-DD HH:mm:ss').format('LLL') %>
-													</span>
-												<% } %>
-											</td>
-										</tr>
-									<% }); %>
-								</tbody>
-							</table>
-						<% } else { %>
-								<!-- No Service in to Display -->
-								<div class="alert alert-info">
-									<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noOfficer %>.
-								</div>
-						<% } %>
+	<!-- Check if there is any Places to display -->
+	<% if(nbServices <= 0) { %>
 
-							<div class="div-actions" >
-								<button class="btn btn-primary btn-small no-outline addOfficer">
-									<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addOfficer) %>
-								</button>
-							</div>
-					</td>
-				</tr>
-
-			<% }; %>
-			</tbody>
-		</table>
-
-
-		<!-- Table pagination -->
-		<div class="pagination pagination-right">
-			<ul>
-				<!-- First page button -->
-				<% if(page-2 >= 1){ %>
-					<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#<%= app.routes.services.baseUrl %>/page<%= 1 %>'><%= _.capitalize(lang.actions.first) %></a></li>
-				<% } %>
-				
-				<!-- Previous page button -->
-				<li <%= ((page - 1) == 0 ? " class='disabled'" : "")%>><a href='#<%= app.routes.services.baseUrl %>/page<%=(page-1)%>'><%= _.capitalize(lang.actions.previousShort) %></a></li>
-			
-				<!-- [...] page Button -->
-				<% 	if (page-2 > 1) { %>
-						<li class="disabled"><a href='#'>...</a></li>
-				<% } 
-						
-					for (var i=(page-2); i < (page+3); i++) {
-						if(i >= 1 && i <= pageCount){ %>
-							<li <%= (i === page ? " class='active'" : "")%>><a href='#<%= app.routes.services.baseUrl %>/page<%=i%>'><%= i %></a></li>
-						<% }
-
-					} %>
-					
-				<!-- [...] page Button -->
-				<% if (page+2 < pageCount) { %>
-					<li class="disabled"><a href='#'>...</a></li>
-				<% } %>
-				
-				<!-- Next page button -->
-				<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#<%= app.routes.services.baseUrl %>/page<%=(page+1)%>'><%= _.capitalize(lang.actions.nextShort) %></a></li>
-				
-				<!-- Last page button -->
-				<% if(page+2 <= pageCount){ %>
-					<li <%= ((page + 1) > pageCount ? " class='disabled'" : "")%>><a href='#<%= app.routes.services.baseUrl %>/page<%= pageCount %>'><%= _.capitalize(lang.actions.end) %></a></li>
-				<% } %>
-			</ul>
-		</div>
-		<!-- /Table pagination -->
-
-	<% }
-	else { %>
-		<div class="tableToolbar">
-			<a href="#services/add" class="btn btn-primary"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addService) %></a>
-		</div><br />
-
-		<!-- No request in the Database -->
+		<!-- No place to display -->
 		<div class="alert alert-info">
 			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noService %>.
 		</div>
 
 	<% } %>
 
-</div>
+
+
+	<!-- Table Requests -->
+	<div class="table-responsive">
+	<table class="table table-bordered table-hover table-striped table-sorter">
+		<thead>
+			<tr>
+				<th data-sort-column="name"><%= _.capitalize(lang.name) %></th>
+				<th data-sort-column="code"><%= _.capitalize(lang.code) %></th>					
+				<th><%= _.capitalize(lang.manager) %></th>
+				<th><%= _.capitalize(lang.parentService) %></th>
+				<th class="col-sm-1"><%= _.capitalize(lang.technicalService) %></th>
+			</tr>
+		</thead>
+		<tbody id="rows-items">
+	
+		</tbody>
+	</table>
+	</div>
+
+
+	<!-- Table pagination -->
+	<div id="pagination" class="pull-right"></div>
+	<!-- /Table pagination -->
+
+
+
+
+<!-- Modal Form to add/update a Service -->
+<div id="modalSaveService" class="modal fade" role="dialog" aria-hidden="true"></div>
+
+<!-- Modal Form Delete Service -->
+<div id="modalDeleteService" class="modal fade" role="dialog" aria-hidden="true" data-backdrop="static"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <!-- Modal Form to add a new Serivice -->
-<div id="modalSaveService" class="modal hide fade">
+<div id="modalSavesdfsdfService" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3><%= _.capitalize(lang.actions.addService) %></h3>
@@ -273,7 +169,7 @@
 
 
 <!-- Modal Form Delete Place -->
-<div id="modalDeleteService" class="modal hide fade">
+<div id="modalDeletsdfsdfsdeService" class="modal hide fade">
 	<div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	    <h3>Suppression du service</h3>
@@ -298,7 +194,7 @@
 
 
 <!-- Modal Form to Save a new Officer -->
-<div id="modalSaveOfficer" class="modal hide fade">
+<div id="modalSaveOdsfdsfdsffficer" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3></h3>
@@ -423,7 +319,7 @@
 
 
 <!-- Modal Form Delete officer -->
-<div id="modalDeleteOfficer" class="modal hide fade">
+<div id="modalDelsdfsdfeteOfficer" class="modal hide fade">
 	<div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	    <h3>Suppression de l'agent</h3>

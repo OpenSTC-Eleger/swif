@@ -11,7 +11,7 @@
 		"jQuery-printElement"  : "2.0.0",
 		"Backbone-localstorage": "1.1.6",
 		"Bootstrap"            : "3.0.0",
-		"Underscore-string"    : "2.3.0",
+		"Underscore-string"    : "2.3.2",
 		"Font-awesome"         : "3.2.1",
 		"Fullcalendar"         : "1.6.4",
 		"jQuery-dataTables"    : "1.9.4",

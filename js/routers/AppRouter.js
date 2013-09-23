@@ -204,11 +204,15 @@ app.Router = Backbone.Router.extend({
 
 	/** Services management
 	*/
-	services: function(page){      
+	services: function(search, sort, page){      
 
-		alert('Page en construction');
+		var params = {};
 
-		app.views.servicesListView = new app.Views.ServicesListView({page: self.page});
+		if(!_.isNull(search)){ params.search = search; }
+		if(!_.isNull(sort))  { params.sort = sort; }
+		if(!_.isNull(page))  { params.page = page; }
+
+		app.views.servicesListView = new app.Views.ServicesListView(params);
 	},
 	
 	

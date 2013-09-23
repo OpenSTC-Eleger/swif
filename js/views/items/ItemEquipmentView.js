@@ -5,15 +5,16 @@ app.Views.ItemEquipmentView = Backbone.View.extend({
 
 	tagName     : 'tr',
 
+	className   : 'row-item',
+
 	templateHTML : 'items/itemEquipment',
 	
-	className   : 'row-item',
+
 
 	// The DOM events //
 	events       : {
-		'click a.modalDeleteEquipment'  			: 'modalDeleteEquipment',
-		'click a.modalSaveEquipment'  				: 'modalSaveEquipment',
-
+		'click a.modalDeleteEquipment'  : 'modalDeleteEquipment',
+		'click a.modalSaveEquipment'  	: 'modalSaveEquipment',
 	},
 
 
@@ -22,31 +23,37 @@ app.Views.ItemEquipmentView = Backbone.View.extend({
 	*/
 	initialize : function() {
 		this.model.off();
-		console.log('EquipmentItemView initialization');
-		// When the model are updated //
+		
+		// When the model are updated  or deleted //
 		this.listenTo(this.model, 'change', this.change);
 		this.listenTo(this.model, 'destroy', this.destroy);
 	},
 
 
-	destroy: function(model){
-		var self = this;
-		app.Helpers.Main.highlight($(this.el)).always(function(){
-			self.options.equipments.remove(model);
-			self.remove();
-			app.views.equipmentsListView.partialRender();
 
-		});
-		
-	},
-	
 	/** When the model ara updated //
 	*/
 	change: function(model){
 		this.render();
 		app.Helpers.Main.highlight($(this.el));
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.equipmentUpdateOk);
 
 	},
+
+
+
+	destroy: function(model){
+		var self = this;
+
+		app.Helpers.Main.highlight($(this.el)).done(function(){
+			self.remove();
+			app.views.equipmentsListView.partialRender();
+
+		});
+
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.equipmentDeleteOk);
+	},
+
 
 
 	/** Display the view
@@ -54,76 +61,46 @@ app.Views.ItemEquipmentView = Backbone.View.extend({
 	render : function() {
 		var self = this;
 
-
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
-		 
 			var template = _.template(templateData, {
-				lang                   : app.lang,
-				equipment				: self.model.toJSON()
+				lang  : app.lang,
+				equipment : self.model
 			});
 
 			$(self.el).html(template);
-			$(self.el).attr('id','equipment_' + self.model.toJSON().id.toString());
-			
-			// Set the Tooltip / Popover //$(self.el).html(template);
-			$('*[data-toggle="tooltip"]').tooltip();
-			$('*[rel="popover"]').popover({trigger: 'hover'});
 
-			// Set the focus to the first input of the form //
-//			$('#modalCancelInter').on('shown', function (e) {
-//				$(this).find('input, textarea').first().focus();
-//			})
-			
-			$('tr.row-object').css({ opacity: '1'});
-			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
-			
+			// Set the Tooltip //
+			$('*[data-toggle="tooltip"]').tooltip();
 		});
-		$(this.el).hide().fadeIn('slow'); 
+
 		return this;
 	},
-	
-	expendAccordion: function(){
-		// Retrieve the intervention ID //
-		//var id = _($(e.target).attr('href')).strRightBack('_');
-		var id = this.model.toJSON().id.toString();
 
-		var isExpend = $('#collapse_'+id).hasClass('expend');
 
-		// Reset the default visibility //
-		$('tr.expend').css({ display: 'none' }).removeClass('expend');
-		$('tr.row-object').css({ opacity: '0.45'});
-		$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-		
-		// If the table row isn't already expend //       
-		if(!isExpend){
-			// Set the new visibility to the selected intervention //
-			$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
-			$(this.el).parents('tr.row-object').css({ opacity: '1'});  
-			$(this.el).parents('tr.row-object').children('td').css({ backgroundColor: "#F5F5F5" }); 
-		}
-		else{
-			$('tr.row-object').css({ opacity: '1'});
-			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
-		}
-	},
-	
-	tableAccordion: function(e){
 
-		e.preventDefault();
-		this.expendAccordion();
-		   
-	},
-	
-	modalDeleteEquipment: function(e){
-		new app.Views.ModalDeleteView({model:this.model, el:'#modalDeleteEquipment'});
-	},
-	
+	/** Modal to update an Equipment
+	*/
 	modalSaveEquipment: function(e){
-		new app.Views.ModalEquipmentView({model:this.model,el:'#modalSaveEquipment', equipments:this.options.equipments});
+		new app.Views.ModalEquipmentView({
+			model     : this.model,
+			el        :'#modalSaveEquipment',
+
+		});
+	},
+
+
+
+	/** Modal to remove an Equipment
+	*/
+	modalDeleteEquipment: function(e){
+		new app.Views.ModalDeleteView({
+			el          :'#modalDeleteEquipment',
+			model       :this.model,
+			modalTitle  : app.lang.viewsTitles.deletePlace,
+			modalConfirm: app.lang.warningMessages.confirmDeletePlace
+		});
 	},
 	
 });
