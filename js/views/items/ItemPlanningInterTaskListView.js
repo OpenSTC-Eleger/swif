@@ -70,10 +70,6 @@ app.Views.ItemPlanningInterTaskListView = Backbone.View.extend({
 				$('button.addTask').attr('disabled','disabled');
 			}
 			
-			if(self.model.toJSON().actions.indexOf('plan_unplan') == -1){
-				$('button.addTask').attr('disabled','disabled');
-			}
-			
 		});
 		return this;
 	},
