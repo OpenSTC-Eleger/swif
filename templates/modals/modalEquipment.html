@@ -19,7 +19,7 @@
 				<% } %>
 			</h3>
 		</div>
-		
+
 		<div class="modal-body">
 		
 			<ul class="nav nav-tabs nav-justified">
@@ -39,7 +39,7 @@
 							<label for="equipmentName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 							
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="equipmentName" required value="<%= equipment.getName() %>" />
+								<input type="text" class="form-control" id="equipmentName" required value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getName())%>" />
 							</div>
 						</div>
 
@@ -63,7 +63,7 @@
 							
 							<div class="col-sm-9">		
 								<!-- Equipment code -->
-								<input type="text" id="equipmentCode" class="form-control" value="<%= equipment.getMarque() %>" />
+								<input type="text" id="equipmentCode" class="form-control" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getMarque()) %>" />
 							</div>
 						</div>
 
@@ -75,8 +75,14 @@
 							<label id="labelForEquipmentServicesInternalUse" style="text-decoration:line-through;display:inline-block;" for="equipmentInternalUse"><%= _.capitalize(lang.equipmentInternalUse) %>:</label>
 							</div>
 							<div class="form-controls col-sm-9">
-								<input id="equipmentServicesInternalUse" disabled class="select2" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="multiple"/>
-								<span class="help-inline"></span>
+								<input id="equipmentServicesInternalUse" disabled class="select2" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="multiple"
+
+								<% if(!_.isNull(equipment.getId())){
+									if(!_.isEmpty(equipment.getServices())) { %>
+									data-selected-value='<%= JSON.stringify(equipment.getServices('json')) %>'
+								<% } } %>
+
+								/>
 							</div>
 						</div>
 					
@@ -85,7 +91,14 @@
 							<label for="equipmentMaintenanceServices" class="control-label col-sm-3"><%= _.capitalize(lang.maintenanceServices) %>:</label>
 
 							<div class="col-sm-9">		
-								<input type="text" id="equipmentMaintenanceServices" class="select2" data-multiple="multiple" data-placeholder="<%=lang.actions.selectServices%>"/>
+								<input type="text" id="equipmentMaintenanceServices" class="select2" data-multiple="multiple" data-placeholder="<%=lang.actions.selectServices%>"
+
+								<% if(!_.isNull(equipment.getId())){
+									if(!_.isEmpty(equipment.getMaintenanceServiceNames())) { %>
+									data-selected-value='<%= JSON.stringify(equipment.getMaintenanceServiceNames('json')) %>'
+								<% } } %>
+
+								/>
 							</div>
 						</div>
 					</fieldset>
@@ -97,7 +110,7 @@
 						<div class="form-group">
 							<label for="equipmentImmat" id="equipmentImmatLabel" class="control-label col-sm-3"><%= _.capitalize(lang.immat) %>:</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="equipmentImmat" value="<%= equipment.getImmat() %>" />
+								<input type="text" class="form-control" id="equipmentImmat" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getImmat()) %>" />
 							</div>
 						</div>
 
@@ -106,16 +119,7 @@
 							<label for="equipmentMarque" class="control-label col-sm-3"><%= _.capitalize(lang.marque) %>:</label>
 
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="equipmentMarque" value="<%= (equipment.marque ? equipment.marque : '')%>" />
-							</div>
-						</div>
-
-						<!-- Equipment km -->
-						<div class="form-group" id="equipmentKmBlock">
-							<label for="equipmentKm" class="control-label col-sm-3"><%= _.capitalize(lang.km) %>:</label>
-
-							<div class="col-sm-9">
-								<input type="text" class="form-control" id="equipmentKm" value="<%= equipment.getKm() %>" />
+								<input type="text" class="form-control" id="equipmentMarque" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getMarque()) %>" />
 							</div>
 						</div>
 
@@ -124,61 +128,84 @@
 							<label for="equipmentEnergy" id="equipmentEnergyLabel" class="control-label col-sm-3"><%= _.capitalize(lang.oil) %>:</label>
 
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="equipmentEnergy" value="<%= equipment.getEnergy() %>" />
+								<input type="text" class="form-control" id="equipmentEnergy" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getEnergy()) %>" />
 							</div>
 						</div>
 
 						<!-- Equipment year -->
 						<div class="form-group">
 							<label for="equipmentYear" class="control-label col-sm-3"><%= _.capitalize(lang.year) %>:</label>
-							<div class="col-sm-3">
-								<input type="text" class="form-control" maxlenght="4" id="equipmentYear" value="<%= (equipment.year ? equipment.year : '')%>" />
+							<div class="col-sm-4">
+								<input type="text" class="form-control" maxlenght="4" id="equipmentYear" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getYear()) %>" />
+							</div>
+						</div>
+
+						<!-- Equipment km -->
+						<div class="form-group" id="equipmentKmBlock">
+							<label for="equipmentKm" class="control-label col-sm-3"><%= _.capitalize(lang.km) %>:</label>
+
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="equipmentKm" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getKm()) %>" />
 							</div>
 						</div>
 
 						<!-- Equipment time of use -->
 						<div class="form-group">
-							<label for="equipmentTime" class="control-label col-sm-3"><%= _.capitalize(lang.time) %>:</label>
+							<label for="equipmentTime" class="control-label col-sm-3"><%= _.capitalize(lang.workHours) %>:</label>
 
-							<div class="col-sm-9">
-								<input type="text" class="form-control" id="equipmentTime" value="<%= equipment.getTime() %>" />
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="equipmentTime" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getTime()) %>" />
 							</div>
 						</div>	
 					</fieldset>
 					
 					
+					<!-- Finances Tab -->
 					<fieldset id="formEquipmentFinances" class="tab-pane fade">
 
 						<!-- Equipment Lenght of Amort. -->
 						<div class="form-group">
 							<label for="equipmentLengthAmort" class="control-label col-sm-3"><%= _.capitalize(lang.lengthAmort) %>:</label>
-							<div class="col-sm-9">
-								<input type="text" class="form-control" id="equipmentLengthAmort" value="<%= (equipment.length_amort ? equipment.length_amort : '')%>" />
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="equipmentLengthAmort" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getDateEndWarranty()) %>" />
 							</div>
 						</div>
 
 						<!-- Equipment purchase price -->
 						<div class="form-group">
 							<label for="equipmentPurchasePrice" class="control-label col-sm-3"><%= _.capitalize(lang.purchasePrice) %>:</label>
-							<div class="col-sm-9">
-								<input type="text" class="form-control" id="equipmentPurchasePrice" value="<%= equipment.getPurchasePrice() %>" />
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="equipmentPurchasePrice" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getDateEndWarranty()) %>" />
 							</div>
 						</div>
 
 						<!-- Equipment hour price -->
 						<div class="form-group">
 							<label for="equipmentHourPrice" class="control-label col-sm-3"><%= _.capitalize(lang.hourPrice) %>:</label>
-							<div class="col-sm-9">
-								<input type="text" class="form-control" id="equipmentHourPrice" value="<%= (equipment.hour_price ? equipment.hour_price : '')%>" />
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="equipmentHourPrice" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getDateEndWarranty()) %>" />
 							</div>
 						</div>
 
+						<!-- Intervention DeadLine -->
 						<div class="form-group">
-							<label for="equipmentWarranty" class="control-label col-sm-3"><%= _.capitalize(lang.warranty) %>:</label>
-							<div class="col-sm-9">
-								<input type="text" class="form-control" id="equipmentWarranty" value="<%= equipment.getWarranty() %>" />
+							<label for="equipmentWarranty" class="control-label col-sm-3"><%= _.capitalize(lang.dateDeadline) %>:</label>
+							<div class="col-sm-4">
+								<div class="input-group">
+								<input 
+									type="text" class="datepicker form-control"
+									id="equipmentWarranty" 
+									value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getDateEndWarranty()) %>" 
+									placeholder="dd/mm/yyyy"
+									required>
+									<span class="input-group-addon"><i class="icon-calendar"></i></span>
+								</div>
 							</div>
 						</div>
+
+
+
+
 					</fieldset>
 					
 				</div>

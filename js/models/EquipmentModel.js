@@ -5,7 +5,7 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 	
 	urlRoot: "/api/openstc/equipments",
 	
-	fields : ['id', 'name', 'maintenance_service_ids', 'internal_use', 'service_ids', 'immat', 'marque', 'usage', 'type', 'cv', 'year', 'time', 'km', 'energy_type', 'length_amort', 'purchase_price', 'default_code', 'categ_id', 'service_names', 'maintenance_service_names', 'complete_name', 'warranty', 'hour_price'],
+	fields : ['id', 'name', 'maintenance_service_ids', 'internal_use', 'immat', 'marque', 'usage', 'type', 'cv', 'year', 'time', 'km', 'energy_type', 'length_amort', 'purchase_price', 'default_code', 'categ_id', 'service_names', 'maintenance_service_names', 'complete_name', 'warranty', 'hour_price'],
 
 
 	searchable_fields: [
@@ -36,18 +36,70 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 	},  
 
 	//service IDs //
-	getServicesId: function() {
-		return this.get('service_ids');
+	getServices : function(type){
+
+		var equipmentServices = [];
+
+		_.each(this.get('service_names'), function(s){
+			switch (type){
+				case 'id': 
+					equipmentServices.push(s[0]);
+				break;
+				case 'json': 
+					equipmentServices.push({id: s[0], name: s[1]});
+				break;
+				default:
+					equipmentServices.push(s[1]);
+			}
+		});
+
+		if(type == 'string'){
+			return _.toSentence(equipmentServices, ', ', ' '+app.lang.and+' ')
+		}
+		else{
+			return equipmentServices;
+		}
 	},
-	setServicesID : function(value) {
-		this.set({ service_ids : value });
+	setServices : function(value, silent) {
+		this.set({ service_ids : [[6, 0, value]] }, {silent: silent});
 	},
 
+
+	getMaintenanceServiceNames : function(type){
+
+		var equipmentServices = [];
+
+		_.each(this.get('maintenance_service_names'), function(s){
+			switch (type){
+				case 'id': 
+					equipmentServices.push(s[0]);
+				break;
+				case 'json': 
+					equipmentServices.push({id: s[0], name: s[1]});
+				break;
+				default:
+					equipmentServices.push(s[1]);
+			}
+		});
+
+		if(type == 'string'){
+			return _.toSentence(equipmentServices, ', ', ' '+app.lang.and+' ')
+		}
+		else{
+			return equipmentServices;
+		}
+	},
+
+
 	getMarque : function() {
-		return this.get('code');
+		return this.get('marque');
 	},
 	setMarque : function(value) {
 		this.set({ marque : value });
+	},
+
+	getCode : function(value) {
+		return this.get('default_code');
 	}, 
 
 	getType : function() {
@@ -89,7 +141,7 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 	}, 
 
 	getKm : function() {
-		return this.get('km');
+		return _.numberFormat(this.get('km'), 0, '.', ' ');
 	},
 	setKm : function(value) {
 		this.set({ km : value });
@@ -112,7 +164,7 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 	},
 
 	getTime : function() {
-		return this.get('time');
+		return _.numberFormat(this.get('time'), 0, '.', ' ');
 	},
 	setTime : function(value) {
 		this.set({ time : value });
@@ -148,7 +200,7 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 
 	getPurchasePrice: function(){
 		return this.get('purchase_price');
-	}
+	},
 
 
 	/** Get Informations of the model

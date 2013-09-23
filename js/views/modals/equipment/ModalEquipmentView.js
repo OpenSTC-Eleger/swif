@@ -63,6 +63,8 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 
 			self.modal.html(template);
 
+			console.log(self.model);
+
 
 			if(!loader){
 				self.selectEquipmentCategory = new app.Views.AdvancedSelectBoxView({el:'#equipmentCategory', collection: app.Collections.EquipmentsTypes.prototype});
@@ -73,6 +75,9 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 
 				self.selectEquipmentMaintenanceServices = new app.Views.AdvancedSelectBoxView({el:'#equipmentMaintenanceServices', collection: app.Collections.ClaimersServices.prototype});
 				self.selectEquipmentMaintenanceServices.render();
+
+				// Enable the datePicker //
+				$('input.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
 			}
 
 			self.modal.modal('show');
@@ -157,21 +162,28 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 //				warranty: $('#equipmentWarranty').val(),
 		}
 
-		this.model.save(params,{patch:!this.create, silent:true, wait:true}).done(function(data){
-			if(self.create){
-				self.model.set('id', data, {silent:true});
-				self.model.fetch().done(function(){
-					self.options.equipments.add(self.model);
-				});
-			}
-			else{
-				self.model.fetch();
-			}
-			self.modal.modal('hide');
-		})
-		.fail(function(e){
-			console.log(e);
-		});
+
+		this.model.save(params)
+			.done(function(data) {
+				self.modal.modal('hide');
+
+				// Create mode //
+				if(self.model.isNew()) {
+					self.model.setId(data);
+					self.model.fetch({silent: true, data : {fields : app.Collections.Equipments.prototype.fields} }).done(function(){
+						app.views.app.views.equipmentsListView.collection.add(self.model);
+					})
+				// Update mode //
+				} else {
+					self.model.fetch({ data : {fields : self.model.fields} });
+				}
+			})
+			.fail(function (e) {
+				console.log(e);
+			})
+			.always(function () {
+				$(self.el).find("button[type=submit]").button('reset');
+			});
 		
 	}
 	

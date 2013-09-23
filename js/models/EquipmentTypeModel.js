@@ -3,9 +3,10 @@
 */
 app.Models.EquipmentType = app.Models.GenericModel.extend({
     
-	model_name : 'product.category',
-	
 	urlRoot: "/api/openstc/equipment_categories",
+
+	fields : ['id', 'name', 'is_equipment', 'is_vehicle'],
+
 
 	/** Model Initialization
 	*/

@@ -3,11 +3,12 @@
 */
 app.Collections.EquipmentsTypes = app.Collections.GenericCollection.extend({
 
-	model       : app.Models.EquipmentType,
+	model  : app.Models.EquipmentType,
 	
-	url         : '/api/openstc/equipment_categories',
+	url    : '/api/openstc/equipment_categories',
 	
-	default_sort: { by: 'name', order: 'ASC' },
+	fields : ['id', 'name', 'is_equipment', 'is_vehicle'],
+
 
 
 	/** Collection Initialization
