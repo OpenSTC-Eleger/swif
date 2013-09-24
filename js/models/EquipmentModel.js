@@ -5,7 +5,7 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 	
 	urlRoot: "/api/openstc/equipments",
 	
-	fields : ['id', 'name', 'maintenance_service_ids', 'internal_use', 'immat', 'marque', 'usage', 'type', 'cv', 'year', 'time', 'km', 'energy_type', 'length_amort', 'purchase_price', 'default_code', 'categ_id', 'service_names', 'maintenance_service_names', 'complete_name', 'warranty', 'hour_price'],
+	fields : ['id', 'name', 'maintenance_service_ids', 'internal_use', 'immat', 'marque', 'usage', 'type', 'cv', 'year', 'time', 'km', 'energy_type', 'length_amort', 'purchase_price', 'default_code', 'categ_id', 'service_names', 'maintenance_service_names', 'complete_name', 'warranty_date','built_date','purchase_date', 'hour_price'],
 
 
 	searchable_fields: [
@@ -159,9 +159,6 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		this.set({ year : value });
 	},
 
-	getWarranty: function(){
-		return this.get('warranty');
-	},
 
 	getTime : function() {
 		return _.numberFormat(this.get('time'), 0, '.', ' ');
@@ -202,9 +199,62 @@ app.Models.Equipment = app.Models.GenericModel.extend({
 		return this.get('purchase_price');
 	},
 
-
+	getDateEndWarranty: function(type){
+		var format = type;
+		if(_.isUndefined(format)){
+			format = 'YYYY-MM-DD';
+		}
+		ret = this.get('warranty_date');
+		if(!ret){
+			return '';
+		}
+		else{
+			return moment(ret).format(format);
+		}
+	},
+	
+	getBuiltDate: function(type){
+		var format = type;
+		if(_.isUndefined(format)){
+			format = 'YYYY-MM-DD';
+		}
+		ret = this.get('built_date');
+		if(!ret){
+			return '';
+		}
+		else{
+			return moment(ret).format(format);
+		}
+	},
+	
+	getPurchaseDate: function(type){
+		var format = type;
+		if(_.isUndefined(format)){
+			format = 'YYYY-MM-DD';
+		}
+		ret = this.get('purchase_date');
+		if(!ret){
+			return '';
+		}
+		else{
+			return moment(ret).format(format);
+		}
+	},
+	
+	getHourPrice: function(){
+		return this.get('hour_price');
+	},
+	
+	getInternalUse: function(){
+		return this.get('internal_use');
+	},
+	
 	/** Get Informations of the model
 	*/
+	getLengthAmort: function(){
+		return this.get('length_amort');
+	},
+	
 	getInformations : function(){
 		var informations = {};
 

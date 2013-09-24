@@ -134,7 +134,7 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 				//fill data with equipment and location
 				$('#interPlaceOrEquipment').html(interJSON.equipment_id[1]);
 				$('#interPlace').html(interJSON.site1[1]);
-				$('#printPlaceOrEquipmentLabel').html(app.lang.equipment + ':');
+				$('#printPlaceOrEquipmentLabel').html(app.lang.equipmentOrVehicle + ':');
 				$('#printPlaceLabel').html(app.lang.location + ':');
 				
 			}

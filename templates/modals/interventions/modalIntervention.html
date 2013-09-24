@@ -60,7 +60,7 @@
 									<input 
 										type="text" class="form-control datepicker"
 										id="interventionDateDeadline" 
-										value=""
+										value="<%= deadLineDt.format('L') %>"
 										placeholder="dd/mm/yyyy"
 										required>
 										<span class="input-group-addon"><i class="icon-calendar"></i></span>
@@ -92,7 +92,7 @@
 									</ul>
 								</div>
 									<input id="interventionPlaceEquipment" class="select2"
-									required data-placeholder="<%= lang.actions.selectAPlaceShort %>"/>
+									required data-placeholder="<%= lang.actions.selectAPlace %>"/>
 		                        <span class="help-inline"></span>
 		                    </div>
 	                    </div>

@@ -27,9 +27,9 @@
 		<!-- Switch button - To Scheduled / Scheduled -->
 		<% if(intervention.tasks.length != 0 && intervention.state != app.Models.Intervention.status.template.key) { %>
 
-			<div class="calendarSwitch pull-right make-switch " data-text-label="<%=_.capitalize(lang.actions.validate) %>" 
-				id="switch-<%= intervention.id %>"
-				data-on-label="<i class='icon-ok icon-white'></i>" data-off-label="<i class='icon-remove icon-white'></i>">
+			<div class="calendarSwitch pull-right make-switch " data-label-icon="icon-fullscreen" data-toggle="tooltip" data-original-title="<%= lang.toScheduled + "/" + lang.planningFenced %>"
+				id="switch-<%= intervention.id %>" data-text
+				data-on-label="<i class='icon-ok icon-white'></i>" data-off-label="<i class='icon-remove'></i>">
 
 				<input type="checkbox" 
 					<% if(intervention.state == app.Models.Intervention.status.scheduled.key){ %>
@@ -39,7 +39,8 @@
 					<% if(intervention.actions.indexOf("plan_unplan") == -1){ %>
 						disabled
 					 <% } %>
-					/>
+					 <i class="icon-pencil icon-large"></i>
+					</input>
 			 </div>
 
 		<% } %>

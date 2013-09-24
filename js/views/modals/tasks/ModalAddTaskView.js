@@ -133,11 +133,13 @@ app.Views.ModalAddTaskView = app.Views.GenericModalView.extend({
 									if(vehicle_names != null){
 										console.log('Error: There is more than one vehicle linked to the task');
 									}
+									//remove vehicle from equipment_names and keep it for vehicle selectBox
 									vehicle_names = equipment_names.splice(i,1)[0];
 								}
 							});
 				    		self.selectListVehicleView.setSelectedItem(vehicle_names);
 						}
+						//format equipment_names to be used with AdvancedSelectBox
 						_.each(equipment_names, function(item,i){
 							equipment_names[i] = {id:item[0],name: item[1]};
 						});
@@ -245,6 +247,7 @@ app.Views.ModalAddTaskView = app.Views.GenericModalView.extend({
 		this.initSearchParams();
 		if(value){
 			var item = $('#taskSelectUsersTeams').data('item');
+			//get model according to select button 'team/officer'
 			var model = null;
 			if(item == 'teams'){
 				model = new app.Models.Team();
@@ -252,10 +255,13 @@ app.Views.ModalAddTaskView = app.Views.GenericModalView.extend({
 			else{
 				model = new app.Models.Officer();
 			}
+			//get service_ids of the model to filter equipments with it
 			model.set('id',value);
 			model.fetch().done(function(){
 				//base filter for equipments
 				var filterEquipment = {field: 'service_ids', operator:'=?', value:'False'};
+				//if services_ids has a value: filter = ('service_ids' '=' false OR 'service_ids.ids' '=' services)
+				//else: filter = ('service_ids' '=' false)
 				if(model.get('service_ids').length>0){
 					var filter = {field: 'service_ids.id', operator:'in', value:model.get('service_ids')};
 					self.selectListVehicleView.setSearchParam('|');
@@ -285,6 +291,7 @@ app.Views.ModalAddTaskView = app.Views.GenericModalView.extend({
 			
 			this.selectListOfficersTeamsView.collection = app.Collections.Officers.prototype;
 			this.selectListOfficersTeamsView.reset();
+			this.selectListOfficersTeamsView.setSearchParam({field:'id',operator:'>',value:'1'},true);
 			this.selectListOfficersTeamsView.render();
 		}
 		else if(itemToLoad == 'teams'){
@@ -294,6 +301,7 @@ app.Views.ModalAddTaskView = app.Views.GenericModalView.extend({
 
 			this.selectListOfficersTeamsView.collection = app.Collections.Teams.prototype;
 			this.selectListOfficersTeamsView.reset();
+			this.selectListOfficersTeamsView.resetSearchParams();
 			this.selectListOfficersTeamsView.render();
 		}
 	},

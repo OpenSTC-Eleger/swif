@@ -64,8 +64,14 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 		var self = this;
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
+				var modelJSON = self.model.toJSON();
+				var deadLineDt = modelJSON.date_deadline!=false ? moment( modelJSON.date_deadline ).tz(app.models.user.getContext().tz) : moment().tz(app.models.user.getContext().tz);
+				deadLineDt.add('minutes',-deadLineDt.zone());
 				
-				var template = _.template(templateData, {lang: app.lang, intervention: self.model.toJSON()});
+				var template = _.template(templateData, {
+					lang: app.lang, intervention	: modelJSON,
+					deadLineDt						: deadLineDt
+				});
 				
 				self.modal.html(template);
 				self.modal.modal('show');
@@ -281,29 +287,28 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 	
     //when clicking on site or equipment select filter, update selectBox collection if data-item change
     setSelectPlaceEquipment: function(item){
-    	var itemSelectedBefore = $('#btnSelectPlaceEquipment').data('item');
+    	var itemSelectedBefore = $('#interventionPlaceEquipment').data('item');
     	//if user wants to change type of collection, we update selectBox, else, do nothing
     	if(item != itemSelectedBefore){
     		//if user wants to switch to equipment, we display place selectBox too, else, we hide it
     		this.displaySiteIfEquipment(item != 'place');
     		//get parameters of the select2 to keep trace of its state
     		var collection = null;
-    		var el = this.advancedSelectBoxInterventionPlaceOrEquipment.el;
     		if(item == 'place'){
-    			$('#interventionPlaceEquipment').attr('data-placeholder',app.lang.actions.selectAPlaceShort);
+    			$('#interventionPlaceEquipment').attr('data-placeholder',app.lang.actions.selectAPlace);
     			collection = app.Collections.Places.prototype;
     			$('#btnSelectPlaceEquipment').data('item', 'place');
     			$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('icon-wrench');
     			$('#btnSelectPlaceEquipment').find('.iconItem').addClass('icon-map-marker');
     		}
     		else{
-    			$('#interventionPlaceEquipment').attr('data-placeholder',app.lang.actions.selectAnEquipmentShort);
+    			$('#interventionPlaceEquipment').attr('data-placeholder',app.lang.actions.selectAnEquipment);
     			collection = app.Collections.Equipments.prototype;	    			
     			$('#btnSelectPlaceEquipment').data('item', 'equipment');
     			$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('icon-map-marker');
     			$('#btnSelectPlaceEquipment').find('.iconItem').addClass('icon-wrench');
     		}
-    		this.advancedSelectBoxInterventionPlaceOrEquipment = new app.Views.AdvancedSelectBoxView({el:el, collection:collection});
+    		this.advancedSelectBoxInterventionPlaceOrEquipment.collection = collection;
 			this.setParamOnSitesEquipments();
 			this.advancedSelectBoxInterventionPlaceOrEquipment.render();
     	}
