@@ -108,6 +108,9 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 		return this;
 	},
 	
+	/**
+	 * Remove item in term of status filter
+	 */
     itemIsToRemove: function(model){
 		var state = model.toJSON().state;
 		if( !_.isUndefined( app.views.planningInterListView.filterValue ) ){

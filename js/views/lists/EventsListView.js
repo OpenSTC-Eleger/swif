@@ -378,7 +378,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			    newEvent.remaining_hours =  (event.remaining_hours + (minuteDelta)/60);
 			   
 				model.save(params, {patch: true, silent: true})
-					.done(function(ids) {
+					.done(function(data) {
 						//If task has intervention (absent task has no intervention)
 						if( model.toJSON().project_id != false )
 							self.collections.interventions.get(model.toJSON().project_id[0]).fetch();
@@ -423,7 +423,8 @@ app.Views.EventsListView = Backbone.View.extend({
     	this.events = [];
     	var self = this;
     	
-    	_.each(this.collection.toJSON() , function (task, i){
+    	_.each(this.collection.models , function (model, i){
+    		var task = model.toJSON();
     		var actionDisabled = task.state == app.Models.Task.status.done.key || task.state == app.Models.Task.status.cancelled.key;
 
     		var title = task.name;
@@ -447,11 +448,15 @@ app.Views.EventsListView = Backbone.View.extend({
     		var dtStart = task.date_start!=false ? moment( task.date_start ).tz(app.models.user.getContext().tz) : null
     		var dtEnd = task.date_end!=false ? moment( task.date_end ).tz(app.models.user.getContext().tz) : null		    		
     		
+
     		//prepare event for calendar
     		var event = { 
     			id: task.id, 
 				state: task.state,
 				title: title,
+				inter_desc: task.inter_desc,
+				inter_name: model.getIntervention(),
+				inter_site: model.getSite(),
 				start: dtStart.add('minutes',-dtStart.zone()).format(),
 				end: dtEnd.add('minutes',-dtStart.zone()).format(),
 				planned_hours: task.planned_hours,
@@ -482,13 +487,13 @@ app.Views.EventsListView = Backbone.View.extend({
 		if ( _.isUndefined(app.views.printingCalendarView) ){
 			app.views.printingCalendarView = new app.Views.PrintingCalendarView({
 				calendar : this,
-				events : this.collection.toJSON(),
+				events : this.events,
 			})
 		}
 		else {
 			app.views.printingCalendarView.close();
 			app.views.printingCalendarView.calendar = this;
-			app.views.printingCalendarView.events = this.collection.toJSON();
+			app.views.printingCalendarView.events = this.events;
 		}
 		$('#printingCalendar').html(app.views.printingCalendarView.render().el);
 	},
