@@ -12,9 +12,13 @@ app.Views.TasksListView = app.Views.GenericListView.extend({
 	// The DOM events //
 	events: {
 		'click .btn.addTask'            : 'displayModalAddTask',
-		'change #filterListAgents' 		: 'setFilter'
+		'change #filterListAgents' 		: 'setFilter',
+		'click .linkNextWeek'			: 'goToNextWeek',
+		'click .linkPreviousWeek'		: 'goToPreviousWeek'
 	},
 
+	urlParameters: _.union(app.Views.GenericListView.prototype.urlParameters, ['year','week']),
+	
 	/** View Initialization
 	*/
 	initialize: function () {
@@ -215,6 +219,7 @@ app.Views.TasksListView = app.Views.GenericListView.extend({
 						});
 	
 						self.selectListFilterOfficerView = new app.Views.AdvancedSelectBoxView({el: $("#filterListAgents"), collection: app.Collections.Officers.prototype})
+						self.selectListFilterOfficerView.setSearchParam({field:'id',operator:'>',value:'1'});
 						self.selectListFilterOfficerView.render();
 	
 						// Collapse border style //

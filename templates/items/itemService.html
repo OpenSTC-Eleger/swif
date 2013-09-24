@@ -9,13 +9,13 @@
 		<% } %>
 
 		<% if(_.contains(service.getActions(), 'delete')){ %>
-		<a href="#" class="modalDeleteService">
+		<!-- <a href="#" class="modalDeleteService">
 			<i class="icon-trash icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
-		</a>
+		</a> -->
 		<% } %>
 	</p>
 </td>
-<td><%= service.getCode() %></td>
-<td><%= service.getManager() %></td>
-<td><%= service.getParentService() %></td>
-<td class="text-center"><%= (service.isTechnical() ? '<i class="icon-ok"></i>' : '') %></td>
+<td data-form-id="serviceCode"><%= service.getCode() %></td>
+<td data-form-id="serviceManager"><%= service.getManager() %></td>
+<td data-form-id="serviceParentService"><%= service.getParentService() %></td>
+<td data-form-id="serviceIsTechnical" class="text-center"><%= (service.isTechnical() ? '<i class="icon-ok"></i>' : '') %></td>

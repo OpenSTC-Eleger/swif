@@ -40,7 +40,7 @@
 	},
 
 	"tasks": {
-		"url"		: "taches(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)(/:year)(/:week)",
+		"url"		: "taches(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)(/year/:year)(/week/:week)",
 		"function"	: "tasksCheck"
 	},
 
@@ -85,7 +85,7 @@
 	},
 
 	"equipments": {
-		"url"		: "materiels(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"url"		: "equipements(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"	: "equipments"
 	}
 
