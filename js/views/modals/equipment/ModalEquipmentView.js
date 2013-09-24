@@ -65,14 +65,21 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 
 			console.log(self.model);
 
-
 			if(!loader){
 				self.selectEquipmentCategory = new app.Views.AdvancedSelectBoxView({el:'#equipmentCategory', collection: app.Collections.EquipmentsTypes.prototype});
+				self.selectEquipmentCategory.setSearchParam('|',true);
+				self.selectEquipmentCategory.setSearchParam({field:'is_vehicle',operator:'=',value:true});
+				self.selectEquipmentCategory.setSearchParam({field:'is_equipment',operator:'=',value:true});
 				self.selectEquipmentCategory.render();
 
 				self.selectEquipmentServicesInternalUse = new app.Views.AdvancedSelectBoxView({el:'#equipmentServicesInternalUse', collection: app.Collections.ClaimersServices.prototype});
+				self.selectEquipmentServicesInternalUse.resetSearchParams();
 				self.selectEquipmentServicesInternalUse.render();
-
+				//initialize value of internal_use and views updates linked with
+				if(!_.isNull(self.model)){
+					self.changeEquipmentInternalUse(self.model.getInternalUse());
+				}
+				
 				self.selectEquipmentMaintenanceServices = new app.Views.AdvancedSelectBoxView({el:'#equipmentMaintenanceServices', collection: app.Collections.ClaimersServices.prototype});
 				self.selectEquipmentMaintenanceServices.render();
 
@@ -142,6 +149,14 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 	saveEquipment: function(e){
 		e.preventDefault();
 		var self = this;
+		function formatDate(frDate){
+			if(frDate != false && frDate != ''){
+				return moment(frDate).format('YYYY-MM-DD');
+			}
+			else{
+				return false;
+			}
+		}
 		
 		params = {
 				name: $('#equipmentName').val(),
@@ -152,18 +167,20 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 				maintenance_service_ids: [[6,0,this.selectEquipmentMaintenanceServices.getSelectedItems()]],
 				immat: $('#equipmentImmat').val(),
 				marque: $('#equipmentMarque').val(),
-				km: $('#equipmentKm').val(),
+				km: parseInt($('#equipmentKm').val().replace(' ','')),
 				energy_type: $('#equipmentEnergy').val(),
-				year: $('#equipmentYear').val(),
+//				year: $('#equipmentYear').val(),
+				built_date: formatDate($('equipmentBuiltDate').val()),
 				time: $('#equipmentTime').val(),
 				length_amort: $('#equipmentLengthAmort').val(),
+				purchase_date: formatDate($('#equipmentPurchaseDate').val()),
 				purchase_price: $('#equipmentPurchasePrice').val(),
-//				hour_price: $('#equipmentHourPrice').val(),
-//				warranty: $('#equipmentWarranty').val(),
+				hour_price: $('#equipmentHourPrice').val(),
+				warranty_date: formatDate($('#equipmentWarranty').val())
 		}
 
 
-		this.model.save(params)
+		this.model.save(params, {patch:!this.model.isNew()})
 			.done(function(data) {
 				self.modal.modal('hide');
 
@@ -171,7 +188,7 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 				if(self.model.isNew()) {
 					self.model.setId(data);
 					self.model.fetch({silent: true, data : {fields : app.Collections.Equipments.prototype.fields} }).done(function(){
-						app.views.app.views.equipmentsListView.collection.add(self.model);
+						app.views.equipmentsListView.collection.add(self.model);
 					})
 				// Update mode //
 				} else {

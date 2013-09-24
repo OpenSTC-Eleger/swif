@@ -85,7 +85,7 @@
 	},
 
 	"equipments": {
-		"url"		: "materiels(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"url"		: "equipements(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"	: "equipments"
 	}
 
