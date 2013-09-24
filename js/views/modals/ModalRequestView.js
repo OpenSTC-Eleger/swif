@@ -238,7 +238,7 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 		this.model.setDescription($('#requestDescription').val(), true);
 		this.model.setPlaceDetails($('#requestPlacePrecision').val(), true);
 
-		
+
 		// On Place //
 		if($('#switchPlaceEquipment').bootstrapSwitch('status')){
 			this.model.setOnEquipment(false, true);

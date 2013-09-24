@@ -90,7 +90,8 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 		app.views.modalPlaceView = new app.Views.ModalPlaceView({
 			el      : '#modalSavePlace',
-			model   : this.model
+			model   : this.model,
+			elFocus : $(e.target).data('form-id')
 		});
 	},
 

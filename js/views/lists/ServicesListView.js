@@ -9,7 +9,7 @@ app.Views.ServicesListView = app.Views.GenericListView.extend({
     // The DOM events  //
 	events: function(){
 		return _.defaults({
-			'click a.modalCreatePlace' : 'modalCreateService',
+			'click a.modalCreateService' : 'modalCreateService',
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -54,12 +54,12 @@ app.Views.ServicesListView = app.Views.GenericListView.extend({
     	var self = this;
 		
 		// Change the page title //
-        app.router.setPageTitle(app.lang.viewsTitles.servicesList);
+		app.router.setPageTitle(app.lang.viewsTitles.servicesList);
 
-        // Change the active menu item //
-        app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
+		// Change the active menu item //
+		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
 
-	
+
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -74,9 +74,9 @@ app.Views.ServicesListView = app.Views.GenericListView.extend({
 			app.Views.GenericListView.prototype.render(self.options);
 
 
-			// Create item place view //
-			_.each(self.collection.models, function(place, i){
-				var itemServiceView  = new app.Views.ItemServiceView({model: place});
+			// Create item service view //
+			_.each(self.collection.models, function(service, i){
+				var itemServiceView  = new app.Views.ItemServiceView({model: service});
 				$('#rows-items').append(itemServiceView.render().el);
 			});
 
@@ -92,13 +92,25 @@ app.Views.ServicesListView = app.Views.GenericListView.extend({
 		$(this.el).hide().fadeIn();
 		
         return this;
-    },  
+    },
+
+
+    /** Partial Render of the view
+	*/
+	partialRender: function (type) {
+		var self = this; 
+
+		this.collection.count(this.fetchParams).done(function(){
+			$('#badgeNbServices').html(self.collection.cpt);
+			app.views.paginationView.render();
+		});
+	},
 
     
 
 	/** Modal form to create a new Service
 	*/
-	modalCreatePlace: function(e){
+	modalCreateService: function(e){
 		e.preventDefault();
 		
 		app.views.modalServiceView = new app.Views.ModalServiceView({

@@ -27,14 +27,18 @@ app.Views.ItemServiceView = Backbone.View.extend({
 		this.listenTo(this.model, 'change', this.change);
 
 		// When the model are destroy //
-		this.listenTo(this.model,'destroy', this.destroy);
+		this.listenTo(this.model, 'destroy', this.destroy);
 	},
 
 
 
 	/** When the model is updated //
 	*/
-	change: function(e){
+	change: function(model){
+
+		this.model = model;
+
+		console.log(model);
 
 		this.render();
 		app.Helpers.Main.highlight($(this.el));
@@ -85,12 +89,15 @@ app.Views.ItemServiceView = Backbone.View.extend({
 
 	/** Display Modal form to add/sav a new service
 	*/
-	modalUpdateService: function(e){  
+	modalUpdateService: function(e){
 		e.preventDefault(); e.stopPropagation();
+
+		console.log('Update du service');
 
 		app.views.modalServiceView = new app.Views.ModalServiceView({
 			el      : '#modalSaveService',
-			model   : this.model
+			model   : this.model,
+			elFocus : $(e.target).data('form-id')
 		});
 	},
 
