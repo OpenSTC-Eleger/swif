@@ -64,8 +64,14 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 		var self = this;
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
+				var modelJSON = self.model.toJSON();
+				var deadLineDt = modelJSON.date_deadline!=false ? moment( modelJSON.date_deadline ).tz(app.models.user.getContext().tz) : moment().tz(app.models.user.getContext().tz);
+				deadLineDt.add('minutes',-deadLineDt.zone());
 				
-				var template = _.template(templateData, {lang: app.lang, intervention: self.model.toJSON()});
+				var template = _.template(templateData, {
+					lang: app.lang, intervention	: modelJSON,
+					deadLineDt						: deadLineDt
+				});
 				
 				self.modal.html(template);
 				self.modal.modal('show');
