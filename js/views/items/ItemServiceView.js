@@ -12,6 +12,7 @@ app.Views.ItemServiceView = Backbone.View.extend({
 
 	// The DOM events //
 	events: {
+		'click a.collapseLink'       : 'collapseOfficers',
 		'click'                      : 'modalUpdateService',
 		'click a.modalDeleteService' : 'modalDeleteService'
 	},
@@ -37,8 +38,6 @@ app.Views.ItemServiceView = Backbone.View.extend({
 	change: function(model){
 
 		this.model = model;
-
-		console.log(model);
 
 		this.render();
 		app.Helpers.Main.highlight($(this.el));
@@ -115,5 +114,15 @@ app.Views.ItemServiceView = Backbone.View.extend({
 			modalConfirm : app.lang.warningMessages.confirmDeleteService
 		});
 	},
+
+
+
+	/** Display or not the Officer List
+	*/
+	collapseOfficers: function(e){
+		e.preventDefault(); e.stopPropagation();
+
+		this.options.officersListView.collapse();
+	}
 
 });

@@ -15,7 +15,7 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 	},
 
 	/** View Initialization
-	 */
+	*/
 	initialize      : function () {
 
 	},

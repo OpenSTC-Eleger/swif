@@ -20,3 +20,17 @@
 
 // New color //
 .table-row-variant(info; @state-info-bg; @state-info-border);
+
+
+/* Table Striped collapse 
+-------------------------------------------------- */
+.table-striped-collapse{
+	> tbody {
+	    > tr:nth-child(4n+1) {
+	      > td,
+	      > th {
+	        background-color: @table-bg-accent;
+	      }
+	    }
+	  }
+}

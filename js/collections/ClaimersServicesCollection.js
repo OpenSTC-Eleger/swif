@@ -7,7 +7,7 @@ app.Collections.ClaimersServices = app.Collections.GenericCollection.extend({
 
 	url          : '/api/openstc/departments',
 
-	fields       : ['id', 'name', 'code', 'service_id', 'technical', 'manager_id', 'actions'],
+	fields       : ['id', 'name', 'code', 'service_id', 'technical', 'manager_id', 'user_ids', 'actions'],
 
 	default_sort : { by: 'name', order: 'ASC' },
 

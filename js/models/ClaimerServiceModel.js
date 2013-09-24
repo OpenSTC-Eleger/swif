@@ -85,6 +85,11 @@ app.Models.ClaimerService = app.Models.GenericModel.extend({
 	},
 
 
+    getUsersId: function(){
+		return this.get('user_ids');
+	},
+
+
     getActions: function(){
 		return this.get('actions');
 	},

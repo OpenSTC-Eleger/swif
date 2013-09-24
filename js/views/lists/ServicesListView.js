@@ -6,7 +6,7 @@ app.Views.ServicesListView = app.Views.GenericListView.extend({
 	templateHTML: 'servicesList',
 	
 
-    // The DOM events  //
+	// The DOM events  //
 	events: function(){
 		return _.defaults({
 			'click a.modalCreateService' : 'modalCreateService',
@@ -76,8 +76,12 @@ app.Views.ServicesListView = app.Views.GenericListView.extend({
 
 			// Create item service view //
 			_.each(self.collection.models, function(service, i){
-				var itemServiceView  = new app.Views.ItemServiceView({model: service});
+
+				var officersListView = new app.Views.OfficersListView({model: service});
+				var itemServiceView  = new app.Views.ItemServiceView({model: service, officersListView: officersListView});
+
 				$('#rows-items').append(itemServiceView.render().el);
+				$('#rows-items').append(officersListView.render().el);
 			});
 
 
