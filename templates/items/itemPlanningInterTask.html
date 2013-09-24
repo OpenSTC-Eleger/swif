@@ -17,7 +17,7 @@
 		<% } %>
 		<% if(task.actions.indexOf("cancel") > -1) { %>
 				<a href="#" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonCancelTask">
-					<i class="icon-ban-circle icon-fixed-width">&nbsp;</i>
+					<i class="icon-ban-circle displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>">&nbsp;</i>
 				</a>
 		<%}%>
 	</small>

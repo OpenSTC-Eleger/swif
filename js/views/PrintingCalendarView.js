@@ -43,7 +43,7 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 	/** Print Calendar
 	*/
 	printCalendar: function () {
-		var date = moment( $(this.divCalendar).fullCalendar('getView').visStart );			
+		var date = moment( $(this.calendar.divCalendar).fullCalendar('getView').visStart );			
 		var momentDate = moment().year(date.year()).week(date.week());
 		
 		var firstDayOfTheWeek = momentDate.clone().day(1);
@@ -84,12 +84,12 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 		
 		
 	    _.each(tasks, function(task){ 
-	    	var inter = task.intervention;
 	    	
 	    	task["day"] = self.getDay(task.date_start);	    	
-	    	task["inter"] = ( inter!=null)?inter.name:"" ;
-	    	task["name"] = task.name;
-	    	task["place"] = ( inter!=null && inter.site1!=null && inter.site1[1] )?inter.site1[1]:"" ;
+	    	task["inter"] = task.inter_name != false ? task.inter_name :'' ;
+	    	task["description"] = task.inter_desc != false ? task.inter_desc :'';
+	    	task["name"] = task.title;
+	    	task["place"] = task.inter_site != false ? task.inter_site :'';;
 	    	task["done"] = ( task.state == app.Models.Task.status.done.key  ? true : false );
 	    	
 	    	task["equipment"] = "";
@@ -110,14 +110,6 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 	    	var endHour = endDt!=null ? endDt.add('minutes',-endDt.zone()).format('H[h]mm') : ''
 	    	task["taskHours"] = startHour + '-' + endHour;
 	    	task["km"] = ''; //task.km;
-
-	    	task["description"] = '';
-	    	if(inter!=null){
-    			task["description"] = inter.description;
-	    	}
-	    	else{
-	    		task["description"] = '';
-	    	}			    
 
 	    })
 		

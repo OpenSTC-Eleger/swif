@@ -29,6 +29,25 @@ app.Models.Task = app.Models.GenericModel.extend({
 			return false;
 		}
 	},
+	
+	getSite : function(type) {
+		if(this.get('site1')){
+			switch(type){
+			case 'id':
+				return this.get('site1')[0];
+			break;
+			case 'json':
+				return {id: this.get('site1')[0], name: this.get('site1')[1]} 
+			break;
+			default:
+				return this.get('site1')[1];
+			}
+		}
+		else{
+			return false;
+		}
+	},
+	
 	setIntervention : function(value) {
 		this.set({ state : project_id }, {silent: silent});
 	},
