@@ -38,8 +38,13 @@ app.Views.ServicesListView = app.Views.GenericListView.extend({
 	*/
 	add: function(model){
 
-		var itemServiceView  = new app.Views.ItemServiceView({ model: model });
+		var officersListView = new app.Views.OfficersListView({model: model});
+		var itemServiceView  = new app.Views.ItemServiceView({ model: model, officersListView: officersListView });
+
+		$('#rows-items').prepend(officersListView.render().el);
 		$('#rows-items').prepend(itemServiceView.render().el);
+	
+
 		app.Helpers.Main.highlight($(itemServiceView.el))
 
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.serviceCreateOk);

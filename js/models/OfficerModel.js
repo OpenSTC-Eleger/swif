@@ -5,12 +5,14 @@ app.Models.Officer = app.Models.GenericModel.extend({
 
 	urlRoot : "/api/open_object/users",
 
+	//fields: ["complete_name", "contact_id", "context_lang", "context_tz", "date", "firstname", "groups_id", "id", "isDST", "isManager", "lastname", "login", "name", "phone", "service_id", "service_ids", "tasks", "team_ids", "user_email"],
+
+
 	defaults:{
 		id       :null,
 		isDST    : false,
 		isManager: false,
 	},
-
 
    
 	// Officer firstname //
@@ -24,14 +26,15 @@ app.Models.Officer = app.Models.GenericModel.extend({
 		this.set({ firstname : value });
 	},
 
-	// Officer Fullname //
-	getFullname : function() {
-        return this.getFirstname()+' '+this.getName();
-    },
+	getCompleteName : function() {
+		return _.titleize(this.get('complete_name').toLowerCase());
+	},
 
     // Officer email //
     getEmail : function() {
-        return this.get('user_email');
+        if(this.get('user_email')){
+        	return this.get('user_email');
+        }
     },
     setEmail : function(value) {
 		this.set({ user_email : value });
@@ -51,11 +54,17 @@ app.Models.Officer = app.Models.GenericModel.extend({
 		this.set({ new_password : value });
 	},
 	// Group IDs //
-	getGroupsId: function() {
+	getGroups: function() {
 	    return this.get('groups_id');
 	},
-	setGroupsID : function(value) {
+	setGroups : function(value) {
 		this.set({ groups_id : value });
+	},
+
+
+	// Group IDs //
+	getLastConnection: function() {
+	    return this.get('date');
 	},
 	
 	// Group Name //

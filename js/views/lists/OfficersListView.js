@@ -56,43 +56,47 @@ app.Views.OfficersListView = Backbone.View.extend({
 			$(self.el).html(template);
 
 
-			// Create item service view //
-			/*_.each(self.collection.models, function(officer, i){
-				var itemOfficerView  = new app.Views.ItemOfficerView({officer: service});
-				$('#rows-items').append(itemOfficerView.render().el);
-			});*/
-			
 		});
 
-        return this;
-    },
+		return this;
+	},
 
 
 
-    collapse: function(e){
-    	var self = this;
+	collapse: function(e){
+		var self = this;
 
-		$(this.el).fadeToggle(function(e){
-			
-			// Is know hide //
-			if(this.isDisplay){
-				console.log('il est caché');
-				this.isDisplay = false;
-			}
-			// Is Know Display //
-			else{
+
+		// Is know hide //
+		if(this.isDisplay){
+			this.isDisplay = false;
+		}
+		// Is Know Display //
+		else{
+
+			if(!_.isEmpty(self.model.getUsersId())){
+
+				// Fetch the Officers //
 				self.fetchOfficers().done(function(){
 
-					console.log(self.collection);
+					// Create item Officer view //
+					_.each(self.collection.models, function(officer, i){
+						console.log(officer.attributes);
+						var itemOfficerView  = new app.Views.ItemOfficerView({model: officer});
+						$('#rows-officers').append(itemOfficerView.render().el);
+					});
 				})
-
-				this.isDisplay = true;
 			}
-		});
-    		
-    },
 
-    
+			this.isDisplay = true;
+		}
+
+
+		$(this.el).stop().fadeToggle();
+
+	},
+
+
 
 	/** Modal form to create a new Officer
 	*/
@@ -103,7 +107,6 @@ app.Views.OfficersListView = Backbone.View.extend({
 			el  : '#modalSaveOfficer'
 		});
 	},
-
 
 
 
@@ -123,8 +126,7 @@ app.Views.OfficersListView = Backbone.View.extend({
 			silent : true,
 			data   : {
 				sort    : this.options.sort.by+' '+this.options.sort.order,
-				filters : {0: {field: 'service_id.id', operator: '=', value: this.model.getId()}},
-				fields  : ['name', 'id']
+				filters : {0: {field: 'service_id.id', operator: '=', value: this.model.getId()}}
 			}
 		};
 

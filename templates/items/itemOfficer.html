@@ -1,0 +1,29 @@
+<td>
+	<i class="icon-user">&nbsp;&nbsp;</i><%= officer.getCompleteName() %>
+
+	<p class="row-actions invisible">
+		<% if(_.contains(officer.getActions(), 'update')){ %>
+		<a href="#"  class="modalSavePlace">
+			<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
+		</a>&nbsp;
+		<% } %>
+
+		<% if(_.contains(officer.getActions(), 'delete')){ %>
+		<a href="#" class="modalDeletePlace">
+			<i class="icon-trash icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+		</a>
+		<% } %>
+	</p>
+</td>
+
+<!-- Login -->
+<td><%= officer.getLogin() %></td>
+
+<!-- Groupe -->
+<td><%= officer.getGroups() %></td>
+
+<!-- Email -->
+<td><a href="mailto:<%= officer.getEmail() %>"><%= officer.getEmail() %></a></td>
+
+<!-- Last Connexion -->
+<td><%= moment(officer.getLastConnection()).format('LLL') %></td>

@@ -1,19 +1,19 @@
 /******************************************
-* Row Place View
+* Row Officer View
 */
-app.Views.ItemPlaceView = Backbone.View.extend({
+app.Views.ItemOfficerView = Backbone.View.extend({
 
 	tagName      : 'tr',
 
 	className    : 'row-item',
 
-	templateHTML : 'items/itemPlace',
+	templateHTML : 'items/itemOfficer',
 
 
 	// The DOM events //
 	events: {
-		'click'                    : 'modalUpdatePlace',
-		'click a.modalDeletePlace' : 'modalDeletePlace'
+		'click a.modalUpdateOfficer' : 'modalUpdateOfficer',
+		'click a.modalDeleteOfficer' : 'modalDeleteOfficer'
 	},
 
 
@@ -38,7 +38,7 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 		this.render();
 		app.Helpers.Main.highlight($(this.el));
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.officerUpdateOk);
 	},
 
 
@@ -50,10 +50,9 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 		app.Helpers.Main.highlight($(this.el)).done(function(){
 			self.remove();
-			app.views.placesListView.partialRender();
 		});
 
-		app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.placeDeleteOk);
+		app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.officerDeleteOk);
 		
 	},
 
@@ -68,8 +67,8 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 			var template = _.template(templateData, {
-				lang  : app.lang,
-				place : self.model
+				lang    : app.lang,
+				officer : self.model
 			});
 
 			$(self.el).html(template);
@@ -83,13 +82,13 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 
 
-	/** Display Modal form to add/sav a new place
+	/** Display Modal form to add/sav a new officer
 	*/
-	modalUpdatePlace: function(e){  
+	modalUpdateOfficer: function(e){  
 		e.preventDefault(); e.stopPropagation();
 
-		app.views.modalPlaceView = new app.Views.ModalPlaceView({
-			el      : '#modalSavePlace',
+		app.views.modalOfficerView = new app.Views.ModalOfficerView({
+			el      : '#modalSaveOfficer',
 			model   : this.model,
 			elFocus : $(e.target).data('form-id')
 		});
@@ -97,17 +96,17 @@ app.Views.ItemPlaceView = Backbone.View.extend({
 
 
 
-	/** Modal to remove a place
+	/** Modal to remove an officer
 	*/
-	modalDeletePlace: function(e){
+	modalDeleteOfficer: function(e){
 		e.preventDefault(); e.stopPropagation();
 
 		app.views.modalDeleteView = new app.Views.ModalDeleteView({
-			el           : '#modalDeletePlace',
+			el           : '#modalDeleteOfficer',
 			model        : this.model,
-			modalTitle   : app.lang.viewsTitles.deletePlace,
-			modalConfirm : app.lang.warningMessages.confirmDeletePlace
+			modalTitle   : app.lang.viewsTitles.deleteOfficer,
+			modalConfirm : app.lang.warningMessages.confirmDeleteOfficer
 		});
-	},
+	}
 
 });
