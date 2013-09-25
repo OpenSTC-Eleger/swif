@@ -90,7 +90,6 @@ app.Views.ItemOfficerView = Backbone.View.extend({
 		app.views.modalOfficerView = new app.Views.ModalOfficerView({
 			el      : '#modalSaveOfficer',
 			model   : this.model,
-			elFocus : $(e.target).data('form-id')
 		});
 	},
 

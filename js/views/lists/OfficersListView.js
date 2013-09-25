@@ -14,7 +14,7 @@ app.Views.OfficersListView = Backbone.View.extend({
 
 	// The DOM events  //
 	events: {
-		'click a.modalCreateOfficer' : 'modalCreateOfficer'
+		'click button.modalCreateOfficer' : 'modalCreateOfficer'
 	},
 
 
@@ -81,7 +81,6 @@ app.Views.OfficersListView = Backbone.View.extend({
 
 					// Create item Officer view //
 					_.each(self.collection.models, function(officer, i){
-						console.log(officer.attributes);
 						var itemOfficerView  = new app.Views.ItemOfficerView({model: officer});
 						$('#rows-officers').append(itemOfficerView.render().el);
 					});
@@ -102,9 +101,10 @@ app.Views.OfficersListView = Backbone.View.extend({
 	*/
 	modalCreateOfficer: function(e){
 		e.preventDefault();
-		
+
 		app.views.modalOfficerView = new app.Views.ModalOfficerView({
-			el  : '#modalSaveOfficer'
+			el  : '#modalSaveOfficer',
+			officersListView : this
 		});
 	},
 

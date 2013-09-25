@@ -5,11 +5,8 @@ app.Collections.STCGroups = app.Collections.GenericCollection.extend({
 
 	model: app.Models.STCGroup,
 
-	// Model name in the database //
-	model_name : 'res.groups',
 
-	url: "/groups",
-
+	url: '/api/open_object/groups',
 
 
 	/** Collection Initialization

@@ -5,7 +5,7 @@ app.Models.Officer = app.Models.GenericModel.extend({
 
 	urlRoot : "/api/open_object/users",
 
-	//fields: ["complete_name", "contact_id", "context_lang", "context_tz", "date", "firstname", "groups_id", "id", "isDST", "isManager", "lastname", "login", "name", "phone", "service_id", "service_ids", "tasks", "team_ids", "user_email"],
+	fields: ["complete_name", "contact_id", "context_lang", "context_tz", "date", "firstname", "groups_id", "id", "isDST", "isManager", "lastname", "login", "name", "phone", "service_id", "service_names", "tasks", "team_ids", "user_email"],
 
 
 	defaults:{
@@ -68,19 +68,52 @@ app.Models.Officer = app.Models.GenericModel.extend({
 	},
 	
 	// Group Name //
-	setGroupSTCName : function(value) {
+	setGroupSTC : function(value) {
 		this.set({ groupSTCName : value });
 	},
-	getGroupSTCName: function() {
-	    return this.get('groupSTCName');
+	getGroupSTC: function() {
+	    return this.get('groupSTC');
 	},
 
-	// Team services ID //
-	getServicesId: function() {
-	    return this.get('service_ids');
+	getServices : function(type){
+
+		var placeServices = [];
+
+		_.each(this.get('service_names'), function(s){
+			switch (type){
+				case 'id': 
+					placeServices.push(s[0]);
+				break;
+				case 'json': 
+					placeServices.push({id: s[0], name: s[1]});
+				break;
+				default:
+					placeServices.push(s[1]);
+			}
+		});
+
+		if(type == 'string'){
+			return _.toSentence(placeServices, ', ', ' '+app.lang.and+' ')
+		}
+		else{
+			return placeServices;
+		}
 	},
 	setServicesID : function(value) {
 		this.set({ service_ids : value });
+	},
+
+	getService : function(type) {
+		switch (type){ 
+			case 'id': 
+				return this.get('service_id')[0];
+			break;
+			case 'json':
+				return {id: this.get('service_id')[0], name: this.get('service_id')[1]};
+			break;
+			default:
+				return this.get('service_id')[1];
+		}
 	},
 
 	// Teams ID// 
@@ -102,5 +135,21 @@ app.Models.Officer = app.Models.GenericModel.extend({
         this.set({ isDST : value });
     },
 
+
+	/** Get Informations of the model
+	*/
+	getInformations : function(){
+		var informations = {};
+
+		informations.name = this.getCompleteName();
+
+		if(!_.isEmpty(this.getService())){
+			informations.infos = {};
+			informations.infos.key = _.capitalize(app.lang.service);
+			informations.infos.value = this.getService();
+		}
+
+		return informations;
+	}
 
 });
