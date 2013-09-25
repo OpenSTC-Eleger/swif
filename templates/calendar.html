@@ -11,15 +11,18 @@
 				<%= _.capitalize(lang.teams) %> &nbsp;<span class="badge"><%= _.size(teams) %></span>
 			</a>
 		</li>
+		<li class="pull-right">
+			<input type="search" id="searchOfficerOrTeam" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off" />
+		</li> 
 	</ul>
 
 	<div class="tab-content">
 		
 		<!-- Officers -->
-		<div class="tab-pane active tab-pane-planning" id="tab-agents">
+		<div class="tab-pane fade in active tab-pane-planning" id="tab-agents">
 			<ul id="listAgents" class="nav nav-pills">
-				<%_.each(officers, function (officer, i) { console.log(officer); %>
-					<li class="col-sm-4">
+				<%_.each(officers, function (officer, i) { %>
+					<li class="col-sm-4" data-name="<%= officer.complete_name.toLowerCase() %>">
 						<a id="pOfficer_<%= officer.id %>" href="#planning/officer/<%= _.slugify(officer.name).toUpperCase()%>">
 							<i class="icon-user icon-fixed-width"></i>&nbsp;<%= officer.name.toUpperCase() %> &nbsp; <%= (officer.firstname != false ? officer.firstname : '') %>
 						</a>
@@ -29,7 +32,7 @@
 		</div>
 
 		<!-- Teams -->
-		<div class="tab-pane tab-pane-planning" id="tab-teams">
+		<div class="tab-pane fade tab-pane-planning" id="tab-teams">
 			<ul id="listTeams" class="nav nav-pills">
 				<% _.each(teams, function (team, i) {
 
@@ -41,7 +44,7 @@
 				%>
 
 					<li rel="popover" data-original-title="<%= _.capitalize(lang.agents) %>" data-content="<ul class='list-unstyled'><%= teamMembers %></ul>" 
-						data-html="true" data-placement="left" >
+						data-html="true" data-placement="left" data-name="<%= team.name.toLowerCase() %>">
 						<a id="pTeam_<%= team.id %>" href="#planning/team/<%= _.slugify(team.name).toUpperCase()%>">
 							<i class="icon-group icon-fixed-width"></i>&nbsp;<%= team.name %>
 						</a>

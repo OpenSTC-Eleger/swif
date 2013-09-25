@@ -4,18 +4,20 @@
 app.Views.EventsListView = Backbone.View.extend({
 	
 	//template name
-	templateHTML 	: 'calendar',	
+	templateHTML: 'calendar',	
 	//Dom element for calendar
-	divCalendar: 	null,
-		
+	divCalendar : 	null,
+	
 	calendarView: 	'agendaWeek',	
-	teamMode:		 false,
-	initialized: false,
-
+	teamMode    :		 false,
+	initialized : false,
+	
 	events: {
 		'click .fc-button-prev'                  	: 'previousDate',
 		'click .fc-button-next'                  	: 'nextDate',
 		'click #listAgents li a, #listTeams li a' 	: 'selectPlanning',
+
+		'keyup #searchOfficerOrTeam'             : 'searchOfficerOrTeam'
 	},
 	
 	urlParameters : ['officer','team','year','week'],
@@ -73,13 +75,16 @@ app.Views.EventsListView = Backbone.View.extend({
 				lang: app.lang,		
 				calendar   	: self.model,
 				officers	: self.collections.officers,
-				teams		: self.collections.teams,	
+				teams		: self.collections.teams
 			});
 			
 			self.$el.html(template);	
 			// Init calendar
 			var momentDate = moment().year(self.options.year).week(self.options.week);			
         	self.initCalendar(momentDate);
+
+
+        	$('#searchOfficerOrTeam').focus();
         	
         	
 			if(!_.isUndefined(self.options.team)) {
@@ -101,6 +106,8 @@ app.Views.EventsListView = Backbone.View.extend({
 
 		return this;
 	},
+
+
 	
 	/**
 	 * Go to next week
@@ -504,6 +511,45 @@ app.Views.EventsListView = Backbone.View.extend({
 		$(this.divCalendar).fullCalendar( 'refetchEvents' )
 		app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.taskUpdateOk);
 	},
+
+
+
+	/** Search officer and Teams //
+	*/
+	searchOfficerOrTeam: function(e){
+
+		var search = $('#searchOfficerOrTeam').val().toLowerCase();
+
+
+		// If the term is not empty //
+		if(!_.isEmpty(search)){
+		 
+			_.each($('#listAgents li'), function(a){
+
+				if(!_.str.include($(a).data('name'), search)){
+					$(a).fadeOut('fast');
+				}
+				else{
+					$(a).fadeIn('fast');
+				}
+			});
+
+			_.each($('#listTeams li'), function(a){
+
+				if(!_.str.include($(a).data('name'), search)){
+					$(a).fadeOut('fast');
+				}
+				else{
+					$(a).fadeIn('fast');	
+				}
+			});
+		}
+		else{
+			$('#listAgents li').fadeIn();
+			$('#listTeams li').fadeIn();
+		}
+	
+	}
 
 });
 
