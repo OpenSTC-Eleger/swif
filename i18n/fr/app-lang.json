@@ -334,6 +334,7 @@
 		"claimerTypeDeleteOk"   : "Type d'organisation correctement supprimé",
 		"claimerTypeCreateOk"	: "Type d'organisation correctement enregistré",
 		"claimerTypeUpdateOk"	: "Type d'organisation correctement mis à jour",
+		"claimerCreateOK"       : "Organisation correctement enregistré",
 		"claimerDeleteOk"		: "Demandeur correctement supprimé",
 		"officerDeleteOk"		: "Agent correctement supprimé",
 		"officerCreateOk"		: "Agent correctement enregistré",

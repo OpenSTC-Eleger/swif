@@ -127,7 +127,7 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
 		$('#claimersList').prepend(claimerView.render().el);
 		app.Helpers.Main.highlight($(claimerView.el));
 
-		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.placeCreateOk);
+		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.claimerCreateOK);
 		this.partialRender();
 	},
 

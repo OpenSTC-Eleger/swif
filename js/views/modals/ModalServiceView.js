@@ -102,6 +102,7 @@ app.Views.ModalServiceView = app.Views.GenericModalView.extend({
 			service_id : app.views.advancedSelectBoxServiceParentView.getSelectedItem()
 		};
 
+		this.model.unset('user_ids', { silent: true });
 
 		this.model.save(params, {silent: true})
 			.done(function(data) {

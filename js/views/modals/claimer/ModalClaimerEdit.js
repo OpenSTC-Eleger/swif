@@ -126,7 +126,7 @@ app.Views.ModalClaimerEdit = app.Views.GenericModalView.extend({
 		var self = this;
 		return self.model.save().
 			done( function (data) {
-				self.model.set(id,data);
+				self.model.set('id' ,data);
 				self.model.fetch({silent: true, data : {fields : app.Collections.Claimers.prototype.fields} }).
 					done( function () {
 						app.views.claimersListView.collection.add(self.model);
