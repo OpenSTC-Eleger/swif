@@ -85,7 +85,7 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 		
 	    _.each(tasks, function(task){ 
 	    	
-	    	task["day"] = self.getDay(task.date_start);	    	
+	    	task["day"] = self.getDay(task.start);	    	
 	    	task["inter"] = task.inter_name != false ? task.inter_name :'' ;
 	    	task["description"] = task.inter_desc != false ? task.inter_desc :'';
 	    	task["name"] = task.title;
@@ -104,13 +104,10 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 		    task["remaining_hours"] =  '';//( task.remaining_hours>0? task.remaining_hours : '' );
 	    	task["oilQtity"] =  (task.oil_qtity>0? task.oil_qtity : '');
 	    	task["oilPrice"] =  (task.oil_price>0? task.oil_price : '');
-	    	var startDt = task.date_start!=false ? moment( task.date_start ).tz(app.models.user.getContext().tz) : null
-	    	var endDt = task.date_end!=false ? moment( task.date_end ).tz(app.models.user.getContext().tz) : null
-	    	var startHour = startDt!=null ? startDt.add('minutes',-startDt.zone()).format('H[h]mm') : ''
-	    	var endHour = endDt!=null ? endDt.add('minutes',-endDt.zone()).format('H[h]mm') : ''
-	    	task["taskHours"] = startHour + '-' + endHour;
-	    	task["km"] = ''; //task.km;
-
+	    	var startDt = task.start!=false ? moment( task.start ):null;
+	    	var endDt = task.end!=false ? moment( task.end ) :null;
+	    	task["taskHours"] = startDt.format('H[h]mm')  + '-' + endDt.format('H[h]mm') ;
+	    	task["km"] = ''; 
 	    })
 		
 	    $('#paperboard').data('resultSet', tasks);

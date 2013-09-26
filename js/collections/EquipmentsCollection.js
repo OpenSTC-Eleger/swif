@@ -7,7 +7,7 @@ app.Collections.Equipments = app.Collections.GenericCollection.extend({
 		
 	url         : '/api/openstc/equipments',
 		
-	fields      : ['id', 'name', 'immat', 'marque', 'year', 'time', 'km', 'categ_id'],
+	fields      : ['id', 'name', 'immat', 'marque', 'purchase_date', 'time', 'km', 'categ_id'],
 
 	default_sort: { by: 'name', order: 'ASC' },
 
