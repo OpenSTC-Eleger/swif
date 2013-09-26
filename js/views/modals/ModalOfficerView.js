@@ -24,6 +24,7 @@ app.Views.ModalOfficerView = app.Views.GenericModalView.extend({
 	initialize : function() {
 		var self = this;
 
+
 		this.modal = $(this.el);
 
 
@@ -54,11 +55,14 @@ app.Views.ModalOfficerView = app.Views.GenericModalView.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
+
 			var template = _.template(templateData, {
 				lang    : app.lang,
 				officer : self.model,
-				loader  : loader
+				loader  : loader,
+				service : (!_.isUndefined(self.options.officersListView) ? self.options.officersListView.options.model : '')
 			});
+
 
 
 			self.modal.html(template);
@@ -115,14 +119,14 @@ app.Views.ModalOfficerView = app.Views.GenericModalView.extend({
 
 
 
-		this.model.save(params)
+		this.model.save(params, {silent: true})
 			.done(function(data) {
 				self.modal.modal('hide');
 
 				// Create mode //
 				if(self.model.isNew()) {
 					self.model.setId(data);
-					self.model.fetch({silent: true, data : {fields : app.Collections.Places.prototype.fields} }).done(function(){
+					self.model.fetch({silent: true, data : {fields : app.Collections.Officers.prototype.fields} }).done(function(){
 						self.options.officersListView.collection.add(self.model);
 					})
 				// Update mode //
@@ -132,6 +136,7 @@ app.Views.ModalOfficerView = app.Views.GenericModalView.extend({
 			})
 			.fail(function (e) {
 				console.log(e);
+				alert('impossible de créer l\'utilisateur');
 			})
 			.always(function () {
 				$(self.el).find("button[type=submit]").button('reset');

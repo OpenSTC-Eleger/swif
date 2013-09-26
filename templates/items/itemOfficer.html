@@ -3,30 +3,16 @@
 
 	<p class="row-actions invisible">
 		<% if(_.contains(officer.getActions(), 'update')){ %>
-		<a href="#"  class="modalSavePlace">
+		<a href="#"  class="modalUpdateOfficer">
 			<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
 		</a>&nbsp;
 		<% } %>
 
 		<% if(_.contains(officer.getActions(), 'delete')){ %>
-		<a href="#" class="modalDeletePlace">
-			<i class="icon-trash icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
-		</a>
-		<% } %>
-	</p>
-
-	<p class="row-actions invisible">
-		
-		<a href="#"  class="modalUpdateOfficer">
-			<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
-		</a>&nbsp;
-		
-
-		
 		<a href="#" class="modalDeleteOfficer">
 			<i class="icon-trash icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
 		</a>
-			
+		<% } %>
 	</p>
 </td>
 
@@ -34,7 +20,7 @@
 <td><%= officer.getLogin() %></td>
 
 <!-- Groupe -->
-<td><%= officer.getGroups() %></td>
+<td><%= officer.getGroupSTC() %></td>
 
 <!-- Email -->
 <td><a href="mailto:<%= officer.getEmail() %>"><%= officer.getEmail() %></a></td>

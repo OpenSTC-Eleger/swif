@@ -87,6 +87,8 @@ app.Views.ItemOfficerView = Backbone.View.extend({
 	modalUpdateOfficer: function(e){  
 		e.preventDefault(); e.stopPropagation();
 
+		console.log(this.model.attributes);
+
 		app.views.modalOfficerView = new app.Views.ModalOfficerView({
 			el      : '#modalSaveOfficer',
 			model   : this.model,

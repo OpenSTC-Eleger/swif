@@ -336,7 +336,7 @@
 		"claimerTypeUpdateOk"	: "Type d'organisation correctement mis à jour",
 		"claimerDeleteOk"		: "Demandeur correctement supprimé",
 		"officerDeleteOk"		: "Agent correctement supprimé",
-		"officerSaveOk"			: "Agent correctement enregistré",
+		"officerCreateOk"		: "Agent correctement enregistré",
 		"officerUpdateOk"		: "Agent correctement mis à jour",
 		"absentTypeDeleteOk"	: "Type d'absence correctement supprimé",
 		"absentTypeSaveOk"		: "Type d'absence correctement enregistré",

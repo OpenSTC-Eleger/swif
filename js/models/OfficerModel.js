@@ -5,7 +5,7 @@ app.Models.Officer = app.Models.GenericModel.extend({
 
 	urlRoot : "/api/open_object/users",
 
-	fields: ["complete_name", "contact_id", "context_lang", "context_tz", "date", "firstname", "groups_id", "id", "isDST", "isManager", "lastname", "login", "name", "phone", "service_id", "service_names", "tasks", "team_ids", "user_email"],
+	fields: ["complete_name", "contact_id", "context_lang", "context_tz", "date", "firstname", "groups_id", "current_group", "id", "isDST", "isManager", "lastname", "login", "name", "phone", "service_id", "service_names", "tasks", "team_ids", "user_email", "actions"],
 
 
 	defaults:{
@@ -69,10 +69,19 @@ app.Models.Officer = app.Models.GenericModel.extend({
 	
 	// Group Name //
 	setGroupSTC : function(value) {
-		this.set({ groupSTCName : value });
+		this.set({ current_group : value });
 	},
-	getGroupSTC: function() {
-	    return this.get('groupSTC');
+	getGroupSTC : function(type) {
+		switch (type){ 
+			case 'id': 
+				return this.get('current_group')[0];
+			break;
+			case 'json':
+				return {id: this.get('current_group')[0], name: this.get('current_group')[1]};
+			break;
+			default:
+				return this.get('current_group')[1];
+		}
 	},
 
 	getServices : function(type){
@@ -150,6 +159,11 @@ app.Models.Officer = app.Models.GenericModel.extend({
 		}
 
 		return informations;
+	},
+
+
+	getActions: function(){
+		return this.get('actions');
 	}
 
 });

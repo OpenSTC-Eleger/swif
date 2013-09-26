@@ -5,7 +5,7 @@ app.Views.OfficersListView = Backbone.View.extend({
 
 	tagName      : 'tr',
 
-	className    : 'row-item row-nested-objects-collapse',
+	className    : 'row-nested-objects-collapse',
 
 	templateHTML : 'officersList',
 
@@ -22,6 +22,12 @@ app.Views.OfficersListView = Backbone.View.extend({
 	/** View Initialization
 	*/
 	initialize: function () {
+		// Instantiate the collection //
+		this.collection = new app.Collections.Officers();
+
+
+		this.collection.off();
+		this.listenTo(this.collection, 'add', this.add);
 
 	},
 
@@ -32,7 +38,7 @@ app.Views.OfficersListView = Backbone.View.extend({
 	add: function(model){
 
 		var itemOfficerView  = new app.Views.ItemOfficerView({ model: model });
-		$('#rows-items').prepend(itemOfficerView.render().el);
+		$('#rows-officers').prepend(itemOfficerView.render().el);
 		app.Helpers.Main.highlight($(itemOfficerView.el))
 
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.officerCreateOk);
@@ -79,6 +85,8 @@ app.Views.OfficersListView = Backbone.View.extend({
 				// Fetch the Officers //
 				self.fetchOfficers().done(function(){
 
+					$('#rows-officers').html('');
+
 					// Create item Officer view //
 					_.each(self.collection.models, function(officer, i){
 						var itemOfficerView  = new app.Views.ItemOfficerView({model: officer});
@@ -114,9 +122,6 @@ app.Views.OfficersListView = Backbone.View.extend({
 	*/
 	fetchOfficers: function(){
 		var self = this;
-
-		// Check if the collections is instantiate //
-		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.Officers(); }
 
 
 		this.options.sort = this.collection.default_sort;

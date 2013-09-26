@@ -62,9 +62,9 @@
 						<div class="col-sm-9">
 							<input id="officerGroup" class="select2" required data-placeholder="<%= lang.actions.selectAGroup %>" 
 
-							<% if(!_.isNull(officer.getGroup())){
-								if(!_.isUndefined(officer.getGroup('id'))) { %>
-								data-selected-value='<%= JSON.stringify(officer.getGroup('json')) %>'
+							<% if(!_.isNull(officer.getId())){
+								if(!_.isUndefined(officer.getGroupSTC('id'))) { %>
+								data-selected-value='<%= JSON.stringify(officer.getGroupSTC('json')) %>'
 							<% } } %>
 
 							/>
@@ -76,12 +76,17 @@
 						<label for="officerService" class="control-label col-sm-3"><%= _.capitalize(lang.membershipService) %>:</label>
 
 						<div class="col-sm-9">
-							<input id="officerService" class="select2" required data-placeholder="<%= lang.actions.selectAService %>" 
+							<input id="officerService" class="select2" required data-placeholder="<%= lang.actions.selectAService %>"
 
 							<% if(!_.isNull(officer.getId())){
 								if(!_.isUndefined(officer.getService('id'))) { %>
 								data-selected-value='<%= JSON.stringify(officer.getService('json')) %>'
-							<% } } %>
+							<% } 
+							}else{ 
+								var json = {id: service.getId(), name: service.getName()} 
+							%>
+								data-selected-value='<%= JSON.stringify(json) %>'
+							<% } %>
 
 							/>
 						</div>
