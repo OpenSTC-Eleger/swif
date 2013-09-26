@@ -85,8 +85,8 @@ app.Views.EventsListView = Backbone.View.extend({
 
 
         	$('#searchOfficerOrTeam').focus();
-        	
-        	
+
+       	
 			if(!_.isUndefined(self.options.team)) {
 				// Check if a Team was selected to select the Team Tab 
 				$('#allTabs a[data-target="#tab-teams"]').tab('show');

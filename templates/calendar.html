@@ -22,7 +22,7 @@
 		<div class="tab-pane fade in active tab-pane-planning" id="tab-agents">
 			<ul id="listAgents" class="nav nav-pills">
 				<%_.each(officers, function (officer, i) { %>
-					<li class="col-sm-4" data-name="<%= officer.complete_name.toLowerCase() %>">
+					<li data-name="<%= officer.complete_name.toLowerCase() %>">
 						<a id="pOfficer_<%= officer.id %>" href="#planning/officer/<%= _.slugify(officer.name).toUpperCase()%>">
 							<i class="icon-user icon-fixed-width"></i>&nbsp;<%= officer.name.toUpperCase() %> &nbsp; <%= (officer.firstname != false ? officer.firstname : '') %>
 						</a>
