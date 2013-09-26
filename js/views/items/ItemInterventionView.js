@@ -36,22 +36,14 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 	*/
 	change: function(model){
 		var self = this;
-		model.fetch({silent: true, data: {fields: app.views.interventions.collections.interventions.fields}})
-		.done(function(){
-			self.render();
+		self.render();
 
-			// Highlight the Row and recalculate the className //
-			app.Helpers.Main.highlight($(self.el)).done(function(){
-//				self.$el.attr('class', _.result(self, 'className'));
-			});
-
-			app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
-
-		})
-		.fail(function(e){
-			console.log(e);
+		// Highlight the Row and recalculate the className //
+		app.Helpers.Main.highlight($(self.el)).done(function(){
 		});
-		
+
+		app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
+
 		// Partial Render //
 		app.views.interventions.partialRender();
 	},

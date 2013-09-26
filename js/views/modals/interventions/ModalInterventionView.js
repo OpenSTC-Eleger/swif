@@ -205,7 +205,7 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 				
 			}
 			else{
-
+				self.model.fetch({data: {fields: app.Collections.Interventions.fields}});
 			}
 
 		})
