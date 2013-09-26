@@ -527,27 +527,32 @@ app.Views.EventsListView = Backbone.View.extend({
 			_.each($('#listAgents li'), function(a){
 
 				if(!_.str.include($(a).data('name'), search)){
-					$(a).fadeOut('fast');
+					$(a).fadeOut('fast').addClass('thide');
 				}
 				else{
-					$(a).fadeIn('fast');
+					$(a).fadeIn('fast').removeClass('thide');
 				}
 			});
+
+			;
 
 			_.each($('#listTeams li'), function(a){
 
 				if(!_.str.include($(a).data('name'), search)){
-					$(a).fadeOut('fast');
+					$(a).fadeOut('fast').addClass('thide');
 				}
 				else{
-					$(a).fadeIn('fast');	
+					$(a).fadeIn('fast').removeClass('thide');	
 				}
 			});
 		}
 		else{
-			$('#listAgents li').fadeIn();
-			$('#listTeams li').fadeIn();
+			$('#listAgents li').fadeIn().removeClass('thide');
+			$('#listTeams li').fadeIn().removeClass('thide');
 		}
+
+		$('#nbOfficersDisplay').html($('#listAgents li:not(.thide)').size())
+		$('#nbTeamsDisplay').html($('#listTeams li:not(.thide)').size())
 	
 	}
 

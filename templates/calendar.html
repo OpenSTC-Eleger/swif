@@ -3,12 +3,12 @@
 	<ul class="nav nav-tabs" id="allTabs">
 		<li class="active">
 			<a href="#" data-target="#tab-agents" data-toggle="tab">
-				<%= _.capitalize(lang.agents) %> &nbsp;<span class="badge"><%= _.size(officers) %></span>
+				<%= _.capitalize(lang.agents) %> &nbsp;<span id="nbOfficersDisplay" class="badge"><%= _.size(officers) %></span>
 			</a>
 		</li>
 		<li>
 			<a href="#" data-target="#tab-teams" data-toggle="tab">
-				<%= _.capitalize(lang.teams) %> &nbsp;<span class="badge"><%= _.size(teams) %></span>
+				<%= _.capitalize(lang.teams) %> &nbsp;<span id="nbTeamsDisplay" class="badge"><%= _.size(teams) %></span>
 			</a>
 		</li>
 		<li class="pull-right">
