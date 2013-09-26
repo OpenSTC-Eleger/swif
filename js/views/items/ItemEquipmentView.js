@@ -14,7 +14,7 @@ app.Views.ItemEquipmentView = Backbone.View.extend({
 	// The DOM events //
 	events       : {
 		'click a.modalDeleteEquipment'  : 'modalDeleteEquipment',
-		'click a.modalSaveEquipment'  	: 'modalSaveEquipment',
+		'click a.modalSaveEquipment' 	: 'modalSaveEquipment',
 	},
 
 
@@ -98,8 +98,8 @@ app.Views.ItemEquipmentView = Backbone.View.extend({
 		new app.Views.ModalDeleteView({
 			el          :'#modalDeleteEquipment',
 			model       :this.model,
-			modalTitle  : app.lang.viewsTitles.deletePlace,
-			modalConfirm: app.lang.warningMessages.confirmDeletePlace
+			modalTitle  : app.lang.viewsTitles.deleteEquipment,
+			modalConfirm: app.lang.warningMessages.confirmDeleteEquipment
 		});
 	},
 	

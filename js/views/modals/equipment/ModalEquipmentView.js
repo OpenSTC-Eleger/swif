@@ -37,7 +37,6 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 		}
 		else{
 			// Render with loader //
-			this.render(true);
 			this.model.fetch({silent: true, data : {fields : this.model.fields}}).done(function(){
 				self.render();
 			});
@@ -151,7 +150,7 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 		var self = this;
 		function formatDate(frDate){
 			if(frDate != false && frDate != ''){
-				return moment(frDate).format('YYYY-MM-DD');
+				return moment(frDate.replace('/','-'),'DD-MM-YYYY').format('YYYY-MM-DD');
 			}
 			else{
 				return false;
@@ -170,7 +169,7 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 				km: parseInt($('#equipmentKm').val().replace(' ','')),
 				energy_type: $('#equipmentEnergy').val(),
 //				year: $('#equipmentYear').val(),
-				built_date: formatDate($('equipmentBuiltDate').val()),
+				built_date: formatDate($('#equipmentBuiltDate').val()),
 				time: $('#equipmentTime').val(),
 				length_amort: $('#equipmentLengthAmort').val(),
 				purchase_date: formatDate($('#equipmentPurchaseDate').val()),
@@ -180,7 +179,7 @@ app.Views.ModalEquipmentView = app.Views.GenericModalView.extend({
 		}
 
 
-		this.model.save(params, {patch:!this.model.isNew()})
+		this.model.save(params, {patch:!this.model.isNew(), silent:true,wait:true})
 			.done(function(data) {
 				self.modal.modal('hide');
 
