@@ -208,7 +208,7 @@ app.Models.User = Backbone.Model.extend({
 		var user = this;
 		$.ajax({
 			async: true,
-			url: app.config.barakafrites.url + this.urlA + '/' + this.get("uid") + '/manageable_teams',
+			url: this.urlA + '/' + this.get("uid") + '/manageable_teams',
 			headers: {Authorization: 'Token token=' + this.get('authToken')},
 			success: function (data) {
 				user.setTeams(data);
@@ -224,7 +224,7 @@ app.Models.User = Backbone.Model.extend({
 		var user = this;
 		$.ajax({
 			async: true,
-			url: app.config.barakafrites.url + this.urlA + '/' + this.get("uid") + '/manageable_officers',
+			url: this.urlA + '/' + this.get("uid") + '/manageable_officers',
 			headers: {Authorization: 'Token token=' + this.get('authToken')},
 			success: function (data) {
 				user.setOfficers(data);
