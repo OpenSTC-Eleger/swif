@@ -4,15 +4,14 @@
 app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 
-	templateHTML: 'modals/modalPlace',
+	templateHTML : 'modals/modalPlace',
 
-	modal : null,
 
 
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'change #placeWidth, #placeLenght' : 'calculPlaceArea',
+			'change #placeWidth, #placeLength' : 'calculPlaceArea',
 			'submit #formSavePlace'            : 'savePlace'
 		}, 
 			app.Views.GenericModalView.prototype.events
@@ -24,38 +23,58 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 	/** View Initialization
 	*/
 	initialize : function() {
+		var self = this;
+
 		this.modal = $(this.el);
+
+
+		// Check if it's a create or an update //
+		if(_.isUndefined(this.model)){
+			
+			this.model = new app.Models.Place();
+			this.render();
+		}
+		else{
+			// Render with loader //
+			this.render(true);
+			this.model.fetch({silent: true, data : {fields : this.model.fields}}).done(function(){
+				self.render();
+			});
+		}
+
 	},
 
 
 
 	/** Display the view
 	*/
-	render : function() {
+	render : function(loader) {
 		var self = this;
 
 
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-		 
+
 			var template = _.template(templateData, {
 				lang  : app.lang,
-				place : self.options.model
+				place : self.model,
+				loader: loader
 			});
+
 
 			self.modal.html(template);
 
+			if(!loader){
+				// Advance Select List View //
+				app.views.advancedSelectBoxPlaceTypeView = new app.Views.AdvancedSelectBoxView({el: $("#placeType"), collection: app.Collections.PlaceTypes.prototype })
+				app.views.advancedSelectBoxPlaceTypeView.render();
 
-			// Advance Select List View //
-			app.views.advancedSelectBoxPlaceTypeView = new app.Views.AdvancedSelectBoxView({el: $("#placeType"), model: app.Models.PlaceType.prototype.model_name })
-			app.views.advancedSelectBoxPlaceTypeView.render();
+				app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#placeParentPlace"), collection: app.Collections.Places.prototype })
+				app.views.advancedSelectBoxPlaceParentView.render();
 
-			app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#placeParentPlace"), model: app.Models.Place.prototype.model_name })
-			app.views.advancedSelectBoxPlaceParentView.render();
-
-			app.views.advancedSelectBoxPlaceServices = new app.Views.AdvancedSelectBoxView({el: $("#placeServices"), model: app.Models.ClaimerService.prototype.model_name })
-			app.views.advancedSelectBoxPlaceServices.render();
-
+				app.views.advancedSelectBoxPlaceServices = new app.Views.AdvancedSelectBoxView({el: $("#placeServices"), collection: app.Collections.ClaimersServices.prototype })
+				app.views.advancedSelectBoxPlaceServices.render();
+			}
 
 			self.modal.modal('show');
 		});
@@ -65,27 +84,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 
 
-	/** Trigger when the modal is shown
-	*/
-	shown: function(){
-
-		// Set the focus to the first input of the form if elFocus is undefined //
-		if(_.isUndefined(this.options.elFocus)){
-			this.modal.find('input, textarea').first().focus();
-		}
-		else{
-			if($('#'+this.options.elFocus).hasClass('select2')){
-				$('#'+this.options.elFocus).select2('open');	
-			}
-			else{
-				this.modal.find('#'+this.options.elFocus).focus();	
-			}
-		}
-	},
-
-
-
-	/** Delete the model pass in the view
+	/** Save the model pass in the view
 	*/
 	savePlace: function(e){
 		e.preventDefault();
@@ -96,51 +95,37 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 		$(this.el).find("button[type=submit]").button('loading');
 
 
-		var params = {	
-			name: this.$('#placeName').val(),
-			service_ids: [[6, 0, app.views.advancedSelectBoxPlaceServices.getSelectedItems()]],
-			type: app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(),
-			site_parent_id: app.views.advancedSelectBoxPlaceParentView.getSelectedItem(),
-			width: this.$('#placeWidth').val(),
-			lenght: this.$('#placeLenght').val(),
-			surface: this.$('#placeArea').val(),
-		};
+		// Set the properties of the model //
+		this.model.setName(this.$('#placeName').val(), true);
+		this.model.setServices(app.views.advancedSelectBoxPlaceServices.getSelectedItems(), true);
+		this.model.setType(app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(), true);
+		this.model.setParentPlace(app.views.advancedSelectBoxPlaceParentView.getSelectedItem(), true);
+		this.model.setWidth(this.$('#placeWidth').val(), true);
+		this.model.setLength(this.$('#placeLength').val(), true);
+		this.model.setSurface(this.$('#placeArea').val(), true);
 
-		// If it's a create pass 0 as ID //
-		if(_.isUndefined(this.options.model)){ var id = 0; }
-		else{ var id = this.options.model.getId(); }
 
-		
-		app.Models.Place.prototype.save(
-			params,
-			id, {
-			success: function(data){
-				console.log(data);
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+		this.model.save()
+			.done(function(data) {
+				self.modal.modal('hide');
+
+				// Create mode //
+				if(self.model.isNew()) {
+					self.model.setId(data);
+					self.model.fetch({silent: true, data : {fields : app.Collections.Places.prototype.fields} }).done(function(){
+						app.views.placesListView.collection.add(self.model);
+					})
+				// Update mode //
+				} else {
+					self.model.fetch({ data : {fields : self.model.fields} });
 				}
-				else{
-					self.modal.modal('hide');
-
-					// Create Place //
-					if(_.isUndefined(self.options.model)){ 
-						Backbone.history.loadUrl(Backbone.history.fragment);
-					}
-					// Update Place //
-					else{
-						self.options.model.fetch();
-					}
-				}
-			},
-			complete: function(){
-				// Reset the button state //
+			})
+			.fail(function (e) {
+				console.log(e);
+			})
+			.always(function () {
 				$(self.el).find("button[type=submit]").button('reset');
-			},
-			error: function () {
-				alert("Impossible de contacter le serveur");
-			},	
-		});
-
+			});
 	},
 
 
@@ -148,8 +133,7 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 	/** Calcul the area of the place
 	*/
 	calculPlaceArea: function (e) {
-		$('#placeArea').val($('#placeWidth').val() * $('#placeLenght').val());
+		$('#placeArea').val($('#placeWidth').val() * $('#placeLength').val());
 	}
-
 
 });

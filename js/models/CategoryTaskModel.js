@@ -1,116 +1,108 @@
 /******************************************
-* Category Task Model - Task category
+* Category Task Model
 */
-app.Models.CategoryTask = Backbone.RelationalModel.extend({
-	
-	model_name : 'openstc.task.category',	
-	
-	url: "/#category/:id",
+app.Models.CategoryTask = app.Models.GenericModel.extend({
 
-	relations: [
+
+	fields  : ['id', 'name', 'code', 'parent_id', 'service_names', 'actions'],
+	
+	urlRoot : '/api/openstc/task_categories',
+
+
+	searchable_fields: [
 		{
-			type: Backbone.HasMany,
-			key: 'service_ids',
-			relatedModel: 'app.Models.ClaimerService',
-			collectionType: 'app.Collections.ClaimersServices',
-			includeInJSON: ['id', 'name'],
+			key  : 'name', 
+			type : 'text'
 		},
-	  ],
+		{
+			key  : 'code', 
+			type : 'text'
+		}
+	],
 
-	defaults:{
-		id:0,
-		name: null,
-		code: null,
-		unit: null,
-		parent_id: null,
-		service_ids: [],
-	},
 
-	getName : function() {
-		return this.get('name');
+	getCompleteName : function() {
+		return _.titleize(this.get('complete_name').toLowerCase());
 	},
-	setName : function(value) {
-		if( value == 'undefined') return;
-		this.set({ name : value });
-	},  
 
 	getCode : function() {
 		return this.get('code');
 	},
-	setCode : function(value) {
-		if( value == 'undefined') return;
-		this.set({ code : value });
-	}, 
-
-	getUnit : function() {
-		return this.get('unit');
-	},
-	setUnit : function(value) {
-		if( value == 'undefined') return;
-		this.set({ unit : value });
-	}, 
-
-	getParent : function() {
-		return this.get('parent_id');
-	},
-	setParent : function(value) {
-		if( value == 'undefined') return;
-		this.set({ parent_id : value });
-	}, 	
-	// Team services ID //
-	getServicesId: function() {
-		return this.get('service_ids');
-	},
-	setServicesID : function(value) {
-		if( value == 'undefined') return;
-		this.set({ service_ids : value });
+	setCode : function(value, silent) {
+		this.set({ code : value }, {silent: silent});
 	},
 
+	getParentCat : function(type) {
 
+		// Check if the place have a parent place //
+		if(this.get('parent_id')){
+			var id = this.get('parent_id')[0];
+			var name = _.titleize(this.get('parent_id')[1].toLowerCase());
+		}
+		else{
+			var id, name = '';
+		}
 
-	/** Model Initialization
+		switch (type){ 
+			case 'id': 
+				return id;
+			break;
+			case 'all':
+				return this.get('parent_id');
+			break;
+			case 'json':
+				return {id: id, name: name};
+			break;
+			default: 
+				return name;
+		}
+	},
+	setParentCat : function(value, silent) {
+		this.set({ parent_id : value }, {silent: silent});
+	},
+
+	getServices : function(type){
+
+		var placeServices = [];
+
+		_.each(this.get('service_names'), function(s){
+			switch (type){
+				case 'id': 
+					placeServices.push(s[0]);
+				break;
+				case 'json': 
+					placeServices.push({id: s[0], name: s[1]});
+				break;
+				default:
+					placeServices.push(s[1]);
+			}
+		});
+
+		if(type == 'string'){
+			return _.toSentence(placeServices, ', ', ' '+app.lang.and+' ')
+		}
+		else{
+			return placeServices;
+		}
+	},
+	setServices : function(value, silent) {
+		this.set({ service_ids : [[6, 0, value]] }, {silent: silent});
+	},
+
+	/** Get Informations of the model
 	*/
-	initialize: function(){
-		//console.log('Category Request Model initialization');
+	getInformations : function(){
+		var informations = {};
+
+		informations.name = this.getName();
+
+		if(!_.isEmpty(this.getCode())){
+			informations.infos = {};
+			informations.infos.key = _.capitalize(app.lang.code);
+			informations.infos.value = this.getCode();
+		}
+
+		return informations;
 	},
-
-
-
-	/** Model Parser
-	*/
-	parse: function(response) {    	
-		return response;
-	},
-
-
-	
-	update: function(params) {
-		this.setName( params.name );
-		this.setCode( params.code );
-		this.setUnit( params.unit );
-		this.setParent( params.parent_id );
-		this.setServicesID( params.service_ids );
-	},
-	
-
-
-	/** Save Model
-	*/
-	save: function(data, id, options) {
-		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
-	},
-
-
-
-	/** Delete category
-	*/
-	delete: function (options) {
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
-	}
 
 });

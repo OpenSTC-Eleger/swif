@@ -3,48 +3,66 @@
 */
 app.Collections.Interventions = app.Collections.GenericCollection.extend({
 
-	model: app.Models.Intervention,
-
-	// Model name in the database //
-	model_name : 'project.project',
+	model : app.Models.Intervention,
 	
-	url: "demandes-dinterventions",
+	url   : "/api/openstc/interventions",
+	
+	fields: ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid','ask_id', 'equipment_id', 'has_equipment'],
+
+	pendingInterventions: 0,
+	plannedInterventions: 0,
 
 
 
-	/** Collection Initialization
+	/** Retrieve the number of Pending Intervention
 	*/
-	initialize: function (options) {
-		//console.log('Interventions collection Initialization');
+	pendingInterventionsCount: function(){
+		var self = this;
+
+		var domain = [ { field : 'state', operator : '=', value : app.Models.Intervention.status.pending.key } ];
+
+		return $.ajax({
+			url      : this.url,
+			method   : 'HEAD',
+			dataType : 'text',
+			data     : {filters: app.objectifyFilters(domain)},
+			success  : function(data,status,request){
+				var contentRange = request.getResponseHeader("Content-Range")
+				self.pendingInterventions = contentRange.match(/\d+$/);
+			}
+		});
+	},
+
+
+	
+	/** Retrieve the number of Planned Intervention
+	*/
+	plannedInterventionsCount: function(){
+		var self = this;
+
+		var domain = [ { field : 'state', operator : '=', value : app.Models.Intervention.status.scheduled.key } ];
+
+		return $.ajax({
+			url      : this.url,
+			method   : 'HEAD',
+			dataType : 'text',
+			data     : {filters: app.objectifyFilters(domain)},
+			success  : function(data,status,request){
+				var contentRange = request.getResponseHeader("Content-Range")
+				self.plannedInterventions = contentRange.match(/\d+$/);
+			}
+		});
 	},
 
 
 
 	/** Collection Sync
 	*/
-	sync: function(method, model, options) {
-		var fields = ["active", "ask", "cancel_reason", "complete_name", "contact_id", "create_date", "create_uid", "overPourcent", "tooltip", "date_deadline", "date_start", "description", "effective_hours", "id", "name", "partner_id", "planned_hours", "progress_rate", "service_id", "site1", "site_details", "state", "tasks", "total_hours", "user_id"];
-		
-		return app.readOE( this.model_name ,  app.models.user.getSessionID(), options, fields);
-	},
+	sync: function(method, model, options){
 
+		options.data.fields = this.fields;
 
-
-	/** Collection Parse
-	*/
-	parse: function(response) {    	
-		return response.result.records;
-	},
-
-
-
-	/** Comparator for ordering collection
-	*/
-	comparator: function(item) {
-		var mCreateDate = moment(item.get('create_date'))
-		item.set({'create_date': mCreateDate});
-		return -item.get('create_date');
-	},	
-
+		return $.when(this.count(options), this.pendingInterventionsCount(), this.plannedInterventionsCount(), Backbone.sync.call(this,method,this,options));
+	}
 
 });

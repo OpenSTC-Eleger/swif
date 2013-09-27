@@ -4,28 +4,12 @@
 
 var app = {
 
-	
-	// Global variables app //
-	uniq_id_counter : 0,
-	
-	urlOE_authentication        : '/web/session/authenticate',
-	urlOE_versionServer         : '/web/webclient/version_info',
-	urlOE_sessionDestroy        : '/web/session/destroy',
-	urlOE_sessionInformation    : '/web/session/get_session_info',
-	urlOE_menuUser              : '/web/menu/load',
-	urlOE_retrieveListe         : '/web/dataset/search_read',
-	urlOE_readObject            : '/web/dataset/get',
-	urlOE_createObject          : '/web/dataset/create',
-	urlOE_updateObject          : '/web/dataset/save',
-	urlOE_deleteObject          : '/web/dataset/call',
-	urlOE_object          		: '/web/dataset/call',
-
-
 
 	// Classes //
 	Collections     : {},
 	Models          : {},
 	Views           : {},
+	Helpers         : {},
 
 	// Instances //
 	properties      : {},
@@ -35,19 +19,19 @@ var app = {
 	collections     : {},
 	models          : {},
 	views           : {},
-	templates       : {},
 
 
 
 	/** Application initialization
 	*/
 	init: function (lang) {
+		var self = this;
 
 
 		// Retrieve App properties, configuration and language //
-		$.when(app.loadProperties('properties.json'), app.loadConfiguration('config/configuration.json'), app.loadRoutes('config/routes.json'), app.loadI18nScripts(lang))
-			.done(function(properties_data, configuration_data, routes_data, lang_data){
-			
+		$.when(app.loadStaticFile('properties.json'), app.loadStaticFile('config/configuration.json'), app.loadStaticFile('config/routes.json'), app.loadI18nScripts(lang))
+			.done(function (properties_data, configuration_data, routes_data, lang_data) {
+
 				// Set the app properties configuration and language //
 				app.properties    = properties_data[0];
 				app.config 		  = configuration_data[0];
@@ -55,23 +39,24 @@ var app = {
 				app.lang          = lang_data[0];
 
 
-				// Instantiation Collections users  et user //
+				// Instantiation of UsersCollections & UserModel //
 				app.collections.users           = new app.Collections.Users();
 				app.collections.users.fetch();
-				app.models.user                 = new app.Models.User();
-				//app.models.team               = new app.Models.Team();
-				app.models.task                 = new app.Models.Task();
-				app.models.intervention         = new app.Models.Intervention();
-				app.models.request              = new app.Models.Request();
-				app.models.place                = new app.Models.Place();
-				app.models.service              = new app.Models.ClaimerService();
-				app.models.categoryTask         = new app.Models.CategoryTask();
-				app.models.categoryIntervention = new app.Models.CategoryIntervention();
-				app.models.claimerContact       = new app.Models.ClaimerContact();
-				app.models.claimerType          = new app.Models.ClaimerType();
+				
+				if(_.isEmpty(app.collections.users.models)){
+					app.models.user = new app.Models.User();
+					app.collections.users.add(app.models.user);
+				}
+				else{
+					app.models.user = app.collections.users.at(0);	
+				}
+				
+				// Set the Ajax Setup //
+				self.setAjaxSetup();
 
 				// Router initialization //
 				app.router = new app.Router();
+
 				// Listen url changes //
 				Backbone.history.start({pushState: false});
 			})
@@ -80,7 +65,8 @@ var app = {
 			});
 
 	},
-	
+
+
 
 	/** Load internationalization scripts
 	*/
@@ -93,7 +79,8 @@ var app = {
 			
 				_.each(langFiles, function(file){
 					var script = document.createElement('script');
-					script.type = 'text/javascript'; script.src = 'i18n/'+lang+'/'+file;
+					script.type = 'text/javascript';
+					script.src = 'i18n/' + lang + '/' + file;
 					$('#app').append(script);
 				});
 
@@ -102,233 +89,74 @@ var app = {
 
 			})
 			.fail(function(){
-				alert('Impossible de charger les fichiers de langues');
+				alert('Unable to load the language files');
 			});
 	},
 
 
 
-	/** Load application configuration
+	/** Load Static file
 	*/
-	loadConfiguration: function(url){
-
+	loadStaticFile: function (url) {
 		return $.getJSON(url)
-			.success(function(data){
+			.success(function (data) {
 			})
-			.fail(function(){
-				alert('Impossible de charger le fichier de configuration');
+			.fail(function () {
+				alert('Unable to load the file : ') + url;
 			});
 	},
 
 
 
-	/** Load application properties
-	*/
-	loadProperties: function(url){
+	setAjaxSetup: function(){
 
-		return $.getJSON(url)
-			.success(function(data){
-			})
-			.fail(function(){
-				alert('Impossible de charger le fichier de propriétés');
-			});
-	},
-	
-
-
-	/** Load application properties
-	*/
-	loadRoutes: function(url){
-
-		return $.getJSON(url)
-			.success(function(data){
-			})
-			.fail(function(){
-				alert('Impossible de charger le fichier de routes');
-			});
-	},
-
-
-
-
-	/******************************************
-	* GENERIC FUNCTION FOR JSON/AJAX
-	*/
-
-	/** Formats an AJAX response to wrap JSON.
-	*/
-	rpc_jsonp: function(url, payload, options) {
-
-		"use strict";
-
-		// Extracted from payload to set on the url //
-		var data = {
-			session_id: '',
-			id: payload.id
-		};
-
-		var ajax = _.extend({
-			type: 'GET',
-			dataType: 'jsonp',
-			jsonp: 'jsonp',
-			cache: false,
-			data: data,
-			url: url
-		}, options);
-
-
-		var payload_str = JSON.stringify(payload);
-		console.debug(payload);
-
-		var payload_url = $.param({r: payload_str});
-
-		if (payload_url.length > 2000) {
-			throw new Error('Payload is too big.');
-		}
-		// Direct jsonp request
-		ajax.data.r = payload_str;
-		return $.ajax(ajax);
-
-	},
-
-
-
-	/** Formats a standard JSON 2.0 call
-	*/
-	json: function (url, params, options) {
-
-		"use strict";
-
-		var deferred = $.Deferred();
-
-		app.uniq_id_counter += 1;
-		var payload = {
-			'jsonrpc' : '2.0',
-			'method'  : 'call',
-			'params'  : params,
-			'id'      : ("r" + app.uniq_id_counter)
-		};
-
-		app.rpc_jsonp(url, payload, options).then(function (data, textStatus, jqXHR) {
-			if (data.error) {
-				deferred.reject(data.error);
+		// Set The Ajax Config //
+		$.ajaxSetup({
+			contentType: "application/json",
+			headers: {Authorization: 'Token token=' + app.models.user.getAuthToken()},
+			beforeSend: function(){
+				NProgress.start();
+			},
+			complete: function(){
+				NProgress.done();
+			},
+			statusCode: {
+				401: function () {
+					console.error('---> Ajax Setp Up 401, redirect to the login page <---');
+					// Redirect the to the login page //
+					app.router.navigate(app.routes.login.url, {trigger: true, replace: true});
+					app.loader('hide');
+				},
+				500: function(){
+					// Server unreachable //
+					app.notify('large', 'danger', app.lang.errorMessages.serverError, '');
+					app.loader('hide');
+				},
+				502: function(){
+					// Server unreachable //
+					app.notify('large', 'danger', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
+					app.loader('hide');
+				}
 			}
-			deferred.resolve(data.result, textStatus, jqXHR);
 		});
-
-		return deferred;
-	},
-
-
-
-	/** Retrieve an object from OpenERP
-	*/
-	getOE : function (model, fields, ids, session_id, options) {
-		this.json(app.config.openerp.url + this.urlOE_readObject, {
-			'model'     : model,
-			'fields'    : fields, 
-			'ids'       : ids,
-			'session_id': session_id
-		}, options)
-
-	},
-
-
-	/** Retrieve a list from OpenERP
-	*/
-	readOE : function (model, session_id, options, fields) {
-
-		var params = {
-			'model'     : model,
-			'session_id': session_id
-		}
-
-		// Limit - Offset //
-		if(!_.isUndefined(options.limitOffset)){
-		 	params.limit = options.limitOffset.limit;
-		 	params.offset = options.limitOffset.offset;
-		}
-
-
-		// args - domain //
-		if(!_.isUndefined(options.search)){
-			params.domain = options.search;
-		}
-
-
-		// Sort by / Order //
-		if(!_.isUndefined(options.sortBy)){
-			params.sort = options.sortBy;
-		}
-
-
-		// Fields //
-		if(_.isUndefined(fields)){ 
-			params.fields = [];
-		}else{
-			params.fields = fields;
-		}
-
-
-		return this.json(app.config.openerp.url + this.urlOE_retrieveListe, params, options)
-	},
-
-
-
-	/** Delete object from OpenERP
-	*/
-	deleteOE : function (args,model,session_id,options) {
-		this.json(app.config.openerp.url + this.urlOE_deleteObject, {
-			'method'    : 'unlink',
-			'args'      : args, 
-			'model'     : model,
-			'session_id': session_id
-		}, options);  
-	},
-
-
-
-	/** Save object in OpenERP
-	*/
-	saveOE : function (id, data, model, session_id, options) {
-		if(id)
-			this.json(app.config.openerp.url + this.urlOE_updateObject, {
-				'data'      : data, 
-				'model'     : model, 
-				'id'        : id,
-				'session_id': session_id      
-		   },options);
-		else
-			this.json(app.config.openerp.url + this.urlOE_createObject, {
-					'data'      : data, 
-					'model'     : model,                 
-					'session_id': session_id      
-		   }, options);      
-	},
-	
-
-
-	/** call object method from OpenERP
-	*/
-	callObjectMethodOE : function (args, model, method, session_id, options) {
-		return this.json(app.config.openerp.url + this.urlOE_object, {
-			'method'    : method,
-			'args'      : args, 
-			'model'     : model,
-			'session_id': session_id      
-	   }, options);  
 	},
 
 
 
 	/** Page Loader
 	*/
-	loader: function(action){
+	loader: function(action, message){
 
 		var deferred = $.Deferred();
 
 		switch(action){
 			case 'display':
+				if(_.isUndefined(message)){ 
+					$('#loaderMessage').html(app.lang.loadingInProgress);
+				}
+				else{
+					$('#loaderMessage').html(message);
+				}
 				$('#loader, #modal-block').fadeIn(250, deferred.resolve);
 			break;
 
@@ -342,27 +170,8 @@ var app = {
 
 
 
-	/** Transform Decimal number to hour:minute
-	*/
-	decimalNumberToTime: function(decimalNumber){
-
-		// Check if the number is decimal //
-		if(_.str.include(decimalNumber, '.')){
-			var minutes = _.lpad(((_.rpad(_(decimalNumber).strRight('.'), 2, '0') / 100) * 60), 2, '0');
-			var hour = _(decimalNumber).strLeft('.');
-
-			if(hour == 0){
-				var date = _(minutes).toNumber()+app.lang.minuteShort;
-			}
-			else{
-				var date = hour+'h'+_(minutes).toNumber();    
-			}
-		}
-		else{
-			var date = decimalNumber+'h';
-		}
-		
-		return date;
+	objectifyFilters: function (filterArray) {
+		return $.extend({},filterArray);
 	},
 
 
@@ -376,34 +185,35 @@ var app = {
 		switch(notifyModel){
 			case 'large' :
 				var addClass = 'stack-bar-top big-icon';
-				var width = '50%';
-				var delay = 4500;
-				var hide = true;
+				var width    = '50%';
+				var delay    = 4500;
+				var hide     = true;
 			break;
 
 			default:
 				var addClass = '';
-				var width = '320px';
-				var delay = 4500;
-				var hide = true;
+				var width    = '320px';
+				var delay    = 4500;
+				var hide     = true;
 			break;
-
 		}
 
+		if(type == 'danger'){ type = 'error'; }
+
 		$.pnotify({
-			title: title,
-			text: message,
-			addclass: addClass,
-			width: width,
-			type: type,
-			hide: hide,
+			title        : title,
+			text         : message,
+			addclass     : addClass,
+			width        : width,
+			type         : type,
+			hide         : hide,
 			animate_speed: 'normal',
-			opacity: .9,
-			icon: true,
-			animation: 'slide',
-			closer: true,
-			closer_hover: false,
-			delay: delay
+			opacity      : .9,
+			icon         : true,
+			animation    : 'slide',
+			closer       : true,
+			closer_hover : false,
+			delay        : delay
 		});
 	}
 
@@ -416,12 +226,9 @@ var app = {
 _.mixin(_.str.exports());
 
 
-
 /******************************************
 * AFTER THE LOADING OF THE PAGE
 */
-$(document).ready(function () {	
+$(document).ready(function () {
 	app.init('fr');
 });
-
-

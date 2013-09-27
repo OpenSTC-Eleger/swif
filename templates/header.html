@@ -1,79 +1,58 @@
-<div class="navbar-inner">
-	<div class="container-fluid">
-	 
-	     
-	    <!-- Application name -->
-	    <a class="brand" id="appName" href="#"><i class="icon-truck icon-large"></i> <%= lang.applicationName %> </a>
-
-		
-		<!-- Display the menu if user is logged -->
-		<% if (user.fields.sessionID != ''){ %>
-
-		    <!-- Navbar button (display on smarthphone and touchpad)-->
-		    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-		    </a>
-		   
-		   	<!-- Elements (display on large screen) -->
-		    <div class="nav-collapse">
-			    	
-		    	<!-- Main menu application -->
-		    	<ul id="nav-menu-app" class="nav" role="menu">
-		    		
-	 				<% _.each(menus, function (menuRacine, i) { 
-	 					console.debug(menuRacine);
-	 					if( menuRacine.name == 'Interventions' ) {
-	 					_.each(menuRacine.children, function (menuParent, i) {	
-	 						%> 		 			
-	 											
-				    		<li class="dropdown" id="<%= _.slugify(menuParent.name) %>" role="menuitem">
-				    			<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuParent.id %>"><%= menuParent.name %> <b class="caret"></b></a>
-			    				
-			    				<ul aria-labelledby="drop-menu-app-<%= menuParent.id %>" role="menu" class="dropdown-menu">
-									<% _.each(menuParent.children, function (menuChildren, i) { 
-										if( menuChildren.children.length>0 ) {%>
-											<li class="dropdown-submenu" id="<%= _.slugify(menuChildren.name) %>" role="menuitem">
-				    							<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuChildren.id %>"><%= menuChildren.name %> <b class="caret"></b></a>
-												<ul aria-labelledby="drop-menu-app-<%= menuChildren.id %>" role="menu" class="dropdown-menu">
-													<% _.each(menuChildren.children, function (menuChildrenLevel2, i) { 
-														console.debug(menuChildrenLevel2.name)%>
-														<li role="menuitem"><a href="#<%= _.slugify(menuChildrenLevel2.name) %>"><%= menuChildrenLevel2.name %></a></li>
-													<%}); %>
-												</ul>
-											</li>
-										<%} else {%>										
-											<li role="menuitem"><a href="#<%= _.slugify(menuChildren.name) %>"><%= menuChildren.name %></a></li>
-										<%} %>
-									<% }); %>
-								</ul>							
-		  					</li>		  					
-		  				<% }); %>
-		  				<% } %>
-  					<% }); %>
-						
-		    	</ul>
-
-
-		    	<!-- User menu application -->
-				<ul class="nav pull-right" role="menu">
-					<li class="dropdown" id="login-drop-menu-container" role="menuitem">
-						<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
-							<i class="icon-user icon-large"></i> <%= user.fullname %> <b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu" role="menu">
-							<li role="menuitem"><a tabindex="-1" href="#about"><i class="icon-info-sign icon-fixed-width"></i> <%= _.capitalize(lang.about) %></a></li>
-							<li role="menuitem" class="disabled"><a tabindex="-1" href="#help"><i class="icon-question-sign icon-fixed-width"></i> <%= _.capitalize(lang.help) %></a></li>
-							<li role="menuitem" class="divider"></li>
-							<li role="menuitem" class="disabled"><a tabindex="-1" href="#settings"><i class="icon-cog icon-fixed-width"></i> <%= _.capitalize(lang.settings) %></a></li>
-							<li role="menuitem"><a tabindex="-1" href="#logout"><i class="icon-signout icon-fixed-width"></i> <%= _.capitalize(lang.actions.logOut) %></a></li>
-						</ul>
-					</li>
-				</ul>
-
-			</div>
-		<% } %>
-
-	</div>
+<!-- Application name -->
+<div class="navbar-header">
+	<% if(user.hasAuthToken()){ %>
+	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+		<span class="sr-only">Toggle navigation</span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	</button>
+	<% } %>
+	<a class="navbar-brand" href="#"><i class="icon-truck icon-large"></i> <%= lang.applicationName %> </a>
 </div>
+
+	
+<!-- Display the menu if user is logged -->
+<% if(user.hasAuthToken()){ %>
+<div class="collapse navbar-collapse navbar-ex1-collapse">
+
+
+	<!-- Main menu application -->
+	<ul id="nav-menu-app" class="nav navbar-nav" role="menu">
+		<% _.each(user.getMenus().content[0].children, function (menuRacine, i) {%>
+
+		<li class="dropdown" id="<%= _.slugify(menuRacine.tag) %>" role="menuitem">
+		<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuRacine.id %>"><%= menuRacine.name %> <b class="caret"></b></a>
+            <ul aria-labelledby="drop-menu-app-<%= menuRacine.id %>" role="menu" class="dropdown-menu">
+                <% _.each(menuRacine.children, function (menuItem, i) {%>
+
+					<li role="menuitem">
+						<a href="#<%= _.slugify(menuItem.tag) %>"><%= menuItem.name %></a>
+					</li>
+
+				<% }); %>
+			</ul>
+		</li>
+	<% }); %>
+	</ul>
+
+
+	<!-- User menu application -->
+	<ul class="nav navbar-nav navbar-right" role="menu">
+		
+		<li class="dropdown" role="menuitem">
+			<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+				<i class="icon-user icon-large"></i> <%= user.getFullname() %> <b class="caret"></b>
+			</a>
+			<ul class="dropdown-menu" role="menu">
+				<li role="menuitem"><a href="#about"><i class="icon-info-sign icon-fixed-width"></i> <%= _.capitalize(lang.about) %></a></li>
+				<li role="menuitem" class="disabled"><a href="#help"><i class="icon-question-sign icon-fixed-width"></i> <%= _.capitalize(lang.help) %></a></li>
+				<li role="menuitem" class="divider"></li>
+				<li role="menuitem" class="disabled"><a href="#settings"><i class="icon-cog icon-fixed-width"></i> <%= _.capitalize(lang.settings) %></a></li>
+				<li role="menuitem"><a href="#logout"><i class="icon-signout icon-fixed-width"></i> <%= _.capitalize(lang.actions.logOut) %></a></li>
+			</ul>
+		</li>
+	</ul>
+
+</div>
+<% }; %>

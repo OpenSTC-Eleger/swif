@@ -1,0 +1,216 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 class="modal-title">
+				<i class="icon-edit"></i>&nbsp;
+				<% if(_.isNull(request.getId())){ %>
+					<%= _.capitalize(lang.viewsTitles.newRequest) %>
+				<% } else{ %>
+					<%= lang.viewsTitles.requestDetail %> n°<%= request.id %>
+				<% } %>
+
+
+				<% if(!_.isUndefined(loader)) { %>
+				<div class="modal-loader progress progress-striped active">
+					<div class="progress-bar" role="progressbar"></div>
+				</div>
+				<% } %>
+			</h3>
+		</div>
+
+
+
+		<!-- Modal Body  -->
+		<div class="modal-body">
+
+			<!-- Tabs -->
+			<ul class="nav nav-tabs nav-justified">
+				<li class="active"><a href="#" data-target="#aboutClaimer" data-toggle="tab"><%= lang.aboutTheRequestClaimer %></a></li>
+				<li><a href="#" data-target="#aboutRequest" data-toggle="tab"><%= lang.aboutTheRequest %></a></li>
+			</ul>
+
+
+			<form id="formSaveRequest" action="#" class="form-horizontal" role="form">
+
+				<div class="tab-content">
+			
+				<!-- About the claimer -->
+				<fieldset class="tab-pane fade in active" id="aboutClaimer">
+
+
+					<!-- is Citizen ? -->
+					<div class="form-group">
+						<label class="control-label col-sm-3" for="isCitizen"><%= _.capitalize(lang.citizen) %></label>
+						<div class="col-sm-9">
+							<div class="make-switch" id="switchCitizen" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
+								<input id="isCitizen" type="checkbox">
+							</div>
+						</div>
+					</div>
+
+
+					<!-- Request Contact -->
+					<div class="form-group hide-citizen">
+						<label for="requestContact" class="control-label col-sm-3"><%= _.capitalize(lang.contact) %>:</label>
+
+						<div class="col-sm-9">
+							<input id="requestContact" class="select2" data-placeholder="<%= lang.actions.selectAContact %>" data-minimum-input-length="2"/>
+						</div>
+					</div>
+
+					
+					<!-- Request Partner -->
+					<div class="form-group hide-citizen">
+						<label for="requestClaimer" class="control-label col-sm-3"><%= _.capitalize(lang.organization) %>:</label>
+
+						<div class="col-sm-9">
+							<input id="requestClaimer" class="select2" data-placeholder="<%= lang.actions.selectAClaimer %>" />
+						</div>
+					</div>
+	
+
+					<!-- Claimer Details -->
+					<div id="claimerDetails" class="panel panel-default hide-citizen hide-soft">
+						<div class="panel-heading">
+							<h3 class="panel-title"><%= lang.claimerDetails %></h3>
+						</div>
+						<ul class="list-group">
+							<li id="claimerFunction" class="list-group-item"><i class="icon-user icon-fixed-width"></i><span></span></li>
+							<li id="claimerPhone" class="list-group-item"><i class="icon-phone icon-fixed-width"></i><span></span></li>
+							<li id="claimerEmail" class="list-group-item"><i class="icon-envelope icon-fixed-width"></i><span></span></li>
+						</ul>
+					</div>
+
+					<!-- Request Contact Name -->
+					<div class="form-group hide-no-citizen hide-soft">
+						<label for="requestContactName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
+
+						<div class="col-sm-9">
+							 <input type="tel" id="requestContactName" class="form-control" value="" />
+						</div>
+					</div>
+
+					<!-- Request Contact Phone -->
+					<div class="form-group hide-no-citizen hide-soft">
+						<label for="requestContactPhone" class="control-label col-sm-3"><%= _.capitalize(lang.phone) %>:</label>
+
+						<div class="col-sm-9">
+							 <input type="tel" id="requestContactPhone" class="form-control readonly-no-citizen" value="" />
+						</div>
+					</div>
+
+					<!-- Request Contact Email -->
+					<div class="form-group hide-no-citizen hide-soft">
+						<label for="requestContactEmail" class="control-label col-sm-3"><%= _.capitalize(lang.email) %>:</label>
+
+						<div class="col-sm-9">
+							 <input type="email" id="requestContactEmail" class="form-control readonly-no-citizen" value="" />
+						</div>
+					</div>
+
+
+				</fieldset>
+				<!-- / About the claimer -->
+
+
+				<!-- About the request -->
+				<fieldset class="tab-pane fade" id="aboutRequest">
+
+					<!-- Request Label -->
+					<div class="form-group">
+						<label for="requestName" class="control-label col-sm-3"><%= _.capitalize(lang.label) %>:</label>
+
+						<div class="col-sm-9">
+							<input type="text" id="requestName" class="form-control" required />
+						</div>
+					</div>
+
+
+					<!-- Place / Equipment -->
+					<div class="form-group">
+						<label class="control-label col-sm-3" for="onEquipment"><%= _.capitalize(lang.placeOrEquipment) %></label>
+						<div class="col-sm-9">
+							<div class="make-switch" id="switchPlaceEquipment" data-on="default" data-on-label="<i class='icon-map-marker icon-large icon-fixed-width'>" data-off-label="<i class='icon-wrench icon-large icon-fixed-width'>" tabindex="0">
+								<input id="onEquipment" type="checkbox" checked>
+							</div>
+						</div>
+					</div>
+
+
+					<!-- Request Equipment -->
+					<div class="form-group hide-no-place hide-soft">
+						<label for="requestEquipment" class="control-label col-sm-3"><%= _.capitalize(lang.equipmentOrVehicle) %>:</label>
+		
+						<div class="col-sm-9">
+							<input id="requestEquipment" class="select2" data-placeholder="<%= lang.actions.selectAnEquipment %>"/>
+						</div>
+					</div>
+
+
+					<!-- Request Place (if Equipment) -->
+					<div class="form-group">
+						<label for="requestPlace" class="control-label col-sm-3"><%= _.capitalize(lang.location) %>:</label>
+		
+						<div class="col-sm-9">
+							<input id="requestPlace" class="select2" data-placeholder="<%= lang.actions.selectAPlace %>"/>
+						</div>
+					</div>
+
+					<!-- Request Place precision -->
+					<div class="form-group">
+						<label for="requestPlacePrecision" class="control-label col-sm-3"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
+
+						<div class="col-sm-9">  
+							 <textarea  class="form-control" id="requestPlacePrecision" rows="2"></textarea>
+						</div>
+					</div>
+
+					
+					<!-- Request Contact Service -->
+					<div class="form-group">
+						<label for="requestDetailService" class="control-label col-sm-3"><%= lang.serviceConcerned %>:</label>
+
+						<div class="col-sm-9">
+							<input id="requestDetailService" class="select2" required data-placeholder="<%= lang.actions.selectAService %>"/>
+						</div>
+					</div>
+
+
+					<!-- Request Description -->
+					<div class="form-group">
+						<label for="requestDescription" class="control-label col-sm-3"><%= _.capitalize(lang.description) %>:</label>
+
+						<div class="col-sm-9">
+							<textarea id="requestDescription" rows="5" class="form-control" required></textarea>
+						</div>
+					</div>
+						
+
+				</fieldset>
+				<!-- / About the request -->
+
+				</div>
+
+			</form>
+		</div>
+		<!-- / Modal Body  -->
+
+
+
+		<div class="modal-footer">
+			<button type="submit" form="formSaveRequest" class="btn btn-primary" 
+				data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>"
+				<%= (_.isUndefined(loader) ? '' : 'disabled') %>
+			>
+				<%= _.capitalize(lang.actions.save) %>
+			</button>&nbsp;&nbsp;
+
+			<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+
+
+	</div>
+</div>

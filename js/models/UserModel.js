@@ -3,52 +3,20 @@
 */
 app.Models.User = Backbone.Model.extend({
 
-	// Model name in the database //
-	model_name : 'res.users',
-	
-	relations: [
-		{
-			type: Backbone.HasMany,
-			key: 'service_ids',
-			relatedModel: 'app.Models.ClaimerService',
-			reverseRelation: {
-				type: Backbone.HasMany,
-				key: 'users',
-				includeInJSON: ['id','name'],
-			}
-		},
-		{
-			type: Backbone.HasMany,
-			key: 'officers',
-			relatedModel: 'app.Models.Officer',
-			includeInJSON: ['id', 'firstname', 'name'],
-		},
-
-	],
+	urlA             : '/api/open_object/users',
+	urlAuthentication: '/sessions',
 
 	defaults: {
-		uid             : '',
-		login           : '',
-		sessionID       : '',
-		lastConnection  : '',
-		firstname       : '',
-		lastname        : '',
-		service_ids		: [],
-		context			: {},
-		officers        : [],
-		teams			: [],
+		uid             : null,
+		authToken       : null,
 		isDST			: false,
-		isManager		: false
+		isManager		: false,
 	},
 
 	initialize: function(){
-		console.log('User initialize: ' + this.getLogin());
+		//console.log('User initialize: ' + this.getLogin());
 	},
-	
-	/** Model Parser */
-	parse: function(response) {    	
-		return response;
-	},
+
 
 	getUID : function() {
 		return this.get('uid');
@@ -89,13 +57,6 @@ app.Models.User = Backbone.Model.extend({
 		return this.get('firstname')+' '+this.get('lastname');
 	},
 
-	getSessionID : function() {
-		return this.get('sessionID');
-	},
-	setSessionID : function(value) {
-		this.set({ sessionID : value });
-	},
-
 	getLastConnection : function() {
 		return this.get('lastConnection');
 	},
@@ -107,13 +68,19 @@ app.Models.User = Backbone.Model.extend({
 		this.setSessionID('');
 	},
 
-	hasSessionID: function(){
-		if(this.getSessionID() != ''){
+	hasAuthToken: function () {
+		if(!_.isNull(this.get('authToken'))) {
 			return true;
 		}
-		else{
+		else {
 			return false;
 		}
+	},
+	getAuthToken : function() {
+		return this.get('authToken');
+	},
+	setAuthToken : function(value) {
+		this.set({ authToken : value });
 	},
 	
 	getService : function() {
@@ -174,75 +141,143 @@ app.Models.User = Backbone.Model.extend({
 	setDST: function(value) {
 		this.set({ isDST : value });
 	},
-
-		
-
-	/** get, by calling server, officers and teams to filter on it in tasks/planning screens
+	
+	/** Get Officer By Id
 	*/
-	getTeamsAndOfficers: function() {
-		var self = this
-		app.callObjectMethodOE([[this.get("uid")]], this.model_name, "getTeamsAndOfficers", self.getSessionID(), {
-			success: function(data){
-				self.setOfficers( data.result.officers )
-				self.setTeams( data.result.teams )
-				self.save();
-			}
+	getOfficerById: function(id){
+		return _.find(this.getOfficers(), function(officer){
+			return officer.id == id
 		});
 	},
+
+	setMenu: function (menu) {
+		this.set({menu: menu});
+	},
+	
+	/** Get officer's teams list selected in planning
+	*/
+	getOfficerIdsByTeamId: function(id) {
+		var self = this;
+		var officers = []
+		               
+		var team = _.find(this.getTeams(), function(team){
+			return team.id == id
+		});
+		if(_.isUndefined(team)) return officers;
+		
+		_.each(team.members, function(member){			
+			officers.push(member.id);
+		});
+		return officers;	
+	},
+	
+	/** Get Officer By Id
+	*/
+	getTeamById: function(id){
+		return _.find(this.getTeams(), function(team){
+			return team.id == id
+		});
+	},
+
+	/** Get team's officers list selected in planning
+	*/
+	getTeamIdsByOfficerId: function(id) {
+		var self = this;
+		var teams = []
+
+		var officer = _.find(this.getOfficers(), function(officer){
+			return officer.id == id
+		});
+		if(_.isUndefined(officer)) return teams;
+
+		_.each(officer.teams, function(team){
+			teams.push(team);
+		});
+		return teams;
+	},
+
+
+	getMenus: function () {
+		return this.get('menu')
+	},
+
+
+	/** Retrieve teams than current user can manage and stores them in user's data
+	*/
+	queryManagableTeams: function () {
+		var user = this;
+		$.ajax({
+			async: true,
+			url: app.config.barakafrites.url + this.urlA + '/' + this.get("uid") + '/manageable_teams',
+			headers: {Authorization: 'Token token=' + this.get('authToken')},
+			success: function (data) {
+				user.setTeams(data);
+			}
+		});
+
+	},
+
+
+	/** Retrieve officers than current user can manage and stores them in user's data
+	*/
+	queryManagableOfficers: function() {
+		var user = this;
+		$.ajax({
+			async: true,
+			url: app.config.barakafrites.url + this.urlA + '/' + this.get("uid") + '/manageable_officers',
+			headers: {Authorization: 'Token token=' + this.get('authToken')},
+			success: function (data) {
+				user.setOfficers(data);
+			}
+		});
+
+	},
+
+
+
+	/** Set all attributes to the user after login
+	*/
+	setUserData: function(data){
+		
+		this.setLogin(data.user.login);
+		this.setUID(data.user.id)
+		this.setAuthToken(data.token);
+		this.setMenu(data.menu);
+		this.setLastConnection(moment());
+		this.setContext({tz: data.user.context_tz, lang: data.user.context_lang});
+		this.setFirstname(data.user.firstname);
+		this.setLastname(data.user.name);
+		this.setGroups(data.user.groups_id);
+		this.setServices(data.user.service_ids);
+		this.setService(data.user.service_id);
+		this.setContact(data.user.contact_id);
+		this.setManager(data.user.isManager);
+		this.setDST(data.user.isDST);
+
+		//this.queryManagableTeams();
+		//this.queryManagableOfficers();
+	},
+
 
 
 	/** Login function
 	*/
-	login: function(loginUser, passUser){
+	login: function (loginUser, passUser) {
 
-		"use strict";
 		var self = this;
 
-		console.log('Login User: ' + loginUser + ' - ' + passUser);
-
-		var deferred = $.Deferred();
-
-		app.json(app.config.openerp.url+app.urlOE_authentication, {
-			'base_location': app.config.openerp.url,
-			'db': app.config.openerp.database,
-			'login': loginUser,
+		var login_data = {
+			'dbname'  : app.config.openerp.database,
+			'login'   : loginUser,
 			'password': passUser,
-			'session_id': ''
+		};
+
+		return $.ajax({
+			url        :  self.urlAuthentication,
+			type       : 'POST',
+			dataType   : 'json',
+			data       :  JSON.stringify(login_data)
 		})
-		.fail(function (error){
-			console.error(error);
-			app.loader('hide');
-			app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
-		})
-		.done(function (data) {
-
-			if(data.uid == false){
-				app.loader('hide');
-				app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
-			}
-			else{
-
-				// Set the user Informations //
-				self.setUID(data.uid)
-				self.setSessionID(data.session_id);
-				self.setLogin(loginUser);
-				self.setUID(data.uid);
-				self.setLastConnection(moment().format("LLL"));
-				self.setContext(data.context);
-
-				// Add the user to the collection and save it to the localStorage //
-				app.collections.users.add(self);
-
-				// Get the users informations //
-				self.getUserInformations();
-				self.getTeamsAndOfficers();
-
-			}
-			
-			deferred.resolve();
-		})
-
-	   return deferred;
 	},
 
 
@@ -250,90 +285,26 @@ app.Models.User = Backbone.Model.extend({
 	/** Logout fonction
 	*/
 	logout: function(options){
-		"use strict";
 		var self = this;
 
-		var deferred = $.Deferred();
-
-		app.json(app.config.openerp.url+app.urlOE_sessionDestroy, {
-			'session_id': self.getSessionID()
+		$.ajax({
+			url    : self.urlAuthentication +'/'+ self.getAuthToken(),
+			method : 'DELETE',
 		})
-		.fail(function (){
-			app.notify('', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
-		})
-		.done(function (data) {
-			// On détruit la session dans le localStorage //
-			self.destroySessionID();
+		.always(function () {
+			// Delete the Auth token of the user //
+			self.setAuthToken(null);
 			self.save();
-			// Reset des filtres initialisées dans les listes //
-			sessionStorage.clear();
-			
-			app.notify('large', 'info', app.lang.infoMessages.information, app.lang.infoMessages.successLogout);
+
+			app.setAjaxSetup();
 
 			// Refresh the header //
 			app.views.headerView.render();
 
 			// Navigate to the login Page //
 			Backbone.history.navigate(app.routes.login.url, {trigger: true, replace: true});
-			deferred.resolve();
 		});
 
-	   return deferred;
-	},
-
-
-
-	/** Get the menu of the user
-	*/
-	getMenus: function(options){
-		"use strict";
-		var self = this;
-
-		return app.json(app.config.openerp.url+app.urlOE_menuUser, {
-			'session_id': self.getSessionID()
-		}, options)
-	},
-
-
-
-	/** Get the informations of the user
-	*/
-	getUserInformations: function(options){
-		"use strict";
-		var self = this;
-
-
-		var fields = ['firstname', 'name', 'groups', 'contact_id', 'service_id', 'service_ids', 'isDST', 'isManager'];
-
-		return  app.getOE(this.model_name, fields, [self.getUID()], self.getSessionID(),
-			({
-				success: function(data){
-
-					// Retrieve the firstname and the lastname of the user //
-					self.setFirstname(data.result[0].firstname);
-					self.setLastname(data.result[0].name);
-					self.setGroups(data.result[0].groups_id);
-					self.setServices(data.result[0].service_ids);
-					self.setService(data.result[0].service_id);
-					self.setContact(data.result[0].contact_id);
-					self.setManager(data.result[0].isManager);
-					self.setDST(data.result[0].isDST);
-					self.save();
-
-					// Refresh the header //
-					app.views.headerView.render(app.router.mainMenus.manageInterventions);
-
-					// Navigate to the Home page //
-					Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
-
-				},
-				error: function(error){
-					console.error(error);
-					app.notify('', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);       
-				}
-			})
-		);
-	},
-
+	}
 
 });

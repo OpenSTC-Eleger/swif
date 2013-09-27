@@ -1,56 +1,159 @@
 /******************************************
 * Intervention Model
 */
-app.Models.Intervention = Backbone.RelationalModel.extend({
+app.Models.Intervention = app.Models.GenericModel.extend({
 	
-	model_name : 'project.project',	
+	urlRoot: "/api/openstc/interventions",
 	
-	url: "/#demandes-dinterventions/:id",
+	fields : ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid','ask_id'],
 
-	relations: [
+
+	searchable_fields: [
 		{
-			type: Backbone.HasMany,
-			key: 'tasks',
-			relatedModel: 'app.Models.Task',
-			collectionType: 'app.Collections.Tasks',
-			includeInJSON: true,
-			reverseRelation: {
-				key: 'intervention',
-				includeInJSON: ['id', 'name', 'description', 'state', 'tasks', 'service_id', 'site1' ,'date_start', 'date_end'],
-			},
-		},		
+			key  : 'site1.complete_name',
+			type : 'text'
+		}
+		,
+		{
+			key  : 'service_id.name',
+			type : 'text'
+		},
+		{
+			key  : 'name', 
+			type : 'text'
+		}
 	],
-	
-	defaults:{
-		id:0,
-		state: null,
-		cancel_reason: null,
+
+	getId: function(){
+		return this.get('id');
 	},
 
-
+	getName: function(){
+		return this.get('name');
+	},
+	
+	getDateDeadline: function(type){
+		if(this.get('date_deadline') != false){
+			switch(type){
+				case 'human':	
+					return moment(this.get('date_deadline')).format('LL');
+				break;
+				default:
+					return this.get('date_deadline');
+				break;
+			}
+		}
+		else{
+			return '';
+		}
+	},
+	
+	getPlannedHours: function(type){
+		if(this.get('planned_hours') != false){
+			switch(type){
+				case 'human':
+					return app.Helpers.Main.decimalNumberToTime(this.get('planned_hours'), 'human');
+				break;
+				default:
+					return this.get('planned_hours');
+				break;
+			}
+		}
+		else{
+			return '';
+		}
+	},
+	
+	getEffectiveHours: function(type){
+		if(this.get('effective_hours') != false){
+			switch(type){
+				case 'human':
+					return app.Helpers.Main.decimalNumberToTime(this.get('effective_hours'), 'human');
+				break;
+				default:
+					return this.get('effective_hours');
+				break;
+			}
+		}
+		else{
+			return '';
+		}
+	},
+	
+	getTooltip: function(){
+		return this.get('tooltip');
+	},
+	
+	getProgressRate: function(){
+		return this.get('progress_rate');
+	},
+	
+	getOverPourcent: function(){
+		return this.get('overPourcent');
+	},
+	
 	getState : function() {
 		return this.get('state');
 	},
-	setState : function(value) {
-		if( value == 'undefined') return;
-		this.set({ state : value });
+	setState : function(value, silent) {
+		this.set({ state : value }, {silent: silent});
 	},
 	
 	getCancelReason : function() {
 		return this.get('cancel_reason');
 	},
-	setCancelReason : function(value) {
-		if( value == 'undefined') return;
-		this.set({ cancel_reason : value });
-	},  
+	setCancelReason : function(value, silent) {
+		this.set({ cancel_reason : value }, {silent: silent});
+	},
+	
+	getSite : function(type) {
+		if(this.get('site1')){
+			switch(type){
+				case 'id': 
+					return this.get('site1')[0];
+				break;
+				default:
+					return _.titleize(this.get('site1')[1].toLowerCase());
+			}
+		}
+	},
+	
+	getEquipment : function(type) {
 
+		if(this.onEquipment()){
+			switch(type){
+				case 'id': 
+					return this.get('equipment_id')[0];
+				break;
+				default:
+					return _.titleize(this.get('equipment_id')[1].toLowerCase());
+			}
+		}
+		else{
+			return false;
+		}
+	},
+	setEquipment : function(value, silent) {
+		this.set({ equipment_id : value }, {silent: silent});
+	},
+	
+	onEquipment: function(){
+		return this.get('has_equipment');
+	},
 
-
+	getActions: function(){
+		return this.get('actions');
+	},
+	
+	hasActions: function(action){
+		return this.getActions().indexOf(action) > -1;
+	},
+	
 	/** Model Initialization
 	*/
 	initialize: function(){
 		//console.log('Intervention Model initialization');
-		this.fetchRelated('tasks');
+		//this.fetchRelated('tasks');
 
 		app.Models.Intervention.status.scheduled.translation = app.lang.planningFenced;
 		app.Models.Intervention.status.open.translation = app.lang.toScheduled;	
@@ -60,87 +163,14 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 		app.Models.Intervention.status.template.translation = "template"; //'app.lang.template';
 	},
 
-
-	
-	/** Model Parser
-	*/
-	parse: function(response) {    	
-		return response;
-	},
-
-
-
-	update: function(params) {
-		this.setState( params.state );
-		this.setCancelReason( params.cancel_reason );
-	},
-
-
-
-	/** Save Model*/
-	save: function(data,options) { 
-		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
-	},
-
-
-
-	//save method with all redondant code
-	saveAndRoute: function(id,data,closeModal, view, strRoute) {
-		app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {
-			beforeSend: function(){
-				app.loader('display');
-			},
-			success: function (data) {
-				console.log(data);
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					if( closeModal!= null )
-						closeModal.modal('hide');
-					if( view ) {
-						if(app.collections.interventions == null ){
-							app.collections.interventions = new app.Collections.Interventions();
-						}		        		
-						app.collections.interventions.fetch({
-							success: function(){				 			
-								if( strRoute ) {
-									route = Backbone.history.fragment;
-									Backbone.history.loadUrl(route);
-								}
-								else if (view){
-									view.render();
-								}
-
-								app.loader('hide');
-							}					 
-						});					 	
-					}
-				}
-			},
-			error: function () {
-				console.log('ERROR - Unable to save the Request - RequestView.js');
-			}, 
-		});
-	},
-	
-
-	
-	//When save intervention and just after save task (TaskListView L.187 et L.190) postgres send this error:
-	//TransactionRollbackError: could not serialize access due to concurrent update
-	//We must wait intervention save callback before save task
-	saveWithCallback: function(id,data,options) { 
-		app.saveOE(id, data, this.model_name, app.models.user.getSessionID(), options);
-	},
-	
-
-	
+		
 	cancel: function(cancel_reason, options) {
 		var params = {}
 		params.state = app.Models.Intervention.status.cancelled.key;
-		params.email_text = app.Models.Intervention.status.cancelled.translation;
+		//params.email_text = app.Models.Intervention.status.cancelled.translation;
 		params.cancel_reason = cancel_reason;
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
+		//app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
+		return this.save(params,{patch:true, wait: true})
 	}
 
 
@@ -151,37 +181,31 @@ app.Models.Intervention = Backbone.RelationalModel.extend({
 		open: {
 			key                 : 'open',
 			color               : 'warning',
-			htmlColor           : '#F89406',
 			translation         : ''
 		},
 		scheduled: {
 			key                 : 'scheduled',
 			color               : 'info',
-			htmlColor           : '#3A87AD',
 			translation         : ''
 		},
 		closed: {
 			key                 : 'closed',
 			color               : 'success',
-			htmlColor           : '#468847',
 			translation         : ''
 		},
 		pending: {
 			key                 : 'pending',
 			color               : 'muted',
-			htmlColor           : '#999999',
 			translation         : ''
 		},
 		cancelled: {
 			key                 : 'cancelled',
-			color               : 'important',
-			htmlColor           : '#B94A48',
+			color               : 'danger',
 			translation         : ''
 		},
 		template: {
 			key               	: 'template',
 			color               : 'template',
-			htmlColor           : '#FFC40D',
 			translation         : ''
 		}
 	}

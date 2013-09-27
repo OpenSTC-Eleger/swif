@@ -1,5 +1,7 @@
-<div class="hero-unit">
-	<h1 class=" text-center"><i class="icon-frown icon-large"></i> Ouuuups <sub class="badge badge-important"><%= lang.notFoundCode %></sub></h1>
-	<p><%= lang.notFoundMessage %></p>
-	<a href="<%= app.routes.home.url %>" class="btn btn-large btn-info pull-right"><i class="icon-home"></i> <%= lang.homePage %></a>
+<div class="jumbotron">
+	<div class="container">
+		<h1 class="text-center"><i class="icon-frown icon-large"></i> Ouuuups <span class="label label-warning"><%= lang.notFoundCode %></span></h1>
+		<p><%= lang.notFoundMessage %></p>
+		<a href="<%= app.routes.home.url %>" class="btn btn-lg btn-info pull-right"><i class="icon-home"></i> <%= lang.homePage %></a>
+	</div>
 </div>

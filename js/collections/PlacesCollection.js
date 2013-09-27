@@ -3,43 +3,20 @@
 */
 app.Collections.Places = app.Collections.GenericCollection.extend({
 
-	model      : app.Models.Place,
+	model        : app.Models.Place,
 
-	model_name : 'openstc.site',
+	url          : '/api/openstc/sites',
 
-	fields     : ["id", "name", "complete_name", "type", "service_ids", "service_names", "site_parent_id", "width", "lenght", "surface"],
+	fields       : ['id', 'actions', 'name', 'complete_name', 'service_names', 'site_parent_id', 'surface'],
+
+	default_sort : { by: 'name', order: 'ASC' },
+
 
 
 	/** Collection Initialization
 	*/
 	initialize: function (options) {
 		//console.log('Place collection Initialization');
-	},
-
-
-
-	/** Collection Sync
-	*/
-	sync: function(method, model, options){
-
-		var deferred = $.Deferred();
-
-		$.when(this.count(options), app.readOE(this.model_name, app.models.user.getSessionID(), options, this.fields))
-		.done(function(){
-			deferred.resolve();
-		})
-
-		return  deferred;
-	},
-
-
-
-	/** Collection Parse
-	*/
-	parse: function(response, options) {
-		this.reset(response);
-		return response.result.records;
-	},
-
+	}
 
 });

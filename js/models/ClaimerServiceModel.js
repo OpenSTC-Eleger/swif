@@ -1,29 +1,26 @@
 /******************************************
 * Claimer Service Model
 */
-app.Models.ClaimerService = Backbone.RelationalModel.extend({
-    
-	model_name : 'openstc.service',	
-	
-	url: "/#demandeurs-services/:id",
+app.Models.ClaimerService = app.Models.GenericModel.extend({
+ 
 
-	relations: [ 
+	fields       : ['id', 'name', 'code', 'manager_id', 'service_id', 'technical', 'user_ids', 'actions'],
+	
+	urlRoot      : '/api/openstc/departments',
+
+
+	searchable_fields: [
 		{
-			type: Backbone.HasMany,
-			key: 'user_ids',
-			relatedModel: 'app.Models.Officer',
-			collectionType: 'app.Collections.Officers',
-			includeInJSON: ['id', 'name', 'firstname', 'login', 'user_email', 'date', 'groups_id'],	
+			key  : 'name',
+			type : 'text'
 		},
-      ],
+		{
+			key  : 'code', 
+			type : 'text'
+		}
+	],
 
 	
-	/** Model Initialization
-	*/
-    initialize: function(){
-        //console.log('Claimer Service Request Model initialization');
-    },
-
 
     /** Check if the Service is a technical service
     */
@@ -31,32 +28,87 @@ app.Models.ClaimerService = Backbone.RelationalModel.extend({
         return this.get('technical');
     },
 
+	getCode: function(){
+		return this.get('code');
+	},
 
-    /** Model Parser
-     */
-    parse: function(response) {    	
-        return response;
-    },
+    getParentService : function(type) {
 
+		// Check if the place have a parent place //
+		if(this.get('service_id')){
+			var id = this.get('service_id')[0];
+			var name = _.titleize(this.get('service_id')[1].toLowerCase());
+		}
+		else{
+			var id, name = '';
+		}
 
+		switch (type){ 
+			case 'id': 
+				return id;
+			break;
+			case 'all':
+				return this.get('service_id');
+			break;
+			case 'json':
+				return {id: id, name: name};
+			break;
+			default: 
+				return name;
+		}
+	},
 
-    /** Save Model
-	*/
-	save: function(data,options) { 
-		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(),options);
+	getManager: function(type) {
+
+		// Check if the place have a parent place //
+		if(this.get('manager_id')){
+			var id = this.get('manager_id')[0];
+			var name = _.titleize(this.get('manager_id')[1].toLowerCase());
+		}
+		else{
+			var id, name = '';
+		}
+
+		switch (type){ 
+			case 'id': 
+				return id;
+			break;
+			case 'all':
+				return this.get('manager_id');
+			break;
+			case 'json':
+				return {id: id, name: name};
+			break;
+			default: 
+				return name;
+		}
 	},
 
 
+    getUsersId: function(){
+		return this.get('user_ids');
+	},
 
-	/** Destroy service
+
+    getActions: function(){
+		return this.get('actions');
+	},
+
+
+	/** Get Informations of the model
 	*/
-	destroy: function (options) {	
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
+	getInformations : function(){
+		var informations = {};
+
+		informations.name = this.getName();
+
+		if(!_.isEmpty(this.getCode())){
+			informations.infos = {};
+			informations.infos.key = _.capitalize(app.lang.code);
+			informations.infos.value = this.getCode();
+		}
+
+		return informations;
 	}
 
 });

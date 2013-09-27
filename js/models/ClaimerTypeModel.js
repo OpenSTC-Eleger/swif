@@ -1,85 +1,48 @@
 /******************************************
 * Claimer Type Model
 */
-app.Models.ClaimerType = Backbone.RelationalModel.extend({
-    
-	model_name : 'openstc.partner.type',
+app.Models.ClaimerType = app.Models.GenericModel.extend({
+
+
+	fields  : ['id', 'name', 'code', 'actions'],
+
+	urlRoot : '/api/open_object/partner_types',
+
+
+	searchable_fields: [
+		{
+			key  : 'name', 
+			type : 'text'
+		},
+		{
+			key  : 'code', 
+			type : 'text'
+		}
+	],
+
 	
-	url: "/type-demandeurs/:id",
-
-
-	relations: [{
-		type: Backbone.HasMany,
-		key: 'claimers',
-		relatedModel: 'app.Models.Claimer',
-		collectionType: 'app.Collections.Claimers',
-		includeInJSON: true,
-	}],
-	
-	defaults:{
-		id:0,
-		name: null,
-		code: null,
+	getCode : function() {
+		return this.get('code');
 	},
-      
-	getName : function() {
-        return this.get('name');
-    },
-    setName : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ name : value });
-    },  
-    
-    getCode : function() {
-        return this.get('code');
-    },
-    setCode : function(value) {
-    	if( value == 'undefined') return;
-        this.set({ code : value });
-    }, 
+	setCode : function(value, silent) {
+		this.set({ code : value }, {silent: silent});
+	},
 
 
-
-	/** Model Initialization
+	/** Get Informations of the model
 	*/
-	initialize: function(){
-		//console.log('Claimer Type Model initialization');
-		this.fetchRelated('claimers');
-	},
+	getInformations : function(){
+		var informations = {};
 
+		informations.name = this.getName();
 
+		if(!_.isEmpty(this.getCode())){
+			informations.infos = {};
+			informations.infos.key = _.capitalize(app.lang.code);
+			informations.infos.value = this.getCode();
+		}
 
-	/** Model Parser */
-	parse: function(response) {    	
-		return response;
-	},
-
-
-
-	update: function(params) {
-		this.setName( params.name );
-		this.setCode( params.code );
-	},
-
-
-
-	/** Save Model
-	*/
-	save: function(data, id, options) { 
-		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
-	},
-
-
-
-	/** Delete category
-	*/
-	delete: function (options) {	
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
+		return informations;
 	}
 
 });

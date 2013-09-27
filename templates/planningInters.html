@@ -1,0 +1,62 @@
+	
+	<!-- Interventions toolbar -->	
+	<div id="planningToolbar" class="row-fluid">
+		<!-- href add intervention -->
+		<a href="#" class="btn btn-primary no-outline  modalCreateInter"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
+
+
+		<!-- Filter -->
+		<div class="dropdown span5 offset1">
+
+			<a id="filterStateIntervention" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#">
+		   		<i class="icon-filter icon-large"> <%= _.capitalize(lang.status) %></i>
+			</a>
+
+			<ul id="filterStateInterventionList" class="dropdown-menu" aria-labelledby="filterStateIntervention">
+
+				<% _.each(interventionsState, function (state, i) {
+					if(i == app.Models.Intervention.status.scheduled.key || i == app.Models.Intervention.status.open.key || i == app.Models.Intervention.status.pending.key || i == app.Models.Intervention.status.template.key){
+				%>
+					<li>
+						<a tabindex="-1" href="#<%= state.key %>">
+							<i class="badge badge-<%= state.color %>">&nbsp;</i>
+							&nbsp; <%= _.capitalize(state.translation) %>
+						</a>
+					</li>
+				<% }
+				}) %>
+					<li class="divider"></li>
+					<li class="delete-filter disabled"><a href="#delete-filter"><%= _.capitalize(lang.deleteFilter) %></a></li>
+			</ul>
+		</div>
+		<br />
+	</div>
+	<!-- /Interventions toolbar -->
+	
+	
+	<!-- Intervention panel -->
+	<% if( _.size(interventions) > 0 ) { %>
+		<table class="table-interventions table table-bordered table-hover table-sorter table-striped">
+				<thead>
+					<tr>						
+					</tr>
+				</thead>
+			<tbody id="inter-items">
+				<!-- Inter rows -->
+				
+			</tbody>
+		
+		</table>
+		
+		<!-- Table pagination -->
+		<div id="pagination"></div>
+		<!-- /Table pagination -->
+		
+	<% }else { %>
+
+		<!-- No interventions to display -->
+		<div class="alert alert-info">
+			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>
+		</div>	
+	<% } %>
+	<!-- /Intervention panel -->

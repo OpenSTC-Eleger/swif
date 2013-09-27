@@ -6,137 +6,86 @@
 
 	"home": {
 		"url" 		: "",
-		"function" 	: "requestsList"
+		"function" 	: "homePageRedirect"
 	},
+
 	"login": {
 		"url" 		: "login",
 		"function" 	: "login"
 	},
+
 	"logout": {
 		"url"		: "logout",
 		"function"	: "logout"
 	},
-		"about": {
+
+	"about": {
 		"url"		: "about",
 		"function"	: "about"
 	},
 
-	"detailIntervention": {
-		"url"		: "interventions/:id",
-		"function"	: "detailsIntervention"
-	},
-	"interventions": {
-		"url"		: "interventions(/page:page)",
-		"baseUrl"   : "interventions",
-		"function"	: "interventions"
-	},
-	"addIntervention": {
-		"url"		: "interventions/add",
-		"function"	: "detailsIntervention"
-	},
-
-	"detailRequestIntervention": {
-		"url"		: "demandes-dinterventions/:id",
-		"function"	: "detailsRequest"
-	},
 	"requestsInterventions": {
-		"url"		: "demandes-dinterventions(/page:page)",
-		"baseUrl"   : "demandes-dinterventions",
+		"url"		: "demandes-dinterventions(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"	: "requestsList"
 	},
-	"addrequestIntervention": {
-		"url"		: "demandes-dinterventions/add",
-		"function"	: "detailsRequest"
-	},
 
+	"interventions": {
+		"url"		: "interventions(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"function"	: "interventions"
+	},
 
 	"planning": {
-		"url"		: "planning",
-		"function"	: "planning"
-	},
-	"planningAgent": {
-		"url"		: "planning/agent/:id",
-		"function"	: "planning"
-	},
-	"planningTeam": {
-		"url"		: "planning/equipe/:id",
+		"url"		: "planning(/officer/:officer)(/team/:team)(/year/:year)(/week/:week)",
 		"function"	: "planning"
 	},
 
-
-	"detailTask": {
-		"url"		: "taches/:id",
-		"function"	: "detailsTask"
-	},
 	"tasks": {
-		"url"		: "taches(/:year/:week)",
-		"baseUrl"	: "taches",
+		"url"		: "taches(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)(/year/:year)(/week/:week)",
 		"function"	: "tasksCheck"
 	},
-	"addTask": {
-		"url"		: "taches/add",
-		"function"	: "addTask"
-	},
 
-	"detailService": {
-		"url"		: "services/:id",
-		"function"	: "detailsService"
-	},
 	"services": {
-		"url"		: "services(/page:page)",
-		"baseUrl"	: "services",
+		"url"		: "services(/search/:search)(/sort/:sort)(/page:page)",
 		"function"	: "services"
-	},
-	"addService": {
-		"url"		: "services/add",
-		"function"	: "detailsService"
 	},
 
 	"places": {
 		"url"		: "sites(/search/:search)(/sort/:sort)(/page:page)",
-		"baseUrl"	: "sites",
 		"function"	: "places"
 	},
 
 	"categoriesTasks": {
-		"url"		: "categories-des-taches(/page:page)",
-		"baseUrl"	: "categories-des-taches",
+		"url"		: "categories-des-taches(/search/:search)(/sort/:sort)(/page:page)",
 		"function"	: "categoriesTasks"
 	},
 
-	"categoriesInterventions": {
-		"url"		: "affectations-des-interventions(/page:page)",
-		"baseUrl"	: "affectations-des-interventions",
-		"function"	: "categoriesInterventions"
+	"categoriesRequests": {
+		"url"		: "affectations-des-interventions(/search/:search)(/sort/:sort)(/page:page)",
+		"function"	: "categoriesRequests"
 	},
 
 	"teams": {
-		"url"		: "equipes(/page:page)",
-		"baseUrl"	: "equipes",
+		"url"		: "equipes(/id/:id)(/search/:search)(/sort/:sort)(/page:page)",
 		"function"	: "teams"
 	},
 
 	"claimers": {
-		"url"		: "organisations(/page:page)",
-		"baseUrl"	: "organisations",
+		"url"		: "organisations(/search/:search)(/sort/:sort)(/page:page)",
 		"function"	: "claimers"
 	},
 
 	"claimersType": {
-		"url"		: "types-dorganisation(/page:page)",
-		"baseUrl"	: "types-dorganisation",
-		"function"	: "types"
+		"url"		: "types-dorganisation(/search/:search)(/sort/:sort)(/page:page)",
+		"function"	: "claimerTypes"
 	},
 
 	"absentTypes": {
-		"url"		: "types-dabscence(/page:page)",
-		"baseUrl"	: "types-dabscence",
+		"url"		: "types-dabscence(/search/:search)(/sort/:sort)(/page:page)",
 		"function"	: "absentTypes"
 	},
 
 	"equipments": {
-		"url"		: "materiel(/page:page)",
-		"baseUrl"	: "materiel",
+		"url"		: "equipements(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"	: "equipments"
 	}
 

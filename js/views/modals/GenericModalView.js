@@ -8,10 +8,10 @@ app.Views.GenericModalView = Backbone.View.extend({
 	
 	// The DOM events //
 	events: {
-		'show'   : 'show',
-		'shown'  : 'shown',
-		'hide'   : 'hide',
-		'hidden' : 'hidden',
+		'show.bs.modal'  : 'show',
+		'shown.bs.modal' : 'shown',
+		'hidde.bs.modal' : 'hide',
+		'hidden.bs.modal': 'hidden',
 	},
 
 
@@ -28,5 +28,25 @@ app.Views.GenericModalView = Backbone.View.extend({
 	hidden: function(){
 		this.undelegateEvents(this.events());
 	},
+
+
+
+	/** Trigger when the modal is shown
+	*/
+	shown: function(){
+
+		// Set the focus to the first input of the form if elFocus is undefined //
+		if(_.isUndefined(this.options.elFocus)){
+			this.modal.find('input, textarea').first().focus();
+		}
+		else{
+			if($('#'+this.options.elFocus).hasClass('select2')){
+				$('#'+this.options.elFocus).select2('open');	
+			}
+			else{
+				this.modal.find('#'+this.options.elFocus).focus();	
+			}
+		}
+	}
 
 });

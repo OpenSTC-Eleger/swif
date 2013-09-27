@@ -1,0 +1,25 @@
+
+<li id="task_<%= task.id %>" class="external-event <%= ( app.Models.Task.status[task.state].key == app.Models.Task.status.draft.key ? '' : 'disabled') %>">
+	<% var taskClass =''
+		if( task.state == app.Models.Task.status.done.draft ) taskClass = 'icon-chevron-right';
+		else if( task.state == app.Models.Task.status.done.open ) taskClass = 'icon-time';
+		else taskClass ='';		
+	%>
+	<i class=" <%= taskClass %> " rel="tooltip" data-placement="right"></i> <%= task.name %>
+	
+	<small class="nested-objects-actions invisible">
+		<% if( task.actions.indexOf("delete")>-1) { %>
+
+			<a href="#" class="modalDeleteTask" data-toggle="modal">
+				<i class="icon-remove displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">&nbsp;</i>
+			</a>
+
+		<% } %>
+		<% if(task.actions.indexOf("cancel") > -1) { %>
+				<a href="#" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonCancelTask">
+					<i class="icon-ban-circle displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>">&nbsp;</i>
+				</a>
+		<%}%>
+	</small>
+	<small class="badge badge-<%= app.Models.Task.status[task.state].color %> pull-right"><%= app.Helpers.Main.decimalNumberToTime(task.planned_hours, 'human') %></small>
+</li>

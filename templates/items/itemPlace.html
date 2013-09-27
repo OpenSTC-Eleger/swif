@@ -2,13 +2,19 @@
 	<i class="icon-map-marker">&nbsp;&nbsp;</i><%= place.getCompleteName() %>
 
 	<p class="row-actions invisible">
+		<% if(_.contains(place.getActions(), 'update')){ %>
 		<a href="#"  class="modalSavePlace">
-			<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i></a>&nbsp;
+			<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
+		</a>&nbsp;
+		<% } %>
+
+		<% if(_.contains(place.getActions(), 'delete')){ %>
 		<a href="#" class="modalDeletePlace">
-			<i class="icon-remove icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+			<i class="icon-trash icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
 		</a>
+		<% } %>
 	</p>
 </td>
 <td data-form-id="placeParentPlace"><%= place.getParentPlace() %></td>
 <td data-form-id="placeServices"><%= place.getServices('string') %></td>	
-<td data-form-id="placeArea" class="text-right hidden-phone"><%= place.getSurface(true) %></td>
+<td data-form-id="placeArea" class="text-right"><%= place.getSurface(true) %></td>

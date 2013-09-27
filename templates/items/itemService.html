@@ -1,0 +1,21 @@
+<td>
+	<a href="#" class="collapseLink"><i class="icon-sitemap">&nbsp;&nbsp;</i><%= service.getName() %></a>
+
+	<p class="row-actions invisible">
+		<% if(_.contains(service.getActions(), 'update')){ %>
+		<a href="#"  class="modalSaveService">
+			<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
+		</a>&nbsp;
+		<% } %>
+
+		<% if(_.contains(service.getActions(), 'delete')){ %>
+		<!-- <a href="#" class="modalDeleteService">
+			<i class="icon-trash icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+		</a> -->
+		<% } %>
+	</p>
+</td>
+<td data-form-id="serviceCode"><%= service.getCode() %></td>
+<td data-form-id="serviceManager"><%= service.getManager() %></td>
+<td data-form-id="serviceParentService"><%= service.getParentService() %></td>
+<td data-form-id="serviceIsTechnical" class="text-center"><%= (service.isTechnical() ? '<i class="icon-ok"></i>' : '') %></td>

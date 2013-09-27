@@ -4,9 +4,9 @@
 app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 
 
-	templateHTML: 'modals/modalDelete',
+	templateHTML : 'modals/modalDelete',
 
-	
+
 	// The DOM events //
 	events: function(){
 		return _.defaults({
@@ -22,6 +22,18 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 	*/
 	initialize : function() {
 		this.modal = $(this.el);
+
+
+		// If the text for the modal wasn't set //
+		if(_.isUndefined(this.options.modalTitle)){
+			this.options.modalTitle = app.lang.viewsTitles.deleteElement;
+		}
+		if(_.isUndefined(this.options.modalConfirm)){
+			this.options.modalConfirm = app.lang.warningMessages.confirmDeleteElement;
+		}
+
+
+		this.render();
 	},
 
 
@@ -35,8 +47,10 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 		 
 			var template = _.template(templateData, {
-				lang  : app.lang,
-				model : self.options.model
+				lang         : app.lang,
+				modalTitle   : self.options.modalTitle,
+				modalConfirm : self.options.modalConfirm,
+				model        : self.model
 			});
 
 			self.modal.html(template);
@@ -58,26 +72,18 @@ app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
 		$(e.target).button('loading');
 
 		// Delete the Model //
-		this.model.delete({
-			success: function(data){
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					self.modal.modal('hide');
-					app.collections.places.remove(self.options.model);
-					//Backbone.history.loadUrl(Backbone.history.fragment);
-				}
-			},
-			complete: function(){
-				// Reset the button state //
-				$(e.target).button('reset');
-			},
-			error: function(e){
-				alert("Impossible de contacter le serveur");
-			}
+		this.model.destroy({wait: true})
+		.done(function(data){
+			self.modal.modal('hide');
+		})
+		.fail(function(){
+			app.notify('', 'danger', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+		})
+		.always(function(){
+			// Reset the button state //
+			$(e.target).button('reset');
+		})
 
-		});
 	}
 
 });

@@ -1,0 +1,75 @@
+<div class="page-header">
+	<h1>
+		<%= lang.viewsTitles.teamsList %>
+		<sup id="bagdeNbTeams" class="badge"><%= nbTeams %></sup>
+	</h1>
+</div>
+
+
+<div class="row">
+
+	<div class="col-sm-5">
+
+		<!-- Table toolbar -->
+		<div class="tableToolbar row">
+			<div class="col-xs-7 col-md-7">
+				<a href="#" class="btn btn-primary modalCreateTeam"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addTeam) %></a>
+			</div>
+
+			<form class=" form-search pull-right col-xs-5 col-md-5">
+				<div class="input-group">
+					<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+					<span class="input-group-btn">
+						<button type="submit" class="btn btn-primary"><i class="icon-search icon-large"></i></button>
+					</span>
+				</div>
+			</form>
+		</div>
+		<!-- Table toolbar -->
+
+
+
+		<!-- Check if there is any Teams to display -->
+		<% if(nbTeams <= 0) { %>
+
+			<!-- No Team to display -->
+			<div class="alert alert-info">
+				<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTeam %>.
+			</div>
+
+		<% } %>
+
+
+		<!-- Table Teams -->
+		<table class="table table-bordered table-hover table-striped table-sorter">
+			<thead>
+				<tr>
+					<th data-sort-column="name" class="span7"><%= _.capitalize(lang.name) %></th>
+					<th class="span5"><%= _.capitalize(lang.foreman) %></th>
+				</tr>
+			</thead>
+			<tbody id="rows-items">
+
+			</tbody>
+		</table>
+
+
+		<!-- Table pagination -->
+		<div id="pagination" class="pull-right"></div>
+		<!-- /Table pagination -->
+
+	</div>
+
+
+	<!-- Team Services and members -->
+	<div class="col-sm-7 hide" id="teamMembersAndServices">
+	</div>
+
+</div>
+
+
+<!-- Modal Form to add/update a Team -->
+<div id="modalSaveTeam" class="modal fade"></div>
+
+<!-- Modal Form Delete Team -->
+<div id="modalDeleteTeam" class="modal fade" data-backdrop="static"></div>

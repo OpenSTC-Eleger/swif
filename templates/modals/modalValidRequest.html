@@ -1,0 +1,118 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 class="modal-title"><i class="icon-check"></i>&nbsp;&nbsp;<%= lang.viewsTitles.validRequest %></h3>
+		</div>
+
+
+		<!-- Modal Body  -->
+		<div class="modal-body">
+
+			<blockquote>
+				<p><%= request.getName() %></p>
+				<small><strong><i class="icon-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong>&nbsp;&nbsp; <%= request.getSite() %></small>
+			</blockquote>
+
+
+			<form id="formValidRequest" action="#" class="form-horizontal" role="form">
+
+
+				<!-- Category Request -->
+				<div class="form-group">
+					<label for="requestCategory" class="col-sm-3 control-label"><%= _.capitalize(lang.category) %>:</label>
+
+					<div class="col-sm-9">
+						<input id="requestCategory" class="select2" data-placeholder="<%= lang.actions.selectACategory %>" required />
+					</div>
+				</div>
+
+				<!-- Request Service -->
+				<div class="form-group">
+					<label for="requestService" class="col-sm-3 control-label"><%= lang.serviceConcerned %>:</label>
+
+					<div class="col-sm-9">
+						<input id="requestService" class="select2" data-placeholder="<%= lang.actions.selectAService %>" required 
+							data-selected-value='<%= JSON.stringify(request.getService('json')) %>'
+						/>
+					</div>
+				</div>
+
+				<!-- Intervention DeadLine -->
+				<div class="form-group">
+					<label for="requestDateDeadline" class="control-label col-sm-3"><%= _.capitalize(lang.endDateWarranty) %>:</label>
+					<div class="col-sm-4">
+						<div class="input-group">
+						<input 
+							type="text" class="datepicker form-control"
+							id="requestDateDeadline" 
+							value="<%= moment().add('w', 1).format('L') %>" 
+							placeholder="dd/mm/yyyy"
+							required>
+							<span class="input-group-addon"><i class="icon-calendar"></i></span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Request description -->
+				<div class="form-group">
+					<label for="requestDescription" class="control-label col-sm-3"><%= _.capitalize(lang.description) %>:</label>
+
+					<div class="col-sm-9">
+						<textarea id="requestDescription" class="form-control" rows="5" required><%= request.getDescription() %></textarea>
+					</div>
+				</div>
+
+
+				<!-- Create Associated Task Link -->
+				<div class="form-group">
+					<div class="col-sm-offset-3 col-sm-10">
+						<label class="checkbox noMarginBottom" for="createAssociatedTask"><input type="checkbox" id="createAssociatedTask"> <%= lang.actions.createAssociatedTask %></label>
+					</div>
+				</div>
+
+
+
+				<!-- Create associate task -->
+				<fieldset class="associated-task hide-soft">
+					<legend><%= lang.aboutTheTask %></legend>
+
+					<!-- Task Estimated hour -->
+					<div class="form-group">
+						<label for="taskHour" class="control-label col-sm-3"><%= lang.estimatedHours %>:</label>
+
+						<div class="col-sm-4">
+							<div class="input-group bootstrap-timepicker">
+								<input id='taskHour' type="text" class="timepicker form-control" value="02:00" />
+								<span class="input-group-addon"><i class="icon-time"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Task Category -->
+					<div class="form-group">
+						<label for="taskCategory" class="control-label col-sm-3"><%= _.capitalize(lang.category) %>:</label>
+
+						<div class="col-sm-9">
+							<input id="taskCategory" class="select2" data-placeholder="<%= lang.actions.selectACategory %>" />
+						</div>
+					</div>
+
+				</fieldset>
+			</form>
+
+		</div>
+
+		<div class="modal-footer">
+			<button type="submit" form="formValidRequest" class="btn btn-primary"
+				data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= _.capitalize(lang.validInProgress) %>"
+			>
+			<%= _.capitalize(lang.actions.validate) %>
+			</button>&nbsp;&nbsp;
+
+			<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+
+	</div>
+</div>

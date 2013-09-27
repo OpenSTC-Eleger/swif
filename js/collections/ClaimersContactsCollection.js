@@ -3,46 +3,20 @@
 */
 app.Collections.ClaimersContacts = app.Collections.GenericCollection.extend({
 
-	model : app.Models.ClaimerContact,
-
-	// Model name in the database //
-	model_name : 'res.partner.address',
-
-	url: "demandeurs-contacts",   
+	model       : app.Models.ClaimerContact,
+	
+	url         : "/api/open_object/partner_addresses",
+	
+	fields      : ['id', 'name', 'email', 'function', 'livesIn', 'mobile', 'partner_id', 'phone', 'street', 'type', 'user_id', 'zip'],
+	
+	default_sort: { by: 'name', order: 'ASC' },
 
 
 
 	/** Collection Initialization
 	*/
 	initialize : function() {
-		//console.log('Claimer Contact collection initialize');
+		//console.log('Claimer Contact collection Initialization');
 	},
-
-
-
-	/** Collection Sync
-	*/
-	sync: function(method, model, options) {
-		var fields = ["email", "function", "id", "livesIn", "mobile", "name", "partner_id", "phone", "street", "type", "user_id", "zip"];
-
-		return app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
-	},
-
-
-
-	/** Collection Parse
-	*/
-	parse: function(response) {
-		return response.result.records;
-	},
-	
-
-
-	/** Comparator for ordering collection
-	 */
-	comparator: function(item) {
-		return item.get("name");
-	},
-
 
 });

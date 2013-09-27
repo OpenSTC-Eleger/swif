@@ -3,12 +3,13 @@
 */
 app.Collections.Teams = app.Collections.GenericCollection.extend({
 
-	model: app.Models.Team,
+	model        : app.Models.Team,
 
-	// Model name in the database //
-	model_name : 'openstc.team',
+	url          : '/api/openstc/teams',
 
-	url: 'teams',
+	fields       : ['id', 'name', 'actions', 'manager_id', 'service_names', 'user_names'],
+
+	default_sort : { by: 'name', order: 'ASC' },
 
 
 
@@ -16,32 +17,6 @@ app.Collections.Teams = app.Collections.GenericCollection.extend({
 	*/
 	initialize: function (options) {
 		//console.log('Teams collection Initialization');
-	},
-
-
-
-	/** Collection Sync
-	*/
-	sync: function(method, model, options) {
-		var fields = ["free_user_ids", "id", "manager_id", "name", "service_ids", "tasks", "user_ids"];
-
-		return app.readOE( this.model_name ,  app.models.user.getSessionID(), options, fields);
-	},
-
-
-
-	/** Collection Parse
-	*/
-	parse: function(response) {
-		return response.result.records;
-	},
-
-
-
-	/** Comparator for ordering collection
-	*/
-	comparator: function(item) {
-		return item.get('name');
 	},
 
 });

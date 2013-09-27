@@ -1,120 +1,238 @@
 /******************************************
 * Request Model
 */
-app.Models.Request = Backbone.RelationalModel.extend({
+app.Models.Request = app.Models.GenericModel.extend({
 
-	// Model name in the database //
-	model_name : 'openstc.ask',	
-	
-	url: "/#demandes-dinterventions/:id",
 
-	relations: [{
-		type: Backbone.HasMany,
-		key: 'intervention_ids',
-		relatedModel: 'app.Models.Intervention',
-		collectionType: 'app.Collections.Interventions',
-		includeInJSON: true,
-		reverseRelation: {
-			type: Backbone.HasOne,
-			key: 'ask',
-			includeInJSON: ['id', 'manager_id', 'people_name', 'people_phone', 'partner_address', 'people_email', 'partner_id', 'partner_type', 'partner_phone', 'partner_email', 'intervention_assignement_id'],
+	fields     : ['id', 'name', 'actions', 'tooltip', 'create_date', 'create_uid', 'date_deadline', 'description', 'manager_id', 'note', 'partner_address', 'partner_id', 'partner_phone', 'partner_service_id', 'partner_type', 'partner_type_code', 'people_name', 'people_email', 'people_phone', 'refusal_reason', 'service_id', 'site1', 'site_details', 'state', 'intervention_assignement_id', 'has_equipment', 'equipment_id', 'is_citizen'],
+
+	urlRoot    : '/api/openstc/intervention_requests',
+
+
+	searchable_fields: [
+		{
+			key  : 'id',
+			type : 'numeric'
+		},
+		{
+			key  : 'name', 
+			type : 'text'
 		}
-	}],
-	
-	defaults: {
-		id: 0,
-		name: "",
-		site1:"",
-		state: "",
-		description: "",
-		belongsToAssignement: "",
-		belongsToService: "",
-		service_id: [],
-		note: "",
-		refusal_reason: "",
-		test: "",
-		intervention_ids : []
+	],
+
+
+	getSite : function(type) {
+		if(this.get('site1')){
+
+			switch(type){
+				case 'id': 
+					return this.get('site1')[0];
+				break;
+				default:
+					return _.titleize(this.get('site1')[1].toLowerCase());
+			}
+		}
+		else{
+			return false;
+		}
+	},
+	setSite : function(value, silent) {
+		this.set({ site1 : value }, {silent: silent});
 	},
 
-	
-	
-	getId : function() {
-		return this.get('id');
-	},
-	setName : function(value) {
-		if( value == 'undefined') return;
-		this.set({ id : value });
-	},
+	getEquipment : function(type) {
 
-	getName : function() {
-		return this.get('name');
+		if(this.onEquipment()){
+			switch(type){
+				case 'id': 
+					return this.get('equipment_id')[0];
+				break;
+				default:
+					return _.titleize(this.get('equipment_id')[1].toLowerCase());
+			}
+		}
+		else{
+			return false;
+		}
 	},
-	setName : function(value) {
-		if( value == 'undefined') return;
-		this.set({ name : value });
-	},
-
-	getSite1 : function() {
-		return this.get('site1');
-	},
-	setSite1 : function(value) {
-		if( value == 'undefined') return;
-		this.set({ site1 : value });
+	setEquipment : function(value, silent) {
+		this.set({ equipment_id : value }, {silent: silent});
 	},
 
 	getDescription : function() {
-		return this.get('description');
+		if(this.get('description')){
+			return this.get('description');
+		}
 	},
-	setDescription : function(value) {
-		if( value == 'undefined') return;
-		this.set({ description : value });
-	},
-	
-	setDescription : function(value) {
-		if( value == 'undefined') return;
-		this.set({ deadline_date : value });
+	setDescription : function(value, silent) {
+		this.set({ description : value }, {silent: silent});
 	},
 	
 	getRefusalReason : function() {
 		return this.get('refusal_reason');
 	},
-	setRefusalReason  : function(value) {
-		if( value == 'undefined') return;
-		this.set({ refusal_reason : value });
+	setRefusalReason  : function(value, silent) {
+		this.set({ refusal_reason : value }, {silent: silent});
 	},
-	
+
 	getState : function() {
 		return this.get('state');
 	},
-	setState : function(value) {
-		if( value == 'undefined') return;
-		this.set({ state : value });
+	setState : function(value, silent) {
+		this.set({ state : value }, {silent: silent});
 	},
-	
+
+	// Note for the DST //
 	getNote : function() {
 		return this.get('note');
 	},
 	setNote : function(value) {
-		if( value == 'undefined') return;
 		this.set({ note : value });
 	},
 
-	getService : function() {
-		return this.get('service_id');
+	getService : function(type) {
+		var id = this.get('service_id')[0];
+		var name = _.titleize(this.get('service_id')[1].toLowerCase());
+
+		switch(type){
+			case 'id': 
+				return id;
+			break;
+			case 'json':
+				return {id: id, name: name};
+			break;
+			default:
+				return name;
+		}
 	},
-	setService : function(value) {
-		if( value == 'undefined') return;
-		this.set({ service_id : value });
+	setService : function(value, silent) {
+		this.set({ service_id : value }, {silent: silent});
 	},
 
-	getInterventions : function() {
-		return this.get('intervention_ids');
-	},
-	setInterventions : function(value) {
-		if( value == 'undefined') return;
-		this.set({ intervention_ids : value });
+
+	// Claimer of the resquest //
+	getClaimer: function(type){
+		var claimer = {}
+
+		// Request From Citizen //
+		if(this.fromCitizen()){
+
+			claimer.type = app.lang.citizen;
+			claimer.name = this.getCitizenName();
+		}
+		else{
+
+			if(!_.isUndefined(this.get('partner_type'))){
+				claimer.type = this.get('partner_type')[1];	
+			}
+			if(!_.isUndefined(this.get('partner_id')) || this.get('partner_id') != false){
+
+				claimer.id =  this.get('partner_id')[0];
+				claimer.name = _.capitalize(this.get('partner_id')[1]);
+			}
+			if(!_.isUndefined(this.get('partner_address'))){
+				claimer.person = _.capitalize(this.get('partner_address')[1]);
+			}
+		}
+
+		return claimer;
+
 	},
 
+	setClaimerType: function(value, silent){
+		this.set({ partner_type : value }, {silent: silent});
+	},
+	setClaimer: function(value, silent){
+		this.set({ partner_id : value }, {silent: silent});
+	},
+	setClaimerContact: function(value, silent){
+		this.set({ partner_address : value }, {silent: silent});
+	},
+
+	getManager: function(type){
+		switch(type){
+			case 'id': 
+				return this.get('manager_id')[0];
+			break;
+			default:
+				return _.capitalize(this.get('manager_id')[1]);
+		}
+	},
+
+	getCreateDate: function(type){
+
+		switch(type){
+			case 'fromNow': 
+				return moment(this.get('create_date'), 'YYYY-MM-DD HH:mm:ss').add('hours',1).fromNow();
+			break;
+			default:
+				return moment(this.get('create_date'), 'YYYY-MM-DD HH:mm:ss').add('hours',1).format('LLL');
+		}
+	},
+
+	getCreateAuthor: function(type){
+		switch(type){
+			case 'id': 
+				return this.get('create_uid')[0];
+			break;
+			default:
+				return _.capitalize(this.get('create_uid')[1]);
+		}
+	},
+
+	onEquipment: function(){
+		return this.get('has_equipment');
+	},
+	setOnEquipment : function(value, silent) {
+		this.set({ has_equipment : value }, {silent: silent});
+	},
+
+	fromCitizen: function(){
+		return this.get('is_citizen');
+	},
+	setFromCitizen: function(value, silent){
+		this.set({ is_citizen : value }, {silent: silent});
+	},
+
+
+	getCitizenName: function(){
+		if(this.fromCitizen()){
+			return this.get('people_name');
+		}
+	},
+	setCitizenName: function(value, silent){
+		this.set({ people_name : value }, {silent: silent});
+	},
+
+	getCitizenPhone: function(){
+		if(this.fromCitizen()){
+			return this.get('people_phone');
+		}
+	},
+	setCitizenPhone: function(value, silent){
+		this.set({ people_phone : value }, {silent: silent});
+	},
+	getCitizenEmail: function(){
+		if(this.fromCitizen()){
+			return this.get('people_email');
+		}
+	},
+	setCitizenEmail: function(value, silent){
+		this.set({ people_email : value }, {silent: silent});
+	},
+
+
+	getPlaceDetails: function(){
+		return this.get('site_details');
+	},
+	setPlaceDetails: function(value, silent) {
+		this.set({ site_details : value }, {silent: silent});
+	},
+
+
+	getInformations: function(){
+		return this.get('tooltip');
+	},
 
 
 	/** Model Initialization
@@ -123,73 +241,17 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		//console.log("Request Model Initialization");
 
 		// Set the translation for the states / actions //
-		app.Models.Request.status.wait.translation = app.lang.wait;
-		app.Models.Request.status.valid.translation = app.lang.valid;
-		app.Models.Request.status.confirm.translation = app.lang.confirm;
-		app.Models.Request.status.refused.translation = app.lang.refused;
-		app.Models.Request.status.closed.translation = app.lang.finished;
+		app.Models.Request.status.wait.translation     = app.lang.wait;
+		app.Models.Request.status.valid.translation    = app.lang.valid;
+		app.Models.Request.status.confirm.translation  = app.lang.confirm;
+		app.Models.Request.status.refused.translation  = app.lang.refused;
+		app.Models.Request.status.closed.translation   = app.lang.finished;
 
-		app.Models.Request.actions.valid.translation = app.lang.actions.validate;
+		app.Models.Request.actions.valid.translation   = app.lang.actions.validate;
 		app.Models.Request.actions.confirm.translation = app.lang.actions.confirmChief;
 		app.Models.Request.actions.refused.translation = app.lang.actions.refuse;
 
 	},
-
-
-
-	/** Model Parser
-	*/
-	parse: function(response) {
-		return response;
-	},
-
-
-
-	/** Save Model
-	*/
-	save: function(data,options) { 
-		app.saveOE(this.get("id"), data, this.model_name, app.models.user.getSessionID(), options);
-	},
-
-
-	
-	/** method not used
-	*/
-	sendEmail: function(data,options) {
-		var params = {}
-		params.state = this.get("state");
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "send_email", app.models.user.getSessionID(), options);
-	},
-	
-
-
-	update: function(params) {
-		this.setDescription( params.description );
-		this.setState( params.state );
-		this.setRefusalReason( params.refusal_reason );
-		this.setNote( params.note );
-	},
-
-
-
-	/** Destroy Model
-	*/
-	destroy: function (options) {	
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
-	},
-	
-
-
-	valid: function(params, options) {
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "valid", app.models.user.getSessionID(), options);
-	},
-
-
 
 }, {
 
@@ -212,12 +274,12 @@ app.Models.Request = Backbone.RelationalModel.extend({
 		},
 		refused: {
 			key 		: 'refused',
-			color 		: 'important',
+			color 		: 'danger',
 			translation : ''
 		},
 		closed: {
 			key 		: 'closed',
-			color 		: 'muted',
+			color 		: 'default',
 			translation : ''
 		}
 	},

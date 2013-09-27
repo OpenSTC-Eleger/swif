@@ -1,109 +1,130 @@
-<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h3>
-		<i class="icon-edit"></i>&nbsp;
-		<% if(_.isUndefined(place)){ %>
-			<%= _.capitalize(lang.viewsTitles.newPlace) %>
-		<% } else{ %>
-			<%= _.capitalize(lang.viewsTitles.editPlace) %>
-		<% } %>
-
-	</h3>
-</div>
-
-<div class="modal-body">
-	<form id="formSavePlace" action="#" class="form-horizontal">
+<div class="modal-dialog">
+	<div class="modal-content">
 
 
-		<!-- Place name -->
-		<div class="control-group">
-			<label for="placeName" class="control-label"><%= _.capitalize(lang.name) %>:</label>
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 class="modal-title">
+				<i class="icon-edit"></i>&nbsp;
+				<% if(_.isNull(place.getId())){ %>
+					<%= _.capitalize(lang.viewsTitles.newPlace) %>
+				<% } else{ %>
+					<%= _.capitalize(lang.viewsTitles.editPlace) %>
+				<% } %>
 
-			<div class="controls">
-				<input type="text" id="placeName" required value="<%= (_.isUndefined(place) ? '' : place.getName())%>"/>
-				<span class="help-inline"></span>
-			</div>
-		</div>
-
-		<!-- Place Type -->
-		<div class="control-group">
-			<label for="placeType" class="control-label"><%= _.capitalize(lang.type) %>:</label>
-
-			<div class="controls">
-				<input id="placeType" class="select2" style="width: 66%" required="required" data-placeholder="<%= lang.actions.selectAPlaceType %>"
-
-					<% if(!_.isUndefined(place)){
-						if(!_.isUndefined(place.getType('id'))) { %>
-						data-selected-value='<%= JSON.stringify(place.getType('json')) %>'
-					<% } } %>
-				/>
-				<span class="help-inline"></span>
-			</div>
-		</div>
-
-		<!-- Place Parent -->
-		<div class="control-group">
-			<label for="placeParentPlace" class="control-label"><%= _.capitalize(lang.parentPlace) %>:</label>
-			<div class="controls">
-				<input id="placeParentPlace" class="select2" style="width: 66%" data-placeholder="<%= lang.actions.selectAPlace %>" data-minimum-input-length="2" 
-
-					<% if(!_.isUndefined(place)){
-						if(!_.isUndefined(place.getParentPlace('id'))) { %>
-						data-selected-value='<%= JSON.stringify(place.getParentPlace('json')) %>'
-					<% } } %>
-				/>
-				<span class="help-inline"></span>
-			</div>
-		</div>
-
-		<!-- Place Services -->
-		<div class="control-group">
-			<label for="placeServices" class="control-label"><%= _.capitalize(lang.associatedServices) %>:</label>
-			<div class="controls">
-				<input id="placeServices" class="select2" style="width: 230px" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="true" 
-
-					<% if(!_.isUndefined(place)){
-						if(!_.isEmpty(place.getServices())) { %>
-						data-selected-value='<%= JSON.stringify(place.getServices('json')) %>'
-					<% } } %>
-				/>
-				<span class="help-inline"></span>
-			</div>
+				
+				<% if(!_.isUndefined(loader)) { %>
+					<span class="modal-loader progress progress-striped active">
+						<span class="bar"></span>
+					</span>
+				<% } %>
+			</h3>
 		</div>
 
 
-		<fieldset>
-			<legend><%= _.capitalize(lang.property) %></legend>
-			<div class="control-group">
-				<div class="form-inline">
-					
-					<!-- Place width -->
-					<div class="span4">
-						<label for="placeWidth"><%= _.capitalize(lang.width) %>:</label>
-						<input type="number" id="placeWidth" class="input-mini" value="<%= (_.isUndefined(place) ? '' : place.getWidth()) %>" />
+
+		<!-- Modal Body  -->
+		<div class="modal-body">
+
+
+			<% if(_.isUndefined(loader)) { %>
+			<form id="formSavePlace" action="#" class="form-horizontal" role="form">
+
+
+				<!-- Place name -->
+				<div class="form-group">
+					<label for="placeName" class="col-sm-3 control-label"><%= _.capitalize(lang.name) %>:</label>
+
+					<div class="col-sm-9">
+						<input type="text" id="placeName" class="form-control" required value="<%= (_.isNull(place.getId()) ? '' : place.getName())%>" />
 					</div>
-
-					<!-- Place Lenght -->
-					<div class="span4">
-						<label for="placeLenght"><%= _.capitalize(lang.lenght) %>:</label>
-						<input type="number" id="placeLenght" class="input-mini" value="<%= (_.isUndefined(place) ? '' : place.getLenght())%>" />
-					</div>
-
-					<!-- Place Area -->
-					<div class="span4">
-						<label for="placeArea"><%= _.capitalize(lang.area) %>:</label>
-						<input type="number" id="placeArea" class="input-mini" value="<%= (_.isUndefined(place) ? '' : place.getSurface())%>" />
-					</div>
-
 				</div>
-			</div>
-		</fieldset>
 
-	</form>
-</div>
+				<!-- Place Type -->
+				<div class="form-group">
+					<label for="placeType" class="col-sm-3 control-label"><%= _.capitalize(lang.type) %>:</label>
+
+					<div class="col-sm-9">
+						<input id="placeType" class="select2" required data-placeholder="<%= lang.actions.selectAPlaceType %>"
+
+							<% if(!_.isNull(place.getId())){
+								if(!_.isUndefined(place.getType('id'))) { %>
+								data-selected-value='<%= JSON.stringify(place.getType('json')) %>'
+							<% } } %>
+						/>
+					</div>
+				</div>
+
+				<!-- Place Parent -->
+				<div class="form-group">
+					<label for="placeParentPlace" class="col-sm-3 control-label"><%= _.capitalize(lang.parentPlace) %>:</label>
+					<div class="col-sm-9">
+						<input id="placeParentPlace" class="select2" data-placeholder="<%= lang.actions.selectAPlace %>" data-minimum-input-length="2" 
+
+							<% if(!_.isNull(place.getId())){
+								if(!_.isUndefined(place.getParentPlace('id'))) { %>
+								data-selected-value='<%= JSON.stringify(place.getParentPlace('json')) %>'
+							<% } } %>
+						/>
+					</div>
+				</div>
+
+				<!-- Place Services -->
+				<div class="form-group">
+					<label for="placeServices" class="col-sm-3 control-label"><%= _.capitalize(lang.associatedServices) %>:</label>
+					<div class="col-sm-9">
+						<input id="placeServices" class="select2" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="true" 
+
+							<% if(!_.isNull(place.getId())){
+								if(!_.isEmpty(place.getServices())) { %>
+								data-selected-value='<%= JSON.stringify(place.getServices('json')) %>'
+							<% } } %>
+						/>
+					</div>
+				</div>
 
 
-<div class="modal-footer">
-	<button type="submit" form="formSavePlace" class="btn btn-primary" data-loading-text="<i class='icon-refresh icon-spin'></i> <%= lang.saveInProgress %>"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
-	<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+				<fieldset>
+					<legend><%= _.capitalize(lang.property) %></legend>
+					<div class="form-group">
+							
+							<!-- Place width -->
+							<div class="col-sm-4">
+								<label for="placeWidth"><%= _.capitalize(lang.width) %>:</label>
+								<input type="number" id="placeWidth" class="form-control" value="<%= (_.isNull(place.getId()) ? '' : place.getWidth()) %>" />
+							</div>
+
+							<!-- Place Lenght -->
+							<div class="col-sm-4">
+								<label for="placeLength"><%= _.capitalize(lang.length) %>:</label>
+								<input type="number" id="placeLength" class="form-control" value="<%= (_.isNull(place.getId()) ? '' : place.getLength())%>" />
+							</div>
+
+							<!-- Place Area -->
+							<div class="col-sm-4">
+								<label for="placeArea"><%= _.capitalize(lang.area) %>:</label>
+								<input type="number" id="placeArea" class="form-control" value="<%= (_.isNull(place.getId()) ? '' : place.getSurface())%>" />
+							</div>
+
+					</div>
+				</fieldset>
+
+			</form>
+			<% } %>
+		</div>
+		<!-- / Modal Body -->
+
+
+		<div class="modal-footer">
+			<button type="submit" form="formSavePlace" class="btn btn-primary" 
+				data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>"
+				<%= (_.isUndefined(loader) ? '' : 'disabled') %>
+			>
+				<%= _.capitalize(lang.actions.save) %>
+			</button>&nbsp;&nbsp;
+
+			<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+
+	</div>
 </div>

@@ -3,10 +3,16 @@
 */
 app.Collections.Requests = app.Collections.GenericCollection.extend({
 
-	model: app.Models.Request,
+	model        : app.Models.Request,
 
-	// Model name in the database //
-	model_name : 'openstc.ask',
+	url          : '/api/openstc/intervention_requests',
+
+	fields       : ['id', 'name', 'actions', 'tooltip', 'create_date', 'create_uid', 'description', 'manager_id', 'partner_address', 'partner_id', 'partner_service_id', 'partner_type', 'partner_type_code', 'people_name', 'service_id', 'site1', 'site_details', 'state', 'refusal_reason', 'has_equipment', 'equipment_id'],
+
+	default_sort : { by: 'id', order: 'DESC' },
+
+	specialCpt : 0,
+
 
 
 	/** Collection Initialization
@@ -16,31 +22,51 @@ app.Collections.Requests = app.Collections.GenericCollection.extend({
 	},
 
 
+	
+	/** Get the number of Request that the user have to deal
+	*/
+	specialCount: function(){
+		var self = this;
+
+		// Construct a domain accrding to user group //
+		if(app.models.user.isDST()){
+			var domain = [
+				{ field : 'state', operator : '=', value : app.Models.Request.status.confirm.key }
+			];
+		}
+		else if(app.models.user.isManager()){
+			var domain = [
+				{ field : 'state', operator : '=', value : app.Models.Request.status.wait.key },
+				{ field : 'service_id.id', operator : 'in', value : app.models.user.getServices() }
+			];
+		}
+
+		return $.ajax({
+			url      : this.url,
+			method   : 'HEAD',
+			dataType : 'text',
+			data     : {filters: app.objectifyFilters(domain)},
+			success  : function(data, status, request){
+				var contentRange = request.getResponseHeader("Content-Range")
+				self.specialCpt = contentRange.match(/\d+$/);
+			}
+		});
+		
+	},
+	
+
 
 	/** Collection Sync
 	*/
-	sync: function(method, model, options) {
-		var fields = ["actions", "belongsToAssignement", "tooltip", "belongsToService", "id", "name", "belongsToSite", "create_date", "create_uid", "date_deadline", "description", "id", "intervention_assignement_id", "intervention_ids", "manager_id", "name", "note", "partner_address", "partner_email", "partner_id", "partner_phone", "partner_service_id", "partner_type", "partner_type_code", "people_email", "people_name", "people_phone", "refusal_reason", "service_id", "site1", "site_details", "state", "write_uid"];
+	sync: function(method, model, options){
 
-		return app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
-	},
+		options.data.fields = this.fields;
 
-
-
-	/** Collection Parse
-	*/
-	parse: function(response) {
-		return response.result.records;
-	},
-	
-	
-
-	/** Comparator for ordering collection
-	*/
-	comparator: function(item) {
-		var mCreateDate = moment(item.get('create_date'))
-		item.set({'create_date': mCreateDate});
-		return -item.get('create_date');
+		return $.when(
+			this.count(options),
+			(app.models.user.isDST() || app.models.user.isManager() ? this.specialCount() : ''),
+			Backbone.sync.call(this,method,this,options)
+		);
 	}
 
 });

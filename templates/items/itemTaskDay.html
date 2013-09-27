@@ -1,0 +1,75 @@
+<!-- Task name -->
+<td class="<%= (task.state == app.Models.Task.status.done.key ? 'isCheck' : '') %>">
+	<!-- Check if the task is Orphan -->
+	<%= (task.project_id != false ? task.project_id[1] : '<i class="icon-asterisk"></i> '+task.name)  %>
+</td>
+
+<!-- Task Name -->
+<td><a href="#" class="updateTask"> <%= _.capitalize(task.name) %> </a></td>
+<td><%= (task.site1 !== false) ? task.site1[1] : '' %></td>
+<td><%= (date_start) != '' ? date_start.format('H[h]mm') : '' %></td>
+<td><%= (date_end) != '' ? date_end.format('H[h]mm') : '' %></td>
+
+<!-- Assign To -->
+<td>
+<% if(task.team_id == false){ %>
+	<%= task.user_id[1] %>
+<% } else { %>
+	<%= task.team_id[1] %>
+<% } %>
+</td>
+
+<td class="hidden-phone"><%= app.Helpers.Main.decimalNumberToTime(task.planned_hours, 'human') %></td>
+<td class="hidden-phone"><%=(task.state != app.Models.Task.status.draft.key && task.state != app.Models.Task.status.absent.key) ? app.Helpers.Main.decimalNumberToTime(task.remaining_hours, 'human') : '' %></td>
+
+<!-- Task State -->
+<td>
+	<!-- To Schedule / Cancelled / Schedule / Absent -->
+	<% if(task.state != app.Models.Task.status.done.key) { %>
+		<span class="label label-<%= app.Models.Task.status[task.state].color %>"><%= app.Models.Task.status[task.state].translation %></span>
+
+	<!-- Finish -->
+	<% } else { 
+							
+		if(_(task.effective_hours).toNumber(2) <= _(task.planned_hours).toNumber(2)){ %>
+			<span class="label label-<%= app.Models.Task.status.done.color %>"><%= app.Models.Task.status.done.translation %></span>
+		<% } else  { %>
+			<span class="label label-overrun"><%= app.Models.Task.status.done.translation %></span>
+		<% } 
+	} %>
+</td>
+
+<!-- Actions -->
+<td class="align">
+
+	<!-- Display Actions button if the task is schedule and the user isn't an officer -->
+	<% if(task.actions.indexOf("normal_mode_finished") > -1 && task.date_start) { %>
+
+		<!-- If the user is not an Agent or is a foreman -->
+		<%// if(displayFilter == true || task.team_id == false){ %>
+	
+		<div class="btn-group">
+			<button class="btn btn-small btn-success no-outline buttonTaskDayDone" data-toggle="modal" data-taskid="<%= task.id %>"><i class="icon-ok icon-fixed-width"></i>
+			</button>
+			<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu pull-right text-left">
+				<% if(task.actions.indexOf("normal_mode_unfinished") > -1){%>
+				<li>
+					<a href="#" class="taskNotDone" data-taskid="<%= task.id %>">
+						<i class="icon-remove icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.lang.notDone) %>
+					</a>
+				</li>
+				<li>
+					<a href="#" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonTaskDayTimeSpent">
+						<i class="icon-time icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.lang.notFinished) %>
+					</a>
+
+				</li>
+				<% } %>
+			</ul>
+		</div>
+		<% //}
+	} %>
+</td>

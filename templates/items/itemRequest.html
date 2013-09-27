@@ -1,0 +1,123 @@
+<!-- Id -->
+<td><%= request.getId() %></td>
+
+<!-- Name -->
+<td>
+	<a 	href="#"
+		class="requestDetails"
+		data-toggle="popover"
+		data-html="true"
+		data-original-title="<%= _.capitalize(lang.about) %>"
+		data-delay="160"
+		data-content="<%= _(request.getDescription()).escapeHTML() %><hr /><%= app.lang.createdBy %>: <%= request.getCreateAuthor() %>">
+		<%= request.getName() %>
+	</a>
+</td>
+
+
+<!-- Place/Equipment -->
+<td>
+	<% if(request.onEquipment()){ %>
+		<i class="icon-wrench icon-fixed-width"></i>&nbsp;<%= request.getEquipment() %> <small class="text-muted">(<%= request.getSite() %>)</small>
+	<% }else if(request.getSite()){ %>
+		<i class="icon-map-marker icon-fixed-width"></i>&nbsp;<%= request.getSite() %>
+	<% }%>
+	
+	<span>
+</td>
+
+
+<!-- Service -->
+<td>
+	<span
+	<% if(request.getState() == app.Models.Request.status.wait.key){ %>
+		data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.toValidateBy) %> <%= request.getManager() %>"
+	<% } %>
+	><%= request.getService() %>
+	</span>
+</td>
+
+
+<!-- Claimer -->
+<td>
+	<span 
+		data-toggle="tooltip" 
+		data-html="true" 
+		data-original-title="<strong><%= request.getClaimer().type %></strong> <br /> <%= request.getClaimer().person %>">
+		<%= request.getClaimer().name %>
+	</span>
+</td>
+
+
+<!-- Request Date -->
+<td>
+	<span data-toggle="tooltip" data-original-title="<%= request.getCreateDate('fromNow') %>"> <%= request.getCreateDate() %></span>
+</td>
+
+
+<!-- Request State -->
+<td>
+	<span 
+		class="label label-<%= app.Models.Request.status[request.getState()].color %>" 
+		data-toggle="tooltip"
+		data-original-title="<%= request.getInformations() %>">
+		<%= app.Models.Request.status[request.getState()].translation %>
+	</span>
+</td>
+
+
+<!-- Request Action -->
+<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
+	<td class="text-center">
+
+	<!-- Check if the user can make action on the request -->
+	<% if(!_.isEmpty(request.getActions())){ 
+		var actions = request.getActions();
+	%>
+
+		<!-- Create the buttons group action -->
+		<div class="btn-group btn-group-sm">
+
+			<!-- Check if the request is not in waiting state -->
+			<%
+
+			if(request.getState() != app.Models.Request.status.wait.key){
+				var mainAction = '';
+				var mainActionIcon = app.Models.Request.actions[request.getState()].icon;
+				var mainActionColor = app.Models.Request.actions[request.getState()].color;
+				var mainActionDisabled = 'disabled';
+			}else{
+				var mainAction = app.Models.Request.actions.valid.key;
+				var mainActionColor = app.Models.Request.actions.valid.color;
+				var mainActionIcon = app.Models.Request.actions.valid.icon;
+				var mainActionDisabled = '';
+
+				/ Remove validate action from the array actions /
+				actions = _.without(actions, app.Models.Request.actions.valid.key);
+			} %>
+
+			<!-- Main action button -->
+			<button class="btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline button<%= _.capitalize(mainAction) %>Request">
+				<i class="<%= mainActionIcon %> icon-fixed-width button<%= _.capitalize(mainAction) %>Request"></i>
+			</button>
+			
+			<!-- Dropdown button action -->
+			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				<span class="icon-caret-down"></span>
+			</button>
+			
+			<!-- Other buttons action -->
+			<ul class="dropdown-menu pull-right text-left">
+				<% _.each(actions, function(action){ %>
+					<li>
+						<a href="#" class="button<%= _.capitalize(app.Models.Request.actions[action].key) %>Request">
+							<i class="<%= app.Models.Request.actions[action].icon %> icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.Models.Request.actions[action].translation) %>
+						</a>
+					</li>
+				<% }); %>
+			</ul>
+		</div>
+
+	<% } %>
+	</td>
+<% } %>

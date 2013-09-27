@@ -1,48 +1,28 @@
 /******************************************
 * Place Model
 */
-app.Models.Place = Backbone.RelationalModel.extend({
-	
-	model_name : 'openstc.site',
-	
-	url: "/#places/:id",
-
-	fields     : ["id", "name", "complete_name", "type", "service_ids", "service_names", "site_parent_id", "width", "lenght", "surface"],
-	
-
-	defaults:{
-		id             : 0,
-		name           : null,
-		type           : 0,
-		site_parent_id : 0,
-		width          : 0,
-		lenght         : 0,
-		surface        : 0,
-	},
+app.Models.Place = app.Models.GenericModel.extend({
 
 
-	getId : function() {
-		return this.get('id');
-	},
-	setId : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ id : value });
-	},
+	fields     : ['id', 'name', 'complete_name', 'type', 'service_names', 'site_parent_id', 'width', 'length', 'surface'],
 
-	getName : function() {
-		return _.titleize(this.get('name').toLowerCase());
-	},
-	setName : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ name : value });
-	},
+	urlRoot    : '/api/openstc/sites',
+
+
+	searchable_fields: [
+		{
+			key  : 'surface',
+			type : 'numeric'
+		},
+		{
+			key  : 'complete_name', 
+			type : 'text'
+		}
+	],
+
 
 	getCompleteName : function() {
 		return _.titleize(this.get('complete_name').toLowerCase());
-	},
-	setCompleteName : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ complete_name : value });
 	},
 
 	getParentPlace : function(type) {
@@ -70,9 +50,8 @@ app.Models.Place = Backbone.RelationalModel.extend({
 				return name;
 		}
 	},
-	setParentPlace : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ site_parent_id : value });
+	setParentPlace : function(value, silent) {
+		this.set({ site_parent_id : value }, {silent: silent});
 	},
 	getServices : function(type){
 
@@ -98,9 +77,8 @@ app.Models.Place = Backbone.RelationalModel.extend({
 			return placeServices;
 		}
 	},
-	setServices : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ service_ids : value });
+	setServices : function(value, silent) {
+		this.set({ service_ids : [[6, 0, value]] }, {silent: silent});
 	},
 
 	getType : function(type) {
@@ -115,25 +93,22 @@ app.Models.Place = Backbone.RelationalModel.extend({
 				return this.get('type')[1];
 		}
 	},
-	setType : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ type : value });
+	setType : function(value, silent) {
+		this.set({ type : value }, {silent: silent});
 	},
 
-	getLenght : function() {
-		return this.get('lenght');
+	getLength : function() {
+		return this.get('length');
 	},
-	setLenght : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ lenght : value });
+	setLength : function(value, silent) {
+		this.set({ length : value }, {silent: silent});
 	},  
 	
 	getWidth : function() {
 		return this.get('width');
 	},
-	setWidth : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ width : value });
+	setWidth : function(value, silent) {
+		this.set({ width : value }, {silent: silent});
 	},
 
 	getSurface : function(human) {
@@ -144,92 +119,24 @@ app.Models.Place = Backbone.RelationalModel.extend({
 			return this.get('surface');
 		}
 	},
-	setSurface : function(value) {
-		if(_.isUndefined(value)) return;
-		this.set({ surface : value });
+	setSurface : function(value, silent) {
+		this.set({ surface : value }, {silent: silent});
 	},
 
 	/** Get Informations of the model
 	*/
 	getInformations : function(){
-		return [this.getName(), this.getType()];
-	},
+		var informations = {};
 
+		informations.name = this.getCompleteName();
 
+		if(!_.isEmpty(this.getServices())){
+			informations.infos = {};
+			informations.infos.key = _.capitalize(app.lang.associatedServices);
+			informations.infos.value = this.getServices();
+		}
 
-	/** Model Initialization
-	*/
-	initialize: function(){
-
-	},
-
-
-
-	/** Model Parser 
-	*/
-	parse: function(response, options) {
-		response.complete_name = _.titleize(response.complete_name.toLowerCase());
-
-		return response;
-	},
-	
-
-
-	update: function(params) {
-		this.setName( params.name );
-		this.setType( params.type );
-		this.setService( params.service );
-		this.setParent( params.site_parent_id );
-		this.setWidth( params.width );
-		this.setLenght( params.lenght );
-		this.setSurface( params.surface );
-	},
-
-
-
-	/** Save Model
-	*/
-	save: function(data, id, options) { 
-		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(), options);
-	},
-
-
-
-	/** Delete place
-	*/
-	delete: function (options) {
-		app.deleteOE( 
-			[[this.get('id')]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
-	},
-
-
-
-	/** Sync the Model
-	*/
-	sync: function(method, model, options){
-		var self = this;
-
-		var deferred = $.Deferred();
-
-		app.getOE(this.model_name, this.fields, [this.getId()], app.models.user.getSessionID(),({
-				success: function(data){
-					self.set(data.result[0]);
-
-					deferred.resolve();
-				},
-				error: function(e){
-					console.log(e);
-				}
-			})
-		)
-
-		return  deferred;
-	},
-
-
+		return informations;
+	}
 
 });

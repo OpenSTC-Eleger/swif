@@ -1,145 +1,155 @@
 /******************************************
 * Task Model
 */
-app.Models.Task = Backbone.RelationalModel.extend({
-
-	// Model name in the database //
-	model_name : 'project.task',	
+app.Models.Task = app.Models.GenericModel.extend({
 	
-	url: '/#taches/:id',
-
-
-	relations: [
-		{
-			type: Backbone.HasMany,
-			key: 'equipment_ids',
-			relatedModel: 'app.Models.Equipment',
-			collectionType: 'app.Collections.Equipments',
-			includeInJSON: ['id', 'name', 'complete_name', 'type'],
-		},	
-	],
-	
-
-	defaults:{
-		id:0,
-		name: null,
-		effective_hours:0,
-		total_hours: 0,
-		remaining_hours: 0,
-		state: null,
-		user_id: null,
-		team_id: null,
-		date_end: null,
-		date_start: null,
-		currentTask: null,
-	},
-	
-	getId : function() {
-		return this.get('id');
-	},
-	setId: function(value) {
-		if( value == 'undefined') return;
-		this.set({ id : value });
-	},
-
-	getName : function() {
-		return this.get('name');
-	},
-	setName: function(value) {
-		if( value == 'undefined') return;
-		this.set({ id : value });
-	},
+	urlRoot: '/api/openstc/tasks',
 
 	getState : function() {
-		return this.get('name');
+		return this.get('state');
 	},
-	setState : function(value) {
-		if( value == 'undefined') return;
-		this.set({ state : value });
+	setState : function(value, silent) {
+		this.set({ state : value }, {silent: silent});
 	},
 
-	getInterventionId : function() {
+	getIntervention : function(type) {
 		if(this.get('project_id')){
-			return this.get('project_id');
+			switch(type){
+			case 'id':
+				return this.get('project_id')[0];
+			break;
+			case 'json':
+				return {id: this.get('project_id')[0], name: this.get('project_id')[1]} 
+			break;
+			default:
+				return this.get('project_id')[1];
+			}
 		}
 		else{
-			return '';
+			return false;
 		}
 	},
-	setInterventionId : function(value) {
-		if( value == 'undefined') return;
-		this.set({ project_id : value });
-	},
-
-	getInterventionName : function() {
-		if(this.get('project_id') != false){
-			return this.get('project_id')[1];
+	
+	getSite : function(type) {
+		if(this.get('site1')){
+			switch(type){
+			case 'id':
+				return this.get('site1')[0];
+			break;
+			case 'json':
+				return {id: this.get('site1')[0], name: this.get('site1')[1]} 
+			break;
+			default:
+				return this.get('site1')[1];
+			}
 		}
 		else{
-			return '';
+			return false;
+		}
+	},
+	
+	setIntervention : function(value) {
+		this.set({ state : project_id }, {silent: silent});
+	},
+
+
+	affectedOnTeam: function(){
+		if(this.get('team_id') == false){
+			return false;
+		}else{
+			return true;
 		}
 	},
 
-	getUserId : function() {
-		return this.get('user_id');
+
+	getUser : function(type) {
+		if(this.get('user_id')){
+			switch(type){
+			case 'id':
+				return this.get('user_id')[0];
+			break;
+			case 'json':
+				return {id: this.get('user_id')[0], name: this.get('user_id')[1]} 
+			break;
+			default:
+				return this.get('user_id')[1];
+			}
+		}
+		else{
+			return false;	
+		}
 	},
-	setUserId : function(value) {
-		if( value == 'undefined') return;
-		this.set({ user_id : value });
-	},
-	getUserName : function() {
-		return this.get('user_id')[1];
+	setUser : function(value) {
+		this.set({ state : user_id }, {silent: silent});
 	},
 
-	getTeamId : function() {
-		return this.get('team_id');
+	getTeam : function(type) {
+		if(this.get('team_id')){
+			switch(type){
+			case 'id':
+				return this.get('team_id')[0];
+			break;
+			case 'json':
+				return {id: this.get('team_id')[0], name: this.get('team_id')[1]} 
+			break;
+			default:
+				return this.get('team_id')[1];	
+			}
+		}
+		else{
+			return false;
+		}
 	},
-	setTeamId : function(value) {
-		if( value == 'undefined') return;
-		this.set({ team_id : value });
+	setTeam : function(value, silent) {
+		this.set({ state : team_id }, {silent: silent});
 	},
 
-	getTeamName : function() {
-		return this.get('team_id')[1];
-	},
+
 
 	getDateEnd : function() {
 		return this.get('date_end');
 	},
-	setDateEnd : function(value) {
-		if( value == 'undefined') return;
-		this.set({ date_end : value });
+	setDateEnd : function(value, silent) {
+		this.set({ date_end : value }, {silent: silent});
 	},
 
 	getDateStart : function() {
 		return this.get('date_start');
 	},
-	setDateStart : function(value) {
-		if( value == 'undefined') return;
-		this.set({ date_start : value });
+	setDateStart : function(value, silent) {
+		this.set({ date_start : value }, {silent: silent});
 	},
 
 	getRemainingHours : function() {
 		return this.get('remaining_hours');
 	},
-	setRemainingHours : function(value) {
-		if( value == 'undefined') return;
-		this.set({ remaining_hours : value });
+	setRemainingHours : function(value, silent) {
+		this.set({ remaining_hours : team_id }, {silent: silent});
 	},
 
 	getPlannedHours : function() {
 		return this.get('planned_hours');
 	},
-	setPlannedHours : function(value) {
-		if( value == 'undefined') return;
-		this.set({ planned_hours : value });
+	setPlannedHours : function(value, silent) {
+		this.set({ planned_hours : team_id }, {silent: silent});
 	},
 
-	getStartEndDateInformations : function(){
-		return "Du " + this.getDateStart().format('LLL') + " au " + this.getDateEnd().format('LLL');
-	},
-	getState : function() {
-		return this.get('state');
+
+
+	/** Get Informations of the model
+	*/
+	getInformations : function(){
+		var informations = {};
+
+		informations.name = this.getName();
+
+		if(!_.isEmpty(this.getIntervention())){
+			informations.infos = {};
+			informations.infos.key = _.capitalize(app.lang.intervention);
+			informations.infos.value = this.getIntervention();
+		}
+
+		return informations;
 	},
 
 
@@ -159,118 +169,15 @@ app.Models.Task = Backbone.RelationalModel.extend({
 
 
 
-	parseDate: function(s) {
-	  var re = /^(\d{4})-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/;
-	  var m = re.exec(s);
-	  //PYF : using UTC time 
-	  return m ? new Date(Date.UTC(parseInt(m[1],10), parseInt(m[2]-1,10), parseInt(m[3],10), 
-		  parseInt(m[4],10), parseInt(m[5],10), parseInt(m[6],10))) : null;
-	},
-
-
-
-	/** Model Parser
-	*/
-	parse: function(response) {
-		
-		// Check if the date is a moment() //
-		if(!moment.isMoment(response.date_start)){
-			if(response.date_start) {
-			//var user = app.models.user.toJSON();			
-			response.date_start = moment(this.parseDate(response.date_start));
-			}
-		}
-
-		// Check if the date is a moment() //
-		if(!moment.isMoment(response.date_end)){
-			if(response.date_end){
-				response.date_end = moment(this.parseDate(response.date_end));
-			}
-		}
-
-		return response;
-	},
-	
-
-
-	/** Save Model
-	*/
-	save: function(id,data, options) { 
-		if( options==null ) {
-			app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), {         	
-				success: function(data){
-					if(!_.str.include(Backbone.history.fragment, 'planning/')){
-						Backbone.history.loadUrl(Backbone.history.fragment);
-					}
-					else{
-						app.router.navigate(app.routes.planning.url, {trigger: true, replace: true});
-					}
-				}
-			});
-		}
-		else {
-			app.saveOE(id, data, this.model_name,app.models.user.getSessionID(), options);
-		}
-	},
-	
-
-
-	/** Save Model with backend method named saveTaskDone
-	*/	
-	saveTaskDone: function(params, options) {
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "saveTaskDone", app.models.user.getSessionID(), options);
-	},
-
-
-	/** Create orphan task in backend
-	*/	
-	createOrphan: function(params, options) {
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "createOrphan", app.models.user.getSessionID(), options);
-	},
-
-
-	
-	/** Report hours in backend
-	*/	
-	reportHours: function(params, options) {
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "reportHours", app.models.user.getSessionID(), options);
-	},
-	
 	/** Report hours in backend
 	*/	
 	cancel: function(cancel_reason, options) {
 		var params = {}
 		params.state = app.Models.Task.status.cancelled.key;
 		params.cancel_reason = cancel_reason;
-		app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
+		//app.callObjectMethodOE([[this.get("id")],params], this.model_name, "cancel", app.models.user.getSessionID(), options);
+		return this.save(params, {silent: true, patch: true})
 	},
-
-
-	update: function(params) {
-		this.setName( params.name );
-		this.setProjectId( params.project_id );
-		this.setState( params.state );
-		this.setRemainingHours( params.remaining_hours );
-		this.setPlannedHours( params.planned_hours );
-		this.setUserId( params.user_id );
-		this.setTeamId( params.team_id );
-		this.setDateEnd( params.date_end );
-		this.setDateStart( params.date_start );
-	},
-	
-
-
-	destroy: function (options) {
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
-	},
-	
-
-
 
 
 }, {
@@ -294,7 +201,7 @@ app.Models.Task = Backbone.RelationalModel.extend({
 		},
 		cancelled: {
 			key 			: 'cancelled', // cancel //
-			color 			: 'important',
+			color 			: 'danger',
 			translation 	: ''
 		},
 		absent: {

@@ -1,0 +1,144 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 class="modal-title"><%= lang.viewsTitles.newContact %></h3>
+		</div>
+
+		<!-- Modal Body -->
+		<div class="modal-body">
+			<form id="formContact" action="#" class="form-horizontal" role="form">
+
+				<!-- Contact name -->
+				<div class="form-group">
+					<label for="contactName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
+
+					<div class="col-sm-9">
+						<input type="text" id="contactName" class="form-control" required value="<%= contact.name %>"/>
+					</div>
+				</div>
+
+                <% if (_.isNull(user.get('id'))) { %>
+				<!-- Create Associated Account Link -->
+				<div class="form-group">
+					<div class="col-sm-9">
+						<label class="checkbox" for="createAssociatedAccount">
+							<input type="checkbox" id="createAssociatedAccount"><%= lang.actions.createAssociatedAccount %></label>
+					</div>
+				</div>
+                <% }else{ %>
+                <fieldset>
+                    <legend><%= lang.aboutTheAccount %></legend>
+                    <div class="row">
+                        <div class=" col-sm-3">
+                            <i class="icon-user"></i> <%= _.capitalize(lang.login) %>
+                        </div>
+                        <div class="col-sm-9">
+                            <%= user.get('login')%>
+                        </div>
+                    </div>
+                <% } %>
+
+				<!-- Create associate Account -->
+				<fieldset class="associated-account">
+					<legend><%= lang.aboutTheAccount %></legend>
+
+					<!-- Officer login -->
+					<div class="form-group">
+						<label for="userLogin" class="control-label col-sm-3"><%= _.capitalize(lang.login) %>:</label>
+
+						<div class="col-sm-9">
+							<input type="text" id="userLogin" class="form-control" />
+						</div>
+					</div>
+
+					<!-- Officer password -->
+					<div class="form-group">
+						<label for="userPassword" class="control-label col-sm-3"><%= _.capitalize(lang.password) %>:</label>
+
+						<div class="col-sm-9">
+							<input type="password" id="userPassword" name="userPassword" pattern=".{6,}" />
+							<p class="help-block"><%= lang.infoMessages.sixCharMin %></p>
+						</div>
+					</div>
+
+				</fieldset>
+
+				<fieldset>
+					<legend><%= lang.aboutTheContact %></legend>
+					<div class="form-group">
+						<label for="contactEmail" class="control-label col-sm-3"><%= _.capitalize(lang.email) %>:</label>
+
+						<div class="col-sm-9">
+							<input type="email" id="contactEmail" class="form-control" required value="<%= contact.email %>"/>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="contactFunction" class="control-label col-sm-3"><%= _.capitalize(lang.function) %>:</label>
+
+						<div class="col-sm-9">
+							<input type="text" id="contactFunction" class="form-control" value="<%= contact.function %>" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="contactPhone" class="control-label col-sm-3"><%= _.capitalize(lang.phone) %>:</label>
+
+						<div class="col-sm-9">
+							<input type="text" id="contactPhone" class="form-control" value="<%= contact.phone %>"/>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="contactMobile" class="control-label col-sm-3"><%= _.capitalize(lang.mobile) %>:</label>
+
+						<div class="col-sm-9">
+							<input type="text" id="contactMobile" class="form-control" value="<%= contact.mobile %>"/>
+						</div>
+					</div>
+
+
+				</fieldset>
+
+				<fieldset class="associated-address">
+					<legend><%= lang.aboutTheContactAdress %></legend>
+
+					<div class="form-group">
+						<label for="addressStreet" class="control-label col-sm-3"><%= _.capitalize(lang.address) %>:</label>
+
+						<div class="col-sm-9">
+							<input type="text" id="addressStreet" class="form-control" value="<%= contact.street %>" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="addressCity" class="control-label col-sm-3"><%= _.capitalize(lang.city) %>:</label>
+
+						<div class="col-sm-9">
+							<input type="text" id="addressCity" class="form-control" value="<%= contact.city %>" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="addressZip" class="control-label col-sm-3"><%= _.capitalize(lang.zip) %>:</label>
+
+						<div class="col-sm-9">
+							<input type="text" id="addressZip" class="form-control" value="<%= contact.zip %>" />
+						</div>
+					</div>
+				</fieldset>
+
+
+			</form>
+		</div>
+		<!--  / Modal Body -->
+
+		<div class="modal-footer">
+			<button type="submit" form="formContact" class="btn btn-primary formContact"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+			<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+
+	</div>
+</div>

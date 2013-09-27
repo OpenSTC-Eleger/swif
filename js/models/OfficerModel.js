@@ -1,76 +1,20 @@
 /******************************************
 * Officer Model
 */
-app.Models.Officer = Backbone.RelationalModel.extend({
-    
-	model_name: "res.users",
-	
-	url: "/#officers/:id",
-	
-	relations: [{
-			type: Backbone.HasMany,
-			key: 'tasks',
-			relatedModel: 'app.Models.Task',
-			collectionType: 'app.Collections.Tasks',
-			includeInJSON: true,
-		},
-		{
-			type: Backbone.HasMany,
-			key: 'service_ids',
-			relatedModel: 'app.Models.ClaimerService',
-			collectionType: 'app.Collections.ClaimersServices',
-			includeInJSON: ['id', 'name'],	
-		},
-		{
-			type: Backbone.HasMany,
-			key: 'team_ids',
-			relatedModel: 'app.Models.Team',
-			collectionType: 'app.Collections.Teams',
-			includeInJSON: ['id', 'name','manager_id','tasks'],	
-		},
-		{
-            type: Backbone.HasMany,
-            key: 'contact_id',
-            relatedModel: 'app.Models.ClaimerContact',
-            collectionType: 'app.Collections.ClaimersContacts',
-            includeInJSON: ['id', 'name','partner_id','phone','email'],
-        },
-		{
-			type: Backbone.HasMany,
-			key: 'groups_id',
-			relatedModel: 'app.Models.STCGroup',
-			collectionType: 'app.Collections.STCGroups',
-			includeInJSON: ['id', 'name','code'],	
-		},
-	],
+app.Models.Officer = app.Models.GenericModel.extend({
+
+	urlRoot : "/api/open_object/users",
+
+	fields: ["complete_name", "contact_id", "context_lang", "context_tz", "date", "firstname", "groups_id", "current_group", "id", "isDST", "isManager", "lastname", "login", "name", "phone", "service_id", "service_names", "tasks", "team_ids", "user_email", "actions"],
 
 
 	defaults:{
-		id:0,
-		firstname: null,
-		name: null,
-		login: null,
-		password: null,
-		groups_id: [],
-		service_ids: [],
-		
-		isDST			: false,
-		isManager		: false,
+		id       :null,
+		isDST    : false,
+		isManager: false,
 	},
 
-
-	// Officer name //
-	getName : function() {
-		if(this.get('name') != false){
-			return this.get('name').toUpperCase();
-		}
-		else{ return ''; }
-	},
-	setName : function(value) {
-		if( value == 'undefined') return;
-		this.set({ name : value });
-	},
-    
+   
 	// Officer firstname //
 	getFirstname : function() {
 		if(this.get('firstname') != false){
@@ -79,21 +23,20 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 		else{ return ''; }
 	},
 	setFirstname : function(value) {
-		if( value == 'undefined') return;
 		this.set({ firstname : value });
 	},
 
-	// Officer Fullname //
-	getFullname : function() {
-        return this.getFirstname()+' '+this.getName();
-    },
+	getCompleteName : function() {
+		return _.titleize(this.get('complete_name').toLowerCase());
+	},
 
     // Officer email //
     getEmail : function() {
-        return this.get('user_email');
+        if(this.get('user_email')){
+        	return this.get('user_email');
+        }
     },
     setEmail : function(value) {
-		if( value == 'undefined') return;
 		this.set({ user_email : value });
 	},
 
@@ -108,34 +51,78 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 
 	// Officer password //
     setPassword : function(value) {
-		if( value == 'undefined') return;
 		this.set({ new_password : value });
 	},
 	// Group IDs //
-	getGroupsId: function() {
+	getGroups: function() {
 	    return this.get('groups_id');
 	},
-	setGroupsID : function(value) {
-		if( value == 'undefined') return;
+	setGroups : function(value) {
 		this.set({ groups_id : value });
+	},
+
+
+	// Group IDs //
+	getLastConnection: function() {
+	    return this.get('date');
 	},
 	
 	// Group Name //
-	setGroupSTCName : function(value) {
-		if( value == 'undefined') return;
-		this.set({ groupSTCName : value });
+	setGroupSTC : function(value) {
+		this.set({ current_group : value });
 	},
-	getGroupSTCName: function() {
-	    return this.get('groupSTCName');
+	getGroupSTC : function(type) {
+		switch (type){ 
+			case 'id': 
+				return this.get('current_group')[0];
+			break;
+			case 'json':
+				return {id: this.get('current_group')[0], name: this.get('current_group')[1]};
+			break;
+			default:
+				return this.get('current_group')[1];
+		}
 	},
 
-	// Team services ID //
-	getServicesId: function() {
-	    return this.get('service_ids');
+	getServices : function(type){
+
+		var placeServices = [];
+
+		_.each(this.get('service_names'), function(s){
+			switch (type){
+				case 'id': 
+					placeServices.push(s[0]);
+				break;
+				case 'json': 
+					placeServices.push({id: s[0], name: s[1]});
+				break;
+				default:
+					placeServices.push(s[1]);
+			}
+		});
+
+		if(type == 'string'){
+			return _.toSentence(placeServices, ', ', ' '+app.lang.and+' ')
+		}
+		else{
+			return placeServices;
+		}
 	},
 	setServicesID : function(value) {
-		if( value == 'undefined') return;
 		this.set({ service_ids : value });
+	},
+
+	getService : function(type) {
+		switch (type){ 
+			case 'id': 
+				return this.get('service_id')[0];
+			break;
+			case 'json':
+				return {id: this.get('service_id')[0], name: this.get('service_id')[1]};
+			break;
+			default:
+				return this.get('service_id')[1];
+		}
 	},
 
 	// Teams ID// 
@@ -153,60 +140,30 @@ app.Models.Officer = Backbone.RelationalModel.extend({
 	isDST: function(value) {
     	return this.get('isDST');
     },
-    
     setDST: function(value) {
         this.set({ isDST : value });
     },
 
 
-
-	/** Model Initialization
+	/** Get Informations of the model
 	*/
-    initialize: function(){
-        //console.log('Officer Model initialization');
-        this.fetchRelated('tasks');
-    },
+	getInformations : function(){
+		var informations = {};
 
+		informations.name = this.getCompleteName();
 
+		if(!_.isEmpty(this.getService())){
+			informations.infos = {};
+			informations.infos.key = _.capitalize(app.lang.service);
+			informations.infos.value = this.getService();
+		}
 
-    /** Model Parser
-	*/
-    parse: function(response) {
-        return response;
-    },
-
-
-
-	/** Update each attributes to the model
-	*/
-	update: function(params) {
-		this.setName( params.name );
-		this.setFirstname( params.firstname );
-		this.setEmail( params.user_email );
-		this.setLogin( params.login );
-		this.setPassword( params.new_password );
-		this.setGroupsID( params.groups_id );
-		this.setServicesID( params.service_ids );
+		return informations;
 	},
 
 
-
-	/** Save Officer
-	*/
-	save: function(data, id, options) { 
-		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
-	},
-
-
-	/** Delete Officer
-	*/
-	delete: function (options) {	
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
+	getActions: function(){
+		return this.get('actions');
 	}
 
 });

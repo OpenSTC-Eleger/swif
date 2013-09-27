@@ -1,159 +1,100 @@
 /******************************************
 * Team Model
 */
-app.Models.Team = Backbone.RelationalModel.extend({
+app.Models.Team = app.Models.GenericModel.extend({
 
-	// Model name in the database //
-	model_name : 'openstc.team',	
-	
-	url: "/#teams/:id",	
-	
-	relations: [{
-			type: Backbone.HasMany,
-			key: 'tasks',
-			relatedModel: 'app.Models.Task',
-			collectionType: 'app.Collections.Tasks',
-			includeInJSON: 'id',
-			reverseRelation: {
-				type: Backbone.HasOne,
-				key: 'teamWorkingOn',
-				includeInJSON: ['id','manager_id'],
+
+	fields     : ['id', 'name', 'manager_id', 'actions', 'service_names', 'user_names'],
+
+	urlRoot    : '/api/openstc/teams',
+
+
+
+	getManager : function(type) {
+		switch (type){ 
+			case 'id': 
+				return this.get('manager_id')[0];
+			break;
+			case 'json':
+				return {id: this.get('manager_id')[0], name: this.get('manager_id')[1]};
+			break;
+			default:
+				return this.get('manager_id')[1];
+		}
+	},
+	setManager : function(value, silent) {
+		this.set({ manager_id : value }, {silent: silent});
+	},
+
+	getMembers: function(type) {
+		var teamMembers = [];
+
+		_.each(this.get('user_names'), function(s){
+			switch (type){
+				case 'id': 
+					teamMembers.push(s[0]);
+				break;
+				case 'json': 
+					teamMembers.push({id: s[0], name: s[1]});
+				break;
+				default:
+					teamMembers.push(s[1]);
 			}
-		},
-		{
-			type: Backbone.HasMany,
-			key: 'user_ids',
-			relatedModel: 'app.Models.Officer',
-			collectionType: 'app.Collections.Officers',
-			includeInJSON: ['id', 'firstname', 'name'],
-		},
-		{
-			type: Backbone.HasMany,
-			key: 'free_user_ids',
-			relatedModel: 'app.Models.Officer',
-			collectionType: 'app.Collections.Officers',
-			includeInJSON: ['id', 'firstname', 'name'],
-		},
-		{
-			type: Backbone.HasMany,
-			key: 'service_ids',
-			relatedModel: 'app.Models.ClaimerService',
-			collectionType: 'app.Collections.ClaimersServices',
-			includeInJSON: ['id', 'name'],
-		},
+		});
+
+		if(type == 'string'){
+			return _.toSentence(teamMembers, ', ', ' '+app.lang.and+' ')
+		}
+		else{
+			return teamMembers;
+		}
+	},
+    setMembers : function(value, silent) {
+		this.set({ user_ids : [[6, 0, value]] }, {silent: silent});
+	},
+
+
+	// Team services ID //
+	getServices: function(type) {
+		var teamServices = [];
+
+		_.each(this.get('service_names'), function(s){
+			switch (type){
+				case 'id': 
+					teamServices.push(s[0]);
+				break;
+				case 'json': 
+					teamServices.push({id: s[0], name: s[1]});
+				break;
+				default:
+					teamServices.push(s[1]);
+			}
+		});
+
+		if(type == 'string'){
+			return _.toSentence(teamServices, ', ', ' '+app.lang.and+' ')
+		}
+		else{
+			return teamServices;
+		}
+	},
+	setServices : function(value, silent) {
+		this.set({ service_ids : [[6, 0, value]] }, {silent: silent});
+	},
+
 	
-	],
-
-
-	defaults:{
-		id:0,
-		name: null,
-		manager_id: null,
-		user_ids: [],
-		free_user_ids: [],
-		service_ids: []
-	},
-
-
-	// Team Name //
-	getName : function() {
-		return this.get('name');
-	},
-	setName : function(value) {
-		if( value == 'undefined') return;
-		this.set({ name : value });
-	},
-    
-	// Team service ID //
-	getServiceId : function() {
-		return this.get('service_ids');
-	},
-	setServiceID : function(value) {
-		if( value == 'undefined') return;
-		this.set({ service_ids : value });
-	},
-
-    // Team manager ID //
-    getManagerId : function() {
-        return this.get('manager_id');
-    },
-    setManagerID : function(value) {
-		if( value == 'undefined') return;
-		this.set({ manager_id : value });
-	},
-
-    // Team services ID //
-    getServicesId: function() {
-        return this.get('service_ids');
-    },
-    setServicesID : function(value) {
-		if( value == 'undefined') return;
-		this.set({ service_ids : value });
-	},
-
-	// Team members ID //
-    getMembersId: function() {
-        return this.get('user_ids');
-    },
-    setMembersID : function(value) {
-		if( value == 'undefined') return;
-		this.set({ user_ids : value });
-	},
-	
-	// Team not members ID //
-    getFreeMembersId: function() {
-        return this.get('free_user_ids');
-    },
-    setFreeMembersID : function(value) {
-		if( value == 'undefined') return;
-		this.set({ free_user_ids : value });
-	},
-
-
-	/** Model Initialization
+	/** Get Informations of the model
 	*/
-	initialize: function (model) {
-		//console.log("Request task Initialization");
+	getInformations : function(){
+		var informations = {};
+
+		informations.name = this.getName();
+
+		informations.infos = {};
+		informations.infos.key = _.capitalize(app.lang.foreman);
+		informations.infos.value = this.getManager();
+
+		return informations;
 	},
-
-
-	/** Model Parser
-	*/
-	parse: function(response) {
-		return response;
-	},
-
-
-
-	/** Update each attributes to the model
-	*/
-	update: function(params) {
-		this.setName( params.name );
-		this.setManagerID( params.manager_id );
-		this.setServicesID( params.service_ids );
-		this.setMembersID( params.user_ids );
-		this.setFreeMembersID( params.free_user_ids );
-	},
-
-
-
-	/** Save Team
-	*/
-	save: function(data, id, options) { 
-		app.saveOE(id>0?id:0, data, this.model_name, app.models.user.getSessionID(),options);
-	},
-
-
-
-	/** Delete Team
-	*/
-	delete: function (options) {	
-		app.deleteOE( 
-			[[this.get("id")]],
-			this.model_name,
-			app.models.user.getSessionID(),
-			options
-		);
-	}
 
 });

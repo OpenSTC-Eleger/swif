@@ -3,45 +3,20 @@
 */
 app.Collections.ClaimersServices = app.Collections.GenericCollection.extend({
 
-	model : app.Models.ClaimerService,
+	model        : app.Models.ClaimerService,
 
-	// Model name in the database //
-	model_name : 'openstc.service',
+	url          : '/api/openstc/departments',
 
-	url: 'demandeurs-services',
+	fields       : ['id', 'name', 'code', 'service_id', 'technical', 'manager_id', 'user_ids', 'actions'],
+
+	default_sort : { by: 'name', order: 'ASC' },
 
 
 
 	/** Collection Initialization
 	*/
 	initialize : function() {
-		//console.log('Claimer Service collection initialize');
-	},
-
-
-
-	/** Collection Sync
-	*/
-	sync: function(method, model, options) {
-		var fields = ["category_ids", "code", "id", "manager_id", "name", "service_id", "technical", "user_ids"];
-
-		return app.readOE(this.model_name, app.models.user.getSessionID(), options, fields);
-	},
-
-
-
-	/** Collection Parse
-	*/
-	parse: function(response) {
-		return response.result.records;
-	},
-	
-
-
-	/** Comparator for ordering collection
-	*/
-	comparator: function(item) {
-		return item.get('name');
+		//console.log('Claimer Services collection Initialization');
 	},
 
 });
