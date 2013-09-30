@@ -35,28 +35,26 @@
 	
 	
 	<!-- Intervention panel -->
-	<% if( _.size(interventions) > 0 ) { %>
-		<table class="table-interventions table table-bordered table-hover table-sorter table-striped">
-				<thead>
-					<tr>						
-					</tr>
-				</thead>
-			<tbody id="inter-items">
-				<!-- Inter rows -->
-				
-			</tbody>
+	<table class="table-interventions table table-bordered table-hover table-sorter table-striped">
+			<thead>
+				<tr>						
+				</tr>
+			</thead>
+		<tbody id="inter-items">
+			<!-- Inter rows -->
+			<% if( _.size(interventions) == 0 ) { %>
+				<!-- No interventions to display -->
+				<div class="alert alert-info noInter">
+					<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>
+				</div>	
+			<% } %>
+			
+		</tbody>
+	
+	</table>
+	
+	<!-- Table pagination -->
+	<div id="pagination"></div>
+	<!-- /Table pagination -->
 		
-		</table>
-		
-		<!-- Table pagination -->
-		<div id="pagination"></div>
-		<!-- /Table pagination -->
-		
-	<% }else { %>
-
-		<!-- No interventions to display -->
-		<div class="alert alert-info">
-			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>
-		</div>	
-	<% } %>
 	<!-- /Intervention panel -->

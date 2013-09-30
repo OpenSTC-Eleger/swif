@@ -48,7 +48,15 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 			itemPlanningInterView.highlight().done(function(){
 				itemPlanningInterView.expendAccordion();
 			});
-		}	
+			if(this.collections.interventions.length == 1){
+				$(this.el).find('.noInter').css({display: 'none'});
+				$(this.el).find('.table-nested-objects').css({display: 'table'});
+			}			
+		}
+		else {
+			//filter is selected and intervention has been created : display open interventions
+			$( "#filterStateInterventionList li" ).children("a[href='#open']").trigger( "click" );
+		}
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.interventionSaveOK);
 	},
 
