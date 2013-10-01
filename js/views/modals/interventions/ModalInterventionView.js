@@ -171,10 +171,10 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 		var self = this;
 
 //		var input_service_id = this.getIdInDopDown(app.views.selectListServicesView);
-
+		var state = this.create ? app.Models.Intervention.status.open.key : this.model.toJSON().state;
 		var params = {
 			name: this.$('#interventionName').val(),
-			state: this.$('#isTemplate').is(':checked')?"template":"open",
+			state: this.$('#isTemplate').is(':checked')?"template":state,
 			description: this.$('#interventionDescription').val(),
 			date_deadline: new moment($('#interventionDateDeadline').val(), 'DD-MM-YYYY HH:mm').add('hours',2).toDate(),
 			service_id: app.views.advancedSelectBoxInterventionServicesView.getSelectedItem(),
