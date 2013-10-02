@@ -32,30 +32,31 @@ app.Views.EventsListView = Backbone.View.extend({
 		
 		var collection = null;
 		
+		// Initialize year,week parameters if not yet in url with current year/week (for prev/next button on calendar)
+		if(_.isUndefined(this.options.year)) {
+			this.options.year = moment().year();
+			this.options.week = moment().week();
+		}
+
 		if(!_.isUndefined(this.options.team)) {
 			//get team model selected on calendar
 			this.teamMode = true;			
 			this.model = _.find(this.collections.teams, function (o) { 
-				return _.slugify(o.name).toUpperCase() == self.options.team
+				return o.id == self.options.team
 			});
 		} else {
 			//get officer model selected on calendar
 			if(_.isUndefined(this.options.officer)) {
 				this.model = this.collections.officers[0];
 				// Initialize first officer in tab if no officer passed in url
-				this.options.officer = _.slugify(this.model.name).toUpperCase()
+				this.options.officer = this.model.id
+				app.router.navigate(self.urlBuilder(), {trigger: false, replace: true});
 			}
 			else{
 				this.model = _.find(this.collections.officers, function (o) { 
-					return _.slugify(o.name).toUpperCase() == self.options.officer.toUpperCase()
+					return o.id == self.options.officer
 				});				
 			}
-		}
-		
-		// Initialize year,week parameters if not yet in url with current year/week (for prev/next button on calendar)
-		if(_.isUndefined(this.options.year)) {
-			this.options.year = moment().year();
-			this.options.week = moment().week();
 		}
 		
 		//DOM element id for calendar with model
@@ -352,9 +353,14 @@ app.Views.EventsListView = Backbone.View.extend({
 			    };
 			    
 				model.save(params, {patch: true, silent: true})
-				.fail(function (e) {
-					console.log(e);
-				})
+					.done(function(ids) {
+						//If task has intervention (absent task has no intervention)
+						if( model.toJSON().project_id != false )
+							self.collections.interventions.get(model.toJSON().project_id[0]).fetch();
+					})
+					.fail(function (e) {
+						console.log(e);
+					})
 			},
 
 
@@ -508,8 +514,7 @@ app.Views.EventsListView = Backbone.View.extend({
 	/** When the model ara updated //
 	*/
 	refreshEvents: function(model){
-		$(this.divCalendar).fullCalendar( 'refetchEvents' )
-		app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.taskUpdateOk);
+		$(this.divCalendar).fullCalendar( 'refetchEvents' );
 	},
 
 

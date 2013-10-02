@@ -55,7 +55,7 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 		}
 		else {
 			//filter is selected and intervention has been created : display open interventions
-			$( "#filterStateInterventionList li" ).children("a[href='#open']").trigger( "click" );
+			$( "#filterStateInterventionList li" ).children("a[href='#'" + app.Models.Task.status.open.key + "]").trigger( "click" );
 		}
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.interventionSaveOK);
 	},

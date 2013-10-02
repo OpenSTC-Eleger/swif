@@ -23,7 +23,7 @@
 			<ul id="listAgents" class="nav nav-pills">
 				<%_.each(officers, function (officer, i) { %>
 					<li data-name="<%= officer.complete_name.toLowerCase() %>">
-						<a id="pOfficer_<%= officer.id %>" href="#planning/officer/<%= _.slugify(officer.name).toUpperCase()%>">
+						<a id="pOfficer_<%= officer.id %>" href="#planning/officer/<%= officer.id %>">
 							<i class="icon-user icon-fixed-width"></i>&nbsp;<%= officer.name.toUpperCase() %> &nbsp; <%= (officer.firstname != false ? officer.firstname : '') %>
 						</a>
 					</li>
@@ -45,7 +45,7 @@
 
 					<li rel="popover" data-original-title="<%= _.capitalize(lang.agents) %>" data-content="<ul class='list-unstyled'><%= teamMembers %></ul>" 
 						data-html="true" data-placement="left" data-name="<%= team.name.toLowerCase() %>">
-						<a id="pTeam_<%= team.id %>" href="#planning/team/<%= _.slugify(team.name).toUpperCase()%>">
+						<a id="pTeam_<%= team.id %>" href="#planning/team/<%= team.id %>">
 							<i class="icon-group icon-fixed-width"></i>&nbsp;<%= team.name %>
 						</a>
 					</li>
@@ -61,7 +61,7 @@
 
 
 <div class="calendar">
-	<section id="planning/<%= _.slugify(calendar.name)%>" class="calendarContainer">
+	<section id="planning/<%= calendar.id %>" class="calendarContainer">
 		<div id="calendar_<%= calendar.id %>" class="calendar thumbnail" data-username="<%= calendar.name %>">
 		</div>
 	</section>

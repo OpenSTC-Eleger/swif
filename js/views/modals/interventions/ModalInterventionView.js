@@ -193,11 +193,11 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
     		params.has_equipment = true;
     	}
 
-		this.model.save(params,{patch:!this.create, wait: true}).done(function(data){
+		this.model.save(params,{patch:!this.create, wait: true, silent: true}).done(function(data){
 			self.modal.modal('hide');
 			if(self.create){
 				self.model.setId(data);
-				self.model.fetch({silent: true, data: {fields: app.Collections.Interventions.fields}})
+				self.model.fetch({data: {fields: app.Collections.Interventions.fields}})
 				.done(function(){
 					if(! _.isUndefined(self.options.interventions) )
 						self.options.interventions.add(self.model);
