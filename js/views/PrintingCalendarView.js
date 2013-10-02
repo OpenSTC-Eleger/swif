@@ -1,23 +1,23 @@
 /******************************************
- * Service Details View
- */
+* Service Details View
+*/
 app.Views.PrintingCalendarView =  Backbone.View.extend({
-	
+
 	templateHTML: 'printingCalendar',
 
 	events:	[],
-	
+
 	/** View Initialization
-	 */
+	*/
 	initialize: function () {
 		this.calendar = this.options.calendar;
 		this.events = this.options.events;
-    },
+	},
 
 
-    /** Display the view
-     */
-    render: function () {			
+	/** Display the view
+	*/
+	render: function () {
 
 		var self = this;
 		// Retrieve the template // 
@@ -28,17 +28,17 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 			$(self.el).html(template);
 
 			// Print button //
-			$('<span class="fc-button-print">' 
-				   +'<button class="btn btn-primary btn-small no-outline"><i class="icon-print"></i></button></span>')
+			$('<span class="fc-button fc-button-print">' 
+				   +'<i class="icon-print"></i></span>')
 				  .appendTo(self.calendar.divCalendar + ' td.fc-header-right')
 				  .button()
 				  .on('click', function() {
-					    self.printCalendar();
+						self.printCalendar();
 				  })
 				  .before('<span class="fc-header-space">');
 		});
 		return this;
-    },
+	},
 
 	/** Print Calendar
 	*/
@@ -48,8 +48,8 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 		
 		var firstDayOfTheWeek = momentDate.clone().day(1);
 		var lastDayOfTheWeek = momentDate.clone().day(7);
-	
-	
+
+
 		if(firstDayOfTheWeek.isSame(lastDayOfTheWeek, 'month')){
 			var titleFirstDay = momentDate.day(1).format('D');
 		}
@@ -61,28 +61,28 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 				var titleFirstDay = momentDate.day(1).format('D MMM YYYY');
 			}
 		}
-					
+
 		$("#printingCalendar .before-muted").html( app.lang.week + " " + momentDate.week() + " - " ); 
 		$("#printingCalendar .muted").html( titleFirstDay + " " + app.lang.to + " " + lastDayOfTheWeek.format('D MMM YYYY')  );			
-		
+
 		var self = this;
-		
+
 		var elementToPrint = $('#printingCalendar');
 		var	worker = $('#worker').text(this.calendar.model.name);
 		var table = $('#paperboard');
-		
+
 		var tasks = _.filter(this.events, function(task){ 
         	return (
         				task.state != app.Models.Task.status.draft.key &&
         				task.state != app.Models.Task.status.cancelled.key        			
         		); 
         });
-		
+
 		tasks = _.sortBy(tasks, function(item){ 
 		    return item.date_start; 
 		});
-		
-		
+
+
 	    _.each(tasks, function(task){ 
 	    	
 	    	task["day"] = self.getDay(task.start);	    	
@@ -99,15 +99,15 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 		    	});
 		    }
 	    	
-		    task["planned_hours"] =  ( task.planned_hours>0? task.planned_hours : '' );
-		    task["effective_hours"] =  ( task.effective_hours>0? task.effective_hours : '' );
-		    task["remaining_hours"] =  '';//( task.remaining_hours>0? task.remaining_hours : '' );
-	    	task["oilQtity"] =  (task.oil_qtity>0? task.oil_qtity : '');
-	    	task["oilPrice"] =  (task.oil_price>0? task.oil_price : '');
-	    	var startDt = task.start!=false ? moment( task.start ):null;
-	    	var endDt = task.end!=false ? moment( task.end ) :null;
-	    	task["taskHours"] = startDt.format('H[h]mm')  + '-' + endDt.format('H[h]mm') ;
-	    	task["km"] = ''; 
+			task["planned_hours"] =  ( task.planned_hours>0? task.planned_hours : '' );
+			task["effective_hours"] =  ( task.effective_hours>0? task.effective_hours : '' );
+			task["remaining_hours"] =  '';//( task.remaining_hours>0? task.remaining_hours : '' );
+			task["oilQtity"] =  (task.oil_qtity>0? task.oil_qtity : '');
+			task["oilPrice"] =  (task.oil_price>0? task.oil_price : '');
+			var startDt = task.start!=false ? moment( task.start ):null;
+			var endDt = task.end!=false ? moment( task.end ) :null;
+			task["taskHours"] = startDt.format('H[h]mm')  + '-' + endDt.format('H[h]mm') ;
+			task["km"] = ''; 
 	    })
 		
 	    $('#paperboard').data('resultSet', tasks);
@@ -121,26 +121,26 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 		    "sPaginationType": "full_numbers",
 		    "bProcessing": true,
 		    "bSort": true,
-		    "aoColumns": [			        
-		        {"sDay": "Day", "mDataProp": "day", 'sWidth': '5%', 'sClass': "center", "bVisible": false, "sType": "day"},
-		        {"sInter": "Inter", "mDataProp": "inter", 'sWidth': '5%', 'sClass': "center"},
-		        {"sDescription": "Description", "mDataProp": "description", 'sWidth': '5%'},
-		        {"sName": "Name", "mDataProp": "name", 'sWidth': '5%', 'fnCreatedCell': self.getStyle },
-		        {"sPlace": "Place", "mDataProp": "place", 'sWidth': '5%', 'sClass': "center"},
-		        {"sDateStart": "DateStart", "mDataProp": "taskHours","sType": "date", 'sWidth': '2%'},
-		        { "sWorkingTime": "WorkingTime", "mDataProp": "planned_hours", 'sWidth': '1%','sClass': "center"},
-		        { "sEffectiveTime": "EffectiveTime", "mDataProp": "effective_hours", 'sWidth': '1%','sClass': "center toFill"}, 
-		        { "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours", 'sWidth': '1%','sClass': "center toFill"}, 
-		        { "sDone": "Done", "mDataProp": "done", 'sWidth': '2%','fnRender': self.renderResume},
-		        { "sEquipment": "Equipment", "mDataProp": "equipment", 'sWidth': '25%','sClass': "center toFill"},
-		        { "sOilQtity": "oilQtity", "mDataProp": "oilQtity", 'sWidth': '2%', 'sClass': "center toFill"},
-		        { "km": "km", "mDataProp": "km", 'sWidth': '2%', 'sClass': "center toFill"},
-		        { "sOilPrice": "oilPrice", "mDataProp": "oilPrice", 'sWidth': '2%', 'sClass': "center toFill"},
-		        ],
+		    "aoColumns": [
+				{"sDay": "Day", "mDataProp": "day", 'sWidth': '5%', 'sClass': "center", "bVisible": false, "sType": "day"},
+				{"sInter": "Inter", "mDataProp": "inter", 'sWidth': '5%', 'sClass': "center"},
+				{"sDescription": "Description", "mDataProp": "description", 'sWidth': '5%'},
+				{"sName": "Name", "mDataProp": "name", 'sWidth': '5%', 'fnCreatedCell': self.getStyle },
+				{"sPlace": "Place", "mDataProp": "place", 'sWidth': '5%', 'sClass': "center"},
+				{"sDateStart": "DateStart", "mDataProp": "taskHours","sType": "date", 'sWidth': '2%'},
+				{ "sWorkingTime": "WorkingTime", "mDataProp": "planned_hours", 'sWidth': '1%','sClass': "center"},
+				{ "sEffectiveTime": "EffectiveTime", "mDataProp": "effective_hours", 'sWidth': '1%','sClass': "center toFill"}, 
+				{ "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours", 'sWidth': '1%','sClass': "center toFill"}, 
+				{ "sDone": "Done", "mDataProp": "done", 'sWidth': '2%','fnRender': self.renderResume},
+				{ "sEquipment": "Equipment", "mDataProp": "equipment", 'sWidth': '25%','sClass': "center toFill"},
+				{ "sOilQtity": "oilQtity", "mDataProp": "oilQtity", 'sWidth': '2%', 'sClass': "center toFill"},
+				{ "km": "km", "mDataProp": "km", 'sWidth': '2%', 'sClass': "center toFill"},
+				{ "sOilPrice": "oilPrice", "mDataProp": "oilPrice", 'sWidth': '2%', 'sClass': "center toFill"},
+			],
 		
 		    "bFilter": false,"bInfo": false,"bPaginate": false,"bLengthChange": false,
 		    bRetrieve: true,
-		    "fnDrawCallback": function ( oSettings ) {					
+		    "fnDrawCallback": function ( oSettings ) {
 	            if ( oSettings.aiDisplay.length == 0 )
 	            {
 	                return;
@@ -198,8 +198,8 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 		$('span').remove('.fc-button-print');
 		$('span').remove('.fc-header-space');
 	},
-	
-    
+
+   
     //--------------------Getter--------------------------------------//
 	
 	getStyle: function (nTd, sData, oData, iRow, iCol) {

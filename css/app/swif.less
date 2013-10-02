@@ -159,11 +159,11 @@ a.filter-button.filter-disabled{
 	border-left-color: @gray-light;
 }
 .border-emphasize {
-	&-info{ border-left-color: @brand-info; }
-	&-danger{ border-left-color: @brand-danger; }
-	&-warning{ border-left-color: @brand-warning; }
-	&-success{ border-left-color: @brand-success; }
-	&-overrun{ border-left-color: @purple; }
+	&-info{ border-left-color    : @brand-info; }
+	&-danger{ border-left-color  : @brand-danger; }
+	&-warning{ border-left-color : @brand-warning; }
+	&-success{ border-left-color : @brand-success; }
+	&-overrun{ border-left-color : @purple; }
 	&-template{ border-left-color: @yellow; }
 }
 
@@ -206,7 +206,7 @@ a.filter-button.filter-disabled{
 
 
 .tab-pane-planning{
-	height: 160px;
+	height: 120px;
 	overflow-y: scroll;
 	margin-top: @line-height-computed/2;
 	margin-bottom: @line-height-computed/2;
@@ -222,18 +222,16 @@ a.filter-button.filter-disabled{
 
 /* Planning Task List
 -------------------------------------------------- */
-ul.tasks li.external-event{
-	padding: 5px 5px 5px 5px;
+li.external-event{
+	padding: 9px;
 	cursor: move;
 }
-
-li.external-event.disabled{
-	color: @gray-light;
-	cursor: no-drop!important;
+li.external-event:not(.disabled):hover{
+	background-color: @well-bg;
 }
-li.external-event:hover{
-	background-color: @gray-lighter;
-	.border-radius(10px);
+li.external-event.disabled{
+	.text-muted();
+	cursor: no-drop !important;
 }
 
 
