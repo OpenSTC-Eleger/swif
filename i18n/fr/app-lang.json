@@ -4,6 +4,7 @@
 
 	"yes"                   : "oui",
 	"no"                    : "non",
+	"or"                    : "ou",
 	"connection"			: "connexion",
 	"login"					: "identifiant",
 	"password"				: "mot de passe",
@@ -163,7 +164,8 @@
 	"vehicleEquipment"						: "Véhicule",
 	"commercialVehicleEquipment"			: "Voiture",
 	"technicalVehicleEquipment"				: "Utilitaire",
-	"materialEquipment"						: "Matériel",
+	"materialEquipment"						: "Equipement",
+	"equipmentUsed"							: "Véhicules et matériels utilisés",
 	"fatMaterialEquipment"					: "Gros matériel",
 	"smallMaterialEquipment"				: "Petit matériel",
 	"officer"								: "Officier",

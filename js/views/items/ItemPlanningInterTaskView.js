@@ -41,7 +41,6 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 		
 		app.Helpers.Main.highlight($(this.el))
 
-		//app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.taskUpdateOk);
 	},
 
 
@@ -81,7 +80,6 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 				opacity: '.8',
 				revert: 300,
 				receive: function(event, ui){
-					//self.saveServicesCategories();
 				}
 
 			});

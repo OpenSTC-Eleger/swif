@@ -89,13 +89,14 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 	    	task["inter"] = task.inter_name != false ? task.inter_name :'' ;
 	    	task["description"] = task.inter_desc != false ? task.inter_desc :'';
 	    	task["name"] = task.title;
-	    	task["place"] = task.inter_site != false ? task.inter_site :'';;
+	    	var site = task.inter_site ? task.inter_site : "";
+	    	task["place"] = task.inter_equipment  ? _(task.inter_equipment).strLeft('/') + "- (" + site + ")": site;
 	    	task["done"] = ( task.state == app.Models.Task.status.done.key  ? true : false );
 	    	
 	    	task["equipment"] = "";
-	    	if( task.equipment_names ) {
-		    	_.each( task.equipment_names, function( equipment_name ) {
-		    		task["equipment"] += "[" + equipment_name[1] + "]";
+	    	if( task.equipments ) {
+		    	_.each( task.equipments , function( equipment ) {
+		    		task["equipment"] += "[" + _(equipment).strLeft('/') + "]";
 		    	});
 		    }
 	    	
