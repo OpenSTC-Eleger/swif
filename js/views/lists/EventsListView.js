@@ -87,6 +87,8 @@ app.Views.EventsListView = Backbone.View.extend({
 
         	$('#searchOfficerOrTeam').focus();
 
+        	$('*[data-toggle="popover"]').popover({trigger: 'hover', delay: { show: 400, hide: 100 }});
+
        	
 			if(!_.isUndefined(self.options.team)) {
 				// Check if a Team was selected to select the Team Tab 
