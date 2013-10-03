@@ -93,7 +93,7 @@ app.Views.ModalClaimerTypeView = app.Views.GenericModalView.extend({
 				}
 			})
 			.fail(function (e) {
-				console.log(e);
+				app.Helpers.Main.printError(e);
 			})
 			.always(function () {
 				$(self.el).find("button[type=submit]").button('reset');
