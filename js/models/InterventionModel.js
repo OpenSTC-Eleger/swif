@@ -82,6 +82,10 @@ app.Models.Intervention = app.Models.GenericModel.extend({
 	getTooltip: function(){
 		return this.get('tooltip');
 	},
+
+	getDescription: function(){
+		return _(this.get('description')).escapeHTML();
+	},
 	
 	getProgressRate: function(){
 		return this.get('progress_rate');
