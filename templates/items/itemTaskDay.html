@@ -52,7 +52,7 @@
 			<button class="btn btn-success buttonTaskDayDone" data-toggle="modal" data-taskid="<%= task.id %>"><i class="icon-ok icon-fixed-width"></i></button>
 			<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 
-			<ul class="dropdown-menu pull-right text-left">
+			<ul class="dropdown-menu pull-right text-left" role="menu">
 				<% if(task.actions.indexOf("normal_mode_unfinished") > -1){%>
 				<li>
 					<a href="#" class="taskNotDone" data-taskid="<%= task.id %>">
