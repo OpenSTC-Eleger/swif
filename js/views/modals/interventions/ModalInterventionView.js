@@ -37,7 +37,6 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 	    //this.initCollections().done(function(){
     	self.render();
 	    //})
-	    
     },
 
 

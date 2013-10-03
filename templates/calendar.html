@@ -19,7 +19,7 @@
 	<div class="tab-content">
 		
 		<!-- Officers -->
-		<div class="tab-pane fade in active tab-pane-planning" id="tab-agents">
+		<div class="tab-pane active tab-pane-planning" id="tab-agents">
 			<ul id="listAgents" class="nav nav-pills">
 				<%_.each(officers, function (officer, i) { %>
 					<li data-name="<%= officer.complete_name.toLowerCase() %>">
@@ -43,7 +43,7 @@
 					});
 				%>
 
-					<li rel="popover" data-original-title="<%= _.capitalize(lang.agents) %>" data-content="<ul class='list-unstyled'><%= teamMembers %></ul>" 
+					<li data-toggle="popover" data-original-title="<%= _.capitalize(lang.agents) %>" data-content="<ul class='list-unstyled'><%= teamMembers %></ul>" 
 						data-html="true" data-placement="left" data-name="<%= team.name.toLowerCase() %>">
 						<a id="pTeam_<%= team.id %>" href="#planning/team/<%= team.id %>">
 							<i class="icon-group icon-fixed-width"></i>&nbsp;<%= team.name %>

@@ -10,12 +10,11 @@ app.Models.Intervention = app.Models.GenericModel.extend({
 
 	searchable_fields: [
 		{
-			key  : 'site1.complete_name',
-			type : 'text'
-		}
-		,
+			key  : 'id',
+			type : 'numeric'
+		},
 		{
-			key  : 'service_id.name',
+			key  : 'site1.complete_name',
 			type : 'text'
 		},
 		{
@@ -82,6 +81,10 @@ app.Models.Intervention = app.Models.GenericModel.extend({
 	
 	getTooltip: function(){
 		return this.get('tooltip');
+	},
+
+	getDescription: function(){
+		return _(this.get('description')).escapeHTML();
 	},
 	
 	getProgressRate: function(){

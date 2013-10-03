@@ -39,7 +39,7 @@
 							<label for="equipmentName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 							
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="equipmentName" required value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getName())%>" />
+								<input type="text" class="form-control" id="equipmentName" required value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getName()) %>" />
 							</div>
 						</div>
 
@@ -63,7 +63,7 @@
 							
 							<div class="col-sm-9">		
 								<!-- Equipment code -->
-								<input type="text" id="equipmentCode" class="form-control" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getMarque()) %>" />
+								<input type="text" id="equipmentCode" class="form-control" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getCode()) %>"
 								<span class="help-block" id="code-error"></span>
 							</div>
 						</div>

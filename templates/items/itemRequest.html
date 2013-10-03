@@ -43,8 +43,8 @@
 	<span 
 		data-toggle="tooltip" 
 		data-html="true" 
-		data-original-title="<strong><%= request.getClaimer().type %></strong> <br /> <%= request.getClaimer().person %>">
-		<%= request.getClaimer().name %>
+		data-original-title="<strong><%= request.fromCitizen() ? lang.citizen : request.getClaimerType() %></strong> <%= request.getClaimerContact() %>">
+			<%= request.fromCitizen() ? request.getCitizenName() : request.getClaimer() %>
 	</span>
 </td>
 

@@ -70,7 +70,7 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 
 			// Set the Tooltip / Popover //$(self.el).html(template);
 			$('*[data-toggle="tooltip"]').tooltip();
-			$('*[rel="popover"]').popover({trigger: 'hover'});
+			$('*[data-toggle="popover"]').popover({trigger: 'hover'});
 
 			// Set the focus to the first input of the form //
 			$('#modalCancelInter').on('shown', function (e) {

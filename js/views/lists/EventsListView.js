@@ -87,6 +87,8 @@ app.Views.EventsListView = Backbone.View.extend({
 
         	$('#searchOfficerOrTeam').focus();
 
+        	$('*[data-toggle="popover"]').popover({trigger: 'hover', delay: { show: 400, hide: 100 }});
+
        	
 			if(!_.isUndefined(self.options.team)) {
 				// Check if a Team was selected to select the Team Tab 
@@ -423,16 +425,16 @@ app.Views.EventsListView = Backbone.View.extend({
     			});
     		},
 		});
-	
-    	/**
-    	 * Get calendar name
-    	 */
+
+		/**
+		* Get calendar name
+		*/
 		var username = $(this.divCalendar).data('username');
 		
 		/**
 		 * Add personal icon for officer on calendar 
 		 */
-		$('table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");		
+		$('table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-thumbnail'> <span class='lead text-info'>"+username+"</span>");		
 	},
 	// -------------------- End fullcalendar initialization -------------------- //
 	

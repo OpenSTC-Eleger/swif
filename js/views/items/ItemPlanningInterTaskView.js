@@ -3,11 +3,19 @@
 */
 app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 
-	tagName     : 'tr',
+	tagName     : 'li',
 
 	templateHTML : 'items/itemPlanningInterTask',
 	
-	className   : 'row-nested-objects',
+	className   : function(){
+		var elementClass = 'external-event';
+		
+		if(this.model.getState() != app.Models.Task.status.draft.key){
+			elementClass += ' disabled';
+		}
+
+		return elementClass;
+	},
 
 	// The DOM events //
 	events       : {		
@@ -94,7 +102,7 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 			
 			
 			//Add draggable task
-			el = $('li#task_'+model.id+':not(.disabled)');
+			el = $('li:not(.disabled)');
 
 				var eventObject = {
 					state: model.state,
@@ -120,7 +128,7 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 					scroll: false,
 					cursorAt: { top: 0, left: 0 },
 					helper: function(e){
-						return $("<p class='well well-small'>"+eventObject.title+"</p>");
+						return $("<p class='well well-sm'>"+eventObject.title+"</p>");
 					},
 					reverting: function() {
 						console.log('reverted');
@@ -131,25 +139,8 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 		});
 		return this;
 	},
-	
-	/** Highlight the row item
-		*/
-	highlight: function(){
-		var self = this;
 
-		$(this.el).addClass('highlight');
 
-		var deferred = $.Deferred();
-
-		// Once the CSS3 animation are end the class are removed //
-		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
-			function(e) {
-				$(self.el).removeClass('highlight');
-				deferred.resolve();
-		});
-
-		return deferred;
-	},
 	
 	/** 
 	 * Display modal Add to delete task
@@ -159,6 +150,8 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 		var name = this.model.toJSON().name;
 		new app.Views.ModalDeleteView({el: '#modalDeleteTask', model: this.model, modalTitle: app.lang.viewsTitles.deleteTask, modalConfirm: app.lang.warningMessages.confirmDeleteTask});
 	},
+
+
 	
 	/**
 	 * Display modal Add to cancel task
