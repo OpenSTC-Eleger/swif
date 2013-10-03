@@ -50,7 +50,7 @@ app.Views.ItemClaimerTypeView = Backbone.View.extend({
 
 		app.Helpers.Main.highlight($(this.el)).done(function(){
 			self.remove();
-			app.views.claimerTypesListView.partialRender();
+			app.views.claimersTypesListView.partialRender();
 		});
 
 		app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.claimerTypeDeleteOk);

@@ -39,6 +39,7 @@
 
 					<div class="col-sm-3">
 						<input type="text" id="catCode" required class="form-control" value="<%= (_.isNull(cat.getId()) ? '' : cat.getCode())%>" />
+						<span class="help-block" id="code-error"></span>
 					</div>
 				</div>
 

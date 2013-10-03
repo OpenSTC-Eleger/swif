@@ -223,6 +223,13 @@ app.Helpers.Main = {
 		}
 		return app.objectifyFilters(search);
 	},
+	
+	printError: function (e) {
+		var fieldId = _(_(e.responseJSON.faultCode).strRight('*')).strLeft('*') + "-error";
+		var message =  _.trim( _(e.responseJSON.faultCode).strRight("/") ); 
+		$('#'+fieldId).html(app.lang.errorMessages[message]);
+		$('#'+fieldId).parents('.form-group').addClass('has-error');
+	}
 
 
 }

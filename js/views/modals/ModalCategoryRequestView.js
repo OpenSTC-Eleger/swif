@@ -49,8 +49,8 @@ app.Views.ModalCategoryRequestView = app.Views.GenericModalView.extend({
 				cat   : self.model
 			});
 
-			self.modal.html(template);
-
+			self.modal.html(template);	
+			
 			self.modal.modal('show');
 		});
 
@@ -95,7 +95,7 @@ app.Views.ModalCategoryRequestView = app.Views.GenericModalView.extend({
 				}
 			})
 			.fail(function (e) {
-				console.log(e);
+				app.Helpers.Main.printError(e);
 			})
 			.always(function () {
 				$(self.el).find("button[type=submit]").button('reset');

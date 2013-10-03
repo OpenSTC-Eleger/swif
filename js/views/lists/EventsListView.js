@@ -358,7 +358,10 @@ app.Views.EventsListView = Backbone.View.extend({
 					.done(function(ids) {
 						//If task has intervention (absent task has no intervention)
 						if( model.toJSON().project_id != false )
-							self.collections.interventions.get(model.toJSON().project_id[0]).fetch();
+							var inter = self.collections.interventions.get(model.toJSON().project_id[0])
+							//If inter is not in left panel : not fetch
+							if( !_.isUndefined( inter ) )
+								inter.fetch();
 					})
 					.fail(function (e) {
 						console.log(e);
@@ -395,8 +398,12 @@ app.Views.EventsListView = Backbone.View.extend({
 				model.save(params, {patch: true, silent: true})
 					.done(function(data) {
 						//If task has intervention (absent task has no intervention)
-						if( model.toJSON().project_id != false )
-							self.collections.interventions.get(model.toJSON().project_id[0]).fetch();
+						if( model.toJSON().project_id != false ) {
+							var inter = self.collections.interventions.get(model.toJSON().project_id[0])
+							//If inter is not in left panel : not fetch
+							if( !_.isUndefined( inter ) )
+								inter.fetch();
+						}							
 					})
 					.fail(function (e) {
 						console.log(e);
