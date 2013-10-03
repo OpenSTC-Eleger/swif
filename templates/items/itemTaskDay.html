@@ -19,8 +19,8 @@
 <% } %>
 </td>
 
-<td class="hidden-phone"><%= app.Helpers.Main.decimalNumberToTime(task.planned_hours, 'human') %></td>
-<td class="hidden-phone"><%=(task.state != app.Models.Task.status.draft.key && task.state != app.Models.Task.status.absent.key) ? app.Helpers.Main.decimalNumberToTime(task.remaining_hours, 'human') : '' %></td>
+<td><%= app.Helpers.Main.decimalNumberToTime(task.planned_hours, 'human') %></td>
+<td><%=(task.state != app.Models.Task.status.draft.key && task.state != app.Models.Task.status.absent.key) ? app.Helpers.Main.decimalNumberToTime(task.remaining_hours, 'human') : '' %></td>
 
 <!-- Task State -->
 <td>
@@ -40,7 +40,7 @@
 </td>
 
 <!-- Actions -->
-<td class="align">
+<td class="text-center">
 
 	<!-- Display Actions button if the task is schedule and the user isn't an officer -->
 	<% if(task.actions.indexOf("normal_mode_finished") > -1 && task.date_start) { %>
@@ -48,13 +48,11 @@
 		<!-- If the user is not an Agent or is a foreman -->
 		<%// if(displayFilter == true || task.team_id == false){ %>
 	
-		<div class="btn-group">
-			<button class="btn btn-small btn-success no-outline buttonTaskDayDone" data-toggle="modal" data-taskid="<%= task.id %>"><i class="icon-ok icon-fixed-width"></i>
-			</button>
-			<button class="btn btn-small dropdown-toggle no-outline" data-toggle="dropdown">
-				<span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu pull-right text-left">
+		<div class="btn-group btn-group-sm">
+			<button class="btn btn-success buttonTaskDayDone" data-toggle="modal" data-taskid="<%= task.id %>"><i class="icon-ok icon-fixed-width"></i></button>
+			<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+
+			<ul class="dropdown-menu pull-right text-left" role="menu">
 				<% if(task.actions.indexOf("normal_mode_unfinished") > -1){%>
 				<li>
 					<a href="#" class="taskNotDone" data-taskid="<%= task.id %>">

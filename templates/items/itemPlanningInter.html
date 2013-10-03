@@ -11,11 +11,11 @@
 		</a>&nbsp;
 
 		<% if(intervention.actions.indexOf("cancel") > -1 ) { %>
-			 &nbsp;<a href="#" class="buttonCancelInter" data-toggle="modal"><i class="icon-ban-circle icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
+			 &nbsp;<a href="#" class="buttonCancelInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"><i class="icon-ban-circle icon-large"></i></a> 
 		<% } %>
 	</p>
 	
-	
-	
 </td>
-<td><small class="badge badge-<%= classColor %> pull-right"><%= informationHour %></small>
+
+
+<td class="text-center"><small class="badge badge-<%= classColor %>"><%= informationHour %></small></td>

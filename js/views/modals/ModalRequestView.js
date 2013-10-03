@@ -94,6 +94,18 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 
 				app.views.selectListServicesView = new app.Views.AdvancedSelectBoxView({el: $('#requestDetailService'), collection: app.Collections.ClaimersServices.prototype})
 				app.views.selectListServicesView.render();
+
+				
+				// Set Information about the contact if needed //
+				if(!self.model.isNew()){
+					if(!self.model.fromCitizen()){
+						self.setContactInformation(app.views.selectListClaimersContactsView.getSelectedItem()).done(function(data){
+							$('#claimerFunction span').html(data.function);
+							$('#claimerPhone span').html(data.phone);
+							$('#claimerEmail span').html(data.email);
+						})
+					}
+				}
 			}
 
 			self.modal.modal('show');
@@ -107,6 +119,9 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 	/** Swith if the resquest is from a citizen or not
 	*/
 	switchCitizen: function(event, data){
+
+		// Always Fade The claimer Details //
+		$('#claimerDetails').fadeOut();
 
 		// From a citizen //
 		if(data.value){
@@ -187,10 +202,9 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 		}
 		else{
 
-			this.contact = new app.Models.ClaimerContact({id: contactId});
-			this.contact.fetch({ data : {fields : ['phone', 'email', 'function', 'partner_id']} })
+			this.setContactInformation(contactId)
 				.done(function(data){
-					
+
 					// Set Information about the claimer //
 					$('#claimerFunction span').html(data.function);
 					$('#claimerPhone span').html(data.phone);
@@ -203,6 +217,12 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 		}
 	},
 
+
+	setContactInformation: function(contactId){
+
+		this.contact = new app.Models.ClaimerContact({id: contactId});
+		return this.contact.fetch({ data : {fields : ['phone', 'email', 'function', 'partner_id']} });
+	},
 
 
 
@@ -231,41 +251,62 @@ app.Views.ModalRequestView = app.Views.GenericModalView.extend({
 		// Set the button in loading State //
 		$(this.el).find("button[type=submit]").button('loading');
 
-		// Set the properties of the model //
+
+		var params = {
+			name        : $('#requestName').val(),
+			site1       : app.views.selectListPlacesView.getSelectedItem(),
+			service_id  :app.views.selectListServicesView.getSelectedItem(),
+			description : $('#requestDescription').val(),
+			site_details: $('#requestPlacePrecision').val(),
+		};
+
+
+		/*// Set the properties of the model //
 		this.model.setName($('#requestName').val(), true);
 		this.model.setSite(app.views.selectListPlacesView.getSelectedItem(), true);
 		this.model.setService(app.views.selectListServicesView.getSelectedItem(), true);
 		this.model.setDescription($('#requestDescription').val(), true);
-		this.model.setPlaceDetails($('#requestPlacePrecision').val(), true);
+		this.model.setPlaceDetails($('#requestPlacePrecision').val(), true);*/
 
 
 		// On Place //
 		if($('#switchPlaceEquipment').bootstrapSwitch('status')){
-			this.model.setOnEquipment(false, true);
+			//this.model.setOnEquipment(false, true);
+			params.has_equipment = false;
 		}
 		else{
-			this.model.setOnEquipment(true, true);
-			this.model.setEquipment(app.views.selectListEquipmentsView.getSelectedItem(), true);
+			/*this.model.setOnEquipment(true, true);
+			this.model.setEquipment(app.views.selectListEquipmentsView.getSelectedItem(), true);*/
+			params.has_equipment = true;
+			params.equipment_id = app.views.selectListEquipmentsView.getSelectedItem();
 		}
 
 		// From Citizen //
 		if($('#switchCitizen').bootstrapSwitch('status')){
-			this.model.setFromCitizen(true, true);
+			//this.model.setFromCitizen(true, true);
+			params.is_citizen   = true;
+			params.people_name  = $('#requestContactName').val();
+			params.people_phone = $('#requestContactPhone').val();
+			params.people_email = $('#requestContactEmail').val();
 
 			// Set the citizen //
-			this.model.setCitizenName($('#requestContactName').val(), true);
+			/*this.model.setCitizenName($('#requestContactName').val(), true);
 			this.model.setCitizenPhone($('#requestContactPhone').val(), true);
-			this.model.setCitizenEmail($('#requestContactEmail').val(), true);
+			this.model.setCitizenEmail($('#requestContactEmail').val(), true);*/
 		}
 		else{
-			this.model.setFromCitizen(false, true);
+			//this.model.setFromCitizen(false, true);
+			params.is_citizen      = false;
+			params.partner_id      = app.views.selectListClaimersView.getSelectedItem();
+			params.partner_address = app.views.selectListClaimersContactsView.getSelectedItem();
+
 			// Set the contact //
-			this.model.setClaimer(app.views.selectListClaimersView.getSelectedItem(), true);
-			this.model.setClaimerContact(app.views.selectListClaimersContactsView.getSelectedItem(), true);
+			/*this.model.setClaimer(app.views.selectListClaimersView.getSelectedItem(), true);
+			this.model.setClaimerContact(app.views.selectListClaimersContactsView.getSelectedItem(), true);*/
 		}
 
 
-		this.model.save()
+		this.model.save(params, {patch : true, silent : true})
 			.done(function(data) {
 				self.modal.modal('hide');
 
