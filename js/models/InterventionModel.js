@@ -10,12 +10,11 @@ app.Models.Intervention = app.Models.GenericModel.extend({
 
 	searchable_fields: [
 		{
-			key  : 'site1.complete_name',
-			type : 'text'
-		}
-		,
+			key  : 'id',
+			type : 'numeric'
+		},
 		{
-			key  : 'service_id.name',
+			key  : 'site1.complete_name',
 			type : 'text'
 		},
 		{
