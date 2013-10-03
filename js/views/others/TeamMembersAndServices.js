@@ -67,6 +67,7 @@ app.Views.TeamMembersAndServices = Backbone.View.extend({
 			
 			// Advance Select List View //
 			app.views.advancedSelectBoxTeamMembersView = new app.Views.AdvancedSelectBoxView({el: $("#searchMembers"), collection: app.Collections.Officers.prototype })
+			app.Views.advancedSelectBoxTeamMembersView.setSearchParam({field:'service_ids', operator:'!=', value:'false'}, true);
 			app.views.advancedSelectBoxTeamMembersView.render();
 
 			app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#searchServices"), collection: app.Collections.ClaimersServices.prototype })
