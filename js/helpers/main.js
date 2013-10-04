@@ -244,9 +244,6 @@ app.Helpers.Main = {
 
 			_.each(app.views, function(view, viewName){
 				view.undelegateEvents();
-
-				console.log('---------------- clear -----------------');
-				console.log(viewName);
 			});
 
 	}

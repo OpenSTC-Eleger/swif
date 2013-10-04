@@ -86,6 +86,8 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 		return this;
 	},
 
+
+
 	/** Print a Task or an Intervention
 	*/
 	print: function(e){
@@ -102,8 +104,33 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 
 		// Display all the tasks of the inter //
 		_.each(interJSON.tasks, function(task, i){
-			var taskJSON = app.views.interventions.collections.tasks.get(task).toJSON();
-			$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+taskJSON.name+'</td><td>'+app.Helpers.Main.decimalNumberToTime(taskJSON.planned_hours, 'human')+'</td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td><td class="toFill"></td></tr>');
+			var task = app.views.interventions.collections.tasks.get(task);
+			var taskJSON = task.toJSON();
+
+			console.log(taskJSON);
+
+
+			// User who made the Task //
+			if(task.getState() == app.Models.Task.status.done.key){
+				if(task.affectedOnTeam()){
+					var doneBy = task.getTeam();
+				}
+				else{
+					var doneBy = task.getUser();
+				}
+
+				var dateStart = moment(task.getDateStart()).format('LLL');
+				var dateEnd = moment(task.getDateEnd()).format('LLL');
+				var equipment = task.getEquipments();
+			}
+			else{
+				var doneBy = '';
+				var dateStart = '';
+				var dateEnd = '';
+				var equipment = '';
+			}
+
+			$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+taskJSON.name+'</td><td>'+app.Helpers.Main.decimalNumberToTime(taskJSON.planned_hours, 'human')+'</td><td class="toFill">'+doneBy+'</td><td class="toFill">'+dateStart+'</td><td class="toFill">'+dateEnd+'</td><td class="toFill">'+equipment+'</td><td class="toFill"></td><td class="toFill"></td></tr>');
 		})
 
 		var deferred = $.Deferred();
@@ -113,8 +140,7 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 			$('#interService').html(!interJSON.service_id?'':interJSON.service_id[1]);
 
 			$('#interDateCreate').html(moment(interJSON.create_date).format('LL'));
-			console.info(interJSON);
-			console.log(interJSON);
+
 			if(interJSON.date_deadline != false){
 				$('#interDeadline').html(' / ' + moment(interJSON.date_deadline).format('LL'));
 			}
@@ -173,6 +199,7 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 				deferred.resolve();
 			})
 			.fail(function(e){
+				console.log('An error occured');
 				console.log(e);
 				deferred.reject();
 			});
