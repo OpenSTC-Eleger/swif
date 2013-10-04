@@ -87,7 +87,7 @@
 						<label for="contactPhone" class="control-label col-sm-3"><%= _.capitalize(lang.phone) %>:</label>
 
 						<div class="col-sm-9">
-							<input type="text" id="contactPhone" class="form-control" value="<%= contact.phone %>"/>
+							<input type="tel" id="contactPhone" class="form-control" value="<%= contact.phone %>" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" />
 						</div>
 					</div>
 
