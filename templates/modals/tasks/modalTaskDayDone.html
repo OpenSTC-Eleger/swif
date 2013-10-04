@@ -9,48 +9,51 @@
 		<div class="modal-body">
 
 			<blockquote>
-				<p><%=task.name%></p>
-				<small><%= task.project_id[1]%></small>
+				<p><%= task.getName() %></p>
+				<small><i class="icon-pushpin icon-fixed-width"></i>&nbsp;<%= task.getIntervention() %></small>
+	
+				<!-- Display the affected Team or Use -->
+				<% if(task.affectedOnTeam()) { %>
+				<small><i class="icon-group icon-fixed-width"></i>&nbsp;<%= task.getTeam() %></small>
+				<% }else{ %>
+				<small><i class="icon-user icon-fixed-width"></i>&nbsp;<%= task.getUser() %></small>
+				<% } %>
+					
 			</blockquote>
 
 		    <form id="formTaskDone" action="#" class="form-horizontal" role="form">
 			
-				<fieldset>
-					<hr>
-					<div id="timeSpentSection" class="form-group">
-						<label for="eventTimeSpent" class="control-label col-sm-3"><%= lang.spentHours %>:</label>			
-						<div class="input-group form-controls bootstrap-timepicker col-sm-4">
-							<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventTimeSpent" value="<%=timeSpentDefault%>">
-							<span class="input-group-addon"><i class="icon-time"></i></span>
-						</div>
+				<div id="timeSpentSection" class="form-group">
+					<label for="eventTimeSpent" class="control-label col-sm-3"><%= lang.spentHours %>:</label>			
+					<div class="input-group form-controls bootstrap-timepicker col-sm-4">
+						<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventTimeSpent" value="<%=timeSpentDefault%>">
+						<span class="input-group-addon"><i class="icon-time"></i></span>
+					</div>
 
+				</div>
+				<!-- Remaining Time -->
+				<div id="remainingTimeSection" class="form-group">
+					<label for="eventRemainingTime" class="control-label col-sm-3"><%= lang.remainingHours %>:</label>
+					<div class="input-group form-controls bootstrap-timepicker col-sm-4">
+							<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventRemainingTime" value="02:00">
+							<span class="input-group-addon"><i class="icon-time"></i></span>
 					</div>
-					<!-- Remaining Time -->
-					<div id="remainingTimeSection" class="form-group">
-						<label for="eventRemainingTime" class="control-label col-sm-3"><%= lang.remainingHours %>:</label>
-						<div class="input-group form-controls bootstrap-timepicker col-sm-4">
-								<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventRemainingTime" value="02:00">
-								<span class="input-group-addon"><i class="icon-time"></i></span>
-						</div>
-					</div>
-				</fieldset>
+				</div>
 				
 				<!-- Vehicle -->
-				<fieldset>
-					<div class="form-group">
-						<label for="taskEquipmentDone" class="linkRefueling control-label col-sm-3"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
-	
-						<div class="form-controls">
-							<div class="input-group col-sm-9">
-								<span class="input-group-addon linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
-									<i class="icon-tint"></i>
-								</span>
-								<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect taskInput"
-									data-placeholder="<%= lang.actions.selectAVehicle %>"/>
-							</div>
+				<div class="form-group">
+					<label for="taskEquipmentDone" class="linkRefueling control-label col-sm-3"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
+
+					<div class="form-controls">
+						<div class="input-group col-sm-9">
+							<span class="input-group-addon linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
+								<i class="icon-tint"></i>
+							</span>
+							<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect taskInput"
+								data-placeholder="<%= lang.actions.selectAVehicle %>"/>
 						</div>
 					</div>
-				</fieldset>
+				</div>
 
 				<!-- Refueling Vehicle -->
 				<fieldset class="refueling-vehicle hide-soft">
@@ -61,19 +64,19 @@
 							<!-- KM -->
 							<div class="col-sm-4">
 								<label for="equipmentKmDone"><%= _.capitalize(lang.milometer) %>:</label>
-								<input type="number" id="equipmentKmDone" class="equipmentKm input-mini taskInput form-control" placeholder="<%= lang.inKm %>" />
+								<input type="number" id="equipmentKmDone" class="equipmentKm taskInput form-control" placeholder="<%= lang.inKm %>" />
 							</div>
 
 							<!-- Oil -->
 							<div class="col-sm-4">
 								<label for="equipmentOilQtityDone"><%= _.capitalize(lang.quantity) %>:</label>
-								<input type="text" id="equipmentOilQtityDone" class="taskInput input-mini form-control" placeholder="<%= lang.inLiter %>" />
+								<input type="text" id="equipmentOilQtityDone" class="taskInput form-control" placeholder="<%= lang.inLiter %>" />
 							</div>
 
 							<!-- Oil Price -->
 							<div class="col-sm-4">
 								<label for="equipmentOilPriceDone"><%= _.capitalize(lang.price) %>:</label>
-								<input type="text" id="equipmentOilPriceDone" class="taskInput input-mini form-control" placeholder="<%= lang.inEuro %>" />
+								<input type="text" id="equipmentOilPriceDone" class="taskInput form-control" placeholder="<%= lang.inEuro %>" />
 							</div>
 						</div>
 					</div>
@@ -82,15 +85,13 @@
 				
 
 				<!-- Equipments -->
-				<fieldset>
-					<div class="form-group">
-						<label for="equipmentListDone" class="control-label col-sm-3"><%= _.capitalize(lang.equipment) %>:</label>
-						<div class="form-controls col-sm-9">
-							<input id="taskEquipmentListDone" class="select2 taskEquipment taskSelect taskInput"
-								data-placeholder="<%= lang.actions.selectEquipments %>" data-multiple="multiple"/>
-						</div>
+				<div class="form-group">
+					<label for="equipmentListDone" class="control-label col-sm-3"><%= _.capitalize(lang.equipment) %>:</label>
+					<div class="form-controls col-sm-9">
+						<input id="taskEquipmentListDone" class="select2 taskEquipment taskSelect taskInput"
+							data-placeholder="<%= lang.actions.selectEquipments %>" data-multiple="multiple"/>
 					</div>
-				</fieldset>
+				</div>
 
 		    </form>
 		</div>
