@@ -225,6 +225,9 @@ app.Helpers.Main = {
 	},
 	
 	printError: function (e) {
+		$('.form-group').removeClass('has-error');
+		$('.help-block').html('');
+		$('#'+fieldId).html(app.lang.errorMessages[message]);
 		var fieldId = _(_(e.responseJSON.faultCode).strRight('*')).strLeft('*') + "-error";
 		var message =  _.trim( _(e.responseJSON.faultCode).strRight("/") ); 
 		$('#'+fieldId).html(app.lang.errorMessages[message]);
