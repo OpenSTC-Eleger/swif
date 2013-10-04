@@ -268,14 +268,15 @@
 	},
 
 	"errorMessages" : {
-		"connectionError"     			: "Erreur de connexion",
-		"serverError"         			: "Erreur interne du serveur",
-		"loginIncorrect"      			: "Identifiant ou mot de passe incorrect",
-		"fillError" 		  			: "Erreur de saisie",
-		"unablePerformAction" 			: "Impossible d'effectuer l'action",
-		"serverUnreachable"   			: "Impossible d'établir la connexion avec le serveur, contactez l'administrateur",
-		"sufficientRights"    			: "Vous n'avez pas les droits suffisants pour éffectuer cette action",
-		"The code name must be unique !": "Ce code existe déjà"
+		"connectionError"     														: "Erreur de connexion",
+		"serverError"         														: "Erreur interne du serveur",
+		"loginIncorrect"      														: "Identifiant ou mot de passe incorrect",
+		"fillError" 		  														: "Erreur de saisie",
+		"unablePerformAction" 														: "Impossible d'effectuer l'action",
+		"serverUnreachable"   														: "Impossible d'établir la connexion avec le serveur, contactez l'administrateur",
+		"sufficientRights"    														: "Vous n'avez pas les droits suffisants pour éffectuer cette action",
+		"The code name must be unique !"											: "Ce code existe déjà",
+		"Name and Category parent must be unique! Change name or category parent"	: "Cette Catégorie existe déjà! Changer le nom ou sa catégorie d'appartenance"
 	},
 
 	"validationMessages" : {
