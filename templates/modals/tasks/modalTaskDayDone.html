@@ -11,14 +11,13 @@
 			<blockquote>
 				<p><%= task.getName() %></p>
 				<small><i class="icon-pushpin icon-fixed-width"></i>&nbsp;<%= task.getIntervention() %></small>
-	
+
 				<!-- Display the affected Team or Use -->
 				<% if(task.affectedOnTeam()) { %>
 				<small><i class="icon-group icon-fixed-width"></i>&nbsp;<%= task.getTeam() %></small>
 				<% }else{ %>
 				<small><i class="icon-user icon-fixed-width"></i>&nbsp;<%= task.getUser() %></small>
 				<% } %>
-					
 			</blockquote>
 
 		    <form id="formTaskDone" action="#" class="form-horizontal" role="form">
@@ -39,7 +38,7 @@
 							<span class="input-group-addon"><i class="icon-time"></i></span>
 					</div>
 				</div>
-				
+
 				<!-- Vehicle -->
 				<div class="form-group">
 					<label for="taskEquipmentDone" class="linkRefueling control-label col-sm-3"><%= _.capitalize(lang.vehicleEquipment) %>:</label>

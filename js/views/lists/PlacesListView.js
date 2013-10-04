@@ -113,6 +113,8 @@ app.Views.PlacesListView = app.Views.GenericListView.extend({
 	*/
 	modalCreatePlace: function(e){
 		e.preventDefault();
+
+		console.log('place mde');
 		
 		app.views.modalPlaceView = new app.Views.ModalPlaceView({
 			el  : '#modalSavePlace'
