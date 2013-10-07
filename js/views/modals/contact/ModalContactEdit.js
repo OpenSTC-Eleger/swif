@@ -1,10 +1,12 @@
 app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 
 	templateHTML : 'modals/contact/contactEdit',
+
+
 	events: function(){
 		return _.defaults({
 				'submit #formContact'            : 'saveContact',
-				'change #createAssociatedAccount' 			: 'accordionAssociatedAccount'
+				'change #createAssociatedAccount': 'accordionAssociatedAccount'
 			},
 			app.Views.GenericModalView.prototype.events
 		);
@@ -26,6 +28,7 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 
 	},
 
+
 	render : function(loader) {
 		var self = this;
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -43,6 +46,8 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 		return this;
 	},
 
+
+
 	// toggle loading style for submit button
 	toggleLoadingOnSubmitButton : function () {
 		var submit_button = $(this.el).find("button[type=submit]")
@@ -52,6 +57,8 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 			submit_button.button('loading');
 		}
 	},
+
+
 
 	// Set model given form's values
 	setModelPropertiesFromForm: function () {
@@ -96,6 +103,8 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 
 	},
 
+
+
 	saveContact: function (e) {
 		e.preventDefault();
 		var self = this;
@@ -115,6 +124,8 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 		);
 	},
 
+
+
 	persistContact: function () {
 
 		if (this.model.isNew()) {
@@ -123,6 +134,8 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 			return this.updateContact()
 		}
 	},
+
+
 
 	updateContact: function () {
 		var self = this;
@@ -157,6 +170,8 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 			})
 	},
 
+
+
 	persistUser: function () {
 		var self = this;
 		if( $('#createAssociatedAccount').is(':checked') ) {
@@ -174,17 +189,23 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 
 	},
 
+
+
 	createUser: function () {
 		var self = this;
 		return self.user.save().done(function (data) {
-			self.user.set('id',data)
+			self.user.set('id', data);
 		})
 	},
+
+
 
 	updateUser: function () {
 		var self = this;
 		return self.user.save({password:self.user.password, name: self.user.name},{patch:true})
 	},
+
+
 
 	accordionAssociatedAccount: function(event){
 		if (!_.isUndefined(event)) {
@@ -192,7 +213,6 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 			event.stopPropagation();
 		}
 
-		console.log('checked event')
 
 		// Toggle Slide Create associated task section //
 		$('fieldset.associated-account').stop().slideToggle(function(){
@@ -206,6 +226,8 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 		});
 	},
 
+
+
 	userIsValid: function (user) {
 		if (!_.isUndefined(user.get('login')) && user.get('password').length > 5) {
 			return true
@@ -213,7 +235,6 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 			return false
 		}
 	},
-
 
 
 });
