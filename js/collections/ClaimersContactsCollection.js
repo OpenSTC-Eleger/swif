@@ -7,7 +7,7 @@ app.Collections.ClaimersContacts = app.Collections.GenericCollection.extend({
 	
 	url         : "/api/open_object/partner_addresses",
 	
-	fields      : ['id', 'name', 'email', 'function', 'livesIn', 'mobile', 'partner_id', 'phone', 'street', 'type', 'user_id', 'zip'],
+	fields      : ['id', 'name', 'email', 'function', 'livesIn', 'mobile', 'partner_id', 'phone', 'street', 'type', 'user_id', 'zip', 'city'],
 	
 	default_sort: { by: 'name', order: 'ASC' },
 

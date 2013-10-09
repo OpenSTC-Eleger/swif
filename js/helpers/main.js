@@ -224,6 +224,8 @@ app.Helpers.Main = {
 		return app.objectifyFilters(search);
 	},
 	
+
+
 	printError: function (e) {
 		$('.form-group').removeClass('has-error');
 		$('.help-block').html('');
@@ -232,7 +234,18 @@ app.Helpers.Main = {
 		var message =  _.trim( _(e.responseJSON.faultCode).strRight("/") ); 
 		$('#'+fieldId).html(app.lang.errorMessages[message]);
 		$('#'+fieldId).parents('.form-group').addClass('has-error');
+	},
+
+
+
+	// Clear all the view off the app Undelegate and delete //
+	clearViews: function(){
+
+
+			_.each(app.views, function(view, viewName){
+				view.undelegateEvents();
+			});
+
 	}
-
-
+					
 }

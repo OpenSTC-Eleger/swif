@@ -48,7 +48,7 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 	changed: function () {
 		this.render();
 		app.Helpers.Main.highlight($(this.el));
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.get('name') + ' : ' + app.lang.infoMessages.placeUpdateOk);
+		app.notify('', 'success', app.lang.infoMessages.information, this.model.get('name') + ' : ' + app.lang.infoMessages.claimerContactUpdateOk);
 	},
 
 	showEditModal: function (e) {
