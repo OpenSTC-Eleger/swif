@@ -29,6 +29,7 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 	*/
 	initialize : function() {
 		this.model.off();
+		this.id = this.model.id;
 		
 		//this.listenTo(this.model, 'change', this.change);
 		this.listenTo(this.model, 'destroy', this.destroyTask);
@@ -101,9 +102,10 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 			
 			
-			//Add draggable task
-			el = $('li:not(.disabled)');
-
+			//Add draggable task if not planned yet
+			if( !$(self.el).hasClass('disabled') ) {
+				el = $(self.el);
+	
 				var eventObject = {
 					state: model.state,
 					id: model.id,
@@ -133,9 +135,8 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 					reverting: function() {
 						console.log('reverted');
 					},
-
-
 				});
+			}
 		});
 		return this;
 	},
