@@ -54,10 +54,14 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 
 
 		$.get("templates/" + this.templateHTML + ".html", function (templateData) {
-
+			var contactNb = self.model.toJSON().address.length;
+			if(!_.isUndefined(self.contactsCollection)){
+				contactNb = self.contactsCollection.length;
+			}
 			var template = _.template(templateData, {
 				lang   : app.lang,
-				claimer: self.model.toJSON()
+				claimer: self.model.toJSON(),
+				contactNb: contactNb
 			});
 
 			$(self.el).html(template);
