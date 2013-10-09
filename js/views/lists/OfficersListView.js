@@ -85,12 +85,12 @@ app.Views.OfficersListView = Backbone.View.extend({
 				// Fetch the Officers //
 				self.fetchOfficers().done(function(){
 
-					$('#rows-officers').html('');
+					$(self.el).find('#rows-officers').html('');
 
 					// Create item Officer view //
 					_.each(self.collection.models, function(officer, i){
 						var itemOfficerView  = new app.Views.ItemOfficerView({model: officer});
-						$('#rows-officers').append(itemOfficerView.render().el);
+						$(self.el).find('#rows-officers').append(itemOfficerView.render().el);
 					});
 				})
 			}

@@ -123,7 +123,8 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 				// Make the event draggable using jQuery UI //
 				el.draggable({
 					zIndex: 9999,
-					revert: true,
+					//revert: true,
+					revert: false,
 					revertDuration: 500,
 					appendTo: '#app',
 					opacity: 0.8,

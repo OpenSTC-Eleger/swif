@@ -60,7 +60,7 @@
 	},
 
 	"categoriesRequests": {
-		"url"		: "affectations-des-interventions(/search/:search)(/sort/:sort)(/page:page)",
+		"url"		: "categories-des-interventions(/search/:search)(/sort/:sort)(/page:page)",
 		"function"	: "categoriesRequests"
 	},
 
