@@ -170,36 +170,6 @@ app.Views.ServicesListView = app.Views.GenericListView.extend({
 	},
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	/** Save Officer
 	*/
 	saveOffiAAcer: function(e) {

@@ -40,9 +40,11 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 		return this;
 	},
 
+
 	/** Print Calendar
 	*/
 	printCalendar: function () {
+
 		var date = moment( $(this.calendar.divCalendar).fullCalendar('getView').visStart );			
 		var momentDate = moment().year(date.year()).week(date.week());
 		
@@ -99,7 +101,7 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 		    		task["equipment"] += "[" + _(equipment).strLeft('/') + "]";
 		    	});
 		    }
-	    	
+
 			task["planned_hours"] =  ( task.planned_hours>0? task.planned_hours : '' );
 			task["effective_hours"] =  ( task.effective_hours>0? task.effective_hours : '' );
 			task["remaining_hours"] =  '';//( task.remaining_hours>0? task.remaining_hours : '' );
