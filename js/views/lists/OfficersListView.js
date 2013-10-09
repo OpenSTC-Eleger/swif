@@ -90,7 +90,7 @@ app.Views.OfficersListView = Backbone.View.extend({
 					// Create item Officer view //
 					_.each(self.collection.models, function(officer, i){
 						var itemOfficerView  = new app.Views.ItemOfficerView({model: officer});
-						$('#rows-officers').append(itemOfficerView.render().el);
+						$(self.el).find('#rows-officers').append(itemOfficerView.render().el);
 					});
 				})
 			}
