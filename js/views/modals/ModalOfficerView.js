@@ -119,7 +119,7 @@ app.Views.ModalOfficerView = app.Views.GenericModalView.extend({
 
 
 
-		this.model.save(params, {silent: true})
+		this.model.save(params, {silent: true, patch: !self.model.isNew()})
 			.done(function(data) {
 				self.modal.modal('hide');
 
