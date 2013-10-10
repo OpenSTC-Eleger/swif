@@ -61,7 +61,7 @@ app.Views.EventsListView = Backbone.View.extend({
 		
 		//DOM element id for calendar with model
 		this.divCalendar = 'div#calendar_' + this.model.id;	
-		
+				
 	},
 
     
@@ -446,7 +446,12 @@ app.Views.EventsListView = Backbone.View.extend({
     	var self = this;
     	
     	_.each(this.collection.models , function (model, i){
+    		
     		var task = model.toJSON();
+    		var interModel = self.collections.interventions.get(model.getIntervention('id'));
+    		if( ! _.isUndefined(interModel) ) {  
+    			 self.listenTo(interModel, 'change', self.refreshEvents);
+    		}
     		var actionDisabled = task.state == app.Models.Task.status.done.key || task.state == app.Models.Task.status.cancelled.key;
 
     		var title = task.name;
