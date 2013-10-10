@@ -121,10 +121,12 @@ var app = {
 				NProgress.done();
 			},
 			statusCode: {
-				401: function () {
-					console.error('---> Ajax Setp Up 401, redirect to the login page <---');
-					// Redirect the to the login page //
-					app.router.navigate(app.routes.login.url, {trigger: true, replace: true});
+				401: function() {
+					// Redirect the to the login page only if we are not on the login page //
+					if(Backbone.history.fragment != app.routes.login.url){
+						app.Helpers.Main.clearViews();
+						app.router.navigate(app.routes.login.url, {trigger: true, replace: true});
+					}
 					app.loader('hide');
 				},
 				500: function(){

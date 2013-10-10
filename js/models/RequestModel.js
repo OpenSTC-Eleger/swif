@@ -28,6 +28,9 @@ app.Models.Request = app.Models.GenericModel.extend({
 				case 'id': 
 					return this.get('site1')[0];
 				break;
+				case 'json':
+					return {id: this.get('site1')[0], name: this.get('site1')[1]};
+				break;
 				default:
 					return _.titleize(this.get('site1')[1].toLowerCase());
 			}
@@ -46,6 +49,9 @@ app.Models.Request = app.Models.GenericModel.extend({
 			switch(type){
 				case 'id': 
 					return this.get('equipment_id')[0];
+				break;
+				case 'json':
+					return {id: this.get('equipment_id')[0], name: this.get('equipment_id')[1]};
 				break;
 				default:
 					return _.titleize(this.get('equipment_id')[1].toLowerCase());
@@ -112,42 +118,67 @@ app.Models.Request = app.Models.GenericModel.extend({
 
 	// Claimer of the resquest //
 	getClaimer: function(type){
-		var claimer = {}
+		var claimer = {};
 
-		// Request From Citizen //
-		if(this.fromCitizen()){
-
-			claimer.type = app.lang.citizen;
-			claimer.name = this.getCitizenName();
-		}
-		else{
-
-			if(!_.isUndefined(this.get('partner_type'))){
-				claimer.type = this.get('partner_type')[1];	
-			}
-			if(!_.isUndefined(this.get('partner_id')) || this.get('partner_id') != false){
-
-				claimer.id =  this.get('partner_id')[0];
-				claimer.name = _.capitalize(this.get('partner_id')[1]);
-			}
-			if(!_.isUndefined(this.get('partner_address'))){
-				claimer.person = _.capitalize(this.get('partner_address')[1]);
-			}
+		switch (type){
+			case 'id': 
+				return this.get('partner_id')[0];
+			break;
+			case 'json':
+				return {id: this.get('partner_id')[0], name: this.get('partner_id')[1]};
+			break;
+			default:
+				return this.get('partner_id')[1];
 		}
 
 		return claimer;
-
 	},
 
 	setClaimerType: function(value, silent){
 		this.set({ partner_type : value }, {silent: silent});
 	},
+	getClaimerType: function(type){
+		if(this.get('partner_type')){
+			switch (type){
+				case 'id': 
+					return this.get('partner_type')[0];
+				break;
+				case 'json':
+					return {id: this.get('partner_type')[0], name: this.get('partner_type')[1]};
+				break;
+				default:
+					return this.get('partner_type')[1];
+			}
+		}
+	},
+
 	setClaimer: function(value, silent){
 		this.set({ partner_id : value }, {silent: silent});
 	},
 	setClaimerContact: function(value, silent){
 		this.set({ partner_address : value }, {silent: silent});
 	},
+
+
+	getClaimerPhone: function(){
+		return this.get('partner_phone');
+	},
+
+	getClaimerContact: function(type){
+		if(this.get('partner_address')){
+			switch (type){
+				case 'id': 
+					return this.get('partner_address')[0];
+				break;
+				case 'json':
+					return {id: this.get('partner_address')[0], name: this.get('partner_address')[1]};
+				break;
+				default:
+					return this.get('partner_address')[1];
+			}
+		}
+	},
+
 
 	getManager: function(type){
 		switch(type){

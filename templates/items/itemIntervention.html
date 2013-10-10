@@ -1,6 +1,6 @@
 <td><%= intervention.id %></td>
 <td>
-	<a class="accordion-object" href="#collapse_<%= intervention.id %>" rel="popover" data-content="<%= _(intervention.description).escapeHTML() %>" data-delay="160" data-title="<%= _.capitalize(lang.description) %>">
+	<a class="accordion-object" href="#collapse_<%= intervention.id %>" data-toggle="popover" data-content="<%= intervention.getDescription() %>" data-delay="160" data-original-title="<%= _.capitalize(lang.description) %>">
 		<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(_(intervention.getName()).escapeHTML()) %>
 	</a>
 	<!-- Interventions action -->

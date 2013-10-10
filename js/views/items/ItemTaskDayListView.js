@@ -7,7 +7,7 @@ app.Views.ItemTaskDayListView = Backbone.View.extend({
 
 	templateHTML : 'items/itemTaskDayList',
 	
-	className   : 'accordion-group',
+	className   : 'panel panel-default',
 
 	// The DOM events //
 	events       : {

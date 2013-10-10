@@ -32,30 +32,31 @@ app.Views.EventsListView = Backbone.View.extend({
 		
 		var collection = null;
 		
+		// Initialize year,week parameters if not yet in url with current year/week (for prev/next button on calendar)
+		if(_.isUndefined(this.options.year)) {
+			this.options.year = moment().year();
+			this.options.week = moment().week();
+		}
+
 		if(!_.isUndefined(this.options.team)) {
 			//get team model selected on calendar
 			this.teamMode = true;			
 			this.model = _.find(this.collections.teams, function (o) { 
-				return _.slugify(o.name).toUpperCase() == self.options.team
+				return o.id == self.options.team
 			});
 		} else {
 			//get officer model selected on calendar
 			if(_.isUndefined(this.options.officer)) {
 				this.model = this.collections.officers[0];
 				// Initialize first officer in tab if no officer passed in url
-				this.options.officer = _.slugify(this.model.name).toUpperCase()
+				this.options.officer = this.model.id
+				app.router.navigate(self.urlBuilder(), {trigger: false, replace: true});
 			}
 			else{
 				this.model = _.find(this.collections.officers, function (o) { 
-					return _.slugify(o.name).toUpperCase() == self.options.officer.toUpperCase()
+					return o.id == self.options.officer
 				});				
 			}
-		}
-		
-		// Initialize year,week parameters if not yet in url with current year/week (for prev/next button on calendar)
-		if(_.isUndefined(this.options.year)) {
-			this.options.year = moment().year();
-			this.options.week = moment().week();
 		}
 		
 		//DOM element id for calendar with model
@@ -85,6 +86,8 @@ app.Views.EventsListView = Backbone.View.extend({
 
 
         	$('#searchOfficerOrTeam').focus();
+
+        	$('*[data-toggle="popover"]').popover({trigger: 'hover', delay: { show: 400, hide: 100 }});
 
        	
 			if(!_.isUndefined(self.options.team)) {
@@ -352,9 +355,17 @@ app.Views.EventsListView = Backbone.View.extend({
 			    };
 			    
 				model.save(params, {patch: true, silent: true})
-				.fail(function (e) {
-					console.log(e);
-				})
+					.done(function(ids) {
+						//If task has intervention (absent task has no intervention)
+						if( model.toJSON().project_id != false )
+							var inter = self.collections.interventions.get(model.toJSON().project_id[0])
+							//If inter is not in left panel : not fetch
+							if( !_.isUndefined( inter ) )
+								inter.fetch();
+					})
+					.fail(function (e) {
+						console.log(e);
+					})
 			},
 
 
@@ -387,8 +398,12 @@ app.Views.EventsListView = Backbone.View.extend({
 				model.save(params, {patch: true, silent: true})
 					.done(function(data) {
 						//If task has intervention (absent task has no intervention)
-						if( model.toJSON().project_id != false )
-							self.collections.interventions.get(model.toJSON().project_id[0]).fetch();
+						if( model.toJSON().project_id != false ) {
+							var inter = self.collections.interventions.get(model.toJSON().project_id[0])
+							//If inter is not in left panel : not fetch
+							if( !_.isUndefined( inter ) )
+								inter.fetch();
+						}							
 					})
 					.fail(function (e) {
 						console.log(e);
@@ -410,16 +425,16 @@ app.Views.EventsListView = Backbone.View.extend({
     			});
     		},
 		});
-	
-    	/**
-    	 * Get calendar name
-    	 */
+
+		/**
+		* Get calendar name
+		*/
 		var username = $(this.divCalendar).data('username');
 		
 		/**
 		 * Add personal icon for officer on calendar 
 		 */
-		$('table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-polaroid'> <span class='lead text-info'>"+username+"</span>");		
+		$('table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-thumbnail'> <span class='lead text-info'>"+username+"</span>");		
 	},
 	// -------------------- End fullcalendar initialization -------------------- //
 	
@@ -463,7 +478,9 @@ app.Views.EventsListView = Backbone.View.extend({
 				title: title,
 				inter_desc: task.inter_desc,
 				inter_name: model.getIntervention(),
+				equipments: model.getEquipments(),
 				inter_site: model.getSite(),
+				inter_equipment: model.getInterEquipment(),
 				start: dtStart.add('minutes',-dtStart.zone()).format(),
 				end: dtEnd.add('minutes',-dtStart.zone()).format(),
 				planned_hours: task.planned_hours,
@@ -508,8 +525,7 @@ app.Views.EventsListView = Backbone.View.extend({
 	/** When the model ara updated //
 	*/
 	refreshEvents: function(model){
-		$(this.divCalendar).fullCalendar( 'refetchEvents' )
-		app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.taskUpdateOk);
+		$(this.divCalendar).fullCalendar( 'refetchEvents' );
 	},
 
 

@@ -113,17 +113,20 @@ app.Views.ModalUnplanTaskView =  app.Views.GenericModalView.extend({
 				date_end  : false,
 				date_start: false,
 			};
-			//Update task
+			//Update task and intervention 
 			this.model.save(params, {patch: true, silent: false})
-				.done(function(data) {				
-					$.when(  self.model.fetch({ data : {fields : self.model.fields} } ), self.interModel.fetch() )
-					.done(function(e){
-						self.modal.modal('hide');
-					})
-					.fail(function(e){
-						console.error(e);
-					});
-					
+				.done(function(data) {	
+					ajaxRequests = [self.model.fetch({ data : {fields : self.model.fields} } )]					
+					if( !_.isUndefined(self.interModel) )
+						//Add ajax request for update intervention
+						ajaxRequests.push(self.interModel.fetch())
+					$.when( ajaxRequests )
+						.done(function(e){
+							self.modal.modal('hide');
+						})
+						.fail(function(e){
+							console.error(e);
+						});					
 				})
 				.always(function(){
 					// Reset the button state //

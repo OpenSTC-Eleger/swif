@@ -32,6 +32,7 @@
 
 					<div class="col-sm-3">
 						<input type="text" id="absentTypeCode" class="form-control" required value="<%= (_.isNull(absentType.getId()) ? '' : absentType.getCode())%>" />
+						<span class="help-block" id="code-error"></span>
 					</div>
 				</div>
 				

@@ -3,7 +3,14 @@
 
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h3 class="modal-title"><%= lang.viewsTitles.newContact %></h3>
+			<h3 class="modal-title">
+				<i class="icon-edit"></i>&nbsp;
+				<% if(_.isNull(contact.id)){ %>
+					<%= _.capitalize(lang.viewsTitles.newContact) %>
+				<% } else{ %>
+					<%= _.capitalize(lang.viewsTitles.editContact) %>
+				<% } %>
+			</h3>
 		</div>
 
 		<!-- Modal Body -->
@@ -22,23 +29,24 @@
                 <% if (_.isNull(user.get('id'))) { %>
 				<!-- Create Associated Account Link -->
 				<div class="form-group">
-					<div class="col-sm-9">
+					<div class="col-sm-9 col-sm-offset-3">
 						<label class="checkbox" for="createAssociatedAccount">
-							<input type="checkbox" id="createAssociatedAccount"><%= lang.actions.createAssociatedAccount %></label>
+						<input type="checkbox" id="createAssociatedAccount"><%= lang.actions.createAssociatedAccount %></label>
 					</div>
 				</div>
                 <% }else{ %>
-                <fieldset>
-                    <legend><%= lang.aboutTheAccount %></legend>
-                    <div class="row">
-                        <div class=" col-sm-3">
-                            <i class="icon-user"></i> <%= _.capitalize(lang.login) %>
-                        </div>
-                        <div class="col-sm-9">
-                            <%= user.get('login')%>
-                        </div>
-                    </div>
-                <% } %>
+				<fieldset>
+					<legend><%= lang.aboutTheAccount %></legend>
+					<div class="row">
+						<div class="col-sm-3">
+							<i class="icon-user"></i> <%= _.capitalize(lang.login) %>
+						</div>
+						<div class="col-sm-9">
+							<%= user.get('login')%>
+						</div>
+					</div>
+				</fieldset>
+				<% } %>
 
 				<!-- Create associate Account -->
 				<fieldset class="associated-account">
@@ -58,7 +66,7 @@
 						<label for="userPassword" class="control-label col-sm-3"><%= _.capitalize(lang.password) %>:</label>
 
 						<div class="col-sm-9">
-							<input type="password" id="userPassword" name="userPassword" pattern=".{6,}" />
+							<input type="password" id="userPassword" class="form-control" name="userPassword" pattern=".{6,}" />
 							<p class="help-block"><%= lang.infoMessages.sixCharMin %></p>
 						</div>
 					</div>
@@ -87,7 +95,7 @@
 						<label for="contactPhone" class="control-label col-sm-3"><%= _.capitalize(lang.phone) %>:</label>
 
 						<div class="col-sm-9">
-							<input type="text" id="contactPhone" class="form-control" value="<%= contact.phone %>"/>
+							<input type="tel" id="contactPhone" class="form-control" value="<%= contact.phone %>" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" />
 						</div>
 					</div>
 
@@ -136,7 +144,7 @@
 		<!--  / Modal Body -->
 
 		<div class="modal-footer">
-			<button type="submit" form="formContact" class="btn btn-primary formContact"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+			<button type="submit" form="formContact" class="btn btn-primary formContact" data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
 			<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 		</div>
 

@@ -1,37 +1,34 @@
 <!-- Task List -->
-<td colspan="7" class="nestedTD">
+
+<td colspan="2" class="nestedTD">
 
 	<!-- Check if there is some tasks -->
-	<table class="table-nested-objects table table-striped table-condensed table-hover">
-		<thead>
-			<tr>
-			</tr>
-		</thead>
-		<tbody id="row-nested-objects">
-		</tbody>
-	</table>
+	<ul id="row-nested-objects" class="list-unstyled nested-objects">
+	</ul>
+
 	<% if(intervention.tasks.length == 0) { %>
 	<!-- No Task to Display -->
 	<div class="alert alert-info noTask">
 		<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTaskForIntervention %>.
 	</div>
 	<% } %>
+
 	<div class="div-actions" >
-		<button class="btn btn-primary btn-small no-outline addTask"
+		<button class="btn btn-primary btn-sm addTask"
 			<% if(intervention.actions.indexOf("add_task") == -1) { %>
 				disabled
-		<% } %>>
+			<% } %>>
 			<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addTask) %>
 		</button>
 		
 		<!-- Switch button - To Scheduled / Scheduled -->
 		<% if(intervention.tasks.length != 0 && intervention.state != app.Models.Intervention.status.template.key) { %>
 
-			<div class="calendarSwitch pull-right make-switch " data-label-icon="icon-fullscreen" data-toggle="tooltip" data-original-title="<%= lang.toScheduled + "/" + lang.planningFenced %>"
+			<div class="calendarSwitch pull-right make-switch" data-label-icon="icon-calendar" data-toggle="tooltip" data-original-title="<%= lang.intervention + " " + lang.planningFenced %>"
 				id="switch-<%= intervention.id %>" data-text
-				data-on-label="<i class='icon-ok icon-white'></i>" data-off-label="<i class='icon-remove'></i>">
+				data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>">
 
-				<input type="checkbox" 
+				<input type="checkbox"
 					<% if(intervention.state == app.Models.Intervention.status.scheduled.key){ %>
 						checked
 					<% } %>
@@ -39,12 +36,10 @@
 					<% if(intervention.actions.indexOf("plan_unplan") == -1){ %>
 						disabled
 					 <% } %>
-					 <i class="icon-pencil icon-large"></i>
-					</input>
+				/>
 			 </div>
 
 		<% } %>
 	</div>
 	
 </td>
-</tr>

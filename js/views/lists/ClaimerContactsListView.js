@@ -1,18 +1,20 @@
 app.Views.ClaimerContactsListView = Backbone.View.extend({
 
-	tagName: 'tr',
+	tagName     : 'tr',
 
-	className: 'row-item row-nested-objects-collapse',
+	className   : 'row-item row-nested-objects-collapse',
 
 	templateHTML: 'claimerContactsList',
 
 	events: {
-		'click button.modalNewContact': 'showNewContactModal'
+		'click button.modalNewContact' : 'showNewContactModal'
 	},
+
 
 	id: function () {
 		return 'collapse_' + this.model.id
 	},
+
 
 	/** View Initialization
 	*/
@@ -45,16 +47,21 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 		app.views.claimersListView.partialRender();
 	},
 
+
 	render: function () {
 
 		var self = this;
 
 
 		$.get("templates/" + this.templateHTML + ".html", function (templateData) {
-
+			var contactNb = self.model.toJSON().address.length;
+			if(!_.isUndefined(self.contactsCollection)){
+				contactNb = self.contactsCollection.length;
+			}
 			var template = _.template(templateData, {
 				lang   : app.lang,
-				claimer: self.model.toJSON()
+				claimer: self.model.toJSON(),
+				contactNb: contactNb
 			});
 
 			$(self.el).html(template);
@@ -82,6 +89,8 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 		return this;
 	},
 
+
+
 	fetchContacts: function () {
 		var self = this;
 		self.contactsCollection = self.model.getAddresses();
@@ -99,10 +108,11 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 					data: {filters: {0: {field: 'id', operator: 'in', value: this.getUserIds()}}}
 				}
 			)
-		}
-		;
+		};
+
 		return self.usersCollection;
 	},
+
 
 
 	fetchData: function () {
@@ -127,19 +137,28 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 
 	},
 
+
+
 	getUserIds: function () {
 		var self = this;
+
 		var user_ids = _.filter(self.contactsCollection.pluck('user_id'), function (e) {
-		return e != false;
+			return e != false;
 		});
+
 		user_ids = _.map(user_ids, function (e) {
-			return e[0]
+			if(!_.isNull(e)){
+				return e[0];
+			}
 		});
-		return user_ids
+
+		return user_ids;
 	},
 
+
+
 	/** Display Modal form to add/sav a new claimer
-	 */
+	*/
 	modalUpdateClaimer: function (e) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -152,8 +171,9 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 	},
 
 
+
 	/** Modal to remove a claimer
-	 */
+	*/
 	modalDeleteClaimer: function (e) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -163,6 +183,8 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 			model: this.model
 		});
 	},
+
+
 
 	showNewContactModal: function (e) {
 		var self = this;
@@ -176,6 +198,5 @@ app.Views.ClaimerContactsListView = Backbone.View.extend({
 			user: new app.Models.Officer()
 		}).render();
 	},
-
 
 });

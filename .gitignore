@@ -4,3 +4,4 @@
 config/configuration.json
 logo/
 dist/
+node_modules/

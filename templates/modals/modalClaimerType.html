@@ -33,6 +33,7 @@
 
 					<div class="col-sm-3">
 						<input type="text" id="claimerTypeCode" class="form-control" required value="<%= (_.isNull(claimerType.getId()) ? '' : claimerType.getCode())%>" />
+						<span class="help-block" id="code-error"></span>
 					</div>
 				</div>
 

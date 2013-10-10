@@ -52,6 +52,10 @@ app.Views.ModalCategoryTaskView = app.Views.GenericModalView.extend({
 			self.modal.html(template);
 
 			app.views.advancedSelectBoxCatParentView = new app.Views.AdvancedSelectBoxView({el: $("#catParentCat"), collection: app.Collections.CategoriesTasks.prototype })
+			// Condition to prevent a Cat to be parent if itself //
+			if(!self.model.isNew()){
+				app.views.advancedSelectBoxCatParentView.setSearchParam({ field : 'id', operator : '!=', value : self.model.getId() }, true);
+			}
 			app.views.advancedSelectBoxCatParentView.render();
 
 			app.views.advancedSelectBoxCatServices = new app.Views.AdvancedSelectBoxView({el: $("#catServices"), collection: app.Collections.ClaimersServices.prototype })
@@ -82,13 +86,6 @@ app.Views.ModalCategoryTaskView = app.Views.GenericModalView.extend({
 		this.model.setParentCat(app.views.advancedSelectBoxCatParentView.getSelectedItem(), true);
 		this.model.setServices(app.views.advancedSelectBoxCatServices.getSelectedItems(), true);
 
-		
-
-
-		/*var params = {
-			name: this.$('#catName').val(),
-			code: this.$('#catCode').val()
-		};*/
 
 
 		this.model.save()
@@ -107,7 +104,7 @@ app.Views.ModalCategoryTaskView = app.Views.GenericModalView.extend({
 				}
 			})
 			.fail(function (e) {
-				console.log(e);
+				app.Helpers.Main.printError(e);
 			})
 			.always(function () {
 				$(self.el).find("button[type=submit]").button('reset');

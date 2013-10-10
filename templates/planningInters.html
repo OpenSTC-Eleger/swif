@@ -1,14 +1,15 @@
 	
 	<!-- Interventions toolbar -->	
-	<div id="planningToolbar" class="row-fluid">
+	<div id="planningToolbar" class="row tableToolbar">
 		<!-- href add intervention -->
-		<a href="#" class="btn btn-primary no-outline  modalCreateInter"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
-
+		<div class="col-xs-8 col-sm-12 col-md-8">
+			<a href="#" class="btn btn-primary modalCreateInter"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
+		</div>
 
 		<!-- Filter -->
-		<div class="dropdown span5 offset1">
+		<div class="dropdown col-xs-4 col-sm-8 col-md-4">
 
-			<a id="filterStateIntervention" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#">
+			<a id="filterStateIntervention" class="dropdown-toggle filter-button pull-right" data-toggle="dropdown" href="#">
 		   		<i class="icon-filter icon-large"> <%= _.capitalize(lang.status) %></i>
 			</a>
 
@@ -35,28 +36,23 @@
 	
 	
 	<!-- Intervention panel -->
-	<% if( _.size(interventions) > 0 ) { %>
-		<table class="table-interventions table table-bordered table-hover table-sorter table-striped">
-				<thead>
-					<tr>						
-					</tr>
-				</thead>
-			<tbody id="inter-items">
-				<!-- Inter rows -->
-				
-			</tbody>
-		
-		</table>
-		
+	<% if( _.size(interventions) == 0 ) { %>
+		<!-- No interventions to display -->
+		<div class="alert alert-info noInter">
+			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>
+		</div>	
+	<% } else{%>
+
+	<table class="table table-bordered table-hover table-striped-collapse">
+		<tbody id="inter-items">
+
+		</tbody>
+	
+	</table>
+	
 		<!-- Table pagination -->
 		<div id="pagination"></div>
 		<!-- /Table pagination -->
-		
-	<% }else { %>
-
-		<!-- No interventions to display -->
-		<div class="alert alert-info">
-			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>
-		</div>	
 	<% } %>
+		
 	<!-- /Intervention panel -->

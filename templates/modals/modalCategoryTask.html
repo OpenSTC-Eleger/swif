@@ -26,6 +26,7 @@
 					<div class="col-sm-9">
 						<input type="text" id="catName" class="form-control" required value="<%= (_.isNull(cat.getId()) ? '' : cat.getName())%>" />
 					</div>
+					<span class="help-block" id="name-error"></span>
 				</div>
 
 				<!-- Category code -->
@@ -34,6 +35,7 @@
 
 					<div class="col-sm-3">
 						<input type="text" id="catCode" class="form-control" required value="<%= (_.isNull(cat.getId()) ? '' : cat.getCode())%>" />
+						<span class="help-block" id="code-error"></span>
 					</div>
 				</div>
 				

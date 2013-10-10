@@ -144,7 +144,6 @@ app.Models.Officer = app.Models.GenericModel.extend({
         this.set({ isDST : value });
     },
 
-
 	/** Get Informations of the model
 	*/
 	getInformations : function(){
@@ -161,7 +160,8 @@ app.Models.Officer = app.Models.GenericModel.extend({
 		return informations;
 	},
 
-
+	
+	
 	getActions: function(){
 		return this.get('actions');
 	}
