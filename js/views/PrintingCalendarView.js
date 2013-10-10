@@ -109,7 +109,9 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 			task["oilPrice"] =  (task.oil_price>0? task.oil_price : '');
 			var startDt = task.start!=false ? moment( task.start ):null;
 			var endDt = task.end!=false ? moment( task.end ) :null;
-			task["taskHours"] = startDt.format('H[h]mm')  + '-' + endDt.format('H[h]mm') ;
+			task["taskHours"] = '';
+			if( !_.isNull(startDt) && !_.isNull(endDt))
+				task["taskHours"] = startDt.format('H[h]mm')  + '-' + endDt.format('H[h]mm') ;
 			task["km"] = ''; 
 	    })
 		
