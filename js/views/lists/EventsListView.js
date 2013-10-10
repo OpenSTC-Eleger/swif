@@ -61,6 +61,9 @@ app.Views.EventsListView = Backbone.View.extend({
 		
 		//DOM element id for calendar with model
 		this.divCalendar = 'div#calendar_' + this.model.id;	
+		
+		if ( !_.isUndefined(app.views.printingCalendarView) )
+			app.views.printingCalendarView.close();
 				
 	},
 
