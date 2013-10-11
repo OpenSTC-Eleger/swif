@@ -96,7 +96,7 @@ app.Views.ModalServiceView = app.Views.GenericModalView.extend({
 		// Set the properties of the model //
 		var params = {
 			name     : $('#serviceName').val(),
-			code     : $('#serviceCode').val(),
+			code     : $('#serviceCode').val().toUpperCase(),
 			technical: $('#switchTechnicalService').bootstrapSwitch('status'),
 			manager_id : app.views.advancedSelectBoxManagerView.getSelectedItem(),
 			service_id : app.views.advancedSelectBoxServiceParentView.getSelectedItem()

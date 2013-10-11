@@ -75,7 +75,7 @@ app.Views.ModalCategoryRequestView = app.Views.GenericModalView.extend({
 		this.model.setCode(this.$('#catCode').val(), false);*/
 		var params = {
 			name: this.$('#catName').val(),
-			code: this.$('#catCode').val()
+			code: this.$('#catCode').val().toUpperCase()
 		};	
 
 

@@ -82,7 +82,7 @@ app.Views.ModalCategoryTaskView = app.Views.GenericModalView.extend({
 
 		// Set the properties of the model //
 		this.model.setName(this.$('#catName').val(), true);
-		this.model.setCode(this.$('#catCode').val(), true);
+		this.model.setCode(this.$('#catCode').val().toUpperCase(), true);
 		this.model.setParentCat(app.views.advancedSelectBoxCatParentView.getSelectedItem(), true);
 		this.model.setServices(app.views.advancedSelectBoxCatServices.getSelectedItems(), true);
 

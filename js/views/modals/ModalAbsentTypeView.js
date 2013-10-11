@@ -77,7 +77,7 @@ app.Views.ModalAbsentTypeView = app.Views.GenericModalView.extend({
 
 		var params = {
 			name       : this.$('#absentTypeName').val(),
-			code       : this.$('#absentTypeCode').val(),
+			code       : this.$('#absentTypeCode').val().toUpperCase(),
 			description: this.$('#absentTypeDescription').val()
 		}
 

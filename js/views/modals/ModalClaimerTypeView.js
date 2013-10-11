@@ -73,7 +73,7 @@ app.Views.ModalClaimerTypeView = app.Views.GenericModalView.extend({
 		// Set the properties of the model //
 		var params = {
 			name       : this.$('#claimerTypeName').val(),
-			code       : this.$('#claimerTypeCode').val()
+			code       : this.$('#claimerTypeCode').val().toUpperCase()
 		}
 
 		this.model.save(params)
