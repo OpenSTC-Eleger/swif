@@ -19,7 +19,7 @@ app.Models.Request = app.Models.GenericModel.extend({
 			type : 'text'
 		},
 		{
-			key  : 'partner_id.name', 
+			key  : 'partner_name', 
 			type : 'text'
 		}
 	],
