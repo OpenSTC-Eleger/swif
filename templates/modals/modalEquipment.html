@@ -176,23 +176,24 @@
 
 						<!-- Equipment Lenght of Amort. -->
 						<div class="form-group">
-							<label for="equipmentLengthAmort" class="control-label col-sm-3"><%= _.capitalize(lang.lengthAmort) %>:</label>
-							<div class="col-sm-4">
+							<label for="equipmentLengthAmort" class="control-label col-sm-4"><%= _.capitalize(lang.amort) %>:</label>
+							<div class="col-sm-6">
 								<input type="number" class="form-control" id="equipmentLengthAmort" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getLengthAmort()) %>" />
+								<span class="help-block"><%= lang.lenthAmort %></span>
 							</div>
 						</div>
 
 						<!-- Equipment purchase price -->
 						<div class="form-group">
-							<label for="equipmentPurchasePrice" class="control-label col-sm-3"><%= _.capitalize(lang.purchasePrice) %>:</label>
-							<div class="col-sm-4">
+							<label for="equipmentPurchasePrice" class="control-label col-sm-4"><%= _.capitalize(lang.purchasePrice) %>:</label>
+							<div class="col-sm-6">
 								<input type="number" class="form-control" id="equipmentPurchasePrice" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getPurchasePrice()) %>" />
 							</div>
 						</div>
 						<!-- Equipment purchase date-->
 						<div class="form-group">
-							<label for="equipmentPurchaseDate" class="control-label col-sm-3"><%= _.capitalize(lang.purchaseDate) %>:</label>
-							<div class="col-sm-4">
+							<label for="equipmentPurchaseDate" class="control-label col-sm-4"><%= _.capitalize(lang.purchaseDate) %>:</label>
+							<div class="col-sm-6">
 								<div class="input-group">
 									<input 
 										type="text" class="datepicker form-control"
@@ -206,16 +207,16 @@
 
 						<!-- Equipment hour price -->
 						<div class="form-group">
-							<label for="equipmentHourPrice" class="control-label col-sm-3"><%= _.capitalize(lang.hourPrice) %>:</label>
-							<div class="col-sm-4">
+							<label for="equipmentHourPrice" class="control-label col-sm-4"><%= _.capitalize(lang.hourPrice) %>:</label>
+							<div class="col-sm-6">
 								<input type="number" step="any" min="0" class="form-control" id="equipmentHourPrice" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getHourPrice()) %>" />
 							</div>
 						</div>
 
 						<!-- Equipment End Date of Warranty -->
 						<div class="form-group">
-							<label for="equipmentWarranty" class="control-label col-sm-3"><%= _.capitalize(lang.warrantyDate) %>:</label>
-							<div class="col-sm-4">
+							<label for="equipmentWarranty" class="control-label col-sm-4"><%= _.capitalize(lang.warrantyDate) %>:</label>
+							<div class="col-sm-6">
 								<div class="input-group">
 								<input 
 									type="text" class="datepicker form-control"
