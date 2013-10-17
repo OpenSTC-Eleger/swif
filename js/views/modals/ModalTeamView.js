@@ -55,6 +55,8 @@ app.Views.ModalTeamView = app.Views.GenericModalView.extend({
 
 			// Advance Select List View //
 			app.views.advancedSelectBoxForemanView = new app.Views.AdvancedSelectBoxView({el: $("#teamForeman"), collection: app.Collections.Officers.prototype })
+			// Retrieve only Officer //
+			app.views.advancedSelectBoxForemanView.setSearchParam({field:'service_ids', operator:'!=', value: 'false'}, true);
 			app.views.advancedSelectBoxForemanView.render();
 
 			self.modal.modal('show');

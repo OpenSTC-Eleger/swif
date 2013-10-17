@@ -67,11 +67,16 @@ app.Views.TeamMembersAndServices = Backbone.View.extend({
 			
 			// Advance Select List View //
 			app.views.advancedSelectBoxTeamMembersView = new app.Views.AdvancedSelectBoxView({el: $("#searchMembers"), collection: app.Collections.Officers.prototype });
-			app.views.advancedSelectBoxTeamMembersView.setSearchParam({field:'service_ids', operator:'!=', value:'false'}, true);
+			
+			// Retrieve only Officer //
+			app.views.advancedSelectBoxTeamMembersView.setSearchParam({field:'service_ids', operator:'!=', value: 'false'}, true);
+			// Condition to prevent a Cat to be parent if itself //
+			app.views.advancedSelectBoxTeamMembersView.setSearchParam({field : 'id', operator : '!=', value : self.model.getManager('id')}, false);
+			
 			app.views.advancedSelectBoxTeamMembersView.render();
 
-			app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#searchServices"), collection: app.Collections.ClaimersServices.prototype })
-			app.views.advancedSelectBoxPlaceParentView.render();
+			app.views.advancedSelectBoxTeamServicesView = new app.Views.AdvancedSelectBoxView({el: $("#searchServices"), collection: app.Collections.ClaimersServices.prototype })
+			app.views.advancedSelectBoxTeamServicesView.render();
 		});
 
 		return this;
@@ -95,7 +100,7 @@ app.Views.TeamMembersAndServices = Backbone.View.extend({
 
 		var params = {
 			user_ids   : [[6, 0, app.views.advancedSelectBoxTeamMembersView.getSelectedItems()]],
-			service_ids: [[6, 0, app.views.advancedSelectBoxPlaceParentView.getSelectedItems()]]
+			service_ids: [[6, 0, app.views.advancedSelectBoxTeamServicesView.getSelectedItems()]]
 		}
 
 		this.model.save(params, {patch: true, silent: true})
