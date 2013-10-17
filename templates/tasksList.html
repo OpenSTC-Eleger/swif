@@ -35,17 +35,20 @@
 
 
 	<!-- Toolbar -->
-	<div class="tableToolbar">
+	<div class="tableToolbar rom">
 		<button class="btn btn-primary addTask">
 			<i class="icon-plus"></i>&nbsp; <%= _.capitalize(lang.actions.addTask) %>
 		</button>
 
 		<% if(displayFilter) { %>
-			<form class="pull-right form-inline">
-				<label for="filterListAgents" class="muted"><i class="icon-filter"></i> <%= _.capitalize(lang.agent) %>:</label>
-			    <input id="filterListAgents" class="select2 input-medium"  data-placeholder="<%= lang.actions.selectAAgent %>"/>
-
+		<div class="pull-right">
+			<form class="form-inline">
+				<div class="input-group">
+					<label for="filterListAgents" class="input-group-addon" style='width: 1px'><i class="icon-filter"></i></label>
+  					<input id="filterListAgents" class="select2"  style="width: 250px" data-placeholder="<%= lang.actions.selectAAgent %>"/>
+				</div>
 			</form>
+		</div>
 		<% } %>
 	</div>
 	<!-- /Toolbar -->
