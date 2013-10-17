@@ -70,6 +70,9 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 				app.views.advancedSelectBoxPlaceTypeView.render();
 
 				app.views.advancedSelectBoxPlaceParentView = new app.Views.AdvancedSelectBoxView({el: $("#placeParentPlace"), collection: app.Collections.Places.prototype })
+				if(!self.model.isNew()){
+					app.views.advancedSelectBoxPlaceParentView.setSearchParam({ field : 'id', operator : '!=', value : self.model.getId() }, true);
+				}
 				app.views.advancedSelectBoxPlaceParentView.render();
 
 				app.views.advancedSelectBoxPlaceServices = new app.Views.AdvancedSelectBoxView({el: $("#placeServices"), collection: app.Collections.ClaimersServices.prototype })
