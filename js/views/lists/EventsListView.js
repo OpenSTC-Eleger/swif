@@ -104,7 +104,7 @@ app.Views.EventsListView = Backbone.View.extend({
 				// Check if a Team was selected to select the Team Tab 
 				$('#allTabs a[data-target="#tab-agents"]').tab('show');
 				// Select first officer
-				$("a[href$="+self.options.officer+"]").parent().addClass('active');
+				$("#pOfficer_"+self.options.officer).parent().addClass('active');
 			}
 			else
 				$("#listAgents li:first").addClass('active');
@@ -115,7 +115,7 @@ app.Views.EventsListView = Backbone.View.extend({
 
 
 	
-	/**
+	/**"#pOfficer_"+self.options.officer+"
 	 * Go to next week
 	 */
 	nextDate: function(e) {
