@@ -41,7 +41,11 @@ app.Views.ModalTaskDayDoneView = app.Views.GenericModalView.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			
-			var template = _.template(templateData, {lang: app.lang, task: self.model.toJSON(),timeSpentDefault: self.secondsToHms(self.model.toJSON().remaining_hours * 60)});
+			var template = _.template(templateData, {
+				lang: app.lang,
+				task: self.model,
+				timeSpentDefault: self.secondsToHms(self.model.toJSON().remaining_hours * 60)
+			});
 			
 			self.modal.html(template);
 			self.modal.modal('show');

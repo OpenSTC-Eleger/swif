@@ -100,6 +100,7 @@ app.Models.User = Backbone.Model.extend({
 	
 	getTeams: function() {
 		return this.get('teams');
+
 	},
 	setTeams : function(value) {
 		this.set({ teams : value });
@@ -206,14 +207,14 @@ app.Models.User = Backbone.Model.extend({
 	*/
 	queryManagableTeams: function () {
 		var user = this;
-		$.ajax({
+		return $.when($.ajax({
 			async: true,
 			url: this.urlA + '/' + this.get("uid") + '/manageable_teams',
 			headers: {Authorization: 'Token token=' + this.get('authToken')},
 			success: function (data) {
 				user.setTeams(data);
 			}
-		});
+		}));
 
 	},
 
@@ -222,17 +223,16 @@ app.Models.User = Backbone.Model.extend({
 	*/
 	queryManagableOfficers: function() {
 		var user = this;
-		$.ajax({
+		return $.when($.ajax({
 			async: true,
 			url: this.urlA + '/' + this.get("uid") + '/manageable_officers',
 			headers: {Authorization: 'Token token=' + this.get('authToken')},
 			success: function (data) {
 				user.setOfficers(data);
 			}
-		});
+		}));
 
 	},
-
 
 
 	/** Set all attributes to the user after login

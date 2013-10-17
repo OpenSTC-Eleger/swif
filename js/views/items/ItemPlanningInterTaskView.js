@@ -3,11 +3,19 @@
 */
 app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 
-	tagName     : 'tr',
+	tagName     : 'li',
 
 	templateHTML : 'items/itemPlanningInterTask',
 	
-	className   : 'row-nested-objects',
+	className   : function(){
+		var elementClass = 'external-event';
+		
+		if(this.model.getState() != app.Models.Task.status.draft.key){
+			elementClass += ' disabled';
+		}
+
+		return elementClass;
+	},
 
 	// The DOM events //
 	events       : {		
@@ -21,6 +29,7 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 	*/
 	initialize : function() {
 		this.model.off();
+		this.id = this.model.id;
 		
 		//this.listenTo(this.model, 'change', this.change);
 		this.listenTo(this.model, 'destroy', this.destroyTask);
@@ -41,7 +50,6 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 		
 		app.Helpers.Main.highlight($(this.el))
 
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.taskUpdateOk);
 	},
 
 
@@ -81,7 +89,6 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 				opacity: '.8',
 				revert: 300,
 				receive: function(event, ui){
-					//self.saveServicesCategories();
 				}
 
 			});
@@ -95,9 +102,10 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 			
 			
-			//Add draggable task
-			el = $('li#task_'+model.id+':not(.disabled)');
-
+			//Add draggable task if not planned yet
+			if( !$(self.el).hasClass('disabled') ) {
+				el = $(self.el);
+	
 				var eventObject = {
 					state: model.state,
 					id: model.id,
@@ -115,43 +123,26 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 				// Make the event draggable using jQuery UI //
 				el.draggable({
 					zIndex: 9999,
-					revert: true,
+					//revert: true,
+					revert: false,
 					revertDuration: 500,
 					appendTo: '#app',
 					opacity: 0.8,
 					scroll: false,
 					cursorAt: { top: 0, left: 0 },
 					helper: function(e){
-						return $("<p class='well well-small'>"+eventObject.title+"</p>");
+						return $("<p class='well well-sm'>"+eventObject.title+"</p>");
 					},
 					reverting: function() {
 						console.log('reverted');
 					},
-
-
 				});
+			}
 		});
 		return this;
 	},
-	
-	/** Highlight the row item
-		*/
-	highlight: function(){
-		var self = this;
 
-		$(this.el).addClass('highlight');
 
-		var deferred = $.Deferred();
-
-		// Once the CSS3 animation are end the class are removed //
-		$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
-			function(e) {
-				$(self.el).removeClass('highlight');
-				deferred.resolve();
-		});
-
-		return deferred;
-	},
 	
 	/** 
 	 * Display modal Add to delete task
@@ -161,6 +152,8 @@ app.Views.ItemPlanningInterTaskView = Backbone.View.extend({
 		var name = this.model.toJSON().name;
 		new app.Views.ModalDeleteView({el: '#modalDeleteTask', model: this.model, modalTitle: app.lang.viewsTitles.deleteTask, modalConfirm: app.lang.warningMessages.confirmDeleteTask});
 	},
+
+
 	
 	/**
 	 * Display modal Add to cancel task

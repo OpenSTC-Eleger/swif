@@ -92,21 +92,22 @@ app.Models.Claimer = app.Models.GenericModel.extend({
 
 	// Returns addresses collection fetched this is used in view to serialize object before template
 	getAddresses: function () {
-		var address_ids = this.get('address');
+//		var address_ids = this.get('address');
 		var collection = new app.Collections.ClaimersContacts
-		if (address_ids == false) {
-			return collection;
-		} else {
+//		if (address_ids == false) {
+//			return collection;
+//		} else {
 
 			collection.fetch({
-					data   : {filters: {0: {field: 'id', operator: 'in', value: this.get('address')}}},
+//					data   : {filters: {0: {field: 'id', operator: 'in', value: this.get('address')}}},
+					data   : {filters: {0: {field: 'partner_id.id', operator: '=', value: this.get('id')}}},
 					reset : true
 				}
 			).done( function () {
 					collection.trigger('fetchDone');
 				})
 			return collection;
-		}
+//		}
 
 	},
 	getInformations: function () {

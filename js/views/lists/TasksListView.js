@@ -118,7 +118,8 @@ app.Views.TasksListView = app.Views.GenericListView.extend({
 		self.collections = {};
 		self.collections.tasks = new app.Collections.Tasks();
 		
-		
+		var deferred = $.Deferred();
+		deferred = app.models.user.queryManagableOfficers();
 		//get taskUser filtered on current week and with optional filter
 		$.ajax({
 			url: '/api/open_object/users/' + app.models.user.getUID().toString() + '/scheduled_tasks',
@@ -205,7 +206,8 @@ app.Views.TasksListView = app.Views.GenericListView.extend({
 							lang: app.lang,
 							nbPendingTasks: nbPendingTasks,
 							momentDate: momentDate,
-							displayFilter: _.size(officersDropDownList) > 0
+							//displayFilter: _.size(officersDropDownList) > 0
+							displayFilter: true
 						});
 						
 						$(self.el).html(template);
@@ -219,7 +221,14 @@ app.Views.TasksListView = app.Views.GenericListView.extend({
 						});
 	
 						self.selectListFilterOfficerView = new app.Views.AdvancedSelectBoxView({el: $("#filterListAgents"), collection: app.Collections.Officers.prototype})
-						self.selectListFilterOfficerView.setSearchParam({field:'id',operator:'>',value:'1'});
+						deferred.done(function(){
+							var ret = app.models.user.getOfficers();
+							var ids = [];
+							_.each(ret,function(item,i){
+								ids.push(item.id);
+							});
+							self.selectListFilterOfficerView.setSearchParam({field:'id',operator:'in',value:ids}, true);
+						});
 						self.selectListFilterOfficerView.render();
 	
 						// Collapse border style //

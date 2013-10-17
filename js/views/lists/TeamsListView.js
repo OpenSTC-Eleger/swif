@@ -196,10 +196,12 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 				sort   : this.options.sort.by+' '+this.options.sort.order
 			}
 		};
+		this.fetchParams.data.filters = [];
 		if(!_.isUndefined(this.options.search)){
-			this.fetchParams.data.filters = app.Helpers.Main.calculSearch({search: this.options.search }, app.Models.Team.prototype.searchable_fields);
+			this.fetchParams.data.filters = app.Helpers.Main.calculSearch({search: this.options.search }, app.Models.Team.prototype.searchable_fields, true);
 		}
-
+		//No displays teams deleted
+		this.fetchParams.data.filters.push({field:'deleted_at',operator:'=',value:'False'})
 
 		return $.when(this.collection.fetch(this.fetchParams))
 			.fail(function(e){

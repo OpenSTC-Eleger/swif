@@ -12,6 +12,7 @@
 @import 'tables';
 @import 'types';
 @import 'form';
+@import 'panel';
 
 // Customizing plugin //
 @import 'select2';
@@ -19,8 +20,9 @@
 @import 'calendar';
 @import 'drop-area';
 @import 'loader';
+@import 'scrollbar';
 
-
+ 
 
 
 /* Generic
@@ -102,7 +104,7 @@ div.datepicker{
 
 /* Tooltip element cursor
 -------------------------------------------------- */
-*:not(i)[data-toggle="tooltip"]:not([data-original-title='']) { cursor: help; }
+*:not(i):not(a)[data-toggle="tooltip"]:not([data-original-title='']) { cursor: help; }
 
 
 
@@ -114,6 +116,13 @@ div.datepicker{
 	border: thin dashed darken(@well-bg, 65%);
 }
 
+
+/* Tooltip element cursor
+-------------------------------------------------- */
+.modal-title .label{
+	margin-right: 10px;
+	margin-top: 4px;
+}
 
 
 /* pNotify compatibility with Font Awesome 3.0.2 and Bootstrap 3.0.0
@@ -152,11 +161,11 @@ a.filter-button.filter-disabled{
 	border-left-color: @gray-light;
 }
 .border-emphasize {
-	&-info{ border-left-color: @brand-info; }
-	&-danger{ border-left-color: @brand-danger; }
-	&-warning{ border-left-color: @brand-warning; }
-	&-success{ border-left-color: @brand-success; }
-	&-overrun{ border-left-color: @purple; }
+	&-info{ border-left-color    : @brand-info; }
+	&-danger{ border-left-color  : @brand-danger; }
+	&-warning{ border-left-color : @brand-warning; }
+	&-success{ border-left-color : @brand-success; }
+	&-overrun{ border-left-color : @purple; }
 	&-template{ border-left-color: @yellow; }
 }
 
@@ -191,15 +200,9 @@ a.filter-button.filter-disabled{
 }
 
 
-/* PYF Twitter Bootstrap Accordion and button dropdown overflow issue 
-	http://stackoverflow.com/questions/10959068/twitter-bootstrap-accordion-and-button-dropdown-overflow-issue
-	TODO
-*/
-.accordion-body[class*="in collapse"]{ overflow:visible; }
-
 
 .tab-pane-planning{
-	height: 160px;
+	height: 120px;
 	overflow-y: scroll;
 	margin-top: @line-height-computed/2;
 	margin-bottom: @line-height-computed/2;
@@ -215,18 +218,16 @@ a.filter-button.filter-disabled{
 
 /* Planning Task List
 -------------------------------------------------- */
-ul.tasks li.external-event{
-	padding: 5px 5px 5px 5px;
+li.external-event{
+	padding: 9px;
 	cursor: move;
 }
-
-li.external-event.disabled{
-	color: @gray-light;
-	cursor: no-drop!important;
+li.external-event:not(.disabled):hover{
+	background-color: @well-bg;
 }
-li.external-event:hover{
-	background-color: @gray-lighter;
-	.border-radius(10px);
+li.external-event.disabled{
+	.text-muted();
+	cursor: no-drop !important;
 }
 
 

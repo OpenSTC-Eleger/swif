@@ -30,6 +30,50 @@ app.Models.Task = app.Models.GenericModel.extend({
 		}
 	},
 	
+	getEquipments : function(type) {
+		var self = this;
+		if(this.get('equipment_names')){
+			var equipments = []
+			switch(type){
+				case 'id':
+					_.each(this.get('equipment_names'),function(equipment){
+						equipments.push(equipment[0])
+					});
+					return equipments;
+				break;
+				case 'json':
+					_.each(this.get('equipment_names'),function(equipment){
+						equipments.push({id: equipment[0], name:equipment[1]} )
+					});
+					return equipments;
+				break;
+				default:
+					_.each(this.get('equipment_names'),function(equipment){
+						equipments.push(equipment[1]);
+					});
+					return equipments;
+			}
+		}
+		else{
+			return false;
+		}
+	},
+	
+	getInterEquipment : function(type) {
+		if(this.get('inter_equipment')){
+			switch(type){
+				case 'id': 
+					return this.get('inter_equipment')[0];
+				break;
+				default:
+					return _.titleize(this.get('inter_equipment')[1].toLowerCase());
+			}
+		}
+		else{
+			return false;
+		}
+	},
+	
 	getSite : function(type) {
 		if(this.get('site1')){
 			switch(type){

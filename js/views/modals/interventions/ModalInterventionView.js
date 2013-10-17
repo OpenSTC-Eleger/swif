@@ -37,7 +37,6 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 	    //this.initCollections().done(function(){
     	self.render();
 	    //})
-	    
     },
 
 
@@ -65,7 +64,7 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 				var modelJSON = self.model.toJSON();
-				var deadLineDt = modelJSON.date_deadline!=false ? moment( modelJSON.date_deadline ).tz(app.models.user.getContext().tz) : moment().tz(app.models.user.getContext().tz);
+				var deadLineDt = modelJSON.date_deadline!=false && !_.isUndefined(modelJSON.date_deadline) ? moment( modelJSON.date_deadline ).tz(app.models.user.getContext().tz) : moment().tz(app.models.user.getContext().tz);
 				deadLineDt.add('minutes',-deadLineDt.zone());
 				
 				var template = _.template(templateData, {
@@ -171,10 +170,10 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
 		var self = this;
 
 //		var input_service_id = this.getIdInDopDown(app.views.selectListServicesView);
-
+		var state = this.create ? app.Models.Intervention.status.open.key : this.model.toJSON().state;
 		var params = {
 			name: this.$('#interventionName').val(),
-			state: this.$('#isTemplate').is(':checked')?"template":"open",
+			state: this.$('#isTemplate').is(':checked')?"template":state,
 			description: this.$('#interventionDescription').val(),
 			date_deadline: new moment($('#interventionDateDeadline').val(), 'DD-MM-YYYY HH:mm').add('hours',2).toDate(),
 			service_id: app.views.advancedSelectBoxInterventionServicesView.getSelectedItem(),
@@ -193,11 +192,11 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
     		params.has_equipment = true;
     	}
 
-		this.model.save(params,{patch:!this.create, wait: true}).done(function(data){
+		this.model.save(params,{patch:!this.create, wait: true, silent: true}).done(function(data){
 			self.modal.modal('hide');
 			if(self.create){
 				self.model.setId(data);
-				self.model.fetch({silent: true, data: {fields: app.Collections.Interventions.fields}})
+				self.model.fetch({data: {fields: app.Collections.Interventions.fields}})
 				.done(function(){
 					if(! _.isUndefined(self.options.interventions) )
 						self.options.interventions.add(self.model);

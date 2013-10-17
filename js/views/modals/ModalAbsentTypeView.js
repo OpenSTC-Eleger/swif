@@ -77,7 +77,7 @@ app.Views.ModalAbsentTypeView = app.Views.GenericModalView.extend({
 
 		var params = {
 			name       : this.$('#absentTypeName').val(),
-			code       : this.$('#absentTypeCode').val(),
+			code       : this.$('#absentTypeCode').val().toUpperCase(),
 			description: this.$('#absentTypeDescription').val()
 		}
 
@@ -97,7 +97,7 @@ app.Views.ModalAbsentTypeView = app.Views.GenericModalView.extend({
 				}
 			})
 			.fail(function (e) {
-				console.log(e);
+				app.Helpers.Main.printError(e);
 			})
 			.always(function () {
 				$(self.el).find("button[type=submit]").button('reset');

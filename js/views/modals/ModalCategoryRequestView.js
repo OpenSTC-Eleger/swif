@@ -49,8 +49,8 @@ app.Views.ModalCategoryRequestView = app.Views.GenericModalView.extend({
 				cat   : self.model
 			});
 
-			self.modal.html(template);
-
+			self.modal.html(template);	
+			
 			self.modal.modal('show');
 		});
 
@@ -75,7 +75,7 @@ app.Views.ModalCategoryRequestView = app.Views.GenericModalView.extend({
 		this.model.setCode(this.$('#catCode').val(), false);*/
 		var params = {
 			name: this.$('#catName').val(),
-			code: this.$('#catCode').val()
+			code: this.$('#catCode').val().toUpperCase()
 		};	
 
 
@@ -95,7 +95,7 @@ app.Views.ModalCategoryRequestView = app.Views.GenericModalView.extend({
 				}
 			})
 			.fail(function (e) {
-				console.log(e);
+				app.Helpers.Main.printError(e);
 			})
 			.always(function () {
 				$(self.el).find("button[type=submit]").button('reset');
