@@ -1,5 +1,5 @@
 <td colspan="5" class="nestedTD">
-	<% if(!_.isEmpty(service.getUsersId())) { %>
+	
 	<table class="table table-striped table-condensed table-hover">
 		<thead>
 		<tr>
@@ -14,9 +14,9 @@
 
 		</tbody>
 	</table>
-	<% } else { %>
 
 	<!-- No Officer to display -->
+	<% if(_.isEmpty(service.getUsersId())) { %>
 	<div class="alert alert-info">
 		<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noOfficer %>.
 	</div>

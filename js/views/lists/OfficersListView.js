@@ -39,7 +39,8 @@ app.Views.OfficersListView = Backbone.View.extend({
 
 		var itemOfficerView  = new app.Views.ItemOfficerView({ model: model });
 		$(this.el).find('#rows-officers').prepend(itemOfficerView.render().el);
-		app.Helpers.Main.highlight($(itemOfficerView.el))
+		app.Helpers.Main.highlight($(itemOfficerView.el));
+		$('div.alert-info').fadeOut();
 
 		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.officerCreateOk);
 	},
