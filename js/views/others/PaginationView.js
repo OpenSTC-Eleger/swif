@@ -25,24 +25,25 @@ app.Views.PaginationView = Backbone.View.extend({
 
 	/** View Initialization
 	*/
-	initialize: function() {
+	initialize: function(options) {
 		this.currentRoute = Backbone.history.fragment;
 
-		
+		this.page = options.page;
+
 		// Display Go To Page //
-		if(!_.isUndefined(this.options.displayGoToPage)){
-			this.displayGoToPage = this.options.displayGoToPage;
+		if(!_.isUndefined(options.displayGoToPage)){
+			this.displayGoToPage = this.displayGoToPage;
 		}
 
 		// Size //
-		if(!_.isUndefined(this.options.size)){
-			this.size = this.options.size;
+		if(!_.isUndefined(options.size)){
+			this.size = this.size;
 		}
 
 
 		// Item per Page //
-		if(!_.isUndefined(this.options.itemsPerPage)){
-			this.itemsPerPage = this.options.itemsPerPage;
+		if(!_.isUndefined(options.itemsPerPage)){
+			this.itemsPerPage = this.itemsPerPage;
 		}
 		else{
 			this.itemsPerPage = app.config.itemsPerPage;
@@ -63,7 +64,7 @@ app.Views.PaginationView = Backbone.View.extend({
 			var template = _.template(templateData, {
 				lang    : app.lang,
 				route   : _(self.currentRoute).strLeftBack('/page'),
-				page    : self.options.page,
+				page    : self.page,
 				nbPage  : Math.ceil(self.collection.cpt / self.itemsPerPage),
 				goToPage: self.displayGoToPage,
 				size    : self.size
@@ -92,6 +93,6 @@ app.Views.PaginationView = Backbone.View.extend({
 		}
 
 		app.router.navigate(navigateTo, {trigger: true, replace: true});
-	},
+	}
 
 });

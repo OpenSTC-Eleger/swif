@@ -21,8 +21,9 @@ app.Views.TasksListView = app.Views.GenericListView.extend({
 	
 	/** View Initialization
 	*/
-	initialize: function () {
+	initialize: function (params) {
 
+		this.options = params;
 	},
 	
 	partialRender: function(){
@@ -217,7 +218,10 @@ app.Views.TasksListView = app.Views.GenericListView.extend({
 						
 						//display all seven days of the selected week
 						_.each(self.tasksUserFiltered, function(dayTasks, i){
-							$('#task-accordion').append(new app.Views.ItemTaskDayListView({day: dayTasks.day, tasks: dayTasks.tasks, parentListView: self}).render().el);
+							
+							var params = {day: dayTasks.day, tasks: dayTasks.tasks, parentListView: self};
+
+							$('#task-accordion').append(new app.Views.ItemTaskDayListView(params).render().el);
 						});
 	
 						self.selectListFilterOfficerView = new app.Views.AdvancedSelectBoxView({el: $("#filterListAgents"), collection: app.Collections.Officers.prototype})

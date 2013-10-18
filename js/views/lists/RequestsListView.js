@@ -22,8 +22,10 @@ app.Views.RequestsListView = app.Views.GenericListView.extend({
 
 	/** View Initialization
 	*/
-	initialize: function () {
+	initialize: function (params) {
 		var self = this;
+
+		this.options = params;
 
 		this.initCollection().done(function(){
 			// Unbind & bind the collection //

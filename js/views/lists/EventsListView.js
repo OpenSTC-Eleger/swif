@@ -25,20 +25,23 @@ app.Views.EventsListView = Backbone.View.extend({
 	/**
 	 * Initialize calendar view
 	 */
-	initialize: function(){	
+	initialize: function(options){	
+
 	
 		var self = this;
-		this.collections = this.options.collections;
+		this.collections = options.collections;
 		
 		var collection = null;
+
+		this.options = {};
 		
 		// Initialize year,week parameters if not yet in url with current year/week (for prev/next button on calendar)
-		if(_.isUndefined(this.options.year)) {
+		if(_.isUndefined(options.year)) {
 			this.options.year = moment().year();
 			this.options.week = moment().week();
 		}
 
-		if(!_.isUndefined(this.options.team)) {
+		if(!_.isUndefined(options.team)) {
 			//get team model selected on calendar
 			this.teamMode = true;			
 			this.model = _.find(this.collections.teams, function (o) { 
@@ -46,7 +49,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			});
 		} else {
 			//get officer model selected on calendar
-			if(_.isUndefined(this.options.officer)) {
+			if(_.isUndefined(options.officer)) {
 				this.model = this.collections.officers[0];
 				// Initialize first officer in tab if no officer passed in url
 				this.options.officer = this.model.id

@@ -9,17 +9,13 @@ app.Views.ItemTaskDayListView = Backbone.View.extend({
 	
 	className   : 'panel panel-default',
 
-	// The DOM events //
-	events       : {
-		
-
-	},
-
 
 
 	/** View Initialization
 	*/
-	initialize : function() {
+	initialize : function(params) {
+
+		this.options = params
 
 		// When the model are updated //
 		this.listenTo(this.options.tasks, 'change', this.change);
@@ -121,8 +117,7 @@ app.Views.ItemTaskDayListView = Backbone.View.extend({
 		});
 		$(this.el).hide().fadeIn('slow'); 
 		return this;
-	},
-
+	}
 
 
 });

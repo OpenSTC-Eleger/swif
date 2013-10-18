@@ -24,10 +24,14 @@ app.Views.PlanningView = Backbone.View.extend({
 
 	/** View Initialization
 	*/
-	initialize : function() {
+	initialize : function(params) {
+		var self = this;
+
+		this.options = params;
+
 		//By default display open intervention (intervention to schedule)
 		this.options.filter = 'state-open';
-		var self = this;
+		
 		
 		
 	    console.log("Planning Details view intialization")

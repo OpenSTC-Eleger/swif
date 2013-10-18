@@ -14,8 +14,8 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'click a.modalCreateInter'			: 'displayModalSaveInter',
-
+			'click a.modalCreateInter'     : 'displayModalSaveInter',
+			
 			'click #filterStateInterList li:not(.disabled) a' 	: 'setFilter'
 		}, 
 			app.Views.GenericListView.prototype.events
@@ -26,9 +26,12 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 
 	/** View Initialization
 	*/
-	initialize : function() {
+	initialize : function(params) {
 		var self = this;
-		console.log('Interventions view Initialize');
+
+		this.options = params;
+
+
 		this.initCollections().done(function(){
 			app.router.render(self);
 			// Unbind & bind the collection //
@@ -36,6 +39,8 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 			self.listenTo(self.collections.interventions, 'add',self.add);
 		});
 	},
+
+
 
 	add: function(model){
 		var itemInterView  = new app.Views.ItemInterventionView({ model: model });
@@ -54,6 +59,8 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		app.router.navigate(app.views.interventions.urlBuilder(), {trigger: false, replace: false});
 	},
 
+
+
 	/** Partial Render of the view
 	*/
 	partialRender: function (type) {
@@ -71,11 +78,13 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		//});
 	},
 	
+
+
 	/** Display the view
 	*/
 	render : function() {
 		var self = this;
-		console.log('-----------Interventions list view rendering--------------');
+
 		// Change the page title //
 		app.router.setPageTitle(app.lang.viewsTitles.interventionsMonitoring);
 
@@ -154,18 +163,6 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 	},
 
 
-	getTarget:function(e) {    	
-		e.preventDefault();
-		// Retrieve the ID of the intervention //
-		var link = $(e.target);
-		if(link.parents('tr').length > 0){
-			this.pos =  _(link.parents('tr').attr('id')).strRightBack('_');
-		}
-		else{
-			this.pos = -1;
-		}
-		},
-
 
 	/** Display the form to add / update an intervention
 	*/
@@ -176,7 +173,7 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		new app.Views.ModalInterventionView(params);
 	},
 
-	
+
 
 	/** Retrieve Equipment  (Vehicle)
 	*/
@@ -192,6 +189,8 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 			}
 		}
 	},
+
+
 
 	saveNewState: function(params, element) {
 		var self = this;
@@ -232,31 +231,19 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 
 		// Set the filter in the local Storage //
 		if(filterValue != 'delete-filter'){
-//			sessionStorage.setItem(this.filters, filterValue);
 			this.options.filter = {by: 'state', value:filterValue};
 		}
 		else{
 			delete this.options.filter;
 		}
 
-//		if(this.options.page <= 1){
-//			this.render();
-//		}
-//		else{
-//			app.router.navigate(app.routes.interventions.baseUrl, {trigger: true, replace: true});
-//		}
+
 		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 
 	},
 
 
 
-	/** Prevent the default action
-	*/
-	preventDefault: function(event){
-		event.preventDefault();
-	},
-	
 	initCollections: function(){
 		var self = this;
 		
@@ -345,7 +332,3 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 	}
   
 });
-
-
-
-

@@ -36,15 +36,15 @@ app.Views.GenericModalView = Backbone.View.extend({
 	shown: function(){
 
 		// Set the focus to the first input of the form if elFocus is undefined //
-		if(_.isUndefined(this.options.elFocus)){
+		if(_.isUndefined(this.elFocus)){
 			this.modal.find('input, textarea').first().focus();
 		}
 		else{
-			if($('#'+this.options.elFocus).hasClass('select2')){
-				$('#'+this.options.elFocus).select2('open');	
+			if($('#'+this.elFocus).hasClass('select2')){
+				$('#'+this.elFocus).select2('open');	
 			}
 			else{
-				this.modal.find('#'+this.options.elFocus).focus();	
+				this.modal.find('#'+this.elFocus).focus();	
 			}
 		}
 	}
