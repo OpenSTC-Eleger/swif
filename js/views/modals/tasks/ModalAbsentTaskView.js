@@ -21,7 +21,8 @@ app.Views.ModalAbsentTaskView = app.Views.GenericModalView.extend({
 
 	/** View Initialization
 	*/
-	initialize : function() {
+	initialize : function(params) {
+		this.options = params;
 
 		this.modal = $(this.el);
 		this.render();

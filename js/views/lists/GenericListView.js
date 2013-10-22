@@ -23,10 +23,11 @@ app.Views.GenericListView = Backbone.View.extend({
 	*/
 	render: function(opts) {
 
+
 		// Set the Tooltip //
 		$('*[data-toggle="tooltip"]').tooltip();
 
-		
+
 		// Set the sort icon //
 		$('th[data-sort-column]').append('<i class="icon-sort icon-large icon-muted pull-right">');
 

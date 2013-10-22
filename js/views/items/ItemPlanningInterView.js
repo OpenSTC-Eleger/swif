@@ -22,7 +22,9 @@ app.Views.ItemPlanningInterView = Backbone.View.extend({
 
 	/** View Initialization
 	*/
-	initialize : function() {
+	initialize : function(params) {
+		this.options = params;
+
 		this.detailedView = this.options.detailedView;
 		
 		this.model.off();		

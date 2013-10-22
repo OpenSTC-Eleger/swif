@@ -20,23 +20,26 @@ app.Views.ModalTaskDayDoneView = app.Views.GenericModalView.extend({
 
 	/** View Initialization
 	 */
-	initialize: function () {
+	initialize: function (params) {
 	    var self = this;
-	    console.log("Daily Task Done modal view intialization");
+
+	    this.options = params;
+	    
 	    this.modal = $(this.el);
     	self.render();
     },
 
-    /** Display the view
-     */
-    render: function () {
-		
+
+	/** Display the view
+	*/
+	render: function () {
+
 		// Change the page title depending on the create value //
 		app.router.setPageTitle(app.lang.viewsTitles.newTask);
 
 		// Change the active menu item //
 		app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
-		
+
 		var self = this;
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -46,7 +49,7 @@ app.Views.ModalTaskDayDoneView = app.Views.GenericModalView.extend({
 				task: self.model,
 				timeSpentDefault: self.secondsToHms(self.model.toJSON().remaining_hours * 60)
 			});
-			
+
 			self.modal.html(template);
 			self.modal.modal('show');
 

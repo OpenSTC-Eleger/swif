@@ -181,8 +181,10 @@ app.Views.AdvancedSelectBoxView = Backbone.View.extend({
 		return returnId;
 	},
 	
+	
+
 	/** Get the value of the selected item
-		*/
+	*/
 	getSelectedText: function(){
 
 		if(!_.isNull(this.select2.select2('data'))){

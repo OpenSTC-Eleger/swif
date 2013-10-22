@@ -13,13 +13,15 @@ app.Views.PlanningView = Backbone.View.extend({
 	
 	
 	selectedInter : '',
-	selectedTask : '',
+	selectedTask  : '',
 
 	sstoragePlanningSelected: 'selectedPlanning',
 	
 	// The DOM events //
 	events: {		
+
 	},
+
 
 
 	/** View Initialization
@@ -41,11 +43,12 @@ app.Views.PlanningView = Backbone.View.extend({
 	},
 
 
+
 	/** Display the view
 	*/
 	render : function() {
 		var self = this;
-		
+
 
 		// Retrieve the Login template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -71,23 +74,24 @@ app.Views.PlanningView = Backbone.View.extend({
 			$('#calendar').append( new app.Views.EventsListView(self.options).render().el );	
 			//interventions left panel			
 			app.views.planningInterListView = new app.Views.PlanningInterListView(self.options)
-					
-			
+
+
 		});
 		$(this.el).hide().fadeIn('slow');
 		return this;
 	},
 
 
+
 	/** Partial Render of the view
-		*/
-	partialRender: function () {	
+	*/
+	partialRender: function () {
 		var self = this;
 		this.initCollections().done(function(){
 			app.views.planningInterListView.render();
-	    });	    		
+		});
 	},
-	
+
 	/**
 	 * Init intervention and task collections
 	 */
@@ -98,8 +102,8 @@ app.Views.PlanningView = Backbone.View.extend({
 		if(_.isUndefined(this.collections)){this.collections = {}}
 		if(_.isUndefined(this.collections.interventions)){this.collections.interventions = new app.Collections.Interventions();}
 		if(_.isUndefined(this.collections.tasks)){ this.collections.tasks = new app.Collections.Tasks(); }
-		
-		
+
+
 		// Check the parameters //
 		if(_.isUndefined(this.options.sort)){
 			this.options.sort = this.collections.interventions.default_sort;
@@ -122,7 +126,7 @@ app.Views.PlanningView = Backbone.View.extend({
 				sort   : this.options.sort.by+' '+this.options.sort.order
 			}
 		};
-		
+
 		var globalSearch = {};
 		if(!_.isUndefined(this.options.search)){
 			globalSearch.search = this.options.search;
@@ -138,10 +142,12 @@ app.Views.PlanningView = Backbone.View.extend({
 		return this.fetchCollections();
 	
 	},
-	
+
+
+
 	/**
-	 * Fetch collections
-	 */
+	* Fetch collections
+	*/
 	fetchCollections : function(){
 		var self = this;
 		//Fetch officers, teams, and interventions collections
@@ -156,4 +162,3 @@ app.Views.PlanningView = Backbone.View.extend({
 	}
 
 });
-

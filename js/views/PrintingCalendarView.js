@@ -9,9 +9,11 @@ app.Views.PrintingCalendarView =  Backbone.View.extend({
 
 	/** View Initialization
 	*/
-	initialize: function () {
-		this.calendar = this.options.calendar;
-		this.events = this.options.events;
+	initialize: function (params) {
+		this.options = params;
+
+		this.calendar = params.calendar;
+		this.events = params.events;
 	},
 
 

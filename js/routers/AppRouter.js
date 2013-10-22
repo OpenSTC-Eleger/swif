@@ -96,12 +96,10 @@ app.Router = Backbone.Router.extend({
 	login: function(){
 		// Check if the user is connect //
 		if(!this.checkConnect()){
-			console.log('User pas connecté donc je lance la login view');
 			app.views.loginView = new app.Views.LoginView({ model: app.models.user });
 			this.render(app.views.loginView);
 		}
 		else{
-			console.log('Home page');
 			this.navigate(app.routes.home.url, {trigger: true, replace: true});
 		}
 	},

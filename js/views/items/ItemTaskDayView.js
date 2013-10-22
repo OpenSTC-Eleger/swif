@@ -20,7 +20,8 @@ app.Views.ItemTaskDayView = Backbone.View.extend({
 
 	/** View Initialization
 	*/
-	initialize : function() {
+	initialize : function(params) {
+		this.options = params;
 
 		// When the model are updated //
 		this.listenTo(this.model, 'change', this.change);

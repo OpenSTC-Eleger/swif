@@ -21,16 +21,17 @@ app.Views.ModalOfficerView = app.Views.GenericModalView.extend({
 
 	/** View Initialization
 	*/
-	initialize : function() {
-		var self = this;
+	initialize : function(params) {
+		this.options = params;
 
+		var self = this;
 
 		this.modal = $(this.el);
 
 
 		// Check if it's a create or an update //
 		if(_.isUndefined(this.model)){
-			
+
 			this.model = new app.Models.Officer();
 			this.render();
 		}

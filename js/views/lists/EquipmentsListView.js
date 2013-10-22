@@ -19,7 +19,8 @@ app.Views.EquipmentsListView = app.Views.GenericListView.extend({
 
 	/** View Initialization
 	*/
-	initialize: function () {
+	initialize: function (params) {
+		this.options = params;
 
 		var self = this;
 

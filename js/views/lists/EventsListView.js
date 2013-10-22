@@ -4,11 +4,11 @@
 app.Views.EventsListView = Backbone.View.extend({
 	
 	//template name
-	templateHTML: 'calendar',	
+	templateHTML: 'calendar',
 	//Dom element for calendar
 	divCalendar : 	null,
-	
-	calendarView: 	'agendaWeek',	
+
+	calendarView: 	'agendaWeek',
 	teamMode    :		 false,
 	initialized : false,
 	
@@ -17,39 +17,40 @@ app.Views.EventsListView = Backbone.View.extend({
 		'click .fc-button-next'                  	: 'nextDate',
 		'click #listAgents li a, #listTeams li a' 	: 'selectPlanning',
 
-		'keyup #searchOfficerOrTeam'             : 'searchOfficerOrTeam'
+		'keyup #searchOfficerOrTeam'                : 'searchOfficerOrTeam'
 	},
 	
-	urlParameters : ['officer','team','year','week'],
+	urlParameters : ['officer', 'team', 'year', 'week'],
+	
 	
 	/**
-	 * Initialize calendar view
-	 */
-	initialize: function(options){	
+	* Initialize calendar view
+	*/
+	initialize: function(params){
 
-	
+
 		var self = this;
-		this.collections = options.collections;
-		
-		var collection = null;
 
-		this.options = {};
-		
+		this.options = params;
+
+		this.collections = this.options.collections;
+
+
 		// Initialize year,week parameters if not yet in url with current year/week (for prev/next button on calendar)
-		if(_.isUndefined(options.year)) {
+		if(_.isUndefined(this.options.year)) {
 			this.options.year = moment().year();
 			this.options.week = moment().week();
 		}
 
-		if(!_.isUndefined(options.team)) {
+		if(!_.isUndefined(this.options.team)) {
 			//get team model selected on calendar
-			this.teamMode = true;			
+			this.teamMode = true;
 			this.model = _.find(this.collections.teams, function (o) { 
 				return o.id == self.options.team
 			});
 		} else {
 			//get officer model selected on calendar
-			if(_.isUndefined(options.officer)) {
+			if(_.isUndefined(this.options.officer)) {
 				this.model = this.collections.officers[0];
 				// Initialize first officer in tab if no officer passed in url
 				this.options.officer = this.model.id
@@ -58,7 +59,7 @@ app.Views.EventsListView = Backbone.View.extend({
 			else{
 				this.model = _.find(this.collections.officers, function (o) { 
 					return o.id == self.options.officer
-				});				
+				});
 			}
 		}
 		
@@ -67,7 +68,7 @@ app.Views.EventsListView = Backbone.View.extend({
 		
 		if ( !_.isUndefined(app.views.printingCalendarView) )
 			app.views.printingCalendarView.close();
-				
+
 	},
 
     

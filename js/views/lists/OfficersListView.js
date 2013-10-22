@@ -21,7 +21,9 @@ app.Views.OfficersListView = Backbone.View.extend({
 
 	/** View Initialization
 	*/
-	initialize: function () {
+	initialize: function (params) {
+		this.options = params;
+
 		// Instantiate the collection //
 		this.collection = new app.Collections.Officers();
 

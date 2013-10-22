@@ -26,13 +26,15 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 
 	/** View Initialization
 	*/
-	initialize: function() {		
+	initialize: function(params) {
+		this.options = params;
+
 		var self = this;
 		
 		this.filterValue = 'state-open';
 		
-		this.collections = this.options.collections;
-	    app.router.render(this);
+		this.collections = params.collections;
+		app.router.render(this);
 	    
 	    this.collections.interventions.off();
 	    this.listenTo(self.collections.interventions, 'add', this.addInter);

@@ -14,7 +14,9 @@ app.Views.ModalContactEdit = app.Views.GenericModalView.extend({
 
 
 
-	initialize : function() {
+	initialize : function(params) {
+		this.options = params;
+
 		var self = this;
 		this.user = this.options.user
 		this.modal = $(this.el);

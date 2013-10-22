@@ -13,14 +13,16 @@ app.Views.ClaimerContactView = Backbone.View.extend({
 		return 'address_' + this.model.id
 	},
 
-	initialize: function () {
+	initialize: function (params) {
+		this.options = params;
+
 		this.user = this.options.user;
 		this.listenTo(this.model, 'updateSuccess', this.changed);
 		this.listenTo(this.model,'destroy', this.destroyed);
 	},
 
 	render: function () {
-		console.log('in render')
+
 		var self = this;
 
 		$.get("templates/" + self.templateHTML + ".html", function (templateData) {

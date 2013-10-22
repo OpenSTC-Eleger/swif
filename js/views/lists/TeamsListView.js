@@ -21,7 +21,8 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 
 	/** View Initialization
 	*/
-	initialize: function () {
+	initialize: function (params) {
+		this.options = params;
 
 		var self = this;
 
@@ -85,7 +86,7 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 			app.Views.GenericListView.prototype.render(self.options);
 
 
-			// Create item place view //
+			// Create item team view //
 			_.each(self.collection.models, function(team, i){
 				var itemTeamView  = new app.Views.ItemTeamView({model: team});
 				$('#rows-items').append(itemTeamView.render().el);
@@ -98,7 +99,6 @@ app.Views.TeamsListView = app.Views.GenericListView.extend({
 				collection   : self.collection,
 				itemsPerPage : self.itemsPerPage
 			})
-			app.views.paginationView.render();
 
 
 			// If an ID is selected display the "Team members, services view" //
