@@ -135,8 +135,8 @@ app.Views.PlanningInterListView = app.Views.GenericListView.extend({
 	/**
 	 * Re calculate pagination 
 	 */
-	paginationRender : function() {
-		app.views.paginationView.initialize();
+	paginationRender : function(params) {
+		app.views.paginationView.initialize(params.page);
 		app.views.paginationView.render();
 	},
 	

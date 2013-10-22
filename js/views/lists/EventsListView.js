@@ -125,8 +125,8 @@ app.Views.EventsListView = Backbone.View.extend({
 	nextDate: function(e) {
 		this.options.week = String(parseInt(this.options.week)+1);
 		app.router.navigate(this.urlBuilder(), {trigger: false, replace: false});
-		//Add new url in pagination for intervention panel 
-		app.views.planningInterListView.paginationRender();
+		//Add new url in pagination for intervention panel
+		app.views.planningInterListView.paginationRender(this.options);
 	},
 
 	/**
@@ -136,7 +136,7 @@ app.Views.EventsListView = Backbone.View.extend({
 		this.options.week = String(parseInt(this.options.week)-1);
 		app.router.navigate(this.urlBuilder(), {trigger: false, replace: false});
 		//Add new url in pagination for intervention panel 
-		app.views.planningInterListView.paginationRender();
+		app.views.planningInterListView.paginationRender(this.options);
 	},
 	
 	/**
@@ -160,11 +160,11 @@ app.Views.EventsListView = Backbone.View.extend({
 		}
 		
 		app.router.navigate(this.urlBuilder(), {trigger: false, replace: true});
-		this.initialize();
+		this.initialize(this.options);
 		this.render();
 		
 		//Add new url in pagination for intervention panel 
-		app.views.planningInterListView.paginationRender();
+		app.views.planningInterListView.paginationRender(this.options);
 		
 	},
 	
