@@ -22,7 +22,9 @@ app.Views.ModalPlaceView = app.Views.GenericModalView.extend({
 
 	/** View Initialization
 	*/
-	initialize : function() {
+	initialize : function(params) {
+		this.options = params;
+
 		var self = this;
 
 		this.modal = $(this.el);

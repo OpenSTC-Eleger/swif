@@ -7,19 +7,6 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 
 	templateHTML : 'items/itemInterventionTaskList',
 	
-//	className   : function(){
-//
-//		var classRow = '';
-//
-//		if(this.model.getState() == app.Models.Request.status.wait.key && app.models.user.isManager() && _.contains(app.models.user.getServices(), this.model.getService('id'))) {
-//			classRow = app.Models.Request.status.wait.color + ' bolder';
-//		}
-//		else if(this.model.getState() == app.Models.Request.status.confirm.key && app.models.user.isDST()){
-//			classRow = app.Models.Request.status.confirm.color + ' bolder';
-//		}
-//
-//		return classRow;
-//	},
 
 	// The DOM events //
 	events       : {
@@ -33,7 +20,10 @@ app.Views.ItemInterventionTaskListView = Backbone.View.extend({
 	
 	/** View Initialization
 	*/
-	initialize : function() {
+	initialize : function(params) {
+
+		this.options = params;
+
 		this.options.tasks.off();
 		this.listenTo(this.options.tasks, 'add', this.add);
 		this.listenTo(this.options.tasks, 'remove', this.destroyTask);

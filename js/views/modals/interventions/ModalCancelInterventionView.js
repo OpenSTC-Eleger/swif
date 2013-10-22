@@ -19,9 +19,11 @@ app.Views.ModalCancelInterventionView = app.Views.GenericModalView.extend({
 
 	/** View Initialization
 	 */
-	initialize: function () {
+	initialize: function (params) {
 	    var self = this;
-	    console.log("Cancel Intervention view intialization")
+
+	    this.options = params;
+
 	    this.modal = $(this.el);
     	self.render();    
     },

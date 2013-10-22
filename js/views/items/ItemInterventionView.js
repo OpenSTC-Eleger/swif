@@ -23,7 +23,9 @@ app.Views.ItemInterventionView = Backbone.View.extend({
 
 	/** View Initialization
 	*/
-	initialize : function() {
+	initialize : function(params) {
+		this.options = params;
+
 		this.model.off();
 
 		// When the model are updated //

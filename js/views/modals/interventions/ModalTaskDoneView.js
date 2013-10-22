@@ -21,9 +21,11 @@ app.Views.ModalTaskDoneView = app.Views.GenericModalView.extend({
 
 	/** View Initialization
 	 */
-	initialize: function () {
+	initialize: function (params) {
 	    var self = this;
-	    console.log("Task Done modal view intialization")
+	    
+	    this.options = params;
+
 	    this.modal = $(this.el);
     	self.render();    
     },

@@ -27,8 +27,10 @@ app.Views.ItemInterventionTaskView = Backbone.View.extend({
 
 	/** View Initialization
 	*/
-	initialize : function() {
-		//this.model.off();
+	initialize : function(params) {
+		this.options = params;
+		
+		this.model.off();
 
 		// When the model are updated //
 		this.listenTo(this.model, 'change', this.change);

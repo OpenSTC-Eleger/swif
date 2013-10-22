@@ -21,9 +21,11 @@ app.Views.ModalInterventionAddTaskView = app.Views.GenericModalView.extend({
 
 	/** View Initialization
 	 */
-	initialize: function () {
+	initialize: function (params) {
 	    var self = this;
-	    console.log("Intervention Add Task view intialization")
+	    
+	    this.options = params;
+
 	    this.modal = $(this.el);
 		this.model = new app.Models.Task();
     	self.render();    
