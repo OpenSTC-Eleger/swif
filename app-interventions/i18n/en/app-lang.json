@@ -1,0 +1,28 @@
+{
+	"connection"		: "connection",
+	"log_in"			: "Log in",
+	"login"				: "login",
+	"password"			: "password",
+	"last_connection"	: "last connection",
+	"settings"			: "settings",
+	"help"				: "help",
+	"about"				: "about",
+	"log_out"			: "log out",
+
+
+	"errorMessages" : {
+		"connectionError"     : "connection error",
+	    "loginIncorrect"      : "Login or password incorrect",
+	    "serverUnreachable"   : "Unable to connect to the server, please contact administrator"
+	},
+
+	"infoMessages" : {
+   		"information"         : "Information",
+    	"successLogout"       : "You are now logout"
+	},
+
+	"viewsTitles" : {
+    	"login": "OpenSTC connection",
+    	"about"			: "About OpenSTC"
+	}
+}

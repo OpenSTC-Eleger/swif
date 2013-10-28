@@ -6,12 +6,7 @@
 
 	"home": {
 		"url" 		: "",
-		"function" 	: "dashboard"
-	},
-
-	"home": {
-		"url" 		: "dashboard",
-		"function" 	: "dashboard"
+		"function" 	: "homePageRedirect"
 	},
 
 	"login": {

@@ -21,13 +21,13 @@
 	<ul id="nav-menu-app" class="nav navbar-nav" role="menu">
 		<% _.each(user.getMenus().content[0].children, function (menuRacine, i) {%>
 
-		<li class="dropdown" id="<%= _.slugify(menuRacine.tag) %>" role="menuitem">
+		<li class="dropdown" id="<%= menuRacine.tag %>" role="menuitem">
 		<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuRacine.id %>"><%= menuRacine.name %> <b class="caret"></b></a>
             <ul aria-labelledby="drop-menu-app-<%= menuRacine.id %>" role="menu" class="dropdown-menu">
                 <% _.each(menuRacine.children, function (menuItem, i) {%>
 
 					<li role="menuitem">
-						<a href="#<%= _.slugify(menuItem.tag) %>"><%= menuItem.name %></a>
+						<a href="#<%= menuItem.tag %>"><%= menuItem.name %></a>
 					</li>
 
 				<% }); %>
@@ -45,11 +45,11 @@
 				<i class="icon-user icon-large"></i> <%= user.getFullname() %> <b class="caret"></b>
 			</a>
 			<ul class="dropdown-menu" role="menu">
-				<li role="menuitem"><a href="#about"><i class="icon-info-sign icon-fixed-width"></i> <%= _.capitalize(lang.about) %></a></li>
-				<li role="menuitem" class="disabled"><a href="#help"><i class="icon-question-sign icon-fixed-width"></i> <%= _.capitalize(lang.help) %></a></li>
+				<li role="menuitem"><a href="#about"><i class="icon-info-sign icon-fixed-width"></i> <%= lang.about %></a></li>
+				<li role="menuitem" class="disabled"><a href="#help"><i class="icon-question-sign icon-fixed-width"></i> <%= lang.help %></a></li>
 				<li role="menuitem" class="divider"></li>
-				<li role="menuitem" class="disabled"><a href="#settings"><i class="icon-cog icon-fixed-width"></i> <%= _.capitalize(lang.settings) %></a></li>
-				<li role="menuitem"><a href="#logout"><i class="icon-signout icon-fixed-width"></i> <%= _.capitalize(lang.actions.logOut) %></a></li>
+				<li role="menuitem" class="disabled"><a href="#settings"><i class="icon-cog icon-fixed-width"></i> <%= lang.settings %></a></li>
+				<li role="menuitem"><a href="#logout"><i class="icon-signout icon-fixed-width"></i> <%= lang.actions.logOut %></a></li>
 			</ul>
 		</li>
 	</ul>
