@@ -51,8 +51,6 @@ define([
 
 			});
 
-			console.log('Attention les yeux');
-			console.log(app);
 			app.views.headerView.render(app.router.mainMenus.manageInterventions);
 
 

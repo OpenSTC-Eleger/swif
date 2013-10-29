@@ -95,12 +95,6 @@ define([
 				app.models.user.setUserData(data);
 				app.models.user.save();
 
-				console.log('je passe par la fonction de login');
-
-				console.log('----------------------------------------');
-				console.log(app.models.user.getFirstname());
-				console.log(app.models.user.getMenus());
-
 				app.setAjaxSetup();
 
 				app.views.headerView.render(app.router.mainMenus.manageInterventions);

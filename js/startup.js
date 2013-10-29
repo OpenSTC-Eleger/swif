@@ -13,6 +13,7 @@ require.config({
 		localStorage       : 'libs/backbone-localStorage-1.1.7',
 		nprogress          : 'libs/NProgress-0.1.2',
 		bootstrap          : 'libs/bootstrap-3.0.0',
+		less               : 'libs/less-1.5.0-min',
 		
 		app                : 'app',
 		main               : 'main'
@@ -34,7 +35,20 @@ require.config({
 			deps   : ['jquery'],
 			exports: 'NProgress'
 		}
-	}
+	},
+
+	packages: [
+	{
+		name: 'css',
+		location: 'require-css',
+		main: 'css'
+	},
+	{
+		name: 'less',
+		location: 'require-less',
+		main: 'less'
+  }
+]
 
 });
 
@@ -43,7 +57,7 @@ require.config({
 
 
 require([
-	'main'
+	'main', 'less'
 ], function(main){
 
 

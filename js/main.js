@@ -18,8 +18,6 @@ define('main', [
 		init: function() {
 
 
-			console.log(_.capitalize('lol'));
-
 		// Retrieve App properties, configuration and language //
 		//$.when(app.loadStaticFile('properties.json'), app.loadStaticFile('config/configuration.json'), app.loadStaticFile('config/routes.json'), app.loadI18nScripts(lang))
 		$.when(app.loadStaticFile('properties.json'), app.loadStaticFile('config/configuration.json'), app.loadStaticFile('config/routes.json'), app.loadI18nScripts('fr'))

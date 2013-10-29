@@ -34,10 +34,6 @@ define([
 		initialize: function () {
 			var self = this;
 
-			//console.log(app.ploum());
-
-			console.log(app);
-
 
 			// Create all the Routes of the app //
 			_.each(app.routes, function(route, i){
