@@ -1,6 +1,5 @@
 define([
 	'app',
-	'global',
 
 	'views/HeaderView',
 	'views/FooterView',
@@ -8,8 +7,7 @@ define([
 	'views/NotFoundView',
 	'views/DashboardView'
 
-
-], function(app, global, HeaderView, FooterView, LoginView, NotFoundView, DashboardView){
+], function(app, HeaderView, FooterView, LoginView, NotFoundView, DashboardView){
 
 
 	/******************************************
@@ -34,16 +32,20 @@ define([
 		initialize: function () {
 			var self = this;
 
+			//console.log(app.ploum());
+
+			console.log(app);
+
 
 			// Create all the Routes of the app //
-			_.each(global.routes, function(route, i){
+			_.each(app.routes, function(route, i){
 				self.route(route.url, route.function);
 			});
 
 
 			// Header, Footer Initialize //    	
-			global.views.headerView = new HeaderView();
-			global.views.footerView = new FooterView();
+			app.views.headerView = new HeaderView();
+			app.views.footerView = new FooterView();
 		},
 
 
@@ -73,7 +75,7 @@ define([
 		*/
 		checkConnect: function () {
 
-			if (global.models.user.hasAuthToken()) {
+			if (app.models.user.hasAuthToken()) {
 				console.info('#### User has an authToken ####');
 				return true;
 			}
@@ -101,7 +103,7 @@ define([
 		/** Redirect to the home page
 		*/
 		homePageRedirect: function(){
-			this.navigate(_.strLeft(global.routes.requestsInterventions.url, '('), {trigger: true, replace: true});
+			this.navigate(_.strLeft(app.routes.requestsInterventions.url, '('), {trigger: true, replace: true});
 		},
 
 
@@ -111,11 +113,11 @@ define([
 		login: function(){
 			// Check if the user is connect //
 			if(!this.checkConnect()){
-				global.views.loginView = new LoginView({ model: global.models.user });
-				this.render(global.views.loginView);
+				app.views.loginView = new LoginView({ model: app.models.user });
+				this.render(app.views.loginView);
 			}
 			else{
-				this.navigate(global.routes.home.url, {trigger: true, replace: true});
+				this.navigate(app.routes.home.url, {trigger: true, replace: true});
 			}
 		},
 
@@ -124,7 +126,7 @@ define([
 		/** Logout the user
 		*/
 		logout: function(){
-			global.models.user.logout();
+			app.models.user.logout();
 		},
 
 
@@ -141,8 +143,8 @@ define([
 		/** About the App
 		*/
 		dashboard: function(){
-			global.views.dashboardView = new DashboardView();
-			this.render(global.views.dashboardView);
+			app.views.dashboardView = new DashboardView();
+			this.render(app.views.dashboardView);
 		},
 
 
@@ -350,8 +352,8 @@ define([
 		*/
 		notFound: function(page){
 
-			global.views.notFoundView = new NotFoundView();
-			this.render(global.views.notFoundView);
+			app.views.notFoundView = new NotFoundView();
+			this.render(app.views.notFoundView);
 		}
 
 	});

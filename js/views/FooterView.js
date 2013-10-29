@@ -1,10 +1,8 @@
 define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'global'
+	'app',
+	'backbone'
 
-], function($, _, Backbone, global){
+], function(app, Backbone){
 
 
 	/******************************************
@@ -35,8 +33,8 @@ define([
 
 				// Templating // 
 				var template = _.template(templateData, {
-					app  : global.properties,
-					lang : global.lang
+					app  : app.properties,
+					lang : app.lang
 				});
 
 				$(self.el).html(template);

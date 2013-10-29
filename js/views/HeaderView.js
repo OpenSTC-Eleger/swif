@@ -1,10 +1,10 @@
 define([
-	'jquery',
-	'underscore',
+	'app',
 	'backbone',
-	'global'
+	'models/UserModel'
 
-], function($, _, Backbone, global){
+
+], function(app, Backbone){
 
 
 	/******************************************
@@ -38,9 +38,19 @@ define([
 
 			$.get("templates/" + this.templateHTML + ".html", function(templateData) {
 
+
+				console.log(app.models.user.getFirstname());
+
+								console.log('je passe par la fonction header');
+
+				console.log('----------------------------------------');
+				console.log(app.models.user.getFirstname());
+				console.log(app.models.user.getMenus());
+				console.log(app.models.user);
+
 				var template = _.template(templateData, {
 					lang  : app.lang,
-					user  : global.models.user
+					user  : app.models.user
 				});
 
 				$(self.el).html(template);

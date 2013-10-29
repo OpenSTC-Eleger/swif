@@ -1,10 +1,8 @@
 define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'global'
+	'app',
+	'backbone'
   
-], function($, _, Backbone, global){
+], function(app, Backbone){
 
 
 	/******************************************
@@ -276,7 +274,7 @@ define([
 			var self = this;
 
 			var login_data = {
-				'dbname'  : global.config.openerp.database,
+				'dbname'  : app.config.openerp.database,
 				'login'   : loginUser,
 				'password': passUser,
 			};
@@ -308,7 +306,7 @@ define([
 				//app.setAjaxSetup();
 
 				// Refresh the header //
-				global.views.headerView.render();
+				app.views.headerView.render();
 
 				// Navigate to the login Page //
 				Backbone.history.navigate(app.routes.login.url, {trigger: true, replace: true});

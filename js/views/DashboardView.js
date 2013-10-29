@@ -1,10 +1,8 @@
 define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'global',
+	'app',
+	'backbone'
 
-], function($, _, Backbone, global){
+], function(app, Backbone){
 
 
 
@@ -40,20 +38,22 @@ define([
 			var self = this;
 
 			// Change the page title //
-			//app.router.setPageTitle(app.lang.applicationName +' '+ global.lang.viewsTitles.login);
+			app.router.setPageTitle(app.lang.applicationName +' '+ "Tableau de bord");
 
 			// Retrieve the Login template // 
 			$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 				var template = _.template(templateData, {
-					lang: global.lang
+					lang: app.lang
 				});
 
 				$(self.el).html(template);
 
 			});
 
-			global.views.headerView.render(global.router.mainMenus.manageInterventions);
+			console.log('Attention les yeux');
+			console.log(app);
+			app.views.headerView.render(app.router.mainMenus.manageInterventions);
 
 
 			$(this.el).hide().fadeIn();
@@ -64,8 +64,6 @@ define([
 		launch: function(e){
 
 			e.preventDefault();
-
-			
 		}
 
 

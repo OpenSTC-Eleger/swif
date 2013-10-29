@@ -1,11 +1,9 @@
 define([
-	'jquery',
-	'underscore',
+	'app',
 	'backbone',
-	'global',
 	'bootstrap',
 
-], function($, _, Backbone, global){
+], function(app, Backbone){
 
 
 	/******************************************
@@ -44,13 +42,13 @@ define([
 			var self = this;
 
 			// Change the page title //
-			//app.router.setPageTitle(app.lang.applicationName +' '+ global.lang.viewsTitles.login);
+			app.router.setPageTitle(app.lang.applicationName +' '+ app.lang.viewsTitles.login);
 
 			// Retrieve the Login template // 
 			$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 				var template = _.template(templateData, {
-					lang: global.lang, 
+					lang: app.lang, 
 					user: self.model
 				});
 
@@ -94,13 +92,19 @@ define([
 			
 			checkLogin.done(function(data){
 				// Set user data and Save it //
-				global.models.user.setUserData(data);
-				global.models.user.save();
+				app.models.user.setUserData(data);
+				app.models.user.save();
+
+				console.log('je passe par la fonction de login');
+
+				console.log('----------------------------------------');
+				console.log(app.models.user.getFirstname());
+				console.log(app.models.user.getMenus());
 
 				app.setAjaxSetup();
 
-				global.views.headerView.render(global.router.mainMenus.manageInterventions);
-				Backbone.history.navigate(global.routes.home.url, {trigger: true, replace: true});
+				app.views.headerView.render(app.router.mainMenus.manageInterventions);
+				Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
 			});
 			checkLogin.fail(function(e){
 	   	        

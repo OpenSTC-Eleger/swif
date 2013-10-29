@@ -1,10 +1,8 @@
 define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'global'
+	'app',
+	'backbone'
 
-], function($, _, Backbone, global){
+], function(app, Backbone){
 	
 
 	/******************************************
@@ -31,16 +29,16 @@ define([
 			var self = this;
 
 			// Change the page title //
-			global.router.setPageTitle(global.lang.viewsTitles.pageNotFound);
+			app.router.setPageTitle(app.lang.viewsTitles.pageNotFound);
 
 			// Change the active menu item //
-			global.views.headerView.selectMenuItem('');
+			app.views.headerView.selectMenuItem('');
 
 		   
 			// Retrieve the Login template // 
 			$.get("templates/" + this.templateHTML + ".html", function(templateData){
 			 
-				var template = _.template(templateData, { lang: global.lang, homeUrl : global.routes.home.url});
+				var template = _.template(templateData, { lang: app.lang, homeUrl : app.routes.home.url});
 				$(self.el).html(template);
 			});
 

@@ -16,6 +16,10 @@
 <% if(user.hasAuthToken()){ %>
 <div class="collapse navbar-collapse navbar-ex1-collapse">
 
+<% console.log('Coucou je suis dans le Header'); %>
+<% console.log(user); %>
+<% console.log(user.getFirstname()); %>
+<% console.log(user.getMenus()); %>
 
 	<!-- Main menu application -->
 	<ul id="nav-menu-app" class="nav navbar-nav" role="menu">
