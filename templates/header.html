@@ -20,7 +20,7 @@
 	<!-- Main menu application -->
 	<ul id="nav-menu-app" class="nav navbar-nav" role="menu">
 		<% var menus = user.getMenus().content;
-		var modules_to_load = ["openstc","openbase"];
+		var modules_to_load = ["openstc","openbase","openresa"];
 		_.each(modules_to_load, function (module, i){
 			if(!_.isUndefined(menus[module])) {%>
 			<% _.each(menus[module].children, function (menuRacine, i) {%>
