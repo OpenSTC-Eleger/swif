@@ -8,6 +8,8 @@ define([
 
 ], function(Backbone, moment, NProgress){
 
+	'use strict';
+
 
 var app =  {
 

@@ -8,7 +8,7 @@ define('main', [
 
 ], function(app, Backbone, AppRouter, UsersCollection, UserModel){
 
-
+	'use strict';
 	
 	var main  = {
 
@@ -16,6 +16,9 @@ define('main', [
 		/** Application initialization
 		*/
 		init: function() {
+
+
+			console.log(_.capitalize('lol'));
 
 		// Retrieve App properties, configuration and language //
 		//$.when(app.loadStaticFile('properties.json'), app.loadStaticFile('config/configuration.json'), app.loadStaticFile('config/routes.json'), app.loadI18nScripts(lang))

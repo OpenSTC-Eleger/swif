@@ -9,6 +9,8 @@ define([
 
 ], function(app, HeaderView, FooterView, LoginView, NotFoundView, DashboardView){
 
+	'use strict';
+
 
 	/******************************************
 	* Application Router

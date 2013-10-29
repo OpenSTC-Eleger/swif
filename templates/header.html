@@ -16,28 +16,29 @@
 <% if(user.hasAuthToken()){ %>
 <div class="collapse navbar-collapse navbar-ex1-collapse">
 
-<% console.log('Coucou je suis dans le Header'); %>
-<% console.log(user); %>
-<% console.log(user.getFirstname()); %>
-<% console.log(user.getMenus()); %>
 
 	<!-- Main menu application -->
 	<ul id="nav-menu-app" class="nav navbar-nav" role="menu">
-		<% _.each(user.getMenus().content[0].children, function (menuRacine, i) {%>
-
-		<li class="dropdown" id="<%= menuRacine.tag %>" role="menuitem">
-		<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuRacine.id %>"><%= menuRacine.name %> <b class="caret"></b></a>
-            <ul aria-labelledby="drop-menu-app-<%= menuRacine.id %>" role="menu" class="dropdown-menu">
-                <% _.each(menuRacine.children, function (menuItem, i) {%>
-
-					<li role="menuitem">
-						<a href="#<%= menuItem.tag %>"><%= menuItem.name %></a>
-					</li>
-
-				<% }); %>
-			</ul>
-		</li>
-	<% }); %>
+		<% var menus = user.getMenus().content;
+		var modules_to_load = ["openstc","openbase"];
+		_.each(modules_to_load, function (module, i){
+			if(!_.isUndefined(menus[module])) {%>
+			<% _.each(menus[module].children, function (menuRacine, i) {%>
+			
+			<li class="dropdown" id="<%= _.slugify(menuRacine.tag) %>" role="menuitem">
+			<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuRacine.id %>"><%= menuRacine.name %> <b class="caret"></b></a>
+	            <ul aria-labelledby="drop-menu-app-<%= menuRacine.id %>" role="menu" class="dropdown-menu">
+	                <% _.each(menuRacine.children, function (menuItem, i) {%>
+	
+						<li role="menuitem">
+							<a href="#<%= _.slugify(menuItem.tag) %>"><%= menuItem.name %></a>
+						</li>
+	
+					<% }); %>
+				</ul>
+			</li>
+		<% }); }%>
+	<% });%>
 	</ul>
 
 

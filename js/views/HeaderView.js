@@ -39,15 +39,6 @@ define([
 			$.get("templates/" + this.templateHTML + ".html", function(templateData) {
 
 
-				console.log(app.models.user.getFirstname());
-
-								console.log('je passe par la fonction header');
-
-				console.log('----------------------------------------');
-				console.log(app.models.user.getFirstname());
-				console.log(app.models.user.getMenus());
-				console.log(app.models.user);
-
 				var template = _.template(templateData, {
 					lang  : app.lang,
 					user  : app.models.user
