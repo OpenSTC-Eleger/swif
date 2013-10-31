@@ -1,12 +1,12 @@
 /******************************************
 * APPLICATION NAMESPACE
 */
-define([
+define('app', [
 
 	// Load our app module and pass it to our definition function
-	'backbone', 'moment', 'nprogress'
+	'backbone', 'moment', 'nprogress', 'pnotify'
 
-], function(Backbone, moment, NProgress){
+], function(Backbone, moment, NProgress, pnotify){
 
 	'use strict';
 
@@ -183,7 +183,3 @@ var app =  {
 return app;
 
 });
-
-
-// No conflict between Underscore && Underscore String //
-//_.mixin(_.str.exports());

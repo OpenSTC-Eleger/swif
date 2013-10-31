@@ -1,9 +1,8 @@
 define([
 	'app',
-	'backbone',
 	'bootstrap',
 
-], function(app, Backbone){
+], function(app){
 
 
 	/******************************************

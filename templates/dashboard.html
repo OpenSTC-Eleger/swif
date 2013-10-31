@@ -1,5 +1,5 @@
 <!-- Connection Form -->
-<div class="container well">
+<div class="container well container-margin">
 
 
 <div class="page-header">
@@ -7,30 +7,33 @@
 </div>
 
 
-	<div class="row">
-		<div class="col-sm-6 col-md-3">
-			<div class="thumbnail">
+	<% var nbMenus = _.size(menus);
 
-			<div class="caption">
-				<h3>Interventions</h3>
-				<img class="img-circle" src="http://www.9ori.com/art/media/images/de558e3bc0.jpg" width="200px" />
-				<p><a href="#" id="lol" class="btn btn-primary btn-block">Accéder</a></p>
-			</div>
+		_.each(menus, function (menu, i){ 
+
+		var offset = 0;	
+
+		if(i % 4 == 0){ %>
+
+			<div class="row">
+
+			<%	if(nbMenus%4 == 3){ offset = 1; }else if(nbMenus%4 == 2){ offset = 3; }else if(nbMenus%4 == 1){ offset = 4; } %>
+		<% } %>
+		
+		<div class="col-sm-6 col-lg-3 col-lg-offset-<%= offset %>">
+			<div class="thumbnail">
+				<div class="caption">
+					<h2 class="text-center"><i class="icon-home icon-large icon-border" /><%= menu.name %></h2>
+					<p><a href="#<%= _.first(menu.children[0].children).tag %>" class="btn btn-primary btn-lg btn-block">Accéder</a></p>
+				</div>
 			</div>
 		</div>
 
-		<div class="col-sm-6 col-md-3">
-			<div class="thumbnail">
-
-			<div class="caption">
-				<h3>Prêt réservations</h3>
-				<img class="img-circle" src="http://www.9ori.com/art/media/images/de558e3bc0.jpg" width="200px" />
-				<p><a href="#" class="btn btn-primary btn-block">Accéder</a></p>
+		<% if(i % 4 == 3){ %>
 			</div>
-			</div>
-		</div>
+			<div class="row">&nbsp;</div>
+		<% } %>
 
-
-	</div>
+	<% }); %>
 
 </div>

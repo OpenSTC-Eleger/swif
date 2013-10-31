@@ -1,8 +1,7 @@
 define([
 	'app',
-	'backbone'
 
-], function(app, Backbone){
+], function(app){
 
 
 	/******************************************

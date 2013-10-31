@@ -19,7 +19,7 @@
 
 	<!-- Main menu application -->
 	<ul id="nav-menu-app" class="nav navbar-nav" role="menu">
-		<% var menus = user.getMenus().content;
+		<% var menus = user.getMenus();
 		var modules_to_load = ["openstc","openbase"];
 		_.each(modules_to_load, function (module, i){
 			if(!_.isUndefined(menus[module])) {%>

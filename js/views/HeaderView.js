@@ -1,10 +1,7 @@
 define([
 	'app',
-	'backbone',
-	'models/UserModel'
 
-
-], function(app, Backbone){
+], function(app){
 
 
 	/******************************************
@@ -37,6 +34,10 @@ define([
 			var self = this;
 
 			$.get("templates/" + this.templateHTML + ".html", function(templateData) {
+
+
+				console.log('##################### Les menus de l\'utilisateur ######################"');
+				console.log(app.models.user.getMenus());
 
 
 				var template = _.template(templateData, {

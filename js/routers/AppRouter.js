@@ -47,6 +47,7 @@ define([
 		},
 
 
+
 		/** Render a view by undelegating all Event
 		*/
 		render: function (view) {
@@ -101,7 +102,12 @@ define([
 		/** Redirect to the home page
 		*/
 		homePageRedirect: function(){
-			this.navigate(_.strLeft(app.routes.requestsInterventions.url, '('), {trigger: true, replace: true});
+			if(!this.checkConnect()){
+				this.navigate(app.routes.login.url, {trigger: true, replace: true});
+			}
+			else{
+				this.navigate(_.strLeft(app.routes.dashboard.url, '('), {trigger: true, replace: true});
+			}
 		},
 
 
@@ -157,6 +163,8 @@ define([
 			if(!_.isNull(filter))  { params.filter = filter; }
 			if(!_.isNull(sort))    { params.sort = sort; }
 			if(!_.isNull(page))    { params.page = page; }
+
+			console.log('je t ai cliqué pourtant');
 
 			app.views.requestsListView = new app.Views.RequestsListView(params);
 		},

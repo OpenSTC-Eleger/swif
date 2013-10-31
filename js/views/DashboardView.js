@@ -1,8 +1,7 @@
 define([
 	'app',
-	'backbone'
 
-], function(app, Backbone){
+], function(app){
 
 
 
@@ -37,6 +36,7 @@ define([
 		render: function() {
 			var self = this;
 
+
 			// Change the page title //
 			app.router.setPageTitle(app.lang.applicationName +' '+ "Tableau de bord");
 
@@ -44,7 +44,8 @@ define([
 			$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 				var template = _.template(templateData, {
-					lang: app.lang
+					lang : app.lang,
+					menus : app.models.user.getMenus()
 				});
 
 				$(self.el).html(template);

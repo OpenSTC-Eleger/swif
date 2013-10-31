@@ -12,12 +12,13 @@ require.config({
 		'underscore.string': 'libs/underscore-string-2.3.2',
 		localStorage       : 'libs/backbone-localStorage-1.1.7',
 		nprogress          : 'libs/NProgress-0.1.2',
+		pnotify            : 'libs/pnotify-1.2.0',
 		bootstrap          : 'libs/bootstrap-3.0.0',
 		less               : 'libs/less-1.5.0-min',
-		
+
 		app                : 'app',
 		main               : 'main'
-		
+
 	},
 
 	shim: {
@@ -34,34 +35,30 @@ require.config({
 		'nprogress': {
 			deps   : ['jquery'],
 			exports: 'NProgress'
+		},
+		'pnotify': {
+			deps   : ['jquery'],
+			exports: 'pnotify'
 		}
 	},
 
-	packages: [
-	{
-		name: 'css',
-		location: 'require-css',
-		main: 'css'
-	},
-	{
-		name: 'less',
-		location: 'require-less',
-		main: 'less'
-  }
-]
+ 	packages: [{ 
+		name    : 'app-interventions',
+		location: '../app-interventions',
+		main    : 'main'
+    }]
 
 });
 
 
 
-
-
+/******************************************
+* Start The App
+*/
 require([
 	'main', 'less'
 ], function(main){
 
-
-	// Start The App //
 	main.init('fr');
 
 });

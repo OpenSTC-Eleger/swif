@@ -6,10 +6,10 @@
 
 	"home": {
 		"url" 		: "",
-		"function" 	: "dashboard"
+		"function" 	: "homePageRedirect"
 	},
 
-	"home": {
+	"dashboard": {
 		"url" 		: "dashboard",
 		"function" 	: "dashboard"
 	},

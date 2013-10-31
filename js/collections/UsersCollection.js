@@ -1,10 +1,9 @@
 define([
-	'underscore',
 	'localStorage',
 
 	'models/UserModel'
 
-], function(_, UserModel){
+], function(UserModel){
 
 
 	/******************************************

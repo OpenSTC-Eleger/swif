@@ -249,7 +249,7 @@ define([
 			this.setLogin(data.user.login);
 			this.setUID(data.user.id)
 			this.setAuthToken(data.token);
-			this.setMenu(data.menu);
+			this.setMenu(data.menu.content);
 			this.setLastConnection(moment());
 			this.setContext({tz: data.user.context_tz, lang: data.user.context_lang});
 			this.setFirstname(data.user.firstname);
@@ -260,9 +260,6 @@ define([
 			this.setContact(data.user.contact_id);
 			this.setManager(data.user.isManager);
 			this.setDST(data.user.isDST);
-
-			//this.queryManagableTeams();
-			//this.queryManagableOfficers();
 		},
 
 
