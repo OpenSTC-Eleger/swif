@@ -1,0 +1,75 @@
+<div class="page-header">
+	<h1>
+		<%= lang.viewsTitles.interventionsMonitoring %>
+		<sup class="badge badge-info" id="nbInterPlanned" data-toggle="tooltip" data-original-title="<%= lang.planningFenced %>" data-placement="bottom">
+			
+		</sup>
+
+		<sup class="badge" id="nbInterPending" data-toggle="tooltip" data-original-title="<%= lang.pending %>" data-placement="bottom">
+			
+		</sup>
+	</h1>
+</div>
+
+
+
+	<!-- Table toolbar -->
+	<div class="tableToolbar row">
+		<div class="col-xs-7 col-md-9 col-lg-10">
+			<a href="#" class="btn btn-primary modalCreateInter"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
+		</div>
+
+		<form class=" form-search pull-right col-xs-5 col-md-3 col-lg-2">
+			<div class="input-group">
+				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+				<span class="input-group-btn">
+					<button type="submit" class="btn btn-primary"><i class="icon-search icon-large"></i></button>
+				</span>
+			</div>
+		</form>
+	</div>
+	<!-- /Table toolbar -->
+
+
+
+		<!-- Message if No intervention to Display -->
+	<% if(bookings.length <= 0) { %>
+		<div class="tableToolbar">
+			<div class="alert alert-info">
+				<i class="icon-info-sign icon-large"></i>&nbsp;<%= lang.infoMessages.noRequest %>
+			</div>
+		</div>
+	<% } %>
+
+
+
+	<!-- Table Interventions -->
+	<div class="table-responsive">
+	<table class="table-interventions table table-bordered table-hover table-sorter table-striped-collapse">
+		<thead>
+			<tr>
+				<th data-sort-column="id">N°</th>
+				<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
+				<th>Ressources</th>
+				<th>Début résa</th>
+				<th>Fin résa</th>
+				<th>Utilisateur / demandeur</th>
+				<th>Date demande</th>
+				<th>Statut</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		
+		<tbody id="booking-items">
+		<!-- Inter rows -->
+		
+		</tbody>
+	</table>
+	</div>
+
+	<!-- Table pagination -->
+	<div id="pagination" class="pull-right"></div>
+	<!-- /Table pagination -->
+
+
+</div>

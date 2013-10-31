@@ -280,7 +280,6 @@ define([
 
 	});
 
-
 return router;
 
 });
