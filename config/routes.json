@@ -87,6 +87,24 @@
 	"equipments": {
 		"url"		: "equipements(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"	: "equipments"
+	},
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	"reservations": {
+		"url"		: "reservations(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"function"	: "bookings"
 	}
+	
+	
 
 }

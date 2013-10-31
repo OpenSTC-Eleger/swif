@@ -1,0 +1,28 @@
+<td><%= booking.id %></td>
+<td>
+	<a class="accordion-object" href="#collapse_<%= booking.id %>" data-toggle="popover" data-content="" data-delay="160" data-original-title="<%= _.capitalize(lang.description) %>">
+		<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(_(booking.getName()).escapeHTML()) %>
+	</a>
+	<!-- Interventions action -->
+	<p class="row-actions invisible">
+		<!--<a href="#bookings/<%= booking.getId() %>" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>">-->
+		<a href="#" class="modalSaveInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>">
+			<i class="icon-pencil icon-large"></i>
+		</a>&nbsp;
+
+		<a href="#" class="printInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="inter">
+			<i class="icon-print icon-large" data-action="inter">&nbsp;</i>
+		</a>
+		<% if(booking.hasActions("cancel")) { %>
+			 &nbsp;<a href="#" class="buttonCancelInter" data-toggle="modal"><i class="icon-ban-circle icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
+		<% } %>
+	</p>
+</td>
+<td><%= booking.getResources() %></td>
+<td><%= booking.getStartDate('human') %></td>
+<td><%= booking.getEndDate('human') %></td>
+<td><%= booking.getPartner() %></td>
+<td><%= booking.getCreateDate('human') %></td>
+<!-- Check the state of the booking -->
+<td><%= booking.getState() %></td>
+<td><%= booking.getActions() %></td>

@@ -329,5 +329,21 @@ app.Router = Backbone.Router.extend({
 		app.views.notFoundView = new app.Views.NotFoundView();
 		this.render(app.views.notFoundView);
 	}
+	,
+	
+	/******************************************************PRETS**************************************************************************/
+	
+	
+	/** Reservations List
+	*/
+
+	bookings: function(search, filter, sort, page){
+		var params = {};
+		if(!_.isNull(search)){params.search = search}
+		if(!_.isNull(filter)){params.filter = filter}
+		if(!_.isNull(sort)){params.sort = sort}
+		if(!_.isNull(page)){params.page = page}
+		app.views.bookingsListView = new app.Views.BookingsListView(params);
+	},
 
 });
