@@ -1,8 +1,9 @@
 define([
 	'app',
-	'backbone'
-  
-], function(app, Backbone){
+
+], function(app){
+
+	'user strict';
 
 
 	/******************************************

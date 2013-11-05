@@ -1,6 +1,5 @@
 define([
-	'app',
-	'bootstrap',
+	'app'
 
 ], function(app){
 

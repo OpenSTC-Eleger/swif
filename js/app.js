@@ -4,7 +4,7 @@
 define('app', [
 
 	// Load our app module and pass it to our definition function
-	'backbone', 'moment', 'nprogress', 'pnotify'
+	'backbone', 'moment', 'nprogress', 'pnotify', 'bootstrap'
 
 ], function(Backbone, moment, NProgress, pnotify){
 
@@ -82,7 +82,7 @@ var app =  {
 				401: function() {
 					// Redirect the to the login page only if we are not on the login page //
 					if(Backbone.history.fragment != app.routes.login.url){
-						app.Helpers.Main.clearViews();
+						app.clearViews();
 						app.router.navigate(app.routes.login.url, {trigger: true, replace: true});
 					}
 					app.loader('hide');
@@ -132,6 +132,16 @@ var app =  {
 
 	objectifyFilters: function (filterArray) {
 		return $.extend({},filterArray);
+	},
+
+
+
+
+	// Clear all the view off the app Undelegate and delete //
+	clearViews: function(){
+		_.each(app.views, function(view, viewName){
+			view.undelegateEvents();
+		});
 	},
 
 

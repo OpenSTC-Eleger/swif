@@ -1,14 +1,17 @@
 define('app-interventions', [
+	'app',
+	'context',
 
-	'app', 
+	'requestsListView'
 
-], function(app){
+], function(app, context, RequestsListView){
 
 	'use strict';
 
 
 	return function(){
-		
+
+		app.views.requestsListView = new RequestsListView(context);
 	}
 
 });

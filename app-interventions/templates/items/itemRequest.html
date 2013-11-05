@@ -9,7 +9,7 @@
 		data-html="true"
 		data-original-title="<%= _.capitalize(lang.about) %>"
 		data-delay="160"
-		data-content="<%= _(request.getDescription()).escapeHTML() %><hr /><%= app.lang.createdBy %>: <%= request.getCreateAuthor() %>">
+		data-content="<%= _(request.getDescription()).escapeHTML() %><hr /><%= lang.createdBy %>: <%= request.getCreateAuthor() %>">
 		<%= request.getName() %>
 	</a>
 </td>
@@ -30,7 +30,7 @@
 <!-- Service -->
 <td>
 	<span
-	<% if(request.getState() == app.Models.Request.status.wait.key){ %>
+	<% if(request.getState() == RequestModel.status.wait.key){ %>
 		data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.toValidateBy) %> <%= request.getManager() %>"
 	<% } %>
 	><%= request.getService() %>
@@ -58,16 +58,16 @@
 <!-- Request State -->
 <td>
 	<span 
-		class="label label-<%= app.Models.Request.status[request.getState()].color %>" 
+		class="label label-<%= RequestModel.status[request.getState()].color %>" 
 		data-toggle="tooltip"
 		data-original-title="<%= request.getInformations() %>">
-		<%= app.Models.Request.status[request.getState()].translation %>
+		<%= RequestModel.status[request.getState()].translation %>
 	</span>
 </td>
 
 
 <!-- Request Action -->
-<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
+<% if(user.isDST() || user.isManager()){ %>
 	<td class="text-center">
 
 	<!-- Check if the user can make action on the request -->
@@ -81,19 +81,19 @@
 			<!-- Check if the request is not in waiting state -->
 			<%
 
-			if(request.getState() != app.Models.Request.status.wait.key){
+			if(request.getState() != RequestModel.status.wait.key){
 				var mainAction = '';
-				var mainActionIcon = app.Models.Request.actions[request.getState()].icon;
-				var mainActionColor = app.Models.Request.actions[request.getState()].color;
+				var mainActionIcon = RequestModel.actions[request.getState()].icon;
+				var mainActionColor = RequestModel.actions[request.getState()].color;
 				var mainActionDisabled = 'disabled';
 			}else{
-				var mainAction = app.Models.Request.actions.valid.key;
-				var mainActionColor = app.Models.Request.actions.valid.color;
-				var mainActionIcon = app.Models.Request.actions.valid.icon;
+				var mainAction = RequestModel.actions.valid.key;
+				var mainActionColor = RequestModel.actions.valid.color;
+				var mainActionIcon = RequestModel.actions.valid.icon;
 				var mainActionDisabled = '';
 
 				/ Remove validate action from the array actions /
-				actions = _.without(actions, app.Models.Request.actions.valid.key);
+				actions = _.without(actions, RequestModel.actions.valid.key);
 			} %>
 
 			<!-- Main action button -->
@@ -110,8 +110,8 @@
 			<ul class="dropdown-menu pull-right text-left">
 				<% _.each(actions, function(action){ %>
 					<li>
-						<a href="#" class="button<%= _.capitalize(app.Models.Request.actions[action].key) %>Request">
-							<i class="<%= app.Models.Request.actions[action].icon %> icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.Models.Request.actions[action].translation) %>
+						<a href="#" class="button<%= _.capitalize(RequestModel.actions[action].key) %>Request">
+							<i class="<%= RequestModel.actions[action].icon %> icon-fixed-width"></i>&nbsp;<%= _.capitalize(RequestModel.actions[action].translation) %>
 						</a>
 					</li>
 				<% }); %>

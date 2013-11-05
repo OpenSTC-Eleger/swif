@@ -19,8 +19,8 @@
 				</div>
 				<% }
 				else{ if(!_.isNull(request.getId())){ %>
-					<span  class="label label-<%= app.Models.Request.status[request.getState()].color %> pull-right">
-						<%= app.Models.Request.status[request.getState()].translation %>
+					<span  class="label label-<%= RequestModel.status[request.getState()].color %> pull-right">
+						<%= RequestModel.status[request.getState()].translation %>
 					</span>
 				<% } }%> 
 			</h3>
@@ -257,7 +257,7 @@
 			<button type="submit" form="formSaveRequest" class="btn btn-primary" 
 				data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>"
 				<%= (_.isUndefined(loader) ? '' : 'disabled') %>
-				<%= (!_.isNull(request.getId()) && request.getState() != app.Models.Request.status.wait.key ? 'disabled' : '') %>
+				<%= (!_.isNull(request.getId()) && request.getState() != RequestModel.status.wait.key ? 'disabled' : '') %>
 			>
 				<%= _.capitalize(lang.actions.save) %>
 			</button>&nbsp;&nbsp;

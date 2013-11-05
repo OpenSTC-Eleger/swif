@@ -2,16 +2,17 @@
 	<h1>
 		<%= lang.viewsTitles.requestsList %>
 
-		<% if(app.models.user.isDST() || app.models.user.isManager()){
 
-		  if(app.models.user.isDST()) { 
-				var classColor      = app.Models.Request.status.confirm.color;
-				var filterValue     = app.Models.Request.status.confirm.key;
+		<% if(user.isDST() || user.isManager()){
+
+		  if(user.isDST()) { 
+				var classColor      = RequestModel.status.confirm.color;
+				var filterValue     = RequestModel.status.confirm.key;
 				var actionToProcess = lang.actions.confirm; 
 			}
-			else if(app.models.user.isManager()){ 
-		   		var classColor      = app.Models.Request.status.wait.color;
-		   		var filterValue     = app.Models.Request.status.wait.key;
+			else if(user.isManager()){ 
+		   		var classColor      = RequestModel.status.wait.color;
+		   		var filterValue     = RequestModel.status.wait.key;
 		   		var actionToProcess = lang.actions.process; }
 			else{ 
 		   		var classColor      = '';
@@ -93,7 +94,7 @@
 					</div>
 				</th>
 
-				<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
+				<% if(user.isDST() || user.isManager()){ %>
 					<th><%= _.capitalize(lang.action) %></th>
 				<% } %>
 			</tr>

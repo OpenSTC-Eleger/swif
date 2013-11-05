@@ -1,13 +1,14 @@
 define([
 	'app',
+	'context',
 
-	'views/HeaderView',
-	'views/FooterView',
-	'views/LoginView',
-	'views/NotFoundView',
-	'views/DashboardView'
+	'headerView',
+	'footerView',
+	'loginView',
+	'notFoundView',
+	'dashboardView'
 
-], function(app, HeaderView, FooterView, LoginView, NotFoundView, DashboardView){
+], function(app, context, HeaderView, FooterView, LoginView, NotFoundView, DashboardView){
 
 	'use strict';
 
@@ -157,17 +158,25 @@ define([
 		*/
 		requestsList: function(search, filter, sort, page) {
 
-			var params = {};
+			// Reset the context //
+			//context = {};
 
-			if(!_.isNull(search))  { params.search = search; }
-			if(!_.isNull(filter))  { params.filter = filter; }
-			if(!_.isNull(sort))    { params.sort = sort; }
-			if(!_.isNull(page))    { params.page = page; }
+			if(!_.isNull(search))  { context.search = search; }else{ delete(context.search); }
+			if(!_.isNull(filter))  { context.filter = filter; }else{ delete(context.filter); }
+			if(!_.isNull(sort))    { context.sort = sort; }else{ delete(context.sort); }
+			if(!_.isNull(page))    { context.page = page; }else{ delete(context.page); }
 
-			console.log('je t ai cliqué pourtant');
 
-			app.views.requestsListView = new app.Views.RequestsListView(params);
+			//app.views.requestsListView = new app.Views.RequestsListView(params);
+			this.loadModule('app-interventions');
 		},
+
+
+		loadModule: function (module) {
+            require([module], function (module) {
+                module();
+            });
+        },
 
 
 

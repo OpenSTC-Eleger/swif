@@ -1,7 +1,7 @@
 define([
 	'localStorage',
 
-	'models/UserModel'
+	'userModel'
 
 ], function(UserModel){
 
