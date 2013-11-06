@@ -64,23 +64,13 @@ require.config({
 		paginationView          : 'js/views/PaginationView',
 		advancedSelectBoxView   : 'js/views/AdvancedSelectBoxView',
 
-		
-
-
-		/* ########### App-Interventions ########### */
-		
-		// Views //
-		requestsListView    : 'app-interventions/js/views/lists/RequestsListView',
-		itemRequestView     : 'app-interventions/js/views/items/ItemRequestView',
-		modalRequestView    : 'app-interventions/js/views/modals/ModalRequestView',
-
-		// Collections //
-		requestsCollection  : 'app-interventions/js/collections/RequestsCollection',
-
-		// Models //
-		requestModel        : 'app-interventions/js/models/RequestModel',
-
 	},
+
+	packages: [{ 
+		name    : 'app-interventions',
+		location: 'app-interventions',
+		main    : 'main'
+    }],
 
 	shim: {
 		'underscore': {
@@ -112,14 +102,12 @@ require.config({
 		'select2': {
 			deps   : ['jquery'],
 			exports: 'select2'
+		},
+		'app-interventions' : {
+			deps   : ['app-interventions/config/require-config']
 		}
-	},
+	}
 
- 	packages: [{ 
-		name    : 'app-interventions',
-		location: 'app-interventions',
-		main    : 'main'
-    }]
 
 });
 
@@ -132,6 +120,6 @@ require([
 	'main', 'less'
 ], function(main){
 
-	main.init('fr');
+	main.init(window.navigator.language);
 
 });

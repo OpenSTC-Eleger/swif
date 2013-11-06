@@ -168,7 +168,10 @@ define([
 
 
 			//app.views.requestsListView = new app.Views.RequestsListView(params);
-			this.loadModule('app-interventions');
+			//this.loadModule('app-interventions');
+
+			//require(['app-interventions/test']);
+				this.loadModule('app-interventions');
 		},
 
 

@@ -281,18 +281,6 @@ define([
 		*/
 		initialize: function (model) {
 			//console.log("Request Model Initialization");
-
-			// Set the translation for the states / actions //
-			/*app.Models.Request.status.wait.translation     = app.lang.wait;
-			app.Models.Request.status.valid.translation    = app.lang.valid;
-			app.Models.Request.status.confirm.translation  = app.lang.confirm;
-			app.Models.Request.status.refused.translation  = app.lang.refused;
-			app.Models.Request.status.closed.translation   = app.lang.finished;
-
-			app.Models.Request.actions.valid.translation   = app.lang.actions.validate;
-			app.Models.Request.actions.confirm.translation = app.lang.actions.confirmChief;
-			app.Models.Request.actions.refused.translation = app.lang.actions.refuse;*/
-
 		},
 
 	}, {
