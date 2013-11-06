@@ -1,7 +1,13 @@
 /******************************************
 * Require JS Configuration
 */
-require.config({
+requirejs.config({
+
+	config : {
+		'app-interventions' : {
+			url : 'app-interventionsLOL'
+		}
+	},
 
 
 	paths: {

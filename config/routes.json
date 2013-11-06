@@ -1,4 +1,5 @@
 {
+
 	"notFound": {
 		"url"		: "*invalidRoute",
 		"function"	: "notFound"
@@ -29,69 +30,9 @@
 		"function"	: "about"
 	},
 
-	"requestsInterventions": {
-		"url"		: "demandes-dinterventions(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
-		"function"	: "requestsList"
-	},
-
-	"interventions": {
-		"url"		: "interventions(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
-		"function"	: "interventions"
-	},
-
-	"planning": {
-		"url"		: "planning(/officer/:officer)(/team/:team)(/year/:year)(/week/:week)",
-		"function"	: "planning"
-	},
-
-	"tasks": {
-		"url"		: "taches(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)(/year/:year)(/week/:week)",
-		"function"	: "tasksCheck"
-	},
-
-	"services": {
-		"url"		: "services(/search/:search)(/sort/:sort)(/page:page)",
-		"function"	: "services"
-	},
-
-	"places": {
-		"url"		: "sites(/search/:search)(/sort/:sort)(/page:page)",
-		"function"	: "places"
-	},
-
-	"categoriesTasks": {
-		"url"		: "categories-des-taches(/search/:search)(/sort/:sort)(/page:page)",
-		"function"	: "categoriesTasks"
-	},
-
-	"categoriesRequests": {
-		"url"		: "categories-des-interventions(/search/:search)(/sort/:sort)(/page:page)",
-		"function"	: "categoriesRequests"
-	},
-
-	"teams": {
-		"url"		: "equipes(/id/:id)(/search/:search)(/sort/:sort)(/page:page)",
-		"function"	: "teams"
-	},
-
-	"claimers": {
-		"url"		: "organisations(/search/:search)(/sort/:sort)(/page:page)",
-		"function"	: "claimers"
-	},
-
-	"claimersType": {
-		"url"		: "types-dorganisation(/search/:search)(/sort/:sort)(/page:page)",
-		"function"	: "claimerTypes"
-	},
-
-	"absentTypes": {
-		"url"		: "types-dabscence(/search/:search)(/sort/:sort)(/page:page)",
-		"function"	: "absentTypes"
-	},
-
-	"equipments": {
-		"url"		: "equipements(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
-		"function"	: "equipments"
+	"app-intervention": {
+		"url"       : "app-interventions/*url",
+		"function"	: "loadAppInterventions"
 	}
 
 }

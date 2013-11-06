@@ -4,6 +4,13 @@
 require.config({
 
 
+	config : {
+		'requestsListView' : {
+			url : 'app-interventionsLOL'
+		}
+	},
+
+
 	paths: {
 		
 		// Views //

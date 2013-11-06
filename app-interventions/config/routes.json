@@ -1,31 +1,7 @@
 {
-	"notFound": {
-		"url"		: "*invalidRoute",
-		"function"	: "notFound"
-	},
-
-	"home": {
-		"url" 		: "",
-		"function" 	: "homePageRedirect"
-	},
-
-	"login": {
-		"url" 		: "login",
-		"function" 	: "login"
-	},
-
-	"logout": {
-		"url"		: "logout",
-		"function"	: "logout"
-	},
-
-	"about": {
-		"url"		: "about",
-		"function"	: "about"
-	},
 
 	"requestsInterventions": {
-		"url"		: "demandes-dinterventions(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"url"		: "app-interventions/demandes-dinterventions(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"	: "requestsList"
 	},
 

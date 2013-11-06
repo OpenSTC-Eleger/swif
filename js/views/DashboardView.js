@@ -18,7 +18,7 @@ define([
 		
 		// The DOM events //
 		events: {
-			'click #lol'   :   'launch'
+			
 		},
 
 
@@ -58,14 +58,6 @@ define([
 			$(this.el).hide().fadeIn();
 			return this;
 		},
-
-
-		launch: function(e){
-
-			e.preventDefault();
-		}
-
-
 
 
 	});

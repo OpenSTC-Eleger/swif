@@ -78,6 +78,7 @@ define('main', [
 				// Router initialization //
 				app.router = new AppRouter();
 
+
 				// Listen url changes //
 				Backbone.history.start({pushState: false});
 			})

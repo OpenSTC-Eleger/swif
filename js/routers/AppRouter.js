@@ -76,11 +76,9 @@ define([
 		checkConnect: function () {
 
 			if (app.models.user.hasAuthToken()) {
-				console.info('#### User has an authToken ####');
 				return true;
 			}
 			else {
-				console.info('#### User has no authToken ####');
 				return false;
 			}
 		},
@@ -168,10 +166,28 @@ define([
 
 
 			//app.views.requestsListView = new app.Views.RequestsListView(params);
-			//this.loadModule('app-interventions');
+			
 
-			//require(['app-interventions/test']);
+			console.log('Je load la page des interventions');
+
+
+			//this.loadModule('requestsListView');
+ 			
+ 			require(['requestsListView'], function (module) {
+                module();
+            })
+
+
+		},
+
+
+
+		loadAppInterventions: function(param){
+
+			if(!require.defined('app-interventions')){
 				this.loadModule('app-interventions');
+			}
+
 		},
 
 
