@@ -13,6 +13,8 @@ define([
 
 ], function(app, context, AppHelpers, RequestsCollection, RequestModel, GenericListView, PaginationView, ItemRequestView, ModalRequestView){
 
+	'use strict';
+
 
 	/******************************************
 	* Requests List View
@@ -80,7 +82,7 @@ define([
 
 
 			// Retrieve the template //
-			$.get('app-interventions/templates/'+ this.templateHTML + '.html', function(templateData){
+			$.get(app.moduleUrl+'/templates/'+ this.templateHTML + '.html', function(templateData){
 
 				var template = _.template(templateData, {
 					lang             : app.lang,

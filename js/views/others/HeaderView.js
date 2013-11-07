@@ -35,9 +35,14 @@ define([
 
 			$.get("templates/" + this.templateHTML + ".html", function(templateData) {
 
+
+				console.log('---------------------------------------');
+				console.log(app.models.user.getMenus());
+
 				var template = _.template(templateData, {
-					lang  : app.lang,
-					user  : app.models.user
+					lang        : app.lang,
+					user        : app.models.user,
+					menusToLoad : app.config.menus
 				});
 
 				$(self.el).html(template);

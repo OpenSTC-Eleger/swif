@@ -98,7 +98,7 @@ define([
 
 
 			// Retrieve the template // 
-			$.get("app-interventions/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
 
 
 				var template = _.template(templateData, {

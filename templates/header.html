@@ -19,11 +19,15 @@
 
 	<!-- Main menu application -->
 	<ul id="nav-menu-app" class="nav navbar-nav" role="menu">
-		<% var menus = user.getMenus();
-		var modules_to_load = ["openstc","openbase"];
-		_.each(modules_to_load, function (module, i){
-			if(!_.isUndefined(menus[module])) {%>
-			<% _.each(menus[module].children, function (menuRacine, i) {%>
+		<% 
+			var menus = user.getMenus();
+		
+		_.each(menusToLoad, function (moduleName, shortName){
+
+			var moduleName = moduleName;
+
+			if(!_.isUndefined(menus[shortName])) {
+			 _.each(menus[shortName].children, function (menuRacine, i) {%>
 			
 			<li class="dropdown" id="<%= _.slugify(menuRacine.tag) %>" role="menuitem">
 			<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuRacine.id %>"><%= menuRacine.name %> <b class="caret"></b></a>
@@ -38,6 +42,7 @@
 				</ul>
 			</li>
 		<% }); }%>
+
 	<% });%>
 	</ul>
 

@@ -3,16 +3,12 @@
 */
 requirejs.config({
 
-	config : {
-		'app-interventions' : {
-			url : 'app-interventionsLOL'
-		}
-	},
-
 
 	paths: {
 		
-		/* ########### Libs ########### */
+		/* #############
+		* Libs
+		*/
 		jquery             : 'js/libs/jQuery-2.0.3-min',
 		underscore         : 'js/libs/underscore-1.5.2-min',
 		backbone           : 'js/libs/backbone-1.1.0',
@@ -32,51 +28,71 @@ requirejs.config({
 		context            : 'js/context',
 
 
-		/* ###########       App        ########### */
-
-		// Helpers //
+		/* #############
+		* Helpers
+		*/
 		appHelpers		          : 'js/helpers/main',
 
-		// Router //
+		/* #############
+		* Routers
+		*/
 		appRouter		          : 'js/routers/AppRouter',
 
-		// Collections //
+		/* #############
+		* collections
+		*/
 		genericCollection          : 'js/collections/GenericCollection',
 		usersCollection            : 'js/collections/UsersCollection',
 		claimersCollection         : 'js/collections/ClaimersCollection',
 		claimersContactsCollection : 'js/collections/ClaimersContactsCollection',
-		equipmentsCollection       : 'js/collections/EquipmentsCollection',
-		placesCollection           : 'js/collections/PlacesCollection',
 		claimersServicesCollection : 'js/collections/ClaimersServicesCollection',
+		claimersTypesCollection    : 'js/collections/ClaimersTypesCollection',
+		equipmentsCollection       : 'js/collections/EquipmentsCollection',
+		equipmentsTypesCollection  : 'js/collections/EquipmentsTypesCollection',
+		placesCollection           : 'js/collections/PlacesCollection',
+		placeTypesCollection       : 'js/collections/PlaceTypesCollection',
+		stcGroupsCollection        : 'js/collections/STCGroupsCollection',
 
-		// Models /
+		/* #############
+		* Models
+		*/
 		genericModel            : 'js/models/GenericModel',
 		userModel               : 'js/models/UserModel',
 		claimerModel            : 'js/models/ClaimerModel',
+		claimerTypeModel        : 'js/models/ClaimerTypeModel',
 		claimerContactModel     : 'js/models/ClaimerContactModel',
+		claimerServiceModel     : 'js/models/ClaimerServiceModel',
 		equipmentModel          : 'js/models/EquipmentModel',
 		placeModel              : 'js/models/PlaceModel',
-		claimerServiceModel    : 'js/models/ClaimerServiceModel',
+		claimerServiceModel     : 'js/models/ClaimerServiceModel',
 
-		// Views //
-		headerView              : 'js/views/HeaderView',
-		footerView              : 'js/views/FooterView',
-		loginView               : 'js/views/LoginView',
-		notFoundView            : 'js/views/NotFoundView',
-		dashboardView           : 'js/views/DashboardView',
-		dashboardView           : 'js/views/DashboardView',
-		genericListView         : 'js/views/GenericListView',
-		genericModalView        : 'js/views/modals/GenericModalView',
-		paginationView          : 'js/views/PaginationView',
-		advancedSelectBoxView   : 'js/views/AdvancedSelectBoxView',
-
+		/* #############
+		* Views
+		*/
+		headerView              : 'js/views/others/HeaderView',
+		footerView              : 'js/views/others/FooterView',
+		loginView               : 'js/views/others/LoginView',
+		paginationView          : 'js/views/others/PaginationView',
+		notFoundView            : 'js/views/others/NotFoundView',
+		advancedSelectBoxView   : 'js/views/others/AdvancedSelectBoxView',
+		dashboardView           : 'js/views/others/DashboardView',
+		dashboardView           : 'js/views/others/DashboardView',
+		genericListView         : 'js/views/lists/GenericListView',
+		genericModalView        : 'js/views/modals/GenericModalView'
 	},
 
-	packages: [{ 
-		name    : 'app-interventions',
-		location: 'app-interventions',
-		main    : 'main'
-    }],
+	packages: [
+		{
+			name    : 'app-interventions',
+			location: 'app-interventions',
+			main    : 'main'
+		},
+		{
+			name    : 'app-reservations',
+			location: 'app-reservations',
+			main    : 'main'
+		}
+	],
 
 	shim: {
 		'underscore': {
@@ -111,6 +127,9 @@ requirejs.config({
 		},
 		'app-interventions' : {
 			deps   : ['app-interventions/config/require-config']
+		},
+		'app-reservations' : {
+			deps   : ['app-reservations/config/require-config']
 		}
 	}
 

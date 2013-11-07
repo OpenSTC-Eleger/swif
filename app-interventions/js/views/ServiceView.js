@@ -10,7 +10,7 @@ app.Views.ServiceView = Backbone.View.extend({
 		
 		// The DOM events //
 		events: {
-			'submit #formService'			: 'saveService',
+			'submit #formService'		: 'saveService',
 		},
 
 

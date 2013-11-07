@@ -47,7 +47,7 @@ var app =  {
 
 			})
 			.fail(function(){
-				alert('Unable to load the language files');
+				console.error('Unable to load the language files');
 			});
 	},
 
@@ -60,7 +60,7 @@ var app =  {
 			.success(function (data) {
 			})
 			.fail(function () {
-				alert('Unable to load the file : ') + url;
+				console.error('Unable to load the file : ' + url);
 			});
 	},
 

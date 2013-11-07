@@ -36,7 +36,7 @@ define([
 		   
 			// Retrieve the Login template // 
 			$.get("templates/" + this.templateHTML + ".html", function(templateData){
-			 
+
 				var template = _.template(templateData, { lang: app.lang, homeUrl : app.routes.home.url});
 				$(self.el).html(template);
 			});
