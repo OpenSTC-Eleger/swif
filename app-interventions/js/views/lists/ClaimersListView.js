@@ -80,7 +80,7 @@ app.Views.ClaimersListView = app.Views.GenericListView.extend({
         app.router.setPageTitle(app.lang.viewsTitles.claimersList);
 
 		// Change the active menu item //
-		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
+		app.views.headerView.selectMenuItem(app.config.menus.openbase);
 
 
 

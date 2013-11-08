@@ -95,7 +95,7 @@ define([
 
 				app.setAjaxSetup();
 
-				app.views.headerView.render(app.router.mainMenus.manageInterventions);
+				app.views.headerView.render();
 				Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
 			});
 			checkLogin.fail(function(e){

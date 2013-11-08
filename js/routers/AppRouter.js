@@ -19,12 +19,6 @@ define([
 	var router = Backbone.Router.extend({
 
 
-		mainMenus: {
-			manageInterventions        : 'gestion-des-interventions',
-			reporting                  : 'reporting',
-			configuration              : 'configuration',
-		},
-
 
 		/******************************************
 		* GENERIC FUNCTION
@@ -93,6 +87,16 @@ define([
 
 
 
+		/** Load a RequireJS module
+		*/
+		loadModule: function (module) {
+			require([module], function (module) {
+				module();
+			});
+		},
+
+
+
 
 		/******************************************
 		* ROUTES FUNCTION
@@ -143,6 +147,16 @@ define([
 
 
 
+		/** 404 Not Found
+		*/
+		notFound: function(page){
+
+			app.views.notFoundView = new NotFoundView();
+			this.render(app.views.notFoundView);
+		},
+
+
+
 		/** About the App
 		*/
 		dashboard: function(){
@@ -152,6 +166,8 @@ define([
 
 
 
+		/** Load The Interventions Module
+		*/
 		loadAppInterventions: function(param){
 
 			if(!require.defined('app-interventions')){
@@ -162,13 +178,6 @@ define([
 			}
 
 		},
-
-
-		loadModule: function (module) {
-            require([module], function (module) {
-                module();
-            });
-        },
 
 
 
@@ -303,16 +312,6 @@ define([
 			if(!_.isNull(sort)){params.sort = sort}
 			if(!_.isNull(page)){params.page = page}
 			app.views.equipmentsListView = new app.Views.EquipmentsListView(params);
-		},
-
-
-
-		/** 404 Not Found
-		*/
-		notFound: function(page){
-
-			app.views.notFoundView = new NotFoundView();
-			this.render(app.views.notFoundView);
 		}
 
 	});

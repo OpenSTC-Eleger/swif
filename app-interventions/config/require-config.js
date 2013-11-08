@@ -5,7 +5,7 @@ require.config({
 
 
 	paths: {
-		
+
 		// Views //
 		requestsListView      : 'app-interventions/js/views/lists/RequestsListView',
 		itemRequestView       : 'app-interventions/js/views/items/ItemRequestView',

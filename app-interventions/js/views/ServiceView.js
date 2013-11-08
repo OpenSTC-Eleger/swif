@@ -38,7 +38,7 @@ app.Views.ServiceView = Backbone.View.extend({
 			}
 
 			// Change the active menu item //
-			app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
+			app.views.headerView.selectMenuItem(app.config.menus.openbase);
 			
 			
 

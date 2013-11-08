@@ -50,6 +50,13 @@ app.Views.PlanningView = Backbone.View.extend({
 		var self = this;
 
 
+		// Change the page title //
+		app.router.setPageTitle(app.lang.viewsTitles.planning);
+
+		// Change the active menu item //
+		app.views.headerView.selectMenuItem(app.config.menus.openstc);
+
+
 		// Retrieve the Login template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
 

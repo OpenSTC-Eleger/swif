@@ -41,12 +41,7 @@ app.Views.ModalAddTaskView = app.Views.GenericModalView.extend({
      */
     render: function () {
 		
-		// Change the page title depending on the create value //
-		app.router.setPageTitle(app.lang.viewsTitles.newTask);
-
-		// Change the active menu item //
-		app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
-		
+	
 		var self = this;
 		// Retrieve the template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){

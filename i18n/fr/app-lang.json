@@ -426,6 +426,7 @@
 		"claimersList"			 : "Liste des organisations",
 		"statementTask"			 : "Relevé de la tâche",
 		"statementEndTask"		 : "Relevé de la tâche non terminée",
-		"pageNotFound" 			 : "Page non trouvée"
+		"pageNotFound" 			 : "Page non trouvée",
+		"myApplications"         : "Mes applications"
 	}
 }

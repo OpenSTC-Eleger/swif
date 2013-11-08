@@ -72,7 +72,7 @@ app.Views.TasksListView = app.Views.GenericListView.extend({
 		app.router.setPageTitle(app.lang.viewsTitles.tasksList);
 
 		// Change the active menu item //
-		app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
+		app.views.headerView.selectMenuItem(app.config.menus.openstc);
 
 
 

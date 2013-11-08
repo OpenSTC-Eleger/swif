@@ -89,7 +89,7 @@ app.Views.InterventionsListView = app.Views.GenericListView.extend({
 		app.router.setPageTitle(app.lang.viewsTitles.interventionsMonitoring);
 
 		// Change the active menu item //
-		app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
+		app.views.headerView.selectMenuItem(app.config.menus.openstc);
 
 
 		var interventions = this.collections.interventions.toJSON();

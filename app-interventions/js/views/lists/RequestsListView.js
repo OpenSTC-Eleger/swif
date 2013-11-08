@@ -78,7 +78,7 @@ define([
 			app.router.setPageTitle(app.lang.viewsTitles.requestsList);
 
 			// Change the active menu item //
-			app.views.headerView.selectMenuItem(app.router.mainMenus.manageInterventions);
+			app.views.headerView.selectMenuItem(app.config.menus.openstc);
 
 
 			// Retrieve the template //

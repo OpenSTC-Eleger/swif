@@ -14,7 +14,7 @@
 	
 <!-- Display the menu if user is logged -->
 <% if(user.hasAuthToken()){ %>
-<div class="collapse navbar-collapse navbar-ex1-collapse">
+<div class="collapse navbar-collapse">
 
 
 	<!-- Main menu application -->
@@ -29,15 +29,39 @@
 			if(!_.isUndefined(menus[shortName])) {
 			 _.each(menus[shortName].children, function (menuRacine, i) {%>
 			
-			<li class="dropdown" id="<%= _.slugify(menuRacine.tag) %>" role="menuitem">
-			<a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#" id="drop-menu-app-<%= menuRacine.id %>"><%= menuRacine.name %> <b class="caret"></b></a>
+			<li class="dropdown" id="<%= moduleName %>" role="presentation">
+			<a data-toggle="dropdown" class="dropdown-toggle" role="menuitem" href="#" id="drop-menu-app-<%= menuRacine.id %>"><%= menuRacine.name %> <b class="caret"></b></a>
 	            <ul aria-labelledby="drop-menu-app-<%= menuRacine.id %>" role="menu" class="dropdown-menu">
-	                <% _.each(menuRacine.children, function (menuItem, i) {%>
-	
-						<li role="menuitem">
-							<a href="#<%= _.slugify(menuItem.tag) %>"><%= menuItem.name %></a>
-						</li>
-	
+	                <% _.each(menuRacine.children, function (menuItem, i, a) {%>
+
+						<% if(_.isEmpty(menuItem.children)){ %>
+							<li role="presentation">
+								<a href="#<%= _.join('/', moduleName, _.slugify(menuItem.tag)) %>"  role="menuitem"><%= menuItem.name %></a>
+							</li>
+						<% } else { %>
+
+	                		<% if(i != 0){ %>
+								<li role="presentation" class="divider"></li>
+							<% } %>
+							<li role="presentation" class="dropdown-header"><%= menuItem.name %></li>
+							<% _.each(menuItem.children, function (menuItem, i) {
+
+								var url = '';
+
+								if(menusToLoad[menuItem.tag_module] != moduleName){
+									url = _.join('/', menusToLoad[menuItem.tag_module], _.join('/', moduleName, _.slugify(menuItem.tag)));
+								}
+								else{
+									url = _.join('/', moduleName, _.slugify(menuItem.tag));
+								} 
+							%>
+
+								<li role="presentation"><a href="#<%= url %>"  role="menuitem"><%= menuItem.name %></a></li>
+							<% }); %>
+
+
+						<% } %>
+
 					<% }); %>
 				</ul>
 			</li>
@@ -55,11 +79,19 @@
 				<i class="icon-user icon-large"></i> <%= user.getFullname() %> <b class="caret"></b>
 			</a>
 			<ul class="dropdown-menu" role="menu">
-				<li role="menuitem"><a href="#about"><i class="icon-info-sign icon-fixed-width"></i> <%= _.capitalize(lang.about) %></a></li>
-				<li role="menuitem" class="disabled"><a href="#help"><i class="icon-question-sign icon-fixed-width"></i> <%= _.capitalize(lang.help) %></a></li>
-				<li role="menuitem" class="divider"></li>
-				<li role="menuitem" class="disabled"><a href="#settings"><i class="icon-cog icon-fixed-width"></i> <%= _.capitalize(lang.settings) %></a></li>
-				<li role="menuitem"><a href="#logout"><i class="icon-signout icon-fixed-width"></i> <%= _.capitalize(lang.actions.logOut) %></a></li>
+				<li role="presentation">
+					<a href="#about" role="menuitem"><i class="icon-info-sign icon-fixed-width"></i> <%= _.capitalize(lang.about) %></a>
+				</li>
+				<li role="presentation" class="disabled">
+					<a href="#help" role="menuitem"><i class="icon-question-sign icon-fixed-width"></i> <%= _.capitalize(lang.help) %></a>
+				</li>
+				<li role="presentation" class="divider"></li>
+				<li role="presentation" class="disabled">
+					<a href="#settings" role="menuitem"><i class="icon-cog icon-fixed-width"></i> <%= _.capitalize(lang.settings) %></a>
+				</li>
+				<li role="presentation">
+					<a href="#logout" role="menuitem"><i class="icon-signout icon-fixed-width"></i> <%= _.capitalize(lang.actions.logOut) %></a>
+				</li>
 			</ul>
 		</li>
 	</ul>

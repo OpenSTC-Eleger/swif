@@ -36,9 +36,6 @@ define([
 			$.get("templates/" + this.templateHTML + ".html", function(templateData) {
 
 
-				console.log('---------------------------------------');
-				console.log(app.models.user.getMenus());
-
 				var template = _.template(templateData, {
 					lang        : app.lang,
 					user        : app.models.user,

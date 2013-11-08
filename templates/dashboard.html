@@ -3,37 +3,39 @@
 
 
 <div class="page-header">
-  <h1>Mes applications</h1>
+	<h1><%= lang.viewsTitles.myApplications %></h1>
 </div>
 
+	<div class="row">
 
-	<% var nbMenus = _.size(menus);
+	<% 
+		var menus = user.getMenus();
+		var nbMenus = _.size(menus);
 
-		_.each(menus, function (menu, i){ 
+		_.each(menusToLoad, function (moduleName, shortName){
 
-		var offset = 0;	
+			var moduleName = moduleName;
 
-		if(i % 4 == 0){ %>
+			if(!_.isUndefined(menus[shortName]) &&  moduleName != menusToLoad.openbase) {
+			 _.each(menus[shortName].children, function (menuItem, i) {
 
-			<div class="row">
+			 	var url = _.join('/', moduleName, menuItem.children[0].tag);
+		%>
 
-			<%	if(nbMenus%4 == 3){ offset = 1; }else if(nbMenus%4 == 2){ offset = 3; }else if(nbMenus%4 == 1){ offset = 4; } %>
-		<% } %>
-		
-		<div class="col-sm-6 col-lg-3 col-lg-offset-<%= offset %>">
+		<div class="col-sm-6 col-md-6 col-lg-4">
 			<div class="thumbnail">
 				<div class="caption">
-					<h2 class="text-center"><i class="icon-home icon-large icon-border" /><%= menu.name %></h2>
-					<p><a href="#app-interventions/<%= _.first(menu.children[0].children).tag %>" class="btn btn-primary btn-lg btn-block">Accéder</a></p>
+					<h3 class="text-center"><i class="icon-home icon-large icon-border" /><%= menuItem.name %></h3>
+					<p><a href="#<%= url %>" class="btn btn-primary btn-lg btn-block">Accéder</a></p>
 				</div>
 			</div>
 		</div>
 
-		<% if(i % 4 == 3){ %>
-			</div>
-			<div class="row">&nbsp;</div>
-		<% } %>
+		<% }); %>
+	<% } %>
 
 	<% }); %>
+
+		</div>
 
 </div>

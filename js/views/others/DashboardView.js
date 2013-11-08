@@ -36,23 +36,23 @@ define([
 		render: function() {
 			var self = this;
 
-
 			// Change the page title //
-			app.router.setPageTitle(app.lang.applicationName +' '+ "Tableau de bord");
+			app.router.setPageTitle(_.join(' ', app.lang.applicationName, app.lang.viewsTitles.myApplications));
+
+
 
 			// Retrieve the Login template // 
 			$.get("templates/" + this.templateHTML + ".html", function(templateData){
 
 				var template = _.template(templateData, {
-					lang : app.lang,
-					menus : app.models.user.getMenus()
+					lang        : app.lang,
+					user        : app.models.user,
+					menusToLoad : app.config.menus
 				});
 
 				$(self.el).html(template);
 
 			});
-
-			app.views.headerView.render(app.router.mainMenus.manageInterventions);
 
 
 			$(this.el).hide().fadeIn();
