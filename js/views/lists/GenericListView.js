@@ -32,9 +32,12 @@ app.Views.GenericListView = Backbone.View.extend({
 		$('th[data-sort-column]').append('<i class="icon-sort icon-large icon-muted pull-right">');
 
 		// Display sort icon if there is a sort //
-		if(opts.sort.order == 'ASC'){ var newIcon = "icon-sort-up"; }else{ var newIcon = "icon-sort-down"; }
-		$("th[data-sort-column='"+opts.sort.by+"'] > i").removeClass('icon-sort icon-muted')
-		.addClass('active ' + newIcon);
+		if( !_.isUndefined(opts.sort) ){
+				if(opts.sort.order == 'ASC'){ var newIcon = "icon-sort-up"; }else{ var newIcon = "icon-sort-down"; }
+				$("th[data-sort-column='"+opts.sort.by+"'] > i").removeClass('icon-sort icon-muted')
+				.addClass('active ' + newIcon);
+		}
+		
 
 		// Rewrite the research in the form //
 		if(!_.isUndefined(opts.search)){
@@ -156,15 +159,15 @@ app.Views.GenericListView = Backbone.View.extend({
 
 						var params = '';
 						_.each(self.options[value], function(value, item){
-							if(!_.isEmpty(params)){
+							if(!_.isEmpty(params) ){
 								params += '-'+value;
 							}
 							else{
 								params += value;
 							}
 						})
-
-						url += '/'+value+'/'+params;
+						if( !_.isBlank(params) )
+							url += '/'+value+'/'+params;
 					}
 				}
 			}

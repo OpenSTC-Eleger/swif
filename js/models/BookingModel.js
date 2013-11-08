@@ -5,7 +5,7 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	
 	urlRoot: "/api/openresa/booking",
 	
-	fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'create_date', 'state', 'actions', 'reservation_line'],
+	fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'create_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template'],
 
 
 	searchable_fields: [
@@ -27,43 +27,70 @@ app.Models.Booking = app.Models.GenericModel.extend({
 		return this.get('name');
 	},
 	
-	
-	getResources: function(){
-		var self = this;
-		if( !_.isUndefined(this.get('resources')) ){
-			return this.get('resources');		
-		}
-		else
-		{
-			this.computeResources().done(function (data) {
-				 self.set( 'resources',  data , {silent:false} );				 
-			});		
+	getCreateAuthor: function(type){
+		switch(type){
+			case 'id': 
+				return this.get('create_uid')[0];
+			break;
+			default:
+				return _.capitalize(this.get('create_uid')[1]);
 		}
 	},
+	
+	getResourceNames : function(type){
+	
+		var bookingResourceNames = [];
+		
+		_.each(this.get('resource_names'), function(s){
+			switch (type){
+				case 'id': 
+					bookingResourceNames.push(s[0]);
+				break;
+				case 'json': 
+					bookingResourceNames.push({id: s[0], name: s[1]});
+				break;
+				default:
+					bookingResourceNames.push(s[1]);
+			}
+		});
+		
+		if(type == 'string'){
+			return _.toSentence(bookingResourceNames, ', ', ' '+app.lang.and+' ')
+		}
+		else{
+			return bookingResourceNames;
+		}
+	},
+	
+	getResourceQuantities : function(){
+		if( this.getState()==app.Models.Booking.status.done.key || 
+				this.getState()==app.Models.Booking.status.cancel.key) return "";
+	
+		var bookingResourceQuantities = [];
+		
+		_.each(this.get('resource_quantities'), function(s){
+				bookingResourceQuantities.push( s[0] + " " + s[1] );			
+		});		
+	
+		return _.toSentence(bookingResourceQuantities, ', ', ' '+app.lang.and+' ')
+
+	},
+	
+	getDescription: function(){
+		return this.get('description');	
+	},
+	
+	isAllDispo: function(){
+		return this.get('all_dispo');	
+	},
+
 	
 	getName: function(){
 		return this.get('name');
 	},
 	
-	computeResources : function() {
-
-		var self = this;
-		var deferred = $.Deferred();
-		self.resources = "";
-		self.bookingLines = new app.Collections.BookingLines();
-		if( self.get('reservation_line')!= false ) {
-			self.bookingLines.fetch({silent: true,data: {filters: {0: {'field': 'id', 'operator': 'in', 'value': self.get('reservation_line')}}}})
-			.done(function(data){	
-				_.each(self.bookingLines.models, function(bookingLine, i){	
-					self.resources +=  _.titleize(bookingLine.get('reserve_product')[1].toLowerCase());
-					if(i!=self.bookingLines.length-1) self.resources += ", "
-				});
-				deferred.resolve(self.resources);
-				
-			});
-		}
-		return deferred;
-
+	isTemplate: function(){
+		return this.get('is_template');
 	},
 	
 	getStartDate: function(type){
@@ -148,47 +175,80 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	initialize: function(){
 		//console.log('Booking Model initialization');
 		//this.fetchRelated('tasks');
+		var self = this;
+
+		app.Models.Booking.status.confirm.translation  = app.lang.confirm;
+		app.Models.Booking.status.cancel.translation  = app.lang.refused;
+		app.Models.Booking.status.done.translation   = app.lang.finished;
+		app.Models.Booking.status.remplir.translation     = app.lang.wait;
+		
+		app.Models.Booking.actions.resolve_conflict.translation   = 'Traiter conflit';
+		app.Models.Booking.actions.refused.translation   = app.lang.actions.refuse;
+		
+//		this.computeResources().done(function (data) {
+//			// self.set( {'resources' :  data.resources, 'description': data.description} , {silent:false} );	
+//			 //self.set( 'resources',  data.resources , {silent:true} );	
+//			 //self.set( 'description',  data.description , {silent:true} );	
+//		});	
+
 	},
 
 
 }, {
 	// Request State Initialization //
 	status : {
-		draft: {
-			key                 : 'draft',
-			color               : '',
-			translation         : ''
-		},
+//		draft: {
+//			key                 : 'draft',
+//			color               : '',
+//			translation         : ''
+//		},
 		confirm: {
 			key                 : 'confirm',
-			color               : '',
+			color               : 'warning',
 			translation         : ''
 		},
 		cancel: {
 			key                 : 'cancel',
-			color               : '',
+			color               : 'danger',
 			translation         : ''
 		},
-		in_use: {
-			key                 : 'in_use',
-			color               : '',
-			translation         : ''
-		},
+//		in_use: {
+//			key                 : 'in_use',
+//			color               : 'default',
+//			translation         : ''
+//		},
 		done: {
 			key                 : 'done',
-			color               : '',
+			color               : 'success',
 			translation         : ''
 		},
 		remplir: {
 			key                 : 'remplir',
-			color               : '',
+			color               : 'info',
 			translation         : ''
 		},
-		wait_confirm: {
-			key                 : 'wait_confirm',
-			color               : '',
-			translation         : ''
+//		wait_confirm: {
+//			key                 : 'wait_confirm',
+//			color               : '',
+//			translation         : ''
+//		},
+	},
+	
+		// Actions of the requests //
+	actions : {
+		resolve_conflict: {
+			key 		: 'resolve_conflict',
+			color 		: 'warning',
+			icon 		: 'icon-level-up',
+			translation : ''
 		},
+		refused: {
+			key 		: 'refused',
+			color 		: 'danger',
+			icon 		: 'icon-remove',
+			translation : ''
+		},
+		
 	}
 
 });

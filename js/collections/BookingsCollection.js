@@ -7,8 +7,10 @@ app.Collections.Bookings = app.Collections.GenericCollection.extend({
 	
 	url   : "/api/openresa/bookings",
 	
-	fields: ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'create_date', 'state', 'actions', 'reservation_line'],
+	fields: ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'create_date', 'state', 'state_num', 'actions', 'reservation_line', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template'],
 
+	default_sort: { by: '', order: '' },
+	
 	/** Collection Sync
 	*/
 	sync: function(method, model, options){

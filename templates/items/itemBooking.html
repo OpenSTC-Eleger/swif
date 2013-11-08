@@ -1,16 +1,22 @@
 <td><%= booking.id %></td>
 <td>
+	<a 	href="#collapse_<%= booking.getId() %>"
+		class="accordion-object"
+		data-toggle="popover"
+		data-html="true"
+		data-original-title="<%= _.capitalize(lang.about) %>"
+		data-delay="160"
+		data-content="">
+			<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(_(booking.getName()).escapeHTML()) %>
+	</a>
+	<!--  
 	<a class="accordion-object" href="#collapse_<%= booking.id %>" data-toggle="popover" data-content="" data-delay="160" data-original-title="<%= _.capitalize(lang.description) %>">
 		<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(_(booking.getName()).escapeHTML()) %>
 	</a>
+	-->
 	<!-- Interventions action -->
 	<p class="row-actions invisible">
-		<!--<a href="#bookings/<%= booking.getId() %>" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>">-->
-		<a href="#" class="modalSaveInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>">
-			<i class="icon-pencil icon-large"></i>
-		</a>&nbsp;
-
-		<a href="#" class="printInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="inter">
+		<a href="#reservations" class="printInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="inter">
 			<i class="icon-print icon-large" data-action="inter">&nbsp;</i>
 		</a>
 		<% if(booking.hasActions("cancel")) { %>
@@ -18,11 +24,54 @@
 		<% } %>
 	</p>
 </td>
-<td><%= booking.getResources() %></td>
+<td>
+<span data-toggle="tooltip" data-original-title="<%= booking.getResourceQuantities() %>"> <%= booking.getResourceNames('string') %></span>
+</td>
 <td><%= booking.getStartDate('human') %></td>
 <td><%= booking.getEndDate('human') %></td>
 <td><%= booking.getPartner() %></td>
 <td><%= booking.getCreateDate('human') %></td>
 <!-- Check the state of the booking -->
-<td><%= booking.getState() %></td>
-<td><%= booking.getActions() %></td>
+<td>
+	<span 
+		class="label label-<%= app.Models.Booking.status[booking.getState()].color %>" 
+		data-toggle="tooltip"
+		data-original-title="">
+		<%= app.Models.Booking.status[booking.getState()].translation %>
+	</span>
+</td>
+<td>
+
+	<!-- Create the buttons group action -->
+	<div class="btn-group btn-group-sm">
+
+		<!-- Check if the booking is not in waiting state -->
+		<%
+
+			var mainAction = app.Models.Booking.actions.resolve_conflict.key;
+			var mainActionColor = app.Models.Booking.actions.resolve_conflict.color;
+			var mainActionIcon = app.Models.Booking.actions.resolve_conflict.icon;
+			var mainActionDisabled = '';
+		%>
+		<!-- Main action button -->
+		<button class="btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline button<%= _.capitalize(mainAction) %>Booking" >
+			<i class="<%= mainActionIcon %> icon-fixed-width button<%= _.capitalize(mainAction) %>Booking"></i>
+		</button>
+		
+		<!-- Dropdown button action -->
+		<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			<span class="icon-caret-down"></span>
+		</button>
+		
+		<!-- Other buttons action -->
+		<ul class="dropdown-menu pull-right text-left">
+			<% _.each(booking.getActions(), function(action){ %>
+				<li>
+					<a href="#reservations" class="button<%= _.capitalize(app.Models.Booking.actions[action].key) %>Booking">
+						<i class="<%= app.Models.Booking.actions[action].icon %> icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.Models.Booking.actions[action].translation) %>
+					</a>
+				</li>
+			<% }); %>
+		</ul>
+	</div>
+</td>

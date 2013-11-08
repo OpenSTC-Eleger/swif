@@ -1,13 +1,7 @@
 <div class="page-header">
 	<h1>
-		<%= lang.viewsTitles.interventionsMonitoring %>
-		<sup class="badge badge-info" id="nbInterPlanned" data-toggle="tooltip" data-original-title="<%= lang.planningFenced %>" data-placement="bottom">
-			
-		</sup>
-
-		<sup class="badge" id="nbInterPending" data-toggle="tooltip" data-original-title="<%= lang.pending %>" data-placement="bottom">
-			
-		</sup>
+		Suivi des réservations
+		<sup id="bagdeCpt" class="badge"><%= nbBookings %></sup>
 	</h1>
 </div>
 
@@ -16,10 +10,15 @@
 	<!-- Table toolbar -->
 	<div class="tableToolbar row">
 		<div class="col-xs-7 col-md-9 col-lg-10">
-			<a href="#" class="btn btn-primary modalCreateInter"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
+			<a href="#reservations" class="btn btn-primary modalCreateBooking"><i class="icon-plus"></i>Nouvelle réservation</a>
 		</div>
 
 		<form class=" form-search pull-right col-xs-5 col-md-3 col-lg-2">
+		  <div class="checkbox">
+		    <label>
+		      <input type="checkbox"> Réccurentes
+		    </label>
+		  </div>
 			<div class="input-group">
 				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
 				<span class="input-group-btn">
@@ -32,7 +31,7 @@
 
 
 
-		<!-- Message if No intervention to Display -->
+		<!-- Message if No booking to Display -->
 	<% if(bookings.length <= 0) { %>
 		<div class="tableToolbar">
 			<div class="alert alert-info">
@@ -43,9 +42,9 @@
 
 
 
-	<!-- Table Interventions -->
+	<!-- Table Bookings -->
 	<div class="table-responsive">
-	<table class="table-interventions table table-bordered table-hover table-sorter table-striped-collapse">
+	<table class="table-bookings table table-bordered table-hover table-sorter">
 		<thead>
 			<tr>
 				<th data-sort-column="id">N°</th>
@@ -55,13 +54,34 @@
 				<th>Fin résa</th>
 				<th>Utilisateur / demandeur</th>
 				<th>Date demande</th>
-				<th>Statut</th>
-				<th>Actions</th>
+				<th>
+					<%= _.capitalize(lang.status) %>
+					<div class="dropdown pull-right">
+						<a id="filterStateBooking" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="icon-filter icon-large"></i></a>
+
+						<ul id="filterStateBookingList" class="dropdown-menu" role="menu" aria-labelledby="filterStateRequest">
+							<% _.each(bookingsState, function (state, i) { %>
+								<li role="menuitem">
+									<a tabindex="-1" href="#<%= state.key %>"> 
+										<i class="badge badge-<%= state.color %>">&nbsp;</i>
+										&nbsp; <%= _.capitalize(state.translation) %>
+									</a>
+								</li>
+							<% }) %>
+								<li class="divider" role="menuitem"></li>
+								<li class="delete-filter disabled" role="menuitem"><a href="#delete-filter"><i class="icon-remove"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
+						</ul>
+					</div>
+				</th>
+
+				<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
+					<th><%= _.capitalize(lang.action) %></th>
+				<% } %>
 			</tr>
 		</thead>
 		
 		<tbody id="booking-items">
-		<!-- Inter rows -->
+		<!-- Bookings rows -->
 		
 		</tbody>
 	</table>

@@ -1,0 +1,19 @@
+<td><%= booking.id %></td>
+<td><%= _.capitalize(_(booking.getName()).escapeHTML()) %></td>
+<td>
+<span data-toggle="tooltip" data-original-title="<%= booking.getResourceQuantities() %>"> <%= booking.getResourceNames('string') %></span>
+</td>
+<td><%= booking.getStartDate('human') %></td>
+<td><%= booking.getEndDate('human') %></td>
+<td><%= booking.getPartner() %></td>
+<td><%= booking.getCreateDate('human') %></td>
+<!-- Check the state of the booking -->
+<td>
+	<span 
+		class="label label-<%= app.Models.Booking.status[booking.getState()].color %>" 
+		data-toggle="tooltip"
+		data-original-title="">
+		<%= app.Models.Booking.status[booking.getState()].translation %>
+	</span>
+</td>
+
