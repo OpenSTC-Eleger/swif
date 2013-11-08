@@ -29,18 +29,17 @@ define([
 		*/
 		render: function(opts) {
 
-
 			// Set the Tooltip //
 			$('*[data-toggle="tooltip"]').tooltip();
-
-
+					
 			// Set the sort icon //
 			$('th[data-sort-column]').append('<i class="fa fa-sort fa-lg text-muted pull-right">');
-
-			// Display sort icon if there is a sort //
-			if(opts.sort.order == 'ASC'){ var newIcon = "fa-sort-up"; }else{ var newIcon = "fa-sort-down"; }
-			$("th[data-sort-column='"+opts.sort.by+"'] > i").removeClass('fa-sort text-muted')
-			.addClass('active ' + newIcon);
+			if( !_.isUndefined(opts.sort) ){
+				// Display sort icon if there is a sort //
+				if(opts.sort.order == 'ASC'){ var newIcon = "fa-sort-up"; }else{ var newIcon = "fa-sort-down"; }
+				$("th[data-sort-column='"+opts.sort.by+"'] > i").removeClass('fa-sort text-muted')
+				.addClass('active ' + newIcon);
+			}
 
 			// Rewrite the research in the form //
 			if(!_.isUndefined(opts.search)){
@@ -172,16 +171,17 @@ define([
 
 							var params = '';
 							_.each(self.options[value], function(value, item){
-								if(!_.isEmpty(params)){
+								if(!_.isEmpty(params) ){
 									params += '-'+value;
 								}
 								else{
 									params += value;
 								}
 							})
-
-							url += '/'+value+'/'+params;
+							if( !_.isBlank(params) )
+								url += '/'+value+'/'+params;
 						}
+
 					}
 				}
 

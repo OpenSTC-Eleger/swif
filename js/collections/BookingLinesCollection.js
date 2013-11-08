@@ -7,7 +7,7 @@ app.Collections.BookingLines = app.Collections.GenericCollection.extend({
 	
 	url   : "/api/openresa/booking_lines",
 	
-	fields: ['id', 'name', 'reserve_product'],
+	fields: ['id', 'name', 'reserve_product', 'qte_dispo'],
 
 	/** Collection Sync
 	*/

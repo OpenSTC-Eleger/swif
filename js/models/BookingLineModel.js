@@ -5,7 +5,7 @@ app.Models.BookingLine = app.Models.GenericModel.extend({
 	
 	urlRoot: "/api/openresa/booking_lines",
 	
-	fields : ['id', 'name', 'reserve_product'],
+	fields : ['id', 'name', 'reserve_product', 'qte_dispo'],
 
 
 	searchable_fields: [
@@ -43,6 +43,9 @@ app.Models.BookingLine = app.Models.GenericModel.extend({
 		}
 	},
 	
+	getAvailableQtity: function(){
+		return this.get('qte_dispo');
+	},
 	
 	/** Model Initialization
 	*/
