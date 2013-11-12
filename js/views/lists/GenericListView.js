@@ -136,7 +136,11 @@ define([
 			var self = this;
 
 			// Retrieve the baseurl of the view //
-			var url = _(Backbone.history.fragment).strLeft('/');
+			var moduleName = _(Backbone.history.fragment).strLeft('/');
+
+			var pageUrl = _(_(Backbone.history.fragment).strRight('/')).strLeft('/');
+
+			var url = _.join('/', moduleName, pageUrl);
 
 
 			// Iterate all urlParameters //

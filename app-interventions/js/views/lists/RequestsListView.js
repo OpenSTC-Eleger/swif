@@ -1,6 +1,5 @@
 define([
 	'app',
-	'context',
 	'appHelpers',
 
 	'requestsCollection',
@@ -11,7 +10,7 @@ define([
 	'itemRequestView',
 	'modalRequestView'
 
-], function(app, context, AppHelpers, RequestsCollection, RequestModel, GenericListView, PaginationView, ItemRequestView, ModalRequestView){
+], function(app, AppHelpers, RequestsCollection, RequestModel, GenericListView, PaginationView, ItemRequestView, ModalRequestView){
 
 	'use strict';
 

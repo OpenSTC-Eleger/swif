@@ -2,11 +2,9 @@ define([
 	'app',
 	'appRouter',
 
-	'context',
-
 	'requestsListView'
 
-], function(app, AppRouter, context, RequestsListView){
+], function(app, AppRouter, RequestsListView){
 
 	'use strict';
 
@@ -22,16 +20,9 @@ define([
 		*/
 		requestsList: function(search, filter, sort, page) {
 
-			// Reset the context //
-			//context = {};
+			var params = this.setContext({search: search, filter : filter, sort : sort, page : page});
 
-			if(!_.isNull(search))  { context.search = search; }else{ delete(context.search); }
-			if(!_.isNull(filter))  { context.filter = filter; }else{ delete(context.filter); }
-			if(!_.isNull(sort))    { context.sort = sort; }else{ delete(context.sort); }
-			if(!_.isNull(page))    { context.page = page; }else{ delete(context.page); }
-
-
-			app.views.requestsListView = new RequestsListView(context);
+			app.views.requestsListView = new RequestsListView(params);
 		},
 
 
@@ -61,7 +52,7 @@ define([
 			if(!_.isNull(team)){params.team = team}
 			if(!_.isNull(year)){params.year = year}
 			if(!_.isNull(week)){params.week = week}
-			
+
 			app.views.planning = new app.Views.PlanningView(params);	   
 		},
 
@@ -80,6 +71,54 @@ define([
 			
 			app.views.tasksListView = new app.Views.TasksListView(params);
 			this.render(app.views.tasksListView);
+		},
+
+
+
+		/** Configuration
+		*/
+
+		/** Categories Request List
+		*/
+		categoriesRequests: function(search, sort, page){
+
+			var params = {};
+
+			if(!_.isNull(search)){ params.search = search; }
+			if(!_.isNull(sort))  { params.sort = sort; }
+			if(!_.isNull(page))  { params.page = page; }
+
+			app.views.categoriesRequestsListView = new app.Views.CategoriesRequestsListView(params);
+		},
+
+
+
+		/** Categories Tasks List
+		*/
+		categoriesTasks: function(search, sort, page){      
+
+			var params = {};
+
+			if(!_.isNull(search)){ params.search = search; }
+			if(!_.isNull(sort))  { params.sort = sort; }
+			if(!_.isNull(page))  { params.page = page; }
+
+			app.views.categoriesTasksListView = new app.Views.CategoriesTasksListView(params);
+		},
+
+
+
+		/** Abstent types List
+		*/
+		absentTypes: function(search, sort, page){
+
+			var params = {};
+
+			if(!_.isNull(search)){ params.search = search; }
+			if(!_.isNull(sort))  { params.sort = sort; }
+			if(!_.isNull(page))  { params.page = page; }
+
+			app.views.absentTypesListView = new app.Views.AbsentTypesListView(params);
 		}
 
 	});

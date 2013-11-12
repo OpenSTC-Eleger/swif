@@ -1,27 +1,3 @@
 {
-	"connection"		: "conexión",
-	"log_in"			: "entrar",
-	"login"				: "login",
-	"password"			: "contraseña",
-	"last_connection"	: "ultima conexión",
-	"settings"			: "contraseña",
-	"help"				: "ayudar",
-	"about"				: "sobre",
-	"log_out"			: "desconexión",
 
-
-	"errorMessages" : {
-		"connectionError"     : "Error de conexión",
-	    "loginIncorrect"      : "Nombre de usuario o contraseña incorrecta",
-	    "serverUnreachable"   : "No se puede conectar con el servidor, póngase en contacto con administrador"
-	},
-
-	"infoMessages" : {
-   		"information"         : "Información",
-    	"successLogout"       : "Ahora está desconectado"
-	},
-
-	"viewsTitles" : {
-    	"login": "OpenSTC conexión"
-	}
 }

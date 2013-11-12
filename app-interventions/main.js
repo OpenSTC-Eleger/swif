@@ -1,11 +1,10 @@
 define('app-interventions', [
 	'app',
-	'context',
 
 	'appInterventionsRouter'
 
 
-], function(app, context, AppInterventionsRouter){
+], function(app, AppInterventionsRouter){
 
 	'use strict';
 
@@ -14,24 +13,25 @@ define('app-interventions', [
 
 		app.moduleUrl = app.config.menus.openstc;
 
-		console.log(app.config);
+
+		// Retrieve the routes and the lang of the modules //
+		$.when(app.loadStaticFile(app.moduleUrl+'/config/routes.json'), app.loadStaticFile(app.moduleUrl+'/i18n/'+app.config.lang+'/app-lang.json'))
+		.done(function(moduleRoutes, moduleLang){
 
 
-		// Retrieve the routes of the modules //
-		$.when(app.loadStaticFile(app.moduleUrl+'/config/routes.json'))
-		.done(function(appInterRoutes){
-			
+			// Extends the lang //
+			app.lang = _.extend(app.lang, moduleLang[0]);
+
 			// Stop the router //
 			Backbone.history.stop();
 
 			// Prefix all the routes of the module with the module name //
-			_.each(appInterRoutes, function(route, index){
+			_.each(moduleRoutes[0], function(route, index){
 				route.url = _.join('/', app.moduleUrl, route.url);
 			})
 
-
 			// Extend the routes //
-			app.routes = _.extend(app.routes, appInterRoutes);
+			app.routes = _.extend(app.routes, moduleRoutes[0]);
 
 
 			// Create all the Routes of the app //
@@ -49,7 +49,6 @@ define('app-interventions', [
 		})
 		.fail(function(e){
 			console.error('Unable to load routes file');
-			console.error(e);
 		})
 
 	}

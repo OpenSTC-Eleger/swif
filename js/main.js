@@ -18,7 +18,6 @@ define('main', [
 		init: function(lang) {
 
 
-
 		// Retrieve App properties, configuration and language //
 		$.when(app.loadStaticFile('properties.json'), app.loadStaticFile('config/configuration.json'), app.loadStaticFile('config/routes.json'), app.loadI18nScripts(lang))
 			.done(function (properties_data, configuration_data, routes_data, lang_data) {
@@ -29,6 +28,8 @@ define('main', [
 				app.config 		= configuration_data[0];
 				app.routes      = routes_data[0];
 				app.lang        = lang_data[0];
+
+				app.config.lang = 'fr';
 
 
 				// Instantiation of UsersCollections & UserModel //

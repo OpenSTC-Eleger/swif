@@ -21,11 +21,10 @@ requirejs.config({
 		bootstrap          : 'js/libs/bootstrap-3.0.0',
 		bootstrapSwitch    : 'js/libs/bootstrap-switch-1.8.0',
 		select2            : 'js/libs/select2-3.4.2-min',
-		less               : 'js/libs/less-1.5.0-min',
+		less               : 'js/libs/less-1.5.0',
 
 		app                : 'js/app',
 		main               : 'js/main',
-		context            : 'js/context',
 
 
 		/* #############

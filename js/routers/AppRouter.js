@@ -1,6 +1,5 @@
 define([
 	'app',
-	'context',
 
 	'headerView',
 	'footerView',
@@ -8,7 +7,7 @@ define([
 	'notFoundView',
 	'dashboardView'
 
-], function(app, context, HeaderView, FooterView, LoginView, NotFoundView, DashboardView){
+], function(app, HeaderView, FooterView, LoginView, NotFoundView, DashboardView){
 
 	'use strict';
 
@@ -97,6 +96,22 @@ define([
 
 
 
+		/** Set the context
+		*/
+		setContext: function(params){
+
+			var returnParams = {};
+
+			_.each(params, function(val, args){
+
+				if(!_.isNull(val))  { returnParams[args] = val;}
+			});
+
+			return returnParams;
+		},
+
+
+
 
 		/******************************************
 		* ROUTES FUNCTION
@@ -176,7 +191,6 @@ define([
 			else{
 				this.notFound();
 			}
-
 		},
 
 
@@ -210,36 +224,6 @@ define([
 		},
 		
 		
-
-		/** Categories Tasks List
-		*/
-		categoriesTasks: function(search, sort, page){      
-
-			var params = {};
-
-			if(!_.isNull(search)){ params.search = search; }
-			if(!_.isNull(sort))  { params.sort = sort; }
-			if(!_.isNull(page))  { params.page = page; }
-
-			app.views.categoriesTasksListView = new app.Views.CategoriesTasksListView(params);
-		},
-
-
-
-		/** Categories Request List
-		*/
-		categoriesRequests: function(search, sort, page){
-
-			var params = {};
-
-			if(!_.isNull(search)){ params.search = search; }
-			if(!_.isNull(sort))  { params.sort = sort; }
-			if(!_.isNull(page))  { params.page = page; }
-
-			app.views.categoriesRequestsListView = new app.Views.CategoriesRequestsListView(params);
-		},
-
-
 
 		/** Teams List
 		*/
@@ -283,21 +267,6 @@ define([
 			if(!_.isNull(page))  { params.page = page; }
 
 			app.views.claimersTypesListView = new app.Views.ClaimersTypesListView(params);
-		},
-
-
-
-		/** Abstent types List
-		*/
-		absentTypes: function(search, sort, page){
-
-			var params = {};
-
-			if(!_.isNull(search)){ params.search = search; }
-			if(!_.isNull(sort))  { params.sort = sort; }
-			if(!_.isNull(page))  { params.page = page; }
-
-			app.views.absentTypesListView = new app.Views.AbsentTypesListView(params);
 		},
 
 

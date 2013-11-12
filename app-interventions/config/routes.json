@@ -18,6 +18,25 @@
 	"tasks": {
 		"url"		: "taches(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)(/year/:year)(/week/:week)",
 		"function"	: "tasksCheck"
+	},
+
+
+
+
+	"categoriesTasks": {
+		"url"		: "configuration/categories-des-taches(/search/:search)(/sort/:sort)(/page:page)",
+		"function"	: "categoriesTasks"
+	},
+
+	"categoriesRequests": {
+		"url"		: "configuration/categories-des-interventions(/search/:search)(/sort/:sort)(/page:page)",
+		"function"	: "categoriesRequests"
+	},
+
+	"absentTypes": {
+		"url"		: "configuration/types-dabscence(/search/:search)(/sort/:sort)(/page:page)",
+		"function"	: "absentTypes"
 	}
+
 
 }

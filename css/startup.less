@@ -1,10 +1,12 @@
-/** Libraries Import
+/** Url
 */
-@libsUrl: "vendors/";
+@libsUrl         : 'vendors/';
+@appInterventions: '../app-interventions/css/';
+@appReservations : '../app-reservations/css/';
 
 
 // Twitter Bootstrap //
-@import "@{libsUrl}bootstrap-3.0.0/bootstrap";
+@import '@{libsUrl}bootstrap-3.0.0/bootstrap';
 
 // Font Awesome //
 @import '@{libsUrl}font-awesome-3.2.1/font-awesome';
@@ -31,6 +33,11 @@
 @import '@{libsUrl}NProgress-0.1.2';
 
 
-/** Application Style
-*/
+// Application Style //
 @import 'app/swif';
+
+// App Interventions Style //
+@import '@{appInterventions}interventions';
+
+// App Reservations Style //
+//@import '@{appReservations}reservations';
