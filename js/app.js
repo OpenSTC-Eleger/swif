@@ -68,15 +68,22 @@ var app =  {
 
 	setAjaxSetup: function(){
 
+		if(_.isUndefined(window.ajaxRequest)){
+			window.ajaxRequest = 0;
+		};
+
 		// Set The Ajax Config //
 		$.ajaxSetup({
 			contentType: "application/json",
 			headers: {Authorization: 'Token token=' + app.models.user.getAuthToken()},
-			beforeSend: function(){
-				NProgress.start();
+			beforeSend: function(a, b){
+				window.ajaxRequest++;
+				
+				if(!NProgress.isStarted()){ NProgress.start(); }
 			},
 			complete: function(){
-				NProgress.done();
+				window.ajaxRequest--;
+				if(window.ajaxRequest == 0){ NProgress.done(); }
 			},
 			statusCode: {
 				401: function() {

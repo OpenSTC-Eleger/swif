@@ -1,7 +1,7 @@
 /******************************************
 * Require JS Configuration
 */
-require.config({
+requirejs.config({
 
 
 	paths: {
