@@ -31,7 +31,7 @@ var app =  {
 	loadI18nScripts: function (lang) {
 
 		var langFiles = ['moment-lang.js', 'bootstrap-datepicker-lang.js', 'select2-lang.js'];
-		
+
 		return $.getJSON('i18n/'+lang+'/app-lang.json')
 			.success(function(data) {
 			
@@ -39,7 +39,7 @@ var app =  {
 					var script = document.createElement('script');
 					script.type = 'text/javascript';
 					script.src = 'i18n/' + lang + '/' + file;
-					$('#app').append(script);
+					$('body').append(script);
 				});
 
 				// I18N Moment JS //

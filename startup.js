@@ -5,7 +5,7 @@ requirejs.config({
 
 
 	paths: {
-		
+
 		/* #############
 		* Libs
 		*/
@@ -13,13 +13,19 @@ requirejs.config({
 		underscore         : 'js/libs/underscore-1.5.2-min',
 		backbone           : 'js/libs/backbone-1.1.0',
 		
-		moment             : 'js/libs/moment-2.3.1',
+		jqueryui           : 'js/libs/jquery-ui-1.10.3.custom.min',
+		moment             : 'js/libs/moment-2.4.0',
+		'moment-timezone'  : 'js/libs/moment-timezone-0.0.1',
+		'moment-timezone-data': 'i18n/moment-timezone-data',
 		'underscore.string': 'js/libs/underscore-string-2.3.2',
 		localStorage       : 'js/libs/backbone-localStorage-1.1.7',
 		nprogress          : 'js/libs/NProgress-0.1.2',
 		pnotify            : 'js/libs/pnotify-1.2.0',
 		bootstrap          : 'js/libs/bootstrap-3.0.0',
+		bootstrapDatepicker: 'js/libs/bootstrap-datepicker-1.1.1',
 		bootstrapSwitch    : 'js/libs/bootstrap-switch-1.8.0',
+		bootstrapTimepicker: 'js/libs/bootstrap-timepicker-0.2.3',
+		fullcalendar       : 'js/libs/fullcalendar-1.6.4',
 		select2            : 'js/libs/select2-3.4.2-min',
 		less               : 'js/libs/less-1.5.0',
 
@@ -38,7 +44,7 @@ requirejs.config({
 		appRouter		          : 'js/routers/AppRouter',
 
 		/* #############
-		* collections
+		* Collections
 		*/
 		genericCollection          : 'js/collections/GenericCollection',
 		usersCollection            : 'js/collections/UsersCollection',
@@ -51,6 +57,8 @@ requirejs.config({
 		placesCollection           : 'js/collections/PlacesCollection',
 		placeTypesCollection       : 'js/collections/PlaceTypesCollection',
 		stcGroupsCollection        : 'js/collections/STCGroupsCollection',
+		teamsCollection            : 'js/models/TeamsCollection',
+		officersCollection         : 'js/models/OfficersCollection',
 
 		/* #############
 		* Models
@@ -64,6 +72,8 @@ requirejs.config({
 		equipmentModel          : 'js/models/EquipmentModel',
 		placeModel              : 'js/models/PlaceModel',
 		claimerServiceModel     : 'js/models/ClaimerServiceModel',
+		teamModel               : 'js/models/TeamModel',
+		officerModel            : 'js/models/OfficerModel',
 
 		/* #############
 		* Views
@@ -104,6 +114,10 @@ requirejs.config({
 				_.mixin(UnderscoreString);
 			}
 		},
+		'localStorage': {
+			deps   : ['backbone'],
+			exports: 'Backbone'
+		},
 		'nprogress': {
 			deps   : ['jquery'],
 			exports: 'NProgress'
@@ -116,6 +130,9 @@ requirejs.config({
 			deps   : ['jquery'],
 			exports: 'bootstrap'
 		},
+		'jqueryui': {
+			deps   : ['jquery'],
+		},
 		'bootstrapSwitch': {
 			deps   : ['jquery'],
 			exports: 'bootstrapSwitch'	
@@ -123,6 +140,18 @@ requirejs.config({
 		'select2': {
 			deps   : ['jquery'],
 			exports: 'select2'
+		},
+		'fullcalendar': {
+			deps   : ['jquery']
+		},
+		'moment-timezone': {
+			deps   : ['moment']
+		},
+		'bootstrapDatepicker': {
+			deps   : ['jquery', 'bootstrap']
+		},
+		'bootstrapTimepicker': {
+			deps   : ['jquery', 'bootstrap']
 		},
 		'app-interventions' : {
 			deps   : ['app-interventions/config/require-config']

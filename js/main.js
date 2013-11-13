@@ -28,8 +28,7 @@ define('main', [
 				app.config 		= configuration_data[0];
 				app.routes      = routes_data[0];
 				app.lang        = lang_data[0];
-
-				app.config.lang = 'fr';
+				app.config.lang = lang;
 
 
 				// Instantiation of UsersCollections & UserModel //
