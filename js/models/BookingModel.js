@@ -5,7 +5,7 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	
 	urlRoot: "/api/openresa/booking",
 	
-	fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'create_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template'],
+	fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'partner_phone', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template'],
 
 
 	searchable_fields: [
@@ -151,22 +151,116 @@ app.Models.Booking = app.Models.GenericModel.extend({
 			return '';
 		}
 	},
-	
-	getPartner : function(type) {
 
-		if(this.get('partner_id')){
-			switch(type){
+	// Claimer of the booking //
+	getClaimer: function(type){
+		var claimer = {};
+	
+		switch (type){
+			case 'id': 
+				return this.get('partner_id')[0];
+			break;
+			case 'json':
+				return {id: this.get('partner_id')[0], name: this.get('partner_id')[1]};
+			break;
+			default:
+				return this.get('partner_id')[1];
+		}
+	
+		return claimer;
+	},
+	
+	setClaimer: function(value, silent){
+		this.set({ partner_id : value }, {silent: silent});
+	},
+
+	
+
+	getClaimerType: function(type){
+		if(this.get('partner_type')){
+			switch (type){
 				case 'id': 
-					return this.get('partner_id')[0];
+					return this.get('partner_type')[0];
+				break;
+				case 'json':
+					return {id: this.get('partner_type')[0], name: this.get('partner_type')[1]};
 				break;
 				default:
-					return _.titleize(this.get('partner_id')[1].toLowerCase());
+					return this.get('partner_type')[1];
 			}
 		}
-		else{
-			return false;
+	},
+	setClaimerType: function(value, silent){
+		this.set({ partner_type : value }, {silent: silent});
+	},
+	
+
+
+	getClaimerPhone: function(){
+		return this.get('partner_phone');
+	},
+	
+	
+	getClaimerContact: function(type){
+		if(this.get('partner_order_id')){
+			switch (type){
+				case 'id': 
+					return this.get('partner_order_id')[0];
+				break;
+				case 'json':
+					return {id: this.get('partner_order_id')[0], name: this.get('partner_address')[1]};
+				break;
+				default:
+					return this.get('partner_order_id')[1];
+			}
 		}
 	},
+	
+	setClaimerContact: function(value, silent){
+		this.set({ partner_address : value }, {silent: silent});
+	},
+	
+	
+
+	
+	fromCitizen: function(){
+		return this.get('is_citizen');
+	},
+	setFromCitizen: function(value, silent){
+		this.set({ is_citizen : value }, {silent: silent});
+	},
+	
+	getCitizenName: function(){
+		if(this.fromCitizen()){
+			return this.get('people_name');
+		}
+	},
+	setCitizenName: function(value, silent){
+		this.set({ people_name : value }, {silent: silent});
+	},	
+	
+	getCitizenPhone: function(){
+		if(this.fromCitizen()){
+			return this.get('people_phone');
+		}
+	},
+	setCitizenPhone: function(value, silent){
+		this.set({ people_phone : value }, {silent: silent});
+	},
+	getCitizenEmail: function(){
+		if(this.fromCitizen()){
+			return this.get('people_email');
+		}
+	},
+	setCitizenEmail: function(value, silent){
+		this.set({ people_email : value }, {silent: silent});
+	},
+
+	
+	
+
+
+
 	
 	getState : function() {
 		return this.get('state');
@@ -193,8 +287,11 @@ app.Models.Booking = app.Models.GenericModel.extend({
 		app.Models.Booking.status.done.translation   = app.lang.finished;
 		app.Models.Booking.status.remplir.translation     = app.lang.wait;
 		
-		app.Models.Booking.actions.resolve_conflict.translation   = 'Traiter conflit';
-		app.Models.Booking.actions.refused.translation   = app.lang.actions.refuse;
+		app.Models.Booking.actions.done.translation   = app.lang.actions.validate;
+		app.Models.Booking.actions.confirm.translation = app.lang.wait;
+		app.Models.Booking.actions.resolve_conflict.translation = 'Traiter conflit';
+		app.Models.Booking.actions.refuse.translation   = app.lang.actions.refuse;
+
 		
 //		this.computeResources().done(function (data) {
 //			// self.set( {'resources' :  data.resources, 'description': data.description} , {silent:false} );	
@@ -247,19 +344,33 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	
 		// Actions of the requests //
 	actions : {
-		resolve_conflict: {
-			key 		: 'resolve_conflict',
+		confirm: {
+			key 		: 'confirm',
 			color 		: 'warning',
-			icon 		: 'icon-level-up',
+			icon 		: 'icon-question',
 			translation : ''
 		},
-		refused: {
+		done: {
+			key 		: 'valid',
+			color 		: 'success',
+			icon 		: 'icon-ok',
+			translation : ''
+		},
+		resolve_conflict: {
+			key 		: 'resolve_conflict',
+			color 		: 'info',
+			icon 		: 'icon-medkit',
+			translation : ''
+		},
+		refuse: {
 			key 		: 'refused',
 			color 		: 'danger',
 			icon 		: 'icon-remove',
 			translation : ''
 		},
-		
+//		create: {},
+//		update: {},
+//		delete: {},
 	}
 
 });

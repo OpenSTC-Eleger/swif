@@ -1,9 +1,22 @@
-<div class="page-header">
-	<h1>
-		Suivi des réservations
-		<sup id="bagdeCpt" class="badge"><%= nbBookings %></sup>
-	</h1>
-</div>
+	<div class="page-header">
+		<h1>
+			<!--  <%= lang.viewsTitles.bookingsList %> -->
+			Suivi des Réservations
+	
+			<% 
+				var classColor      = app.Models.Booking.status.remplir.color;
+				var filterValue     = app.Models.Booking.status.remplir.key;
+				var actionToProcess = lang.actions.process;
+		
+			%>
+			
+			<sup id="badgeActions" class="badge badge-<%= classColor %> badge-action" data-filter="<%= filterValue %>" data-toggle="tooltip" data-original-title="<%= actionToProcess %>" data-placement="bottom">
+				<%= nbBookings %>
+			</sup>
+	
+			
+		</h1>
+	</div>
 
 
 

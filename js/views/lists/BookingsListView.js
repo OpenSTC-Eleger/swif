@@ -16,6 +16,7 @@ app.Views.BookingsListView = app.Views.GenericListView.extend({
 	events: function(){
 		return _.defaults({
 			'click #filterStateBookingList li a' 	: 'setFilterState',	
+			'click #badgeActions[data-filter!=""]'  : 'badgeFilter',
 			'click .btn-info'             		: 'unbindOccurences',
 			'click .btn-success'             	: 'validOccurences',
 			'click .btn-danger'             		: 'refuseOccurences',
@@ -72,7 +73,7 @@ app.Views.BookingsListView = app.Views.GenericListView.extend({
 			var template = _.template(templateData, {
 				lang             : app.lang,
 				bookings         : self.collection,
-				nbBookings       : self.collection.cpt,				
+				nbBookings       : self.collection.specialCpt,				
 				bookingsState    : app.Models.Booking.status,
 			});
 
@@ -138,6 +139,23 @@ app.Views.BookingsListView = app.Views.GenericListView.extend({
 			delete this.options.filter;
 		}
 		
+		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+	},
+	
+	/** Filter Requests on the State of the Badge
+	 	*/
+	badgeFilter: function(e){
+	 	delete this.options.recurrence
+	 		
+		var filterValue = $(e.target).data('filter');
+
+		// Set the filter value in the options of the view //
+		if(filterValue != ''){
+			this.options.filter = { by: 'state', value: filterValue};
+			delete this.options.search;
+			delete this.options.page;
+		}
+
 		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 	},
 
