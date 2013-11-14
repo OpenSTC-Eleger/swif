@@ -5,7 +5,7 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	
 	urlRoot: "/api/openresa/booking",
 	
-	fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'partner_phone', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template'],
+	fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'partner_phone', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'note'],
 
 
 	searchable_fields: [
@@ -35,6 +35,16 @@ app.Models.Booking = app.Models.GenericModel.extend({
 			break;
 			default:
 				return _.capitalize(this.get('create_uid')[1]);
+		}
+	},
+	
+	getWriteAuthor: function(type){
+		switch(type){
+			case 'id': 
+				return this.get('write_uid')[0];
+			break;
+			default:
+				return _.capitalize(this.get('write_uid')[1]);
 		}
 	},
 	
@@ -79,6 +89,14 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	
 	getDescription: function(){
 		return this.get('description');	
+	},
+	
+	getInformations: function(){
+		return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate() + (this.getNote()!=false ? " : " + this.getNote() : "");
+	},
+	
+	getNote: function(){
+		return this.get('note');
 	},
 	
 	getRecurrence: function(type){
@@ -144,6 +162,22 @@ app.Models.Booking = app.Models.GenericModel.extend({
 				break;
 				default:
 					return this.get('create_date');
+				break;
+			}
+		}
+		else{
+			return '';
+		}
+	},
+	
+	getWriteDate: function(type){
+		if(this.get('write_date') != false){
+			switch(type){
+				case 'human':	
+					return moment(this.get('write_date')).format('LL');
+				break;
+				default:
+					return this.get('write_date');
 				break;
 			}
 		}
@@ -282,15 +316,17 @@ app.Models.Booking = app.Models.GenericModel.extend({
 		//this.fetchRelated('tasks');
 		var self = this;
 
-		app.Models.Booking.status.confirm.translation  = app.lang.confirm;
+		app.Models.Booking.status.remplir.translation     = app.lang.wait;
+		app.Models.Booking.status.confirm.translation  = app.lang.valid;
 		app.Models.Booking.status.cancel.translation  = app.lang.refused;
 		app.Models.Booking.status.done.translation   = app.lang.finished;
-		app.Models.Booking.status.remplir.translation     = app.lang.wait;
 		
-		app.Models.Booking.actions.done.translation   = app.lang.actions.validate;
-		app.Models.Booking.actions.confirm.translation = app.lang.wait;
+		
+		
+		app.Models.Booking.actions.valid.translation = app.lang.actions.validate;
+		app.Models.Booking.actions.closed.translation   = app.lang.finished;
 		app.Models.Booking.actions.resolve_conflict.translation = 'Traiter conflit';
-		app.Models.Booking.actions.refuse.translation   = app.lang.actions.refuse;
+		app.Models.Booking.actions.refused.translation   = app.lang.actions.refuse;
 
 		
 //		this.computeResources().done(function (data) {
@@ -305,64 +341,53 @@ app.Models.Booking = app.Models.GenericModel.extend({
 }, {
 	// Request State Initialization //
 	status : {
-//		draft: {
-//			key                 : 'draft',
-//			color               : '',
-//			translation         : ''
-//		},
-		confirm: {
-			key                 : 'confirm',
-			color               : 'warning',
-			translation         : ''
-		},
-		cancel: {
-			key                 : 'cancel',
-			color               : 'danger',
-			translation         : ''
-		},
-//		in_use: {
-//			key                 : 'in_use',
-//			color               : 'default',
-//			translation         : ''
-//		},
-		done: {
-			key                 : 'done',
-			color               : 'success',
-			translation         : ''
-		},
+		//= égal au 'wait' STC
 		remplir: {
-			key                 : 'remplir',
+			key                 : 'wait',
 			color               : 'info',
 			translation         : ''
 		},
-//		wait_confirm: {
-//			key                 : 'wait_confirm',
-//			color               : '',
-//			translation         : ''
-//		},
+		//= égal au 'valid' STC
+		confirm: {
+			key                 : 'valid',
+			color               : 'success',
+			translation         : ''
+		},
+		//= égal au 'refused' STC
+		cancel: {
+			key                 : 'refused',
+			color               : 'danger',
+			translation         : ''
+		},
+		//= égal au 'closed' STC
+		done: {
+			key                 : 'closed',
+			color               : 'success',
+			translation         : ''
+		},
 	},
 	
 		// Actions of the requests //
 	actions : {
-		confirm: {
-			key 		: 'confirm',
-			color 		: 'warning',
-			icon 		: 'icon-question',
-			translation : ''
-		},
-		done: {
+		valid: {
 			key 		: 'valid',
 			color 		: 'success',
 			icon 		: 'icon-ok',
 			translation : ''
 		},
+		closed: {
+			key 		: 'closed',
+			color 		: 'default',
+			icon 		: 'icon-eye-close',
+			translation : ''
+		},
 		resolve_conflict: {
 			key 		: 'resolve_conflict',
-			color 		: 'info',
+			color 		: 'warning',
 			icon 		: 'icon-medkit',
 			translation : ''
 		},
-		refuse: {
+		refused: {
 			key 		: 'refused',
 			color 		: 'danger',
 			icon 		: 'icon-remove',

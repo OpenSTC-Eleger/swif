@@ -52,7 +52,7 @@
 	<span 
 		class="label label-<%= app.Models.Booking.status[booking.getState()].color %>" 
 		data-toggle="tooltip"
-		data-original-title="">
+		data-original-title="<%= booking.getInformations() %>">
 		<%= app.Models.Booking.status[booking.getState()].translation %>
 	</span>
 </td>

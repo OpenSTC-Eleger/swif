@@ -13,6 +13,8 @@ app.Views.ItemBookingView = Backbone.View.extend({
 	events       : {
 		'click a.accordion-object'    		: 'tableAccordion',
 		'click a.displayOccurences'			: 'displayOccurences',
+		
+		'click .buttonValidBooking'	      	: 'modalValidBooking',
 	},
 
 
@@ -159,6 +161,18 @@ app.Views.ItemBookingView = Backbone.View.extend({
 			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
 			$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 		}
-	},	
+	},
+	
+	
+	/** Display Modal form to valid an Intervention Request
+	*/
+	modalValidBooking: function(e){
+		e.preventDefault(); e.stopPropagation();
+
+		app.views.modalValidBookingView = new app.Views.ModalValidBookingView({
+			el      : '#modalValidBooking',
+			model   : this.model
+		});
+	},
 
 });
