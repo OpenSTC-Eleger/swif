@@ -303,5 +303,4 @@ app.Views.BookingsListView = app.Views.GenericListView.extend({
 		
 		return deferred;
 	}
-  
 });

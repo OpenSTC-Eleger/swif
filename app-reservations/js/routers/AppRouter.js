@@ -23,7 +23,14 @@ define([
 
 			app.views.bookingsListView = new BookingsListView(params);
 		},
-
+		
+		formReservation: function(id){
+			params = {}
+			if (!_.isUndefined(id)){
+				params.booking_id = id;
+			}
+			app.views.formBooking = new app.Views.FormBooking(params);
+		}
 
 	});
 
