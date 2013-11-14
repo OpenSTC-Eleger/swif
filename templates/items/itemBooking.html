@@ -16,9 +16,16 @@
 	-->
 	<!-- Interventions action -->
 	<p class="row-actions invisible">
-		<a href="#reservations" class="printInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="inter">
+		<!--  <a href="#reservations" class="printInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="inter">
 			<i class="icon-print icon-large" data-action="inter">&nbsp;</i>
 		</a>
+		-->
+		<% if ( !_.isUndefined(booking.getRecurrence('id')) ) { %>
+			<a href="#" class="displayOccurences" data-toggle="tooltip" data-original-title="Afficher les occurences" data-action="reccurent">
+				<i class="icon-th-list icon-large" data-action="reccurent">&nbsp;</i>
+			</a>
+		<% } %>
+
 		<% if(booking.hasActions("cancel")) { %>
 			 &nbsp;<a href="#" class="buttonCancelInter" data-toggle="modal"><i class="icon-ban-circle icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
 		<% } %>

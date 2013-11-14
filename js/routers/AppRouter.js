@@ -337,8 +337,9 @@ app.Router = Backbone.Router.extend({
 	/** Reservations List
 	*/
 
-	bookings: function(search, filter, sort, page){
+	bookings: function(recurrence, search, filter, sort, page){
 		var params = {};
+		if(!_.isNull(recurrence)){params.recurrence = recurrence}
 		if(!_.isNull(search)){params.search = search}
 		if(!_.isNull(filter)){params.filter = filter}
 		if(!_.isNull(sort)){params.sort = sort}

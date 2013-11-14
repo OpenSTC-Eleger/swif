@@ -17,6 +17,7 @@ app.Models.Booking = app.Models.GenericModel.extend({
 			key  : 'name', 
 			type : 'text'
 		}
+		
 	],
 
 	getId: function(){
@@ -78,6 +79,16 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	
 	getDescription: function(){
 		return this.get('description');	
+	},
+	
+	getRecurrence: function(type){
+		switch(type){
+			case 'id': 
+				return this.get('recurrence_id')[0];
+			break;
+			default:
+				return _.capitalize(this.get('recurrence_id')[1]);
+		}	
 	},
 	
 	isAllDispo: function(){

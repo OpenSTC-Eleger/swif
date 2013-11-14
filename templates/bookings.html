@@ -9,17 +9,29 @@
 
 	<!-- Table toolbar -->
 	<div class="tableToolbar row">
-		<div class="col-xs-7 col-md-9 col-lg-10">
+		<div class="col-xs-7 col-md-9 col-lg-5">
 			<a href="#reservations" class="btn btn-primary modalCreateBooking"><i class="icon-plus"></i>Nouvelle réservation</a>
 		</div>
+		
+		<form class="form-actions pull-center col-xs-5 col-md-3 col-lg-2">
 
-		<form class=" form-search pull-right col-xs-5 col-md-3 col-lg-2">
-		  <div class="checkbox">
-		    <label>
-		      <input type="checkbox"> Réccurentes
-		    </label>
+		  <div class="input-group">
+		  		<div class="col-lg-20">
+		  			<button type="button" class="btn btn-info"> <i class="icon-step-backward"></i>
+		  			</button>
+			  		<button type="button" class="btn btn-success">Tout valider</button>
+			  		<button type="button" class="btn btn-danger">Tout Refuser</button>		
+		  		</div>  		
 		  </div>
-			<div class="input-group">
+		</form>
+
+		<form class="form-search pull-right col-xs-5 col-md-3 col-lg-2">
+
+		  <div class="input-group">
+				<!--  <div class="reccurentSwitch pull-right make-switch" data-label-icon="icon-calendar" data-toggle="tooltip" data-original-title="Récurrences" data-text
+					data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" id="switch-reccurent">
+					<input type="checkbox"/>
+		  		</div> -->
 				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
 				<span class="input-group-btn">
 					<button type="submit" class="btn btn-primary"><i class="icon-search icon-large"></i></button>

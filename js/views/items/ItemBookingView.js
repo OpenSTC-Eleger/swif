@@ -12,6 +12,7 @@ app.Views.ItemBookingView = Backbone.View.extend({
 	// The DOM events //
 	events       : {
 		'click a.accordion-object'    		: 'tableAccordion',
+		'click a.displayOccurences'			: 'displayOccurences',
 	},
 
 
@@ -69,6 +70,7 @@ app.Views.ItemBookingView = Backbone.View.extend({
 			});
 
 			$(self.el).html(template);
+			
 
 			// Set the Tooltip / Popover //$(self.el).html(template);
 			$('*[data-toggle="tooltip"]').tooltip();
@@ -85,6 +87,31 @@ app.Views.ItemBookingView = Backbone.View.extend({
 		});
 		$(this.el).hide().fadeIn('slow'); 
 		return this;
+	},
+	
+	/** Displays occurences booking
+	*/
+	displayOccurences: function(e){
+		e.preventDefault();
+		
+		//var booking = this.model.toJSON();
+		
+		//app.views.bookingsListView.options.filter = { by: 'recurrence_id', operator : '=', value: this.model.getRecurrence('id')}; 
+		app.views.bookingsListView.options.recurrence = this.model.getRecurrence('id'); //{ by: 'recurrence_id', value: this.model.getRecurrence('id')}; 
+		app.router.navigate(app.views.bookingsListView.urlBuilder(), {trigger: true, replace: true});		
+
+//		
+//		
+//		//Add reccurrent name before run search
+//		sessionStorage.setItem('reccurent', booking.name);
+//		
+//		//Set search with occurence name
+//		$(app.views.bookingsListView.searchForm).val(booking.name)
+//		
+//		//Search all same name in search form 
+//		app.views.bookingsListView.search(e);
+	
+
 	},
 
 	/**

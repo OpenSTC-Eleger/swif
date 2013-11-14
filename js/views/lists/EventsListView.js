@@ -282,7 +282,7 @@ app.Views.EventsListView = Backbone.View.extend({
         				domain.push({ 'field' : 'user_id.id', 'operator' : '=', 'value' : self.model.id })
     			}
 
-	    		fetchParams.data.filters    = app.objectifyFilters(domain),
+	    		fetchParams.data.filters    = app.objectifyFilters(domain)
 	    		self.collection = new app.Collections.Tasks();
 	    		//Get tasks for domain
 				self.collection.fetch(fetchParams).done(function(data){					
