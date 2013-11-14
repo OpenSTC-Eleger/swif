@@ -51,9 +51,9 @@ define('main', [
 				}
 
 
-				// Unable to fetch with Backbone LocalStorage and Require JS//
-				//app.collections.users.fetch();
-				/*if(_.isEmpty(app.collections.users.models)){
+				// UNABLE TO FETCH WITH BACKBONE LOCALSTORAGE AND REQUIRE JS //
+				/*app.collections.users.fetch();
+				if(_.isEmpty(app.collections.users.models)){
 					app.models.user = new UserModel();
 					app.collections.users.add(app.models.user);
 				}

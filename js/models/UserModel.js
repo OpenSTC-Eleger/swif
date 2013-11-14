@@ -301,8 +301,6 @@ define([
 				self.setAuthToken(null);
 				self.save();
 
-				//app.setAjaxSetup();
-
 				// Refresh the header //
 				app.views.headerView.render();
 

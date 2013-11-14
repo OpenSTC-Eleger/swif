@@ -28,7 +28,7 @@ requirejs.config({
 		bsTimepicker          : 'js/libs/bootstrap-timepicker-0.2.3',
 		fullcalendar          : 'js/libs/fullcalendar-1.6.4',
 		select2               : 'js/libs/select2-3.4.2-min',
-		
+
 		less                  : 'js/libs/less-1.5.0',
 
 
