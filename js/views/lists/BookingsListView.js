@@ -4,16 +4,22 @@
 app.Views.BookingsListView = app.Views.GenericListView.extend({
 
 	templateHTML: 'bookings',
+	
+	urlParameters : ['recurrence', 'id', 'search', 'filter', 'sort', 'page'],
 
 	collections:  {},
 	
-	searchReccurent    : 'form.form-search checkbox',
+	//searchReccurent    : 'form.form-search input',
+	actionsForm    : 'form.form-actions',
 
 	// The DOM events //
 	events: function(){
 		return _.defaults({
-			'click #filterStateBookingList li a' 	: 'setFilterState',
-			'click form.form-search checkbox'       : 'searchReccurent',
+			'click #filterStateBookingList li a' 	: 'setFilterState',	
+			'click .btn-info'             		: 'unbindOccurences',
+			'click .btn-success'             	: 'validOccurences',
+			'click .btn-danger'             		: 'refuseOccurences',
+			//'click form.form-search checkbox'       : 'searchReccurent',
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -73,6 +79,11 @@ app.Views.BookingsListView = app.Views.GenericListView.extend({
 
 			$(self.el).html(template);
 			
+
+			
+			
+			//$('#switch-reccurent').bootstrapSwitch();			
+
 			// Call the render Generic View //
 			app.Views.GenericListView.prototype.render(self.options);
 			
@@ -93,6 +104,14 @@ app.Views.BookingsListView = app.Views.GenericListView.extend({
 				page       : self.options.page.page,
 				collection : self.collection
 			})
+
+
+			if(self.options.recurrence == null){				
+				$(self.actionsForm).addClass('hide');				
+			}
+			else{				
+				$(self.actionsForm).removeClass('hide');
+			}
 			
 		});
 		$(this.el).hide().fadeIn();
@@ -121,29 +140,65 @@ app.Views.BookingsListView = app.Views.GenericListView.extend({
 		
 		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 	},
+
 	
-	/** Perform a search on the sites
+	/** valid occurences booking
 	*/
-	searchReccurent: function(e){
+	validOccurences: function(e){
 		e.preventDefault();
-
-		var domain = $(this.searchReccurent).val();
-
-
-		if(_.isEmpty(query)){
-			delete this.options.search;
-		}
-		else{
-			this.options.search = query
-		}
+		var self = this;	
 		
-		// Delete parameters //
-		delete this.options.id;
-		delete this.options.page;
-
-		app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+		//var booking = this.model.toJSON();
+		console.debug('Valid occurences');
 
 	},
+	
+	/** valid occurences booking
+	*/
+	refuseOccurences: function(e){
+		e.preventDefault();
+		var self = this;	
+		
+		//var booking = this.model.toJSON();
+		console.debug('refuse occurences');
+
+	},
+	
+	/** unbind occurences 
+	*/
+	unbindOccurences: function(e){
+		e.preventDefault();
+		var self = this;	
+		
+		delete this.options.recurrence
+		
+		app.router.navigate(app.views.bookingsListView.urlBuilder(), {trigger: true, replace: true});
+
+		//var booking = this.model.toJSON();
+		console.debug('unbind occurences');
+
+	},
+	
+//	search: function(e){
+//		e.preventDefault();
+//		delete this.options.recurrence
+//		
+//		app.Views.GenericListView.prototype.search.call(this, e);
+//		//app.Views.BookingsListView.__super__.search(e);
+//		
+//	},
+
+
+
+//	/** Sort the row of the table
+//	*/
+//	sort: function(e){
+//		sessionStorage.removeItem('reccurent');
+//		app.Views.GenericListView.prototype.search.call(this, e);
+//		//app.Views.BookingsListView.__super__.search(e);
+//
+//	},
+	
 
 	initCollections: function(){
 		var self = this;
@@ -179,6 +234,8 @@ app.Views.BookingsListView = app.Views.GenericListView.extend({
 		
 
 		var globalSearch = {};
+		
+
 		if(!_.isUndefined(this.options.search)){
 			globalSearch.search = this.options.search;
 		}
@@ -189,6 +246,13 @@ app.Views.BookingsListView = app.Views.GenericListView.extend({
 		if(!_.isEmpty(globalSearch)){
 			fetchParams.data.filters = app.Helpers.Main.calculSearch(globalSearch, app.Models.Booking.prototype.searchable_fields);
 		}
+		
+		if(!_.isUndefined(this.options.recurrence)){
+			fetchParams.data.filters  = _.toArray(fetchParams.data.filters);
+			fetchParams.data.filters.push({ 'field' : 'recurrence_id.id', 'operator' : '=', 'value' : this.options.recurrence})
+		}
+		
+
 		
 		var deferred = $.Deferred();
 		//retrieve bookings and tasks associated (use domain ('project_id','in',[...] to retrieve tasks associated)

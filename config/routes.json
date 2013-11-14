@@ -80,7 +80,7 @@
 	
 	
 	"reservations": {
-		"url"		: "reservations(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"url"		: "reservations(/recurrence/:recurrence)(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"	: "bookings"
 	}
 	
