@@ -22,7 +22,7 @@ requirejs.config({
 		localStorage          : 'js/libs/backbone-localStorage-1.1.7',
 		nprogress             : 'js/libs/NProgress-0.1.2',
 		pnotify               : 'js/libs/pnotify-1.2.0',
-		bootstrap             : 'js/libs/bootstrap-3.0.0',
+		bootstrap             : 'js/libs/bootstrap-3.0.2',
 		bsDatepicker          : 'js/libs/bootstrap-datepicker-1.1.1',
 		bsSwitch              : 'js/libs/bootstrap-switch-1.8.0',
 		bsTimepicker          : 'js/libs/bootstrap-timepicker-0.2.3',

@@ -175,8 +175,13 @@ define([
 		/** About the App
 		*/
 		dashboard: function(){
-			app.views.dashboardView = new DashboardView();
-			this.render(app.views.dashboardView);
+			if(this.checkConnect()){
+				app.views.dashboardView = new DashboardView();
+				this.render(app.views.dashboardView);
+			}
+			else{
+				this.navigate(app.routes.login.url, {trigger: true, replace: true});
+			}
 		},
 
 
