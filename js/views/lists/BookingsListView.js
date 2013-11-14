@@ -20,7 +20,7 @@ app.Views.BookingsListView = app.Views.GenericListView.extend({
 			'click .btn-info'             		: 'unbindOccurences',
 			'click .btn-success'             	: 'validOccurences',
 			'click .btn-danger'             		: 'refuseOccurences',
-			//'click form.form-search checkbox'       : 'searchReccurent',
+			
 		}, 
 			app.Views.GenericListView.prototype.events
 		);
@@ -163,11 +163,18 @@ app.Views.BookingsListView = app.Views.GenericListView.extend({
 	/** valid occurences booking
 	*/
 	validOccurences: function(e){
-		e.preventDefault();
-		var self = this;	
+//		e.preventDefault();
+//		var self = this;	
 		
 		//var booking = this.model.toJSON();
 		console.debug('Valid occurences');
+		
+		e.preventDefault(); e.stopPropagation();
+
+		app.views.modalValidBookingsListView = new app.Views.modalValidBookingsListView({
+			el      : '#modalValidBookingsList',
+			model   : this.collection
+		});
 
 	},
 	
