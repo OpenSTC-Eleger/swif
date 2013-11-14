@@ -4,9 +4,9 @@
 define('app', [
 
 	// Load our app module and pass it to our definition function
-	'backbone', 'moment', 'nprogress', 'pnotify', 'bootstrap'
+	'backbone', 'nprogress', 'pnotify', 'bootstrap'
 
-], function(Backbone, moment, NProgress, pnotify){
+], function(Backbone, NProgress, pnotify){
 
 	'use strict';
 
@@ -17,7 +17,7 @@ var app =  {
 	// Instances //
 	properties     : {},
 	routes         : {},
-	configuration  : {},
+	config         : {},
 	lang           : {},
 	collections    : {},
 	models         : {},
@@ -25,37 +25,10 @@ var app =  {
 
 
 
-
-	/** Load internationalization scripts
-	*/
-	loadI18nScripts: function (lang) {
-
-		var langFiles = ['moment-lang.js', 'bootstrap-datepicker-lang.js', 'select2-lang.js'];
-
-		return $.getJSON('i18n/'+lang+'/app-lang.json')
-			.success(function(data) {
-			
-				/*_.each(langFiles, function(file){
-					var script = document.createElement('script');
-					script.type = 'text/javascript';
-					script.src = 'i18n/' + lang + '/' + file;
-					$('body').append(script);
-				});
-
-				// I18N Moment JS //
-				moment.lang(lang);*/
-
-			})
-			.fail(function(){
-				console.error('Unable to load the language files');
-			});
-	},
-
-
-
 	/** Load Static file
 	*/
 	loadStaticFile: function (url) {
+
 		return $.getJSON(url)
 			.success(function (data) {
 			})

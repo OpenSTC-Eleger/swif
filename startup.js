@@ -9,28 +9,38 @@ requirejs.config({
 		/* #############
 		* Libs
 		*/
-		jquery             : 'js/libs/jQuery-2.0.3-min',
-		underscore         : 'js/libs/underscore-1.5.2-min',
-		backbone           : 'js/libs/backbone-1.1.0',
-		
-		jqueryui           : 'js/libs/jquery-ui-1.10.3.custom.min',
-		moment             : 'js/libs/moment-2.4.0',
-		'moment-timezone'  : 'js/libs/moment-timezone-0.0.1',
-		'moment-timezone-data': 'i18n/moment-timezone-data',
-		'underscore.string': 'js/libs/underscore-string-2.3.2',
-		localStorage       : 'js/libs/backbone-localStorage-1.1.7',
-		nprogress          : 'js/libs/NProgress-0.1.2',
-		pnotify            : 'js/libs/pnotify-1.2.0',
-		bootstrap          : 'js/libs/bootstrap-3.0.0',
-		bootstrapDatepicker: 'js/libs/bootstrap-datepicker-1.1.1',
-		bootstrapSwitch    : 'js/libs/bootstrap-switch-1.8.0',
-		bootstrapTimepicker: 'js/libs/bootstrap-timepicker-0.2.3',
-		fullcalendar       : 'js/libs/fullcalendar-1.6.4',
-		select2            : 'js/libs/select2-3.4.2-min',
-		less               : 'js/libs/less-1.5.0',
+		jquery                : 'js/libs/jQuery-2.0.3-min',
+		underscore            : 'js/libs/underscore-1.5.2-min',
+		backbone              : 'js/libs/backbone-1.1.0',
 
-		app                : 'js/app',
-		main               : 'js/main',
+		jqueryui              : 'js/libs/jquery-ui-1.10.3.custom.min',
+		moment                : 'js/libs/moment-2.4.0',
+		'moment-timezone'     : 'js/libs/moment-timezone-0.0.1',
+		'moment-timezone-data': 'i18n/moment-timezone-data',
+
+		'underscore.string'   : 'js/libs/underscore-string-2.3.2',
+		localStorage          : 'js/libs/backbone-localStorage-1.1.7',
+		nprogress             : 'js/libs/NProgress-0.1.2',
+		pnotify               : 'js/libs/pnotify-1.2.0',
+		bootstrap             : 'js/libs/bootstrap-3.0.0',
+		bsDatepicker          : 'js/libs/bootstrap-datepicker-1.1.1',
+		bsSwitch              : 'js/libs/bootstrap-switch-1.8.0',
+		bsTimepicker          : 'js/libs/bootstrap-timepicker-0.2.3',
+		fullcalendar          : 'js/libs/fullcalendar-1.6.4',
+		select2               : 'js/libs/select2-3.4.2-min',
+		
+		less                  : 'js/libs/less-1.5.0',
+
+
+		/* #############
+		* i18n Libs
+		*/
+		'select2-lang'         : 'i18n/select2-lang',
+		'bsDatepicker-lang'    : 'i18n/bootstrap-datepicker-lang',
+
+
+		app                   : 'js/app',
+		main                  : 'js/main',
 
 
 		/* #############
@@ -132,27 +142,34 @@ requirejs.config({
 		},
 		'jqueryui': {
 			deps   : ['jquery'],
+			exports: 'jquery'
 		},
-		'bootstrapSwitch': {
+		'bsSwitch': {
 			deps   : ['jquery'],
-			exports: 'bootstrapSwitch'	
+			exports: 'bsSwitch'	
 		},
 		'select2': {
 			deps   : ['jquery'],
 			exports: 'select2'
 		},
+		'select2-lang': {
+			deps   : ['select2'],
+			exports: 'select2'
+		},
 		'fullcalendar': {
 			deps   : ['jquery']
 		},
-		'moment-timezone': {
-			deps   : ['moment']
+		'bsDatepicker': {
+			deps   : ['jquery']
 		},
-		'bootstrapDatepicker': {
-			deps   : ['jquery', 'bootstrap']
+		'bsDatepicker-lang': {
+			deps   : ['bsDatepicker'],
+			exports: 'bsDatepicker'
 		},
-		'bootstrapTimepicker': {
-			deps   : ['jquery', 'bootstrap']
+		'bsTimepicker': {
+			deps   : ['jquery']
 		},
+
 		'app-interventions' : {
 			deps   : ['app-interventions/config/require-config']
 		},
@@ -160,7 +177,6 @@ requirejs.config({
 			deps   : ['app-reservations/config/require-config']
 		}
 	}
-
 
 });
 

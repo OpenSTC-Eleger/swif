@@ -1,7 +1,7 @@
 define([
 	'app',
 
-	'select2'
+	'select2-lang'
 
 ], function(app, select2){
 

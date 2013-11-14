@@ -13,10 +13,11 @@ define([
 
 	'requestModel',
 	'claimerContactModel',
+	'claimerModel',
 
-	'bootstrapSwitch'
+	'bsSwitch'
 
-], function(app, GenericModalView, AdvancedSelectBoxView, RequestsCollection, ClaimersCollection, ClaimersContactsCollection, EquipmentsCollection, PlacesCollection, ClaimersServicesCollection, RequestModel, ClaimerContactModel, bootstrapSwitch){
+], function(app, GenericModalView, AdvancedSelectBoxView, RequestsCollection, ClaimersCollection, ClaimersContactsCollection, EquipmentsCollection, PlacesCollection, ClaimersServicesCollection, RequestModel, ClaimerContactModel, ClaimerModel, bootstrapSwitch){
 
 
 
@@ -194,7 +195,7 @@ define([
 
 				
 				// Fetch the organisation to know the Associated place and Service //
-				this.organisation = new app.Models.Claimer({id: claimerId});
+				this.organisation = new ClaimerModel({id: claimerId});
 				this.organisation.fetch({ data : {fields : ['technical_service_id', 'technical_site_id']} })
 					.done(function(data){
 

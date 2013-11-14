@@ -4,9 +4,9 @@
 define('main', [
 
 	// Load our app module and pass it to our definition function
-	'app', 'appRouter', 'usersCollection', 'userModel'
+	'app', 'appRouter', 'moment', 'usersCollection', 'userModel'
 
-], function(app, AppRouter, UsersCollection, UserModel){
+], function(app, AppRouter, moment, UsersCollection, UserModel){
 
 	'use strict';
 
@@ -19,7 +19,10 @@ define('main', [
 
 
 		// Retrieve App properties, configuration and language //
-		$.when(app.loadStaticFile('properties.json'), app.loadStaticFile('config/configuration.json'), app.loadStaticFile('config/routes.json'), app.loadI18nScripts(lang))
+		$.when(app.loadStaticFile('properties.json'),
+			   app.loadStaticFile('config/configuration.json'),
+			   app.loadStaticFile('config/routes.json'),
+			   app.loadStaticFile('i18n/'+lang+'/app-lang.json'))
 			.done(function (properties_data, configuration_data, routes_data, lang_data) {
 
 
@@ -30,11 +33,10 @@ define('main', [
 				app.lang        = lang_data[0];
 				app.config.lang = lang;
 
+				moment.lang(app.config.lang);
 
 				// Instantiation of UsersCollections & UserModel //
-				app.collections.users           = new UsersCollection();
-				//app.collections.users.fetch();
-
+				app.collections.users  = new UsersCollection();
 
 
 				app.models.user = new UserModel();
@@ -49,6 +51,8 @@ define('main', [
 				}
 
 
+				// Unable to fetch with Backbone LocalStorage and Require JS//
+				//app.collections.users.fetch();
 				/*if(_.isEmpty(app.collections.users.models)){
 					app.models.user = new UserModel();
 					app.collections.users.add(app.models.user);
@@ -56,7 +60,8 @@ define('main', [
 				else{
 					app.models.user = app.collections.users.at(0);
 				}*/
-				
+
+
 				// Set the Ajax Setup //
 				app.setAjaxSetup();
 
