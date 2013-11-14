@@ -296,6 +296,22 @@ app.Models.Booking = app.Models.GenericModel.extend({
 
 
 	
+	getContact : function(type) {
+
+		if(this.get('partner_invoice_id')){
+			switch(type){
+				case 'id': 
+					return this.get('partner_invoice_id')[0];
+				break;
+				default:
+					return _.titleize(this.get('partner_invoice_id')[1].toLowerCase());
+			}
+		}
+		else{
+			return false;
+		}
+	},
+	
 	getState : function() {
 		return this.get('state');
 	},
