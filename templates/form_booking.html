@@ -1,0 +1,124 @@
+<div class="page-header">
+	<h1>
+		<%= lang.viewsTitles.newBooking %>
+	</h1>
+</div>
+
+	
+	<form id="formSaveRequest" action="#" class="form-horizontal container" role="form">
+		<div class="row">
+			<div class="col-sm-6">
+				<!-- Booking Partner (claimer) -->
+				<div class="form-group">
+					<label for="bookingPartner" class="control-label col-sm-3"><%= _.capitalize(lang.claiment) %>:</label>
+		
+					<div class="col-sm-9">
+						<input id="bookingPartner" class="select2" data-placeholder="<%= lang.actions.selectAClaimer %>"
+		
+							<% if(!_.isNull(booking.getId())){
+								if(!_.isUndefined(booking.getPartner('id'))) { %>
+								data-selected-value='<%= JSON.stringify(booking.getPartner('json')) %>'
+							<% } } %>
+		
+						/>
+					</div>
+				</div>
+		
+				<!-- Booking Contact (contact of claimer) -->
+				<div class="form-group">
+					<label for="bookingContact" class="control-label col-sm-3"><%= _.capitalize(lang.contact) %>:</label>
+		
+					<div class="col-sm-9">
+						<input id="bookingContact" class="select2" data-placeholder="<%= lang.actions.selectAContact %>"
+		
+							<% if(!_.isNull(booking.getId())){
+								if(!_.isUndefined(booking.getContact('id'))) { %>
+								data-selected-value='<%= JSON.stringify(booking.getContact('json')) %>'
+							<% } } %>
+		
+						/>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<!-- booking name -->
+				<div class="form-group">
+					<label for="bookingName" class="control-label col-sm-3"><%= _.capitalize(lang.label) %>:</label>
+					<div class="col-sm-9">
+						<input type="text" id="bookingName" name="bookingName" class="form-control" required="required" value="<%= booking.getName()%>"/>
+					</div>				
+				</div>
+				
+				<!-- booking checkin -->
+				<div class="form-group">
+					<label for="bookingCheckin" class="control-label col-sm-3"><%= _.capitalize(lang.dateStart) %>:</label>
+					<!-- checkin date -->
+					<div class="input-group col-sm-4">
+						<input type="text" class="datepicker form-control" id="bookingCheckin" value="" placeholder="dd/mm/yyyy" required="required">
+						<span class="input-group-addon"><i class="icon-calendar"></i></span>
+					</div>
+	
+					<!-- checkin hour -->
+					<div class="input-group bootstrap-timepicker col-sm-3" >							
+						<input type="text" class="timepicker-default form-control" id='bookingCheckinHour' required="required">
+						<span class="input-group-addon"><i class="icon-time"></i></span>
+					</div>						
+				</div>
+				
+				<!-- booking checkout -->
+				<div class="form-group">
+					<label for="bookingCheckout" class="control-label col-sm-3"><%= _.capitalize(lang.dateEnd) %>:</label>
+					<!-- checkout date -->
+					<div class="input-group col-sm-4">
+						<input type="text" class="datepicker form-control" id="bookingCheckout" value="" placeholder="dd/mm/yyyy" required="required">
+						<span class="input-group-addon"><i class="icon-calendar"></i></span>
+					</div>
+	
+					<!-- checkout hour -->
+					<div class="input-group bootstrap-timepicker col-sm-3" >							
+						<input type="text" class="timepicker-default form-control" id='bookingCheckoutHour' required="required">
+						<span class="input-group-addon"><i class="icon-time"></i></span>
+					</div>						
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<!-- Bookables (qty, pricing, dispo)-->
+			<div class="col-sm-6">
+				<!-- Recap of BookingLines -->
+				<table class="table-nested-objects table table-striped table-condensed table-hover">
+					<thead>
+					<tr>
+						<th class="row-sm-3"><%= _.capitalize(lang.picture) %></th>
+						<th class="row-sm-3"><%= _.capitalize(lang.bookable) %></th>
+						<th class="row-sm-2"><%= _.capitalize(lang.quantity) %></th>
+						<th class="row-sm-1"><%= _.capitalize(lang.availability) %></th>
+						<th class="row-sm-3"><%= _.capitalize(lang.price) %></th>
+					</tr>
+					</thead>
+					<tbody id="bookingLines">
+			
+					</tbody>
+				</table>
+				<!-- Add a bookable -->
+				<div class="form-group">
+					<label for="bookingAddBookable" class="control-label col-sm-3"><%= _.capitalize(lang.bookable) %>:</label>
+		
+					<div class="col-sm-9">
+						<input id="bookingAddBookable" class="select2" data-placeholder="<%= lang.actions.selectABookable %>"/>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Recurrence (optionnal, list of (dates + dispo) )-->
+			<div class="col-sm-6">
+				<div class="form-group">
+					<input type="checkbox"><%= lang.recurrence%></input>
+				</div>
+			</div>
+		</div>
+	</form>
+	
+
+<!-- Modal form to add a request -->
+<div id="modalSaveRequest" class="modal fade" aria-hidden="true"></div>
