@@ -3,7 +3,7 @@
 */
 app.Models.Booking = app.Models.GenericModel.extend({
 	
-	urlRoot: "/api/openresa/booking",
+	urlRoot: "/api/openresa/bookings",
 	
 	fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'partner_phone', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'note'],
 
@@ -375,10 +375,10 @@ app.Models.Booking = app.Models.GenericModel.extend({
 			icon 		: 'icon-ok',
 			translation : ''
 		},
-		closed: {
-			key 		: 'closed',
-			color 		: 'default',
-			icon 		: 'icon-eye-close',
+		refused: {
+			key 		: 'refused',
+			color 		: 'danger',
+			icon 		: 'icon-remove',
 			translation : ''
 		},
 		resolve_conflict: {
@@ -387,12 +387,14 @@ app.Models.Booking = app.Models.GenericModel.extend({
 			icon 		: 'icon-medkit',
 			translation : ''
 		},
-		refused: {
-			key 		: 'refused',
-			color 		: 'danger',
-			icon 		: 'icon-remove',
+		closed: {
+			key 		: 'closed',
+			color 		: 'default',
+			icon 		: 'icon-eye-close',
 			translation : ''
 		},
+
+
 //		create: {},
 //		update: {},
 //		delete: {},

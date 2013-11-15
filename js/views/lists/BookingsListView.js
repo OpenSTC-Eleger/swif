@@ -163,18 +163,30 @@ app.Views.BookingsListView = app.Views.GenericListView.extend({
 	/** valid occurences booking
 	*/
 	validOccurences: function(e){
-//		e.preventDefault();
-//		var self = this;	
+		e.preventDefault();
+		var self = this;	
 		
 		//var booking = this.model.toJSON();
 		console.debug('Valid occurences');
 		
 		e.preventDefault(); e.stopPropagation();
 
-		app.views.modalValidBookingsListView = new app.Views.modalValidBookingsListView({
-			el      : '#modalValidBookingsList',
-			model   : this.collection
-		});
+		var model = new app.Models.BookingRecurrence({id: this.options.recurrence.value });
+		
+		var deferred = $.Deferred();
+		model.fetch().done(function(){
+			app.views.modalValidBookingsListView = new app.Views.ModalValidBookingsListView({
+				el      : '#modalValidBookingsList',
+				model   : model
+			});
+			deferred.resolve();
+		})
+		.fail(function(e){
+			console.error(e);
+		})
+		
+		return deferred;
+
 
 	},
 	

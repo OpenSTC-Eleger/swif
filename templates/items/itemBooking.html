@@ -57,37 +57,79 @@
 	</span>
 </td>
 <td>
-
-	<!-- Create the buttons group action -->
-	<div class="btn-group btn-group-sm">
-
-		<!-- Check if the booking is not in waiting state -->
-		<%
-
-			var mainAction = app.Models.Booking.actions.resolve_conflict.key;
-			var mainActionColor = app.Models.Booking.actions.resolve_conflict.color;
-			var mainActionIcon = app.Models.Booking.actions.resolve_conflict.icon;
-			var mainActionDisabled = '';
-		%>
-		<!-- Main action button -->
-		<button class="btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline button<%= _.capitalize(mainAction) %>Booking" >
-			<i class="<%= mainActionIcon %> icon-fixed-width button<%= _.capitalize(mainAction) %>Booking"></i>
-		</button>
+	<!-- Check if the user can make action on the request -->
+	<% if(!_.isEmpty(booking.getActions())){ 
+		var actions = booking.getActions();
+	%>
+		<!-- Create the buttons group action -->
+		<div class="btn-group btn-group-sm">
+	
+			<!-- Check if the booking is not in waiting state -->
+			<%
+	
+				var mainAction = '';
+				var mainActionColor = '';
+				var mainActionIcon = '';
+				var mainActionDisabled = '';
 		
-		<!-- Dropdown button action -->
-		<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-			<span class="icon-caret-down"></span>
-		</button>
-		
-		<!-- Other buttons action -->
-		<ul class="dropdown-menu pull-right text-left">
-			<% _.each(booking.getActions(), function(action){ %>
-				<li>
-					<a href="#reservations" class="button<%= _.capitalize(app.Models.Booking.actions[action].key) %>Booking">
-						<i class="<%= app.Models.Booking.actions[action].icon %> icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.Models.Booking.actions[action].translation) %>
-					</a>
-				</li>
-			<% }); %>
-		</ul>
-	</div>
+				switch(booking.getState()){
+					case 'remplir':
+						console.debug("remplir");	
+						if(booking.isAllDispo()) {
+							mainAction = app.Models.Booking.actions.valid.key;
+							mainActionColor = app.Models.Booking.actions.valid.color;
+							mainActionIcon = app.Models.Booking.actions.valid.icon;
+							mainActionDisabled = '';
+						}
+						else {
+							mainAction = app.Models.Booking.actions.resolve_conflict.key;
+							mainActionColor = app.Models.Booking.actions.resolve_conflict.color;
+							mainActionIcon = app.Models.Booking.actions.resolve_conflict.icon;
+							mainActionDisabled = '';
+						}
+					break;
+					case 'cancel':	
+							console.debug("cancel");	
+							mainAction = app.Models.Booking.actions.refused.key;
+							mainActionColor = app.Models.Booking.actions.refused.color;
+							mainActionIcon = app.Models.Booking.actions.refused.icon;
+							mainActionDisabled = '';
+					break;
+					case 'confirm':	
+							mainAction = app.Models.Booking.actions.closed.key;
+							mainActionColor = app.Models.Booking.actions.closed.color;
+							mainActionIcon = app.Models.Booking.actions.closed.icon;
+							mainActionDisabled = '';
+					break;
+					
+					default:
+							mainAction = app.Models.Booking.actions.valid.key;
+							mainActionColor = app.Models.Booking.actions.valid.color;
+							mainActionIcon = app.Models.Booking.actions.valid.icon;
+							mainActionDisabled = '';
+				}
+
+			%>
+			<!-- Main action button -->
+			<button class="btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline button<%= _.capitalize(mainAction) %>Booking" >
+				<i class="<%= mainActionIcon %> icon-fixed-width button<%= _.capitalize(mainAction) %>Booking"></i>
+			</button>
+			
+			<!-- Dropdown button action -->
+			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				<span class="icon-caret-down"></span>
+			</button>
+			
+			<!-- Other buttons action -->
+			<ul class="dropdown-menu pull-right text-left">
+				<% _.each(actions, function(action){ %>
+					<li>
+						<a href="#reservations" class="button<%= _.capitalize(app.Models.Booking.actions[action].key) %>Booking">
+							<i class="<%= app.Models.Booking.actions[action].icon %> icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.Models.Booking.actions[action].translation) %>
+						</a>
+					</li>
+				<% }); %>
+			</ul>
+		</div>
+	<% } %>
 </td>

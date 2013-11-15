@@ -64,30 +64,44 @@ app.Views.ModalValidBookingsListView = app.Views.GenericModalView.extend({
 		// Set the button in loading State //
 		$(this.el).find("button[type=submit]").button('loading');
 
-
-		self.params = {
-			state   : app.Models.Booking.status.done.key,
+		var params = {
+			state   : app.Models.Booking.status.done.key,			 
 			note 	: $('#note').val()
 		}
 
+
+		// Save Only the params //
+		this.model.save(params, {patch: false, silent: true})
+			.done(function(data) {
+				self.modal.modal('hide');
+				//self.model.fetch({ data : {fields : self.model.fields} });
+			})
+			.fail(function (e) {
+				console.log(e);
+			})
+			.always(function () {
+				$(self.el).find("button[type=submit]").button('reset');
+			});
+	
+//		_.each(this.collection.models, function(model){
+//			// Save Only the params //
+//			model.set({
+//				note 	: $('#note').val()});			
+//		});
+//		
+//		Backbone.sync('update', this.collection, {patch: true, silent: true})
+//			.done(function(data) {
+//				self.modal.modal('hide');
+//				//self.model.fetch({ data : {fields : self.model.fields} });
+//			})
+//			.fail(function (e) {
+//				console.log(e);
+//			})
+//			.always(function () {
+//				$(self.el).find("button[type=submit]").button('reset');
+//			});
+//			
 		
-		_.each(this.collection, function(model){
-			// Save Only the params //
-			model.save(params, {patch: true, silent: true})
-				.done(function(data) {
-					self.modal.modal('hide');
-					self.model.fetch({ data : {fields : self.model.fields} });
-				})
-				.fail(function (e) {
-					console.log(e);
-				})
-				.always(function () {
-					$(self.el).find("button[type=submit]").button('reset');
-				});
-			
-		});
-
-
 	}
 
 });

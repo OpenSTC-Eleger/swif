@@ -66,7 +66,7 @@ app.Views.ModalValidBookingView = app.Views.GenericModalView.extend({
 
 
 		var params = {
-			state   : app.Models.Booking.status.done.key,
+			//state   : app.Models.Booking.status.done.key,
 			note 	: $('#note').val()
 		}
 
