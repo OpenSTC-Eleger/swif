@@ -1,10 +1,7 @@
 define([
 	'app',
-
 	'genericModel',
-
 	'claimersContactsCollection',
-
 	'appHelpers'
 
 ], function(app, GenericModel, ClaimersContactsCollection, AppHelpers){

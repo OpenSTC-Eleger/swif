@@ -1,18 +1,27 @@
-/******************************************
-* Groups Collection - User groups for OpenERP
-*/
-app.Collections.STCGroups = app.Collections.GenericCollection.extend({
+define([
+	'genericCollection'
 
-	model: app.Models.STCGroup,
+], function(GenericCollection){
 
-
-	url: '/api/open_object/groups',
+	'use strict';
 
 
-	/** Collection Initialization
+	/******************************************
+	* Groups Collection - User groups for OpenERP
 	*/
-	initialize: function (options) {
-		//console.log('Groups collection Initialization');
-	},
+	var STCGroupsCollection = GenericCollection.extend({
+
+		url: '/api/open_object/groups',
+
+
+		/** Collection Initialization
+		*/
+		initialize: function (options) {
+			//console.log('Groups collection Initialization');
+		},
+
+	});
+
+return STCGroupsCollection;
 
 });

@@ -8,7 +8,6 @@ define([
 	'user strict';
 
 
-
 	/******************************************
 	* Claimer Service Model
 	*/

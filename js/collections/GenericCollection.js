@@ -3,6 +3,7 @@ define([
 
 ], function(Backbone){
 
+	'use strict';
 
 
 	/******************************************

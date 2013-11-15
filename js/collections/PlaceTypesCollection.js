@@ -1,15 +1,27 @@
-/******************************************
-* Place Type Collection
-*/
-app.Collections.PlaceTypes = app.Collections.GenericCollection.extend({
+define([
+	'genericCollection'
 
-	url  : '/api/openstc/site_categories',
+], function(GenericCollection){
+
+	'use strict';
 
 
-	/** Collection Initialization
+	/******************************************
+	* Place Type Collection
 	*/
-	initialize: function (options) {
-		//console.log('Sites types collection Initialization');
-	},
+	var PlaceTypesCollection = GenericCollection.extend({
+
+		url  : '/api/openstc/site_categories',
+
+
+		/** Collection Initialization
+		*/
+		initialize: function (options) {
+			//console.log('Sites types collection Initialization');
+		},
+
+	});
+
+return PlaceTypesCollection;
 
 });

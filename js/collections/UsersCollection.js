@@ -5,6 +5,8 @@ define([
 
 ], function(UserModel){
 
+	'use strict';
+
 
 	/******************************************
 	* Users Collection - Person who are Log in

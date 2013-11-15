@@ -1,22 +1,35 @@
-/******************************************
-* Claimers Types Collection
-*/
-app.Collections.ClaimersTypes = app.Collections.GenericCollection.extend({
+define([
+	'genericCollection',
+	'claimerTypeModel'
 
-	model       : app.Models.ClaimerType,
+], function(GenericCollection, ClaimerTypeModel){
 
-	url         : '/api/open_object/partner_types',
+	'use strict';
 
-	fields      : ["id", "name", "code", "actions"],
 
-	default_sort: { by: 'name', order: 'ASC' },
-
-	
-
-	/** Collection Initialization
+	/******************************************
+	* Claimers Types Collection
 	*/
-	initialize: function (options) {
-		//console.log('Claimer type collection Initialization');
-	}
+	var ClaimersTypesCollection = GenericCollection.extend({
+
+		model       : ClaimerTypeModel,
+
+		url         : '/api/open_object/partner_types',
+
+		fields      : ["id", "name", "code", "actions"],
+
+		default_sort: { by: 'name', order: 'ASC' },
+
+		
+
+		/** Collection Initialization
+		*/
+		initialize: function (options) {
+			//console.log('Claimer type collection Initialization');
+		}
+
+	});
+
+return ClaimersTypesCollection;
 
 });

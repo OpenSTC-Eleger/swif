@@ -4,6 +4,8 @@ define([
 
 ], function(GenericCollection, EquipmentModel){
 
+	'use strict';
+
 
 	/******************************************
 	* Equipments Collection

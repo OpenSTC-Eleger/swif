@@ -1,22 +1,36 @@
-/******************************************
-* Teams Collection
-*/
-app.Collections.Teams = app.Collections.GenericCollection.extend({
+define([
+	'genericCollection',
+	'teamModel'
 
-	model        : app.Models.Team,
+], function(GenericCollection, TeamModel){
 
-	url          : '/api/openstc/teams',
-
-	fields       : ['id', 'name', 'actions', 'manager_id', 'service_names', 'user_names'],
-
-	default_sort : { by: 'name', order: 'ASC' },
+	'use strict';
 
 
-
-	/** Collection Initialization
+	/******************************************
+	* Teams Collection
 	*/
-	initialize: function (options) {
-		//console.log('Teams collection Initialization');
-	},
+	var TeamsCollection = GenericCollection.extend({
+
+		model        : TeamModel,
+
+		url          : '/api/openstc/teams',
+
+		fields       : ['id', 'name', 'actions', 'manager_id', 'service_names', 'user_names'],
+
+		default_sort : { by: 'name', order: 'ASC' },
+
+
+
+		/** Collection Initialization
+		*/
+		initialize: function (options) {
+			//console.log('Teams collection Initialization');
+		},
+
+	});
+
+
+return TeamsCollection;
 
 });

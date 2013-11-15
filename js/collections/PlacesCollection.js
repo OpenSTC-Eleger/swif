@@ -4,12 +4,13 @@ define([
 
 ], function(GenericCollection, PlaceModel){
 
+	'use strict';
 
 
 	/******************************************
 	* Places Collection
 	*/
-	PlacesCollection = GenericCollection.extend({
+	var PlacesCollection = GenericCollection.extend({
 
 		model        : PlaceModel,
 

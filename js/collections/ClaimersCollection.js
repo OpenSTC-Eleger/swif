@@ -4,6 +4,7 @@ define([
 
 ], function(GenericCollection, ClaimerModel){
 
+	'use strict';
 
 
 	/******************************************
