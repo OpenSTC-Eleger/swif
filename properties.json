@@ -12,7 +12,7 @@
 		"Backbone-localstorage": "1.1.7",
 		"Bootstrap"            : "3.0.2",
 		"Underscore-string"    : "2.3.2",
-		"Font-awesome"         : "3.2.1",
+		"Font-awesome"         : "4.0.3",
 		"Fullcalendar"         : "1.6.4",
 		"jQuery-dataTables"    : "1.9.4",
 		"pNotify"              : "1.2.0",

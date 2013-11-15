@@ -18,9 +18,9 @@
 <!-- Place/Equipment -->
 <td>
 	<% if(request.onEquipment()){ %>
-		<i class="icon-wrench icon-fixed-width"></i>&nbsp;<%= request.getEquipment() %> <small class="text-muted">(<%= request.getSite() %>)</small>
+		<i class="fa fa-wrench fa-fw"></i>&nbsp;<%= request.getEquipment() %> <small class="text-muted">(<%= request.getSite() %>)</small>
 	<% }else if(request.getSite()){ %>
-		<i class="icon-map-marker icon-fixed-width"></i>&nbsp;<%= request.getSite() %>
+		<i class="fa fa-map-marker fa-fw"></i>&nbsp;<%= request.getSite() %>
 	<% }%>
 	
 	<span>
@@ -98,12 +98,12 @@
 
 			<!-- Main action button -->
 			<button class="btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline button<%= _.capitalize(mainAction) %>Request">
-				<i class="<%= mainActionIcon %> icon-fixed-width button<%= _.capitalize(mainAction) %>Request"></i>
+				<i class="fa <%= mainActionIcon %> fa-fw button<%= _.capitalize(mainAction) %>Request"></i>
 			</button>
 			
 			<!-- Dropdown button action -->
 			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-				<span class="icon-caret-down"></span>
+				<span class="fa fa-caret-down"></span>
 			</button>
 			
 			<!-- Other buttons action -->
@@ -111,7 +111,7 @@
 				<% _.each(actions, function(action){ %>
 					<li>
 						<a href="#" class="button<%= _.capitalize(RequestModel.actions[action].key) %>Request">
-							<i class="<%= RequestModel.actions[action].icon %> icon-fixed-width"></i>&nbsp;<%= _.capitalize(RequestModel.actions[action].translation) %>
+							<i class="fa <%= RequestModel.actions[action].icon %> fa-fw"></i>&nbsp;<%= _.capitalize(RequestModel.actions[action].translation) %>
 						</a>
 					</li>
 				<% }); %>

@@ -37,14 +37,14 @@
 	<!-- Table toolbar -->
 	<div class="tableToolbar row">
 		<div class="col-xs-7 col-md-9 col-lg-10">
-			<a href="#" class="btn btn-primary createRequest"><i class="icon-plus"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
+			<a href="#" class="btn btn-primary createRequest"><i class="fa fa-plus fa-fw"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
 		</div>
 
 		<form class="form-search pull-right col-xs-5 col-md-3 col-lg-2">
 			<div class="input-group">
 				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
 				<span class="input-group-btn">
-					<button type="submit" class="btn btn-primary"><i class="icon-search icon-large"></i></button>
+					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
 				</span>
 			</div>
 		</form>
@@ -57,7 +57,7 @@
 	<% if(nbRequests <= 0) { %>
 		<div class="tableToolbar">
 			<div class="alert alert-info">
-				<i class="icon-info-sign icon-large"></i>&nbsp;<%= lang.infoMessages.noRequest %>
+				<i class="fa fa-info-circle fa-lg"></i>&nbsp;<%= lang.infoMessages.noRequest %>
 			</div>
 		</div>
 	<% } %>
@@ -77,7 +77,7 @@
 				<th>
 					<%= _.capitalize(lang.status) %>
 					<div class="dropdown pull-right">
-						<a id="filterStateRequest" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="icon-filter icon-large"></i></a>
+						<a id="filterStateRequest" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="fa fa-filter fa-lg"></i></a>
 
 						<ul id="filterStateRequestList" class="dropdown-menu" role="menu" aria-labelledby="filterStateRequest">
 							<% _.each(requestsState, function (state, i) { %>
@@ -89,7 +89,7 @@
 								</li>
 							<% }) %>
 								<li class="divider" role="menuitem"></li>
-								<li class="delete-filter disabled" role="menuitem"><a href="#delete-filter"><i class="icon-remove"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
+								<li class="delete-filter disabled" role="menuitem"><a href="#delete-filter"><i class="fa fa-times"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
 						</ul>
 					</div>
 				</th>

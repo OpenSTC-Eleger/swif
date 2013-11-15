@@ -8,7 +8,7 @@
 		<span class="icon-bar"></span>
 	</button>
 	<% } %>
-	<a class="navbar-brand" href="#"><i class="icon-truck icon-large"></i> <%= lang.applicationName %> </a>
+	<a class="navbar-brand" href="#"><i class="fa fa-truck fa-lg fa-fw"></i> <%= lang.applicationName %> </a>
 </div>
 
 	
@@ -89,21 +89,21 @@
 		
 		<li class="dropdown" role="menuitem">
 			<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
-				<i class="icon-user icon-large"></i> <%= user.getFullname() %> <b class="caret"></b>
+				<i class="fa fa-user fa-lg fa-fw"></i> <%= user.getFullname() %> <b class="caret"></b>
 			</a>
 			<ul class="dropdown-menu" role="menu">
 				<li role="presentation">
-					<a href="#about" role="menuitem"><i class="icon-info-sign icon-fixed-width"></i> <%= _.capitalize(lang.about) %></a>
+					<a href="#about" role="menuitem"><i class="fa fa-info-circle fa-fw"></i> <%= _.capitalize(lang.about) %></a>
 				</li>
 				<li role="presentation" class="disabled">
-					<a href="#help" role="menuitem"><i class="icon-question-sign icon-fixed-width"></i> <%= _.capitalize(lang.help) %></a>
+					<a href="#help" role="menuitem"><i class="fa fa-question-circle fa-fw"></i> <%= _.capitalize(lang.help) %></a>
 				</li>
 				<li role="presentation" class="divider"></li>
 				<li role="presentation" class="disabled">
-					<a href="#settings" role="menuitem"><i class="icon-cog icon-fixed-width"></i> <%= _.capitalize(lang.settings) %></a>
+					<a href="#settings" role="menuitem"><i class="fa fa-cog fa-fw"></i> <%= _.capitalize(lang.settings) %></a>
 				</li>
 				<li role="presentation">
-					<a href="#logout" role="menuitem"><i class="icon-signout icon-fixed-width"></i> <%= _.capitalize(lang.actions.logOut) %></a>
+					<a href="#logout" role="menuitem"><i class="fa fa-sign-out fa-fw"></i> <%= _.capitalize(lang.actions.logOut) %></a>
 				</li>
 			</ul>
 		</li>

@@ -60,7 +60,7 @@ define([
 		add: function(model){
 			var itemRequestView = new ItemRequestView({ model: model });
 			$('#rows-items').prepend(itemRequestView.render().el);
-			app.Helpers.Main.highlight($(itemRequestView.el))
+			AppHelpers.highlight($(itemRequestView.el))
 
 			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.requestCreateOk);
 			this.partialRender();

@@ -130,7 +130,7 @@ define([
 		*/
 		displayPassword: function(e){
 			$('#passUser').prop('type', 'text');
-			$(e.target).removeClass('icon-eye-open').addClass('icon-eye-close');
+			$(e.target).removeClass('fa-eye').addClass('fa-eye-slash');
 		},
 
 		/** Hide the password
@@ -138,7 +138,7 @@ define([
 		hidePassword: function(e){
 			$('#passUser').prop('type', 'password');
 			$('#passUser').focus();
-			$(e.target).removeClass('icon-eye-close').addClass('icon-eye-open');
+			$(e.target).removeClass('fa-eye-slash').addClass('fa-eye');
 		}
 
 	});

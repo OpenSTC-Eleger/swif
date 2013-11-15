@@ -322,19 +322,19 @@ define([
 			valid: {
 				key 		: 'valid',
 				color 		: 'success',
-				icon 		: 'icon-ok',
+				icon 		: 'fa-check',
 				translation : app.lang.actions.validate
 			},
 			confirm: {
 				key 		: 'confirm',
 				color 		: 'warning',
-				icon 		: 'icon-level-up',
+				icon 		: 'fa-level-up',
 				translation : app.lang.actions.confirmChief
 			},
 			refused: {
 				key 		: 'refused',
 				color 		: 'danger',
-				icon 		: 'icon-remove',
+				icon 		: 'fa-times',
 				translation : app.lang.actions.refuse
 			},
 		}

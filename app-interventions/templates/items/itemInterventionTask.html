@@ -56,7 +56,7 @@
 	<% if(task.actions.indexOf("light_mode_finished") > -1) { %>
 			
 		<div class="btn-group btn-group-xs">
-			<button class="btn btn-success buttonTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok icon-fixed-width"></i>
+			<button class="btn btn-success buttonTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" data-target="#modalTaskDone"><i class="icon-ok fa-fw"></i>
 			</button>
 			<button class="btn dropdown-toggle no-outline" data-toggle="dropdown">
 				<span class="caret"></span>
@@ -65,14 +65,14 @@
 				<% if(task.actions.indexOf("light_mode_unfinished") > -1) { %>
 					<li>
 						<a href="#" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonNotFinish">
-							<i class="icon-time icon-fixed-width iconButtonNotFinish"></i>&nbsp;<%= _.capitalize(lang.notFinished) %>
+							<i class="icon-time fa-fw iconButtonNotFinish"></i>&nbsp;<%= _.capitalize(lang.notFinished) %>
 						</a>
 					</li>
 				<%}%>
 				<% if(task.actions.indexOf("cancel") > -1) { %>
 					<li>
 						<a href="#" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonCancelTask">
-							<i class="icon-ban-circle icon-fixed-width"></i>&nbsp;<%= _.capitalize(lang.actions.cancel) %>
+							<i class="icon-ban-circle fa-fw"></i>&nbsp;<%= _.capitalize(lang.actions.cancel) %>
 						</a>
 					</li>
 				<%}%>

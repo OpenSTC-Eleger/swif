@@ -49,19 +49,19 @@
 		<%// if(displayFilter == true || task.team_id == false){ %>
 	
 		<div class="btn-group btn-group-sm">
-			<button class="btn btn-success buttonTaskDayDone" data-toggle="modal" data-taskid="<%= task.id %>"><i class="icon-ok icon-fixed-width"></i></button>
+			<button class="btn btn-success buttonTaskDayDone" data-toggle="modal" data-taskid="<%= task.id %>"><i class="icon-ok fa-fw"></i></button>
 			<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 
 			<ul class="dropdown-menu pull-right text-left" role="menu">
 				<% if(task.actions.indexOf("normal_mode_unfinished") > -1){%>
 				<li>
 					<a href="#" class="taskNotDone" data-taskid="<%= task.id %>">
-						<i class="icon-remove icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.lang.notDone) %>
+						<i class="icon-remove fa-fw"></i>&nbsp;<%= _.capitalize(app.lang.notDone) %>
 					</a>
 				</li>
 				<li>
 					<a href="#" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonTaskDayTimeSpent">
-						<i class="icon-time icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.lang.notFinished) %>
+						<i class="icon-time fa-fw"></i>&nbsp;<%= _.capitalize(app.lang.notFinished) %>
 					</a>
 
 				</li>

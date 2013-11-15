@@ -5,7 +5,7 @@
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			<h3 class="modal-title">
-				<i class="icon-edit"></i>&nbsp;
+				<i class="fa fa-edit"></i>&nbsp;
 				<% if(_.isNull(request.getId())){ %>
 					<%= _.capitalize(lang.viewsTitles.newRequest) %>
 				<% } else{ %>
@@ -102,15 +102,15 @@
 						</div>
 						<ul class="list-group">
 							<li id="claimerFunction" class="list-group-item">
-								<i class="icon-user icon-fixed-width"></i>
+								<i class="fa fa-user fa-fw"></i>
 								<span></span>
 							</li>
 							<li id="claimerPhone" class="list-group-item">
-								<i class="icon-phone icon-fixed-width"></i>
+								<i class="fa fa	-phone fa-fw"></i>
 								<span></span>
 							</li>
 							<li id="claimerEmail" class="list-group-item">
-								<i class="icon-envelope icon-fixed-width"></i>
+								<i class="fa fa-envelope fa-fw"></i>
 								<span></span>
 							</li>
 						</ul>
@@ -165,7 +165,7 @@
 					<div class="form-group">
 						<label class="control-label col-sm-3" for="onEquipment"><%= _.capitalize(lang.placeOrEquipment) %></label>
 						<div class="col-sm-9">
-							<div class="make-switch" id="switchPlaceEquipment" data-on="default" data-on-label="<i class='icon-map-marker icon-large icon-fixed-width'>" data-off-label="<i class='icon-wrench icon-large icon-fixed-width'>" tabindex="0">
+							<div class="make-switch" id="switchPlaceEquipment" data-on="default" data-on-label="<i class='fa fa-map-marker fa-fw'>" data-off-label="<i class='fa fa-wrench fa-fw'>" tabindex="0">
 								<input id="onEquipment" type="checkbox"
 
 								<% if(!_.isNull(request.getId())){ if(!request.onEquipment()) { %> checked <% } }else{ %> checked <%  } %>
@@ -255,7 +255,7 @@
 
 		<div class="modal-footer">
 			<button type="submit" form="formSaveRequest" class="btn btn-primary" 
-				data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>"
+				data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.saveInProgress %>"
 				<%= (_.isUndefined(loader) ? '' : 'disabled') %>
 				<%= (!_.isNull(request.getId()) && request.getState() != RequestModel.status.wait.key ? 'disabled' : '') %>
 			>

@@ -10,13 +10,13 @@
 
 			<blockquote>
 				<p><%= task.getName() %></p>
-				<small><i class="icon-pushpin icon-fixed-width"></i>&nbsp;<%= task.getIntervention() %></small>
+				<small><i class="icon-pushpin fa-fw"></i>&nbsp;<%= task.getIntervention() %></small>
 
 				<!-- Display the affected Team or Use -->
 				<% if(task.affectedOnTeam()) { %>
-				<small><i class="icon-group icon-fixed-width"></i>&nbsp;<%= task.getTeam() %></small>
+				<small><i class="icon-group fa-fw"></i>&nbsp;<%= task.getTeam() %></small>
 				<% }else{ %>
-				<small><i class="icon-user icon-fixed-width"></i>&nbsp;<%= task.getUser() %></small>
+				<small><i class="icon-user fa-fw"></i>&nbsp;<%= task.getUser() %></small>
 				<% } %>
 			</blockquote>
 
