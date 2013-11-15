@@ -4,6 +4,8 @@ define([
 
 ], function(app, GenericModel){
 
+	'use strict';
+
 
 	/******************************************
 	* Request Model

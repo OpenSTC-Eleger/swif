@@ -1,55 +1,68 @@
-/******************************************
-* Absent Type Model
-*/
-app.Models.AbsentType = app.Models.GenericModel.extend({
+define([
+	'app',
+	'genericModel'
+
+], function(app, GenericModel){
+
+	'use strict';
 
 
-	fields  : ['id', 'name', 'code', 'description', 'actions'],
-
-	urlRoot : '/api/openstc/absence_categories',
-
-
-	searchable_fields: [
-		{
-			key  : 'name', 
-			type : 'text'
-		},
-		{
-			key  : 'code', 
-			type : 'text'
-		}
-	],
-
-	
-	getCode : function() {
-		return this.get('code');
-	},
-	setCode : function(value, silent) {
-		this.set({ code : value }, {silent: silent});
-	},
-	
-	getDescription : function() {
-		return this.get('description');
-	},
-	setDescription : function(value, silent) {
-		this.set({ description : value }, {silent: silent});
-	},
-
-
-	/** Get Informations of the model
+	/******************************************
+	* Absent Type Model
 	*/
-	getInformations : function(){
-		var informations = {};
+	var AbsentTypeModel = GenericModel.extend({
 
-		informations.name = this.getName();
 
-		if(!_.isEmpty(this.getCode())){
-			informations.infos = {};
-			informations.infos.key = _.capitalize(app.lang.code);
-			informations.infos.value = this.getCode();
-		}
+		fields  : ['id', 'name', 'code', 'description', 'actions'],
 
-		return informations;
-	},
+		urlRoot : '/api/openstc/absence_categories',
+
+
+		searchable_fields: [
+			{
+				key  : 'name', 
+				type : 'text'
+			},
+			{
+				key  : 'code', 
+				type : 'text'
+			}
+		],
+
+		
+		getCode : function() {
+			return this.get('code');
+		},
+		setCode : function(value, silent) {
+			this.set({ code : value }, {silent: silent});
+		},
+		
+		getDescription : function() {
+			return this.get('description');
+		},
+		setDescription : function(value, silent) {
+			this.set({ description : value }, {silent: silent});
+		},
+
+
+		/** Get Informations of the model
+		*/
+		getInformations : function(){
+			var informations = {};
+
+			informations.name = this.getName();
+
+			if(!_.isEmpty(this.getCode())){
+				informations.infos = {};
+				informations.infos.key = _.capitalize(app.lang.code);
+				informations.infos.value = this.getCode();
+			}
+
+			return informations;
+		},
+
+	});
+
+return AbsentTypeModel;
 
 });

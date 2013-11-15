@@ -1,22 +1,35 @@
-/******************************************
-* Categories Tasks collection
-*/
-app.Collections.CategoriesTasks = app.Collections.GenericCollection.extend({
+define([
+	'genericCollection',
+	'categoryTaskModel'
 
-	model        : app.Models.CategoryTask,
+], function(GenericCollection, CategoryTaskModel){
 
-	url          : '/api/openstc/task_categories',
-
-	fields       : ['id', 'name', 'code', 'parent_id', 'service_names', 'actions'],
-
-	default_sort : { by: 'name', order: 'ASC' },
+	'use strict';
 
 
-
-	/** Collection Initialization
+	/******************************************
+	* Categories Tasks collection
 	*/
-	initialize: function (options) {
-		//console.log('Categories Tasks Initialization');
-	}
+	var CategoriesTasksCollection = GenericCollection.extend({
+
+		model        : CategoryTaskModel,
+
+		url          : '/api/openstc/task_categories',
+
+		fields       : ['id', 'name', 'code', 'parent_id', 'service_names', 'actions'],
+
+		default_sort : { by: 'name', order: 'ASC' },
+
+
+
+		/** Collection Initialization
+		*/
+		initialize: function (options) {
+			//console.log('Categories Tasks Initialization');
+		}
+
+	});
+
+return CategoriesTasksCollection;
 
 });

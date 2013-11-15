@@ -11,6 +11,7 @@ requirejs.config({
 
 		// Collections //
 		requestsCollection          : 'app-interventions/js/collections/RequestsCollection',
+		tasksCollection             : 'app-interventions/js/collections/TasksCollection',
 		categoriesRequestsCollection: 'app-interventions/js/collections/CategoriesRequestsCollection',
 		categoriesTasksCollection   : 'app-interventions/js/collections/CategoriesTasksCollection',
 		absentTypesCollection       : 'app-interventions/js/collections/AbsentTypesCollection',
@@ -18,6 +19,7 @@ requirejs.config({
 
 		// Models //
 		requestModel                : 'app-interventions/js/models/RequestModel',
+		taskModel                   : 'app-interventions/js/models/TaskModel',
 		categoryRequestModel        : 'app-interventions/js/models/CategoryRequestModel',
 		categoryTaskModel           : 'app-interventions/js/models/CategoryTaskModel',
 		absentTypeModel             : 'app-interventions/js/models/AbsentTypeModel',

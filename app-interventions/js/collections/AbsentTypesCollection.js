@@ -1,22 +1,35 @@
-/******************************************
-* AbsentType Collection - Leave Time Type
-*/
-app.Collections.AbsentTypes = app.Collections.GenericCollection.extend({
+define([
+	'genericCollection',
+	'absentTypeModel'
 
-	model       : app.Models.AbsentType,
+], function(GenericCollection, AbsentTypeModel){
 
-	url         : "/api/openstc/absence_categories",
-
-	fields      : ['id', 'name', 'code', 'description', 'actions'],
-
-	default_sort: { by: 'name', order: 'ASC' },
+	'use strict';
 
 
-
-	/** Collection Initialization
+	/******************************************
+	* AbsentType Collection - Leave Time Type
 	*/
-	initialize: function (options) {
-		//console.log('Place collection Initialization');
-	},
+	var AbsentTypesCollection = GenericCollection.extend({
+
+		model       : AbsentTypeModel,
+
+		url         : "/api/openstc/absence_categories",
+
+		fields      : ['id', 'name', 'code', 'description', 'actions'],
+
+		default_sort: { by: 'name', order: 'ASC' },
+
+
+
+		/** Collection Initialization
+		*/
+		initialize: function (options) {
+			//console.log('Place collection Initialization');
+		},
+
+	});
+
+return AbsentTypesCollection;
 
 });

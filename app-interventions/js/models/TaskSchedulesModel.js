@@ -1,12 +1,24 @@
-/******************************************
-* Absent Type Model
-*/
-app.Models.TaskSchedules = app.Models.GenericModel.extend({
+define([
+	'genericModel'
+
+], function(GenericModel){
+
+	'use strict';
 
 
-	fields  : [],
+	/******************************************
+	* Absent Type Model
+	*/
+	var TaskSchedulesModel = GenericModel.extend({
 
-	urlRoot : '/api/openstc/task_schedules',
 
+		fields  : [],
+
+		urlRoot : '/api/openstc/task_schedules',
+
+
+	});
+
+return TaskSchedulesModel;
 
 });

@@ -1,22 +1,35 @@
-/******************************************
-* Request Categorie Collection - Intervention classification for budget
-*/
-app.Collections.CategoriesRequests = app.Collections.GenericCollection.extend({
+define([
+	'genericCollection',
+	'categoryRequestModel'
 
-	model        : app.Models.CategoryRequest,
+], function(GenericCollection, CategoryRequestModel){
 
-	url          : '/api/openstc/intervention_categories',
-
-	fields       : ['id', 'name', 'code', 'actions'],
-
-	default_sort : { by: 'name', order: 'ASC' },
+	'use strict';
 
 
-
-	/** Collection Initialization
+	/******************************************
+	* Request Categorie Collection - Intervention classification for budget
 	*/
-	initialize: function (options) {
-		//console.log('Categorie collection Initialization');
-	},
+	var CategoriesRequestsCollection = GenericCollection.extend({
+
+		model        : CategoryRequestModel,
+
+		url          : '/api/openstc/intervention_categories',
+
+		fields       : ['id', 'name', 'code', 'actions'],
+
+		default_sort : { by: 'name', order: 'ASC' },
+
+
+
+		/** Collection Initialization
+		*/
+		initialize: function (options) {
+			//console.log('Categorie collection Initialization');
+		},
+
+	});
+
+return CategoriesRequestsCollection;
 
 });
