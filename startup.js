@@ -94,8 +94,6 @@ requirejs.config({
 		paginationView          : 'js/views/others/PaginationView',
 		notFoundView            : 'js/views/others/NotFoundView',
 		advancedSelectBoxView   : 'js/views/others/AdvancedSelectBoxView',
-		dashboardView           : 'js/views/others/DashboardView',
-		dashboardView           : 'js/views/others/DashboardView',
 		genericListView         : 'js/views/lists/GenericListView',
 		genericModalView        : 'js/views/modals/GenericModalView'
 	},

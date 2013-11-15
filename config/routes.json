@@ -10,11 +10,6 @@
 		"function" 	: "homePageRedirect"
 	},
 
-	"dashboard": {
-		"url" 		: "dashboard",
-		"function" 	: "dashboard"
-	},
-
 	"login": {
 		"url" 		: "login",
 		"function" 	: "login"

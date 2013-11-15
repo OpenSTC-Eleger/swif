@@ -4,10 +4,9 @@ define([
 	'headerView',
 	'footerView',
 	'loginView',
-	'notFoundView',
-	'dashboardView'
+	'notFoundView'
 
-], function(app, HeaderView, FooterView, LoginView, NotFoundView, DashboardView){
+], function(app, HeaderView, FooterView, LoginView, NotFoundView){
 
 	'use strict';
 
@@ -87,10 +86,9 @@ define([
 
 
 
+		/** Change the Title of the page
+		*/
 		routeChange: function(route){
-
-			console.log('the route change');
-
 			app.views.headerView.render();
 		},
 
@@ -130,11 +128,29 @@ define([
 		/** Redirect to the home page
 		*/
 		homePageRedirect: function(){
+			var self = this;
+
 			if(!this.checkConnect()){
 				this.navigate(app.routes.login.url, {trigger: true, replace: true});
 			}
 			else{
-				this.navigate(_.strLeft(app.routes.dashboard.url, '('), {trigger: true, replace: true});
+				
+				// Redirect to the firt Menu page //
+
+				var userMenus = app.models.user.getMenus();
+				_.find(app.config.menus, function (moduleName, shortName){
+
+				if(!_.isUndefined(userMenus[shortName])) {
+					
+					var module = _.first(userMenus[shortName].children) 
+					var modulePage = _.slugify(_.first(module.children).tag);
+					var url = _.join('/', moduleName, _.slugify(modulePage));
+
+					return self.navigate(url, {trigger: true, replace: true});
+				}
+
+				});
+
 			}
 		},
 
@@ -178,20 +194,6 @@ define([
 
 			app.views.notFoundView = new NotFoundView();
 			this.render(app.views.notFoundView);
-		},
-
-
-
-		/** About the App
-		*/
-		dashboard: function(){
-			if(this.checkConnect()){
-				app.views.dashboardView = new DashboardView();
-				this.render(app.views.dashboardView);
-			}
-			else{
-				this.navigate(app.routes.login.url, {trigger: true, replace: true});
-			}
 		},
 
 
