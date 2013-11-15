@@ -63,9 +63,6 @@ app.Views.ServicesListView = app.Views.GenericListView.extend({
 		// Change the page title //
 		app.router.setPageTitle(app.lang.viewsTitles.servicesList);
 
-		// Change the active menu item //
-		app.views.headerView.selectMenuItem(app.config.menus.openbase);
-
 
 
 		// Retrieve the template // 

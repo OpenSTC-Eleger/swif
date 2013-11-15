@@ -37,10 +37,7 @@ app.Views.ServiceView = Backbone.View.extend({
 				app.router.setPageTitle(app.lang.viewsTitles.serviceDetail + 'n° ' + this.model.id);
 			}
 
-			// Change the active menu item //
-			app.views.headerView.selectMenuItem(app.config.menus.openbase);
-			
-			
+	
 
 			var self = this;
 			// Retrieve the template // 

@@ -30,8 +30,6 @@ define([
 			// Change the page title //
 			app.router.setPageTitle(app.lang.viewsTitles.pageNotFound);
 
-			// Change the active menu item //
-			//app.views.headerView.selectMenuItem('');
 
 		   
 			// Retrieve the Login template // 

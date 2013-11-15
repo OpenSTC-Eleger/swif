@@ -53,9 +53,6 @@ app.Views.PlanningView = Backbone.View.extend({
 		// Change the page title //
 		app.router.setPageTitle(app.lang.viewsTitles.planning);
 
-		// Change the active menu item //
-		app.views.headerView.selectMenuItem(app.config.menus.openstc);
-
 
 		// Retrieve the Login template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -63,8 +60,7 @@ app.Views.PlanningView = Backbone.View.extend({
 
 			// Change the page title //
 			app.router.setPageTitle(app.lang.viewsTitles.planning);
-			// Change the Grid Mode of the view //
-			app.views.headerView.switchGridMode('fluid');
+
 			
 			var options = self.options
 			self.collections.officers = app.models.user.getOfficers();

@@ -25,9 +25,6 @@ app.Views.AboutView = Backbone.View.extend({
 		// Change the page title //
 		app.router.setPageTitle(app.lang.viewsTitles.about);
 
-		// Change the active menu item //
-		app.views.headerView.selectMenuItem('');
-
 		
 		// Retrieve the Login template // 
 		$.get("templates/" + this.templateHTML + ".html", function(templateData){

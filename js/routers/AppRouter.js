@@ -34,10 +34,11 @@ define([
 				self.route(route.url, route.function);
 			});
 
-
 			// Header, Footer Initialize //    	
 			app.views.headerView = new HeaderView();
 			app.views.footerView = new FooterView();
+
+			this.bind('route', this.routeChange);
 		},
 
 
@@ -82,6 +83,15 @@ define([
 		*/
 		setPageTitle: function(title){
 			$(document).attr('title', title);
+		},
+
+
+
+		routeChange: function(route){
+
+			console.log('the route change');
+
+			app.views.headerView.render();
 		},
 
 
@@ -280,6 +290,7 @@ define([
 		*/
 
 		equipments: function(search, filter, sort, page){
+
 			var params = {};
 			if(!_.isNull(search)){params.search = search}
 			if(!_.isNull(filter)){params.filter = filter}

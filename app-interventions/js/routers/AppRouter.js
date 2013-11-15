@@ -46,7 +46,8 @@ define([
 		/** Planning
 		*/
 		planning: function(officer, team, year, week){
-			
+
+
 			var params = {};
 			if(!_.isNull(officer)){params.officer = officer}
 			if(!_.isNull(team)){params.team = team}

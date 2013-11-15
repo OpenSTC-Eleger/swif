@@ -124,10 +124,6 @@ requirejs.config({
 				_.mixin(UnderscoreString);
 			}
 		},
-		'localStorage': {
-			deps   : ['backbone'],
-			exports: 'Backbone'
-		},
 		'nprogress': {
 			deps   : ['jquery'],
 			exports: 'NProgress'

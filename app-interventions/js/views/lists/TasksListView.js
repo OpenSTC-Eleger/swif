@@ -71,9 +71,6 @@ app.Views.TasksListView = app.Views.GenericListView.extend({
 		// Change the page title //
 		app.router.setPageTitle(app.lang.viewsTitles.tasksList);
 
-		// Change the active menu item //
-		app.views.headerView.selectMenuItem(app.config.menus.openstc);
-
 
 
 		//var officer = app.models.user.getUID();

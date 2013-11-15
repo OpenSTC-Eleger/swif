@@ -27,15 +27,25 @@
 			var moduleName = moduleName;
 
 			if(!_.isUndefined(menus[shortName])) {
-			 _.each(menus[shortName].children, function (menuRacine, i) {%>
-			
-			<li class="dropdown" id="<%= moduleName %>" role="presentation">
+			 _.each(menus[shortName].children, function (menuRacine, i) {
+
+			 	var active = '';
+			 	if(currentModule == moduleName){ active = 'active';}
+			%>
+
+			<li class="dropdown <%= active %>" id="<%= moduleName %>" role="presentation">
 			<a data-toggle="dropdown" class="dropdown-toggle" role="menuitem" href="#" id="drop-menu-app-<%= menuRacine.id %>"><%= menuRacine.name %> <b class="caret"></b></a>
 	            <ul aria-labelledby="drop-menu-app-<%= menuRacine.id %>" role="menu" class="dropdown-menu">
 	                <% _.each(menuRacine.children, function (menuItem, i, a) {%>
 
-						<% if(_.isEmpty(menuItem.children)){ %>
-							<li role="presentation">
+						<% if(_.isEmpty(menuItem.children)){ 
+
+							var active = '';
+							if(currentUrl == _.slugify(menuItem.tag)){ active = 'active'; }
+		
+
+						%>
+							<li role="presentation" class="<%= active %>">
 								<a href="#<%= _.join('/', moduleName, _.slugify(menuItem.tag)) %>"  role="menuitem"><%= menuItem.name %></a>
 							</li>
 						<% } else { %>
@@ -53,10 +63,13 @@
 								}
 								else{
 									url = _.join('/', moduleName, _.slugify(menuItem.tag));
-								} 
+								}
+
+								var active = '';
+								if(currentUrl == _.slugify(menuItem.tag)){ active = 'active'; }
 							%>
 
-								<li role="presentation"><a href="#<%= url %>"  role="menuitem"><%= menuItem.name %></a></li>
+								<li role="presentation" class="<%= active %>"><a href="#<%= url %>"  role="menuitem"><%= menuItem.name %></a></li>
 							<% }); %>
 
 
