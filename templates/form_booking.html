@@ -39,8 +39,7 @@
 						/>
 					</div>
 				</div>
-			</div>
-			<div class="col-sm-6">
+
 				<!-- booking name -->
 				<div class="form-group">
 					<label for="bookingName" class="control-label col-sm-3"><%= _.capitalize(lang.label) %>:</label>
@@ -80,9 +79,12 @@
 						<span class="input-group-addon"><i class="icon-time"></i></span>
 					</div>						
 				</div>
+				<!-- Recurrence (optionnal, list of (dates + dispo) )-->
+				<div class="form-group">
+					<input type="checkbox"><%= lang.recurrence%></input>
+				</div>
 			</div>
-		</div>
-		<div class="row">
+			
 			<!-- Bookables (qty, pricing, dispo)-->
 			<div class="col-sm-6">
 				<!-- Recap of BookingLines -->
@@ -107,13 +109,6 @@
 					<div class="col-sm-9">
 						<input id="bookingAddBookable" class="select2" data-placeholder="<%= lang.actions.selectABookable %>"/>
 					</div>
-				</div>
-			</div>
-			
-			<!-- Recurrence (optionnal, list of (dates + dispo) )-->
-			<div class="col-sm-6">
-				<div class="form-group">
-					<input type="checkbox"><%= lang.recurrence%></input>
 				</div>
 			</div>
 		</div>

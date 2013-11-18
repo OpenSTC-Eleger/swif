@@ -13,16 +13,26 @@ app.Views.FormBooking = Backbone.View.extend({
 		'change #bookingPartner'		: 'changeBookingPartner',
 		'change #bookingAddBookable'	: 'changeBookingAddBookable',
 		'change #bookingCheckin'		: 'changeBookingCheckin',
-		'change #bookingCheckout'		: 'changeBookingCheckout'
+		'change #bookingCheckout'		: 'changeBookingCheckout',
+		'change #bookingCheckinHour'	: 'changeBookingCheckin',
+		'change #bookingCheckoutHour'	: 'changeBookingCheckout',
 	},
+	/*
+	 * Method to perform smart update of all models on the collection
+	 */
+	partialRender: function(){
+		var self = this;
+		_.each(this.lineViews, function(lineView,i){
+			lineView.updateData();
+		});
 
-
+	},
 
 	/** View Initialization
 	*/
 	initialize : function() {
 		var self = this;
-		this.lines = new app.Collections.BookingLines();
+		this.lineViews = [];
 		// Check if it's a create or an update //
 		if(_.isUndefined(this.booking_id)){
 			
@@ -98,7 +108,7 @@ app.Views.FormBooking = Backbone.View.extend({
     	partner_id = app.views.selectListClaimersView.getSelectedItem();
     	if(partner_id != ''){
     		app.views.selectListClaimersContactsView.setSearchParam({'field':'partner_id.id','operator':'=','value':partner_id},true);
-    		this.model.set({partner_id:partner_id});
+    		this.model.set({partner_id:[partner_id,app.views.selectListClaimersView.getSelectedText()]});
     	}
     	else{
     		app.views.selectListClaimersContactsView.resetSearchParams();
@@ -117,14 +127,15 @@ app.Views.FormBooking = Backbone.View.extend({
     	bookable_name = app.views.selectListAddBookableView.getSelectedText();
     	var lineModel = new app.Models.BookingLine({
     		reserve_product:[bookable_id, bookable_name],
-			qte_reserves: 1,
 			pricelist_amount:0});
+    	lineModel.setQuantity(1);
+    	this.model.addLine(lineModel);
     	var partner_id = this.model.getPartner('id');
     	var checkin = this.model.getStartDate();
     	var checkout = this.model.getEndDate();
     	$.when(lineModel.fetchAvailableQtity(checkin,checkout),lineModel.fetchPricing(partner_id,checkin,checkout)).done(function(){
         	var lineView = new app.Views.ItemFormBookingLineView({model:lineModel});
-        	self.lines.add(lineModel);
+        	self.lineViews.push(lineView);
         	$(self.el).find('#bookingLines').append(lineView.render().el);
     	})
     	.fail(function(e){
@@ -135,17 +146,24 @@ app.Views.FormBooking = Backbone.View.extend({
     
     changeBookingCheckin: function(e){
     	e.preventDefault();
-    	var dateVal = new moment( $("#bookingCheckin").val(),"DD-MM-YYYY")
-		.add('hours',$("#bookingCheckinHour").val().split(":")[0] )
-		.add('minutes',$("#bookingCheckinHour").val().split(":")[1] );
-    	this.model.set({checkin:moment.utc(dateVal).format('YYYY-MM-DD hh:mm:ss')});
+    	if($("#bookingCheckin").val() != '' && $("#bookingCheckinHour").val() != ''){
+	    	var dateVal = new moment( $("#bookingCheckin").val(),"DD-MM-YYYY")
+			.add('hours',$("#bookingCheckinHour").val().split(":")[0] )
+			.add('minutes',$("#bookingCheckinHour").val().split(":")[1] );
+	    	this.model.set({checkin:moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss')});
+	    	this.partialRender();	
+    	}
     },
     
     changeBookingCheckout: function(e){
     	e.preventDefault();
-    	var dateVal = new moment( $("#bookingCheckout").val(),"DD-MM-YYYY")
-		.add('hours',$("#bookingCheckoutHour").val().split(":")[0] )
-		.add('minutes',$("#bookingCheckoutHour").val().split(":")[1] );
-    	this.model.set({checkout:moment.utc(dateVal).format('YYYY-MM-DD hh:mm:ss')});
-    }
+    	if($("#bookingCheckout").val() != '' && $("#bookingCheckoutHour").val() != ''){
+	    	var dateVal = new moment( $("#bookingCheckout").val(),"DD-MM-YYYY")
+			.add('hours',$("#bookingCheckoutHour").val().split(":")[0] )
+			.add('minutes',$("#bookingCheckoutHour").val().split(":")[1] );
+	    	this.model.set({checkout:moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss')});
+	    	this.partialRender();
+    	}
+    },
+
 });

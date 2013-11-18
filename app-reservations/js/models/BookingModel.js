@@ -323,7 +323,12 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	hasActions: function(action){
 		return this.getActions().indexOf(action) > -1;
 	},
-
+	
+	//method to add a bookingLine to collection on this model
+	addLine: function(lineModel){
+		this.lines.add(lineModel);
+		lineModel.setParentBookingModel(this);
+	},
 	
 	/** Model Initialization
 	*/
@@ -345,6 +350,7 @@ app.Models.Booking = app.Models.GenericModel.extend({
 		app.Models.Booking.actions.refused.translation   = app.lang.actions.refuse;
 
 		
+		this.lines = new app.Collections.BookingLines();
 //		this.computeResources().done(function (data) {
 //			// self.set( {'resources' :  data.resources, 'description': data.description} , {silent:false} );	
 //			 //self.set( 'resources',  data.resources , {silent:true} );	

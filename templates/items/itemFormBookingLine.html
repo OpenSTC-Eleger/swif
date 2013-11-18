@@ -21,4 +21,7 @@
 <!-- Booking Line pricing-->
 <td>
 	<input type="number" id="bookingLinePricing" name="bookingLinePricing" placeholder="" value="<%= line.getPricing()%>" min="0" required="required"/>
+	<a href="#" class="removeLine" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">
+		<i class="icon-trash icon-large">&nbsp;</i>
+	</a>
 </td>

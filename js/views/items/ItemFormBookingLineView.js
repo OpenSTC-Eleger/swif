@@ -21,7 +21,9 @@ app.Views.ItemFormBookingLineView = Backbone.View.extend({
 
 	// The DOM events //
 	events: {
-		
+		'change #bookingLineQty': 'changeBookingLineQty',
+		'change #bookingLinePricing': 'changeBookingLinePricing',
+		'click .removeLine'				: 'removeLine'
 	},
 
 
@@ -43,16 +45,33 @@ app.Views.ItemFormBookingLineView = Backbone.View.extend({
 		this.bookableModel = new app.Models.Bookable({id:this.model.getResource('id')});
 		this.deferredBookable = this.bookableModel.fetch({silent:true});
 	},
+	/*
+	 * Method to perform smart update of models according to some conditions (dates changed, partner changed,...)
+	 */
+	updateData: function(){
+		var parentModel = this.model.getParentBookingModel();
+		
+		if(parentModel != null){
+			var checkin = parentModel.getStartDate();
+			var checkout = parentModel.getEndDate();
+			var partner_id = parentModel.getPartner('id');
+			if(checkin != '' && checkout != ''){
+				this.model.fetchAvailableQtity(checkin,checkout);
+				if(partner_id > 0){
+					this.model.fetchPricing(partner_id, checkin, checkout);
+				}
+			}
+		}
 
-
+	},
 
 	/** When the model is updated //
 	*/
 	change: function(e){
-
+		$(this.el).attr('class',this.className());
 		this.render();
 		app.Helpers.Main.highlight($(this.el));
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
+		//app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
 	},
 
 
@@ -62,12 +81,11 @@ app.Views.ItemFormBookingLineView = Backbone.View.extend({
 	destroy: function(e){
 		var self = this;
 
-		app.Helpers.Main.highlight($(this.el)).done(function(){
+		//app.Helpers.Main.highlight($(this.el)).done(function(){
 			self.remove();
-			app.views.placesListView.partialRender();
-		});
+		//});
 
-		app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.placeDeleteOk);
+		//app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.placeDeleteOk);
 		
 	},
 
@@ -101,5 +119,26 @@ app.Views.ItemFormBookingLineView = Backbone.View.extend({
 
 		return this;
 	},
-
+	
+	changeBookingLineQty: function(e){
+		e.preventDefault();
+		val = $(this.el).find('#bookingLineQty').val();
+		if(val != ''){
+			this.model.setQuantity(parseFloat(val));
+		}
+	},
+	
+	changeBookingLinePricing: function(e){
+		e.preventDefault();
+		val = $(this.el).find('#bookingLinePricing').val();
+		if(val != ''){
+			this.model.set({pricelist_amount:parseFloat(val)},{silent:true});
+		}
+	},
+	
+    
+    removeLine: function(e){
+    	e.preventDefault();
+    	this.model.destroy();
+    }
 });

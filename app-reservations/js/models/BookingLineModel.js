@@ -5,7 +5,7 @@ app.Models.BookingLine = app.Models.GenericModel.extend({
 	
 	urlRoot: "/api/openresa/booking_lines",
 	
-	fields : ['id', 'name', 'reserve_product', 'qte_dispo', 'qte_reserves', 'pricelist_amount'],
+	fields : ['id', 'name', 'reserve_product', 'qte_dispo', 'qte_reserves', 'pricelist_amount','dispo'],
 
 
 	searchable_fields: [
@@ -47,12 +47,27 @@ app.Models.BookingLine = app.Models.GenericModel.extend({
 		return this.get('qte_dispo');
 	},
 	
+	setAvailableQtity: function(qty){
+		this.set({qte_dispo:qty},{silent:true});
+		this.updateAvailable();
+	},
+	
 	getQuantity: function(){
 		return this.get('qte_reserves');
 	},
 	
+	setQuantity: function(qty){
+		this.set({qte_reserves:qty},{silent:true});
+		this.updateAvailable();
+	},
+	
 	getAvailable: function(){
-		return this.getAvailableQtity() >= this.getQuantity();
+		return this.get('dispo');
+	},
+	
+	// not really a setter, used by other setters of the module to trigger change event
+	updateAvailable: function(){
+		this.set({dispo:this.getAvailableQtity() >= this.getQuantity()})
 	},
 	
 	getPricing: function(){
@@ -69,7 +84,7 @@ app.Models.BookingLine = app.Models.GenericModel.extend({
 				checkout:checkout}
 			),
 			success: function(data){
-				self.set({qte_dispo:data});
+				self.setAvailableQtity(data);
 			},
 			error: function(e){
 				console.log(e);
@@ -97,11 +112,23 @@ app.Models.BookingLine = app.Models.GenericModel.extend({
 		}));
 	},
 	
+	getParentBookingModel: function(){
+		return this.parentBookingModel;
+	},
+	
+	setParentBookingModel: function	(model){
+		this.parentBookingModel = model;
+		if(!model.isNew()){
+			this.set({line_id:model.getId()});
+		}
+	},
+	
 	/** Model Initialization
 	*/
 	initialize: function(){
 		//console.log('Booking Model initialization');
 		//this.fetchRelated('tasks');
+		this.parentBookingModel = null;
 	},
 
 
