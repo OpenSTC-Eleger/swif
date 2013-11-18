@@ -7,9 +7,11 @@ define([
 
 	'genericListView',
 	'paginationView',
+	'itemPlaceView',
+	'modalPlaceView'
 
 
-], function(app, AppHelpers, PlacesCollection, PlaceModel, GenericListView, PaginationView){
+], function(app, AppHelpers, PlacesCollection, PlaceModel, GenericListView, PaginationView, ItemPlaceView, ModalPlaceView){
 
 	'use strict';
 
@@ -56,12 +58,12 @@ define([
 		*/
 		add: function(model){
 
-			/*var itemPlaceView  = new ItemPlaceView({ model: model });
+			var itemPlaceView  = new ItemPlaceView({ model: model });
 			$('#rows-items').prepend(itemPlaceView.render().el);
-			app.Helpers.Main.highlight($(itemPlaceView.el))
+			AppHelpers.Main.highlight($(itemPlaceView.el))
 
 			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.placeCreateOk);
-			this.partialRender();*/
+			this.partialRender();
 		},
 
 
@@ -90,10 +92,10 @@ define([
 
 
 				// Create item place view //
-				/*_.each(self.collection.models, function(place, i){
-					var itemPlaceView  = new app.Views.ItemPlaceView({model: place});
+				_.each(self.collection.models, function(place, i){
+					var itemPlaceView  = new ItemPlaceView({model: place});
 					$('#rows-items').append(itemPlaceView.render().el);
-				});*/
+				});
 
 
 				// Pagination view //
@@ -128,9 +130,8 @@ define([
 		modalCreatePlace: function(e){
 			e.preventDefault();
 
-			console.log('place mde');
-			
-			app.views.modalPlaceView = new app.Views.ModalPlaceView({
+	
+			app.views.modalPlaceView = new ModalPlaceView({
 				el  : '#modalSavePlace'
 			});
 		},

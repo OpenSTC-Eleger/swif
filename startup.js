@@ -97,6 +97,9 @@ requirejs.config({
 		genericListView         : 'js/views/lists/GenericListView',
 		genericModalView        : 'js/views/modals/GenericModalView',
 		placesListView          : 'js/views/lists/PlacesListView',
+		itemPlaceView           : 'js/views/items/ItemPlaceView',
+		modalPlaceView          : 'js/views/modals/ModalPlaceView',
+		modalDeleteView         : 'js/views/modals/ModalDeleteView',
 	},
 
 	packages: [
@@ -143,12 +146,8 @@ requirejs.config({
 			deps   : ['jquery'],
 			exports: 'bsSwitch'	
 		},
-		'select2': {
-			deps   : ['jquery'],
-			exports: 'select2'
-		},
 		'select2-lang': {
-			deps   : ['select2'],
+			deps   : [ 'jquery', 'select2'],
 			exports: 'select2'
 		},
 		'fullcalendar': {

@@ -19,12 +19,13 @@ define([
 
 ], function(app, GenericModalView, AdvancedSelectBoxView, RequestsCollection, ClaimersCollection, ClaimersContactsCollection, EquipmentsCollection, PlacesCollection, ClaimersServicesCollection, RequestModel, ClaimerContactModel, ClaimerModel, bootstrapSwitch){
 
+	'use strict';
 
 
 	/******************************************
 	* Requests Details View
 	*/
-	ModalRequestView = GenericModalView.extend({
+	var ModalRequestView = GenericModalView.extend({
 
 
 		templateHTML : 'modals/modalRequest',
