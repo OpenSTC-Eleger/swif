@@ -1,15 +1,13 @@
-define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListView', 'paginationView', 'claimerView',
-    'claimerContactsListView', 'modalClaimerEdit'
+define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListView', 'paginationView', 'claimerView', 'claimerContactsListView', 'modalClaimerEdit'
 
-], function (app, AppHelpers, ClaimersCollection, ClaimerModel, GenericListView, PaginationView, ClaimerView,
-             ClaimerContactsListView, ModalClaimerEdit) {
+], function (app, AppHelpers, ClaimersCollection, ClaimerModel, GenericListView, PaginationView, ClaimerView, ClaimerContactsListView, ModalClaimerEdit) {
 
     'use strict';
 
     /******************************************
      * Claimers List View
      */
-    var ClaimersListView = GenericListView.extend({
+    return GenericListView.extend({
 
         el: '#rowContainer',
 
@@ -222,6 +220,4 @@ define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListV
         },
 
     });
-
-    return ClaimersListView;
 });
