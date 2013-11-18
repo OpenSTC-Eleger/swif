@@ -3,10 +3,11 @@ define([
 	'appHelpers',
 
 	'requestModel',
-	'modalRequestView'
+	'modalRequestView',
+	'modalValidRequestView'
 
 
-], function(app, AppHelpers, RequestModel, ModalRequestView){
+], function(app, AppHelpers, RequestModel, ModalRequestView, ModalValidRequestView){
 
 
 	/******************************************
@@ -125,7 +126,7 @@ define([
 		modalValidRequest: function(e){
 			e.preventDefault(); e.stopPropagation();
 
-			app.views.modalValidRequestView = new app.Views.ModalValidRequestView({
+			app.views.modalValidRequestView = new ModalValidRequestView({
 				el      : '#modalValidRequest',
 				model   : this.model
 			});
