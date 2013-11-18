@@ -21,7 +21,7 @@ define([
 	*/
 	var PlacesListView = GenericListView.extend({
 
-		templateHTML  : 'placesList',
+		templateHTML  : 'lists/placesList',
 
 
 		// The DOM events //

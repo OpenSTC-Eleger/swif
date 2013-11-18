@@ -67,8 +67,8 @@ requirejs.config({
 		placesCollection           : 'js/collections/PlacesCollection',
 		placeTypesCollection       : 'js/collections/PlaceTypesCollection',
 		stcGroupsCollection        : 'js/collections/STCGroupsCollection',
-		teamsCollection            : 'js/models/TeamsCollection',
-		officersCollection         : 'js/models/OfficersCollection',
+		teamsCollection            : 'js/collections/TeamsCollection',
+		officersCollection         : 'js/collections/OfficersCollection',
 
 		/* #############
 		* Models
@@ -104,7 +104,10 @@ requirejs.config({
 		claimerView             : 'js/views/items/ClaimerView',
 		claimerContactsListView : 'js/views/lists/ClaimerContactsListView',
 		modalClaimerEdit        : 'js/views/modals/ModalClaimerEdit',
-		modalDeleteView         : 'js/views/modals/ModalDeleteView'
+		teamsListView           : 'js/views/lists/TeamsListView',
+		itemTeamView            : 'js/views/items/ItemTeamView',
+		teamMembersAndServices  : 'js/views/others/TeamMembersAndServices',
+		modalTeamView           : 'js/views/modals/ModalTeamView',
 	},
 
 	packages: [

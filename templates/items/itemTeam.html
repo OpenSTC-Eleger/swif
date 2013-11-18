@@ -1,0 +1,18 @@
+<td>
+	<i class="fa fa-group">&nbsp;&nbsp;</i><%= team.getName() %>
+
+	<p class="row-actions invisible">
+		<% if(_.contains(team.getActions(), 'update')){ %>
+		<a href="#" class="modalUpdateTeam">
+			<i class="fa fa-pencil fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
+		</a>&nbsp;
+		<% } %>
+
+		<% if(_.contains(team.getActions(), 'delete')){ %>
+		<a href="#" class="modalDeleteTeam">
+			<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+		</a>
+		<% } %>
+	</p>
+</td>
+<td><%= team.getManager() %></td>
