@@ -1,16 +1,16 @@
 <td>
-	<i class="icon-tag"></i>&nbsp; <%= cat.getName() %>
+	<i class="fa fa-icon-tag"></i>&nbsp; <%= cat.getName() %>
 
 	<p class="row-actions invisible">
 		<% if(_.contains(cat.getActions(), 'update')){ %>
 		<a href="#"  class="modalUpdateCat">
-			<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
+			<i class="fa fa-pencil fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
 		</a>&nbsp;
 		<% } %>
 
 		<% if(_.contains(cat.getActions(), 'delete')){ %>
 		<a href="#" class="modalDeleteCat">
-			<i class="icon-trash icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+			<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
 		</a>
 		<% } %>
 	</p>
