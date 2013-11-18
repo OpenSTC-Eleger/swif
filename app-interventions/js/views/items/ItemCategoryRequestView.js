@@ -3,10 +3,11 @@ define([
 	'appHelpers',
 
 	'categoryRequestModel',
-	'modalCategoryRequestView'
+	'modalCategoryRequestView',
+	'modalDeleteView'
 
 
-], function(app, AppHelpers, CategoryRequestModel, ModalCategoryRequestView){
+], function(app, AppHelpers, CategoryRequestModel, ModalCategoryRequestView, ModalDeleteView){
 
 	'use strict';
 
