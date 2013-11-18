@@ -1,13 +1,13 @@
 define([
 	'app',
-
 	'headerView',
 	'footerView',
 	'loginView',
 	'notFoundView',
-	'placesListView'
+	'placesListView',
+    'claimersListView'
 
-], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView){
+], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView, ClaimersListView){
 
 	'use strict';
 
@@ -258,14 +258,8 @@ define([
 		/** Claimers List
 		*/
 		claimers: function(search, sort, page){
-
-			var params = {};
-
-			if(!_.isNull(search)){ params.search = search; }
-			if(!_.isNull(sort))  { params.sort = sort; }
-			if(!_.isNull(page))  { params.page = page; }
-
-			app.views.claimersListView = new app.Views.ClaimersListView(params);
+			var params = this.setContext({search: search, sort : sort, page : page});
+			app.views.claimersListView = new ClaimersListView(params);
 		},
 
 

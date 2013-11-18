@@ -100,6 +100,10 @@ requirejs.config({
 		itemPlaceView           : 'js/views/items/ItemPlaceView',
 		modalPlaceView          : 'js/views/modals/ModalPlaceView',
 		modalDeleteView         : 'js/views/modals/ModalDeleteView',
+        claimersListView: 'js/views/lists/ClaimersListView',
+        claimerView: 'js/views/items/ClaimerView',
+        claimerContactsListView: 'js/views/list/ClaimerContactsListView',
+        modalClaimerEdit: 'js/views/modals/ModalClaimerEdit'
 	},
 
 	packages: [
