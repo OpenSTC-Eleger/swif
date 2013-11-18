@@ -38,6 +38,10 @@ requirejs.config({
 		categoriesTasksListView  	: 'app-interventions/js/views/lists/CategoriesTasksListView',
 		itemCategoryTaskView     	: 'app-interventions/js/views/items/ItemCategoryTaskView',
 		modalCategoryTaskView    	: 'app-interventions/js/views/modals/ModalCategoryTaskView',
+		
+		absentTypesListView  		: 'app-interventions/js/views/lists/AbsentTypesListView',
+		itemAbsentTypeView	     	: 'app-interventions/js/views/items/ItemAbsentTypeView',
+		modalAbsentTypeView    		: 'app-interventions/js/views/modals/ModalAbsentTypeView',
 
 		interventionsListView       : 'app-interventions/js/views/lists/InterventionsListView',
 		

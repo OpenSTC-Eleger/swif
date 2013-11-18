@@ -4,13 +4,13 @@
 	<p class="row-actions invisible">
 		<% if(_.contains(absentType.getActions(), 'update')){ %>
 		<a href="#"  class="modalUpdateAbsentType">
-			<i class="icon-pencil icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
+			<i class="fa fa-pencil fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
 		</a>&nbsp;
 		<% } %>
 
 		<% if(_.contains(absentType.getActions(), 'delete')){ %>
 		<a href="#" class="modalDeleteAbsentType">
-			<i class="icon-trash icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+			<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
 		</a>
 		<% } %>
 	</p>

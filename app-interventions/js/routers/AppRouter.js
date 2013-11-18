@@ -4,9 +4,10 @@ define([
 
 	'requestsListView',
 	'categoriesRequestsListView',
-	'categoriesTasksListView'
+	'categoriesTasksListView',
+	'absentTypesListView'
 
-], function(app, AppRouter, RequestsListView, CategoriesRequestsListView, CategoriesTasksListView){
+], function(app, AppRouter, RequestsListView, CategoriesRequestsListView, CategoriesTasksListView, AbsentTypesListView){
 
 	'use strict';
 
@@ -103,14 +104,11 @@ define([
 		/** Abstent types List
 		*/
 		absentTypes: function(search, sort, page){
+			
+			var params = this.setContext({search: search, sort : sort, page : page});
 
-			var params = {};
-
-			if(!_.isNull(search)){ params.search = search; }
-			if(!_.isNull(sort))  { params.sort = sort; }
-			if(!_.isNull(page))  { params.page = page; }
-
-			app.views.absentTypesListView = new app.Views.AbsentTypesListView(params);
+			app.views.absentTypesListView = new AbsentTypesListView(params);
+			
 		}
 
 	});
