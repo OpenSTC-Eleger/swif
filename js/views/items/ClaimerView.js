@@ -1,8 +1,6 @@
-define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListView', 'paginationView', 'claimerView',
-    'claimerContactsListView', 'modalClaimerEdit', 'modalDeleteView'
+define(['app', 'appHelpers', 'modalClaimerEdit', 'modalDeleteView'
 
-], function (app, AppHelpers, ClaimersCollection, ClaimerModel, GenericListView, PaginationView, ClaimerView,
-             ClaimerContactsListView, ModalClaimerEdit, ModalDeleteView) {
+], function (app, AppHelpers, ModalClaimerEdit, ModalDeleteView) {
 
     'use strict';
 
@@ -19,8 +17,6 @@ define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListV
             'click a.modalEditClaimer' : 'showEditModal'
         },
 
-
-
         /** View Initialization
          */
         initialize : function() {
@@ -32,7 +28,6 @@ define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListV
             // When the model are destroy //
             this.listenTo(this.model,'destroy', this.destroy);
         },
-
 
         toggleAccordion: function(e){
             e.preventDefault();
@@ -66,8 +61,6 @@ define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListV
 
         },
 
-
-
         render : function() {
             var self = this;
             $.get("templates/" + this.templateHTML + ".html", function(templateData){
@@ -89,8 +82,6 @@ define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListV
             AppHelpers.Main.highlight($(this.el))
             app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.claimerUpdateOk);
         },
-
-
 
         /** When the model is destroy //
          */
@@ -120,8 +111,6 @@ define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListV
             });
         },
 
-
-
         /** Modal to remove a claimer
          */
         modalDeleteClaimer: function(e){
@@ -131,9 +120,8 @@ define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListV
                 el         : '#modalDeleteClaimer',
                 model      : this.model
             });
-        },
+        }
 
     });
-
 });
 
