@@ -8,12 +8,12 @@ define([
 	
 	'genericListView',
 	'paginationView',
-	/*modalServiceView,
-	 modalDeleteView
-	 */
+	'modalServiceView',
+	'modalDeleteView'
+	 
 
 
-], function(app, AppHelpers, ClaimersServicesCollection, ClaimerServiceModel, OfficerModel, GenericListView, PaginationView/*,ModalServiceView,ModalDeleteView*/){
+], function(app, AppHelpers, ClaimersServicesCollection, ClaimerServiceModel, OfficerModel, GenericListView, PaginationView, ModalServiceView,ModalDeleteView){
 
 	'use strict';
 
