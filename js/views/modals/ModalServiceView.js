@@ -1,14 +1,13 @@
 define([
 	'app',
 	'appHelpers',
-
 	'claimersServicesCollection',
 	'claimerServiceModel',
-	'officerModel',
 	'officersCollection',
 	
 	'genericModalView',
-	'advancedSelectBoxView'
+	'advancedSelectBoxView',
+	'bsSwitch'
 
 ], function(app, AppHelpers, ClaimersServicesCollection, ClaimerServiceModel, OfficersCollection, GenericModalView, AdvancedSelectBoxView){
 
