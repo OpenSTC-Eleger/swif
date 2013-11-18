@@ -95,7 +95,8 @@ requirejs.config({
 		notFoundView            : 'js/views/others/NotFoundView',
 		advancedSelectBoxView   : 'js/views/others/AdvancedSelectBoxView',
 		genericListView         : 'js/views/lists/GenericListView',
-		genericModalView        : 'js/views/modals/GenericModalView'
+		genericModalView        : 'js/views/modals/GenericModalView',
+		placesListView          : 'js/views/lists/PlacesListView',
 	},
 
 	packages: [

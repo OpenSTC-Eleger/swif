@@ -4,9 +4,10 @@ define([
 	'headerView',
 	'footerView',
 	'loginView',
-	'notFoundView'
+	'notFoundView',
+	'placesListView'
 
-], function(app, HeaderView, FooterView, LoginView, NotFoundView){
+], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView){
 
 	'use strict';
 
@@ -216,13 +217,9 @@ define([
 		*/
 		places: function(search, sort, page){
 
-			var params = {};
+			var params = this.setContext({search: search, sort : sort, page : page});
 
-			if(!_.isNull(search)){ params.search = search; }
-			if(!_.isNull(sort))  { params.sort = sort; }
-			if(!_.isNull(page))  { params.page = page; }
-
-			app.views.placesListView = new app.Views.PlacesListView(params);
+			app.views.placesListView = new PlacesListView(params);
 		},
 
 

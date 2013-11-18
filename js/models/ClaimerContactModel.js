@@ -1,9 +1,7 @@
 define([
-	'app',
-
 	'genericModel',
 
-], function(app, GenericModel){
+], function(GenericModel){
 
 	'user strict';
 

@@ -2,7 +2,7 @@ define([
 	'app',
 	'appRouter',
 
-	'requestsListView'
+	'requestsListView',
 
 ], function(app, AppRouter, RequestsListView){
 
@@ -31,14 +31,9 @@ define([
 		*/
 		interventions: function(search, filter, sort, page){
 
-			var params = {};
+			var params = this.setContext({search: search, filter : filter, sort : sort, page : page});
 
-			if(!_.isNull(search)){params.search = search}
-			if(!_.isNull(filter)){params.filter = filter}
-			if(!_.isNull(sort)){params.sort = sort}
-			if(!_.isNull(page)){params.page = page}
-
-			app.views.interventions = new app.Views.InterventionsListView(params);
+			//app.views.interventions = new InterventionsListView(params);
 		},
 
 

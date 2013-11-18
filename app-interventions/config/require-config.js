@@ -30,6 +30,8 @@ requirejs.config({
 		itemRequestView             : 'app-interventions/js/views/items/ItemRequestView',
 		modalRequestView            : 'app-interventions/js/views/modals/ModalRequestView',
 
+		interventionsListView       : 'app-interventions/js/views/lists/InterventionsListView',
+
 	}
 
 });
