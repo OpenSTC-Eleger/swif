@@ -22,7 +22,7 @@
 <% if(intervention.onEquipment()){ %>
 	<i class="icon-wrench fa-fw"></i>&nbsp;<%= intervention.getEquipment() %> <small class="text-muted">(<%= intervention.getSite() %>)</small>
 <% }else if(intervention.getSite()){ %>
-	<i class="icon-map-marker fa-fw"></i>&nbsp;<%= intervention.getSite() %>
+	<i class="fa fa-map-marker fa-fw"></i>&nbsp;<%= intervention.getSite() %>
 <% }%>
 </td>
 

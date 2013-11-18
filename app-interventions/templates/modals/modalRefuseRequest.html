@@ -13,7 +13,7 @@
 
 		<blockquote>
 			<p><%= request.getName() %></p>
-			<small><strong><i class="icon-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong></i>&nbsp;&nbsp; <%= request.getSite() %></small>
+			<small><strong><i class="fa fa-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong></i>&nbsp;&nbsp; <%= request.getSite() %></small>
 		</blockquote>
 
 		<form id="formRefuseRequest" action="#" class="form-horizontal">
@@ -32,7 +32,7 @@
 
 	<div class="modal-footer">
 		<button type="submit" form="formRefuseRequest" class="btn btn-primary"
-			data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= _.capitalize(lang.refuseInProgress) %>"
+			data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= _.capitalize(lang.refuseInProgress) %>"
 		><%= _.capitalize(lang.actions.refuse) %>
 		</button>&nbsp;&nbsp;
 

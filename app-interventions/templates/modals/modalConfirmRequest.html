@@ -12,7 +12,7 @@
 
 			<blockquote class="spaceBottom">
 				<p><%= request.getName() %></p>
-				<small><strong><i class="icon-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong></i>&nbsp;&nbsp; <%= request.getSite() %></small>
+				<small><strong><i class="fa fa-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong></i>&nbsp;&nbsp; <%= request.getSite() %></small>
 			</blockquote>
 
 			<form id="formConfirmRequest" action="#" class="form-horizontal">
@@ -31,7 +31,7 @@
 
 		<div class="modal-footer">
 			<button type="submit" form="formConfirmRequest" class="btn btn-primary"
-				data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= _.capitalize(lang.actions.confirmChief) %>"
+				data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= _.capitalize(lang.actions.confirmChief) %>"
 			><%= _.capitalize(lang.actions.confirmChief) %>
 			</button>&nbsp;&nbsp;
 			

@@ -12,7 +12,7 @@
 
 			<blockquote>
 				<p><%= request.getName() %></p>
-				<small><strong><i class="icon-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong>&nbsp;&nbsp; <%= request.getSite() %></small>
+				<small><strong><i class="fa fa-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong>&nbsp;&nbsp; <%= request.getSite() %></small>
 			</blockquote>
 
 
@@ -106,7 +106,7 @@
 
 		<div class="modal-footer">
 			<button type="submit" form="formValidRequest" class="btn btn-primary"
-				data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= _.capitalize(lang.validInProgress) %>"
+				data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= _.capitalize(lang.validInProgress) %>"
 			>
 			<%= _.capitalize(lang.actions.validate) %>
 			</button>&nbsp;&nbsp;

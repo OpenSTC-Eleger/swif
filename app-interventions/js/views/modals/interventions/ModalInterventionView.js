@@ -285,13 +285,13 @@ app.Views.ModalInterventionView = app.Views.GenericModalView.extend({
     			collection = app.Collections.Places.prototype;
     			$('#btnSelectPlaceEquipment').data('item', 'place');
     			$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('icon-wrench');
-    			$('#btnSelectPlaceEquipment').find('.iconItem').addClass('icon-map-marker');
+    			$('#btnSelectPlaceEquipment').find('.iconItem').addClass('fa fa-map-marker');
     		}
     		else{
     			$('#interventionPlaceEquipment').attr('data-placeholder',app.lang.actions.selectAnEquipment);
     			collection = app.Collections.Equipments.prototype;	    			
     			$('#btnSelectPlaceEquipment').data('item', 'equipment');
-    			$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('icon-map-marker');
+    			$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('fa fa-map-marker');
     			$('#btnSelectPlaceEquipment').find('.iconItem').addClass('icon-wrench');
     		}
     		this.advancedSelectBoxInterventionPlaceOrEquipment.collection = collection;

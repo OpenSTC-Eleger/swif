@@ -35,7 +35,7 @@
 		</div>
 
 		<div class="modal-footer">
-		    <button type="button" id="btnRemoveTask" class="btn btn-danger" data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.unplanInProgress %>"
+		    <button type="button" id="btnRemoveTask" class="btn btn-danger" data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.unplanInProgress %>"
 				<%= (task.getState() == app.Models.Task.status.done.key || task.getState() == app.Models.Task.status.cancelled.key ? 'disabled' : '') %>
 		    >
 		    	<%= _.capitalize(lang.actions.removeOfTheSchedule) %>
