@@ -4,8 +4,9 @@ define([
 
 	'requestsListView',
 	'categoriesRequestsListView',
+	'categoriesTasksListView'
 
-], function(app, AppRouter, RequestsListView, CategoriesRequestsListView){
+], function(app, AppRouter, RequestsListView, CategoriesRequestsListView, CategoriesTasksListView){
 
 	'use strict';
 
@@ -83,13 +84,6 @@ define([
 
 			app.views.categoriesRequestsListView = new CategoriesRequestsListView(params);
 
-//			var params = {};
-//
-//			if(!_.isNull(search)){ params.search = search; }
-//			if(!_.isNull(sort))  { params.sort = sort; }
-//			if(!_.isNull(page))  { params.page = page; }
-//
-//			app.views.categoriesRequestsListView = new app.Views.CategoriesRequestsListView(params);
 		},
 
 
@@ -97,14 +91,11 @@ define([
 		/** Categories Tasks List
 		*/
 		categoriesTasks: function(search, sort, page){      
+			
+			var params = this.setContext({search: search, sort : sort, page : page});
 
-			var params = {};
-
-			if(!_.isNull(search)){ params.search = search; }
-			if(!_.isNull(sort))  { params.sort = sort; }
-			if(!_.isNull(page))  { params.page = page; }
-
-			app.views.categoriesTasksListView = new app.Views.CategoriesTasksListView(params);
+			app.views.categoriesTasksListView = new CategoriesTasksListView(params);
+			
 		},
 
 
