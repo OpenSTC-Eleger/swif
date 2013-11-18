@@ -104,10 +104,20 @@ requirejs.config({
 		claimerView             : 'js/views/items/ClaimerView',
 		claimerContactsListView : 'js/views/lists/ClaimerContactsListView',
 		modalClaimerEdit        : 'js/views/modals/ModalClaimerEdit',
+<<<<<<< HEAD
 		teamsListView           : 'js/views/lists/TeamsListView',
 		itemTeamView            : 'js/views/items/ItemTeamView',
 		teamMembersAndServices  : 'js/views/others/TeamMembersAndServices',
 		modalTeamView           : 'js/views/modals/ModalTeamView',
+=======
+		modalDeleteView         : 'js/views/modals/ModalDeleteView',
+		servicesListView        : 'js/views/lists/ServicesListView',
+		officersListView        : 'js/views/lists/OfficersListView',
+		itemServiceView         : 'js/views/items/ItemServiceView',
+		itemOfficerView         : 'js/views/items/ItemOfficerView',
+		modalServiceView        : 'js/views/modals/ModalServiceView',
+		modalOfficerView        : 'js/views/modals/ModalOfficerView'
+>>>>>>> 4dd41a0d096f900fb23517d7b360d5d83442f19b
 	},
 
 	packages: [
