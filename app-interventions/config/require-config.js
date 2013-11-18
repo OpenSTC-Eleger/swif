@@ -29,8 +29,13 @@ requirejs.config({
 		requestsListView            : 'app-interventions/js/views/lists/RequestsListView',
 		itemRequestView             : 'app-interventions/js/views/items/ItemRequestView',
 		modalRequestView            : 'app-interventions/js/views/modals/ModalRequestView',
+		
+		itemCategoryRequestView     : 'app-interventions/js/views/items/ItemCategoryRequestView',
+		categoriesRequestsListView  : 'app-interventions/js/views/lists/CategoriesRequestsListView',
+		modalCategoryRequestView    : 'app-interventions/js/views/modals/ModalCategoryRequestView',
 
 		interventionsListView       : 'app-interventions/js/views/lists/InterventionsListView',
+		
 
 	}
 
