@@ -171,7 +171,7 @@ app.Views.BookingsListView = app.Views.GenericListView.extend({
 		
 		e.preventDefault(); e.stopPropagation();
 
-		var model = new app.Models.BookingRecurrence({id: this.options.recurrence.value });
+		var model = new app.Models.BookingRecurrence({id: this.options.recurrence });
 		
 		var deferred = $.Deferred();
 		model.fetch().done(function(){
