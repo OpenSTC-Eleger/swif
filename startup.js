@@ -104,7 +104,7 @@ requirejs.config({
 		claimerView             : 'js/views/items/ClaimerView',
 		claimerContactsListView : 'js/views/lists/ClaimerContactsListView',
 		modalClaimerEdit        : 'js/views/modals/ModalClaimerEdit',
-		modalDeleteView         : 'js/views/modals/ModalDeleteView'
+		modalDeleteView         : 'js/views/modals/ModalDeleteView',
 		servicesListView        : 'js/views/lists/ServicesListView',
 		officersListView        : 'js/views/lists/OfficersListView',
 		itemServiceView         : 'js/views/items/ItemServiceView',
