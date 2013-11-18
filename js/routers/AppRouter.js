@@ -5,9 +5,11 @@ define([
 	'loginView',
 	'notFoundView',
 	'placesListView',
-    'claimersListView'
+    'claimersListView',
+    'servicesListView'
 
-], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView, ClaimersListView){
+], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView, ClaimersListView, ServicesListView){
+
 
 	'use strict';
 
@@ -228,13 +230,9 @@ define([
 		*/
 		services: function(search, sort, page){      
 
-			var params = {};
+			var params = this.setContext({search: search, sort : sort, page : page});
 
-			if(!_.isNull(search)){ params.search = search; }
-			if(!_.isNull(sort))  { params.sort = sort; }
-			if(!_.isNull(page))  { params.page = page; }
-
-			app.views.servicesListView = new app.Views.ServicesListView(params);
+			app.views.servicesListView = new ServicesListView(params);
 		},
 		
 		
