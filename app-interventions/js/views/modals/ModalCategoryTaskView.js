@@ -41,7 +41,8 @@ define([
 	
 		/** View Initialization
 		*/
-		initialize : function() {
+		initialize : function(params) {
+			this.options = params;
 	
 			this.modal = $(this.el);
 	
