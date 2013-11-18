@@ -3,10 +3,10 @@ define([
 	'appHelpers',
 
 	'officersCollection',
-	'itemOfficerView'
-	 /*ModalOfficerView*/
+	'itemOfficerView',
+	 'modalOfficerView'
 
-	], function(app, AppHelpers, OfficersCollection, ItemOfficerView/*, ModalOfficerView*/){
+	], function(app, AppHelpers, OfficersCollection, ItemOfficerView, ModalOfficerView){
 
 		'use strict';
 	/******************************************

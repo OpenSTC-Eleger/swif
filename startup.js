@@ -109,7 +109,8 @@ requirejs.config({
 		officersListView        : 'js/views/lists/OfficersListView',
 		itemServiceView         : 'js/views/items/ItemServiceView',
 		itemOfficerView         : 'js/views/items/ItemOfficerView',
-		modalServiceView        : 'js/views/modals/ModalServiceView'
+		modalServiceView        : 'js/views/modals/ModalServiceView',
+		modalOfficerView        : 'js/views/modals/ModalOfficerView'
 	},
 
 	packages: [

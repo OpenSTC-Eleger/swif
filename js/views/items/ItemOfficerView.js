@@ -3,11 +3,10 @@ define([
 	'appHelpers',
 
 	'officerModel',
-	/*modalOfficerView,
-	 modalDeleteView
-	 */
-
-	], function(app, AppHelpers,OfficerModel /*ModalOfficerView,ModalDeleteView*/){
+	'modalOfficerView',
+	'modalDeleteView'
+	
+	], function(app, AppHelpers,OfficerModel, ModalOfficerView,ModalDeleteView){
 
 		'use strict';
 

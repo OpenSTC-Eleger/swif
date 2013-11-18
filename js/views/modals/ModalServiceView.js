@@ -9,7 +9,7 @@ define([
 	'advancedSelectBoxView',
 	'bsSwitch'
 
-], function(app, AppHelpers, ClaimersServicesCollection, ClaimerServiceModel, OfficersCollection, GenericModalView, AdvancedSelectBoxView){
+], function(app, AppHelpers, ClaimersServicesCollection, ClaimerServiceModel, OfficersCollection, GenericModalView, AdvancedSelectBoxView, bootstrapSwitch){
 
 	'use strict';
 
