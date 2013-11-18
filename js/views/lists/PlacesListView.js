@@ -60,7 +60,7 @@ define([
 
 			var itemPlaceView  = new ItemPlaceView({ model: model });
 			$('#rows-items').prepend(itemPlaceView.render().el);
-			AppHelpers.Main.highlight($(itemPlaceView.el))
+			AppHelpers.highlight($(itemPlaceView.el))
 
 			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.placeCreateOk);
 			this.partialRender();

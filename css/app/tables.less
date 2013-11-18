@@ -4,10 +4,11 @@
 	thead {
 		th[data-sort-column] {
 			cursor: pointer;
+			line-height: initial;
 			&:hover{
 				background-color: darken(@table-bg-hover, 5%);
 				i{
-					.text-muted;
+					color: darken(@text-muted, 15%);
 				}
 			}
 			i.active{
