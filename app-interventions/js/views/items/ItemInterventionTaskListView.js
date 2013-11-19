@@ -3,10 +3,10 @@ define([
 	'appHelpers',
 
 
-	/*'itemInterventionTaskView'
-	'modalInterventionAddTaskView',*/
+	'itemInterventionTaskView',
+	/*'modalInterventionAddTaskView',*/
 
-], function(app, AppHelpers/*, ItemInterventionTaskView, ModalInterventionAddTaskView*/){
+], function(app, AppHelpers, ItemInterventionTaskView/*, ModalInterventionAddTaskView*/){
 
 	'use strict';
 	

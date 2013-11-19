@@ -5,7 +5,7 @@ define([
 	'interventionModel',
 	'taskModel',
 	'requestModel',
-	
+	'printElement',
 	/*'modalInterventionView',
 	 modalCancelInterventionView*/
 	'moment',
@@ -156,31 +156,31 @@ define([
 				$('#interDescription').html(interJSON.description);
 				$('#interService').html(!interJSON.service_id?'':interJSON.service_id[1]);
 	
-				$('#interDateCreate').html(moment(interJSON.create_date).format('LL'));
+				//$('#interDateCreate').html(moment(interJSON.create_date).format('LL'));
 	
-				if(interJSON.date_deadline != false){
+				/*if(interJSON.date_deadline != false){
 					$('#interDeadline').html(' / ' + moment(interJSON.date_deadline).format('LL'));
-				}
+				}*/
 				if(interJSON.has_equipment){
 					//display location (openstc.site) info
-					$('#printPlaceLabel').css({display:'inline-block'});
+					//$('#printPlaceLabel').css({display:'inline-block'});
 					$('#interPlace').css({display:'inline-block'});
 					
 					//fill data with equipment and location
 					$('#interPlaceOrEquipment').html(interJSON.equipment_id[1]);
 					$('#interPlace').html(interJSON.site1[1]);
-					$('#printPlaceOrEquipmentLabel').html(app.lang.equipmentOrVehicle + ':');
-					$('#printPlaceLabel').html(app.lang.location + ':');
+					//$('#printPlaceOrEquipmentLabel').html(app.lang.equipmentOrVehicle + ':');
+					//$('#printPlaceLabel').html(app.lang.location + ':');
 					
 				}
 				else{
 					//hide location info (keeping only site info on placeOrEquipment field)
-					$('#printPlaceLabel').css({display:'none'});
+					//$('#printPlaceLabel').css({display:'none'});
 					$('#interPlace').css({display:'none'});
 					
 					//fill data of site1
 					$('#interPlaceOrEquipment').html(interJSON.site1[1]);
-					$('#printPlaceOrEquipmentLabel').html(app.lang.place + ':');
+					//$('#printPlaceOrEquipmentLabel').html(app.lang.place + ':');
 				}
 				$('#interPlaceMore').html(interJSON.site_details);
 	
@@ -211,8 +211,9 @@ define([
 						$('#claimentName').html(askJSON.people_name);
 						$('#claimentPhone').html(askJSON.people_phone);
 					}
-		
-					$('#claimentType').html(askJSON.partner_type[1]);
+					if(!_.isUndefined(askJSON.partner_type) && askJSON.partner_type != false){
+						$('#claimentType').html(askJSON.partner_type[1]);
+					}
 					deferred.resolve();
 				})
 				.fail(function(e){

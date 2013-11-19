@@ -46,7 +46,8 @@ requirejs.config({
 
 		interventionsListView       : 'app-interventions/js/views/lists/InterventionsListView',
 		itemInterventionView        : 'app-interventions/js/views/items/ItemInterventionView',
-		itemInterventionTaskListView: 'app-interventions/js/views/items/ItemInterventionTaskListView'
+		itemInterventionTaskListView: 'app-interventions/js/views/items/ItemInterventionTaskListView',
+		itemInterventionTaskView    : 'app-interventions/js/views/items/ItemInterventionTaskView',
 	}
 
 });
