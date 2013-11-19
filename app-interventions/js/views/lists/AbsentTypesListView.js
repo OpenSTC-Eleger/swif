@@ -10,7 +10,7 @@ define([
 	'itemAbsentTypeView',
 	'modalAbsentTypeView'
 
-], function(app, AppHelpers, AbsentTypesCollection, AbsentTypeModel, GenericListView, PaginationView , ItemAbsentTypeView , ModalAbsentTypeView ){
+], function(app, AppHelpers, AbsentTypesCollection, AbsentTypeModel, GenericListView, PaginationView ,ItemAbsentTypeView ,ModalAbsentTypeView ){
 
 	'use strict';
 
@@ -102,7 +102,6 @@ define([
 					page       : self.options.page.page,
 					collection : self.collection
 				})
-				app.views.paginationView.render();
 	
 			});
 	
@@ -167,7 +166,7 @@ define([
 				}
 			};
 			if(!_.isUndefined(this.options.search)){
-				this.fetchParams.data.filters = AppHelpers.calculSearch({search: this.options.search }, app.Models.AbsentType.prototype.searchable_fields);
+				this.fetchParams.data.filters = AppHelpers.calculSearch({search: this.options.search }, AbsentTypeModel.prototype.searchable_fields);
 			}
 	
 	
