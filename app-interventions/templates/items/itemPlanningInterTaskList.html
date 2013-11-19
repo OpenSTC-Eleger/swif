@@ -9,7 +9,7 @@
 	<% if(intervention.tasks.length == 0) { %>
 	<!-- No Task to Display -->
 	<div class="alert alert-info noTask">
-		<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noTaskForIntervention %>.
+		<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noTaskForIntervention %>.
 	</div>
 	<% } %>
 
@@ -24,7 +24,7 @@
 		<!-- Switch button - To Scheduled / Scheduled -->
 		<% if(intervention.tasks.length != 0 && intervention.state != app.Models.Intervention.status.template.key) { %>
 
-			<div class="calendarSwitch pull-right make-switch" data-label-icon="icon-calendar" data-toggle="tooltip" data-original-title="<%= lang.intervention + " " + lang.planningFenced %>"
+			<div class="calendarSwitch pull-right make-switch" data-label-icon="fa fa-calendar" data-toggle="tooltip" data-original-title="<%= lang.intervention + " " + lang.planningFenced %>"
 				id="switch-<%= intervention.id %>" data-text
 				data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>">
 

@@ -16,7 +16,7 @@
 					<%= task.getName() %><br />
 					<!-- Display the Intervention -->
 					<% if(task.getIntervention()) { %>
-						<em class="text-muted"><i class="icon-pushpin"></i>&nbsp;<%= task.getIntervention() %></em>
+						<em class="text-muted"><i class="fa fa-thumb-tack"></i>&nbsp;<%= task.getIntervention() %></em>
 					<% } %>
 
 					<span class="label label-<%= app.Models.Task.status[task.getState()].color %> pull-right"><%= app.Models.Task.status[task.getState()].translation %></span>
@@ -25,9 +25,9 @@
 				<!-- Display the affected Team or Use -->
 				<small>
 					<% if(task.affectedOnTeam()) { %>
-						<i class="icon-group fa-fw"></i>&nbsp;<%= task.getTeam() %>
+						<i class="fa fa-users fa-fw"></i>&nbsp;<%= task.getTeam() %>
 					<% }else{ %>
-						<i class="icon-user fa-fw"></i>&nbsp;<%= task.getUser() %>
+						<i class="fa fa-user fa-fw"></i>&nbsp;<%= task.getUser() %>
 					<% } %>
 					
 				</small>
