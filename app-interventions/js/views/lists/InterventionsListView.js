@@ -10,9 +10,9 @@ define([
 	'paginationView',
 	'itemInterventionView',
 	'itemInterventionTaskListView',
-	/*'modalInterventionView'*/
+	'modalInterventionView'
 
-], function(app, AppHelpers, InterventionsCollection, InterventionModel, TasksCollection, GenericListView, PaginationView, ItemInterventionView, ItemInterventionTaskListView/*, ModalInterventionView*/){
+], function(app, AppHelpers, InterventionsCollection, InterventionModel, TasksCollection, GenericListView, PaginationView, ItemInterventionView, ItemInterventionTaskListView, ModalInterventionView){
 
 	'use strict';
 	
@@ -187,7 +187,7 @@ define([
 		displayModalSaveInter: function(e){
 			e.preventDefault();
 			
-			var params = {el:'#modalSaveInter',interventions: this.collections.interventions}
+			var params = {el:'#modalSaveInter',collection: this.collections.interventions}
 			new ModalInterventionView(params);
 		},
 	

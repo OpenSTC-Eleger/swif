@@ -7,11 +7,10 @@ define([
 	'requestModel',
 	'jqueryui',
 	
-	/*'modalInterventionView',
-	 modalCancelInterventionView*/
+	/*'modalCancelInterventionView*/
 	'moment',
 
-], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel /*,ModalInterventionView, ModalCancelInterventionView*/,moment){
+], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel/*, ModalCancelInterventionView*/,moment){
 
 	
 	
