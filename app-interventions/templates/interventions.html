@@ -61,7 +61,7 @@
 
 						<ul id="filterStateInterList" class="dropdown-menu" role="menu" aria-labelledby="filterStateInter">
 							<% _.each(interventionsState, function (state, i) {
-								if(i == app.Models.Intervention.status.template.key){ %>
+								if(i == interventionsState.template.key){ %>
 									<li class="divider"></li>
 							<% } %>
 								
@@ -127,7 +127,7 @@
 		<div>
 		<div>
 			<h1 style="float: left;">Fiche d'interventions</h1>
-   			<img src="<%= app.config.logo_path %>" style="float: right" />
+   			<img src="<%= logo_path %>" style="float: right" />
    		</div>
    		<hr style="clear: both;">
 

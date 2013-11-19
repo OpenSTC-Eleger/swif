@@ -5,9 +5,10 @@ define([
 	'requestsListView',
 	'categoriesRequestsListView',
 	'categoriesTasksListView',
-	'absentTypesListView'
+	'absentTypesListView',
+	'interventionsListView',
 
-], function(app, AppRouter, RequestsListView, CategoriesRequestsListView, CategoriesTasksListView, AbsentTypesListView){
+], function(app, AppRouter, RequestsListView, CategoriesRequestsListView, CategoriesTasksListView, AbsentTypesListView, InterventionsListView){
 
 	'use strict';
 
@@ -36,7 +37,7 @@ define([
 
 			var params = this.setContext({search: search, filter : filter, sort : sort, page : page});
 
-			//app.views.interventions = new InterventionsListView(params);
+			app.views.interventions = new InterventionsListView(params);
 		},
 
 
