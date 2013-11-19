@@ -1,202 +1,197 @@
-app.Views.ClaimerContactsListView = Backbone.View.extend({
+define(['app', 'appHelpers', 'officerModel','officersCollection', 'claimerContactModel', 'claimerContactView', 'modalClaimerEdit', 'modalDeleteView', 'modalContactEdit'
 
-	tagName     : 'tr',
+], function (app, AppHelpers, OfficerModel, OfficersCollection, ClaimerContactModel, ClaimerContactView, ModalClaimerEdit, ModalDeleteView, ModalContactEdit) {
 
-	className   : 'row-item row-nested-objects-collapse',
+    'use strict';
 
-	templateHTML: 'claimerContactsList',
+    return Backbone.View.extend({
 
-	events: {
-		'click button.modalNewContact' : 'showNewContactModal'
-	},
+        tagName: 'tr',
 
+        className: 'row-item row-nested-objects-collapse',
 
-	id: function () {
-		return 'collapse_' + this.model.id
-	},
+        templateHTML: 'lists/claimerContacts',
 
-
-	/** View Initialization
-	*/
-	initialize      : function () {
-
-	},
+        events: {
+            'click button.modalNewContact': 'showNewContactModal'
+        },
 
 
-	// This set addresses attribute with the JSON address object
-	serializeClaimer: function (claimer) {
-		var addresses = claimer.getAddresses();
-		_.each(addresses, function (address) {
-		})
-		claimer.set('addresses', addresses);
-		return claimer
-	},
+        id: function () {
+            return 'collapse_' + this.model.id
+        },
 
 
-	/** When the model is destroy //
-	 */
-	destroy: function (e) {
-		var self = this;
+        /** View Initialization
+         */
+        initialize: function () {
 
-		app.Helpers.Main.highlight($(this.el)).done(function () {
-			self.remove();
-		});
-
-		app.notify('', 'success', app.lang.infoMessatages.information, e.getCompleteName() + ' : ' + app.lang.infoMessages.claimerDeleteOk);
-		app.views.claimersListView.collection.cpt--;
-		app.views.claimersListView.partialRender();
-	},
+        },
 
 
-	render: function () {
-
-		var self = this;
-
-
-		$.get("templates/" + this.templateHTML + ".html", function (templateData) {
-			var contactNb = self.model.toJSON().address.length;
-			if(!_.isUndefined(self.contactsCollection)){
-				contactNb = self.contactsCollection.length;
-			}
-			var template = _.template(templateData, {
-				lang   : app.lang,
-				claimer: self.model.toJSON(),
-				contactNb: contactNb
-			});
-
-			$(self.el).html(template);
-
-			if (!_.isUndefined(self.contactsCollection)) {
-				$(('#claimerContactsList_' + self.model.id)).empty();
-				_.each(self.contactsCollection.models, function (address) {
-					if (!_.isUndefined(address.get('user_id')[0])) {
-						var user = self.usersCollection.get(address.get('user_id')[0]);
-					} else {
-						var user = undefined;
-					}
-					$(('#claimerContactsList_' + self.model.id)).append(
-						new app.Views.ClaimerContactView({model: address, user: user}).render().el
-					)
-				})
-			}
-			;
-
-			// Set the Tooltip //
-			$('*[data-toggle="tooltip"]').tooltip();
-		});
+        // This set addresses attribute with the JSON address object
+        serializeClaimer: function (claimer) {
+            var addresses = claimer.getAddresses();
+            _.each(addresses, function (address) {
+            })
+            claimer.set('addresses', addresses);
+            return claimer
+        },
 
 
-		return this;
-	},
+        /** When the model is destroy //
+         */
+        destroy: function (e) {
+            var self = this;
+
+            AppHelpers.Main.highlight($(this.el)).done(function () {
+                self.remove();
+            });
+
+            app.notify('', 'success', app.lang.infoMessatages.information, e.getCompleteName() + ' : ' + app.lang.infoMessages.claimerDeleteOk);
+            app.views.claimersListView.collection.cpt--;
+            app.views.claimersListView.partialRender();
+        },
 
 
+        render: function () {
 
-	fetchContacts: function () {
-		var self = this;
-		self.contactsCollection = self.model.getAddresses();
-
-	},
+            var self = this;
 
 
-	// Fetch users in self.address collection. Should only be launched on contactCollections 'fetchDone' event.
-	fetchUsers   : function () {
-		var self = this;
-		self.usersCollection = new app.Collections.Officers()
-		if (this.getUserIds().length > 0) {
-			self.usersCollection.fetch(
-				{
-					data: {filters: {0: {field: 'id', operator: 'in', value: this.getUserIds()}}}
-				}
-			)
-		};
+            $.get("templates/" + this.templateHTML + ".html", function (templateData) {
+                var contactNb = self.model.toJSON().address.length;
+                if (!_.isUndefined(self.contactsCollection)) {
+                    contactNb = self.contactsCollection.length;
+                }
+                var template = _.template(templateData, {
+                    lang: app.lang,
+                    claimer: self.model.toJSON(),
+                    contactNb: contactNb
+                });
 
-		return self.usersCollection;
-	},
+                $(self.el).html(template);
 
+                if (!_.isUndefined(self.contactsCollection)) {
+                    $(('#claimerContactsList_' + self.model.id)).empty();
+                    _.each(self.contactsCollection.models, function (address) {
+                        if (!_.isUndefined(address.get('user_id')[0])) {
+                            var user = self.usersCollection.get(address.get('user_id')[0]);
+                        } else {
+                            var user = undefined;
+                        }
+                        $(('#claimerContactsList_' + self.model.id)).append(
+                            new ClaimerContactView({model: address, user: user}).render().el
+                        )
+                    })
+                }
+                ;
 
-
-	fetchData: function () {
-		var self = this;
-		var deferred = jQuery.Deferred(function () {
-
-				self.fetchContacts()
-				self.listenTo(self.contactsCollection, 'sync', function () {
-					if (this.getUserIds().length > 0) {
-						self.fetchUsers();
-						self.listenTo(self.usersCollection, 'sync', function () {
-							deferred.resolve();
-						})
-					} else {
-						deferred.resolve();
-					}
-
-				})
-			}
-		)
-		return deferred
-
-	},
+                // Set the Tooltip //
+                $('*[data-toggle="tooltip"]').tooltip();
+            });
+            return this;
+        },
 
 
+        fetchContacts: function () {
+            var self = this;
+            self.contactsCollection = self.model.getAddresses();
+        },
 
-	getUserIds: function () {
-		var self = this;
+        // Fetch users in self.address collection. Should only be launched on contactCollections 'fetchDone' event.
+        fetchUsers: function () {
+            var self = this;
+            self.usersCollection = new OfficersCollection();
+            if (this.getUserIds().length > 0) {
+                self.usersCollection.fetch(
+                    {
+                        data: {filters: {0: {field: 'id', operator: 'in', value: this.getUserIds()}}}
+                    }
+                )
+            }
+            ;
 
-		var user_ids = _.filter(self.contactsCollection.pluck('user_id'), function (e) {
-			return e != false;
-		});
+            return self.usersCollection;
+        },
 
-		user_ids = _.map(user_ids, function (e) {
-			if(!_.isNull(e)){
-				return e[0];
-			}
-		});
+        fetchData: function () {
+            var self = this;
+            var deferred = jQuery.Deferred(function () {
 
-		return user_ids;
-	},
+                    self.fetchContacts()
+                    self.listenTo(self.contactsCollection, 'sync', function () {
+                        if (this.getUserIds().length > 0) {
+                            self.fetchUsers();
+                            self.listenTo(self.usersCollection, 'sync', function () {
+                                deferred.resolve();
+                            })
+                        } else {
+                            deferred.resolve();
+                        }
 
+                    })
+                }
+            )
+            return deferred
 
+        },
 
-	/** Display Modal form to add/sav a new claimer
-	*/
-	modalUpdateClaimer: function (e) {
-		e.preventDefault();
-		e.stopPropagation();
+        getUserIds: function () {
+            var self = this;
 
-		app.views.modalClaimerEdit = new app.Views.ModalClaimerEdit({
-			el     : '#modalSaveClaimer',
-			model  : this.model,
-			elFocus: $(e.target).data('form-id')
-		});
-	},
+            var user_ids = _.filter(self.contactsCollection.pluck('user_id'), function (e) {
+                return e != false;
+            });
 
+            user_ids = _.map(user_ids, function (e) {
+                if (!_.isNull(e)) {
+                    return e[0];
+                }
+            });
 
-
-	/** Modal to remove a claimer
-	*/
-	modalDeleteClaimer: function (e) {
-		e.preventDefault();
-		e.stopPropagation();
-
-		app.views.modalDeleteView = new app.Views.ModalDeleteView({
-			el   : '#modalDeleteClaimer',
-			model: this.model
-		});
-	},
-
+            return user_ids;
+        },
 
 
-	showNewContactModal: function (e) {
-		var self = this;
-		e.preventDefault();
-		e.stopPropagation();
-		var new_contact = new app.Models.ClaimerContact;
-		new app.Views.ModalContactEdit({
-			el                      : "#modalEditContact",
-			model                   : new_contact,
-			claimersContactsListView: self,
-			user: new app.Models.Officer()
-		}).render();
-	},
+        /** Display Modal form to add/sav a new claimer
+         */
+        modalUpdateClaimer: function (e) {
+            e.preventDefault();
+            e.stopPropagation();
 
+            app.views.modalClaimerEdit = new ModalClaimerEdit({
+                el: '#modalSaveClaimer',
+                model: this.model,
+                elFocus: $(e.target).data('form-id')
+            });
+        },
+
+
+        /** Modal to remove a claimer
+         */
+        modalDeleteClaimer: function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            app.views.modalDeleteView = new ModalDeleteView({
+                el: '#modalDeleteClaimer',
+                model: this.model
+            });
+        },
+
+
+        showNewContactModal: function (e) {
+            var self = this;
+            e.preventDefault();
+            e.stopPropagation();
+            var new_contact = new ClaimerContactModel;
+            new ModalContactEdit({
+                el: "#modalEditContact",
+                model: new_contact,
+                claimersContactsListView: self,
+                user: new OfficerModel()
+            }).render();
+        }
+    });
 });

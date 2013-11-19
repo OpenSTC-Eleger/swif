@@ -4,10 +4,12 @@ define([
 
 	'requestModel',
 	'modalRequestView',
-	'modalValidRequestView'
+	'modalValidRequestView',
+	'modalRefuseRequestView',
+	'modalConfirmRequestView'
 
 
-], function(app, AppHelpers, RequestModel, ModalRequestView, ModalValidRequestView){
+], function(app, AppHelpers, RequestModel, ModalRequestView, ModalValidRequestView, ModalRefuseRequestView, ModalConfirmRequestView){
 
 
 	/******************************************
@@ -139,7 +141,7 @@ define([
 		modalRefuseRequest: function(e){
 			e.preventDefault(); e.stopPropagation();
 
-			app.views.modalRefuseRequestView = new app.Views.ModalRefuseRequestView({
+			app.views.modalRefuseRequestView = new ModalRefuseRequestView({
 				el      : '#modalRefuseRequest',
 				model   : this.model
 			});
@@ -152,7 +154,7 @@ define([
 		modalConfirmRequest: function(e){
 			e.preventDefault(); e.stopPropagation();
 
-			app.views.modalConfirmRequestView = new app.Views.ModalConfirmRequestView({
+			app.views.modalConfirmRequestView = new ModalConfirmRequestView({
 				el      : '#modalConfirmRequest',
 				model   : this.model
 			});

@@ -4,7 +4,7 @@
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			<h3 class="modal-title">
-				<i class="icon-edit"></i>&nbsp;
+				<i class="fa fa-edit"></i>&nbsp;
 				<% if(_.isNull(contact.id)){ %>
 					<%= _.capitalize(lang.viewsTitles.newContact) %>
 				<% } else{ %>
@@ -39,7 +39,7 @@
 					<legend><%= lang.aboutTheAccount %></legend>
 					<div class="row">
 						<div class="col-sm-3">
-							<i class="icon-user"></i> <%= _.capitalize(lang.login) %>
+							<i class="fa fa-user"></i> <%= _.capitalize(lang.login) %>
 						</div>
 						<div class="col-sm-9">
 							<%= user.get('login')%>
