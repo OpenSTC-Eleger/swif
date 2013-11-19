@@ -66,6 +66,7 @@ requirejs.config({
 		modalTaskDoneView           : 'app-interventions/js/views/modals/interventions/ModalTaskDoneView',
 		
 		tasksListView               : 'app-interventions/js/views/lists/TasksListView',
+		itemTaskDayListView         : 'app-interventions/js/views/items/ItemTaskDayListView',
 	}
 
 });

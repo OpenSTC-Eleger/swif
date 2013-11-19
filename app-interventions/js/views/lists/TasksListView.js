@@ -9,12 +9,12 @@ define([
 	'genericListView',
 	'paginationView',
 	'advancedSelectBoxView',
-	/*
+	
 	'itemTaskDayListView',
-	'modalAddTaskView'*/
+	/*'modalAddTaskView'*/
 	'moment',
 
-], function(app, AppHelpers, TasksCollection, TaskModel, OfficersCollection, GenericListView, PaginationView, AdvancedSelectBoxView/*,ItemTaskDayListView, ModalAddTaskView*/,moment){
+], function(app, AppHelpers, TasksCollection, TaskModel, OfficersCollection, GenericListView, PaginationView, AdvancedSelectBoxView,ItemTaskDayListView/*, ModalAddTaskView*/,moment){
 
 	'use strict';
 
