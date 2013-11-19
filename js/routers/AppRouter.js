@@ -8,9 +8,10 @@ define([
     'claimersListView',
     'teamsListView',
     'servicesListView',
-    'equipmentsListView'
+    'equipmentsListView',
+    'claimersTypesListView'
 
-], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView, ClaimersListView, TeamsListView, ServicesListView, EquipmentsListView){
+], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView, ClaimersListView, TeamsListView, ServicesListView, EquipmentsListView, ClaimersTypesListView){
 
 	'use strict';
 
@@ -261,14 +262,8 @@ define([
 		/** Claimer Type List
 		*/
 		claimerTypes: function(search, sort, page){
-
-			var params = {};
-
-			if(!_.isNull(search)){ params.search = search; }
-			if(!_.isNull(sort))  { params.sort = sort; }
-			if(!_.isNull(page))  { params.page = page; }
-
-			app.views.claimersTypesListView = new app.Views.ClaimersTypesListView(params);
+            var params = this.setContext({search: search, sort : sort, page : page});
+			app.views.claimersTypesListView = new ClaimersTypesListView(params);
 		},
 
 
