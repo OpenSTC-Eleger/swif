@@ -56,12 +56,12 @@
 				<% if(task.actions.indexOf("normal_mode_unfinished") > -1){%>
 				<li>
 					<a href="#" class="taskNotDone" data-taskid="<%= task.id %>">
-						<i class="fa fa-remove fa-fw"></i>&nbsp;<%= _.capitalize(app.lang.notDone) %>
+						<i class="fa fa-times fa-fw"></i>&nbsp;<%= _.capitalize(lang.notDone) %>
 					</a>
 				</li>
 				<li>
 					<a href="#" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonTaskDayTimeSpent">
-						<i class="fa fa-clock-o fa-fw"></i>&nbsp;<%= _.capitalize(app.lang.notFinished) %>
+						<i class="fa fa-clock-o fa-fw"></i>&nbsp;<%= _.capitalize(lang.notFinished) %>
 					</a>
 
 				</li>

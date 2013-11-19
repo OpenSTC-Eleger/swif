@@ -3,13 +3,15 @@ define([
 	'appHelpers',
 	'taskModel',
 
-	/*
 	'modalTaskDayDoneView',
-	'modalAddTaskView'*/
+	'modalAddTaskView',
+
 	'moment',
+	'moment-timezone',
+	'moment-timezone-data',
 	
 	
-], function(app, AppHelpers, TaskModel/*,ModalTaskDayDoneView, ModalAddTaskView*/, moment){
+], function(app, AppHelpers, TaskModel, ModalTaskDayDoneView, ModalAddTaskView, moment){
 
 	'use strict';
 
