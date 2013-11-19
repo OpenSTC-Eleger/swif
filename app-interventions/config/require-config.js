@@ -45,7 +45,7 @@ requirejs.config({
 		modalAbsentTypeView    		: 'app-interventions/js/views/modals/ModalAbsentTypeView',
 
 		interventionsListView       : 'app-interventions/js/views/lists/InterventionsListView',
-		
+		itemInterventionView        : 'app-interventions/js/views/items/ItemInterventionView',
 
 	}
 

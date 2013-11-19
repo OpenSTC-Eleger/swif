@@ -1,26 +1,26 @@
 <td><%= intervention.id %></td>
 <td>
 	<a class="accordion-object" href="#collapse_<%= intervention.id %>" data-toggle="popover" data-content="<%= intervention.getDescription() %>" data-delay="160" data-original-title="<%= _.capitalize(lang.description) %>">
-		<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(_(intervention.getName()).escapeHTML()) %>
+		<i class="fa fa-tumb_tack">&nbsp;&nbsp;</i><%= _.capitalize(_(intervention.getName()).escapeHTML()) %>
 	</a>
 	<!-- Interventions action -->
 	<p class="row-actions invisible">
 		<!--<a href="#interventions/<%= intervention.getId() %>" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>">-->
 		<a href="#" class="modalSaveInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>">
-			<i class="icon-pencil icon-large"></i>
+			<i class="fa fa-pencil fa-lg"></i>
 		</a>&nbsp;
 
 		<a href="#" class="printInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="inter">
-			<i class="icon-print icon-large" data-action="inter">&nbsp;</i>
+			<i class="fa fa-print fa-lg" data-action="inter">&nbsp;</i>
 		</a>
 		<% if(intervention.hasActions("cancel")) { %>
-			 &nbsp;<a href="#" class="buttonCancelInter" data-toggle="modal"><i class="icon-ban-circle icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
+			 &nbsp;<a href="#" class="buttonCancelInter" data-toggle="modal"><i class="fa fa-ban fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
 		<% } %>
 	</p>
 </td>
 <td>
 <% if(intervention.onEquipment()){ %>
-	<i class="icon-wrench fa-fw"></i>&nbsp;<%= intervention.getEquipment() %> <small class="text-muted">(<%= intervention.getSite() %>)</small>
+	<i class="fa fa-wrench fa-fw"></i>&nbsp;<%= intervention.getEquipment() %> <small class="text-muted">(<%= intervention.getSite() %>)</small>
 <% }else if(intervention.getSite()){ %>
 	<i class="fa fa-map-marker fa-fw"></i>&nbsp;<%= intervention.getSite() %>
 <% }%>
@@ -33,13 +33,13 @@
 
 <!-- Check the state of the intervention -->
 <td>
-	<% if(intervention.getState() != app.Models.Intervention.status.pending.key && intervention.getState() != app.Models.Intervention.status.closed.key){ %>
-		<span class="label label-<%= app.Models.Intervention.status[intervention.getState()].color %>"  data-toggle="tooltip" data-original-title="<%= intervention.getTooltip() %>">
-			<%= app.Models.Intervention.status[intervention.getState()].translation %>
+	<% if(intervention.getState() != interventionsState.pending.key && intervention.getState() != interventionsState.closed.key){ %>
+		<span class="label label-<%= interventionsState[intervention.getState()].color %>"  data-toggle="tooltip" data-original-title="<%= intervention.getTooltip() %>">
+			<%= interventionsState[intervention.getState()].translation %>
 		</span>
 
 	<!-- state - Pending -->
-	<% } else if(intervention.getState() == app.Models.Intervention.status.pending.key){ %>
+	<% } else if(intervention.getState() == interventionsState.pending.key){ %>
 		<div class="progress" data-toggle="tooltip" data-title="<%= intervention.getTooltip() %>">
 			<div class="progress-bar progress-bar-default" role="progressbar" style="width: <%= intervention.getProgressRate() %>%">
 				<p class="progress-value"><%= _(intervention.getProgressRate()).toNumber() %>%</p>
@@ -47,7 +47,7 @@
 		</div>
 
 	<!-- state - Closed -->
-	<% } else if(intervention.getState() == app.Models.Intervention.status.closed.key){ 
+	<% } else if(intervention.getState() == interventionsState.closed.key){ 
 		if(intervention.getOverPourcent() > 100){ %>
 			<div class="progress" data-toggle="tooltip" data-title="<%= intervention.getTooltip() %>">
 				<div class="progress-bar progress-bar-overrun" role="progressbar" style="width: 100%">
