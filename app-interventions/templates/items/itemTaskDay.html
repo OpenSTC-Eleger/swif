@@ -1,7 +1,7 @@
 <!-- Task name -->
-<td class="<%= (task.state == app.Models.Task.status.done.key ? 'isCheck' : '') %>">
+<td class="<%= (task.state == tasksStatus.done.key ? 'isCheck' : '') %>">
 	<!-- Check if the task is Orphan -->
-	<%= (task.project_id != false ? task.project_id[1] : '<i class="icon-asterisk"></i> '+task.name)  %>
+	<%= (task.project_id != false ? task.project_id[1] : '<i class="fa fa-asterisk"></i> '+task.name)  %>
 </td>
 
 <!-- Task Name -->
@@ -19,22 +19,22 @@
 <% } %>
 </td>
 
-<td><%= app.Helpers.Main.decimalNumberToTime(task.planned_hours, 'human') %></td>
-<td><%=(task.state != app.Models.Task.status.draft.key && task.state != app.Models.Task.status.absent.key) ? app.Helpers.Main.decimalNumberToTime(task.remaining_hours, 'human') : '' %></td>
+<td><%= AppHelpers.decimalNumberToTime(task.planned_hours, 'human') %></td>
+<td><%=(task.state != tasksStatus.draft.key && task.state != tasksStatus.absent.key) ? AppHelpers.decimalNumberToTime(task.remaining_hours, 'human') : '' %></td>
 
 <!-- Task State -->
 <td>
 	<!-- To Schedule / Cancelled / Schedule / Absent -->
-	<% if(task.state != app.Models.Task.status.done.key) { %>
-		<span class="label label-<%= app.Models.Task.status[task.state].color %>"><%= app.Models.Task.status[task.state].translation %></span>
+	<% if(task.state != tasksStatus.done.key) { %>
+		<span class="label label-<%= tasksStatus[task.state].color %>"><%= tasksStatus[task.state].translation %></span>
 
 	<!-- Finish -->
 	<% } else { 
 							
 		if(_(task.effective_hours).toNumber(2) <= _(task.planned_hours).toNumber(2)){ %>
-			<span class="label label-<%= app.Models.Task.status.done.color %>"><%= app.Models.Task.status.done.translation %></span>
+			<span class="label label-<%= tasksStatus.done.color %>"><%= tasksStatus.done.translation %></span>
 		<% } else  { %>
-			<span class="label label-overrun"><%= app.Models.Task.status.done.translation %></span>
+			<span class="label label-overrun"><%= tasksStatus.done.translation %></span>
 		<% } 
 	} %>
 </td>
@@ -49,19 +49,19 @@
 		<%// if(displayFilter == true || task.team_id == false){ %>
 	
 		<div class="btn-group btn-group-sm">
-			<button class="btn btn-success buttonTaskDayDone" data-toggle="modal" data-taskid="<%= task.id %>"><i class="icon-ok fa-fw"></i></button>
+			<button class="btn btn-success buttonTaskDayDone" data-toggle="modal" data-taskid="<%= task.id %>"><i class="fa fa-check fa-fw"></i></button>
 			<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 
 			<ul class="dropdown-menu pull-right text-left" role="menu">
 				<% if(task.actions.indexOf("normal_mode_unfinished") > -1){%>
 				<li>
 					<a href="#" class="taskNotDone" data-taskid="<%= task.id %>">
-						<i class="icon-remove fa-fw"></i>&nbsp;<%= _.capitalize(app.lang.notDone) %>
+						<i class="fa fa-remove fa-fw"></i>&nbsp;<%= _.capitalize(app.lang.notDone) %>
 					</a>
 				</li>
 				<li>
 					<a href="#" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonTaskDayTimeSpent">
-						<i class="icon-time fa-fw"></i>&nbsp;<%= _.capitalize(app.lang.notFinished) %>
+						<i class="fa fa-clock-o fa-fw"></i>&nbsp;<%= _.capitalize(app.lang.notFinished) %>
 					</a>
 
 				</li>
