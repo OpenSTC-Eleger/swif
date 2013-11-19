@@ -113,8 +113,11 @@ requirejs.config({
 		itemOfficerView         : 'js/views/items/ItemOfficerView',
 		modalServiceView        : 'js/views/modals/ModalServiceView',
 		modalOfficerView        : 'js/views/modals/ModalOfficerView',
-        modalContactEdit: 'js/views/modals/ModalContactEdit',
-        claimerContactView: 'js/views/items/ClaimerContactView'
+		modalContactEdit        : 'js/views/modals/ModalContactEdit',
+		claimerContactView      : 'js/views/items/ClaimerContactView',
+		claimersTypesListView   : 'js/views/lists/ClaimersTypesListView',
+		itemClaimerTypeView     : 'js/views/items/ItemClaimerTypeView',
+		modalClaimerTypeView    : 'js/views/modals/ModalClaimerTypeView'
 
     },
 
