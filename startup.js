@@ -15,6 +15,7 @@ requirejs.config({
 		backbone              : 'js/libs/backbone-1.1.0',
 		
 		jqueryui              : 'js/libs/jquery-ui-1.10.3.custom.min',
+		datatables	  		  :	'js/libs/jquery-dataTables-1.9.4-min',
 		moment                : 'js/libs/moment-2.4.0',
 		'moment-timezone'     : 'js/libs/moment-timezone-0.0.1',
 		'moment-timezone-data': 'i18n/moment-timezone-data',
@@ -145,7 +146,7 @@ requirejs.config({
 			exports: '_'
 		},
 		'backbone': {
-			deps   : ['jquery', 'underscore', 'underscore.string'],
+			deps   : ['jqueryui', 'underscore', 'underscore.string'],
 			exports: 'Backbone',
 			init : function(JQuery, _, UnderscoreString){
 				_.mixin(UnderscoreString);

@@ -22,14 +22,14 @@
 		</button>
 		
 		<!-- Switch button - To Scheduled / Scheduled -->
-		<% if(intervention.tasks.length != 0 && intervention.state != app.Models.Intervention.status.template.key) { %>
+		<% if(intervention.tasks.length != 0 && intervention.state != InterventionModel.status.template.key) { %>
 
 			<div class="calendarSwitch pull-right make-switch" data-label-icon="fa fa-calendar" data-toggle="tooltip" data-original-title="<%= lang.intervention + " " + lang.planningFenced %>"
 				id="switch-<%= intervention.id %>" data-text
 				data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>">
 
 				<input type="checkbox"
-					<% if(intervention.state == app.Models.Intervention.status.scheduled.key){ %>
+					<% if(intervention.state == InterventionModel.status.scheduled.key){ %>
 						checked
 					<% } %>
 

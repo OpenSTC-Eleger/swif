@@ -16,7 +16,7 @@
 			<ul id="filterStateInterventionList" class="dropdown-menu" aria-labelledby="filterStateIntervention">
 
 				<% _.each(interventionsState, function (state, i) {
-					if(i == app.Models.Intervention.status.scheduled.key || i == app.Models.Intervention.status.open.key || i == app.Models.Intervention.status.pending.key || i == app.Models.Intervention.status.template.key){
+					if(i == InterventionModel.status.scheduled.key || i == InterventionModel.status.open.key || i == InterventionModel.status.pending.key || i == InterventionModel.status.template.key){
 				%>
 					<li>
 						<a tabindex="-1" href="#<%= state.key %>">

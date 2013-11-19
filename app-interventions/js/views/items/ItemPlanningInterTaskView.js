@@ -1,15 +1,17 @@
 define([
 	'app',
 	'appHelpers',
+	'moment-timezone',
+	'moment-timezone-data',
 	
 	'taskModel',
-	'interventionModel',
+	'userModel',
+	'interventionModel',	
 	
-	'itemPlanningInterTaskView',
 	'modalDeleteView',
-	'modalCancelTaskView',
+	//'modalCancelTaskView',
 
-], function(app, AppHelpers, TaskModel, InterventionModel, ItemPlanningInterTaskView,  ModalDeleteView, ModalCancelTaskView){
+], function(app, AppHelpers, moment , MomentTimezoneData, TaskModel, UserModel, InterventionModel, ModalDeleteView/*, ModalCancelTaskView*/){
 
 	'use strict';
 
@@ -80,9 +82,13 @@ define([
 	
 				var model = self.model.toJSON()
 				var template = _.template(templateData, {
-					lang                   : app.lang,
-					interventionsState     : InterventionModel.status,
+					lang                   	: app.lang,
+					interventionsState     	: InterventionModel.status,
 					task					: model,
+					InterventionModel		: InterventionModel,
+					TaskModel				: TaskModel,
+					UserModel				: app.models.user,
+					AppHelpers				: AppHelpers
 				});
 	
 				$(self.el).html(template);
@@ -120,7 +126,7 @@ define([
 				
 				//Add draggable task if not planned yet
 				if( !$(self.el).hasClass('disabled') ) {
-					el = $(self.el);
+					var el = $(self.el);
 		
 					var eventObject = {
 						state: model.state,

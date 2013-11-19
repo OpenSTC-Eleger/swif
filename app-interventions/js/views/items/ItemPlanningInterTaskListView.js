@@ -2,11 +2,13 @@ define([
 	'app',
 	'appHelpers',
 	
+	'tasksCollection',
+	
 	'interventionModel',
 	'itemPlanningInterTaskView',
-	'modalInterventionAddTaskView'
+	//'modalInterventionAddTaskView'
 
-], function(app, AppHelpers, InterventionModel, ItemPlanningInterTaskView,  ModalInterventionAddTaskView){
+], function(app, AppHelpers, TasksCollection, InterventionModel, ItemPlanningInterTaskView/*,  ModalInterventionAddTaskView*/){
 
 	'use strict';
 
@@ -53,6 +55,7 @@ define([
 				var template = _.template(templateData, {
 					lang                   	: app.lang,
 					intervention			: self.model.toJSON(),
+					InterventionModel		: InterventionModel
 				});
 	
 				$(self.el).html(template);
@@ -87,7 +90,7 @@ define([
 		fetchData: function () {
 			var self = this;
 			var deferred = $.Deferred();
-			self.tasksCollection = new app.Collections.Tasks();
+			self.tasksCollection = new TasksCollection();
 			if( self.model.get('tasks')!= false ) {
 				self.tasksCollection.fetch({silent: true,data: {filters: {0: {'field': 'id', 'operator': 'in', 'value': self.model.get('tasks')}}}}).done(function(){				
 					deferred.resolve();

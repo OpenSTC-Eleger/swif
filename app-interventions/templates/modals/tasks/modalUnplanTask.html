@@ -19,7 +19,7 @@
 						<em class="text-muted"><i class="fa fa-thumb-tack"></i>&nbsp;<%= task.getIntervention() %></em>
 					<% } %>
 
-					<span class="label label-<%= app.Models.Task.status[task.getState()].color %> pull-right"><%= app.Models.Task.status[task.getState()].translation %></span>
+					<span class="label label-<%= TaskModel.status[task.getState()].color %> pull-right"><%= TaskModel.status[task.getState()].translation %></span>
 				</p>
 
 				<!-- Display the affected Team or Use -->
@@ -36,7 +36,7 @@
 
 		<div class="modal-footer">
 		    <button type="button" id="btnRemoveTask" class="btn btn-danger" data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.unplanInProgress %>"
-				<%= (task.getState() == app.Models.Task.status.done.key || task.getState() == app.Models.Task.status.cancelled.key ? 'disabled' : '') %>
+				<%= (task.getState() == TaskModel.status.done.key || task.getState() == TaskModel.status.cancelled.key ? 'disabled' : '') %>
 		    >
 		    	<%= _.capitalize(lang.actions.removeOfTheSchedule) %>
 		    </button>&nbsp;&nbsp;

@@ -1,7 +1,8 @@
 define([
-	'app',	
+	'app',
+	'datatables',
 	'taskModel',	
-], function(app, TaskModel){
+], function(app, jqueryDataTables, TaskModel){
 
 	'use strict';
 
@@ -33,6 +34,7 @@ define([
 			$.get(app.moduleUrl+"/templates/"  + this.templateHTML + ".html", function(templateData){
 				var template = _.template(templateData,{
 					lang: app.lang,
+					logo: app.config.logo_path
 				});
 				$(self.el).html(template);
 	
@@ -240,8 +242,11 @@ define([
 		var indexOfy = days.indexOf(y);
 		return ((indexOfx < indexOfy) ? -1 : ((indexOfx > indexOfy) ? 1 : 0));
 	};	
+
 	
 	return printingCalendarView;
 
 });
+
+
 

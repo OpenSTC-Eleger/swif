@@ -9,12 +9,14 @@ define([
 
 	'printingCalendarView',
 	'modalAbsentTaskView',
-	'modalUnplanTaskView'
+	'modalUnplanTaskView',
+	
+	'fullcalendar'
 
 ], function(app, 
 				TasksCollection, 
 				UserModel, TaskModel, TaskSchedulesModel,
-				PrintingCalendarView, ModalAbsentTaskView, ModalUnplanTaskView ){
+				PrintingCalendarView, ModalAbsentTaskView, ModalUnplanTaskView, Fullcalendar ){
 
 	'use strict';
 
@@ -167,7 +169,7 @@ define([
 			var link = $(e.target);
 			var linkId = link.attr('id')	
 			
-			this.teamMode = _.str.include( _(linkId).strLeft('_').toLowerCase(),"officer" )?false:true;			
+			this.teamMode = _.include( _(linkId).strLeft('_').toLowerCase(),"officer" )?false:true;			
 			var calendarName = _(link.attr('href')).strRightBack('/')
 	
 			if(this.teamMode) {
@@ -281,7 +283,7 @@ define([
 	    			             ]
 	    			
 	    			if(self.teamMode){
-	        			var users = UserModel.getOfficerIdsByTeamId(self.model.id)
+	        			var users = app.models.user.getOfficerIdsByTeamId(self.model.id)
 	        			if( users.length>0 )
 	        				domain.push(		'|',
 	        								   { 'field' : 'team_id.id', 'operator' : '=', 'value' : self.model.id },
@@ -291,7 +293,7 @@ define([
 	        				domain.push({ 'field' : 'user_id.id', 'operator' : '=', 'value' : self.model.id })
 	    			}
 	    			else{
-	        			var teams = UserModel.getTeamIdsByOfficerId(self.model.id)
+	        			var teams = app.models.user.getTeamIdsByOfficerId(self.model.id)
 	        			if( teams.length>0 )
 	        				domain.push(		'|',
 	        								   { 'field' : 'user_id.id', 'operator' : '=', 'value' : self.model.id },
@@ -498,8 +500,8 @@ define([
 	    		}    		
 	    		
 	    		//Apply user's 'timezone on dates
-	    		var dtStart = task.date_start!=false ? moment( task.date_start ).tz(UserModel.getContext().tz) : null
-	    		var dtEnd = task.date_end!=false ? moment( task.date_end ).tz(UserModel.getContext().tz) : null		    		
+	    		var dtStart = task.date_start!=false ? moment( task.date_start ).tz(app.models.user.getContext().tz) : null
+	    		var dtEnd = task.date_end!=false ? moment( task.date_end ).tz(app.models.user.getContext().tz) : null		    		
 	    		
 	
 	    		//prepare event for calendar
@@ -530,7 +532,7 @@ define([
 	    	});
 	    	
 	    	//order events list by date and return
-			return eventsSortedArray = _.sortBy(self.events, function(event){ 
+			return _.sortBy(self.events, function(event){ 
 				return [event.start, event.end]; 
 			});
 	    },
@@ -573,7 +575,7 @@ define([
 			 
 				_.each($('#listAgents li'), function(a){
 	
-					if(!_.str.include($(a).data('name'), search)){
+					if(!_.include($(a).data('name'), search)){
 						$(a).fadeOut('fast').addClass('thide');
 					}
 					else{
@@ -585,7 +587,7 @@ define([
 	
 				_.each($('#listTeams li'), function(a){
 	
-					if(!_.str.include($(a).data('name'), search)){
+					if(!_.include($(a).data('name'), search)){
 						$(a).fadeOut('fast').addClass('thide');
 					}
 					else{

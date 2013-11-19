@@ -88,8 +88,8 @@ define([
 	
 				
 				var options = self.options
-				self.collections.officers = UserModel.getOfficers();
-				self.collections.teams = UserModel.getTeams();
+				self.collections.officers = app.models.user.getOfficers();
+				self.collections.teams = app.models.user.getTeams();
 				options.collections = self.collections;
 	
 				// Set variables template //
@@ -180,8 +180,8 @@ define([
 			var self = this;
 			//Fetch officers, teams, and interventions collections
 			return $.when(
-				UserModel.queryManagableOfficers(), 
-				UserModel.queryManagableTeams(),
+				app.models.user.queryManagableOfficers(), 
+				app.models.user.queryManagableTeams(),
 				this.collections.interventions.fetch(this.fetchParams)
 			)
 			.fail(function(e){

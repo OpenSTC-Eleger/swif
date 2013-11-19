@@ -8,9 +8,9 @@ define([
 	'paginationView',
 	'itemPlanningInterView',
 	'itemPlanningInterTaskListView',
-	'modalInterventionView'
+	//'modalInterventionView'
 
-], function(app, TaskModel, InterventionModel, GenericListView, PaginationView , ItemPlanningInterView , ItemPlanningInterTaskListView, ModalInterventionView ){
+], function(app, TaskModel, InterventionModel, GenericListView, PaginationView , ItemPlanningInterView , ItemPlanningInterTaskListView/*, ModalInterventionView */ ){
 
 	'use strict';
 
@@ -87,9 +87,10 @@ define([
 			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
 				// Set variables template //
 				var template = _.template(templateData, {
-					lang: app.lang,
-					interventionsState: InterventionModel.status,
-					interventions: self.collections.interventions.toJSON(),		
+					lang				: app.lang,
+					interventionsState	: InterventionModel.status,
+					interventions		: self.collections.interventions.toJSON(),		
+					InterventionModel	: InterventionModel
 				});
 				
 				$(self.el).html(template);

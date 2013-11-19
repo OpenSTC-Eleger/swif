@@ -1,9 +1,9 @@
 	<% var taskClass =''
-		if( task.state == app.Models.Task.status.draft.key ) taskClass = 'icon-chevron-right';
-		else if( task.state == app.Models.Task.status.open.key ) taskClass = 'icon-time';
+		if( task.state == TaskModel.status.draft.key ) taskClass = 'icon-chevron-right';
+		else if( task.state == TaskModel.status.open.key ) taskClass = 'icon-time';
 		else taskClass ='';
 
-		var dateStart = moment(task.date_start).tz(app.models.user.getContext().tz);
+		var dateStart = moment(task.date_start).tz(UserModel.getContext().tz);
 		dateStart.add('minutes',-dateStart.zone());
 	%>
 
@@ -24,4 +24,4 @@
 				</a>
 		<%}%>
 	</small>
-	<small class="badge badge-<%= app.Models.Task.status[task.state].color %> pull-right"><%= app.Helpers.Main.decimalNumberToTime(task.planned_hours, 'human') %></small>
+	<small class="badge badge-<%= TaskModel.status[task.state].color %> pull-right"><%= AppHelpers.decimalNumberToTime(task.planned_hours, 'human') %></small>

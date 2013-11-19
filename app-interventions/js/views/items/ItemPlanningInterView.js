@@ -4,11 +4,11 @@ define([
 	
 	'interventionModel',
 	'modalAbsentTypeView',
-	'modalInterventionView',
-	'modalCancelInterventionView'
+	//'modalInterventionView',
+	//'modalCancelInterventionView'
 
 
-], function(app, AppHelpers, InterventionModel, ModalAbsentTypeView, ModalInterventionView, ModalCancelInterventionView){
+], function(app, AppHelpers, InterventionModel, ModalAbsentTypeView/*, ModalInterventionView, ModalCancelInterventionView*/){
 
 	'use strict';
 
