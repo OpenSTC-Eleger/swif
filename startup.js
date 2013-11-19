@@ -171,7 +171,7 @@ requirejs.config({
 			exports: 'bsSwitch'	
 		},
 		'select2-lang': {
-			deps   : [ 'jquery', 'select2'],
+			deps   : ['jquery', 'select2'],
 			exports: 'select2'
 		},
 		'fullcalendar': {

@@ -17,7 +17,6 @@ define('main', [
 		*/
 		init: function(lang) {
 
-
 		// Retrieve App properties, configuration and language //
 		$.when(app.loadStaticFile('properties.json'),
 			   app.loadStaticFile('config/configuration.json'),
@@ -32,6 +31,7 @@ define('main', [
 				app.routes      = routes_data[0];
 				app.lang        = lang_data[0];
 				app.config.lang = lang;
+			
 
 				moment.lang(app.config.lang);
 

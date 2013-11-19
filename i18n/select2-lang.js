@@ -2,10 +2,8 @@
 * Select2 lang
 */
 define('select2-lang', [
-	'app'
-], function(app) {
+], function() {
 
-	
-	//$.getScript('i18n/'+app.config.lang+'/select2-lang.js');
+	$.getScript('i18n/'+window.navigator.language+'/select2-lang.js');
 
 });
