@@ -1,46 +1,58 @@
-/******************************************
-* About View
-*/
-app.Views.AboutView = Backbone.View.extend({
+define([
+	'app'
 
-	el           : '#rowContainer',
+], function(app){
 
-	templateHTML : 'about',
+	'use strict';
 
-	
 
-	/** View Initialization
+	/******************************************
+	* About View
 	*/
-	initialize : function(user) {
-		//this.render();
-   },
+	var AboutView = Backbone.View.extend({
 
+		el           : '#rowContainer',
 
-
-	/** Display the view
-	*/
-	render : function() {
-		var self = this;
-
-		// Change the page title //
-		app.router.setPageTitle(app.lang.viewsTitles.about);
+		templateHTML : 'about',
 
 		
-		// Retrieve the Login template // 
-		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-		 
-			var template = _.template(templateData, {
-				lang: app.lang, 
-				version: app.versionOpenSTM
+
+		/** View Initialization
+		*/
+		initialize : function(user) {
+			app.router.render(this);
+	   },
+
+
+
+		/** Display the view
+		*/
+		render : function() {
+			var self = this;
+
+			// Change the page title //
+			app.router.setPageTitle(app.lang.viewsTitles.about);
+
+			
+			// Retrieve the Login template // 
+			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			 
+				var template = _.template(templateData, {
+					lang   : app.lang, 
+					version: app.properties.version
+				});
+
+				$(self.el).html(template);
 			});
 
-			$(self.el).html(template);
-		});
+			$(this.el).hide().fadeIn('slow');
 
-		$(this.el).hide().fadeIn('slow');
+			return this;
+		}
 
-		return this;
-	}
+	 
+	});
 
- 
+return AboutView;
+
 });

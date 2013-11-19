@@ -9,9 +9,10 @@ define([
     'teamsListView',
     'servicesListView',
     'equipmentsListView',
-    'claimersTypesListView'
+    'claimersTypesListView',
+    'aboutView'
 
-], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView, ClaimersListView, TeamsListView, ServicesListView, EquipmentsListView, ClaimersTypesListView){
+], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView, ClaimersListView, TeamsListView, ServicesListView, EquipmentsListView, ClaimersTypesListView, AboutView){
 
 	'use strict';
 
@@ -187,8 +188,7 @@ define([
 		/** About the App
 		*/
 		about: function(){
-			app.views.aboutView = new app.Views.AboutView();
-			this.render(app.views.aboutView);
+			app.views.aboutView = new AboutView();
 		},
 
 
