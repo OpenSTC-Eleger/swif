@@ -4,13 +4,13 @@ define([
 	'genericModalView',
 
 ], function(app, GenericModalView){
-
+	'use strict';
 	
 	/******************************************
 	 * Intervention Details View
 	 */
 	var ModalCancelInterventionView = GenericModalView.extend({
-	
+
 		//el : '#rowContainer',
 		
 		templateHTML: 'modals/interventions/modalCancelIntervention',

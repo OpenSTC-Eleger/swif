@@ -5,14 +5,14 @@ define([
 	'interventionModel',
 	'taskModel',
 	'requestModel',
-	'jqueryui',
 	
-	/*'modalCancelInterventionView*/
+	'modalDeleteView',
+	'modalCancelTaskView',
 	'moment',
 
-], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel/*, ModalCancelInterventionView*/,moment){
+], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel, ModalDeleteView, ModalCancelTaskView, moment){
+	'use strict';
 
-	
 	
 	/******************************************
 	* Row Intervention Task View
@@ -229,7 +229,7 @@ define([
 		displayModalDeleteTask: function(e){
 			e.preventDefault();
 			var name = this.model.toJSON().name;
-			new app.Views.ModalDeleteView({el: '#modalDeleteTask', model: this.model, modalTitle: app.lang.viewsTitles.deleteTask, modalConfirm: app.lang.warningMessages.confirmDeleteTask});
+			new ModalDeleteView({el: '#modalDeleteTask', model: this.model, modalTitle: app.lang.viewsTitles.deleteTask, modalConfirm: app.lang.warningMessages.confirmDeleteTask});
 		},
 	
 		displayModalTaskDone: function(e){
@@ -250,7 +250,7 @@ define([
 		
 		displayModalCancelTask: function(e) {
 			e.preventDefault();
-			new app.Views.ModalCancelTaskView({el: '#modalCancelTask', model: this.model, inter:this.inter});
+			new ModalCancelTaskView({el: '#modalCancelTask', model: this.model, inter:this.inter});
 		},
 	
 	});
