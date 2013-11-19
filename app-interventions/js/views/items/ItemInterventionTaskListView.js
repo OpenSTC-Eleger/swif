@@ -4,9 +4,9 @@ define([
 
 
 	'itemInterventionTaskView',
-	/*'modalInterventionAddTaskView',*/
+	'modalInterventionAddTaskView'
 
-], function(app, AppHelpers, ItemInterventionTaskView/*, ModalInterventionAddTaskView*/){
+], function(app, AppHelpers, ItemInterventionTaskView, ModalInterventionAddTaskView){
 
 	'use strict';
 	
@@ -128,7 +128,7 @@ define([
 		displayModalAddTask: function(e){
 			e.preventDefault();
 			var self = this;
-			new app.Views.ModalInterventionAddTaskView({el: '#modalAddTask', inter: self.options.inter, tasks: self.options.tasks});
+			new ModalInterventionAddTaskView({el: '#modalAddTask', inter: self.options.inter, tasks: self.options.tasks});
 			
 		},
 	

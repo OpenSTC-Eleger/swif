@@ -50,6 +50,7 @@ requirejs.config({
 		itemInterventionTaskView    : 'app-interventions/js/views/items/ItemInterventionTaskView',
 		modalInterventionView       : 'app-interventions/js/views/modals/interventions/ModalInterventionView',
 		modalCancelInterventionView : 'app-interventions/js/views/modals/interventions/ModalCancelInterventionView',
+		modalInterventionAddTaskView: 'app-interventions/js/views/modals/interventions/ModalInterventionAddTaskView',
 	}
 
 });
