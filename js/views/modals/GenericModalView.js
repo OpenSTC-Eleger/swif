@@ -43,7 +43,8 @@ define([
 		shown: function(){
 
 			// Set the focus to the first input of the form if elFocus is undefined //
-			if(_.isUndefined(this.options)){
+			if(_.isUndefined(this.options.elFocus)){
+				console.log('preumssss');
 				this.modal.find('input, textarea').first().focus();
 			}
 			else{

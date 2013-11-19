@@ -67,7 +67,7 @@ requirejs.config({
 		placesCollection           : 'js/collections/PlacesCollection',
 		placeTypesCollection       : 'js/collections/PlaceTypesCollection',
 		stcGroupsCollection        : 'js/collections/STCGroupsCollection',
-		teamsCollection            : 'js/models/TeamsCollection',
+		teamsCollection            : 'js/collections/TeamsCollection',
 		officersCollection         : 'js/collections/OfficersCollection',
 
 		/* #############
@@ -98,15 +98,25 @@ requirejs.config({
 		placesListView          : 'js/views/lists/PlacesListView',
 		itemPlaceView           : 'js/views/items/ItemPlaceView',
 		modalPlaceView          : 'js/views/modals/ModalPlaceView',
+		claimersListView        : 'js/views/lists/ClaimersListView',
+		claimerView             : 'js/views/items/ClaimerView',
+		claimerContactsListView : 'js/views/lists/ClaimerContactsListView',
+		modalClaimerEdit        : 'js/views/modals/ModalClaimerEdit',
+		teamsListView           : 'js/views/lists/TeamsListView',
+		itemTeamView            : 'js/views/items/ItemTeamView',
+		teamMembersAndServices  : 'js/views/others/TeamMembersAndServices',
+		modalTeamView           : 'js/views/modals/ModalTeamView',
 		modalDeleteView         : 'js/views/modals/ModalDeleteView',
-        claimersListView: 'js/views/lists/ClaimersListView',
-        claimerView: 'js/views/items/ClaimerView',
-        claimerContactsListView: 'js/views/lists/ClaimerContactsListView',
-        modalClaimerEdit: 'js/views/modals/ModalClaimerEdit',
+		servicesListView        : 'js/views/lists/ServicesListView',
+		officersListView        : 'js/views/lists/OfficersListView',
+		itemServiceView         : 'js/views/items/ItemServiceView',
+		itemOfficerView         : 'js/views/items/ItemOfficerView',
+		modalServiceView        : 'js/views/modals/ModalServiceView',
+		modalOfficerView        : 'js/views/modals/ModalOfficerView',
         modalContactEdit: 'js/views/modals/ModalContactEdit',
         claimerContactView: 'js/views/items/ClaimerContactView'
 
-	},
+    },
 
 	packages: [
 		{

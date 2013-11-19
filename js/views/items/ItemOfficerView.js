@@ -2,31 +2,30 @@ define([
 	'app',
 	'appHelpers',
 
-	'categoryRequestModel',
-	'modalCategoryRequestView',
+	'officerModel',
+	'modalOfficerView',
 	'modalDeleteView'
+	
+	], function(app, AppHelpers,OfficerModel, ModalOfficerView,ModalDeleteView){
 
-
-], function(app, AppHelpers, CategoryRequestModel, ModalCategoryRequestView, ModalDeleteView){
-
-	'use strict';
+		'use strict';
 
 	/******************************************
-	* Row Category Request View
+	* Row Officer View
 	*/
-	var itemCategoryRequestView = Backbone.View.extend({
+	var ItemOfficerView = Backbone.View.extend({
 	
 		tagName      : 'tr',
 	
 		className    : 'row-item',
 	
-		templateHTML : 'items/itemCategoryRequest',
+		templateHTML : 'items/itemOfficer',
 	
 	
 		// The DOM events //
 		events: {
-			'click'                  : 'modalUpdateCat',
-			'click a.modalDeleteCat' : 'modalDeleteCat'
+			'click a.modalUpdateOfficer' : 'modalUpdateOfficer',
+			'click a.modalDeleteOfficer' : 'modalDeleteOfficer'
 		},
 	
 	
@@ -51,7 +50,7 @@ define([
 	
 			this.render();
 			AppHelpers.highlight($(this.el));
-			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.catUpdateOk);
+			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.officerUpdateOk);
 		},
 	
 	
@@ -63,10 +62,9 @@ define([
 	
 			AppHelpers.highlight($(this.el)).done(function(){
 				self.remove();
-				app.views.categoriesRequestsListView.partialRender();
 			});
 	
-			app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.catDeleteOk);
+			app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.officerDeleteOk);
 			
 		},
 	
@@ -78,11 +76,11 @@ define([
 			var self = this;
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get("templates/" + this.templateHTML + ".html", function(templateData){
 	
 				var template = _.template(templateData, {
-					lang : app.lang,
-					cat  : self.model
+					lang    : app.lang,
+					officer : self.model
 				});
 	
 				$(self.el).html(template);
@@ -96,36 +94,35 @@ define([
 	
 	
 	
-		/** Display Modal form to add/sav a new Category
+		/** Display Modal form to add/sav a new officer
 		*/
-		modalUpdateCat: function(e){  
+		modalUpdateOfficer: function(e){  
 			e.preventDefault(); e.stopPropagation();
 	
-			app.views.modalCategoryRequestView = new ModalCategoryRequestView({
-				el      : '#modalSaveCat',
+			console.log(this.model.attributes);
+	
+			app.views.modalOfficerView = new ModalOfficerView({
+				el      : '#modalSaveOfficer',
 				model   : this.model,
-				elFocus : $(e.target).data('form-id')
 			});
 		},
 	
 	
 	
-		/** Modal to remove a Category
+		/** Modal to remove an officer
 		*/
-		modalDeleteCat: function(e){
+		modalDeleteOfficer: function(e){
 			e.preventDefault(); e.stopPropagation();
 	
 			app.views.modalDeleteView = new ModalDeleteView({
-				el           : '#modalDeleteCat',
+				el           : '#modalDeleteOfficer',
 				model        : this.model,
-				modalTitle   : app.lang.viewsTitles.deleteCategory,
-				modalConfirm : app.lang.warningMessages.confirmDeleteCategory
+				modalTitle   : app.lang.viewsTitles.deleteOfficer,
+				modalConfirm : app.lang.warningMessages.confirmDeleteOfficer
 			});
-		},
-	
+		}
 	
 	});
 	
-	return itemCategoryRequestView;
-
-});
+	return ItemOfficerView;
+})
