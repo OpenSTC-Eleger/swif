@@ -67,7 +67,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get("templates/lists/" + this.templateHTML + ".html", function(templateData){
 				var template = _.template(templateData, {
 					lang      : app.lang,
 					service   : self.model
