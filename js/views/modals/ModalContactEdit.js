@@ -6,7 +6,7 @@ define(['app', 'appHelpers', 'genericModalView', 'claimersContactsCollection', '
 
     return GenericModalView.extend({
 
-        templateHTML: 'modals/contact/contactEdit',
+        templateHTML: 'modals/contactEdit',
 
 
         events: function () {

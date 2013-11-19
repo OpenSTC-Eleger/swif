@@ -1,6 +1,6 @@
-define(['app', 'appHelpers', 'officersCollection', 'claimerContactModel', 'claimerContactView', 'modalClaimerEdit', 'modalDeleteView', 'modalContactEdit'
+define(['app', 'appHelpers', 'officerModel','officersCollection', 'claimerContactModel', 'claimerContactView', 'modalClaimerEdit', 'modalDeleteView', 'modalContactEdit'
 
-], function (app, AppHelpers, OfficersCollection, ClaimerContactModel, ClaimerContactView, ModalClaimerEdit, ModalDeleteView, ModalContactEdit) {
+], function (app, AppHelpers, OfficerModel, OfficersCollection, ClaimerContactModel, ClaimerContactView, ModalClaimerEdit, ModalDeleteView, ModalContactEdit) {
 
     'use strict';
 
@@ -10,7 +10,7 @@ define(['app', 'appHelpers', 'officersCollection', 'claimerContactModel', 'claim
 
         className: 'row-item row-nested-objects-collapse',
 
-        templateHTML: 'claimerContactsList',
+        templateHTML: 'lists/claimerContacts',
 
         events: {
             'click button.modalNewContact': 'showNewContactModal'
@@ -190,7 +190,7 @@ define(['app', 'appHelpers', 'officersCollection', 'claimerContactModel', 'claim
                 el: "#modalEditContact",
                 model: new_contact,
                 claimersContactsListView: self,
-                user: new app.Models.Officer()
+                user: new OfficerModel()
             }).render();
         }
     });

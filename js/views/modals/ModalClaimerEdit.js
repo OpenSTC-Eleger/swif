@@ -6,7 +6,7 @@ define(['app', 'appHelpers', 'claimerModel', 'claimersTypesCollection', 'placesC
 
     return GenericModalView.extend({
 
-        templateHTML : 'modals/claimer/claimerEdit',
+        templateHTML : 'modals/claimerEdit',
 
         events: function(){
             return _.defaults({

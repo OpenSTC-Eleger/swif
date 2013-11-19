@@ -11,7 +11,7 @@ define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListV
 
         el: '#rowContainer',
 
-        templateHTML: 'claimers',
+        templateHTML: 'lists/claimers',
 
         selectedClaimer: '',
         selectedContact: '',
@@ -51,9 +51,9 @@ define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListV
                 this.options.sort = this.collection.default_sort;
             }
             else {
-                this.options.sort = AppHelpers.Main.calculPageSort(this.options.sort);
+                this.options.sort = AppHelpers.calculPageSort(this.options.sort);
             }
-            this.options.page = AppHelpers.Main.calculPageOffset(this.options.page);
+            this.options.page = AppHelpers.calculPageOffset(this.options.page);
 
 
             // Create Fetch params //
@@ -66,7 +66,7 @@ define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListV
                 }
             };
             if (!_.isUndefined(this.options.search)) {
-                fetchParams.data.filters = AppHelpers.Main.calculSearch({search: this.options.search }, ClaimerModel.prototype.searchable_fields);
+                fetchParams.data.filters = AppHelpers.calculSearch({search: this.options.search }, ClaimerModel.prototype.searchable_fields);
             }
 
 
@@ -130,7 +130,7 @@ define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListV
         add: function (model) {
             var claimerView = new ClaimerView({ model: model });
             $('#claimersList').prepend(claimerView.render().el);
-            AppHelpers.Main.highlight($(claimerView.el));
+            AppHelpers.highlight($(claimerView.el));
 
             app.notify('', 'success', app.lang.infoMessages.information, model.getName() + ' : ' + app.lang.infoMessages.claimerCreateOK);
             this.partialRender();
