@@ -6,9 +6,11 @@ define([
 	'categoriesRequestsListView',
 	'categoriesTasksListView',
 	'absentTypesListView',
+	'planningView',
 	'interventionsListView',
+	
+], function(app, AppRouter, RequestsListView, CategoriesRequestsListView, CategoriesTasksListView, AbsentTypesListView, PlanningView, InterventionsListView){
 
-], function(app, AppRouter, RequestsListView, CategoriesRequestsListView, CategoriesTasksListView, AbsentTypesListView, InterventionsListView){
 
 	'use strict';
 
@@ -46,14 +48,9 @@ define([
 		*/
 		planning: function(officer, team, year, week){
 
+			var params = this.setContext({officer: officer, team : team, year : year, week : week});
 
-			var params = {};
-			if(!_.isNull(officer)){params.officer = officer}
-			if(!_.isNull(team)){params.team = team}
-			if(!_.isNull(year)){params.year = year}
-			if(!_.isNull(week)){params.week = week}
-
-			app.views.planning = new app.Views.PlanningView(params);	   
+			app.views.planning = new PlanningView(params);
 		},
 
 

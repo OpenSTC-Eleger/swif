@@ -10,13 +10,13 @@
 		<div class="dropdown col-xs-4 col-sm-8 col-md-4">
 
 			<a id="filterStateIntervention" class="dropdown-toggle filter-button pull-right" data-toggle="dropdown" href="#">
-		   		<i class="icon-filter icon-large"> <%= _.capitalize(lang.status) %></i>
+		   		<i class="fa fa-filter fa-lg"> <%= _.capitalize(lang.status) %></i>
 			</a>
 
 			<ul id="filterStateInterventionList" class="dropdown-menu" aria-labelledby="filterStateIntervention">
 
 				<% _.each(interventionsState, function (state, i) {
-					if(i == app.Models.Intervention.status.scheduled.key || i == app.Models.Intervention.status.open.key || i == app.Models.Intervention.status.pending.key || i == app.Models.Intervention.status.template.key){
+					if(i == InterventionModel.status.scheduled.key || i == InterventionModel.status.open.key || i == InterventionModel.status.pending.key || i == InterventionModel.status.template.key){
 				%>
 					<li>
 						<a tabindex="-1" href="#<%= state.key %>">
@@ -39,7 +39,7 @@
 	<% if( _.size(interventions) == 0 ) { %>
 		<!-- No interventions to display -->
 		<div class="alert alert-info noInter">
-			<i class="icon-info-sign icon-large"></i> &nbsp;<%= lang.infoMessages.noRequest %>
+			<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noRequest %>
 		</div>	
 	<% } else{%>
 
