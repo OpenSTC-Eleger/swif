@@ -6,11 +6,11 @@ define([
 	'taskModel',
 	'requestModel',
 	'modalInterventionView',
-	/*'modalCancelInterventionView'*/
+	'modalCancelInterventionView',
 	'moment',
 	'printElement',
 
-], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel, ModalInterventionView/*, ModalCancelInterventionView*/,moment){
+], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel, ModalInterventionView, ModalCancelInterventionView,moment){
 
 	
 	/******************************************
