@@ -172,7 +172,7 @@
     html.push('<base href="' + _getBaseHref() + '" />');
     html.push('</head><body style="' + opts.printBodyOptions.styleToAdd + '" class="' + opts.printBodyOptions.classNameToAdd + '">');
     html.push('<div class="' + $element.attr('class') + '">' + elementHtml + '</div>');
-    html.push('<script type="text/javascript">function printPage(){focus();print();' + ((!$.browser.opera && !opts.leaveOpen && opts.printMode.toLowerCase() === 'popup') ? 'close();' : '') + '}</script>');
+    html.push('<script type="text/javascript">function printPage(){focus();print();' + ((!opts.leaveOpen && opts.printMode.toLowerCase() === 'popup') ? 'close();' : '') + '}</script>');
     html.push('</body></html>');
 
     return html.join('');

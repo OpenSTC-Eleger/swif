@@ -10,9 +10,10 @@ requirejs.config({
 		* Libs
 		*/
 		jquery                : 'js/libs/jQuery-2.0.3-min',
+		printElement          : 'js/libs/jquery.printElement-2.0.0',
 		underscore            : 'js/libs/underscore-1.5.2-min',
 		backbone              : 'js/libs/backbone-1.1.0',
-
+		
 		jqueryui              : 'js/libs/jquery-ui-1.10.3.custom.min',
 		moment                : 'js/libs/moment-2.4.0',
 		'moment-timezone'     : 'js/libs/moment-timezone-0.0.1',
@@ -190,6 +191,10 @@ requirejs.config({
 		},
 		'app-reservations' : {
 			deps   : ['app-reservations/config/require-config']
+		},
+		'printElement': {
+			deps: ['jquery','jqueryui'],
+			exports : 'printElement'
 		}
 	}
 
