@@ -5,6 +5,6 @@ define('bsDatepicker-lang', [
 	'app'
 ], function(app) {
 
-	$.getScript('i18n/'+app.config.lang+'/bootstrap-datepicker-lang.js');
+	//$.getScript('i18n/'+app.config.lang+'/bootstrap-datepicker-lang.js');
 
 });

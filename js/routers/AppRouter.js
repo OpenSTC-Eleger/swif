@@ -7,9 +7,10 @@ define([
 	'placesListView',
     'claimersListView',
     'teamsListView',
-    'servicesListView'
+    'servicesListView',
+    'equipmentsListView'
 
-], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView, ClaimersListView, TeamsListView,ServicesListView){
+], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView, ClaimersListView, TeamsListView, ServicesListView, EquipmentsListView){
 
 	'use strict';
 
@@ -277,12 +278,9 @@ define([
 
 		equipments: function(search, filter, sort, page){
 
-			var params = {};
-			if(!_.isNull(search)){params.search = search}
-			if(!_.isNull(filter)){params.filter = filter}
-			if(!_.isNull(sort)){params.sort = sort}
-			if(!_.isNull(page)){params.page = page}
-			app.views.equipmentsListView = new app.Views.EquipmentsListView(params);
+			var params = this.setContext({search: search, filter: filter, sort : sort, page : page});
+
+			app.views.equipmentsListView = new EquipmentsListView(params);
 		}
 
 	});

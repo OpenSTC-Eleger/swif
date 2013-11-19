@@ -80,6 +80,7 @@ requirejs.config({
 		claimerContactModel     : 'js/models/ClaimerContactModel',
 		claimerServiceModel     : 'js/models/ClaimerServiceModel',
 		equipmentModel          : 'js/models/EquipmentModel',
+		equipmentTypeModel      : 'js/models/EquipmentTypeModel',
 		placeModel              : 'js/models/PlaceModel',
 		teamModel               : 'js/models/TeamModel',
 		officerModel            : 'js/models/OfficerModel',
@@ -113,8 +114,11 @@ requirejs.config({
 		itemOfficerView         : 'js/views/items/ItemOfficerView',
 		modalServiceView        : 'js/views/modals/ModalServiceView',
 		modalOfficerView        : 'js/views/modals/ModalOfficerView',
-        modalContactEdit: 'js/views/modals/ModalContactEdit',
-        claimerContactView: 'js/views/items/ClaimerContactView'
+        modalContactEdit        : 'js/views/modals/ModalContactEdit',
+        claimerContactView      : 'js/views/items/ClaimerContactView',
+        equipmentsListView      : 'js/views/lists/EquipmentsListView',
+        itemEquipmentView       : 'js/views/items/ItemEquipmentView',
+        modalEquipmentView      : 'js/views/modals/ModalEquipmentView',
 
     },
 
@@ -169,12 +173,9 @@ requirejs.config({
 		'fullcalendar': {
 			deps   : ['jquery']
 		},
-		'bsDatepicker': {
-			deps   : ['jquery']
-		},
 		'bsDatepicker-lang': {
-			deps   : ['bsDatepicker'],
-			exports: 'bsDatepicker'
+			deps   : ['jquery', 'bsDatepicker'],
+			exports: 'datepicker'
 		},
 		'bsTimepicker': {
 			deps   : ['jquery']
