@@ -25,10 +25,10 @@
 					<div class="col-sm-9">
 						   <div class="input-group">
       						<div class="input-group-btn">
-							<button class="btn dropdown-toggle" id="btnSelectUsersTeams" data-toggle="dropdown"><i class="icon-user fa-fw iconItem"></i>&nbsp; <span class="icon-caret-down"></span></button>
+							<button class="btn dropdown-toggle" id="btnSelectUsersTeams" data-toggle="dropdown"><i class="fa fa-user fa-fw iconItem"></i>&nbsp; <span class="fa fa-caret-down"></span></button>
 							<ul class="dropdown-menu">
-								<li><a href="#" class="linkSelectUsersTeams" data-item="officers"><i class="icon-user fa-fw"></i> <%= lang.agents %></a></li>
-								<li><a href="#" class="linkSelectUsersTeams" data-item="teams"><i class="icon-group fa-fw"></i> <%= lang.teams %></a></li>
+								<li><a href="#" class="linkSelectUsersTeams" data-item="officers"><i class="fa fa-user fa-fw"></i> <%= lang.agents %></a></li>
+								<li><a href="#" class="linkSelectUsersTeams" data-item="teams"><i class="fa fa-users fa-fw"></i> <%= lang.teams %></a></li>
 							</ul>
 							</div>
 							<input id="taskSelectUsersTeams" class="select2" required data-placeholder="<%= lang.actions.selectAAgentShort %>" data-item="officers"/>
@@ -55,13 +55,13 @@
 							<!-- Start date -->
 							<div class="input-group col-sm-4">
 		                        <input type="text" class="datepicker taskInput input-small form-control" id="startDate" size="20" value="" required />
-								<span class="input-group-addon"><i class="icon-calendar"></i></span>
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 		                	</div>
 
 							<!-- Start hour -->
 		                	<div class="input-group col-sm-3 bootstrap-timepicker" >
 						    	<input type="text" class="timepicker-default input-small taskInput form-control" id='startHour' required />
-						    	<span class="input-group-addon"><i class="icon-time"></i></span>
+						    	<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 							</div>
 		                </div>
 
@@ -77,13 +77,13 @@
 							<!-- End date -->
 							<div class="input-group col-sm-4">
 								<input type="text" class="datepicker taskInput input-small form-control" id="endDate" size="20" value="" placeholder="dd/mm/yyyy" required />
-								<span class="input-group-addon"><i class="icon-calendar"></i></span>
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 							</div>
 							
 							<!-- End Hour -->
 							<div class="input-group col-sm-3 bootstrap-timepicker">
 							    <input type="text" class="timepicker-default input-small taskInput form-control" id='endHour' required />
-							    <span class="input-group-addon"><i class="icon-time"></i></span>
+							    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 							</div>
 
 						</div>
@@ -97,7 +97,7 @@
 
 					<div class="controls input-group col-sm-9">
 							<span class="input-group-addon linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
-								<i class="icon-tint"></i>
+								<i class="fa fa-tint"></i>
 							</span>
 							<input id="taskEquipmentAdd" class="select2 taskInput taskSelect" data-placeholder="<%= lang.actions.selectAVehicle %>"/>
 					</div>
@@ -106,7 +106,7 @@
 
 				<!-- Refueling Vehicle -->
 				<fieldset class="refueling-vehicle hide-soft">
-					<legend><i class="icon-tint"></i> <%= _.capitalize(lang.oil) %></legend>
+					<legend><i class="fa fa-tint"></i> <%= _.capitalize(lang.oil) %></legend>
 
 					<div class="form-group">
 						<div class="form-inline">
