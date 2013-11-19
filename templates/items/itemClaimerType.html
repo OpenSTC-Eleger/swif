@@ -1,16 +1,16 @@
 <td>
-	<i class="icon-tag">&nbsp;&nbsp;</i><%= claimerType.getName() %>
+	<i class="fa fa-tag">&nbsp;&nbsp;</i><%= claimerType.getName() %>
 
 	<p class="row-actions invisible">
 		<% if(_.contains(claimerType.getActions(), 'update')){ %>
 		<a href="#"  class="modalUpdateClaimerType">
-			<i class="fa fa-edit" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
+			<i class="fa fa-pencil fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
 		</a>&nbsp;
 		<% } %>
 
 		<% if(_.contains(claimerType.getActions(), 'delete')){ %>
 		<a href="#" class="modalDeleteClaimerType">
-			<i class="fa fa-trash-o" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+			<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
 		</a>
 		<% } %>
 	</p>

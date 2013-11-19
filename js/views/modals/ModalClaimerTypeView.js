@@ -2,6 +2,8 @@ define(['app', 'appHelpers', 'claimerTypeModel', 'claimersTypesCollection', 'gen
 	function (app, AppHelpers, ClaimerTypeModel, ClaimersTypesCollection, GenericModalView) {
 
 	'use strict';
+
+
 	return GenericModalView.extend({
 
 		templateHTML: 'modals/modalClaimerType',
@@ -15,9 +17,12 @@ define(['app', 'appHelpers', 'claimerTypeModel', 'claimersTypesCollection', 'gen
 			);
 		},
 
+		
+
 		/** View Initialization
-		 */
-		initialize: function () {
+		*/
+		initialize: function (params) {
+			this.options = params;
 
 			this.modal = $(this.el);
 
@@ -29,8 +34,10 @@ define(['app', 'appHelpers', 'claimerTypeModel', 'claimersTypesCollection', 'gen
 			this.render();
 		},
 
+
+
 		/** Display the view
-		 */
+		*/
 		render: function () {
 			var self = this;
 

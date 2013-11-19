@@ -140,6 +140,12 @@ define([
 
 			var pageUrl = _(_(Backbone.history.fragment).strRight('/')).strLeft('/');
 
+
+			if(pageUrl == app.config.menus.openbase){
+				pageUrl = pageUrl + '/' + _(_(_(Backbone.history.fragment).strRight('/')).strRight('/')).strLeft('/');
+			}
+
+
 			var url = _.join('/', moduleName, pageUrl);
 
 
