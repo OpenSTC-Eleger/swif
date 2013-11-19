@@ -8,9 +8,9 @@ define([
 	'absentTypesListView',
 	'planningView',
 	'interventionsListView',
-	
-], function(app, AppRouter, RequestsListView, CategoriesRequestsListView, CategoriesTasksListView, AbsentTypesListView, PlanningView, InterventionsListView){
+	'tasksListView',
 
+], function(app, AppRouter, RequestsListView, CategoriesRequestsListView, CategoriesTasksListView, AbsentTypesListView, PlanningView, InterventionsListView, TasksListView){
 
 	'use strict';
 
@@ -58,15 +58,10 @@ define([
 		/** Tasks List 
 		*/
 		tasksCheck: function(search, filter, sort, page, year, week){
-			var params = {};
-			if(!_.isNull(search)){params.search = search}
-			if(!_.isNull(filter)){params.filter = filter}
-			if(!_.isNull(sort)){params.sort = sort}
-			if(!_.isNull(page)){params.page = page}
-			if(!_.isNull(year)){params.year = year}
-			if(!_.isNull(week)){params.week = week}
 			
-			app.views.tasksListView = new app.Views.TasksListView(params);
+			var params = this.setContext({search: search, filter : filter, sort : sort, page : page, year: year, week:week});
+			
+			app.views.tasksListView = new TasksListView(params);
 			this.render(app.views.tasksListView);
 		},
 

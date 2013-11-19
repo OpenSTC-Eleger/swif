@@ -40,11 +40,11 @@ requirejs.config({
 		categoriesTasksListView  		: 'app-interventions/js/views/lists/CategoriesTasksListView',
 		itemCategoryTaskView     		: 'app-interventions/js/views/items/ItemCategoryTaskView',
 		modalCategoryTaskView    		: 'app-interventions/js/views/modals/ModalCategoryTaskView',
-		
-		absentTypesListView  			: 'app-interventions/js/views/lists/AbsentTypesListView',
-		itemAbsentTypeView	     		: 'app-interventions/js/views/items/ItemAbsentTypeView',
-		modalAbsentTypeView    			: 'app-interventions/js/views/modals/ModalAbsentTypeView',
-		
+
+		absentTypesListView  		: 'app-interventions/js/views/lists/AbsentTypesListView',
+		itemAbsentTypeView	     	: 'app-interventions/js/views/items/ItemAbsentTypeView',
+		modalAbsentTypeView    		: 'app-interventions/js/views/modals/ModalAbsentTypeView',
+
 		planningView  					: 'app-interventions/js/views/others/PlanningView',
 		calendarView  					: 'app-interventions/js/views/others/CalendarView',
 		printingCalendarView  			: 'app-interventions/js/views/others/PrintingCalendarView',
@@ -54,18 +54,18 @@ requirejs.config({
 		itemPlanningInterTaskView		: 'app-interventions/js/views/items/ItemPlanningInterTaskView',
 		modalAbsentTaskView    			: 'app-interventions/js/views/modals/tasks/ModalAbsentTaskView',
 		modalUnplanTaskView    			: 'app-interventions/js/views/modals/tasks/ModalUnplanTaskView',
-
 		
+		interventionsListView       : 'app-interventions/js/views/lists/InterventionsListView',
+		itemInterventionView        : 'app-interventions/js/views/items/ItemInterventionView',
+		itemInterventionTaskListView: 'app-interventions/js/views/items/ItemInterventionTaskListView',
+		itemInterventionTaskView    : 'app-interventions/js/views/items/ItemInterventionTaskView',
+		modalInterventionView       : 'app-interventions/js/views/modals/interventions/ModalInterventionView',
+		modalCancelInterventionView : 'app-interventions/js/views/modals/interventions/ModalCancelInterventionView',
+		modalInterventionAddTaskView: 'app-interventions/js/views/modals/interventions/ModalInterventionAddTaskView',
+		modalCancelTaskView         : 'app-interventions/js/views/modals/interventions/ModalCancelTaskView',
+		modalTaskDoneView           : 'app-interventions/js/views/modals/interventions/ModalTaskDoneView',
 		
-		interventionsListView       	: 'app-interventions/js/views/lists/InterventionsListView',
-		itemInterventionView        	: 'app-interventions/js/views/items/ItemInterventionView',
-		itemInterventionTaskListView	: 'app-interventions/js/views/items/ItemInterventionTaskListView',
-		itemInterventionTaskView    	: 'app-interventions/js/views/items/ItemInterventionTaskView',
-		modalInterventionView       	: 'app-interventions/js/views/modals/interventions/ModalInterventionView',
-		modalCancelInterventionView 	: 'app-interventions/js/views/modals/interventions/ModalCancelInterventionView',
-		modalInterventionAddTaskView	: 'app-interventions/js/views/modals/interventions/ModalInterventionAddTaskView',
-		modalCancelTaskView         	: 'app-interventions/js/views/modals/interventions/ModalCancelTaskView',
-		modalTaskDoneView           	: 'app-interventions/js/views/modals/interventions/ModalTaskDoneView',
+		tasksListView               : 'app-interventions/js/views/lists/TasksListView',
 	}
 
 });
