@@ -52,6 +52,7 @@ requirejs.config({
 		modalCancelInterventionView : 'app-interventions/js/views/modals/interventions/ModalCancelInterventionView',
 		modalInterventionAddTaskView: 'app-interventions/js/views/modals/interventions/ModalInterventionAddTaskView',
 		modalCancelTaskView         : 'app-interventions/js/views/modals/interventions/ModalCancelTaskView',
+		modalTaskDoneView           : 'app-interventions/js/views/modals/interventions/ModalTaskDoneView',
 	}
 
 });

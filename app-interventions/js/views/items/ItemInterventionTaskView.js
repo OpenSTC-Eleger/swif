@@ -8,9 +8,10 @@ define([
 	
 	'modalDeleteView',
 	'modalCancelTaskView',
+	'modalTaskDoneView',
 	'moment',
 
-], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel, ModalDeleteView, ModalCancelTaskView, moment){
+], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel, ModalDeleteView, ModalCancelTaskView, ModalTaskDoneView, moment){
 	'use strict';
 
 	
@@ -245,7 +246,7 @@ define([
 				taskDone = true
 	//			$('#remainingTimeSection').hide();
 			}
-			new app.Views.ModalTaskDoneView({el:'#modalTaskDone', model: this.model, inter: this.inter, taskDone: taskDone, tasks: self.options.tasks});
+			new ModalTaskDoneView({el:'#modalTaskDone', model: this.model, inter: this.inter, taskDone: taskDone, tasks: self.options.tasks});
 		},
 		
 		displayModalCancelTask: function(e) {
