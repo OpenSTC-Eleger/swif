@@ -7,7 +7,7 @@ requirejs.config({
 	paths: {
 
 		// Router //
-		appInterventionsRouter      : 'app-interventions/js/routers/AppRouter',
+		appInterventionsRouter      	: 'app-interventions/js/routers/AppRouter',
 
 		// Collections //
 		requestsCollection          	: 'app-interventions/js/collections/RequestsCollection',
@@ -57,15 +57,15 @@ requirejs.config({
 
 		
 		
-		interventionsListView       : 'app-interventions/js/views/lists/InterventionsListView',
-		itemInterventionView        : 'app-interventions/js/views/items/ItemInterventionView',
-		itemInterventionTaskListView: 'app-interventions/js/views/items/ItemInterventionTaskListView',
-		itemInterventionTaskView    : 'app-interventions/js/views/items/ItemInterventionTaskView',
-		modalInterventionView       : 'app-interventions/js/views/modals/interventions/ModalInterventionView',
-		modalCancelInterventionView : 'app-interventions/js/views/modals/interventions/ModalCancelInterventionView',
-		modalInterventionAddTaskView: 'app-interventions/js/views/modals/interventions/ModalInterventionAddTaskView',
-		modalCancelTaskView         : 'app-interventions/js/views/modals/interventions/ModalCancelTaskView',
-		modalTaskDoneView           : 'app-interventions/js/views/modals/interventions/ModalTaskDoneView',
+		interventionsListView       	: 'app-interventions/js/views/lists/InterventionsListView',
+		itemInterventionView        	: 'app-interventions/js/views/items/ItemInterventionView',
+		itemInterventionTaskListView	: 'app-interventions/js/views/items/ItemInterventionTaskListView',
+		itemInterventionTaskView    	: 'app-interventions/js/views/items/ItemInterventionTaskView',
+		modalInterventionView       	: 'app-interventions/js/views/modals/interventions/ModalInterventionView',
+		modalCancelInterventionView 	: 'app-interventions/js/views/modals/interventions/ModalCancelInterventionView',
+		modalInterventionAddTaskView	: 'app-interventions/js/views/modals/interventions/ModalInterventionAddTaskView',
+		modalCancelTaskView         	: 'app-interventions/js/views/modals/interventions/ModalCancelTaskView',
+		modalTaskDoneView           	: 'app-interventions/js/views/modals/interventions/ModalTaskDoneView',
 	}
 
 });

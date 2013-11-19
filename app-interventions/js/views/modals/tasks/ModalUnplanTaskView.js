@@ -35,7 +35,9 @@ define([
 	
 		/** View Initialization
 		*/
-		initialize : function() {
+		initialize : function(params) {
+			this.options = params;
+			
 			var self = this;
 	
 			this.modal = $(this.el);
@@ -55,12 +57,13 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
 			 
 	
 				var template = _.template(templateData, {
-					lang : app.lang,
-					task : self.model
+					lang 		: app.lang,
+					task 		: self.model,
+					TaskModel	: TaskModel
 				});
 				
 				self.modal.html(template);
@@ -121,7 +124,7 @@ define([
 			else 
 			{
 				//Set Task fields 
-				params = {
+				var params = {
 					state     : TaskModel.status.draft.key,
 					user_id   : false,
 					team_id   : false,
@@ -131,7 +134,7 @@ define([
 				//Update task and intervention 
 				this.model.save(params, {patch: true, silent: false})
 					.done(function(data) {	
-						ajaxRequests = [self.model.fetch({ data : {fields : self.model.fields} } )]					
+						var ajaxRequests = [self.model.fetch({ data : {fields : self.model.fields} } )]					
 						if( !_.isUndefined(self.interModel) )
 							//Add ajax request for update intervention
 							ajaxRequests.push(self.interModel.fetch())
