@@ -18,7 +18,7 @@ define([
 	
 		className    : 'row-nested-objects-collapse',
 	
-		templateHTML : 'officersList',
+		templateHTML : 'lists/officersList',
 	
 		isDisplay    : false,
 	
@@ -67,7 +67,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get("templates/lists/" + this.templateHTML + ".html", function(templateData){
+			$.get("templates/" + this.templateHTML + ".html", function(templateData){
 				var template = _.template(templateData, {
 					lang      : app.lang,
 					service   : self.model

@@ -23,7 +23,7 @@ define([
 	*/
 	var ServicesListView = GenericListView.extend({
 		
-		templateHTML: 'servicesList',
+		templateHTML: 'lists/servicesList',
 		
 	
 		// The DOM events  //
@@ -86,7 +86,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get("templates/lists/" + this.templateHTML + ".html", function(templateData){
+			$.get("templates/" + this.templateHTML + ".html", function(templateData){
 				var template = _.template(templateData, {
 					lang      : app.lang,
 					nbServices: self.collection.cpt
