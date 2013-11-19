@@ -7,11 +7,9 @@ define([
 
 	'absentTypesCollection',	
 	
-	'absentTypeModel',
+	'absentTypeModel'
 
-	'bsSwitch'
-
-], function(app, AppHelpers, GenericModalView, AdvancedSelectBoxView, AbsentTypesCollection, AbsentTypeModel, bootstrapSwitch){
+], function(app, AppHelpers, GenericModalView, AdvancedSelectBoxView, AbsentTypesCollection, AbsentTypeModel){
 
 
 	'use strict';

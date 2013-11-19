@@ -7,11 +7,9 @@ define([
 
 	'categoriesRequestsCollection',	
 	
-	'categoryRequestModel',
+	'categoryRequestModel'
 
-	'bsSwitch'
-
-], function(app, AppHelpers, GenericModalView, AdvancedSelectBoxView, CategoriesRequestsCollection, CategoryRequestModel, bootstrapSwitch){
+], function(app, AppHelpers, GenericModalView, AdvancedSelectBoxView, CategoriesRequestsCollection, CategoryRequestModel){
 
 
 	'use strict';

@@ -201,7 +201,7 @@ define([
 			_.each(this.urlParameters, function(value, index){		
 				// Check if the options parameter aren't undefined or null //
 				if(!_.isUndefined(self.options[value]) && !_.isNull(self.options[value])){	
-						url += '/'+value+'/'+self.options[value];					
+						url += '/planning/'+value+'/'+self.options[value];					
 				}
 			});				
 			return url;		

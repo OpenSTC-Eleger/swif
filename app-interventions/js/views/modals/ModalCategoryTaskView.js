@@ -8,11 +8,9 @@ define([
 	'categoriesTasksCollection',	
 	'claimersServicesCollection',
 	
-	'categoryTaskModel',
+	'categoryTaskModel'
 
-	'bsSwitch'
-
-], function(app, AppHelpers, GenericModalView, AdvancedSelectBoxView, CategoriesTasksCollection, ClaimersServicesCollection, CategoryTaskModel, bootstrapSwitch){
+], function(app, AppHelpers, GenericModalView, AdvancedSelectBoxView, CategoriesTasksCollection, ClaimersServicesCollection, CategoryTaskModel){
 
 
 	'use strict';

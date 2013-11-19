@@ -1,14 +1,15 @@
 define([
 	'app',
 	'appHelpers',
+	'bsSwitch',
 	
 	'tasksCollection',
 	
 	'interventionModel',
 	'itemPlanningInterTaskView',
-	//'modalInterventionAddTaskView'
+	'modalInterventionAddTaskView',	
 
-], function(app, AppHelpers, TasksCollection, InterventionModel, ItemPlanningInterTaskView/*,  ModalInterventionAddTaskView*/){
+], function(app, AppHelpers, bootstrapSwitch, TasksCollection, InterventionModel, ItemPlanningInterTaskView,  ModalInterventionAddTaskView){
 
 	'use strict';
 
@@ -107,13 +108,12 @@ define([
 			
 			var intervention = $(e.target);
 			var id = _(intervention.parents('.accordion-body').attr('id')).strRightBack('_');
-	
+			
+			var params = { state: InterventionModel.status.open.key, };
+			
 			// Retrieve the new status //
 			if(intervention.bootstrapSwitch('status')){
 				params = { state: InterventionModel.status.scheduled.key, };
-			}
-			else{
-				params = { state: InterventionModel.status.open.key, };
 			}
 	
 			this.model.save(params,{patch:true, wait: true}).done(function(data){

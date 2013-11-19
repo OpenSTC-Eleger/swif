@@ -9,9 +9,9 @@ define([
 	'interventionModel',	
 	
 	'modalDeleteView',
-	//'modalCancelTaskView',
+	'modalCancelTaskView',
 
-], function(app, AppHelpers, moment , MomentTimezoneData, TaskModel, UserModel, InterventionModel, ModalDeleteView/*, ModalCancelTaskView*/){
+], function(app, AppHelpers, moment , MomentTimezoneData, TaskModel, UserModel, InterventionModel, ModalDeleteView, ModalCancelTaskView){
 
 	'use strict';
 

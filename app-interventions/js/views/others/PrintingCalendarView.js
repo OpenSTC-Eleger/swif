@@ -1,8 +1,9 @@
 define([
 	'app',
 	'datatables',
+	'printElement',
 	'taskModel',	
-], function(app, jqueryDataTables, TaskModel){
+], function(app, Datatables, PrintElement, TaskModel){
 
 	'use strict';
 
@@ -40,7 +41,7 @@ define([
 	
 				// Print button //
 				$('<span class="fc-button fc-button-print">' 
-					   +'<i class="icon-print"></i></span>')
+					   +'<i class="fa fa-print"></i></span>')
 					  .appendTo(self.calendar.divCalendar + ' td.fc-header-right')
 					  .button()
 					  .on('click', function() {
