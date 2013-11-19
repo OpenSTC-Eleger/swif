@@ -9,9 +9,10 @@ define([
 	'genericListView',
 	'paginationView',
 	'itemInterventionView',
+	'itemInterventionTaskListView',
 	/*'modalInterventionView'*/
 
-], function(app, AppHelpers, InterventionsCollection, InterventionModel, TasksCollection, GenericListView, PaginationView, ItemInterventionView/*, ModalInterventionView*/){
+], function(app, AppHelpers, InterventionsCollection, InterventionModel, TasksCollection, GenericListView, PaginationView, ItemInterventionView, ItemInterventionTaskListView/*, ModalInterventionView*/){
 
 	'use strict';
 	
