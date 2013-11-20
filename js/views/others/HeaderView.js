@@ -34,6 +34,15 @@ define([
 			var self = this;
 
 
+			var currentModule = _(Backbone.history.fragment).strLeft('/');
+			var currentUrl    = _(_(Backbone.history.fragment).strRight('/')).strLeft('/');
+
+			if(currentUrl == app.config.menus.openbase){
+				currentUrl = _(_(_(Backbone.history.fragment).strRight('/')).strRight('/')).strLeft('/');
+				currentModule = app.config.menus.openbase;
+			}
+
+
 			$.get("templates/" + this.templateHTML + ".html", function(templateData) {
 
 
@@ -41,8 +50,8 @@ define([
 					lang         : app.lang,
 					user         : app.models.user,
 					menusToLoad  : app.config.menus,
-					currentModule: _(Backbone.history.fragment).strLeft('/'),
-					currentUrl   : _(_(Backbone.history.fragment).strRight('/')).strLeft('/')
+					currentModule: currentModule,
+					currentUrl   : currentUrl
 				});
 
 				$(self.el).html(template);

@@ -1,107 +1,121 @@
-define(['app', 'appHelpers', 'claimerTypeModel', 'genericListView', 'paginationView', 'modalDeleteView', 'modalClaimerTypeView'],
-	function (app, AppHelpers, ClaimerTypeModel, GenericListView, PaginationView, ModalDeleteView, ModalClaimerTypeView) {
+define([
+	'app',
+	'appHelpers',
+	'claimerTypeModel',
+	'genericListView',
+	'paginationView',
+	'modalDeleteView',
+	'modalClaimerTypeView'
+
+], function (app, AppHelpers, ClaimerTypeModel, GenericListView, PaginationView, ModalDeleteView, ModalClaimerTypeView) {
 
 		'use strict';
 
-		return Backbone.View.extend({
 
-			tagName     : 'tr',
-			className   : 'row-item',
-			templateHTML: 'items/itemClaimerType',
+	/******************************************
+	* Row Place View
+	*/
+	var ItemClaimerTypeView =  Backbone.View.extend({
 
-			// The DOM events //
-			events      : {
-				'click'                         : 'modalUpdateClaimerType',
-				'click a.modalDeleteClaimerType': 'modalDeleteClaimerType'
-			},
+		tagName     : 'tr',
+		className   : 'row-item',
+		templateHTML: 'items/itemClaimerType',
 
-			/** View Initialization
-			 */
-			initialize: function () {
-				this.model.off();
+		// The DOM events //
+		events      : {
+			'click'                         : 'modalUpdateClaimerType',
+			'click a.modalDeleteClaimerType': 'modalDeleteClaimerType'
+		},
 
-				// When the model are updated //
-				this.listenTo(this.model, 'change', this.change);
+		/** View Initialization
+		 */
+		initialize: function () {
+			this.model.off();
 
-				// When the model are destroy //
-				this.listenTo(this.model, 'destroy', this.destroy);
-			},
+			// When the model are updated //
+			this.listenTo(this.model, 'change', this.change);
 
-			/** When the model is updated //
-			 */
-			change: function (e) {
+			// When the model are destroy //
+			this.listenTo(this.model, 'destroy', this.destroy);
+		},
 
-				this.render();
-				AppHelpers.Main.highlight($(this.el));
-				app.notify('', 'success', app.lang.infoMessages.information, this.model.getName() + ' : ' + app.lang.infoMessages.claimerTypeUpdateOk);
-			},
+		/** When the model is updated //
+		 */
+		change: function (e) {
 
-			/** When the model is destroy //
-			 */
-			destroy: function (e) {
-				var self = this;
+			this.render();
+			AppHelpers.highlight($(this.el));
+			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName() + ' : ' + app.lang.infoMessages.claimerTypeUpdateOk);
+		},
 
-				AppHelpers.Main.highlight($(this.el)).done(function () {
-					self.remove();
-					app.views.claimersTypesListView.partialRender();
+		/** When the model is destroy //
+		 */
+		destroy: function (e) {
+			var self = this;
+
+			AppHelpers.highlight($(this.el)).done(function () {
+				self.remove();
+				app.views.claimersTypesListView.partialRender();
+			});
+
+			app.notify('', 'success', app.lang.infoMessages.information, e.getName() + ' : ' + app.lang.infoMessages.claimerTypeDeleteOk);
+		},
+
+
+		/** Display the view
+		 */
+		render: function () {
+			var self = this;
+
+			// Retrieve the template //
+			$.get("templates/" + this.templateHTML + ".html", function (templateData) {
+
+				var template = _.template(templateData, {
+					lang       : app.lang,
+					claimerType: self.model
 				});
 
-				app.notify('', 'success', app.lang.infoMessages.information, e.getName() + ' : ' + app.lang.infoMessages.claimerTypeDeleteOk);
-			},
+				$(self.el).html(template);
+
+				// Set the Tooltip //
+				$('*[data-toggle="tooltip"]').tooltip();
+
+			});
+
+			return this;
+		},
 
 
-			/** Display the view
-			 */
-			render: function () {
-				var self = this;
+		/** Display Modal form to add/sav a new Claimer type
+		 */
+		modalUpdateClaimerType: function (e) {
+			e.preventDefault();
+			e.stopPropagation();
 
-				// Retrieve the template //
-				$.get("templates/" + this.templateHTML + ".html", function (templateData) {
-
-					var template = _.template(templateData, {
-						lang       : app.lang,
-						claimerType: self.model
-					});
-
-					$(self.el).html(template);
-
-					// Set the Tooltip //
-					$('*[data-toggle="tooltip"]').tooltip();
-
-				});
-
-				return this;
-			},
+			app.views.modalClaimerTypeView = new ModalClaimerTypeView({
+				el     : '#modalSaveClaimerType',
+				model  : this.model,
+				elFocus: $(e.target).data('form-id')
+			});
+		},
 
 
-			/** Display Modal form to add/sav a new Claimer type
-			 */
-			modalUpdateClaimerType: function (e) {
-				e.preventDefault();
-				e.stopPropagation();
+		/** Modal to remove an Claimer Type
+		 */
+		modalDeleteClaimerType: function (e) {
+			e.preventDefault();
+			e.stopPropagation();
 
-				app.views.modalClaimerTypeView = new ModalClaimerTypeView({
-					el     : '#modalSaveClaimerType',
-					model  : this.model,
-					elFocus: $(e.target).data('form-id')
-				});
-			},
+			app.views.modalDeleteView = new ModalDeleteView({
+				el          : '#modalDeleteClaimerType',
+				model       : this.model,
+				modalTitle  : app.lang.viewsTitles.deleteClaimerType,
+				modalConfirm: app.lang.warningMessages.confirmDeleteClaimerType
+			});
+		}
 
-
-			/** Modal to remove an Claimer Type
-			 */
-			modalDeleteClaimerType: function (e) {
-				e.preventDefault();
-				e.stopPropagation();
-
-				app.views.modalDeleteView = new ModalDeleteView({
-					el          : '#modalDeleteClaimerType',
-					model       : this.model,
-					modalTitle  : app.lang.viewsTitles.deleteClaimerType,
-					modalConfirm: app.lang.warningMessages.confirmDeleteClaimerType
-				});
-			}
-
-		});
-		
 	});
+
+return ItemClaimerTypeView;
+		
+});

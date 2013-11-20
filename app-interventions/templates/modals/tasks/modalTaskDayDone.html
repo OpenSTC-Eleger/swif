@@ -10,13 +10,13 @@
 
 			<blockquote>
 				<p><%= task.getName() %></p>
-				<small><i class="icon-pushpin fa-fw"></i>&nbsp;<%= task.getIntervention() %></small>
+				<small><i class="fa fa-thumb-tack fa-fw"></i>&nbsp;<%= task.getIntervention() %></small>
 
 				<!-- Display the affected Team or Use -->
 				<% if(task.affectedOnTeam()) { %>
-				<small><i class="icon-group fa-fw"></i>&nbsp;<%= task.getTeam() %></small>
+				<small><i class="fa fa-users fa-fw"></i>&nbsp;<%= task.getTeam() %></small>
 				<% }else{ %>
-				<small><i class="icon-user fa-fw"></i>&nbsp;<%= task.getUser() %></small>
+				<small><i class="fa fa-user fa-fw"></i>&nbsp;<%= task.getUser() %></small>
 				<% } %>
 			</blockquote>
 
@@ -26,7 +26,7 @@
 					<label for="eventTimeSpent" class="control-label col-sm-3"><%= lang.spentHours %>:</label>			
 					<div class="input-group form-controls bootstrap-timepicker col-sm-4">
 						<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventTimeSpent" value="<%=timeSpentDefault%>">
-						<span class="input-group-addon"><i class="icon-time"></i></span>
+						<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 					</div>
 
 				</div>
@@ -35,7 +35,7 @@
 					<label for="eventRemainingTime" class="control-label col-sm-3"><%= lang.remainingHours %>:</label>
 					<div class="input-group form-controls bootstrap-timepicker col-sm-4">
 							<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventRemainingTime" value="02:00">
-							<span class="input-group-addon"><i class="icon-time"></i></span>
+							<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 					</div>
 				</div>
 
@@ -46,7 +46,7 @@
 					<div class="form-controls">
 						<div class="input-group col-sm-9">
 							<span class="input-group-addon linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
-								<i class="icon-tint"></i>
+								<i class="fa fa-tint"></i>
 							</span>
 							<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect taskInput"
 								data-placeholder="<%= lang.actions.selectAVehicle %>"/>
@@ -56,7 +56,7 @@
 
 				<!-- Refueling Vehicle -->
 				<fieldset class="refueling-vehicle hide-soft">
-					<legend><i class="icon-tint"></i> <%= _.capitalize(lang.oil) %></legend>
+					<legend><i class="fa fa-tint"></i> <%= _.capitalize(lang.oil) %></legend>
 
 					<div class="form-group">
 						<div class="form-inline">
