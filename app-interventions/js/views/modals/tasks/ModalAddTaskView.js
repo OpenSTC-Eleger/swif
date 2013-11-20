@@ -307,7 +307,7 @@ define([
 		
 		updateSelectListUsersTeams: function(itemToLoad){
 			if(itemToLoad == 'officers'){
-				$('#btnSelectUsersTeams > i.iconItem.fa-group').addClass('fa fa-user').removeClass('fa-users');
+				$('#btnSelectUsersTeams > i.iconItem.fa-users').addClass('fa fa-user').removeClass('fa-users');
 				$('#taskSelectUsersTeams').data('item', 'officers');
 				$('#taskSelectUsersTeams').attr('data-placeholder', app.lang.actions.selectAAgentShort);
 				
