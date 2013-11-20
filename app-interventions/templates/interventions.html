@@ -36,7 +36,7 @@
 	<% if(interventions.length <= 0) { %>
 		<div class="tableToolbar">
 			<div class="alert alert-info">
-				<i class="icon-info-sign icon-large"></i>&nbsp;<%= lang.infoMessages.noRequest %>
+				<i class="fa fa-info-circle fa-lg"></i>&nbsp;<%= lang.infoMessages.noRequest %>
 			</div>
 		</div>
 	<% } %>
@@ -57,7 +57,7 @@
 				<th><%= _.capitalize(lang.progressRate) %>
 					<!-- Status Filter -->
 					<div class="dropdown pull-right">
-						<a id="filterStateInter" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="icon-filter icon-large"></i></a>
+						<a id="filterStateInter" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="fa fa-filter fa-lg"></i></a>
 
 						<ul id="filterStateInterList" class="dropdown-menu" role="menu" aria-labelledby="filterStateInter">
 							<% _.each(interventionsState, function (state, i) {
@@ -80,7 +80,7 @@
 									</a>
 								</li>
 								<li class="divider"></li>
-								<li class="delete-filter disabled"><a href="#delete-filter"> <i class="icon-remove"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
+								<li class="delete-filter disabled"><a href="#delete-filter"> <i class="fa fa-times"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
 						</ul>
 					</div>
 				</th>

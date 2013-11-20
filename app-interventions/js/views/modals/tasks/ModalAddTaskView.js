@@ -14,8 +14,12 @@ define([
 	'teamsCollection',
 	'officerModel',
 	'officersCollection',
+	
+	'moment',
+	'moment-timezone',
+	'moment-timezone-data',
 
-], function(app, GenericModalView, AdvancedSelectBoxView, TasksCollection, TaskModel, CategoriesTasksCollection, EquipmentsCollection, PlacesCollection, ClaimersServicesCollection, TeamModel, TeamsCollection, OfficerModel, OfficersCollection){
+], function(app, GenericModalView, AdvancedSelectBoxView, TasksCollection, TaskModel, CategoriesTasksCollection, EquipmentsCollection, PlacesCollection, ClaimersServicesCollection, TeamModel, TeamsCollection, OfficerModel, OfficersCollection, moment){
 
 	'use strict';
 
