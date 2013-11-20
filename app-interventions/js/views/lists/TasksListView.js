@@ -133,9 +133,6 @@ define([
 			if(_.isUndefined(this.options.sort)){
 				this.options.sort = TasksCollection.prototype.default_sort;
 			}
-	//		else{
-	//			this.options.sort = app.Helpers.Main.calculPageSort(this.options.sort);	
-	//		}
 			
 			self.collections = {};
 			self.collections.tasks = new TasksCollection();

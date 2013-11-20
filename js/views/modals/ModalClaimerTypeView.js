@@ -90,7 +90,7 @@ define(['app', 'appHelpers', 'claimerTypeModel', 'claimersTypesCollection', 'gen
 					}
 				})
 				.fail(function (e) {
-					app.Helpers.Main.printError(e);
+					AppHelpers.printError(e);
 				})
 				.always(function () {
 					$(self.el).find("button[type=submit]").button('reset');
