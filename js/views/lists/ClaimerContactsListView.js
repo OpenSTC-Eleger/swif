@@ -69,6 +69,9 @@ define(['app', 'appHelpers', 'officerModel', 'officersCollection', 'claimerConta
 
 			var self = this;
 
+            AppHelpers.highlight($(this.el)).done(function () {
+                self.remove();
+            });
 			$.get("templates/" + this.templateHTML + ".html", function (templateData) {
 				var contactNb = self.model.toJSON().address.length;
 				if (!_.isUndefined(self.contactsCollection)) {

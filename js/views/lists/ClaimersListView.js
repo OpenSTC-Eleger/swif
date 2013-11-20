@@ -133,7 +133,7 @@ define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListV
             AppHelpers.highlight($(claimerView.el));
 
             app.notify('', 'success', app.lang.infoMessages.information, model.getName() + ' : ' + app.lang.infoMessages.claimerCreateOK);
-            this.partialRender();
+            //this.partialRender();
         },
 
 

@@ -10,11 +10,11 @@ define([
 	'genericModalView',
 	'advancedSelectBoxView',
 	'bsDatepicker',
-	'moment',
+
 	'moment-timezone',
 	'moment-timezone-data'
 
-], function(app, InterventionModel, InterventionsCollection, ClaimersServicesCollection, EquipmentsCollection, PlacesCollection, GenericModalView, AdvancedSelectBoxView){
+], function(app, InterventionModel, InterventionsCollection, ClaimersServicesCollection, EquipmentsCollection, PlacesCollection, GenericModalView, AdvancedSelectBoxView, datepicker, moment){
 
 	'use strict';
 
@@ -305,7 +305,7 @@ define([
 	    			$('#interventionPlaceEquipment').attr('data-placeholder',app.lang.actions.selectAPlace);
 	    			collection = PlacesCollection.prototype;
 	    			$('#btnSelectPlaceEquipment').data('item', 'place');
-	    			$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('icon-wrench');
+	    			$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('fa fa-wrench');
 	    			$('#btnSelectPlaceEquipment').find('.iconItem').addClass('fa fa-map-marker');
 	    		}
 	    		else{
@@ -313,7 +313,7 @@ define([
 	    			collection = EquipmentsCollection.prototype;	    			
 	    			$('#btnSelectPlaceEquipment').data('item', 'equipment');
 	    			$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('fa fa-map-marker');
-	    			$('#btnSelectPlaceEquipment').find('.iconItem').addClass('icon-wrench');
+	    			$('#btnSelectPlaceEquipment').find('.iconItem').addClass('fa fa-wrench');
 	    		}
 	    		this.advancedSelectBoxInterventionPlaceOrEquipment.collection = collection;
 				this.setParamOnSitesEquipments();

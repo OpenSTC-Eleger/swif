@@ -8,13 +8,12 @@ define([
 	
 	'advancedSelectBoxView',
 	
-	'moment',
 	'moment-timezone',
 	'moment-timezone-data',
 	'bsDatepicker',
 	'bsTimepicker',
 	
-], function(app, GenericModalView, OfficersCollection, TeamsCollection, EquipmentsCollection, AdvancedSelectBoxView,moment){
+], function(app, GenericModalView, OfficersCollection, TeamsCollection, EquipmentsCollection, AdvancedSelectBoxView, moment, momentTZ, datepicker, timepicker){
 
 	'use strict';
 
@@ -229,7 +228,7 @@ define([
 			this.setSearchParamsOnUsersTeams();
 			//update Advanced selectBox Params (placeholder, collection and filters) according to itemToLoad
 			if(itemToLoad == 'officers'){
-				$('#btnSelectUsersTeams > i.iconItem.icon-group').addClass('icon-user').removeClass('icon-group');
+				$('#btnSelectUsersTeams > i.iconItem.fa-users').addClass('fa-user').removeClass('fa-users');
 				$('#selectUsersTeams').data('item', 'officers');
 				$('#selectUsersTeams').attr('data-placeholder', app.lang.actions.selectAAgentShort);
 				
@@ -240,7 +239,7 @@ define([
 				this.selectListOfficersTeamsView.render();
 			}
 			else if(itemToLoad == 'teams'){
-				$('#btnSelectUsersTeams > i.iconItem.icon-user').addClass('icon-group').removeClass('icon-user');
+				$('#btnSelectUsersTeams > i.iconItem.fa-user').addClass('fa-users').removeClass('fa-user');
 				$('#selectUsersTeams').data('item', 'teams');
 				$('#selectUsersTeams').attr('data-placeholder', app.lang.actions.selectATeamShort);
 	

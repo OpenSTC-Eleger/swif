@@ -6,7 +6,6 @@ define([
 	'modalTaskDayDoneView',
 	'modalAddTaskView',
 
-	'moment',
 	'moment-timezone',
 	'moment-timezone-data',
 	

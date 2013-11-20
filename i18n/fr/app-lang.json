@@ -306,7 +306,7 @@
 		"noRequest"      	  	: "Aucune demande d'intervention à afficher",
 		"noRequestPlanned"		: "Aucune intervention planifiées",
 		"noPlace"				: "Aucun site à afficher",
-		"noClaimer"				: "Aucune organisation enregistré",
+		"noClaimer"				: "Aucune organisation à afficher",
 		"noPartner" 			: "Aucun contact enregistré. Ajouter des contacts.",
 		"noService"				: "Aucun service à afficher",
 		"noAbsentType"			: "Aucun type d'absence à afficher",
@@ -427,6 +427,6 @@
 		"statementTask"			 : "Relevé de la tâche",
 		"statementEndTask"		 : "Relevé de la tâche non terminée",
 		"pageNotFound" 			 : "Page non trouvée",
-		"myApplications"         : "Mes applications"
+		"editClaimer" 		     : "Edition de l'organisation"
 	}
 }

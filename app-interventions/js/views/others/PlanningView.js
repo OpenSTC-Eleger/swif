@@ -2,24 +2,15 @@ define([
 	'app',
 	'appHelpers',
 
-	'officersCollection',
-	'teamsCollection',
 	'interventionsCollection',
 	'tasksCollection',
 	
 	'interventionModel',
-	'userModel',
 
-	'genericListView',
-	'paginationView',
-	'planningView',
 	'calendarView',
 	'planningInterListView'
 
-], function(app, AppHelpers,
-				OfficersCollection, TeamsCollection, InterventionsCollection, TasksCollection, 
-				InterventionModel, UserModel,
-				GenericListView, PaginationView , PlanningView , CalendarView, PlanningInterListView ){
+], function(app, AppHelpers, InterventionsCollection, TasksCollection, InterventionModel, CalendarView, PlanningInterListView ){
 
 	'use strict';
 
@@ -59,9 +50,6 @@ define([
 			//By default display open intervention (intervention to schedule)
 			this.options.filter = 'state-open';
 			
-			
-			
-		    console.log("Planning Details view intialization")
 		    this.initCollections().done(function(){	    	
 		    	app.router.render(self);		
 		    });

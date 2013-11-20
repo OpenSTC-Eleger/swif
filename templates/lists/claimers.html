@@ -26,9 +26,9 @@
 	<!-- Table toolbar -->
 
 
-	<% if(nbClaimers < 0) { %>
+	<% if(nbClaimers <= 0) { %>
 		<div class="alert alert-info">
-			<i class="fa fa-info"></i> &nbsp;<%= lang.infoMessages.noClaimer %>.
+			<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noClaimer %>.
 		</div>
 	<% } %>
 	
