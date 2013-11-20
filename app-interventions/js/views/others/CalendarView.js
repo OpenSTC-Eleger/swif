@@ -195,13 +195,24 @@ define([
 		 */
 		urlBuilder: function() {
 			var self = this;
-			var url = _(Backbone.history.fragment).strLeft('/');
+			// Retrieve the baseurl of the view //
+			var moduleName = _(Backbone.history.fragment).strLeft('/');
+
+			var pageUrl = _(_(Backbone.history.fragment).strRight('/')).strLeft('/');
+
+
+			if(pageUrl == app.config.menus.openbase){
+				pageUrl = pageUrl + '/' + _(_(_(Backbone.history.fragment).strRight('/')).strRight('/')).strLeft('/');
+			}
+
+
+			var url = _.join('/', moduleName, pageUrl);
 	
 			// Iterate all urlParameters //
 			_.each(this.urlParameters, function(value, index){		
 				// Check if the options parameter aren't undefined or null //
 				if(!_.isUndefined(self.options[value]) && !_.isNull(self.options[value])){	
-						url += '/planning/'+value+'/'+self.options[value];					
+						url += '/'+value+'/'+self.options[value];					
 				}
 			});				
 			return url;		
@@ -377,7 +388,7 @@ define([
 				eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) { 
 					var model = self.collection.get(event.id)
 				
-				    params = { 
+				    var params = { 
 				       date_start: event.start,
 				       date_end: event.end,
 				    };
@@ -404,11 +415,11 @@ define([
 				    
 				    var model = self.collection.get(event.id)
 				    
-				    newEvent = self.events.filter(function (element) { 
+				    var newEvent = self.events.filter(function (element) { 
 					    return element.id == event.id;
 					})[0];
 					
-				    params = {
+				    var params = {
 					   date_start: event.start,
 				       date_end: event.end,
 				       planned_hours: (event.planned_hours + (minuteDelta)/60),
