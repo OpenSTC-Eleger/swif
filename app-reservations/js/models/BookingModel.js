@@ -5,8 +5,7 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	
 	urlRoot: "/api/openresa/bookings",
 	
-	fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'partner_phone', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'note'],
-
+	fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'partner_phone', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'note', 'pricelist_id', 'partner_order_id'],
 
 	searchable_fields: [
 		{
@@ -26,6 +25,9 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	
 	getName: function(){
 		return this.get('name');
+	},
+	setName: function(name){
+		this.set({name:name});
 	},
 	
 	getCreateAuthor: function(type){
@@ -112,11 +114,6 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	isAllDispo: function(){
 		return this.get('all_dispo');	
 	},
-
-	
-	getName: function(){
-		return this.get('name');
-	},
 	
 	isTemplate: function(){
 		return this.get('is_template');
@@ -136,7 +133,14 @@ app.Models.Booking = app.Models.GenericModel.extend({
 		else{
 			return '';
 		}
-	},	
+	},
+	
+	setStartDate: function(dateStr){
+		if(dateStr != ''){
+			this.set({checkin:dateStr});
+			this.updateLinesData();
+		}
+	},
 	
 	getEndDate: function(type){
 		if(this.get('checkout') != false){
@@ -151,6 +155,13 @@ app.Models.Booking = app.Models.GenericModel.extend({
 		}
 		else{
 			return '';
+		}
+	},
+	
+	setEndDate: function(dateStr){
+		if(dateStr != ''){
+			this.set({checkout:dateStr});
+			this.updateLinesData();
 		}
 	},
 	
@@ -170,8 +181,33 @@ app.Models.Booking = app.Models.GenericModel.extend({
 		}
 	},
 	
+<<<<<<< HEAD
 	getWriteDate: function(type){
 		if(this.get('write_date') != false){
+=======
+	getPricelist: function(type){
+		if(this.get('pricelist_id')){
+			switch(type){
+				case 'id': 
+					return this.get('pricelist_id')[0];
+				break;
+				default:
+					return _.titleize(this.get('pricelist_id')[1].toLowerCase());
+			}
+		}
+		else{
+			return false;
+		}
+	},
+	
+	setPricelist: function(id){
+		this.set({pricelist_id:id});
+	},
+	
+	getPartner : function(type) {
+
+		if(this.get('partner_id')){
+>>>>>>> updated FormBooking: creation in backend OK; model refactored to be fully responsible of data udpates
 			switch(type){
 				case 'human':	
 					return moment(this.get('write_date')).format('LL');
@@ -296,6 +332,18 @@ app.Models.Booking = app.Models.GenericModel.extend({
 
 
 	
+	setPartner: function(id){
+		var self = this;
+		this.set({partner_id:id});
+		var modelClaimer = new app.Models.Claimer({id:this.getPartner('id')});
+		modelClaimer.fetch({data:{fields:['property_product_pricelist']}}).done(function(){
+			self.setPricelist(modelClaimer.get('property_product_pricelist'));
+		})
+		.always(function(){
+			self.updateLinesData();
+		});
+	},
+	
 	getContact : function(type) {
 
 		if(this.get('partner_invoice_id')){
@@ -310,6 +358,10 @@ app.Models.Booking = app.Models.GenericModel.extend({
 		else{
 			return false;
 		}
+	},
+	
+	setContact: function(id){
+		this.set({partner_invoice_id:id});
 	},
 	
 	getState : function() {
@@ -328,6 +380,59 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	addLine: function(lineModel){
 		this.lines.add(lineModel);
 		lineModel.setParentBookingModel(this);
+	},
+	
+	//method to perform updates on bookingLines (pricing, dispo, ...) when some fields value change
+	updateLinesData: function(){
+		var checkin = this.getStartDate();
+		var checkout = this.getEndDate();
+		var partner_id = this.getPartner('id');
+		if(checkin != '' && checkout != ''){
+			_.each(this.lines.models, function(lineModel,i){
+				lineModel.fetchAvailableQtity(checkin,checkout);
+				if(partner_id > 0){
+					lineModel.fetchPricing(partner_id, checkin, checkout);
+				}
+			});
+			
+		}
+	},
+	
+	//used for OpenERP to format many2one data to be writable in OpenERP
+	saveToBackend: function(){
+		var self = this;
+		var vals = {
+				partner_invoice_id:this.getContact('id'),
+				partner_order_id:this.getContact('id'),
+				partner_shipping_id: this.getContact('id'),
+				partner_id: this.getPartner('id'),
+				openstc_partner_id: this.getPartner('id'),
+				pricelist_id: this.getPricelist('id'),
+				name: this.getName()};
+		
+		//if new, POST new values and fetch the model to retrieve values stored on backend
+		if(this.isNew()){
+			return this.save(vals,{wait:true}).done(function(data){
+				self.set({id:data});
+				self.fetch({silent:true});
+				self.lines.each(function(lineModel){
+					lineModel.saveToBackend().fail(function(e){console.log(e)});
+				});
+			});
+		}
+		
+		//if already exists, PATCH values and fetch the model to retrieve values updated on backend
+		//also perform save/update for lineModels
+		else{
+			vals.user_id = this.getCreateAuthor('id');
+			return this.save(vals, {wait:true, patch:true}).always(function(){
+				self.lines.each(function(lineModel,i)	{
+					self.fetch({silent:true});
+					lineModel.saveToBackend().fail(function(e){console.log(e)});
+				});
+			});
+		}
+		return false;
 	},
 	
 	/** Model Initialization

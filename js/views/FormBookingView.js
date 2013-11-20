@@ -11,28 +11,20 @@ app.Views.FormBooking = Backbone.View.extend({
 	// The DOM events //
 	events: {
 		'change #bookingPartner'		: 'changeBookingPartner',
+		'change #bookingContact'		: 'changeBookingContact',
 		'change #bookingAddBookable'	: 'changeBookingAddBookable',
 		'change #bookingCheckin'		: 'changeBookingCheckin',
 		'change #bookingCheckout'		: 'changeBookingCheckout',
 		'change #bookingCheckinHour'	: 'changeBookingCheckin',
 		'change #bookingCheckoutHour'	: 'changeBookingCheckout',
-	},
-	/*
-	 * Method to perform smart update of all models on the collection
-	 */
-	partialRender: function(){
-		var self = this;
-		_.each(this.lineViews, function(lineView,i){
-			lineView.updateData();
-		});
-
+		'submit #formSaveBooking'		: 'saveBookingForm',
 	},
 
 	/** View Initialization
 	*/
 	initialize : function() {
 		var self = this;
-		this.lineViews = [];
+		//this.lineViews = [];
 		// Check if it's a create or an update //
 		if(_.isUndefined(this.booking_id)){
 			
@@ -99,22 +91,32 @@ app.Views.FormBooking = Backbone.View.extend({
 		return this;
     },
     
-    
     /*
      * Update searchParam of ClaimerContact (partner.id = self if partner_id is set, else, remove searchParams)
      */	
     changeBookingPartner: function(e){
     	e.preventDefault();
-    	partner_id = app.views.selectListClaimersView.getSelectedItem();
+    	var partner_id = app.views.selectListClaimersView.getSelectedItem();
     	if(partner_id != ''){
     		app.views.selectListClaimersContactsView.setSearchParam({'field':'partner_id.id','operator':'=','value':partner_id},true);
-    		this.model.set({partner_id:[partner_id,app.views.selectListClaimersView.getSelectedText()]});
+    		this.model.setPartner([partner_id,app.views.selectListClaimersView.getSelectedText()]);
     	}
     	else{
     		app.views.selectListClaimersContactsView.resetSearchParams();
-    		this.model.set({partner_id:0});
+    		this.model.setPartner(false);
     	}
     	app.views.selectListClaimersContactsView.render();
+    },
+    
+    changeBookingContact: function(e){
+    	e.preventDefault();
+    	var contact_id = app.views.selectListClaimersContactsView.getSelectedItem();
+    	if(contact_id){
+    		this.model.setContact([contact_id], app.views.selectListClaimersContactsView.getSelectedText());
+    	}
+    	else{
+    		this.model.setContact(false);
+    	}
     },
     
     /*
@@ -123,6 +125,7 @@ app.Views.FormBooking = Backbone.View.extend({
     changeBookingAddBookable: function(e){
     	var self = this;
     	e.preventDefault();
+    	//create lineModel and initialize values
     	bookable_id = app.views.selectListAddBookableView.getSelectedItem();
     	bookable_name = app.views.selectListAddBookableView.getSelectedText();
     	var lineModel = new app.Models.BookingLine({
@@ -130,17 +133,20 @@ app.Views.FormBooking = Backbone.View.extend({
 			pricelist_amount:0});
     	lineModel.setQuantity(1);
     	this.model.addLine(lineModel);
+    	
+    	//perform manually updates to lineModel to get pricing, dispo, ...
     	var partner_id = this.model.getPartner('id');
     	var checkin = this.model.getStartDate();
     	var checkout = this.model.getEndDate();
-    	$.when(lineModel.fetchAvailableQtity(checkin,checkout),lineModel.fetchPricing(partner_id,checkin,checkout)).done(function(){
+    	$.when(lineModel.fetchAvailableQtity(checkin,checkout),lineModel.fetchPricing(partner_id,checkin,checkout)).always(function(){
         	var lineView = new app.Views.ItemFormBookingLineView({model:lineModel});
-        	self.lineViews.push(lineView);
+        	//self.lineViews.push(lineView);
         	$(self.el).find('#bookingLines').append(lineView.render().el);
     	})
     	.fail(function(e){
     		console.log(e);
     	});
+    	//finally, reset selection to be able to add another bookable to booking
     	app.views.selectListAddBookableView.reset();
     },
     
@@ -150,8 +156,7 @@ app.Views.FormBooking = Backbone.View.extend({
 	    	var dateVal = new moment( $("#bookingCheckin").val(),"DD-MM-YYYY")
 			.add('hours',$("#bookingCheckinHour").val().split(":")[0] )
 			.add('minutes',$("#bookingCheckinHour").val().split(":")[1] );
-	    	this.model.set({checkin:moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss')});
-	    	this.partialRender();	
+	    	this.model.setStartDate(moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss'));
     	}
     },
     
@@ -161,9 +166,20 @@ app.Views.FormBooking = Backbone.View.extend({
 	    	var dateVal = new moment( $("#bookingCheckout").val(),"DD-MM-YYYY")
 			.add('hours',$("#bookingCheckoutHour").val().split(":")[0] )
 			.add('minutes',$("#bookingCheckoutHour").val().split(":")[1] );
-	    	this.model.set({checkout:moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss')});
-	    	this.partialRender();
+	    	this.model.setEndDate(moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss'));
     	}
     },
 
+    saveBookingForm: function(e){
+    	e.preventDefault();
+    	this.model.setName($("#bookingName").val());
+    	this.model.saveToBackend()
+    	.done(function(){
+    		
+    	})
+    	.fail(function(e){
+    		console.log(e);
+    	});
+    }
+    
 });

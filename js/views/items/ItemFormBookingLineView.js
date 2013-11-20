@@ -45,25 +45,7 @@ app.Views.ItemFormBookingLineView = Backbone.View.extend({
 		this.bookableModel = new app.Models.Bookable({id:this.model.getResource('id')});
 		this.deferredBookable = this.bookableModel.fetch({silent:true});
 	},
-	/*
-	 * Method to perform smart update of models according to some conditions (dates changed, partner changed,...)
-	 */
-	updateData: function(){
-		var parentModel = this.model.getParentBookingModel();
-		
-		if(parentModel != null){
-			var checkin = parentModel.getStartDate();
-			var checkout = parentModel.getEndDate();
-			var partner_id = parentModel.getPartner('id');
-			if(checkin != '' && checkout != ''){
-				this.model.fetchAvailableQtity(checkin,checkout);
-				if(partner_id > 0){
-					this.model.fetchPricing(partner_id, checkin, checkout);
-				}
-			}
-		}
 
-	},
 
 	/** When the model is updated //
 	*/
@@ -139,6 +121,6 @@ app.Views.ItemFormBookingLineView = Backbone.View.extend({
     
     removeLine: function(e){
     	e.preventDefault();
-    	this.model.destroy();
+    	this.model.destroyOnBackend();
     }
 });

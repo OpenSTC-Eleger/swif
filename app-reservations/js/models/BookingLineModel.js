@@ -123,6 +123,35 @@ app.Models.BookingLine = app.Models.GenericModel.extend({
 		}
 	},
 	
+	saveToBackend: function(){
+		var self = this;
+		var vals = {
+				reserve_product:this.getResource('id'),
+				qte_reserves:this.getQuantity(),
+				pricelist_amount: this.getPricing()};
+
+		//if new, POST new values and fetch the model to retrieve values stored on backend
+		if(this.isNew()){
+			vals.line_id = this.parentBookingModel.getId();
+			return this.save(vals, {silent:true, wait:true}).done(function(data){
+				self.set({id:data},{silent:true});
+				self.fetch({silent:true});
+			});
+		}
+		//if new, PATCH updated values and fetch the model to retrieve values updated on backend
+		else{
+			return this.save(vals, {silent:true, wait:true,patch:true}).done(function(){
+				self.fetch({silent:true});
+			});
+		}
+		return false;
+	},
+	
+	destroyOnBackend: function(){
+		this.getParentBookingModel().lines.remove(this);
+		this.destroy();
+	},
+	
 	/** Model Initialization
 	*/
 	initialize: function(){
