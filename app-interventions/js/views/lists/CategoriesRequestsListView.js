@@ -20,7 +20,7 @@ define([
 	*/
 	var categoriesRequestsListView = GenericListView.extend({
 		
-		templateHTML: 'categoriesRequestsList',
+		templateHTML: 'lists/categoriesRequestsList',
 		
 	
 		// The DOM events //

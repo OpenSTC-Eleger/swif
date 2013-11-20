@@ -20,7 +20,7 @@ define([
 	*/
 	var absentTypesListView = GenericListView.extend({
 		
-		templateHTML: 'absentTypesList',
+		templateHTML: 'lists/absentTypesList',
 		
 	
 		// The DOM events //
