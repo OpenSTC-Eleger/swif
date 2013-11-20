@@ -20,7 +20,7 @@ define([
 	*/
 	var categoriesTasksListView = GenericListView.extend({
 		
-		templateHTML: 'categoriesTasksList',
+		templateHTML: 'lists/categoriesTasksList',
 	
 	
 		// The DOM events //
