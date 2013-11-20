@@ -181,7 +181,6 @@ define([
 							if( !_.isBlank(params) )
 								url += '/'+value+'/'+params;
 						}
-
 					}
 				}
 
