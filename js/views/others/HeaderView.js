@@ -39,6 +39,7 @@ define([
 
 			if(currentUrl == app.config.menus.openbase){
 				currentUrl = _(_(_(Backbone.history.fragment).strRight('/')).strRight('/')).strLeft('/');
+				currentModule = app.config.menus.openbase;
 			}
 
 

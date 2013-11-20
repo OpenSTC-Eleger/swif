@@ -38,11 +38,10 @@
 	            <ul aria-labelledby="drop-menu-app-<%= menuRacine.id %>" role="menu" class="dropdown-menu">
 	                <% _.each(menuRacine.children, function (menuItem, i, a) {%>
 
-						<% if(_.isEmpty(menuItem.children)){ 
+						<% if(_.isEmpty(menuItem.children)){
 
 							var active = '';
 							if(currentUrl == _.slugify(menuItem.tag)){ active = 'active'; }
-		
 
 						%>
 							<li role="presentation" class="<%= active %>">
