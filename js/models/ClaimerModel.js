@@ -101,16 +101,9 @@ define([
 			this.set({ type_id : value });
 		},
 
-		// Returns addresses collection fetched this is used in view to serialize object before template
 		getAddresses: function () {
-	//		var address_ids = this.get('address');
 			var collection = new ClaimersContactsCollection
-	//		if (address_ids == false) {
-	//			return collection;
-	//		} else {
-
 				collection.fetch({
-	//					data   : {filters: {0: {field: 'id', operator: 'in', value: this.get('address')}}},
 						data   : {filters: {0: {field: 'partner_id.id', operator: '=', value: this.get('id')}}},
 						reset : true
 					}
@@ -118,14 +111,11 @@ define([
 						collection.trigger('fetchDone');
 					})
 				return collection;
-	//		}
-
 		},
+
 		getInformations: function () {
 			return {name: this.get('name')};
 		},
-
-
 
 		// Returns the many2one id fields in form of an object {name:'name',id:'id'}
 		objectifiedTypeId : function () {
