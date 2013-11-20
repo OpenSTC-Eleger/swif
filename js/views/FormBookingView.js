@@ -135,7 +135,7 @@ app.Views.FormBooking = Backbone.View.extend({
     	this.model.addLine(lineModel);
     	
     	//perform manually updates to lineModel to get pricing, dispo, ...
-    	var partner_id = this.model.getPartner('id');
+    	var partner_id = this.model.getClaimer('id');
     	var checkin = this.model.getStartDate();
     	var checkout = this.model.getEndDate();
     	$.when(lineModel.fetchAvailableQtity(checkin,checkout),lineModel.fetchPricing(partner_id,checkin,checkout)).always(function(){

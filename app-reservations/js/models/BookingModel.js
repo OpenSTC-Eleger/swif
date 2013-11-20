@@ -5,7 +5,7 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	
 	urlRoot: "/api/openresa/bookings",
 	
-	fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'partner_phone', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'note', 'pricelist_id', 'partner_order_id'],
+	fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'partner_phone', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'note', 'pricelist_id'],
 
 	searchable_fields: [
 		{
@@ -181,10 +181,22 @@ app.Models.Booking = app.Models.GenericModel.extend({
 		}
 	},
 	
-<<<<<<< HEAD
 	getWriteDate: function(type){
 		if(this.get('write_date') != false){
-=======
+			switch(type){
+			case 'human':	
+				return moment(this.get('write_date')).format('LL');
+			break;
+			default:
+				return this.get('write_date');
+			break;
+			}
+		}
+		else{
+			return '';
+		}
+	},
+
 	getPricelist: function(type){
 		if(this.get('pricelist_id')){
 			switch(type){
@@ -202,24 +214,6 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	
 	setPricelist: function(id){
 		this.set({pricelist_id:id});
-	},
-	
-	getPartner : function(type) {
-
-		if(this.get('partner_id')){
->>>>>>> updated FormBooking: creation in backend OK; model refactored to be fully responsible of data udpates
-			switch(type){
-				case 'human':	
-					return moment(this.get('write_date')).format('LL');
-				break;
-				default:
-					return this.get('write_date');
-				break;
-			}
-		}
-		else{
-			return '';
-		}
 	},
 
 	// Claimer of the booking //
@@ -335,7 +329,7 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	setPartner: function(id){
 		var self = this;
 		this.set({partner_id:id});
-		var modelClaimer = new app.Models.Claimer({id:this.getPartner('id')});
+		var modelClaimer = new app.Models.Claimer({id:this.getClaimer('id')});
 		modelClaimer.fetch({data:{fields:['property_product_pricelist']}}).done(function(){
 			self.setPricelist(modelClaimer.get('property_product_pricelist'));
 		})
@@ -386,7 +380,7 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	updateLinesData: function(){
 		var checkin = this.getStartDate();
 		var checkout = this.getEndDate();
-		var partner_id = this.getPartner('id');
+		var partner_id = this.getClaimer('id');
 		if(checkin != '' && checkout != ''){
 			_.each(this.lines.models, function(lineModel,i){
 				lineModel.fetchAvailableQtity(checkin,checkout);
@@ -405,8 +399,8 @@ app.Models.Booking = app.Models.GenericModel.extend({
 				partner_invoice_id:this.getContact('id'),
 				partner_order_id:this.getContact('id'),
 				partner_shipping_id: this.getContact('id'),
-				partner_id: this.getPartner('id'),
-				openstc_partner_id: this.getPartner('id'),
+				partner_id: this.getClaimer('id'),
+				openstc_partner_id: this.getClaimer('id'),
 				pricelist_id: this.getPricelist('id'),
 				name: this.getName()};
 		
