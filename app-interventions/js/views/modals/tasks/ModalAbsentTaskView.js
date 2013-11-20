@@ -94,8 +94,8 @@ define([
 	        	}
 	        	
 	        	// Set Modal informations 
-	        	var icon = self.teamMode?'group':'user' 
-	        	$('#infoModalAbsentTask p').html("<i class='icon-" + icon +"'></i> " + self.model.name );
+	        	var icon = self.options.teamMode?'users':'user' 
+	        	$('#infoModalAbsentTask p').html("<i class='fa fa-" + icon +"'></i> " + self.model.name );
 	    		$('#infoModalAbsentTask small').html("Du " + mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
 	
 				
