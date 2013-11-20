@@ -1,6 +1,6 @@
-define(['app', 'appHelpers', 'genericModalView', 'claimersContactsCollection', 'claimerContactView'
+define(['app', 'appHelpers', 'genericModalView', 'claimersContactsCollection'
 
-], function (app, AppHelpers, GenericModalView, ClaimersContactsCollection, ClaimerContactView) {
+], function (app, AppHelpers, GenericModalView, ClaimersContactsCollection) {
 
     'use strict';
 
@@ -165,9 +165,7 @@ define(['app', 'appHelpers', 'genericModalView', 'claimersContactsCollection', '
                     self.model.set('id', data);
                     self.model.fetch({silent: true, data: {fields: ClaimersContactsCollection.prototype.fields} }).
                         done(function () {
-                            $(('#claimerContactsList_' + self.currentClaimer.id)).append(
-                                new ClaimerContactView({model: self.model, user_ids: []}).render().el
-                            )
+							self.claimersContactsListView.contactsCollection.add(self.model)
                         })
                 })
         },

@@ -1,6 +1,15 @@
-define(['app', 'appHelpers', 'claimerModel', 'claimersTypesCollection', 'placesCollection','claimersServicesCollection', 'claimersCollection','genericModalView','advancedSelectBoxView'
+define([
+    'app',
+    'appHelpers',
+    'claimerModel',
+    'claimersTypesCollection',
+    'placesCollection',
+    'claimersServicesCollection',
+    'claimersCollection',
+    'genericModalView',
+    'advancedSelectBoxView'
 
-], function (app, AppHelpers, ClaimerModel, ClaimersTypesCollection, PlacesCollection,ClaimersServicesCollection, ClaimersCollection, GenericModalView, AdvancedSelectBoxView ) {
+], function (app, AppHelpers, ClaimerModel, ClaimersTypesCollection, PlacesCollection,ClaimersServicesCollection, ClaimersCollection, GenericModalView, AdvancedSelectBoxView) {
 
     'use strict';
 
@@ -10,14 +19,15 @@ define(['app', 'appHelpers', 'claimerModel', 'claimersTypesCollection', 'placesC
 
         events: function(){
             return _.defaults({
-                    'submit #formSaveClaimer'            : 'saveClaimer',
-                    'click a.modalEditClaimer' : 'showEditModal'
+                    'submit #formSaveClaimer' : 'saveClaimer',
+                    'click a.modalEditClaimer': 'showEditModal'
                 },
                 GenericModalView.prototype.events
             );
         },
 
-        initialize : function() {
+        initialize : function(params) {
+            this.options = params;
             var self = this;
 
             this.modal = $(this.el);
@@ -40,6 +50,8 @@ define(['app', 'appHelpers', 'claimerModel', 'claimersTypesCollection', 'placesC
             })
 
         },
+
+
 
         render : function(loader) {
             var self = this;

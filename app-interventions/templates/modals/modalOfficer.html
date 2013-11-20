@@ -5,7 +5,9 @@
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			<h3 class="modal-title">
+
 				<i class="fa pencil-square-o"></i>&nbsp;
+
 				<% if(_.isNull(officer.getId())){ %>
 					<%= _.capitalize(lang.viewsTitles.newOfficer) %>
 				<% } else{ %>
