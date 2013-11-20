@@ -44,7 +44,7 @@ define(['app', 'appHelpers', 'officerModel','officersCollection', 'claimerContac
         destroy: function (e) {
             var self = this;
 
-            AppHelpers.Main.highlight($(this.el)).done(function () {
+            AppHelpers.highlight($(this.el)).done(function () {
                 self.remove();
             });
 

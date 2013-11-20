@@ -79,7 +79,7 @@ define(['app', 'appHelpers', 'modalClaimerEdit', 'modalDeleteView'
          */
         change: function(e){
             this.render();
-            AppHelpers.Main.highlight($(this.el))
+            AppHelpers.highlight($(this.el))
             app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.claimerUpdateOk);
         },
 
@@ -88,7 +88,7 @@ define(['app', 'appHelpers', 'modalClaimerEdit', 'modalDeleteView'
         destroy: function(e){
             var self = this;
 
-            AppHelpers.Main.highlight($(this.el)).done(function(){
+            AppHelpers.highlight($(this.el)).done(function(){
                 self.remove();
             });
 
@@ -101,8 +101,6 @@ define(['app', 'appHelpers', 'modalClaimerEdit', 'modalDeleteView'
          */
         showEditModal: function(e){
             e.preventDefault(); e.stopPropagation();
-
-            console.log(this.model);
 
             app.views.modalClaimerEdit = new ModalClaimerEdit({
                 el      : '#modalEditClaimer',

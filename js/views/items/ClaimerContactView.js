@@ -55,7 +55,7 @@ define(['app', 'appHelpers', 'officerModel', 'modalContactEdit', 'modalDeleteVie
 
         changed: function () {
             this.render();
-            AppHelpers.Main.highlight($(this.el));
+            AppHelpers.highlight($(this.el));
             app.notify('', 'success', app.lang.infoMessages.information, this.model.get('name') + ' : ' + app.lang.infoMessages.claimerContactUpdateOk);
         },
 
@@ -108,7 +108,7 @@ define(['app', 'appHelpers', 'officerModel', 'modalContactEdit', 'modalDeleteVie
         destroyed: function (e) {
             var self = this;
 
-            AppHelpers.Main.highlight($(this.el)).done(function () {
+            AppHelpers.highlight($(this.el)).done(function () {
                 self.$el.remove();
             });
 
