@@ -10,11 +10,11 @@ define([
 	'genericModalView',
 	'advancedSelectBoxView',
 	'bsDatepicker',
-	'moment',
+
 	'moment-timezone',
 	'moment-timezone-data'
 
-], function(app, InterventionModel, InterventionsCollection, ClaimersServicesCollection, EquipmentsCollection, PlacesCollection, GenericModalView, AdvancedSelectBoxView){
+], function(app, InterventionModel, InterventionsCollection, ClaimersServicesCollection, EquipmentsCollection, PlacesCollection, GenericModalView, AdvancedSelectBoxView, datepicker, moment){
 
 	'use strict';
 

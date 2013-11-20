@@ -7,7 +7,6 @@ define([
 	'genericModalView',
 	'advancedSelectBoxView',
 	
-	'moment',
 	'moment-timezone',
 	'moment-timezone-data',
 	'bsTimepicker',

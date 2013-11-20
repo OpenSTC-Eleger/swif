@@ -8,7 +8,6 @@ define([
 	'interventionModel',
 	'equipmentsCollection',
 	
-	'moment',
 	'moment-timezone',
 	'moment-timezone-data'
 

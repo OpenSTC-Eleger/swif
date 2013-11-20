@@ -8,13 +8,12 @@ define([
 	
 	'advancedSelectBoxView',
 	
-	'moment',
 	'moment-timezone',
 	'moment-timezone-data',
 	'bsDatepicker',
 	'bsTimepicker',
 	
-], function(app, GenericModalView, OfficersCollection, TeamsCollection, EquipmentsCollection, AdvancedSelectBoxView,moment){
+], function(app, GenericModalView, OfficersCollection, TeamsCollection, EquipmentsCollection, AdvancedSelectBoxView, moment, momentTZ, datepicker, timepicker){
 
 	'use strict';
 
