@@ -1,167 +1,164 @@
-/******************************************
-* Claimers Type List View
-*/
-app.Views.ClaimersTypesListView = app.Views.GenericListView.extend({
+define(['app', 'appHelpers', 'claimersTypesCollection', 'claimerTypeModel', 'genericListView', 'paginationView', 'itemClaimerTypeView', 'modalClaimerTypeView'],
+    function (app, AppHelpers, ClaimersTypesCollection,  ClaimerTypeModel, GenericListView, PaginationView, ItemClaimerTypeView, ModalClaimerTypeView) {
 
-	templateHTML: 'claimersTypesList',
-	
+        'use strict';
 
-	// The DOM events //
-	events: function(){
-		return _.defaults({
-			'click a.modalCreateClaimerType' : 'modalCreateClaimerType',
-		}, 
-			app.Views.GenericListView.prototype.events
-		);
-	},
+        return  GenericListView.extend({
 
-	
-
-	/** View Initialization
-	*/
-	initialize: function (params) {
-		this.options = params;
-
-		var self = this;
-
-		this.initCollection().done(function(){
-
-			// Unbind & bind the collection //
-			self.collection.off();
-			self.listenTo(self.collection, 'add', self.add);
-
-			app.router.render(self);
-		})
-	},
+            templateHTML: 'lists/claimersTypesList',
 
 
-
-	/** When the model ara created //
-	*/
-	add: function(model){
-
-		var itemClaimerTypeView  = new app.Views.ItemClaimerTypeView({ model: model });
-		$('#rows-items').prepend(itemClaimerTypeView.render().el);
-		app.Helpers.Main.highlight($(itemClaimerTypeView.el));
-
-		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.claimerTypeCreateOk);
-		this.partialRender();
-	},
+            // The DOM events //
+            events: function () {
+                return _.defaults({
+                        'click a.modalCreateClaimerType': 'modalCreateClaimerType',
+                    },
+                    GenericListView.prototype.events
+                );
+            },
 
 
+            /** View Initialization
+             */
+            initialize: function (params) {
+                this.options = params;
 
-	/** Display the view
-	*/
-	render: function () {
-		var self = this;
+                var self = this;
 
-		// Change the page title //
-		app.router.setPageTitle(app.lang.viewsTitles.claimersTypesList);
+                this.initCollection().done(function () {
 
-		// Change the active menu item //
-		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
+                    // Unbind & bind the collection //
+                    self.collection.off();
+                    self.listenTo(self.collection, 'add', self.add);
 
-
-		
-		// Retrieve the template // 
-		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-			var template = _.template(templateData, {
-				lang           : app.lang,
-				nbClaimersTypes: self.collection.cpt
-			});
-			
-			$(self.el).html(template);
-
-			// Call the render Generic View //
-			app.Views.GenericListView.prototype.render(self.options);
+                    app.router.render(self);
+                })
+            },
 
 
-			// Create item category request view //
-			_.each(self.collection.models, function(claimerType, i){
-				var itemClaimerTypeView  = new app.Views.ItemClaimerTypeView({model: claimerType});
-				$('#rows-items').append(itemClaimerTypeView.render().el);
-			});
+            /** When the model ara created //
+             */
+            add: function (model) {
+
+                var itemClaimerTypeView = new ItemClaimerTypeView({ model: model });
+                $('#rows-items').prepend(itemClaimerTypeView.render().el);
+                AppHelpers.highlight($(itemClaimerTypeView.el));
+
+                app.notify('', 'success', app.lang.infoMessages.information, model.getName() + ' : ' + app.lang.infoMessages.claimerTypeCreateOk);
+                this.partialRender();
+            },
 
 
-			// Pagination view //
-			app.views.paginationView = new app.Views.PaginationView({ 
-				page       : self.options.page.page,
-				collection : self.collection
-			})
-			app.views.paginationView.render();
+            /** Display the view
+             */
+            render: function () {
+                var self = this;
 
-		});
-
-		$(this.el).hide().fadeIn();
-		
-		return this;
-	},
+                // Change the page title //
+                app.router.setPageTitle(app.lang.viewsTitles.claimersTypesList);
 
 
+                // Retrieve the template //
+                $.get("templates/" + this.templateHTML + ".html", function (templateData) {
+                    var template = _.template(templateData, {
+                        lang: app.lang,
+                        nbClaimersTypes: self.collection.cpt
+                    });
 
-	/** Partial Render of the view
-	*/
-	partialRender: function (type) {
-		var self = this; 
+                    $(self.el).html(template);
 
-		this.collection.count(this.fetchParams).done(function(){
-			$('#badgeNbClaimerTypes').html(self.collection.cpt);
-			app.views.paginationView.render();
-		});
-	},
-
-
-
-	/** Modal form to create a new Cat
-	*/
-	modalCreateClaimerType: function(e){
-		e.preventDefault();
-		
-		app.views.modalClaimerTypeView = new app.Views.ModalClaimerTypeView({
-			el  : '#modalSaveClaimerType'
-		});
-	},
+                    // Call the render Generic View //
+                    GenericListView.prototype.render(self.options);
 
 
-
-	/** Collection Initialisation
-	*/
-    initCollection: function(){
-		var self = this;
-
-		// Check if the collections is instantiate //
-		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.ClaimersTypes(); }
+                    // Create item category request view //
+                    _.each(self.collection.models, function (claimerType, i) {
+                        var itemClaimerTypeView = new ItemClaimerTypeView({model: claimerType});
+                        $('#rows-items').append(itemClaimerTypeView.render().el);
+                    });
 
 
-		// Check the parameters //
-		if(_.isUndefined(this.options.sort)){
-			this.options.sort = this.collection.default_sort;
-		}
-		else{
-			this.options.sort = app.Helpers.Main.calculPageSort(this.options.sort);	
-		}
-		this.options.page = app.Helpers.Main.calculPageOffset(this.options.page);
+                    // Pagination view //
+                    app.views.paginationView = new PaginationView({
+                        page: self.options.page.page,
+                        collection: self.collection
+                    })
+                    app.views.paginationView.render();
+
+                });
+
+                $(this.el).hide().fadeIn();
+
+                return this;
+            },
 
 
-		// Create Fetch params //
-		this.fetchParams = {
-			silent : true,
-			data   : {
-				limit  : app.config.itemsPerPage,
-				offset : this.options.page.offset,
-				sort   : this.options.sort.by+' '+this.options.sort.order
-			}
-		};
-		if(!_.isUndefined(this.options.search)){
-			this.fetchParams.data.filters = app.Helpers.Main.calculSearch({search: this.options.search }, app.Models.ClaimerType.prototype.searchable_fields);
-		}
+            /** Partial Render of the view
+             */
+            partialRender: function (type) {
+                var self = this;
+
+                this.collection.count(this.fetchParams).done(function () {
+                    $('#badgeNbClaimerTypes').html(self.collection.cpt);
+                    app.views.paginationView.render();
+                });
+            },
 
 
-		return $.when(self.collection.fetch(this.fetchParams))
-			.fail(function(e){
-				console.log(e);
-			})
+            /** Modal form to create a new Cat
+             */
+            modalCreateClaimerType: function (e) {
+                e.preventDefault();
 
-	}
+                app.views.modalClaimerTypeView = new ModalClaimerTypeView({
+                    el: '#modalSaveClaimerType'
+                });
+            },
 
-});
+
+            /** Collection Initialisation
+             */
+            initCollection: function () {
+                var self = this;
+
+                // Check if the collections is instantiate //
+                if (_.isUndefined(this.collection)) {
+                    this.collection = new ClaimersTypesCollection();
+                }
+
+
+                // Check the parameters //
+                if (_.isUndefined(this.options.sort)) {
+                    this.options.sort = this.collection.default_sort;
+                }
+                else {
+                    this.options.sort = AppHelpers.calculPageSort(this.options.sort);
+                }
+                this.options.page = AppHelpers.calculPageOffset(this.options.page);
+
+
+                // Create Fetch params //
+                this.fetchParams = {
+                    silent: true,
+                    data: {
+                        limit: app.config.itemsPerPage,
+                        offset: this.options.page.offset,
+                        sort: this.options.sort.by + ' ' + this.options.sort.order
+                    }
+                };
+                if (!_.isUndefined(this.options.search)) {
+                    this.fetchParams.data.filters = AppHelpers.calculSearch({search: this.options.search }, ClaimerTypeModel.prototype.searchable_fields);
+                }
+
+
+                return $.when(self.collection.fetch(this.fetchParams))
+                    .fail(function (e) {
+                        console.log(e);
+                    })
+
+            }
+
+        });
+
+
+    });

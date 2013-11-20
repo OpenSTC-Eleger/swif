@@ -1,0 +1,27 @@
+	<% var taskClass =''
+		if( task.state == TaskModel.status.draft.key ) taskClass = 'fa fa-chevron-right';
+		else if( task.state == TaskModel.status.open.key ) taskClass = 'fa fa-clock-o';
+		else taskClass ='';
+
+		var dateStart = moment(task.date_start).tz(UserModel.getContext().tz);
+		dateStart.add('minutes',-dateStart.zone());
+	%>
+
+	<i class="<%= taskClass %>" data-toggle="tooltip" data-placement="top" data-original-title="<%= dateStart.format('LLL') %>"></i> <%= task.name %>
+
+
+	<small class="nested-objects-actions invisible">
+		<% if( task.actions.indexOf("delete")>-1) { %>
+
+			<a href="#" class="modalDeleteTask" data-toggle="modal">
+				<i class="fa fa-times displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">&nbsp;</i>
+			</a>
+
+		<% } %>
+		<% if(task.actions.indexOf("cancel") > -1) { %>
+				<a href="#" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonCancelTask">
+					<i class="fa fa-ban displayInlineBlock" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>">&nbsp;</i>
+				</a>
+		<%}%>
+	</small>
+	<small class="badge badge-<%= TaskModel.status[task.state].color %> pull-right"><%= AppHelpers.decimalNumberToTime(task.planned_hours, 'human') %></small>

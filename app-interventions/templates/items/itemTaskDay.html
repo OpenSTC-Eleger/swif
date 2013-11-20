@@ -1,0 +1,73 @@
+<!-- Task name -->
+<td class="<%= (task.state == tasksStatus.done.key ? 'isCheck' : '') %>">
+	<!-- Check if the task is Orphan -->
+	<%= (task.project_id != false ? task.project_id[1] : '<i class="fa fa-asterisk"></i> '+task.name)  %>
+</td>
+
+<!-- Task Name -->
+<td><a href="#" class="updateTask"> <%= _.capitalize(task.name) %> </a></td>
+<td><%= (task.site1 !== false) ? task.site1[1] : '' %></td>
+<td><%= (date_start) != '' ? date_start.format('H[h]mm') : '' %></td>
+<td><%= (date_end) != '' ? date_end.format('H[h]mm') : '' %></td>
+
+<!-- Assign To -->
+<td>
+<% if(task.team_id == false){ %>
+	<%= task.user_id[1] %>
+<% } else { %>
+	<%= task.team_id[1] %>
+<% } %>
+</td>
+
+<td><%= AppHelpers.decimalNumberToTime(task.planned_hours, 'human') %></td>
+<td><%=(task.state != tasksStatus.draft.key && task.state != tasksStatus.absent.key) ? AppHelpers.decimalNumberToTime(task.remaining_hours, 'human') : '' %></td>
+
+<!-- Task State -->
+<td>
+	<!-- To Schedule / Cancelled / Schedule / Absent -->
+	<% if(task.state != tasksStatus.done.key) { %>
+		<span class="label label-<%= tasksStatus[task.state].color %>"><%= tasksStatus[task.state].translation %></span>
+
+	<!-- Finish -->
+	<% } else { 
+							
+		if(_(task.effective_hours).toNumber(2) <= _(task.planned_hours).toNumber(2)){ %>
+			<span class="label label-<%= tasksStatus.done.color %>"><%= tasksStatus.done.translation %></span>
+		<% } else  { %>
+			<span class="label label-overrun"><%= tasksStatus.done.translation %></span>
+		<% } 
+	} %>
+</td>
+
+<!-- Actions -->
+<td class="text-center">
+
+	<!-- Display Actions button if the task is schedule and the user isn't an officer -->
+	<% if(task.actions.indexOf("normal_mode_finished") > -1 && task.date_start) { %>
+
+		<!-- If the user is not an Agent or is a foreman -->
+		<%// if(displayFilter == true || task.team_id == false){ %>
+	
+		<div class="btn-group btn-group-sm">
+			<button class="btn btn-success buttonTaskDayDone" data-toggle="modal" data-taskid="<%= task.id %>"><i class="fa fa-check fa-fw"></i></button>
+			<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+
+			<ul class="dropdown-menu pull-right text-left" role="menu">
+				<% if(task.actions.indexOf("normal_mode_unfinished") > -1){%>
+				<li>
+					<a href="#" class="taskNotDone" data-taskid="<%= task.id %>">
+						<i class="fa fa-times fa-fw"></i>&nbsp;<%= _.capitalize(lang.notDone) %>
+					</a>
+				</li>
+				<li>
+					<a href="#" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonTaskDayTimeSpent">
+						<i class="fa fa-clock-o fa-fw"></i>&nbsp;<%= _.capitalize(lang.notFinished) %>
+					</a>
+
+				</li>
+				<% } %>
+			</ul>
+		</div>
+		<% //}
+	} %>
+</td>

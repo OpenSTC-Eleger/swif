@@ -1,7 +1,9 @@
-// XL screen / wide desktop
-@screen-xl:                  1600px;
-@screen-xl-desktop:          @screen-xl;
-@container-xl-desktop:        ((1900px + @grid-gutter-width));
+@screen-xl-min:             1600px;
+
+// Container sizes
+// --------------------------------------------------
+@container-xl-desktop:      97%;
+@container-xl:              @container-xl-desktop;
 
 
 // New Brand colors
@@ -58,4 +60,10 @@
   #gradient > .vertical(@primaryColor, @secondaryColor);
   border-color: @secondaryColor @secondaryColor darken(@secondaryColor, 15%);
   border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) fadein(rgba(0,0,0,.1), 15%);
+}
+
+.border-radius(@radius) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
 }

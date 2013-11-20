@@ -1,22 +1,35 @@
-/******************************************
-* Places Collection
-*/
-app.Collections.Places = app.Collections.GenericCollection.extend({
+define([
+	'genericCollection',
+	'placeModel'
 
-	model        : app.Models.Place,
+], function(GenericCollection, PlaceModel){
 
-	url          : '/api/openstc/sites',
-
-	fields       : ['id', 'actions', 'name', 'complete_name', 'service_names', 'site_parent_id', 'surface'],
-
-	default_sort : { by: 'name', order: 'ASC' },
+	'use strict';
 
 
-
-	/** Collection Initialization
+	/******************************************
+	* Places Collection
 	*/
-	initialize: function (options) {
-		//console.log('Place collection Initialization');
-	}
+	var PlacesCollection = GenericCollection.extend({
+
+		model        : PlaceModel,
+
+		url          : '/api/openstc/sites',
+
+		fields       : ['id', 'actions', 'name', 'complete_name', 'service_names', 'site_parent_id', 'surface'],
+
+		default_sort : { by: 'name', order: 'ASC' },
+
+
+
+		/** Collection Initialization
+		*/
+		initialize: function (options) {
+			//console.log('Place collection Initialization');
+		}
+
+	});
+
+return PlacesCollection;
 
 });

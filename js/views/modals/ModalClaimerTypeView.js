@@ -1,103 +1,101 @@
-/******************************************
-* Claimer Type Modal View
-*/
-app.Views.ModalClaimerTypeView = app.Views.GenericModalView.extend({
+define(['app', 'appHelpers', 'claimerTypeModel', 'claimersTypesCollection', 'genericModalView'],
+	function (app, AppHelpers, ClaimerTypeModel, ClaimersTypesCollection, GenericModalView) {
+
+	'use strict';
 
 
-	templateHTML : 'modals/modalClaimerType',
+	return GenericModalView.extend({
+
+		templateHTML: 'modals/modalClaimerType',
+
+		// The DOM events //
+		events      : function () {
+			return _.defaults({
+					'submit #formSaveClaimerType': 'saveClaimerType'
+				},
+				GenericModalView.prototype.events
+			);
+		},
+
+		
+
+		/** View Initialization
+		*/
+		initialize: function (params) {
+			this.options = params;
+
+			this.modal = $(this.el);
+
+			// Check if it's a create or an update //
+			if (_.isUndefined(this.model)) {
+				this.model = new ClaimerTypeModel();
+			}
+
+			this.render();
+		},
 
 
 
-	// The DOM events //
-	events: function(){
-		return _.defaults({
-			'submit #formSaveClaimerType'  : 'saveClaimerType'
-		}, 
-			app.Views.GenericModalView.prototype.events
-		);
-	},
+		/** Display the view
+		*/
+		render: function () {
+			var self = this;
 
+			// Retrieve the template //
+			$.get("templates/" + this.templateHTML + ".html", function (templateData) {
 
+				var template = _.template(templateData, {
+					lang       : app.lang,
+					claimerType: self.model
+				});
 
-	/** View Initialization
-	*/
-	initialize : function() {
+				self.modal.html(template);
 
-		this.modal = $(this.el);
-
-		// Check if it's a create or an update //
-		if(_.isUndefined(this.model)){
-			this.model = new app.Models.ClaimerType();
-		}
-
-		this.render();
-	},
-
-
-
-	/** Display the view
-	*/
-	render : function() {
-		var self = this;
-
-
-		// Retrieve the template // 
-		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-
-			var template = _.template(templateData, {
-				lang       : app.lang,
-				claimerType: self.model
+				self.modal.modal('show');
 			});
 
-			self.modal.html(template);
+			return this;
+		},
 
-			self.modal.modal('show');
-		});
+		/** Delete the model pass in the view
+		 */
+		saveClaimerType: function (e) {
+			e.preventDefault();
 
-		return this;
-	},
+			var self = this;
 
+			// Set the button in loading State //
+			$(this.el).find("button[type=submit]").button('loading');
 
+			// Set the properties of the model //
+			var params = {
+				name: this.$('#claimerTypeName').val(),
+				code: this.$('#claimerTypeCode').val().toUpperCase()
+			}
 
-	/** Delete the model pass in the view
-	*/
-	saveClaimerType: function(e){
-		e.preventDefault();
+			this.model.save(params)
+				.done(function (data) {
+					self.modal.modal('hide');
 
-		var self = this;
+					// Create mode //
+					if (self.model.isNew()) {
+						self.model.setId(data);
+						console.log(data);
+						self.model.fetch({silent: true, data: {fields: ClaimersTypesCollection.prototype.fields} }).done(function () {
+							app.views.claimersTypesListView.collection.add(self.model);
+						})
+						// Update mode //
+					} else {
+						self.model.fetch({ data: {fields: self.model.fields} });
+					}
+				})
+				.fail(function (e) {
+					AppHelpers.printError(e);
+				})
+				.always(function () {
+					$(self.el).find("button[type=submit]").button('reset');
+				});
+		},
 
-		// Set the button in loading State //
-		$(this.el).find("button[type=submit]").button('loading');
-
-
-		// Set the properties of the model //
-		var params = {
-			name       : this.$('#claimerTypeName').val(),
-			code       : this.$('#claimerTypeCode').val().toUpperCase()
-		}
-
-		this.model.save(params)
-			.done(function(data) {
-				self.modal.modal('hide');
-
-				// Create mode //
-				if(self.model.isNew()) {
-					self.model.setId(data);
-					console.log(data);
-					self.model.fetch({silent: true, data : {fields : app.Collections.ClaimersTypes.prototype.fields} }).done(function(){
-						app.views.claimersTypesListView.collection.add(self.model);
-					})
-				// Update mode //
-				} else {
-					self.model.fetch({ data : {fields : self.model.fields} });
-				}
-			})
-			.fail(function (e) {
-				app.Helpers.Main.printError(e);
-			})
-			.always(function () {
-				$(self.el).find("button[type=submit]").button('reset');
-			});
-	},
-
+	});
 });

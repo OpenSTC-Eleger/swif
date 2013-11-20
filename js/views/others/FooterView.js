@@ -1,39 +1,49 @@
-/******************************************
-* Footer View
-*/
-app.Views.FooterView = Backbone.View.extend({
+define([
+	'app',
 
-	el           : '#footer-navbar',
+], function(app){
 
-	templateHTML : 'footer',
 
- 
- 
-	/** View Initialization
+	/******************************************
+	* Footer View
 	*/
-	initialize: function () {
-		this.render();
-	},
+	var FooterView = Backbone.View.extend({
 
-	
+		el           : '#footer-navbar',
 
-	/** Display the view
-	*/
-	render: function () {
-		var self = this;
+		templateHTML : 'footer',
 
-		$.get("templates/" + this.templateHTML + ".html", function(templateData){
+	 
+	 
+		/** View Initialization
+		*/
+		initialize: function () {
+			this.render();
+		},
 
-			// Templating // 
-			var template = _.template(templateData, {
-				app  : app.properties,
-				lang : app.lang
+		
+
+		/** Display the view
+		*/
+		render: function () {
+			var self = this;
+
+			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+
+				// Templating // 
+				var template = _.template(templateData, {
+					app  : app.properties,
+					lang : app.lang
+				});
+
+				$(self.el).html(template);
 			});
+			return this;
+		}
 
-			$(self.el).html(template);
-		});
-		return this;
-	}
 
+	});
+
+return FooterView;
 
 });

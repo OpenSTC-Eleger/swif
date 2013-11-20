@@ -10,7 +10,7 @@
 			<!-- Login -->
 			<div class="form-group">
 				<div class="input-group input-group-lg">
-					<label for="loginUser" class="input-group-addon"><i class="icon-user"></i></label>
+					<label for="loginUser" class="input-group-addon"><i class="fa fa-user fa-lg fa-fw"></i></label>
 					<input type="text" id="loginUser" class="form-control" required placeholder="<%= _.capitalize(lang.login) %>" autocomplete="off" value="<%= user.getLogin() %>">
 				</div>
 			</div>
@@ -18,19 +18,19 @@
 			<!-- Password -->
 			<div class="form-group">
 				<div class="input-group input-group-lg">
-					<label for="passUser" class="input-group-addon"><i class="icon-lock"></i></label>
+					<label for="passUser" class="input-group-addon"><i class="fa fa-lock fa-lg fa-fw"></i></label>
 					<input type="password" id="passUser" class="form-control" required placeholder="<%= _.capitalize(lang.password) %>">
-					<span class="input-group-addon-inner"><i id="toggelDisplayPassword" class="icon-eye-open icon-large" data-toggle="tooltip" data-original-title="<%= lang.actions.displayPassword %>"></i>
+					<span class="input-group-addon-inner"><i id="toggelDisplayPassword" class="fa fa-eye fa-lg" data-toggle="tooltip" data-original-title="<%= lang.actions.displayPassword %>"></i>
 					</span>
 
 				</div>
-				<span id="errorLogin" class="help-block hide"><%= app.lang.errorMessages.loginIncorrect %></span>
+				<span id="errorLogin" class="help-block hide"><%= lang.errorMessages.loginIncorrect %></span>
 			</div>
 				<% if(!_.isNull(user.getUID())){ %>
 					<p class="help-block" id="lastConnection"><%= _.capitalize(lang.lastConnection) %>  <%= moment(user.getLastConnection()).format('LLL') %></p>
 				<% } %>
 
-				<button type="submit" class="btn btn-primary btn-block btn-lg" data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.connectionInProgress %>"><%= _.capitalize(lang.actions.logIn) %></button>
+				<button type="submit" class="btn btn-primary btn-block btn-lg" data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.connectionInProgress %>"><%= _.capitalize(lang.actions.logIn) %></button>
 
 		</fieldset>
 	</form>

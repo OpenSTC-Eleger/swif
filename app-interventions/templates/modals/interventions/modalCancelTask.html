@@ -1,0 +1,38 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 class="modal-title"><i class="fa fa-ban"></i>&nbsp<%= lang.viewsTitles.cancelTask %></h3>
+		</div>
+
+		
+		<!-- Modal Body -->
+		<div class="modal-body">
+
+			<blockquote id="infoModalCancelTask" class="spaceBottom">
+				<p><%= task.name%></p>
+				<small><%= task.project_id[1]%></small>
+			</blockquote>
+
+			<form id="formCancelTask" action="#" class="form-horizontal" role="form">
+			
+				<!-- Request refuse motif -->
+				<div class="form-group">
+					<label for="motifCancelTask" class="control-label col-sm-3"><%= _.capitalize(lang.reason) %>:</label>
+
+					<div class="col-sm-9">
+						<textarea id="motifCancelTask" class="form-control" rows="5" required></textarea>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- / Modal Body -->
+
+		<div class="modal-footer">
+			<button type="submit" form="formCancelTask" class="btn btn-danger"><%= _.capitalize(lang.actions.cancel) %></button>&nbsp;&nbsp;
+			<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+
+	</div>
+</div>

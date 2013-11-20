@@ -1,13 +1,15 @@
-/** Libraries Import
+/** Url
 */
-@libsUrl: "vendors/";
+@libsUrl         : 'vendors/';
+@appInterventions: '../app-interventions/css/';
+@appReservations : '../app-reservations/css/';
 
 
 // Twitter Bootstrap //
-@import "@{libsUrl}bootstrap-3.0.0/bootstrap";
+@import '@{libsUrl}bootstrap-3.0.2/bootstrap';
 
 // Font Awesome //
-@import '@{libsUrl}font-awesome-3.2.1/font-awesome';
+@import '@{libsUrl}font-awesome-4.0.3/font-awesome';
 
 // Bootstrap Datepicker //
 @import '@{libsUrl}bootstrap-datepicker-1.1.1';
@@ -25,12 +27,17 @@
 @import '@{libsUrl}fullcalendar-1.6.4.css';
 
 // Select2 //
-@import '@{libsUrl}select2-3.4.2.css';
+@import '@{libsUrl}select2-3.4.5.css';
 
 // NProgress //
 @import '@{libsUrl}NProgress-0.1.2';
 
 
-/** Application Style
-*/
+// Application Style //
 @import 'app/swif';
+
+// App Interventions Style //
+@import '@{appInterventions}interventions';
+
+// App Reservations Style //
+//@import '@{appReservations}reservations';

@@ -1,10 +1,10 @@
 <td>
-    <a class="accordion-object" href="#collapse_<%= claimer.id %>"><i class="icon-pushpin">&nbsp;&nbsp;</i><%= claimer.name %></a>
+    <a class="accordion-object" href="#collapse_<%= claimer.id %>"><i class="fa fa-thumb-tack">&nbsp;&nbsp;</i><%= claimer.name %></a>
                     <span class="object-actions invisible row-actions">
-                        <a href="#modalEditClaimer" class="modalEditClaimer" data-toggle="modal"><i class="icon-pencil"></i>&nbsp;<%= _.capitalize(lang.actions.update) %></a>
+                        <a href="#modalEditClaimer" class="modalEditClaimer" data-toggle="modal"><i class="fa fa-pencil fa-lg"></i></a>
                     </span>
 </td>
 <td><%= claimer.type_id[1]  %></td>
-<td class="hidden-phone"><%= (claimer.technical_site_id != null ? claimer.technical_site_id[1] : "") %></td>
+<td><%= (claimer.technical_site_id != null ? claimer.technical_site_id[1] : "") %></td>
 <td><%= (claimer.phone != false ? claimer.phone : "") %></td>
 <td><%= (claimer.email != false ? '<a href="mailto:'+claimer.email+'">'+claimer.email+'</a>' : "") %></td>

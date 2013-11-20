@@ -1,0 +1,232 @@
+<div class="page-header">
+	<h1>
+		<%= lang.viewsTitles.interventionsMonitoring %>
+		<sup class="badge badge-info" id="nbInterPlanned" data-toggle="tooltip" data-original-title="<%= lang.planningFenced %>" data-placement="bottom">
+			<%= nbInterventionsPlanned %>
+		</sup>
+
+		<sup class="badge" id="nbInterPending" data-toggle="tooltip" data-original-title="<%= lang.pending %>" data-placement="bottom">
+			<%= nbInterventionsPending %>
+		</sup>
+	</h1>
+</div>
+
+
+
+	<!-- Table toolbar -->
+	<div class="tableToolbar row">
+		<div class="col-xs-7 col-md-9 col-lg-10">
+			<a href="#" class="btn btn-primary modalCreateInter"><i class="fa fa-plus fa-fw"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
+		</div>
+
+		<form class=" form-search pull-right col-xs-5 col-md-3 col-lg-2">
+			<div class="input-group">
+				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+				<span class="input-group-btn">
+					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
+				</span>
+			</div>
+		</form>
+	</div>
+	<!-- /Table toolbar -->
+
+
+
+		<!-- Message if No intervention to Display -->
+	<% if(interventions.length <= 0) { %>
+		<div class="tableToolbar">
+			<div class="alert alert-info">
+				<i class="fa fa-info-circle fa-lg"></i>&nbsp;<%= lang.infoMessages.noRequest %>
+			</div>
+		</div>
+	<% } %>
+
+
+
+	<!-- Table Interventions -->
+	<div class="table-responsive">
+	<table class="table-interventions table table-bordered table-hover table-sorter table-striped-collapse">
+		<thead>
+			<tr>
+				<th data-sort-column="id">N°</th>
+				<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
+				<th><%= _.capitalize(lang.place) + ' / '%><%= _.capitalize(lang.equipment) %></th>
+				<th><%= _.capitalize(lang.dateDeadline) %></th>
+				<th><%= _.capitalize(lang.plannedHours) %></th>
+				<th><%= _.capitalize(lang.spentHours) %></th>
+				<th><%= _.capitalize(lang.progressRate) %>
+					<!-- Status Filter -->
+					<div class="dropdown pull-right">
+						<a id="filterStateInter" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="fa fa-filter fa-lg"></i></a>
+
+						<ul id="filterStateInterList" class="dropdown-menu" role="menu" aria-labelledby="filterStateInter">
+							<% _.each(interventionsState, function (state, i) {
+								if(i == interventionsState.template.key){ %>
+									<li class="divider"></li>
+							<% } %>
+								
+								<li role="menuitem">
+									<a tabindex="-1" href="#<%= state.key %>"> 
+										<i class="badge badge-<%= state.color %>">&nbsp;</i>
+										&nbsp; <%= _.capitalize(state.translation) %>
+									</a>
+								</li>
+
+							<% }) %>
+
+								<li role="menuitem">
+									<a href="#overrun"><i class="badge badge-overrun">&nbsp;</i>
+										&nbsp; <%= _.capitalize(lang.overrun) %>
+									</a>
+								</li>
+								<li class="divider"></li>
+								<li class="delete-filter disabled"><a href="#delete-filter"> <i class="fa fa-times"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
+						</ul>
+					</div>
+				</th>
+			</tr>
+		</thead>
+		
+		<tbody id="inter-items">
+		<!-- Inter rows -->
+		
+		</tbody>
+	</table>
+	</div>
+
+	<!-- Table pagination -->
+	<div id="pagination" class="pull-right"></div>
+	<!-- /Table pagination -->
+
+
+
+
+<!-- Modal Form to add a new Task to Inter -->
+<div id="modalAddTask" class="modal fade" role="dialog" aria-hidden="true"></div>
+
+<!-- Modal Form Delete Task -->
+<div id="modalDeleteTask" class="modal fade" role="dialog" aria-hidden="true"></div>
+
+<!-- Modal Form Cancel Intervention -->
+<div id="modalCancelInter" class="modal fade" role="dialog" aria-hidden="true"></div>
+
+<!-- Modal Form Task Done -->
+<div id="modalTaskDone" class="modal fade" role="dialog" aria-hidden="true"></div>
+
+<!-- Modal Form Cancel Task -->
+<div id="modalCancelTask" class="modal fade" role="dialog" aria-hidden="true"></div>
+
+<!-- Modal Form to add/update an inter -->
+<div id="modalSaveInter" class="modal fade" role="dialog" aria-hidden="true"></div>
+
+
+
+<!-- Form to print paperboard-->
+<div id="printTask" class="hide container-fluid printContainer" >
+
+	<div>
+		<div>
+			<h1 style="float: left;">Fiche d'interventions</h1>
+   			<img src="<%= logo_path %>" style="float: right" />
+   		</div>
+   		<hr style="clear: both;">
+
+
+
+		<fieldset style="font-size: 20px; margin-bottom: 30px; padding-top: 20px;">
+			<legend><strong><%= lang.aboutTheIntervention %>:</strong></legend>
+			<p id="interService" class="field" style="float: right; margin: 0;"></p><br />
+			<p style="float: right; margin: 0">
+				<strong id="interDateCreate" class="field"></strong>
+				<strong id="interDeadline" class="field"></strong>
+			</p>
+			<div style="clear: both;">
+				<em style="text-decoration:underline;"><%= _.capitalize(lang.intervention) %>:</em> <span id="interName" class="field"></span><br />
+				<em style="text-decoration:underline;"><%= _.capitalize(lang.description) %>:</em> <span id="interDescription" class="field"></span><br />
+				<em style="text-decoration:underline;" id="printPlaceOrEquipmentLabel"><%= _.capitalize(lang.place) %>:</em> <span id="interPlaceOrEquipment" class="field"></span><br />
+				<em style="text-decoration:underline;" id="printPlaceLabel"><%= _.capitalize(lang.place) %>:</em> <span id="interPlace" class="field"></span><br />
+				<em style="text-decoration:underline;"><%= _.capitalize(lang.informationOfTheSite) %>:</em> <span id="interPlaceMore" class="field"></span><br />
+			</div>
+
+			<fieldset style="font-size: 20px; margin-top: 30px;">
+				<legend><strong><%= lang.claimerDetails %>:</strong></legend>
+
+				<em style="text-decoration:underline;"><%= _.capitalize(lang.claiment) %>:</em> <span id="claimentName" class="field"></span><br />
+				<em style="text-decoration:underline;"><%= _.capitalize(lang.type) %>:</em> <span id="claimentType" class="field"></span><br />
+				<em style="text-decoration:underline;"><%= _.capitalize(lang.phone) %>:</em> <span id="claimentPhone" class="field"></span><br />
+			</fieldset>
+
+		</fieldset>
+		
+
+
+		<div class="forTask">
+			<fieldset style="font-size: 20px;">
+				<legend><strong><%= lang.aboutTheTask %>:</strong></legend>
+
+				<table style="width: 100%;">
+					<tr style="height: 50px;">
+						<td><strong><%= _.capitalize(lang.label) %>:</strong></td>
+						<td style="width: 80%" id="taskLabel"></td>
+					</tr>
+					<tr style="height: 50px;">
+						<td><strong><%= _.capitalize(lang.estimatedHours) %>:</strong></td>
+						<td style="width: 80%" id="taskPlannedHour"></td>
+					</tr>
+					<tr style="height: 50px;">
+						<td><strong><%= _.capitalize(lang.carryOutBy) %>:</strong></td>
+						<td class="toFill" style="width: 80%"></td>
+					</tr>
+					<tr style="height: 50px;">
+						<td><strong><%= _.capitalize(lang.dateHourStart) %>:</strong></td>
+						<td class="toFill" style="width: 80%"></td>
+					</tr>
+					<tr style="height: 50px;">
+						<td><strong><%= _.capitalize(lang.dateHourEnd) %>:</strong></td>
+						<td class="toFill" style="width: 80%"></td>
+					</tr>
+					<tr style="height: 80px;">
+						<td><strong><%= _.capitalize(lang.vehiclesOrEquipments) %>:</strong></td>
+						<td class="toFill" style="width: 80%"></td>
+					</tr>
+					<tr style="height: 50px;">
+						<td><strong><%= _.capitalize(lang.oil) %> / <%= _.capitalize(lang.price) %>:</strong></td>
+						<td class="toFill" style="width: 80%"></td>
+					</tr>
+					<tr style="height: 80px;">
+						<td><strong><%= _.capitalize(lang.observations) %>:</strong></td>
+						<td class="toFill" style="width: 80%"></td>
+					</tr>
+
+				</table>
+
+			</fieldset>
+		</div>
+
+
+		<div class="forInter">
+			<h3 style="margin-bottom: 5px;"><%= lang.viewsTitles.tasksList %>:</h3>
+
+				<table id="tableTasks" style="width: 100%; border: thin solid gray;">
+					<thead>
+						<tr>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.label) %></strong></td>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.estimatedHours) %></strong></td>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.carryOutBy) %></strong></td>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.dateHourStart) %></strong></td>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.dateHourEnd) %></strong></td>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.vehiclesOrEquipments) %></strong></td>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.oil) %> / <%= _.capitalize(lang.price) %></strong></td>
+							<td style="text-align: center"><strong><%= _.capitalize(lang.observations) %>:</strong></td>
+						</tr>
+					</thead>
+					
+					<tbody>
+
+					</tbody>
+				</table>
+
+		</div>
+
+	</div>
+</div>

@@ -1,22 +1,35 @@
-/******************************************
-* Equipments Collection
-*/
-app.Collections.Equipments = app.Collections.GenericCollection.extend({
+define([
+	'genericCollection',
+	'equipmentModel'
 
-	model       : app.Models.Equipment,
-		
-	url         : '/api/openstc/equipments',
-		
-	fields      : ['id', 'name', 'immat', 'marque', 'purchase_date', 'time', 'km', 'categ_id'],
+], function(GenericCollection, EquipmentModel){
 
-	default_sort: { by: 'name', order: 'ASC' },
+	'use strict';
 
 
-
-	/** Collection Initialization
+	/******************************************
+	* Equipments Collection
 	*/
-	initialize: function (options) {
-		//console.log('Equipment collection Initialization');
-	}
+	var EquipmentsCollection = GenericCollection.extend({
+
+		model       : EquipmentModel,
+			
+		url         : '/api/openstc/equipments',
+			
+		fields      : ['id', 'name', 'immat', 'marque', 'purchase_date', 'time', 'km', 'categ_id'],
+
+		default_sort: { by: 'name', order: 'ASC' },
+
+
+
+		/** Collection Initialization
+		*/
+		initialize: function (options) {
+			//console.log('Equipment collection Initialization');
+		}
+
+	});
+
+return EquipmentsCollection;
 
 });

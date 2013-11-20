@@ -1,81 +1,73 @@
-/******************************************
-* Header View
-*/
-app.Views.HeaderView = Backbone.View.extend({
+define([
+	'app',
 
-	el           : '#header-navbar',
-
-	templateHTML : 'header',
+], function(app){
 
 
-	// The DOM events //
-	events: {
-		'click li.disabled' : 'preventDefault'
-	},
-
-
-	/** View Initialization
+	/******************************************
+	* Header View
 	*/
-	initialize: function () {
-		this.render();
-	},
+	var HeaderView = Backbone.View.extend({
+
+		el           : '#header-navbar',
+
+		templateHTML : 'header',
+
+
+		// The DOM events //
+		events: {
+			'click li.disabled' : 'preventDefault'
+		},
+
+
+		/** View Initialization
+		*/
+		initialize: function () {
+			this.render();
+		},
 
 
 
-	/** Display the view
-	*/
-	render: function(){
-		var self = this;
+		/** Display the view
+		*/
+		render: function(){
+			var self = this;
 
-		$.get("templates/" + this.templateHTML + ".html", function(templateData) {
 
-			var template = _.template(templateData, {
-				lang  : app.lang,
-				user  : app.models.user
+			var currentModule = _(Backbone.history.fragment).strLeft('/');
+			var currentUrl    = _(_(Backbone.history.fragment).strRight('/')).strLeft('/');
+
+			if(currentUrl == app.config.menus.openbase){
+				currentUrl = _(_(_(Backbone.history.fragment).strRight('/')).strRight('/')).strLeft('/');
+				currentModule = app.config.menus.openbase;
+			}
+
+
+			$.get("templates/" + this.templateHTML + ".html", function(templateData) {
+
+
+				var template = _.template(templateData, {
+					lang         : app.lang,
+					user         : app.models.user,
+					menusToLoad  : app.config.menus,
+					currentModule: currentModule,
+					currentUrl   : currentUrl
+				});
+
+				$(self.el).html(template);
+
 			});
 
-			$(self.el).html(template);
-
-		});
-
-	},
+		},
 
 
-
-	/** Change the active menu item
-	*/
-	selectMenuItem: function (menuItem) {
-		$('#nav-menu-app li').removeClass('active');
-
-		if(menuItem){
-			$('#' + menuItem).addClass('active');
-		}
-	},
+		preventDefault: function(event){
+			event.preventDefault();
+		},
 
 
+	});
 
-	/** Change the Grid view of the page
-	*/
-	switchGridMode: function(type){
-
-		switch(type){
-
-			case 'fluid' :
-				$('#container').removeClass('container').addClass('container-fluid');
-				$('#rowContainer').removeClass('row').addClass('row-fluid');
-			break;
-
-			case 'default' :
-				$('#rowContainer').removeClass('row-fluid').addClass('row');
-				$('#container').removeClass('container-fluid').addClass('container');
-			break;
-		}
-	},
-
-
-	preventDefault: function(event){
-		event.preventDefault();
-	},
-
+return HeaderView;
 
 });

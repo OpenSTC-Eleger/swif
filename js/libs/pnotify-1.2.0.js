@@ -38,20 +38,20 @@
 			bootstrap: {
 				container: "alert",
 				notice: "",
-				notice_icon: "icon-exclamation-sign icon-large",
-				info: "alert-info icon-large",
-				info_icon: "icon-info-sign icon-large",
-				success: "alert-success icon-large",
-				success_icon: "icon-ok-sign icon-large",
-				error: "alert-error icon-large",
-				error_icon: "icon-warning-sign icon-large",
-				closer: "icon-remove",
-				pin_up: "icon-pause",
-				pin_down: "icon-play",
+				notice_icon: "fa fa-exclamation-circle fa-lg",
+				info: "alert-info fa-lg",
+				info_icon: "fa fa-info-circle fa-lg",
+				success: "alert-success fa-lg",
+				success_icon: "fa fa-check-circle fa-lg",
+				error: "alert-error fa-lg",
+				error_icon: "icon-warning-sign fa-lg",
+				closer: "fa fa-times",
+				pin_up: "fa fa-pause",
+				pin_down: "fa fa-play",
 				hi_menu: "well",
 				hi_btn: "btn",
 				hi_btnhov: "",
-				hi_hnd: "icon-chevron-down"
+				hi_hnd: "fa fa-chevron-down"
 			}
 		};
 	// Set global variables.

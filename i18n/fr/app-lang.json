@@ -269,15 +269,15 @@
 	},
 
 	"errorMessages" : {
-		"connectionError"     														: "Erreur de connexion",
-		"serverError"         														: "Erreur interne du serveur",
-		"loginIncorrect"      														: "Identifiant ou mot de passe incorrect",
-		"fillError" 		  														: "Erreur de saisie",
-		"unablePerformAction" 														: "Impossible d'effectuer l'action",
-		"serverUnreachable"   														: "Impossible d'établir la connexion avec le serveur, contactez l'administrateur",
-		"sufficientRights"    														: "Vous n'avez pas les droits suffisants pour éffectuer cette action",
-		"The code name must be unique !"											: "Ce code existe déjà",
-		"Name and Category parent must be unique! Change name or category parent"	: "Cette Catégorie existe déjà! Changer le nom ou sa catégorie d'appartenance"
+		"connectionError"               : "Erreur de connexion",
+		"serverError"                   : "Erreur interne du serveur",
+		"loginIncorrect"                : "Identifiant ou mot de passe incorrect",
+		"fillError"                     : "Erreur de saisie",
+		"unablePerformAction"           : "Impossible d'effectuer l'action",
+		"serverUnreachable"             : "Impossible d'établir la connexion avec le serveur, contactez l'administrateur",
+		"sufficientRights"              : "Vous n'avez pas les droits suffisants pour éffectuer cette action",
+		"codeNameUniq"                  : "Ce code existe déjà",
+		"catMustBeUniq"                 : "Cette Catégorie existe déjà! Changer le nom ou sa catégorie d'appartenance"
 	},
 
 	"validationMessages" : {
@@ -306,7 +306,7 @@
 		"noRequest"      	  	: "Aucune demande d'intervention à afficher",
 		"noRequestPlanned"		: "Aucune intervention planifiées",
 		"noPlace"				: "Aucun site à afficher",
-		"noClaimer"				: "Aucune organisation enregistré",
+		"noClaimer"				: "Aucune organisation à afficher",
 		"noPartner" 			: "Aucun contact enregistré. Ajouter des contacts.",
 		"noService"				: "Aucun service à afficher",
 		"noAbsentType"			: "Aucun type d'absence à afficher",
@@ -426,6 +426,7 @@
 		"claimersList"			 : "Liste des organisations",
 		"statementTask"			 : "Relevé de la tâche",
 		"statementEndTask"		 : "Relevé de la tâche non terminée",
-		"pageNotFound" 			 : "Page non trouvée"
+		"pageNotFound" 			 : "Page non trouvée",
+		"editClaimer" 		     : "Edition de l'organisation"
 	}
 }

@@ -1,0 +1,58 @@
+	
+	<!-- Interventions toolbar -->	
+	<div id="planningToolbar" class="row tableToolbar">
+		<!-- href add intervention -->
+		<div class="col-xs-8 col-sm-12 col-md-8">
+			<a href="#" class="btn btn-primary modalCreateInter"><i class="fa fa-plus fa-fw"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
+		</div>
+
+		<!-- Filter -->
+		<div class="dropdown col-xs-4 col-sm-8 col-md-4">
+
+			<a id="filterStateIntervention" class="dropdown-toggle filter-button pull-right" data-toggle="dropdown" href="#">
+		   		<i class="fa fa-filter fa-lg"> <%= _.capitalize(lang.status) %></i>
+			</a>
+
+			<ul id="filterStateInterventionList" class="dropdown-menu" aria-labelledby="filterStateIntervention">
+
+				<% _.each(interventionsState, function (state, i) {
+					if(i == InterventionModel.status.scheduled.key || i == InterventionModel.status.open.key || i == InterventionModel.status.pending.key || i == InterventionModel.status.template.key){
+				%>
+					<li>
+						<a tabindex="-1" href="#<%= state.key %>">
+							<i class="badge badge-<%= state.color %>">&nbsp;</i>
+							&nbsp; <%= _.capitalize(state.translation) %>
+						</a>
+					</li>
+				<% }
+				}) %>
+					<li class="divider"></li>
+					<li class="delete-filter disabled"><a href="#delete-filter"><%= _.capitalize(lang.deleteFilter) %></a></li>
+			</ul>
+		</div>
+		<br />
+	</div>
+	<!-- /Interventions toolbar -->
+	
+	
+	<!-- Intervention panel -->
+	<% if( _.size(interventions) == 0 ) { %>
+		<!-- No interventions to display -->
+		<div class="alert alert-info noInter">
+			<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noRequest %>
+		</div>	
+	<% } else{%>
+
+	<table class="table table-bordered table-hover table-striped-collapse">
+		<tbody id="inter-items">
+
+		</tbody>
+	
+	</table>
+	
+		<!-- Table pagination -->
+		<div id="pagination"></div>
+		<!-- /Table pagination -->
+	<% } %>
+		
+	<!-- /Intervention panel -->

@@ -1,0 +1,77 @@
+<div class="page-header">
+	<h1>
+		<%= lang.viewsTitles.servicesList %>
+		<sup id="badgeNbServices" class="badge"><%= nbServices %></sup>
+	</h1>
+</div>
+
+
+
+	<!-- Table toolbar -->
+	<div class="tableToolbar row">
+		<div class="col-xs-7 col-md-9 col-lg-10">
+			<a href="#" class="btn btn-primary modalCreateService"><i class="fa fa-plus fa-fw"></i> <%= _.capitalize(lang.actions.addService) %></a>
+		</div>
+
+		<form class="form-search pull-right col-xs-5 col-md-3 col-lg-2">
+			<div class="input-group">
+				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+				<span class="input-group-btn">
+					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
+				</span>
+			</div>
+		</form>
+	</div>
+	<!-- Table toolbar -->
+
+
+
+	<!-- Check if there is any Places to display -->
+	<% if(nbServices <= 0) { %>
+
+		<!-- No place to display -->
+		<div class="alert alert-info">
+			<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noService %>.
+		</div>
+
+	<% } %>
+
+
+
+	<!-- Table Requests -->
+	<div class="table-responsive">
+	<table class="table table-bordered table-hover table-striped-collapse table-sorter">
+		<thead>
+			<tr>
+				<th data-sort-column="name"><%= _.capitalize(lang.name) %></th>
+				<th data-sort-column="code"><%= _.capitalize(lang.code) %></th>					
+				<th><%= _.capitalize(lang.manager) %></th>
+				<th><%= _.capitalize(lang.parentService) %></th>
+				<th class="col-sm-1"><%= _.capitalize(lang.technicalService) %></th>
+			</tr>
+		</thead>
+		<tbody id="rows-items">
+	
+		</tbody>
+	</table>
+	</div>
+
+
+	<!-- Table pagination -->
+	<div id="pagination" class="pull-right"></div>
+	<!-- /Table pagination -->
+
+
+
+
+<!-- Modal Form to add/update a Service -->
+<div id="modalSaveService" class="modal fade" role="dialog" aria-hidden="true"></div>
+
+<!-- Modal Form Delete Service -->
+<div id="modalDeleteService" class="modal fade" role="dialog" aria-hidden="true" data-backdrop="static"></div>
+
+<!-- Modal Form Save officer -->
+<div id="modalSaveOfficer" class="modal fade" role="dialog" aria-hidden="true"></div>
+
+<!-- Modal Form Delete officer -->
+<div id="modalDeleteOfficer" class="modal fade" role="dialog" aria-hidden="true" data-backdrop="static"></div>

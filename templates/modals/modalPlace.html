@@ -5,7 +5,7 @@
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			<h3 class="modal-title">
-				<i class="icon-edit"></i>&nbsp;
+				<i class="fa fa-edit"></i>&nbsp;
 				<% if(_.isNull(place.getId())){ %>
 					<%= _.capitalize(lang.viewsTitles.newPlace) %>
 				<% } else{ %>
@@ -117,7 +117,7 @@
 
 		<div class="modal-footer">
 			<button type="submit" form="formSavePlace" class="btn btn-primary" 
-				data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= lang.saveInProgress %>"
+				data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.saveInProgress %>"
 				<%= (_.isUndefined(loader) ? '' : 'disabled') %>
 			>
 				<%= _.capitalize(lang.actions.save) %>

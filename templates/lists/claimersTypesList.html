@@ -1,0 +1,66 @@
+<div class="page-header">
+	<h1>
+		<%= lang.viewsTitles.claimersTypesList %>
+		<sup id="badgeNbClaimerTypes" class="badge"><%= nbClaimersTypes %></sup>
+	</h1>
+</div>
+
+
+	
+	<!-- Table toolbar -->
+	<div class="tableToolbar row">
+		<div class="col-xs-7 col-md-9 col-lg-10">
+			<a href="#" class="btn btn-primary modalCreateClaimerType"><i class="fa fa-plus fa-fw"></i> <%= _.capitalize(lang.actions.addClaimersTypes) %></a>
+		</div>
+
+		<form class="form-search pull-right col-xs-5 col-md-3 col-lg-2">
+			<div class="input-group">
+				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+				<span class="input-group-btn">
+					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
+				</span>
+			</div>
+		</form>
+	</div>
+	<!-- Table toolbar -->
+
+
+	<!-- Check if there is any Claimer Type to display -->
+	<% if(nbClaimersTypes <= 0) { %>
+
+		<!-- No Claimer Type to display -->
+		<div class="alert alert-info">
+			<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noClaimersType %>.
+		</div>
+
+	<% } %>
+
+
+	<!-- Table Categories -->
+	<div class="table-responsive">
+	<table class="table table-bordered table-hover table-striped table-sorter">
+		<thead>
+			<tr>
+				<th data-sort-column="name"><%= _.capitalize(lang.name) %></th>
+				<th data-sort-column="code" class="col-sm-4"><%= _.capitalize(lang.code) %></th>
+			</tr>
+		</thead>
+		<tbody id="rows-items">
+
+		</tbody>
+	</table>
+	</div>
+
+
+	<!-- Table pagination -->
+	<div id="pagination" class="pull-right"></div>
+	<!-- /Table pagination -->
+
+
+
+
+<!-- Modal Form to add/update a Cat -->
+<div id="modalSaveClaimerType" class="modal fade"></div>
+
+<!-- Modal Form Delete Cat -->
+<div id="modalDeleteClaimerType" class="modal fade" data-backdrop="static"></div>

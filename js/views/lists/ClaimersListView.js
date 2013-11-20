@@ -1,219 +1,223 @@
-/******************************************
-* Claimers List View
-*/
-app.Views.ClaimersListView = app.Views.GenericListView.extend({
+define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListView', 'paginationView', 'claimerView', 'claimerContactsListView', 'modalClaimerEdit'
 
-	el : '#rowContainer',
+], function (app, AppHelpers, ClaimersCollection, ClaimerModel, GenericListView, PaginationView, ClaimerView, ClaimerContactsListView, ModalClaimerEdit) {
 
-	templateHTML: 'claimers',
+    'use strict';
 
-	selectedClaimer : '',
-	selectedContact : '',
+    /******************************************
+     * Claimers List View
+     */
+    return GenericListView.extend({
 
+        el: '#rowContainer',
 
-    // The DOM events //
-    events: function(){
-		return _.defaults({
-				'click a.modalNewClaimer' : 'modalNewClaimer'
-			},
-			app.Views.GenericListView.prototype.events
-		);
-	},
+        templateHTML: 'lists/claimers',
+
+        selectedClaimer: '',
+        selectedContact: '',
 
 
-
-	/** View Initialization
-	*/
-	initialize: function (params) {
-		this.options = params;
-
-		var self = this;
-		this.initCollection().done(function () {
-			self.collection.off();
-			self.listenTo(self.collection, 'add', self.add);
-
-			app.router.render(self);
-		})
-	},
+        // The DOM events //
+        events: function () {
+            return _.defaults({
+                    'click a.modalNewClaimer': 'modalNewClaimer'
+                },
+                GenericListView.prototype.events
+            );
+        },
 
 
-	initCollection: function () {
-		if(_.isUndefined(this.collection)){ this.collection = new app.Collections.Claimers(); }
+        /** View Initialization
+         */
+        initialize: function (params) {
+            this.options = params;
 
-		if(_.isUndefined(this.options.sort)){
-			this.options.sort = this.collection.default_sort;
-		}
-		else{
-			this.options.sort = app.Helpers.Main.calculPageSort(this.options.sort);
-		}
-		this.options.page = app.Helpers.Main.calculPageOffset(this.options.page);
+            var self = this;
+            this.initCollection().done(function () {
+                self.collection.off();
+                self.listenTo(self.collection, 'add', self.add);
 
-
-		// Create Fetch params //
-		var fetchParams = {
-			silent : true,
-			data   : {
-				limit  : app.config.itemsPerPage,
-				offset : this.options.page.offset,
-				sort   : this.options.sort.by+' '+this.options.sort.order
-			}
-		};
-		if(!_.isUndefined(this.options.search)){
-			fetchParams.data.filters = app.Helpers.Main.calculSearch({search: this.options.search }, app.Models.Claimer.prototype.searchable_fields);
-		}
+                app.router.render(self);
+            })
+        },
 
 
-		return $.when(this.collection.fetch(fetchParams))
-			.fail(function(e){
-				console.error(e);
-			})
+        initCollection: function () {
+            if (_.isUndefined(this.collection)) {
+                this.collection = new ClaimersCollection();
+            }
 
-	},
-
-
-	/** Display the view
-	*/
-    render: function () {
-		var self = this;
-
-		// Change the page title //
-        app.router.setPageTitle(app.lang.viewsTitles.claimersList);
-
-		// Change the active menu item //
-		app.views.headerView.selectMenuItem(app.router.mainMenus.configuration);
+            if (_.isUndefined(this.options.sort)) {
+                this.options.sort = this.collection.default_sort;
+            }
+            else {
+                this.options.sort = AppHelpers.calculPageSort(this.options.sort);
+            }
+            this.options.page = AppHelpers.calculPageOffset(this.options.page);
 
 
-
-		// Retrieve the template // 
-		$.get("templates/" + this.templateHTML + ".html", function (templateData) {
-			var template = _.template(templateData, {
-				lang      : app.lang,
-				nbClaimers: self.collection.cpt,
-			});
-
-			$(self.el).html(template);
-			app.Views.GenericListView.prototype.render(self.options);
-
-
-			$('*[data-toggle="tooltip"]').tooltip();
-
-			_.each(self.collection.models, function (claimer, i) {
-				var simpleView = new app.Views.ClaimerView({model: claimer})
-				var detailedView = new app.Views.ClaimerContactsListView({model: claimer})
-				$('#claimersList').append( simpleView.render().el );
-				$('#claimersList').append(detailedView.render().el);
-				simpleView.detailedView = detailedView;
-			});
-
-			// Set the focus to the first input of the form //
-			$('#modalSaveContact, #modalSaveClaimer').on('shown', function (e) {
-				$(this).find('input, textarea').first().focus();
-			})
-
-			app.views.paginationView = new app.Views.PaginationView({
-				page       : self.options.page.page,
-				collection : self.collection
-			})
-			app.views.paginationView.render();
-
-		});
-
-		$(this.el).hide().fadeIn('slow');
-
-		return this;
-	},
+            // Create Fetch params //
+            var fetchParams = {
+                silent: true,
+                data: {
+                    limit: app.config.itemsPerPage,
+                    offset: this.options.page.offset,
+                    sort: this.options.sort.by + ' ' + this.options.sort.order
+                }
+            };
+            if (!_.isUndefined(this.options.search)) {
+                fetchParams.data.filters = AppHelpers.calculSearch({search: this.options.search }, ClaimerModel.prototype.searchable_fields);
+            }
 
 
-	add: function(model){
-		var claimerView  = new app.Views.ClaimerView({ model: model });
-		$('#claimersList').prepend(claimerView.render().el);
-		app.Helpers.Main.highlight($(claimerView.el));
+            return $.when(this.collection.fetch(fetchParams))
+                .fail(function (e) {
+                    console.error(e);
+                })
 
-		app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.claimerCreateOK);
-		this.partialRender();
-	},
+        },
 
 
+        /** Display the view
+         */
+        render: function () {
+            var self = this;
 
-	getIdInDropDown: function(view) {
-		if ( view && view.getSelected() )
-			var item = view.getSelected().toJSON();
-			if( item )
-				return [ item.id, item.name ];
-		else 
-			return 0
-	},
-
-	getTarget:function(e) {    	
-    	e.preventDefault();
-	    // Retrieve the ID of the intervention //
-		var link = $(e.target);
-		this.pos =  _(link.parents('tr').attr('id')).strRightBack('_');
-		
-    },
-	
-	setModel: function(e) {
-    	this.getTarget(e);
-    	var self = this;
-	    this.selectedClaimer = _.filter(app.collections.claimers.models, function(item){ return item.attributes.id == self.pos });
-	    if( this.selectedClaimer.length>0 ) {
-	    	this.model = this.selectedClaimer[0];
-	    	this.selectedClaimerJson = this.model.toJSON();        
-	    }
-	    else {
-	    	this.selectedClaimerJson = null;
-	    }        
-	},
-
-	modalNewClaimer: function(e){
-		e.preventDefault();
-		app.views.modalClaimerView = new app.Views.ModalClaimerEdit({
-			el  : '#modalEditClaimer'
-		});
-	},
-
-	
-	
-	/** Display information to the Modal for delete claimer
-	*/
-	modalDeleteClaimer: function(e){
-
-	    // Retrieve the ID of the Claimer //
-		this.setModel(e);
+            // Change the page title //
+            app.router.setPageTitle(app.lang.viewsTitles.claimersList);
 
 
-	    $('#infoModalDeleteClaimer p').html(this.selectedClaimerJson.name);
-	    $('#infoModalDeleteClaimer small').html(this.selectedClaimerJson.type_id[1]);
-	},
+            // Retrieve the template //
+            $.get("templates/" + this.templateHTML + ".html", function (templateData) {
+                var template = _.template(templateData, {
+                    lang: app.lang,
+                    nbClaimers: self.collection.cpt
+                });
 
-	/** Delete the selected claimer
-	*/
-	deleteClaimer: function(e){
-		e.preventDefault();
-		
-	   	var self = this;
-		this.model.delete({
-			success: function(data){
-				if(data.error){
-					app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-				}
-				else{
-					app.collections.claimers.remove(self.model);
-					$('#modalDeleteClaimer').modal('hide');
-					app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.claimerDeleteOk);
-					self.render();
-				}
-			},
-			error: function(e){
-				console.error(e);
-				alert("Impossible de supprimer le demandeur");
-			}
-	
-		});
-	},
+                $(self.el).html(template);
+                GenericListView.prototype.render(self.options);
 
-	preventDefault: function(event){
-		event.preventDefault();
-	},
 
+                $('*[data-toggle="tooltip"]').tooltip();
+
+                _.each(self.collection.models, function (claimer, i) {
+                    var simpleView = new ClaimerView({model: claimer})
+                    var detailedView = new ClaimerContactsListView({model: claimer})
+                    $('#claimersList').append(simpleView.render().el);
+                    $('#claimersList').append(detailedView.render().el);
+                    simpleView.detailedView = detailedView;
+                });
+
+                // Set the focus to the first input of the form //
+                $('#modalSaveContact, #modalSaveClaimer').on('shown', function (e) {
+                    $(this).find('input, textarea').first().focus();
+                })
+
+                app.views.paginationView = new PaginationView({
+                    page: self.options.page.page,
+                    collection: self.collection
+                })
+                app.views.paginationView.render();
+
+            });
+
+            $(this.el).hide().fadeIn('slow');
+
+            return this;
+        },
+
+
+        add: function (model) {
+            var claimerView = new ClaimerView({ model: model });
+            $('#claimersList').prepend(claimerView.render().el);
+            AppHelpers.highlight($(claimerView.el));
+
+            app.notify('', 'success', app.lang.infoMessages.information, model.getName() + ' : ' + app.lang.infoMessages.claimerCreateOK);
+            //this.partialRender();
+        },
+
+
+        getIdInDropDown: function (view) {
+            if (view && view.getSelected())
+                var item = view.getSelected().toJSON();
+            if (item)
+                return [ item.id, item.name ];
+            else
+                return 0
+        },
+
+        getTarget: function (e) {
+            e.preventDefault();
+            // Retrieve the ID of the intervention //
+            var link = $(e.target);
+            this.pos = _(link.parents('tr').attr('id')).strRightBack('_');
+
+        },
+
+        setModel: function (e) {
+            this.getTarget(e);
+            var self = this;
+            this.selectedClaimer = _.filter(app.collections.claimers.models, function (item) {
+                return item.attributes.id == self.pos
+            });
+            if (this.selectedClaimer.length > 0) {
+                this.model = this.selectedClaimer[0];
+                this.selectedClaimerJson = this.model.toJSON();
+            }
+            else {
+                this.selectedClaimerJson = null;
+            }
+        },
+
+        modalNewClaimer: function (e) {
+            e.preventDefault();
+            app.views.modalClaimerView = new ModalClaimerEdit({
+                el: '#modalEditClaimer'
+            });
+        },
+
+
+        /** Display information to the Modal for delete claimer
+         */
+        modalDeleteClaimer: function (e) {
+
+            // Retrieve the ID of the Claimer //
+            this.setModel(e);
+
+
+            $('#infoModalDeleteClaimer p').html(this.selectedClaimerJson.name);
+            $('#infoModalDeleteClaimer small').html(this.selectedClaimerJson.type_id[1]);
+        },
+
+        /** Delete the selected claimer
+         */
+        deleteClaimer: function (e) {
+            e.preventDefault();
+
+            var self = this;
+            this.model.delete({
+                success: function (data) {
+                    if (data.error) {
+                        app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+                    }
+                    else {
+                        app.collections.claimers.remove(self.model);
+                        $('#modalDeleteClaimer').modal('hide');
+                        app.notify('', 'info', app.lang.infoMessages.information, app.lang.infoMessages.claimerDeleteOk);
+                        self.render();
+                    }
+                },
+                error: function (e) {
+                    console.error(e);
+                    alert("Impossible de supprimer le demandeur");
+                }
+
+            });
+        },
+
+        preventDefault: function (event) {
+            event.preventDefault();
+        },
+
+    });
 });

@@ -4,10 +4,11 @@
 	thead {
 		th[data-sort-column] {
 			cursor: pointer;
+			line-height: initial;
 			&:hover{
 				background-color: darken(@table-bg-hover, 5%);
 				i{
-					.text-muted;
+					color: darken(@text-muted, 15%);
 				}
 			}
 			i.active{
@@ -21,6 +22,8 @@
 // New color //
 .table-row-variant(info; @state-info-bg; @state-info-border);
 
+tr.selectable{cursor: pointer}
+
 
 /* Table Striped collapse 
 -------------------------------------------------- */
@@ -33,4 +36,12 @@
 	      }
 	    }
 	  }
+}
+
+
+
+/* Button group in <td>
+-------------------------------------------------- */
+th.actions{
+	min-width: 80px;
 }

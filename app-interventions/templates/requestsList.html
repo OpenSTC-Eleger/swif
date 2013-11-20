@@ -1,0 +1,127 @@
+<div class="page-header">
+	<h1>
+		<%= lang.viewsTitles.requestsList %>
+
+
+		<% if(user.isDST() || user.isManager()){
+
+		  if(user.isDST()) { 
+				var classColor      = RequestModel.status.confirm.color;
+				var filterValue     = RequestModel.status.confirm.key;
+				var actionToProcess = lang.actions.confirm; 
+			}
+			else if(user.isManager()){ 
+		   		var classColor      = RequestModel.status.wait.color;
+		   		var filterValue     = RequestModel.status.wait.key;
+		   		var actionToProcess = lang.actions.process; }
+			else{ 
+		   		var classColor      = '';
+		   		var actionToProcess = '';
+		   		var filterValue     = ''; 
+			}
+		%>
+		
+		<sup id="badgeActions" class="badge badge-<%= classColor %> badge-action" data-filter="<%= filterValue %>" data-toggle="tooltip" data-original-title="<%= actionToProcess %>" data-placement="bottom">
+			<%= nbRequestsToDeal %>
+		</sup>
+
+		<% } %>
+
+		<sup id="bagdeCpt" class="badge"><%= nbRequests %></sup>
+	</h1>
+</div>
+
+
+
+
+	<!-- Table toolbar -->
+	<div class="tableToolbar row">
+		<div class="col-xs-7 col-md-9 col-lg-10">
+			<a href="#" class="btn btn-primary createRequest"><i class="fa fa-plus fa-fw"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
+		</div>
+
+		<form class="form-search pull-right col-xs-5 col-md-3 col-lg-2">
+			<div class="input-group">
+				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+				<span class="input-group-btn">
+					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
+				</span>
+			</div>
+		</form>
+	</div>
+	<!-- Table toolbar -->
+
+
+
+	<!-- Message if No Request to Display -->
+	<% if(nbRequests <= 0) { %>
+		<div class="tableToolbar">
+			<div class="alert alert-info">
+				<i class="fa fa-info-circle fa-lg"></i>&nbsp;<%= lang.infoMessages.noRequest %>
+			</div>
+		</div>
+	<% } %>
+
+
+	<!-- Table Requests -->
+	<div class="table-responsive ">
+	<table class="table table-striped table-bordered table-hover table-sorter">
+		<thead>
+			<tr>
+				<th data-sort-column="id">N°</th>
+				<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
+				<th><%= _.capitalize(lang.place) %>  / <%= _.capitalize(lang.equipment) %></th>
+				<th><%= _.capitalize(lang.service) %></th>
+				<th><%= _.capitalize(lang.claiment) %></th>
+				<th data-sort-column="create_date"><%= _.capitalize(lang.createDate) %></th>
+				<th>
+					<%= _.capitalize(lang.status) %>
+					<div class="dropdown pull-right">
+						<a id="filterStateRequest" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="fa fa-filter fa-lg"></i></a>
+
+						<ul id="filterStateRequestList" class="dropdown-menu" role="menu" aria-labelledby="filterStateRequest">
+							<% _.each(requestsState, function (state, i) { %>
+								<li role="menuitem">
+									<a tabindex="-1" href="#<%= state.key %>"> 
+										<i class="badge badge-<%= state.color %>">&nbsp;</i>
+										&nbsp; <%= _.capitalize(state.translation) %>
+									</a>
+								</li>
+							<% }) %>
+								<li class="divider" role="menuitem"></li>
+								<li class="delete-filter disabled" role="menuitem"><a href="#delete-filter"><i class="fa fa-times"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
+						</ul>
+					</div>
+				</th>
+
+				<% if(user.isDST() || user.isManager()){ %>
+					<th class="actions"><%= _.capitalize(lang.action) %></th>
+				<% } %>
+			</tr>
+		</thead>
+		<tbody id="rows-items">
+			
+		</tbody>
+
+	</table>
+	</div>
+	<!-- /Table Requests -->
+
+
+	<!-- Table pagination -->
+	<div id="pagination" class="pull-right"></div>
+	<!-- /Table pagination -->
+
+
+
+<!-- Modal form to add a request -->
+<div id="modalSaveRequest" class="modal fade" aria-hidden="true"></div>
+
+<!-- Modal form to valid a request -->
+<div id="modalValidRequest" class="modal fade" role="dialog" aria-hidden="true"></div>
+
+<!-- Modal form to refuse a request -->
+<div id="modalRefuseRequest" class="modal fade" role="dialog" aria-hidden="true" data-backdrop="static"></div>
+
+<!-- Modal form to Confirm a request -->
+<div id="modalConfirmRequest" class="modal fade" role="dialog" aria-hidden="true"></div>

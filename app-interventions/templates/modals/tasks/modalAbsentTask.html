@@ -1,0 +1,89 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 class="modal-title">
+				<i class="fa fa-pencil-square-o"></i>&nbsp;
+				<%= _.capitalize(lang.viewsTitles.newAbsent) %>
+			</h3>
+		</div>
+
+		<div class="modal-body">
+
+			<blockquote id="infoModalAbsentTask" class="spaceBottom">
+				<p></p>
+				<small></small>
+			</blockquote>
+
+
+			<form id="formAbsentTask" action="#" class="form-horizontal" role="form">
+
+
+			    	<!-- Absent Type -->
+			    	<div class="form-group">
+						<label for="absentType" class="control-label col-sm-3"><%= _.capitalize(lang.type) %>:</label>
+						
+						<div class="col-sm-9">
+							<input id="absentType" class="select2" required data-placeholder="<%= lang.actions.selectAbsentType %>"/>
+						</div>
+					</div>
+
+					<!-- Absent start date / hour -->
+					<div class="form-group">
+						<label for="startDate" class="control-label col-sm-3"><%= _.capitalize(lang.dateStart) %>:</label>
+
+						<!-- Start date -->
+						<div class="form-inline">
+						<div class="col-sm-4">
+							<div class="input-group">
+								<input  type="text" class="datepicker form-control" id="startDate" required>
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+							</div>
+						</div>
+
+						<!-- Start Hour -->
+						<div class="col-sm-3">
+							<div class="input-group bootstrap-timepicker">
+							    <input type="text" class="timepicker-default form-control" id='startHour' required>
+							    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+							</div>
+						</div>
+						</div>
+					</div>
+		            
+
+					<!-- Absent end date / hour -->
+		            <div class="form-group">
+		                <label for="endDate" class="control-label col-sm-3"><%= _.capitalize(lang.dateEnd) %>:</label>
+
+						<!-- End Date -->
+						<div class="col-sm-4">
+							<div class="input-group">
+						        <input type="text" class="datepicker form-control" id="endDate" placeholder="dd/mm/yyyy" required>
+					    		<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+					    	</div>
+					    </div>
+
+					    <!-- End Hour -->
+					    <div class="col-sm-3">
+						    <div class="input-group bootstrap-timepicker" >							
+						    	<input type="text" class="timepicker-default form-control" id='endHour' required>
+						    	<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+							</div>
+						</div>
+
+		            </div>
+
+			</form>
+		</div>
+		
+		<div class="modal-footer">
+		    <button type="button" id="btnAddAbsentTask" class="btn btn-primary" data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.saveInProgress %>">
+		    	<%= _.capitalize(lang.actions.save) %>
+		    </button>&nbsp;&nbsp;
+		    
+		    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+	</div>
+</div>

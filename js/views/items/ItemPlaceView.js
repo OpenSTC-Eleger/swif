@@ -1,113 +1,129 @@
-/******************************************
-* Row Place View
-*/
-app.Views.ItemPlaceView = Backbone.View.extend({
+define([
+	'app',
+	'appHelpers',
 
-	tagName      : 'tr',
+	'modalPlaceView',
+	'modalDeleteView'
 
-	className    : 'row-item',
+], function(app, AppHelpers, ModalPlaceView, ModalDeleteView){
 
-	templateHTML : 'items/itemPlace',
-
-
-	// The DOM events //
-	events: {
-		'click'                    : 'modalUpdatePlace',
-		'click a.modalDeletePlace' : 'modalDeletePlace'
-	},
+	'use strict';
 
 
-
-	/** View Initialization
+	/******************************************
+	* Row Place View
 	*/
-	initialize : function() {
-		this.model.off();
+	var ItemPlaceView = Backbone.View.extend({
 
-		// When the model are updated //
-		this.listenTo(this.model, 'change', this.change);
+		tagName      : 'tr',
 
-		// When the model are destroy //
-		this.listenTo(this.model,'destroy', this.destroy);
-	},
+		className    : 'row-item',
+
+		templateHTML : 'items/itemPlace',
 
 
-
-	/** When the model is updated //
-	*/
-	change: function(e){
-
-		this.render();
-		app.Helpers.Main.highlight($(this.el));
-		app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
-	},
+		// The DOM events //
+		events: {
+			'click'                    : 'modalUpdatePlace',
+			'click a.modalDeletePlace' : 'modalDeletePlace'
+		},
 
 
 
-	/** When the model is destroy //
-	*/
-	destroy: function(e){
-		var self = this;
+		/** View Initialization
+		*/
+		initialize : function() {
+			this.model.off();
 
-		app.Helpers.Main.highlight($(this.el)).done(function(){
-			self.remove();
-			app.views.placesListView.partialRender();
-		});
+			// When the model are updated //
+			this.listenTo(this.model, 'change', this.change);
 
-		app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.placeDeleteOk);
-		
-	},
+			// When the model are destroy //
+			this.listenTo(this.model,'destroy', this.destroy);
+		},
 
 
 
-	/** Display the view
-	*/
-	render : function() {
-		var self = this;
+		/** When the model is updated //
+		*/
+		change: function(e){
 
-		// Retrieve the template // 
-		$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			this.render();
+			AppHelpers.highlight($(this.el));
+			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
+		},
 
-			var template = _.template(templateData, {
-				lang  : app.lang,
-				place : self.model
+
+
+		/** When the model is destroy //
+		*/
+		destroy: function(e){
+			var self = this;
+
+			AppHelpers.highlight($(this.el)).done(function(){
+				self.remove();
+				app.views.placesListView.partialRender();
 			});
 
-			$(self.el).html(template);
-
-			// Set the Tooltip //
-			$('*[data-toggle="tooltip"]').tooltip();
-		});
-
-		return this;
-	},
+			app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.placeDeleteOk);
+			
+		},
 
 
 
-	/** Display Modal form to add/sav a new place
-	*/
-	modalUpdatePlace: function(e){  
-		e.preventDefault(); e.stopPropagation();
+		/** Display the view
+		*/
+		render : function() {
+			var self = this;
 
-		app.views.modalPlaceView = new app.Views.ModalPlaceView({
-			el      : '#modalSavePlace',
-			model   : this.model,
-			elFocus : $(e.target).data('form-id')
-		});
-	},
+			// Retrieve the template // 
+			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+
+				var template = _.template(templateData, {
+					lang  : app.lang,
+					place : self.model
+				});
+
+				$(self.el).html(template);
+
+				// Set the Tooltip //
+				$('*[data-toggle="tooltip"]').tooltip();
+			});
+
+			return this;
+		},
 
 
 
-	/** Modal to remove a place
-	*/
-	modalDeletePlace: function(e){
-		e.preventDefault(); e.stopPropagation();
+		/** Display Modal form to add/sav a new place
+		*/
+		modalUpdatePlace: function(e){  
+			e.preventDefault(); e.stopPropagation();
 
-		app.views.modalDeleteView = new app.Views.ModalDeleteView({
-			el           : '#modalDeletePlace',
-			model        : this.model,
-			modalTitle   : app.lang.viewsTitles.deletePlace,
-			modalConfirm : app.lang.warningMessages.confirmDeletePlace
-		});
-	},
+			app.views.modalPlaceView = new ModalPlaceView({
+				el      : '#modalSavePlace',
+				model   : this.model,
+				elFocus : $(e.target).data('form-id')
+			});
+		},
+
+
+
+		/** Modal to remove a place
+		*/
+		modalDeletePlace: function(e){
+			e.preventDefault(); e.stopPropagation();
+
+			app.views.modalDeleteView = new ModalDeleteView({
+				el           : '#modalDeletePlace',
+				model        : this.model,
+				modalTitle   : app.lang.viewsTitles.deletePlace,
+				modalConfirm : app.lang.warningMessages.confirmDeletePlace
+			});
+		},
+
+	});
+
+return ItemPlaceView;
 
 });

@@ -1,0 +1,19 @@
+<td>
+	<i class="fa fa-tag">&nbsp;&nbsp;</i><%= absentType.getName() %>
+
+	<p class="row-actions invisible">
+		<% if(_.contains(absentType.getActions(), 'update')){ %>
+		<a href="#" class="modalUpdateAbsentType">
+			<i class="fa fa-pencil fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
+		</a>&nbsp;
+		<% } %>
+
+		<% if(_.contains(absentType.getActions(), 'delete')){ %>
+		<a href="#" class="modalDeleteAbsentType">
+			<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+		</a>
+		<% } %>
+	</p>
+</td>
+<td data-form-id="absentTypeCode"><%= absentType.getCode() %></td>
+<td data-form-id="absentTypeDescription"><%= absentType.getDescription() %></td>

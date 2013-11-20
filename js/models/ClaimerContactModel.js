@@ -1,13 +1,25 @@
-/******************************************
-* Claimer Contact Model
-*/
-app.Models.ClaimerContact = app.Models.GenericModel.extend({
+define([
+	'genericModel',
 
-	urlRoot : "/api/open_object/partner_addresses",
+], function(GenericModel){
+
+	'user strict';
 
 
-	getInformations: function () {
-		return this.getName();
-	}
+	/******************************************
+	* Claimer Contact Model
+	*/
+	var ClaimerContactModel = GenericModel.extend({
+
+		urlRoot : "/api/open_object/partner_addresses",
+
+
+		getInformations: function () {
+			return this.getName();
+		}
+
+	});
+
+return ClaimerContactModel;
 
 });

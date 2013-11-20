@@ -1,0 +1,21 @@
+<td>
+	<a class="accordion-object" href="#collapse_<%= intervention.id %>" rel="popover" data-content="<%= _(intervention.description).escapeHTML() %>" 		
+		data-delay="160" data-title="<%= _.capitalize(lang.description) %>">
+		<i class="fa fa-thumb-tack">&nbsp;&nbsp;</i><%= _.capitalize(_(intervention.name).escapeHTML()) %>
+	</a>
+	
+	<!-- Interventions action -->
+	<p class="row-actions invisible">
+		<a href="#" class="modalSaveInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>">
+			<i class="fa fa-pencil fa-lg"></i>
+		</a>&nbsp;
+
+		<% if(intervention.actions.indexOf("cancel") > -1 ) { %>
+			 &nbsp;<a href="#" class="buttonCancelInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"><i class="fa fa-ban fa-lg"></i></a> 
+		<% } %>
+	</p>
+	
+</td>
+
+
+<td class="text-center"><small class="badge badge-<%= classColor %>"><%= informationHour %></small></td>

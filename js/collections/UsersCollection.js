@@ -1,17 +1,32 @@
-/******************************************
-* Users Collection - Person who are Log in
-*/
-app.Collections.Users = Backbone.Collection.extend({
+define([
+	'localStorage',
 
-	model       : app.Models.User,
+	'userModel'
 
-	localStorage: new Backbone.LocalStorage('users-collection'),
+], function(UserModel){
+
+	'use strict';
 
 
-	/** Collection Initialization
+	/******************************************
+	* Users Collection - Person who are Log in
 	*/
-	initialize : function() {
-		//console.log('User collection initialize');
-	},
+	var UsersCollection = Backbone.Collection.extend({
+
+		model       : UserModel,
+
+		localStorage: new Backbone.LocalStorage('users-collection'),
+
+
+		/** Collection Initialization
+		*/
+		initialize : function() {
+			//console.log('User collection initialize');
+		},
+
+	});
+
+
+	return UsersCollection;
 
 });

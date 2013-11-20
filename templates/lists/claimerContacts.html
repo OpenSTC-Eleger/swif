@@ -1,0 +1,32 @@
+<td colspan="5" class="nestedTD">
+	
+	<table class="table-nested-objects table table-striped table-condensed table-hover">
+		<thead>
+		<tr>
+			<th><%= _.capitalize(lang.name) %></th>
+			<th><%= _.capitalize(lang.function) %></th>
+			<th><%= _.capitalize(lang.phone) %></th>
+			<th><%= _.capitalize(lang.email) %></th>
+			<th><%= _.capitalize(lang.mobile) %></th>
+			<th><%= _.capitalize(lang.street) %></th>
+			<th><%= _.capitalize(lang.city) %></th>
+		</tr>
+		</thead>
+		<tbody id="claimerContactsList_<%= claimer.id %>">
+
+		</tbody>
+	</table>
+
+	<% if(contactNb == 0) { %>
+	<!-- No Claimer to display -->
+	<div class="alert alert-info">
+		<i class="fa fa-info-circle"></i> &nbsp;<%= lang.infoMessages.noPartner %>.
+	</div>
+	<% } %>
+
+	<div class="div-actions">
+		<button class="btn btn-primary btn-small no-outline modalNewContact" data-action="create" data-toggle="modal" data-target="#modalEditContact">
+			<i class="fa fa-plus fa-fw"></i>&nbsp; <%= _.capitalize(lang.actions.addContact) %>
+		</button>
+	</div>
+</td>

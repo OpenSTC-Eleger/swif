@@ -1,0 +1,148 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		    <h3 class="modal-title"><%= lang.viewsTitles.statementTask %></h3>
+		</div>
+
+		<div class="modal-body">
+
+			<blockquote>
+				<p><%=task.name%></p>
+				<small><%= task.project_id[1]%></small>
+			</blockquote>
+
+		    <form id="formTaskDone" action="#" class="form-horizontal" role="form">
+
+				<!-- Users or Teams -->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="selectUsersTeams"><%= _.capitalize(lang.carryOutBy) %>:</label>
+
+					<div class="col-sm-9">	
+						   <div class="input-group">
+      						<div class="input-group-btn">
+							<!--<div class="input-prepend">-->
+							<button class="btn dropdown-toggle" id="btnSelectUsersTeams" data-toggle="dropdown"><i class="fa fa-user fa-fw iconItem"></i>&nbsp; <span class="fa fa-caret-down"></span></button>
+							<ul class="dropdown-menu">
+								<li><a href="#" class="linkSelectUsersTeams" data-item="officers"><i class="fa fa-user fa-fw"></i> <%= lang.agents %></a></li>
+								<li><a href="#" class="linkSelectUsersTeams" data-item="teams"><i class="fa fa-users fa-fw"></i> <%= lang.teams %></a></li>
+							</ul>
+							</div>
+							<input id="selectUsersTeams" class="select2" required data-placeholder="<%= lang.actions.selectAAgentShort %>" data-item="officers"/>
+						</div>
+						<!--</div>-->
+					</div>
+				</div>
+
+		    	<!-- Start date / Start Hour -->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="startDate"><%= _.capitalize(lang.dateStart) %>:</label>
+
+					<!-- Start date -->
+					<div class="input-group col-sm-4">
+						<input type="text" class="datepicker form-control" id="startDate" value="" placeholder="dd/mm/yyyy" required="required">
+						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+					</div>
+
+					<!-- Start hour -->
+					<div class="input-group bootstrap-timepicker col-sm-3" >							
+						<input type="text" class="timepicker-default form-control" id='startHour' required="required">
+						<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+					</div>
+				</div>
+
+
+				<!-- End date / End Hour -->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="endDate"><%= _.capitalize(lang.dateEnd) %>:</label>
+
+					<!-- End date -->
+					<div class="input-group col-sm-4">
+						<input type="text" class="datepicker form-control" id="endDate" placeholder="dd/mm/yyyy" required>
+						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+					</div>
+
+					<!-- End Hour -->
+					<div class="input-group bootstrap-timepicker col-sm-3">
+					    <input type="text" class="timepicker-default form-control" id='endHour' required>
+					    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+					</div>
+				</div>
+
+				<div id="remainingTimeSection" class="hide-soft">
+					<!-- Remaining Time -->
+					<div id="remainingTimeSection" class="form-group">
+						<label for="eventRemainingTime" class="control-label col-sm-3"><%= lang.remainingTime %>:</label>
+						<div class="col-sm-9">
+							<div class="input-append bootstrap-timepicker">
+								<input type="text" class="timepicker-default form-control" id="eventRemainingTime" value="02:00">
+								<span class="add-on"><i class="fa fa-clock-o"></i></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- Vehicle -->
+				<div class="form-group">
+					<label for="taskEquipmentDone" class="control-label col-sm-3"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
+
+					<div class="col-sm-9 input-group">
+						<span class="input-group-addon linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
+							<i class="fa fa-tint"></i>
+						</span>
+						<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect" data-placeholder="<%= lang.actions.selectAVehicle %>"/>						
+					</div>
+				</div>
+
+
+				<!-- Refueling Vehicle -->
+				<fieldset class="refueling-vehicle hide-soft">
+					<legend><i class="fa fa-tint"></i> <%= _.capitalize(lang.oil) %></legend>
+
+					<div class="form-group">
+						<div class="form-inline">
+							<!-- KM -->
+							<div class="col-sm-4">
+								<label for="equipmentKmDone"><%= _.capitalize(lang.milometer) %>:</label>
+								<input type="number" id="equipmentKmDone" class="equipmentKm form-control" placeholder="<%= lang.inKm %>" />
+							</div>
+
+							<!-- Oil -->
+							<div class="col-sm-4">
+								<label for="equipmentOilQtityDone"><%= _.capitalize(lang.quantity) %>:</label>
+								<input type="text" id="equipmentOilQtityDone" class="form-control" placeholder="<%= lang.inLiter %>" />
+							</div>
+
+							<!-- Oil Price -->
+							<div class="col-sm-4">
+								<label for="equipmentOilPriceDone"><%= _.capitalize(lang.price) %>:</label>
+								<input type="text" id="equipmentOilPriceDone" class="form-control" placeholder="<%= lang.inEuro %>" />
+							</div>
+						</div>
+					</div>
+
+				</fieldset>
+				
+
+				<!-- Equipments -->
+				<fieldset>
+					<div class="form-group">
+						<label for="taskEquipmentListDone" class="control-label col-sm-3"><%= _.capitalize(lang.equipment) %>:</label>
+						<div class="form-controls col-sm-9">
+							<input id="taskEquipmentListDone" class="select2 taskEquipment taskSelect taskInput"
+								data-placeholder="<%= lang.actions.selectEquipments %>" data-multiple="multiple"/>
+						</div>
+					</div>
+				</fieldset>
+
+		    </form>
+		</div>
+
+		<div class="modal-footer">
+		    <button type="submit" form="formTaskDone" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+		    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+
+	</div>
+</div>

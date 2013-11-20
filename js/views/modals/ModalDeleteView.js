@@ -1,92 +1,107 @@
-/******************************************
-* Modal Delete View
-*/
-app.Views.ModalDeleteView = app.Views.GenericModalView.extend({
+define([
+	'app',
+
+	'genericModalView',
 
 
-	templateHTML : 'modals/modalDelete',
+], function(app, GenericModalView){
+
+	'use strict';
 
 
-	// The DOM events //
-	events: function(){
-		return _.defaults({
-			'click .btnDelete' : 'deleteModel',
-		}, 
-			app.Views.GenericModalView.prototype.events
-		);
-	},
-
-
-
-	/** View Initialization
+	/******************************************
+	* Modal Delete View
 	*/
-	initialize : function(params) {
-
-		this.options = params;
-
-		this.modal = $(this.el);
+	var ModalDeleteView = GenericModalView.extend({
 
 
-		// If the text for the modal wasn't set //
-		if(_.isUndefined(this.options.modalTitle)){
-			this.options.modalTitle = app.lang.viewsTitles.deleteElement;
-		}
-		if(_.isUndefined(this.options.modalConfirm)){
-			this.options.modalConfirm = app.lang.warningMessages.confirmDeleteElement;
-		}
+		templateHTML : 'modals/modalDelete',
 
 
-		this.render();
-	},
+		// The DOM events //
+		events: function(){
+			return _.defaults({
+				'click .btnDelete' : 'deleteModel',
+			}, 
+				GenericModalView.prototype.events
+			);
+		},
 
 
 
-	/** Display the view
-	*/
-	render : function() {
-		var self = this;
+		/** View Initialization
+		*/
+		initialize : function(params) {
 
-		// Retrieve the template // 
-		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-		 
-			var template = _.template(templateData, {
-				lang         : app.lang,
-				modalTitle   : self.options.modalTitle,
-				modalConfirm : self.options.modalConfirm,
-				model        : self.model
+			this.options = params;
+
+			this.modal = $(this.el);
+
+
+			// If the text for the modal wasn't set //
+			if(_.isUndefined(this.options.modalTitle)){
+				this.options.modalTitle = app.lang.viewsTitles.deleteElement;
+			}
+			if(_.isUndefined(this.options.modalConfirm)){
+				this.options.modalConfirm = app.lang.warningMessages.confirmDeleteElement;
+			}
+
+
+			this.render();
+		},
+
+
+
+		/** Display the view
+		*/
+		render : function() {
+			var self = this;
+
+			// Retrieve the template // 
+			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			 
+				var template = _.template(templateData, {
+					lang         : app.lang,
+					modalTitle   : self.options.modalTitle,
+					modalConfirm : self.options.modalConfirm,
+					model        : self.model
+				});
+
+				self.modal.html(template);
+				self.modal.modal('show');
 			});
 
-			self.modal.html(template);
-			self.modal.modal('show');
-		});
-
-		return this;
-	},
+			return this;
+		},
 
 
 
-	/** Delete the model pass in the view
-	*/
-	deleteModel: function(e){
-		var self = this;
+		/** Delete the model pass in the view
+		*/
+		deleteModel: function(e){
+			var self = this;
 
 
-		// Set the button in loading State //
-		$(e.target).button('loading');
+			// Set the button in loading State //
+			$(e.target).button('loading');
 
-		// Delete the Model //
-		this.model.destroy({wait: true})
-		.done(function(data){
-			self.modal.modal('hide');
-		})
-		.fail(function(){
-			app.notify('', 'danger', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
-		})
-		.always(function(){
-			// Reset the button state //
-			$(e.target).button('reset');
-		})
+			// Delete the Model //
+			this.model.destroy({wait: true})
+			.done(function(data){
+				self.modal.modal('hide');
+			})
+			.fail(function(){
+				app.notify('', 'danger', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+			})
+			.always(function(){
+				// Reset the button state //
+				$(e.target).button('reset');
+			})
 
-	}
+		}
+
+	});
+
+return ModalDeleteView;
 
 });

@@ -1,108 +1,39 @@
 /******************************************
 * APPLICATION NAMESPACE
 */
+define('app', [
 
-var app = {
+	// Load our app module and pass it to our definition function
+	'backbone', 'nprogress', 'pnotify', 'bootstrap'
+
+], function(Backbone, NProgress, pnotify){
+
+	'use strict';
 
 
-	// Classes //
-	Collections     : {},
-	Models          : {},
-	Views           : {},
-	Helpers         : {},
+var app =  {
+
 
 	// Instances //
-	properties      : {},
-	routes          : {},
-	configuration   : {},
-	lang            : {},
-	collections     : {},
-	models          : {},
-	views           : {},
-
-
-
-	/** Application initialization
-	*/
-	init: function (lang) {
-		var self = this;
-
-
-		// Retrieve App properties, configuration and language //
-		$.when(app.loadStaticFile('properties.json'), app.loadStaticFile('config/configuration.json'), app.loadStaticFile('config/routes.json'), app.loadI18nScripts(lang))
-			.done(function (properties_data, configuration_data, routes_data, lang_data) {
-
-				// Set the app properties configuration and language //
-				app.properties    = properties_data[0];
-				app.config 		  = configuration_data[0];
-				app.routes        = routes_data[0];
-				app.lang          = lang_data[0];
-
-
-				// Instantiation of UsersCollections & UserModel //
-				app.collections.users           = new app.Collections.Users();
-				app.collections.users.fetch();
-				
-				if(_.isEmpty(app.collections.users.models)){
-					app.models.user = new app.Models.User();
-					app.collections.users.add(app.models.user);
-				}
-				else{
-					app.models.user = app.collections.users.at(0);	
-				}
-				
-				// Set the Ajax Setup //
-				self.setAjaxSetup();
-
-				// Router initialization //
-				app.router = new app.Router();
-
-				// Listen url changes //
-				Backbone.history.start({pushState: false});
-			})
-			.fail(function(){
-				console.error('Unable to init the app');
-			});
-
-	},
-
-
-
-	/** Load internationalization scripts
-	*/
-	loadI18nScripts: function (lang) {
-
-		var langFiles = ['moment-lang.js', 'bootstrap-datepicker-lang.js', 'select2-lang.js'];
-		
-		return $.getJSON('i18n/'+lang+'/app-lang.json')
-			.success(function(data) {
-			
-				_.each(langFiles, function(file){
-					var script = document.createElement('script');
-					script.type = 'text/javascript';
-					script.src = 'i18n/' + lang + '/' + file;
-					$('#app').append(script);
-				});
-
-				// I18N Moment JS //
-				moment.lang(lang);
-
-			})
-			.fail(function(){
-				alert('Unable to load the language files');
-			});
-	},
+	properties     : {},
+	routes         : {},
+	config         : {},
+	lang           : {},
+	collections    : {},
+	models         : {},
+	views          : {},
 
 
 
 	/** Load Static file
 	*/
 	loadStaticFile: function (url) {
+
 		return $.getJSON(url)
 			.success(function (data) {
 			})
 			.fail(function () {
-				alert('Unable to load the file : ') + url;
+				console.error('Unable to load the file : ' + url);
 			});
 	},
 
@@ -110,21 +41,28 @@ var app = {
 
 	setAjaxSetup: function(){
 
+		if(_.isUndefined(window.ajaxRequest)){
+			window.ajaxRequest = 0;
+		};
+
 		// Set The Ajax Config //
 		$.ajaxSetup({
 			contentType: "application/json",
 			headers: {Authorization: 'Token token=' + app.models.user.getAuthToken()},
-			beforeSend: function(){
-				NProgress.start();
+			beforeSend: function(a, b){
+				window.ajaxRequest++;
+				
+				if(!NProgress.isStarted()){ NProgress.start(); }
 			},
 			complete: function(){
-				NProgress.done();
+				window.ajaxRequest--;
+				if(window.ajaxRequest == 0){ NProgress.done(); }
 			},
 			statusCode: {
 				401: function() {
 					// Redirect the to the login page only if we are not on the login page //
 					if(Backbone.history.fragment != app.routes.login.url){
-						app.Helpers.Main.clearViews();
+						app.clearViews();
 						app.router.navigate(app.routes.login.url, {trigger: true, replace: true});
 					}
 					app.loader('hide');
@@ -178,6 +116,16 @@ var app = {
 
 
 
+
+	// Clear all the view off the app Undelegate and delete //
+	clearViews: function(){
+		_.each(app.views, function(view, viewName){
+			view.undelegateEvents();
+		});
+	},
+
+
+
 	/** Notification Message
 	*/
 	notify: function(notifyModel, type, title, message) {
@@ -222,15 +170,6 @@ var app = {
 
 };
 
+return app;
 
-
-// No conflict between Underscore && Underscore String //
-_.mixin(_.str.exports());
-
-
-/******************************************
-* AFTER THE LOADING OF THE PAGE
-*/
-$(document).ready(function () {
-	app.init('fr');
 });

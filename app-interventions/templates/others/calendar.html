@@ -1,0 +1,75 @@
+<!-- List Officer/Teams -->
+<div>
+	<ul class="nav nav-tabs" id="allTabs">
+		<li class="active">
+			<a href="#" data-target="#tab-agents" data-toggle="tab">
+				<%= _.capitalize(lang.agents) %> &nbsp;<span id="nbOfficersDisplay" class="badge"><%= _.size(officers) %></span>
+			</a>
+		</li>
+		<li>
+			<a href="#" data-target="#tab-teams" data-toggle="tab">
+				<%= _.capitalize(lang.teams) %> &nbsp;<span id="nbTeamsDisplay" class="badge"><%= _.size(teams) %></span>
+			</a>
+		</li>
+		<li class="pull-right">
+			<input type="search" id="searchOfficerOrTeam" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off" />
+		</li> 
+	</ul>
+
+	<div class="tab-content">
+		
+		<!-- Officers -->
+		<div class="tab-pane active tab-pane-planning" id="tab-agents">
+			<ul id="listAgents" class="nav nav-pills">
+				<%_.each(officers, function (officer, i) { %>
+					<li data-name="<%= officer.complete_name.toLowerCase() %>">
+						<a id="pOfficer_<%= officer.id %>" href="#planning/officer/<%= officer.id %>">
+							<i class="fa fa-user fa-fw"></i>&nbsp;<%= officer.name.toUpperCase() %> &nbsp; <%= (officer.firstname != false ? officer.firstname : '') %>
+						</a>
+					</li>
+				<% }) %>
+			</ul>
+		</div>
+
+		<!-- Teams -->
+		<div class="tab-pane fade tab-pane-planning" id="tab-teams">
+			<ul id="listTeams" class="nav nav-pills">
+				<% _.each(teams, function (team, i) {
+
+					var teamMembers = "<li><i class='fa fa-asterisk'></i> "+ team.manager_id[1] +"</li>";
+
+					_.each(team.members, function(teamMember){
+						teamMembers += "<li><i class='fa fa-user'></i>&nbsp;"+ (teamMember.firstname != false ? teamMember.firstname.replace(' ', '&nbsp;') : '') +"&nbsp;"+ teamMember.name.toUpperCase().replace(' ', '&nbsp;') +"</li>"
+					});
+				%>
+
+					<li data-toggle="popover" data-original-title="<%= _.capitalize(lang.agents) %>" data-content="<ul class='list-unstyled'><%= teamMembers %></ul>" 
+						data-html="true" data-placement="left" data-name="<%= team.name.toLowerCase() %>">
+						<a id="pTeam_<%= team.id %>" href="#planning/team/<%= team.id %>">
+							<i class="fa fa-users fa-fw"></i>&nbsp;<%= team.name %>
+						</a>
+					</li>
+				<% }) %>
+			</ul>
+		</div>
+
+
+  	</div>
+</div>
+<!-- /List Officer/Teams -->
+
+
+
+<div class="calendar">
+	<section id="planning/<%= calendar.id %>" class="calendarContainer">
+		<div id="calendar_<%= calendar.id %>" class="calendar thumbnail" data-username="<%= calendar.name %>">
+		</div>
+	</section>
+	
+</div>
+
+
+
+<!-- Modal Form to add a new Place -->
+<div id="modalUnplanTask" class="modal fade"></div>
+<div id="modalAbsentTask" class="modal fade"></div>
