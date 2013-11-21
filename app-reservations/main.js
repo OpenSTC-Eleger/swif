@@ -4,14 +4,14 @@ define('app-reservations', [
 	'appReservationsRouter'
 
 
-], function(app, AppInterventionsRouter){
+], function(app, AppReservationsRouter){
 
 	'use strict';
 
 
 	return function(){
 
-		app.moduleUrl = app.config.menus.openstc;
+		app.moduleUrl = app.config.menus.openresa;
 
 
 		// Retrieve the routes and the lang of the modules //
