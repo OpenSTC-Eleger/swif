@@ -10,10 +10,10 @@
 <!-- Check the state of the booking -->
 <td>
 	<span 
-		class="label label-<%= app.Models.Booking.status[booking.getState()].color %>" 
+		class="label label-<%= BookingModel.status[booking.getState()].color %>" 
 		data-toggle="tooltip"
 		data-original-title="">
-		<%= app.Models.Booking.status[booking.getState()].translation %>
+		<%= BookingModel.status[booking.getState()].translation %>
 	</span>
 </td>
 

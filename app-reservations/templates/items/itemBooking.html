@@ -7,27 +7,18 @@
 		data-original-title="<%= _.capitalize(lang.about) %>"
 		data-delay="160"
 		data-content="">
-			<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(_(booking.getName()).escapeHTML()) %>
+			<i class="fa fa-thumb-tack">&nbsp;&nbsp;</i><%= _.capitalize(_(booking.getName()).escapeHTML()) %>
 	</a>
-	<!--  
-	<a class="accordion-object" href="#collapse_<%= booking.id %>" data-toggle="popover" data-content="" data-delay="160" data-original-title="<%= _.capitalize(lang.description) %>">
-		<i class="icon-pushpin">&nbsp;&nbsp;</i><%= _.capitalize(_(booking.getName()).escapeHTML()) %>
-	</a>
-	-->
 	<!-- Interventions action -->
 	<p class="row-actions invisible">
-		<!--  <a href="#reservations" class="printInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="inter">
-			<i class="icon-print icon-large" data-action="inter">&nbsp;</i>
-		</a>
-		-->
 		<% if ( !_.isUndefined(booking.getRecurrence('id')) ) { %>
 			<a href="#" class="displayOccurences" data-toggle="tooltip" data-original-title="Afficher les occurences" data-action="reccurent">
-				<i class="icon-th-list icon-large" data-action="reccurent">&nbsp;</i>
+				<i class="fa fa-th-list fa-lg" data-action="reccurent">&nbsp;</i>
 			</a>
 		<% } %>
 
 		<% if(booking.hasActions("cancel")) { %>
-			 &nbsp;<a href="#" class="buttonCancelInter" data-toggle="modal"><i class="icon-ban-circle icon-large" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
+			 &nbsp;<a href="#" class="buttonCancelInter" data-toggle="modal"><i class="fa fa-ban fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
 		<% } %>
 	</p>
 </td>
@@ -50,10 +41,10 @@
 <!-- Check the state of the booking -->
 <td>
 	<span 
-		class="label label-<%= app.Models.Booking.status[booking.getState()].color %>" 
+		class="label label-<%= BookingModel.status[booking.getState()].color %>" 
 		data-toggle="tooltip"
 		data-original-title="<%= booking.getInformations() %>">
-		<%= app.Models.Booking.status[booking.getState()].translation %>
+		<%= BookingModel.status[booking.getState()].translation %>
 	</span>
 </td>
 <td>
@@ -76,48 +67,48 @@
 					case 'remplir':
 						console.debug("remplir");	
 						if(booking.isAllDispo()) {
-							mainAction = app.Models.Booking.actions.valid.key;
-							mainActionColor = app.Models.Booking.actions.valid.color;
-							mainActionIcon = app.Models.Booking.actions.valid.icon;
+							mainAction = BookingModel.actions.valid.key;
+							mainActionColor = BookingModel.actions.valid.color;
+							mainActionIcon = BookingModel.actions.valid.icon;
 							mainActionDisabled = '';
 						}
 						else {
-							mainAction = app.Models.Booking.actions.resolve_conflict.key;
-							mainActionColor = app.Models.Booking.actions.resolve_conflict.color;
-							mainActionIcon = app.Models.Booking.actions.resolve_conflict.icon;
+							mainAction = BookingModel.actions.resolve_conflict.key;
+							mainActionColor = BookingModel.actions.resolve_conflict.color;
+							mainActionIcon = BookingModel.actions.resolve_conflict.icon;
 							mainActionDisabled = '';
 						}
 					break;
 					case 'cancel':	
 							console.debug("cancel");	
-							mainAction = app.Models.Booking.actions.refused.key;
-							mainActionColor = app.Models.Booking.actions.refused.color;
-							mainActionIcon = app.Models.Booking.actions.refused.icon;
+							mainAction = BookingModel.actions.refused.key;
+							mainActionColor = BookingModel.actions.refused.color;
+							mainActionIcon = BookingModel.actions.refused.icon;
 							mainActionDisabled = '';
 					break;
 					case 'confirm':	
-							mainAction = app.Models.Booking.actions.closed.key;
-							mainActionColor = app.Models.Booking.actions.closed.color;
-							mainActionIcon = app.Models.Booking.actions.closed.icon;
+							mainAction = BookingModel.actions.closed.key;
+							mainActionColor = BookingModel.actions.closed.color;
+							mainActionIcon = BookingModel.actions.closed.icon;
 							mainActionDisabled = '';
 					break;
 					
 					default:
-							mainAction = app.Models.Booking.actions.valid.key;
-							mainActionColor = app.Models.Booking.actions.valid.color;
-							mainActionIcon = app.Models.Booking.actions.valid.icon;
+							mainAction = BookingModel.actions.valid.key;
+							mainActionColor = BookingModel.actions.valid.color;
+							mainActionIcon = BookingModel.actions.valid.icon;
 							mainActionDisabled = '';
 				}
 
 			%>
 			<!-- Main action button -->
 			<button class="btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline button<%= _.capitalize(mainAction) %>Booking" >
-				<i class="<%= mainActionIcon %> icon-fixed-width button<%= _.capitalize(mainAction) %>Booking"></i>
+				<i class="fa <%= mainActionIcon %> fa-fw button<%= _.capitalize(mainAction) %>Booking"></i>
 			</button>
 			
 			<!-- Dropdown button action -->
 			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-				<span class="icon-caret-down"></span>
+				<span class="fa fa-caret-down"></span>
 			</button>
 			
 			<!-- Other buttons action -->
@@ -125,7 +116,7 @@
 				<% _.each(actions, function(action){ %>
 					<li>
 						<a href="#reservations" class="button<%= _.capitalize(app.Models.Booking.actions[action].key) %>Booking">
-							<i class="<%= app.Models.Booking.actions[action].icon %> icon-fixed-width"></i>&nbsp;<%= _.capitalize(app.Models.Booking.actions[action].translation) %>
+							<i class="fa <%= app.Models.Booking.actions[action].icon %> fa-fw"></i>&nbsp;<%= _.capitalize(app.Models.Booking.actions[action].translation) %>
 						</a>
 					</li>
 				<% }); %>

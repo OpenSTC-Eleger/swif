@@ -1,21 +1,36 @@
-/******************************************
-* Reservations Collection
-*/
-app.Collections.BookingLines = app.Collections.GenericCollection.extend({
+define([
+	'app', 
 
-	model : app.Models.Booking,
-	
-	url   : "/api/openresa/booking_lines",
-	
-	fields: ['id', 'name', 'reserve_product', 'qte_dispo'],
+	'genericCollection',
+	'bookingLineModel'
 
-	/** Collection Sync
+], function(app, GenericCollection, BookingLineModel){
+
+	'use strict';
+
+
+	/******************************************
+	* Reservations Collection
 	*/
-	sync: function(method, model, options){
+	var bookingLines = GenericCollection.extend({
+	
+		model : BookingLineModel,
+		
+		url   : "/api/openresa/booking_lines",
+		
+		fields: ['id', 'name', 'reserve_product', 'qte_dispo'],
+	
+		/** Collection Sync
+		*/
+		sync: function(method, model, options){
+	
+			options.data.fields = this.fields;
+	
+			return $.when(this.count(options), Backbone.sync.call(this,method,this,options));
+		}
+	
+	});
 
-		options.data.fields = this.fields;
-
-		return $.when(this.count(options), Backbone.sync.call(this,method,this,options));
-	}
+	return bookingLines;
 
 });

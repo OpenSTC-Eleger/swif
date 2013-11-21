@@ -214,6 +214,18 @@ define([
 				this.notFound();
 			}
 		},
+		
+		/** Load The Bookings Module
+		*/
+		loadAppReservations: function(param){
+
+			if(!require.defined('app-reservations')){
+				this.loadModule('app-reservations');
+			}
+			else{
+				this.notFound();
+			}
+		},
 
 
 

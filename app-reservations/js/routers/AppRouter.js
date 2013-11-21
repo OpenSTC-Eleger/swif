@@ -17,7 +17,7 @@ define([
 
 		/** Bookings List
 		*/
-		requestsList: function(recurrence, search, filter, sort, page) {
+		bookings: function(recurrence, search, filter, sort, page) {
 
 			var params = this.setContext({recurrence: recurrence, search : search, filter : filter, page : page});
 
