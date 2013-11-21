@@ -88,7 +88,8 @@ define([
 					InterventionModel		: InterventionModel,
 					TaskModel				: TaskModel,
 					UserModel				: app.models.user,
-					AppHelpers				: AppHelpers
+					AppHelpers				: AppHelpers,
+					moment                  : moment
 				});
 	
 				$(self.el).html(template);

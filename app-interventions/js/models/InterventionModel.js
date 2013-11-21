@@ -1,9 +1,10 @@
 define([
 	'app',
 	'appHelpers',
-	'genericModel'
+	'genericModel',
+	'moment'
 
-], function(app, AppHelpers, GenericModel){
+], function(app, AppHelpers, GenericModel, moment){
 
 	'use strict';
 

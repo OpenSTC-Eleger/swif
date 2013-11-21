@@ -123,10 +123,10 @@ define([
 				
 				// Pagination view //
 				app.views.paginationView = new PaginationView({ 
-					page       : self.options.page.page,
-					collection : self.collections.interventions,
-					size		: 'sm',
-					displayGoToPage : false,
+					page           : self.options.page.page,
+					collection     : self.collections.interventions,
+					size           : 'sm',
+					displayGoToPage: false,
 					
 				})
 				app.views.paginationView.render();

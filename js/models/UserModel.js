@@ -1,7 +1,8 @@
 define([
 	'app',
+	'moment'
 
-], function(app){
+], function(app, moment){
 
 	'user strict';
 
@@ -66,7 +67,7 @@ define([
 		},
 
 		getLastConnection : function() {
-			return this.get('lastConnection');
+			return moment(this.get('lastConnection')).format('LLL');
 		},
 		setLastConnection : function(value) {
 			this.set({ lastConnection : value });

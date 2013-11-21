@@ -103,8 +103,9 @@ define([
 					lang                   : app.lang,
 					interventionsState     : InterventionModel.status,
 					tasksState             : TaskModel.status,
-					task					: self.model.toJSON(),
+					task				   : self.model.toJSON(),
 					AppHelpers             : AppHelpers,
+					moment                 : moment
 				});
 	
 				$(self.el).html(template);
