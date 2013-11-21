@@ -1,0 +1,9 @@
+{
+
+	"reservations": {
+		"url"		: "reservations(/recurrence/:recurrence)(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"function"	: "bookings"
+	}
+
+
+}

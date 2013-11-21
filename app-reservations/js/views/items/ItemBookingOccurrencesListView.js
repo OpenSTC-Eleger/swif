@@ -1,7 +1,7 @@
 /******************************************
 * Row Intervention Task List View
 */
-app.Views.ItemBookingOccurrenceListView = Backbone.View.extend({
+app.Views.ItemBookingOccurrencesListView = Backbone.View.extend({
 
 	tagName     : 'tr',
 

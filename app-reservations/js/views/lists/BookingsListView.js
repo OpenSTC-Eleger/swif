@@ -3,7 +3,7 @@
 */
 app.Views.BookingsListView = app.Views.GenericListView.extend({
 
-	templateHTML: 'bookings',
+	templateHTML: 'bookingsList',
 	
 	urlParameters : ['recurrence', 'id', 'search', 'filter', 'sort', 'page'],
 
@@ -92,7 +92,7 @@ app.Views.BookingsListView = app.Views.GenericListView.extend({
 			_.each(self.collection.models, function(booking, i){
 				var detailedView = null;
 				if( booking.isTemplate() )
-					detailedView = new app.Views.ItemBookingOccurrenceListView({model: booking});
+					detailedView = new app.Views.ItemBookingOccurrencesListView({model: booking});
 				var simpleView = new app.Views.ItemBookingView({model: booking });
 				$('#booking-items').append(simpleView.render().el);	
 				if( booking.isTemplate() )
