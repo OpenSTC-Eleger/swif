@@ -218,20 +218,20 @@ app.Models.Booking = app.Models.GenericModel.extend({
 
 	// Claimer of the booking //
 	getClaimer: function(type){
-		var claimer = {};
-	
-		switch (type){
-			case 'id': 
-				return this.get('partner_id')[0];
-			break;
-			case 'json':
-				return {id: this.get('partner_id')[0], name: this.get('partner_id')[1]};
-			break;
-			default:
-				return this.get('partner_id')[1];
+		if(this.get('partner_id') != false){
+			switch (type){
+				case 'id': 
+					return this.get('partner_id')[0];
+				break;
+				case 'json':
+					return {id: this.get('partner_id')[0], name: this.get('partner_id')[1]};
+				break;
+				default:
+					return this.get('partner_id')[1];
+			}
 		}
 	
-		return claimer;
+		return false;
 	},
 	
 	setClaimer: function(value, silent){
@@ -272,7 +272,7 @@ app.Models.Booking = app.Models.GenericModel.extend({
 					return this.get('partner_order_id')[0];
 				break;
 				case 'json':
-					return {id: this.get('partner_order_id')[0], name: this.get('partner_address')[1]};
+					return {id: this.get('partner_order_id')[0], name: this.get('partner_order_id')[1]};
 				break;
 				default:
 					return this.get('partner_order_id')[1];
@@ -281,11 +281,8 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	},
 	
 	setClaimerContact: function(value, silent){
-		this.set({ partner_address : value }, {silent: silent});
+		this.set({partner_invoice_id:id});
 	},
-	
-	
-
 	
 	fromCitizen: function(){
 		return this.get('is_citizen');
@@ -338,25 +335,7 @@ app.Models.Booking = app.Models.GenericModel.extend({
 		});
 	},
 	
-	getContact : function(type) {
 
-		if(this.get('partner_invoice_id')){
-			switch(type){
-				case 'id': 
-					return this.get('partner_invoice_id')[0];
-				break;
-				default:
-					return _.titleize(this.get('partner_invoice_id')[1].toLowerCase());
-			}
-		}
-		else{
-			return false;
-		}
-	},
-	
-	setContact: function(id){
-		this.set({partner_invoice_id:id});
-	},
 	
 	getState : function() {
 		return this.get('state');
@@ -374,6 +353,15 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	addLine: function(lineModel){
 		this.lines.add(lineModel);
 		lineModel.setParentBookingModel(this);
+	},
+	
+	fetchLines: function(){
+		var self = this;
+		return this.lines.fetch({data:{filters:{0:{field:'line_id.id',operator:'=',value:this.getId()}}}}).done(function(){
+			self.lines.each(function(lineModel){
+				lineModel.setParentBookingModel(self);
+			});
+		});
 	},
 	
 	//method to perform updates on bookingLines (pricing, dispo, ...) when some fields value change
@@ -396,9 +384,9 @@ app.Models.Booking = app.Models.GenericModel.extend({
 	saveToBackend: function(){
 		var self = this;
 		var vals = {
-				partner_invoice_id:this.getContact('id'),
-				partner_order_id:this.getContact('id'),
-				partner_shipping_id: this.getContact('id'),
+				partner_invoice_id:this.getClaimerContact('id'),
+				partner_order_id:this.getClaimerContact('id'),
+				partner_shipping_id: this.getClaimerContact('id'),
 				partner_id: this.getClaimer('id'),
 				openstc_partner_id: this.getClaimer('id'),
 				pricelist_id: this.getPricelist('id'),

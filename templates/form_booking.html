@@ -16,8 +16,8 @@
 					<input id="bookingPartner" class="select2" data-placeholder="<%= lang.actions.selectAClaimer %>"
 	
 						<% if(!_.isNull(booking.getId())){
-							if(!_.isUndefined(booking.getPartner('id'))) { %>
-							data-selected-value='<%= JSON.stringify(booking.getPartner('json')) %>'
+							if(!_.isUndefined(booking.getClaimer('id'))) { %>
+							data-selected-value='<%= JSON.stringify(booking.getClaimer('json')) %>'
 						<% } } %>
 	
 					/>
@@ -32,8 +32,8 @@
 					<input id="bookingContact" class="select2" data-placeholder="<%= lang.actions.selectAContact %>"
 	
 						<% if(!_.isNull(booking.getId())){
-							if(!_.isUndefined(booking.getContact('id'))) { %>
-							data-selected-value='<%= JSON.stringify(booking.getContact('json')) %>'
+							if(!_.isUndefined(booking.getClaimerContact('id'))) { %>
+							data-selected-value='<%= JSON.stringify(booking.getClaimerContact('json')) %>'
 						<% } } %>
 	
 					/>
@@ -53,13 +53,13 @@
 				<label for="bookingCheckin" class="control-label col-sm-3"><%= _.capitalize(lang.dateStart) %>:</label>
 				<!-- checkin date -->
 				<div class="input-group col-sm-4">
-					<input type="text" class="datepicker form-control" id="bookingCheckin" value="" placeholder="dd/mm/yyyy" required="required">
+					<input type="text" class="datepicker form-control" id="bookingCheckin" value="<%= startDate%>" placeholder="dd/mm/yyyy" required="required">
 					<span class="input-group-addon"><i class="icon-calendar"></i></span>
 				</div>
 
 				<!-- checkin hour -->
 				<div class="input-group bootstrap-timepicker col-sm-3" >							
-					<input type="text" class="timepicker-default form-control" id='bookingCheckinHour' required="required">
+					<input type="text" class="timepicker-default form-control" id='bookingCheckinHour' value="<%= startHour%>" required="required">
 					<span class="input-group-addon"><i class="icon-time"></i></span>
 				</div>						
 			</div>
@@ -69,13 +69,13 @@
 				<label for="bookingCheckout" class="control-label col-sm-3"><%= _.capitalize(lang.dateEnd) %>:</label>
 				<!-- checkout date -->
 				<div class="input-group col-sm-4">
-					<input type="text" class="datepicker form-control" id="bookingCheckout" value="" placeholder="dd/mm/yyyy" required="required">
+					<input type="text" class="datepicker form-control" id="bookingCheckout" value="<%= endDate%>" placeholder="dd/mm/yyyy" required="required">
 					<span class="input-group-addon"><i class="icon-calendar"></i></span>
 				</div>
 
 				<!-- checkout hour -->
 				<div class="input-group bootstrap-timepicker col-sm-3" >							
-					<input type="text" class="timepicker-default form-control" id='bookingCheckoutHour' required="required">
+					<input type="text" class="timepicker-default form-control" id='bookingCheckoutHour' value="<%= endHour%>" required="required">
 					<span class="input-group-addon"><i class="icon-time"></i></span>
 				</div>						
 			</div>
@@ -116,7 +116,7 @@
 	<div class="row">
 		<div class="col-sm-1 col-sm-offset-5">
 			<button type="submit" class="btn btn-primary" form="formSaveBooking" id="saveFormBooking"><%= lang.actions.validate%></button>
-			
+			<a href="#reservations" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>			
 		</div>
 	</div>
 </form>

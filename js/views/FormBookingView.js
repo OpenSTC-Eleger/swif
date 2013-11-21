@@ -22,27 +22,41 @@ app.Views.FormBooking = Backbone.View.extend({
 
 	/** View Initialization
 	*/
-	initialize : function() {
+	initialize : function(params) {
+		this.options = params;
 		var self = this;
 		//this.lineViews = [];
 		// Check if it's a create or an update //
-		if(_.isUndefined(this.booking_id)){
+		if(_.isUndefined(this.options.booking_id)){
 			
 			this.model = new app.Models.Booking();
 			this.render();
 		}
 		else{
 			// Render with loader //
-			this.render(true);
-			this.model = new app.Models.Booking({id:this.booking_id});
-			this.model.fetch({silent: true, data : {fields : this.model.fields}}).done(function(){
-				self.render();
+			this.model = new app.Models.Booking({id:this.options.booking_id});
+			this.model.fetch({silent: true}).done(function(){
+				self.render(true);
+				self.model.fetchLines()
+				.done(function(){
+					self.renderLines();
+				});
 			});
 		}
 
 	},
-
-
+	
+	//split rendering of form and rendering of lines to avoid change-events conflicts 
+	//(which perform unwanted updates on lineModels)
+	renderLines: function(){
+		var self = this;
+		this.model.lines.each(function(lineModel){
+        	var lineView = new app.Views.ItemFormBookingLineView({model:lineModel});
+        	//self.lineViews.push(lineView);
+        	$(self.el).find('#bookingLines').append(lineView.render().el);
+		});
+	},
+	
 
 	/** Display the view
 	*/
@@ -51,12 +65,30 @@ app.Views.FormBooking = Backbone.View.extend({
 		var self = this;
 
 		// Retrieve the template //
-		$.get("templates/" + this.templateHTML + ".html", function(templateData){
-
+		$.get("templates/" + this.templateHTML + ".html", function(templateData){			
+			var startDate = '';
+			var startHour = '';
+			var endDate = '';
+			var endHour = '';
+			if(!self.model.isNew()){
+				var tz = app.models.user.getContext().tz;
+				var checkin = moment.utc((self.model.getStartDate())).local();
+				var checkout = moment.utc((self.model.getEndDate())).local();
+				
+				startDate = checkin.format('D/M/YYYY');
+				startHour = checkin.format('H:m');
+				endDate = checkout.format('D/M/YYYY');
+				endHour = checkout.format('H:m');	
+			}
+			
 			var template = _.template(templateData, {
-				lang   : app.lang,
-				booking: self.model,
-				loader : loader
+				lang   		: app.lang,
+				booking		: self.model,
+				loader 		: loader,
+				startDate	: startDate,
+				startHour	: startHour,
+				endDate 	: endDate,
+				endHour		: endHour,
 			});
 
 			$(self.el).html(template);
@@ -64,27 +96,31 @@ app.Views.FormBooking = Backbone.View.extend({
 			$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 			$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 			
-			if(!loader){
 				$('.make-switch').bootstrapSwitch();
 
-				// Request Claimer //
-				app.views.selectListClaimersView = new app.Views.AdvancedSelectBoxView({el: $('#bookingPartner'), collection: app.Collections.Claimers.prototype});
-				app.views.selectListClaimersView.resetSearchParams();
-				app.views.selectListClaimersView.render();
+			// Request Claimer //
+			app.views.selectListClaimersView = new app.Views.AdvancedSelectBoxView({el: $('#bookingPartner'), collection: app.Collections.Claimers.prototype});
+			app.views.selectListClaimersView.resetSearchParams();
+			app.views.selectListClaimersView.render();
 
-				// Request Contact //
-				app.views.selectListClaimersContactsView = new app.Views.AdvancedSelectBoxView({el: $('#bookingContact'), collection: app.Collections.ClaimersContacts.prototype});
-				app.views.selectListClaimersContactsView.resetSearchParams();
-				app.views.selectListClaimersContactsView.render();
+			// Request Contact //
+			app.views.selectListClaimersContactsView = new app.Views.AdvancedSelectBoxView({el: $('#bookingContact'), collection: app.Collections.ClaimersContacts.prototype});
+			app.views.selectListClaimersContactsView.resetSearchParams();
+			app.views.selectListClaimersContactsView.render();
 
-				app.views.selectListAddBookableView = new app.Views.AdvancedSelectBoxView({el: $('#bookingAddBookable'), collection: app.Collections.Bookables.prototype}),
-				app.views.selectListAddBookableView.resetSearchParams();
-				app.views.selectListAddBookableView.render();
-				// Set Information about the booking if needed //
-				if(!self.model.isNew()){
-
-				}
-			}
+			app.views.selectListAddBookableView = new app.Views.AdvancedSelectBoxView({el: $('#bookingAddBookable'), collection: app.Collections.Bookables.prototype}),
+			app.views.selectListAddBookableView.resetSearchParams();
+			app.views.selectListAddBookableView.render();
+			
+			// Set Information about the booking if needed //
+//			if(!self.model.isNew()){
+//				self.model.lines.each(function(lineModel){
+//		        	var lineView = new app.Views.ItemFormBookingLineView({model:lineModel});
+//		        	//self.lineViews.push(lineView);
+//		        	$(self.el).find('#bookingLines').append(lineView.render().el);
+//				});
+//			}
+		
 
 			$(this.el).hide().fadeIn('slow');
 		});
@@ -112,10 +148,10 @@ app.Views.FormBooking = Backbone.View.extend({
     	e.preventDefault();
     	var contact_id = app.views.selectListClaimersContactsView.getSelectedItem();
     	if(contact_id){
-    		this.model.setContact([contact_id], app.views.selectListClaimersContactsView.getSelectedText());
+    		this.model.setClaimerContact([contact_id], app.views.selectListClaimersContactsView.getSelectedText());
     	}
     	else{
-    		this.model.setContact(false);
+    		this.model.setClaimerContact(false);
     	}
     },
     
