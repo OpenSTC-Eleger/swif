@@ -115,8 +115,8 @@
 			<ul class="dropdown-menu pull-right text-left">
 				<% _.each(actions, function(action){ %>
 					<li>
-						<a href="#reservations" class="button<%= _.capitalize(app.Models.Booking.actions[action].key) %>Booking">
-							<i class="fa <%= app.Models.Booking.actions[action].icon %> fa-fw"></i>&nbsp;<%= _.capitalize(app.Models.Booking.actions[action].translation) %>
+						<a href="#reservations" class="button<%= _.capitalize(BookingModel.actions[action].key) %>Booking">
+							<i class="fa <%= BookingModel.actions[action].icon %> fa-fw"></i>&nbsp;<%= _.capitalize(BookingModel.actions[action].translation) %>
 						</a>
 					</li>
 				<% }); %>

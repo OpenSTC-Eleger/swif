@@ -81,6 +81,7 @@ define([
 					lang                   : app.lang,
 					bookingsState     	   : BookingModel,
 					booking          	   : self.model,
+					BookingModel			: BookingModel
 				});
 	
 				$(self.el).html(template);

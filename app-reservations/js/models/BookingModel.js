@@ -83,8 +83,8 @@ define([
 		},
 		
 		getResourceQuantities : function(){
-			if( this.getState()==BookingModel.status.done.key || 
-					this.getState()==BookingModel.status.cancel.key) return "";
+			if( this.getState()=='closed' || 
+					this.getState()=='refused') return "";
 		
 			var bookingResourceQuantities = [];
 			
