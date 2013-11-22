@@ -173,29 +173,15 @@ define([
 		// BookingLine State Initialization //
 		status : {
 			dispo:{
-				icon	: 'icon-ok',
+				icon	: 'fa fa-check',
 				key		: 'dispo',
 				color	: 'success'
 			},
 			not_dispo:{
-				icon	: 'icon-remove',
+				icon	: 'fa fa-times',
 				key		: 'not_dispo',
 				color	: 'danger'
 			}
-		}
-		
-		/** Model Initialization
-		*/
-		initialize: function(){
-			//console.log('Booking Model initialization');
-			//this.fetchRelated('tasks');
-		},
-	
-	
-	}, {
-		// Request State Initialization //
-		status : {
-	
 		}
 	
 	});

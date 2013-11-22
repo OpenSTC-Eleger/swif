@@ -4,12 +4,12 @@ define(['app',
         
         'bookingModel',
         'bookingLineModel',
-        'BookingLinesCollection',
+        'bookingLinesCollection',
         'bookablesCollection',
         'claimersCollection',
         'claimersContactsCollection',
         
-        
+        'itemFormBookingLineView',
         'advancedSelectBoxView',
         'moment',
         'moment-timezone',
@@ -17,7 +17,7 @@ define(['app',
         'bsTimepicker',
         'bsDatepicker'
 
-], function (app, AppHelpers, BookingModel, BookingLineModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, AdvancedSelectBoxView, model) {
+], function (app, AppHelpers, BookingModel, BookingLineModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, ItemFormBookingLineView, AdvancedSelectBoxView, moment) {
 
     'use strict';
 	/******************************************
@@ -49,14 +49,14 @@ define(['app',
 			var self = this;
 			//this.lineViews = [];
 			// Check if it's a create or an update //
-			if(_.isUndefined(this.options.booking_id)){
+			if(_.isUndefined(this.options.id)){
 				
 				this.model = new BookingModel();
 				this.render();
 			}
 			else{
 				// Render with loader //
-				this.model = new BookingModel({id:this.options.booking_id});
+				this.model = new BookingModel({id:this.options.id});
 				this.model.fetch({silent: true}).done(function(){
 					self.render(true);
 					self.model.fetchLines()
@@ -147,11 +147,11 @@ define(['app',
 	    	var partner_id = app.views.selectListClaimersView.getSelectedItem();
 	    	if(partner_id != ''){
 	    		app.views.selectListClaimersContactsView.setSearchParam({'field':'partner_id.id','operator':'=','value':partner_id},true);
-	    		this.model.setPartner([partner_id,app.views.selectListClaimersView.getSelectedText()]);
+	    		this.model.setClaimer([partner_id,app.views.selectListClaimersView.getSelectedText()]);
 	    	}
 	    	else{
 	    		app.views.selectListClaimersContactsView.resetSearchParams();
-	    		this.model.setPartner(false);
+	    		this.model.setClaimer(false);
 	    	}
 	    	app.views.selectListClaimersContactsView.render();
 	    },
@@ -174,8 +174,8 @@ define(['app',
 	    	var self = this;
 	    	e.preventDefault();
 	    	//create lineModel and initialize values
-	    	bookable_id = app.views.selectListAddBookableView.getSelectedItem();
-	    	bookable_name = app.views.selectListAddBookableView.getSelectedText();
+	    	var bookable_id = app.views.selectListAddBookableView.getSelectedItem();
+	    	var bookable_name = app.views.selectListAddBookableView.getSelectedText();
 	    	var lineModel = new BookingLineModel({
 	    		reserve_product:[bookable_id, bookable_name],
 				pricelist_amount:0});

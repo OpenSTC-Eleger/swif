@@ -2,7 +2,8 @@ define(['app',
         'appHelpers', 
         
         'bookingLineModel',
-        'BookingLinesCollection',
+        'bookableModel',
+        'bookingLinesCollection',
         'bookablesCollection',
         'claimersCollection',
         'claimersContactsCollection',
@@ -15,7 +16,7 @@ define(['app',
         'bsTimepicker',
         'bsDatepicker'
 
-], function (app, AppHelpers, BookingLineModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, AdvancedSelectBoxView, model) {
+], function (app, AppHelpers, BookingLineModel, BookableModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, AdvancedSelectBoxView, model) {
 
     'use strict';
 
@@ -100,7 +101,8 @@ define(['app',
 					var template = _.template(templateData, {
 						lang	: app.lang,
 						line	: self.model,
-						bookable: self.bookableModel
+						bookable: self.bookableModel,
+						linesStat: BookingLineModel.status,
 					});
 	
 					$(self.el).html(template);
@@ -119,7 +121,7 @@ define(['app',
 		
 		changeBookingLineQty: function(e){
 			e.preventDefault();
-			val = $(this.el).find('#bookingLineQty').val();
+			var val = $(this.el).find('#bookingLineQty').val();
 			if(val != ''){
 				this.model.setQuantity(parseFloat(val));
 			}
@@ -127,7 +129,7 @@ define(['app',
 		
 		changeBookingLinePricing: function(e){
 			e.preventDefault();
-			val = $(this.el).find('#bookingLinePricing').val();
+			var val = $(this.el).find('#bookingLinePricing').val();
 			if(val != ''){
 				this.model.set({pricelist_amount:parseFloat(val)},{silent:true});
 			}

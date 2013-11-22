@@ -24,6 +24,7 @@ requirejs.config({
 		// Views //
 		bookingsListView            		: 'app-reservations/js/views/lists/BookingsListView',
 		formBookingView						: 'app-reservations/js/views/forms/FormBookingView',
+		itemFormBookingLineView				: 'app-reservations/js/views/forms/ItemFormBookingLineView',
 		
 		// Items //
 		itemBookingView            			: 'app-reservations/js/views/items/ItemBookingView',

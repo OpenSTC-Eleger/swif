@@ -10,7 +10,7 @@ define([
 	/******************************************
 	* Bookables Collection
 	*/
-	var BookablesCollection = app.Collections.GenericCollection.extend({
+	var BookablesCollection = GenericCollection.extend({
 	
 		model : BookableModel,
 		

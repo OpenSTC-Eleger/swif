@@ -8,7 +8,12 @@
 	
 	"actions" : {
 		"validAll"							: "Tout valider",
-		"cancelAll"							: "Tout annuler"
+		"cancelAll"							: "Tout annuler",
+		"selectAContact"					: "Sélectionner un contact",
+		"selectAClaimer"					: "Sélectionner un demandeur",
+		"selectABookable"					: "Sélectionner une ressource",
+		"cancel"							: "annuler",
+		"validate"				 			: "valider"				
 	},
 	
 	"infoMessages" : {

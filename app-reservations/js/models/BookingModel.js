@@ -1,9 +1,11 @@
 define([
 	'app',
 	'genericModel',
-	'bookingModel'
+	'bookingModel',
+	'claimerModel',
+	'bookingLinesCollection'
 
-], function(app, GenericModel, BookingModel){
+], function(app, GenericModel, BookingModel, ClaimerModel, BookingLinesCollection){
 
 	'use strict';
 	
@@ -160,6 +162,13 @@ define([
 			}
 		},	
 		
+		setStartDate: function(dateStr){
+			if(dateStr != ''){
+				this.set({checkin:dateStr});
+				this.updateLinesData();
+			}
+		},
+		
 		getEndDate: function(type){
 			if(this.get('checkout') != false){
 				switch(type){
@@ -173,6 +182,13 @@ define([
 			}
 			else{
 				return '';
+			}
+		},
+		
+		setEndDate: function(dateStr){
+			if(dateStr != ''){
+				this.set({checkout:dateStr});
+				this.updateLinesData();
 			}
 		},
 		
@@ -226,8 +242,9 @@ define([
 		},
 		
 		setClaimer: function(value, silent){
+			var self = this;
 			this.set({ partner_id : value }, {silent: silent});
-			var modelClaimer = new app.Models.Claimer({id:this.getClaimer('id')});
+			var modelClaimer = new ClaimerModel({id:this.getClaimer('id')});
 			modelClaimer.fetch({data:{fields:['property_product_pricelist']}}).done(function(){
 				self.setPricelist(modelClaimer.get('property_product_pricelist'));
 			})
@@ -295,7 +312,9 @@ define([
 					partner_id: this.getClaimer('id'),
 					openstc_partner_id: this.getClaimer('id'),
 					pricelist_id: this.getPricelist('id'),
-					name: this.getName()};
+					name: this.getName(),
+					checkin:this.getStartDate(),
+					checkout:this.getEndDate()};
 			
 			//if new, POST new values and fetch the model to retrieve values stored on backend
 			if(this.isNew()){
@@ -333,7 +352,7 @@ define([
 						return this.get('partner_order_id')[0];
 					break;
 					case 'json':
-						return {id: this.get('partner_order_id')[0], name: this.get('partner_address')[1]};
+						return {id: this.get('partner_order_id')[0], name: this.get('partner_order_id')[1]};
 					break;
 					default:
 						return this.get('partner_order_id')[1];
@@ -342,7 +361,7 @@ define([
 		},
 		
 		setClaimerContact: function(value, silent){
-			this.set({ partner_address : value }, {silent: silent});
+			this.set({ partner_order_id : value }, {silent: silent});
 		},	
 		
 		fromCitizen: function(){
@@ -394,7 +413,7 @@ define([
 		/** Model Initialization
 		*/
 		initialize: function(){
-			this.lines = new app.Collections.BookingLines();
+			this.lines = new BookingLinesCollection();
 //			this.computeResources().done(function (data) {
 //				// self.set( {'resources' :  data.resources, 'description': data.description} , {silent:false} );	
 //				 //self.set( 'resources',  data.resources , {silent:true} );	

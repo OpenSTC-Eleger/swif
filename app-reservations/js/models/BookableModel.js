@@ -7,7 +7,7 @@ define([
 	/******************************************
 	* Booking Model
 	*/
-	var BookableModel = app.Models.GenericModel.extend({
+	var BookableModel = GenericModel.extend({
 		
 		urlRoot: "/api/openresa/bookables",
 		
