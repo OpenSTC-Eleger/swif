@@ -68,6 +68,6 @@ define([
 
 	});
 
-return HeaderView;
+	return HeaderView;
 
 });

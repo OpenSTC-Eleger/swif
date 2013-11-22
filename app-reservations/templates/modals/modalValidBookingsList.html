@@ -4,7 +4,7 @@
 
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h3 class="modal-title"><i class="icon-remove"></i>&nbsp;&nbsp;<%= lang.viewsTitles.validBooking %></h3>
+		<h3 class="modal-title"><i class="fa fa-times"></i>&nbsp;&nbsp;<%= lang.viewsTitles.validBooking %></h3>
 	</div>
 
 
@@ -13,7 +13,7 @@
 
 		<blockquote>
 			<p></p>
-			<small><strong><i class="icon-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong></i>&nbsp;&nbsp; </small>
+			<small><strong><i class="fa fa-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong></i>&nbsp;&nbsp; </small>
 		</blockquote>
 
 		<form id="formValidBooking" action="#" class="form-horizontal">
@@ -32,7 +32,7 @@
 
 	<div class="modal-footer">
 		<button type="submit" form="formValidBooking" class="btn btn-primary"
-			data-loading-text="<i class='icon-refresh icon-spin'></i>&nbsp; <%= _.capitalize(lang.validInProgress) %>"
+			data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= _.capitalize(lang.validInProgress) %>"
 		><%= _.capitalize(lang.actions.valid) %>
 		</button>&nbsp;&nbsp;
 

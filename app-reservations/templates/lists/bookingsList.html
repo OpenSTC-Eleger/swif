@@ -1,11 +1,10 @@
 	<div class="page-header">
 		<h1>
-			<!--  <%= lang.viewsTitles.bookingsList %> -->
-			Suivi des Réservations
+			<%= lang.viewsTitles.bookingsList %>
 	
 			<% 
-				var classColor      = app.Models.Booking.status.remplir.color;
-				var filterValue     = app.Models.Booking.status.remplir.key;
+				var classColor      = BookingModel.status.remplir.color;
+				var filterValue     = BookingModel.status.remplir.key;
 				var actionToProcess = lang.actions.process;
 		
 			%>
@@ -23,17 +22,17 @@
 	<!-- Table toolbar -->
 	<div class="tableToolbar row">
 		<div class="col-xs-7 col-md-9 col-lg-5">
-			<a href="#formReservation" id="newBooking" class="btn btn-primary modalCreateBooking"><i class="icon-plus"></i>Nouvelle réservation</a>
+			<a href="#formReservation" class="btn btn-primary modalCreateBooking"><i class="fa fa-plus"></i><%= lang.viewsTitles.newBooking %></a>
 		</div>
 		
 		<form class="form-actions pull-center col-xs-5 col-md-3 col-lg-2">
 
 		  <div class="input-group">
 		  		<div class="col-lg-20">
-		  			<button type="button" class="btn btn-info"> <i class="icon-step-backward"></i>
+		  			<button type="button" class="btn btn-info"> <i class="fa fa-step-backward"></i>
 		  			</button>
-			  		<button type="button" class="btn btn-success">Tout valider</button>
-			  		<button type="button" class="btn btn-danger">Tout Refuser</button>		
+			  		<button type="button" class="btn btn-success"><%= lang.viewsTitles.validAll %></button>
+			  		<button type="button" class="btn btn-danger"><%= lang.viewsTitles.cancelAll %></button>		
 		  		</div>  		
 		  </div>
 		</form>
@@ -41,13 +40,9 @@
 		<form class="form-search pull-right col-xs-5 col-md-3 col-lg-2">
 
 		  <div class="input-group">
-				<!--  <div class="reccurentSwitch pull-right make-switch" data-label-icon="icon-calendar" data-toggle="tooltip" data-original-title="Récurrences" data-text
-					data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" id="switch-reccurent">
-					<input type="checkbox"/>
-		  		</div> -->
 				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
 				<span class="input-group-btn">
-					<button type="submit" class="btn btn-primary"><i class="icon-search icon-large"></i></button>
+					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
 				</span>
 			</div>
 		</form>
@@ -60,7 +55,7 @@
 	<% if(bookings.length <= 0) { %>
 		<div class="tableToolbar">
 			<div class="alert alert-info">
-				<i class="icon-info-sign icon-large"></i>&nbsp;<%= lang.infoMessages.noRequest %>
+				<i class="fa fa-info-circle fa-lg"></i>&nbsp;<%= lang.infoMessages.noBooking %>
 			</div>
 		</div>
 	<% } %>
@@ -74,15 +69,15 @@
 			<tr>
 				<th data-sort-column="id">N°</th>
 				<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
-				<th>Ressources</th>
-				<th>Début résa</th>
-				<th>Fin résa</th>
-				<th>Utilisateur / demandeur</th>
-				<th>Date demande</th>
+				<th><%= _.capitalize(lang.ressources) %></th>
+				<th><%= _.capitalize(lang.startBookingDate) %></th>
+				<th><%= _.capitalize(lang.endBookingDate) %></th>
+				<th><%= _.capitalize(lang.UserOrClaimer) %></th>
+				<th><%= _.capitalize(lang.bookingDate) %></th>
 				<th>
 					<%= _.capitalize(lang.status) %>
 					<div class="dropdown pull-right">
-						<a id="filterStateBooking" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="icon-filter icon-large"></i></a>
+						<a id="filterStateBooking" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="fa fa-filter fa-lg"></i></a>
 
 						<ul id="filterStateBookingList" class="dropdown-menu" role="menu" aria-labelledby="filterStateRequest">
 							<% _.each(bookingsState, function (state, i) { %>
@@ -94,14 +89,14 @@
 								</li>
 							<% }) %>
 								<li class="divider" role="menuitem"></li>
-								<li class="delete-filter disabled" role="menuitem"><a href="#delete-filter"><i class="icon-remove"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
+								<li class="delete-filter disabled" role="menuitem"><a href="#delete-filter"><i class="fa fa-times"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
 						</ul>
 					</div>
 				</th>
 
-				<% if(app.models.user.isDST() || app.models.user.isManager()){ %>
-					<th><%= _.capitalize(lang.action) %></th>
-				<% } %>
+				
+				<th><%= _.capitalize(lang.action) %></th>
+				
 			</tr>
 		</thead>
 		

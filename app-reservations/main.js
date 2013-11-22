@@ -41,7 +41,7 @@ define('app-reservations', [
 
 
 			// Launch the new Router //
-			app.router = new AppInterventionsRouter();
+			app.router = new AppReservationsRouter();
 			
 			Backbone.history.start({pushState: false});
 

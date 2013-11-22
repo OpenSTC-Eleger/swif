@@ -7,7 +7,7 @@ requirejs.config({
 	paths: {
 
 		// Router //
-		appReservationsRouter      			: 'app-interventions/js/routers/AppRouter',
+		appReservationsRouter      			: 'app-reservations/js/routers/AppRouter',
 
 		// Collections //
 		bookingsCollection        			: 'app-reservations/js/collections/BookingsCollection',
@@ -27,8 +27,8 @@ requirejs.config({
 		
 		// Items //
 		itemBookingView            			: 'app-reservations/js/views/items/ItemBookingView',
-		itemBookingOccurencesListView       : 'app-reservations/js/views/items/ItemBookingOccurencesListView',
-		itemBookingOccurenceView            : 'app-reservations/js/views/items/ItemBookingOccurenceView',
+		itemBookingOccurrencesListView      : 'app-reservations/js/views/items/ItemBookingOccurrencesListView',
+		itemBookingOccurrenceView           : 'app-reservations/js/views/items/ItemBookingOccurrenceView',
 		
 		// Modals //
 		modalValidBookingView          		: 'app-reservations/js/views/modals/ModalValidBookingView',

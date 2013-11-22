@@ -192,6 +192,6 @@ define([
 
 	});
 
-return ItemRequestView;
+	return ItemRequestView;
 
 });
