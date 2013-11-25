@@ -1,16 +1,16 @@
 {
 	"resa" :
-	{
-		"ressources"                   			: "Ressources",
-		"bookingDate"                   		: "Date demande",
-		"startBookingDate"                   	: "Début résa",
-		"endBookingDate"                   		: "Fin résa",
-		"UserOrClaimer"                   		: "Utilisateur / demandeur",
-	
+		{
+			"ressources"                   			: "Ressources",
+			"bookingDate"                   		: "Date demande",
+			"startBookingDate"                   	: "Début résa",
+			"endBookingDate"                   		: "Fin résa",
+			"UserOrClaimer"                   		: "Utilisateur / demandeur",	
 	
 		"actions" : {
 			"validAll"							: "Tout valider",
-			"cancelAll"							: "Tout annuler"
+			"cancelAll"							: "Tout annuler",
+			"selectABookable"					: "Sélectionner une ressource"			
 		},
 		
 		"infoMessages" : {
@@ -21,6 +21,7 @@
 			"bookingsList"						: "Suivi des réservations",
 			"newBooking"		 				: "Nouvelle réservation",
 			"validBooking" 			 			: "Validation de la demande de réservation"
+	
 		}
 	}
 }

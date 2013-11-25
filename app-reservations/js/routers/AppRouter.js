@@ -3,8 +3,9 @@ define([
 	'appRouter',
 
 	'bookingsListView',
+	'formBookingView',
 
-], function(app, AppRouter, BookingsListView){
+], function(app, AppRouter, BookingsListView, FormBookingView){
 
 	'use strict';
 
@@ -23,7 +24,13 @@ define([
 
 			app.views.bookingsListView = new BookingsListView(params);
 		},
+		
+		formReservation: function(id){
+			params = {}
+			var params = this.setContext({id:id});
 
+			app.views.formBooking = new FormBookingView(params);
+		}
 
 	});
 

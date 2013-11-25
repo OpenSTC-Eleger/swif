@@ -3,7 +3,10 @@
 	"reservations": {
 		"url"		: "reservations(/recurrence/:recurrence)(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"	: "bookings"
+	},
+
+	"formReservation": {
+		"url"		: "formReservation(/id/:id)",
+		"function"	: "formReservation"
 	}
-
-
 }
