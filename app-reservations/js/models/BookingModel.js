@@ -356,7 +356,7 @@ define([
 				key 		: 'refused',
 				color 		: 'danger',
 				icon 		: 'fa-times',
-				translation : app.lang.finished
+				translation : app.lang.actions.refuse
 			},
 			resolve_conflict: {
 				key 		: 'resolve_conflict',
@@ -368,7 +368,7 @@ define([
 				key 		: 'closed',
 				color 		: 'default',
 				icon 		: 'fa-eye-slash',
-				translation : app.lang.actions.refuse
+				translation : app.lang.finished
 			},
 	
 	

@@ -258,7 +258,7 @@ define([
 				data       : {
 					limit  : app.config.itemsPerPage,
 					offset : this.options.page.offset,
-					//sort   : this.options.sort.by+' '+this.options.sort.order
+					sort   : this.options.sort.by+' '+this.options.sort.order
 				}
 			};
 			
@@ -279,7 +279,8 @@ define([
 			
 			if(!_.isUndefined(this.options.recurrence)){
 				fetchParams.data.filters  = _.toArray(fetchParams.data.filters);
-				fetchParams.data.filters.push({ 'field' : 'recurrence_id.id', 'operator' : '=', 'value' : this.options.recurrence})
+				fetchParams.data.filters.push({field: 'recurrence_id.id', operator:'=', value:this.options.recurrence})				
+				fetchParams.data.filters = app.objectifyFilters(fetchParams.data.filters)
 			}
 			
 	
