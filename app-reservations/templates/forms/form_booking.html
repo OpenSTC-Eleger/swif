@@ -54,13 +54,13 @@
 				<!-- checkin date -->
 				<div class="input-group col-sm-4">
 					<input type="text" class="datepicker form-control" id="bookingCheckin" value="<%= startDate%>" placeholder="dd/mm/yyyy" required="required">
-					<span class="input-group-addon"><i class="icon-calendar"></i></span>
+					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 				</div>
 
 				<!-- checkin hour -->
 				<div class="input-group bootstrap-timepicker col-sm-3" >							
 					<input type="text" class="timepicker-default form-control" id='bookingCheckinHour' value="<%= startHour%>" required="required">
-					<span class="input-group-addon"><i class="icon-time"></i></span>
+					<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 				</div>						
 			</div>
 			
@@ -70,19 +70,111 @@
 				<!-- checkout date -->
 				<div class="input-group col-sm-4">
 					<input type="text" class="datepicker form-control" id="bookingCheckout" value="<%= endDate%>" placeholder="dd/mm/yyyy" required="required">
-					<span class="input-group-addon"><i class="icon-calendar"></i></span>
+					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 				</div>
 
 				<!-- checkout hour -->
 				<div class="input-group bootstrap-timepicker col-sm-3" >							
 					<input type="text" class="timepicker-default form-control" id='bookingCheckoutHour' value="<%= endHour%>" required="required">
-					<span class="input-group-addon"><i class="icon-time"></i></span>
+					<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 				</div>						
 			</div>
 			<!-- Recurrence (optionnal, list of (dates + dispo) )-->
 			<div class="form-group">
-				<input type="checkbox"><%= lang.recurrence%></input>
+				<div class="col-sm-9 col-sm-offset-3">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox"><%= lang.recurrence%></input>
+						</label>
+					</div>
+				</div>
 			</div>
+
+			<!-- periodicity of recurrence-->
+			<div class="form-group">
+				<label class="control-label col-sm-3">Periodicité: </label>
+				
+				<label class="radio-inline">
+					<input type="radio" name="periodicity" value="daily" checked>Quotidienne</input>
+				</label>
+			
+				<label class="radio-inline">
+						<input type="radio" name="periodicity" value="weekly">Hebdomadaire</input>
+				</label>
+				
+				<label class="radio-inline">
+						<input type="radio" name="periodicity" value="monthly">Mensuelle</input>
+				</label>
+			</div>
+			
+			<!-- daily-periodicity-setting of recurrence-->
+			<div id="settings_daily" class="form-group">
+				<p class="col-sm-offset-3">Tous les <input class="form-control" type="number" min="1"/> jours</p>
+
+			</div>
+			
+			<!-- weekly-periodicity-setting of recurrence-->
+			<div id="settings_weekly" class="form-group">
+				<div class="col-sm-offset-3">
+					<label class="checkbox-inline">
+						<input type="checkbox" value="mon">Lun.</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" value="thu">Mar.</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" value="wed">Mer.</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" value="thu">jeu.</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" value="fri">Ven.</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" value="sat">Sam.</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" value="sun">Dim.</input>
+					</label>
+				</div>
+				<p class="col-sm-offset-3">Toutes les <input type="number" min="1"/> semaines</p>
+			</div>
+			
+			<!-- monthly-periodicity-setting of recurrence-->
+			<div id="settings_monthly" class="form-group">
+				<div class="col-sm-offset-3">
+					<p><input type="radio" class="radio-inline" name="type_monthly" value="weekmonth"/>Tous les <input type="number" min="1"/> du mois</p>
+					<p><input type="radio" class="radio-inline" name="type_monthly" value="weekdaymonth"/>Tous les 
+					<select>
+						<option>Premiers</option>
+						<option>Deuxième</option>
+						<option>Troisièmes</option>
+						<option>Quatrièmes</option>
+						<option>Derniers</option>	
+					</select>
+					<select>
+						<option>Lundi</option>
+						<option>Mardi</option>
+						<option>Mercredi</option>
+						<option>Jeudi</option>
+						<option>Vendredi</option>
+						<option>Samedi</option>
+						<option>Dimanche</option>
+					</select> du mois</p>
+										
+				</div>
+				<p class="col-sm-offset-3">Tous les <input type="number" min="1"/> mois</p>
+			</div>
+			
+			<!-- length of recurrence-->
+			<div class="form-group">		
+				<div class="form-group col-sm-offset-3">
+					<label class="control-label col-sm-3">Durée: </label>			
+	
+				</div>
+			</div>	
+			
 		</div>
 		
 		<!-- Bookables (qty, pricing, dispo)-->
@@ -116,7 +208,7 @@
 	<div class="row">
 		<div class="col-sm2 col-sm-offset-4">
 			<button type="submit" class="btn btn-primary" form="formSaveBooking" id="saveFormBooking"><%= lang.actions.validate%></button>
-			<a href="#reservations" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>			
+			<a href="#app-reservations/reservations" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>			
 		</div>
 	</div>
 </form>
