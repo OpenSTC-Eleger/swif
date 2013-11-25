@@ -1,0 +1,27 @@
+<!-- Image-->
+<td>
+	<img src="data:image/gif;base64,<%= bookable.getProductImage()%>" style="max-height:50px;max-width:50px"/>
+</td>
+
+<!-- Booking Line name-->
+<td>
+	<%= bookable.getName()%>
+</td>
+
+<!-- Booking Line qty-->
+<td>
+	<input type="number" id="bookingLineQty" name="bookingLineQty" placeholder="" value="<%= line.getQuantity()%>" min="1" required="required"/>
+</td>
+
+<!-- Booking Line dispo-->
+<td>
+	<i class="fa <%= line.getAvailable() ? linesStat.dispo.icon: linesStat.not_dispo.icon%>" />
+</td>
+
+<!-- Booking Line pricing-->
+<td>
+	<input type="number" id="bookingLinePricing" name="bookingLinePricing" placeholder="" value="<%= line.getPricing()%>" min="0" required="required"/>
+	<a href="#" class="removeLine" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">
+		<i class="fa fa-trash-o fa-lg">&nbsp;</i>
+	</a>
+</td>

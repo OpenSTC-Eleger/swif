@@ -1,6 +1,5 @@
 define([
 	'app', 
-
 	'genericCollection',
 	'bookingModel'
 

@@ -1,12 +1,14 @@
 define([
 	'app',
 	'genericModel',
-	'bookingModel'
+	'bookingModel',
+	'claimerModel',
+	'bookingLinesCollection'
 
-], function(app, GenericModel, BookingModel){
+], function(app, GenericModel, BookingModel, ClaimerModel, BookingLinesCollection){
 
 	'use strict';
-
+	
 	/******************************************
 	* Booking Model
 	*/
@@ -14,8 +16,7 @@ define([
 		
 		urlRoot: "/api/openresa/bookings",
 		
-		fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'partner_phone', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'note'],
-	
+		fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'partner_phone', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'note', 'pricelist_id'],	
 	
 		searchable_fields: [
 			{
@@ -118,11 +119,28 @@ define([
 			}	
 		},
 		
+		getPricelist: function(type){
+			if(this.get('pricelist_id')){
+				switch(type){
+					case 'id': 
+						return this.get('pricelist_id')[0];
+					break;
+					default:
+						return _.titleize(this.get('pricelist_id')[1].toLowerCase());
+				}
+			}
+			else{
+				return false;
+			}
+		},
+		
+		setPricelist: function(id){
+			this.set({pricelist_id:id});
+		},
+		
 		isAllDispo: function(){
 			return this.get('all_dispo');	
 		},
-	
-
 		
 		isTemplate: function(){
 			return this.get('is_template');
@@ -144,6 +162,13 @@ define([
 			}
 		},	
 		
+		setStartDate: function(dateStr){
+			if(dateStr != ''){
+				this.set({checkin:dateStr});
+				this.updateLinesData();
+			}
+		},
+		
 		getEndDate: function(type){
 			if(this.get('checkout') != false){
 				switch(type){
@@ -157,6 +182,13 @@ define([
 			}
 			else{
 				return '';
+			}
+		},
+		
+		setEndDate: function(dateStr){
+			if(dateStr != ''){
+				this.set({checkout:dateStr});
+				this.updateLinesData();
 			}
 		},
 		
@@ -206,16 +238,21 @@ define([
 				default:
 					return this.get('partner_id')[1];
 			}
-		
 			return claimer;
 		},
 		
 		setClaimer: function(value, silent){
+			var self = this;
 			this.set({ partner_id : value }, {silent: silent});
+			var modelClaimer = new ClaimerModel({id:this.getClaimer('id')});
+			modelClaimer.fetch({data:{fields:['property_product_pricelist']}}).done(function(){
+				self.setPricelist(modelClaimer.get('property_product_pricelist'));
+			})
+			.always(function(){
+				self.updateLinesData();
+			});
 		},
-	
-		
-	
+
 		getClaimerType: function(type){
 			if(this.get('partner_type')){
 				switch (type){
@@ -234,12 +271,79 @@ define([
 			this.set({ partner_type : value }, {silent: silent});
 		},
 		
-	
-	
+		//method to add a bookingLine to collection on this model
+		addLine: function(lineModel){
+			this.lines.add(lineModel);
+			lineModel.setParentBookingModel(this);
+		},
+		
+		fetchLines: function(){
+			var self = this;
+			return this.lines.fetch({data:{filters:{0:{field:'line_id.id',operator:'=',value:this.getId()}}}}).done(function(){
+				self.lines.each(function(lineModel){
+					lineModel.setParentBookingModel(self);
+				});
+			});
+		},
+		
+		//method to perform updates on bookingLines (pricing, dispo, ...) when some fields value change
+		updateLinesData: function(){
+			var checkin = this.getStartDate();
+			var checkout = this.getEndDate();
+			var partner_id = this.getClaimer('id');
+			if(checkin != '' && checkout != ''){
+				_.each(this.lines.models, function(lineModel,i){
+					lineModel.fetchAvailableQtity(checkin,checkout);
+					if(partner_id > 0){
+						lineModel.fetchPricing(partner_id, checkin, checkout);
+					}
+				});
+				
+			}
+		},
+		
+		//used for OpenERP to format many2one data to be writable in OpenERP
+		saveToBackend: function(){
+			var self = this;
+			var vals = {
+					partner_invoice_id:this.getClaimerContact('id'),
+					partner_order_id:this.getClaimerContact('id'),
+					partner_shipping_id: this.getClaimerContact('id'),
+					partner_id: this.getClaimer('id'),
+					openstc_partner_id: this.getClaimer('id'),
+					pricelist_id: this.getPricelist('id'),
+					name: this.getName(),
+					checkin:this.getStartDate(),
+					checkout:this.getEndDate()};
+			
+			//if new, POST new values and fetch the model to retrieve values stored on backend
+			if(this.isNew()){
+				return this.save(vals,{wait:true}).done(function(data){
+					self.set({id:data});
+					self.fetch({silent:true});
+					self.lines.each(function(lineModel){
+						lineModel.saveToBackend().fail(function(e){console.log(e)});
+					});
+				});
+			}
+			
+			//if already exists, PATCH values and fetch the model to retrieve values updated on backend
+			//also perform save/update for lineModels
+			else{
+				vals.user_id = this.getCreateAuthor('id');
+				return this.save(vals, {wait:true, patch:true}).always(function(){
+					self.lines.each(function(lineModel,i)	{
+						self.fetch({silent:true});
+						lineModel.saveToBackend().fail(function(e){console.log(e)});
+					});
+				});
+			}
+			return false;
+		},
+
 		getClaimerPhone: function(){
 			return this.get('partner_phone');
 		},
-		
 		
 		getClaimerContact: function(type){
 			if(this.get('partner_order_id')){
@@ -248,7 +352,7 @@ define([
 						return this.get('partner_order_id')[0];
 					break;
 					case 'json':
-						return {id: this.get('partner_order_id')[0], name: this.get('partner_address')[1]};
+						return {id: this.get('partner_order_id')[0], name: this.get('partner_order_id')[1]};
 					break;
 					default:
 						return this.get('partner_order_id')[1];
@@ -257,11 +361,8 @@ define([
 		},
 		
 		setClaimerContact: function(value, silent){
-			this.set({ partner_address : value }, {silent: silent});
-		},
-		
-		
-	
+			this.set({ partner_order_id : value }, {silent: silent});
+		},	
 		
 		fromCitizen: function(){
 			return this.get('is_citizen');
@@ -295,7 +396,7 @@ define([
 		setCitizenEmail: function(value, silent){
 			this.set({ people_email : value }, {silent: silent});
 		},
-		
+
 		getState : function() {
 			return this.get('state');
 		},
@@ -312,6 +413,12 @@ define([
 		/** Model Initialization
 		*/
 		initialize: function(){
+			this.lines = new BookingLinesCollection();
+//			this.computeResources().done(function (data) {
+//				// self.set( {'resources' :  data.resources, 'description': data.description} , {silent:false} );	
+//				 //self.set( 'resources',  data.resources , {silent:true} );	
+//				 //self.set( 'description',  data.description , {silent:true} );	
+//			});	
 		},
 	
 	

@@ -300,5 +300,4 @@ define([
 	});	
 	
 	return bookingsListView;
-
 });

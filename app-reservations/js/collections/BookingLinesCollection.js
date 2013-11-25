@@ -1,6 +1,5 @@
 define([
 	'app', 
-
 	'genericCollection',
 	'bookingLineModel'
 
@@ -18,7 +17,7 @@ define([
 		
 		url   : "/api/openresa/booking_lines",
 		
-		fields: ['id', 'name', 'reserve_product', 'qte_dispo'],
+		fields : ['id', 'name', 'reserve_product', 'qte_dispo', 'qte_reserves', 'pricelist_amount','dispo'],
 	
 		/** Collection Sync
 		*/

@@ -175,7 +175,11 @@
 	"location"								: "Emplacement",
 	"developBy" 							: "développé par",
 	"citizen"                               : "administré",
-
+	"recurrence"							: "récurrence",
+	"bookable"								: "ressource",
+	"picture"								: "Image",
+	"availability"							: "Disponible",
+	
 	"detailsEquipment"						: "Détails",
 	"baseEquipment"							: "Général",
 	"financesEquipment"						: "Finances",
@@ -263,6 +267,7 @@
 		"selectAContact"	: "Sélectionner un contact",
 		"selectAClaimer"	: "Sélectionner un demandeur",
 		"selectAClaimerType": "Sélectionner un type de demandeur",
+		"selectABookable"	: "Sélectionner une ressource",
 		"displayPassword"   : "Afficher le mot de passe",
 		"addAttach"			: "Ajouter une pièce jointe"
 		
@@ -427,6 +432,8 @@
 		"statementTask"			 : "Relevé de la tâche",
 		"statementEndTask"		 : "Relevé de la tâche non terminée",
 		"pageNotFound" 			 : "Page non trouvée",
-		"editClaimer" 		     : "Edition de l'organisation"
+		"editClaimer" 		     : "Edition de l'organisation",
+		"newBooking"			 : "Nouvelle Demande de Réservation",
+		"updateBooking"			 : "Modifier Réservation"
 	}
 }
