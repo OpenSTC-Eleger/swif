@@ -4,9 +4,9 @@ define([
 
 	'bookingModel',
 	
-	'modalValidBookingView'
+	'modalUpdateBookingView'
 
-], function(app, AppHelpers, BookingModel, ModalValidBookingView){
+], function(app, AppHelpers, BookingModel, ModalUpdateBookingView){
 
 	'use strict';
 
@@ -24,10 +24,10 @@ define([
 	
 		// The DOM events //
 		events       : {
-			'click a.accordion-object'    		: 'tableAccordion',
-			'click a.displayOccurences'			: 'displayOccurences',
+			'click a.accordion-object'    			: 'tableAccordion',
+			'click a.displayOccurences'				: 'displayOccurences',
 			
-			'click .buttonValidBooking'	      	: 'modalValidBooking',
+			'click .actions'						: 'modalUpdateBooking'
 		},
 	
 	
@@ -162,12 +162,13 @@ define([
 		
 		/** Display Modal form to valid an Intervention Request
 		*/
-		modalValidBooking: function(e){
+		modalUpdateBooking: function(e){
 			e.preventDefault(); e.stopPropagation();
 	
-			app.views.modalValidBookingView = new ModalValidBookingView({
-				el      : '#modalValidBooking',
-				model   : this.model
+			app.views.modalUpdateBookingView = new ModalUpdateBookingView({
+				el      : '#modalUpdateBooking',
+				model   : this.model,
+				state	: e.currentTarget.id
 			});
 		},
 	

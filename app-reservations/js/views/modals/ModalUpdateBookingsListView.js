@@ -1,25 +1,28 @@
 define([
-	'app',	
+	'app',
+	
+	'bookingModel',
 	
 	'genericModalView'
 
-], function(app, GenericModalView){
+], function(app, BookingModel, GenericModalView){
 
 	'use strict';
+
 
 	/******************************************
 	* Refuse Request Modal View
 	*/
-	var modalValidBookingView = GenericModalView.extend({
+	var modalUpdateBookingsListView = GenericModalView.extend({
 	
 	
-		templateHTML : 'modals/modalValidBooking',
+		templateHTML : 'modals/modalUpdateBookingsList',
 	
 	
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'submit #formValidBooking'   : 'validBooking'
+				'submit #formUpdateBooking'   : 'updateBooking'
 			}, 
 				GenericModalView.prototype.events
 			);
@@ -29,7 +32,8 @@ define([
 	
 		/** View Initialization
 		*/
-		initialize : function() {
+		initialize : function(params) {
+			this.options = params;
 			var self = this;
 	
 			this.modal = $(this.el);
@@ -49,8 +53,10 @@ define([
 			$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){
 	
 				var template = _.template(templateData, {
-					lang    : app.lang,
-					booking : self.model
+					lang     : app.lang,
+					bookings : self.collection,
+					title 	 : app.lang.resa.viewsTitles[self.options.state + "AllBookings" ],
+					iconTitle	: self.getIconTitle()
 				});
 	
 				self.modal.html(template);
@@ -60,12 +66,23 @@ define([
 	
 			return this;
 		},
-	
-	
+		
+		getIconTitle: function(){
+			switch (this.options.state){ 
+				case BookingModel.status.done.key: 
+					return 'fa-eye-slash';
+				break;
+				case BookingModel.status.cancel.key:
+					return 'fa-times';
+				break;
+				default: 
+					return 'fa-check';
+			}
+		},		
 	
 		/** Delete the model pass in the view
 		*/
-		validBooking: function(e){
+		updateBooking: function(e){
 			e.preventDefault();
 	
 			var self = this;
@@ -73,9 +90,8 @@ define([
 			// Set the button in loading State //
 			$(this.el).find("button[type=submit]").button('loading');
 	
-	
 			var params = {
-				//state   : BookingModel.status.done.key,
+				state   : this.options.state,			 
 				note 	: $('#note').val()
 			}
 	
@@ -84,7 +100,7 @@ define([
 			this.model.save(params, {patch: true, silent: true})
 				.done(function(data) {
 					self.modal.modal('hide');
-					self.model.fetch({ data : {fields : self.model.fields} });
+					//self.model.fetch({ data : {fields : self.model.fields} });
 				})
 				.fail(function (e) {
 					console.log(e);
@@ -92,9 +108,10 @@ define([
 				.always(function () {
 					$(self.el).find("button[type=submit]").button('reset');
 				});
+			
 		}
 	
-	});	
-		
-	return modalValidBookingView;
+	});
+	
+	return modalUpdateBookingsListView;
 })

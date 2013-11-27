@@ -230,6 +230,7 @@
 		"associatedAdress" 	: "Adresse associée",
 		"save"				: "enregistrer",
 		"reopen"			: "Réintegrer",
+		"close"				: "Clôturer",
 		"cancel"			: "annuler",
 		"confirmChief"		: "remonter DST",
 		"refuse"			: "refuser",

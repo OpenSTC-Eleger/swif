@@ -4,7 +4,7 @@
 
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h3 class="modal-title"><i class="fa fa-times"></i>&nbsp;&nbsp;<%= lang.resa.viewsTitles.validBooking %></h3>
+		<h3 class="modal-title"><i class="fa <%= iconTitle %> "></i>&nbsp;&nbsp;<%= title %></h3>
 	</div>
 
 
@@ -12,15 +12,15 @@
 	<div class="modal-body">
 
 		<blockquote>
-			<p></p>
-			<small><strong><i class="fa fa-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong></i>&nbsp;&nbsp; </small>
+			<p><%= booking.getName() %></p>
+			<small><strong><i class="fa fa-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong></i>&nbsp;&nbsp; <%= booking.getResourceNames() %></small>
 		</blockquote>
 
-		<form id="formValidBooking" action="#" class="form-horizontal">
+		<form id="formUpdateBooking" action="#" class="form-horizontal">
 		
 			<!-- The Reason for Refusal -->
 			<div class="form-group">
-				<label for="note" class="control-label col-sm-3"><%= _.capitalize(lang.refusalReason) %>:</label>
+				<label for="note" class="control-label col-sm-3"><%= _.capitalize(lang.description) %>:</label>
 
 				<div class="col-sm-9">
 					<textarea id="note" class="form-control" rows="5" required></textarea>
@@ -31,7 +31,7 @@
 	<!-- /Modal Body -->
 
 	<div class="modal-footer">
-		<button type="submit" form="formValidBooking" class="btn btn-primary"
+		<button type="submit" form="formUpdateBooking" class="btn btn-primary"
 			data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= _.capitalize(lang.validInProgress) %>"
 		><%= _.capitalize(lang.actions.valid) %>
 		</button>&nbsp;&nbsp;

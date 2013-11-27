@@ -427,40 +427,40 @@ define([
 		status : {
 			//= égal au 'wait' STC
 			remplir: {
-				key                 : 'wait',
+				key                 : 'remplir',
 				color               : 'info',
 				translation         : app.lang.wait
 			},
 			//= égal au 'valid' STC
 			confirm: {
-				key                 : 'valid',
+				key                 : 'confirm',
 				color               : 'success',
 				translation         : app.lang.valid
 			},
 			//= égal au 'refused' STC
 			cancel: {
-				key                 : 'refused',
+				key                 : 'cancel',
 				color               : 'danger',
 				translation         : app.lang.refused
 			},
 			//= égal au 'closed' STC
 			done: {
-				key                 : 'closed',
-				color               : 'success',
-				translation         : app.lang.finished
+				key                 : 'done',
+				color               : 'default',
+				translation         : app.lang.closed
 			},
 		},
 		
 			// Actions of the requests //
 		actions : {
-			valid: {
-				key 		: 'valid',
+			confirm: {
+				key 		: 'confirm',
 				color 		: 'success',
 				icon 		: 'fa-check',
 				translation : app.lang.actions.validate
 			},
-			refused: {
-				key 		: 'refused',
+			cancel: {
+				key 		: 'cancel',
 				color 		: 'danger',
 				icon 		: 'fa-times',
 				translation : app.lang.actions.refuse
@@ -469,13 +469,14 @@ define([
 				key 		: 'resolve_conflict',
 				color 		: 'warning',
 				icon 		: 'fa-medkit',
-				translation : 'Traiter conflit'
+				translation : 'Traiter le conflit'
+				//translation : app.lang.resa.actions.resolveConflict
 			},
-			closed: {
-				key 		: 'closed',
+			done: {
+				key 		: 'done',
 				color 		: 'default',
 				icon 		: 'fa-eye-slash',
-				translation : app.lang.finished
+				translation : app.lang.actions.close
 			},
 	
 	

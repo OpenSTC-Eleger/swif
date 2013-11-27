@@ -32,8 +32,8 @@ requirejs.config({
 		itemBookingOccurrenceView           : 'app-reservations/js/views/items/ItemBookingOccurrenceView',
 		
 		// Modals //
-		modalValidBookingView          		: 'app-reservations/js/views/modals/ModalValidBookingView',
-		modalValidBookingsListView          : 'app-reservations/js/views/modals/ModalValidBookingsListView',		
+		modalUpdateBookingView          	: 'app-reservations/js/views/modals/ModalUpdateBookingView',
+		modalUpdateBookingsListView         : 'app-reservations/js/views/modals/ModalUpdateBookingsListView',		
 		
 	}
 

@@ -70,11 +70,12 @@
 		
 				switch(booking.getState()){
 					case 'remplir':
+						actions = _.without(actions, BookingModel.actions.confirm.key);
 						console.debug("remplir");	
 						if(booking.isAllDispo()) {
-							mainAction = BookingModel.actions.valid.key;
-							mainActionColor = BookingModel.actions.valid.color;
-							mainActionIcon = BookingModel.actions.valid.icon;
+							mainAction = BookingModel.actions.confirm.key;
+							mainActionColor = BookingModel.actions.confirm.color;
+							mainActionIcon = BookingModel.actions.confirm.icon;
 							mainActionDisabled = '';
 						}
 						else {
@@ -85,30 +86,31 @@
 						}
 					break;
 					case 'cancel':	
+							actions = _.without(actions, BookingModel.actions.cancel.key);
 							console.debug("cancel");	
-							mainAction = BookingModel.actions.refused.key;
-							mainActionColor = BookingModel.actions.refused.color;
-							mainActionIcon = BookingModel.actions.refused.icon;
+							mainAction = BookingModel.actions.cancel.key;
+							mainActionColor = BookingModel.actions.cancel.color;
+							mainActionIcon = BookingModel.actions.cancel.icon;
 							mainActionDisabled = '';
 					break;
 					case 'confirm':	
-							mainAction = BookingModel.actions.closed.key;
-							mainActionColor = BookingModel.actions.closed.color;
-							mainActionIcon = BookingModel.actions.closed.icon;
+							mainAction = BookingModel.actions.done.key;
+							mainActionColor = BookingModel.actions.done.color;
+							mainActionIcon = BookingModel.actions.done.icon;
 							mainActionDisabled = '';
 					break;
 					
 					default:
-							mainAction = BookingModel.actions.valid.key;
-							mainActionColor = BookingModel.actions.valid.color;
-							mainActionIcon = BookingModel.actions.valid.icon;
+							mainAction = BookingModel.actions.confirm.key;
+							mainActionColor = BookingModel.actions.confirm.color;
+							mainActionIcon = BookingModel.actions.confirm.icon;
 							mainActionDisabled = '';
 				}
 
 			%>
 			<!-- Main action button -->
-			<button class="btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline button<%= _.capitalize(mainAction) %>Booking" >
-				<i class="fa <%= mainActionIcon %> fa-fw button<%= _.capitalize(mainAction) %>Booking"></i>
+			<button class="actions btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline" id="<%= mainAction %>">
+				<i class="fa <%= mainActionIcon %> fa-fw <%= _.capitalize(mainAction) %>"></i>
 			</button>
 			
 			<!-- Dropdown button action -->
@@ -119,8 +121,8 @@
 			<!-- Other buttons action -->
 			<ul class="dropdown-menu pull-right text-left">
 				<% _.each(actions, function(action){ %>
-					<li>
-						<a href="#reservations" class="button<%= _.capitalize(BookingModel.actions[action].key) %>Booking">
+					<li >
+						<a href="#reservations" class="actions" id="<%= BookingModel.actions[action].key %>">
 							<i class="fa <%= BookingModel.actions[action].icon %> fa-fw"></i>&nbsp;<%= _.capitalize(BookingModel.actions[action].translation) %>
 						</a>
 					</li>

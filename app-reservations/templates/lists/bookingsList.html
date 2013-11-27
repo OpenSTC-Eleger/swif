@@ -20,22 +20,22 @@
 
 
 	<!-- Table toolbar -->
-	<div class="tableToolbar row">
-		<div class="col-xs-7 col-md-9 col-lg-5">
-			<a href="#formReservation" class="btn btn-primary modalCreateBooking"><i class="fa fa-plus"></i><%= lang.resa.viewsTitles.newBooking%></a>
-		</div>
+	<div class="btn-toolbar tableToolbar row">
 		
-		<form class="form-actions pull-center col-xs-5 col-md-3 col-lg-2">
+		<span class="bt-group col-sm-5">			
+			<a href="#formReservation" class="btn btn-primary modalCreateBooking" role="button"><i class="fa fa-plus"></i><%= lang.resa.viewsTitles.newBooking%></a>
+		 </span>
+		
+		<span class="bt-group col-sm-5 btn-actions" >						
+  			<button type="button" class="btn btn-info" id="unbindOccurences"> <i class="fa fa-step-backward"></i></button>		  			
+	  		<button type="button" class="actions btn btn-success" id="<%= BookingModel.actions['confirm'].key %>"><%= lang.resa.actions.validAll %></button>
+	  		<button type="button" class="actions btn btn-danger" id="<%= BookingModel.actions['cancel'].key %>"><%= lang.resa.actions.cancelAll %></button>
+	  		<button type="button" class="actions btn btn-close" id="<%= BookingModel.actions['done'].key %>"><%= lang.resa.actions.closeAll %></button>	
+	 	</span>	
 
-		  <div class="input-group">
-		  		<div class="col-lg-20">
-		  			<button type="button" class="btn btn-info"> <i class="fa fa-step-backward"></i>
-		  			</button>
-			  		<button type="button" class="btn btn-success"><%= lang.resa.actions.validAll %></button>
-			  		<button type="button" class="btn btn-danger"><%= lang.resa.actions.cancelAll %></button>		
-		  		</div>  		
-		  </div>
-		</form>
+
+
+	
 
 		<form class="form-search pull-right col-xs-5 col-md-3 col-lg-2">
 
@@ -112,6 +112,6 @@
 	<!-- /Table pagination -->
 
 	<!-- Modal form to valid a request -->
-	<div id="modalValidBooking" class="modal fade" role="dialog" aria-hidden="true"></div>
+	<div id="modalUpdateBooking" class="modal fade" role="dialog" aria-hidden="true"></div>
 	
-	<div id="modalValidBookingsList" class="modal fade" role="dialog" aria-hidden="true"></div>
+	<div id="modalUpdateBookingsList" class="modal fade" role="dialog" aria-hidden="true"></div>
