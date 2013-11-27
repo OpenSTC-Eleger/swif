@@ -50,10 +50,12 @@ requirejs.config({
 		*/
 		appHelpers		          : 'js/helpers/main',
 
+
 		/* #############
 		* Routers
 		*/
 		appRouter		          : 'js/routers/AppRouter',
+
 
 		/* #############
 		* Collections
@@ -72,6 +74,7 @@ requirejs.config({
 		teamsCollection            : 'js/collections/TeamsCollection',
 		officersCollection         : 'js/collections/OfficersCollection',
 
+
 		/* #############
 		* Models
 		*/
@@ -87,6 +90,7 @@ requirejs.config({
 		teamModel               : 'js/models/TeamModel',
 		officerModel            : 'js/models/OfficerModel',
 
+
 		/* #############
 		* Views
 		*/
@@ -97,33 +101,39 @@ requirejs.config({
 		notFoundView            : 'js/views/others/NotFoundView',
 		aboutView               : 'js/views/others/AboutView',
 		advancedSelectBoxView   : 'js/views/others/AdvancedSelectBoxView',
-		genericListView         : 'js/views/lists/GenericListView',
-		genericModalView        : 'js/views/modals/GenericModalView',
-		placesListView          : 'js/views/lists/PlacesListView',
-		itemPlaceView           : 'js/views/items/ItemPlaceView',
-		modalPlaceView          : 'js/views/modals/ModalPlaceView',
-		claimersListView        : 'js/views/lists/ClaimersListView',
-		claimerView             : 'js/views/items/ClaimerView',
-		claimerContactsListView : 'js/views/lists/ClaimerContactsListView',
-		modalClaimerEdit        : 'js/views/modals/ModalClaimerEdit',
-		teamsListView           : 'js/views/lists/TeamsListView',
-		itemTeamView            : 'js/views/items/ItemTeamView',
 		teamMembersAndServices  : 'js/views/others/TeamMembersAndServices',
-		modalTeamView           : 'js/views/modals/ModalTeamView',
-		modalDeleteView         : 'js/views/modals/ModalDeleteView',
+
+		// Lists //
+		genericListView         : 'js/views/lists/GenericListView',
+		placesListView          : 'js/views/lists/PlacesListView',
+		claimersListView        : 'js/views/lists/ClaimersListView',
+		claimerContactsListView : 'js/views/lists/ClaimerContactsListView',
 		servicesListView        : 'js/views/lists/ServicesListView',
 		officersListView        : 'js/views/lists/OfficersListView',
+		teamsListView           : 'js/views/lists/TeamsListView',
+		claimersTypesListView   : 'js/views/lists/ClaimersTypesListView',
+		equipmentsListView      : 'js/views/lists/EquipmentsListView',
+
+		// Items //		
+		itemPlaceView           : 'js/views/items/ItemPlaceView',
+		claimerView             : 'js/views/items/ClaimerView',
+		itemTeamView            : 'js/views/items/ItemTeamView',
 		itemServiceView         : 'js/views/items/ItemServiceView',
 		itemOfficerView         : 'js/views/items/ItemOfficerView',
+		claimerContactView      : 'js/views/items/ClaimerContactView',
+		itemEquipmentView       : 'js/views/items/ItemEquipmentView',
+		itemClaimerTypeView     : 'js/views/items/ItemClaimerTypeView',
+
+		// Modals //
+		genericModalView        : 'js/views/modals/GenericModalView',
+		modalPlaceView          : 'js/views/modals/ModalPlaceView',
+		modalClaimerEdit        : 'js/views/modals/ModalClaimerEdit',
+		modalTeamView           : 'js/views/modals/ModalTeamView',
+		modalDeleteView         : 'js/views/modals/ModalDeleteView',
 		modalServiceView        : 'js/views/modals/ModalServiceView',
 		modalOfficerView        : 'js/views/modals/ModalOfficerView',
         modalContactEdit        : 'js/views/modals/ModalContactEdit',
-        claimerContactView      : 'js/views/items/ClaimerContactView',
-        equipmentsListView      : 'js/views/lists/EquipmentsListView',
-        itemEquipmentView       : 'js/views/items/ItemEquipmentView',
-        modalEquipmentView      : 'js/views/modals/ModalEquipmentView',
-        claimersTypesListView   : 'js/views/lists/ClaimersTypesListView',
-        itemClaimerTypeView     : 'js/views/items/ItemClaimerTypeView',
+		modalEquipmentView      : 'js/views/modals/ModalEquipmentView',
 		modalClaimerTypeView    : 'js/views/modals/ModalClaimerTypeView'
 
     },
@@ -186,17 +196,18 @@ requirejs.config({
 		'bsTimepicker': {
 			deps   : ['jquery']
 		},
+		'printElement': {
+			deps   : ['jqueryui'],
+			exports: 'printElement'
+		},
 
 		'app-interventions' : {
 			deps   : ['app-interventions/config/require-config']
 		},
 		'app-reservations' : {
 			deps   : ['app-reservations/config/require-config']
-		},
-		'printElement': {
-			deps: ['jquery','jqueryui'],
-			exports : 'printElement'
 		}
+
 	}
 
 });

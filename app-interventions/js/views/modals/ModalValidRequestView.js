@@ -66,7 +66,8 @@ define([
 	
 				var template = _.template(templateData, {
 					lang    : app.lang,
-					request : self.model
+					request : self.model,
+					moment  : moment
 				});
 	
 				self.modal.html(template);

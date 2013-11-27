@@ -3,7 +3,6 @@ define([
 
 	'tasksCollection',	
 	
-	'userModel',
 	'taskModel',
 	'taskSchedulesModel',
 
@@ -15,8 +14,8 @@ define([
 
 ], function(app, 
 				TasksCollection, 
-				UserModel, TaskModel, TaskSchedulesModel,
-				PrintingCalendarView, ModalAbsentTaskView, ModalUnplanTaskView, Fullcalendar ){
+				TaskModel, TaskSchedulesModel,
+				PrintingCalendarView, ModalAbsentTaskView, ModalUnplanTaskView, fullcalendar ){
 
 	'use strict';
 
@@ -30,7 +29,7 @@ define([
 		templateHTML: 'others/calendar',
 		//Dom element for calendar
 		divCalendar : 	null,
-	
+		
 		calendarView: 	'agendaWeek',
 		teamMode    :		 false,
 		initialized : false,

@@ -26,7 +26,7 @@ define(['app', 'appHelpers', 'officerModel', 'officersCollection', 'claimerConta
 			var self = this;
 			self.fetchData().done(
 				function () {
-					self.contactsCollection.off();
+					//self.contactsCollection.off();
 					self.listenTo(self.contactsCollection, 'add', self.addContact);
 				}
 			)
@@ -56,7 +56,7 @@ define(['app', 'appHelpers', 'officerModel', 'officersCollection', 'claimerConta
 		destroy: function (e) {
 			var self = this;
 
-			AppHelpers.Main.highlight($(this.el)).done(function () {
+			AppHelpers.highlight($(this.el)).done(function () {
 				self.remove();
 			});
 
@@ -69,9 +69,6 @@ define(['app', 'appHelpers', 'officerModel', 'officersCollection', 'claimerConta
 
 			var self = this;
 
-            AppHelpers.highlight($(this.el)).done(function () {
-                self.remove();
-            });
 			$.get("templates/" + this.templateHTML + ".html", function (templateData) {
 				var contactNb = self.model.toJSON().address.length;
 				if (!_.isUndefined(self.contactsCollection)) {

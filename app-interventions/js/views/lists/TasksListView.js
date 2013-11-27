@@ -27,7 +27,7 @@ define([
 		
 		el : '#rowContainer',
 	
-		templateHTML: 'tasksList',
+		templateHTML: '/templates/lists/tasksList',
 	
 		filters: 'tasksListFilter',
 	
@@ -48,6 +48,7 @@ define([
 			this.options = params;
 		},
 		
+	
 		partialRender: function(){
 			
 			var pendingTasks = 0;
@@ -59,7 +60,9 @@ define([
 			$('#globalBagePendingTask').html(pendingTasks.toString());
 	
 		},
-		
+
+
+
 		//listener to dispatch newly created task to corresponding Day
 		addTask: function(model){
 			var self = this;
@@ -79,12 +82,16 @@ define([
 		removeTask: function(model){
 			this.partialRender();
 		},
+
+
 		
 		//listener to dispatch newly created task to corresponding Day
 		changeTask: function(model){
 			this.partialRender();
 		},
 	
+
+
 		/** Display the view
 		*/
 		render: function () {
@@ -216,7 +223,7 @@ define([
 		
 		
 						// Retrieve the template // 
-						$.get(app.moduleUrl + "/templates/" + self.templateHTML + ".html", function(templateData){
+						$.get(app.moduleUrl+self.templateHTML + ".html", function(templateData){
 		
 		
 							var officersDropDownList = new OfficersCollection( app.models.user.attributes.officers );
