@@ -414,6 +414,7 @@ define([
 		*/
 		initialize: function(){
 			this.lines = new BookingLinesCollection();
+			this.recurrence = null;
 //			this.computeResources().done(function (data) {
 //				// self.set( {'resources' :  data.resources, 'description': data.description} , {silent:false} );	
 //				 //self.set( 'resources',  data.resources , {silent:true} );	

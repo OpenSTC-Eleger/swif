@@ -82,130 +82,14 @@
 			<!-- Recurrence (optionnal, list of (dates + dispo) )-->
 			<div class="form-group">
 				<div class="col-sm-9 col-sm-offset-3">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox"><%= lang.recurrence%></input>
-						</label>
-					</div>
+						<button type="button" id="addRecurrence" class="btn btn-default"><%= lang.recurrence%></button>
 				</div>
 			</div>
 
 			<!-- periodicity of recurrence-->
-			<div class="form-group">
-				<label class="control-label col-sm-3">Periodicité: </label>
+			<div id="recurrence">
 				
-				<label class="radio-inline">
-					<input type="radio" name="periodicity" value="daily" checked>Quotidienne</input>
-				</label>
-			
-				<label class="radio-inline">
-						<input type="radio" name="periodicity" value="weekly">Hebdomadaire</input>
-				</label>
-				
-				<label class="radio-inline">
-						<input type="radio" name="periodicity" value="monthly">Mensuelle</input>
-				</label>
 			</div>
-			
-			<!-- daily-periodicity-setting of recurrence-->
-			<div id="settings_daily" class="form-group">
-				<label class="control-label col-sm-3" for="recur_daily_weight">Tous les: </label>
-				<div class="input-group col-sm-3">
-					<input class="form-control" id="recur_daily_weight" type="number" min="1"/>
-					 <span class="input-group-addon">Jours</span>
-				</div>
-			</div>
-			
-			<!-- weekly-periodicity-setting of recurrence-->
-			<div id="settings_weekly">
-				<div class="form-group">
-					<div class="col-sm-offset-3">
-						<label class="checkbox-inline">
-							<input type="checkbox" value="mon">Lun.</input>
-						</label>
-						<label class="checkbox-inline">
-							<input type="checkbox" value="thu">Mar.</input>
-						</label>
-						<label class="checkbox-inline">
-							<input type="checkbox" value="wed">Mer.</input>
-						</label>
-						<label class="checkbox-inline">
-							<input type="checkbox" value="thu">jeu.</input>
-						</label>
-						<label class="checkbox-inline">
-							<input type="checkbox" value="fri">Ven.</input>
-						</label>
-						<label class="checkbox-inline">
-							<input type="checkbox" value="sat">Sam.</input>
-						</label>
-						<label class="checkbox-inline">
-							<input type="checkbox" value="sun">Dim.</input>
-						</label>
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="recur_weekly_weight" class="col-sm-3 control-label">Toutes les: </label>
-					<div class="input-group col-sm-3">
-						<input id="recur_weekly_weight" class="form-control" type="number" min="1"/>
-						<span class="input-group-addon">Semaines</span>
-					</div>
-				</div>
-			</div>
-			
-			<!-- monthly-periodicity-setting of recurrence-->
-			<div id="settings_monthly">
-				<div class="form-group">
-					<label class="control-label col-sm-3">
-						<input type="radio" class="radio-inline" name="type_monthly" value="monthday">Jour n°: </input>
-					</label>
-					<div class="input-group col-sm-3">
-						<input class="form-control" id="recur_monthly_monthday" type="number" value="1" min="1"/>
-						<span class="input-group-addon">Du mois</span>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label col-sm-3">
-						<input type="radio" class="radio-inline" name="type_monthly" value="monthweekday">Chaque: </input>
-					</label>
-					<div class="input-group col-sm-3">
-						<select class="form-control">
-							<option>Premiers</option>
-							<option>Deuxième</option>
-							<option>Troisièmes</option>
-							<option>Quatrièmes</option>
-							<option>Derniers</option>	
-						</select>
-					</div>
-					<div class="input-group col-sm-4">
-						<select class="form-control">
-							<option>Lundi</option>
-							<option>Mardi</option>
-							<option>Mercredi</option>
-							<option>Jeudi</option>
-							<option>Vendredi</option>
-							<option>Samedi</option>
-							<option>Dimanche</option>
-						</select>
-						<span class="input-group-addon">Du mois</span>
-					</div>			
-				</div>
-				
-				<div class="form-group">
-					<label for="recur_monthly_weight" class="col-sm-3 control-label">Tous les: </label>
-					<div class="input-group col-sm-3">
-						<input id="recur_monthly_weight" class="form-control" type="number" min="1"/>
-						<span class="input-group-addon">Mois</span>
-					</div>
-				</div>
-			</div>
-			
-			<!-- length of recurrence-->
-			<div class="form-group">		
-				<div class="form-group col-sm-3">
-					<label class="control-label col-sm-3">Durée: </label>			
-				</div>
-			</div>	
-			
 		</div>
 		
 		<!-- Bookables (qty, pricing, dispo)-->

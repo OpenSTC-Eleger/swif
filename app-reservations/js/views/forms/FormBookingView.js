@@ -4,12 +4,14 @@ define(['app',
         
         'bookingModel',
         'bookingLineModel',
+        'bookingRecurrenceModel',
         'bookingLinesCollection',
         'bookablesCollection',
         'claimersCollection',
         'claimersContactsCollection',
         
         'itemFormBookingLineView',
+        'formRecurrenceView',
         'advancedSelectBoxView',
         'moment',
         'moment-timezone',
@@ -17,7 +19,7 @@ define(['app',
         'bsTimepicker',
         'bsDatepicker'
 
-], function (app, AppHelpers, BookingModel, BookingLineModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, ItemFormBookingLineView, AdvancedSelectBoxView, moment) {
+], function (app, AppHelpers, BookingModel, BookingLineModel, BookingRecurrenceModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, ItemFormBookingLineView, FormRecurrenceView, AdvancedSelectBoxView, moment) {
 
     'use strict';
 	/******************************************
@@ -32,14 +34,32 @@ define(['app',
 	
 		// The DOM events //
 		events: {
-			'change #bookingPartner'		: 'changeBookingPartner',
-			'change #bookingContact'		: 'changeBookingContact',
-			'change #bookingAddBookable'	: 'changeBookingAddBookable',
-			'change #bookingCheckin'		: 'changeBookingCheckin',
-			'change #bookingCheckout'		: 'changeBookingCheckout',
-			'change #bookingCheckinHour'	: 'changeBookingCheckin',
-			'change #bookingCheckoutHour'	: 'changeBookingCheckout',
-			'submit #formSaveBooking'		: 'saveBookingForm',
+			'change #bookingPartner'			: 'changeBookingPartner',
+			'change #bookingContact'			: 'changeBookingContact',
+			'change #bookingAddBookable'		: 'changeBookingAddBookable',
+			'change #bookingCheckin'			: 'changeBookingCheckin',
+			'change #bookingCheckout'			: 'changeBookingCheckout',
+			'change #bookingCheckinHour'		: 'changeBookingCheckin',
+			'change #bookingCheckoutHour'		: 'changeBookingCheckout',
+			
+			//Recurrence setting events
+			'change input[name="periodicity"]'	: 'changePeriodicity',
+			'change input[name="type_monthly"]'	: 'changeTypeMonthly',
+			'change input[name="recur_type_length"]': 'changeTypeLength',
+			'change #recur_length_count'		: 'changeCount',
+			'change #recur_length_until'		: 'changeUntil',
+			'change input[name="weekdays"]'		: 'changeWeekdays',
+			'change #recur_daily_weight'		: 'changeDailyWeight',
+			'change #recur_weekly_weight'		: 'changeWeeklyWeight',
+			'change #recur_monthly_weight'		: 'changeMonthlyWeight',
+			'change #recur_monthly_monthday'	: 'changeMonthday',
+			'change #recur_monthly_relative_position': 'changeRelativePosition',
+			'change #recur_monthly_weekday'		: 'changeMonthWeekday',
+			
+			//Form Buttons
+			'submit #formSaveBooking'			: 'saveBookingForm',
+			'click #getRecurrenceDates'			: 'getRecurrenceDates',
+			'click #addRecurrence'				: 'addRecurrence'
 		},
 	
 		/** View Initialization
@@ -93,7 +113,6 @@ define(['app',
 				var endDate = '';
 				var endHour = '';
 				if(!self.model.isNew()){
-					var tz = app.models.user.getContext().tz;
 					var checkin = moment.utc((self.model.getStartDate())).local();
 					var checkout = moment.utc((self.model.getEndDate())).local();
 					
@@ -218,6 +237,10 @@ define(['app',
 	    	}
 	    },
 	
+	    changePeriodicity: function(e){
+	    	$('input[name="periodicity"]').val();
+	    },
+	    
 	    saveBookingForm: function(e){
 	    	e.preventDefault();
 	    	this.model.setName($("#bookingName").val());
@@ -228,8 +251,16 @@ define(['app',
 	    	.fail(function(e){
 	    		console.log(e);
 	    	});
-	    }
-	    
-	});
+	    },
+	    addRecurrence: function(e){
+			e.preventDefault();
+			var recurrenceModel = new BookingRecurrenceModel();
+			recurrenceModel.setStartDate(this.model.getStartDate());
+			recurrenceModel.setTemplate(this.model);
+			var recurrenceView = new FormRecurrenceView({model:recurrenceModel});
+			$(this.el).find('#recurrence').html(recurrenceView.render().el);
+		}
+ 
+	});	
 	return FormBookingView;
 })
