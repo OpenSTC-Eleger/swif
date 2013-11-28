@@ -61,6 +61,6 @@ define([
 	
 	});	
 
-	return bookingRecurrence;
+return bookingRecurrence;
 
 });

@@ -26,7 +26,7 @@ define([
 	var calendarView = Backbone.View.extend({
 		
 		//template name
-		templateHTML: '/templates/others/calendar',
+		templateHTML: '/templates/others/calendar.html',
 
 		//Dom element for calendar
 		divCalendar : 	null,

@@ -8,7 +8,7 @@
 			"UserOrClaimer"                   		: "Utilisateur / demandeur",	
 	
 		"actions" : {			
-			"confirmAll"								: "Tout valider",
+			"confirmAll"							: "Tout valider",
 			"cancelAll"								: "Tout refuser",
 			"doneAll"								: "Tout clôturer",
 			"resolveConflict"						: "Traiter le conflit",
@@ -27,7 +27,8 @@
 			"doneAllBookings" 			 		: "Clôture de la récurrence",
 			"confirmBooking" 			 		: "Validation de la demande de réservation",
 			"cancelBooking" 			 		: "Annulation de la demande de réservation",
-			"doneBooking" 			 			: "Clôture de la demande de réservation"
+			"doneBooking" 			 			: "Clôture de la demande de réservation",
+			"reservationPlanning"				: "Planning des réservations"
 	
 		}
 	}

@@ -3,8 +3,9 @@ define([
 
 	'bookingsListView',
 	'formBookingView',
+	'planningManagerView'
 
-], function(app, BookingsListView, FormBookingView){
+], function(app, BookingsListView, FormBookingView, PlanningManagerView){
 
 	'use strict';
 
@@ -13,6 +14,7 @@ define([
 	* Application Router
 	*/
 	var router = Backbone.Router.extend({
+
 
 
 		/** Bookings List
@@ -24,15 +26,28 @@ define([
 			app.views.bookingsListView = new BookingsListView(params);
 		},
 		
+
+
+		/** Abstent types List
+		*/
 		formReservation: function(id){
-			params = {}
-			var params = this.setContext({id:id});
+
+			var params = this.setContext({id: id});
 
 			app.views.formBooking = new FormBookingView(params);
+		},
+
+
+
+		/** Planning Mananger
+		*/
+		planningManager: function(){
+
+			app.views.planningManager = new PlanningManagerView();
 		}
 
 	});
 
-	return router;
+return router;
 
 });

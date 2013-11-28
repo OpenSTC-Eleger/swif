@@ -488,6 +488,6 @@ define([
 	});
 	
 
-	return booking;
+return booking;
 
 });
