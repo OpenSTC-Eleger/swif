@@ -207,9 +207,10 @@ define([
 			//var deferred = $.Deferred();
 			//this.selectedBookingRecurrence.fetch().done(function(){
 				app.views.modalUpdateBookingsListView = new ModalUpdateBookingsListView({
-					el      : '#modalUpdateBookingsList',
-					model   : this.selectedBookingRecurrence,
-					state	: state
+					el      	: '#modalUpdateBookingsList',
+					model   	: this.bookingRecurrenceSelectedModel,
+					booking		: this.collection.at(0),
+					state		: state
 				});
 //				deferred.resolve();
 //			})

@@ -53,13 +53,19 @@ define([
 			$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){
 	
 				var template = _.template(templateData, {
-					lang     : app.lang,
-					bookings : self.collection,
-					title 	 : app.lang.resa.viewsTitles[self.options.state + "AllBookings" ],
-					iconTitle	: self.getIconTitle()
+					lang     	: app.lang,
+					booking  	: self.options.booking,
+					state		: self.options.state,
+					title 	 	: app.lang.resa.viewsTitles[self.options.state + "AllBookings" ],
+					iconTitle	: self.getIconTitle(),
+					BookingModel: BookingModel
 				});
 	
-				self.modal.html(template);
+				self.modal.html(template);				
+								
+				if( self.options.state == BookingModel.status.done.key) {
+					$('#note').html(self.options.booking.getResourceNames('newline'));
+				}		
 	
 				self.modal.modal('show');
 			});

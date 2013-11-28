@@ -55,11 +55,17 @@ define([
 				var template = _.template(templateData, {
 					lang    	: app.lang,
 					booking 	: self.model,
+					state		: self.options.state,
 					title 	 	: app.lang.resa.viewsTitles[self.options.state + "Booking" ],
-					iconTitle	: self.getIconTitle()
+					iconTitle	: self.getIconTitle(),
+					BookingModel: BookingModel
 				});
-	
+				
 				self.modal.html(template);
+				
+				if( self.options.state == BookingModel.status.done.key) {
+					$('#note').html(self.model.getResourceNames('newline'));
+				}			
 	
 				self.modal.modal('show');
 			});

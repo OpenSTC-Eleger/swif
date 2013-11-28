@@ -13,19 +13,31 @@
 
 		<blockquote>
 			<p><%= booking.getName() %></p>
-			<small><strong><i class="fa fa-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong></i>&nbsp;&nbsp; <%= booking.getResourceNames() %></small>
+			<small><strong><i class="fa fa-user"></i>&nbsp;<%= _.capitalize(lang.contact) %> : </strong></i>&nbsp;&nbsp; <%= booking.getClaimerContact()  + " ("+ booking.getClaimer() + ")" %></small>
+			<small><strong><i class="fa fa-envelope"></i>&nbsp;<%= _.capitalize(lang.email) %> : </strong></i><%= booking.getClaimerMail() %></small>
 		</blockquote>
 
 		<form id="formUpdateBooking" action="#" class="form-horizontal">
 		
-			<!-- The Reason for Refusal -->
+			<!-- note related to this action -->
 			<div class="form-group">
 				<label for="note" class="control-label col-sm-3"><%= _.capitalize(lang.description) %>:</label>
 
 				<div class="col-sm-9">
 					<textarea id="note" class="form-control" rows="5" required></textarea>
-				</div>
-			</div>
+				</div>			
+
+			</div>	
+			<% if(state != BookingModel.status.cancel.key) { %>
+				<!--  Attach invoice -->
+				<div class="form-group">
+					<div class="col-sm-9 col-sm-offset-3">
+						<label for="isTemplate" class="checkbox"><%= _.capitalize(lang.resa.actions.attachInvoice) %>
+							<input type="checkbox" id="attachInvoice" />
+						</label>
+					</div>
+				</div>	
+			<% } %>		
 		</form>
 	</div>
 	<!-- /Modal Body -->
@@ -33,7 +45,7 @@
 	<div class="modal-footer">
 		<button type="submit" form="formUpdateBooking" class="btn btn-primary"
 			data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= _.capitalize(lang.validInProgress) %>"
-		><%= _.capitalize(lang.actions.valid) %>
+		><%= _.capitalize(lang.actions.validate) %>
 		</button>&nbsp;&nbsp;
 
 		<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
@@ -41,3 +53,4 @@
 
 	</div>
 </div>
+
