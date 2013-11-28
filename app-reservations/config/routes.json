@@ -6,7 +6,13 @@
 	},
 
 	"formReservation": {
-		"url"		: "formReservation(/id/:id)",
+		"url"		: "nouvelle-reservation(/id/:id)",
 		"function"	: "formReservation"
+	},
+
+	"planningManager" : {
+		"url"       : "planning-des-reservations",
+		"function"  : "planningManager"
 	}
+
 }

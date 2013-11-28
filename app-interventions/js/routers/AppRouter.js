@@ -1,6 +1,5 @@
 define([
 	'app',
-	'appRouter',
 
 	'requestsListView',
 	'categoriesRequestsListView',
@@ -10,7 +9,7 @@ define([
 	'interventionsListView',
 	'tasksListView',
 
-], function(app, AppRouter, RequestsListView, CategoriesRequestsListView, CategoriesTasksListView, AbsentTypesListView, PlanningView, InterventionsListView, TasksListView){
+], function(app, RequestsListView, CategoriesRequestsListView, CategoriesTasksListView, AbsentTypesListView, PlanningView, InterventionsListView, TasksListView){
 
 	'use strict';
 
@@ -18,7 +17,7 @@ define([
 	/******************************************
 	* Application Router
 	*/
-	var router = AppRouter.extend({
+	var router = Backbone.Router.extend({
 
 
 

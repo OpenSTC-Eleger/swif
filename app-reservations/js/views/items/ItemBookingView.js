@@ -18,7 +18,7 @@ define([
 	
 		tagName     : 'tr',
 	
-		templateHTML : 'items/itemBooking',
+		templateHTML : '/templates/items/itemBooking.html',
 		
 		className   : 'row-item',
 	
@@ -74,7 +74,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl+'/templates/' + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openresa + this.templateHTML, function(templateData){
 	
 			 
 				var template = _.template(templateData, {

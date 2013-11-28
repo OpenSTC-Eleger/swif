@@ -31,6 +31,9 @@ define('main', [
 				app.routes      = routes_data[0];
 				app.lang        = lang_data[0];
 				app.config.lang = lang;
+
+				// Shortcup to the menus //
+				app.menus = app.config.menus;
 			
 
 				moment.lang(app.config.lang);

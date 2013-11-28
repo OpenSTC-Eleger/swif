@@ -22,7 +22,7 @@ define([
 	
 		tagName     : 'tr',
 	
-		templateHTML : 'items/itemTaskDay',
+		templateHTML : '/templates/items/itemTaskDay.html',
 	
 		// The DOM events //
 		events       : {
@@ -58,8 +58,9 @@ define([
 	
 			var date_start = moment.utc(this.model.toJSON().date_start).tz(app.models.user.getContext().tz);
 			var date_end = moment.utc(this.model.toJSON().date_end).tz(app.models.user.getContext().tz);
+
 			// Retrieve the template // 
-			$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 	
 			 
 				var template = _.template(templateData, {

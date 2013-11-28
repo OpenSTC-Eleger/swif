@@ -27,7 +27,7 @@ define([
 		
 		el : '#rowContainer',
 	
-		templateHTML: '/templates/lists/tasksList',
+		templateHTML: '/templates/lists/tasksList.html',
 	
 		filters: 'tasksListFilter',
 	
@@ -223,7 +223,7 @@ define([
 		
 		
 						// Retrieve the template // 
-						$.get(app.moduleUrl+self.templateHTML + ".html", function(templateData){
+						$.get(app.menus.openstc+self.templateHTML, function(templateData){
 		
 		
 							var officersDropDownList = new OfficersCollection( app.models.user.attributes.officers );

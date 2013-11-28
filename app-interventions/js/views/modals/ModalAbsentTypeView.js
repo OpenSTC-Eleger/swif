@@ -21,7 +21,7 @@ define([
 	var modalAbsentTypeView = GenericModalView.extend({
 	
 	
-		templateHTML : 'modals/modalAbsentType',
+		templateHTML : '/templates/modals/modalAbsentType.html',
 	
 	
 	
@@ -60,7 +60,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 	
 				var template = _.template(templateData, {
 					lang      : app.lang,

@@ -23,7 +23,7 @@ define([
 	
 		//el : '#rowContainer',
 		
-		templateHTML: 'modals/interventions/modalInterventionAddTask',
+		templateHTML: '/templates/modals/interventions/modalInterventionAddTask.html',
 	
 		
 		// The DOM events //
@@ -58,7 +58,7 @@ define([
 			//self.collection = this.collection;
 			var self = this;
 			// Retrieve the template // 
-			$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 				
 				var template = _.template(templateData, {lang: app.lang});
 				

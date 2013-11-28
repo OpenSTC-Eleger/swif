@@ -28,7 +28,7 @@ define([
 	var ModalRequestView = GenericModalView.extend({
 
 
-		templateHTML : 'modals/modalRequest',
+		templateHTML : '/templates/modals/modalRequest.html',
 
 
 
@@ -88,7 +88,7 @@ define([
 			var self = this;
 
 			// Retrieve the template //
-			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 
 
 				var template = _.template(templateData, {

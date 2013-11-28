@@ -19,7 +19,7 @@ define([
 	var modalUnplanTaskView =  GenericModalView.extend({
 	
 	
-		templateHTML: 'modals/tasks/modalUnplanTask',
+		templateHTML: '/templates/modals/tasks/modalUnplanTask.html',
 	
 	
 		
@@ -57,7 +57,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 			 
 	
 				var template = _.template(templateData, {

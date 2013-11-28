@@ -17,8 +17,8 @@ define([
 	var ItemInterventionTaskListView = Backbone.View.extend({
 	
 		tagName     : 'tr',
-	
-		templateHTML : 'items/itemInterventionTaskList',
+		
+		templateHTML: '/templates/items/itemInterventionTaskList.html',
 		
 	
 		// The DOM events //
@@ -94,7 +94,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc + this.templateHTML, function(templateData){
 	
 			 
 				var template = _.template(templateData, {

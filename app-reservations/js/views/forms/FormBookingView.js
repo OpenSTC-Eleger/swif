@@ -20,14 +20,18 @@ define(['app',
 ], function (app, AppHelpers, BookingModel, BookingLineModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, ItemFormBookingLineView, AdvancedSelectBoxView, moment) {
 
     'use strict';
+
+
 	/******************************************
 	* Requests Details View
 	*/
 	var FormBookingView = Backbone.View.extend({
 	
-	
-		templateHTML : 'forms/form_booking',
-		el: '#rowContainer',
+
+		el          : '#rowContainer',
+
+		templateHTML: '/templates/forms/form_booking.html',
+
 	
 	
 		// The DOM events //
@@ -87,7 +91,7 @@ define(['app',
 			var self = this;
 	
 			// Retrieve the template //
-			$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){			
+			$.get(app.menus.openresa + this.templateHTML, function(templateData){			
 				var startDate = '';
 				var startHour = '';
 				var endDate = '';

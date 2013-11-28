@@ -22,7 +22,7 @@ define([
 	
 		tagName     : 'tr',
 	
-		templateHTML : 'items/itemInterventionTask',
+		templateHTML : '/templates/items/itemInterventionTask.html',
 		
 		className   : 'row-nested-objects',
 	
@@ -96,7 +96,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 	
 			 
 				var template = _.template(templateData, {

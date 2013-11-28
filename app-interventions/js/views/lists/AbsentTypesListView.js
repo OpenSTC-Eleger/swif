@@ -20,7 +20,7 @@ define([
 	*/
 	var absentTypesListView = GenericListView.extend({
 		
-		templateHTML: 'lists/absentTypesList',
+		templateHTML: '/templates/lists/absentTypesList.html',
 		
 	
 		// The DOM events //
@@ -78,7 +78,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc + this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang         : app.lang,
 					nbAbsentTypes: self.collection.cpt

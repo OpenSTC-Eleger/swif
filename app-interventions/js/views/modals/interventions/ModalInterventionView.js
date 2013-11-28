@@ -25,7 +25,7 @@ define([
 	
 		//el : '#rowContainer',
 		
-		templateHTML: 'modals/interventions/modalIntervention',
+		templateHTML: '/templates/modals/interventions/modalIntervention.html',
 	
 		
 		// The DOM events //
@@ -70,7 +70,7 @@ define([
 			//self.collection = this.collection;
 			var self = this;
 			// Retrieve the template // 
-			$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 					var modelJSON = self.model.toJSON();
 					var deadLineDt = modelJSON.date_deadline!=false && !_.isUndefined(modelJSON.date_deadline) ? moment( modelJSON.date_deadline ).tz(app.models.user.getContext().tz) : moment().tz(app.models.user.getContext().tz);
 					deadLineDt.add('minutes',-deadLineDt.zone());

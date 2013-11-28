@@ -22,11 +22,11 @@ define([
 	*/
 	var bookingsListView = GenericListView.extend({
 	
-		templateHTML: 'lists/bookingsList',
-		
-		urlParameters : ['recurrence', 'id', 'search', 'filter', 'sort', 'page'],
-	
-		collections:  {},
+		templateHTML : '/templates/lists/bookingsList.html',
+
+		urlParameters: ['recurrence', 'id', 'search', 'filter', 'sort', 'page'],
+
+		collections  :  {},
 		
 		//DOM actions elements, buttons : all valid, all refuse, all close
 		btnActions    : 'span.btn-actions',
@@ -88,7 +88,7 @@ define([
 	
 			
 			// Retrieve the HTML template //
-			$.get(app.moduleUrl+'/templates/' + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openresa + this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang             : app.lang,
 					bookings         : self.collection,
