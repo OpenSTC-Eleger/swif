@@ -8,9 +8,9 @@
 			"UserOrClaimer"                   		: "Utilisateur / demandeur",	
 	
 		"actions" : {			
-			"validAll"								: "Tout valider",
+			"confirmAll"								: "Tout valider",
 			"cancelAll"								: "Tout refuser",
-			"closeAll"								: "Tout clôturer",
+			"doneAll"								: "Tout clôturer",
 			"resolveConflict"						: "Traiter le conflit",
 			"selectABookable"						: "Sélectionner une ressource"			
 		},

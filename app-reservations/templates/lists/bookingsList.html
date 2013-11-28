@@ -25,12 +25,19 @@
 		<span class="bt-group col-sm-5">			
 			<a href="#formReservation" class="btn btn-primary modalCreateBooking" role="button"><i class="fa fa-plus"></i><%= lang.resa.viewsTitles.newBooking%></a>
 		 </span>
+		 
+		 <% if(!_.isNull(recurrenceModel) && !_.isEmpty(recurrenceModel.getActions())){ 
+				var actions = recurrenceModel.getActions();
+			}
+		 %>
 		
-		<span class="bt-group col-sm-5 btn-actions" >						
-  			<button type="button" class="btn btn-info" id="unbindOccurences"> <i class="fa fa-step-backward"></i></button>		  			
-	  		<button type="button" class="actions btn btn-success" id="<%= BookingModel.actions['confirm'].key %>"><%= lang.resa.actions.validAll %></button>
-	  		<button type="button" class="actions btn btn-danger" id="<%= BookingModel.actions['cancel'].key %>"><%= lang.resa.actions.cancelAll %></button>
-	  		<button type="button" class="actions btn btn-close" id="<%= BookingModel.actions['done'].key %>"><%= lang.resa.actions.closeAll %></button>	
+		<span class="bt-group col-sm-5 btn-actions" >
+			<button type="button" class="btn btn-info" id="unbindOccurences"> <i class="fa fa-step-backward"></i></button>
+			<% _.each(actions, function(action){ %>
+				<button type="button" class="actions btn btn-<%= BookingModel.actions[action].color%>" id="<%= BookingModel.actions[action].key %>">
+					<%= lang.resa.actions[BookingModel.actions[action].key+"All"] %>
+				</button>
+			<% }); %>	
 	 	</span>	
 
 
