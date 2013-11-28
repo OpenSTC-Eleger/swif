@@ -13,7 +13,7 @@ define([
 	
 		//el : '#rowContainer',
 		
-		templateHTML: 'modals/interventions/modalCancelTask',
+		templateHTML: '/templates/modals/interventions/modalCancelTask.html',
 	
 		
 		// The DOM events //
@@ -43,7 +43,7 @@ define([
 			
 			var self = this;
 			// Retrieve the template // 
-			$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc + this.templateHTML, function(templateData){
 				
 				var template = _.template(templateData, {lang: app.lang, task: self.model.toJSON()});
 				

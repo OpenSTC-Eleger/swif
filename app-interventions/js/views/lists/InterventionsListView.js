@@ -115,8 +115,9 @@ define([
 	
 			var startPos = (this.options.page.page - 1) * app.config.itemsPerPage;
 			var endPos = startPos + app.config.itemsPerPage;
+
 			// Retrieve the HTML template //
-			$.get(app.moduleUrl+this.templateHTML, function(templateData){
+			$.get(app.menus.openstc + this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang                   : app.lang,
 					nbInterventions        : len,

@@ -20,7 +20,7 @@ define([
 	*/
 	var RequestsListView = GenericListView.extend({
 
-		templateHTML : '/templates/lists/requestsList',
+		templateHTML : '/templates/lists/requestsList.html',
 
 
 
@@ -78,7 +78,7 @@ define([
 
 
 			// Retrieve the template //
-			$.get(app.moduleUrl+this.templateHTML + '.html', function(templateData){
+			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
 					lang             : app.lang,

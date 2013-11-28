@@ -17,7 +17,7 @@ define([
 	
 		tagName     : 'tr',
 	
-		templateHTML : 'items/itemBookingOccurrence',
+		templateHTML : '/templates/items/itemBookingOccurrence',
 		
 		// The DOM events //
 		events       : {
@@ -51,7 +51,7 @@ define([
 			var self = this;	
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openresa + this.templateHTML, function(templateData){
 	
 				//var model = self.model.toJSON()
 				var template = _.template(templateData, {

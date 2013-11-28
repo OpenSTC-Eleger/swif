@@ -22,7 +22,7 @@ define([
 	var modalCategoryTaskView = GenericModalView.extend({
 	
 	
-		templateHTML : 'modals/modalCategoryTask',
+		templateHTML : '/templates/modals/modalCategoryTask.html',
 	
 	
 	
@@ -61,7 +61,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 	
 				var template = _.template(templateData, {
 					lang  : app.lang,

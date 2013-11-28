@@ -16,7 +16,7 @@ define([
 	var modalUpdateBookingView = GenericModalView.extend({
 	
 	
-		templateHTML : 'modals/modalUpdateBooking',
+		templateHTML : '/templates/modals/modalUpdateBooking.html',
 	
 	
 		// The DOM events //
@@ -50,7 +50,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openresa + this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
 					lang    	: app.lang,

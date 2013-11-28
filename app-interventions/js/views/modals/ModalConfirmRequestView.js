@@ -16,7 +16,7 @@ define([
 	var ModalConfirmRequestView = GenericModalView.extend({
 	
 	
-		templateHTML : 'modals/modalConfirmRequest',
+		templateHTML : '/templates/modals/modalConfirmRequest.html',
 	
 	
 		// The DOM events //
@@ -50,7 +50,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc + this.templateHTML, function(templateData){
 	
 				var template = _.template(templateData, {
 					lang    : app.lang,

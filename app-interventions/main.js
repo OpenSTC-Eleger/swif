@@ -1,21 +1,20 @@
 define('app-interventions', [
 	'app',
 
+	'appRouter',
 	'appInterventionsRouter'
 
 
-], function(app, AppInterventionsRouter){
+], function(app, AppRouter, AppInterventionsRouter){
 
 	'use strict';
 
 
 	return function(){
 
-		app.moduleUrl = app.config.menus.openstc;
-
 
 		// Retrieve the routes and the lang of the modules //
-		$.when(app.loadStaticFile(app.moduleUrl+'/config/routes.json'), app.loadStaticFile(app.moduleUrl+'/i18n/'+app.config.lang+'/app-lang.json'))
+		$.when(app.loadStaticFile(app.menus.openstc+'/config/routes.json'), app.loadStaticFile(app.menus.openstc+'/i18n/'+app.config.lang+'/app-lang.json'))
 		.done(function(moduleRoutes, moduleLang){
 
 
@@ -25,9 +24,10 @@ define('app-interventions', [
 			// Stop the router //
 			Backbone.history.stop();
 
+
 			// Prefix all the routes of the module with the module name //
 			_.each(moduleRoutes[0], function(route, index){
-				route.url = _.join('/', app.moduleUrl, route.url);
+				route.url = _.join('/', app.menus.openstc, route.url);
 			})
 
 			// Extend the routes //
@@ -40,9 +40,16 @@ define('app-interventions', [
 			});
 
 
+			// Extends the Router functions //
+			_.each(AppInterventionsRouter.prototype, function(func, funcName, e){
+				AppRouter.prototype[funcName] = func;
+			});
+
+
 			// Launch the new Router //
-			app.router = new AppInterventionsRouter();
-			
+			app.router = new AppRouter();
+		 
+		
 			Backbone.history.start({pushState: false});
 
 

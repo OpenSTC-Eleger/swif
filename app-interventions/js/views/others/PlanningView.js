@@ -20,11 +20,11 @@ define([
 	var planningView = Backbone.View.extend({
 	
 	
-		el : '#rowContainer',
-	
-		templateHTML: 'others/planning',
-	
-		filters: 'interventionsListFilter',
+		el          : '#rowContainer',
+
+		templateHTML: '/templates/others/planning.html',
+
+		filters     : 'interventionsListFilter',
 	
 		
 		
@@ -68,7 +68,7 @@ define([
 	
 	
 			// Retrieve the Login template // 
-			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc + this.templateHTML, function(templateData){
 	
 	
 				// Change the page title //

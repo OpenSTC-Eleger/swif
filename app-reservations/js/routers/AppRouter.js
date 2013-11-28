@@ -1,11 +1,10 @@
 define([
 	'app',
-	'appRouter',
 
 	'bookingsListView',
 	'formBookingView',
 
-], function(app, AppRouter, BookingsListView, FormBookingView){
+], function(app, BookingsListView, FormBookingView){
 
 	'use strict';
 
@@ -13,7 +12,7 @@ define([
 	/******************************************
 	* Application Router
 	*/
-	var router = AppRouter.extend({
+	var router = Backbone.Router.extend({
 
 
 		/** Bookings List

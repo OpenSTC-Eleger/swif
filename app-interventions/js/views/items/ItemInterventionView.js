@@ -20,7 +20,7 @@ define([
 	
 		tagName     : 'tr',
 	
-		templateHTML : 'items/itemIntervention',
+		templateHTML : '/templates/items/itemIntervention.html',
 		
 		className   : 'row-item',
 	
@@ -74,7 +74,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 	
 			 
 				var template = _.template(templateData, {
