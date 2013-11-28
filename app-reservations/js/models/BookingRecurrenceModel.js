@@ -14,7 +14,7 @@ define([
 		
 		urlRoot: "/api/openresa/booking_recurrences",
 		
-		fields : ['id', 'name'],
+		fields : ['id', 'name', 'possible_actions'],
 	
 	
 		searchable_fields: [
@@ -34,6 +34,14 @@ define([
 		
 		getName: function(){
 			return this.get('name');
+		},
+		
+		getActions: function(){
+			return this.get('actions');
+		},
+		
+		hasActions: function(action){
+			return this.getActions().indexOf(action) > -1;
 		},
 		
 	

@@ -56,12 +56,14 @@ define([
 			this.options = params;
 	
 	
-			this.initCollections().done(function(){
-				app.router.render(self);
-				// Unbind & bind the collection //
-				self.collection.off();
-				self.listenTo(self.collection, 'add',self.add);
-			});
+			this.initCollections().then(
+				function(){
+					app.router.render(self);
+					// Unbind & bind the collection //
+					self.collection.off();
+					self.listenTo(self.collection, 'add',self.add);
+				}
+			);
 		},
 	
 	
@@ -93,6 +95,7 @@ define([
 					nbBookings       : self.collection.specialCpt,	
 					BookingModel	 : BookingModel,
 					bookingsState    : BookingModel.status,
+					recurrenceModel  : self.bookingRecurrenceSelectedModel
 				});
 	
 	
@@ -128,8 +131,7 @@ define([
 					}						
 					$(self.btnActions).addClass('hide');				
 				}
-				else{	
-
+				else{
 //					self.bookingRecurrenceSelectedModel = new BookingRecurrenceModel({id: self.options.recurrence });
 //					self.bookingRecurrenceSelectedModel.fetch();
 //					self.listenTo(self.bookingRecurrenceSelectedModel, 'change', self.render);						
@@ -273,15 +275,15 @@ define([
 			var ajaxRequests = [this.collection.fetch(fetchParams)]					
 			if( !_.isUndefined(this.options.recurrence) 
 					&& !_.isNull(this.options.recurrence) ){
-				this.bookingRecurrenceSelectedModel = new BookingRecurrenceModel({id: self.options.recurrence });		
-				this.listenTo(self.bookingRecurrenceSelectedModel, 'change', this.render);		
+				this.bookingRecurrenceSelectedModel = new BookingRecurrenceModel({id: this.options.recurrence });		
+				this.listenTo(this.bookingRecurrenceSelectedModel, 'change', this.render);		
 				//Add ajax request for update intervention
 				ajaxRequests.push(this.bookingRecurrenceSelectedModel.fetch())
 			}	
 			
 			var deferred = $.Deferred();
 			//retrieve bookings and tasks associated (use domain ('project_id','in',[...] to retrieve tasks associated)
-			$.when( ajaxRequests )
+			$.when.apply( $, ajaxRequests )
 				.done(function(){
 					deferred.resolve();
 				})
