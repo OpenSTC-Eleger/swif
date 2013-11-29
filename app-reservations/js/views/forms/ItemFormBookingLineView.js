@@ -16,7 +16,7 @@ define(['app',
         'bsTimepicker',
         'bsDatepicker'
 
-], function (app, AppHelpers, BookingLineModel, BookableModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, AdvancedSelectBoxView, model) {
+], function (app, AppHelpers, BookingLineModel, BookableModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, AdvancedSelectBoxView, moment) {
 
     'use strict';
 

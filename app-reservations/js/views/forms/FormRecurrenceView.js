@@ -4,13 +4,15 @@ define(['app',
         
         'bookingRecurrenceModel',
         
+        'itemFormBookingOccurrenceView',
+        
         'moment',
         'moment-timezone',
         'moment-timezone-data',
         'bsTimepicker',
         'bsDatepicker'
 
-], function (app, AppHelpers, BookingRecurrenceModel, moment) {
+], function (app, AppHelpers, BookingRecurrenceModel, ItemFormBookingOccurrenceView, moment) {
 
     'use strict';
 	/******************************************
@@ -50,18 +52,29 @@ define(['app',
 		/** View Initialization
 		*/
 		initialize : function() {
-
+			var self = this;
+			this.deferredOccurrences = $.Deferred();
+			this.listenTo(this.model.occurrences, 'add', this.addOccurrence);
+			if(!this.model.isNew()){
+				self.deferredOccurrences = this.model.fetchOccurrences();
+			}
+			else{
+				self.deferredOccurrences.resolve();
+			}
 		},
 		
+		addOccurrence: function(model){
+			var itemView = new ItemFormBookingOccurrenceView({model:model});
+			$(this.el).find('#bookingOccurrences').append(itemView.render().el);
+		},
 		
 		/** Display the view
 		*/
 		render: function(loader) {
 	
 			var self = this;
-	
 			// Retrieve the template //
-			$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){			
+			$.get(app.moduleUrl + "/templates/" + self.templateHTML + ".html", function(templateData){			
 				
 				var date_end = self.model.getUntil();
 				if(date_end != ''){

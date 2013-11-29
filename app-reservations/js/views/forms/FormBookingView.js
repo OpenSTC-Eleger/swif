@@ -79,10 +79,23 @@ define(['app',
 				this.model = new BookingModel({id:this.options.id});
 				this.model.fetch({silent: true}).done(function(){
 					self.render(true);
+					
+					//fetch and render lines
 					self.model.fetchLines()
 					.done(function(){
 						self.renderLines();
 					});
+					
+					//fetch and render recurrence if exists
+					if(self.model.get('is_template') && self.model.getRecurrence() != false){
+						var recurrence = new BookingRecurrenceModel({id:self.model.getRecurrence('id')});
+						recurrence.setTemplate(self.model);
+						recurrence.fetch()
+						.done(function(){
+							var recurrenceView = new FormRecurrenceView({model:recurrence});
+							$(self.el).find('#recurrence').html(recurrenceView.render().el);
+						});
+					}
 				});
 			}
 	
@@ -194,27 +207,29 @@ define(['app',
 	    	e.preventDefault();
 	    	//create lineModel and initialize values
 	    	var bookable_id = app.views.selectListAddBookableView.getSelectedItem();
-	    	var bookable_name = app.views.selectListAddBookableView.getSelectedText();
-	    	var lineModel = new BookingLineModel({
-	    		reserve_product:[bookable_id, bookable_name],
-				pricelist_amount:0});
-	    	lineModel.setQuantity(1);
-	    	this.model.addLine(lineModel);
-	    	
-	    	//perform manually updates to lineModel to get pricing, dispo, ...
-	    	var partner_id = this.model.getClaimer('id');
-	    	var checkin = this.model.getStartDate();
-	    	var checkout = this.model.getEndDate();
-	    	$.when(lineModel.fetchAvailableQtity(checkin,checkout),lineModel.fetchPricing(partner_id,checkin,checkout)).always(function(){
-	        	var lineView = new ItemFormBookingLineView({model:lineModel});
-	        	//self.lineViews.push(lineView);
-	        	$(self.el).find('#bookingLines').append(lineView.render().el);
-	    	})
-	    	.fail(function(e){
-	    		console.log(e);
-	    	});
-	    	//finally, reset selection to be able to add another bookable to booking
-	    	app.views.selectListAddBookableView.reset();
+	    	if(bookable_id != ''){
+		    	var bookable_name = app.views.selectListAddBookableView.getSelectedText();
+		    	var lineModel = new BookingLineModel({
+		    		reserve_product:[bookable_id, bookable_name],
+					pricelist_amount:0});
+		    	lineModel.setQuantity(1);
+		    	this.model.addLine(lineModel);
+		    	
+		    	//perform manually updates to lineModel to get pricing, dispo, ...
+		    	var partner_id = this.model.getClaimer('id');
+		    	var checkin = this.model.getStartDate();
+		    	var checkout = this.model.getEndDate();
+		    	$.when(lineModel.fetchAvailableQtity(checkin,checkout),lineModel.fetchPricing(partner_id,checkin,checkout)).always(function(){
+		        	var lineView = new ItemFormBookingLineView({model:lineModel});
+		        	//self.lineViews.push(lineView);
+		        	$(self.el).find('#bookingLines').append(lineView.render().el);
+		    	})
+		    	.fail(function(e){
+		    		console.log(e);
+		    	});
+		    	//finally, reset selection to be able to add another bookable to booking
+		    	app.views.selectListAddBookableView.reset();
+	    	}
 	    },
 	    
 	    changeBookingCheckin: function(e){
@@ -246,7 +261,7 @@ define(['app',
 	    	this.model.setName($("#bookingName").val());
 	    	this.model.saveToBackend()
 	    	.done(function(){
-	    		
+	    		//TODO: redirect to list ?
 	    	})
 	    	.fail(function(e){
 	    		console.log(e);

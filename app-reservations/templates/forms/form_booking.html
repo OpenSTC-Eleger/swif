@@ -79,19 +79,7 @@
 					<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 				</div>						
 			</div>
-			<!-- Recurrence (optionnal, list of (dates + dispo) )-->
-			<div class="form-group">
-				<div class="col-sm-9 col-sm-offset-3">
-						<button type="button" id="addRecurrence" class="btn btn-default"><%= lang.recurrence%></button>
-				</div>
-			</div>
-
-			<!-- periodicity of recurrence-->
-			<div id="recurrence">
-				
-			</div>
 		</div>
-		
 		<!-- Bookables (qty, pricing, dispo)-->
 		<div class="col-sm-6">
 			<!-- Recap of BookingLines -->
@@ -106,7 +94,7 @@
 				</tr>
 				</thead>
 				<tbody id="bookingLines">
-		
+				
 				</tbody>
 			</table>
 			<!-- Add a bookable -->
@@ -117,6 +105,19 @@
 					<input id="bookingAddBookable" class="select2" data-placeholder="<%= lang.actions.selectABookable %>"/>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group">
+			<div class="col-sm-4 col-sm-offset-2">
+				<button type="button" id="addRecurrence" class="btn btn-default"><%= lang.recurrence%></button>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<!-- recurrence-->
+		<div id="recurrence">
+			
 		</div>
 	</div>
 	<hr/>

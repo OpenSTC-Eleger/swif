@@ -179,6 +179,7 @@
 	"bookable"								: "ressource",
 	"picture"								: "Image",
 	"availability"							: "Disponible",
+	"amount"								: "Montant",
 	
 	"detailsEquipment"						: "Détails",
 	"baseEquipment"							: "Général",

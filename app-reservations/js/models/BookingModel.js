@@ -3,9 +3,10 @@ define([
 	'genericModel',
 	'bookingModel',
 	'claimerModel',
-	'bookingLinesCollection'
+	'bookingLinesCollection',
+	'moment'
 
-], function(app, GenericModel, BookingModel, ClaimerModel, BookingLinesCollection){
+], function(app, GenericModel, BookingModel, ClaimerModel, BookingLinesCollection, moment){
 
 	'use strict';
 	
@@ -110,13 +111,22 @@ define([
 		},
 		
 		getRecurrence: function(type){
-			switch(type){
-				case 'id': 
-					return this.get('recurrence_id')[0];
-				break;
-				default:
-					return _.capitalize(this.get('recurrence_id')[1]);
-			}	
+			if(this.get('recurrence_id') != false){
+				switch(type){
+					case 'id': 
+						return this.get('recurrence_id')[0];
+					break;
+					default:
+						return _.capitalize(this.get('recurrence_id')[1]);
+				}
+			}
+			else{
+				return false;
+			}
+		},
+		
+		setRecurrenceId: function(val){
+			this.set({recurrence_id:val}, {silent:true});
 		},
 		
 		getPricelist: function(type){
@@ -138,6 +148,24 @@ define([
 			this.set({pricelist_id:id});
 		},
 		
+		getAmount: function(){
+			var ret = 0.0;
+			_.each(this.lines.models, function(line,i){
+				ret += line.getPricing();
+			});
+			return ret;
+		},
+		
+		getAllDispo: function(){
+			var ret = true;
+			_.each(this.lines.models, function(line,i){
+				if(!line.getAvailable()){
+					ret = false;
+				}
+			});
+			return ret;
+		},
+		
 		isAllDispo: function(){
 			return this.get('all_dispo');	
 		},
@@ -150,7 +178,7 @@ define([
 			if(this.get('checkin') != false){
 				switch(type){
 					case 'human':	
-						return moment(this.get('checkin')).format('LL');
+						return moment.utc(this.get('checkin')).local().format('LLL');
 					break;
 					default:
 						return this.get('checkin');
@@ -173,7 +201,7 @@ define([
 			if(this.get('checkout') != false){
 				switch(type){
 					case 'human':	
-						return moment(this.get('checkout')).format('LL');
+						return moment.utc(this.get('checkout')).local().format('LLL');
 					break;
 					default:
 						return this.get('checkout');
@@ -271,6 +299,30 @@ define([
 			this.set({ partner_type : value }, {silent: silent});
 		},
 		
+		getCloneVals: function(){
+			var self = this;
+			var ret = {};
+			var toClone = ['partner_invoice_id','partner_order_id','partner_shipping_id','partner_id','openstc_partner_id','pricelist_id','name','checkin','checkout'];
+			_.each(toClone,function(field,i){
+				ret[field] = self.get(field);
+			});
+			return ret;
+		},
+		
+		getSaveVals: function(){
+			return {
+				partner_invoice_id:this.getClaimerContact('id'),
+				partner_order_id:this.getClaimerContact('id'),
+				partner_shipping_id: this.getClaimerContact('id'),
+				partner_id: this.getClaimer('id'),
+				openstc_partner_id: this.getClaimer('id'),
+				pricelist_id: this.getPricelist('id'),
+				name: this.getName(),
+				checkin:this.getStartDate(),
+				checkout:this.getEndDate()
+			}
+		},
+		
 		//method to add a bookingLine to collection on this model
 		addLine: function(lineModel){
 			this.lines.add(lineModel);
@@ -287,40 +339,42 @@ define([
 		},
 		
 		//method to perform updates on bookingLines (pricing, dispo, ...) when some fields value change
+		//by default, fetch dispo, and if partner is set, fetch pricing too
 		updateLinesData: function(){
 			var checkin = this.getStartDate();
 			var checkout = this.getEndDate();
 			var partner_id = this.getClaimer('id');
+			var deferred = $.Deferred();
 			if(checkin != '' && checkout != ''){
 				_.each(this.lines.models, function(lineModel,i){
-					lineModel.fetchAvailableQtity(checkin,checkout);
 					if(partner_id > 0){
-						lineModel.fetchPricing(partner_id, checkin, checkout);
+						deferred = $.when(lineModel.fetchAvailableQtity(checkin,checkout),lineModel.fetchPricing(partner_id, checkin, checkout))
+						.fail(function(e){console.log(e)});
+					}
+					else{
+						deferred = $.when(lineModel.fetchAvailableQtity(checkin,checkout))
+						.fail(function(e){console.log(e)});
 					}
 				});
 				
 			}
+			return deferred;
 		},
 		
 		//used for OpenERP to format many2one data to be writable in OpenERP
 		saveToBackend: function(){
 			var self = this;
-			var vals = {
-					partner_invoice_id:this.getClaimerContact('id'),
-					partner_order_id:this.getClaimerContact('id'),
-					partner_shipping_id: this.getClaimerContact('id'),
-					partner_id: this.getClaimer('id'),
-					openstc_partner_id: this.getClaimer('id'),
-					pricelist_id: this.getPricelist('id'),
-					name: this.getName(),
-					checkin:this.getStartDate(),
-					checkout:this.getEndDate()};
+			var vals = this.getSaveVals();
 			
 			//if new, POST new values and fetch the model to retrieve values stored on backend
+			//and, if set, save recurrence too
 			if(this.isNew()){
 				return this.save(vals,{wait:true}).done(function(data){
 					self.set({id:data});
 					self.fetch({silent:true});
+					if(self.get('is_template') && self.recurrence != null){
+						self.recurrence.saveToBackend();
+					}
 					self.lines.each(function(lineModel){
 						lineModel.saveToBackend().fail(function(e){console.log(e)});
 					});
@@ -329,16 +383,34 @@ define([
 			
 			//if already exists, PATCH values and fetch the model to retrieve values updated on backend
 			//also perform save/update for lineModels
+			//and, if set, save recurrence too
 			else{
 				vals.user_id = this.getCreateAuthor('id');
 				return this.save(vals, {wait:true, patch:true}).always(function(){
-					self.lines.each(function(lineModel,i)	{
-						self.fetch({silent:true});
+					self.fetch({silent:true});
+					if(self.get('is_template') && self.recurrence != null){
+						self.recurrence.saveToBackend();
+					}
+					self.lines.each(function(lineModel,i){
 						lineModel.saveToBackend().fail(function(e){console.log(e)});
+					});
+					self.linesToRemove.each(function(lineToRemove,i){
+						lineToRemove.destroy();
 					});
 				});
 			}
 			return false;
+		},
+		
+		destroyOnBackend: function(){
+			if(this.recurrence != null){
+				this.set({id:null},{silent:true});
+				this.destroy();
+				this.recurrence.occurrences.remove(this);
+				this.recurrence.occurrencesToRemove.add(this.clone().off());
+			}
+			this.destroy();
+			
 		},
 
 		getClaimerPhone: function(){
@@ -414,6 +486,8 @@ define([
 		*/
 		initialize: function(){
 			this.lines = new BookingLinesCollection();
+			//collection to store lines to remove (because form persist modifications only after clicking on 'validate' btn)
+			this.linesToRemove = new BookingLinesCollection();
 			this.recurrence = null;
 //			this.computeResources().done(function (data) {
 //				// self.set( {'resources' :  data.resources, 'description': data.description} , {silent:false} );	

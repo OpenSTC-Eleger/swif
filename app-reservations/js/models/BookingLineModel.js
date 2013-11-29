@@ -84,7 +84,8 @@ define([
 		
 		fetchAvailableQtity: function(checkin, checkout){
 			var self = this;
-			return $.when($.ajax({
+			var deferred = $.Deferred();
+			$.ajax({
 				url:'/api/openresa/bookables/' + self.getResource('id') + '/available_quantity',
 				type: 'GET',
 				data: app.objectifyFilters({
@@ -93,11 +94,14 @@ define([
 				),
 				success: function(data){
 					self.setAvailableQtity(data);
+					deferred.resolve();
 				},
 				error: function(e){
 					console.log(e);
+					deferred.reject();
 				}
-			}));
+			});
+			return deferred;
 		},
 		
 		fetchPricing: function(partner_id, checkin, checkout){
@@ -157,6 +161,8 @@ define([
 		
 		destroyOnBackend: function(){
 			this.getParentBookingModel().lines.remove(this);
+			this.getParentBookingModel().linesToRemove.add(this.clone().off());
+			this.set({id:null},{silent:true});
 			this.destroy();
 		},
 		
