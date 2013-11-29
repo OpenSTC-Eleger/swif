@@ -15,7 +15,7 @@
 
 <!-- Available Y/N-->
 <td>
-	<i class="fa <%= booking.getAllDispo() ? bookingStat.valid.icon: bookingStat.refused.icon%>" />
+	<i class="fa <%= booking.getAllDispo() ? bookingStat.confirm.icon: bookingStat.cancel.icon%>" />
 	<a href="#" class="removeLine" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">
 		<i class="fa fa-trash-o fa-lg">&nbsp;</i>
 	</a>	

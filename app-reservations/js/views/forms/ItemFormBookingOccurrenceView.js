@@ -23,11 +23,11 @@ define(['app',
 		className    :  function() {
 				var classRow = 'row-nested-objects';
 				if(this.model.getAllDispo()){
-					classRow += ' ' + BookingModel.actions.valid.color;
+					classRow += ' ' + BookingModel.actions.confirm.color;
 					return classRow;
 				}
 				else{
-					return classRow += ' ' + BookingModel.actions.refused.color;
+					return classRow += ' ' + BookingModel.actions.cancel.color;
 				}
 			},
 	
@@ -81,7 +81,7 @@ define(['app',
 			var self = this;
 			
 		// Retrieve the template // 
-		$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){
+		$.get(app.menus.openresa + "/templates/" + this.templateHTML + ".html", function(templateData){
 			//we wait for bookable fetch finished
 			var template = _.template(templateData, {
 				lang	: app.lang,
@@ -100,7 +100,7 @@ define(['app',
 			    
 	    removeLine: function(e){
 	    	e.preventDefault();
-	    	this.model.destroyOnBackend();
+	    	this.model.recurrence.destroyOccurrenceFromBackend(this.model);
 	    }
 	});
 	return ItemFormBookingOccurrenceView;

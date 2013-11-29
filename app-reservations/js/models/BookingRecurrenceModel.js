@@ -374,11 +374,13 @@ define([
 				recur_week_thursday: this.get('recur_week_thursday'),
 				recur_week_tuesday: this.get('recur_week_tuesday'),
 				recur_week_wednesday: this.get('recur_week_wednesday'),
-				template_id: this.getTemplate().getId()}
+				template_id: this.getTemplate().getId()
+			}
 		},
 		
 		//save template to backend, then save the recurrence, and finally, save its occurrences
 		//if some occurrences are planned to be removed, destroy corresponding models too
+		//take care to not save template here (to avoid infinite loop), because booking_template also launch save of recurrence
 		saveToBackend: function(){
 			var self = this;
 			var vals = this.getSaveVals();
@@ -390,7 +392,9 @@ define([
 				self.fetch({silent:true}).done(function(){
 					self.occurrences.each(function(occurrence){
 						occurrence.setRecurrenceId(data);
-						occurrence.saveToBackend();
+						if(!occurrence.get('is_template')){
+							occurrence.saveToBackend();
+						}
 					});
 					self.occurrencesToRemove.each(function(occurrenceToRemove){
 						occurrenceToRemove.destroy();
@@ -398,6 +402,13 @@ define([
 				});
 			});
 			
+		},
+		
+		destroyOccurrenceFromBackend: function(model){
+			this.occurrences.remove(model);
+			this.occurrencesToRemove.add(model.clone().off());
+			model.set({id:null},{silent:true});
+			model.destroy();
 		},
 		
 		getActions: function(){

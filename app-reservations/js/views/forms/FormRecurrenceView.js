@@ -53,13 +53,9 @@ define(['app',
 		*/
 		initialize : function() {
 			var self = this;
-			this.deferredOccurrences = $.Deferred();
 			this.listenTo(this.model.occurrences, 'add', this.addOccurrence);
 			if(!this.model.isNew()){
-				self.deferredOccurrences = this.model.fetchOccurrences();
-			}
-			else{
-				self.deferredOccurrences.resolve();
+				this.model.fetchOccurrences();
 			}
 		},
 		
@@ -74,7 +70,7 @@ define(['app',
 	
 			var self = this;
 			// Retrieve the template //
-			$.get(app.moduleUrl + "/templates/" + self.templateHTML + ".html", function(templateData){			
+			$.get(app.menus.openresa + "/templates/" + self.templateHTML + ".html", function(templateData){			
 				
 				var date_end = self.model.getUntil();
 				if(date_end != ''){

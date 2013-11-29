@@ -6,7 +6,7 @@ define([
 	'claimerModel',
 	'userModel',
 	'bookingLinesCollection',
-	'moment'
+	'moment',
 	'moment-timezone',
 	'moment-timezone-data',
 
@@ -158,7 +158,7 @@ define([
 		},
 		
 		getPricelist: function(type){
-			if(this.get('pricelist_id')){
+			if(this.get('pricelist_id') != false){
 				switch(type){
 					case 'id': 
 						return this.get('pricelist_id')[0];
