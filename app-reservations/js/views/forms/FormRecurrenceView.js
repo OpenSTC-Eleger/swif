@@ -54,14 +54,21 @@ define(['app',
 		initialize : function() {
 			var self = this;
 			this.listenTo(this.model.occurrences, 'add', this.addOccurrence);
+			this.deferred = $.Deferred();
 			if(!this.model.isNew()){
-				this.model.fetchOccurrences();
+				this.deferred = this.model.fetchOccurrences();
+			}
+			else{
+				this.deferred.resolve();
 			}
 		},
 		
 		addOccurrence: function(model){
-			var itemView = new ItemFormBookingOccurrenceView({model:model});
-			$(this.el).find('#bookingOccurrences').append(itemView.render().el);
+			var self = this;
+			this.deferred.done(function(){
+				var itemView = new ItemFormBookingOccurrenceView({model:model});
+				$(self.el).find('#bookingOccurrences').append(itemView.render().el);
+			});
 		},
 		
 		/** Display the view
@@ -70,7 +77,7 @@ define(['app',
 	
 			var self = this;
 			// Retrieve the template //
-			$.get(app.menus.openresa + "/templates/" + self.templateHTML + ".html", function(templateData){			
+			$.get(app.menus.openresa + "/templates/" + self.templateHTML + ".html", function(templateData){		
 				
 				var date_end = self.model.getUntil();
 				if(date_end != ''){
@@ -88,7 +95,7 @@ define(['app',
 				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 				$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 
-				$(this.el).hide().fadeIn('slow');
+				$(self.el).hide().fadeIn('slow');
 			});
 			return this;
 	    },
