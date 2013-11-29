@@ -255,7 +255,7 @@ define([
 		
 		getCreateDate: function(type){
 			if(this.get('create_date') != false){
-				var createDate = AppHelpers.convertDateToTz(this.get('checkout'));
+				var createDate = AppHelpers.convertDateToTz(this.get('create_date'));
 				switch(type){
 					case 'human':	
 						return createDate.format('LLL');
