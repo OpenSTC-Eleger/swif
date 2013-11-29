@@ -1,12 +1,16 @@
 define([
 	'app',
+	
 	'genericModel',
 	'bookingModel',
 	'claimerModel',
+	'userModel',
 	'bookingLinesCollection',
 	'moment'
+	'moment-timezone',
+	'moment-timezone-data',
 
-], function(app, GenericModel, BookingModel, ClaimerModel, BookingLinesCollection, moment){
+], function(app, GenericModel, BookingModel, ClaimerModel, UserModel, BookingLinesCollection, moment){
 
 	'use strict';
 	
@@ -17,7 +21,7 @@ define([
 		
 		urlRoot: "/api/openresa/bookings",
 		
-		fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'partner_phone', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'note', 'pricelist_id'],	
+		fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'pricelist_id', 'confirm_note', 'cancel_note', 'done_note'],	
 	
 		searchable_fields: [
 			{
@@ -79,14 +83,17 @@ define([
 			if(type == 'string'){
 				return _.toSentence(bookingResourceNames, ', ', ' '+app.lang.and+' ')
 			}
+			else if(type == 'newline'){	
+				return _.join(":",_.toSentence(bookingResourceNames, ':\n\r ', ':\n\r '), " ");
+			}
 			else{
 				return bookingResourceNames;
 			}
 		},
 		
 		getResourceQuantities : function(){
-			if( this.getState()=='closed' || 
-					this.getState()=='refused') return "";
+			if( this.getState()=='done' || 
+					this.getState()=='cancel') return "";
 		
 			var bookingResourceQuantities = [];
 			
@@ -103,11 +110,32 @@ define([
 		},
 		
 		getInformations: function(){
-			return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate() + (this.getNote()!=false ? " : " + this.getNote() : "");
+			switch (this.getState()){ 
+				case 'confirm': 
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate() + (this.getConfirmNote()!=false ? " : " + this.getConfirmNote() : "");
+				break;
+				case 'cancel':
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate() + (this.getCancelNote()!=false ? " : " + this.getCancelNote() : "");
+				break;
+				case 'done':
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate() + (this.getDoneNote()!=false ? " : " + this.getDoneNote() : "");
+				break;
+				default: 
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate();
+			}
+			return ;
 		},
 		
-		getNote: function(){
-			return this.get('note');
+		getConfirmNote: function(){
+			return this.get('confirm_note');
+		},
+		
+		getCancelNote: function(){
+			return this.get('cancel_note');
+		},
+		
+		getDoneNote: function(){
+			return this.get('done_note');
 		},
 		
 		getRecurrence: function(type){
@@ -174,6 +202,24 @@ define([
 			return this.get('is_template');
 		},
 		
+//		getStartDate: function(type){
+//			if(this.get('checkin') != false){
+//				var checkinDate = moment(this.get('checkin')).tz(UserModel.getContext().tz)
+//				checkinDate.add('minutes',-checkinDate.zone());
+//				switch(type){
+//					case 'human':	
+//						return checkinDate.format('LLL');
+//					break;
+//					default:
+//						return checkinDate;
+//					break;
+//				}
+//			}
+//			else{
+//				return '';
+//			}
+//		},	
+		
 		getStartDate: function(type){
 			if(this.get('checkin') != false){
 				switch(type){
@@ -196,6 +242,24 @@ define([
 				this.updateLinesData();
 			}
 		},
+		
+//		getEndDate: function(type){
+//			if(this.get('checkout') != false){
+//				var checkoutDate = moment(this.get('checkout')).tz(UserModel.getContext().tz)
+//				checkoutDate.add('minutes',-checkoutDate.zone());
+//				switch(type){
+//					case 'human':	
+//						return checkoutDate.format('LLL');
+//					break;
+//					default:
+//						return checkoutDate;
+//					break;
+//				}
+//			}
+//			else{
+//				return '';
+//			}
+//		},
 		
 		getEndDate: function(type){
 			if(this.get('checkout') != false){
@@ -322,6 +386,78 @@ define([
 				checkout:this.getEndDate()
 			}
 		},
+
+		getClaimerPhone: function(){
+			return this.get('contact_phone');
+		},
+		
+		getClaimerContact: function(type){
+			if(this.get('partner_order_id')){
+				switch (type){
+					case 'id': 
+						return this.get('partner_order_id')[0];
+					break;
+					case 'json':
+						return {id: this.get('partner_order_id')[0], name: this.get('partner_order_id')[1]};
+					break;
+					default:
+						return this.get('partner_order_id')[1];
+				}
+			}
+		},
+		
+		setClaimerContact: function(value, silent){
+			this.set({ partner_order_id : value }, {silent: silent});
+		},	
+		
+		getClaimerMail : function(){
+			return !_.isUndefined(this.get('partner_mail')) && !_.isNull(this.get('partner_mail')) && this.get('partner_mail')!=false ? this.get('partner_mail') : "";
+		},
+		
+		fromCitizen: function(){
+			return this.get('is_citizen');
+		},
+		setFromCitizen: function(value, silent){
+			this.set({ is_citizen : value }, {silent: silent});
+		},
+		
+		getCitizenName: function(){
+			if(this.fromCitizen()){
+				return this.get('people_name');
+			}
+		},
+		setCitizenName: function(value, silent){
+			this.set({ people_name : value }, {silent: silent});
+		},	
+		
+		getCitizenPhone: function(){
+			if(this.fromCitizen()){
+				return this.get('people_phone');
+			}
+		},
+		setCitizenPhone: function(value, silent){
+			this.set({ people_phone : value }, {silent: silent});
+		},
+		getCitizenEmail: function(){
+			if(this.fromCitizen()){
+				return this.get('people_email');
+			}
+		},
+		setCitizenEmail: function(value, silent){
+			this.set({ people_email : value }, {silent: silent});
+		},
+		
+		getState : function() {
+			return this.get('state');
+		},
+		
+		getActions: function(){
+			return this.get('actions');
+		},
+		
+		hasActions: function(action){
+			return this.getActions().indexOf(action) > -1;
+		},
 		
 		//method to add a bookingLine to collection on this model
 		addLine: function(lineModel){
@@ -413,73 +549,6 @@ define([
 			
 		},
 
-		getClaimerPhone: function(){
-			return this.get('partner_phone');
-		},
-		
-		getClaimerContact: function(type){
-			if(this.get('partner_order_id')){
-				switch (type){
-					case 'id': 
-						return this.get('partner_order_id')[0];
-					break;
-					case 'json':
-						return {id: this.get('partner_order_id')[0], name: this.get('partner_order_id')[1]};
-					break;
-					default:
-						return this.get('partner_order_id')[1];
-				}
-			}
-		},
-		
-		setClaimerContact: function(value, silent){
-			this.set({ partner_order_id : value }, {silent: silent});
-		},	
-		
-		fromCitizen: function(){
-			return this.get('is_citizen');
-		},
-		setFromCitizen: function(value, silent){
-			this.set({ is_citizen : value }, {silent: silent});
-		},
-		
-		getCitizenName: function(){
-			if(this.fromCitizen()){
-				return this.get('people_name');
-			}
-		},
-		setCitizenName: function(value, silent){
-			this.set({ people_name : value }, {silent: silent});
-		},	
-		
-		getCitizenPhone: function(){
-			if(this.fromCitizen()){
-				return this.get('people_phone');
-			}
-		},
-		setCitizenPhone: function(value, silent){
-			this.set({ people_phone : value }, {silent: silent});
-		},
-		getCitizenEmail: function(){
-			if(this.fromCitizen()){
-				return this.get('people_email');
-			}
-		},
-		setCitizenEmail: function(value, silent){
-			this.set({ people_email : value }, {silent: silent});
-		},
-
-		getState : function() {
-			return this.get('state');
-		},
-		
-		getActions: function(){
-			return this.get('actions');
-		},
-		
-		hasActions: function(action){
-			return this.getActions().indexOf(action) > -1;
-		},
 	
 		
 		/** Model Initialization
@@ -502,55 +571,56 @@ define([
 		status : {
 			//= égal au 'wait' STC
 			remplir: {
-				key                 : 'wait',
+				key                 : 'remplir',
 				color               : 'info',
 				translation         : app.lang.wait
 			},
 			//= égal au 'valid' STC
 			confirm: {
-				key                 : 'valid',
+				key                 : 'confirm',
 				color               : 'success',
 				translation         : app.lang.valid
 			},
 			//= égal au 'refused' STC
 			cancel: {
-				key                 : 'refused',
+				key                 : 'cancel',
 				color               : 'danger',
 				translation         : app.lang.refused
 			},
 			//= égal au 'closed' STC
 			done: {
-				key                 : 'closed',
-				color               : 'success',
-				translation         : app.lang.finished
+				key                 : 'done',
+				color               : 'default',
+				translation         : app.lang.closed
 			},
 		},
 		
 			// Actions of the requests //
 		actions : {
-			valid: {
-				key 		: 'valid',
+			confirm: {
+				key 		: 'confirm',
 				color 		: 'success',
 				icon 		: 'fa-check',
 				translation : app.lang.actions.validate
 			},
-			refused: {
-				key 		: 'refused',
+			cancel: {
+				key 		: 'cancel',
 				color 		: 'danger',
 				icon 		: 'fa-times',
-				translation : app.lang.finished
+				translation : app.lang.actions.refuse
 			},
 			resolve_conflict: {
 				key 		: 'resolve_conflict',
 				color 		: 'warning',
 				icon 		: 'fa-medkit',
-				translation : 'Traiter conflit'
+				translation : 'Traiter le conflit'
+				//translation : app.lang.resa.actions.resolveConflict
 			},
-			closed: {
-				key 		: 'closed',
+			done: {
+				key 		: 'done',
 				color 		: 'default',
 				icon 		: 'fa-eye-slash',
-				translation : app.lang.actions.refuse
+				translation : app.lang.actions.close
 			},
 	
 	
@@ -562,6 +632,6 @@ define([
 	});
 	
 
-	return booking;
+return booking;
 
 });

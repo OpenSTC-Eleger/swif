@@ -1,26 +1,28 @@
 define([
-	'app',
-	'requestModel',
+	'app',	
 	
-	'genericModalView'
+	'bookingModel',
+	
+	'genericModalView',
+	
 
-], function(app, RequestModel, GenericModalView){
+], function(app, BookingModel, GenericModalView){
 
 	'use strict';
 
 	/******************************************
 	* Refuse Request Modal View
 	*/
-	var ModalRefuseRequestView = GenericModalView.extend({
+	var modalUpdateBookingView = GenericModalView.extend({
 	
 	
-		templateHTML : '/templates/modals/modalRefuseRequest.html',
+		templateHTML : '/templates/modals/modalUpdateBooking.html',
 	
 	
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'submit #formRefuseRequest'   : 'refuseRequest'
+				'submit #formUpdateBooking'   : 'updateBooking'
 			}, 
 				GenericModalView.prototype.events
 			);
@@ -48,14 +50,22 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.menus.openstc+this.templateHTML, function(templateData){
-	
+			$.get(app.menus.openresa + this.templateHTML, function(templateData){
+
 				var template = _.template(templateData, {
-					lang    : app.lang,
-					request : self.model
+					lang    	: app.lang,
+					booking 	: self.model,
+					state		: self.options.state,
+					title 	 	: app.lang.resa.viewsTitles[self.options.state + "Booking" ],
+					iconTitle	: self.getIconTitle(),
+					BookingModel: BookingModel
 				});
-	
+				
 				self.modal.html(template);
+				
+				if( self.options.state == BookingModel.status.done.key) {
+					$('#note').html(self.model.getResourceNames('newline'));
+				}			
 	
 				self.modal.modal('show');
 			});
@@ -63,11 +73,22 @@ define([
 			return this;
 		},
 	
-	
+		getIconTitle: function(){
+			switch (this.options.state){ 
+				case BookingModel.status.done.key: 
+					return 'fa-eye-slash';
+				break;
+				case BookingModel.status.cancel.key:
+					return 'fa-times';
+				break;
+				default: 
+					return 'fa-check';
+			}
+		},
 	
 		/** Delete the model pass in the view
 		*/
-		refuseRequest: function(e){
+		updateBooking: function(e){
 			e.preventDefault();
 	
 			var self = this;
@@ -77,10 +98,10 @@ define([
 	
 	
 			var params = {
-				state          : RequestModel.status.refused.key,
-				refusal_reason : $('#motifRefuse').val()
+				state   		: this.options.state,
+				send_invoicing  : $('#sendInvoicing').is(':checked'),
 			}
-	
+			params[this.options.state+'_note'] = $('#note').val()
 	
 			// Save Only the params //
 			this.model.save(params, {patch: true, silent: true})
@@ -96,6 +117,7 @@ define([
 				});
 		}
 	
-	});
-	return ModalRefuseRequestView;
+	});	
+		
+	return modalUpdateBookingView;
 })

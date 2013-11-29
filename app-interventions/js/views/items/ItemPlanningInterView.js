@@ -20,7 +20,7 @@ define([
 	
 		tagName     : 'tr',
 	
-		templateHTML : 'items/itemPlanningInter',
+		templateHTML : '/templates/items/itemPlanningInter.html',
 		
 			
 		className   : function(){
@@ -84,7 +84,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc + this.templateHTML, function(templateData){
 	
 				var modelJSON = self.model.toJSON();
 				var informationHour = '';

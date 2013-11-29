@@ -38,7 +38,7 @@ define(['app',
 				}
 			},
 	
-		templateHTML : 'forms/itemFormBookingLine',
+		templateHTML : '/templates/forms/itemFormBookingLine.html',
 	
 	
 		// The DOM events //
@@ -95,7 +95,7 @@ define(['app',
 			var self = this;
 			
 			// Retrieve the template // 
-			$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openresa + this.templateHTML, function(templateData){
 				//we wait for bookable fetch finished
 				self.deferredBookable.done(function(){
 					var template = _.template(templateData, {

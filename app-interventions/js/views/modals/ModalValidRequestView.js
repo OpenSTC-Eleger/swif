@@ -24,7 +24,7 @@ define([
 	var ModalValidRequestView = GenericModalView.extend({
 	
 	
-		templateHTML : 'modals/modalValidRequest',
+		templateHTML : '/templates/modals/modalValidRequest.html',
 	
 	
 		// The DOM events //
@@ -62,11 +62,12 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl + "/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 	
 				var template = _.template(templateData, {
 					lang    : app.lang,
-					request : self.model
+					request : self.model,
+					moment  : moment
 				});
 	
 				self.modal.html(template);

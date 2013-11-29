@@ -23,10 +23,11 @@ define([
 		fields : ['id', 'name' , 'recur_periodicity', 'recur_week_monday', 'recur_week_tuesday', 'recur_week_wednesday', 'recur_week_thursday',
 		         'recur_week_friday', 'recur_week_saturday', 'recur_week_sunday', 'recur_month_type', 'recur_month_absolute',
 				 'recur_month_relative_weight', 'recur_month_relative_day', 'recur_type', 'date_start', 'recur_length_type', 
-				 'date_end', 'recur_occurrence_nb', 'date_confirm', 'recurrence_state', 'actions'
+				 'date_end', 'recur_occurrence_nb', 'date_confirm', 'recurrence_state', 'actions', 'possible_actions'
 				],
 				
 		weekdays_vals : ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'],
+
 	
 		searchable_fields: [
 			{
@@ -399,6 +400,14 @@ define([
 			
 		},
 		
+		getActions: function(){
+			return this.get('actions');
+		},
+		
+		hasActions: function(action){
+			return this.getActions().indexOf(action) > -1;
+		},
+		
 		/** Model Initialization
 		*/
 		initialize: function(){
@@ -432,6 +441,6 @@ define([
 	
 	});	
 
-	return bookingRecurrence;
+return bookingRecurrence;
 
 });

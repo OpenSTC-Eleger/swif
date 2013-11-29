@@ -3,7 +3,6 @@ define([
 
 	'tasksCollection',	
 	
-	'userModel',
 	'taskModel',
 	'taskSchedulesModel',
 
@@ -15,8 +14,8 @@ define([
 
 ], function(app, 
 				TasksCollection, 
-				UserModel, TaskModel, TaskSchedulesModel,
-				PrintingCalendarView, ModalAbsentTaskView, ModalUnplanTaskView, Fullcalendar ){
+				TaskModel, TaskSchedulesModel,
+				PrintingCalendarView, ModalAbsentTaskView, ModalUnplanTaskView, fullcalendar ){
 
 	'use strict';
 
@@ -27,10 +26,11 @@ define([
 	var calendarView = Backbone.View.extend({
 		
 		//template name
-		templateHTML: 'others/calendar',
+		templateHTML: '/templates/others/calendar.html',
+
 		//Dom element for calendar
 		divCalendar : 	null,
-	
+		
 		calendarView: 	'agendaWeek',
 		teamMode    :		 false,
 		initialized : false,
@@ -99,7 +99,7 @@ define([
 			var self = this;
 	
 			// Retrieve the template //
-			$.get(app.moduleUrl+"/templates/"  + this.templateHTML + '.html', function(templateData){
+			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang: app.lang,		
 					calendar   	: self.model,

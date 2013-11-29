@@ -22,7 +22,7 @@ define([
 	
 		el           : '#planningInters',
 		
-		templateHTML : 'lists/planningInters',
+		templateHTML : '/templates/lists/planningInters.html',
 	
 		currentRoute : null,
 	
@@ -84,7 +84,7 @@ define([
 		render: function() {
 			var self = this;		
 		
-			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc + this.templateHTML, function(templateData){
 				// Set variables template //
 				var template = _.template(templateData, {
 					lang				: app.lang,
@@ -123,10 +123,10 @@ define([
 				
 				// Pagination view //
 				app.views.paginationView = new PaginationView({ 
-					page       : self.options.page.page,
-					collection : self.collections.interventions,
-					size		: 'sm',
-					displayGoToPage : false,
+					page           : self.options.page.page,
+					collection     : self.collections.interventions,
+					size           : 'sm',
+					displayGoToPage: false,
 					
 				})
 				app.views.paginationView.render();

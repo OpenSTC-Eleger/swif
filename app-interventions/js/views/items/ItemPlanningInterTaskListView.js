@@ -20,7 +20,7 @@ define([
 	
 		tagName     : 'tr',
 	
-		templateHTML : 'items/itemPlanningInterTaskList',
+		templateHTML : '/templates/items/itemPlanningInterTaskList.html',
 	
 		// The DOM events //
 		events       : {
@@ -50,7 +50,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc + this.templateHTML, function(templateData){
 	
 				
 				var template = _.template(templateData, {

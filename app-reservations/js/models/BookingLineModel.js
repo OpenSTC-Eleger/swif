@@ -192,6 +192,6 @@ define([
 	
 	});
 
-	return bookingLine;
+return bookingLine;
 
 });

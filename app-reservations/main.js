@@ -1,21 +1,19 @@
 define('app-reservations', [
 	'app',
 
+	'appRouter',
 	'appReservationsRouter'
 
 
-], function(app, AppReservationsRouter){
+], function(app, AppRouter, AppReservationsRouter){
 
 	'use strict';
 
 
 	return function(){
 
-		app.moduleUrl = app.config.menus.openresa;
-
-
 		// Retrieve the routes and the lang of the modules //
-		$.when(app.loadStaticFile(app.moduleUrl+'/config/routes.json'), app.loadStaticFile(app.moduleUrl+'/i18n/'+app.config.lang+'/app-lang.json'))
+		$.when(app.loadStaticFile(app.menus.openresa+'/config/routes.json'), app.loadStaticFile(app.menus.openresa+'/i18n/'+app.config.lang+'/app-lang.json'))
 		.done(function(moduleRoutes, moduleLang){
 
 
@@ -27,7 +25,7 @@ define('app-reservations', [
 
 			// Prefix all the routes of the module with the module name //
 			_.each(moduleRoutes[0], function(route, index){
-				route.url = _.join('/', app.moduleUrl, route.url);
+				route.url = _.join('/', app.menus.openresa, route.url);
 			})
 
 			// Extend the routes //
@@ -39,12 +37,18 @@ define('app-reservations', [
 				app.router.route(route.url, route.function);
 			});
 
+			
+				// Extends the Router functions //
+			_.each(AppReservationsRouter.prototype, function(func, funcName, e){
+				AppRouter.prototype[funcName] = func;
+			});
+
 
 			// Launch the new Router //
-			app.router = new AppReservationsRouter();
-			
-			Backbone.history.start({pushState: false});
+			app.router = new AppRouter();
 
+
+			Backbone.history.start({pushState: false});
 
 		})
 		.fail(function(e){

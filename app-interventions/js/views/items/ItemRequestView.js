@@ -32,7 +32,7 @@ define([
 			
 		},
 
-		templateHTML : 'items/itemRequest',
+		templateHTML : '/templates/items/itemRequest.html',
 
 
 		// The DOM events //
@@ -101,7 +101,7 @@ define([
 
 
 			// Retrieve the template // 
-			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 
 
 				var template = _.template(templateData, {

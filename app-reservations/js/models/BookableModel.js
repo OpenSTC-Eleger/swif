@@ -48,5 +48,7 @@ define([
 		}
 	
 	});
-	return BookableModel;
+
+return BookableModel;
+
 })

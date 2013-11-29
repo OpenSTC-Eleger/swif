@@ -15,7 +15,7 @@ define([
 		
 		url   : "/api/openresa/booking_recurrences",
 		
-		fields: ['id', 'name'],
+		fields: ['id', 'name', 'possible_actions'],
 			
 		
 		/** Collection Sync

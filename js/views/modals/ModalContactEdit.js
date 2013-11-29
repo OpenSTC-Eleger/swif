@@ -166,8 +166,7 @@ define(['app', 'appHelpers', 'genericModalView', 'claimersContactsCollection'
                     self.model.fetch({silent: true, data: {fields: ClaimersContactsCollection.prototype.fields} }).
                         done(function () {
 							self.claimersContactsListView.contactsCollection.trigger('add');
-							self.claimersContactsListView.contactsCollection.add(self.model)
-							console.log(self.claimersContactsListView.contactsCollection)
+							self.claimersContactsListView.contactsCollection.add(self.model);
                         })
                 })
         },

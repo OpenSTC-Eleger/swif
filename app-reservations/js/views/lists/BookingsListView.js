@@ -10,9 +10,9 @@ define([
 	'paginationView',
 	'itemBookingView',
 	'itemBookingOccurrencesListView',
-	'modalValidBookingsListView'
+	'modalUpdateBookingsListView'
 
-], function(app, AppHelpers, BookingsCollection, BookingModel, BookingRecurrenceModel, GenericListView, PaginationView, ItemBookingView, ItemBookingOccurrencesListView, ModalValidBookingsListView){
+], function(app, AppHelpers, BookingsCollection, BookingModel, BookingRecurrenceModel, GenericListView, PaginationView, ItemBookingView, ItemBookingOccurrencesListView, ModalUpdateBookingsListView){
 
 	'use strict';
 
@@ -22,24 +22,25 @@ define([
 	*/
 	var bookingsListView = GenericListView.extend({
 	
-		templateHTML: 'lists/bookingsList',
+		templateHTML : '/templates/lists/bookingsList.html',
+
+		urlParameters: ['recurrence', 'id', 'search', 'filter', 'sort', 'page'],
+
+		collections  :  {},
 		
-		urlParameters : ['recurrence', 'id', 'search', 'filter', 'sort', 'page'],
-	
-		collections:  {},
+		//DOM actions elements, buttons : all valid, all refuse, all close
+		btnActions    : 'span.btn-actions',
 		
-		//searchReccurent    : 'form.form-search input',
-		actionsForm    : 'form.form-actions',
+		bookingRecurrenceSelectedModel : null,
 	
 		// The DOM events //
 		events: function(){
 			return _.defaults({
 				'click #filterStateBookingList li a' 	: 'setFilterState',	
 				'click #badgeActions[data-filter!=""]'  : 'badgeFilter',
-				'click .btn-info'             		: 'unbindOccurences',
-				'click .btn-success'             	: 'validOccurences',
-				'click .btn-danger'             		: 'refuseOccurences',
 				
+				'click .actions'						: 'updateOccurences',
+				'click #unbindOccurences'           	: 'unbindOccurences',				
 			}, 
 				GenericListView.prototype.events
 			);
@@ -55,12 +56,14 @@ define([
 			this.options = params;
 	
 	
-			this.initCollections().done(function(){
-				app.router.render(self);
-				// Unbind & bind the collection //
-				self.collection.off();
-				self.listenTo(self.collection, 'add',self.add);
-			});
+			this.initCollections().then(
+				function(){
+					app.router.render(self);
+					// Unbind & bind the collection //
+					self.collection.off();
+					self.listenTo(self.collection, 'add',self.add);
+				}
+			);
 		},
 	
 	
@@ -85,13 +88,14 @@ define([
 	
 			
 			// Retrieve the HTML template //
-			$.get(app.moduleUrl+'/templates/' + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openresa + this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang             : app.lang,
 					bookings         : self.collection,
 					nbBookings       : self.collection.specialCpt,	
 					BookingModel	 : BookingModel,
 					bookingsState    : BookingModel.status,
+					recurrenceModel  : self.bookingRecurrenceSelectedModel
 				});
 	
 	
@@ -120,11 +124,19 @@ define([
 				})
 	
 	
-				if(self.options.recurrence == null){				
-					$(self.actionsForm).addClass('hide');				
+				if(self.options.recurrence == null){
+					if( !_.isUndefined(self.bookingRecurrenceSelectedModel) 
+						&& !_.isNull(self.bookingRecurrenceSelectedModel) ){
+							self.bookingRecurrenceSelectedModel.off();
+					}						
+					$(self.btnActions).addClass('hide');				
 				}
-				else{				
-					$(self.actionsForm).removeClass('hide');
+				else{
+//					self.bookingRecurrenceSelectedModel = new BookingRecurrenceModel({id: self.options.recurrence });
+//					self.bookingRecurrenceSelectedModel.fetch();
+//					self.listenTo(self.bookingRecurrenceSelectedModel, 'change', self.render);						
+					//TODO : calculates actions buttons to display with self.bookingRecurrenceSelectedModel.getActions();
+					$(self.btnActions).removeClass('hide');
 				}
 				
 			});
@@ -172,63 +184,41 @@ define([
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 		},
 	
-		
-		/** valid occurences booking
+		/** valid all occurences booking
 		*/
-		validOccurences: function(e){
+		updateOccurences: function(e){
 			e.preventDefault();
-			var self = this;	
-			
-			//var booking = this.model.toJSON();
-			console.debug('Valid occurences');
-			
-			e.preventDefault(); e.stopPropagation();
-	
-			var model = new BookingRecurrenceModel({id: this.options.recurrence });
-			
-			var deferred = $.Deferred();
-			model.fetch().done(function(){
-				app.views.modalValidBookingsListView = new ModalValidBookingsListView({
-					el      : '#modalValidBookingsList',
-					model   : model
-				});
-				deferred.resolve();
-			})
-			.fail(function(e){
-				console.error(e);
-			})
-			
-			return deferred;
-	
-	
+			var self = this;		
+			this.openModal(e.currentTarget.id);	
 		},
 		
-		/** valid occurences booking
-		*/
-		refuseOccurences: function(e){
-			e.preventDefault();
-			var self = this;	
-			
-			//var booking = this.model.toJSON();
-			console.debug('refuse occurences');
-	
-		},
-		
-		/** unbind occurences 
+		/** unbind occurences : return to list
 		*/
 		unbindOccurences: function(e){
 			e.preventDefault();
-			var self = this;	
-			
-			delete this.options.recurrence
-			
-			app.router.navigate(app.views.bookingsListView.urlBuilder(), {trigger: true, replace: true});
-	
-			//var booking = this.model.toJSON();
-			console.debug('unbind occurences');
-	
+			var self = this;				
+			delete this.options.recurrence		
+			app.router.navigate(app.views.bookingsListView.urlBuilder(), {trigger: true, replace: true});	
 		},
 		
+		openModal: function(state){
+//			var model = new BookingRecurrenceModel({id: this.options.recurrence });
+//			this.listenTo(model, 'change', this.render);
+			//var deferred = $.Deferred();
+			//this.selectedBookingRecurrence.fetch().done(function(){
+				app.views.modalUpdateBookingsListView = new ModalUpdateBookingsListView({
+					el      	: '#modalUpdateBookingsList',
+					model   	: this.bookingRecurrenceSelectedModel,
+					booking		: this.collection.at(0),
+					state		: state
+				});
+//				deferred.resolve();
+//			})
+//			.fail(function(e){
+//				console.error(e);
+//			})			
+//			return deferred;
+		},
 	
 		initCollections: function(){
 			var self = this;
@@ -258,7 +248,7 @@ define([
 				data       : {
 					limit  : app.config.itemsPerPage,
 					offset : this.options.page.offset,
-					//sort   : this.options.sort.by+' '+this.options.sort.order
+					sort   : this.options.sort.by+' '+this.options.sort.order
 				}
 			};
 			
@@ -279,20 +269,28 @@ define([
 			
 			if(!_.isUndefined(this.options.recurrence)){
 				fetchParams.data.filters  = _.toArray(fetchParams.data.filters);
-				fetchParams.data.filters.push({ 'field' : 'recurrence_id.id', 'operator' : '=', 'value' : this.options.recurrence})
+				fetchParams.data.filters.push({field: 'recurrence_id.id', operator:'=', value:this.options.recurrence})				
+				fetchParams.data.filters = app.objectifyFilters(fetchParams.data.filters)
 			}
 			
-	
+			var ajaxRequests = [this.collection.fetch(fetchParams)]					
+			if( !_.isUndefined(this.options.recurrence) 
+					&& !_.isNull(this.options.recurrence) ){
+				this.bookingRecurrenceSelectedModel = new BookingRecurrenceModel({id: this.options.recurrence });		
+				this.listenTo(this.bookingRecurrenceSelectedModel, 'change', this.render);		
+				//Add ajax request for update intervention
+				ajaxRequests.push(this.bookingRecurrenceSelectedModel.fetch())
+			}	
 			
 			var deferred = $.Deferred();
 			//retrieve bookings and tasks associated (use domain ('project_id','in',[...] to retrieve tasks associated)
-			this.collection.fetch(fetchParams)
-			.done(function(){
-				deferred.resolve();
-			})
-			.fail(function(e){
-				console.error(e);
-			})
+			$.when.apply( $, ajaxRequests )
+				.done(function(){
+					deferred.resolve();
+				})
+				.fail(function(e){
+					console.error(e);
+				})
 			
 			return deferred;
 		}	  

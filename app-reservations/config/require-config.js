@@ -21,12 +21,14 @@ requirejs.config({
 		bookingRecurrenceModel             	: 'app-reservations/js/models/BookingRecurrenceModel',
 		bookableModel		             	: 'app-reservations/js/models/BookableModel',
 
+
 		// Views //
 		bookingsListView            		: 'app-reservations/js/views/lists/BookingsListView',
 		formBookingView						: 'app-reservations/js/views/forms/FormBookingView',
 		itemFormBookingLineView				: 'app-reservations/js/views/forms/ItemFormBookingLineView',
 		formRecurrenceView					: 'app-reservations/js/views/forms/FormRecurrenceView',
 		itemFormBookingOccurrenceView		: 'app-reservations/js/views/forms/ItemFormBookingOccurrenceView',
+		planningManagerView  				: 'app-reservations/js/views/others/PlanningManagerView',
 		
 		// Items //
 		itemBookingView            			: 'app-reservations/js/views/items/ItemBookingView',
@@ -34,8 +36,8 @@ requirejs.config({
 		itemBookingOccurrenceView           : 'app-reservations/js/views/items/ItemBookingOccurrenceView',
 		
 		// Modals //
-		modalValidBookingView          		: 'app-reservations/js/views/modals/ModalValidBookingView',
-		modalValidBookingsListView          : 'app-reservations/js/views/modals/ModalValidBookingsListView',		
+		modalUpdateBookingView          	: 'app-reservations/js/views/modals/ModalUpdateBookingView',
+		modalUpdateBookingsListView         : 'app-reservations/js/views/modals/ModalUpdateBookingsListView',		
 		
 	}
 

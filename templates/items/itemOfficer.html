@@ -26,4 +26,4 @@
 <td><a href="mailto:<%= officer.getEmail() %>"><%= officer.getEmail() %></a></td>
 
 <!-- Last Connexion -->
-<td><%= moment(officer.getLastConnection()).format('LLL') %></td>
+<td><%= officer.getLastConnection() %></td>

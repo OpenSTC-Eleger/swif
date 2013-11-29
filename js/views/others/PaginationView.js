@@ -32,6 +32,7 @@ define([
 		/** View Initialization
 		*/
 		initialize: function(options) {
+
 			this.currentRoute = Backbone.history.fragment;
 
 			this.page = options.page;
@@ -43,7 +44,7 @@ define([
 
 			// Size //
 			if(!_.isUndefined(options.size)){
-				this.size = this.size;
+				this.size = options.size;
 			}
 
 

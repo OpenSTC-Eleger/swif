@@ -23,7 +23,7 @@ define([
 	
 		tagName     : 'li',
 	
-		templateHTML : 'items/itemPlanningInterTask',
+		templateHTML : '/templates/items/itemPlanningInterTask.html',
 		
 		className   : function(){
 			var elementClass = 'external-event';
@@ -78,7 +78,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.moduleUrl+"/templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 	
 				var model = self.model.toJSON()
 				var template = _.template(templateData, {
@@ -88,7 +88,8 @@ define([
 					InterventionModel		: InterventionModel,
 					TaskModel				: TaskModel,
 					UserModel				: app.models.user,
-					AppHelpers				: AppHelpers
+					AppHelpers				: AppHelpers,
+					moment                  : moment
 				});
 	
 				$(self.el).html(template);
