@@ -98,10 +98,10 @@ define([
 	
 	
 			var params = {
-				state   : this.options.state,
-				note 	: $('#note').val()
+				state   		: this.options.state,
+				send_invoicing  : $('#sendInvoicing').is(':checked'),
 			}
-	
+			params[this.options.state+'_note'] = $('#note').val()
 	
 			// Save Only the params //
 			this.model.save(params, {patch: true, silent: true})

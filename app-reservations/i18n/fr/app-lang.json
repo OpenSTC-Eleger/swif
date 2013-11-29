@@ -13,7 +13,7 @@
 			"doneAll"								: "Tout clôturer",
 			"resolveConflict"						: "Traiter le conflit",
 			"selectABookable"						: "Sélectionner une ressource",
-			"attachInvoice" 							: "Joindre la facture / Bon de réservation"			
+			"sendInvoicing" 						: "Joindre la facture / Bon de réservation"			
 		},
 		
 		"infoMessages" : {
