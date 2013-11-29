@@ -1,0 +1,85 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Les ressources</h3>
+	</div>
+  
+
+	<div class="panel-body">
+
+		<!-- Claimer Type -->
+		<div class="panel-group">
+			<div class="row panel-group-heading">
+				<h4 class="col-sm-12"><i class="fa fa-user fa-lg fa-fw"></i> <%= _.capitalize(lang.claimerType) %></h4>
+			</div>
+	    
+	    	<div class="panel-group-body">
+	    		<form class="form-inline" role="form">
+		    		<input id="claimersTypes" class="select2" data-placeholder="<%= lang.actions.selectAClaimerType %>" required />
+	    		</form>
+	    	</div>
+		</div>
+
+		<hr>
+
+		<!-- Places -->
+		<div class="panel-group">
+			<div class="row panel-group-heading">
+				<h4 class="col-sm-6"><i class="fa fa-map-marker fa-lg fa-fw"></i> <%= _.capitalize(lang.places) %></h4>
+
+				<form class="form-inline col-sm-6" role="form">
+					<div class="form-group pull-right">
+						<input type="search" id="placesSearch" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off" />
+					</div>
+				</form>
+			</div>
+		
+			<div class="panel-group-body">
+				<ul id="bookablesPlaces" class="nav nav-pills nav-stacked nav-stacked-6">
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>ma salle 1</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>ma salle 2</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>ma salle 3</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>ma salle 4</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>ma salle 5</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>ma salle 6</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>ma salle 7</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>ma salle 8</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>ma salle 9</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>ma salle 10</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<hr>
+
+		<!-- Equipment -->
+		<div class="panel-group">
+			<div class="row panel-group-heading">
+				<h4 class="col-sm-6"><i class="fa fa-wrench fa-lg fa-fw"></i> <%= _.capitalize(lang.equipments) %></h4>
+
+				<form class="form-inline col-sm-6" role="form">
+					<div class="form-group pull-right">
+						<input type="search" id="equipmentsSearch" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off" />
+					</div>
+				</form>
+			</div>
+		
+			<div class="panel-group-body">
+				<ul id="bookablesEquipments" class="nav nav-pills nav-stacked nav-stacked-4">
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>mon matos 1</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>mon matos 2</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>mon matos 3</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>mon matos 4</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>mon matos 5</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>mon matos 6</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>mon matos 7</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>mon matos 8</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>mon matos 9</a></li>
+					<li><a href="#"><i class="fa fa-circle-o fa-lg"></i>mon matos 10</a></li>
+				</ul>
+			</div>
+		</div>
+
+	  
+	</div>
+
+</div>
