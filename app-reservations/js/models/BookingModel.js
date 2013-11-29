@@ -1,16 +1,14 @@
 define([
 	'app',
+	'appHelpers',
 	
 	'genericModel',
 	'bookingModel',
 	'claimerModel',
-	'userModel',
 	'bookingLinesCollection',
-	'moment',
-	'moment-timezone',
-	'moment-timezone-data',
 
-], function(app, GenericModel, BookingModel, ClaimerModel, UserModel, BookingLinesCollection, moment){
+
+], function(app, AppHelpers, GenericModel, BookingModel, ClaimerModel, BookingLinesCollection){
 
 	'use strict';
 	
@@ -34,6 +32,7 @@ define([
 			}
 			
 		],
+	
 	
 		getId: function(){
 			return this.get('id');
@@ -202,32 +201,17 @@ define([
 			return this.get('is_template');
 		},
 		
-//		getStartDate: function(type){
-//			if(this.get('checkin') != false){
-//				var checkinDate = moment(this.get('checkin')).tz(UserModel.getContext().tz)
-//				checkinDate.add('minutes',-checkinDate.zone());
-//				switch(type){
-//					case 'human':	
-//						return checkinDate.format('LLL');
-//					break;
-//					default:
-//						return checkinDate;
-//					break;
-//				}
-//			}
-//			else{
-//				return '';
-//			}
-//		},	
-		
 		getStartDate: function(type){
 			if(this.get('checkin') != false){
+				var checkinDate = AppHelpers.convertDateToTz(this.get('checkin'));
 				switch(type){
 					case 'human':	
-						return moment.utc(this.get('checkin')).local().format('LLL');
+						return checkinDate.format('LLL');
 					break;
+					case 'fromNow': 
+						return checkinDate.fromNow();
 					default:
-						return this.get('checkin');
+						return checkinDate;
 					break;
 				}
 			}
@@ -243,32 +227,17 @@ define([
 			}
 		},
 		
-//		getEndDate: function(type){
-//			if(this.get('checkout') != false){
-//				var checkoutDate = moment(this.get('checkout')).tz(UserModel.getContext().tz)
-//				checkoutDate.add('minutes',-checkoutDate.zone());
-//				switch(type){
-//					case 'human':	
-//						return checkoutDate.format('LLL');
-//					break;
-//					default:
-//						return checkoutDate;
-//					break;
-//				}
-//			}
-//			else{
-//				return '';
-//			}
-//		},
-		
 		getEndDate: function(type){
 			if(this.get('checkout') != false){
+				var checkoutDate = AppHelpers.convertDateToTz(this.get('checkout'));
 				switch(type){
 					case 'human':	
-						return moment.utc(this.get('checkout')).local().format('LLL');
+						return checkoutDate.format('LLL');
+					case 'fromNow': 
+						return checkoutDate.fromNow();
 					break;
 					default:
-						return this.get('checkout');
+						return checkoutDate;
 					break;
 				}
 			}
@@ -286,9 +255,12 @@ define([
 		
 		getCreateDate: function(type){
 			if(this.get('create_date') != false){
+				var createDate = AppHelpers.convertDateToTz(this.get('checkout'));
 				switch(type){
 					case 'human':	
-						return moment(this.get('create_date')).format('LL');
+						return createDate.format('LLL');
+					case 'fromNow': 
+						return createDate.fromNow();
 					break;
 					default:
 						return this.get('create_date');
