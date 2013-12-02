@@ -211,7 +211,7 @@ define([
 					case 'fromNow': 
 						return checkinDate.fromNow();
 					default:
-						return checkinDate;
+						return this.get('checkin');
 					break;
 				}
 			}
@@ -237,7 +237,7 @@ define([
 						return checkoutDate.fromNow();
 					break;
 					default:
-						return checkoutDate;
+						return this.get('checkout');
 					break;
 				}
 			}
