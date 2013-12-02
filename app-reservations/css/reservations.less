@@ -1,7 +1,25 @@
+#bookablesPlaces, #bookablesEquipments{
 
- 
- @-webkit-keyframes beat {
-    0% {-webkit-transform: scale(1);}
-    50% {-webkit-transform: scale(1.3); color: red;}
-    100% {-webkit-transform: scale(1); }
+	li{
+
+		a{
+			.text-default();
+
+			i{
+				margin-right: 10px;
+			}
+		}
+	}
+	> .selected{
+	
+		a{
+			.text-primary();
+			font-weight: bolder;
+
+			i{
+				.animation(pulse 0.4s linear 0s 1 normal);
+			}
+
+		}
+	}
 }

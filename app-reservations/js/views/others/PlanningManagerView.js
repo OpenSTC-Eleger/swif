@@ -1,7 +1,9 @@
 define([
-	'app'
+	'app',
 
-], function(app){
+	'sideBarPlanningSelectResourcesView'
+
+], function(app, SideBarPlanningSelectResourcesView){
 
 	'use strict';
 
@@ -56,6 +58,9 @@ define([
 				$(self.el).html(template);
 
 
+				app.views.SideBarPlanningSelectResourcesView = new SideBarPlanningSelectResourcesView({
+					el : '#sideBarselectResource'
+				});
 
 			});
 

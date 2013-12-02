@@ -1,0 +1,15 @@
+// nav-stacked Limit Height display item //
+// nav-stacked-1 , nav-stacked-2, nav-stacked-3...
+
+.calc-list-display-items(@nb) when (@nb > 0) and (@nb < 11){
+	.nav-stacked{
+		&-@{nb}{
+			max-height: (40px * @nb + (2*@nb));
+			overflow-y: scroll;
+		}
+	}
+	.calc-list-display-items(@nb+1);
+}
+
+// Kickstart //
+.calc-list-display-items(1);

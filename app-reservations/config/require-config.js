@@ -22,23 +22,31 @@ requirejs.config({
 		bookableModel		             	: 'app-reservations/js/models/BookableModel',
 
 
-		// Views //
+		
+		// Views Lists //
 		bookingsListView            		: 'app-reservations/js/views/lists/BookingsListView',
 		formBookingView						: 'app-reservations/js/views/forms/FormBookingView',
 		itemFormBookingLineView				: 'app-reservations/js/views/forms/ItemFormBookingLineView',
 		formRecurrenceView					: 'app-reservations/js/views/forms/FormRecurrenceView',
 		itemFormBookingOccurrenceView		: 'app-reservations/js/views/forms/ItemFormBookingOccurrenceView',
 		planningManagerView  				: 'app-reservations/js/views/others/PlanningManagerView',
+	
+
+		// Views Others //
+		planningManagerView                 : 'app-reservations/js/views/others/PlanningManagerView',
+		sideBarPlanningSelectResourcesView  : 'app-reservations/js/views/others/SideBarPlanningSelectResourcesView',
+
 		
-		// Items //
+		// Views Items //
 		itemBookingView            			: 'app-reservations/js/views/items/ItemBookingView',
 		itemBookingOccurrencesListView      : 'app-reservations/js/views/items/ItemBookingOccurrencesListView',
 		itemBookingOccurrenceView           : 'app-reservations/js/views/items/ItemBookingOccurrenceView',
 		
-		// Modals //
+		// Views Modals //
 		modalUpdateBookingView          	: 'app-reservations/js/views/modals/ModalUpdateBookingView',
-		modalUpdateBookingsListView         : 'app-reservations/js/views/modals/ModalUpdateBookingsListView',		
-		
+		modalUpdateBookingsListView         : 'app-reservations/js/views/modals/ModalUpdateBookingsListView',
+
+	
 	}
 
 });
