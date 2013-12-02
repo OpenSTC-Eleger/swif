@@ -86,22 +86,22 @@ define([
 
 				if(!loader){
 					// Advance Select List View //
-					app.views.advancedSelectBoxPlaceTypeView = new AdvancedSelectBoxView({el: $("#placeType"), collection: PlaceTypesCollection.prototype })
+					app.views.advancedSelectBoxPlaceTypeView = new AdvancedSelectBoxView({el: $("#placeType"), collection: PlaceTypesCollection.prototype });
 					app.views.advancedSelectBoxPlaceTypeView.render();
 
-					app.views.advancedSelectBoxPlaceParentView = new AdvancedSelectBoxView({el: $("#placeParentPlace"), collection: PlacesCollection.prototype })
+					app.views.advancedSelectBoxPlaceParentView = new AdvancedSelectBoxView({el: $("#placeParentPlace"), collection: PlacesCollection.prototype });
 					if(!self.model.isNew()){
 						app.views.advancedSelectBoxPlaceParentView.setSearchParam({ field : 'id', operator : '!=', value : self.model.getId() }, true);
 					}
 					app.views.advancedSelectBoxPlaceParentView.render();
 
-					app.views.advancedSelectBoxPlaceServices = new AdvancedSelectBoxView({el: $("#placeServices"), collection: ClaimersServicesCollection.prototype })
+					app.views.advancedSelectBoxPlaceServices = new AdvancedSelectBoxView({el: $("#placeServices"), collection: ClaimersServicesCollection.prototype });
 					app.views.advancedSelectBoxPlaceServices.render();
 					
-					app.views.advancedSelectBoxPlaceBookingServices = new AdvancedSelectBoxView({el: $("#placeBookingServices"), collection: ClaimersServicesCollection.prototype })
+					app.views.advancedSelectBoxPlaceBookingServices = new AdvancedSelectBoxView({el: $("#placeBookingServices"), collection: ClaimersServicesCollection.prototype });
 					app.views.advancedSelectBoxPlaceBookingServices.render();
 					
-					app.views.advancedSelectBoxPlaceBookingClaimers = new AdvancedSelectBoxView({el: $("#placeBookingClaimers"), collection: ClaimersTypesCollection.prototype })
+					app.views.advancedSelectBoxPlaceBookingClaimers = new AdvancedSelectBoxView({el: $("#placeBookingClaimers"), collection: ClaimersTypesCollection.prototype });
 					app.views.advancedSelectBoxPlaceBookingClaimers.render();
 				}
 

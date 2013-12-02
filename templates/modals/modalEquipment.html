@@ -67,7 +67,18 @@
 								<span class="help-block" id="code-error"></span>
 							</div>
 						</div>
-
+						
+						<!-- Equipment Qty in stock -->
+						<div class="form-group">
+							<label for="equipmentQtyAvailable" class="control-label col-sm-3"><%= _.capitalize(lang.stockQty) %>:</label>
+							
+							<div class="col-sm-9">		
+								<!-- Equipment code -->
+								<input required type="number" min="0" id="equipmentQtyAvailable" class="form-control" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getAvailableQty()) %>"
+								<span class="help-block" id="code-error"></span>
+							</div>
+						</div>
+												
 						<!-- Equipment Services authorized for internal use -->
 						<div class="form-group">
 							<div class="control-label col-sm-3">
@@ -86,6 +97,38 @@
 									data-selected-value='<%= JSON.stringify(equipment.getServices('json')) %>'
 								<% } } %>
 
+								/>
+							</div>
+						</div>
+						
+						<!-- Equipment internal_booking (Departments) -->
+						<div class="form-group">
+							<label class="col-sm-3 control-label">
+								<input type="checkbox" id="equipmentInternalBooking" <%= !_.isNull(equipment.getId())  && equipment.getInternalBooking() ? 'checked' : ''%> value="1" class="checkbox-inline"><%= _.capitalize(lang.internal_booking) %>: </input>
+							</label>
+							<div class="col-sm-9">
+								<input id="equipmentBookingServices" class="select2" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="true" 
+		
+									<% if(!_.isNull(equipment.getId())){
+										if(!_.isEmpty(equipment.getBookingServices())) { %>
+										data-selected-value='<%= JSON.stringify(equipment.getBookingServices('json')) %>'
+									<% } } %>
+								/>
+							</div>
+						</div>
+						
+						<!-- Equipment external booking (Partners) -->
+						<div class="form-group">
+							<label class="col-sm-3 control-label">
+								<input type="checkbox" id="equipmentExternalBooking" value="1" <%= !_.isNull(equipment.getId())  && equipment.getExternalBooking() ? 'checked' : ''%> class="checkbox-inline"><%= _.capitalize(lang.external_booking) %>: </input>
+							</label>
+							<div class="col-sm-9">
+								<input id="equipmentBookingClaimers" class="select2" data-placeholder="<%= lang.actions.selectAClaimerType %>" data-multiple="true" 
+		
+									<% if(!_.isNull(equipment.getId())){
+										if(!_.isEmpty(equipment.getBookingClaimers())) { %>
+										data-selected-value='<%= JSON.stringify(equipment.getBookingClaimers('json')) %>'
+									<% } } %>
 								/>
 							</div>
 						</div>
