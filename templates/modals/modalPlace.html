@@ -82,7 +82,38 @@
 						/>
 					</div>
 				</div>
+				
+				<!-- Place internal_booking (Departments) -->
+				<div class="form-group">
+					<label class="col-sm-3 control-label">
+						<input type="checkbox" id="placeInternalBooking" <%= !_.isNull(place.getId())  && place.getInternalBooking() ? 'checked' : ''%> value="1" class="checkbox-inline"><%= _.capitalize(lang.internal_booking) %>: </input>
+					</label>
+					<div class="col-sm-9">
+						<input id="placeBookingServices" class="select2" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="true" 
 
+							<% if(!_.isNull(place.getId())){
+								if(!_.isEmpty(place.getBookingServices())) { %>
+								data-selected-value='<%= JSON.stringify(place.getBookingServices('json')) %>'
+							<% } } %>
+						/>
+					</div>
+				</div>
+				
+				<!-- Place external booking (Partners) -->
+				<div class="form-group">
+					<label class="col-sm-3 control-label">
+						<input type="checkbox" id="placeExternalBooking" value="1" <%= !_.isNull(place.getId())  && place.getExternalBooking() ? 'checked' : ''%> class="checkbox-inline"><%= _.capitalize(lang.external_booking) %>: </input>
+					</label>
+					<div class="col-sm-9">
+						<input id="placeBookingClaimers" class="select2" data-placeholder="<%= lang.actions.selectAClaimerType %>" data-multiple="true" 
+
+							<% if(!_.isNull(place.getId())){
+								if(!_.isEmpty(place.getBookingClaimers())) { %>
+								data-selected-value='<%= JSON.stringify(place.getBookingClaimers('json')) %>'
+							<% } } %>
+						/>
+					</div>
+				</div>
 
 				<fieldset>
 					<legend><%= _.capitalize(lang.property) %></legend>

@@ -15,7 +15,7 @@ define([
 	var PlaceModel = GenericModel.extend({
 
 
-		fields     : ['id', 'name', 'complete_name', 'type', 'service_names', 'site_parent_id', 'width', 'length', 'surface'],
+		fields     : ['id', 'name', 'complete_name', 'type', 'service_names', 'site_parent_id', 'width', 'length', 'surface','internal_booking','external_booking','service_bookable_ids' ,'service_bookable_names','partner_type_bookable_ids', 'partner_type_bookable_names'],
 
 		urlRoot    : '/api/openstc/sites',
 
@@ -91,7 +91,82 @@ define([
 		setServices : function(value, silent) {
 			this.set({ service_ids : [[6, 0, value]] }, {silent: silent});
 		},
+		
+		getInternalBooking: function(){
+			return this.get('internal_booking');
+		},
+		
+		setInternalBooking: function(val, silent){
+			this.set({internal_booking: val},{silent:silent});
+		},
+		
+		
+		getBookingServices : function(type){
 
+			var placeBookingServices = [];
+
+			_.each(this.get('service_bookable_names'), function(s){
+				switch (type){
+					case 'id': 
+						placeBookingServices.push(s[0]);
+					break;
+					case 'json': 
+						placeBookingServices.push({id: s[0], name: s[1]});
+					break;
+					default:
+						placeBookingServices.push(s[1]);
+				}
+			});
+
+			if(type == 'string'){
+				return _.toSentence(placeBookingServices, ', ', ' '+app.lang.and+' ')
+			}
+			else{
+				return placeBookingServices;
+			}
+		},
+				
+		setBookingServices: function(val, silent){
+			this.set({service_bookable_ids: [[6,0,val]]},{silent:silent});
+		},
+
+		getExternalBooking: function(){
+			return this.get('external_booking');
+		},
+		
+		setExternalBooking: function(val, silent){
+			this.set({external_booking: val},{silent:silent});
+		},
+		
+		getBookingClaimers : function(type){
+
+			var placeBookingClaimers = [];
+
+			_.each(this.get('partner_type_bookable_names'), function(s){
+				switch (type){
+					case 'id': 
+						placeBookingClaimers.push(s[0]);
+					break;
+					case 'json': 
+						placeBookingClaimers.push({id: s[0], name: s[1]});
+					break;
+					default:
+						placeBookingClaimers.push(s[1]);
+				}
+			});
+
+			if(type == 'string'){
+				return _.toSentence(placeBookingClaimers, ', ', ' '+app.lang.and+' ')
+			}
+			else{
+				return placeBookingClaimers;
+			}
+		},
+		
+		setBookingClaimers: function(val, silent){
+			this.set({partner_type_bookable_ids: [[6,0,val]]},{silent:silent});
+		},
+		
 		getType : function(type) {
 			switch (type){ 
 				case 'id': 

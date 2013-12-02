@@ -70,6 +70,8 @@
 	"manager"				: "chef de service",
 	"width" 				: "largeur",
 	"length" 				: "longueur",
+	"internal_booking"		: "Réservable en interne",
+	"external_booking"		: "Réservable par des tiers",
 	"reason" 				: "motif",
 	"horsepower" 			: "en chevaux fiscaux",
 	"notKnown"				: "non renseigné",
