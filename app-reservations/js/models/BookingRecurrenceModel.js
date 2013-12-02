@@ -361,8 +361,8 @@ define([
 			return {
 				recur_length_type: this.get('recur_length_type'),
 				recur_month_absolute: this.getMonthday(),
-				recur_month_relative_day: this.getMonthRelativePosition(),
-				recur_month_relative_weight: this.getMonthWeekday(),
+				recur_month_relative_weight: this.getMonthRelativePosition(),
+				recur_month_relative_day: this.getMonthWeekday(),
 				recur_month_type: this.get('recur_month_type'),
 				recur_occurrence_nb: this.getCount(),
 				recur_periodicity: this.getWeight(),
@@ -425,7 +425,7 @@ define([
 			this.template = null;
 			this.occurrences = new BookingsCollection();
 			this.occurrencesToRemove = new BookingsCollection();
-			if(!this.isNew()){
+			if(this.isNew()){
 				var default_values = {
 					date_end:false,
 					recur_occurrence_nb:1,
