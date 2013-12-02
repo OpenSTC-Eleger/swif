@@ -22,8 +22,11 @@ define([
 	
 		// The DOM events //
 		events: {
-			'click #bookablesPlaces a'     : 'selectPlaces',
-			'click #bookablesEquipments a' : 'selectEquipments',
+			'mouseenter #bookablesPlaces a, #bookablesEquipments a' : 'highlightResource',
+			'mouseleave #bookablesPlaces a, #bookablesEquipments a' : 'mutedResource',
+
+			'click #bookablesPlaces a'      : 'selectPlace',
+			'click #bookablesEquipments a'  : 'selectEquipments',
 		}, 
 	
 	
@@ -66,22 +69,76 @@ define([
 
 
 
-		selectPlaces: function(e){
+		/** When a places is selected/unselected
+		*/
+		selectPlace: function(e){
 			e.preventDefault();
 
-			var row = $(e.target).parent('li');
-
-			$(e.target).children('i').toggleClass('fa-circle-o').toggleClass('fa-circle');
-
-
-			row.toggleClass('active');
+			this.toggleResource(e);
 		},
 
 
 
+		/** When an equipments is selected/unselected
+		*/
 		selectEquipments: function(e){
 			e.preventDefault();
 
+			this.toggleResource(e);
+
+		},
+
+
+
+
+		/** When the mouse enter a resource
+		*/
+		highlightResource: function(e){
+			var link = $(e.target);
+			var row = link.parent('li');
+
+			if(!row.hasClass('selected')){
+				var icon = link.children('i.fa');
+
+				var color = '#' + link.parent('li').data('color');
+				icon.css({color: color});
+			}
+
+		},
+
+		/** When the mouse leave a resource
+		*/
+		mutedResource: function(e){
+			var link = $(e.target);
+			var row = link.parent('li');
+
+			if(!row.hasClass('selected')){
+
+				var icon = link.children('i.fa');
+				icon.css({color: 'inherit'});
+			}
+		},
+
+
+		/** Make element selected
+		*/
+		toggleResource: function(e){
+			var link = $(e.target);
+			var row = link.parent('li');
+			var icon = link.children('i.fa');
+
+			row.toggleClass('selected');
+
+			// Get the color of the Places //
+			icon.toggleClass('fa-circle-o').toggleClass('fa-circle');
+
+			if(row.hasClass('selected')){
+				var color = '#' + row.data('color');
+				icon.css({color: color});
+			}
+			else{
+				icon.css({color: 'inherit'});
+			}
 		}
 
 
@@ -90,4 +147,5 @@ define([
 	});
 
 return SideBarPlanningSelectResourcesView;
+
 })

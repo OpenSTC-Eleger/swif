@@ -3,19 +3,23 @@
 	li{
 
 		a{
-			.text-muted;
+			.text-default();
 
 			i{
-				margin-right: 10px;	
+				margin-right: 10px;
 			}
 		}
-		&.active{
-			color: white;
-		}
 	}
-	> .active{
+	> .selected{
+	
 		a{
-			color: white;
+			.text-primary();
+			font-weight: bolder;
+
+			i{
+				.animation(pulse 0.4s linear 0s 1 normal);
+			}
+
 		}
 	}
 }
