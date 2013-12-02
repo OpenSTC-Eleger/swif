@@ -1,0 +1,22 @@
+<!-- Checkin-->
+<td>
+	<%= booking.getStartDate('human')%>
+</td>
+
+<!-- Checkout-->
+<td>
+	<%= booking.getEndDate('human')%>
+</td>
+
+<!-- Amount (if pricing)-->
+<td>
+	<%= booking.getAmount()%>
+</td>
+
+<!-- Available Y/N-->
+<td>
+	<i class="fa <%= booking.getAllDispo() ? bookingStat.confirm.icon: bookingStat.cancel.icon%>" />
+	<a href="#" class="removeLine" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">
+		<i class="fa fa-trash-o fa-lg">&nbsp;</i>
+	</a>	
+</td>

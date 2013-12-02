@@ -27,7 +27,10 @@ requirejs.config({
 		bookingsListView            		: 'app-reservations/js/views/lists/BookingsListView',
 		formBookingView						: 'app-reservations/js/views/forms/FormBookingView',
 		itemFormBookingLineView				: 'app-reservations/js/views/forms/ItemFormBookingLineView',
-		
+		formRecurrenceView					: 'app-reservations/js/views/forms/FormRecurrenceView',
+		itemFormBookingOccurrenceView		: 'app-reservations/js/views/forms/ItemFormBookingOccurrenceView',
+		planningManagerView  				: 'app-reservations/js/views/others/PlanningManagerView',
+	
 
 		// Views Others //
 		planningManagerView                 : 'app-reservations/js/views/others/PlanningManagerView',

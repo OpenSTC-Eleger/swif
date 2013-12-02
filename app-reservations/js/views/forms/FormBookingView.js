@@ -4,12 +4,14 @@ define(['app',
         
         'bookingModel',
         'bookingLineModel',
+        'bookingRecurrenceModel',
         'bookingLinesCollection',
         'bookablesCollection',
         'claimersCollection',
         'claimersContactsCollection',
         
         'itemFormBookingLineView',
+        'formRecurrenceView',
         'advancedSelectBoxView',
         'moment',
         'moment-timezone',
@@ -17,7 +19,7 @@ define(['app',
         'bsTimepicker',
         'bsDatepicker'
 
-], function (app, AppHelpers, BookingModel, BookingLineModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, ItemFormBookingLineView, AdvancedSelectBoxView, moment) {
+], function (app, AppHelpers, BookingModel, BookingLineModel, BookingRecurrenceModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, ItemFormBookingLineView, FormRecurrenceView, AdvancedSelectBoxView, moment) {
 
     'use strict';
 
@@ -36,14 +38,32 @@ define(['app',
 	
 		// The DOM events //
 		events: {
-			'change #bookingPartner'		: 'changeBookingPartner',
-			'change #bookingContact'		: 'changeBookingContact',
-			'change #bookingAddBookable'	: 'changeBookingAddBookable',
-			'change #bookingCheckin'		: 'changeBookingCheckin',
-			'change #bookingCheckout'		: 'changeBookingCheckout',
-			'change #bookingCheckinHour'	: 'changeBookingCheckin',
-			'change #bookingCheckoutHour'	: 'changeBookingCheckout',
-			'submit #formSaveBooking'		: 'saveBookingForm',
+			'change #bookingPartner'			: 'changeBookingPartner',
+			'change #bookingContact'			: 'changeBookingContact',
+			'change #bookingAddBookable'		: 'changeBookingAddBookable',
+			'change #bookingCheckin'			: 'changeBookingCheckin',
+			'change #bookingCheckout'			: 'changeBookingCheckout',
+			'change #bookingCheckinHour'		: 'changeBookingCheckin',
+			'change #bookingCheckoutHour'		: 'changeBookingCheckout',
+			
+			//Recurrence setting events
+			'change input[name="periodicity"]'	: 'changePeriodicity',
+			'change input[name="type_monthly"]'	: 'changeTypeMonthly',
+			'change input[name="recur_type_length"]': 'changeTypeLength',
+			'change #recur_length_count'		: 'changeCount',
+			'change #recur_length_until'		: 'changeUntil',
+			'change input[name="weekdays"]'		: 'changeWeekdays',
+			'change #recur_daily_weight'		: 'changeDailyWeight',
+			'change #recur_weekly_weight'		: 'changeWeeklyWeight',
+			'change #recur_monthly_weight'		: 'changeMonthlyWeight',
+			'change #recur_monthly_monthday'	: 'changeMonthday',
+			'change #recur_monthly_relative_position': 'changeRelativePosition',
+			'change #recur_monthly_weekday'		: 'changeMonthWeekday',
+			
+			//Form Buttons
+			'submit #formSaveBooking'			: 'saveBookingForm',
+			'click #getRecurrenceDates'			: 'getRecurrenceDates',
+			'click #addRecurrence'				: 'addRecurrence'
 		},
 	
 		/** View Initialization
@@ -63,10 +83,23 @@ define(['app',
 				this.model = new BookingModel({id:this.options.id});
 				this.model.fetch({silent: true}).done(function(){
 					self.render(true);
+					
+					//fetch and render lines
 					self.model.fetchLines()
 					.done(function(){
 						self.renderLines();
 					});
+					
+					//fetch and render recurrence if exists
+					if(self.model.get('is_template') && self.model.getRecurrence() != false){
+						var recurrence = new BookingRecurrenceModel({id:self.model.getRecurrence('id')});
+						recurrence.setTemplate(self.model);
+						recurrence.fetch()
+						.done(function(){
+							var recurrenceView = new FormRecurrenceView({model:recurrence});
+							$(self.el).find('#recurrence').html(recurrenceView.render().el);
+						});
+					}
 				});
 			}
 	
@@ -97,7 +130,6 @@ define(['app',
 				var endDate = '';
 				var endHour = '';
 				if(!self.model.isNew()){
-					var tz = app.models.user.getContext().tz;
 					var checkin = moment.utc((self.model.getStartDate())).local();
 					var checkout = moment.utc((self.model.getEndDate())).local();
 					
@@ -179,27 +211,29 @@ define(['app',
 	    	e.preventDefault();
 	    	//create lineModel and initialize values
 	    	var bookable_id = app.views.selectListAddBookableView.getSelectedItem();
-	    	var bookable_name = app.views.selectListAddBookableView.getSelectedText();
-	    	var lineModel = new BookingLineModel({
-	    		reserve_product:[bookable_id, bookable_name],
-				pricelist_amount:0});
-	    	lineModel.setQuantity(1);
-	    	this.model.addLine(lineModel);
-	    	
-	    	//perform manually updates to lineModel to get pricing, dispo, ...
-	    	var partner_id = this.model.getClaimer('id');
-	    	var checkin = this.model.getStartDate();
-	    	var checkout = this.model.getEndDate();
-	    	$.when(lineModel.fetchAvailableQtity(checkin,checkout),lineModel.fetchPricing(partner_id,checkin,checkout)).always(function(){
-	        	var lineView = new ItemFormBookingLineView({model:lineModel});
-	        	//self.lineViews.push(lineView);
-	        	$(self.el).find('#bookingLines').append(lineView.render().el);
-	    	})
-	    	.fail(function(e){
-	    		console.log(e);
-	    	});
-	    	//finally, reset selection to be able to add another bookable to booking
-	    	app.views.selectListAddBookableView.reset();
+	    	if(bookable_id != ''){
+		    	var bookable_name = app.views.selectListAddBookableView.getSelectedText();
+		    	var lineModel = new BookingLineModel({
+		    		reserve_product:[bookable_id, bookable_name],
+					pricelist_amount:0});
+		    	lineModel.setQuantity(1);
+		    	this.model.addLine(lineModel);
+		    	
+		    	//perform manually updates to lineModel to get pricing, dispo, ...
+		    	var partner_id = this.model.getClaimer('id');
+		    	var checkin = this.model.getStartDate();
+		    	var checkout = this.model.getEndDate();
+		    	$.when(lineModel.fetchAvailableQtity(checkin,checkout),lineModel.fetchPricing(partner_id,checkin,checkout)).always(function(){
+		        	var lineView = new ItemFormBookingLineView({model:lineModel});
+		        	//self.lineViews.push(lineView);
+		        	$(self.el).find('#bookingLines').append(lineView.render().el);
+		    	})
+		    	.fail(function(e){
+		    		console.log(e);
+		    	});
+		    	//finally, reset selection to be able to add another bookable to booking
+		    	app.views.selectListAddBookableView.reset();
+	    	}
 	    },
 	    
 	    changeBookingCheckin: function(e){
@@ -222,18 +256,30 @@ define(['app',
 	    	}
 	    },
 	
+	    changePeriodicity: function(e){
+	    	$('input[name="periodicity"]').val();
+	    },
+	    
 	    saveBookingForm: function(e){
 	    	e.preventDefault();
 	    	this.model.setName($("#bookingName").val());
 	    	this.model.saveToBackend()
 	    	.done(function(){
-	    		
+	    		//TODO: redirect to list ?
 	    	})
 	    	.fail(function(e){
 	    		console.log(e);
 	    	});
-	    }
-	    
-	});
+	    },
+	    addRecurrence: function(e){
+			e.preventDefault();
+			var recurrenceModel = new BookingRecurrenceModel();
+			recurrenceModel.setStartDate(this.model.getStartDate());
+			recurrenceModel.setTemplate(this.model);
+			var recurrenceView = new FormRecurrenceView({model:recurrenceModel});
+			$(this.el).find('#recurrence').html(recurrenceView.render().el);
+		}
+ 
+	});	
 	return FormBookingView;
 })

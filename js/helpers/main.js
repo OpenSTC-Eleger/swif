@@ -1,8 +1,9 @@
 define('appHelpers', [
 
-	'app'
+	'app',
+	'userModel'
 
-], function(app){
+], function(app, UserModel){
 
 
 	/******************************************
@@ -193,6 +194,11 @@ define('appHelpers', [
 			$('#'+fieldId).html(app.lang.errorMessages[message]);
 			$('#'+fieldId).parents('.form-group').addClass('has-error');
 		},
+		
+		convertDateToTz : function(date) {
+			var convertedDate = moment(date).tz(app.models.user.getContext().tz)
+			return convertedDate.add('minutes',-convertedDate.zone());
+		}
 
 	}
 

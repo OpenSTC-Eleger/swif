@@ -1,11 +1,14 @@
 define([
 	'app',
+	'appHelpers',
+	
 	'genericModel',
 	'bookingModel',
 	'claimerModel',
-	'bookingLinesCollection'
+	'bookingLinesCollection',
 
-], function(app, GenericModel, BookingModel, ClaimerModel, BookingLinesCollection){
+
+], function(app, AppHelpers, GenericModel, BookingModel, ClaimerModel, BookingLinesCollection){
 
 	'use strict';
 	
@@ -16,7 +19,7 @@ define([
 		
 		urlRoot: "/api/openresa/bookings",
 		
-		fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'partner_phone', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'note', 'pricelist_id'],	
+		fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'pricelist_id', 'confirm_note', 'cancel_note', 'done_note'],	
 	
 		searchable_fields: [
 			{
@@ -29,6 +32,7 @@ define([
 			}
 			
 		],
+	
 	
 		getId: function(){
 			return this.get('id');
@@ -78,14 +82,17 @@ define([
 			if(type == 'string'){
 				return _.toSentence(bookingResourceNames, ', ', ' '+app.lang.and+' ')
 			}
+			else if(type == 'newline'){	
+				return _.join(":",_.toSentence(bookingResourceNames, ':\n\r ', ':\n\r '), " ");
+			}
 			else{
 				return bookingResourceNames;
 			}
 		},
 		
 		getResourceQuantities : function(){
-			if( this.getState()=='closed' || 
-					this.getState()=='refused') return "";
+			if( this.getState()=='done' || 
+					this.getState()=='cancel') return "";
 		
 			var bookingResourceQuantities = [];
 			
@@ -102,25 +109,55 @@ define([
 		},
 		
 		getInformations: function(){
-			return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate() + (this.getNote()!=false ? " : " + this.getNote() : "");
+			switch (this.getState()){ 
+				case 'confirm': 
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate() + (this.getConfirmNote()!=false ? " : " + this.getConfirmNote() : "");
+				break;
+				case 'cancel':
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate() + (this.getCancelNote()!=false ? " : " + this.getCancelNote() : "");
+				break;
+				case 'done':
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate() + (this.getDoneNote()!=false ? " : " + this.getDoneNote() : "");
+				break;
+				default: 
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate();
+			}
+			return ;
 		},
 		
-		getNote: function(){
-			return this.get('note');
+		getConfirmNote: function(){
+			return this.get('confirm_note');
+		},
+		
+		getCancelNote: function(){
+			return this.get('cancel_note');
+		},
+		
+		getDoneNote: function(){
+			return this.get('done_note');
 		},
 		
 		getRecurrence: function(type){
-			switch(type){
-				case 'id': 
-					return this.get('recurrence_id')[0];
-				break;
-				default:
-					return _.capitalize(this.get('recurrence_id')[1]);
-			}	
+			if(this.get('recurrence_id') != false){
+				switch(type){
+					case 'id': 
+						return this.get('recurrence_id')[0];
+					break;
+					default:
+						return _.capitalize(this.get('recurrence_id')[1]);
+				}
+			}
+			else{
+				return false;
+			}
+		},
+		
+		setRecurrenceId: function(val){
+			this.set({recurrence_id:val}, {silent:true});
 		},
 		
 		getPricelist: function(type){
-			if(this.get('pricelist_id')){
+			if(this.get('pricelist_id') != false){
 				switch(type){
 					case 'id': 
 						return this.get('pricelist_id')[0];
@@ -138,6 +175,24 @@ define([
 			this.set({pricelist_id:id});
 		},
 		
+		getAmount: function(){
+			var ret = 0.0;
+			_.each(this.lines.models, function(line,i){
+				ret += line.getPricing();
+			});
+			return ret;
+		},
+		
+		getAllDispo: function(){
+			var ret = true;
+			_.each(this.lines.models, function(line,i){
+				if(!line.getAvailable()){
+					ret = false;
+				}
+			});
+			return ret;
+		},
+		
 		isAllDispo: function(){
 			return this.get('all_dispo');	
 		},
@@ -148,12 +203,15 @@ define([
 		
 		getStartDate: function(type){
 			if(this.get('checkin') != false){
+				var checkinDate = AppHelpers.convertDateToTz(this.get('checkin'));
 				switch(type){
 					case 'human':	
-						return moment(this.get('checkin')).format('LL');
+						return checkinDate.format('LLL');
 					break;
+					case 'fromNow': 
+						return checkinDate.fromNow();
 					default:
-						return this.get('checkin');
+						return checkinDate;
 					break;
 				}
 			}
@@ -171,12 +229,15 @@ define([
 		
 		getEndDate: function(type){
 			if(this.get('checkout') != false){
+				var checkoutDate = AppHelpers.convertDateToTz(this.get('checkout'));
 				switch(type){
 					case 'human':	
-						return moment(this.get('checkout')).format('LL');
+						return checkoutDate.format('LLL');
+					case 'fromNow': 
+						return checkoutDate.fromNow();
 					break;
 					default:
-						return this.get('checkout');
+						return checkoutDate;
 					break;
 				}
 			}
@@ -194,9 +255,12 @@ define([
 		
 		getCreateDate: function(type){
 			if(this.get('create_date') != false){
+				var createDate = AppHelpers.convertDateToTz(this.get('create_date'));
 				switch(type){
 					case 'human':	
-						return moment(this.get('create_date')).format('LL');
+						return createDate.format('LLL');
+					case 'fromNow': 
+						return createDate.fromNow();
 					break;
 					default:
 						return this.get('create_date');
@@ -271,78 +335,32 @@ define([
 			this.set({ partner_type : value }, {silent: silent});
 		},
 		
-		//method to add a bookingLine to collection on this model
-		addLine: function(lineModel){
-			this.lines.add(lineModel);
-			lineModel.setParentBookingModel(this);
-		},
-		
-		fetchLines: function(){
+		getCloneVals: function(){
 			var self = this;
-			return this.lines.fetch({data:{filters:{0:{field:'line_id.id',operator:'=',value:this.getId()}}}}).done(function(){
-				self.lines.each(function(lineModel){
-					lineModel.setParentBookingModel(self);
-				});
+			var ret = {};
+			var toClone = ['partner_invoice_id','partner_order_id','partner_shipping_id','partner_id','openstc_partner_id','pricelist_id','name','checkin','checkout'];
+			_.each(toClone,function(field,i){
+				ret[field] = self.get(field);
 			});
+			return ret;
 		},
 		
-		//method to perform updates on bookingLines (pricing, dispo, ...) when some fields value change
-		updateLinesData: function(){
-			var checkin = this.getStartDate();
-			var checkout = this.getEndDate();
-			var partner_id = this.getClaimer('id');
-			if(checkin != '' && checkout != ''){
-				_.each(this.lines.models, function(lineModel,i){
-					lineModel.fetchAvailableQtity(checkin,checkout);
-					if(partner_id > 0){
-						lineModel.fetchPricing(partner_id, checkin, checkout);
-					}
-				});
-				
+		getSaveVals: function(){
+			return {
+				partner_invoice_id:this.getClaimerContact('id'),
+				partner_order_id:this.getClaimerContact('id'),
+				partner_shipping_id: this.getClaimerContact('id'),
+				partner_id: this.getClaimer('id'),
+				openstc_partner_id: this.getClaimer('id'),
+				pricelist_id: this.getPricelist('id'),
+				name: this.getName(),
+				checkin:this.getStartDate(),
+				checkout:this.getEndDate()
 			}
-		},
-		
-		//used for OpenERP to format many2one data to be writable in OpenERP
-		saveToBackend: function(){
-			var self = this;
-			var vals = {
-					partner_invoice_id:this.getClaimerContact('id'),
-					partner_order_id:this.getClaimerContact('id'),
-					partner_shipping_id: this.getClaimerContact('id'),
-					partner_id: this.getClaimer('id'),
-					openstc_partner_id: this.getClaimer('id'),
-					pricelist_id: this.getPricelist('id'),
-					name: this.getName(),
-					checkin:this.getStartDate(),
-					checkout:this.getEndDate()};
-			
-			//if new, POST new values and fetch the model to retrieve values stored on backend
-			if(this.isNew()){
-				return this.save(vals,{wait:true}).done(function(data){
-					self.set({id:data});
-					self.fetch({silent:true});
-					self.lines.each(function(lineModel){
-						lineModel.saveToBackend().fail(function(e){console.log(e)});
-					});
-				});
-			}
-			
-			//if already exists, PATCH values and fetch the model to retrieve values updated on backend
-			//also perform save/update for lineModels
-			else{
-				vals.user_id = this.getCreateAuthor('id');
-				return this.save(vals, {wait:true, patch:true}).always(function(){
-					self.lines.each(function(lineModel,i)	{
-						self.fetch({silent:true});
-						lineModel.saveToBackend().fail(function(e){console.log(e)});
-					});
-				});
-			}
-			return false;
 		},
 
 		getClaimerPhone: function(){
-			return this.get('partner_phone');
+			return this.get('contact_phone');
 		},
 		
 		getClaimerContact: function(type){
@@ -363,6 +381,10 @@ define([
 		setClaimerContact: function(value, silent){
 			this.set({ partner_order_id : value }, {silent: silent});
 		},	
+		
+		getClaimerMail : function(){
+			return !_.isUndefined(this.get('partner_mail')) && !_.isNull(this.get('partner_mail')) && this.get('partner_mail')!=false ? this.get('partner_mail') : "";
+		},
 		
 		fromCitizen: function(){
 			return this.get('is_citizen');
@@ -396,7 +418,7 @@ define([
 		setCitizenEmail: function(value, silent){
 			this.set({ people_email : value }, {silent: silent});
 		},
-
+		
 		getState : function() {
 			return this.get('state');
 		},
@@ -408,12 +430,106 @@ define([
 		hasActions: function(action){
 			return this.getActions().indexOf(action) > -1;
 		},
+		
+		//method to add a bookingLine to collection on this model
+		addLine: function(lineModel){
+			this.lines.add(lineModel);
+			lineModel.setParentBookingModel(this);
+		},
+		
+		fetchLines: function(){
+			var self = this;
+			return this.lines.fetch({data:{filters:{0:{field:'line_id.id',operator:'=',value:this.getId()}}}}).done(function(){
+				self.lines.each(function(lineModel){
+					lineModel.setParentBookingModel(self);
+				});
+			});
+		},
+		
+		//method to perform updates on bookingLines (pricing, dispo, ...) when some fields value change
+		//by default, fetch dispo, and if partner is set, fetch pricing too
+		updateLinesData: function(){
+			var checkin = this.getStartDate();
+			var checkout = this.getEndDate();
+			var partner_id = this.getClaimer('id');
+			var deferred = $.Deferred();
+			if(checkin != '' && checkout != ''){
+				_.each(this.lines.models, function(lineModel,i){
+					if(partner_id > 0){
+						deferred = $.when(lineModel.fetchAvailableQtity(checkin,checkout),lineModel.fetchPricing(partner_id, checkin, checkout))
+						.fail(function(e){console.log(e)});
+					}
+					else{
+						deferred = $.when(lineModel.fetchAvailableQtity(checkin,checkout))
+						.fail(function(e){console.log(e)});
+					}
+				});
+				
+			}
+			return deferred;
+		},
+		
+		//used for OpenERP to format many2one data to be writable in OpenERP
+		saveToBackend: function(){
+			var self = this;
+			var vals = this.getSaveVals();
+			
+			//if new, POST new values and fetch the model to retrieve values stored on backend
+			//and, if set, save recurrence too
+			if(this.isNew()){
+				return this.save(vals,{wait:true}).done(function(data){
+					self.set({id:data});
+					self.fetch({silent:true});
+					if(self.get('is_template') && self.recurrence != null){
+						self.recurrence.saveToBackend();
+					}
+					self.lines.each(function(lineModel){
+						lineModel.saveToBackend().fail(function(e){console.log(e)});
+					});
+				});
+			}
+			
+			//if already exists, PATCH values and fetch the model to retrieve values updated on backend
+			//also perform save/update for lineModels
+			//and, if set, save recurrence too
+			else{
+				vals.user_id = this.getCreateAuthor('id');
+				return this.save(vals, {wait:true, patch:true}).always(function(){
+					self.fetch({silent:true});
+					if(self.get('is_template') && self.recurrence != null){
+						self.recurrence.saveToBackend();
+					}
+					self.lines.each(function(lineModel,i){
+						lineModel.saveToBackend().fail(function(e){console.log(e)});
+					});
+					self.linesToRemove.each(function(lineToRemove,i){
+						lineToRemove.destroy();
+					});
+				});
+			}
+			return false;
+		},
+		
+		destroyOnBackend: function(){
+			if(this.recurrence != null){
+				this.set({id:null},{silent:true});
+				this.destroy();
+				this.recurrence.occurrences.remove(this);
+				this.recurrence.occurrencesToRemove.add(this.clone().off());
+			}
+			this.destroy();
+			
+		},
+
 	
 		
 		/** Model Initialization
 		*/
 		initialize: function(){
 			this.lines = new BookingLinesCollection();
+			//collection to store lines to remove (because form persist modifications only after clicking on 'validate' btn)
+			this.linesToRemove = new BookingLinesCollection();
+			this.recurrence = null;
 //			this.computeResources().done(function (data) {
 //				// self.set( {'resources' :  data.resources, 'description': data.description} , {silent:false} );	
 //				 //self.set( 'resources',  data.resources , {silent:true} );	

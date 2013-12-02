@@ -1,0 +1,151 @@
+<div class="col-sm-6">
+	<!-- Recurrence setting (optionnal)-->
+	<div class="form-group">
+		<label class="control-label col-sm-3">Periodicité: </label>
+		
+		<label class="radio-inline">
+			<input type="radio" name="periodicity" value="daily" <%= recurrence.get('recur_type') == 'daily' ? 'checked': ''%>>Quotidienne</input>
+		</label>
+	
+		<label class="radio-inline">
+				<input type="radio" name="periodicity" value="weekly" <%= recurrence.get('recur_type') == 'weekly' ? 'checked': ''%>>Hebdomadaire</input>
+		</label>
+		
+		<label class="radio-inline">
+				<input type="radio" name="periodicity" value="monthly" <%= recurrence.get('recur_type') == 'monthly' ? 'checked': ''%>>Mensuelle</input>
+		</label>
+	</div>
+	<hr/>
+	<!-- daily-periodicity-setting of recurrence-->
+	<div id="settings_daily" class="form-group">
+		<label class="control-label col-sm-3" for="recur_daily_weight">Tous les: </label>
+		<div class="input-group col-sm-3">
+			<input class="form-control" id="recur_daily_weight" value="<%= recurrence.getWeight()%>" type="number" min="1"/>
+			 <span class="input-group-addon">Jours</span>
+		</div>
+	</div>
+	
+	<!-- weekly-periodicity-setting of recurrence-->
+	<div id="settings_weekly">
+		<div class="form-group">
+			<div class="col-sm-offset-3">
+				<label class="checkbox-inline">
+					<input name="weekdays" type="checkbox" value="monday" <%= weekdays.indexOf('monday') > -1 ? 'checked': ''%>>Lun.</input>
+				</label>
+				<label class="checkbox-inline">
+					<input name="weekdays" type="checkbox" value="tuesday" <%= weekdays.indexOf('tuesday') > -1 ? 'checked': ''%>>Mar.</input>
+				</label>
+				<label class="checkbox-inline">
+					<input name="weekdays" type="checkbox" value="wednesday" <%= weekdays.indexOf('wednesday') > -1 ? 'checked': ''%>>Mer.</input>
+				</label>
+				<label class="checkbox-inline">
+					<input name="weekdays" type="checkbox" value="thursday" <%= weekdays.indexOf('thursday') > -1 ? 'checked': ''%>>jeu.</input>
+				</label>
+				<label class="checkbox-inline">
+					<input name="weekdays" type="checkbox" value="friday" <%= weekdays.indexOf('friday') > -1 ? 'checked': ''%>>Ven.</input>
+				</label>
+				<label class="checkbox-inline">
+					<input name="weekdays" type="checkbox" value="saturday" <%= weekdays.indexOf('saturday') > -1 ? 'checked': ''%>>Sam.</input>
+				</label>
+				<label class="checkbox-inline">
+					<input name="weekdays" type="checkbox" value="sunday" <%= weekdays.indexOf('sunday') > -1 ? 'checked': ''%>>Dim.</input>
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="recur_weekly_weight" class="col-sm-3 control-label">Toutes les: </label>
+			<div class="input-group col-sm-3">
+				<input id="recur_weekly_weight" class="form-control" value="<%= recurrence.getWeight()%>" type="number" min="1"/>
+				<span class="input-group-addon">Semaines</span>
+			</div>
+		</div>
+	</div>
+	
+	<!-- monthly-periodicity-setting of recurrence-->
+	<div id="settings_monthly">
+		<div class="form-group">
+			<label class="control-label col-sm-3">
+				<input type="radio" class="radio-inline" name="type_monthly" <%= recurrence.get('recur_month_type') == 'monthday' ? 'checked': ''%> value="monthday">Jour n°: </input>
+			</label>
+			<div class="input-group col-sm-3">
+				<input class="form-control" id="recur_monthly_monthday" type="number" value="<%= recurrence.getMonthday()%>" min="1"/>
+				<span class="input-group-addon">Du mois</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-3">
+				<input type="radio" class="radio-inline" name="type_monthly" <%= recurrence.get('recur_month_type') == 'monthweekday' ? 'checked': ''%> value="monthweekday">Chaque: </input>
+			</label>
+			<div class="input-group col-sm-3">
+				<select id="recur_monthly_relative_position" class="form-control">
+					<option value="first" <%= recurrence.getMonthRelativePosition() == 'first' ? 'selected': ''%>>Premiers</option>
+					<option value="second" <%= recurrence.getMonthRelativePosition() == 'second' ? 'selected': ''%>>Deuxième</option>
+					<option value="third" <%= recurrence.getMonthRelativePosition() == 'third' ? 'selected': ''%>>Troisièmes</option>
+					<option value="fourth" <%= recurrence.getMonthRelativePosition() == 'fourth' ? 'selected': ''%>>Quatrièmes</option>
+					<option value="last" <%= recurrence.getMonthRelativePosition() == 'last' ? 'selected': ''%>>Derniers</option>	
+				</select>
+			</div>
+			<div class="input-group col-sm-4">
+				<select id="recur_monthly_weekday" class="form-control">
+					<option value="monday" <%= recurrence.getMonthWeekday() == 'monday' ? 'selected': ''%>>Lundi</option>
+					<option value="tuesday" <%= recurrence.getMonthWeekday() == 'tuesday' ? 'selected': ''%>>Mardi</option>
+					<option value="wednesday" <%= recurrence.getMonthWeekday() == 'wednesday' ? 'selected': ''%>>Mercredi</option>
+					<option value="thursday" <%= recurrence.getMonthWeekday() == 'thursday' ? 'selected': ''%>>Jeudi</option>
+					<option value="friday" <%= recurrence.getMonthWeekday() == 'friday' ? 'selected': ''%>>Vendredi</option>
+					<option value="saturday" <%= recurrence.getMonthWeekday() == 'saturday' ? 'selected': ''%>>Samedi</option>
+					<option value="sunday" <%= recurrence.getMonthWeekday() == 'sunday' ? 'selected': ''%>>Dimanche</option>
+				</select>
+				<span class="input-group-addon">Du mois</span>
+			</div>			
+		</div>
+		
+		<div class="form-group">
+			<label for="recur_monthly_weight" class="col-sm-3 control-label">Tous les: </label>
+			<div class="input-group col-sm-3">
+				<input id="recur_monthly_weight" class="form-control" value="<%= recurrence.getWeight()%>" type="number" min="1"/>
+				<span class="input-group-addon">Mois</span>
+			</div>
+		</div>
+	</div>
+	<hr/>
+	<!-- length of recurrence-->
+	<div class="form-group">		
+		<label class="control-label col-sm-3">
+			<input type="radio" class="radio-inline" name="recur_type_length" <%= recurrence.get('recur_length_type') == 'count' ? 'checked': ''%> value="count">Au bout de: </input>
+		</label>
+		<div class="input-group col-sm-3">
+			<input class="form-control" id="recur_length_count" type="number" value="<%= recurrence.getCount()%>" min="1"/>
+			<span class="input-group-addon">Occurences</span>
+		</div>
+	</div>
+	<div class="form-group">	
+		<label class="control-label col-sm-3">
+			<input type="radio" class="radio-inline" name="recur_type_length" <%= recurrence.get('recur_length_type') == 'until' ? 'checked': ''%> value="until">Jusqu'au: </input>
+		</label>
+		<div class="input-group col-sm-3">
+			<input class="datepicker form-control" id="recur_length_until" placeholder="dd/mm/yyyy" value="<%= date_end%>" type="text" min="1"/>
+			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+		</div>
+	</div>
+	<div class="form-group">	
+		<div class="col-sm-1 col-sm-offset-7">
+			<button type="button" class="btn btn-default" id="getRecurrenceDates">Générer dates</button>			
+		</div>
+	</div>
+</div>
+<div class="col-sm-6">
+	<!-- Recap of BookingLines -->
+	<table class="table-nested-objects table table-striped table-condensed table-hover">
+		<thead>
+		<tr>
+			<th class="row-sm-4"><%= _.capitalize(lang.dateStart) %></th>
+			<th class="row-sm-4"><%= _.capitalize(lang.dateEnd) %></th>
+			<th class="row-sm-3"><%= _.capitalize(lang.amount) %></th>
+			<th class="row-sm-1"><%= _.capitalize(lang.availability) %></th>
+		</tr>
+		</thead>
+		<tbody id="bookingOccurrences">
+	
+		</tbody>
+	</table>
+</div>

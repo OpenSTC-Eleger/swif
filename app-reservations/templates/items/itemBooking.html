@@ -11,12 +11,12 @@
 	</a>
 	<!-- Interventions action -->
 	<p class="row-actions invisible">
-		 &nbsp;<a href="#app-reservations/formReservation/id/<%= booking.getId()%>" class="updateBooking"><i class="fa fa-pencil fa-lg" data-original-title="<%= _.capitalize(lang.actions.modify) %>"></i></a>
+		 &nbsp;<a href="#app-reservations/nouvelle-reservation/id/<%= booking.getId()%>" class="updateBooking"><i class="fa fa-pencil fa-lg" data-original-title="<%= _.capitalize(lang.actions.modify) %>"></i></a>
 		<!--  <a href="#reservations" class="printInter" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.print) %>" data-action="inter">
 			<i class="icon-print icon-large" data-action="inter">&nbsp;</i>
 		</a>
 		-->
-		<% if ( !_.isUndefined(booking.getRecurrence('id')) ) { %>
+		<% if ( booking.getRecurrence('id') ) { %>
 			<a href="#" class="displayOccurences" data-toggle="tooltip" data-original-title="Afficher les occurences" data-action="reccurent">
 				<i class="fa fa-th-list fa-lg" data-action="reccurent">&nbsp;</i>
 			</a>
@@ -41,7 +41,7 @@
 	</span>
 </td>
 <td>
-<span data-toggle="tooltip" data-original-title="<%= booking.getCreateDate('fromNow') %>"> <%= booking.getCreateDate() %></span>
+<span data-toggle="tooltip" data-original-title="<%= booking.getCreateDate('fromNow') %>"> <%= booking.getCreateDate('human') %></span>
 </td>
 <!-- Check the state of the booking -->
 <td>
