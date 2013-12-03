@@ -182,6 +182,7 @@
 	"citizen"                               : "administré",
 	"recurrence"							: "récurrence",
 	"bookable"								: "ressource",
+	"bookables"								: "ressources",
 	"picture"								: "Image",
 	"availability"							: "Disponible",
 	"amount"								: "Montant",

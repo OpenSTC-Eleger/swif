@@ -1,6 +1,6 @@
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h3 class="panel-title">Les ressources</h3>
+		<h3 class="panel-title"><%= _.capitalize(lang.bookables) %></h3>
 	</div>
   
 
@@ -24,11 +24,11 @@
 		<!-- Places -->
 		<div class="panel-group">
 			<div class="row panel-group-heading">
-				<h4 class="col-xs-6 col-md-12 col-lg-6"><i class="fa fa-map-marker fa-lg fa-fw"></i> <%= _.capitalize(lang.places) %> 
+				<h4 class="col-xs-6 col-md-12 col-lg-7"><i class="fa fa-map-marker fa-lg fa-fw"></i> <%= _.capitalize(lang.places) %> 
 					<span id="nbPlaces" class="badge"></span>
 				</h4>
 
-				<form class="form-inline col-xs-6 col-md-12 col-lg-6" role="form">
+				<form class="form-inline col-xs-6 col-md-12 col-lg-5" role="form">
 					<div class="form-group pull-right">
 						<input type="search" id="placesSearch" data-search="bookablesPlaces" class="form-control input-sm" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off" />
 					</div>
@@ -56,11 +56,11 @@
 		<!-- Equipment -->
 		<div class="panel-group">
 			<div class="row panel-group-heading">
-				<h4 class="col-xs-6 col-md-12 col-lg-6"><i class="fa fa-wrench fa-lg fa-fw"></i> <%= _.capitalize(lang.equipments) %>
+				<h4 class="col-xs-6 col-md-12 col-lg-7"><i class="fa fa-wrench fa-lg fa-fw"></i> <%= _.capitalize(lang.equipments) %>
 					<span id="nbEquipments" class="badge"></span>
 				</h4>
 
-				<form class="form-inline col-xs-6 col-md-12 col-lg-6" role="form">
+				<form class="form-inline col-xs-6 col-md-12 col-lg-5" role="form">
 					<div class="form-group pull-right">
 						<input type="search" id="equipmentsSearch" data-search="bookablesEquipments" class="form-control input-sm" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off" />
 					</div>

@@ -15,7 +15,7 @@ define([
 	var CalendarPlanningView = Backbone.View.extend({
 	
 	
-		templateHTML        : '/templates/others/CalendarPlanning.html',
+		templateHTML        : '<div id="calendarContainer"></div>',
 
 
 	
@@ -45,17 +45,17 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get(app.menus.openresa+this.templateHTML, function(templateData){
-	
-				var template = _.template(templateData, {
-					lang    : app.lang,
-				});
-	
-				$(self.el).html(template);
-
-				self.initCalendar();
-	
+			var template = _.template(this.templateHTML, {
+				lang    : app.lang,
 			});
+	
+			$(this.el).html(template);
+
+			this.calendar = $('#calendarContainer');
+			
+			// Init the calendar //
+			this.initCalendar();
+
 	
 			return this;
 		},
@@ -66,53 +66,59 @@ define([
 		*/
 		initCalendar: function(){
 
-			$('#calendarContainer').fullCalendar({
+			this.calendar.fullCalendar({
 	    		
 	    		/** Full calendar attributes **/
-
-	    		ignoreTimezone: false,
-				aspectRatio: 1.30,
+				//month       :	date.month(),
+				//year        :	date.year(),
+				//date        : date.date(),
+				defaultView   : 'agendaWeek',
+				ignoreTimezone: false,
+				height        : 735,
 				header: {
-					left: 'infosUser',
+					left  : 'month,agendaWeek,agendaDay',
 					center: 'title',
-					right: 'today,prev,next'
+					right : 'today,prev,next'
 				},
 				// time formats
 				titleFormat: {
 					month: 'MMMM yyyy',
-					week:"'Semaine 'W' du' dd [MMM] [yyyy] {'au' dd MMM yyyy}",
-					day: 'dddd dd MMM yyyy'
+					week : "'Semaine 'W' <small>du' dd [MMM] [yyyy] {'au' dd MMM yyyy}</small>",
+					day  : 'dddd dd MMM yyyy'
 				},
 				columnFormat: {
-				    month: 'ddd',
-				    week: 'ddd dd/M',
-				    day: 'dddd dd/M'
+					month: 'ddd',
+					week : 'ddd d/MM',
+					day  : 'dd/MM/yyyy'
 				},
 				firstDay: 1,
 				axisFormat: 'HH:mm',
 				timeFormat: 'H(:mm){ - H(:mm)}',
-	
+				allDayText         : _.capitalize(app.lang.daytime),
+				slotMinutes        : 30,
+				firstHour          : 8,
+				defaultEventMinutes: 30,
+				minTime            : 6,
+				maxTime            : 23,
+				weekends           : true,
+				selectable         : true,
+				selectHelper       : true,
+
+				weekNumbers        : true,
+				weekNumberTitle    : 's',
+
 				monthNames: app.lang.monthNames,
 				monthNamesShort: app.lang.monthNamesShort,
 				dayNames: app.lang.dayNames,
 				dayNamesShort: app.lang.dayNamesShort,
 				buttonText: {
-				    today: app.lang.today,
-				    month: app.lang.month,
-				    week: app.lang.week,
-				    day: app.lang.day
+					today: _.capitalize(app.lang.today),
+					month: _.capitalize(app.lang.month),
+					week : _.capitalize(app.lang.week),
+					day  : _.capitalize(app.lang.day),
+					prev: '<i class="fa fa-chevron-left fa-fw"></i>',
+					next: '<i class="fa fa-chevron-right fa-fw"></i>',
 				},
-				allDayText: app.lang.daytime,
-				slotMinutes	: 30,
-				firstHour	: 8,
-				minTime		: app.config.startWorkTime,
-				maxTime		: app.config.endWorkTime,
-				defaultEventMinutes	: 30,
-				dragOpacity	: 0.5,
-				weekends	: true,
-				selectable	: true,
-				selectHelper: true,
-				editable	: true,
 
 
 	    		/**
