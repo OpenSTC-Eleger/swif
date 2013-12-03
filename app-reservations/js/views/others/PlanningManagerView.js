@@ -1,9 +1,10 @@
 define([
 	'app',
 
-	'sideBarPlanningSelectResourcesView'
+	'sideBarPlanningSelectResourcesView',
+	'calendarPlanningView'
 
-], function(app, SideBarPlanningSelectResourcesView){
+], function(app, SideBarPlanningSelectResourcesView, CalendarPlanningView){
 
 	'use strict';
 
@@ -62,13 +63,16 @@ define([
 					el : '#sideBarselectResource'
 				});
 
+				app.views.CalendarPlanningView = new CalendarPlanningView({
+					el : '#calendarManager'
+				});
+
 			});
 
 			$(this.el).hide().fadeIn();
 
 			return this;
-		},
-
+		}
 
 
 	});

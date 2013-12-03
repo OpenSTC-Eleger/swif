@@ -24,27 +24,29 @@
 		<!-- Places -->
 		<div class="panel-group">
 			<div class="row panel-group-heading">
-				<h4 class="col-sm-6"><i class="fa fa-map-marker fa-lg fa-fw"></i> <%= _.capitalize(lang.places) %></h4>
+				<h4 class="col-xs-6 col-md-12 col-lg-6"><i class="fa fa-map-marker fa-lg fa-fw"></i> <%= _.capitalize(lang.places) %> 
+					<span id="nbPlaces" class="badge"></span>
+				</h4>
 
-				<form class="form-inline col-sm-6" role="form">
+				<form class="form-inline col-xs-6 col-md-12 col-lg-6" role="form">
 					<div class="form-group pull-right">
-						<input type="search" id="placesSearch" class="form-control input-sm" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off" />
+						<input type="search" id="placesSearch" data-search="bookablesPlaces" class="form-control input-sm" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off" />
 					</div>
 				</form>
 			</div>
 		
 			<div class="panel-group-body">
 				<ul id="bookablesPlaces" class="nav nav-pills nav-stacked nav-stacked-6">
-					<li data-color="00FF6A"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 1</a></li>
-					<li data-color="0040FF"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 2</a></li>
-					<li data-color="FF00D9"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 3</a></li>
-					<li data-color="EAFF00"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 4</a></li>
-					<li data-color="0B0B40"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 5</a></li>
-					<li data-color="E38AD6"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 6</a></li>
-					<li data-color="11CFAC"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 7</a></li>
-					<li data-color="118FCF"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 8</a></li>
-					<li data-color="CF8611"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 9</a></li>
-					<li data-color="4D493A"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 10</a></li>
+					<li data-color="00FF6A" data-id="1" data-name="Ma salle 1"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 1</a></li>
+					<li data-color="0040FF" data-id="2" data-name="Ma salle 2"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 2</a></li>
+					<li data-color="FF00D9" data-id="3" data-name="Ma salle 3"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 3</a></li>
+					<li data-color="EAFF00" data-id="4" data-name="Ma salle 4"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 4</a></li>
+					<li data-color="0B0B40" data-id="5" data-name="Ma salle 5"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 5</a></li>
+					<li data-color="E38AD6" data-id="6" data-name="Ma salle 6"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 6</a></li>
+					<li data-color="11CFAC" data-id="7" data-name="Ma salle 7"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 7</a></li>
+					<li data-color="118FCF" data-id="8" data-name="Ma salle 8"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 8</a></li>
+					<li data-color="CF8611" data-id="9" data-name="Ma salle 9"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 9</a></li>
+					<li data-color="4D493A" data-id="10" data-name="Ma salle 10"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Ma salle 10</a></li>
 				</ul>
 			</div>
 		</div>
@@ -54,27 +56,29 @@
 		<!-- Equipment -->
 		<div class="panel-group">
 			<div class="row panel-group-heading">
-				<h4 class="col-sm-6"><i class="fa fa-wrench fa-lg fa-fw"></i> <%= _.capitalize(lang.equipments) %></h4>
+				<h4 class="col-xs-6 col-md-12 col-lg-6"><i class="fa fa-wrench fa-lg fa-fw"></i> <%= _.capitalize(lang.equipments) %>
+					<span id="nbEquipments" class="badge"></span>
+				</h4>
 
-				<form class="form-inline col-sm-6" role="form">
+				<form class="form-inline col-xs-6 col-md-12 col-lg-6" role="form">
 					<div class="form-group pull-right">
-						<input type="search" id="equipmentsSearch" class="form-control input-sm" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off" />
+						<input type="search" id="equipmentsSearch" data-search="bookablesEquipments" class="form-control input-sm" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off" />
 					</div>
 				</form>
 			</div>
 		
 			<div class="panel-group-body">
 				<ul id="bookablesEquipments" class="nav nav-pills nav-stacked nav-stacked-4">
-					<li data-color="00FF6A"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 1</a></li>
-					<li data-color="0040FF"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 2</a></li>
-					<li data-color="FF00D9"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 3</a></li>
-					<li data-color="EAFF00"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 4</a></li>
-					<li data-color="0B0B40"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 5</a></li>
-					<li data-color="E38AD6"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 6</a></li>
-					<li data-color="11CFAC"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 7</a></li>
-					<li data-color="118FCF"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 8</a></li>
-					<li data-color="CF8611"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 9</a></li>
-					<li data-color="4D493A"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 10</a></li>
+					<li data-color="00FF6A" data-id="1" data-name="Mon matos 1"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 1</a></li>
+					<li data-color="0040FF" data-id="2" data-name="Mon matos 2"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 2</a></li>
+					<li data-color="FF00D9" data-id="3" data-name="Mon matos 3"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 3</a></li>
+					<li data-color="EAFF00" data-id="4" data-name="Mon matos 4"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 4</a></li>
+					<li data-color="0B0B40" data-id="5" data-name="Mon matos 5"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 5</a></li>
+					<li data-color="E38AD6" data-id="6" data-name="Mon matos 6"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 6</a></li>
+					<li data-color="11CFAC" data-id="7" data-name="Mon matos 7"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 7</a></li>
+					<li data-color="118FCF" data-id="8" data-name="Mon matos 8"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 8</a></li>
+					<li data-color="CF8611" data-id="9" data-name="Mon matos 9"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 9</a></li>
+					<li data-color="4D493A" data-id="10" data-name="Mon matos 10"><a href="#"><i class="fa fa-circle-o fa-lg"></i>Mon matos 10</a></li>
 				</ul>
 			</div>
 		</div>
