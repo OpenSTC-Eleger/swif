@@ -91,33 +91,31 @@ define([
 					week : 'ddd d/MM',
 					day  : 'dd/MM/yyyy'
 				},
-				firstDay: 1,
-				axisFormat: 'HH:mm',
-				timeFormat: 'H(:mm){ - H(:mm)}',
+				firstDay           : 1,
+				axisFormat         : 'HH:mm',
+				timeFormat         : 'H(:mm){ - H(:mm)}',
 				allDayText         : _.capitalize(app.lang.daytime),
 				slotMinutes        : 30,
 				firstHour          : 8,
 				defaultEventMinutes: 30,
-				minTime            : 6,
-				maxTime            : 23,
 				weekends           : true,
 				selectable         : true,
 				selectHelper       : true,
-
+				
 				weekNumbers        : true,
 				weekNumberTitle    : 's',
-
-				monthNames: app.lang.monthNames,
-				monthNamesShort: app.lang.monthNamesShort,
-				dayNames: app.lang.dayNames,
-				dayNamesShort: app.lang.dayNamesShort,
-				buttonText: {
-					today: _.capitalize(app.lang.today),
-					month: _.capitalize(app.lang.month),
-					week : _.capitalize(app.lang.week),
-					day  : _.capitalize(app.lang.day),
-					prev: '<i class="fa fa-chevron-left fa-fw"></i>',
-					next: '<i class="fa fa-chevron-right fa-fw"></i>',
+				
+				monthNames         : app.lang.monthNames,
+				monthNamesShort    : app.lang.monthNamesShort,
+				dayNames           : app.lang.dayNames,
+				dayNamesShort      : app.lang.dayNamesShort,
+				buttonText         : {
+					today : _.capitalize(app.lang.today),
+					month : _.capitalize(app.lang.month),
+					week  : _.capitalize(app.lang.week),
+					day   : _.capitalize(app.lang.day),
+					prev  : '<i class="fa fa-chevron-left fa-fw"></i>',
+					next  : '<i class="fa fa-chevron-right fa-fw"></i>',
 				},
 
 

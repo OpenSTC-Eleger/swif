@@ -154,8 +154,17 @@ define([
 		*/
 		toggleResource: function(e){
 			var link = $(e.target);
-			var row = link.parent('li');
-			var icon = link.children('i.fa');
+
+			// If the <a> or the <i> who was clicked //
+			if(link.is('a')){
+				var row = link.parent('li');
+				var icon = link.children('i.fa');
+			}
+			else if(link.is('i')){
+				var row = link.parents('li');
+				var icon = link;
+			}
+
 
 			row.toggleClass('selected');
 
@@ -197,8 +206,6 @@ define([
 						$(a).fadeIn('fast').removeClass('thide');
 					}
 				});
-	
-				;
 			}
 			else{
 				listSearchable.find('li').fadeIn().removeClass('thide');
