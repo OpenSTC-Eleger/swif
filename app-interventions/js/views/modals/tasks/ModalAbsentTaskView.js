@@ -123,7 +123,7 @@ define([
 									.add('minutes',$("#endHour").val().split(":")[1] );
 			var planned_hours = mNewDateEnd.diff(mNewDateStart, 'hours', true);
 			
-			params = {
+			var params = {
 				name: self.advancedSelectBoxAbsentTypesView.getSelectedText(),
 			    absent_type_id: self.advancedSelectBoxAbsentTypesView.getSelectedItem(),
 			    state: 'absent',

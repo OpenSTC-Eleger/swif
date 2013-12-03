@@ -7,13 +7,14 @@ define([
 	'equipmentTypeModel',
 	'equipmentsTypesCollection',
 	'claimersServicesCollection',
-
+	'claimersTypesCollection',
+	
 	'genericModalView',
 	'advancedSelectBoxView',
 	'bsDatepicker-lang'
 	
 
-], function(app, AppHelpers, EquipmentModel, EquipmentsCollection, EquipmentTypeModel, EquipmentsTypesCollection, ClaimersServicesCollection, GenericModalView, AdvancedSelectBoxView, datepicker){
+], function(app, AppHelpers, EquipmentModel, EquipmentsCollection, EquipmentTypeModel, EquipmentsTypesCollection, ClaimersServicesCollection, ClaimersTypesCollection, GenericModalView, AdvancedSelectBoxView, datepicker){
 
 	'use strict';
 
@@ -101,7 +102,13 @@ define([
 					
 					self.selectEquipmentMaintenanceServices = new AdvancedSelectBoxView({el:'#equipmentMaintenanceServices', collection: ClaimersServicesCollection.prototype});
 					self.selectEquipmentMaintenanceServices.render();
-
+					
+					self.selectEquipmentBookingServices = new AdvancedSelectBoxView({el: $("#equipmentBookingServices"), collection: ClaimersServicesCollection.prototype });
+					self.selectEquipmentBookingServices.render();
+					
+					self.selectClaimersBookingServices = new AdvancedSelectBoxView({el: $("#equipmentBookingClaimers"), collection: ClaimersTypesCollection.prototype });
+					self.selectClaimersBookingServices.render();
+					
 					// Enable the datePicker //
 					$('input.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
 				}
@@ -195,9 +202,14 @@ define([
 					purchase_date: formatDate($('#equipmentPurchaseDate').val()),
 					purchase_price: $('#equipmentPurchasePrice').val(),
 					hour_price: $('#equipmentHourPrice').val(),
-					warranty_date: formatDate($('#equipmentWarranty').val())
+					warranty_date: formatDate($('#equipmentWarranty').val()),
+					internal_booking: $('#equipmentInternalBooking:checked').val() == "1",
+					external_booking: $('#equipmentExternalBooking:checked').val() == "1",
+					service_bookable_ids: [[6,0, this.selectEquipmentBookingServices.getSelectedItems() ]],
+					partner_type_bookable_ids: [[6,0, this.selectClaimersBookingServices.getSelectedItems() ]]
+					
 			}
-
+			var stockQty = parseInt($('#equipmentQtyAvailable').val());
 
 			this.model.save(params, {patch:!this.model.isNew(), silent:true,wait:true})
 				.done(function(data) {
@@ -213,6 +225,10 @@ define([
 					} else {
 						self.model.fetch({ data : {fields : self.model.fields} });
 					}
+					if(stockQty != self.model.getAvailableQty()){
+						self.model.updateAvailableQty(stockQty);
+					}
+					
 				})
 				.fail(function (e) {
 					AppHelpers.printError(e);

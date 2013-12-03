@@ -71,6 +71,8 @@
 	"manager"				: "chef de service",
 	"width" 				: "largeur",
 	"length" 				: "longueur",
+	"internal_booking"		: "Réservable en interne",
+	"external_booking"		: "Réservable par des tiers",
 	"reason" 				: "motif",
 	"claimerType"           : "Type de demandeur",
 	"horsepower" 			: "en chevaux fiscaux",
@@ -199,6 +201,7 @@
 	"purchaseDate"							: "Date d'acquisition",
 	"warrantyDate"							: "Date de fin de garantie",
 	"builtDate"								: "Date de sortie d'usine",
+	"stockQty"								: "Quantité en stock",
 
 	"monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
 	"monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],

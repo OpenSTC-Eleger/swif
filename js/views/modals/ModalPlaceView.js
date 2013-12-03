@@ -5,12 +5,13 @@ define([
 	'placesCollection',
 	'placeTypesCollection',
 	'claimersServicesCollection',
-
+	'claimersTypesCollection',
+	
 	'genericModalView',
 	'advancedSelectBoxView'
 	
 
-], function(app, PlaceModel, PlacesCollection, PlaceTypesCollection, ClaimersServicesCollection, GenericModalView, AdvancedSelectBoxView){
+], function(app, PlaceModel, PlacesCollection, PlaceTypesCollection, ClaimersServicesCollection, ClaimersTypesCollection, GenericModalView, AdvancedSelectBoxView){
 
 	'use strict';
 
@@ -85,17 +86,23 @@ define([
 
 				if(!loader){
 					// Advance Select List View //
-					app.views.advancedSelectBoxPlaceTypeView = new AdvancedSelectBoxView({el: $("#placeType"), collection: PlaceTypesCollection.prototype })
+					app.views.advancedSelectBoxPlaceTypeView = new AdvancedSelectBoxView({el: $("#placeType"), collection: PlaceTypesCollection.prototype });
 					app.views.advancedSelectBoxPlaceTypeView.render();
 
-					app.views.advancedSelectBoxPlaceParentView = new AdvancedSelectBoxView({el: $("#placeParentPlace"), collection: PlacesCollection.prototype })
+					app.views.advancedSelectBoxPlaceParentView = new AdvancedSelectBoxView({el: $("#placeParentPlace"), collection: PlacesCollection.prototype });
 					if(!self.model.isNew()){
 						app.views.advancedSelectBoxPlaceParentView.setSearchParam({ field : 'id', operator : '!=', value : self.model.getId() }, true);
 					}
 					app.views.advancedSelectBoxPlaceParentView.render();
 
-					app.views.advancedSelectBoxPlaceServices = new AdvancedSelectBoxView({el: $("#placeServices"), collection: ClaimersServicesCollection.prototype })
+					app.views.advancedSelectBoxPlaceServices = new AdvancedSelectBoxView({el: $("#placeServices"), collection: ClaimersServicesCollection.prototype });
 					app.views.advancedSelectBoxPlaceServices.render();
+					
+					app.views.advancedSelectBoxPlaceBookingServices = new AdvancedSelectBoxView({el: $("#placeBookingServices"), collection: ClaimersServicesCollection.prototype });
+					app.views.advancedSelectBoxPlaceBookingServices.render();
+					
+					app.views.advancedSelectBoxPlaceBookingClaimers = new AdvancedSelectBoxView({el: $("#placeBookingClaimers"), collection: ClaimersTypesCollection.prototype });
+					app.views.advancedSelectBoxPlaceBookingClaimers.render();
 				}
 
 				self.modal.modal('show');
@@ -109,7 +116,7 @@ define([
 		/** Save the model pass in the view
 		*/
 		savePlace: function(e){
-			e.preventDefault();
+			e.preventDefault();	
 
 			var self = this;
 
@@ -125,7 +132,11 @@ define([
 			this.model.setWidth(this.$('#placeWidth').val(), true);
 			this.model.setLength(this.$('#placeLength').val(), true);
 			this.model.setSurface(this.$('#placeArea').val(), true);
-
+			this.model.setInternalBooking(this.$('#placeInternalBooking:checked').val() == "1", true);
+			this.model.setExternalBooking(this.$('#placeExternalBooking:checked').val() == "1", true);
+			this.model.setBookingServices(app.views.advancedSelectBoxPlaceBookingServices.getSelectedItems(), true);
+			this.model.setBookingClaimers(app.views.advancedSelectBoxPlaceBookingClaimers.getSelectedItems(), true);
+			
 
 			this.model.save()
 				.done(function(data) {
