@@ -45,20 +45,7 @@ define(['app',
 			'change #bookingCheckout'			: 'changeBookingCheckout',
 			'change #bookingCheckinHour'		: 'changeBookingCheckin',
 			'change #bookingCheckoutHour'		: 'changeBookingCheckout',
-			
-			//Recurrence setting events
-			'change input[name="periodicity"]'	: 'changePeriodicity',
-			'change input[name="type_monthly"]'	: 'changeTypeMonthly',
-			'change input[name="recur_type_length"]': 'changeTypeLength',
-			'change #recur_length_count'		: 'changeCount',
-			'change #recur_length_until'		: 'changeUntil',
-			'change input[name="weekdays"]'		: 'changeWeekdays',
-			'change #recur_daily_weight'		: 'changeDailyWeight',
-			'change #recur_weekly_weight'		: 'changeWeeklyWeight',
-			'change #recur_monthly_weight'		: 'changeMonthlyWeight',
-			'change #recur_monthly_monthday'	: 'changeMonthday',
-			'change #recur_monthly_relative_position': 'changeRelativePosition',
-			'change #recur_monthly_weekday'		: 'changeMonthWeekday',
+			'change #bookingName'				: 'changeName',
 			
 			//Form Buttons
 			'submit #formSaveBooking'			: 'saveBookingForm',
@@ -76,13 +63,13 @@ define(['app',
 			if(_.isUndefined(this.options.id)){
 				
 				this.model = new BookingModel();
-				this.render();
+				app.router.render(this);
 			}
 			else{
 				// Render with loader //
 				this.model = new BookingModel({id:this.options.id});
 				this.model.fetch({silent: true}).done(function(){
-					self.render(true);
+					app.router.render(self);
 					
 					//fetch and render lines
 					self.model.fetchLines()
@@ -255,14 +242,13 @@ define(['app',
 		    	this.model.setEndDate(moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss'));
 	    	}
 	    },
-	
-	    changePeriodicity: function(e){
-	    	$('input[name="periodicity"]').val();
+	    
+	    changeName: function(e){
+	    	this.model.setName($("#bookingName").val());
 	    },
 	    
 	    saveBookingForm: function(e){
 	    	e.preventDefault();
-	    	this.model.setName($("#bookingName").val());
 	    	this.model.saveToBackend()
 	    	.done(function(){
 	    		//TODO: redirect to list ?
@@ -274,12 +260,12 @@ define(['app',
 	    addRecurrence: function(e){
 			e.preventDefault();
 			var recurrenceModel = new BookingRecurrenceModel();
-			recurrenceModel.setStartDate(this.model.getStartDate());
 			recurrenceModel.setTemplate(this.model);
+			recurrenceModel.setStartDate(this.model.getStartDate());
 			var recurrenceView = new FormRecurrenceView({model:recurrenceModel});
 			$(this.el).find('#recurrence').html(recurrenceView.render().el);
 		}
- 
-	});	
+
+	});
 	return FormBookingView;
 })

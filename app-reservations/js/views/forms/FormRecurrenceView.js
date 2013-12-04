@@ -102,6 +102,7 @@ define(['app',
 	    
 	    //update type of recurrence (daily, weekly, ...) and map correct value of 'weight'
 	    changePeriodicity: function(e){
+	    	$('input[name="periodicity"]:checked').tab('show');
 	    	var type = $('input[name="periodicity"]:checked').val();
 	    	this.model.set({recur_type:type});
 	    	switch(type){
