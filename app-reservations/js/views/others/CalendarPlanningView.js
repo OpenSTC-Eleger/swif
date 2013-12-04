@@ -83,8 +83,8 @@ define([
 				// time formats
 				titleFormat: {
 					month: 'MMMM yyyy',
-					week : "'Semaine 'W' <small>du' dd [MMM] [yyyy] {'au' dd MMM yyyy}</small>",
-					day  : 'dddd dd MMM yyyy'
+					week : "'Semaine 'W' <small>du' d [MMM] [yyyy] {'au' d MMM yyyy}</small>",
+					day  : 'dddd d MMM yyyy'
 				},
 				columnFormat: {
 					month: 'ddd',
@@ -97,7 +97,7 @@ define([
 				allDayText         : _.capitalize(app.lang.daytime),
 				slotMinutes        : 30,
 				firstHour          : 8,
-				defaultEventMinutes: 30,
+				defaultEventMinutes: 120,
 				weekends           : true,
 				selectable         : true,
 				selectHelper       : true,

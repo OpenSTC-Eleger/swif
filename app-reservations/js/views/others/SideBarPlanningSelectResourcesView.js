@@ -70,6 +70,16 @@ define([
 				app.views.advancedSelectBoxCategoryRequestView = new AdvancedSelectBoxView({el: $('#claimersTypes'), collection: ClaimersTypesCollection.prototype })
 				app.views.advancedSelectBoxCategoryRequestView.render();
 
+				var templatePopover = "<div class='input-group'><span class='input-group-addon'><i class='fa fa-minus'></i></span><input type='text' class='form-control text-center' value='1'><span class='input-group-addon'><i class='fa fa-plus'></i></span></div>";
+
+				$('*[data-toggle="popover"]').popover({
+					placement : 'top',
+					title     : _.capitalize(app.lang.quantity),
+					container : 'body',
+					html      : true,
+					content   : templatePopover
+				});
+
 				// Set the numbers of selectable resources //
 				$('#nbPlaces').html(_.size(self.selectablePlaces));
 				$('#nbEquipments').html(_.size(self.selectableEquipments));
@@ -128,7 +138,7 @@ define([
 			var row = link.parent('li');
 
 			if(!row.hasClass('selected')){
-				var icon = link.children('i.fa');
+				var icon = link.children('i:first-child');
 
 				var color = '#' + link.parent('li').data('color');
 				icon.css({color: color});
@@ -144,7 +154,7 @@ define([
 
 			if(!row.hasClass('selected')){
 
-				var icon = link.children('i.fa');
+				var icon = link.children('i.icon-radio');
 				icon.css({color: 'inherit'});
 			}
 		},
@@ -158,28 +168,34 @@ define([
 			// If the <a> or the <i> who was clicked //
 			if(link.is('a')){
 				var row = link.parent('li');
-				var icon = link.children('i.fa');
+				var icon = link.children('i.icon-radio');
 			}
-			else if(link.is('i')){
+			else if(link.is('i.icon-radio')){
 				var row = link.parents('li');
 				var icon = link;
 			}
 
+			if(!_.isUndefined(row)){
+			
+				row.toggleClass('selected');
 
-			row.toggleClass('selected');
+				// Get the color of the Places //
+				icon.toggleClass('fa-dot-circle-o').toggleClass('fa-circle');
 
-			// Get the color of the Places //
-			icon.toggleClass('fa-circle-o').toggleClass('fa-circle');
-
-			if(row.hasClass('selected')){
-				var color = '#' + row.data('color');
-				icon.css({color: color});
+				if(row.hasClass('selected')){
+					var color = '#' + row.data('color');
+					icon.css({color: color});
+				}
+				else{
+					icon.css({color: 'inherit'});
+				}
+				return row.data('id');
 			}
 			else{
-				icon.css({color: 'inherit'});
+				return null;
 			}
 
-			return row.data('id');
+			
 		},
 
 
