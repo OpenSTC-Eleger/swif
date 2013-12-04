@@ -12,21 +12,29 @@ define([
 		
 	
 	/******************************************
-	* Valid Request Modal View
+	* Side Bar for selecting resources
 	*/
 	var SideBarPlanningSelectResourcesView = Backbone.View.extend({
 	
 	
-		templateHTML : '/templates/others/SideBarPlanningSelectResources.html',
+		templateHTML        : '/templates/others/SideBarPlanningSelectResources.html',
+
+		selectablePlaces    : ['lo', 'lo', 'oko', 'lkjlkj', 'lo', 'lo', 'oko', 'lkjlkj'],
+		selectedPlaces      : [],
+
+		selectableEquipments: [],
+		selectedEquipments  : [],
 	
 	
 		// The DOM events //
 		events: {
-			'mouseenter #bookablesPlaces a, #bookablesEquipments a' : 'highlightResource',
-			'mouseleave #bookablesPlaces a, #bookablesEquipments a' : 'mutedResource',
+			'mouseenter #bookablesPlaces a, #bookablesEquipments a': 'highlightResource',
+			'mouseleave #bookablesPlaces a, #bookablesEquipments a': 'mutedResource',
 
-			'click #bookablesPlaces a'      : 'selectPlace',
-			'click #bookablesEquipments a'  : 'selectEquipments',
+			'click #bookablesPlaces a'                             : 'selectPlace',
+			'click #bookablesEquipments a'                         : 'selectEquipments',
+
+			'keyup #placesSearch, keyup #equipmentsSearch'         : 'resourcesSearch',
 		}, 
 	
 	
@@ -59,9 +67,12 @@ define([
 				$(self.el).html(template);
 	
 				// Advance Select List View //
-				app.views.advancedSelectBoxCategoryRequestView = new AdvancedSelectBoxView({el: $("#claimersTypes"), collection: ClaimersTypesCollection.prototype })
+				app.views.advancedSelectBoxCategoryRequestView = new AdvancedSelectBoxView({el: $('#claimersTypes'), collection: ClaimersTypesCollection.prototype })
 				app.views.advancedSelectBoxCategoryRequestView.render();
-	
+
+				// Set the numbers of selectable resources //
+				$('#nbPlaces').html(_.size(self.selectablePlaces));
+				$('#nbEquipments').html(_.size(self.selectableEquipments));
 			});
 	
 			return this;
@@ -74,7 +85,26 @@ define([
 		selectPlace: function(e){
 			e.preventDefault();
 
-			this.toggleResource(e);
+			var idPlaces = this.toggleResource(e);
+
+			if(!_.contains(this.selectedPlaces, idPlaces)){
+				this.selectedPlaces.push(idPlaces);
+			}
+			else{
+				this.selectedPlaces.shift();
+			}
+	
+
+			if(_.isEmpty(this.selectedPlaces)){
+
+				$('#nbPlaces').removeClass('badge-info');
+				$('#nbPlaces').html(_.size(this.selectablePlaces));
+			}
+			else{
+				$('#nbPlaces').addClass('badge-info');	
+				$('#nbPlaces').html(_.join('/', _.size(this.selectedPlaces), _.size(this.selectablePlaces)));
+			}
+			
 		},
 
 
@@ -124,8 +154,17 @@ define([
 		*/
 		toggleResource: function(e){
 			var link = $(e.target);
-			var row = link.parent('li');
-			var icon = link.children('i.fa');
+
+			// If the <a> or the <i> who was clicked //
+			if(link.is('a')){
+				var row = link.parent('li');
+				var icon = link.children('i.fa');
+			}
+			else if(link.is('i')){
+				var row = link.parents('li');
+				var icon = link;
+			}
+
 
 			row.toggleClass('selected');
 
@@ -139,10 +178,42 @@ define([
 			else{
 				icon.css({color: 'inherit'});
 			}
-		}
 
+			return row.data('id');
+		},
+
+
+
+		/** Search on selectable Place
+		*/
+		resourcesSearch: function(e){
+
+			var input = $(e.target);
+			var search = input.val().toLowerCase();
+
+			var listSearchable = $('#'+input.data('search'));
 
 	
+			// If the term is not empty //
+			if(!_.isEmpty(search)){
+			 
+				_.each(listSearchable.find('li'), function(a){
+	
+					if(!_.include($(a).data('name'), search)){
+						$(a).fadeOut('fast').addClass('thide');
+					}
+					else{
+						$(a).fadeIn('fast').removeClass('thide');
+					}
+				});
+			}
+			else{
+				listSearchable.find('li').fadeIn().removeClass('thide');
+			}
+
+		}
+	
+
 
 	});
 

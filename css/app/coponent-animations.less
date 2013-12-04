@@ -57,24 +57,30 @@ tr.highlight td{
 
 /* Pulse Animation
 -------------------------------------------------- */
-
 @-webkit-keyframes pulse
 {
-    0%   { -webkit-transform: scale(1.00); }
-    50%  { -webkit-transform: scale(1.25); }
-    100% { -webkit-transform: scale(1.00); }
+	0%   { .scale(1.0); }
+	25%  { .scale(0.5); }
+	50%  { .scale(1.0); }
+	75%  { .scale(1.5); }
+	100% { .scale(1.0); }
 }
 
 // Firefox
-@-moz-keyframes pulse {
-    0%   { transform: scale(1.00); }
-    50%  { transform: scale(1.25); }
-    100% { transform: scale(1.00); }
+@-moz-keyframes pulse
+{
+	0%   { .scale(1.0); }
+	25%  { .scale(0.5); }
+	50%  { .scale(1.0); }
+	75%  { .scale(1.5); }
+	100% { .scale(1.0); }
 }
 
 // Spec
-@keyframes highlight {
-    0%   { transform: scale(1.00); }
-    50%  { transform: scale(1.25); }
-    100% { transform: scale(1.00); }
+@keyframes pulse {
+    0%   { .scale(1.0); }
+    25%  { .scale(0.5); }
+    50%  { .scale(1.0); }
+    75%  { .scale(1.5); }
+    100% { .scale(1.0); }
 }

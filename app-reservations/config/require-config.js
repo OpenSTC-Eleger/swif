@@ -35,6 +35,7 @@ requirejs.config({
 		// Views Others //
 		planningManagerView                 : 'app-reservations/js/views/others/PlanningManagerView',
 		sideBarPlanningSelectResourcesView  : 'app-reservations/js/views/others/SideBarPlanningSelectResourcesView',
+		calendarPlanningView                : 'app-reservations/js/views/others/CalendarPlanningView',
 
 		
 		// Views Items //
