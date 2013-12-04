@@ -6,9 +6,12 @@ define([
 	'bookingModel',
 	'claimerModel',
 	'bookingLinesCollection',
+	'moment',
+	'moment-timezone',
+	'moment-timezone-data'
 
 
-], function(app, AppHelpers, GenericModel, BookingModel, ClaimerModel, BookingLinesCollection){
+], function(app, AppHelpers, GenericModel, BookingModel, ClaimerModel, BookingLinesCollection, moment){
 
 	'use strict';
 	
@@ -481,6 +484,8 @@ define([
 					self.set({id:data});
 					self.fetch({silent:true});
 					if(self.get('is_template') && self.recurrence != null){
+						//add template to occurrence_ids
+						self.recurrence.set({'reservation_ids':[[4,self.getId()]]});
 						self.recurrence.saveToBackend();
 					}
 					self.lines.each(function(lineModel){

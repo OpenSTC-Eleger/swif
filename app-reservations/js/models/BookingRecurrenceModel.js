@@ -26,7 +26,8 @@ define([
 				 'date_end', 'recur_occurrence_nb', 'date_confirm', 'recurrence_state', 'actions', 'possible_actions'
 				],
 				
-		weekdays_vals : ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'],
+		//keep same ordering as moment JS for convenience
+		weekdays_vals : ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'],
 
 	
 		searchable_fields: [
@@ -68,6 +69,23 @@ define([
 		setStartDate: function(val){
 			if(val != ''){
 				this.set({'date_start':val});
+				
+				var date_start = moment(this.getStartDate());
+				var weekdayPositionVals = ['first','second','third','fourth','last']; 
+				if(this.isNew()){
+					var weekdayPosition = parseInt(date_start.date() / 7);
+					if(date_start.date() % 7 == 0){
+						weekdayPosition -= 1;
+					}
+					var default_values = {
+						recur_month_absolute: date_start.date(),
+						recur_month_relative_day: this.weekdays_vals[date_start.day()],
+						recur_month_relative_weight: weekdayPositionVals[weekdayPosition]
+					}
+					this.set(default_values);
+					//use setter to set 7 weekdays to default values
+					this.setWeekdays([this.weekdays_vals[date_start.day()]]);
+				}
 			}
 			else{
 				this.set({'date_start':false});
@@ -287,11 +305,6 @@ define([
 			return fnct.call(this).done(function(data){
 				//for each date, i create a BookingModel based on this.template
 				if(data.length > 0){
-					//do not create first date if refers to the template dates
-					//TOREMOVE or TOCHECK, do nothing for now (data[0] is an object, startDate is a string)
-					if(data[0] == self.template.getStartDate()){
-						data.splice(0,1);
-					}
 					//get length of resa (date_end - date_start)
 					var date_start = moment.utc(self.getTemplate().getStartDate()).local();
 					var date_end = moment.utc(self.getTemplate().getEndDate()).local();
@@ -302,26 +315,29 @@ define([
 						date.month -= 1;
 						date.minute = date.min;
 						var resa_date_start = moment(date);
-						var resa_date_end = moment(resa_date_start).add(length_resa);
-						//create new occurrence based on template
-						var resaModel = new BookingModel(self.template.getCloneVals());
-						//add lines based on template_lines
-						_.each(collectionLine.models,function(line,i){
-							var newLine = line.clone().off();
-							newLine.set({id:null},{silent:true});
-							resaModel.addLine(newLine);
-						});
-						//and set changed data for this occurrence
-						resaModel.set({
-							id: null,
-							checkin: moment.utc(resa_date_start).format('YYYY-MM-DD HH:mm:ss'),
-							checkout: moment.utc(resa_date_end).format('YYYY-MM-DD HH:mm:ss'),
-							is_template:false
-						},{silent:true});
-						//manually perform update of lines data
-						resaModel.updateLinesData().done(function(){
-							self.addOccurrence(resaModel);
-						});
+						//do not create first date if refers to the template dates
+						if(!date_start.isSame(resa_date_start)){
+							var resa_date_end = moment(resa_date_start).add(length_resa);
+							//create new occurrence based on template
+							var resaModel = new BookingModel(self.template.getCloneVals());
+							//add lines based on template_lines
+							_.each(collectionLine.models,function(line,i){
+								var newLine = line.clone().off();
+								newLine.set({id:null},{silent:true});
+								resaModel.addLine(newLine);
+							});
+							//and set changed data for this occurrence
+							resaModel.set({
+								id: null,
+								checkin: moment.utc(resa_date_start).format('YYYY-MM-DD HH:mm:ss'),
+								checkout: moment.utc(resa_date_end).format('YYYY-MM-DD HH:mm:ss'),
+								is_template:false
+							},{silent:true});
+							//manually perform update of lines data
+							resaModel.updateLinesData().done(function(){
+								self.addOccurrence(resaModel);
+							});
+						}
 					});
 					//DEBUG
 					console.log(self);
@@ -425,6 +441,7 @@ define([
 			this.template = null;
 			this.occurrences = new BookingsCollection();
 			this.occurrencesToRemove = new BookingsCollection();
+			
 			if(this.isNew()){
 				var default_values = {
 					date_end:false,
@@ -438,7 +455,7 @@ define([
 					recur_length_type: 'count'
 				}
 				this.set(default_values);
-				//use setter to set 7 weekdays to false
+				//use setter to set 7 weekdays to default values
 				this.setWeekdays([]);
 			}			
 		},
