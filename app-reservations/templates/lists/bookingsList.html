@@ -26,22 +26,8 @@
 			<a href="#app-reservations/nouvelle-reservation" class="btn btn-primary modalCreateBooking" role="button"><i class="fa fa-plus"></i><%= lang.resa.viewsTitles.newBooking%></a>
 		 </span>
 		 
-		 <% if(!_.isNull(recurrenceModel) && !_.isEmpty(recurrenceModel.getActions())){ 
-				var actions = recurrenceModel.getActions();
-			}
-		 %>
 		
-		<span class="bt-group col-sm-5 btn-actions" >
-			<button type="button" class="btn btn-info" id="unbindOccurences"> <i class="fa fa-step-backward"></i></button>
-			<% _.each(actions, function(action){ %>
-				<button type="button" class="actions btn btn-<%= BookingModel.actions[action].color%>" id="<%= BookingModel.actions[action].key %>">
-					<%= lang.resa.actions[BookingModel.actions[action].key+"All"] %>
-				</button>
-			<% }); %>	
-	 	</span>	
-
-
-
+		<span id="toolbar-buttons" class="bt-group col-sm-5 btn-actions"></span>
 	
 
 		<form class="form-search pull-right col-xs-5 col-md-3 col-lg-2">

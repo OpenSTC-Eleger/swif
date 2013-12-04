@@ -46,6 +46,9 @@ requirejs.config({
 		// Views Modals //
 		modalUpdateBookingView          	: 'app-reservations/js/views/modals/ModalUpdateBookingView',
 		modalUpdateBookingsListView         : 'app-reservations/js/views/modals/ModalUpdateBookingsListView',
+		
+		//Others View //
+		toolbarButtonsView					: 'app-reservations/js/views/others/ToolbarButtonsView',
 
 	
 	}

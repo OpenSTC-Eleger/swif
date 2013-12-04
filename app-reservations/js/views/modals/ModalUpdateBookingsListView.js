@@ -51,10 +51,10 @@ define([
 	
 			// Retrieve the template // 
 			$.get(app.menus.openresa + this.templateHTML, function(templateData){
-	
+				var booking = self.options.collection.at(0)
 				var template = _.template(templateData, {
 					lang     	: app.lang,
-					booking  	: self.options.booking,
+					booking  	: booking,
 					state		: self.options.state,
 					title 	 	: app.lang.resa.viewsTitles[self.options.state + "AllBookings" ],
 					iconTitle	: self.getIconTitle(),
@@ -64,7 +64,7 @@ define([
 				self.modal.html(template);				
 								
 				if( self.options.state == BookingModel.status.done.key) {
-					$('#note').html(self.options.booking.getResourceNames('newline'));
+					$('#note').html(booking.getResourceNames('newline'));
 				}		
 	
 				self.modal.modal('show');
@@ -107,7 +107,10 @@ define([
 			this.model.save(params, {patch: true, silent: true})
 				.done(function(data) {
 					self.modal.modal('hide');
-					//self.model.fetch({ data : {fields : self.model.fields} });
+					self.model.fetch({ data : {fields : self.model.fields} });
+					_.each(self.options.collection.models, function(model) {
+						model.fetch( { data : {fields : model.fields} } )
+					});
 				})
 				.fail(function (e) {
 					console.log(e);

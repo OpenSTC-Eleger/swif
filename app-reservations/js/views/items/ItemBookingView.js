@@ -36,9 +36,7 @@ define([
 		*/
 		initialize : function(params) {
 			this.options = params;
-			
-			this.detailedView = this.options.detailedView;
-	
+				
 			this.model.off();
 	
 			// When the model are updated //
@@ -110,53 +108,6 @@ define([
 			e.preventDefault();
 			app.views.bookingsListView.options.recurrence = this.model.getRecurrence('id'); 
 			app.router.navigate(app.views.bookingsListView.urlBuilder(), {trigger: true, replace: true});			
-		},
-	
-		/**
-		 * Process Table accordion event
-		 */
-		tableAccordion: function(e){	
-			e.preventDefault();
-			//fold up current accordion and expand 
-			this.expendAccordion();		   
-		},
-		
-		/**
-		 * Expan accordion
-		 */
-		expendAccordion: function(){
-			// Retrieve the intervention ID //
-			//var id = _($(e.target).attr('href')).strRightBack('_');
-			var id = this.model.toJSON().id.toString();
-			var self = this;
-		
-			var isExpend = $('#collapse_'+id).hasClass('expend');
-		
-			// Reset the default visibility //
-			$('tr.expend').css({ display: 'none' }).removeClass('expend');
-			$('tr.row-object').css({ opacity: '0.45'});
-			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-			
-			
-			// If the table row isn't already expend //       
-			if(!isExpend){
-				// Fetch tasks
-				if(!_.isUndefined(this.detailedView) && !_.isNull(this.detailedView)){
-					this.detailedView.fetchData().done(function () {
-						self.detailedView.render();
-					});
-				}
-				
-				// Set the new visibility to the selected intervention //
-				$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
-				$(this.el).parents('tr.row-object').css({ opacity: '1'});  
-				$(this.el).parents('tr.row-object').children('td').css({ backgroundColor: "#F5F5F5" }); 
-			}
-			else {
-				$('tr.row-object').css({ opacity: '1'});
-				$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-				$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
-			}
 		},
 		
 		
