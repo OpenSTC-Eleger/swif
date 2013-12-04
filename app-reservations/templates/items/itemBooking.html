@@ -69,20 +69,26 @@
 				var mainActionDisabled = '';
 		
 				switch(booking.getState()){
-					case 'remplir':
-						actions = _.without(actions, BookingModel.actions.confirm.key);
+					case 'remplir':						
 						console.debug("remplir");	
 						if(booking.isAllDispo()) {
+							actions = _.without(actions, BookingModel.actions.confirm.key);
 							mainAction = BookingModel.actions.confirm.key;
 							mainActionColor = BookingModel.actions.confirm.color;
 							mainActionIcon = BookingModel.actions.confirm.icon;
 							mainActionDisabled = '';
 						}
 						else {
-							mainAction = BookingModel.actions.resolve_conflict.key;
+							actions = _.without(actions, BookingModel.actions.cancel.key);
+							mainAction = BookingModel.actions.cancel.key;
+							mainActionColor = BookingModel.actions.cancel.color;
+							mainActionIcon = BookingModel.actions.cancel.icon;
+							mainActionDisabled = '';
+							/* mainAction = BookingModel.actions.resolve_conflict.key;
 							mainActionColor = BookingModel.actions.resolve_conflict.color;
 							mainActionIcon = BookingModel.actions.resolve_conflict.icon;
 							mainActionDisabled = '';
+							*/
 						}
 					break;
 					case 'cancel':	
@@ -114,9 +120,11 @@
 			</button>
 			
 			<!-- Dropdown button action -->
-			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-				<span class="fa fa-caret-down"></span>
-			</button>
+			<% if( _.size(actions)>0 ) { %>
+				<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					<span class="fa fa-caret-down"></span>
+				</button>
+			<% } %>
 			
 			<!-- Other buttons action -->
 			<ul class="dropdown-menu pull-right text-left">

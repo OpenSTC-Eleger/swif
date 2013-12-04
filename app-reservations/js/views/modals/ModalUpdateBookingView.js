@@ -98,8 +98,8 @@ define([
 	
 	
 			var params = {
-				state   		: this.options.state,
-				send_invoicing  : $('#sendInvoicing').is(':checked'),
+				state_event   		: this.options.state,
+				send_invoicing  	: $('#sendInvoicing').is(':checked'),
 			}
 			params[this.options.state+'_note'] = $('#note').val()
 	
