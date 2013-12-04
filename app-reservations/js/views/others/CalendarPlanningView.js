@@ -1,9 +1,10 @@
 define([
 	'app',
 	'fullcalendar',
+	'moment',
 
 
-], function(app,fullcalendar){
+], function(app, fullcalendar, moment){
 
 	'use strict';
 
@@ -31,7 +32,10 @@ define([
 		initialize: function (params) {
 			var self = this;
 
-			this.options = params;
+
+			// Params //
+			this.calendarView = params.calendarView;
+			this.currentDate = params.date;
 
 			this.render();
 		},
@@ -69,14 +73,14 @@ define([
 			this.calendar.fullCalendar({
 	    		
 	    		/** Full calendar attributes **/
-				//month       :	date.month(),
-				//year        :	date.year(),
-				//date        : date.date(),
-				defaultView   : 'agendaWeek',
+				date        :   this.currentDate.date(),
+				month       :	this.currentDate.month(),
+				year        :	this.currentDate.year(),
+				defaultView   : this.calendarView,
 				ignoreTimezone: false,
 				height        : 735,
 				header: {
-					left  : 'month,agendaWeek,agendaDay',
+					left  : 'agendaDay,agendaWeek,month',
 					center: 'title',
 					right : 'today,prev,next'
 				},
