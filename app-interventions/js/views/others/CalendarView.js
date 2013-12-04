@@ -241,7 +241,7 @@ define([
 				// time formats
 				titleFormat: {
 				    month: 'MMMM yyyy',
-				    week:"'Semaine 'W' du' dd [MMM] [yyyy] {'au' dd MMM yyyy}",
+				    week:"'Semaine 'W' <small>du' dd [MMM] [yyyy] {'au' dd MMM yyyy}</small>",
 				    day: 'dddd dd MMM yyyy'
 				},
 				columnFormat: {
