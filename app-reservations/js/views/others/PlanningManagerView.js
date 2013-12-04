@@ -1,10 +1,11 @@
 define([
 	'app',
+	'moment',
 
 	'sideBarPlanningSelectResourcesView',
 	'calendarPlanningView'
 
-], function(app, SideBarPlanningSelectResourcesView, CalendarPlanningView){
+], function(app, moment, SideBarPlanningSelectResourcesView, CalendarPlanningView){
 
 	'use strict';
 
@@ -31,8 +32,34 @@ define([
 		*/
 		initialize: function (params) {
 			var self = this;
+			this.options ={};
 
-			this.options = params;
+			
+			// Check the params //
+			switch(params.calendarView){
+				case 'month':
+					this.options.calendarView = 'month';
+				break;
+
+				case 'week':
+					this.options.calendarView = 'agendaWeek';
+				break;
+
+				case 'day':
+					this.options.calendarView = 'agendaDay';
+				break;
+
+				default: 
+					this.options.calendarView = 'agendaWeek';
+			}
+
+			if(!_.isUndefined(params.day)){
+				this.options.date = moment().date(params.day).month(params.month).year(params.year);
+			}
+			else{
+				this.options.date = moment();
+			}
+
 
 			app.router.render(self);
 		},
@@ -64,7 +91,9 @@ define([
 				});
 
 				app.views.CalendarPlanningView = new CalendarPlanningView({
-					el : '#calendarManager'
+					el   : '#calendarManager',
+					calendarView : self.options.calendarView,
+					date : self.options.date
 				});
 
 			});

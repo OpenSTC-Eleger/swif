@@ -5,8 +5,12 @@
 		a{
 			.text-default();
 
-			i{
+			> i.icon-radio{
 				margin-right: 10px;
+			}
+
+			.quantity-container{
+				.hide();
 			}
 		}
 	}
@@ -16,10 +20,13 @@
 			.text-primary();
 			font-weight: bolder;
 
-			i{
+			> i.icon-radio{
 				.animation(pulse 0.3s linear 0s 1 normal);
 			}
 
+			.quantity-container{
+				.show();
+			}
 		}
 	}
 }
