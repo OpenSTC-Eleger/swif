@@ -70,7 +70,7 @@ define([
 			if(val != ''){
 				this.set({'date_start':val});
 				
-				var date_start = moment(this.getStartDate());
+				var date_start = AppHelpers.convertDateToTz(this.getStartDate());
 				var weekdayPositionVals = ['first','second','third','fourth','last']; 
 				if(this.isNew()){
 					var weekdayPosition = parseInt(date_start.date() / 7);
@@ -104,7 +104,7 @@ define([
 			if(this.get('date_end') != false){
 				switch(type){
 					case 'human':	
-						return moment(this.get('date_end')).format('LL');
+						return AppHelpers.convertDateToTz(this.get('date_end')).format('LL');
 					break;
 					default:
 						return this.get('date_end');
@@ -315,10 +315,10 @@ define([
 						//fix to map date returned by JSON and date expected by moment
 						date.month -= 1;
 						date.minute = date.min;
-						var resa_date_start = moment(date);
+						var resa_date_start = AppHelpers.convertDateToTz(date);
 						//do not create first date if refers to the template dates
 						if(!date_start.isSame(resa_date_start)){
-							var resa_date_end = moment(resa_date_start).add(length_resa);
+							var resa_date_end = AppHelpers.convertDateToTz(resa_date_start).add(length_resa);
 							//create new occurrence based on template
 							var resaModel = new BookingModel(self.template.getCloneVals());
 							//add lines based on template_lines

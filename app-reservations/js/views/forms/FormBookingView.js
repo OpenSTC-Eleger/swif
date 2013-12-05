@@ -60,7 +60,7 @@ define(['app',
 			this.options = params;
 			var self = this;
 			//if view is called with a filled model (new booking from calendar)
-			if(!_.isUndefined(this.options.model)){
+			if(!_.isUndefined(this.model)){
 				self.renderLines();
 			}
 			//else, if view is called without an id (new booking from scratch)
@@ -106,10 +106,15 @@ define(['app',
 			
 		},
 		
+		//compute if form can be modified or not
+		isEditable: function(){
+			return this.model.getState() == BookingModel.status.remplir.key;
+		},
+		
 	    //compute display of button addBookable (readonly or visible)
 	    updateDisplayAddBookable: function(){
 	    	var elt = $('#bookingAddBookable');
-	    	if(this.model.getStartDate() != '' && this.model.getEndDate() != '' && this.model.getClaimer('id') > 0){
+	    	if(this.isEditable() && this.model.getStartDate() != '' && this.model.getEndDate() != '' && this.model.getClaimer('id') > 0){
 	    		elt.removeAttr('disabled');
 	    	}
 	    	else{
@@ -123,7 +128,7 @@ define(['app',
 	    //compute display of button save (readonly or visible)
 	    updateDisplaySave: function(){
 	    	var elt = $('#saveFormBooking');
-	    	if(this.model.getStartDate() != '' && this.model.getEndDate() != '' && this.model.getClaimer('id') > 0 && this.model.lines.length > 0){
+	    	if(this.isEditable() && this.model.getStartDate() != '' && this.model.getEndDate() != '' && this.model.getClaimer('id') > 0 && this.model.lines.length > 0){
 	    		elt.removeAttr('disabled');
 	    	}
 	    	else{
@@ -134,7 +139,7 @@ define(['app',
 	    //compute display of button addRecurrence (readonly or visible)
 	    updateDisplayAddRecurrence: function(){
 	    	var elt = $('#addRecurrence');
-	    	if(this.model.recurrence == null && this.model.getStartDate() != '' && 
+	    	if(this.isEditable() && this.model.recurrence == null && this.model.getStartDate() != '' && 
 	    			this.model.getEndDate() != '' && this.model.getClaimer('id') > 0 && this.model.lines.length > 0){
 	    		elt.removeClass('hide-soft');
 	    	}
@@ -146,7 +151,7 @@ define(['app',
 	    //compute display of button removeRecurrence (readonly or visible)
 	    updateDisplayRemoveRecurrence: function(){
 	    	var elt = $('#removeRecurrence');
-	    	if(this.model.recurrence != null && this.model.isTemplate()){
+	    	if(this.isEditable() && this.model.recurrence != null && this.model.isTemplate()){
 	    		elt.removeClass('hide-soft');
 	    	}
 	    	else{
@@ -179,16 +184,16 @@ define(['app',
 		render: function(loader) {
 	
 			var self = this;
-	
 			// Retrieve the template //
 			$.get(app.menus.openresa + this.templateHTML, function(templateData){			
+				//compute dates with browser-local TZ
 				var startDate = '';
 				var startHour = '';
 				var endDate = '';
 				var endHour = '';
 				if(!self.model.isNew()){
-					var checkin = moment.utc((self.model.getStartDate())).local();
-					var checkout = moment.utc((self.model.getEndDate())).local();
+					var checkin = AppHelpers.convertDateToTz(self.model.getStartDate());
+					var checkout = AppHelpers.convertDateToTz(self.model.getEndDate());
 					
 					startDate = checkin.format('D/M/YYYY');
 					startHour = checkin.format('H:m');
@@ -204,6 +209,7 @@ define(['app',
 					startHour	: startHour,
 					endDate 	: endDate,
 					endHour		: endHour,
+					readonly	: !self.isEditable()
 				});
 	
 				$(self.el).html(template);

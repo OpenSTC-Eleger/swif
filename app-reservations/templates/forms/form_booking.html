@@ -7,7 +7,7 @@
 	
 <form id="formSaveBooking" action="#" class="form-horizontal container" role="form">
 	<div class="row">
-		<fieldset class="col-sm-6">
+		<fieldset class="col-sm-6" <%= readonly ? 'disabled' : ''%>>
 		<legend>Informations Générales</legend>
 			<!-- Booking Partner (claimer) -->
 			<div class="form-group">
@@ -82,7 +82,7 @@
 			</div>
 		</fieldset>
 		<!-- Bookables (qty, pricing, dispo)-->
-		<fieldset class="col-sm-6">
+		<fieldset class="col-sm-6" <%= readonly ? 'disabled' : ''%>>
 		<legend>Ressources demandées</legend>
 			<!-- Recap of BookingLines -->
 			<table class="table-nested-objects table table-striped table-condensed table-hover">
