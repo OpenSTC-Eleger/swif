@@ -130,7 +130,7 @@ define([
 	    		 * Calculates events to display on calendar for officer (or team) on week selected
 	    		 */    		
 				events: function(start, end, callback) { 
-	    		
+	    			console.log('Calendar');
 				},			
 	
 				/**
@@ -150,6 +150,12 @@ define([
 
 	    		}
 			});
+
+		},
+
+
+
+		fetchReservations: function(){
 
 		},
 
@@ -180,6 +186,9 @@ define([
 			}
 			else if(mode == 'subtract'){
 				this.currentDate.subtract(unite, 1);
+			}
+			else if(mode == 'subtract'){
+				this.currentDate = moment();
 			}
 
 			var route = _.strLeft(app.routes.planningManager.url, '(');
