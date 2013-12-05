@@ -59,13 +59,17 @@ define(['app',
 		initialize : function(params) {
 			this.options = params;
 			var self = this;
-			//this.lineViews = [];
-			// Check if it's a create or an update //
-			if(_.isUndefined(this.options.id)){
+			//if view is called with a filled model (new booking from calendar)
+			if(!_.isUndefined(this.options.model)){
+				self.renderLines();
+			}
+			//else, if view is called without an id (new booking from scratch)
+			else if(_.isUndefined(this.options.id)){
 				
 				this.model = new BookingModel();
 				app.router.render(this);
 			}
+			//else, mean that id option is set (update booking from list, for example)
 			else{
 				// Render with loader //
 				this.model = new BookingModel({id:this.options.id});
