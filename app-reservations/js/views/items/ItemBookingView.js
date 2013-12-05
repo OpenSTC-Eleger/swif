@@ -12,7 +12,7 @@ define([
 
 
 	/******************************************
-	* Row Intervention View
+	* Row Booking View
 	*/
 	var itemBookingView = Backbone.View.extend({
 	
@@ -23,13 +23,10 @@ define([
 		className   : 'row-item',
 	
 		// The DOM events //
-		events       : {
-			'click a.accordion-object'    			: 'tableAccordion',
-			'click a.displayOccurences'				: 'displayOccurences',
-			
+		events       : {			
+			'click a.displayOccurences'				: 'displayOccurences',			
 			'click .actions'						: 'modalUpdateBooking'
-		},
-	
+		},	
 	
 	
 		/** View Initialization
@@ -49,18 +46,16 @@ define([
 		*/
 		change: function(model){
 			var self = this;
+			
 			self.render();
+				
+			// Highlight the Row and recalculate the className //
+			AppHelpers.highlight($(self.el)).done(function(){});
 	
-			//Not apply notification for resources because field is calculated.
-			if(! model.hasChanged('resources') ){
-				// Highlight the Row and recalculate the className //
-				AppHelpers.highlight($(self.el)).done(function(){});
-		
-				app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
-		
-				// Partial Render //
-				app.views.bookingsListView.partialRender();
-			}
+			app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
+	
+			// Partial Render //
+			app.views.bookingsListView.partialRender(model);			
 		},
 	
 	
@@ -93,8 +88,8 @@ define([
 				$('tr.row-object > td').css({ backgroundColor: '#FFF'});
 				$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 				
-				if( !self.model.isAllDispo() )
-					//this.el.effect("highlight", {color: 'blue'});
+				//Apply warning color when some ressources are not disponible
+				if( !self.model.isAllDispo() )					
 					$(self.el).addClass('danger');
 				
 			});
@@ -111,10 +106,11 @@ define([
 		},
 		
 		
-		/** Display Modal form to valid an Intervention Request
+		/** Display Modal form to valid an Booking Request
 		*/
 		modalUpdateBooking: function(e){
-			e.preventDefault(); e.stopPropagation();
+			e.preventDefault(); 
+			//e.stopPropagation();
 	
 			app.views.modalUpdateBookingView = new ModalUpdateBookingView({
 				el      : '#modalUpdateBooking',

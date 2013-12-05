@@ -1,19 +1,18 @@
 define([
 	'app',
-	'appHelpers',
 
 	'bookingModel',
 	'bookingRecurrenceModel',
 	
 	'modalUpdateBookingsListView'
 
-], function(app, AppHelpers, BookingModel, BookingRecurrenceModel, ModalUpdateBookingsListView){
+], function(app, BookingModel, BookingRecurrenceModel, ModalUpdateBookingsListView){
 
 	'use strict';
 
 
 	/******************************************
-	* Row Intervention View
+	* Booking's Toolbar 
 	*/
 	var toolbarButtonsView = Backbone.View.extend({
 	
@@ -26,28 +25,29 @@ define([
 		events       : {
 			'click .actions'						: 'updateOccurences',
 			'click #unbindOccurences'           	: 'unbindOccurences',	
-		},
-	
+		},	
 	
 	
 		/** View Initialization
 		*/
 		initialize : function(params) {			
 			this.options = params;
-			var self = this
-			
+			var self = this			
 			
 			if( !_.isUndefined( app.views.bookingsListView.options.recurrence )) {
+				//fetch recurrence model
 				this.model = new BookingRecurrenceModel({id: app.views.bookingsListView.options.recurrence });
 				this.model.fetch().done(function(model){
-					self.listenTo(self.model, 'change', self.change);
-					_.each(self.options.collection.models, function(model){
-						self.listenTo(model, 'change', self.initialize);
-					})					
+					//update toolbar buttons when recurrence change
+					self.listenTo(self.model, 'change', self.change);			
 					self.render();
 				});
 			}
-			
+			else{
+				if( !_.isUndefined(this.model) && !_.isNull(this.model))
+					//Kill listeners on model
+					this.model.off();
+			}			
 		},
 	
 	
@@ -56,7 +56,9 @@ define([
 		*/
 		change: function(model){
 			this.model = model;
+			
 			var self = this;
+			//update toolbar buttons when recurrence model change
 			self.render();
 		},
 	
@@ -65,8 +67,7 @@ define([
 		/** Display the view
 		*/
 		render : function() {
-			var self = this;
-	
+			var self = this;	
 	
 			// Retrieve the template // 
 			$.get(app.menus.openresa + this.templateHTML, function(templateData){
@@ -74,8 +75,7 @@ define([
 					lang             : app.lang,
 					BookingModel	 : BookingModel,
 					recurrenceModel  : self.model
-				});
-	
+				});	
 	
 				$(self.el).html(template);	
 				
@@ -84,7 +84,7 @@ define([
 			return this;
 		},
 		
-		/** valid all occurences booking
+		/** valid booking 's occurences
 		*/
 		updateOccurences: function(e){
 			e.preventDefault();
@@ -92,7 +92,7 @@ define([
 			this.openModal(e.currentTarget.id);	
 		},
 		
-		/** unbind occurences : return to list
+		/** unbind occurences : return to bookings list
 		*/
 		unbindOccurences: function(e){
 			e.preventDefault();
@@ -101,6 +101,9 @@ define([
 			app.router.navigate(app.views.bookingsListView.urlBuilder(), {trigger: true, replace: true});	
 		},
 		
+		/**
+		 * Open modal to validate all booking's occurences
+		 */
 		openModal: function(state){
 			app.views.modalUpdateBookingsListView = new ModalUpdateBookingsListView({
 				el      	: '#modalUpdateBookingsList',

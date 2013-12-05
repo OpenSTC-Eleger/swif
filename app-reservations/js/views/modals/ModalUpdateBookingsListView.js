@@ -11,7 +11,7 @@ define([
 
 
 	/******************************************
-	* Refuse Request Modal View
+	* Update booking's occurence
 	*/
 	var modalUpdateBookingsListView = GenericModalView.extend({
 	
@@ -22,12 +22,11 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'submit #formUpdateBooking'   : 'updateBooking'
+				'submit #formUpdateBookingList'   : 'updateBooking'
 			}, 
 				GenericModalView.prototype.events
 			);
-		},
-	
+		},	
 	
 	
 		/** View Initialization
@@ -39,8 +38,7 @@ define([
 			this.modal = $(this.el);
 	
 			this.render();
-		},
-	
+		},	
 	
 	
 		/** Display the view
@@ -57,15 +55,11 @@ define([
 					booking  	: booking,
 					state		: self.options.state,
 					title 	 	: app.lang.resa.viewsTitles[self.options.state + "AllBookings" ],
-					iconTitle	: self.getIconTitle(),
+					iconTitle	: self.getIconTitle(),					
 					BookingModel: BookingModel
 				});
 	
 				self.modal.html(template);				
-								
-				if( self.options.state == BookingModel.status.done.key) {
-					$('#note').html(booking.getResourceNames('newline'));
-				}		
 	
 				self.modal.modal('show');
 			});
@@ -73,6 +67,9 @@ define([
 			return this;
 		},
 		
+		/**
+		 * Adapts icon displayed on top with state wanted
+		 */
 		getIconTitle: function(){
 			switch (this.options.state){ 
 				case BookingModel.status.done.key: 
@@ -86,7 +83,7 @@ define([
 			}
 		},		
 	
-		/** Delete the model pass in the view
+		/** Update the model pass in the view
 		*/
 		updateBooking: function(e){
 			e.preventDefault();
@@ -107,7 +104,9 @@ define([
 			this.model.save(params, {patch: true, silent: true})
 				.done(function(data) {
 					self.modal.modal('hide');
+					//Fetch recurrence
 					self.model.fetch({ data : {fields : self.model.fields} });
+					//Fetch booking 's occurences
 					_.each(self.options.collection.models, function(model) {
 						model.fetch( { data : {fields : model.fields} } )
 					});
@@ -117,8 +116,7 @@ define([
 				})
 				.always(function () {
 					$(self.el).find("button[type=submit]").button('reset');
-				});
-			
+				});			
 		}
 	
 	});
