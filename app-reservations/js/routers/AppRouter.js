@@ -1,11 +1,12 @@
 define([
 	'app',
+	'moment',
 
 	'bookingsListView',
 	'formBookingView',
 	'planningManagerView'
 
-], function(app, BookingsListView, FormBookingView, PlanningManagerView){
+], function(app, moment, BookingsListView, FormBookingView, PlanningManagerView){
 
 	'use strict';
 
@@ -41,9 +42,11 @@ define([
 
 		/** Planning Mananger
 		*/
-		planningManager: function(){
+		planningManager: function(calendarView, day, month, year){
 
-			app.views.planningManager = new PlanningManagerView();
+			var params = this.setContext({calendarView: calendarView, day: day, month: month, year: year});
+
+			app.views.planningManager = new PlanningManagerView(params);
 		}
 
 	});

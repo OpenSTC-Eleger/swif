@@ -11,7 +11,7 @@
 	},
 
 	"planningManager" : {
-		"url"       : "planning-des-reservations",
+		"url"       : "planning-des-reservations(/:view)(/:day/:month/:year)",
 		"function"  : "planningManager"
 	}
 
