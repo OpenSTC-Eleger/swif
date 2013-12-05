@@ -34,7 +34,7 @@ define([
 			var self = this;
 			this.options ={};
 
-			
+
 			// Check the params //
 			switch(params.calendarView){
 				case 'month':
@@ -49,12 +49,13 @@ define([
 					this.options.calendarView = 'agendaDay';
 				break;
 
-				default: 
+				default:
 					this.options.calendarView = 'agendaWeek';
 			}
 
+
 			if(!_.isUndefined(params.day)){
-				this.options.date = moment().date(params.day).month(params.month).year(params.year);
+				this.options.date = moment().date(params.day).month((params.month)-1).year(params.year);
 			}
 			else{
 				this.options.date = moment();
@@ -79,8 +80,7 @@ define([
 			$.get(app.menus.openresa + this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					lang             : app.lang,
-
+					lang       : app.lang,
 				});
 
 				$(self.el).html(template);
@@ -91,9 +91,9 @@ define([
 				});
 
 				app.views.CalendarPlanningView = new CalendarPlanningView({
-					el   : '#calendarManager',
-					calendarView : self.options.calendarView,
-					date : self.options.date
+					el          : '#calendarManager',
+					calendarView: self.options.calendarView,
+					date        : self.options.date
 				});
 
 			});

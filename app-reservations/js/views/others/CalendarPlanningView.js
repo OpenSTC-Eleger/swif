@@ -22,7 +22,12 @@ define([
 	
 		// The DOM events //
 		events: {
-
+			'click .fc-button-prev'      : 'goPrevDate',
+			'click .fc-button-next'      : 'goNextDate',
+			'click .fc-button-today'     : 'goTodayDate',
+			'click .fc-button-agendaDay' : 'goDayFormat',
+			'click .fc-button-agendaWeek': 'goWeekFormat',
+			'click .fc-button-month'     : 'goMonthFormat'
 		}, 
 	
 	
@@ -31,7 +36,6 @@ define([
 		*/
 		initialize: function (params) {
 			var self = this;
-
 
 			// Params //
 			this.calendarView = params.calendarView;
@@ -122,7 +126,6 @@ define([
 					next  : '<i class="fa fa-chevron-right fa-fw"></i>',
 				},
 
-
 	    		/**
 	    		 * Calculates events to display on calendar for officer (or team) on week selected
 	    		 */    		
@@ -148,8 +151,85 @@ define([
 	    		}
 			});
 
+		},
+
+
+		urlBuilder: function(mode){
+
+			var unite; var view;
+			// Check the params //
+			switch(this.calendarView){
+				case 'agendaDay':
+					unite = 'days';
+					view = 'day';
+				break;
+
+				case 'agendaWeek':
+					unite = 'weeks';
+					view = 'week';
+				break;
+
+				case 'month':
+					unite = 'months';
+					view = 'month';
+				break;
+			}
+
+			if(mode == 'add'){
+				this.currentDate.add(unite, 1);
+			}
+			else if(mode == 'subtract'){
+				this.currentDate.subtract(unite, 1);
+			}
+
+			var route = _.strLeft(app.routes.planningManager.url, '(');
+
+			var params = view +'/'+ this.currentDate.format('DD') +'/'+ (this.currentDate).format('MM') +'/'+ this.currentDate.year();
+
+			app.router.navigate(_.join('/', route, params), {trigger: false, replace: true});
+
+		},
+
+
+
+		/** Go to the previous Date
+		*/		
+		goPrevDate: function(e){
+			this.urlBuilder('subtract');
+		},
+
+		/** Go to the next Date
+		*/
+		goNextDate: function(e){
+			this.urlBuilder('add');
+		},
+
+		/** Go to the today's Date
+		*/
+		goTodayDate: function(e){
+			this.urlBuilder('today');
+		},
+
+		/** Go to the Day Format
+		*/
+		goDayFormat: function(e){
+			this.calendarView = 'agendaDay';
+			this.urlBuilder();
+		},
+
+		/** Go to the Week Format
+		*/
+		goWeekFormat: function(e){
+			this.calendarView = 'agendaWeek';
+			this.urlBuilder();
+		},
+
+		/** Go to the Month Format
+		*/
+		goMonthFormat: function(e){
+			this.calendarView = 'month';
+			this.urlBuilder();
 		}
-	
 
 
 	});

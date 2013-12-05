@@ -319,7 +319,7 @@ define([
 		    		//Get tasks for domain
 					self.collection.fetch(fetchParams).done(function(data){					
 						//Transforms tasks in events for fullcalendar
-						self.events = self.fetchEvents();	
+						self.events = self.fetchEvents();
 						self.collection.off();
 						self.listenTo(self.collection, 'add', self.refreshEvents);
 						self.listenTo(self.collection, 'change', self.refreshEvents);
