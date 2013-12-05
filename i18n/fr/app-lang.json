@@ -181,6 +181,7 @@
 	"developBy" 							: "développé par",
 	"citizen"                               : "administré",
 	"recurrence"							: "récurrence",
+	"removeRecurrence"						: "Retirer récurrence",
 	"bookable"								: "ressource",
 	"bookables"								: "ressources",
 	"picture"								: "Image",

@@ -11,7 +11,7 @@ define([
 	'use strict';
 
 	/******************************************
-	* Refuse Request Modal View
+	* Update booking
 	*/
 	var modalUpdateBookingView = GenericModalView.extend({
 	
@@ -26,9 +26,7 @@ define([
 			}, 
 				GenericModalView.prototype.events
 			);
-		},
-	
-	
+		},	
 	
 		/** View Initialization
 		*/
@@ -39,9 +37,7 @@ define([
 			this.modal = $(this.el);
 	
 			this.render();
-		},
-	
-	
+		},	
 	
 		/** Display the view
 		*/
@@ -62,10 +58,6 @@ define([
 				});
 				
 				self.modal.html(template);
-				
-				if( self.options.state == BookingModel.status.done.key) {
-					$('#note').html(self.model.getResourceNames('newline'));
-				}			
 	
 				self.modal.modal('show');
 			});
@@ -73,6 +65,9 @@ define([
 			return this;
 		},
 	
+		 /**
+		 * Adapts icon displayed on top with state wanted
+		 */
 		getIconTitle: function(){
 			switch (this.options.state){ 
 				case BookingModel.status.done.key: 
@@ -86,7 +81,7 @@ define([
 			}
 		},
 	
-		/** Delete the model pass in the view
+		/** Update the model pass in the view
 		*/
 		updateBooking: function(e){
 			e.preventDefault();
@@ -107,6 +102,7 @@ define([
 			this.model.save(params, {patch: true, silent: true})
 				.done(function(data) {
 					self.modal.modal('hide');
+					//Fetch booking
 					self.model.fetch({ data : {fields : self.model.fields} });
 				})
 				.fail(function (e) {

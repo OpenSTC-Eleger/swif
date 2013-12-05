@@ -19,12 +19,17 @@
 
 		<form id="formUpdateBooking" action="#" class="form-horizontal">
 		
+			<% 
+				var note = ''
+				if(state==BookingModel.status.done.key) 
+					note = booking.getResourceNames('newline') 
+			%>
 			<!-- note related to this action -->
 			<div class="form-group">
 				<label for="note" class="control-label col-sm-3"><%= _.capitalize(lang.description) %>:</label>
 
 				<div class="col-sm-9">
-					<textarea id="note" class="form-control" rows="5" required></textarea>
+					<textarea id="note" class="form-control" rows="5" required><%= note %></textarea>
 				</div>			
 
 			</div>	

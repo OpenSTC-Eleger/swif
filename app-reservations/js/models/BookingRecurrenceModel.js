@@ -23,7 +23,7 @@ define([
 		fields : ['id', 'name' , 'recur_periodicity', 'recur_week_monday', 'recur_week_tuesday', 'recur_week_wednesday', 'recur_week_thursday',
 		         'recur_week_friday', 'recur_week_saturday', 'recur_week_sunday', 'recur_month_type', 'recur_month_absolute',
 				 'recur_month_relative_weight', 'recur_month_relative_day', 'recur_type', 'date_start', 'recur_length_type', 
-				 'date_end', 'recur_occurrence_nb', 'date_confirm', 'recurrence_state', 'actions', 'possible_actions'
+				 'date_end', 'recur_occurrence_nb', 'date_confirm', 'recurrence_state', 'actions', 'possible_actions','reservation_ids'
 				],
 				
 		//keep same ordering as moment JS for convenience
@@ -282,6 +282,7 @@ define([
 			});
 		},
 		
+		//method to compute occurrences according to recurrence settings, and add these occurrences to model
 		fetchDates: function(){
 			var self = this;
 			var fnct = null;
@@ -333,8 +334,8 @@ define([
 								checkout: moment.utc(resa_date_end).format('YYYY-MM-DD HH:mm:ss'),
 								is_template:false
 							},{silent:true});
-							//manually perform update of lines data
-							resaModel.updateLinesData().done(function(){
+							//manually perform update of lines data, take care keeping same pricing as set in template.lines
+							resaModel.updateLinesData({pricing:false}).done(function(){
 								self.addOccurrence(resaModel);
 							});
 						}
@@ -348,7 +349,7 @@ define([
 		setTemplate: function(model){
 			this.template = model;
 			model.recurrence = this;
-			this.template.set({is_template:true},{silent:true});
+			this.template.set({is_template:true});
 		},
 		
 		getTemplate: function(){
@@ -360,19 +361,34 @@ define([
 			this.occurrences.add(model);
 		},
 		
+		//fetch occurrences from backend and returns a deferred (deferred is resolve() when all data, lines and bookings, are fetched
 		fetchOccurrences: function(){
 			var self = this;
 			var deferred = $.Deferred();
 			this.occurrences.fetch({data:{filters:{0:{field:'recurrence_id.id',operator:'=',value:this.getId()}}}}).done(function(){
-				self.occurrences.each(function(occurrence,i){
-					occurrence.recurrence = self;
-					occurrence.fetchLines();
-				});
-				deferred.resolve();
+				if(self.occurrences.length > 0){
+					var arrayDeferred = [];
+					self.occurrences.each(function(occurrence,i){
+						occurrence.recurrence = self;
+						var tempDeferred= $.Deferred();
+						occurrence.fetchLines().done(function(){
+							tempDeferred.resolve();
+						});
+						arrayDeferred.push(tempDeferred);
+					});
+					//use apply JS method to call when with unknown number of deferred, in order to resolve the main deferred when all lines are fetched
+					$.when.apply($, arrayDeferred).done(function(){
+						deferred.resolve();
+					})
+				}
+				else{
+					deferred.resolve();
+				}
 			});
 			return deferred;
 		},
 		
+		//returns formatted values to be saved to backend
 		getSaveVals: function(){
 			return {
 				recur_length_type: this.get('recur_length_type'),
@@ -420,6 +436,19 @@ define([
 			
 		},
 		
+		//destroy recurrenceModel form backend and destroy its occurrences too
+		persistentDestroyOnBackend: function(){
+			//get ids of occurrences to remove
+			var occurrenceToRemoveIds = this.get('reservation_ids');
+			//remove template_id from ids to remove
+			occurrenceToRemoveIds.splice(occurrenceToRemoveIds.indexOf(this.get('template_id')),1);
+			_.each(occurrenceToRemoveIds,function(id,i){
+				var modelToRemove = new BookingModel({id:id});
+				modelToRemove.destroy();
+			});
+			this.destroy();
+		},
+		
 		destroyOccurrenceFromBackend: function(model){
 			this.occurrences.remove(model);
 			this.occurrencesToRemove.add(model.clone().off());
@@ -452,7 +481,8 @@ define([
 					recur_month_relative_day: 'monday',
 					recur_month_relative_weight: 'first',
 					recur_month_type: 'monthday',
-					recur_length_type: 'count'
+					recur_length_type: 'count',
+					reservation_ids:[]
 				}
 				this.set(default_values);
 				//use setter to set 7 weekdays to default values

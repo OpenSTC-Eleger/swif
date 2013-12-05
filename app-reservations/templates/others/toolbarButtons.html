@@ -1,0 +1,12 @@
+<% if(!_.isNull(recurrenceModel) && !_.isEmpty(recurrenceModel.getActions())){ 
+	var actions = recurrenceModel.getActions();
+}
+		
+if(!_.isNull(recurrenceModel) ) { %>
+	<button type="button" class="btn btn-info" id="unbindOccurences"> <i class="fa fa-step-backward"></i></button>
+<% } %>
+<% _.each(actions, function(action){ %>
+	<button type="button" class="actions btn btn-<%= BookingModel.actions[action].color%>" id="<%= BookingModel.actions[action].key %>">
+		<%= lang.resa.actions[BookingModel.actions[action].key+"All"] %>
+	</button>
+<% }); %>	

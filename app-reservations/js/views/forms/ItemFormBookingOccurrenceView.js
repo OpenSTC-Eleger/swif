@@ -19,7 +19,7 @@ define(['app',
 	var ItemFormBookingOccurrenceView = Backbone.View.extend({
 	
 		tagName      : 'tr',
-	
+		//retrieve className to display line as 'available' or 'not available' according to lines.dispo
 		className    :  function() {
 				var classRow = 'row-nested-objects';
 				if(this.model.getAllDispo()){

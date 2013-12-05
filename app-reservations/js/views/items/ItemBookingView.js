@@ -12,7 +12,7 @@ define([
 
 
 	/******************************************
-	* Row Intervention View
+	* Row Booking View
 	*/
 	var itemBookingView = Backbone.View.extend({
 	
@@ -23,22 +23,17 @@ define([
 		className   : 'row-item',
 	
 		// The DOM events //
-		events       : {
-			'click a.accordion-object'    			: 'tableAccordion',
-			'click a.displayOccurences'				: 'displayOccurences',
-			
+		events       : {			
+			'click a.displayOccurences'				: 'displayOccurences',			
 			'click .actions'						: 'modalUpdateBooking'
-		},
-	
+		},	
 	
 	
 		/** View Initialization
 		*/
 		initialize : function(params) {
 			this.options = params;
-			
-			this.detailedView = this.options.detailedView;
-	
+				
 			this.model.off();
 	
 			// When the model are updated //
@@ -51,18 +46,16 @@ define([
 		*/
 		change: function(model){
 			var self = this;
+			
 			self.render();
+				
+			// Highlight the Row and recalculate the className //
+			AppHelpers.highlight($(self.el)).done(function(){});
 	
-			//Not apply notification for resources because field is calculated.
-			if(! model.hasChanged('resources') ){
-				// Highlight the Row and recalculate the className //
-				AppHelpers.highlight($(self.el)).done(function(){});
-		
-				app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
-		
-				// Partial Render //
-				app.views.bookingsListView.partialRender();
-			}
+			app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
+	
+			// Partial Render //
+			app.views.bookingsListView.partialRender(model);			
 		},
 	
 	
@@ -95,8 +88,8 @@ define([
 				$('tr.row-object > td').css({ backgroundColor: '#FFF'});
 				$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 				
-				if( !self.model.isAllDispo() )
-					//this.el.effect("highlight", {color: 'blue'});
+				//Apply warning color when some ressources are not disponible
+				if( !self.model.isAllDispo() )					
 					$(self.el).addClass('danger');
 				
 			});
@@ -111,59 +104,13 @@ define([
 			app.views.bookingsListView.options.recurrence = this.model.getRecurrence('id'); 
 			app.router.navigate(app.views.bookingsListView.urlBuilder(), {trigger: true, replace: true});			
 		},
-	
-		/**
-		 * Process Table accordion event
-		 */
-		tableAccordion: function(e){	
-			e.preventDefault();
-			//fold up current accordion and expand 
-			this.expendAccordion();		   
-		},
-		
-		/**
-		 * Expan accordion
-		 */
-		expendAccordion: function(){
-			// Retrieve the intervention ID //
-			//var id = _($(e.target).attr('href')).strRightBack('_');
-			var id = this.model.toJSON().id.toString();
-			var self = this;
-		
-			var isExpend = $('#collapse_'+id).hasClass('expend');
-		
-			// Reset the default visibility //
-			$('tr.expend').css({ display: 'none' }).removeClass('expend');
-			$('tr.row-object').css({ opacity: '0.45'});
-			$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-			
-			
-			// If the table row isn't already expend //       
-			if(!isExpend){
-				// Fetch tasks
-				if(!_.isUndefined(this.detailedView) && !_.isNull(this.detailedView)){
-					this.detailedView.fetchData().done(function () {
-						self.detailedView.render();
-					});
-				}
-				
-				// Set the new visibility to the selected intervention //
-				$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
-				$(this.el).parents('tr.row-object').css({ opacity: '1'});  
-				$(this.el).parents('tr.row-object').children('td').css({ backgroundColor: "#F5F5F5" }); 
-			}
-			else {
-				$('tr.row-object').css({ opacity: '1'});
-				$('tr.row-object > td').css({ backgroundColor: '#FFF'});
-				$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
-			}
-		},
 		
 		
-		/** Display Modal form to valid an Intervention Request
+		/** Display Modal form to valid an Booking Request
 		*/
 		modalUpdateBooking: function(e){
-			e.preventDefault(); e.stopPropagation();
+			e.preventDefault(); 
+			//e.stopPropagation();
 	
 			app.views.modalUpdateBookingView = new ModalUpdateBookingView({
 				el      : '#modalUpdateBooking',

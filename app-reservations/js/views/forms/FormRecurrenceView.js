@@ -54,8 +54,10 @@ define(['app',
 		initialize : function() {
 			var self = this;
 			this.listenTo(this.model.occurrences, 'add', this.addOccurrence);
+			this.listenTo(this.model, 'destroy', this.removedRecurrence);
 			this.deferred = $.Deferred();
 			if(!this.model.isNew()){
+				//fetchOccurrences will fire an 'add' event on occurrencesCollection, and this view will add occurrences by itself
 				this.deferred = this.model.fetchOccurrences();
 			}
 			else{
@@ -69,6 +71,11 @@ define(['app',
 				var itemView = new ItemFormBookingOccurrenceView({model:model});
 				$(self.el).find('#bookingOccurrences').append(itemView.render().el);
 			});
+		},
+		
+		removedRecurrence: function(){
+			$(this.el).hide();
+			this.remove();
 		},
 		
 		/** Display the view

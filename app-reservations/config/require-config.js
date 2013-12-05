@@ -40,12 +40,13 @@ requirejs.config({
 		
 		// Views Items //
 		itemBookingView            			: 'app-reservations/js/views/items/ItemBookingView',
-		itemBookingOccurrencesListView      : 'app-reservations/js/views/items/ItemBookingOccurrencesListView',
-		itemBookingOccurrenceView           : 'app-reservations/js/views/items/ItemBookingOccurrenceView',
 		
 		// Views Modals //
 		modalUpdateBookingView          	: 'app-reservations/js/views/modals/ModalUpdateBookingView',
 		modalUpdateBookingsListView         : 'app-reservations/js/views/modals/ModalUpdateBookingsListView',
+		
+		//Others View //
+		toolbarButtonsView					: 'app-reservations/js/views/others/ToolbarButtonsView',
 
 	
 	}
