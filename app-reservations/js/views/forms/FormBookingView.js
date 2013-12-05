@@ -50,7 +50,8 @@ define(['app',
 			//Form Buttons
 			'submit #formSaveBooking'			: 'saveBookingForm',
 			'click #getRecurrenceDates'			: 'getRecurrenceDates',
-			'click #addRecurrence'				: 'addRecurrence'
+			'click #addRecurrence'				: 'addRecurrence',
+			'click #removeRecurrence'			: 'removeRecurrence'
 		},
 	
 		/** View Initialization
@@ -78,19 +79,84 @@ define(['app',
 					});
 					
 					//fetch and render recurrence if exists
-					if(self.model.get('is_template') && self.model.getRecurrence() != false){
+					if(self.model.getRecurrence() != false){
 						var recurrence = new BookingRecurrenceModel({id:self.model.getRecurrence('id')});
-						recurrence.setTemplate(self.model);
-						recurrence.fetch()
-						.done(function(){
-							var recurrenceView = new FormRecurrenceView({model:recurrence});
-							$(self.el).find('#recurrence').html(recurrenceView.render().el);
-						});
+						if(self.model.isTemplate()){
+							recurrence.setTemplate(self.model);
+							recurrence.fetch()
+							.done(function(){
+								var recurrenceView = new FormRecurrenceView({model:recurrence});
+								$(self.el).find('#recurrence').html(recurrenceView.render().el);
+							});
+						}
+						else{
+							self.model.recurrence = recurrence;
+						}
 					}
 				});
 			}
-	
+			//TOCHECK
+			this.listenTo(this.model, 'change', this.updateDisplayDoms);
+			this.listenTo(this.model.lines, 'add', this.updateDisplayDoms);
+			this.listenTo(this.model.linesToRemove, 'add', this.updateDisplayDoms);
+			
 		},
+		
+	    //compute display of button addBookable (readonly or visible)
+	    updateDisplayAddBookable: function(){
+	    	var elt = $('#bookingAddBookable');
+	    	if(this.model.getStartDate() != '' && this.model.getEndDate() != '' && this.model.getClaimer('id') > 0){
+	    		elt.removeAttr('disabled');
+	    	}
+	    	else{
+	    		elt.attr('disabled','');
+	    	}
+	    	if(!_.isUndefined(app.views.selectListAddBookableView)){
+	    		app.views.selectListAddBookableView.render();
+	    	}
+	    },
+
+	    //compute display of button save (readonly or visible)
+	    updateDisplaySave: function(){
+	    	var elt = $('#saveFormBooking');
+	    	if(this.model.getStartDate() != '' && this.model.getEndDate() != '' && this.model.getClaimer('id') > 0 && this.model.lines.length > 0){
+	    		elt.removeAttr('disabled');
+	    	}
+	    	else{
+	    		elt.attr('disabled','');
+	    	}
+	    },
+	    
+	    //compute display of button addRecurrence (readonly or visible)
+	    updateDisplayAddRecurrence: function(){
+	    	var elt = $('#addRecurrence');
+	    	if(this.model.recurrence == null && this.model.getStartDate() != '' && 
+	    			this.model.getEndDate() != '' && this.model.getClaimer('id') > 0 && this.model.lines.length > 0){
+	    		elt.removeClass('hide-soft');
+	    	}
+	    	else{
+	    		elt.addClass('hide-soft');
+	    	}
+	    },
+	    
+	    //compute display of button removeRecurrence (readonly or visible)
+	    updateDisplayRemoveRecurrence: function(){
+	    	var elt = $('#removeRecurrence');
+	    	if(this.model.recurrence != null && this.model.isTemplate()){
+	    		elt.removeClass('hide-soft');
+	    	}
+	    	else{
+	    		elt.addClass('hide-soft');
+	    	}
+	    },
+	    
+	    //main method to compute all conditionnal display of form inputs
+	    updateDisplayDoms: function(model){
+	    	this.updateDisplayAddBookable();
+	    	this.updateDisplayAddRecurrence();
+	    	this.updateDisplaySave();
+	    	this.updateDisplayRemoveRecurrence();
+	    },
 		
 		//split rendering of form and rendering of lines to avoid change-events conflicts 
 		//(which perform unwanted updates on lineModels)
@@ -204,6 +270,9 @@ define(['app',
 		    		reserve_product:[bookable_id, bookable_name],
 					pricelist_amount:0});
 		    	lineModel.setQuantity(1);
+		    	//reset selection to be able to add another bookable to booking
+		    	app.views.selectListAddBookableView.reset();
+		    	
 		    	this.model.addLine(lineModel);
 		    	
 		    	//perform manually updates to lineModel to get pricing, dispo, ...
@@ -218,8 +287,6 @@ define(['app',
 		    	.fail(function(e){
 		    		console.log(e);
 		    	});
-		    	//finally, reset selection to be able to add another bookable to booking
-		    	app.views.selectListAddBookableView.reset();
 	    	}
 	    },
 	    
@@ -231,6 +298,9 @@ define(['app',
 				.add('minutes',$("#bookingCheckinHour").val().split(":")[1] );
 		    	this.model.setStartDate(moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss'));
 	    	}
+	    	else{
+	    		this.model.setStartDate('');
+	    	}
 	    },
 	    
 	    changeBookingCheckout: function(e){
@@ -240,6 +310,9 @@ define(['app',
 				.add('hours',$("#bookingCheckoutHour").val().split(":")[0] )
 				.add('minutes',$("#bookingCheckoutHour").val().split(":")[1] );
 		    	this.model.setEndDate(moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss'));
+	    	}
+	    	else{
+	    		this.model.setEndDate('');
 	    	}
 	    },
 	    
@@ -264,7 +337,14 @@ define(['app',
 			recurrenceModel.setStartDate(this.model.getStartDate());
 			var recurrenceView = new FormRecurrenceView({model:recurrenceModel});
 			$(this.el).find('#recurrence').html(recurrenceView.render().el);
-		}
+		},
+	    
+	    removeRecurrence: function(e){
+	    	e.preventDefault();
+	    	if(this.model.recurrence != null){
+	    		this.model.destroyRecurrenceOnBackend();
+	    	}
+	    }
 
 	});
 	return FormBookingView;

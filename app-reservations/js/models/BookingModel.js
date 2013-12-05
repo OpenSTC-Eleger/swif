@@ -141,7 +141,7 @@ define([
 		},
 		
 		getRecurrence: function(type){
-			if(this.get('recurrence_id') != false){
+			if(this.get('recurrence_id') != false && !_.isUndefined(this.get('recurrence_id'))){
 				switch(type){
 					case 'id': 
 						return this.get('recurrence_id')[0];
@@ -201,11 +201,14 @@ define([
 		},
 		
 		isTemplate: function(){
-			return this.get('is_template');
+			if(!_.isUndefined(this.get('is_template'))){
+				return this.get('is_template');
+			}
+			return false; 
 		},
 		
 		getStartDate: function(type){
-			if(this.get('checkin') != false){
+			if(this.get('checkin') != false && !_.isUndefined(this.get('checkin'))){
 				var checkinDate = AppHelpers.convertDateToTz(this.get('checkin'));
 				switch(type){
 					case 'human':	
@@ -228,10 +231,13 @@ define([
 				this.set({checkin:dateStr});
 				this.updateLinesData();
 			}
+			else{
+				this.set({checkin:false});
+			}
 		},
 		
 		getEndDate: function(type){
-			if(this.get('checkout') != false){
+			if(this.get('checkout') != false && !_.isUndefined(this.get('checkout'))){
 				var checkoutDate = AppHelpers.convertDateToTz(this.get('checkout'));
 				switch(type){
 					case 'human':	
@@ -253,6 +259,9 @@ define([
 			if(dateStr != ''){
 				this.set({checkout:dateStr});
 				this.updateLinesData();
+			}
+			else{
+				this.set({checkout:false});
 			}
 		},
 		
@@ -293,17 +302,18 @@ define([
 	
 		// Claimer of the booking //
 		getClaimer: function(type){
-			var claimer = {};
-		
-			switch (type){
-				case 'id': 
-					return this.get('partner_id')[0];
-				break;
-				case 'json':
-					return {id: this.get('partner_id')[0], name: this.get('partner_id')[1]};
-				break;
-				default:
-					return this.get('partner_id')[1];
+			var claimer = 0;
+			if(this.get('partner_id') != false && !_.isUndefined(this.get('partner_id'))){
+				switch (type){
+					case 'id': 
+						return this.get('partner_id')[0];
+					break;
+					case 'json':
+						return {id: this.get('partner_id')[0], name: this.get('partner_id')[1]};
+					break;
+					default:
+						return this.get('partner_id')[1];
+				}
 			}
 			return claimer;
 		},
@@ -451,18 +461,29 @@ define([
 		
 		//method to perform updates on bookingLines (pricing, dispo, ...) when some fields value change
 		//by default, fetch dispo, and if partner is set, fetch pricing too
-		updateLinesData: function(){
+		//@param options: object containing flags 'pricing' and / or 'dispo', associated with a boolean to set which data to fetch (default, fetch all data)
+		updateLinesData: function(options){
+			var pricing = true;
+			var dispo = true;
+			if(!_.isUndefined(options)){
+				if(!_.isUndefined(options.pricing)){
+					pricing = options.pricing;
+				}
+				if(!_.isUndefined(options.dispo)){
+					dispo = options.dispo;
+				}
+			}			
 			var checkin = this.getStartDate();
 			var checkout = this.getEndDate();
 			var partner_id = this.getClaimer('id');
 			var deferred = $.Deferred();
 			if(checkin != '' && checkout != ''){
 				_.each(this.lines.models, function(lineModel,i){
-					if(partner_id > 0){
+					if(partner_id > 0 && pricing){
 						deferred = $.when(lineModel.fetchAvailableQtity(checkin,checkout),lineModel.fetchPricing(partner_id, checkin, checkout))
 						.fail(function(e){console.log(e)});
 					}
-					else{
+					else if(dispo){
 						deferred = $.when(lineModel.fetchAvailableQtity(checkin,checkout))
 						.fail(function(e){console.log(e)});
 					}
@@ -502,6 +523,8 @@ define([
 				return this.save(vals, {wait:true, patch:true}).always(function(){
 					self.fetch({silent:true});
 					if(self.get('is_template') && self.recurrence != null){
+						//add template to occurrence_ids
+						self.recurrence.set({'reservation_ids':[[4,self.getId()]]});
 						self.recurrence.saveToBackend();
 					}
 					self.lines.each(function(lineModel,i){
@@ -510,11 +533,15 @@ define([
 					self.linesToRemove.each(function(lineToRemove,i){
 						lineToRemove.destroy();
 					});
+					_.each(self.recurrencesToRemove,function(recurrenceToRemove,i){
+						recurrenceToRemove.persistentDestroyOnBackend();
+					});
 				});
 			}
 			return false;
 		},
 		
+		//TOREMOVE ?
 		destroyOnBackend: function(){
 			if(this.recurrence != null){
 				this.set({id:null},{silent:true});
@@ -526,7 +553,13 @@ define([
 			
 		},
 
-	
+		destroyRecurrenceOnBackend: function(){
+			this.recurrencesToRemove.push(this.recurrence.clone());
+			this.recurrence.set({id:null});
+			this.recurrence.destroy();
+			this.recurrence = null;
+			this.set({template:false});
+		},
 		
 		/** Model Initialization
 		*/
@@ -535,6 +568,7 @@ define([
 			//collection to store lines to remove (because form persist modifications only after clicking on 'validate' btn)
 			this.linesToRemove = new BookingLinesCollection();
 			this.recurrence = null;
+			this.recurrencesToRemove = [];
 //			this.computeResources().done(function (data) {
 //				// self.set( {'resources' :  data.resources, 'description': data.description} , {silent:false} );	
 //				 //self.set( 'resources',  data.resources , {silent:true} );	
