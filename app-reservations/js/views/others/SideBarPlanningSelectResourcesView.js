@@ -31,10 +31,13 @@ define([
 			'mouseenter #bookablesPlaces a, #bookablesEquipments a': 'highlightResource',
 			'mouseleave #bookablesPlaces a, #bookablesEquipments a': 'mutedResource',
 
+			'keyup #placesSearch, keyup #equipmentsSearch'         : 'resourcesSearch',
+
 			'click #bookablesPlaces a'                             : 'selectPlace',
 			'click #bookablesEquipments a'                         : 'selectEquipments',
 
-			'keyup #placesSearch, keyup #equipmentsSearch'         : 'resourcesSearch',
+			'click i.icon-quantity'                                : 'focusQuantity',
+			'keyup span.quantity'                                  : 'updateQuantity'
 		}, 
 	
 	
@@ -70,15 +73,6 @@ define([
 				app.views.advancedSelectBoxCategoryRequestView = new AdvancedSelectBoxView({el: $('#claimersTypes'), collection: ClaimersTypesCollection.prototype })
 				app.views.advancedSelectBoxCategoryRequestView.render();
 
-				var templatePopover = "<div class='input-group'><span class='input-group-addon'><i class='fa fa-minus'></i></span><input type='text' class='form-control text-center' value='1'><span class='input-group-addon'><i class='fa fa-plus'></i></span></div>";
-
-				$('*[data-toggle="popover"]').popover({
-					placement : 'top',
-					title     : _.capitalize(app.lang.quantity),
-					container : 'body',
-					html      : true,
-					content   : templatePopover
-				});
 
 				// Set the numbers of selectable resources //
 				$('#nbPlaces').html(_.size(self.selectablePlaces));
@@ -227,6 +221,35 @@ define([
 				listSearchable.find('li').fadeIn().removeClass('thide');
 			}
 
+		},
+
+
+		
+
+
+		/** Set the focus on the <span> content Editable
+		*/
+		focusQuantity: function(e){
+			$(e.target).siblings('.quantity').focus();
+
+		},
+
+
+		/** Check the quantity in the content Editable
+		*/
+		updateQuantity: function(e){
+			var input = $(e.target);
+
+			var value = _.toNumber(input.text());
+
+			if(!_.isNaN(value)){
+				if(value > 999){
+					input.text('1');
+				}				
+			}
+			else{
+				input.text('1');	
+			}
 		}
 	
 

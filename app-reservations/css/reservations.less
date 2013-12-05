@@ -30,3 +30,17 @@
 		}
 	}
 }
+
+
+.quantity[contenteditable="true"]{
+	text-decoration: underline;
+	padding: 1px 5px;
+
+	&:hover{
+		border: thin dashed @gray;
+	}	
+	&:focus{
+		border: thin solid @brand-primary;
+		outline: none;
+	}
+}

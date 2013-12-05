@@ -135,7 +135,7 @@ define([
 		getCancelNote: function(){
 			return this.get('cancel_note');
 		},
-		
+		//mmmmmh a donut !
 		getDoneNote: function(){
 			return this.get('done_note');
 		},
@@ -573,6 +573,12 @@ define([
 			this.linesToRemove = new BookingLinesCollection();
 			this.recurrence = null;
 			this.recurrencesToRemove = [];
+			//set default values to model
+			if(this.isNew()){
+				this.set({
+					state:'remplir'
+				});
+			};
 //			this.computeResources().done(function (data) {
 //				// self.set( {'resources' :  data.resources, 'description': data.description} , {silent:false} );	
 //				 //self.set( 'resources',  data.resources , {silent:true} );	

@@ -3,6 +3,7 @@ define(['app',
         'appHelpers', 
         
         'bookingRecurrenceModel',
+        'bookingModel',
         
         'itemFormBookingOccurrenceView',
         
@@ -12,7 +13,7 @@ define(['app',
         'bsTimepicker',
         'bsDatepicker'
 
-], function (app, AppHelpers, BookingRecurrenceModel, ItemFormBookingOccurrenceView, moment) {
+], function (app, AppHelpers, BookingRecurrenceModel, BookingModel, ItemFormBookingOccurrenceView, moment) {
 
     'use strict';
 	/******************************************
@@ -78,6 +79,10 @@ define(['app',
 			this.remove();
 		},
 		
+		isEditable: function(){
+			return this.model.getState() == BookingModel.status.remplir.key;
+		},
+		
 		/** Display the view
 		*/
 		render: function(loader) {
@@ -85,16 +90,16 @@ define(['app',
 			var self = this;
 			// Retrieve the template //
 			$.get(app.menus.openresa + "/templates/" + self.templateHTML + ".html", function(templateData){		
-				
 				var date_end = self.model.getUntil();
 				if(date_end != ''){
-					date_end = moment.utc(date_end).local().format('DD/MM/YYYY');
+					date_end = AppHelpers.convertDateToTz(date_end).format('DD/MM/YYYY');
 				}
 				var template = _.template(templateData, {
 					lang   		: app.lang,
 					recurrence  : self.model,
 					weekdays	: self.model.getWeekdays(),
-					date_end	: date_end
+					date_end	: date_end,
+					readonly	: !self.isEditable()
 				});
 	
 				$(self.el).html(template);
