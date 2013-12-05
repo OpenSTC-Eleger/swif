@@ -18,14 +18,19 @@
 			<small><strong><i class="fa fa-envelope"></i>&nbsp;<%= _.capitalize(lang.email) %> : </strong></i><%= booking.getClaimerMail() %></small>
 		</blockquote>
 
-		<form id="formUpdateBooking" action="#" class="form-horizontal">
+		<form id="formUpdateBookingList" action="#" class="form-horizontal">
 		
+			<% 
+				var note = ''
+				if(state==BookingModel.status.done.key) 
+					note = booking.getResourceNames('newline') 
+			%>
 			<!-- note related to this action  -->
 			<div class="form-group">
 				<label for="note" class="control-label col-sm-3"><%= _.capitalize(lang.description) %>:</label>
 
 				<div class="col-sm-9">
-					<textarea id="note" class="form-control" rows="5" required></textarea>
+					<textarea id="note" class="form-control" rows="5" required><%= note %></textarea>
 				</div>
 			</div>
 			<% if(state != BookingModel.status.cancel.key) { %>
@@ -43,7 +48,7 @@
 	<!-- /Modal Body -->
 
 	<div class="modal-footer">
-		<button type="submit" form="formUpdateBooking" class="btn btn-primary"
+		<button type="submit" form="formUpdateBookingList" class="btn btn-primary"
 			data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= _.capitalize(lang.validInProgress) %>"
 		><%= _.capitalize(lang.actions.validate) %>
 		</button>&nbsp;&nbsp;

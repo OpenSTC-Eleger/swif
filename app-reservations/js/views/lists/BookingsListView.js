@@ -4,16 +4,13 @@ define([
 
 	'bookingsCollection',
 	'bookingModel',
-	'bookingRecurrenceModel',
 
 	'genericListView',
 	'paginationView',
-	'itemBookingView',
-	'itemBookingOccurrencesListView',
-	'modalUpdateBookingsListView',
+	'itemBookingView',	
 	'toolbarButtonsView'
 
-], function(app, AppHelpers, BookingsCollection, BookingModel, BookingRecurrenceModel, GenericListView, PaginationView, ItemBookingView, ItemBookingOccurrencesListView, ModalUpdateBookingsListView, ToolbarButtonsView){
+], function(app, AppHelpers, BookingsCollection, BookingModel, GenericListView, PaginationView, ItemBookingView, ToolbarButtonsView){
 
 	'use strict';
 
@@ -24,23 +21,15 @@ define([
 	var bookingsListView = GenericListView.extend({
 	
 		templateHTML : '/templates/lists/bookingsList.html',
-
+		
+		//overrides url GenericListView's url parameters to add 'recurrence parameter'  
 		urlParameters: ['recurrence', 'id', 'search', 'filter', 'sort', 'page'],
-
-		collections  :  {},
-		
-		//DOM actions elements, buttons : all valid, all refuse, all close
-		btnActions    : 'span.btn-actions',
-		
-		//bookingRecurrenceSelectedModel : null,
 	
 		// The DOM events //
 		events: function(){
 			return _.defaults({
 				'click #filterStateBookingList li a' 	: 'setFilterState',	
-				'click #badgeActions[data-filter!=""]'  : 'badgeFilter',
-				
-			
+				'click #badgeActions[data-filter!=""]'  : 'badgeFilter',	
 			}, 
 				GenericListView.prototype.events
 			);
@@ -69,16 +58,17 @@ define([
 	
 	
 		add: function(model){
+			//TODO : add item after new booking created
 		},
 		
 
 	
-		/** Partial Render of the view
+		/** Partial Render of the view : refresh toolbar buttons
 		*/
-		partialRender: function(){
+		partialRender: function(model){
+			if( model.getRecurrence('id')!= false )
+				app.views.toolbarButtonsView.initialize( { collection: this.collection } );
 		},
-		
-
 	
 	
 		/** Display the view
@@ -87,8 +77,7 @@ define([
 			var self = this;
 	
 			// Change the page title //
-			app.router.setPageTitle(app.lang.viewsTitles.bookingsList);
-	
+			app.router.setPageTitle(app.lang.viewsTitles.bookingsList);	
 	
 			
 			// Retrieve the HTML template //
@@ -108,22 +97,20 @@ define([
 				// Call the render Generic View //
 				GenericListView.prototype.render(self.options);
 				
-				// Create item intervention view //
-				
+				// Create item booking view //				
 				_.each(self.collection.models, function(booking, i){
-					var simpleView = new ItemBookingView( {model: booking} );
-					$('#booking-items').append(simpleView.render().el);	
+					var itemView = new ItemBookingView( {model: booking} );
+					$('#booking-items').append(itemView.render().el);	
 				});
 				
-				self.toolbarButtonsView = new ToolbarButtonsView( { collection: self.collection } );
+				//Toolbar buttons : factory actions for multiple bookings ( confirm/cancel:close booking)
+				app.views.toolbarButtonsView = new ToolbarButtonsView( { collection: self.collection } );
 				
 				// Pagination view //
-
 				app.views.paginationView = new PaginationView({ 
 					page       : self.options.page.page,
 					collection : self.collection
 				})
-
 				
 			});
 			$(this.el).hide().fadeIn();
@@ -157,6 +144,7 @@ define([
 		/** Filter Requests on the State of the Badge
 		 	*/
 		badgeFilter: function(e){
+		 	e.preventDefault();
 		 	delete this.options.recurrence
 		 		
 			var filterValue = $(e.target).data('filter');
@@ -173,7 +161,9 @@ define([
 	
 
 
-	
+		/**
+		 * Init reservation collection with url params
+		 */	
 		initCollections: function(){
 			var self = this;
 			
@@ -221,6 +211,7 @@ define([
 				fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, BookingModel.prototype.searchable_fields);
 			}
 			
+			//Add filter on recurrence selected
 			if(!_.isUndefined(this.options.recurrence)){
 				fetchParams.data.filters  = _.toArray(fetchParams.data.filters);
 				fetchParams.data.filters.push({field: 'recurrence_id.id', operator:'=', value:this.options.recurrence})				
