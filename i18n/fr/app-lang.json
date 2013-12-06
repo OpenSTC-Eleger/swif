@@ -71,6 +71,8 @@
 	"manager"				: "chef de service",
 	"width" 				: "largeur",
 	"length" 				: "longueur",
+    "bookings"              : "réservations",
+    "displayColor"          : "couleur d'affichage",
 	"internal_booking"		: "Réservable en interne",
 	"external_booking"		: "Réservable par des tiers",
 	"reason" 				: "motif",
