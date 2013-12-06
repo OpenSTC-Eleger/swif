@@ -1,12 +1,14 @@
 define([
 	'app',
+	'appHelpers',
 
 	'claimersTypesCollection',
 	'bookablesCollection',
+	'bookableModel',
 
 	'advancedSelectBoxView',
 
-], function(app, ClaimersTypesCollection, BookablesCollection, AdvancedSelectBoxView){
+], function(app, AppHelpers, ClaimersTypesCollection, BookablesCollection, BookableModel, AdvancedSelectBoxView){
 
 	'use strict';
 
@@ -21,10 +23,10 @@ define([
 		templateHTML        : '/templates/others/SideBarPlanningSelectResources.html',
 
 		selectablePlaces    : new BookablesCollection(),
-		selectedPlaces      : new BookablesCollection(),
+		selectedPlaces      : [],
 
 		selectableEquipments: new BookablesCollection(),
-		selectedEquipments  : new BookablesCollection(),
+		selectedEquipments  : [],
 	
 	
 		// The DOM events //
@@ -32,7 +34,8 @@ define([
 			'mouseenter #bookablesPlaces a, #bookablesEquipments a': 'highlightResource',
 			'mouseleave #bookablesPlaces a, #bookablesEquipments a': 'mutedResource',
 
-			'keyup #placesSearch, keyup #equipmentsSearch'         : 'resourcesSearch',
+			'keyup #placesSearch'                                  : 'resourcesSearch',
+			'keyup #equipmentsSearch'                              : 'resourcesSearch',
 
 			'click #bookablesPlaces a'                             : 'selectPlace',
 			'click #bookablesEquipments a'                         : 'selectEquipments',
@@ -95,18 +98,18 @@ define([
 		selectPlace: function(e){
 			e.preventDefault();
 
-			var idPlaces = this.toggleResource(e);
+			var idPlace = this.toggleResource(e);
 
-			if(!_.contains(this.selectedPlaces, idPlaces)){
-				this.selectedPlaces.push(idPlaces);
+
+			if(_.contains(this.selectedPlaces, idPlace)){
+				this.selectedPlaces = _.without(this.selectedPlaces, idPlace);
 			}
 			else{
-				this.selectedPlaces.shift();
+				this.selectedPlaces.push(idPlace);
 			}
-	
+
 
 			if(_.isEmpty(this.selectedPlaces)){
-
 				$('#nbPlaces').removeClass('badge-info');
 				$('#nbPlaces').html(_.size(this.selectablePlaces));
 			}
@@ -114,7 +117,6 @@ define([
 				$('#nbPlaces').addClass('badge-info');	
 				$('#nbPlaces').html(_.join('/', _.size(this.selectedPlaces), _.size(this.selectablePlaces)));
 			}
-			
 		},
 
 
@@ -124,7 +126,26 @@ define([
 		selectEquipments: function(e){
 			e.preventDefault();
 
-			this.toggleResource(e);
+
+			var idEquipment = this.toggleResource(e);
+
+
+			if(_.contains(this.selectedEquipments, idEquipment)){
+				this.selectedEquipments = _.without(this.selectedEquipments, idEquipment);
+			}
+			else{
+				this.selectedEquipments.push(idEquipment);
+			}
+
+
+			if(_.isEmpty(this.selectedEquipments)){
+				$('#nbEquipments').removeClass('badge-info');
+				$('#nbEquipments').html(_.size(this.selectableEquipments));
+			}
+			else{
+				$('#nbEquipments').addClass('badge-info');	
+				$('#nbEquipments').html(_.join('/', _.size(this.selectedEquipments), _.size(this.selectableEquipments)));
+			}
 
 		},
 
@@ -140,7 +161,7 @@ define([
 			if(!row.hasClass('selected')){
 				var icon = link.children('i:first-child');
 
-				var color = '#' + link.parent('li').data('color');
+				var color = link.parent('li').data('color');
 				icon.css({color: color});
 			}
 
@@ -195,7 +216,6 @@ define([
 				return null;
 			}
 
-			
 		},
 
 
@@ -230,14 +250,11 @@ define([
 		},
 
 
-		
-
 
 		/** Set the focus on the <span> content Editable
 		*/
 		focusQuantity: function(e){
 			$(e.target).siblings('.quantity').focus();
-
 		},
 
 
@@ -265,13 +282,23 @@ define([
 		initCollection: function(){
 
 			// Create Fetch params //
-			var fetchParams = {
+			var fetchParamsPlaces = {
 				silent  : true,
+				data : {
+					filters : AppHelpers.calculSearch({search: 'site' }, BookableModel.prototype.searchable_fields)
+				}
+			};
+
+			var fetchParamsEquipments = {
+				silent  : true,
+				data : {
+					filters : AppHelpers.calculSearch({search: 'materiel' }, BookableModel.prototype.searchable_fields)
+				}
 			};
 
 
 			// Fetch the collections //
-			return $.when(this.selectablePlaces.fetch(fetchParams), this.selectableEquipments.fetch(fetchParams))
+			return $.when(this.selectablePlaces.fetch(fetchParamsPlaces), this.selectableEquipments.fetch(fetchParamsEquipments))
 			.fail(function(e){
 				console.log(e);
 			});
