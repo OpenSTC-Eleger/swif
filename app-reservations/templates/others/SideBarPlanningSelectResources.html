@@ -37,6 +37,12 @@
 		
 			<div class="panel-group-body">
 				<ul id="bookablesPlaces" class="nav nav-pills nav-stacked nav-stacked-6">
+					<%
+						_.each(selectablePlaces.models,function(place, i){
+							console.log(place);
+							console.log(i);
+						})
+					%>
 					<li data-color="00FF6A" data-id="1" data-name="Ma salle 1">
 						<a href="#"><i class="icon-radio fa fa-circle-o fa-lg"></i>Ma salle 1</a>
 					</li>

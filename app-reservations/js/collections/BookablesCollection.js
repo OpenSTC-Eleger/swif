@@ -6,16 +6,16 @@ define([
 
 	'use strict';
 
-	
+
 	/******************************************
 	* Bookables Collection
 	*/
 	var BookablesCollection = GenericCollection.extend({
 	
 		model : BookableModel,
-		
+
 		url   : "/api/openresa/bookables",
-		
+
 		fields: ['id', 'name', 'qty_available'],
 	
 	});

@@ -2,10 +2,11 @@ define([
 	'app',
 
 	'claimersTypesCollection',
+	'bookablesCollection',
 
 	'advancedSelectBoxView',
 
-], function(app, ClaimersTypesCollection, AdvancedSelectBoxView){
+], function(app, ClaimersTypesCollection, BookablesCollection, AdvancedSelectBoxView){
 
 	'use strict';
 
@@ -19,11 +20,11 @@ define([
 	
 		templateHTML        : '/templates/others/SideBarPlanningSelectResources.html',
 
-		selectablePlaces    : ['lo', 'lo', 'oko', 'lkjlkj', 'lo', 'lo', 'oko', 'lkjlkj'],
-		selectedPlaces      : [],
+		selectablePlaces    : new BookablesCollection(),
+		selectedPlaces      : new BookablesCollection(),
 
-		selectableEquipments: [],
-		selectedEquipments  : [],
+		selectableEquipments: new BookablesCollection(),
+		selectedEquipments  : new BookablesCollection(),
 	
 	
 		// The DOM events //
@@ -49,7 +50,10 @@ define([
 
 			this.options = params;
 
-			app.router.render(self);
+			this.initCollection().done(function(){
+
+				app.router.render(self);
+			});
 		},
 	
 	
@@ -64,7 +68,9 @@ define([
 			$.get(app.menus.openresa+this.templateHTML, function(templateData){
 	
 				var template = _.template(templateData, {
-					lang    : app.lang,
+					lang                : app.lang,
+					selectablePlaces    : self.selectablePlaces,
+					selectableEquipments: self.selectableEquipments
 				});
 	
 				$(self.el).html(template);
@@ -250,6 +256,26 @@ define([
 			else{
 				input.text('1');	
 			}
+		},
+
+
+
+		/** Load Bookable collection
+		*/
+		initCollection: function(){
+
+			// Create Fetch params //
+			var fetchParams = {
+				silent  : true,
+			};
+
+
+			// Fetch the collections //
+			return $.when(this.selectablePlaces.fetch(fetchParams), this.selectableEquipments.fetch(fetchParams))
+			.fail(function(e){
+				console.log(e);
+			});
+
 		}
 	
 
