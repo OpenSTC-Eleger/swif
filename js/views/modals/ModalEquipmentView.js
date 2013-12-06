@@ -113,6 +113,10 @@ define([
 					$('input.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
 				}
 
+                console.log(app.menus);
+                if (_.isUndefined(app.menus['openresa'])) {
+                    $('#bookingTab').hide();
+                }
 				self.modal.modal('show');
 
 			});
