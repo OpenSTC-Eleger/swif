@@ -73,6 +73,7 @@
 	"length" 				: "longueur",
     "bookings"              : "réservations",
     "displayColor"          : "couleur d'affichage",
+    "general"               : "général",
 	"internal_booking"		: "Réservable en interne",
 	"external_booking"		: "Réservable par des tiers",
 	"reason" 				: "motif",
