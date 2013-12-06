@@ -206,8 +206,8 @@ define([
 					internal_booking: $('#equipmentInternalBooking:checked').val() == "1",
 					external_booking: $('#equipmentExternalBooking:checked').val() == "1",
 					service_bookable_ids: [[6,0, this.selectEquipmentBookingServices.getSelectedItems() ]],
-					partner_type_bookable_ids: [[6,0, this.selectClaimersBookingServices.getSelectedItems() ]]
-					
+					partner_type_bookable_ids: [[6,0, this.selectClaimersBookingServices.getSelectedItems() ]],
+					color: $('#displayColor').val()
 			}
 			var stockQty = parseInt($('#equipmentQtyAvailable').val());
 
