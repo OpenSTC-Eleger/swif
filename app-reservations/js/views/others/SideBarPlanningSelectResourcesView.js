@@ -55,9 +55,9 @@ define([
 				app.router.render(self);
 			});
 		},
-	
-	
-	
+
+
+
 		/** Display the view
 		*/
 		render : function() {

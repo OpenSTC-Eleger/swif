@@ -11,7 +11,7 @@ define([
 		
 		urlRoot: "/api/openresa/bookables",
 		
-		fields : ['id', 'name', 'product_image'],
+		fields : ['id', 'name', 'product_image', 'qty_available', 'type_prod', 'color', 'categ_id'],
 	
 		searchable_fields: [
 			{

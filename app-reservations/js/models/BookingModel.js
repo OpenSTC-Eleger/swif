@@ -93,17 +93,17 @@ define([
 			}
 		},
 		
-		getResourceQuantities : function(){
-			if( this.getState()=='done' || 
-					this.getState()=='cancel') return "";
+		getResourceQuantitiesHtml : function(){
+			if( this.getState()=='done' ||  this.getState()=='cancel' 
+				||  _.size( this.get('resource_quantities') ) == 0 ) return "";
 		
-			var bookingResourceQuantities = [];
+			var bookingResourceQuantities = "<dl>";
 			
 			_.each(this.get('resource_quantities'), function(s){
-					bookingResourceQuantities.push( s[0] + " " + s[1] );			
+				bookingResourceQuantities += "<dt>" + s[0] + "</dt><dd>" + s[1] + "</dd>"					
 			});		
-		
-			return _.toSentence(bookingResourceQuantities, ', ', ' '+app.lang.and+' ')
+			
+			return bookingResourceQuantities + "</dl>"
 	
 		},
 		
@@ -114,16 +114,16 @@ define([
 		getInformations: function(){
 			switch (this.getState()){ 
 				case 'confirm': 
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate() + (this.getConfirmNote()!=false ? " : " + this.getConfirmNote() : "");
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human') + (this.getConfirmNote()!=false ? " : " + this.getConfirmNote() : "");
 				break;
 				case 'cancel':
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate() + (this.getCancelNote()!=false ? " : " + this.getCancelNote() : "");
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human') + (this.getCancelNote()!=false ? " : " + this.getCancelNote() : "");
 				break;
 				case 'done':
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate() + (this.getDoneNote()!=false ? " : " + this.getDoneNote() : "");
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human') + (this.getDoneNote()!=false ? " : " + this.getDoneNote() : "");
 				break;
 				default: 
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate();
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human');
 			}
 			return ;
 		},
@@ -135,7 +135,7 @@ define([
 		getCancelNote: function(){
 			return this.get('cancel_note');
 		},
-		
+		//mmmmmh a donut !
 		getDoneNote: function(){
 			return this.get('done_note');
 		},
@@ -286,9 +286,13 @@ define([
 		
 		getWriteDate: function(type){
 			if(this.get('write_date') != false){
+				var writeDate = AppHelpers.convertDateToTz(this.get('write_date'));
 				switch(type){
 					case 'human':	
-						return moment(this.get('write_date')).format('LL');
+						return writeDate.format('LLL');
+					break;
+					case 'fromNow': 
+						return createDate.fromNow();
 					break;
 					default:
 						return this.get('write_date');
@@ -440,7 +444,7 @@ define([
 			return this.get('actions');
 		},
 		
-		hasActions: function(action){
+		hasActions: function(action){this.get('write_date')
 			return this.getActions().indexOf(action) > -1;
 		},
 		
@@ -569,6 +573,12 @@ define([
 			this.linesToRemove = new BookingLinesCollection();
 			this.recurrence = null;
 			this.recurrencesToRemove = [];
+			//set default values to model
+			if(this.isNew()){
+				this.set({
+					state:'remplir'
+				});
+			};
 //			this.computeResources().done(function (data) {
 //				// self.set( {'resources' :  data.resources, 'description': data.description} , {silent:false} );	
 //				 //self.set( 'resources',  data.resources , {silent:true} );	

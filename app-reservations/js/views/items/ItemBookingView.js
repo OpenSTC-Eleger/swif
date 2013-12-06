@@ -50,9 +50,9 @@ define([
 			self.render();
 				
 			// Highlight the Row and recalculate the className //
-			AppHelpers.highlight($(self.el)).done(function(){});
+			//AppHelpers.highlight($(self.el)).done(function(){});
 	
-			app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
+			//app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
 	
 			// Partial Render //
 			app.views.bookingsListView.partialRender(model);			

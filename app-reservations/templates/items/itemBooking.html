@@ -28,7 +28,10 @@
 	</p>
 </td>
 <td>
-<span data-toggle="tooltip" data-original-title="<%= booking.getResourceQuantities() %>"> <%= booking.getResourceNames('string') %></span>
+<span data-toggle="popover" data-content="<%=booking.getResourceQuantitiesHtml()%>"
+	data-html="true" data-placement="left">
+	<%= booking.getResourceNames('string') %>
+</span>
 </td>
 <td><%= booking.getStartDate('human') %></td>
 <td><%= booking.getEndDate('human') %></td>
