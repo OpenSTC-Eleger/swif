@@ -6,12 +6,11 @@ define([
 	'bookingModel',
 	'claimerModel',
 	'bookingLinesCollection',
-	'moment',
 	'moment-timezone',
 	'moment-timezone-data'
 
 
-], function(app, AppHelpers, GenericModel, BookingModel, ClaimerModel, BookingLinesCollection, moment){
+], function(app, AppHelpers, GenericModel, BookingModel, ClaimerModel, BookingLinesCollection, moment, momentTZData){
 
 	'use strict';
 	
@@ -22,7 +21,7 @@ define([
 		
 		urlRoot: "/api/openresa/bookings",
 		
-		fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'pricelist_id', 'confirm_note', 'cancel_note', 'done_note'],	
+		fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_ids', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'pricelist_id', 'confirm_note', 'cancel_note', 'done_note'],
 	
 		searchable_fields: [
 			{
@@ -64,7 +63,13 @@ define([
 					return _.capitalize(this.get('write_uid')[1]);
 			}
 		},
+
+
+		getResourcesId : function(){
+			return this.get('resource_ids');
+		},
 		
+
 		getResourceNames : function(type){
 		
 			var bookingResourceNames = [];

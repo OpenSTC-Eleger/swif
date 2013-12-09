@@ -23,10 +23,12 @@ define([
 		templateHTML        : '/templates/others/SideBarPlanningSelectResources.html',
 
 		selectablePlaces    : new BookablesCollection(),
+		selectablePlaceIds  : [],
 		selectedPlaces      : [],
 
-		selectableEquipments: new BookablesCollection(),
-		selectedEquipments  : [],
+		selectableEquipments   : new BookablesCollection(),
+		selectableEquipmentIds : [],
+		selectedEquipments     : [],
 	
 	
 		// The DOM events //
@@ -54,6 +56,16 @@ define([
 			this.options = params;
 
 			this.initCollection().done(function(){
+
+				// Fill the selectablePlaceIds & selectableEquipmentIds //
+				_.each(self.selectablePlaces.models, function(model){
+					self.selectablePlaceIds.push(model.getId());
+				})
+
+				_.each(self.selectableEquipments.models, function(model){
+					self.selectableEquipmentIds.push(model.getId());
+				})
+
 
 				app.router.render(self);
 			});
@@ -115,8 +127,10 @@ define([
 			}
 			else{
 				$('#nbPlaces').addClass('badge-info');	
-				$('#nbPlaces').html(_.join('/', _.size(this.selectedPlaces), _.size(this.selectablePlaces)));
+				$('#nbPlaces').html(_.join(' / ', _.size(this.selectedPlaces), _.size(this.selectablePlaces)));
 			}
+
+			app.views.calendarPlanningView.fetchEvents();
 		},
 
 
@@ -144,9 +158,10 @@ define([
 			}
 			else{
 				$('#nbEquipments').addClass('badge-info');	
-				$('#nbEquipments').html(_.join('/', _.size(this.selectedEquipments), _.size(this.selectableEquipments)));
+				$('#nbEquipments').html(_.join(' / ', _.size(this.selectedEquipments), _.size(this.selectableEquipments)));
 			}
 
+			app.views.calendarPlanningView.fetchEvents();
 		},
 
 
@@ -201,15 +216,13 @@ define([
 				row.toggleClass('selected');
 
 				// Get the color of the Places //
-				icon.toggleClass('fa-dot-circle-o').toggleClass('fa-circle');
+				icon.toggleClass('fa-dot-circle-o').toggleClass('fa-circle-o');
 
 				if(row.hasClass('selected')){
 					var color = '#' + row.data('color');
 					icon.css({color: color});
 				}
-				else{
-					icon.css({color: 'inherit'});
-				}
+
 				return row.data('id');
 			}
 			else{
