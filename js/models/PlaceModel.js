@@ -31,6 +31,12 @@ define([
 			}
 		],
 
+        initialize: function () {
+            if (_.isUndefined(this.get('color'))) {
+                this.set('color', ('#' + Math.floor(Math.random()*16777215).toString(16)));
+            };
+        },
+
 
 		getCompleteName : function() {
 			return _.titleize(this.get('complete_name').toLowerCase());
