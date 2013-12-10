@@ -170,7 +170,6 @@ define([
 						content += '<li><i class="fa-li fa fa-user"></i>'+event.info.claimerContact+'<li>';	
 					}
 					
-
 					content += '</ul>';
 					
 					// Note //
@@ -262,10 +261,12 @@ define([
 
 				// Set the color of the event with the color of the place resource //
 				if(!_.isEmpty(resourcePlaces)){
-					var color = app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(_.first(resourcePlaces)).getColor();
+					var resourceColorId = _.first(resourcePlaces);
+					var color = app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(resourceColorId).getColor();
 				}
 				else{
-					var color = app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get(_.first(resourceEquipments)).getColor();
+					var resourceColorId = _.first(resourceEquipments);
+					var color = app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get().getColor();
 				}
 
 				var rgb = AppHelpers.hexaToRgb(color.split('#')[1]);
@@ -277,7 +278,7 @@ define([
 					var textColor = '#000';
 				}
 
-				
+
 				// Get the equipments //
 				if(!_.isEmpty(resourceEquipments)){
 					
@@ -291,8 +292,6 @@ define([
 					var equipments = ''
 				}
 
-				console.log(model.attributes);
-
 				var evt = {
 					id       : model.getId(),
 					title    : model.getName() + equipments,
@@ -301,6 +300,7 @@ define([
 					color    : color,
 					textColor: textColor,
 					allDay   : false,
+					className: 'resa-'+resourceColorId,
 					info     : {
 						title          : model.getName(),
 						note           : model.getNote(),

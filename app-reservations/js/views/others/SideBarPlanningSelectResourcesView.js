@@ -29,6 +29,7 @@ define([
 		selectableEquipments   : new BookablesCollection(),
 		selectableEquipmentIds : [],
 		selectedEquipments     : [],
+
 	
 	
 		// The DOM events //
@@ -179,8 +180,15 @@ define([
 				var color = link.parent('li').data('color');
 				icon.css({color: color});
 			}
+			else{
+				
+				this.timeOver = setTimeout(function () {
+					$('.fc-event').not('.resa-'+row.data('id')).delay(500).fadeOut();
+				}, 400);
+			}
 
 		},
+
 
 		/** When the mouse leave a resource
 		*/
@@ -192,6 +200,10 @@ define([
 
 				var icon = link.children('i.icon-radio');
 				icon.css({color: 'inherit'});
+			}
+			else{
+				clearTimeout(this.timeOver);
+				$('.fc-event').fadeIn();
 			}
 		},
 
