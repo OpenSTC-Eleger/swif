@@ -1,5 +1,7 @@
 define([
 	'app',
+	'appHelpers',
+	
 	'genericModel',
 	'bookingModel',
 	'bookingsCollection',
@@ -8,7 +10,7 @@ define([
 	'moment-timezone',
 	'moment-timezone-data'
 
-], function(app, GenericModel, BookingModel, BookingsCollection, moment){
+], function(app, AppHelpers, GenericModel, BookingModel, BookingsCollection, moment){
 
 	'use strict';
 
@@ -303,22 +305,24 @@ define([
 			break;
 			}
 			//compute recurrence by calling corresponding method on 'fnct' variable
+			//dates are returned with user TZ
 			return fnct.call(this).done(function(data){
 				//for each date, i create a BookingModel based on this.template
 				if(data.length > 0){
+					var tzUser = app.models.user.getContext().tz; 
 					//get length of resa (date_end - date_start)
-					var date_start = moment.utc(self.getTemplate().getStartDate()).local();
-					var date_end = moment.utc(self.getTemplate().getEndDate()).local();
+					var date_start = moment.utc(self.getTemplate().getStartDate()).tz(tzUser);
+					var date_end = moment.utc(self.getTemplate().getEndDate()).tz(tzUser);
 					var length_resa = moment.duration({milliseconds:date_end - date_start});
 					var collectionLine = self.template.lines;
 					_.each(data, function(date,i){
 						//fix to map date returned by JSON and date expected by moment
 						date.month -= 1;
 						date.minute = date.min;
-						var resa_date_start = AppHelpers.convertDateToTz(date);
+						var resa_date_start = moment(date).tz(tzUser);
 						//do not create first date if refers to the template dates
 						if(!date_start.isSame(resa_date_start)){
-							var resa_date_end = AppHelpers.convertDateToTz(resa_date_start).add(length_resa);
+							var resa_date_end = moment(resa_date_start).tz(tzUser).add(length_resa);
 							//create new occurrence based on template
 							var resaModel = new BookingModel(self.template.getCloneVals());
 							//add lines based on template_lines
@@ -365,7 +369,11 @@ define([
 		fetchOccurrences: function(){
 			var self = this;
 			var deferred = $.Deferred();
-			this.occurrences.fetch({data:{filters:{0:{field:'recurrence_id.id',operator:'=',value:this.getId()}}}}).done(function(){
+			this.occurrences.fetch({
+				data:{filters:{
+					0:{field:'recurrence_id.id',operator:'=',value:this.getId()},
+					1:{field:'id',operator:'!=',value:this.getTemplate().getId()}
+					}}}).done(function(){
 				if(self.occurrences.length > 0){
 					var arrayDeferred = [];
 					self.occurrences.each(function(occurrence,i){

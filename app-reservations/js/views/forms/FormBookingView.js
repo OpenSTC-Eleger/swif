@@ -17,7 +17,8 @@ define(['app',
         'moment-timezone',
         'moment-timezone-data',
         'bsTimepicker',
-        'bsDatepicker'
+        'bsDatepicker',
+        'bsSwitch'
 
 ], function (app, AppHelpers, BookingModel, BookingLineModel, BookingRecurrenceModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, ItemFormBookingLineView, FormRecurrenceView, AdvancedSelectBoxView, moment) {
 
@@ -138,25 +139,22 @@ define(['app',
 	    
 	    //compute display of button addRecurrence (readonly or visible)
 	    updateDisplayAddRecurrence: function(){
-	    	var elt = $('#addRecurrence');
-	    	if(this.isEditable() && this.model.recurrence == null && this.model.getStartDate() != '' && 
-	    			this.model.getEndDate() != '' && this.model.getClaimer('id') > 0 && this.model.lines.length > 0){
+	    	var elt = $('#bookingAddRecurrence');
+	    	var isHidden = this.recurrence != null && !this.isTemplate();
+	    	
+	    	if(!isHidden){
 	    		elt.removeClass('hide-soft');
+	    		if(this.isEditable() ){
+	    			elt.removeAttr('disabled');
+	    		}
+	    		else{
+	    			elt.attr('disabled','');
+	    		}
 	    	}
 	    	else{
 	    		elt.addClass('hide-soft');
 	    	}
-	    },
-	    
-	    //compute display of button removeRecurrence (readonly or visible)
-	    updateDisplayRemoveRecurrence: function(){
-	    	var elt = $('#removeRecurrence');
-	    	if(this.isEditable() && this.model.recurrence != null && this.model.isTemplate()){
-	    		elt.removeClass('hide-soft');
-	    	}
-	    	else{
-	    		elt.addClass('hide-soft');
-	    	}
+
 	    },
 	    
 	    //main method to compute all conditionnal display of form inputs
@@ -164,7 +162,6 @@ define(['app',
 	    	this.updateDisplayAddBookable();
 	    	this.updateDisplayAddRecurrence();
 	    	this.updateDisplaySave();
-	    	this.updateDisplayRemoveRecurrence();
 	    },
 		
 		//split rendering of form and rendering of lines to avoid change-events conflicts 
@@ -213,22 +210,24 @@ define(['app',
 				});
 	
 				$(self.el).html(template);
-	
+				
+				$('.make-switch').bootstrapSwitch();
 				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 				$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 				
 					$('.make-switch').bootstrapSwitch();
 	
-				// Request Claimer //
+				// Booking Claimer //
 				app.views.selectListClaimersView = new AdvancedSelectBoxView({el: $('#bookingPartner'), collection: ClaimersCollection.prototype});
 				app.views.selectListClaimersView.resetSearchParams();
 				app.views.selectListClaimersView.render();
 	
-				// Request Contact //
+				// Booking Contact //
 				app.views.selectListClaimersContactsView = new AdvancedSelectBoxView({el: $('#bookingContact'), collection: ClaimersContactsCollection.prototype});
 				app.views.selectListClaimersContactsView.resetSearchParams();
 				app.views.selectListClaimersContactsView.render();
-	
+				
+				//selectBox to add bookables to booking
 				app.views.selectListAddBookableView = new AdvancedSelectBoxView({el: $('#bookingAddBookable'), collection: BookablesCollection.prototype}),
 				app.views.selectListAddBookableView.resetSearchParams();
 				app.views.selectListAddBookableView.render();

@@ -19,8 +19,7 @@
 						<% if(!_.isNull(booking.getId())){
 							if(!_.isUndefined(booking.getClaimer('id'))) { %>
 							data-selected-value='<%= JSON.stringify(booking.getClaimer('json')) %>'
-						<% } } %>
-	
+						<% } } %> <%= readonly ? 'disabled' : ''%>
 					/>
 				</div>
 			</div>
@@ -35,7 +34,7 @@
 						<% if(!_.isNull(booking.getId())){
 							if(!_.isUndefined(booking.getClaimerContact('id'))) { %>
 							data-selected-value='<%= JSON.stringify(booking.getClaimerContact('json')) %>'
-						<% } } %>
+						<% } } %> <%= readonly ? 'disabled' : ''%>
 	
 					/>
 				</div>
@@ -101,7 +100,7 @@
 			</table>
 			<!-- Add a bookable -->
 			<div class="form-group">
-				<label for="bookingAddBookable" class="control-label col-sm-3"><%= _.capitalize(lang.bookable) %>:</label>
+				<label for="bookingAddBookable" class="control-label col-sm-3"><%= _.capitalize(lang.resa.actions.addABookable) %>:</label>
 	
 				<div class="col-sm-9">
 					<input id="bookingAddBookable" class="select2" data-placeholder="<%= lang.actions.selectABookable %>"/>
@@ -111,9 +110,11 @@
 	</div>
 	<div class="row">
 		<div class="form-group">
-			<div class="col-sm-4 col-sm-offset-2">
-				<button type="button" id="addRecurrence" class="btn btn-default"><%= lang.recurrence%></button>
-				<button type="button" id="removeRecurrence" class="btn btn-default"><%= lang.removeRecurrence%></button>
+			<div class="make-switch" id="bookingAddRecurrence" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
+				<input id="addRecurrence" type="checkbox"
+	
+					<% if(!_.isNull(booking.getId())){ if(booking.getRecurrence()) { %> checked <% } } %>
+				>
 			</div>
 		</div>
 	</div>
@@ -125,9 +126,11 @@
 	</div>
 	<hr/>
 	<div class="row">
-		<div class="col-sm2 col-sm-offset-4">
-			<button type="submit" class="btn btn-primary" form="formSaveBooking" id="saveFormBooking"><%= lang.actions.validate%></button>
-			<a href="#app-reservations/reservations" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>			
+		<div class="col-sm-2 col-sm-offset-4">
+			<div class="pull-right">
+				<button type="submit" class="btn btn-primary" form="formSaveBooking" id="saveFormBooking"><%= lang.actions.validate%></button>
+				<a href="#app-reservations/reservations" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+			</div>
 		</div>
 	</div>
 </form>
