@@ -2,13 +2,13 @@ define([
 	'app',
 	'appHelpers',
 
-	'claimersTypesCollection',
+	'claimersCollection',
 	'bookablesCollection',
 	'bookableModel',
 
 	'advancedSelectBoxView',
 
-], function(app, AppHelpers, ClaimersTypesCollection, BookablesCollection, BookableModel, AdvancedSelectBoxView){
+], function(app, AppHelpers, ClaimersCollection, BookablesCollection, BookableModel, AdvancedSelectBoxView){
 
 	'use strict';
 
@@ -92,8 +92,8 @@ define([
 				$(self.el).html(template);
 	
 				// Advance Select List View //
-				app.views.advancedSelectBoxCategoryRequestView = new AdvancedSelectBoxView({el: $('#claimersTypes'), collection: ClaimersTypesCollection.prototype })
-				app.views.advancedSelectBoxCategoryRequestView.render();
+				app.views.advancedSelectBoxClaimerView = new AdvancedSelectBoxView({el: $('#claimersOrganization'), collection: ClaimersCollection.prototype })
+				app.views.advancedSelectBoxClaimerView.render();
 
 
 				// Set the numbers of selectable resources //
