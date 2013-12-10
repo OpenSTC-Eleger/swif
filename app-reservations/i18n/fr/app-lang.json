@@ -31,7 +31,8 @@
 			"confirmBooking" 			 		: "Validation de la demande de réservation",
 			"cancelBooking" 			 		: "Annulation de la demande de réservation",
 			"doneBooking" 			 			: "Clôture de la demande de réservation",
-			"reservationPlanning"				: "Planning des réservations"
+			"reservationPlanning"				: "Planning des réservations",
+			"reservationDetails"				: "Détails de la réservations"
 	
 		}
 	}

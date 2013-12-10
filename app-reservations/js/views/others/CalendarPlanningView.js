@@ -5,10 +5,12 @@ define([
 	'fullcalendar',
 	'moment',
 
-	'bookingsCollection'
+	'bookingsCollection',
+
+	'modalReservationDetailsView'
 
 
-], function(app, AppHelpers, fullcalendar, moment, BookingsCollection){
+], function(app, AppHelpers, fullcalendar, moment, BookingsCollection, ModalReservationDetailsView){
 
 	'use strict';
 
@@ -140,13 +142,12 @@ define([
 		    
 	    			if(!_.isEmpty(selectedResources)){
 
-		    			self.fetchReservations(start, end, selectedResources)
-		    			.done(function(){
-							var events = self.collectionsToEvents(self.collection);
-							callback(events);
-		    			});
-	    			}
-
+						self.fetchReservations(start, end, selectedResources)
+						.done(function(){
+								var events = self.collectionsToEvents(self.collection);
+								callback(events);
+						});
+					}
 				},
 
 
@@ -195,6 +196,11 @@ define([
 	    	    */
 	    	    eventClick: function(fcEvent, jsEvent, view) {
 
+					app.views.ModalReservationDetailsView = new ModalReservationDetailsView({
+						el      : '#modalReservationDetails',
+						modelId : fcEvent.id,
+						elFocus : 'a'
+					});
 	    		}
 			});
 
