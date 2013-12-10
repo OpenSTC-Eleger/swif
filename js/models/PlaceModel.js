@@ -15,7 +15,7 @@ define([
 	var PlaceModel = GenericModel.extend({
 
 
-		fields     : ['id', 'name', 'complete_name', 'type', 'service_names', 'site_parent_id', 'width', 'length', 'surface','internal_booking','external_booking','service_bookable_ids' ,'service_bookable_names','partner_type_bookable_ids', 'partner_type_bookable_names'],
+		fields     : ['id', 'name', 'complete_name', 'type', 'service_names', 'site_parent_id', 'width', 'length', 'surface','internal_booking','external_booking','service_bookable_ids' ,'service_bookable_names','partner_type_bookable_ids', 'partner_type_bookable_names', 'color'],
 
 		urlRoot    : '/api/openstc/sites',
 
@@ -30,6 +30,12 @@ define([
 				type : 'text'
 			}
 		],
+
+        initialize: function () {
+            if (_.isUndefined(this.get('color'))) {
+                this.set('color', ('#' + Math.floor(Math.random()*16777215).toString(16)));
+            };
+        },
 
 
 		getCompleteName : function() {

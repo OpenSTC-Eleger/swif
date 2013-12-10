@@ -30,7 +30,6 @@ define([
 			}
 		],
 
-
 		getImmat : function() {
 			return this.get('immat');
 		},
@@ -389,7 +388,10 @@ define([
 		*/
 		initialize: function(){
 			//console.log('Equipment Model initialization');
-		},
+            if (_.isUndefined(this.get('color'))) {
+                this.set('color', ('#' + Math.floor(Math.random()*16777215).toString(16)));
+            };
+        }
 
 
 	});
