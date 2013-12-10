@@ -131,10 +131,10 @@ define([
 				},
 
 
-	    		/** Calculates events to display on calendar for officer (or team) on week selected
-				*/    		
+				/** Calculates events to display on calendar for officer (or team) on week selected
+				*/ 		
 				events: function(start, end, callback) { 
-	    			
+
 					// Get the selected resources //
 		    		var selectedResources = _.union(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, app.views.sideBarPlanningSelectResourcesView.selectedEquipments);
 		    
@@ -149,10 +149,37 @@ define([
 
 				},
 
-				eventRender: function(event, element){
-					element.find('.fc-event-title').html(event.title);	
 
-					element.popover( {trigger: 'hover', content: 'lolol', title: 'pouopui', placement: 'left', container: 'body'} );
+				/** EventRender
+				*/ 
+				eventRender: function(event, element){
+					// Allow html tag in the reservation title //
+					element.find('.fc-event-title').html(event.title);
+
+
+					var dateFormat = 'DD/MM HH:mm'
+					var content =  '<ul class="fa-ul">';
+					content += '<li><i class="fa-li fa fa-clock-o"></i>'+moment(event.start).format(dateFormat)+' - '+moment(event.end).format(dateFormat)+'</li>';
+
+
+					// Is Citizen //
+					if(event.info.isCitizen == true){
+						content += '<li><i class="fa-li fa fa-user"></i>'+app.lang.citizen+' : '+event.info.citizenName+'<li>';
+					}
+					else{
+						content += '<li><i class="fa-li fa fa-user"></i>'+event.info.claimerContact+'<li>';	
+					}
+					
+
+					content += '</ul>';
+					
+					// Note //
+					if(!_.isUndefined(event.info.note)){
+						content += '<p>'+event.info.note+'</p>';
+					}
+
+					// Popover //
+					element.popover( {trigger: 'hover', placement: 'left', container: '#calendarManager', html: true, title: event.info.title, content: content} );
 				},
 
 
@@ -264,6 +291,8 @@ define([
 					var equipments = ''
 				}
 
+				console.log(model.attributes);
+
 				var evt = {
 					id       : model.getId(),
 					title    : model.getName() + equipments,
@@ -272,6 +301,13 @@ define([
 					color    : color,
 					textColor: textColor,
 					allDay   : false,
+					info     : {
+						title          : model.getName(),
+						note           : model.getNote(),
+						isCitizen      : model.fromCitizen(),
+						citizenName    : model.getCitizenName(),
+						claimerContact : model.getClaimer()
+					}
 				}
 
 				events.push(evt);

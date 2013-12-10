@@ -21,7 +21,7 @@ define([
 		
 		urlRoot: "/api/openresa/bookings",
 		
-		fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_ids', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'pricelist_id', 'confirm_note', 'cancel_note', 'done_note'],
+		fields : ['id', 'name', 'prod_id', 'checkin', 'note', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_ids', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'pricelist_id', 'confirm_note', 'cancel_note', 'done_note'],
 	
 		searchable_fields: [
 			{
@@ -308,6 +308,13 @@ define([
 				return '';
 			}
 		},
+
+
+		getNote: function(){
+			if(this.get('note') != false){
+				return this.get('note');
+			}
+		},
 	
 		// Claimer of the booking //
 		getClaimer: function(type){
@@ -384,7 +391,7 @@ define([
 		getClaimerPhone: function(){
 			return this.get('contact_phone');
 		},
-		
+
 		getClaimerContact: function(type){
 			if(this.get('partner_order_id')){
 				switch (type){
@@ -402,7 +409,7 @@ define([
 		
 		setClaimerContact: function(value, silent){
 			this.set({ partner_order_id : value }, {silent: silent});
-		},	
+		},
 		
 		getClaimerMail : function(){
 			return !_.isUndefined(this.get('partner_mail')) && !_.isNull(this.get('partner_mail')) && this.get('partner_mail')!=false ? this.get('partner_mail') : "";
@@ -414,7 +421,7 @@ define([
 		setFromCitizen: function(value, silent){
 			this.set({ is_citizen : value }, {silent: silent});
 		},
-		
+
 		getCitizenName: function(){
 			if(this.fromCitizen()){
 				return this.get('people_name');
