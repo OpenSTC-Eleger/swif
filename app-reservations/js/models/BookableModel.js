@@ -21,24 +21,30 @@ define([
 			{
 				key  : 'name', 
 				type : 'text'
+			},
+			{
+				key  : 'type_prod', 
+				type : 'text'
 			}
 		],
 	
-		getId: function(){
-			return this.get('id');
-		},
 		
-		getName: function(){
-			return this.get('name');
+		getQtyAvailable: function(){
+			return this.get('qty_available');
 		},
-		
-		getQtyAvailable: function(dateStart, dateEnd){
-			
-		},
-		
+
 		getProductImage: function(){
 			return this.get('product_image');
-		}
+		},
+
+		getColor: function(){
+			if(this.get('color') != false){
+				return this.get('color');
+			}
+			else{
+				return '#0BA4D8';
+			}
+		},
 	
 	
 	}, {

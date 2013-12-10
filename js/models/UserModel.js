@@ -49,21 +49,31 @@ define([
 		},
 
 		getFirstname : function() {
-			return this.get('firstname');
+			if(this.get('firstname') != false){
+				return this.get('firstname');
+			}
+			else{
+				return '';
+			}
 		},
 		setFirstname : function(value) {
 			this.set({ firstname : value });
 		},
 
 		getLastname : function() {
-			return this.get('lastname');
+			if(this.get('lastname') != false){
+				return this.get('lastname');
+			}
+			else{
+				return '';
+			}
 		},
 		setLastname : function(value) {
 			this.set({ lastname : value.toUpperCase() });
 		},
 
 		getFullname : function() {
-			return this.get('firstname')+' '+this.get('lastname');
+			return this.getFirstname()+' '+this.getLastname();
 		},
 
 		getLastConnection : function() {

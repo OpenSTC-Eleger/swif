@@ -86,11 +86,11 @@ define([
 				$(self.el).html(template);
 
 
-				app.views.SideBarPlanningSelectResourcesView = new SideBarPlanningSelectResourcesView({
+				app.views.sideBarPlanningSelectResourcesView = new SideBarPlanningSelectResourcesView({
 					el : '#sideBarselectResource'
 				});
 
-				app.views.CalendarPlanningView = new CalendarPlanningView({
+				app.views.calendarPlanningView = new CalendarPlanningView({
 					el          : '#calendarManager',
 					calendarView: self.options.calendarView,
 					date        : self.options.date

@@ -136,7 +136,10 @@ define([
 			this.model.setExternalBooking(this.$('#placeExternalBooking:checked').val() == "1", true);
 			this.model.setBookingServices(app.views.advancedSelectBoxPlaceBookingServices.getSelectedItems(), true);
 			this.model.setBookingClaimers(app.views.advancedSelectBoxPlaceBookingClaimers.getSelectedItems(), true);
-			
+			this.model.set('color', $('#displayColor').val());
+
+            delete this.model.attributes.href;
+            delete this.model.attributes.id;
 
 			this.model.save()
 				.done(function(data) {

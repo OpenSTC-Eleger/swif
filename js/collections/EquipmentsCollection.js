@@ -16,11 +16,9 @@ define([
 			
 		url         : '/api/openstc/equipments',
 			
-		fields      : ['id', 'name', 'immat', 'marque', 'purchase_date', 'time', 'km', 'categ_id', 'qty_available'],
+		fields      : ['id', 'name', 'immat', 'marque', 'purchase_date', 'time', 'km', 'categ_id', 'qty_available', 'color'],
 
 		default_sort: { by: 'name', order: 'ASC' },
-
-
 
 		/** Collection Initialization
 		*/

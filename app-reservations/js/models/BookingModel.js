@@ -6,12 +6,11 @@ define([
 	'bookingModel',
 	'claimerModel',
 	'bookingLinesCollection',
-	'moment',
 	'moment-timezone',
 	'moment-timezone-data'
 
 
-], function(app, AppHelpers, GenericModel, BookingModel, ClaimerModel, BookingLinesCollection, moment){
+], function(app, AppHelpers, GenericModel, BookingModel, ClaimerModel, BookingLinesCollection, moment, momentTZData){
 
 	'use strict';
 	
@@ -22,7 +21,7 @@ define([
 		
 		urlRoot: "/api/openresa/bookings",
 		
-		fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'pricelist_id', 'confirm_note', 'cancel_note', 'done_note'],	
+		fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_ids', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'pricelist_id', 'confirm_note', 'cancel_note', 'done_note'],
 	
 		searchable_fields: [
 			{
@@ -64,7 +63,13 @@ define([
 					return _.capitalize(this.get('write_uid')[1]);
 			}
 		},
+
+
+		getResourcesId : function(){
+			return this.get('resource_ids');
+		},
 		
+
 		getResourceNames : function(type){
 		
 			var bookingResourceNames = [];
@@ -93,17 +98,17 @@ define([
 			}
 		},
 		
-		getResourceQuantities : function(){
-			if( this.getState()=='done' || 
-					this.getState()=='cancel') return "";
+		getResourceQuantitiesHtml : function(){
+			if( this.getState()=='done' ||  this.getState()=='cancel' 
+				||  _.size( this.get('resource_quantities') ) == 0 ) return "";
 		
-			var bookingResourceQuantities = [];
+			var bookingResourceQuantities = "<dl>";
 			
 			_.each(this.get('resource_quantities'), function(s){
-					bookingResourceQuantities.push( s[0] + " " + s[1] );			
+				bookingResourceQuantities += "<dt>" + s[0] + "</dt><dd>" + s[1] + "</dd>"					
 			});		
-		
-			return _.toSentence(bookingResourceQuantities, ', ', ' '+app.lang.and+' ')
+			
+			return bookingResourceQuantities + "</dl>"
 	
 		},
 		
@@ -114,16 +119,16 @@ define([
 		getInformations: function(){
 			switch (this.getState()){ 
 				case 'confirm': 
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate() + (this.getConfirmNote()!=false ? " : " + this.getConfirmNote() : "");
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human') + (this.getConfirmNote()!=false ? " : " + this.getConfirmNote() : "");
 				break;
 				case 'cancel':
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate() + (this.getCancelNote()!=false ? " : " + this.getCancelNote() : "");
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human') + (this.getCancelNote()!=false ? " : " + this.getCancelNote() : "");
 				break;
 				case 'done':
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate() + (this.getDoneNote()!=false ? " : " + this.getDoneNote() : "");
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human') + (this.getDoneNote()!=false ? " : " + this.getDoneNote() : "");
 				break;
 				default: 
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate();
+					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human');
 			}
 			return ;
 		},
@@ -286,9 +291,13 @@ define([
 		
 		getWriteDate: function(type){
 			if(this.get('write_date') != false){
+				var writeDate = AppHelpers.convertDateToTz(this.get('write_date'));
 				switch(type){
 					case 'human':	
-						return moment(this.get('write_date')).format('LL');
+						return writeDate.format('LLL');
+					break;
+					case 'fromNow': 
+						return createDate.fromNow();
 					break;
 					default:
 						return this.get('write_date');
@@ -440,7 +449,7 @@ define([
 			return this.get('actions');
 		},
 		
-		hasActions: function(action){
+		hasActions: function(action){this.get('write_date')
 			return this.getActions().indexOf(action) > -1;
 		},
 		

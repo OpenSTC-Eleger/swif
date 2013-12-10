@@ -16,11 +16,12 @@ define([
 		
 		url   : "/api/openresa/bookings",
 		
-		fields: ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state', 'state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'note', 'confirm_note', 'cancel_note', 'done_note','pricelist_id'],
-	
+		fields: ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state', 'state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_names', 'resource_ids', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'note', 'confirm_note', 'cancel_note', 'done_note','pricelist_id'],
+
 		default_sort: { by: '', order: '' },
 		
 		specialCpt : 0,
+
 		
 		/** Get the number of Booking that the user have to deal
 		*/
@@ -50,8 +51,10 @@ define([
 		/** Collection Sync
 		*/
 		sync: function(method, model, options){
-	
-			options.data.fields = this.fields;
+
+			if(_.isUndefined(options.data.fields)){
+				options.data.fields = this.fields;	
+			}
 	
 			return $.when(this.count(options), this.specialCount(), Backbone.sync.call(this,method,this,options));
 		}
