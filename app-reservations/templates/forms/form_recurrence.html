@@ -16,18 +16,21 @@
 				<input type="radio" data-target="#settings_monthly" data-toggle="tab" name="periodicity" value="monthly" <%= recurrence.get('recur_type') == 'monthly' ? 'checked': ''%>>Mensuelle</input>
 		</label>
 	</div>-->
-	<div class="btn-group col-sm-offset-3 col-sm-9" data-toggle="buttons">
-		<label class="btn btn-default <%= recurrence.get('recur_type') == 'daily' ? 'active' : ''%>">
-			<input type="radio" name="periodicity" data-toggle="tab" value="daily" data-target="#settings_daily">Quotidienne
-		</label>
-		<label class="btn btn-default <%= recurrence.get('recur_type') == 'weekly' ? 'active' : ''%>">
-			<input type="radio" name="periodicity" data-toggle="tab" value="weekly" data-target="#settings_weekly">Hebdomadaire
-		</label>
-		<label class="btn btn-default <%= recurrence.get('recur_type') == 'monthly' ? 'active' : ''%>">
-		<input type="radio" name="periodicity" data-toggle="tab" value="monthly" data-target="#settings_monthly">Mensuelle
-		</label>
+	<div class="form-group">
+		<label class="control-label col-sm-3" for="recur_periodicity">Type de récurrence: </label>
+		<div class="btn-group col-sm-9" data-toggle="buttons">
+			<label class="btn btn-default <%= recurrence.get('recur_type') == 'daily' ? 'active' : ''%>">
+				<input type="radio" name="periodicity" data-toggle="tab" value="daily" data-target="#settings_daily">Quotidienne
+			</label>
+			<label class="btn btn-default <%= recurrence.get('recur_type') == 'weekly' ? 'active' : ''%>">
+				<input type="radio" name="periodicity" data-toggle="tab" value="weekly" data-target="#settings_weekly">Hebdomadaire
+			</label>
+			<label class="btn btn-default <%= recurrence.get('recur_type') == 'monthly' ? 'active' : ''%>">
+			<input type="radio" name="periodicity" data-toggle="tab" value="monthly" data-target="#settings_monthly">Mensuelle
+			</label>
+		</div>
 	</div>
-	<hr/>
+	
 	<div class="tab-content form-group">
 		<!-- daily-periodicity-setting of recurrence-->
 		<fieldset id="settings_daily" class="tab-pane fade <%= recurrence.get('recur_type') == 'daily' ? 'in active' : ''%>">
@@ -66,7 +69,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="recur_weekly_weight" class="col-sm-3 control-label">Toutes les: </label>
+				<label for="recur_weekly_weight" class="col-sm-1 control-label">Toutes les: </label>
 				<div class="input-group col-sm-3">
 					<input id="recur_weekly_weight" class="form-control" value="<%= recurrence.getWeight()%>" type="number" min="1"/>
 					<span class="input-group-addon">Semaines</span>
@@ -141,8 +144,8 @@
 		</div>
 	</div>
 	<div class="form-group">	
-		<div class="col-sm-1 col-sm-offset-7">
-			<button type="button" class="btn btn-default" id="getRecurrenceDates">Générer dates</button>			
+		<div class="col-sm-1 col-sm-offset-11">
+			<button type="button" class="btn btn-default pull-right" id="getRecurrenceDates">Générer dates</button>			
 		</div>
 	</div>
 </fieldset>

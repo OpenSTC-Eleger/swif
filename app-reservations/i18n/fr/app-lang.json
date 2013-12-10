@@ -5,7 +5,8 @@
 			"bookingDate"                   		: "Date demande",
 			"startBookingDate"                   	: "Début résa",
 			"endBookingDate"                   		: "Fin résa",
-			"UserOrClaimer"                   		: "Utilisateur / demandeur",	
+			"UserOrClaimer"                   		: "Utilisateur / demandeur",
+			"recurrenteBooking"						: "Réservation récurrence",
 	
 		"actions" : {			
 			"confirmAll"							: "Tout valider",
@@ -13,7 +14,8 @@
 			"doneAll"								: "Tout clôturer",
 			"resolveConflict"						: "Traiter le conflit",
 			"selectABookable"						: "Sélectionner une ressource",
-			"sendInvoicing" 						: "Joindre la facture / Bon de réservation"			
+			"sendInvoicing" 						: "Joindre la facture / Bon de réservation",
+			"addABookable"							: "Ajouter une Ressource"
 		},
 		
 		"infoMessages" : {
