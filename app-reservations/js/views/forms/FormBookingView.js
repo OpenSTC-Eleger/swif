@@ -51,8 +51,7 @@ define(['app',
 			//Form Buttons
 			'submit #formSaveBooking'			: 'saveBookingForm',
 			'click #getRecurrenceDates'			: 'getRecurrenceDates',
-			'click #addRecurrence'				: 'addRecurrence',
-			'click #removeRecurrence'			: 'removeRecurrence'
+			'change #addRecurrence'				: 'changeAddRecurrence',
 		},
 	
 		/** View Initialization
@@ -214,9 +213,7 @@ define(['app',
 				$('.make-switch').bootstrapSwitch();
 				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 				$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
-				
-					$('.make-switch').bootstrapSwitch();
-	
+					
 				// Booking Claimer //
 				app.views.selectListClaimersView = new AdvancedSelectBoxView({el: $('#bookingPartner'), collection: ClaimersCollection.prototype});
 				app.views.selectListClaimersView.resetSearchParams();
@@ -339,6 +336,19 @@ define(['app',
 	    		console.log(e);
 	    	});
 	    },
+	    
+	    changeAddRecurrence: function(e){
+	    	console.log('----------------------');
+	    	
+	    	var val = $('#bookingAddRecurrence').bootstrapSwitch('status');
+	    	if(val){
+	    		this.addRecurrence(e);
+	    	}
+	    	else{
+	    		this.removeRecurrence(e);
+	    	}
+	    },
+	    
 	    addRecurrence: function(e){
 			e.preventDefault();
 			var recurrenceModel = new BookingRecurrenceModel();

@@ -5,7 +5,8 @@
 			"bookingDate"                   		: "Date demande",
 			"startBookingDate"                   	: "Début résa",
 			"endBookingDate"                   		: "Fin résa",
-			"UserOrClaimer"                   		: "Utilisateur / demandeur",	
+			"UserOrClaimer"                   		: "Utilisateur / demandeur",
+			"recurrenteBooking"						: "Réservation récurrence",
 	
 		"actions" : {			
 			"confirmAll"							: "Tout valider",
