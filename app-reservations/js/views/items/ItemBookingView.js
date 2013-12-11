@@ -25,7 +25,7 @@ define([
 		// The DOM events //
 		events       : {			
 			'click a.displayOccurences'				: 'displayOccurences',			
-			'click .actions'						: 'modalUpdateBooking'
+			'click .actions'						: 'modalUpdateBooking',
 		},	
 	
 	

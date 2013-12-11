@@ -1,8 +1,7 @@
 <td><%= booking.id %></td>
 <td>
-	<a 	href="#collapse_<%= booking.getId() %>"
-		class="accordion-object"
-		data-toggle="popover"
+	<a 	href="#app-reservations/reservations"	
+		class="title"	
 		data-html="true"
 		data-original-title="<%= _.capitalize(lang.about) %>"
 		data-delay="160"
@@ -10,8 +9,8 @@
 			<i class="fa fa-thumb-tack">&nbsp;&nbsp;</i><%= _.capitalize(_(booking.getName()).escapeHTML()) %>
 	</a>
 	<!-- Interventions action -->
-	<p class="row-actions invisible">
-		 &nbsp;<a href="#app-reservations/nouvelle-reservation/id/<%= booking.getId()%>" class="updateBooking"><i class="fa fa-pencil fa-lg" data-original-title="<%= _.capitalize(lang.actions.modify) %>"></i></a>
+	<p class="row-actions">
+		 &nbsp;<a href="#app-reservations/nouvelle-reservation/id/<%= booking.getId()%>" class="updateBooking invisible"><i class="fa fa-pencil fa-lg" data-original-title="<%= _.capitalize(lang.actions.modify) %>"></i></a>
 
 		<% if ( booking.getRecurrence('id') ) { %>
 			<a href="#" class="displayOccurences" data-toggle="tooltip" data-original-title="Afficher les occurences" data-action="reccurent">
@@ -20,11 +19,11 @@
 		<% } %>
 
 		<% if(booking.hasActions("cancel")) { %>
-			 &nbsp;<a href="#" class="buttonCancelInter" data-toggle="modal"><i class="fa fa-ban fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
+			 &nbsp;<a href="#" class="buttonCancelInter invisible" data-toggle="modal"><i class="fa fa-ban fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
 		<% } %>
 
         <% if (booking.get('invoice_attachment_id') != 0) { %>
-        &nbsp;<a target="_blank" href="/api/open_object/portable_documents/<%= booking.get('invoice_attachment_id') %>?token=<%= downloadToken %>" class="buttonDownload"><i class="fa fa-download" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.download) %>"></i></a>
+        &nbsp;<a target="_blank" href="/api/open_object/portable_documents/<%= booking.get('invoice_attachment_id') %>?token=<%= downloadToken %>" class="buttonDownload invisible"><i class="fa fa-download" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.download) %>"></i></a>
         <% } %>
 	</p>
 </td>
