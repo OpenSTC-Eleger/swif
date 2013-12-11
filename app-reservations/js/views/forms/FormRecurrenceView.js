@@ -80,7 +80,7 @@ define(['app',
 		},
 		
 		isEditable: function(){
-			return this.model.getState() == BookingModel.status.remplir.key;
+			return this.model.template.getState() == BookingModel.status.remplir.key;
 		},
 		
 		/** Display the view
@@ -198,6 +198,15 @@ define(['app',
 	    
 	    getRecurrenceDates: function(e){
 			e.preventDefault();
+			var self = this;
+			var listOfOccurrence = [];
+			this.model.occurrences.each(function(occurrence){
+				listOfOccurrence.push(occurrence);
+			});
+			_.each(listOfOccurrence, function(occurrence){
+				console.log('Delete occurrence');
+				self.model.destroyOccurrenceFromBackend(occurrence);
+			});
 			this.model.fetchDates();
 		}
  

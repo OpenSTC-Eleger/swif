@@ -8,36 +8,57 @@
 <form id="formSaveBooking" action="#" class="form-horizontal container" role="form">
 	<div class="row">
 		<fieldset class="col-sm-6" <%= readonly ? 'disabled' : ''%>>
-		<legend>Informations Générales</legend>
+		<legend><%= lang.resa.generalInfos%></legend>
+			<!-- Citizen BS-switch -->
+			<div class="form-group">
+				<label for="bookingIsCitizen" class="control-label col-sm-3"><%= _.capitalize(lang.citizen) %>:</label>
+		
+				<div class="make-switch" id="bookingIsCitizen" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
+					<input id="isCitizen" type="checkbox"
+		
+						<% if(!_.isNull(booking.getId())){ if(booking.fromCitizen()) { %> checked <% } } %>
+					>
+				</div>
+			</div>
+			
 			<!-- Booking Partner (claimer) -->
 			<div class="form-group">
 				<label for="bookingPartner" class="control-label col-sm-3"><%= _.capitalize(lang.claiment) %>:</label>
 	
 				<div class="col-sm-9">
 					<input id="bookingPartner" class="select2" data-placeholder="<%= lang.actions.selectAClaimer %>"
-	
-						<% if(!_.isNull(booking.getId())){
-							if(!_.isUndefined(booking.getClaimer('id'))) { %>
-							data-selected-value='<%= JSON.stringify(booking.getClaimer('json')) %>'
-						<% } } %>
-	
-					/>
+					<%= readonly ? 'disabled' : ''%>/>
 				</div>
 			</div>
-	
+
 			<!-- Booking Contact (contact of claimer) -->
-			<div class="form-group">
+			<div class="form-group" id="blockBookingContact">
 				<label for="bookingContact" class="control-label col-sm-3"><%= _.capitalize(lang.contact) %>:</label>
 	
 				<div class="col-sm-9">
-					<input id="bookingContact" class="select2" data-placeholder="<%= lang.actions.selectAContact %>"
-	
-						<% if(!_.isNull(booking.getId())){
-							if(!_.isUndefined(booking.getClaimerContact('id'))) { %>
-							data-selected-value='<%= JSON.stringify(booking.getClaimerContact('json')) %>'
-						<% } } %>
-	
-					/>
+					<input id="bookingContact" class="select2" data-placeholder="<%= lang.actions.selectAContact %>" 
+					<%= readonly ? 'disabled' : ''%>/>
+				</div>
+			</div>
+			<!-- Citizen infos -->
+			<div id="citizenInfos">
+				<div class="form-group">
+					<label for="bookingPeopleName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
+					<div class="col-sm-9">
+						<input type="text" id="bookingPeopleName" name="peopleName" class="form-control" value="<%= booking.getCitizenName()%>"/>
+					</div>	
+				</div>
+				<div class="form-group">
+					<label for="bookingPeoplePhone" class="control-label col-sm-3"><%= _.capitalize(lang.phone) %>:</label>
+					<div class="col-sm-9">
+						<input type="text" id="bookingPeoplePhone" name="peoplePhone" class="form-control" value="<%= booking.getCitizenPhone()%>"/>
+					</div>	
+				</div>
+				<div class="form-group">
+					<label for="bookingPeopleMail" class="control-label col-sm-3"><%= _.capitalize(lang.email) %>:</label>
+					<div class="col-sm-9">
+						<input type="text" id="bookingPeopleMail" name="peopleMail" class="form-control" value="<%= booking.getClaimerMail()%>"/>
+					</div>	
 				</div>
 			</div>
 
@@ -78,12 +99,14 @@
 				<div class="input-group bootstrap-timepicker col-sm-3" >							
 					<input type="text" class="timepicker-default form-control" id='bookingCheckoutHour' value="<%= endHour%>" required="required">
 					<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-				</div>						
+				</div>
 			</div>
-		</fieldset>
+
+		<!-- </fieldset>-->
 		<!-- Bookables (qty, pricing, dispo)-->
-		<fieldset class="col-sm-6" <%= readonly ? 'disabled' : ''%>>
-		<legend>Ressources demandées</legend>
+		<!-- <fieldset class="col-sm-6" <%= readonly ? 'disabled' : ''%>>-->
+		<hr/>
+		<legend><%= lang.resa.bookablesOrdered%></legend>
 			<!-- Recap of BookingLines -->
 			<table class="table-nested-objects table table-striped table-condensed table-hover">
 				<thead>
@@ -101,33 +124,39 @@
 			</table>
 			<!-- Add a bookable -->
 			<div class="form-group">
-				<label for="bookingAddBookable" class="control-label col-sm-3"><%= _.capitalize(lang.bookable) %>:</label>
+				<label for="bookingAddBookable" class="control-label col-sm-3"><%= _.capitalize(lang.resa.actions.addABookable) %>:</label>
 	
 				<div class="col-sm-9">
 					<input id="bookingAddBookable" class="select2" data-placeholder="<%= lang.actions.selectABookable %>"/>
 				</div>
 			</div>
 		</fieldset>
-	</div>
-	<div class="row">
-		<div class="form-group">
-			<div class="col-sm-4 col-sm-offset-2">
-				<button type="button" id="addRecurrence" class="btn btn-default"><%= lang.recurrence%></button>
-				<button type="button" id="removeRecurrence" class="btn btn-default"><%= lang.removeRecurrence%></button>
+
+		<fieldset class="col-sm-6">
+			<legend><%= lang.resa.recurrenceSetting%></legend>
+			<div class="form-group">
+				<label for="bookingAddBookable" class="control-label col-sm-3"><%= _.capitalize(lang.resa.recurrenteBooking) %>:</label>
+		
+				<div class="make-switch" id="bookingAddRecurrence" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
+					<input id="addRecurrence" type="checkbox"
+		
+						<% if(!_.isNull(booking.getId())){ if(booking.getRecurrence()) { %> checked <% } } %>
+					>
+				</div>
 			</div>
-		</div>
-	</div>
-	<div class="row">
-		<!-- recurrence-->
-		<div id="recurrence">
-			
-		</div>
+			<!-- recurrence-->
+			<div id="recurrence">
+				
+			</div>
+		</fieldset>
 	</div>
 	<hr/>
 	<div class="row">
-		<div class="col-sm2 col-sm-offset-4">
-			<button type="submit" class="btn btn-primary" form="formSaveBooking" id="saveFormBooking"><%= lang.actions.validate%></button>
-			<a href="#app-reservations/reservations" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>			
+		<div class="col-sm-2 col-sm-offset-4">
+			<div class="pull-right">
+				<button type="submit" class="btn btn-primary" form="formSaveBooking" id="saveFormBooking"><%= lang.actions.validate%></button>
+				<a href="#app-reservations/reservations" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+			</div>
 		</div>
 	</div>
 </form>

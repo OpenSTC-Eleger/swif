@@ -1,9 +1,12 @@
 define('appHelpers', [
 
 	'app',
-	'userModel'
+	'userModel',
 
-], function(app, UserModel){
+	'moment-timezone',
+	'moment-timezone-data'
+
+], function(app, UserModel, moment, momentTZData){
 
 
 	/******************************************
@@ -194,10 +197,18 @@ define('appHelpers', [
 			$('#'+fieldId).html(app.lang.errorMessages[message]);
 			$('#'+fieldId).parents('.form-group').addClass('has-error');
 		},
-		
+
+
 		convertDateToTz : function(date) {
 			var convertedDate = moment(date).tz(app.models.user.getContext().tz)
 			return convertedDate.add('minutes',-convertedDate.zone());
+		},
+
+
+		hexaToRgb : function(arg){
+            if (arg.length === 3) { arg = arg.charAt(0) + arg.charAt(0) + arg.charAt(1) + arg.charAt(1) + arg.charAt(2) + arg.charAt(2); }
+
+            return [parseInt(arg.substr(0,2), 16).toString(), parseInt(arg.substr(2,2), 16).toString(), parseInt(arg.substr(4,2), 16).toString()];
 		}
 
 	}

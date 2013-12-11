@@ -2,13 +2,13 @@ define([
 	'app',
 	'appHelpers',
 
-	'claimersTypesCollection',
+	'claimersCollection',
 	'bookablesCollection',
 	'bookableModel',
 
 	'advancedSelectBoxView',
 
-], function(app, AppHelpers, ClaimersTypesCollection, BookablesCollection, BookableModel, AdvancedSelectBoxView){
+], function(app, AppHelpers, ClaimersCollection, BookablesCollection, BookableModel, AdvancedSelectBoxView){
 
 	'use strict';
 
@@ -25,8 +25,9 @@ define([
 		selectablePlaces    : new BookablesCollection(),
 		selectedPlaces      : [],
 
-		selectableEquipments: new BookablesCollection(),
-		selectedEquipments  : [],
+		selectableEquipments   : new BookablesCollection(),
+		selectedEquipments     : [],
+
 	
 	
 		// The DOM events //
@@ -52,6 +53,9 @@ define([
 			var self = this;
 
 			this.options = params;
+
+			this.selectedPlaces = [];
+			this.selectedEquipments = [];
 
 			this.initCollection().done(function(){
 
@@ -79,8 +83,8 @@ define([
 				$(self.el).html(template);
 	
 				// Advance Select List View //
-				app.views.advancedSelectBoxCategoryRequestView = new AdvancedSelectBoxView({el: $('#claimersTypes'), collection: ClaimersTypesCollection.prototype })
-				app.views.advancedSelectBoxCategoryRequestView.render();
+				app.views.advancedSelectBoxClaimerView = new AdvancedSelectBoxView({el: $('#claimersOrganization'), collection: ClaimersCollection.prototype })
+				app.views.advancedSelectBoxClaimerView.render();
 
 
 				// Set the numbers of selectable resources //
@@ -115,8 +119,10 @@ define([
 			}
 			else{
 				$('#nbPlaces').addClass('badge-info');	
-				$('#nbPlaces').html(_.join('/', _.size(this.selectedPlaces), _.size(this.selectablePlaces)));
+				$('#nbPlaces').html(_.join(' / ', _.size(this.selectedPlaces), _.size(this.selectablePlaces)));
 			}
+
+			app.views.calendarPlanningView.fetchEvents();
 		},
 
 
@@ -144,9 +150,10 @@ define([
 			}
 			else{
 				$('#nbEquipments').addClass('badge-info');	
-				$('#nbEquipments').html(_.join('/', _.size(this.selectedEquipments), _.size(this.selectableEquipments)));
+				$('#nbEquipments').html(_.join(' / ', _.size(this.selectedEquipments), _.size(this.selectableEquipments)));
 			}
 
+			app.views.calendarPlanningView.fetchEvents();
 		},
 
 
@@ -164,8 +171,15 @@ define([
 				var color = link.parent('li').data('color');
 				icon.css({color: color});
 			}
+			else{
+				
+				this.timeOver = setTimeout(function () {
+					$('.fc-event').not('.resa-'+row.data('id')).delay(500).fadeOut();
+				}, 400);
+			}
 
 		},
+
 
 		/** When the mouse leave a resource
 		*/
@@ -177,6 +191,10 @@ define([
 
 				var icon = link.children('i.icon-radio');
 				icon.css({color: 'inherit'});
+			}
+			else{
+				clearTimeout(this.timeOver);
+				$('.fc-event').fadeIn();
 			}
 		},
 
@@ -201,15 +219,13 @@ define([
 				row.toggleClass('selected');
 
 				// Get the color of the Places //
-				icon.toggleClass('fa-dot-circle-o').toggleClass('fa-circle');
+				icon.toggleClass('fa-dot-circle-o').toggleClass('fa-circle-o');
 
 				if(row.hasClass('selected')){
 					var color = '#' + row.data('color');
 					icon.css({color: color});
 				}
-				else{
-					icon.css({color: 'inherit'});
-				}
+
 				return row.data('id');
 			}
 			else{
@@ -271,7 +287,7 @@ define([
 				}				
 			}
 			else{
-				input.text('1');	
+				input.text('1');
 			}
 		},
 

@@ -5,15 +5,57 @@
 			"bookingDate"                   		: "Date demande",
 			"startBookingDate"                   	: "Début résa",
 			"endBookingDate"                   		: "Fin résa",
-			"UserOrClaimer"                   		: "Utilisateur / demandeur",	
-	
+			"UserOrClaimer"                   		: "Utilisateur / demandeur",
+			"recurrenteBooking"						: "Réservation récurrente",
+			"occurrences"							: "Occurrences",
+			"generalInfos"							: "Informations Générales",
+			"bookablesOrdered"						: "Ressources demandées",
+			"recurrenceSetting"						: "Paramétrage Récurrence",
+			"plannedDates"							: "Dates prévues",
+			"recurrenceType"						: "Type de récurrence",
+			"forEachDays"							: "Tous les",
+			"forEachWeeks"							: "Toutes les",
+			"forEachMonthday"						: "Tous les ",
+			"monthlyWeekday"						: "Chaque",
+			"monthlyMonthday"						: "Jour n°",
+			"ofMonth"								: "Du mois",
+			"untilCount"							: "Au bout de",
+			"until"									: "Jusqu'au",
+			"recurDaily"							: "Quotidienne",
+			"recurWeekly"							: "Hebdomadaire",
+			"recurMonthly"							: "Mensuelle",
+			"days"									: "Jours",
+			"weeks"									: "Semaines",
+			"months"								: "Mois",
+			"weekdayMon"							: "Lun.",
+			"weekdayTue"							: "Mar.",
+			"weekdayWed"							: "Mer.",
+			"weekdayThu"							: "Jeu.",
+			"weekdayFri"							: "Ven.",
+			"weekdaySat"							: "Sam.",
+			"weekdaySun"							: "Dim.",
+			"weekdayMonday"							: "Lundi",
+			"weekdayTuesday"						: "Mardi",
+			"weekdayWednesday"						: "Mercredi",
+			"weekdayThursday"						: "Jeudi",
+			"weekdayFriday"							: "Vendredi",
+			"weekdaySaturday"						: "Samedi",
+			"weekdaySunday"							: "Dimanche",
+			"first"									: "Premier",
+			"second"								: "Deuxième",
+			"third"									: "Troisième",
+			"fourth"								: "Quatrième",
+			"last"									: "Dernier",
+			
 		"actions" : {			
 			"confirmAll"							: "Tout valider",
 			"cancelAll"								: "Tout refuser",
 			"doneAll"								: "Tout clôturer",
 			"resolveConflict"						: "Traiter le conflit",
 			"selectABookable"						: "Sélectionner une ressource",
-			"sendInvoicing" 						: "Joindre la facture / Bon de réservation"			
+			"sendInvoicing" 						: "Joindre la facture / Bon de réservation",
+			"addABookable"							: "Ajouter une Ressource",
+			"generateDates"							: "Générer dates"
 		},
 		
 		"infoMessages" : {
@@ -29,7 +71,8 @@
 			"confirmBooking" 			 		: "Validation de la demande de réservation",
 			"cancelBooking" 			 		: "Annulation de la demande de réservation",
 			"doneBooking" 			 			: "Clôture de la demande de réservation",
-			"reservationPlanning"				: "Planning des réservations"
+			"reservationPlanning"				: "Planning des réservations",
+			"reservationDetails"				: "Détails de la réservations"
 	
 		}
 	}

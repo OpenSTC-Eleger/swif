@@ -1,5 +1,4 @@
-<fieldset class="col-sm-6">
-<legend>Paramétrage Récurrence</legend>
+
 	<!-- Recurrence setting (optionnal)-->
 	<!-- <div class="form-group">
 		<label class="control-label col-sm-3">Periodicité: </label>
@@ -16,25 +15,28 @@
 				<input type="radio" data-target="#settings_monthly" data-toggle="tab" name="periodicity" value="monthly" <%= recurrence.get('recur_type') == 'monthly' ? 'checked': ''%>>Mensuelle</input>
 		</label>
 	</div>-->
-	<div class="btn-group col-sm-offset-3 col-sm-9" data-toggle="buttons">
-		<label class="btn btn-default <%= recurrence.get('recur_type') == 'daily' ? 'active' : ''%>">
-			<input type="radio" name="periodicity" data-toggle="tab" value="daily" data-target="#settings_daily">Quotidienne
-		</label>
-		<label class="btn btn-default <%= recurrence.get('recur_type') == 'weekly' ? 'active' : ''%>">
-			<input type="radio" name="periodicity" data-toggle="tab" value="weekly" data-target="#settings_weekly">Hebdomadaire
-		</label>
-		<label class="btn btn-default <%= recurrence.get('recur_type') == 'monthly' ? 'active' : ''%>">
-		<input type="radio" name="periodicity" data-toggle="tab" value="monthly" data-target="#settings_monthly">Mensuelle
-		</label>
+	<div class="form-group">
+		<label class="control-label col-sm-3" for="recur_periodicity"><%= lang.resa.recurrenceSetting%>:</label>
+		<div class="btn-group col-sm-9" data-toggle="buttons">
+			<label class="btn btn-default <%= recurrence.get('recur_type') == 'daily' ? 'active' : ''%>">
+				<input type="radio" name="periodicity" data-toggle="tab" value="daily" data-target="#settings_daily"><%= lang.resa.recurDaily%>
+			</label>
+			<label class="btn btn-default <%= recurrence.get('recur_type') == 'weekly' ? 'active' : ''%>">
+				<input type="radio" name="periodicity" data-toggle="tab" value="weekly" data-target="#settings_weekly"><%= lang.resa.recurWeekly%>
+			</label>
+			<label class="btn btn-default <%= recurrence.get('recur_type') == 'monthly' ? 'active' : ''%>">
+			<input type="radio" name="periodicity" data-toggle="tab" value="monthly" data-target="#settings_monthly"><%= lang.resa.recurMonthly%>
+			</label>
+		</div>
 	</div>
-	<hr/>
+	
 	<div class="tab-content form-group">
 		<!-- daily-periodicity-setting of recurrence-->
 		<fieldset id="settings_daily" class="tab-pane fade <%= recurrence.get('recur_type') == 'daily' ? 'in active' : ''%>">
-			<label class="control-label col-sm-3" for="recur_daily_weight">Tous les: </label>
+			<label class="control-label col-sm-3" for="recur_daily_weight"><%= lang.resa.forEachDays%>:</label>
 			<div class="input-group col-sm-3">
 				<input class="form-control" id="recur_daily_weight" value="<%= recurrence.getWeight()%>" type="number" min="1"/>
-				 <span class="input-group-addon">Jours</span>
+				 <span class="input-group-addon"><%= lang.resa.days%></span>
 			</div>
 		</fieldset>
 		
@@ -43,33 +45,33 @@
 			<div class="form-group">
 				<div class="col-sm-offset-3">
 					<label class="checkbox-inline">
-						<input name="weekdays" type="checkbox" value="monday" <%= weekdays.indexOf('monday') > -1 ? 'checked': ''%>>Lun.</input>
+						<input name="weekdays" type="checkbox" value="monday" <%= weekdays.indexOf('monday') > -1 ? 'checked': ''%>><%= lang.resa.weekdayMon%></input>
 					</label>
 					<label class="checkbox-inline">
-						<input name="weekdays" type="checkbox" value="tuesday" <%= weekdays.indexOf('tuesday') > -1 ? 'checked': ''%>>Mar.</input>
+						<input name="weekdays" type="checkbox" value="tuesday" <%= weekdays.indexOf('tuesday') > -1 ? 'checked': ''%>><%= lang.resa.weekdayTue%></input>
 					</label>
 					<label class="checkbox-inline">
-						<input name="weekdays" type="checkbox" value="wednesday" <%= weekdays.indexOf('wednesday') > -1 ? 'checked': ''%>>Mer.</input>
+						<input name="weekdays" type="checkbox" value="wednesday" <%= weekdays.indexOf('wednesday') > -1 ? 'checked': ''%>><%= lang.resa.weekdayWed%></input>
 					</label>
 					<label class="checkbox-inline">
-						<input name="weekdays" type="checkbox" value="thursday" <%= weekdays.indexOf('thursday') > -1 ? 'checked': ''%>>jeu.</input>
+						<input name="weekdays" type="checkbox" value="thursday" <%= weekdays.indexOf('thursday') > -1 ? 'checked': ''%>><%= lang.resa.weekdayThu%></input>
 					</label>
 					<label class="checkbox-inline">
-						<input name="weekdays" type="checkbox" value="friday" <%= weekdays.indexOf('friday') > -1 ? 'checked': ''%>>Ven.</input>
+						<input name="weekdays" type="checkbox" value="friday" <%= weekdays.indexOf('friday') > -1 ? 'checked': ''%>><%= lang.resa.weekdayFri%></input>
 					</label>
 					<label class="checkbox-inline">
-						<input name="weekdays" type="checkbox" value="saturday" <%= weekdays.indexOf('saturday') > -1 ? 'checked': ''%>>Sam.</input>
+						<input name="weekdays" type="checkbox" value="saturday" <%= weekdays.indexOf('saturday') > -1 ? 'checked': ''%>><%= lang.resa.weekdaySat%></input>
 					</label>
 					<label class="checkbox-inline">
-						<input name="weekdays" type="checkbox" value="sunday" <%= weekdays.indexOf('sunday') > -1 ? 'checked': ''%>>Dim.</input>
+						<input name="weekdays" type="checkbox" value="sunday" <%= weekdays.indexOf('sunday') > -1 ? 'checked': ''%>><%= lang.resa.weekdaySun%></input>
 					</label>
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="recur_weekly_weight" class="col-sm-3 control-label">Toutes les: </label>
+				<label for="recur_weekly_weight" class="col-sm-3 control-label"><%= lang.resa.forEachWeeks%>: </label>
 				<div class="input-group col-sm-3">
 					<input id="recur_weekly_weight" class="form-control" value="<%= recurrence.getWeight()%>" type="number" min="1"/>
-					<span class="input-group-addon">Semaines</span>
+					<span class="input-group-addon"><%= lang.resa.weeks%></span>
 				</div>
 			</div>
 		</fieldset>
@@ -78,44 +80,44 @@
 		<fieldset id="settings_monthly" class="tab-pane fade <%= recurrence.get('recur_type') == 'monthly' ? 'in active' : ''%>">
 			<div class="form-group">
 				<label class="control-label col-sm-3">
-					<input type="radio" class="radio-inline" name="type_monthly" <%= recurrence.get('recur_month_type') == 'monthday' ? 'checked': ''%> value="monthday">Jour n°: </input>
+					<input type="radio" class="radio-inline" name="type_monthly" <%= recurrence.get('recur_month_type') == 'monthday' ? 'checked': ''%> value="monthday"><%= lang.resa.monthlyMonthday%>: </input>
 				</label>
 				<div class="input-group col-sm-3">
 					<input class="form-control" id="recur_monthly_monthday" type="number" value="<%= recurrence.getMonthday()%>" min="1"/>
-					<span class="input-group-addon">Du mois</span>
+					<span class="input-group-addon"><%= lang.resa.ofMonth%></span>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-3">
-					<input type="radio" class="radio-inline" name="type_monthly" <%= recurrence.get('recur_month_type') == 'monthweekday' ? 'checked': ''%> value="monthweekday">Chaque: </input>
+					<input type="radio" class="radio-inline" name="type_monthly" <%= recurrence.get('recur_month_type') == 'monthweekday' ? 'checked': ''%> value="monthweekday"><%= lang.resa.monthlyWeekday%>: </input>
 				</label>
 				<div class="input-group col-sm-3">
 					<select id="recur_monthly_relative_position" class="form-control">
-						<option value="first" <%= recurrence.getMonthRelativePosition() == 'first' ? 'selected': ''%>>Premiers</option>
-						<option value="second" <%= recurrence.getMonthRelativePosition() == 'second' ? 'selected': ''%>>Deuxième</option>
-						<option value="third" <%= recurrence.getMonthRelativePosition() == 'third' ? 'selected': ''%>>Troisièmes</option>
-						<option value="fourth" <%= recurrence.getMonthRelativePosition() == 'fourth' ? 'selected': ''%>>Quatrièmes</option>
-						<option value="last" <%= recurrence.getMonthRelativePosition() == 'last' ? 'selected': ''%>>Derniers</option>	
+						<option value="first" <%= recurrence.getMonthRelativePosition() == 'first' ? 'selected': ''%>><%= lang.resa.first%></option>
+						<option value="second" <%= recurrence.getMonthRelativePosition() == 'second' ? 'selected': ''%>><%= lang.resa.second%></option>
+						<option value="third" <%= recurrence.getMonthRelativePosition() == 'third' ? 'selected': ''%>><%= lang.resa.third%></option>
+						<option value="fourth" <%= recurrence.getMonthRelativePosition() == 'fourth' ? 'selected': ''%>><%= lang.resa.fourth%></option>
+						<option value="last" <%= recurrence.getMonthRelativePosition() == 'last' ? 'selected': ''%>><%= lang.resa.last%></option>	
 					</select>
 				</div>
 				<div class="input-group col-sm-4">
 					<select id="recur_monthly_weekday" class="form-control">
-						<option value="monday" <%= recurrence.getMonthWeekday() == 'monday' ? 'selected': ''%>>Lundi</option>
-						<option value="tuesday" <%= recurrence.getMonthWeekday() == 'tuesday' ? 'selected': ''%>>Mardi</option>
-						<option value="wednesday" <%= recurrence.getMonthWeekday() == 'wednesday' ? 'selected': ''%>>Mercredi</option>
-						<option value="thursday" <%= recurrence.getMonthWeekday() == 'thursday' ? 'selected': ''%>>Jeudi</option>
-						<option value="friday" <%= recurrence.getMonthWeekday() == 'friday' ? 'selected': ''%>>Vendredi</option>
-						<option value="saturday" <%= recurrence.getMonthWeekday() == 'saturday' ? 'selected': ''%>>Samedi</option>
-						<option value="sunday" <%= recurrence.getMonthWeekday() == 'sunday' ? 'selected': ''%>>Dimanche</option>
+						<option value="monday" <%= recurrence.getMonthWeekday() == 'monday' ? 'selected': ''%>><%= lang.resa.weekdayMonday%></option>
+						<option value="tuesday" <%= recurrence.getMonthWeekday() == 'tuesday' ? 'selected': ''%>><%= lang.resa.weekdayTuesday%></option>
+						<option value="wednesday" <%= recurrence.getMonthWeekday() == 'wednesday' ? 'selected': ''%>><%= lang.resa.weekdayWednesday%></option>
+						<option value="thursday" <%= recurrence.getMonthWeekday() == 'thursday' ? 'selected': ''%>><%= lang.resa.weekdayThursday%></option>
+						<option value="friday" <%= recurrence.getMonthWeekday() == 'friday' ? 'selected': ''%>><%= lang.resa.weekdayFriday%></option>
+						<option value="saturday" <%= recurrence.getMonthWeekday() == 'saturday' ? 'selected': ''%>><%= lang.resa.weekdaySaturday%></option>
+						<option value="sunday" <%= recurrence.getMonthWeekday() == 'sunday' ? 'selected': ''%>><%= lang.resa.weekdaySunday%></option>
 					</select>
-					<span class="input-group-addon">Du mois</span>
+					<span class="input-group-addon"><%= lang.resa.ofMonth%></span>
 				</div>			
 			</div>
 			<div class="form-group">
 				<label for="recur_monthly_weight" class="col-sm-3 control-label">Tous les: </label>
 				<div class="input-group col-sm-3">
 					<input id="recur_monthly_weight" class="form-control" value="<%= recurrence.getWeight()%>" type="number" min="1"/>
-					<span class="input-group-addon">Mois</span>
+					<span class="input-group-addon"><%= lang.resa.months%></span>
 				</div>
 			</div>
 		</fieldset>
@@ -124,16 +126,16 @@
 	<!-- length of recurrence-->
 	<div class="form-group">		
 		<label class="control-label col-sm-3">
-			<input type="radio" class="radio-inline" name="recur_type_length" <%= recurrence.get('recur_length_type') == 'count' ? 'checked': ''%> value="count">Au bout de: </input>
+			<input type="radio" class="radio-inline" name="recur_type_length" <%= recurrence.get('recur_length_type') == 'count' ? 'checked': ''%> value="count"><%= lang.resa.untilCount%>: </input>
 		</label>
 		<div class="input-group col-sm-3">
 			<input class="form-control" id="recur_length_count" type="number" value="<%= recurrence.getCount()%>" min="1"/>
-			<span class="input-group-addon">Occurences</span>
+			<span class="input-group-addon"><%= lang.resa.occurrences%></span>
 		</div>
 	</div>
 	<div class="form-group">	
 		<label class="control-label col-sm-3">
-			<input type="radio" class="radio-inline" name="recur_type_length" <%= recurrence.get('recur_length_type') == 'until' ? 'checked': ''%> value="until">Jusqu'au: </input>
+			<input type="radio" class="radio-inline" name="recur_type_length" <%= recurrence.get('recur_length_type') == 'until' ? 'checked': ''%> value="until"><%= lang.resa.until%>: </input>
 		</label>
 		<div class="input-group col-sm-3">
 			<input class="datepicker form-control" id="recur_length_until" placeholder="dd/mm/yyyy" value="<%= date_end%>" type="text" min="1"/>
@@ -141,25 +143,23 @@
 		</div>
 	</div>
 	<div class="form-group">	
-		<div class="col-sm-1 col-sm-offset-7">
-			<button type="button" class="btn btn-default" id="getRecurrenceDates">Générer dates</button>			
+		<div class="col-sm-1 col-sm-offset-11">
+			<button type="button" class="btn btn-default pull-right" id="getRecurrenceDates"><%= lang.resa.actions.generateDates%></button>			
 		</div>
 	</div>
-</fieldset>
-<fieldset class="col-sm-6">
-<legend>Dates prévues</legend>
-	<!-- Recap of BookingLines -->
-	<table class="table-nested-objects table table-striped table-condensed table-hover">
-		<thead>
-		<tr>
-			<th class="row-sm-4"><%= _.capitalize(lang.dateStart) %></th>
-			<th class="row-sm-4"><%= _.capitalize(lang.dateEnd) %></th>
-			<th class="row-sm-3"><%= _.capitalize(lang.amount) %></th>
-			<th class="row-sm-1"><%= _.capitalize(lang.availability) %></th>
-		</tr>
-		</thead>
-		<tbody id="bookingOccurrences">
-	
-		</tbody>
-	</table>
-</fieldset>
+
+<legend><%= lang.resa.plannedDates%></legend>
+<!-- Recap of BookingLines -->
+<table class="table-nested-objects table table-striped table-condensed table-hover">
+	<thead>
+	<tr>
+		<th class="row-sm-4"><%= _.capitalize(lang.dateStart) %></th>
+		<th class="row-sm-4"><%= _.capitalize(lang.dateEnd) %></th>
+		<th class="row-sm-3"><%= _.capitalize(lang.amount) %></th>
+		<th class="row-sm-1"><%= _.capitalize(lang.availability) %></th>
+	</tr>
+	</thead>
+	<tbody id="bookingOccurrences">
+
+	</tbody>
+</table>
