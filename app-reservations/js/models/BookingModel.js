@@ -442,7 +442,7 @@ define([
 					self.setClaimerMail(contactModel.get('email'), false);
 				});
 			}
-		},	
+		},
 
 		getClaimerMail : function(default_value){
 			return this.getAttribute('partner_mail',default_value);
