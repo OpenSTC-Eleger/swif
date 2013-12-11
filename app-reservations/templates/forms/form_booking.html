@@ -8,7 +8,7 @@
 <form id="formSaveBooking" action="#" class="form-horizontal container" role="form">
 	<div class="row">
 		<fieldset class="col-sm-6" <%= readonly ? 'disabled' : ''%>>
-		<legend>Informations Générales</legend>
+		<legend><%= lang.resa.generalInfos%></legend>
 			<!-- Citizen BS-switch -->
 			<div class="form-group">
 				<label for="bookingIsCitizen" class="control-label col-sm-3"><%= _.capitalize(lang.citizen) %>:</label>
@@ -27,12 +27,7 @@
 	
 				<div class="col-sm-9">
 					<input id="bookingPartner" class="select2" data-placeholder="<%= lang.actions.selectAClaimer %>"
-	
-						<% if(!_.isNull(booking.getId())){
-							if(!_.isUndefined(booking.getClaimer('id'))) { %>
-							data-selected-value='<%= JSON.stringify(booking.getClaimer('json')) %>'
-						<% } } %> <%= readonly ? 'disabled' : ''%>
-					/>
+					<%= readonly ? 'disabled' : ''%>/>
 				</div>
 			</div>
 
@@ -41,14 +36,8 @@
 				<label for="bookingContact" class="control-label col-sm-3"><%= _.capitalize(lang.contact) %>:</label>
 	
 				<div class="col-sm-9">
-					<input id="bookingContact" class="select2" data-placeholder="<%= lang.actions.selectAContact %>"
-	
-						<% if(!_.isNull(booking.getId())){
-							if(!_.isUndefined(booking.getClaimerContact('id'))) { %>
-							data-selected-value='<%= JSON.stringify(booking.getClaimerContact('json')) %>'
-						<% } } %> <%= readonly ? 'disabled' : ''%>
-	
-					/>
+					<input id="bookingContact" class="select2" data-placeholder="<%= lang.actions.selectAContact %>" 
+					<%= readonly ? 'disabled' : ''%>/>
 				</div>
 			</div>
 			<!-- Citizen infos -->
@@ -110,22 +99,14 @@
 				<div class="input-group bootstrap-timepicker col-sm-3" >							
 					<input type="text" class="timepicker-default form-control" id='bookingCheckoutHour' value="<%= endHour%>" required="required">
 					<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-				</div>						
-			</div>
-			<div class="form-group">
-				<label for="bookingAddBookable" class="control-label col-sm-3"><%= _.capitalize(lang.resa.recurrenteBooking) %>:</label>
-		
-				<div class="make-switch" id="bookingAddRecurrence" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
-					<input id="addRecurrence" type="checkbox"
-		
-						<% if(!_.isNull(booking.getId())){ if(booking.getRecurrence()) { %> checked <% } } %>
-					>
 				</div>
 			</div>
-		</fieldset>
+
+		<!-- </fieldset>-->
 		<!-- Bookables (qty, pricing, dispo)-->
-		<fieldset class="col-sm-6" <%= readonly ? 'disabled' : ''%>>
-		<legend>Ressources demandées</legend>
+		<!-- <fieldset class="col-sm-6" <%= readonly ? 'disabled' : ''%>>-->
+		<hr/>
+		<legend><%= lang.resa.bookablesOrdered%></legend>
 			<!-- Recap of BookingLines -->
 			<table class="table-nested-objects table table-striped table-condensed table-hover">
 				<thead>
@@ -150,13 +131,24 @@
 				</div>
 			</div>
 		</fieldset>
-	</div>
 
-	<div class="row">
-		<!-- recurrence-->
-		<div id="recurrence">
-			
-		</div>
+		<fieldset class="col-sm-6">
+			<legend><%= lang.resa.recurrenceSetting%></legend>
+			<div class="form-group">
+				<label for="bookingAddBookable" class="control-label col-sm-3"><%= _.capitalize(lang.resa.recurrenteBooking) %>:</label>
+		
+				<div class="make-switch" id="bookingAddRecurrence" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
+					<input id="addRecurrence" type="checkbox"
+		
+						<% if(!_.isNull(booking.getId())){ if(booking.getRecurrence()) { %> checked <% } } %>
+					>
+				</div>
+			</div>
+			<!-- recurrence-->
+			<div id="recurrence">
+				
+			</div>
+		</fieldset>
 	</div>
 	<hr/>
 	<div class="row">

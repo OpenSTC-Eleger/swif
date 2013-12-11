@@ -154,7 +154,7 @@ define([
 		getCancelNote: function(){
 			return this.get('cancel_note');
 		},
-		//mmmmmh a donut !
+
 		getDoneNote: function(){
 			return this.get('done_note');
 		},
@@ -442,7 +442,7 @@ define([
 					self.setClaimerMail(contactModel.get('email'), false);
 				});
 			}
-		},	
+		},
 
 		getClaimerMail : function(default_value){
 			return this.getAttribute('partner_mail',default_value);
@@ -537,6 +537,9 @@ define([
 			var checkout = this.getEndDate();
 			var partner_id = this.getClaimer('id');
 			var deferred = $.Deferred();
+			if(this.lines.models.length <= 0){
+				deferred.resolve();
+			}
 			if(checkin != '' && checkout != ''){
 				_.each(this.lines.models, function(lineModel,i){
 					if(partner_id > 0 && pricing){

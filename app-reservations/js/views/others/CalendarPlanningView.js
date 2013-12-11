@@ -5,12 +5,14 @@ define([
 	'fullcalendar',
 	'moment',
 
+	'bookingModel',
 	'bookingsCollection',
 
-	'modalReservationDetailsView'
+	'modalReservationDetailsView',
+	'formBookingView'
 
 
-], function(app, AppHelpers, fullcalendar, moment, BookingsCollection, ModalReservationDetailsView){
+], function(app, AppHelpers, fullcalendar, moment, BookingModel, BookingsCollection, ModalReservationDetailsView, FormBookingView){
 
 	'use strict';
 
@@ -186,9 +188,21 @@ define([
 				/** Open leave time modal (Absent task)
 				*/
 				select: function( startDate, endDate, allDay, jsEvent, view) {
-					 
-					console.log(startDate + ' - ' + endDate);
-	    			//allDay  	: allDay,
+
+					var booking = new BookingModel();
+					booking.setStartDate(startDate);
+					booking.setEndDate(endDate);
+
+
+					console.log(booking);
+
+					// Redirect to form //
+					app.views.formBooking = new FormBookingView({
+						model : booking
+					});
+
+					//app.views.formBooking.render();
+
 				},
 	
 
@@ -220,15 +234,17 @@ define([
 			var fetchParams = {
 				silent  : true,
 				data : {
-					fields : ['name', 'checkin', 'checkout', 'note', 'resource_ids', 'is_citizen', 'partner_id', 'people_name']
+					fields : ['name', 'checkin', 'checkout', 'note', 'resource_ids', 'is_citizen', 'partner_id', 'people_name', 'recurrence_id']
 				}
 			};
+
 
 			// Select the period of time //
 			var domain = [
 				{ 'field' : 'checkin', 'operator' : '>', 'value' : moment(start).format('YYYY-MM-DD HH:mm:ss') },
 				{ 'field' : 'checkout', 'operator' : '<', 'value' : moment(end).format('YYYY-MM-DD HH:mm:ss')  },
-				{ 'field' : 'reservation_line.reserve_product.id', 'operator' : 'in', 'value' : selectedResources}
+				{ 'field' : 'reservation_line.reserve_product.id', 'operator' : 'in', 'value' : selectedResources},
+				{ 'field' : 'state', 'operator' : 'in', 'value' : [BookingModel.status.confirm.key, BookingModel.status.done.key]}
 			]
 
 			fetchParams.data.filters    = app.objectifyFilters(domain);
@@ -266,12 +282,10 @@ define([
 
 				// Set the color of the event with the color of the place resource //
 				if(!_.isEmpty(resourcePlaces)){
-					console.log('Ressource place');
 					var resourceColorId = _.first(resourcePlaces);
 					var color = app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(resourceColorId).getColor();
 				}
 				else{
-					console.log('Ressource equipment');
 					var resourceColorId = _.first(resourceEquipments);
 					var color = app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get(resourceColorId).getColor();
 				}
@@ -283,6 +297,15 @@ define([
 				}
 				else{
 					var textColor = '#000';
+				}
+
+
+				// Recurrence //
+				if(model.getRecurrence() != false){
+					var recurrence = '<i class="fa fa-repeat fa-fw"></i>&nbsp;';
+				}
+				else{
+					var recurrence = '';
 				}
 
 
@@ -301,7 +324,7 @@ define([
 
 				var evt = {
 					id       : model.getId(),
-					title    : model.getName() + equipments,
+					title    : recurrence + model.getName() + equipments,
 					start    : model.getStartDate(),
 					end      : model.getEndDate(),
 					color    : color,
