@@ -23,11 +23,9 @@ define([
 		templateHTML        : '/templates/others/SideBarPlanningSelectResources.html',
 
 		selectablePlaces    : new BookablesCollection(),
-		selectablePlaceIds  : [],
 		selectedPlaces      : [],
 
 		selectableEquipments   : new BookablesCollection(),
-		selectableEquipmentIds : [],
 		selectedEquipments     : [],
 
 	
@@ -56,17 +54,10 @@ define([
 
 			this.options = params;
 
+			this.selectedPlaces = [];
+			this.selectedEquipments = [];
+
 			this.initCollection().done(function(){
-
-				// Fill the selectablePlaceIds & selectableEquipmentIds //
-				_.each(self.selectablePlaces.models, function(model){
-					self.selectablePlaceIds.push(model.getId());
-				})
-
-				_.each(self.selectableEquipments.models, function(model){
-					self.selectableEquipmentIds.push(model.getId());
-				})
-
 
 				app.router.render(self);
 			});
@@ -296,7 +287,7 @@ define([
 				}				
 			}
 			else{
-				input.text('1');	
+				input.text('1');
 			}
 		},
 
