@@ -5,12 +5,13 @@ define([
 	'fullcalendar',
 	'moment',
 
+	'bookingModel',
 	'bookingsCollection',
 
 	'modalReservationDetailsView'
 
 
-], function(app, AppHelpers, fullcalendar, moment, BookingsCollection, ModalReservationDetailsView){
+], function(app, AppHelpers, fullcalendar, moment, BookingModel, BookingsCollection, ModalReservationDetailsView){
 
 	'use strict';
 
@@ -224,11 +225,13 @@ define([
 				}
 			};
 
+
 			// Select the period of time //
 			var domain = [
 				{ 'field' : 'checkin', 'operator' : '>', 'value' : moment(start).format('YYYY-MM-DD HH:mm:ss') },
 				{ 'field' : 'checkout', 'operator' : '<', 'value' : moment(end).format('YYYY-MM-DD HH:mm:ss')  },
-				{ 'field' : 'reservation_line.reserve_product.id', 'operator' : 'in', 'value' : selectedResources}
+				{ 'field' : 'reservation_line.reserve_product.id', 'operator' : 'in', 'value' : selectedResources},
+				{ 'field' : 'state', 'operator' : 'in', 'value' : [BookingModel.status.confirm.key, BookingModel.status.done.key]}
 			]
 
 			fetchParams.data.filters    = app.objectifyFilters(domain);
