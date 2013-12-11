@@ -154,7 +154,7 @@ define([
 		getCancelNote: function(){
 			return this.get('cancel_note');
 		},
-		//mmmmmh a donut !
+
 		getDoneNote: function(){
 			return this.get('done_note');
 		},
