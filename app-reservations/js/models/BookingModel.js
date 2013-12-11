@@ -537,6 +537,9 @@ define([
 			var checkout = this.getEndDate();
 			var partner_id = this.getClaimer('id');
 			var deferred = $.Deferred();
+			if(this.lines.models.length <= 0){
+				deferred.resolve();
+			}
 			if(checkin != '' && checkout != ''){
 				_.each(this.lines.models, function(lineModel,i){
 					if(partner_id > 0 && pricing){
