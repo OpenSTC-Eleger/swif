@@ -220,7 +220,7 @@ define([
 			var fetchParams = {
 				silent  : true,
 				data : {
-					fields : ['name', 'checkin', 'checkout', 'note', 'resource_ids', 'is_citizen', 'partner_id', 'people_name']
+					fields : ['name', 'checkin', 'checkout', 'note', 'resource_ids', 'is_citizen', 'partner_id', 'people_name', 'recurrence_id']
 				}
 			};
 
@@ -266,12 +266,10 @@ define([
 
 				// Set the color of the event with the color of the place resource //
 				if(!_.isEmpty(resourcePlaces)){
-					console.log('Ressource place');
 					var resourceColorId = _.first(resourcePlaces);
 					var color = app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(resourceColorId).getColor();
 				}
 				else{
-					console.log('Ressource equipment');
 					var resourceColorId = _.first(resourceEquipments);
 					var color = app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get(resourceColorId).getColor();
 				}
@@ -283,6 +281,15 @@ define([
 				}
 				else{
 					var textColor = '#000';
+				}
+
+
+				// Recurrence //
+				if(model.getRecurrence() != false){
+					var recurrence = '<i class="fa fa-repeat fa-fw"></i>&nbsp;';
+				}
+				else{
+					var recurrence = '';
 				}
 
 
@@ -301,7 +308,7 @@ define([
 
 				var evt = {
 					id       : model.getId(),
-					title    : model.getName() + equipments,
+					title    : recurrence + model.getName() + equipments,
 					start    : model.getStartDate(),
 					end      : model.getEndDate(),
 					color    : color,
