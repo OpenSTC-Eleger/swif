@@ -8,7 +8,7 @@
 <form id="formSaveBooking" action="#" class="form-horizontal container" role="form">
 	<div class="row">
 		<fieldset class="col-sm-6" <%= readonly ? 'disabled' : ''%>>
-		<legend>Informations Générales</legend>
+		<legend><%= lang.resa.generalInfos%></legend>
 			<!-- Citizen BS-switch -->
 			<div class="form-group">
 				<label for="bookingIsCitizen" class="control-label col-sm-3"><%= _.capitalize(lang.citizen) %>:</label>
@@ -125,7 +125,7 @@
 		</fieldset>
 		<!-- Bookables (qty, pricing, dispo)-->
 		<fieldset class="col-sm-6" <%= readonly ? 'disabled' : ''%>>
-		<legend>Ressources demandées</legend>
+		<legend><%= lang.resa.bookablesOrdered%></legend>
 			<!-- Recap of BookingLines -->
 			<table class="table-nested-objects table table-striped table-condensed table-hover">
 				<thead>
