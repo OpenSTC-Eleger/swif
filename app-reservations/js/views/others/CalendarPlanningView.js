@@ -135,7 +135,7 @@ define([
 
 				/** Calculates events to display on calendar for officer (or team) on week selected
 				*/ 		
-				events: function(start, end, callback) { 
+				events: function(start, end, callback) {
 
 					// Get the selected resources //
 		    		var selectedResources = _.union(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, app.views.sideBarPlanningSelectResourcesView.selectedEquipments);
@@ -198,8 +198,7 @@ define([
 
 					app.views.ModalReservationDetailsView = new ModalReservationDetailsView({
 						el      : '#modalReservationDetails',
-						modelId : fcEvent.id,
-						elFocus : 'a'
+						modelId : fcEvent.id
 					});
 	    		}
 			});
@@ -261,18 +260,20 @@ define([
 
 				var resouceIds = model.getResourcesId();
 
-				var resourcePlaces     = _.intersection(app.views.sideBarPlanningSelectResourcesView.selectablePlaceIds, resouceIds);
-				var resourceEquipments = _.intersection(app.views.sideBarPlanningSelectResourcesView.selectableEquipmentIds, resouceIds);
+				var resourcePlaces     = _.intersection(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, resouceIds);
+				var resourceEquipments = _.intersection(app.views.sideBarPlanningSelectResourcesView.selectedEquipments, resouceIds);
 
 
 				// Set the color of the event with the color of the place resource //
 				if(!_.isEmpty(resourcePlaces)){
+					console.log('Ressource place');
 					var resourceColorId = _.first(resourcePlaces);
 					var color = app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(resourceColorId).getColor();
 				}
 				else{
+					console.log('Ressource equipment');
 					var resourceColorId = _.first(resourceEquipments);
-					var color = app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get().getColor();
+					var color = app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get(resourceColorId).getColor();
 				}
 
 				var rgb = AppHelpers.hexaToRgb(color.split('#')[1]);
