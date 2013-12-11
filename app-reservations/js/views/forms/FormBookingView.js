@@ -66,7 +66,9 @@ define(['app',
 			var self = this;
 			//if view is called with a filled model (new booking from calendar)
 			if(!_.isUndefined(this.model)){
-				self.renderLines();
+				self.model.updateLinesData().done(function(){
+					self.renderLines();
+				});
 			}
 			//else, if view is called without an id (new booking from scratch)
 			else if(_.isUndefined(this.options.id)){
