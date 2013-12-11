@@ -122,7 +122,7 @@ define([
 					app.views.selectListServicesView = new AdvancedSelectBoxView({el: $('#requestDetailService'), collection: ClaimersServicesCollection.prototype})
 					app.views.selectListServicesView.render();
 
-					
+
 					// Set Information about the contact if needed //
 					if(!self.model.isNew()){
 						if(!self.model.fromCitizen()){
@@ -163,7 +163,7 @@ define([
 			}
 			else{
 				$('.hide-no-citizen').fadeOut(function(){
-				
+
 					// Reset the form input //
 					$('#requestContactName, #requestContactPhone, #requestContactEmail').val('');
 
