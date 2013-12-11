@@ -101,19 +101,11 @@
 					<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 				</div>
 			</div>
-			<div class="form-group">
-				<label for="bookingAddBookable" class="control-label col-sm-3"><%= _.capitalize(lang.resa.recurrenteBooking) %>:</label>
-		
-				<div class="make-switch" id="bookingAddRecurrence" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
-					<input id="addRecurrence" type="checkbox"
-		
-						<% if(!_.isNull(booking.getId())){ if(booking.getRecurrence()) { %> checked <% } } %>
-					>
-				</div>
-			</div>
-		</fieldset>
+
+		<!-- </fieldset>-->
 		<!-- Bookables (qty, pricing, dispo)-->
-		<fieldset class="col-sm-6" <%= readonly ? 'disabled' : ''%>>
+		<!-- <fieldset class="col-sm-6" <%= readonly ? 'disabled' : ''%>>-->
+		<hr/>
 		<legend><%= lang.resa.bookablesOrdered%></legend>
 			<!-- Recap of BookingLines -->
 			<table class="table-nested-objects table table-striped table-condensed table-hover">
@@ -139,13 +131,24 @@
 				</div>
 			</div>
 		</fieldset>
-	</div>
 
-	<div class="row">
-		<!-- recurrence-->
-		<div id="recurrence">
-			
-		</div>
+		<fieldset class="col-sm-6">
+			<legend><%= lang.resa.recurrenceSetting%></legend>
+			<div class="form-group">
+				<label for="bookingAddBookable" class="control-label col-sm-3"><%= _.capitalize(lang.resa.recurrenteBooking) %>:</label>
+		
+				<div class="make-switch" id="bookingAddRecurrence" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
+					<input id="addRecurrence" type="checkbox"
+		
+						<% if(!_.isNull(booking.getId())){ if(booking.getRecurrence()) { %> checked <% } } %>
+					>
+				</div>
+			</div>
+			<!-- recurrence-->
+			<div id="recurrence">
+				
+			</div>
+		</fieldset>
 	</div>
 	<hr/>
 	<div class="row">

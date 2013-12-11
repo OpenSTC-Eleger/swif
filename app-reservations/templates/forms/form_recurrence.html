@@ -1,5 +1,4 @@
-<fieldset class="col-sm-6">
-<legend><%= lang.resa.recurrenceSetting%></legend>
+
 	<!-- Recurrence setting (optionnal)-->
 	<!-- <div class="form-group">
 		<label class="control-label col-sm-3">Periodicité: </label>
@@ -17,7 +16,7 @@
 		</label>
 	</div>-->
 	<div class="form-group">
-		<label class="control-label col-sm-3" for="recur_periodicity"><%= lang.resa.recurrenceSetting%></label>
+		<label class="control-label col-sm-3" for="recur_periodicity"><%= lang.resa.recurrenceSetting%>:</label>
 		<div class="btn-group col-sm-9" data-toggle="buttons">
 			<label class="btn btn-default <%= recurrence.get('recur_type') == 'daily' ? 'active' : ''%>">
 				<input type="radio" name="periodicity" data-toggle="tab" value="daily" data-target="#settings_daily"><%= lang.resa.recurDaily%>
@@ -34,7 +33,7 @@
 	<div class="tab-content form-group">
 		<!-- daily-periodicity-setting of recurrence-->
 		<fieldset id="settings_daily" class="tab-pane fade <%= recurrence.get('recur_type') == 'daily' ? 'in active' : ''%>">
-			<label class="control-label col-sm-3" for="recur_daily_weight"><%= lang.resa.forEachDays%></label>
+			<label class="control-label col-sm-3" for="recur_daily_weight"><%= lang.resa.forEachDays%>:</label>
 			<div class="input-group col-sm-3">
 				<input class="form-control" id="recur_daily_weight" value="<%= recurrence.getWeight()%>" type="number" min="1"/>
 				 <span class="input-group-addon"><%= lang.resa.days%></span>
@@ -69,7 +68,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="recur_weekly_weight" class="col-sm-1 control-label"><%= lang.resa.forEachWeeks%></label>
+				<label for="recur_weekly_weight" class="col-sm-3 control-label"><%= lang.resa.forEachWeeks%>: </label>
 				<div class="input-group col-sm-3">
 					<input id="recur_weekly_weight" class="form-control" value="<%= recurrence.getWeight()%>" type="number" min="1"/>
 					<span class="input-group-addon"><%= lang.resa.weeks%></span>
@@ -148,21 +147,19 @@
 			<button type="button" class="btn btn-default pull-right" id="getRecurrenceDates"><%= lang.resa.actions.generateDates%></button>			
 		</div>
 	</div>
-</fieldset>
-<fieldset class="col-sm-6">
+
 <legend><%= lang.resa.plannedDates%></legend>
-	<!-- Recap of BookingLines -->
-	<table class="table-nested-objects table table-striped table-condensed table-hover">
-		<thead>
-		<tr>
-			<th class="row-sm-4"><%= _.capitalize(lang.dateStart) %></th>
-			<th class="row-sm-4"><%= _.capitalize(lang.dateEnd) %></th>
-			<th class="row-sm-3"><%= _.capitalize(lang.amount) %></th>
-			<th class="row-sm-1"><%= _.capitalize(lang.availability) %></th>
-		</tr>
-		</thead>
-		<tbody id="bookingOccurrences">
-	
-		</tbody>
-	</table>
-</fieldset>
+<!-- Recap of BookingLines -->
+<table class="table-nested-objects table table-striped table-condensed table-hover">
+	<thead>
+	<tr>
+		<th class="row-sm-4"><%= _.capitalize(lang.dateStart) %></th>
+		<th class="row-sm-4"><%= _.capitalize(lang.dateEnd) %></th>
+		<th class="row-sm-3"><%= _.capitalize(lang.amount) %></th>
+		<th class="row-sm-1"><%= _.capitalize(lang.availability) %></th>
+	</tr>
+	</thead>
+	<tbody id="bookingOccurrences">
+
+	</tbody>
+</table>
