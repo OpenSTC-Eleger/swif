@@ -15,7 +15,7 @@ define([
 
 		urlRoot : "/api/open_object/users",
 
-		fields: ["complete_name", "contact_id", "context_lang", "context_tz", "date", "firstname", "groups_id", "current_group", "id", "isDST", "isManager", "lastname", "login", "name", "phone", "service_id", "service_names", "tasks", "team_ids", "user_email", "actions"],
+		fields: ["complete_name", "contact_id", "context_lang", "context_tz", "date", "firstname", "groups_id", "current_group", "openresa_group", "id", "isDST", "isManager", "lastname", "login", "name", "phone", "service_id", "service_names", "tasks", "team_ids", "user_email", "actions"],
 
 
 		defaults:{
@@ -91,6 +91,19 @@ define([
 				break;
 				default:
 					return this.get('current_group')[1];
+			}
+		},
+		
+		getGroupResa : function(type) {
+			switch (type){ 
+				case 'id': 
+					return this.get('openresa_group')[0];
+				break;
+				case 'json':
+					return {id: this.get('openresa_group')[0], name: this.get('openresa_group')[1]};
+				break;
+				default:
+					return this.get('openresa_group')[1];
 			}
 		},
 

@@ -1,6 +1,6 @@
 {
 	"resa" :
-		{
+		{			
 			"ressources"                   			: "Ressources",
 			"bookingDate"                   		: "Date demande",
 			"startBookingDate"                   	: "Début résa",
