@@ -111,6 +111,10 @@ define([
 				return bookingResourceNames;
 			}
 		},
+
+		getResourceQuantities: function(){
+			return this.get('resource_quantities');
+		},
 		
 		getResourceQuantitiesHtml : function(){
 			if( this.getState()=='done' ||  this.getState()=='cancel' 

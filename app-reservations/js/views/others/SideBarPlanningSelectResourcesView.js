@@ -180,7 +180,7 @@ define([
 				
 				this.timeOver = setTimeout(function () {
 					$('.fc-event').not('.resa-'+row.data('id')).delay(500).fadeOut();
-				}, 400);
+				}, 380);
 			}
 
 		},
@@ -227,7 +227,7 @@ define([
 				icon.toggleClass('fa-dot-circle-o').toggleClass('fa-circle-o');
 
 				if(row.hasClass('selected')){
-					var color = '#' + row.data('color');
+					var color = row.data('color');
 					icon.css({color: color});
 				}
 

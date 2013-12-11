@@ -136,12 +136,12 @@ define([
 
 
 				/** Calculates events to display on calendar for officer (or team) on week selected
-				*/ 		
+				*/
 				events: function(start, end, callback) {
 
 					// Get the selected resources //
-		    		var selectedResources = _.union(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, app.views.sideBarPlanningSelectResourcesView.selectedEquipments);
-		    
+					var selectedResources = _.union(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, app.views.sideBarPlanningSelectResourcesView.selectedEquipments);
+
 	    			if(!_.isEmpty(selectedResources)){
 
 						self.fetchReservations(start, end, selectedResources)
@@ -172,9 +172,9 @@ define([
 					else{
 						content += '<li><i class="fa-li fa fa-user"></i>'+event.info.claimerContact+'<li>';	
 					}
-					
+
 					content += '</ul>';
-					
+
 					// Note //
 					if(!_.isUndefined(event.info.note)){
 						content += '<p>'+event.info.note+'</p>';
