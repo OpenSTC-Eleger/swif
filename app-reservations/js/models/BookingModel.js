@@ -5,12 +5,13 @@ define([
 	'genericModel',
 	'bookingModel',
 	'claimerModel',
+	'claimerContactModel',
 	'bookingLinesCollection',
 	'moment-timezone',
 	'moment-timezone-data'
 
 
-], function(app, AppHelpers, GenericModel, BookingModel, ClaimerModel, BookingLinesCollection, moment, momentTZData){
+], function(app, AppHelpers, GenericModel, BookingModel, ClaimerModel, ClaimerContactModel, BookingLinesCollection, moment, momentTZData){
 
 	'use strict';
 	
@@ -21,7 +22,7 @@ define([
 		
 		urlRoot: "/api/openresa/bookings",
 		
-		fields : ['id', 'name', 'prod_id', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_ids', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'pricelist_id', 'confirm_note', 'cancel_note', 'done_note'],
+		fields : ['id', 'name', 'prod_id', 'checkin', 'note', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_ids', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 'pricelist_id', 'confirm_note', 'cancel_note', 'done_note'],
 	
 		searchable_fields: [
 			{
@@ -34,6 +35,19 @@ define([
 			}
 			
 		],
+		//method to retrieve attribute with standard return form
+		getAttribute: function(key,default_value){
+			var val = this.get(key);
+			if(_.isUndefined(default_value)){
+				default_value = false;
+			}
+			if(!_.isUndefined(val) && val != '' && val != false && val != null){
+				return val;
+			}
+			else{
+				return default_value;
+			}
+		},
 	
 	
 		getId: function(){
@@ -308,6 +322,13 @@ define([
 				return '';
 			}
 		},
+
+
+		getNote: function(){
+			if(this.get('note') != false){
+				return this.get('note');
+			}
+		},
 	
 		// Claimer of the booking //
 		getClaimer: function(type){
@@ -319,6 +340,9 @@ define([
 					break;
 					case 'json':
 						return {id: this.get('partner_id')[0], name: this.get('partner_id')[1]};
+					break;
+					case 'array':
+						return this.get('partner_id');
 					break;
 					default:
 						return this.get('partner_id')[1];
@@ -360,7 +384,9 @@ define([
 		getCloneVals: function(){
 			var self = this;
 			var ret = {};
-			var toClone = ['partner_invoice_id','partner_order_id','partner_shipping_id','partner_id','openstc_partner_id','pricelist_id','name','checkin','checkout'];
+			var toClone = ['partner_invoice_id','partner_order_id','partner_shipping_id','partner_id',
+			               'openstc_partner_id','pricelist_id','name','checkin','checkout',
+			               'people_name','people_phone','partner_mail', 'is_citizen'];
 			_.each(toClone,function(field,i){
 				ret[field] = self.get(field);
 			});
@@ -377,14 +403,18 @@ define([
 				pricelist_id: this.getPricelist('id'),
 				name: this.getName(),
 				checkin:this.getStartDate(),
-				checkout:this.getEndDate()
+				checkout:this.getEndDate(),
+				people_name:this.getCitizenName(),
+				people_phone: this.getCitizenPhone(),
+				partner_mail: this.getClaimerMail(),
+				is_citizen: this.fromCitizen()
 			}
 		},
 
 		getClaimerPhone: function(){
 			return this.get('contact_phone');
 		},
-		
+
 		getClaimerContact: function(type){
 			if(this.get('partner_order_id')){
 				switch (type){
@@ -394,6 +424,9 @@ define([
 					case 'json':
 						return {id: this.get('partner_order_id')[0], name: this.get('partner_order_id')[1]};
 					break;
+					case 'array':
+						return this.get('partner_order_id');
+					break;
 					default:
 						return this.get('partner_order_id')[1];
 				}
@@ -401,23 +434,37 @@ define([
 		},
 		
 		setClaimerContact: function(value, silent){
+			var self = this;
 			this.set({ partner_order_id : value }, {silent: silent});
+			if(value != false){
+				var contactModel = new ClaimerContactModel({id:value});
+				contactModel.fetch({data:{fields:['email']}}).done(function(){
+					self.setClaimerMail(contactModel.get('email'), false);
+				});
+			}
 		},	
+
+		getClaimerMail : function(default_value){
+			return this.getAttribute('partner_mail',default_value);
+		},
 		
-		getClaimerMail : function(){
-			return !_.isUndefined(this.get('partner_mail')) && !_.isNull(this.get('partner_mail')) && this.get('partner_mail')!=false ? this.get('partner_mail') : "";
+		setClaimerMail : function(val, silent){
+			return this.set({partner_mail:val},{silent:silent});
 		},
 		
 		fromCitizen: function(){
-			return this.get('is_citizen');
+			return this.getAttribute('is_citizen',false);
 		},
 		setFromCitizen: function(value, silent){
 			this.set({ is_citizen : value }, {silent: silent});
 		},
-		
+
 		getCitizenName: function(){
 			if(this.fromCitizen()){
-				return this.get('people_name');
+				return this.getAttribute('people_name','');
+			}
+			else{
+				return '';
 			}
 		},
 		setCitizenName: function(value, silent){
@@ -426,15 +473,19 @@ define([
 		
 		getCitizenPhone: function(){
 			if(this.fromCitizen()){
-				return this.get('people_phone');
+				return this.getAttribute('people_phone','');
 			}
+			return '';
 		},
 		setCitizenPhone: function(value, silent){
 			this.set({ people_phone : value }, {silent: silent});
 		},
 		getCitizenEmail: function(){
 			if(this.fromCitizen()){
-				return this.get('people_email');
+				return this.getAttribute('people_email', '');
+			}
+			else{
+				return '';
 			}
 		},
 		setCitizenEmail: function(value, silent){

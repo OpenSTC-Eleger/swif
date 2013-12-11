@@ -5,10 +5,12 @@ define([
 	'fullcalendar',
 	'moment',
 
-	'bookingsCollection'
+	'bookingsCollection',
+
+	'modalReservationDetailsView'
 
 
-], function(app, AppHelpers, fullcalendar, moment, BookingsCollection){
+], function(app, AppHelpers, fullcalendar, moment, BookingsCollection, ModalReservationDetailsView){
 
 	'use strict';
 
@@ -131,28 +133,53 @@ define([
 				},
 
 
-	    		/** Calculates events to display on calendar for officer (or team) on week selected
-				*/    		
-				events: function(start, end, callback) { 
-	    			
+				/** Calculates events to display on calendar for officer (or team) on week selected
+				*/ 		
+				events: function(start, end, callback) {
+
 					// Get the selected resources //
 		    		var selectedResources = _.union(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, app.views.sideBarPlanningSelectResourcesView.selectedEquipments);
 		    
 	    			if(!_.isEmpty(selectedResources)){
 
-		    			self.fetchReservations(start, end, selectedResources)
-		    			.done(function(){
-							var events = self.collectionsToEvents(self.collection);
-							callback(events);
-		    			});
-	    			}
-
+						self.fetchReservations(start, end, selectedResources)
+						.done(function(){
+								var events = self.collectionsToEvents(self.collection);
+								callback(events);
+						});
+					}
 				},
 
-				eventRender: function(event, element){
-					element.find('.fc-event-title').html(event.title);	
 
-					element.popover( {trigger: 'hover', content: 'lolol', title: 'pouopui', placement: 'left', container: 'body'} );
+				/** EventRender
+				*/ 
+				eventRender: function(event, element){
+					// Allow html tag in the reservation title //
+					element.find('.fc-event-title').html(event.title);
+
+
+					var dateFormat = 'DD/MM HH:mm'
+					var content =  '<ul class="fa-ul">';
+					content += '<li><i class="fa-li fa fa-clock-o"></i>'+moment(event.start).format(dateFormat)+' - '+moment(event.end).format(dateFormat)+'</li>';
+
+
+					// Is Citizen //
+					if(event.info.isCitizen == true){
+						content += '<li><i class="fa-li fa fa-user"></i>'+app.lang.citizen+' : '+event.info.citizenName+'<li>';
+					}
+					else{
+						content += '<li><i class="fa-li fa fa-user"></i>'+event.info.claimerContact+'<li>';	
+					}
+					
+					content += '</ul>';
+					
+					// Note //
+					if(!_.isUndefined(event.info.note)){
+						content += '<p>'+event.info.note+'</p>';
+					}
+
+					// Popover //
+					element.popover( {trigger: 'hover', placement: 'left', container: '#calendarManager', html: true, title: event.info.title, content: content} );
 				},
 
 
@@ -169,6 +196,10 @@ define([
 	    	    */
 	    	    eventClick: function(fcEvent, jsEvent, view) {
 
+					app.views.ModalReservationDetailsView = new ModalReservationDetailsView({
+						el      : '#modalReservationDetails',
+						modelId : fcEvent.id
+					});
 	    		}
 			});
 
@@ -229,16 +260,20 @@ define([
 
 				var resouceIds = model.getResourcesId();
 
-				var resourcePlaces     = _.intersection(app.views.sideBarPlanningSelectResourcesView.selectablePlaceIds, resouceIds);
-				var resourceEquipments = _.intersection(app.views.sideBarPlanningSelectResourcesView.selectableEquipmentIds, resouceIds);
+				var resourcePlaces     = _.intersection(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, resouceIds);
+				var resourceEquipments = _.intersection(app.views.sideBarPlanningSelectResourcesView.selectedEquipments, resouceIds);
 
 
 				// Set the color of the event with the color of the place resource //
 				if(!_.isEmpty(resourcePlaces)){
-					var color = app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(_.first(resourcePlaces)).getColor();
+					console.log('Ressource place');
+					var resourceColorId = _.first(resourcePlaces);
+					var color = app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(resourceColorId).getColor();
 				}
 				else{
-					var color = app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get(_.first(resourceEquipments)).getColor();
+					console.log('Ressource equipment');
+					var resourceColorId = _.first(resourceEquipments);
+					var color = app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get(resourceColorId).getColor();
 				}
 
 				var rgb = AppHelpers.hexaToRgb(color.split('#')[1]);
@@ -250,7 +285,7 @@ define([
 					var textColor = '#000';
 				}
 
-				
+
 				// Get the equipments //
 				if(!_.isEmpty(resourceEquipments)){
 					
@@ -272,6 +307,14 @@ define([
 					color    : color,
 					textColor: textColor,
 					allDay   : false,
+					className: 'resa-'+resourceColorId,
+					info     : {
+						title          : model.getName(),
+						note           : model.getNote(),
+						isCitizen      : model.fromCitizen(),
+						citizenName    : model.getCitizenName(),
+						claimerContact : model.getClaimer()
+					}
 				}
 
 				events.push(evt);

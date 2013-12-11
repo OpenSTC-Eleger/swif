@@ -2,13 +2,13 @@ define([
 	'app',
 	'appHelpers',
 
-	'claimersTypesCollection',
+	'claimersCollection',
 	'bookablesCollection',
 	'bookableModel',
 
 	'advancedSelectBoxView',
 
-], function(app, AppHelpers, ClaimersTypesCollection, BookablesCollection, BookableModel, AdvancedSelectBoxView){
+], function(app, AppHelpers, ClaimersCollection, BookablesCollection, BookableModel, AdvancedSelectBoxView){
 
 	'use strict';
 
@@ -23,12 +23,11 @@ define([
 		templateHTML        : '/templates/others/SideBarPlanningSelectResources.html',
 
 		selectablePlaces    : new BookablesCollection(),
-		selectablePlaceIds  : [],
 		selectedPlaces      : [],
 
 		selectableEquipments   : new BookablesCollection(),
-		selectableEquipmentIds : [],
 		selectedEquipments     : [],
+
 	
 	
 		// The DOM events //
@@ -55,17 +54,10 @@ define([
 
 			this.options = params;
 
+			this.selectedPlaces = [];
+			this.selectedEquipments = [];
+
 			this.initCollection().done(function(){
-
-				// Fill the selectablePlaceIds & selectableEquipmentIds //
-				_.each(self.selectablePlaces.models, function(model){
-					self.selectablePlaceIds.push(model.getId());
-				})
-
-				_.each(self.selectableEquipments.models, function(model){
-					self.selectableEquipmentIds.push(model.getId());
-				})
-
 
 				app.router.render(self);
 			});
@@ -91,8 +83,8 @@ define([
 				$(self.el).html(template);
 	
 				// Advance Select List View //
-				app.views.advancedSelectBoxCategoryRequestView = new AdvancedSelectBoxView({el: $('#claimersTypes'), collection: ClaimersTypesCollection.prototype })
-				app.views.advancedSelectBoxCategoryRequestView.render();
+				app.views.advancedSelectBoxClaimerView = new AdvancedSelectBoxView({el: $('#claimersOrganization'), collection: ClaimersCollection.prototype })
+				app.views.advancedSelectBoxClaimerView.render();
 
 
 				// Set the numbers of selectable resources //
@@ -179,8 +171,15 @@ define([
 				var color = link.parent('li').data('color');
 				icon.css({color: color});
 			}
+			else{
+				
+				this.timeOver = setTimeout(function () {
+					$('.fc-event').not('.resa-'+row.data('id')).delay(500).fadeOut();
+				}, 400);
+			}
 
 		},
+
 
 		/** When the mouse leave a resource
 		*/
@@ -192,6 +191,10 @@ define([
 
 				var icon = link.children('i.icon-radio');
 				icon.css({color: 'inherit'});
+			}
+			else{
+				clearTimeout(this.timeOver);
+				$('.fc-event').fadeIn();
 			}
 		},
 
@@ -284,7 +287,7 @@ define([
 				}				
 			}
 			else{
-				input.text('1');	
+				input.text('1');
 			}
 		},
 

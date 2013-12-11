@@ -46,13 +46,17 @@ define(['app',
 			'change #bookingCheckout'			: 'changeBookingCheckout',
 			'change #bookingCheckinHour'		: 'changeBookingCheckin',
 			'change #bookingCheckoutHour'		: 'changeBookingCheckout',
-			'change #bookingName'				: 'changeName',
+			'blur #bookingName'					: 'changeName',
+			'blur #bookingPeopleName'			: 'changePeopleName',
+			'blur #bookingPeoplePhone'			: 'changePeoplePhone',
+			'blur #bookingPeopleMail'			: 'changePeopleEmail',
+			
 			
 			//Form Buttons
 			'submit #formSaveBooking'			: 'saveBookingForm',
 			'click #getRecurrenceDates'			: 'getRecurrenceDates',
-			'click #addRecurrence'				: 'addRecurrence',
-			'click #removeRecurrence'			: 'removeRecurrence'
+			'change #addRecurrence'				: 'changeAddRecurrence',
+			'change #isCitizen'					: 'changeIsCitizen',
 		},
 	
 		/** View Initialization
@@ -157,11 +161,27 @@ define(['app',
 
 	    },
 	    
+	    updateDisplayCitizenInfos: function(){
+	    	var val = $('#bookingIsCitizen').bootstrapSwitch('status');
+	    	if(val){
+	    		$('#blockBookingContact').addClass('hide-soft');
+	    		$('#citizenInfos').removeClass('hide-soft');
+	    	}
+	    	else{
+	    		$('#blockBookingContact').removeClass('hide-soft');
+	    		$('#citizenInfos').addClass('hide-soft');
+	    	}
+	    	if(!_.isUndefined(app.views.selectListClaimersContactsView)){
+	    		app.views.selectListClaimersContactsView.render();
+	    	}
+	    },
+	    
 	    //main method to compute all conditionnal display of form inputs
 	    updateDisplayDoms: function(model){
 	    	this.updateDisplayAddBookable();
 	    	this.updateDisplayAddRecurrence();
 	    	this.updateDisplaySave();
+	    	this.updateDisplayCitizenInfos();
 	    },
 		
 		//split rendering of form and rendering of lines to avoid change-events conflicts 
@@ -214,9 +234,7 @@ define(['app',
 				$('.make-switch').bootstrapSwitch();
 				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 				$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
-				
-					$('.make-switch').bootstrapSwitch();
-	
+					
 				// Booking Claimer //
 				app.views.selectListClaimersView = new AdvancedSelectBoxView({el: $('#bookingPartner'), collection: ClaimersCollection.prototype});
 				app.views.selectListClaimersView.resetSearchParams();
@@ -231,7 +249,13 @@ define(['app',
 				app.views.selectListAddBookableView = new AdvancedSelectBoxView({el: $('#bookingAddBookable'), collection: BookablesCollection.prototype}),
 				app.views.selectListAddBookableView.resetSearchParams();
 				app.views.selectListAddBookableView.render();
-	
+				
+				//i initialize advancedSelectBox here to correclty trigger change event at init (and so, perform correct view updates)
+				if(!self.model.isNew()){
+					self.changeBookingPartner();
+					self.changeBookingContact();
+				}
+				
 				$(this.el).hide().fadeIn('slow');
 			});
 			return this;
@@ -241,9 +265,9 @@ define(['app',
 	     * Update searchParam of ClaimerContact (partner.id = self if partner_id is set, else, remove searchParams)
 	     */	
 	    changeBookingPartner: function(e){
-	    	e.preventDefault();
 	    	var partner_id = app.views.selectListClaimersView.getSelectedItem();
 	    	if(partner_id != ''){
+	    		//TODO: implement filter to fetch only bookables authorized for partner
 	    		app.views.selectListClaimersContactsView.setSearchParam({'field':'partner_id.id','operator':'=','value':partner_id},true);
 	    		this.model.setClaimer([partner_id,app.views.selectListClaimersView.getSelectedText()]);
 	    	}
@@ -255,10 +279,9 @@ define(['app',
 	    },
 	    
 	    changeBookingContact: function(e){
-	    	e.preventDefault();
 	    	var contact_id = app.views.selectListClaimersContactsView.getSelectedItem();
 	    	if(contact_id){
-	    		this.model.setClaimerContact([contact_id], app.views.selectListClaimersContactsView.getSelectedText());
+	    		this.model.setClaimerContact([contact_id, app.views.selectListClaimersContactsView.getSelectedText()]);
 	    	}
 	    	else{
 	    		this.model.setClaimerContact(false);
@@ -329,6 +352,30 @@ define(['app',
 	    	this.model.setName($("#bookingName").val());
 	    },
 	    
+	    changeIsCitizen: function(e){
+	    	var val = $('#bookingIsCitizen').bootstrapSwitch('status');
+	    	this.model.setFromCitizen(val, false);
+	    	if(val){
+	    		app.views.selectListClaimersView.setSearchParam({field:'type_id.code', operator:'ilike', value:'PART'},true);
+	    	}
+	    	else{
+	    		app.views.selectListClaimersView.resetSearchParams();
+	    	}
+	    	app.views.selectListClaimersView.render();
+	    },
+	    
+	    changePeopleName: function(e){
+	    	this.model.setCitizenName($('#bookingPeopleName').val(),true);
+	    },
+	    
+	    changePeoplePhone: function(e){
+	    	this.model.setCitizenPhone($('#bookingPeoplePhone').val(),true);
+	    },
+	    
+	    changePeopleEmail: function(e){
+	    	this.model.setClaimerMail($('#bookingPeopleMail').val(),true);
+	    },
+	    
 	    saveBookingForm: function(e){
 	    	e.preventDefault();
 	    	this.model.saveToBackend()
@@ -339,6 +386,19 @@ define(['app',
 	    		console.log(e);
 	    	});
 	    },
+	    
+	    changeAddRecurrence: function(e){
+	    	console.log('----------------------');
+	    	
+	    	var val = $('#bookingAddRecurrence').bootstrapSwitch('status');
+	    	if(val){
+	    		this.addRecurrence(e);
+	    	}
+	    	else{
+	    		this.removeRecurrence(e);
+	    	}
+	    },
+	    
 	    addRecurrence: function(e){
 			e.preventDefault();
 			var recurrenceModel = new BookingRecurrenceModel();
