@@ -74,7 +74,8 @@ define([
 					lang                   : app.lang,
 					bookingsState     	   : BookingModel,
 					booking          	   : self.model,
-					BookingModel			: BookingModel
+					BookingModel			: BookingModel,
+                    downloadToken : app.current_user.get('authToken')
 				});
 	
 				$(self.el).html(template);
