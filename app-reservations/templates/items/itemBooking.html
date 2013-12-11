@@ -24,7 +24,7 @@
 		<% } %>
 
         <% if (booking.get('invoice_attachment_id') != 0) { %>
-        &nbsp;<a target="_blank" href="/api/open_object/portable_documents/<%= booking.get('invoice_attachment_id') %>?token=<%= downloadToken %>" class="buttonDownload"><i class="fa fa-download" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.download) %>"></i></a>
+        &nbsp;<a target="_blank" href="/api/open_object/portable_documents/<%= booking.get('invoice_attachment_id') %>?token=<%= downloadToken %>" class="buttonDownload"><i class="fa fa-download" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.downloadInvoice) %>"></i></a>
         <% } %>
 	</p>
 </td>
