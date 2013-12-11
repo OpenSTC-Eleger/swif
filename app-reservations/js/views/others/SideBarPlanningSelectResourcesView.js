@@ -27,6 +27,8 @@ define([
 
 		selectableEquipments   : new BookablesCollection(),
 		selectedEquipments     : [],
+		
+		selectableClaimers   : new ClaimersCollection(),
 
 	
 	
@@ -75,16 +77,19 @@ define([
 			$.get(app.menus.openresa+this.templateHTML, function(templateData){
 	
 				var template = _.template(templateData, {
-					lang                : app.lang,
-					selectablePlaces    : self.selectablePlaces,
-					selectableEquipments: self.selectableEquipments
+					lang                		: app.lang,
+					selectablePlaces    		: self.selectablePlaces,
+					selectableEquipments		: self.selectableEquipments,
+					displayClaimersSelectBox	: self.selectableClaimers.cpt>0 ? "" : "hide"
 				});
 	
 				$(self.el).html(template);
 	
 				// Advance Select List View //
-				app.views.advancedSelectBoxClaimerView = new AdvancedSelectBoxView({el: $('#claimersOrganization'), collection: ClaimersCollection.prototype })
-				app.views.advancedSelectBoxClaimerView.render();
+				if( self.selectableClaimers.cpt > 0 ) {
+					app.views.advancedSelectBoxClaimerView = new AdvancedSelectBoxView({el: $('#claimersOrganization'), collection: ClaimersCollection.prototype })
+					app.views.advancedSelectBoxClaimerView.render();
+				}
 
 
 				// Set the numbers of selectable resources //
@@ -314,7 +319,7 @@ define([
 
 
 			// Fetch the collections //
-			return $.when(this.selectablePlaces.fetch(fetchParamsPlaces), this.selectableEquipments.fetch(fetchParamsEquipments))
+			return $.when(this.selectablePlaces.fetch(fetchParamsPlaces), this.selectableEquipments.fetch(fetchParamsEquipments), this.selectableClaimers.count())
 			.fail(function(e){
 				console.log(e);
 			});
