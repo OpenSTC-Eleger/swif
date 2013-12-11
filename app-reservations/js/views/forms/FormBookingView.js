@@ -64,6 +64,7 @@ define(['app',
 		initialize : function(params) {
 			this.options = params;
 			var self = this;
+
 			//if view is called with a filled model (new booking from calendar)
 			if(!_.isUndefined(this.model)){
 				self.model.updateLinesData().done(function(){

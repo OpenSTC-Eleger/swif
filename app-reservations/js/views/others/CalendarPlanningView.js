@@ -8,10 +8,11 @@ define([
 	'bookingModel',
 	'bookingsCollection',
 
-	'modalReservationDetailsView'
+	'modalReservationDetailsView',
+	'formBookingView'
 
 
-], function(app, AppHelpers, fullcalendar, moment, BookingModel, BookingsCollection, ModalReservationDetailsView){
+], function(app, AppHelpers, fullcalendar, moment, BookingModel, BookingsCollection, ModalReservationDetailsView, FormBookingView){
 
 	'use strict';
 
@@ -187,9 +188,21 @@ define([
 				/** Open leave time modal (Absent task)
 				*/
 				select: function( startDate, endDate, allDay, jsEvent, view) {
-					 
-					console.log(startDate + ' - ' + endDate);
-	    			//allDay  	: allDay,
+
+					var booking = new BookingModel();
+					booking.setStartDate(startDate);
+					booking.setEndDate(endDate);
+
+
+					console.log(booking);
+
+					// Redirect to form //
+					app.views.formBooking = new FormBookingView({
+						model : booking
+					});
+
+					//app.views.formBooking.render();
+
 				},
 	
 
