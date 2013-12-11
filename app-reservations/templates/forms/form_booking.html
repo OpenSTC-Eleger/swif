@@ -27,12 +27,7 @@
 	
 				<div class="col-sm-9">
 					<input id="bookingPartner" class="select2" data-placeholder="<%= lang.actions.selectAClaimer %>"
-	
-						<% if(!_.isNull(booking.getId())){
-							if(!_.isUndefined(booking.getClaimer('id'))) { %>
-							data-selected-value='<%= JSON.stringify(booking.getClaimer('json')) %>'
-						<% } } %> <%= readonly ? 'disabled' : ''%>
-					/>
+					<%= readonly ? 'disabled' : ''%>/>
 				</div>
 			</div>
 
@@ -41,14 +36,8 @@
 				<label for="bookingContact" class="control-label col-sm-3"><%= _.capitalize(lang.contact) %>:</label>
 	
 				<div class="col-sm-9">
-					<input id="bookingContact" class="select2" data-placeholder="<%= lang.actions.selectAContact %>"
-	
-						<% if(!_.isNull(booking.getId())){
-							if(!_.isUndefined(booking.getClaimerContact('id'))) { %>
-							data-selected-value='<%= JSON.stringify(booking.getClaimerContact('json')) %>'
-						<% } } %> <%= readonly ? 'disabled' : ''%>
-	
-					/>
+					<input id="bookingContact" class="select2" data-placeholder="<%= lang.actions.selectAContact %>" 
+					<%= readonly ? 'disabled' : ''%>/>
 				</div>
 			</div>
 			<!-- Citizen infos -->
@@ -110,7 +99,7 @@
 				<div class="input-group bootstrap-timepicker col-sm-3" >							
 					<input type="text" class="timepicker-default form-control" id='bookingCheckoutHour' value="<%= endHour%>" required="required">
 					<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-				</div>						
+				</div>
 			</div>
 			<div class="form-group">
 				<label for="bookingAddBookable" class="control-label col-sm-3"><%= _.capitalize(lang.resa.recurrenteBooking) %>:</label>

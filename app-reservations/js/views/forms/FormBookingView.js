@@ -172,7 +172,6 @@ define(['app',
 	    		$('#citizenInfos').addClass('hide-soft');
 	    	}
 	    	if(!_.isUndefined(app.views.selectListClaimersContactsView)){
-	    		app.views.selectListClaimersContactsView.render();
 	    	}
 	    },
 	    
@@ -252,7 +251,9 @@ define(['app',
 				
 				//i initialize advancedSelectBox here to correclty trigger change event at init (and so, perform correct view updates)
 				if(!self.model.isNew()){
+					app.views.selectListClaimersView.setSelectedItem(self.model.getClaimer('array'));
 					self.changeBookingPartner();
+					app.views.selectListClaimersContactsView.setSelectedItem(self.model.getClaimerContact('array'));
 					self.changeBookingContact();
 				}
 				
@@ -269,13 +270,15 @@ define(['app',
 	    	if(partner_id != ''){
 	    		//TODO: implement filter to fetch only bookables authorized for partner
 	    		app.views.selectListClaimersContactsView.setSearchParam({'field':'partner_id.id','operator':'=','value':partner_id},true);
+	    		
 	    		this.model.setClaimer([partner_id,app.views.selectListClaimersView.getSelectedText()]);
 	    	}
 	    	else{
 	    		app.views.selectListClaimersContactsView.resetSearchParams();
 	    		this.model.setClaimer(false);
 	    	}
-	    	app.views.selectListClaimersContactsView.render();
+	    	app.views.selectListClaimersContactsView.reset();
+	    	this.changeBookingContact();
 	    },
 	    
 	    changeBookingContact: function(e){
@@ -361,7 +364,9 @@ define(['app',
 	    	else{
 	    		app.views.selectListClaimersView.resetSearchParams();
 	    	}
-	    	app.views.selectListClaimersView.render();
+	    	$('#citizenInfos').find('input').val('');
+	    	app.views.selectListClaimersView.reset();
+	    	this.changeBookingPartner();
 	    },
 	    
 	    changePeopleName: function(e){
@@ -388,8 +393,6 @@ define(['app',
 	    },
 	    
 	    changeAddRecurrence: function(e){
-	    	console.log('----------------------');
-	    	
 	    	var val = $('#bookingAddRecurrence').bootstrapSwitch('status');
 	    	if(val){
 	    		this.addRecurrence(e);
