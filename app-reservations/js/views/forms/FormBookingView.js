@@ -42,21 +42,26 @@ define(['app',
 			'change #bookingPartner'			: 'changeBookingPartner',
 			'change #bookingContact'			: 'changeBookingContact',
 			'change #bookingAddBookable'		: 'changeBookingAddBookable',
+			
 			'change #bookingCheckin'			: 'changeBookingCheckin',
 			'change #bookingCheckout'			: 'changeBookingCheckout',
 			'change #bookingCheckinHour'		: 'changeBookingCheckin',
 			'change #bookingCheckoutHour'		: 'changeBookingCheckout',
+
 			'blur #bookingName'					: 'changeName',
 			'blur #bookingPeopleName'			: 'changePeopleName',
 			'blur #bookingPeoplePhone'			: 'changePeoplePhone',
 			'blur #bookingPeopleMail'			: 'changePeopleEmail',
-			
+			'blur #bookingPeopleStreet'			: 'changePeopleStreet',
+			'blur #bookingPeopleCity'			: 'changePeopleCity',
+			'blur #bookingPeopleZip'			: 'changePeopleZip',
 			
 			//Form Buttons
 			'submit #formSaveBooking'			: 'saveBookingForm',
 			'click #getRecurrenceDates'			: 'getRecurrenceDates',
 			'change #addRecurrence'				: 'changeAddRecurrence',
-			'change #isCitizen'					: 'changeIsCitizen',
+			'switch-change #bookingIsCitizen'	: 'changeIsCitizen',
+			'switch-change #bookingWholeDay'	: 'changeWholeDay',
 		},
 	
 		/** View Initialization
@@ -123,7 +128,7 @@ define(['app',
 	    //compute display of button addBookable (readonly or visible)
 	    updateDisplayAddBookable: function(){
 	    	var elt = $('#bookingAddBookable');
-	    	if(this.isEditable() && this.model.getStartDate() != '' && this.model.getEndDate() != '' && this.model.getClaimer('id') > 0){
+	    	if(this.isEditable() && this.model.getStartDate() != '' && this.model.getEndDate() != '' && this.model.getClaimer('id') != false){
 	    		elt.removeAttr('disabled');
 	    	}
 	    	else{
@@ -137,7 +142,7 @@ define(['app',
 	    //compute display of button save (readonly or visible)
 	    updateDisplaySave: function(){
 	    	var elt = $('#saveFormBooking');
-	    	if(this.isEditable() && this.model.getStartDate() != '' && this.model.getEndDate() != '' && this.model.getClaimer('id') > 0 && this.model.lines.length > 0){
+	    	if(this.isEditable() && this.model.getStartDate() != '' && this.model.getEndDate() != '' && this.model.getClaimer('id') != false && this.model.lines.length > 0){
 	    		elt.removeAttr('disabled');
 	    	}
 	    	else{
@@ -150,19 +155,12 @@ define(['app',
 	    	var elt = $('#bookingAddRecurrence');
 	    	var isHidden = this.recurrence != null && !this.isTemplate();
 	    	
-	    	if(!isHidden){
-	    		elt.removeClass('hide-soft');
-	    		if(this.isEditable() ){
-	    			elt.removeAttr('disabled');
-	    		}
-	    		else{
-	    			elt.attr('disabled','');
-	    		}
-	    	}
+	    	if(!isHidden && this.isEditable() && this.model.lines.length > 0){
+    			elt.bootstrapSwitch('setActive',true);
+    		}
 	    	else{
-	    		elt.addClass('hide-soft');
+	    		elt.bootstrapSwitch('setActive',false);
 	    	}
-
 	    },
 	    
 	    updateDisplayCitizenInfos: function(){
@@ -191,7 +189,7 @@ define(['app',
 		//(which perform unwanted updates on lineModels)
 		renderLines: function(){
 			var self = this;
-			this.model.lines.each(function(lineModel){
+			_.each(this.model.lines.models, function(lineModel){
 	        	var lineView = new ItemFormBookingLineView({model:lineModel});
 	        	//self.lineViews.push(lineView);
 	        	$(self.el).find('#bookingLines').append(lineView.render().el);
@@ -206,14 +204,16 @@ define(['app',
 			var self = this;
 			// Retrieve the template //
 			$.get(app.menus.openresa + this.templateHTML, function(templateData){			
-				//compute dates with browser-local TZ
+				//compute dates with user TZ
+				var checkin = self.model.getAttribute('checkin',false);
+				var checkout = self.model.getAttribute('checkout',false);;
 				var startDate = '';
 				var startHour = '';
 				var endDate = '';
 				var endHour = '';
-				if(!self.model.isNew()){
-					var checkin = AppHelpers.convertDateToTz(self.model.getStartDate());
-					var checkout = AppHelpers.convertDateToTz(self.model.getEndDate());
+				if(checkin != false && checkout != false){
+					checkin = AppHelpers.convertDateToTz(checkin);
+					checkout = AppHelpers.convertDateToTz(checkout);
 					
 					startDate = checkin.format('D/M/YYYY');
 					startHour = checkin.format('H:m');
@@ -254,13 +254,20 @@ define(['app',
 				app.views.selectListAddBookableView.render();
 				
 				//i initialize advancedSelectBox here to correclty trigger change event at init (and so, perform correct view updates)
-				if(!self.model.isNew()){
-					app.views.selectListClaimersView.setSelectedItem(self.model.getClaimer('array'));
+				var partner = self.model.getClaimer('array');
+				if(partner != 0){
+					app.views.selectListClaimersView.setSelectedItem(partner);
 					self.changeBookingPartner();
-					app.views.selectListClaimersContactsView.setSelectedItem(self.model.getClaimerContact('array'));
-					self.changeBookingContact();
 				}
-				
+				var contact = self.model.getClaimerContact('array');
+				if(contact != 0){
+					app.views.selectListClaimersContactsView.setSelectedItem(self.model.getClaimerContact('array'));
+					self.changeBookingContact(contact);
+				}
+				if(self.model.fromCitizen()){
+					self.changeIsCitizen();
+				}
+				self.changeWholeDay();
 				$(this.el).hide().fadeIn('slow');
 			});
 			return this;
@@ -368,8 +375,8 @@ define(['app',
 	    	else{
 	    		app.views.selectListClaimersView.resetSearchParams();
 	    	}
-	    	$('#citizenInfos').find('input').val('');
-	    	app.views.selectListClaimersView.reset();
+	    	//$('#citizenInfos').find('input').val('');
+	    	//app.views.selectListClaimersView.reset();
 	    	this.changeBookingPartner();
 	    },
 	    
@@ -383,6 +390,34 @@ define(['app',
 	    
 	    changePeopleEmail: function(e){
 	    	this.model.setClaimerMail($('#bookingPeopleMail').val(),true);
+	    },
+	    
+	    changePeopleStreet: function(e){
+	    	this.model.set({'people_street':$('#bookingPeopleStreet').val()},{silent:true});
+	    },
+	    
+	    changePeopleCity: function(e){
+	    	this.model.set({'people_city':$('#bookingPeopleCity').val()},{silent:true});
+	    },
+	    
+	    changePeopleZip: function(e){
+	    	this.model.set({'people_zip':$('#bookingPeopleZip').val()},{silent:true});
+	    },
+	    
+	    changeWholeDay: function(e){
+	    	var val = $('#bookingWholeDay').bootstrapSwitch('status');
+	    	this.model.set({'whole_day':val},{silent:true});
+	    	if(val){
+	    		$('#bookingCheckinHour').val('00:00');
+	    		$('#blockBookingCheckinHour').addClass('hide');
+	    		$('#bookingCheckoutHour').val('23:59');
+	    		$('#blockBookingCheckoutHour').addClass('hide');
+	    		
+	    	}
+	    	else{
+	    		$('#blockBookingCheckinHour').removeClass('hide');
+	    		$('#blockBookingCheckoutHour').removeClass('hide');
+	    	}
 	    },
 	    
 	    saveBookingForm: function(e){
