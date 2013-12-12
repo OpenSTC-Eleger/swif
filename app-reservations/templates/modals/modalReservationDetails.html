@@ -4,13 +4,21 @@
 
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h3 class="modal-title"><%= lang.resa.viewsTitles.reservationDetails %></h3>
+			<h3 class="modal-title">
+				<%= booking.getName() %>
 
-			<% if(!_.isUndefined(loader)) { %>
-				<span class="modal-loader progress progress-striped active">
-					<span class="bar"></span>
-				</span>
-			<% } %>
+				<% if(!_.isUndefined(loader)) { %>
+					<span class="modal-loader progress progress-striped active">
+						<span class="bar"></span>
+					</span>
+				<% }
+				else{ %>
+					<span class="label label-<%= BookingModel.status[booking.getState()].color %> pull-right">
+						<%= BookingModel.status[booking.getState()].translation %>
+					</span>
+				<% } %>
+
+			</h3>
 
 		</div>
 
@@ -19,7 +27,57 @@
 		<!-- Modal Body  -->
 		<div class="modal-body">
 
-			<h3><%= booking.getName() %></h3>
+			<% if(_.isUndefined(loader)) { %>
+				<div class="alert alert-<%= BookingModel.status[booking.getState()].color %>">
+	        		<%= booking.getDoneNote() %>
+      			</div>
+      		<% } %>
+
+			
+			<dl class="dl-horizontal dl-large">
+  				<dt><%= _.capitalize(lang.dateStart) %> :</dt>
+				<dd><%= moment(booking.getStartDate()).format('LLL') %></dd>
+
+  				<dt><%= _.capitalize(lang.dateStart) %> :</dt>
+				<dd><%= moment(booking.getEndDate()).format('LLL') %></dd>
+
+  				<dt><%= _.capitalize(lang.claiment) %> :</dt>
+				<dd>
+					<% if(booking.fromCitizen() == true){ %>
+						<%= lang.citizen %> : <%= booking.getCitizenName() %>
+					<% }
+					else { %>
+						<%= booking.getClaimer() %> - <%= booking.getClaimerContact() %>
+					<% } %>
+				</dd>
+
+				<dt><%= _.capitalize(lang.description) %> :</dt>
+				<dd><%= booking.getNote() %></dd>
+
+				<dt><%= _.capitalize(lang.bookables) %></dt>
+				<dd>
+					<% if(!_.isEmpty(booking.getResourceQuantities())) { %>
+					<table class="table table-condensed">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th><%= _.capitalize(lang.name) %></th>
+								<th><%= _.capitalize(lang.quantity) %></th>
+							</tr>
+						</thead>
+					<tbody>
+						<% _.each(booking.getResourceQuantities(), function(res, index){ %>
+						<tr>
+							<td>1</td>
+							<td><%= res[0] %></td>
+							<td><%= res[1] %></td>
+						</tr>
+						<% }); %>
+					</tbody>
+					</table>
+
+					<% } %>
+				</dd>
 
 		</div>
 		<!-- / Modal Body  -->

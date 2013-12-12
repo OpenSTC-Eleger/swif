@@ -200,8 +200,12 @@ define('appHelpers', [
 
 
 		convertDateToTz : function(date) {
-			var convertedDate = moment(date).tz(app.models.user.getContext().tz)
-			return convertedDate.add('minutes',-convertedDate.zone());
+			var convertedDate = moment(date)
+			if( app.models.user.getContext().tz ) {
+				convertedDate.tz(app.models.user.getContext().tz)
+				convertedDate.add('minutes',-convertedDate.zone());			
+			}
+			return convertedDate;
 		},
 
 

@@ -71,7 +71,7 @@ app.Views.ModalOfficerView = app.Views.GenericModalView.extend({
 			if(!loader){
 				// Advance Select List View //
 				app.views.advancedSelectBoxOfficerGroupView = new app.Views.AdvancedSelectBoxView({el: $("#officerGroup"), collection: app.Collections.STCGroups.prototype })
-				app.views.advancedSelectBoxOfficerGroupView.setSearchParam({ field : 'name', operator : 'ilike', value : 'openstc' }, true);
+				//app.views.advancedSelectBoxOfficerGroupView.setSearchParam({ field : 'name', operator : 'ilike', value : 'openstc' }, true);
 				app.views.advancedSelectBoxOfficerGroupView.render();
 
 				app.views.advancedSelectBoxOfficerServiceView = new app.Views.AdvancedSelectBoxView({el: $("#officerService"), collection: app.Collections.ClaimersServices.prototype })

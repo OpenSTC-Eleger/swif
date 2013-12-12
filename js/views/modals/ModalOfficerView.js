@@ -89,6 +89,10 @@ define([
 					app.views.advancedSelectBoxOfficerGroupView = new AdvancedSelectBoxView({el: $("#officerGroup"), collection: StcGroupsCollection.prototype })
 					app.views.advancedSelectBoxOfficerGroupView.setSearchParam({ field : 'name', operator : 'ilike', value : 'openstc' }, true);
 					app.views.advancedSelectBoxOfficerGroupView.render();
+					
+					app.views.advancedSelectBoxResaGroupView = new AdvancedSelectBoxView({el: $("#resaGroup"), collection: StcGroupsCollection.prototype })
+					app.views.advancedSelectBoxResaGroupView.setSearchParam({ field : 'name', operator : 'ilike', value : 'openresa' }, true);
+					app.views.advancedSelectBoxResaGroupView.render();
 	
 					app.views.advancedSelectBoxOfficerServiceView = new AdvancedSelectBoxView({el: $("#officerService"), collection: ClaimersServicesCollection.prototype })
 					app.views.advancedSelectBoxOfficerServiceView.render();
@@ -120,7 +124,7 @@ define([
 				firstname   : $('#officerFirstname').val(),
 				name        : $('#officerName').val(),
 				user_email  : $('#officerEmail').val(),
-				groups_id   : [[6, 0, [app.views.advancedSelectBoxOfficerGroupView.getSelectedItem()]]],
+				groups_id   : [[6, 0, [app.views.advancedSelectBoxOfficerGroupView.getSelectedItem() , app.views.advancedSelectBoxResaGroupView.getSelectedItem() ]]],
 				service_id  : app.views.advancedSelectBoxOfficerServiceView.getSelectedItem(),
 				
 			};

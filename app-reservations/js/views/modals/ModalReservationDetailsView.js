@@ -3,9 +3,10 @@ define([
 
 	'genericModalView',
 
-	'bookingModel'
+	'bookingModel',
+	'moment'
 
-], function(app, GenericModalView, BookingModel){
+], function(app, GenericModalView, BookingModel, moment){
 
 	'use strict';
 
@@ -64,9 +65,11 @@ define([
 				console.log(self.model);
 
 				var template = _.template(templateData, {
-					lang      : app.lang,
-					loader    : loader,
-					booking   : self.model
+					lang         : app.lang,
+					loader       : loader,
+					moment       : moment,
+					BookingModel : BookingModel,
+					booking      : self.model
 				});
 
 				self.modal.html(template);

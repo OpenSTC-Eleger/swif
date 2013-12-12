@@ -1,6 +1,6 @@
 {
 	"resa" :
-		{
+		{			
 			"ressources"                   			: "Ressources",
 			"bookingDate"                   		: "Date demande",
 			"startBookingDate"                   	: "Début résa",
@@ -57,7 +57,8 @@
 			"selectABookable"						: "Sélectionner une ressource",
 			"sendInvoicing" 						: "Joindre la facture / Bon de réservation",
 			"addABookable"							: "Ajouter une Ressource",
-			"generateDates"							: "Générer dates"
+			"generateDates"							: "Générer dates",
+            "downloadInvoice"                       : "Télécharger la facture/bon de réservation"
 		},
 		
 		"infoMessages" : {
