@@ -5,11 +5,14 @@
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			<h3 class="modal-title">
+				<!-- Récurrence -->
+				<% if(booking.getRecurrence() != false){ %> <i class="fa fa-repeat"></i>&nbsp; <% } %>
+
 				<%= booking.getName() %>
 
 				<% if(!_.isUndefined(loader)) { %>
 					<span class="modal-loader progress progress-striped active">
-						<span class="bar"></span>
+						<div class="progress-bar"></span>
 					</span>
 				<% }
 				else{ %>
@@ -28,32 +31,60 @@
 		<div class="modal-body">
 
 			<% if(_.isUndefined(loader)) { %>
-				<div class="alert alert-<%= BookingModel.status[booking.getState()].color %>">
-	        		<%= booking.getDoneNote() %>
-      			</div>
-      		<% } %>
+				
+				<div class="alert alert-<%= BookingModel.status.confirm.color %>">
+					<i class="fa <%= BookingModel.status.confirm.icon %> fa-fw fa-lg"></i>&nbsp;<%= booking.getConfirmNote() %>
+				</div>
 
-			
+				<% if(booking.getState() == BookingModel.status.done.key){ %>
+				<div class="alert alert-<%= BookingModel.status.done.color %>">
+					<i class="fa <%= BookingModel.status.done.icon %> fa-fw fa-lg"></i>&nbsp;<%= booking.getDoneNote() %>
+				</div>
+				<% } %>
+
+
+
 			<dl class="dl-horizontal dl-large">
+  				<!-- Date Start -->
   				<dt><%= _.capitalize(lang.dateStart) %> :</dt>
 				<dd><%= moment(booking.getStartDate()).format('LLL') %></dd>
 
-  				<dt><%= _.capitalize(lang.dateStart) %> :</dt>
+				<!-- Date End -->
+  				<dt><%= _.capitalize(lang.dateEnd) %> :</dt>
 				<dd><%= moment(booking.getEndDate()).format('LLL') %></dd>
 
+  				<!-- Claimer -->
   				<dt><%= _.capitalize(lang.claiment) %> :</dt>
 				<dd>
-					<% if(booking.fromCitizen() == true){ %>
-						<%= lang.citizen %> : <%= booking.getCitizenName() %>
-					<% }
-					else { %>
-						<%= booking.getClaimer() %> - <%= booking.getClaimerContact() %>
-					<% } %>
+					<% if(booking.fromCitizen() == true){
+						var type = lang.citizen;
+						var name = booking.getCitizenName();
+						var phone = booking.getCitizenPhone();
+						var mail = booking.getCitizenEmail();
+					}
+					else {
+						var type = booking.getClaimer();
+						var name = booking.getClaimerContact();
+						var phone = booking.getClaimerPhone();
+						var mail = booking.getClaimerMail();
+					} %>
+
+					<ul class="fa-ul">
+						<li><i class="fa fa-sitemap fa-li"></i> <%= type %></li>
+						<li><i class="fa fa-user fa-li"></i> <%= name %></li>
+						<% if(!_.isEmpty(phone) && phone != false){ %><li><i class="fa fa-phone fa-li"></i> <%= phone %></li> <% } %>
+						<% if(!_.isEmpty(mail) && mail != false){ %><li><i class="fa fa-envelope fa-li"></i> <a href="mailto:<%= mail %>"><%= mail %></a></li> <% } %>
+					</ul>
+
+
+					<% console.log(booking); %>
 				</dd>
 
+				<!-- Description -->
 				<dt><%= _.capitalize(lang.description) %> :</dt>
 				<dd><%= booking.getNote() %></dd>
 
+				<!-- Resources -->
 				<dt><%= _.capitalize(lang.bookables) %></dt>
 				<dd>
 					<% if(!_.isEmpty(booking.getResourceQuantities())) { %>
@@ -78,6 +109,8 @@
 
 					<% } %>
 				</dd>
+
+			<% } %>
 
 		</div>
 		<!-- / Modal Body  -->

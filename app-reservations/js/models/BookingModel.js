@@ -416,7 +416,12 @@ define([
 		},
 
 		getClaimerPhone: function(){
-			return this.get('contact_phone');
+			if(this.get('contact_phone') != false){
+				return this.get('contact_phone');
+			}
+			else{
+				return '';
+			}
 		},
 
 		getClaimerContact: function(type){
@@ -449,7 +454,12 @@ define([
 		},
 
 		getClaimerMail : function(default_value){
-			return this.getAttribute('partner_mail',default_value);
+			if(this.get('partner_mail') != false){
+				return this.get('partner_mail');
+			}
+			else{
+				return '';
+			}
 		},
 		
 		setClaimerMail : function(val, silent){
@@ -663,18 +673,21 @@ define([
 			confirm: {
 				key                 : 'confirm',
 				color               : 'success',
+				icon 		        : 'fa-check',
 				translation         : app.lang.valid
 			},
 			//= égal au 'refused' STC
 			cancel: {
 				key                 : 'cancel',
 				color               : 'danger',
+				icon 		        : 'fa-times',
 				translation         : app.lang.refused
 			},
 			//= égal au 'closed' STC
 			done: {
 				key                 : 'done',
 				color               : 'default',
+				icon 		        : 'fa-thumbs-up',
 				translation         : app.lang.closed
 			},
 		},
@@ -703,7 +716,7 @@ define([
 			done: {
 				key 		: 'done',
 				color 		: 'default',
-				icon 		: 'fa-eye-slash',
+				icon 		: 'fa-thumbs-up',
 				translation : app.lang.actions.close
 			},
 	

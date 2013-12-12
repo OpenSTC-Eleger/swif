@@ -148,10 +148,19 @@ a.filter-button.filter-disabled{
 /* dl-large
 -------------------------------------------------- */
 .dl-large{
-	dd{
+	dd:not(:last-child){
 		padding-bottom: @padding-small-horizontal;
 	}
 }
+
+
+
+/* Default Alert color
+-------------------------------------------------- */
+.alert-default {
+  .alert-variant(@well-bg; darken(@well-bg, 7%); #000);
+}
+
 
 
 
