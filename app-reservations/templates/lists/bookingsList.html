@@ -23,7 +23,7 @@
 	<div class="btn-toolbar tableToolbar row">
 		
 		<span class="bt-group col-sm-5">			
-			<a href="#app-reservations/nouvelle-reservation" class="btn btn-primary modalCreateBooking" role="button"><i class="fa fa-plus"></i><%= lang.resa.viewsTitles.newBooking%></a>
+			<a href="#app-reservations/nouvelle-reservation" class="btn btn-primary modalCreateBooking" role="button"><i class="fa fa-plus"></i> <%= lang.resa.viewsTitles.newBooking%></a>
 		 </span>
 		 
 		
@@ -57,7 +57,7 @@
 
 	<!-- Table Bookings -->
 	<div class="table-responsive">
-	<table class="table-bookings table table-bordered table-hover table-sorter">
+	<table class="table-bookings table table-bordered table-hover table-sorter table-vertical-center">
 		<thead>
 			<tr>
 				<th data-sort-column="id">N°</th>
@@ -88,7 +88,7 @@
 				</th>
 
 				
-				<th><%= _.capitalize(lang.action) %></th>
+				<th class="actions"><%= _.capitalize(lang.action) %></th>
 				
 			</tr>
 		</thead>

@@ -713,7 +713,7 @@ define([
 			done: {
 				key                 : 'done',
 				color               : 'default',
-				icon 		        : 'fa-thumbs-up',
+				icon 		        : 'fa-thumbs-o-up',
 				translation         : app.lang.closed
 			},
 		},
@@ -742,7 +742,7 @@ define([
 			done: {
 				key 		: 'done',
 				color 		: 'default',
-				icon 		: 'fa-thumbs-up',
+				icon 		: 'fa-thumbs-o-up',
 				translation : app.lang.actions.close
 			},
 	

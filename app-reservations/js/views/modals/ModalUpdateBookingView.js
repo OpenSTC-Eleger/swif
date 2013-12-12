@@ -71,10 +71,10 @@ define([
 		getIconTitle: function(){
 			switch (this.options.state){ 
 				case BookingModel.status.done.key: 
-					return 'fa-eye-slash';
+					return BookingModel.status.done.icon;
 				break;
 				case BookingModel.status.cancel.key:
-					return 'fa-times';
+					return BookingModel.status.cancel.key;
 				break;
 				default: 
 					return 'fa-check';
