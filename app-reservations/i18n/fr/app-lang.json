@@ -46,6 +46,8 @@
 			"third"									: "Troisième",
 			"fourth"								: "Quatrième",
 			"last"									: "Dernier",
+			"wholeDay"								: "Toute la journée",
+			"contactDetails"						: "Coordonnées",						
 			
 		"actions" : {			
 			"confirmAll"							: "Tout valider",

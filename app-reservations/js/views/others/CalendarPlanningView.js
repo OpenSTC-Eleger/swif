@@ -6,13 +6,17 @@ define([
 	'moment',
 
 	'bookingModel',
+	'bookingLineModel',
 	'bookingsCollection',
 
 	'modalReservationDetailsView',
-	'formBookingView'
+	'formBookingView',
+	
+	'moment-timezone',
+	'moment-timezone-data'
 
 
-], function(app, AppHelpers, fullcalendar, moment, BookingModel, BookingsCollection, ModalReservationDetailsView, FormBookingView){
+], function(app, AppHelpers, fullcalendar, moment, BookingModel, BookingLineModel, BookingsCollection, ModalReservationDetailsView, FormBookingView){
 
 	'use strict';
 
@@ -188,12 +192,29 @@ define([
 				/** Open leave time modal (Absent task)
 				*/
 				select: function( startDate, endDate, allDay, jsEvent, view) {
-
 					var booking = new BookingModel();
-					booking.setStartDate(startDate);
-					booking.setEndDate(endDate);
-
-
+					booking.setStartDate(moment(startDate).utc().format('YYYY-MM-DD HH:mm:ss'));
+					booking.setEndDate(moment(endDate).utc().format('YYYY-MM-DD HH:mm:ss'));
+					booking.setClaimer([app.views.advancedSelectBoxClaimerView.getSelectedItem(),
+					                    app.views.advancedSelectBoxClaimerView.getSelectedText()]);
+					//for each bookable selected, add a new bookingLine
+					_.each(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, function(place_id){
+						var line = new BookingLineModel();
+						var bookable = [app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(place_id).getId(), 
+						                app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(place_id).getName()];
+						line.set({reserve_product:bookable,
+							qte_reserves:1});
+						booking.addLine(line);
+					});
+					_.each(app.views.sideBarPlanningSelectResourcesView.selectedEquipments, function(equipment_id){
+						var line = new BookingLineModel();
+						var bookable = [app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get(equipment_id).getId(), 
+						                app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get(equipment_id).getName()];
+						line.set({reserve_product:bookable,
+							qte_reserves:1});
+						booking.addLine(line);
+					});
+					
 					console.log(booking);
 
 					// Redirect to form //
