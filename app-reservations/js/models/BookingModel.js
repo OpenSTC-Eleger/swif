@@ -725,7 +725,7 @@ define([
 			done: {
 				key 		: 'done',
 				color 		: 'default',
-				icon 		: 'fa-eye-slash',
+				icon 		: 'fa-thumbs-up',
 				translation : app.lang.actions.close
 			},
 	
