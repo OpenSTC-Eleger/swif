@@ -21,8 +21,12 @@ define([
 	var booking = GenericModel.extend({
 		
 		urlRoot: "/api/openresa/bookings",
-		
-		fields : ['id', 'name', 'prod_id', 'checkin', 'note', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 'resource_ids', 'resource_names', 'resource_quantities', 'resource_types', 'resources', 'all_dispo', 'recurrence_id', 'is_template', 'pricelist_id', 'confirm_note', 'cancel_note', 'done_note'],
+
+		fields : ['id', 'name', 'prod_id', 'checkin', 'note', 'checkout', 'partner_id', 'partner_order_id', 'partner_type',
+		          'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 
+		          'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 
+		          'resource_ids', 'resource_names', 'resource_quantities',  'resources', 'all_dispo', 'recurrence_id', 'is_template', 
+		          'pricelist_id', 'confirm_note', 'cancel_note', 'done_note', 'people_street','people_city', 'people_zip', 'whole_day'],
 	
 		searchable_fields: [
 			{
@@ -231,8 +235,9 @@ define([
 		},
 		
 		getStartDate: function(type){
-			if(this.get('checkin') != false && !_.isUndefined(this.get('checkin'))){
-				var checkinDate = AppHelpers.convertDateToTz(this.get('checkin'));
+			var checkin = this.getAttribute('checkin','');
+			if(checkin != ''){
+				var checkinDate = AppHelpers.convertDateToTz(checkin);
 				switch(type){
 					case 'human':	
 						return checkinDate.format('LLL');
@@ -240,7 +245,7 @@ define([
 					case 'fromNow': 
 						return checkinDate.fromNow();
 					default:
-						return this.get('checkin');
+						return checkin;
 					break;
 				}
 			}
@@ -260,8 +265,9 @@ define([
 		},
 		
 		getEndDate: function(type){
-			if(this.get('checkout') != false && !_.isUndefined(this.get('checkout'))){
-				var checkoutDate = AppHelpers.convertDateToTz(this.get('checkout'));
+			var checkout = this.getAttribute('checkout','');
+			if(checkout != ''){
+				var checkoutDate = AppHelpers.convertDateToTz(checkout);
 				switch(type){
 					case 'human':	
 						return checkoutDate.format('LLL');
@@ -269,7 +275,7 @@ define([
 						return checkoutDate.fromNow();
 					break;
 					default:
-						return this.get('checkout');
+						return checkout;
 					break;
 				}
 			}
@@ -286,6 +292,14 @@ define([
 			else{
 				this.set({checkout:false});
 			}
+		},
+		
+		getWholeDay: function(){
+			return this.getAttribute('all_day', false);
+		},
+		
+		setWholeDay: function(val, silent){
+			this.set({all_day:val}, {silent:silent});
 		},
 		
 		getCreateDate: function(type){
@@ -336,8 +350,8 @@ define([
 	
 		// Claimer of the booking //
 		getClaimer: function(type){
-			var claimer = 0;
-			if(this.get('partner_id') != false && !_.isUndefined(this.get('partner_id'))){
+			var claimer = this.getAttribute('partner_id',false);
+			if(claimer != false){
 				switch (type){
 					case 'id': 
 						return this.get('partner_id')[0];
@@ -390,7 +404,7 @@ define([
 			var ret = {};
 			var toClone = ['partner_invoice_id','partner_order_id','partner_shipping_id','partner_id',
 			               'openstc_partner_id','pricelist_id','name','checkin','checkout',
-			               'people_name','people_phone','partner_mail', 'is_citizen'];
+			               'people_name','people_phone','partner_mail', 'people_street', 'people_city', 'people_zip', 'whole_day', 'is_citizen'];
 			_.each(toClone,function(field,i){
 				ret[field] = self.get(field);
 			});
@@ -398,10 +412,11 @@ define([
 		},
 		
 		getSaveVals: function(){
+			var contact_id = this.getClaimerContact('id') ? this.getClaimerContact('id') : null;
 			return {
-				partner_invoice_id:this.getClaimerContact('id'),
-				partner_order_id:this.getClaimerContact('id'),
-				partner_shipping_id: this.getClaimerContact('id'),
+				partner_invoice_id:contact_id,
+				partner_order_id:contact_id,
+				partner_shipping_id: contact_id,
 				partner_id: this.getClaimer('id'),
 				openstc_partner_id: this.getClaimer('id'),
 				pricelist_id: this.getPricelist('id'),
@@ -411,7 +426,12 @@ define([
 				people_name:this.getCitizenName(),
 				people_phone: this.getCitizenPhone(),
 				partner_mail: this.getClaimerMail(),
-				is_citizen: this.fromCitizen()
+				is_citizen: this.fromCitizen(),
+				people_street: this.getAttribute('people_street',false),
+				people_city: this.getAttribute('people_city',false),
+				people_zip: this.getAttribute('people_zip',false),
+				whole_day: this.getAttribute('whole_day',false)
+				
 			}
 		},
 
@@ -420,7 +440,8 @@ define([
 		},
 
 		getClaimerContact: function(type){
-			if(this.get('partner_order_id')){
+			var contact = this.getAttribute('partner_order_id',false);
+			if(contact != false){
 				switch (type){
 					case 'id': 
 						return this.get('partner_order_id')[0];
@@ -435,6 +456,7 @@ define([
 						return this.get('partner_order_id')[1];
 				}
 			}
+			return contact;
 		},
 		
 		setClaimerContact: function(value, silent){
