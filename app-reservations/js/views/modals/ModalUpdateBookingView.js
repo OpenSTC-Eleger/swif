@@ -53,7 +53,6 @@ define([
 					booking 	: self.model,
 					state		: self.options.state,
 					title 	 	: app.lang.resa.viewsTitles[self.options.state + "Booking" ],
-					iconTitle	: self.getIconTitle(),
 					BookingModel: BookingModel
 				});
 				
@@ -64,22 +63,7 @@ define([
 	
 			return this;
 		},
-	
-		 /**
-		 * Adapts icon displayed on top with state wanted
-		 */
-		getIconTitle: function(){
-			switch (this.options.state){ 
-				case BookingModel.status.done.key: 
-					return BookingModel.status.done.icon;
-				break;
-				case BookingModel.status.cancel.key:
-					return BookingModel.status.cancel.key;
-				break;
-				default: 
-					return 'fa-check';
-			}
-		},
+
 	
 		/** Update the model pass in the view
 		*/
