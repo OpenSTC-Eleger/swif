@@ -49,7 +49,7 @@
 		<%= BookingModel.status[booking.getState()].translation %>
 	</span>
 </td>
-<td>
+<td class="text-center">
 	<!-- Check if the user can make action on the request -->
 	<% if(!_.isEmpty(booking.getActions())){ 
 		var actions = booking.getActions();
@@ -67,7 +67,6 @@
 		
 				switch(booking.getState()){
 					case 'remplir':						
-						console.debug("remplir");	
 						if(booking.isAllDispo()) {
 							actions = _.without(actions, BookingModel.actions.confirm.key);
 							mainAction = BookingModel.actions.confirm.key;
@@ -96,8 +95,9 @@
 							mainActionIcon = BookingModel.actions.cancel.icon;
 							mainActionDisabled = '';
 					break;
-					case 'confirm':	
-							mainAction = _.without(actions, BookingModel.actions.done.key);
+					case 'confirm':
+							actions = _.without(actions, BookingModel.actions.done.key);
+							mainAction = BookingModel.actions.done.key;
 							mainActionColor = BookingModel.actions.done.color;
 							mainActionIcon = BookingModel.actions.done.icon;
 							mainActionDisabled = '';
@@ -113,9 +113,11 @@
 			%>
 			<!-- Main action button -->
 			<button class="actions btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline" id="<%= mainAction %>">
-				<i class="fa <%= mainActionIcon %> fa-fw <%= _.capitalize(mainAction) %>"></i>
+				<i class="fa <%= mainActionIcon %> fa-fw fa-lg <%= _.capitalize(mainAction) %>"></i>
 			</button>
-			
+
+			<% console.log(actions); %>
+
 			<!-- Dropdown button action -->
 			<% if( _.size(actions)>0 ) { %>
 				<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -126,7 +128,7 @@
 			<!-- Other buttons action -->
 			<ul class="dropdown-menu pull-right text-left">
 				<% _.each(actions, function(action){ %>
-					<li >
+					<li>
 						<a href="#reservations" class="actions" id="<%= BookingModel.actions[action].key %>">
 							<i class="fa <%= BookingModel.actions[action].icon %> fa-fw"></i>&nbsp;<%= _.capitalize(BookingModel.actions[action].translation) %>
 						</a>
