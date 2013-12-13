@@ -140,23 +140,26 @@ define([
 		
 		getDescription: function(){
 			return this.get('description');	
-		},
+		},		
 		
-		getInformations: function(){
+		getStateInformationsHtml: function(){
+			var html = "<dl>";
 			switch (this.getState()){ 
 				case 'confirm': 
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human') + (this.getConfirmNote()!=false ? " : " + this.getConfirmNote() : "");
+					html+= this.getConfirmNote()!=false ?  "<dt>confirmation</dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
 				break;
 				case 'cancel':
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human') + (this.getCancelNote()!=false ? " : " + this.getCancelNote() : "");
+					html+= this.getCancelNote()!=false ?  "<dt>refus</dt><dd>" + this.getCancelNote() + "</dd></br>" : "";	
 				break;
 				case 'done':
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human') + (this.getDoneNote()!=false ? " : " + this.getDoneNote() : "");
+					html+=  this.getConfirmNote()!=false ?  "<dt>confirmation</dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
+					html+=  this.getDoneNote()!=false ? "<dt>clôture</dt><dd>" + this.getDoneNote() + "</dd></br>" : "" ;					
 				break;
 				default: 
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human');
+					
 			}
-			return ;
+			return html+= "<dt> le " + this.getWriteDate('human') + "</dt></dl>";
+			
 		},
 		
 		getConfirmNote: function(){
