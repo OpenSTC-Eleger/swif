@@ -44,8 +44,10 @@
 <td>
 	<span 
 		class="label label-<%= BookingModel.status[booking.getState()].color %>" 
-		data-toggle="tooltip"
-		data-original-title="<%= booking.getInformations() %>">
+		data-toggle="popover"
+		data-html="true" data-placement="left"
+		data-original-title="<%= lang.by + booking.getWriteAuthor() %>"
+		data-content="<%= booking.getStateInformationsHtml() %>">
 		<%= BookingModel.status[booking.getState()].translation %>
 	</span>
 </td>
