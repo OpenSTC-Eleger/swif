@@ -4,11 +4,12 @@ define([
 
 	'claimersCollection',
 	'bookablesCollection',
+	'bookablesPartnerCollection',
 	'bookableModel',
 
 	'advancedSelectBoxView',
 
-], function(app, AppHelpers, ClaimersCollection, BookablesCollection, BookableModel, AdvancedSelectBoxView){
+], function(app, AppHelpers, ClaimersCollection, BookablesCollection, BookablesPartnerCollection, BookableModel, AdvancedSelectBoxView){
 
 	'use strict';
 
@@ -18,17 +19,17 @@ define([
 	* Side Bar for selecting resources
 	*/
 	var SideBarPlanningSelectResourcesView = Backbone.View.extend({
-	
-	
-		templateHTML        : '/templates/others/SideBarPlanningSelectResources.html',
 
-		selectablePlaces    : new BookablesCollection(),
-		selectedPlaces      : [],
 
-		selectableEquipments   : new BookablesCollection(),
-		selectedEquipments     : [],
+		templateHTML          : '/templates/others/SideBarPlanningSelectResources.html',
+
+		selectablePlaces      : new BookablesCollection(),
+		selectedPlaces        : [],
+
+		selectableEquipments  : new BookablesCollection(),
+		selectedEquipments    : [],
 		
-		selectableClaimers   : new ClaimersCollection(),
+		selectableClaimers    : new ClaimersCollection(),
 
 	
 	
@@ -44,7 +45,9 @@ define([
 			'click #bookablesEquipments a'                         : 'selectEquipments',
 
 			'click i.icon-quantity'                                : 'focusQuantity',
-			'keyup span.quantity'                                  : 'updateQuantity'
+			'keyup span.quantity'                                  : 'updateQuantity',
+
+			'change #claimersOrganization'                         : 'filterResources'
 		}, 
 	
 	
@@ -294,6 +297,13 @@ define([
 			else{
 				input.text('1');
 			}
+		},
+
+
+		filterResources : function(e){
+
+			var partnerId = app.views.advancedSelectBoxClaimerView.getSelectedItem();
+
 		},
 
 
