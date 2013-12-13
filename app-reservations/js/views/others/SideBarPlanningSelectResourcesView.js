@@ -18,17 +18,18 @@ define([
 	* Side Bar for selecting resources
 	*/
 	var SideBarPlanningSelectResourcesView = Backbone.View.extend({
-	
-	
-		templateHTML        : '/templates/others/SideBarPlanningSelectResources.html',
 
-		selectablePlaces    : new BookablesCollection(),
-		selectedPlaces      : [],
 
-		selectableEquipments   : new BookablesCollection(),
-		selectedEquipments     : [],
+		templateHTML          : '/templates/others/SideBarPlanningSelectResources.html',
+
+		selectablePlaces      : new BookablesCollection(),
+		selectedPlaces        : [],
+
+		selectableEquipments  : new BookablesCollection(),
+		selectedEquipments    : [],
+		selectedEquipmentsQuantity : {},
 		
-		selectableClaimers   : new ClaimersCollection(),
+		selectableClaimers    : new ClaimersCollection(),
 
 	
 	
@@ -43,8 +44,11 @@ define([
 			'click #bookablesPlaces a'                             : 'selectPlace',
 			'click #bookablesEquipments a'                         : 'selectEquipments',
 
-			'click i.icon-quantity'                                : 'focusQuantity',
-			'keyup span.quantity'                                  : 'updateQuantity'
+			'click i.icon-quantity, span.quantity, span.quantity-container'    : 'focusQuantity',
+			'keyup span.quantity'                                  : 'updateQuantity',
+			'blur  span.quantity'                                  : 'setQuantity',
+
+			'change #claimersOrganization'                         : 'filterResources'
 		}, 
 	
 	
@@ -58,6 +62,7 @@ define([
 
 			this.selectedPlaces = [];
 			this.selectedEquipments = [];
+			this.selectedEquipmentsQuantity = {};
 
 			this.initCollection().done(function(){
 
@@ -143,9 +148,11 @@ define([
 
 			if(_.contains(this.selectedEquipments, idEquipment)){
 				this.selectedEquipments = _.without(this.selectedEquipments, idEquipment);
+				delete this.selectedEquipmentsQuantity[idEquipment];
 			}
 			else{
 				this.selectedEquipments.push(idEquipment);
+				this.selectedEquipmentsQuantity[idEquipment] = 1;
 			}
 
 
@@ -275,6 +282,8 @@ define([
 		/** Set the focus on the <span> content Editable
 		*/
 		focusQuantity: function(e){
+			e.preventDefault();
+			e.stopPropagation();
 			$(e.target).siblings('.quantity').focus();
 		},
 
@@ -289,11 +298,31 @@ define([
 			if(!_.isNaN(value)){
 				if(value > 999){
 					input.text('1');
-				}				
+				}
 			}
 			else{
 				input.text('1');
 			}
+		},
+
+
+		/** Set the quantity of an equipment
+		*/
+		setQuantity: function(e){
+			var target = $(e.target);
+
+			var equipmentId = target.parents('li').data('id');
+
+			this.selectedEquipmentsQuantity[equipmentId] = _($(e.target).text()).toNumber();
+
+			console.log(this.selectedEquipmentsQuantity);
+		},
+
+
+		filterResources : function(e){
+
+			var partnerId = app.views.advancedSelectBoxClaimerView.getSelectedItem();
+
 		},
 
 
