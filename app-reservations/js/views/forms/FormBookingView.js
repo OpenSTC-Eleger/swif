@@ -49,6 +49,7 @@ define(['app',
 			'change #bookingCheckoutHour'		: 'changeBookingCheckout',
 
 			'blur #bookingName'					: 'changeName',
+			'blur #bookingNote'					: 'changeNote',
 			'blur #bookingPeopleName'			: 'changePeopleName',
 			'blur #bookingPeoplePhone'			: 'changePeoplePhone',
 			'blur #bookingPeopleMail'			: 'changePeopleEmail',
@@ -75,9 +76,8 @@ define(['app',
 		initializeWithId: function(){
 			// Render with loader, store ajax calls in var 'waitDeferred' to call $.when at the end of  function//
 			var self = this;
-			this.model = new BookingModel({id:this.options.id});
+			this.model.set({id:this.options.id},{silent:true});
 			this.model.fetch({silent: true}).done(function(){
-				app.router.render(self);
 				var waitDeferred = [];
 				//fetch and render lines
 				waitDeferred.push(self.model.fetchLines());
@@ -188,7 +188,7 @@ define(['app',
 	    updateDisplayCitizenInfos: function(){
 	    	
 	    	var val = $('#bookingIsCitizen').bootstrapSwitch('status');
-	    	if(parseInt(this.claimers.cpt) == 0){
+	    	if(this.isClaimer){
 	    		$('#bookingIsCitizen').bootstrapSwitch('setActive', false);
 	    	}
 	    	if(val){
@@ -293,7 +293,7 @@ define(['app',
 				app.views.selectListAddBookableView = new AdvancedSelectBoxView({el: $('#bookingAddBookable'), collection: BookablesCollection.prototype}),
 				app.views.selectListAddBookableView.resetSearchParams();
 				app.views.selectListAddBookableView.render();
-						
+
 				
 				//i initialize advancedSelectBox here to correclty trigger change event at init (and so, perform correct view updates)
 				var partner = self.model.getClaimer('array');
@@ -304,10 +304,11 @@ define(['app',
 				var contact = self.model.getClaimerContact('array');
 				if(contact != 0){
 					app.views.selectListClaimersContactsView.setSelectedItem(self.model.getClaimerContact('array'));
-					self.changeBookingContact(contact);
+					self.changeBookingContact();
 				}
 				//manually fire listeners to apply dynamic DOM visibilities and filter to selectBoxes
 				self.changeIsCitizen();
+				self.updateDisplayCitizenInfos();
 				self.changeWholeDay();
 				$(this.el).hide().fadeIn('slow');
 			});
@@ -406,6 +407,10 @@ define(['app',
 	    	this.model.setName($("#bookingName").val());
 	    },
 	    
+	    changeNote: function(e){
+	    	this.model.set({note:$("#bookingNote").val()},{silent:true});
+	    },
+	    
 	    changeIsCitizen: function(e){
 	    	var val = $('#bookingIsCitizen').bootstrapSwitch('status');
 	    	this.model.setFromCitizen(val, false);
@@ -415,8 +420,6 @@ define(['app',
 	    	else{
 	    		app.views.selectListClaimersView.resetSearchParams();
 	    	}
-	    	//$('#citizenInfos').find('input').val('');
-	    	//app.views.selectListClaimersView.reset();
 	    	this.changeBookingPartner();
 	    },
 	    
