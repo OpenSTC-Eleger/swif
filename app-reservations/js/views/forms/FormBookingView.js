@@ -66,40 +66,36 @@ define(['app',
 		
 		initializeWithNonPersistedModel: function(){
 			var self = this;
+			
 			this.model.updateLinesData().done(function(){
 				app.router.render(self);
-				self.renderLines();
 			});
 		},
 		
 		initializeWithId: function(){
-			// Render with loader //
+			// Render with loader, store ajax calls in var 'waitDeferred' to call $.when at the end of  function//
 			var self = this;
 			this.model = new BookingModel({id:this.options.id});
 			this.model.fetch({silent: true}).done(function(){
 				app.router.render(self);
-				
+				var waitDeferred = [];
 				//fetch and render lines
-				self.model.fetchLines()
-				.done(function(){
-					self.renderLines();
-				});
+				waitDeferred.push(self.model.fetchLines());
 				
 				//fetch and render recurrence if exists
 				if(self.model.getRecurrence() != false){
 					var recurrence = new BookingRecurrenceModel({id:self.model.getRecurrence('id')});
 					if(self.model.isTemplate()){
 						recurrence.setTemplate(self.model);
-						recurrence.fetch()
-						.done(function(){
-							var recurrenceView = new FormRecurrenceView({model:recurrence});
-							$(self.el).find('#recurrence').html(recurrenceView.render().el);
-						});
+						waitDeferred.push(recurrence.fetch());
 					}
 					else{
 						self.model.recurrence = recurrence;
 					}
 				}
+				$.when.apply(self, waitDeferred).done(function(){
+					app.router.render(self);
+				})
 			});
 		},
 		
@@ -225,6 +221,13 @@ define(['app',
 			});
 		},
 		
+		renderRecurrence: function(){
+			if(this.model.recurrence != null){
+				var recurrenceView = new FormRecurrenceView({model:this.model.recurrence});
+				$(this.el).find('#recurrence').html(recurrenceView.render().el);
+			}
+		},
+		
 	
 		/** Display the view
 		*/
@@ -264,6 +267,9 @@ define(['app',
 	
 				$(self.el).html(template);
 				
+				self.renderLines();
+				self.renderRecurrence();
+				
 				if(self.isClaimer){
 					$('#bookingPartner').attr('disabled');
 					$('#bookingContact').attr('disabled');
@@ -300,9 +306,8 @@ define(['app',
 					app.views.selectListClaimersContactsView.setSelectedItem(self.model.getClaimerContact('array'));
 					self.changeBookingContact(contact);
 				}
-				if(self.model.fromCitizen()){
-					self.changeIsCitizen();
-				}
+				//manually fire listeners to apply dynamic DOM visibilities and filter to selectBoxes
+				self.changeIsCitizen();
 				self.changeWholeDay();
 				$(this.el).hide().fadeIn('slow');
 			});
