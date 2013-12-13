@@ -102,6 +102,21 @@ define([
 					var itemView = new ItemBookingView( {model: booking} );
 					$('#booking-items').append(itemView.render().el);	
 				});
+
+
+				// Render Filter Link on the Table //
+				if(!_.isUndefined(self.options.filter)){
+
+					$('#filterStateBooking').removeClass('filter-disabled');
+					$('#filterStateBookingList li.delete-filter').removeClass('disabled');
+
+					$('a.filter-button').addClass('text-'+BookingModel.status[self.options.filter.value].color);
+				}
+				else{
+					$('#filterStateBooking').addClass('filter-disabled');
+					$('#filterStateBookingList li.delete-filter').addClass('disabled');
+				}
+
 				
 				//Toolbar buttons : factory actions for multiple bookings ( confirm/cancel:close booking)
 				app.views.toolbarButtonsView = new ToolbarButtonsView( { collection: self.collection } );
