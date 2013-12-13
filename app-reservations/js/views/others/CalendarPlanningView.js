@@ -195,34 +195,35 @@ define([
 					var booking = new BookingModel();
 					booking.setStartDate(moment(startDate).utc().format('YYYY-MM-DD HH:mm:ss'));
 					booking.setEndDate(moment(endDate).utc().format('YYYY-MM-DD HH:mm:ss'));
-					booking.setClaimer([app.views.advancedSelectBoxClaimerView.getSelectedItem(),
-					                    app.views.advancedSelectBoxClaimerView.getSelectedText()]);
+
+					// If a claimer is set //
+					if(app.views.sideBarPlanningSelectResourcesView.selectableClaimers.cpt > 0){
+						booking.setClaimer([app.views.advancedSelectBoxClaimerView.getSelectedItem(), app.views.advancedSelectBoxClaimerView.getSelectedText()]);
+					}
+					
+
 					//for each bookable selected, add a new bookingLine
 					_.each(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, function(place_id){
+
 						var line = new BookingLineModel();
-						var bookable = [app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(place_id).getId(), 
-						                app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(place_id).getName()];
-						line.set({reserve_product:bookable,
-							qte_reserves:1});
+						var bookable = [place_id, app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(place_id).getName()];
+						line.set({reserve_product:bookable, qte_reserves:1});
 						booking.addLine(line);
 					});
-					_.each(app.views.sideBarPlanningSelectResourcesView.selectedEquipments, function(equipment_id){
+
+					_.each(app.views.sideBarPlanningSelectResourcesView.selectedEquipmentsQuantity, function(quantity, idEquipment){
 						var line = new BookingLineModel();
-						var bookable = [app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get(equipment_id).getId(), 
-						                app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get(equipment_id).getName()];
-						line.set({reserve_product:bookable,
-							qte_reserves:1});
+						var bookable = [idEquipment, app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get(idEquipment).getName()];
+
+						line.set({reserve_product:bookable, qte_reserves:quantity});
 						booking.addLine(line);
 					});
 					
-					console.log(booking);
 
 					// Redirect to form //
 					app.views.formBooking = new FormBookingView({
 						model : booking
 					});
-
-					//app.views.formBooking.render();
 
 				},
 	

@@ -63,61 +63,83 @@ define(['app',
 			'switch-change #bookingIsCitizen'	: 'changeIsCitizen',
 			'switch-change #bookingWholeDay'	: 'changeWholeDay',
 		},
-	
+		
+		initializeWithNonPersistedModel: function(){
+			var self = this;
+			
+			this.model.updateLinesData().done(function(){
+				app.router.render(self);
+			});
+		},
+		
+		initializeWithId: function(){
+			// Render with loader, store ajax calls in var 'waitDeferred' to call $.when at the end of  function//
+			var self = this;
+			this.model = new BookingModel({id:this.options.id});
+			this.model.fetch({silent: true}).done(function(){
+				app.router.render(self);
+				var waitDeferred = [];
+				//fetch and render lines
+				waitDeferred.push(self.model.fetchLines());
+				
+				//fetch and render recurrence if exists
+				if(self.model.getRecurrence() != false){
+					var recurrence = new BookingRecurrenceModel({id:self.model.getRecurrence('id')});
+					if(self.model.isTemplate()){
+						recurrence.setTemplate(self.model);
+						waitDeferred.push(recurrence.fetch());
+					}
+					else{
+						self.model.recurrence = recurrence;
+					}
+				}
+				$.when.apply(self, waitDeferred).done(function(){
+					app.router.render(self);
+				})
+			});
+		},
+		
 		/** View Initialization
 		*/
 		initialize : function(params) {
 			this.options = params;
 			var self = this;
-
-			//if view is called with a filled model (new booking from calendar)
-			if(!_.isUndefined(this.model)){
-				self.model.updateLinesData().done(function(){
-					app.router.render(self);
-					self.renderLines();
-				});
-			}
-			//else, if view is called without an id (new booking from scratch)
-			else if(_.isUndefined(this.options.id)){
-				
+			if(_.isUndefined(this.model)){
 				this.model = new BookingModel();
-				app.router.render(this);
 			}
-			//else, mean that id option is set (update booking from list, for example)
-			else{
-				// Render with loader //
-				this.model = new BookingModel({id:this.options.id});
-				this.model.fetch({silent: true}).done(function(){
-					app.router.render(self);
-					
-					//fetch and render lines
-					self.model.fetchLines()
-					.done(function(){
-						self.renderLines();
-					});
-					
-					//fetch and render recurrence if exists
-					if(self.model.getRecurrence() != false){
-						var recurrence = new BookingRecurrenceModel({id:self.model.getRecurrence('id')});
-						if(self.model.isTemplate()){
-							recurrence.setTemplate(self.model);
-							recurrence.fetch()
-							.done(function(){
-								var recurrenceView = new FormRecurrenceView({model:recurrence});
-								$(self.el).find('#recurrence').html(recurrenceView.render().el);
-							});
-						}
-						else{
-							self.model.recurrence = recurrence;
-						}
+			/*TODO:(remove this calculation by properer one)
+			 *check if user is claimer or manager (to know if he can see or not 'Claimer' and 'Contact' selectBoxes,
+			 *if user can not fetch any partner, means that he has only claimer rights
+			 */
+			this.claimers = new ClaimersCollection();
+			this.isClaimer = false;
+			this.claimers.count().always(function(){
+				self.isClaimer = parseInt(self.claimers.cpt) == 0;
+				//fill the 2 selectBoxes with service_id.partner_id values
+				var ret = {};
+				
+				//if view is called with a filled model (new booking from calendar)
+				if(_.isUndefined(self.options.id)){
+					if(self.isClaimer){
+						app.models.user.fetchContactAndClaimer(ret).done(function(){
+							self.model.setClaimer([ret.claimer.id, ret.claimer.name]);
+							self.model.setClaimerContact([ret.contact.id, ret.contact.name]);
+							self.initializeWithNonPersistedModel();
+						});
 					}
-				});
-			}
-			//TOCHECK
-			this.listenTo(this.model, 'change', this.updateDisplayDoms);
-			this.listenTo(this.model.lines, 'add', this.updateDisplayDoms);
-			this.listenTo(this.model.linesToRemove, 'add', this.updateDisplayDoms);
-			
+					else{
+						self.initializeWithNonPersistedModel();
+					}
+				}
+				//else, init view fetching model from db
+				else{
+					self.initializeWithId();
+				}
+				
+				self.listenTo(self.model, 'change', self.updateDisplayDoms);
+				self.listenTo(self.model.lines, 'add', self.updateDisplayDoms);
+				self.listenTo(self.model.linesToRemove, 'add', self.updateDisplayDoms);
+			});
 		},
 		
 		//compute if form can be modified or not
@@ -155,7 +177,7 @@ define(['app',
 	    	var elt = $('#bookingAddRecurrence');
 	    	var isHidden = this.recurrence != null && !this.isTemplate();
 	    	
-	    	if(!isHidden && this.isEditable() && this.model.lines.length > 0){
+	    	if(!isHidden && this.isEditable() && this.model.lines.length > 0 && parseInt(this.claimers.cpt) > 0){
     			elt.bootstrapSwitch('setActive',true);
     		}
 	    	else{
@@ -164,7 +186,11 @@ define(['app',
 	    },
 	    
 	    updateDisplayCitizenInfos: function(){
+	    	
 	    	var val = $('#bookingIsCitizen').bootstrapSwitch('status');
+	    	if(parseInt(this.claimers.cpt) == 0){
+	    		$('#bookingIsCitizen').bootstrapSwitch('setActive', false);
+	    	}
 	    	if(val){
 	    		$('#blockBookingContact').addClass('hide-soft');
 	    		$('#citizenInfos').removeClass('hide-soft');
@@ -191,9 +217,15 @@ define(['app',
 			var self = this;
 			_.each(this.model.lines.models, function(lineModel){
 	        	var lineView = new ItemFormBookingLineView({model:lineModel});
-	        	//self.lineViews.push(lineView);
 	        	$(self.el).find('#bookingLines').append(lineView.render().el);
 			});
+		},
+		
+		renderRecurrence: function(){
+			if(this.model.recurrence != null){
+				var recurrenceView = new FormRecurrenceView({model:this.model.recurrence});
+				$(this.el).find('#recurrence').html(recurrenceView.render().el);
+			}
 		},
 		
 	
@@ -211,6 +243,7 @@ define(['app',
 				var startHour = '';
 				var endDate = '';
 				var endHour = '';
+				
 				if(checkin != false && checkout != false){
 					checkin = AppHelpers.convertDateToTz(checkin);
 					checkout = AppHelpers.convertDateToTz(checkout);
@@ -234,6 +267,14 @@ define(['app',
 	
 				$(self.el).html(template);
 				
+				self.renderLines();
+				self.renderRecurrence();
+				
+				if(self.isClaimer){
+					$('#bookingPartner').attr('disabled');
+					$('#bookingContact').attr('disabled');
+				}
+				
 				$('.make-switch').bootstrapSwitch();
 				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 				$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
@@ -252,6 +293,7 @@ define(['app',
 				app.views.selectListAddBookableView = new AdvancedSelectBoxView({el: $('#bookingAddBookable'), collection: BookablesCollection.prototype}),
 				app.views.selectListAddBookableView.resetSearchParams();
 				app.views.selectListAddBookableView.render();
+						
 				
 				//i initialize advancedSelectBox here to correclty trigger change event at init (and so, perform correct view updates)
 				var partner = self.model.getClaimer('array');
@@ -264,9 +306,8 @@ define(['app',
 					app.views.selectListClaimersContactsView.setSelectedItem(self.model.getClaimerContact('array'));
 					self.changeBookingContact(contact);
 				}
-				if(self.model.fromCitizen()){
-					self.changeIsCitizen();
-				}
+				//manually fire listeners to apply dynamic DOM visibilities and filter to selectBoxes
+				self.changeIsCitizen();
 				self.changeWholeDay();
 				$(this.el).hide().fadeIn('slow');
 			});
@@ -288,8 +329,7 @@ define(['app',
 	    		app.views.selectListClaimersContactsView.resetSearchParams();
 	    		this.model.setClaimer(false);
 	    	}
-	    	app.views.selectListClaimersContactsView.reset();
-	    	this.changeBookingContact();
+	    	
 	    },
 	    
 	    changeBookingContact: function(e){

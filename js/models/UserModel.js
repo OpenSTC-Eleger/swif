@@ -1,8 +1,9 @@
 define([
 	'app',
+	'claimerContactModel',
 	'moment'
 
-], function(app, moment){
+], function(app, ClaimerContactModel, moment){
 
 	'user strict';
 
@@ -26,7 +27,21 @@ define([
 			//console.log('User initialize: ' + this.getLogin());
 		},
 
-
+		
+		//method to retrieve attribute with standard return form
+		getAttribute: function(key,default_value){
+			var val = this.get(key);
+			if(_.isUndefined(default_value)){
+				default_value = false;
+			}
+			if(!_.isUndefined(val) && val != '' && val != false && val != null){
+				return val;
+			}
+			else{
+				return default_value;
+			}
+		},
+		
 		getUID : function() {
 			return this.get('uid');
 		},
@@ -128,6 +143,26 @@ define([
 		getContact : function() {
 			return this.get('contact_id');
 		},
+		
+		fetchContactAndClaimer: function(ret){
+			var contact_ids = this.getAttribute('contact_id',[]);
+			var deferred = $.Deferred();
+			if(contact_ids.length > 0){
+				var contact_id = contact_ids[0];
+				var claimerContact = new ClaimerContactModel({id:contact_id});
+				deferred = claimerContact.fetch({data:{fields:['name','partner_id']}}).done(function(){
+					var partner = claimerContact.get('partner_id');
+					ret.claimer = {id:partner[0], name:partner[1]};
+					ret.contact = {id:contact_id, name:claimerContact.get('name')};
+				});
+			}
+			else{
+				deferred.reject();
+				console.warn('Fail on method UserModel#fetchContactAndClaimer: not any ClaimerContact found for current user.');
+			}
+			return deferred;
+		},
+		
 		setContact : function(value) {
 			this.set({ contact_id : value });
 		},
