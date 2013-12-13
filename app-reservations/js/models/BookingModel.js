@@ -21,11 +21,11 @@ define([
 	var booking = GenericModel.extend({
 		
 		urlRoot: "/api/openresa/bookings",
-		
+
 		fields : ['id', 'name', 'prod_id', 'checkin', 'note', 'checkout', 'partner_id', 'partner_order_id', 'partner_type',
 		          'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 
 		          'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 
-		          'resource_ids', 'resource_names', 'resource_quantities', 'all_dispo', 'recurrence_id', 'is_template', 
+		          'resource_ids', 'resource_names', 'resource_quantities',  'resources', 'all_dispo', 'recurrence_id', 'is_template', 
 		          'pricelist_id', 'confirm_note', 'cancel_note', 'done_note', 'people_street','people_city', 'people_zip', 'whole_day'],
 	
 		searchable_fields: [
@@ -82,11 +82,15 @@ define([
 			}
 		},
 
+		getResources: function(type){
+			return this.get('resources');
+		},
+
 
 		getResourcesId : function(){
 			return this.get('resource_ids');
 		},
-		
+
 
 		getResourceNames : function(type){
 		
@@ -136,23 +140,26 @@ define([
 		
 		getDescription: function(){
 			return this.get('description');	
-		},
+		},		
 		
-		getInformations: function(){
+		getStateInformationsHtml: function(){
+			var html = "<dl>";
 			switch (this.getState()){ 
 				case 'confirm': 
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human') + (this.getConfirmNote()!=false ? " : " + this.getConfirmNote() : "");
+					html+= this.getConfirmNote()!=false ?  "<dt>confirmation</dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
 				break;
 				case 'cancel':
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human') + (this.getCancelNote()!=false ? " : " + this.getCancelNote() : "");
+					html+= this.getCancelNote()!=false ?  "<dt>refus</dt><dd>" + this.getCancelNote() + "</dd></br>" : "";	
 				break;
 				case 'done':
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human') + (this.getDoneNote()!=false ? " : " + this.getDoneNote() : "");
+					html+=  this.getConfirmNote()!=false ?  "<dt>confirmation</dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
+					html+=  this.getDoneNote()!=false ? "<dt>clôture</dt><dd>" + this.getDoneNote() + "</dd></br>" : "" ;					
 				break;
 				default: 
-					return "Par " + this.getWriteAuthor() + " le " + this.getWriteDate('human');
+					
 			}
-			return ;
+			return html+= "<dt> le " + this.getWriteDate('human') + "</dt></dl>";
+			
 		},
 		
 		getConfirmNote: function(){
@@ -436,7 +443,12 @@ define([
 		},
 
 		getClaimerPhone: function(){
-			return this.get('contact_phone');
+			if(this.get('contact_phone') != false){
+				return this.get('contact_phone');
+			}
+			else{
+				return '';
+			}
 		},
 
 		getClaimerContact: function(type){
@@ -471,7 +483,12 @@ define([
 		},
 
 		getClaimerMail : function(default_value){
-			return this.getAttribute('partner_mail',default_value);
+			if(this.get('partner_mail') != false){
+				return this.get('partner_mail');
+			}
+			else{
+				return '';
+			}
 		},
 		
 		setClaimerMail : function(val, silent){
@@ -685,18 +702,21 @@ define([
 			confirm: {
 				key                 : 'confirm',
 				color               : 'success',
+				icon 		        : 'fa-check',
 				translation         : app.lang.valid
 			},
 			//= égal au 'refused' STC
 			cancel: {
 				key                 : 'cancel',
 				color               : 'danger',
+				icon 		        : 'fa-times',
 				translation         : app.lang.refused
 			},
 			//= égal au 'closed' STC
 			done: {
 				key                 : 'done',
 				color               : 'default',
+				icon 		        : 'fa-thumbs-o-up',
 				translation         : app.lang.closed
 			},
 		},
@@ -725,7 +745,7 @@ define([
 			done: {
 				key 		: 'done',
 				color 		: 'default',
-				icon 		: 'fa-eye-slash',
+				icon 		: 'fa-thumbs-o-up',
 				translation : app.lang.actions.close
 			},
 	

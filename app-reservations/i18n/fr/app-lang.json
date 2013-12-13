@@ -62,7 +62,7 @@
 		},
 		
 		"infoMessages" : {
-			"information"         				: "noBooking"
+			"noBooking"         				: "Aucune réservation à afficher"
 		},
 		
 		"viewsTitles" : {
