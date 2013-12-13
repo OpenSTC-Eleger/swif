@@ -74,6 +74,9 @@
 			"confirmBooking" 			 		: "Validation de la demande de réservation",
 			"cancelBooking" 			 		: "Annulation de la demande de réservation",
 			"doneBooking" 			 			: "Clôture de la demande de réservation",
+			"confirmBookingNote" 			 	: "Note",
+			"cancelBookingNote" 			 	: "Motif",
+			"doneBookingNote" 			 		: "Etat des lieux",
 			"reservationPlanning"				: "Planning des réservations",
 			"reservationDetails"				: "Détails de la réservations"
 	
