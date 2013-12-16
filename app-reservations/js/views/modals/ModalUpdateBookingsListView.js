@@ -54,7 +54,8 @@ define([
 					lang     	: app.lang,
 					booking  	: booking,
 					state		: self.options.state,
-					title 	 	: app.lang.resa.viewsTitles[self.options.state + "AllBookings" ],			
+					title 	 	: app.lang.resa.viewsTitles[self.options.state + "AllBookings" ],	
+					titleNote	: app.lang.resa.viewsTitles[self.options.state + "BookingNote" ],
 					BookingModel: BookingModel
 				});
 	
