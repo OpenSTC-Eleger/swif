@@ -91,6 +91,9 @@ define([
 			return this.get('resource_ids');
 		},
 
+		getDescription: function(){
+			return this.get('description');	
+		},	
 
 		getResourceNames : function(type){
 		
@@ -125,8 +128,7 @@ define([
 		},
 		
 		getResourceQuantitiesHtml : function(){
-			if( this.getState()=='done' ||  this.getState()=='cancel' 
-				||  _.size( this.get('resource_quantities') ) == 0 ) return "";
+			if( _.size( this.get('resource_quantities') ) == 0 ) return "";
 		
 			var bookingResourceQuantities = "<dl>";
 			
@@ -138,22 +140,18 @@ define([
 	
 		},
 		
-		getDescription: function(){
-			return this.get('description');	
-		},		
-		
 		getStateInformationsHtml: function(){
 			var html = "<dl>";
 			switch (this.getState()){ 
 				case 'confirm': 
-					html+= this.getConfirmNote()!=false ?  "<dt>confirmation</dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
+					html+= this.getConfirmNote()!=false ?  "<dt>" + app.lang.confirmation + "</dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
 				break;
 				case 'cancel':
-					html+= this.getCancelNote()!=false ?  "<dt>refus</dt><dd>" + this.getCancelNote() + "</dd></br>" : "";	
+					html+= this.getCancelNote()!=false ?  "<dt>" + app.lang.refusal + "</dt><dd>" + this.getCancelNote() + "</dd></br>" : "";	
 				break;
 				case 'done':
-					html+=  this.getConfirmNote()!=false ?  "<dt>confirmation</dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
-					html+=  this.getDoneNote()!=false ? "<dt>clôture</dt><dd>" + this.getDoneNote() + "</dd></br>" : "" ;					
+					html+=  this.getConfirmNote()!=false ?  "<dt>" + app.lang.confirmation + "</dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
+					html+=  this.getDoneNote()!=false ? "<dt>" + app.lang.enclosing + "</dt><dd>" + this.getDoneNote() + "</dd></br>" : "" ;					
 				break;
 				default: 
 					
@@ -410,8 +408,9 @@ define([
 			var self = this;
 			var ret = {};
 			var toClone = ['partner_invoice_id','partner_order_id','partner_shipping_id','partner_id',
-			               'openstc_partner_id','pricelist_id','name','checkin','checkout',
-			               'people_name','people_phone','partner_mail', 'people_street', 'people_city', 'people_zip', 'whole_day', 'is_citizen'];
+			               'openstc_partner_id','pricelist_id','name','note','checkin','checkout',
+			               'people_name','people_phone','partner_mail', 'people_street', 'people_city', 'people_zip', 
+			               'whole_day', 'is_citizen'];
 			_.each(toClone,function(field,i){
 				ret[field] = self.get(field);
 			});
@@ -437,7 +436,8 @@ define([
 				people_street: this.getAttribute('people_street',false),
 				people_city: this.getAttribute('people_city',false),
 				people_zip: this.getAttribute('people_zip',false),
-				whole_day: this.getAttribute('whole_day',false)
+				whole_day: this.getAttribute('whole_day',false),
+				note: this.getAttribute('note',false)
 				
 			}
 		},

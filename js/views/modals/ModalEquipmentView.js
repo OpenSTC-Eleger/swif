@@ -84,7 +84,9 @@ define([
 				});
 
 				self.modal.html(template);
-
+				
+				$('.make-switch').bootstrapSwitch();
+				
 				if(!loader){
 					self.selectEquipmentCategory = new AdvancedSelectBoxView({el:'#equipmentCategory', collection: EquipmentsTypesCollection.prototype});
 					self.selectEquipmentCategory.setSearchParam('|',true);
@@ -211,7 +213,9 @@ define([
 					external_booking: $('#equipmentExternalBooking:checked').val() == "1",
 					service_bookable_ids: [[6,0, this.selectEquipmentBookingServices.getSelectedItems() ]],
 					partner_type_bookable_ids: [[6,0, this.selectClaimersBookingServices.getSelectedItems() ]],
-					color: $('#displayColor').val()
+					color: $('#displayColor').val(),
+					block_booking: $('#placeBlockingBookable').bootstrapSwitch('status')
+
 			}
 			var stockQty = parseInt($('#equipmentQtyAvailable').val());
 

@@ -16,7 +16,12 @@ define([
 		
 		urlRoot: "/api/openstc/equipments",
 		
-		fields : ['id', 'name', 'maintenance_service_ids', 'internal_use', 'immat', 'marque', 'usage', 'type', 'cv', 'year', 'time', 'km', 'energy_type', 'length_amort', 'purchase_price', 'default_code', 'categ_id', 'service_names', 'maintenance_service_names', 'complete_name', 'warranty_date','built_date','purchase_date', 'hour_price', 'internal_booking','external_booking','service_bookable_ids' ,'service_bookable_names','partner_type_bookable_ids', 'partner_type_bookable_names', 'qty_available', 'product_product_id','color'],
+		fields : ['id', 'name', 'maintenance_service_ids', 'internal_use', 'immat', 'marque', 'usage', 'type', 'cv',
+		          'year', 'time', 'km', 'energy_type', 'length_amort', 'purchase_price', 'default_code', 'categ_id', 
+		          'service_names', 'maintenance_service_names', 'complete_name', 'warranty_date','built_date',
+		          'purchase_date', 'hour_price', 'internal_booking','external_booking','service_bookable_ids', 
+		          'service_bookable_names','partner_type_bookable_ids', 'partner_type_bookable_names', 
+		          'qty_available', 'product_product_id','color', 'block_booking'],
 
 
 		searchable_fields: [

@@ -53,6 +53,7 @@ define([
 					booking 	: self.model,
 					state		: self.options.state,
 					title 	 	: app.lang.resa.viewsTitles[self.options.state + "Booking" ],
+					titleNote	: app.lang.resa.viewsTitles[self.options.state + "BookingNote" ],
 					BookingModel: BookingModel
 				});
 				
