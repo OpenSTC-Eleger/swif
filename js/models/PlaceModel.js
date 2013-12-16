@@ -15,7 +15,9 @@ define([
 	var PlaceModel = GenericModel.extend({
 
 
-		fields     : ['id', 'name', 'complete_name', 'type', 'service_names', 'site_parent_id', 'width', 'length', 'surface','internal_booking','external_booking','service_bookable_ids' ,'service_bookable_names','partner_type_bookable_ids', 'partner_type_bookable_names', 'color'],
+		fields     : ['id', 'name', 'complee_name', 'type', 'service_names', 'site_parent_id', 'width', 'length', 
+		              'surface','internal_booking','external_booking','service_bookable_ids' ,'service_bookable_names',
+		              'partner_type_bookable_ids', 'partner_type_bookable_names', 'color', 'block_booking'],
 
 		urlRoot    : '/api/openstc/sites',
 

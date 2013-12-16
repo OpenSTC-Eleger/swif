@@ -176,6 +176,17 @@
                                 />
                             </div>
                         </div>
+                        
+                        <div class="form-group">
+                        	<label class="col-sm-3 control-label"><%= _.capitalize(lang.blocking_bookable) %>: </label>
+           					<div class="make-switch" id="bookingWholeDay" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
+								<input id="wholeDay" type="checkbox"
+								<% if(!_.isNull(place.getId())){ if(place.get('block_booking',false)) { %> checked <% } } %>
+								>
+							</div>
+                       	
+                        </div>
+                        
                     </fieldset>
                 </div>
             </form>

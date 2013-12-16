@@ -8,7 +8,8 @@ define([
 	'claimersTypesCollection',
 	
 	'genericModalView',
-	'advancedSelectBoxView'
+	'advancedSelectBoxView',
+	'bsSwitch'
 	
 
 ], function(app, PlaceModel, PlacesCollection, PlaceTypesCollection, ClaimersServicesCollection, ClaimersTypesCollection, GenericModalView, AdvancedSelectBoxView){
@@ -83,7 +84,7 @@ define([
 
 
 				self.modal.html(template);
-
+				$('.make-switch').bootstrapSwitch();
 				if(!loader){
 					// Advance Select List View //
 					app.views.advancedSelectBoxPlaceTypeView = new AdvancedSelectBoxView({el: $("#placeType"), collection: PlaceTypesCollection.prototype });
@@ -137,6 +138,7 @@ define([
 			this.model.setBookingServices(app.views.advancedSelectBoxPlaceBookingServices.getSelectedItems(), true);
 			this.model.setBookingClaimers(app.views.advancedSelectBoxPlaceBookingClaimers.getSelectedItems(), true);
 			this.model.set('color', $('#displayColor').val());
+			this.model.set('block_booking', $('#').bootstrapSwitch('status'));
 
             delete this.model.attributes.href;
             delete this.model.attributes.id;
