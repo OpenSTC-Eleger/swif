@@ -173,17 +173,17 @@ define(['app',
 	    },
 	    
 	    //compute display of button addRecurrence (readonly or visible)
-	    updateDisplayAddRecurrence: function(){
-	    	var elt = $('#bookingAddRecurrence');
-	    	var isHidden = this.recurrence != null && !this.isTemplate();
-	    	
-	    	if(!isHidden && this.isEditable() && this.model.lines.length > 0 && parseInt(this.claimers.cpt) > 0){
-    			elt.bootstrapSwitch('setActive',true);
-    		}
-	    	else{
-	    		elt.bootstrapSwitch('setActive',false);
-	    	}
-	    },
+//	    updateDisplayAddRecurrence: function(){
+//	    	var elt = $('#bookingAddRecurrence');
+//	    	var isHidden = this.recurrence != null && !this.isTemplate();
+//	    	
+//	    	if(!isHidden && this.isEditable() && this.model.lines.length > 0 && parseInt(this.claimers.cpt) > 0){
+//    			elt.bootstrapSwitch('setActive',true);
+//    		}
+//	    	else{
+//	    		elt.bootstrapSwitch('setActive',false);
+//	    	}
+//	    },
 	    
 	    updateDisplayCitizenInfos: function(){
 	    	
@@ -206,13 +206,14 @@ define(['app',
 	    //main method to compute all conditionnal display of form inputs
 	    updateDisplayDoms: function(model){
 	    	this.updateDisplayAddBookable();
-	    	this.updateDisplayAddRecurrence();
+	    	//this.updateDisplayAddRecurrence();
 	    	this.updateDisplaySave();
 	    	this.updateDisplayCitizenInfos();
 	    },
 		
-		//split rendering of form and rendering of lines to avoid change-events conflicts 
-		//(which perform unwanted updates on lineModels)
+		/**split rendering of form and rendering of lines to avoid change-events conflicts
+		 * (which perform unwanted updates on lineModels)
+		 */
 		renderLines: function(){
 			var self = this;
 			_.each(this.model.lines.models, function(lineModel){
