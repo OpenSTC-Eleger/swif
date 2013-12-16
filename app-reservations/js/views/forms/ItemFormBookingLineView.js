@@ -92,7 +92,11 @@ define(['app',
 
 		popoverValue: function(){
 			if(!this.model.getAvailable()){
-				var val = '<p>' + app.lang.resa.available_qty + ': ' + parseInt(this.model.getAvailableQtity()).toString() + '</p>';
+				var qty = parseInt(this.model.getAvailableQtity());
+				if(qty < 0){
+					qty = 0;
+				}
+				var val = '<p>' + app.lang.resa.available_qty + ': ' + qty.toString() + '</p>';
 				$(this.el).data('toggle','popover');
 				$(this.el).data('html','true');
 				$(this.el).data('placement','top');
@@ -152,6 +156,8 @@ define(['app',
 	    
 	    removeLine: function(e){
 	    	e.preventDefault();
+			$(this.el).popover('hide');
+			$(this.el).popover('destroy');
 	    	this.model.destroyOnBackend();
 	    }
 	});
