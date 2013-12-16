@@ -138,7 +138,7 @@ define([
 			this.model.setBookingServices(app.views.advancedSelectBoxPlaceBookingServices.getSelectedItems(), true);
 			this.model.setBookingClaimers(app.views.advancedSelectBoxPlaceBookingClaimers.getSelectedItems(), true);
 			this.model.set('color', $('#displayColor').val());
-			this.model.set('block_booking', $('#').bootstrapSwitch('status'));
+			this.model.set('block_booking', $('#placeBlockingBookable').bootstrapSwitch('status'));
 
             delete this.model.attributes.href;
             delete this.model.attributes.id;
