@@ -83,6 +83,14 @@
 				</div>
 			</div>
 			
+			<!-- booking note -->
+			<div class="form-group">
+				<label for="bookingNote" class="control-label col-sm-3"><%= _.capitalize(lang.note) %>:</label>
+				<div class="col-sm-9">
+					<textarea id="bookingNote" name="bookingNote" class="form-control"><%= booking.getAttribute('note','')%></textarea>
+				</div>
+			</div>
+			
 			<!-- whole_day flag -->
 			<div class="form-group">
 				<label for="bookingWholeDay" class="control-label col-sm-3"><%= _.capitalize(lang.resa.wholeDay) %>:</label>

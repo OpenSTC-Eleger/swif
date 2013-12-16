@@ -383,8 +383,9 @@ define([
 			var self = this;
 			var ret = {};
 			var toClone = ['partner_invoice_id','partner_order_id','partner_shipping_id','partner_id',
-			               'openstc_partner_id','pricelist_id','name','checkin','checkout',
-			               'people_name','people_phone','partner_mail', 'people_street', 'people_city', 'people_zip', 'whole_day', 'is_citizen'];
+			               'openstc_partner_id','pricelist_id','name','note','checkin','checkout',
+			               'people_name','people_phone','partner_mail', 'people_street', 'people_city', 'people_zip', 
+			               'whole_day', 'is_citizen'];
 			_.each(toClone,function(field,i){
 				ret[field] = self.get(field);
 			});
@@ -410,7 +411,8 @@ define([
 				people_street: this.getAttribute('people_street',false),
 				people_city: this.getAttribute('people_city',false),
 				people_zip: this.getAttribute('people_zip',false),
-				whole_day: this.getAttribute('whole_day',false)
+				whole_day: this.getAttribute('whole_day',false),
+				note: this.getAttribute('note',false)
 				
 			}
 		},

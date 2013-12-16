@@ -41,6 +41,11 @@ define([
 			'keyup #placesSearch'                                  : 'resourcesSearch',
 			'keyup #equipmentsSearch'                              : 'resourcesSearch',
 
+			'click #actionsPlaceList a[data-action="select"]'      : 'actionsPlaceSelectAll',
+			'click #actionsPlaceList a[data-action="unselect"]'    : 'actionsPlaceUnSelectAll',
+			//'click #actionsPlaceList a[data-action="toggle"]'      : 'actionsPlaceSelectToggle',
+
+
 			'click #bookablesPlaces a'                             : 'selectPlace',
 			'click #bookablesEquipments a'                         : 'selectEquipments',
 
@@ -187,10 +192,10 @@ define([
 				
 				this.timeOver = setTimeout(function () {
 					$('.fc-event').not('.resa-'+row.data('id')).delay(500).fadeOut();
-				}, 380);
+				}, 350);
 			}
-
 		},
+
 
 
 		/** When the mouse leave a resource
@@ -209,6 +214,7 @@ define([
 				$('.fc-event').fadeIn();
 			}
 		},
+
 
 
 		/** Make element selected
@@ -244,6 +250,108 @@ define([
 				return null;
 			}
 
+		},
+
+
+		actionsPlaceSelectAll: function(e){
+			var self = this;
+			e.preventDefault();
+
+
+			// Clear the selected Places array //
+			this.selectedPlaces = [];
+
+			_.each(this.selectablePlaces.models, function(a, i){
+				self.selectedPlaces.push(a.getId());
+			})
+
+			$('#bookablesPlaces li').each(function(index) {
+
+  				// Get the color //
+  				var color = $(this).data('color');
+
+  				// Icons //
+  				var icon = $(this).find('i.icon-radio');
+
+				$(this).addClass('selected');
+				icon.removeClass('fa-circle-o').addClass('fa-dot-circle-o').css({color: color});
+
+			});
+
+			$('#nbPlaces').addClass('badge-info');
+			$('#nbPlaces').html(_.join(' / ', _.size(self.selectedPlaces), _.size(self.selectablePlaces)));
+
+			app.views.calendarPlanningView.fetchEvents();
+		},
+
+
+		actionsPlaceUnSelectAll: function(e){
+			var self = this;
+			e.preventDefault();
+
+			// Clear the selected Places array //
+			this.selectedPlaces = [];
+
+			$('#bookablesPlaces li').each(function(index) {
+
+  				// Icons //
+  				var icon = $(this).find('i.icon-radio');
+
+				$(this).removeClass('selected');
+				icon.removeClass('fa-dot-circle-o').addClass('fa-circle-o').css({color: 'inherit'});
+
+			});
+
+			$('#nbPlaces').removeClass('badge-info');
+			$('#nbPlaces').html(_.size(self.selectablePlaces));
+
+
+			app.views.calendarPlanningView.fetchEvents();
+		},
+
+
+		actionsPlaceSelectToggle: function(e){
+			var self = this;
+			e.preventDefault();
+
+			var allPlaces = [];
+			_.each(this.selectablePlaces.models, function(a, i){
+				allPlaces.push(a.getId());
+			})
+
+			this.selectedPlaces = _.difference(allPlaces, this.selectedPlaces);
+
+
+			$('#bookablesPlaces li').each(function(index) {
+
+  				// Icons //
+  				var icon = $(this).find('i.icon-radio');
+
+				$(this).toggleClass('selected');
+				icon.toggleClass('fa-dot-circle-o').toggleClass('fa-circle-o');
+
+
+				if($(this).hasClass('selected')){
+					var color = $(this).data('color');
+					icon.css({color: color});
+				}
+				else{
+					icon.css({color: 'inherit'});
+				}
+
+			});
+
+
+			if(_.isEmpty(this.selectedPlaces)){
+				$('#nbPlaces').removeClass('badge-info');
+				$('#nbPlaces').html(_.size(this.selectablePlaces));
+			}
+			else{
+				$('#nbPlaces').addClass('badge-info');	
+				$('#nbPlaces').html(_.join(' / ', _.size(this.selectedPlaces), _.size(this.selectablePlaces)));
+			}
+
+			app.views.calendarPlanningView.fetchEvents();
 		},
 
 
@@ -288,6 +396,7 @@ define([
 		},
 
 
+
 		/** Check the quantity in the content Editable
 		*/
 		updateQuantity: function(e){
@@ -314,8 +423,6 @@ define([
 			var equipmentId = target.parents('li').data('id');
 
 			this.selectedEquipmentsQuantity[equipmentId] = _($(e.target).text()).toNumber();
-
-			console.log(this.selectedEquipmentsQuantity);
 		},
 
 

@@ -197,6 +197,7 @@
 	"picture"								: "Image",
 	"availability"							: "Disponible",
 	"amount"								: "Montant",
+	"blocking_bookable"						: "Ressource blocante",
 	
 	"detailsEquipment"						: "Détails",
 	"baseEquipment"							: "Général",
