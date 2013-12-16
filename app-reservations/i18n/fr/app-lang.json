@@ -47,7 +47,8 @@
 			"fourth"								: "Quatrième",
 			"last"									: "Dernier",
 			"wholeDay"								: "Toute la journée",
-			"contactDetails"						: "Coordonnées",						
+			"contactDetails"						: "Coordonnées",
+			"missing_qty"							: "Quantité manquante",			
 			
 		"actions" : {			
 			"confirmAll"							: "Tout valider",

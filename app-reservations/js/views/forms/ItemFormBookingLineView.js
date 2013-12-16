@@ -86,9 +86,23 @@ define(['app',
 			var self = this;
 			self.remove();		
 		},
-	
-	
-	
+		
+		/**Compute popover value
+		 */
+
+		popoverValue: function(){
+			if(!this.model.getAvailable()){
+				var val = '<p>' + app.lang.resa.missing_qty + ': ' + parseInt(this.model.getQuantity() - this.model.getAvailableQtity()).toString() + '</p>';
+				$(this.el).data('toggle','popover');
+				$(this.el).data('html','true');
+				$(this.el).data('placement','top');
+				$(this.el).popover({trigger: 'hover', content: val});
+			}
+			else{
+				$(this.el).popover('destroy');
+			}
+		},
+		
 		/** Display the view
 		*/
 		render : function() {
@@ -106,7 +120,7 @@ define(['app',
 					});
 	
 					$(self.el).html(template);
-	
+					self.popoverValue();
 					// Set the Tooltip //
 					$('*[data-toggle="tooltip"]').tooltip();
 				})
