@@ -58,7 +58,10 @@
 			"sendInvoicing" 						: "Joindre la facture / Bon de réservation",
 			"addABookable"							: "Ajouter une Ressource",
 			"generateDates"							: "Générer dates",
-            "downloadInvoice"                       : "Télécharger la facture/bon de réservation"
+            "downloadInvoice"                       : "Télécharger la facture/bon de réservation",
+            "selectAll"                             : "Tout sélectionner",
+            "unselectAll"                           : "Tout désélectionner",
+            "selectToggle"                          : "Inverser la sélection"
 		},
 		
 		"infoMessages" : {

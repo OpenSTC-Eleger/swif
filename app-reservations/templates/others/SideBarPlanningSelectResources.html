@@ -28,9 +28,32 @@
 					<span id="nbPlaces" class="badge"></span>
 				</h4>
 
+
 				<form class="form-inline col-xs-6 col-md-12 col-lg-5" role="form">
 					<div class="form-group pull-right">
-						<input type="search" id="placesSearch" data-search="bookablesPlaces" class="form-control input-sm" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off" />
+						<div class="input-group input-group-sm">
+
+      						
+      						<div class="input-group-btn">
+        						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        							<i class="fa fa-bars"></i>
+        						</button>
+        						<ul class="dropdown-menu" id="actionsPlaceList">
+									<li>
+										<a href="#" data-action="select"><i class="fa fa-check-square-o fa-fw"></i> <%= lang.resa.actions.selectAll %></a>
+									</li>
+									<li>
+										<a href="#" data-action="unselect"><i class="fa fa-square-o fa-fw"></i> <%= lang.resa.actions.unselectAll %></a>
+									</li>
+									<!--<li>
+										<a href="#" data-action="toggle"><i class="fa fa-repeat fa-fw"></i> <%= lang.resa.actions.selectToggle %></a>
+									</li>-->
+						        </ul>
+      						</div>
+
+
+						<input type="search" id="placesSearch" data-search="bookablesPlaces" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off" />
+						</div>
 					</div>
 				</form>
 			</div>
@@ -40,7 +63,7 @@
 
 				<% _.each(selectablePlaces.models,function(place, i){ %>
 						<li data-color="<%= place.getColor() %>" data-id="<%= place.getId() %>" data-name="<%= place.getName().toLowerCase() %>">
-							<a href="#"><i class="icon-radio fa fa-circle-o fa-lg"></i><%= place.getName() %></a>
+							<a href="#"><i class="icon-radio fa fa-circle-o fa-lg"></i><%= place.getId() %> - <%= place.getName() %></a>
 						</li>
 				<% }) %>
 

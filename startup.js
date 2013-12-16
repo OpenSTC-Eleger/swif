@@ -159,7 +159,9 @@ requirejs.config({
 			deps   : ['jqueryui', 'underscore', 'underscore.string'],
 			exports: 'Backbone',
 			init : function(JQuery, _, UnderscoreString){
-				_.mixin(UnderscoreString);
+				_.str = UnderscoreString;
+				_.mixin(_.str.exports());
+				//_.str.include('Underscore.string', 'string');
 			}
 		},
 		'nprogress': {
