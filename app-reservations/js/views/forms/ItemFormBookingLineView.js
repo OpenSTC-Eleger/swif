@@ -92,7 +92,7 @@ define(['app',
 
 		popoverValue: function(){
 			if(!this.model.getAvailable()){
-				var val = '<p>' + app.lang.resa.missing_qty + ': ' + parseInt(this.model.getQuantity() - this.model.getAvailableQtity()).toString() + '</p>';
+				var val = '<p>' + app.lang.resa.available_qty + ': ' + parseInt(this.model.getAvailableQtity()).toString() + '</p>';
 				$(this.el).data('toggle','popover');
 				$(this.el).data('html','true');
 				$(this.el).data('placement','top');

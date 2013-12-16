@@ -48,7 +48,7 @@
 			"last"									: "Dernier",
 			"wholeDay"								: "Toute la journée",
 			"contactDetails"						: "Coordonnées",
-			"missing_qty"							: "Quantité manquante",			
+			"available_qty"							: "Quantité disponible",			
 			
 		"actions" : {			
 			"confirmAll"							: "Tout valider",
