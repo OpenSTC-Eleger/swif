@@ -12,8 +12,8 @@
 	<!-- Interventions action -->
 	<p class="row-actions invisible">
 
-		<% if(booking.hasActions("cancel")) { %>
-			 &nbsp;<a href="#" class="buttonCancelInter " data-toggle="modal"><i class="fa fa-ban fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
+		<% if(booking.getState() == BookingModel.status.remplir.key) { %>
+		&nbsp;<a href="#" class="buttonCancelBooking " data-toggle="modal"><i class="fa fa-ban fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
 		<% } %>
 
         <% if (booking.get('invoice_attachment_id') != 0) { %>

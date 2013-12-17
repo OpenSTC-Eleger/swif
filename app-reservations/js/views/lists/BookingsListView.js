@@ -207,13 +207,21 @@ define([
 				data       : {
 					limit  : app.config.itemsPerPage,
 					offset : this.options.page.offset,
-					sort   : this.options.sort.by+' '+this.options.sort.order
+					sort   : this.options.sort.by+' '+this.options.sort.order,					
 				}
 			};
 			
-	
-			var globalSearch = {};
+			if(_.isUndefined(fetchParams.data.filters))
+				fetchParams.data.filters = new Object();
 			
+			//No displays bookings deleted
+			fetchParams.data.filters[_.size(fetchParams.data.filters)] = {field:'deleted_at',operator:'=',value:'False'}
+			if( ! app.models.user.isResaManager()) {
+				fetchParams.data.filters[_.size(fetchParams.data.filters)] = {field: 'partner_id.address.id', operator:'in', value:app.models.user.getContact()}
+			}
+			
+				
+			var globalSearch = {};			
 	
 			if(!_.isUndefined(this.options.search)){
 				globalSearch.search = this.options.search;

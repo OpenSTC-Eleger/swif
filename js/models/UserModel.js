@@ -193,8 +193,16 @@ define([
 			return this.get('isDST');
 		},
 		
+		isResaManager: function(value) {
+			return this.get('isResaManager');
+		},
+		
 		setDST: function(value) {
 			this.set({ isDST : value });
+		},
+		
+		setResaManager: function(value) {
+			this.set({ isResaManager : value });
 		},
 		
 		/** Get Officer By Id
@@ -307,6 +315,7 @@ define([
 			this.setContact(data.user.contact_id);
 			this.setManager(data.user.isManager);
 			this.setDST(data.user.isDST);
+			this.setResaManager(data.user.isResaManager);
 		},
 
 
