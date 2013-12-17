@@ -56,7 +56,10 @@ define([
 		*/
 		sync: function(method, model, options){
 	
-			options.data.fields = this.fields;
+			if(_.isUndefined(options.data.fields)){
+				options.data.fields = this.fields;	
+			}
+			
 	
 			return $.when(this.count(options), this.specialCount(), Backbone.sync.call(this,method,this,options));
 		}

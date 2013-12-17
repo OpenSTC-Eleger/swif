@@ -63,7 +63,7 @@
 
 				<% _.each(selectablePlaces.models,function(place, i){ %>
 						<li data-color="<%= place.getColor() %>" data-id="<%= place.getId() %>" data-name="<%= place.getName().toLowerCase() %>">
-							<a href="#"><i class="icon-radio fa fa-circle-o fa-lg"></i><%= place.getId() %> - <%= place.getName() %></a>
+							<a href="#"><i class="icon-radio fa fa-circle-o fa-lg"></i><%= place.getName() %></a>
 						</li>
 				<% }) %>
 

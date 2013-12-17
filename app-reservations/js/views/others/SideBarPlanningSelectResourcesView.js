@@ -31,6 +31,8 @@ define([
 		
 		selectableClaimers    : new ClaimersCollection(),
 
+		isResourceManager     : false,
+
 	
 	
 		// The DOM events //
@@ -70,6 +72,11 @@ define([
 			this.selectedEquipmentsQuantity = {};
 
 			this.initCollection().done(function(){
+
+				if(_.size(self.selectableClaimers)>0){
+					self.isResourceManager = true;
+				}
+
 
 				app.router.render(self);
 			});
