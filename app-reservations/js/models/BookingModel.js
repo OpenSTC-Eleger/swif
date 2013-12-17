@@ -63,12 +63,13 @@ define([
 		},
 		
 		getCreateAuthor: function(type){
+			var val = this.getAttribute('create_uid', false);
 			switch(type){
 				case 'id': 
-					return this.get('create_uid')[0];
+					return val[0];
 				break;
 				default:
-					return _.capitalize(this.get('create_uid')[1]);
+					return _.capitalize(val[1]);
 			}
 		},
 		

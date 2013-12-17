@@ -315,6 +315,8 @@ define([
 					var date_end = moment.utc(self.getTemplate().getEndDate()).tz(tzUser);
 					var length_resa = moment.duration({milliseconds:date_end - date_start});
 					var collectionLine = self.template.lines;
+					var deferreds = [];
+					var modelsToAdd = [];
 					_.each(data, function(date,i){
 						//fix to map date returned by JSON and date expected by moment
 						date.month -= 1;
@@ -339,10 +341,14 @@ define([
 								is_template:false
 							},{silent:true});
 							//manually perform update of lines data, take care keeping same pricing as set in template.lines
-							resaModel.updateLinesData({pricing:false}).done(function(){
-								self.addOccurrence(resaModel);
-							});
+							deferreds.push(resaModel.updateLinesData({pricing:false}));
+							modelsToAdd.push(resaModel);
 						}
+					});
+					$.when.apply(this, deferreds).done(function(){
+						_.each(modelsToAdd, function(resaModel){
+							self.addOccurrence(resaModel);
+						});
 					});
 					//DEBUG
 					console.log(self);
