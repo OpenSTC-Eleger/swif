@@ -24,7 +24,7 @@ define([
 
 		fields : ['id', 'name', 'checkin', 'note', 'checkout', 'partner_id', 'partner_order_id', 'partner_type',
 		          'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 
-		          'create_date', 'write_date', 'state','state_num', 'actions', 'write_uid', 
+		          'create_date', 'write_date', 'state','state_num', 'actions', 'create_uid', 'write_uid', 
 		          'resources', 'all_dispo', 'recurrence_id', 'is_template', 
 		          'pricelist_id', 'confirm_note', 'cancel_note', 'done_note', 'people_street','people_city', 'people_zip', 'whole_day'],
 	
@@ -61,6 +61,16 @@ define([
 		getName: function(){
 			return this.get('name');
 		},		
+		
+		getCreateAuthor: function(type){
+			switch(type){
+				case 'id': 
+					return this.get('create_uid')[0];
+				break;
+				default:
+					return _.capitalize(this.get('create_uid')[1]);
+			}
+		},
 	
 		getWriteAuthor: function(type){
 			switch(type){
