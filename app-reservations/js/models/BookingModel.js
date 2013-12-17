@@ -22,10 +22,10 @@ define([
 		
 		urlRoot: "/api/openresa/bookings",
 
-		fields : ['id', 'name', 'prod_id', 'checkin', 'note', 'checkout', 'partner_id', 'partner_order_id', 'partner_type',
+		fields : ['id', 'name', 'checkin', 'note', 'checkout', 'partner_id', 'partner_order_id', 'partner_type',
 		          'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 
-		          'create_date', 'write_date', 'state','state_num', 'actions', 'reservation_line', 'create_uid', 'write_uid', 
-		          'resource_ids', 'resource_names', 'resource_quantities',  'resources', 'all_dispo', 'recurrence_id', 'is_template', 
+		          'create_date', 'write_date', 'state','state_num', 'actions', 'create_uid', 'write_uid', 
+		          'resources', 'all_dispo', 'recurrence_id', 'is_template', 
 		          'pricelist_id', 'confirm_note', 'cancel_note', 'done_note', 'people_street','people_city', 'people_zip', 'whole_day'],
 	
 		searchable_fields: [
@@ -60,7 +60,7 @@ define([
 		
 		getName: function(){
 			return this.get('name');
-		},
+		},		
 		
 		getCreateAuthor: function(type){
 			var val = this.getAttribute('create_uid', false);
@@ -72,7 +72,7 @@ define([
 					return _.capitalize(val[1]);
 			}
 		},
-		
+	
 		getWriteAuthor: function(type){
 			switch(type){
 				case 'id': 
@@ -83,13 +83,13 @@ define([
 			}
 		},
 
-		getResources: function(type){
+		getResources: function(){
 			return this.get('resources');
 		},
 
 
 		getResourcesId : function(){
-			return this.get('resource_ids');
+			return _.pluck(this.getResources(), "id");
 		},
 
 		getDescription: function(){
@@ -97,44 +97,29 @@ define([
 		},	
 
 		getResourceNames : function(type){
-		
-			var bookingResourceNames = [];
-			
-			_.each(this.get('resource_names'), function(s){
-				switch (type){
-					case 'id': 
-						bookingResourceNames.push(s[0]);
-					break;
-					case 'json': 
-						bookingResourceNames.push({id: s[0], name: s[1]});
-					break;
-					default:
-						bookingResourceNames.push(s[1]);
-				}
+			var resourceNames = [];
+			_.each(this.getResources(), function(r) {
+				resourceNames.push(r.name);
 			});
-			
 			if(type == 'string'){
-				return _.toSentence(bookingResourceNames, ', ', ' '+app.lang.and+' ')
+				return _.toSentence(resourceNames, ', ', ' '+app.lang.and+' ')
 			}
 			else if(type == 'newline'){	
-				return _.join(":",_.toSentence(bookingResourceNames, ':\n\r ', ':\n\r '), " ");
+				return _.join(":",_.toSentence(resourceNames, ':\n\r ', ':\n\r '), " ");
 			}
 			else{
-				return bookingResourceNames;
+				return resourceNames;
 			}
 		},
 
-		getResourceQuantities: function(){
-			return this.get('resource_quantities');
-		},
 		
 		getResourceQuantitiesHtml : function(){
-			if( _.size( this.get('resource_quantities') ) == 0 ) return "";
+			if( _.size( this.getResources() ) == 0 ) return "";
 		
 			var bookingResourceQuantities = "<dl>";
 			
-			_.each(this.get('resource_quantities'), function(s){
-				bookingResourceQuantities += "<dt>" + s[0] + "</dt><dd>" + s[1] + "</dd>"					
+			_.each(this.getResources(), function(r){
+				bookingResourceQuantities += "<dt>" + r.name + "</dt><dd>" + r.tooltip + "</dd>"					
 			});		
 			
 			return bookingResourceQuantities + "</dl>"

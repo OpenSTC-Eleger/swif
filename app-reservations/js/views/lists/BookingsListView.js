@@ -45,7 +45,7 @@ define([
 			this.options = params;
 	
 	
-			this.initCollections().then(
+			this.initCollections().done(
 				function(){
 					app.router.render(self);
 					// Unbind & bind the collection //

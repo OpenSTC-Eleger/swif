@@ -92,7 +92,7 @@ define([
 
 
 			// Navigate to the page - Check if we are on a page //
-			if(_.include(_(this.currentRoute).strRightBack('/'), 'page')){
+			if(_.str.include(_(this.currentRoute).strRightBack('/'), 'page')){
 				navigateTo = _(this.currentRoute).strLeftBack('page')+'page'+page;
 			}
 			else{
