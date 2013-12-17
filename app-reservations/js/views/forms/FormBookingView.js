@@ -233,6 +233,18 @@ define(['app',
 		/** Display the view
 		*/
 		render: function(loader) {
+
+			var pageTitle = '';
+			if(_.isNull(this.model.getId())) { 
+				pageTitle = app.lang.resa.viewsTitles.newAskingBooking; 
+			}
+			else{ 
+				pageTitle = app.lang.resa.viewsTitles.reservationDetails +' '+ this.model.getId(); 
+			} 
+
+			// Change the page title //
+			app.router.setPageTitle(pageTitle);
+
 	
 			var self = this;
 			// Retrieve the template //
@@ -257,6 +269,7 @@ define(['app',
 				
 				var template = _.template(templateData, {
 					lang   		: app.lang,
+					pageTitle   : pageTitle,
 					booking		: self.model,
 					loader 		: loader,
 					startDate	: startDate,

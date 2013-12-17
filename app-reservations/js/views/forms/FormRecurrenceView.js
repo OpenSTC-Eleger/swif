@@ -86,7 +86,7 @@ define(['app',
 		/** Display the view
 		*/
 		render: function(loader) {
-	
+
 			var self = this;
 			// Retrieve the template //
 			$.get(app.menus.openresa + "/templates/" + self.templateHTML + ".html", function(templateData){		

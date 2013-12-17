@@ -63,12 +63,13 @@ define([
 		},		
 		
 		getCreateAuthor: function(type){
+			var val = this.getAttribute('create_uid', false);
 			switch(type){
 				case 'id': 
-					return this.get('create_uid')[0];
+					return val[0];
 				break;
 				default:
-					return _.capitalize(this.get('create_uid')[1]);
+					return _.capitalize(val[1]);
 			}
 		},
 	
@@ -87,8 +88,17 @@ define([
 		},
 
 
+		isAllDay: function(){
+			return this.get('whole_day');
+		},
+
+		setAllDay: function(value){
+			this.set({whole_day: value});
+		},
+
+
 		getResourcesId : function(){
-			return _.pluck(this.getResources(), "id");
+			return _.pluck(this.getResources(), 'id');
 		},
 
 		getDescription: function(){
@@ -114,13 +124,13 @@ define([
 		
 		getResourceQuantitiesHtml : function(){
 			if( _.size( this.getResources() ) == 0 ) return "";
-		
+
 			var bookingResourceQuantities = "<dl>";
-			
+
 			_.each(this.getResources(), function(r){
 				bookingResourceQuantities += "<dt>" + r.name + "</dt><dd>" + r.tooltip + "</dd>"					
-			});		
-			
+			});
+
 			return bookingResourceQuantities + "</dl>"
 	
 		},
@@ -234,6 +244,8 @@ define([
 					break;
 					case 'fromNow': 
 						return checkinDate.fromNow();
+					case 'string': 
+						return checkinDate.format('YYYY-MM-DD HH:mm');
 					default:
 						return checkin;
 					break;
@@ -264,6 +276,8 @@ define([
 					case 'fromNow': 
 						return checkoutDate.fromNow();
 					break;
+					case 'string': 
+						return checkoutDate.format('YYYY-MM-DD HH:mm');;
 					default:
 						return checkout;
 					break;

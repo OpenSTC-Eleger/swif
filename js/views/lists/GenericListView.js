@@ -198,7 +198,7 @@ define([
 
 			_.each(forbiddenChars, function(itemChar, index){
 
-				if(_.include(query, itemChar)){
+				if(_.str.include(query, itemChar)){
 					result = false;
 				}
 			})

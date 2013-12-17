@@ -41,7 +41,7 @@ define('appHelpers', [
 		decimalNumberToTime: function(decimalNumber){
 
 			// Check if the number is decimal //
-			if(_.include(decimalNumber, '.')){
+			if(_.str.include(decimalNumber, '.')){
 				var minutes = _.lpad(((_.rpad(_(decimalNumber).strRight('.'), 2, '0') / 100) * 60), 2, '0');
 				var hour = _(decimalNumber).strLeft('.');
 

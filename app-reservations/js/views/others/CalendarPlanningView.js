@@ -169,23 +169,33 @@ define([
 					content += '<li><i class="fa-li fa fa-clock-o"></i>'+moment(event.start).format(dateFormat)+' - '+moment(event.end).format(dateFormat)+'</li>';
 
 
-					// Is Citizen //
-					if(event.info.isCitizen == true){
-						content += '<li><i class="fa-li fa fa-user"></i>'+app.lang.citizen+' : '+event.info.citizenName+'<li>';
+					if(!_.isUndefined(event.info)){
+						
+						// Is Citizen //
+						if(event.info.isCitizen == true){
+							content += '<li><i class="fa-li fa fa-user"></i>'+app.lang.citizen+' : '+event.info.citizenName+'<li>';
+						}
+						else{
+							content += '<li><i class="fa-li fa fa-user"></i>'+event.info.claimerContact+'<li>';	
+						}
+
+						// Note //
+						if(!_.isUndefined(event.info.note)){
+							content += '<p>'+event.info.note+'</p>';
+						}
+
+						var title = event.info.title;	
 					}
 					else{
-						content += '<li><i class="fa-li fa fa-user"></i>'+event.info.claimerContact+'<li>';	
+						var title = '';
 					}
 
 					content += '</ul>';
 
-					// Note //
-					if(!_.isUndefined(event.info.note)){
-						content += '<p>'+event.info.note+'</p>';
-					}
+
 
 					// Popover //
-					element.popover( {trigger: 'hover', placement: 'left', container: '#calendarManager', html: true, title: event.info.title, content: content} );
+					element.popover( {trigger: 'hover', placement: 'left', container: '#calendarManager', html: true, title: title, content: content} );
 				},
 
 
@@ -195,6 +205,8 @@ define([
 					var booking = new BookingModel();
 					booking.setStartDate(moment(startDate).utc().format('YYYY-MM-DD HH:mm:ss'));
 					booking.setEndDate(moment(endDate).utc().format('YYYY-MM-DD HH:mm:ss'));
+					booking.setAllDay(allDay);
+
 
 					// If a claimer is set //
 					if(app.views.sideBarPlanningSelectResourcesView.selectableClaimers.cpt > 0){
@@ -232,10 +244,14 @@ define([
 	    	    */
 	    	    eventClick: function(fcEvent, jsEvent, view) {
 
-					app.views.ModalReservationDetailsView = new ModalReservationDetailsView({
-						el      : '#modalReservationDetails',
-						modelId : fcEvent.id
-					});
+					// If the user is a resource manager //
+					if(app.views.sideBarPlanningSelectResourcesView.isResourceManager){
+
+						app.views.ModalReservationDetailsView = new ModalReservationDetailsView({
+							el      : '#modalReservationDetails',
+							modelId : fcEvent.id
+						});
+					}
 	    		}
 			});
 
@@ -256,15 +272,15 @@ define([
 			var fetchParams = {
 				silent  : true,
 				data : {
-					fields : ['name', 'checkin', 'checkout', 'note', 'resource_ids', 'is_citizen', 'partner_id', 'people_name', 'recurrence_id']
+					fields : ['name', 'checkin', 'checkout', 'note', 'resources', 'is_citizen', 'partner_id', 'people_name', 'recurrence_id', 'whole_day']
 				}
 			};
 
 
 			// Select the period of time //
 			var domain = [
-				{ 'field' : 'checkin', 'operator' : '>', 'value' : moment(start).format('YYYY-MM-DD HH:mm:ss') },
-				{ 'field' : 'checkout', 'operator' : '<', 'value' : moment(end).format('YYYY-MM-DD HH:mm:ss')  },
+				{ 'field' : 'checkin', 'operator' : '>=', 'value' : moment.utc(moment(start)).format('YYYY-MM-DD HH:mm:ss') },
+				{ 'field' : 'checkin', 'operator' : '>=', 'value' : moment.utc(moment(start)).format('YYYY-MM-DD HH:mm:ss') },
 				{ 'field' : 'reservation_line.reserve_product.id', 'operator' : 'in', 'value' : selectedResources},
 				{ 'field' : 'state', 'operator' : 'in', 'value' : [BookingModel.status.confirm.key, BookingModel.status.done.key]}
 			]
@@ -344,21 +360,33 @@ define([
 					var equipments = ''
 				}
 
-				var evt = {
-					id       : model.getId(),
-					title    : recurrence + model.getName() + equipments,
-					start    : model.getStartDate(),
-					end      : model.getEndDate(),
-					color    : color,
-					textColor: textColor,
-					allDay   : false,
-					className: 'resa-'+resourceColorId,
-					info     : {
-						title          : model.getName(),
-						note           : model.getNote(),
-						isCitizen      : model.fromCitizen(),
-						citizenName    : model.getCitizenName(),
-						claimerContact : model.getClaimer()
+				if(app.views.sideBarPlanningSelectResourcesView.isResourceManager){
+					var evt = {
+						id       : model.getId(),
+						title    : recurrence + model.getName() + equipments,
+						start    : model.getStartDate('string'),
+						end      : model.getEndDate('string'),
+						color    : color,
+						textColor: textColor,
+						allDay   : model.isAllDay(),
+						className: 'resa-'+resourceColorId,
+						info     : {
+							title          : model.getName(),
+							note           : model.getNote(),
+							isCitizen      : model.fromCitizen(),
+							citizenName    : model.getCitizenName(),
+							claimerContact : model.getClaimer()
+						}
+					}
+				}
+				else{
+					var evt = {
+						id       : model.getId(),
+						start    : model.getStartDate('string'),
+						end      : model.getEndDate('string'),
+						color    : color,
+						textColor: textColor,
+						allDay   : model.isAllDay(),
 					}
 				}
 

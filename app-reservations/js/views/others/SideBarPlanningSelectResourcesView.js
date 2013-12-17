@@ -31,6 +31,8 @@ define([
 		
 		selectableClaimers    : new ClaimersCollection(),
 
+		isResourceManager     : false,
+
 	
 	
 		// The DOM events //
@@ -43,7 +45,7 @@ define([
 
 			'click #actionsPlaceList a[data-action="select"]'      : 'actionsPlaceSelectAll',
 			'click #actionsPlaceList a[data-action="unselect"]'    : 'actionsPlaceUnSelectAll',
-			//'click #actionsPlaceList a[data-action="toggle"]'      : 'actionsPlaceSelectToggle',
+			'click #actionsPlaceList a[data-action="toggle"]'      : 'actionsPlaceSelectToggle',
 
 
 			'click #bookablesPlaces a'                             : 'selectPlace',
@@ -70,6 +72,11 @@ define([
 			this.selectedEquipmentsQuantity = {};
 
 			this.initCollection().done(function(){
+
+				if(_.size(self.selectableClaimers)>0){
+					self.isResourceManager = true;
+				}
+
 
 				app.router.render(self);
 			});
@@ -371,7 +378,7 @@ define([
 			 
 				_.each(listSearchable.find('li'), function(a){
 	
-					if(!_.include($(a).data('name'), search)){
+					if(!_.str.include($(a).data('name'), search)){
 						$(a).fadeOut('fast').addClass('thide');
 					}
 					else{
