@@ -136,7 +136,7 @@ requirejs.config({
 		modalEquipmentView      : 'js/views/modals/ModalEquipmentView',
 		modalClaimerTypeView    : 'js/views/modals/ModalClaimerTypeView'
 
-    },
+	},
 
 	packages: [
 		{
@@ -161,7 +161,6 @@ requirejs.config({
 			init : function(JQuery, _, UnderscoreString){
 				_.str = UnderscoreString;
 				_.mixin(_.str.exports());
-				//_.str.include('Underscore.string', 'string');
 			}
 		},
 		'nprogress': {

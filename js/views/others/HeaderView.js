@@ -34,8 +34,9 @@ define([
 			var self = this;
 
 
-			var currentModule = _(Backbone.history.fragment).strLeft('/');
-			var currentUrl    = _(_(Backbone.history.fragment).strRight('/')).strLeft('/');
+			var currentModule = _.str.strLeft(Backbone.history.fragment, '/');
+			var currentUrl    = _.strLeft(_.strRight(Backbone.history.fragment, '/'), '/');
+
 
 			if(currentUrl == app.config.menus.openbase){
 				currentUrl = _(_(_(Backbone.history.fragment).strRight('/')).strRight('/')).strLeft('/');

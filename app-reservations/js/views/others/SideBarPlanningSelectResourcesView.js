@@ -43,7 +43,7 @@ define([
 
 			'click #actionsPlaceList a[data-action="select"]'      : 'actionsPlaceSelectAll',
 			'click #actionsPlaceList a[data-action="unselect"]'    : 'actionsPlaceUnSelectAll',
-			//'click #actionsPlaceList a[data-action="toggle"]'      : 'actionsPlaceSelectToggle',
+			'click #actionsPlaceList a[data-action="toggle"]'      : 'actionsPlaceSelectToggle',
 
 
 			'click #bookablesPlaces a'                             : 'selectPlace',
@@ -371,7 +371,7 @@ define([
 			 
 				_.each(listSearchable.find('li'), function(a){
 	
-					if(!_.include($(a).data('name'), search)){
+					if(!_.str.include($(a).data('name'), search)){
 						$(a).fadeOut('fast').addClass('thide');
 					}
 					else{

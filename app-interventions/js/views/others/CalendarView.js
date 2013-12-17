@@ -169,7 +169,7 @@ define([
 			var link = $(e.target);
 			var linkId = link.attr('id')	
 			
-			this.teamMode = _.include( _(linkId).strLeft('_').toLowerCase(),"officer" )?false:true;			
+			this.teamMode = _.str.include( _(linkId).strLeft('_').toLowerCase(),"officer" )?false:true;			
 			var calendarName = _(link.attr('href')).strRightBack('/')
 	
 			if(this.teamMode) {
@@ -586,7 +586,7 @@ define([
 			 
 				_.each($('#listAgents li'), function(a){
 	
-					if(!_.include($(a).data('name'), search)){
+					if(!_.str.include($(a).data('name'), search)){
 						$(a).fadeOut('fast').addClass('thide');
 					}
 					else{
@@ -598,7 +598,7 @@ define([
 	
 				_.each($('#listTeams li'), function(a){
 	
-					if(!_.include($(a).data('name'), search)){
+					if(!_.str.include($(a).data('name'), search)){
 						$(a).fadeOut('fast').addClass('thide');
 					}
 					else{
