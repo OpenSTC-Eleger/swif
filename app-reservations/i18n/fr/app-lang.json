@@ -72,6 +72,7 @@
 		"viewsTitles" : {
 			"bookingsList"						: "Suivi des réservations",
 			"newBooking"		 				: "Nouvelle réservation",
+			"newAskingBooking"		 				: "Demande de réservation",
 			"confirmAllBookings" 			 	: "Validation de la récurrence",
 			"cancelAllBookings" 			 	: "Annulation de la récurrence",
 			"doneAllBookings" 			 		: "Clôture de la récurrence",
@@ -82,8 +83,7 @@
 			"cancelBookingNote" 			 	: "Motif",
 			"doneBookingNote" 			 		: "Etat des lieux",
 			"reservationPlanning"				: "Planning des réservations",
-			"reservationDetails"				: "Détails de la réservations"
-	
+			"reservationDetails"				: "Détails de la réservations n°"
 		}
 	}
 }
