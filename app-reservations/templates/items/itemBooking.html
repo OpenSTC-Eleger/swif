@@ -1,4 +1,5 @@
 <td><%= booking.id %></td>
+
 <td>
 	<% if ( booking.getRecurrence('id') ) { %>
 	<a href="#" class="displayOccurences" data-toggle="tooltip" data-original-title="Afficher les occurences" data-action="reccurent"><i class="fa fa-repeat" data-action="reccurent"></i></a>&nbsp;
@@ -21,14 +22,18 @@
         <% } %>
 	</p>
 </td>
+
 <td>
-<span data-toggle="popover" data-content="<%=booking.getResourceQuantitiesHtml()%>"
-	data-html="true" data-placement="left">
-	<%= booking.getResourceNames('string') %>
-</span>
+	<span data-toggle="popover" data-content="<%=booking.getResourceQuantitiesHtml()%>"
+		data-html="true" data-placement="left">
+		<%= booking.getResourceNames('string') %>
+	</span>
 </td>
+
 <td><%= booking.getStartDate('human') %></td>
+
 <td><%= booking.getEndDate('human') %></td>
+
 <td>
 	<span 
 		data-toggle="tooltip" 
@@ -37,9 +42,11 @@
 			<%= booking.fromCitizen() ? booking.getCitizenName() : booking.getClaimer() %>
 	</span>
 </td>
+
 <td>
-<span data-toggle="tooltip" data-original-title="<%= booking.getCreateDate('fromNow') %>"> <%= booking.getCreateDate('human') %></span>
+	<span data-toggle="tooltip" data-original-title="<%= booking.getCreateDate('fromNow') %>"> <%= booking.getCreateDate('human') %></span>
 </td>
+
 <!-- Check the state of the booking -->
 <td>
 	<span 
@@ -51,6 +58,7 @@
 		<%= BookingModel.status[booking.getState()].translation %>
 	</span>
 </td>
+
 <td class="text-center">
 	<!-- Check if the user can make action on the request -->
 	<% if(!_.isEmpty(booking.getActions())){ 
@@ -114,11 +122,10 @@
 
 			%>
 			<!-- Main action button -->
-			<button class="actions btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline" id="<%= mainAction %>">
-				<i class="fa <%= mainActionIcon %> fa-fw fa-lg <%= _.capitalize(mainAction) %>"></i>
+			<button class="actions btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline" data-action="<%= mainAction %>">
+				<i class="fa <%= mainActionIcon %> fa-fw fa-lg <%= _.capitalize(mainAction) %>" data-action="<%= mainAction %>"></i>
 			</button>
 
-			<% console.log(actions); %>
 
 			<!-- Dropdown button action -->
 			<% if( _.size(actions)>0 ) { %>
@@ -131,12 +138,13 @@
 			<ul class="dropdown-menu pull-right text-left">
 				<% _.each(actions, function(action){ %>
 					<li>
-						<a href="#reservations" class="actions" id="<%= BookingModel.actions[action].key %>">
-							<i class="fa <%= BookingModel.actions[action].icon %> fa-fw"></i>&nbsp;<%= _.capitalize(BookingModel.actions[action].translation) %>
+						<a href="#reservations" class="actions" data-action="<%= BookingModel.actions[action].key %>">
+							<i class="fa <%= BookingModel.actions[action].icon %> fa-fw" data-action="<%= BookingModel.actions[action].key %>"></i>&nbsp;<%= _.capitalize(BookingModel.actions[action].translation) %>
 						</a>
 					</li>
 				<% }); %>
 			</ul>
+
 		</div>
 	<% } %>
 </td>
