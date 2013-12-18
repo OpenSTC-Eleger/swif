@@ -146,7 +146,7 @@ define([
 					// Get the selected resources //
 					var selectedResources = _.union(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, app.views.sideBarPlanningSelectResourcesView.selectedEquipments);
 
-	    			if(!_.isEmpty(selectedResources)){
+					if(!_.isEmpty(selectedResources)){
 
 						self.fetchReservations(start, end, selectedResources)
 						.done(function(){
@@ -170,7 +170,7 @@ define([
 
 
 					if(!_.isUndefined(event.info)){
-						
+
 						// Is Citizen //
 						if(event.info.isCitizen == true){
 							content += '<li><i class="fa-li fa fa-user"></i>'+app.lang.citizen+' : '+event.info.citizenName+'<li>';
@@ -212,7 +212,7 @@ define([
 					if(app.views.sideBarPlanningSelectResourcesView.selectableClaimers.cpt > 0){
 						booking.setClaimer([app.views.advancedSelectBoxClaimerView.getSelectedItem(), app.views.advancedSelectBoxClaimerView.getSelectedText()]);
 					}
-					
+
 
 					//for each bookable selected, add a new bookingLine
 					_.each(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, function(place_id){
@@ -230,7 +230,8 @@ define([
 						line.set({reserve_product:bookable, qte_reserves:quantity});
 						booking.addLine(line);
 					});
-					
+
+					app.router.navigate(_.strLeft(app.routes.formReservation.url, '('), {trigger: false, replace: true});
 
 					// Redirect to form //
 					app.views.formBooking = new FormBookingView({
@@ -245,7 +246,7 @@ define([
 	    	    eventClick: function(fcEvent, jsEvent, view) {
 
 					// If the user is a resource manager //
-					if(app.views.sideBarPlanningSelectResourcesView.isResourceManager){
+					if(app.models.user.isResaManager()){
 
 						app.views.ModalReservationDetailsView = new ModalReservationDetailsView({
 							el      : '#modalReservationDetails',
@@ -360,7 +361,7 @@ define([
 					var equipments = ''
 				}
 
-				if(app.views.sideBarPlanningSelectResourcesView.isResourceManager){
+				if(app.models.user.isResaManager()){
 					var evt = {
 						id       : model.getId(),
 						title    : recurrence + model.getName() + equipments,
@@ -382,6 +383,7 @@ define([
 				else{
 					var evt = {
 						id       : model.getId(),
+						title    : equipments,
 						start    : model.getStartDate('string'),
 						end      : model.getEndDate('string'),
 						color    : color,

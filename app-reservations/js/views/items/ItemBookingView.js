@@ -120,13 +120,15 @@ define([
 		/** Display Modal form to valid an Booking Request
 		*/
 		modalUpdateBooking: function(e){
-			e.preventDefault(); 
-			//e.stopPropagation();
+			e.preventDefault();
+
+			var state = $(e.target).data('action');
+			
 	
 			app.views.modalUpdateBookingView = new ModalUpdateBookingView({
 				el      : '#modalUpdateBooking',
 				model   : this.model,
-				state	: e.currentTarget.id
+				state	: state
 			});
 		},
 		
