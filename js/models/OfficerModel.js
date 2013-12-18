@@ -22,6 +22,7 @@ define([
 			id       :null,
 			isDST    : false,
 			isManager: false,
+			isResaManager: false
 		},
 
 	   

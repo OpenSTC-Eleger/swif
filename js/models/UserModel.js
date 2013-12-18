@@ -20,7 +20,7 @@ define([
 			uid             : null,
 			authToken       : null,
 			isDST			: false,
-			isManager		: false,
+			isManager		: false
 		},
 
 		initialize: function(){

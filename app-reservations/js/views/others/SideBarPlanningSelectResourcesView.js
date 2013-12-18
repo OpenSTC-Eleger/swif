@@ -31,8 +31,6 @@ define([
 		
 		selectableClaimers    : new ClaimersCollection(),
 
-		isResourceManager     : false,
-
 	
 	
 		// The DOM events //
@@ -72,12 +70,6 @@ define([
 			this.selectedEquipmentsQuantity = {};
 
 			this.initCollection().done(function(){
-
-				if(_.size(self.selectableClaimers)>0){
-					self.isResourceManager = true;
-				}
-
-
 				app.router.render(self);
 			});
 		},
@@ -97,13 +89,13 @@ define([
 					lang                		: app.lang,
 					selectablePlaces    		: self.selectablePlaces,
 					selectableEquipments		: self.selectableEquipments,
-					displayClaimersSelectBox	: self.selectableClaimers.cpt>0 ? "" : "hide"
+					displayClaimersSelectBox	: app.models.user.isResaManager() ? "" : "hide"
 				});
 	
 				$(self.el).html(template);
 	
 				// Advance Select List View //
-				if( self.selectableClaimers.cpt > 0 ) {
+				if(app.models.user.isResaManager()) {
 					app.views.advancedSelectBoxClaimerView = new AdvancedSelectBoxView({el: $('#claimersOrganization'), collection: ClaimersCollection.prototype })
 					app.views.advancedSelectBoxClaimerView.render();
 				}
@@ -462,7 +454,7 @@ define([
 
 
 			// Fetch the collections //
-			return $.when(this.selectablePlaces.fetch(fetchParamsPlaces), this.selectableEquipments.fetch(fetchParamsEquipments), this.selectableClaimers.count())
+			return $.when(this.selectablePlaces.fetch(fetchParamsPlaces), this.selectableEquipments.fetch(fetchParamsEquipments))
 			.fail(function(e){
 				console.log(e);
 			});
