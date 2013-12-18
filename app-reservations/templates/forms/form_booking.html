@@ -27,7 +27,7 @@
 	
 				<div class="col-sm-9">
 					<input id="bookingPartner" class="select2" data-placeholder="<%= lang.actions.selectAClaimer %>"
-					<%= readonly ? 'disabled' : ''%>/>
+					<%= readonly || !user.isResaManager() ? 'disabled' : ''%>/>
 				</div>
 			</div>
 
@@ -37,7 +37,7 @@
 	
 				<div class="col-sm-9">
 					<input id="bookingContact" class="select2" data-placeholder="<%= lang.actions.selectAContact %>" 
-					<%= readonly ? 'disabled' : ''%>/>
+					<%= readonly || !user.isResaManager()? 'disabled' : ''%>/>
 				</div>
 			</div>
 			<!-- Citizen infos -->

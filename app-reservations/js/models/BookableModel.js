@@ -11,7 +11,7 @@ define([
 		
 		urlRoot: "/api/openresa/bookables",
 		
-		fields : ['id', 'name', 'product_image', 'qty_available', 'type_prod', 'color', 'categ_id'],
+		fields : ['id', 'name', 'product_image', 'qty_available', 'type_prod', 'color', 'categ_id', 'block_booking'],
 	
 		searchable_fields: [
 			{
@@ -28,6 +28,19 @@ define([
 			}
 		],
 	
+		//method to retrieve attribute with standard return form
+		getAttribute: function(key,default_value){
+			var val = this.get(key);
+			if(_.isUndefined(default_value)){
+				default_value = false;
+			}
+			if(!_.isUndefined(val) && val != '' && val != false && val != null){
+				return val;
+			}
+			else{
+				return default_value;
+			}
+		},
 		
 		getQtyAvailable: function(){
 			return this.get('qty_available');

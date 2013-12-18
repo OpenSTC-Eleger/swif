@@ -216,7 +216,7 @@ define([
 		getAllDispo: function(){
 			var ret = true;
 			_.each(this.lines.models, function(line,i){
-				if(!line.getAvailable()){
+				if(!line.getAvailable() && line.bookable.getAttribute('block_booking',false)){
 					ret = false;
 				}
 			});

@@ -2,7 +2,6 @@ define(['app',
         'appHelpers', 
         
         'bookingLineModel',
-        'bookableModel',
         'bookingLinesCollection',
         'bookablesCollection',
         'claimersCollection',
@@ -16,7 +15,7 @@ define(['app',
         'bsTimepicker',
         'bsDatepicker'
 
-], function (app, AppHelpers, BookingLineModel, BookableModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, AdvancedSelectBoxView, moment) {
+], function (app, AppHelpers, BookingLineModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, AdvancedSelectBoxView, moment) {
 
     'use strict';
 
@@ -60,14 +59,8 @@ define(['app',
 	
 			// When the model are destroy //
 			this.listenTo(this.model,'destroy', this.destroy);
-			
-			//I store bookableModel (and base64 image value) on object directly
-			//TODO: set a default picture if no one is found
-			this.deferredBookable = $.Deferred();
-			this.bookableModel = new BookableModel({id:this.model.getResource('id')});
-			this.deferredBookable = this.bookableModel.fetch({silent:true});
+
 		},
-	
 	
 		/** When the model is updated //
 		*/
@@ -78,8 +71,6 @@ define(['app',
 			//app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
 		},
 	
-	
-	
 		/** When the model is destroy //
 		*/
 		destroy: function(e){
@@ -89,7 +80,6 @@ define(['app',
 		
 		/**Compute popover value
 		 */
-
 		popoverValue: function(){
 			if(!this.model.getAvailable()){
 				var qty = parseInt(this.model.getAvailableQtity());
@@ -114,23 +104,19 @@ define(['app',
 			
 			// Retrieve the template // 
 			$.get(app.menus.openresa + this.templateHTML, function(templateData){
-				//we wait for bookable fetch finished
-				self.deferredBookable.done(function(){
-					var template = _.template(templateData, {
-						lang	: app.lang,
-						line	: self.model,
-						bookable: self.bookableModel,
-						linesStat: BookingLineModel.status,
-					});
-	
-					$(self.el).html(template);
-					self.popoverValue();
-					// Set the Tooltip //
-					$('*[data-toggle="tooltip"]').tooltip();
-				})
-				.fail(function(e){
-					console.log(e);
+
+				var template = _.template(templateData, {
+					lang	: app.lang,
+					line	: self.model,
+					bookable: self.model.bookable,
+					linesStat: BookingLineModel.status,
+					user	: app.models.user
 				});
+
+				$(self.el).html(template);
+				self.popoverValue();
+				// Set the Tooltip //
+				$('*[data-toggle="tooltip"]').tooltip();
 	
 			});
 	

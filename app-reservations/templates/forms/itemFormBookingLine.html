@@ -20,7 +20,8 @@
 
 <!-- Booking Line pricing-->
 <td>
-	<input type="number" id="bookingLinePricing" name="bookingLinePricing" placeholder="" value="<%= line.getPricing()%>" min="0" required="required"/>
+	<input type="number" id="bookingLinePricing" name="bookingLinePricing" placeholder=""
+	 value="<%= line.getPricing()%>" min="0" <%= user.isResaManager() ? '' : 'disabled'%>/>
 	<a href="#" class="removeLine" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">
 		<i class="fa fa-trash-o fa-lg">&nbsp;</i>
 	</a>

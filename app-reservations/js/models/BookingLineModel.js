@@ -162,6 +162,7 @@ define([
 		destroyOnBackend: function(){
 			this.getParentBookingModel().lines.remove(this);
 			this.getParentBookingModel().linesToRemove.add(this.clone().off());
+			this.bookable = null;
 			this.set({id:null},{silent:true});
 			this.destroy();
 		},
