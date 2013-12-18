@@ -19,7 +19,7 @@ define([
 		// The DOM events //
 		events: function() {
 			return _.defaults({
-			'submit #formCancelBooking'          : 'cancelBooking',
+				'submit #formCancelBooking'          : 'cancelBooking',
 			},
 			GenericModalView.prototype.events);
 			

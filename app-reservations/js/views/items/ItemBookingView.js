@@ -39,7 +39,7 @@ define([
 			this.model.off();
 	
 			// When the model are updated //
-			this.listenTo(this.model, 'change', this.change);
+			this.listenTo(this.model, 'change', this.change);			
 		},
 	
 	
@@ -48,8 +48,15 @@ define([
 		*/
 		change: function(model){
 			var self = this;
-			
-			self.render();
+			if( !_.isBlank(model.getDeletedAt()) ) {
+				AppHelpers.highlight($(this.el)).done(function(){
+					self.remove();
+					//app.views.bookingsListView.partialRender();
+	
+				});			
+			}
+			else
+				self.render();
 				
 			// Highlight the Row and recalculate the className //
 			//AppHelpers.highlight($(self.el)).done(function(){});
@@ -57,7 +64,7 @@ define([
 			//app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
 	
 			// Partial Render //
-			app.views.bookingsListView.partialRender(model);			
+			app.views.bookingsListView.partialRender();			
 		},
 	
 	
@@ -105,6 +112,7 @@ define([
 		displayOccurences: function(e){
 			e.preventDefault();
 			app.views.bookingsListView.options.recurrence = this.model.getRecurrence('id'); 
+			delete app.views.bookingsListView.options.page;
 			app.router.navigate(app.views.bookingsListView.urlBuilder(), {trigger: true, replace: true});			
 		},
 		
