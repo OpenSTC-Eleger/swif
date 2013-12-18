@@ -174,7 +174,7 @@ define(['app',
 	    	var elt = $('#bookingAddRecurrence');
 	    	var isHidden = this.recurrence != null && !this.isTemplate();
 	    	
-	    	if(!isHidden && this.isEditable() && this.model.lines.length > 0 && parseInt(this.claimers.cpt) > 0){
+	    	if(!isHidden && this.isEditable() && this.model.lines.length > 0){
     			elt.bootstrapSwitch('setActive',true);
     		}
 	    	else{
