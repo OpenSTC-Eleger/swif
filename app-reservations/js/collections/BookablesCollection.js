@@ -16,7 +16,7 @@ define([
 
 		url   : "/api/openresa/bookables",
 		
-		fields : ['id', 'name', 'product_image', 'qty_available', 'type_prod', 'color', 'categ_id'],
+		fields : ['id', 'name', 'product_image', 'qty_available', 'type_prod', 'color', 'categ_id', 'block_booking'],
 	
 	});
 

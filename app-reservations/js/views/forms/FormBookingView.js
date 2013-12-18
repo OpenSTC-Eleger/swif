@@ -5,6 +5,7 @@ define(['app',
         'bookingModel',
         'bookingLineModel',
         'bookingRecurrenceModel',
+        'bookableModel',
         'bookingLinesCollection',
         'bookablesCollection',
         'claimersCollection',
@@ -20,7 +21,7 @@ define(['app',
         'bsDatepicker',
         'bsSwitch'
 
-], function (app, AppHelpers, BookingModel, BookingLineModel, BookingRecurrenceModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, ItemFormBookingLineView, FormRecurrenceView, AdvancedSelectBoxView, moment) {
+], function (app, AppHelpers, BookingModel, BookingLineModel, BookingRecurrenceModel, BookableModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, ItemFormBookingLineView, FormRecurrenceView, AdvancedSelectBoxView, moment) {
 
     'use strict';
 
@@ -107,39 +108,33 @@ define(['app',
 			if(_.isUndefined(this.model)){
 				this.model = new BookingModel();
 			}
-			/*TODO:(remove this calculation by properer one)
-			 *check if user is claimer or manager (to know if he can see or not 'Claimer' and 'Contact' selectBoxes,
-			 *if user can not fetch any partner, means that he has only claimer rights
-			 */
+
 			this.claimers = new ClaimersCollection();
-			this.isClaimer = false;
-			this.claimers.count().always(function(){
-				self.isClaimer = parseInt(self.claimers.cpt) == 0;
-				//fill the 2 selectBoxes with service_id.partner_id values
-				var ret = {};
-				
-				//if view is called with a filled model (new booking from calendar)
-				if(_.isUndefined(self.options.id)){
-					if(self.isClaimer){
-						app.models.user.fetchContactAndClaimer(ret).done(function(){
-							self.model.setClaimer([ret.claimer.id, ret.claimer.name]);
-							self.model.setClaimerContact([ret.contact.id, ret.contact.name]);
-							self.initializeWithNonPersistedModel();
-						});
-					}
-					else{
+			this.isClaimer = !app.models.user.isResaManager();
+			//fill the 2 selectBoxes with service_id.partner_id values
+			var ret = {};
+			
+			//if view is called with a filled model (new booking from calendar or new form 'from scratch')
+			if(_.isUndefined(self.options.id)){
+				if(self.isClaimer){
+					app.models.user.fetchContactAndClaimer(ret).done(function(){
+						self.model.setClaimer([ret.claimer.id, ret.claimer.name]);
+						self.model.setClaimerContact([ret.contact.id, ret.contact.name]);
 						self.initializeWithNonPersistedModel();
-					}
+					});
 				}
-				//else, init view fetching model from db
 				else{
-					self.initializeWithId();
+					self.initializeWithNonPersistedModel();
 				}
-				
-				self.listenTo(self.model, 'change', self.updateDisplayDoms);
-				self.listenTo(self.model.lines, 'add', self.updateDisplayDoms);
-				self.listenTo(self.model.linesToRemove, 'add', self.updateDisplayDoms);
-			});
+			}
+			//else, init view fetching model from db
+			else{
+				self.initializeWithId();
+			}
+			
+			self.listenTo(self.model, 'change', self.updateDisplayDoms);
+			self.listenTo(self.model.lines, 'add', self.updateDisplayDoms);
+			self.listenTo(self.model.linesToRemove, 'add', self.updateDisplayDoms);
 		},
 		
 		//compute if form can be modified or not
@@ -164,7 +159,9 @@ define(['app',
 	    //compute display of button save (readonly or visible)
 	    updateDisplaySave: function(){
 	    	var elt = $('#saveFormBooking');
-	    	if(this.isEditable() && this.model.getStartDate() != '' && this.model.getEndDate() != '' && this.model.getClaimer('id') != false && this.model.lines.length > 0){
+	    	if(this.isEditable() && this.model.getStartDate() != '' 
+	    		&& this.model.getEndDate() != '' && this.model.getClaimer('id') != false 
+	    		&& this.model.lines.length > 0 && this.model.getAllDispo()){
 	    		elt.removeAttr('disabled');
 	    	}
 	    	else{
@@ -173,17 +170,17 @@ define(['app',
 	    },
 	    
 	    //compute display of button addRecurrence (readonly or visible)
-//	    updateDisplayAddRecurrence: function(){
-//	    	var elt = $('#bookingAddRecurrence');
-//	    	var isHidden = this.recurrence != null && !this.isTemplate();
-//	    	
-//	    	if(!isHidden && this.isEditable() && this.model.lines.length > 0 && parseInt(this.claimers.cpt) > 0){
-//    			elt.bootstrapSwitch('setActive',true);
-//    		}
-//	    	else{
-//	    		elt.bootstrapSwitch('setActive',false);
-//	    	}
-//	    },
+	    updateDisplayAddRecurrence: function(){
+	    	var elt = $('#bookingAddRecurrence');
+	    	var isHidden = this.recurrence != null && !this.isTemplate();
+	    	
+	    	if(!isHidden && this.isEditable() && this.model.lines.length > 0){
+    			elt.bootstrapSwitch('setActive',true);
+    		}
+	    	else{
+	    		elt.bootstrapSwitch('setActive',false);
+	    	}
+	    },
 	    
 	    updateDisplayCitizenInfos: function(){
 	    	
@@ -206,7 +203,7 @@ define(['app',
 	    //main method to compute all conditionnal display of form inputs
 	    updateDisplayDoms: function(model){
 	    	this.updateDisplayAddBookable();
-	    	//this.updateDisplayAddRecurrence();
+	    	this.updateDisplayAddRecurrence();
 	    	this.updateDisplaySave();
 	    	this.updateDisplayCitizenInfos();
 	    },
@@ -276,7 +273,8 @@ define(['app',
 					startHour	: startHour,
 					endDate 	: endDate,
 					endHour		: endHour,
-					readonly	: !self.isEditable()
+					readonly	: !self.isEditable(),
+					user		: app.models.user
 				});
 	
 				$(self.el).html(template);
@@ -371,18 +369,19 @@ define(['app',
 		    		reserve_product:[bookable_id, bookable_name],
 					pricelist_amount:0});
 		    	lineModel.setQuantity(1);
+		    	lineModel.bookable = new BookableModel({id:bookable_id});
 		    	//reset selection to be able to add another bookable to booking
 		    	app.views.selectListAddBookableView.reset();
-		    	
-		    	this.model.addLine(lineModel);
 		    	
 		    	//perform manually updates to lineModel to get pricing, dispo, ...
 		    	var partner_id = this.model.getClaimer('id');
 		    	var checkin = this.model.getStartDate();
 		    	var checkout = this.model.getEndDate();
-		    	$.when(lineModel.fetchAvailableQtity(checkin,checkout),lineModel.fetchPricing(partner_id,checkin,checkout)).always(function(){
+		    	$.when(lineModel.fetchAvailableQtity(checkin,checkout),
+    			lineModel.fetchPricing(partner_id,checkin,checkout),
+    			lineModel.bookable.fetch()).always(function(){
+    				self.model.addLine(lineModel);
 		        	var lineView = new ItemFormBookingLineView({model:lineModel});
-		        	//self.lineViews.push(lineView);
 		        	$(self.el).find('#bookingLines').append(lineView.render().el);
 		    	})
 		    	.fail(function(e){

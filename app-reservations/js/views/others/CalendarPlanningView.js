@@ -209,10 +209,9 @@ define([
 
 
 					// If a claimer is set //
-					if(app.views.sideBarPlanningSelectResourcesView.selectableClaimers.cpt > 0){
+					if(app.models.user.isResaManager()){
 						booking.setClaimer([app.views.advancedSelectBoxClaimerView.getSelectedItem(), app.views.advancedSelectBoxClaimerView.getSelectedText()]);
 					}
-
 
 					//for each bookable selected, add a new bookingLine
 					_.each(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, function(place_id){
