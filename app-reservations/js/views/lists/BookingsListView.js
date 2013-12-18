@@ -77,7 +77,7 @@ define([
 			var self = this;
 	
 			// Change the page title //
-			app.router.setPageTitle(app.lang.viewsTitles.bookingsList);	
+			app.router.setPageTitle(app.lang.resa.viewsTitles.bookingsList);	
 	
 			
 			// Retrieve the HTML template //
