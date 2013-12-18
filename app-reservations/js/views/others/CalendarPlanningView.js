@@ -420,8 +420,14 @@ define([
 				var startDate = moment(this.calendar.fullCalendar('getView').start).utc().format('YYYY-MM-DD HH:mm:ss');
 				var endDate   = moment(this.calendar.fullCalendar('getView').end).utc().format('YYYY-MM-DD HH:mm:ss');
 
+				var param = {
+					start_date: startDate,
+					end_date  : endDate,
+					ids       : selectedPlaces,
+					token     : app.models.user.getAuthToken()
+				}
 
-				var url = encodeURIComponent(window.location.origin+'/openresa/bookings/print_planning?start_date='+startDate+'&end_date='+endDate+'&ids=[]'+selectedPlaces+'&token='+app.models.user.getAuthToken());
+				var url = 'openresa/bookings/print_planning?'+jQuery.param(param);
 				
 				window.open(url);
 			}
