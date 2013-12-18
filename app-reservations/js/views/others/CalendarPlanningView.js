@@ -39,7 +39,9 @@ define([
 			'click .fc-button-today'     : 'goTodayDate',
 			'click .fc-button-agendaDay' : 'goDayFormat',
 			'click .fc-button-agendaWeek': 'goWeekFormat',
-			'click .fc-button-month'     : 'goMonthFormat'
+			'click .fc-button-month'     : 'goMonthFormat',
+
+			'click .fc-button-print'     : 'printCalendar'
 		}, 
 	
 	
@@ -75,6 +77,10 @@ define([
 			
 			// Init the calendar //
 			this.initCalendar();
+
+			// Add Print Button //
+			this.addPrintButton();
+
 
 			return this;
 		},
@@ -303,7 +309,7 @@ define([
 		},
 
 
-		
+
 		/** Convert a collection to Array events for FullCalendar
 		*/
 		collectionsToEvents: function(collection){
@@ -397,6 +403,30 @@ define([
 			return events;
 		},
 
+		
+
+		/** Convert a collection to Array events for FullCalendar
+		*/
+		printCalendar: function(e){
+			var selectedPlaces = app.views.sideBarPlanningSelectResourcesView.selectedPlaces;
+			
+			if(_.isEmpty(selectedPlaces)){
+				app.notify('', 'notice', 'Attention', 'Merci de sélectionner au moins une salle');
+			}
+			else if(_.size(selectedPlaces) > 1){
+				app.notify('', 'notice', 'Attention', 'Merci de sélectionner une seule salle');
+			}
+			else{
+				var startDate = moment(this.calendar.fullCalendar('getView').start).utc().format('YYYY-MM-DD HH:mm:ss');
+				var endDate   = moment(this.calendar.fullCalendar('getView').end).utc().format('YYYY-MM-DD HH:mm:ss');
+
+
+				var url = encodeURIComponent(window.location.origin+'/openresa/bookings/print_planning?start_date='+startDate+'&end_date='+endDate+'&ids=[]'+selectedPlaces+'&token='+app.models.user.getAuthToken());
+				
+				window.open(url);
+			}
+		
+		},
 
 
 		urlBuilder: function(mode){
@@ -477,6 +507,13 @@ define([
 		goMonthFormat: function(e){
 			this.calendarView = 'month';
 			this.urlBuilder();
+		},
+
+		addPrintButton: function(){
+
+			var custom_buttons = '<span class="fc-header-space"></span> <span class="fc-button fc-button-print fc-corner-left fc-corner-right fc-state-default text-primary"><i class="fa fa-print"></i></span>';
+
+        	$('.fc-header-left span:last-child()').after(custom_buttons);
 		}
 
 
