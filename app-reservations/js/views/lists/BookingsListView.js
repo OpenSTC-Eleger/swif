@@ -66,8 +66,15 @@ define([
 		/** Partial Render of the view : refresh toolbar buttons
 		*/
 		partialRender: function(model){
-			if( model.getRecurrence('id')!= false )
-				app.views.toolbarButtonsView.initialize( { collection: this.collection } );
+			var self = this;
+			if(! _.isNull(model) && !_.isUndefined(model) ) {
+				if( model.getRecurrence('id')!= false )
+					app.views.toolbarButtonsView.initialize( { collection: this.collection } );			
+			}
+			this.collection.count(this.fetchParams).done(function(){
+				$('#badgeActions').html(self.collection.specialCpt);
+				app.views.paginationView.render();
+			});
 		},
 	
 	
@@ -77,7 +84,7 @@ define([
 			var self = this;
 	
 			// Change the page title //
-			app.router.setPageTitle(app.lang.viewsTitles.bookingsList);	
+			app.router.setPageTitle(app.lang.resa.viewsTitles.bookingsList);	
 	
 			
 			// Retrieve the HTML template //
@@ -202,7 +209,7 @@ define([
 			}
 				
 			// Create Fetch params //
-			var fetchParams = {
+			this.fetchParams = {
 				silent     : true,
 				data       : {
 					limit  : app.config.itemsPerPage,
@@ -211,13 +218,13 @@ define([
 				}
 			};
 			
-			if(_.isUndefined(fetchParams.data.filters))
-				fetchParams.data.filters = new Object();
+			if(_.isUndefined(this.fetchParams.data.filters))
+				this.fetchParams.data.filters = new Object();
 			
 			//No displays bookings deleted
-			fetchParams.data.filters[_.size(fetchParams.data.filters)] = {field:'deleted_at',operator:'=',value:'False'}
+			this.fetchParams.data.filters[_.size(this.fetchParams.data.filters)] = {field:'deleted_at',operator:'=',value:'False'}
 			if( ! app.models.user.isResaManager()) {
-				fetchParams.data.filters[_.size(fetchParams.data.filters)] = {field: 'partner_id.address.id', operator:'in', value:app.models.user.getContact()}
+				this.fetchParams.data.filters[_.size(this.fetchParams.data.filters)] = {field: 'partner_id.address.id', operator:'in', value:app.models.user.getContact()}
 			}
 			
 				
@@ -231,17 +238,17 @@ define([
 			}
 	
 			if(!_.isEmpty(globalSearch)){
-				fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, BookingModel.prototype.searchable_fields);
+				this.fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, BookingModel.prototype.searchable_fields);
 			}
 			
 			//Add filter on recurrence selected
 			if(!_.isUndefined(this.options.recurrence)){
-				fetchParams.data.filters  = _.toArray(fetchParams.data.filters);
-				fetchParams.data.filters.push({field: 'recurrence_id.id', operator:'=', value:this.options.recurrence})				
-				fetchParams.data.filters = app.objectifyFilters(fetchParams.data.filters)
+				this.fetchParams.data.filters  = _.toArray(this.fetchParams.data.filters);
+				this.fetchParams.data.filters.push({field: 'recurrence_id.id', operator:'=', value:this.options.recurrence})				
+				this.fetchParams.data.filters = app.objectifyFilters(this.fetchParams.data.filters)
 			}
 			
-			var ajaxRequests = [this.collection.fetch(fetchParams)]					
+			var ajaxRequests = [this.collection.fetch(this.fetchParams)]					
 
 			var deferred = $.Deferred();
 			$.when.apply( $, ajaxRequests )

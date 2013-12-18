@@ -146,7 +146,7 @@ define([
 					// Get the selected resources //
 					var selectedResources = _.union(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, app.views.sideBarPlanningSelectResourcesView.selectedEquipments);
 
-	    			if(!_.isEmpty(selectedResources)){
+					if(!_.isEmpty(selectedResources)){
 
 						self.fetchReservations(start, end, selectedResources)
 						.done(function(){
@@ -230,6 +230,7 @@ define([
 						booking.addLine(line);
 					});
 
+					app.router.navigate(_.strLeft(app.routes.formReservation.url, '('), {trigger: false, replace: true});
 
 					// Redirect to form //
 					app.views.formBooking = new FormBookingView({
