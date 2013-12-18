@@ -427,7 +427,7 @@ define([
 					token     : app.models.user.getAuthToken()
 				}
 
-				var url = '/openresa/bookings/print_planning?'+jQuery.param(param);
+				var url = '/api/openresa/bookings/print_planning?'+jQuery.param(param);
 				
 				window.open(url);
 			}
