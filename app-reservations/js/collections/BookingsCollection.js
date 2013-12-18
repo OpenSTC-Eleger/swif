@@ -18,7 +18,7 @@ define([
 		
 		fields: ['id', 'name', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 
 		         'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 
-		         'create_date', 'write_date', 'state', 'state_num', 'actions', 'create_uid', 'write_uid', 
+		         'create_date', 'write_date', 'deleted_at', 'state', 'state_num', 'actions', 'create_uid', 'write_uid', 
 		         'resources', 'all_dispo', 'recurrence_id', 'is_template', 'note', 'confirm_note', 'cancel_note', 'done_note',
 		         'pricelist_id', 'invoice_attachment_id'],
 
@@ -33,11 +33,19 @@ define([
 			var self = this;
 	
 			// Construct a domain  //
-	
-			var domain = [
-				{ field : 'state', operator : '=', value : BookingModel.status.remplir.key },
-			];
-			
+			if(app.models.user.isResaManager()){
+				var domain = [
+					{ field : 'state', operator : '=', value : BookingModel.status.remplir.key },
+					 {field:'deleted_at',operator:'=',value:'False'}
+				];
+			}
+			else {
+				var domain = [
+				    { field : 'state', operator : '=', value : BookingModel.status.remplir.key },
+				    {field:'deleted_at',operator:'=',value:'False'},
+				    {field: 'partner_id.address.id', operator:'in', value:app.models.user.getContact()}
+				];
+			}
 	
 			return $.ajax({
 				url      : this.url,
@@ -58,9 +66,8 @@ define([
 	
 			if(_.isUndefined(options.data.fields)){
 				options.data.fields = this.fields;	
-			}
+			}		
 			
-	
 			return $.when(this.count(options), this.specialCount(), Backbone.sync.call(this,method,this,options));
 		}
 	
