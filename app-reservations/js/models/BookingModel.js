@@ -128,7 +128,16 @@ define([
 			var bookingResourceQuantities = "<dl>";
 
 			_.each(this.getResources(), function(r){
-				bookingResourceQuantities += "<dt>" + r.name + "</dt><dd>" + r.tooltip + "</dd>"					
+
+				if(r.type == 'site'){
+					var icon = "<i class='fa fa-map-marker fa-fw'></i>";
+				}
+				else{
+					var icon = "<i class='fa fa-wrench fa-fw'></i>";
+				}
+
+
+				bookingResourceQuantities += "<dt>" + icon +' '+ r.name + "</dt><dd>" + r.tooltip + "</dd>"					
 			});
 
 			return bookingResourceQuantities + "</dl>"
@@ -151,7 +160,7 @@ define([
 				default: 
 					
 			}
-			return html+= "<dt> le " + this.getWriteDate('human') + "</dt></dl>";
+			return html+= "<small> le " + this.getWriteDate('human') + "</small></dl>";
 			
 		},
 		

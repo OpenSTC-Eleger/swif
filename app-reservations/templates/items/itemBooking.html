@@ -24,8 +24,7 @@
 </td>
 
 <td>
-	<span data-toggle="popover" data-content="<%=booking.getResourceQuantitiesHtml()%>"
-		data-html="true" data-placement="left">
+	<span data-toggle="popover" data-content="<%=booking.getResourceQuantitiesHtml()%>" data-html="true" data-placement="left">
 		<%= booking.getResourceNames('string') %>
 	</span>
 </td>
@@ -53,7 +52,7 @@
 		class="label label-<%= BookingModel.status[booking.getState()].color %>" 
 		data-toggle="popover"
 		data-html="true" data-placement="left"
-		data-original-title="<%= lang.by + booking.getWriteAuthor() %>"
+		data-original-title="<%= lang.by +' '+ booking.getWriteAuthor() %>"
 		data-content="<%= booking.getStateInformationsHtml() %>">
 		<%= BookingModel.status[booking.getState()].translation %>
 	</span>
