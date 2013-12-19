@@ -21,7 +21,6 @@ requirejs.config({
 		'moment-timezone-data': 'i18n/moment-timezone-data',
 
 		'underscore.string'   : 'js/libs/underscore-string-2.3.2',
-		localStorage          : 'js/libs/backbone-localStorage-1.1.7',
 		nprogress             : 'js/libs/NProgress-0.1.2',
 		pnotify               : 'js/libs/pnotify-1.2.0',
 		bootstrap             : 'js/libs/bootstrap-3.0.2',
