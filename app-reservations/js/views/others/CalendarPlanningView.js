@@ -413,6 +413,7 @@ define([
 						color    : color,
 						textColor: textColor,
 						allDay   : model.isAllDay(),
+						className: 'resa-'+resourceColorId,
 					}
 				}
 
