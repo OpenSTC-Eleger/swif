@@ -24,7 +24,7 @@ define([
 
 		fields : ['id', 'name', 'checkin', 'note', 'checkout', 'partner_id', 'partner_order_id', 'partner_type',
 		          'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 
-		          'create_date', 'write_date', 'deleted_at', 'state','state_num', 'actions', 'create_uid', 'write_uid', 
+		          'create_date', 'write_date', 'deleted_at', 'done_at', 'confirm_at', 'cancel_at', 'state','state_num', 'actions', 'create_uid', 'write_uid', 
 		          'resources', 'all_dispo', 'recurrence_id', 'is_template', 
 		          'pricelist_id', 'confirm_note', 'cancel_note', 'done_note', 'people_street','people_city', 'people_zip', 'whole_day'],
 	
@@ -148,19 +148,20 @@ define([
 			var html = "<dl>";
 			switch (this.getState()){ 
 				case 'confirm': 
-					html+= this.getConfirmNote()!=false ?  "<dt>" + app.lang.confirmation + "</dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
+					html+= this.getConfirmNote()!=false ?  "<dt>" + app.lang.confirmation + " <i>" + this.getConfirmDate() + "</i></dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
 				break;
 				case 'cancel':
-					html+= this.getCancelNote()!=false ?  "<dt>" + app.lang.refusal + "</dt><dd>" + this.getCancelNote() + "</dd></br>" : "";	
+					html+= this.getCancelNote()!=false ?  "<dt>" + app.lang.refusal + " <i>" + this.getCancelDate() + "</i></dt><dd>" + this.getCancelNote() + "</dd></br>" : "";	
 				break;
 				case 'done':
-					html+=  this.getConfirmNote()!=false ?  "<dt>" + app.lang.confirmation + "</dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
-					html+=  this.getDoneNote()!=false ? "<dt>" + app.lang.enclosing + "</dt><dd>" + this.getDoneNote() + "</dd></br>" : "" ;					
+					html+=  this.getConfirmNote()!=false ?  "<dt>" + app.lang.confirmation + " <i>" + this.getConfirmDate() + "</i></dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
+					html+=  this.getDoneNote()!=false ? "<dt>" + app.lang.enclosing + " <i>" + this.getDoneDate() + "</i></dt><dd>" + this.getDoneNote() + "</dd></br>" : "" ;					
 				break;
 				default: 
+					html+= "<small> le " + this.getWriteDate('human') + "</small>"
 					
 			}
-			return html+= "<small> le " + this.getWriteDate('human') + "</small></dl>";
+			return html+= "</dl>";
 			
 		},
 		
@@ -364,10 +365,70 @@ define([
 						return writeDate.format('LLL');
 					break;
 					case 'fromNow': 
-						return createDate.fromNow();
+						return writeDate.fromNow();
 					break;
 					default:
 						return this.get('write_date');
+					break;
+				}
+			}
+			else{
+				return '';
+			}
+		},
+		
+		getDoneDate: function(type){
+			if(this.get('done_at') != false){
+				var doneDate = AppHelpers.convertDateToTz(this.get('done_at'));
+				switch(type){
+					case 'human':	
+						return doneDate.format('LLL');
+					break;
+					case 'fromNow': 
+						return doneDate.fromNow();
+					break;
+					default:
+						return this.get('done_at');
+					break;
+				}
+			}
+			else{
+				return '';
+			}
+		},
+		
+		getCancelDate: function(type){
+			if(this.get('cancel_at') != false){
+				var cancelDate = AppHelpers.convertDateToTz(this.get('cancel_at'));
+				switch(type){
+					case 'human':	
+						return cancelDate.format('LLL');
+					break;
+					case 'fromNow': 
+						return cancelDate.fromNow();
+					break;
+					default:
+						return this.get('cancel_at');
+					break;
+				}
+			}
+			else{
+				return '';
+			}
+		},
+		
+		getConfirmDate: function(type){
+			if(this.get('confirm_at') != false){
+				var confirmDate = AppHelpers.convertDateToTz(this.get('confirm_at'));
+				switch(type){
+					case 'human':	
+						return confirmDate.format('LLL');
+					break;
+					case 'fromNow': 
+						return confirmDate.fromNow();
+					break;
+					default:
+						return this.get('confirm_at');
 					break;
 				}
 			}

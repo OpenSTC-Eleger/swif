@@ -39,7 +39,10 @@ define([
 				this.model = new BookingRecurrenceModel({id: app.views.bookingsListView.options.recurrence });
 				this.model.fetch().done(function(model){
 					//update toolbar buttons when recurrence change
-					self.listenTo(self.model, 'change', self.change);			
+					self.listenTo(self.model, 'change', self.change);
+					_.each(self.options.collection.models, function(model){
+						self.listenTo(model, 'change', self.initialize);
+					})					
 					self.render();
 				});
 			}

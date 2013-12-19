@@ -82,7 +82,7 @@ define([
 				state_event   		: this.options.state,
 				send_invoicing  	: $('#sendInvoicing').is(':checked'),
 			}
-			params[this.options.state+'_note'] = $('#note').val()
+			params[this.options.state+'_note'] = $('#allNote').val()
 	
 	
 			// Save Only the params //

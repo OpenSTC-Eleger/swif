@@ -18,7 +18,7 @@ define([
 		
 		fields: ['id', 'name', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 
 		         'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 
-		         'create_date', 'write_date', 'deleted_at', 'state', 'state_num', 'actions', 'create_uid', 'write_uid', 
+		         'create_date', 'write_date', 'deleted_at', 'done_at', 'confirm_at', 'cancel_at', 'state', 'state_num', 'actions', 'create_uid', 'write_uid', 
 		         'resources', 'all_dispo', 'recurrence_id', 'is_template', 'note', 'confirm_note', 'cancel_note', 'done_note',
 		         'pricelist_id', 'invoice_attachment_id'],
 

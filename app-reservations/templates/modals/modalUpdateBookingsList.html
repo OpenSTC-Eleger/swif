@@ -27,10 +27,10 @@
 			%>
 			<!-- note related to this action  -->
 			<div class="form-group">
-				<label for="note" class="control-label col-sm-3"><%= titleNote %>:</label>
+				<label for="allNote" class="control-label col-sm-3"><%= titleNote %>:</label>
 
 				<div class="col-sm-9">
-					<textarea id="note" class="form-control" rows="5" required><%= note %></textarea>
+					<textarea id="allNote" class="form-control" rows="5" required><%= note %></textarea>
 				</div>
 			</div>
 			<% if(state != BookingModel.status.cancel.key) { %>
