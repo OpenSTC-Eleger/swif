@@ -7,6 +7,7 @@ define([
 
 	'bookingModel',
 	'bookingLineModel',
+	'bookableModel',
 	'bookingsCollection',
 
 	'modalReservationDetailsView',
@@ -16,7 +17,7 @@ define([
 	'moment-timezone-data'
 
 
-], function(app, AppHelpers, fullcalendar, moment, BookingModel, BookingLineModel, BookingsCollection, ModalReservationDetailsView, FormBookingView){
+], function(app, AppHelpers, fullcalendar, moment, BookingModel, BookingLineModel, BookableModel, BookingsCollection, ModalReservationDetailsView, FormBookingView){
 
 	'use strict';
 
@@ -212,14 +213,16 @@ define([
 					if(app.models.user.isResaManager()){
 						booking.setClaimer([app.views.advancedSelectBoxClaimerView.getSelectedItem(), app.views.advancedSelectBoxClaimerView.getSelectedText()]);
 					}
-
+					var arrayDeferreds = [];
 					//for each bookable selected, add a new bookingLine
 					_.each(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, function(place_id){
 
 						var line = new BookingLineModel();
 						var bookable = [place_id, app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(place_id).getName()];
 						line.set({reserve_product:bookable, qte_reserves:1});
+						line.bookable = new BookableModel({id:place_id});
 						booking.addLine(line);
+						arrayDeferreds.push(line.bookable.fetch());
 					});
 
 					_.each(app.views.sideBarPlanningSelectResourcesView.selectedEquipmentsQuantity, function(quantity, idEquipment){
@@ -227,16 +230,20 @@ define([
 						var bookable = [idEquipment, app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get(idEquipment).getName()];
 
 						line.set({reserve_product:bookable, qte_reserves:quantity});
+						line.bookable = new BookableModel({id:idEquipment});
 						booking.addLine(line);
+						arrayDeferreds.push(line.bookable.fetch());
 					});
-
-					app.router.navigate(_.strLeft(app.routes.formReservation.url, '('), {trigger: false, replace: true});
-
-					// Redirect to form //
-					app.views.formBooking = new FormBookingView({
-						model : booking
+					
+					$.when.apply(self, arrayDeferreds).done(function(){
+						
+						app.router.navigate(_.strLeft(app.routes.formReservation.url, '('), {trigger: false, replace: true});
+	
+						// Redirect to form //
+						app.views.formBooking = new FormBookingView({
+							model : booking
+						});
 					});
-
 				},
 	
 
