@@ -87,7 +87,7 @@ define([
 					task					: model,
 					InterventionModel		: InterventionModel,
 					TaskModel				: TaskModel,
-					UserModel				: app.models.user,
+					UserModel				: app.current_user,
 					AppHelpers				: AppHelpers,
 					moment                  : moment
 				});

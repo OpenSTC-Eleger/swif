@@ -89,13 +89,13 @@ define([
 					lang                		: app.lang,
 					selectablePlaces    		: self.selectablePlaces,
 					selectableEquipments		: self.selectableEquipments,
-					displayClaimersSelectBox	: app.models.user.isResaManager() ? "" : "hide"
+					displayClaimersSelectBox	: app.current_user.isResaManager() ? "" : "hide"
 				});
 	
 				$(self.el).html(template);
 	
 				// Advance Select List View //
-				if(app.models.user.isResaManager()) {
+				if(app.current_user.isResaManager()) {
 					app.views.advancedSelectBoxClaimerView = new AdvancedSelectBoxView({el: $('#claimersOrganization'), collection: ClaimersCollection.prototype })
 					app.views.advancedSelectBoxClaimerView.render();
 				}

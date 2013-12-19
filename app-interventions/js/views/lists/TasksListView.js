@@ -102,8 +102,8 @@ define([
 	
 	
 	
-			//var officer = app.models.user.getUID();
-			var officer_id = app.models.user.getUID();
+			//var officer = app.current_user.getUID();
+			var officer_id = app.current_user.getUID();
 			
 			// Retrieve the year - If not exist in the URL set as the current year //
 			var year = 0;
@@ -145,10 +145,10 @@ define([
 			self.collections.tasks = new TasksCollection();
 			
 			var deferred = $.Deferred();
-			deferred = app.models.user.queryManagableOfficers();
+			deferred = app.current_user.queryManagableOfficers();
 			//get taskUser filtered on current week and with optional filter
 			$.ajax({
-				url: '/api/open_object/users/' + app.models.user.getUID().toString() + '/scheduled_tasks',
+				url: '/api/open_object/users/' + app.current_user.getUID().toString() + '/scheduled_tasks',
 				type:'GET',
 				data: app.objectifyFilters({'filters':app.objectifyFilters(filter),'fields':self.collections.tasks.fields}),	
 				success: function(data){
@@ -226,7 +226,7 @@ define([
 						$.get(app.menus.openstc+self.templateHTML, function(templateData){
 		
 		
-							var officersDropDownList = new OfficersCollection( app.models.user.attributes.officers );
+							var officersDropDownList = new OfficersCollection( app.current_user.attributes.officers );
 			
 							var template = _.template(templateData, {
 								lang: app.lang,
@@ -251,7 +251,7 @@ define([
 		
 							self.selectListFilterOfficerView = new AdvancedSelectBoxView({el: $("#filterListAgents"), collection: OfficersCollection.prototype})
 							deferred.done(function(){
-								var ret = app.models.user.getOfficers();
+								var ret = app.current_user.getOfficers();
 								var ids = [];
 								_.each(ret,function(item,i){
 									ids.push(item.id);

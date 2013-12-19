@@ -38,35 +38,8 @@ define('main', [
 
 				moment.lang(app.config.lang);
 
-				// Instantiation of UsersCollections & UserModel //
-				app.collections.users  = new UsersCollection();
-
-
-                // DO NOT USE THIS (it is a nonsense, ask Cedric for details, when reading value use the app.current_user interface)
-				app.models.user = new UserModel();
-				if(_.isNull(localStorage.getItem('users-collection'))){
-					app.collections.users.add(app.models.user);
-				}
-				else{
-					var id = localStorage.getItem('users-collection');
-					var detailsUser = jQuery.parseJSON(localStorage.getItem('users-collection-'+id));
-
-					app.models.user.set(detailsUser);
-				}
-
                 // Interface to current_user, this should not be a collection stored in localstorage but just some current_user client state.
-                app.current_user = app.models.user
-
-				// UNABLE TO FETCH WITH BACKBONE LOCALSTORAGE AND REQUIRE JS //
-				/*app.collections.users.fetch();
-				if(_.isEmpty(app.collections.users.models)){
-					app.models.user = new UserModel();
-					app.collections.users.add(app.models.user);
-				}
-				else{
-					app.models.user = app.collections.users.at(0);
-				}*/
-
+                app.current_user = new UserModel(JSON.parse(localStorage.getItem('current_user')));  //app.current_user
 
 				// Set the Ajax Setup //
 				app.setAjaxSetup();

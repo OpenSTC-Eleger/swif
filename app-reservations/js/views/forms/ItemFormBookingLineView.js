@@ -110,7 +110,7 @@ define(['app',
 					line	: self.model,
 					bookable: self.model.bookable,
 					linesStat: BookingLineModel.status,
-					user	: app.models.user
+					user	: app.current_user
 				});
 
 				$(self.el).html(template);

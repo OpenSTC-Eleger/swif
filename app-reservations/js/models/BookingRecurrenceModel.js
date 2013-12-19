@@ -309,7 +309,7 @@ define([
 			return fnct.call(this).done(function(data){
 				//for each date, i create a BookingModel based on this.template
 				if(data.length > 0){
-					var tzUser = app.models.user.getContext().tz; 
+					var tzUser = app.current_user.getContext().tz;
 					//get length of resa (date_end - date_start)
 					var date_start = moment.utc(self.getTemplate().getStartDate()).tz(tzUser);
 					var date_end = moment.utc(self.getTemplate().getEndDate()).tz(tzUser);

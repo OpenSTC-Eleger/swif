@@ -33,7 +33,7 @@ define([
 			var self = this;
 	
 			// Construct a domain  //
-			if(app.models.user.isResaManager()){
+			if(app.current_user.isResaManager()){
 				var domain = [
 					{ field : 'state', operator : '=', value : BookingModel.status.remplir.key },
 					 {field:'deleted_at',operator:'=',value:'False'}
@@ -43,7 +43,7 @@ define([
 				var domain = [
 				    { field : 'state', operator : '=', value : BookingModel.status.remplir.key },
 				    {field:'deleted_at',operator:'=',value:'False'},
-				    {field: 'partner_id.address.id', operator:'in', value:app.models.user.getContact()}
+				    {field: 'partner_id.address.id', operator:'in', value:app.current_user.getContact()}
 				];
 			}
 	

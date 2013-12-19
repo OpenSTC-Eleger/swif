@@ -216,7 +216,7 @@ define([
 
 
 					// If a claimer is set //
-					if(app.models.user.isResaManager()){
+					if(app.current_user.isResaManager()){
 						booking.setClaimer([app.views.advancedSelectBoxClaimerView.getSelectedItem(), app.views.advancedSelectBoxClaimerView.getSelectedText()]);
 					}
 					var arrayDeferreds = [];
@@ -258,7 +258,7 @@ define([
 	    	    eventClick: function(fcEvent, jsEvent, view) {
 
 					// If the user is a resource manager //
-					if(app.models.user.isResaManager()){
+					if(app.current_user.isResaManager()){
 
 						app.views.ModalReservationDetailsView = new ModalReservationDetailsView({
 							el      : '#modalReservationDetails',
@@ -385,7 +385,7 @@ define([
 					var equipments = ''
 				}
 
-				if(app.models.user.isResaManager()){
+				if(app.current_user.isResaManager()){
 					var evt = {
 						id       : model.getId(),
 						title    : recurrence + model.getName() + equipments,
@@ -443,7 +443,7 @@ define([
 					start_date: startDate,
 					end_date  : endDate,
 					ids       : selectedPlaces,
-					token     : app.models.user.getAuthToken()
+					token     : app.current_user.getAuthToken()
 				}
 
 				var url = '/api/openresa/bookings/print_planning?'+jQuery.param(param);

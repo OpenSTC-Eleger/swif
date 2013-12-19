@@ -201,8 +201,8 @@ define('appHelpers', [
 
 		convertDateToTz : function(date) {
 			var convertedDate = moment(date)
-			if( app.models.user.getContext().tz ) {
-				convertedDate.tz(app.models.user.getContext().tz)
+			if( app.current_user.getContext().tz ) {
+				convertedDate.tz(app.current_user.getContext().tz)
 				convertedDate.add('minutes',-convertedDate.zone());			
 			}
 			return convertedDate;

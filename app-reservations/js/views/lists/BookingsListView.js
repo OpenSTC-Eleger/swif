@@ -223,8 +223,8 @@ define([
 			
 			//No displays bookings deleted
 			this.fetchParams.data.filters[_.size(this.fetchParams.data.filters)] = {field:'deleted_at',operator:'=',value:'False'}
-			if( ! app.models.user.isResaManager()) {
-				this.fetchParams.data.filters[_.size(this.fetchParams.data.filters)] = {field: 'partner_id.address.id', operator:'in', value:app.models.user.getContact()}
+			if( ! app.current_user.isResaManager()) {
+				this.fetchParams.data.filters[_.size(this.fetchParams.data.filters)] = {field: 'partner_id.address.id', operator:'in', value:app.current_user.getContact()}
 			}
 			
 				

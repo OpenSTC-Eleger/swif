@@ -40,15 +40,15 @@ define([
 			var self = this;
 
 			// Construct a domain accrding to user group //
-			if(app.models.user.isDST()){
+			if(app.current_user.isDST()){
 				var domain = [
 					{ field : 'state', operator : '=', value : RequestModel.status.confirm.key }
 				];
 			}
-			else if(app.models.user.isManager()){
+			else if(app.current_user.isManager()){
 				var domain = [
 					{ field : 'state', operator : '=', value : RequestModel.status.wait.key },
-					{ field : 'service_id.id', operator : 'in', value : app.models.user.getServices() }
+					{ field : 'service_id.id', operator : 'in', value : app.current_user.getServices() }
 				];
 			}
 
@@ -75,7 +75,7 @@ define([
 
 			return $.when(
 				this.count(options),
-				(app.models.user.isDST() || app.models.user.isManager() ? this.specialCount() : ''),
+				(app.current_user.isDST() || app.current_user.isManager() ? this.specialCount() : ''),
 				Backbone.sync.call(this,method,this,options)
 			);
 		}

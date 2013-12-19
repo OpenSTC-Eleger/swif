@@ -49,7 +49,7 @@ define([
 
 				var template = _.template(templateData, {
 					lang         : app.lang,
-					user         : app.models.user,
+					user         : app.current_user,
 					menusToLoad  : app.config.menus,
 					currentModule: currentModule,
 					currentUrl   : currentUrl

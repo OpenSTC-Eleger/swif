@@ -56,8 +56,8 @@ define([
 		render : function() {
 			var self = this;
 	
-			var date_start = moment.utc(this.model.toJSON().date_start).tz(app.models.user.getContext().tz);
-			var date_end = moment.utc(this.model.toJSON().date_end).tz(app.models.user.getContext().tz);
+			var date_start = moment.utc(this.model.toJSON().date_start).tz(app.current_user.getContext().tz);
+			var date_end = moment.utc(this.model.toJSON().date_end).tz(app.current_user.getContext().tz);
 
 			// Retrieve the template // 
 			$.get(app.menus.openstc+this.templateHTML, function(templateData){
