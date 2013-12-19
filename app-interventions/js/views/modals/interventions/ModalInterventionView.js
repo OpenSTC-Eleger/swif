@@ -33,8 +33,7 @@ define([
 			return _.defaults({
 			'submit #formIntervention'          : 'saveIntervention',
 			'change #interventionDetailService' : 'fillDropdownService',
-			'click a.linkSelectPlaceEquipment'	: 'changeSelectPlaceEquipment',
-	
+			'click a.linkSelectPlaceEquipment'	: 'changeSelectPlaceEquipment'
 			},
 			GenericModalView.prototype.events);
 			
@@ -72,7 +71,7 @@ define([
 			// Retrieve the template // 
 			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 					var modelJSON = self.model.toJSON();
-					var deadLineDt = modelJSON.date_deadline!=false && !_.isUndefined(modelJSON.date_deadline) ? moment( modelJSON.date_deadline ).tz(app.models.user.getContext().tz) : moment().tz(app.models.user.getContext().tz);
+					var deadLineDt = modelJSON.date_deadline!=false && !_.isUndefined(modelJSON.date_deadline) ? moment( modelJSON.date_deadline ).tz(app.current_user.getContext().tz) : moment().tz(app.current_user.getContext().tz);
 					deadLineDt.add('minutes',-deadLineDt.zone());
 					
 					var template = _.template(templateData, {

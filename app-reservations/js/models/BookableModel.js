@@ -50,6 +50,25 @@ define([
 			return this.get('product_image');
 		},
 
+		getType: function(action){
+			var type = this.get('type_prod');
+			
+			switch(action){
+				case 'logo':
+					if(type == 'site'){
+						return '<i class="fa fa-map-marker"></i>';
+					}
+					else{
+						return '<i class="fa fa-wrench"></i>';
+					}
+				break;
+
+				default: 
+				return type;	
+			}
+			
+		},
+
 		getColor: function(){
 			if(this.get('color') != false){
 				return this.get('color');

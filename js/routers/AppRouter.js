@@ -73,12 +73,11 @@ define([
 		/** Check if the User is connect
 		*/
 		checkConnect: function () {
-
-			if (app.models.user.hasAuthToken()) {
-				return true;
+			if (localStorage.getItem('current_user') == null) {
+				return false;
 			}
 			else {
-				return false;
+				return true;
 			}
 		},
 
@@ -143,7 +142,7 @@ define([
 				
 				// Redirect to the firt Menu page //
 
-				var userMenus = app.models.user.getMenus();
+				var userMenus = app.current_user.getMenus();
 				_.find(app.config.menus, function (moduleName, shortName){
 
 				if(!_.isUndefined(userMenus[shortName])) {
@@ -165,9 +164,10 @@ define([
 		/** Login View
 		*/
 		login: function(){
+            //var current_token = app.current_user
 			// Check if the user is connect //
 			if(!this.checkConnect()){
-				app.views.loginView = new LoginView({ model: app.models.user });
+				app.views.loginView = new LoginView({ model: app.current_user });
 				this.render(app.views.loginView);
 			}
 			else{
@@ -180,7 +180,7 @@ define([
 		/** Logout the user
 		*/
 		logout: function(){
-			app.models.user.logout();
+			app.current_user.logout();
 		},
 
 

@@ -21,11 +21,11 @@ define([
 
 		className   : function(){
 
-			if(this.model.getState() == RequestModel.status.wait.key && app.models.user.isManager() && _.contains(app.models.user.getServices(), this.model.getService('id'))) {
+			if(this.model.getState() == RequestModel.status.wait.key && app.current_user.isManager() && _.contains(app.current_user.getServices(), this.model.getService('id'))) {
 				classRow = RequestModel.status.wait.color + ' bolder';
 				return classRow;
 			}
-			else if(this.model.getState() == RequestModel.status.confirm.key && app.models.user.isDST()){
+			else if(this.model.getState() == RequestModel.status.confirm.key && app.current_user.isDST()){
 				classRow = RequestModel.status.confirm.color + ' bolder';
 				return classRow;
 			}
@@ -107,7 +107,7 @@ define([
 				var template = _.template(templateData, {
 					lang        : app.lang,
 					request     : self.model,
-					user        : app.models.user,
+					user        : app.current_user,
 					RequestModel: RequestModel
 				});
 

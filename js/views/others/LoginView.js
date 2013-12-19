@@ -90,8 +90,11 @@ define([
 			
 			checkLogin.done(function(data){
 				// Set user data and Save it //
-				app.models.user.setUserData(data);
-				app.models.user.save();
+				app.current_user.setUserData(data);
+                // TODO : Move this to an authentication library, abstract Storage which resolves to localStorage or fallback to sessionStorage
+                localStorage.setItem('current_user', JSON.stringify(app.current_user));
+				// The above replace this previous model.save() :
+				// app.current_user.save();
 
 				app.setAjaxSetup();
 

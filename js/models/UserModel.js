@@ -349,12 +349,10 @@ define([
 
 			$.ajax({
 				url    : self.urlAuthentication +'/'+ self.getAuthToken(),
-				method : 'DELETE',
+				method : 'DELETE'
 			})
 			.always(function () {
-				// Delete the Auth token of the user //
-				self.setAuthToken(null);
-				self.save();
+				localStorage.clear();
 
 				// Refresh the header //
 				app.views.headerView.render();

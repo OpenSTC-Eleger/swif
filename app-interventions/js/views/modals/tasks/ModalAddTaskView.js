@@ -127,8 +127,8 @@ define([
 					
 					$('#taskName').val(modelJSON.name);
 					//init datetimes values with user timezone
-					var mStartDate = moment.utc(modelJSON.date_start).tz(app.models.user.getContext().tz);
-					var mEndDate = moment.utc(modelJSON.date_end).tz(app.models.user.getContext().tz);
+					var mStartDate = moment.utc(modelJSON.date_start).tz(app.current_user.getContext().tz);
+					var mEndDate = moment.utc(modelJSON.date_end).tz(app.current_user.getContext().tz);
 				
 					$("#startDate").val( mStartDate.format('L') );
 			    	$("#endDate").val( mEndDate.format('L') );

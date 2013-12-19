@@ -1,6 +1,4 @@
 define([
-	'localStorage',
-
 	'userModel'
 
 ], function(UserModel){
@@ -15,7 +13,6 @@ define([
 
 		model       : UserModel,
 
-		localStorage: new Backbone.LocalStorage('users-collection'),
 
 
 		/** Collection Initialization

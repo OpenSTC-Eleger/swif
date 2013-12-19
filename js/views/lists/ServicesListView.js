@@ -236,7 +236,7 @@ define([
 						app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 					}
 					else{
-						app.models.user.getTeamsAndOfficers();
+						app.current_user.getTeamsAndOfficers();
 	
 						route = Backbone.history.fragment;
 						Backbone.history.loadUrl(route);

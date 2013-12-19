@@ -87,7 +87,7 @@ define([
 					requestsState    : RequestModel.status,
 
 					RequestModel     : RequestModel,
-					user             : app.models.user
+					user             : app.current_user
 				});
 
 				$(self.el).html(template);

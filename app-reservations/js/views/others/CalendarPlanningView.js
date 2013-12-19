@@ -216,7 +216,7 @@ define([
 
 
 					// If a claimer is set //
-					if(app.models.user.isResaManager()){
+					if(app.current_user.isResaManager()){
 						booking.setClaimer([app.views.advancedSelectBoxClaimerView.getSelectedItem(), app.views.advancedSelectBoxClaimerView.getSelectedText()]);
 					}
 					var arrayDeferreds = [];
@@ -258,14 +258,14 @@ define([
 	    	    eventClick: function(fcEvent, jsEvent, view) {
 
 					// If the user is a resource manager //
-					if(app.models.user.isResaManager()){
+					if(app.current_user.isResaManager()){
 
 						app.views.ModalReservationDetailsView = new ModalReservationDetailsView({
 							el      : '#modalReservationDetails',
 							modelId : fcEvent.id
 						});
 					}
-	    		}
+				}
 			});
 
 		},
@@ -289,11 +289,23 @@ define([
 				}
 			};
 
+			var startDate = moment.utc(moment(start)).format('YYYY-MM-DD HH:mm:ss');
+			var endDate = moment.utc(moment(end)).format('YYYY-MM-DD HH:mm:ss');
 
 			// Select the period of time //
 			var domain = [
-				{ 'field' : 'checkin', 'operator' : '>=', 'value' : moment.utc(moment(start)).format('YYYY-MM-DD HH:mm:ss') },
-				{ 'field' : 'checkin', 'operator' : '>=', 'value' : moment.utc(moment(start)).format('YYYY-MM-DD HH:mm:ss') },
+				'|',
+				'|',
+				'&',
+				{ 'field' : 'checkin', 'operator' : '>=', 'value' : startDate },
+				{ 'field' : 'checkin', 'operator' : '<=', 'value' : endDate },
+				'&',
+				{ 'field' : 'checkout', 'operator' : '>=', 'value' : startDate },
+				{ 'field' : 'checkout', 'operator' : '<=', 'value' : endDate },
+				'&',
+				{ 'field' : 'checkin', 'operator' : '<', 'value' : startDate },
+				{ 'field' : 'checkout','operator' : '>', 'value' : endDate },
+				
 				{ 'field' : 'reservation_line.reserve_product.id', 'operator' : 'in', 'value' : selectedResources},
 				{ 'field' : 'state', 'operator' : 'in', 'value' : [BookingModel.status.confirm.key, BookingModel.status.done.key]}
 			]
@@ -373,7 +385,7 @@ define([
 					var equipments = ''
 				}
 
-				if(app.models.user.isResaManager()){
+				if(app.current_user.isResaManager()){
 					var evt = {
 						id       : model.getId(),
 						title    : recurrence + model.getName() + equipments,
@@ -401,6 +413,7 @@ define([
 						color    : color,
 						textColor: textColor,
 						allDay   : model.isAllDay(),
+						className: 'resa-'+resourceColorId,
 					}
 				}
 
@@ -431,11 +444,11 @@ define([
 					start_date: startDate,
 					end_date  : endDate,
 					ids       : selectedPlaces,
-					token     : app.models.user.getAuthToken()
+					token     : app.current_user.getAuthToken()
 				}
 
 				var url = '/api/openresa/bookings/print_planning?'+jQuery.param(param);
-				
+
 				window.open(url);
 			}
 		

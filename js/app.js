@@ -48,7 +48,7 @@ var app =  {
 		// Set The Ajax Config //
 		$.ajaxSetup({
 			contentType: "application/json",
-			headers: {Authorization: 'Token token=' + app.models.user.getAuthToken()},
+			headers: {Authorization: 'Token token=' + app.current_user.getAuthToken()},
 			beforeSend: function(a, b){
 				window.ajaxRequest++;
 				

@@ -294,7 +294,7 @@ define([
 	    			             ]
 	    			
 	    			if(self.teamMode){
-	        			var users = app.models.user.getOfficerIdsByTeamId(self.model.id)
+	        			var users = app.current_user.getOfficerIdsByTeamId(self.model.id)
 	        			if( users.length>0 )
 	        				domain.push(		'|',
 	        								   { 'field' : 'team_id.id', 'operator' : '=', 'value' : self.model.id },
@@ -304,7 +304,7 @@ define([
 	        				domain.push({ 'field' : 'user_id.id', 'operator' : '=', 'value' : self.model.id })
 	    			}
 	    			else{
-	        			var teams = app.models.user.getTeamIdsByOfficerId(self.model.id)
+	        			var teams = app.current_user.getTeamIdsByOfficerId(self.model.id)
 	        			if( teams.length>0 )
 	        				domain.push(		'|',
 	        								   { 'field' : 'user_id.id', 'operator' : '=', 'value' : self.model.id },
@@ -511,8 +511,8 @@ define([
 	    		}    		
 	    		
 	    		//Apply user's 'timezone on dates
-	    		var dtStart = task.date_start!=false ? moment( task.date_start ).tz(app.models.user.getContext().tz) : null
-	    		var dtEnd = task.date_end!=false ? moment( task.date_end ).tz(app.models.user.getContext().tz) : null		    		
+	    		var dtStart = task.date_start!=false ? moment( task.date_start ).tz(app.current_user.getContext().tz) : null
+	    		var dtEnd = task.date_end!=false ? moment( task.date_end ).tz(app.current_user.getContext().tz) : null
 	    		
 	
 	    		//prepare event for calendar

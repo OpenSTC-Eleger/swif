@@ -110,14 +110,14 @@ define(['app',
 			}
 
 			this.claimers = new ClaimersCollection();
-			this.isClaimer = !app.models.user.isResaManager();
+			this.isClaimer = !app.current_user.isResaManager();
 			//fill the 2 selectBoxes with service_id.partner_id values
 			var ret = {};
 			
 			//if view is called with a filled model (new booking from calendar or new form 'from scratch')
 			if(_.isUndefined(self.options.id)){
 				if(self.isClaimer){
-					app.models.user.fetchContactAndClaimer(ret).done(function(){
+					app.current_user.fetchContactAndClaimer(ret).done(function(){
 						self.model.setClaimer([ret.claimer.id, ret.claimer.name]);
 						self.model.setClaimerContact([ret.contact.id, ret.contact.name]);
 						self.initializeWithNonPersistedModel();
@@ -274,7 +274,7 @@ define(['app',
 					endDate 	: endDate,
 					endHour		: endHour,
 					readonly	: !self.isEditable(),
-					user		: app.models.user
+					user		: app.current_user
 				});
 	
 				$(self.el).html(template);

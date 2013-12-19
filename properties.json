@@ -9,7 +9,6 @@
 		"Less"                 : "1.5.0",
 		"jQuery-ui"            : "1.10.3",
 		"jQuery-printElement"  : "2.0.0",
-		"Backbone-localstorage": "1.1.7",
 		"Bootstrap"            : "3.0.2",
 		"Underscore-string"    : "2.3.2",
 		"Font-awesome"         : "4.0.3",
