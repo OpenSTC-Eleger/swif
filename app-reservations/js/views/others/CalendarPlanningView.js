@@ -265,7 +265,7 @@ define([
 							modelId : fcEvent.id
 						});
 					}
-	    		}
+				}
 			});
 
 		},
@@ -289,11 +289,23 @@ define([
 				}
 			};
 
+			var startDate = moment.utc(moment(start)).format('YYYY-MM-DD HH:mm:ss');
+			var endDate = moment.utc(moment(end)).format('YYYY-MM-DD HH:mm:ss');
 
 			// Select the period of time //
 			var domain = [
-				{ 'field' : 'checkin', 'operator' : '>=', 'value' : moment.utc(moment(start)).format('YYYY-MM-DD HH:mm:ss') },
-				{ 'field' : 'checkin', 'operator' : '>=', 'value' : moment.utc(moment(start)).format('YYYY-MM-DD HH:mm:ss') },
+				'|',
+				'|',
+				'&',
+				{ 'field' : 'checkin', 'operator' : '>=', 'value' : startDate },
+				{ 'field' : 'checkin', 'operator' : '<=', 'value' : endDate },
+				'&',
+				{ 'field' : 'checkout', 'operator' : '>=', 'value' : startDate },
+				{ 'field' : 'checkout', 'operator' : '<=', 'value' : endDate },
+				'&',
+				{ 'field' : 'checkin', 'operator' : '<', 'value' : startDate },
+				{ 'field' : 'checkout','operator' : '>', 'value' : endDate },
+				
 				{ 'field' : 'reservation_line.reserve_product.id', 'operator' : 'in', 'value' : selectedResources},
 				{ 'field' : 'state', 'operator' : 'in', 'value' : [BookingModel.status.confirm.key, BookingModel.status.done.key]}
 			]
@@ -435,7 +447,7 @@ define([
 				}
 
 				var url = '/api/openresa/bookings/print_planning?'+jQuery.param(param);
-				
+
 				window.open(url);
 			}
 		
