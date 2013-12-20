@@ -113,7 +113,7 @@ define([
 			e.preventDefault();
 			app.views.bookingsListView.options.recurrence = this.model.getRecurrence('id'); 
 			delete app.views.bookingsListView.options.page;
-			app.router.navigate(app.views.bookingsListView.urlBuilder(), {trigger: true, replace: true});			
+			app.router.navigate(app.views.bookingsListView.urlBuilder(), {trigger: true, replace: false});			
 		},
 		
 		
