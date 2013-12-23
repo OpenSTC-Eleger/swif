@@ -480,7 +480,7 @@ define(['app',
 	    	e.preventDefault();
 	    	this.model.saveToBackend()
 	    	.done(function(){
-	    		//TODO: redirect to list ?
+	    		window.history.back();
 	    	})
 	    	.fail(function(e){
 	    		console.log(e);
