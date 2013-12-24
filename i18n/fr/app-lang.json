@@ -24,6 +24,7 @@
 	"label"					: "libellé",
 	"state"					: "Etat",
 	"confirmation"			: "Confirmation",
+	"validation"			: "Validation",
 	"refusal"				: "Refus",
 	"enclosing"				: "Clôture",
 	"unit"					: "Unité",

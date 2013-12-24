@@ -148,13 +148,13 @@ define([
 			var html = "<dl>";
 			switch (this.getState()){ 
 				case 'confirm': 
-					html+= this.getConfirmNote()!=false ?  "<dt>" + app.lang.confirmation + " <i>" + this.getConfirmDate() + "</i></dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
+					html+= this.getConfirmNote()!=false ?  "<dt>" + app.lang.validation + " <i>" + this.getConfirmDate() + "</i></dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
 				break;
 				case 'cancel':
 					html+= this.getCancelNote()!=false ?  "<dt>" + app.lang.refusal + " <i>" + this.getCancelDate() + "</i></dt><dd>" + this.getCancelNote() + "</dd></br>" : "";	
 				break;
 				case 'done':
-					html+=  this.getConfirmNote()!=false ?  "<dt>" + app.lang.confirmation + " <i>" + this.getConfirmDate() + "</i></dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
+					html+=  this.getConfirmNote()!=false ?  "<dt>" + app.lang.validation + " <i>" + this.getConfirmDate() + "</i></dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
 					html+=  this.getDoneNote()!=false ? "<dt>" + app.lang.enclosing + " <i>" + this.getDoneDate() + "</i></dt><dd>" + this.getDoneNote() + "</dd></br>" : "" ;					
 				break;
 				default: 
@@ -388,7 +388,7 @@ define([
 						return doneDate.fromNow();
 					break;
 					default:
-						return this.get('done_at');
+						return doneDate.format('DD-MM-YYYY');
 					break;
 				}
 			}
@@ -408,7 +408,7 @@ define([
 						return cancelDate.fromNow();
 					break;
 					default:
-						return this.get('cancel_at');
+						return cancelDate.format('DD-MM-YYYY');
 					break;
 				}
 			}
@@ -428,7 +428,7 @@ define([
 						return confirmDate.fromNow();
 					break;
 					default:
-						return this.get('confirm_at');
+						return confirmDate.format('DD-MM-YYYY');
 					break;
 				}
 			}

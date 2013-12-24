@@ -71,7 +71,7 @@ define([
 				if( model.getRecurrence('id')!= false )
 					app.views.toolbarButtonsView.initialize( { collection: this.collection } );			
 			}
-			this.collection.specialCount(this.fetchParams).done(function(){
+			this.collection.specialCount().done(function(){
 				$('#badgeActions').html(self.collection.specialCpt);
 				app.views.paginationView.render();
 			});
