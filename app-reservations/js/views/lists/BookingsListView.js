@@ -233,12 +233,6 @@ define([
 				this.fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, BookingModel.prototype.searchable_fields);
 			}
 			
-			//No displays bookings deleted
-			this.fetchParams.data.filters[_.size(this.fetchParams.data.filters)] = {field:'deleted_at',operator:'=',value:'False'}
-			if( ! app.current_user.isResaManager()) {
-				this.fetchParams.data.filters[_.size(this.fetchParams.data.filters)] = {field: 'partner_id.address.id', operator:'in', value:app.current_user.getContact()}
-			}
-			
 			//Add filter on recurrence selected
 			if(!_.isUndefined(this.options.recurrence)){
 				this.fetchParams.data.filters  = _.toArray(this.fetchParams.data.filters);

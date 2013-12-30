@@ -33,19 +33,11 @@ define([
 			var self = this;
 	
 			// Construct a domain  //
-			if(app.current_user.isResaManager()){
-				var domain = [
-					{ field : 'state', operator : '=', value : BookingModel.status.remplir.key },
-					 {field:'deleted_at',operator:'=',value:'False'}
+
+			var domain = [
+					 { field : 'state', operator : '=', value : BookingModel.status.remplir.key }					 
 				];
-			}
-			else {
-				var domain = [
-				    { field : 'state', operator : '=', value : BookingModel.status.remplir.key },
-				    {field:'deleted_at',operator:'=',value:'False'},
-				    {field: 'partner_id.address.id', operator:'in', value:app.current_user.getContact()}
-				];
-			}
+
 	
 			return $.ajax({
 				url      : this.url,
