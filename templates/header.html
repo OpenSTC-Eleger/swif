@@ -15,14 +15,15 @@
 <!-- Display the menu if user is logged -->
 <% if(user.hasAuthToken()){ %>
 <div class="collapse navbar-collapse" id="navbar">
-
-
+	<% 
+	var menus = user.getMenus();
+	if( !_.isUndefined(menus) ) {
+	%>
 	<!-- Main menu application -->
 	<ul id="nav-menu-app" class="nav navbar-nav" role="menu">
+		
 		<% 
 		
-		var menus = user.getMenus();
-		if( !_.isUndefined(menus) ) {
 			_.each(menusToLoad, function (moduleName, shortName){
 	
 				var moduleName = moduleName;
@@ -80,8 +81,7 @@
 					</ul>
 				</li>
 			<% }); }%>
-		<% });%>
-	<% }%>
+		<% });%>	
 	</ul>
 
 
@@ -109,6 +109,8 @@
 			</ul>
 		</li>
 	</ul>
-
+	
+	<% }%>
+	
 </div>
 <% }; %>
