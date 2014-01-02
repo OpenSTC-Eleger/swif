@@ -23,7 +23,7 @@ define([
 		urlRoot: "/api/openresa/bookings",
 
 		fields : ['id', 'name', 'checkin', 'note', 'checkout', 'partner_id', 'partner_order_id', 'partner_type',
-		          'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 
+		          'contact_phone', 'partner_mail', 'people_name', 'people_phone', 'is_citizen', 
 		          'create_date', 'write_date', 'deleted_at', 'done_at', 'confirm_at', 'cancel_at', 'state','state_num', 'actions', 'create_uid', 'write_uid', 
 		          'resources', 'all_dispo', 'recurrence_id', 'is_template', 
 		          'pricelist_id', 'confirm_note', 'cancel_note', 'done_note', 'people_street','people_city', 'people_zip', 'whole_day'],
@@ -611,19 +611,17 @@ define([
 			}
 			return '';
 		},
+
 		setCitizenPhone: function(value, silent){
 			this.set({ people_phone : value }, {silent: silent});
 		},
-		getCitizenEmail: function(){
+		getCitizenAddress: function(){
 			if(this.fromCitizen()){
-				return this.getAttribute('people_email', '');
+				return this.get('people_street') +' '+ this.get('people_zip') +' '+ this.get('people_city');
 			}
 			else{
 				return '';
 			}
-		},
-		setCitizenEmail: function(value, silent){
-			this.set({ people_email : value }, {silent: silent});
 		},
 		
 		getState : function() {

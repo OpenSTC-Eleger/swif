@@ -34,12 +34,29 @@
 <td><%= booking.getEndDate('human') %></td>
 
 <td>
-	<span 
-		data-toggle="tooltip" 
-		data-html="true" 
-		data-original-title="<strong><%= booking.fromCitizen() ? lang.citizen : booking.getClaimerType() %></strong> <%= booking.getClaimerContact() %>">
+	<% if(booking.fromCitizen()){
+		var tooltip = '<strong>'+lang.citizen+'</strong>' +'<br />'+ booking.getCitizenPhone();
+	}
+	else{
+		var tooltip = '<strong>'+booking.getClaimerType()+'</strong>' +' '+ booking.getClaimerContact();
+	} %>
+
+
+	<% if(!_.isEmpty(booking.getClaimerMail())){ %>
+		<a 	href="mailto:<%= booking.getClaimerMail() %>"
+			data-toggle="tooltip" 
+			data-html="true" 
+			data-original-title="<%= tooltip %>">
 			<%= booking.fromCitizen() ? booking.getCitizenName() : booking.getClaimer() %>
-	</span>
+		<a>
+	<% } else{ %>
+		<span
+			data-toggle="tooltip" 
+			data-html="true" 
+			data-original-title="<%= tooltip %>">
+			<%= booking.fromCitizen() ? booking.getCitizenName() : booking.getClaimer() %>
+		<span>
+	<% } %>
 </td>
 
 <td>

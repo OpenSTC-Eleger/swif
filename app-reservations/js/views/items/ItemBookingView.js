@@ -78,6 +78,9 @@ define([
 			// Retrieve the template // 
 			$.get(app.menus.openresa + this.templateHTML, function(templateData){
 	
+			if(self.model.attributes.id == 5165){
+				console.log(self.model.attributes);
+			}
 			 
 				var template = _.template(templateData, {
 					lang                   : app.lang,
