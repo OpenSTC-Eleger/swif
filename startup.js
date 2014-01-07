@@ -18,7 +18,7 @@ requirejs.config({
 		datatables	  		  :	'js/libs/jquery-dataTables-1.9.4-min',
 		moment                : 'js/libs/moment-2.4.0',
 		'moment-timezone'     : 'js/libs/moment-timezone-0.0.1',
-		'moment-timezone-data': 'i18n/moment-timezone-data',
+		'moment-timezone-data': 'js/i18n/moment-timezone-data',
 
 		'underscore.string'   : 'js/libs/underscore-string-2.3.2',
 		nprogress             : 'js/libs/NProgress-0.1.2',
@@ -36,8 +36,8 @@ requirejs.config({
 		/* #############
 		* i18n Libs
 		*/
-		'select2-lang'         : 'i18n/select2-lang',
-		'bsDatepicker-lang'    : 'i18n/bootstrap-datepicker-lang',
+		'select2-lang'         : 'js/i18n/select2-lang',
+		'bsDatepicker-lang'    : 'js/i18n/bootstrap-datepicker-lang',
 
 
 		app                   : 'js/app',
