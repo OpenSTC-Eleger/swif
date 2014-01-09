@@ -129,7 +129,7 @@ define([
 			e.preventDefault(); e.stopPropagation();
 
 			app.views.modalValidRequestView = new ModalValidRequestView({
-				el      : '#modalValidRequest',
+				el      : '#modalRequest',
 				model   : this.model
 			});
 		},
@@ -142,7 +142,7 @@ define([
 			e.preventDefault(); e.stopPropagation();
 
 			app.views.modalRefuseRequestView = new ModalRefuseRequestView({
-				el      : '#modalRefuseRequest',
+				el      : '#modalRequest',
 				model   : this.model
 			});
 		},
@@ -155,7 +155,7 @@ define([
 			e.preventDefault(); e.stopPropagation();
 
 			app.views.modalConfirmRequestView = new ModalConfirmRequestView({
-				el      : '#modalConfirmRequest',
+				el      : '#modalRequest',
 				model   : this.model
 			});
 		},
@@ -165,7 +165,7 @@ define([
 			console.log(this.model);
 
 			e.preventDefault();
-			new ModalRequestView({el:'#modalSaveRequest', requests: app.views.requestsListView.collection, model: this.model});
+			new ModalRequestView({el:'#modalRequest', requests: app.views.requestsListView.collection, model: this.model});
 
 		},
 

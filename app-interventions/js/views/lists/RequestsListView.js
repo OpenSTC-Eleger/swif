@@ -197,7 +197,7 @@ define([
 			e.preventDefault();
 
 			app.views.modalRequestView = new ModalRequestView({
-				el : '#modalSaveRequest'
+				el : '#modalRequest'
 			});
 		},
 
