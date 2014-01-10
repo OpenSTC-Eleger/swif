@@ -23,10 +23,13 @@ define([
 		         'pricelist_id', 'invoice_attachment_id'],
 
 
+
+
 		default_sort: { by: '', order: '' },
 		
 		specialCpt : 0,
-		
+			
+
 		/** Get the number of Booking that the user have to deal
 		*/
 		specialCount: function(){

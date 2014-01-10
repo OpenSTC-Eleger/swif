@@ -14,6 +14,8 @@ define([
 		cpt         : 0,
 
 		default_sort: { by: 'id', order: 'DESC' },
+		
+		modelFields: [],
 
 
 		/** count all models without restricts ( openerp search_count method call select count(*) request)
@@ -42,6 +44,7 @@ define([
 				success  : function(data,status,request){
 					var contentRange = request.getResponseHeader("Content-Range")
 					self.cpt = contentRange.match(/\d+$/);
+					self.modelFields = JSON.parse(request.getResponseHeader("Model-Fields"))
 				}
 			});
 		},
