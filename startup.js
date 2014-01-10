@@ -112,6 +112,7 @@ requirejs.config({
 		teamsListView           : 'js/views/lists/TeamsListView',
 		claimersTypesListView   : 'js/views/lists/ClaimersTypesListView',
 		equipmentsListView      : 'js/views/lists/EquipmentsListView',
+		usersListView           : 'js/views/lists/UsersListView',
 
 		// Items //		
 		itemPlaceView           : 'js/views/items/ItemPlaceView',
@@ -122,6 +123,7 @@ requirejs.config({
 		claimerContactView      : 'js/views/items/ClaimerContactView',
 		itemEquipmentView       : 'js/views/items/ItemEquipmentView',
 		itemClaimerTypeView     : 'js/views/items/ItemClaimerTypeView',
+		itemUserView            : 'js/views/items/ItemUserView',
 
 		// Modals //
 		genericModalView        : 'js/views/modals/GenericModalView',

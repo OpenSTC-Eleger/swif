@@ -1,0 +1,16 @@
+<td>
+	<i class="fa fa-user">&nbsp;&nbsp;</i><%= user.getCompleteName() %>
+
+	<p class="row-actions invisible">
+		<a href="#"  class="modalResetPassword">
+			<i class="fa fa-lock fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.resetPassword) %>"></i>
+		</a>&nbsp;
+	</p>
+</td>
+<td><%= user.getLogin() %></td>
+<td><%= user.getLogin() %></td>
+<td>
+	<% if(user.getLastConnection() != false){ %>
+	<span data-toggle="tooltip" data-original-title="<%= moment(user.getLastConnection()).fromNow() %>"><%= moment(user.getLastConnection()).format('LLL') %></span>
+	<% } %>
+</td>

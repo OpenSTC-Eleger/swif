@@ -25,6 +25,18 @@ define([
 			isResaManager: false
 		},
 
+
+		searchable_fields: [
+			{
+				key  : 'complete_name',
+				type : 'text'
+			},
+			{
+				key  : 'login',
+				type : 'text'
+			}
+		],
+
 	   
 		// Officer firstname //
 		getFirstname : function() {
