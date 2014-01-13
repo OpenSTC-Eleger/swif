@@ -1,10 +1,12 @@
 define([
 	'app',
 
+	'claimersCollection',
+
 	'modalPlaceView',
 	'moment'
 
-], function(app, ModalResetPasswordView, moment){
+], function(app, ClaimersCollection, ModalResetPasswordView, moment){
 
 	'use strict';
 
@@ -31,10 +33,20 @@ define([
 		/** View Initialization
 		*/
 		initialize : function() {
+			var self = this;
+
 			this.model.off();
 
-			// When the model are updated //
-			//this.listenTo(this.model, 'change', this.change);
+			// if the user is associated to an Organization, retrieve it //
+			if(!_.isEmpty(this.model.getServices())){
+				this.render();				
+			}
+			else{
+				this.getOrganization().done(function(data, result){
+						self.model.attributes.organization = result[0][0];
+					self.render();
+				}); 
+			}
 		},
 
 
@@ -71,6 +83,28 @@ define([
 
 			app.views.modalPlaceView = new ModalResetPasswordView({
 				el  : '#modalResetPassword'
+			});
+		},
+
+
+
+		/** Get the organization of a user
+		*/
+		getOrganization: function(){
+			var self = this;
+
+			var m = new ClaimersCollection();
+
+			// Create Fetch params //
+			var fetchParams = {
+				silent : true,
+				data   : {
+					filters : [{ field : 'address.user_id.id', operator : '=', value : this.model.getId() }]
+				}
+			};
+
+			return m.fetch(fetchParams).done(function(){
+				
 			});
 		}
 

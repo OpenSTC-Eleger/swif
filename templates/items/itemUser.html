@@ -1,3 +1,4 @@
+<!-- Complete Name -->
 <td>
 	<i class="fa fa-user">&nbsp;&nbsp;</i><%= user.getCompleteName() %>
 
@@ -7,10 +8,22 @@
 		</a>&nbsp;
 	</p>
 </td>
+
+<!-- Login -->
 <td><%= user.getLogin() %></td>
-<td><%= user.getLogin() %></td>
+
+<!-- Services / Organization -->
+<td>
+	<% if(_.isUndefined(user.attributes.organization)){ %>
+	<i class="fa fa-sitemap text-muted"></i> <%= user.getServices('string') %>
+	<% } else{ %>
+	<i class="fa fa-thumb-tack text-muted"></i> <%= user.attributes.organization.name %>
+	<% } %>
+</td>
+
+<!-- Last connection -->
 <td>
 	<% if(user.getLastConnection() != false){ %>
-	<span data-toggle="tooltip" data-original-title="<%= moment(user.getLastConnection()).fromNow() %>"><%= moment(user.getLastConnection()).format('LLL') %></span>
+	<span data-toggle="tooltip" data-original-title="<%= moment(user.getLastConnection()).fromNow() %>"><%= moment(user.getLastConnection()).calendar() %></span>
 	<% } %>
 </td>
