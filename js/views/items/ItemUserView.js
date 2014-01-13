@@ -1,12 +1,13 @@
 define([
 	'app',
+	'appHelpers',
 
 	'claimersCollection',
 
-	'modalPlaceView',
+	'modalResetPasswordView',
 	'moment'
 
-], function(app, ClaimersCollection, ModalResetPasswordView, moment){
+], function(app, AppHelpers, ClaimersCollection, ModalResetPasswordView, moment){
 
 	'use strict';
 
@@ -37,6 +38,10 @@ define([
 
 			this.model.off();
 
+			// When the model are updated //
+			this.listenTo(this.model, 'change', this.change);
+
+
 			// if the user is associated to an Organization, retrieve it //
 			if(!_.isEmpty(this.model.getServices())){
 				this.render();				
@@ -47,6 +52,14 @@ define([
 					self.render();
 				}); 
 			}
+		},
+
+
+
+
+		change: function(){
+			AppHelpers.highlight($(this.el));
+			app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.passwordReset);
 		},
 
 
@@ -81,8 +94,9 @@ define([
 		modalResetPassword: function(e){
 			e.preventDefault();
 
-			app.views.modalPlaceView = new ModalResetPasswordView({
-				el  : '#modalResetPassword'
+			app.views.modalResetPasswordView = new ModalResetPasswordView({
+				el    : '#modalResetPassword',
+				model : this.model
 			});
 		},
 

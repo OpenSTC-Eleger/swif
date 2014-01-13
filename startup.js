@@ -135,7 +135,8 @@ requirejs.config({
 		modalOfficerView        : 'js/views/modals/ModalOfficerView',
         modalContactEdit        : 'js/views/modals/ModalContactEdit',
 		modalEquipmentView      : 'js/views/modals/ModalEquipmentView',
-		modalClaimerTypeView    : 'js/views/modals/ModalClaimerTypeView'
+		modalClaimerTypeView    : 'js/views/modals/ModalClaimerTypeView',
+		modalResetPasswordView  : 'js/views/modals/ModalResetPasswordView'
 
 	},
 

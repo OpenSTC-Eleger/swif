@@ -216,6 +216,7 @@
 	"warrantyDate"							: "Date de fin de garantie",
 	"builtDate"								: "Date de sortie d'usine",
 	"stockQty"								: "Quantité en stock",
+	"newPassword"                           : "Nouveau mot de passe",
 
 	"monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
 	"monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
@@ -388,8 +389,9 @@
 		"requestCreateOk"       : "Demande d'intervention correctement enregistrée",
 		"interventionSaveOK"	: "Intervention correctement enregistrée",
 		"interventionUpdateOK"	: "Intervention correctement mise à jour",
-		"inteventionAddTaskOK" : "Tâche correctement associée à l'intervention",
-		"claimerContactUpdateOk": "Contact correcement enregistré"
+		"inteventionAddTaskOK"  : "Tâche correctement associée à l'intervention",
+		"claimerContactUpdateOk": "Contact correcement enregistré",
+		"passwordReset"         : "Mot de passe correctement modifié"
 		
 	},
 
@@ -458,6 +460,7 @@
 		"pageNotFound" 			 : "Page non trouvée",
 		"editClaimer" 		     : "Edition de l'organisation",
 		"updateBooking"			 : "Modifier Réservation",
-		"usersList"              : "Liste des utilisateurs"
+		"usersList"              : "Liste des utilisateurs",
+		"resetPassword"          : "Réinitialisation du mot de passe"
 	}
 }
