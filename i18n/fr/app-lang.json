@@ -306,7 +306,8 @@
 		"serverUnreachable"             : "Impossible d'établir la connexion avec le serveur, contactez l'administrateur",
 		"sufficientRights"              : "Vous n'avez pas les droits suffisants pour éffectuer cette action",
 		"codeNameUniq"                  : "Ce code existe déjà",
-		"catMustBeUniq"                 : "Cette Catégorie existe déjà! Changer le nom ou sa catégorie d'appartenance"
+		"catMustBeUniq"                 : "Cette Catégorie existe déjà! Changer le nom ou sa catégorie d'appartenance",
+		"passwordsDontMatch"            : "Les mots de passe sont différents"
 	},
 
 	"validationMessages" : {

@@ -22,7 +22,6 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'change #placeWidth, #placeLength' : 'checkPassword',
 				'submit #formResetPassword'        : 'resetPassword',
 				
 				'mousedown #toggleDisplayPassword' : 'displayPassword',
@@ -76,29 +75,36 @@ define([
 		/** Reset password
 		*/
 		resetPassword: function(e){
-			e.preventDefault();	
+			e.preventDefault();
 
-			var self = this;
+			if(this.checkPassword()){
 
-			// Set the button in loading State //
-			$(this.el).find("button[type=submit]").button('loading');
+				var self = this;
 
-			/*console.log($('#newPassword').val());
-			console.log($('#confirmPassword').val());*/
+				// Set the button in loading State //
+				$(this.el).find("button[type=submit]").button('loading');
 
-			var params = { new_password : $('#newPassword').val() };
+				/*console.log($('#newPassword').val());
+				console.log($('#confirmPassword').val());*/
+
+				var params = { new_password : $('#newPassword').val() };
 
 
-			this.model.save(params, {patch: true, wait: true})
-				.done(function(data) {
-					self.modal.modal('hide');
-				})
-				.fail(function (e) {
-					console.log(e);
-				})
-				.always(function () {
-					$(self.el).find("button[type=submit]").button('reset');
-				});
+				this.model.save(params, {patch: true, wait: true})
+					.done(function(data) {
+						self.modal.modal('hide');
+					})
+					.fail(function (e) {
+						console.log(e);
+					})
+					.always(function () {
+						$(self.el).find("button[type=submit]").button('reset');
+					});
+			}
+			else{
+				$('#confirmPasswordGroup').addClass('has-error');
+				$('#confirmPasswordGroup .help-block').removeClass('hide');
+			}
 		},
 
 
@@ -106,8 +112,12 @@ define([
 		/** Calcul the area of the place
 		*/
 		checkPassword: function (e) {
-			console.log($('#newPassword').val());
-			console.log($('#confirmPassword').val());
+			if($('#newPassword').val() != $('#confirmPassword').val()){
+				return false;
+			}
+			else{
+				return true;
+			}
 		},
 
 
