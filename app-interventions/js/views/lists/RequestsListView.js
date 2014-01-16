@@ -3,14 +3,17 @@ define([
 	'appHelpers',
 
 	'requestsCollection',
+	'claimersServicesCollection',
 	'requestModel',
 
 	'genericListView',
 	'paginationView',
 	'itemRequestView',
-	'modalRequestView'
+	'modalRequestView',
+	'advancedSelectBoxView',
+	'advancedFiltersBarView'
 
-], function(app, AppHelpers, RequestsCollection, RequestModel, GenericListView, PaginationView, ItemRequestView, ModalRequestView){
+], function(app, AppHelpers, RequestsCollection, ClaimersServicesCollection, RequestModel, GenericListView, PaginationView, ItemRequestView, ModalRequestView, AdvancedSelectBoxView, AdvancedFiltersBarView){
 
 	'use strict';
 
@@ -22,14 +25,16 @@ define([
 
 		templateHTML : '/templates/lists/requestsList.html',
 
-
+		formAdvancedFiltersBarView : null,
 
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'click #filterStateRequestList li a' 	: 'setFilterState',
-				'click #badgeActions[data-filter!=""]'  : 'badgeFilter',
-				'click a.createRequest'		            : 'modalCreateRequest'
+				'click #filterStateRequestList li a' 		: 'setFilterState',
+				'click #badgeActions[data-filter!=""]'  	: 'badgeFilter',
+				'click a.createRequest'		            	: 'modalCreateRequest',
+				
+				'click #advancedfilters' 					: 'displayAdvancedfilters'
 			}, 
 				GenericListView.prototype.events
 			);
@@ -48,11 +53,12 @@ define([
 				// Unbind & bind the collection //
 				self.collection.off();
 				self.listenTo(self.collection, 'add', self.add);
+				self.listenTo(self.collection, 'reset', self.render);
 				
 				app.router.render(self);
 			});
 		},
-		
+
 
 
 		/** When the model ara created //
@@ -108,6 +114,11 @@ define([
 					page       : self.options.page.page,
 					collection : self.collection
 				})
+				
+				if(!_.isUndefined(this.formAdvancedFiltersBarView)) {
+					this.formAdvancedFiltersBarView = new AdvancedFiltersBarView(this.options, this.collection, RequestsCollection.prototype.searchable_fields);
+					$('#advanced-filters-bar').append(this.formAdvancedFiltersBarView.render().el);
+				}
 
 				
 				// Render Filter Link on the Table //
@@ -245,7 +256,7 @@ define([
 			}
 
 			if(!_.isEmpty(globalSearch)){
-				fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, RequestModel.prototype.searchable_fields);
+				fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, RequestsCollection.prototype.searchable_fields);
 			}
 
 
@@ -255,9 +266,24 @@ define([
 				console.log(e);
 			});
 
-		}
+		},
+		
+		displayAdvancedfilters: function(e){
+			e.preventDefault();		
+			//build filter IHM
+			if(!_.isUndefined(this.formAdvancedFiltersBarView)) {
+				this.formAdvancedFiltersBarView = new AdvancedFiltersBarView(this.options, this.collection, RequestsCollection.prototype.searchable_fields);
+				$('#advanced-filters-bar').append(this.formAdvancedFiltersBarView.render().el);
+			}
+		
+		},
+
 
 	});
+	
+	
+
+
 
 return RequestsListView;
 

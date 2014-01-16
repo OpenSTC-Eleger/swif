@@ -15,9 +15,14 @@ define([
 
 		default_sort: { by: 'id', order: 'DESC' },
 		
-		modelFields: [],
-
-
+		searchable_fields: [
+			{
+				key  : 'id',
+				type : 'numeric'
+			},
+		],
+		
+		
 		/** count all models without restricts ( openerp search_count method call select count(*) request)
 		*/
 		count: function(options) {
@@ -43,8 +48,16 @@ define([
 				data     : paramFilter,
 				success  : function(data,status,request){
 					var contentRange = request.getResponseHeader("Content-Range")
-					self.cpt = contentRange.match(/\d+$/);
-					self.modelFields = JSON.parse(request.getResponseHeader("Model-Fields"))
+					self.cpt = contentRange.match(/\d+$/);	
+//					var fields = JSON.parse(request.getResponseHeader("Model-Fields"));
+//					var selectFields = []
+//					_.each(fields, function(v,k){
+//						if (v.select == true) {
+//							v.key = k
+//							selectFields.push( v )										
+//						}
+//					})
+//					self.searchable_fields = selectFields;
 				}
 			});
 		},
