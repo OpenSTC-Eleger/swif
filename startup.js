@@ -101,6 +101,8 @@ requirejs.config({
 		aboutView               : 'js/views/others/AboutView',
 		advancedSelectBoxView   : 'js/views/others/AdvancedSelectBoxView',
 		teamMembersAndServices  : 'js/views/others/TeamMembersAndServices',
+		advancedFiltersBarView  : 'js/views/others/AdvancedFiltersBarView',
+		inputFieldView  		: 'js/views/others/InputFieldView',
 
 		// Lists //
 		genericListView         : 'js/views/lists/GenericListView',

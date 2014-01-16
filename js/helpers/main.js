@@ -2,11 +2,16 @@ define('appHelpers', [
 
 	'app',
 	'userModel',
+	
+	'advancedSelectBoxView',
+	'inputFieldView',
+	
+	'claimersServicesCollection',
 
 	'moment-timezone',
 	'moment-timezone-data'
 
-], function(app, UserModel, moment, momentTZData){
+], function(app, UserModel, AdvancedSelectBoxView, InputFieldView, ClaimersServicesCollection, moment, momentTZData){
 
 
 	/******************************************
@@ -135,11 +140,13 @@ define('appHelpers', [
 				_.each(fieldsFilters, function (filter, index) {
 					switch (filter.type) {
 						case 'numeric':
+						case 'many2one':
 							if (isNumber(searchQuery.search)) {
 								convertedFilters.push(convertFilter(filter, '='));
 							}
 							break;
 						case 'text':
+						case 'char':
 							convertedFilters.push(convertFilter(filter, 'ilike'));
 							break;
 					}
@@ -186,6 +193,36 @@ define('appHelpers', [
 			return app.objectifyFilters(search);
 		},
 		
+		/** Calcul the filter IHM of the page (specific to model)
+		*/
+		addfilter: function (field) {			
+			switch (field.type) {
+				case 'text':
+				case 'char':
+//					if(field.key == 'name')	
+//						return new InputFieldView({el: $("#"+field.key), collection: ClaimersServicesCollection.prototype,  field:field })
+					break;
+				case 'many2one':
+					if(field.key == 'service_id')					
+						return new AdvancedSelectBoxView({el: $("#"+field.key), collection: ClaimersServicesCollection.prototype,  field:field })
+					break;				
+			}
+		},
+		
+		getFilterDomain: function(component) {
+			var field = component.field;			
+			switch (field.type) {
+				case 'text':
+				case 'char':
+//					if(field.key == 'name')	
+//						return { field : field.key , 'ilike' : 'in', value: component.val() } 
+					break;
+				case 'many2one':
+					if(field.key == 'service_id')					
+						return { field : field.key + '.id', 'operator' : 'in', value: component.getSelectedItems() } 
+					break;			
+			}			
+		},
 
 
 		printError: function (e) {

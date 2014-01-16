@@ -20,8 +20,9 @@ define([
 
 		/** View Initialization
 		*/
-		initialize: function(){
+		initialize: function(options){
 			this.select2 = $(this.el);
+			this.field = options.field;
 		},
 
 

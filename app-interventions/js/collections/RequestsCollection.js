@@ -30,6 +30,9 @@ define([
 		*/
 		initialize: function (options) {
 			//console.log('Requests collection Initialization');
+			return $.when(
+					this.metadata()
+				);			
 		},
 
 
@@ -59,10 +62,34 @@ define([
 				data     : {filters: app.objectifyFilters(domain)},
 				success  : function(data, status, request){
 					var contentRange = request.getResponseHeader("Content-Range")
-					self.specialCpt = contentRange.match(/\d+$/);
+					self.specialCpt = contentRange.match(/\d+$/);					
 				}
 			});
 			
+		},
+		
+		metadata: function(options) {
+			var self = this;
+
+
+			return $.ajax({
+				url      : this.url,
+				method   : 'HEAD',
+				dataType : 'text',
+				async	 : false,
+				data     : {},
+				success  : function(data,status,request){
+					var fields = JSON.parse(request.getResponseHeader("Model-Fields"));
+					var selectFields = GenericCollection.prototype.searchable_fields
+					_.each(fields, function(v,k){
+						if (v.select == true) {
+							v.key = k
+							selectFields.push( v )										
+						}
+					})
+					RequestsCollection.prototype.searchable_fields = selectFields;
+				}
+			});
 		},
 		
 
@@ -74,7 +101,7 @@ define([
 			options.data.fields = this.fields;
 
 			return $.when(
-				this.count(options),
+				this.count(options),				
 				(app.current_user.isDST() || app.current_user.isManager() ? this.specialCount() : ''),
 				Backbone.sync.call(this,method,this,options)
 			);
