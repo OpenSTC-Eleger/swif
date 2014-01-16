@@ -307,7 +307,8 @@
 		"sufficientRights"              : "Vous n'avez pas les droits suffisants pour éffectuer cette action",
 		"codeNameUniq"                  : "Ce code existe déjà",
 		"catMustBeUniq"                 : "Cette Catégorie existe déjà! Changer le nom ou sa catégorie d'appartenance",
-		"passwordsDontMatch"            : "Les mots de passe sont différents"
+		"passwordsDontMatch"            : "Les mots de passe sont différents",
+		"passwordRules"                 : "Le mot de passe doit contenir au moins 7 caractères"
 	},
 
 	"validationMessages" : {

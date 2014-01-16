@@ -102,8 +102,7 @@ define([
 					});
 			}
 			else{
-				$('#confirmPasswordGroup').addClass('has-error');
-				$('#confirmPasswordGroup .help-block').removeClass('hide');
+
 			}
 		},
 
@@ -112,7 +111,38 @@ define([
 		/** Calcul the area of the place
 		*/
 		checkPassword: function (e) {
+
+			if(this.checkPasswordRules() && this.checkPasswordsMatch()){
+				return true;
+			} 
+			else{
+				return false;
+			}
+
+		},
+
+
+
+		/** Check if the password filled the rules right
+		*/
+		checkPasswordRules: function(){
+			if($('#newPassword').val().length < 7){
+				$('#newPasswordGroup').addClass('has-error');
+				return false;
+			}
+			else{
+				$('#newPasswordGroup').removeClass('has-error');
+				return true;
+			}
+		},
+
+		/** Check if the new password and the confirmation are equals
+		*/
+		checkPasswordsMatch: function(){
 			if($('#newPassword').val() != $('#confirmPassword').val()){
+				$('#confirmPasswordGroup').addClass('has-error');
+				$('#confirmPasswordGroup .help-block').removeClass('hide');
+
 				return false;
 			}
 			else{
