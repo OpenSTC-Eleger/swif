@@ -23,7 +23,10 @@ define([
 		events: function(){
 			return _.defaults({
 				'change #placeWidth, #placeLength' : 'checkPassword',
-				'submit #formResetPassword'        : 'resetPassword'
+				'submit #formResetPassword'        : 'resetPassword',
+				
+				'mousedown #toggleDisplayPassword' : 'displayPassword',
+				'mouseup #toggleDisplayPassword'   : 'hidePassword'
 			}, 
 				GenericModalView.prototype.events
 			);
@@ -59,6 +62,8 @@ define([
 				});
 
 				self.modal.html(template);
+
+				$('*[data-toggle="tooltip"]').tooltip({ container: '.form-group' });
 
 				self.modal.modal('show');
 			});
@@ -103,6 +108,23 @@ define([
 		checkPassword: function (e) {
 			console.log($('#newPassword').val());
 			console.log($('#confirmPassword').val());
+		},
+
+
+
+		/** Display the password
+		*/
+		displayPassword: function(e){
+			$('#newPassword, #confirmPassword').prop('type', 'text');
+			$(e.target).removeClass('fa-eye').addClass('fa-eye-slash');
+		},
+
+		/** Hide the password
+		*/
+		hidePassword: function(e){
+			$('#newPassword, #confirmPassword').prop('type', 'password');
+			$('#newPassword').focus();
+			$(e.target).removeClass('fa-eye-slash').addClass('fa-eye');
 		}
 
 	});

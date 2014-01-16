@@ -1,11 +1,15 @@
 /* Input group addons Inner
 -------------------------------------------------- */
+.input-group-inner{
+	.form-control:first-child{
+		.border-right-radius(@border-radius-base);
+	}
+}
+
 .input-group-addon-inner{
-	height: 45px;
 	position: absolute;
 	padding: @padding-large-vertical @padding-large-horizontal;
 	right: @padding-large-horizontal/2;
-	margin-top: 2px;
 
 	i{
 		cursor: pointer;
@@ -13,9 +17,18 @@
 	}
 }
 
+.input-group{
+	> .input-group-addon-inner{
+		height: @input-height-base;
+		top: -3px;
+	}
 
-#passUser{
-	.border-right-radius(@border-radius-large);
+	&-lg{
+		> .input-group-addon-inner{
+			height: @input-height-large;
+			top: 2px;
+		}
+	}
 }
 
 
