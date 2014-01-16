@@ -289,7 +289,7 @@ define([
 
 
 			// On Place //
-			if($('#switchPlaceEquipment').bootstrapSwitch('status')){
+			if($('#switchPlaceEquipment').bootstrapSwitch('state')){
 				//this.model.setOnEquipment(false, true);
 				params.has_equipment = false;
 			}
@@ -301,7 +301,7 @@ define([
 			}
 
 			// From Citizen //
-			if($('#switchCitizen').bootstrapSwitch('status')){
+			if($('#switchCitizen').bootstrapSwitch('state')){
 				//this.model.setFromCitizen(true, true);
 				params.is_citizen   = true;
 				params.people_name  = $('#requestContactName').val();

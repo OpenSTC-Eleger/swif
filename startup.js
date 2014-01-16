@@ -25,7 +25,7 @@ requirejs.config({
 		pnotify               : 'js/libs/pnotify-1.2.0',
 		bootstrap             : 'js/libs/bootstrap-3.0.2',
 		bsDatepicker          : 'js/libs/bootstrap-datepicker-1.1.1',
-		bsSwitch              : 'js/libs/bootstrap-switch-1.8.0',
+		bsSwitch              : 'js/libs/bootstrap-switch-2.0.0',
 		bsTimepicker          : 'js/libs/bootstrap-timepicker-0.2.3',
 		fullcalendar          : 'js/libs/fullcalendar-1.6.4',
 		select2               : 'js/libs/select2-3.4.5-min',
