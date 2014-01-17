@@ -93,16 +93,18 @@ requirejs.config({
 		/* #############
 		* Views
 		*/
-		headerView              : 'js/views/others/HeaderView',
-		footerView              : 'js/views/others/FooterView',
-		loginView               : 'js/views/others/LoginView',
-		paginationView          : 'js/views/others/PaginationView',
-		notFoundView            : 'js/views/others/NotFoundView',
-		aboutView               : 'js/views/others/AboutView',
-		advancedSelectBoxView   : 'js/views/others/AdvancedSelectBoxView',
-		teamMembersAndServices  : 'js/views/others/TeamMembersAndServices',
-		advancedFiltersBarView  : 'js/views/others/AdvancedFiltersBarView',
-		inputFieldView  		: 'js/views/others/InputFieldView',
+		headerView              	: 'js/views/others/HeaderView',
+		footerView              	: 'js/views/others/FooterView',
+		loginView               	: 'js/views/others/LoginView',
+		paginationView          	: 'js/views/others/PaginationView',
+		notFoundView            	: 'js/views/others/NotFoundView',
+		aboutView               	: 'js/views/others/AboutView',
+		advancedSelectBoxView   	: 'js/views/others/AdvancedSelectBoxView',
+		teamMembersAndServices  	: 'js/views/others/TeamMembersAndServices',
+		advancedFiltersBarView  	: 'js/views/others/AdvancedFiltersBarView',
+		inputFieldView  			: 'js/views/others/InputFieldView',
+		fieldContainerView  		: 'js/views/others/FieldContainerView',
+		dynamicAdvancedSelectBoxView: 'js/views/others/DynamicAdvancedSelectBoxView',
 
 		// Lists //
 		genericListView         : 'js/views/lists/GenericListView',

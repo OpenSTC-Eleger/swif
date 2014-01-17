@@ -41,6 +41,7 @@ define([
 
 				var template = _.template(templateData, {
 					lang             : app.lang,
+					name			 : self.field.key, 
 
 				});
 

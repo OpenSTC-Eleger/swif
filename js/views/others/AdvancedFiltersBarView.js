@@ -5,8 +5,9 @@ define([
 	'claimersServicesCollection',
 
 	'advancedSelectBoxView',
+	'fieldContainerView'
 
-], function(app, AppHelpers, ClaimersServicesCollection, AdvancedSelectBoxView){
+], function(app, AppHelpers, ClaimersServicesCollection, AdvancedSelectBoxView, FieldContainerView){
 
 	'use strict';
 
@@ -17,6 +18,7 @@ define([
 	var AdvancedFiltersBarView = Backbone.View.extend({
 		
 		templateHTML : 'others/advancedFiltersBar.html',
+		
 		
 		// The DOM events //
 		events: function(){
@@ -58,16 +60,11 @@ define([
 					$('#divTable').addClass('span10');
 				}
 				
-				//Build filters IHM : AppHelpers.buildfiltersIHM
-				self.components = []
-				_.each(self.searchableFields, function(field,i){
-					var component = AppHelpers.addfilter(field);					
-					if(!_.isUndefined(component)) {
-						component.render();
-						self.components.push(component)						
-					}
-				})
-			
+				
+				self.fieldContainerView = new FieldContainerView({ el: $(".field-container"), searchableFields : self.searchableFields} )
+				self.fieldContainerView.render();
+				//$(".field-container").append(self.fieldContainerView.render().el);
+
 				$('#navbar li:not(.nav-header)').first().addClass('active');
 
 
@@ -84,14 +81,14 @@ define([
 		*/
 		applyFilterForm: function(e){
 			e.preventDefault();
+			var self = this;
 
 			var filters = []
-
-			_.each(this.components, function(c) {
+		    var size = _.size(this.fieldContainerView.components)
+			_.each(self.fieldContainerView.components, function(c,i) {
 				var filter = AppHelpers.getFilterDomain(c);
 				if(!_.isUndefined(filter)) {
 					filters.push(filter)
-					//filters.push('|');
 				}
 			})
 
