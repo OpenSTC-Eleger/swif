@@ -14,14 +14,12 @@
 
 			<!-- Citizen BS-switch -->
 			<div class="form-group">
-				<label for="isCitizen" class="control-label col-sm-3"><%= _.capitalize(lang.citizen) %>:</label>
+				<label for="bookingIsCitizen" class="control-label col-sm-3"><%= _.capitalize(lang.citizen) %>:</label>
 		
 				<div class="col-sm-9">
-					<div class="make-switch" id="bookingIsCitizen" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
-						<input id="isCitizen" type="checkbox"
+					<input type="checkbox" class="make-switch" id="bookingIsCitizen" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"
 							<% if(!_.isNull(booking.getId())){ if(booking.fromCitizen()) { %> checked <% } } %>
-						>
-					</div>
+						/>
 				</div>
 			</div>
 			
@@ -98,15 +96,12 @@
 			
 			<!-- whole_day flag -->
 			<div class="form-group">
-				<label for="wholeDay" class="control-label col-sm-3"><%= _.capitalize(lang.resa.wholeDay) %>:</label>
+				<label for="bookingWholeDay" class="control-label col-sm-3"><%= _.capitalize(lang.resa.wholeDay) %>:</label>
 		
 				<div class="col-sm-9">
-					<div class="make-switch" id="bookingWholeDay" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
-						<input id="wholeDay" type="checkbox"
-		
+					<input type="checkbox" class="make-switch" id="bookingWholeDay" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"
 							<% if(!_.isNull(booking.getId())){ if(booking.getAttribute('whole_day',false)) { %> checked <% } } %>
-					>
-					</div>
+					/>
 				</div>
 			</div>
 
@@ -177,14 +172,12 @@
 			<legend><%= lang.resa.recurrenceSetting%></legend>
 			
 			<div class="form-group">
-				<label for="addRecurrence" class="control-label col-sm-3"><%= _.capitalize(lang.resa.recurrenteBooking) %>:</label>
+				<label for="bookingAddRecurrence" class="control-label col-sm-3"><%= _.capitalize(lang.resa.recurrenteBooking) %>:</label>
 		
 				<div class="col-sm-9">
-					<div class="make-switch" id="bookingAddRecurrence" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
-						<input id="addRecurrence" type="checkbox"
+					<input type="checkbox" class="make-switch" id="bookingAddRecurrence" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"
 							<% if(!_.isNull(booking.getId())){ if(booking.getRecurrence()) { %> checked <% } } %>
-						>
-					</div>
+						/>
 				</div>
 			</div>
 
