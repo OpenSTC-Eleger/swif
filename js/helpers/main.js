@@ -192,34 +192,21 @@ define('appHelpers', [
 			}
 			return app.objectifyFilters(search);
 		},
+
 		
-		/** Calcul the filter IHM of the page (specific to model)
+		/** Calcul the filter IHM of the page for slected input component (specific to model)
 		*/
-		addfilter: function (field) {			
-			switch (field.type) {
-				case 'text':
-				case 'char':
-//					if(field.key == 'name')	
-//						return new InputFieldView({el: $("#"+field.key), collection: ClaimersServicesCollection.prototype,  field:field })
-					break;
-				case 'many2one':
-					if(field.key == 'service_id')					
-						return new AdvancedSelectBoxView({el: $("#"+field.key), collection: ClaimersServicesCollection.prototype,  field:field })
-					break;				
-			}
-		},
-		
 		getFilterDomain: function(component) {
 			var field = component.field;			
 			switch (field.type) {
 				case 'text':
 				case 'char':
-//					if(field.key == 'name')	
-//						return { field : field.key , 'ilike' : 'in', value: component.val() } 
+					if($(component.el).val() != '')	
+						return { field : field.key , 'operator' : 'ilike', value: $(component.el).val() } 
 					break;
 				case 'many2one':
-					if(field.key == 'service_id')					
-						return { field : field.key + '.id', 'operator' : 'in', value: component.getSelectedItems() } 
+					if(_.size(component.getSelectedItems())>0 )
+						return { field : field.key + '.id', 'operator' : 'in', value: component.getSelectedItems() }  //[$(component.el).val()]
 					break;			
 			}			
 		},

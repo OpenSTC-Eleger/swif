@@ -115,11 +115,10 @@ define([
 					collection : self.collection
 				})
 				
-				if(!_.isUndefined(this.formAdvancedFiltersBarView)) {
-					this.formAdvancedFiltersBarView = new AdvancedFiltersBarView(this.options, this.collection, RequestsCollection.prototype.searchable_fields);
-					$('#advanced-filters-bar').append(this.formAdvancedFiltersBarView.render().el);
-				}
 
+				if( !_.isNull(self.formAdvancedFiltersBarView)) {
+					self.formAdvancedFiltersBarView.remove();
+				}
 				
 				// Render Filter Link on the Table //
 				if(!_.isUndefined(self.options.filter)){
@@ -269,12 +268,15 @@ define([
 		},
 		
 		displayAdvancedfilters: function(e){
-			e.preventDefault();		
-			//build filter IHM
-			if(!_.isUndefined(this.formAdvancedFiltersBarView)) {
-				this.formAdvancedFiltersBarView = new AdvancedFiltersBarView(this.options, this.collection, RequestsCollection.prototype.searchable_fields);
-				$('#advanced-filters-bar').append(this.formAdvancedFiltersBarView.render().el);
+			e.preventDefault();	
+			if( !_.isNull(this.formAdvancedFiltersBarView)) {
+				this.formAdvancedFiltersBarView.remove();
 			}
+			//build filter IHM
+			//if(_.isUndefined(this.formAdvancedFiltersBarView) || _.isNull(this.formAdvancedFiltersBarView)) {
+			this.formAdvancedFiltersBarView = new AdvancedFiltersBarView(this.options, this.collection, RequestsCollection.prototype.searchable_fields);
+			$('#advanced-filters-bar').append(this.formAdvancedFiltersBarView.render().el);
+			//}
 		
 		},
 
