@@ -30,11 +30,11 @@ define(['app',
 				var classRow = 'row-nested-objects';
 				if(this.model.getAvailable()){
 					classRow += ' ' + BookingLineModel.status.dispo.color;
-					return classRow;
 				}
 				else{
-					return classRow += ' ' + BookingLineModel.status.not_dispo.color;
+					classRow += ' ' + BookingLineModel.status.not_dispo.color;
 				}
+				return classRow;
 			},
 	
 		templateHTML : '/templates/forms/itemFormBookingLine.html',
@@ -64,10 +64,11 @@ define(['app',
 	
 		/** When the model is updated //
 		*/
-		change: function(e){
+		change: function(e,options){
+			console.log(options);
 			$(this.el).attr('class',this.className());
 			this.render();
-			AppHelpers.highlight($(this.el));
+			//AppHelpers.highlight($(this.el));
 			//app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
 		},
 	
@@ -81,7 +82,7 @@ define(['app',
 		/**Compute popover value
 		 */
 		popoverValue: function(){
-			if(!this.model.getAvailable()){
+			if(!this.model.getAvailable() && this.model.getParentBookingModel().hasActions('update')){
 				var qty = parseInt(this.model.getAvailableQtity());
 				if(qty < 0){
 					qty = 0;

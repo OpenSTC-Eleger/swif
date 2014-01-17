@@ -1,16 +1,16 @@
 <div class="page-header">
-	<h1>
-		<%= pageTitle %>
-	</h1>
+	<h1><%= pageTitle %></h1>
 </div>
 
-	
-<form id="formSaveBooking" action="#" class="form-horizontal container" role="form">
-	
+
+<form id="formSaveBooking" action="#" class="form-horizontal container"
+	role="form">
+
 	<div class="row">
 
-		<fieldset class="col-sm-6" <%= readonly ? 'disabled' : ''%>>
-		<legend><%= lang.resa.generalInfos%></legend>
+		<fieldset class="col-sm-6"
+			<%= readonly ? 'disabled' : ''%>>
+			<legend><%= lang.resa.generalInfos%></legend>
 
 			<!-- Citizen BS-switch -->
 			<div class="form-group">
@@ -163,7 +163,7 @@
 			</table>
 
 			<!-- Add a bookable -->
-			<div class="form-group">
+			<div class="form-group<%= readonly ? ' hide-soft' : ''%>">
 				<label for="bookingAddBookable" class="control-label col-sm-3"><%= _.capitalize(lang.resa.actions.addABookable) %>:</label>
 	
 				<div class="col-sm-9">
@@ -173,7 +173,8 @@
 		</fieldset>
 
 		<!-- Récurrence -->
-		<fieldset class="col-sm-6">
+		<fieldset class="col-sm-6"
+			<%= readonly ? 'disabled' : ''%>>
 			<legend><%= lang.resa.recurrenceSetting%></legend>
 			
 			<div class="form-group">
@@ -193,13 +194,16 @@
 
 	</div>
 
-	<hr/>
+	<hr />
 
 	<!-- Form Actions -->
 	<div class="row">
 		<div class="text-center">
-			<button type="submit" class="btn btn-primary btn-lg" form="formSaveBooking" id="saveFormBooking"><%= _.capitalize(lang.actions.save) %></button>&nbsp;
-			<a href="#app-reservations/reservations" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+			<button type="submit" class="btn btn-primary btn-lg"
+				form="formSaveBooking" id="saveFormBooking"><%=
+				_.capitalize(lang.actions.save) %></button>
+			&nbsp; <a href="#app-reservations/reservations" aria-hidden="true"><%=
+				_.capitalize(lang.actions.cancel) %></a>
 		</div>
 	</div>
 </form>

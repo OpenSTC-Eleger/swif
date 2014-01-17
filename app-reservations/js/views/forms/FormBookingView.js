@@ -65,6 +65,18 @@ define(['app',
 			'switch-change #bookingIsCitizen'	: 'changeIsCitizen',
 			'switch-change #bookingWholeDay'	: 'changeWholeDay',
 		},
+		/** 
+		 *@param id: id of Booking to route to
+		 *@return: url to call to go to specified Booking (or to create new Booking if id is not set)
+		*/
+		urlBuilder: function(id){
+			var url = _.strLeft(app.routes.formReservation.url, '(');
+			var params = '';
+			if(!_.isUndefined(id)){
+				params = 'id/' + id.toString();
+			}
+			return _.join('/','#' + url, params);
+		},
 		
 		initializeWithNonPersistedModel: function(){
 			var self = this;
@@ -86,13 +98,8 @@ define(['app',
 				//fetch and render recurrence if exists
 				if(self.model.getRecurrence() != false){
 					var recurrence = new BookingRecurrenceModel({id:self.model.getRecurrence('id')});
-					if(self.model.isTemplate()){
-						recurrence.setTemplate(self.model);
-						waitDeferred.push(recurrence.fetch());
-					}
-					else{
-						self.model.recurrence = recurrence;
-					}
+					waitDeferred.push(recurrence.fetch());
+					recurrence.setTemplate(self.model);
 				}
 				$.when.apply(self, waitDeferred).done(function(){
 					app.router.render(self);
@@ -172,8 +179,9 @@ define(['app',
 	    //compute display of button addRecurrence (readonly or visible)
 	    updateDisplayAddRecurrence: function(){
 	    	var elt = $('#bookingAddRecurrence');
-	    	var isHidden = this.recurrence != null && !this.isTemplate();
-	    	
+	    	//@TODO: remove isHidden when tests are finished
+	    	//var isHidden = this.recurrence != null && !this.isTemplate();
+	    	var isHidden = true;
 	    	if(!isHidden && this.isEditable() && this.model.lines.length > 0){
     			elt.bootstrapSwitch('setActive',true);
     		}
@@ -369,7 +377,7 @@ define(['app',
 		    		reserve_product:[bookable_id, bookable_name],
 					pricelist_amount:0});
 		    	lineModel.setQuantity(1);
-		    	lineModel.bookable = new BookableModel({id:bookable_id});
+		    	
 		    	//reset selection to be able to add another bookable to booking
 		    	app.views.selectListAddBookableView.reset();
 		    	

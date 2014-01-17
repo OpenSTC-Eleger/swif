@@ -5,7 +5,8 @@ define([
 	'bookingModel',
 	
 	'modalUpdateBookingView',
-	'modalCancelBookingView'
+	'modalCancelBookingView',
+	'itemFormBookingOccurrenceView'
 
 ], function(app, AppHelpers, BookingModel, ModalUpdateBookingView, ModalCancelBookingView){
 
@@ -74,7 +75,6 @@ define([
 		render : function() {
 			var self = this;
 	
-	
 			// Retrieve the template // 
 			$.get(app.menus.openresa + this.templateHTML, function(templateData){
 	
@@ -87,7 +87,7 @@ define([
 					bookingsState     	   : BookingModel,
 					booking          	   : self.model,
 					BookingModel			: BookingModel,
-                    downloadToken : app.current_user.get('authToken')
+                    downloadToken : app.current_user.get('authToken'),
 				});
 	
 				$(self.el).html(template);

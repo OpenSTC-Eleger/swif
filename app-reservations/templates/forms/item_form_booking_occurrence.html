@@ -1,22 +1,17 @@
-<!-- Checkin-->
-<td>
-	<%= booking.getStartDate('human')%>
+<!-- ID -->
+<td><% if(bookingUrl != ''){ %> <a href="<%= bookingUrl%>"
+	class="goToBooking"> #<%= booking.getId()%> </a> <% } else{%> <% }%>
 </td>
+<!-- Checkin-->
+<td><%= booking.getStartDate('human')%></td>
 
 <!-- Checkout-->
-<td>
-	<%= booking.getEndDate('human')%>
-</td>
+<td><%= booking.getEndDate('human')%></td>
 
 <!-- Amount (if pricing)-->
-<td>
-	<%= booking.getAmount()%>
-</td>
+<td><%= booking.getAmount()%></td>
 
 <!-- Available Y/N-->
-<td>
-	<i class="fa <%= booking.getAllDispo() ? bookingStat.confirm.icon: bookingStat.cancel.icon%>"></i>
-	<a href="#" class="removeLine" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">
-		<i class="fa fa-trash-o fa-lg">&nbsp;</i>
-	</a>	
-</td>
+<td><i
+	class="fa <%= booking.getAllDispo() ? bookingStat.confirm.icon: bookingStat.cancel.icon%>"></i>
+	<button class="removeLine close" type="button">&times;</button></td>
