@@ -9,8 +9,11 @@
 	
 	<div class="row">
 
-		<fieldset class="col-sm-6" <%= readonly ? 'disabled' : ''%>>
-		<legend><%= lang.resa.generalInfos%></legend>
+		<!-- Left Panel -->
+		<div class="col-sm-6">
+
+		<fieldset>
+		<legend><span class="text-info">1</span> - <%= lang.aboutTheRequestClaimer %></legend>
 
 			<!-- Citizen BS-switch -->
 			<div class="form-group">
@@ -45,38 +48,64 @@
 
 			<!-- Citizen infos -->
 			<div id="citizenInfos">
+
 				<div class="form-group">
 					<label for="bookingPeopleName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 					<div class="col-sm-9">
 						<input type="text" id="bookingPeopleName" name="peopleName" class="form-control" value="<%= booking.getCitizenName()%>"/>
 					</div>	
 				</div>
+
 				<div class="form-group">
 					<label for="bookingPeopleStreet" class="control-label col-sm-3"><%= _.capitalize(lang.resa.contactDetails) %>:</label>
-						<div class="input-group col-sm-9">
+						
+					<div class="col-sm-9">
+						<div class="input-group">
 							<label class="input-group-addon"><%= _.capitalize(lang.street) %></label>
 							<input type="text" id="bookingPeopleStreet" name="peopleStreet" class="form-control" value="<%= booking.getAttribute('people_street','')%>"/>
 						</div>
-						<div class="col-sm-3"/>
-						<div class="input-group col-md-4">
+					</div>
+
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-4 col-sm-offset-3">
+						<div class="input-group">
 							<label for="bookingPeopleZip" class="input-group-addon"><%= _.capitalize(lang.zip) %></label>
 							<input type="text" id="bookingPeopleZip" name="peopleZip" class="form-control" value="<%= booking.getAttribute('people_zip','')%>"/>
 						</div>
-						<div class="input-group col-md-5">
+					</div>
+
+					<div class="col-sm-5">
+						<div class="input-group">
 							<label for="bookingPeopleCity" class="input-group-addon"><%= _.capitalize(lang.city) %></label>
 							<input type="text" id="bookingPeopleCity" name="peopleCity" class="form-control" value="<%= booking.getAttribute('people_city','')%>"/>
 						</div>
-						<div class="col-sm-3"/>
-						<div class="input-group col-md-4">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-3 col-sm-offset-3">
+						<div class="input-group">
 							<label for="bookingPeoplePhone" class="input-group-addon"><%= _.capitalize(lang.phone) %></label>
 							<input type="phone" id="bookingPeoplePhone" name="peoplePhone" class="form-control" value="<%= booking.getCitizenPhone()%>"/>
 						</div>
-						<div class="input-group col-md-5">
+					</div>
+					
+					<div class="col-sm-5">
+					<div class="input-group">
 							<label for="bookingPeopleMail" class="input-group-addon"><%= _.capitalize(lang.email) %></label>
 							<input type="email" id="bookingPeopleMail" name="peopleMail" class="form-control" value="<%= booking.getAttribute('partner_mail','')%>"/>
 						</div>
+					</div>
 				</div>
+
 			</div>
+		</fieldset>
+
+		<fieldset <%= readonly ? 'disabled' : ''%>>
+		<legend><span class="text-info">2</span> - <%= lang.resa.generalInfos%></legend>
+
 
 			<!-- booking name -->
 			<div class="form-group">
@@ -109,38 +138,61 @@
 			<!-- booking checkin -->
 			<div class="form-group">
 				<label for="bookingCheckin" class="control-label col-sm-3"><%= _.capitalize(lang.dateStart) %>:</label>
-				<!-- checkin date -->
-				<div class="input-group col-sm-4">
-					<input type="text" class="datepicker form-control" id="bookingCheckin" value="<%= startDate%>" placeholder="dd/mm/yyyy" required="required">
-					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-				</div>
 
-				<!-- checkin hour -->
-				<div id="blockBookingCheckinHour" class="input-group bootstrap-timepicker col-sm-3">							
-					<input type="text" class="timepicker-default form-control" id='bookingCheckinHour' value="<%= startHour%>" required="required">
-					<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+				<div class="col-sm-9">
+				<div class="row">
+
+					<!-- checkin date -->
+					<div class="col-sm-5">
+					<div class="input-group">
+						<input type="text" class="datepicker form-control" id="bookingCheckin" value="<%= startDate%>" placeholder="dd/mm/yyyy" required="required">
+						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+					</div>
+					</div>
+
+					<!-- checkin hour -->
+					<div class="col-sm-4">
+					<div id="blockBookingCheckinHour" class="input-group bootstrap-timepicker">
+						<input type="text" class="timepicker-default form-control" id='bookingCheckinHour' value="<%= startHour%>" required="required">
+						<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+					</div>
+					</div>
+
+				</div>
 				</div>
 			</div>
 			
 			<!-- booking checkout -->
 			<div class="form-group">
 				<label for="bookingCheckout" class="control-label col-sm-3"><%= _.capitalize(lang.dateEnd) %>:</label>
+
+				<div class="col-sm-9">
+				<div class="row">
+
 				<!-- checkout date -->
-				<div class="input-group col-sm-4">
-					<input type="text" class="datepicker form-control" id="bookingCheckout" value="<%= endDate%>" placeholder="dd/mm/yyyy" required="required">
-					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				<div class="col-sm-5">
+					<div class="input-group">
+						<input type="text" class="datepicker form-control" id="bookingCheckout" value="<%= endDate%>" placeholder="dd/mm/yyyy" required="required">
+						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+					</div>
 				</div>
 
 				<!-- checkout hour -->
-				<div id="blockBookingCheckoutHour" class="input-group bootstrap-timepicker col-sm-3">							
-					<input type="text" class="timepicker-default form-control" id='bookingCheckoutHour' value="<%= endHour%>" required="required">
-					<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+				<div class="col-sm-4">
+					<div id="blockBookingCheckoutHour" class="input-group bootstrap-timepicker">
+						<input type="text" class="timepicker-default form-control" id='bookingCheckoutHour' value="<%= endHour%>" required="required">
+						<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+					</div>
+				</div>
+
+				</div>
 				</div>
 			</div>
 
+	</fieldset>
 
-
-		<legend><%= lang.resa.bookablesOrdered%></legend>
+	<fieldset>
+		<legend><span class="text-info">3</span> - <%= lang.resa.bookablesOrdered%></legend>
 			
 			<!-- Recap of BookingLines -->
 			<table class="table table-striped table-condensed table-hover table-vertical-center">
@@ -167,9 +219,14 @@
 			</div>
 		</fieldset>
 
+	</div>
+	<!-- /Left Panel -->
+
+	<div class="col-sm-6">
+
 		<!-- Récurrence -->
-		<fieldset class="col-sm-6">
-			<legend><%= lang.resa.recurrenceSetting%></legend>
+		<fieldset>
+			<legend><span class="text-info">4</span> - <%= lang.resa.recurrenceSetting%></legend>
 			
 			<div class="form-group">
 				<label for="bookingAddRecurrence" class="control-label col-sm-3"><%= _.capitalize(lang.resa.recurrenteBooking) %>:</label>
@@ -189,10 +246,11 @@
 	<hr/>
 
 	<!-- Form Actions -->
-	<div class="row">
-		<div class="text-center">
+	<div class="col-sm-12 well">
+		<div class="text-center ">
 			<button type="submit" class="btn btn-primary btn-lg" form="formSaveBooking" id="saveFormBooking"><%= _.capitalize(lang.actions.save) %></button>&nbsp;
 			<a href="#app-reservations/reservations" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
 		</div>
 	</div>
+
 </form>
