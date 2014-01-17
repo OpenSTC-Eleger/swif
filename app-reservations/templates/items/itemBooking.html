@@ -14,7 +14,7 @@
 	<p class="row-actions invisible">
 
 		<% if(booking.getState() == BookingModel.status.remplir.key) { %>
-		&nbsp;<a href="#" class="buttonCancelBooking " data-toggle="modal"><i class="fa fa-ban fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
+		&nbsp;<a href="#" class="buttonCancelBooking " data-toggle="modal"><i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i></a> 
 		<% } %>
 
         <% if (booking.get('invoice_attachment_id') != 0) { %>

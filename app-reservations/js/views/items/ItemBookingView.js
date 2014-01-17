@@ -40,24 +40,22 @@ define([
 			this.model.off();
 	
 			// When the model are updated //
-			this.listenTo(this.model, 'change', this.change);			
+			this.listenTo(this.model, 'change', this.change);
+			this.listenTo(this.model, 'destroy', this.destroy);
 		},
 	
-	
+		destroy: function(model){
+			var self = this;
+			AppHelpers.highlight($(this.el)).done(function(){
+				self.remove();
+				app.views.bookingsListView.partialRender();
+			});
+		},
 	
 		/** When the model ara updated //
 		*/
 		change: function(model){
-			var self = this;
-			if( !_.isBlank(model.getDeletedAt()) ) {
-				AppHelpers.highlight($(this.el)).done(function(){
-					self.remove();
-					//app.views.bookingsListView.partialRender();
-	
-				});			
-			}
-			else
-				self.render();
+			this.render();
 				
 			// Highlight the Row and recalculate the className //
 			//AppHelpers.highlight($(self.el)).done(function(){});
@@ -65,7 +63,7 @@ define([
 			//app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
 	
 			// Partial Render //
-			app.views.bookingsListView.partialRender();			
+			app.views.bookingsListView.partialRender();	
 		},
 	
 	
