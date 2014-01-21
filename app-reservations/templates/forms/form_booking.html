@@ -1,18 +1,17 @@
 <div class="page-header">
-	<h1>
-		<%= pageTitle %>
-	</h1>
+	<h1><%= pageTitle %></h1>
 </div>
 
-	
-<form id="formSaveBooking" action="#" class="form-horizontal container" role="form">
-	
+
+<form id="formSaveBooking" action="#" class="form-horizontal container"
+	role="form">
+
 	<div class="row">
 
 		<!-- Left Panel -->
 		<div class="col-sm-6">
 
-		<fieldset>
+		<fieldset <%= readonly ? 'disabled' : ''%>>
 		<legend><span class="text-info">1</span> - <%= lang.aboutTheRequestClaimer %></legend>
 
 			<!-- Citizen BS-switch -->
@@ -210,7 +209,7 @@
 			</table>
 
 			<!-- Add a bookable -->
-			<div class="form-group">
+			<div class="form-group<%= readonly ? ' hide-soft' : ''%>">
 				<label for="bookingAddBookable" class="control-label col-sm-3"><%= _.capitalize(lang.resa.actions.addABookable) %>:</label>
 	
 				<div class="col-sm-9">
@@ -221,11 +220,11 @@
 
 	</div>
 	<!-- /Left Panel -->
-
 	<div class="col-sm-6">
 
 		<!-- Récurrence -->
-		<fieldset>
+
+		<fieldset <%= readonly ? 'disabled' : ''%>>
 			<legend><span class="text-info">4</span> - <%= lang.resa.recurrenceSetting%></legend>
 			
 			<div class="form-group">
@@ -243,7 +242,7 @@
 
 	</div>
 
-	<hr/>
+	<hr />
 
 	<!-- Form Actions -->
 	<div class="col-sm-12 well">

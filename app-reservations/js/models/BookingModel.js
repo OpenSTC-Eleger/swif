@@ -60,7 +60,7 @@ define([
 		
 		getName: function(){
 			return this.get('name');
-		},		
+		},
 		
 		getCreateAuthor: function(type){
 			var val = this.getAttribute('create_uid', false);
@@ -567,9 +567,6 @@ define([
 			this.set({ partner_order_id : value }, {silent: silent});
 			if(value != false){
 				var contactModel = new ClaimerContactModel({id:value});
-				contactModel.fetch({data:{fields:['email']}}).done(function(){
-					self.setClaimerMail(contactModel.get('email'), false);
-				});
 			}
 		},
 
@@ -632,7 +629,7 @@ define([
 			return this.get('actions');
 		},
 		
-		hasActions: function(action){this.get('write_date')
+		hasActions: function(action){
 			return this.getActions().indexOf(action) > -1;
 		},
 		
@@ -662,9 +659,10 @@ define([
 					pricing = options.pricing;
 				}
 				if(!_.isUndefined(options.dispo)){
+					
 					dispo = options.dispo;
 				}
-			}			
+			}
 			var checkin = this.getStartDate();
 			var checkout = this.getEndDate();
 			var partner_id = this.getClaimer('id');
@@ -770,11 +768,7 @@ define([
 					state:'remplir'
 				});
 			};
-//			this.computeResources().done(function (data) {
-//				// self.set( {'resources' :  data.resources, 'description': data.description} , {silent:false} );	
-//				 //self.set( 'resources',  data.resources , {silent:true} );	
-//				 //self.set( 'description',  data.description , {silent:true} );	
-//			});	
+
 		},
 	
 	
