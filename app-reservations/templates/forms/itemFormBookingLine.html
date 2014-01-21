@@ -6,21 +6,21 @@
 <td><%= bookable.getName()%></td>
 
 <!-- Booking Line qty-->
-<td>
-	<input type="number" id="bookingLineQty" name="bookingLineQty" class="form-control input-sm" placeholder="" value="<%= line.getQuantity()%>" min="1" required="required"/>
-</td>
+<td><input type="number" id="bookingLineQty" name="bookingLineQty"
+	class="form-control input-sm" placeholder=""
+	value="<%= line.getQuantity()%>" min="1" required="required" /></td>
 
 <!-- Booking Line pricing-->
-<td>
-	<input type="number" id="bookingLinePricing" class="form-control input-sm" size="5" name="bookingLinePricing" placeholder="" value="<%= line.getPricing()%>" min="0" <%= user.isResaManager() ? '' : 'disabled'%>/>
-</td>
+<td><input type="number" id="bookingLinePricing"
+	class="form-control input-sm" size="5" name="bookingLinePricing"
+	placeholder="" value="<%= line.getPricing()%>" min="0"<%=
+	user.isResaManager() ? '' : 'disabled'%>/></td>
 
 <!-- Booking Line dispo-->
-<td class="text-center"><i class="fa <%= line.getAvailable() ? linesStat.dispo.icon: linesStat.not_dispo.icon%>"></i></td>
+<td class="text-center"><i
+	class="fa <%= line.getAvailable() ? linesStat.dispo.icon: linesStat.not_dispo.icon%>"></i></td>
 
 
 <td class="text-center">
-	<a href="#" class="removeLine" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>">
-		<i class="fa fa-trash-o fa-lg">&nbsp;</i>
-	</a>
+	<button type="button" class="removeLine close">&times;</button>
 </td>

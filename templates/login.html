@@ -1,38 +1,74 @@
 <!-- Connection Form -->
-<div class="container well" id="formConnectionContainer">
+<div class="flip-container col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4 vertical-offset-6" id="formConnectionContainer">
+	<div class="flipper">
 
+		
+		<!-- Front Login Form -->
+		<div class="front">
 
-	<h3 class="formHeading"><%= _.capitalize(lang.connection) %></h3>
+			<div class="panel panel-default shadow">
+				<div class="panel-heading"><h3 class="panel-title"><%= _.capitalize(lang.connection) %></h3></div>
 
-	<form id="formConnection" role="form">
-		<fieldset class="noMarginTop">
-	
-			<!-- Login -->
-			<div class="form-group">
-				<div class="input-group input-group-lg">
-					<label for="loginUser" class="input-group-addon"><i class="fa fa-user fa-lg fa-fw"></i></label>
-					<input type="text" id="loginUser" class="form-control" required placeholder="<%= _.capitalize(lang.login) %>" autocomplete="off" value="<%= user.getLogin() %>">
+				<div class="panel-body">
+					<form id="formConnection" role="form">
+
+						<!-- Login -->
+						<div class="form-group">
+							<div class="input-group input-group-lg">
+								<label for="loginUser" class="input-group-addon"><i class="fa fa-user fa-lg fa-fw"></i></label>
+								<input type="text" id="loginUser" class="form-control" required placeholder="<%= _.capitalize(lang.login) %>" autocomplete="off" value="<%= user.getLogin() %>">
+							</div>
+						</div>
+
+						<!-- Password -->
+						<div class="form-group">
+							<div class="input-group input-group-inner input-group-lg">
+								<label for="passUser" class="input-group-addon"><i class="fa fa-lock fa-lg fa-fw"></i></label>
+								<input type="password" id="passUser" class="form-control" required placeholder="<%= _.capitalize(lang.password) %>">
+								<span class="input-group-addon-inner"><i id="toggelDisplayPassword" class="fa fa-eye fa-fw fa-lg" data-toggle="tooltip" data-original-title="<%= lang.actions.displayPassword %>"></i>
+								</span>
+
+							</div>
+							<span id="errorLogin" class="help-block hide"><%= lang.errorMessages.loginIncorrect %></span>
+						</div>
+							<% if(!_.isNull(user.getUID())){ %>
+								<p class="help-block" id="lastConnection"><%= _.capitalize(lang.lastConnection) %>  <%= user.getLastConnection() %></p>
+							<% } %>
+
+							<button type="submit" class="btn btn-primary btn-block btn-lg" data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.connectionInProgress %>"><%= _.capitalize(lang.actions.logIn) %></button>
+							<a href="#" class="pull-right toggleFlip"><%= lang.forgottenPassword %></a>
+					</form>
 				</div>
 			</div>
 
-			<!-- Password -->
-			<div class="form-group">
-				<div class="input-group input-group-lg">
-					<label for="passUser" class="input-group-addon"><i class="fa fa-lock fa-lg fa-fw"></i></label>
-					<input type="password" id="passUser" class="form-control" required placeholder="<%= _.capitalize(lang.password) %>">
-					<span class="input-group-addon-inner"><i id="toggelDisplayPassword" class="fa fa-eye fa-lg" data-toggle="tooltip" data-original-title="<%= lang.actions.displayPassword %>"></i>
-					</span>
+		</div> <!-- /Front Login Form -->
 
+
+		<!-- Forgot password form -->
+		<div class="back">
+			
+			<div class="panel panel-default shadow">
+				<div class="panel-heading"><h3 class="panel-title"><%= lang.viewsTitles.resetPassword %></h3></div>
+
+				<div class="panel-body">
+					<form id="formResetPassword" role="form">
+
+						<!-- Login -->
+						<div class="form-group">
+							<div class="input-group input-group-lg">
+								<label for="loginUserFortgetPasword" class="input-group-addon"><i class="fa fa-user fa-lg fa-fw"></i></label>
+								<input type="text" id="loginUserFortgetPasword" class="form-control" required placeholder="<%= _.capitalize(lang.login) %>" autocomplete="off">
+							</div>
+						</div>
+
+						<button type="submit" class="btn btn-primary btn-block btn-lg disabled" data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.onnectionInProgress %>"><%= _.capitalize(lang.actions.resetPassword) %></button>
+							<a href="#" class="pull-right toggleFlip"><%= lang.connection %></a>
+					</form>
 				</div>
-				<span id="errorLogin" class="help-block hide"><%= lang.errorMessages.loginIncorrect %></span>
 			</div>
-				<% if(!_.isNull(user.getUID())){ %>
-					<p class="help-block" id="lastConnection"><%= _.capitalize(lang.lastConnection) %>  <%= user.getLastConnection() %></p>
-				<% } %>
 
-				<button type="submit" class="btn btn-primary btn-block btn-lg" data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.connectionInProgress %>"><%= _.capitalize(lang.actions.logIn) %></button>
+		</div> <!-- /Forgot password form -->
 
-		</fieldset>
-	</form>
 
+	</div>
 </div>

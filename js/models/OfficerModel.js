@@ -13,9 +13,9 @@ define([
 	*/
 	var OfficerModel = GenericModel.extend({
 
-		urlRoot : "/api/open_object/users",
+		urlRoot : '/api/open_object/users',
 
-		fields: ["complete_name", "contact_id", "context_lang", "context_tz", "date", "firstname", "groups_id", "current_group", "openresa_group", "id", "isDST", "isManager", "isResaManager", "lastname", "login", "name", "phone", "service_id", "service_names", "tasks", "team_ids", "user_email", "actions"],
+		fields: ['complete_name', 'contact_id', 'context_lang', 'context_tz', 'date', 'firstname', 'groups_id', 'current_group', 'openresa_group', 'id', 'isDST', 'isManager', 'isResaManager', 'lastname', 'login', 'name', 'phone', 'service_id', 'service_names', 'tasks', 'team_ids', 'user_email', 'actions'],
 
 
 		defaults:{
@@ -24,6 +24,18 @@ define([
 			isManager: false,
 			isResaManager: false
 		},
+
+
+		searchable_fields: [
+			{
+				key  : 'complete_name',
+				type : 'text'
+			},
+			{
+				key  : 'login',
+				type : 'text'
+			}
+		],
 
 	   
 		// Officer firstname //

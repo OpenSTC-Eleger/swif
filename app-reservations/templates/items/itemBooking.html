@@ -5,16 +5,16 @@
 	<a href="#" class="displayOccurences" data-toggle="tooltip" data-original-title="Afficher les occurences" data-action="reccurent"><i class="fa fa-repeat" data-action="reccurent"></i></a>&nbsp;
 	<% } %>
 
-	<!--<a href="#app-reservations/nouvelle-reservation/id/<%= booking.getId()%>" class="updateBooking">-->
+	<a href="#app-reservations/nouvelle-reservation/id/<%=booking.getId()%>" class="updateBooking">
 		<%= _.capitalize(_(booking.getName()).escapeHTML()) %>
-	<!--</a>-->
+	</a>
 
 	
 	<!-- Interventions action -->
 	<p class="row-actions invisible">
 
-		<% if(booking.getState() == BookingModel.status.remplir.key) { %>
-		&nbsp;<a href="#" class="buttonCancelBooking " data-toggle="modal"><i class="fa fa-ban fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
+		<% if(booking.hasActions('delete')) { %>
+		&nbsp;<a href="#" class="buttonCancelBooking " data-toggle="modal"><i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i></a> 
 		<% } %>
 
         <% if (booking.get('invoice_attachment_id') != 0) { %>
@@ -94,52 +94,31 @@
 				switch(booking.getState()){
 					case 'remplir':						
 						if(booking.isAllDispo()) {
-							actions = _.without(actions, BookingModel.actions.confirm.key);
-							mainAction = BookingModel.actions.confirm.key;
-							mainActionColor = BookingModel.actions.confirm.color;
-							mainActionIcon = BookingModel.actions.confirm.icon;
-							mainActionDisabled = '';
+							mainAction = BookingModel.actions.confirm;
+
 						}
 						else {
-							actions = _.without(actions, BookingModel.actions.cancel.key);
-							mainAction = BookingModel.actions.cancel.key;
-							mainActionColor = BookingModel.actions.cancel.color;
-							mainActionIcon = BookingModel.actions.cancel.icon;
-							mainActionDisabled = '';
-							/* mainAction = BookingModel.actions.resolve_conflict.key;
-							mainActionColor = BookingModel.actions.resolve_conflict.color;
-							mainActionIcon = BookingModel.actions.resolve_conflict.icon;
-							mainActionDisabled = '';
-							*/
+							mainAction = BookingModel.actions.cancel;
+							/* mainAction = BookingModel.actions.resolve_conflict;*/
 						}
 					break;
 					case 'cancel':	
-							actions = _.without(actions, BookingModel.actions.cancel.key);
-							console.debug("cancel");	
-							mainAction = BookingModel.actions.cancel.key;
-							mainActionColor = BookingModel.actions.cancel.color;
-							mainActionIcon = BookingModel.actions.cancel.icon;
-							mainActionDisabled = '';
+							mainAction = BookingModel.actions.cancel;
+
 					break;
 					case 'confirm':
-							actions = _.without(actions, BookingModel.actions.done.key);
-							mainAction = BookingModel.actions.done.key;
-							mainActionColor = BookingModel.actions.done.color;
-							mainActionIcon = BookingModel.actions.done.icon;
-							mainActionDisabled = '';
+							mainAction = BookingModel.actions.done;
 					break;
 					
 					default:
-							mainAction = BookingModel.actions.confirm.key;
-							mainActionColor = BookingModel.actions.confirm.color;
-							mainActionIcon = BookingModel.actions.confirm.icon;
-							mainActionDisabled = '';
+							mainAction = BookingModel.actions.confirm;
 				}
+				actions = _.without(actions, mainAction.key);
 
 			%>
 			<!-- Main action button -->
-			<button class="actions btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline" data-action="<%= mainAction %>">
-				<i class="fa <%= mainActionIcon %> fa-fw fa-lg <%= _.capitalize(mainAction) %>" data-action="<%= mainAction %>"></i>
+			<button class="actions btn btn-<%= mainAction.color %> <%= mainActionDisabled %> no-outline" data-action="<%= mainAction.key %>">
+				<i class="fa <%= mainAction.icon %> fa-fw fa-lg <%= _.capitalize(mainAction.key) %>" data-action="<%= mainAction.key %>"></i>
 			</button>
 
 
@@ -152,13 +131,15 @@
 			
 			<!-- Other buttons action -->
 			<ul class="dropdown-menu pull-right text-left">
-				<% _.each(actions, function(action){ %>
+				<% _.each(BookingModel.actions, function(action,action_key){ 
+					if(_.contains(actions,action_key)){%>
 					<li>
-						<a href="#reservations" class="actions" data-action="<%= BookingModel.actions[action].key %>">
-							<i class="fa <%= BookingModel.actions[action].icon %> fa-fw" data-action="<%= BookingModel.actions[action].key %>"></i>&nbsp;<%= _.capitalize(BookingModel.actions[action].translation) %>
+						<a href="#reservations" class="actions" data-action="<%= action.key %>">
+							<i class="fa <%= action.icon %> fa-fw" data-action="<%= action.key %>"></i>&nbsp;<%= _.capitalize(action.translation) %>
 						</a>
 					</li>
-				<% }); %>
+				<% 		}
+				}); %>
 			</ul>
 
 		</div>

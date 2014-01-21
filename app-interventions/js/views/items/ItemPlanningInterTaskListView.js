@@ -112,7 +112,7 @@ define([
 			var params = { state: InterventionModel.status.open.key, };
 			
 			// Retrieve the new status //
-			if(intervention.bootstrapSwitch('status')){
+			if(intervention.bootstrapSwitch('state')){
 				params = { state: InterventionModel.status.scheduled.key, };
 			}
 	

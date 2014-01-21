@@ -67,7 +67,9 @@ define([
 			if(_.isUndefined(options.data)) {
 				options.data = {};
 			}
-			options.data.fields = this.fields;
+			if(_.isUndefined(options.data.fields)){
+				options.data.fields = this.fields;
+			}
 
 			return $.when(this.count(options), Backbone.sync.call(this, method, this, options));
 		},

@@ -83,15 +83,11 @@
 
 				<!-- is Technical Service -->
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="serviceIsTechnical"><%= _.capitalize(lang.technicalService) %>:</label>
+					<label class="control-label col-sm-3" for="switchTechnicalService"><%= _.capitalize(lang.technicalService) %>:</label>
 					<div class="col-sm-9">
-						<div class="make-switch" id="switchTechnicalService" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
-							<input id="serviceIsTechnical" type="checkbox" 
-
+						<input type="checkbox" class="make-switch" id="switchTechnicalService" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"
 							<% if(!_.isNull(service.getId())){ if(service.isTechnical()) { %> checked <% } } %>
-
 							/>
-						</div>
 					</div>
 				</div>
 

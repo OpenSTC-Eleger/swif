@@ -1,0 +1,62 @@
+<div class="page-header">
+	<h1>
+		<%= lang.viewsTitles.usersList %>
+		<sup id="badgeNbUsers" class="badge"><%= nbUsers %></sup>
+	</h1>
+</div>
+
+
+
+	<!-- Table toolbar -->
+	<div class="tableToolbar row">
+		<form class=" form-search pull-right col-xs-5 col-md-3 col-lg-2">
+			<div class="input-group">
+				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+				<span class="input-group-btn">
+					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
+				</span>
+			</div>
+		</form>
+	</div>
+	<!-- Table toolbar -->
+
+
+
+	<!-- Check if there is any Users to display -->
+	<% if(nbUsers <= 0) { %>
+
+		<!-- No user to display -->
+		<div class="alert alert-info">
+			<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noUser %>.
+		</div>
+
+	<% } %>
+
+	<!-- Table users -->
+	<div class="table-responsive">
+	<table class="table table-bordered table-hover table-striped table-sorter">
+		<thead>
+			<tr>
+				<th data-sort-column="complete_name"><%= _.capitalize(lang.name) %></th>
+				<th data-sort-column="login"><%= _.capitalize(lang.login) %></th>
+				<th data-sort-column="user_email"><%= _.capitalize(lang.email) %></th>
+				<th><%= _.capitalize(lang.organization) %> / <%= _.capitalize(lang.service) %></th>
+				<th data-sort-column="date"><%= _.capitalize(lang.lastConnection) %></th>
+			</tr>
+		</thead>
+		<tbody id="rows-items">
+
+		</tbody>
+	</table>
+	</div>
+
+
+	<!-- Table pagination -->
+	<div id="pagination" class="pull-right"></div>
+	<!-- /Table pagination -->
+
+
+
+
+<!-- Modal Form to reset the Password -->
+<div id="modalResetPassword" class="modal fade" role="dialog" aria-hidden="true"></div>
