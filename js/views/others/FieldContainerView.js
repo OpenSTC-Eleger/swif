@@ -61,17 +61,7 @@ define([
 								self.components.push(inputFieldView);
 								break;
 							case 'many2one':
-								var collection = null 
-								if(field.key == 'service_id') {
-									collection = ClaimersServicesCollection.prototype ;
-								}
-								else if(field.key == 'equipment_id' ) {
-									collection = EquipmentsCollection.prototype ;
-								}
-								else {
-									collection = PlacesCollection.prototype ;
-								}
-								var dynamicAdvancedSelectBoxView = new DynamicAdvancedSelectBoxView({ field:field, collection: collection })
+								var dynamicAdvancedSelectBoxView = new DynamicAdvancedSelectBoxView({ field:field, url: field.url })
 								//dynamicAdvancedSelectBoxView.$el.on('change', function(event) {self.updateSelectBox(event)})								
 								$(self.el).append(dynamicAdvancedSelectBoxView.render().el);
 								self.components.push(dynamicAdvancedSelectBoxView);

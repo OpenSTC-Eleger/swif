@@ -23,8 +23,9 @@ define([
 		*/
 		initialize: function(options){
 			//this.select2 = $(this.el);
-			this.field = options.field;			
-			this.collection = options.collection;
+			this.field = options.field;	
+			this.url = options.url;
+			//this.collection = options.collection;
 		},
 
 
@@ -63,12 +64,12 @@ define([
 	
 	
 				// Check if the collection have a complete Name //
-				if(_.contains(self.collection.fields, 'complete_name')){
-					var fields = ['id', 'complete_name'];
-				}
-				else{
+//				if(_.contains(self.collection.fields, 'complete_name')){
+//					var fields = ['id', 'complete_name'];
+//				}
+//				else{
 					var fields = ['id', 'name'];
-				}
+//				}
 			
 
 				self.select2.select2({
@@ -99,7 +100,7 @@ define([
 	
 	
 						$.ajax({
-							url: self.collection.url,
+							url: self.url,
 							method: 'GET',
 							data: {
 								fields  : fields,
