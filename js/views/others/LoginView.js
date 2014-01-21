@@ -12,7 +12,7 @@ define([
 
 		el           : '#rowContainer',
 
-		templateHTML : 'login',
+		templateHTML : 'templates/login.html',
 
 		
 		// The DOM events //
@@ -21,7 +21,9 @@ define([
 			'change #loginUser'               : 'hideLastConnection',
 
 			'mousedown #toggelDisplayPassword': 'displayPassword',
-			'mouseup #toggelDisplayPassword'  : 'hidePassword'
+			'mouseup #toggelDisplayPassword'  : 'hidePassword',
+
+			'click a.toggleFlip'    : 'toggleForgotPassword'
 		},
 
 
@@ -43,7 +45,7 @@ define([
 			app.router.setPageTitle(app.lang.applicationName +' '+ app.lang.viewsTitles.login);
 
 			// Retrieve the Login template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
 					lang: app.lang, 
@@ -53,7 +55,7 @@ define([
 				$(self.el).html(template);
 
 				// Set the Tooltip //
-				$('*[data-toggle="tooltip"]').tooltip();
+				$('*[data-toggle="tooltip"]').tooltip({ container: 'body' });
 
 
 				// Set the focus to the login or password input //
@@ -142,6 +144,15 @@ define([
 			$('#passUser').prop('type', 'password');
 			$('#passUser').focus();
 			$(e.target).removeClass('fa-eye-slash').addClass('fa-eye');
+		},
+
+
+		/** Toggle forgot Password
+		*/
+		toggleForgotPassword: function(e){
+			e.preventDefault();
+
+			$('.flip-container').toggleClass('flip');
 		}
 
 	});

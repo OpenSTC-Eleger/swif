@@ -187,19 +187,77 @@ a.filter-button.filter-disabled{
 }
 
 
+/* Vertical OFFSET
+-------------------------------------------------- */
+.calc-vertical-offset(@nb) when (@nb > 0) and (@nb < 7){
+		
+  .vertical-offset{
+		&-@{nb}{
+			margin-top: percentage(@nb*2  / 100);
+		}
+	}
+
+	.calc-vertical-offset(@nb+1);
+}
+// Kickstart //
+.calc-vertical-offset(1);
+
+
+
+/* Box Shadow
+-------------------------------------------------- */
+.shadow{
+	.box-shadow(0 1px 10px rgba(50, 50, 0, 0.5));
+}
+
+
+
 
 /* Connection Form
 -------------------------------------------------- */
 #formConnectionContainer{
-	max-width: 500px;
-	.box-shadow(0 1px 10px rgba(50, 50, 0, 0.5));
-	margin-top: 12%;
-
-	.formHeading{
-		.noMarginTop();
-		margin-bottom: 20px;
-	}
+	max-width: 550px;
 }
+
+
+
+
+/* FLIP
+-------------------------------------------------- */
+.flip-container {
+	.perspective(1000);
+}
+/* flip the pane when hovered */
+.flip-container.flip .flipper{
+	.rotateY(180deg);
+}
+
+
+.flipper {
+	.transition(all .6s ease-out);
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+	.backface-visibility(hidden);
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* front pane, placed above back */
+.front {
+	z-index: 5;
+}
+
+/* back, initially hidden pane */
+.back {
+	.rotateY(180deg);
+}
+
 
 
 
