@@ -13,6 +13,10 @@ define([
 	*/
 	var InputFieldView = Backbone.View.extend({
 		
+		tagName      : 'div',
+	
+		className    : 'form-group',
+		
 		templateHTML : 'others/inputField.html',
 		
 		// The DOM events //
@@ -27,6 +31,8 @@ define([
 		*/
 		initialize: function(options){
 			this.field = options.field;
+			
+			this.render();
 		},
 
 

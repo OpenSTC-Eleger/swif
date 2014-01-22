@@ -80,7 +80,7 @@ define([
 				data     : {},
 				success  : function(data,status,request){
 					var fields = JSON.parse(request.getResponseHeader("Model-Fields"));
-					var selectFields = GenericCollection.prototype.searchable_fields
+					var selectFields = []
 					_.each(fields, function(v,k){
 						if (v.select == true) {
 							v.key = k

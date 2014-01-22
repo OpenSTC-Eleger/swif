@@ -1,7 +1,9 @@
 define([
 	'app',
+	
+	'advancedFiltersBarView',
 
-], function(app){
+], function(app, AdvancedFiltersBarView){
 
 
 	/******************************************
@@ -11,7 +13,7 @@ define([
 
 		el            : '#rowContainer',
 
-		urlParameters : ['id', 'search', 'filter', 'sort', 'page'],
+		urlParameters : ['id', 'search', 'filter', 'sort', 'page', 'advancedSearch'],
 
 		searchForm    : 'form.form-search input',
 
@@ -19,8 +21,10 @@ define([
 		// The DOM events //
 		events: {
 			'click form.form-search input'                  : 'selectSearchInput',
+			//'click form  button'  : 'search',
 			'submit form.form-search'                       : 'search',
-			'click table.table-sorter th[data-sort-column]' : 'sort'
+			'click table.table-sorter th[data-sort-column]' : 'sort',		
+			
 		},
 
 
@@ -45,12 +49,12 @@ define([
 			if(!_.isUndefined(opts.search)){
 				$(this.searchForm).val(opts.search);
 			}
+			
 
 			// Set the focus to the search form //
 			$('form.form-search input').focus();
 		},
-
-
+		
 
 		/** Select the value in the search input when it is focus
 		*/
@@ -64,7 +68,7 @@ define([
 		*/
 		search: function(e){
 			e.preventDefault();
-
+			
 			var query = $(this.searchForm).val();
 
 			// Check if the query is valid //
@@ -167,6 +171,9 @@ define([
 						if(value == 'page'){
 							url += '/'+value+self.options[value].page;
 						}
+						else if(value == 'advancedSearch'){
+							url += '/'+value+'/'+JSON.stringify(self.options[value]);
+						}
 						else{
 
 							var params = '';
@@ -204,7 +211,24 @@ define([
 			})
 		
 			return result;
+		},
+
+		
+		applyAdvancedFilters: function(jsonFilters) {
+			if(_.isEmpty(jsonFilters)){
+				delete this.options.advancedSearch;
+			}
+			else{
+				this.options.advancedSearch = jsonFilters
+			}
+			
+			// Delete parameters //
+			delete this.options.id;
+			delete this.options.page;
+
+			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 		}
+		
 
 	});
 

@@ -17,7 +17,8 @@ define([
 	*/
 	var AdvancedFiltersBarView = Backbone.View.extend({
 		
-		templateHTML : 'others/advancedFiltersBar.html',
+		el              : '#advanced-filters-bar',
+		templateHTML 	: 'others/advancedFiltersBar.html',
 		
 		
 		// The DOM events //
@@ -31,10 +32,11 @@ define([
 
 		/** View Initialization
 		*/
-		initialize: function(options, collection, searchableFields){
-			this.options = options;
-			this.collection = collection;
-			this.searchableFields = searchableFields
+		initialize: function(options){
+			this.collection = options.collection;
+			this.view = options.view;
+			
+			this.render();
 		},
 
 
@@ -57,14 +59,15 @@ define([
 				
 				if($('#divNavbar').hasClass('hide')){
 					$('#divNavbar').removeClass('hide');
+					$('#advanced-filters').removeClass('disabled');
 					$('#divTable').addClass('span10');
 				}
+				else {
+					$('#advanced-filters').addClass('disabled');
+				}				
 				
+				self.fieldContainerView = new FieldContainerView({ searchableFields : self.collection.searchable_fields} )
 				
-				self.fieldContainerView = new FieldContainerView({ el: $(".field-container"), searchableFields : self.searchableFields} )
-				self.fieldContainerView.render();
-				//$(".field-container").append(self.fieldContainerView.render().el);
-
 				$('#navbar li:not(.nav-header)').first().addClass('active');
 
 
@@ -80,33 +83,48 @@ define([
 		/*
 		*/
 		applyFilterForm: function(e){
+
 			e.preventDefault();
 			var self = this;
-
-			var filters = []
-		    var size = _.size(this.fieldContainerView.components)
-			_.each(self.fieldContainerView.components, function(c,i) {
-				var filter = AppHelpers.getFilterDomain(c);
-				if(!_.isUndefined(filter)) {
-					filters.push(filter)
-				}
-			})
-
-            var fetchParams = {
-               				reset      : true,
-               				data       : {
-               					limit  : app.config.itemsPerPage,
-               					offset : this.options.page.offset,
-               					sort   : this.options.sort.by+' '+this.options.sort.order
-               				}
-               			};  
-            if(_.size(filters)>0) {
-            	fetchParams.data.filters = app.objectifyFilters(filters)            
-            	this.collection.fetch(fetchParams)
-            }
 			
 
-		},
+			var advancedSearch = {};
+			
+			_.each(self.fieldContainerView.components, function(c,i) {
+				var search = AppHelpers.getComponentValue(c);
+				if(!_.isUndefined(search)) {
+					advancedSearch[c.field.key] = search;
+				}
+			});
+
+			this.view.applyAdvancedFilters(advancedSearch)
+
+		}			
+
+//			var filters = []
+//		    var size = _.size(this.fieldContainerView.components)
+//			_.each(self.fieldContainerView.components, function(c,i) {
+//				var filter = AppHelpers.getFilterDomain(c);
+//				if(!_.isUndefined(filter)) {
+//					filters.push(filter)
+//				}
+//			})
+//
+//            var fetchParams = {
+//               				reset      : true,
+//               				data       : {
+//               					limit  : app.config.itemsPerPage,
+//               					offset : this.options.page.offset,
+//               					sort   : this.options.sort.by+' '+this.options.sort.order
+//               				}
+//               			};  
+//            if(_.size(filters)>0) {
+//            	fetchParams.data.filters = app.objectifyFilters(filters)            
+//            	this.collection.fetch(fetchParams)
+//            }
+			
+
+		//},
 
 
 	});

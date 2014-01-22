@@ -25,7 +25,6 @@ define([
 
 		templateHTML : '/templates/lists/requestsList.html',
 
-		formAdvancedFiltersBarView : null,
 
 		// The DOM events //
 		events: function(){
@@ -34,7 +33,7 @@ define([
 				'click #badgeActions[data-filter!=""]'  	: 'badgeFilter',
 				'click a.createRequest'		            	: 'modalCreateRequest',
 				
-				'click #advancedfilters' 					: 'displayAdvancedfilters'
+				//'click #advanced-filters' 					: 'displayAdvancedfilters'
 			}, 
 				GenericListView.prototype.events
 			);
@@ -113,12 +112,13 @@ define([
 				app.views.paginationView = new PaginationView({ 
 					page       : self.options.page.page,
 					collection : self.collection
-				})
+				});
 				
-
-				if( !_.isNull(self.formAdvancedFiltersBarView)) {
-					self.formAdvancedFiltersBarView.remove();
-				}
+				app.views.advancedFiltersBarView = new AdvancedFiltersBarView({
+					collection :self.collection, 
+					view : self
+				});
+				
 				
 				// Render Filter Link on the Table //
 				if(!_.isUndefined(self.options.filter)){
@@ -154,7 +154,13 @@ define([
 				$('#bagdeCpt').html(self.collection.cpt);
 			});
 		},
-
+		
+//		displayAdvancedfilters: function(e){
+//			app.views.advancedFiltersBarView = new AdvancedFiltersBarView({
+//				collection :this.collection, 
+//				view : this
+//			});
+//		},
 
 
 		/** Filter Requests on the State
@@ -250,6 +256,9 @@ define([
 			if(!_.isUndefined(this.options.search)){
 				globalSearch.search = this.options.search;
 			}
+			else if(!_.isUndefined(this.options.advancedSearch)){
+				globalSearch.advancedSearch = JSON.parse(this.options.advancedSearch);
+			}
 			if(!_.isUndefined(this.options.filter)){
 				globalSearch.filter = this.options.filter;
 			}
@@ -267,18 +276,7 @@ define([
 
 		},
 		
-		displayAdvancedfilters: function(e){
-			e.preventDefault();	
-			if( !_.isNull(this.formAdvancedFiltersBarView)) {
-				this.formAdvancedFiltersBarView.remove();
-			}
-			//build filter IHM
-			//if(_.isUndefined(this.formAdvancedFiltersBarView) || _.isNull(this.formAdvancedFiltersBarView)) {
-			this.formAdvancedFiltersBarView = new AdvancedFiltersBarView(this.options, this.collection, RequestsCollection.prototype.searchable_fields);
-			$('#advanced-filters-bar').append(this.formAdvancedFiltersBarView.render().el);
-			//}
-		
-		},
+
 
 
 	});

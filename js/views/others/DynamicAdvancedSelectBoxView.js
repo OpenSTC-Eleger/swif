@@ -64,12 +64,12 @@ define([
 	
 	
 				// Check if the collection have a complete Name //
-//				if(_.contains(self.collection.fields, 'complete_name')){
-//					var fields = ['id', 'complete_name'];
-//				}
-//				else{
+				if(_.contains(self.fields, 'complete_name')){
+					var fields = ['id', 'complete_name'];
+				}
+				else{
 					var fields = ['id', 'name'];
-//				}
+				}
 			
 
 				self.select2.select2({

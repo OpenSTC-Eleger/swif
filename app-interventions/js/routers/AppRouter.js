@@ -23,9 +23,9 @@ define([
 
 		/** Requests List
 		*/
-		requestsList: function(search, filter, sort, page) {
+		requestsList: function(search, filter, sort, page, advancedSearch) {
 
-			var params = this.setContext({search: search, filter : filter, sort : sort, page : page});
+			var params = this.setContext({search: search, filter : filter, sort : sort, page : page, advancedSearch : advancedSearch});
 
 			app.views.requestsListView = new RequestsListView(params);
 		},

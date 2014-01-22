@@ -20,8 +20,7 @@ define([
 	*/
 	var FieldContainerView = Backbone.View.extend({
 		
-		
-		
+		el              : '.field-container',
 		
 		components : [],
 		
@@ -38,6 +37,7 @@ define([
 		initialize: function(options){
 			this.searchableFields = options.searchableFields
 			
+			this.render();
 		},
 
 
@@ -48,14 +48,14 @@ define([
 			var self = this;
 			
 			// Retrieve the template //
-			
+				
 				self.components = [];
 				_.each(self.searchableFields, function(field,i){
 						
 						switch (field.type) {
 							case 'text':
 							case 'char':
-								var inputFieldView = new InputFieldView({ field:field })
+								var inputFieldView = new InputFieldView({ field:field})
 								inputFieldView.$el.on('change', function(event) {self.updateComponent(event)})								
 								$(self.el).append(inputFieldView.render().el);
 								self.components.push(inputFieldView);

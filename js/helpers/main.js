@@ -190,6 +190,16 @@ define('appHelpers', [
 					search.push( buildFilterObject(filteredAndConvertedFilters[0].key,filteredAndConvertedFilters[0].type,searchQuery.search));
 				}
 			}
+			else if (!_.isUndefined(searchQuery.advancedSearch)) {
+				_.each(searchQuery.advancedSearch, function (item, key) {
+					if( _.isArray(item) )
+						search.push(buildFilterObject(key+'.id','in',item));
+					else if( _.isNumber(item) )
+						search.push(buildFilterObject(key,'=',item));
+					else
+						search.push(buildFilterObject(key,'ilike',item));
+				});
+			}
 			return app.objectifyFilters(search);
 		},
 
@@ -207,6 +217,23 @@ define('appHelpers', [
 				case 'many2one':
 					if(_.size(component.getSelectedItems())>0 )
 						return { field : field.key + '.id', 'operator' : 'in', value: component.getSelectedItems() }  //[$(component.el).val()]
+					break;			
+			}			
+		},
+		
+		/** Calcul the filter IHM of the page for slected input component (specific to model)
+		*/
+		getComponentValue: function(component) {
+			var field = component.field;			
+			switch (field.type) {
+				case 'text':
+				case 'char':
+					if($(component.el).val() != '')	
+						return  $(component.el).val() 
+					break;
+				case 'many2one':
+					if(_.size(component.getSelectedItems())>0 )
+						return component.getSelectedItems()   //[$(component.el).val()]
 					break;			
 			}			
 		},
