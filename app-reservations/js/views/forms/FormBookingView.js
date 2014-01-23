@@ -180,8 +180,7 @@ define(['app',
 		updateDisplayAddRecurrence: function(){
 			var elt = $('#bookingAddRecurrence');
 	    	//@TODO: remove isHidden when tests are finished
-	    	//var isHidden = this.recurrence != null && !this.isTemplate();
-	    	var isHidden = true;
+	    	var isHidden = this.recurrence != null && !this.isTemplate();
 			if(!isHidden && this.isEditable() && this.model.lines.length > 0){
 				elt.bootstrapSwitch('setDisabled', false);
 			}

@@ -69,7 +69,7 @@ define([
 			var self = this;
 			
 			var params = {}
-			params.cancelNote = $('#modelCancelBookingNote').val();
+			params.cancel_note = $('#modelCancelBookingNote').val();
 			params.send_email = $('#modelCancelBookingSendMail').bootstrapSwitch('state');
 			//params.email_text = InterventionModel.status.cancelled.translation;
 			
@@ -78,6 +78,7 @@ define([
 				.done(function(data) {
 					self.model.destroy().done(function(){
 						self.modal.modal('hide');
+						window.history.back();
 					})
 				});
 		},

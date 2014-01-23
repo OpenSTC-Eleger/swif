@@ -1,20 +1,29 @@
+<% var actions = booking.getActions();%>
 <td><%= booking.id %></td>
 
 <td>
-	<% if ( booking.getRecurrence('id') ) { %>
+	<% if ( booking.getRecurrence('id')) {%>
 	<a href="#" class="displayOccurences" data-toggle="tooltip" data-original-title="Afficher les occurences" data-action="reccurent"><i class="fa fa-repeat" data-action="reccurent"></i></a>&nbsp;
 	<% } %>
 
+	<% if ( booking.hasActions('update')) {
+	actions = _.without(actions, 'update') }%>
 	<a href="#app-reservations/nouvelle-reservation/id/<%=booking.getId()%>" class="updateBooking">
 		<%= _.capitalize(_(booking.getName()).escapeHTML()) %>
 	</a>
-
 	
 	<!-- Interventions action -->
 	<p class="row-actions invisible">
 
-		<% if(booking.hasActions('delete')) { %>
+		<% if(booking.hasActions('delete')) { 
+		actions = _.without(actions, 'delete');%>
 		&nbsp;<a href="#" class="buttonCancelBooking " data-toggle="modal"><i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i></a> 
+		<% } %>
+
+		<% if(booking.hasActions('cancel')) {
+		actions = _.without(actions, 'cancel'); 
+		var action = BookingModel.actions.cancel;%>
+		&nbsp;<a href="#" class="actions" data-action="<%= action.key%>" data-toggle="modal"><i data-action="<%=action.key%>" class="actions fa <%= action.icon%> fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(action.translation) %>"></i></a> 
 		<% } %>
 
         <% if (booking.get('invoice_attachment_id') != 0) { %>
@@ -77,8 +86,8 @@
 
 <td class="text-center">
 	<!-- Check if the user can make action on the request -->
-	<% if(!_.isEmpty(booking.getActions())){ 
-		var actions = booking.getActions();
+	<% if(!_.isEmpty(actions)){ 
+		
 	%>
 		<!-- Create the buttons group action -->
 		<div class="btn-group btn-group-sm">
@@ -98,7 +107,7 @@
 
 						}
 						else {
-							mainAction = BookingModel.actions.cancel;
+							mainAction = BookingModel.actions.refuse;
 							/* mainAction = BookingModel.actions.resolve_conflict;*/
 						}
 					break;

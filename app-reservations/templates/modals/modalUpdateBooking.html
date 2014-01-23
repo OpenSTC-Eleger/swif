@@ -24,22 +24,32 @@
 				if(state==BookingModel.status.done.key) 
 					note = booking.getResourceNames('newline') 
 			%>
+			
+			<% if(state == BookingModel.actions.refuse.key && !isClaimer) { %>
+				<!--  send email Y/N -->
+				<div class="form-group">
+					<label for="sendMailToClaimer" class="col-sm-3 control-label" ><%= _.capitalize(lang.resa.sendMailToClaimer) %></label>				
+					<div class="col-sm-9">
+						<input type="checkbox" class="make-switch" id="sendMailToClaimer" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"/>
+					</div>
+				</div>	
+			<% } %>	
+			
 			<!-- note related to this action -->
 			<div class="form-group">
 				<label for="note" class="control-label col-sm-3"><%= titleNote %>:</label>
 
 				<div class="col-sm-9">
-					<textarea id="note" class="form-control" rows="5" required><%= note %></textarea>
+					<textarea id="note" class="form-control" rows="5" <%= noteOptional ? '': 'required'%>><%= note %></textarea>
 				</div>			
 
 			</div>	
-			<% if(state != BookingModel.status.cancel.key) { %>
+			<% if(state != BookingModel.actions.refuse.key) { %>
 				<!--  Attach invoice -->
 				<div class="form-group">
-					<div class="col-sm-9 col-sm-offset-3">
-						<label for=sendInvoicing class="checkbox"><%= _.capitalize(lang.resa.actions.sendInvoicing) %>
-							<input type="checkbox" id=sendInvoicing />
-						</label>
+					<label for="sendInvoicing" class="col-sm-3 control-label" ><%= _.capitalize(lang.resa.actions.sendInvoicing) %></label>
+					<div class="col-sm-9">
+						<input type="checkbox" class="make-switch" id="sendInvoicing" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"/>
 					</div>
 				</div>	
 			<% } %>		

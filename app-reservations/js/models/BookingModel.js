@@ -690,48 +690,49 @@ define([
 		saveToBackend: function(){
 			var self = this;
 			var vals = this.getSaveVals();
-			
+			var deferred = $.Deferred();
 			//if new, POST new values and fetch the model to retrieve values stored on backend
 			//and, if set, save recurrence too
 			if(this.isNew()){
-				return this.save(vals,{wait:true}).done(function(data){
-					self.set({id:data});
-					self.fetch({silent:true});
-					if(self.get('is_template') && self.recurrence != null){
-						//add template to occurrence_ids
-						self.recurrence.set({'reservation_ids':[[4,self.getId()]]});
-						self.recurrence.saveToBackend();
+				this.save(vals,{wait:true, patch: !self.isNew()}).done(function(data){
+					var deferredArray = [];
+					if(self.isNew()){
+						self.set({id:data});
 					}
-					self.lines.each(function(lineModel){
-						lineModel.saveToBackend().fail(function(e){console.log(e)});
+					self.fetch({silent:true}).done(function(){
+						if(self.get('is_template') && self.recurrence != null){
+							//add template to occurrence_ids
+							self.recurrence.set({'reservation_ids':[[4,self.getId()]]});
+							deferredArray.push(self.recurrence.saveToBackend());
+						}
+						self.lines.each(function(lineModel){
+							deferredArray.push(lineModel.saveToBackend().fail(function(e){console.log(e)}));
+						});
+						self.linesToRemove.each(function(lineToRemove,i){
+							deferredArray.push(lineToRemove.destroy());
+						});
+						_.each(self.recurrencesToRemove,function(recurrenceToRemove,i){
+							deferredArray.push(recurrenceToRemove.persistentDestroyOnBackend());
+						});
+						if(_.isEmpty(deferredArray)){
+							deferred.resolve();
+						}
+						else{
+							$.when.apply($,deferredArray).done(function(){
+								deferred.resolve();
+							}).fail(function(e){
+								deferred.reject();
+							});
+						}
+					}).fail(function(e){
+						deferred.reject();
 					});
+				}).fail(function(e){
+					deferred.reject();
 				});
 			}
-			
-			//if already exists, PATCH values and fetch the model to retrieve values updated on backend
-			//also perform save/update for lineModels
-			//and, if set, save recurrence too
-			else{
-				vals.user_id = this.getCreateAuthor('id');
-				return this.save(vals, {wait:true, patch:true}).always(function(){
-					self.fetch({silent:true});
-					if(self.get('is_template') && self.recurrence != null){
-						//add template to occurrence_ids
-						self.recurrence.set({'reservation_ids':[[4,self.getId()]]});
-						self.recurrence.saveToBackend();
-					}
-					self.lines.each(function(lineModel,i){
-						lineModel.saveToBackend().fail(function(e){console.log(e)});
-					});
-					self.linesToRemove.each(function(lineToRemove,i){
-						lineToRemove.destroy();
-					});
-					_.each(self.recurrencesToRemove,function(recurrenceToRemove,i){
-						recurrenceToRemove.persistentDestroyOnBackend();
-					});
-				});
-			}
-			return false;
+
+			return deferred;
 		},
 		
 		//TOREMOVE ?
@@ -814,6 +815,12 @@ define([
 			},
 			cancel: {
 				key 		: 'cancel',
+				color 		: 'default',
+				icon 		: 'fa-ban',
+				translation : app.lang.actions.refuse
+			},
+			refuse: {
+				key 		: 'refuse',
 				color 		: 'danger',
 				icon 		: 'fa-times',
 				translation : app.lang.actions.refuse
@@ -831,6 +838,12 @@ define([
 				icon 		: 'fa-thumbs-o-up',
 				translation : app.lang.actions.close
 			},
+			delete_recurrence: {
+				key 		: 'delete',
+				color 		: 'default',
+				icon 		: 'fa-times',
+				translation : app.lang.actions.deleteAll
+			}
 	
 	
 	//		create: {},

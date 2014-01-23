@@ -43,7 +43,8 @@ define([
 		*/
 		render : function() {
 			var self = this;
-	
+			var isClaimer = !app.current_user.isResaManager();
+			var noteOptional = !isClaimer && self.options.state == BookingModel.actions.refuse.key;
 	
 			// Retrieve the template // 
 			$.get(app.menus.openresa + this.templateHTML, function(templateData){
@@ -54,11 +55,13 @@ define([
 					state		: self.options.state,
 					title 	 	: app.lang.resa.viewsTitles[self.options.state + "Booking" ],
 					titleNote	: app.lang.resa.viewsTitles[self.options.state + "BookingNote" ],
-					BookingModel: BookingModel
+					BookingModel: BookingModel,
+					noteOptional: noteOptional,
+					isClaimer: isClaimer
 				});
 				
 				self.modal.html(template);
-	
+				$('.make-switch').bootstrapSwitch();
 				self.modal.modal('show');
 			});
 	
@@ -76,12 +79,12 @@ define([
 			// Set the button in loading State //
 			$(this.el).find("button[type=submit]").button('loading');
 	
-	
 			var params = {
 				state_event   		: this.options.state,
-				send_invoicing  	: $('#sendInvoicing').is(':checked'),
+				send_invoicing  	: $('#sendInvoicing').bootstrapSwitch('state'),
+				send_email			: $('#sendMailToClaimer').bootstrapSwitch('state')
 			}
-			params[this.options.state+'_note'] = $('#note').val()
+			params[this.options.state+'_note'] = $('#note').val();
 	
 			// Save Only the params //
 			this.model.save(params, {patch: true, silent: true})

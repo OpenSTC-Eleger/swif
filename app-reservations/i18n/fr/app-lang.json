@@ -53,8 +53,10 @@
 			
 		"actions" : {			
 			"confirmAll"							: "Tout valider",
-			"cancelAll"								: "Tout refuser",
+			"cancelAll"								: "Tout annuler",
+			"refuseAll"								: "Tout refuser",
 			"doneAll"								: "Tout clôturer",
+			"deleteAll"								: "Tout supprimer",
 			"resolveConflict"						: "Traiter le conflit",
 			"selectABookable"						: "Sélectionner une ressource",
 			"sendInvoicing" 						: "Joindre la facture / Bon de réservation",
@@ -73,16 +75,19 @@
 		"viewsTitles" : {
 			"bookingsList"						: "Suivi des réservations",
 			"newBooking"		 				: "Nouvelle réservation",
-			"newAskingBooking"		 				: "Demande de réservation",
+			"newAskingBooking"		 			: "Demande de réservation",
 			"confirmAllBookings" 			 	: "Validation de la récurrence",
 			"cancelAllBookings" 			 	: "Annulation de la récurrence",
+			"refuseAllBookings" 			 	: "Refus de la récurrence",
 			"doneAllBookings" 			 		: "Clôture de la récurrence",
 			"confirmBooking" 			 		: "Validation de la demande de réservation",
 			"cancelBooking" 			 		: "Annulation de la demande de réservation",
 			"deleteBooking" 			 		: "Suppression de la demande de réservation",
 			"doneBooking" 			 			: "Clôture de la demande de réservation",
+			"refuseBooking" 			 		: "Refus de la demande de réservation",
 			"confirmBookingNote" 			 	: "Note",
 			"cancelBookingNote" 			 	: "Motif",
+			"refuseBookingNote" 			 	: "Motif",
 			"doneBookingNote" 			 		: "Etat des lieux",
 			"reservationPlanning"				: "Planning des réservations",
 			"reservationDetails"				: "Détails de la réservations n°"
