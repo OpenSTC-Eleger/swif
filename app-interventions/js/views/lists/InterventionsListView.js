@@ -10,9 +10,10 @@ define([
 	'paginationView',
 	'itemInterventionView',
 	'itemInterventionTaskListView',
-	'modalInterventionView'
+	'modalInterventionView',
+	'advancedFiltersBarView'
 
-], function(app, AppHelpers, InterventionsCollection, InterventionModel, TasksCollection, GenericListView, PaginationView, ItemInterventionView, ItemInterventionTaskListView, ModalInterventionView){
+], function(app, AppHelpers, InterventionsCollection, InterventionModel, TasksCollection, GenericListView, PaginationView, ItemInterventionView, ItemInterventionTaskListView, ModalInterventionView, AdvancedFiltersBarView){
 
 	'use strict';
 	
@@ -173,7 +174,12 @@ define([
 				app.views.paginationView = new PaginationView({ 
 					page       : self.options.page.page,
 					collection : self.collections.interventions
-				})
+				});
+				
+				app.views.advancedFiltersBarView = new AdvancedFiltersBarView({
+					collection :self.collections.interventions, 
+					view : self
+				});
 	
 				
 			});
@@ -290,6 +296,9 @@ define([
 				// Collection Filter if not null //
 				optionSearch.search = this.options.search;
 			}
+			else if(!_.isUndefined(this.options.advancedSearch)){
+				optionSearch.advancedSearch = JSON.parse(this.options.advancedSearch);
+			}
 			if(!_.isUndefined(this.options.filter) && !_.isNull(this.options.filter)){
 				this.options.filter = AppHelpers.calculPageFilter(this.options.filter);
 	
@@ -304,7 +313,7 @@ define([
 				}
 			}
 			//'Unbuild' domain objectify to be able to add other filters (and objectify when all filters are added
-			var searchDomain = AppHelpers.calculSearch(optionSearch, InterventionModel.prototype.searchable_fields);
+			var searchDomain = AppHelpers.calculSearch(optionSearch, InterventionsCollection.prototype.searchable_fields); //InterventionModel.prototype.searchable_fields);
 			_.each(searchDomain,function(item, index){
 				domain.push(item);
 			});	

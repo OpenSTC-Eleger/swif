@@ -6,7 +6,7 @@
 	},
 
 	"interventions": {
-		"url"		: "interventions(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"url"		: "interventions(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)(/advancedSearch/:advancedSearch)",
 		"function"	: "interventions"
 	},
 

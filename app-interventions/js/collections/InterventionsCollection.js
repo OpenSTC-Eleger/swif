@@ -23,6 +23,15 @@ define([
 		pendingInterventions: 0,
 		plannedInterventions: 0,
 
+	
+		/** Collection Initialization
+		*/
+		initialize: function (options) {
+			//console.log('Requests collection Initialization');
+			return $.when(
+					this.metadata()
+				);			
+		},
 
 
 		/** Retrieve the number of Pending Intervention
@@ -65,6 +74,30 @@ define([
 			});
 		},
 
+			
+		metadata: function(options) {
+			var self = this;
+
+
+			return $.ajax({
+				url      : this.url,
+				method   : 'HEAD',
+				dataType : 'text',
+				async	 : false,
+				data     : {},
+				success  : function(data,status,request){
+					var fields = JSON.parse(request.getResponseHeader("Model-Fields"));
+					var selectFields = []
+					_.each(fields, function(v,k){
+						if (v.select == true) {
+							v.key = k
+							selectFields.push( v )										
+						}
+					})
+					InterventionsCollection.prototype.searchable_fields = selectFields;
+				}
+			});
+		},
 
 
 		/** Collection Sync

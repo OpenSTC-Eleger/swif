@@ -34,9 +34,9 @@ define([
 
 		/** Interventions list
 		*/
-		interventions: function(search, filter, sort, page){
+		interventions: function(search, filter, sort, page, advancedSearch){
 
-			var params = this.setContext({search: search, filter : filter, sort : sort, page : page});
+			var params = this.setContext({search: search, filter : filter, sort : sort, page : page, advancedSearch : advancedSearch});
 
 			app.views.interventions = new InterventionsListView(params);
 		},
