@@ -29,10 +29,9 @@ define([
 		/** Collection Initialization
 		*/
 		initialize: function (options) {
-			//console.log('Requests collection Initialization');
 			return $.when(
 					this.metadata()
-				);			
+				);		
 		},
 
 
@@ -67,31 +66,6 @@ define([
 			});
 			
 		},
-		
-		metadata: function(options) {
-			var self = this;
-
-
-			return $.ajax({
-				url      : this.url,
-				method   : 'HEAD',
-				dataType : 'text',
-				async	 : false,
-				data     : {},
-				success  : function(data,status,request){
-					var fields = JSON.parse(request.getResponseHeader("Model-Fields"));
-					var selectFields = []
-					_.each(fields, function(v,k){
-						if (v.select == true) {
-							v.key = k
-							selectFields.push( v )										
-						}
-					})
-					RequestsCollection.prototype.searchable_fields = selectFields;
-				}
-			});
-		},
-		
 
 
 		/** Collection Sync

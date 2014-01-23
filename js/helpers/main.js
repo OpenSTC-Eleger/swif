@@ -192,10 +192,10 @@ define('appHelpers', [
 			}
 			else if (!_.isUndefined(searchQuery.advancedSearch)) {
 				_.each(searchQuery.advancedSearch, function (item, key) {
-					if( moment(item).isValid() )
-						search.push(buildFilterObject(key,'>',item));
-					else if( _.isArray(item) )
+					if( _.isArray(item) )
 						search.push(buildFilterObject(key+'.id','in',item));
+					else if( moment(item).isValid() )
+						search.push(buildFilterObject(key,'>',item));
 					else if( _.isNumber(item) )
 						search.push(buildFilterObject(key,'=',item));
 					else

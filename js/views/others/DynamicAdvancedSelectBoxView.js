@@ -69,12 +69,12 @@ define([
 	
 	
 				// Check if the collection have a complete Name //
-				if(_.contains(self.fields, 'complete_name')){
-					var fields = ['id', 'complete_name'];
-				}
-				else{
+//				if(_.contains(self.fields, 'complete_name')){
+//					var fields = ['id', 'complete_name'];
+//				}
+//				else{
 					var fields = ['id', 'name'];
-				}
+//				}
 			
 
 				self.select2.select2({
@@ -88,12 +88,12 @@ define([
 						// SEARCH PARAMS //
 						var params = [];
 						
-						if(_.contains(fields, 'complete_name')){
-							params.push({ field : 'complete_name', operator : 'ilike', value : query.term});
-						}
-						else{
+//						if(_.contains(fields, 'complete_name')){
+//							params.push({ field : 'complete_name', operator : 'ilike', value : query.term});
+//						}
+//						else{
 							params.push({ field : 'name', operator : 'ilike', value : query.term});	
-						}
+//						}
 	
 						// Set all the search params in the params for the query //
 						if(!_.isEmpty(self.searchParams)){

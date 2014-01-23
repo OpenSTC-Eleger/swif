@@ -41,45 +41,38 @@ define([
 		},
 
 
-
 		/** View Render
 		*/
 		render: function(){
 			var self = this;
 			
-			// Retrieve the template //
-				
-				self.components = [];
-				_.each(self.searchableFields, function(field,i){
-						
-						switch (field.type) {
-							case 'text':
-							case 'char':
-								var inputFieldView = new InputFieldView({ field:field})
-								inputFieldView.$el.on('change', function(event) {self.updateComponent(event)})								
-								$(self.el).append(inputFieldView.render().el);
-								self.components.push(inputFieldView);
-								break;
-							case 'date':
-							case 'datetime':
-								var dateFieldView = new DateFieldView({ field:field, url: field.url })	
-								dateFieldView.$el.on('change', function(event) {self.updateComponent(event)})
-								$(self.el).append(dateFieldView.render().el);
-								self.components.push(dateFieldView);
-								break;
-							case 'many2one':
-								var dynamicAdvancedSelectBoxView = new DynamicAdvancedSelectBoxView({ field:field, url: field.url })					
-								$(self.el).append(dynamicAdvancedSelectBoxView.render().el);								
-								self.components.push(dynamicAdvancedSelectBoxView);
-								break;
-							break;				
-						}
-				})
-				
-				$('input.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
-
-
-
+			// Retrieve the template //				
+			self.components = [];
+			_.each(self.searchableFields, function(field,i){
+					
+					switch (field.type) {
+						case 'text':
+						case 'char':
+							var inputFieldView = new InputFieldView({ field:field})
+							inputFieldView.$el.on('change', function(event) {self.updateComponent(event)})								
+							$(self.el).append(inputFieldView.render().el);
+							self.components.push(inputFieldView);
+							break;
+						case 'date':
+						case 'datetime':
+							var dateFieldView = new DateFieldView({ field:field })	
+							dateFieldView.$el.on('change', function(event) {self.updateComponent(event)})
+							$(self.el).append(dateFieldView.render().el);
+							self.components.push(dateFieldView);
+							break;
+						case 'many2one':
+							var dynamicAdvancedSelectBoxView = new DynamicAdvancedSelectBoxView({ field:field, url: field.url })					
+							$(self.el).append(dynamicAdvancedSelectBoxView.render().el);								
+							self.components.push(dynamicAdvancedSelectBoxView);
+							break;
+						break;				
+					}
+			});
 		},
 		
 		updateComponent: function(e){
@@ -91,9 +84,6 @@ define([
 			$(component.el).val($(e.target).val())
 			self.components.push(component);
 		},
-
-
-
 
 	});
 
