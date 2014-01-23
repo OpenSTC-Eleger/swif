@@ -1,0 +1,14 @@
+<label for="<%= name %>" class="control-label col-sm-3"><%= name %>:</label>
+<div class="col-sm-4">
+	<div class="input-group">
+	<input 
+		type="text" class="datepicker form-control"
+		id="<%= name %>" 
+		value="<%= moment().add('w', 1).format('L') %>" 
+		placeholder="dd/mm/yyyy"
+		required>
+		<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+	</div>
+</div>
+
+

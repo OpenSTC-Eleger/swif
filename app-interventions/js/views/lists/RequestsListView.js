@@ -13,7 +13,8 @@ define([
 	'advancedSelectBoxView',
 	'advancedFiltersBarView'
 
-], function(app, AppHelpers, RequestsCollection, ClaimersServicesCollection, RequestModel, GenericListView, PaginationView, ItemRequestView, ModalRequestView, AdvancedSelectBoxView, AdvancedFiltersBarView){
+], function(app, AppHelpers, RequestsCollection, ClaimersServicesCollection, RequestModel, GenericListView, PaginationView, 
+				ItemRequestView, ModalRequestView, AdvancedSelectBoxView, AdvancedFiltersBarView){
 
 	'use strict';
 
@@ -118,6 +119,7 @@ define([
 					collection :self.collection, 
 					view : self
 				});
+				
 				
 				
 				// Render Filter Link on the Table //

@@ -3,14 +3,14 @@ define([
 	'appHelpers',
 	
 	'inputFieldView',
+	'dateFieldView',
 	'dynamicAdvancedSelectBoxView',
 	
 	'claimersServicesCollection',
 	'equipmentsCollection',
 	'placesCollection',
-
-
-], function(app, AppHelpers, InputFieldView, DynamicAdvancedSelectBoxView, ClaimersServicesCollection, EquipmentsCollection, PlacesCollection){
+	
+], function(app, AppHelpers, InputFieldView, DateFieldView, DynamicAdvancedSelectBoxView, ClaimersServicesCollection, EquipmentsCollection, PlacesCollection){
 
 	'use strict';
 
@@ -60,16 +60,23 @@ define([
 								$(self.el).append(inputFieldView.render().el);
 								self.components.push(inputFieldView);
 								break;
+							case 'date':
+							case 'datetime':
+								var dateFieldView = new DateFieldView({ field:field, url: field.url })	
+								dateFieldView.$el.on('change', function(event) {self.updateComponent(event)})
+								$(self.el).append(dateFieldView.render().el);
+								self.components.push(dateFieldView);
+								break;
 							case 'many2one':
-								var dynamicAdvancedSelectBoxView = new DynamicAdvancedSelectBoxView({ field:field, url: field.url })
-								//dynamicAdvancedSelectBoxView.$el.on('change', function(event) {self.updateSelectBox(event)})								
-								$(self.el).append(dynamicAdvancedSelectBoxView.render().el);
+								var dynamicAdvancedSelectBoxView = new DynamicAdvancedSelectBoxView({ field:field, url: field.url })					
+								$(self.el).append(dynamicAdvancedSelectBoxView.render().el);								
 								self.components.push(dynamicAdvancedSelectBoxView);
 								break;
-
 							break;				
 						}
 				})
+				
+				$('input.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
 
 
 

@@ -5,7 +5,7 @@ define([
 	'claimersServicesCollection',
 
 	'advancedSelectBoxView',
-	'fieldContainerView'
+	'fieldContainerView'	
 
 ], function(app, AppHelpers, ClaimersServicesCollection, AdvancedSelectBoxView, FieldContainerView){
 

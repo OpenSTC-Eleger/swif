@@ -12,6 +12,10 @@ define([
 	*/
 	var DynamicAdvancedSelectBoxView = Backbone.View.extend({
 		
+		tagName      : 'div',
+	
+		className    : 'form-group',
+		
 		templateHTML : 'others/dynamicAdvancedSelectBox.html',
 		
 		select2      : null,
@@ -26,6 +30,7 @@ define([
 			this.field = options.field;	
 			this.url = options.url;
 			//this.collection = options.collection;
+			this.render();
 		},
 
 

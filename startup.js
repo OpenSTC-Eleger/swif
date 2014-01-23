@@ -105,6 +105,7 @@ requirejs.config({
 		inputFieldView  			: 'js/views/others/InputFieldView',
 		fieldContainerView  		: 'js/views/others/FieldContainerView',
 		dynamicAdvancedSelectBoxView: 'js/views/others/DynamicAdvancedSelectBoxView',
+		dateFieldView				: 'js/views/others/DateFieldView',
 
 		// Lists //
 		genericListView         : 'js/views/lists/GenericListView',

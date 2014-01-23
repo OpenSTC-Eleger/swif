@@ -192,7 +192,9 @@ define('appHelpers', [
 			}
 			else if (!_.isUndefined(searchQuery.advancedSearch)) {
 				_.each(searchQuery.advancedSearch, function (item, key) {
-					if( _.isArray(item) )
+					if( moment(item).isValid() )
+						search.push(buildFilterObject(key,'>',item));
+					else if( _.isArray(item) )
 						search.push(buildFilterObject(key+'.id','in',item));
 					else if( _.isNumber(item) )
 						search.push(buildFilterObject(key,'=',item));
@@ -231,6 +233,11 @@ define('appHelpers', [
 					if($(component.el).val() != '')	
 						return  $(component.el).val() 
 					break;
+				case 'date':
+				case 'datetime':
+					if( ($(component.el).val() != '') )
+						return moment($(component.el).val(), 'DD/MM/YYYY').format('YYYY-MM-DD');
+					break;	
 				case 'many2one':
 					if(_.size(component.getSelectedItems())>0 )
 						return component.getSelectedItems()   //[$(component.el).val()]
