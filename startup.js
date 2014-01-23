@@ -224,6 +224,6 @@ require([
 	'main', 'less'
 ], function(main){
 
-	main.init(window.navigator.language);
+	main.init('fr');
 
 });
