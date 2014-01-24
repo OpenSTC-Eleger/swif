@@ -67,7 +67,10 @@
 		<span>
 	<% } %>
 </td>
-
+<!-- Amount of booking -->
+<td>
+	<%= booking.getAttribute('amount_total',0.00).toString() + " " + lang.currencySymbol%>
+</td>
 <td>
 	<span data-toggle="tooltip" data-original-title="<%= booking.getCreateDate('fromNow') %>"> <%= booking.getCreateDate('human') %></span>
 </td>

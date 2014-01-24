@@ -20,7 +20,7 @@ define([
 		         'contact_phone', 'partner_mail', 'people_name', 'people_phone', 'is_citizen', 
 		         'create_date', 'write_date', 'deleted_at', 'done_at', 'confirm_at', 'cancel_at', 'state', 'state_num', 'actions', 'create_uid', 'write_uid', 
 		         'resources', 'all_dispo', 'recurrence_id', 'is_template', 'note', 'confirm_note', 'cancel_note', 'done_note',
-		         'pricelist_id', 'invoice_attachment_id'],
+		         'pricelist_id', 'invoice_attachment_id', 'amount_total'],
 
 
 
