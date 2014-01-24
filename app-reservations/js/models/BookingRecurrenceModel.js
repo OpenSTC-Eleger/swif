@@ -384,11 +384,7 @@ define([
 					var arrayDeferred = [];
 					self.occurrences.each(function(occurrence,i){
 						occurrence.recurrence = self;
-						var tempDeferred= $.Deferred();
-						occurrence.fetchLines().done(function(){
-							tempDeferred.resolve();
-						});
-						arrayDeferred.push(tempDeferred);
+						arrayDeferred.push(occurrence.fetchLines());
 					});
 					//use apply JS method to call when with unknown number of deferred, in order to resolve the main deferred when all lines are fetched
 					$.when.apply($, arrayDeferred).done(function(){
