@@ -803,6 +803,12 @@ define([
 				icon 		        : 'fa-thumbs-o-up',
 				translation         : app.lang.closed
 			},
+			draft: {
+				key                 : 'draft',
+				color               : 'default',
+				icon 		        : 'fa-pencil-o',
+				translation         : app.lang.draft
+			}
 		},
 		
 			// Actions of the requests //
@@ -817,7 +823,7 @@ define([
 				key 		: 'cancel',
 				color 		: 'default',
 				icon 		: 'fa-ban',
-				translation : app.lang.actions.refuse
+				translation : app.lang.actions.cancel
 			},
 			refuse: {
 				key 		: 'refuse',

@@ -5,10 +5,10 @@ define([
 	'bookingModel',
 	
 	'modalUpdateBookingView',
-	'modalCancelBookingView',
+	'modalDeleteBookingView',
 	'itemFormBookingOccurrenceView'
 
-], function(app, AppHelpers, BookingModel, ModalUpdateBookingView, ModalCancelBookingView){
+], function(app, AppHelpers, BookingModel, ModalUpdateBookingView, ModalDeleteBookingView){
 
 	'use strict';
 
@@ -28,7 +28,7 @@ define([
 		events       : {			
 			'click a.displayOccurences'				: 'displayOccurences',			
 			'click .actions'						: 'modalUpdateBooking',
-			'click a.buttonCancelBooking'			: 'displayModalCancelBooking',
+			'click a.buttonCancelBooking'			: 'displayModalDeleteBooking',
 		},	
 	
 	
@@ -133,9 +133,9 @@ define([
 			});
 		},
 		
-		displayModalCancelBooking: function(e) {
+		displayModalDeleteBooking: function(e) {
 			e.preventDefault();
-			new ModalCancelBookingView({el: '#modalCancelBooking', model: this.model});
+			new ModalDeleteBookingView({el: '#modalCancelBooking', model: this.model});
 		},
 	
 	});	

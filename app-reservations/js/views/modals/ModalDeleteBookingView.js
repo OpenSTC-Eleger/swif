@@ -9,17 +9,17 @@ define([
 	/******************************************
 	 * Booking Details View
 	 */
-	var ModalCancelBookingView = GenericModalView.extend({
+	var ModalDeleteBookingView = GenericModalView.extend({
 
 		//el : '#rowContainer',
 		
-		templateHTML: '/templates/modals/modalCancelBooking.html',
+		templateHTML: '/templates/modals/modalDeleteBooking.html',
 	
 		
 		// The DOM events //
 		events: function() {
 			return _.defaults({
-				'submit #formCancelBooking'          : 'cancelBooking',
+				'submit #formDeleteBooking'          : 'cancelBooking',
 			},
 			GenericModalView.prototype.events);
 			
@@ -62,15 +62,15 @@ define([
 	    },
 	
 	
-		/** Cancel Booking
+		/** Delete Booking
 		*/
 		cancelBooking: function(e){
 			e.preventDefault();
 			var self = this;
 			
 			var params = {}
-			params.cancel_note = $('#modelCancelBookingNote').val();
-			params.send_email = $('#modelCancelBookingSendMail').bootstrapSwitch('state');
+			params.cancel_note = $('#modelDeleteBookingNote').val();
+			params.send_email = $('#modelDeleteBookingSendMail').bootstrapSwitch('state');
 			//params.email_text = InterventionModel.status.cancelled.translation;
 			
 			//cancel the booking and fetch all tasks associated to display there new state
@@ -78,11 +78,10 @@ define([
 				.done(function(data) {
 					self.model.destroy().done(function(){
 						self.modal.modal('hide');
-						window.history.back();
 					})
 				});
 		},
 	
 	});
-	return ModalCancelBookingView;
+	return ModalDeleteBookingView;
 })

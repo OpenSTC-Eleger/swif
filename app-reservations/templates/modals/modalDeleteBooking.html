@@ -8,17 +8,17 @@
 
 		<div class="modal-body">
 
-			<blockquote id="infoModalCancelBooking" class="spaceBottom">
+			<blockquote id="infoModalDeleteBooking" class="spaceBottom">
 				<p>Etes-vous sûr de vouloir supprimer <%= inter.name %> ?</p>
 				<small><%= inter.description %></small>
 			</blockquote>
-			<form id="formCancelBooking" action="#" class="form-horizontal" role="form">
+			<form id="formDeleteBooking" action="#" class="form-horizontal" role="form">
 				<% if(!isClaimer){%>
 				<!-- send mail Y/N -->
 				<div class="form-group">
-					<label for="modelCancelBookingSendMail" class="control-label col-sm-4"><%= _.capitalize(lang.resa.sendMailToClaimer)%>:</label>
+					<label for="modelDeleteBookingSendMail" class="control-label col-sm-4"><%= _.capitalize(lang.resa.sendMailToClaimer)%>:</label>
 					<div class="col-sm-8">
-						<input type="checkbox" class="make-switch" id="modelCancelBookingSendMail" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
+						<input type="checkbox" class="make-switch" id="modelDeleteBookingSendMail" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
 					</div>
 				</div>
 				<% }%>				
@@ -26,7 +26,7 @@
 				<div class="form-group">
 					<label for="" class="control-label col-sm-4"><%= _.capitalize(lang.resa.viewsTitles.cancelBookingNote)%>:</label>
 					<div class="col-sm-8">
-						<textarea class="form-control" id="modelCancelBookingNote"
+						<textarea class="form-control" id="modelDeleteBookingNote"
 						<%= isClaimer ? 'required' : ''%>
 						></textarea>
 					</div>
@@ -36,7 +36,7 @@
 		</div>
 
 		<div class="modal-footer">
-			<button type="submit" form="formCancelBooking" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
+			<button type="submit" form="formDeleteBooking" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
 			<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 		</div>
 

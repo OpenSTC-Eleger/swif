@@ -5,9 +5,9 @@ define([
 	'bookingRecurrenceModel',
 	
 	'modalUpdateBookingsListView',
-	'modalCancelBookingView'
+	'modalDeleteBookingView'
 
-], function(app, BookingModel, BookingRecurrenceModel, ModalUpdateBookingsListView, ModalCancelBookingView){
+], function(app, BookingModel, BookingRecurrenceModel, ModalUpdateBookingsListView, ModalDeleteBookingView){
 
 	'use strict';
 
@@ -108,7 +108,7 @@ define([
 		
 		deleteRecurrence: function(e){
 			e.preventDefault();
-			new ModalCancelBookingView({el: '#modalCancelBooking', model: this.model});
+			new ModalDeleteBookingView({el: '#modalCancelBooking', model: this.model});
 		},
 		
 		/**

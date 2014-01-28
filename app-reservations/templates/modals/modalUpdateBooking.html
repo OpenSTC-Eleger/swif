@@ -25,7 +25,7 @@
 					note = booking.getResourceNames('newline') 
 			%>
 			
-			<% if(state == BookingModel.actions.refuse.key && !isClaimer) { %>
+			<% if((state == BookingModel.actions.refuse.key || state == BookingModel.actions.cancel.key) && !isClaimer) { %>
 				<!--  send email Y/N -->
 				<div class="form-group">
 					<label for="sendMailToClaimer" class="col-sm-3 control-label" ><%= _.capitalize(lang.resa.sendMailToClaimer) %></label>				
@@ -44,7 +44,7 @@
 				</div>			
 
 			</div>	
-			<% if(state != BookingModel.actions.refuse.key) { %>
+			<% if(state != BookingModel.actions.refuse.key && state != BookingModel.actions.cancel.key) { %>
 				<!--  Attach invoice -->
 				<div class="form-group">
 					<label for="sendInvoicing" class="col-sm-3 control-label" ><%= _.capitalize(lang.resa.actions.sendInvoicing) %></label>
