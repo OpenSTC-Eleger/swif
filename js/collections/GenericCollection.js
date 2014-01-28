@@ -15,6 +15,8 @@ define([
 
 		default_sort: { by: 'id', order: 'DESC' },
 		
+		advanced_searchable_fields: [],
+		
 		searchable_fields: [
 			{
 				key  : 'id',
@@ -49,30 +51,8 @@ define([
 				success  : function(data,status,request){
 					var contentRange = request.getResponseHeader("Content-Range")
 					self.cpt = contentRange.match(/\d+$/);	
-//					var fields = JSON.parse(request.getResponseHeader("Model-Fields"));
-//					var selectFields = []
-//					_.each(fields, function(v,k){
-//						if (v.select == true) {
-//							v.key = k
-//							selectFields.push( v )										
-//						}
-//					})
-//					self.searchable_fields = selectFields;
-				}
-			});
-		},
-		
-		metadata: function(options) {
-			var self = this;
-
-
-			return $.ajax({
-				url      : self.__proto__.url,
-				method   : 'HEAD',
-				dataType : 'text',
-				async	 : false,
-				data     : {},
-				success  : function(data,status,request){
+					
+					
 					var fields = JSON.parse(request.getResponseHeader("Model-Fields"));
 					var selectFields = []
 					_.each(fields, function(v,k){
@@ -81,10 +61,13 @@ define([
 							selectFields.push( v )										
 						}
 					})
-					self.__proto__.searchable_fields = selectFields;
+					self.__proto__.advanced_searchable_fields = selectFields;
+
+
 				}
 			});
 		},
+		
 
 		sync: function(method, model, options){
 

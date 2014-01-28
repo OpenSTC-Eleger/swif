@@ -27,9 +27,6 @@ define([
 		/** Collection Initialization
 		*/
 		initialize: function (options) {
-			return $.when(
-					this.metadata()
-				);		
 		},
 
 

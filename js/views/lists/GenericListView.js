@@ -84,6 +84,7 @@ define([
 				// Delete parameters //
 				delete this.options.id;
 				delete this.options.page;
+				delete this.options.advancedSearch;
 
 				app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 			}
@@ -225,6 +226,7 @@ define([
 			// Delete parameters //
 			delete this.options.id;
 			delete this.options.page;
+			delete this.options.search;
 
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 		}

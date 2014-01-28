@@ -140,7 +140,6 @@ define('appHelpers', [
 				_.each(fieldsFilters, function (filter, index) {
 					switch (filter.type) {
 						case 'numeric':
-						case 'many2one':
 							if (isNumber(searchQuery.search)) {
 								convertedFilters.push(convertFilter(filter, '='));
 							}
@@ -191,6 +190,7 @@ define('appHelpers', [
 				}
 			}
 			else if (!_.isUndefined(searchQuery.advancedSearch)) {
+				//computer requests with advanced filters
 				_.each(searchQuery.advancedSearch, function (item, key) {
 					if( _.isArray(item) )
 						search.push(buildFilterObject(key+'.id','in',item));
@@ -223,7 +223,7 @@ define('appHelpers', [
 			}			
 		},
 		
-		/** Calcul the filter IHM of the page for slected input component (specific to model)
+		/** Calcul the filter value in advanced filters form (specific to model)
 		*/
 		getComponentValue: function(component) {
 			var field = component.field;			
@@ -240,7 +240,7 @@ define('appHelpers', [
 					break;	
 				case 'many2one':
 					if(_.size(component.getSelectedItems())>0 )
-						return component.getSelectedItems()   //[$(component.el).val()]
+						return component.getSelectedItems() 
 					break;			
 			}			
 		},

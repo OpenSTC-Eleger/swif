@@ -259,6 +259,7 @@ define([
 				globalSearch.search = this.options.search;
 			}
 			else if(!_.isUndefined(this.options.advancedSearch)){
+				//Add advanced search from url in params
 				globalSearch.advancedSearch = JSON.parse(this.options.advancedSearch);
 			}
 			if(!_.isUndefined(this.options.filter)){
@@ -266,7 +267,7 @@ define([
 			}
 
 			if(!_.isEmpty(globalSearch)){
-				fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, RequestsCollection.prototype.searchable_fields);
+				fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, RequestModel.prototype.searchable_fields);
 			}
 
 

@@ -65,7 +65,7 @@ define([
 					$('#advanced-filters').addClass('disabled');
 				}				
 				
-				self.fieldContainerView = new FieldContainerView({ searchableFields : self.collection.searchable_fields} )
+				self.fieldContainerView = new FieldContainerView({ searchableFields : self.collection.advanced_searchable_fields} )
 				
 				$('#navbar li:not(.nav-header)').first().addClass('active');
 

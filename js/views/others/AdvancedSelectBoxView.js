@@ -46,12 +46,12 @@ define([
 
 
 			// Check if the collection have a complete Name //
-			if(_.contains(this.collection.fields, 'complete_name')){
-				var fields = ['id', 'complete_name'];
-			}
-			else{
-				var fields = ['id', 'name'];
-			}
+//			if(_.contains(this.collection.fields, 'complete_name')){
+				var fields = ['id', 'name', 'complete_name'];
+//			}
+//			else{
+//				var fields = ['id', 'name'];
+//			}
 			
 
 
@@ -66,12 +66,12 @@ define([
 					// SEARCH PARAMS //
 					var params = [];
 					
-					if(_.contains(fields, 'complete_name')){
-						params.push({ field : 'complete_name', operator : 'ilike', value : query.term});
-					}
-					else{
+//					if(_.contains(fields, 'complete_name')){
+//						params.push({ field : 'complete_name', operator : 'ilike', value : query.term});
+//					}
+//					else{
 						params.push({ field : 'name', operator : 'ilike', value : query.term});	
-					}
+//					}
 
 					// Set all the search params in the params for the query //
 					if(!_.isEmpty(self.searchParams)){

@@ -313,7 +313,7 @@ define([
 				}
 			}
 			//'Unbuild' domain objectify to be able to add other filters (and objectify when all filters are added
-			var searchDomain = AppHelpers.calculSearch(optionSearch, InterventionsCollection.prototype.searchable_fields); //InterventionModel.prototype.searchable_fields);
+			var searchDomain = AppHelpers.calculSearch(optionSearch, InterventionModel.prototype.searchable_fields);
 			_.each(searchDomain,function(item, index){
 				domain.push(item);
 			});	
