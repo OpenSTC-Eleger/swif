@@ -2,12 +2,9 @@ define([
 	'app',
 	'appHelpers',
 	
-	'claimersServicesCollection',
-
-	'advancedSelectBoxView',
 	'fieldContainerView'	
 
-], function(app, AppHelpers, ClaimersServicesCollection, AdvancedSelectBoxView, FieldContainerView){
+], function(app, AppHelpers, FieldContainerView){
 
 	'use strict';
 
@@ -55,15 +52,15 @@ define([
 				});
 
 				$(self.el).html(template);
-				
-				if($('#divNavbar').hasClass('hide')){
-					$('#divNavbar').removeClass('hide');
-					$('#advanced-filters').removeClass('disabled');
-					$('#divTable').addClass('span10');
-				}
-				else {
-					$('#advanced-filters').addClass('disabled');
-				}				
+//				
+//				if($('#divNavbar').hasClass('hide')){
+//					$('#divNavbar').removeClass('hide');
+//					$('#advanced-filters').removeClass('disabled');
+//					$('#divTable').addClass('span10');
+//				}
+//				else {
+//					$('#advanced-filters').addClass('disabled');
+//				}				
 				
 				self.fieldContainerView = new FieldContainerView({ searchableFields : self.collection.advanced_searchable_fields} )
 				
@@ -79,7 +76,7 @@ define([
 
 		},
 		
-		/**
+		/** Prepares filters for generic list view
 		*/
 		applyFilterForm: function(e){
 

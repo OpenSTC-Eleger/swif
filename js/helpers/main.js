@@ -3,15 +3,10 @@ define('appHelpers', [
 	'app',
 	'userModel',
 	
-	'advancedSelectBoxView',
-	'inputFieldView',
-	
-	'claimersServicesCollection',
-
 	'moment-timezone',
 	'moment-timezone-data'
 
-], function(app, UserModel, AdvancedSelectBoxView, InputFieldView, ClaimersServicesCollection, moment, momentTZData){
+], function(app, UserModel, moment, momentTZData){
 
 
 	/******************************************

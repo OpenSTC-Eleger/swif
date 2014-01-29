@@ -297,6 +297,7 @@ define([
 				optionSearch.search = this.options.search;
 			}
 			else if(!_.isUndefined(this.options.advancedSearch)){
+				//Add advanced search from url in params
 				optionSearch.advancedSearch = JSON.parse(this.options.advancedSearch);
 			}
 			if(!_.isUndefined(this.options.filter) && !_.isNull(this.options.filter)){

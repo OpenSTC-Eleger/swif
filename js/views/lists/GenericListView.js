@@ -1,9 +1,7 @@
 define([
 	'app',
 	
-	'advancedFiltersBarView',
-
-], function(app, AdvancedFiltersBarView){
+], function(app){
 
 
 	/******************************************
@@ -214,7 +212,7 @@ define([
 			return result;
 		},
 
-		
+		//apply advanced search 
 		applyAdvancedFilters: function(jsonFilters) {
 			if(_.isEmpty(jsonFilters)){
 				delete this.options.advancedSearch;

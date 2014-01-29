@@ -1,16 +1,10 @@
-define([
-	'app',
-	'appHelpers',
+define([	
 	
 	'inputFieldView',
 	'dateFieldView',
 	'dynamicAdvancedSelectBoxView',
 	
-	'claimersServicesCollection',
-	'equipmentsCollection',
-	'placesCollection',
-	
-], function(app, AppHelpers, InputFieldView, DateFieldView, DynamicAdvancedSelectBoxView, ClaimersServicesCollection, EquipmentsCollection, PlacesCollection){
+], function(InputFieldView, DateFieldView, DynamicAdvancedSelectBoxView){
 
 	'use strict';
 
@@ -48,8 +42,15 @@ define([
 			
 			// Retrieve the template //				
 			self.components = [];
+			//to order searchable fields
+			self.searchableFields = _.sortBy(self.searchableFields, function(field){ 
+				if( !_.isUndefined( field.help ))
+					return [field.help]; 
+			});
+			
 			_.each(self.searchableFields, function(field,i){
 					
+					//Add widget corresponding to field's type
 					switch (field.type) {
 						case 'text':
 						case 'char':
@@ -75,6 +76,7 @@ define([
 			});
 		},
 		
+		//Change input value for component
 		updateComponent: function(e){
 			var self = this;
 			var component = _.find(self.components,function(c){ 

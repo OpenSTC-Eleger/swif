@@ -52,7 +52,7 @@ define([
 					var contentRange = request.getResponseHeader("Content-Range")
 					self.cpt = contentRange.match(/\d+$/);	
 					
-					
+					//Set advanced filters for collection
 					var fields = JSON.parse(request.getResponseHeader("Model-Fields"));
 					var selectFields = []
 					_.each(fields, function(v,k){
