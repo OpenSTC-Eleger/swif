@@ -15,6 +15,7 @@
 @import 'form';
 @import 'panel';
 @import 'navs';
+@import 'dropdowns';
 
 // Customizing plugin //
 @import 'select2';
@@ -110,9 +111,9 @@ div.datepicker{
 /* Sortable PlaceHolder
 -------------------------------------------------- */
 .sortablePlaceHold{
-	background-color: @well-bg;
 	height: 28px;
 	border: thin dashed darken(@well-bg, 65%);
+	background-color: @well-bg;
 }
 
 
@@ -242,10 +243,10 @@ a.filter-button.filter-disabled{
 /* hide back of pane during swap */
 .front, .back {
 	.backface-visibility(hidden);
-	width: 100%;
 	position: absolute;
 	top: 0;
 	left: 0;
+	width: 100%;
 }
 
 /* front pane, placed above back */
@@ -277,10 +278,10 @@ a.filter-button.filter-disabled{
 
 
 .tab-pane-planning{
-	height: 120px;
 	overflow-y: scroll;
 	margin-top: @line-height-computed/2;
 	margin-bottom: @line-height-computed/2;
+	height: 120px;
 
 	> ul li[data-name]{
 		width: 33%
@@ -311,9 +312,9 @@ li.external-event.disabled{
 // object Actions //
 .row-actions{
 	display: inline;
-	font-size: 85%;
-	width: auto;
 	margin: 0 0 0 15px;
+	width: auto;
+	font-size: 85%;
 }
 .nested-objects-actions{
 	font-size: 90%;
