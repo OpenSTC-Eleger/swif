@@ -15,7 +15,7 @@ define([
 
 		default_sort: { by: 'id', order: 'DESC' },
 		
-		advanced_searchable_fields: [],
+
 		
 		searchable_fields: [
 			{
@@ -52,18 +52,15 @@ define([
 					var contentRange = request.getResponseHeader("Content-Range")
 					self.cpt = contentRange.match(/\d+$/);	
 					
-					//Set advanced filters for collection
-					var fields = JSON.parse(request.getResponseHeader("Model-Fields"));
-					var selectFields = []
-					_.each(fields, function(v,k){
-						if (v.select == true) {
-							v.key = k
-							selectFields.push( v )										
-						}
-					})
-					self.__proto__.advanced_searchable_fields = selectFields;
-
-
+					//Set advanced filters for collection with metadatas
+					var fieldsMetadata = JSON.parse(request.getResponseHeader("Model-Fields"));
+					//self.advanced_searchable_fields = _.sortBy(self.advanced_searchable_fields, function(item){ return item })
+					_.each(self.advanced_searchable_fields, function(fieldToKeep){
+						var field = _.find(fieldsMetadata,function(value,key){ 
+							return fieldToKeep.key == key; 
+						});
+						_.extend(fieldToKeep, field);
+					});
 				}
 			});
 		},

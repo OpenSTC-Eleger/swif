@@ -72,6 +72,7 @@ requirejs.config({
 		stcGroupsCollection        : 'js/collections/STCGroupsCollection',
 		teamsCollection            : 'js/collections/TeamsCollection',
 		officersCollection         : 'js/collections/OfficersCollection',
+		filtersCollection          : 'js/collections/FiltersCollection',
 
 
 		/* #############
@@ -88,6 +89,7 @@ requirejs.config({
 		placeModel              : 'js/models/PlaceModel',
 		teamModel               : 'js/models/TeamModel',
 		officerModel            : 'js/models/OfficerModel',
+		filterModel            	: 'js/models/FilterModel',
 
 
 		/* #############

@@ -43,10 +43,10 @@ define([
 			// Retrieve the template //				
 			self.components = [];
 			//to order searchable fields
-			self.searchableFields = _.sortBy(self.searchableFields, function(field){ 
-				if( !_.isUndefined( field.help ))
-					return [field.help]; 
-			});
+//			self.searchableFields = _.sortBy(self.searchableFields, function(field){ 
+//				if( !_.isUndefined( field.help ))
+//					return [field.help]; 
+//			});
 			
 			_.each(self.searchableFields, function(field,i){
 					
