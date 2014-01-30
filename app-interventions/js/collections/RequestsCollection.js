@@ -28,6 +28,9 @@ define([
 		    	key : 'description'
 		    },
 		    {
+		    	key : 'state'
+		    },
+		    {
 		    	key : 'site1'
 		    },
 		    {

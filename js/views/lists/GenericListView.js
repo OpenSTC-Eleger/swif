@@ -11,7 +11,7 @@ define([
 
 		el            : '#rowContainer',
 
-		urlParameters : ['id', 'search', 'filter', 'sort', 'page', 'advancedSearch'],
+		urlParameters : ['id', 'search', 'advancedSearch', 'filter', 'sort', 'page'],
 
 		searchForm    : 'form.form-search input',
 

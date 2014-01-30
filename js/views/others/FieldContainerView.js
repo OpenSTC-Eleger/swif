@@ -42,11 +42,6 @@ define([
 			
 			// Retrieve the template //				
 			self.components = [];
-			//to order searchable fields
-//			self.searchableFields = _.sortBy(self.searchableFields, function(field){ 
-//				if( !_.isUndefined( field.help ))
-//					return [field.help]; 
-//			});
 			
 			_.each(self.searchableFields, function(field,i){
 					
@@ -70,6 +65,19 @@ define([
 							var dynamicAdvancedSelectBoxView = new DynamicAdvancedSelectBoxView({ field:field, url: field.url })					
 							$(self.el).append(dynamicAdvancedSelectBoxView.render().el);								
 							self.components.push(dynamicAdvancedSelectBoxView);
+							break;
+						case 'selection':
+							var selectionModel  = Backbone.Model.extend({});
+							var selectionCollection = Backbone.Collection.extend({
+							    model: selectionModel,
+							    initialize: function(){}
+							});
+							var statesCollection = new selectionCollection();
+							statesCollection.reset(field.selection)
+							var dynamicAdvancedSelectBoxView = new DynamicAdvancedSelectBoxView({ field:field, collection: statesCollection })					
+							$(self.el).append(dynamicAdvancedSelectBoxView.render().el);								
+							self.components.push(dynamicAdvancedSelectBoxView);
+							
 							break;
 						break;				
 					}
