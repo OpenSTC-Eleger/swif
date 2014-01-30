@@ -1,7 +1,8 @@
 define([
 	'app',
+	'advanceSearchView'
 	
-], function(app){
+], function(app, AdvanceSearchView){
 
 
 	/******************************************
@@ -246,6 +247,16 @@ define([
 
 			$('#advanceFilterContainer').toggleClass('hide');
 			$('#contentContainer').toggleClass('col-sm-12 trim col-sm-9 col-sm-pull-3 col-xl-10 col-xl-pull-2');
+
+
+			// Create the advance filter View //
+			if(_.isUndefined(app.views.advanceSearchView) && !$('#advanceFilterContainer').hasClass('hide')){
+				app.views.advanceSearchView = new AdvanceSearchView({
+					collection: this.collection, 
+					view      : this
+				});
+			}
+
 		}
 		
 

@@ -10,19 +10,17 @@ define([
 
 
 	/******************************************
-	* Advanced Filter Bar View
+	* Advanced Search View
 	*/
-	var AdvancedFiltersBarView = Backbone.View.extend({
+	var AdvanceSearchView = Backbone.View.extend({
 		
 		el              : '#advanced-filters-bar',
-		templateHTML 	: 'others/advancedFiltersBar.html',
+		templateHTML 	: 'others/advanceSearch.html',
 		
 		
 		// The DOM events //
-		events: function(){
-			return _.defaults({
-				'submit #formApplyFilters'					: 'applyFilterForm',
-			});
+		events: {
+			'submit #formApplyFilters'		: 'applyFilterForm'
 		},
 
 
@@ -31,7 +29,7 @@ define([
 		initialize: function(options){
 			this.collection = options.collection;
 			this.view = options.view;
-			
+
 			this.render();
 		},
 
@@ -47,35 +45,24 @@ define([
 
 				var template = _.template(templateData, {
 					lang             : app.lang,
-					pageTitle		 : "Filtres avançés"
-
 				});
 
 				$(self.el).html(template);
-//				
-//				if($('#divNavbar').hasClass('hide')){
-//					$('#divNavbar').removeClass('hide');
-//					$('#advanced-filters').removeClass('disabled');
-//					$('#divTable').addClass('span10');
-//				}
-//				else {
-//					$('#advanced-filters').addClass('disabled');
-//				}				
+	
 				
 				self.fieldContainerView = new FieldContainerView({ searchableFields : self.collection.advanced_searchable_fields} )
 				
 				$('#navbar li:not(.nav-header)').first().addClass('active');
-
 
 			});
 
 			$(this.el).hide().fadeIn();
 
 			return this;
-
-
 		},
-		
+
+
+
 		/** Prepares filters for generic list view
 		*/
 		applyFilterForm: function(e){
@@ -99,6 +86,6 @@ define([
 
 	});
 
-return AdvancedFiltersBarView;
+	return AdvanceSearchView;
 
 });

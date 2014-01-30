@@ -10,11 +10,10 @@ define([
 	'paginationView',
 	'itemRequestView',
 	'modalRequestView',
-	'advancedSelectBoxView',
-	'advancedFiltersBarView'
+	'advancedSelectBoxView'
 
 ], function(app, AppHelpers, RequestsCollection, ClaimersServicesCollection, RequestModel, GenericListView, PaginationView, 
-				ItemRequestView, ModalRequestView, AdvancedSelectBoxView, AdvancedFiltersBarView){
+				ItemRequestView, ModalRequestView, AdvancedSelectBoxView){
 
 	'use strict';
 
@@ -33,8 +32,6 @@ define([
 				'click #filterStateRequestList li a' 		: 'setFilterState',
 				'click #badgeActions[data-filter!=""]'  	: 'badgeFilter',
 				'click a.createRequest'		            	: 'modalCreateRequest',
-				
-				//'click #advanced-filters' 					: 'displayAdvancedfilters'
 			}, 
 				GenericListView.prototype.events
 			);
@@ -54,7 +51,7 @@ define([
 				self.collection.off();
 				self.listenTo(self.collection, 'add', self.add);
 				self.listenTo(self.collection, 'reset', self.render);
-				
+
 				app.router.render(self);
 			});
 		},
@@ -114,14 +111,9 @@ define([
 					page       : self.options.page.page,
 					collection : self.collection
 				});
-				
-				app.views.advancedFiltersBarView = new AdvancedFiltersBarView({
-					collection :self.collection, 
-					view : self
-				});
-				
-				
-				
+
+
+
 				// Render Filter Link on the Table //
 				if(!_.isUndefined(self.options.filter)){
 
@@ -156,13 +148,7 @@ define([
 				$('#bagdeCpt').html(self.collection.cpt);
 			});
 		},
-		
-//		displayAdvancedfilters: function(e){
-//			app.views.advancedFiltersBarView = new AdvancedFiltersBarView({
-//				collection :this.collection, 
-//				view : this
-//			});
-//		},
+
 
 
 		/** Filter Requests on the State

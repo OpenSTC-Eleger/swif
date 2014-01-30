@@ -10,10 +10,9 @@ define([
 	'paginationView',
 	'itemInterventionView',
 	'itemInterventionTaskListView',
-	'modalInterventionView',
-	'advancedFiltersBarView'
+	'modalInterventionView'
 
-], function(app, AppHelpers, InterventionsCollection, InterventionModel, TasksCollection, GenericListView, PaginationView, ItemInterventionView, ItemInterventionTaskListView, ModalInterventionView, AdvancedFiltersBarView){
+], function(app, AppHelpers, InterventionsCollection, InterventionModel, TasksCollection, GenericListView, PaginationView, ItemInterventionView, ItemInterventionTaskListView, ModalInterventionView){
 
 	'use strict';
 	
@@ -175,12 +174,6 @@ define([
 					page       : self.options.page.page,
 					collection : self.collections.interventions
 				});
-				
-				app.views.advancedFiltersBarView = new AdvancedFiltersBarView({
-					collection :self.collections.interventions, 
-					view : self
-				});
-	
 				
 			});
 			$(this.el).hide().fadeIn();
