@@ -19,8 +19,8 @@ define([
 		// The DOM events //
 		events: {
 			'click form.form-search input'                  : 'selectSearchInput',
-			//'click form  button'  : 'search',
 			'submit form.form-search'                       : 'search',
+			'click button[data-toggle="advance-search"]'    : 'toggleAdvanceSearch',
 			'click table.table-sorter th[data-sort-column]' : 'sort',		
 			
 		},
@@ -33,9 +33,10 @@ define([
 
 			// Set the Tooltip //
 			$('*[data-toggle="tooltip"]').tooltip();
-					
+
 			// Set the sort icon //
 			$('th[data-sort-column]').append('<i class="fa fa-sort fa-lg text-muted pull-right">');
+
 			if( !_.isUndefined(opts.sort) ){
 				// Display sort icon if there is a sort //
 				if(opts.sort.order == 'ASC'){ var newIcon = "fa-sort-up"; }else{ var newIcon = "fa-sort-down"; }
@@ -47,12 +48,13 @@ define([
 			if(!_.isUndefined(opts.search)){
 				$(this.searchForm).val(opts.search);
 			}
-			
+
 
 			// Set the focus to the search form //
 			$('form.form-search input').focus();
 		},
-		
+
+
 
 		/** Select the value in the search input when it is focus
 		*/
@@ -197,6 +199,8 @@ define([
 
 
 
+		/** Check if the search string contains special char
+		*/
 		isQueryValid: function(query){
 			var forbiddenChars = ['/', '%', '$'];
 
@@ -211,6 +215,8 @@ define([
 		
 			return result;
 		},
+
+
 
 		//apply advanced search 
 		applyAdvancedFilters: function(jsonFilters) {
@@ -227,11 +233,24 @@ define([
 			delete this.options.search;
 
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+		},
+
+
+
+		/** Display or hide the Advance Search Box
+		*/
+		toggleAdvanceSearch: function(e){
+
+			// Set the button to active //
+			$(e.target).toggleClass('active');
+
+			$('#advanceFilterContainer').toggleClass('hide');
+			$('#contentContainer').toggleClass('col-sm-12 trim col-sm-9 col-sm-pull-3 col-xl-10 col-xl-pull-2');
 		}
 		
 
 	});
 
-return GenericListView
+	return GenericListView
 
 });
