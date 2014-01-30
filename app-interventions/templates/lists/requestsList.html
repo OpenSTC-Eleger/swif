@@ -43,9 +43,14 @@
 		<form class="form-search pull-right col-xs-5 col-sm-5 col-md-3 col-xl-2">
 			<div class="input-group">
 				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
-				<span class="input-group-btn">
+				<div class="input-group-btn">
 					<!-- Submit Button -->
 					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
+
+					<!-- Button Advance filter -->
+					<button type="button" class="btn btn-primary" data-toggle="advance-search">
+						<span class="fa fa-search-plus"></span>
+					</button>
 
 					<!-- Display saved Filters -->
 					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -62,57 +67,82 @@
 							<% }) %>
 						</li>
 					</ul>
-				</span>
+				</div>
 			</div>
 		</form>
 	</div>
 	<!-- Table toolbar -->
 
-	<!-- Filters bar -->
-	<div id="advanced-filters-bar"></div>
-	<hr/>
 
 	<!-- Message if No Request to Display -->
 	<% if(nbRequests <= 0) { %>
 		<div class="tableToolbar">
-			<div class="alert alert-info">
-				<i class="fa fa-info-circle fa-lg"></i>&nbsp;<%= lang.infoMessages.noRequest %>
+			<div class="alert alert-warning">
+				<i class="fa fa-info-circle fa-lg fa-fw"></i>&nbsp;<%= lang.infoMessages.noRequest %>
 			</div>
 		</div>
 	<% } %>
 
 
 
-	<!-- Table Requests -->
-	<div class="table-responsive " id="divTable">
-	<table class="table table-striped table-bordered table-hover table-sorter">
-		<thead>
-			<tr>
-				<th data-sort-column="id">N°</th>
-				<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
-				<th><%= _.capitalize(lang.place) %>  / <%= _.capitalize(lang.equipment) %></th>
-				<th><%= _.capitalize(lang.service) %></th>
-				<th><%= _.capitalize(lang.claiment) %></th>
-				<th data-sort-column="create_date"><%= _.capitalize(lang.createDate) %></th>
-				<th><%= _.capitalize(lang.status) %></th>
+	<!-- Main view -->
+	<div class="row">
 
-				<% if(user.isDST() || user.isManager()){ %>
-					<th class="actions"><%= _.capitalize(lang.action) %></th>
-				<% } %>
-			</tr>
-		</thead>
-		<tbody id="rows-items">
+		<!-- Advance filter container -->
+		<div id="advanceFilterContainer" class="hide col-sm-3 col-sm-push-9 col-xl-2 col-xl-push-10">
+		<div class="panel panel-default">
+
+			<div class="panel-heading">
+				<h4 class="panel-title"><%= lang.advanceSearch %></h4>
+			</div>
+
+			<div class="panel-body">
+				<!-- Advance filter -->
+				<div id="advanced-filters-bar"></div>
+			</div>
+		</div>
+		</div>
+
+		
+		<div id="contentContainer" class="col-sm-12 content-container">
 			
-		</tbody>
+			<!-- Table Requests -->
+			<div class="table-responsive">
+			<table class="table table-striped table-bordered table-hover table-sorter">
+				<thead>
+					<tr>
+						<th data-sort-column="id">N°</th>
+						<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
+						<th><%= _.capitalize(lang.place) %>  / <%= _.capitalize(lang.equipment) %></th>
+						<th><%= _.capitalize(lang.service) %></th>
+						<th><%= _.capitalize(lang.claiment) %></th>
+						<th data-sort-column="create_date"><%= _.capitalize(lang.createDate) %></th>
+						<th><%= _.capitalize(lang.status) %></th>
 
-	</table>
+						<% if(user.isDST() || user.isManager()){ %>
+							<th class="actions"><%= _.capitalize(lang.action) %></th>
+						<% } %>
+					</tr>
+				</thead>
+				<tbody id="rows-items">
+
+				</tbody>
+
+			</table>
+			</div>
+			<!-- /Table Requests -->
+
+			<!-- Table pagination -->
+			<div id="pagination" class="pull-right"></div>
+			<!-- /Table pagination -->
+
+		</div>
+
 	</div>
-	<!-- /Table Requests -->
+	<!-- /Main view -->
 
 
-	<!-- Table pagination -->
-	<div id="pagination" class="pull-right"></div>
-	<!-- /Table pagination -->
+
 
 
 
