@@ -185,7 +185,9 @@ define('appHelpers', [
 				}
 			}
 			else if (!_.isUndefined(searchQuery.advancedSearch)) {
-				//computer requests with advanced filters
+				//TODO : if id fecth filter model to build rest filter
+				//else
+				//computer requests with advanced filters not saved
 				_.each(searchQuery.advancedSearch, function (item, key) {
 					if( key == 'state' ) {
 						search.push(buildFilterObject(key,'in',item));
@@ -203,23 +205,6 @@ define('appHelpers', [
 			return app.objectifyFilters(search);
 		},
 
-		
-		/** Calcul the filter IHM of the page for slected input component (specific to model)
-		*/
-		getFilterDomain: function(component) {
-			var field = component.field;			
-			switch (field.type) {
-				case 'text':
-				case 'char':
-					if($(component.el).val() != '')	
-						return { field : field.key , 'operator' : 'ilike', value: $(component.el).val() } 
-					break;
-				case 'many2one':
-					if(_.size(component.getSelectedItems())>0 )
-						return { field : field.key + '.id', 'operator' : 'in', value: component.getSelectedItems() }  //[$(component.el).val()]
-					break;			
-			}			
-		},
 		
 		/** Calcul the filter value in advanced filters form (specific to model)
 		*/
