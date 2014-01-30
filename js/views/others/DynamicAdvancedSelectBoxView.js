@@ -29,7 +29,7 @@ define([
 			//this.select2 = $(this.el);
 			this.field = options.field;	
 			this.url = options.url;
-			//this.collection = options.collection;
+			this.collection = options.collection;
 			this.render();
 		},
 
@@ -84,47 +84,59 @@ define([
 					minimumInputLength : minimumInputLength,
 					//width              : 'resolve',
 					query: function(query){
-	
-						// SEARCH PARAMS //
-						var params = [];
 						
-//						if(_.contains(fields, 'complete_name')){
-							params.push({ field : 'name', operator : 'ilike', value : query.term});
-//						}
-//						else{
-//							params.push({ field : 'name', operator : 'ilike', value : query.term});	
-//						}
+						if ( !_.isUndefined (self.url) ) {
 	
-						// Set all the search params in the params for the query //
-						if(!_.isEmpty(self.searchParams)){
-							_.each(self.searchParams, function(query, index){
-								params.push(query);
-							})
-						}
-						// / SEARCH PARAMS //
-	
-	
-						$.ajax({
-							url: self.url,
-							method: 'GET',
-							data: {
-								fields  : fields,
-								filters : app.objectifyFilters(params)
+							// SEARCH PARAMS //
+							var params = [];
+							
+	//						if(_.contains(fields, 'complete_name')){
+								params.push({ field : 'name', operator : 'ilike', value : query.term});
+	//						}
+	//						else{
+	//							params.push({ field : 'name', operator : 'ilike', value : query.term});	
+	//						}
+		
+							// Set all the search params in the params for the query //
+							if(!_.isEmpty(self.searchParams)){
+								_.each(self.searchParams, function(query, index){
+									params.push(query);
+								})
 							}
-						}).done(function(data){
-	
-								var returnData = {results: []};
-	
-								_.each(data, function(item, index){
-									returnData.results.push({
-										id   : item.id,
-										text : (_.isUndefined(item.complete_name) ? _.titleize(item.name.toLowerCase()) : _.titleize(item.complete_name.toLowerCase()))
+							// / SEARCH PARAMS //
+		
+		
+							$.ajax({
+								url: self.url,
+								method: 'GET',
+								data: {
+									fields  : fields,
+									filters : app.objectifyFilters(params)
+								}
+							}).done(function(data){
+		
+									var returnData = {results: []};
+		
+									_.each(data, function(item, index){
+										returnData.results.push({
+											id   : item.id,
+											text : (_.isUndefined(item.complete_name) ? _.titleize(item.name.toLowerCase()) : _.titleize(item.complete_name.toLowerCase()))
+										});
 									});
+		
+									// Return the query //
+									query.callback(returnData)
 								});
-	
-								// Return the query //
-								query.callback(returnData)
-							});
+						}
+						else {
+							var data = {results: []};
+							preload = self.collection;
+					        _.each(preload.models, function(model) {
+					        		var modelJSON = model.toJSON();
+					               data.results.push({id: modelJSON[0], text: app.lang[modelJSON[0]] });
+					        });
+					        query.callback(data);
+						}
 	
 					},
 					sortResults: function(results, container, query) {

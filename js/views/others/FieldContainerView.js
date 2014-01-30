@@ -66,6 +66,19 @@ define([
 							$(self.el).append(dynamicAdvancedSelectBoxView.render().el);								
 							self.components.push(dynamicAdvancedSelectBoxView);
 							break;
+						case 'selection':
+							var selectionModel  = Backbone.Model.extend({});
+							var selectionCollection = Backbone.Collection.extend({
+							    model: selectionModel,
+							    initialize: function(){}
+							});
+							var statesCollection = new selectionCollection();
+							statesCollection.reset(field.selection)
+							var dynamicAdvancedSelectBoxView = new DynamicAdvancedSelectBoxView({ field:field, collection: statesCollection })					
+							$(self.el).append(dynamicAdvancedSelectBoxView.render().el);								
+							self.components.push(dynamicAdvancedSelectBoxView);
+							
+							break;
 						break;				
 					}
 			});

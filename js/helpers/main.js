@@ -187,7 +187,10 @@ define('appHelpers', [
 			else if (!_.isUndefined(searchQuery.advancedSearch)) {
 				//computer requests with advanced filters
 				_.each(searchQuery.advancedSearch, function (item, key) {
-					if( _.isArray(item) )
+					if( key == 'state' ) {
+						search.push(buildFilterObject(key,'in',item));
+					}
+					else if( _.isArray(item) )
 						search.push(buildFilterObject(key+'.id','in',item));
 					else if( moment(item).isValid() )
 						search.push(buildFilterObject(key,'>',item));
@@ -232,7 +235,8 @@ define('appHelpers', [
 				case 'datetime':
 					if( ($(component.el).val() != '') )
 						return moment($(component.el).val(), 'DD/MM/YYYY').format('YYYY-MM-DD');
-					break;	
+					break;
+				case 'selection':
 				case 'many2one':
 					if(_.size(component.getSelectedItems())>0 )
 						return component.getSelectedItems() 
