@@ -246,6 +246,8 @@ define([
 
 			$('#advanceFilterContainer').toggleClass('hide');
 			$('#contentContainer').toggleClass('col-sm-12 trim col-sm-9 col-sm-pull-3 col-xl-10 col-xl-pull-2');
+			
+			
 		}
 		
 

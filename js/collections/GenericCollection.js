@@ -15,7 +15,7 @@ define([
 
 		default_sort: { by: 'id', order: 'DESC' },
 		
-
+		modelId		: 0,
 		
 		searchable_fields: [
 			{
@@ -54,13 +54,15 @@ define([
 					
 					//Set advanced filters for collection with metadatas
 					var fieldsMetadata = JSON.parse(request.getResponseHeader("Model-Fields"));
-					//self.advanced_searchable_fields = _.sortBy(self.advanced_searchable_fields, function(item){ return item })
 					_.each(self.advanced_searchable_fields, function(fieldToKeep){
 						var field = _.find(fieldsMetadata,function(value,key){ 
 							return fieldToKeep.key == key; 
 						});
 						_.extend(fieldToKeep, field);
 					});
+					//Get model Id to obtain his filters
+					self.modelId = request.getResponseHeader("Model-Id");
+					
 				}
 			});
 		},

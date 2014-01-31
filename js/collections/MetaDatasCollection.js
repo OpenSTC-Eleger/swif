@@ -2,23 +2,23 @@ define([
 	'app', 
 
 	'genericCollection',
-	'requestModel'
+	'metaDataModel'
 
-], function(app, GenericCollection, RequestModel){
+], function(app, GenericCollection, MetaDataModel){
 
 	'use strict';
 
 
 	/******************************************
-	* Requests Collection
+	* Metadatas Collection
 	*/
-	var FiltersCollection = GenericCollection.extend({
+	var MetaDatasCollection = GenericCollection.extend({
 
-		model        : RequestModel,
+		model        : MetaDataModel,
 
-		url          : '/api/open_object/filters',
+		url          : '/api/open_object/meta_datas',
 
-		fields       : ['id', 'name', 'user_id', 'domain', 'context', 'model_id'],
+		fields       : ['id', 'name', 'model', 'info'],
 
 		advanced_searchable_fields: [],
 
@@ -38,13 +38,12 @@ define([
 			options.data.fields = this.fields;
 
 			return $.when(
-				this.count(options),
 				Backbone.sync.call(this,method,this,options)
 			);
 		}
 
 	});
 
-return FiltersCollection;
+return MetaDatasCollection;
 
 });
