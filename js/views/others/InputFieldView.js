@@ -1,37 +1,28 @@
 define([
-	'app',
-	'appHelpers',
+	'app'
 
-
-], function(app, AppHelpers){
+], function(app){
 
 	'use strict';
 
 
 	/******************************************
-	* Advanced Filter Bar View
+	* Input form
 	*/
 	var InputFieldView = Backbone.View.extend({
 		
 		tagName      : 'div',
-	
+
 		className    : 'form-group',
 		
-		templateHTML : 'others/inputField.html',
-		
-		// The DOM events //
-		events: function(){
-			return _.defaults({
-
-			});
-		},
+		templateHTML : 'templates/others/inputField.html',
 
 
 		/** View Initialization
 		*/
 		initialize: function(options){
 			this.field = options.field;
-			
+
 			this.render();
 		},
 
@@ -43,30 +34,21 @@ define([
 			var self = this;
 			
 			// Retrieve the template //
-			$.get("templates/" + this.templateHTML, function(templateData){
+			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					lang             : app.lang,
-					name			 : self.field.key, 
-
+					field	: self.field 
 				});
 
 				$(self.el).html(template);
-
-
-
 			});
 
-			$(this.el).hide().fadeIn();
-
 			return this;
-
-
 		},
 
 
 	});
 
-return InputFieldView;
+	return InputFieldView;
 
 });

@@ -1,7 +1,2 @@
-
-	<label for="<%= name %>" class="control-label col-sm-3"><%= name %>:</label>
-	<div class="col-sm-4 input-field">		
-		<input type="text" id="<%= name %>" name="<%= name %>" class="form-control" value=""/>
-	</div>	
-
-
+<label for="ads_<%= field.key %>" class="control-label"><%= _.capitalize(field.label) %>:</label>
+<input type="text" id="ads_<%= field.key %>" name="ads_<%= field.key %>" class="form-control" value=""/>
