@@ -16,7 +16,7 @@ define([
 	
 		className    : 'form-group',
 		
-		templateHTML : 'others/dynamicAdvancedSelectBox.html',
+		templateHTML : 'templates/others/dynamicAdvancedSelectBox.html',
 		
 		select2      : null,
 
@@ -41,19 +41,16 @@ define([
 			var self = this;
 
 
-			
 			// Retrieve the template //
-			$.get("templates/" + this.templateHTML, function(templateData){
+			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					lang             : app.lang,
-					name			 : self.field.key, 
-
+					field			 : self.field
 				});
 
 				$(self.el).html(template);
 
-				self.select2 = $("#"+self.field.key);
+				self.select2 = $("#ads_"+self.field.key);
 				
 				// Retrieve placeholder attribute //
 				if(!_.isUndefined(self.select2.data('placeholder'))){ var placeholder = self.select2.data('placeholder'); }
@@ -185,8 +182,6 @@ define([
 					}
 				}
 			});
-			
-			$(this.el).hide().fadeIn();
 
 			return this;
 

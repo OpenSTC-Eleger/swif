@@ -14,15 +14,12 @@ define([
 	*/
 	var FieldContainerView = Backbone.View.extend({
 		
-		el              : '.field-container',
+		el         : '.fields-container',
 		
 		components : [],
 		
 		// The DOM events //
-		events: function(){
-			return _.defaults({
-
-			});
+		events: {
 		},
 
 
@@ -35,6 +32,7 @@ define([
 		},
 
 
+
 		/** View Render
 		*/
 		render: function(){
@@ -43,29 +41,36 @@ define([
 			// Retrieve the template //				
 			self.components = [];
 			
-			_.each(self.searchableFields, function(field,i){
-					
+			_.each(self.searchableFields, function(field, i){
+
 					//Add widget corresponding to field's type
 					switch (field.type) {
 						case 'text':
+						break;
+
 						case 'char':
-							var inputFieldView = new InputFieldView({ field:field})
+							var inputFieldView = new InputFieldView({ field: field })
 							inputFieldView.$el.on('change', function(event) {self.updateComponent(event)})								
 							$(self.el).append(inputFieldView.render().el);
 							self.components.push(inputFieldView);
-							break;
+						break;
+
 						case 'date':
+						break;
+
 						case 'datetime':
-							var dateFieldView = new DateFieldView({ field:field })	
+							var dateFieldView = new DateFieldView({ field: field })	
 							dateFieldView.$el.on('change', function(event) {self.updateComponent(event)})
 							$(self.el).append(dateFieldView.render().el);
 							self.components.push(dateFieldView);
-							break;
+						break;
+
 						case 'many2one':
-							var dynamicAdvancedSelectBoxView = new DynamicAdvancedSelectBoxView({ field:field, url: field.url })					
+							var dynamicAdvancedSelectBoxView = new DynamicAdvancedSelectBoxView({ field: field, url: field.url })					
 							$(self.el).append(dynamicAdvancedSelectBoxView.render().el);								
 							self.components.push(dynamicAdvancedSelectBoxView);
-							break;
+						break;
+
 						case 'selection':
 							var selectionModel  = Backbone.Model.extend({});
 							var selectionCollection = Backbone.Collection.extend({
@@ -74,16 +79,16 @@ define([
 							});
 							var statesCollection = new selectionCollection();
 							statesCollection.reset(field.selection)
-							var dynamicAdvancedSelectBoxView = new DynamicAdvancedSelectBoxView({ field:field, collection: statesCollection })					
-							$(self.el).append(dynamicAdvancedSelectBoxView.render().el);								
+							var dynamicAdvancedSelectBoxView = new DynamicAdvancedSelectBoxView({ field: field, collection: statesCollection })					
+							$(self.el).append(dynamicAdvancedSelectBoxView.render().el);
 							self.components.push(dynamicAdvancedSelectBoxView);
-							
-							break;
 						break;				
 					}
 			});
 		},
-		
+
+
+
 		//Change input value for component
 		updateComponent: function(e){
 			var self = this;
@@ -97,6 +102,6 @@ define([
 
 	});
 
-return FieldContainerView;
+	return FieldContainerView;
 
 });

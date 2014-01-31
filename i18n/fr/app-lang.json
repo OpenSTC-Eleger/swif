@@ -298,7 +298,8 @@
 		"selectABookable"	: "Sélectionner une ressource",
 		"displayPassword"   : "Afficher le mot de passe",
 		"resetPassword"     : "Réinitialiser le mot de passe",
-		"addAttach"			: "Ajouter une pièce jointe"
+		"addAttach"			: "Ajouter une pièce jointe",
+		"apply"             : "appliquer"
 		
 	},
 

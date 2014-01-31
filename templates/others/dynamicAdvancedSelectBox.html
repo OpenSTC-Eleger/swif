@@ -1,8 +1,2 @@
-<!-- Advanced Select Box -->
-
-<label for="<%= name %>" class="control-label col-sm-3"><%= name %></label>
-
-<div class="col-sm-4">
-	<input  type="text" id="<%= name %>"  style="width: 100%" data-multiple='true' class="select2" data-placeholder="<%= name %>"  data-tag-large="true">
-</div>
-
+<label for="ads_<%= field.key %>" class="control-label"><%= _.capitalize(field.label) %></label>
+<input type="text" id="ads_<%= field.key %>" data-multiple='true' class="select2">

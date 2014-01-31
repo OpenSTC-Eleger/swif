@@ -20,14 +20,8 @@ define([
 	
 		className    : 'form-group',
 		
-		templateHTML : 'others/dateField.html',
+		templateHTML : 'templates/others/dateField.html',
 		
-		// The DOM events //
-		events: function(){
-			return _.defaults({
-
-			});
-		},
 
 
 		/** View Initialization
@@ -46,30 +40,22 @@ define([
 			var self = this;
 			
 			// Retrieve the template //
-			$.get("templates/" + this.templateHTML, function(templateData){
+			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					lang             : app.lang,
-					name			 : self.field.key, 
-
+					field	: self.field 
 				});
 
 				$(self.el).html(template);
 				$('input.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
-
-
 			});
 
-			$(this.el).hide().fadeIn();
-
 			return this;
-
-
 		},
 
 
 	});
 
-return InputFieldView;
+	return InputFieldView;
 
 });

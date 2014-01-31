@@ -1,13 +1,5 @@
-<label for="<%= name %>" class="control-label col-sm-3"><%= name %>:</label>
-<div class="col-sm-4">
-	<div class="input-group">
-	<input 
-		type="text" class="datepicker form-control"
-		id="<%= name %>" 
-		value="" 
-		placeholder="dd/mm/yyyy">
-		<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-	</div>
+<label for="ads_<%= field.key %>" class="control-label"><%= _.capitalize(field.label) %></label>
+<div class="input-group">
+	<input type="text" id="ads_<%= field.key %>" class="datepicker form-control" value="" placeholder="dd/mm/yyyy">
+	<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 </div>
-
-

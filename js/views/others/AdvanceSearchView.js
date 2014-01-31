@@ -20,7 +20,7 @@ define([
 		
 		// The DOM events //
 		events: {
-			'submit #formApplyFilters'		: 'applyFilterForm'
+			'submit #formAdvanceSearch'	: 'applyFilterForm'
 		},
 
 
@@ -44,16 +44,13 @@ define([
 			$.get("templates/" + this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					lang             : app.lang,
+					lang   : app.lang,
 				});
 
 				$(self.el).html(template);
 	
-				
-				self.fieldContainerView = new FieldContainerView({ searchableFields : self.collection.advanced_searchable_fields} )
-				
-				$('#navbar li:not(.nav-header)').first().addClass('active');
 
+				self.fieldContainerView = new FieldContainerView({ searchableFields : self.collection.advanced_searchable_fields} )
 			});
 
 			$(this.el).hide().fadeIn();
@@ -81,7 +78,6 @@ define([
 			});
 
 			this.view.applyAdvancedFilters(advancedSearch)
-
 		}
 
 	});
