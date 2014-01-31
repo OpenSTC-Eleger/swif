@@ -248,6 +248,8 @@ define([
 			$('#advanceFilterContainer').toggleClass('hide');
 			$('#contentContainer').toggleClass('col-sm-12 trim col-sm-9 col-sm-pull-3 col-xl-10 col-xl-pull-2');
 
+			console.log(this.collection);
+			console.log('sdjfklfjjqsfmldkjsfmljsdlkj');
 
 			// Create the advance filter View //
 			if(_.isUndefined(app.views.advanceSearchView) && !$('#advanceFilterContainer').hasClass('hide')){

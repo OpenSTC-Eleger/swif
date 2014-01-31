@@ -15,7 +15,7 @@ define([
 	var AdvanceSearchView = Backbone.View.extend({
 		
 		el              : '#advanced-filters-bar',
-		templateHTML 	: 'others/advanceSearch.html',
+		templateHTML 	: 'templates/others/advanceSearch.html',
 		
 		
 		// The DOM events //
@@ -41,7 +41,7 @@ define([
 			var self = this;
 			
 			// Retrieve the template //
-			$.get("templates/" + this.templateHTML, function(templateData){
+			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
 					lang   : app.lang,

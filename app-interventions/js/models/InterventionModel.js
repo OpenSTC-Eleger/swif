@@ -201,7 +201,7 @@ define([
 			},
 			pending: {
 				key                 : 'pending',
-				color               : 'muted',
+				color               : 'default',
 				translation         : app.lang.pending
 			},
 			cancelled: {

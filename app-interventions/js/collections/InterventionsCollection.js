@@ -14,37 +14,21 @@ define([
 	*/
 	var InterventionsCollection = GenericCollection.extend({
 
-		model : InterventionModel,
+		model  : InterventionModel,
 		
-		url   : "/api/openstc/interventions",
+		url    : "/api/openstc/interventions",
 		
-		fields: ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid', 'create_date', 'ask_id', 'equipment_id', 'has_equipment'],
+		fields : ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid', 'create_date', 'ask_id', 'equipment_id', 'has_equipment'],
 
 		advanced_searchable_fields: [ 
-		    {
-		    	key : 'name'
-		    },
-		    {
-		    	key : 'description'
-		    },
-		    {
-		    	key : 'state'
-		    },
-		    {
-		    	key : 'site1'
-		    },
-		    {
-		    	key : 'equipment_id'
-		    },
-		    {
-		    	key : 'service_id'
-		    },
-		    {
-		    	key : 'create_date'
-		    },
-		    {
-		    	key : 'date_deadline'
-		    }
+		    { key: 'name',          label: app.lang.name },
+		    { key: 'description',   label: app.lang.description },
+		    { key: 'state',         label: app.lang.status },
+		    { key: 'site1',         label: app.lang.place },
+		    { key: 'equipment_id',  label: app.lang.equipment },
+		    { key: 'service_id',    label: app.lang.service },
+		    { key: 'create_date',   label: app.lang.createDate },
+		    { key: 'date_deadline', label: app.lang.date_deadline }
 		],
 
 		pendingInterventions: 0,

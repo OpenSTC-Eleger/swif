@@ -15,91 +15,110 @@
 
 	<!-- Table toolbar -->
 	<div class="tableToolbar row">
-		<div class="col-xs-7 col-md-9 col-lg-10">
+		<div class="col-xs-7 col-sm-7 col-md-9 col-xl-10">
 			<a href="#" class="btn btn-primary modalCreateInter"><i class="fa fa-plus fa-fw"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
 		</div>
 
-		<form class=" form-search pull-right col-xs-5 col-md-3 col-lg-2">
+		<form class="form-search pull-right col-xs-5 col-sm-5 col-md-3 col-xl-2">
 			<div class="input-group">
 				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
-				<span class="input-group-btn">
+				<div class="input-group-btn">
+					<!-- Submit Button -->
 					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
-				</span>
+
+					<!-- Button Advance filter -->
+					<button type="button" class="btn btn-primary" data-toggle="advance-search">
+						<span class="fa fa-search-plus"></span>
+					</button>
+
+					<!-- Display saved Filters -->
+					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+						<span class="fa fa-caret-down"></span>
+					</button>
+
+					<ul class="dropdown-menu pull-right" role="menu">
+						<li role="presentation" class="dropdown-header dropdown-header-lg"><%= lang.prerecoredFilters %></li>
+						<li role="presentation" class="horizontal-align">
+							<% _.each(interventionsState, function (state, i) { %>
+								<a tabindex="-1" href="#<%= state.key %>">
+									<span class="label label-lg label-<%= state.color %>"><%= _.capitalize(state.translation) %></span>
+								</a>
+							<% }) %>
+							<a tabindex="-1" href="#overrun">
+								<span class="label label-lg label-overrun"><%= _.capitalize(lang.overrun) %></span>
+							</a>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</form>
 	</div>
 	<!-- /Table toolbar -->
 
-	<!-- Filters bar -->
-	<div id="advanced-filters-bar"></div>
-	<hr/>
 
-
-		<!-- Message if No intervention to Display -->
+	<!-- Message if No intervention to Display -->
 	<% if(interventions.length <= 0) { %>
 		<div class="tableToolbar">
-			<div class="alert alert-info">
-				<i class="fa fa-info-circle fa-lg"></i>&nbsp;<%= lang.infoMessages.noRequest %>
+			<div class="alert alert-warning">
+				<i class="fa fa-info-circle fa-lg fa-fw"></i>&nbsp;<%= lang.infoMessages.noRequest %>
 			</div>
 		</div>
 	<% } %>
 
 
+	<!-- Main view -->
+	<div class="row">
 
-	<!-- Table Interventions -->
-	<div class="table-responsive">
-	<table class="table-interventions table table-bordered table-hover table-sorter table-striped-collapse">
-		<thead>
-			<tr>
-				<th data-sort-column="id">N°</th>
-				<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
-				<th><%= _.capitalize(lang.place) + ' / '%><%= _.capitalize(lang.equipment) %></th>
-				<th><%= _.capitalize(lang.dateDeadline) %></th>
-				<th><%= _.capitalize(lang.plannedHours) %></th>
-				<th><%= _.capitalize(lang.spentHours) %></th>
-				<th><%= _.capitalize(lang.progressRate) %>
-					<!-- Status Filter -->
-					<div class="dropdown pull-right">
-						<a id="filterStateInter" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="fa fa-filter fa-lg"></i></a>
+		<!-- Advance filter container -->
+		<div id="advanceFilterContainer" class="hide col-sm-3 col-sm-push-9 col-xl-2 col-xl-push-10">
+		<div class="panel panel-default">
 
-						<ul id="filterStateInterList" class="dropdown-menu" role="menu" aria-labelledby="filterStateInter">
-							<% _.each(interventionsState, function (state, i) {
-								if(i == interventionsState.template.key){ %>
-									<li class="divider"></li>
-							<% } %>
-								
-								<li role="menuitem">
-									<a tabindex="-1" href="#<%= state.key %>"> 
-										<i class="badge badge-<%= state.color %>">&nbsp;</i>
-										&nbsp; <%= _.capitalize(state.translation) %>
-									</a>
-								</li>
+			<div class="panel-heading">
+				<h4 class="panel-title"><%= lang.advanceSearch %></h4>
+			</div>
 
-							<% }) %>
+			<div class="panel-body">
+				<!-- Advance filter -->
+				<div id="advanced-filters-bar"></div>
+			</div>
+		</div>
+		</div>
 
-								<li role="menuitem">
-									<a href="#overrun"><i class="badge badge-overrun">&nbsp;</i>
-										&nbsp; <%= _.capitalize(lang.overrun) %>
-									</a>
-								</li>
-								<li class="divider"></li>
-								<li class="delete-filter disabled"><a href="#delete-filter"> <i class="fa fa-times"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
-						</ul>
-					</div>
-				</th>
-			</tr>
-		</thead>
-		
-		<tbody id="inter-items">
-		<!-- Inter rows -->
-		
-		</tbody>
-	</table>
+		<div id="contentContainer" class="col-sm-12 content-container">
+
+
+			<!-- Table Interventions -->
+			<div class="table-responsive">
+			<table class="table-interventions table table-bordered table-hover table-sorter table-striped-collapse">
+				<thead>
+					<tr>
+						<th data-sort-column="id">N°</th>
+						<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
+						<th><%= _.capitalize(lang.place) + ' / '%><%= _.capitalize(lang.equipment) %></th>
+						<th><%= _.capitalize(lang.dateDeadline) %></th>
+						<th><%= _.capitalize(lang.plannedHours) %></th>
+						<th><%= _.capitalize(lang.spentHours) %></th>
+						<th><%= _.capitalize(lang.progressRate) %></th>
+					</tr>
+				</thead>
+				
+				<tbody id="inter-items">
+				<!-- Inter rows -->
+				
+				</tbody>
+			</table>
+			</div>
+
+			<!-- Table pagination -->
+			<div id="pagination" class="pull-right"></div>
+			<!-- /Table pagination -->
+
+		</div>
+
 	</div>
+	<!-- /Main view -->
 
-	<!-- Table pagination -->
-	<div id="pagination" class="pull-right"></div>
-	<!-- /Table pagination -->
+
 
 
 
