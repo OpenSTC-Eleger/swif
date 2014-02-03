@@ -65,19 +65,20 @@ define([
 		applyFilterForm: function(e){
 
 			e.preventDefault();
-			var self = this;
 			
-
 			var advancedSearch = {};
 			
-			_.each(self.fieldContainerView.components, function(c,i) {
-				var search = AppHelpers.getComponentValue(c);
-				if(!_.isUndefined(search)) {
+			_.each(this.fieldContainerView.components, function(c,i) {
+
+				var search = c.getValue();
+
+				if(!_.isNull(search)){
 					advancedSearch[c.field.key] = search;
 				}
+			
 			});
 
-			this.view.applyAdvancedFilters(advancedSearch)
+			this.view.applyAdvancedFilters(advancedSearch);
 		}
 
 	});
