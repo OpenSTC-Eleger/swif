@@ -1,8 +1,13 @@
 define([
 	'app',
-	'advanceSearchView'
 	
-], function(app, AdvanceSearchView){
+	'metaDataModel',
+
+	'advanceSearchView',
+	'recordFilterView'
+	
+	
+], function(app, MetaDataModel, AdvanceSearchView, RecordFilterView){
 
 
 	/******************************************
@@ -19,10 +24,11 @@ define([
 
 		// The DOM events //
 		events: {
-			'click form.form-search input'                  : 'selectSearchInput',
-			'submit form.form-search'                       : 'search',
-			'click button[data-toggle="advance-search"]'    : 'toggleAdvanceSearch',
-			'click table.table-sorter th[data-sort-column]' : 'sort',		
+			'click form.form-search input'                  	: 'selectSearchInput',
+			'submit form.form-search'                      		: 'search',
+			'click button[data-toggle="advance-search"]'    	: 'toggleAdvanceSearch',
+			'click table.table-sorter th[data-sort-column]' 	: 'sort',
+			//'click button[data-toggle="dropdown"]'				: 'displayAdvancedFilters'
 			
 		},
 
@@ -257,6 +263,7 @@ define([
 				});
 			}
 		}
+
 		
 
 	});

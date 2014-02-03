@@ -93,7 +93,7 @@ define([
 		updateComponent: function(e){
 			var self = this;
 			var component = _.find(self.components,function(c){ 
-				return e.target.id == c.field.key				
+				return  _(e.target.id).strRight('_') == c.field.key				
 			});
 			self.components = _.without(self.components, component)
 			$(component.el).val($(e.target).val())

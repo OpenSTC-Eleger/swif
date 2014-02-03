@@ -108,6 +108,7 @@ requirejs.config({
 		fieldContainerView  		: 'js/views/others/FieldContainerView',
 		dynamicAdvancedSelectBoxView: 'js/views/others/DynamicAdvancedSelectBoxView',
 		dateFieldView				: 'js/views/others/DateFieldView',
+		recordFilterView			: 'js/views/others/RecordFilterView',
 
 		// Lists //
 		genericListView         : 'js/views/lists/GenericListView',
