@@ -258,6 +258,20 @@ define([
 		},
 
 
+		/** Alias for getSelectedItems()
+		*/
+		getValue: function(){
+			var vals = this.getSelectedItems();
+
+			if(!_.isEmpty(vals)){
+				return vals;
+			}
+			else{
+				return null;
+			}
+		},
+
+
 
 		/** Reset the selectBox Value
 		*/

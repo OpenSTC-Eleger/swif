@@ -54,6 +54,20 @@ define([
 		},
 
 
+
+		/** Get the value of the input
+		*/
+		getValue: function(){
+			var val = $(this.el).find('input').val();
+
+			if(val != ""){
+				return moment(val, 'DD/MM/YYYY').format('YYYY-MM-DD');
+			}
+			else{
+				return null;
+			}
+		}
+
 	});
 
 	return InputFieldView;

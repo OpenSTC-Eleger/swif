@@ -32,7 +32,7 @@ define([
 		*/
 		render: function(){
 			var self = this;
-			
+
 			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 
@@ -45,6 +45,21 @@ define([
 
 			return this;
 		},
+
+
+
+		/** Get the value of the input
+		*/
+		getValue: function(){
+			var val = $(this.el).find('input').val();
+
+			if(val != ""){
+				return val;
+			}
+			else{
+				return null;
+			}
+		}
 
 
 	});

@@ -205,38 +205,6 @@ define('appHelpers', [
 			return app.objectifyFilters(search);
 		},
 
-		
-
-		/** Calcul the filter value in advanced filters form (specific to model)
-		*/
-		getComponentValue: function(component) {
-			var field = component.field;			
-			switch (field.type) {
-				case 'text':
-				break;
-
-				case 'char':
-					if($(component.el).val() != '')	
-						return  $(component.el).val() 
-				break;
-
-				case 'date':
-				break;
-
-				case 'datetime':
-					if( ($(component.el).val() != '') )
-						return moment($(component.el).val(), 'DD/MM/YYYY').format('YYYY-MM-DD');
-				break;
-
-				case 'selection':
-				break;
-
-				case 'many2one':
-					if(_.size(component.getSelectedItems())>0 )
-						return component.getSelectedItems() 
-				break;			
-			}			
-		},
 
 
 		printError: function (e) {

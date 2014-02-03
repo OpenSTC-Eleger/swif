@@ -50,7 +50,6 @@ define([
 
 						case 'char':
 							var inputFieldView = new InputFieldView({ field: field })
-							inputFieldView.$el.on('change', function(event) {self.updateComponent(event)})								
 							$(self.el).append(inputFieldView.render().el);
 							self.components.push(inputFieldView);
 						break;
@@ -60,7 +59,6 @@ define([
 
 						case 'datetime':
 							var dateFieldView = new DateFieldView({ field: field })	
-							dateFieldView.$el.on('change', function(event) {self.updateComponent(event)})
 							$(self.el).append(dateFieldView.render().el);
 							self.components.push(dateFieldView);
 						break;
@@ -85,20 +83,7 @@ define([
 						break;				
 					}
 			});
-		},
-
-
-
-		//Change input value for component
-		updateComponent: function(e){
-			var self = this;
-			var component = _.find(self.components,function(c){ 
-				return e.target.id == c.field.key				
-			});
-			self.components = _.without(self.components, component)
-			$(component.el).val($(e.target).val())
-			self.components.push(component);
-		},
+		}
 
 	});
 
