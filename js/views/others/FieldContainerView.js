@@ -83,6 +83,9 @@ define([
 						break;				
 					}
 			});
+		},
+
+
 	});
 
 	return FieldContainerView;
