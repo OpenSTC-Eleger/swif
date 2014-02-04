@@ -221,6 +221,7 @@
 	"newPassword"                           : "Nouveau mot de passe",
 	"forgottenPassword"	                    : "Mot de passe oublié",
 	"prerecoredFilters"                     : "Filtres préenregistrés",
+	"myFilters"                             : "Mes filtres",
 	"advanceSearch"                         : "Recherche avancée",
 	"afterThe"                              : "Après le",
 	"beforeThe"                             : "Avant le",
@@ -471,6 +472,7 @@
 		"editClaimer" 		     : "Edition de l'organisation",
 		"updateBooking"			 : "Modifier Réservation",
 		"usersList"              : "Liste des utilisateurs",
-		"resetPassword"          : "Réinitialisation du mot de passe"
+		"resetPassword"          : "Réinitialisation du mot de passe",
+		"saveFilter"	         : "Enregistrement du filtre"
 	}
 }
