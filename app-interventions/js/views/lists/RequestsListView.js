@@ -282,8 +282,6 @@ define([
 	
 	
 
-
-
-return RequestsListView;
+	return RequestsListView;
 
 });

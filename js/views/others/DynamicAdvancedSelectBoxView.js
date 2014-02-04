@@ -22,6 +22,10 @@ define([
 
 		searchParams : [],
 
+		events: {
+			'click .dropdown-menu li'  : 'selectOperator'
+		},
+
 
 		/** View Initialization
 		*/
@@ -47,7 +51,8 @@ define([
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					field			 : self.field
+					lang   : app.lang,
+					field  : self.field
 				});
 
 				$(self.el).html(template);
@@ -299,10 +304,31 @@ define([
 		*/
 		resetSearchParams: function(){
 			this.searchParams = [];
+		},
+
+
+		/** Select the operator
+		*/
+		selectOperator: function(e){
+			e.preventDefault();
+
+			var link = $(e.currentTarget);
+
+			console.log("Select operator from Dynmaci");
+
+			// Set selected liste active //
+			$(this.el).find('.dropdown-menu li').removeClass('active');
+			link.addClass('active');
+
+
+			// Set the operator //
+			$(this.el).find('.dropdown-toggle').html(link.data('operator'));
+
 		}
+
 
 	});
 
-return DynamicAdvancedSelectBoxView;
+	return DynamicAdvancedSelectBoxView;
 
 });

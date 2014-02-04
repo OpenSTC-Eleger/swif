@@ -226,6 +226,8 @@
 	"afterThe"                              : "Après le",
 	"beforeThe"                             : "Avant le",
 	"the"                                   : "Le",
+	"equalTo"                               : "Egal à",
+	"differentFrom"                         : "Différent de",
 
 	"monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
 	"monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
