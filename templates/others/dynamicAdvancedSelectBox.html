@@ -1,2 +1,17 @@
 <label for="ads_<%= field.key %>" class="control-label"><%= _.capitalize(field.label) %></label>
-<input type="text" id="ads_<%= field.key %>" data-multiple='true' class="select2">
+<div class="input-group">
+
+	<div class="input-group-btn">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">=</button>
+		<ul class="dropdown-menu" role="menu">
+			<li class="active" data-operator="=">
+				<a href="#"><%= lang.equalTo %><span class="pull-right">=</span></a>
+			</li>
+			<li data-operator="&ne;">
+				<a href="#"><%= lang.differentFrom %><span class="pull-right">&ne;</span></a>
+			</li>
+		</ul>
+	</div>
+
+	<input type="text" id="ads_<%= field.key %>" data-multiple='true' class="select2">
+</div>

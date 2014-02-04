@@ -35,7 +35,7 @@ define([
 				'click #filterStateRequestList li a' 		: 'setFilterState',
 				'click #badgeActions[data-filter!=""]'  	: 'badgeFilter',
 				'click a.createRequest'		            	: 'modalCreateRequest',
-				'click button[data-toggle="dropdown"]'		: 'displayAdvancedFilters'
+				'click #displayRecordFilters'               : 'displayAdvancedFilters'
 			}, 
 				GenericListView.prototype.events
 			);
@@ -97,8 +97,7 @@ define([
 					nbRequests       : self.collection.cpt,
 					nbRequestsToDeal : self.collection.specialCpt,
 					requestsState    : RequestModel.status,
-
-					RequestModel     : RequestModel,
+					searchableFields : RequestModel.prototype.searchable_fields,
 					user             : app.current_user
 				});
 
@@ -119,13 +118,14 @@ define([
 				app.views.paginationView = new PaginationView({ 
 					page       : self.options.page.page,
 					collection : self.collection
-				});							
+				});
 
-				//Advanced recording filters view
+
+				// Advanced recording filters view //
 				app.views.recordFilterView = new RecordFilterView({
-					el		   		: ".filters",
-					states  		: RequestModel.status,
-					metaDataModel	: self.metaDataModel
+					el            : '#savedFilters',
+					states        : RequestModel.status,
+					metaDataModel : self.metaDataModel
 				});
 
 				// Render Filter Link on the Table //
@@ -288,7 +288,7 @@ define([
 					//TO REMOVE
 					fetchParams.data.filters= $.extend({},JSON.parse(this.filterModel.toJSON().domain));
 					//TO OBTAIN
-					globalSearch.filter = JSON.parse(this.filterModel.toJSON().domain);
+					//globalSearch.filter = JSON.parse(this.filterModel.toJSON().domain);
 				}
 				else{
 					globalSearch.filter = JSON.parse(this.options.filter);
@@ -311,8 +311,6 @@ define([
 	
 	
 
-
-
-return RequestsListView;
+	return RequestsListView;
 
 });

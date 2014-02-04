@@ -2,9 +2,10 @@ define([
 	'app',
 	'appHelpers',
 	
-	'fieldContainerView'	
+	'fieldContainerView',
+	'modalSaveFilterView'
 
-], function(app, AppHelpers, FieldContainerView){
+], function(app, AppHelpers, FieldContainerView, ModalSaveFilterView){
 
 	'use strict';
 
@@ -20,7 +21,8 @@ define([
 		
 		// The DOM events //
 		events: {
-			'submit #formAdvanceSearch'	: 'applyFilterForm'
+			'submit #formAdvanceSearch'	: 'applyFilterForm',
+			'click #saveFilter'         : 'modalSaveFilter'
 		},
 
 
@@ -79,8 +81,19 @@ define([
 			});
 
 			console.log(advancedSearch);
-
+			
 			this.view.applyAdvancedFilters(advancedSearch);
+		},
+
+
+		/** Display modal to save the Filter
+		*/
+		modalSaveFilter: function(e){
+
+			app.views.modalSaveFilterView = new ModalSaveFilterView({
+				el : '#modalSaveFilter'
+			});
+
 		}
 
 	});

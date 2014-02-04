@@ -20,18 +20,9 @@ define([
 
 
 		searchable_fields: [
-			{
-				key  : 'id',
-				type : 'numeric'
-			},
-			{
-				key  : 'name', 
-				type : 'text'
-			},
-			{
-				key  : 'description', 
-				type : 'text'
-			}
+			{ key: 'id',          type: 'numeric', label: 'N°' },
+			{ key: 'name',        type: 'text',    label: app.lang.label },
+			{ key: 'description', type: 'text',    label: app.lang.description }
 		],
 
 
