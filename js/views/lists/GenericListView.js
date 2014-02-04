@@ -252,7 +252,7 @@ define([
 			$(e.currentTarget).toggleClass('active');
 
 			$('#advanceFilterContainer').toggleClass('hide');
-			$('#contentContainer').toggleClass('col-sm-12 trim col-sm-9 col-sm-pull-3 col-xl-10 col-xl-pull-2');
+			$('#contentContainer').toggleClass('content-main-left');
 
 
 			// Create the advance filter View //

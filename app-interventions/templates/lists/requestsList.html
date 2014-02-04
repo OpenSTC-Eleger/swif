@@ -6,13 +6,13 @@
 		<% if(user.isDST() || user.isManager()){
 
 		  if(user.isDST()) { 
-				var classColor      = RequestModel.status.confirm.color;
-				var filterValue     = RequestModel.status.confirm.key;
+				var classColor      = requestsState.confirm.color;
+				var filterValue     = requestsState.confirm.key;
 				var actionToProcess = lang.actions.confirm; 
 			}
 			else if(user.isManager()){ 
-		   		var classColor      = RequestModel.status.wait.color;
-		   		var filterValue     = RequestModel.status.wait.key;
+		   		var classColor      = requestsState.wait.color;
+		   		var filterValue     = requestsState.wait.key;
 		   		var actionToProcess = lang.actions.process; }
 			else{ 
 		   		var classColor      = '';
@@ -42,7 +42,15 @@
 
 		<form class="form-search pull-right col-xs-6 col-sm-6 col-md-4 col-xl-3">
 			<div class="input-group">
-				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+
+				<% 
+					var fields = [];
+					_.each(searchableFields, function(field){
+						fields.push(field.label);
+					})
+				%>
+				<input type="search" class="form-control" placeholder="<%= _.toSentence(fields, ', ', ' '+lang.or+' ') %>" autocomplete="off">
+
 				<div class="input-group-btn">
 					<!-- Submit Button -->
 					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
@@ -53,13 +61,11 @@
 					</button>
 
 					<!-- Display saved Filters -->
-					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+					<button id="displayRecordFilters" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 						<span class="fa fa-caret-down"></span>
 					</button>
 
-					<ul class="dropdown-menu pull-right filters" role="menu"></ul>
-					
-
+					<ul id="savedFilters" class="dropdown-menu pull-right" role="menu"></ul>
 				</div>
 			</div>
 		</form>
@@ -82,7 +88,7 @@
 	<div class="row">
 
 		<!-- Advance filter container -->
-		<div id="advanceFilterContainer" class="hide col-sm-3 col-sm-push-9 col-xl-2 col-xl-push-10">
+		<div id="advanceFilterContainer" class="hide content-sidebar content-sidebar-right">
 		<div class="panel panel-default">
 
 			<div class="panel-heading">
@@ -97,7 +103,7 @@
 		</div>
 
 		
-		<div id="contentContainer" class="col-sm-12 content-container">
+		<div id="contentContainer" class="content-main">
 			
 			<!-- Table Requests -->
 			<div class="table-responsive">

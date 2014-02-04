@@ -79,6 +79,39 @@ fieldset{
 	.border-right-radius(@border-radius-large);
 }
 
+
+
+
+
+/* Side bar column
+-------------------------------------------------- */
+.content-sidebar{
+	.make-sm-column(3);
+	.make-xl-column(2);
+	
+	&-right{
+		.make-sm-column-push(9);
+		.make-xl-column-push(10);
+	}
+}
+
+
+/* Main Column
+-------------------------------------------------- */
+.content-main{
+	.make-sm-column(12);
+	
+	&-left{
+		.make-sm-column(9);
+		.make-sm-column-pull(3);
+
+		.make-xl-column(10);
+		.make-xl-column-pull(2);
+	}
+}
+
+
+
 /* HEADER
 -------------------------------------------------- */
 div.page-header{

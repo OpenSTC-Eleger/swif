@@ -1,14 +1,47 @@
 /* XL Grid
 -------------------------------------------------- */
 @media (min-width: @screen-xl-min) {
-  .container {
-    width: @container-xl;
-  }
+	.container {
+		width: @container-xl;
+	}
 
-  .make-grid-columns-float(xl);
-  .make-grid(@grid-columns, xl, width);
-  .make-grid(@grid-columns, xl, pull);
-  .make-grid(@grid-columns, xl, push);
-  .make-grid(@grid-columns, xl, offset);
+	.make-grid-columns-float(xl);
+	.make-grid(@grid-columns, xl, width);
+	.make-grid(@grid-columns, xl, pull);
+	.make-grid(@grid-columns, xl, push);
+	.make-grid(@grid-columns, xl, offset);
 }
 
+
+// Generate the large columns
+.make-xl-column(@columns; @gutter: @grid-gutter-width) {
+	position: relative;
+	// Prevent columns from collapsing when empty
+	min-height: 1px;
+	// Inner gutter via padding
+	padding-left:  (@gutter / 2);
+	padding-right: (@gutter / 2);
+
+	// Calculate width based on number of columns available
+	@media (min-width: @screen-xl-min) {
+		float: left;
+		width: percentage((@columns / @grid-columns));
+		}
+}
+
+// Generate the large column offsets
+.make-xl-column-offset(@columns) {
+	@media (min-width: @screen-xl-min) {
+    margin-left: percentage((@columns / @grid-columns));
+	}
+}
+.make-xl-column-push(@columns) {
+		@media (min-width: @screen-xl-min) {
+    	left: percentage((@columns / @grid-columns));
+		}
+}	
+.make-xl-column-pull(@columns) {
+		@media (min-width: @screen-xl-min) {
+		right: percentage((@columns / @grid-columns));
+		}
+}
