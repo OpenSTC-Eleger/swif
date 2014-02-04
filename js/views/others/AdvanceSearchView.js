@@ -80,7 +80,7 @@ define([
 
 			console.log(advancedSearch);
 
-			//this.view.applyAdvancedFilters(advancedSearch);
+			this.view.applyAdvancedFilters(advancedSearch);
 		}
 
 	});

@@ -13,7 +13,7 @@
 	<% if(! _.isUndefined(filters) ) {  %>		
 		<% _.each(filters, function (f) { 
 			%>	
-			<a tabindex="-1" href="#<%= f.name %>">
+			<a tabindex="-1" href="#<%= route %>/filter/<%= f.id %>">
 				<span><%= _.capitalize(f.name) %></span>
 			</a>
 		<% }) %>

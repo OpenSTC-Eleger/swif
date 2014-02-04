@@ -5,6 +5,7 @@ define([
 	'requestsCollection',
 	'claimersServicesCollection',
 	'requestModel',
+	'filterModel',
 
 	'genericListView',
 	'paginationView',
@@ -14,7 +15,7 @@ define([
 	'metaDataModel',
 	'recordFilterView'
 
-], function(app, AppHelpers, RequestsCollection, ClaimersServicesCollection, RequestModel, GenericListView, PaginationView, 
+], function(app, AppHelpers, RequestsCollection, ClaimersServicesCollection, RequestModel, FilterModel, GenericListView, PaginationView, 
 				ItemRequestView, ModalRequestView, AdvancedSelectBoxView, MetaDataModel,  RecordFilterView){
 
 	'use strict';
@@ -48,16 +49,20 @@ define([
 			var self = this;
 
 			this.options = params;
-
-			this.initCollection().done(function(){
-				// Unbind & bind the collection //
-				self.collection.off();
-				self.listenTo(self.collection, 'add', self.add);
-				self.listenTo(self.collection, 'reset', self.render);
-				//Set Meta Data for request collection to compute recording filters
-				self.metaDataModel = new MetaDataModel({ id :  self.collection.modelId });	
-				app.router.render(self);
+			
+			this.initFilters().done(function(){
+				self.initCollection().done(function(){
+					// Unbind & bind the collection //
+					self.collection.off();
+					self.listenTo(self.collection, 'add', self.add);
+					self.listenTo(self.collection, 'reset', self.render);
+					//Set Meta Data for request collection to compute recording filters
+					self.metaDataModel = new MetaDataModel({ id :  self.collection.modelId });	
+					app.router.render(self);
+				});
 			});
+
+
 		},
 
 
@@ -124,17 +129,17 @@ define([
 				});
 
 				// Render Filter Link on the Table //
-				if(!_.isUndefined(self.options.filter)){
-
-					$('#filterStateRequest').removeClass('filter-disabled');
-					$('#filterStateRequestList li.delete-filter').removeClass('disabled');
-
-					$('a.filter-button').addClass('text-'+RequestModel.status[self.options.filter.value].color);
-				}
-				else{
-					$('#filterStateRequest').addClass('filter-disabled');
-					$('#filterStateRequestList li.delete-filter').addClass('disabled');
-				}
+//				if(!_.isUndefined(self.options.filter)){
+//
+//					$('#filterStateRequest').removeClass('filter-disabled');
+//					$('#filterStateRequestList li.delete-filter').removeClass('disabled');
+//
+//					$('a.filter-button').addClass('text-'+RequestModel.status[self.options.filter.value].color);
+//				}
+//				else{
+//					$('#filterStateRequest').addClass('filter-disabled');
+//					$('#filterStateRequestList li.delete-filter').addClass('disabled');
+//				}
 
 			});
 
@@ -221,6 +226,24 @@ define([
 		},
 
 
+		initFilters: function(){
+			var self = this;
+			
+			var deferred = $.Deferred();
+			if (_.isUndefined( this.options.filter ) )
+				return deferred.resolve();	
+			var filter = JSON.parse(this.options.filter);
+			filter = parseInt(filter);
+			if( _.isNaN(filter) ) 
+				deferred.resolve();		
+			else{
+				self.filterModel = new FilterModel({ id :  filter });
+				self.filterModel.fetch().done( function(){
+					deferred.resolve();
+				});			
+			}
+			return deferred
+		},
 
 		initCollection: function(){
 			var self = this;
@@ -239,9 +262,9 @@ define([
 
 			this.options.page = AppHelpers.calculPageOffset(this.options.page);
 
-			if(!_.isUndefined(this.options.filter)){
-				this.options.filter = AppHelpers.calculPageFilter(this.options.filter);
-			}
+//			if(!_.isUndefined(this.options.filter)){
+//				this.options.filter = AppHelpers.calculPageFilter(this.options.filter);
+//			}
 
 				
 			// Create Fetch params //
@@ -259,16 +282,22 @@ define([
 			if(!_.isUndefined(this.options.search)){
 				globalSearch.search = this.options.search;
 			}
-
-			if(!_.isUndefined(this.options.filter)){
-				console.log(this.options.filter);
-				globalSearch.filter = this.options.filter;
+			
+			if(!_.isUndefined(this.options.filter)){				
+				if(!_.isUndefined(this.filterModel)){
+					//TO REMOVE
+					fetchParams.data.filters= $.extend({},JSON.parse(this.filterModel.toJSON().domain));
+					//TO OBTAIN
+					globalSearch.filter = JSON.parse(this.filterModel.toJSON().domain);
+				}
+				else{
+					globalSearch.filter = JSON.parse(this.options.filter);
+				}
 			}
 
-			if(!_.isEmpty(globalSearch)){
+			if(!_.isEmpty(globalSearch)){			
 				fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, RequestModel.prototype.searchable_fields);
 			}
-
 
 			// Fetch the collections //
 			return $.when(this.collection.fetch(fetchParams))
