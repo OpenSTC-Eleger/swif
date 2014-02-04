@@ -52,14 +52,16 @@ define([
 					});
 				
 					$(self.el).html(template);
+
+					$(this.el).hide().fadeIn();
 				});
-				
-				$(this.el).hide().fadeIn();
-				
-				return self;
+
 			});
+
+			return this;
 		},
 		
+
 		//Get recording filters for model
 		initFilters: function(){
 			var self = this;
