@@ -78,7 +78,9 @@ define([
 			
 			});
 
-			this.view.applyAdvancedFilters(advancedSearch);
+			console.log(advancedSearch);
+
+			//this.view.applyAdvancedFilters(advancedSearch);
 		}
 
 	});

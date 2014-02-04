@@ -1,12 +1,11 @@
 define([
 	'app',
-	'appHelpers',
 	
 	'bsDatepicker',
 	'bsTimepicker',
 	'moment'
 
-], function(app, AppHelpers, datepicker, timepicker, moment){
+], function(app, datepicker, timepicker, moment){
 
 	'use strict';
 
@@ -21,6 +20,11 @@ define([
 		className    : 'form-group',
 		
 		templateHTML : 'templates/others/dateField.html',
+
+
+		events: {
+			'click .dropdown-menu li'  : 'selectOperator'
+		},
 		
 
 
@@ -38,12 +42,13 @@ define([
 		*/
 		render: function(){
 			var self = this;
-			
+
 			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					field	: self.field 
+					lang   : app.lang, 
+					field  : self.field 
 				});
 
 				$(self.el).html(template);
@@ -66,6 +71,25 @@ define([
 			else{
 				return null;
 			}
+		},
+
+
+
+		/** Select the operator
+		*/
+		selectOperator: function(e){
+			e.preventDefault();
+
+			var link = $(e.currentTarget);
+
+			// Set selected liste active //
+			$(this.el).find('.dropdown-menu li').removeClass('active');
+			link.addClass('active');
+
+
+			// Set the operator //
+			$(this.el).find('.dropdown-toggle').html(link.data('operator'));
+
 		}
 
 	});

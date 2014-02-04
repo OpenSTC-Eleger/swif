@@ -26,7 +26,9 @@ define([
 		/** View Initialization
 		*/
 		initialize: function(options){
-			//this.select2 = $(this.el);
+
+			console.log(options);
+
 			this.field = options.field;	
 			this.url = options.url;
 			this.collection = options.collection;

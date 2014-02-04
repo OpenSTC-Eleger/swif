@@ -12,7 +12,7 @@ define([
 
 		el            : '#rowContainer',
 
-		urlParameters : ['id', 'search', 'advancedSearch', 'filter', 'sort', 'page'],
+		urlParameters : ['id', 'search', 'filter', 'sort', 'page'],
 
 		searchForm    : 'form.form-search input',
 
@@ -173,7 +173,7 @@ define([
 						if(value == 'page'){
 							url += '/'+value+self.options[value].page;
 						}
-						else if(value == 'advancedSearch'){
+						else if(value == 'filter'){
 							url += '/'+value+'/'+JSON.stringify(self.options[value]);
 						}
 						else{
@@ -222,10 +222,10 @@ define([
 		//apply advanced search 
 		applyAdvancedFilters: function(jsonFilters) {
 			if(_.isEmpty(jsonFilters)){
-				delete this.options.advancedSearch;
+				delete this.options.filter;
 			}
 			else{
-				this.options.advancedSearch = jsonFilters
+				this.options.filter = jsonFilters
 			}
 			
 			// Delete parameters //

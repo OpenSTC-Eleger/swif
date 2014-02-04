@@ -1,12 +1,12 @@
 {
 
 	"requestsInterventions": {
-		"url"		: "demandes-dinterventions(/search/:search)(/advancedSearch/:advancedSearch)(/sort/:sort)(/page:page)",
+		"url"		: "demandes-dinterventions(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"	: "requestsList"
 	},
 
 	"interventions": {
-		"url"		: "interventions(/search/:search)(/advancedSearch/:advancedSearch)(/sort/:sort)(/page:page)",
+		"url"		: "interventions(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"	: "interventions"
 	},
 

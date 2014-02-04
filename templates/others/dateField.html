@@ -1,5 +1,21 @@
 <label for="ads_<%= field.key %>" class="control-label"><%= _.capitalize(field.label) %></label>
 <div class="input-group">
+
+	<div class="input-group-btn">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">></button>
+		<ul class="dropdown-menu" role="menu">
+			<li class="active" data-operator=">">
+				<a href="#"><%= lang.afterThe %><span class="pull-right">&gt;</span></a>
+			</li>
+			<li data-operator="<">
+				<a href="#"><%= lang.beforeThe %><span class="pull-right">&lt;</span></a>
+			</li>
+			<li data-operator="=">
+				<a href="#"><%= lang.the %><span class="pull-right">=</span></a>
+			</li>
+		</ul>
+	</div>
+
 	<input type="text" id="ads_<%= field.key %>" class="datepicker form-control" value="" placeholder="dd/mm/yyyy">
 	<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 </div>

@@ -244,11 +244,9 @@ define([
 			if(!_.isUndefined(this.options.search)){
 				globalSearch.search = this.options.search;
 			}
-			else if(!_.isUndefined(this.options.advancedSearch)){
-				//Add advanced search from url in params
-				globalSearch.advancedSearch = JSON.parse(this.options.advancedSearch);
-			}
+
 			if(!_.isUndefined(this.options.filter)){
+				console.log(this.options.filter);
 				globalSearch.filter = this.options.filter;
 			}
 

@@ -46,8 +46,6 @@ define([
 					//Add widget corresponding to field's type
 					switch (field.type) {
 						case 'text':
-						break;
-
 						case 'char':
 							var inputFieldView = new InputFieldView({ field: field })
 							$(self.el).append(inputFieldView.render().el);
@@ -55,8 +53,6 @@ define([
 						break;
 
 						case 'date':
-						break;
-
 						case 'datetime':
 							var dateFieldView = new DateFieldView({ field: field })	
 							$(self.el).append(dateFieldView.render().el);

@@ -21,15 +21,13 @@ define([
 		fields       : ['id', 'name', 'actions', 'tooltip', 'create_date', 'create_uid', 'description', 'manager_id', 'partner_address', 'partner_id', 'partner_name', 'partner_service_id', 'partner_type', 'partner_type_code', 'people_name', 'service_id', 'site1', 'site_details', 'state', 'refusal_reason', 'has_equipment', 'equipment_id', 'is_citizen'],
 
 		advanced_searchable_fields: [ 
-			{ key: 'name',          label : app.lang.label },
-			{ key: 'description',   label : app.lang.description },
-			{ key: 'state',         label : app.lang.status },
 			{ key: 'site1',         label : app.lang.place },
 			{ key: 'equipment_id',  label : app.lang.equipment },
 			{ key: 'service_id',    label : app.lang.service },
 			{ key: 'partner_name',  label : app.lang.claiment },
 			{ key: 'create_date',   label : app.lang.createDate },
-			{ key: 'date_deadline', label : app.lang.date_deadline }
+			{ key: 'date_deadline', label : app.lang.date_deadline },
+			{ key: 'state',         label : app.lang.status }
 		],
 
 		default_sort : { by: 'id', order: 'DESC' },

@@ -222,6 +222,9 @@
 	"forgottenPassword"	                    : "Mot de passe oublié",
 	"prerecoredFilters"                     : "Filtres préenregistrés",
 	"advanceSearch"                         : "Recherche avancée",
+	"afterThe"                              : "Après le",
+	"beforeThe"                             : "Avant le",
+	"the"                                   : "Le",
 
 	"monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
 	"monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
@@ -300,7 +303,6 @@
 		"resetPassword"     : "Réinitialiser le mot de passe",
 		"addAttach"			: "Ajouter une pièce jointe",
 		"apply"             : "appliquer"
-		
 	},
 
 	"errorMessages" : {

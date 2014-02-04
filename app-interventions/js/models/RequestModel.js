@@ -29,7 +29,7 @@ define([
 				type : 'text'
 			},
 			{
-				key  : 'partner_name', 
+				key  : 'description', 
 				type : 'text'
 			}
 		],

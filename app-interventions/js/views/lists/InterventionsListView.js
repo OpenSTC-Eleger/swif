@@ -289,9 +289,9 @@ define([
 				// Collection Filter if not null //
 				optionSearch.search = this.options.search;
 			}
-			else if(!_.isUndefined(this.options.advancedSearch)){
+			else if(!_.isUndefined(this.options.filter)){
 				//Add advanced search from url in params
-				optionSearch.advancedSearch = JSON.parse(this.options.advancedSearch);
+				optionSearch.filter = JSON.parse(this.options.filter);
 			}
 			if(!_.isUndefined(this.options.filter) && !_.isNull(this.options.filter)){
 				this.options.filter = AppHelpers.calculPageFilter(this.options.filter);

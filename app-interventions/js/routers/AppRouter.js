@@ -23,9 +23,9 @@ define([
 
 		/** Requests List
 		*/
-		requestsList: function(search, advancedSearch, sort, page) {
+		requestsList: function(search, filter, sort, page) {
 
-			var params = this.setContext({search: search,  advancedSearch : advancedSearch, sort : sort, page : page});
+			var params = this.setContext({search: search,  filter : filter, sort : sort, page : page});
 
 			app.views.requestsListView = new RequestsListView(params);
 		},
@@ -34,9 +34,9 @@ define([
 
 		/** Interventions list
 		*/
-		interventions: function(search, advancedSearch, sort, page){
+		interventions: function(search, filter, sort, page){
 
-			var params = this.setContext({search: search,  advancedSearch : advancedSearch, sort : sort, page : page});
+			var params = this.setContext({search: search,  filter : filter, sort : sort, page : page});
 
 			app.views.interventions = new InterventionsListView(params);
 		},
