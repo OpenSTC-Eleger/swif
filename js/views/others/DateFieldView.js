@@ -20,6 +20,8 @@ define([
 		className    : 'form-group',
 		
 		templateHTML : 'templates/others/dateField.html',
+		
+		operator	 : '>',
 
 
 		events: {
@@ -72,7 +74,12 @@ define([
 				return null;
 			}
 		},
-
+		
+		/** Get operator selected (always '>')
+		*/
+		getOperator: function(){
+			return this.operator;
+		},
 
 
 		/** Select the operator

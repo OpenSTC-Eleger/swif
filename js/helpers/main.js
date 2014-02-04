@@ -190,16 +190,12 @@ define('appHelpers', [
 			if (!_.isUndefined(searchQuery.filter) && !_.isNumber(searchQuery.filter)) {			
 				_.each(searchQuery.filter, function (item, key) {
 					if( key == 'state' ) {
-						search.push(buildFilterObject(key,'in',item));
+						search.push(buildFilterObject(item.field,item.operator,item.value));
 					}
-					else if( _.isArray(item) )
-						search.push(buildFilterObject(key+'.id','in',item));
-					else if( moment(item).isValid() )
-						search.push(buildFilterObject(key,'>',item));
-					else if( _.isNumber(item) )
-						search.push(buildFilterObject(key,'=',item));
+					else if( _.isArray(item.value) )
+						search.push(buildFilterObject(item.field+'.id',item.operator,item.value));
 					else
-						search.push(buildFilterObject(key,'ilike',item));
+						search.push(buildFilterObject(item.field,item.operator,item.value));
 				});
 			}
 			return app.objectifyFilters(search);

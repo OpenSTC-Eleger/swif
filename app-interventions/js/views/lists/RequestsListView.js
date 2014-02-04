@@ -285,10 +285,7 @@ define([
 			
 			if(!_.isUndefined(this.options.filter)){				
 				if(!_.isUndefined(this.filterModel)){
-					//TO REMOVE
-					fetchParams.data.filters= $.extend({},JSON.parse(this.filterModel.toJSON().domain));
-					//TO OBTAIN
-					//globalSearch.filter = JSON.parse(this.filterModel.toJSON().domain);
+					globalSearch.filter = JSON.parse(this.filterModel.toJSON().domain);
 				}
 				else{
 					globalSearch.filter = JSON.parse(this.options.filter);

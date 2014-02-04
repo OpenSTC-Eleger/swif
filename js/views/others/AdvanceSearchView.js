@@ -68,21 +68,23 @@ define([
 
 			e.preventDefault();
 			
-			var advancedSearch = {};
+			var filters = [];
 			
 			_.each(this.fieldContainerView.components, function(c,i) {
 
-				var search = c.getValue();
+				var field = c.field.key
+				var value = c.getValue();
+				var operator = c.getOperator();
 
-				if(!_.isNull(search)){
-					advancedSearch[c.field.key] = search;
+				if(!_.isNull(value)){
+					filters.push({'field': field, 'operator': operator, 'value' : value});
 				}
 			
 			});
 
-			console.log(advancedSearch);
+			console.log(filters);
 			
-			this.view.applyAdvancedFilters(advancedSearch);
+			this.view.applyAdvancedFilters(filters);
 		},
 
 
