@@ -1,0 +1,24 @@
+<li role="presentation" class="dropdown-header dropdown-header-lg"><%= lang.prerecoredFilters %></li>
+<li role="presentation" class="horizontal-align">
+	<% if(! _.isUndefined(states) ) {  %>
+		<% _.each(states, function (state, i) { %>
+			<a tabindex="-1" href="#<%= state.key %>">
+				<span class="label label-lg label-<%= state.color %>"><%= _.capitalize(state.translation) %></span>
+			</a>
+		<% }) %>
+	<% } %>							
+</li>
+<li role="presentation" class="dropdown-header dropdown-header-lg">---------------------------</li>
+<li role="presentation" class="vertical-align">
+	<% if(! _.isUndefined(filters) ) {  %>		
+		<% _.each(filters, function (f) { 
+			%>	
+			<a tabindex="-1" href="#<%= f.name %>">
+				<span><%= _.capitalize(f.name) %></span>
+			</a>
+		<% }) %>
+	<% } %>		
+</li>
+
+
+

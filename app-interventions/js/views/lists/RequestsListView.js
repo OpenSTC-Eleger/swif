@@ -10,10 +10,12 @@ define([
 	'paginationView',
 	'itemRequestView',
 	'modalRequestView',
-	'advancedSelectBoxView'
+	'advancedSelectBoxView',
+	'metaDataModel',
+	'recordFilterView'
 
 ], function(app, AppHelpers, RequestsCollection, ClaimersServicesCollection, RequestModel, GenericListView, PaginationView, 
-				ItemRequestView, ModalRequestView, AdvancedSelectBoxView){
+				ItemRequestView, ModalRequestView, AdvancedSelectBoxView, MetaDataModel,  RecordFilterView){
 
 	'use strict';
 
@@ -32,6 +34,7 @@ define([
 				'click #filterStateRequestList li a' 		: 'setFilterState',
 				'click #badgeActions[data-filter!=""]'  	: 'badgeFilter',
 				'click a.createRequest'		            	: 'modalCreateRequest',
+				'click button[data-toggle="dropdown"]'		: 'displayAdvancedFilters'
 			}, 
 				GenericListView.prototype.events
 			);
@@ -51,7 +54,8 @@ define([
 				self.collection.off();
 				self.listenTo(self.collection, 'add', self.add);
 				self.listenTo(self.collection, 'reset', self.render);
-
+				//Set Meta Data for request collection to compute recording filters
+				self.metaDataModel = new MetaDataModel({ id :  self.collection.modelId });	
 				app.router.render(self);
 			});
 		},
@@ -110,9 +114,14 @@ define([
 				app.views.paginationView = new PaginationView({ 
 					page       : self.options.page.page,
 					collection : self.collection
+				});							
+
+				//Advanced recording filters view
+				app.views.recordFilterView = new RecordFilterView({
+					el		   		: ".filters",
+					states  		: RequestModel.status,
+					metaDataModel	: self.metaDataModel
 				});
-
-
 
 				// Render Filter Link on the Table //
 				if(!_.isUndefined(self.options.filter)){
@@ -192,7 +201,13 @@ define([
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 		},
 
-
+			
+		/**
+		 * Render recording filters view
+		 */	
+		displayAdvancedFilters: function(e){
+			app.views.recordFilterView.render();
+		},
 
 
 		/** Modal form to create a new Request

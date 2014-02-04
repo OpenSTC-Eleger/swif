@@ -57,16 +57,9 @@
 						<span class="fa fa-caret-down"></span>
 					</button>
 
-					<ul class="dropdown-menu pull-right" role="menu">
-						<li role="presentation" class="dropdown-header dropdown-header-lg"><%= lang.prerecoredFilters %></li>
-						<li role="presentation" class="horizontal-align">
-							<% _.each(requestsState, function (state, i) { %>
-								<a tabindex="-1" href="#<%= state.key %>">
-									<span class="label label-lg label-<%= state.color %>"><%= _.capitalize(state.translation) %></span>
-								</a>
-							<% }) %>
-						</li>
-					</ul>
+					<ul class="dropdown-menu pull-right filters" role="menu"></ul>
+					
+
 				</div>
 			</div>
 		</form>

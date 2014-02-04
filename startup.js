@@ -73,6 +73,7 @@ requirejs.config({
 		teamsCollection            : 'js/collections/TeamsCollection',
 		officersCollection         : 'js/collections/OfficersCollection',
 		metaDatasCollection        : 'js/collections/MetaDatasCollection',
+		filtersCollection          : 'js/collections/FiltersCollection',
 
 
 		/* #############
@@ -90,6 +91,7 @@ requirejs.config({
 		teamModel               : 'js/models/TeamModel',
 		officerModel            : 'js/models/OfficerModel',
 		metaDataModel           : 'js/models/MetaDataModel',
+		filterModel           	: 'js/models/FilterModel',
 
 
 		/* #############
@@ -108,6 +110,7 @@ requirejs.config({
 		fieldContainerView  		: 'js/views/others/FieldContainerView',
 		dynamicAdvancedSelectBoxView: 'js/views/others/DynamicAdvancedSelectBoxView',
 		dateFieldView				: 'js/views/others/DateFieldView',
+		recordFilterView			: 'js/views/others/RecordFilterView',
 
 		// Lists //
 		genericListView         : 'js/views/lists/GenericListView',
