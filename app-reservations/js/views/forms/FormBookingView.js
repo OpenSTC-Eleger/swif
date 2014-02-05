@@ -146,7 +146,7 @@ define(['app',
 		
 		//compute if form can be modified or not
 		isEditable: function(){
-			return this.model.getState() == BookingModel.status.remplir.key;
+			return this.model.getState() == BookingModel.status.draft.key;
 		},
 		
 		//compute display of button addBookable (readonly or visible)
@@ -295,7 +295,7 @@ define(['app',
 				}
 				
 				$('.make-switch').bootstrapSwitch();
-				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
+				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: true, modalBackdrop: false});
 				$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 					
 				// Booking Claimer //
@@ -482,6 +482,12 @@ define(['app',
 				$('#blockBookingCheckinHour').removeClass('hide');
 				$('#blockBookingCheckoutHour').removeClass('hide');
 			}
+		},
+		
+		postBookingForm: function(e){
+			//TODO: remove this call when save will be made at each input change
+			this.model.set({state_event:'save'})
+			this.saveBookingForm(e);
 		},
 		
 		saveBookingForm: function(e){
