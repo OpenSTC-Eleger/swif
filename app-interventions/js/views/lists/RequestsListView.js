@@ -128,19 +128,6 @@ define([
 					metaDataModel : self.metaDataModel
 				});
 
-				// Render Filter Link on the Table //
-//				if(!_.isUndefined(self.options.filter)){
-//
-//					$('#filterStateRequest').removeClass('filter-disabled');
-//					$('#filterStateRequestList li.delete-filter').removeClass('disabled');
-//
-//					$('a.filter-button').addClass('text-'+RequestModel.status[self.options.filter.value].color);
-//				}
-//				else{
-//					$('#filterStateRequest').addClass('filter-disabled');
-//					$('#filterStateRequestList li.delete-filter').addClass('disabled');
-//				}
-
 			});
 
 			$(this.el).hide().fadeIn();
@@ -225,18 +212,24 @@ define([
 			});
 		},
 
-
+		/**
+		 * Load filter model 
+		 */
 		initFilters: function(){
 			var self = this;
 			
 			var deferred = $.Deferred();
+			//Resolve if there is not filter 
 			if (_.isUndefined( this.options.filter ) )
 				return deferred.resolve();	
+			//Parse filter
 			var filter = JSON.parse(this.options.filter);
 			filter = parseInt(filter);
 			if( _.isNaN(filter) ) 
+				//Resolve if filter is not a recording filter 
 				deferred.resolve();		
 			else{
+				//Load saved filter model
 				self.filterModel = new FilterModel({ id :  filter });
 				self.filterModel.fetch().done( function(){
 					deferred.resolve();
@@ -261,11 +254,6 @@ define([
 			}
 
 			this.options.page = AppHelpers.calculPageOffset(this.options.page);
-
-//			if(!_.isUndefined(this.options.filter)){
-//				this.options.filter = AppHelpers.calculPageFilter(this.options.filter);
-//			}
-
 				
 			// Create Fetch params //
 			var fetchParams = {
