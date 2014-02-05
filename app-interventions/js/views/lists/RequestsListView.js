@@ -284,8 +284,15 @@ define([
 			}
 			
 			if(!_.isUndefined(this.options.filter)){				
-				if(!_.isUndefined(this.filterModel)){
-					globalSearch.filter = JSON.parse(this.filterModel.toJSON().domain);
+				if(!_.isUndefined(this.filterModel) ){
+					try {
+						globalSearch.filter = JSON.parse(this.filterModel.toJSON().domain);
+					}
+					catch(e)
+					{
+						console.log("Filter is not valid")
+					}
+					
 				}
 				else{
 					globalSearch.filter = JSON.parse(this.options.filter);

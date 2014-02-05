@@ -48,8 +48,7 @@ define([
 		*/
 		initialize: function(options){
 			this.options = options;
-
-
+			this.field = options.field;
 
 			// Check the Advance SelectBox need template //
 			if(!this.options.template){
