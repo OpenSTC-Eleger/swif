@@ -6,6 +6,8 @@ define([
 ], function(app, select2){
 
 
+	'use strict';
+
 
 	/******************************************
 	* Advanced SelectBox View
@@ -16,13 +18,18 @@ define([
 	
 		className    : 'form-group',
 		
-		templateHTML : 'templates/others/dynamicAdvancedSelectBox.html',
+		templateHTML : 'templates/others/advancedSelectBox.html',
 
 		select2      : null,
 
 		searchParams : [],
 
 		fields       : ['id', 'name'],
+
+		operators    : {
+			egal    : { key: 'in',     symbol: '=' },
+			notEgal : { key: 'not in', symbol: '&ne;' }
+		},
 
 		options      : {
 			template          : false,
@@ -42,10 +49,18 @@ define([
 		initialize: function(options){
 			this.options = options;
 			this.field = options.field;
+
 			// Check the Advance SelectBox need template //
 			if(!this.options.template){
 				this.select2 = $(this.el);	
 			}
+
+
+			// Set the translation //
+			this.operators.egal.label = app.lang.equalTo;
+			this.operators.notEgal.label = app.lang.differentFrom;
+
+			this.currentOperator = this.operators.egal;
 
 			this.render();
 		},
@@ -65,8 +80,9 @@ define([
 				$.get(this.templateHTML, function(templateData){
 
 					var template = _.template(templateData, {
-						lang   : app.lang,
-						field  : self.options.field
+						field           : self.options.field,
+						operators       : self.operators,
+						currentOperator : self.currentOperator
 					});
 
 					$(self.el).html(template);
@@ -324,17 +340,27 @@ define([
 
 			var link = $(e.currentTarget);
 
-			console.log("Select operator from Dynmaci");
 
 			// Set selected liste active //
 			$(this.el).find('.dropdown-menu li').removeClass('active');
 			link.addClass('active');
 
+			var operator = link.data('operator');
+
 
 			// Set the operator //
-			$(this.el).find('.dropdown-toggle').html(link.data('operator'));
+			$(this.el).find('.dropdown-toggle').html(this.operators[operator].symbol);
+			
+			this.currentOperator = this.operators[operator];
+		},
 
+
+		/** Return the current selected Operator
+		*/
+		getOperator: function(){
+			return this.currentOperator.key;
 		}
+
 
 	});
 
