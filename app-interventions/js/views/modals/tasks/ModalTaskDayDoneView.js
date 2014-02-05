@@ -86,7 +86,7 @@ define([
 				interAssociated.setId(self.selectedTaskJSON.project_id[0]);
 				interAssociated.fetch({silent: true}).done(function(){
 					
-					self.selectListVehicleView = new AdvancedSelectBoxView({el:'#taskEquipmentDone', collection:EquipmentsCollection.prototype});
+					self.selectListVehicleView = new AdvancedSelectBoxView({el:'#taskEquipmentDone', url: EquipmentsCollection.prototype.url });
 					self.selectListVehicleView.setSearchParam({field:'categ_id.is_vehicle',operator:'=',value:'True'},true);
 					self.selectListVehicleView.setSearchParam({field:'internal_use',operator:'=',value:'True'});
 					self.selectListVehicleView.setSearchParam('|');
@@ -95,7 +95,7 @@ define([
 					
 					self.selectListVehicleView.render();
 				
-					self.selectListEquipmentsDoneView = new AdvancedSelectBoxView({el:'#taskEquipmentListDone', collection:EquipmentsCollection.prototype});
+					self.selectListEquipmentsDoneView = new AdvancedSelectBoxView({el:'#taskEquipmentListDone', url: EquipmentsCollection.prototype.url });
 					self.selectListEquipmentsDoneView.setSearchParam({field:'categ_id.is_equipment', operator:'=', value:'True'}, true);
 					self.selectListEquipmentsDoneView.setSearchParam({field:'internal_use',operator:'=',value:'True'});
 					self.selectListEquipmentsDoneView.setSearchParam('|');

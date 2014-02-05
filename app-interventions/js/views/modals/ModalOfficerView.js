@@ -70,14 +70,14 @@ app.Views.ModalOfficerView = app.Views.GenericModalView.extend({
 
 			if(!loader){
 				// Advance Select List View //
-				app.views.advancedSelectBoxOfficerGroupView = new app.Views.AdvancedSelectBoxView({el: $("#officerGroup"), collection: app.Collections.STCGroups.prototype })
+				app.views.advancedSelectBoxOfficerGroupView = new app.Views.AdvancedSelectBoxView({el: $("#officerGroup"), url: app.Collections.STCGroups.prototype.url })
 				//app.views.advancedSelectBoxOfficerGroupView.setSearchParam({ field : 'name', operator : 'ilike', value : 'openstc' }, true);
 				app.views.advancedSelectBoxOfficerGroupView.render();
 
-				app.views.advancedSelectBoxOfficerServiceView = new app.Views.AdvancedSelectBoxView({el: $("#officerService"), collection: app.Collections.ClaimersServices.prototype })
+				app.views.advancedSelectBoxOfficerServiceView = new app.Views.AdvancedSelectBoxView({el: $("#officerService"), url: app.Collections.ClaimersServices.prototype.url })
 				app.views.advancedSelectBoxOfficerServiceView.render();
 
-				app.views.advancedSelectBoxOfficerServicesView = new app.Views.AdvancedSelectBoxView({el: $("#officerOtherServices"), collection: app.Collections.ClaimersServices.prototype })
+				app.views.advancedSelectBoxOfficerServicesView = new app.Views.AdvancedSelectBoxView({el: $("#officerOtherServices"), url: app.Collections.ClaimersServices.prototype.url })
 				app.views.advancedSelectBoxOfficerServicesView.render();
 			}
 

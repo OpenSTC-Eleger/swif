@@ -91,10 +91,10 @@ define([
 	
 				var hasService = (self.options.inter.toJSON().service_id && !_.isUndefined(self.options.inter.toJSON().service_id));
 				
-				self.selectListOfficersTeamsView = new AdvancedSelectBoxView({el:$('#selectUsersTeams'), collection: OfficersCollection.prototype});
+				self.selectListOfficersTeamsView = new AdvancedSelectBoxView({ el:$('#selectUsersTeams'), url: OfficersCollection.prototype.url });
 				
-				self.selectVehicleView = new AdvancedSelectBoxView({el:'#taskEquipmentDone', collection: EquipmentsCollection.prototype});
-				self.selectListEquipmentsView = new AdvancedSelectBoxView({el:'#taskEquipmentListDone', collection: EquipmentsCollection.prototype});
+				self.selectVehicleView = new AdvancedSelectBoxView({ el:'#taskEquipmentDone', url: EquipmentsCollection.prototype.url });
+				self.selectListEquipmentsView = new AdvancedSelectBoxView({ el:'#taskEquipmentListDone', url: EquipmentsCollection.prototype.url });
 				
 				self.selectVehicleView.setSearchParam({field:'categ_id.is_vehicle', operator:'=', value:'True'}, true);
 				self.selectListEquipmentsView.setSearchParam({field:'categ_id.is_equipment', operator:'=', value:'True'}, true);

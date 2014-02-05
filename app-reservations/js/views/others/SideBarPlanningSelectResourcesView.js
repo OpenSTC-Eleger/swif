@@ -96,7 +96,7 @@ define([
 	
 				// Advance Select List View //
 				if(app.current_user.isResaManager()) {
-					app.views.advancedSelectBoxClaimerView = new AdvancedSelectBoxView({el: $('#claimersOrganization'), collection: ClaimersCollection.prototype })
+					app.views.advancedSelectBoxClaimerView = new AdvancedSelectBoxView({el: $('#claimersOrganization'), url: ClaimersCollection.prototype.url })
 					app.views.advancedSelectBoxClaimerView.render();
 				}
 

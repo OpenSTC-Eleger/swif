@@ -84,10 +84,10 @@ define([
 	
 				if(!loader){
 					// Advance Select List View //
-					app.views.advancedSelectBoxManagerView = new AdvancedSelectBoxView({el: $("#serviceManager"), collection: OfficersCollection.prototype })
+					app.views.advancedSelectBoxManagerView = new AdvancedSelectBoxView({el: $("#serviceManager"), url: OfficersCollection.prototype.url })
 					app.views.advancedSelectBoxManagerView.render();
 	
-					app.views.advancedSelectBoxServiceParentView = new AdvancedSelectBoxView({el: $("#serviceParentService"), collection: ClaimersServicesCollection.prototype })
+					app.views.advancedSelectBoxServiceParentView = new AdvancedSelectBoxView({el: $("#serviceParentService"), url: ClaimersServicesCollection.prototype.url })
 					app.views.advancedSelectBoxServiceParentView.render();
 	
 					$('.make-switch').bootstrapSwitch();

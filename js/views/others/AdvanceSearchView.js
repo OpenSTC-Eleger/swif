@@ -70,7 +70,7 @@ define([
 			
 			var advancedSearch = {};
 			
-			_.each(this.fieldContainerView.components, function(c,i) {
+			_.each(this.fieldContainerView.components, function(c, i) {
 
 				var search = c.getValue();
 
@@ -84,6 +84,7 @@ define([
 
 			//this.view.applyAdvancedFilters(advancedSearch);
 		},
+
 
 
 		/** Display modal to save the Filter

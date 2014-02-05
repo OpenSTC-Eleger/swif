@@ -92,17 +92,17 @@ define([
 				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 				
 				// Display only categories in dropdown belongs to intervention //
-				self.advancedSelectBoxCategoriesInterventionAddTaskView = new AdvancedSelectBoxView({el: $("#taskCategory"), collection: CategoriesTasksCollection.prototype}); 
+				self.advancedSelectBoxCategoriesInterventionAddTaskView = new AdvancedSelectBoxView({el: $("#taskCategory"), url: CategoriesTasksCollection.prototype.url});
 	
 				self.advancedSelectBoxCategoriesInterventionAddTaskView.render();
 				//Initialize Vehicle select2 box
-				self.selectListVehicleView = new AdvancedSelectBoxView({el:'#taskEquipmentAdd', collection:EquipmentsCollection.prototype});
+				self.selectListVehicleView = new AdvancedSelectBoxView({el:'#taskEquipmentAdd', url: EquipmentsCollection.prototype.url});
 				self.selectListVehicleView.render();
 			
-				self.taskEquipmentAddList = new AdvancedSelectBoxView({el:'#taskEquipmentAddList', collection:EquipmentsCollection.prototype});
+				self.taskEquipmentAddList = new AdvancedSelectBoxView({el:'#taskEquipmentAddList', url: EquipmentsCollection.prototype.url});
 				self.taskEquipmentAddList.render();
 				
-				self.selectListOfficersTeamsView = new AdvancedSelectBoxView({el:'#taskSelectUsersTeams', collection: OfficersCollection.prototype});
+				self.selectListOfficersTeamsView = new AdvancedSelectBoxView({el:'#taskSelectUsersTeams', url:  OfficersCollection.prototype.url});
 				self.selectListOfficersTeamsView.render();
 				
 				self.initSearchParams();

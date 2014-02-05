@@ -64,13 +64,13 @@ define([
                 });
                 self.modal.html(template);
                 if(!loader){
-                    app.views.selectListClaimerTypeView = new AdvancedSelectBoxView({el: $("#claimerType"), collection: ClaimersTypesCollection.prototype})
+                    app.views.selectListClaimerTypeView = new AdvancedSelectBoxView({el: $("#claimerType"), url: ClaimersTypesCollection.prototype.url})
                     app.views.selectListClaimerTypeView.render();
 
-                    app.views.selectListClaimerTechnicalServiceView = new AdvancedSelectBoxView({el: $("#claimerTechnicalService"), collection: ClaimersServicesCollection.prototype})
+                    app.views.selectListClaimerTechnicalServiceView = new AdvancedSelectBoxView({el: $("#claimerTechnicalService"), url: ClaimersServicesCollection.prototype.url})
                     app.views.selectListClaimerTechnicalServiceView.render();
 
-                    app.views.selectListClaimerTechnicalSiteView = new AdvancedSelectBoxView({el: $("#claimerTechnicalSite"), collection: PlacesCollection.prototype})
+                    app.views.selectListClaimerTechnicalSiteView = new AdvancedSelectBoxView({el: $("#claimerTechnicalSite"), url: PlacesCollection.prototype.url})
                     app.views.selectListClaimerTechnicalSiteView.render();
 
                 }

@@ -71,7 +71,7 @@ define([
 				self.modal.html(template);
 
 				// Advance Select List View //
-				app.views.advancedSelectBoxForemanView = new AdvancedSelectBoxView({el: $("#teamForeman"), collection: OfficersCollection.prototype })
+				app.views.advancedSelectBoxForemanView = new AdvancedSelectBoxView({el: $("#teamForeman"), url: OfficersCollection.prototype.url })
 				// Retrieve only Officer //
 				app.views.advancedSelectBoxForemanView.setSearchParam({field:'service_ids', operator:'!=', value: 'false'}, true);
 				app.views.advancedSelectBoxForemanView.render();

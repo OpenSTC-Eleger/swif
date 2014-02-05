@@ -11,18 +11,44 @@ define([
 	* Advanced SelectBox View
 	*/
 	var AdvancedSelectBoxView = Backbone.View.extend({
+
+		tagName      : 'div',
+	
+		className    : 'form-group',
 		
+		templateHTML : 'templates/others/dynamicAdvancedSelectBox.html',
 
 		select2      : null,
 
 		searchParams : [],
 
+		fields       : ['id', 'name'],
+
+		options      : {
+			template          : false,
+			placeholder       : '',
+			minimumInputLength: 0,
+			multiple          : false
+		},
+
+
+		events: {
+			'click .dropdown-menu li'  : 'selectOperator'
+		},
+
 
 		/** View Initialization
 		*/
 		initialize: function(options){
-			this.select2 = $(this.el);
-			this.field = options.field;
+			this.options = options;
+
+
+			// Check the Advance SelectBox need template //
+			if(!this.options.template){
+				this.select2 = $(this.el);	
+			}
+
+			this.render();
 		},
 
 
@@ -32,80 +58,73 @@ define([
 		render: function(){
 			var self = this;
 
-			// Retrieve placeholder attribute //
-			if(!_.isUndefined(this.select2.data('placeholder'))){ var placeholder = this.select2.data('placeholder'); }
-			else{ var placeholder = ''; }
-
-			// Retrieve minimum-input-length attribute //
-			if(!_.isUndefined(this.select2.data('minimum-input-length'))){ var minimumInputLength = this.select2.data('minimum-input-length'); }
-			else{ var minimumInputLength = 0; }
-
-			// Retrieve multiple attribute //
-			if(!_.isUndefined(this.select2.data('multiple'))){ var multiple = this.select2.data('multiple'); }
-			else{ var multiple = false; }
+			// If there need to retrieve the template //
+			if(this.options.template){
 
 
-			// Check if the collection have a complete Name //
-//			if(_.contains(this.collection.fields, 'complete_name')){
-				var fields = ['id', 'name', 'complete_name'];
-//			}
-//			else{
-//				var fields = ['id', 'name'];
-//			}
-			
+				// Retrieve the template //
+				$.get(this.templateHTML, function(templateData){
 
+					var template = _.template(templateData, {
+						lang   : app.lang,
+						field  : self.options.field
+					});
 
-			this.select2.select2({
-				allowClear         : true,
-				placeholder        : placeholder,
-				multiple           : multiple, 
-				minimumInputLength : minimumInputLength,
-				//width              : 'resolve',
-				query: function(query){
+					$(self.el).html(template);
 
-					// SEARCH PARAMS //
-					var params = [];
-					
-//					if(_.contains(fields, 'complete_name')){
-//						params.push({ field : 'complete_name', operator : 'ilike', value : query.term});
-//					}
-//					else{
-						params.push({ field : 'name', operator : 'ilike', value : query.term});	
-//					}
+					self.select2 = $(self.el).find('input');
 
-					// Set all the search params in the params for the query //
-					if(!_.isEmpty(self.searchParams)){
-						_.each(self.searchParams, function(query, index){
-							params.push(query);
-						})
+					// Create the advance Select Box
+					self.createAdvanceSelectBox();
+				});
+			}
+			else{
+
+				// Retrieve placeholder attribute //
+				if(!_.isUndefined(this.select2.data('placeholder'))){ this.options.placeholder = this.select2.data('placeholder'); }
+
+				// Retrieve minimum-input-length attribute //
+				if(!_.isUndefined(this.select2.data('minimum-input-length'))){ this.options.minimumInputLength = this.select2.data('minimum-input-length'); }
+
+				// Retrieve multiple attribute //
+				if(!_.isUndefined(this.select2.data('multiple'))){ this.options.multiple = this.select2.data('multiple'); }
+
+				// Create the advance Select Box
+				this.createAdvanceSelectBox();
+
+				
+				// Set data as Selected //
+				if(!_.isUndefined(this.select2.data('selected-value'))){
+					selectedJSON = this.select2.data('selected-value');
+
+					// Check if the select is a Multiple //
+					if(_.isArray(selectedJSON)){
+						this.setSelectedItems(selectedJSON);
 					}
-					// / SEARCH PARAMS //
+					else{
+						this.setSelectedItem([selectedJSON.id, selectedJSON.name]);
+					}
+				}
+			}
 
 
-					$.ajax({
-						url: self.collection.url,
-						method: 'GET',
-						data: {
-							fields  : fields,
-							filters : app.objectifyFilters(params)
-						}
-					}).done(function(data){
+			return this;
+		},
 
-							var returnData = {results: []};
 
-							_.each(data, function(item, index){
-								returnData.results.push({
-									id   : item.id,
-									text : (_.isUndefined(item.complete_name) ? _.titleize(item.name.toLowerCase()) : _.titleize(item.complete_name.toLowerCase()))
-								});
-							});
 
-							// Return the query //
-							query.callback(returnData)
-						});
+		/** Create the AdvanceSelectBox
+		*/
+		createAdvanceSelectBox: function(){
+			var self = this;
 
-				},
+			var select2Options = {
+				allowClear         : true,
+				placeholder        : this.options.placeholder,
+				multiple           : this.options.multiple, 
+				minimumInputLength : this.options.minimumInputLength,
 				sortResults: function(results, container, query) {
+
 					// If no term was enter, results are Alphabetic //
 					if(_.isEmpty(query.term)){
 						var sortResults = _.sortBy(results, function(result){ 
@@ -134,22 +153,54 @@ define([
 						return 'tag-large';
 					}
 				}
+			};
 
-			});
+
+			if(!_.isUndefined(self.options.url)){
+				select2Options.query = function(query){
+
+					// SEARCH PARAMS //
+					var params = [];
+					
+					params.push({ field: 'name', operator: 'ilike', value: query.term });
+
+					// Set all the search params in the params for the query //
+					if(!_.isEmpty(self.searchParams)){
+						_.each(self.searchParams, function(query, index){
+							params.push(query);
+						})
+					}
 
 
-			// Set data as Selected //
-			if(!_.isUndefined(this.select2.data('selected-value'))){
-				selectedJSON = this.select2.data('selected-value');
+					$.ajax({
+						url    : self.options.url,
+						method : 'GET',
+						data   : {
+							fields  : this.fields,
+							filters : app.objectifyFilters(params)
+						}
+					}).done(function(data){
 
-				// Check if the select is a Multiple //
-				if(_.isArray(selectedJSON)){
-					this.setSelectedItems(selectedJSON);
-				}
-				else{
-					this.setSelectedItem([selectedJSON.id, selectedJSON.name]);
-				}
+						var returnData = {results: []};
+
+						_.each(data, function(item, index){
+							returnData.results.push({
+								id   : item.id,
+								text : _.titleize(item.name.toLowerCase())
+							});
+						});
+
+						// Return the query //
+						query.callback(returnData);
+					});
+
+				};
 			}
+			else{
+				select2Options.data = this.options.data
+			}
+
+			this.select2.select2(select2Options);
 
 		},
 
@@ -224,6 +275,20 @@ define([
 		},
 
 
+		/** Alias for getSelectedItems()
+		*/
+		getValue: function(){
+			var vals = this.getSelectedItems();
+
+			if(!_.isEmpty(vals)){
+				return vals;
+			}
+			else{
+				return null;
+			}
+		},
+
+
 
 		/** Reset the selectBox Value
 		*/
@@ -249,10 +314,31 @@ define([
 		*/
 		resetSearchParams: function(){
 			this.searchParams = [];
+		},
+
+
+
+		/** Select the operator
+		*/
+		selectOperator: function(e){
+			e.preventDefault();
+
+			var link = $(e.currentTarget);
+
+			console.log("Select operator from Dynmaci");
+
+			// Set selected liste active //
+			$(this.el).find('.dropdown-menu li').removeClass('active');
+			link.addClass('active');
+
+
+			// Set the operator //
+			$(this.el).find('.dropdown-toggle').html(link.data('operator'));
+
 		}
 
 	});
 
-return AdvancedSelectBoxView;
+	return AdvancedSelectBoxView;
 
 });

@@ -249,7 +249,7 @@ define([
 								$('#task-accordion').append(new ItemTaskDayListView(params).render().el);
 							});
 		
-							self.selectListFilterOfficerView = new AdvancedSelectBoxView({el: $("#filterListAgents"), collection: OfficersCollection.prototype})
+							self.selectListFilterOfficerView = new AdvancedSelectBoxView({ el: $("#filterListAgents"), url: OfficersCollection.prototype.url })
 							deferred.done(function(){
 								var ret = app.current_user.getOfficers();
 								var ids = [];

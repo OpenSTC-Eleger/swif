@@ -70,14 +70,14 @@ define([
 	
 				self.modal.html(template);
 	
-				app.views.advancedSelectBoxCatParentView = new AdvancedSelectBoxView({el: $("#catParentCat"), collection: CategoriesTasksCollection.prototype })
+				app.views.advancedSelectBoxCatParentView = new AdvancedSelectBoxView({el: $("#catParentCat"), url: CategoriesTasksCollection.prototype.url })
 				// Condition to prevent a Cat to be parent if itself //
 				if(!self.model.isNew()){
 					app.views.advancedSelectBoxCatParentView.setSearchParam({ field : 'id', operator : '!=', value : self.model.getId() }, true);
 				}
 				app.views.advancedSelectBoxCatParentView.render();
 	
-				app.views.advancedSelectBoxCatServices = new AdvancedSelectBoxView({el: $("#catServices"), collection: ClaimersServicesCollection.prototype })
+				app.views.advancedSelectBoxCatServices = new AdvancedSelectBoxView({el: $("#catServices"), url: ClaimersServicesCollection.prototype.url })
 				app.views.advancedSelectBoxCatServices.render();
 	
 				self.modal.modal('show');

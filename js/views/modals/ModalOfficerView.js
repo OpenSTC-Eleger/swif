@@ -86,18 +86,18 @@ define([
 	
 				if(!loader){
 					// Advance Select List View //
-					app.views.advancedSelectBoxOfficerGroupView = new AdvancedSelectBoxView({el: $("#officerGroup"), collection: StcGroupsCollection.prototype })
+					app.views.advancedSelectBoxOfficerGroupView = new AdvancedSelectBoxView({el: $("#officerGroup"), url: StcGroupsCollection.prototype.url })
 					app.views.advancedSelectBoxOfficerGroupView.setSearchParam({ field : 'name', operator : 'ilike', value : 'openstc' }, true);
 					app.views.advancedSelectBoxOfficerGroupView.render();
 					
-					app.views.advancedSelectBoxResaGroupView = new AdvancedSelectBoxView({el: $("#resaGroup"), collection: StcGroupsCollection.prototype })
+					app.views.advancedSelectBoxResaGroupView = new AdvancedSelectBoxView({el: $("#resaGroup"), url: StcGroupsCollection.prototype.url })
 					app.views.advancedSelectBoxResaGroupView.setSearchParam({ field : 'name', operator : 'ilike', value : 'openresa' }, true);
 					app.views.advancedSelectBoxResaGroupView.render();
 	
-					app.views.advancedSelectBoxOfficerServiceView = new AdvancedSelectBoxView({el: $("#officerService"), collection: ClaimersServicesCollection.prototype })
+					app.views.advancedSelectBoxOfficerServiceView = new AdvancedSelectBoxView({el: $("#officerService"), url: ClaimersServicesCollection.prototype.url })
 					app.views.advancedSelectBoxOfficerServiceView.render();
 	
-					app.views.advancedSelectBoxOfficerServicesView = new AdvancedSelectBoxView({el: $("#officerOtherServices"), collection: ClaimersServicesCollection.prototype })
+					app.views.advancedSelectBoxOfficerServicesView = new AdvancedSelectBoxView({el: $("#officerOtherServices"), url: ClaimersServicesCollection.prototype.url })
 					app.views.advancedSelectBoxOfficerServicesView.render();
 				}
 	
