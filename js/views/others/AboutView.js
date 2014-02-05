@@ -13,7 +13,7 @@ define([
 
 		el           : '#rowContainer',
 
-		templateHTML : 'about',
+		templateHTML : 'templates/others/about.html',
 
 		
 
@@ -35,7 +35,7 @@ define([
 
 			
 			// Retrieve the Login template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 			 
 				var template = _.template(templateData, {
 					lang   : app.lang, 

@@ -15,7 +15,7 @@ define([
 
 		className    : 'form-group',
 		
-		templateHTML : 'templates/others/inputField.html',
+		templateHTML : 'templates/form-components/input.html',
 		
 		operator	 : 'ilike',
 

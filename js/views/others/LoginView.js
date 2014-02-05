@@ -12,7 +12,7 @@ define([
 
 		el           : '#rowContainer',
 
-		templateHTML : 'templates/login.html',
+		templateHTML : 'templates/others/login.html',
 
 		
 		// The DOM events //

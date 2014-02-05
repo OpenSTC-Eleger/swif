@@ -11,7 +11,7 @@ define([
 
 		el           : '#header-navbar',
 
-		templateHTML : 'header',
+		templateHTML : 'templates/others/header.html',
 
 
 		// The DOM events //
@@ -44,7 +44,7 @@ define([
 			}
 
 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData) {
+			$.get(this.templateHTML, function(templateData) {
 
 
 				var template = _.template(templateData, {

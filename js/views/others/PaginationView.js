@@ -11,7 +11,7 @@ define([
 
 		el              : '#pagination',
 		
-		templateHTML    : 'pagination',
+		templateHTML    : 'templates/others/pagination.html',
 
 		currentRoute    : null,
 
@@ -67,7 +67,7 @@ define([
 			var self = this;
 
 			// Retrieve the template //
-			$.get('templates/' + this.templateHTML + '.html', function(templateData){
+			$.get(this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang    : app.lang,
 					route   : _(self.currentRoute).strLeftBack('/page'),

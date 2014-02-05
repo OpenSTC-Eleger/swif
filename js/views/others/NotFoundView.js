@@ -11,7 +11,7 @@ define([
 
 		el : '#rowContainer',
 
-		templateHTML: '404',
+		templateHTML: 'templates/others/404.html',
 
 		
 		/** View Initialization
@@ -33,7 +33,7 @@ define([
 
 		   
 			// Retrieve the Login template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, { lang: app.lang, homeUrl : app.routes.home.url});
 				$(self.el).html(template);

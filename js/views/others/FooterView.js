@@ -11,7 +11,7 @@ define([
 
 		el           : '#footer-navbar',
 
-		templateHTML : 'footer',
+		templateHTML : 'templates/others/footer.html',
 
 	 
 	 
@@ -28,7 +28,7 @@ define([
 		render: function () {
 			var self = this;
 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 
 				// Templating // 
 				var template = _.template(templateData, {

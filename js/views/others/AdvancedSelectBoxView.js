@@ -18,7 +18,7 @@ define([
 	
 		className    : 'form-group',
 		
-		templateHTML : 'templates/others/advancedSelectBox.html',
+		templateHTML : 'templates/form-components/select.html',
 
 		select2      : null,
 

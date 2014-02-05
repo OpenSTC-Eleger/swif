@@ -19,7 +19,7 @@ define([
 	
 		className    : 'form-group',
 		
-		templateHTML : 'templates/others/dateField.html',
+		templateHTML : 'templates/form-components/inputDate.html',
 		
 		operators    : {
 			egal    : { key: '=', symbol: '=' },
