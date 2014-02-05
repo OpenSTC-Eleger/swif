@@ -189,7 +189,7 @@ define('appHelpers', [
 			
 			if (!_.isUndefined(searchQuery.filter) && !_.isNumber(searchQuery.filter)) {			
 				_.each(searchQuery.filter, function (item, key) {
-					if( key == 'state' ) {
+					if( item.field == 'state' ) {
 						search.push(buildFilterObject(item.field,item.operator,item.value));
 					}
 					else if( _.isArray(item.value) )
