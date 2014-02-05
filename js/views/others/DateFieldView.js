@@ -21,7 +21,11 @@ define([
 		
 		templateHTML : 'templates/others/dateField.html',
 		
-		operator	 : '>',
+		operators    : {
+			egal    : { key: '=', symbol: '=' },
+			before : { key: '<',  symbol: '&lt;' },
+			after : { key: '>',   symbol: '&gt;' }
+		},
 
 
 		events: {
@@ -34,6 +38,14 @@ define([
 		*/
 		initialize: function(options){
 			this.field = options.field;
+
+
+			// Set the translation //
+			this.operators.egal.label = app.lang.the;
+			this.operators.before.label = app.lang.beforeThe;
+			this.operators.after.label = app.lang.afterThe;
+
+			this.currentOperator = this.operators.after;
 			
 			this.render();
 		},
@@ -49,8 +61,9 @@ define([
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					lang   : app.lang, 
-					field  : self.field 
+					field           : self.field,
+					operators       : self.operators,
+					currentOperator : self.currentOperator
 				});
 
 				$(self.el).html(template);
@@ -74,12 +87,7 @@ define([
 				return null;
 			}
 		},
-		
-		/** Get operator selected (always '>')
-		*/
-		getOperator: function(){
-			return this.operator;
-		},
+
 
 
 		/** Select the operator
@@ -89,14 +97,25 @@ define([
 
 			var link = $(e.currentTarget);
 
+
 			// Set selected liste active //
 			$(this.el).find('.dropdown-menu li').removeClass('active');
 			link.addClass('active');
 
+			var operator = link.data('operator');
+
 
 			// Set the operator //
-			$(this.el).find('.dropdown-toggle').html(link.data('operator'));
+			$(this.el).find('.dropdown-toggle').html(this.operators[operator].symbol);
+			
+			this.currentOperator = this.operators[operator];
+		},
 
+
+		/** Return the current selected Operator
+		*/
+		getOperator: function(){
+			return this.currentOperator.key;
 		}
 
 	});
