@@ -44,7 +44,8 @@ define([
 		render : function() {
 			var self = this;
 			var isClaimer = !app.current_user.isResaManager();
-			var noteOptional = !isClaimer && self.options.state == BookingModel.actions.refuse.key;
+			var noteOptional = !isClaimer && (self.options.state == BookingModel.actions.refuse.key || 
+												self.options.state == BookingModel.actions.cancel.key);
 	
 			// Retrieve the template // 
 			$.get(app.menus.openresa + this.templateHTML, function(templateData){
