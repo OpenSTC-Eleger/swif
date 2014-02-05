@@ -1,10 +1,11 @@
-define([	
-	
+define([
+	'app',
+
 	'inputFieldView',
 	'dateFieldView',
-	'dynamicAdvancedSelectBoxView',
-	
-], function(InputFieldView, DateFieldView, DynamicAdvancedSelectBoxView){
+	'advancedSelectBoxView'
+
+], function(app, InputFieldView, DateFieldView, AdvancedSelectBoxView){
 
 	'use strict';
 
@@ -13,19 +14,17 @@ define([
 	* Advanced Filter Bar View
 	*/
 	var FieldContainerView = Backbone.View.extend({
-		
+
 		el         : '.fields-container',
-		
+
 		components : [],
-		
-		// The DOM events //
-		events: {
-		},
+
 
 
 		/** View Initialization
 		*/
 		initialize: function(options){
+
 			this.searchableFields = options.searchableFields
 			
 			this.render();
@@ -38,48 +37,45 @@ define([
 		render: function(){
 			var self = this;
 			
-			// Retrieve the template //				
 			self.components = [];
 			
 			_.each(self.searchableFields, function(field, i){
 
-					//Add widget corresponding to field's type
-					switch (field.type) {
-						case 'text':
-						case 'char':
-							var inputFieldView = new InputFieldView({ field: field })
-							$(self.el).append(inputFieldView.render().el);
-							self.components.push(inputFieldView);
-						break;
+				// Create widget corresponding to field's type  //
+				switch (field.type) {
+					case 'text':
+					case 'char':
+						var inputFieldView = new InputFieldView({ field: field });
+						$(self.el).append(inputFieldView.render().el);
+						self.components.push(inputFieldView);
+					break;
 
-						case 'date':
-						case 'datetime':
-							var dateFieldView = new DateFieldView({ field: field })	
-							$(self.el).append(dateFieldView.render().el);
-							self.components.push(dateFieldView);
-						break;
+					case 'date':
+					case 'datetime':
+						var dateFieldView = new DateFieldView({ field: field });
+						$(self.el).append(dateFieldView.render().el);
+						self.components.push(dateFieldView);
+					break;
 
-						case 'many2one':
-							var dynamicAdvancedSelectBoxView = new DynamicAdvancedSelectBoxView({ field: field, url: field.url })					
-							$(self.el).append(dynamicAdvancedSelectBoxView.render().el);								
-							self.components.push(dynamicAdvancedSelectBoxView);
-						break;
+					case 'many2one':
+						var advancedSelectBoxView = new AdvancedSelectBoxView({ field: field, url: field.url, template: true, multiple: true, minimumInputLength: 2 });
+						$(self.el).append(advancedSelectBoxView.render().el);
+						self.components.push(advancedSelectBoxView);
+					break;
 
-						case 'selection':
-							var selectionModel  = Backbone.Model.extend({});
-							var selectionCollection = Backbone.Collection.extend({
-							    model: selectionModel,
-							    initialize: function(){}
-							});
-							var statesCollection = new selectionCollection();
-							statesCollection.reset(field.selection)
-							var dynamicAdvancedSelectBoxView = new DynamicAdvancedSelectBoxView({ field: field, collection: statesCollection })					
-							$(self.el).append(dynamicAdvancedSelectBoxView.render().el);
-							self.components.push(dynamicAdvancedSelectBoxView);
-						break;				
-					}
+					case 'selection':
+						var data = [];
+						$.each(field.selection, function(index, val) {
+							data.push({ id: val[0], text: _.capitalize(app.lang[val[0]]) });
+						});
+
+						var advancedSelectBoxView = new AdvancedSelectBoxView({ field: field, data: data, template: true, multiple: true });
+						$(self.el).append(advancedSelectBoxView.render().el);
+						self.components.push(advancedSelectBoxView);
+					break;
+				}
 			});
-		},
+		}
 
 
 	});

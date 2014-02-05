@@ -33,11 +33,15 @@ define([
 		*/
 		initialize: function(options){
 
-			console.log(options);
+			if(!_.isUndefined(options.template)){
 
-			this.field = options.field;	
-			this.url = options.url;
-			this.collection = options.collection;
+				this.field = options.field;	
+				this.url = options.url;
+			}
+			else{
+				this.select2 = $(this.el);	
+			}
+
 			this.render();
 		},
 
@@ -75,12 +79,7 @@ define([
 	
 	
 				// Check if the collection have a complete Name //
-//				if(_.contains(self.fields, 'complete_name')){
-					var fields = ['id', 'name', 'complete_name'];
-//				}
-//				else{
-//					var fields = ['id', 'name'];
-//				}
+				var fields = ['id', 'name', 'complete_name'];
 			
 
 				self.select2.select2({
@@ -96,12 +95,7 @@ define([
 							// SEARCH PARAMS //
 							var params = [];
 							
-	//						if(_.contains(fields, 'complete_name')){
-								params.push({ field : 'name', operator : 'ilike', value : query.term});
-	//						}
-	//						else{
-	//							params.push({ field : 'name', operator : 'ilike', value : query.term});	
-	//						}
+							params.push({ field : 'name', operator : 'ilike', value : query.term});
 		
 							// Set all the search params in the params for the query //
 							if(!_.isEmpty(self.searchParams)){

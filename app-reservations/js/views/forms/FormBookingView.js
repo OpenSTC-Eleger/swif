@@ -300,17 +300,17 @@ define(['app',
 				$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 					
 				// Booking Claimer //
-				app.views.selectListClaimersView = new AdvancedSelectBoxView({el: $('#bookingPartner'), collection: ClaimersCollection.prototype});
+				app.views.selectListClaimersView = new AdvancedSelectBoxView({el: $('#bookingPartner'), url: ClaimersCollection.prototype.url });
 				app.views.selectListClaimersView.resetSearchParams();
 				app.views.selectListClaimersView.render();
 	
 				// Booking Contact //
-				app.views.selectListClaimersContactsView = new AdvancedSelectBoxView({el: $('#bookingContact'), collection: ClaimersContactsCollection.prototype});
+				app.views.selectListClaimersContactsView = new AdvancedSelectBoxView({el: $('#bookingContact'), url: ClaimersContactsCollection.prototype.url });
 				app.views.selectListClaimersContactsView.resetSearchParams();
 				app.views.selectListClaimersContactsView.render();
 				
 				//selectBox to add bookables to booking
-				app.views.selectListAddBookableView = new AdvancedSelectBoxView({el: $('#bookingAddBookable'), collection: BookablesCollection.prototype}),
+				app.views.selectListAddBookableView = new AdvancedSelectBoxView({el: $('#bookingAddBookable'), url: BookablesCollection.prototype.url }),
 				app.views.selectListAddBookableView.resetSearchParams();
 				app.views.selectListAddBookableView.render();
 

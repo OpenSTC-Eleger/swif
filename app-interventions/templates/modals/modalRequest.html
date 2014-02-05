@@ -190,7 +190,7 @@
 						<label for="requestPlace" class="control-label col-sm-3"><%= _.capitalize(lang.location) %>:</label>
 
 						<div class="col-sm-9">
-							<input id="requestPlace" class="select2" data-placeholder="<%= lang.actions.selectAPlace %>" 
+							<input id="requestPlace" class="select2" data-placeholder="<%= lang.actions.selectAPlace %>" data-minimum-input-length="2"
 
 								<% if(!_.isNull(request.getId())){
 									if(!_.isUndefined(request.getSite('id'))) { %>

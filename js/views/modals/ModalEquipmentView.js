@@ -88,13 +88,13 @@ define([
 				$('.make-switch').bootstrapSwitch();
 				
 				if(!loader){
-					self.selectEquipmentCategory = new AdvancedSelectBoxView({el:'#equipmentCategory', collection: EquipmentsTypesCollection.prototype});
+					self.selectEquipmentCategory = new AdvancedSelectBoxView({el:'#equipmentCategory', url: EquipmentsTypesCollection.prototype.url });
 					self.selectEquipmentCategory.setSearchParam('|',true);
 					self.selectEquipmentCategory.setSearchParam({field:'is_vehicle',operator:'=',value:true});
 					self.selectEquipmentCategory.setSearchParam({field:'is_equipment',operator:'=',value:true});
 					self.selectEquipmentCategory.render();
 
-					self.selectEquipmentServicesInternalUse = new AdvancedSelectBoxView({el:'#equipmentServicesInternalUse', collection: ClaimersServicesCollection.prototype});
+					self.selectEquipmentServicesInternalUse = new AdvancedSelectBoxView({el:'#equipmentServicesInternalUse', url: ClaimersServicesCollection.prototype.url });
 					self.selectEquipmentServicesInternalUse.resetSearchParams();
 					self.selectEquipmentServicesInternalUse.render();
 					//initialize value of internal_use and views updates linked with
@@ -102,13 +102,13 @@ define([
 						self.changeEquipmentInternalUse(self.model.getInternalUse());
 					}
 					
-					self.selectEquipmentMaintenanceServices = new AdvancedSelectBoxView({el:'#equipmentMaintenanceServices', collection: ClaimersServicesCollection.prototype});
+					self.selectEquipmentMaintenanceServices = new AdvancedSelectBoxView({el:'#equipmentMaintenanceServices', url: ClaimersServicesCollection.prototype.url });
 					self.selectEquipmentMaintenanceServices.render();
 					
-					self.selectEquipmentBookingServices = new AdvancedSelectBoxView({el: $("#equipmentBookingServices"), collection: ClaimersServicesCollection.prototype });
+					self.selectEquipmentBookingServices = new AdvancedSelectBoxView({el: $("#equipmentBookingServices"), url: ClaimersServicesCollection.prototype.url });
 					self.selectEquipmentBookingServices.render();
 					
-					self.selectClaimersBookingServices = new AdvancedSelectBoxView({el: $("#equipmentBookingClaimers"), collection: ClaimersTypesCollection.prototype });
+					self.selectClaimersBookingServices = new AdvancedSelectBoxView({el: $("#equipmentBookingClaimers"), url: ClaimersTypesCollection.prototype.url });
 					self.selectClaimersBookingServices.render();
 					
 					// Enable the datePicker //

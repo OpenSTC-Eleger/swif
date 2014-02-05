@@ -70,7 +70,7 @@ define([
 			
 			var filters = [];
 			
-			_.each(this.fieldContainerView.components, function(c,i) {
+			_.each(this.fieldContainerView.components, function(c, i) {
 
 				var field = c.field.key
 				var value = c.getValue();
@@ -86,6 +86,7 @@ define([
 			
 			this.view.applyAdvancedFilters(filters);
 		},
+
 
 
 		/** Display modal to save the Filter

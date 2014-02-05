@@ -75,7 +75,7 @@ define([
 	        	$('.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
 	
 	        	// Display only categories in dropdown belongs to intervention //
-				self.advancedSelectBoxAbsentTypesView = new AdvancedSelectBoxView({el: $("#absentType"), collection: AbsentTypesCollection.prototype}); 
+				self.advancedSelectBoxAbsentTypesView = new AdvancedSelectBoxView({ el: $("#absentType"), url: AbsentTypesCollection.prototype.url }); 
 				self.advancedSelectBoxAbsentTypesView.render();
 	
 	        	$("#startDate").val( moment( startDate ).format('L') );

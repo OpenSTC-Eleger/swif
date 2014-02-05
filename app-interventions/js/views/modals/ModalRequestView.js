@@ -105,21 +105,21 @@ define([
 					$('.make-switch').bootstrapSwitch();
 
 					// Request Claimer //
-					app.views.selectListClaimersView = new AdvancedSelectBoxView({el: $('#requestClaimer'), collection: ClaimersCollection.prototype});
+					app.views.selectListClaimersView = new AdvancedSelectBoxView({el: $('#requestClaimer'), url: ClaimersCollection.prototype.url});
 					app.views.selectListClaimersView.render();
 
 					// Request Contact //
-					app.views.selectListClaimersContactsView = new AdvancedSelectBoxView({el: $('#requestContact'), collection: ClaimersContactsCollection.prototype});
+					app.views.selectListClaimersContactsView = new AdvancedSelectBoxView({el: $('#requestContact'), url: ClaimersContactsCollection.prototype.url});
 					app.views.selectListClaimersContactsView.render();
 
 					// Fill select Places/Equipments //
-					app.views.selectListEquipmentsView = new AdvancedSelectBoxView({el: $("#requestEquipment"), collection: EquipmentsCollection.prototype})
+					app.views.selectListEquipmentsView = new AdvancedSelectBoxView({el: $("#requestEquipment"), url: EquipmentsCollection.prototype.url})
 					app.views.selectListEquipmentsView.render();
 
-					app.views.selectListPlacesView = new AdvancedSelectBoxView({el: $('#requestPlace'), collection: PlacesCollection.prototype});
+					app.views.selectListPlacesView = new AdvancedSelectBoxView({el: $('#requestPlace'), url: PlacesCollection.prototype.url});
 					app.views.selectListPlacesView.render();
 
-					app.views.selectListServicesView = new AdvancedSelectBoxView({el: $('#requestDetailService'), collection: ClaimersServicesCollection.prototype})
+					app.views.selectListServicesView = new AdvancedSelectBoxView({el: $('#requestDetailService'), url: ClaimersServicesCollection.prototype.url})
 					app.views.selectListServicesView.render();
 
 

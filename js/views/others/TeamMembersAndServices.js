@@ -82,7 +82,7 @@ define([
 				self.delegateEvents(self.events());
 				
 				// Advance Select List View //
-				app.views.advancedSelectBoxTeamMembersView = new AdvancedSelectBoxView({el: $("#searchMembers"), collection: OfficersCollection.prototype });
+				app.views.advancedSelectBoxTeamMembersView = new AdvancedSelectBoxView({el: $("#searchMembers"), url: OfficersCollection.prototype.url });
 				
 				// Retrieve only Officer //
 				app.views.advancedSelectBoxTeamMembersView.setSearchParam({field:'service_ids', operator:'!=', value: 'false'}, true);
@@ -91,7 +91,7 @@ define([
 				
 				app.views.advancedSelectBoxTeamMembersView.render();
 
-				app.views.advancedSelectBoxTeamServicesView = new AdvancedSelectBoxView({el: $("#searchServices"), collection: ClaimersServicesCollection.prototype })
+				app.views.advancedSelectBoxTeamServicesView = new AdvancedSelectBoxView({el: $("#searchServices"), url: ClaimersServicesCollection.prototype.url })
 				app.views.advancedSelectBoxTeamServicesView.render();
 			});
 

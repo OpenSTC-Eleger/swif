@@ -82,7 +82,7 @@ define([
 					self.modal.html(template);
 					self.modal.modal('show');
 	
-					app.views.advancedSelectBoxInterventionServicesView = new AdvancedSelectBoxView({el: $("#interventionDetailService"), collection: ClaimersServicesCollection.prototype}) 
+					app.views.advancedSelectBoxInterventionServicesView = new AdvancedSelectBoxView({el: $("#interventionDetailService"), url: ClaimersServicesCollection.prototype.url}) 
 					app.views.advancedSelectBoxInterventionServicesView.setSearchParam({field:'technical',operator:'=',value:'True'},true)
 					app.views.advancedSelectBoxInterventionServicesView.render();
 	
@@ -90,17 +90,17 @@ define([
 					
 					//display equipment collection os place collection according to 'has_equipment'
 					if(currentIntervention.has_equipment){
-						self.advancedSelectBoxInterventionPlaceOrEquipment = new AdvancedSelectBoxView({el:'#interventionPlaceEquipment', collection: EquipmentsCollection.prototype});
+						self.advancedSelectBoxInterventionPlaceOrEquipment = new AdvancedSelectBoxView({el:'#interventionPlaceEquipment', url: EquipmentsCollection.prototype.url});
 					}
 					else{
-						self.advancedSelectBoxInterventionPlaceOrEquipment = new AdvancedSelectBoxView({el:'#interventionPlaceEquipment', collection: PlacesCollection.prototype});
+						self.advancedSelectBoxInterventionPlaceOrEquipment = new AdvancedSelectBoxView({el:'#interventionPlaceEquipment', url: PlacesCollection.prototype.url});
 	
 					}
 					self.advancedSelectBoxInterventionPlaceOrEquipment.render();
 	
 					
 					// Fill select Places  //
-					app.views.advancedSelectBoxInterventionPlacesView = new AdvancedSelectBoxView({el: $("#interventionPlaceIfEquipment"), collection: PlacesCollection.prototype});
+					app.views.advancedSelectBoxInterventionPlacesView = new AdvancedSelectBoxView({el: $("#interventionPlaceIfEquipment"), url: PlacesCollection.prototype.url});
 					app.views.advancedSelectBoxInterventionPlacesView.render();	
 					
 					
