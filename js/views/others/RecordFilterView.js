@@ -29,8 +29,22 @@ define([
 			this.el = options.el;
 			this.metaDataModel = options.metaDataModel;
 			this.states = options.states;
-			//init current route
-			this.currentRoute = Backbone.history.fragment;
+			//init current route	
+			this.currentRoute = Backbone.history.fragment
+			this.urlArray = [this.currentRoute];			
+			if( _.str.include(this.currentRoute, "/filter/") ) 
+			{
+				this.urlArray = _.words(this.currentRoute, "/filter/");
+				var filter = parseInt(this.urlArray[1][0]);
+				if( _.isNaN(filter) ) 
+					this.urlArray[1] = '/' + _(this.urlArray[1]).strRight('/');
+				else
+					if( _.str.include(this.urlArray[1],'/') )
+						this.urlArray[1] = '/' + _(this.urlArray[1]).strRight('/');
+					else
+						this.urlArray[1] = "";
+			}
+
 			//Fetch meta model
 			this.metaDataModel.fetch();
 		},
@@ -48,10 +62,10 @@ define([
 				$.get(self.templateHTML, function(templateData){
 				
 					var template = _.template(templateData, {
-						lang   : app.lang,
-						route  : self.currentRoute, 
-						states : self.states,
-						filters: self.metaDataModel.getFilters()
+						lang   		: app.lang,
+						urlArray  	: self.urlArray, 
+						states 		: self.states,
+						filters		: self.metaDataModel.getFilters()
 					});
 				
 					$(self.el).html(template);
