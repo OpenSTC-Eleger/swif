@@ -3,10 +3,12 @@ define('appHelpers', [
 	'app',
 	'userModel',
 	
+	'filterModel',
+	
 	'moment-timezone',
 	'moment-timezone-data'
 
-], function(app, UserModel, moment, momentTZData){
+], function(app, UserModel, FilterModel, moment, momentTZData){
 
 
 	/******************************************
@@ -155,12 +157,12 @@ define('appHelpers', [
 			};
 
 			// Check if there is a filter //
-			if (!_.isUndefined(searchQuery.filter)) {
-				if (!_.isUndefined(searchQuery.search)) {
-					search.push('&');
-				}
-				search.push( buildFilterObject(searchQuery.filter.by,'ilike',searchQuery.filter.value));
-			}
+//			if (!_.isUndefined(searchQuery.filter)) {
+//				if (!_.isUndefined(searchQuery.search)) {
+//					search.push('&');
+//				}
+//				search.push( buildFilterObject(searchQuery.filter.by,'ilike',searchQuery.filter.value));
+//			}
 
 			// Check if there is a Search //
 			if (!_.isUndefined(searchQuery.search)) {
@@ -184,22 +186,16 @@ define('appHelpers', [
 					search.push( buildFilterObject(filteredAndConvertedFilters[0].key,filteredAndConvertedFilters[0].type,searchQuery.search));
 				}
 			}
-			else if (!_.isUndefined(searchQuery.advancedSearch)) {
-				//TODO : if id fecth filter model to build rest filter
-				//else
-				//computer requests with advanced filters not saved
-				_.each(searchQuery.advancedSearch, function (item, key) {
+			
+			if (!_.isUndefined(searchQuery.filter) && !_.isNumber(searchQuery.filter)) {			
+				_.each(searchQuery.filter, function (item, key) {
 					if( key == 'state' ) {
-						search.push(buildFilterObject(key,'in',item));
+						search.push(buildFilterObject(item.field,item.operator,item.value));
 					}
-					else if( _.isArray(item) )
-						search.push(buildFilterObject(key+'.id','in',item));
-					else if( moment(item).isValid() )
-						search.push(buildFilterObject(key,'>',item));
-					else if( _.isNumber(item) )
-						search.push(buildFilterObject(key,'=',item));
+					else if( _.isArray(item.value) )
+						search.push(buildFilterObject(item.field+'.id',item.operator,item.value));
 					else
-						search.push(buildFilterObject(key,'ilike',item));
+						search.push(buildFilterObject(item.field,item.operator,item.value));
 				});
 			}
 			return app.objectifyFilters(search);

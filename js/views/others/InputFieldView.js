@@ -16,6 +16,8 @@ define([
 		className    : 'form-group',
 		
 		templateHTML : 'templates/others/inputField.html',
+		
+		operator	 : 'ilike',
 
 
 		/** View Initialization
@@ -59,7 +61,13 @@ define([
 			else{
 				return null;
 			}
-		}
+		},
+		
+		/** Get operator selected (always 'ilike')
+		*/
+		getOperator: function(){
+			return this.operator;
+		},
 
 
 	});

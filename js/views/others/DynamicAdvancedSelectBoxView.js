@@ -21,6 +21,8 @@ define([
 		select2      : null,
 
 		searchParams : [],
+		
+		operator	 : 'in',
 
 		events: {
 			'click .dropdown-menu li'  : 'selectOperator'
@@ -271,6 +273,12 @@ define([
 				return null;
 			}
 		},
+		
+		/** Get operator selected ('=' ou '#')
+		*/
+		getOperator: function(){
+			return this.operator;
+		},
 
 
 
@@ -314,9 +322,16 @@ define([
 			$(this.el).find('.dropdown-menu li').removeClass('active');
 			link.addClass('active');
 
-
+			var operator = link.data('operator');
 			// Set the operator //
-			$(this.el).find('.dropdown-toggle').html(link.data('operator'));
+			$(this.el).find('.dropdown-toggle').html(operator);
+			
+			if( _.isEqual('=',operator) ) {
+				this.operator = 'in';
+			}
+			else{
+				this.operator = 'not in';
+			}
 
 		}
 

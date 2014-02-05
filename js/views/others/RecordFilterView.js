@@ -29,6 +29,8 @@ define([
 			this.el = options.el;
 			this.metaDataModel = options.metaDataModel;
 			this.states = options.states;
+			//init current route
+			this.currentRoute = Backbone.history.fragment;
 			//Fetch meta model
 			this.metaDataModel.fetch();
 		},
@@ -47,6 +49,7 @@ define([
 				
 					var template = _.template(templateData, {
 						lang   : app.lang,
+						route  : self.currentRoute, 
 						states : self.states,
 						filters: self.metaDataModel.getFilters()
 					});
