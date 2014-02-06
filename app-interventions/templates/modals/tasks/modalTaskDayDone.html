@@ -24,18 +24,22 @@
 			
 				<div id="timeSpentSection" class="form-group">
 					<label for="eventTimeSpent" class="control-label col-sm-3"><%= lang.spentHours %>:</label>			
-					<div class="input-group form-controls bootstrap-timepicker col-sm-4">
-						<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventTimeSpent" value="<%=timeSpentDefault%>">
-						<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+					<div class="col-sm-3">
+						<div class="input-group form-controls bootstrap-timepicker">
+							<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventTimeSpent" value="<%=timeSpentDefault%>">
+							<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+						</div>
 					</div>
-
 				</div>
+
 				<!-- Remaining Time -->
 				<div id="remainingTimeSection" class="form-group">
 					<label for="eventRemainingTime" class="control-label col-sm-3"><%= lang.remainingHours %>:</label>
-					<div class="input-group form-controls bootstrap-timepicker col-sm-4">
-							<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventRemainingTime" value="02:00">
-							<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+					<div class="col-sm-3">
+						<div class="input-group form-controls bootstrap-timepicker">
+								<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventRemainingTime" value="02:00">
+								<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+						</div>
 					</div>
 				</div>
 
@@ -43,8 +47,8 @@
 				<div class="form-group">
 					<label for="taskEquipmentDone" class="linkRefueling control-label col-sm-3"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
 
-					<div class="form-controls">
-						<div class="input-group col-sm-9">
+					<div class=" col-sm-9">
+						<div class="input-group">
 							<span class="input-group-addon linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
 								<i class="fa fa-tint"></i>
 							</span>
@@ -59,7 +63,6 @@
 					<legend><i class="fa fa-tint"></i> <%= _.capitalize(lang.oil) %></legend>
 
 					<div class="form-group">
-						<div class="form-inline">
 							<!-- KM -->
 							<div class="col-sm-4">
 								<label for="equipmentKmDone"><%= _.capitalize(lang.milometer) %>:</label>
@@ -77,7 +80,6 @@
 								<label for="equipmentOilPriceDone"><%= _.capitalize(lang.price) %>:</label>
 								<input type="text" id="equipmentOilPriceDone" class="taskInput form-control" placeholder="<%= lang.inEuro %>" />
 							</div>
-						</div>
 					</div>
 
 				</fieldset>
@@ -85,8 +87,8 @@
 
 				<!-- Equipments -->
 				<div class="form-group">
-					<label for="equipmentListDone" class="control-label col-sm-3"><%= _.capitalize(lang.equipment) %>:</label>
-					<div class="form-controls col-sm-9">
+					<label for="taskEquipmentListDone" class="control-label col-sm-3"><%= _.capitalize(lang.equipment) %>:</label>
+					<div class="col-sm-9">
 						<input id="taskEquipmentListDone" class="select2 taskEquipment taskSelect taskInput"
 							data-placeholder="<%= lang.actions.selectEquipments %>" data-multiple="multiple"/>
 					</div>

@@ -46,7 +46,7 @@ requirejs.config({
 		modalUpdateBookingView              : 'app-reservations/js/views/modals/ModalUpdateBookingView',
 		modalUpdateBookingsListView         : 'app-reservations/js/views/modals/ModalUpdateBookingsListView',
 		modalReservationDetailsView         : 'app-reservations/js/views/modals/ModalReservationDetailsView',
-		modalCancelBookingView				: 'app-reservations/js/views/modals/ModalCancelBookingView',
+		modalDeleteBookingView				: 'app-reservations/js/views/modals/ModalDeleteBookingView',
 		
 		//Others View //
 		toolbarButtonsView                  : 'app-reservations/js/views/others/ToolbarButtonsView',

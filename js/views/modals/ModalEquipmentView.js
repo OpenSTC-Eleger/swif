@@ -214,7 +214,7 @@ define([
 					service_bookable_ids: [[6,0, this.selectEquipmentBookingServices.getSelectedItems() ]],
 					partner_type_bookable_ids: [[6,0, this.selectClaimersBookingServices.getSelectedItems() ]],
 					color: $('#displayColor').val(),
-					block_booking: $('#placeBlockingBookable').bootstrapSwitch('status')
+					block_booking: $('#equipmentBlockingBookable').bootstrapSwitch('state')
 
 			}
 			var stockQty = parseInt($('#equipmentQtyAvailable').val());

@@ -23,7 +23,7 @@ define([
 		urlRoot: "/api/openresa/bookings",
 
 		fields : ['id', 'name', 'checkin', 'note', 'checkout', 'partner_id', 'partner_order_id', 'partner_type',
-		          'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 
+		          'contact_phone', 'partner_mail', 'people_name', 'people_phone', 'is_citizen', 
 		          'create_date', 'write_date', 'deleted_at', 'done_at', 'confirm_at', 'cancel_at', 'state','state_num', 'actions', 'create_uid', 'write_uid', 
 		          'resources', 'all_dispo', 'recurrence_id', 'is_template', 
 		          'pricelist_id', 'confirm_note', 'cancel_note', 'done_note', 'people_street','people_city', 'people_zip', 'whole_day'],
@@ -60,7 +60,7 @@ define([
 		
 		getName: function(){
 			return this.get('name');
-		},		
+		},
 		
 		getCreateAuthor: function(type){
 			var val = this.getAttribute('create_uid', false);
@@ -148,13 +148,13 @@ define([
 			var html = "<dl>";
 			switch (this.getState()){ 
 				case 'confirm': 
-					html+= this.getConfirmNote()!=false ?  "<dt>" + app.lang.confirmation + " <i>" + this.getConfirmDate() + "</i></dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
+					html+= this.getConfirmNote()!=false ?  "<dt>" + app.lang.validation + " <i>" + this.getConfirmDate() + "</i></dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
 				break;
 				case 'cancel':
 					html+= this.getCancelNote()!=false ?  "<dt>" + app.lang.refusal + " <i>" + this.getCancelDate() + "</i></dt><dd>" + this.getCancelNote() + "</dd></br>" : "";	
 				break;
 				case 'done':
-					html+=  this.getConfirmNote()!=false ?  "<dt>" + app.lang.confirmation + " <i>" + this.getConfirmDate() + "</i></dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
+					html+=  this.getConfirmNote()!=false ?  "<dt>" + app.lang.validation + " <i>" + this.getConfirmDate() + "</i></dt><dd>" + this.getConfirmNote() + "</dd></br>" : "" ;
 					html+=  this.getDoneNote()!=false ? "<dt>" + app.lang.enclosing + " <i>" + this.getDoneDate() + "</i></dt><dd>" + this.getDoneNote() + "</dd></br>" : "" ;					
 				break;
 				default: 
@@ -388,7 +388,7 @@ define([
 						return doneDate.fromNow();
 					break;
 					default:
-						return this.get('done_at');
+						return doneDate.format('DD-MM-YYYY');
 					break;
 				}
 			}
@@ -408,7 +408,7 @@ define([
 						return cancelDate.fromNow();
 					break;
 					default:
-						return this.get('cancel_at');
+						return cancelDate.format('DD-MM-YYYY');
 					break;
 				}
 			}
@@ -428,7 +428,7 @@ define([
 						return confirmDate.fromNow();
 					break;
 					default:
-						return this.get('confirm_at');
+						return confirmDate.format('DD-MM-YYYY');
 					break;
 				}
 			}
@@ -567,9 +567,6 @@ define([
 			this.set({ partner_order_id : value }, {silent: silent});
 			if(value != false){
 				var contactModel = new ClaimerContactModel({id:value});
-				contactModel.fetch({data:{fields:['email']}}).done(function(){
-					self.setClaimerMail(contactModel.get('email'), false);
-				});
 			}
 		},
 
@@ -611,19 +608,17 @@ define([
 			}
 			return '';
 		},
+
 		setCitizenPhone: function(value, silent){
 			this.set({ people_phone : value }, {silent: silent});
 		},
-		getCitizenEmail: function(){
+		getCitizenAddress: function(){
 			if(this.fromCitizen()){
-				return this.getAttribute('people_email', '');
+				return this.get('people_street') +' '+ this.get('people_zip') +' '+ this.get('people_city');
 			}
 			else{
 				return '';
 			}
-		},
-		setCitizenEmail: function(value, silent){
-			this.set({ people_email : value }, {silent: silent});
 		},
 		
 		getState : function() {
@@ -634,7 +629,7 @@ define([
 			return this.get('actions');
 		},
 		
-		hasActions: function(action){this.get('write_date')
+		hasActions: function(action){
 			return this.getActions().indexOf(action) > -1;
 		},
 		
@@ -664,9 +659,10 @@ define([
 					pricing = options.pricing;
 				}
 				if(!_.isUndefined(options.dispo)){
+					
 					dispo = options.dispo;
 				}
-			}			
+			}
 			var checkin = this.getStartDate();
 			var checkout = this.getEndDate();
 			var partner_id = this.getClaimer('id');
@@ -694,48 +690,49 @@ define([
 		saveToBackend: function(){
 			var self = this;
 			var vals = this.getSaveVals();
-			
+			var deferred = $.Deferred();
 			//if new, POST new values and fetch the model to retrieve values stored on backend
 			//and, if set, save recurrence too
 			if(this.isNew()){
-				return this.save(vals,{wait:true}).done(function(data){
-					self.set({id:data});
-					self.fetch({silent:true});
-					if(self.get('is_template') && self.recurrence != null){
-						//add template to occurrence_ids
-						self.recurrence.set({'reservation_ids':[[4,self.getId()]]});
-						self.recurrence.saveToBackend();
+				this.save(vals,{wait:true, patch: !self.isNew()}).done(function(data){
+					var deferredArray = [];
+					if(self.isNew()){
+						self.set({id:data});
 					}
-					self.lines.each(function(lineModel){
-						lineModel.saveToBackend().fail(function(e){console.log(e)});
+					self.fetch({silent:true}).done(function(){
+						if(self.get('is_template') && self.recurrence != null){
+							//add template to occurrence_ids
+							self.recurrence.set({'reservation_ids':[[4,self.getId()]]});
+							deferredArray.push(self.recurrence.saveToBackend());
+						}
+						self.lines.each(function(lineModel){
+							deferredArray.push(lineModel.saveToBackend().fail(function(e){console.log(e)}));
+						});
+						self.linesToRemove.each(function(lineToRemove,i){
+							deferredArray.push(lineToRemove.destroy());
+						});
+						_.each(self.recurrencesToRemove,function(recurrenceToRemove,i){
+							deferredArray.push(recurrenceToRemove.persistentDestroyOnBackend());
+						});
+						if(_.isEmpty(deferredArray)){
+							deferred.resolve();
+						}
+						else{
+							$.when.apply($,deferredArray).done(function(){
+								deferred.resolve();
+							}).fail(function(e){
+								deferred.reject();
+							});
+						}
+					}).fail(function(e){
+						deferred.reject();
 					});
+				}).fail(function(e){
+					deferred.reject();
 				});
 			}
-			
-			//if already exists, PATCH values and fetch the model to retrieve values updated on backend
-			//also perform save/update for lineModels
-			//and, if set, save recurrence too
-			else{
-				vals.user_id = this.getCreateAuthor('id');
-				return this.save(vals, {wait:true, patch:true}).always(function(){
-					self.fetch({silent:true});
-					if(self.get('is_template') && self.recurrence != null){
-						//add template to occurrence_ids
-						self.recurrence.set({'reservation_ids':[[4,self.getId()]]});
-						self.recurrence.saveToBackend();
-					}
-					self.lines.each(function(lineModel,i){
-						lineModel.saveToBackend().fail(function(e){console.log(e)});
-					});
-					self.linesToRemove.each(function(lineToRemove,i){
-						lineToRemove.destroy();
-					});
-					_.each(self.recurrencesToRemove,function(recurrenceToRemove,i){
-						recurrenceToRemove.persistentDestroyOnBackend();
-					});
-				});
-			}
-			return false;
+
+			return deferred;
 		},
 		
 		//TOREMOVE ?
@@ -772,11 +769,7 @@ define([
 					state:'remplir'
 				});
 			};
-//			this.computeResources().done(function (data) {
-//				// self.set( {'resources' :  data.resources, 'description': data.description} , {silent:false} );	
-//				 //self.set( 'resources',  data.resources , {silent:true} );	
-//				 //self.set( 'description',  data.description , {silent:true} );	
-//			});	
+
 		},
 	
 	
@@ -810,6 +803,12 @@ define([
 				icon 		        : 'fa-thumbs-o-up',
 				translation         : app.lang.closed
 			},
+			draft: {
+				key                 : 'draft',
+				color               : 'default',
+				icon 		        : 'fa-pencil-o',
+				translation         : app.lang.draft
+			}
 		},
 		
 			// Actions of the requests //
@@ -822,6 +821,12 @@ define([
 			},
 			cancel: {
 				key 		: 'cancel',
+				color 		: 'default',
+				icon 		: 'fa-ban',
+				translation : app.lang.actions.cancel
+			},
+			refuse: {
+				key 		: 'refuse',
 				color 		: 'danger',
 				icon 		: 'fa-times',
 				translation : app.lang.actions.refuse
@@ -839,6 +844,12 @@ define([
 				icon 		: 'fa-thumbs-o-up',
 				translation : app.lang.actions.close
 			},
+			delete_recurrence: {
+				key 		: 'delete',
+				color 		: 'default',
+				icon 		: 'fa-times',
+				translation : app.lang.actions.deleteAll
+			}
 	
 	
 	//		create: {},

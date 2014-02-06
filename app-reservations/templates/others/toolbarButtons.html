@@ -1,12 +1,33 @@
-<% if(!_.isNull(recurrenceModel) && !_.isEmpty(recurrenceModel.getActions())){ 
-	var actions = recurrenceModel.getActions();
+<div class="col-sm-1">
+	<%if(!_.isNull(recurrenceModel) ) { %>
+		<button type="button" class="btn btn-info" id="unbindOccurences"> <i class="fa fa-step-backward"></i></button>
+	<% } %>
+</div>
+
+<div class="col-sm-3">
+<% var actions = []; 
+if(!_.isNull(recurrenceModel) && !_.isEmpty(recurrenceModel.getActions())){ 
+	actions = recurrenceModel.getActions();
 }
-		
-if(!_.isNull(recurrenceModel) ) { %>
-	<button type="button" class="btn btn-info" id="unbindOccurences"> <i class="fa fa-step-backward"></i></button>
-<% } %>
-<% _.each(actions, function(action){ %>
-	<button type="button" class="actions btn btn-<%= BookingModel.actions[action].color%>" id="<%= BookingModel.actions[action].key %>">
-		<%= lang.resa.actions[BookingModel.actions[action].key+"All"] %>
+if(!_.isNull(recurrenceModel) && _.contains(actions,'delete_recurrence')) { 
+	actions = _.without(actions, 'delete_recurrence');
+	var action = BookingModel.actions.delete_recurrence%>
+	<button type="button" class="delete btn btn-<%= action.color%>" id="deleteRecurrence"> <i class="fa <%= action.icon%>"></i><%=lang.resa.actions.deleteAll %></button>
+<% }
+
+if(!_.isNull(recurrenceModel) && _.contains(actions,'cancel')) { 
+	actions = _.without(actions, 'cancel');
+	var action = BookingModel.actions.cancel%>
+		<button type="button" class="actions btn btn-<%= action.color%>" id="<%=action.key%>"> <i class="actions fa <%= action.icon%>"></i><%=lang.resa.actions.cancelAll %></button>
+<% }%>
+</div>
+
+<div class="col-sm-7">
+<% _.each(BookingModel.actions, function(action,action_key){
+	if(_.contains(actions,action_key)){%>
+	<button type="button" class="actions btn btn-<%= action.color%>" id="<%= action.key %>">
+		<%= lang.resa.actions[action.key+"All"] %>
 	</button>
-<% }); %>	
+<% }
+}); %>	
+</div>

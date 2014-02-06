@@ -224,19 +224,18 @@ define([
 					_.each(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, function(place_id){
 
 						var line = new BookingLineModel();
-						var bookable = [place_id, app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(place_id).getName()];
-						line.set({reserve_product:bookable, qte_reserves:1});
-						line.bookable = new BookableModel({id:place_id});
+						line.setBookable(place_id,app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(place_id).getName());
+						line.set({qte_reserves:1});
+						
 						booking.addLine(line);
 						arrayDeferreds.push(line.bookable.fetch());
 					});
 
 					_.each(app.views.sideBarPlanningSelectResourcesView.selectedEquipmentsQuantity, function(quantity, idEquipment){
 						var line = new BookingLineModel();
-						var bookable = [idEquipment, app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get(idEquipment).getName()];
-
-						line.set({reserve_product:bookable, qte_reserves:quantity});
-						line.bookable = new BookableModel({id:idEquipment});
+						line.setBookable(idEquipment,app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get(idEquipment).getName());
+						line.set({qte_reserves:quantity});
+						
 						booking.addLine(line);
 						arrayDeferreds.push(line.bookable.fetch());
 					});
@@ -285,7 +284,7 @@ define([
 			var fetchParams = {
 				silent  : true,
 				data : {
-					fields : ['name', 'checkin', 'checkout', 'note', 'resources', 'is_citizen', 'partner_id', 'people_name', 'recurrence_id', 'whole_day']
+					fields : ['name', 'checkin', 'checkout', 'note', 'resource_ids', 'is_citizen', 'partner_id', 'people_name', 'recurrence_id', 'whole_day']
 				}
 			};
 
@@ -337,7 +336,7 @@ define([
 
 			_.each(collection.models, function(model, index){
 
-				var resouceIds = model.getResourcesId();
+				var resouceIds = model.get('resource_ids');
 
 				var resourcePlaces     = _.intersection(app.views.sideBarPlanningSelectResourcesView.selectedPlaces, resouceIds);
 				var resourceEquipments = _.intersection(app.views.sideBarPlanningSelectResourcesView.selectedEquipments, resouceIds);

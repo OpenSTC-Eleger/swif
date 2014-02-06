@@ -16,16 +16,16 @@ requirejs.config({
 		
 		jqueryui              : 'js/libs/jquery-ui-1.10.3.custom.min',
 		datatables	  		  :	'js/libs/jquery-dataTables-1.9.4-min',
-		moment                : 'js/libs/moment-2.4.0',
+		moment                : 'js/libs/moment-2.5.0-min',
 		'moment-timezone'     : 'js/libs/moment-timezone-0.0.1',
-		'moment-timezone-data': 'i18n/moment-timezone-data',
+		'moment-timezone-data': 'js/i18n/moment-timezone-data',
 
 		'underscore.string'   : 'js/libs/underscore-string-2.3.2',
 		nprogress             : 'js/libs/NProgress-0.1.2',
 		pnotify               : 'js/libs/pnotify-1.2.0',
-		bootstrap             : 'js/libs/bootstrap-3.0.2',
-		bsDatepicker          : 'js/libs/bootstrap-datepicker-1.1.1',
-		bsSwitch              : 'js/libs/bootstrap-switch-1.8.0',
+		bootstrap             : 'js/libs/bootstrap-3.0.3',
+		bsDatepicker          : 'js/libs/bootstrap-datepicker-1.1.2',
+		bsSwitch              : 'js/libs/bootstrap-switch-2.0.0',
 		bsTimepicker          : 'js/libs/bootstrap-timepicker-0.2.3',
 		fullcalendar          : 'js/libs/fullcalendar-1.6.4',
 		select2               : 'js/libs/select2-3.4.5-min',
@@ -36,8 +36,8 @@ requirejs.config({
 		/* #############
 		* i18n Libs
 		*/
-		'select2-lang'         : 'i18n/select2-lang',
-		'bsDatepicker-lang'    : 'i18n/bootstrap-datepicker-lang',
+		'select2-lang'         : 'js/i18n/select2-lang',
+		'bsDatepicker-lang'    : 'js/i18n/bootstrap-datepicker-lang',
 
 
 		app                   : 'js/app',
@@ -112,6 +112,7 @@ requirejs.config({
 		teamsListView           : 'js/views/lists/TeamsListView',
 		claimersTypesListView   : 'js/views/lists/ClaimersTypesListView',
 		equipmentsListView      : 'js/views/lists/EquipmentsListView',
+		usersListView           : 'js/views/lists/UsersListView',
 
 		// Items //		
 		itemPlaceView           : 'js/views/items/ItemPlaceView',
@@ -122,6 +123,7 @@ requirejs.config({
 		claimerContactView      : 'js/views/items/ClaimerContactView',
 		itemEquipmentView       : 'js/views/items/ItemEquipmentView',
 		itemClaimerTypeView     : 'js/views/items/ItemClaimerTypeView',
+		itemUserView            : 'js/views/items/ItemUserView',
 
 		// Modals //
 		genericModalView        : 'js/views/modals/GenericModalView',
@@ -133,7 +135,8 @@ requirejs.config({
 		modalOfficerView        : 'js/views/modals/ModalOfficerView',
         modalContactEdit        : 'js/views/modals/ModalContactEdit',
 		modalEquipmentView      : 'js/views/modals/ModalEquipmentView',
-		modalClaimerTypeView    : 'js/views/modals/ModalClaimerTypeView'
+		modalClaimerTypeView    : 'js/views/modals/ModalClaimerTypeView',
+		modalResetPasswordView  : 'js/views/modals/ModalResetPasswordView'
 
 	},
 
@@ -221,6 +224,6 @@ require([
 	'main', 'less'
 ], function(main){
 
-	main.init(window.navigator.language);
+	main.init('fr');
 
 });

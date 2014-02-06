@@ -1,6 +1,7 @@
 .idea
 *.iml
 *.project
+*.swp
 config/configuration.json
 logo/
 dist/

@@ -4,9 +4,10 @@ define([
 	'bookingModel',
 	'bookingRecurrenceModel',
 	
-	'modalUpdateBookingsListView'
+	'modalUpdateBookingsListView',
+	'modalDeleteBookingView'
 
-], function(app, BookingModel, BookingRecurrenceModel, ModalUpdateBookingsListView){
+], function(app, BookingModel, BookingRecurrenceModel, ModalUpdateBookingsListView, ModalDeleteBookingView){
 
 	'use strict';
 
@@ -24,7 +25,8 @@ define([
 		// The DOM events //
 		events       : {
 			'click .actions'						: 'updateOccurences',
-			'click #unbindOccurences'           	: 'unbindOccurences',	
+			'click #unbindOccurences'           	: 'unbindOccurences',
+			'click #deleteRecurrence'				: 'deleteRecurrence',
 		},	
 	
 	
@@ -104,6 +106,11 @@ define([
 			app.router.navigate(app.views.bookingsListView.urlBuilder(), {trigger: true, replace: true});	
 		},
 		
+		deleteRecurrence: function(e){
+			e.preventDefault();
+			new ModalDeleteBookingView({el: '#modalCancelBooking', model: this.model});
+		},
+		
 		/**
 		 * Open modal to validate all booking's occurences
 		 */
@@ -115,7 +122,6 @@ define([
 				state		: state
 			});
 		},
-		
 	
 	});	
 	

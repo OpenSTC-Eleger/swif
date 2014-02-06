@@ -353,6 +353,7 @@ define([
 			})
 			.always(function () {
 				localStorage.clear();
+				self.clear();
 
 				// Refresh the header //
 				app.views.headerView.render();
