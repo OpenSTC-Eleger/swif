@@ -1,11 +1,23 @@
 {
   "name": "SWIF",
-  "version": "1.0.0",
+  "version": "1.2.4",
+  "description": "Logiciel de gestion des services techniques",
+  "repository": {
+    "type": "git",
+    "url": "git@dev.siclic.fr:stc-swif.git"
+  },
+  "keywords": [
+    "swif",
+    "services tehcniques"
+  ],
+  "author": "Siclic <contact@siclic.fr>",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.6.3",
     "grunt-contrib-nodeunit": "~0.2.0",
     "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-less": "~0.7.0"
+    "grunt-contrib-less": "~0.7.0",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-jscs-checker": "~0.3.0"
   }
 }
