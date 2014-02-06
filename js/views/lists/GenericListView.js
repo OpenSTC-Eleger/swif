@@ -26,39 +26,48 @@ define([
 		events: {
 			'click form.form-search input'                  	: 'selectSearchInput',
 			'submit form.form-search'                      		: 'search',
+
 			'click button[data-toggle="advance-search"]'    	: 'toggleAdvanceSearch',
-			'click table.table-sorter th[data-sort-column]' 	: 'sort',
-			//'click button[data-toggle="dropdown"]'				: 'displayAdvancedFilters'
-			
+			'click table.table-sorter th[data-sort-column]' 	: 'sort'
 		},
 
 
 
 		/** View Initialization
 		*/
-		render: function(opts) {
+		render: function(childView) {
+
 
 			// Set the Tooltip //
 			$('*[data-toggle="tooltip"]').tooltip();
 
-			// Set the sort icon //
+			// Set the sort icon in the table columns //
 			$('th[data-sort-column]').append('<i class="fa fa-sort fa-lg text-muted pull-right">');
 
-			if( !_.isUndefined(opts.sort) ){
+			// Add icon to the sorted column //
+			if( !_.isUndefined(childView.options.sort) ){
+				
 				// Display sort icon if there is a sort //
-				if(opts.sort.order == 'ASC'){ var newIcon = "fa-sort-up"; }else{ var newIcon = "fa-sort-down"; }
-				$("th[data-sort-column='"+opts.sort.by+"'] > i").removeClass('fa-sort text-muted')
-				.addClass('active ' + newIcon);
+				if(childView.options.sort.order == 'ASC'){ var newIcon = 'fa-sort-up'; } else{ var newIcon = 'fa-sort-down'; }
+				$("th[data-sort-column='"+childView.options.sort.by+"'] > i").removeClass('fa-sort text-muted').addClass('active ' + newIcon);
 			}
 
+
 			// Rewrite the research in the form //
-			if(!_.isUndefined(opts.search)){
-				$(this.searchForm).val(opts.search);
+			if(!_.isUndefined(childView.options.search)){
+				$(this.searchForm).val(childView.options.search);
 			}
 
 
 			// Set the focus to the search form //
 			$('form.form-search input').focus();
+
+
+			// Create the advanceSearch View //
+			app.views.advanceSearchView = new AdvanceSearchView({
+				collection : childView.collection,
+				view       : childView
+			});
 		},
 
 
@@ -71,11 +80,12 @@ define([
 
 
 
-		/** Perform a search on the sites
+		/** Perform a search on the list
 		*/
 		search: function(e){
 			e.preventDefault();
-			
+
+		
 			var query = $(this.searchForm).val();
 
 			// Check if the query is valid //
@@ -103,12 +113,9 @@ define([
 		*/
 		sort: function(e){
 
-			if(!$(e.target).is('i')){
-				var sortBy = $(e.target).data('sort-column');
-			}
-			else{
-				var sortBy = $(e.target).parent('th').data('sort-column');	
-			}
+			// Get the sort column click //
+			var sortBy = $(e.currentTarget).data('sort-column');
+
 
 			// Retrieve the current Sort //
 			var currentSort = this.options.sort;
@@ -225,7 +232,8 @@ define([
 
 
 
-		//apply advanced search 
+		/** Apply advanced search
+		*/
 		applyAdvancedFilters: function(jsonFilters) {
 			if(_.isEmpty(jsonFilters)){
 				delete this.options.filter;
@@ -255,15 +263,20 @@ define([
 			$('#contentContainer').toggleClass('content-main-left');
 
 
+
 			// Create the advance filter View //
-			if(_.isUndefined(app.views.advanceSearchView) && !$('#advanceFilterContainer').hasClass('hide')){
-				app.views.advanceSearchView = new AdvanceSearchView({
-					collection: this.collection, 
-					view      : this
-				});
+			if(!$('#advanceFilterContainer').hasClass('hide')){
+				app.views.advanceSearchView.render();
+				$('#filter-informations').addClass('hide');
+			}
+			else{
+
+				// Display the informations filters if the advanceSearchView is collapse //
+				if(!_.isUndefined(this.options.filter)){
+					$('#filter-informations').removeClass('hide');
+				}
 			}
 		}
-
 		
 
 	});

@@ -82,8 +82,7 @@ define([
 			
 			});
 
-			console.log(filters);
-			
+
 			this.view.applyAdvancedFilters(filters);
 		},
 

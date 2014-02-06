@@ -32,10 +32,9 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'click #filterStateRequestList li a' 		: 'setFilterState',
-				'click #badgeActions[data-filter!=""]'  	: 'badgeFilter',
-				'click a.createRequest'		            	: 'modalCreateRequest',
-				'click #displayRecordFilters'               : 'displayAdvancedFilters'
+				'click #badgeActions[data-filter!=""]' : 'badgeFilter',
+				'click a.createRequest'		           : 'modalCreateRequest',
+				'click #displayRecordFilters'          : 'displayRecordFilters'
 			}, 
 				GenericListView.prototype.events
 			);
@@ -45,13 +44,15 @@ define([
 
 		/** View Initialization
 		*/
-		initialize: function (params) {
+		initialize: function(params) {
 			var self = this;
 
 			this.options = params;
-			
+
+		
 			this.initFilters().done(function(){
 				self.initCollection().done(function(){
+
 					// Unbind & bind the collection //
 					self.collection.off();
 					self.listenTo(self.collection, 'add', self.add);
@@ -61,7 +62,6 @@ define([
 					app.router.render(self);
 				});
 			});
-
 
 		},
 
@@ -104,7 +104,7 @@ define([
 				$(self.el).html(template);
 
 				// Call the render Generic View //
-				GenericListView.prototype.render(self.options);
+				GenericListView.prototype.render(self);
 
 
 				// Create item request view //
@@ -152,31 +152,6 @@ define([
 
 
 
-		/** Filter Requests on the State
-		*/
-		setFilterState: function(e){
-			e.preventDefault();
-
-			if($(e.target).is('i')){
-				var filterValue = _($(e.target).parent().attr('href')).strRightBack('#');
-			}else{
-				var filterValue = _($(e.target).attr('href')).strRightBack('#');
-			}
-
-			// Set the filter value in the options of the view //
-			if(filterValue != 'delete-filter'){
-				this.options.filter = { by: 'state', value: filterValue};
-				delete this.options.page;
-			}
-			else{
-				delete this.options.filter;
-			}
-			
-			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-		},
-
-
-
 		/** Filter Requests on the State of the Badge
 		*/
 		badgeFilter: function(e){
@@ -193,13 +168,14 @@ define([
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 		},
 
-			
-		/**
-		 * Render recording filters view
-		 */	
-		displayAdvancedFilters: function(e){
+
+
+		/** Render recording filters view
+		*/	
+		displayRecordFilters: function(){
 			app.views.recordFilterView.render();
 		},
+
 
 
 		/** Modal form to create a new Request
@@ -212,9 +188,10 @@ define([
 			});
 		},
 
-		/**
-		 * Load filter model 
-		 */
+
+
+		/** Load filter model
+		*/
 		initFilters: function(){
 			var self = this;
 			
@@ -237,6 +214,8 @@ define([
 			}
 			return deferred
 		},
+
+
 
 		initCollection: function(){
 			var self = this;
@@ -300,8 +279,8 @@ define([
 		},
 
 	});
-	
-	
+
+
 
 	return RequestsListView;
 
