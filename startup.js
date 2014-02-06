@@ -103,12 +103,9 @@ requirejs.config({
 		paginationView          	: 'js/views/others/PaginationView',
 		notFoundView            	: 'js/views/others/NotFoundView',
 		aboutView               	: 'js/views/others/AboutView',
-		advancedSelectBoxView   	: 'js/views/others/AdvancedSelectBoxView',
 		teamMembersAndServices  	: 'js/views/others/TeamMembersAndServices',
 		advanceSearchView  	        : 'js/views/others/AdvanceSearchView',
-		inputFieldView  			: 'js/views/others/InputFieldView',
 		fieldContainerView  		: 'js/views/others/FieldContainerView',
-		dateFieldView				: 'js/views/others/DateFieldView',
 		recordFilterView			: 'js/views/others/RecordFilterView',
 
 		// Lists //
@@ -146,7 +143,12 @@ requirejs.config({
 		modalEquipmentView      : 'js/views/modals/ModalEquipmentView',
 		modalClaimerTypeView    : 'js/views/modals/ModalClaimerTypeView',
 		modalResetPasswordView  : 'js/views/modals/ModalResetPasswordView',
-		modalSaveFilterView     : 'js/views/modals/ModalSaveFilterView'
+		modalSaveFilterView     : 'js/views/modals/ModalSaveFilterView',
+
+		// Form Components //
+		advancedSelectBoxView   : 'js/views/form-components/AdvancedSelectBoxView',
+		inputFieldView  		: 'js/views/form-components/InputFieldView',
+		dateFieldView			: 'js/views/form-components/DateFieldView'
 
 	},
 
