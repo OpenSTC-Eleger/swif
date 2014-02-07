@@ -61,8 +61,6 @@ define([
 			this.operators.notEgal.label = app.lang.differentFrom;
 
 			this.currentOperator = this.operators.egal;
-
-			this.render();
 		},
 
 
@@ -80,7 +78,7 @@ define([
 				$.get(this.templateHTML, function(templateData){
 
 					var template = _.template(templateData, {
-						field           : self.options.field,
+						field           : self.field,
 						operators       : self.operators,
 						currentOperator : self.currentOperator
 					});
@@ -91,6 +89,13 @@ define([
 
 					// Create the advance Select Box
 					self.createAdvanceSelectBox();
+
+
+					// Set current selected value //
+					if(!_.isUndefined(self.field.value)){
+						self.select2.select2('val', self.field.value);
+					}
+
 				});
 			}
 			else{
@@ -110,7 +115,7 @@ define([
 				
 				// Set data as Selected //
 				if(!_.isUndefined(this.select2.data('selected-value'))){
-					selectedJSON = this.select2.data('selected-value');
+					var selectedJSON = this.select2.data('selected-value');
 
 					// Check if the select is a Multiple //
 					if(_.isArray(selectedJSON)){
@@ -171,7 +176,8 @@ define([
 			};
 
 
-			if(!_.isUndefined(self.options.url)){
+			// ManyToOne - Add the Query function if a url is pass //
+			if(!_.isUndefined(this.options.url)){
 				select2Options.query = function(query){
 
 					// SEARCH PARAMS //
@@ -210,11 +216,55 @@ define([
 					});
 
 				};
+
+				// Set data as selected if field has value // TOTO
+				select2Options.initSelection = function(element, callback){
+
+					var ids = _.words(element.val(), ',');
+
+					$.ajax({
+						url    : self.options.url,
+						method : 'GET',
+						data   : {
+							fields  : self.fields,
+							filters : [{ field: 'id', operator: 'in', value: ids }]
+						}
+					}).done(function(data){
+
+						var returnData = [];
+
+						_.each(data, function(item, index){
+							returnData.push({ id: item.id, text: _.titleize(item.name.toLowerCase()) });
+						});
+
+						console.log(returnData);
+
+						callback(returnData);
+					});
+
+				};
 			}
+			// Selection - Add the Query function if a url is pass //
 			else{
-				select2Options.data = this.options.data
+				select2Options.data = this.options.data;
+
+				// Set data as selected if field has value // TOTO
+				select2Options.initSelection = function(element, callback){
+					var ids = _.words(element.val(), ',');
+
+					var data = []
+					_.each(ids, function(index, val) {
+						data.push({ id: index, text: _.capitalize(app.lang[index]) });
+					});
+
+					console.log(data);
+
+					callback(data);
+				};
 			}
 
+			
+			// Select2 Initialization //
 			this.select2.select2(select2Options);
 
 		},
@@ -303,6 +353,9 @@ define([
 			}
 		},
 
+		setValue: function(){
+
+		},
 
 
 		/** Reset the selectBox Value

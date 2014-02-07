@@ -19,6 +19,8 @@ define([
 		
 		operator	 : 'ilike',
 
+		input        : null,
+
 
 		/** View Initialization
 		*/
@@ -43,6 +45,8 @@ define([
 				});
 
 				$(self.el).html(template);
+
+				self.input = $(self.el).find('input');
 			});
 
 			return this;
@@ -53,7 +57,7 @@ define([
 		/** Get the value of the input
 		*/
 		getValue: function(){
-			var val = $(this.el).find('input').val();
+			var val = this.input.val();
 
 			if(val != ""){
 				return val;
@@ -62,13 +66,20 @@ define([
 				return null;
 			}
 		},
-		
+
+		/** Set the value in the input
+		*/
+		setValue: function(value){
+			$(self.el).find('input').val(value);
+		},
+
+
+
 		/** Get operator selected (always 'ilike')
 		*/
 		getOperator: function(){
 			return this.operator;
 		},
-
 
 	});
 

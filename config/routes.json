@@ -1,76 +1,76 @@
 {
 
 	"notFound": {
-		"url"		: "*invalidRoute",
-		"function"	: "notFound"
+		"url"       : "*invalidRoute",
+		"function"  : "notFound"
 	},
 
 	"home": {
-		"url" 		: "",
-		"function" 	: "homePageRedirect"
+		"url"       : "",
+		"function"  : "homePageRedirect"
 	},
 
 	"login": {
-		"url" 		: "login",
-		"function" 	: "login"
+		"url"       : "login",
+		"function"  : "login"
 	},
 
 	"logout": {
-		"url"		: "logout",
-		"function"	: "logout"
+		"url"       : "logout",
+		"function"  : "logout"
 	},
 
 	"about": {
-		"url"		: "about",
-		"function"	: "about"
+		"url"       : "about",
+		"function"  : "about"
 	},
 
 	"app-interventions": {
 		"url"       : "app-interventions/*subroutes",
-		"function"	: "loadAppInterventions"
+		"function"  : "loadAppInterventions"
 	},
 
 	"app-reservations": {
 		"url"       : "app-reservations/*subroutes",
-		"function"	: "loadAppReservations"
+		"function"  : "loadAppReservations"
 	},
 
 
 
 
 	"claimers": {
-		"url"		: "configuration/organisations(/search/:search)(/sort/:sort)(/page:page)",
-		"function"	: "claimers"
+		"url"       : "configuration/organisations(/search/:search)(/sort/:sort)(/page:page)",
+		"function"  : "claimers"
 	},
 
 	"claimersType": {
-		"url"		: "configuration/types-dorganisation(/search/:search)(/sort/:sort)(/page:page)",
-		"function"	: "claimerTypes"
+		"url"       : "configuration/types-dorganisation(/search/:search)(/sort/:sort)(/page:page)",
+		"function"  : "claimerTypes"
 	},
 
 	"users": {
-		"url"		: "configuration/utilisateurs(/search/:search)(/sort/:sort)(/page:page)",
-		"function"	: "users"
+		"url"       : "configuration/utilisateurs(/search/:search)(/sort/:sort)(/page:page)",
+		"function"  : "users"
 	},
 
 	"services": {
-		"url"		: "configuration/services(/search/:search)(/sort/:sort)(/page:page)",
-		"function"	: "services"
+		"url"       : "configuration/services(/search/:search)(/sort/:sort)(/page:page)",
+		"function"  : "services"
 	},
 
 	"places": {
-		"url"		: "configuration/sites(/search/:search)(/sort/:sort)(/page:page)",
-		"function"	: "places"
+		"url"       : "configuration/sites(/search/:search)(/sort/:sort)(/page:page)",
+		"function"  : "places"
 	},
 
 	"teams": {
-		"url"		: "configuration/equipes(/id/:id)(/search/:search)(/sort/:sort)(/page:page)",
-		"function"	: "teams"
+		"url"       : "configuration/equipes(/id/:id)(/search/:search)(/sort/:sort)(/page:page)",
+		"function"  : "teams"
 	},
 
 	"equipments": {
-		"url"		: "configuration/equipements(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
-		"function"	: "equipments"
+		"url"       : "configuration/equipements(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"function"  : "equipments"
 	}
 
 }

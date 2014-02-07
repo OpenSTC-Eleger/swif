@@ -46,7 +46,7 @@ define([
 
 			// Add icon to the sorted column //
 			if( !_.isUndefined(childView.options.sort) ){
-				
+
 				// Display sort icon if there is a sort //
 				if(childView.options.sort.order == 'ASC'){ var newIcon = 'fa-sort-up'; } else{ var newIcon = 'fa-sort-down'; }
 				$("th[data-sort-column='"+childView.options.sort.by+"'] > i").removeClass('fa-sort text-muted').addClass('active ' + newIcon);
@@ -68,6 +68,13 @@ define([
 				collection : childView.collection,
 				view       : childView
 			});
+
+
+			// Rewrite the research in the form //
+			if(!_.isUndefined(childView.options.filter)){
+				this.displayAdvanceSearch(childView.options.filter);
+			}
+
 		},
 
 
@@ -276,6 +283,17 @@ define([
 					$('#filter-informations').removeClass('hide');
 				}
 			}
+		},
+
+
+		/** Display the advance filter //
+		*/
+		displayAdvanceSearch: function(filter){
+
+			$('#advanceFilterContainer').removeClass('hide');
+			$('#contentContainer').addClass('content-main-left');
+
+			app.views.advanceSearchView.render(filter);
 		}
 		
 

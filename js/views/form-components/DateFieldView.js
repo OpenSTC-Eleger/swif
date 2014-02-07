@@ -1,6 +1,6 @@
 define([
 	'app',
-	
+
 	'bsDatepicker',
 	'bsTimepicker',
 	'moment'
@@ -20,18 +20,20 @@ define([
 		className    : 'form-group',
 		
 		templateHTML : 'templates/form-components/inputDate.html',
+
+		input        : null,
 		
 		operators    : {
-			egal    : { key: '=', symbol: '=' },
-			before : { key: '<',  symbol: '&lt;' },
-			after : { key: '>',   symbol: '&gt;' }
+			egal   : { key: '=', symbol: '=' },
+			before : { key: '<', symbol: '&lt;' },
+			after  : { key: '>', symbol: '&gt;' }
 		},
 
 
 		events: {
 			'click .dropdown-menu li'  : 'selectOperator'
 		},
-		
+
 
 
 		/** View Initialization
@@ -46,8 +48,6 @@ define([
 			this.operators.after.label = app.lang.afterThe;
 
 			this.currentOperator = this.operators.after;
-			
-			this.render();
 		},
 
 
@@ -63,11 +63,15 @@ define([
 				var template = _.template(templateData, {
 					field           : self.field,
 					operators       : self.operators,
-					currentOperator : self.currentOperator
+					currentOperator : self.currentOperator,
+					moment          : moment
 				});
 
 				$(self.el).html(template);
-				$('input.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
+
+				self.input = $(self.el).find('input.datepicker');
+
+				self.input.datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
 			});
 
 			return this;
@@ -78,7 +82,7 @@ define([
 		/** Get the value of the input
 		*/
 		getValue: function(){
-			var val = $(this.el).find('input').val();
+			var val = this.input.val();
 
 			if(val != ""){
 				return moment(val, 'DD/MM/YYYY').format('YYYY-MM-DD');
@@ -86,6 +90,12 @@ define([
 			else{
 				return null;
 			}
+		},
+
+		/** Set the value 
+		*/
+		setValue: function(value){
+			this.input.val(moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY'));
 		},
 
 

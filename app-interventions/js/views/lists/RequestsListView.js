@@ -250,10 +250,11 @@ define([
 				globalSearch.search = this.options.search;
 			}
 			
-			if(!_.isUndefined(this.options.filter)){				
+			if(!_.isUndefined(this.options.filter)){
 				if(!_.isUndefined(this.filterModel) ){
 					try {
 						globalSearch.filter = JSON.parse(this.filterModel.toJSON().domain);
+						this.options.filter = globalSearch.filter;
 					}
 					catch(e)
 					{
@@ -263,6 +264,7 @@ define([
 				}
 				else{
 					globalSearch.filter = JSON.parse(this.options.filter);
+					this.options.filter = globalSearch.filter;
 				}
 			}
 
