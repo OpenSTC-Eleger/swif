@@ -125,7 +125,8 @@ define([
 				app.views.recordFilterView = new RecordFilterView({
 					el            : '#savedFilters',
 					states        : RequestModel.status,
-					metaDataModel : self.metaDataModel
+					metaDataModel : self.metaDataModel,
+					listView 		  : self
 				});
 
 			});

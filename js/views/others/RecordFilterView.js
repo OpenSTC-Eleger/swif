@@ -24,6 +24,7 @@ define([
 		
 		// The DOM events //
 		events: {
+			'click [href^=#filter-state]'               : 'filterByState'
 		},
 
 
@@ -35,6 +36,7 @@ define([
 			this.el = options.el;
 			this.metaDataModel = options.metaDataModel;
 			this.states = options.states;
+			this.listView = options.listView;
 			//prepares variables to construct url filter in template	
 			this.prepareUrls();
 
@@ -124,6 +126,19 @@ define([
 				}
 				self.filters.push(f);
 			});
+		},
+		
+		/**
+		 * Filter list by state
+		 */
+		filterByState: function(e){
+			e.preventDefault();
+			
+			var state = _(e.currentTarget.href).strRight('_');		
+			var filters = [{'field': 'state', 'operator': '=', 'value' : state}];
+			
+			this.listView.applyAdvancedFilters(filters);
+			
 		}
 
 	});

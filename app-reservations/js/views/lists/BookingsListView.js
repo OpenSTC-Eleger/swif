@@ -196,9 +196,10 @@ define([
 	
 			this.options.page = AppHelpers.calculPageOffset(this.options.page);
 	
-			if(!_.isUndefined(this.options.filter)){
-				this.options.filter = AppHelpers.calculPageFilter(this.options.filter);
-			}
+			//TODO : remove state filter from list
+//			if(!_.isUndefined(this.options.filter)){
+//				this.options.filter = AppHelpers.calculPageFilter(this.options.filter);
+//			}
 	
 			if(_.isUndefined(this.options.sort)){
 				this.options.sort = this.collection.default_sort;
