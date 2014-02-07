@@ -5,13 +5,13 @@ define([
 	'loginView',
 	'notFoundView',
 	'placesListView',
-    'claimersListView',
-    'teamsListView',
-    'servicesListView',
-    'equipmentsListView',
-    'claimersTypesListView',
-    'aboutView',
-    'usersListView'
+	'claimersListView',
+	'teamsListView',
+	'servicesListView',
+	'equipmentsListView',
+	'claimersTypesListView',
+	'aboutView',
+	'usersListView'
 
 ], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView, ClaimersListView, TeamsListView, ServicesListView, EquipmentsListView, ClaimersTypesListView, AboutView, UsersListView){
 
@@ -36,11 +36,11 @@ define([
 
 
 			// Create all the Routes of the app //
-			_.each(app.routes, function(route, i){
+			_.each(app.routes, function(route){
 				self.route(route.url, route.function);
 			});
 
-			// Header, Footer Initialize //    	
+			// Header, Footer Initialize //
 			app.views.headerView = new HeaderView();
 			app.views.footerView = new FooterView();
 
@@ -55,7 +55,9 @@ define([
 
 			// Close the current view //
 			if (this.currentView) {
-				if (this.currentView.$el) this.currentView.undelegateEvents();
+				if (this.currentView.$el){
+					this.currentView.undelegateEvents();
+				}
 				this.currentView.$el = (this.currentView.el instanceof $) ? this.currentView.el : $(this.currentView.el);
 				this.currentView.el = this.currentView.$el[0];
 			}
@@ -74,7 +76,7 @@ define([
 		/** Check if the User is connect
 		*/
 		checkConnect: function () {
-			if (localStorage.getItem('current_user') == null) {
+			if (localStorage.getItem('current_user') === null) {
 				return false;
 			}
 			else {
@@ -94,7 +96,7 @@ define([
 
 		/** Change the Title of the page
 		*/
-		routeChange: function(route){
+		routeChange: function(){
 			app.views.headerView.render();
 		},
 
@@ -146,14 +148,14 @@ define([
 				var userMenus = app.current_user.getMenus();
 				_.find(app.config.menus, function (moduleName, shortName){
 
-				if(!_.isUndefined(userMenus[shortName])) {
-					
-					var module = _.first(userMenus[shortName].children) 
-					var modulePage = _.slugify(_.first(module.children).tag);
-					var url = _.join('/', moduleName, _.slugify(modulePage));
+					if(!_.isUndefined(userMenus[shortName])) {
 
-					return self.navigate(url, {trigger: true, replace: true});
-				}
+						var module = _.first(userMenus[shortName].children);
+						var modulePage = _.slugify(_.first(module.children).tag);
+						var url = _.join('/', moduleName, _.slugify(modulePage));
+
+						return self.navigate(url, {trigger: true, replace: true});
+					}
 
 				});
 
@@ -165,7 +167,7 @@ define([
 		/** Login View
 		*/
 		login: function(){
-            //var current_token = app.current_user
+			//var current_token = app.current_user
 			// Check if the user is connect //
 			if(!this.checkConnect()){
 				app.views.loginView = new LoginView({ model: app.current_user });
@@ -196,7 +198,7 @@ define([
 
 		/** 404 Not Found
 		*/
-		notFound: function(page){
+		notFound: function(){
 
 			app.views.notFoundView = new NotFoundView();
 			this.render(app.views.notFoundView);
@@ -206,7 +208,7 @@ define([
 
 		/** Load The Interventions Module
 		*/
-		loadAppInterventions: function(param){
+		loadAppInterventions: function(){
 
 			if(!require.defined('app-interventions')){
 				this.loadModule('app-interventions');
@@ -218,7 +220,7 @@ define([
 		
 		/** Load The Bookings Module
 		*/
-		loadAppReservations: function(param){
+		loadAppReservations: function(){
 
 			if(!require.defined('app-reservations')){
 				this.loadModule('app-reservations');
@@ -286,7 +288,7 @@ define([
 		/** Claimer Type List
 		*/
 		claimerTypes: function(search, sort, page){
-            var params = this.setContext({search: search, sort : sort, page : page});
+			var params = this.setContext({search: search, sort : sort, page : page});
 			app.views.claimersTypesListView = new ClaimersTypesListView(params);
 		},
 
@@ -304,6 +306,6 @@ define([
 
 	});
 
-return router;
+	return router;
 	
 });

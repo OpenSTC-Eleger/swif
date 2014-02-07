@@ -58,7 +58,7 @@ define('main', [
 
             $(function () {
                 $.ajaxSetup({
-                    error: function (x, status, error) {
+                    error: function (x) {
                         // If token expires , clear the localstorage to remove session
                         if (x.status == 401) {
                             localStorage.clear();
@@ -70,12 +70,7 @@ define('main', [
 
         }
 
-
-
-    }
-
+    };
 
     return main;
-
-
 });

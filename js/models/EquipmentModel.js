@@ -6,7 +6,7 @@ define([
 
 ], function(app, GenericModel, moment){
 
-	'user strict';
+	'use strict';
 
 
 	/******************************************
@@ -14,14 +14,14 @@ define([
 	*/
 	var EquipmentModel = GenericModel.extend({
 		
-		urlRoot: "/api/openstc/equipments",
+		urlRoot: '/api/openstc/equipments',
 		
 		fields : ['id', 'name', 'maintenance_service_ids', 'internal_use', 'immat', 'marque', 'usage', 'type', 'cv',
-		          'year', 'time', 'km', 'energy_type', 'length_amort', 'purchase_price', 'default_code', 'categ_id', 
-		          'service_names', 'maintenance_service_names', 'complete_name', 'warranty_date','built_date',
-		          'purchase_date', 'hour_price', 'internal_booking','external_booking','service_bookable_ids', 
-		          'service_bookable_names','partner_type_bookable_ids', 'partner_type_bookable_names', 
-		          'qty_available', 'product_product_id','color', 'block_booking'],
+					'year', 'time', 'km', 'energy_type', 'length_amort', 'purchase_price', 'default_code', 'categ_id', 
+					'service_names', 'maintenance_service_names', 'complete_name', 'warranty_date','built_date',
+					'purchase_date', 'hour_price', 'internal_booking','external_booking','service_bookable_ids', 
+					'service_bookable_names','partner_type_bookable_ids', 'partner_type_bookable_names', 
+					'qty_available', 'product_product_id','color', 'block_booking'],
 
 
 		searchable_fields: [
@@ -59,17 +59,17 @@ define([
 				switch (type){
 					case 'id': 
 						equipmentServices.push(s[0]);
-					break;
+						break;
 					case 'json': 
 						equipmentServices.push({id: s[0], name: s[1]});
-					break;
+						break;
 					default:
 						equipmentServices.push(s[1]);
 				}
 			});
 
 			if(type == 'string'){
-				return _.toSentence(equipmentServices, ', ', ' '+app.lang.and+' ')
+				return _.toSentence(equipmentServices, ', ', ' '+app.lang.and+' ');
 			}
 			else{
 				return equipmentServices;
@@ -88,17 +88,17 @@ define([
 				switch (type){
 					case 'id': 
 						equipmentServices.push(s[0]);
-					break;
+						break;
 					case 'json': 
 						equipmentServices.push({id: s[0], name: s[1]});
-					break;
+						break;
 					default:
 						equipmentServices.push(s[1]);
 				}
 			});
 
 			if(type == 'string'){
-				return _.toSentence(equipmentServices, ', ', ' '+app.lang.and+' ')
+				return _.toSentence(equipmentServices, ', ', ' '+app.lang.and+' ');
 			}
 			else{
 				return equipmentServices;
@@ -122,17 +122,17 @@ define([
 				switch (type){
 					case 'id': 
 						placeBookingServices.push(s[0]);
-					break;
+						break;
 					case 'json': 
 						placeBookingServices.push({id: s[0], name: s[1]});
-					break;
+						break;
 					default:
 						placeBookingServices.push(s[1]);
 				}
 			});
 
 			if(type == 'string'){
-				return _.toSentence(placeBookingServices, ', ', ' '+app.lang.and+' ')
+				return _.toSentence(placeBookingServices, ', ', ' '+app.lang.and+' ');
 			}
 			else{
 				return placeBookingServices;
@@ -159,17 +159,17 @@ define([
 				switch (type){
 					case 'id': 
 						placeBookingClaimers.push(s[0]);
-					break;
+						break;
 					case 'json': 
 						placeBookingClaimers.push({id: s[0], name: s[1]});
-					break;
+						break;
 					default:
 						placeBookingClaimers.push(s[1]);
 				}
 			});
 
 			if(type == 'string'){
-				return _.toSentence(placeBookingClaimers, ', ', ' '+app.lang.and+' ')
+				return _.toSentence(placeBookingClaimers, ', ', ' '+app.lang.and+' ');
 			}
 			else{
 				return placeBookingClaimers;
@@ -191,7 +191,7 @@ define([
 			this.set({ marque : value });
 		},
 
-		getCode : function(value) {
+		getCode : function() {
 			return this.get('default_code');
 		}, 
 
@@ -214,16 +214,21 @@ define([
 		}, 
 
 		getCategory : function(type) {
+
+			var returnCat;
+
 			switch (type){ 
 				case 'id': 
-					return this.get('categ_id')[0];
-				break;
+					returnCat = this.get('categ_id')[0];
+					break;
 				case 'json':
-					return {id: this.get('categ_id')[0], name: this.get('categ_id')[1]};
-				break;
+					returnCat = {id: this.get('categ_id')[0], name: this.get('categ_id')[1]};
+					break;
 				default:
-					return this.get('categ_id')[1];
+					returnCat = this.get('categ_id')[1];
 			}
+
+			return returnVal;
 		},
 
 		getCV : function() {
@@ -241,7 +246,7 @@ define([
 		}, 
 
 		getYear : function() {
-			if(this.get('year') != 0){
+			if(this.get('year') !== 0){
 				return this.get('year');
 			}
 			else{
@@ -363,29 +368,31 @@ define([
 		},
 		
 		getBookable: function(type){
+
+			var returnVal;
+
 			switch (type){ 
 				case 'id': 
-					return this.get('product_product_id')[0];
-				break;
+					returnVal = this.get('product_product_id')[0];
+					break;
 				case 'json':
-					return {id: this.get('product_product_id')[0], name: this.get('product_product_id')[1]};
-				break;
+					returnVal = {id: this.get('product_product_id')[0], name: this.get('product_product_id')[1]};
+					break;
 				default:
-					return this.get('product_product_id')[1];
+					returnVal = this.get('product_product_id')[1];
 			}
+
+			return returnVal;
 		},
 		
 		updateAvailableQty:function(newQuantity){
-			var self = this;
+
 			return $.ajax({
 				url:'/api/openresa/bookables/' + this.getBookable('id') + '/update_available_quantity',
 				type:'GET',
 				data: app.objectifyFilters({
 					new_quantity: newQuantity
-				}),
-				success: function(data){
-					
-				}
+				})
 			});
 		},
 		
@@ -395,12 +402,12 @@ define([
 			//console.log('Equipment Model initialization');
             if (_.isUndefined(this.get('color'))) {
                 this.set('color', ('#' + Math.floor(Math.random()*16777215).toString(16)));
-            };
+            }
         }
 
 
 	});
 
-return EquipmentModel;
+	return EquipmentModel;
 
 });

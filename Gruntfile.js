@@ -74,7 +74,7 @@ module.exports = function(grunt) {
 				src: ['config/*.json', 'i18n/**/*.json']
 			},
 			scripts: {
-				src: ['js/models/*.js']
+				src: ['js/**/*.js', '!js/libs/*']
 			}
 		},
 
@@ -116,5 +116,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-jscs-checker');
 
 	grunt.registerTask('default', ['less', 'targethtml', 'copy']);
-	grunt.registerTask('check', ['jshint', 'jscs']);
+	//grunt.registerTask('check', ['jshint', 'jscs']);
+	grunt.registerTask('check', ['jshint']);
 };

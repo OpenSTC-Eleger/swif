@@ -5,7 +5,7 @@ define([
 
 ], function(app, GenericModel){
 
-	'user strict';
+	'use strict';
 
 
 	/******************************************
@@ -21,16 +21,21 @@ define([
 
 
 		getManager : function(type) {
+			
+			var returnVal;
+
 			switch (type){ 
 				case 'id': 
-					return this.get('manager_id')[0];
-				break;
+					returnVal = this.get('manager_id')[0];
+					break;
 				case 'json':
-					return {id: this.get('manager_id')[0], name: this.get('manager_id')[1]};
-				break;
+					returnVal = {id: this.get('manager_id')[0], name: this.get('manager_id')[1]};
+					break;
 				default:
-					return this.get('manager_id')[1];
+					returnVal = this.get('manager_id')[1];
 			}
+
+			return returnVal;
 		},
 		setManager : function(value, silent) {
 			this.set({ manager_id : value }, {silent: silent});
@@ -43,23 +48,23 @@ define([
 				switch (type){
 					case 'id': 
 						teamMembers.push(s[0]);
-					break;
+						break;
 					case 'json': 
 						teamMembers.push({id: s[0], name: s[1]});
-					break;
+						break;
 					default:
 						teamMembers.push(s[1]);
 				}
 			});
 
 			if(type == 'string'){
-				return _.toSentence(teamMembers, ', ', ' '+app.lang.and+' ')
+				return _.toSentence(teamMembers, ', ', ' '+app.lang.and+' ');
 			}
 			else{
 				return teamMembers;
 			}
 		},
-	    setMembers : function(value, silent) {
+		setMembers : function(value, silent) {
 			this.set({ user_ids : [[6, 0, value]] }, {silent: silent});
 		},
 
@@ -72,17 +77,17 @@ define([
 				switch (type){
 					case 'id': 
 						teamServices.push(s[0]);
-					break;
+						break;
 					case 'json': 
 						teamServices.push({id: s[0], name: s[1]});
-					break;
+						break;
 					default:
 						teamServices.push(s[1]);
 				}
 			});
 
 			if(type == 'string'){
-				return _.toSentence(teamServices, ', ', ' '+app.lang.and+' ')
+				return _.toSentence(teamServices, ', ', ' '+app.lang.and+' ');
 			}
 			else{
 				return teamServices;
@@ -105,10 +110,10 @@ define([
 			informations.infos.value = this.getManager();
 
 			return informations;
-		},
+		}
 
 	});
 
-return TeamModel;
+	return TeamModel;
 
 });

@@ -16,7 +16,7 @@ define([
 
 		url         : '/api/open_object/partner_types',
 
-		fields      : ["id", "name", "code", "actions"],
+		fields      : ['id', 'name', 'code', 'actions'],
 
 		default_sort: { by: 'name', order: 'ASC' },
 
@@ -24,12 +24,12 @@ define([
 
 		/** Collection Initialization
 		*/
-		initialize: function (options) {
+		initialize: function () {
 			//console.log('Claimer type collection Initialization');
 		}
 
 	});
 
-return ClaimersTypesCollection;
+	return ClaimersTypesCollection;
 
 });

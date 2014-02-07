@@ -27,7 +27,7 @@ define([
 
 		/** Collection Initialization
 		*/
-		initialize: function (options) {
+		initialize: function () {
 		},
 
 
@@ -44,6 +44,6 @@ define([
 
 	});
 
-return MetaDatasCollection;
+	return MetaDatasCollection;
 
 });

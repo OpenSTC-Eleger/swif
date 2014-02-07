@@ -6,7 +6,7 @@ define([
 
 ], function(app, GenericModel, ClaimersContactsCollection, AppHelpers){
 
-	'user strict';
+	'use strict';
 
 
 	/******************************************
@@ -14,7 +14,7 @@ define([
 	*/
 	var ClaimerModel = GenericModel.extend({
 
-		urlRoot : "/api/open_object/partners",
+		urlRoot : '/api/open_object/partners',
 
 		defaults:{
 			name: null,
@@ -28,69 +28,73 @@ define([
 		},
 		
 		setId: function(value){
-			if( value == 'undefined') return;
-	        this.set({ id : value });
+			this.set({ id: value });
 		},
 		
 		getName : function() {
-	        return this.get('name');
-	    },
-	    setName : function(value) {
-	    	if( value == 'undefined') return;
-	        this.set({ name : value });
-	    },  
+			return this.get('name');
+		},
+		setName : function(value) {
+			this.set({ name: value });
+		},
 		
 		getTypeId : function() {
 			return this.get('type_id');
 		},
 
 		setTypeId : function(value) {
-			if( value == 'undefined') return;
-			this.set({ type_id : value });
-		}, 
+			this.set({ type_id: value });
+		},
 
 		getTechnicalService : function(type) {
 			if(this.get('technical_service_id')){
 
+				var val;
+
 				switch (type){ 
 					case 'id': 
-						return this.get('technical_service_id')[0];
-					break;
+						val = this.get('technical_service_id')[0];
+						break;
 					case 'json':
-						return {id: this.get('technical_service_id')[0], name: this.get('technical_service_id')[1]};
-					break;
+						val = {id: this.get('technical_service_id')[0], name: this.get('technical_service_id')[1]};
+						break;
 					default:
-						return this.get('technical_service_id')[1];
+						val = this.get('technical_service_id')[1];
 				}
+
+				return val;
 			}
 			else{
 				return false;
 			}
 		},
 		setTechnicalService : function(value) {
-			this.set({ technical_service_id : value });
-		}, 
-		
+			this.set({ technical_service_id: value });
+		},
+
 		getTechnicalSite : function(type) {
 			if(this.get('technical_site_id')){
 
+				var val;
 				switch (type){ 
 					case 'id': 
-						return this.get('technical_site_id')[0];
-					break;
+						val = this.get('technical_site_id')[0];
+						break;
 					case 'json':
-						return {id: this.get('technical_site_id')[0], name: this.get('technical_site_id')[1]};
-					break;
+						val =  {id: this.get('technical_site_id')[0], name: this.get('technical_site_id')[1]};
+						break;
 					default:
 						return this.get('technical_site_id')[1];
 				}
+
+				return val;
 			}
 			else{
 				return false;
 			}
 		},
 		setTechnicalSite : function(value) {
-			this.set({ technical_site_id : value });
+			this.set({ technical_site_id: value });
 		},
 
 		getClaimerType : function() {
@@ -98,19 +102,21 @@ define([
 		},
 
 		setClaimerType : function(value) {
-			this.set({ type_id : value });
+			this.set({ type_id: value });
 		},
 
 		getAddresses: function () {
-			var collection = new ClaimersContactsCollection
-				collection.fetch({
-						data   : {filters: {0: {field: 'partner_id.id', operator: '=', value: this.get('id')}}},
-						reset : true
-					}
-				).done( function () {
-						collection.trigger('fetchDone');
-					})
-				return collection;
+			var collection = new ClaimersContactsCollection();
+			
+			collection.fetch({
+				data   : {filters: {0: {field: 'partner_id.id', operator: '=', value: this.get('id')}}},
+				reset : true
+			})
+			.done(function() {
+				collection.trigger('fetchDone');
+			});
+
+			return collection;
 		},
 
 		getInformations: function () {
@@ -119,18 +125,18 @@ define([
 
 		// Returns the many2one id fields in form of an object {name:'name',id:'id'}
 		objectifiedTypeId : function () {
-			return AppHelpers.many2oneObjectify(this.get('type_id'))
+			return AppHelpers.many2oneObjectify(this.get('type_id'));
 		},
 		objectifiedTechnicalServiceId : function () {
-			return AppHelpers.many2oneObjectify(this.get('technical_service_id'))
+			return AppHelpers.many2oneObjectify(this.get('technical_service_id'));
 		},
 		objectifiedTechnicalSiteId : function () {
-			return AppHelpers.many2oneObjectify(this.get('technical_site_id'))
+			return AppHelpers.many2oneObjectify(this.get('technical_site_id'));
 		},
 
 	});
 
 
-return ClaimerModel;
+	return ClaimerModel;
 
 });

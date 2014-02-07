@@ -27,7 +27,7 @@ define([
 
 		/** Collection Initialization
 		*/
-		initialize: function (options) {
+		initialize: function () {
 		},
 
 
@@ -45,6 +45,6 @@ define([
 
 	});
 
-return FiltersCollection;
+	return FiltersCollection;
 
 });

@@ -5,14 +5,14 @@ define([
 
 ], function(app, GenericModel){
 
-	'user strict';
+	'use strict';
 
 
 	/******************************************
 	* Claimer Service Model
 	*/
 	var ClaimerServiceModel = GenericModel.extend({
-	 
+
 
 		fields       : ['id', 'name', 'code', 'manager_id', 'service_id', 'technical', 'user_ids', 'actions'],
 		
@@ -30,77 +30,80 @@ define([
 			}
 		],
 
-		
 
-	    /** Check if the Service is a technical service
-	    */
-	    isTechnical: function() {
-	        return this.get('technical');
-	    },
+		/** Check if the Service is a technical service
+		*/
+		isTechnical: function() {
+			return this.get('technical');
+		},
 
 		getCode: function(){
 			return this.get('code');
 		},
 
-	    getParentService : function(type) {
+		getParentService : function(type) {
+			var id, name = '';
 
 			// Check if the place have a parent place //
 			if(this.get('service_id')){
-				var id = this.get('service_id')[0];
-				var name = _.titleize(this.get('service_id')[1].toLowerCase());
-			}
-			else{
-				var id, name = '';
+				id = this.get('service_id')[0];
+				name = _.titleize(this.get('service_id')[1].toLowerCase());
 			}
 
+			var returnVal;
 			switch (type){ 
 				case 'id': 
-					return id;
-				break;
+					returnVal = id;
+					break;
 				case 'all':
-					return this.get('service_id');
-				break;
+					returnVal = this.get('service_id');
+					break;
 				case 'json':
-					return {id: id, name: name};
-				break;
+					returnVal = {id: id, name: name};
+					break;
 				default: 
-					return name;
+					returnVal = name;
 			}
+
+			return returnVal;
 		},
 
 		getManager: function(type) {
 
+			var id, name = '';
+			
 			// Check if the place have a parent place //
 			if(this.get('manager_id')){
-				var id = this.get('manager_id')[0];
-				var name = _.titleize(this.get('manager_id')[1].toLowerCase());
+				id = this.get('manager_id')[0];
+				name = _.titleize(this.get('manager_id')[1].toLowerCase());
 			}
-			else{
-				var id, name = '';
-			}
+
+			var returnVal;
 
 			switch (type){ 
 				case 'id': 
-					return id;
-				break;
+					returnVal = id;
+					break;
 				case 'all':
-					return this.get('manager_id');
-				break;
+					returnVal = this.get('manager_id');
+					break;
 				case 'json':
-					return {id: id, name: name};
-				break;
+					returnVal = {id: id, name: name};
+					break;
 				default: 
-					return name;
+					returnVal = name;
 			}
+
+			return returnVal;
 		},
 
 
-	    getUsersId: function(){
+		getUsersId: function(){
 			return this.get('user_ids');
 		},
 
 
-	    getActions: function(){
+		getActions: function(){
 			return this.get('actions');
 		},
 
@@ -123,6 +126,6 @@ define([
 
 	});
 
-return ClaimerServiceModel;
+	return ClaimerServiceModel;
 
 });

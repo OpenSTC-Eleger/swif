@@ -3,15 +3,15 @@ define([
 
 ], function(GenericModel){
 
-	'user strict';
+	'use strict';
 
 
 	/******************************************
 	* Equipment Model
 	*/
 	var EquipmentTypeModel = GenericModel.extend({
-	    
-		urlRoot: "/api/openstc/equipment_categories",
+
+		urlRoot: '/api/openstc/equipment_categories',
 
 		fields : ['id', 'name', 'is_equipment', 'is_vehicle'],
 
@@ -20,10 +20,10 @@ define([
 		*/
 		initialize: function(){
 			//console.log('Equipment Model initialization');
-		},
+		}
 
 	});
 
-return EquipmentTypeModel;
+	return EquipmentTypeModel;
 
 });

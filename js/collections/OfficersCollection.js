@@ -23,12 +23,12 @@ define([
 
 		/** Collection Initialization
 		*/
-		initialize: function (options) {
+		initialize: function () {
 			//console.log('Requests collection Initialization');
 		}
 
 	});
 
-return OfficersCollection;
+	return OfficersCollection;
 
 });

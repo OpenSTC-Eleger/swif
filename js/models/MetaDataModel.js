@@ -21,7 +21,7 @@ define([
 
 		/** Model Initialization
 		*/
-		initialize: function (model) {
+		initialize: function () {
 			//console.log("Meta Model Initialization");
 		},
 
@@ -32,7 +32,7 @@ define([
 
 			return $.when($.ajax({
 				async   : true,
-				url     : this.urlRoot + '/' + this.get("id") + '/filters',
+				url     : this.urlRoot + '/' + this.get('id') + '/filters',
 				headers : {Authorization: 'Token token=' + app.current_user.getAuthToken()},
 				success : function (data) {
 					metaModel.setFilters(data);

@@ -16,12 +16,12 @@ define([
 
 		/** Collection Initialization
 		*/
-		initialize: function (options) {
+		initialize: function () {
 			//console.log('Sites types collection Initialization');
 		},
 
 	});
 
-return PlaceTypesCollection;
+	return PlaceTypesCollection;
 
 });

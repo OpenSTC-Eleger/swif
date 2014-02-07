@@ -24,13 +24,13 @@ define([
 
 		/** Collection Initialization
 		*/
-		initialize: function (options) {
+		initialize: function () {
 			//console.log('Teams collection Initialization');
 		},
 
 	});
 
 
-return TeamsCollection;
+	return TeamsCollection;
 
 });

@@ -24,12 +24,12 @@ define([
 
 		/** Collection Initialization
 		*/
-		initialize: function (options) {
+		initialize: function () {
 			//console.log('Place collection Initialization');
 		}
 
 	});
 
-return PlacesCollection;
+	return PlacesCollection;
 
 });

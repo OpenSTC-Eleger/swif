@@ -22,12 +22,12 @@ define([
 
 		/** Collection Initialization
 		*/
-		initialize: function (options) {
+		initialize: function () {
 			//console.log('Equipment collection Initialization');
 		}
 
 	});
 
-return EquipmentsCollection;
+	return EquipmentsCollection;
 
 });

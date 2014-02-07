@@ -14,7 +14,7 @@ define([
 
 		model       : ClaimerContactModel,
 		
-		url         : "/api/open_object/partner_addresses",
+		url         : '/api/open_object/partner_addresses',
 		
 		fields      : ['id', 'name', 'email', 'function', 'livesIn', 'mobile', 'partner_id', 'phone', 'street', 'type', 'user_id', 'zip', 'city'],
 		
@@ -30,6 +30,6 @@ define([
 
 	});
 
-return ClaimersContactsCollection;
+	return ClaimersContactsCollection;
 
 });
