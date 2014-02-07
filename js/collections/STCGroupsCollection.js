@@ -16,12 +16,12 @@ define([
 
 		/** Collection Initialization
 		*/
-		initialize: function (options) {
+		initialize: function () {
 			//console.log('Groups collection Initialization');
 		},
 
 	});
 
-return STCGroupsCollection;
+	return STCGroupsCollection;
 
 });

@@ -1,15 +1,14 @@
 define([
 	'app',
 	'genericModel',
-	'moment'
 
-], function(app, GenericModel, moment){
+], function(app, GenericModel){
 
 	'use strict';
 
 
 	/******************************************
-	* Request Model
+	* Filter Model
 	*/
 	var FilterModel = GenericModel.extend({
 
@@ -33,12 +32,12 @@ define([
 
 		/** Model Initialization
 		*/
-		initialize: function (model) {
+		initialize: function () {
 			//console.log("Filter Model Initialization");
 		},
 
 	});
 
-return FilterModel;
+	return FilterModel;
 
 });

@@ -16,12 +16,13 @@ define([
 	var AdvanceSearchView = Backbone.View.extend({
 		
 		el              : '#advanced-filters-bar',
+
 		templateHTML 	: 'templates/others/advanceSearch.html',
 		
 		
 		// The DOM events //
 		events: {
-			'submit #formAdvanceSearch'	: 'applyFilterForm',
+			'submit #formAdvanceSearch'	: 'performSearch',
 			'click #saveFilter'         : 'modalSaveFilter'
 		},
 
@@ -31,28 +32,28 @@ define([
 		initialize: function(options){
 			this.collection = options.collection;
 			this.view = options.view;
-
-			this.render();
 		},
 
 
 
 		/** View Render
 		*/
-		render: function(){
+		render: function(activeSearch){
 			var self = this;
+
+			this.activeSearch = activeSearch;
 			
 			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					lang   : app.lang,
+					lang   : app.lang
 				});
 
 				$(self.el).html(template);
-	
 
-				self.fieldContainerView = new FieldContainerView({ searchableFields : self.collection.advanced_searchable_fields} )
+
+				self.fieldContainerView = new FieldContainerView({ searchableFields: self.collection.advanced_searchable_fields, activeSearch: self.activeSearch });
 			});
 
 			$(this.el).hide().fadeIn();
@@ -64,7 +65,7 @@ define([
 
 		/** Prepares filters for generic list view
 		*/
-		applyFilterForm: function(e){
+		performSearch: function(e){
 
 			e.preventDefault();
 			
@@ -77,13 +78,11 @@ define([
 				var operator = c.getOperator();
 
 				if(!_.isNull(value)){
-					filters.push({'field': field, 'operator': operator, 'value' : value});
+					filters.push({'field': field, 'operator': operator, 'value': value});
 				}
 			
 			});
 
-			console.log(filters);
-			
 			this.view.applyAdvancedFilters(filters);
 		},
 

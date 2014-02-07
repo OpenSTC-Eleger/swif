@@ -30,6 +30,6 @@ define([
 
 	});
 
-return ClaimersServicesCollection;
+	return ClaimersServicesCollection;
 
 });

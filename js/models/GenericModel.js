@@ -3,6 +3,7 @@ define([
 
 ], function(Backbone){
 
+	'use strict';
 
 	/******************************************
 	* Generic Model
@@ -43,6 +44,6 @@ define([
 
 	});
 
-return GenericModel;
+	return GenericModel;
 
 });

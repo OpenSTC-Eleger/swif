@@ -49,11 +49,11 @@ define([
 				dataType : 'text',
 				data     : paramFilter,
 				success  : function(data,status,request){
-					var contentRange = request.getResponseHeader("Content-Range")
+					var contentRange = request.getResponseHeader('Content-Range');
 					self.cpt = contentRange.match(/\d+$/);	
 					
 					//Set advanced filters for collection with metadatas
-					var fieldsMetadata = JSON.parse(request.getResponseHeader("Model-Fields"));
+					var fieldsMetadata = JSON.parse(request.getResponseHeader('Model-Fields'));
 
 					_.each(self.advanced_searchable_fields, function(fieldToKeep){
 						var field = _.find(fieldsMetadata,function(value,key){ 
@@ -62,7 +62,7 @@ define([
 						_.extend(fieldToKeep, field);
 					});
 					//Get model Id to obtain his filters
-					self.modelId = request.getResponseHeader("Model-Id");
+					self.modelId = request.getResponseHeader('Model-Id');
 					
 				}
 			});
@@ -84,6 +84,6 @@ define([
 
 	});
 
-return GenericCollection;
+	return GenericCollection;
 
 });

@@ -24,9 +24,9 @@ define([
 		/** View Initialization
 		*/
 		initialize: function(options){
+			this.searchableFields = options.searchableFields;
+			this.activeSearch = options.activeSearch;
 
-			this.searchableFields = options.searchableFields
-			
 			this.render();
 		},
 
@@ -36,11 +36,28 @@ define([
 		*/
 		render: function(){
 			var self = this;
-			
-			self.components = [];
-			
-			_.each(self.searchableFields, function(field, i){
 
+			this.components = [];
+
+
+
+			_.each(this.searchableFields, function(field, i){
+
+				
+				// Set value to the field if 
+				var tab = _.filter(self.activeSearch, function(f){
+					return f.field == field.key;
+				});
+
+				if(!_.isEmpty(tab)) {
+					field.value = tab[0].value;
+				}
+				else{
+					delete field.value;
+				};
+
+
+				
 				// Create widget corresponding to field's type  //
 				switch (field.type) {
 					case 'text':

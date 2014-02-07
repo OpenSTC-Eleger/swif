@@ -4,7 +4,7 @@ define([
 
 ], function(app, GenericModel){
 
-	'user strict';
+	'use strict';
 
 
 	/******************************************
@@ -29,7 +29,7 @@ define([
 			}
 		],
 
-		
+
 		getCode : function() {
 			return this.get('code');
 		},
@@ -56,6 +56,6 @@ define([
 
 	});
 
-return ClaimerTypeModel;
+	return ClaimerTypeModel;
 
 });

@@ -5,7 +5,7 @@ define([
 
 ], function(app, ClaimerContactModel, moment){
 
-	'user strict';
+	'use strict';
 
 
 	/******************************************
@@ -34,14 +34,14 @@ define([
 			if(_.isUndefined(default_value)){
 				default_value = false;
 			}
-			if(!_.isUndefined(val) && val != '' && val != false && val != null){
+			if(!_.isUndefined(val) && val !== '' && val !== false && val !== null){
 				return val;
 			}
 			else{
 				return default_value;
 			}
 		},
-		
+	
 		getUID : function() {
 			return this.get('uid');
 		},
@@ -64,7 +64,7 @@ define([
 		},
 
 		getFirstname : function() {
-			if(this.get('firstname') != false){
+			if(this.get('firstname') !== false){
 				return this.get('firstname');
 			}
 			else{
@@ -76,7 +76,7 @@ define([
 		},
 
 		getLastname : function() {
-			if(this.get('lastname') != false){
+			if(this.get('lastname') !== false){
 				return this.get('lastname');
 			}
 			else{
@@ -181,7 +181,7 @@ define([
 			this.set({ context : value });
 		},
 		
-		isManager: function(value) {
+		isManager: function() {
 			return this.get('isManager');
 		},
 		
@@ -189,11 +189,11 @@ define([
 			this.set({ isManager : value });
 		},
 		
-		isDST: function(value) {
+		isDST: function() {
 			return this.get('isDST');
 		},
 		
-		isResaManager: function(value) {
+		isResaManager: function() {
 			return this.get('isResaManager');
 		},
 		
@@ -209,7 +209,7 @@ define([
 		*/
 		getOfficerById: function(id){
 			return _.find(this.getOfficers(), function(officer){
-				return officer.id == id
+				return officer.id == id;
 			});
 		},
 
@@ -220,13 +220,14 @@ define([
 		/** Get officer's teams list selected in planning
 		*/
 		getOfficerIdsByTeamId: function(id) {
-			var self = this;
-			var officers = []
-			               
+			var officers = [];
+
 			var team = _.find(this.getTeams(), function(team){
-				return team.id == id
+				return team.id == id;
 			});
-			if(_.isUndefined(team)) return officers;
+			if(_.isUndefined(team)){
+				return officers;
+			}
 			
 			_.each(team.members, function(member){			
 				officers.push(member.id);
@@ -238,20 +239,21 @@ define([
 		*/
 		getTeamById: function(id){
 			return _.find(this.getTeams(), function(team){
-				return team.id == id
+				return team.id == id;
 			});
 		},
 
 		/** Get team's officers list selected in planning
 		*/
 		getTeamIdsByOfficerId: function(id) {
-			var self = this;
-			var teams = []
+			var teams = [];
 
 			var officer = _.find(this.getOfficers(), function(officer){
-				return officer.id == id
+				return officer.id == id;
 			});
-			if(_.isUndefined(officer)) return teams;
+			if(_.isUndefined(officer)){
+				return teams;
+			}
 
 			_.each(officer.teams, function(team){
 				teams.push(team);
@@ -261,7 +263,7 @@ define([
 
 
 		getMenus: function () {
-			return this.get('menu')
+			return this.get('menu');
 		},
 
 
@@ -271,7 +273,7 @@ define([
 			var user = this;
 			return $.when($.ajax({
 				async: true,
-				url: this.urlA + '/' + this.get("uid") + '/manageable_teams',
+				url: this.urlA + '/' + this.get('uid') + '/manageable_teams',
 				headers: {Authorization: 'Token token=' + this.get('authToken')},
 				success: function (data) {
 					user.setTeams(data);
@@ -287,7 +289,7 @@ define([
 			var user = this;
 			return $.when($.ajax({
 				async: true,
-				url: this.urlA + '/' + this.get("uid") + '/manageable_officers',
+				url: this.urlA + '/' + this.get('uid') + '/manageable_officers',
 				headers: {Authorization: 'Token token=' + this.get('authToken')},
 				success: function (data) {
 					user.setOfficers(data);
@@ -302,7 +304,7 @@ define([
 		setUserData: function(data){
 
 			this.setLogin(data.user.login);
-			this.setUID(data.user.id)
+			this.setUID(data.user.id);
 			this.setAuthToken(data.token);
 			this.setMenu(data.menu.content);
 			this.setLastConnection(moment());
@@ -337,14 +339,14 @@ define([
 				type       : 'POST',
 				dataType   : 'json',
 				data       :  JSON.stringify(login_data)
-			})
+			});
 		},
 
 
 
 		/** Logout fonction
 		*/
-		logout: function(options){
+		logout: function(){
 			var self = this;
 
 			$.ajax({
@@ -366,6 +368,5 @@ define([
 
 	});
 
-
-	return UserModel
+	return UserModel;
 });

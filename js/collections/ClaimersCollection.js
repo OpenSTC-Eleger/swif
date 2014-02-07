@@ -14,7 +14,7 @@ define([
 
 		model       : ClaimerModel,
 		
-		url         : "/api/open_object/partners",
+		url         : '/api/open_object/partners',
 		
 		fields      : ['id', 'name', 'address', 'category_id', 'contract_ids', 'email', 'phone', 'service_id', 'task_ids', 'technical_service_id', 'technical_site_id', 'title', 'type_id', 'user_id'],
 		
@@ -31,6 +31,6 @@ define([
 	});
 
 
-return ClaimersCollection;
+	return ClaimersCollection;
 
 });

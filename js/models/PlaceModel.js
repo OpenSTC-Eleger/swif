@@ -5,7 +5,7 @@ define([
 
 ], function(app, GenericModel){
 
-	'user strict';
+	'use strict';
 
 
 
@@ -16,8 +16,8 @@ define([
 
 
 		fields     : ['id', 'name', 'complete_name', 'type', 'service_names', 'site_parent_id', 'width', 'length', 
-		              'surface','internal_booking','external_booking','service_bookable_ids' ,'service_bookable_names',
-		              'partner_type_bookable_ids', 'partner_type_bookable_names', 'color', 'block_booking'],
+						'surface','internal_booking','external_booking','service_bookable_ids' ,'service_bookable_names',
+						'partner_type_bookable_ids', 'partner_type_bookable_names', 'color', 'block_booking'],
 
 		urlRoot    : '/api/openstc/sites',
 
@@ -33,11 +33,11 @@ define([
 			}
 		],
 
-        initialize: function () {
-            if (_.isUndefined(this.get('color'))) {
-                this.set('color', ('#' + Math.floor(Math.random()*16777215).toString(16)));
-            };
-        },
+		initialize: function () {
+			if (_.isUndefined(this.get('color'))) {
+				this.set('color', ('#' + Math.floor(Math.random()*16777215).toString(16)));
+			}
+		},
 
 
 		getCompleteName : function() {
@@ -46,28 +46,31 @@ define([
 
 		getParentPlace : function(type) {
 
+			var id, name = '';
+			
 			// Check if the place have a parent place //
 			if(this.get('site_parent_id')){
-				var id = this.get('site_parent_id')[0];
-				var name = _.titleize(this.get('site_parent_id')[1].toLowerCase());
+				id = this.get('site_parent_id')[0];
+				name = _.titleize(this.get('site_parent_id')[1].toLowerCase());
 			}
-			else{
-				var id, name = '';
-			}
+
+			var returnVal;
 
 			switch (type){ 
 				case 'id': 
-					return id;
-				break;
+					returnVal = id;
+					break;
 				case 'all':
-					return this.get('site_parent_id');
-				break;
+					returnVal = this.get('site_parent_id');
+					break;
 				case 'json':
-					return {id: id, name: name};
-				break;
+					returnVal = {id: id, name: name};
+					break;
 				default: 
-					return name;
+					returnVal = name;
 			}
+
+			return returnVal;
 		},
 		setParentPlace : function(value, silent) {
 			this.set({ site_parent_id : value }, {silent: silent});
@@ -80,17 +83,17 @@ define([
 				switch (type){
 					case 'id': 
 						placeServices.push(s[0]);
-					break;
+						break;
 					case 'json': 
 						placeServices.push({id: s[0], name: s[1]});
-					break;
+						break;
 					default:
 						placeServices.push(s[1]);
 				}
 			});
 
 			if(type == 'string'){
-				return _.toSentence(placeServices, ', ', ' '+app.lang.and+' ')
+				return _.toSentence(placeServices, ', ', ' '+app.lang.and+' ');
 			}
 			else{
 				return placeServices;
@@ -117,17 +120,17 @@ define([
 				switch (type){
 					case 'id': 
 						placeBookingServices.push(s[0]);
-					break;
+						break;
 					case 'json': 
 						placeBookingServices.push({id: s[0], name: s[1]});
-					break;
+						break;
 					default:
 						placeBookingServices.push(s[1]);
 				}
 			});
 
 			if(type == 'string'){
-				return _.toSentence(placeBookingServices, ', ', ' '+app.lang.and+' ')
+				return _.toSentence(placeBookingServices, ', ', ' '+app.lang.and+' ');
 			}
 			else{
 				return placeBookingServices;
@@ -154,17 +157,17 @@ define([
 				switch (type){
 					case 'id': 
 						placeBookingClaimers.push(s[0]);
-					break;
+						break;
 					case 'json': 
 						placeBookingClaimers.push({id: s[0], name: s[1]});
-					break;
+						break;
 					default:
 						placeBookingClaimers.push(s[1]);
 				}
 			});
 
 			if(type == 'string'){
-				return _.toSentence(placeBookingClaimers, ', ', ' '+app.lang.and+' ')
+				return _.toSentence(placeBookingClaimers, ', ', ' '+app.lang.and+' ');
 			}
 			else{
 				return placeBookingClaimers;
@@ -176,16 +179,20 @@ define([
 		},
 		
 		getType : function(type) {
+			var returnVal;
+
 			switch (type){ 
 				case 'id': 
-					return this.get('type')[0];
-				break;
+					returnVal = this.get('type')[0];
+					break;
 				case 'json':
-					return {id: this.get('type')[0], name: this.get('type')[1]};
-				break;
+					returnVal = {id: this.get('type')[0], name: this.get('type')[1]};
+					break;
 				default:
-					return this.get('type')[1];
+					returnVal = this.get('type')[1];
 			}
+
+			return returnVal;
 		},
 		setType : function(value, silent) {
 			this.set({ type : value }, {silent: silent});
@@ -207,7 +214,7 @@ define([
 
 		getSurface : function(human) {
 			if(human){
-				return (this.get('surface') != 0 ? _.numberFormat(this.get('surface'), 0, ',', ' ') +' m²' : '');
+				return (this.get('surface') !== 0 ? _.numberFormat(this.get('surface'), 0, ',', ' ') +' m²' : '');
 			}
 			else{
 				return this.get('surface');
@@ -235,6 +242,6 @@ define([
 
 	});
 
-return PlaceModel;
+	return PlaceModel;
 
 });

@@ -3,7 +3,7 @@ define([
 
 ], function(GenericModel){
 
-	'user strict';
+	'use strict';
 
 
 	/******************************************
@@ -11,7 +11,7 @@ define([
 	*/
 	var ClaimerContactModel = GenericModel.extend({
 
-		urlRoot : "/api/open_object/partner_addresses",
+		urlRoot : '/api/open_object/partner_addresses',
 
 
 		getInformations: function () {
@@ -20,6 +20,6 @@ define([
 
 	});
 
-return ClaimerContactModel;
+	return ClaimerContactModel;
 
 });
