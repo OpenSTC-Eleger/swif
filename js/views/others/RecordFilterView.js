@@ -37,6 +37,7 @@ define([
 			this.metaDataModel = options.metaDataModel;
 			this.states = options.states;
 			this.listView = options.listView;
+
 			//prepares variables to construct url filter in template	
 			this.prepareUrls();
 
@@ -76,6 +77,7 @@ define([
 		},
 		
 
+
 		/**
 		 * Get recording filters for model
 		 */
@@ -83,6 +85,8 @@ define([
 			var self = this;
 			return this.metaDataModel.filters()
 		},
+
+
 		
 		/**
 		 * Init Urls varaiables using to buils url filters in templates
@@ -109,6 +113,8 @@ define([
 				}
 			}
 		},
+
+
 		
 		/**
 		 * Builds url for each filters in template
@@ -127,15 +133,17 @@ define([
 				self.filters.push(f);
 			});
 		},
-		
+
+
+
 		/**
 		 * Filter list by state
 		 */
 		filterByState: function(e){
 			e.preventDefault();
-			
+
 			var state = _(e.currentTarget.href).strRight('_');		
-			var filters = [{'field': 'state', 'operator': '=', 'value' : state}];
+			var filters = [{'field': 'state', 'operator': 'in', 'value': [state] }];
 			
 			this.listView.applyAdvancedFilters(filters);
 			

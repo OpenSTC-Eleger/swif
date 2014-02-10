@@ -62,6 +62,7 @@ define([
 			this.operators.egal.label = app.lang.equalTo;
 			this.operators.notEgal.label = app.lang.differentFrom;
 
+
 			// Check if field has operator //
 			if(_.isUndefined(this.field.operator)){
 				this.currentOperator = this.operators.egal;
@@ -358,10 +359,6 @@ define([
 			else{
 				return null;
 			}
-		},
-
-		setValue: function(){
-
 		},
 
 

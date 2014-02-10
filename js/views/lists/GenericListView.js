@@ -273,7 +273,7 @@ define([
 
 			// Create the advance filter View //
 			if(!$('#advanceFilterContainer').hasClass('hide')){
-				app.views.advanceSearchView.render();
+				app.views.advanceSearchView.render(this.options.filter);
 				$('#filter-informations').addClass('hide');
 			}
 			else{
