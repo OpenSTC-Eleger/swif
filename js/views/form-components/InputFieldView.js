@@ -1,7 +1,6 @@
 define([
-	'app'
 
-], function(app){
+], function(){
 
 	'use strict';
 
@@ -17,7 +16,7 @@ define([
 		
 		templateHTML : 'templates/form-components/input.html',
 		
-		operator	 : 'ilike',
+		operator     : 'ilike',
 
 		input        : null,
 
@@ -59,7 +58,7 @@ define([
 		getValue: function(){
 			var val = this.input.val();
 
-			if(val != ""){
+			if(val !== ''){
 				return val;
 			}
 			else{

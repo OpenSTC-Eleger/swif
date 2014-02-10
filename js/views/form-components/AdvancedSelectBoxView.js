@@ -3,7 +3,7 @@ define([
 
 	'select2-lang'
 
-], function(app, select2){
+], function(app){
 
 
 	'use strict';
@@ -157,11 +157,13 @@ define([
 				minimumInputLength : this.options.minimumInputLength,
 				sortResults: function(results, container, query) {
 
+					var sortResults;
+
 					// If no term was enter, results are Alphabetic //
 					if(_.isEmpty(query.term)){
-						var sortResults = _.sortBy(results, function(result){ 
+						sortResults = _.sortBy(results, function(result){ 
 							return result.text;
-						})
+						});
 					}
 					// Display results begin with the term enter and after the rest of the result //
 					else{
@@ -173,9 +175,9 @@ define([
 							}else{
 								otherResults.push(result);
 							}
-						})
+						});
 
-						var sortResults = _.union(beginWithResults, otherResults);
+						sortResults = _.union(beginWithResults, otherResults);
 					}
 
 					return sortResults;
@@ -199,9 +201,9 @@ define([
 
 					// Set all the search params in the params for the query //
 					if(!_.isEmpty(self.searchParams)){
-						_.each(self.searchParams, function(query, index){
+						_.each(self.searchParams, function(query){
 							params.push(query);
-						})
+						});
 					}
 
 
@@ -216,7 +218,7 @@ define([
 
 						var returnData = {results: []};
 
-						_.each(data, function(item, index){
+						_.each(data, function(item){
 							returnData.results.push({
 								id   : item.id,
 								text : _.titleize(item.name.toLowerCase())
@@ -245,7 +247,7 @@ define([
 
 						var returnData = [];
 
-						_.each(data, function(item, index){
+						_.each(data, function(item){
 							returnData.push({ id: item.id, text: _.titleize(item.name.toLowerCase()) });
 						});
 
@@ -262,8 +264,9 @@ define([
 				select2Options.initSelection = function(element, callback){
 					var ids = _.words(element.val(), ',');
 
-					var data = []
-					_.each(ids, function(index, val) {
+					var data = [];
+
+					_.each(ids, function(index) {
 						data.push({ id: index, text: _.capitalize(app.lang[index]) });
 					});
 
@@ -295,7 +298,7 @@ define([
 			_.each(items, function(item){
 				var itemData = {id: item.id, text: item.name};
 				data.push(itemData);
-			})
+			});
 
 			this.select2.select2('data', data);
 		},
@@ -306,12 +309,12 @@ define([
 		*/
 		getSelectedItem: function(){
 
+			var returnId = '';
+
 			if(!_.isNull(this.select2.select2('data'))){
-				var returnId = this.select2.select2('data').id;
+				returnId = this.select2.select2('data').id;
 			}
-			else{
-				var returnId = '';
-			}
+
 			return returnId;
 		},
 		
@@ -321,12 +324,12 @@ define([
 		*/
 		getSelectedText: function(){
 
+			var name = '';
+
 			if(!_.isNull(this.select2.select2('data'))){
-				var name = this.select2.select2('data').text;
+				name = this.select2.select2('data').text;
 			}
-			else{
-				var name = '';
-			}
+
 			return name;
 		},
 
@@ -341,7 +344,7 @@ define([
 				
 				_.each(this.select2.select2('data'), function(item){
 					returnIds.push(item.id);
-				})
+				});
 			}
 
 			return returnIds;

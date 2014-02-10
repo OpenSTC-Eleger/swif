@@ -74,7 +74,7 @@ module.exports = function(grunt) {
 				src: ['config/*.json', 'i18n/**/*.json']
 			},
 			scripts: {
-				src: ['js/**/*.js', '!js/libs/*']
+				src: ['js/**/*.js', '!js/libs/*', '!js/i18n/*']
 			}
 		},
 

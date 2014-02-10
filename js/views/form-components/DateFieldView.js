@@ -95,7 +95,7 @@ define([
 		getValue: function(){
 			var val = this.input.val();
 
-			if(val != ""){
+			if(val !== ''){
 				return moment(val, 'DD/MM/YYYY').format('YYYY-MM-DD');
 			}
 			else{

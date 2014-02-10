@@ -8,7 +8,9 @@ define('appHelpers', [
 	'moment-timezone',
 	'moment-timezone-data'
 
-], function(app, UserModel, FilterModel, moment, momentTZData){
+], function(app, UserModel, FilterModel, moment){
+
+	'use strict';
 
 
 	/******************************************
@@ -17,18 +19,20 @@ define('appHelpers', [
 	var AppHelpers = {
 
 		many2oneObjectify : function (field) {
-			return {id: field[0], name: field[1]}
+			return {id: field[0], name: field[1]};
 		},
+
 
 
 		/** Highlight an item
 		*/
 		highlight: function(highlight_element){
+
 			highlight_element.addClass('highlight');
 			var deferred = $.Deferred();
 
 			highlight_element.one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
-				function(e) {
+				function() {
 					highlight_element.removeClass('highlight');
 					deferred.resolve();
 				}
@@ -38,24 +42,27 @@ define('appHelpers', [
 		},
 
 
+
 		/** Transform Decimal number to hour:minute
 		*/
 		decimalNumberToTime: function(decimalNumber){
+
+			var date;
 
 			// Check if the number is decimal //
 			if(_.str.include(decimalNumber, '.')){
 				var minutes = _.lpad(((_.rpad(_(decimalNumber).strRight('.'), 2, '0') / 100) * 60), 2, '0');
 				var hour = _(decimalNumber).strLeft('.');
 
-				if(hour == 0){
-					var date = _(minutes).toNumber()+app.lang.minuteShort;
+				if(hour === 0){
+					date = _(minutes).toNumber()+app.lang.minuteShort;
 				}
 				else{
-					var date = hour+'h'+_(minutes).toNumber();    
+					date = hour+'h'+_(minutes).toNumber();    
 				}
 			}
 			else{
-				var date = decimalNumber+'h';
+				date = decimalNumber+'h';
 			}
 			
 			return date;
@@ -123,7 +130,7 @@ define('appHelpers', [
 			// Is Number //
 			function isNumber(n) {
 				return !isNaN(parseFloat(n)) && isFinite(n);
-			};
+			}
 
 			
 			// Convert Field Filters //
@@ -132,9 +139,9 @@ define('appHelpers', [
 
 				function convertFilter(filter, operator) {
 					return {key:filter.key, type: operator};
-				};
+				}
 
-				_.each(fieldsFilters, function (filter, index) {
+				_.each(fieldsFilters, function (filter) {
 					switch (filter.type) {
 						case 'numeric':
 							if (isNumber(searchQuery.search)) {
@@ -148,13 +155,13 @@ define('appHelpers', [
 					}
 				});
 				return convertedFilters;
-			};
+			}
 
 			var filteredAndConvertedFilters = convertFieldFilters(searchableFields);
 
 			function buildFilterObject(field,operator,value) {
-				return {field: field, operator:operator, value:value}
-			};
+				return {field: field, operator:operator, value:value};
+			}
 			//TODO : remove state filter from list
 			// Check if there is a filter //
 //			if (!_.isUndefined(searchQuery.filter)) {
@@ -167,17 +174,18 @@ define('appHelpers', [
 			// Check if there is a Search //
 			if (!_.isUndefined(searchQuery.search)) {
 				// Search on several fields //
-				for(var i=1;i < _.size(filteredAndConvertedFilters);i++){
+				for(var i=1; i < _.size(filteredAndConvertedFilters); i++){
 					search.push('|');
 				}
 
 				if (_.size(filteredAndConvertedFilters) > 1) {
-					_.each(filteredAndConvertedFilters, function (item, index) {
+					_.each(filteredAndConvertedFilters, function (item) {
+						var term;
+						
 						if (item.type == '=' && isNumber(searchQuery.search)) {
-							var term = _(searchQuery.search).toNumber();
+							term = _(searchQuery.search).toNumber();
 						} else {
-							var term = searchQuery.search;
-		
+							term = searchQuery.search;
 						}
 						search.push(buildFilterObject(item.key,item.type,term));
 					});
@@ -188,14 +196,16 @@ define('appHelpers', [
 			}
 			
 			if (!_.isUndefined(searchQuery.filter) && !_.isNumber(searchQuery.filter)) {			
-				_.each(searchQuery.filter, function (item, key) {
+				_.each(searchQuery.filter, function (item) {
 					if( item.field == 'state' ) {
 						search.push(buildFilterObject(item.field,item.operator,item.value));
 					}
-					else if( _.isArray(item.value) )
+					else if( _.isArray(item.value)){
 						search.push(buildFilterObject(item.field+'.id',item.operator,item.value));
-					else
+					}
+					else{
 						search.push(buildFilterObject(item.field,item.operator,item.value));
+					}
 				});
 			}
 			return app.objectifyFilters(search);
@@ -204,34 +214,45 @@ define('appHelpers', [
 
 
 		printError: function (e) {
+			var fieldId = _(_(e.responseJSON.faultCode).strRight('*')).strLeft('*') + '-error';
+			var message =  _.trim( _(e.responseJSON.faultCode).strRight('/') );
+
 			$('.form-group').removeClass('has-error');
 			$('.help-block').html('');
 			$('#'+fieldId).html(app.lang.errorMessages[message]);
-			var fieldId = _(_(e.responseJSON.faultCode).strRight('*')).strLeft('*') + "-error";
-			var message =  _.trim( _(e.responseJSON.faultCode).strRight("/") ); 
+			
+
 			$('#'+fieldId).html(app.lang.errorMessages[message]);
 			$('#'+fieldId).parents('.form-group').addClass('has-error');
 		},
 
 
+
+		/** Convert Date to TimeZoneDate
+		*/
 		convertDateToTz : function(date) {
-			var convertedDate = moment(date)
+			var convertedDate = moment(date);
+
 			if( app.current_user.getContext().tz ) {
-				convertedDate.tz(app.current_user.getContext().tz)
+				convertedDate.tz(app.current_user.getContext().tz);
 				convertedDate.add('minutes',-convertedDate.zone());			
 			}
+
 			return convertedDate;
 		},
 
 
-		hexaToRgb : function(arg){
-            if (arg.length === 3) { arg = arg.charAt(0) + arg.charAt(0) + arg.charAt(1) + arg.charAt(1) + arg.charAt(2) + arg.charAt(2); }
 
-            return [parseInt(arg.substr(0,2), 16).toString(), parseInt(arg.substr(2,2), 16).toString(), parseInt(arg.substr(4,2), 16).toString()];
+		/** Transform Hexa color into RGB color
+		*/
+		hexaToRgb : function(arg){
+			if (arg.length === 3) { arg = arg.charAt(0) + arg.charAt(0) + arg.charAt(1) + arg.charAt(1) + arg.charAt(2) + arg.charAt(2); }
+
+			return [parseInt(arg.substr(0,2), 16).toString(), parseInt(arg.substr(2,2), 16).toString(), parseInt(arg.substr(4,2), 16).toString()];
 		}
 
-	}
+	};
 
-return AppHelpers;
+	return AppHelpers;
 
 });

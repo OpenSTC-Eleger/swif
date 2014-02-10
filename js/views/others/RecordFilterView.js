@@ -24,7 +24,7 @@ define([
 		
 		// The DOM events //
 		events: {
-			'click [href^=#filter-state]'               : 'filterByState'
+			'click [href^=#filter-state]'     : 'filterByState'
 		},
 
 
@@ -53,7 +53,7 @@ define([
 			var self = this;
 			
 			//After get filters render view
-			this.initFilters().done(function(){				
+			this.initFilters().done(function(){
 
 				// Retrieve the template //
 				$.get(self.templateHTML, function(templateData){
