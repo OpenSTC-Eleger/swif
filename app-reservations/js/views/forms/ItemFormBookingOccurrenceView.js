@@ -7,7 +7,7 @@ define(['app',
         'moment-timezone',
         'moment-timezone-data',
         'bsTimepicker',
-        'bsDatepicker'
+        'bsDatepicker-lang'
 
 ], function (app, AppHelpers, BookingModel, moment) {
 

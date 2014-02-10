@@ -13,7 +13,7 @@ define(['app',
         'moment-timezone',
         'moment-timezone-data',
         'bsTimepicker',
-        'bsDatepicker'
+        'bsDatepicker-lang'
 
 ], function (app, AppHelpers, BookingLineModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, AdvancedSelectBoxView, moment) {
 

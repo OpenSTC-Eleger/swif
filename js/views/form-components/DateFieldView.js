@@ -1,7 +1,7 @@
 define([
 	'app',
 
-	'bsDatepicker',
+	'bsDatepicker-lang',
 	'bsTimepicker',
 	'moment'
 
