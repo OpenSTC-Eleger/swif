@@ -3,7 +3,7 @@
 	"version": "1.2.4",
 	"description": "Gestion des services techniques communaux",
 	"dependencies": {
-		"jQuery"               : "2.0.3",
+		"jQuery"               : "2.1.0",
 		"Underscore"           : "1.5.2",
 		"Backbone"             : "1.1.0",
 		"Less"                 : "1.5.0",

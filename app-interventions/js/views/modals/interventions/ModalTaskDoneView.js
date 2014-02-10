@@ -10,7 +10,7 @@ define([
 	
 	'moment-timezone',
 	'moment-timezone-data',
-	'bsDatepicker',
+	'bsDatepicker-lang',
 	'bsTimepicker',
 	
 ], function(app, GenericModalView, OfficersCollection, TeamsCollection, EquipmentsCollection, AdvancedSelectBoxView, moment, momentTZ, datepicker, timepicker){

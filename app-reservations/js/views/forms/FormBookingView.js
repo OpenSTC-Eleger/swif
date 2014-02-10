@@ -18,7 +18,7 @@ define(['app',
 		'moment-timezone',
 		'moment-timezone-data',
 		'bsTimepicker',
-		'bsDatepicker',
+		'bsDatepicker-lang',
 		'bsSwitch'
 
 ], function (app, AppHelpers, BookingModel, BookingLineModel, BookingRecurrenceModel, BookableModel, BookingLinesCollection, BookablesCollection, ClaimersCollection, ClaimersContactsCollection, ItemFormBookingLineView, FormRecurrenceView, AdvancedSelectBoxView, moment) {

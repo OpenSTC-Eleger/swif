@@ -9,7 +9,7 @@ requirejs.config({
 		/* #############
 		* Libs
 		*/
-		jquery                : 'js/libs/jQuery-2.0.3-min',
+		jquery                : 'js/libs/jQuery-2.1.0-min',
 		printElement          : 'js/libs/jquery.printElement-2.0.0',
 		underscore            : 'js/libs/underscore-1.5.2-min',
 		backbone              : 'js/libs/backbone-1.1.0',
