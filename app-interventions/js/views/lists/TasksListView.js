@@ -130,7 +130,8 @@ define([
 			
 			//  Collection Task Filter if not null //
 			if(!_.isUndefined(self.options.filter)){
-				self.options.filter = AppHelpers.calculPageFilter(this.options.filter);
+				//TODO : remove state filter from list
+				//self.options.filter = AppHelpers.calculPageFilter(this.options.filter);
 				if(self.options.filter.value != false && self.options.filter.value > 0){
 					filter.push({field: 'user_id.id', operator: '=', value: self.options.filter.value});
 				}

@@ -96,18 +96,18 @@ define('appHelpers', [
 		},
 
 
-
+		//TODO : remove state filter from list
 		/** Calcul the Filter By
 		*/
-		calculPageFilter: function(filter){
-
-			var filt = {};
-
-			filt.by = _(filter).strLeft('-');
-			filt.value = _(filter).strRight('-');
-
-			return filt;
-		},
+//		calculPageFilter: function(filter){
+//
+//			var filt = {};
+//
+//			filt.by = _(filter).strLeft('-');
+//			filt.value = _(filter).strRight('-');
+//
+//			return filt;
+//		},
 
 
 
@@ -155,7 +155,7 @@ define('appHelpers', [
 			function buildFilterObject(field,operator,value) {
 				return {field: field, operator:operator, value:value}
 			};
-
+			//TODO : remove state filter from list
 			// Check if there is a filter //
 //			if (!_.isUndefined(searchQuery.filter)) {
 //				if (!_.isUndefined(searchQuery.search)) {

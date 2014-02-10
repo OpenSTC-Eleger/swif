@@ -4,7 +4,7 @@
 <li role="presentation" class="horizontal-align">
 	<% if(! _.isUndefined(states) ) {  %>
 		<% _.each(states, function (state, i) { %>
-			<a tabindex="-1" href="#<%= state.key %>">
+			<a tabindex="-1" href="#filter-state_<%= state.key %>">
 				<span class="label label-<%= state.color %>"><%= _.capitalize(state.translation) %></span>
 			</a>
 		<% }) %>

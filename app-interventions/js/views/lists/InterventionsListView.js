@@ -293,19 +293,20 @@ define([
 				//Add advanced search from url in params
 				optionSearch.filter = JSON.parse(this.options.filter);
 			}
-			if(!_.isUndefined(this.options.filter) && !_.isNull(this.options.filter)){
-				this.options.filter = AppHelpers.calculPageFilter(this.options.filter);
-	
-				//interventions = _.filter(interventions, function(item){ 
-				if(this.options.filter.value == 'overrun'){
-					//return (item.state == app.Models.Intervention.status.closed.key && item.overPourcent > 100);
-					domain.push({field:'state',operator:'=',value:'closed'});
-					domain.push({field:'overPourcent',operator:'>',value:'100.0'});
-				}
-				else{
-					optionSearch.filter = this.options.filter;
-				}
-			}
+			//TODO : remove state filter from list
+//			if(!_.isUndefined(this.options.filter) && !_.isNull(this.options.filter)){
+//				this.options.filter = AppHelpers.calculPageFilter(this.options.filter);
+//	
+//				//interventions = _.filter(interventions, function(item){ 
+//				if(this.options.filter.value == 'overrun'){
+//					//return (item.state == app.Models.Intervention.status.closed.key && item.overPourcent > 100);
+//					domain.push({field:'state',operator:'=',value:'closed'});
+//					domain.push({field:'overPourcent',operator:'>',value:'100.0'});
+//				}
+//				else{
+//					optionSearch.filter = this.options.filter;
+//				}
+//			}
 			//'Unbuild' domain objectify to be able to add other filters (and objectify when all filters are added
 			var searchDomain = AppHelpers.calculSearch(optionSearch, InterventionModel.prototype.searchable_fields);
 			_.each(searchDomain,function(item, index){
