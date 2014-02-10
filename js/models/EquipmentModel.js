@@ -228,7 +228,7 @@ define([
 					returnCat = this.get('categ_id')[1];
 			}
 
-			return returnVal;
+			return returnCat;
 		},
 
 		getCV : function() {
@@ -330,7 +330,7 @@ define([
 			if(_.isUndefined(format)){
 				format = 'YYYY-MM-DD';
 			}
-			ret = this.get('purchase_date');
+			var ret = this.get('purchase_date');
 			if(!ret){
 				return '';
 			}
