@@ -290,6 +290,7 @@ define([
 		*/
 		displayAdvanceSearch: function(filter){
 
+			$('button[data-toggle="advance-search"]').addClass('active');
 			$('#advanceFilterContainer').removeClass('hide');
 			$('#contentContainer').addClass('content-main-left');
 

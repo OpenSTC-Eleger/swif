@@ -47,6 +47,8 @@ define([
 		/** View Initialization
 		*/
 		initialize: function(options){
+			var self = this;
+
 			this.options = options;
 			this.field = options.field;
 
@@ -60,7 +62,16 @@ define([
 			this.operators.egal.label = app.lang.equalTo;
 			this.operators.notEgal.label = app.lang.differentFrom;
 
-			this.currentOperator = this.operators.egal;
+			// Check if field has operator //
+			if(_.isUndefined(this.field.operator)){
+				this.currentOperator = this.operators.egal;
+			}
+			else{
+				var op = _.filter(this.operators, function(o){
+					return o.key == self.field.operator;
+				});
+				this.currentOperator = op[0];
+			}
 		},
 
 
@@ -237,8 +248,6 @@ define([
 							returnData.push({ id: item.id, text: _.titleize(item.name.toLowerCase()) });
 						});
 
-						console.log(returnData);
-
 						callback(returnData);
 					});
 
@@ -256,8 +265,6 @@ define([
 					_.each(ids, function(index, val) {
 						data.push({ id: index, text: _.capitalize(app.lang[index]) });
 					});
-
-					console.log(data);
 
 					callback(data);
 				};

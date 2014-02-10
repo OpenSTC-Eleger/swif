@@ -51,6 +51,7 @@ define([
 
 				if(!_.isEmpty(tab)) {
 					field.value = tab[0].value;
+					field.operator = tab[0].operator;
 				}
 				else{
 					delete field.value;

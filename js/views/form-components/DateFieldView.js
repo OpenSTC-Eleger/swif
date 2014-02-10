@@ -39,15 +39,25 @@ define([
 		/** View Initialization
 		*/
 		initialize: function(options){
-			this.field = options.field;
+			var self = this;
 
+			this.field = options.field;
 
 			// Set the translation //
 			this.operators.egal.label = app.lang.the;
 			this.operators.before.label = app.lang.beforeThe;
 			this.operators.after.label = app.lang.afterThe;
 
-			this.currentOperator = this.operators.after;
+			// Check if field has operator //
+			if(_.isUndefined(this.field.operator)){
+				this.currentOperator = this.operators.after;
+			}
+			else{
+				var op = _.filter(this.operators, function(o){
+					return o.key == self.field.operator;
+				});
+				this.currentOperator = op[0];
+			}
 		},
 
 
@@ -59,6 +69,7 @@ define([
 
 			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
+
 
 				var template = _.template(templateData, {
 					field           : self.field,
