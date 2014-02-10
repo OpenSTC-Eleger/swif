@@ -95,7 +95,7 @@ define([
 				$(self.el).html(template);
 	
 				// Call the render Generic View //
-				GenericListView.prototype.render(self.options);
+				GenericListView.prototype.render(self);
 	
 	
 				// Create item service view //

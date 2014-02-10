@@ -154,7 +154,7 @@ define([
 				}
 	
 				// Call the render Generic View //
-				GenericListView.prototype.render(self.options);
+				GenericListView.prototype.render(self);
 				
 				// Create item intervention view //
 				_.each(self.collections.interventions.models, function(inter, i){

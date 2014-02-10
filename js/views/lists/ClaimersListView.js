@@ -95,7 +95,7 @@ define(['app', 'appHelpers', 'claimersCollection', 'claimerModel', 'genericListV
                 });
 
                 $(self.el).html(template);
-                GenericListView.prototype.render(self.options);
+                GenericListView.prototype.render(self);
 
 
                 $('*[data-toggle="tooltip"]').tooltip();

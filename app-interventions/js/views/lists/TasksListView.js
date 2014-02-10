@@ -240,7 +240,7 @@ define([
 							$(self.el).html(template);
 							
 							// Call the render Generic View //
-							GenericListView.prototype.render(self.options);
+							GenericListView.prototype.render(self);
 							
 							//display all seven days of the selected week
 							_.each(self.tasksUserFiltered, function(dayTasks, i){

@@ -64,14 +64,16 @@ define([
 
 
 			// Check if field has operator //
-			if(_.isUndefined(this.field.operator)){
-				this.currentOperator = this.operators.egal;
-			}
-			else{
-				var op = _.filter(this.operators, function(o){
-					return o.key == self.field.operator;
-				});
-				this.currentOperator = op[0];
+			if(!_.isUndefined(this.field)){
+				if(_.isUndefined(this.field.operator)){
+					this.currentOperator = this.operators.egal;
+				}
+				else{
+					var op = _.filter(this.operators, function(o){
+						return o.key == self.field.operator;
+					});
+					this.currentOperator = op[0];
+				}
 			}
 		},
 

@@ -85,7 +85,7 @@ define([
 				$(self.el).html(template);
 
 				// Call the render Generic View //
-				GenericListView.prototype.render(self.options);
+				GenericListView.prototype.render(self);
 
 				
 				//create ItemView for each equipment in the collection

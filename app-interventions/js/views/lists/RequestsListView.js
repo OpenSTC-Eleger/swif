@@ -161,7 +161,7 @@ define([
 
 			// Set the filter value in the options of the view //
 			if(filterValue != ''){
-				this.options.filter = { by: 'state', value: filterValue};
+				this.options.filter = [{field: 'state', operator: 'in', value: [filterValue] }];
 				delete this.options.search;
 				delete this.options.page;
 			}

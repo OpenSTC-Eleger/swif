@@ -143,7 +143,7 @@ define([
 			e.preventDefault();
 
 			var state = _(e.currentTarget.href).strRight('_');		
-			var filters = [{'field': 'state', 'operator': 'in', 'value': [state] }];
+			var filters = [{field: 'state', operator: 'in', value: [state] }];
 			
 			this.listView.applyAdvancedFilters(filters);
 			

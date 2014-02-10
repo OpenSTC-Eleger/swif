@@ -1,6 +1,7 @@
 define([
+	'app'
 
-], function(){
+], function(app){
 
 	'use strict';
 
