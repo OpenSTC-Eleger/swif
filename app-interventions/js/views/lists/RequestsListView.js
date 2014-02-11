@@ -57,8 +57,9 @@ define([
 					self.collection.off();
 					self.listenTo(self.collection, 'add', self.add);
 					self.listenTo(self.collection, 'reset', self.render);
+
 					//Set Meta Data for request collection to compute recording filters
-					self.metaDataModel = new MetaDataModel({ id :  self.collection.modelId });	
+					self.metaDataModel = new MetaDataModel({ id:  self.collection.modelId });	
 					app.router.render(self);
 				});
 			});
