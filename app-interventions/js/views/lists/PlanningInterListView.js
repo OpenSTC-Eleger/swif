@@ -49,7 +49,7 @@ define([
 			var self = this;
 			
 			//By default display open intervention (intervention to schedule)
-			this.filterValue = [{field:"state", operator:"=", value:"open"}];
+			this.filter = [{field:"state", operator:"=", value:"open"}];
 			
 			this.collections = params.collections;
 			
@@ -64,7 +64,7 @@ define([
 		
 		addInter: function(model){
 			//If filter is on 'all state' or 'scheduled' add item view in panel
-			if( _.isUndefined(this.filterValue) || _(this.filterValue).strRight('-') == model.toJSON().state ) {
+			if( _.isUndefined(this.filter.value) || this.filter.value == model.toJSON().state ) {
 				var itemPlanningInterTaskListView = new ItemPlanningInterTaskListView({ model : model });	
 				var itemPlanningInterView  = new ItemPlanningInterView({ model: model, detailedView:itemPlanningInterTaskListView });
 				$('#inter-items').prepend(itemPlanningInterTaskListView.render().el);
@@ -174,7 +174,7 @@ define([
 		*/
 		displayModalSaveInter: function(e){
 			e.preventDefault();
-			var params = {el:'#modalSaveInter',interventions: this.collections.interventions}
+			var params = {el:'#modalSaveInter',collection: this.collections.interventions}
 			new ModalInterventionView(params);
 		},
 	
@@ -191,18 +191,18 @@ define([
 			delete this.options.sort;
 			delete this.options.filter;
 	
-			var filterValue = _($(e.target).attr('href')).strRightBack('#');
+			var filter = _($(e.target).attr('href')).strRightBack('#');
 			
 			// Set the filter value in the options of the view //
 			var globalSearch = {};
-			if(filterValue != 'delete-filter'){
-				this.options.filter =  [{field:"state", operator:"=", value:filterValue}] ;
+			if(filter != 'delete-filter'){
+				this.options.filter =  [{field:"state", operator:"=", value:filter}] ;
 			}
 			else{
 				delete this.options.filter;
 			}
 			
-			this.filterValue = this.options.filter;
+			this.filter = this.options.filter;
 			
 			app.views.planning.partialRender();
 			app.views.paginationView.render();
@@ -219,7 +219,7 @@ define([
 			delete this.options.sort;
 			delete this.options.filter;
 	
-			this.options.filter =   this.filterValue;		
+			this.options.filter =   this.filter;		
 					
 			var link = $(e.target);
 			

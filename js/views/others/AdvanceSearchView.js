@@ -92,8 +92,10 @@ define([
 		*/
 		modalSaveFilter: function(e){
 
+			var filter = createFilter()
 			app.views.modalSaveFilterView = new ModalSaveFilterView({
-				el : '#modalSaveFilter'
+				el 		: '#modalSaveFilter',
+				model 	: this.model,
 			});
 
 		}
