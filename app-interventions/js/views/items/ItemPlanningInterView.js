@@ -129,8 +129,8 @@ define([
 		 */
 	    itemIsToRemove: function(model){
 			var state = model.toJSON().state;
-			if( !_.isUndefined( app.views.planningInterListView.filterValue ) ){
-				var filter = _(app.views.planningInterListView.filterValue).strRight('-');
+			if( !_.isUndefined( app.views.planningInterListView.filter ) ){
+				var filter = app.views.planningInterListView.filter[0].value;
 				if( state!=filter )	{
 					if ( 	state==InterventionModel.status.cancelled.key ||
 							state==InterventionModel.status.scheduled.key ||

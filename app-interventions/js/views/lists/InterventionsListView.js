@@ -272,6 +272,9 @@ define([
 			if(_.isUndefined(this.collections.interventions)){this.collections.interventions = new InterventionsCollection();}
 			else{this.collections.interventions.reset();}
 			
+			// Set main collection used in GenericListView
+			this.collection = this.collections.interventions;
+			
 			//check sort parameter
 			if(_.isUndefined(this.options.sort)){
 				this.options.sort = this.collections.interventions.default_sort;

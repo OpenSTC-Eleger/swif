@@ -44,7 +44,9 @@ define([
 		/** View Initialization
 		 */
 		initialize: function (params) {
-			this.options = params;			 
+			this.options = params;	
+			this.collection = params.collection;
+			this.model = params.model;
 		    var self = this;
 		    console.log("Intervention Details view intialization")
 	//		this.model = model;

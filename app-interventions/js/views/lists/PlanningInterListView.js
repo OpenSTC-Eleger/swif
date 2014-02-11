@@ -48,9 +48,14 @@ define([
 	
 			var self = this;
 			
-			this.filterValue = 'state-open';
+			//By default display open intervention (intervention to schedule)
+			this.filter = [{field:"state", operator:"=", value:"open"}];
 			
 			this.collections = params.collections;
+			
+			// Set main collection used in GenericListView
+			this.collection = this.collections.interventions;
+			
 			app.router.render(this);
 		    
 		    this.collections.interventions.off();
@@ -59,7 +64,7 @@ define([
 		
 		addInter: function(model){
 			//If filter is on 'all state' or 'scheduled' add item view in panel
-			if( _.isUndefined(this.filterValue) || _(this.filterValue).strRight('-') == model.toJSON().state ) {
+			if( _.isUndefined(this.filter.value) || this.filter.value == model.toJSON().state ) {
 				var itemPlanningInterTaskListView = new ItemPlanningInterTaskListView({ model : model });	
 				var itemPlanningInterView  = new ItemPlanningInterView({ model: model, detailedView:itemPlanningInterTaskListView });
 				$('#inter-items').prepend(itemPlanningInterTaskListView.render().el);
@@ -142,8 +147,14 @@ define([
 					// set status information on filter selected
 					$('#filterStateIntervention').removeClass('filter-disabled');
 					$('#filterStateInterventionList li.delete-filter').removeClass('disabled');
-					if( !_.isUndefined( InterventionModel.status[self.options.filter.value] ) ) 
-						$('a.filter-button').addClass('text-' + InterventionModel.status[self.options.filter.value].color);
+					if( !_.isUndefined(self.options.filter) ){
+						if( _.size(self.options.filter)>0 ){
+							var filter = self.options.filter[0].value;						
+							if( !_.isUndefined( InterventionModel.status[filter] ) ) 
+								//Set color of status filter
+								$('a.filter-button').addClass('text-' + InterventionModel.status[filter].color);
+						}
+					}
 				}
 				
 			});
@@ -163,7 +174,7 @@ define([
 		*/
 		displayModalSaveInter: function(e){
 			e.preventDefault();
-			var params = {el:'#modalSaveInter',interventions: this.collections.interventions}
+			var params = {el:'#modalSaveInter',collection: this.collections.interventions}
 			new ModalInterventionView(params);
 		},
 	
@@ -180,18 +191,18 @@ define([
 			delete this.options.sort;
 			delete this.options.filter;
 	
-			var filterValue = _($(e.target).attr('href')).strRightBack('#');
+			var filter = _($(e.target).attr('href')).strRightBack('#');
 			
 			// Set the filter value in the options of the view //
 			var globalSearch = {};
-			if(filterValue != 'delete-filter'){
-				this.options.filter =  'state-' + filterValue;
+			if(filter != 'delete-filter'){
+				this.options.filter =  [{field:"state", operator:"=", value:filter}] ;
 			}
 			else{
 				delete this.options.filter;
 			}
 			
-			this.filterValue = this.options.filter;
+			this.filter = this.options.filter;
 			
 			app.views.planning.partialRender();
 			app.views.paginationView.render();
@@ -208,7 +219,7 @@ define([
 			delete this.options.sort;
 			delete this.options.filter;
 	
-			this.options.filter =   this.filterValue;		
+			this.options.filter =   this.filter;		
 					
 			var link = $(e.target);
 			
