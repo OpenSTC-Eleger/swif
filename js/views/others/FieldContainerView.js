@@ -83,7 +83,7 @@ define([
 
 					case 'selection':
 						var data = [];
-						$.each(field.selection, function(index, val) {
+						_.each(field.selection, function(val) {
 							data.push({ id: val[0], text: _.capitalize(app.lang[val[0]]) });
 						});
 

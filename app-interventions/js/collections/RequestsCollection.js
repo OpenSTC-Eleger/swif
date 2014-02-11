@@ -27,7 +27,7 @@ define([
 			{ key: 'partner_name',  label : app.lang.claiment },
 			{ key: 'create_date',   label : app.lang.createDate },
 			{ key: 'date_deadline', label : app.lang.date_deadline },
-			//{ key: 'intervention_assignement_id', label: app.lang.category },
+			{ key: 'intervention_assignement_id', label: app.lang.category },
 			{ key: 'state',         label : app.lang.status }
 		],
 
