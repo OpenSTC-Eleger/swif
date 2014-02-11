@@ -48,7 +48,7 @@ define([
 			this.options = params;
 	
 			//By default display open intervention (intervention to schedule)
-			this.options.filter = 'state-open';
+			this.options.filter = [{field:"state", operator:"=", value:"open"}];
 			
 		    this.initCollections().done(function(){	    	
 		    	app.router.render(self);		

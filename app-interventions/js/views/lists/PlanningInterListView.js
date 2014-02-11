@@ -48,9 +48,14 @@ define([
 	
 			var self = this;
 			
-			this.filterValue = 'state-open';
+			//By default display open intervention (intervention to schedule)
+			this.filterValue = [{field:"state", operator:"=", value:"open"}];
 			
 			this.collections = params.collections;
+			
+			// Set main collection used in GenericListView
+			this.collection = this.collections.interventions;
+			
 			app.router.render(this);
 		    
 		    this.collections.interventions.off();
@@ -142,8 +147,14 @@ define([
 					// set status information on filter selected
 					$('#filterStateIntervention').removeClass('filter-disabled');
 					$('#filterStateInterventionList li.delete-filter').removeClass('disabled');
-					if( !_.isUndefined( InterventionModel.status[self.options.filter.value] ) ) 
-						$('a.filter-button').addClass('text-' + InterventionModel.status[self.options.filter.value].color);
+					if( !_.isUndefined(self.options.filter) ){
+						if( _.size(self.options.filter)>0 ){
+							var filter = self.options.filter[0].value;						
+							if( !_.isUndefined( InterventionModel.status[filter] ) ) 
+								//Set color of status filter
+								$('a.filter-button').addClass('text-' + InterventionModel.status[filter].color);
+						}
+					}
 				}
 				
 			});
@@ -185,7 +196,7 @@ define([
 			// Set the filter value in the options of the view //
 			var globalSearch = {};
 			if(filterValue != 'delete-filter'){
-				this.options.filter =  'state-' + filterValue;
+				this.options.filter =  [{field:"state", operator:"=", value:filterValue}] ;
 			}
 			else{
 				delete this.options.filter;
