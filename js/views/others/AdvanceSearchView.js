@@ -52,6 +52,7 @@ define([
 
 				$(self.el).html(template);
 
+				console.log(self.collection.advanced_searchable_fields);
 
 				self.fieldContainerView = new FieldContainerView({ searchableFields: self.collection.advanced_searchable_fields, activeSearch: self.activeSearch });
 			});

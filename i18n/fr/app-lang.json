@@ -228,6 +228,7 @@
     "the"                                   : "Le",
     "equalTo"                               : "Egal à",
     "differentFrom"                         : "Différent de",
+    "activeFilter"                          : "Filtre actif",
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
     "monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
@@ -305,7 +306,8 @@
         "displayPassword"   : "Afficher le mot de passe",
         "resetPassword"     : "Réinitialiser le mot de passe",
         "addAttach"         : "Ajouter une pièce jointe",
-        "apply"             : "appliquer"
+        "apply"             : "appliquer",
+        "unapplyFilter"     : "Enlever le filtre"
     },
 
     "errorMessages" : {

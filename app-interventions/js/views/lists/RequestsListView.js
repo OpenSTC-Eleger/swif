@@ -127,7 +127,7 @@ define([
 					el            : '#savedFilters',
 					states        : RequestModel.status,
 					metaDataModel : self.metaDataModel,
-					listView 		  : self
+					listView 	  : self
 				});
 
 			});
@@ -260,7 +260,7 @@ define([
 					}
 					catch(e)
 					{
-						console.log("Filter is not valid")
+						console.log("Filter is not valid");
 					}
 					
 				}

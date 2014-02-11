@@ -24,11 +24,13 @@ define([
 
 		// The DOM events //
 		events: {
-			'click form.form-search input'                  	: 'selectSearchInput',
-			'submit form.form-search'                      		: 'search',
+			'click form.form-search input'                   : 'selectSearchInput',
+			'submit form.form-search'                      	 : 'search',
 
-			'click button[data-toggle="advance-search"]'    	: 'toggleAdvanceSearch',
-			'click table.table-sorter th[data-sort-column]' 	: 'sort'
+			'click button[data-toggle="advance-search"]'     : 'toggleAdvanceSearch',
+			'click table.table-sorter th[data-sort-column]'  : 'sort',
+
+			'click .unapply-filter'                          : 'unapplyFilter'
 		},
 
 
@@ -106,9 +108,7 @@ define([
 				}
 				
 				// Delete parameters //
-				delete this.options.id;
 				delete this.options.page;
-				delete this.options.advancedSearch;
 
 				app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 			}
@@ -143,7 +143,6 @@ define([
 			}
 
 			// Delete parameter //
-			delete this.options.id;
 			delete this.options.page;
 
 
@@ -246,15 +245,15 @@ define([
 				delete this.options.filter;
 			}
 			else{
-				this.options.filter = jsonFilters
+				this.options.filter = jsonFilters;
 			}
 			
 			// Delete parameters //
-			delete this.options.id;
 			delete this.options.page;
 			delete this.options.search;
 
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+			
 		},
 
 
@@ -281,9 +280,11 @@ define([
 				// Display the informations filters if the advanceSearchView is collapse //
 				if(!_.isUndefined(this.options.filter)){
 					$('#filter-informations').removeClass('hide');
+					this.humanizeFilter(this.options.filter);
 				}
 			}
 		},
+
 
 
 		/** Display the advance filter //
@@ -295,6 +296,49 @@ define([
 			$('#contentContainer').addClass('content-main-left');
 
 			app.views.advanceSearchView.render(filter);
+		},
+
+
+
+		/** Unapply the filter
+		*/
+		unapplyFilter: function(e){
+			e.preventDefault();
+
+			delete this.options.filter;
+			delete this.options.page;
+			delete this.options.search;
+
+			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+		},
+
+
+
+		/** Transform JSON filter to readable String
+		*/
+		humanizeFilter: function(filter){
+
+			var string = '';
+
+			_.each(this.collection.advanced_searchable_fields, function(field){
+			
+				var f = _.filter(filter, function(f){
+					if(f.field == field.key){
+						f.type = field.type;
+						f.label = field.label;
+
+						return f;
+					}
+				});
+
+				if(!_.isEmpty(f)){
+					string += f[0].label +" "+ f[0].operator +" "+f[0].value +" && ";
+				}
+			});
+
+
+			$('#filterContent').html(string);
+
 		}
 		
 
