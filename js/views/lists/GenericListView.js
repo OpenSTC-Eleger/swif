@@ -74,10 +74,8 @@ define([
 
 			// Rewrite the research in the form //
 			if(!_.isUndefined(childView.options.filter)){
-				// Filter advanced view needs collection setted in Generic
-				if(!_.isUndefined(this.collection)) {
-					this.displayAdvanceSearch(childView.options.filter);				
-				}
+				// Filter advanced view needs collection setted in Generic //
+				this.displayAdvanceSearch(childView.options.filter);				
 			}
 
 		},
