@@ -28,7 +28,7 @@ define([
 	
 		className    : 'row-item',
 	
-		templateHTML : 'items/itemService',
+		templateHTML : 'templates/items/itemService.html',
 	
 	
 		// The DOM events //
@@ -91,7 +91,7 @@ define([
 			var self = this;
 	
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 	
 				var template = _.template(templateData, {
 					lang    : app.lang,
@@ -112,7 +112,8 @@ define([
 		/** Display Modal form to add/sav a new service
 		*/
 		modalUpdateService: function(e){
-			e.preventDefault(); e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 	
 			console.log('Update du service');
 	
@@ -128,7 +129,8 @@ define([
 		/** Modal to remove a service
 		*/
 		modalDeleteService: function(e){
-			e.preventDefault(); e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 	
 			app.views.modalDeleteView = new ModalDeleteView({
 				el           : '#modalDeleteService',
@@ -143,7 +145,8 @@ define([
 		/** Display or not the Officer List
 		*/
 		collapseOfficers: function(e){
-			e.preventDefault(); e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 	
 			this.options.officersListView.collapse();
 		}
@@ -151,4 +154,4 @@ define([
 	});
 	
 	return ItemServiceView;
-})
+});

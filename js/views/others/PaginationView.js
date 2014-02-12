@@ -3,6 +3,8 @@ define([
 
 ], function(app){
 
+	'use strict';
+
 
 	/******************************************
 	* Pagination View
@@ -87,7 +89,7 @@ define([
 
 		/** Go to the page
 		*/
-		goToPage: function(e){
+		goToPage: function(){
 			var page = $(this.el).find('option:selected').val();
 
 
@@ -104,6 +106,6 @@ define([
 
 	});
 
-return PaginationView;
+	return PaginationView;
 
 });

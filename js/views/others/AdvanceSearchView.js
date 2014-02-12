@@ -17,7 +17,7 @@ define([
 		
 		el              : '#advanced-filters-bar',
 
-		templateHTML 	: 'templates/others/advanceSearch.html',
+		templateHTML    : 'templates/others/advanceSearch.html',
 		
 		
 		// The DOM events //
@@ -70,9 +70,9 @@ define([
 			
 			var filters = [];
 			
-			_.each(this.fieldContainerView.components, function(c, i) {
+			_.each(this.fieldContainerView.components, function(c) {
 
-				var field = c.field.key
+				var field = c.field.key;
 				var value = c.getValue();
 				var operator = c.getOperator('key');
 
@@ -119,9 +119,10 @@ define([
 
 		/** Display modal to save the Filter
 		*/
-		modalSaveFilter: function(e){
+		modalSaveFilter: function(){
 
-			var filter = createFilter()
+			var filter = createFilter();
+
 			app.views.modalSaveFilterView = new ModalSaveFilterView({
 				el 		: '#modalSaveFilter',
 				model 	: this.model,

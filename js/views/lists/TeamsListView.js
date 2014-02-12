@@ -21,7 +21,7 @@ define([
 	*/
 	var TeamsListView = GenericListView.extend({
 
-		templateHTML : 'lists/teamsList',
+		templateHTML : 'templates/lists/teamsList.html',
 
 		itemsPerPage : 10,
 
@@ -51,7 +51,7 @@ define([
 				self.listenTo(self.collection, 'add', self.add);
 
 				app.router.render(self);
-			})
+			});
 		},
 
 
@@ -88,7 +88,7 @@ define([
 
 		
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					nbTeams: self.collection.cpt,
 					lang   : app.lang
@@ -102,7 +102,7 @@ define([
 
 
 				// Create item team view //
-				_.each(self.collection.models, function(team, i){
+				_.each(self.collection.models, function(team){
 					var itemTeamView  = new ItemTeamView({model: team});
 					$('#rows-items').append(itemTeamView.render().el);
 				});
@@ -113,7 +113,7 @@ define([
 					page         : self.options.page.page,
 					collection   : self.collection,
 					itemsPerPage : self.itemsPerPage
-				})
+				});
 
 
 				// If an ID is selected display the "Team members, services view" //
@@ -144,7 +144,7 @@ define([
 
 		/** Partial Render of the view
 		*/
-		partialRender: function (type) {
+		partialRender: function() {
 			var self = this;
 
 			this.collection.count(this.fetchParams).done(function(){
@@ -211,21 +211,26 @@ define([
 					sort   : this.options.sort.by+' '+this.options.sort.order
 				}
 			};
+
 			if(!_.isUndefined(this.options.search)){
 				this.fetchParams.data.filters = AppHelpers.calculSearch({search: this.options.search }, TeamModel.prototype.searchable_fields, true);
 			}
+
 			//No displays teams deleted
-			if(_.isUndefined(this.fetchParams.data.filters))
-				this.fetchParams.data.filters = new Object();
-			this.fetchParams.data.filters[_.size(this.fetchParams.data.filters)] = {field:'deleted_at',operator:'=',value:'False'}
+			if(_.isUndefined(this.fetchParams.data.filters)){
+				this.fetchParams.data.filters = {};
+			}
+			else{
+				this.fetchParams.data.filters[_.size(this.fetchParams.data.filters)] = {field: 'deleted_at', operator: '=', value :'False'};
+			}
 
 			return $.when(this.collection.fetch(this.fetchParams))
 				.fail(function(e){
 					console.log(e);
-				})
+				});
 		}
 	});
 
-return TeamsListView;
+	return TeamsListView;
 
 });

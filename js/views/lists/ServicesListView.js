@@ -23,7 +23,7 @@ define([
 	*/
 	var ServicesListView = GenericListView.extend({
 		
-		templateHTML: 'lists/servicesList',
+		templateHTML: 'templates/lists/servicesList.html',
 		
 	
 		// The DOM events  //
@@ -51,7 +51,7 @@ define([
 				self.listenTo(self.collection, 'add', self.add);
 	
 				app.router.render(self);
-			})
+			});
 		},
 	
 	
@@ -67,7 +67,7 @@ define([
 			$('#rows-items').prepend(itemServiceView.render().el);
 		
 	
-			AppHelpers.highlight($(itemServiceView.el))
+			AppHelpers.highlight($(itemServiceView.el));
 	
 			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.serviceCreateOk);
 			this.partialRender();
@@ -77,8 +77,8 @@ define([
 	
 		/** Display the view
 		*/
-	    render: function () {
-	    	var self = this;
+		render: function () {
+			var self = this;
 			
 			// Change the page title //
 			app.router.setPageTitle(app.lang.viewsTitles.servicesList);
@@ -86,7 +86,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang      : app.lang,
 					nbServices: self.collection.cpt
@@ -99,7 +99,7 @@ define([
 	
 	
 				// Create item service view //
-				_.each(self.collection.models, function(service, i){
+				_.each(self.collection.models, function(service){
 	
 					var officersListView = new OfficersListView({model: service});
 					var itemServiceView  = new ItemServiceView({model: service, officersListView: officersListView});
@@ -113,19 +113,20 @@ define([
 				app.views.paginationView = new PaginationView({ 
 					page       : self.options.page.page,
 					collection : self.collection
-				})
+				});
 				
 			});
 	
 			$(this.el).hide().fadeIn();
 			
-	        return this;
-	    },
-	
-	
-	    /** Partial Render of the view
+			return this;
+		},
+
+
+
+		/** Partial Render of the view
 		*/
-		partialRender: function (type) {
+		partialRender: function() {
 			var self = this; 
 	
 			this.collection.count(this.fetchParams).done(function(){
@@ -134,7 +135,7 @@ define([
 			});
 		},
 	
-	    
+		
 	
 		/** Modal form to create a new Service
 		*/
@@ -152,7 +153,6 @@ define([
 		/** Collection Initialisation
 		*/
 		initCollection: function(){
-			var self = this;
 	
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new ClaimersServicesCollection(); }
@@ -182,22 +182,23 @@ define([
 			}
 	
 	
-			return $.when(self.collection.fetch(this.fetchParams))
+			return $.when(this.collection.fetch(this.fetchParams))
 				.fail(function(e){
 					console.log(e);
-				})
+				});
 		},
 	
-	
+
+
 		/** Save Officer
 		*/
 		saveOffiAAcer: function(e) {
 			e.preventDefault();
 		
 			var group_id = this.getIdInDropDown(app.views.selectListGroupsView);
-			this.services = _.map($("#officerServices").sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); }); 
+			this.services = _.map($('#officerServices').sortable('toArray'), function(service){ return _(_(service).strRightBack('_')).toNumber(); }); 
 			
-			if( this.$('#officerPassword').val() != '' ){
+			if( this.$('#officerPassword').val() !== '' ){
 				this.params = {
 					name: this.$('#officerName').val().toUpperCase(),
 					firstname: this.$('#officerFirstname').val(),
@@ -223,13 +224,12 @@ define([
 				};
 			}
 		
-			     
-			var self = this;
-			this.modelId = this.selectedOfficerJson==null?0: this.selectedOfficerJson.id;
+				 
+			this.modelId = this.selectedOfficerJson===null ? 0 : this.selectedOfficerJson.id;
 		
-		    OfficerModel.prototype.save(
-		    	this.params,
-		    	this.modelId, {
+			OfficerModel.prototype.save(
+				this.params,
+				this.modelId, {
 				success: function(data){
 					
 					if(data.error){
@@ -244,15 +244,14 @@ define([
 						$('#modalSaveOfficer').modal('hide');
 					}				
 				},
-				error: function(e){
+				error: function(){
 					alert('Impossible de créer ou mettre à jour l\'équipe');
 				}
 			});
 		},
 		
 	
-	
 	});
 
 	return ServicesListView;
-})
+});

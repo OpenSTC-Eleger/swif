@@ -21,7 +21,7 @@ define([
 	*/
 	var PlacesListView = GenericListView.extend({
 
-		templateHTML  : 'lists/placesList',
+		templateHTML  : 'templates/lists/placesList.html',
 
 
 		// The DOM events //
@@ -49,7 +49,7 @@ define([
 				self.listenTo(self.collection, 'add', self.add);
 
 				app.router.render(self);
-			})
+			});
 		},
 
 
@@ -60,7 +60,7 @@ define([
 
 			var itemPlaceView  = new ItemPlaceView({ model: model });
 			$('#rows-items').prepend(itemPlaceView.render().el);
-			AppHelpers.highlight($(itemPlaceView.el))
+			AppHelpers.highlight($(itemPlaceView.el));
 
 			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.placeCreateOk);
 			this.partialRender();
@@ -79,7 +79,7 @@ define([
 
 
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang    : app.lang,
 					nbPlaces: self.collection.cpt
@@ -92,7 +92,7 @@ define([
 
 
 				// Create item place view //
-				_.each(self.collection.models, function(place, i){
+				_.each(self.collection.models, function(place){
 					var itemPlaceView  = new ItemPlaceView({model: place});
 					$('#rows-items').append(itemPlaceView.render().el);
 				});
@@ -102,7 +102,7 @@ define([
 				app.views.paginationView = new PaginationView({ 
 					page       : self.options.page.page,
 					collection : self.collection
-				})
+				});
 
 			});
 
@@ -114,7 +114,7 @@ define([
 
 		/** Partial Render of the view
 		*/
-		partialRender: function (type) {
+		partialRender: function () {
 			var self = this; 
 
 			this.collection.count(this.fetchParams).done(function(){
@@ -130,7 +130,6 @@ define([
 		modalCreatePlace: function(e){
 			e.preventDefault();
 
-	
 			app.views.modalPlaceView = new ModalPlaceView({
 				el  : '#modalSavePlace'
 			});
@@ -174,11 +173,11 @@ define([
 			return $.when(self.collection.fetch(this.fetchParams))
 				.fail(function(e){
 					console.log(e);
-				})
+				});
 		}
 
 	});
 
-return PlacesListView;
+	return PlacesListView;
 
 });

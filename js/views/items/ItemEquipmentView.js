@@ -11,7 +11,7 @@ define([
 
 
 	/******************************************
-	* Row Intervention View
+	* Row ItemEquipment View
 	*/
 	var ItemEquipmentView = Backbone.View.extend({
 
@@ -19,14 +19,14 @@ define([
 
 		className   : 'row-item',
 
-		templateHTML : 'items/itemEquipment',
+		templateHTML : 'templates/items/itemEquipment.html',
 		
 
 
 		// The DOM events //
 		events       : {
-			'click a.modalDeleteEquipment'  : 'modalDeleteEquipment',
-			'click a.modalSaveEquipment' 	: 'modalSaveEquipment',
+			'click a.modalDeleteEquipment' : 'modalDeleteEquipment',
+			'click a.modalSaveEquipment'   : 'modalSaveEquipment',
 		},
 
 
@@ -45,7 +45,7 @@ define([
 
 		/** When the model ara updated //
 		*/
-		change: function(model){
+		change: function(){
 			this.render();
 			AppHelpers.highlight($(this.el));
 			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.equipmentUpdateOk);
@@ -54,7 +54,7 @@ define([
 
 
 
-		destroy: function(model){
+		destroy: function(){
 			var self = this;
 
 			AppHelpers.highlight($(this.el)).done(function(){
@@ -74,7 +74,7 @@ define([
 			var self = this;
 
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
 					lang  : app.lang,
@@ -94,7 +94,7 @@ define([
 
 		/** Modal to update an Equipment
 		*/
-		modalSaveEquipment: function(e){
+		modalSaveEquipment: function(){
 			new ModalEquipmentView({
 				model     : this.model,
 				el        :'#modalSaveEquipment',
@@ -106,7 +106,7 @@ define([
 
 		/** Modal to remove an Equipment
 		*/
-		modalDeleteEquipment: function(e){
+		modalDeleteEquipment: function(){
 			new ModalDeleteView({
 				el          :'#modalDeleteEquipment',
 				model       :this.model,
@@ -117,6 +117,6 @@ define([
 		
 	});
 
-return ItemEquipmentView;
+	return ItemEquipmentView;
 
 });

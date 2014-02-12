@@ -10,13 +10,13 @@ define([
 	/******************************************
 	* Recording filter view
 	*/
-	var FilterView = Backbone.View.extend({		
+	var FilterView = Backbone.View.extend({
 		
-		templateHTML 	: 'templates/others/recordFilter.html',
+		templateHTML   : 'templates/others/recordFilter.html',
 		
 		components : [],
 		
-		filters	   : [],
+		filters    : [],
 		
 		//Static variables uses to build url
 		URL_CTXT    : '/filter/',
@@ -61,9 +61,9 @@ define([
 					self.buildUrls();
 				
 					var template = _.template(templateData, {
-						lang   		: app.lang,
-						states 		: self.states,
-						filters		: self.filters
+						lang    : app.lang,
+						states  : self.states,
+						filters : self.filters
 					});
 				
 					$(self.el).html(template);
@@ -78,19 +78,16 @@ define([
 		
 
 
-		/**
-		 * Get recording filters for model
-		 */
+		/** Get recording filters for model
+		*/
 		initFilters: function(){
-			var self = this;
-			return this.metaDataModel.filters()
+			return this.metaDataModel.filters();
 		},
 
 
 		
-		/**
-		 * Init Urls varaiables using to buils url filters in templates
-		 */
+		/** Init Urls varaiables using to buils url filters in templates
+		*/
 		prepareUrls: function(){
 			this.urlLeftPart = Backbone.history.fragment;
 			this.urlRightPart = null;
@@ -100,25 +97,24 @@ define([
 				this.urlLeftPart = this.urlArray[0];
 				this.urlRightPart = _(this.urlArray[1]).strRight(this.SLASH_CHAR);
 				var filter = parseInt(this.urlArray[1][0]);
-				if( _.isNaN(filter) ) 
-				{
+				if( _.isNaN(filter) ) {
 					this.urlRightPart = this.SLASH_CHAR + this.urlRightPart;				
 				}
-				else
-				{
-					if( _.str.include(this.urlRightPart,this.SLASH_CHAR) )
+				else{
+					if( _.str.include(this.urlRightPart,this.SLASH_CHAR) ){
 						this.urlRightPart = this.SLASH_CHAR + this.urlRightPart;
-					else
+					}
+					else{
 						this.urlRightPart = null;
+					}
 				}
 			}
 		},
 
 
 		
-		/**
-		 * Builds url for each filters in template
-		 */
+		/** Builds url for each filters in template
+		*/
 		buildUrls: function() {
 			this.filters = [];
 			
@@ -136,9 +132,8 @@ define([
 
 
 
-		/**
-		 * Filter list by state
-		 */
+		/** Filter list by state
+		*/
 		filterByState: function(e){
 			e.preventDefault();
 

@@ -3,6 +3,7 @@ define([
 
 ], function(app){
 
+	'use strict';
 
 	/******************************************
 	* Login View
@@ -30,7 +31,7 @@ define([
 
 		/** View Initialization
 		*/
-		initialize: function(user) {
+		initialize: function() {
 			//console.log('Login view Initialize');
 		},
 
@@ -84,7 +85,7 @@ define([
 
 			// Set the button in loading State //
 			$('#formConnection').find('fieldset').prop('disabled', true);
-			$(this.el).find("button[type=submit]").button('loading');
+			$(this.el).find('button[type=submit]').button('loading');
 
 			// Execution user login function //
 			var checkLogin = this.model.login($('#loginUser').val(), $('#passUser').val());
@@ -93,8 +94,8 @@ define([
 			checkLogin.done(function(data){
 				// Set user data and Save it //
 				app.current_user.setUserData(data);
-                // TODO : Move this to an authentication library, abstract Storage which resolves to localStorage or fallback to sessionStorage
-                localStorage.setItem('current_user', JSON.stringify(app.current_user));
+				// TODO : Move this to an authentication library, abstract Storage which resolves to localStorage or fallback to sessionStorage
+				localStorage.setItem('current_user', JSON.stringify(app.current_user));
 				// The above replace this previous model.save() :
 				// app.current_user.save();
 
@@ -104,21 +105,21 @@ define([
 				Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
 			});
 			checkLogin.fail(function(e){
-	   	        
-	   	        if(e.status == 401){
-	   	        	$('#passUser').parents('.form-group').addClass('has-error');
-	   	        	$('#errorLogin').removeClass('hide');
-	   	        }
-	   	        
+				
+				if(e.status == 401){
+					$('#passUser').parents('.form-group').addClass('has-error');
+					$('#errorLogin').removeClass('hide');
+				}
+				
 
-	   	        $('#formConnection').find('fieldset').prop('disabled', false);
-	   	        $('#passUser').focus();
-	   	        //app.notify('large', 'danger', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
+				$('#formConnection').find('fieldset').prop('disabled', false);
+				$('#passUser').focus();
+				//app.notify('large', 'danger', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
 
-	   	        // Reset password value //
-				$(self.el).find("button[type=submit]").button('reset');
+				// Reset password value //
+				$(self.el).find('button[type=submit]').button('reset');
 				$('#passUser').val('');
-	    	});
+			});
 		},
 
 
@@ -158,6 +159,6 @@ define([
 	});
 
 
-return LoginView;
+	return LoginView;
 
 });

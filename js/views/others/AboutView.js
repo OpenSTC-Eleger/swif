@@ -19,9 +19,9 @@ define([
 
 		/** View Initialization
 		*/
-		initialize : function(user) {
+		initialize : function() {
 			app.router.render(this);
-	   },
+		},
 
 
 
@@ -53,6 +53,6 @@ define([
 	 
 	});
 
-return AboutView;
+	return AboutView;
 
 });

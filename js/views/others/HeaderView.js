@@ -3,6 +3,7 @@ define([
 
 ], function(app){
 
+	'use strict';
 
 	/******************************************
 	* Header View

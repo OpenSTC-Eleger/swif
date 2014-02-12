@@ -6,9 +6,11 @@ define([
 	'modalOfficerView',
 	'modalDeleteView'
 	
-	], function(app, AppHelpers,OfficerModel, ModalOfficerView,ModalDeleteView){
+], function(app, AppHelpers,OfficerModel, ModalOfficerView,ModalDeleteView){
 
-		'use strict';
+	'use strict';
+
+
 
 	/******************************************
 	* Row Officer View
@@ -19,7 +21,7 @@ define([
 	
 		className    : 'row-item',
 	
-		templateHTML : 'items/itemOfficer',
+		templateHTML : 'templates/items/itemOfficer.html',
 	
 	
 		// The DOM events //
@@ -46,7 +48,7 @@ define([
 	
 		/** When the model is updated //
 		*/
-		change: function(e){
+		change: function(){
 	
 			this.render();
 			AppHelpers.highlight($(this.el));
@@ -76,7 +78,7 @@ define([
 			var self = this;
 	
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 	
 				var template = _.template(templateData, {
 					lang    : app.lang,
@@ -97,7 +99,8 @@ define([
 		/** Display Modal form to add/sav a new officer
 		*/
 		modalUpdateOfficer: function(e){  
-			e.preventDefault(); e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 	
 			console.log(this.model.attributes);
 	
@@ -112,7 +115,8 @@ define([
 		/** Modal to remove an officer
 		*/
 		modalDeleteOfficer: function(e){
-			e.preventDefault(); e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 	
 			app.views.modalDeleteView = new ModalDeleteView({
 				el           : '#modalDeleteOfficer',
@@ -125,4 +129,4 @@ define([
 	});
 	
 	return ItemOfficerView;
-})
+});
