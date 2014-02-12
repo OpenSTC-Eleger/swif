@@ -127,14 +127,11 @@ define([
 			
 			//get only tasks on the current week
 			var filter = [{'field':'date_start','operator':'>=','value':momentDate.clone().weekday(0).format('YYYY-MM-DD 00:00:00')},{'field':'date_start','operator':'<=','value':momentDate.clone().weekday(6).format('YYYY-MM-DD 23:59:59')}];
-			
+			//Get Selected Agent in filters
+			var agent = AppHelpers.getFilterValue(self.options.filter,'user_id');
 			//  Collection Task Filter if not null //
-			if(!_.isUndefined(self.options.filter)){
-				//TODO : remove state filter from list
-				//self.options.filter = AppHelpers.calculPageFilter(this.options.filter);
-				if(self.options.filter.value != false && self.options.filter.value > 0){
-					filter.push({field: 'user_id.id', operator: '=', value: self.options.filter.value});
-				}
+			if(!_.isUndefined(agent)){
+				filter.push({field: 'user_id.id', operator: 'in', value: [agent.value[0]]});
 			}
 			
 			//check sort parameter
@@ -239,8 +236,6 @@ define([
 							
 							$(self.el).html(template);
 							
-							// Call the render Generic View //
-							GenericListView.prototype.render(self);
 							
 							//display all seven days of the selected week
 							_.each(self.tasksUserFiltered, function(dayTasks, i){
@@ -270,12 +265,11 @@ define([
 								}
 				    		})
 		
-		
 				    		//  DropDown Filter set Selected //
-							if(!_.isUndefined(self.options.filter)){
+							if(!_.isUndefined(agent)){
 								$('label[for="filterListAgents"]').removeClass('muted');
 								var modelUser = new OfficerModel();
-								modelUser.set('id', self.options.filter.value);
+								modelUser.set('id', agent.value[0]);
 								modelUser.fetch({silent:true, fields: ['name']}).done(function(){
 									self.selectListFilterOfficerView.setSelectedItem([modelUser.toJSON().id, modelUser.toJSON().name]);
 								});
@@ -316,19 +310,12 @@ define([
 	
 			// Set the filter in the local Storage //
 			if(filterValue != ''){
-	//			sessionStorage.setItem(this.filters, filterValue);
-				this.options.filter = {by: 'agent', value:filterValue};
+				this.options.filter = [{field: 'user_id', operator:'in', value:[filterValue]}];
 			}
 			else{
 				delete this.options.filter;
 			}
 	
-	//		if(this.options.page <= 1){
-	//			this.render();
-	//		}
-	//		else{
-	//			app.router.navigate(app.routes.interventions.baseUrl, {trigger: true, replace: true});
-	//		}
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 	
 		},

@@ -34,8 +34,6 @@ define([
 		events: function(){
 			return _.defaults({
 				'click a.modalCreateInter'     : 'displayModalSaveInter',
-				
-				'click #filterStateInterList li:not(.disabled) a' 	: 'setFilter'
 			}, 
 				GenericListView.prototype.events
 			);
@@ -134,25 +132,6 @@ define([
 	
 				$(self.el).html(template);
 	
-				// Display filter on the table //
-				if(!_.isUndefined(self.options.filter)){
-					$('a.filter-button').removeClass('filter-disabled').addClass('filter-active');
-					$('li.delete-filter').removeClass('disabled');
-	
-					var applyFilter = self.options.filter;
-	
-					if(applyFilter.value != 'overrun') {
-						$('a.filter-button').addClass('text-'+InterventionModel.status[applyFilter.value].color);
-					}
-					else{
-						$('a.filter-button').addClass('text-overrun');
-					}
-				}
-				else{
-					$('a.filter-button').removeClass('filter-active ^text').addClass('filter-disabled');
-					$('li.delete-filter').addClass('disabled');
-				}
-	
 				// Call the render Generic View //
 				GenericListView.prototype.render(self);
 				
@@ -237,31 +216,6 @@ define([
 	
 	
 	
-	
-		/** Filter Request
-		*/
-		setFilter: function(event){
-			event.preventDefault();
-	
-			var link = $(event.target);
-	
-			var filterValue = _(link.attr('href')).strRightBack('#');
-	
-			// Set the filter in the local Storage //
-			if(filterValue != 'delete-filter'){
-				this.options.filter = {by: 'state', value:filterValue};
-			}
-			else{
-				delete this.options.filter;
-			}
-	
-	
-			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-	
-		},
-	
-	
-	
 		initCollections: function(){
 			var self = this;
 			
@@ -296,20 +250,6 @@ define([
 				//Add advanced search from url in params
 				optionSearch.filter = JSON.parse(this.options.filter);
 			}
-			//TODO : remove state filter from list
-//			if(!_.isUndefined(this.options.filter) && !_.isNull(this.options.filter)){
-//				this.options.filter = AppHelpers.calculPageFilter(this.options.filter);
-//	
-//				//interventions = _.filter(interventions, function(item){ 
-//				if(this.options.filter.value == 'overrun'){
-//					//return (item.state == app.Models.Intervention.status.closed.key && item.overPourcent > 100);
-//					domain.push({field:'state',operator:'=',value:'closed'});
-//					domain.push({field:'overPourcent',operator:'>',value:'100.0'});
-//				}
-//				else{
-//					optionSearch.filter = this.options.filter;
-//				}
-//			}
 			//'Unbuild' domain objectify to be able to add other filters (and objectify when all filters are added
 			var searchDomain = AppHelpers.calculSearch(optionSearch, InterventionModel.prototype.searchable_fields);
 			_.each(searchDomain,function(item, index){
