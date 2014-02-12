@@ -77,8 +77,18 @@ define([
 
 		/** Get operator selected (always 'ilike')
 		*/
-		getOperator: function(){
-			return this.operator;
+		getOperator: function(type){
+			var returnVal;
+
+			switch(type){
+				case 'key':
+					returnVal = this.operator;
+					break;
+				default: 
+					returnVal = app.lang.equalTo;
+			}
+
+			return returnVal;
 		},
 
 	});

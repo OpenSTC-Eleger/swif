@@ -43,7 +43,7 @@ define([
 
 			_.each(this.searchableFields, function(field, i){
 
-				
+
 				// Set value to the field if 
 				var tab = _.filter(self.activeSearch, function(f){
 					return f.field == field.key;

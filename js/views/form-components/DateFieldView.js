@@ -49,7 +49,7 @@ define([
 			this.operators.after.label = app.lang.afterThe;
 
 			// Check if field has operator //
-			if(_.isUndefined(this.field.operator)){
+			if(_.isUndefined(this.field.value)){
 				this.currentOperator = this.operators.after;
 			}
 			else{
@@ -92,15 +92,22 @@ define([
 
 		/** Get the value of the input
 		*/
-		getValue: function(){
+		getValue: function(humanize){
 			var val = this.input.val();
 
 			if(val !== ''){
-				return moment(val, 'DD/MM/YYYY').format('YYYY-MM-DD');
+
+				if(_.isUndefined(humanize)){
+					return moment(val, 'DD/MM/YYYY').format('YYYY-MM-DD');
+				}
+				else{
+					return moment(val, 'DD/MM/YYYY').format('LL');
+				}
 			}
 			else{
 				return null;
-			}
+			}				
+
 		},
 
 		/** Set the value 
@@ -133,10 +140,24 @@ define([
 		},
 
 
+
 		/** Return the current selected Operator
 		*/
-		getOperator: function(){
-			return this.currentOperator.key;
+		getOperator: function(type){
+			var returnVal;
+
+			switch(type){
+				case 'key':
+					returnVal = this.currentOperator.key;
+					break;
+				case 'symbol':
+					returnVal = this.currentOperator.symbol;
+					break;
+				default: 
+					returnVal = this.currentOperator.label;
+			}
+
+			return returnVal;
 		}
 
 	});

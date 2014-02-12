@@ -24,11 +24,13 @@ define([
 
 		// The DOM events //
 		events: {
-			'click form.form-search input'                  	: 'selectSearchInput',
-			'submit form.form-search'                      		: 'search',
+			'click form.form-search input'                   : 'selectSearchInput',
+			'submit form.form-search'                      	 : 'search',
 
-			'click button[data-toggle="advance-search"]'    	: 'toggleAdvanceSearch',
-			'click table.table-sorter th[data-sort-column]' 	: 'sort'
+			'click button[data-toggle="advance-search"]'     : 'toggleAdvanceSearch',
+			'click table.table-sorter th[data-sort-column]'  : 'sort',
+
+			'click .unapply-filter'                          : 'unapplyFilter'
 		},
 
 
@@ -72,10 +74,8 @@ define([
 
 			// Rewrite the research in the form //
 			if(!_.isUndefined(childView.options.filter)){
-				// Filter advanced view needs collection setted in Generic
-				if(!_.isUndefined(this.collection)) {
-					this.displayAdvanceSearch(childView.options.filter);				
-				}
+				// Filter advanced view needs collection setted in Generic //
+				this.displayAdvanceSearch(childView.options.filter);
 			}
 
 		},
@@ -109,9 +109,7 @@ define([
 				}
 				
 				// Delete parameters //
-				delete this.options.id;
 				delete this.options.page;
-				delete this.options.advancedSearch;
 
 				app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 			}
@@ -146,7 +144,6 @@ define([
 			}
 
 			// Delete parameter //
-			delete this.options.id;
 			delete this.options.page;
 
 
@@ -249,15 +246,15 @@ define([
 				delete this.options.filter;
 			}
 			else{
-				this.options.filter = jsonFilters
+				this.options.filter = jsonFilters;
 			}
 			
 			// Delete parameters //
-			delete this.options.id;
 			delete this.options.page;
 			delete this.options.search;
 
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+			
 		},
 
 
@@ -284,9 +281,11 @@ define([
 				// Display the informations filters if the advanceSearchView is collapse //
 				if(!_.isUndefined(this.options.filter)){
 					$('#filter-informations').removeClass('hide');
+					$('#filterContent').html(app.views.advanceSearchView.humanizeFilter());
 				}
 			}
 		},
+
 
 
 		/** Display the advance filter //
@@ -298,7 +297,22 @@ define([
 			$('#contentContainer').addClass('content-main-left');
 
 			app.views.advanceSearchView.render(filter);
+		},
+
+
+
+		/** Unapply the filter
+		*/
+		unapplyFilter: function(e){
+			e.preventDefault();
+
+			delete this.options.filter;
+			delete this.options.page;
+			delete this.options.search;
+
+			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 		}
+
 		
 
 	});

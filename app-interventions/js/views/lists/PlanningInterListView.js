@@ -101,9 +101,6 @@ define([
 				
 				$(self.el).html(template);
 				
-				// Call the render Generic View //
-				//GenericListView.prototype.render(self);
-				
 				$('*[rel="tooltip"]').tooltip();
 				$('*[rel="popover"]').popover({trigger: 'hover', delay: { show: 500, hide: 100 }});
 	
