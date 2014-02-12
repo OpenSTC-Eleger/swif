@@ -28,7 +28,6 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'click #filterStateBookingList li a' 	: 'setFilterState',	
 				'click #badgeActions[data-filter!=""]'  : 'badgeFilter',	
 			}, 
 				GenericListView.prototype.events
@@ -109,22 +108,7 @@ define([
 					var itemView = new ItemBookingView( {model: booking} );
 					$('#booking-items').append(itemView.render().el);	
 				});
-
-
-				// Render Filter Link on the Table //
-				if(!_.isUndefined(self.options.filter)){
-
-					$('#filterStateBooking').removeClass('filter-disabled');
-					$('#filterStateBookingList li.delete-filter').removeClass('disabled');
-
-					$('a.filter-button').addClass('text-'+BookingModel.status[self.options.filter.value].color);
-				}
-				else{
-					$('#filterStateBooking').addClass('filter-disabled');
-					$('#filterStateBookingList li.delete-filter').addClass('disabled');
-				}
-
-				
+			
 				//Toolbar buttons : factory actions for multiple bookings ( confirm/cancel:close booking)
 				app.views.toolbarButtonsView = new ToolbarButtonsView( { collection: self.collection } );
 				
@@ -139,48 +123,23 @@ define([
 			return this;
 		},
 		
-		
-		/** Filter Requests on the State
-			*/
-		setFilterState: function(e){
-			e.preventDefault();
-	
-			if($(e.target).is('i')){
-				var filterValue = _($(e.target).parent().attr('href')).strRightBack('#');
-			}else{
-				var filterValue = _($(e.target).attr('href')).strRightBack('#');
-			}
-	
-			// Set the filter value in the options of the view //
-			if(filterValue != 'delete-filter'){
-				this.options.filter = { by: 'state', value: filterValue};
-				delete this.options.page;
-			}
-			else{
-				delete this.options.filter;
-			}
-			
-			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-		},
-		
-		/** Filter Requests on the State of the Badge
+		/** Filter Bookings on the State of the Badge
 		 	*/
 		badgeFilter: function(e){
 		 	e.preventDefault();
 		 	delete this.options.recurrence
 		 		
 			var filterValue = $(e.target).data('filter');
-	
+
 			// Set the filter value in the options of the view //
 			if(filterValue != ''){
-				this.options.filter = { by: 'state', value: filterValue};
+				this.options.filter = [{field: 'state', operator: 'in', value: [filterValue] }];
 				delete this.options.search;
 				delete this.options.page;
 			}
-	
+
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-		},
-		
+		},		
 
 		/**
 		 * Init reservation collection with url params
@@ -191,16 +150,9 @@ define([
 			// Check if the collections are instantiated //
 			if(_.isUndefined(this.collection)){ this.collection = new BookingsCollection(); }
 			else{this.collection.reset();}
-			
-	
-	
+		
 			this.options.page = AppHelpers.calculPageOffset(this.options.page);
-	
-			//TODO : remove state filter from list
-//			if(!_.isUndefined(this.options.filter)){
-//				this.options.filter = AppHelpers.calculPageFilter(this.options.filter);
-//			}
-	
+		
 			if(_.isUndefined(this.options.sort)){
 				this.options.sort = this.collection.default_sort;
 			}

@@ -38,8 +38,8 @@ define([
 			this.page = options.page;
 
 			// Display Go To Page //
-			if(!_.isUndefined(options.displayGoToPage)){
-				this.displayGoToPage = this.displayGoToPage;
+			if(!_.isUndefined(options.displayGoToPage) && !options.displayGoToPage ){
+				this.displayGoToPage = options.displayGoToPage;
 			}
 
 			// Size //

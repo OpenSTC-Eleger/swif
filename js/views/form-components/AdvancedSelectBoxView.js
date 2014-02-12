@@ -223,7 +223,7 @@ define([
 						_.each(data, function(item){
 							returnData.results.push({
 								id   : item.id,
-								text : _.titleize(item.name.toLowerCase())
+								text : _.titleize(self.getItemText(item).toLowerCase())
 							});
 						});
 
@@ -250,7 +250,7 @@ define([
 						var returnData = [];
 
 						_.each(data, function(item){
-							returnData.push({ id: item.id, text: _.titleize(item.name.toLowerCase()) });
+							returnData.push({ id: item.id, text: _.titleize(self.getItemText(item).toLowerCase()) });
 						});
 
 						callback(returnData);
@@ -281,7 +281,17 @@ define([
 			this.select2.select2(select2Options);
 
 		},
-
+		
+		getItemText: function(item) {
+			if( ! _.isUndefined(item.complete_name)  &&
+					item.complete_name!=false)  {
+				return item.complete_name
+			}
+			else 
+			{
+				return item.name;
+			}
+		},
 
 
 		/** Set an item as selected
@@ -298,7 +308,7 @@ define([
 			var data = [];
 
 			_.each(items, function(item){
-				var itemData = {id: item.id, text: item.name};
+				var itemData = {id: item.id, text: this.getItemText(item)};
 				data.push(itemData);
 			});
 

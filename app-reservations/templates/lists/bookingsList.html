@@ -67,25 +67,7 @@
 				<th><%= _.capitalize(lang.resa.endBookingDate) %></th>
 				<th><%= _.capitalize(lang.resa.UserOrClaimer) %></th>
 				<th><%= _.capitalize(lang.resa.bookingDate) %></th>
-				<th>
-					<%= _.capitalize(lang.status) %>
-					<div class="dropdown pull-right">
-						<a id="filterStateBooking" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="fa fa-filter fa-lg"></i></a>
-
-						<ul id="filterStateBookingList" class="dropdown-menu" role="menu" aria-labelledby="filterStateBooking">
-							<% _.each(bookingsState, function (state, i) { %>
-								<li role="menuitem">
-									<a tabindex="-1" href="#<%= state.key %>"> 
-										<i class="badge badge-<%= state.color %>">&nbsp;</i>
-										&nbsp; <%= _.capitalize(state.translation) %>
-									</a>
-								</li>
-							<% }) %>
-								<li class="divider" role="menuitem"></li>
-								<li class="delete-filter disabled" role="menuitem"><a href="#delete-filter"><i class="fa fa-times"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
-						</ul>
-					</div>
-				</th>
+				<th><%= _.capitalize(lang.status) %></th>
 
 				
 				<th class="actions"><%= _.capitalize(lang.action) %></th>

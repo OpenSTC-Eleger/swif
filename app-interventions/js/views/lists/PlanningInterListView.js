@@ -1,5 +1,6 @@
 define([
 	'app',
+	'appHelpers',
 	
 	'taskModel',
 	'interventionModel',
@@ -10,7 +11,7 @@ define([
 	'itemPlanningInterTaskListView',
 	'modalInterventionView'
 
-], function(app, TaskModel, InterventionModel, GenericListView, PaginationView , ItemPlanningInterView , ItemPlanningInterTaskListView, ModalInterventionView  ){
+], function(app, AppHelpers, TaskModel, InterventionModel, GenericListView, PaginationView , ItemPlanningInterView , ItemPlanningInterTaskListView, ModalInterventionView  ){
 
 	'use strict';
 
@@ -101,7 +102,7 @@ define([
 				$(self.el).html(template);
 				
 				// Call the render Generic View //
-				GenericListView.prototype.render(self);
+				//GenericListView.prototype.render(self);
 				
 				$('*[rel="tooltip"]').tooltip();
 				$('*[rel="popover"]').popover({trigger: 'hover', delay: { show: 500, hide: 100 }});
@@ -136,9 +137,9 @@ define([
 				})
 				app.views.paginationView.render();
 				
-				
+				var state = AppHelpers.getFilterValue(self.options.filter,'state');
 				// Render Filter Link //
-				if(_.isUndefined(self.options.filter)){
+				if(_.isUndefined(state)){
 					
 					$('#filterStateIntervention').addClass('filter-disabled');
 					$('#filterStateInterventionList li.delete-filter').addClass('disabled');
@@ -146,15 +147,10 @@ define([
 				else{
 					// set status information on filter selected
 					$('#filterStateIntervention').removeClass('filter-disabled');
-					$('#filterStateInterventionList li.delete-filter').removeClass('disabled');
-					if( !_.isUndefined(self.options.filter) ){
-						if( _.size(self.options.filter)>0 ){
-							var filter = self.options.filter[0].value;						
-							if( !_.isUndefined( InterventionModel.status[filter] ) ) 
-								//Set color of status filter
-								$('a.filter-button').addClass('text-' + InterventionModel.status[filter].color);
-						}
-					}
+					$('#filterStateInterventionList li.delete-filter').removeClass('disabled');				
+					if( !_.isUndefined( InterventionModel.status[state.value] ) ) 
+						//Set color of status filter
+						$('a.filter-button').addClass('text-' + InterventionModel.status[state.value].color);
 				}
 				
 			});
