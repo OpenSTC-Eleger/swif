@@ -69,7 +69,7 @@ define([
 				
 				// Display only categories in dropdown belongs to intervention //
 				var interJSON = self.options.inter.toJSON();
-				app.views.advancedSelectBoxCategoriesInterventionAddTaskView = new AdvancedSelectBoxView({el: $("#taskCategory"), url: CategoriesTasksCollection.url}) 
+				app.views.advancedSelectBoxCategoriesInterventionAddTaskView = new AdvancedSelectBoxView({ el: $("#taskCategory"), url: CategoriesTasksCollection.prototype.url }) 
 				if(interJSON.service_id.length > 0){
 					app.views.advancedSelectBoxCategoriesInterventionAddTaskView.setSearchParam({field:'service_ids.id',operator:'=','value':interJSON.service_id[0]}, true);
 				}
