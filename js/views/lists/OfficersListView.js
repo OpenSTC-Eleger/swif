@@ -4,11 +4,12 @@ define([
 
 	'officersCollection',
 	'itemOfficerView',
-	 'modalOfficerView'
+	'modalOfficerView'
+], function(app, AppHelpers, OfficersCollection, ItemOfficerView, ModalOfficerView){
 
-	], function(app, AppHelpers, OfficersCollection, ItemOfficerView, ModalOfficerView){
+	'use strict';
 
-		'use strict';
+
 	/******************************************
 	* Row Officers List View
 	*/
@@ -18,7 +19,7 @@ define([
 	
 		className    : 'row-nested-objects-collapse',
 	
-		templateHTML : 'lists/officersList',
+		templateHTML : 'templates/lists/officersList.html',
 	
 		isDisplay    : false,
 	
@@ -41,7 +42,6 @@ define([
 	
 			this.collection.off();
 			this.listenTo(this.collection, 'add', this.add);
-	
 		},
 	
 	
@@ -62,20 +62,19 @@ define([
 	
 		/** Display the view
 		*/
-	    render: function () {
-	    	var self = this;
+		render: function () {
+			var self = this;
 	
 	
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang      : app.lang,
 					service   : self.model
 				});
 	
 				$(self.el).html(template);
-	
-	
+		
 			});
 	
 			return this;
@@ -83,7 +82,7 @@ define([
 	
 	
 	
-		collapse: function(e){
+		collapse: function(){
 			var self = this;
 	
 	
@@ -102,11 +101,11 @@ define([
 						$(self.el).find('#rows-officers').html('');
 	
 						// Create item Officer view //
-						_.each(self.collection.models, function(officer, i){
+						_.each(self.collection.models, function(officer){
 							var itemOfficerView  = new ItemOfficerView({model: officer});
 							$(self.el).find('#rows-officers').append(itemOfficerView.render().el);
 						});
-					})
+					});
 				}
 	
 				this.isDisplay = true;
@@ -149,14 +148,13 @@ define([
 				}
 			};
 	
-	
 			return $.when(self.collection.fetch(this.fetchParams))
 				.fail(function(e){
 					console.log(e);
-				})
+				});
 		}
 	
 	});
 	
 	return OfficersListView;
-})
+});

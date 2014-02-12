@@ -33,7 +33,7 @@ define([
 			this.initCollection().done(function(){
 
 				app.router.render(self);
-			})
+			});
 		},
 
 
@@ -61,7 +61,7 @@ define([
 
 
 				// Create item user view //
-				_.each(self.collection.models, function(place, i){
+				_.each(self.collection.models, function(place){
 					var itemUserView  = new ItemUserView({model: place});
 					$('#rows-items').append(itemUserView.render().el);
 				});
@@ -71,7 +71,7 @@ define([
 				app.views.paginationView = new PaginationView({ 
 					page       : self.options.page.page,
 					collection : self.collection
-				})
+				});
 
 			});
 
@@ -119,7 +119,7 @@ define([
 			return $.when(self.collection.fetch(this.fetchParams))
 				.fail(function(e){
 					console.log(e);
-				})
+				});
 		}
 
 	});

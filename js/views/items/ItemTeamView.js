@@ -28,7 +28,7 @@ define([
 
 		},
 
-		templateHTML : 'items/itemTeam',
+		templateHTML : 'templates/items/itemTeam.html',
 
 
 		// The DOM events //
@@ -56,7 +56,7 @@ define([
 
 		/** When the model is updated //
 		*/
-		change: function(e){
+		change: function(){
 
 			this.render();
 			AppHelpers.highlight($(this.el));
@@ -98,7 +98,7 @@ define([
 			var self = this;
 
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
 					lang  : app.lang,
@@ -119,7 +119,8 @@ define([
 		/** Display Modal form to add/sav a new Team
 		*/
 		modalUpdateTeam: function(e){  
-			e.preventDefault(); e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 
 			app.views.modalTeamView = new ModalTeamView({
 				el      : '#modalSaveTeam',
@@ -132,7 +133,8 @@ define([
 		/** Modal to remove a Team
 		*/
 		modalDeleteTeam: function(e){
-			e.preventDefault(); e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 
 			app.views.modalDeleteView = new ModalDeleteView({
 				el           : '#modalDeleteTeam',
@@ -169,6 +171,6 @@ define([
 
 	});
 
-return ItemTeamView;
+	return ItemTeamView;
 
 });

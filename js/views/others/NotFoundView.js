@@ -3,6 +3,7 @@ define([
 
 ], function(app){
 	
+	'use strict';
 
 	/******************************************
 	* About View
@@ -16,9 +17,9 @@ define([
 		
 		/** View Initialization
 		*/
-		initialize : function(user) {
+		initialize : function() {
 			//this.render();
-	   },
+		},
 
 
 
@@ -31,7 +32,6 @@ define([
 			app.router.setPageTitle(app.lang.viewsTitles.pageNotFound);
 
 
-		   
 			// Retrieve the Login template // 
 			$.get(this.templateHTML, function(templateData){
 
@@ -40,6 +40,7 @@ define([
 			});
 
 			$(this.el).hide().fadeIn('slow');
+
 			return this;
 		}
 

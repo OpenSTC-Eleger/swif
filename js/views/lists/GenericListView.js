@@ -2,12 +2,11 @@ define([
 	'app',
 	
 	'metaDataModel',
+	'advanceSearchView'
+	
+], function(app, MetaDataModel, AdvanceSearchView){
 
-	'advanceSearchView',
-	'recordFilterView'
-	
-	
-], function(app, MetaDataModel, AdvanceSearchView, RecordFilterView){
+	'use strict';
 
 
 	/******************************************
@@ -25,7 +24,7 @@ define([
 		// The DOM events //
 		events: {
 			'click form.form-search input'                   : 'selectSearchInput',
-			'submit form.form-search'                      	 : 'search',
+			'submit form.form-search'                        : 'search',
 
 			'click button[data-toggle="advance-search"]'     : 'toggleAdvanceSearch',
 			'click table.table-sorter th[data-sort-column]'  : 'sort',
@@ -50,8 +49,10 @@ define([
 			if( !_.isUndefined(childView.options.sort) ){
 
 				// Display sort icon if there is a sort //
-				if(childView.options.sort.order == 'ASC'){ var newIcon = 'fa-sort-up'; } else{ var newIcon = 'fa-sort-down'; }
-				$("th[data-sort-column='"+childView.options.sort.by+"'] > i").removeClass('fa-sort text-muted').addClass('active ' + newIcon);
+				var newIcon;
+				if(childView.options.sort.order == 'ASC'){ newIcon = 'fa-sort-up'; } else{ newIcon = 'fa-sort-down'; }
+
+				$('th[data-sort-column="'+childView.options.sort.by+'"] > i').removeClass('fa-sort text-muted').addClass('active ' + newIcon);
 			}
 
 
@@ -105,7 +106,7 @@ define([
 					delete this.options.search;
 				}
 				else{
-					this.options.search = query
+					this.options.search = query;
 				}
 				
 				// Delete parameters //
@@ -175,7 +176,7 @@ define([
 
 
 			// Iterate all urlParameters //
-			_.each(this.urlParameters, function(value, index){
+			_.each(this.urlParameters, function(value){
 
 
 				// Check if the options parameter aren't undefined or null //
@@ -199,21 +200,23 @@ define([
 						else{
 
 							var params = '';
-							_.each(self.options[value], function(value, item){
+							_.each(self.options[value], function(value){
 								if(!_.isEmpty(params) ){
 									params += '-'+value;
 								}
 								else{
 									params += value;
 								}
-							})
-							if( !_.isBlank(params) )
+							});
+
+							if( !_.isBlank(params) ){
 								url += '/'+value+'/'+params;
+							}
 						}
 					}
 				}
 
-			})
+			});
 
 			return url;
 		},
@@ -227,12 +230,12 @@ define([
 
 			var result = true;
 
-			_.each(forbiddenChars, function(itemChar, index){
+			_.each(forbiddenChars, function(itemChar){
 
 				if(_.str.include(query, itemChar)){
 					result = false;
 				}
-			})
+			});
 		
 			return result;
 		},
@@ -317,6 +320,6 @@ define([
 
 	});
 
-	return GenericListView
+	return GenericListView;
 
 });

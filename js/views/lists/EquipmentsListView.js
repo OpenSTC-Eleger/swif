@@ -20,7 +20,7 @@ define([
 	*/
 	var EquipmentsListView = GenericListView.extend({
 		
-		templateHTML: 'lists/equipmentsList',
+		templateHTML: 'templates/lists/equipmentsList.html',
 		
 
 		// The DOM events //
@@ -77,11 +77,12 @@ define([
 
 
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang        : app.lang,
 					nbEquipments: self.collection.cpt
 				});
+
 				$(self.el).html(template);
 
 				// Call the render Generic View //
@@ -89,7 +90,7 @@ define([
 
 				
 				//create ItemView for each equipment in the collection
-				_.each(self.collection.models, function(equipment ,i){
+				_.each(self.collection.models, function(equipment){
 					var itemEquipmentView  = new ItemEquipmentView({model: equipment});
 					$('#row-items').append(itemEquipmentView.render().el);
 				});
@@ -112,7 +113,7 @@ define([
 
 		/** Partial Render of the view
 		*/
-		partialRender: function (type) {
+		partialRender: function() {
 			var self = this; 
 
 			this.collection.count(this.fetchParams).done(function(){
@@ -160,6 +161,7 @@ define([
 					sort   : this.options.sort.by+' '+this.options.sort.order
 				}
 			};
+
 			if(!_.isUndefined(this.options.search)){
 				this.fetchParams.data.filters = AppHelpers.calculSearch({search: this.options.search }, EquipmentModel.prototype.searchable_fields);
 			}
@@ -167,12 +169,12 @@ define([
 			return $.when(self.collection.fetch(this.fetchParams))
 				.fail(function(e){
 					console.log(e);
-				})
+				});
 			
 		}
 
 	});
 
-return EquipmentsListView;
+	return EquipmentsListView;
 
 });

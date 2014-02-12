@@ -19,7 +19,7 @@ define([
 		
 		el              : '#advanced-filters-bar',
 
-		templateHTML 	: 'templates/others/advanceSearch.html',
+		templateHTML    : 'templates/others/advanceSearch.html',
 		
 		
 		// The DOM events //
@@ -73,10 +73,10 @@ define([
 
 		getDomain: function() {
 			var domain = [];
-				
-			_.each(this.fieldContainerView.components, function(c, i) {
 			
-				var field = c.field.key
+			_.each(this.fieldContainerView.components, function(c) {
+
+				var field = c.field.key;
 				var value = c.getValue();
 				var operator = c.getOperator('key');
 			
@@ -127,7 +127,7 @@ define([
 			var filter = new FilterModel({ 
 				domain	: JSON.stringify(this.getDomain()), 
 				user_id : app.current_user.getUID(),
-				model_id: modelJSON.model//parseInt(this.view.collection.modelId).toString(),				
+				model_id: modelJSON.model				
 			});
 			app.views.modalSaveFilterView = new ModalSaveFilterView({
 				el 		: '#modalSaveFilter',

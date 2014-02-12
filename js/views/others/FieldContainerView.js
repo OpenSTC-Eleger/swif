@@ -41,7 +41,7 @@ define([
 
 
 
-			_.each(this.searchableFields, function(field, i){
+			_.each(this.searchableFields, function(field){
 
 
 				// Set value to the field if 
@@ -55,7 +55,7 @@ define([
 				}
 				else{
 					delete field.value;
-				};
+				}
 
 
 				
@@ -66,20 +66,20 @@ define([
 						var inputFieldView = new InputFieldView({ field: field });
 						$(self.el).append(inputFieldView.render().el);
 						self.components.push(inputFieldView);
-					break;
+						break;
 
 					case 'date':
 					case 'datetime':
 						var dateFieldView = new DateFieldView({ field: field });
 						$(self.el).append(dateFieldView.render().el);
 						self.components.push(dateFieldView);
-					break;
+						break;
 
 					case 'many2one':
 						var advancedSelectBoxView = new AdvancedSelectBoxView({ field: field, url: field.url, template: true, multiple: true, minimumInputLength: 2 });
 						$(self.el).append(advancedSelectBoxView.render().el);
 						self.components.push(advancedSelectBoxView);
-					break;
+						break;
 
 					case 'selection':
 						var data = [];
@@ -87,10 +87,10 @@ define([
 							data.push({ id: val[0], text: _.capitalize(app.lang[val[0]]) });
 						});
 
-						var advancedSelectBoxView = new AdvancedSelectBoxView({ field: field, data: data, template: true, multiple: true });
-						$(self.el).append(advancedSelectBoxView.render().el);
-						self.components.push(advancedSelectBoxView);
-					break;
+						var advancedSelectBoxView2 = new AdvancedSelectBoxView({ field: field, data: data, template: true, multiple: true });
+						$(self.el).append(advancedSelectBoxView2.render().el);
+						self.components.push(advancedSelectBoxView2);
+						break;
 				}
 			});
 		}

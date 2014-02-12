@@ -3,6 +3,8 @@ define([
 
 ], function(app){
 
+	'use strict';
+
 
 	/******************************************
 	* Footer View
@@ -44,6 +46,6 @@ define([
 
 	});
 
-return FooterView;
+	return FooterView;
 
 });

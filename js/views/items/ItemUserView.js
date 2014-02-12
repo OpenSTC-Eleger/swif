@@ -48,7 +48,7 @@ define([
 			}
 			else{
 				this.getOrganization().done(function(data, result){
-						self.model.attributes.organization = result[0][0];
+					self.model.attributes.organization = result[0][0];
 					self.render();
 				}); 
 			}
@@ -105,7 +105,6 @@ define([
 		/** Get the organization of a user
 		*/
 		getOrganization: function(){
-			var self = this;
 
 			var m = new ClaimersCollection();
 
@@ -113,7 +112,7 @@ define([
 			var fetchParams = {
 				silent : true,
 				data   : {
-					filters : [{ field : 'address.user_id.id', operator : '=', value : this.model.getId() }]
+					filters : [{ field: 'address.user_id.id', operator: '=', value: this.model.getId() }]
 				}
 			};
 
