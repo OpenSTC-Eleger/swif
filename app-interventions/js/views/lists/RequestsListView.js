@@ -260,7 +260,7 @@ define([
 					}
 					catch(e)
 					{
-						console.log("Filter is not valid");
+						console.log('Filter is not valid');
 					}
 					
 				}

@@ -225,9 +225,9 @@
     "advanceSearch"                         : "Recherche avancée",
     "afterThe"                              : "Après le",
     "beforeThe"                             : "Avant le",
-    "the"                                   : "Le",
-    "equalTo"                               : "Egal à",
-    "differentFrom"                         : "Différent de",
+    "the"                                   : "le",
+    "equalTo"                               : "égal à",
+    "differentFrom"                         : "différent de",
     "activeFilter"                          : "Filtre actif",
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],

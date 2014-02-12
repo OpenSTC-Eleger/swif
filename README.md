@@ -31,3 +31,7 @@ Build HTML index
 
     $: grunt targethtml
 
+
+Check Swif
+=================
+	$: grunt check

@@ -10,7 +10,7 @@
 			%>
 				
 				<li class="<%= isActive %>" data-operator="<%= key %>">
-					<a href="#"><%= op.label %><span class="pull-right"><%= op.symbol %></span></a>
+					<a href="#"><%= _.capitalize(op.label) %><span class="pull-right"><%= op.symbol %></span></a>
 				</li>
 			<% }) %>
 		</ul>

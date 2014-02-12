@@ -75,7 +75,7 @@ define([
 			// Rewrite the research in the form //
 			if(!_.isUndefined(childView.options.filter)){
 				// Filter advanced view needs collection setted in Generic //
-				this.displayAdvanceSearch(childView.options.filter);				
+				this.displayAdvanceSearch(childView.options.filter);
 			}
 
 		},
@@ -281,7 +281,7 @@ define([
 				// Display the informations filters if the advanceSearchView is collapse //
 				if(!_.isUndefined(this.options.filter)){
 					$('#filter-informations').removeClass('hide');
-					this.humanizeFilter(this.options.filter);
+					$('#filterContent').html(app.views.advanceSearchView.humanizeFilter());
 				}
 			}
 		},
@@ -311,36 +311,8 @@ define([
 			delete this.options.search;
 
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-		},
-
-
-
-		/** Transform JSON filter to readable String
-		*/
-		humanizeFilter: function(filter){
-
-			var string = '';
-
-			_.each(this.collection.advanced_searchable_fields, function(field){
-			
-				var f = _.filter(filter, function(f){
-					if(f.field == field.key){
-						f.type = field.type;
-						f.label = field.label;
-
-						return f;
-					}
-				});
-
-				if(!_.isEmpty(f)){
-					string += f[0].label +" "+ f[0].operator +" "+f[0].value +" && ";
-				}
-			});
-
-
-			$('#filterContent').html(string);
-
 		}
+
 		
 
 	});

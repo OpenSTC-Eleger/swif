@@ -65,7 +65,7 @@ define([
 
 			// Check if field has operator //
 			if(!_.isUndefined(this.field)){
-				if(_.isUndefined(this.field.operator)){
+				if(_.isUndefined(this.field.value)){
 					this.currentOperator = this.operators.egal;
 				}
 				else{
@@ -353,13 +353,36 @@ define([
 		},
 
 
+		/** Get the values text of the selected item
+		*/
+		getSelectedItemsText: function(){
+
+			var returnText = [];
+
+			if(!_.isEmpty(this.select2.select2('data'))){
+				
+				_.each(this.select2.select2('data'), function(item){
+					returnText.push(item.text);
+				});
+			}
+
+			return returnText;
+		},
+
+
 		/** Alias for getSelectedItems()
 		*/
-		getValue: function(){
+		getValue: function(humanize){
 			var vals = this.getSelectedItems();
 
 			if(!_.isEmpty(vals)){
-				return vals;
+				
+				if(_.isUndefined(humanize)){
+					return vals;
+				}
+				else{
+					return _.toSentence(this.getSelectedItemsText(), ', ', ' '+app.lang.and+' ');
+				}
 			}
 			else{
 				return null;
@@ -419,8 +442,22 @@ define([
 
 		/** Return the current selected Operator
 		*/
-		getOperator: function(){
-			return this.currentOperator.key;
+		getOperator: function(type){
+
+			var returnVal;
+
+			switch(type){
+				case 'key':
+					returnVal = this.currentOperator.key;
+					break;
+				case 'symbol':
+					returnVal = this.currentOperator.symbol;
+					break;
+				default: 
+					returnVal = this.currentOperator.label;
+			}
+
+			return returnVal;
 		}
 
 

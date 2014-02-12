@@ -52,8 +52,6 @@ define([
 
 				$(self.el).html(template);
 
-				console.log(self.collection.advanced_searchable_fields);
-
 				self.fieldContainerView = new FieldContainerView({ searchableFields: self.collection.advanced_searchable_fields, activeSearch: self.activeSearch });
 			});
 
@@ -76,15 +74,45 @@ define([
 
 				var field = c.field.key
 				var value = c.getValue();
-				var operator = c.getOperator();
+				var operator = c.getOperator('key');
 
 				if(!_.isNull(value)){
-					filters.push({'field': field, 'operator': operator, 'value': value});
+					filters.push({ field: field, operator: operator, value: value });
 				}
 			
 			});
 
 			this.view.applyAdvancedFilters(filters);
+		},
+
+
+
+
+		/** Transform JSON filter to readable String
+		*/
+		humanizeFilter: function(){
+
+			var str = '';
+
+			var i = 0;
+			_.each(this.fieldContainerView.components, function(c) {
+
+				var cVal = c.getValue();
+				
+				
+				if(!_.isNull(cVal)){
+
+					if(i !== 0){ str += app.lang.and; }
+					i++;
+
+					str += ' <strong>'+ _.capitalize(c.field.label) +'</strong> ';
+					str += c.getOperator('label').toLowerCase()+ ' ';
+					str += '<em class="text-underline">'+ c.getValue(true) +'</em> ';
+				}
+
+			});
+
+			return str;
 		},
 
 
