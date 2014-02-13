@@ -33,7 +33,8 @@ define([
 		events: function(){
 			return _.defaults({
 				'click #badgeActions[data-filter!=""]' : 'badgeFilter',
-				'click a.createRequest'		           : 'modalCreateRequest',
+
+				'click a.createModel'		           : 'modalCreateRequest',
 				'click #displayRecordFilters'          : 'displayRecordFilters'
 			}, 
 				GenericListView.prototype.events
@@ -98,14 +99,13 @@ define([
 					nbRequests       : self.collection.cpt,
 					nbRequestsToDeal : self.collection.specialCpt,
 					requestsState    : RequestModel.status,
-					searchableFields : RequestModel.prototype.searchable_fields,
 					user             : app.current_user
 				});
 
 				$(self.el).html(template);
 
 				// Call the render Generic View //
-				GenericListView.prototype.render(self);
+				GenericListView.prototype.render(self, RequestModel.prototype.searchable_fields);
 
 
 				// Create item request view //
@@ -251,7 +251,7 @@ define([
 			if(!_.isUndefined(this.options.search)){
 				globalSearch.search = this.options.search;
 			}
-			
+
 			if(!_.isUndefined(this.options.filter)){
 				if(!_.isUndefined(this.filterModel) ){
 					try {
@@ -270,15 +270,15 @@ define([
 				}
 			}
 
-			if(!_.isEmpty(globalSearch)){			
+			if(!_.isEmpty(globalSearch)){
 				fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, RequestModel.prototype.searchable_fields);
 			}
 
 			// Fetch the collections //
 			return $.when(this.collection.fetch(fetchParams))
-			.fail(function(e){
-				console.log(e);
-			});
+				.fail(function(e){
+					console.log(e);
+				});
 
 		},
 

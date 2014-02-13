@@ -27,7 +27,7 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'click a.modalCreatePlace' : 'modalCreatePlace',
+				'click a.createModel' : 'modalCreatePlace',
 			}, 
 				GenericListView.prototype.events
 			);
@@ -87,8 +87,9 @@ define([
 
 				$(self.el).html(template);
 
+
 				// Call the render Generic View //
-				GenericListView.prototype.render(self);
+				GenericListView.prototype.render(self, PlaceModel.prototype.searchable_fields);
 
 
 				// Create item place view //
@@ -153,11 +154,12 @@ define([
 			else{
 				this.options.sort = AppHelpers.calculPageSort(this.options.sort);	
 			}
+
 			this.options.page = AppHelpers.calculPageOffset(this.options.page);
 
 
 			// Create Fetch params //
-			this.fetchParams = {
+			var fetchParams = {
 				silent : true,
 				data   : {
 					limit  : app.config.itemsPerPage,
@@ -165,12 +167,37 @@ define([
 					sort   : this.options.sort.by+' '+this.options.sort.order
 				}
 			};
+
+
+			var globalSearch = {};
 			if(!_.isUndefined(this.options.search)){
-				this.fetchParams.data.filters = AppHelpers.calculSearch({search: this.options.search }, PlaceModel.prototype.searchable_fields);
+				globalSearch.search = this.options.search;
+			}
+
+			if(!_.isUndefined(this.options.filter)){
+				if(!_.isUndefined(this.filterModel) ){
+					try {
+						globalSearch.filter = JSON.parse(this.filterModel.toJSON().domain);
+						this.options.filter = globalSearch.filter;
+					}
+					catch(e)
+					{
+						console.log('Filter is not valid');
+					}
+					
+				}
+				else{
+					globalSearch.filter = JSON.parse(this.options.filter);
+					this.options.filter = globalSearch.filter;
+				}
+			}
+
+			if(!_.isEmpty(globalSearch)){
+				fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, PlaceModel.prototype.searchable_fields);
 			}
 
 
-			return $.when(self.collection.fetch(this.fetchParams))
+			return $.when(self.collection.fetch(fetchParams))
 				.fail(function(e){
 					console.log(e);
 				});

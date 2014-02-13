@@ -234,9 +234,9 @@ define([
 
 		/** Places List
 		*/
-		places: function(search, sort, page){
+		places: function(search, filter, sort, page){
 
-			var params = this.setContext({search: search, sort : sort, page : page});
+			var params = this.setContext({ search: search, filter: filter, sort: sort, page: page });
 
 			app.views.placesListView = new PlacesListView(params);
 		},

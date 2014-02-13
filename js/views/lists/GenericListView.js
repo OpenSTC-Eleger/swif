@@ -20,6 +20,8 @@ define([
 
 		searchForm    : 'form.form-search input',
 
+		templateHTML : 'templates/others/headerListView.html',
+
 
 		// The DOM events //
 		events: {
@@ -36,48 +38,61 @@ define([
 
 		/** View Initialization
 		*/
-		render: function(childView) {
+		render: function(childView, searchableFields) {
+			var self = this;
 
 
-			// Set the Tooltip //
-			$('*[data-toggle="tooltip"]').tooltip();
+			// Retrieve the template //
+			$.get(this.templateHTML, function(templateData){
 
-			// Set the sort icon in the table columns //
-			$('th[data-sort-column]').append('<i class="fa fa-sort fa-lg text-muted pull-right">');
+				var template = _.template(templateData, {
+					lang             : app.lang,
+					searchableFields : searchableFields
+				});
 
-			// Add icon to the sorted column //
-			if( !_.isUndefined(childView.options.sort) ){
-
-				// Display sort icon if there is a sort //
-				var newIcon;
-				if(childView.options.sort.order == 'ASC'){ newIcon = 'fa-sort-up'; } else{ newIcon = 'fa-sort-down'; }
-
-				$('th[data-sort-column="'+childView.options.sort.by+'"] > i').removeClass('fa-sort text-muted').addClass('active ' + newIcon);
-			}
+				$('#headerList').html(template);
 
 
-			// Rewrite the research in the form //
-			if(!_.isUndefined(childView.options.search)){
-				$(this.searchForm).val(childView.options.search);
-			}
+				// Set the Tooltip //
+				$('*[data-toggle="tooltip"]').tooltip();
+
+				// Set the sort icon in the table columns //
+				$('th[data-sort-column]').append('<i class="fa fa-sort fa-lg text-muted pull-right">');
+
+				// Add icon to the sorted column //
+				if( !_.isUndefined(childView.options.sort) ){
+
+					// Display sort icon if there is a sort //
+					var newIcon;
+					if(childView.options.sort.order == 'ASC'){ newIcon = 'fa-sort-up'; } else{ newIcon = 'fa-sort-down'; }
+
+					$('th[data-sort-column="'+childView.options.sort.by+'"] > i').removeClass('fa-sort text-muted').addClass('active ' + newIcon);
+				}
 
 
-			// Set the focus to the search form //
-			$('form.form-search input').focus();
+				// Rewrite the research in the form //
+				if(!_.isUndefined(childView.options.search)){
+					$(self.searchForm).val(childView.options.search);
+				}
 
 
-			// Create the advanceSearch View //
-			app.views.advanceSearchView = new AdvanceSearchView({
-				collection : childView.collection,
-				view       : childView
+				// Set the focus to the search form //
+				$(self.searchForm).focus();
+
+
+				// Create the advanceSearch View //
+				app.views.advanceSearchView = new AdvanceSearchView({
+					collection : childView.collection,
+					view       : childView
+				});
+
+
+				// Rewrite the research in the form //
+				if(!_.isUndefined(childView.options.filter)){
+					// Filter advanced view needs collection setted in Generic //
+					self.displayAdvanceSearch(childView.options.filter);
+				}
 			});
-
-
-			// Rewrite the research in the form //
-			if(!_.isUndefined(childView.options.filter)){
-				// Filter advanced view needs collection setted in Generic //
-				this.displayAdvanceSearch(childView.options.filter);
-			}
 
 		},
 

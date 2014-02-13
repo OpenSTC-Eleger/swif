@@ -447,6 +447,7 @@ define([
 			$(this.el).find('.dropdown-toggle').html(this.operators[operator].symbol);
 			
 			this.currentOperator = this.operators[operator];
+			this.select2.select2('open');
 		},
 
 

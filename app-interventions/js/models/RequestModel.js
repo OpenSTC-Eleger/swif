@@ -333,6 +333,6 @@ define([
 
 	});
 
-return RequestModel;
+	return RequestModel;
 
 });

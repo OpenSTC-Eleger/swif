@@ -3,9 +3,10 @@ define([
 
 	'inputFieldView',
 	'dateFieldView',
+	'numberFieldView',
 	'advancedSelectBoxView'
 
-], function(app, InputFieldView, DateFieldView, AdvancedSelectBoxView){
+], function(app, InputFieldView, DateFieldView, NumberFieldView, AdvancedSelectBoxView){
 
 	'use strict';
 
@@ -58,27 +59,25 @@ define([
 				}
 
 
-				
+				var fieldView;
 				// Create widget corresponding to field's type  //
 				switch (field.type) {
 					case 'text':
 					case 'char':
-						var inputFieldView = new InputFieldView({ field: field });
-						$(self.el).append(inputFieldView.render().el);
-						self.components.push(inputFieldView);
+						fieldView = new InputFieldView({ field: field });
+						break;
+
+					case 'integer':
+						fieldView = new NumberFieldView({ field: field });
 						break;
 
 					case 'date':
 					case 'datetime':
-						var dateFieldView = new DateFieldView({ field: field });
-						$(self.el).append(dateFieldView.render().el);
-						self.components.push(dateFieldView);
+						fieldView = new DateFieldView({ field: field });
 						break;
 
 					case 'many2one':
-						var advancedSelectBoxView = new AdvancedSelectBoxView({ field: field, url: field.url, template: true, multiple: true, minimumInputLength: 2 });
-						$(self.el).append(advancedSelectBoxView.render().el);
-						self.components.push(advancedSelectBoxView);
+						fieldView = new AdvancedSelectBoxView({ field: field, url: field.url, template: true, multiple: true, minimumInputLength: 2 });
 						break;
 
 					case 'selection':
@@ -87,11 +86,14 @@ define([
 							data.push({ id: val[0], text: _.capitalize(app.lang[val[0]]) });
 						});
 
-						var advancedSelectBoxView2 = new AdvancedSelectBoxView({ field: field, data: data, template: true, multiple: true });
-						$(self.el).append(advancedSelectBoxView2.render().el);
-						self.components.push(advancedSelectBoxView2);
+						fieldView = new AdvancedSelectBoxView({ field: field, data: data, template: true, multiple: true });
 						break;
 				}
+
+
+				// Add the component //
+				$(self.el).append(fieldView.render().el);
+				self.components.push(fieldView);
 			});
 		}
 

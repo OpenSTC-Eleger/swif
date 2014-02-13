@@ -1,32 +1,28 @@
 define([
-	'app',
+	'app'
 
-	'bsDatepicker-lang',
-	'bsTimepicker',
-	'moment'
-
-], function(app, datepicker, timepicker, moment){
+], function(app){
 
 	'use strict';
 
 
 	/******************************************
-	* Date Field View
+	* Number Field View
 	*/
-	var InputFieldView = Backbone.View.extend({
+	var NumberFieldView = Backbone.View.extend({
 		
 		tagName      : 'div',
 	
 		className    : 'form-group',
 		
-		templateHTML : 'templates/form-components/inputDate.html',
+		templateHTML : 'templates/form-components/inputNumber.html',
 
 		input        : null,
 		
 		operators    : {
 			egal   : { key: '=', symbol: '=' },
-			before : { key: '<', symbol: '&lt;' },
-			after  : { key: '>', symbol: '&gt;' }
+			lower  : { key: '<', symbol: '&lt;' },
+			upper  : { key: '>', symbol: '&gt;' }
 		},
 
 
@@ -44,13 +40,13 @@ define([
 			this.field = options.field;
 
 			// Set the translation //
-			this.operators.egal.label = app.lang.the;
-			this.operators.before.label = app.lang.beforeThe;
-			this.operators.after.label = app.lang.afterThe;
+			this.operators.egal.label = app.lang.equalTo;
+			this.operators.lower.label = app.lang.lowerThan;
+			this.operators.upper.label = app.lang.upperThan;
 
 			// Check if field has operator //
 			if(_.isUndefined(this.field.value)){
-				this.currentOperator = this.operators.after;
+				this.currentOperator = this.operators.upper;
 			}
 			else{
 				var op = _.filter(this.operators, function(o){
@@ -74,15 +70,12 @@ define([
 				var template = _.template(templateData, {
 					field           : self.field,
 					operators       : self.operators,
-					currentOperator : self.currentOperator,
-					moment          : moment
+					currentOperator : self.currentOperator
 				});
 
 				$(self.el).html(template);
 
-				self.input = $(self.el).find('input.datepicker');
-
-				self.input.datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
+				self.input = $(self.el).find('input');
 			});
 
 			return this;
@@ -92,28 +85,23 @@ define([
 
 		/** Get the value of the input
 		*/
-		getValue: function(humanize){
-			var val = this.input.val();
+		getValue: function(){
+			var val = parseInt(this.input.val());
 
-			if(val !== ''){
 
-				if(_.isUndefined(humanize)){
-					return moment(val, 'DD/MM/YYYY').format('YYYY-MM-DD');
-				}
-				else{
-					return moment(val, 'DD/MM/YYYY').format('LL');
-				}
+			if(!_.isNaN(val)){
+				return val;
 			}
 			else{
 				return null;
-			}				
+			}
 
 		},
 
 		/** Set the value 
 		*/
 		setValue: function(value){
-			this.input.val(moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+			this.input.val(value);
 		},
 
 
@@ -163,6 +151,6 @@ define([
 
 	});
 
-	return InputFieldView;
+	return NumberFieldView;
 
 });
