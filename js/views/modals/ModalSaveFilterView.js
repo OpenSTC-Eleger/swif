@@ -67,6 +67,7 @@ define([
 		/** Save the filter
 		*/
 		saveFilter: function(e){
+			e.preventDefault();
 			var self = this;
 			
 			this.model.setName(this.$('#filterName').val(), true);

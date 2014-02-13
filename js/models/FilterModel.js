@@ -13,7 +13,7 @@ define([
 	var FilterModel = GenericModel.extend({
 
 
-		fields     : ['id', 'name', 'user_id', 'domain', 'context', 'model_id'],
+		fields     : ['id', 'name', 'user_id', 'domain', 'context', 'model_id', 'description', 'pre_recorded'],
 
 		urlRoot    : '/api/open_object/filters',
 		

@@ -52,19 +52,26 @@ define([
 					var contentRange = request.getResponseHeader('Content-Range');
 					self.cpt = contentRange.match(/\d+$/);	
 					
+					var fieldsMetadata = {}
+					
 					//Set advanced filters for collection with metadatas
-					var fieldsMetadata = JSON.parse(request.getResponseHeader('Model-Fields'));
-
-					_.each(self.advanced_searchable_fields, function(fieldToKeep){
-						var field = _.find(fieldsMetadata,function(value,key){ 
-							return fieldToKeep.key == key; 
+					try {
+						fieldsMetadata = JSON.parse(request.getResponseHeader('Model-Fields'));
+						
+						_.each(self.advanced_searchable_fields, function(fieldToKeep){
+							var field = _.find(fieldsMetadata,function(value,key){ 
+								return fieldToKeep.key == key; 
+							});
+							_.extend(fieldToKeep, field);
 						});
-						_.extend(fieldToKeep, field);
-					});
+					}
+					catch(e){
+						console.log('Meta data are not valid');						
+					}
 
 					//Get model Id to obtain his filters
 					self.modelId = request.getResponseHeader('Model-Id');
-					
+				
 				}
 			});
 		},
