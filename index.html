@@ -24,27 +24,6 @@
 	<!--dist environment-->
 
 	<!--(if target dist)>
-	<script type="text/javascript">
-	  (function(callback) {
-		(function(callback) {
-			var ab = document.createElement('script');
-			ab.type = 'text/javascript'; ab.async = true;
-			ab.onload = ab.onreadystatechange = callback;
-			ab.src = (("https:" == document.location.protocol) ? "https://ssljscdn" : "http://jscdn") + ".airbrake.io/notifier.min.js";
-			var p = document.getElementsByTagName('script')[0];
-			p.parentNode.insertBefore(ab, p);
-		}(function () {
-			Airbrake.setRequestType('GET');
-			Airbrake.setGuessFunctionName(false);
-			Airbrake.setHost('monitor.siclic.fr:3000');
-			Airbrake.setKey('730161f0e43d7a81910a3d3fbb298cc1');
-			Airbrake.setEnvironment('dev');
-			Airbrake.setErrorDefaults({
-				url: document.URL
-				// Ajouter des variables a renvoyer içi
-			});
-		}));
-	</script>
 
 	<!(endif)-->
 
