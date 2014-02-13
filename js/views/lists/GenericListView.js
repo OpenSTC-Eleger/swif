@@ -310,6 +310,7 @@ define([
 			e.preventDefault();
 
 			delete this.options.filter;
+			delete this.options.sort;
 			delete this.options.page;
 			delete this.options.search;
 
