@@ -8,10 +8,11 @@ define([
 	'genericListView',
 	'paginationView',
 	'itemPlaceView',
-	'modalPlaceView'
+	'modalPlaceView',
+	'metaDataModel'
 
 
-], function(app, AppHelpers, PlacesCollection, PlaceModel, GenericListView, PaginationView, ItemPlaceView, ModalPlaceView){
+], function(app, AppHelpers, PlacesCollection, PlaceModel, GenericListView, PaginationView, ItemPlaceView, ModalPlaceView, MetaDataModel){
 
 	'use strict';
 
@@ -42,13 +43,18 @@ define([
 
 			var self = this;
 
-			this.initCollection().done(function(){
+			this.initFilters().done(function(){
+				self.initCollection().done(function(){
 
-				// Unbind & bind the collection //
-				self.collection.off();
-				self.listenTo(self.collection, 'add', self.add);
+					// Unbind & bind the collection //
+					self.collection.off();
+					self.listenTo(self.collection, 'add', self.add);
 
-				app.router.render(self);
+					//Set Meta Data for request collection to compute recording filters
+					self.metaDataModel = new MetaDataModel({ id: self.collection.modelId });
+
+					app.router.render(self);
+				});
 			});
 		},
 

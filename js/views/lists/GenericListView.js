@@ -2,9 +2,12 @@ define([
 	'app',
 	
 	'metaDataModel',
-	'advanceSearchView'
+	'filterModel',
+
+	'advanceSearchView',
+	'recordFilterView'
 	
-], function(app, MetaDataModel, AdvanceSearchView){
+], function(app, MetaDataModel, FilterModel, AdvanceSearchView, RecordFilterView){
 
 	'use strict';
 
@@ -29,6 +32,8 @@ define([
 			'submit form.form-search'                        : 'search',
 
 			'click button[data-toggle="advance-search"]'     : 'toggleAdvanceSearch',
+			'click #displayRecordFilters'                    : 'displayRecordFilters',
+
 			'click table.table-sorter th[data-sort-column]'  : 'sort',
 
 			'click .unapply-filter'                          : 'unapplyFilter'
@@ -84,6 +89,15 @@ define([
 				app.views.advanceSearchView = new AdvanceSearchView({
 					collection : childView.collection,
 					view       : childView
+				});
+
+
+				// Advanced recording filters view //
+				app.views.recordFilterView = new RecordFilterView({
+					el            : '#savedFilters',
+					states        : childView.modelState,
+					metaDataModel : childView.metaDataModel,
+					listView      : childView
 				});
 
 
@@ -329,6 +343,46 @@ define([
 			delete this.options.search;
 
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
+		},
+
+
+
+		/** Render recording filters view
+		*/	
+		displayRecordFilters: function(){
+			app.views.recordFilterView.render();
+		},
+
+
+
+		/** Load filter model
+		*/
+		initFilters: function(){
+			var self = this;
+
+			var deferred = $.Deferred();
+
+			//Resolve if there is not filter 
+			if (_.isUndefined( this.options.filter ) ){
+				return deferred.resolve();
+			}
+			//Parse filter
+			var filter = JSON.parse(this.options.filter);
+			filter = parseInt(filter);
+			
+			if( _.isNaN(filter)){
+				//Resolve if filter is not a recording filter 
+				deferred.resolve();
+			}
+			else{
+				//Load saved filter model
+				self.filterModel = new FilterModel({ id:  filter });
+				self.filterModel.fetch().done( function(){
+					deferred.resolve();
+				});
+			}
+
+			return deferred;
 		}
 
 		

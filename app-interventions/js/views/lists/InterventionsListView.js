@@ -178,9 +178,9 @@ define([
 			if( target ) {
 				var equipment = this.collections.vehicles.get( target );
 				if( equipment ) {
-					var km = equipment.toJSON().km ;
+					var km = equipment.toJSON().km;
 					$('.equipmentKm').val( km );
-					$('.equipmentKm').attr('min', km )
+					$('.equipmentKm').attr('min', km);
 				}
 			}
 		},
@@ -198,7 +198,6 @@ define([
 						app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 					}
 					else{
-						console.log('NEW STATE INTER SAVED');
 						if( self.element!= null )
 							self.element.modal('hide');
 						self.selectedInter.update(self.params);
@@ -248,6 +247,7 @@ define([
 				//Add advanced search from url in params
 				optionSearch.filter = JSON.parse(this.options.filter);
 			}
+
 			//'Unbuild' domain objectify to be able to add other filters (and objectify when all filters are added
 			var searchDomain = AppHelpers.calculSearch(optionSearch, InterventionModel.prototype.searchable_fields);
 			_.each(searchDomain,function(item, index){
@@ -276,7 +276,7 @@ define([
 			this.collections.interventions.fetch(fetchParams)
 			.done(function(){
 				if(self.collections.interventions.cpt > 0){
-					self.collections.tasks.fetch({silent: true,data: {filters: {0:{'field':'project_id.id','operator':'in','value':self.collections.interventions.pluck('id')}}}})
+					self.collections.tasks.fetch({silent: true,data: {filters: {0:{'field': 'project_id.id', 'operator':'in', 'value':self.collections.interventions.pluck('id')}}}})
 					.done(function(){
 						deferred.resolve();
 					})

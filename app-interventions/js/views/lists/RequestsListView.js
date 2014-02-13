@@ -5,18 +5,16 @@ define([
 	'requestsCollection',
 	'claimersServicesCollection',
 	'requestModel',
-	'filterModel',
 
 	'genericListView',
 	'paginationView',
 	'itemRequestView',
 	'modalRequestView',
 	'advancedSelectBoxView',
-	'metaDataModel',
-	'recordFilterView'
+	'metaDataModel'
 
-], function(app, AppHelpers, RequestsCollection, ClaimersServicesCollection, RequestModel, FilterModel, GenericListView, PaginationView, 
-				ItemRequestView, ModalRequestView, AdvancedSelectBoxView, MetaDataModel,  RecordFilterView){
+], function(app, AppHelpers, RequestsCollection, ClaimersServicesCollection, RequestModel, GenericListView, PaginationView, 
+				ItemRequestView, ModalRequestView, AdvancedSelectBoxView, MetaDataModel){
 
 	'use strict';
 
@@ -34,8 +32,7 @@ define([
 			return _.defaults({
 				'click #badgeActions[data-filter!=""]' : 'badgeFilter',
 
-				'click a.createModel'           : 'modalCreateRequest',
-				'click #displayRecordFilters'   : 'displayRecordFilters'
+				'click a.createModel'                  : 'modalCreateRequest'
 			}, 
 				GenericListView.prototype.events
 			);
@@ -50,6 +47,7 @@ define([
 
 			this.options = params;
 
+			this.modelState = RequestModel.status;
 
 			this.initFilters().done(function(){
 				self.initCollection().done(function(){
@@ -60,7 +58,7 @@ define([
 					self.listenTo(self.collection, 'reset', self.render);
 
 					//Set Meta Data for request collection to compute recording filters
-					self.metaDataModel = new MetaDataModel({ id:  self.collection.modelId });	
+					self.metaDataModel = new MetaDataModel({ id: self.collection.modelId });
 					app.router.render(self);
 				});
 			});
@@ -98,7 +96,7 @@ define([
 					lang             : app.lang,
 					nbRequests       : self.collection.cpt,
 					nbRequestsToDeal : self.collection.specialCpt,
-					requestsState    : RequestModel.status,
+					requestsState    : self.modelState,
 					user             : app.current_user
 				});
 
@@ -119,15 +117,6 @@ define([
 				app.views.paginationView = new PaginationView({ 
 					page       : self.options.page.page,
 					collection : self.collection
-				});
-
-
-				// Advanced recording filters view //
-				app.views.recordFilterView = new RecordFilterView({
-					el            : '#savedFilters',
-					states        : RequestModel.status,
-					metaDataModel : self.metaDataModel,
-					listView      : self
 				});
 
 			});
@@ -172,14 +161,6 @@ define([
 
 
 
-		/** Render recording filters view
-		*/	
-		displayRecordFilters: function(){
-			app.views.recordFilterView.render();
-		},
-
-
-
 		/** Modal form to create a new Request
 		*/
 		modalCreateRequest: function(e){
@@ -192,38 +173,8 @@ define([
 
 
 
-		/** Load filter model
+		/** Collection initialisation
 		*/
-		initFilters: function(){
-			var self = this;
-
-			var deferred = $.Deferred();
-
-			//Resolve if there is not filter 
-			if (_.isUndefined( this.options.filter ) ){
-				return deferred.resolve();
-			}
-			//Parse filter
-			var filter = JSON.parse(this.options.filter);
-			filter = parseInt(filter);
-			
-			if( _.isNaN(filter)){
-				//Resolve if filter is not a recording filter 
-				deferred.resolve();		
-			}
-			else{
-				//Load saved filter model
-				self.filterModel = new FilterModel({ id :  filter });
-				self.filterModel.fetch().done( function(){
-					deferred.resolve();
-				});			
-			}
-
-			return deferred;
-		},
-
-
-
 		initCollection: function(){
 			var self = this;
 
@@ -263,11 +214,9 @@ define([
 						globalSearch.filter = JSON.parse(this.filterModel.toJSON().domain);
 						this.options.filter = globalSearch.filter;
 					}
-					catch(e)
-					{
+					catch(e){
 						console.log('Filter is not valid');
 					}
-					
 				}
 				else{
 					globalSearch.filter = JSON.parse(this.options.filter);

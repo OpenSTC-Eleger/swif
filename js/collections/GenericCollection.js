@@ -61,6 +61,7 @@ define([
 						});
 						_.extend(fieldToKeep, field);
 					});
+
 					//Get model Id to obtain his filters
 					self.modelId = request.getResponseHeader('Model-Id');
 					

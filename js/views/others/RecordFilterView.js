@@ -59,6 +59,8 @@ define([
 				$.get(self.templateHTML, function(templateData){
 					
 					self.buildUrls();
+
+					console.log(self.states);
 				
 					var template = _.template(templateData, {
 						lang    : app.lang,
@@ -68,8 +70,9 @@ define([
 				
 					$(self.el).html(template);
 
-					$(this.el).hide().fadeIn();
 				});
+
+				$(this.el).hide().fadeIn();
 
 			});
 
@@ -91,8 +94,9 @@ define([
 		prepareUrls: function(){
 			this.urlLeftPart = Backbone.history.fragment;
 			this.urlRightPart = null;
-			if( _.str.include(this.urlLeftPart, this.URL_CTXT) ) 
-			{
+
+			if( _.str.include(this.urlLeftPart, this.URL_CTXT) ) {
+
 				this.urlArray = _.words(this.urlLeftPart, this.URL_CTXT);
 				this.urlLeftPart = this.urlArray[0];
 				this.urlRightPart = _(this.urlArray[1]).strRight(this.SLASH_CHAR);
@@ -141,7 +145,6 @@ define([
 			var filters = [{field: 'state', operator: 'in', value: [state] }];
 			
 			this.listView.applyAdvancedFilters(filters);
-			
 		}
 
 	});
