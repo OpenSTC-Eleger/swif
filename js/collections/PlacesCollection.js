@@ -21,9 +21,7 @@ define([
 		default_sort : { by: 'name', order: 'ASC' },
 
 		advanced_searchable_fields: [ 
-			/*{ key: 'site_parent_id' },
-			{ key: 'service_names' },*/
-			{ key: 'surface', label: "surface" }
+			{ key: 'surface' }
 		],
 
 
@@ -33,9 +31,7 @@ define([
 			//console.log('Place collection Initialization');
 
 			// Add label to the Advance Search Fields //
-			/*this.advanced_searchable_fields[0].label = app.lang.parentPlace;
-			this.advanced_searchable_fields[1].label = app.lang.associatedServices;
-			this.advanced_searchable_fields[2].label = app.lang.area;*/
+			this.advanced_searchable_fields[0].label = app.lang.area;
 		}
 
 	});

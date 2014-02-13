@@ -26,14 +26,14 @@ define([
 	
 		filters: 'intersListFilter',
 		
-		selectedInter : '',
+		selectedInter: '',
 		selectedTask : '',
-		collections:  {},
+		collections  :  {},
 	
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'click a.modalCreateInter'     : 'displayModalSaveInter',
+				'click a.modalCreateInter'   : 'displayModalSaveInter',
 			}, 
 				GenericListView.prototype.events
 			);
@@ -106,7 +106,6 @@ define([
 			app.router.setPageTitle(app.lang.viewsTitles.interventionsMonitoring);
 	
 	
-	
 			var interventions = this.collections.interventions.toJSON();
 			var len = this.collections.interventions.cpt;
 			var pageCount = Math.ceil(len / app.config.itemsPerPage);
@@ -118,22 +117,18 @@ define([
 			$.get(app.menus.openstc + this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang                   : app.lang,
-					nbInterventions        : len,
 					nbInterventionsPending : self.collections.interventions.pendingInterventions,
 					nbInterventionsPlanned : self.collections.interventions.plannedInterventions,
 					interventionsState     : InterventionModel.status,
 					interventions          : interventions,
-					startPos               : startPos, endPos: endPos,
-					page                   : self.options.page.page, 
-					pageCount              : pageCount,
 					logo_path              : app.config.logo_path
 				});
-	
-	
+
+
 				$(self.el).html(template);
 	
 				// Call the render Generic View //
-				GenericListView.prototype.render(self);
+				GenericListView.prototype.render(self, InterventionModel.prototype.searchable_fields);
 				
 				// Create item intervention view //
 				_.each(self.collections.interventions.models, function(inter, i){
@@ -153,9 +148,12 @@ define([
 					page       : self.options.page.page,
 					collection : self.collections.interventions
 				});
+
+				$(this.el).hide().fadeIn();
 				
 			});
-			$(this.el).hide().fadeIn();
+
+			
 			return this;
 		},
 	

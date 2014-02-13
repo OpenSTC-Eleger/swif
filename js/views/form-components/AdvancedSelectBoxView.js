@@ -305,10 +305,11 @@ define([
 		/** Set somes items as selected
 		*/
 		setSelectedItems: function(items){
+			var self = this;
 			var data = [];
 
 			_.each(items, function(item){
-				var itemData = {id: item.id, text: this.getItemText(item)};
+				var itemData = {id: item.id, text: self.getItemText(item)};
 				data.push(itemData);
 			});
 
