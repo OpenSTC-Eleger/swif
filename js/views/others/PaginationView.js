@@ -92,7 +92,8 @@ define([
 		goToPage: function(){
 			var page = $(this.el).find('option:selected').val();
 
-
+			var navigateTo;
+			
 			// Navigate to the page - Check if we are on a page //
 			if(_.str.include(_(this.currentRoute).strRightBack('/'), 'page')){
 				navigateTo = _(this.currentRoute).strLeftBack('page')+'page'+page;

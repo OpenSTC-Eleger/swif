@@ -123,6 +123,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-jscs-checker');
 
 	grunt.registerTask('default', ['less', 'targethtml', 'copy']);
-	//grunt.registerTask('check', ['jshint', 'jscs']);
 	grunt.registerTask('check', ['jshint']);
+	grunt.registerTask('full-check', ['jshint', 'jscs']);
 };

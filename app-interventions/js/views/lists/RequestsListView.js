@@ -33,8 +33,9 @@ define([
 		events: function(){
 			return _.defaults({
 				'click #badgeActions[data-filter!=""]' : 'badgeFilter',
-				'click a.createRequest'		           : 'modalCreateRequest',
-				'click #displayRecordFilters'          : 'displayRecordFilters'
+
+				'click a.createModel'           : 'modalCreateRequest',
+				'click #displayRecordFilters'   : 'displayRecordFilters'
 			}, 
 				GenericListView.prototype.events
 			);
@@ -49,7 +50,7 @@ define([
 
 			this.options = params;
 
-		
+
 			this.initFilters().done(function(){
 				self.initCollection().done(function(){
 
@@ -98,14 +99,13 @@ define([
 					nbRequests       : self.collection.cpt,
 					nbRequestsToDeal : self.collection.specialCpt,
 					requestsState    : RequestModel.status,
-					searchableFields : RequestModel.prototype.searchable_fields,
 					user             : app.current_user
 				});
 
 				$(self.el).html(template);
 
 				// Call the render Generic View //
-				GenericListView.prototype.render(self);
+				GenericListView.prototype.render(self, RequestModel.prototype.searchable_fields);
 
 
 				// Create item request view //
@@ -127,7 +127,7 @@ define([
 					el            : '#savedFilters',
 					states        : RequestModel.status,
 					metaDataModel : self.metaDataModel,
-					listView 	  : self
+					listView      : self
 				});
 
 			});
@@ -196,17 +196,21 @@ define([
 		*/
 		initFilters: function(){
 			var self = this;
-			
+
 			var deferred = $.Deferred();
+
 			//Resolve if there is not filter 
-			if (_.isUndefined( this.options.filter ) )
-				return deferred.resolve();	
+			if (_.isUndefined( this.options.filter ) ){
+				return deferred.resolve();
+			}
 			//Parse filter
 			var filter = JSON.parse(this.options.filter);
 			filter = parseInt(filter);
-			if( _.isNaN(filter) ) 
+			
+			if( _.isNaN(filter)){
 				//Resolve if filter is not a recording filter 
 				deferred.resolve();		
+			}
 			else{
 				//Load saved filter model
 				self.filterModel = new FilterModel({ id :  filter });
@@ -214,7 +218,8 @@ define([
 					deferred.resolve();
 				});			
 			}
-			return deferred
+
+			return deferred;
 		},
 
 
@@ -251,7 +256,7 @@ define([
 			if(!_.isUndefined(this.options.search)){
 				globalSearch.search = this.options.search;
 			}
-			
+
 			if(!_.isUndefined(this.options.filter)){
 				if(!_.isUndefined(this.filterModel) ){
 					try {
@@ -270,20 +275,19 @@ define([
 				}
 			}
 
-			if(!_.isEmpty(globalSearch)){			
+			if(!_.isEmpty(globalSearch)){
 				fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, RequestModel.prototype.searchable_fields);
 			}
 
 			// Fetch the collections //
 			return $.when(this.collection.fetch(fetchParams))
-			.fail(function(e){
-				console.log(e);
-			});
+				.fail(function(e){
+					console.log(e);
+				});
 
 		},
 
 	});
-
 
 
 	return RequestsListView;

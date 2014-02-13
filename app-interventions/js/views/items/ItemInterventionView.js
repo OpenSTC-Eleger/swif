@@ -245,8 +245,7 @@ define([
 			// If the table row isn't already expend //       
 			if(!isExpend){
 	
-				console.log('not expend');
-	
+
 				// Set the new visibility to the selected intervention //
 				$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
 				$(this.el).parents('tr.row-object').css({ opacity: '1'});  

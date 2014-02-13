@@ -23,18 +23,18 @@ define([
 
 
 		searchable_fields: [
-			{
-				key  : 'surface',
-				type : 'numeric'
-			},
-			{
-				key  : 'complete_name', 
-				type : 'text'
-			}
+			{ key: 'complete_name', type : 'text' }
 		],
 
-		initialize: function () {
-			if (_.isUndefined(this.get('color'))) {
+
+
+		initialize: function() {
+
+			// Add the translate for the searchable fields //
+			this.searchable_fields[0].label = app.lang.name;
+
+
+			if(_.isUndefined(this.get('color'))) {
 				this.set('color', ('#' + Math.floor(Math.random()*16777215).toString(16)));
 			}
 		},

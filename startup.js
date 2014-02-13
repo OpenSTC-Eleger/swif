@@ -148,7 +148,8 @@ requirejs.config({
 		// Form Components //
 		advancedSelectBoxView   : 'js/views/form-components/AdvancedSelectBoxView',
 		inputFieldView  		: 'js/views/form-components/InputFieldView',
-		dateFieldView			: 'js/views/form-components/DateFieldView'
+		dateFieldView			: 'js/views/form-components/DateFieldView',
+		numberFieldView			: 'js/views/form-components/NumberFieldView'
 
 	},
 

@@ -21,14 +21,12 @@ define([
 		fields : ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid', 'create_date', 'ask_id', 'equipment_id', 'has_equipment'],
 
 		advanced_searchable_fields: [ 
-		    { key: 'name',          label: app.lang.name },
-		    { key: 'description',   label: app.lang.description },
-		    { key: 'state',         label: app.lang.status },
 		    { key: 'site1',         label: app.lang.place },
 		    { key: 'equipment_id',  label: app.lang.equipment },
 		    { key: 'service_id',    label: app.lang.service },
 		    { key: 'create_date',   label: app.lang.createDate },
-		    { key: 'date_deadline', label: app.lang.date_deadline }
+		    { key: 'date_deadline', label: app.lang.date_deadline },
+		    { key: 'state',         label: app.lang.status }
 		],
 
 		pendingInterventions: 0,

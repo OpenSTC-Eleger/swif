@@ -7,57 +7,81 @@
 
 
 
-	<!-- Table toolbar -->
-	<div class="tableToolbar row">
-		<div class="col-xs-7 col-md-9 col-lg-10">
-			<a href="#" class="btn btn-primary modalCreatePlace"><i class="fa fa-plus fa-fw"></i> <%= _.capitalize(lang.actions.addPlace) %></a>
+<!-- Table toolbar -->
+<div id="headerList" class="tableToolbar row"></div>
+<!-- Table toolbar -->
+
+
+
+<!-- Check if there is any Places to display -->
+<% if(nbPlaces <= 0) { %>
+	<!-- No place to display -->
+	<div class="alert alert-info">
+		<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noPlace %>.
+	</div>
+<% } %>
+
+<div id="filter-informations" class="tableToolbar hide">
+	<div class="alert alert-info">
+		<i class="fa fa-filter fa-fw pull-left"></i><p id="filterContent" class="d-inline"><%= lang.activeFilter %>:</p>
+		<button type="button" class="btn btn-link btn-xs pull-right unapply-filter"><i class="fa fa-eraser fa-fw"></i> <%= lang.actions.unapplyFilter %></button>
+	</div>
+</div>
+
+
+
+<!-- Main view -->
+<div class="row">
+
+	<!-- Advance filter container -->
+	<div id="advanceFilterContainer" class="hide content-sidebar content-sidebar-right">
+	<div class="panel panel-default">
+
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<%= lang.advanceSearch %>
+				<a href="#" class="pull-right unapply-filter">
+					<i class="fa fa-eraser fa-fw text-muted" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.unapplyFilter) %>"></i>
+				</a>
+			</h4>
 		</div>
 
-		<form class=" form-search pull-right col-xs-5 col-md-3 col-lg-2">
-			<div class="input-group">
-				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
-				<span class="input-group-btn">
-					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
-				</span>
-			</div>
-		</form>
-	</div>
-	<!-- Table toolbar -->
-
-
-
-	<!-- Check if there is any Places to display -->
-	<% if(nbPlaces <= 0) { %>
-
-		<!-- No place to display -->
-		<div class="alert alert-info">
-			<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noPlace %>.
+		<div class="panel-body">
+			<!-- Advance filter -->
+			<div id="advanced-filters-bar"></div>
 		</div>
-
-	<% } %>
-
-	<!-- Table Teams -->
-	<div class="table-responsive">
-	<table class="table table-bordered table-hover table-striped table-sorter">
-		<thead>
-			<tr>
-				<th data-sort-column="name"><%= _.capitalize(lang.name) %></th>
-				<th><%= _.capitalize(lang.parentPlace) %></th>
-				<th><%= _.capitalize(lang.associatedServices) %></th>	
-				<th data-sort-column="surface"><%= _.capitalize(lang.area) %></th>
-			</tr>
-		</thead>
-		<tbody id="rows-items">
-
-		</tbody>
-	</table>
+	</div>
 	</div>
 
+	
+	<div id="contentContainer" class="content-main">
+		
+		<!-- Table Places -->
+		<div class="table-responsive">
+		<table class="table table-bordered table-hover table-striped table-sorter">
+			<thead>
+				<tr>
+					<th data-sort-column="name"><%= _.capitalize(lang.name) %></th>
+					<th><%= _.capitalize(lang.parentPlace) %></th>
+					<th><%= _.capitalize(lang.associatedServices) %></th>	
+					<th data-sort-column="surface"><%= _.capitalize(lang.area) %></th>
+				</tr>
+			</thead>
+			<tbody id="rows-items">
 
-	<!-- Table pagination -->
-	<div id="pagination" class="pull-right"></div>
-	<!-- /Table pagination -->
+			</tbody>
+		</table>
+		</div>
+		<!-- /Table Places -->
 
+		<!-- Table pagination -->
+		<div id="pagination" class="pull-right"></div>
+		<!-- /Table pagination -->
+
+	</div>
+
+</div>
+<!-- /Main view -->
 
 
 

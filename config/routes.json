@@ -59,7 +59,7 @@
 	},
 
 	"places": {
-		"url"       : "configuration/sites(/search/:search)(/sort/:sort)(/page:page)",
+		"url"       : "configuration/sites(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"  : "places"
 	},
 

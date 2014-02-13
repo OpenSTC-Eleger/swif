@@ -13,110 +13,87 @@
 
 
 
-	<!-- Table toolbar -->
-	<div class="tableToolbar row">
-		<div class="col-xs-7 col-sm-7 col-md-9 col-xl-10">
-			<a href="#" class="btn btn-primary modalCreateInter"><i class="fa fa-plus fa-fw"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
+<!-- Table toolbar -->
+<div id="headerList" class="tableToolbar row"></div>
+<!-- Table toolbar -->
+
+
+<!-- Message if No intervention to Display -->
+<% if(interventions.length <= 0) { %>
+	<div class="tableToolbar">
+		<div class="alert alert-warning">
+			<i class="fa fa-info-circle fa-lg fa-fw"></i>&nbsp;<%= lang.infoMessages.noRequest %>
 		</div>
-
-		<form class="form-search pull-right col-xs-5 col-sm-5 col-md-3 col-xl-2">
-			<div class="input-group">
-				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
-				<div class="input-group-btn">
-					<!-- Submit Button -->
-					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
-
-					<!-- Button Advance filter -->
-					<button type="button" class="btn btn-primary" data-toggle="advance-search">
-						<span class="fa fa-search-plus"></span>
-					</button>
-
-					<!-- Display saved Filters -->
-					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-						<span class="fa fa-caret-down"></span>
-					</button>
-
-					<ul class="dropdown-menu pull-right" role="menu">
-						<li role="presentation" class="dropdown-header dropdown-header-lg"><%= lang.prerecoredFilters %></li>
-						<li role="presentation" class="horizontal-align">
-							<% _.each(interventionsState, function (state, i) { %>
-								<a tabindex="-1" href="#<%= state.key %>">
-									<span class="label label-lg label-<%= state.color %>"><%= _.capitalize(state.translation) %></span>
-								</a>
-							<% }) %>
-							<a tabindex="-1" href="#overrun">
-								<span class="label label-lg label-overrun"><%= _.capitalize(lang.overrun) %></span>
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</form>
 	</div>
-	<!-- /Table toolbar -->
+<% } %>
 
 
-	<!-- Message if No intervention to Display -->
-	<% if(interventions.length <= 0) { %>
-		<div class="tableToolbar">
-			<div class="alert alert-warning">
-				<i class="fa fa-info-circle fa-lg fa-fw"></i>&nbsp;<%= lang.infoMessages.noRequest %>
-			</div>
-		</div>
-	<% } %>
+<div id="filter-informations" class="tableToolbar hide">
+	<div class="alert alert-info">
+		<i class="fa fa-filter fa-fw pull-left"></i>
+		<p id="filterContent" class="d-inline"><%= lang.activeFilter %>:</p>
+		<button type="button" class="btn btn-link btn-xs pull-right unapply-filter"><i class="fa fa-eraser fa-fw"></i> <%= lang.actions.unapplyFilter %></button>
+	</div>
+</div>
 
 
-	<!-- Main view -->
-	<div class="row">
 
-		<!-- Advance filter container -->
-		<div id="advanceFilterContainer" class="hide content-sidebar content-sidebar-right">
-		<div class="panel panel-default">
+<!-- Main view -->
+<div class="row">
 
-			<div class="panel-heading">
-				<h4 class="panel-title"><%= lang.advanceSearch %></h4>
-			</div>
+	<!-- Advance filter container -->
+	<div id="advanceFilterContainer" class="hide content-sidebar content-sidebar-right">
+	<div class="panel panel-default">
 
-			<div class="panel-body">
-				<!-- Advance filter -->
-				<div id="advanced-filters-bar"></div>
-			</div>
-		</div>
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<%= lang.advanceSearch %>
+				<a href="#" class="pull-right unapply-filter">
+					<i class="fa fa-eraser fa-fw text-muted" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.unapplyFilter) %>"></i>
+				</a>
+			</h4>
 		</div>
 
-		<div id="contentContainer" class="col-sm-12 content-main">
-
-
-			<!-- Table Interventions -->
-			<div class="table-responsive">
-			<table class="table-interventions table table-bordered table-hover table-sorter table-striped-collapse">
-				<thead>
-					<tr>
-						<th data-sort-column="id">N°</th>
-						<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
-						<th><%= _.capitalize(lang.place) + ' / '%><%= _.capitalize(lang.equipment) %></th>
-						<th><%= _.capitalize(lang.dateDeadline) %></th>
-						<th><%= _.capitalize(lang.plannedHours) %></th>
-						<th><%= _.capitalize(lang.spentHours) %></th>
-						<th><%= _.capitalize(lang.progressRate) %></th>
-					</tr>
-				</thead>
-				
-				<tbody id="inter-items">
-				<!-- Inter rows -->
-				
-				</tbody>
-			</table>
-			</div>
-
-			<!-- Table pagination -->
-			<div id="pagination" class="pull-right"></div>
-			<!-- /Table pagination -->
-
+		<div class="panel-body">
+			<!-- Advance filter -->
+			<div id="advanced-filters-bar"></div>
 		</div>
+	</div>
+	</div>
+
+	<div id="contentContainer" class="content-main">
+
+
+		<!-- Table Interventions -->
+		<div class="table-responsive">
+		<table class="table-interventions table table-bordered table-hover table-sorter table-striped-collapse">
+			<thead>
+				<tr>
+					<th data-sort-column="id">N°</th>
+					<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
+					<th><%= _.capitalize(lang.place) + ' / '%><%= _.capitalize(lang.equipment) %></th>
+					<th><%= _.capitalize(lang.dateDeadline) %></th>
+					<th><%= _.capitalize(lang.plannedHours) %></th>
+					<th><%= _.capitalize(lang.spentHours) %></th>
+					<th><%= _.capitalize(lang.progressRate) %></th>
+				</tr>
+			</thead>
+			
+			<tbody id="inter-items">
+			<!-- Inter rows -->
+			
+			</tbody>
+		</table>
+		</div>
+
+		<!-- Table pagination -->
+		<div id="pagination" class="pull-right"></div>
+		<!-- /Table pagination -->
 
 	</div>
-	<!-- /Main view -->
+
+</div>
+<!-- /Main view -->
 
 
 

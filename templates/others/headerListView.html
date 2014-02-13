@@ -1,0 +1,38 @@
+<div class="col-xs-6 col-sm-6 col-md-8 col-xl-9">
+	<a href="#" class="btn btn-primary createModel"><i class="fa fa-plus fa-fw"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
+</div>
+
+<form class="form-search pull-right col-xs-6 col-sm-6 col-md-4 col-xl-3">
+	<div class="input-group">
+
+		<% 
+			var fields = [];
+			_.each(searchableFields, function(field, i){
+				if(i == 0){
+					fields.push(_.capitalize(field.label));
+				}
+				else{
+					fields.push(field.label);
+				}
+			})
+		%>
+		<input type="search" class="form-control" placeholder="<%= _.toSentence(fields, ', ', ' '+lang.or+' ') %>" autocomplete="off">
+
+		<div class="input-group-btn">
+			<!-- Submit Button -->
+			<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
+
+			<!-- Button Advance filter -->
+			<button type="button" class="btn btn-primary" data-toggle="advance-search">
+				<span class="fa fa-search-plus"></span>
+			</button>
+
+			<!-- Display saved Filters -->
+			<button id="displayRecordFilters" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+				<span class="fa fa-caret-down"></span>
+			</button>
+
+			<ul id="savedFilters" class="dropdown-menu pull-right" role="menu"></ul>
+		</div>
+	</div>
+</form>

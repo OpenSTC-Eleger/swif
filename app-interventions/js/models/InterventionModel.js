@@ -20,19 +20,11 @@ define([
 
 
 		searchable_fields: [
-			{
-				key  : 'id',
-				type : 'numeric'
-			},
-			{
-				key  : 'site1.complete_name',
-				type : 'text'
-			},
-			{
-				key  : 'name', 
-				type : 'text'
-			}
+			{ key: 'id',          type: 'numeric', label: 'N°' },
+			{ key: 'name',        type: 'text',    label: app.lang.label },
+			{ key: 'description', type: 'text',    label: app.lang.description }
 		],
+
 
 		getId: function(){
 			return this.get('id');
