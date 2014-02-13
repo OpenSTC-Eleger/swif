@@ -68,8 +68,14 @@ define([
 		*/
 		saveFilter: function(e){
 			var self = this;
-
-
+			
+			this.model.setName(this.$('#filterName').val(), true);
+			this.model.save().done(function(e){
+				self.modal.modal('hide');
+			})
+			.fail(function(e){
+				console.error(e);
+			});	
 			// Set the button in loading State //
 			$(e.target).button('loading');
 

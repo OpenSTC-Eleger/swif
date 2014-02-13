@@ -16,6 +16,13 @@ define([
 		fields     : ['id', 'name', 'user_id', 'domain', 'context', 'model_id'],
 
 		urlRoot    : '/api/open_object/filters',
+		
+		defaults:{
+			name: null,
+			user_id: null,
+			model_id: null,
+			domain: null,
+		},
 
 
 		searchable_fields: [
@@ -34,6 +41,13 @@ define([
 		*/
 		initialize: function () {
 			//console.log("Filter Model Initialization");
+		},
+		
+		getName : function() {
+			return this.get('name');
+		},
+		setName : function(value) {
+			this.set({ name: value });
 		},
 
 	});

@@ -2,10 +2,12 @@ define([
 	'app',
 	'appHelpers',
 	
+	'filterModel',
+	
 	'fieldContainerView',
 	'modalSaveFilterView'
 
-], function(app, AppHelpers, FieldContainerView, ModalSaveFilterView){
+], function(app, AppHelpers, FilterModel, FieldContainerView, ModalSaveFilterView){
 
 	'use strict';
 
@@ -65,27 +67,27 @@ define([
 		/** Prepares filters for generic list view
 		*/
 		performSearch: function(e){
-
 			e.preventDefault();
-			
-			var filters = [];
+			this.view.applyAdvancedFilters(this.getDomain());
+		},
+
+		getDomain: function() {
+			var domain = [];
 			
 			_.each(this.fieldContainerView.components, function(c) {
 
 				var field = c.field.key;
 				var value = c.getValue();
 				var operator = c.getOperator('key');
-
+			
 				if(!_.isNull(value)){
-					filters.push({ field: field, operator: operator, value: value });
+					domain.push({ field: field, operator: operator, value: value });
 				}
 			
 			});
-
-			this.view.applyAdvancedFilters(filters);
+			
+			return domain;
 		},
-
-
 
 
 		/** Transform JSON filter to readable String
@@ -119,13 +121,17 @@ define([
 
 		/** Display modal to save the Filter
 		*/
-		modalSaveFilter: function(){
-
-			var filter = createFilter();
-
+		modalSaveFilter: function(e){
+			e.preventDefault();
+			var modelJSON = this.view.metaDataModel.toJSON();
+			var filter = new FilterModel({ 
+				domain	: JSON.stringify(this.getDomain()), 
+				user_id : app.current_user.getUID(),
+				model_id: modelJSON.model				
+			});
 			app.views.modalSaveFilterView = new ModalSaveFilterView({
 				el 		: '#modalSaveFilter',
-				model 	: this.model,
+				model 	: filter,
 			});
 
 		}
