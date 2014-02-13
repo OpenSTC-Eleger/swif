@@ -116,7 +116,7 @@ define([
 			var params = {
 				name     : $('#serviceName').val(),
 				code     : $('#serviceCode').val().toUpperCase(),
-				technical: $('#switchTechnicalService').bootstrapSwitch('status'),
+				technical: $('#switchTechnicalService').bootstrapSwitch('state'),
 				manager_id : app.views.advancedSelectBoxManagerView.getSelectedItem(),
 				service_id : app.views.advancedSelectBoxServiceParentView.getSelectedItem()
 			};

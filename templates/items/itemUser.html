@@ -1,0 +1,36 @@
+<!-- Complete Name -->
+<td>
+	<i class="fa fa-user">&nbsp;&nbsp;</i><%= user.getCompleteName() %>
+
+	<p class="row-actions invisible">
+		<a href="#"  class="modalResetPassword">
+			<i class="fa fa-lock fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.resetPassword) %>"></i>
+		</a>&nbsp;
+	</p>
+</td>
+
+<!-- Login -->
+<td><%= user.getLogin() %></td>
+
+<!-- Email -->
+<td>
+	<% if(!_.isEmpty(user.getEmail())){ %>
+		<a href="mailto:<%= user.getEmail() %>"><%= user.getEmail() %></a>
+	<% } %>
+</td>
+
+<!-- Services / Organization -->
+<td class="col-sm-5">
+	<% if(_.isUndefined(user.attributes.organization)){ %>
+	<i class="fa fa-sitemap text-muted"></i> <%= user.getServices('string') %>
+	<% } else{ %>
+	<i class="fa fa-thumb-tack text-muted"></i> <%= user.attributes.organization.name %>
+	<% } %>
+</td>
+
+<!-- Last connection -->
+<td>
+	<% if(user.getLastConnection() != false){ %>
+	<span data-toggle="tooltip" data-original-title="<%= moment(user.getLastConnection()).fromNow() %>"><%= moment(user.getLastConnection()).calendar() %></span>
+	<% } %>
+</td>

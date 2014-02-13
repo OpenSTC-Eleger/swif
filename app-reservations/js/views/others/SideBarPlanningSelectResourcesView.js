@@ -381,7 +381,6 @@ define([
 			else{
 				listSearchable.find('li').fadeIn().removeClass('thide');
 			}
-
 		},
 
 

@@ -24,6 +24,7 @@
 	"label"					: "libellé",
 	"state"					: "Etat",
 	"confirmation"			: "Confirmation",
+	"validation"			: "Validation",
 	"refusal"				: "Refus",
 	"enclosing"				: "Clôture",
 	"unit"					: "Unité",
@@ -215,6 +216,10 @@
 	"warrantyDate"							: "Date de fin de garantie",
 	"builtDate"								: "Date de sortie d'usine",
 	"stockQty"								: "Quantité en stock",
+	"newPassword"                           : "Nouveau mot de passe",
+	"forgottenPassword"	                    : "Mot de passe oublié",
+	"currencySymbol"						: "&euro;",
+	"draft"									: "Brouillon",
 
 	"monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
 	"monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
@@ -290,6 +295,7 @@
 		"selectAClaimerType": "Sélectionner un type de demandeur",
 		"selectABookable"	: "Sélectionner une ressource",
 		"displayPassword"   : "Afficher le mot de passe",
+		"resetPassword"     : "Réinitialiser le mot de passe",
 		"addAttach"			: "Ajouter une pièce jointe"
 		
 	},
@@ -303,7 +309,9 @@
 		"serverUnreachable"             : "Impossible d'établir la connexion avec le serveur, contactez l'administrateur",
 		"sufficientRights"              : "Vous n'avez pas les droits suffisants pour éffectuer cette action",
 		"codeNameUniq"                  : "Ce code existe déjà",
-		"catMustBeUniq"                 : "Cette Catégorie existe déjà! Changer le nom ou sa catégorie d'appartenance"
+		"catMustBeUniq"                 : "Cette Catégorie existe déjà! Changer le nom ou sa catégorie d'appartenance",
+		"passwordsDontMatch"            : "Les mots de passe sont différents",
+		"passwordRules"                 : "Le mot de passe doit contenir au moins 7 caractères"
 	},
 
 	"validationMessages" : {
@@ -333,6 +341,7 @@
 		"noRequestPlanned"		: "Aucune intervention planifiées",
 		"noPlace"				: "Aucun site à afficher",
 		"noClaimer"				: "Aucune organisation à afficher",
+		"noUser"				: "Aucune utilisateur à afficher",
 		"noPartner" 			: "Aucun contact enregistré. Ajouter des contacts.",
 		"noService"				: "Aucun service à afficher",
 		"noAbsentType"			: "Aucun type d'absence à afficher",
@@ -385,8 +394,9 @@
 		"requestCreateOk"       : "Demande d'intervention correctement enregistrée",
 		"interventionSaveOK"	: "Intervention correctement enregistrée",
 		"interventionUpdateOK"	: "Intervention correctement mise à jour",
-		"inteventionAddTaskOK" : "Tâche correctement associée à l'intervention",
-		"claimerContactUpdateOk": "Contact correcement enregistré"
+		"inteventionAddTaskOK"  : "Tâche correctement associée à l'intervention",
+		"claimerContactUpdateOk": "Contact correcement enregistré",
+		"passwordReset"         : "Mot de passe correctement modifié"
 		
 	},
 
@@ -454,6 +464,8 @@
 		"statementEndTask"		 : "Relevé de la tâche non terminée",
 		"pageNotFound" 			 : "Page non trouvée",
 		"editClaimer" 		     : "Edition de l'organisation",
-		"updateBooking"			 : "Modifier Réservation"
+		"updateBooking"			 : "Modifier Réservation",
+		"usersList"              : "Liste des utilisateurs",
+		"resetPassword"          : "Réinitialisation du mot de passe"
 	}
 }

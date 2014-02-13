@@ -15,37 +15,32 @@ define([
 		model : BookingModel,
 		
 		url   : "/api/openresa/bookings",
-		
+
 		fields: ['id', 'name', 'checkin', 'checkout', 'partner_id', 'partner_order_id', 'partner_type', 
-		         'contact_phone', 'partner_mail', 'people_name', 'people_email', 'people_phone', 'is_citizen', 
+		         'contact_phone', 'partner_mail', 'people_name', 'people_phone', 'is_citizen', 
 		         'create_date', 'write_date', 'deleted_at', 'done_at', 'confirm_at', 'cancel_at', 'state', 'state_num', 'actions', 'create_uid', 'write_uid', 
 		         'resources', 'all_dispo', 'recurrence_id', 'is_template', 'note', 'confirm_note', 'cancel_note', 'done_note',
-		         'pricelist_id', 'invoice_attachment_id'],
+		         'pricelist_id', 'invoice_attachment_id', 'amount_total'],
+
+
 
 
 		default_sort: { by: '', order: '' },
 		
 		specialCpt : 0,
-		
+			
+
 		/** Get the number of Booking that the user have to deal
 		*/
 		specialCount: function(){
 			var self = this;
 	
 			// Construct a domain  //
-			if(app.current_user.isResaManager()){
-				var domain = [
-					{ field : 'state', operator : '=', value : BookingModel.status.remplir.key },
-					 {field:'deleted_at',operator:'=',value:'False'}
+
+			var domain = [
+					 { field : 'state', operator : '=', value : BookingModel.status.remplir.key }					 
 				];
-			}
-			else {
-				var domain = [
-				    { field : 'state', operator : '=', value : BookingModel.status.remplir.key },
-				    {field:'deleted_at',operator:'=',value:'False'},
-				    {field: 'partner_id.address.id', operator:'in', value:app.current_user.getContact()}
-				];
-			}
+
 	
 			return $.ajax({
 				url      : this.url,

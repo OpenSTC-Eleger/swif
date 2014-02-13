@@ -14,6 +14,8 @@ define([
 		cpt         : 0,
 
 		default_sort: { by: 'id', order: 'DESC' },
+		
+		modelFields: [],
 
 
 		/** count all models without restricts ( openerp search_count method call select count(*) request)
@@ -42,6 +44,7 @@ define([
 				success  : function(data,status,request){
 					var contentRange = request.getResponseHeader("Content-Range")
 					self.cpt = contentRange.match(/\d+$/);
+					self.modelFields = JSON.parse(request.getResponseHeader("Model-Fields"))
 				}
 			});
 		},
@@ -51,7 +54,9 @@ define([
 			if(_.isUndefined(options.data)) {
 				options.data = {};
 			}
-			options.data.fields = this.fields;
+			if(_.isUndefined(options.data.fields)){
+				options.data.fields = this.fields;
+			}
 
 			return $.when(this.count(options), Backbone.sync.call(this, method, this, options));
 		},

@@ -22,6 +22,9 @@ define(['app',
 		//retrieve className to display line as 'available' or 'not available' according to lines.dispo
 		className    :  function() {
 				var classRow = 'row-nested-objects';
+				if(this.model.getId() == this.model.recurrence.getTemplate().getId()){
+					classRow += ' bolder';
+				}
 				if(this.model.getAllDispo()){
 					classRow += ' ' + BookingModel.actions.confirm.color;
 					return classRow;
@@ -79,14 +82,19 @@ define(['app',
 		*/
 		render : function() {
 			var self = this;
+			var bookingUrl = '';
+			if(!this.model.isNew()){
+				bookingUrl =  app.views.formBooking.urlBuilder(this.model.getId());
+			}
 			
 		// Retrieve the template // 
 		$.get(app.menus.openresa + "/templates/" + this.templateHTML + ".html", function(templateData){
 			//we wait for bookable fetch finished
 			var template = _.template(templateData, {
-				lang	: app.lang,
-				booking: self.model,
-				bookingStat: BookingModel.actions,
+				lang		: app.lang,
+				booking		: self.model,
+				bookingStat	: BookingModel.actions,
+				bookingUrl	: bookingUrl
 			});
 
 			$(self.el).html(template);
@@ -101,7 +109,7 @@ define(['app',
 	    removeLine: function(e){
 	    	e.preventDefault();
 	    	this.model.recurrence.destroyOccurrenceFromBackend(this.model);
-	    }
+	    },
 	});
 	return ItemFormBookingOccurrenceView;
 })

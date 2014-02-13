@@ -345,7 +345,7 @@ define([
 							modelsToAdd.push(resaModel);
 						}
 					});
-					$.when.apply(this, deferreds).done(function(){
+					$.when.apply($, deferreds).done(function(){
 						_.each(modelsToAdd, function(resaModel){
 							self.addOccurrence(resaModel);
 						});
@@ -384,11 +384,7 @@ define([
 					var arrayDeferred = [];
 					self.occurrences.each(function(occurrence,i){
 						occurrence.recurrence = self;
-						var tempDeferred= $.Deferred();
-						occurrence.fetchLines().done(function(){
-							tempDeferred.resolve();
-						});
-						arrayDeferred.push(tempDeferred);
+						arrayDeferred.push(occurrence.fetchLines());
 					});
 					//use apply JS method to call when with unknown number of deferred, in order to resolve the main deferred when all lines are fetched
 					$.when.apply($, arrayDeferred).done(function(){
@@ -430,24 +426,39 @@ define([
 		saveToBackend: function(){
 			var self = this;
 			var vals = this.getSaveVals();
-			
+			var deferred = $.Deferred();
+			var deferredArray = [];
 			this.save(vals,{wait:true,silent:true,patch:!this.isNew()}).done(function(data){
 				if(self.isNew()){
 					self.set({id:data});
 				}
 				self.fetch({silent:true}).done(function(){
 					self.occurrences.each(function(occurrence){
-						occurrence.setRecurrenceId(data);
+						occurrence.setRecurrenceId(self.getId());
 						if(!occurrence.get('is_template')){
-							occurrence.saveToBackend();
+							deferredArray.push(occurrence.saveToBackend());
+						}
+						if(_.isEmpty(deferredArray)){
+							deferred.resolve();
+						}
+						else{
+							$.when.apply($,deferredArray).done(function(){
+								deferred.resolve();
+							}).fail(function(e){
+								deferred.reject();
+							});
 						}
 					});
 					self.occurrencesToRemove.each(function(occurrenceToRemove){
-						occurrenceToRemove.destroy();
+						deferredArray.push(occurrenceToRemove.destroy());
 					});
+				}).fail(function(e){
+					deferred.reject();
 				});
+			}).fail(function(e){
+				deferred.reject();
 			});
-			
+			return deferred;
 		},
 		
 		//destroy recurrenceModel form backend and destroy its occurrences too

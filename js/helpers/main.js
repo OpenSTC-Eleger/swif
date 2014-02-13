@@ -200,10 +200,12 @@ define('appHelpers', [
 
 
 		convertDateToTz : function(date) {
-			var convertedDate = moment(date)
+			//convert moment as UTC date, instead of using browser locale by default
+			var convertedDate = moment.utc(date);
+			//and convert UTC to user TZ
 			if( app.current_user.getContext().tz ) {
 				convertedDate.tz(app.current_user.getContext().tz)
-				convertedDate.add('minutes',-convertedDate.zone());			
+//				convertedDate.add('minutes',-convertedDate.zone());			
 			}
 			return convertedDate;
 		},

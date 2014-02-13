@@ -10,9 +10,10 @@ define([
     'servicesListView',
     'equipmentsListView',
     'claimersTypesListView',
-    'aboutView'
+    'aboutView',
+    'usersListView'
 
-], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView, ClaimersListView, TeamsListView, ServicesListView, EquipmentsListView, ClaimersTypesListView, AboutView){
+], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView, ClaimersListView, TeamsListView, ServicesListView, EquipmentsListView, ClaimersTypesListView, AboutView, UsersListView){
 
 	'use strict';
 
@@ -249,6 +250,17 @@ define([
 			app.views.servicesListView = new ServicesListView(params);
 		},
 		
+
+
+		/** Services management
+		*/
+		users: function(search, sort, page){      
+
+			var params = this.setContext({search: search, sort : sort, page : page});
+
+			app.views.usersListView = new UsersListView(params);
+		},
+
 		
 
 		/** Teams List

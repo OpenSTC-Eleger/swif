@@ -48,6 +48,11 @@
 		"function"	: "claimerTypes"
 	},
 
+	"users": {
+		"url"		: "configuration/utilisateurs(/search/:search)(/sort/:sort)(/page:page)",
+		"function"	: "users"
+	},
+
 	"services": {
 		"url"		: "configuration/services(/search/:search)(/sort/:sort)(/page:page)",
 		"function"	: "services"
