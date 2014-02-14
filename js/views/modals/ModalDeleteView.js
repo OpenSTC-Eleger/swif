@@ -15,7 +15,7 @@ define([
 	var ModalDeleteView = GenericModalView.extend({
 
 
-		templateHTML : 'modals/modalDelete',
+		templateHTML : 'templates/modals/modalDelete.html',
 
 
 		// The DOM events //
@@ -58,7 +58,7 @@ define([
 			var self = this;
 
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 			 
 				var template = _.template(templateData, {
 					lang         : app.lang,

@@ -49,10 +49,12 @@ define([
 
 			// Retrieve the template // 
 			$.get(this.templateHTML, function(templateData){
-			 
+
+		 
 				var template = _.template(templateData, {
 					lang      : app.lang,
-					filter    : self.model
+					filter    : self.model,
+					filterInfo: app.views.advanceSearchView.humanizeFilter()
 				});
 
 				self.modal.html(template);
@@ -69,17 +71,23 @@ define([
 		saveFilter: function(e){
 			e.preventDefault();
 			var self = this;
-			
+
+			// Set the button in loading State //
+			$(this.el).find("button[type=submit]").button('loading');
+
 			this.model.setName(this.$('#filterName').val(), true);
+			this.model.setDescription(this.$('#filterDescription').val(), true);
+
 			this.model.save().done(function(e){
 				self.modal.modal('hide');
+				app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.filterSaveOk);
 			})
 			.fail(function(e){
 				console.error(e);
-			});	
-			// Set the button in loading State //
-			$(e.target).button('loading');
-
+			})
+			.always(function () {
+				$(self.el).find("button[type=submit]").button('reset');
+			});
 		}
 
 	});

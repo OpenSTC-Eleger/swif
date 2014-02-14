@@ -18,10 +18,7 @@ define([
 		modelId		: 0,
 		
 		searchable_fields: [
-			{
-				key  : 'id',
-				type : 'numeric'
-			},
+			{ key: 'id', type: 'numeric' }
 		],
 
 		

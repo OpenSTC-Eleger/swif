@@ -407,7 +407,9 @@
         "interventionUpdateOK"  : "Intervention correctement mise à jour",
         "inteventionAddTaskOK"  : "Tâche correctement associée à l'intervention",
         "claimerContactUpdateOk": "Contact correcement enregistré",
-        "passwordReset"         : "Mot de passe correctement modifié"
+        "passwordReset"         : "Mot de passe correctement modifié",
+        "filterSaveOk"          : "Filtre correctement enregistré",
+        "filterDeleteOk"        : "Filtre correctement supprimé"
     },
 
     "viewsTitles": {

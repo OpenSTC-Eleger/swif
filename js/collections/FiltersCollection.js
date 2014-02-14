@@ -18,7 +18,7 @@ define([
 
 		url          : '/api/open_object/filters',
 
-		fields       : ['id', 'name', 'user_id', 'domain', 'context', 'model_id','description', 'pre_recorded'],
+		fields       : ['id', 'name', 'user_id', 'domain', 'context', 'model_id', 'description', 'pre_recorded'],
 
 		advanced_searchable_fields: [],
 

@@ -1,7 +1,9 @@
 <li role="presentation" class="dropdown-header dropdown-header-lg"><%= lang.prerecoredFilters %></li>
 
+
 <!-- Pre Recorded Filters -->
 <li role="presentation" class="horizontal-align">
+	<!-- State Filter -->
 	<% if(! _.isUndefined(states) ) {  %>
 		<% _.each(states, function (state, i) { %>
 			<a tabindex="-1" href="#filter-state_<%= state.key %>">
@@ -18,7 +20,10 @@
 <% if(! _.isUndefined(filters) ) { 
 	 _.each(filters, function (f) {  %>
 	<li role="presentation">
-		<a tabindex="-1" href="#<%= f.route %>"><i class="fa fa-filter fa-fw"></i> <%= _.capitalize(f.name) %></a>
+		<a tabindex="-1" href="#<%= f.route %>" data-filter-name="<%= _.slugify(f.name) %>" data-toggle="tooltip" data-original-title="<%= f.description %>">
+			<i class="fa fa-filter fa-fw"></i> <%= _.capitalize(f.name) %>
+			<button type="button" class="pull-right btn-link invisible"><i class="fa fa-trash-o delete-filter"></i></button>
+		</a>
 	</li>
 	<% }) %>
 <% } %>

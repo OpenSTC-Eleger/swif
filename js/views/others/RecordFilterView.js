@@ -1,8 +1,9 @@
 define([	
 	
 	'app',
+	'filterModel'
 	
-], function(app){
+], function(app, FilterModel){
 
 	'use strict';
 
@@ -24,7 +25,8 @@ define([
 		
 		// The DOM events //
 		events: {
-			'click [href^=#filter-state]'     : 'filterByState'
+			'click [href^=#filter-state]'   : 'filterByState',
+			'click .delete-filter'           : 'deleteFilter'
 		},
 
 
@@ -60,8 +62,13 @@ define([
 					
 					self.buildUrls();
 
-					console.log(self.states);
-				
+					// TO DELETE TEST //
+					_.each(self.filters, function(f){
+						f.description = 'La demande n\'est toujours pas terminée conformément à la date butoir';
+						f.pre_recorded = _.random(0, 1);
+					});
+
+
 					var template = _.template(templateData, {
 						lang    : app.lang,
 						states  : self.states,
@@ -69,6 +76,9 @@ define([
 					});
 				
 					$(self.el).html(template);
+
+					// Tooltip for the filter description //
+					$('*[data-toggle="tooltip"]').tooltip({ delay: { show: 500, hide: 0 }, container: 'body' });
 
 				});
 
@@ -128,7 +138,7 @@ define([
 					f.route = _.join(self.URL_CTXT, self.urlLeftPart , _(self.urlRightPart).splice(0, 0, f.id) );
 				}
 				else {
-					f.route = _.join(self.URL_CTXT, self.urlLeftPart, f.id);					
+					f.route = _.join(self.URL_CTXT, self.urlLeftPart, f.id);
 				}
 				self.filters.push(f);
 			});
@@ -145,6 +155,36 @@ define([
 			var filters = [{field: 'state', operator: 'in', value: [state] }];
 			
 			this.listView.applyAdvancedFilters(filters);
+		},
+
+
+
+		/** Delete the filter
+		*/
+		deleteFilter: function(e){
+			e.preventDefault();
+
+			var selectedFilter = $(e.currentTarget).parents('a').data('filter-name');
+
+
+			var filterModels = _.filter(this.metaDataModel.getFilters(), function(f){
+				return _.slugify(f.name) == selectedFilter;
+			});
+
+			var filterModel = new FilterModel();
+			filterModel.setName(filterModels[0].name);
+			filterModel.setId(filterModels[0].id);
+
+			
+			// Delete the Model //
+			filterModel.destroy()
+			.done(function(data){
+				app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.filterDeleteOk);
+			})
+			.fail(function(){
+				app.notify('', 'error', app.lang.errorMessages.unablePerformAction, '');
+			})
+			
 		}
 
 	});

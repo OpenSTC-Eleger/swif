@@ -83,9 +83,9 @@ define([
 				if(!_.isNull(value)){
 					domain.push({ field: field, operator: operator, value: value });
 				}
-			
+
 			});
-			
+
 			return domain;
 		},
 
@@ -100,8 +100,8 @@ define([
 			_.each(this.fieldContainerView.components, function(c) {
 
 				var cVal = c.getValue();
-				
-				
+
+
 				if(!_.isNull(cVal)){
 
 					if(i !== 0){ str += app.lang.and; }
@@ -124,14 +124,16 @@ define([
 		modalSaveFilter: function(e){
 			e.preventDefault();
 			var modelJSON = this.view.metaDataModel.toJSON();
+
 			var filter = new FilterModel({ 
-				domain	: JSON.stringify(this.getDomain()), 
-				user_id : app.current_user.getUID(),
-				model_id: modelJSON.model				
+				domain	 : JSON.stringify(this.getDomain()), 
+				user_id  : app.current_user.getUID(),
+				model_id : modelJSON.model
 			});
+
 			app.views.modalSaveFilterView = new ModalSaveFilterView({
-				el 		: '#modalSaveFilter',
-				model 	: filter,
+				el     : '#modalSaveFilter',
+				model  : filter
 			});
 
 		}
