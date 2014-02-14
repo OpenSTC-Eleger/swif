@@ -6,7 +6,7 @@
 		"jQuery"               : "2.1.0",
 		"Underscore"           : "1.5.2",
 		"Backbone"             : "1.1.0",
-		"Less"                 : "1.5.0",
+		"Less"                 : "1.6.3",
 		"jQuery-ui"            : "1.10.3",
 		"jQuery-printElement"  : "2.0.0",
 		"Bootstrap"            : "3.0.3",

@@ -30,7 +30,7 @@ requirejs.config({
 		fullcalendar          : 'js/libs/fullcalendar-1.6.4',
 		select2               : 'js/libs/select2-3.4.5-min',
 
-		less                  : 'js/libs/less-1.5.0',
+		less                  : 'js/libs/less-1.6.3',
 
 
 		/* #############
