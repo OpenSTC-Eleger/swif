@@ -25,7 +25,8 @@ define([
 		
 		// The DOM events //
 		events: {
-			'click [href^=#filter-state]'   : 'filterByState',
+			'click a.disabled'               : 'preventDefault',
+			'click [href^=#filter-state]'    : 'filterByState',
 			'click .delete-filter'           : 'deleteFilter'
 		},
 
@@ -62,17 +63,21 @@ define([
 					
 					self.buildUrls();
 
-					// TO DELETE TEST //
-					_.each(self.filters, function(f){
-						f.description = 'La demande n\'est toujours pas terminée conformément à la date butoir';
-						f.pre_recorded = _.random(0, 1);
+
+					var preRecordedFilters = _.reject(self.filters, function(f){
+						return f.pre_recorded == 0;
+					});
+
+					var myFilters = _.reject(self.filters, function(f){
+						return f.pre_recorded == 1;
 					});
 
 
 					var template = _.template(templateData, {
-						lang    : app.lang,
-						states  : self.states,
-						filters : self.filters
+						lang               : app.lang,
+						states             : self.states,
+						preRecordedFilters : preRecordedFilters,
+						myFilters          : myFilters
 					});
 				
 					$(self.el).html(template);
@@ -185,6 +190,12 @@ define([
 				app.notify('', 'error', app.lang.errorMessages.unablePerformAction, '');
 			})
 			
+		},
+
+
+
+		preventDefault: function(e){
+			e.preventDefault();
 		}
 
 	});

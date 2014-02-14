@@ -409,7 +409,8 @@
         "claimerContactUpdateOk": "Contact correcement enregistré",
         "passwordReset"         : "Mot de passe correctement modifié",
         "filterSaveOk"          : "Filtre correctement enregistré",
-        "filterDeleteOk"        : "Filtre correctement supprimé"
+        "filterDeleteOk"        : "Filtre correctement supprimé",
+        "noFilter"              : "Aucun filtre enregistré"
     },
 
     "viewsTitles": {

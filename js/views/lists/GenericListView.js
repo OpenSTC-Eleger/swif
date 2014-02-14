@@ -367,6 +367,7 @@ define([
 			if (_.isUndefined( this.options.filter ) ){
 				return deferred.resolve();
 			}
+
 			//Parse filter
 			var filter = JSON.parse(this.options.filter);
 			filter = parseInt(filter);

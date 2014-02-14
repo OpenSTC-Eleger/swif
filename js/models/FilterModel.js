@@ -51,6 +51,16 @@ define([
 			this.set({ description: value }, {silent: silent});
 		},
 
+
+		isPreRecored: function(){
+			if(this.get('pre_recorded')){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+
 	});
 
 	return FilterModel;
