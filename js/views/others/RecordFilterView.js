@@ -64,11 +64,8 @@ define([
 					self.buildUrls();
 
 
-					var preRecordedFilters = _.reject(self.filters, function(f){
-						return f.pre_recorded == 0;
-					});
-
-					var myFilters = _.reject(self.filters, function(f){
+					// Seperate the Pre Recorded filter //
+					var filtersArray = _.partition(self.filters, function(f){
 						return f.pre_recorded == 1;
 					});
 
@@ -76,8 +73,8 @@ define([
 					var template = _.template(templateData, {
 						lang               : app.lang,
 						states             : self.states,
-						preRecordedFilters : preRecordedFilters,
-						myFilters          : myFilters
+						preRecordedFilters : filtersArray[0],
+						myFilters          : filtersArray[1]
 					});
 				
 					$(self.el).html(template);

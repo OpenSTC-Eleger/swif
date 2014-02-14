@@ -11,7 +11,7 @@ requirejs.config({
 		*/
 		jquery                : 'js/libs/jQuery-2.1.0-min',
 		printElement          : 'js/libs/jquery.printElement-2.0.0',
-		underscore            : 'js/libs/underscore-1.5.2-min',
+		underscore            : 'js/libs/underscore-1.6.0-min',
 		backbone              : 'js/libs/backbone-1.1.0',
 		
 		jqueryui              : 'js/libs/jquery-ui-1.10.3.custom.min',
@@ -167,9 +167,6 @@ requirejs.config({
 	],
 
 	shim: {
-		'underscore': {
-			exports: '_'
-		},
 		'backbone': {
 			deps   : ['jqueryui', 'underscore', 'underscore.string'],
 			exports: 'Backbone',

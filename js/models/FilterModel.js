@@ -18,10 +18,11 @@ define([
 		urlRoot    : '/api/open_object/filters',
 		
 		defaults   :{
-			name    : null,
-			user_id : null,
-			model_id: null,
-			domain  : null,
+			name         : null,
+			user_id      : null,
+			model_id     : null,
+			domain       : null,
+			pre_recorded : 0
 		},
 
 

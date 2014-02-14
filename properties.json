@@ -4,7 +4,7 @@
 	"description": "Gestion des services techniques communaux",
 	"dependencies": {
 		"jQuery"               : "2.1.0",
-		"Underscore"           : "1.5.2",
+		"Underscore"           : "1.6.0",
 		"Backbone"             : "1.1.0",
 		"Less"                 : "1.6.3",
 		"jQuery-ui"            : "1.10.3",
