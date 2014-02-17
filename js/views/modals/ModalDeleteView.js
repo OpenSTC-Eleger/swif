@@ -87,7 +87,7 @@ define([
 
 			// Delete the Model //
 			this.model.destroy({wait: true})
-			.done(function(data){
+			.done(function(){
 				self.modal.modal('hide');
 			})
 			.fail(function(){
@@ -96,12 +96,12 @@ define([
 			.always(function(){
 				// Reset the button state //
 				$(e.target).button('reset');
-			})
+			});
 
 		}
 
 	});
 
-return ModalDeleteView;
+	return ModalDeleteView;
 
 });

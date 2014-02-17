@@ -23,7 +23,7 @@ define([
 	var ModalPlaceView = GenericModalView.extend({
 
 
-		templateHTML : 'modals/modalPlace',
+		templateHTML : 'templates/modals/modalPlace.html',
 
 
 
@@ -74,7 +74,7 @@ define([
 
 
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
 					lang  : app.lang,
@@ -87,22 +87,22 @@ define([
 				$('.make-switch').bootstrapSwitch();
 				if(!loader){
 					// Advance Select List View //
-					app.views.advancedSelectBoxPlaceTypeView = new AdvancedSelectBoxView({el: $("#placeType"), url: PlaceTypesCollection.prototype.url });
+					app.views.advancedSelectBoxPlaceTypeView = new AdvancedSelectBoxView({el: $('#placeType'), url: PlaceTypesCollection.prototype.url });
 					app.views.advancedSelectBoxPlaceTypeView.render();
 
-					app.views.advancedSelectBoxPlaceParentView = new AdvancedSelectBoxView({el: $("#placeParentPlace"), url: PlacesCollection.prototype.url });
+					app.views.advancedSelectBoxPlaceParentView = new AdvancedSelectBoxView({el: $('#placeParentPlace'), url: PlacesCollection.prototype.url });
 					if(!self.model.isNew()){
-						app.views.advancedSelectBoxPlaceParentView.setSearchParam({ field : 'id', operator : '!=', value : self.model.getId() }, true);
+						app.views.advancedSelectBoxPlaceParentView.setSearchParam({ field: 'id', operator: '!=', value: self.model.getId() }, true);
 					}
 					app.views.advancedSelectBoxPlaceParentView.render();
 
-					app.views.advancedSelectBoxPlaceServices = new AdvancedSelectBoxView({el: $("#placeServices"), url: ClaimersServicesCollection.prototype.url });
+					app.views.advancedSelectBoxPlaceServices = new AdvancedSelectBoxView({el: $('#placeServices'), url: ClaimersServicesCollection.prototype.url });
 					app.views.advancedSelectBoxPlaceServices.render();
 					
-					app.views.advancedSelectBoxPlaceBookingServices = new AdvancedSelectBoxView({el: $("#placeBookingServices"), url: ClaimersServicesCollection.prototype.url });
+					app.views.advancedSelectBoxPlaceBookingServices = new AdvancedSelectBoxView({el: $('#placeBookingServices'), url: ClaimersServicesCollection.prototype.url });
 					app.views.advancedSelectBoxPlaceBookingServices.render();
 					
-					app.views.advancedSelectBoxPlaceBookingClaimers = new AdvancedSelectBoxView({el: $("#placeBookingClaimers"), url: ClaimersTypesCollection.prototype.url });
+					app.views.advancedSelectBoxPlaceBookingClaimers = new AdvancedSelectBoxView({el: $('#placeBookingClaimers'), url: ClaimersTypesCollection.prototype.url });
 					app.views.advancedSelectBoxPlaceBookingClaimers.render();
 				}
 
@@ -122,7 +122,7 @@ define([
 			var self = this;
 
 			// Set the button in loading State //
-			$(this.el).find("button[type=submit]").button('loading');
+			$(this.el).find('button[type=submit]').button('loading');
 
 
 			// Set the properties of the model //
@@ -133,8 +133,8 @@ define([
 			this.model.setWidth(this.$('#placeWidth').val(), true);
 			this.model.setLength(this.$('#placeLength').val(), true);
 			this.model.setSurface(this.$('#placeArea').val(), true);
-			this.model.setInternalBooking(this.$('#placeInternalBooking:checked').val() == "1", true);
-			this.model.setExternalBooking(this.$('#placeExternalBooking:checked').val() == "1", true);
+			this.model.setInternalBooking(this.$('#placeInternalBooking:checked').val() == '1', true);
+			this.model.setExternalBooking(this.$('#placeExternalBooking:checked').val() == '1', true);
 			this.model.setBookingServices(app.views.advancedSelectBoxPlaceBookingServices.getSelectedItems(), true);
 			this.model.setBookingClaimers(app.views.advancedSelectBoxPlaceBookingClaimers.getSelectedItems(), true);
 			this.model.set('color', $('#displayColor').val());
@@ -152,7 +152,7 @@ define([
 						self.model.setId(data);
 						self.model.fetch({silent: true, data : {fields : PlacesCollection.prototype.fields} }).done(function(){
 							app.views.placesListView.collection.add(self.model);
-						})
+						});
 					// Update mode //
 					} else {
 						self.model.fetch({ data : {fields : self.model.fields} });
@@ -162,7 +162,7 @@ define([
 					console.log(e);
 				})
 				.always(function () {
-					$(self.el).find("button[type=submit]").button('reset');
+					$(self.el).find('button[type=submit]').button('reset');
 				});
 		},
 
@@ -170,12 +170,12 @@ define([
 
 		/** Calcul the area of the place
 		*/
-		calculPlaceArea: function (e) {
+		calculPlaceArea: function() {
 			$('#placeArea').val($('#placeWidth').val() * $('#placeLength').val());
 		}
 
 	});
 
-return ModalPlaceView;
+	return ModalPlaceView;
 
 });

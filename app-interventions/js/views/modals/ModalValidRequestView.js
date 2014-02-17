@@ -103,7 +103,7 @@ define([
 			var self = this;
 	
 			// Set the button in loading State //
-			$(this.el).find("button[type=submit]").button('loading');
+			$(this.el).find('button[type=submit]').button('loading');
 	
 	
 			var params = {
@@ -128,7 +128,7 @@ define([
 					console.log(e);
 				})
 				.always(function () {
-					$(self.el).find("button[type=submit]").button('reset');
+					$(self.el).find('button[type=submit]').button('reset');
 				});
 		},
 	

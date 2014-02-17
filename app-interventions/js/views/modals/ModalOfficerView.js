@@ -4,7 +4,7 @@
 app.Views.ModalOfficerView = app.Views.GenericModalView.extend({
 
 
-	templateHTML : 'modals/modalOfficer',
+	templateHTML : 'templates/modals/modalOfficer.html',
 
 
 
@@ -54,7 +54,7 @@ app.Views.ModalOfficerView = app.Views.GenericModalView.extend({
 
 
 		// Retrieve the template // 
-		$.get("templates/" + this.templateHTML + ".html", function(templateData){
+		$.get(this.templateHTML, function(templateData){
 
 
 			var template = _.template(templateData, {
@@ -97,7 +97,7 @@ app.Views.ModalOfficerView = app.Views.GenericModalView.extend({
 		var self = this;
 
 		// Set the button in loading State //
-		$(this.el).find("button[type=submit]").button('loading');
+		$(this.el).find('button[type=submit]').button('loading');
 
 
 		var params = {
@@ -140,7 +140,7 @@ app.Views.ModalOfficerView = app.Views.GenericModalView.extend({
 				alert('impossible de créer l\'utilisateur');
 			})
 			.always(function () {
-				$(self.el).find("button[type=submit]").button('reset');
+				$(self.el).find('button[type=submit]').button('reset');
 			});
 	}
 

@@ -15,9 +15,9 @@ define([
 	var AdvancedSelectBoxView = Backbone.View.extend({
 
 		tagName      : 'div',
-	
+
 		className    : 'form-group',
-		
+
 		templateHTML : 'templates/form-components/select.html',
 
 		select2      : null,
@@ -283,12 +283,10 @@ define([
 		},
 		
 		getItemText: function(item) {
-			if( ! _.isUndefined(item.complete_name)  &&
-					item.complete_name!=false)  {
-				return item.complete_name
+			if( ! _.isUndefined(item.complete_name)  && item.complete_name !== false) {
+				return item.complete_name;
 			}
-			else 
-			{
+			else {
 				return item.name;
 			}
 		},

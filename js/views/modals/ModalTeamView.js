@@ -20,7 +20,7 @@ define([
 	var ModalTeamView = GenericModalView.extend({
 
 
-		templateHTML : 'modals/modalTeam',
+		templateHTML : 'templates/modals/modalTeam.html',
 
 
 
@@ -60,7 +60,7 @@ define([
 
 
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
 					lang  : app.lang,
@@ -71,7 +71,8 @@ define([
 				self.modal.html(template);
 
 				// Advance Select List View //
-				app.views.advancedSelectBoxForemanView = new AdvancedSelectBoxView({el: $("#teamForeman"), url: OfficersCollection.prototype.url })
+				app.views.advancedSelectBoxForemanView = new AdvancedSelectBoxView({el: $('#teamForeman'), url: OfficersCollection.prototype.url });
+
 				// Retrieve only Officer //
 				app.views.advancedSelectBoxForemanView.setSearchParam({field:'service_ids', operator:'!=', value: 'false'}, true);
 				app.views.advancedSelectBoxForemanView.render();
@@ -92,7 +93,7 @@ define([
 			var self = this;
 
 			// Set the button in loading State //
-			$(this.el).find("button[type=submit]").button('loading');
+			$(this.el).find('button[type=submit]').button('loading');
 
 
 			// Set the properties of the model //
@@ -109,7 +110,7 @@ define([
 						self.model.setId(data);
 						self.model.fetch({silent: true, data : {fields : TeamsCollection.prototype.fields} }).done(function(){
 							app.views.teamsListView.collection.add(self.model);
-						})
+						});
 					// Update mode //
 					} else {
 						self.model.fetch({ data : {fields : self.model.fields} });
@@ -119,12 +120,12 @@ define([
 					console.log(e);
 				})
 				.always(function () {
-					$(self.el).find("button[type=submit]").button('reset');
+					$(self.el).find('button[type=submit]').button('reset');
 				});
 		},
 
 	});
 
-return ModalTeamView;
+	return ModalTeamView;
 
 });

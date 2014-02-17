@@ -82,7 +82,7 @@ define([
 				var self = this;
 
 				// Set the button in loading State //
-				$(this.el).find("button[type=submit]").button('loading');
+				$(this.el).find('button[type=submit]').button('loading');
 
 				/*console.log($('#newPassword').val());
 				console.log($('#confirmPassword').val());*/
@@ -91,14 +91,14 @@ define([
 
 
 				this.model.save(params, {patch: true, wait: true})
-					.done(function(data) {
+					.done(function() {
 						self.modal.modal('hide');
 					})
 					.fail(function (e) {
 						console.log(e);
 					})
 					.always(function () {
-						$(self.el).find("button[type=submit]").button('reset');
+						$(self.el).find('button[type=submit]').button('reset');
 					});
 			}
 			else{
@@ -110,7 +110,7 @@ define([
 
 		/** Calcul the area of the place
 		*/
-		checkPassword: function (e) {
+		checkPassword: function () {
 
 			if(this.checkPasswordRules() && this.checkPasswordsMatch()){
 				return true;

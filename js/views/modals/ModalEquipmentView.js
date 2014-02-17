@@ -14,7 +14,7 @@ define([
 	'bsDatepicker-lang'
 	
 
-], function(app, AppHelpers, EquipmentModel, EquipmentsCollection, EquipmentTypeModel, EquipmentsTypesCollection, ClaimersServicesCollection, ClaimersTypesCollection, GenericModalView, AdvancedSelectBoxView, datepicker){
+], function(app, AppHelpers, EquipmentModel, EquipmentsCollection, EquipmentTypeModel, EquipmentsTypesCollection, ClaimersServicesCollection, ClaimersTypesCollection, GenericModalView, AdvancedSelectBoxView){
 
 	'use strict';
 
@@ -25,7 +25,7 @@ define([
 	var ModalEquipmentView = GenericModalView.extend({
 
 
-		templateHTML : 'modals/modalEquipment',
+		templateHTML : 'templates/modals/modalEquipment.html',
 
 
 
@@ -75,7 +75,7 @@ define([
 			var self = this;
 
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
 					lang     : app.lang,
@@ -86,12 +86,12 @@ define([
 				self.modal.html(template);
 				
 				$('.make-switch').bootstrapSwitch();
-				
+
 				if(!loader){
 					self.selectEquipmentCategory = new AdvancedSelectBoxView({el:'#equipmentCategory', url: EquipmentsTypesCollection.prototype.url });
 					self.selectEquipmentCategory.setSearchParam('|',true);
-					self.selectEquipmentCategory.setSearchParam({field:'is_vehicle',operator:'=',value:true});
-					self.selectEquipmentCategory.setSearchParam({field:'is_equipment',operator:'=',value:true});
+					self.selectEquipmentCategory.setSearchParam({field:'is_vehicle', operator:'=', value:true});
+					self.selectEquipmentCategory.setSearchParam({field:'is_equipment', operator:'=', value:true});
 					self.selectEquipmentCategory.render();
 
 					self.selectEquipmentServicesInternalUse = new AdvancedSelectBoxView({el:'#equipmentServicesInternalUse', url: ClaimersServicesCollection.prototype.url });
@@ -101,24 +101,23 @@ define([
 					if(!_.isNull(self.model)){
 						self.changeEquipmentInternalUse(self.model.getInternalUse());
 					}
-					
+
 					self.selectEquipmentMaintenanceServices = new AdvancedSelectBoxView({el:'#equipmentMaintenanceServices', url: ClaimersServicesCollection.prototype.url });
 					self.selectEquipmentMaintenanceServices.render();
 					
-					self.selectEquipmentBookingServices = new AdvancedSelectBoxView({el: $("#equipmentBookingServices"), url: ClaimersServicesCollection.prototype.url });
+					self.selectEquipmentBookingServices = new AdvancedSelectBoxView({el: $('#equipmentBookingServices'), url: ClaimersServicesCollection.prototype.url });
 					self.selectEquipmentBookingServices.render();
 					
-					self.selectClaimersBookingServices = new AdvancedSelectBoxView({el: $("#equipmentBookingClaimers"), url: ClaimersTypesCollection.prototype.url });
+					self.selectClaimersBookingServices = new AdvancedSelectBoxView({el: $('#equipmentBookingClaimers'), url: ClaimersTypesCollection.prototype.url });
 					self.selectClaimersBookingServices.render();
 					
 					// Enable the datePicker //
 					$('input.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
 				}
 
-                console.log(app.menus);
-                if (_.isUndefined(app.menus['openresa'])) {
-                    $('#bookingTab').hide();
-                }
+				if(_.isUndefined(app.menus.openresa)) {
+					$('#bookingTab').hide();
+				}
 				self.modal.modal('show');
 
 			});
@@ -152,7 +151,7 @@ define([
 			});
 		},
 		
-		fillEquipmentCategory: function(e){
+		fillEquipmentCategory: function(){
 			this.changeEquipmentCategory(this.selectEquipmentCategory.getSelectedItem());
 		},
 		
@@ -182,7 +181,7 @@ define([
 			e.preventDefault();
 			var self = this;
 			function formatDate(frDate){
-				if(frDate != false && frDate != ''){
+				if(frDate !== false && frDate !== ''){
 					return moment(frDate.replace('/','-'),'DD-MM-YYYY').format('YYYY-MM-DD');
 				}
 				else{
@@ -191,32 +190,32 @@ define([
 			}
 			
 			var params = {
-					name: $('#equipmentName').val(),
-					default_code: $('#equipmentCode').val(),
-					categ_id: this.selectEquipmentCategory.getSelectedItem(),
-					internal_use: $('#equipmentInternalUse').is(':checked'),
-					service_ids: [[6,0,this.selectEquipmentServicesInternalUse.getSelectedItems()]],
-					maintenance_service_ids: [[6,0,this.selectEquipmentMaintenanceServices.getSelectedItems()]],
-					immat: $('#equipmentImmat').val(),
-					marque: $('#equipmentMarque').val(),
-					km: parseInt($('#equipmentKm').val().replace(' ','')),
-					energy_type: $('#equipmentEnergy').val(),
-	//				year: $('#equipmentYear').val(),
-					built_date: formatDate($('#equipmentBuiltDate').val()),
-					time: $('#equipmentTime').val(),
-					length_amort: $('#equipmentLengthAmort').val(),
-					purchase_date: formatDate($('#equipmentPurchaseDate').val()),
-					purchase_price: $('#equipmentPurchasePrice').val(),
-					hour_price: $('#equipmentHourPrice').val(),
-					warranty_date: formatDate($('#equipmentWarranty').val()),
-					internal_booking: $('#equipmentInternalBooking:checked').val() == "1",
-					external_booking: $('#equipmentExternalBooking:checked').val() == "1",
-					service_bookable_ids: [[6,0, this.selectEquipmentBookingServices.getSelectedItems() ]],
-					partner_type_bookable_ids: [[6,0, this.selectClaimersBookingServices.getSelectedItems() ]],
-					color: $('#displayColor').val(),
-					block_booking: $('#equipmentBlockingBookable').bootstrapSwitch('state')
+				name: $('#equipmentName').val(),
+				default_code: $('#equipmentCode').val(),
+				categ_id: this.selectEquipmentCategory.getSelectedItem(),
+				internal_use: $('#equipmentInternalUse').is(':checked'),
+				service_ids: [[6,0,this.selectEquipmentServicesInternalUse.getSelectedItems()]],
+				maintenance_service_ids: [[6,0,this.selectEquipmentMaintenanceServices.getSelectedItems()]],
+				immat: $('#equipmentImmat').val(),
+				marque: $('#equipmentMarque').val(),
+				km: parseInt($('#equipmentKm').val().replace(' ','')),
+				energy_type: $('#equipmentEnergy').val(),
+//				year: $('#equipmentYear').val(),
+				built_date: formatDate($('#equipmentBuiltDate').val()),
+				time: $('#equipmentTime').val(),
+				length_amort: $('#equipmentLengthAmort').val(),
+				purchase_date: formatDate($('#equipmentPurchaseDate').val()),
+				purchase_price: $('#equipmentPurchasePrice').val(),
+				hour_price: $('#equipmentHourPrice').val(),
+				warranty_date: formatDate($('#equipmentWarranty').val()),
+				internal_booking: $('#equipmentInternalBooking:checked').val() == '1',
+				external_booking: $('#equipmentExternalBooking:checked').val() == '1',
+				service_bookable_ids: [[6,0, this.selectEquipmentBookingServices.getSelectedItems() ]],
+				partner_type_bookable_ids: [[6,0, this.selectClaimersBookingServices.getSelectedItems() ]],
+				color: $('#displayColor').val(),
+				block_booking: $('#equipmentBlockingBookable').bootstrapSwitch('state')
+			};
 
-			}
 			var stockQty = parseInt($('#equipmentQtyAvailable').val());
 
 			this.model.save(params, {patch:!this.model.isNew(), silent:true,wait:true})
@@ -228,7 +227,7 @@ define([
 						self.model.setId(data);
 						self.model.fetch({silent: true, data : {fields : EquipmentsCollection.prototype.fields} }).done(function(){
 							app.views.equipmentsListView.collection.add(self.model);
-						})
+						});
 					// Update mode //
 					} else {
 						self.model.fetch({ data : {fields : self.model.fields} });
@@ -242,13 +241,13 @@ define([
 					AppHelpers.printError(e);
 				})
 				.always(function () {
-					$(self.el).find("button[type=submit]").button('reset');
+					$(self.el).find('button[type=submit]').button('reset');
 				});
 			
 		}
 
 	});
 
-return ModalEquipmentView;
+	return ModalEquipmentView;
 
 });

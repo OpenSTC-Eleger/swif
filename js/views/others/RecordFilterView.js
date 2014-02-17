@@ -170,7 +170,7 @@ define([
 
 
 			var filterModels = _.filter(this.metaDataModel.getFilters(), function(f){
-				return _.slugify(f.name) == selectedFilter;
+				return _.slugify(f.name) === selectedFilter;
 			});
 
 			var filterModel = new FilterModel();
@@ -180,12 +180,12 @@ define([
 			
 			// Delete the Model //
 			filterModel.destroy()
-			.done(function(data){
+			.done(function(){
 				app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.filterDeleteOk);
 			})
 			.fail(function(){
 				app.notify('', 'error', app.lang.errorMessages.unablePerformAction, '');
-			})
+			});
 			
 		},
 

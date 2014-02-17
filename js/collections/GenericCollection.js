@@ -49,7 +49,7 @@ define([
 					var contentRange = request.getResponseHeader('Content-Range');
 					self.cpt = contentRange.match(/\d+$/);	
 					
-					var fieldsMetadata = {}
+					var fieldsMetadata = {};
 					
 					//Set advanced filters for collection with metadatas
 					try {

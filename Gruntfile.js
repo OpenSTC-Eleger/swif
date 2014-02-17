@@ -85,7 +85,6 @@ module.exports = function(grunt) {
 
 		},
 
-
 		// Check Style JS File 
 		jscs: {
 			options: {

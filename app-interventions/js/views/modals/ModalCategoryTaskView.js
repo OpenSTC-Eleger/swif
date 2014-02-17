@@ -96,7 +96,7 @@ define([
 			var self = this;
 	
 			// Set the button in loading State //
-			$(this.el).find("button[type=submit]").button('loading');
+			$(this.el).find('button[type=submit]').button('loading');
 	
 	
 			// Set the properties of the model //
@@ -126,7 +126,7 @@ define([
 					AppHelpers.printError(e);
 				})
 				.always(function () {
-					$(self.el).find("button[type=submit]").button('reset');
+					$(self.el).find('button[type=submit]').button('reset');
 				});
 		},
 	

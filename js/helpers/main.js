@@ -187,25 +187,33 @@ define('appHelpers', [
 			return app.objectifyFilters(search);
 		},
 		
+
+
 		/**
 		 * Get filter by field name
 		 * @param JSONfilters : filters, ex : [{"field":"user_id","operator":"in","value":[278]}, {"field":"name","operator":"ilike","value":"name"}]
 		 * @param field : field name key, ex : "user_id"
 		 * @return json value, ex for "user_id"	: {"field":"user_id","operator":"in","value":[278]}	
 		 */
-		getFilterValue: function (filters, field) {
-			if(_.isUndefined(filters)) return filters;			
-			try {
-				filters = JSON.parse(filters);
+		getFilterValue: function(filters, field) {
+			if(_.isUndefined(filters)){
+				return undefined;
 			}
-			catch(e)
-			{
-				console.log("Filter is an object, not a JSON")
-			}			
-			return _.find(filters, function(f){
-				return f.field == field;
-			})
+			else{
+
+				try {
+					filters = JSON.parse(filters);
+				}
+				catch(e){
+					console.log('Filter is an object, not a JSON');
+				}
+
+				return _.find(filters, function(f){
+					return f.field == field;
+				});
+			}
 		},
+
 
 
 		printError: function (e) {
@@ -230,7 +238,7 @@ define('appHelpers', [
 
 			if( app.current_user.getContext().tz ) {
 				convertedDate.tz(app.current_user.getContext().tz);
-				convertedDate.add('minutes',-convertedDate.zone());			
+				convertedDate.add('minutes',-convertedDate.zone());
 			}
 
 			return convertedDate;

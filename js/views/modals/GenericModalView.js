@@ -3,6 +3,7 @@ define([
 
 ], function(Backbone){
 
+	'use strict';
 
 
 	/******************************************
@@ -58,6 +59,6 @@ define([
 
 	});
 
-return GenericModalView;
+	return GenericModalView;
 
 });

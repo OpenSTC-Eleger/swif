@@ -302,7 +302,8 @@ define([
 			if(_.isUndefined(format)){
 				format = 'YYYY-MM-DD';
 			}
-			ret = this.get('warranty_date');
+			var ret = this.get('warranty_date');
+
 			if(!ret){
 				return '';
 			}
@@ -313,10 +314,12 @@ define([
 		
 		getBuiltDate: function(type){
 			var format = type;
+
 			if(_.isUndefined(format)){
 				format = 'YYYY-MM-DD';
 			}
-			ret = this.get('built_date');
+			var ret = this.get('built_date');
+
 			if(!ret){
 				return '';
 			}
@@ -331,6 +334,7 @@ define([
 				format = 'YYYY-MM-DD';
 			}
 			var ret = this.get('purchase_date');
+
 			if(!ret){
 				return '';
 			}

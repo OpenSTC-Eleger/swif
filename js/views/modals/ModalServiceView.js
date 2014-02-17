@@ -9,7 +9,7 @@ define([
 	'advancedSelectBoxView',
 	'bsSwitch'
 
-], function(app, AppHelpers, ClaimersServicesCollection, ClaimerServiceModel, OfficersCollection, GenericModalView, AdvancedSelectBoxView, bootstrapSwitch){
+], function(app, AppHelpers, ClaimersServicesCollection, ClaimerServiceModel, OfficersCollection, GenericModalView, AdvancedSelectBoxView){
 
 	'use strict';
 
@@ -21,7 +21,7 @@ define([
 	var ModalServiceView = GenericModalView.extend({
 	
 	
-		templateHTML : 'modals/modalService',
+		templateHTML : 'templates/modals/modalService.html',
 	
 	
 	
@@ -71,7 +71,7 @@ define([
 	
 	
 			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			$.get(this.templateHTML, function(templateData){
 	
 				var template = _.template(templateData, {
 					lang   : app.lang,
@@ -84,10 +84,10 @@ define([
 	
 				if(!loader){
 					// Advance Select List View //
-					app.views.advancedSelectBoxManagerView = new AdvancedSelectBoxView({el: $("#serviceManager"), url: OfficersCollection.prototype.url })
+					app.views.advancedSelectBoxManagerView = new AdvancedSelectBoxView({el: $('#serviceManager'), url: OfficersCollection.prototype.url });
 					app.views.advancedSelectBoxManagerView.render();
 	
-					app.views.advancedSelectBoxServiceParentView = new AdvancedSelectBoxView({el: $("#serviceParentService"), url: ClaimersServicesCollection.prototype.url })
+					app.views.advancedSelectBoxServiceParentView = new AdvancedSelectBoxView({el: $('#serviceParentService'), url: ClaimersServicesCollection.prototype.url });
 					app.views.advancedSelectBoxServiceParentView.render();
 	
 					$('.make-switch').bootstrapSwitch();
@@ -109,7 +109,7 @@ define([
 			var self = this;
 	
 			// Set the button in loading State //
-			$(this.el).find("button[type=submit]").button('loading');
+			$(this.el).find('button[type=submit]').button('loading');
 	
 	
 			// Set the properties of the model //
@@ -132,7 +132,7 @@ define([
 						self.model.setId(data);
 						self.model.fetch({silent: true, data : {fields : ClaimersServicesCollection.prototype.fields} }).done(function(){
 							app.views.servicesListView.collection.add(self.model);
-						})
+						});
 					// Update mode //
 					} else {
 						self.model.fetch({ data : {fields : self.model.fields} });
@@ -142,10 +142,11 @@ define([
 					AappHelpers.printError(e);
 				})
 				.always(function () {
-					$(self.el).find("button[type=submit]").button('reset');
+					$(self.el).find('button[type=submit]').button('reset');
 				});
 		}
 	
 	});
+
 	return ModalServiceView;
-})
+});

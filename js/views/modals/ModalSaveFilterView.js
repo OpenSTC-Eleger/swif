@@ -73,12 +73,12 @@ define([
 			var self = this;
 
 			// Set the button in loading State //
-			$(this.el).find("button[type=submit]").button('loading');
+			$(this.el).find('button[type=submit]').button('loading');
 
 			this.model.setName(this.$('#filterName').val(), true);
 			this.model.setDescription(this.$('#filterDescription').val(), true);
 
-			this.model.save().done(function(e){
+			this.model.save().done(function(){
 				self.modal.modal('hide');
 				app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.filterSaveOk);
 			})
@@ -86,7 +86,7 @@ define([
 				console.error(e);
 			})
 			.always(function () {
-				$(self.el).find("button[type=submit]").button('reset');
+				$(self.el).find('button[type=submit]').button('reset');
 			});
 		}
 
