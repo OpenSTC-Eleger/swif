@@ -35,7 +35,7 @@ define([
 			var self = this;
 
 
-			var currentModule = _.str.strLeft(Backbone.history.fragment, '/');
+			var currentModule = _.strLeft(Backbone.history.fragment, '/');
 			var currentUrl    = _.strLeft(_.strRight(Backbone.history.fragment, '/'), '/');
 
 
