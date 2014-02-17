@@ -247,7 +247,7 @@ define([
 		*/
 		services: function(search, sort, page){      
 
-			var params = this.setContext({search: search, sort : sort, page : page});
+			var params = this.setContext({search: search, sort: sort, page: page});
 
 			app.views.servicesListView = new ServicesListView(params);
 		},
@@ -258,7 +258,7 @@ define([
 		*/
 		users: function(search, sort, page){      
 
-			var params = this.setContext({search: search, sort : sort, page : page});
+			var params = this.setContext({search: search, sort: sort, page: page});
 
 			app.views.usersListView = new UsersListView(params);
 		},

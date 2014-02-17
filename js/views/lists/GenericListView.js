@@ -92,13 +92,19 @@ define([
 				});
 
 
-				// Advanced recording filters view //
-				app.views.recordFilterView = new RecordFilterView({
-					el            : '#savedFilters',
-					states        : childView.modelState,
-					metaDataModel : childView.metaDataModel,
-					listView      : childView
-				});
+
+				if(!_.isUndefined(childView.metaDataModel)){
+					
+					// Advanced recording filters view //
+					app.views.recordFilterView = new RecordFilterView({
+						el            : '#savedFilters',
+						states        : childView.modelState,
+						metaDataModel : childView.metaDataModel,
+						listView      : childView
+					});
+				}
+
+
 
 
 				// Rewrite the research in the form //
