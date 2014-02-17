@@ -1,6 +1,6 @@
 <% if(!_.isUndefined(states) || !_.isEmpty(myFilters) ||  !_.isEmpty(myFilters)) { %>
 
-	<% if(! _.isUndefined(states) && !_.isEmpty(myFilters) ) { %>
+	<% if(! _.isUndefined(states) || !_.isEmpty(preRecordedFilters) ) { %>
 	<li role="presentation" class="dropdown-header dropdown-header-lg"><%= lang.prerecoredFilters %></li>
 
 		<!-- Pre Recorded Filters -->
