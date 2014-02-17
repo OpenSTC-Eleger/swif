@@ -233,6 +233,13 @@ define([
 				this.fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, BookingModel.prototype.searchable_fields);
 			}
 			
+			//add filter for claimer to fetch only their own bookings
+			if(!app.current_user.isResaManager()){
+				this.fetchParams.data.filters  = _.toArray(this.fetchParams.data.filters);
+				this.fetchParams.data.filters.push({field: 'partner_id.address.id', operator:'in', value:app.current_user.get('contact_id')});			
+				this.fetchParams.data.filters = app.objectifyFilters(this.fetchParams.data.filters);
+			}
+			
 			//Add filter on recurrence selected
 			if(!_.isUndefined(this.options.recurrence)){
 				this.fetchParams.data.filters  = _.toArray(this.fetchParams.data.filters);
