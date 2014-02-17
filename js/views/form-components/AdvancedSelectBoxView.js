@@ -54,7 +54,7 @@ define([
 
 			// Check the Advance SelectBox need template //
 			if(!this.options.template){
-				this.select2 = $(this.el);	
+				this.select2 = $(this.el);
 			}
 
 
@@ -126,7 +126,7 @@ define([
 				// Create the advance Select Box
 				this.createAdvanceSelectBox();
 
-				
+
 				// Set data as Selected //
 				if(!_.isUndefined(this.select2.data('selected-value'))){
 					var selectedJSON = this.select2.data('selected-value');
@@ -155,7 +155,7 @@ define([
 			var select2Options = {
 				allowClear         : true,
 				placeholder        : this.options.placeholder,
-				multiple           : this.options.multiple, 
+				multiple           : this.options.multiple,
 				minimumInputLength : this.options.minimumInputLength,
 				sortResults: function(results, container, query) {
 
@@ -163,7 +163,7 @@ define([
 
 					// If no term was enter, results are Alphabetic //
 					if(_.isEmpty(query.term)){
-						sortResults = _.sortBy(results, function(result){ 
+						sortResults = _.sortBy(results, function(result){
 							return result.text;
 						});
 					}
@@ -185,7 +185,7 @@ define([
 					return sortResults;
 				},
 				containerCssClass: function(){
-					if(!_.isUndefined(self.select2.data('tag-large'))){ 
+					if(!_.isUndefined(self.select2.data('tag-large'))){
 						return 'tag-large';
 					}
 				}
@@ -198,7 +198,7 @@ define([
 
 					// SEARCH PARAMS //
 					var params = [];
-					
+
 					params.push({ field: 'name', operator: 'ilike', value: query.term });
 
 					// Set all the search params in the params for the query //
@@ -276,12 +276,12 @@ define([
 				};
 			}
 
-			
+
 			// Select2 Initialization //
 			this.select2.select2(select2Options);
 
 		},
-		
+
 		getItemText: function(item) {
 			if( ! _.isUndefined(item.complete_name)  && item.complete_name !== false) {
 				return item.complete_name;
@@ -328,8 +328,8 @@ define([
 
 			return returnId;
 		},
-		
-		
+
+
 
 		/** Get the value of the selected item
 		*/
@@ -352,7 +352,7 @@ define([
 			var returnIds = [];
 
 			if(!_.isEmpty(this.select2.select2('data'))){
-				
+
 				_.each(this.select2.select2('data'), function(item){
 					returnIds.push(item.id);
 				});
@@ -369,7 +369,7 @@ define([
 			var returnText = [];
 
 			if(!_.isEmpty(this.select2.select2('data'))){
-				
+
 				_.each(this.select2.select2('data'), function(item){
 					returnText.push(item.text);
 				});
@@ -385,7 +385,7 @@ define([
 			var vals = this.getSelectedItems();
 
 			if(!_.isEmpty(vals)){
-				
+
 				if(_.isUndefined(humanize)){
 					return vals;
 				}
@@ -444,7 +444,7 @@ define([
 
 			// Set the operator //
 			$(this.el).find('.dropdown-toggle').html(this.operators[operator].symbol);
-			
+
 			this.currentOperator = this.operators[operator];
 			this.select2.select2('open');
 		},
@@ -463,7 +463,7 @@ define([
 				case 'symbol':
 					returnVal = this.currentOperator.symbol;
 					break;
-				default: 
+				default:
 					returnVal = this.currentOperator.label;
 			}
 

@@ -1,12 +1,12 @@
 define([
 	'app',
-	
+
 	'metaDataModel',
 	'filterModel',
 
 	'advanceSearchView',
 	'recordFilterView'
-	
+
 ], function(app, MetaDataModel, FilterModel, AdvanceSearchView, RecordFilterView){
 
 	'use strict';
@@ -94,7 +94,7 @@ define([
 
 
 				if(!_.isUndefined(childView.metaDataModel)){
-					
+
 					// Advanced recording filters view //
 					app.views.recordFilterView = new RecordFilterView({
 						el            : '#savedFilters',
@@ -131,7 +131,7 @@ define([
 		search: function(e){
 			e.preventDefault();
 
-		
+
 			var query = $(this.searchForm).val();
 
 			// Check if the query is valid //
@@ -143,7 +143,7 @@ define([
 				else{
 					this.options.search = query;
 				}
-				
+
 				// Delete parameters //
 				delete this.options.page;
 
@@ -271,7 +271,7 @@ define([
 					result = false;
 				}
 			});
-		
+
 			return result;
 		},
 
@@ -286,13 +286,13 @@ define([
 			else{
 				this.options.filter = jsonFilters;
 			}
-			
+
 			// Delete parameters //
 			delete this.options.page;
 			delete this.options.search;
 
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-			
+
 		},
 
 
@@ -355,7 +355,7 @@ define([
 
 
 		/** Render recording filters view
-		*/	
+		*/
 		displayRecordFilters: function(){
 			app.views.recordFilterView.render();
 		},
@@ -369,7 +369,7 @@ define([
 
 			var deferred = $.Deferred();
 
-			//Resolve if there is not filter 
+			//Resolve if there is not filter
 			if (_.isUndefined( this.options.filter ) ){
 				return deferred.resolve();
 			}
@@ -377,9 +377,9 @@ define([
 			//Parse filter
 			var filter = JSON.parse(this.options.filter);
 			filter = parseInt(filter);
-			
+
 			if( _.isNaN(filter)){
-				//Resolve if filter is not a recording filter 
+				//Resolve if filter is not a recording filter
 				deferred.resolve();
 			}
 			else{
@@ -393,7 +393,7 @@ define([
 			return deferred;
 		}
 
-		
+
 
 	});
 

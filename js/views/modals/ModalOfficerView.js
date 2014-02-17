@@ -4,7 +4,7 @@ define([
 	'officersCollection',
 	'stcGroupsCollection',
 	'claimersServicesCollection',
-	
+
 	'genericModalView',
 	'advancedSelectBoxView'
 
@@ -12,7 +12,7 @@ define([
 
 	'use strict';
 
-		
+
 
 	/******************************************
 	* Officer Modal View
@@ -27,8 +27,8 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'submit #formSaveOfficer'     : 'saveOfficer'
-			}, 
+				'submit #formSaveOfficer'   : 'saveOfficer'
+			},
 				GenericModalView.prototype.events
 			);
 		},
@@ -39,9 +39,9 @@ define([
 		*/
 		initialize : function(params) {
 			this.options = params;
-	
+
 			var self = this;
-	
+
 			this.modal = $(this.el);
 
 
@@ -58,7 +58,7 @@ define([
 					self.render();
 				});
 			}
-	
+
 		},
 
 
@@ -67,12 +67,12 @@ define([
 		*/
 		render : function(loader) {
 			var self = this;
-	
-	
-			// Retrieve the template // 
+
+
+			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
-	
-	
+
+
 				var template = _.template(templateData, {
 					lang    : app.lang,
 					officer : self.model,
@@ -83,27 +83,27 @@ define([
 
 
 				self.modal.html(template);
-	
+
 				if(!loader){
 					// Advance Select List View //
 					app.views.advancedSelectBoxOfficerGroupView = new AdvancedSelectBoxView({el: $('#officerGroup'), url: StcGroupsCollection.prototype.url });
 					app.views.advancedSelectBoxOfficerGroupView.setSearchParam({ field: 'name', operator: 'ilike', value: 'openstc' }, true);
 					app.views.advancedSelectBoxOfficerGroupView.render();
-					
+
 					app.views.advancedSelectBoxResaGroupView = new AdvancedSelectBoxView({el: $('#resaGroup'), url: StcGroupsCollection.prototype.url });
 					app.views.advancedSelectBoxResaGroupView.setSearchParam({ field: 'name', operator: 'ilike', value: 'openresa' }, true);
 					app.views.advancedSelectBoxResaGroupView.render();
-	
+
 					app.views.advancedSelectBoxOfficerServiceView = new AdvancedSelectBoxView({el: $('#officerService'), url: ClaimersServicesCollection.prototype.url });
 					app.views.advancedSelectBoxOfficerServiceView.render();
-	
+
 					app.views.advancedSelectBoxOfficerServicesView = new AdvancedSelectBoxView({el: $('#officerOtherServices'), url: ClaimersServicesCollection.prototype.url });
 					app.views.advancedSelectBoxOfficerServicesView.render();
 				}
-	
+
 				self.modal.modal('show');
 			});
-	
+
 			return this;
 		},
 
@@ -113,20 +113,20 @@ define([
 		*/
 		saveOfficer: function(e){
 			e.preventDefault();
-	
+
 			var self = this;
-	
+
 			// Set the button in loading State //
 			$(this.el).find('button[type=submit]').button('loading');
-	
-	
+
+
 			var params = {
 				firstname   : $('#officerFirstname').val(),
 				name        : $('#officerName').val(),
 				user_email  : $('#officerEmail').val(),
 				groups_id   : [[6, 0, [app.views.advancedSelectBoxOfficerGroupView.getSelectedItem() , app.views.advancedSelectBoxResaGroupView.getSelectedItem() ]]],
 				service_id  : app.views.advancedSelectBoxOfficerServiceView.getSelectedItem(),
-				
+
 			};
 
 			if(!_.isEmpty(app.views.advancedSelectBoxOfficerServicesView.getSelectedItems())){
@@ -143,7 +143,7 @@ define([
 			this.model.save(params, {silent: true, patch: !self.model.isNew()})
 				.done(function(data) {
 					self.modal.modal('hide');
-	
+
 					// Create mode //
 					if(self.model.isNew()) {
 						self.model.setId(data);
@@ -163,7 +163,7 @@ define([
 					$(self.el).find('button[type=submit]').button('reset');
 				});
 		}
-	
+
 	});
 
 	return ModalOfficerView;

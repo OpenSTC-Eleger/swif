@@ -1,8 +1,8 @@
-define([	
-	
+define([
+
 	'app',
 	'filterModel'
-	
+
 ], function(app, FilterModel){
 
 	'use strict';
@@ -12,17 +12,17 @@ define([
 	* Recording filter view
 	*/
 	var FilterView = Backbone.View.extend({
-		
+
 		templateHTML   : 'templates/others/recordFilter.html',
-		
+
 		components : [],
-		
+
 		filters    : [],
-		
+
 		//Static variables uses to build url
 		URL_CTXT    : '/filter/',
 		SLASH_CHAR	: '/',
-		
+
 		// The DOM events //
 		events: {
 			'click a.disabled'               : 'preventDefault',
@@ -33,15 +33,15 @@ define([
 
 		/** View Initialization
 		*/
-		initialize: function(options){	
-			
+		initialize: function(options){
+
 			//init view parameters
 			this.el = options.el;
 			this.metaDataModel = options.metaDataModel;
 			this.states = options.states;
 			this.listView = options.listView;
 
-			//prepares variables to construct url filter in template	
+			//prepares variables to construct url filter in template
 			this.prepareUrls();
 
 			//Fetch meta model
@@ -54,13 +54,13 @@ define([
 		*/
 		render: function(){
 			var self = this;
-			
+
 			//After get filters render view
 			this.initFilters().done(function(){
 
 				// Retrieve the template //
 				$.get(self.templateHTML, function(templateData){
-					
+
 					self.buildUrls();
 
 
@@ -76,7 +76,7 @@ define([
 						preRecordedFilters : filtersArray[0],
 						myFilters          : filtersArray[1]
 					});
-				
+
 					$(self.el).html(template);
 
 					// Tooltip for the filter description //
@@ -90,7 +90,7 @@ define([
 
 			return this;
 		},
-		
+
 
 
 		/** Get recording filters for model
@@ -100,7 +100,7 @@ define([
 		},
 
 
-		
+
 		/** Init Urls varaiables using to buils url filters in templates
 		*/
 		prepareUrls: function(){
@@ -114,7 +114,7 @@ define([
 				this.urlRightPart = _(this.urlArray[1]).strRight(this.SLASH_CHAR);
 				var filter = parseInt(this.urlArray[1][0]);
 				if( _.isNaN(filter) ) {
-					this.urlRightPart = this.SLASH_CHAR + this.urlRightPart;				
+					this.urlRightPart = this.SLASH_CHAR + this.urlRightPart;
 				}
 				else{
 					if( _.str.include(this.urlRightPart,this.SLASH_CHAR) ){
@@ -128,12 +128,12 @@ define([
 		},
 
 
-		
+
 		/** Builds url for each filters in template
 		*/
 		buildUrls: function() {
 			this.filters = [];
-			
+
 			var self = this;
 			_.each(self.metaDataModel.getFilters(),function(f){
 				if ( !_.isNull( self.urlRightPart ) ) {
@@ -153,9 +153,9 @@ define([
 		filterByState: function(e){
 			e.preventDefault();
 
-			var state = _(e.currentTarget.href).strRight('_');		
+			var state = _(e.currentTarget.href).strRight('_');
 			var filters = [{field: 'state', operator: 'in', value: [state] }];
-			
+
 			this.listView.applyAdvancedFilters(filters);
 		},
 
@@ -177,7 +177,7 @@ define([
 			filterModel.setName(filterModels[0].name);
 			filterModel.setId(filterModels[0].id);
 
-			
+
 			// Delete the Model //
 			filterModel.destroy()
 			.done(function(){
@@ -186,7 +186,7 @@ define([
 			.fail(function(){
 				app.notify('', 'error', app.lang.errorMessages.unablePerformAction, '');
 			});
-			
+
 		},
 
 

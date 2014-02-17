@@ -26,18 +26,18 @@ define([
 		getId: function(){
 			return this.get('id');
 		},
-		
+
 		setId: function(value){
 			this.set({ id: value });
 		},
-		
+
 		getName : function() {
 			return this.get('name');
 		},
 		setName : function(value) {
 			this.set({ name: value });
 		},
-		
+
 		getTypeId : function() {
 			return this.get('type_id');
 		},
@@ -51,8 +51,8 @@ define([
 
 				var val;
 
-				switch (type){ 
-					case 'id': 
+				switch (type){
+					case 'id':
 						val = this.get('technical_service_id')[0];
 						break;
 					case 'json':
@@ -76,8 +76,8 @@ define([
 			if(this.get('technical_site_id')){
 
 				var val;
-				switch (type){ 
-					case 'id': 
+				switch (type){
+					case 'id':
 						val = this.get('technical_site_id')[0];
 						break;
 					case 'json':
@@ -107,7 +107,7 @@ define([
 
 		getAddresses: function () {
 			var collection = new ClaimersContactsCollection();
-			
+
 			collection.fetch({
 				data   : {filters: {0: {field: 'partner_id.id', operator: '=', value: this.get('id')}}},
 				reset : true

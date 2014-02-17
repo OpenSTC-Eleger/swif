@@ -47,7 +47,7 @@ define([
 			app.router.setPageTitle(app.lang.viewsTitles.usersList);
 
 
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get('templates/' + this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang    : app.lang,
@@ -68,7 +68,7 @@ define([
 
 
 				// Pagination view //
-				app.views.paginationView = new PaginationView({ 
+				app.views.paginationView = new PaginationView({
 					page       : self.options.page.page,
 					collection : self.collection
 				});
@@ -96,7 +96,7 @@ define([
 				this.options.sort = this.collection.default_sort;
 			}
 			else{
-				this.options.sort = AppHelpers.calculPageSort(this.options.sort);	
+				this.options.sort = AppHelpers.calculPageSort(this.options.sort);
 			}
 			this.options.page = AppHelpers.calculPageOffset(this.options.page);
 

@@ -12,8 +12,8 @@ requirejs.config({
 		jquery                : 'js/libs/jQuery-2.1.0-min',
 		printElement          : 'js/libs/jquery.printElement-2.0.0',
 		underscore            : 'js/libs/underscore-1.6.0-min',
-		backbone              : 'js/libs/backbone-1.1.0',
-		
+		backbone              : 'js/libs/backbone-1.1.1-min',
+
 		jqueryui              : 'js/libs/jquery-ui-1.10.3.custom.min',
 		datatables	  		  :	'js/libs/jquery-dataTables-1.9.4-min',
 		moment                : 'js/libs/moment-2.5.0-min',
@@ -120,7 +120,7 @@ requirejs.config({
 		equipmentsListView      : 'js/views/lists/EquipmentsListView',
 		usersListView           : 'js/views/lists/UsersListView',
 
-		// Items //		
+		// Items //
 		itemPlaceView           : 'js/views/items/ItemPlaceView',
 		claimerView             : 'js/views/items/ClaimerView',
 		itemTeamView            : 'js/views/items/ItemTeamView',
@@ -167,14 +167,6 @@ requirejs.config({
 	],
 
 	shim: {
-		'backbone': {
-			deps   : ['jqueryui', 'underscore', 'underscore.string'],
-			exports: 'Backbone',
-			init : function(JQuery, _, UnderscoreString){
-				_.str = UnderscoreString;
-				_.mixin(_.str.exports());
-			}
-		},
 		'nprogress': {
 			deps   : ['jquery'],
 			exports: 'NProgress'
@@ -193,7 +185,7 @@ requirejs.config({
 		},
 		'bsSwitch': {
 			deps   : ['jquery'],
-			exports: 'bsSwitch'	
+			exports: 'bsSwitch'
 		},
 		'select2-lang': {
 			deps   : ['jquery', 'select2'],
@@ -231,8 +223,11 @@ requirejs.config({
 * Start The App
 */
 require([
-	'main', 'less'
-], function(main){
+	'main', 'underscore', 'underscore.string', 'less'
+], function(main, _, _s){
+
+	_.str = _s;
+	_.mixin(_.str.exports());
 
 	main.init('fr');
 

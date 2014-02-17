@@ -4,9 +4,9 @@
 define('app', [
 
 	// Load our app module and pass it to our definition function
-	'backbone', 'nprogress', 'pnotify', 'bootstrap'
+	'jquery', 'backbone', 'nprogress', 'pnotify', 'bootstrap'
 
-], function(Backbone, NProgress){
+], function($, Backbone, NProgress){
 
 	'use strict';
 
@@ -51,7 +51,7 @@ define('app', [
 				headers: {Authorization: 'Token token=' + app.current_user.getAuthToken()},
 				beforeSend: function(){
 					window.ajaxRequest++;
-					
+
 					if(!NProgress.isStarted()){ NProgress.start(); }
 				},
 				complete: function(){
@@ -91,7 +91,7 @@ define('app', [
 
 			switch(action){
 				case 'display':
-					if(_.isUndefined(message)){ 
+					if(_.isUndefined(message)){
 						$('#loaderMessage').html(app.lang.loadingInProgress);
 					}
 					else{

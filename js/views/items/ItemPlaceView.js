@@ -66,7 +66,7 @@ define([
 			});
 
 			app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.placeDeleteOk);
-			
+
 		},
 
 
@@ -76,7 +76,7 @@ define([
 		render : function() {
 			var self = this;
 
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
@@ -97,7 +97,7 @@ define([
 
 		/** Display Modal form to add/sav a new place
 		*/
-		modalUpdatePlace: function(e){  
+		modalUpdatePlace: function(e){
 			e.preventDefault();
 			e.stopPropagation();
 

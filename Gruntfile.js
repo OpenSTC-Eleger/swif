@@ -59,10 +59,17 @@ module.exports = function(grunt) {
 				unused       : true,
 				quotmark     : 'single',
 				indent       : 4,
+				undef        : true,
+				noempty      : true,
 				freeze       : true,
 				curly        : true,
 				latedef      : true,
-				maxcomplexity: 15
+				maxcomplexity: 15,
+				trailing     : true,
+				browser      : true,
+				jquery       : true,
+				devel        : true,
+				globals      : { 'module': false, 'require': false, 'define': false, '_': false, 'Backbone': false }
 			},
 			gruntfile: {
 				src: ['Gruntfile.js']
@@ -77,15 +84,15 @@ module.exports = function(grunt) {
 				src: ['js/**/*.js', '!js/libs/*', '!js/i18n/*']
 			},
 			scripts_inter: {
-				src: ['app-interventions/js/**/*.js', 'app-interventions/main.js']
+				//src: ['app-interventions/js/**/*.js', 'app-interventions/main.js']
 			},
 			scripts_resa: {
-				src: ['app-reservations/js/**/*.js', 'app-reservations/main.js']
+				//src: ['app-reservations/js/**/*.js', 'app-reservations/main.js']
 			},
 
 		},
 
-		// Check Style JS File 
+		// Check Style JS File
 		jscs: {
 			options: {
 				'disallowKeywords'                        : ['with'],

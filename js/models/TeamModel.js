@@ -21,11 +21,11 @@ define([
 
 
 		getManager : function(type) {
-			
+
 			var returnVal;
 
-			switch (type){ 
-				case 'id': 
+			switch (type){
+				case 'id':
 					returnVal = this.get('manager_id')[0];
 					break;
 				case 'json':
@@ -46,10 +46,10 @@ define([
 
 			_.each(this.get('user_names'), function(s){
 				switch (type){
-					case 'id': 
+					case 'id':
 						teamMembers.push(s[0]);
 						break;
-					case 'json': 
+					case 'json':
 						teamMembers.push({id: s[0], name: s[1]});
 						break;
 					default:
@@ -75,10 +75,10 @@ define([
 
 			_.each(this.get('service_names'), function(s){
 				switch (type){
-					case 'id': 
+					case 'id':
 						teamServices.push(s[0]);
 						break;
-					case 'json': 
+					case 'json':
 						teamServices.push({id: s[0], name: s[1]});
 						break;
 					default:
@@ -97,7 +97,7 @@ define([
 			this.set({ service_ids : [[6, 0, value]] }, {silent: silent});
 		},
 
-		
+
 		/** Get Informations of the model
 		*/
 		getInformations : function(){

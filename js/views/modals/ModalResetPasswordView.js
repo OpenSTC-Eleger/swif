@@ -2,7 +2,7 @@ define([
 	'app',
 
 	'genericModalView',
-	
+
 
 ], function(app, GenericModalView){
 
@@ -23,10 +23,10 @@ define([
 		events: function(){
 			return _.defaults({
 				'submit #formResetPassword'        : 'resetPassword',
-				
+
 				'mousedown #toggleDisplayPassword' : 'displayPassword',
 				'mouseup #toggleDisplayPassword'   : 'hidePassword'
-			}, 
+			},
 				GenericModalView.prototype.events
 			);
 		},
@@ -51,7 +51,7 @@ define([
 			var self = this;
 
 
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
@@ -101,9 +101,6 @@ define([
 						$(self.el).find('button[type=submit]').button('reset');
 					});
 			}
-			else{
-
-			}
 		},
 
 
@@ -114,7 +111,7 @@ define([
 
 			if(this.checkPasswordRules() && this.checkPasswordsMatch()){
 				return true;
-			} 
+			}
 			else{
 				return false;
 			}

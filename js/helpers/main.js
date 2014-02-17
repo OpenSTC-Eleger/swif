@@ -2,9 +2,9 @@ define('appHelpers', [
 
 	'app',
 	'userModel',
-	
+
 	'filterModel',
-	
+
 	'moment-timezone',
 	'moment-timezone-data'
 
@@ -58,13 +58,13 @@ define('appHelpers', [
 					date = _(minutes).toNumber()+app.lang.minuteShort;
 				}
 				else{
-					date = hour+'h'+_(minutes).toNumber();    
+					date = hour+'h'+_(minutes).toNumber();
 				}
 			}
 			else{
 				date = decimalNumber+'h';
 			}
-			
+
 			return date;
 		},
 
@@ -116,7 +116,7 @@ define('appHelpers', [
 				return !isNaN(parseFloat(n)) && isFinite(n);
 			}
 
-			
+
 			// Convert Field Filters //
 			function convertFieldFilters(fieldsFilters) {
 				var convertedFilters = [];
@@ -157,7 +157,7 @@ define('appHelpers', [
 				if (_.size(filteredAndConvertedFilters) > 1) {
 					_.each(filteredAndConvertedFilters, function (item) {
 						var term;
-						
+
 						if (item.type == '=' && isNumber(searchQuery.search)) {
 							term = _(searchQuery.search).toNumber();
 						} else {
@@ -170,8 +170,8 @@ define('appHelpers', [
 					search.push( buildFilterObject(filteredAndConvertedFilters[0].key,filteredAndConvertedFilters[0].type,searchQuery.search));
 				}
 			}
-			
-			if (!_.isUndefined(searchQuery.filter) && !_.isNumber(searchQuery.filter)) {			
+
+			if (!_.isUndefined(searchQuery.filter) && !_.isNumber(searchQuery.filter)) {
 				_.each(searchQuery.filter, function (item) {
 					if( item.field == 'state' ) {
 						search.push(buildFilterObject(item.field,item.operator,item.value));
@@ -186,14 +186,14 @@ define('appHelpers', [
 			}
 			return app.objectifyFilters(search);
 		},
-		
+
 
 
 		/**
 		 * Get filter by field name
 		 * @param JSONfilters : filters, ex : [{"field":"user_id","operator":"in","value":[278]}, {"field":"name","operator":"ilike","value":"name"}]
 		 * @param field : field name key, ex : "user_id"
-		 * @return json value, ex for "user_id"	: {"field":"user_id","operator":"in","value":[278]}	
+		 * @return json value, ex for "user_id"	: {"field":"user_id","operator":"in","value":[278]}
 		 */
 		getFilterValue: function(filters, field) {
 			if(_.isUndefined(filters)){
@@ -205,7 +205,7 @@ define('appHelpers', [
 					filters = JSON.parse(filters);
 				}
 				catch(e){
-					console.log('Filter is an object, not a JSON');
+					console.error('Filter is an object, not a JSON');
 				}
 
 				return _.find(filters, function(f){
@@ -223,7 +223,7 @@ define('appHelpers', [
 			$('.form-group').removeClass('has-error');
 			$('.help-block').html('');
 			$('#'+fieldId).html(app.lang.errorMessages[message]);
-			
+
 
 			$('#'+fieldId).html(app.lang.errorMessages[message]);
 			$('#'+fieldId).parents('.form-group').addClass('has-error');

@@ -19,15 +19,15 @@ define([
 	* Equipments List View
 	*/
 	var EquipmentsListView = GenericListView.extend({
-		
+
 		templateHTML: 'templates/lists/equipmentsList.html',
-		
+
 
 		// The DOM events //
 		events: function(){
 			return _.defaults({
 				'click a.modalAddEquipment'  : 'modalCreateEquipment',
-			}, 
+			},
 				GenericListView.prototype.events
 			);
 		},
@@ -60,13 +60,13 @@ define([
 			var itemEquipmentView  = new ItemEquipmentView({ model: model });
 			$('#row-items').prepend(itemEquipmentView.render().el);
 			AppHelpers.highlight($(itemEquipmentView.el));
-			
+
 			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.equipmentCreateOk);
 			this.partialRender();
 		},
 
 
-		
+
 		/** Display the view
 		*/
 		render: function () {
@@ -76,7 +76,7 @@ define([
 			app.router.setPageTitle(app.lang.viewsTitles.equipmentsList);
 
 
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang        : app.lang,
@@ -88,24 +88,24 @@ define([
 				// Call the render Generic View //
 				GenericListView.prototype.render(self);
 
-				
+
 				//create ItemView for each equipment in the collection
 				_.each(self.collection.models, function(equipment){
 					var itemEquipmentView  = new ItemEquipmentView({model: equipment});
 					$('#row-items').append(itemEquipmentView.render().el);
 				});
-				
-				
+
+
 				// Pagination view //
-				app.views.paginationView = new PaginationView({ 
+				app.views.paginationView = new PaginationView({
 					page       : self.options.page.page,
 					collection : self.collection
 				});
-				
+
 			});
 
 			$(this.el).hide().fadeIn();
-			
+
 			return this;
 		},
 
@@ -114,7 +114,7 @@ define([
 		/** Partial Render of the view
 		*/
 		partialRender: function() {
-			var self = this; 
+			var self = this;
 
 			this.collection.count(this.fetchParams).done(function(){
 				$('#badgeNbEquipments').html(self.collection.cpt);
@@ -135,19 +135,19 @@ define([
 		},
 
 
-		
+
 		initCollection: function(){
 			var self = this;
 
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new EquipmentsCollection(); }
-			
+
 			// Check the parameters //
 			if(_.isUndefined(this.options.sort)){
 				this.options.sort = this.collection.default_sort;
 			}
 			else{
-				this.options.sort = AppHelpers.calculPageSort(this.options.sort);	
+				this.options.sort = AppHelpers.calculPageSort(this.options.sort);
 			}
 			this.options.page = AppHelpers.calculPageOffset(this.options.page);
 
@@ -165,12 +165,12 @@ define([
 			if(!_.isUndefined(this.options.search)){
 				this.fetchParams.data.filters = AppHelpers.calculSearch({search: this.options.search }, EquipmentModel.prototype.searchable_fields);
 			}
-			
+
 			return $.when(self.collection.fetch(this.fetchParams))
 				.fail(function(e){
 					console.log(e);
 				});
-			
+
 		}
 
 	});

@@ -44,13 +44,13 @@ define([
 
 			// if the user is associated to an Organization, retrieve it //
 			if(!_.isEmpty(this.model.getServices())){
-				this.render();				
+				this.render();
 			}
 			else{
 				this.getOrganization().done(function(data, result){
 					self.model.attributes.organization = result[0][0];
 					self.render();
-				}); 
+				});
 			}
 		},
 
@@ -69,7 +69,7 @@ define([
 		render : function() {
 			var self = this;
 
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
@@ -117,7 +117,7 @@ define([
 			};
 
 			return m.fetch(fetchParams).done(function(){
-				
+
 			});
 		}
 

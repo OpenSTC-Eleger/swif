@@ -1,5 +1,5 @@
 define([
-	'app', 
+	'app',
 
 	'genericCollection',
 	'requestModel'
