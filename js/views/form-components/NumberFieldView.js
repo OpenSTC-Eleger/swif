@@ -10,15 +10,15 @@ define([
 	* Number Field View
 	*/
 	var NumberFieldView = Backbone.View.extend({
-		
+
 		tagName      : 'div',
-	
+
 		className    : 'form-group',
-		
+
 		templateHTML : 'templates/form-components/inputNumber.html',
 
 		input        : null,
-		
+
 		operators    : {
 			egal   : { key: '=', symbol: '=' },
 			lower  : { key: '<', symbol: '&lt;' },
@@ -98,7 +98,7 @@ define([
 
 		},
 
-		/** Set the value 
+		/** Set the value
 		*/
 		setValue: function(value){
 			this.input.val(value);
@@ -123,7 +123,7 @@ define([
 
 			// Set the operator //
 			$(this.el).find('.dropdown-toggle').html(this.operators[operator].symbol);
-			
+
 			this.currentOperator = this.operators[operator];
 			this.input.focus();
 		},
@@ -142,7 +142,7 @@ define([
 				case 'symbol':
 					returnVal = this.currentOperator.symbol;
 					break;
-				default: 
+				default:
 					returnVal = this.currentOperator.label;
 			}
 

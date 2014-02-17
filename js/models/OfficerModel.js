@@ -27,14 +27,8 @@ define([
 
 
 		searchable_fields: [
-			{
-				key  : 'complete_name',
-				type : 'text'
-			},
-			{
-				key  : 'login',
-				type : 'text'
-			}
+			{ key: 'complete_name', type: 'text' },
+			{ key: 'login', type: 'text' }
 		],
 
 
@@ -88,7 +82,7 @@ define([
 		getLastConnection: function() {
 			return this.get('date');
 		},
-		
+
 		// Group Name //
 		setGroupSTC : function(value) {
 			this.set({ current_group : value });
@@ -97,8 +91,8 @@ define([
 
 			var returnVal;
 
-			switch (type){ 
-				case 'id': 
+			switch (type){
+				case 'id':
 					returnVal = this.get('current_group')[0];
 					break;
 				case 'json':
@@ -110,13 +104,13 @@ define([
 
 			return returnVal;
 		},
-		
+
 		getGroupResa : function(type) {
 
 			var returnVal;
 
-			switch (type){ 
-				case 'id': 
+			switch (type){
+				case 'id':
 					returnVal = this.get('openresa_group')[0];
 					break;
 				case 'json':
@@ -135,10 +129,10 @@ define([
 
 			_.each(this.get('service_names'), function(s){
 				switch (type){
-					case 'id': 
+					case 'id':
 						placeServices.push(s[0]);
 						break;
-					case 'json': 
+					case 'json':
 						placeServices.push({id: s[0], name: s[1]});
 						break;
 					default:
@@ -161,8 +155,8 @@ define([
 
 			var returnVal;
 
-			switch (type){ 
-				case 'id': 
+			switch (type){
+				case 'id':
 					returnVal = this.get('service_id')[0];
 					break;
 				case 'json':
@@ -175,9 +169,9 @@ define([
 			return returnVal;
 		},
 
-		// Teams ID// 
+		// Teams ID//
 		getTeamsInArray: function(){
-			jsonTeamId = this.get('team_ids');
+			var jsonTeamId = this.get('team_ids');
 
 			var officerTeams = [];
 			_.each(jsonTeamId.models, function(item){
@@ -186,7 +180,7 @@ define([
 
 			return officerTeams;
 		},
-		
+
 		isDST: function() {
 			return this.get('isDST');
 		},

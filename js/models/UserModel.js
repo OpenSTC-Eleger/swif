@@ -27,7 +27,7 @@ define([
 			//console.log('User initialize: ' + this.getLogin());
 		},
 
-		
+
 		//method to retrieve attribute with standard return form
 		getAttribute: function(key,default_value){
 			var val = this.get(key);
@@ -41,14 +41,14 @@ define([
 				return default_value;
 			}
 		},
-	
+
 		getUID : function() {
 			return this.get('uid');
 		},
 		setUID : function(value) {
 			this.set({ uid : value });
 		},
-		
+
 		getGroups : function() {
 			return this.get('groupsID');
 		},
@@ -116,22 +116,22 @@ define([
 		setAuthToken : function(value) {
 			this.set({ authToken : value });
 		},
-		
+
 		getService : function() {
 			return this.get('service_id');
 		},
 		setService : function(value) {
 			this.set({ service_id : value });
 		},
-		
+
 		getOfficers: function() {
 			return this.get('officers');
 		},
 
 		setOfficers : function(value) {
 			this.set({ officers : value });
-		},	
-		
+		},
+
 		getTeams: function() {
 			return this.get('teams');
 
@@ -143,7 +143,7 @@ define([
 		getContact : function() {
 			return this.get('contact_id');
 		},
-		
+
 		fetchContactAndClaimer: function(ret){
 			var contact_ids = this.getAttribute('contact_id',[]);
 			var deferred = $.Deferred();
@@ -162,7 +162,7 @@ define([
 			}
 			return deferred;
 		},
-		
+
 		setContact : function(value) {
 			this.set({ contact_id : value });
 		},
@@ -173,38 +173,38 @@ define([
 		setServices : function(value) {
 			this.set({ service_ids : value });
 		},
-		
+
 		getContext : function() {
 			return this.get('context');
 		},
 		setContext : function(value) {
 			this.set({ context : value });
 		},
-		
+
 		isManager: function() {
 			return this.get('isManager');
 		},
-		
+
 		setManager: function(value) {
 			this.set({ isManager : value });
 		},
-		
+
 		isDST: function() {
 			return this.get('isDST');
 		},
-		
+
 		isResaManager: function() {
 			return this.get('isResaManager');
 		},
-		
+
 		setDST: function(value) {
 			this.set({ isDST : value });
 		},
-		
+
 		setResaManager: function(value) {
 			this.set({ isResaManager : value });
 		},
-		
+
 		/** Get Officer By Id
 		*/
 		getOfficerById: function(id){
@@ -216,7 +216,7 @@ define([
 		setMenu: function (menu) {
 			this.set({menu: menu});
 		},
-		
+
 		/** Get officer's teams list selected in planning
 		*/
 		getOfficerIdsByTeamId: function(id) {
@@ -228,13 +228,13 @@ define([
 			if(_.isUndefined(team)){
 				return officers;
 			}
-			
-			_.each(team.members, function(member){			
+
+			_.each(team.members, function(member){
 				officers.push(member.id);
 			});
-			return officers;	
+			return officers;
 		},
-		
+
 		/** Get Officer By Id
 		*/
 		getTeamById: function(id){

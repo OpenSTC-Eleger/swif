@@ -142,7 +142,7 @@ define([
 				this.navigate(app.routes.login.url, {trigger: true, replace: true});
 			}
 			else{
-				
+
 				// Redirect to the firt Menu page //
 
 				var userMenus = app.current_user.getMenus();
@@ -217,7 +217,7 @@ define([
 				this.notFound();
 			}
 		},
-		
+
 		/** Load The Bookings Module
 		*/
 		loadAppReservations: function(){
@@ -245,25 +245,25 @@ define([
 
 		/** Services management
 		*/
-		services: function(search, sort, page){      
+		services: function(search, sort, page){
 
 			var params = this.setContext({search: search, sort: sort, page: page});
 
 			app.views.servicesListView = new ServicesListView(params);
 		},
-		
+
 
 
 		/** Services management
 		*/
-		users: function(search, sort, page){      
+		users: function(search, sort, page){
 
 			var params = this.setContext({search: search, sort: sort, page: page});
 
 			app.views.usersListView = new UsersListView(params);
 		},
 
-		
+
 
 		/** Teams List
 		*/
@@ -307,5 +307,5 @@ define([
 	});
 
 	return router;
-	
+
 });

@@ -1,8 +1,10 @@
 define([
+	'app',
+
 	'genericCollection',
 	'placeModel'
 
-], function(GenericCollection, PlaceModel){
+], function(app, GenericCollection, PlaceModel){
 
 	'use strict';
 
@@ -20,7 +22,7 @@ define([
 
 		default_sort : { by: 'name', order: 'ASC' },
 
-		advanced_searchable_fields: [ 
+		advanced_searchable_fields: [
 			{ key: 'surface' }
 		],
 

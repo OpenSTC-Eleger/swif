@@ -15,7 +15,7 @@ define([
 
 		templateHTML : 'templates/others/about.html',
 
-		
+
 
 		/** View Initialization
 		*/
@@ -33,12 +33,12 @@ define([
 			// Change the page title //
 			app.router.setPageTitle(app.lang.viewsTitles.about);
 
-			
-			// Retrieve the Login template // 
+
+			// Retrieve the Login template //
 			$.get(this.templateHTML, function(templateData){
-			 
+
 				var template = _.template(templateData, {
-					lang   : app.lang, 
+					lang   : app.lang,
 					version: app.properties.version
 				});
 
@@ -50,7 +50,7 @@ define([
 			return this;
 		}
 
-	 
+
 	});
 
 	return AboutView;

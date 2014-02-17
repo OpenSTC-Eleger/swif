@@ -125,8 +125,8 @@ define([
 			e.preventDefault();
 			var modelJSON = this.view.metaDataModel.toJSON();
 
-			var filter = new FilterModel({ 
-				domain   : JSON.stringify(this.getDomain()), 
+			var filter = new FilterModel({
+				domain   : JSON.stringify(this.getDomain()),
 				user_id  : app.current_user.getUID(),
 				model_id : modelJSON.model
 			});

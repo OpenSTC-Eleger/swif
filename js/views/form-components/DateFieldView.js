@@ -14,15 +14,15 @@ define([
 	* Date Field View
 	*/
 	var InputFieldView = Backbone.View.extend({
-		
+
 		tagName      : 'div',
-	
+
 		className    : 'form-group',
-		
+
 		templateHTML : 'templates/form-components/inputDate.html',
 
 		input        : null,
-		
+
 		operators    : {
 			egal   : { key: '=', symbol: '=' },
 			before : { key: '<', symbol: '&lt;' },
@@ -106,11 +106,11 @@ define([
 			}
 			else{
 				return null;
-			}				
+			}
 
 		},
 
-		/** Set the value 
+		/** Set the value
 		*/
 		setValue: function(value){
 			this.input.val(moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY'));
@@ -135,7 +135,7 @@ define([
 
 			// Set the operator //
 			$(this.el).find('.dropdown-toggle').html(this.operators[operator].symbol);
-			
+
 			this.currentOperator = this.operators[operator];
 			this.input.focus();
 		},
@@ -154,7 +154,7 @@ define([
 				case 'symbol':
 					returnVal = this.currentOperator.symbol;
 					break;
-				default: 
+				default:
 					returnVal = this.currentOperator.label;
 			}
 

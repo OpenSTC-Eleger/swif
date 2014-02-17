@@ -7,7 +7,7 @@ define([
 
 	'genericModalView',
 	'advancedSelectBoxView'
-	
+
 
 ], function(app, TeamModel, TeamsCollection, OfficersCollection, GenericModalView, AdvancedSelectBoxView){
 
@@ -28,7 +28,7 @@ define([
 		events: function(){
 			return _.defaults({
 				'submit #formSaveTeam'   : 'saveTeam'
-			}, 
+			},
 				GenericModalView.prototype.events
 			);
 		},
@@ -39,10 +39,10 @@ define([
 		*/
 		initialize : function(params) {
 			this.options = params;
-		
+
 			this.modal = $(this.el);
 
-			
+
 			// Check if it's a create or an update //
 			if(_.isUndefined(this.model)){
 				this.model = new TeamModel();
@@ -59,7 +59,7 @@ define([
 			var self = this;
 
 
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {

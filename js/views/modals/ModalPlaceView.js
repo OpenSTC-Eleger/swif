@@ -6,11 +6,11 @@ define([
 	'placeTypesCollection',
 	'claimersServicesCollection',
 	'claimersTypesCollection',
-	
+
 	'genericModalView',
 	'advancedSelectBoxView',
 	'bsSwitch'
-	
+
 
 ], function(app, PlaceModel, PlacesCollection, PlaceTypesCollection, ClaimersServicesCollection, ClaimersTypesCollection, GenericModalView, AdvancedSelectBoxView){
 
@@ -32,7 +32,7 @@ define([
 			return _.defaults({
 				'change #placeWidth, #placeLength' : 'calculPlaceArea',
 				'submit #formSavePlace'            : 'savePlace'
-			}, 
+			},
 				GenericModalView.prototype.events
 			);
 		},
@@ -51,7 +51,7 @@ define([
 
 			// Check if it's a create or an update //
 			if(_.isUndefined(this.model)){
-				
+
 				this.model = new PlaceModel();
 				this.render();
 			}
@@ -73,7 +73,7 @@ define([
 			var self = this;
 
 
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
@@ -98,10 +98,10 @@ define([
 
 					app.views.advancedSelectBoxPlaceServices = new AdvancedSelectBoxView({el: $('#placeServices'), url: ClaimersServicesCollection.prototype.url });
 					app.views.advancedSelectBoxPlaceServices.render();
-					
+
 					app.views.advancedSelectBoxPlaceBookingServices = new AdvancedSelectBoxView({el: $('#placeBookingServices'), url: ClaimersServicesCollection.prototype.url });
 					app.views.advancedSelectBoxPlaceBookingServices.render();
-					
+
 					app.views.advancedSelectBoxPlaceBookingClaimers = new AdvancedSelectBoxView({el: $('#placeBookingClaimers'), url: ClaimersTypesCollection.prototype.url });
 					app.views.advancedSelectBoxPlaceBookingClaimers.render();
 				}
@@ -117,7 +117,7 @@ define([
 		/** Save the model pass in the view
 		*/
 		savePlace: function(e){
-			e.preventDefault();	
+			e.preventDefault();
 
 			var self = this;
 

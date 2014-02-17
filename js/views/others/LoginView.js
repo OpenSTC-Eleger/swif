@@ -49,7 +49,7 @@ define([
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					lang: app.lang, 
+					lang: app.lang,
 					user: self.model
 				});
 

@@ -15,7 +15,7 @@ define([
 
 
 		fields       : ['id', 'name', 'code', 'manager_id', 'service_id', 'technical', 'user_ids', 'actions'],
-		
+
 		urlRoot      : '/api/openstc/departments',
 
 
@@ -25,7 +25,7 @@ define([
 				type : 'text'
 			},
 			{
-				key  : 'code', 
+				key  : 'code',
 				type : 'text'
 			}
 		],
@@ -51,8 +51,8 @@ define([
 			}
 
 			var returnVal;
-			switch (type){ 
-				case 'id': 
+			switch (type){
+				case 'id':
 					returnVal = id;
 					break;
 				case 'all':
@@ -61,7 +61,7 @@ define([
 				case 'json':
 					returnVal = {id: id, name: name};
 					break;
-				default: 
+				default:
 					returnVal = name;
 			}
 
@@ -71,7 +71,7 @@ define([
 		getManager: function(type) {
 
 			var id, name = '';
-			
+
 			// Check if the place have a parent place //
 			if(this.get('manager_id')){
 				id = this.get('manager_id')[0];
@@ -80,8 +80,8 @@ define([
 
 			var returnVal;
 
-			switch (type){ 
-				case 'id': 
+			switch (type){
+				case 'id':
 					returnVal = id;
 					break;
 				case 'all':
@@ -90,7 +90,7 @@ define([
 				case 'json':
 					returnVal = {id: id, name: name};
 					break;
-				default: 
+				default:
 					returnVal = name;
 			}
 

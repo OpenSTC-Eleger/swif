@@ -91,7 +91,7 @@ define('app', [
 
 			switch(action){
 				case 'display':
-					if(_.isUndefined(message)){ 
+					if(_.isUndefined(message)){
 						$('#loaderMessage').html(app.lang.loadingInProgress);
 					}
 					else{

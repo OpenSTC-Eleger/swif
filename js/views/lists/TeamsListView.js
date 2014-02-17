@@ -30,7 +30,7 @@ define([
 		events: function(){
 			return _.defaults({
 				'click a.modalCreateTeam'  : 'modalCreateTeam',
-			}, 
+			},
 				GenericListView.prototype.events
 			);
 		},
@@ -67,7 +67,7 @@ define([
 			});
 
 			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.teamCreateOk);
-			
+
 			this.partialRender();
 
 			// Display the team members and services View //
@@ -86,8 +86,8 @@ define([
 			// Change the page title //
 			app.router.setPageTitle(app.lang.viewsTitles.teamsList);
 
-		
-			// Retrieve the template // 
+
+			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					nbTeams: self.collection.cpt,
@@ -109,7 +109,7 @@ define([
 
 
 				// Pagination view //
-				app.views.paginationView = new PaginationView({ 
+				app.views.paginationView = new PaginationView({
 					page         : self.options.page.page,
 					collection   : self.collection,
 					itemsPerPage : self.itemsPerPage
@@ -124,14 +124,14 @@ define([
 						self.displayTeamMembersAndServices(self.collection.get(self.options.id));
 					}
 					else{
-						self.displayTeamMembersAndServices(self.options.id);	
+						self.displayTeamMembersAndServices(self.options.id);
 					}
 				}
 				// If there is only One result on the collection display the "Team members, services view" //
 				else if(_.size(self.collection) == 1){
 					self.displayTeamMembersAndServices(_.first(self.collection.models));
 				}
-		
+
 
 			});
 
@@ -159,7 +159,7 @@ define([
 		*/
 		modalCreateTeam: function(e){
 			e.preventDefault();
-			
+
 			app.views.modalTeamView = new ModalTeamView({
 				el  : '#modalSaveTeam'
 			});
@@ -176,7 +176,7 @@ define([
 			if(!_.isUndefined(app.views.teamMembersAndServices)){ app.views.teamMembersAndServices.undelegateEvents(); }
 			app.views.teamMembersAndServices = new TeamMembersAndServices({
 				el    : '#teamMembersAndServices',
-				model : model 
+				model : model
 			});
 		},
 
@@ -195,7 +195,7 @@ define([
 				this.options.sort = this.collection.default_sort;
 			}
 			else{
-				this.options.sort = AppHelpers.calculPageSort(this.options.sort);	
+				this.options.sort = AppHelpers.calculPageSort(this.options.sort);
 			}
 
 			this.options.page = AppHelpers.calculPageOffset(this.options.page, this.itemsPerPage);

@@ -10,13 +10,13 @@ define([
 	* Input form
 	*/
 	var InputFieldView = Backbone.View.extend({
-		
+
 		tagName      : 'div',
 
 		className    : 'form-group',
-		
+
 		templateHTML : 'templates/form-components/input.html',
-		
+
 		operator     : 'ilike',
 
 		input        : null,
@@ -41,7 +41,7 @@ define([
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					field	: self.field 
+					field	: self.field
 				});
 
 				$(self.el).html(template);
@@ -70,7 +70,7 @@ define([
 		/** Set the value in the input
 		*/
 		setValue: function(value){
-			$(self.el).find('input').val(value);
+			$(this.el).find('input').val(value);
 		},
 
 
@@ -84,7 +84,7 @@ define([
 				case 'key':
 					returnVal = this.operator;
 					break;
-				default: 
+				default:
 					returnVal = app.lang.equalTo;
 			}
 

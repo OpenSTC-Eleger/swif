@@ -79,8 +79,8 @@ define([
 			});
 
 			app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.teamDeleteOk);
-			
-			
+
+
 			if(!_.isUndefined(app.views.teamMembersAndServices)){
 				if(_.isEqual(this.model, app.views.teamMembersAndServices.model)){
 					app.views.teamMembersAndServices.hide();
@@ -97,7 +97,7 @@ define([
 		render : function() {
 			var self = this;
 
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
@@ -118,7 +118,7 @@ define([
 
 		/** Display Modal form to add/sav a new Team
 		*/
-		modalUpdateTeam: function(e){  
+		modalUpdateTeam: function(e){
 			e.preventDefault();
 			e.stopPropagation();
 

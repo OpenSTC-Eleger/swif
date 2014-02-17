@@ -15,7 +15,7 @@ define([
 	var PlaceModel = GenericModel.extend({
 
 
-		fields     : ['id', 'name', 'complete_name', 'type', 'service_names', 'site_parent_id', 'width', 'length', 
+		fields     : ['id', 'name', 'complete_name', 'type', 'service_names', 'site_parent_id', 'width', 'length',
 						'surface','internal_booking','external_booking','service_bookable_ids' ,'service_bookable_names',
 						'partner_type_bookable_ids', 'partner_type_bookable_names', 'color', 'block_booking'],
 
@@ -47,7 +47,7 @@ define([
 		getParentPlace : function(type) {
 
 			var id, name = '';
-			
+
 			// Check if the place have a parent place //
 			if(this.get('site_parent_id')){
 				id = this.get('site_parent_id')[0];
@@ -56,8 +56,8 @@ define([
 
 			var returnVal;
 
-			switch (type){ 
-				case 'id': 
+			switch (type){
+				case 'id':
 					returnVal = id;
 					break;
 				case 'all':
@@ -66,7 +66,7 @@ define([
 				case 'json':
 					returnVal = {id: id, name: name};
 					break;
-				default: 
+				default:
 					returnVal = name;
 			}
 
@@ -81,10 +81,10 @@ define([
 
 			_.each(this.get('service_names'), function(s){
 				switch (type){
-					case 'id': 
+					case 'id':
 						placeServices.push(s[0]);
 						break;
-					case 'json': 
+					case 'json':
 						placeServices.push({id: s[0], name: s[1]});
 						break;
 					default:
@@ -102,26 +102,26 @@ define([
 		setServices : function(value, silent) {
 			this.set({ service_ids : [[6, 0, value]] }, {silent: silent});
 		},
-		
+
 		getInternalBooking: function(){
 			return this.get('internal_booking');
 		},
-		
+
 		setInternalBooking: function(val, silent){
 			this.set({internal_booking: val},{silent:silent});
 		},
-		
-		
+
+
 		getBookingServices : function(type){
 
 			var placeBookingServices = [];
 
 			_.each(this.get('service_bookable_names'), function(s){
 				switch (type){
-					case 'id': 
+					case 'id':
 						placeBookingServices.push(s[0]);
 						break;
-					case 'json': 
+					case 'json':
 						placeBookingServices.push({id: s[0], name: s[1]});
 						break;
 					default:
@@ -136,7 +136,7 @@ define([
 				return placeBookingServices;
 			}
 		},
-				
+
 		setBookingServices: function(val, silent){
 			this.set({service_bookable_ids: [[6,0,val]]},{silent:silent});
 		},
@@ -144,21 +144,21 @@ define([
 		getExternalBooking: function(){
 			return this.get('external_booking');
 		},
-		
+
 		setExternalBooking: function(val, silent){
 			this.set({external_booking: val},{silent:silent});
 		},
-		
+
 		getBookingClaimers : function(type){
 
 			var placeBookingClaimers = [];
 
 			_.each(this.get('partner_type_bookable_names'), function(s){
 				switch (type){
-					case 'id': 
+					case 'id':
 						placeBookingClaimers.push(s[0]);
 						break;
-					case 'json': 
+					case 'json':
 						placeBookingClaimers.push({id: s[0], name: s[1]});
 						break;
 					default:
@@ -173,16 +173,16 @@ define([
 				return placeBookingClaimers;
 			}
 		},
-		
+
 		setBookingClaimers: function(val, silent){
 			this.set({partner_type_bookable_ids: [[6,0,val]]},{silent:silent});
 		},
-		
+
 		getType : function(type) {
 			var returnVal;
 
-			switch (type){ 
-				case 'id': 
+			switch (type){
+				case 'id':
 					returnVal = this.get('type')[0];
 					break;
 				case 'json':
@@ -203,8 +203,8 @@ define([
 		},
 		setLength : function(value, silent) {
 			this.set({ length : value }, {silent: silent});
-		},  
-		
+		},
+
 		getWidth : function() {
 			return this.get('width');
 		},

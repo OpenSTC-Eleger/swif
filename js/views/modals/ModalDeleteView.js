@@ -22,7 +22,7 @@ define([
 		events: function(){
 			return _.defaults({
 				'click .btnDelete' : 'deleteModel',
-			}, 
+			},
 				GenericModalView.prototype.events
 			);
 		},
@@ -57,9 +57,9 @@ define([
 		render : function() {
 			var self = this;
 
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
-			 
+
 				var template = _.template(templateData, {
 					lang         : app.lang,
 					modalTitle   : self.options.modalTitle,

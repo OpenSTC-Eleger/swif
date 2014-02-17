@@ -8,13 +8,14 @@ define([
 	'equipmentsTypesCollection',
 	'claimersServicesCollection',
 	'claimersTypesCollection',
-	
+
 	'genericModalView',
 	'advancedSelectBoxView',
-	'bsDatepicker-lang'
-	
+	'bsDatepicker-lang',
+	'moment'
 
-], function(app, AppHelpers, EquipmentModel, EquipmentsCollection, EquipmentTypeModel, EquipmentsTypesCollection, ClaimersServicesCollection, ClaimersTypesCollection, GenericModalView, AdvancedSelectBoxView){
+
+], function(app, AppHelpers, EquipmentModel, EquipmentsCollection, EquipmentTypeModel, EquipmentsTypesCollection, ClaimersServicesCollection, ClaimersTypesCollection, GenericModalView, AdvancedSelectBoxView, moment){
 
 	'use strict';
 
@@ -35,7 +36,7 @@ define([
 				'submit #formSaveEquipment'   : 'saveEquipment',
 				'change #equipmentInternalUse': 'fillEquipmentInternalUse',
 				'change #equipmentCategory'   : 'fillEquipmentCategory'
-			}, 
+			},
 				GenericModalView.prototype.events
 			);
 		},
@@ -74,7 +75,7 @@ define([
 		render : function(loader) {
 			var self = this;
 
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
@@ -84,7 +85,7 @@ define([
 				});
 
 				self.modal.html(template);
-				
+
 				$('.make-switch').bootstrapSwitch();
 
 				if(!loader){
@@ -104,13 +105,13 @@ define([
 
 					self.selectEquipmentMaintenanceServices = new AdvancedSelectBoxView({el:'#equipmentMaintenanceServices', url: ClaimersServicesCollection.prototype.url });
 					self.selectEquipmentMaintenanceServices.render();
-					
+
 					self.selectEquipmentBookingServices = new AdvancedSelectBoxView({el: $('#equipmentBookingServices'), url: ClaimersServicesCollection.prototype.url });
 					self.selectEquipmentBookingServices.render();
-					
+
 					self.selectClaimersBookingServices = new AdvancedSelectBoxView({el: $('#equipmentBookingClaimers'), url: ClaimersTypesCollection.prototype.url });
 					self.selectClaimersBookingServices.render();
-					
+
 					// Enable the datePicker //
 					$('input.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
 				}
@@ -124,7 +125,7 @@ define([
 
 			return this;
 		},
-		
+
 
 
 		/**
@@ -150,11 +151,11 @@ define([
 				console.log(e);
 			});
 		},
-		
+
 		fillEquipmentCategory: function(){
 			this.changeEquipmentCategory(this.selectEquipmentCategory.getSelectedItem());
 		},
-		
+
 		changeEquipmentInternalUse: function(value){
 			if(value){
 				$('#labelForEquipmentServicesInternalUse').css('text-decoration','none');
@@ -167,11 +168,11 @@ define([
 			}
 			this.selectEquipmentServicesInternalUse.render();
 		},
-		
+
 		fillEquipmentInternalUse: function(e){
 			this.changeEquipmentInternalUse($(e.target).is(':checked'));
 		},
-		
+
 
 
 
@@ -188,7 +189,7 @@ define([
 					return false;
 				}
 			}
-			
+
 			var params = {
 				name: $('#equipmentName').val(),
 				default_code: $('#equipmentCode').val(),
@@ -235,7 +236,7 @@ define([
 					if(stockQty != self.model.getAvailableQty()){
 						self.model.updateAvailableQty(stockQty);
 					}
-					
+
 				})
 				.fail(function (e) {
 					AppHelpers.printError(e);
@@ -243,7 +244,7 @@ define([
 				.always(function () {
 					$(self.el).find('button[type=submit]').button('reset');
 				});
-			
+
 		}
 
 	});
