@@ -247,8 +247,13 @@
 	<!-- Form Actions -->
 	<div class="col-sm-12 well">
 		<div class="text-center ">
-			<button type="submit" class="btn btn-primary btn-lg" form="formSaveBooking" id="saveFormBooking"><%= _.capitalize(lang.actions.save) %></button>&nbsp;
-			<a href="#app-reservations/reservations" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+			<% if(_.isNull(booking.getId()) || booking.hasActions('post')){ %>
+				<button type="submit" class="btn btn-primary" form="formSaveBooking" id="postFormBooking"><%= _.capitalize(lang.resa.actions.postBooking) %></button>&nbsp;
+			<% } %>
+			<% if(_.isNull(booking.getId()) || booking.hasActions('update')){ %>
+				<button type="submit" class="btn btn-default" form="formSaveBooking" id="saveFormBooking"><%= _.capitalize(lang.resa.actions.saveBooking) %></button>&nbsp;
+			<% }%>
+			<a href="#app-reservations/reservations" aria-hidden="true"><%= _.capitalize(lang.actions.back) %></a>
 		</div>
 	</div>
 

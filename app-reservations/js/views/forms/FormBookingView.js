@@ -59,7 +59,8 @@ define(['app',
 			'blur #bookingPeopleZip'			: 'changePeopleZip',
 			
 			//Form Buttons
-			'submit #formSaveBooking'			 : 'saveBookingForm',
+			'click #saveFormBooking'			 : 'saveBookingForm',
+			'click #postFormBooking'			 : 'postBookingForm',
 			'click #getRecurrenceDates'			 : 'getRecurrenceDates',
 			'switch-change #bookingAddRecurrence': 'changeAddRecurrence',
 			'switch-change #bookingIsCitizen'	 : 'changeIsCitizen',
@@ -110,6 +111,7 @@ define(['app',
 		/** View Initialization
 		*/
 		initialize : function(params) {
+			this.viewRendered = false;
 			this.options = params;
 			var self = this;
 			if(_.isUndefined(this.model)){
@@ -330,6 +332,7 @@ define(['app',
 				self.updateDisplayCitizenInfos();
 				self.changeWholeDay();
 				$(this.el).hide().fadeIn('slow');
+				self.viewRendered = true;
 			});
 			return this;
 		},
@@ -338,27 +341,30 @@ define(['app',
 		 * Update searchParam of ClaimerContact (partner.id = self if partner_id is set, else, remove searchParams)
 		 */	
 		changeBookingPartner: function(e){
-			var partner_id = app.views.selectListClaimersView.getSelectedItem();
-			if(partner_id != ''){
-				//TODO: implement filter to fetch only bookables authorized for partner
-				app.views.selectListClaimersContactsView.setSearchParam({'field':'partner_id.id','operator':'=','value':partner_id},true);
-				
-				this.model.setClaimer([partner_id,app.views.selectListClaimersView.getSelectedText()]);
-			}
-			else{
-				app.views.selectListClaimersContactsView.resetSearchParams();
-				this.model.setClaimer(false);
-			}
-			
+			if(this.viewRendered){
+				var partner_id = app.views.selectListClaimersView.getSelectedItem();
+				if(partner_id != ''){
+					//TODO: implement filter to fetch only bookables authorized for partner
+					app.views.selectListClaimersContactsView.setSearchParam({'field':'partner_id.id','operator':'=','value':partner_id},true);
+					
+					this.model.setClaimer([partner_id,app.views.selectListClaimersView.getSelectedText()]);
+				}
+				else{
+					app.views.selectListClaimersContactsView.resetSearchParams();
+					this.model.setClaimer(false);
+				}
+			}			
 		},
 		
 		changeBookingContact: function(e){
-			var contact_id = app.views.selectListClaimersContactsView.getSelectedItem();
-			if(contact_id){
-				this.model.setClaimerContact([contact_id, app.views.selectListClaimersContactsView.getSelectedText()]);
-			}
-			else{
-				this.model.setClaimerContact(false);
+			if(this.viewRendered){
+				var contact_id = app.views.selectListClaimersContactsView.getSelectedItem();
+				if(contact_id){
+					this.model.setClaimerContact([contact_id, app.views.selectListClaimersContactsView.getSelectedText()]);
+				}
+				else{
+					this.model.setClaimerContact(false);
+				}
 			}
 		},
 		
@@ -366,61 +372,67 @@ define(['app',
 		 * each time a bookable is selected on AdvancedSelectBox, we create a new itemView (not any save before user click on validate)
 		 */
 		changeBookingAddBookable: function(e){
-			var self = this;
-			e.preventDefault();
-			//create lineModel and initialize values
-			var bookable_id = app.views.selectListAddBookableView.getSelectedItem();
-			if(bookable_id != ''){
-				var bookable_name = app.views.selectListAddBookableView.getSelectedText();
-				var lineModel = new BookingLineModel({
-					reserve_product:[bookable_id, bookable_name],
-					pricelist_amount:0});
-
-				lineModel.setQuantity(1);
-				lineModel.bookable = new BookableModel({id:bookable_id});
-				//reset selection to be able to add another bookable to booking
-				app.views.selectListAddBookableView.reset();
-				
-				//perform manually updates to lineModel to get pricing, dispo, ...
-				var partner_id = this.model.getClaimer('id');
-				var checkin = this.model.getStartDate();
-				var checkout = this.model.getEndDate();
-				$.when(lineModel.fetchAvailableQtity(checkin,checkout),
-				lineModel.fetchPricing(partner_id,checkin,checkout),
-				lineModel.bookable.fetch()).always(function(){
-					self.model.addLine(lineModel);
-					var lineView = new ItemFormBookingLineView({model:lineModel});
-					$(self.el).find('#bookingLines').append(lineView.render().el);
-				})
-				.fail(function(e){
-					console.log(e);
-				});
+			if(this.viewRendered){
+				var self = this;
+				e.preventDefault();
+				//create lineModel and initialize values
+				var bookable_id = app.views.selectListAddBookableView.getSelectedItem();
+				if(bookable_id != ''){
+					var bookable_name = app.views.selectListAddBookableView.getSelectedText();
+					var lineModel = new BookingLineModel({
+						reserve_product:[bookable_id, bookable_name],
+						pricelist_amount:0});
+	
+					lineModel.setQuantity(1);
+					lineModel.bookable = new BookableModel({id:bookable_id});
+					//reset selection to be able to add another bookable to booking
+					app.views.selectListAddBookableView.reset();
+					
+					//perform manually updates to lineModel to get pricing, dispo, ...
+					var partner_id = this.model.getClaimer('id');
+					var checkin = this.model.getStartDate();
+					var checkout = this.model.getEndDate();
+					$.when(lineModel.fetchAvailableQtity(checkin,checkout),
+					lineModel.fetchPricing(partner_id,checkin,checkout),
+					lineModel.bookable.fetch()).always(function(){
+						self.model.addLine(lineModel);
+						var lineView = new ItemFormBookingLineView({model:lineModel});
+						$(self.el).find('#bookingLines').append(lineView.render().el);
+					})
+					.fail(function(e){
+						console.log(e);
+					});
+				}
 			}
 		},
 		
 		changeBookingCheckin: function(e){
-			e.preventDefault();
-			if($("#bookingCheckin").val() != '' && $("#bookingCheckinHour").val() != ''){
-				var dateVal = new moment( $("#bookingCheckin").val(),"DD-MM-YYYY")
-				.add('hours',$("#bookingCheckinHour").val().split(":")[0] )
-				.add('minutes',$("#bookingCheckinHour").val().split(":")[1] );
-				this.model.setStartDate(moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss'));
-			}
-			else{
-				this.model.setStartDate('');
+			if(this.viewRendered){
+				e.preventDefault();
+				if($("#bookingCheckin").val() != '' && $("#bookingCheckinHour").val() != ''){
+					var dateVal = new moment( $("#bookingCheckin").val(),"DD-MM-YYYY")
+					.add('hours',$("#bookingCheckinHour").val().split(":")[0] )
+					.add('minutes',$("#bookingCheckinHour").val().split(":")[1] );
+					this.model.setStartDate(moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss'));
+				}
+				else{
+					this.model.setStartDate('');
+				}
 			}
 		},
 		
 		changeBookingCheckout: function(e){
-			e.preventDefault();
-			if($("#bookingCheckout").val() != '' && $("#bookingCheckoutHour").val() != ''){
-				var dateVal = new moment( $("#bookingCheckout").val(),"DD-MM-YYYY")
-				.add('hours',$("#bookingCheckoutHour").val().split(":")[0] )
-				.add('minutes',$("#bookingCheckoutHour").val().split(":")[1] );
-				this.model.setEndDate(moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss'));
-			}
-			else{
-				this.model.setEndDate('');
+			if(this.viewRendered){
+				e.preventDefault();
+				if($("#bookingCheckout").val() != '' && $("#bookingCheckoutHour").val() != ''){
+					var dateVal = new moment( $("#bookingCheckout").val(),"DD-MM-YYYY")
+					.add('hours',$("#bookingCheckoutHour").val().split(":")[0] )
+					.add('minutes',$("#bookingCheckoutHour").val().split(":")[1] );
+					this.model.setEndDate(moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss'));
+				}
+				else{
+					this.model.setEndDate('');
+				}
 			}
 		},
 		
@@ -484,12 +496,28 @@ define(['app',
 			}
 		},
 		
+		/**
+		 * Save form and evolve wkf from 'draft' to 'remplir' state. Adapt url to call if it's a recurrente or a simple booking
+		 */
 		postBookingForm: function(e){
 			//TODO: remove this call when save will be made at each input change
-			this.model.set({state_event:'save'})
-			this.saveBookingForm(e);
+			var self = this;
+			e.preventDefault();
+			this.model.saveToBackend()
+			.done(function(){
+				var model = (self.model.isTemplate() && self.model.recurrence != null) ? self.model.recurrence : self.model;
+				model.save({state_event:"save"},{wait:true,patch:true}).always(function(){
+					window.history.back();
+				});
+			})
+			.fail(function(e){
+				console.log(e);
+			});
 		},
 		
+		/**
+		 * Save only form
+		 */
 		saveBookingForm: function(e){
 			e.preventDefault();
 			this.model.saveToBackend()

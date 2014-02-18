@@ -65,7 +65,9 @@
             "downloadInvoice"                       : "Télécharger la facture/bon de réservation",
             "selectAll"                             : "Tout sélectionner",
             "unselectAll"                           : "Tout désélectionner",
-            "selectToggle"                          : "Inverser la sélection"
+            "selectToggle"                          : "Inverser la sélection",
+            "saveBooking"							: "Sauvegarder ma réservation",
+            "postBooking"							: "Sauvegarder et soumettre ma réservation"
 		},
 		
 		"infoMessages" : {
