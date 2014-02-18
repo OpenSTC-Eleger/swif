@@ -217,15 +217,26 @@ define('appHelpers', [
 
 
 		printError: function (e) {
+			//Get error field
 			var fieldId = _(_(e.responseJSON.faultCode).strRight('*')).strLeft('*') + '-error';
-			var message =  _.trim( _(e.responseJSON.faultCode).strRight('/') );
+			try{
+				_.isUndefined($('#'+fieldId));
+			}catch(error){
+				fieldId = 'name-error';
+			}
 
+			//get error message
+			var message = e.responseJSON.faultCode;
+			var codeMessage = 'nameUniq';
+			if( _.str.include(message,'/') ) {
+				codeMessage =  _.trim( _(e.responseJSON.faultCode).strRight('/') );
+			}
+
+			//Displays message in form
 			$('.form-group').removeClass('has-error');
 			$('.help-block').html('');
-			$('#'+fieldId).html(app.lang.errorMessages[message]);
-
-
-			$('#'+fieldId).html(app.lang.errorMessages[message]);
+			$('#'+fieldId).html(app.lang.errorMessages[codeMessage]);
+			$('#'+fieldId).html(app.lang.errorMessages[codeMessage]);
 			$('#'+fieldId).parents('.form-group').addClass('has-error');
 		},
 

@@ -1,10 +1,11 @@
 define([
 	'app',
+	'appHelpers',
 
 	'genericModalView',
 
 
-], function(app, GenericModalView){
+], function(app, AppHelpers, GenericModalView){
 
 	'use strict';
 
@@ -83,7 +84,7 @@ define([
 				app.notify('', 'success', app.lang.infoMessages.information, app.lang.infoMessages.filterSaveOk);
 			})
 			.fail(function(e){
-				console.error(e);
+				AppHelpers.printError(e);
 			})
 			.always(function () {
 				$(self.el).find('button[type=submit]').button('reset');

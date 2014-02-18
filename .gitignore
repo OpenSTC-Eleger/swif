@@ -1,6 +1,8 @@
 .idea
 *.iml
 *.project
+.settings/
+.project
 *.swp
 config/configuration.json
 logo/
