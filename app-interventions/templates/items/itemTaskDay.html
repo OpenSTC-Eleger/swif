@@ -29,13 +29,13 @@
 		<span class="label label-<%= tasksStatus[task.state].color %>"><%= tasksStatus[task.state].translation %></span>
 
 	<!-- Finish -->
-	<% } else { 
-							
+	<% } else {
+
 		if(_(task.effective_hours).toNumber(2) <= _(task.planned_hours).toNumber(2)){ %>
 			<span class="label label-<%= tasksStatus.done.color %>"><%= tasksStatus.done.translation %></span>
 		<% } else  { %>
 			<span class="label label-overrun"><%= tasksStatus.done.translation %></span>
-		<% } 
+		<% }
 	} %>
 </td>
 
@@ -47,12 +47,12 @@
 
 		<!-- If the user is not an Agent or is a foreman -->
 		<%// if(displayFilter == true || task.team_id == false){ %>
-	
+
 		<div class="btn-group btn-group-sm">
 			<button class="btn btn-success buttonTaskDayDone" data-toggle="modal" data-taskid="<%= task.id %>"><i class="fa fa-check fa-fw"></i></button>
 			<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 
-			<ul class="dropdown-menu pull-right text-left" role="menu">
+			<ul class="dropdown-menu dropdown-menu-right text-left" role="menu">
 				<% if(task.actions.indexOf("normal_mode_unfinished") > -1){%>
 				<li>
 					<a href="#" class="taskNotDone" data-taskid="<%= task.id %>">

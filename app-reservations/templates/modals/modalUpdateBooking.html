@@ -13,16 +13,16 @@
 
 		<blockquote>
 			<p><%= booking.getName() %></p>
-			<small><strong><i class="fa fa-user"></i>&nbsp;<%= _.capitalize(lang.contact) %> : </strong></i>&nbsp;&nbsp; <%= booking.getClaimerContact()  + " ("+ booking.getClaimer() + ")" %></small>
+			<footer><strong><i class="fa fa-user"></i>&nbsp;<%= _.capitalize(lang.contact) %> : </strong></i>&nbsp;&nbsp; <%= booking.getClaimerContact()  + " ("+ booking.getClaimer() + ")" %></footer>
 			<small><strong><i class="fa fa-envelope"></i>&nbsp;<%= _.capitalize(lang.email) %> : </strong></i><%= booking.getClaimerMail() %></small>
 		</blockquote>
 
 		<form id="formUpdateBooking" action="#" class="form-horizontal">
-		
-			<% 
+
+			<%
 				var note = ''
-				if(state==BookingModel.status.done.key) 
-					note = booking.getResourceNames('newline') 
+				if(state==BookingModel.status.done.key)
+					note = booking.getResourceNames('newline')
 			%>
 			<!-- note related to this action -->
 			<div class="form-group">
@@ -30,9 +30,9 @@
 
 				<div class="col-sm-9">
 					<textarea id="note" class="form-control" rows="5" required><%= note %></textarea>
-				</div>			
+				</div>
 
-			</div>	
+			</div>
 			<% if(state != BookingModel.status.cancel.key) { %>
 				<!--  Attach invoice -->
 				<div class="form-group">
@@ -41,8 +41,8 @@
 							<input type="checkbox" id=sendInvoicing />
 						</label>
 					</div>
-				</div>	
-			<% } %>		
+				</div>
+			<% } %>
 		</form>
 	</div>
 	<!-- /Modal Body -->

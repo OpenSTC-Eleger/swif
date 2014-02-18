@@ -9,12 +9,12 @@
 		<%= _.capitalize(_(booking.getName()).escapeHTML()) %>
 	</a>
 
-	
+
 	<!-- Interventions action -->
 	<p class="row-actions invisible">
 
 		<% if(booking.hasActions('delete')) { %>
-		&nbsp;<a href="#" class="buttonCancelBooking " data-toggle="modal"><i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i></a> 
+		&nbsp;<a href="#" class="buttonCancelBooking " data-toggle="modal"><i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i></a>
 		<% } %>
 
         <% if (booking.get('invoice_attachment_id') != 0) { %>
@@ -44,15 +44,15 @@
 
 	<% if(!_.isEmpty(booking.getClaimerMail())){ %>
 		<a 	href="mailto:<%= booking.getClaimerMail() %>"
-			data-toggle="tooltip" 
-			data-html="true" 
+			data-toggle="tooltip"
+			data-html="true"
 			data-original-title="<%= tooltip %>">
 			<%= booking.fromCitizen() ? booking.getCitizenName() : booking.getClaimer() %>
 		<a>
 	<% } else{ %>
 		<span
-			data-toggle="tooltip" 
-			data-html="true" 
+			data-toggle="tooltip"
+			data-html="true"
 			data-original-title="<%= tooltip %>">
 			<%= booking.fromCitizen() ? booking.getCitizenName() : booking.getClaimer() %>
 		<span>
@@ -65,8 +65,8 @@
 
 <!-- Check the state of the booking -->
 <td>
-	<span 
-		class="label label-<%= BookingModel.status[booking.getState()].color %>" 
+	<span
+		class="label label-<%= BookingModel.status[booking.getState()].color %>"
 		data-toggle="popover"
 		data-html="true" data-placement="left"
 		data-original-title="<%= lang.by +' '+ booking.getWriteAuthor() %>"
@@ -77,22 +77,22 @@
 
 <td class="text-center">
 	<!-- Check if the user can make action on the request -->
-	<% if(!_.isEmpty(booking.getActions())){ 
+	<% if(!_.isEmpty(booking.getActions())){
 		var actions = booking.getActions();
 	%>
 		<!-- Create the buttons group action -->
 		<div class="btn-group btn-group-sm">
-	
+
 			<!-- Check if the booking is not in waiting state -->
 			<%
-	
+
 				var mainAction = '';
 				var mainActionColor = '';
 				var mainActionIcon = '';
 				var mainActionDisabled = '';
-		
+
 				switch(booking.getState()){
-					case 'remplir':						
+					case 'remplir':
 						if(booking.isAllDispo()) {
 							mainAction = BookingModel.actions.confirm;
 
@@ -102,14 +102,14 @@
 							/* mainAction = BookingModel.actions.resolve_conflict;*/
 						}
 					break;
-					case 'cancel':	
+					case 'cancel':
 							mainAction = BookingModel.actions.cancel;
 
 					break;
 					case 'confirm':
 							mainAction = BookingModel.actions.done;
 					break;
-					
+
 					default:
 							mainAction = BookingModel.actions.confirm;
 				}
@@ -128,10 +128,10 @@
 					<span class="fa fa-caret-down"></span>
 				</button>
 			<% } %>
-			
+
 			<!-- Other buttons action -->
-			<ul class="dropdown-menu pull-right text-left">
-				<% _.each(BookingModel.actions, function(action,action_key){ 
+			<ul class="dropdown-menu dropdown-menu-right text-left">
+				<% _.each(BookingModel.actions, function(action,action_key){
 					if(_.contains(actions,action_key)){%>
 					<li>
 						<a href="#reservations" class="actions" data-action="<%= action.key %>">

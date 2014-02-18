@@ -14,7 +14,7 @@
 			<blockquote class="spaceBottom">
 				<p><%= model.getInformations().name %></p>
 				<% if(!_.isUndefined(model.getInformations().infos)) { %>
-					<small><strong><%= model.getInformations().infos.key %> : </strong><%= model.getInformations().infos.value %></small>
+					<footer><strong><%= model.getInformations().infos.key %> : </strong><%= model.getInformations().infos.value %></footer>
 				<% } %>
 			</blockquote>
 

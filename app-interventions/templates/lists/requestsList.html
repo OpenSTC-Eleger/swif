@@ -5,22 +5,22 @@
 
 		<% if(user.isDST() || user.isManager()){
 
-		  if(user.isDST()) { 
+		  if(user.isDST()) {
 				var classColor      = requestsState.confirm.color;
 				var filterValue     = requestsState.confirm.key;
-				var actionToProcess = lang.actions.confirm; 
+				var actionToProcess = lang.actions.confirm;
 			}
-			else if(user.isManager()){ 
+			else if(user.isManager()){
 		   		var classColor      = requestsState.wait.color;
 		   		var filterValue     = requestsState.wait.key;
 		   		var actionToProcess = lang.actions.process; }
-			else{ 
+			else{
 		   		var classColor      = '';
 		   		var actionToProcess = '';
-		   		var filterValue     = ''; 
+		   		var filterValue     = '';
 			}
 		%>
-		
+
 		<sup id="badgeActions" class="badge badge-<%= classColor %> badge-action" data-filter="<%= filterValue %>" data-toggle="tooltip" data-original-title="<%= actionToProcess %>" data-placement="bottom">
 			<%= nbRequestsToDeal %>
 		</sup>
@@ -81,12 +81,12 @@
 	</div>
 	</div>
 
-	
+
 	<div id="contentContainer" class="content-main">
-		
+
 		<!-- Table Requests -->
 		<div class="table-responsive">
-		<table class="table table-striped table-bordered table-hover table-sorter">
+		<table class="table table-striped table-bordered table-hover table-sorter table-vertical-align">
 			<thead>
 				<tr>
 					<th data-sort-column="id">N°</th>

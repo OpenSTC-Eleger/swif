@@ -82,7 +82,7 @@ define([
 
 				self.input = $(self.el).find('input.datepicker');
 
-				self.input.datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
+				self.input.datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr', todayHighlight: true});
 			});
 
 			return this;

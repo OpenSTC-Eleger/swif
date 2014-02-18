@@ -12,11 +12,11 @@
 
 			<blockquote class="spaceBottom">
 				<p><%= request.getName() %></p>
-				<small><strong><i class="fa fa-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong></i>&nbsp;&nbsp; <%= request.getSite() %></small>
+				<footer><strong><i class="fa fa-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong></i>&nbsp;&nbsp; <%= request.getSite() %></footer>
 			</blockquote>
 
 			<form id="formConfirmRequest" action="#" class="form-horizontal">
-			
+
 				<!-- Request confirm DST information -->
 				<div class="form-group">
 					<label for="informationForDST" class="control-label col-sm-3"><%= lang.infoMessages.information %>:</label>
@@ -34,7 +34,7 @@
 				data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= _.capitalize(lang.actions.confirmChief) %>"
 			><%= _.capitalize(lang.actions.confirmChief) %>
 			</button>&nbsp;&nbsp;
-			
+
 			<a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 		</div>
 

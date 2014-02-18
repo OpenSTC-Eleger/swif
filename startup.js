@@ -15,7 +15,7 @@ requirejs.config({
 		backbone              : 'js/libs/backbone-1.1.1-min',
 
 		jqueryui              : 'js/libs/jquery-ui-1.10.3.custom.min',
-		datatables	  		  :	'js/libs/jquery-dataTables-1.9.4-min',
+		datatables            : 'js/libs/jquery-dataTables-1.9.4-min',
 		moment                : 'js/libs/moment-2.5.0-min',
 		'moment-timezone'     : 'js/libs/moment-timezone-0.0.1',
 		'moment-timezone-data': 'js/i18n/moment-timezone-data',
@@ -47,13 +47,13 @@ requirejs.config({
 		/* #############
 		* Helpers
 		*/
-		appHelpers		          : 'js/helpers/main',
+		appHelpers                : 'js/helpers/main',
 
 
 		/* #############
 		* Routers
 		*/
-		appRouter		          : 'js/routers/AppRouter',
+		appRouter                 : 'js/routers/AppRouter',
 
 
 		/* #############
@@ -91,22 +91,22 @@ requirejs.config({
 		teamModel               : 'js/models/TeamModel',
 		officerModel            : 'js/models/OfficerModel',
 		metaDataModel           : 'js/models/MetaDataModel',
-		filterModel           	: 'js/models/FilterModel',
+		filterModel             : 'js/models/FilterModel',
 
 
 		/* #############
 		* Views
 		*/
-		headerView              	: 'js/views/others/HeaderView',
-		footerView              	: 'js/views/others/FooterView',
-		loginView               	: 'js/views/others/LoginView',
-		paginationView          	: 'js/views/others/PaginationView',
-		notFoundView            	: 'js/views/others/NotFoundView',
-		aboutView               	: 'js/views/others/AboutView',
-		teamMembersAndServices  	: 'js/views/others/TeamMembersAndServices',
-		advanceSearchView  	        : 'js/views/others/AdvanceSearchView',
-		fieldContainerView  		: 'js/views/others/FieldContainerView',
-		recordFilterView			: 'js/views/others/RecordFilterView',
+		headerView                  : 'js/views/others/HeaderView',
+		footerView                  : 'js/views/others/FooterView',
+		loginView                   : 'js/views/others/LoginView',
+		paginationView              : 'js/views/others/PaginationView',
+		notFoundView                : 'js/views/others/NotFoundView',
+		aboutView                   : 'js/views/others/AboutView',
+		teamMembersAndServices      : 'js/views/others/TeamMembersAndServices',
+		advanceSearchView           : 'js/views/others/AdvanceSearchView',
+		fieldContainerView          : 'js/views/others/FieldContainerView',
+		recordFilterView            : 'js/views/others/RecordFilterView',
 
 		// Lists //
 		genericListView         : 'js/views/lists/GenericListView',
@@ -139,7 +139,7 @@ requirejs.config({
 		modalDeleteView         : 'js/views/modals/ModalDeleteView',
 		modalServiceView        : 'js/views/modals/ModalServiceView',
 		modalOfficerView        : 'js/views/modals/ModalOfficerView',
-        modalContactEdit        : 'js/views/modals/ModalContactEdit',
+		modalContactEdit        : 'js/views/modals/ModalContactEdit',
 		modalEquipmentView      : 'js/views/modals/ModalEquipmentView',
 		modalClaimerTypeView    : 'js/views/modals/ModalClaimerTypeView',
 		modalResetPasswordView  : 'js/views/modals/ModalResetPasswordView',
@@ -147,9 +147,9 @@ requirejs.config({
 
 		// Form Components //
 		advancedSelectBoxView   : 'js/views/form-components/AdvancedSelectBoxView',
-		inputFieldView  		: 'js/views/form-components/InputFieldView',
-		dateFieldView			: 'js/views/form-components/DateFieldView',
-		numberFieldView			: 'js/views/form-components/NumberFieldView'
+		inputFieldView          : 'js/views/form-components/InputFieldView',
+		dateFieldView           : 'js/views/form-components/DateFieldView',
+		numberFieldView         : 'js/views/form-components/NumberFieldView'
 
 	},
 
@@ -225,6 +225,8 @@ requirejs.config({
 require([
 	'main', 'underscore', 'underscore.string', 'less'
 ], function(main, _, _s){
+
+	'use strict';
 
 	_.str = _s;
 	_.mixin(_.str.exports());

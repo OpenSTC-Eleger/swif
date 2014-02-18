@@ -69,7 +69,7 @@ module.exports = function(grunt) {
 				browser      : true,
 				jquery       : true,
 				devel        : true,
-				globals      : { 'module': false, 'require': false, 'define': false, '_': false, 'Backbone': false }
+				globals      : { 'requirejs': false, 'module': false, 'require': false, 'define': false, '_': false, 'Backbone': false }
 			},
 			gruntfile: {
 				src: ['Gruntfile.js']
@@ -78,10 +78,10 @@ module.exports = function(grunt) {
 				options: {
 					quotmark: 'double'
 				},
-				src: ['config/*.json', 'i18n/**/*.json']
+				src: ['properties.json', 'package.json', 'config/*.json', 'i18n/**/*.json']
 			},
 			scripts_main: {
-				src: ['js/**/*.js', '!js/libs/*', '!js/i18n/*']
+				src: ['startup.js', 'js/**/*.js', '!js/libs/*', '!js/i18n/*']
 			},
 			scripts_inter: {
 				//src: ['app-interventions/js/**/*.js', 'app-interventions/main.js']

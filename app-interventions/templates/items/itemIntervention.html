@@ -14,7 +14,7 @@
 			<i class="fa fa-print fa-lg" data-action="inter">&nbsp;</i>
 		</a>
 		<% if(intervention.hasActions("cancel")) { %>
-			 &nbsp;<a href="#" class="buttonCancelInter" data-toggle="modal"><i class="fa fa-ban fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a> 
+			 &nbsp;<a href="#" class="buttonCancelInter" data-toggle="modal"><i class="fa fa-ban fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.cancel) %>"></i></a>
 		<% } %>
 	</p>
 </td>
@@ -47,17 +47,17 @@
 		</div>
 
 	<!-- state - Closed -->
-	<% } else if(intervention.getState() == interventionsState.closed.key){ 
+	<% } else if(intervention.getState() == interventionsState.closed.key){
 		if(intervention.getOverPourcent() > 100){ %>
 			<div class="progress" data-toggle="tooltip" data-title="<%= intervention.getTooltip() %>">
 				<div class="progress-bar progress-bar-overrun" role="progressbar" style="width: 100%">
-					<p class="progress-value"><%= _(intervention.getOverPourcent()).toNumber() %>%</p>
+					<%= _(intervention.getOverPourcent()).toNumber() %>%
 				</div>
 			</div>
 		<% } else { %>
 			<div class="progress" data-toggle="tooltip" data-title="<%= intervention.getTooltip() %>">
 				<div class="progress-bar progress-bar-success" role="progressbar" style="width: <%= intervention.getOverPourcent() %>%">
-					<p class="progress-value"><%= _(intervention.getOverPourcent()).toNumber() %>%</p>
+					<%= _(intervention.getOverPourcent()).toNumber() %>%
 				</div>
 			</div>
 		<% } %>

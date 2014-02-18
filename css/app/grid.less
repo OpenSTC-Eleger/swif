@@ -5,11 +5,7 @@
 		width: @container-xl;
 	}
 
-	.make-grid-columns-float(xl);
-	.make-grid(@grid-columns, xl, width);
-	.make-grid(@grid-columns, xl, pull);
-	.make-grid(@grid-columns, xl, push);
-	.make-grid(@grid-columns, xl, offset);
+	.make-grid(xl);
 }
 
 
@@ -26,22 +22,22 @@
 	@media (min-width: @screen-xl-min) {
 		float: left;
 		width: percentage((@columns / @grid-columns));
-		}
+	}
 }
 
 // Generate the large column offsets
 .make-xl-column-offset(@columns) {
 	@media (min-width: @screen-xl-min) {
-    margin-left: percentage((@columns / @grid-columns));
+	    margin-left: percentage((@columns / @grid-columns));
 	}
 }
 .make-xl-column-push(@columns) {
-		@media (min-width: @screen-xl-min) {
-    	left: percentage((@columns / @grid-columns));
-		}
-}	
+	@media (min-width: @screen-xl-min) {
+		left: percentage((@columns / @grid-columns));
+	}
+}
 .make-xl-column-pull(@columns) {
-		@media (min-width: @screen-xl-min) {
+	@media (min-width: @screen-xl-min) {
 		right: percentage((@columns / @grid-columns));
-		}
+	}
 }

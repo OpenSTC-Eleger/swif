@@ -22,7 +22,6 @@
 
 @import 'calendar';
 @import 'drop-area';
-@import 'loader';
 @import 'scrollbar';
 
 
@@ -39,7 +38,7 @@ body{
 }
 
 .hide-soft{
-	display: none	
+	display: none
 }
 
 fieldset{
@@ -70,10 +69,6 @@ fieldset{
 	margin-bottom: 8px;
 }
 
-.table-vertical-center > tbody > tr > td{
-	vertical-align: middle;
-}
-
 
 #passUser{
 	.border-right-radius(@border-radius-large);
@@ -92,7 +87,7 @@ fieldset{
 .content-sidebar{
 	.make-sm-column(3);
 	.make-xl-column(2);
-	
+
 	&-right{
 		.make-sm-column-push(9);
 		.make-xl-column-push(10);
@@ -104,7 +99,7 @@ fieldset{
 -------------------------------------------------- */
 .content-main{
 	.make-sm-column(12);
-	
+
 	&-left{
 		.make-sm-column(9);
 		.make-sm-column-pull(3);
@@ -228,7 +223,7 @@ a.filter-button.filter-disabled{
 /* Vertical OFFSET
 -------------------------------------------------- */
 .calc-vertical-offset(@nb) when (@nb > 0) and (@nb < 7){
-		
+
   .vertical-offset{
 		&-@{nb}{
 			margin-top: percentage(@nb*2  / 100);
@@ -245,7 +240,7 @@ a.filter-button.filter-disabled{
 /* Box Shadow
 -------------------------------------------------- */
 .shadow{
-	.box-shadow(0 1px 10px rgba(50, 50, 0, 0.5));
+	box-shadow: 0 1px 10px rgba(50, 50, 0, 0.5);
 }
 
 
@@ -302,7 +297,7 @@ a.filter-button.filter-disabled{
 
 
 /*--------------------------------------------------
-/* TO REVIEW OR CONFIRM DELETE 
+/* TO REVIEW OR CONFIRM DELETE
 -------------------------------------------------- */
 
 
