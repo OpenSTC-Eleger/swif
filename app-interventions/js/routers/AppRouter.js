@@ -25,7 +25,7 @@ define([
 		*/
 		requestsList: function(search, filter, sort, page) {
 
-			var params = this.setContext({search: search,  filter : filter, sort : sort, page : page});
+			var params = this.setContext({search: search,  filter : filter, sort: sort, page: page});
 
 			app.views.requestsListView = new RequestsListView(params);
 		},
@@ -36,7 +36,7 @@ define([
 		*/
 		interventions: function(search, filter, sort, page){
 
-			var params = this.setContext({search: search,  filter : filter, sort : sort, page : page});
+			var params = this.setContext({search: search,  filter : filter, sort: sort, page: page});
 
 			app.views.interventions = new InterventionsListView(params);
 		},
@@ -54,12 +54,12 @@ define([
 
 
 
-		/** Tasks List 
+		/** Tasks List
 		*/
 		tasksCheck: function(search, filter, sort, page, year, week){
-			
-			var params = this.setContext({search: search, filter : filter, sort : sort, page : page, year: year, week:week});
-			
+
+			var params = this.setContext({search: search, filter : filter, sort: sort, page: page, year: year, week:week});
+
 			app.views.tasksListView = new TasksListView(params);
 			this.render(app.views.tasksListView);
 		},
@@ -72,8 +72,8 @@ define([
 		/** Categories Request List
 		*/
 		categoriesRequests: function(search, sort, page){
-			
-			var params = this.setContext({search: search, sort : sort, page : page});
+
+			var params = this.setContext({search: search, sort: sort, page: page});
 
 			app.views.categoriesRequestsListView = new CategoriesRequestsListView(params);
 
@@ -83,12 +83,12 @@ define([
 
 		/** Categories Tasks List
 		*/
-		categoriesTasks: function(search, sort, page){      
-			
-			var params = this.setContext({search: search, sort : sort, page : page});
+		categoriesTasks: function(search, sort, page){
+
+			var params = this.setContext({search: search, sort: sort, page: page});
 
 			app.views.categoriesTasksListView = new CategoriesTasksListView(params);
-			
+
 		},
 
 
@@ -96,15 +96,15 @@ define([
 		/** Abstent types List
 		*/
 		absentTypes: function(search, sort, page){
-			
-			var params = this.setContext({search: search, sort : sort, page : page});
+
+			var params = this.setContext({search: search, sort: sort, page: page});
 
 			app.views.absentTypesListView = new AbsentTypesListView(params);
-			
+
 		}
 
 	});
 
-return router;
+	return router;
 
 });

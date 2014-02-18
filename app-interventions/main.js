@@ -26,38 +26,38 @@ define('app-interventions', [
 
 
 			// Prefix all the routes of the module with the module name //
-			_.each(moduleRoutes[0], function(route, index){
+			_.each(moduleRoutes[0], function(route){
 				route.url = _.join('/', app.menus.openstc, route.url);
-			})
+			});
 
 			// Extend the routes //
 			app.routes = _.extend(app.routes, moduleRoutes[0]);
 
 
 			// Create all the Routes of the app //
-			_.each(app.routes, function(route, i){
+			_.each(app.routes, function(route){
 				app.router.route(route.url, route.function);
 			});
 
 
 			// Extends the Router functions //
-			_.each(AppInterventionsRouter.prototype, function(func, funcName, e){
+			_.each(AppInterventionsRouter.prototype, function(func, funcName){
 				AppRouter.prototype[funcName] = func;
 			});
 
 
 			// Launch the new Router //
 			app.router = new AppRouter();
-		 
-		
+
+
 			Backbone.history.start({pushState: false});
 
 
 		})
-		.fail(function(e){
+		.fail(function(){
 			console.error('Unable to load routes file');
-		})
+		});
 
-	}
+	};
 
 });

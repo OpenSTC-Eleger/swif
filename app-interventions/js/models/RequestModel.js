@@ -29,16 +29,20 @@ define([
 		getSite : function(type) {
 			if(this.get('site1')){
 
+				var returnVal;
+
 				switch(type){
-					case 'id': 
-						return this.get('site1')[0];
-					break;
+					case 'id':
+						returnVal = this.get('site1')[0];
+						break;
 					case 'json':
-						return {id: this.get('site1')[0], name: this.get('site1')[1]};
-					break;
+						returnVal = {id: this.get('site1')[0], name: this.get('site1')[1]};
+						break;
 					default:
-						return _.titleize(this.get('site1')[1].toLowerCase());
+						returnVal = _.titleize(this.get('site1')[1].toLowerCase());
 				}
+
+				return returnVal;
 			}
 			else{
 				return false;
@@ -51,16 +55,21 @@ define([
 		getEquipment : function(type) {
 
 			if(this.onEquipment()){
+
+				var returnVal;
+
 				switch(type){
-					case 'id': 
-						return this.get('equipment_id')[0];
-					break;
+					case 'id':
+						returnVal = this.get('equipment_id')[0];
+						break;
 					case 'json':
-						return {id: this.get('equipment_id')[0], name: this.get('equipment_id')[1]};
-					break;
+						returnVal = {id: this.get('equipment_id')[0], name: this.get('equipment_id')[1]};
+						break;
 					default:
-						return _.titleize(this.get('equipment_id')[1].toLowerCase());
+						returnVal = _.titleize(this.get('equipment_id')[1].toLowerCase());
 				}
+
+				return returnVal;
 			}
 			else{
 				return false;
@@ -78,7 +87,7 @@ define([
 		setDescription : function(value, silent) {
 			this.set({ description : value }, {silent: silent});
 		},
-		
+
 		getRefusalReason : function() {
 			return this.get('refusal_reason');
 		},
@@ -105,16 +114,19 @@ define([
 			var id = this.get('service_id')[0];
 			var name = _.titleize(this.get('service_id')[1].toLowerCase());
 
+			var returnVal;
 			switch(type){
-				case 'id': 
-					return id;
-				break;
+				case 'id':
+					returnVal = id;
+					break;
 				case 'json':
-					return {id: id, name: name};
-				break;
+					returnVal = {id: id, name: name};
+					break;
 				default:
-					return name;
+					returnVal = name;
 			}
+
+			return returnVal;
 		},
 		setService : function(value, silent) {
 			this.set({ service_id : value }, {silent: silent});
@@ -123,20 +135,20 @@ define([
 
 		// Claimer of the resquest //
 		getClaimer: function(type){
-			var claimer = {};
+			var returnVal;
 
 			switch (type){
-				case 'id': 
-					return this.get('partner_id')[0];
-				break;
+				case 'id':
+					returnVal = this.get('partner_id')[0];
+					break;
 				case 'json':
-					return {id: this.get('partner_id')[0], name: this.get('partner_id')[1]};
-				break;
+					returnVal = {id: this.get('partner_id')[0], name: this.get('partner_id')[1]};
+					break;
 				default:
-					return this.get('partner_id')[1];
+					returnVal = this.get('partner_id')[1];
 			}
 
-			return claimer;
+			return returnVal;
 		},
 
 		setClaimerType: function(value, silent){
@@ -144,16 +156,20 @@ define([
 		},
 		getClaimerType: function(type){
 			if(this.get('partner_type')){
+
+				var returnVal;
 				switch (type){
-					case 'id': 
-						return this.get('partner_type')[0];
-					break;
+					case 'id':
+						returnVal = this.get('partner_type')[0];
+						break;
 					case 'json':
-						return {id: this.get('partner_type')[0], name: this.get('partner_type')[1]};
-					break;
+						returnVal = {id: this.get('partner_type')[0], name: this.get('partner_type')[1]};
+						break;
 					default:
-						return this.get('partner_type')[1];
+						returnVal = this.get('partner_type')[1];
 				}
+
+				return returnVal;
 			}
 		},
 
@@ -171,49 +187,64 @@ define([
 
 		getClaimerContact: function(type){
 			if(this.get('partner_address')){
+
+				var returnVal;
 				switch (type){
-					case 'id': 
-						return this.get('partner_address')[0];
-					break;
+					case 'id':
+						returnVal = this.get('partner_address')[0];
+						break;
 					case 'json':
-						return {id: this.get('partner_address')[0], name: this.get('partner_address')[1]};
-					break;
+						returnVal = {id: this.get('partner_address')[0], name: this.get('partner_address')[1]};
+						break;
 					default:
-						return this.get('partner_address')[1];
+						returnVal = this.get('partner_address')[1];
 				}
+
+				return returnVal;
 			}
 		},
 
 
 		getManager: function(type){
+
+			var returnVal;
 			switch(type){
-				case 'id': 
-					return this.get('manager_id')[0];
-				break;
+				case 'id':
+					returnVal = this.get('manager_id')[0];
+					break;
 				default:
-					return _.capitalize(this.get('manager_id')[1]);
+					returnVal = _.capitalize(this.get('manager_id')[1]);
 			}
+
+			return returnVal;
 		},
 
 		getCreateDate: function(type){
 
+			var returnVal;
 			switch(type){
-				case 'fromNow': 
-					return moment(this.get('create_date'), 'YYYY-MM-DD HH:mm:ss').add('hours',1).fromNow();
-				break;
+				case 'fromNow':
+					returnVal = moment(this.get('create_date'), 'YYYY-MM-DD HH:mm:ss').add('hours',1).fromNow();
+					break;
 				default:
-					return moment(this.get('create_date'), 'YYYY-MM-DD HH:mm:ss').add('hours',1).format('LLL');
+					returnVal = moment(this.get('create_date'), 'YYYY-MM-DD HH:mm:ss').add('hours',1).format('LLL');
 			}
+
+			return returnVal;
 		},
 
 		getCreateAuthor: function(type){
+
+			var returnVal;
 			switch(type){
-				case 'id': 
-					return this.get('create_uid')[0];
-				break;
+				case 'id':
+					returnVal = this.get('create_uid')[0];
+					break;
 				default:
-					return _.capitalize(this.get('create_uid')[1]);
+					returnVal = _.capitalize(this.get('create_uid')[1]);
 			}
+
+			return returnVal;
 		},
 
 		onEquipment: function(){
@@ -273,7 +304,7 @@ define([
 
 		/** Model Initialization
 		*/
-		initialize: function (model) {
+		initialize: function () {
 			//console.log("Request Model Initialization");
 		},
 
@@ -282,52 +313,52 @@ define([
 		// Status of the requests //
 		status : {
 			wait: {
-				key 		: 'wait',
-				color 		: 'info',
-				translation : app.lang.wait
+				key        : 'wait',
+				color      : 'info',
+				translation: app.lang.wait
 			},
 			valid: {
-				key 		: 'valid',
-				color 		: 'success',
-				translation : app.lang.valid
+				key        : 'valid',
+				color      : 'success',
+				translation: app.lang.valid
 			},
 			confirm: {
-				key 		: 'confirm',
-				color 		: 'warning',
-				translation : app.lang.confirm
+				key        : 'confirm',
+				color      : 'warning',
+				translation: app.lang.confirm
 			},
 			refused: {
-				key 		: 'refused',
-				color 		: 'danger',
-				translation : app.lang.refused
+				key        : 'refused',
+				color      : 'danger',
+				translation: app.lang.refused
 			},
 			closed: {
-				key 		: 'closed',
-				color 		: 'default',
-				translation : app.lang.finished
+				key        : 'closed',
+				color      : 'default',
+				translation: app.lang.finished
 			}
 		},
 
-		
+
 		// Actions of the requests //
 		actions : {
 			valid: {
-				key 		: 'valid',
-				color 		: 'success',
-				icon 		: 'fa-check',
-				translation : app.lang.actions.validate
+				key        : 'valid',
+				color      : 'success',
+				icon       : 'fa-check',
+				translation: app.lang.actions.validate
 			},
 			confirm: {
-				key 		: 'confirm',
-				color 		: 'warning',
-				icon 		: 'fa-level-up',
-				translation : app.lang.actions.confirmChief
+				key        : 'confirm',
+				color      : 'warning',
+				icon       : 'fa-level-up',
+				translation: app.lang.actions.confirmChief
 			},
 			refused: {
-				key 		: 'refused',
-				color 		: 'danger',
-				icon 		: 'fa-times',
-				translation : app.lang.actions.refuse
+				key        : 'refused',
+				color      : 'danger',
+				icon       : 'fa-times',
+				translation: app.lang.actions.refuse
 			},
 		}
 

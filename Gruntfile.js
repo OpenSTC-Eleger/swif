@@ -78,16 +78,18 @@ module.exports = function(grunt) {
 				options: {
 					quotmark: 'double'
 				},
-				src: ['properties.json', 'package.json', 'config/*.json', 'i18n/**/*.json']
+				src: ['properties.json', 'package.json', 'config/*.json', 'i18n/**/*.json', 'app-interventions/config/*.json', 'app-reservations/config/*.json'],
 			},
 			scripts_main: {
 				src: ['startup.js', 'js/**/*.js', '!js/libs/*', '!js/i18n/*']
 			},
 			scripts_inter: {
 				//src: ['app-interventions/js/**/*.js', 'app-interventions/main.js']
+				src: ['app-interventions/main.js', 'app-interventions/js/routers/*.js', 'app-interventions/js/models/*.js', 'app-interventions/js/collections/*.js']
 			},
 			scripts_resa: {
 				//src: ['app-reservations/js/**/*.js', 'app-reservations/main.js']
+				src: ['app-reservations/main.js', 'app-reservations/js/routers/*.js', 'app-reservations/js/models/*.js', 'app-reservations/js/collections/*.js']
 			},
 
 		},

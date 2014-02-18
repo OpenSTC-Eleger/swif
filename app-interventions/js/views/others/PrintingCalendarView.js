@@ -2,7 +2,7 @@ define([
 	'app',
 	'datatables',
 	'printElement',
-	'taskModel',	
+	'taskModel',
 ], function(app, Datatables, PrintElement, TaskModel){
 
 	'use strict';
@@ -11,36 +11,36 @@ define([
 	* Service Details View
 	*/
 	var printingCalendarView =  Backbone.View.extend({
-	
+
 		templateHTML: '/templates/others/printingCalendar.html',
-	
+
 		events:	[],
-	
+
 		/** View Initialization
 		*/
 		initialize: function (params) {
 			this.options = params;
-	
+
 			this.calendar = params.calendar;
 			this.events = params.events;
 		},
-	
-	
+
+
 		/** Display the view
 		*/
 		render: function () {
-	
+
 			var self = this;
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(app.menus.openstc + this.templateHTML, function(templateData){
 				var template = _.template(templateData,{
 					lang: app.lang,
 					logo: app.config.logo_path
 				});
 				$(self.el).html(template);
-	
+
 				// Print button //
-				$('<span class="fc-button fc-button-print">' 
+				$('<span class="fc-button fc-button-print">'
 					   +'<i class="fa fa-print"></i></span>')
 					  .appendTo(self.calendar.divCalendar + ' td.fc-header-right')
 					  .button()
@@ -51,19 +51,19 @@ define([
 			});
 			return this;
 		},
-	
-	
+
+
 		/** Print Calendar
 		*/
 		printCalendar: function () {
-	
-			var date = moment( $(this.calendar.divCalendar).fullCalendar('getView').visStart );			
+
+			var date = moment( $(this.calendar.divCalendar).fullCalendar('getView').visStart );
 			var momentDate = moment().year(date.year()).week(date.week());
-			
+
 			var firstDayOfTheWeek = momentDate.clone().day(1);
 			var lastDayOfTheWeek = momentDate.clone().day(7);
-	
-	
+
+
 			if(firstDayOfTheWeek.isSame(lastDayOfTheWeek, 'month')){
 				var titleFirstDay = momentDate.day(1).format('D');
 			}
@@ -75,45 +75,45 @@ define([
 					var titleFirstDay = momentDate.day(1).format('D MMM YYYY');
 				}
 			}
-	
-			$("#printingCalendar .before-muted").html( app.lang.week + " " + momentDate.week() + " - " ); 
-			$("#printingCalendar .muted").html( titleFirstDay + " " + app.lang.to + " " + lastDayOfTheWeek.format('D MMM YYYY')  );			
-	
+
+			$("#printingCalendar .before-muted").html( app.lang.week + " " + momentDate.week() + " - " );
+			$("#printingCalendar .muted").html( titleFirstDay + " " + app.lang.to + " " + lastDayOfTheWeek.format('D MMM YYYY')  );
+
 			var self = this;
-	
+
 			var elementToPrint = $('#printingCalendar');
 			var	worker = $('#worker').text(this.calendar.model.name);
 			var table = $('#paperboard');
-	
-			var tasks = _.filter(this.events, function(task){ 
+
+			var tasks = _.filter(this.events, function(task){
 	        	return (
-	        				task.state != TaskModel.status.draft.key &&
-	        				task.state != TaskModel.status.cancelled.key        			
-	        		); 
+					task.state != TaskModel.status.draft.key &&
+					task.state != TaskModel.status.cancelled.key
+	        	);
 	        });
-	
-			tasks = _.sortBy(tasks, function(item){ 
-			    return item.date_start; 
+
+			tasks = _.sortBy(tasks, function(item){
+			    return item.date_start;
 			});
-	
-	
-		    _.each(tasks, function(task){ 
-		    	
-		    	task["day"] = self.getDay(task.start);	    	
-		    	task["inter"] = task.inter_name != false ? task.inter_name :'' ;
-		    	task["description"] = task.inter_desc != false ? task.inter_desc :'';
-		    	task["name"] = task.title;
-		    	var site = task.inter_site ? task.inter_site : "";
-		    	task["place"] = task.inter_equipment  ? _(task.inter_equipment).strLeft('/') + "- (" + site + ")": site;
-		    	task["done"] = ( task.state == TaskModel.status.done.key  ? true : false );
-		    	
-		    	task["equipment"] = "";
+
+
+		    _.each(tasks, function(task){
+
+		    	task['day'] = self.getDay(task.start);
+		    	task['inter'] = task.inter_name != false ? task.inter_name :'' ;
+		    	task['description'] = task.inter_desc != false ? task.inter_desc :'';
+		    	task['name'] = task.title;
+		    	var site = task.inter_site ? task.inter_site : '';
+		    	task['place'] = task.inter_equipment  ? _(task.inter_equipment).strLeft('/') + '- (' + site + ')': site;
+		    	task['done'] = ( task.state == TaskModel.status.done.key  ? true : false );
+
+		    	task['equipment'] = '';
 		    	if( task.equipments ) {
 			    	_.each( task.equipments , function( equipment ) {
-			    		task["equipment"] += "[" + _(equipment).strLeft('/') + "]";
+			    		task['equipment'] += "[" + _(equipment).strLeft('/') + "]";
 			    	});
 			    }
-	
+
 				task["planned_hours"] =  ( task.planned_hours>0? task.planned_hours : '' );
 				task["effective_hours"] =  ( task.effective_hours>0? task.effective_hours : '' );
 				task["remaining_hours"] =  '';//( task.remaining_hours>0? task.remaining_hours : '' );
@@ -124,13 +124,13 @@ define([
 				task["taskHours"] = '';
 				if( !_.isNull(startDt) && !_.isNull(endDt))
 					task["taskHours"] = startDt.format('H[h]mm')  + '-' + endDt.format('H[h]mm') ;
-				task["km"] = ''; 
+				task["km"] = '';
 		    })
-			
+
 		    $('#paperboard').data('resultSet', tasks);
 		    var results = $('#paperboard').data('resultSet');
 		    self.results = results;
-		    
+
 			table.dataTable({
 				"bAutoWidth": false,
 				"aaData": self.results,
@@ -146,15 +146,15 @@ define([
 					{"sPlace": "Place", "mDataProp": "place", 'sWidth': '5%', 'sClass': "center"},
 					{"sDateStart": "DateStart", "mDataProp": "taskHours","sType": "date", 'sWidth': '2%'},
 					{ "sWorkingTime": "WorkingTime", "mDataProp": "planned_hours", 'sWidth': '1%','sClass': "center"},
-					{ "sEffectiveTime": "EffectiveTime", "mDataProp": "effective_hours", 'sWidth': '1%','sClass': "center toFill"}, 
-					{ "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours", 'sWidth': '1%','sClass': "center toFill"}, 
+					{ "sEffectiveTime": "EffectiveTime", "mDataProp": "effective_hours", 'sWidth': '1%','sClass': "center toFill"},
+					{ "sRemainingTime": "RemainingTime", "mDataProp": "remaining_hours", 'sWidth': '1%','sClass': "center toFill"},
 					{ "sDone": "Done", "mDataProp": "done", 'sWidth': '2%','fnRender': self.renderResume},
 					{ "sEquipment": "Equipment", "mDataProp": "equipment", 'sWidth': '25%','sClass': "center toFill"},
 					{ "sOilQtity": "oilQtity", "mDataProp": "oilQtity", 'sWidth': '2%', 'sClass': "center toFill"},
 					{ "km": "km", "mDataProp": "km", 'sWidth': '2%', 'sClass': "center toFill"},
 					{ "sOilPrice": "oilPrice", "mDataProp": "oilPrice", 'sWidth': '2%', 'sClass': "center toFill"},
 				],
-			
+
 			    "bFilter": false,"bInfo": false,"bPaginate": false,"bLengthChange": false,
 			    bRetrieve: true,
 			    "fnDrawCallback": function ( oSettings ) {
@@ -162,7 +162,7 @@ define([
 		            {
 		                return;
 		            }
-		             
+
 		            var nTrs = $('#paperboard tbody tr');
 		            var iColspan = nTrs[0].getElementsByTagName('td').length;
 		            var sLastGroup = "";
@@ -174,7 +174,7 @@ define([
 		                {
 		                    var nGroup = document.createElement( 'tr' );
 		                    var nCell = document.createElement( 'td' );
-		                    
+
 		                    nCell.colSpan = iColspan;
 		                    nCell.className = "group";
 		                    nCell.innerHTML = sGroup;
@@ -192,12 +192,12 @@ define([
 		        ],
 		        "aaSorting": [[ 0, 'asc' ]],
 			})
-	
+
 			table.fnClearTable();
 			if (results.length)
 				table.fnAddData(results);
 			table.fnDraw();
-	
+
 			elementToPrint.printElement({
 				leaveOpen	: true,
 				printMode	: 'popup',
@@ -205,46 +205,46 @@ define([
 					{ href:'css/vendors/print_table.css', media: 'all'}
 				]
 			});
-		},	
+		},
 		//--------------------End  Print calendar----------------------------------------//
-	
+
 		/**
 		 * Remove print button on close calendar
 		 */
-		close : function() {	
+		close : function() {
 			$('span').remove('.fc-button-print');
 			$('span').remove('.fc-header-space');
 		},
-	
-	   
+
+
 	    //--------------------Getter--------------------------------------//
-		
+
 		getStyle: function (nTd, sData, oData, iRow, iCol) {
 			if( oData.state == TaskModel.status.absent.key )
 				$(nTd).css('font-style', 'italic');
 		},
-		
+
 		renderResume: function (o, check){
 			if( o.aData.state != TaskModel.status.absent.key )
 				return "<td class=\"center\"><input type=\"checkbox\" disabled " + (check?"checked":"") + "></td>";
 			else
 				return "<td class=\"center\"></td>";
 		},
-		
+
 		getDay : function(date) {
 			return moment(date).format('dddd D MMMM')
 		},
-		
+
 	});
-	
+
 	jQuery.fn.dataTableExt.oSort['day-asc']  = function(x,y) {
-		var days = Array("lundi","mardi","mercredi","jeudi","vendredi","samedi");
+		var days = Array('lundi','mardi','mercredi','jeudi','vendredi','samedi');
 		var indexOfx = days.indexOf(x);
 		var indexOfy = days.indexOf(y);
 		return ((indexOfx < indexOfy) ? -1 : ((indexOfx > indexOfy) ? 1 : 0));
-	};	
+	};
 
-	
+
 	return printingCalendarView;
 
 });

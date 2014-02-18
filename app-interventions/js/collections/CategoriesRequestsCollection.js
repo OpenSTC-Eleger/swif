@@ -24,12 +24,12 @@ define([
 
 		/** Collection Initialization
 		*/
-		initialize: function (options) {
+		initialize: function () {
 			//console.log('Categorie collection Initialization');
 		},
 
 	});
 
-return CategoriesRequestsCollection;
+	return CategoriesRequestsCollection;
 
 });

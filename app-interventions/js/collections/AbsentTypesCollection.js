@@ -14,7 +14,7 @@ define([
 
 		model       : AbsentTypeModel,
 
-		url         : "/api/openstc/absence_categories",
+		url         : '/api/openstc/absence_categories',
 
 		fields      : ['id', 'name', 'code', 'description', 'actions'],
 
@@ -24,12 +24,12 @@ define([
 
 		/** Collection Initialization
 		*/
-		initialize: function (options) {
+		initialize: function () {
 			//console.log('Place collection Initialization');
 		},
 
 	});
 
-return AbsentTypesCollection;
+	return AbsentTypesCollection;
 
 });

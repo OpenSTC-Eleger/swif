@@ -14,19 +14,13 @@ define([
 
 
 		fields     : ['id', 'name', 'code', 'actions'],
-		
+
 		urlRoot    : '/api/openstc/intervention_categories',
 
 
 		searchable_fields: [
-			{
-				key  : 'name', 
-				type : 'text'
-			},
-			{
-				key  : 'code', 
-				type : 'text'
-			}
+			{ key: 'name', type: 'text' },
+			{ key: 'code', type: 'text' }
 		],
 
 
@@ -54,6 +48,6 @@ define([
 
 	});
 
-return CategoryRequestModel;
+	return CategoryRequestModel;
 
 });

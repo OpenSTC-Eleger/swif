@@ -26,7 +26,7 @@ define([
 
 			app.views.bookingsListView = new BookingsListView(params);
 		},
-		
+
 
 
 		/** Abstent types List
@@ -51,6 +51,6 @@ define([
 
 	});
 
-return router;
+	return router;
 
 });

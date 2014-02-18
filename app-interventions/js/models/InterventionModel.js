@@ -13,9 +13,9 @@ define([
 	* Intervention Model
 	*/
 	var InterventionModel = GenericModel.extend({
-		
-		urlRoot: "/api/openstc/interventions",
-		
+
+		urlRoot: '/api/openstc/interventions',
+
 		fields : ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid', 'create_date', 'ask_id'],
 
 
@@ -33,55 +33,66 @@ define([
 		getName: function(){
 			return this.get('name');
 		},
-		
+
 		getDateDeadline: function(type){
-			if(this.get('date_deadline') != false){
+			if(this.get('date_deadline') !== false){
+
+				var returnVal;
 				switch(type){
-					case 'human':	
-						return moment(this.get('date_deadline')).format('LL');
-					break;
+					case 'human':
+						returnVal = moment(this.get('date_deadline')).format('LL');
+						break;
 					default:
-						return this.get('date_deadline');
-					break;
+						returnVal = this.get('date_deadline');
+						break;
 				}
+
+				return returnVal;
 			}
 			else{
 				return '';
 			}
 		},
-		
+
 		getPlannedHours: function(type){
-			if(this.get('planned_hours') != false){
+			if(this.get('planned_hours') !== false){
+
+				var returnVal;
 				switch(type){
 					case 'human':
-						return AppHelpers.decimalNumberToTime(this.get('planned_hours'), 'human');
-					break;
+						returnVal = AppHelpers.decimalNumberToTime(this.get('planned_hours'), 'human');
+						break;
 					default:
-						return this.get('planned_hours');
-					break;
+						returnVal = this.get('planned_hours');
+						break;
 				}
+
+				return returnVal;
 			}
 			else{
 				return '';
 			}
 		},
-		
+
 		getEffectiveHours: function(type){
-			if(this.get('effective_hours') != false){
+			if(this.get('effective_hours') !== false){
+
+				var returnVal;
 				switch(type){
 					case 'human':
-						return AppHelpers.decimalNumberToTime(this.get('effective_hours'), 'human');
-					break;
+						returnVal = AppHelpers.decimalNumberToTime(this.get('effective_hours'), 'human');
+						break;
 					default:
-						return this.get('effective_hours');
-					break;
+						returnVal = this.get('effective_hours');
 				}
+
+				return returnVal;
 			}
 			else{
 				return '';
 			}
 		},
-		
+
 		getTooltip: function(){
 			return this.get('tooltip');
 		},
@@ -89,51 +100,59 @@ define([
 		getDescription: function(){
 			return _(this.get('description')).escapeHTML();
 		},
-		
+
 		getProgressRate: function(){
 			return this.get('progress_rate');
 		},
-		
+
 		getOverPourcent: function(){
 			return this.get('overPourcent');
 		},
-		
+
 		getState : function() {
 			return this.get('state');
 		},
 		setState : function(value, silent) {
 			this.set({ state : value }, {silent: silent});
 		},
-		
+
 		getCancelReason : function() {
 			return this.get('cancel_reason');
 		},
 		setCancelReason : function(value, silent) {
 			this.set({ cancel_reason : value }, {silent: silent});
 		},
-		
+
 		getSite : function(type) {
 			if(this.get('site1')){
+
+				var returnVal;
 				switch(type){
-					case 'id': 
-						return this.get('site1')[0];
-					break;
+					case 'id':
+						returnVal = this.get('site1')[0];
+						break;
 					default:
-						return _.titleize(this.get('site1')[1].toLowerCase());
+						returnVal = _.titleize(this.get('site1')[1].toLowerCase());
 				}
+
+				return returnVal;
 			}
 		},
-		
+
 		getEquipment : function(type) {
 
 			if(this.onEquipment()){
+
+				var returnVal;
 				switch(type){
-					case 'id': 
-						return this.get('equipment_id')[0];
-					break;
+					case 'id':
+						returnVal = this.get('equipment_id')[0];
+						break;
 					default:
-						return _.titleize(this.get('equipment_id')[1].toLowerCase());
+						returnVal = _.titleize(this.get('equipment_id')[1].toLowerCase());
 				}
+
+				return returnVal;
 			}
 			else{
 				return false;
@@ -142,7 +161,7 @@ define([
 		setEquipment : function(value, silent) {
 			this.set({ equipment_id : value }, {silent: silent});
 		},
-		
+
 		onEquipment: function(){
 			return this.get('has_equipment');
 		},
@@ -150,25 +169,25 @@ define([
 		getActions: function(){
 			return this.get('actions');
 		},
-		
+
 		hasActions: function(action){
 			return this.getActions().indexOf(action) > -1;
 		},
-		
+
 		/** Model Initialization
 		*/
 		initialize: function(){
 			//console.log('Intervention Model initialization');
 		},
 
-			
-		cancel: function(cancel_reason, options) {
-			var params = {}
+
+		cancel: function(cancel_reason) {
+			var params = {};
 			params.state = InterventionModel.status.cancelled.key;
 			//params.email_text = InterventionModel.status.cancelled.translation;
 			params.cancel_reason = cancel_reason;
 
-			return this.save(params,{patch:true, wait: true})
+			return this.save(params,{patch:true, wait: true});
 		}
 
 
@@ -202,7 +221,7 @@ define([
 				translation         : app.lang.cancelled
 			},
 			template: {
-				key               	: 'template',
+				key                 : 'template',
 				color               : 'template',
 				translation         : 'template'
 			}
@@ -210,6 +229,6 @@ define([
 
 	});
 
-return InterventionModel;
+	return InterventionModel;
 
 });

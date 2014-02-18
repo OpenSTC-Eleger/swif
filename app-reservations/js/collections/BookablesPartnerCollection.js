@@ -16,13 +16,13 @@ define([
 
 		partnerId : '',
 
-		url   : function(){
+		url: function(){
 			return '/api/openresa/partners/'+this.partnerId+'/bookables';
 		},
 
 		fields: ['id', 'name', 'product_image', 'qty_available', 'type_prod', 'color', 'categ_id'],
-		
+
 	});
 
 	return BookablesPartnerCollection;
-})
+});

@@ -11,77 +11,75 @@ define([
 	* Booking Model
 	*/
 	var bookingLine = GenericModel.extend({
-		
-		urlRoot: "/api/openresa/booking_lines",
-		
+
+		urlRoot: '/api/openresa/booking_lines',
+
 		fields : ['id', 'name', 'reserve_product', 'qte_dispo', 'qte_reserves', 'pricelist_amount','dispo'],
-	
-	
+
+
 		searchable_fields: [
-			{
-				key  : 'id',
-				type : 'numeric'
-			},
-			{
-				key  : 'name', 
-				type : 'text'
-			}
+			{ key: 'id', type : 'numeric' },
+			{ key: 'name', type : 'text' }
 		],
-	
+
 		getId: function(){
 			return this.get('id');
 		},
-		
+
 		getName: function(){
 			return this.get('name');
 		},
-		
-		getResource : function(type) {	
+
+		getResource : function(type) {
 			if(this.get('reserve_product')){
+
+				var returnVal;
 				switch(type){
-					case 'id': 
-						return this.get('reserve_product')[0];
-					break;
+					case 'id':
+						returnVal = this.get('reserve_product')[0];
+						break;
 					default:
-						return _.titleize(this.get('reserve_product')[1].toLowerCase());
+						returnVal = _.titleize(this.get('reserve_product')[1].toLowerCase());
 				}
+
+				return returnVal;
 			}
 			else{
 				return false;
 			}
 		},
-		
+
 		getAvailableQtity: function(){
 			return this.get('qte_dispo');
 		},
-		
+
 		setAvailableQtity: function(qty){
 			this.set({qte_dispo:qty},{silent:true});
 			this.updateAvailable();
 		},
-		
+
 		getQuantity: function(){
 			return this.get('qte_reserves');
 		},
-		
+
 		setQuantity: function(qty){
 			this.set({qte_reserves:qty},{silent:true});
 			this.updateAvailable();
 		},
-		
+
 		getAvailable: function(){
 			return this.get('dispo');
 		},
-		
+
 		// not really a setter, used by other setters of the module to trigger change event
 		updateAvailable: function(){
-			this.set({dispo:this.getAvailableQtity() >= this.getQuantity()})
+			this.set({dispo:this.getAvailableQtity() >= this.getQuantity()});
 		},
-		
+
 		getPricing: function(){
 			return this.get('pricelist_amount');
 		},
-		
+
 		fetchAvailableQtity: function(checkin, checkout){
 			var self = this;
 			var deferred = $.Deferred();
@@ -90,8 +88,8 @@ define([
 				type: 'GET',
 				data: app.objectifyFilters({
 					checkin:checkin,
-					checkout:checkout}
-				),
+					checkout:checkout
+				}),
 				success: function(data){
 					self.setAvailableQtity(data);
 					deferred.resolve();
@@ -103,44 +101,48 @@ define([
 			});
 			return deferred;
 		},
-		
+
 		fetchPricing: function(partner_id, checkin, checkout){
 			var self = this;
-			var prodAndQty = [{prod_id:this.getResource('id'),qty:this.getQuantity()}]
+			var prodAndQty = [{prod_id:this.getResource('id'),qty:this.getQuantity()}];
 			return $.when($.ajax({
-				url:'/api/open_object/partners/' + partner_id + '/get_bookables_pricing',
-				type: 'GET',
-				data: app.objectifyFilters({
-					checkin:checkin,
-					checkout:checkout,
-					prodAndQties:prodAndQty}
-				),
-				success: function(data){
-					self.set({pricelist_amount:data[self.getResource('id').toString()]});
-				},
-				error: function(e){
-					console.log(e);
-				}
-			}));
+					url:'/api/open_object/partners/' + partner_id + '/get_bookables_pricing',
+					type: 'GET',
+					data: app.objectifyFilters({
+						checkin:checkin,
+						checkout:checkout,
+						prodAndQties:prodAndQty
+					}),
+					success: function(data){
+						self.set({pricelist_amount:data[self.getResource('id').toString()]});
+					},
+					error: function(e){
+						console.log(e);
+					}
+				})
+			);
 		},
-		
+
 		getParentBookingModel: function(){
 			return this.parentBookingModel;
 		},
-		
+
+
 		setParentBookingModel: function	(model){
 			this.parentBookingModel = model;
 			if(!model.isNew()){
 				this.set({line_id:model.getId()});
 			}
 		},
-		
+
+
 		saveToBackend: function(){
 			var self = this;
 			var vals = {
-					reserve_product:this.getResource('id'),
-					qte_reserves:this.getQuantity(),
-					pricelist_amount: this.getPricing()};
+				reserve_product:this.getResource('id'),
+				qte_reserves:this.getQuantity(),
+				pricelist_amount: this.getPricing()
+			};
 
 			//if new, POST new values and fetch the model to retrieve values stored on backend
 			if(this.isNew()){
@@ -158,7 +160,9 @@ define([
 			}
 			return false;
 		},
-		
+
+
+
 		destroyOnBackend: function(){
 			this.getParentBookingModel().lines.remove(this);
 			this.getParentBookingModel().linesToRemove.add(this.clone().off());
@@ -166,12 +170,13 @@ define([
 			this.set({id:null},{silent:true});
 			this.destroy();
 		},
-		
+
+
+
 		/** Model Initialization
 		*/
 		initialize: function(){
 			//console.log('Booking Model initialization');
-			//this.fetchRelated('tasks');
 			this.parentBookingModel = null;
 		},
 
@@ -180,19 +185,19 @@ define([
 		// BookingLine State Initialization //
 		status : {
 			dispo:{
-				icon	: 'fa fa-check',
-				key		: 'dispo',
-				color	: 'success'
+				icon : 'fa fa-check',
+				key  : 'dispo',
+				color: 'success'
 			},
 			not_dispo:{
-				icon	: 'fa fa-times',
-				key		: 'not_dispo',
-				color	: 'danger'
+				icon : 'fa fa-times',
+				key  : 'not_dispo',
+				color: 'danger'
 			}
 		}
-	
+
 	});
 
-return bookingLine;
+	return bookingLine;
 
 });

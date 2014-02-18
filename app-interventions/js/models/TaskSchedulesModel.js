@@ -19,6 +19,6 @@ define([
 
 	});
 
-return TaskSchedulesModel;
+	return TaskSchedulesModel;
 
 });

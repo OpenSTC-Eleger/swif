@@ -19,24 +19,18 @@ define([
 
 
 		searchable_fields: [
-			{
-				key  : 'name', 
-				type : 'text'
-			},
-			{
-				key  : 'code', 
-				type : 'text'
-			}
+			{ key: 'name',  type: 'text' },
+			{ key: 'code',  type: 'text'}
 		],
 
-		
+
 		getCode : function() {
 			return this.get('code');
 		},
 		setCode : function(value, silent) {
 			this.set({ code : value }, {silent: silent});
 		},
-		
+
 		getDescription : function() {
 			return this.get('description');
 		},
@@ -63,6 +57,6 @@ define([
 
 	});
 
-return AbsentTypeModel;
+	return AbsentTypeModel;
 
 });

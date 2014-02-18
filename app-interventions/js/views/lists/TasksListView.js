@@ -6,11 +6,11 @@ define([
 	'taskModel',
 	'officersCollection',
 	'officerModel',
-	
+
 	'genericListView',
 	'paginationView',
 	'advancedSelectBoxView',
-	
+
 	'itemTaskDayListView',
 	'modalAddTaskView',
 	'moment',
@@ -24,13 +24,13 @@ define([
 	* Task List View
 	*/
 	var TasksListView = GenericListView.extend({
-		
+
 		el : '#rowContainer',
-	
+
 		templateHTML: '/templates/lists/tasksList.html',
-	
+
 		filters: 'tasksListFilter',
-	
+
 		// The DOM events //
 		events: {
 			'click .btn.addTask'            : 'displayModalAddTask',
@@ -38,19 +38,19 @@ define([
 			'click .linkNextWeek'			: 'goToNextWeek',
 			'click .linkPreviousWeek'		: 'goToPreviousWeek'
 		},
-	
+
 		urlParameters: _.union(GenericListView.prototype.urlParameters, ['year','week']),
-		
+
 		/** View Initialization
 		*/
 		initialize: function (params) {
-	
+
 			this.options = params;
 		},
-		
-	
+
+
 		partialRender: function(){
-			
+
 			var pendingTasks = 0;
 			_.each(this.collections.tasks.models, function(task, i){
 				if(task.toJSON().state == TaskModel.status.open.key){
@@ -58,7 +58,7 @@ define([
 				}
 			});
 			$('#globalBagePendingTask').html(pendingTasks.toString());
-	
+
 		},
 
 
@@ -77,34 +77,34 @@ define([
 				}
 			});
 		},
-		
+
 		//listener to dispatch newly created task to corresponding Day
 		removeTask: function(model){
 			this.partialRender();
 		},
 
 
-		
+
 		//listener to dispatch newly created task to corresponding Day
 		changeTask: function(model){
 			this.partialRender();
 		},
-	
+
 
 
 		/** Display the view
 		*/
 		render: function () {
 			var self = this;
-	
+
 			// Change the page title //
 			app.router.setPageTitle(app.lang.viewsTitles.tasksList);
-	
-	
-	
+
+
+
 			//var officer = app.current_user.getUID();
 			var officer_id = app.current_user.getUID();
-			
+
 			// Retrieve the year - If not exist in the URL set as the current year //
 			var year = 0;
 			var week = 0;
@@ -112,9 +112,9 @@ define([
 				year = moment().year();
 			}
 			else{
-				year = this.options.year;	
+				year = this.options.year;
 			}
-	
+
 			// Retrieve the week of the year - - If not exist in the URL set as the current week ////
 			if(_.isUndefined(this.options.week)){
 				week = moment().week();
@@ -122,9 +122,9 @@ define([
 			else{
 				week = this.options.week;
 			}
-	
+
 			var momentDate = moment().year(year).week(week);
-			
+
 			//get only tasks on the current week
 			var filter = [{'field':'date_start','operator':'>=','value':momentDate.clone().weekday(0).format('YYYY-MM-DD 00:00:00')},{'field':'date_start','operator':'<=','value':momentDate.clone().weekday(6).format('YYYY-MM-DD 23:59:59')}];
 			//Get Selected Agent in filters
@@ -133,36 +133,36 @@ define([
 			if(!_.isUndefined(agent)){
 				filter.push({field: 'user_id.id', operator: 'in', value: [agent.value[0]]});
 			}
-			
+
 			//check sort parameter
 			if(_.isUndefined(this.options.sort)){
 				this.options.sort = TasksCollection.prototype.default_sort;
 			}
-			
+
 			self.collections = {};
 			self.collections.tasks = new TasksCollection();
-			
+
 			var deferred = $.Deferred();
 			deferred = app.current_user.queryManagableOfficers();
 			//get taskUser filtered on current week and with optional filter
 			$.ajax({
 				url: '/api/open_object/users/' + app.current_user.getUID().toString() + '/scheduled_tasks',
 				type:'GET',
-				data: app.objectifyFilters({'filters':app.objectifyFilters(filter),'fields':self.collections.tasks.fields}),	
+				data: app.objectifyFilters({'filters':app.objectifyFilters(filter),'fields':self.collections.tasks.fields}),
 				success: function(data){
 					self.collections.tasks = new TasksCollection(data);
 					self.listenTo(self.collections.tasks, 'add', self.addTask);
 					self.listenTo(self.collections.tasks, 'remove', self.removeTask);
 					self.listenTo(self.collections.tasks, 'change', self.changeTask);
-						
+
 						// Create table for each day //
 						var mondayTasks = new TasksCollection(); 	var tuesdayTasks =new TasksCollection();
 						var wednesdayTasks = new TasksCollection(); var thursdayTasks =new TasksCollection();
-						var fridayTasks = new TasksCollection(); 	var saturdayTasks =new TasksCollection(); 
+						var fridayTasks = new TasksCollection(); 	var saturdayTasks =new TasksCollection();
 						var sundayTasks =new TasksCollection();
-		
+
 						var nbPendingTasks = 0;
-		
+
 						// Fill the tables with the tasks //
 						_.each(self.collections.tasks.toJSON(), function(task, i){
 							if(momentDate.clone().isSame(task.date_start, 'week')){
@@ -187,19 +187,19 @@ define([
 								else if(momentDate.clone().day(7).isSame(task.date_start, 'day')){
 									sundayTasks.add(task);
 								}
-		
+
 								// Retrieve the number of Open Task //
 								if(task.state == TaskModel.status.open.key){
 									nbPendingTasks++;
 								}
-		
+
 							}
 							// Hack for Sunday Task //
 							else {
-		
-								if( momentDate.clone().day(7).isSame(task.date_start, 'day') ){					
+
+								if( momentDate.clone().day(7).isSame(task.date_start, 'day') ){
 									sundayTasks.add(task);
-		
+
 									// Retrieve the number of Open Task //
 									if(task.state == TaskModel.status.open.key){
 										nbPendingTasks++;
@@ -207,7 +207,7 @@ define([
 								}
 							}
 						});
-			
+
 						self.tasksUserFiltered = [
 							{'day': momentDate.clone().day(1), 'tasks': mondayTasks},
 							{'day': momentDate.clone().day(2), 'tasks': tuesdayTasks},
@@ -217,15 +217,15 @@ define([
 							{'day': momentDate.clone().day(6), 'tasks': saturdayTasks},
 							{'day': momentDate.clone().day(7), 'tasks': sundayTasks}
 						];
-		
-		
-		
-						// Retrieve the template // 
+
+
+
+						// Retrieve the template //
 						$.get(app.menus.openstc+self.templateHTML, function(templateData){
-		
-		
+
+
 							var officersDropDownList = new OfficersCollection( app.current_user.attributes.officers );
-			
+
 							var template = _.template(templateData, {
 								lang: app.lang,
 								nbPendingTasks: nbPendingTasks,
@@ -233,18 +233,18 @@ define([
 								//displayFilter: _.size(officersDropDownList) > 0
 								displayFilter: true
 							});
-							
+
 							$(self.el).html(template);
-							
-							
+
+
 							//display all seven days of the selected week
 							_.each(self.tasksUserFiltered, function(dayTasks, i){
-								
+
 								var params = {day: dayTasks.day, tasks: dayTasks.tasks, parentListView: self};
-	
+
 								$('#task-accordion').append(new ItemTaskDayListView(params).render().el);
 							});
-		
+
 							self.selectListFilterOfficerView = new AdvancedSelectBoxView({ el: $("#filterListAgents"), url: OfficersCollection.prototype.url })
 							deferred.done(function(){
 								var ret = app.current_user.getOfficers();
@@ -255,17 +255,17 @@ define([
 								self.selectListFilterOfficerView.setSearchParam({field:'id',operator:'in',value:ids}, true);
 							});
 							self.selectListFilterOfficerView.render();
-		
+
 							// Collapse border style //
 							$('.accordion-toggle').click(function(){
 								if($(this).parents('.accordion-group').hasClass('collapse-selected')){
 									$(this).parents('.accordion-group').removeClass('collapse-selected');
 								}else{
-									$(this).parents('.accordion-group').addClass('collapse-selected');	
+									$(this).parents('.accordion-group').addClass('collapse-selected');
 								}
-				    		})
-		
-				    		//  DropDown Filter set Selected //
+							})
+
+							//  DropDown Filter set Selected //
 							if(!_.isUndefined(agent)){
 								$('label[for="filterListAgents"]').removeClass('muted');
 								var modelUser = new OfficerModel();
@@ -274,40 +274,40 @@ define([
 									self.selectListFilterOfficerView.setSelectedItem([modelUser.toJSON().id, modelUser.toJSON().name]);
 								});
 							}
-		
-		
-				    		// Set the focus to the first input of the form //
+
+
+							// Set the focus to the first input of the form //
 							$('#modalTaskDone, #modalAddTask, #modalTimeSpent').on('shown', function (e) {
 								$(this).find('input, textarea').first().focus();
 							})
 							$(self.el).hide().fadeIn();
 						});
-	                              
+
 				},
 				error: function(code){
-	
+
 				}
 			});
-	
+
 			return this;
-		},		
-	
+		},
+
 		/** Display the form to add a new Task
 		*/
 		displayModalAddTask: function(e){
 			new ModalAddTaskView({el:'#modalAddTask',tasks: this.collections.tasks});
-	
+
 		},
-	
+
 		/** Filter Request
 		*/
 		setFilter: function(event){
 			event.preventDefault();
-	
+
 			var link = $(event.target);
-	
+
 			var filterValue = this.selectListFilterOfficerView.getSelectedItem();
-	
+
 			// Set the filter in the local Storage //
 			if(filterValue != ''){
 				this.options.filter = [{field: 'user_id', operator:'in', value:[filterValue]}];
@@ -315,11 +315,11 @@ define([
 			else{
 				delete this.options.filter;
 			}
-	
+
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-	
+
 		},
-		
+
 		goToPreviousWeek: function(event){
 			event.preventDefault();
 			//get currentDate and substract week by 1 (use moment to manage cases when we must change the year)
@@ -335,11 +335,13 @@ define([
 			var momentDate = moment().year(year).week(week).subtract('weeks',1);
 			this.options.year = momentDate.year();
 			this.options.week = momentDate.week();
-			
+
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-	
+
 		},
-		
+
+
+
 		goToNextWeek: function(event){
 			event.preventDefault();
 			//get currentDate and substract week by 1 (use moment to manage cases when we must change the year)
@@ -355,11 +357,13 @@ define([
 			var momentDate = moment().year(year).week(week).add('weeks',1);
 			this.options.year = momentDate.year();
 			this.options.week = momentDate.week();
-			
+
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-	
+
 		},
-		
+
 	});
+
 	return TasksListView;
-})
+
+});
