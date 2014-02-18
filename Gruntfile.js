@@ -6,6 +6,7 @@ module.exports = function(grunt) {
 
 		pkg: grunt.file.readJSON('package.json'),
 
+
 		// LESS compilation options
 		less: {
 
@@ -119,18 +120,24 @@ module.exports = function(grunt) {
 			scripts: {
 				src: ['js/models/*.js']
 			}
+		},
+
+
+		githooks: {
+			all: {
+				// Will run the jshint and test:unit tasks at every commit
+				'pre-commit': 'check',
+			}
 		}
 
 
 	});
 
-	grunt.loadNpmTasks('grunt-contrib-less');
-	grunt.loadNpmTasks('grunt-targethtml');
-	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-jscs-checker');
+
+	// Load the Tasks //
+	require('load-grunt-tasks')(grunt, {scope: 'devDependencies'});
+
 
 	grunt.registerTask('default', ['less', 'targethtml', 'copy']);
 	grunt.registerTask('check', ['jshint']);
-	grunt.registerTask('full-check', ['jshint', 'jscs']);
 };
