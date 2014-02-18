@@ -13,10 +13,14 @@ define([
 
 	'genericListView',
 	'paginationView',
-	'itemBookingView',
-	'toolbarButtonsView'
 
-], function(app, AppHelpers, BookingsCollection, BookingModel, GenericListView, PaginationView, ItemBookingView, ToolbarButtonsView){
+	'itemBookingView',	
+	'toolbarButtonsView',
+	
+	'metaDataModel'
+
+], function(app, AppHelpers, BookingsCollection, BookingModel, GenericListView, PaginationView, ItemBookingView, 
+				ToolbarButtonsView, MetaDataModel){
 
 	'use strict';
 
@@ -27,7 +31,9 @@ define([
 	var bookingsListView = GenericListView.extend({
 
 		templateHTML : '/templates/lists/bookingsList.html',
-
+		
+		model : BookingModel,
+		
 		//overrides url GenericListView's url parameters to add 'recurrence parameter'
 		urlParameters: ['recurrence', 'id', 'search', 'filter', 'sort', 'page'],
 
@@ -48,16 +54,13 @@ define([
 			var self = this;
 
 			this.options = params;
+			
+			
+			// Check if the collections are instantiated //
+			if(_.isUndefined(this.collection)){ this.collection = new BookingsCollection(); }
+			else{this.collection.reset();}
 
-
-			this.initCollections().done(
-				function(){
-					app.router.render(self);
-					// Unbind & bind the collection //
-					self.collection.off();
-					self.listenTo(self.collection, 'add',self.add);
-				}
-			);
+			GenericListView.prototype.initialize.apply(self, arguments);
 		},
 
 
@@ -107,8 +110,8 @@ define([
 
 
 				// Call the render Generic View //
-				GenericListView.prototype.render(self);
-
+				GenericListView.prototype.render.apply(self);
+				
 				// Create item booking view //
 				_.each(self.collection.models, function(booking, i){
 					var itemView = new ItemBookingView( {model: booking} );
@@ -122,8 +125,8 @@ define([
 				app.views.paginationView = new PaginationView({
 					page       : self.options.page.page,
 					collection : self.collection
-				})
 
+				});
 			});
 			$(this.el).hide().fadeIn();
 			return this;
@@ -133,8 +136,8 @@ define([
 		 	*/
 		badgeFilter: function(e){
 		 	e.preventDefault();
-		 	delete this.options.recurrence
 
+		 	delete this.options.recurrence;
 			var filterValue = $(e.target).data('filter');
 
 			// Set the filter value in the options of the view //
@@ -145,74 +148,9 @@ define([
 			}
 
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-		},
-
-		/**
-		 * Init reservation collection with url params
-		 */
-		initCollections: function(){
-			var self = this;
-
-			// Check if the collections are instantiated //
-			if(_.isUndefined(this.collection)){ this.collection = new BookingsCollection(); }
-			else{this.collection.reset();}
-
-			this.options.page = AppHelpers.calculPageOffset(this.options.page);
-
-			if(_.isUndefined(this.options.sort)){
-				this.options.sort = this.collection.default_sort;
-			}
-			else{
-				this.options.sort = AppHelpers.calculPageSort(this.options.sort);
-			}
-
-			// Create Fetch params //
-			this.fetchParams = {
-				silent     : true,
-				data       : {
-					limit  : app.config.itemsPerPage,
-					offset : this.options.page.offset,
-					sort   : this.options.sort.by+' '+this.options.sort.order,
-				}
-			};
-
-			if(_.isUndefined(this.fetchParams.data.filters))
-				this.fetchParams.data.filters = new Object();
-
-			var globalSearch = {};
-
-			if(!_.isUndefined(this.options.search)){
-				globalSearch.search = this.options.search;
-			}
-			if(!_.isUndefined(this.options.filter)){
-				globalSearch.filter = this.options.filter;
-			}
-
-			if(!_.isEmpty(globalSearch)){
-				this.fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, BookingModel.prototype.searchable_fields);
-			}
-
-			//Add filter on recurrence selected
-			if(!_.isUndefined(this.options.recurrence)){
-				this.fetchParams.data.filters  = _.toArray(this.fetchParams.data.filters);
-				this.fetchParams.data.filters.push({field: 'recurrence_id.id', operator:'=', value:this.options.recurrence})
-				this.fetchParams.data.filters = app.objectifyFilters(this.fetchParams.data.filters)
-			}
-
-			var ajaxRequests = [this.collection.fetch(this.fetchParams)]
-
-			var deferred = $.Deferred();
-			$.when.apply( $, ajaxRequests )
-				.done(function(){
-					deferred.resolve();
-				})
-				.fail(function(e){
-					console.error(e);
-				})
-
-			return deferred;
-		}
-	});
-
+		},		
+ 
+	});	
+	
 	return bookingsListView;
 });

@@ -29,7 +29,9 @@ define([
 				'pricelist_id', 'invoice_attachment_id'],
 
 
-
+		advanced_searchable_fields: [ 
+			{ key: 'state',         label : app.lang.status }
+		],
 
 		default_sort: { by: '', order: '' },
 

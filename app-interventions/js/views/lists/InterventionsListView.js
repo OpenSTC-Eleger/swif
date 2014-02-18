@@ -30,6 +30,9 @@ define([
 
 		templateHTML: '/templates/lists/interventionsList.html',
 
+		
+		model: InterventionModel,
+		
 		filters: 'intersListFilter',
 
 		selectedInter: '',
