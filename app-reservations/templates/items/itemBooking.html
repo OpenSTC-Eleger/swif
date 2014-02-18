@@ -8,9 +8,9 @@
 
 	<% if ( booking.hasActions('update')) {
 	actions = _.without(actions, 'update') }%>
-<!-- <a href="#app-reservations/nouvelle-reservation/id/<%=booking.getId()%>" class="updateBooking">-->
+ <a href="#app-reservations/nouvelle-reservation/id/<%=booking.getId()%>" class="updateBooking">
 		<%= _.capitalize(_(booking.getName()).escapeHTML()) %>
-<!-- </a> -->
+ </a>
 	
 	<!-- Interventions action -->
 	<p class="row-actions invisible">
