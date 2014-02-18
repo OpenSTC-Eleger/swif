@@ -16,7 +16,7 @@ define([
 		fields     : ['id', 'name', 'user_id', 'domain', 'context', 'model_id', 'description', 'pre_recorded'],
 
 		urlRoot    : '/api/open_object/filters',
-		
+
 		defaults   :{
 			name         : null,
 			user_id      : null,
@@ -37,7 +37,7 @@ define([
 		initialize: function () {
 			//console.log("Filter Model Initialization");
 		},
-		
+
 		getName: function() {
 			return this.get('name');
 		},
@@ -55,6 +55,15 @@ define([
 
 		isPreRecored: function(){
 			if(this.get('pre_recorded')){
+				return true;
+			}
+			else{
+				return false;
+			}
+		},
+
+		isEmpty: function(){
+			if(_.isEmpty(JSON.parse(this.get('domain')))){
 				return true;
 			}
 			else{

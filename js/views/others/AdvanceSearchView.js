@@ -1,9 +1,9 @@
 define([
 	'app',
 	'appHelpers',
-	
+
 	'filterModel',
-	
+
 	'fieldContainerView',
 	'modalSaveFilterView'
 
@@ -16,12 +16,12 @@ define([
 	* Advanced Search View
 	*/
 	var AdvanceSearchView = Backbone.View.extend({
-		
+
 		el              : '#advanced-filters-bar',
 
 		templateHTML    : 'templates/others/advanceSearch.html',
-		
-		
+
+
 		// The DOM events //
 		events: {
 			'submit #formAdvanceSearch'	: 'performSearch',
@@ -44,7 +44,7 @@ define([
 			var self = this;
 
 			this.activeSearch = activeSearch;
-			
+
 			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 
@@ -73,13 +73,13 @@ define([
 
 		getDomain: function() {
 			var domain = [];
-			
+
 			_.each(this.fieldContainerView.components, function(c) {
 
 				var field = c.field.key;
 				var value = c.getValue();
 				var operator = c.getOperator('key');
-			
+
 				if(!_.isNull(value)){
 					domain.push({ field: field, operator: operator, value: value });
 				}
@@ -131,10 +131,13 @@ define([
 				model_id : modelJSON.model
 			});
 
-			app.views.modalSaveFilterView = new ModalSaveFilterView({
-				el     : '#modalSaveFilter',
-				model  : filter
-			});
+
+			if(!filter.isEmpty()){
+				app.views.modalSaveFilterView = new ModalSaveFilterView({
+					el     : '#modalSaveFilter',
+					model  : filter
+				});
+			}
 
 		}
 
