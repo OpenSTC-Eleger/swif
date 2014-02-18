@@ -528,7 +528,8 @@ define([
 				people_city: this.getAttribute('people_city',false),
 				people_zip: this.getAttribute('people_zip',false),
 				whole_day: this.getAttribute('whole_day',false),
-				note: this.getAttribute('note',false)
+				note: this.getAttribute('note',false),
+				is_template: this.isTemplate(),
 				
 			}
 		},
@@ -638,14 +639,25 @@ define([
 			this.lines.add(lineModel);
 			lineModel.setParentBookingModel(this);
 		},
-		
+		/**
+		 * Fetch BookingLines and return Deferred object. resolve deferred if all lines (and their bookable) have been fetch, reject otherwise
+		 */
 		fetchLines: function(){
 			var self = this;
-			return this.lines.fetch({data:{filters:{0:{field:'line_id.id',operator:'=',value:this.getId()}}}}).done(function(){
+			var arrayDeferred = [];
+			var deferred = $.Deferred();
+			this.lines.fetch({data:{filters:{0:{field:'line_id.id',operator:'=',value:this.getId()}}}}).done(function(){
 				self.lines.each(function(lineModel){
 					lineModel.setParentBookingModel(self);
+					arrayDeferred.push(lineModel.fetchBookable());
+				});
+				$.when.apply($,arrayDeferred).done(function(){
+					deferred.resolve();
+				}).fail(function(e){
+					deferred.reject();
 				});
 			});
+			return deferred;
 		},
 		
 		//method to perform updates on bookingLines (pricing, dispo, ...) when some fields value change
@@ -693,45 +705,42 @@ define([
 			var deferred = $.Deferred();
 			//if new, POST new values and fetch the model to retrieve values stored on backend
 			//and, if set, save recurrence too
-			if(this.isNew()){
-				this.save(vals,{wait:true, patch: !self.isNew()}).done(function(data){
-					var deferredArray = [];
-					if(self.isNew()){
-						self.set({id:data});
+			this.save(vals,{wait:true, patch: !self.isNew()}).done(function(data){
+				var deferredArray = [];
+				if(self.isNew()){
+					self.set({id:data});
+				}
+				self.fetch({silent:true}).done(function(){
+					if(self.get('is_template') && self.recurrence != null){
+						//add template to occurrence_ids
+						self.recurrence.set({'reservation_ids':[[4,self.getId()]]});
+						deferredArray.push(self.recurrence.saveToBackend());
 					}
-					self.fetch({silent:true}).done(function(){
-						if(self.get('is_template') && self.recurrence != null){
-							//add template to occurrence_ids
-							self.recurrence.set({'reservation_ids':[[4,self.getId()]]});
-							deferredArray.push(self.recurrence.saveToBackend());
-						}
-						self.lines.each(function(lineModel){
-							deferredArray.push(lineModel.saveToBackend().fail(function(e){console.log(e)}));
-						});
-						self.linesToRemove.each(function(lineToRemove,i){
-							deferredArray.push(lineToRemove.destroy());
-						});
-						_.each(self.recurrencesToRemove,function(recurrenceToRemove,i){
-							deferredArray.push(recurrenceToRemove.persistentDestroyOnBackend());
-						});
-						if(_.isEmpty(deferredArray)){
-							deferred.resolve();
-						}
-						else{
-							$.when.apply($,deferredArray).done(function(){
-								deferred.resolve();
-							}).fail(function(e){
-								deferred.reject();
-							});
-						}
-					}).fail(function(e){
-						deferred.reject();
+					self.lines.each(function(lineModel){
+						deferredArray.push(lineModel.saveToBackend().fail(function(e){console.log(e)}));
 					});
+					self.linesToRemove.each(function(lineToRemove,i){
+						deferredArray.push(lineToRemove.destroy());
+					});
+					_.each(self.recurrencesToRemove,function(recurrenceToRemove,i){
+						deferredArray.push(recurrenceToRemove.persistentDestroyOnBackend());
+					});
+					if(_.isEmpty(deferredArray)){
+						deferred.resolve();
+					}
+					else{
+						$.when.apply($,deferredArray).done(function(){
+							deferred.resolve();
+						}).fail(function(e){
+							deferred.reject();
+						});
+					}
 				}).fail(function(e){
 					deferred.reject();
 				});
-			}
-
+			}).fail(function(e){
+				deferred.reject();
+			});
 			return deferred;
 		},
 		
@@ -766,7 +775,7 @@ define([
 			//set default values to model
 			if(this.isNew()){
 				this.set({
-					state:'remplir'
+					state:'draft'
 				});
 			};
 
