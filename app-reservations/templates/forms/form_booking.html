@@ -253,6 +253,9 @@
 			<% if(_.isNull(booking.getId()) || booking.hasActions('update')){ %>
 				<button type="submit" class="btn btn-default" form="formSaveBooking" id="saveFormBooking"><%= _.capitalize(lang.resa.actions.saveBooking) %></button>&nbsp;
 			<% }%>
+			<% if(_.isNull(booking.getId()) || booking.hasActions('redraft')){ %>
+				<button type="submit" class="btn btn-default" form="formSaveBooking" id="redraftFormBooking"><%= _.capitalize(lang.resa.actions.redraftBooking) %></button>&nbsp;
+			<% } %>
 			<a href="#app-reservations/reservations" aria-hidden="true"><%= _.capitalize(lang.actions.back) %></a>
 		</div>
 	</div>

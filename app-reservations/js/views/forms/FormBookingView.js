@@ -61,6 +61,7 @@ define(['app',
 			//Form Buttons
 			'click #saveFormBooking'			 : 'saveBookingForm',
 			'click #postFormBooking'			 : 'postBookingForm',
+			'click #redraftFormBooking'			 : 'redraftBookingForm',
 			'click #getRecurrenceDates'			 : 'getRecurrenceDates',
 			'switch-change #bookingAddRecurrence': 'changeAddRecurrence',
 			'switch-change #bookingIsCitizen'	 : 'changeIsCitizen',
@@ -88,30 +89,16 @@ define(['app',
 		},
 		
 		initializeWithId: function(){
-			// Render with loader, store ajax calls in var 'waitDeferred' to call $.when at the end of  function//
 			var self = this;
 			this.model.set({id:this.options.id},{silent:true});
-			this.model.fetch({silent: true}).done(function(){
-				var waitDeferred = [];
-				//fetch and render lines
-				waitDeferred.push(self.model.fetchLines());
-				
-				//fetch and render recurrence if exists
-				if(self.model.getRecurrence() != false){
-					var recurrence = new BookingRecurrenceModel({id:self.model.getRecurrence('id')});
-					waitDeferred.push(recurrence.fetch());
-					recurrence.setTemplate(self.model);
-				}
-				$.when.apply(self, waitDeferred).done(function(){
-					app.router.render(self);
-				})
+			this.model.fetchFromBackend().done(function(){
+				app.router.render(self);
 			});
 		},
 		
 		/** View Initialization
 		*/
 		initialize : function(params) {
-			this.viewRendered = false;
 			this.options = params;
 			var self = this;
 			if(_.isUndefined(this.model)){
@@ -239,7 +226,7 @@ define(['app',
 		/** Display the view
 		*/
 		render: function(loader) {
-
+			this.viewRendered = false;
 			var pageTitle = '';
 			if(_.isNull(this.model.getId())) { 
 				pageTitle = app.lang.resa.viewsTitles.newAskingBooking; 
@@ -512,6 +499,18 @@ define(['app',
 			})
 			.fail(function(e){
 				console.log(e);
+			});
+		},
+		
+		redraftBookingForm: function(e){
+			e.preventDefault();
+			var self = this;
+			var model = (self.model.isTemplate() && self.model.recurrence != null) ? self.model.recurrence : self.model;
+			model.save({state_event:"redraft"}, {wait:true, patch:true}).done(function(){
+				model.fetchFromBackend().done(function(){
+					//self.initializeWithId();
+					self.render();
+				});
 			});
 		},
 		
