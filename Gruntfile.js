@@ -9,7 +9,6 @@ module.exports = function(grunt) {
 
 		// LESS compilation options
 		less: {
-
 			dist: {
 				files: {
 					'dist/css/swif.css': 'css/startup.less'
@@ -19,7 +18,6 @@ module.exports = function(grunt) {
 					yuicompress: true
 				}
 			}
-
 		},
 
 		targethtml: {
@@ -134,10 +132,46 @@ module.exports = function(grunt) {
 	});
 
 
+
+	/** Check if the version in package.json and properties.json are equal
+	*/
+	grunt.registerTask('checkVersion', 'Check if the version in package.json and properties.json are equal', function() {
+
+		// Get the Semver version in the package file //
+		var packageVersion = grunt.file.readJSON('package.json').version;
+
+		// Get the Semver version in the properties file
+		var propertiesVersion = grunt.file.readJSON('properties.json').version;
+
+		// Require semver //
+		var semver = require('semver');
+
+		if(!semver.valid(packageVersion)){
+			grunt.log.error(packageVersion);
+			grunt.fail.warn('Version in package.json file are not correct');
+		}
+
+		if(!semver.valid(propertiesVersion)){
+			grunt.log.error(propertiesVersion);
+			grunt.fail.warn('Version in properties.json file are not correct');
+		}
+
+		if(packageVersion !== propertiesVersion){
+			grunt.log.error(packageVersion+' != '+propertiesVersion);
+			grunt.fail.warn('Versions in properties.json and package.json are not equal');
+		}
+
+		grunt.log.ok('Version ' + propertiesVersion + ' is correct');
+
+	});
+
+
+
 	// Load the Tasks //
 	require('load-grunt-tasks')(grunt, {scope: 'devDependencies'});
 
 
-	grunt.registerTask('default', ['less', 'targethtml', 'copy']);
-	grunt.registerTask('check', ['jshint']);
+	grunt.registerTask('default', ['checkVersion', 'less', 'targethtml', 'copy']);
+	grunt.registerTask('check', ['checkVersion', 'jshint']);
+
 };
