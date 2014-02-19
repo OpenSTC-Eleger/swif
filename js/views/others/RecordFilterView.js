@@ -26,7 +26,8 @@ define([
 		filters    : [],
 
 		//Static variables uses to build url
-		URL_CTXT    : '/filter/',
+		URL_FILTER_CTXT    : '/filter/',
+		URL_SORT_CTXT    : '/sort/',
 		SLASH_CHAR	: '/',
 
 		// The DOM events //
@@ -107,15 +108,15 @@ define([
 
 
 
-		/** Init Urls varaiables using to buils url filters in templates
+		/** Init Urls varaiables using to buils url recorded filters in templates
 		*/
 		prepareUrls: function(){
 			this.urlLeftPart = Backbone.history.fragment;
 			this.urlRightPart = null;
-
-			if( _.str.include(this.urlLeftPart, this.URL_CTXT) ) {
-
-				this.urlArray = _.words(this.urlLeftPart, this.URL_CTXT);
+			
+			if( _.str.include(this.urlLeftPart, this.URL_FILTER_CTXT) ) {
+				//url contains filter 
+				this.urlArray = _.words(this.urlLeftPart, this.URL_FILTER_CTXT);
 				this.urlLeftPart = this.urlArray[0];
 				this.urlRightPart = _(this.urlArray[1]).strRight(this.SLASH_CHAR);
 				var filter = parseInt(this.urlArray[1][0]);
@@ -131,6 +132,12 @@ define([
 					}
 				}
 			}
+			else if ( _.str.include(this.urlLeftPart, this.URL_SORT_CTXT) ) {
+				//url contains sort
+				this.urlArray = _.words(this.urlLeftPart, this.URL_SORT_CTXT);
+				this.urlLeftPart = this.urlArray[0];
+				this.urlRightPart =  this.URL_SORT_CTXT + this.urlArray[1];				
+			}
 		},
 
 
@@ -143,10 +150,10 @@ define([
 			var self = this;
 			_.each(self.metaDataModel.getFilters(),function(f){
 				if ( !_.isNull( self.urlRightPart ) ) {
-					f.route = _.join(self.URL_CTXT, self.urlLeftPart , _(self.urlRightPart).splice(0, 0, f.id) );
+					f.route = _.join(self.URL_FILTER_CTXT, self.urlLeftPart , _(self.urlRightPart).splice(0, 0, f.id) );
 				}
 				else {
-					f.route = _.join(self.URL_CTXT, self.urlLeftPart, f.id);
+					f.route = _.join(self.URL_FILTER_CTXT, self.urlLeftPart, f.id);
 				}
 				self.filters.push(f);
 			});
