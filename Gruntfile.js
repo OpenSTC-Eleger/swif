@@ -134,34 +134,71 @@ module.exports = function(grunt) {
 
 
 	/** Check if the version in package.json and properties.json are equal
+	*   && if the package version are equal to the last git Tag
 	*/
 	grunt.registerTask('checkVersion', 'Check if the version in package.json and properties.json are equal', function() {
-
-		// Get the Semver version in the package file //
-		var packageVersion = grunt.file.readJSON('package.json').version;
-
-		// Get the Semver version in the properties file
-		var propertiesVersion = grunt.file.readJSON('properties.json').version;
 
 		// Require semver //
 		var semver = require('semver');
 
-		if(!semver.valid(packageVersion)){
-			grunt.log.error(packageVersion);
-			grunt.fail.warn('Version in package.json file are not correct');
+
+		// Get the Semver version in the package file //
+		var packageVersion = grunt.file.readJSON('package.json').version;
+
+		// Get the Semver version in the properties file //
+		var propertiesVersion = grunt.file.readJSON('properties.json').version;
+
+		// Get the last Git Tag version //
+		var shell = require('shelljs');
+		var cmdOutput = shell.exec('git describe --tags `git rev-list --tags --max-count=1`', {'silent': true});
+
+		if(cmdOutput.code !== 0){
+			grunt.fail.fatal('Git software are require');
 		}
 
+		var lastTagVersion = cmdOutput.output.replace(/(\r\n|\n|\r)/gm, '');
+
+
+		// Check if the last Git Tag is correct //
+		if(!semver.valid(lastTagVersion)){
+			grunt.log.error(lastTagVersion);
+			grunt.fail.warn('Last Git tag Version is not correct');
+		}
+
+		// Check if the properties.json version is correct //
 		if(!semver.valid(propertiesVersion)){
 			grunt.log.error(propertiesVersion);
-			grunt.fail.warn('Version in properties.json file are not correct');
+			grunt.fail.warn('Version in properties.json file is not correct');
 		}
 
+		// Check if the package.json version is correct //
+		if(!semver.valid(packageVersion)){
+			grunt.log.error(packageVersion);
+			grunt.fail.warn('Version in package.json file is not correct');
+		}
+
+
+
+		// Check if the package.json version and properties.json version are equal //
 		if(packageVersion !== propertiesVersion){
 			grunt.log.error(packageVersion+' != '+propertiesVersion);
 			grunt.fail.warn('Versions in properties.json and package.json are not equal');
 		}
 
-		grunt.log.ok('Version ' + propertiesVersion + ' is correct');
+
+		if(semver.gt(lastTagVersion, packageVersion)){
+			grunt.log.error(packageVersion+' != '+lastTagVersion);
+			grunt.fail.warn('App version are lower than the last Git tag');
+		}
+		else if(semver.lt(lastTagVersion, packageVersion)){
+			grunt.log.error(packageVersion+' != '+lastTagVersion);
+			grunt.fail.warn('App version are greater than the last Git tag');
+		}
+
+
+		grunt.log.ok('App version ' + propertiesVersion);
+		grunt.log.writeln('Check version done without error.'.green);
+
 
 	});
 
