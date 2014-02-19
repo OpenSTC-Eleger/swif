@@ -17,20 +17,20 @@ requirejs.config({
 		jqueryui              : 'js/libs/jquery-ui-1.10.3.custom.min',
 		datatables            : 'js/libs/jquery-dataTables-1.9.4-min',
 		moment                : 'js/libs/moment-2.5.0-min',
-		'moment-timezone'     : 'js/libs/moment-timezone-0.0.1',
+		'moment-timezone'     : 'js/libs/moment-timezone-0.0.1-min',
 		'moment-timezone-data': 'js/i18n/moment-timezone-data',
 
-		'underscore.string'   : 'js/libs/underscore-string-2.3.2',
+		'underscore.string'   : 'js/libs/underscore-string-2.3.2-min',
 		nprogress             : 'js/libs/NProgress-0.1.2',
 		pnotify               : 'js/libs/pnotify-1.2.0',
-		bootstrap             : 'js/libs/bootstrap-3.1.1',
+		bootstrap             : 'js/libs/bootstrap-3.1.1-min',
 		bsDatepicker          : 'js/libs/bootstrap-datepicker-1.1.2',
 		bsSwitch              : 'js/libs/bootstrap-switch-2.0.0',
 		bsTimepicker          : 'js/libs/bootstrap-timepicker-0.2.3',
-		fullcalendar          : 'js/libs/fullcalendar-1.6.4',
+		fullcalendar          : 'js/libs/fullcalendar-1.6.4-min',
 		select2               : 'js/libs/select2-3.4.5-min',
 
-		less                  : 'js/libs/less-1.6.3',
+		less                  : 'js/libs/less-1.6.3-min',
 
 
 		/* #############

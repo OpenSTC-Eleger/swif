@@ -126,6 +126,22 @@ module.exports = function(grunt) {
 				// Will run the jshint and test:unit tasks at every commit
 				'pre-commit': 'check',
 			}
+		},
+
+
+		notify: {
+			check: {
+				options: {
+					title  : 'Check done without error',
+					message: 'Changes can be commit!'
+				}
+			}
+		},
+		notify_hooks: {
+			options: {
+				enabled: true,
+				max_jshint_notifications: 0
+			}
 		}
 
 
@@ -161,44 +177,43 @@ module.exports = function(grunt) {
 
 		// Check if the last Git Tag is correct //
 		if(!semver.valid(lastTagVersion)){
-			grunt.log.error(lastTagVersion);
 			grunt.fail.warn('Last Git tag Version is not correct');
+			grunt.log.error(lastTagVersion);
 		}
 
 		// Check if the properties.json version is correct //
 		if(!semver.valid(propertiesVersion)){
-			grunt.log.error(propertiesVersion);
 			grunt.fail.warn('Version in properties.json file is not correct');
+			grunt.log.error(propertiesVersion);
 		}
 
 		// Check if the package.json version is correct //
 		if(!semver.valid(packageVersion)){
-			grunt.log.error(packageVersion);
 			grunt.fail.warn('Version in package.json file is not correct');
+			grunt.log.error(packageVersion);
 		}
 
 
 
 		// Check if the package.json version and properties.json version are equal //
 		if(packageVersion !== propertiesVersion){
-			grunt.log.error(packageVersion+' != '+propertiesVersion);
 			grunt.fail.warn('Versions in properties.json and package.json are not equal');
+			grunt.log.error(packageVersion+' != '+propertiesVersion);
 		}
 
 
 		if(semver.gt(lastTagVersion, packageVersion)){
-			grunt.log.error(packageVersion+' != '+lastTagVersion);
 			grunt.fail.warn('App version are lower than the last Git tag');
+			grunt.log.error(packageVersion+' != '+lastTagVersion);
 		}
 		else if(semver.lt(lastTagVersion, packageVersion)){
-			grunt.log.error(packageVersion+' != '+lastTagVersion);
 			grunt.fail.warn('App version are greater than the last Git tag');
+			grunt.log.error(packageVersion+' != '+lastTagVersion);
 		}
 
 
-		grunt.log.ok('App version ' + propertiesVersion);
 		grunt.log.writeln('Check version done without error.'.green);
-
+		grunt.log.ok('App version ' + propertiesVersion);
 
 	});
 
@@ -206,9 +221,11 @@ module.exports = function(grunt) {
 
 	// Load the Tasks //
 	require('load-grunt-tasks')(grunt, {scope: 'devDependencies'});
+	grunt.task.run('notify_hooks');
+
 
 
 	grunt.registerTask('default', ['checkVersion', 'less', 'targethtml', 'copy']);
-	grunt.registerTask('check', ['checkVersion', 'jshint']);
+	grunt.registerTask('check', ['checkVersion', 'jshint', 'notify:check']);
 
 };
