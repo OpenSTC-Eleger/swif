@@ -121,12 +121,6 @@ define([
 				//Toolbar buttons : factory actions for multiple bookings ( confirm/cancel:close booking)
 				app.views.toolbarButtonsView = new ToolbarButtonsView( { collection: self.collection } );
 
-				// Pagination view //
-				app.views.paginationView = new PaginationView({
-					page       : self.options.page.page,
-					collection : self.collection
-
-				});
 			});
 			$(this.el).hide().fadeIn();
 			return this;

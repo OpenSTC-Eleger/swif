@@ -65,7 +65,7 @@ define([
 				}
 
 
-				var fieldView;
+				var fieldView = null;
 				// Create widget corresponding to field's type  //
 				switch (field.type) {
 					case 'text':
@@ -89,17 +89,22 @@ define([
 					case 'selection':
 						var data = [];
 						_.each(field.selection, function(val) {
-							data.push({ id: val[0], text: _.capitalize(app.lang[val[0]]) });
+							var text = app.lang[val[0]];
+							if( !_.isBlank(text) ) 
+							{
+								data.push({ id: val[0], text: _.capitalize(text) });
+							}
 						});
 
 						fieldView = new AdvancedSelectBoxView({ field: field, data: data, template: true, multiple: true });
 						break;
 				}
-
-
-				// Add the component //
-				$(self.el).append(fieldView.render().el);
-				self.components.push(fieldView);
+				
+				if( !_.isNull(fieldView)){
+					// Add the component //
+					$(self.el).append(fieldView.render().el);
+					self.components.push(fieldView);
+				}
 			});
 		}
 

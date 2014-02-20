@@ -211,10 +211,10 @@ define([
 				color               : 'info',
 				translation         : app.lang.planningFenced
 			},
-			closed: {
-				key                 : 'closed',
+			finished: {
+				key                 : 'finished',
 				color               : 'success',
-				translation         : app.lang.closed
+				translation         : app.lang.finished
 			},
 			pending: {
 				key                 : 'pending',

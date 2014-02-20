@@ -53,13 +53,11 @@ define([
 		/** View Initialization
 		*/
 		initialize: function() {
-			var self = this;			
-
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new RequestsCollection(); }
 			
 			
-			GenericListView.prototype.initialize.apply(self, arguments);
+			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
 
@@ -107,14 +105,6 @@ define([
 					var itemRequestView = new ItemRequestView({model: request});
 					$('#rows-items').append(itemRequestView.render().el);
 				});
-
-
-				// Pagination view //
-				app.views.paginationView = new PaginationView({
-					page       : self.options.page.page,
-					collection : self.collection
-				});
-
 			});
 
 			$(this.el).hide().fadeIn();

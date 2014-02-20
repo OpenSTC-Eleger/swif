@@ -120,7 +120,11 @@ define([
 				$('#modalCancelInter').on('shown', function() {
 					$(this).find('input, textarea').first().focus();
 				});
+<<<<<<< HEAD
 
+=======
+				
+>>>>>>> refs #2515 : Préparation à la recherche avancée pour toutes les listes
 				$('tr.row-object').css({ opacity: '1'});
 				$('tr.row-object > td').css({ backgroundColor: '#FFF'});
 				$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
@@ -146,6 +150,7 @@ define([
 			}
 			return false;
 		},
+<<<<<<< HEAD
 
 
 
@@ -161,12 +166,25 @@ define([
 
 		/** Expan accordion
 		*/
+=======
+		
+		
+		/**
+		 * Expan accordion
+		 */
+>>>>>>> refs #2515 : Préparation à la recherche avancée pour toutes les listes
 		expendAccordion: function(){
+			 var self = this;
 			// Retrieve the intervention ID //
 			//var id = _($(e.target).attr('href')).strRightBack('_');
+<<<<<<< HEAD
 			var id = this.model.toJSON().id.toString();
 			var self = this;
 
+=======
+			var id = this.model.toJSON().id.toString();			
+		
+>>>>>>> refs #2515 : Préparation à la recherche avancée pour toutes les listes
 			var isExpend = $('#collapse_'+id).hasClass('expend');
 
 			// Reset the default visibility //
@@ -194,10 +212,25 @@ define([
 				$('tr.row-object > td').css({ backgroundColor: '#FFF'});
 				$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 			}
+<<<<<<< HEAD
 		},
 
 
 
+=======
+		},	
+		
+		/**
+		 * Process Table accordion event
+		 */
+		tableAccordion: function(e){	
+			e.preventDefault();
+			//fold up current accordion and expand 
+			this.expendAccordion();		   
+		},
+	
+		
+>>>>>>> refs #2515 : Préparation à la recherche avancée pour toutes les listes
 		/** Highlight the row item
 		*/
 		highlight: function(){

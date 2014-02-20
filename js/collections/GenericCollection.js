@@ -41,7 +41,7 @@ define([
 				if(_.isUndefined(options.data)) {
 					options.data = {};
 				}
-				else if(!_.isUndefined(options.data.filters)){
+				else if(!_.isUndefined(options.data.filters) && _.size(options.data.filters)>0 ){
 					paramFilter.filters = options.data.filters;
 				}
 			}

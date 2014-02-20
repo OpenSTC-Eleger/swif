@@ -20,8 +20,8 @@ define([
 
 ], function(app, AppHelpers, PlacesCollection, PlaceModel, GenericListView, PaginationView, ItemPlaceView, ModalPlaceView, MetaDataModel){
 
-	'use strict';
-
+	'use strict';		
+	
 
 	/******************************************
 	* Places List View
@@ -29,6 +29,8 @@ define([
 	var PlacesListView = GenericListView.extend({
 
 		templateHTML  : 'templates/lists/placesList.html',
+		
+		model: PlaceModel,
 
 
 		// The DOM events //
@@ -45,23 +47,11 @@ define([
 		/** View Initialization
 		*/
 		initialize: function (params) {
-			this.options = params;
-
-			var self = this;
-
-			this.initFilters().done(function(){
-				self.initCollection().done(function(){
-
-					// Unbind & bind the collection //
-					self.collection.off();
-					self.listenTo(self.collection, 'add', self.add);
-
-					//Set Meta Data for request collection to compute recording filters
-					self.metaDataModel = new MetaDataModel({ id: self.collection.modelId });
-
-					app.router.render(self);
-				});
-			});
+			// Check if the collections is instantiate //
+			if(_.isUndefined(this.collection)){ this.collection = new PlacesCollection(); }
+			
+			
+			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
 
@@ -101,20 +91,13 @@ define([
 
 
 				// Call the render Generic View //
-				GenericListView.prototype.render(self, PlaceModel.prototype.searchable_fields);
+				GenericListView.prototype.render.apply(self);
 
 
 				// Create item place view //
 				_.each(self.collection.models, function(place){
 					var itemPlaceView  = new ItemPlaceView({model: place});
 					$('#rows-items').append(itemPlaceView.render().el);
-				});
-
-
-				// Pagination view //
-				app.views.paginationView = new PaginationView({
-					page       : self.options.page.page,
-					collection : self.collection
 				});
 
 			});

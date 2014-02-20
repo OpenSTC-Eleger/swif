@@ -86,7 +86,7 @@ define('appHelpers', [
 				paginate.page = 1;
 				paginate.offset = 0;
 			}
-			else{
+			else if( _.isString(page) ){
 				paginate.page = parseInt(page, 10);
 				paginate.offset = (paginate.page - 1) * (!_.isUndefined(itemsPerPage) ? itemsPerPage : app.config.itemsPerPage);
 			}
@@ -102,8 +102,8 @@ define('appHelpers', [
 
 			var sorter = {};
 
-			sorter.by = _(sort).strLeft('-');
-			sorter.order = _(sort).strRight('-');
+			sorter.by = _.isUndefined(sort.by)?_(sort).strLeft('-'):sort.by;
+			sorter.order = _.isUndefined(sort.order)?_(sort).strRight('-'):sort.order;
 
 			return sorter;
 		},
@@ -208,10 +208,11 @@ define('appHelpers', [
 			else{
 
 				try {
+					//get array from JSON
 					filters = JSON.parse(filters);
 				}
 				catch(e){
-					console.error('Filter is an object, not a JSON');
+					console.info('Filter is already an object, not a JSON');
 				}
 
 				return _.find(filters, function(f){

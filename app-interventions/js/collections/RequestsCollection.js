@@ -55,12 +55,13 @@ define([
 		specialCount: function(){
 			var self = this;
 
-			var domain;
+			var domain = [];
 
 			// Construct a domain accrding to user group //
 			if(app.current_user.isDST()){
-				domain = [
-					{ field : 'state', operator : '=', value : RequestModel.status.confirm.key }
+
+				var domain = [
+					{ field : 'state', operator : '=', value : RequestModel.status.to_confirm.key }
 				];
 			}
 			else if(app.current_user.isManager()){

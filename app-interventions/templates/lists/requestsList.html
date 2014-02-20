@@ -6,9 +6,9 @@
 		<% if(user.isDST() || user.isManager()){
 
 		  if(user.isDST()) {
-				var classColor      = requestsState.confirm.color;
-				var filterValue     = requestsState.confirm.key;
-				var actionToProcess = lang.actions.confirm;
+				var classColor      = requestsState.to_confirm.color;
+				var filterValue     = requestsState.to_confirm.key;
+				var actionToProcess = lang.actions.to_confirm;
 			}
 			else if(user.isManager()){
 		   		var classColor      = requestsState.wait.color;

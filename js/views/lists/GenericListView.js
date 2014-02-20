@@ -12,9 +12,10 @@ define([
 	'filterModel',
 
 	'advanceSearchView',
-	'recordFilterView'
+	'recordFilterView',
+	'paginationView'
 
-], function(app, AppHelpers, MetaDataModel, FilterModel, AdvanceSearchView, RecordFilterView){
+], function(app, AppHelpers, MetaDataModel, FilterModel, AdvanceSearchView, RecordFilterView, PaginationView){
 
 	'use strict';
 
@@ -31,7 +32,7 @@ define([
 
 		searchForm    : 'form.form-search input',
 
-		superTemplateHTML : 'templates/others/headerListView.html',
+		genericTemplateHTML : 'templates/others/headerListView.html',
 
 
 		// The DOM events //
@@ -57,6 +58,8 @@ define([
 					// Unbind & bind the collection //
 					self.collection.off();
 					self.listenTo(self.collection, 'add', self.add);
+					self.listenTo(self.collection, 'destroy', self.destroy);
+					self.listenTo(self.collection, 'remove', self.destroy);
 					self.listenTo(self.collection, 'reset', self.render);
 	
 					//Set Meta Data for request collection to compute recording filters
@@ -74,7 +77,7 @@ define([
 
 
 			// Retrieve the template //
-			$.get(this.superTemplateHTML, function(templateData){
+			$.get(this.genericTemplateHTML, function(templateData){
 
 				var template = _.template(templateData, {
 					lang             : app.lang,
@@ -138,8 +141,27 @@ define([
 					// Filter advanced view needs collection setted in Generic //
 					self.displayAdvanceSearch(self.options.filter);
 				}
+				
+				// Pagination view //
+				app.views.paginationView = new PaginationView({
+					page       : self.options.page.page,
+					collection : self.collection
+				});
+
+				
 			});
 
+		},
+		
+		/** Partial Render of the view
+		*/
+		partialRender: function () {
+			var self = this; 
+	
+			this.collection.count(this.getParams()).done(function(){
+				$('#badge').html(self.collection.cpt);
+				app.views.paginationView.render();
+			});
 		},
 		
 		/**
@@ -205,16 +227,14 @@ define([
 				fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, this.model.prototype.searchable_fields);
 			}
 			
-			if(_.isUndefined(fetchParams.data.filters))
-				fetchParams.data.filters = new Object();
-			
 			//Add filter on recurrence selected
 			if(!_.isUndefined(this.options.recurrence)){
+				if(_.isUndefined(fetchParams.data.filters))
+					fetchParams.data.filters = new Object();
 				fetchParams.data.filters  = _.toArray(fetchParams.data.filters);
 				fetchParams.data.filters.push({field: 'recurrence_id.id', operator:'=', value:this.options.recurrence});				
 				fetchParams.data.filters = app.objectifyFilters(fetchParams.data.filters);
 			}
-			
 			return fetchParams;
 		},
 

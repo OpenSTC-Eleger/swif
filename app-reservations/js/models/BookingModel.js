@@ -35,12 +35,19 @@ define([
 				'pricelist_id', 'confirm_note', 'cancel_note', 'done_note', 'people_street','people_city', 'people_zip', 'whole_day'],
 
 		searchable_fields: [
+<<<<<<< HEAD
 			{ key: 'id', type : 'numeric' },
 			{ key: 'name', type : 'text' }
 
 		],
 
 
+=======
+			{ key: 'id',          type: 'numeric', label: 'N°' },
+			{ key: 'name',        type: 'text',    label: app.lang.label },			
+		],
+		
+>>>>>>> refs #2515 : Préparation à la recherche avancée pour toutes les listes
 		//method to retrieve attribute with standard return form
 		getAttribute: function(key,default_value){
 			var val = this.get(key);
@@ -843,6 +850,12 @@ define([
 	}, {
 		// Request State Initialization //
 		status : {
+			//= 
+			draft: {
+				key                 : 'draft',
+				color               : 'warning',
+				translation         : app.lang.draft
+			},
 			//= égal au 'wait' STC
 			remplir: {
 				key        : 'remplir',
@@ -858,10 +871,17 @@ define([
 			},
 			//= égal au 'refused' STC
 			cancel: {
+<<<<<<< HEAD
 				key        : 'cancel',
 				color      : 'danger',
 				icon       : 'fa-times',
 				translation: app.lang.refused
+=======
+				key                 : 'cancel',
+				color               : 'danger',
+				icon 		        : 'fa-times',
+				translation         : app.lang.cancel
+>>>>>>> refs #2515 : Préparation à la recherche avancée pour toutes les listes
 			},
 			//= égal au 'closed' STC
 			done: {

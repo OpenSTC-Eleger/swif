@@ -27,8 +27,9 @@ define([
 	var categoriesRequestsListView = GenericListView.extend({
 
 		templateHTML: '/templates/lists/categoriesRequestsList.html',
-
-
+		
+		model:CategoryRequestModel,
+		
 		// The DOM events //
 		events: function(){
 			return _.defaults({
@@ -43,18 +44,11 @@ define([
 		/** View Initialization
 		*/
 		initialize: function (params) {
-			this.options = params;
-
-			var self = this;
-
-			this.initCollection().done(function(){
-
-				// Unbind & bind the collection //
-				self.collection.off();
-				self.listenTo(self.collection, 'add', self.add);
-
-				app.router.render(self);
-			});
+			// Check if the collections is instantiate //
+			if(_.isUndefined(this.collection)){ this.collection = new CategoriesRequestsCollection(); }
+			
+			
+			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
 
@@ -93,44 +87,20 @@ define([
 				$(self.el).html(template);
 
 				// Call the render Generic View //
-				GenericListView.prototype.render(self);
-
-
+				GenericListView.prototype.render.apply(self);
+	
 				// Create item category request view //
 				_.each(self.collection.models, function(catRequest){
 					var itemCategoryRequestView  = new ItemCategoryRequestView({model: catRequest});
 					$('#rows-items').append(itemCategoryRequestView.render().el);
 				});
 
-
-				// Pagination view //
-				app.views.paginationView = new PaginationView({
-					page       : self.options.page.page,
-					collection : self.collection
-				});
-				app.views.paginationView.render();
-
 			});
 
 			$(this.el).hide().fadeIn('slow');
-
-			return this;
-		},
-
-
-
-		/** Partial Render of the view
-		*/
-		partialRender: function() {
-			var self = this;
-
-			this.collection.count(this.fetchParams).done(function(){
-				$('#bagdeNbCats').html(self.collection.cpt);
-				app.views.paginationView.render();
-			});
-		},
-
-
+			
+	        return this;
+	    },
 
 		/** Modal form to create a new Cat
 		*/
@@ -141,49 +111,6 @@ define([
 				el  : '#modalSaveCat'
 			});
 		},
-
-
-
-		/** Collection Initialisation
-		*/
-		initCollection: function(){
-			var self = this;
-
-			// Check if the collections is instantiate //
-			if(_.isUndefined(this.collection)){ this.collection = new CategoriesRequestsCollection(); }
-
-
-			// Check the parameters //
-			if(_.isUndefined(this.options.sort)){
-				this.options.sort = this.collection.default_sort;
-			}
-			else{
-				this.options.sort = AppHelpers.calculPageSort(this.options.sort);
-			}
-			this.options.page = AppHelpers.calculPageOffset(this.options.page);
-
-
-			// Create Fetch params //
-			this.fetchParams = {
-				silent : true,
-				data   : {
-					limit  : app.config.itemsPerPage,
-					offset : this.options.page.offset,
-					sort   : this.options.sort.by+' '+this.options.sort.order
-				}
-			};
-			if(!_.isUndefined(this.options.search)){
-				this.fetchParams.data.filters = AppHelpers.calculSearch({search: this.options.search }, CategoryRequestModel.prototype.searchable_fields);
-			}
-
-
-			return $.when(self.collection.fetch(this.fetchParams))
-				.fail(function(e){
-					console.log(e);
-				});
-
-		}
-
 	});
 
 	return categoriesRequestsListView;

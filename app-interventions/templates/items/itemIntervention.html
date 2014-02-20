@@ -33,7 +33,7 @@
 
 <!-- Check the state of the intervention -->
 <td>
-	<% if(intervention.getState() != interventionsState.pending.key && intervention.getState() != interventionsState.closed.key){ %>
+	<% if(intervention.getState() != interventionsState.pending.key && intervention.getState() != interventionsState.finished.key){ %>
 		<span class="label label-<%= interventionsState[intervention.getState()].color %>"  data-toggle="tooltip" data-original-title="<%= intervention.getTooltip() %>">
 			<%= interventionsState[intervention.getState()].translation %>
 		</span>
@@ -46,8 +46,8 @@
 			</div>
 		</div>
 
-	<!-- state - Closed -->
-	<% } else if(intervention.getState() == interventionsState.closed.key){
+	<!-- state - Finished -->
+	<% } else if(intervention.getState() == interventionsState.finished.key){
 		if(intervention.getOverPourcent() > 100){ %>
 			<div class="progress" data-toggle="tooltip" data-title="<%= intervention.getTooltip() %>">
 				<div class="progress-bar progress-bar-overrun" role="progressbar" style="width: 100%">
