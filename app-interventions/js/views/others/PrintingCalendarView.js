@@ -35,7 +35,7 @@ define([
 			$.get(app.menus.openstc + this.templateHTML, function(templateData){
 				var template = _.template(templateData,{
 					lang: app.lang,
-					logo: app.config.logo_path
+					logo: app.config.medias.cityLogo
 				});
 				$(self.el).html(template);
 

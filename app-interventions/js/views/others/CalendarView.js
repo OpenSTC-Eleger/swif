@@ -472,7 +472,7 @@ define([
 			/**
 			 * Add personal icon for officer on calendar
 			 */
-			$('table td.fc-header-left').html("<img src='css/images/unknown-person.jpg' width='80px' class='img-thumbnail'> <span class='lead text-info'>"+username+"</span>");
+			$('table td.fc-header-left').html("<img src='medias/unknown-person.jpg' width='80px' class='img-thumbnail'> <span class='lead text-info'>"+username+"</span>");
 		},
 		// -------------------- End fullcalendar initialization -------------------- //
 

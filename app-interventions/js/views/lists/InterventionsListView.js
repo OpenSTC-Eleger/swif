@@ -15,40 +15,40 @@ define([
 ], function(app, AppHelpers, InterventionsCollection, InterventionModel, TasksCollection, GenericListView, PaginationView, ItemInterventionView, ItemInterventionTaskListView, ModalInterventionView){
 
 	'use strict';
-	
-	
+
+
 	/******************************************
 	* Interventions List View
 	*/
 	var InterventionsListView = GenericListView.extend({
-	
+
 		templateHTML: '/templates/lists/interventionsList.html',
-	
+
 		filters: 'intersListFilter',
-		
+
 		selectedInter: '',
 		selectedTask : '',
 		collections  :  {},
-	
+
 		// The DOM events //
 		events: function(){
 			return _.defaults({
 				'click a.modalCreateInter'   : 'displayModalSaveInter',
-			}, 
+			},
 				GenericListView.prototype.events
 			);
 		},
-	
-	
-	
+
+
+
 		/** View Initialization
 		*/
 		initialize : function(params) {
 			var self = this;
-	
+
 			this.options = params;
-	
-	
+
+
 			this.initCollections().done(function(){
 				app.router.render(self);
 				// Unbind & bind the collection //
@@ -56,9 +56,9 @@ define([
 				self.listenTo(self.collections.interventions, 'add',self.add);
 			});
 		},
-	
-	
-	
+
+
+
 		add: function(model){
 			var itemInterView  = new ItemInterventionView({ model: model });
 			var itemInterTaskListView = new ItemInterventionTaskListView({ inter: model, tasks: new TasksCollection() });
@@ -67,17 +67,17 @@ define([
 			AppHelpers.highlight($(itemInterView.el)).done(function(){
 				itemInterView.expendAccordion();
 			});
-	
+
 			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.interventionSaveOK);
-			
+
 			this.partialRender();
-	
+
 			//this.options.id = model.getId();
 			app.router.navigate(app.views.interventions.urlBuilder(), {trigger: false, replace: false});
 		},
-	
-	
-	
+
+
+
 		/** Partial Render of the view
 		*/
 		partialRender: function (type) {
@@ -88,28 +88,28 @@ define([
 				$('#nbInterPending').html(self.collections.interventions.pendingInterventions);
 			});
 			//@TODO: update view to use paginationView
-			
+
 			//this.collection.count(this.fetchParams).done(function(){
 				//$('#bagdeNbTeams').html(self.collection.cpt);
 				//app.views.paginationView.render();
 			//});
 		},
-		
-	
-	
+
+
+
 		/** Display the view
 		*/
 		render : function() {
 			var self = this;
-	
+
 			// Change the page title //
 			app.router.setPageTitle(app.lang.viewsTitles.interventionsMonitoring);
-	
-	
+
+
 			var interventions = this.collections.interventions.toJSON();
 			var len = this.collections.interventions.cpt;
 			var pageCount = Math.ceil(len / app.config.itemsPerPage);
-	
+
 			var startPos = (this.options.page.page - 1) * app.config.itemsPerPage;
 			var endPos = startPos + app.config.itemsPerPage;
 
@@ -121,15 +121,15 @@ define([
 					nbInterventionsPlanned : self.collections.interventions.plannedInterventions,
 					interventionsState     : InterventionModel.status,
 					interventions          : interventions,
-					logo_path              : app.config.logo_path
+					cityLogo               : app.config.medias.cityLogo
 				});
 
 
 				$(self.el).html(template);
-	
+
 				// Call the render Generic View //
 				GenericListView.prototype.render(self, InterventionModel.prototype.searchable_fields);
-				
+
 				// Create item intervention view //
 				_.each(self.collections.interventions.models, function(inter, i){
 					var tasks = new TasksCollection();
@@ -140,36 +140,36 @@ define([
 					$('#inter-items').append(itemInterventionView.render().el);
 					var itemInterventionTaskListView = new ItemInterventionTaskListView({inter: inter, tasks: tasks});
 					$('#inter-items').append(itemInterventionTaskListView.render().el);
-					
+
 				});
-				
+
 				// Pagination view //
-				app.views.paginationView = new PaginationView({ 
+				app.views.paginationView = new PaginationView({
 					page       : self.options.page.page,
 					collection : self.collections.interventions
 				});
 
 				$(this.el).hide().fadeIn();
-				
+
 			});
 
-			
+
 			return this;
 		},
-	
-	
-	
+
+
+
 		/** Display the form to add / update an intervention
 		*/
 		displayModalSaveInter: function(e){
 			e.preventDefault();
-			
+
 			var params = {el:'#modalSaveInter',collection: this.collections.interventions}
 			new ModalInterventionView(params);
 		},
-	
-	
-	
+
+
+
 		/** Retrieve Equipment  (Vehicle)
 		*/
 		fillDropdownEquipment: function(e){
@@ -184,9 +184,9 @@ define([
 				}
 			}
 		},
-	
-	
-	
+
+
+
 		saveNewState: function(params, element) {
 			var self = this;
 			self.element = element;
@@ -210,31 +210,31 @@ define([
 				},
 			},false);
 		},
-	
-	
-	
+
+
+
 		initCollections: function(){
 			var self = this;
-			
+
 			// Check if the collections are instantiated //
 			if(_.isUndefined(this.collections.tasks)){ this.collections.tasks = new TasksCollection(); }
 			else{this.collections.tasks.reset();}
-			
+
 			if(_.isUndefined(this.collections.interventions)){this.collections.interventions = new InterventionsCollection();}
 			else{this.collections.interventions.reset();}
-			
+
 			// Set main collection used in GenericListView
 			this.collection = this.collections.interventions;
-			
+
 			//check sort parameter
 			if(_.isUndefined(this.options.sort)){
 				this.options.sort = this.collections.interventions.default_sort;
 			}
 			else{
-				this.options.sort = AppHelpers.calculPageSort(this.options.sort);	
+				this.options.sort = AppHelpers.calculPageSort(this.options.sort);
 			}
-			
-			
+
+
 			// Construction of the domain (filter and search, special domain if filter == overrun)
 			var domain = [];
 			var optionSearch = {};
@@ -252,10 +252,10 @@ define([
 			var searchDomain = AppHelpers.calculSearch(optionSearch, InterventionModel.prototype.searchable_fields);
 			_.each(searchDomain,function(item, index){
 				domain.push(item);
-			});	
-			
+			});
+
 			this.options.page = AppHelpers.calculPageOffset(this.options.page);
-	
+
 			// Create Fetch params //
 			var fetchParams = {
 				silent : true,
@@ -268,9 +268,9 @@ define([
 			if(!_.isUndefined(this.options.sort)){
 				fetchParams.data.sort = this.options.sort.by+' '+this.options.sort.order;
 			}
-			
+
 			fetchParams.data.fields = this.collections.interventions.fields;
-			
+
 			var deferred = $.Deferred();
 			//retrieve interventions and tasks associated (use domain ('project_id','in',[...] to retrieve tasks associated)
 			this.collections.interventions.fetch(fetchParams)
@@ -291,10 +291,10 @@ define([
 			.fail(function(e){
 				console.error(e);
 			})
-			
+
 			return deferred;
 		}
-	  
+
 	});
 	return InterventionsListView;
 })

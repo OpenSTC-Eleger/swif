@@ -133,7 +133,7 @@ module.exports = function(grunt) {
 			check: {
 				options: {
 					title  : 'Check done without error',
-					message: 'Changes can be commit!'
+					message: 'Changes can be commited and pushed!'
 				}
 			}
 		},
