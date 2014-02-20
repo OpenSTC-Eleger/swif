@@ -1,12 +1,12 @@
 define([
 	'app',
-	
+
 	'interventionModel',
 	'interventionsCollection',
 	'claimersServicesCollection',
 	'equipmentsCollection',
 	'placesCollection',
-	
+
 	'genericModalView',
 	'advancedSelectBoxView',
 	'bsDatepicker-lang',
@@ -22,12 +22,11 @@ define([
 	* Intervention Details View
 	 */
 	var ModalInterventionView = GenericModalView.extend({
-	
-		//el : '#rowContainer',
-		
+
+
 		templateHTML: '/templates/modals/interventions/modalIntervention.html',
-	
-		
+
+
 		// The DOM events //
 		events: function() {
 			return _.defaults({
@@ -36,15 +35,15 @@ define([
 			'click a.linkSelectPlaceEquipment'	: 'changeSelectPlaceEquipment'
 			},
 			GenericModalView.prototype.events);
-			
+
 		},
-	
-	
-	
+
+
+
 		/** View Initialization
 		 */
 		initialize: function (params) {
-			this.options = params;	
+			this.options = params;
 			this.collection = params.collection;
 			this.model = params.model;
 		    var self = this;
@@ -60,52 +59,52 @@ define([
 	    	self.render();
 		    //})
 	    },
-	
-	
-	
+
+
+
 	    /** Display the view
 	     */
 	    render: function () {
-			
-		
+
+
 			//self.collection = this.collection;
 			var self = this;
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 					var modelJSON = self.model.toJSON();
 					var deadLineDt = modelJSON.date_deadline!=false && !_.isUndefined(modelJSON.date_deadline) ? moment( modelJSON.date_deadline ).tz(app.current_user.getContext().tz) : moment().tz(app.current_user.getContext().tz);
 					deadLineDt.add('minutes',-deadLineDt.zone());
-					
+
 					var template = _.template(templateData, {
 						lang: app.lang, intervention	: modelJSON,
 						deadLineDt						: deadLineDt
 					});
-					
+
 					self.modal.html(template);
 					self.modal.modal('show');
-	
-					app.views.advancedSelectBoxInterventionServicesView = new AdvancedSelectBoxView({el: $("#interventionDetailService"), url: ClaimersServicesCollection.prototype.url}) 
+
+					app.views.advancedSelectBoxInterventionServicesView = new AdvancedSelectBoxView({el: $("#interventionDetailService"), url: ClaimersServicesCollection.prototype.url})
 					app.views.advancedSelectBoxInterventionServicesView.setSearchParam({field:'technical',operator:'=',value:'True'},true)
 					app.views.advancedSelectBoxInterventionServicesView.render();
-	
+
 					var currentIntervention = self.model.toJSON();
-					
+
 					//display equipment collection os place collection according to 'has_equipment'
 					if(currentIntervention.has_equipment){
 						self.advancedSelectBoxInterventionPlaceOrEquipment = new AdvancedSelectBoxView({el:'#interventionPlaceEquipment', url: EquipmentsCollection.prototype.url});
 					}
 					else{
 						self.advancedSelectBoxInterventionPlaceOrEquipment = new AdvancedSelectBoxView({el:'#interventionPlaceEquipment', url: PlacesCollection.prototype.url});
-	
+
 					}
 					self.advancedSelectBoxInterventionPlaceOrEquipment.render();
-	
-					
+
+
 					// Fill select Places  //
 					app.views.advancedSelectBoxInterventionPlacesView = new AdvancedSelectBoxView({el: $("#interventionPlaceIfEquipment"), url: PlacesCollection.prototype.url});
-					app.views.advancedSelectBoxInterventionPlacesView.render();	
-					
-					
+					app.views.advancedSelectBoxInterventionPlacesView.render();
+
+
 					if(!self.create && currentIntervention.service_id.length > 0 ) {
 						self.renderService(currentIntervention.service_id);
 					}
@@ -118,7 +117,7 @@ define([
 							self.renderSiteOrEquipment(currentIntervention.equipment_id);
 							if(currentIntervention.site1){
 								self.renderSite(currentIntervention.site1);
-							}					
+							}
 						}
 						else{
 							self.setSelectPlaceEquipment('place');
@@ -130,40 +129,40 @@ define([
 							}
 						}
 					}
-					
+
 					$('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
-	
-	
+
+
 					// If the intervention is Template - Checked the checkbox //
 					if(currentIntervention.state == 'template')
 						$('#isTemplate').prop('checked', true);
 					else
 						$('#isTemplate').prop('checked', false);
-	
-	
+
+
 					// Form elements that can't be change are disable //
 					if(self.create){
 						$('#isTemplate').prop('disabled', false);
 					}
 					else{
-						$('#isTemplate').prop('disabled', true);	
+						$('#isTemplate').prop('disabled', true);
 					}
 			});
-	 
+
 			return this;
 	    },
-	
-	
-	
+
+
+
 	    getIdInDopDown: function(view) {
 	    	if ( view && view.getSelected() )
 	    		return view.getSelected().toJSON().id;
-	    	else 
+	    	else
 	    		return 0
 	    },
-	
-	
-	
+
+
+
 		/** Save the intervention
 		*/
 		saveIntervention: function (e) {
@@ -175,9 +174,9 @@ define([
 		    	return fieldValue;
 		    }
 			e.preventDefault();
-	
+
 			var self = this;
-	
+
 	//		var input_service_id = this.getIdInDopDown(app.views.selectListServicesView);
 			var state = this.create ? InterventionModel.status.open.key : this.model.toJSON().state;
 			var params = {
@@ -189,18 +188,18 @@ define([
 	//			site1: app.views.advancedSelectBoxInterventionPlacesView.getSelectedItem(),
 				site_details: this.$('#interventionPlacePrecision').val(),
 			};
-			
+
 		    //adapt data mapping if intervention according that intervention belongs to a place or an equipment
 		    if($('#btnSelectPlaceEquipment').data('item') == 'place'){
 		    	params.site1 = evalField(this.advancedSelectBoxInterventionPlaceOrEquipment.getSelectedItem());
 		    	params.has_equipment = false;
 	    	}
 	    	else{
-	    		params.site1 = evalField(app.views.advancedSelectBoxInterventionPlacesView.getSelectedItem()); 
+	    		params.site1 = evalField(app.views.advancedSelectBoxInterventionPlacesView.getSelectedItem());
 	    		params.equipment_id = evalField(this.advancedSelectBoxInterventionPlaceOrEquipment.getSelectedItem());
 	    		params.has_equipment = true;
 	    	}
-	
+
 			this.model.save(params,{patch:!this.create, wait: true, silent: true}).done(function(data){
 				self.modal.modal('hide');
 				if(self.create){
@@ -210,61 +209,61 @@ define([
 						if(! _.isUndefined(self.collection) )
 							self.collection.add(self.model);
 					});
-					
+
 				}
 				else{
 					self.model.fetch({data: {fields: InterventionsCollection.fields}});
 				}
-	
+
 			})
 			.fail(function(e){
 				console.log(e);
 			});
 		},
-	
-	
-	
+
+
+
 		/** Delete the intervention
 		 */
-		deleteIntervention: function() { 
+		deleteIntervention: function() {
 		 	this.model.destroy({
 		 		success: function () {
 		 			window.history.back();
 		 		},
 		 		error: function () {
 		 			console.log('ERROR - Unable to delete the Intervention - InterventionView.js');
-		 		},   
+		 		},
 		 	});
 			return false;
 		},
-			
-	
-	
+
+
+
 		renderSite: function ( site ) {
 			if( site!=null )
 				//app.views.selectListPlacesView.setSelectedItem( site );
 				app.views.advancedSelectBoxInterventionPlacesView.setSelectedItem(site);
 		},
-	
+
 		renderSiteOrEquipment: function(valueM2o){
 			this.advancedSelectBoxInterventionPlaceOrEquipment.setSelectedItem(valueM2o);
 		},
-	
+
 		renderService: function ( service ) {
 			if(service != null){
 				app.views.advancedSelectBoxInterventionServicesView.setSelectedItem(service);
 				this.setParamOnSitesEquipments(service);
-			}	
+			}
 		},
-	
-	
-	
+
+
+
 		fillDropdownService: function(e){
 			e.preventDefault();
 			var service = app.views.advancedSelectBoxInterventionServicesView.getSelectedItem();
 			this.setParamOnSitesEquipments(service);
 		},
-		
+
 	    /**
 	     * Used to update filter of 'places/equipments' select2, reset value and last filters
 	     */
@@ -282,7 +281,7 @@ define([
 	    		this.advancedSelectBoxInterventionPlaceOrEquipment.setSearchParam({field:'internal_use', operator:'=', value:true});
 	    	}
 	    },
-		
+
 	    displaySiteIfEquipment: function(display){
 	    	if(display){
 	    		app.views.advancedSelectBoxInterventionPlacesView.reset();
@@ -292,7 +291,7 @@ define([
 	    		$('#interventionPlaceIfEquipmentBlock').css({display:'none'});
 	    	}
 	    },
-		
+
 	    //when clicking on site or equipment select filter, update selectBox collection if data-item change
 	    setSelectPlaceEquipment: function(item){
 	    	var itemSelectedBefore = $('#interventionPlaceEquipment').data('item');
@@ -311,7 +310,7 @@ define([
 	    		}
 	    		else{
 	    			$('#interventionPlaceEquipment').attr('data-placeholder',app.lang.actions.selectAnEquipment);
-	    			collection = EquipmentsCollection.prototype;	    			
+	    			collection = EquipmentsCollection.prototype;
 	    			$('#btnSelectPlaceEquipment').data('item', 'equipment');
 	    			$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('fa fa-map-marker');
 	    			$('#btnSelectPlaceEquipment').find('.iconItem').addClass('fa fa-wrench');
@@ -321,7 +320,7 @@ define([
 				this.advancedSelectBoxInterventionPlaceOrEquipment.render();
 	    	}
 	    },
-		
+
 	    changeSelectPlaceEquipment: function(e){
 	    	if(e != null){
 	    		e.preventDefault();

@@ -10,21 +10,20 @@ define([
 	 * Intervention Details View
 	 */
 	var ModalCancelTaskView = GenericModalView.extend({
-	
-		//el : '#rowContainer',
-		
+
+
 		templateHTML: '/templates/modals/interventions/modalCancelTask.html',
-	
-		
+
+
 		// The DOM events //
 		events: function() {
 			return _.defaults({
 			'submit #formCancelTask' 			: 'cancelTask',
 			},
 			GenericModalView.prototype.events);
-			
+
 		},
-	
+
 		/** View Initialization
 		 */
 		initialize: function (params) {
@@ -33,29 +32,29 @@ define([
 		    this.options = params;
 		    console.log("Cancel Intervention view intialization")
 		    this.modal = $(this.el);
-	    	self.render();    
+	    	self.render();
 	    },
-	
+
 	    /** Display the view
 	     */
 	    render: function () {
-			
-			
+
+
 			var self = this;
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(app.menus.openstc + this.templateHTML, function(templateData){
-				
+
 				var template = _.template(templateData, {lang: app.lang, task: self.model.toJSON()});
-				
+
 				self.modal.html(template);
 				self.modal.modal('show');
 			});
-	 
+
 			return this;
 	    },
-	
-	
-	
+
+
+
 		/** Cancel Task
 		*/
 		cancelTask: function(e){
@@ -75,11 +74,11 @@ define([
 				.fail(function(e){
 					console.log(e)
 				});
-			
+
 			//alert("Merci de laisser du temps pour pouvoir développer cette fonctionnalité");
 		}
-	
-	
+
+
 	});
 	return ModalCancelTaskView;
 })
