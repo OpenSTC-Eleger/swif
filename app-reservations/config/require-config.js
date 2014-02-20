@@ -18,6 +18,7 @@ requirejs.config({
 
 		// Models //
 		bookingModel                        : 'app-reservations/js/models/BookingModel',
+		bookingModelExtend					: 'app-reservations/js/models/BookingModelExtend',
 		bookingLineModel                    : 'app-reservations/js/models/BookingLineModel',
 		bookingRecurrenceModel             	: 'app-reservations/js/models/BookingRecurrenceModel',
 		bookableModel		             	: 'app-reservations/js/models/BookableModel',
