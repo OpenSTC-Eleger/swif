@@ -19,6 +19,7 @@
 	},
 
 	"medias": {
-		"cityLogo"         : "medias/city_logo.png"
+		"cityLogo"         : "medias/city_logo.png",
+		"cityWallpaper"    : "medias/city_wallpaper.jpg"
 	}
 }

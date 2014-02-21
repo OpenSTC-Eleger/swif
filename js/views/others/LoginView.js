@@ -15,7 +15,7 @@ define([
 
 		templateHTML : 'templates/others/login.html',
 
-		
+
 		// The DOM events //
 		events: {
 			'submit #formConnection'          : 'login',
@@ -44,13 +44,17 @@ define([
 
 			// Change the page title //
 			app.router.setPageTitle(app.lang.applicationName +' '+ app.lang.viewsTitles.login);
+			app.router.toggleCityWallpaper();
 
-			// Retrieve the Login template // 
+
+			// Retrieve the Login template //
 			$.get(this.templateHTML, function(templateData){
 
+
 				var template = _.template(templateData, {
-					lang: app.lang,
-					user: self.model
+					lang    : app.lang,
+					user    : self.model,
+					cityLogo: app.config.medias.cityLogo
 				});
 
 				$(self.el).html(template);
@@ -90,7 +94,7 @@ define([
 			// Execution user login function //
 			var checkLogin = this.model.login($('#loginUser').val(), $('#passUser').val());
 
-			
+
 			checkLogin.done(function(data){
 				// Set user data and Save it //
 				app.current_user.setUserData(data);
@@ -103,14 +107,16 @@ define([
 
 				app.views.headerView.render();
 				Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
+
+				app.router.toggleCityWallpaper();
 			});
 			checkLogin.fail(function(e){
-				
+
 				if(e.status == 401){
 					$('#passUser').parents('.form-group').addClass('has-error');
 					$('#errorLogin').removeClass('hide');
 				}
-				
+
 
 				$('#formConnection').find('fieldset').prop('disabled', false);
 				$('#passUser').focus();

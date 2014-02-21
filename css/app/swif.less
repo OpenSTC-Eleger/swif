@@ -79,8 +79,10 @@ fieldset{
 
 
 .city-wallpaper{
-	background: url('medias/city-wallpaper') no-repeat center center fixed;
-	background-size: cover;
+	background-repeat    : no-repeat;
+	background-attachment: fixed;
+	background-position  : center;
+	background-size      : cover;
 }
 
 
@@ -254,6 +256,13 @@ a.filter-button.filter-disabled{
 -------------------------------------------------- */
 #formConnectionContainer{
 	max-width: 550px;
+}
+.login-logo {
+	position: absolute;
+	top: 100px;
+	left: 5%;
+	border: 2px solid @thumbnail-border;
+	max-width: 150px;
 }
 
 

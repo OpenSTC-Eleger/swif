@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 				},
 				options: {
 					compress: true,
-					yuicompress: true
+					cleancss: true
 				}
 			}
 		},
@@ -144,7 +144,6 @@ module.exports = function(grunt) {
 			}
 		}
 
-
 	});
 
 
@@ -224,8 +223,6 @@ module.exports = function(grunt) {
 	grunt.task.run('notify_hooks');
 
 
-
 	grunt.registerTask('default', ['checkVersion', 'less', 'targethtml', 'copy']);
-	grunt.registerTask('check', ['checkVersion', 'jshint', 'notify:check']);
-
+	grunt.registerTask('check', ['jshint', 'checkVersion', 'notify:check']);
 };

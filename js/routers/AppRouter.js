@@ -93,6 +93,24 @@ define([
 		},
 
 
+		/** Set the City Wallpaper on the application body
+		*/
+		toggleCityWallpaper: function(){
+
+			if(!_.isUndefined(app.config.medias.cityWallpaper) && app.config.medias.cityWallpaper !== ''){
+
+				$('body').toggleClass('city-wallpaper');
+
+				if($('body').hasClass('city-wallpaper')){
+					$('body').css('backgroundImage','url('+app.config.medias.cityWallpaper+')');
+				}
+				else{
+					$('body').css('backgroundImage','none');
+				}
+			}
+		},
+
+
 
 		/** Change the Title of the page
 		*/
