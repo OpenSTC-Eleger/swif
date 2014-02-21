@@ -738,36 +738,60 @@ define([
 					self.set({id:data});
 				}
 				self.fetch({silent:true}).done(function(){
-					if(self.get('is_template') && self.recurrence != null){
-						//add template to occurrence_ids
-						self.recurrence.set({'reservation_ids':[[4,self.getId()]]});
-						deferredArray.push(self.recurrence.saveToBackend());
-					}
+					//retrieve BookingLines to create/update
 					self.lines.each(function(lineModel){
 						deferredArray.push(lineModel.saveToBackend().fail(function(e){console.log(e)}));
 					});
+					//retrieve BookingLines to remove
 					self.linesToRemove.each(function(lineToRemove,i){
 						deferredArray.push(lineToRemove.destroy());
 					});
-					_.each(self.recurrencesToRemove,function(recurrenceToRemove,i){
-						deferredArray.push(recurrenceToRemove.persistentDestroyOnBackend());
-					});
+					
 					if(_.isEmpty(deferredArray)){
 						deferred.resolve();
 					}
+					//perform Create/Update/Delete on BookingLines and perform recurrence save if needed
 					else{
 						$.when.apply($,deferredArray).done(function(){
-							deferred.resolve();
+							self.saveRecurrenceOnlyToBackend().done(function(){
+								deferred.resolve();
+							});
 						}).fail(function(e){
 							deferred.reject();
 						});
 					}
+					
 				}).fail(function(e){
 					deferred.reject();
 				});
 			}).fail(function(e){
 				deferred.reject();
 			});
+			return deferred;
+		},
+		
+		saveRecurrenceOnlyToBackend: function(){
+			var self = this;
+			var deferredArray = [];
+			var deferred = $.Deferred();
+			if(self.get('is_template') && self.recurrence != null){
+				//add template to occurrence_ids
+				self.recurrence.set({'reservation_ids':[[4,self.getId()]]});
+				deferredArray.push(self.recurrence.saveToBackend());
+			}
+			_.each(self.recurrencesToRemove,function(recurrenceToRemove,i){
+				deferredArray.push(recurrenceToRemove.persistentDestroyOnBackend());
+			});
+			if(deferredArray.length > 0){
+				$.when.apply($, deferredArray).done(function(){
+					deferred.resolve();
+				}).fail(function(e){
+					deferred.reject();
+				});
+			}
+			else{
+				deferred.resolve();
+			}
 			return deferred;
 		},
 		
