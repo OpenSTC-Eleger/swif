@@ -105,7 +105,7 @@
 	</div>
 	<hr>
 	
-	<% if(_.isNull(booking.getId()) || booking.hasActions('redraft')){ %>
+	<% if(!_.isNull(booking.getId()) && booking.hasActions('redraft')){ %>
 	<div class="row">
 		<fieldset>
 			<span>

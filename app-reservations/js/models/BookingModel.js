@@ -826,6 +826,7 @@ define([
 			//set default values to model
 			if(this.isNew()){
 				this.set({
+					actions: ['update','post'],
 					state:'draft'
 				});
 			};

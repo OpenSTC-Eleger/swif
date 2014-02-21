@@ -154,7 +154,7 @@ define(['app',
 
 		//compute display of button save (readonly or visible)
 		updateDisplaySave: function(){
-			var elt = $('#saveFormBooking');
+			var elt = $('button[form="formSaveBooking"]');
 			if(this.isEditable() && this.model.getStartDate() != '' 
 				&& this.model.getEndDate() != '' && this.model.getClaimer('id') != false 
 				&& this.model.lines.length > 0 && this.model.getAllDispo()){
