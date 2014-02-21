@@ -91,7 +91,7 @@ define([
 
 
 				// Create item category request view //
-				_.each(self.collection.models, function(absentType, i){
+				_.each(self.collection.models, function(absentType){
 					var itemAbsentTypeView  = new ItemAbsentTypeView({model: absentType});
 					$('#rows-items').append(itemAbsentTypeView.render().el);
 				});
@@ -114,7 +114,7 @@ define([
 
 		/** Partial Render of the view
 		*/
-		partialRender: function (type) {
+		partialRender: function () {
 			var self = this;
 
 			this.collection.count(this.fetchParams).done(function(){
@@ -173,7 +173,7 @@ define([
 			return $.when(self.collection.fetch(this.fetchParams))
 				.fail(function(e){
 					console.log(e);
-				})
+				});
 
 		}
 

@@ -29,9 +29,9 @@ define([
 		// The DOM events //
 		events: function() {
 			return _.defaults({
-				'submit #formTaskDone'   			: 'taskDone',
-				'click a.linkSelectUsersTeams'		: 'changeSelectListUsersTeams',
-				'click .linkRefueling'				: 'accordionRefuelingInputs'
+				'submit #formTaskDone'        : 'taskDone',
+				'click a.linkSelectUsersTeams': 'changeSelectListUsersTeams',
+				'click .linkRefueling'        : 'accordionRefuelingInputs'
 			},
 			GenericModalView.prototype.events);
 
@@ -40,17 +40,17 @@ define([
 		/** View Initialization
 		 */
 		initialize: function (params) {
-		    var self = this;
+			var self = this;
 
-		    this.options = params;
+			this.options = params;
 
-		    this.modal = $(this.el);
-	    	self.render();
-	    },
+			this.modal = $(this.el);
+			self.render();
+		},
 
-	    /** Display the view
-	     */
-	    render: function () {
+		/** Display the view
+		 */
+		render: function () {
 
 			// Change the page title depending on the create value //
 			app.router.setPageTitle(app.lang.viewsTitles.newTask);
@@ -68,14 +68,14 @@ define([
 				self.selectedTaskJSON = self.model.toJSON();
 
 				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
-				$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
+				$('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 
-				$("#startDate").val(  moment().format('L') );
-				$("#endDate").val( moment().format('L') );
+				$('#startDate').val(  moment().format('L') );
+				$('#endDate').val( moment().format('L') );
 
 				// Set Task Planned Hour //
-				$("#startHour").timepicker('setTime', moment().format('LT') );
-				$("#endHour").timepicker('setTime', moment().add('hour', self.selectedTaskJSON.planned_hours).format('LT') );
+				$('#startHour').timepicker('setTime', moment().format('LT') );
+				$('#endHour').timepicker('setTime', moment().add('hour', self.selectedTaskJSON.planned_hours).format('LT') );
 
 				//Display remainingTime if user clicked on "task unfinished"
 				if(!self.options.taskDone){
@@ -121,21 +121,21 @@ define([
 			});
 
 			return this;
-	    },
-
-	    setSearchParamsOnUsersTeams: function(){
-	    	if(this.options.inter.toJSON().service_id && !_.isUndefined(this.options.inter.toJSON().service_id)){
-	    		this.selectListOfficersTeamsView.setSearchParam({field:'service_ids.id',operator:'=',value:this.options.inter.toJSON().service_id[0]}, true);
-	    	}
 		},
 
-	    /** Save Task as Done (create another one if timeRemaining set)
-	     */
-	    taskDone: function(e){
+		setSearchParamsOnUsersTeams: function(){
+			if(this.options.inter.toJSON().service_id && !_.isUndefined(this.options.inter.toJSON().service_id)){
+				this.selectListOfficersTeamsView.setSearchParam({field:'service_ids.id',operator:'=',value:this.options.inter.toJSON().service_id[0]}, true);
+			}
+		},
+
+		/** Save Task as Done (create another one if timeRemaining set)
+		 */
+		taskDone: function(e){
 			e.preventDefault();
 			var self = this;
 
-			if($('#selectUsersTeams').data('item') == 'officers'){
+			if($('#selectUsersTeams').data('item') === 'officers'){
 				var teamMode = false;
 
 			}
@@ -147,15 +147,14 @@ define([
 			var id = this.selectListOfficersTeamsView.getSelectedItem();
 
 			// Retrieve Start Date and Start Hour //
-			var mNewDateStart =  new moment( $("#startDate").val(),"DD-MM-YYYY")
-									.add('hours',$("#startHour").val().split(":")[0] )
-									.add('minutes',$("#startHour").val().split(":")[1] );
+			var mNewDateStart =  new moment( $("#startDate").val(),'DD-MM-YYYY')
+									.add('hours',$("#startHour").val().split(':')[0] )
+									.add('minutes',$("#startHour").val().split(':')[1] );
 
 			// Retrieve Start Date and Start Hour //
-			var mNewDateEnd =  new moment( $("#endDate").val(),"DD-MM-YYYY")
-									.add('hours',$("#endHour").val().split(":")[0] )
-									.add('minutes',$("#endHour").val().split(":")[1] );
-
+			var mNewDateEnd =  new moment( $("#endDate").val(),'DD-MM-YYYY')
+									.add('hours',$("#endHour").val().split(':')[0] )
+									.add('minutes',$("#endHour").val().split(':')[1] );
 
 
 			var vehicule =  this.selectVehicleView.getSelectedItem();
@@ -167,7 +166,7 @@ define([
 			equipments = [[6,0,equipments]];
 
 			if($('#remainingTimeSection').is(':visible')){
-				var duration = $("#eventRemainingTime").val().split(":");
+				var duration = $('#eventRemainingTime').val().split(':');
 				var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
 				var remaining_hours = mDuration.asHours();
 			}
@@ -176,16 +175,16 @@ define([
 			}
 
 			var params = {
-				date_start: mNewDateStart.toDate(),
-				date_end: mNewDateEnd.toDate(),
-				team_id: teamMode ? id : 0,
-				user_id: !teamMode ? id : 0,
-				equipment_ids: equipments,
-				vehicule: vehicule,
-				km: this.$('#equipmentKmDone').val(),
-				oil_qtity: this.$('#equipmentOilQtityDone').val().replace(',', '.'),
-				oil_price: this.$('#equipmentOilPriceDone').val().replace(',', '.'),
-				report_hours: mNewDateEnd.diff(mNewDateStart,'hours',true),
+				date_start     : mNewDateStart.toDate(),
+				date_end       : mNewDateEnd.toDate(),
+				team_id        : teamMode ? id : 0,
+				user_id        : !teamMode ? id : 0,
+				equipment_ids  : equipments,
+				vehicule       : vehicule,
+				km             : this.$('#equipmentKmDone').val(),
+				oil_qtity      : this.$('#equipmentOilQtityDone').val().replace(',', '.'),
+				oil_price      : this.$('#equipmentOilPriceDone').val().replace(',', '.'),
+				report_hours   : mNewDateEnd.diff(mNewDateStart,'hours',true),
 				remaining_hours: remaining_hours,
 			};
 
@@ -196,16 +195,16 @@ define([
 						self.options.tasks.fetch({data: {filters:{0:{'field':'project_id.id',operator: '=', value: self.options.inter.toJSON().id} }}}),
 						self.model.fetch())
 					.done(function(){
-					self.modal.modal('hide');
-					self.options.inter.fetch();
+						self.modal.modal('hide');
+						self.options.inter.fetch();
 					})
 					.fail(function(e){
-						console.log(e)
+						console.log(e);
 					});
 
 				})
 				.fail(function(e){
-					console.log(e)
+					console.log(e);
 				});
 
 		},
@@ -218,15 +217,17 @@ define([
 			var link = $(e.target);
 
 			// Retrieve the item to refres - Users or Teams //
-			if(link.is('a')){ var itemToLoad = link.data('item'); }
-			else{ var itemToLoad = link.parent('a').data('item'); }
+			var itemToLoad;
+			if(link.is('a')){ itemToLoad = link.data('item'); }
+			else{ itemToLoad = link.parent('a').data('item'); }
 
 			this.selectedTaskJSON = this.model.toJSON();
-			var filters = this.selectListOfficersTeamsView.searchParams;
+
+
 			//first, re-init filters with default ones
 			this.setSearchParamsOnUsersTeams();
 			//update Advanced selectBox Params (placeholder, collection and filters) according to itemToLoad
-			if(itemToLoad == 'officers'){
+			if(itemToLoad === 'officers'){
 				$('#btnSelectUsersTeams > i.iconItem.fa-users').addClass('fa-user').removeClass('fa-users');
 				$('#selectUsersTeams').data('item', 'officers');
 				$('#selectUsersTeams').attr('data-placeholder', app.lang.actions.selectAAgentShort);
@@ -237,7 +238,7 @@ define([
 				this.selectListOfficersTeamsView.reset();
 				this.selectListOfficersTeamsView.render();
 			}
-			else if(itemToLoad == 'teams'){
+			else if(itemToLoad === 'teams'){
 				$('#btnSelectUsersTeams > i.iconItem.fa-user').addClass('fa-users').removeClass('fa-user');
 				$('#selectUsersTeams').data('item', 'teams');
 				$('#selectUsersTeams').attr('data-placeholder', app.lang.actions.selectATeamShort);
@@ -259,5 +260,6 @@ define([
 			$('.refueling-vehicle').stop().slideToggle();
 		},
 	});
+
 	return ModalTaskDoneView;
-})
+});

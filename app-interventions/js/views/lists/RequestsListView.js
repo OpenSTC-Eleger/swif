@@ -13,7 +13,7 @@ define([
 	'advancedSelectBoxView',
 	'metaDataModel'
 
-], function(app, AppHelpers, RequestsCollection, ClaimersServicesCollection, RequestModel, GenericListView, PaginationView, 
+], function(app, AppHelpers, RequestsCollection, ClaimersServicesCollection, RequestModel, GenericListView, PaginationView,
 				ItemRequestView, ModalRequestView, AdvancedSelectBoxView, MetaDataModel){
 
 	'use strict';
@@ -30,10 +30,10 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'click #badgeActions[data-filter!=""]' : 'badgeFilter',
+				'click #badgeActions[data-filter !=""]' : 'badgeFilter',
 
-				'click a.createModel'                  : 'modalCreateRequest'
-			}, 
+				'click a.createModel'            : 'modalCreateRequest'
+			},
 				GenericListView.prototype.events
 			);
 		},
@@ -72,7 +72,7 @@ define([
 		add: function(model){
 			var itemRequestView = new ItemRequestView({ model: model });
 			$('#rows-items').prepend(itemRequestView.render().el);
-			AppHelpers.highlight($(itemRequestView.el))
+			AppHelpers.highlight($(itemRequestView.el));
 
 			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.requestCreateOk);
 			this.partialRender();
@@ -107,14 +107,14 @@ define([
 
 
 				// Create item request view //
-				_.each(self.collection.models, function(request, i){
+				_.each(self.collection.models, function(request){
 					var itemRequestView = new ItemRequestView({model: request});
 					$('#rows-items').append(itemRequestView.render().el);
 				});
 
 
 				// Pagination view //
-				app.views.paginationView = new PaginationView({ 
+				app.views.paginationView = new PaginationView({
 					page       : self.options.page.page,
 					collection : self.collection
 				});
@@ -150,7 +150,7 @@ define([
 			var filterValue = $(e.target).data('filter');
 
 			// Set the filter value in the options of the view //
-			if(filterValue != ''){
+			if(filterValue !== ''){
 				this.options.filter = [{field: 'state', operator: 'in', value: [filterValue] }];
 				delete this.options.search;
 				delete this.options.page;
@@ -176,8 +176,6 @@ define([
 		/** Collection initialisation
 		*/
 		initCollection: function(){
-			var self = this;
-
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new RequestsCollection(); }
 
@@ -191,7 +189,7 @@ define([
 			}
 
 			this.options.page = AppHelpers.calculPageOffset(this.options.page);
-				
+
 			// Create Fetch params //
 			var fetchParams = {
 				silent     : true,

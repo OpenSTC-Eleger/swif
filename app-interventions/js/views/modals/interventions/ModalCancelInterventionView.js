@@ -7,8 +7,8 @@ define([
 	'use strict';
 
 	/******************************************
-	 * Intervention Details View
-	 */
+	* Intervention Details View
+	*/
 	var ModalCancelInterventionView = GenericModalView.extend({
 
 
@@ -18,26 +18,27 @@ define([
 		// The DOM events //
 		events: function() {
 			return _.defaults({
-			'submit #formCancelInter'          : 'cancelInter',
+				'submit #formCancelInter'    : 'cancelInter',
 			},
 			GenericModalView.prototype.events);
-
 		},
 
+
+
 		/** View Initialization
-		 */
+		*/
 		initialize: function (params) {
-		    var self = this;
+			this.options = params;
 
-		    this.options = params;
+			this.modal = $(this.el);
+			this.render();
+		},
 
-		    this.modal = $(this.el);
-	    	self.render();
-	    },
 
-	    /** Display the view
-	     */
-	    render: function () {
+
+		/** Display the view
+		*/
+		render: function () {
 
 			// Change the page title depending on the create value //
 			app.router.setPageTitle(app.lang.viewsTitles.newTask);
@@ -54,7 +55,7 @@ define([
 			});
 
 			return this;
-	    },
+		},
 
 
 		/** Cancel Intervention
@@ -63,17 +64,18 @@ define([
 			e.preventDefault();
 			var self = this;
 			//cancel the intervention and fetch all tasks associated to display there new state
-			this.model.cancel($('#motifCancel').val()).done(function(data){
+			this.model.cancel($('#motifCancel').val()).done(function(){
 				self.modal.modal('hide');
 				if(!_.isUndefined(self.options.tasks)){
-					_.each(self.model.toJSON().tasks, function(taskId, i){
+					_.each(self.model.toJSON().tasks, function(taskId){
 						var task = self.options.tasks.get(taskId);
 						task.fetch();
 					});
 				}
 			});
-		},
+		}
 
 	});
+
 	return ModalCancelInterventionView;
-})
+});

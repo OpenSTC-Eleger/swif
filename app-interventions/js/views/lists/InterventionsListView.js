@@ -80,7 +80,7 @@ define([
 
 		/** Partial Render of the view
 		*/
-		partialRender: function (type) {
+		partialRender: function() {
 			var self = this;
 			$.when(self.collections.interventions.pendingInterventionsCount(),
 					self.collections.interventions.plannedInterventionsCount()).done(function(){
@@ -107,11 +107,7 @@ define([
 
 
 			var interventions = this.collections.interventions.toJSON();
-			var len = this.collections.interventions.cpt;
-			var pageCount = Math.ceil(len / app.config.itemsPerPage);
 
-			var startPos = (this.options.page.page - 1) * app.config.itemsPerPage;
-			var endPos = startPos + app.config.itemsPerPage;
 
 			// Retrieve the HTML template //
 			$.get(app.menus.openstc + this.templateHTML, function(templateData){
@@ -131,9 +127,9 @@ define([
 				GenericListView.prototype.render(self, InterventionModel.prototype.searchable_fields);
 
 				// Create item intervention view //
-				_.each(self.collections.interventions.models, function(inter, i){
+				_.each(self.collections.interventions.models, function(inter){
 					var tasks = new TasksCollection();
-					_.each(inter.toJSON().tasks,function(item,i){
+					_.each(inter.toJSON().tasks,function(item){
 						tasks.add(self.collections.tasks.get(item));
 					});
 					var itemInterventionView = new ItemInterventionView({model: inter, tasks: tasks});
@@ -164,7 +160,7 @@ define([
 		displayModalSaveInter: function(e){
 			e.preventDefault();
 
-			var params = {el:'#modalSaveInter',collection: this.collections.interventions}
+			var params = {el:'#modalSaveInter',collection: this.collections.interventions};
 			new ModalInterventionView(params);
 		},
 
@@ -190,7 +186,7 @@ define([
 		saveNewState: function(params, element) {
 			var self = this;
 			self.element = element;
-			self.params = params
+			self.params = params;
 			this.selectedInter.save(params, {
 				success: function (data) {
 					console.log(data);
@@ -198,8 +194,9 @@ define([
 						app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 					}
 					else{
-						if( self.element!= null )
+						if( self.element !== null ){
 							self.element.modal('hide');
+						}
 						self.selectedInter.update(self.params);
 						this.collections.interventions.add(self.selectedInter);
 						self.render();
@@ -250,7 +247,7 @@ define([
 
 			//'Unbuild' domain objectify to be able to add other filters (and objectify when all filters are added
 			var searchDomain = AppHelpers.calculSearch(optionSearch, InterventionModel.prototype.searchable_fields);
-			_.each(searchDomain,function(item, index){
+			_.each(searchDomain,function(item){
 				domain.push(item);
 			});
 
@@ -282,7 +279,7 @@ define([
 					})
 					.fail(function(e){
 						console.error(e);
-					})
+					});
 				}
 				else{
 					deferred.resolve();
@@ -290,11 +287,12 @@ define([
 			})
 			.fail(function(e){
 				console.error(e);
-			})
+			});
 
 			return deferred;
 		}
 
 	});
+
 	return InterventionsListView;
-})
+});

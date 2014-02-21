@@ -91,7 +91,7 @@ define([
 
 
 				// Create item category request view //
-				_.each(self.collection.models, function(catRequest, i){
+				_.each(self.collection.models, function(catRequest){
 					var itemCategoryRequestView  = new ItemCategoryRequestView({model: catRequest});
 					$('#rows-items').append(itemCategoryRequestView.render().el);
 				});
@@ -101,7 +101,7 @@ define([
 				app.views.paginationView = new PaginationView({
 					page       : self.options.page.page,
 					collection : self.collection
-				})
+				});
 				app.views.paginationView.render();
 
 			});
@@ -115,7 +115,7 @@ define([
 
 		/** Partial Render of the view
 		*/
-		partialRender: function (type) {
+		partialRender: function() {
 			var self = this;
 
 			this.collection.count(this.fetchParams).done(function(){

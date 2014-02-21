@@ -11,6 +11,7 @@ define([
 
 ], function(app, AppHelpers, RequestModel, ModalRequestView, ModalValidRequestView, ModalRefuseRequestView, ModalConfirmRequestView){
 
+	'use strict';
 
 	/******************************************
 	* Row Request View
@@ -21,6 +22,7 @@ define([
 
 		className   : function(){
 
+			var classRow;
 			if(this.model.getState() == RequestModel.status.wait.key && app.current_user.isManager() && _.contains(app.current_user.getServices(), this.model.getService('id'))) {
 				classRow = RequestModel.status.wait.color + ' bolder';
 				return classRow;
@@ -29,7 +31,7 @@ define([
 				classRow = RequestModel.status.confirm.color + ' bolder';
 				return classRow;
 			}
-			
+
 		},
 
 		templateHTML : '/templates/items/itemRequest.html',
@@ -37,10 +39,10 @@ define([
 
 		// The DOM events //
 		events       : {
-			'click .buttonValidRequest'	      : 'modalValidRequest',
-			'click .buttonRefusedRequest'	  : 'modalRefuseRequest',
-			'click .buttonConfirmRequest'	  : 'modalConfirmRequest',
-			'click .requestDetails'			  : 'displayModalUpdateRequest',
+			'click .buttonValidRequest'  : 'modalValidRequest',
+			'click .buttonRefusedRequest': 'modalRefuseRequest',
+			'click .buttonConfirmRequest': 'modalConfirmRequest',
+			'click .requestDetails'      : 'displayModalUpdateRequest',
 		},
 
 
@@ -70,19 +72,19 @@ define([
 
 
 			// Set the info message for the notification //
+			var infoMessage;
 			switch(model.getState()){
-				case RequestModel.status.refused.key: 
-					var infoMessage = app.lang.infoMessages.requestRefuseOk;
-				break;
+				case RequestModel.status.refused.key:
+					infoMessage = app.lang.infoMessages.requestRefuseOk;
+					break;
 				case RequestModel.status.confirm.key:
-					var infoMessage = app.lang.infoMessages.requestConfirmOk;
-				break;
+					infoMessage = app.lang.infoMessages.requestConfirmOk;
+					break;
 				case RequestModel.status.valid.key:
-					var infoMessage = app.lang.infoMessages.requestValidOk;
-				break;
+					infoMessage = app.lang.infoMessages.requestValidOk;
+					break;
 				default:
-					var infoMessage = app.lang.infoMessages.requestUpdateOk;
-				break;
+					infoMessage = app.lang.infoMessages.requestUpdateOk;
 			}
 
 
@@ -100,7 +102,7 @@ define([
 			var self = this;
 
 
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 
 
@@ -126,7 +128,8 @@ define([
 		/** Display Modal form to valid an Intervention Request
 		*/
 		modalValidRequest: function(e){
-			e.preventDefault(); e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 
 			app.views.modalValidRequestView = new ModalValidRequestView({
 				el      : '#modalRequest',
@@ -139,7 +142,8 @@ define([
 		/** Display Modal form to Refuse an Intervention Request
 		*/
 		modalRefuseRequest: function(e){
-			e.preventDefault(); e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 
 			app.views.modalRefuseRequestView = new ModalRefuseRequestView({
 				el      : '#modalRequest',
@@ -152,7 +156,8 @@ define([
 		/** Display Modal form to Confirm an Intervention Request
 		*/
 		modalConfirmRequest: function(e){
-			e.preventDefault(); e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 
 			app.views.modalConfirmRequestView = new ModalConfirmRequestView({
 				el      : '#modalRequest',
@@ -180,11 +185,12 @@ define([
 			var deferred = $.Deferred();
 
 			// Once the CSS3 animation are end the class are removed //
-			$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
-				function(e) {
+			$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
+				function() {
 					$(self.el).removeClass('highlight');
 					deferred.resolve();
-			});
+				}
+			);
 
 			return deferred;
 		}

@@ -68,7 +68,7 @@ module.exports = function(grunt) {
 				browser      : true,
 				jquery       : true,
 				devel        : true,
-				globals      : { 'requirejs': false, 'module': false, 'require': false, 'define': false, '_': false, 'Backbone': false }
+				globals      : { 'requirejs': true, 'require': true, 'module': true, 'define': true, '_': true, 'Backbone': true }
 			},
 			gruntfile: {
 				src: ['Gruntfile.js']
@@ -77,14 +77,14 @@ module.exports = function(grunt) {
 				options: {
 					quotmark: 'double'
 				},
-				src: ['properties.json', 'package.json', 'config/*.json', 'i18n/**/*.json', 'app-interventions/config/*.json', 'app-reservations/config/*.json'],
+				src: ['properties.json', 'package.json', 'config/*.json.*', 'i18n/**/*.json', 'app-interventions/config/*.json', 'app-reservations/config/*.json'],
 			},
 			scripts_main: {
-				src: ['startup.js', 'js/**/*.js', '!js/libs/*', '!js/i18n/*']
+				src: ['js/**/*.js', '!js/libs/*', '!js/i18n/*']
 			},
 			scripts_inter: {
 				//src: ['app-interventions/js/**/*.js', 'app-interventions/main.js']
-				src: ['app-interventions/main.js', 'app-interventions/js/routers/*.js', 'app-interventions/js/models/*.js', 'app-interventions/js/collections/*.js']
+				src: ['app-interventions/main.js', 'app-interventions/js/routers/*.js', 'app-interventions/js/models/*.js', 'app-interventions/js/collections/*.js', 'app-interventions/js/views/items/*.js', 'app-interventions/js/views/modals/*.js', 'app-interventions/js/views/lists/*.js']
 			},
 			scripts_resa: {
 				//src: ['app-reservations/js/**/*.js', 'app-reservations/main.js']

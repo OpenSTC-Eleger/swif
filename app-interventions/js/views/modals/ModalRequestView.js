@@ -17,7 +17,7 @@ define([
 
 	'bsSwitch'
 
-], function(app, GenericModalView, AdvancedSelectBoxView, RequestsCollection, ClaimersCollection, ClaimersContactsCollection, EquipmentsCollection, PlacesCollection, ClaimersServicesCollection, RequestModel, ClaimerContactModel, ClaimerModel, bootstrapSwitch){
+], function(app, GenericModalView, AdvancedSelectBoxView, RequestsCollection, ClaimersCollection, ClaimersContactsCollection, EquipmentsCollection, PlacesCollection, ClaimersServicesCollection, RequestModel, ClaimerContactModel, ClaimerModel){
 
 	'use strict';
 
@@ -36,20 +36,20 @@ define([
 		events: function() {
 			return _.defaults({
 				'submit #formSaveRequest'            : 'saveRequest',
-				
+
 				'switch-change #switchCitizen'       : 'switchCitizen',
 				'switch-change #switchPlaceEquipment': 'switchPlaceEquipment',
-				
+
 				'change #requestClaimer'             : 'changeClaimer',
 				'change #requestContact'             : 'changeContact',
-				
+
 				'click #menuSelectPlaceEquipement li': 'changeSelectPlaceEquipment',
-				
+
 				'change #requestDetailService'       : 'fillDropdownService',
 			},
 				GenericModalView.prototype.events
 			);
-			
+
 		},
 
 
@@ -65,7 +65,7 @@ define([
 
 			// Check if it's a create or an update //
 			if(_.isUndefined(this.model)){
-				
+
 				this.model = new RequestModel();
 				this.render();
 			}
@@ -113,13 +113,13 @@ define([
 					app.views.selectListClaimersContactsView.render();
 
 					// Fill select Places/Equipments //
-					app.views.selectListEquipmentsView = new AdvancedSelectBoxView({el: $("#requestEquipment"), url: EquipmentsCollection.prototype.url})
+					app.views.selectListEquipmentsView = new AdvancedSelectBoxView({el: $('#requestEquipment'), url: EquipmentsCollection.prototype.url});
 					app.views.selectListEquipmentsView.render();
 
 					app.views.selectListPlacesView = new AdvancedSelectBoxView({el: $('#requestPlace'), url: PlacesCollection.prototype.url});
 					app.views.selectListPlacesView.render();
 
-					app.views.selectListServicesView = new AdvancedSelectBoxView({el: $('#requestDetailService'), url: ClaimersServicesCollection.prototype.url})
+					app.views.selectListServicesView = new AdvancedSelectBoxView({el: $('#requestDetailService'), url: ClaimersServicesCollection.prototype.url});
 					app.views.selectListServicesView.render();
 
 
@@ -130,7 +130,7 @@ define([
 								$('#claimerFunction span').html(data.function);
 								$('#claimerPhone span').html(data.phone);
 								$('#claimerEmail span').html(data.email);
-							})
+							});
 						}
 					}
 				}
@@ -139,10 +139,10 @@ define([
 			});
 
 			return this;
-	    },
+		},
 
 
-		
+
 		/** Swith if the resquest is from a citizen or not
 		*/
 		switchCitizen: function(event, data){
@@ -195,11 +195,11 @@ define([
 				var searchParam = { field : 'partner_id.id', operator : '=', value : claimerId };
 				app.views.selectListClaimersContactsView.setSearchParam(searchParam , true);
 
-				
+
 				// Fetch the organisation to know the Associated place and Service //
 				this.organisation = new ClaimerModel({id: claimerId});
 				this.organisation.fetch({ data : {fields : ['technical_service_id', 'technical_site_id']} })
-					.done(function(data){
+					.done(function(){
 
 						// Set the Associated place of the Claimer //
 						if(self.organisation.getTechnicalService()){
@@ -218,7 +218,7 @@ define([
 
 		/** When the SelectBox Contact change
 		*/
-		changeContact: function(event){
+		changeContact: function(){
 			var self = this;
 
 			var contactId = app.views.selectListClaimersContactsView.getSelectedItem();
@@ -334,7 +334,7 @@ define([
 						self.model.setId(data);
 						self.model.fetch({silent: true, data : {fields : RequestsCollection.prototype.fields} }).done(function(){
 							app.views.requestsListView.collection.add(self.model);
-						})
+						});
 					// Update mode //
 					} else {
 						self.model.fetch({ data : {fields : self.model.fields} });
@@ -352,6 +352,6 @@ define([
 
 	});
 
-return ModalRequestView;
+	return ModalRequestView;
 
 });

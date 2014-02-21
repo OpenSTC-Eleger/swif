@@ -1,10 +1,10 @@
 define([
 	'app',
-	'genericModalView',''
+	'genericModalView'
 
 ], function(app, GenericModalView){
-	'use strict';
 
+	'use strict';
 
 	/******************************************
 	 * Intervention Details View
@@ -18,7 +18,7 @@ define([
 		// The DOM events //
 		events: function() {
 			return _.defaults({
-			'submit #formCancelTask' 			: 'cancelTask',
+				'submit #formCancelTask'  : 'cancelTask',
 			},
 			GenericModalView.prototype.events);
 
@@ -27,17 +27,16 @@ define([
 		/** View Initialization
 		 */
 		initialize: function (params) {
-		    var self = this;
-		    //backward compatibility for last version of SWIF, must be changed to make a better use of Backbone View
-		    this.options = params;
-		    console.log("Cancel Intervention view intialization")
-		    this.modal = $(this.el);
-	    	self.render();
-	    },
+			//backward compatibility for last version of SWIF, must be changed to make a better use of Backbone View
+			this.options = params;
+			this.modal = $(this.el);
+			this.render();
+		},
 
-	    /** Display the view
-	     */
-	    render: function () {
+
+		/** Display the view
+		*/
+		render: function () {
 
 
 			var self = this;
@@ -51,7 +50,7 @@ define([
 			});
 
 			return this;
-	    },
+		},
 
 
 
@@ -64,15 +63,16 @@ define([
 				.done(function(){
 					$.when(self.model.fetch({wait: true}))
 					.fail(function(e){
-						console.log(e)}
-					);
+						console.log(e);
+					});
+
 					if(!_.isUndefined(self.options.inter)){
-						self.options.inter.fetch().fail(function(e){console.log(e)});
+						self.options.inter.fetch().fail(function(e){console.log(e);});
 					}
 					self.modal.modal('hide');
 				})
 				.fail(function(e){
-					console.log(e)
+					console.log(e);
 				});
 
 			//alert("Merci de laisser du temps pour pouvoir développer cette fonctionnalité");
@@ -80,5 +80,6 @@ define([
 
 
 	});
+
 	return ModalCancelTaskView;
-})
+});

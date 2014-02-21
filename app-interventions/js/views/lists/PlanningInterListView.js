@@ -33,10 +33,10 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				//'switch-change #switchWithForeman'        : 'setForemanInTeam',
-				'click #filterStateInterventionList li a' 	: 'setFilterState',
-				'click a.modalCreateInter'			: 'displayModalSaveInter',
-				'click #pagination ul a'			: 'goToPage',
+				//'switch-change #switchWithForeman'     : 'setForemanInTeam',
+				'click #filterStateInterventionList li a': 'setFilterState',
+				'click a.modalCreateInter'               : 'displayModalSaveInter',
+				'click #pagination ul a'                 : 'goToPage',
 			},
 				GenericListView.prototype.events
 			);
@@ -52,7 +52,7 @@ define([
 			var self = this;
 
 			//By default display open intervention (intervention to schedule)
-			this.filter = [{field:"state", operator:"=", value:"open"}];
+			this.filter = [{field: 'state', operator: '=', value: 'open'}];
 
 			this.collections = params.collections;
 
@@ -77,14 +77,14 @@ define([
 				itemPlanningInterView.highlight().done(function(){
 					itemPlanningInterView.expendAccordion();
 				});
-				if(this.collections.interventions.length == 1){
+				if(this.collections.interventions.length === 1){
 					$(this.el).find('.noInter').css({display: 'none'});
 					$(this.el).find('.table-nested-objects').css({display: 'table'});
 				}
 			}
 			else {
 				//filter is selected and intervention has been created : display open interventions
-				$( "#filterStateInterventionList li" ).children("a[href='#'" + TaskModel.status.open.key + "]").trigger( "click" );
+				$('#filterStateInterventionList li').children('a[href="#"' + TaskModel.status.open.key + ']').trigger('click');
 			}
 			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.interventionSaveOK);
 		},
@@ -115,11 +115,11 @@ define([
 
 
 				// Set the focus to the first input of the form //
-				$('#modalAddInter, #modalAddTask').on('shown', function (e) {
+				$('#modalAddInter, #modalAddTask').on('shown', function(){
 					$(this).find('input').first().focus();
-				})
+				});
 
-				_.each(self.collections.interventions.models, function(inter, i){
+				_.each(self.collections.interventions.models, function(inter){
 
 					var detailedView =new ItemPlanningInterTaskListView({model: inter});
 					var simpleView = new ItemPlanningInterView({model: inter, detailedView:detailedView});
@@ -137,7 +137,8 @@ define([
 					size           : 'sm',
 					displayGoToPage: false,
 
-				})
+				});
+
 				app.views.paginationView.render();
 
 				var state = AppHelpers.getFilterValue(self.options.filter,'state');
@@ -151,9 +152,10 @@ define([
 					// set status information on filter selected
 					$('#filterStateIntervention').removeClass('filter-disabled');
 					$('#filterStateInterventionList li.delete-filter').removeClass('disabled');
-					if( !_.isUndefined( InterventionModel.status[state.value] ) )
+					if( !_.isUndefined( InterventionModel.status[state.value] ) ){
 						//Set color of status filter
 						$('a.filter-button').addClass('text-' + InterventionModel.status[state.value].color);
+					}
 				}
 
 			});
@@ -174,7 +176,7 @@ define([
 		*/
 		displayModalSaveInter: function(e){
 			e.preventDefault();
-			var params = {el:'#modalSaveInter',collection: this.collections.interventions}
+			var params = {el:'#modalSaveInter',collection: this.collections.interventions};
 			new ModalInterventionView(params);
 		},
 
@@ -185,7 +187,9 @@ define([
 		setFilterState: function(e){
 
 			e.preventDefault();
-			if($(e.target).parent().hasClass('disabled')) return;
+			if($(e.target).parent().hasClass('disabled')){
+				return;
+			}
 
 
 			delete this.options.page;
@@ -195,9 +199,8 @@ define([
 			var filter = _($(e.target).attr('href')).strRightBack('#');
 
 			// Set the filter value in the options of the view //
-			var globalSearch = {};
 			if(filter != 'delete-filter'){
-				this.options.filter =  [{field:"state", operator:"=", value:filter}] ;
+				this.options.filter =  [{field: 'state', operator: '=', value: filter}] ;
 			}
 			else{
 				delete this.options.filter;
@@ -214,7 +217,7 @@ define([
 		/** Go to page
 		*/
 		goToPage: function(e){
-			e.preventDefault()
+			e.preventDefault();
 
 			delete this.options.page;
 			delete this.options.sort;
@@ -227,7 +230,7 @@ define([
 			this.options.page = _(link.attr('href')).strRightBack('/page');
 
 			app.views.planning.partialRender();
-		},
+		}
 
 	});
 
