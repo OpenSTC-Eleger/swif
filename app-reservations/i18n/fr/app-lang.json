@@ -66,9 +66,9 @@
             "selectAll"                             : "Tout sélectionner",
             "unselectAll"                           : "Tout désélectionner",
             "selectToggle"                          : "Inverser la sélection",
-            "saveBooking"							: "Sauvegarder ma réservation",
-            "postBooking"							: "Sauvegarder et soumettre ma réservation",
-            "redraftBooking"						: "Recommencer et modifier ma réservation"
+            "saveBooking"							: "Sauvegarder en brouillon",
+            "postBooking"							: "Soumettre ma demande",
+            "redraftBooking"						: "Modifier (repassera par une validation)"
 		},
 		
 		"infoMessages" : {

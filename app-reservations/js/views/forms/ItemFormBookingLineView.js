@@ -102,7 +102,8 @@ define(['app',
 		*/
 		render : function() {
 			var self = this;
-			
+			var readonly = this.model.getParentBookingModel().getAttribute('state','draft') != 'draft';
+			var pricingEnabled = this.model.getParentBookingModel().hasActions('update') && app.current_user.isResaManager();
 			// Retrieve the template // 
 			$.get(app.menus.openresa + this.templateHTML, function(templateData){
 
@@ -111,7 +112,8 @@ define(['app',
 					line	: self.model,
 					bookable: self.model.bookable,
 					linesStat: BookingLineModel.status,
-					user	: app.current_user
+					readonly: readonly,
+					pricingEnabled: pricingEnabled
 				});
 
 				$(self.el).html(template);

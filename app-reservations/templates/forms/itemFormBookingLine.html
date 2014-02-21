@@ -7,13 +7,13 @@
 <!-- Booking Line qty-->
 <td><input type="number" id="bookingLineQty" name="bookingLineQty"
 	class="form-control input-sm" placeholder=""
-	value="<%= line.getQuantity()%>" min="1" required="required" /></td>
+	value="<%= line.getQuantity()%>" min="1" required="required" <%= readonly ? 'disabled' : ''%>/></td>
 
 <!-- Booking Line pricing-->
 <td><input type="number" id="bookingLinePricing"
 	class="form-control input-sm" size="5" name="bookingLinePricing"
 	placeholder="" value="<%= line.getPricing()%>" min="0"<%=
-	user.isResaManager() ? '' : 'disabled'%>/></td>
+	pricingEnabled? '' : 'disabled'%>/></td>
 
 <!-- Booking Line dispo-->
 <td class="text-center"><i
@@ -21,5 +21,7 @@
 
 
 <td class="text-center">
+	<%if(!readonly){ %>
 	<button type="button" class="removeLine close">&times;</button>
+	<% }%>
 </td>

@@ -3,7 +3,6 @@ define([
 	'appHelpers',
 	
 	'genericModel',
-	'bookingModel',
 	'claimerModel',
 	'claimerContactModel',
 	'bookingLinesCollection',
@@ -11,7 +10,7 @@ define([
 	'moment-timezone-data'
 
 
-], function(app, AppHelpers, GenericModel, BookingModel, ClaimerModel, ClaimerContactModel, BookingLinesCollection, moment, momentTZData){
+], function(app, AppHelpers, GenericModel, ClaimerModel, ClaimerContactModel, BookingLinesCollection, moment, momentTZData){
 
 	'use strict';
 	

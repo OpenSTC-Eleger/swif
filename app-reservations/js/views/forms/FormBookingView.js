@@ -2,7 +2,7 @@
 define(['app', 
 		'appHelpers', 
 		
-		'bookingModel',
+		'bookingModelExtend',
 		'bookingLineModel',
 		'bookingRecurrenceModel',
 		'bookableModel',
