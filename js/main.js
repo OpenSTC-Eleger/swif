@@ -1,3 +1,9 @@
+/*! 
+ * SWIF
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define('main', [
 
 	// Load our app module and pass it to our definition function

@@ -135,7 +135,7 @@ module.exports = function(grunt) {
 					banner  : '<%= banner %>'
 				},
 				files: {
-					src: ['js/**/*.js', '!js/libs/*', '!js/i18n/*', 'app-interventions/**/*.js', 'app-reservations/**/*.js']
+					src: ['js/**/*.js', '!js/libs/*', '!js/i18n/*', 'app-interventions/**/*.js', 'app-reservations/**/*.js', '**/*.less', '!css/vendors/**/*.less']
 				}
 			}
 		},
