@@ -507,7 +507,7 @@ define(['app',
 			var self = this;
 			var model = (self.model.isTemplate() && self.model.recurrence != null) ? self.model.recurrence : self.model;
 			model.save({state_event:"redraft"}, {wait:true, patch:true}).done(function(){
-				model.fetchFromBackend().done(function(){
+				self.model.fetchFromBackend().done(function(){
 					//self.initializeWithId();
 					self.render();
 				});
