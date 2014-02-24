@@ -7,6 +7,7 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 
 
+		// License banner //
 		banner: '/*! \n' +
 			' * <%= pkg.name %>\n' +
 			' * Copyright 2013-<%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
@@ -91,7 +92,7 @@ module.exports = function(grunt) {
 			},
 			scripts_inter: {
 				//src: ['app-interventions/js/**/*.js', 'app-interventions/main.js']
-				src: ['app-interventions/main.js', 'app-interventions/js/routers/*.js', 'app-interventions/js/models/*.js', 'app-interventions/js/collections/*.js', 'app-interventions/js/views/items/*.js', 'app-interventions/js/views/modals/*.js', 'app-interventions/js/views/lists/*.js']
+				src: ['app-interventions/main.js', 'app-interventions/js/routers/*.js', 'app-interventions/js/models/*.js', 'app-interventions/js/collections/*.js', 'app-interventions/js/views/items/*.js', 'app-interventions/js/views/modals/**/*.js', 'app-interventions/js/views/lists/*.js']
 			},
 			scripts_resa: {
 				//src: ['app-reservations/js/**/*.js', 'app-reservations/main.js']
@@ -148,14 +149,14 @@ module.exports = function(grunt) {
 			}
 		},
 
+		// Hooks to run check task before each commit //
 		githooks: {
 			all: {
-				// Will run the jshint and test:unit tasks at every commit
 				'pre-commit': 'check',
 			}
 		},
 
-
+		// Display notifications messages //
 		notify: {
 			check: {
 				options: {

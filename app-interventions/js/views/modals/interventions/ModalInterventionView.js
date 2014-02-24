@@ -79,15 +79,16 @@ define([
 				deadLineDt.add('minutes',-deadLineDt.zone());
 
 				var template = _.template(templateData, {
-					lang      : app.lang, intervention	: modelJSON,
-					deadLineDt: deadLineDt
+					lang        : app.lang,
+					intervention: modelJSON,
+					deadLineDt  : deadLineDt
 				});
 
 				self.modal.html(template);
 				self.modal.modal('show');
 
-				app.views.advancedSelectBoxInterventionServicesView = new AdvancedSelectBoxView({el: $("#interventionDetailService"), url: ClaimersServicesCollection.prototype.url})
-				app.views.advancedSelectBoxInterventionServicesView.setSearchParam({field:'technical',operator:'=',value:'True'},true)
+				app.views.advancedSelectBoxInterventionServicesView = new AdvancedSelectBoxView({el: $('#interventionDetailService'), url: ClaimersServicesCollection.prototype.url});
+				app.views.advancedSelectBoxInterventionServicesView.setSearchParam({field:'technical',operator:'=',value:'True'},true);
 				app.views.advancedSelectBoxInterventionServicesView.render();
 
 				var currentIntervention = self.model.toJSON();
@@ -104,7 +105,7 @@ define([
 
 
 				// Fill select Places  //
-				app.views.advancedSelectBoxInterventionPlacesView = new AdvancedSelectBoxView({el: $("#interventionPlaceIfEquipment"), url: PlacesCollection.prototype.url});
+				app.views.advancedSelectBoxInterventionPlacesView = new AdvancedSelectBoxView({el: $('#interventionPlaceIfEquipment'), url: PlacesCollection.prototype.url});
 				app.views.advancedSelectBoxInterventionPlacesView.render();
 
 
@@ -137,10 +138,12 @@ define([
 
 
 				// If the intervention is Template - Checked the checkbox //
-				if(currentIntervention.state == 'template')
+				if(currentIntervention.state === 'template'){
 					$('#isTemplate').prop('checked', true);
-				else
+				}
+				else{
 					$('#isTemplate').prop('checked', false);
+				}
 
 
 				// Form elements that can't be change are disable //
@@ -158,10 +161,12 @@ define([
 
 
 		getIdInDopDown: function(view) {
-			if ( view && view.getSelected() )
+			if ( view && view.getSelected() ){
 				return view.getSelected().toJSON().id;
-			else
-				return 0
+			}
+			else{
+				return 0;
+			}
 		},
 
 
@@ -171,7 +176,7 @@ define([
 		saveIntervention: function (e) {
 			//private function used to check data: if no value, return false
 			function evalField(fieldValue){
-				if(fieldValue == '' || _.isUndefined(fieldValue) || fieldValue == null){
+				if(fieldValue === '' || _.isUndefined(fieldValue) || fieldValue === null){
 					return false;
 				}
 				return fieldValue;
@@ -180,20 +185,18 @@ define([
 
 			var self = this;
 
-	//		var input_service_id = this.getIdInDopDown(app.views.selectListServicesView);
 			var state = this.create ? InterventionModel.status.open.key : this.model.toJSON().state;
 			var params = {
-				name: this.$('#interventionName').val(),
-				state: this.$('#isTemplate').is(':checked')?"template":state,
-				description: this.$('#interventionDescription').val(),
-				date_deadline: new moment($('#interventionDateDeadline').val(), 'DD-MM-YYYY HH:mm').add('hours',2).toDate(),
-				service_id: app.views.advancedSelectBoxInterventionServicesView.getSelectedItem(),
-	//			site1: app.views.advancedSelectBoxInterventionPlacesView.getSelectedItem(),
-				site_details: this.$('#interventionPlacePrecision').val(),
+				name         : this.$('#interventionName').val(),
+				state        : this.$('#isTemplate').is(':checked')? 'template' : state,
+				description  : this.$('#interventionDescription').val(),
+				date_deadline: moment($('#interventionDateDeadline').val(), 'DD-MM-YYYY HH:mm').add('hours',2).toDate(),
+				service_id   : app.views.advancedSelectBoxInterventionServicesView.getSelectedItem(),
+				site_details : this.$('#interventionPlacePrecision').val(),
 			};
 
 			//adapt data mapping if intervention according that intervention belongs to a place or an equipment
-			if($('#btnSelectPlaceEquipment').data('item') == 'place'){
+			if($('#btnSelectPlaceEquipment').data('item') === 'place'){
 				params.site1 = evalField(this.advancedSelectBoxInterventionPlaceOrEquipment.getSelectedItem());
 				params.has_equipment = false;
 			}
@@ -209,8 +212,9 @@ define([
 					self.model.setId(data);
 					self.model.fetch({data: {fields: InterventionsCollection.fields}})
 					.done(function(){
-						if(! _.isUndefined(self.collection) )
+						if(! _.isUndefined(self.collection) ){
 							self.collection.add(self.model);
+						}
 					});
 
 				}
@@ -237,15 +241,16 @@ define([
 					console.log('ERROR - Unable to delete the Intervention - InterventionView.js');
 				},
 			});
+
 			return false;
 		},
 
 
 
 		renderSite: function ( site ) {
-			if( site!=null )
-				//app.views.selectListPlacesView.setSelectedItem( site );
+			if( site !== null ){
 				app.views.advancedSelectBoxInterventionPlacesView.setSelectedItem(site);
+			}
 		},
 
 		renderSiteOrEquipment: function(valueM2o){
@@ -253,7 +258,7 @@ define([
 		},
 
 		renderService: function ( service ) {
-			if(service != null){
+			if(service !== null){
 				app.views.advancedSelectBoxInterventionServicesView.setSelectedItem(service);
 				this.setParamOnSitesEquipments(service);
 			}
@@ -271,12 +276,12 @@ define([
 		 * Used to update filter of 'places/equipments' select2, reset value and last filters
 		 */
 		setParamOnSitesEquipments: function(service_id){
-			if(service_id == null){
+			if(service_id === null){
 				service_id = app.views.advancedSelectBoxInterventionServicesView.getSelectedItem();
 			}
 			this.advancedSelectBoxInterventionPlaceOrEquipment.reset();
 			this.advancedSelectBoxInterventionPlaceOrEquipment.resetSearchParams();
-			if(service_id != '' && service_id){
+			if(service_id !== '' && service_id){
 				this.advancedSelectBoxInterventionPlaceOrEquipment.setSearchParam({field:'service_ids.id', operator:'=', value:service_id});
 			}
 			//if it's an equipment, check too if boolean 'internal_user' is True
@@ -304,7 +309,7 @@ define([
 				this.displaySiteIfEquipment(item != 'place');
 				//get parameters of the select2 to keep trace of its state
 				var collection = null;
-				if(item == 'place'){
+				if(item === 'place'){
 					$('#interventionPlaceEquipment').attr('data-placeholder',app.lang.actions.selectAPlace);
 					collection = PlacesCollection.prototype;
 					$('#btnSelectPlaceEquipment').data('item', 'place');

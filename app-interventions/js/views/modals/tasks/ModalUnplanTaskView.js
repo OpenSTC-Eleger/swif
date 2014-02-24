@@ -32,7 +32,7 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'click #btnRemoveTask'     : 'removeTaskFromSchedule'
+				'click #btnRemoveTask': 'removeTaskFromSchedule'
 			},
 				GenericModalView.prototype.events
 			);
@@ -43,8 +43,6 @@ define([
 		*/
 		initialize : function(params) {
 			this.options = params;
-
-			var self = this;
 
 			this.modal = $(this.el);
 
@@ -58,7 +56,7 @@ define([
 
 		/** Display the view
 		*/
-		render : function(action) {
+		render : function() {
 			var self = this;
 
 
@@ -67,9 +65,9 @@ define([
 
 
 				var template = _.template(templateData, {
-					lang 		: app.lang,
-					task 		: self.model,
-					TaskModel	: TaskModel
+					lang     : app.lang,
+					task     : self.model,
+					TaskModel: TaskModel
 				});
 
 				self.modal.html(template);
@@ -89,34 +87,30 @@ define([
 			$(e.target).button('loading');
 
 			//Cancel absent task (no intervention)
-			if(( TaskModel.status[this.model.toJSON().state].key ==
-					TaskModel.status.absent.key ) )
-			{
-					this.model.destroy({wait: true})
-					.done(function(data){
-						self.modal.modal('hide');
-					})
-					.fail(function(){
-						console.error(e);
-					})
-					.always(function(){
-						// Reset the button state //
-						$(e.target).button('reset');
-					})
+			if(( TaskModel.status[this.model.toJSON().state].key === TaskModel.status.absent.key ) ){
+				this.model.destroy({wait: true})
+				.done(function(){
+					self.modal.modal('hide');
+				})
+				.fail(function(){
+					console.error(e);
+				})
+				.always(function(){
+					// Reset the button state //
+					$(e.target).button('reset');
+				});
 			}
 			//Template task unplanned
-			else if(	!_.isNull(this.interModel) && !_.isUndefined(this.interModel)  &&
-					( InterventionModel.status[this.interModel.toJSON().state].key ==
-					InterventionModel.status.template.key ) )
-			{
+			else if(!_.isNull(this.interModel) && !_.isUndefined(this.interModel)  && ( InterventionModel.status[this.interModel.toJSON().state].key === InterventionModel.status.template.key ) ){
+
 				//remove template task
 				this.model.destroy({wait: true})
-					.done(function(data){
+					.done(function(){
 						//re-fetch intervention
 						$.when(  self.interModel.fetch() )
-							.done(function(e){
+							.done(function(){
 								self.modal.modal('hide');
-							})
+							});
 					})
 					.fail(function(){
 						console.error(e);
@@ -124,7 +118,7 @@ define([
 					.always(function(){
 						// Reset the button state //
 						$(e.target).button('reset');
-					})
+					});
 			}
 			//others tasks to unplanned
 			else
@@ -139,13 +133,16 @@ define([
 				};
 				//Update task and intervention
 				this.model.save(params, {patch: true, silent: false})
-					.done(function(data) {
-						var ajaxRequests = [self.model.fetch({ data : {fields : self.model.fields} } )]
-						if( !_.isUndefined(self.interModel) )
+					.done(function() {
+						var ajaxRequests = [self.model.fetch({ data : {fields : self.model.fields} } )];
+
+						if( !_.isUndefined(self.interModel) ){
 							//Add ajax request for update intervention
-							ajaxRequests.push(self.interModel.fetch())
+							ajaxRequests.push(self.interModel.fetch());
+						}
+
 						$.when( ajaxRequests )
-							.done(function(e){
+							.done(function(){
 								self.modal.modal('hide');
 							})
 							.fail(function(e){
@@ -155,13 +152,12 @@ define([
 					.always(function(){
 						// Reset the button state //
 						$(e.target).button('reset');
-					})
+					});
 			}
 		}
 
 
 	});
-
 
 	return modalUnplanTaskView;
 

@@ -14,9 +14,10 @@ define([
 	'absentTypesCollection',
 
 	'taskModel',
+	'moment'
 
 
-], function(app, AppHelpers, GenericModalView, AdvancedSelectBoxView, AbsentTypesCollection, TaskModel){
+], function(app, AppHelpers, GenericModalView, AdvancedSelectBoxView, AbsentTypesCollection, TaskModel, moment){
 
 
 	'use strict';
@@ -77,32 +78,33 @@ define([
 				var mStartDate = moment( startDate );
 				var mEndDate = moment( endDate );
 
-	        	$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
-	        	$('.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
+				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
+				$('.datepicker').datepicker({ format: 'dd/mm/yyyy', weekStart: 1, autoclose: true, language: 'fr'});
 
-	        	// Display only categories in dropdown belongs to intervention //
-				self.advancedSelectBoxAbsentTypesView = new AdvancedSelectBoxView({ el: $("#absentType"), url: AbsentTypesCollection.prototype.url });
+				// Display only categories in dropdown belongs to intervention //
+				self.advancedSelectBoxAbsentTypesView = new AdvancedSelectBoxView({ el: $('#absentType'), url: AbsentTypesCollection.prototype.url });
 				self.advancedSelectBoxAbsentTypesView.render();
 
-	        	$("#startDate").val( moment( startDate ).format('L') );
-	        	$("#endDate").val( moment( endDate ).format('L') );
-	        	if( self.options.allDay ) {
-	        		var tempStartDate = moment( mStartDate );
-	        		tempStartDate.add('hours', (app.config.endWorkTime - app.config.startWorkTime))
-		    		$("#startHour").timepicker( 'setTime', tempStartDate.format('LT') );
-	        		var tempEndDate = moment( mEndDate );
-	        		tempEndDate.add('hours',app.config.endWorkTime)
-		    		$("#endHour").timepicker('setTime', tempEndDate.format('LT') );
-	        	}
-	        	else {
-		    		$("#startHour").timepicker( 'setTime', mStartDate.format('LT') );
-		    		$("#endHour").timepicker('setTime', mEndDate.format('LT') );
-	        	}
+				$('#startDate').val( moment( startDate ).format('L') );
+				$('#endDate').val( moment( endDate ).format('L') );
+				if( self.options.allDay ) {
+					var tempStartDate = moment( mStartDate );
+					tempStartDate.add('hours', (app.config.endWorkTime - app.config.startWorkTime));
 
-	        	// Set Modal informations
-	        	var icon = self.options.teamMode?'users':'user'
-	        	$('#infoModalAbsentTask p').html("<i class='fa fa-" + icon +"'></i> " + self.model.name );
-	    		$('#infoModalAbsentTask small').html("Du " + mStartDate.format('LLL') + " au " + mEndDate.format('LLL') );
+					$('#startHour').timepicker( 'setTime', tempStartDate.format('LT') );
+					var tempEndDate = moment( mEndDate );
+					tempEndDate.add('hours',app.config.endWorkTime);
+					$('#endHour').timepicker('setTime', tempEndDate.format('LT') );
+				}
+				else {
+					$('#startHour').timepicker( 'setTime', mStartDate.format('LT') );
+					$('#endHour').timepicker('setTime', mEndDate.format('LT') );
+				}
+
+				// Set Modal informations
+				var icon = self.options.teamMode?'users':'user';
+				$('#infoModalAbsentTask p').html('<i class="fa fa-' + icon +'"></i> ' + self.model.name );
+				$('#infoModalAbsentTask small').html('Du ' + mStartDate.format('LLL') + ' au ' + mEndDate.format('LLL') );
 
 
 			});
@@ -121,34 +123,34 @@ define([
 			// Set the button in loading State //
 			$(e.target).button('loading');
 
-			var mNewDateStart =  new moment( $("#startDate").val(),"DD-MM-YYYY")
-									.add('hours',$("#startHour").val().split(":")[0] )
-									.add('minutes',$("#startHour").val().split(":")[1] );
-			var mNewDateEnd =  new moment( $("#endDate").val(),"DD-MM-YYYY")
-									.add('hours',$("#endHour").val().split(":")[0] )
-									.add('minutes',$("#endHour").val().split(":")[1] );
+			var mNewDateStart =  moment( $('#startDate').val(), 'DD-MM-YYYY')
+									.add('hours', $('#startHour').val().split(':')[0] )
+									.add('minutes', $('#startHour').val().split(':')[1] );
+			var mNewDateEnd =  moment( $('#endDate').val(), 'DD-MM-YYYY')
+									.add('hours',$('#endHour').val().split(':')[0] )
+									.add('minutes',$('#endHour').val().split(':')[1] );
 			var planned_hours = mNewDateEnd.diff(mNewDateStart, 'hours', true);
 
 			var params = {
-				name: self.advancedSelectBoxAbsentTypesView.getSelectedText(),
-			    absent_type_id: self.advancedSelectBoxAbsentTypesView.getSelectedItem(),
-			    state: 'absent',
-			    date_start: mNewDateStart.toDate(),
-			    date_end: mNewDateEnd.toDate(),
-			    planned_hours: planned_hours,
-			    effective_hours: planned_hours,
-			    hours: planned_hours,
-			    remaining_hours: 0,
-			    team_id: self.options.teamMode?self.model.id:0,
-			    user_id: !self.options.teamMode?self.model.id:0,
+				name           : self.advancedSelectBoxAbsentTypesView.getSelectedText(),
+				absent_type_id : self.advancedSelectBoxAbsentTypesView.getSelectedItem(),
+				state          : 'absent',
+				date_start     : mNewDateStart.toDate(),
+				date_end       : mNewDateEnd.toDate(),
+				planned_hours  : planned_hours,
+				effective_hours: planned_hours,
+				hours          : planned_hours,
+				remaining_hours: 0,
+				team_id        : self.options.teamMode?self.model.id:0,
+				user_id        : !self.options.teamMode?self.model.id:0,
 			};
 
 			this.model = new TaskModel();
 
 			this.model.save(params, {patch: false, silent: true})
-				.done(function(data) {
+				.done(function() {
 					self.model.fetch({ data : {fields : self.model.fields} })
-						.done(function(data) {
+						.done(function() {
 							self.modal.modal('hide');
 							self.options.collection.add(self.model);
 						})
@@ -159,7 +161,7 @@ define([
 				})
 				.fail(function (e) {
 					console.log(e);
-				})
+				});
 
 		},
 

@@ -138,8 +138,9 @@ define([
 					// Select first officer
 					$('#pOfficer_'+self.options.officer).parent().addClass('active');
 				}
-				else
+				else{
 					$('#listAgents li:first').addClass('active');
+				}
 			});
 
 			return this;
@@ -176,7 +177,7 @@ define([
 			var link = $(e.target);
 			var linkId = link.attr('id');
 
-			this.teamMode = _.str.include( _(linkId).strLeft('_').toLowerCase(),"officer" ) ? false : true;
+			this.teamMode = _.str.include( _(linkId).strLeft('_').toLowerCase(), 'officer' ) ? false : true;
 			var calendarName = _(link.attr('href')).strRightBack('/');
 
 			if(this.teamMode) {
@@ -225,8 +226,9 @@ define([
 			return url;
 		},
 
-	   /**
-		* Init fullcallendar
+
+
+		/** Init fullcallendar
 		*/
 		initCalendar: function(date) {
 			var self = this;
@@ -236,7 +238,7 @@ define([
 				/** Full calendar attributes **/
 				month         :	date.month(),
 				year          :	date.year(),
-				date          : 	date.date(),
+				date          : date.date(),
 				defaultView   : self.calendarView,
 				ignoreTimezone: false,
 				aspectRatio   : 1.30,
@@ -248,7 +250,7 @@ define([
 				// time formats
 				titleFormat: {
 					month: 'MMMM yyyy',
-					week :"'Semaine 'W' <small>du' dd [MMM] [yyyy] {'au' dd MMM yyyy}</small>",
+					week : "'Semaine 'W' <small>du' dd [MMM] [yyyy] {'au' dd MMM yyyy}</small>",
 					day  : 'dddd dd MMM yyyy'
 				},
 				columnFormat: {
@@ -286,9 +288,10 @@ define([
 				startOfLunchTime   : app.config.startLunchTime,
 				endOfLunchTime     : app.config.endLunchTime,
 
-				/**
-				 * Calculates events to display on calendar for officer (or team) on week selected
-				 */
+
+
+				/** Calculates events to display on calendar for officer (or team) on week selected
+				*/
 				events: function(start, end, callback) {
 					var fetchParams={
 						silent : true,
@@ -337,19 +340,20 @@ define([
 					});
 				},
 
-				/**
-				 * Open leave time modal (Absent task)
-				 */
+
+
+				/** Open leave time modal (Absent task)
+				*/
 				select: function( startDate, endDate, allDay, jsEvent, view) {
 
 					app.views.modalAbsentTaskView = new ModalAbsentTaskView({
-						el    		: '#modalAbsentTask',
-						model		: self.model,
-						collection 	: self.collection,
-						startDate 	: startDate ,
-						endDate		: endDate ,
-						teamMode	: self.teamMode,
-						allDay  	: allDay,
+						el        : '#modalAbsentTask',
+						model     : self.model,
+						collection: self.collection,
+						startDate : startDate ,
+						endDate   : endDate ,
+						teamMode  : self.teamMode,
+						allDay    : allDay,
 					});
 
 				},
@@ -365,15 +369,15 @@ define([
 					copiedEventObject.start = date; //$.fullCalendar.formatDate(date, 'yyyy-MM-dd HH:mm:ss');
 
 					var params = {
-							task_id	: copiedEventObject.id,
-							start_working_time : app.config.startWorkTime,
-							end_working_time : app.config.endWorkTime,
-							start_lunch_time : app.config.startLunchTime,
-							end_lunch_time : app.config.endLunchTime,
-							start_dt: copiedEventObject.start ,
-							team_mode : self.teamMode,
-							calendar_id : self.model.id,
-					}
+						task_id           : copiedEventObject.id,
+						start_working_time: app.config.startWorkTime,
+						end_working_time  : app.config.endWorkTime,
+						start_lunch_time  : app.config.startLunchTime,
+						end_lunch_time    : app.config.endLunchTime,
+						start_dt          : copiedEventObject.start ,
+						team_mode         : self.teamMode,
+						calendar_id       : self.model.id,
+					};
 
 
 					var model = new TaskSchedulesModel();
@@ -388,9 +392,10 @@ define([
 						})
 				},
 
-				/**
-				 * Drop event from time slot to another
-				 */
+
+
+				/** Drop event from time slot to another
+				*/
 				eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
 					var model = self.collection.get(event.id)
 
@@ -454,6 +459,7 @@ define([
 						});
 				},
 
+
 				/** Task is click on the calendar : display unplan task modal
 				*/
 				eventClick: function(fcEvent, jsEvent, view) {
@@ -475,9 +481,8 @@ define([
 			*/
 			var username = $(this.divCalendar).data('username');
 
-			/**
-			 * Add personal icon for officer on calendar
-			 */
+			/** Add personal icon for officer on calendar
+			*/
 			$('table td.fc-header-left').html("<img src='medias/unknown-person.jpg' width='80px' class='img-thumbnail'> <span class='lead text-info'>"+username+"</span>");
 		},
 		// -------------------- End fullcalendar initialization -------------------- //
@@ -553,9 +558,10 @@ define([
 			});
 		},
 
-		/**
-		 * Initialize Print calendar view
-		 */
+
+
+		/** Initialize Print calendar view
+		*/
 		initPrintView: function(){
 			if ( _.isUndefined(app.views.printingCalendarView) ){
 				app.views.printingCalendarView = new PrintingCalendarView({
@@ -570,6 +576,8 @@ define([
 			}
 			$('#printingCalendar').html(app.views.printingCalendarView.render().el);
 		},
+
+
 
 		/** When the model ara updated //
 		*/
@@ -599,7 +607,6 @@ define([
 					}
 				});
 
-				;
 
 				_.each($('#listTeams li'), function(a){
 
@@ -616,8 +623,8 @@ define([
 				$('#listTeams li').fadeIn().removeClass('thide');
 			}
 
-			$('#nbOfficersDisplay').html($('#listAgents li:not(.thide)').size())
-			$('#nbTeamsDisplay').html($('#listTeams li:not(.thide)').size())
+			$('#nbOfficersDisplay').html($('#listAgents li:not(.thide)').size());
+			$('#nbTeamsDisplay').html($('#listTeams li:not(.thide)').size());
 
 		}
 

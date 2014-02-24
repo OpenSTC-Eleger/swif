@@ -19,7 +19,7 @@ define([
 	'bsDatepicker-lang',
 	'bsTimepicker',
 
-], function(app, GenericModalView, OfficersCollection, TeamsCollection, EquipmentsCollection, AdvancedSelectBoxView, moment, momentTZ, datepicker, timepicker){
+], function(app, GenericModalView, OfficersCollection, TeamsCollection, EquipmentsCollection, AdvancedSelectBoxView, moment){
 
 	'use strict';
 
@@ -91,9 +91,7 @@ define([
 					$('#remainingTimeSection').hide();
 				}
 
-	//			// Filter Equipment and user/team by service on intervention's task //
-				var task_id = self.selectedTaskJSON.id;
-
+				// Filter Equipment and user/team by service on intervention's task //
 				var hasService = (self.options.inter.toJSON().service_id && !_.isUndefined(self.options.inter.toJSON().service_id));
 
 				self.selectListOfficersTeamsView = new AdvancedSelectBoxView({ el:$('#selectUsersTeams'), url: OfficersCollection.prototype.url });
@@ -141,40 +139,42 @@ define([
 			e.preventDefault();
 			var self = this;
 
+			var teamMode;
 			if($('#selectUsersTeams').data('item') === 'officers'){
-				var teamMode = false;
+				teamMode = false;
 
 			}
 			else{
-				var teamMode = true;
+				teamMode = true;
 			}
 
 			//var id = $('#selectUsersTeams').val();
 			var id = this.selectListOfficersTeamsView.getSelectedItem();
 
 			// Retrieve Start Date and Start Hour //
-			var mNewDateStart =  new moment( $("#startDate").val(),'DD-MM-YYYY')
-									.add('hours',$("#startHour").val().split(':')[0] )
-									.add('minutes',$("#startHour").val().split(':')[1] );
+			var mNewDateStart =  moment( $('#startDate').val(),'DD-MM-YYYY')
+									.add('hours', $('#startHour').val().split(':')[0] )
+									.add('minutes', $('#startHour').val().split(':')[1] );
 
 			// Retrieve Start Date and Start Hour //
-			var mNewDateEnd =  new moment( $("#endDate").val(),'DD-MM-YYYY')
-									.add('hours',$("#endHour").val().split(':')[0] )
-									.add('minutes',$("#endHour").val().split(':')[1] );
+			var mNewDateEnd =  moment( $('#endDate').val(),'DD-MM-YYYY')
+									.add('hours', $('#endHour').val().split(':')[0] )
+									.add('minutes', $('#endHour').val().split(':')[1] );
 
 
 			var vehicule =  this.selectVehicleView.getSelectedItem();
 			var equipments = this.selectListEquipmentsView.getSelectedItems();
 
-			if(vehicule >0 ){
+			if(vehicule > 0 ){
 				equipments.push( vehicule );
 			}
 			equipments = [[6,0,equipments]];
 
+			var remaining_hours;
 			if($('#remainingTimeSection').is(':visible')){
 				var duration = $('#eventRemainingTime').val().split(':');
 				var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
-				var remaining_hours = mDuration.asHours();
+				remaining_hours = mDuration.asHours();
 			}
 			else{
 				remaining_hours = 0;

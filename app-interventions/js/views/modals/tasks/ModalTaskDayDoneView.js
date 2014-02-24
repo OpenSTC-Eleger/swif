@@ -35,8 +35,8 @@ define([
 		// The DOM events //
 		events: function() {
 			return _.defaults({
-				'submit #formTaskDone'   			: 'taskDone',
-				'click .linkRefueling'				: 'accordionRefuelingInputs'
+				'submit #formTaskDone': 'taskDone',
+				'click .linkRefueling': 'accordionRefuelingInputs'
 			},
 			GenericModalView.prototype.events);
 
@@ -45,13 +45,13 @@ define([
 		/** View Initialization
 		 */
 		initialize: function (params) {
-		    var self = this;
+			var self = this;
 
-		    this.options = params;
+			this.options = params;
 
-		    this.modal = $(this.el);
-	    	self.render();
-	    },
+			this.modal = $(this.el);
+			self.render();
+		},
 
 
 		/** Display the view
@@ -85,8 +85,6 @@ define([
 				}
 
 				// Filter Equipments / Vehicle by service of task's intervention
-				var task_id = self.selectedTaskJSON.id;
-
 				var interAssociated = new InterventionModel();
 				interAssociated.setId(self.selectedTaskJSON.project_id[0]);
 				interAssociated.fetch({silent: true}).done(function(){
@@ -112,12 +110,12 @@ define([
 			});
 
 			return this;
-	    },
+		},
 
 
-	    /** Save Task as Done (create another one if timeRemaining set)
-	     */
-	    taskDone: function(e){
+		/** Save Task as Done (create another one if timeRemaining set)
+		 */
+		taskDone: function(e){
 			e.preventDefault();
 			var self = this;
 
@@ -130,10 +128,11 @@ define([
 
 			equipments = [[6,0,equipments]];
 
+			var remaining_hours;
 			if($('#remainingTimeSection').is(':visible')){
-				var duration = $("#eventRemainingTime").val().split(":");
+				var duration = $('#eventRemainingTime').val().split(':');
 				var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
-				var remaining_hours = mDuration.asHours();
+				remaining_hours = mDuration.asHours();
 			}
 			else{
 				remaining_hours = 0;
@@ -156,21 +155,22 @@ define([
 			this.model.save(params, {silent: true, patch: true, wait: true})
 				.done(function(){
 					//if task is "unfinished", must retrieve the newly created task with remainingHours
-					$.when(
-						self.model.fetch())
+					$.when(self.model.fetch())
 					.done(function(){
-					self.modal.modal('hide');
+						self.modal.modal('hide');
 					})
 					.fail(function(e){
-						console.log(e)
+						console.log(e);
 					});
 
 				})
 				.fail(function(e){
-					console.log(e)
+					console.log(e);
 				});
 
 		},
+
+
 		/** Display or Hide Refueling Section (Inputs Km, Oil, Oil prize)
 		*/
 		accordionRefuelingInputs: function(e){
@@ -185,8 +185,10 @@ define([
 			var h = Math.floor(d / 3600);
 			var m = Math.floor(d % 3600 / 60);
 			var s = Math.floor(d % 3600 % 60);
-			return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":" : "0:") + (s < 10 ? "0" : "") + s);
+			return ((h > 0 ? h + ':' : '') + (m > 0 ? (h > 0 && m < 10 ? '0' : '') + m + ':' : '0:') + (s < 10 ? '0' : '') + s);
 		},
+
 	});
+
 	return ModalTaskDayDoneView;
-})
+});
