@@ -1,5 +1,5 @@
-/*! 
- * SWIF
+/*!
+ * SWIF-OpenSTC
  * Copyright 2013-2014 Siclic <contact@siclic.fr>
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
@@ -19,9 +19,9 @@ define([
 	var EquipmentsCollection = GenericCollection.extend({
 
 		model       : EquipmentModel,
-			
+
 		url         : '/api/openstc/equipments',
-			
+
 		fields      : ['id', 'name', 'immat', 'marque', 'purchase_date', 'time', 'km', 'categ_id', 'qty_available', 'color'],
 
 		default_sort: { by: 'name', order: 'ASC' },

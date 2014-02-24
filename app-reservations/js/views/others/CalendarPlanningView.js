@@ -1,5 +1,5 @@
-/*! 
- * SWIF
+/*!
+ * SWIF-OpenSTC
  * Copyright 2013-2014 Siclic <contact@siclic.fr>
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
@@ -18,7 +18,7 @@ define([
 
 	'modalReservationDetailsView',
 	'formBookingView',
-	
+
 	'moment-timezone',
 	'moment-timezone-data'
 
@@ -27,18 +27,18 @@ define([
 
 	'use strict';
 
-		
-	
+
+
 	/******************************************
 	* Valid Request Modal View
 	*/
 	var CalendarPlanningView = Backbone.View.extend({
-	
-	
+
+
 		templateHTML        : '<div id="calendarContainer"></div>',
 
 
-	
+
 		// The DOM events //
 		events: {
 			'click .fc-button-prev'      : 'goPrevDate',
@@ -49,10 +49,10 @@ define([
 			'click .fc-button-month'     : 'goMonthFormat',
 
 			'click .fc-button-print'     : 'printCalendar'
-		}, 
-	
-	
-	
+		},
+
+
+
 		/** View Initialization
 		*/
 		initialize: function (params) {
@@ -64,24 +64,24 @@ define([
 
 			this.render();
 		},
-	
-	
-	
+
+
+
 		/** Display the view
 		*/
 		render : function() {
 			var self = this;
-	
-	
-			// Retrieve the template // 
+
+
+			// Retrieve the template //
 			var template = _.template(this.templateHTML, {
 				lang    : app.lang,
 			});
-	
+
 			$(this.el).html(template);
 
 			this.calendar = $('#calendarContainer');
-			
+
 			// Init the calendar //
 			this.initCalendar();
 
@@ -100,7 +100,7 @@ define([
 			var self = this;
 
 			this.calendar.fullCalendar({
-	    		
+
 	    		/** Full calendar attributes **/
 				date        :   this.currentDate.date(),
 				month       :	this.currentDate.month(),
@@ -134,10 +134,10 @@ define([
 				weekends           : true,
 				selectable         : true,
 				selectHelper       : true,
-				
+
 				weekNumbers        : true,
 				weekNumberTitle    : 's',
-				
+
 				monthNames         : app.lang.monthNames,
 				monthNamesShort    : app.lang.monthNamesShort,
 				dayNames           : app.lang.dayNames,
@@ -171,7 +171,7 @@ define([
 
 
 				/** EventRender
-				*/ 
+				*/
 				eventRender: function(event, element){
 					// Allow html tag in the reservation title //
 					element.find('.fc-event-title').html(event.title);
@@ -189,7 +189,7 @@ define([
 							content += '<li><i class="fa-li fa fa-user"></i>'+app.lang.citizen+' : '+event.info.citizenName+'<li>';
 						}
 						else{
-							content += '<li><i class="fa-li fa fa-user"></i>'+event.info.claimerContact+'<li>';	
+							content += '<li><i class="fa-li fa fa-user"></i>'+event.info.claimerContact+'<li>';
 						}
 
 						// Note //
@@ -197,7 +197,7 @@ define([
 							content += '<p>'+event.info.note+'</p>';
 						}
 
-						var title = event.info.title;	
+						var title = event.info.title;
 					}
 					else{
 						var title = '';
@@ -232,7 +232,7 @@ define([
 						var line = new BookingLineModel();
 						line.setBookable(place_id,app.views.sideBarPlanningSelectResourcesView.selectablePlaces.get(place_id).getName());
 						line.set({qte_reserves:1});
-						
+
 						booking.addLine(line);
 						arrayDeferreds.push(line.bookable.fetch());
 					});
@@ -241,22 +241,22 @@ define([
 						var line = new BookingLineModel();
 						line.setBookable(idEquipment,app.views.sideBarPlanningSelectResourcesView.selectableEquipments.get(idEquipment).getName());
 						line.set({qte_reserves:quantity});
-						
+
 						booking.addLine(line);
 						arrayDeferreds.push(line.bookable.fetch());
 					});
-					
+
 					$.when.apply(self, arrayDeferreds).done(function(){
-						
+
 						app.router.navigate(_.strLeft(app.routes.formReservation.url, '('), {trigger: false, replace: true});
-	
+
 						// Redirect to form //
 						app.views.formBooking = new FormBookingView({
 							model : booking
 						});
 					});
 				},
-	
+
 
 				/** Task is click on the calendar : display unplan task modal
 	    	    */
@@ -310,7 +310,7 @@ define([
 				'&',
 				{ 'field' : 'checkin', 'operator' : '<', 'value' : startDate },
 				{ 'field' : 'checkout','operator' : '>', 'value' : endDate },
-				
+
 				{ 'field' : 'reservation_line.reserve_product.id', 'operator' : 'in', 'value' : selectedResources},
 				{ 'field' : 'state', 'operator' : 'in', 'value' : [BookingModel.status.confirm.key, BookingModel.status.done.key]}
 			]
@@ -329,7 +329,7 @@ define([
 		/** fetchEvents
 		*/
 		fetchEvents: function(){
-			this.calendar.fullCalendar('refetchEvents');	
+			this.calendar.fullCalendar('refetchEvents');
 		},
 
 
@@ -379,7 +379,7 @@ define([
 
 				// Get the equipments //
 				if(!_.isEmpty(resourceEquipments)){
-					
+
 					var equipments = '&nbsp;'
 
 					_.each(resourceEquipments, function(i){
@@ -428,13 +428,13 @@ define([
 			return events;
 		},
 
-		
+
 
 		/** Convert a collection to Array events for FullCalendar
 		*/
 		printCalendar: function(e){
 			var selectedPlaces = app.views.sideBarPlanningSelectResourcesView.selectedPlaces;
-			
+
 			if(_.isEmpty(selectedPlaces)){
 				app.notify('', 'notice', 'Attention', 'Merci de sélectionner au moins une salle');
 			}
@@ -456,7 +456,7 @@ define([
 
 				window.open(url);
 			}
-		
+
 		},
 
 
@@ -502,7 +502,7 @@ define([
 
 
 		/** Go to the previous Date
-		*/		
+		*/
 		goPrevDate: function(e){
 			this.urlBuilder('subtract');
 		},

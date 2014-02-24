@@ -1,5 +1,5 @@
-/*! 
- * SWIF
+/*!
+ * SWIF-OpenSTC
  * Copyright 2013-2014 Siclic <contact@siclic.fr>
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
@@ -51,7 +51,7 @@ define([
 			_.each(this.searchableFields, function(field){
 
 
-				// Set value to the field if 
+				// Set value to the field if
 				var tab = _.filter(self.activeSearch, function(f){
 					return f.field == field.key;
 				});

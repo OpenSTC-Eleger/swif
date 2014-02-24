@@ -1,5 +1,5 @@
-/*! 
- * SWIF
+/*!
+ * SWIF-OpenSTC
  * Copyright 2013-2014 Siclic <contact@siclic.fr>
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
@@ -21,15 +21,15 @@ define([
 
 		templateHTML : 'templates/others/footer.html',
 
-	 
-	 
+
+
 		/** View Initialization
 		*/
 		initialize: function () {
 			this.render();
 		},
 
-		
+
 
 		/** Display the view
 		*/
@@ -38,7 +38,7 @@ define([
 
 			$.get(this.templateHTML, function(templateData){
 
-				// Templating // 
+				// Templating //
 				var template = _.template(templateData, {
 					app  : app.properties,
 					lang : app.lang

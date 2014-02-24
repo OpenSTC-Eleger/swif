@@ -1,5 +1,5 @@
-/*! 
- * SWIF
+/*!
+ * SWIF-OpenSTC
  * Copyright 2013-2014 Siclic <contact@siclic.fr>
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
@@ -18,8 +18,8 @@ define([
 
 	'use strict';
 
-		
-	
+
+
 	/******************************************
 	* Side Bar for selecting resources
 	*/
@@ -34,11 +34,11 @@ define([
 		selectableEquipments  : new BookablesCollection(),
 		selectedEquipments    : [],
 		selectedEquipmentsQuantity : {},
-		
+
 		selectableClaimers    : new ClaimersCollection(),
 
-	
-	
+
+
 		// The DOM events //
 		events: {
 			'mouseenter #bookablesPlaces a, #bookablesEquipments a': 'highlightResource',
@@ -60,10 +60,10 @@ define([
 			'blur  span.quantity'                                  : 'setQuantity',
 
 			'change #claimersOrganization'                         : 'filterResources'
-		}, 
-	
-	
-	
+		},
+
+
+
 		/** View Initialization
 		*/
 		initialize: function (params) {
@@ -86,20 +86,20 @@ define([
 		*/
 		render : function() {
 			var self = this;
-	
-	
-			// Retrieve the template // 
+
+
+			// Retrieve the template //
 			$.get(app.menus.openresa+this.templateHTML, function(templateData){
-	
+
 				var template = _.template(templateData, {
 					lang                		: app.lang,
 					selectablePlaces    		: self.selectablePlaces,
 					selectableEquipments		: self.selectableEquipments,
 					displayClaimersSelectBox	: app.current_user.isResaManager() ? "" : "hide"
 				});
-	
+
 				$(self.el).html(template);
-	
+
 				// Advance Select List View //
 				if(app.current_user.isResaManager()) {
 					app.views.advancedSelectBoxClaimerView = new AdvancedSelectBoxView({el: $('#claimersOrganization'), url: ClaimersCollection.prototype.url })
@@ -111,7 +111,7 @@ define([
 				$('#nbPlaces').html(_.size(self.selectablePlaces));
 				$('#nbEquipments').html(_.size(self.selectableEquipments));
 			});
-	
+
 			return this;
 		},
 
@@ -138,7 +138,7 @@ define([
 				$('#nbPlaces').html(_.size(this.selectablePlaces));
 			}
 			else{
-				$('#nbPlaces').addClass('badge-info');	
+				$('#nbPlaces').addClass('badge-info');
 				$('#nbPlaces').html(_.join(' / ', _.size(this.selectedPlaces), _.size(this.selectablePlaces)));
 			}
 
@@ -171,7 +171,7 @@ define([
 				$('#nbEquipments').html(_.size(this.selectableEquipments));
 			}
 			else{
-				$('#nbEquipments').addClass('badge-info');	
+				$('#nbEquipments').addClass('badge-info');
 				$('#nbEquipments').html(_.join(' / ', _.size(this.selectedEquipments), _.size(this.selectableEquipments)));
 			}
 
@@ -194,7 +194,7 @@ define([
 				icon.css({color: color});
 			}
 			else{
-				
+
 				this.timeOver = setTimeout(function () {
 					$('.fc-event').not('.resa-'+row.data('id')).delay(500).fadeOut();
 				}, 350);
@@ -238,7 +238,7 @@ define([
 			}
 
 			if(!_.isUndefined(row)){
-			
+
 				row.toggleClass('selected');
 
 				// Get the color of the Places //
@@ -352,7 +352,7 @@ define([
 				$('#nbPlaces').html(_.size(this.selectablePlaces));
 			}
 			else{
-				$('#nbPlaces').addClass('badge-info');	
+				$('#nbPlaces').addClass('badge-info');
 				$('#nbPlaces').html(_.join(' / ', _.size(this.selectedPlaces), _.size(this.selectablePlaces)));
 			}
 
@@ -370,12 +370,12 @@ define([
 
 			var listSearchable = $('#'+input.data('search'));
 
-	
+
 			// If the term is not empty //
 			if(!_.isEmpty(search)){
-			 
+
 				_.each(listSearchable.find('li'), function(a){
-	
+
 					if(!_.str.include($(a).data('name'), search)){
 						$(a).fadeOut('fast').addClass('thide');
 					}
@@ -465,7 +465,7 @@ define([
 			});
 
 		}
-	
+
 
 
 	});

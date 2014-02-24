@@ -1,5 +1,5 @@
-/*! 
- * SWIF
+/*!
+ * SWIF-OpenSTC
  * Copyright 2013-2014 Siclic <contact@siclic.fr>
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
@@ -59,7 +59,7 @@ define(['app', 'appHelpers', 'officerModel', 'officersCollection', 'claimerConta
 		// This set addresses attribute with the JSON address object
 		serializeClaimer: function (claimer) {
 			var addresses = claimer.getAddresses();
-		
+
 			claimer.set('addresses', addresses);
 			return claimer;
 		},
@@ -169,7 +169,7 @@ define(['app', 'appHelpers', 'officerModel', 'officersCollection', 'claimerConta
 
 				});
 			});
-		
+
 
 			return deferred;
 

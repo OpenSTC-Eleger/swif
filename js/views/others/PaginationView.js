@@ -1,5 +1,5 @@
-/*! 
- * SWIF
+/*!
+ * SWIF-OpenSTC
  * Copyright 2013-2014 Siclic <contact@siclic.fr>
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
@@ -18,7 +18,7 @@ define([
 	var PaginationView = Backbone.View.extend({
 
 		el              : '#pagination',
-		
+
 		templateHTML    : 'templates/others/pagination.html',
 
 		currentRoute    : null,
@@ -99,7 +99,7 @@ define([
 			var page = $(this.el).find('option:selected').val();
 
 			var navigateTo;
-			
+
 			// Navigate to the page - Check if we are on a page //
 			if(_.str.include(_(this.currentRoute).strRightBack('/'), 'page')){
 				navigateTo = _(this.currentRoute).strLeftBack('page')+'page'+page;

@@ -1,5 +1,5 @@
-/*! 
- * SWIF
+/*!
+ * SWIF-OpenSTC
  * Copyright 2013-2014 Siclic <contact@siclic.fr>
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
@@ -19,13 +19,13 @@ define([
 	var ClaimersCollection = GenericCollection.extend({
 
 		model       : ClaimerModel,
-		
+
 		url         : '/api/open_object/partners',
-		
+
 		fields      : ['id', 'name', 'address', 'category_id', 'contract_ids', 'email', 'phone', 'service_id', 'task_ids', 'technical_service_id', 'technical_site_id', 'title', 'type_id', 'user_id'],
-		
+
 		default_sort: { by: 'name', order: 'ASC' },
-		
+
 
 
 		/** Collection Initialization

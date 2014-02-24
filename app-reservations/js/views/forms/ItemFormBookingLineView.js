@@ -1,19 +1,19 @@
-/*! 
- * SWIF
+/*!
+ * SWIF-OpenSTC
  * Copyright 2013-2014 Siclic <contact@siclic.fr>
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
 
-define(['app', 
-        'appHelpers', 
-        
+define(['app',
+        'appHelpers',
+
         'bookingLineModel',
         'bookingLinesCollection',
         'bookablesCollection',
         'claimersCollection',
         'claimersContactsCollection',
-        
-        
+
+
         'advancedSelectBoxView',
         'moment',
         'moment-timezone',
@@ -29,9 +29,9 @@ define(['app',
 	* Row Bookable FormBooking View
 	*/
 	var ItemFormBookingLineView = Backbone.View.extend({
-	
+
 		tagName      : 'tr',
-	
+
 		className    :  function() {
 				var classRow = 'row-nested-objects';
 				if(this.model.getAvailable()){
@@ -42,32 +42,32 @@ define(['app',
 				}
 				return classRow;
 			},
-	
+
 		templateHTML : '/templates/forms/itemFormBookingLine.html',
-	
-	
+
+
 		// The DOM events //
 		events: {
 			'change #bookingLineQty': 'changeBookingLineQty',
 			'change #bookingLinePricing': 'changeBookingLinePricing',
 			'click .removeLine'				: 'removeLine'
 		},
-	
-	
-	
+
+
+
 		/** View Initialization
 		*/
 		initialize : function() {
 			this.model.off();
-	
+
 			// When the model are updated //
 			this.listenTo(this.model, 'change', this.change);
-	
+
 			// When the model are destroy //
 			this.listenTo(this.model,'destroy', this.destroy);
 
 		},
-	
+
 		/** When the model is updated //
 		*/
 		change: function(e,options){
@@ -77,14 +77,14 @@ define(['app',
 			//AppHelpers.highlight($(this.el));
 			//app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.placeUpdateOk);
 		},
-	
+
 		/** When the model is destroy //
 		*/
 		destroy: function(e){
 			var self = this;
-			self.remove();		
+			self.remove();
 		},
-		
+
 		/**Compute popover value
 		 */
 		popoverValue: function(){
@@ -103,13 +103,13 @@ define(['app',
 				$(this.el).popover('destroy');
 			}
 		},
-		
+
 		/** Display the view
 		*/
 		render : function() {
 			var self = this;
-			
-			// Retrieve the template // 
+
+			// Retrieve the template //
 			$.get(app.menus.openresa + this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
@@ -124,12 +124,12 @@ define(['app',
 				self.popoverValue();
 				// Set the Tooltip //
 				$('*[data-toggle="tooltip"]').tooltip();
-	
+
 			});
-	
+
 			return this;
 		},
-		
+
 		changeBookingLineQty: function(e){
 			e.preventDefault();
 			var val = $(this.el).find('#bookingLineQty').val();
@@ -137,7 +137,7 @@ define(['app',
 				this.model.setQuantity(parseFloat(val));
 			}
 		},
-		
+
 		changeBookingLinePricing: function(e){
 			e.preventDefault();
 			var val = $(this.el).find('#bookingLinePricing').val();
@@ -145,8 +145,8 @@ define(['app',
 				this.model.set({pricelist_amount:parseFloat(val)},{silent:true});
 			}
 		},
-		
-	    
+
+
 	    removeLine: function(e){
 	    	e.preventDefault();
 			$(this.el).popover('hide');

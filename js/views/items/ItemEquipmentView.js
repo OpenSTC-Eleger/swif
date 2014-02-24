@@ -1,5 +1,5 @@
-/*! 
- * SWIF
+/*!
+ * SWIF-OpenSTC
  * Copyright 2013-2014 Siclic <contact@siclic.fr>
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
@@ -26,7 +26,7 @@ define([
 		className   : 'row-item',
 
 		templateHTML : 'templates/items/itemEquipment.html',
-		
+
 
 
 		// The DOM events //
@@ -41,7 +41,7 @@ define([
 		*/
 		initialize : function() {
 			this.model.off();
-			
+
 			// When the model are updated  or deleted //
 			this.listenTo(this.model, 'change', this.change);
 			this.listenTo(this.model, 'destroy', this.destroy);
@@ -79,7 +79,7 @@ define([
 		render : function() {
 			var self = this;
 
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
@@ -120,7 +120,7 @@ define([
 				modalConfirm: app.lang.warningMessages.confirmDeleteEquipment
 			});
 		},
-		
+
 	});
 
 	return ItemEquipmentView;

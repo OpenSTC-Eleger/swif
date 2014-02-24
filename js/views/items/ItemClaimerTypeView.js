@@ -1,5 +1,5 @@
-/*! 
- * SWIF
+/*!
+ * SWIF-OpenSTC
  * Copyright 2013-2014 Siclic <contact@siclic.fr>
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
@@ -47,7 +47,7 @@ define([
 			this.listenTo(this.model, 'destroy', this.destroy);
 		},
 
-		
+
 
 		/** When the model is updated
 		*/
@@ -74,7 +74,7 @@ define([
 		},
 
 
-		
+
 		/** Display the view
 		*/
 		render: function () {
@@ -132,5 +132,5 @@ define([
 	});
 
 	return ItemClaimerTypeView;
-		
+
 });
