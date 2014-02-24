@@ -7,6 +7,13 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 
 
+		banner: '/*! \n' +
+			' * <%= pkg.name %>\n' +
+			' * Copyright 2013-<%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
+			' * Licensed under <%= pkg.license.type %> (<%= pkg.license.url %>)\n' +
+			' */\n',
+
+
 		// LESS compilation options
 		less: {
 			dist: {
@@ -120,6 +127,26 @@ module.exports = function(grunt) {
 			}
 		},
 
+		// Add licence to the files //
+		usebanner: {
+			default: {
+				options: {
+					position: 'top',
+					banner  : '<%= banner %>'
+				},
+				files: {
+					src: ['js/**/*.js', '!js/libs/*', '!js/i18n/*', 'app-interventions/**/*.js', 'app-reservations/**/*.js']
+				}
+			}
+		},
+
+		// Create AUTHORS file //
+		contributors: {
+			master: {
+				branch: 'master',
+				chronologically: true
+			}
+		},
 
 		githooks: {
 			all: {

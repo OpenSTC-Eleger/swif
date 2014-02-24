@@ -11,6 +11,10 @@
     "services tehcniques"
   ],
   "author": "Siclic <contact@siclic.fr>",
+  "license": {
+    "type": "AGPL-3.0",
+    "url": "https://www.gnu.org/licenses/agpl.txt"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "load-grunt-tasks": "~0.2.1",
@@ -22,6 +26,8 @@
     "grunt-githooks": "~0.3.1",
     "grunt-notify": "~0.2.17",
     "semver": "~2.2.1",
-    "shelljs": "~0.2.6"
+    "shelljs": "~0.2.6",
+    "grunt-banner": "~0.2.1",
+    "grunt-git-contributors": "~0.1.5"
   }
 }
