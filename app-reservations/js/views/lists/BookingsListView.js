@@ -40,8 +40,9 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'click #badgeActions[data-filter!=""]'  : 'badgeFilter',
-			},
+				'click #badge[data-filter!=""]'  : 'badgeFilter',	
+				'click a.createModel'            : 'createResa'
+			}, 
 				GenericListView.prototype.events
 			);
 		},
@@ -79,10 +80,7 @@ define([
 				if( model.getRecurrence('id')!= false )
 					app.views.toolbarButtonsView.initialize( { collection: this.collection } );
 			}
-			this.collection.specialCount().done(function(){
-				$('#badgeActions').html(self.collection.specialCpt);
-				app.views.paginationView.render();
-			});
+			GenericListView.prototype.partialRender.apply(self);
 		},
 
 
@@ -142,7 +140,15 @@ define([
 			}
 
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-		},		
+		},	
+		
+		/** Got to create Resa form
+		*/
+		createResa: function(e){
+			e.preventDefault();
+			// forward to new route (go to form 'create resa')
+			app.router.navigate(_.join('/',_(Backbone.history.fragment).strLeft('/'), "planning-des-reservations"), {trigger: true, replace: true});
+		},
  
 	});	
 	

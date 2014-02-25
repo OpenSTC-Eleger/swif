@@ -44,20 +44,19 @@ define([
 
 		/** View Initialization
 		 */
-		initialize: function (params) {
-			this.options = params;
-
-			this.modal = $(this.el);
-			this.model = new TaskModel();
-			this.render();
-		},
-
-
-		/** Display the view
-		 */
-		render: function () {
-
-
+		initialize: function (params) {		    
+		    this.options = params;
+		    if( _.isUndefined( this.model )){
+		    	this.model = new TaskModel();		    
+		    }
+		    this.modal = $(this.el);
+	    	this.render();    
+	    },
+	
+	
+	    /** Display the view
+	     */
+	    render: function () {
 			//self.collection = this.collection;
 			var self = this;
 			// Retrieve the template //
@@ -104,27 +103,29 @@ define([
 
 			e.preventDefault();
 
-			var duration = $('#taskHour').val().split(':');
-			var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
-
-			var params = {
-				project_id: this.options.inter.toJSON().id,
-				//equipment_id: input_equipment_id,
-				name: this.$('#taskName').val(),
-				category_id: app.views.advancedSelectBoxCategoriesInterventionAddTaskView.getSelectedItem(),
-				planned_hours: mDuration.asHours(),
-			};
-
-
-			this.model.save(params, {silent: true}).done(function(data){
-				self.model.setId(data);
+	
+			 var duration = $("#taskHour").val().split(":");
+			 var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
+	
+			 var params = {
+				 project_id: this.options.inter.toJSON().id,
+				 //equipment_id: input_equipment_id,
+				 name: this.$('#taskName').val(),
+				 category_id: app.views.advancedSelectBoxCategoriesInterventionAddTaskView.getSelectedItem(),
+				 planned_hours: mDuration.asHours(),
+			 };
+	
+			 
+			 this.model.save(params, {silent: true}).done(function(data){
+				self.model.setId(data, {silent: true});
 				self.model.fetch().done(function(){
 					if(!_.isUndefined(self.options.tasks)){
 						self.options.tasks.add(self.model);
 					}
 				});
-				//force re-calculation asynchronously of intervention to update functional fields (planned_hours for example)
-				self.options.inter.fetch();
+
+				 //force re-calculation asynchronously of intervention to update functional fields (planned_hours for example)
+				 self.options.inter.fetch();
 				$('#modalAddTask').modal('hide');
 			})
 			.fail(function(e){

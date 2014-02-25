@@ -40,9 +40,8 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'click #badgeActions[data-filter !=""]' : 'badgeFilter',
-
-				'click a.createModel'            : 'modalCreateRequest'
+				'click #specialBadge[data-filter!=""]' : 'badgeFilter',
+				'click a.createModel'            : 'modalCreateRequest',
 			},
 				GenericListView.prototype.events
 			);
@@ -111,22 +110,6 @@ define([
 
 			return this;
 		},
-
-
-
-		/** Partial Render of the view
-		*/
-		partialRender: function() {
-			var self = this;
-
-			app.views.paginationView.render();
-
-			this.collection.specialCount().done(function(){
-				$('#badgeActions').html(self.collection.specialCpt);
-				$('#bagdeCpt').html(self.collection.cpt);
-			});
-		},
-
 
 
 		/** Filter Requests on the State of the Badge

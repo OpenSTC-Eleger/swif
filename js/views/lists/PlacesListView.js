@@ -108,19 +108,6 @@ define([
 		},
 
 
-		/** Partial Render of the view
-		*/
-		partialRender: function () {
-			var self = this;
-
-			this.collection.count(this.fetchParams).done(function(){
-				$('#badgeNbPlaces').html(self.collection.cpt);
-				app.views.paginationView.render();
-			});
-		},
-
-
-
 		/** Modal form to create a new Place
 		*/
 		modalCreatePlace: function(e){
@@ -130,73 +117,6 @@ define([
 				el  : '#modalSavePlace'
 			});
 		},
-
-
-
-		/** Collection Initialisation
-		*/
-		initCollection: function(){
-			var self = this;
-
-			// Check if the collections is instantiate //
-			if(_.isUndefined(this.collection)){ this.collection = new PlacesCollection(); }
-
-
-			// Check the parameters //
-			if(_.isUndefined(this.options.sort)){
-				this.options.sort = this.collection.default_sort;
-			}
-			else{
-				this.options.sort = AppHelpers.calculPageSort(this.options.sort);
-			}
-
-			this.options.page = AppHelpers.calculPageOffset(this.options.page);
-
-
-			// Create Fetch params //
-			var fetchParams = {
-				silent : true,
-				data   : {
-					limit  : app.config.itemsPerPage,
-					offset : this.options.page.offset,
-					sort   : this.options.sort.by+' '+this.options.sort.order
-				}
-			};
-
-
-			var globalSearch = {};
-			if(!_.isUndefined(this.options.search)){
-				globalSearch.search = this.options.search;
-			}
-
-			if(!_.isUndefined(this.options.filter)){
-				if(!_.isUndefined(this.filterModel) ){
-					try {
-						globalSearch.filter = JSON.parse(this.filterModel.toJSON().domain);
-						this.options.filter = globalSearch.filter;
-					}
-					catch(e)
-					{
-						console.log('Filter is not valid');
-					}
-
-				}
-				else{
-					globalSearch.filter = JSON.parse(this.options.filter);
-					this.options.filter = globalSearch.filter;
-				}
-			}
-
-			if(!_.isEmpty(globalSearch)){
-				fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, PlaceModel.prototype.searchable_fields);
-			}
-
-
-			return $.when(self.collection.fetch(fetchParams))
-				.fail(function(e){
-					console.log(e);
-				});
-		}
 
 	});
 

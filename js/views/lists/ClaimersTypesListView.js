@@ -12,6 +12,7 @@ define(['app', 'appHelpers', 'claimersTypesCollection', 'claimerTypeModel', 'gen
 		return  GenericListView.extend({
 
 			templateHTML: 'templates/lists/claimersTypesList.html',
+			model		: ClaimerTypeModel,
 
 
 			// The DOM events //
@@ -27,18 +28,11 @@ define(['app', 'appHelpers', 'claimersTypesCollection', 'claimerTypeModel', 'gen
 			/** View Initialization
 			 */
 			initialize: function (params) {
-				this.options = params;
-
-				var self = this;
-
-				this.initCollection().done(function () {
-
-					// Unbind & bind the collection //
-					self.collection.off();
-					self.listenTo(self.collection, 'add', self.add);
-
-					app.router.render(self);
-				});
+				 
+				 // Check if the collections is instantiate //
+				if(_.isUndefined(this.collection)){ this.collection = new ClaimersTypesCollection(); }			
+			
+				GenericListView.prototype.initialize.apply(this, arguments);
 			},
 
 
@@ -74,8 +68,7 @@ define(['app', 'appHelpers', 'claimersTypesCollection', 'claimerTypeModel', 'gen
 					$(self.el).html(template);
 
 					// Call the render Generic View //
-					GenericListView.prototype.render(self);
-
+					GenericListView.prototype.render.apply(self);
 
 					// Create item category request view //
 					_.each(self.collection.models, function (claimerType) {
@@ -83,34 +76,12 @@ define(['app', 'appHelpers', 'claimersTypesCollection', 'claimerTypeModel', 'gen
 						$('#rows-items').append(itemClaimerTypeView.render().el);
 					});
 
-
-					// Pagination view //
-					app.views.paginationView = new PaginationView({
-						page: self.options.page.page,
-						collection: self.collection
-					});
-
-					app.views.paginationView.render();
-
 				});
 
 				$(this.el).hide().fadeIn();
 
 				return this;
 			},
-
-
-			/** Partial Render of the view
-			*/
-			partialRender: function () {
-				var self = this;
-
-				this.collection.count(this.fetchParams).done(function () {
-					$('#badgeNbClaimerTypes').html(self.collection.cpt);
-					app.views.paginationView.render();
-				});
-			},
-
 
 
 			/** Modal form to create a new Cat
@@ -122,50 +93,6 @@ define(['app', 'appHelpers', 'claimersTypesCollection', 'claimerTypeModel', 'gen
 					el: '#modalSaveClaimerType'
 				});
 			},
-
-
-
-			/** Collection Initialisation
-			*/
-			initCollection: function () {
-				var self = this;
-
-				// Check if the collections is instantiate //
-				if (_.isUndefined(this.collection)) {
-					this.collection = new ClaimersTypesCollection();
-				}
-
-
-				// Check the parameters //
-				if (_.isUndefined(this.options.sort)) {
-					this.options.sort = this.collection.default_sort;
-				}
-				else {
-					this.options.sort = AppHelpers.calculPageSort(this.options.sort);
-				}
-				this.options.page = AppHelpers.calculPageOffset(this.options.page);
-
-
-				// Create Fetch params //
-				this.fetchParams = {
-					silent: true,
-					data: {
-						limit: app.config.itemsPerPage,
-						offset: this.options.page.offset,
-						sort: this.options.sort.by + ' ' + this.options.sort.order
-					}
-				};
-				if (!_.isUndefined(this.options.search)) {
-					this.fetchParams.data.filters = AppHelpers.calculSearch({search: this.options.search }, ClaimerTypeModel.prototype.searchable_fields);
-				}
-
-
-				return $.when(self.collection.fetch(this.fetchParams))
-					.fail(function (e) {
-						console.log(e);
-					});
-
-			}
 
 		});
 

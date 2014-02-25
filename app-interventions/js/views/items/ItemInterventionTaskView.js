@@ -56,28 +56,16 @@ define([
 			this.model.off();
 
 			// When the model are updated //
-			this.listenTo(this.model, 'change', this.change);
+			this.listenTo(this.model, 'sync', this.change);
 			this.listenTo(this.model, 'destroy', this.destroyTask);
 			this.inter = this.options.inter;
+			this.tasks = this.options.tasks;
 		},
 
 		destroyTask: function(model){
 			var self = this;
-			this.inter.fetch().done(function(){
-				if(self.inter.toJSON().tasks.length > 0){
-					AppHelpers.highlight($(self.el)).always(function(){
-						self.remove();
-					});
-
-				}
-				else{
-					self.remove();
-				}
-			});
+			self.remove();
 			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.taskDeleteOk);
-
-
-
 		},
 
 		/** When the model ara updated //
@@ -90,7 +78,6 @@ define([
 
 			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.taskUpdateOk);
 		},
-
 
 
 		/** Display the view
@@ -140,7 +127,7 @@ define([
 			var selectedTaskJSON = this.model.toJSON();
 
 			// Get the inter of the Task //
-			var inter = app.views.interventions.collections.interventions.get(selectedTaskJSON.project_id[0]);
+			var inter = app.views.interventions.collection.get(selectedTaskJSON.project_id[0]);
 			var interJSON = inter.toJSON();
 
 			// Hide the print Inter section //
@@ -250,7 +237,7 @@ define([
 				taskDone = true;
 	//			$('#remainingTimeSection').hide();
 			}
-			new ModalTaskDoneView({el:'#modalTaskDone', model: this.model, inter: this.inter, taskDone: taskDone, tasks: self.options.tasks});
+			new ModalTaskDoneView({el:'#modalTaskDone', model: this.model, inter: this.inter, taskDone: taskDone, tasks: this.tasks});
 		},
 
 		displayModalCancelTask: function(e) {

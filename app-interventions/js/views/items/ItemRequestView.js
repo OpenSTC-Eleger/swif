@@ -80,21 +80,12 @@ define([
 			// Set the info message for the notification //
 			var infoMessage;
 			switch(model.getState()){
-<<<<<<< HEAD
-				case RequestModel.status.refused.key:
-					infoMessage = app.lang.infoMessages.requestRefuseOk;
-					break;
-				case RequestModel.status.confirm.key:
-					infoMessage = app.lang.infoMessages.requestConfirmOk;
-					break;
-=======
 				case RequestModel.status.refused.key: 
 					var infoMessage = app.lang.infoMessages.requestRefuseOk;
 				break;
 				case RequestModel.status.to_confirm.key:
 					var infoMessage = app.lang.infoMessages.requestConfirmOk;
 				break;
->>>>>>> refs #2515 : Préparation à la recherche avancée pour toutes les listes
 				case RequestModel.status.valid.key:
 					infoMessage = app.lang.infoMessages.requestValidOk;
 					break;

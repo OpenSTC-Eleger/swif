@@ -56,11 +56,9 @@ define([
 			var self = this;
 
 			var domain = [];
-
 			// Construct a domain accrding to user group //
 			if(app.current_user.isDST()){
-
-				var domain = [
+				domain = [
 					{ field : 'state', operator : '=', value : RequestModel.status.to_confirm.key }
 				];
 			}
@@ -77,7 +75,7 @@ define([
 				dataType : 'text',
 				data     : {filters: app.objectifyFilters(domain)},
 				success  : function(data, status, request){
-					var contentRange = request.getResponseHeader('Content-Range');
+					var contentRange = request.getResponseHeader("Content-Range");
 					self.specialCpt = contentRange.match(/\d+$/);
 				}
 			});

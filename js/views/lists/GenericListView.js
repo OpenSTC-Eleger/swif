@@ -153,15 +153,27 @@ define([
 
 		},
 		
+		/**
+		 * Destroy collection's model
+		 */
+		destroy: function(){			
+			this.partialRender();
+		},
+		
 		/** Partial Render of the view
 		*/
 		partialRender: function () {
 			var self = this; 
-	
-			this.collection.count(this.getParams()).done(function(){
-				$('#badge').html(self.collection.cpt);
-				app.views.paginationView.render();
-			});
+			
+			app.views.paginationView.render();
+			
+			$.when(this.collection.count(this.getParams()), this.collection.specialCount(), this.collection.specialCount2())
+				.done(function(){
+					$('#badge').html(self.collection.cpt);
+					$('#specialBadge').html(self.collection.specialCpt);
+					$('#specialBadge2').html(self.collection.specialCpt2);
+					app.views.paginationView.render();
+				});
 		},
 		
 		/**
@@ -218,8 +230,13 @@ define([
 					}
 				}
 				else{
-					globalSearch.filter = JSON.parse(this.options.filter);
-					this.options.filter = globalSearch.filter;
+					try {						
+						globalSearch.filter = JSON.parse(this.options.filter);
+						this.options.filter = globalSearch.filter;
+					}
+					catch(e){
+						console.log('Filter is already as json format');
+					}
 				}
 			}
 

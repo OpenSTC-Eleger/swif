@@ -35,8 +35,8 @@ define([
 			{ key: 'state',         label: app.lang.status }
 		],
 
-		pendingInterventions: 0,
-		plannedInterventions: 0,
+		specialCpt: 0,
+		specialCpt2: 0,
 
 
 		/** Collection Initialization
@@ -47,10 +47,10 @@ define([
 
 		/** Retrieve the number of Pending Intervention
 		*/
-		pendingInterventionsCount: function(){
+		specialCount: function(){
 			var self = this;
 
-			var domain = [ { field : 'state', operator : '=', value : InterventionModel.status.pending.key } ];
+			var domain = [ { field : 'state', operator : 'in', value : [InterventionModel.status.pending.key] } ];
 
 			return $.ajax({
 				url      : this.url,
@@ -58,8 +58,8 @@ define([
 				dataType : 'text',
 				data     : {filters: app.objectifyFilters(domain)},
 				success  : function(data,status,request){
-					var contentRange = request.getResponseHeader('Content-Range');
-					self.pendingInterventions = contentRange.match(/\d+$/);
+					var contentRange = request.getResponseHeader("Content-Range");
+					self.specialCpt = contentRange.match(/\d+$/);
 				}
 			});
 		},
@@ -68,10 +68,10 @@ define([
 
 		/** Retrieve the number of Planned Intervention
 		*/
-		plannedInterventionsCount: function(){
+		specialCount2: function(){
 			var self = this;
 
-			var domain = [ { field : 'state', operator : '=', value : InterventionModel.status.scheduled.key } ];
+			var domain = [ { field : 'state', operator : 'in', value : [InterventionModel.status.scheduled.key] } ];
 
 			return $.ajax({
 				url      : this.url,
@@ -79,12 +79,14 @@ define([
 				dataType : 'text',
 				data     : {filters: app.objectifyFilters(domain)},
 				success  : function(data,status,request){
-					var contentRange = request.getResponseHeader('Content-Range');
-					self.plannedInterventions = contentRange.match(/\d+$/);
+					var contentRange = request.getResponseHeader("Content-Range");
+					self.specialCpt2 = contentRange.match(/\d+$/);
 				}
 			});
 		},
 
+			
+		
 
 		/** Collection Sync
 		*/
@@ -92,7 +94,7 @@ define([
 
 			options.data.fields = this.fields;
 
-			return $.when(this.count(options), this.pendingInterventionsCount(), this.plannedInterventionsCount(), Backbone.sync.call(this,method,this,options));
+			return $.when(this.count(options), this.specialCount(), this.specialCount2(), Backbone.sync.call(this,method,this,options));
 		}
 
 	});

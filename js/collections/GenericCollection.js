@@ -78,6 +78,9 @@ define([
 				}
 			});
 		},
+		
+		specialCount: function(){},
+		specialCount2: function(){},
 
 
 		sync: function(method, model, options){
