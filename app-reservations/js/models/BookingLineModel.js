@@ -1,8 +1,9 @@
 define([
 	'app',
-	'genericModel'
+	'genericModel',
+	'bookableModel'
 
-], function(app, GenericModel){
+], function(app, GenericModel, BookableModel){
 
 	'use strict';
 
@@ -133,6 +134,11 @@ define([
 			if(!model.isNew()){
 				this.set({line_id:model.getId()});
 			}
+		},
+		
+		setBookable: function(idBooking, nameBooking){
+			this.bookable = new BookableModel({id:idBooking});
+			this.set({reserve_product:[idBooking,nameBooking]}); 
 		},
 		
 		saveToBackend: function(){
