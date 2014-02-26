@@ -141,14 +141,14 @@ define([
 
 				var icon;
 				if(r.type === 'site'){
-					icon = '<i class="fa fa-map-marker fa-fw"></i>';
+					icon = _('<i class=&quot;fa fa-map-marker fa-fw&quot;></i>').escapeHTML();
 				}
 				else{
-					icon = '<i class="fa fa-wrench fa-fw"></i>';
+					icon = _('<i class=&quot;fa fa-wrench fa-fw&quot;></i>').escapeHTML();
 				}
 
 
-				bookingResourceQuantities += '<dt>' + icon +' '+ r.name + '</dt><dd>' + r.tooltip + '</dd>';
+				bookingResourceQuantities += '<dt>' + icon +' '+ _(r.name).unescapeHTML() + '</dt><dd>' + _(r.tooltip).unescapeHTML()  + '</dd>';
 			});
 
 			return bookingResourceQuantities + '</dl>';

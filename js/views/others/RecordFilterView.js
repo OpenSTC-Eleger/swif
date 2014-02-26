@@ -28,6 +28,7 @@ define([
 		//Static variables uses to build url
 		URL_FILTER_CTXT    : '/filter/',
 		URL_SORT_CTXT    : '/sort/',
+		URL_PAGE_CTXT    : '/page',
 		SLASH_CHAR	: '/',
 
 		// The DOM events //
@@ -120,23 +121,24 @@ define([
 				this.urlLeftPart = this.urlArray[0];
 				this.urlRightPart = _(this.urlArray[1]).strRight(this.SLASH_CHAR);
 				var filter = parseInt(this.urlArray[1][0]);
-				if( _.isNaN(filter) ) {
+				if( !_.isNaN(filter) && _.str.include(this.urlRightPart,this.SLASH_CHAR)) {
 					this.urlRightPart = this.SLASH_CHAR + this.urlRightPart;
 				}
 				else{
-					if( _.str.include(this.urlRightPart,this.SLASH_CHAR) ){
-						this.urlRightPart = this.SLASH_CHAR + this.urlRightPart;
-					}
-					else{
-						this.urlRightPart = null;
-					}
+					this.urlRightPart = null;
 				}
 			}
 			else if ( _.str.include(this.urlLeftPart, this.URL_SORT_CTXT) ) {
-				//url contains sort
+				//url contains sort : keep sort order in url
 				this.urlArray = _.words(this.urlLeftPart, this.URL_SORT_CTXT);
 				this.urlLeftPart = this.urlArray[0];
 				this.urlRightPart =  this.URL_SORT_CTXT + this.urlArray[1];				
+			}
+			else if ( _.str.include(this.urlLeftPart, this.URL_PAGE_CTXT) ) {
+				//url contains page : remove page parameter
+				this.urlArray = _.words(this.urlLeftPart, this.URL_PAGE_CTXT);
+				this.urlLeftPart = this.urlArray[0];
+				this.urlRightPart =  "";				
 			}
 		},
 

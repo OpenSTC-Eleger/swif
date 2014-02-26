@@ -257,7 +257,7 @@ define([
 		*/
 		displayModalSaveInter: function(e){
 			e.preventDefault();
-			var params = {el:'#modalSaveInter'};
+			var params = {el:'#modalInter'};
 			params.model = this.model;
 			new ModalInterventionView(params);
 		},

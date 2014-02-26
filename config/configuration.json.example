@@ -19,7 +19,7 @@
 	},
 
 	"medias": {
-		"cityLogo"         : "medias/city_logo.png",
-		"cityWallpaper"    : "medias/city_wallpaper.jpg"
+		"cityLogo"         : "medias/city_logo_sample.png",
+		"cityWallpaper"    : "medias/city_wallpaper_sample.jpg"
 	}
 }
