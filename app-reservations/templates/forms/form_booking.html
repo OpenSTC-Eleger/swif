@@ -4,16 +4,15 @@
 <div class="row">
 	<div class="col-sm-6">
 	<% if(!_.isNull(booking.getId()) && (booking.hasActions('redraft') || booking.hasActions('redraft_unauthorized'))){ %>
-		<span
-		<% if(booking.hasActions('redraft_unauthorized')){ %> 
-			data-toggle="tooltip" data-original-title="lang.resa.infoMessages.redraftBookingUnauthorized" 
-			<% } %>
-		>
-			<button type="submit" class="btn btn-primary pull-right" form="formSaveBooking" id="redraftFormBooking" 
+		<span class="pull-right">
+			<button type="submit" class="btn btn-primary" form="formSaveBooking" id="redraftFormBooking" 
 			<% if(booking.hasActions('redraft_unauthorized')){ %> 
-			disabled 
+			disabled
 			<% } %>
 			><%= _.capitalize(lang.resa.actions.redraftBooking) %></button>&nbsp;
+			<% if(booking.hasActions('redraft_unauthorized')){ %>
+			<button type="button" class="btn btn-warning" data-toggle="tooltip" data-original-title="<%= lang.resa.infoMessages.redraftBookingUnauthorized%>"><i class="fa fa-info fa-lg"></i></button>
+			<% } %>
 		</span>
 	<% } %>
 	</div>
