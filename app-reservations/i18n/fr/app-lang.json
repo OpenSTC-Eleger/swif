@@ -66,13 +66,14 @@
             "selectAll"                             : "Tout sélectionner",
             "unselectAll"                           : "Tout désélectionner",
             "selectToggle"                          : "Inverser la sélection",
-            "saveBooking"							: "Sauvegarder en brouillon",
+            "saveBooking"							: "Sauvegarder",
             "postBooking"							: "Soumettre ma demande",
             "redraftBooking"						: "Modifier (repassera par une validation)"
 		},
 		
 		"infoMessages" : {
-			"noBooking"         				: "Aucune réservation à afficher"
+			"noBooking"         				: "Aucune réservation à afficher",
+			"redraftBookingUnauthorized"		: "Votre réservation démarre bientôt, elle ne peux plus être modifiée"
 		},
 		
 		"viewsTitles" : {

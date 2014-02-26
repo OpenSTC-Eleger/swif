@@ -1,7 +1,23 @@
 <div class="page-header">
 	<h1><%= pageTitle %></h1>
 </div>
-
+<div class="row">
+	<div class="col-sm-6">
+	<% if(!_.isNull(booking.getId()) && (booking.hasActions('redraft') || booking.hasActions('redraft_unauthorized'))){ %>
+		<span
+		<% if(booking.hasActions('redraft_unauthorized')){ %> 
+			data-toggle="tooltip" data-original-title="lang.resa.infoMessages.redraftBookingUnauthorized" 
+			<% } %>
+		>
+			<button type="submit" class="btn btn-primary pull-right" form="formSaveBooking" id="redraftFormBooking" 
+			<% if(booking.hasActions('redraft_unauthorized')){ %> 
+			disabled 
+			<% } %>
+			><%= _.capitalize(lang.resa.actions.redraftBooking) %></button>&nbsp;
+		</span>
+	<% } %>
+	</div>
+</div>
 
 <form id="formSaveBooking" action="#" class="form-horizontal container"
 	role="form">
@@ -101,22 +117,6 @@
 	
 				</div>
 			</fieldset>
-		</div>
-	</div>
-	<hr>
-	
-	<% if(!_.isNull(booking.getId()) && booking.hasActions('redraft')){ %>
-	<div class="row">
-		<fieldset>
-			<span>
-				<button type="submit" class="btn btn-primary" form="formSaveBooking" id="redraftFormBooking"><%= _.capitalize(lang.resa.actions.redraftBooking) %></button>&nbsp;
-			</span>
-		</fieldset>
-	</div>
-	<% } %>
-	
-	<div class="row">
-		<div class="col-sm-6">
 			
 			<fieldset <%= readonly ? 'disabled' : ''%>>
 				<legend><span class="text-info">2</span> - <%= lang.resa.generalInfos%> </legend>
@@ -204,35 +204,34 @@
 				</div>
 	
 		</fieldset>
-	
+
 		<fieldset>
 			<legend><span class="text-info">3</span> - <%= lang.resa.bookablesOrdered%></legend>
-				
-				<!-- Recap of BookingLines -->
-				<table class="table table-striped table-condensed table-hover table-vertical-center">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th><%= _.capitalize(lang.bookable) %></th>
-							<th><%= _.capitalize(lang.quantity) %></th>
-							<th><%= _.capitalize(lang.price) %></th>
-							<th><%= _.capitalize(lang.availability) %></th>
-							<th><%= _.capitalize(lang.action) %></th>
-						</tr>
-					</thead>
-					<tbody id="bookingLines"></tbody>
-				</table>
-	
-				<!-- Add a bookable -->
-				<div class="form-group<%= readonly ? ' hide-soft' : ''%>">
-					<label for="bookingAddBookable" class="control-label col-sm-3"><%= _.capitalize(lang.resa.actions.addABookable) %>:</label>
-		
-					<div class="col-sm-9">
-						<input id="bookingAddBookable" class="select2" data-placeholder="<%= lang.actions.selectABookable %>"/>
-					</div>
-				</div>
-			</fieldset>
+			
+			<!-- Recap of BookingLines -->
+			<table class="table table-striped table-condensed table-hover table-vertical-center">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th><%= _.capitalize(lang.bookable) %></th>
+						<th><%= _.capitalize(lang.quantity) %></th>
+						<th><%= _.capitalize(lang.price) %></th>
+						<th><%= _.capitalize(lang.availability) %></th>
+						<th><%= _.capitalize(lang.action) %></th>
+					</tr>
+				</thead>
+				<tbody id="bookingLines"></tbody>
+			</table>
 
+			<!-- Add a bookable -->
+			<div class="form-group<%= readonly ? ' hide-soft' : ''%>">
+				<label for="bookingAddBookable" class="control-label col-sm-3"><%= _.capitalize(lang.resa.actions.addABookable) %>:</label>
+	
+				<div class="col-sm-9">
+					<input id="bookingAddBookable" class="select2" data-placeholder="<%= lang.actions.selectABookable %>"/>
+				</div>
+			</div>
+		</fieldset>
 		</div>
 		<!-- /Left Panel -->
 		<div class="col-sm-6">
