@@ -468,12 +468,14 @@ define([
 			var self = this;
 			this.set({ partner_id : value }, {silent: silent});
 			var modelClaimer = new ClaimerModel({id:this.getClaimer('id')});
-			modelClaimer.fetch({data:{fields:['property_product_pricelist']}}).done(function(){
-				self.setPricelist(modelClaimer.get('property_product_pricelist'));
-			})
-			.always(function(){
-				self.updateLinesData();
-			});
+			if(!silent){
+				modelClaimer.fetch({data:{fields:['property_product_pricelist']}}).done(function(){
+					self.setPricelist(modelClaimer.get('property_product_pricelist'));
+				})
+				.always(function(){
+					self.updateLinesData();
+				});
+			}
 		},
 
 		getClaimerType: function(type){

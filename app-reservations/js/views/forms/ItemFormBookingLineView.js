@@ -82,7 +82,7 @@ define(['app',
 		/**Compute popover value
 		 */
 		popoverValue: function(){
-			if(!this.model.getAvailable() && this.model.getParentBookingModel().hasActions('update')){
+			if(!this.model.getAvailable()){
 				var qty = parseInt(this.model.getAvailableQtity());
 				if(qty < 0){
 					qty = 0;
