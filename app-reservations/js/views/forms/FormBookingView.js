@@ -27,7 +27,7 @@ define(['app',
 
 
 	/******************************************
-	* Requests Details View
+	* Booking Form View
 	*/
 	var FormBookingView = Backbone.View.extend({
 	
@@ -107,11 +107,11 @@ define(['app',
 
 			this.claimers = new ClaimersCollection();
 			this.isClaimer = !app.current_user.isResaManager();
-			//fill the 2 selectBoxes with service_id.partner_id values
 			var ret = {};
 			
 			//if view is called with a filled model (new booking from calendar or new form 'from scratch')
 			if(_.isUndefined(self.options.id)){
+				//if user is a claimer, retrieve it's corresponding partner and partner_contact
 				if(self.isClaimer){
 					app.current_user.fetchContactAndClaimer(ret).done(function(){
 						self.model.setClaimer([ret.claimer.id, ret.claimer.name]);
@@ -226,6 +226,7 @@ define(['app',
 		/** Display the view
 		*/
 		render: function(loader) {
+			//boolean to know if form is fully rendered or not, used to avoid pb of change events
 			this.viewRendered = false;
 			var pageTitle = '';
 			if(_.isNull(this.model.getId())) { 
@@ -238,13 +239,13 @@ define(['app',
 			// Change the page title //
 			app.router.setPageTitle(pageTitle);
 
-	
+			
 			var self = this;
 			// Retrieve the template //
 			$.get(app.menus.openresa + this.templateHTML, function(templateData){			
 				//compute dates with user TZ
 				var checkin = self.model.getAttribute('checkin',false);
-				var checkout = self.model.getAttribute('checkout',false);;
+				var checkout = self.model.getAttribute('checkout',false);
 				var startDate = '';
 				var startHour = '';
 				var endDate = '';
@@ -274,7 +275,6 @@ define(['app',
 				});
 	
 				$(self.el).html(template);
-				
 				self.renderLines();
 				self.renderRecurrence();
 				
@@ -283,6 +283,7 @@ define(['app',
 					$('#bookingContact').attr('disabled');
 				}
 				
+				$('*[data-toggle="tooltip"]').tooltip();
 				$('.make-switch').bootstrapSwitch();
 				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: true, modalBackdrop: false});
 				$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
@@ -303,7 +304,7 @@ define(['app',
 				app.views.selectListAddBookableView.render();
 
 				
-				//i initialize advancedSelectBox here to correclty trigger change event at init (and so, perform correct view updates)
+				//i initialize advancedSelectBox here to correctly trigger change event at init (and so, perform correct view updates)
 				var partner = self.model.getClaimer('array');
 				if(partner != 0){
 					app.views.selectListClaimersView.setSelectedItem(partner);
@@ -328,19 +329,17 @@ define(['app',
 		 * Update searchParam of ClaimerContact (partner.id = self if partner_id is set, else, remove searchParams)
 		 */	
 		changeBookingPartner: function(e){
-			if(this.viewRendered){
-				var partner_id = app.views.selectListClaimersView.getSelectedItem();
-				if(partner_id != ''){
-					//TODO: implement filter to fetch only bookables authorized for partner
-					app.views.selectListClaimersContactsView.setSearchParam({'field':'partner_id.id','operator':'=','value':partner_id},true);
-					
-					this.model.setClaimer([partner_id,app.views.selectListClaimersView.getSelectedText()]);
-				}
-				else{
-					app.views.selectListClaimersContactsView.resetSearchParams();
-					this.model.setClaimer(false);
-				}
-			}			
+			var silent = !this.viewRendered;
+			var partner_id = app.views.selectListClaimersView.getSelectedItem();
+			if(partner_id != ''){
+				app.views.selectListClaimersContactsView.setSearchParam({'field':'partner_id.id','operator':'=','value':partner_id},true);
+				
+				this.model.setClaimer([partner_id,app.views.selectListClaimersView.getSelectedText()], silent);
+			}
+			else{
+				app.views.selectListClaimersContactsView.resetSearchParams();
+				this.model.setClaimer(false, silent);
+			}
 		},
 		
 		changeBookingContact: function(e){
@@ -484,10 +483,9 @@ define(['app',
 		},
 		
 		/**
-		 * Save form and evolve wkf from 'draft' to 'remplir' state. Adapt url to call if it's a recurrente or a simple booking
+		 * Save form and evolve workflow from 'draft' to 'remplir' state. Adapt url to call if it's a recurrente or a simple booking
 		 */
 		postBookingForm: function(e){
-			//TODO: remove this call when save will be made at each input change
 			var self = this;
 			e.preventDefault();
 			this.model.saveToBackend()
@@ -502,20 +500,22 @@ define(['app',
 			});
 		},
 		
+		/**
+		 * evolve workflow to 'draft' state, fetch the model and render this view to update widget states (visible, readonly, etc.)
+		 */
 		redraftBookingForm: function(e){
 			e.preventDefault();
 			var self = this;
 			var model = (self.model.isTemplate() && self.model.recurrence != null) ? self.model.recurrence : self.model;
 			model.save({state_event:"redraft"}, {wait:true, patch:true}).done(function(){
 				self.model.fetchFromBackend().done(function(){
-					//self.initializeWithId();
 					self.render();
 				});
 			});
 		},
 		
 		/**
-		 * Save only form
+		 * Save only form, do not evolve workflow
 		 */
 		saveBookingForm: function(e){
 			e.preventDefault();
@@ -530,7 +530,6 @@ define(['app',
 		
 		changeAddRecurrence: function(e){
 			var val = $('#bookingAddRecurrence').bootstrapSwitch('state');
-
 			if(val){
 				this.addRecurrence(e);
 			}
