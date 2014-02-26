@@ -101,7 +101,7 @@ define([
 
 			this.calendar.fullCalendar({
 
-	    		/** Full calendar attributes **/
+				/** Full calendar attributes **/
 				date        :   this.currentDate.date(),
 				month       :	this.currentDate.month(),
 				year        :	this.currentDate.year(),
@@ -259,8 +259,8 @@ define([
 
 
 				/** Task is click on the calendar : display unplan task modal
-	    	    */
-	    	    eventClick: function(fcEvent, jsEvent, view) {
+				*/
+				eventClick: function(fcEvent, jsEvent, view) {
 
 					// If the user is a resource manager //
 					if(app.current_user.isResaManager()){
@@ -544,12 +544,12 @@ define([
 
 			var custom_buttons = '<span class="fc-header-space"></span> <span class="fc-button fc-button-print fc-corner-left fc-corner-right fc-state-default text-primary"><i class="fa fa-print"></i></span>';
 
-        	$('.fc-header-left span:last-child()').after(custom_buttons);
+			$('.fc-header-left span:last-child()').after(custom_buttons);
 		}
 
 
 	});
 
-return CalendarPlanningView;
+	return CalendarPlanningView;
 
-})
+});

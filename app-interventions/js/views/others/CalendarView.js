@@ -16,12 +16,13 @@ define([
 	'modalAbsentTaskView',
 	'modalUnplanTaskView',
 
-	'fullcalendar'
+	'fullcalendar',
+	'moment'
 
 ], function(app,
 				TasksCollection,
 				TaskModel, TaskSchedulesModel,
-				PrintingCalendarView, ModalAbsentTaskView, ModalUnplanTaskView, fullcalendar ){
+				PrintingCalendarView, ModalAbsentTaskView, ModalUnplanTaskView, fullcalendar, moment){
 
 	'use strict';
 
@@ -148,29 +149,27 @@ define([
 
 
 
-		/**"#pOfficer_"+self.options.officer+"
-		 * Go to next week
-		 */
-		nextDate: function(e) {
+		/**"#pOfficer_"+self.options.officer+" Go to next week
+		*/
+		nextDate: function() {
 			this.options.week = String(parseInt(this.options.week)+1);
 			app.router.navigate(this.urlBuilder(), {trigger: false, replace: false});
 			//Add new url in pagination for intervention panel
 			app.views.planningInterListView.paginationRender(this.options);
 		},
 
-		/**
-		 * Go to previous week
-		 */
-		previousDate: function(e) {
+
+		/** Go to previous week
+		*/
+		previousDate: function() {
 			this.options.week = String(parseInt(this.options.week)-1);
 			app.router.navigate(this.urlBuilder(), {trigger: false, replace: false});
 			//Add new url in pagination for intervention panel
 			app.views.planningInterListView.paginationRender(this.options);
 		},
 
-		/**
-		 * Go to planning selected
-		 */
+		/** Go to planning selected
+		*/
 		selectPlanning: function(e) {
 			e.preventDefault();
 
@@ -198,9 +197,8 @@ define([
 		},
 
 
-		/**
-		 * Constructs url for planning
-		 */
+		/** Constructs url for planning
+		*/
 		urlBuilder: function() {
 			var self = this;
 			// Retrieve the baseurl of the view //
@@ -217,7 +215,7 @@ define([
 			var url = _.join('/', moduleName, pageUrl);
 
 			// Iterate all urlParameters //
-			_.each(this.urlParameters, function(value, index){
+			_.each(this.urlParameters, function(value){
 				// Check if the options parameter aren't undefined or null //
 				if(!_.isUndefined(self.options[value]) && !_.isNull(self.options[value])){
 					url += '/'+value+'/'+self.options[value];
@@ -250,7 +248,7 @@ define([
 				// time formats
 				titleFormat: {
 					month: 'MMMM yyyy',
-					week : "'Semaine 'W' <small>du' dd [MMM] [yyyy] {'au' dd MMM yyyy}</small>",
+					week :  '\'Semaine \'W\' <small>du\' dd [MMM] [yyyy] {\'au\' dd MMM yyyy}</small>',
 					day  : 'dddd dd MMM yyyy'
 				},
 				columnFormat: {
@@ -304,7 +302,7 @@ define([
 					];
 
 					if(self.teamMode){
-						var users = app.current_user.getOfficerIdsByTeamId(self.model.id)
+						var users = app.current_user.getOfficerIdsByTeamId(self.model.id);
 						if( users.length > 0 ){
 							domain.push('|', { 'field' : 'team_id.id', 'operator' : '=', 'value' : self.model.id }, { 'field' : 'user_id.id', 'operator' : 'in', 'value' : users  } );
 						}
@@ -313,7 +311,7 @@ define([
 						}
 					}
 					else{
-						var teams = app.current_user.getTeamIdsByOfficerId(self.model.id)
+						var teams = app.current_user.getTeamIdsByOfficerId(self.model.id);
 						if( teams.length>0 ){
 							domain.push('|', { 'field' : 'user_id.id', 'operator' : '=', 'value' : self.model.id }, { 'field' : 'team_id.id', 'operator' : 'in', 'value' : teams  });
 						}
@@ -326,7 +324,7 @@ define([
 					self.collection = new TasksCollection();
 
 					//Get tasks for domain
-					self.collection.fetch(fetchParams).done(function(data){
+					self.collection.fetch(fetchParams).done(function(){
 						//Transforms tasks in events for fullcalendar
 						self.events = self.fetchEvents();
 						self.collection.off();
@@ -344,7 +342,7 @@ define([
 
 				/** Open leave time modal (Absent task)
 				*/
-				select: function( startDate, endDate, allDay, jsEvent, view) {
+				select: function(startDate, endDate, allDay) {
 
 					app.views.modalAbsentTaskView = new ModalAbsentTaskView({
 						el        : '#modalAbsentTask',
@@ -362,7 +360,6 @@ define([
 				*/
 				drop: function( date, allDay ) {
 
-					var domObject = $(this)
 					var originalEventObject = $(this).data('eventObject');
 					var copiedEventObject = $.extend({}, originalEventObject);
 					copiedEventObject.allDay = allDay;
@@ -383,35 +380,38 @@ define([
 					var model = new TaskSchedulesModel();
 
 					model.save(params, {patch: false, silent: true})
-						.done(function(ids) {
+						.done(function() {
 							self.collections.interventions.get(copiedEventObject.project_id).fetch();
 							self.refreshEvents();
 						})
 						.fail(function (e) {
 							console.log(e);
-						})
+						});
 				},
 
 
 
 				/** Drop event from time slot to another
 				*/
-				eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-					var model = self.collection.get(event.id)
+				eventDrop: function (event) {
+					var model = self.collection.get(event.id);
 
 					var params = {
-					   date_start: event.start,
-					   date_end: event.end,
+						date_start: event.start,
+						date_end  : event.end,
 					};
 
 					model.save(params, {patch: true, silent: true})
-						.done(function(ids) {
+						.done(function() {
 							//If task has intervention (absent task has no intervention)
-							if( model.toJSON().project_id !== false )
-								var inter = self.collections.interventions.get(model.toJSON().project_id[0])
-								//If inter is not in left panel : not fetch
-								if( !_.isUndefined( inter ) )
-									inter.fetch();
+							var inter;
+							if( model.toJSON().project_id !== false ){
+								inter = self.collections.interventions.get(model.toJSON().project_id[0]);
+							}
+							//If inter is not in left panel : not fetch
+							if( !_.isUndefined( inter ) ){
+								inter.fetch();
+							}
 						})
 						.fail(function (e) {
 							console.log(e);
@@ -421,9 +421,9 @@ define([
 
 				/** Resize event
 				*/
-				eventResize: function( event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) {
+				eventResize: function( event, dayDelta, minuteDelta) {
 
-					var model = self.collection.get(event.id)
+					var model = self.collection.get(event.id);
 
 					var newEvent = self.events.filter(function (element) {
 						return element.id == event.id;
@@ -445,13 +445,14 @@ define([
 					newEvent.remaining_hours =  (event.remaining_hours + (minuteDelta)/60);
 
 					model.save(params, {patch: true, silent: true})
-						.done(function(data) {
+						.done(function() {
 							//If task has intervention (absent task has no intervention)
 							if( model.toJSON().project_id !== false ) {
-								var inter = self.collections.interventions.get(model.toJSON().project_id[0])
+								var inter = self.collections.interventions.get(model.toJSON().project_id[0]);
 								//If inter is not in left panel : not fetch
-								if( !_.isUndefined( inter ) )
+								if( !_.isUndefined( inter ) ){
 									inter.fetch();
+								}
 							}
 						})
 						.fail(function (e) {
@@ -462,16 +463,18 @@ define([
 
 				/** Task is click on the calendar : display unplan task modal
 				*/
-				eventClick: function(fcEvent, jsEvent, view) {
+				eventClick: function(fcEvent) {
 					var taskModel = self.collection.get(fcEvent.id);
 					var taskModelJSON = taskModel.toJSON();
 					var interModel = null;
-					if( taskModelJSON.project_id !== false )
+					if( taskModelJSON.project_id !== false ){
 						interModel = self.collections.interventions.get(taskModelJSON.project_id[0]);
+					}
+
 					app.views.modalUnplanTaskView = new ModalUnplanTaskView({
-						el    		: '#modalUnplanTask',
-						model 	    : taskModel,
-						interModel	: interModel,
+						el        : '#modalUnplanTask',
+						model     : taskModel,
+						interModel: interModel
 					});
 				},
 			});
@@ -483,7 +486,7 @@ define([
 
 			/** Add personal icon for officer on calendar
 			*/
-			$('table td.fc-header-left').html("<img src='medias/unknown-person.jpg' width='80px' class='img-thumbnail'> <span class='lead text-info'>"+username+"</span>");
+			$('table td.fc-header-left').html('<img src="medias/unknown-person.jpg" width="80px" class="img-thumbnail"> <span class="lead text-info">'+username+'</span>');
 		},
 		// -------------------- End fullcalendar initialization -------------------- //
 
@@ -494,12 +497,12 @@ define([
 			this.events = [];
 			var self = this;
 
-			_.each(this.collection.models , function (model, i){
+			_.each(this.collection.models , function (model){
 
 				var task = model.toJSON();
 				var interModel = self.collections.interventions.get(model.getIntervention('id'));
 				if( ! _.isUndefined(interModel) ) {
-					 self.listenTo(interModel, 'change', self.refreshEvents);
+					self.listenTo(interModel, 'change', self.refreshEvents);
 				}
 				var actionDisabled = task.state == TaskModel.status.done.key || task.state == TaskModel.status.cancelled.key;
 
@@ -565,9 +568,9 @@ define([
 		initPrintView: function(){
 			if ( _.isUndefined(app.views.printingCalendarView) ){
 				app.views.printingCalendarView = new PrintingCalendarView({
-					calendar : this,
-					events : this.events,
-				})
+					calendar: this,
+					events  : this.events
+				});
 			}
 			else {
 				app.views.printingCalendarView.close();
@@ -581,7 +584,7 @@ define([
 
 		/** When the model ara updated //
 		*/
-		refreshEvents: function(model){
+		refreshEvents: function(){
 			$(this.divCalendar).fullCalendar( 'refetchEvents' );
 		},
 
@@ -589,7 +592,7 @@ define([
 
 		/** Search officer and Teams //
 		*/
-		searchOfficerOrTeam: function(e){
+		searchOfficerOrTeam: function(){
 
 			var search = $('#searchOfficerOrTeam').val().toLowerCase();
 

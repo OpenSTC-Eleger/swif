@@ -112,6 +112,6 @@ define([
 
 	});
 
-return PlanningManagerView;
+	return PlanningManagerView;
 
 });
