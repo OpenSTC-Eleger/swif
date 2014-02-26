@@ -14,7 +14,6 @@ define([
 
 	'use strict';
 
-
 	/******************************************
 	* Interventions Collection
 	*/
@@ -58,7 +57,7 @@ define([
 				dataType : 'text',
 				data     : {filters: app.objectifyFilters(domain)},
 				success  : function(data,status,request){
-					var contentRange = request.getResponseHeader("Content-Range");
+					var contentRange = request.getResponseHeader('Content-Range');
 					self.specialCpt = contentRange.match(/\d+$/);
 				}
 			});
@@ -79,7 +78,7 @@ define([
 				dataType : 'text',
 				data     : {filters: app.objectifyFilters(domain)},
 				success  : function(data,status,request){
-					var contentRange = request.getResponseHeader("Content-Range");
+					var contentRange = request.getResponseHeader('Content-Range');
 					self.specialCpt2 = contentRange.match(/\d+$/);
 				}
 			});

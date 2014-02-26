@@ -1,5 +1,6 @@
 /*!
  * SWIF-OpenSTC
+ * 
  * Copyright 2013-2014 Siclic <contact@siclic.fr>
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
@@ -31,8 +32,8 @@ define([
 		templateHTML : '/templates/items/itemIntervention.html',
 				
 		className   : function(){
-			this.classColor = InterventionModel.status[this.model.getState()].color;
-			return "row-item border-emphasize border-emphasize-" + this.classColor;	
+			this.classColor = InterventionModel.status[this.model.getState()].color; 
+			return "row-item border-emphasize border-emphasize-" + this.classColor;	 
 		},
 	
 		// The DOM events //

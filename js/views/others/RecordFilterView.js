@@ -132,13 +132,13 @@ define([
 				//url contains sort : keep sort order in url
 				this.urlArray = _.words(this.urlLeftPart, this.URL_SORT_CTXT);
 				this.urlLeftPart = this.urlArray[0];
-				this.urlRightPart =  this.URL_SORT_CTXT + this.urlArray[1];				
+				this.urlRightPart =  this.URL_SORT_CTXT + this.urlArray[1];
 			}
 			else if ( _.str.include(this.urlLeftPart, this.URL_PAGE_CTXT) ) {
 				//url contains page : remove page parameter
 				this.urlArray = _.words(this.urlLeftPart, this.URL_PAGE_CTXT);
 				this.urlLeftPart = this.urlArray[0];
-				this.urlRightPart =  "";				
+				this.urlRightPart =  '';
 			}
 		},
 

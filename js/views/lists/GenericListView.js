@@ -54,7 +54,7 @@ define([
 	
 			this.options = arguments[0];
 			this.initFilters().done(function(){
-				self.initCollections().done(function(){	
+				self.initCollections().done(function(){
 					// Unbind & bind the collection //
 					self.collection.off();
 					self.listenTo(self.collection, 'add', self.add);
@@ -153,17 +153,16 @@ define([
 
 		},
 		
-		/**
-		 * Destroy collection's model
-		 */
-		destroy: function(){			
+		/** Destroy collection's model
+		*/
+		destroy: function(){
 			this.partialRender();
 		},
 		
 		/** Partial Render of the view
 		*/
 		partialRender: function () {
-			var self = this; 
+			var self = this;
 			
 			app.views.paginationView.render();
 			
@@ -176,9 +175,8 @@ define([
 				});
 		},
 		
-		/**
-		 * Init collection with url params
-		 */	
+		/** Init collection with url params
+		 */
 		initCollections: function(){
 
 			// Fetch the collections //
@@ -186,7 +184,7 @@ define([
 				.fail(function(e){
 					console.log(e);
 				});
-		},	 
+		},
 		
 		/**
 		 * 
@@ -205,8 +203,7 @@ define([
 			// Create Fetch params //
 			var fetchParams = {
 				silent     : true,
-				data       : 
-				{
+				data       :{
 					limit  : app.config.itemsPerPage,
 					offset : this.options.page.offset,
 					sort   : this.options.sort.by+' '+this.options.sort.order
@@ -230,7 +227,7 @@ define([
 					}
 				}
 				else{
-					try {						
+					try {
 						globalSearch.filter = JSON.parse(this.options.filter);
 						this.options.filter = globalSearch.filter;
 					}
@@ -246,10 +243,11 @@ define([
 			
 			//Add filter on recurrence selected
 			if(!_.isUndefined(this.options.recurrence)){
-				if(_.isUndefined(fetchParams.data.filters))
-					fetchParams.data.filters = new Object();
+				if(_.isUndefined(fetchParams.data.filters)) {
+					fetchParams.data.filters = {};
+				}
 				fetchParams.data.filters  = _.toArray(fetchParams.data.filters);
-				fetchParams.data.filters.push({field: 'recurrence_id.id', operator:'=', value:this.options.recurrence});				
+				fetchParams.data.filters.push({field: 'recurrence_id.id', operator:'=', value:this.options.recurrence});
 				fetchParams.data.filters = app.objectifyFilters(fetchParams.data.filters);
 			}
 			return fetchParams;

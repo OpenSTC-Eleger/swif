@@ -14,15 +14,13 @@ define([
 	'genericListView',
 	'paginationView',
 	'itemPlaceView',
-	'modalPlaceView',
-	'metaDataModel'
+	'modalPlaceView'
 
 
-], function(app, AppHelpers, PlacesCollection, PlaceModel, GenericListView, PaginationView, ItemPlaceView, ModalPlaceView, MetaDataModel){
+], function(app, AppHelpers, PlacesCollection, PlaceModel, GenericListView, PaginationView, ItemPlaceView, ModalPlaceView){
 
-	'use strict';		
+	'use strict';
 	
-
 	/******************************************
 	* Places List View
 	*/
@@ -46,7 +44,7 @@ define([
 
 		/** View Initialization
 		*/
-		initialize: function (params) {
+		initialize: function () {
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new PlacesCollection(); }
 			

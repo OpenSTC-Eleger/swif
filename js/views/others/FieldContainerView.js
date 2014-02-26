@@ -90,7 +90,7 @@ define([
 						var data = [];
 						_.each(field.selection, function(val) {
 							var text = app.lang[val[0]];
-							if( !_.isBlank(text) ) 
+							if( !_.isBlank(text) )
 							{
 								data.push({ id: val[0], text: _.capitalize(text) });
 							}

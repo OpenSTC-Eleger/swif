@@ -27,11 +27,10 @@ define(['app', 'appHelpers', 'claimersTypesCollection', 'claimerTypeModel', 'gen
 
 			/** View Initialization
 			 */
-			initialize: function (params) {
-				 
-				 // Check if the collections is instantiate //
-				if(_.isUndefined(this.collection)){ this.collection = new ClaimersTypesCollection(); }			
-			
+			initialize: function () {
+				// Check if the collections is instantiate //
+				if(_.isUndefined(this.collection)){ this.collection = new ClaimersTypesCollection(); }
+				
 				GenericListView.prototype.initialize.apply(this, arguments);
 			},
 
@@ -47,10 +46,9 @@ define(['app', 'appHelpers', 'claimersTypesCollection', 'claimerTypeModel', 'gen
 				app.notify('', 'success', app.lang.infoMessages.information, model.getName() + ' : ' + app.lang.infoMessages.claimerTypeCreateOk);
 				this.partialRender();
 			},
-
-
+			
 			/** Display the view
-			 */
+			*/
 			render: function () {
 				var self = this;
 

@@ -91,7 +91,7 @@ module.exports = function(grunt) {
 				src: ['js/**/*.js', '!js/libs/*', '!js/i18n/*']
 			},
 			scripts_inter: {
-				src: ['app-interventions/js/**/*.js', 'app-interventions/main.js']
+				//src: ['app-interventions/js/**/*.js', 'app-interventions/main.js']
 			},
 			scripts_resa: {
 				//src: ['app-reservations/js/**/*.js', 'app-reservations/main.js']

@@ -44,9 +44,9 @@ define([
 
 		/** View Initialization
 		*/
-		initialize: function (params) {
+		initialize: function () {
 			// Check if the collections is instantiate //
-			if(_.isUndefined(this.collection)){ this.collection = new EquipmentsCollection(); }			
+			if(_.isUndefined(this.collection)){ this.collection = new EquipmentsCollection(); }
 			
 			GenericListView.prototype.initialize.apply(this, arguments);
 		},

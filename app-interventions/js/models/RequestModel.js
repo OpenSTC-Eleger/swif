@@ -329,8 +329,8 @@ define([
 				translation: app.lang.valid
 			},
 			to_confirm: {
-				key 		: 'to_confirm',
-				color 		: 'warning',
+				key			: 'to_confirm',
+				color		: 'warning',
 				translation : app.lang.to_confirm
 			},
 			refused: {
@@ -349,9 +349,9 @@ define([
 		// Actions of the requests //
 		actions : {
 			valid: {
-				key        : 'valid',
-				color      : 'success',
-				icon       : 'fa-check',
+				key			: 'valid',
+				color		: 'success',
+				icon		: 'fa-check',
 				translation: app.lang.actions.validate
 			},
 			to_confirm: {

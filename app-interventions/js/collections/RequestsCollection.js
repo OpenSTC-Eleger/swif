@@ -75,7 +75,7 @@ define([
 				dataType : 'text',
 				data     : {filters: app.objectifyFilters(domain)},
 				success  : function(data, status, request){
-					var contentRange = request.getResponseHeader("Content-Range");
+					var contentRange = request.getResponseHeader('Content-Range');
 					self.specialCpt = contentRange.match(/\d+$/);
 				}
 			});
