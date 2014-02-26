@@ -120,7 +120,6 @@ define([
 				$('#modalCancelInter').on('shown', function() {
 					$(this).find('input, textarea').first().focus();
 				});
-
 				$('tr.row-object').css({ opacity: '1'});
 				$('tr.row-object > td').css({ backgroundColor: '#FFF'});
 				$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
@@ -146,9 +145,7 @@ define([
 			}
 			return false;
 		},
-
-
-
+		
 		/** Process Table accordion event
 		*/
 		tableAccordion: function(e){
@@ -157,16 +154,14 @@ define([
 			this.expendAccordion();
 		},
 
-
-
 		/** Expan accordion
 		*/
 		expendAccordion: function(){
+			 var self = this;
 			// Retrieve the intervention ID //
 			//var id = _($(e.target).attr('href')).strRightBack('_');
 			var id = this.model.toJSON().id.toString();
 			var self = this;
-
 			var isExpend = $('#collapse_'+id).hasClass('expend');
 
 			// Reset the default visibility //
@@ -195,7 +190,6 @@ define([
 				$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 			}
 		},
-
 
 
 		/** Highlight the row item

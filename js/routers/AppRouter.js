@@ -54,19 +54,31 @@ define([
 		},
 
 
-
-		/** Render a view by undelegating all Event
-		*/
-		render: function (view) {
-
-			// Close the current view //
+		closeCurrentView: function() {
 			if (this.currentView) {
+				if (this.currentView) {
+					if (this.currentView.$el){
+						this.currentView.undelegateEvents();
+					}
+					this.currentView.$el = (this.currentView.el instanceof $) ? this.currentView.el : $(this.currentView.el);
+					this.currentView.el = this.currentView.$el[0];
+				}
+			
 				if (this.currentView.$el){
 					this.currentView.undelegateEvents();
 				}
 				this.currentView.$el = (this.currentView.el instanceof $) ? this.currentView.el : $(this.currentView.el);
 				this.currentView.el = this.currentView.$el[0];
 			}
+		},
+	
+
+		/** Render a view by undelegating all Event
+		*/
+		render: function (view) {
+
+			// Close the current view //
+			this.closeCurrentView();
 
 			// render the new view //
 			view.render();
@@ -233,7 +245,7 @@ define([
 		/** Load The Interventions Module
 		*/
 		loadAppInterventions: function(){
-
+			this.closeCurrentView();
 			if(!require.defined('app-interventions')){
 				this.loadModule('app-interventions');
 			}
@@ -245,7 +257,7 @@ define([
 		/** Load The Bookings Module
 		*/
 		loadAppReservations: function(){
-
+			this.closeCurrentView();
 			if(!require.defined('app-reservations')){
 				this.loadModule('app-reservations');
 			}

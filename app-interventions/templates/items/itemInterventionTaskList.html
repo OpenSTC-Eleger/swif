@@ -17,10 +17,12 @@
 		<tbody id="row-nested-objects">
 		</tbody>
 	</table>
+	<% if(intervention.tasks.length == 0) { %>
 	<!-- No Task to Display -->
 	<div class="alert alert-info noTask">
-		<i class="fa fa-info-circle"></i> &nbsp;<%= lang.infoMessages.noTaskForIntervention %>.
+		<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noTaskForIntervention %>.
 	</div>
+	<% } %>
 
 	<div class="div-actions" >
 		<button class="btn btn-primary btn-sm addTask"

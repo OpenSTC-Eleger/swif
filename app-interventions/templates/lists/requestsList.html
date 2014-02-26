@@ -6,9 +6,9 @@
 		<% if(user.isDST() || user.isManager()){
 
 		  if(user.isDST()) {
-				var classColor      = requestsState.confirm.color;
-				var filterValue     = requestsState.confirm.key;
-				var actionToProcess = lang.actions.confirm;
+				var classColor      = requestsState.to_confirm.color;
+				var filterValue     = requestsState.to_confirm.key;
+				var actionToProcess = lang.actions.to_confirm;
 			}
 			else if(user.isManager()){
 		   		var classColor      = requestsState.wait.color;
@@ -21,13 +21,13 @@
 			}
 		%>
 
-		<sup id="badgeActions" class="badge badge-<%= classColor %> badge-action" data-filter="<%= filterValue %>" data-toggle="tooltip" data-original-title="<%= actionToProcess %>" data-placement="bottom">
+		<sup id="specialBadge" class="badge badge-<%= classColor %> badge-action" data-filter="<%= filterValue %>" data-toggle="tooltip" data-original-title="<%= actionToProcess %>" data-placement="bottom">
 			<%= nbRequestsToDeal %>
 		</sup>
 
 		<% } %>
 
-		<sup id="bagdeCpt" class="badge"><%= nbRequests %></sup>
+		<sup id="bagde" class="badge"><%= nbRequests %></sup>
 	</h1>
 </div>
 

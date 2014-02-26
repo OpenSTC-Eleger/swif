@@ -20,6 +20,7 @@ define([
 
 		urlRoot: '/api/openstc/tasks',
 
+
 		getState : function() {
 			return this.get('state');
 		},

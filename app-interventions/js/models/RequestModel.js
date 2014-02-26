@@ -328,20 +328,20 @@ define([
 				color      : 'success',
 				translation: app.lang.valid
 			},
-			confirm: {
-				key        : 'confirm',
-				color      : 'warning',
-				translation: app.lang.confirm
+			to_confirm: {
+				key 		: 'to_confirm',
+				color 		: 'warning',
+				translation : app.lang.to_confirm
 			},
 			refused: {
 				key        : 'refused',
 				color      : 'danger',
 				translation: app.lang.refused
 			},
-			closed: {
-				key        : 'closed',
-				color      : 'default',
-				translation: app.lang.finished
+			finished: {
+				key 		: 'finished',
+				color 		: 'default',
+				translation : app.lang.finished
 			}
 		},
 
@@ -354,11 +354,11 @@ define([
 				icon       : 'fa-check',
 				translation: app.lang.actions.validate
 			},
-			confirm: {
-				key        : 'confirm',
-				color      : 'warning',
-				icon       : 'fa-level-up',
-				translation: app.lang.actions.confirmChief
+			to_confirm: {
+				key 		: 'to_confirm',
+				color 		: 'warning',
+				icon 		: 'fa-level-up',
+				translation : app.lang.actions.confirmChief
 			},
 			refused: {
 				key        : 'refused',

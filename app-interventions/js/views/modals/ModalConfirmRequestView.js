@@ -84,7 +84,7 @@ define([
 
 
 			var params = {
-				state   : RequestModel.status.confirm.key,
+				state   : RequestModel.status.to_confirm.key,
 				note    : $('#informationForDST').val()
 			};
 

@@ -9,7 +9,7 @@
 		
 			%>
 			
-			<sup id="badgeActions" class="badge badge-<%= classColor %> badge-action" data-filter="<%= filterValue %>" data-toggle="tooltip" data-original-title="<%= actionToProcess %>" data-placement="bottom">
+			<sup id="badge" class="badge badge-<%= classColor %> badge-action" data-filter="<%= filterValue %>" data-toggle="tooltip" data-original-title="<%= actionToProcess %>" data-placement="bottom">
 				<%= nbBookings %>
 			</sup>
 	
@@ -20,27 +20,8 @@
 
 
 	<!-- Table toolbar -->
-	<div class="btn-toolbar tableToolbar row">
-		
-		<span class="bt-group col-sm-5">			
-			<a href="#app-reservations/nouvelle-reservation" class="btn btn-primary modalCreateBooking" role="button"><i class="fa fa-plus"></i> <%= lang.resa.viewsTitles.newBooking%></a>
-		 </span>
-		 
-		
-		<span id="toolbar-buttons" class="bt-group col-sm-5 btn-actions"></span>
-	
-
-		<form class="form-search pull-right col-xs-5 col-md-3 col-lg-2">
-
-		  <div class="input-group">
-				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
-				<span class="input-group-btn">
-					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
-				</span>
-			</div>
-		</form>
-	</div>
-	<!-- /Table toolbar -->
+	<div id="headerList" class="tableToolbar row"></div>
+	<!-- Table toolbar -->
 
 
 
@@ -53,38 +34,74 @@
 		</div>
 	<% } %>
 
-
-
-	<!-- Table Bookings -->
-	<div class="table-responsive">
-	<table class="table-bookings table table-bordered table-hover table-sorter table-vertical-center">
-		<thead>
-			<tr>
-				<th data-sort-column="id">N°</th>
-				<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
-				<th><%= _.capitalize(lang.resa.ressources) %></th>
-				<th><%= _.capitalize(lang.resa.startBookingDate) %></th>
-				<th><%= _.capitalize(lang.resa.endBookingDate) %></th>
-				<th><%= _.capitalize(lang.resa.UserOrClaimer) %></th>
-				<th><%= _.capitalize(lang.resa.bookingDate) %></th>
-				<th><%= _.capitalize(lang.status) %></th>
-
-				
-				<th class="actions"><%= _.capitalize(lang.action) %></th>
-				
-			</tr>
-		</thead>
-		
-		<tbody id="booking-items">
-		<!-- Bookings rows -->
-		
-		</tbody>
-	</table>
+	<div id="filter-informations" class="tableToolbar hide">
+		<div class="alert alert-info">
+			<i class="fa fa-filter fa-fw pull-left"></i>
+			<p id="filterContent" class="d-inline"><%= lang.activeFilter %>:</p>
+			<button type="button" class="btn btn-link btn-xs pull-right unapply-filter"><i class="fa fa-eraser fa-fw"></i> <%= lang.actions.unapplyFilter %></button>
+		</div>
 	</div>
+	
+	<!-- Main view -->
+	<div class="row">
+	
+		<!-- Advance filter container -->
+		<div id="advanceFilterContainer" class="hide content-sidebar content-sidebar-right">
+		<div class="panel panel-default">
+	
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<%= lang.advanceSearch %>
+					<a href="#" class="pull-right unapply-filter">
+						<i class="fa fa-eraser fa-fw text-muted" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.unapplyFilter) %>"></i>
+					</a>
+				</h4>
+			</div>
+	
+			<div class="panel-body">
+				<!-- Advance filter -->
+				<div id="advanced-filters-bar"></div>
+			</div>
+		</div>
+		</div>
+	
+	
+		<div id="contentContainer" class="content-main">
 
-	<!-- Table pagination -->
-	<div id="pagination" class="pull-right"></div>
-	<!-- /Table pagination -->
+			<!-- Table Bookings -->
+			<div class="table-responsive">
+			<table class="table-bookings table table-bordered table-hover table-sorter table-vertical-center">
+				<thead>
+					<tr>
+						<th data-sort-column="id">N°</th>
+						<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
+						<th><%= _.capitalize(lang.resa.ressources) %></th>
+						<th><%= _.capitalize(lang.resa.startBookingDate) %></th>
+						<th><%= _.capitalize(lang.resa.endBookingDate) %></th>
+						<th><%= _.capitalize(lang.resa.UserOrClaimer) %></th>
+						<th><%= _.capitalize(lang.resa.bookingDate) %></th>
+						<th><%= _.capitalize(lang.status) %></th>
+		
+						
+						<th class="actions"><%= _.capitalize(lang.action) %></th>
+						
+					</tr>
+				</thead>
+				
+				<tbody id="booking-items">
+				<!-- Bookings rows -->
+				
+				</tbody>
+			</table>
+			</div>
+
+			<!-- Table pagination -->
+			<div id="pagination" class="pull-right"></div>
+			<!-- /Table pagination -->
+		</div>
+
+	</div>
+	<!-- /Main view -->
 
 	<!-- Modal form to valid a request -->
 	<div id="modalUpdateBooking" class="modal fade" role="dialog" aria-hidden="true"></div>

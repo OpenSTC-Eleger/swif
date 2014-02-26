@@ -35,12 +35,10 @@ define([
 				'pricelist_id', 'confirm_note', 'cancel_note', 'done_note', 'people_street','people_city', 'people_zip', 'whole_day'],
 
 		searchable_fields: [
-			{ key: 'id', type : 'numeric' },
-			{ key: 'name', type : 'text' }
-
+			{ key: 'id',          type: 'numeric', label: 'N°' },
+			{ key: 'name',        type: 'text',    label: app.lang.label },			
 		],
-
-
+		
 		//method to retrieve attribute with standard return form
 		getAttribute: function(key,default_value){
 			var val = this.get(key);
@@ -143,14 +141,14 @@ define([
 
 				var icon;
 				if(r.type === 'site'){
-					icon = '<i class="fa fa-map-marker fa-fw"></i>';
+					icon = _('<i class=&quot;fa fa-map-marker fa-fw&quot;></i>').escapeHTML();
 				}
 				else{
-					icon = '<i class="fa fa-wrench fa-fw"></i>';
+					icon = _('<i class=&quot;fa fa-wrench fa-fw&quot;></i>').escapeHTML();
 				}
 
 
-				bookingResourceQuantities += '<dt>' + icon +' '+ r.name + '</dt><dd>' + r.tooltip + '</dd>';
+				bookingResourceQuantities += '<dt>' + icon +' '+ _(r.name).unescapeHTML() + '</dt><dd>' + _(r.tooltip).unescapeHTML()  + '</dd>';
 			});
 
 			return bookingResourceQuantities + '</dl>';
@@ -843,6 +841,12 @@ define([
 	}, {
 		// Request State Initialization //
 		status : {
+			//= 
+			draft: {
+				key                 : 'draft',
+				color               : 'warning',
+				translation         : app.lang.draft
+			},
 			//= égal au 'wait' STC
 			remplir: {
 				key        : 'remplir',
@@ -858,10 +862,10 @@ define([
 			},
 			//= égal au 'refused' STC
 			cancel: {
-				key        : 'cancel',
-				color      : 'danger',
-				icon       : 'fa-times',
-				translation: app.lang.refused
+				key                 : 'cancel',
+				color               : 'danger',
+				icon 		        : 'fa-times',
+				translation         : app.lang.cancel
 			},
 			//= égal au 'closed' STC
 			done: {

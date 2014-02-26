@@ -55,12 +55,11 @@ define([
 		specialCount: function(){
 			var self = this;
 
-			var domain;
-
+			var domain = [];
 			// Construct a domain accrding to user group //
 			if(app.current_user.isDST()){
 				domain = [
-					{ field : 'state', operator : '=', value : RequestModel.status.confirm.key }
+					{ field : 'state', operator : '=', value : RequestModel.status.to_confirm.key }
 				];
 			}
 			else if(app.current_user.isManager()){
@@ -76,7 +75,7 @@ define([
 				dataType : 'text',
 				data     : {filters: app.objectifyFilters(domain)},
 				success  : function(data, status, request){
-					var contentRange = request.getResponseHeader('Content-Range');
+					var contentRange = request.getResponseHeader("Content-Range");
 					self.specialCpt = contentRange.match(/\d+$/);
 				}
 			});

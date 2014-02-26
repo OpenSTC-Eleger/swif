@@ -20,8 +20,8 @@ define([
 
 ], function(app, AppHelpers, PlacesCollection, PlaceModel, GenericListView, PaginationView, ItemPlaceView, ModalPlaceView, MetaDataModel){
 
-	'use strict';
-
+	'use strict';		
+	
 
 	/******************************************
 	* Places List View
@@ -29,6 +29,8 @@ define([
 	var PlacesListView = GenericListView.extend({
 
 		templateHTML  : 'templates/lists/placesList.html',
+		
+		model: PlaceModel,
 
 
 		// The DOM events //
@@ -45,23 +47,11 @@ define([
 		/** View Initialization
 		*/
 		initialize: function (params) {
-			this.options = params;
-
-			var self = this;
-
-			this.initFilters().done(function(){
-				self.initCollection().done(function(){
-
-					// Unbind & bind the collection //
-					self.collection.off();
-					self.listenTo(self.collection, 'add', self.add);
-
-					//Set Meta Data for request collection to compute recording filters
-					self.metaDataModel = new MetaDataModel({ id: self.collection.modelId });
-
-					app.router.render(self);
-				});
-			});
+			// Check if the collections is instantiate //
+			if(_.isUndefined(this.collection)){ this.collection = new PlacesCollection(); }
+			
+			
+			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
 
@@ -101,7 +91,7 @@ define([
 
 
 				// Call the render Generic View //
-				GenericListView.prototype.render(self, PlaceModel.prototype.searchable_fields);
+				GenericListView.prototype.render.apply(self);
 
 
 				// Create item place view //
@@ -110,32 +100,12 @@ define([
 					$('#rows-items').append(itemPlaceView.render().el);
 				});
 
-
-				// Pagination view //
-				app.views.paginationView = new PaginationView({
-					page       : self.options.page.page,
-					collection : self.collection
-				});
-
 			});
 
 			$(this.el).hide().fadeIn();
 
 			return this;
 		},
-
-
-		/** Partial Render of the view
-		*/
-		partialRender: function () {
-			var self = this;
-
-			this.collection.count(this.fetchParams).done(function(){
-				$('#badgeNbPlaces').html(self.collection.cpt);
-				app.views.paginationView.render();
-			});
-		},
-
 
 
 		/** Modal form to create a new Place
@@ -147,73 +117,6 @@ define([
 				el  : '#modalSavePlace'
 			});
 		},
-
-
-
-		/** Collection Initialisation
-		*/
-		initCollection: function(){
-			var self = this;
-
-			// Check if the collections is instantiate //
-			if(_.isUndefined(this.collection)){ this.collection = new PlacesCollection(); }
-
-
-			// Check the parameters //
-			if(_.isUndefined(this.options.sort)){
-				this.options.sort = this.collection.default_sort;
-			}
-			else{
-				this.options.sort = AppHelpers.calculPageSort(this.options.sort);
-			}
-
-			this.options.page = AppHelpers.calculPageOffset(this.options.page);
-
-
-			// Create Fetch params //
-			var fetchParams = {
-				silent : true,
-				data   : {
-					limit  : app.config.itemsPerPage,
-					offset : this.options.page.offset,
-					sort   : this.options.sort.by+' '+this.options.sort.order
-				}
-			};
-
-
-			var globalSearch = {};
-			if(!_.isUndefined(this.options.search)){
-				globalSearch.search = this.options.search;
-			}
-
-			if(!_.isUndefined(this.options.filter)){
-				if(!_.isUndefined(this.filterModel) ){
-					try {
-						globalSearch.filter = JSON.parse(this.filterModel.toJSON().domain);
-						this.options.filter = globalSearch.filter;
-					}
-					catch(e)
-					{
-						console.log('Filter is not valid');
-					}
-
-				}
-				else{
-					globalSearch.filter = JSON.parse(this.options.filter);
-					this.options.filter = globalSearch.filter;
-				}
-			}
-
-			if(!_.isEmpty(globalSearch)){
-				fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, PlaceModel.prototype.searchable_fields);
-			}
-
-
-			return $.when(self.collection.fetch(fetchParams))
-				.fail(function(e){
-					console.log(e);
-				});
-		}
 
 	});
 

@@ -220,7 +220,11 @@ define([
 
 		getSurface : function(human) {
 			if(human){
-				return (this.get('surface') !== 0 ? _.numberFormat(this.get('surface'), 0, ',', ' ') +' m²' : '');
+				var surface = this.get('surface');
+				if ( _.isString( this.get('surface') )) {
+					surface = parseInt( surface );
+				}
+				return (surface !== 0 ? _.numberFormat(surface, 0, ',', ' ') +' m²' : '');
 			}
 			else{
 				return this.get('surface');

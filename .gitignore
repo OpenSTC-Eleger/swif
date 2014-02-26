@@ -3,6 +3,7 @@
 *.project
 .settings/
 .project
+.htaccess
 *.swp
 config/configuration.json
 logo/

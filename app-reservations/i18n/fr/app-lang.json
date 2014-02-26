@@ -49,7 +49,8 @@
 			"wholeDay"								: "Toute la journée",
 			"contactDetails"						: "Coordonnées",
 			"available_qty"							: "Quantité disponible",
-			"sendMailToClaimer"						: "Notifier le demandeur",			
+			"sendMailToClaimer"						: "Notifier le demandeur",
+	
 			
 		"actions" : {			
 			"confirmAll"							: "Tout valider",
