@@ -136,8 +136,7 @@ define([
 			}
 			else if ( _.str.include(this.urlLeftPart, this.URL_PAGE_CTXT) ) {
 				//url contains page : remove page parameter
-				this.urlArray = _.words(this.urlLeftPart, this.URL_PAGE_CTXT);
-				this.urlLeftPart = this.urlArray[0];
+				this.urlLeftPart = _(this.urlLeftPart).strLeft(this.URL_PAGE_CTXT);
 				this.urlRightPart =  '';
 			}
 		},

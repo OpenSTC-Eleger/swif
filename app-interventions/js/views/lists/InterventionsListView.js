@@ -101,8 +101,8 @@ define([
 				_.each(self.collection.models, function(model){
 					var detailedView =new ItemInterventionTaskListView({model: model});
 					var simpleView = new ItemInterventionView({model: model, detailedView:detailedView});
-					$('#inter-items').append( detailedView.render().el );
 					$('#inter-items').append( simpleView.render().el );
+					$('#inter-items').append( detailedView.render().el );
 
 					simpleView.detailedView = detailedView;
 				});
