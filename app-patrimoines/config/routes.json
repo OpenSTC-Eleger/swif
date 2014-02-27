@@ -1,0 +1,8 @@
+{
+
+	"contracts": {
+		"url"		: "contracts",
+		"function"	: "bookings"
+	}
+
+}
