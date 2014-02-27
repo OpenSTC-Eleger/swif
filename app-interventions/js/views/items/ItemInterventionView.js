@@ -1,6 +1,6 @@
 /*!
  * SWIF-OpenSTC
- * 
+ *
  * Copyright 2013-2014 Siclic <contact@siclic.fr>
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
@@ -30,19 +30,18 @@ define([
 		tagName     : 'tr',
 
 		templateHTML : '/templates/items/itemIntervention.html',
-				
+
 		className   : function(){
-			this.classColor = InterventionModel.status[this.model.getState()].color; 
-			return "row-item border-emphasize border-emphasize-" + this.classColor;	 
+			this.classColor = InterventionModel.status[this.model.getState()].color;
+			return 'row-item border-emphasize border-emphasize-' + this.classColor;
 		},
-	
+
 		// The DOM events //
 		events       : {
-			
-			'click a.printInter'				: 'print',
-			'click a.buttonCancelInter'			: 'displayModalCancelInter',
-			'click a.accordion-object'    		: 'tableAccordion',
-			'click a.modalSaveInter'			: 'displayModalSaveInter',
+			'click a.printInter'       : 'print',
+			'click a.buttonCancelInter': 'displayModalCancelInter',
+			'click a.accordion-object' : 'tableAccordion',
+			'click a.modalSaveInter'   : 'displayModalSaveInter',
 		},
 
 
@@ -51,7 +50,7 @@ define([
 		*/
 		initialize : function(params) {
 			this.options = params;
-			
+
 			this.detailedView = this.options.detailedView;
 			this.model.off();
 
@@ -63,8 +62,7 @@ define([
 
 		/** When the model ara updated //
 		*/
-
-		change: function(model){
+		change: function(){
 			var self = this;
 			self.render();
 
@@ -113,14 +111,14 @@ define([
 			});
 			$(this.el).hide().fadeIn('slow');
 			return this;
-		},	
-	
+		},
+
 		/** Print a Task or an Intervention
 		*/
 		print: function(e){
 			e.preventDefault();
 
-			var self = this;			
+			var self = this;
 			var interJSON = this.model.toJSON();
 
 			// Hide the print Inter section //
@@ -128,17 +126,17 @@ define([
 			$('#printTask div.forInter').show();
 			$('#tableTasks tbody').empty();
 
-			
+
 			this.detailedView.fetchData().done(function () {
 				// Display all the tasks of the inter //
-				_.each(self.detailedView.tasksCollection.models, function(task, i){
-					var taskJSON = task.toJSON();		
-					
+				_.each(self.detailedView.tasksCollection.models, function(task){
+					var taskJSON = task.toJSON();
+
 					var doneBy = '';
 					var dateStart = '';
 					var dateEnd = '';
 					var equipment = '';
-		
+
 					// User who made the Task //
 					if(task.getState() == TaskModel.status.done.key){
 						if(task.affectedOnTeam()){
@@ -146,33 +144,33 @@ define([
 						}
 						else{
 							doneBy = task.getUser();
-						}		
+						}
 						dateStart = moment(task.getDateStart()).format('LLL');
 						dateEnd = moment(task.getDateEnd()).format('LLL');
 						equipment = task.getEquipments();
-					}		
+					}
 					$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+taskJSON.name+'</td><td>'+AppHelpers.decimalNumberToTime(taskJSON.planned_hours, 'human')+'</td><td class="toFill">'+doneBy+'</td><td class="toFill">'+dateStart+'</td><td class="toFill">'+dateEnd+'</td><td class="toFill">'+equipment+'</td><td class="toFill"></td><td class="toFill"></td></tr>');
-				});					
-					
+				});
+
 				var deferred = $.Deferred();
 				deferred.always(function(){
 					$('#interName').html(interJSON.name);
 					$('#interDescription').html(interJSON.description);
 					$('#interService').html(!interJSON.service_id?'':interJSON.service_id[1]);
-	
+
 					if(interJSON.has_equipment){
-						$('#interPlace').css({display:'inline-block'});					
+						$('#interPlace').css({display:'inline-block'});
 						//fill data with equipment and location
 						$('#interPlaceOrEquipment').html(interJSON.equipment_id[1]);
-						$('#interPlace').html(interJSON.site1[1]);					
+						$('#interPlace').html(interJSON.site1[1]);
 					}
 					else{
-						$('#interPlace').css({display:'none'});					
+						$('#interPlace').css({display:'none'});
 						//fill data of site1
 						$('#interPlaceOrEquipment').html(interJSON.site1[1]);
 					}
 					$('#interPlaceMore').html(interJSON.site_details);
-		
+
 					$('#printTask').printElement({
 						leaveOpen	: true,
 						printMode	: 'popup',
@@ -183,7 +181,7 @@ define([
 				});
 
 				if(!interJSON.ask_id){
-					
+
 					$('#claimentName').html(interJSON.create_uid[1]);
 					deferred.resolve();
 				}else{
@@ -192,16 +190,16 @@ define([
 					ask.setId(interJSON.ask_id[0]);
 					ask.fetch().done(function(){
 						var askJSON = ask.toJSON();
-						if(askJSON.partner_id != false){
+						if(askJSON.partner_id !== false){
 							$('#claimentName').html(askJSON.partner_id[1]+' - '+ !askJSON.partner_address?'':askJSON.partner_address[1]);
 							$('#claimentPhone').html(askJSON.partner_phone);
-							
+
 						}
 						else{
 							$('#claimentName').html(askJSON.people_name);
 							$('#claimentPhone').html(askJSON.people_phone);
 						}
-						if(!_.isUndefined(askJSON.partner_type) && askJSON.partner_type != false){
+						if(!_.isUndefined(askJSON.partner_type) && askJSON.partner_type !== false){
 							$('#claimentType').html(askJSON.partner_type[1]);
 						}
 						deferred.resolve();
@@ -214,12 +212,12 @@ define([
 				}
 			});
 		},
-		
+
 		expendAccordion: function(){
 			var self = this;
 			// Retrieve the intervention ID //
 
-			var id = this.model.toJSON().id.toString();	
+			var id = this.model.toJSON().id.toString();
 			var isExpend = $('#collapse_'+id).hasClass('expend');
 
 			// Reset the default visibility //
@@ -247,10 +245,10 @@ define([
 			}
 		},
 
-		
-		tableAccordion: function(e){	
+
+		tableAccordion: function(e){
 			e.preventDefault();
-			//fold up current accordion and expand 
+			//fold up current accordion and expand
 			this.expendAccordion();
 		},
 
@@ -262,14 +260,14 @@ define([
 			params.model = this.model;
 			new ModalInterventionView(params);
 		},
-		
-	
+
+
 		/** Display the form to cancel an intervention
 		*/
 		displayModalCancelInter: function(e) {
 			e.preventDefault();
 			new ModalCancelInterventionView({el: '#modalCancelInter', model: this.model});
-		},
+		}
 
 	});
 

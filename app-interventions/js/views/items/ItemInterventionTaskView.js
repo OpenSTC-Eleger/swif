@@ -43,7 +43,6 @@ define([
 			'click a.printTask'                      : 'print',
 
 			'click .buttonTaskDone, .buttonNotFinish': 'displayModalTaskDone',
-
 		},
 
 
@@ -223,10 +222,11 @@ define([
 			new ModalDeleteView({el: '#modalDeleteTask', model: this.model, modalTitle: app.lang.viewsTitles.deleteTask, modalConfirm: app.lang.warningMessages.confirmDeleteTask});
 		},
 
+
 		displayModalTaskDone: function(e){
 			e.preventDefault();
 			var button = $(e.target);
-			var self = this;
+
 			var taskDone;
 			// Display or nor the Remaining Time Section //
 			if(button.hasClass('buttonNotFinish') || button.hasClass('iconButtonNotFinish')){
@@ -240,10 +240,11 @@ define([
 			new ModalTaskDoneView({el:'#modalTaskDone', model: this.model, inter: this.inter, taskDone: taskDone, tasks: this.tasks});
 		},
 
+
 		displayModalCancelTask: function(e) {
 			e.preventDefault();
 			new ModalCancelTaskView({el: '#modalCancelTask', model: this.model, inter:this.inter});
-		},
+		}
 
 	});
 

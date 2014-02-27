@@ -145,7 +145,7 @@ define([
 			}
 			return false;
 		},
-		
+
 		/** Process Table accordion event
 		*/
 		tableAccordion: function(e){
@@ -157,11 +157,10 @@ define([
 		/** Expan accordion
 		*/
 		expendAccordion: function(){
-			 var self = this;
-			// Retrieve the intervention ID //
-			//var id = _($(e.target).attr('href')).strRightBack('_');
-			var id = this.model.toJSON().id.toString();
 			var self = this;
+
+			// Retrieve the intervention ID //
+			var id = this.model.toJSON().id.toString();
 			var isExpend = $('#collapse_'+id).hasClass('expend');
 
 			// Reset the default visibility //

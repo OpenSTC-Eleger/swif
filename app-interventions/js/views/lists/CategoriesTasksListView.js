@@ -27,9 +27,9 @@ define([
 	var categoriesTasksListView = GenericListView.extend({
 
 		templateHTML: '/templates/lists/categoriesTasksList.html',
-		
+
 		model : CategoryTaskModel,
-		
+
 		// The DOM events //
 		events: function(){
 			return _.defaults({
@@ -43,11 +43,11 @@ define([
 
 		/** View Initialization
 		*/
-		initialize: function (params) {
+		initialize: function() {
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new CategoriesTasksCollection(); }
-			
-			
+
+
 			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
@@ -85,10 +85,10 @@ define([
 				});
 
 				$(self.el).html(template);
-				
+
 				// Call the render Generic View //
 				GenericListView.prototype.render.apply(self);
-	
+
 				// Create item category request view //
 				_.each(self.collection.models, function(catTask){
 					var itemCategoryTaskView  = new ItemCategoryTaskView({model: catTask});
@@ -110,9 +110,8 @@ define([
 				el  : '#modalSaveCat'
 			});
 		},
-		
+
 	});
 
 	return categoriesTasksListView;
-
 });

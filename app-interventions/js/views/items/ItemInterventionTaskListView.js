@@ -7,7 +7,7 @@
 define([
 	'app',
 	'appHelpers',
-	
+
 	'taskModel',
 
 	'tasksCollection',
@@ -36,21 +36,22 @@ define([
 			'click .btn.addTask'      : 'displayModalAddTask',
 		},
 
-		
+
 		/** View Initialization
 		*/
 		initialize : function() {
 		},
-	
+
+
 		/** When the model has updated //
 		*/
-		change: function(model){
+		change: function(){
 			var self = this;
 			//Update Inter model
 			self.model.fetch();
 			this.partialRender();
 		},
-		
+
 		addTask: function(model){
 			var itemTaskView  = new ItemInterventionTaskView({ model: model, inter:this.model, tasks:this.tasksCollection});
 			$(this.el).find('#row-nested-objects').append(itemTaskView.el);
@@ -59,15 +60,15 @@ define([
 			this.listenTo(model, 'destroy', this.destroyTask);
 			this.partialRender();
 		},
-		
+
 		destroyTask: function(model){
 			this.tasksCollection.remove(model);
 			//check if there is tasks, if not, display message infos instead of table
 			this.change();
 		},
-	
+
 		updateList: function(){
-			if(_.size(this.tasksCollection) == 0){
+			if(_.size(this.tasksCollection) === 0){
 				$(this.el).find('.noTask').css({display:'block'});
 				$(this.el).find('.table-nested-objects').css({display: 'none'});
 			}
@@ -76,16 +77,17 @@ define([
 				$(this.el).find('.table-nested-objects').css({display: 'table'});
 			}
 		},
-		
+
 		/** Display the view
 		*/
-		
 		partialRender: function(){
 			this.updateList();
-			if(this.model.toJSON().actions.indexOf('add_task') == -1){
+			if(this.model.toJSON().actions.indexOf('add_task') === -1){
 				$('button.addTask').attr('disabled','disabled');
 			}
 		},
+
+
 
 		render : function() {
 			var self = this;
@@ -108,7 +110,7 @@ define([
 				$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 
 				self.updateList();
-				
+
 				// Render tasks
 				if (!_.isUndefined(self.tasksCollection)) {
 					$('#row-nested-objects').empty();
@@ -116,38 +118,41 @@ define([
 						var itemInterventionTaskView = new ItemInterventionTaskView({model: task, inter:self.model, tasks:self.tasksCollection});
 						$(self.el).find('#row-nested-objects').append(itemInterventionTaskView.render().el);
 						self.listenTo(task, 'change', self.change);
-						self.listenTo(task, 'destroy', self.destroyTask);	
+						self.listenTo(task, 'destroy', self.destroyTask);
 					});
-				};
-				
+				}
+
 			});
 			return this;
 		},
-		
-		/**
-		 * Fetch tasks
-		 */
+
+
+
+		/** Fetch tasks
+		*/
 		fetchData: function () {
 			var self = this;
 			var deferred = $.Deferred();
 			self.tasksCollection = new TasksCollection();
-			if( self.model.get('tasks')!= false ) {
+			if( self.model.get('tasks')!== false ) {
 				self.tasksCollection.fetch({silent: true,data: {filters: {0: {'field': 'id', 'operator': 'in', 'value': self.model.get('tasks')}}}}).done(function(){
 					deferred.resolve();
 				});
 			}
 			return deferred;
 		},
-		
-		/**
-		 * Add task
-		 */
+
+
+
+		/** Add task
+		*/
 		displayModalAddTask: function(e){
 			e.preventDefault();
 			var task = new TaskModel();
 			this.listenTo(task, 'sync', this.addTask);
-			new ModalInterventionAddTaskView({el: '#modalAddTask',  model : task, inter: this.model});			
-		},
+			new ModalInterventionAddTaskView({el: '#modalAddTask',  model : task, inter: this.model});
+		}
+
 	});
 
 	return ItemInterventionTaskListView;

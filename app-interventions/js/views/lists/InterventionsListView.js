@@ -30,14 +30,14 @@ define([
 
 		templateHTML: '/templates/lists/interventionsList.html',
 
-		
+
 		model: InterventionModel,
-	
+
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'click a.createModel'                  : 'modalCreateInter'
-			}, 
+				'click a.createModel'  : 'modalCreateInter'
+			},
 				GenericListView.prototype.events
 			);
 		},
@@ -46,17 +46,17 @@ define([
 
 		/** View Initialization
 		*/
-		initialize : function(params) {
+		initialize : function() {
 			// Check if the collections is instantiate //
-			if(_.isUndefined(this.collection)){ this.collection = new InterventionsCollection(); }			
-			
+			if(_.isUndefined(this.collection)){ this.collection = new InterventionsCollection(); }
+
 			GenericListView.prototype.initialize.apply(this, arguments);
-		},	
-	
+		},
+
 		/**
 		 * Add Intervention view
 		 */
-		add: function(model){			
+		add: function(model){
 			var detailedView =new ItemInterventionTaskListView({model: model});
 			var simpleView = new ItemInterventionView({model: model, detailedView:detailedView});
 			$('#inter-items').prepend( detailedView.render().el );
@@ -71,7 +71,7 @@ define([
 
 			this.partialRender();
 		},
-		
+
 		/** Display the view
 		*/
 		render : function() {
@@ -96,43 +96,44 @@ define([
 
 				// Call the render Generic View //
 				GenericListView.prototype.render.apply(self);
-				
+
 				// Create item intervention view //
-				_.each(self.collection.models, function(model){	
+				_.each(self.collection.models, function(model){
 					var detailedView =new ItemInterventionTaskListView({model: model});
 					var simpleView = new ItemInterventionView({model: model, detailedView:detailedView});
 					$('#inter-items').append( detailedView.render().el );
 					$('#inter-items').append( simpleView.render().el );
 
-					simpleView.detailedView = detailedView;					
+					simpleView.detailedView = detailedView;
 				});
 
 				$(this.el).hide().fadeIn();
-				
-			});			
+
+			});
 			return this;
 		},
-		
-	
+
+
 		/** Display the form to add / update an intervention
 		*/
 		displayModalSaveInter: function(e){
-			e.preventDefault();			
+			e.preventDefault();
 			var params = {el:'#modalSaveInter',collection: this.collection};
 			new ModalInterventionView(params);
 		},
-		
+
 
 		/** Modal form to create a new Inter
 		*/
 		modalCreateInter: function(e){
 			e.preventDefault();
-	
+
 			app.views.modalInterView = new ModalInterventionView({
 				el : '#modalInter',
 				collection: this.collection,
 			});
 		},
 	});
+
 	return InterventionsListView;
 });

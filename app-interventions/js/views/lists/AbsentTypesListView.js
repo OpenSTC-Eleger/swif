@@ -29,7 +29,7 @@ define([
 		templateHTML: '/templates/lists/absentTypesList.html',
 
 		model : AbsentTypeModel,
-		
+
 		// The DOM events //
 		events: function(){
 			return _.defaults({
@@ -43,11 +43,11 @@ define([
 
 		/** View Initialization
 		*/
-		initialize: function (params) {
+		initialize: function() {
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new AbsentTypesCollection(); }
-			
-			
+
+
 			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
@@ -88,7 +88,7 @@ define([
 
 				// Call the render Generic View //
 				GenericListView.prototype.render.apply(self);
-				
+
 				// Create item category request view //
 				_.each(self.collection.models, function(absentType){
 					var itemAbsentTypeView  = new ItemAbsentTypeView({model: absentType});

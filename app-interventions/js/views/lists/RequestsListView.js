@@ -15,15 +15,13 @@ define([
 	'genericListView',
 	'paginationView',
 	'itemRequestView',
-	'modalRequestView',
-	'advancedSelectBoxView',
-	'metaDataModel'
+	'modalRequestView'
 
 ], function(app, AppHelpers, RequestsCollection, ClaimersServicesCollection, RequestModel, GenericListView, PaginationView,
-				ItemRequestView, ModalRequestView, AdvancedSelectBoxView, MetaDataModel){
+				ItemRequestView, ModalRequestView){
 
 	'use strict';
-	
+
 
 
 
@@ -33,7 +31,7 @@ define([
 	var RequestsListView = GenericListView.extend({
 
 		templateHTML : '/templates/lists/requestsList.html',
-		
+
 		model : RequestModel,
 
 
@@ -54,8 +52,8 @@ define([
 		initialize: function() {
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new RequestsCollection(); }
-			
-			
+
+
 			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
@@ -98,7 +96,7 @@ define([
 
 				// Call the render Generic View //
 				GenericListView.prototype.render.apply(self);
-				
+
 				// Create item request view //
 				_.each(self.collection.models, function(request){
 					var itemRequestView = new ItemRequestView({model: request});

@@ -329,9 +329,9 @@ define([
 				translation: app.lang.valid
 			},
 			to_confirm: {
-				key			: 'to_confirm',
-				color		: 'warning',
-				translation : app.lang.to_confirm
+				key        : 'to_confirm',
+				color      : 'warning',
+				translation: app.lang.to_confirm
 			},
 			refused: {
 				key        : 'refused',
@@ -339,9 +339,9 @@ define([
 				translation: app.lang.refused
 			},
 			finished: {
-				key 		: 'finished',
-				color 		: 'default',
-				translation : app.lang.finished
+				key        : 'finished',
+				color      : 'default',
+				translation: app.lang.finished
 			}
 		},
 
@@ -349,16 +349,16 @@ define([
 		// Actions of the requests //
 		actions : {
 			valid: {
-				key			: 'valid',
-				color		: 'success',
-				icon		: 'fa-check',
+				key        : 'valid',
+				color      : 'success',
+				icon       : 'fa-check',
 				translation: app.lang.actions.validate
 			},
 			to_confirm: {
-				key 		: 'to_confirm',
-				color 		: 'warning',
-				icon 		: 'fa-level-up',
-				translation : app.lang.actions.confirmChief
+				key        : 'to_confirm',
+				color      : 'warning',
+				icon       : 'fa-level-up',
+				translation: app.lang.actions.confirmChief
 			},
 			refused: {
 				key        : 'refused',
@@ -371,5 +371,4 @@ define([
 	});
 
 	return RequestModel;
-
 });

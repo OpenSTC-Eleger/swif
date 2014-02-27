@@ -27,9 +27,9 @@ define([
 	var categoriesRequestsListView = GenericListView.extend({
 
 		templateHTML: '/templates/lists/categoriesRequestsList.html',
-		
+
 		model:CategoryRequestModel,
-		
+
 		// The DOM events //
 		events: function(){
 			return _.defaults({
@@ -43,11 +43,11 @@ define([
 
 		/** View Initialization
 		*/
-		initialize: function (params) {
+		initialize: function() {
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new CategoriesRequestsCollection(); }
-			
-			
+
+
 			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
@@ -88,7 +88,7 @@ define([
 
 				// Call the render Generic View //
 				GenericListView.prototype.render.apply(self);
-	
+
 				// Create item category request view //
 				_.each(self.collection.models, function(catRequest){
 					var itemCategoryRequestView  = new ItemCategoryRequestView({model: catRequest});
@@ -98,9 +98,9 @@ define([
 			});
 
 			$(this.el).hide().fadeIn('slow');
-			
-	        return this;
-	    },
+
+			return this;
+		},
 
 		/** Modal form to create a new Cat
 		*/

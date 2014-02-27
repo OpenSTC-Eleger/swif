@@ -36,9 +36,9 @@ define([
 
 		searchable_fields: [
 			{ key: 'id',          type: 'numeric', label: 'N°' },
-			{ key: 'name',        type: 'text',    label: app.lang.label },			
+			{ key: 'name',        type: 'text',    label: app.lang.label },
 		],
-		
+
 		//method to retrieve attribute with standard return form
 		getAttribute: function(key,default_value){
 			var val = this.get(key);
@@ -841,7 +841,7 @@ define([
 	}, {
 		// Request State Initialization //
 		status : {
-			//= 
+			//=
 			draft: {
 				key                 : 'draft',
 				color               : 'warning',
@@ -862,10 +862,10 @@ define([
 			},
 			//= égal au 'refused' STC
 			cancel: {
-				key                 : 'cancel',
-				color               : 'danger',
-				icon 		        : 'fa-times',
-				translation         : app.lang.cancel
+				key        : 'cancel',
+				color      : 'danger',
+				icon       : 'fa-times',
+				translation: app.lang.cancel
 			},
 			//= égal au 'closed' STC
 			done: {
