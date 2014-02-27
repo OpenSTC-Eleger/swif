@@ -89,7 +89,7 @@ define([
 
 
 				// Set the Tooltip //
-				$('*[data-toggle="tooltip"]').tooltip();
+				$('*[data-toggle="tooltip"]').tooltip({container: 'body'});
 
 				// Set the sort icon in the table columns //
 				$('th[data-sort-column]').append('<i class="fa fa-sort fa-lg text-muted pull-right">');

@@ -20,14 +20,14 @@ define([
 ], function(app, AppHelpers, PlacesCollection, PlaceModel, GenericListView, PaginationView, ItemPlaceView, ModalPlaceView){
 
 	'use strict';
-	
+
 	/******************************************
 	* Places List View
 	*/
 	var PlacesListView = GenericListView.extend({
 
 		templateHTML  : 'templates/lists/placesList.html',
-		
+
 		model: PlaceModel,
 
 
@@ -47,8 +47,8 @@ define([
 		initialize: function () {
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new PlacesCollection(); }
-			
-			
+
+
 			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
@@ -104,6 +104,7 @@ define([
 
 			return this;
 		},
+
 
 
 		/** Modal form to create a new Place

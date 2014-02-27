@@ -146,8 +146,6 @@ define([
 			this.model.set('color', $('#displayColor').val());
 			this.model.set('block_booking', $('#placeBlockingBookable').bootstrapSwitch('state'));
 
-            delete this.model.attributes.href;
-            delete this.model.attributes.id;
 
 			this.model.save()
 				.done(function(data) {

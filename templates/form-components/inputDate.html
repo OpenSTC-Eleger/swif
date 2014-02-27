@@ -6,11 +6,11 @@
 		<ul class="dropdown-menu" role="menu">
 			<% _.each(operators, function(op, key){
 
-				if(op.key == currentOperator.key){ var isActive = "active"; } else{ isActive = ""; } 
+				if(op.key == currentOperator.key){ var isActive = "active"; } else{ isActive = ""; }
 			%>
-				
+
 				<li class="<%= isActive %>" data-operator="<%= key %>">
-					<a href="#"><%= _.capitalize(op.label) %><span class="pull-right"><%= op.symbol %></span></a>
+					<a href="#"><span class="pull-right"><%= op.symbol %></span><%= _.capitalize(op.label) %></a>
 				</li>
 			<% }) %>
 		</ul>
