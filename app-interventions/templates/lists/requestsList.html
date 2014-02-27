@@ -5,20 +5,18 @@
 
 		<% if(user.isDST() || user.isManager()){
 
+		  	var classColor      = '';
+			var filterValue     = '';
+			var actionToProcess = lang.actions.process;
+
 		  if(user.isDST()) {
-				var classColor      = requestsState.to_confirm.color;
-				var filterValue     = requestsState.to_confirm.key;
-				var actionToProcess = lang.actions.to_confirm;
+				classColor      = requestsState.to_confirm.color;
+				filterValue     = requestsState.to_confirm.key;
 			}
 			else if(user.isManager()){
-		   		var classColor      = requestsState.wait.color;
-		   		var filterValue     = requestsState.wait.key;
-		   		var actionToProcess = lang.actions.process; }
-			else{
-		   		var classColor      = '';
-		   		var actionToProcess = '';
-		   		var filterValue     = '';
-			}
+		   		classColor      = requestsState.wait.color;
+		   		filterValue     = requestsState.wait.key;
+		   	}
 		%>
 
 		<sup id="specialBadge" class="badge badge-<%= classColor %> badge-action" data-filter="<%= filterValue %>" data-toggle="tooltip" data-original-title="<%= actionToProcess %>" data-placement="bottom">
@@ -102,8 +100,8 @@
 					<% } %>
 				</tr>
 			</thead>
-			<tbody id="rows-items">
 
+			<tbody id="rows-items">
 			</tbody>
 
 		</table>

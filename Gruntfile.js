@@ -123,7 +123,7 @@ module.exports = function(grunt) {
 				src: ['Gruntfile.js']
 			},
 			scripts: {
-				src: ['js/models/*.js']
+				src: ['app-interventions/js/views/lists/RequestsListView.js']
 			}
 		},
 
@@ -194,7 +194,7 @@ module.exports = function(grunt) {
 		var shell = require('shelljs');
 		var cmdOutput = shell.exec('git describe --tags `git rev-list --tags --max-count=1`', {'silent': true});
 
-		if(cmdOutput.code !== 0){
+		if (cmdOutput.code !== 0){
 			grunt.fail.fatal('Git software are require');
 		}
 
@@ -202,19 +202,19 @@ module.exports = function(grunt) {
 
 
 		// Check if the last Git Tag is correct //
-		if(!semver.valid(lastTagVersion)){
+		if (!semver.valid(lastTagVersion)){
 			grunt.fail.warn('Last Git tag Version is not correct');
 			grunt.log.error(lastTagVersion);
 		}
 
 		// Check if the properties.json version is correct //
-		if(!semver.valid(propertiesVersion)){
+		if (!semver.valid(propertiesVersion)){
 			grunt.fail.warn('Version in properties.json file is not correct');
 			grunt.log.error(propertiesVersion);
 		}
 
 		// Check if the package.json version is correct //
-		if(!semver.valid(packageVersion)){
+		if (!semver.valid(packageVersion)){
 			grunt.fail.warn('Version in package.json file is not correct');
 			grunt.log.error(packageVersion);
 		}
@@ -222,19 +222,19 @@ module.exports = function(grunt) {
 
 
 		// Check if the package.json version and properties.json version are equal //
-		if(packageVersion !== propertiesVersion){
+		if (packageVersion !== propertiesVersion){
 			grunt.fail.warn('Versions in properties.json and package.json are not equal');
-			grunt.log.error(packageVersion+' != '+propertiesVersion);
+			grunt.log.error(packageVersion + ' != ' + propertiesVersion);
 		}
 
 
-		if(semver.gt(lastTagVersion, packageVersion)){
+		if (semver.gt(lastTagVersion, packageVersion)){
 			grunt.fail.warn('App version are lower than the last Git tag');
-			grunt.log.error(packageVersion+' != '+lastTagVersion);
+			grunt.log.error(packageVersion + ' != ' + lastTagVersion);
 		}
-		else if(semver.lt(lastTagVersion, packageVersion)){
+		else if (semver.lt(lastTagVersion, packageVersion)){
 			grunt.fail.warn('App version are greater than the last Git tag');
-			grunt.log.error(packageVersion+' != '+lastTagVersion);
+			grunt.log.error(packageVersion + ' != ' + lastTagVersion);
 		}
 
 

@@ -53,9 +53,10 @@ define([
 			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
-		/**
-		 * Add Intervention view
-		 */
+
+
+		/** Add Intervention view
+		*/
 		add: function(model){
 			var detailedView =new ItemInterventionTaskListView({model: model});
 			var simpleView = new ItemInterventionView({model: model, detailedView:detailedView});
@@ -71,6 +72,8 @@ define([
 
 			this.partialRender();
 		},
+
+
 
 		/** Display the view
 		*/
@@ -132,7 +135,8 @@ define([
 				el : '#modalInter',
 				collection: this.collection,
 			});
-		},
+		}
+
 	});
 
 	return InterventionsListView;

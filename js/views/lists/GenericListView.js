@@ -26,13 +26,13 @@ define([
 	*/
 	var GenericListView = Backbone.View.extend({
 
-		el            : '#rowContainer',
+		el                 : '#rowContainer',
 
-		urlParameters : ['id', 'search', 'filter', 'sort', 'page'],
+		urlParameters      : ['id', 'search', 'filter', 'sort', 'page'],
 
-		searchForm    : 'form.form-search input',
+		searchForm         : 'form.form-search input',
 
-		genericTemplateHTML : 'templates/others/headerListView.html',
+		genericTemplateHTML: 'templates/others/headerListView.html',
 
 
 		// The DOM events //
@@ -48,11 +48,12 @@ define([
 			'click .unapply-filter'                          : 'unapplyFilter'
 		},
 
-			
+
 		initialize: function() {
 			var self = this;
-	
+
 			this.options = arguments[0];
+
 			this.initFilters().done(function(){
 				self.initCollections().done(function(){
 					// Unbind & bind the collection //
@@ -61,7 +62,7 @@ define([
 					self.listenTo(self.collection, 'destroy', self.destroy);
 					self.listenTo(self.collection, 'remove', self.destroy);
 					self.listenTo(self.collection, 'reset', self.render);
-	
+
 					//Set Meta Data for request collection to compute recording filters
 					self.metaDataModel = new MetaDataModel({ id: self.collection.modelId });
 					app.router.render(self);
@@ -141,31 +142,32 @@ define([
 					// Filter advanced view needs collection setted in Generic //
 					self.displayAdvanceSearch(self.options.filter);
 				}
-				
+
 				// Pagination view //
 				app.views.paginationView = new PaginationView({
 					page       : self.options.page.page,
 					collection : self.collection
 				});
 
-				
+
 			});
 
 		},
-		
+
 		/** Destroy collection's model
 		*/
 		destroy: function(){
 			this.partialRender();
 		},
-		
+
+
 		/** Partial Render of the view
 		*/
 		partialRender: function () {
 			var self = this;
-			
+
 			app.views.paginationView.render();
-			
+
 			$.when(this.collection.count(this.getParams()), this.collection.specialCount(), this.collection.specialCount2())
 				.done(function(){
 					$('#badge').html(self.collection.cpt);
@@ -174,9 +176,10 @@ define([
 					app.views.paginationView.render();
 				});
 		},
-		
+
+
 		/** Init collection with url params
-		 */
+		*/
 		initCollections: function(){
 
 			// Fetch the collections //
@@ -185,11 +188,12 @@ define([
 					console.log(e);
 				});
 		},
-		
-		/**
-		 * 
-		 */
+
+
+		/** Retrieve params
+		*/
 		getParams: function(){
+
 			// Check the parameters //
 			if(_.isUndefined(this.options.sort)){
 				this.options.sort = this.collection.default_sort;
@@ -199,7 +203,7 @@ define([
 			}
 
 			this.options.page = AppHelpers.calculPageOffset(this.options.page);
-				
+
 			// Create Fetch params //
 			var fetchParams = {
 				silent     : true,
@@ -240,7 +244,7 @@ define([
 			if(!_.isEmpty(globalSearch)){
 				fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, this.model.prototype.searchable_fields);
 			}
-			
+
 			//Add filter on recurrence selected
 			if(!_.isUndefined(this.options.recurrence)){
 				if(_.isUndefined(fetchParams.data.filters)) {

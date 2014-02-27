@@ -138,7 +138,7 @@
     "done"                  : "clôturée",
 	"remplir"				: "en attente",
 	"away"                  : "absence",
-    "to_confirm"               : "DST",
+    "to_confirm"            : "DST",
     "confirmed"             : "validée",
     "pending"               : "en cours",
     "template"              : "avec tâches duplicables",

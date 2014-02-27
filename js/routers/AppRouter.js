@@ -63,7 +63,7 @@ define([
 					this.currentView.$el = (this.currentView.el instanceof $) ? this.currentView.el : $(this.currentView.el);
 					this.currentView.el = this.currentView.$el[0];
 				}
-			
+
 				if (this.currentView.$el){
 					this.currentView.undelegateEvents();
 				}
@@ -71,7 +71,7 @@ define([
 				this.currentView.el = this.currentView.$el[0];
 			}
 		},
-	
+
 
 		/** Render a view by undelegating all Event
 		*/
@@ -332,7 +332,6 @@ define([
 
 		/** Equipments List
 		*/
-
 		equipments: function(search, filter, sort, page){
 
 			var params = this.setContext({search: search, filter: filter, sort : sort, page : page});

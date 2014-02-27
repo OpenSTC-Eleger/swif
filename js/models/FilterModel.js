@@ -8,39 +8,42 @@ define([
 	'app',
 	'genericModel',
 
-], function(app, GenericModel){
+], function(app, GenericModel) {
 
 	'use strict';
 
 
 	/******************************************
-	* Filter Model
-	*/
+	 * Filter Model
+	 */
 	var FilterModel = GenericModel.extend({
 
 
-		fields     : ['id', 'name', 'user_id', 'domain', 'context', 'model_id', 'description', 'pre_recorded'],
+		fields: ['id', 'name', 'user_id', 'domain', 'context', 'model_id', 'description', 'pre_recorded'],
 
-		urlRoot    : '/api/open_object/filters',
+		urlRoot: '/api/open_object/filters',
 
-		defaults   :{
-			name         : null,
-			user_id      : null,
-			model_id     : null,
-			domain       : null,
-			pre_recorded : 0
+		defaults: {
+			name: null,
+			user_id: null,
+			model_id: null,
+			domain: null,
+			pre_recorded: 0
 		},
 
 
-		searchable_fields: [
-			{ key: 'id',   type: 'numeric' },
-			{ key: 'name', type: 'text' }
-		],
+		searchable_fields: [{
+			key: 'id',
+			type: 'numeric'
+		}, {
+			key: 'name',
+			type: 'text'
+		}],
 
 
 		/** Model Initialization
-		*/
-		initialize: function () {
+		 */
+		initialize: function() {
 			//console.log("Filter Model Initialization");
 		},
 
@@ -48,31 +51,39 @@ define([
 			return this.get('name');
 		},
 		setName: function(value, silent) {
-			this.set({ name: value }, {silent: silent});
+			this.set({
+				name: value
+			}, {
+				silent: silent
+			});
 		},
 
 		getDescription: function() {
 			return this.get('description');
 		},
 		setDescription: function(value, silent) {
-			this.set({ description: value }, {silent: silent});
+			this.set({
+				description: value
+			}, {
+				silent: silent
+			});
 		},
 
 
-		isPreRecored: function(){
-			if(this.get('pre_recorded')){
+		isPreRecored: function() {
+			if (this.get('pre_recorded')) {
 				return true;
 			}
-			else{
+			else {
 				return false;
 			}
 		},
 
-		isEmpty: function(){
-			if(_.isEmpty(JSON.parse(this.get('domain')))){
+		isEmpty: function() {
+			if (_.isEmpty(JSON.parse(this.get('domain')))) {
 				return true;
 			}
-			else{
+			else {
 				return false;
 			}
 		}
