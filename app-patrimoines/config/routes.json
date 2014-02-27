@@ -1,8 +1,8 @@
 {
 
-	"contracts": {
-		"url"		: "contracts",
-		"function"	: "bookings"
+	"contrats": {
+		"url"		: "app-patrimoines/contrats(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"function"	: "contractsList"
 	}
 
 }

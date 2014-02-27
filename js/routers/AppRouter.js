@@ -265,6 +265,18 @@ define([
 				this.notFound();
 			}
 		},
+		
+		/** Load The Patrimoines Module
+		*/
+		loadAppPatrimoines: function(){
+			this.closeCurrentView();
+			if(!require.defined('app-patrimoines')){
+				this.loadModule('app-patrimoines');
+			}
+			else{
+				this.notFound();
+			}
+		},
 
 
 

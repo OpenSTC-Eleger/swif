@@ -4,16 +4,21 @@ define([
 
 	'genericListView',
 	'paginationView',
+	
+	'contractsCollection',
+	'contractModel',
+	
+	'itemContractView',
 
-], function(app, AppHelpers, GenericListView, PaginationView){
+], function(app, AppHelpers, GenericListView, PaginationView, ContractsCollection, ContractModel, ItemContractView){
 
 	'use strict';
 
 
 	/******************************************
-	* Requests List View
+	* Contracts List View
 	*/
-	var ContractsListView = GenericListView.extend({
+	return GenericListView.extend({
 
 		templateHTML : '/templates/lists/contractsList.html',
 
@@ -22,10 +27,10 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'click #filterStateRequestList li a' 	: 'setFilterState',
-				'click #badgeActions[data-filter!=""]'  : 'badgeFilter',
-				'click a.createContract'	            : 'modalCreateContract'
-			}, 
+					'click #filterStateContractList li a'	: 'setFilterState',
+					'click #badgeActions[data-filter!=""]'	: 'badgeFilter',
+					'click a.createContract'				: 'modalCreateContract'
+				},
 				GenericListView.prototype.events
 			);
 		},
@@ -55,7 +60,7 @@ define([
 		add: function(model){
 			var itemContractView = new ItemContractView({ model: model });
 			$('#rows-items').prepend(itemContractView.render().el);
-			AppHelpers.highlight($(itemContractView.el))
+			AppHelpers.highlight($(itemContractView.el));
 
 			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.patrimoines.infoMessages.contractCreateOk);
 			this.partialRender();
@@ -79,9 +84,9 @@ define([
 					lang             : app.lang,
 					nbContract       : self.collection.cpt,
 					nbContractToDeal : self.collection.specialCpt,
-					requestsState    : RequestModel.status,
+					contractsState    : ContractModel.status,
 
-					ContractModel     : RequestModel,
+					ContractModel     : ContractModel,
 					user             : app.current_user
 				});
 
@@ -92,30 +97,30 @@ define([
 
 
 				// Create item request view //
-				_.each(self.collection.models, function(request, i){
-					var itemContractView = new ItemRequestView({model: request});
+				_.each(self.collection.models, function(request){
+					var itemContractView = new ItemContractView({model: request});
 					$('#rows-items').append(itemContractView.render().el);
 				});
 
 
 				// Pagination view //
-				app.views.paginationView = new PaginationView({ 
+				app.views.paginationView = new PaginationView({
 					page       : self.options.page.page,
 					collection : self.collection
-				})
+				});
 
 				
 				// Render Filter Link on the Table //
 				if(!_.isUndefined(self.options.filter)){
 
-					$('#filterStateRequest').removeClass('filter-disabled');
-					$('#filterStateRequestList li.delete-filter').removeClass('disabled');
+					$('#filterStateContract').removeClass('filter-disabled');
+					$('#filterStateContractList li.delete-filter').removeClass('disabled');
 
 					$('a.filter-button').addClass('text-'+ContractModel.status[self.options.filter.value].color);
 				}
 				else{
-					$('#filterStateRequest').addClass('filter-disabled');
-					$('#filterStateRequestList li.delete-filter').addClass('disabled');
+					$('#filterStateContract').addClass('filter-disabled');
+					$('#filterStateContractList li.delete-filter').addClass('disabled');
 				}
 
 			});
@@ -142,15 +147,15 @@ define([
 
 
 
-		/** Filter Requests on the State
+		/** Filter Contracts on the State
 		*/
 		setFilterState: function(e){
 			e.preventDefault();
-
+			var filterValue = '';
 			if($(e.target).is('i')){
-				var filterValue = _($(e.target).parent().attr('href')).strRightBack('#');
+				filterValue = _($(e.target).parent().attr('href')).strRightBack('#');
 			}else{
-				var filterValue = _($(e.target).attr('href')).strRightBack('#');
+				filterValue = _($(e.target).attr('href')).strRightBack('#');
 			}
 
 			// Set the filter value in the options of the view //
@@ -167,14 +172,14 @@ define([
 
 
 
-		/** Filter Requests on the State of the Badge
+		/** Filter Contracts on the State of the Badge
 		*/
 		badgeFilter: function(e){
 
 			var filterValue = $(e.target).data('filter');
 
 			// Set the filter value in the options of the view //
-			if(filterValue != ''){
+			if(filterValue !== ''){
 				this.options.filter = { by: 'state', value: filterValue};
 				delete this.options.search;
 				delete this.options.page;
@@ -186,20 +191,19 @@ define([
 
 
 
-		/** Modal form to create a new Request
-		*/
+		/** Modal form to create a new Contract
 		modalCreateContract: function(e){
 			e.preventDefault();
 
 			app.views.modalContractView = new ModalContractView({
 				el : '#modalContract'
 			});
-		},
+		},*/
 
 
 
 		initCollection: function(){
-			var self = this;
+			//var self = this;
 
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new ContractsCollection(); }
@@ -253,7 +257,4 @@ define([
 		}
 
 	});
-
-return ContractsListView;
-
 });

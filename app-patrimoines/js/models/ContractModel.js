@@ -1,22 +1,19 @@
 define([
 	'app',
 	'appHelpers',
-	
 	'genericModel',
-	'moment-timezone',
-	'moment-timezone-data'
 
 
-], function(app, AppHelpers, GenericModel, moment){
+], function(app, AppHelpers, GenericModel){
 
 	'use strict';
 	
 	/******************************************
 	* Booking Model
 	*/
-	var contract = GenericModel.extend({
+	return GenericModel.extend({
 		
-		urlRoot: "/api/openresa/bookings",
+		urlRoot: '/api/openresa/bookings',
 
 		fields : ['id', 'name'],
 	
@@ -26,7 +23,7 @@ define([
 				type : 'numeric'
 			},
 			{
-				key  : 'name', 
+				key  : 'name',
 				type : 'text'
 			}
 			
@@ -37,7 +34,7 @@ define([
 			if(_.isUndefined(default_value)){
 				default_value = false;
 			}
-			if(!_.isUndefined(val) && val != '' && val != false && val != null){
+			if(!_.isUndefined(val) && val !== '' && val !== false && val !== null){
 				return val;
 			}
 			else{
@@ -65,22 +62,21 @@ define([
 		// Request State Initialization //
 		status : {
 			confirm: {
-				key                 : 'confirm',
-				color               : 'success',
-				icon 		        : 'fa-check',
-				translation         : app.lang.valid
+				key					: 'confirm',
+				color				: 'success',
+				translation			: app.lang.valid
 			},
 			done: {
-				key                 : 'done',
-				color               : 'default',
-				icon 		        : 'fa-thumbs-o-up',
-				translation         : app.lang.closed
+				key					: 'done',
+				color				: 'default',
+				icon				: 'fa-thumbs-o-up',
+				translation			: app.lang.closed
 			},
 			draft: {
-				key                 : 'draft',
-				color               : 'default',
-				icon 		        : 'fa-pencil-o',
-				translation         : app.lang.draft
+				key					: 'draft',
+				color				: 'default',
+				icon				: 'fa-pencil-o',
+				translation			: app.lang.draft
 			}
 		},
 		
@@ -90,8 +86,4 @@ define([
 		}
 	
 	});
-	
-
-return contract;
-
 });
