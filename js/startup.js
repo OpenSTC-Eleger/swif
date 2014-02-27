@@ -217,6 +217,9 @@ requirejs.config({
 		},
 		'app-reservations' : {
 			deps   : ['app-reservations/config/require-config']
+		},
+		'app-patrimoines' : {
+			deps   : ['app-patrimoines/config/require-config']
 		}
 
 	}
