@@ -14,12 +14,12 @@ define([
 	'genericListView',
 	'paginationView',
 
-	'itemBookingView',	
+	'itemBookingView',
 	'toolbarButtonsView',
-	
+
 	'metaDataModel'
 
-], function(app, AppHelpers, BookingsCollection, BookingModel, GenericListView, PaginationView, ItemBookingView, 
+], function(app, AppHelpers, BookingsCollection, BookingModel, GenericListView, PaginationView, ItemBookingView,
 				ToolbarButtonsView, MetaDataModel){
 
 	'use strict';
@@ -31,18 +31,18 @@ define([
 	var bookingsListView = GenericListView.extend({
 
 		templateHTML : '/templates/lists/bookingsList.html',
-		
+
 		model : BookingModel,
-		
+
 		//overrides url GenericListView's url parameters to add 'recurrence parameter'
 		urlParameters: ['recurrence', 'id', 'search', 'filter', 'sort', 'page'],
 
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'click #badge[data-filter!=""]'  : 'badgeFilter',	
+				'click #badge[data-filter!=""]'  : 'badgeFilter',
 				'click a.createModel'            : 'createResa'
-			}, 
+			},
 				GenericListView.prototype.events
 			);
 		},
@@ -55,8 +55,8 @@ define([
 			var self = this;
 
 			this.options = params;
-			
-			
+
+
 			// Check if the collections are instantiated //
 			if(_.isUndefined(this.collection)){ this.collection = new BookingsCollection(); }
 			else{this.collection.reset();}
@@ -109,7 +109,7 @@ define([
 
 				// Call the render Generic View //
 				GenericListView.prototype.render.apply(self);
-				
+
 				// Create item booking view //
 				_.each(self.collection.models, function(booking, i){
 					var itemView = new ItemBookingView( {model: booking} );
@@ -140,17 +140,33 @@ define([
 			}
 
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-		},	
-		
+		},
+
+
 		/** Got to create Resa form
 		*/
 		createResa: function(e){
 			e.preventDefault();
 			// forward to new route (go to form 'create resa')
-			app.router.navigate(_.join('/',_(Backbone.history.fragment).strLeft('/'), "planning-des-reservations"), {trigger: true, replace: true});
+			app.router.navigate(_.join('/',_(Backbone.history.fragment).strLeft('/'), 'planning-des-reservations'), {trigger: true, replace: true});
 		},
- 
-	});	
-	
+
+		// TODO GenericListView
+		/*//add filter for claimer to fetch only their own bookings
+		if(!app.current_user.isResaManager()){
+			this.fetchParams.data.filters  = _.toArray(this.fetchParams.data.filters);
+			this.fetchParams.data.filters.push({field: 'partner_id.address.id', operator:'in', value:app.current_user.get('contact_id')});
+			this.fetchParams.data.filters = app.objectifyFilters(this.fetchParams.data.filters);
+		}
+
+		//Add filter on recurrence selected
+		if(!_.isUndefined(this.options.recurrence)){
+			this.fetchParams.data.filters  = _.toArray(this.fetchParams.data.filters);
+			this.fetchParams.data.filters.push({field: 'recurrence_id.id', operator:'=', value:this.options.recurrence})
+			this.fetchParams.data.filters = app.objectifyFilters(this.fetchParams.data.filters)
+		}*/
+
+	});
+
 	return bookingsListView;
 });
