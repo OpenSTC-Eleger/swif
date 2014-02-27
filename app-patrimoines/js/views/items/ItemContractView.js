@@ -1,17 +1,17 @@
 define([
 	'app',
 	'appHelpers',
-
+	'contractModel'
 	
 
 
-], function(app, AppHelpers){
-
+], function(app, AppHelpers, ContractModel){
+	'use strict';
 
 	/******************************************
 	* Row Request View
 	*/
-	var ItemContractView = Backbone.View.extend({
+	return Backbone.View.extend({
 
 		tagName     : 'tr',
 
@@ -25,8 +25,8 @@ define([
 //				classRow = RequestModel.status.confirm.color + ' bolder';
 //				return classRow;
 //			}
-			
-		},
+//		
+//		},
 
 		templateHTML : '/templates/items/itemRequest.html',
 
@@ -51,8 +51,8 @@ define([
 
 		/** When the model ara updated //
 		*/
-		change: function(model){
-			var self = this;
+		change: function(/*model*/){
+			//var self = this;
 
 			this.render();
 
@@ -61,10 +61,10 @@ define([
 				
 			});
 
-			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+infoMessage);
+			//app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+infoMessage);
 
 			// Partial Render //
-			app.views.contractsListView.partialRender();
+			//app.views.contractsListView.partialRender();
 		},
 
 
@@ -106,18 +106,15 @@ define([
 			var deferred = $.Deferred();
 
 			// Once the CSS3 animation are end the class are removed //
-			$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',   
-				function(e) {
+			$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
+				function(/*e*/) {
 					$(self.el).removeClass('highlight');
 					deferred.resolve();
-			});
+				});
 
 			return deferred;
 		}
 
 
 	});
-
-	return ItemContractView;
-
 });

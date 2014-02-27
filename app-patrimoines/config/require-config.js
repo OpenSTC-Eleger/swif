@@ -7,13 +7,13 @@ requirejs.config({
 	paths: {
 
 		// Router //
-		appPatrimoinesRouter                : 'app-patrimoines/js/routers/AppRouter',
+		appPatrimoinesRouter                : '../app-patrimoines/js/routers/AppRouter',
 
 		// Collections //
-		contractsCollection					: 'app-patrimoines/js/collections/ContractsCollection',
+		contractsCollection					: '../app-patrimoines/js/collections/ContractsCollection',
 		
 		//Models
-		contractModel						: 'app-patrimoines/js/models/ContractModel',
+		contractModel						: '../app-patrimoines/js/models/ContractModel',
 		
 		//Views
 //		contractsListView					: 'app-patrimoines/js/views/lists/ContractsListView',

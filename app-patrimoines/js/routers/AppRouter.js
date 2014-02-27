@@ -1,9 +1,9 @@
 define([
 	'app',
 	'moment',
+	'contractsListView'
 
-
-], function(app, moment){
+], function(app, moment, ContractsListView){
 
 	'use strict';
 
@@ -11,10 +11,14 @@ define([
 	/******************************************
 	* Application Router
 	*/
-	var router = Backbone.Router.extend({
+	return Backbone.Router.extend({
+		
+		contractsList: function(search, filter, sort, page) {
 
+			var params = this.setContext({search: search,  filter : filter, sort: sort, page: page});
+
+			app.views.contractsListView = new ContractsListView(params);
+		}
+		
 	});
-
-return router;
-
 });

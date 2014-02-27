@@ -1,5 +1,5 @@
 define([
-	'app', 
+	'app',
 	'genericCollection',
 	'contractModel'
 
@@ -10,16 +10,13 @@ define([
 	/******************************************
 	* Contracts Collection
 	*/
-	var contracts = GenericCollection.extend({
+	return GenericCollection.extend({
 	
 		model : ContractModel,
 		
-		url   : "/api/openresa/bookings",
+		url   : '/api/openresa/bookings',
 
 		fields: ['id', 'name'],
-
-
-
 
 		default_sort: { by: '', order: '' },
 		
@@ -34,7 +31,7 @@ define([
 			// Construct a domain  //
 
 			var domain = [
-					 { field : 'state', operator : '=', value : ContractModel.status.remplir.key }					 
+					{field:'state', operator:'=', value:ContractModel.status.remplir.key}
 				];
 
 	
@@ -44,12 +41,12 @@ define([
 				dataType : 'text',
 				data     : {filters: app.objectifyFilters(domain)},
 				success  : function(data, status, request){
-					var contentRange = request.getResponseHeader("Content-Range")
+					var contentRange = request.getResponseHeader('Content-Range');
 					self.specialCpt = contentRange.match(/\d+$/);
 				}
 			});
 			
-		},
+		}
 		
 		/** Collection Sync
 		*/
@@ -63,7 +60,5 @@ define([
 //		}
 //	
 //	});
-	
-	return contracts;
-
+	});
 });

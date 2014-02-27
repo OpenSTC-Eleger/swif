@@ -93,8 +93,11 @@ module.exports = function(grunt) {
 				//src: ['app-reservations/js/**/*.js', 'app-reservations/main.js']
 				src: ['app-reservations/main.js', 'app-reservations/js/routers/*.js', 'app-reservations/js/models/*.js', 'app-reservations/js/collections/*.js']
 			},
+			scripts_patrimoine: {
+				src: ['app-patrimoines/js/**/*.js', 'app-patrimoines/main.js']
+				//src: ['app-patrimoines/main.js', 'app-reservations/js/routers/*.js', 'app-reservations/js/models/*.js', 'app-reservations/js/collections/*.js']
+			},
 		},
-
 
 		// Check CSS Files //
 		csslint: {
@@ -105,7 +108,6 @@ module.exports = function(grunt) {
 				src: ['dist/style/*.css']
 			}
 		},
-
 
 		// Check Style JS Files //
 		jscs: {

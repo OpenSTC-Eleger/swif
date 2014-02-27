@@ -34,6 +34,10 @@
 		"url"       : "app-reservations/*subroutes",
 		"function"  : "loadAppReservations"
 	},
+	"app-patrimoines": {
+		"url"       : "app-patrimoines/*subroutes",
+		"function"  : "loadAppPatrimoines"
+	},
 
 
 
