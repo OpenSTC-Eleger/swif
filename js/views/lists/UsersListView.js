@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 	'appHelpers',
@@ -33,7 +39,7 @@ define([
 			this.initCollection().done(function(){
 
 				app.router.render(self);
-			})
+			});
 		},
 
 
@@ -47,7 +53,7 @@ define([
 			app.router.setPageTitle(app.lang.viewsTitles.usersList);
 
 
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get('templates/' + this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang    : app.lang,
@@ -57,21 +63,21 @@ define([
 				$(self.el).html(template);
 
 				// Call the render Generic View //
-				GenericListView.prototype.render(self.options);
+				GenericListView.prototype.render(self);
 
 
 				// Create item user view //
-				_.each(self.collection.models, function(place, i){
+				_.each(self.collection.models, function(place){
 					var itemUserView  = new ItemUserView({model: place});
 					$('#rows-items').append(itemUserView.render().el);
 				});
 
 
 				// Pagination view //
-				app.views.paginationView = new PaginationView({ 
+				app.views.paginationView = new PaginationView({
 					page       : self.options.page.page,
 					collection : self.collection
-				})
+				});
 
 			});
 
@@ -96,7 +102,7 @@ define([
 				this.options.sort = this.collection.default_sort;
 			}
 			else{
-				this.options.sort = AppHelpers.calculPageSort(this.options.sort);	
+				this.options.sort = AppHelpers.calculPageSort(this.options.sort);
 			}
 			this.options.page = AppHelpers.calculPageOffset(this.options.page);
 
@@ -119,7 +125,7 @@ define([
 			return $.when(self.collection.fetch(this.fetchParams))
 				.fail(function(e){
 					console.log(e);
-				})
+				});
 		}
 
 	});

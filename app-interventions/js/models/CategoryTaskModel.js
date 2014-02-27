@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 	'genericModel'
@@ -14,19 +20,13 @@ define([
 
 
 		fields  : ['id', 'name', 'code', 'parent_id', 'service_names', 'actions'],
-		
+
 		urlRoot : '/api/openstc/task_categories',
 
 
 		searchable_fields: [
-			{
-				key  : 'name', 
-				type : 'text'
-			},
-			{
-				key  : 'code', 
-				type : 'text'
-			}
+			{ key: 'name',  type: 'text' },
+			{ key: 'code',  type: 'text' }
 		],
 
 
@@ -43,28 +43,31 @@ define([
 
 		getParentCat : function(type) {
 
+			var id, name = '';
+
 			// Check if the place have a parent place //
 			if(this.get('parent_id')){
-				var id = this.get('parent_id')[0];
-				var name = _.titleize(this.get('parent_id')[1].toLowerCase());
-			}
-			else{
-				var id, name = '';
+				id = this.get('parent_id')[0];
+				name = _.titleize(this.get('parent_id')[1].toLowerCase());
 			}
 
-			switch (type){ 
-				case 'id': 
-					return id;
-				break;
+			var returnVal;
+
+			switch (type){
+				case 'id':
+					returnVal = id;
+					break;
 				case 'all':
-					return this.get('parent_id');
-				break;
+					returnVal = this.get('parent_id');
+					break;
 				case 'json':
-					return {id: id, name: name};
-				break;
-				default: 
-					return name;
+					returnVal = {id: id, name: name};
+					break;
+				default:
+					returnVal = name;
 			}
+
+			return returnVal;
 		},
 		setParentCat : function(value, silent) {
 			this.set({ parent_id : value }, {silent: silent});
@@ -76,27 +79,29 @@ define([
 
 			_.each(this.get('service_names'), function(s){
 				switch (type){
-					case 'id': 
+					case 'id':
 						placeServices.push(s[0]);
-					break;
-					case 'json': 
+						break;
+					case 'json':
 						placeServices.push({id: s[0], name: s[1]});
-					break;
+						break;
 					default:
 						placeServices.push(s[1]);
 				}
 			});
 
-			if(type == 'string'){
-				return _.toSentence(placeServices, ', ', ' '+app.lang.and+' ')
+			if(type === 'string'){
+				return _.toSentence(placeServices, ', ', ' '+app.lang.and+' ');
 			}
 			else{
 				return placeServices;
 			}
 		},
+
 		setServices : function(value, silent) {
 			this.set({ service_ids : [[6, 0, value]] }, {silent: silent});
 		},
+
 
 		/** Get Informations of the model
 		*/
@@ -116,6 +121,6 @@ define([
 
 	});
 
-return CategoryTaskModel;
+	return CategoryTaskModel;
 
 });

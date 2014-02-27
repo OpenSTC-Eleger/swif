@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 /* New TABLE PROPERTIES
 -------------------------------------------------- */
 .table-sorter{
@@ -19,13 +25,14 @@
 }
 
 
-// New color //
-.table-row-variant(info; @state-info-bg);
-
 tr.selectable{cursor: pointer}
 
+.table-vertical-align > tbody > tr > td{
+  vertical-align: middle;
+}
 
-/* Table Striped collapse 
+
+/* Table Striped collapse
 -------------------------------------------------- */
 .table-striped-collapse{
 	> tbody {
@@ -43,5 +50,74 @@ tr.selectable{cursor: pointer}
 /* Button group in <td>
 -------------------------------------------------- */
 th.actions{
-	min-width: 80px;
+	min-width: 90px;
+}
+
+
+/* Table Responsive
+ * When the content-main is trim with a side Bar
+-------------------------------------------------- */
+@media (max-width: @screen-md-max) {
+
+	.content-main.content-main-left > .table-responsive{
+	 width: 100%;
+    margin-bottom: (@line-height-computed * 0.75);
+    overflow-y: hidden;
+    overflow-x: scroll;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border: 1px solid @table-border-color;
+    -webkit-overflow-scrolling: touch;
+
+    // Tighten up spacing
+    > .table {
+      margin-bottom: 0;
+
+      // Ensure the content doesn't wrap
+      > thead,
+      > tbody,
+      > tfoot {
+        > tr {
+          > th,
+          > td {
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+
+    // Special overrides for the bordered tables
+    > .table-bordered {
+      border: 0;
+
+      // Nuke the appropriate borders so that the parent can handle them
+      > thead,
+      > tbody,
+      > tfoot {
+        > tr {
+          > th:first-child,
+          > td:first-child {
+            border-left: 0;
+          }
+          > th:last-child,
+          > td:last-child {
+            border-right: 0;
+          }
+        }
+      }
+
+      // Only nuke the last row's bottom-border in `tbody` and `tfoot` since
+      // chances are there will be only one `tr` in a `thead` and that would
+      // remove the border altogether.
+      > tbody,
+      > tfoot {
+        > tr:last-child {
+          > th,
+          > td {
+            border-bottom: 0;
+          }
+        }
+      }
+
+    }
+	}
 }

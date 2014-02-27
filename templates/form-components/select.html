@@ -1,0 +1,20 @@
+<label for="ads_<%= field.key %>" class="control-label"><%= _.capitalize(field.label) %></label>
+<div class="input-group">
+
+	<div class="input-group-btn">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><%= currentOperator.symbol %></button>
+		<ul class="dropdown-menu" role="menu">
+			<% _.each(operators, function(op, key){
+
+				if(op.key == currentOperator.key){ var isActive = "active"; } else{ isActive = ""; } 
+			%>
+				
+				<li class="<%= isActive %>" data-operator="<%= key %>">
+					<a href="#"><%= _.capitalize(op.label) %><span class="pull-right"><%= op.symbol %></span></a>
+				</li>
+			<% }) %>
+		</ul>
+	</div>
+
+	<input type="text" id="ads_<%= field.key %>" data-multiple='true' class="select2">
+</div>

@@ -1,8 +1,15 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'backbone',
 
 ], function(Backbone){
 
+	'use strict';
 
 
 	/******************************************
@@ -12,7 +19,7 @@ define([
 
 		modal : null,
 
-		
+
 		// The DOM events //
 		events: {
 			'show.bs.modal'  : 'show',
@@ -48,16 +55,16 @@ define([
 			}
 			else{
 				if($('#'+this.options.elFocus).hasClass('select2')){
-					$('#'+this.options.elFocus).select2('open');	
+					$('#'+this.options.elFocus).select2('open');
 				}
 				else{
-					this.modal.find('#'+this.options.elFocus).focus();	
+					this.modal.find('#'+this.options.elFocus).focus();
 				}
 			}
 		}
 
 	});
 
-return GenericModalView;
+	return GenericModalView;
 
 });

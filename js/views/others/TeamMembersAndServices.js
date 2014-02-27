@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 
@@ -19,7 +25,7 @@ define([
 	var TeamMembersAndServicesView = Backbone.View.extend({
 
 
-		templateHTML : 'lists/teamMembersAndServices',
+		templateHTML : 'templates/lists/teamMembersAndServices.html',
 
 
 
@@ -27,7 +33,7 @@ define([
 		events: function(){
 			return _.defaults({
 				'change #searchMembers, #searchServices' : 'change',
-			}, 
+			},
 				GenericModalView.prototype.events
 			);
 		},
@@ -49,12 +55,12 @@ define([
 				var id = this.model;
 				this.model = new TeamModel();
 				this.model.setId(id);
-				
+
 				this.model.fetch().done(function(){
 					self.render();
 				}).fail(function(){
 					console.error('Unable to load the team');
-				})
+				});
 			}
 		},
 
@@ -67,8 +73,8 @@ define([
 
 
 
-			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			// Retrieve the template //
+			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
 					lang  : app.lang,
@@ -77,21 +83,21 @@ define([
 
 				$(self.el).html(template);
 
-				
+
 				self.off(self.events());
 				self.delegateEvents(self.events());
-				
+
 				// Advance Select List View //
-				app.views.advancedSelectBoxTeamMembersView = new AdvancedSelectBoxView({el: $("#searchMembers"), collection: OfficersCollection.prototype });
-				
+				app.views.advancedSelectBoxTeamMembersView = new AdvancedSelectBoxView({el: $('#searchMembers'), url: OfficersCollection.prototype.url });
+
 				// Retrieve only Officer //
-				app.views.advancedSelectBoxTeamMembersView.setSearchParam({field:'service_ids', operator:'!=', value: 'false'}, true);
+				app.views.advancedSelectBoxTeamMembersView.setSearchParam({field:'service_ids', operator: '!=', value: 'false'}, true);
 				// Condition to prevent a Cat to be parent if itself //
-				app.views.advancedSelectBoxTeamMembersView.setSearchParam({field : 'id', operator : '!=', value : self.model.getManager('id')}, false);
-				
+				app.views.advancedSelectBoxTeamMembersView.setSearchParam({field: 'id', operator: '!=', value: self.model.getManager('id')}, false);
+
 				app.views.advancedSelectBoxTeamMembersView.render();
 
-				app.views.advancedSelectBoxTeamServicesView = new AdvancedSelectBoxView({el: $("#searchServices"), collection: ClaimersServicesCollection.prototype })
+				app.views.advancedSelectBoxTeamServicesView = new AdvancedSelectBoxView({el: $('#searchServices'), url: ClaimersServicesCollection.prototype.url });
 				app.views.advancedSelectBoxTeamServicesView.render();
 			});
 
@@ -109,26 +115,27 @@ define([
 
 
 
-		/* Save the model when a service or a member is set, remove 
+		/* Save the model when a service or a member is set, remove
 		*/
-		change: function(e){
+		change: function(){
 			var self = this;
 
 			var params = {
 				user_ids   : [[6, 0, app.views.advancedSelectBoxTeamMembersView.getSelectedItems()]],
 				service_ids: [[6, 0, app.views.advancedSelectBoxTeamServicesView.getSelectedItems()]]
-			}
+			};
 
 			this.model.save(params, {patch: true, silent: true})
-				.done(function(data) {
-					self.model.fetch({ data : {fields : self.model.fields}, silent: true }).done(function(){
+				.done(function() {
+					self.model.fetch({ data: {fields : self.model.fields}, silent: true }).done(function(){
 						self.partialRender();
 					});
 				})
-				.fail(function (e) {
+				.fail(function () {
 					console.error('Unable to save');
-				})
+				});
 		},
+
 
 
 		/* Hide the view
@@ -139,6 +146,6 @@ define([
 
 	});
 
-return TeamMembersAndServicesView;
+	return TeamMembersAndServicesView;
 
 });

@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 	'appHelpers',
@@ -21,7 +27,7 @@ define([
 	*/
 	var TeamsListView = GenericListView.extend({
 
-		templateHTML : 'lists/teamsList',
+		templateHTML : 'templates/lists/teamsList.html',
 
 		itemsPerPage : 10,
 
@@ -30,7 +36,7 @@ define([
 		events: function(){
 			return _.defaults({
 				'click a.modalCreateTeam'  : 'modalCreateTeam',
-			}, 
+			},
 				GenericListView.prototype.events
 			);
 		},
@@ -51,7 +57,7 @@ define([
 				self.listenTo(self.collection, 'add', self.add);
 
 				app.router.render(self);
-			})
+			});
 		},
 
 
@@ -67,7 +73,7 @@ define([
 			});
 
 			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.teamCreateOk);
-			
+
 			this.partialRender();
 
 			// Display the team members and services View //
@@ -86,9 +92,9 @@ define([
 			// Change the page title //
 			app.router.setPageTitle(app.lang.viewsTitles.teamsList);
 
-		
-			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+
+			// Retrieve the template //
+			$.get(this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					nbTeams: self.collection.cpt,
 					lang   : app.lang
@@ -98,22 +104,22 @@ define([
 
 
 				// Call the render Generic View //
-				GenericListView.prototype.render(self.options);
+				GenericListView.prototype.render(self);
 
 
 				// Create item team view //
-				_.each(self.collection.models, function(team, i){
+				_.each(self.collection.models, function(team){
 					var itemTeamView  = new ItemTeamView({model: team});
 					$('#rows-items').append(itemTeamView.render().el);
 				});
 
 
 				// Pagination view //
-				app.views.paginationView = new PaginationView({ 
+				app.views.paginationView = new PaginationView({
 					page         : self.options.page.page,
 					collection   : self.collection,
 					itemsPerPage : self.itemsPerPage
-				})
+				});
 
 
 				// If an ID is selected display the "Team members, services view" //
@@ -124,14 +130,14 @@ define([
 						self.displayTeamMembersAndServices(self.collection.get(self.options.id));
 					}
 					else{
-						self.displayTeamMembersAndServices(self.options.id);	
+						self.displayTeamMembersAndServices(self.options.id);
 					}
 				}
 				// If there is only One result on the collection display the "Team members, services view" //
 				else if(_.size(self.collection) == 1){
 					self.displayTeamMembersAndServices(_.first(self.collection.models));
 				}
-		
+
 
 			});
 
@@ -144,7 +150,7 @@ define([
 
 		/** Partial Render of the view
 		*/
-		partialRender: function (type) {
+		partialRender: function() {
 			var self = this;
 
 			this.collection.count(this.fetchParams).done(function(){
@@ -159,7 +165,7 @@ define([
 		*/
 		modalCreateTeam: function(e){
 			e.preventDefault();
-			
+
 			app.views.modalTeamView = new ModalTeamView({
 				el  : '#modalSaveTeam'
 			});
@@ -176,7 +182,7 @@ define([
 			if(!_.isUndefined(app.views.teamMembersAndServices)){ app.views.teamMembersAndServices.undelegateEvents(); }
 			app.views.teamMembersAndServices = new TeamMembersAndServices({
 				el    : '#teamMembersAndServices',
-				model : model 
+				model : model
 			});
 		},
 
@@ -195,7 +201,7 @@ define([
 				this.options.sort = this.collection.default_sort;
 			}
 			else{
-				this.options.sort = AppHelpers.calculPageSort(this.options.sort);	
+				this.options.sort = AppHelpers.calculPageSort(this.options.sort);
 			}
 
 			this.options.page = AppHelpers.calculPageOffset(this.options.page, this.itemsPerPage);
@@ -211,21 +217,26 @@ define([
 					sort   : this.options.sort.by+' '+this.options.sort.order
 				}
 			};
+
 			if(!_.isUndefined(this.options.search)){
 				this.fetchParams.data.filters = AppHelpers.calculSearch({search: this.options.search }, TeamModel.prototype.searchable_fields, true);
 			}
+
 			//No displays teams deleted
-			if(_.isUndefined(this.fetchParams.data.filters))
-				this.fetchParams.data.filters = new Object();
-			this.fetchParams.data.filters[_.size(this.fetchParams.data.filters)] = {field:'deleted_at',operator:'=',value:'False'}
+			if(_.isUndefined(this.fetchParams.data.filters)){
+				this.fetchParams.data.filters = {};
+			}
+			else{
+				this.fetchParams.data.filters[_.size(this.fetchParams.data.filters)] = {field: 'deleted_at', operator: '=', value :'False'};
+			}
 
 			return $.when(this.collection.fetch(this.fetchParams))
 				.fail(function(e){
 					console.log(e);
-				})
+				});
 		}
 	});
 
-return TeamsListView;
+	return TeamsListView;
 
 });

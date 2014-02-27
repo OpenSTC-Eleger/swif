@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 /* Import
 -------------------------------------------------- */
 
@@ -15,13 +21,12 @@
 @import 'form';
 @import 'panel';
 @import 'navs';
+@import 'dropdowns';
 
 // Customizing plugin //
 @import 'select2';
 
 @import 'calendar';
-@import 'drop-area';
-@import 'loader';
 @import 'scrollbar';
 
 
@@ -38,7 +43,7 @@ body{
 }
 
 .hide-soft{
-	display: none	
+	display: none
 }
 
 fieldset{
@@ -69,14 +74,54 @@ fieldset{
 	margin-bottom: 8px;
 }
 
-.table-vertical-center > tbody > tr > td{
-	vertical-align: middle;
-}
-
 
 #passUser{
 	.border-right-radius(@border-radius-large);
 }
+
+.d-inline{
+	display: inline;
+}
+
+
+.city-wallpaper{
+	background-repeat    : no-repeat;
+	background-attachment: fixed;
+	background-position  : center;
+	background-size      : cover;
+}
+
+
+
+
+/* Side bar column
+-------------------------------------------------- */
+.content-sidebar{
+	.make-sm-column(3);
+	.make-xl-column(2);
+
+	&-right{
+		.make-sm-column-push(9);
+		.make-xl-column-push(10);
+	}
+}
+
+
+/* Main Column
+-------------------------------------------------- */
+.content-main{
+	.make-sm-column(12);
+
+	&-left{
+		.make-sm-column(9);
+		.make-sm-column-pull(3);
+
+		.make-xl-column(10);
+		.make-xl-column-pull(2);
+	}
+}
+
+
 
 /* HEADER
 -------------------------------------------------- */
@@ -110,9 +155,9 @@ div.datepicker{
 /* Sortable PlaceHolder
 -------------------------------------------------- */
 .sortablePlaceHold{
-	background-color: @well-bg;
 	height: 28px;
 	border: thin dashed darken(@well-bg, 65%);
+	background-color: @well-bg;
 }
 
 
@@ -190,7 +235,7 @@ a.filter-button.filter-disabled{
 /* Vertical OFFSET
 -------------------------------------------------- */
 .calc-vertical-offset(@nb) when (@nb > 0) and (@nb < 7){
-		
+
   .vertical-offset{
 		&-@{nb}{
 			margin-top: percentage(@nb*2  / 100);
@@ -207,7 +252,7 @@ a.filter-button.filter-disabled{
 /* Box Shadow
 -------------------------------------------------- */
 .shadow{
-	.box-shadow(0 1px 10px rgba(50, 50, 0, 0.5));
+	box-shadow: 0 1px 10px rgba(50, 50, 0, 0.5);
 }
 
 
@@ -217,6 +262,13 @@ a.filter-button.filter-disabled{
 -------------------------------------------------- */
 #formConnectionContainer{
 	max-width: 550px;
+}
+.login-logo {
+	position: absolute;
+	top: 100px;
+	left: 5%;
+	border: 2px solid @thumbnail-border;
+	max-width: 150px;
 }
 
 
@@ -234,7 +286,7 @@ a.filter-button.filter-disabled{
 
 
 .flipper {
-	.transition(all .6s ease-out);
+	.transition(all .6s cubic-bezier(0.420, 0.000, 0.580, 1.380));
 	-webkit-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 }
@@ -242,10 +294,10 @@ a.filter-button.filter-disabled{
 /* hide back of pane during swap */
 .front, .back {
 	.backface-visibility(hidden);
-	width: 100%;
 	position: absolute;
 	top: 0;
 	left: 0;
+	width: 100%;
 }
 
 /* front pane, placed above back */
@@ -264,7 +316,7 @@ a.filter-button.filter-disabled{
 
 
 /*--------------------------------------------------
-/* TO REVIEW OR CONFIRM DELETE 
+/* TO REVIEW OR CONFIRM DELETE
 -------------------------------------------------- */
 
 
@@ -277,10 +329,10 @@ a.filter-button.filter-disabled{
 
 
 .tab-pane-planning{
-	height: 120px;
 	overflow-y: scroll;
 	margin-top: @line-height-computed/2;
 	margin-bottom: @line-height-computed/2;
+	height: 120px;
 
 	> ul li[data-name]{
 		width: 33%
@@ -311,9 +363,9 @@ li.external-event.disabled{
 // object Actions //
 .row-actions{
 	display: inline;
-	font-size: 85%;
-	width: auto;
 	margin: 0 0 0 15px;
+	width: auto;
+	font-size: 85%;
 }
 .nested-objects-actions{
 	font-size: 90%;

@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 
@@ -5,7 +11,7 @@ define([
 
 ], function(app, GenericModel){
 
-	'user strict';
+	'use strict';
 
 
 	/******************************************
@@ -21,16 +27,21 @@ define([
 
 
 		getManager : function(type) {
-			switch (type){ 
-				case 'id': 
-					return this.get('manager_id')[0];
-				break;
+
+			var returnVal;
+
+			switch (type){
+				case 'id':
+					returnVal = this.get('manager_id')[0];
+					break;
 				case 'json':
-					return {id: this.get('manager_id')[0], name: this.get('manager_id')[1]};
-				break;
+					returnVal = {id: this.get('manager_id')[0], name: this.get('manager_id')[1]};
+					break;
 				default:
-					return this.get('manager_id')[1];
+					returnVal = this.get('manager_id')[1];
 			}
+
+			return returnVal;
 		},
 		setManager : function(value, silent) {
 			this.set({ manager_id : value }, {silent: silent});
@@ -41,25 +52,25 @@ define([
 
 			_.each(this.get('user_names'), function(s){
 				switch (type){
-					case 'id': 
+					case 'id':
 						teamMembers.push(s[0]);
-					break;
-					case 'json': 
+						break;
+					case 'json':
 						teamMembers.push({id: s[0], name: s[1]});
-					break;
+						break;
 					default:
 						teamMembers.push(s[1]);
 				}
 			});
 
 			if(type == 'string'){
-				return _.toSentence(teamMembers, ', ', ' '+app.lang.and+' ')
+				return _.toSentence(teamMembers, ', ', ' '+app.lang.and+' ');
 			}
 			else{
 				return teamMembers;
 			}
 		},
-	    setMembers : function(value, silent) {
+		setMembers : function(value, silent) {
 			this.set({ user_ids : [[6, 0, value]] }, {silent: silent});
 		},
 
@@ -70,19 +81,19 @@ define([
 
 			_.each(this.get('service_names'), function(s){
 				switch (type){
-					case 'id': 
+					case 'id':
 						teamServices.push(s[0]);
-					break;
-					case 'json': 
+						break;
+					case 'json':
 						teamServices.push({id: s[0], name: s[1]});
-					break;
+						break;
 					default:
 						teamServices.push(s[1]);
 				}
 			});
 
 			if(type == 'string'){
-				return _.toSentence(teamServices, ', ', ' '+app.lang.and+' ')
+				return _.toSentence(teamServices, ', ', ' '+app.lang.and+' ');
 			}
 			else{
 				return teamServices;
@@ -92,7 +103,7 @@ define([
 			this.set({ service_ids : [[6, 0, value]] }, {silent: silent});
 		},
 
-		
+
 		/** Get Informations of the model
 		*/
 		getInformations : function(){
@@ -105,10 +116,10 @@ define([
 			informations.infos.value = this.getManager();
 
 			return informations;
-		},
+		}
 
 	});
 
-return TeamModel;
+	return TeamModel;
 
 });

@@ -1,9 +1,15 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'genericModel',
 
 ], function(GenericModel){
 
-	'user strict';
+	'use strict';
 
 
 	/******************************************
@@ -11,7 +17,7 @@ define([
 	*/
 	var ClaimerContactModel = GenericModel.extend({
 
-		urlRoot : "/api/open_object/partner_addresses",
+		urlRoot : '/api/open_object/partner_addresses',
 
 
 		getInformations: function () {
@@ -20,6 +26,6 @@ define([
 
 	});
 
-return ClaimerContactModel;
+	return ClaimerContactModel;
 
 });

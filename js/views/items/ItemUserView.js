@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 	'appHelpers',
@@ -44,13 +50,13 @@ define([
 
 			// if the user is associated to an Organization, retrieve it //
 			if(!_.isEmpty(this.model.getServices())){
-				this.render();				
+				this.render();
 			}
 			else{
 				this.getOrganization().done(function(data, result){
-						self.model.attributes.organization = result[0][0];
+					self.model.attributes.organization = result[0][0];
 					self.render();
-				}); 
+				});
 			}
 		},
 
@@ -69,7 +75,7 @@ define([
 		render : function() {
 			var self = this;
 
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
@@ -105,7 +111,6 @@ define([
 		/** Get the organization of a user
 		*/
 		getOrganization: function(){
-			var self = this;
 
 			var m = new ClaimersCollection();
 
@@ -113,12 +118,12 @@ define([
 			var fetchParams = {
 				silent : true,
 				data   : {
-					filters : [{ field : 'address.user_id.id', operator : '=', value : this.model.getId() }]
+					filters : [{ field: 'address.user_id.id', operator: '=', value: this.model.getId() }]
 				}
 			};
 
 			return m.fetch(fetchParams).done(function(){
-				
+
 			});
 		}
 

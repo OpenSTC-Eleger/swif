@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 
@@ -15,14 +21,14 @@ define([
 	var ModalDeleteView = GenericModalView.extend({
 
 
-		templateHTML : 'modals/modalDelete',
+		templateHTML : 'templates/modals/modalDelete.html',
 
 
 		// The DOM events //
 		events: function(){
 			return _.defaults({
 				'click .btnDelete' : 'deleteModel',
-			}, 
+			},
 				GenericModalView.prototype.events
 			);
 		},
@@ -57,9 +63,9 @@ define([
 		render : function() {
 			var self = this;
 
-			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
-			 
+			// Retrieve the template //
+			$.get(this.templateHTML, function(templateData){
+
 				var template = _.template(templateData, {
 					lang         : app.lang,
 					modalTitle   : self.options.modalTitle,
@@ -87,7 +93,7 @@ define([
 
 			// Delete the Model //
 			this.model.destroy({wait: true})
-			.done(function(data){
+			.done(function(){
 				self.modal.modal('hide');
 			})
 			.fail(function(){
@@ -96,12 +102,12 @@ define([
 			.always(function(){
 				// Reset the button state //
 				$(e.target).button('reset');
-			})
+			});
 
 		}
 
 	});
 
-return ModalDeleteView;
+	return ModalDeleteView;
 
 });

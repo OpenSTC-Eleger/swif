@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 	'appHelpers',
@@ -19,7 +25,7 @@ define([
 
 		className    : 'row-item',
 
-		templateHTML : 'items/itemPlace',
+		templateHTML : 'templates/items/itemPlace.html',
 
 
 		// The DOM events //
@@ -46,7 +52,7 @@ define([
 
 		/** When the model is updated //
 		*/
-		change: function(e){
+		change: function(){
 
 			this.render();
 			AppHelpers.highlight($(this.el));
@@ -66,7 +72,7 @@ define([
 			});
 
 			app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.placeDeleteOk);
-			
+
 		},
 
 
@@ -76,8 +82,8 @@ define([
 		render : function() {
 			var self = this;
 
-			// Retrieve the template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
+			// Retrieve the template //
+			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
 					lang  : app.lang,
@@ -97,8 +103,9 @@ define([
 
 		/** Display Modal form to add/sav a new place
 		*/
-		modalUpdatePlace: function(e){  
-			e.preventDefault(); e.stopPropagation();
+		modalUpdatePlace: function(e){
+			e.preventDefault();
+			e.stopPropagation();
 
 			app.views.modalPlaceView = new ModalPlaceView({
 				el      : '#modalSavePlace',
@@ -112,7 +119,8 @@ define([
 		/** Modal to remove a place
 		*/
 		modalDeletePlace: function(e){
-			e.preventDefault(); e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 
 			app.views.modalDeleteView = new ModalDeleteView({
 				el           : '#modalDeletePlace',
@@ -124,6 +132,6 @@ define([
 
 	});
 
-return ItemPlaceView;
+	return ItemPlaceView;
 
 });

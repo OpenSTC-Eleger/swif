@@ -1,32 +1,14 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 /* Highlight Animation
 -------------------------------------------------- */
 
 // WebKit
 @-webkit-keyframes highlight {
-	0%   { background-color: none }
-	25%  { background-color: lighten(@pink, 50%) }
-	50%  { background-color: lighten(@pink, 25%) }
-	100% { background-color: lighten(@pink, 50%) }
-}
-
-// Firefox
-@-moz-keyframes highlight {
-	0%   { background-color: none }
-	25%  { background-color: lighten(@pink, 50%) }
-	50%  { background-color: lighten(@pink, 25%) }
-	100% { background-color: lighten(@pink, 50%) }
-}
-
-// IE9
-@-ms-keyframes highlight {
-	0%   { background-color: none }
-	25%  { background-color: lighten(@pink, 50%) }
-	50%  { background-color: lighten(@pink, 25%) }
-	100% { background-color: lighten(@pink, 50%) }
-}
-
-// Opera
-@-o-keyframes highlight {
 	0%   { background-color: none }
 	25%  { background-color: lighten(@pink, 50%) }
 	50%  { background-color: lighten(@pink, 25%) }
@@ -57,18 +39,7 @@ tr.highlight td{
 
 /* Pulse Animation
 -------------------------------------------------- */
-@-webkit-keyframes pulse
-{
-	0%   { .scale(1.0); }
-	25%  { .scale(0.5); }
-	50%  { .scale(1.0); }
-	75%  { .scale(1.5); }
-	100% { .scale(1.0); }
-}
-
-// Firefox
-@-moz-keyframes pulse
-{
+@-webkit-keyframes pulse{
 	0%   { .scale(1.0); }
 	25%  { .scale(0.5); }
 	50%  { .scale(1.0); }

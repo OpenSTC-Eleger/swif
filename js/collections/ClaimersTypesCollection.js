@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'genericCollection',
 	'claimerTypeModel'
@@ -16,20 +22,20 @@ define([
 
 		url         : '/api/open_object/partner_types',
 
-		fields      : ["id", "name", "code", "actions"],
+		fields      : ['id', 'name', 'code', 'actions'],
 
 		default_sort: { by: 'name', order: 'ASC' },
 
-		
+
 
 		/** Collection Initialization
 		*/
-		initialize: function (options) {
+		initialize: function () {
 			//console.log('Claimer type collection Initialization');
 		}
 
 	});
 
-return ClaimersTypesCollection;
+	return ClaimersTypesCollection;
 
 });

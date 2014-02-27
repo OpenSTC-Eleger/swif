@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 
@@ -42,7 +48,7 @@ define([
 			if(_.isUndefined(this.model)){
 
 				this.model = new BookingModel({id: params.modelId});
-			
+
 				this.model.fetch({silent: true, data : {fields : BookingModel.prototype.fields}}).done(function(){
 					self.render();
 				});

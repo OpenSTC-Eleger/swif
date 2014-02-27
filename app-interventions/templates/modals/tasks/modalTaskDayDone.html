@@ -10,7 +10,7 @@
 
 			<blockquote>
 				<p><%= task.getName() %></p>
-				<small><i class="fa fa-thumb-tack fa-fw"></i>&nbsp;<%= task.getIntervention() %></small>
+				<footer><i class="fa fa-thumb-tack fa-fw"></i>&nbsp;<%= task.getIntervention() %></footer>
 
 				<!-- Display the affected Team or Use -->
 				<% if(task.affectedOnTeam()) { %>
@@ -21,9 +21,9 @@
 			</blockquote>
 
 		    <form id="formTaskDone" action="#" class="form-horizontal" role="form">
-			
+
 				<div id="timeSpentSection" class="form-group">
-					<label for="eventTimeSpent" class="control-label col-sm-3"><%= lang.spentHours %>:</label>			
+					<label for="eventTimeSpent" class="control-label col-sm-3"><%= lang.spentHours %>:</label>
 					<div class="col-sm-3">
 						<div class="input-group form-controls bootstrap-timepicker">
 							<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventTimeSpent" value="<%=timeSpentDefault%>">
@@ -83,7 +83,7 @@
 					</div>
 
 				</fieldset>
-				
+
 
 				<!-- Equipments -->
 				<div class="form-group">

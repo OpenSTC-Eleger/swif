@@ -1,10 +1,16 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 	'genericModel',
 
 ], function(app, GenericModel){
 
-	'user strict';
+	'use strict';
 
 
 	/******************************************
@@ -19,17 +25,11 @@ define([
 
 
 		searchable_fields: [
-			{
-				key  : 'name', 
-				type : 'text'
-			},
-			{
-				key  : 'code', 
-				type : 'text'
-			}
+			{ key: 'name', type: 'text' },
+			{ key: 'code', type: 'text' }
 		],
 
-		
+
 		getCode : function() {
 			return this.get('code');
 		},
@@ -56,6 +56,6 @@ define([
 
 	});
 
-return ClaimerTypeModel;
+	return ClaimerTypeModel;
 
 });

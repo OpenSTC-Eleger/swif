@@ -1,11 +1,11 @@
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.interventionsMonitoring %>
-		<sup class="badge badge-info" id="nbInterPlanned" data-toggle="tooltip" data-original-title="<%= lang.planningFenced %>" data-placement="bottom">
+		<sup class="badge badge-info" id="specialBadge2" data-toggle="tooltip" data-original-title="<%= lang.planningFenced %>" data-placement="bottom">
 			<%= nbInterventionsPlanned %>
 		</sup>
 
-		<sup class="badge" id="nbInterPending" data-toggle="tooltip" data-original-title="<%= lang.pending %>" data-placement="bottom">
+		<sup class="badge" id="specialBadge" data-toggle="tooltip" data-original-title="<%= lang.pending %>" data-placement="bottom">
 			<%= nbInterventionsPending %>
 		</sup>
 	</h1>
@@ -13,90 +13,89 @@
 
 
 
-	<!-- Table toolbar -->
-	<div class="tableToolbar row">
-		<div class="col-xs-7 col-md-9 col-lg-10">
-			<a href="#" class="btn btn-primary modalCreateInter"><i class="fa fa-plus fa-fw"></i> <%= _.capitalize(lang.actions.addIntervention) %></a>
+<!-- Table toolbar -->
+<div id="headerList" class="tableToolbar row"></div>
+<!-- Table toolbar -->
+
+
+<!-- Message if No intervention to Display -->
+<% if(interventions.length <= 0) { %>
+	<div class="tableToolbar">
+		<div class="alert alert-warning">
+			<i class="fa fa-info-circle fa-lg fa-fw"></i>&nbsp;<%= lang.infoMessages.noRequest %>
+		</div>
+	</div>
+<% } %>
+
+
+<div id="filter-informations" class="tableToolbar hide">
+	<div class="alert alert-info">
+		<i class="fa fa-filter fa-fw pull-left"></i>
+		<p id="filterContent" class="d-inline"><%= lang.activeFilter %>:</p>
+		<button type="button" class="btn btn-link btn-xs pull-right unapply-filter"><i class="fa fa-eraser fa-fw"></i> <%= lang.actions.unapplyFilter %></button>
+	</div>
+</div>
+
+
+
+<!-- Main view -->
+<div class="row">
+
+	<!-- Advance filter container -->
+	<div id="advanceFilterContainer" class="hide content-sidebar content-sidebar-right">
+	<div class="panel panel-default">
+
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<%= lang.advanceSearch %>
+				<a href="#" class="pull-right unapply-filter">
+					<i class="fa fa-eraser fa-fw text-muted" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.unapplyFilter) %>"></i>
+				</a>
+			</h4>
 		</div>
 
-		<form class=" form-search pull-right col-xs-5 col-md-3 col-lg-2">
-			<div class="input-group">
-				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
-				<span class="input-group-btn">
-					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
-				</span>
-			</div>
-		</form>
-	</div>
-	<!-- /Table toolbar -->
-
-
-
-		<!-- Message if No intervention to Display -->
-	<% if(interventions.length <= 0) { %>
-		<div class="tableToolbar">
-			<div class="alert alert-info">
-				<i class="fa fa-info-circle fa-lg"></i>&nbsp;<%= lang.infoMessages.noRequest %>
-			</div>
+		<div class="panel-body">
+			<!-- Advance filter -->
+			<div id="advanced-filters-bar"></div>
 		</div>
-	<% } %>
-
-
-
-	<!-- Table Interventions -->
-	<div class="table-responsive">
-	<table class="table-interventions table table-bordered table-hover table-sorter table-striped-collapse">
-		<thead>
-			<tr>
-				<th data-sort-column="id">N°</th>
-				<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
-				<th><%= _.capitalize(lang.place) + ' / '%><%= _.capitalize(lang.equipment) %></th>
-				<th><%= _.capitalize(lang.dateDeadline) %></th>
-				<th><%= _.capitalize(lang.plannedHours) %></th>
-				<th><%= _.capitalize(lang.spentHours) %></th>
-				<th><%= _.capitalize(lang.progressRate) %>
-					<!-- Status Filter -->
-					<div class="dropdown pull-right">
-						<a id="filterStateInter" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="fa fa-filter fa-lg"></i></a>
-
-						<ul id="filterStateInterList" class="dropdown-menu" role="menu" aria-labelledby="filterStateInter">
-							<% _.each(interventionsState, function (state, i) {
-								if(i == interventionsState.template.key){ %>
-									<li class="divider"></li>
-							<% } %>
-								
-								<li role="menuitem">
-									<a tabindex="-1" href="#<%= state.key %>"> 
-										<i class="badge badge-<%= state.color %>">&nbsp;</i>
-										&nbsp; <%= _.capitalize(state.translation) %>
-									</a>
-								</li>
-
-							<% }) %>
-
-								<li role="menuitem">
-									<a href="#overrun"><i class="badge badge-overrun">&nbsp;</i>
-										&nbsp; <%= _.capitalize(lang.overrun) %>
-									</a>
-								</li>
-								<li class="divider"></li>
-								<li class="delete-filter disabled"><a href="#delete-filter"> <i class="fa fa-times"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
-						</ul>
-					</div>
-				</th>
-			</tr>
-		</thead>
-		
-		<tbody id="inter-items">
-		<!-- Inter rows -->
-		
-		</tbody>
-	</table>
+	</div>
 	</div>
 
-	<!-- Table pagination -->
-	<div id="pagination" class="pull-right"></div>
-	<!-- /Table pagination -->
+	<div id="contentContainer" class="content-main">
+
+
+		<!-- Table Interventions -->
+		<div class="table-responsive">
+		<table class="table-interventions table table-bordered table-hover table-sorter table-striped-collapse">
+			<thead>
+				<tr>
+					<th data-sort-column="id">N°</th>
+					<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
+					<th><%= _.capitalize(lang.place) + ' / '%><%= _.capitalize(lang.equipment) %></th>
+					<th><%= _.capitalize(lang.dateDeadline) %></th>
+					<th><%= _.capitalize(lang.plannedHours) %></th>
+					<th><%= _.capitalize(lang.spentHours) %></th>
+					<th><%= _.capitalize(lang.progressRate) %></th>
+				</tr>
+			</thead>
+
+			<tbody id="inter-items">
+			<!-- Inter rows -->
+
+			</tbody>
+		</table>
+		</div>
+
+		<!-- Table pagination -->
+		<div id="pagination" class="pull-right"></div>
+		<!-- /Table pagination -->
+
+	</div>
+
+</div>
+<!-- /Main view -->
+
+
 
 
 
@@ -117,7 +116,7 @@
 <div id="modalCancelTask" class="modal fade" role="dialog" aria-hidden="true"></div>
 
 <!-- Modal Form to add/update an inter -->
-<div id="modalSaveInter" class="modal fade" role="dialog" aria-hidden="true"></div>
+<div id="modalInter" class="modal fade" role="dialog" aria-hidden="true"></div>
 
 
 
@@ -127,7 +126,7 @@
 	<div>
 		<div>
 			<h1 style="float: left;">Fiche d'interventions</h1>
-   			<img src="<%= logo_path %>" style="float: right" />
+   			<img src="<%= cityLogo %>" style="float: right" />
    		</div>
    		<hr style="clear: both;">
 
@@ -157,7 +156,7 @@
 			</fieldset>
 
 		</fieldset>
-		
+
 
 
 		<div class="forTask">
@@ -220,7 +219,7 @@
 							<td style="text-align: center"><strong><%= _.capitalize(lang.observations) %>:</strong></td>
 						</tr>
 					</thead>
-					
+
 					<tbody>
 
 					</tbody>

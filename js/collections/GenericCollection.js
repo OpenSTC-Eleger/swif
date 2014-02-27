@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'backbone'
 
@@ -14,8 +20,12 @@ define([
 		cpt         : 0,
 
 		default_sort: { by: 'id', order: 'DESC' },
-		
-		modelFields: [],
+
+		modelId		: 0,
+
+		searchable_fields: [
+			{ key: 'id', type: 'numeric' }
+		],
 
 
 		/** count all models without restricts ( openerp search_count method call select count(*) request)
@@ -31,7 +41,7 @@ define([
 				if(_.isUndefined(options.data)) {
 					options.data = {};
 				}
-				else if(!_.isUndefined(options.data.filters)){
+				else if(!_.isUndefined(options.data.filters) && _.size(options.data.filters)>0 ){
 					paramFilter.filters = options.data.filters;
 				}
 			}
@@ -42,12 +52,36 @@ define([
 				dataType : 'text',
 				data     : paramFilter,
 				success  : function(data,status,request){
-					var contentRange = request.getResponseHeader("Content-Range")
+					var contentRange = request.getResponseHeader('Content-Range');
 					self.cpt = contentRange.match(/\d+$/);
-					self.modelFields = JSON.parse(request.getResponseHeader("Model-Fields"))
+
+					var fieldsMetadata = {};
+
+					//Set advanced filters for collection with metadatas
+					try {
+						fieldsMetadata = JSON.parse(request.getResponseHeader('Model-Fields'));
+
+						_.each(self.advanced_searchable_fields, function(fieldToKeep){
+							var field = _.find(fieldsMetadata,function(value,key){
+								return fieldToKeep.key == key;
+							});
+							_.extend(fieldToKeep, field);
+						});
+					}
+					catch(e){
+						console.log('Meta data are not valid');
+					}
+
+					//Get model Id to obtain his filters
+					self.modelId = request.getResponseHeader('Model-Id');
+
 				}
 			});
 		},
+		
+		specialCount: function(){},
+		specialCount2: function(){},
+
 
 		sync: function(method, model, options){
 
@@ -64,6 +98,6 @@ define([
 
 	});
 
-return GenericCollection;
+	return GenericCollection;
 
 });

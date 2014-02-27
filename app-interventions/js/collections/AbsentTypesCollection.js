@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'genericCollection',
 	'absentTypeModel'
@@ -14,7 +20,7 @@ define([
 
 		model       : AbsentTypeModel,
 
-		url         : "/api/openstc/absence_categories",
+		url         : '/api/openstc/absence_categories',
 
 		fields      : ['id', 'name', 'code', 'description', 'actions'],
 
@@ -24,12 +30,12 @@ define([
 
 		/** Collection Initialization
 		*/
-		initialize: function (options) {
+		initialize: function () {
 			//console.log('Place collection Initialization');
 		},
 
 	});
 
-return AbsentTypesCollection;
+	return AbsentTypesCollection;
 
 });

@@ -12,7 +12,7 @@
 
 			<blockquote>
 				<p><%= request.getName() %></p>
-				<small><strong><i class="fa fa-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong>&nbsp;&nbsp; <%= request.getSite() %></small>
+				<footer><strong><i class="fa fa-map-marker"></i>&nbsp;<%= _.capitalize(lang.place) %> : </strong>&nbsp;&nbsp; <%= request.getSite() %></footer>
 			</blockquote>
 
 
@@ -33,7 +33,7 @@
 					<label for="requestService" class="col-sm-3 control-label"><%= lang.serviceConcerned %>:</label>
 
 					<div class="col-sm-9">
-						<input id="requestService" class="select2" data-placeholder="<%= lang.actions.selectAService %>" required 
+						<input id="requestService" class="select2" data-placeholder="<%= lang.actions.selectAService %>" required
 							data-selected-value='<%= JSON.stringify(request.getService('json')) %>'
 						/>
 					</div>
@@ -44,10 +44,10 @@
 					<label for="requestDateDeadline" class="control-label col-sm-3"><%= _.capitalize(lang.dateDeadline) %>:</label>
 					<div class="col-sm-4">
 						<div class="input-group">
-						<input 
+						<input
 							type="text" class="datepicker form-control"
-							id="requestDateDeadline" 
-							value="<%= moment().add('w', 1).format('L') %>" 
+							id="requestDateDeadline"
+							value="<%= moment().add('w', 1).format('L') %>"
 							placeholder="dd/mm/yyyy"
 							required>
 							<span class="input-group-addon"><i class="fa fa-calendar"></i></span>

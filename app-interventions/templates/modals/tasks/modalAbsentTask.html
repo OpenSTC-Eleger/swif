@@ -13,7 +13,7 @@
 
 			<blockquote id="infoModalAbsentTask" class="spaceBottom">
 				<p></p>
-				<small></small>
+				<footer></footer>
 			</blockquote>
 
 
@@ -23,7 +23,7 @@
 			    	<!-- Absent Type -->
 			    	<div class="form-group">
 						<label for="absentType" class="control-label col-sm-3"><%= _.capitalize(lang.type) %>:</label>
-						
+
 						<div class="col-sm-9">
 							<input id="absentType" class="select2" required data-placeholder="<%= lang.actions.selectAbsentType %>"/>
 						</div>
@@ -51,7 +51,7 @@
 						</div>
 						</div>
 					</div>
-		            
+
 
 					<!-- Absent end date / hour -->
 		            <div class="form-group">
@@ -67,7 +67,7 @@
 
 					    <!-- End Hour -->
 					    <div class="col-sm-3">
-						    <div class="input-group bootstrap-timepicker" >							
+						    <div class="input-group bootstrap-timepicker" >
 						    	<input type="text" class="timepicker-default form-control" id='endHour' required>
 						    	<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 							</div>
@@ -77,12 +77,12 @@
 
 			</form>
 		</div>
-		
+
 		<div class="modal-footer">
 		    <button type="button" id="btnAddAbsentTask" class="btn btn-primary" data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.saveInProgress %>">
 		    	<%= _.capitalize(lang.actions.save) %>
 		    </button>&nbsp;&nbsp;
-		    
+
 		    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 		</div>
 	</div>

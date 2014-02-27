@@ -1,0 +1,58 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 class="modal-title">
+				<i class="fa fa-save"></i>&nbsp; <%= lang.viewsTitles.saveFilter %>
+			</h3>
+		</div>
+
+
+		<!-- Modal Body  -->
+		<div class="modal-body">
+
+			<blockquote>
+				<footer class="text-muted"><%= filterInfo %></footer>
+			</blockquote>
+
+
+			<form id="formSaveFilter" action="#" class="form-horizontal" role="form">
+
+				<!-- Filter Name -->
+				<div class="form-group">
+					<label for="filterName" class="col-sm-3 control-label"><%= _.capitalize(lang.label) %>:</label>
+
+					<div class="col-sm-6">
+						<input type="text" id="filterName" class="form-control" />
+						<span class="help-block" id="name-error"></span>
+					</div>
+				</div>
+
+
+				<!-- Filter description -->
+				<div class="form-group">
+					<label for="filterDescription" class="col-sm-3 control-label"><%= _.capitalize(lang.description) %>:</label>
+
+					<div class="col-sm-9">
+						<input type="text" id="filterDescription" class="form-control" />
+					</div>
+				</div>
+
+			</form>
+
+		</div>
+		<!-- / Modal Body -->
+
+
+		<div class="modal-footer">
+			<button type="submit" form="formSaveFilter" class="btn btn-primary"
+					data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.saveInProgress %>">
+			<%= _.capitalize(lang.actions.save) %>
+			</button>&nbsp;&nbsp;
+
+			<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+
+	</div>
+</div>

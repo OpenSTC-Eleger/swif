@@ -10,7 +10,7 @@
 
 			<blockquote>
 				<p><%=task.name%></p>
-				<small><%= task.project_id[1]%></small>
+				<footer><%= task.project_id[1]%></footer>
 			</blockquote>
 
 			<form id="formTaskDone" action="#" class="form-horizontal" role="form">
@@ -19,7 +19,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="selectUsersTeams"><%= _.capitalize(lang.carryOutBy) %>:</label>
 
-					<div class="col-sm-9">	
+					<div class="col-sm-9">
 						   <div class="input-group">
 							<div class="input-group-btn">
 							<!--<div class="input-prepend">-->
@@ -69,7 +69,7 @@
 
 					<div class="col-sm-9">
 					<div class="row">
-					
+
 					<!-- End date -->
 					<div class="col-sm-5">
 						<div class="input-group">
@@ -102,7 +102,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<!-- Vehicle -->
 				<div class="form-group">
 					<label for="taskEquipmentDone" class="control-label col-sm-3"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
@@ -112,7 +112,7 @@
 							<span class="input-group-addon linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
 								<i class="fa fa-tint"></i>
 							</span>
-							<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect" data-placeholder="<%= lang.actions.selectAVehicle %>"/>						
+							<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect" data-placeholder="<%= lang.actions.selectAVehicle %>"/>
 						</div>
 					</div>
 				</div>
@@ -143,7 +143,7 @@
 					</div>
 
 				</fieldset>
-				
+
 
 				<!-- Equipments -->
 				<fieldset>

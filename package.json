@@ -1,11 +1,33 @@
 {
-  "name": "SWIF",
-  "version": "1.0.0",
+  "name": "SWIF-OpenSTC",
+  "version": "1.3.6",
+  "description": "Logiciel de gestion des services techniques",
+  "repository": {
+    "type": "git",
+    "url": "git@dev.siclic.fr:stc-swif.git"
+  },
+  "keywords": [
+    "swif",
+    "services tehcniques"
+  ],
+  "author": "Siclic <contact@siclic.fr>",
+  "license": {
+    "type": "AGPL-3.0",
+    "url": "https://www.gnu.org/licenses/agpl.txt"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
-    "grunt-contrib-jshint": "~0.6.3",
-    "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-less": "~0.7.0"
+    "load-grunt-tasks": "~0.2.1",
+    "grunt-targethtml": "~0.2.6",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-less": "~0.9.0",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-jscs-checker": "~0.3.0",
+    "grunt-githooks": "~0.3.1",
+    "grunt-notify": "~0.2.17",
+    "semver": "~2.2.1",
+    "shelljs": "~0.2.6",
+    "grunt-banner": "~0.2.1",
+    "grunt-git-contributors": "~0.1.5"
   }
 }

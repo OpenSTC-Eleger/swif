@@ -13,37 +13,37 @@
 
 		<blockquote>
 			<p><%= booking.getName() %></p>
-			<small><strong><i class="fa fa-user"></i>&nbsp;<%= _.capitalize(lang.contact) %> : </strong></i>&nbsp;&nbsp; <%= booking.getClaimerContact()  + " ("+ booking.getClaimer() + ")" %></small>
+			<footer><strong><i class="fa fa-user"></i>&nbsp;<%= _.capitalize(lang.contact) %> : </strong></i>&nbsp;&nbsp; <%= booking.getClaimerContact()  + " ("+ booking.getClaimer() + ")" %></footer>
 			<small><strong><i class="fa fa-envelope"></i>&nbsp;<%= _.capitalize(lang.email) %> : </strong></i><%= booking.getClaimerMail() %></small>
 		</blockquote>
 
 		<form id="formUpdateBooking" action="#" class="form-horizontal">
-		
-			<% 
+
+			<%
 				var note = ''
-				if(state==BookingModel.status.done.key) 
-					note = booking.getResourceNames('newline') 
+				if(state==BookingModel.status.done.key)
+					note = booking.getResourceNames('newline')
 			%>
-			
+
 			<% if((state == BookingModel.actions.refuse.key || state == BookingModel.actions.cancel.key) && !isClaimer) { %>
 				<!--  send email Y/N -->
 				<div class="form-group">
-					<label for="sendMailToClaimer" class="col-sm-3 control-label" ><%= _.capitalize(lang.resa.sendMailToClaimer) %></label>				
+					<label for="sendMailToClaimer" class="col-sm-3 control-label" ><%= _.capitalize(lang.resa.sendMailToClaimer) %></label>
 					<div class="col-sm-9">
 						<input type="checkbox" class="make-switch" id="sendMailToClaimer" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"/>
 					</div>
-				</div>	
-			<% } %>	
-			
+				</div>
+			<% } %>
+
 			<!-- note related to this action -->
 			<div class="form-group">
 				<label for="note" class="control-label col-sm-3"><%= titleNote %>:</label>
 
 				<div class="col-sm-9">
 					<textarea id="note" class="form-control" rows="5" <%= noteOptional ? '': 'required'%>><%= note %></textarea>
-				</div>			
+				</div>
 
-			</div>	
+			</div>
 			<% if(state != BookingModel.actions.refuse.key && state != BookingModel.actions.cancel.key) { %>
 				<!--  Attach invoice -->
 				<div class="form-group">
@@ -51,8 +51,8 @@
 					<div class="col-sm-9">
 						<input type="checkbox" class="make-switch" id="sendInvoicing" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"/>
 					</div>
-				</div>	
-			<% } %>		
+				</div>
+			<% } %>
 		</form>
 	</div>
 	<!-- /Modal Body -->

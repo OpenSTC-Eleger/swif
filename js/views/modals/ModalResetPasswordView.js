@@ -1,8 +1,14 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 
 	'genericModalView',
-	
+
 
 ], function(app, GenericModalView){
 
@@ -23,10 +29,10 @@ define([
 		events: function(){
 			return _.defaults({
 				'submit #formResetPassword'        : 'resetPassword',
-				
+
 				'mousedown #toggleDisplayPassword' : 'displayPassword',
 				'mouseup #toggleDisplayPassword'   : 'hidePassword'
-			}, 
+			},
 				GenericModalView.prototype.events
 			);
 		},
@@ -51,7 +57,7 @@ define([
 			var self = this;
 
 
-			// Retrieve the template // 
+			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
@@ -82,7 +88,7 @@ define([
 				var self = this;
 
 				// Set the button in loading State //
-				$(this.el).find("button[type=submit]").button('loading');
+				$(this.el).find('button[type=submit]').button('loading');
 
 				/*console.log($('#newPassword').val());
 				console.log($('#confirmPassword').val());*/
@@ -91,18 +97,15 @@ define([
 
 
 				this.model.save(params, {patch: true, wait: true})
-					.done(function(data) {
+					.done(function() {
 						self.modal.modal('hide');
 					})
 					.fail(function (e) {
 						console.log(e);
 					})
 					.always(function () {
-						$(self.el).find("button[type=submit]").button('reset');
+						$(self.el).find('button[type=submit]').button('reset');
 					});
-			}
-			else{
-
 			}
 		},
 
@@ -110,11 +113,11 @@ define([
 
 		/** Calcul the area of the place
 		*/
-		checkPassword: function (e) {
+		checkPassword: function () {
 
 			if(this.checkPasswordRules() && this.checkPasswordsMatch()){
 				return true;
-			} 
+			}
 			else{
 				return false;
 			}
