@@ -14,11 +14,11 @@ define([
 	
 		model : ContractModel,
 		
-		url   : '/api/openresa/bookings',
+		url   : '/api/openpatrimoine/contracts',
 
-		fields: ['id', 'name'],
+		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'provider_name', 'patrimoine_is_equipment', 'patrimoine_name'],
 
-		default_sort: { by: '', order: '' },
+		default_sort: { by: 'id', order: 'DESC' },
 		
 		specialCpt : 0,
 			
