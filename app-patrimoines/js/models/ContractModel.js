@@ -13,10 +13,10 @@ define([
 	*/
 	return GenericModel.extend({
 		
-		urlRoot: '/api/openresa/bookings',
+		urlRoot: '/api/openpatrimoine/contracts',
 
-		fields : ['id', 'name'],
-	
+		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'technical_service_id', 'supplier_id', 'provider_name', 'patrimoine_is_equipment', 'equipment_id' ,'site_id' ,'patrimoine_name'],
+
 		searchable_fields: [
 			{
 				key  : 'id',
@@ -41,8 +41,7 @@ define([
 				return default_value;
 			}
 		},
-	
-	
+		
 		getId: function(){
 			return this.get('id');
 		},

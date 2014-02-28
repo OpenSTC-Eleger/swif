@@ -55,14 +55,14 @@ define([
 					var contentRange = request.getResponseHeader('Content-Range');
 					self.cpt = contentRange.match(/\d+$/)[0];
 
-					var fieldsMetadata = {};
+					self.fieldsMetadata = {};
 
 					//Set advanced filters for collection with metadatas
 					try {
-						fieldsMetadata = JSON.parse(request.getResponseHeader('Model-Fields'));
+						self.fieldsMetadata = JSON.parse(request.getResponseHeader('Model-Fields'));
 
 						_.each(self.advanced_searchable_fields, function(fieldToKeep){
-							var field = _.find(fieldsMetadata,function(value,key){
+							var field = _.find(self.fieldsMetadata,function(value,key){
 								return fieldToKeep.key == key;
 							});
 							_.extend(fieldToKeep, field);
