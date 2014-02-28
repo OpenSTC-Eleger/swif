@@ -53,7 +53,7 @@ define([
 				data     : paramFilter,
 				success  : function(data,status,request){
 					var contentRange = request.getResponseHeader('Content-Range');
-					self.cpt = contentRange.match(/\d+$/);
+					self.cpt = contentRange.match(/\d+$/)[0];
 
 					var fieldsMetadata = {};
 
@@ -76,9 +76,10 @@ define([
 					self.modelId = request.getResponseHeader('Model-Id');
 
 				}
+
 			});
 		},
-		
+
 		specialCount: function(){},
 		specialCount2: function(){},
 

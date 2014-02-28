@@ -13,14 +13,12 @@ define([
 	'requestModel',
 
 	'genericListView',
-	'paginationView',
 	'itemRequestView',
 	'modalRequestView'
 
-], function(app, AppHelpers, RequestsCollection, ClaimersServicesCollection, RequestModel, GenericListView, PaginationView, ItemRequestView, ModalRequestView) {
+], function(app, AppHelpers, RequestsCollection, ClaimersServicesCollection, RequestModel, GenericListView, ItemRequestView, ModalRequestView) {
 
 	'use strict';
-
 
 
 
@@ -38,7 +36,7 @@ define([
 		events: function() {
 			return _.defaults({
 					'click #specialBadge[data-filter!=""]': 'badgeFilter',
-					'click a.createModel': 'modalCreateRequest',
+					'click a.createModel'                 : 'modalCreateRequest',
 				},
 				GenericListView.prototype.events
 			);
@@ -89,11 +87,11 @@ define([
 
 
 				var template = _.template(templateData, {
-					lang: app.lang,
-					nbRequests: self.collection.cpt,
+					lang            : app.lang,
+					nbRequests      : self.collection.cpt,
 					nbRequestsToDeal: self.collection.specialCpt,
-					requestsState: self.model.status,
-					user: app.current_user
+					requestsState   : self.model.status,
+					user            : app.current_user
 				});
 
 				$(self.el).html(template);
@@ -149,7 +147,7 @@ define([
 			app.views.modalRequestView = new ModalRequestView({
 				el: '#modalRequest'
 			});
-		},
+		}
 
 	});
 

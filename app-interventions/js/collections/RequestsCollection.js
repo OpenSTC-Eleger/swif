@@ -30,7 +30,7 @@ define([
 			{ key: 'site1',         label : app.lang.place },
 			{ key: 'equipment_id',  label : app.lang.equipment },
 			{ key: 'service_id',    label : app.lang.service },
-			{ key: 'partner_id',  label : app.lang.claiment },
+			{ key: 'partner_id',    label : app.lang.claiment },
 			{ key: 'create_date',   label : app.lang.createDate },
 			{ key: 'date_deadline', label : app.lang.date_deadline },
 			{ key: 'intervention_assignement_id', label: app.lang.category },

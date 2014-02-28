@@ -88,7 +88,7 @@ define('appHelpers', [
 			}
 			else if( _.isString(page) ){
 				paginate.page = parseInt(page, 10);
-				paginate.offset = (paginate.page - 1) * (!_.isUndefined(itemsPerPage) ? itemsPerPage : app.config.itemsPerPage);
+				paginate.offset = ((paginate.page - 1) * itemsPerPage);
 			}
 
 			return paginate;

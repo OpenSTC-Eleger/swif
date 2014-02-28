@@ -27,6 +27,8 @@ define([
 	*/
 	var TeamsListView = GenericListView.extend({
 
+		model: TeamModel,
+
 		templateHTML : 'templates/lists/teamsList.html',
 
 		itemsPerPage : 10,
@@ -35,7 +37,7 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'click a.modalCreateTeam'  : 'modalCreateTeam',
+				'click a.modalCreateModel'  : 'modalCreateTeam',
 			},
 				GenericListView.prototype.events
 			);
@@ -45,24 +47,21 @@ define([
 
 		/** View Initialization
 		*/
-		initialize: function (params) {
-			this.options = params;
+		initialize: function() {
 
-			var self = this;
+			// Check if the collections is instantiate //
+			if (_.isUndefined(this.collection)) {
+				this.collection = new TeamsCollection();
+			}
 
-			this.initCollection().done(function(){
+			this.specialDomain = {field: 'deleted_at', operator: '=', value: 'False'};
 
-				// Unbind & bind the collection //
-				self.collection.off();
-				self.listenTo(self.collection, 'add', self.add);
-
-				app.router.render(self);
-			});
+			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
 
 
-		/** When the model ara created //
+		/** When the model created //
 		*/
 		add: function(model){
 
@@ -104,21 +103,13 @@ define([
 
 
 				// Call the render Generic View //
-				GenericListView.prototype.render(self);
+				GenericListView.prototype.render.apply(self);
 
 
 				// Create item team view //
 				_.each(self.collection.models, function(team){
 					var itemTeamView  = new ItemTeamView({model: team});
 					$('#rows-items').append(itemTeamView.render().el);
-				});
-
-
-				// Pagination view //
-				app.views.paginationView = new PaginationView({
-					page         : self.options.page.page,
-					collection   : self.collection,
-					itemsPerPage : self.itemsPerPage
 				});
 
 
@@ -148,18 +139,6 @@ define([
 
 
 
-		/** Partial Render of the view
-		*/
-		partialRender: function() {
-			var self = this;
-
-			this.collection.count(this.fetchParams).done(function(){
-				$('#bagdeNbTeams').html(self.collection.cpt);
-				app.views.paginationView.render();
-			});
-		},
-
-
 
 		/** Modal form to create a new Team
 		*/
@@ -184,59 +163,9 @@ define([
 				el    : '#teamMembersAndServices',
 				model : model
 			});
-		},
-
-
-
-		/** Collection Initialisation
-		*/
-		initCollection: function(){
-
-			// Check if the collections is instantiate //
-			if(_.isUndefined(this.collection)){ this.collection = new TeamsCollection(); }
-
-
-			// Check the parameters //
-			if(_.isUndefined(this.options.sort)){
-				this.options.sort = this.collection.default_sort;
-			}
-			else{
-				this.options.sort = AppHelpers.calculPageSort(this.options.sort);
-			}
-
-			this.options.page = AppHelpers.calculPageOffset(this.options.page, this.itemsPerPage);
-
-
-
-			// Create Fetch params //
-			this.fetchParams = {
-				silent : true,
-				data   : {
-					limit  : (!_.isUndefined(this.itemsPerPage) ? this.itemsPerPage : app.config.itemsPerPage),
-					offset : this.options.page.offset,
-					sort   : this.options.sort.by+' '+this.options.sort.order
-				}
-			};
-
-			if(!_.isUndefined(this.options.search)){
-				this.fetchParams.data.filters = AppHelpers.calculSearch({search: this.options.search }, TeamModel.prototype.searchable_fields, true);
-			}
-
-			//No displays teams deleted
-			if(_.isUndefined(this.fetchParams.data.filters)){
-				this.fetchParams.data.filters = {};
-			}
-			else{
-				this.fetchParams.data.filters[_.size(this.fetchParams.data.filters)] = {field: 'deleted_at', operator: '=', value :'False'};
-			}
-
-			return $.when(this.collection.fetch(this.fetchParams))
-				.fail(function(e){
-					console.log(e);
-				});
 		}
+
 	});
 
 	return TeamsListView;
-
 });

@@ -34,6 +34,8 @@ define([
 
 		genericTemplateHTML: 'templates/others/headerListView.html',
 
+		specialDomain      : {},
+
 
 		// The DOM events //
 		events: {
@@ -59,8 +61,6 @@ define([
 					// Unbind & bind the collection //
 					self.collection.off();
 					self.listenTo(self.collection, 'add', self.add);
-					self.listenTo(self.collection, 'destroy', self.destroy);
-					self.listenTo(self.collection, 'remove', self.destroy);
 					self.listenTo(self.collection, 'reset', self.render);
 
 					//Set Meta Data for request collection to compute recording filters
@@ -136,7 +136,6 @@ define([
 
 
 
-
 				// Rewrite the research in the form //
 				if(!_.isUndefined(self.options.filter)){
 					// Filter advanced view needs collection setted in Generic //
@@ -145,20 +144,15 @@ define([
 
 				// Pagination view //
 				app.views.paginationView = new PaginationView({
-					page       : self.options.page.page,
-					collection : self.collection
+					page        : self.options.page.page,
+					collection  : self.collection,
+					itemsPerPage: self.itemsPerPage
 				});
-
 
 			});
 
 		},
 
-		/** Destroy collection's model
-		*/
-		destroy: function(){
-			this.partialRender();
-		},
 
 
 		/** Partial Render of the view
@@ -170,6 +164,7 @@ define([
 
 			$.when(this.collection.count(this.getParams()), this.collection.specialCount(), this.collection.specialCount2())
 				.done(function(){
+
 					$('#badge').html(self.collection.cpt);
 					$('#specialBadge').html(self.collection.specialCpt);
 					$('#specialBadge2').html(self.collection.specialCpt2);
@@ -202,13 +197,20 @@ define([
 				this.options.sort = AppHelpers.calculPageSort(this.options.sort);
 			}
 
-			this.options.page = AppHelpers.calculPageOffset(this.options.page);
+
+			var itemsPerPage = app.config.itemsPerPage;
+			if(!_.isUndefined(this.itemsPerPage)){
+				itemsPerPage = this.itemsPerPage;
+			}
+
+			this.options.page = AppHelpers.calculPageOffset(this.options.page, itemsPerPage);
+
 
 			// Create Fetch params //
 			var fetchParams = {
 				silent     : true,
-				data       :{
-					limit  : app.config.itemsPerPage,
+				data       : {
+					limit  : itemsPerPage,
 					offset : this.options.page.offset,
 					sort   : this.options.sort.by+' '+this.options.sort.order
 				}
@@ -241,9 +243,25 @@ define([
 				}
 			}
 
+
+			// Add Special domain. EX Team list with delete_date //
+			if(!_.isEmpty(this.specialDomain)){
+
+				if(_.isUndefined(globalSearch.filter)){
+					globalSearch.filter = [];
+				}
+
+				// Add the speciald Domain to the Filter //
+				globalSearch.filter.push(this.specialDomain);
+			}
+
+
+
 			if(!_.isEmpty(globalSearch)){
 				fetchParams.data.filters = AppHelpers.calculSearch(globalSearch, this.model.prototype.searchable_fields);
 			}
+
+
 
 			//Add filter on recurrence selected
 			if(!_.isUndefined(this.options.recurrence)){
@@ -251,9 +269,10 @@ define([
 					fetchParams.data.filters = {};
 				}
 				fetchParams.data.filters  = _.toArray(fetchParams.data.filters);
-				fetchParams.data.filters.push({field: 'recurrence_id.id', operator:'=', value:this.options.recurrence});
+				fetchParams.data.filters.push({field: 'recurrence_id.id', operator: '=', value: this.options.recurrence});
 				fetchParams.data.filters = app.objectifyFilters(fetchParams.data.filters);
 			}
+
 			return fetchParams;
 		},
 
@@ -285,6 +304,7 @@ define([
 				}
 
 				// Delete parameters //
+				delete this.options.id;
 				delete this.options.page;
 
 				app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});

@@ -45,7 +45,7 @@ define([
 			this.listenTo(this.model, 'change', this.change);
 
 			// When the model are destroy //
-			this.listenTo(this.model,'destroy', this.destroy);
+			//this.listenTo(this.model, 'destroy', this.destroy);
 		},
 
 

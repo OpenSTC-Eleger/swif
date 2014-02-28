@@ -21,7 +21,6 @@ define([
 			id : null,
 		},
 
-
 		searchable_fields: [
 			{ key: 'name',  type: 'text' }
 		],

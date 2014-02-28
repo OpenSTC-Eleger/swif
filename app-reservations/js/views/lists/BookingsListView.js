@@ -159,13 +159,6 @@ define([
 			this.fetchParams.data.filters = app.objectifyFilters(this.fetchParams.data.filters);
 		}
 
-		//Add filter on recurrence selected
-		if(!_.isUndefined(this.options.recurrence)){
-			this.fetchParams.data.filters  = _.toArray(this.fetchParams.data.filters);
-			this.fetchParams.data.filters.push({field: 'recurrence_id.id', operator:'=', value:this.options.recurrence})
-			this.fetchParams.data.filters = app.objectifyFilters(this.fetchParams.data.filters)
-		}*/
-
 	});
 
 	return bookingsListView;
