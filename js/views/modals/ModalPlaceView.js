@@ -131,23 +131,24 @@ define([
 			$(this.el).find('button[type=submit]').button('loading');
 
 
-			// Set the properties of the model //
-			this.model.setName(this.$('#placeName').val(), true);
-			this.model.setServices(app.views.advancedSelectBoxPlaceServices.getSelectedItems(), true);
-			this.model.setType(app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(), true);
-			this.model.setParentPlace(app.views.advancedSelectBoxPlaceParentView.getSelectedItem(), true);
-			this.model.setWidth(this.$('#placeWidth').val(), true);
-			this.model.setLength(this.$('#placeLength').val(), true);
-			this.model.setSurface(this.$('#placeArea').val(), true);
-			this.model.setInternalBooking(this.$('#placeInternalBooking:checked').val() == '1', true);
-			this.model.setExternalBooking(this.$('#placeExternalBooking:checked').val() == '1', true);
-			this.model.setBookingServices(app.views.advancedSelectBoxPlaceBookingServices.getSelectedItems(), true);
-			this.model.setBookingClaimers(app.views.advancedSelectBoxPlaceBookingClaimers.getSelectedItems(), true);
-			this.model.set('color', $('#displayColor').val());
-			this.model.set('block_booking', $('#placeBlockingBookable').bootstrapSwitch('state'));
+			var params = {
+				name                     : this.$('#placeName').val(),
+				service_ids              : [[6, 0, app.views.advancedSelectBoxPlaceServices.getSelectedItems()]],
+				type                     : app.views.advancedSelectBoxPlaceTypeView.getSelectedItem(),
+				site_parent_id           : app.views.advancedSelectBoxPlaceParentView.getSelectedItem(),
+				width                    : this.$('#placeWidth').val(),
+				length                   : this.$('#placeLength').val(),
+				surface                  : this.$('#placeArea').val(),
+				internal_booking         : this.$('#placeInternalBooking:checked').val() == '1',
+				external_booking         : this.$('#placeExternalBooking:checked').val() == '1',
+				service_bookable_ids     : [[6, 0, app.views.advancedSelectBoxPlaceBookingServices.getSelectedItems()]],
+				partner_type_bookable_ids: [[6, 0, app.views.advancedSelectBoxPlaceBookingClaimers.getSelectedItems()]],
+				color                    : this.$('#displayColor').val(),
+				block_booking            : $('#placeBlockingBookable').bootstrapSwitch('state')
+			};
 
 
-			this.model.save()
+			this.model.save(params, {patch: !this.model.isNew(), silent: true})
 				.done(function(data) {
 					self.modal.modal('hide');
 

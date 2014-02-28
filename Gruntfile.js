@@ -123,7 +123,7 @@ module.exports = function(grunt) {
 				src: ['Gruntfile.js']
 			},
 			scripts: {
-				src: ['app-interventions/js/views/lists/RequestsListView.js']
+				src: ['js/views/modals/ModalPlaceView.js']
 			}
 		},
 

@@ -101,6 +101,7 @@ define([
 			return this;
 		},
 
+
 		/** Modal form to create a new Cat
 		*/
 		modalCreateCat: function(e){

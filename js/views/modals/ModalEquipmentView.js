@@ -225,7 +225,7 @@ define([
 
 			var stockQty = parseInt($('#equipmentQtyAvailable').val());
 
-			this.model.save(params, {patch:!this.model.isNew(), silent:true,wait:true})
+			this.model.save(params, {patch:!this.model.isNew(), silent:true, wait:true})
 				.done(function(data) {
 					self.modal.modal('hide');
 
