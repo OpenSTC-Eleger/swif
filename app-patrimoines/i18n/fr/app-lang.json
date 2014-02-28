@@ -1,18 +1,19 @@
 {
-	"resa" :
-		{			
-					
-			
+	"patrimoine":{
+
+		"provider"					:"prestataire",
+		"patrimony"					:"patrimoine",
+		
 		"actions" : {			
-			
+			"addContract"			:"créer un contract"
 		},
 		
 		"infoMessages" : {
+			"noContract"			:"aucun contract à afficher"
 		},
 		
 		"viewsTitles" : {
-			
+			"contractsList"			: "Suivi des Contrats"
 		}
 	}
 }
-

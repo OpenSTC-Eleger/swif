@@ -16,8 +16,8 @@ requirejs.config({
 		contractModel						: '../app-patrimoines/js/models/ContractModel',
 		
 		//Views
-//		contractsListView					: 'app-patrimoines/js/views/lists/ContractsListView',
-//		itemContractView					: 'app-patrimoines/js/views/lists/ItemContractView',
+		contractsListView					: '../app-patrimoines/js/views/lists/ContractsListView',
+		itemContractView					: '../app-patrimoines/js/views/items/ItemContractView',
 
 	}
 

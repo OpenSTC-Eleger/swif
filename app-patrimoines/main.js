@@ -1,11 +1,11 @@
-define('app-reservations', [
+define('app-patrimoines', [
 	'app',
 
 	'appRouter',
-	'appReservationsRouter'
+	'appPatrimoinesRouter'
 
 
-], function(app, AppRouter, AppReservationsRouter){
+], function(app, AppRouter, AppPatrimoinesRouter){
 
 	'use strict';
 
@@ -39,7 +39,7 @@ define('app-reservations', [
 
 			
 				// Extends the Router functions //
-			_.each(AppReservationsRouter.prototype, function(func, funcName){
+			_.each(AppPatrimoinesRouter.prototype, function(func, funcName){
 				AppRouter.prototype[funcName] = func;
 			});
 
