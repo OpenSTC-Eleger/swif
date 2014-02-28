@@ -169,6 +169,11 @@ requirejs.config({
 			name    : 'app-reservations',
 			location: '../app-reservations',
 			main    : 'main'
+		},
+		{
+			name    : 'app-patrimoines',
+			location: '../app-patrimoines',
+			main    : 'main'
 		}
 	],
 
