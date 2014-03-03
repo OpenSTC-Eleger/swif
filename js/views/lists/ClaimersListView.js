@@ -19,14 +19,17 @@ define([
 
 	'use strict';
 
-	/******************************************
-	 * Claimers List View
-	 */
-	return GenericListView.extend({
 
-		el: '#rowContainer',
+	/******************************************
+	* Claimers List View
+	*/
+	var ClaimersListView =  GenericListView.extend({
+
+		el          : '#rowContainer',
 
 		templateHTML: 'templates/lists/claimers.html',
+
+		model       : ClaimerModel,
 
 		selectedClaimer: '',
 		selectedContact: '',
@@ -43,53 +46,14 @@ define([
 
 
 		/** View Initialization
-		 */
-		initialize: function (params) {
-			this.options = params;
-
-			var self = this;
-			this.initCollection().done(function () {
-				self.collection.off();
-				self.listenTo(self.collection, 'add', self.add);
-
-				app.router.render(self);
-			});
-		},
-
-
-		initCollection: function () {
+		*/
+		initialize: function() {
+			// Check if the collections is instantiate //
 			if (_.isUndefined(this.collection)) {
 				this.collection = new ClaimersCollection();
 			}
 
-			if (_.isUndefined(this.options.sort)) {
-				this.options.sort = this.collection.default_sort;
-			}
-			else {
-				this.options.sort = AppHelpers.calculPageSort(this.options.sort);
-			}
-			this.options.page = AppHelpers.calculPageOffset(this.options.page);
-
-
-			// Create Fetch params //
-			var fetchParams = {
-				silent: true,
-				data: {
-					limit: app.config.itemsPerPage,
-					offset: this.options.page.offset,
-					sort: this.options.sort.by + ' ' + this.options.sort.order
-				}
-			};
-			if (!_.isUndefined(this.options.search)) {
-				fetchParams.data.filters = AppHelpers.calculSearch({search: this.options.search }, ClaimerModel.prototype.searchable_fields);
-			}
-
-
-			return $.when(this.collection.fetch(fetchParams))
-				.fail(function (e) {
-					console.error(e);
-				});
-
+			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
 
@@ -111,7 +75,7 @@ define([
 				});
 
 				$(self.el).html(template);
-				GenericListView.prototype.render(self);
+				GenericListView.prototype.render.apply(self);
 
 
 				$('*[data-toggle="tooltip"]').tooltip();
@@ -256,4 +220,5 @@ define([
 
 	});
 
+	return ClaimersListView;
 });

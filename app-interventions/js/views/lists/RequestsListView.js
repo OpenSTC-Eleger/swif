@@ -52,7 +52,6 @@ define([
 				this.collection = new RequestsCollection();
 			}
 
-
 			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
@@ -153,5 +152,4 @@ define([
 
 
 	return RequestsListView;
-
 });
