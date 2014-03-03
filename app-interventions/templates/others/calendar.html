@@ -12,12 +12,12 @@
 			</a>
 		</li>
 		<li class="pull-right">
-			<input type="search" id="searchOfficerOrTeam" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off" />
-		</li> 
+			<input type="search" id="searchOfficerOrTeam" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+		</li>
 	</ul>
 
 	<div class="tab-content">
-		
+
 		<!-- Officers -->
 		<div class="tab-pane active tab-pane-planning" id="tab-agents">
 			<ul id="listAgents" class="nav nav-pills">
@@ -43,7 +43,7 @@
 					});
 				%>
 
-					<li data-toggle="popover" data-original-title="<%= _.capitalize(lang.agents) %>" data-content="<ul class='list-unstyled'><%= teamMembers %></ul>" 
+					<li data-toggle="popover" data-original-title="<%= _.capitalize(lang.agents) %>" data-content="<ul class='list-unstyled'><%= teamMembers %></ul>"
 						data-html="true" data-placement="left" data-name="<%= team.name.toLowerCase() %>">
 						<a id="pTeam_<%= team.id %>" href="#planning/team/<%= team.id %>">
 							<i class="fa fa-users fa-fw"></i>&nbsp;<%= team.name %>
@@ -65,7 +65,7 @@
 		<div id="calendar_<%= calendar.id %>" class="calendar thumbnail planning-inter" data-username="<%= calendar.name %>">
 		</div>
 	</section>
-	
+
 </div>
 
 

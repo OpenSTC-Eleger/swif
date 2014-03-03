@@ -22,7 +22,7 @@
 					<span  class="label label-<%= RequestModel.status[request.getState()].color %> pull-right">
 						<%= RequestModel.status[request.getState()].translation %>
 					</span>
-				<% } }%> 
+				<% } }%>
 			</h3>
 		</div>
 
@@ -52,7 +52,7 @@
 						<div class="col-sm-9">
 							<input class="make-switch" type="checkbox" id="switchCitizen" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"
 							<% if(!_.isNull(request.getId())){ if(request.fromCitizen()) { %> checked <% } } %>
-							/>
+							>
 						</div>
 					</div>
 
@@ -69,8 +69,7 @@
 									if(!_.isUndefined(request.getClaimerContact('id'))) { %>
 									data-selected-value='<%= JSON.stringify(request.getClaimerContact('json')) %>'
 								<% } } %>
-
-							/>
+							>
 						</div>
 					</div>
 
@@ -80,14 +79,14 @@
 						<label for="requestClaimer" class="control-label col-sm-3"><%= _.capitalize(lang.organization) %>:</label>
 
 						<div class="col-sm-9">
-							<input id="requestClaimer" class="select2" data-placeholder="<%= lang.actions.selectAClaimer %>" 
+							<input id="requestClaimer" class="select2" data-placeholder="<%= lang.actions.selectAClaimer %>"
 
 								<% if(!_.isNull(request.getId())){
 									if(!_.isUndefined(request.getClaimer('id'))) { %>
 									data-selected-value='<%= JSON.stringify(request.getClaimer('json')) %>'
 								<% } } %>
 
-							/>
+							>
 						</div>
 					</div>
 
@@ -118,7 +117,7 @@
 						<label for="requestContactName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 
 						<div class="col-sm-9">
-							 <input type="tel" id="requestContactName" class="form-control" value="<%= (_.isNull(request.getId()) ? '' : request.getCitizenName()) %>" />
+							<input type="tel" id="requestContactName" class="form-control" value="<%= (_.isNull(request.getId()) ? '' : request.getCitizenName()) %>">
 						</div>
 					</div>
 
@@ -127,7 +126,7 @@
 						<label for="requestContactPhone" class="control-label col-sm-3"><%= _.capitalize(lang.phone) %>:</label>
 
 						<div class="col-sm-9">
-							 <input type="tel" id="requestContactPhone" class="form-control readonly-no-citizen" value="<%= (_.isNull(request.getId()) ? '' : request.getCitizenPhone()) %>" />
+							<input type="tel" id="requestContactPhone" class="form-control readonly-no-citizen" value="<%= (_.isNull(request.getId()) ? '' : request.getCitizenPhone()) %>">
 						</div>
 					</div>
 
@@ -136,7 +135,7 @@
 						<label for="requestContactEmail" class="control-label col-sm-3"><%= _.capitalize(lang.email) %>:</label>
 
 						<div class="col-sm-9">
-							 <input type="email" id="requestContactEmail" class="form-control readonly-no-citizen" value="<%= (_.isNull(request.getId()) ? '' : request.getCitizenEmail()) %>" />
+							<input type="email" id="requestContactEmail" class="form-control readonly-no-citizen" value="<%= (_.isNull(request.getId()) ? '' : request.getCitizenEmail()) %>">
 						</div>
 					</div>
 
@@ -153,7 +152,7 @@
 						<label for="requestName" class="control-label col-sm-3"><%= _.capitalize(lang.label) %>:</label>
 
 						<div class="col-sm-9">
-							<input type="text" id="requestName" class="form-control" required value="<%= (_.isNull(request.getId()) ? '' : request.getName()) %>" />
+							<input type="text" id="requestName" class="form-control" required value="<%= (_.isNull(request.getId()) ? '' : request.getName()) %>">
 						</div>
 					</div>
 
@@ -164,7 +163,7 @@
 						<div class="col-sm-9">
 							<input type="checkbox" class="make-switch" id="switchPlaceEquipment" data-on="default" data-on-label="<i class='fa fa-map-marker fa-fw'>" data-off-label="<i class='fa fa-wrench fa-fw'>" tabindex="0"
 								<% if(!_.isNull(request.getId())){ if(!request.onEquipment()) { %> checked <% } }else{ %> checked <%  } %>
-							/>
+							>
 						</div>
 					</div>
 
@@ -180,7 +179,7 @@
 									if(request.onEquipment('id')) { %>
 									data-selected-value='<%= JSON.stringify(request.getEquipment('json')) %>'
 								<% } } %>
-							/>
+							>
 						</div>
 					</div>
 
@@ -196,7 +195,7 @@
 									if(!_.isUndefined(request.getSite('id'))) { %>
 									data-selected-value='<%= JSON.stringify(request.getSite('json')) %>'
 								<% } } %>
-							/>
+							>
 						</div>
 					</div>
 
@@ -204,7 +203,7 @@
 					<div class="form-group">
 						<label for="requestPlacePrecision" class="control-label col-sm-3"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
 
-						<div class="col-sm-9">  
+						<div class="col-sm-9">
 							 <textarea  class="form-control" id="requestPlacePrecision" rows="2"><%= (_.isNull(request.getId()) ? '' : request.getPlaceDetails()) %></textarea>
 						</div>
 					</div>
@@ -221,7 +220,7 @@
 									if(!_.isUndefined(request.getService('id'))) { %>
 									data-selected-value='<%= JSON.stringify(request.getService('json')) %>'
 								<% } } %>
-							/>
+							>
 						</div>
 					</div>
 
@@ -248,7 +247,7 @@
 
 
 		<div class="modal-footer">
-			<button type="submit" form="formSaveRequest" class="btn btn-primary" 
+			<button type="submit" form="formSaveRequest" class="btn btn-primary"
 				data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.saveInProgress %>"
 				<%= (_.isUndefined(loader) ? '' : 'disabled') %>
 				<%= (!_.isNull(request.getId()) && request.getState() != RequestModel.status.wait.key ? 'disabled' : '') %>

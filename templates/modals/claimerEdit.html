@@ -23,7 +23,7 @@
 						<label for="claimerName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 
 						<div class="col-sm-9">
-							<input type="text" id="claimerName" name="claimerName" class="form-control" required value="<%= claimer.get('name') %>" />
+							<input type="text" id="claimerName" name="claimerName" class="form-control" required value="<%= claimer.get('name') %>">
 						</div>
 					</div>
 
@@ -36,7 +36,7 @@
 								<% if(!claimer.isNew() && !_.isNull(claimer.get('type_id'))){ %>
 									data-selected-value='<%= JSON.stringify(claimer.objectifiedTypeId()) %>'
 								<% }  %>
-							/>
+							>
 						</div>
 					</div>
 
@@ -55,7 +55,7 @@
 									<% if(!claimer.isNew() && !_.isNull(claimer.get('technical_service_id'))) { %>
 										data-selected-value='<%= JSON.stringify(claimer.objectifiedTechnicalServiceId()) %>'
 								   <% } %>
-							/>
+							>
 						</div>
 					</div>
 
@@ -68,7 +68,7 @@
 							<% if(!claimer.isNew() && !_.isNull(claimer.get('technical_site_id'))) { %>
 							data-selected-value='<%= JSON.stringify(claimer.objectifiedTechnicalSiteId()) %>'
 							<% } %>
-							/
+							>
 						</div>
 					</div>
 

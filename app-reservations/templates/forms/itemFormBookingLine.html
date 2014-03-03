@@ -1,5 +1,5 @@
 <!-- Image-->
-<!--<td><img src="data:image/gif;base64,<%= bookable.getProductImage()%>" style="height:50px;width:50px"/></td>-->
+<!--<td><img src="data:image/gif;base64,<%= bookable.getProductImage()%>" style="height:50px;width:50px"></td>-->
 <td class="text-center"><%= bookable.getType('logo') %></td>
 
 <!-- Booking Line name-->
@@ -8,17 +8,19 @@
 <!-- Booking Line qty-->
 <td><input type="number" id="bookingLineQty" name="bookingLineQty"
 	class="form-control input-sm" placeholder=""
-	value="<%= line.getQuantity()%>" min="1" required="required" /></td>
+	value="<%= line.getQuantity()%>" min="1" required="required"></td>
 
 <!-- Booking Line pricing-->
-<td><input type="number" id="bookingLinePricing"
-	class="form-control input-sm" size="5" name="bookingLinePricing"
+<td>
+	<input type="number" id="bookingLinePricing" class="form-control input-sm" size="5" name="bookingLinePricing"
 	placeholder="" value="<%= line.getPricing()%>" min="0"<%=
-	user.isResaManager() ? '' : 'disabled'%>/></td>
+	user.isResaManager() ? '' : 'disabled'%>>
+</td>
 
 <!-- Booking Line dispo-->
-<td class="text-center"><i
-	class="fa <%= line.getAvailable() ? linesStat.dispo.icon: linesStat.not_dispo.icon%>"></i></td>
+<td class="text-center">
+	<i class="fa <%= line.getAvailable() ? linesStat.dispo.icon: linesStat.not_dispo.icon%>"></i>
+</td>
 
 
 <td class="text-center">

@@ -18,6 +18,6 @@
 
 	<% if(!_.isUndefined(field.value)){ var value = moment(field.value, 'YYYY-MM-DD').format('DD/MM/YYYY'); } else{ var value = ''; } %>
 
-	<input type="text" id="ads_<%= field.key %>" class="datepicker form-control" placeholder="dd/mm/yyyy" value="<%= value %>" />
+	<input type="text" id="ads_<%= field.key %>" class="datepicker form-control" placeholder="dd/mm/yyyy" value="<%= value %>">
 	<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 </div>

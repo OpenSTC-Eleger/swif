@@ -9,7 +9,7 @@
 		data-html="true"
 		data-original-title="<%= _.capitalize(lang.about) %>"
 		data-delay="160"
-		data-content="<%= _(request.getDescription()).escapeHTML() %><hr /><%= lang.createdBy %>: <%= request.getCreateAuthor() %>">
+		data-content="<%= _(request.getDescription()).escapeHTML() %><hr><%= lang.createdBy %>: <%= request.getCreateAuthor() %>">
 		<%= request.getName() %>
 	</a>
 </td>

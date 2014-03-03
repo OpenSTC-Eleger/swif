@@ -45,7 +45,7 @@
 
 <td>
 	<% if(booking.fromCitizen()){
-		var tooltip = '<strong>'+lang.citizen+'</strong>' +'<br />'+ booking.getCitizenPhone();
+		var tooltip = '<strong>'+lang.citizen+'</strong>' +'<br>'+ booking.getCitizenPhone();
 	}
 	else{
 		var tooltip = '<strong>'+booking.getClaimerType()+'</strong>' +' '+ booking.getClaimerContact();

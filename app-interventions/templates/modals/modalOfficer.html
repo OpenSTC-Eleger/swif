@@ -22,7 +22,7 @@
 				<% } %>
 			</h3>
 		</div>
-	
+
 		<div class="modal-body">
 
 			<% if(_.isUndefined(loader)) { %>
@@ -35,7 +35,7 @@
 						<label for="officerFirstname" class="control-label col-sm-3"><%= _.capitalize(lang.firstname) %>:</label>
 
 						<div class="col-sm-9">
-							<input type="text" id="officerFirstname" class="form-control" required value="<%= (_.isNull(officer.getId()) ? '' : officer.getFirstname())%>" />
+							<input type="text" id="officerFirstname" class="form-control" required value="<%= (_.isNull(officer.getId()) ? '' : officer.getFirstname())%>">
 						</div>
 					</div>
 
@@ -44,7 +44,7 @@
 						<label for="officerName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 
 						<div class="col-sm-9">
-							<input type="text" id="officerName" class="form-control" required value="<%= (_.isNull(officer.getId()) ? '' : officer.getName()) %>" />
+							<input type="text" id="officerName" class="form-control" required value="<%= (_.isNull(officer.getId()) ? '' : officer.getName()) %>">
 						</div>
 					</div>
 
@@ -62,17 +62,17 @@
 						<label for="officerGroup" class="control-label col-sm-3"><%= _.capitalize(lang.group) %>:</label>
 
 						<div class="col-sm-9">
-							<input id="officerGroup" class="select2" required data-placeholder="<%= lang.actions.selectAGroup %>" 
+							<input id="officerGroup" class="select2" required data-placeholder="<%= lang.actions.selectAGroup %>"
 
 							<% if(!_.isNull(officer.getId())){
 								if(!_.isUndefined(officer.getGroupSTC('id'))) { %>
 								data-selected-value='<%= JSON.stringify(officer.getGroupSTC('json')) %>'
 							<% } } %>
 
-							/>
+							>
 						</div>
 					</div>
-					
+
 					<!-- Officer Service -->
 					<div class="form-group">
 						<label for="officerService" class="control-label col-sm-3"><%= _.capitalize(lang.membershipService) %>:</label>
@@ -83,14 +83,14 @@
 							<% if(!_.isNull(officer.getId())){
 								if(!_.isUndefined(officer.getService('id'))) { %>
 								data-selected-value='<%= JSON.stringify(officer.getService('json')) %>'
-							<% } 
-							}else{ 
-								var json = {id: service.getId(), name: service.getName()} 
+							<% }
+							}else{
+								var json = {id: service.getId(), name: service.getName()}
 							%>
 								data-selected-value='<%= JSON.stringify(json) %>'
 							<% } %>
 
-							/>
+							>
 						</div>
 					</div>
 
@@ -99,15 +99,14 @@
 						<label for="officerOtherServices" class="control-label col-sm-3"><%= _.capitalize(lang.otherServices) %>:</label>
 
 						<div class="col-sm-9">
-							<input id="officerOtherServices" class="select2" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="true" 
+							<input id="officerOtherServices" class="select2" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="true"
 
 							<% if(!_.isNull(officer.getId())){
 								if(!_.isEmpty(officer.getServices())) { %>
 									data-selected-value='<%= JSON.stringify(officer.getServices('json')) %>'
 							<% } } %>
 
-
-							/>
+							>
 						</div>
 					</div>
 
@@ -115,9 +114,9 @@
 
 				<% if(_.isNull(officer.getId())) {%>
 				<fieldset>
-					
+
 					<legend><%= _.capitalize(lang.connection) %></legend>
-					
+
 					<!-- Officer login -->
 					<div class="form-group">
 						<label for="officerLogin" class="control-label col-sm-3"><%= _.capitalize(lang.login) %>:</label>
@@ -143,9 +142,9 @@
 			</form>
 			<% } %>
 		</div>
-	
+
 		<div class="modal-footer">
-			<button type="submit" form="formSaveOfficer" class="btn btn-primary" 
+			<button type="submit" form="formSaveOfficer" class="btn btn-primary"
 				data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.saveInProgress %>"
 				<%= (_.isUndefined(loader) ? '' : 'disabled') %>
 			>

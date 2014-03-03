@@ -17,13 +17,13 @@
 		<div class="modal-body">
 			<form id="formSaveClaimerType" action="#" class="form-horizontal" role="form">
 
-				
+
 				<!-- Claimer Type name -->
 				<div class="form-group">
 					<label for="claimerTypeName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 
 					<div class="col-sm-9">
-						<input type="text" id="claimerTypeName" class="form-control" required value="<%= (_.isNull(claimerType.getId()) ? '' : claimerType.getName())%>" />
+						<input type="text" id="claimerTypeName" class="form-control" required value="<%= (_.isNull(claimerType.getId()) ? '' : claimerType.getName())%>">
 					</div>
 				</div>
 
@@ -32,7 +32,7 @@
 					<label for="claimerTypeCode" class="control-label col-sm-3"><%= _.capitalize(lang.code) %>:</label>
 
 					<div class="col-sm-3">
-						<input type="text" id="claimerTypeCode" class="form-control" required value="<%= (_.isNull(claimerType.getId()) ? '' : claimerType.getCode())%>" />
+						<input type="text" id="claimerTypeCode" class="form-control" required value="<%= (_.isNull(claimerType.getId()) ? '' : claimerType.getCode())%>">
 						<span class="help-block" id="code-error"></span>
 					</div>
 				</div>
@@ -48,7 +48,7 @@
 			>
 				<%= _.capitalize(lang.actions.save) %>
 			</button>&nbsp;&nbsp;
-			
+
 			<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
 		</div>
 
