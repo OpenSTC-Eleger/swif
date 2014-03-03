@@ -1,5 +1,5 @@
 <% if(!_.isUndefined(cityLogo) && !_.isEmpty(cityLogo)){ %>
-	<img src="<%= cityLogo %>" alt="Logo" class="img-thumbnail hidden-xs hidden-sm login-logo">
+	<img class="img-thumbnail hidden-xs hidden-sm login-logo" src="<%= cityLogo %>" alt="Logo">
 <% } %>
 
 <!-- Connection Form -->
@@ -28,8 +28,8 @@
 						<!-- Password -->
 						<div class="form-group">
 							<div class="input-group input-group-inner input-group-lg">
-								<label for="passUser" class="input-group-addon"><i class="fa fa-lock fa-lg fa-fw"></i></label>
-								<input type="password" id="passUser" class="form-control" required placeholder="<%= _.capitalize(lang.password) %>">
+								<label class="input-group-addon" for="passUser"><i class="fa fa-lock fa-lg fa-fw"></i></label>
+								<input class="form-control" id="passUser" type="password" required placeholder="<%= _.capitalize(lang.password) %>">
 								<span class="input-group-addon-inner"><i id="toggelDisplayPassword" class="fa fa-eye fa-fw fa-lg" data-toggle="tooltip" data-original-title="<%= lang.actions.displayPassword %>"></i>
 								</span>
 

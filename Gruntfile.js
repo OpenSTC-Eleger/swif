@@ -15,8 +15,22 @@ module.exports = function(grunt) {
 			' */\n',
 
 
-		// LESS compilation options
+		// Clean dist directory //
+		clean: {
+			dist: ['dist/'],
+		},
+
+
+		// LESS compilation options //
 		less: {
+			options: {
+				strictMath: true
+			},
+			dev: {
+				files: {
+					'dist/css/swif.css': 'css/startup.less'
+				}
+			},
 			dist: {
 				files: {
 					'dist/css/swif.css': 'css/startup.less'
@@ -28,6 +42,7 @@ module.exports = function(grunt) {
 			}
 		},
 
+
 		targethtml: {
 			dist: {
 				files: {
@@ -35,6 +50,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+
 
 		copy: {
 			dist: {
@@ -52,12 +68,13 @@ module.exports = function(grunt) {
 						'config/*',
 						'properties.json',
 						'font/*',
-						'css/vendors/*.css',
-						'css/images/**'
+						'style/vendors/*.css',
+						'medias/images/**'
 					]
 				}
 			}
 		},
+
 
 		// Check JS Files //
 		jshint: {
@@ -100,6 +117,34 @@ module.exports = function(grunt) {
 
 		},
 
+
+		// Check CSS File //
+		csslint: {
+			dist: {
+				options: {
+					'adjoining-classes'         : false,
+					'box-sizing'                : false,
+					'box-model'                 : false,
+					'compatible-vendor-prefixes': false,
+					'floats'                    : false,
+					'font-sizes'                : false,
+					'gradients'                 : false,
+					'important'                 : false,
+					'known-properties'          : false,
+					'outline-none'              : false,
+					'qualified-headings'        : false,
+					'regex-selectors'           : false,
+					'shorthand'                 : false,
+					'text-indent'               : false,
+					'unique-headings'           : false,
+					'universal-selector'        : false,
+					'unqualified-attributes'    : false
+				},
+				src: ['dist/css/*.css']
+			}
+		},
+
+
 		// Check Style JS File
 		jscs: {
 			options: {
@@ -127,6 +172,7 @@ module.exports = function(grunt) {
 			}
 		},
 
+
 		// Add licence to the files //
 		usebanner: {
 			default: {
@@ -135,10 +181,11 @@ module.exports = function(grunt) {
 					banner  : '<%= banner %>'
 				},
 				files: {
-					src: ['js/**/*.js', '!js/libs/*', '!js/i18n/*', 'app-interventions/**/*.js', 'app-reservations/**/*.js', '**/*.less', '!css/vendors/**/*.less']
+					src: ['js/**/*.js', '!js/libs/*', '!js/i18n/*', 'app-interventions/**/*.js', 'app-reservations/**/*.js', 'style/**/*.less', '!style/vendors/**/*.less']
 				}
 			}
 		},
+
 
 		// Create AUTHORS file //
 		contributors: {
@@ -148,12 +195,14 @@ module.exports = function(grunt) {
 			}
 		},
 
+
 		// Hooks to run check task before each commit //
 		githooks: {
 			all: {
 				'pre-commit': 'check',
 			}
 		},
+
 
 		// Display notifications messages //
 		notify: {
@@ -250,6 +299,7 @@ module.exports = function(grunt) {
 	grunt.task.run('notify_hooks');
 
 
-	grunt.registerTask('default', ['checkVersion', 'less', 'targethtml', 'copy']);
+	grunt.registerTask('default', ['clean', 'checkVersion', 'less', 'targethtml', 'copy']);
 	grunt.registerTask('check', ['jshint', 'checkVersion', 'notify:check']);
+	grunt.registerTask('check-css', ['clean', 'less:dev', 'csslint']);
 };

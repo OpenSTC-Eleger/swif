@@ -38,36 +38,26 @@ body{
 	padding-top: 50px;
 	padding-bottom: 50px;
 }
-.container-margin{
-	margin-top: 4%;
-}
+.container-margin{ margin-top: 4%; }
 
-.hide-soft{
-	display: none
-}
+.hide-soft{ display: none }
 
 fieldset{
 	margin-top: @line-height-computed*1.5;
 }
 
-.popover-title, .bolder{
+.popover-title,
+.bolder{
 	font-weight: bolder;
 }
 
-.isCheck{
-	text-decoration: line-through;
-}
+.isCheck{ text-decoration: line-through; }
 
-.noMarginTop{
-	margin-top: 0;
-}
-.noMarginBottom{
-	margin-bottom: 0 !important;
-}
+.noMarginTop{ margin-top: 0; }
 
-.tableToolbar{
-	margin-bottom: 15px;
-}
+.noMarginBottom{ margin-bottom: 0 !important; }
+
+.tableToolbar{ margin-bottom: 15px; }
 
 .popover-content hr{
 	margin-top: 8px;
@@ -141,8 +131,14 @@ div.datepicker{
 
 /* Selection Color
 -------------------------------------------------- */
-::selection { background: lighten(@pink, 20%); color: #FFF; }
-::-moz-selection { background: lighten(@pink, 20%); color: #FFF; }
+::selection {
+	background: lighten(@pink, 20%);
+	color: #fff;
+}
+::-moz-selection {
+	background: lighten(@pink, 20%);
+	color: #fff;
+}
 
 
 
@@ -292,7 +288,8 @@ a.filter-button.filter-disabled{
 }
 
 /* hide back of pane during swap */
-.front, .back {
+.front,
+.back {
 	.backface-visibility(hidden);
 	position: absolute;
 	top: 0;
@@ -370,12 +367,17 @@ li.external-event.disabled{
 .nested-objects-actions{
 	font-size: 90%;
 }
-.row-actions a:hover i, .nested-objects-actions a:hover i, a.accordion-toggle:hover i, a.accordion-object:hover i{
+.row-actions a:hover i,
+.nested-objects-actions a:hover i,
+a.accordion-toggle:hover i,
+a.accordion-object:hover i {
 	text-decoration: none;
 }
 
 // object nestedObjects //
-ul.nested-objects li:hover .nested-objects-actions, tr.row-item:hover .row-actions, tr.row-nested-objects:hover .nested-objects-actions{
+ul.nested-objects li:hover .nested-objects-actions,
+tr.row-item:hover .row-actions,
+tr.row-nested-objects:hover .nested-objects-actions {
 	visibility: visible;
 	a:hover{
 		text-decoration: none;
@@ -388,9 +390,9 @@ ul.nested-objects li:hover .nested-objects-actions, tr.row-item:hover .row-actio
 
 /* List tasks
 -------------------------------------------------- */
-.collapse-selected{
+.collapse-selected {
 	border-left: 5px solid @brand-info !important;
-	border-radius: 0px !important;
+	border-radius: 0 !important;
 }
 
 
@@ -401,15 +403,15 @@ ul.nested-objects li:hover .nested-objects-actions, tr.row-item:hover .row-actio
 
 /* objects list
 -------------------------------------------------- */
-tr.row-nested-objects-collapse{
+tr.row-nested-objects-collapse {
 	.hide-soft();
 }
-tr.row-nested-objects-collapse.expend:hover td.nestedTD{
-	background-color: #FFF;
+tr.row-nested-objects-collapse.expend:hover td.nestedTD {
+	background-color: #fff;
 }
-tr.row-nested-objects-collapse td.nestedTD{
+tr.row-nested-objects-collapse td.nestedTD {
 	padding: 25px 3% 5px 3%;
 }
-tr.row-nested-objects-collapse:hover td.nestedTD{
-	background-color: #FFF;
+tr.row-nested-objects-collapse:hover td.nestedTD {
+	background-color: #fff;
 }
