@@ -5,7 +5,8 @@
 		"patrimony"					:"patrimoine",
 		
 		"actions" : {			
-			"addContract"			:"créer un contract"
+			"addContract"			:"créer un contract",
+			"extend"				:"recodnuire le contrat"
 		},
 		
 		"infoMessages" : {

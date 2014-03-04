@@ -317,6 +317,7 @@
         "unapplyFilter"     : "Enlever le filtre",
         "sendingMail"		: "Notifications",
         "back"				: "Retour"
+        "extendContract"	: "Reconduire le contrat"
     },
 
     "errorMessages" : {

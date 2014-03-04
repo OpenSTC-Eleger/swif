@@ -1,18 +1,6 @@
 <td class="field" data-fieldname="id"></td>
 <td><span class="field" data-fieldname="name"></span>
-	<p class="row-actions invisible">
-		<% if(_.contains(contract.getActions(), 'update')){ %>
-		<a href="#" class="modalUpdateAbsentType">
-			<i class="fa fa-pencil fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
-		</a>&nbsp;
-		<% } %>
-
-		<% if(_.contains(contract.getActions(), 'delete')){ %>
-		<a href="#" class="modalDeleteAbsentType">
-			<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
-		</a>
-		<% } %>
-	</p>
+	<p class="row-actions invisible small-actions" data-actions="update,delete"></p>
 </td>
 <td class="field" data-fieldname="provider_name"></td>
 <td>
@@ -21,4 +9,4 @@
 </td>
 <td class="field" data-fieldname="date_start_order"></td>
 <td class="field" data-fieldname="date_end_order"></td>
-<td></td>
+<td class="button-actions" data-actions="draft,confirm,extend,done" data-main-action="<%= mainAction%>"></td>

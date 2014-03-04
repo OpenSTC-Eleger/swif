@@ -7,11 +7,11 @@
 define([
 	'app',
 	'appHelpers',
-	
+	'contractModel',
 	'moment'
 
 
-], function(app, AppHelpers, moment){
+], function(app, AppHelpers, ContractModel, moment){
 
 	'use strict';
 
@@ -22,10 +22,90 @@ define([
 		className    : 'row-item',
 
 		templateHTML : '/templates/items/itemContract.html',
-
+		templateSmallActionHTML : '/templates/others/templateSmallActionComponent.html',
+		templateButtonActionHTML : '/templates/others/templateButtonActionComponent.html',
+		
+		classModel	: ContractModel,
+		
 		// The DOM events //
 		events: {
 
+		},
+		
+		/**
+		 * Method used by template to display actions on the view.
+		 * if action not present in model.actions, display nothing, else, display the component
+		 */
+		renderSmallActions: function(dom){
+			if(dom){
+				var actions = dom.attr('data-actions').split(',');
+				var ret = '';
+				var self = this;
+				return $.when($.get(app.menus.openpatrimoine+this.templateSmallActionHTML)).done(function(smallActionTemplate){
+					_.each(actions, function(action){
+						
+						if(_.contains(self.authorizedActions, action)){
+							if(_.has(self.classModel.actions,action)){
+								var modelAction = self.classModel.actions[action];
+								ret += _.template(smallActionTemplate,{action:modelAction});
+							}
+							else{
+								console.warning('Error, action "' + action + '" not present in model definition, please implement it in actions model attribute');
+							}
+						}
+					});
+					dom.html(ret);
+				});
+			}
+		},
+		
+		/**
+		 * Method used by template to display button actions (right side) on the view.
+		 * if action not present in model.actions, display nothing, else, display the component
+		 */
+		renderButtonAction: function(dom){
+			var ret = '';
+			var self = this;
+			function getActionDefinition(action){
+				var value = null;
+				if(_.contains(self.authorizedActions, action)){
+					if(_.has(self.classModel.actions, action)){
+						value = self.classModel.actions[action];
+					}
+					else{
+						console.warning('Error, action "' + action + '" not present in model definition, please implement it in actions model attribute');
+					}
+				}
+				return value;
+			}
+			
+			if(dom){
+				var actions = dom.attr('data-actions').split(',');
+				var mainAction = dom.attr('data-main-action');
+				
+				return $.when($.get(app.menus.openpatrimoine+this.templateButtonActionHTML)).done(function(buttonActionTemplate){
+					if(mainAction){
+						//if mainAction present in actions authorized to user, render the component, else, do nothing
+						var modelMainAction = getActionDefinition(mainAction);
+						if(modelMainAction){
+							actions = _.without(actions, mainAction);
+							//retrieve other actions authorized to user and render them in the component
+							var modelOtherActions = [];
+							_.each(actions, function(action){
+								var elt = getActionDefinition(action);
+								if(elt){
+									modelOtherActions.push(elt);
+								}
+							});
+							ret = _.template(buttonActionTemplate, {
+								mainAction:modelMainAction,
+								otherActions: modelOtherActions
+							});
+						}
+					}
+					dom.html(ret);
+				});
+			}
 		},
 		
 		toFrDate: function(date){
@@ -40,28 +120,6 @@ define([
 		
 		integerToStr: function(integer){
 			return integer.toString();
-		},
-		
-		/** View Initialization
-		*/
-		initialize: function (params) {
-			this.fieldParser = {
-				date		: this.toFrDate,
-				datetime	: this.toFrDatetime,
-				char		: _.capitalize,
-				text		: _.capitalize,
-				integer		: this.integerToStr
-			};
-			
-			this.options = params;
-
-			this.model.off();
-
-			// When the model are updated //
-			this.listenTo(this.model, 'change', this.change);
-
-			// When the model are destroy //
-			this.listenTo(this.model,'destroy', this.destroy);
 		},
 		
 		/**
@@ -85,6 +143,29 @@ define([
 					console.warn('Swif Error: "' + field + '" not present on Collection, authorized values are : "' + _.keys(self.model.collection.fieldsMetadata));
 				}
 			});
+		},
+		
+		
+		/** View Initialization
+		*/
+		initialize: function (params) {
+			this.fieldParser = {
+				date		: this.toFrDate,
+				datetime	: this.toFrDatetime,
+				char		: _.capitalize,
+				text		: _.capitalize,
+				integer		: this.integerToStr
+			};
+			
+			this.options = params;
+
+			this.model.off();
+
+			// When the model are updated //
+			this.listenTo(this.model, 'change', this.change);
+
+			// When the model are destroy //
+			this.listenTo(this.model,'destroy', this.destroy);
 		},
 		
 		/** When the model is updated //
@@ -120,53 +201,27 @@ define([
 
 			// Retrieve the template //
 			$.get(app.menus.openpatrimoine+this.templateHTML, function(templateData){
-
+				
+				if(_.isUndefined(self.actions)){self.authorizedActions = self.model.getAttribute('actions',[]);}
+				
 				var template = _.template(templateData, {
 					lang        : app.lang,
-					contract  : self.model
+					contract  : self.model,
+					mainAction: self.model.getUserActions().mainAction,
+					otherActions: self.model.getUserActions().otherActions,
 				});
-
 				$(self.el).html(template);
 				self.renderFieldsValues();
-
-				// Set the Tooltip //
-				$('*[data-toggle="tooltip"]').tooltip();
+				$.when(self.renderButtonAction($(self.el).find('.button-actions')),
+						self.renderSmallActions($(self.el).find('.small-actions'))).always(function(){
+					// Set the Tooltip //
+					$('*[data-toggle="tooltip"]').tooltip();
+				});
 
 			});
 
 			return this;
 		},
-
-
-
-		/** Display Modal form to add/sav a new Absent type
-		*/
-//		modalUpdateAbsentType: function(e){
-//			e.preventDefault();
-//			e.stopPropagation();
-//
-//			app.views.modalAbsentTypeView = new ModalAbsentTypeView({
-//				el      : '#modalSaveAbsentType',
-//				model   : this.model,
-//				elFocus : $(e.target).data('form-id')
-//			});
-//		},
-//
-//
-//
-//		/** Modal to remove an Absent Type
-//		*/
-//		modalDeleteAbsentType: function(e){
-//			e.preventDefault();
-//			e.stopPropagation();
-//
-//			app.views.modalDeleteView = new ModalDeleteView({
-//				el           : '#modalDeleteAbsentType',
-//				model        : this.model,
-//				modalTitle   : app.lang.viewsTitles.deleteAbsentType,
-//				modalConfirm : app.lang.warningMessages.confirmDeleteAbsentType
-//			});
-//		},
 
 	});
 });
