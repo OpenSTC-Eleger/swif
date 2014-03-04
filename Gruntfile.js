@@ -21,28 +21,33 @@ module.exports = function(grunt) {
 		},
 
 
-		// LESS compilation options //
+		// Compile Less file //
 		less: {
 			options: {
 				strictMath: true
 			},
-			dev: {
-				files: {
-					'dist/css/swif.css': 'css/startup.less'
-				}
-			},
 			dist: {
 				files: {
-					'dist/css/swif.css': 'css/startup.less'
-				},
-				options: {
-					compress: true,
-					cleancss: true
+					'dist/css/swif.css': 'style/startup.less'
 				}
 			}
 		},
 
 
+		// Clean and organize css file //
+		csscomb: {
+			options: {
+				config: 'grunt/.csscomb.json'
+			},
+			dist: {
+				files: {
+					'dist/css/swif.css': ['dist/css/swif.css']
+				}
+			}
+		},
+
+
+		// Target HTML  //
 		targethtml: {
 			dist: {
 				files: {
@@ -52,6 +57,7 @@ module.exports = function(grunt) {
 		},
 
 
+		// Copy files to the Dist //
 		copy: {
 			dist: {
 				files: {
@@ -79,30 +85,13 @@ module.exports = function(grunt) {
 		// Check JS Files //
 		jshint: {
 			options: {
-				strict       : true,
-				unused       : true,
-				quotmark     : 'single',
-				indent       : 4,
-				undef        : true,
-				noempty      : true,
-				freeze       : true,
-				curly        : true,
-				latedef      : true,
-				maxcomplexity: 15,
-				trailing     : true,
-				browser      : true,
-				jquery       : true,
-				devel        : true,
-				globals      : { 'requirejs': true, 'require': true, 'module': true, 'define': true, '_': true, 'Backbone': true }
+				jshintrc: 'grunt/.jshintrc'
 			},
 			gruntfile: {
 				src: ['Gruntfile.js']
 			},
 			jsonFile: {
-				options: {
-					quotmark: 'double'
-				},
-				src: ['properties.json', 'package.json', 'config/*.json.*', 'i18n/**/*.json', 'app-interventions/config/*.json', 'app-reservations/config/*.json'],
+				src: ['properties.json', 'package.json', 'config/*.json.*', 'i18n/**/*.json', 'grunt/.*.json', 'app-interventions/config/*.json', 'app-reservations/config/*.json'],
 			},
 			scripts_main: {
 				src: ['js/**/*.js', '!js/libs/*', '!js/i18n/*']
@@ -114,55 +103,24 @@ module.exports = function(grunt) {
 				//src: ['app-reservations/js/**/*.js', 'app-reservations/main.js']
 				src: ['app-reservations/main.js', 'app-reservations/js/routers/*.js', 'app-reservations/js/models/*.js', 'app-reservations/js/collections/*.js']
 			},
-
 		},
 
 
-		// Check CSS File //
+		// Check CSS Files //
 		csslint: {
 			dist: {
 				options: {
-					'adjoining-classes'         : false,
-					'box-sizing'                : false,
-					'box-model'                 : false,
-					'compatible-vendor-prefixes': false,
-					'floats'                    : false,
-					'font-sizes'                : false,
-					'gradients'                 : false,
-					'important'                 : false,
-					'known-properties'          : false,
-					'outline-none'              : false,
-					'qualified-headings'        : false,
-					'regex-selectors'           : false,
-					'shorthand'                 : false,
-					'text-indent'               : false,
-					'unique-headings'           : false,
-					'universal-selector'        : false,
-					'unqualified-attributes'    : false
+					csslintrc: 'grunt/.csslintrc'
 				},
 				src: ['dist/css/*.css']
 			}
 		},
 
 
-		// Check Style JS File
+		// Check Style JS Files //
 		jscs: {
 			options: {
-				'disallowKeywords'                        : ['with'],
-				'requireLeftStickedOperators'             : [','],
-				'disallowLeftStickedOperators'            : ['?', '+', '-', '/', '*', '=', '==', '===', '!=', '!==', '>', '>=', '<', '<='],
-				'disallowRightStickedOperators'           : ['?', '/', '*', ':', '=', '==', '===', '!=', '!==', '>', '>=', '<', '<='],
-				'disallowSpaceAfterPrefixUnaryOperators'  : ['++', '--', '+', '-', '~'],
-				'disallowSpaceBeforePostfixUnaryOperators': ['++', '--'],
-				'requireRightStickedOperators'            : ['!'],
-				'requireSpaceAfterBinaryOperators'        : ['+', '-', '/', '*', '=', '==', '===', '!=', '!=='],
-				'requireSpaceAfterKeywords'               : ['if', 'else', 'for', 'while', 'do', 'switch', 'return', 'try', 'catch'],
-				'requireSpaceBeforeBinaryOperators'       : ['+', '-', '/', '*', '=', '==', '===', '!=', '!=='],
-				'requireSpacesInFunctionExpression'       : { 'beforeOpeningCurlyBrace': true },
-				'requireKeywordsOnNewLine'                : ['else'],
-				'disallowSpacesInFunctionExpression'      : { 'beforeOpeningRoundBrace': true },
-				'validateLineBreaks'                      : 'LF',
-				'force': true
+				config: 'grunt/.jscsrc'
 			},
 			gruntfile: {
 				src: ['Gruntfile.js']
@@ -301,5 +259,5 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('default', ['clean', 'checkVersion', 'less', 'targethtml', 'copy']);
 	grunt.registerTask('check', ['jshint', 'checkVersion', 'notify:check']);
-	grunt.registerTask('check-css', ['clean', 'less:dev', 'csslint']);
+	grunt.registerTask('check-css', ['clean', 'less', 'csscomb']);
 };

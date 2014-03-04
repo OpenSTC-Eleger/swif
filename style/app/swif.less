@@ -43,7 +43,7 @@ body{
 .hide-soft{ display: none }
 
 fieldset{
-	margin-top: @line-height-computed*1.5;
+	margin-top: (@line-height-computed * 1.5);
 }
 
 .popover-title,
@@ -115,7 +115,7 @@ fieldset{
 
 /* HEADER
 -------------------------------------------------- */
-div.page-header{
+.page-header{
 	margin-top: 5px;
 }
 
@@ -124,7 +124,7 @@ div.page-header{
 /* Hack for DatePicker
 -------------------------------------------------- */
 div.datepicker{
-	z-index: @zindex-modal+1 !important;
+	z-index: (@zindex-modal + 1) !important;
 }
 
 
@@ -232,13 +232,13 @@ a.filter-button.filter-disabled{
 -------------------------------------------------- */
 .calc-vertical-offset(@nb) when (@nb > 0) and (@nb < 7){
 
-  .vertical-offset{
+	.vertical-offset{
 		&-@{nb}{
-			margin-top: percentage(@nb*2  / 100);
+			margin-top: percentage(((@nb * 2)  / 100));
 		}
 	}
 
-	.calc-vertical-offset(@nb+1);
+	.calc-vertical-offset((@nb + 1));
 }
 // Kickstart //
 .calc-vertical-offset(1);
@@ -327,8 +327,8 @@ a.filter-button.filter-disabled{
 
 .tab-pane-planning{
 	overflow-y: scroll;
-	margin-top: @line-height-computed/2;
-	margin-bottom: @line-height-computed/2;
+	margin-top: (@line-height-computed / 2);
+	margin-bottom: (@line-height-computed / 2);
 	height: 120px;
 
 	> ul li[data-name]{
