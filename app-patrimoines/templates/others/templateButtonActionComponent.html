@@ -1,0 +1,29 @@
+<td class="text-center">
+		<!-- Buttons group action -->
+		<div class="btn-group btn-group-sm">
+
+			<!-- Main action button -->
+			<button class="actions btn btn-<%= mainAction.color%>  no-outline" data-action="<%= mainAction.key%>">
+				<i class="fa <%= mainAction.icon%> fa-fw fa-lg" data-action="<%= mainAction.key%>"></i>
+			</button>
+
+			<% if(otherActions.length > 0){ %>
+				<!-- Dropdown button action(s) -->			
+				<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					<span class="fa fa-caret-down"></span>
+				</button>
+				
+				<!-- Other button(s) action(s) -->
+				<ul class="dropdown-menu dropdown-menu-right text-left">
+					<% _.each(otherActions, function(action){ %>
+						<li>
+							<a href="#" class="actions" data-action="<%= action.key%>">
+								<i class="fa <%= action.icon%> fa-fw" data-action="<%= action.key%>"></i>&nbsp;<%= action.translation %>
+							</a>
+						</li>
+					<% });%>
+				</ul>
+			<% }%>
+		</div>
+	
+</td>
