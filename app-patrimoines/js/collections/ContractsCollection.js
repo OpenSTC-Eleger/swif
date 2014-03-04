@@ -16,7 +16,7 @@ define([
 		
 		url   : '/api/openpatrimoine/contracts',
 
-		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'provider_name', 'patrimoine_is_equipment', 'patrimoine_name'],
+		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'provider_name', 'patrimoine_is_equipment', 'patrimoine_name', 'state'],
 
 		default_sort: { by: 'id', order: 'DESC' },
 		
