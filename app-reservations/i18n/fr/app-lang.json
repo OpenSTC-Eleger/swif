@@ -1,6 +1,6 @@
 {
 	"resa" :
-		{			
+		{
 			"ressources"                   			: "Ressources",
 			"bookingDate"                   		: "Date demande",
 			"startBookingDate"                   	: "Début résa",
@@ -50,9 +50,10 @@
 			"contactDetails"						: "Coordonnées",
 			"available_qty"							: "Quantité disponible",
 			"sendMailToClaimer"						: "Notifier le demandeur",
-	
-			
-		"actions" : {			
+
+
+		"actions" : {
+			"addBooking"                            : "Nouvelle réservation",
 			"confirmAll"							: "Tout valider",
 			"cancelAll"								: "Tout annuler",
 			"refuseAll"								: "Tout refuser",
@@ -68,11 +69,11 @@
             "unselectAll"                           : "Tout désélectionner",
             "selectToggle"                          : "Inverser la sélection"
 		},
-		
+
 		"infoMessages" : {
 			"noBooking"         				: "Aucune réservation à afficher"
 		},
-		
+
 		"viewsTitles" : {
 			"bookingsList"						: "Suivi des réservations",
 			"newBooking"		 				: "Nouvelle réservation",

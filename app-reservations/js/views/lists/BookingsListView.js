@@ -52,8 +52,6 @@ define([
 		/** View Initialization
 		*/
 		initialize : function(params) {
-			var self = this;
-
 			this.options = params;
 
 
@@ -61,7 +59,8 @@ define([
 			if(_.isUndefined(this.collection)){ this.collection = new BookingsCollection(); }
 			else{this.collection.reset();}
 
-			GenericListView.prototype.initialize.apply(self, arguments);
+			this.buttonAction = app.lang.resa.actions.addBooking;
+			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
 
@@ -124,8 +123,10 @@ define([
 			return this;
 		},
 
+
+
 		/** Filter Bookings on the State of the Badge
-		 	*/
+		*/
 		badgeFilter: function(e){
 		 	e.preventDefault();
 
@@ -147,8 +148,8 @@ define([
 		*/
 		createResa: function(e){
 			e.preventDefault();
-			// forward to new route (go to form 'create resa')
-			app.router.navigate(_.join('/',_(Backbone.history.fragment).strLeft('/'), 'planning-des-reservations'), {trigger: true, replace: true});
+
+			app.router.navigate(_.strLeft(app.routes.formReservation.url, '('), {trigger: true, replace: true});
 		},
 
 		// TODO GenericListView

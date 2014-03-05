@@ -49,6 +49,7 @@ define([
 			if(_.isUndefined(this.collection)){ this.collection = new PlacesCollection(); }
 
 
+			this.buttonAction = app.lang.actions.addPlace;
 			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 

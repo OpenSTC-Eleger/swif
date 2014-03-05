@@ -82,7 +82,8 @@ define([
 
 				var template = _.template(templateData, {
 					lang             : app.lang,
-					searchableFields : self.model.prototype.searchable_fields
+					searchableFields : self.model.prototype.searchable_fields,
+					buttonAction     : self.buttonAction
 				});
 
 				$('#headerList').html(template);

@@ -50,6 +50,7 @@ define([
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new InterventionsCollection(); }
 
+			this.buttonAction = app.lang.actions.addIntervention;
 			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
