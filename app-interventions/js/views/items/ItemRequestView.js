@@ -45,10 +45,10 @@ define([
 
 		// The DOM events //
 		events       : {
-			'click .buttonValidRequest'  : 'modalValidRequest',
-			'click .buttonRefusedRequest': 'modalRefuseRequest',
-			'click .buttonConfirmRequest': 'modalConfirmRequest',
-			'click .requestDetails'      : 'displayModalUpdateRequest',
+			'click .buttonValidRequest'     : 'modalValidRequest',
+			'click .buttonRefusedRequest'   : 'modalRefuseRequest',
+			'click .buttonTo_confirmRequest': 'modalConfirmRequest',
+			'click .requestDetails'         : 'displayModalUpdateRequest',
 		},
 
 
@@ -95,6 +95,8 @@ define([
 
 
 			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+infoMessage);
+
+			$(this.el).removeClass('bolder info confirm');
 
 			// Partial Render //
 			app.views.requestsListView.partialRender();
@@ -178,27 +180,6 @@ define([
 			e.preventDefault();
 			new ModalRequestView({el:'#modalRequest', requests: app.views.requestsListView.collection, model: this.model});
 
-		},
-
-
-		/** Highlight the row item
-		*/
-		highlight: function(){
-			var self = this;
-
-			$(this.el).addClass('highlight');
-
-			var deferred = $.Deferred();
-
-			// Once the CSS3 animation are end the class are removed //
-			$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
-				function() {
-					$(self.el).removeClass('highlight');
-					deferred.resolve();
-				}
-			);
-
-			return deferred;
 		}
 
 

@@ -40,6 +40,8 @@ body{
 }
 .container-margin{ margin-top: 4%; }
 
+.fix-container{ max-width: @modal-md; }
+
 .hide-soft{ display: none }
 
 fieldset{
@@ -64,10 +66,6 @@ fieldset{
 	margin-bottom: 8px;
 }
 
-
-#passUser{
-	.border-right-radius(@border-radius-large);
-}
 
 .d-inline{
 	display: inline;
@@ -123,7 +121,7 @@ fieldset{
 
 /* Hack for DatePicker
 -------------------------------------------------- */
-div.datepicker{
+.datepicker-dropdown{
 	z-index: (@zindex-modal + 1) !important;
 }
 
@@ -217,8 +215,7 @@ a.filter-button.filter-disabled{
 	border-left-width: 4px;
 	border-left-style: solid;
 	border-left-color: @gray-light;
-}
-.border-emphasize {
+
 	&-info{ border-left-color    : @brand-info; }
 	&-danger{ border-left-color  : @brand-danger; }
 	&-warning{ border-left-color : @brand-warning; }
@@ -256,9 +253,6 @@ a.filter-button.filter-disabled{
 
 /* Connection Form
 -------------------------------------------------- */
-#formConnectionContainer{
-	max-width: 550px;
-}
 .login-logo {
 	position: absolute;
 	top: 100px;
@@ -359,9 +353,8 @@ li.external-event.disabled{
 
 // object Actions //
 .row-actions{
-	display: inline;
+	display: inline-block;
 	margin: 0 0 0 15px;
-	width: auto;
 	font-size: 85%;
 }
 .nested-objects-actions{
@@ -369,8 +362,8 @@ li.external-event.disabled{
 }
 .row-actions a:hover i,
 .nested-objects-actions a:hover i,
-a.accordion-toggle:hover i,
-a.accordion-object:hover i {
+.accordion-toggle:hover i,
+.accordion-object:hover i {
 	text-decoration: none;
 }
 
@@ -383,21 +376,6 @@ tr.row-nested-objects:hover .nested-objects-actions {
 		text-decoration: none;
 	};
 }
-
-
-
-
-
-/* List tasks
--------------------------------------------------- */
-.collapse-selected {
-	border-left: 5px solid @brand-info !important;
-	border-radius: 0 !important;
-}
-
-
-
-
 
 
 

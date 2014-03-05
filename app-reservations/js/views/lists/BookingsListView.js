@@ -52,8 +52,6 @@ define([
 		/** View Initialization
 		*/
 		initialize : function(params) {
-			var self = this;
-
 			this.options = params;
 
 
@@ -61,7 +59,15 @@ define([
 			if(_.isUndefined(this.collection)){ this.collection = new BookingsCollection(); }
 			else{this.collection.reset();}
 
-			GenericListView.prototype.initialize.apply(self, arguments);
+
+
+			// Add filter for claimer to fetch only their own bookings //
+			if(!app.current_user.isResaManager()){
+				this.specialDomain = {field: 'partner_id.address', operator: 'in', value: app.current_user.get('contact_id')};
+			}
+
+			this.buttonAction = app.lang.resa.actions.addBooking;
+			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
 
@@ -82,6 +88,7 @@ define([
 			}
 			GenericListView.prototype.partialRender.apply(self);
 		},
+
 
 
 		/** Display the view
@@ -124,8 +131,10 @@ define([
 			return this;
 		},
 
+
+
 		/** Filter Bookings on the State of the Badge
-		 	*/
+		*/
 		badgeFilter: function(e){
 		 	e.preventDefault();
 
@@ -143,21 +152,15 @@ define([
 		},
 
 
+
 		/** Got to create Resa form
 		*/
 		createResa: function(e){
 			e.preventDefault();
-			// forward to new route (go to form 'create resa')
-			app.router.navigate(_.join('/',_(Backbone.history.fragment).strLeft('/'), 'planning-des-reservations'), {trigger: true, replace: true});
-		},
 
-		// TODO GenericListView
-		/*//add filter for claimer to fetch only their own bookings
-		if(!app.current_user.isResaManager()){
-			this.fetchParams.data.filters  = _.toArray(this.fetchParams.data.filters);
-			this.fetchParams.data.filters.push({field: 'partner_id.address.id', operator:'in', value:app.current_user.get('contact_id')});
-			this.fetchParams.data.filters = app.objectifyFilters(this.fetchParams.data.filters);
-		}*/
+			app.router.navigate(_.strLeft(app.routes.formReservation.url, '('), {trigger: true, replace: true});
+		}
+
 
 	});
 

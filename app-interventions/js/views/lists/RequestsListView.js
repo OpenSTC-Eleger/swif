@@ -48,10 +48,9 @@ define([
 		 */
 		initialize: function() {
 			// Check if the collections is instantiate //
-			if (_.isUndefined(this.collection)) {
-				this.collection = new RequestsCollection();
-			}
+			if (_.isUndefined(this.collection)) { this.collection = new RequestsCollection(); }
 
+			this.buttonAction = app.lang.actions.addRequest;
 			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
