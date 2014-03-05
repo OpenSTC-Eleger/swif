@@ -19,7 +19,7 @@ define([
 	var ClaimerTypeModel = GenericModel.extend({
 
 
-		fields  : ['id', 'name', 'code', 'actions'],
+		fields  : ['id', 'name', 'code', 'actions', 'sending_mail'],
 
 		urlRoot : '/api/open_object/partner_types',
 
@@ -36,6 +36,11 @@ define([
 		setCode : function(value, silent) {
 			this.set({ code : value }, {silent: silent});
 		},
+		
+		isSendingMail: function() {
+			return this.get('sending_mail');
+		},
+
 
 
 		/** Get Informations of the model

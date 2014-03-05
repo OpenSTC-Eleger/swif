@@ -57,6 +57,8 @@ define(['app', 'appHelpers', 'claimerTypeModel', 'claimersTypesCollection', 'gen
 				});
 
 				self.modal.html(template);
+				
+				$('.make-switch').bootstrapSwitch();
 
 				self.modal.modal('show');
 			});
@@ -77,7 +79,8 @@ define(['app', 'appHelpers', 'claimerTypeModel', 'claimersTypesCollection', 'gen
 			// Set the properties of the model //
 			var params = {
 				name: this.$('#claimerTypeName').val(),
-				code: this.$('#claimerTypeCode').val().toUpperCase()
+				code: this.$('#claimerTypeCode').val().toUpperCase(),
+				sending_mail: $('#switchSendingMail').bootstrapSwitch('state'),
 			};
 
 			this.model.save(params)

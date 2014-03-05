@@ -36,6 +36,16 @@
 						<span class="help-block" id="code-error"></span>
 					</div>
 				</div>
+				
+				<!-- is Sending Mail -->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="switchSendingMail"><%= _.capitalize(lang.actions.sendingMail) %>:</label>
+					<div class="col-sm-9">
+						<input type="checkbox" class="make-switch" id="switchSendingMail" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"
+							<% if(!_.isNull(claimerType.getId())){ if(claimerType.isSendingMail()) { %> checked <% } } %>
+						>
+					</div>
+				</div>
 
 
 			</form>

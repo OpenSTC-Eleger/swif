@@ -134,7 +134,7 @@ define([
 			var self = this;
 			var deferred = $.Deferred();
 			self.tasksCollection = new TasksCollection();
-			if( self.model.get('tasks')!== false ) {
+			if( self.model.get('tasks')!== false && _.size(self.model.get('tasks'))>0 ) {
 				self.tasksCollection.fetch({silent: true,data: {filters: {0: {'field': 'id', 'operator': 'in', 'value': self.model.get('tasks')}}}}).done(function(){
 					deferred.resolve();
 				});
