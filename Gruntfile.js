@@ -75,7 +75,9 @@ module.exports = function(grunt) {
 						'properties.json',
 						'font/*',
 						'style/vendors/*.css',
-						'medias/images/**'
+						'medias/images/**',
+						'LICENSE',
+						'AUTHORS'
 					]
 				}
 			}
@@ -259,5 +261,5 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('default', ['clean', 'checkVersion', 'less', 'targethtml', 'copy']);
 	grunt.registerTask('check', ['jshint', 'checkVersion', 'notify:check']);
-	grunt.registerTask('check-css', ['clean', 'less', 'csscomb']);
+	grunt.registerTask('check-css', ['clean', 'less', 'csscomb', 'csslint']);
 };
