@@ -15,19 +15,39 @@ module.exports = function(grunt) {
 			' */\n',
 
 
-		// LESS compilation options
+		// Clean dist directory //
+		clean: {
+			dist: ['dist/'],
+		},
+
+
+		// Compile Less file //
 		less: {
+			options: {
+				strictMath: true
+			},
 			dist: {
 				files: {
-					'dist/css/swif.css': 'css/startup.less'
-				},
-				options: {
-					compress: true,
-					cleancss: true
+					'dist/css/swif.css': 'style/startup.less'
 				}
 			}
 		},
 
+
+		// Clean and organize css file //
+		csscomb: {
+			options: {
+				config: 'grunt/.csscomb.json'
+			},
+			dist: {
+				files: {
+					'dist/css/swif.css': ['dist/css/swif.css']
+				}
+			}
+		},
+
+
+		// Target HTML  //
 		targethtml: {
 			dist: {
 				files: {
@@ -36,6 +56,8 @@ module.exports = function(grunt) {
 			}
 		},
 
+
+		// Copy files to the Dist //
 		copy: {
 			dist: {
 				files: {
@@ -52,40 +74,24 @@ module.exports = function(grunt) {
 						'config/*',
 						'properties.json',
 						'font/*',
-						'css/vendors/*.css',
-						'css/images/**'
+						'style/vendors/*.css',
+						'medias/images/**'
 					]
 				}
 			}
 		},
 
+
 		// Check JS Files //
 		jshint: {
 			options: {
-				strict       : true,
-				unused       : true,
-				quotmark     : 'single',
-				indent       : 4,
-				undef        : true,
-				noempty      : true,
-				freeze       : true,
-				curly        : true,
-				latedef      : true,
-				maxcomplexity: 15,
-				trailing     : true,
-				browser      : true,
-				jquery       : true,
-				devel        : true,
-				globals      : { 'requirejs': true, 'require': true, 'module': true, 'define': true, '_': true, 'Backbone': true }
+				jshintrc: 'grunt/.jshintrc'
 			},
 			gruntfile: {
 				src: ['Gruntfile.js']
 			},
 			jsonFile: {
-				options: {
-					quotmark: 'double'
-				},
-				src: ['properties.json', 'package.json', 'config/*.json.*', 'i18n/**/*.json', 'app-interventions/config/*.json', 'app-reservations/config/*.json'],
+				src: ['properties.json', 'package.json', 'config/*.json.*', 'i18n/**/*.json', 'grunt/.*.json', 'app-interventions/config/*.json', 'app-reservations/config/*.json'],
 			},
 			scripts_main: {
 				src: ['js/**/*.js', '!js/libs/*', '!js/i18n/*']
@@ -97,27 +103,24 @@ module.exports = function(grunt) {
 				//src: ['app-reservations/js/**/*.js', 'app-reservations/main.js']
 				src: ['app-reservations/main.js', 'app-reservations/js/routers/*.js', 'app-reservations/js/models/*.js', 'app-reservations/js/collections/*.js']
 			},
-
 		},
 
-		// Check Style JS File
+
+		// Check CSS Files //
+		csslint: {
+			dist: {
+				options: {
+					csslintrc: 'grunt/.csslintrc'
+				},
+				src: ['dist/css/*.css']
+			}
+		},
+
+
+		// Check Style JS Files //
 		jscs: {
 			options: {
-				'disallowKeywords'                        : ['with'],
-				'requireLeftStickedOperators'             : [','],
-				'disallowLeftStickedOperators'            : ['?', '+', '-', '/', '*', '=', '==', '===', '!=', '!==', '>', '>=', '<', '<='],
-				'disallowRightStickedOperators'           : ['?', '/', '*', ':', '=', '==', '===', '!=', '!==', '>', '>=', '<', '<='],
-				'disallowSpaceAfterPrefixUnaryOperators'  : ['++', '--', '+', '-', '~'],
-				'disallowSpaceBeforePostfixUnaryOperators': ['++', '--'],
-				'requireRightStickedOperators'            : ['!'],
-				'requireSpaceAfterBinaryOperators'        : ['+', '-', '/', '*', '=', '==', '===', '!=', '!=='],
-				'requireSpaceAfterKeywords'               : ['if', 'else', 'for', 'while', 'do', 'switch', 'return', 'try', 'catch'],
-				'requireSpaceBeforeBinaryOperators'       : ['+', '-', '/', '*', '=', '==', '===', '!=', '!=='],
-				'requireSpacesInFunctionExpression'       : { 'beforeOpeningCurlyBrace': true },
-				'requireKeywordsOnNewLine'                : ['else'],
-				'disallowSpacesInFunctionExpression'      : { 'beforeOpeningRoundBrace': true },
-				'validateLineBreaks'                      : 'LF',
-				'force': true
+				config: 'grunt/.jscsrc'
 			},
 			gruntfile: {
 				src: ['Gruntfile.js']
@@ -127,6 +130,7 @@ module.exports = function(grunt) {
 			}
 		},
 
+
 		// Add licence to the files //
 		usebanner: {
 			default: {
@@ -135,10 +139,11 @@ module.exports = function(grunt) {
 					banner  : '<%= banner %>'
 				},
 				files: {
-					src: ['js/**/*.js', '!js/libs/*', '!js/i18n/*', 'app-interventions/**/*.js', 'app-reservations/**/*.js', '**/*.less', '!css/vendors/**/*.less']
+					src: ['js/**/*.js', '!js/libs/*', '!js/i18n/*', 'app-interventions/**/*.js', 'app-reservations/**/*.js', 'style/**/*.less', '!style/vendors/**/*.less']
 				}
 			}
 		},
+
 
 		// Create AUTHORS file //
 		contributors: {
@@ -148,12 +153,14 @@ module.exports = function(grunt) {
 			}
 		},
 
+
 		// Hooks to run check task before each commit //
 		githooks: {
 			all: {
 				'pre-commit': 'check',
 			}
 		},
+
 
 		// Display notifications messages //
 		notify: {
@@ -250,6 +257,7 @@ module.exports = function(grunt) {
 	grunt.task.run('notify_hooks');
 
 
-	grunt.registerTask('default', ['checkVersion', 'less', 'targethtml', 'copy']);
+	grunt.registerTask('default', ['clean', 'checkVersion', 'less', 'targethtml', 'copy']);
 	grunt.registerTask('check', ['jshint', 'checkVersion', 'notify:check']);
+	grunt.registerTask('check-css', ['clean', 'less', 'csscomb']);
 };

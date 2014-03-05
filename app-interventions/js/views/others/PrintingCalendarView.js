@@ -210,7 +210,7 @@ define([
 				leaveOpen	: true,
 				printMode	: 'popup',
 				overrideElementCSS:[
-					{ href:'css/vendors/print_table.css', media: 'all'}
+					{ href:'style/vendors/print_table.css', media: 'all'}
 				]
 			});
 		},

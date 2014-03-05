@@ -6,32 +6,32 @@
 
 /* Input group addons Inner
 -------------------------------------------------- */
-.input-group-inner{
+.input-group-inner {
 	.form-control:first-child{
 		.border-right-radius(@border-radius-base);
 	}
 }
 
-.input-group-addon-inner{
+.input-group-addon-inner {
 	position: absolute;
 	padding: @padding-large-vertical @padding-large-horizontal;
-	right: @padding-large-horizontal/2;
+	right: (@padding-large-horizontal / 2);
 	z-index: @zindex-navbar;
 
-	i{
+	i {
 		cursor: pointer;
 		.text-muted();
 	}
 }
 
-.input-group{
+.input-group {
 	> .input-group-addon-inner{
 		height: @input-height-base;
 		top: -3px;
 	}
 
-	&-lg{
-		> .input-group-addon-inner{
+	&-lg {
+		> .input-group-addon-inner {
 			height: @input-height-large;
 			top: 2px;
 		}
@@ -42,7 +42,7 @@
 
 /* Panel in form
 -------------------------------------------------- */
-.form-horizontal .panel{
+.form-horizontal .panel {
 	margin-top: @line-height-computed;
 	.noMarginBottom();
 }

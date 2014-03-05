@@ -38,10 +38,10 @@
 
 				<!-- Absent Type Description -->
 				<div class="form-group">
-					<label for="absentTypeDescription" class="control-label col-sm-3"><%= _.capitalize(lang.description) %>:</label>
+					<label class="control-label col-sm-3" for="absentTypeDescription"><%= _.capitalize(lang.description) %>:</label>
 
 					<div class="col-sm-9">
-					 	<textarea id="absentTypeDescription" class="form-control" rows="2"><%= (_.isNull(absentType.getId()) ? '' : absentType.getDescription())%></textarea>
+					 	<textarea class="form-control" id="absentTypeDescription" rows="2"><%= (_.isNull(absentType.getId()) ? '' : absentType.getDescription())%></textarea>
 					</div>
 				</div>
 
