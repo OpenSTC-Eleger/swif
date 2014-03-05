@@ -22,7 +22,7 @@ define([
 
 		url         : '/api/open_object/partner_types',
 
-		fields      : ['id', 'name', 'code', 'actions'],
+		fields      : ['id', 'name', 'code', 'actions', 'sending_mail'],
 
 		default_sort: { by: 'name', order: 'ASC' },
 
