@@ -75,7 +75,7 @@ define([
 						self.detailedView.render();
 					});
 				}
-				self.highlight().done();
+				AppHelpers.highlight($(self.el));
 			}
 			app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
 
@@ -189,28 +189,6 @@ define([
 				$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
 			}
 		},
-
-
-		/** Highlight the row item
-		*/
-		highlight: function(){
-			var self = this;
-
-			$(this.el).addClass('highlight');
-
-			var deferred = $.Deferred();
-
-			// Once the CSS3 animation are end the class are removed //
-			$(this.el).one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
-				function() {
-					$(self.el).removeClass('highlight');
-					deferred.resolve();
-				}
-			);
-
-			return deferred;
-		},
-
 
 
 		/** Display the form to add / update an intervention

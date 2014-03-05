@@ -259,14 +259,6 @@ define([
 						});
 						self.selectListFilterOfficerView.render();
 
-						// Collapse border style //
-						$('.accordion-toggle').click(function(){
-							if($(this).parents('.accordion-group').hasClass('collapse-selected')){
-								$(this).parents('.accordion-group').removeClass('collapse-selected');
-							}else{
-								$(this).parents('.accordion-group').addClass('collapse-selected');
-							}
-						});
 
 						//  DropDown Filter set Selected //
 						if(!_.isUndefined(agent)){

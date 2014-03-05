@@ -13,11 +13,11 @@
 
 		<blockquote>
 			<p><%= request.getName() %></p>
-			<small><strong><i class="fa fa-map-marker"></i>&nbsp;<%= _.capitalize(app.lang.place) %> : </strong></i>&nbsp;&nbsp; <%= request.getSite() %></small>
+			<small><strong><i class="fa fa-map-marker"></i>&nbsp;<%= _.capitalize(lang.place) %> : </strong></i>&nbsp;&nbsp; <%= request.getSite() %></small>
 		</blockquote>
 
 		<form id="formRefuseRequest" action="#" class="form-horizontal">
-		
+
 			<!-- The Reason for Refusal -->
 			<div class="form-group">
 				<label for="motifRefuse" class="control-label col-sm-3"><%= _.capitalize(lang.refusalReason) %>:</label>

@@ -67,7 +67,7 @@ define([
 		},
 
 		displayTodayAccordion: function(){
-			$(this.el).addClass('collapse-selected');
+			$(this.el).addClass('border-emphasize border-emphasize-info panel-info');
 			this.accordion.addClass('in');
 		},
 

@@ -239,7 +239,7 @@ define([
 						this.options.filter = globalSearch.filter;
 					}
 					catch(e){
-						console.log('Filter is already as json format');
+						//console.log('Filter is already as json format');
 					}
 				}
 			}
