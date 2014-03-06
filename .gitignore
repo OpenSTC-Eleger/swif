@@ -5,6 +5,7 @@
 .project
 .htaccess
 *.swp
+*.tar.gz
 config/configuration.json
 logo/
 dist/

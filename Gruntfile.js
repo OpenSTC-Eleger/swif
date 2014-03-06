@@ -28,7 +28,7 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				files: {
-					'dist/css/swif.css': 'style/startup.less'
+					'dist/style/swif.css': 'style/startup.less'
 				}
 			}
 		},
@@ -41,7 +41,7 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				files: {
-					'dist/css/swif.css': ['dist/css/swif.css']
+					'dist/style/swif.css': ['dist/style/swif.css']
 				}
 			}
 		},
@@ -62,7 +62,6 @@ module.exports = function(grunt) {
 			dist: {
 				files: {
 					'dist/': [
-						'startup.js',
 						'app-interventions/**',
 						'app-reservations/**',
 						'fonts/**',
@@ -74,8 +73,7 @@ module.exports = function(grunt) {
 						'config/*',
 						'properties.json',
 						'font/*',
-						'style/vendors/*.css',
-						'medias/images/**',
+						'medias/**/*',
 						'LICENSE',
 						'AUTHORS'
 					]
@@ -114,7 +112,7 @@ module.exports = function(grunt) {
 				options: {
 					csslintrc: 'grunt/.csslintrc'
 				},
-				src: ['dist/css/*.css']
+				src: ['dist/style/*.css']
 			}
 		},
 
@@ -129,6 +127,37 @@ module.exports = function(grunt) {
 			},
 			scripts: {
 				src: ['js/views/modals/ModalPlaceView.js']
+			}
+		},
+
+
+
+		// Compress the CSS file //
+		cssmin: {
+			dist: {
+				options: {
+					banner: '<%= banner %>',
+					keepSpecialComments: 0
+				},
+				files: {
+					'dist/style/swif.css': ['dist/style/swif.css']
+				}
+			}
+		},
+
+
+		// Archive the dist //
+		compress : {
+			dist : {
+				options : {
+					mode   : 'tgz',
+					level  : 9,
+					archive: '<%= pkg.name %>_v<%= pkg.version %>.tar.gz',
+					pretty : true
+				},
+				files : [
+					{ expand: true, src : '**/*', cwd : 'dist/' }
+				]
 			}
 		},
 
@@ -170,6 +199,12 @@ module.exports = function(grunt) {
 				options: {
 					title  : 'Check done without error',
 					message: 'Changes can be commited and pushed!'
+				}
+			},
+			build: {
+				options: {
+					title  : 'Build done without error',
+					message: 'v<%= pkg.version %> ready for production!'
 				}
 			}
 		},
@@ -259,7 +294,11 @@ module.exports = function(grunt) {
 	grunt.task.run('notify_hooks');
 
 
-	grunt.registerTask('default', ['clean', 'checkVersion', 'less', 'targethtml', 'copy']);
+	grunt.registerTask('default', ['clean', 'checkVersion', 'build-css', 'targethtml', 'copy', 'compress', 'notify:build']);
+	grunt.registerTask('build-css', ['clean', 'less', 'csscomb', 'cssmin']);
+
+	// Check tasks //
 	grunt.registerTask('check', ['jshint', 'checkVersion', 'notify:check']);
 	grunt.registerTask('check-css', ['clean', 'less', 'csscomb', 'csslint']);
+
 };
