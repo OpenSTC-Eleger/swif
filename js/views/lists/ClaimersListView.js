@@ -93,13 +93,6 @@ define([
 					$(this).find('input, textarea').first().focus();
 				});
 
-				app.views.paginationView = new PaginationView({
-					page: self.options.page.page,
-					collection: self.collection
-				});
-
-				app.views.paginationView.render();
-
 			});
 
 			$(this.el).hide().fadeIn('slow');

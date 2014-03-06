@@ -313,7 +313,8 @@
         "resetPassword"     : "Réinitialiser le mot de passe",
         "addAttach"         : "Ajouter une pièce jointe",
         "apply"             : "appliquer",
-        "unapplyFilter"     : "Enlever le filtre"
+        "unapplyFilter"     : "Enlever le filtre",
+        "sendingMail"		: "Notifications"
     },
 
     "errorMessages" : {
