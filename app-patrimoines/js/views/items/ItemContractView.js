@@ -8,10 +8,12 @@ define([
 	'app',
 	'appHelpers',
 	'contractModel',
+	'formContractView',
+	
 	'moment'
 
 
-], function(app, AppHelpers, ContractModel, moment){
+], function(app, AppHelpers, ContractModel, FormContractView, moment){
 
 	'use strict';
 
@@ -198,7 +200,7 @@ define([
 		*/
 		render : function() {
 			var self = this;
-
+			var formUrl = FormContractView.prototype.urlBuilder(this.model.getId());
 			// Retrieve the template //
 			$.get(app.menus.openpatrimoine+this.templateHTML, function(templateData){
 				
@@ -209,6 +211,7 @@ define([
 					contract  : self.model,
 					mainAction: self.model.getUserActions().mainAction,
 					otherActions: self.model.getUserActions().otherActions,
+					formUrl		: formUrl
 				});
 				$(self.el).html(template);
 				self.renderFieldsValues();

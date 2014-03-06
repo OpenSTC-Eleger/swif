@@ -15,7 +15,7 @@ define([
 		
 		urlRoot: '/api/openpatrimoine/contracts',
 
-		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'technical_service_id', 'supplier_id', 'provider_name', 'patrimoine_is_equipment', 'equipment_id' ,'site_id' ,'patrimoine_name', 'state'],
+		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'technical_service_id', 'supplier_id', 'provider_name', 'patrimoine_is_equipment', 'equipment_id' ,'site_id' ,'patrimoine_name', 'state', 'description', 'deadline_delay', 'type_renewal', 'category_id'],
 
 		searchable_fields: [
 			{

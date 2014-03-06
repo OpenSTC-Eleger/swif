@@ -3,6 +3,12 @@
 
 		"provider"					:"prestataire",
 		"patrimony"					:"patrimoine",
+		"generalInfos"				:"infos générales",
+		"recurrenceSetting"			:"paramétrage récurrence",
+		"delay_deadline"			:"préavis (jours)",
+		"type_renewal"				:"Reconduction",
+		"extendContract"			:"Reconduire le contrat",
+		"supplierOrDepartment"		:"Prestataire / Service",
 		
 		"actions" : {			
 			"addContract"			:"créer un contract",
@@ -14,7 +20,9 @@
 		},
 		
 		"viewsTitles" : {
-			"contractsList"			: "Suivi des Contrats"
+			"contractsList"			: "Suivi des Contrats",
+			"newContract"			: "nouveau Contrat",
+			"contractDetails"		: "détails du contrat"
 		}
 	}
 }
