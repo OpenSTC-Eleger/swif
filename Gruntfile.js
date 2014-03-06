@@ -14,10 +14,12 @@ module.exports = function(grunt) {
 			' * Licensed under <%= pkg.license.type %> (<%= pkg.license.url %>)\n' +
 			' */\n',
 
+		archiveName: '<%= pkg.name %>_v<%= pkg.version %>.tar.gz',
+
 
 		// Clean dist directory //
 		clean: {
-			dist: ['dist/'],
+			dist: ['dist/', '*.tar.gz'],
 		},
 
 
@@ -152,7 +154,7 @@ module.exports = function(grunt) {
 				options : {
 					mode   : 'tgz',
 					level  : 9,
-					archive: '<%= pkg.name %>_v<%= pkg.version %>.tar.gz',
+					archive: '<%= archiveName %>',
 					pretty : true
 				},
 				files : [
