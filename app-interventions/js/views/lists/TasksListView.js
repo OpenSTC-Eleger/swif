@@ -243,7 +243,7 @@ define([
 						//display all seven days of the selected week
 						_.each(self.tasksUserFiltered, function(dayTasks){
 
-							var params = {day: dayTasks.day, tasks: dayTasks.tasks, parentListView: self};
+							var params = { day: dayTasks.day, tasks: dayTasks.tasks, parentListView: self };
 
 							$('#task-accordion').append(new ItemTaskDayListView(params).render().el);
 						});
@@ -289,7 +289,7 @@ define([
 		/** Display the form to add a new Task
 		*/
 		displayModalAddTask: function(){
-			new ModalAddTaskView({el:'#modalAddTask',tasks: this.collections.tasks});
+			new ModalAddTaskView({ el:'#modalAddTask', tasks: this.collections.tasks });
 		},
 
 

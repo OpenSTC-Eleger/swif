@@ -214,7 +214,6 @@ define([
 						});
 					}
 
-
 					$.ajax({
 						url    : self.options.url,
 						method : 'GET',
@@ -429,6 +428,14 @@ define([
 		*/
 		resetSearchParams: function(){
 			this.searchParams = [];
+		},
+
+
+
+		/** Set the url to fetch collection
+		*/
+		setUrl: function(url){
+			this.options.url = url;
 		},
 
 

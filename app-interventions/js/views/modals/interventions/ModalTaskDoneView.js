@@ -238,7 +238,7 @@ define([
 				$('#selectUsersTeams').data('item', 'officers');
 				$('#selectUsersTeams').attr('data-placeholder', app.lang.actions.selectAAgentShort);
 
-				this.selectListOfficersTeamsView.collection = OfficersCollection.prototype;
+				this.selectListOfficersTeamsView.setUrl(OfficersCollection.prototype.url);
 				//filter to remove administrator record
 				this.selectListOfficersTeamsView.setSearchParam({field:'id', operator:'>',value:'1'});
 				this.selectListOfficersTeamsView.reset();
@@ -249,7 +249,7 @@ define([
 				$('#selectUsersTeams').data('item', 'teams');
 				$('#selectUsersTeams').attr('data-placeholder', app.lang.actions.selectATeamShort);
 
-				this.selectListOfficersTeamsView.collection = TeamsCollection.prototype;
+				this.selectListOfficersTeamsView.setUrl(TeamsCollection.prototype.url);
 				this.selectListOfficersTeamsView.reset();
 				this.selectListOfficersTeamsView.render();
 			}

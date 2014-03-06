@@ -142,6 +142,7 @@ define([
 
 					//init AdvancedSelectBox values
 					self.advancedSelectBoxCategoriesInterventionAddTaskView.setSelectedItem(modelJSON.category_id);
+
 					//equipments and vehicle values need to be retrieved separately
 					if(modelJSON.equipment_ids.length>0){
 						var vehicle = new EquipmentsCollection();
@@ -192,6 +193,8 @@ define([
 
 			return this;
 		},
+
+
 
 		/** Save the Task
 		*/
@@ -325,9 +328,9 @@ define([
 				$('#taskSelectUsersTeams').data('item', 'officers');
 				$('#taskSelectUsersTeams').attr('data-placeholder', app.lang.actions.selectAAgentShort);
 
-				this.selectListOfficersTeamsView.collection = OfficersCollection.prototype;
+				this.selectListOfficersTeamsView.setUrl(OfficersCollection.prototype.url);
 				this.selectListOfficersTeamsView.reset();
-				this.selectListOfficersTeamsView.setSearchParam({field:'id',operator:'>',value:'1'},true);
+				this.selectListOfficersTeamsView.setSearchParam({field:'id',operator:'>',value:'1'}, true);
 				this.selectListOfficersTeamsView.render();
 			}
 			else if(itemToLoad === 'teams'){
@@ -335,30 +338,25 @@ define([
 				$('#taskSelectUsersTeams').data('item', 'teams');
 				$('#taskSelectUsersTeams').attr('data-placeholder', app.lang.actions.selectATeamShort);
 
-				this.selectListOfficersTeamsView.collection = TeamsCollection.prototype;
+				this.selectListOfficersTeamsView.setUrl(TeamsCollection.prototype.url);
 				this.selectListOfficersTeamsView.reset();
 				this.selectListOfficersTeamsView.resetSearchParams();
 				this.selectListOfficersTeamsView.render();
 			}
 		},
 
+
+
 		/** Update the <select> list of Users or Teams in the Modal Task Done
 		*/
 		changeSelectListUsersTeams: function(e){
 			e.preventDefault();
-			var link = $(e.target);
+			var link = $(e.currentTarget);
 
 			// Retrieve the item to refresh - Users or Teams //
-			var itemToLoad;
-			if(link.is('a')){
-				itemToLoad = link.data('item');
-			}
-			else{
-				itemToLoad = link.parent('a').data('item');
-			}
-
-			this.updateSelectListUsersTeams(itemToLoad);
+			this.updateSelectListUsersTeams(link.data('item'));
 		},
+
 
 
 		/** Display or Hide Refueling Section (Inputs Km, Oil, Oil prize)
@@ -368,7 +366,7 @@ define([
 
 			// Toggle Slide Refueling section //
 			$('.refueling-vehicle').stop().slideToggle();
-		},
+		}
 	});
 
 	return ModalAddTaskView;

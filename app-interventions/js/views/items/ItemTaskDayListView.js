@@ -33,7 +33,7 @@ define([
 
 		/** View Initialization
 		*/
-		initialize : function(params) {
+		initialize: function(params) {
 
 			this.options = params;
 
