@@ -3,6 +3,10 @@
 	"contrats": {
 		"url"		: "contrats(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"	: "contractsList"
+	},
+	"contrat": {
+		"url"		: "contrat(/id/:id)",
+		"function"	: "contractForm"
 	}
 
 }

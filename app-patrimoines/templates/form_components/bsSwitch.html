@@ -1,0 +1,7 @@
+<label for="<%= field.fieldName %>" class="control-label col-sm-3"><%= _.capitalize(field.fieldLabel) %>:</label>
+
+<div class="col-sm-9">
+	<input id="<%= field.fieldName %>" type="checkbox" class="make-switch field-element" data-on="default" data-on-label="<%= field.onLabel %>" data-off-label="<%= field.offLabel %>"
+			<%= field.value ? 'checked' : '' %>	
+	/>
+</div>

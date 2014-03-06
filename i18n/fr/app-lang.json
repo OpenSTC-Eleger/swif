@@ -245,7 +245,8 @@
     "homePage"              : "Page d'accueil",
     "notFoundCode"          : "erreur 404",
     "notFoundMessage"       : "La page que vous avez demandé n'existe pas/plus ou à été déplacée. Cliquez sur le bouton en dessous pour revenir sur la page d'accueil",
-
+	"serviceProvider"	: "Prestataire",
+	
     "actions" : {
         "logIn"             : "connectez-vous",
         "logOut"            : "déconnexion",
@@ -310,12 +311,12 @@
         "selectAClaimer"    : "Sélectionner un demandeur",
         "selectAClaimerType": "Sélectionner un type de demandeur",
         "selectABookable"   : "Sélectionner une ressource",
+        "selectAServiceProvider": "Sélectionner un prestataire",
         "displayPassword"   : "Afficher le mot de passe",
         "resetPassword"     : "Réinitialiser le mot de passe",
         "addAttach"         : "Ajouter une pièce jointe",
         "apply"             : "appliquer",
-        "unapplyFilter"     : "Enlever le filtre",
-        "extendContract"	: "Reconduire le contrat"
+        "unapplyFilter"     : "Enlever le filtre"
     },
 
     "errorMessages" : {

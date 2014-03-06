@@ -243,25 +243,27 @@ define([
 				select2Options.initSelection = function(element, callback){
 
 					var ids = _.words(element.val(), ',');
-
-					$.ajax({
-						url    : self.options.url,
-						method : 'GET',
-						data   : {
-							fields  : self.fields,
-							filters : [{ field: 'id', operator: 'in', value: ids }]
-						}
-					}).done(function(data){
-
-						var returnData = [];
-
-						_.each(data, function(item){
-							returnData.push({ id: item.id, text: _.titleize(self.getItemText(item).toLowerCase()) });
+					if(ids.length > 0){
+						$.ajax({
+							url    : self.options.url,
+							method : 'GET',
+							data   : {
+								fields  : self.fields,
+								filters : [{ field: 'id', operator: 'in', value: ids }]
+							}
+						}).done(function(data){
+	
+							var returnData = [];
+	
+							_.each(data, function(item){
+								returnData.push({ id: item.id, text: _.titleize(self.getItemText(item).toLowerCase()) });
+							});
+							if(!self.options.multiple){
+								returnData = returnData[0];
+							}
+							callback(returnData);
 						});
-
-						callback(returnData);
-					});
-
+					}
 				};
 			}
 			// Selection - Add the Query function if a url is pass //
