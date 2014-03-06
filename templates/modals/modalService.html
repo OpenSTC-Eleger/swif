@@ -70,12 +70,12 @@
 
 					<div class="col-sm-9">
 						<input id="serviceParentService" class="select2" data-placeholder="<%= lang.actions.selectAService %>"
-
+							required
 							<% if(!_.isNull(service.getId())){
 								if(!_.isUndefined(service.getParentService('id'))) { %>
 								data-selected-value='<%= JSON.stringify(service.getParentService('json')) %>'
 							<% } } %>
-
+							
 						>
 					</div>
 				</div>
