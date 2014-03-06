@@ -419,6 +419,12 @@
         "noFilter"              : "Aucun filtre enregistré"
     },
 
+
+    "helpMessages": {
+        "aboutNotification"       : "Notifie par email les changements d'états d'une demande/intervention les demandeurs appartenant à cette organisation"
+    },
+
+
     "viewsTitles": {
         "login"                  : "Connexion",
         "about"                  : "À propos d'OpenSTC",
