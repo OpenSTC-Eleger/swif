@@ -34,7 +34,8 @@ define(['app',
 		
 		// The DOM events //
 		events: {
-			'change .field-element'			: 'performModelChange'
+			'change .field-element'			: 'performModelChange',
+			'submit #formSaveContract'		: 'saveForm'
 			//Form Buttons
 		},
 		/**
@@ -113,7 +114,7 @@ define(['app',
 		renderFormComponents: function(){
 			var arrayDeferred = [];
 			var self = this;
-			//TODO: refacto this component to be easier to use
+			//TODO: refacto fieldSwitch component to be easier to use
 			//$(self.el).find('.field-switch').each(function(){
 				//arrayDeferred.push(self.renderOneSwitchComponent($(this)));
 			//});
@@ -142,8 +143,8 @@ define(['app',
 		
 		renderOneAvancedSelectBox: function(dom){
 			var select = new AdvancedSelectBoxView({el: dom, url: dom.attr('data-url')});
-			this.advancedSelectBoxes[dom.data('field-name')] = select;
-			var domain = $(this).attr('data-domain');
+			this.advancedSelectBoxes[dom.attr('id')] = select;
+			var domain = dom.attr('data-domain');
 			if(domain){
 				select.resetSearchParams();
 				select.searchParams = this.computeSearchparams(domain);
@@ -208,7 +209,11 @@ define(['app',
 			};
 			this.formValueFieldParser = {
 				boolean: function(dom){return dom.prop('checked');},
-				many2one: function(dom){return self.advancedSelectBoxes[dom.data('field-name')].getSelectedItem();},
+				date: function(dom){return dom.val() ? moment(dom.val(),'DD/MM/YYYY').format('YYYY-MM-DD') : false;},
+				many2one: function(dom){
+					var select = self.advancedSelectBoxes[dom.attr('id')];
+					return select.getSelectedItem() ? [select.getSelectedItem(), select.getSelectedText()] : false;
+				},
 			};
 			this.initModel().done(function(){
 				app.router.render(self);
@@ -252,6 +257,19 @@ define(['app',
 				$(this.el).hide().fadeIn('slow');
 			});
 			return this;
+		},
+		
+		/**
+		 * Save data into backend, use special behavior of method 'saveToBackebnd' to work fine with OpenERP 
+		 */
+		
+		saveForm: function(e){
+			e.preventDefault();
+			this.model.saveToBackend().done(function(){
+				window.history.back();
+			}).fail(function(e){
+				console.log(e);
+			});
 		},
 		
 		/**

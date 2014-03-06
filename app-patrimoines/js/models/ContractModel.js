@@ -2,6 +2,7 @@ define([
 	'app',
 	'appHelpers',
 	'genericModel',
+	'moment'
 
 
 ], function(app, AppHelpers, GenericModel){
@@ -77,6 +78,37 @@ define([
 			return this.get('name');
 		},
 		
+		/**
+		 * to move to GenericCollection
+		 */
+		getSaveVals: function(){
+			var ret = {};
+			var self = this;
+			if(!_.isUndefined(this.collection)){
+				_.map(this.collection.fieldsMetadata, function(fieldDefinition, fieldName){
+					if(fieldDefinition.type == 'many2one'){
+						ret[fieldName] = self.getAttribute(fieldName, [false,''])[0];
+					}
+					else{
+						ret[fieldName] = self.getAttribute(fieldName, null);
+					}
+				});
+			}
+			else{
+				console.warning('Swif error: Could not save model because not any collection is linked with, and so can not retrieve metadata fields.');
+			}
+			return ret;
+		},
+		
+		saveToBackend: function(){
+			var self = this;
+			var vals = this.getSaveVals();
+			var ret = this.save(vals,{patch:!this.isNew(), wait:true}).then(function(data){
+				self.set({id:data});
+				return self.fetch();
+			});
+			return ret;
+		},
 		
 		/** Model Initialization
 		*/
