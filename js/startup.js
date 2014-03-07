@@ -28,7 +28,7 @@ requirejs.config({
 
 		'underscore.string'   : 'libs/underscore-string-2.3.2-min',
 		nprogress             : 'libs/NProgress-0.1.2',
-		pnotify               : 'libs/pnotify-1.2.0',
+		pnotify               : 'libs/pnotify-1.2.2',
 		bootstrap             : 'libs/bootstrap-3.1.1-min',
 		bsDatepicker          : 'libs/bootstrap-datepicker-1.1.2',
 		bsSwitch              : 'libs/bootstrap-switch-2.0.0',

@@ -97,7 +97,7 @@ define([
 				self.modal.modal('hide');
 			})
 			.fail(function(){
-				app.notify('', 'danger', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
+				app.notify('', 'error', app.lang.errorMessages.unablePerformAction, app.lang.errorMessages.sufficientRights);
 			})
 			.always(function(){
 				// Reset the button state //

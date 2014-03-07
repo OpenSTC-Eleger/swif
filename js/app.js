@@ -75,12 +75,12 @@ define('app', [
 					},
 					500: function(){
 						// Server unreachable //
-						app.notify('large', 'danger', app.lang.errorMessages.serverError, '');
+						app.notify('large', 'error', app.lang.errorMessages.serverError, '');
 						app.loader('hide');
 					},
 					502: function(){
 						// Server unreachable //
-						app.notify('large', 'danger', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
+						app.notify('large', 'error', app.lang.errorMessages.connectionError, app.lang.errorMessages.serverUnreachable);
 						app.loader('hide');
 					}
 				}
@@ -136,40 +136,42 @@ define('app', [
 		*/
 		notify: function(notifyModel, type, title, message) {
 
-			var addClass, width, delay, hide;
+			var addClass, width, delay;
+
 
 			switch(notifyModel){
 				case 'large' :
-					addClass = 'stack-bar-top big-icon';
+					addClass = 'stack-bar-top';
+					delay    = 5500;
 					width    = '50%';
-					delay    = 4500;
-					hide     = true;
 					break;
 
 				default:
 					addClass = '';
-					width    = '320px';
 					delay    = 4500;
-					hide     = true;
+					width    = '310px';
 					break;
 			}
 
-			if(type == 'danger'){ type = 'error'; }
 
 			$.pnotify({
 				title        : title,
 				text         : message,
 				addclass     : addClass,
+				delay        : delay,
+				styling      : 'fontawesome',
 				width        : width,
 				type         : type,
-				hide         : hide,
+				maxonscreen  : 6,
+				sticker      : false,
+				hide         : true,
+				history      : false,
 				animate_speed: 'normal',
 				opacity      : 0.9,
 				icon         : true,
-				animation    : 'slide',
+				animation    : 'fade',
 				closer       : true,
-				closer_hover : false,
-				delay        : delay
+				closer_hover : false
 			});
 		}
 
