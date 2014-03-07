@@ -22,7 +22,7 @@ define([
 
 		url         : '/api/openstc/equipments',
 
-		fields      : ['id', 'name', 'immat', 'marque', 'purchase_date', 'time', 'km', 'categ_id', 'qty_available', 'color'],
+		fields      : ['id', 'name', 'immat', 'marque', 'purchase_date', 'time', 'km', 'categ_id', 'qty_available', 'color', 'product_product_id'],
 
 		default_sort: { by: 'name', order: 'ASC' },
 

@@ -17,9 +17,8 @@ define([
 
 	'genericModalView',
 	'advancedSelectBoxView',
-	'bsDatepicker-lang',
-	'moment'
-
+	'moment',
+	'bsDatepicker-lang'
 
 ], function(app, AppHelpers, EquipmentModel, EquipmentsCollection, EquipmentTypeModel, EquipmentsTypesCollection, ClaimersServicesCollection, ClaimersTypesCollection, GenericModalView, AdvancedSelectBoxView, moment){
 
@@ -197,30 +196,30 @@ define([
 			}
 
 			var params = {
-				name: $('#equipmentName').val(),
-				default_code: $('#equipmentCode').val(),
-				categ_id: this.selectEquipmentCategory.getSelectedItem(),
-				internal_use: $('#equipmentInternalUse').is(':checked'),
-				service_ids: [[6,0,this.selectEquipmentServicesInternalUse.getSelectedItems()]],
-				maintenance_service_ids: [[6,0,this.selectEquipmentMaintenanceServices.getSelectedItems()]],
-				immat: $('#equipmentImmat').val(),
-				marque: $('#equipmentMarque').val(),
-				km: parseInt($('#equipmentKm').val().replace(' ','')),
-				energy_type: $('#equipmentEnergy').val(),
-//				year: $('#equipmentYear').val(),
-				built_date: formatDate($('#equipmentBuiltDate').val()),
-				time: $('#equipmentTime').val(),
-				length_amort: $('#equipmentLengthAmort').val(),
-				purchase_date: formatDate($('#equipmentPurchaseDate').val()),
-				purchase_price: $('#equipmentPurchasePrice').val(),
-				hour_price: $('#equipmentHourPrice').val(),
-				warranty_date: formatDate($('#equipmentWarranty').val()),
-				internal_booking: $('#equipmentInternalBooking:checked').val() == '1',
-				external_booking: $('#equipmentExternalBooking:checked').val() == '1',
-				service_bookable_ids: [[6,0, this.selectEquipmentBookingServices.getSelectedItems() ]],
+				name                     : $('#equipmentName').val(),
+				default_code             : $('#equipmentCode').val(),
+				categ_id                 : this.selectEquipmentCategory.getSelectedItem(),
+				internal_use             : $('#equipmentInternalUse').is(':checked'),
+				service_ids              : [[6,0,this.selectEquipmentServicesInternalUse.getSelectedItems()]],
+				maintenance_service_ids  : [[6,0,this.selectEquipmentMaintenanceServices.getSelectedItems()]],
+				immat                    : $('#equipmentImmat').val(),
+				marque                   : $('#equipmentMarque').val(),
+				km                       : parseInt($('#equipmentKm').val().replace(' ','')),
+				energy_type              : $('#equipmentEnergy').val(),
+				//year                   : $('#equipmentYear').val(),
+				built_date               : formatDate($('#equipmentBuiltDate').val()),
+				time                     : $('#equipmentTime').val(),
+				length_amort             : $('#equipmentLengthAmort').val(),
+				purchase_date            : formatDate($('#equipmentPurchaseDate').val()),
+				purchase_price           : $('#equipmentPurchasePrice').val(),
+				hour_price               : $('#equipmentHourPrice').val(),
+				warranty_date            : formatDate($('#equipmentWarranty').val()),
+				internal_booking         : $('#equipmentInternalBooking:checked').val() == '1',
+				external_booking         : $('#equipmentExternalBooking:checked').val() == '1',
+				service_bookable_ids     : [[6,0, this.selectEquipmentBookingServices.getSelectedItems() ]],
 				partner_type_bookable_ids: [[6,0, this.selectClaimersBookingServices.getSelectedItems() ]],
-				color: $('#displayColor').val(),
-				block_booking: $('#equipmentBlockingBookable').bootstrapSwitch('state')
+				color                    : $('#displayColor').val(),
+				block_booking            : $('#equipmentBlockingBookable').bootstrapSwitch('state')
 			};
 
 			var stockQty = parseInt($('#equipmentQtyAvailable').val());
@@ -234,14 +233,21 @@ define([
 						self.model.setId(data);
 						self.model.fetch({silent: true, data : {fields : EquipmentsCollection.prototype.fields} }).done(function(){
 							app.views.equipmentsListView.collection.add(self.model);
+
+							if(stockQty != self.model.getAvailableQty()){
+								self.model.updateAvailableQty(stockQty);
+							}
+
 						});
 					// Update mode //
 					} else {
-						self.model.fetch({ data : {fields : self.model.fields} });
+						self.model.fetch({ data : {fields : self.model.fields} }).done(function(){
+							if(stockQty != self.model.getAvailableQty()){
+								self.model.updateAvailableQty(stockQty);
+							}
+						});
 					}
-					if(stockQty != self.model.getAvailableQty()){
-						self.model.updateAvailableQty(stockQty);
-					}
+
 
 				})
 				.fail(function (e) {
