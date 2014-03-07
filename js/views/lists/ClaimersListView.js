@@ -38,7 +38,7 @@ define([
 		// The DOM events //
 		events: function () {
 			return _.defaults({
-					'click a.modalNewClaimer': 'modalNewClaimer'
+					'click a.createModel': 'modalNewClaimer'
 				},
 				GenericListView.prototype.events
 			);
