@@ -2,7 +2,7 @@
 	<div class="panel-heading">
 		<h3 class="panel-title"><%= _.capitalize(lang.bookables) %></h3>
 	</div>
-  
+
 
 	<div class="panel-body">
 
@@ -11,7 +11,7 @@
 			<div class="row panel-group-heading">
 				<h4 class="col-sm-12"><i class="fa fa-user fa-lg fa-fw"></i> <%= _.capitalize(lang.claiments) %></h4>
 			</div>
-	    
+
 	    	<div class="panel-group-body">
 	    		<form class="form-inline" role="form">
 		    		<input id="claimersOrganization" class="select2" data-placeholder="<%= lang.actions.selectAClaimer %>" required />
@@ -24,7 +24,7 @@
 		<!-- Places -->
 		<div class="panel-group">
 			<div class="row panel-group-heading">
-				<h4 class="col-xs-6 col-md-12 col-lg-7"><i class="fa fa-map-marker fa-lg fa-fw"></i> <%= _.capitalize(lang.places) %> 
+				<h4 class="col-xs-6 col-md-12 col-lg-7"><i class="fa fa-map-marker fa-lg fa-fw"></i> <%= _.capitalize(lang.places) %>
 					<span id="nbPlaces" class="badge"></span>
 				</h4>
 
@@ -33,7 +33,7 @@
 					<div class="form-group pull-right">
 						<div class="input-group input-group-sm">
 
-      						
+
       						<div class="input-group-btn">
         						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
         							<i class="fa fa-bars"></i>
@@ -57,9 +57,9 @@
 					</div>
 				</form>
 			</div>
-		
+
 			<div class="panel-group-body">
-				<ul id="bookablesPlaces" class="nav nav-pills nav-stacked nav-stacked-6">
+				<ul id="bookablesPlaces" class="selectable-list nav nav-pills nav-stacked nav-stacked-6">
 
 				<% _.each(selectablePlaces.models,function(place, i){ %>
 						<li data-color="<%= place.getColor() %>" data-id="<%= place.getId() %>" data-name="<%= place.getName().toLowerCase() %>">
@@ -86,9 +86,9 @@
 					</div>
 				</form>
 			</div>
-		
+
 			<div class="panel-group-body">
-				<ul id="bookablesEquipments" class="nav nav-pills nav-stacked nav-stacked-4">
+				<ul id="bookablesEquipments" class="selectable-list nav nav-pills nav-stacked nav-stacked-4">
 
 				<% _.each(selectableEquipments.models,function(equipment, i){ %>
 

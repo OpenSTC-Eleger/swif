@@ -175,6 +175,7 @@ define([
 				eventRender: function(event, element){
 					// Allow html tag in the reservation title //
 					element.find('.fc-event-title').html(event.title);
+					element.addClass('selectable'); // CSS style
 
 
 					var dateFormat = 'DD/MM HH:mm'
