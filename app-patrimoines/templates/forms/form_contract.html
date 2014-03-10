@@ -2,11 +2,8 @@
 	<h1><%= _.capitalize(pageTitle) %></h1>
 </div>
 
-
 <form id="formSaveContract" action="#" class="form-horizontal container" role="form">
-
 	<div class="row">
-
 		<div class="col-sm-6">
 			<fieldset <%= readonly ? 'disabled' : ''%>>
 			<legend><span class="text-info">1</span> - <%= lang.patrimoine.generalInfos%></legend>
@@ -46,8 +43,8 @@
 				</div>
 				
 				<!-- contract actor (supplier or department ?) -->
-				<div class="form-group field" data-field-label="<%= lang.patrimoine.supplierOrDepartment%>" data-field-name="internal_inter"
-				data-off-label="<%= lang.serviceProvider%>" data-on-label="<%= lang.service%>"></div>
+				<div class="form-group field" data-field-label="<%= lang.patrimoine.internalIntervention %>" data-field-name="internal_inter"
+				data-off-label="<%= lang.no%>" data-on-label="<%= lang.yes%>"></div>
 				
 				<div class="field-visible-if" data-field-name="internal_inter" data-field-value="false">
 					<!-- contract supplier -->
@@ -56,7 +53,7 @@
 				
 				<div class="field-visible-if" data-field-name="internal_inter" data-field-value="true">
 					<!-- contract department -->
-					<div class="form-group field" data-field-placeholder="<%= lang.actions.selectAPlace%>" data-field-label="<%= lang.service %>" data-field-name="technical_service_id"></div>
+					<div class="form-group field" data-field-placeholder="<%= lang.actions.selectAService%>" data-field-label="<%= lang.service %>" data-field-name="technical_service_id"></div>
 				</div>
 <!-- 				<div class="form-group field field-switch" data-field-placeholder="patrimoine" data-field-label="Patrimoine" -->
 <!-- 				data-field-switch-name="patrimoine_is_equipment" data-field-switch-icon-yes="" data-field-switch-icon-no="" -->
@@ -66,14 +63,14 @@
 		</div>
 		<div class="col-sm-6">
 
-			<!-- Récurrence -->
-	
+			<!-- Tasks -->
 			<fieldset <%= readonly ? 'disabled' : ''%>>
-				<legend><span class="text-info">3</span> - <%= lang.patrimoine.recurrenceSetting%></legend>
-				<!-- add recurrence Y/N -->
-				<div class="form-group"></div>
-	
-				<div id="recurrence"></div>
+				<legend><span class="text-info">2</span> - <%= lang.patrimoine.recurrenceSetting%></legend>
+				<ul id="linesHeader" class="nav nav-tabs">
+					<li><a href="#" id="addLine"><i class="fa fa-plus fa-fw"></i> Nouvelle tâche</a></li>
+				</ul>
+				<div id="lines" class="tab-content"></div>
+				
 			</fieldset>
 		</div>
 

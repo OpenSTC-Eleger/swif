@@ -1,12 +1,19 @@
 <td class="field" data-fieldname="id"></td>
-<td><a href="<%= formUrl %>"><span class="field" data-fieldname="name"></span></a>
+
+<td>
+	<a href="<%= formUrl %>"><span class="field" data-fieldname="name"></span></a>
 	<p class="row-actions invisible small-actions" data-actions="delete"></p>
 </td>
+
 <td class="field" data-fieldname="provider_name"></td>
+
 <td>
-<i class="<%= contract.getAttribute('patrimoine_is_equipment',false) ?'fa fa-wrench' : 'fa fa-map-marker'%>"></i>
+<i class="<%= contract.getAttribute('patrimoine_is_equipment',false) ?'fa fa-wrench' : 'fa fa-map-marker'%> fa-fw"></i>
 <span class="field" data-fieldname="patrimoine_name"></span>
 </td>
+
 <td class="field" data-fieldname="date_start_order"></td>
+
 <td class="field" data-fieldname="date_end_order"></td>
+
 <td class="button-actions" data-actions="draft,confirm,extend,done" data-main-action="<%= mainAction%>"></td>
