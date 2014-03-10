@@ -73,6 +73,7 @@ module.exports = function(grunt) {
 						'i18n/**',
 						'templates/**',
 						'config/*',
+						'!config/configuration.json',
 						'properties.json',
 						'font/*',
 						'medias/**/*',
