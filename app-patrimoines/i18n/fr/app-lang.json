@@ -9,10 +9,11 @@
 		"type_renewal"				:"Reconduction",
 		"extendContract"			:"Reconduire le contrat",
 		"supplierOrDepartment"		:"Prestataire / Service",
+		"internalIntervention"		:"En régie",
 		
 		"actions" : {			
 			"addContract"			:"créer un contract",
-			"extend"				:"recodnuire le contrat"
+			"extend"				:"reconduire le contrat"
 		},
 		
 		"infoMessages" : {

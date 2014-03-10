@@ -12,9 +12,10 @@ define([
 	'contractsCollection',
 	
 	'genericListView',
+	'formContractView',
 	'itemContractView'
 
-], function(app, AppHelpers, ContractModel, ContractsCollection, GenericListView, ItemContractView){
+], function(app, AppHelpers, ContractModel, ContractsCollection, GenericListView, FormContractView, ItemContractView){
 
 	'use strict';
 
@@ -62,7 +63,7 @@ define([
 		*/
 		render: function () {
 			var self = this;
-
+			var formUrl = FormContractView.prototype.urlBuilder();
 			// Change the page title //
 			app.router.setPageTitle(app.lang.viewsTitles.categoriesTasksList);
 
@@ -70,7 +71,8 @@ define([
 			$.get(app.menus.openpatrimoine + this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang  : app.lang,
-					nbContracts: self.collection.cpt
+					nbContracts: self.collection.cpt,
+					formUrl: formUrl
 				});
 
 				$(self.el).html(template);

@@ -1,0 +1,4 @@
+<label for="<%= field.fieldName %>" class="control-label col-sm-3"><%= _.capitalize(field.fieldLabel) %></label>
+<div class="col-sm-9">
+	<input type="text" id="<%= field.fieldName %>" name="<%= field.fieldName %>" class="form-control field-element" value="<%= field.value ? field.value : '' %>" <%= field.fieldPlaceholder ? 'data-placeholder="' + fieldPlaceholder + '"' : '' %> />
+</div>

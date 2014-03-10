@@ -19,6 +19,7 @@ requirejs.config({
 		contractsListView					: '../app-patrimoines/js/views/lists/ContractsListView',
 		itemContractView					: '../app-patrimoines/js/views/items/ItemContractView',
 		formContractView					: '../app-patrimoines/js/views/forms/FormContractView',
+		//formContractLineView				: '../app-patrimoines/js/views/forms/FormContractLineView',
 	}
 
 });
