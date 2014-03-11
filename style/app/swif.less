@@ -48,6 +48,8 @@ fieldset{
 	margin-top: (@line-height-computed * 1.5);
 }
 
+.selectable{ cursor: pointer; }
+
 .popover-title,
 .bolder{
 	font-weight: bolder;
@@ -160,19 +162,6 @@ fieldset{
 .modal-title .label{
 	margin-right: 10px;
 	margin-top: 4px;
-}
-
-
-/* pNotify compatibility with Font Awesome 3.0.2 and Bootstrap 3.0.0
--------------------------------------------------- */
-div.ui-pnotify-container{
-	.show();
-}
-div.ui-pnotify.big-icon div.icon-large div.ui-pnotify-icon{
-	.noMarginTop();
-}
-.alert-error {
-  .alert-danger();
 }
 
 
@@ -369,8 +358,8 @@ li.external-event.disabled{
 
 // object nestedObjects //
 ul.nested-objects li:hover .nested-objects-actions,
-tr.row-item:hover .row-actions,
-tr.row-nested-objects:hover .nested-objects-actions {
+.row-item:hover .row-actions,
+.row-nested-objects:hover .nested-objects-actions {
 	visibility: visible;
 	a:hover{
 		text-decoration: none;
@@ -381,15 +370,15 @@ tr.row-nested-objects:hover .nested-objects-actions {
 
 /* objects list
 -------------------------------------------------- */
-tr.row-nested-objects-collapse {
+.row-nested-objects-collapse {
 	.hide-soft();
 }
-tr.row-nested-objects-collapse.expend:hover td.nestedTD {
+.row-nested-objects-collapse.expend:hover td.nestedTD {
 	background-color: #fff;
 }
-tr.row-nested-objects-collapse td.nestedTD {
+.row-nested-objects-collapse td.nestedTD {
 	padding: 25px 3% 5px 3%;
 }
-tr.row-nested-objects-collapse:hover td.nestedTD {
+.row-nested-objects-collapse:hover td.nestedTD {
 	background-color: #fff;
 }

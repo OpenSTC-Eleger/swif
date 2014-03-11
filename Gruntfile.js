@@ -73,6 +73,7 @@ module.exports = function(grunt) {
 						'i18n/**',
 						'templates/**',
 						'config/*',
+						'!config/configuration.json',
 						'properties.json',
 						'font/*',
 						'medias/**/*',
@@ -144,6 +145,24 @@ module.exports = function(grunt) {
 				files: {
 					'dist/style/swif.css': ['dist/style/swif.css']
 				}
+			}
+		},
+
+
+		// Minify JS files //
+		uglify: {
+			options: {
+				report          : 'min',
+				preserveComments: 'some',
+				beautify: true
+			},
+			dist: {
+				files: [{
+					expand: true,
+					cwd   : 'dist/js/',
+					src   : ['**/*.js', '!libs/*'],
+					dest  : 'dist/js/'
+				}]
 			}
 		},
 
@@ -296,7 +315,7 @@ module.exports = function(grunt) {
 	grunt.task.run('notify_hooks');
 
 
-	grunt.registerTask('default', ['clean', 'checkVersion', 'build-css', 'targethtml', 'copy', 'compress', 'notify:build']);
+	grunt.registerTask('default', ['clean', 'checkVersion', 'build-css', 'targethtml', 'copy', 'uglify', 'compress', 'notify:build']);
 	grunt.registerTask('build-css', ['clean', 'less', 'csscomb', 'cssmin']);
 
 	// Check tasks //

@@ -494,7 +494,8 @@ define(['app',
 			e.preventDefault();
 			this.model.saveToBackend()
 			.done(function(){
-				window.history.back();
+				//window.history.back();
+				app.router.navigate(_.strLeft(app.routes.reservations.url, '('), {trigger: true, replace: true});
 			})
 			.fail(function(e){
 				console.log(e);

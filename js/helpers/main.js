@@ -86,8 +86,13 @@ define('appHelpers', [
 				paginate.page = 1;
 				paginate.offset = 0;
 			}
+			// ???? //
 			else if( _.isString(page) ){
 				paginate.page = parseInt(page, 10);
+				paginate.offset = ((paginate.page - 1) * itemsPerPage);
+			}
+			else{
+				paginate.page = parseInt(page.page, 10);
 				paginate.offset = ((paginate.page - 1) * itemsPerPage);
 			}
 

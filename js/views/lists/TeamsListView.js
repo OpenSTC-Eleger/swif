@@ -129,7 +129,6 @@ define([
 					self.displayTeamMembersAndServices(_.first(self.collection.models));
 				}
 
-
 			});
 
 			$(this.el).hide().fadeIn();

@@ -126,7 +126,6 @@ define([
 
 				$('#formConnection').find('fieldset').prop('disabled', false);
 				$('#passUser').focus();
-				//app.notify('large', 'danger', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
 
 				// Reset password value //
 				$(self.el).find('button[type=submit]').button('reset');
