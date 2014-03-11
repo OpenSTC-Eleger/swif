@@ -59,28 +59,15 @@ module.exports = function(grunt) {
 		},
 
 
-		// Copy files to the Dist //
+		// Copy files and folders //
 		copy: {
 			dist: {
-				files: {
-					'dist/': [
-						'app-interventions/**',
-						'app-reservations/**',
-						'fonts/**',
-						'js/*.js',
-						'js/**/*.js',
-						'js/libs/**.js',
-						'i18n/**',
-						'templates/**',
-						'config/*',
-						'!config/configuration.json',
-						'properties.json',
-						'font/*',
-						'medias/**/*',
-						'LICENSE',
-						'AUTHORS'
-					]
-				}
+				files: [
+					{ src: ['app-*/**', 'fonts/**', 'js/**/*', 'i18n/**/*', 'templates/**/*', 'medias/**/*'], dest: 'dist/'},
+					{ src: ['LICENSE', 'AUTHORS', 'properties.json'], dest: 'dist/'},
+					{ src: ['config/*', '!config/configuration.json'], dest: 'dist/'},
+					{ expand: true, cwd: 'style/vendors/', src: ['**/*.css', '**/*.png', '**/*.gif'], dest: 'dist/style/vendors/'}
+				]
 			}
 		},
 
@@ -140,7 +127,8 @@ module.exports = function(grunt) {
 			dist: {
 				options: {
 					banner: '<%= banner %>',
-					keepSpecialComments: 0
+					keepSpecialComments: 0,
+					processImport: false
 				},
 				files: {
 					'dist/style/swif.css': ['dist/style/swif.css']
@@ -159,9 +147,9 @@ module.exports = function(grunt) {
 			dist: {
 				files: [{
 					expand: true,
-					cwd   : 'dist/js/',
-					src   : ['**/*.js', '!libs/*'],
-					dest  : 'dist/js/'
+					cwd   : 'dist/',
+					src   : ['**/*.js', '!**/libs/*'],
+					dest  : 'dist/'
 				}]
 			}
 		},
@@ -315,7 +303,7 @@ module.exports = function(grunt) {
 	grunt.task.run('notify_hooks');
 
 
-	grunt.registerTask('default', ['clean', 'checkVersion', 'build-css', 'targethtml', 'copy', 'uglify', 'compress', 'notify:build']);
+	grunt.registerTask('default', ['checkVersion', 'build-css', 'targethtml', 'copy', 'uglify', 'compress', 'notify:build']);
 	grunt.registerTask('build-css', ['clean', 'less', 'csscomb', 'cssmin']);
 
 	// Check tasks //
