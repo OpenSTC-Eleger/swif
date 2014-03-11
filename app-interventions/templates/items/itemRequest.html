@@ -91,7 +91,7 @@
 				var mainActionColor = RequestModel.actions[request.getState()].color;
 				var mainActionDisabled = 'disabled';
 			}
-
+			%>
 			<!-- Main action button -->
 			<button class="btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline button<%= _.capitalize(mainAction) %>Request">
 				<i class="fa <%= mainActionIcon %> fa-fw button<%= _.capitalize(mainAction) %>Request"></i>
