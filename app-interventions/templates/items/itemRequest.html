@@ -81,20 +81,16 @@
 			<!-- Check if the request is not in waiting state -->
 			<%
 
-			if(request.getState() != RequestModel.status.wait.key){
-				var mainAction = '';
-				var mainActionIcon = RequestModel.actions[request.getState()].icon;
-				var mainActionColor = RequestModel.actions[request.getState()].color;
-				var mainActionDisabled = 'disabled';
-			}else{
+			if( _.contains(actions, RequestModel.actions.valid.key)) {
 				var mainAction = RequestModel.actions.valid.key;
 				var mainActionColor = RequestModel.actions.valid.color;
 				var mainActionIcon = RequestModel.actions.valid.icon;
 				var mainActionDisabled = '';
-
-				/ Remove validate action from the array actions /
-				actions = _.without(actions, RequestModel.actions.valid.key);
-			} %>
+			}else{
+				var mainActionIcon = RequestModel.actions[request.getState()].icon;
+				var mainActionColor = RequestModel.actions[request.getState()].color;
+				var mainActionDisabled = 'disabled';
+			}
 
 			<!-- Main action button -->
 			<button class="btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline button<%= _.capitalize(mainAction) %>Request">
