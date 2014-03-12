@@ -16,7 +16,9 @@
 		
 		"actions" : {			
 			"addContract"			:"créer un contract",
-			"extend"				:"reconduire le contrat"
+			"extend"				:"reconduire le contrat",
+			"deleteContract"		:"Supprimer le contrat",
+			"confirmDeleteContract"	:"Confirmer la suppression du contrat"
 		},
 		
 		"infoMessages" : {
