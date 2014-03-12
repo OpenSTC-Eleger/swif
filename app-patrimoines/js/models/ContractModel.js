@@ -80,6 +80,13 @@ define([
 			return this.get('name');
 		},
 		
+		getInformations: function(){
+			var ret = {};
+			ret.name = this.getAttribute('name','');
+			ret.infos = {key:app.lang.description, value:this.getAttribute('description','')};
+			return ret;
+		},
+		
 		/**
 		 * to move to GenericCollection
 		 */

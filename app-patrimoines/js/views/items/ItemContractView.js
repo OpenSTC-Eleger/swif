@@ -9,11 +9,12 @@ define([
 	'appHelpers',
 	'contractModel',
 	'formContractView',
+	'modalDeleteView',
 	
 	'moment'
 
 
-], function(app, AppHelpers, ContractModel, FormContractView, moment){
+], function(app, AppHelpers, ContractModel, FormContractView, ModalDeleteView, moment){
 
 	'use strict';
 
@@ -31,7 +32,7 @@ define([
 		
 		// The DOM events //
 		events: {
-
+			'click .actionDelete': 'modalDelete',
 		},
 		
 		/**
@@ -225,6 +226,20 @@ define([
 
 			return this;
 		},
+		
+		/** Modal to remove a place
+		*/
+		modalDelete: function(e){
+			e.preventDefault();
+			e.stopPropagation();
 
+			app.views.modalDeleteView = new ModalDeleteView({
+				el           : '#modalView',
+				model        : this.model,
+				modalTitle   : app.lang.viewsTitles.deleteContract,
+				modalConfirm : app.lang.warningMessages.confirmDeleteContract
+			});
+		}
+		
 	});
 });
