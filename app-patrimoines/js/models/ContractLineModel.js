@@ -29,7 +29,7 @@ define([
 			}
 			
 		],
-		
+		readonlyFields: ['internal_inter', 'id'],
 		relatedFields: ['technical_service_id', 'supplier_id', 'internal_inter'],
 		
 		getUserMainAction: function(){
@@ -88,11 +88,13 @@ define([
 			var self = this;
 			if(!_.isUndefined(this.collection)){
 				_.map(this.collection.fieldsMetadata, function(fieldDefinition, fieldName){
-					if(fieldDefinition.type == 'many2one'){
-						ret[fieldName] = self.getAttribute(fieldName, [false,''])[0];
-					}
-					else{
-						ret[fieldName] = self.getAttribute(fieldName, false);
+					if(!_.contains(self.readonlyFields, fieldName)){
+						if(fieldDefinition.type == 'many2one'){
+							ret[fieldName] = self.getAttribute(fieldName, [false,''])[0];
+						}
+						else{
+							ret[fieldName] = self.getAttribute(fieldName, false);
+						}
 					}
 				});
 			}
