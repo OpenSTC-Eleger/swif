@@ -296,6 +296,7 @@
         "selectATeamShort"  : "Une équipe...",
         "selectAAgentShort" : "Un agent...",
         "selectAAgent"      : "Sélectionner un agent",
+        "selectATeam"       : "Sélectionner une équipe",
         "selectAgents"      : "Sélectionner des agents",
         "selectAPlace"      : "Sélectionner un site",
         "selectAGroup"      : "Sélectionner un groupe",

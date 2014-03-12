@@ -1,0 +1,51 @@
+<!-- contract name -->
+<div class="form-group field" data-field-label="<%= lang.label%>" data-field-name="name"></div>
+
+<!-- contract category -->
+<div class="form-group field" data-field-placeholder="<%= lang.actions.selectACategory%>" data-field-label="<%= lang.category%>" data-field-name="category_id"></div>
+
+<!-- contract note -->
+<div class="form-group field" data-field-label="<%= lang.note%>" data-field-name="description"></div>
+
+<!-- contract date start -->
+<div class="form-group field" data-field-label="<%= lang.dateStart%>" data-field-name="date_start_order"></div>
+
+<!-- contract date end -->
+<div class="form-group field" data-field-label="<%= lang.dateEnd%>" data-field-name="date_end_order"></div>
+
+<!-- contract date deadline -->
+<div class="form-group field" data-field-label="<%= lang.patrimoine.delay_deadline%>" data-field-name="deadline_delay"></div>
+
+<!-- contract type renewal -->
+<div class="form-group field" data-field-label="<%= lang.patrimoine.type_renewal%>" data-field-name="type_renewal"></div>
+
+<!-- contract patrimony (Equipment or Place ?) -->
+<div class="form-group field" data-field-label="<%= lang.placeOrEquipment%>" data-field-name="patrimoine_is_equipment"
+data-off-label="<i class='fa fa-map-marker fa-fw'>" data-on-label="<i class='fa fa-wrench fa-fw'>"></div>
+
+<div class="field-visible-if" data-field-name="patrimoine_is_equipment" data-field-value="true">
+	<!-- contract equipment -->
+	<div class="form-group field" data-field-placeholder="<%= lang.actions.selectAnEquipment%>" data-field-label="<%= lang.equipment%>" data-field-name="equipment_id"></div>
+</div>
+<div class="field-visible-if" data-field-name="patrimoine_is_equipment" data-field-value="false">
+	<!-- contract place -->
+	<div class="form-group field" data-field-placeholder="<%= lang.actions.selectAPlace%>" data-field-label="<%= lang.place %>" data-field-name="site_id"></div>
+</div>
+
+<!-- contract actor (supplier or department ?) -->
+<div class="form-group field" data-field-label="<%= lang.patrimoine.internalIntervention %>" data-field-name="internal_inter"
+data-off-label="<%= lang.no%>" data-on-label="<%= lang.yes%>"></div>
+
+<div class="field-visible-if" data-field-name="internal_inter" data-field-value="false">
+	<!-- contract supplier -->
+	<div class="form-group field" data-field-placeholder="<%= lang.actions.selectAServiceProvider%>" data-field-label="<%= lang.serviceProvider%>" data-field-name="supplier_id"></div>
+</div>
+
+<div class="field-visible-if" data-field-name="internal_inter" data-field-value="true">
+	<!-- contract department -->
+	<div class="form-group field" data-field-placeholder="<%= lang.actions.selectAService%>" data-field-label="<%= lang.service %>" data-field-name="technical_service_id"></div>
+</div>
+<!-- 				<div class="form-group field field-switch" data-field-placeholder="patrimoine" data-field-label="Patrimoine" -->
+<!-- 				data-field-switch-name="patrimoine_is_equipment" data-field-switch-icon-yes="" data-field-switch-icon-no="" -->
+<!-- 				data-field-name-yes="equipment_id" data-field-name-no="site_id"></div> -->
+

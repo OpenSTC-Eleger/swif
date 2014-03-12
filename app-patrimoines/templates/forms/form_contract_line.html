@@ -1,0 +1,21 @@
+<fieldset class="row">
+	<!-- contratLine name -->
+	<div class="form-group field" data-field-label="<%= lang.label%>" data-field-name="name"></div>
+	
+	<div class="field-visible-if" data-field-name="internal_inter" data-field-value="true">
+		
+		<!-- contratLine is Team Work ? -->
+		<div class="form-group field" data-field-label="<%= lang.patrimoine.agentOrTeam%>" data-field-name="is_team"
+		data-off-label="<i class='fa fa-user fa-fw'></i>" data-on-label="<i class='fa fa-users fa-fw'></i>"></div>
+		
+		<div class="field-visible-if" data-field-name="is_team" data-field-value="false">
+			<!-- contratLine Agent -->
+			<div class="form-group field" data-field-label="<%= lang.agent%>" data-field-placeholder="<%= lang.actions.selectAAgent %>" data-field-name="agent_id"></div>				
+		</div>
+		
+		<div class="field-visible-if" data-field-name="is_team" data-field-value="true">
+			<!-- contratLine Team -->
+			<div class="form-group field" data-field-label="<%= lang.team%>" data-field-placeholder="<%= lang.actions.selectATeam %>" data-field-name="team_id"></div>
+		</div>
+	</div>	
+</fieldset>
