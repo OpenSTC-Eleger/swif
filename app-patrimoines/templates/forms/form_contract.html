@@ -7,7 +7,7 @@
 		<!-- General Infos -->
 		<div class="col-sm-6">	
 			<fieldset <%= readonly ? 'disabled' : ''%>>
-				<legend><span class="text-info">1</span> - <%= lang.patrimoine.generalInfos%></legend>
+				<legend><span class="text-info">1</span> - <%= _.capitalize(lang.patrimoine.generalInfos) %></legend>
 				<div id="general_infos"></div>
 			</fieldset>
 		</div>
@@ -15,7 +15,7 @@
 		<!-- Contract Lines -->
 		<div class="col-sm-6">
 			<fieldset <%= readonly ? 'disabled' : ''%>>
-				<legend><span class="text-info">2</span> - <%= lang.patrimoine.recurrenceSetting%></legend>
+				<legend><span class="text-info">2</span> - <%= _.capitalize(lang.patrimoine.viewsTitles.contractTasks) %></legend>
 				<ul id="linesHeader" class="nav nav-tabs">
 					<li><a href="#" id="addLine"><i class="fa fa-plus fa-fw"></i> Nouvelle tâche</a></li>
 				</ul>

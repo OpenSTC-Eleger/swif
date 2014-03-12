@@ -10,8 +10,9 @@
 		"extendContract"			:"Reconduire le contrat",
 		"supplierOrDepartment"		:"Prestataire / Service",
 		"internalIntervention"		:"En régie",
-		"taskAssignedTo"			: "Affectée à",
-		"agentOrTeam"				: "Agent / équipe",
+		"taskAssignedTo"			:"Affectée à",
+		"agentOrTeam"				:"Agent / équipe",
+		"supplierCost"				:"Coût prestataire",
 		
 		"actions" : {			
 			"addContract"			:"créer un contract",
@@ -27,7 +28,8 @@
 			"newContract"			: "nouveau Contrat",
 			"contractDetails"		: "détails du contrat",
 			"newContractLine"		: "nouvelle tâche",
-			"contractLineDetails"	: "détails de la tâche"
+			"contractLineDetails"	: "détails de la tâche",
+			"contractTasks"			: "Tâches prévues"
 		}
 	}
 }

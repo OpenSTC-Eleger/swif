@@ -16,7 +16,7 @@ define([
 		
 		url   : '/api/openpatrimoine/contract_lines',
 
-		fields: ['id', 'name', 'is_team', 'agent_id', 'team_id', 'technical_service_id'],
+		fields: ['id', 'name', 'is_team', 'agent_id', 'team_id', 'technical_service_id', 'planned_hours', 'task_categ_id' ,'supplier_cost'],
 
 		default_sort: { by: 'id', order: 'DESC' },
 		

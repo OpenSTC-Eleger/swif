@@ -93,7 +93,7 @@ define([
 							ret[fieldName] = self.getAttribute(fieldName, [false,''])[0];
 						}
 						else{
-							ret[fieldName] = self.getAttribute(fieldName, null);
+							ret[fieldName] = self.getAttribute(fieldName, false);
 						}
 					}
 				});
