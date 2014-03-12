@@ -67,6 +67,11 @@ define(['app',
 			return '#' + url;
 		},
 		
+		renderTabs: function(){
+			$('#lines .tab-pane').last().addClass('in active');
+			$('.lineHeader:last').tab('show');
+		},
+		
 		/** Display the view
 		*/
 		render: function() {
@@ -102,6 +107,7 @@ define(['app',
 				_.each(self.model.getAttribute('contract_line_names',[]), function(lineIdName){
 					self.addLine(lineIdName);
 				});
+				self.renderTabs();
 			});
 			return this;
 		},
@@ -142,6 +148,7 @@ define(['app',
 		actionAddLine: function(e){
 			e.preventDefault();
 			this.addLine(null);
+			this.renderTabs();
 		},
 		
 		/**
@@ -162,13 +169,13 @@ define(['app',
 				idString += 'new_task_' + (this.cptTasks++).toString();
 			}
 			params.id = idString;
-			var html = '<li><a class="lineHeader" data-toggle="tab" href="#' + idString + '">' + name + '</li>';
+			var html = '<li><a class="lineHeader" data-toggle="tab" href="#' + idString + '"><b>' + name + '</b></li>';
 			$(self.el).find('#linesHeader li:last').hide().fadeIn('slow').before(html);
 			
 			var lineView = new FormContractLineView(params);
 			this.linesViews.push(lineView);
 			$(this.el).find('#lines').append(lineView.el);
-			$('a[href="#' + idString + '"]').tab('show');
+			//$('a[href="#' + idString + '"]').tab('show');
 		},
 		
 	});

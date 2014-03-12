@@ -31,7 +31,7 @@ define(['app',
 			return arguments[0] ? arguments[0].id : '';
 		},
 		tagName: 'div',
-		className	: 'tab-pane fade in active',
+		className	: 'tab-pane fade',
 		templateHTML: '/templates/forms/form_contract_line.html',
 		collectionName: ContractLinesCollection,
 		modelName: ContractLineModel,

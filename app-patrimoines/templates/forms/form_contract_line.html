@@ -1,21 +1,30 @@
 <fieldset class="row">
 	<!-- contratLine name -->
-	<div class="form-group field" data-field-label="<%= lang.label%>" data-field-name="name"></div>
+	<div class="form-group field" data-field-name="name" data-field-label="<%= lang.label%>"></div>
+	
+	<!-- contratLine Category task(s) -->
+	<div class="form-group field" data-field-name="task_categ_id" data-field-label="<%= lang.category%>" data-field-placeholder="<%= lang.actions.selectACategory %>"></div>
 	
 	<div class="field-visible-if" data-field-name="internal_inter" data-field-value="true">
 		
 		<!-- contratLine is Team Work ? -->
-		<div class="form-group field" data-field-label="<%= lang.patrimoine.agentOrTeam%>" data-field-name="is_team"
+		<div class="form-group field" data-field-name="is_team" data-field-label="<%= lang.patrimoine.agentOrTeam%>"
 		data-off-label="<i class='fa fa-user fa-fw'></i>" data-on-label="<i class='fa fa-users fa-fw'></i>"></div>
 		
 		<div class="field-visible-if" data-field-name="is_team" data-field-value="false">
 			<!-- contratLine Agent -->
-			<div class="form-group field" data-field-label="<%= lang.agent%>" data-field-placeholder="<%= lang.actions.selectAAgent %>" data-field-name="agent_id"></div>				
+			<div class="form-group field" data-field-name="agent_id" data-field-label="<%= lang.agent%>" data-field-placeholder="<%= lang.actions.selectAAgent %>"></div>				
 		</div>
 		
 		<div class="field-visible-if" data-field-name="is_team" data-field-value="true">
 			<!-- contratLine Team -->
-			<div class="form-group field" data-field-label="<%= lang.team%>" data-field-placeholder="<%= lang.actions.selectATeam %>" data-field-name="team_id"></div>
+			<div class="form-group field" data-field-name="team_id" data-field-label="<%= lang.team%>" data-field-placeholder="<%= lang.actions.selectATeam %>"></div>
 		</div>
-	</div>	
+		
+		<div class="form-group field" data-field-name="planned_hours" data-field-label="<%= lang.plannedHours %>"></div>
+	</div>
+	
+	<div class="field-visible-if" data-field-name="internal_inter" data-field-value="false">
+		<div class="form-group field" data-field-name="supplier_cost" data-field-label="<%= lang.patrimoine.supplierCost %>"></div>
+	</div>
 </fieldset>
