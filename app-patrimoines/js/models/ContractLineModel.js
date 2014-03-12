@@ -14,12 +14,10 @@ define([
 	*/
 	return GenericModel.extend({
 		
-		urlRoot: '/api/openpatrimoine/contracts',
+		urlRoot: '/api/openpatrimoine/contract_lines',
 
-		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'technical_service_id', 'supplier_id', 'provider_name', 'patrimoine_is_equipment', 'equipment_id' ,'site_id' ,'patrimoine_name', 'state', 'description', 'deadline_delay', 'type_renewal', 'category_id', 'contract_line', 'contract_line_names'],
-		
-		readonlyFields: ['contract_line_names', 'contract_line'],
-		
+		fields: ['id', 'name', 'is_team', 'agent_id', 'team_id', 'internal_inter', 'technical_service_id'],
+
 		searchable_fields: [
 			{
 				key  : 'id',
@@ -31,6 +29,8 @@ define([
 			}
 			
 		],
+		
+		relatedFields: ['technical_service_id', 'supplier_id', 'internal_inter'],
 		
 		getUserMainAction: function(){
 			var ret = '';
@@ -88,13 +88,11 @@ define([
 			var self = this;
 			if(!_.isUndefined(this.collection)){
 				_.map(this.collection.fieldsMetadata, function(fieldDefinition, fieldName){
-					if(!_.contains(self.readonlyFields, fieldName)){
-						if(fieldDefinition.type == 'many2one'){
-							ret[fieldName] = self.getAttribute(fieldName, [false,''])[0];
-						}
-						else{
-							ret[fieldName] = self.getAttribute(fieldName, null);
-						}
+					if(fieldDefinition.type == 'many2one'){
+						ret[fieldName] = self.getAttribute(fieldName, [false,''])[0];
+					}
+					else{
+						ret[fieldName] = self.getAttribute(fieldName, null);
 					}
 				});
 			}
@@ -108,40 +106,41 @@ define([
 			var self = this;
 			var vals = this.getSaveVals();
 			var ret = this.save(vals,{patch:!this.isNew(), wait:true}).then(function(data){
-				if(self.isNew()){
-					self.set({id:data});
-				}
+				self.set({id:data});
 				return self.fetch();
 			});
 			return ret;
 		},
 		
+		/**
+		 * Copy all related data from parentModel to this model
+		 */
+		bubbleData: function(model){
+			var vals = {};
+			_.each(this.relatedFields, function(field){
+				vals[field] = model.getAttribute(field, false);
+			});
+			this.set(vals);
+		},
+		
 		/** Model Initialization
+		 * if some related fields are declared, retrieve there data and add them to the model attribute
+		 * Add a listener to always keep its related data up-to-date
 		*/
-		initialize: function(){
+		initialize: function(vals, options){
+			var self = this;
+			if(options.parentModel){
+				this.parentModel = options.parentModel;
+				this.listenTo(this.parentModel, 'change', self.bubbleData);
+				this.bubbleData(this.parentModel);
+			}
 		},
 	
 	
 	}, {
 		// Request State Initialization //
 		status : {
-			confirm: {
-				key					: 'confirm',
-				color				: 'success',
-				translation			: app.lang.valid
-			},
-			done: {
-				key					: 'done',
-				color				: 'default',
-				icon				: 'fa-thumbs-o-up',
-				translation			: app.lang.closed
-			},
-			draft: {
-				key					: 'draft',
-				color				: 'default',
-				icon				: 'fa-pencil-o',
-				translation			: app.lang.draft
-			}
+			
 		},
 		
 			// Actions of the requests //
@@ -150,31 +149,6 @@ define([
 				key					: 'update',
 				icon				: 'fa-pencil',
 				translation			: app.lang.actions.update
-			},
-			delete: {
-				key					: 'delete',
-				icon				: 'fa-trash-o',
-				translation			: app.lang.actions.delete
-			},
-			
-			confirm: {
-				key					: 'confirm',
-				color				: 'success',
-				icon				: 'fa-check',
-				translation			: app.lang.actions.validate
-			},
-			
-			done: {
-				key					: 'done',
-				color				: 'default',
-				icon				: 'fa-thumbs-o-up',
-				translation			: app.lang.actions.closed
-			},
-			extend: {
-				key					: 'extend',
-				color				: 'info',
-				icon				: 'fa-pencil',
-				translation			: app.lang.actions.extendContract
 			},
 			
 			foo: {

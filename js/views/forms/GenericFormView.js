@@ -23,9 +23,7 @@ define(['app',
 	* Contract Form View
 	*/
 	var GenericFormView = Backbone.View.extend({
-
-		el          : '#rowContainer',
-
+		el: '',
 		templateHTML: '',
 		collectionName: null,
 		modelName: null,
@@ -34,7 +32,7 @@ define(['app',
 		// The DOM events //
 		events: {
 			'change .field-element'			: 'performModelChange',
-			'submit #formSaveContract'		: 'saveForm'
+			'submit #formSaveModel'		: 'saveForm'
 			//Form Buttons
 		},
 		/**
@@ -53,6 +51,10 @@ define(['app',
 			return '#' + url;
 		},
 		
+		/**
+		 * Get value and definition of a field
+		 * retrieve data from "this.model"
+		 */
 		getField: function(field){
 			var ret = null;
 			if(_.has(this.model.collection.fieldsMetadata,field)){
@@ -143,20 +145,42 @@ define(['app',
 			return ret;
 		},
 		
-		renderOneAvancedSelectBox: function(dom){
-			var select = new AdvancedSelectBoxView({el: dom, url: dom.attr('data-url')});
-			this.advancedSelectBoxes[dom.attr('id')] = select;
-			var domain = dom.attr('data-domain');
-			if(domain){
-				select.resetSearchParams();
-				select.searchParams = this.computeSearchparams(domain);
+		/**
+		 * Parse Url to replace variable (":technical_service_id" for example) with its value on the url
+		 * return a copy of the url parsed with the data
+		 */
+		parseUrl: function(url){
+			var reg = /\/:([\w]+)\//;
+			var variableId = url.match(reg);
+			var ret = url;
+			if(variableId){
+				var field = this.getField(variableId[1]);
+				if(field && field.value){
+					ret = url.replace(':' + variableId[1], field.value[0]);
+				}
 			}
+			return ret;
+		},
+		
+		renderOneAvancedSelectBox: function(dom){
+			//if a component already exists, remove it properly
+			if(_.has(this.advancedSelectBoxes),dom.attr('id')){
+				delete this.advancedSelectBoxes[dom.attr('id')];
+			}
+			//if url contains variable such as ":technical_service_id", then replace this variable with its value before applying url to the component
+			var url = this.parseUrl(dom.attr('data-url'));
+			
+			//create the component, apply url to it and store the component on a view attribute
+			var select = new AdvancedSelectBoxView({el: dom, url: url});
+			this.advancedSelectBoxes[dom.attr('id')] = select;
+			select.resetSearchParams();
+			
 			select.render();
 		},
 		
 		renderAdvancedSelectBoxes: function(){
 			var self = this;
-			$('.field .select2').each(function(){
+			$(this.el).find('input.select2.field-element').each(function(){
 				self.renderOneAvancedSelectBox($(this));
 			});
 		},
@@ -167,7 +191,7 @@ define(['app',
 		updateDoms: function(){
 			var self = this;
 			//first, update dynamic visibility of doms
-			$('.field-visible-if').each(function(){
+			$(this.el).find('.field-visible-if').each(function(){
 				var fieldData = self.getField($(this).data('field-name'));
 				if(fieldData.value == $(this).data('field-value')){
 					$(this).removeClass('hide-soft');
@@ -178,6 +202,20 @@ define(['app',
 			});
 		},
 		
+		/**
+		 * for each advancedSelectBox, update their url (usually triggered after a model update)
+		 */
+		updateAdvancedSelectBoxUrl: function(){
+			var self = this;
+			_.each(this.advancedSelectBoxes, function(item){
+				var url = self.parseUrl($(item.el).attr('data-url'));
+				item.options.url = url;
+			});
+		},
+		
+		/**
+		 * store the new value (from the widget) on the model
+		 */
 		performModelChange: function(e){
 			e.preventDefault();
 			var value = null;
@@ -189,6 +227,15 @@ define(['app',
 				value = $(e.target).val();
 			}
 			this.model.set(fieldName,value);
+		},
+		
+		/**
+		 * triggered at each change on the model
+		 * Used to perform dom updates for example
+		 * Can be override to make custom behavior according to specifics attributes changes 
+		 */
+		modelChanged: function(){
+			this.updateAdvancedSelectBoxUrl();
 			this.updateDoms();
 		},
 		
@@ -196,6 +243,7 @@ define(['app',
 		*/
 		initialize : function() {
 			this.options = arguments[0];
+			this.parentModel = this.options.parentModel;
 			var self = this;
 			this.advancedSelectBoxes = {};
 			this.formFieldParser = {
@@ -218,7 +266,13 @@ define(['app',
 				},
 			};
 			this.initModel().done(function(){
-				app.router.render(self);
+				self.listenTo(self.model, 'change', self.modelChanged);
+				if(!self.options.notMainView){
+					app.router.render(self);
+				}
+				else{
+					self.render();
+				}
 			});
 		},
 		
@@ -230,8 +284,8 @@ define(['app',
 			self.renderFormComponents().always(function(){
 				self.renderAdvancedSelectBoxes();
 				self.updateDoms();
-				$('.make-switch').bootstrapSwitch();
-				$('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
+				$(self.el).find('.make-switch').bootstrapSwitch();
+				$(self.el).find('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 			});
 		},
 		
@@ -241,9 +295,7 @@ define(['app',
 		
 		saveForm: function(e){
 			e.preventDefault();
-			this.model.saveToBackend().done(function(){
-				window.history.back();
-			}).fail(function(e){
+			return this.model.saveToBackend().fail(function(e){
 				console.log(e);
 			});
 		},
@@ -253,15 +305,24 @@ define(['app',
 		 */
 		initModel: function(){
 			var arrayDeferred = [];
-			if(_.isUndefined(this.options.id)){
-				this.model = new this.modelName();
+			//if needed, initialize model
+			if(_.isUndefined(this.model)){
+				//Create instance of the model, and if set, link it with "this.parentModel" 
+				if(_.isUndefined(this.options.id)){
+					this.model = new this.modelName({}, {parentModel: this.parentModel});
+				}
+				else{
+					this.model = new this.modelName({id:this.options.id}, {parentModel: this.parentModel});
+				}
 			}
-			else{
-				this.model = new this.modelName({id:this.options.id});
+			if(!this.model.isNew()){
 				arrayDeferred.push(this.model.fetch());
 			}
+			//if needed, initialize collection of the model
+			if(_.isUndefined(this.model.collection)){
+				this.model.collection = new this.collectionName();
+			}
 			//perform a head request to retrieve metadaFields
-			this.model.collection = new this.collectionName();
 			arrayDeferred.push(this.model.collection.count());
 			return $.when.apply($, arrayDeferred);
 		}

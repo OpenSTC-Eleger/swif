@@ -10,6 +10,8 @@
 		"extendContract"			:"Reconduire le contrat",
 		"supplierOrDepartment"		:"Prestataire / Service",
 		"internalIntervention"		:"En régie",
+		"taskAssignedTo"			: "Affectée à",
+		"agentOrTeam"				: "Agent / équipe",
 		
 		"actions" : {			
 			"addContract"			:"créer un contract",
@@ -23,7 +25,9 @@
 		"viewsTitles" : {
 			"contractsList"			: "Suivi des Contrats",
 			"newContract"			: "nouveau Contrat",
-			"contractDetails"		: "détails du contrat"
+			"contractDetails"		: "détails du contrat",
+			"newContractLine"		: "nouvelle tâche",
+			"contractLineDetails"	: "détails de la tâche"
 		}
 	}
 }
