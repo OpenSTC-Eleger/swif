@@ -117,22 +117,26 @@ define([
 		},
 
 		getService : function(type) {
-			var id = this.get('service_id')[0];
-			var name = _.titleize(this.get('service_id')[1].toLowerCase());
-
-			var returnVal;
-			switch(type){
-				case 'id':
-					returnVal = id;
-					break;
-				case 'json':
-					returnVal = {id: id, name: name};
-					break;
-				default:
-					returnVal = name;
+			if(this.get('service_id')){
+				var id = this.get('service_id')[0];
+				var name = _.titleize(this.get('service_id')[1].toLowerCase());
+	
+				var returnVal;
+				switch(type){
+					case 'id':
+						returnVal = id;
+						break;
+					case 'json':
+						returnVal = {id: id, name: name};
+						break;
+					default:
+						returnVal = name;
+				}
+				return returnVal;
 			}
-
-			return returnVal;
+			else{
+				return false;
+			}
 		},
 		setService : function(value, silent) {
 			this.set({ service_id : value }, {silent: silent});
