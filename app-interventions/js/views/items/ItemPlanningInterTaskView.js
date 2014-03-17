@@ -38,6 +38,10 @@ define([
 				elementClass += ' disabled';
 			}
 
+			if(this.model.getState() == TaskModel.status.done.key ) {
+				elementClass += ' isCheck';
+			}
+
 			return elementClass;
 		},
 

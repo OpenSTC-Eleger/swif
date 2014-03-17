@@ -101,7 +101,9 @@ define([
 					informationHour = (modelJSON.planned_hours !== false ? AppHelpers.decimalNumberToTime(modelJSON.planned_hours, 'human') : '');
 				}
 				else{
-					informationHour = (modelJSON.total_hours !== false ? AppHelpers.decimalNumberToTime(modelJSON.total_hours, 'human') : '');
+					// Display the draf hour //
+					var hours = modelJSON.planned_hours - modelJSON.total_hours;
+					informationHour = (modelJSON.total_hours !== false ? AppHelpers.decimalNumberToTime(hours, 'human') : '');
 				}
 
 				var template = _.template(templateData, {

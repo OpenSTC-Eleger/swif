@@ -110,8 +110,12 @@ define([
 			if( self.model.get('tasks') !== false && _.size(self.model.get('tasks'))>0 ) {
 
 
-				// Retrieve the all the task of the intervention exept the with done state //
-				var filter = [{field: 'id', operator: 'in', value: self.model.get('tasks')}, {field: 'state', operator: 'not in', value: [TaskModel.status.done.key] }];
+				// Retrieve the all the task of the intervention exept the tasks with done state if intervention is template //
+				var filter = [{field: 'id', operator: 'in', value: self.model.get('tasks')}];
+				if(self.model.getState() == InterventionModel.status.template.key){
+					filter.push({field: 'state', operator: 'not in', value: [TaskModel.status.done.key] });
+				}
+
 				filter = app.objectifyFilters(filter);
 
 				self.tasksCollection.fetch({silent: true, data: {filters: filter } }).done(function(){
