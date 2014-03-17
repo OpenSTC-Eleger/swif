@@ -7,7 +7,6 @@
 		"recurrenceSetting"			:"paramétrage récurrence",
 		"delay_deadline"			:"préavis (jours)",
 		"type_renewal"				:"Reconduction",
-		"extendContract"			:"Reconduire le contrat",
 		"supplierOrDepartment"		:"Prestataire / Service",
 		"internalIntervention"		:"En régie",
 		"taskAssignedTo"			:"Affectée à",
@@ -16,7 +15,7 @@
 		
 		"actions" : {			
 			"addContract"			:"créer un contract",
-			"extend"				:"reconduire le contrat",
+			"extendContract"		:"reconduire le contrat",
 			"deleteContract"		:"Supprimer le contrat",
 			"confirmDeleteContract"	:"Confirmer la suppression du contrat"
 		},
