@@ -264,7 +264,7 @@ define([
 
 
 
-			//Add filter on recurrence selected
+			// Add filter on recurrence selected
 			if(!_.isUndefined(this.options.recurrence)){
 				if(_.isUndefined(fetchParams.data.filters)) {
 					fetchParams.data.filters = {};

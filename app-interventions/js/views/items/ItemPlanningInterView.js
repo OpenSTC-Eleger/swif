@@ -26,7 +26,7 @@ define([
 
 		tagName     : 'tr',
 
-		templateHTML : '/templates/items/itemPlanningInter.html',
+		templateHTML: '/templates/items/itemPlanningInter.html',
 
 
 		className   : function(){
@@ -52,6 +52,8 @@ define([
 			// When the model are updated //
 			this.listenTo(this.model, 'change', this.change);
 		},
+
+
 
 		/** When the model ara updated //
 		*/
@@ -146,6 +148,8 @@ define([
 			return false;
 		},
 
+
+
 		/** Process Table accordion event
 		*/
 		tableAccordion: function(e){
@@ -153,6 +157,8 @@ define([
 			//fold up current accordion and expand
 			this.expendAccordion();
 		},
+
+
 
 		/** Expan accordion
 		*/
@@ -173,7 +179,7 @@ define([
 			if(!isExpend){
 				// Fetch tasks
 				if(!_.isUndefined(this.detailedView)){
-					this.detailedView.fetchData().done(function () {
+					this.detailedView.fetchData().done(function() {
 						self.detailedView.render();
 					});
 				}
@@ -213,5 +219,4 @@ define([
 	});
 
 	return itemPlanningInterView;
-
 });
