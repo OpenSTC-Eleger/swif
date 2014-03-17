@@ -76,7 +76,18 @@ define([
 			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 
-
+				if(!_.isUndefined(self.field.value))
+				{
+					var date = moment(self.field.value, 'YYYY-MM-DD');
+					if(!date.isValid()) {
+						self.field.value = moment().format('DD/MM/YYYY');
+					}
+					else{
+						self.field.value = date.format('DD/MM/YYYY');
+					}
+					
+				}
+				
 				var template = _.template(templateData, {
 					field           : self.field,
 					operators       : self.operators,
