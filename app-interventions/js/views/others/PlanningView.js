@@ -132,7 +132,7 @@ define([
 			else{
 				this.options.sort = AppHelpers.calculPageSort(this.options.sort);
 			}
-			this.options.page = AppHelpers.calculPageOffset(this.options.page);
+			this.options.page = AppHelpers.calculPageOffset(this.options.page, app.config.itemsPerPage);
 
 			// Create Fetch params //
 			this.fetchParams = {

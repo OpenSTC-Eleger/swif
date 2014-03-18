@@ -18,8 +18,8 @@ define([
 	var STCGroupsCollection = GenericCollection.extend({
 
 		url: '/api/open_object/groups',
-
-
+		
+		
 		/** Collection Initialization
 		*/
 		initialize: function () {
