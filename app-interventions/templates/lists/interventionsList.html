@@ -1,11 +1,11 @@
 <div class="page-header">
 	<h1>
 		<%= lang.viewsTitles.interventionsMonitoring %>
-		<sup class="badge badge-info" id="specialBadge2" data-toggle="tooltip" data-original-title="<%= lang.planningFenced %>" data-placement="bottom">
+		<sup class="badge badge-<%= interventionsState.scheduled.color %> badge-action" id="specialBadge2" data-filter="<%= interventionsState.scheduled.key %>" data-toggle="tooltip" data-original-title="<%= lang.planningFenced %>" data-placement="bottom">
 			<%= nbInterventionsPlanned %>
 		</sup>
 
-		<sup class="badge" id="specialBadge" data-toggle="tooltip" data-original-title="<%= lang.pending %>" data-placement="bottom">
+		<sup class="badge badge-action" id="specialBadge" data-filter="<%= interventionsState.pending.key %>" data-toggle="tooltip" data-original-title="<%= lang.pending %>" data-placement="bottom">
 			<%= nbInterventionsPending %>
 		</sup>
 	</h1>

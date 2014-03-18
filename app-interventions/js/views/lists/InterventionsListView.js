@@ -36,7 +36,8 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'click a.createModel'  : 'modalCreateInter'
+				'click .badge-action[data-filter !=""]': 'badgeFilter',
+				'click a.createModel'            : 'modalCreateInter'
 			},
 				GenericListView.prototype.events
 			);
@@ -118,6 +119,27 @@ define([
 		},
 
 
+
+		/** Filter Interventions on the State of the Badge
+		*/
+		badgeFilter: function(e) {
+
+			var filterValue = $(e.target).data('filter');
+
+			// Set the filter value in the options of the view //
+			if(filterValue !== '' && !_.isUndefined(filterValue)) {
+
+				this.options.filter = [{ field: 'state', operator: 'in', value: [filterValue] }];
+				delete this.options.search;
+				delete this.options.page;
+			}
+
+			// Refresh the page with the new options //
+			app.router.navigate(this.urlBuilder(), { trigger: true, replace: true });
+		},
+
+
+
 		/** Display the form to add / update an intervention
 		*/
 		displayModalSaveInter: function(e){
@@ -125,6 +147,7 @@ define([
 			var params = {el:'#modalSaveInter',collection: this.collection};
 			new ModalInterventionView(params);
 		},
+
 
 
 		/** Modal form to create a new Inter

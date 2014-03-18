@@ -113,7 +113,7 @@ define([
 
 
 		/** Filter Requests on the State of the Badge
-		 */
+		*/
 		badgeFilter: function(e) {
 
 			var filterValue = $(e.target).data('filter');
