@@ -67,13 +67,11 @@ define([
 			var params = this.setContext({search: search, filter : filter, sort: sort, page: page, year: year, week:week});
 
 			app.views.tasksListView = new TasksListView(params);
-			this.render(app.views.tasksListView);
 		},
 
 
 
-		/** Configuration
-		*/
+		/** Configuration **/
 
 		/** Categories Request List
 		*/
@@ -82,7 +80,6 @@ define([
 			var params = this.setContext({search: search, sort: sort, page: page});
 
 			app.views.categoriesRequestsListView = new CategoriesRequestsListView(params);
-
 		},
 
 
@@ -94,7 +91,6 @@ define([
 			var params = this.setContext({search: search, sort: sort, page: page});
 
 			app.views.categoriesTasksListView = new CategoriesTasksListView(params);
-
 		},
 
 
@@ -106,7 +102,6 @@ define([
 			var params = this.setContext({search: search, sort: sort, page: page});
 
 			app.views.absentTypesListView = new AbsentTypesListView(params);
-
 		}
 
 	});

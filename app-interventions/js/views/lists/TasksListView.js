@@ -50,8 +50,24 @@ define([
 		/** View Initialization
 		*/
 		initialize: function (params) {
+			var self = this;
 
 			this.options = params;
+
+			this.userManagableOfficers = [];
+
+			// Get the Managable Officers of the connected user //
+			var deferred = $.Deferred();
+			deferred = app.current_user.queryManagableOfficers();
+
+			deferred.done(function(){
+				_.each(app.current_user.getOfficers(), function(item){
+					self.userManagableOfficers.push(item.id);
+				});
+
+				app.router.render(self);
+			});
+
 		},
 
 
@@ -144,8 +160,7 @@ define([
 			self.collections = {};
 			self.collections.tasks = new TasksCollection();
 
-			var deferred = $.Deferred();
-			deferred = app.current_user.queryManagableOfficers();
+
 			//get taskUser filtered on current week and with optional filter
 			$.ajax({
 				url: '/api/open_object/users/' + app.current_user.getUID().toString() + '/scheduled_tasks',
@@ -228,16 +243,24 @@ define([
 					// Retrieve the template //
 					$.get(app.menus.openstc+self.templateHTML, function(templateData){
 
+						// Display the filter if the connected user don't have managable Officers //
+						var displayFilter = true;
+						if(_.isEmpty(self.userManagableOfficers)){
+							displayFilter = false;
+						}
 
 
 						var template = _.template(templateData, {
-							lang: app.lang,
+							lang          : app.lang,
 							nbPendingTasks: nbPendingTasks,
-							momentDate: momentDate,
-							displayFilter: true
+							momentDate    : momentDate,
+							displayFilter : displayFilter
 						});
 
 						$(self.el).html(template);
+
+						// Set the Tooltip //
+						$('*[data-toggle="tooltip"]').tooltip({container: 'body'});
 
 
 						//display all seven days of the selected week
@@ -248,15 +271,9 @@ define([
 							$('#task-accordion').append(new ItemTaskDayListView(params).render().el);
 						});
 
+
 						self.selectListFilterOfficerView = new AdvancedSelectBoxView({ el: $('#filterListAgents'), url: OfficersCollection.prototype.url });
-						deferred.done(function(){
-							var ret = app.current_user.getOfficers();
-							var ids = [];
-							_.each(ret,function(item){
-								ids.push(item.id);
-							});
-							self.selectListFilterOfficerView.setSearchParam({field:'id',operator:'in',value:ids}, true);
-						});
+						self.selectListFilterOfficerView.setSearchParam({field: 'id',operator: 'in', value: self.userManagableOfficers}, true);
 						self.selectListFilterOfficerView.render();
 
 
@@ -275,6 +292,7 @@ define([
 						$('#modalTaskDone, #modalAddTask, #modalTimeSpent').on('shown', function() {
 							$(this).find('input, textarea').first().focus();
 						});
+
 						$(self.el).hide().fadeIn();
 					});
 
@@ -312,6 +330,7 @@ define([
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
 
 		},
+
 
 		goToPreviousWeek: function(event){
 			event.preventDefault();
@@ -352,7 +371,6 @@ define([
 			this.options.week = momentDate.week();
 
 			app.router.navigate(this.urlBuilder(), {trigger: true, replace: true});
-
 		},
 
 	});
