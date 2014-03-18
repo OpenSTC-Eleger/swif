@@ -4,9 +4,9 @@
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
 
-define(['app', 'appHelpers', 'genericModalView', 'claimersContactsCollection'
+define(['app', 'appHelpers', 'genericModalView', 'claimersContactsCollection', 'stcGroupsCollection'
 
-], function (app, AppHelpers, GenericModalView, ClaimersContactsCollection) {
+], function (app, AppHelpers, GenericModalView, ClaimersContactsCollection, StcGroupsCollection) {
 
 	'use strict';
 
@@ -44,6 +44,10 @@ define(['app', 'appHelpers', 'genericModalView', 'claimersContactsCollection'
 
 		render: function (loader) {
 			var self = this;
+			if(this.model.isNew()){
+				//Fetch groups
+				this.fetchGroups();
+			}
 			$.get(this.templateHTML, function (templateData) {
 
 				var template = _.template(templateData, {
@@ -58,7 +62,16 @@ define(['app', 'appHelpers', 'genericModalView', 'claimersContactsCollection'
 			});
 			return this;
 		},
-
+		
+		/**
+		 * Fetch groups to associates this on user if account option has selected
+		 */
+		fetchGroups: function() {
+			this.stcGroupsCollection = new StcGroupsCollection();
+			var fetchParams = {silent : true,data   : {}};
+			fetchParams.data.filters = app.objectifyFilters([{ 'field' : 'code', 'operator' : '=', 'value' : ['PART','HOTEL_USER'] }]);
+			this.stcGroupsCollection.fetch(fetchParams);
+		},
 
 		// toggle loading style for submit button
 		toggleLoadingOnSubmitButton: function () {
@@ -99,14 +112,19 @@ define(['app', 'appHelpers', 'genericModalView', 'claimersContactsCollection'
 			setAttribute('zip', readFormValue('addressZip'));
 
 			if ($('#createAssociatedAccount').is(':checked')) {
-				if (readFormValue('userLogin') === '' || readFormValue('userPassword') === '') {
+				if (readFormValue('userLogin') === '' || readFormValue('userPastcGroupsCollectionssword') === '') {
 					app.notify('', 'error',
 						app.lang.errorMessages.unablePerformAction,
 						app.lang.validationMessages.claimers.accountIncorrect);
 					return;
 				}
 				else {
+					var groups = [];
+					_.each(this.stcGroupsCollection.toJSON(), function(group){
+						groups.push(group.id);
+					});
 					this.user.set({
+						groups_id   : [[6, 0, groups]],
 						login: readFormValue('userLogin'),
 						password: readFormValue('userPassword'),
 						name: readFormValue('contactName')
