@@ -229,7 +229,7 @@ define([
 			template: {
 				key                 : 'template',
 				color               : 'template',
-				translation         : 'template'
+				translation         : app.lang.template
 			}
 		}
 

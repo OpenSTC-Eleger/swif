@@ -142,7 +142,6 @@ define([
 					collection     : self.collections.interventions,
 					size           : 'sm',
 					displayGoToPage: false,
-
 				});
 
 				app.views.paginationView.render();

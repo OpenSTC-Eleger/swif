@@ -113,9 +113,11 @@ define('appHelpers', [
 			return sorter;
 		},
 
+
+
 		/** Calcul the search argument of the page
 		*/
-		calculSearch: function (searchQuery, searchableFields) {
+		calculSearch: function(searchQuery, searchableFields) {
 
 			//['|', ["name", "ilike", searchQuery], ["surface", "=", _(searchQuery).toNumber()]];
 			//['&', ["state", "ilike", 'valid'], '|', ["name", "ilike", 'demande'], ["id", "=", _('demande').toNumber()]];
@@ -217,7 +219,7 @@ define('appHelpers', [
 					filters = JSON.parse(filters);
 				}
 				catch(e){
-					console.info('Filter is already an object, not a JSON');
+					//console.info('Filter is already an object, not a JSON');
 				}
 
 				return _.find(filters, function(f){

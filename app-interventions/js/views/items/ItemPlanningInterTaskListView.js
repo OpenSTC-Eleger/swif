@@ -10,12 +10,13 @@ define([
 	'bsSwitch',
 
 	'tasksCollection',
+	'taskModel',
 
 	'interventionModel',
 	'itemPlanningInterTaskView',
 	'modalInterventionAddTaskView',
 
-], function(app, AppHelpers, bootstrapSwitch, TasksCollection, InterventionModel, ItemPlanningInterTaskView,  ModalInterventionAddTaskView){
+], function(app, AppHelpers, bootstrapSwitch, TasksCollection, TaskModel, InterventionModel, ItemPlanningInterTaskView,  ModalInterventionAddTaskView){
 
 	'use strict';
 
@@ -25,7 +26,7 @@ define([
 	*/
 	var itemPlanningInterTaskListView = Backbone.View.extend({
 
-		tagName     : 'tr',
+		tagName      : 'tr',
 
 		templateHTML : '/templates/items/itemPlanningInterTaskList.html',
 
@@ -104,12 +105,24 @@ define([
 		fetchData: function () {
 			var self = this;
 			var deferred = $.Deferred();
+
 			self.tasksCollection = new TasksCollection();
-			if( self.model.get('tasks')!== false && _.size(self.model.get('tasks'))>0 ) {
-				self.tasksCollection.fetch({silent: true, data: {filters: {0: {'field': 'id', 'operator': 'in', 'value': self.model.get('tasks')}}}}).done(function(){
+			if( self.model.get('tasks') !== false && _.size(self.model.get('tasks'))>0 ) {
+
+
+				// Retrieve the all the task of the intervention exept the tasks with done state if intervention is template //
+				var filter = [{field: 'id', operator: 'in', value: self.model.get('tasks')}];
+				if(self.model.getState() == InterventionModel.status.template.key){
+					filter.push({field: 'state', operator: 'not in', value: [TaskModel.status.done.key] });
+				}
+
+				filter = app.objectifyFilters(filter);
+
+				self.tasksCollection.fetch({silent: true, data: {filters: filter } }).done(function(){
 					deferred.resolve();
 				});
 			}
+
 			return deferred;
 		},
 
