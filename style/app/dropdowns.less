@@ -1,0 +1,37 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
+//
+// Dropdown menus
+//
+
+// Bigger header //
+.dropdown-header-lg{
+	font-weight: bolder;
+	font-size: @font-size-base;
+}
+
+
+.dropdown-menu{
+
+	> .horizontal-align {
+		padding-bottom: @padding-xs-horizontal;
+	}
+
+	// Horizontal display //
+	> .horizontal-align > a {
+		display: inline-block;
+	}
+
+	> li > a:hover > .invisible {
+		visibility: visible;
+	}
+
+	// Vertical align for icon button //
+	> li > a button i {
+		vertical-align: top;
+	}
+}

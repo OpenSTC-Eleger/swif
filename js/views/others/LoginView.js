@@ -1,8 +1,15 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app'
 
 ], function(app){
 
+	'use strict';
 
 	/******************************************
 	* Login View
@@ -12,9 +19,9 @@ define([
 
 		el           : '#rowContainer',
 
-		templateHTML : 'templates/login.html',
+		templateHTML : 'templates/others/login.html',
 
-		
+
 		// The DOM events //
 		events: {
 			'submit #formConnection'          : 'login',
@@ -30,7 +37,7 @@ define([
 
 		/** View Initialization
 		*/
-		initialize: function(user) {
+		initialize: function() {
 			//console.log('Login view Initialize');
 		},
 
@@ -43,13 +50,17 @@ define([
 
 			// Change the page title //
 			app.router.setPageTitle(app.lang.applicationName +' '+ app.lang.viewsTitles.login);
+			app.router.toggleCityWallpaper();
 
-			// Retrieve the Login template // 
+
+			// Retrieve the Login template //
 			$.get(this.templateHTML, function(templateData){
 
+
 				var template = _.template(templateData, {
-					lang: app.lang, 
-					user: self.model
+					lang    : app.lang,
+					user    : self.model,
+					cityLogo: app.config.medias.cityLogo
 				});
 
 				$(self.el).html(template);
@@ -84,17 +95,17 @@ define([
 
 			// Set the button in loading State //
 			$('#formConnection').find('fieldset').prop('disabled', true);
-			$(this.el).find("button[type=submit]").button('loading');
+			$(this.el).find('button[type=submit]').button('loading');
 
 			// Execution user login function //
 			var checkLogin = this.model.login($('#loginUser').val(), $('#passUser').val());
 
-			
+
 			checkLogin.done(function(data){
 				// Set user data and Save it //
 				app.current_user.setUserData(data);
-                // TODO : Move this to an authentication library, abstract Storage which resolves to localStorage or fallback to sessionStorage
-                localStorage.setItem('current_user', JSON.stringify(app.current_user));
+				// TODO : Move this to an authentication library, abstract Storage which resolves to localStorage or fallback to sessionStorage
+				localStorage.setItem('current_user', JSON.stringify(app.current_user));
 				// The above replace this previous model.save() :
 				// app.current_user.save();
 
@@ -102,23 +113,24 @@ define([
 
 				app.views.headerView.render();
 				Backbone.history.navigate(app.routes.home.url, {trigger: true, replace: true});
+
+				app.router.toggleCityWallpaper();
 			});
 			checkLogin.fail(function(e){
-	   	        
-	   	        if(e.status == 401){
-	   	        	$('#passUser').parents('.form-group').addClass('has-error');
-	   	        	$('#errorLogin').removeClass('hide');
-	   	        }
-	   	        
 
-	   	        $('#formConnection').find('fieldset').prop('disabled', false);
-	   	        $('#passUser').focus();
-	   	        //app.notify('large', 'danger', app.lang.errorMessages.connectionError, app.lang.errorMessages.loginIncorrect);
+				if(e.status == 401){
+					$('#passUser').parents('.form-group').addClass('has-error');
+					$('#errorLogin').removeClass('hide');
+				}
 
-	   	        // Reset password value //
-				$(self.el).find("button[type=submit]").button('reset');
+
+				$('#formConnection').find('fieldset').prop('disabled', false);
+				$('#passUser').focus();
+
+				// Reset password value //
+				$(self.el).find('button[type=submit]').button('reset');
 				$('#passUser').val('');
-	    	});
+			});
 		},
 
 
@@ -158,6 +170,6 @@ define([
 	});
 
 
-return LoginView;
+	return LoginView;
 
 });

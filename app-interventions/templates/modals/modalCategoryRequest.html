@@ -18,13 +18,13 @@
 
 			<form id="formSaveCat" action="#" class="form-horizontal" role="form">
 
-				
+
 				<!-- Category name -->
 				<div class="form-group">
 					<label for="catName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 
 					<div class="col-sm-9">
-						<input type="text" id="catName" class="form-control" required value="<%= (_.isNull(cat.getId()) ? '' : cat.getName())%>" />
+						<input type="text" id="catName" class="form-control" required value="<%= (_.isNull(cat.getId()) ? '' : cat.getName())%>">
 					</div>
 				</div>
 
@@ -33,7 +33,7 @@
 					<label for="catCode" class="control-label col-sm-3"><%= _.capitalize(lang.code) %>:</label>
 
 					<div class="col-sm-3">
-						<input type="text" id="catCode" required class="form-control" value="<%= (_.isNull(cat.getId()) ? '' : cat.getCode())%>" />
+						<input type="text" id="catCode" required class="form-control" value="<%= (_.isNull(cat.getId()) ? '' : cat.getCode())%>">
 						<span class="help-block" id="code-error"></span>
 					</div>
 				</div>
@@ -48,7 +48,7 @@
 			>
 				<%= _.capitalize(lang.actions.save) %>
 			</button>&nbsp;&nbsp;
-			
+
 			<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
 		</div>
 

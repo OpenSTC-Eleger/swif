@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 	'headerView',
@@ -5,13 +11,13 @@ define([
 	'loginView',
 	'notFoundView',
 	'placesListView',
-    'claimersListView',
-    'teamsListView',
-    'servicesListView',
-    'equipmentsListView',
-    'claimersTypesListView',
-    'aboutView',
-    'usersListView'
+	'claimersListView',
+	'teamsListView',
+	'servicesListView',
+	'equipmentsListView',
+	'claimersTypesListView',
+	'aboutView',
+	'usersListView'
 
 ], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView, ClaimersListView, TeamsListView, ServicesListView, EquipmentsListView, ClaimersTypesListView, AboutView, UsersListView){
 
@@ -36,11 +42,11 @@ define([
 
 
 			// Create all the Routes of the app //
-			_.each(app.routes, function(route, i){
+			_.each(app.routes, function(route){
 				self.route(route.url, route.function);
 			});
 
-			// Header, Footer Initialize //    	
+			// Header, Footer Initialize //
 			app.views.headerView = new HeaderView();
 			app.views.footerView = new FooterView();
 
@@ -48,17 +54,31 @@ define([
 		},
 
 
+		closeCurrentView: function() {
+			if (this.currentView) {
+				if (this.currentView) {
+					if (this.currentView.$el){
+						this.currentView.undelegateEvents();
+					}
+					this.currentView.$el = (this.currentView.el instanceof $) ? this.currentView.el : $(this.currentView.el);
+					this.currentView.el = this.currentView.$el[0];
+				}
+
+				if (this.currentView.$el){
+					this.currentView.undelegateEvents();
+				}
+				this.currentView.$el = (this.currentView.el instanceof $) ? this.currentView.el : $(this.currentView.el);
+				this.currentView.el = this.currentView.$el[0];
+			}
+		},
+
 
 		/** Render a view by undelegating all Event
 		*/
 		render: function (view) {
 
 			// Close the current view //
-			if (this.currentView) {
-				if (this.currentView.$el) this.currentView.undelegateEvents();
-				this.currentView.$el = (this.currentView.el instanceof $) ? this.currentView.el : $(this.currentView.el);
-				this.currentView.el = this.currentView.$el[0];
-			}
+			this.closeCurrentView();
 
 			// render the new view //
 			view.render();
@@ -74,7 +94,7 @@ define([
 		/** Check if the User is connect
 		*/
 		checkConnect: function () {
-			if (localStorage.getItem('current_user') == null) {
+			if (localStorage.getItem('current_user') === null) {
 				return false;
 			}
 			else {
@@ -91,10 +111,28 @@ define([
 		},
 
 
+		/** Set the City Wallpaper on the application body
+		*/
+		toggleCityWallpaper: function(){
+
+			if(!_.isUndefined(app.config.medias.cityWallpaper) && app.config.medias.cityWallpaper !== ''){
+
+				$('body').toggleClass('city-wallpaper');
+
+				if($('body').hasClass('city-wallpaper')){
+					$('body').css('backgroundImage','url('+app.config.medias.cityWallpaper+')');
+				}
+				else{
+					$('body').css('backgroundImage','none');
+				}
+			}
+		},
+
+
 
 		/** Change the Title of the page
 		*/
-		routeChange: function(route){
+		routeChange: function(){
 			app.views.headerView.render();
 		},
 
@@ -140,20 +178,20 @@ define([
 				this.navigate(app.routes.login.url, {trigger: true, replace: true});
 			}
 			else{
-				
+
 				// Redirect to the firt Menu page //
 
 				var userMenus = app.current_user.getMenus();
 				_.find(app.config.menus, function (moduleName, shortName){
 
-				if(!_.isUndefined(userMenus[shortName])) {
-					
-					var module = _.first(userMenus[shortName].children) 
-					var modulePage = _.slugify(_.first(module.children).tag);
-					var url = _.join('/', moduleName, _.slugify(modulePage));
+					if(!_.isUndefined(userMenus[shortName])) {
 
-					return self.navigate(url, {trigger: true, replace: true});
-				}
+						var module = _.first(userMenus[shortName].children);
+						var modulePage = _.slugify(_.first(module.children).tag);
+						var url = _.join('/', moduleName, _.slugify(modulePage));
+
+						return self.navigate(url, {trigger: true, replace: true});
+					}
 
 				});
 
@@ -165,7 +203,7 @@ define([
 		/** Login View
 		*/
 		login: function(){
-            //var current_token = app.current_user
+			//var current_token = app.current_user
 			// Check if the user is connect //
 			if(!this.checkConnect()){
 				app.views.loginView = new LoginView({ model: app.current_user });
@@ -196,7 +234,7 @@ define([
 
 		/** 404 Not Found
 		*/
-		notFound: function(page){
+		notFound: function(){
 
 			app.views.notFoundView = new NotFoundView();
 			this.render(app.views.notFoundView);
@@ -206,8 +244,8 @@ define([
 
 		/** Load The Interventions Module
 		*/
-		loadAppInterventions: function(param){
-
+		loadAppInterventions: function(){
+			this.closeCurrentView();
 			if(!require.defined('app-interventions')){
 				this.loadModule('app-interventions');
 			}
@@ -215,11 +253,11 @@ define([
 				this.notFound();
 			}
 		},
-		
+
 		/** Load The Bookings Module
 		*/
-		loadAppReservations: function(param){
-
+		loadAppReservations: function(){
+			this.closeCurrentView();
 			if(!require.defined('app-reservations')){
 				this.loadModule('app-reservations');
 			}
@@ -232,9 +270,9 @@ define([
 
 		/** Places List
 		*/
-		places: function(search, sort, page){
+		places: function(search, filter, sort, page){
 
-			var params = this.setContext({search: search, sort : sort, page : page});
+			var params = this.setContext({ search: search, filter: filter, sort: sort, page: page });
 
 			app.views.placesListView = new PlacesListView(params);
 		},
@@ -243,25 +281,25 @@ define([
 
 		/** Services management
 		*/
-		services: function(search, sort, page){      
+		services: function(search, sort, page){
 
-			var params = this.setContext({search: search, sort : sort, page : page});
+			var params = this.setContext({search: search, sort: sort, page: page});
 
 			app.views.servicesListView = new ServicesListView(params);
 		},
-		
+
 
 
 		/** Services management
 		*/
-		users: function(search, sort, page){      
+		users: function(search, sort, page){
 
-			var params = this.setContext({search: search, sort : sort, page : page});
+			var params = this.setContext({search: search, sort: sort, page: page});
 
 			app.views.usersListView = new UsersListView(params);
 		},
 
-		
+
 
 		/** Teams List
 		*/
@@ -286,7 +324,7 @@ define([
 		/** Claimer Type List
 		*/
 		claimerTypes: function(search, sort, page){
-            var params = this.setContext({search: search, sort : sort, page : page});
+			var params = this.setContext({search: search, sort : sort, page : page});
 			app.views.claimersTypesListView = new ClaimersTypesListView(params);
 		},
 
@@ -294,7 +332,6 @@ define([
 
 		/** Equipments List
 		*/
-
 		equipments: function(search, filter, sort, page){
 
 			var params = this.setContext({search: search, filter: filter, sort : sort, page : page});
@@ -304,6 +341,6 @@ define([
 
 	});
 
-return router;
-	
+	return router;
+
 });

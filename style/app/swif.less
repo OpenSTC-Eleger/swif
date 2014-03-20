@@ -1,0 +1,384 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
+/* Import
+-------------------------------------------------- */
+
+@import 'variables';
+
+// Customizing Bootstrap components //
+@import 'grid';
+@import 'progress-bars';
+@import 'labels';
+@import 'badges';
+@import 'pagination';
+@import 'coponent-animations';
+@import 'tables';
+@import 'types';
+@import 'form';
+@import 'panel';
+@import 'navs';
+@import 'dropdowns';
+
+// Customizing plugin //
+@import 'select2';
+
+@import 'calendar';
+@import 'scrollbar';
+
+
+
+
+/* Generic
+-------------------------------------------------- */
+body{
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+.container-margin{ margin-top: 4%; }
+
+.fix-container{ max-width: @modal-md; }
+
+.hide-soft{ display: none }
+
+fieldset{
+	margin-top: (@line-height-computed * 1.5);
+}
+
+.selectable{ cursor: pointer; }
+
+.popover-title,
+.bolder{
+	font-weight: bolder;
+}
+
+.isCheck{ text-decoration: line-through; }
+
+.noMarginTop{ margin-top: 0; }
+
+.noMarginBottom{ margin-bottom: 0 !important; }
+
+.tableToolbar{ margin-bottom: 15px; }
+
+.popover-content hr{
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+
+.d-inline{
+	display: inline;
+}
+
+
+.city-wallpaper{
+	background-repeat    : no-repeat;
+	background-attachment: fixed;
+	background-position  : center;
+	background-size      : cover;
+}
+
+
+
+
+/* Side bar column
+-------------------------------------------------- */
+.content-sidebar{
+	.make-sm-column(3);
+	.make-xl-column(2);
+
+	&-right{
+		.make-sm-column-push(9);
+		.make-xl-column-push(10);
+	}
+}
+
+
+/* Main Column
+-------------------------------------------------- */
+.content-main{
+	.make-sm-column(12);
+
+	&-left{
+		.make-sm-column(9);
+		.make-sm-column-pull(3);
+
+		.make-xl-column(10);
+		.make-xl-column-pull(2);
+	}
+}
+
+
+
+/* HEADER
+-------------------------------------------------- */
+.page-header{
+	margin-top: 5px;
+}
+
+
+
+/* Hack for DatePicker
+-------------------------------------------------- */
+.datepicker-dropdown{
+	z-index: (@zindex-modal + 1) !important;
+}
+
+
+
+/* Selection Color
+-------------------------------------------------- */
+::selection {
+	background: lighten(@pink, 20%);
+	color: #fff;
+}
+::-moz-selection {
+	background: lighten(@pink, 20%);
+	color: #fff;
+}
+
+
+
+/* Tooltip element cursor
+-------------------------------------------------- */
+*:not(i):not(a)[data-toggle="tooltip"]:not([data-original-title='']) { cursor: help; }
+
+
+
+/* Sortable PlaceHolder
+-------------------------------------------------- */
+.sortablePlaceHold{
+	height: 28px;
+	border: thin dashed darken(@well-bg, 65%);
+	background-color: @well-bg;
+}
+
+
+/* Tooltip element cursor
+-------------------------------------------------- */
+.modal-title .label{
+	margin-right: 10px;
+	margin-top: 4px;
+}
+
+
+
+/* Filter Button Table
+-------------------------------------------------- */
+a.filter-button.filter-disabled{
+	.opacity(.4);
+	.text-muted();
+
+	&:hover{
+		.opacity(1);
+		color: none;
+	}
+}
+
+
+/* dl-large
+-------------------------------------------------- */
+.dl-large{
+	dd:not(:last-child){
+		padding-bottom: @padding-small-horizontal;
+	}
+}
+
+
+
+/* Default Alert color
+-------------------------------------------------- */
+.alert-default {
+  .alert-variant(@well-bg; darken(@well-bg, 7%); #000);
+}
+
+
+
+
+/* Border Emphasize
+-------------------------------------------------- */
+.border-emphasize {
+	border-left-width: 4px;
+	border-left-style: solid;
+	border-left-color: @gray-light;
+
+	&-info{ border-left-color    : @brand-info; }
+	&-danger{ border-left-color  : @brand-danger; }
+	&-warning{ border-left-color : @brand-warning; }
+	&-success{ border-left-color : @brand-success; }
+	&-overrun{ border-left-color : @purple; }
+	&-template{ border-left-color: @yellow; }
+}
+
+
+/* Vertical OFFSET
+-------------------------------------------------- */
+.calc-vertical-offset(@nb) when (@nb > 0) and (@nb < 7){
+
+	.vertical-offset{
+		&-@{nb}{
+			margin-top: percentage(((@nb * 2)  / 100));
+		}
+	}
+
+	.calc-vertical-offset((@nb + 1));
+}
+// Kickstart //
+.calc-vertical-offset(1);
+
+
+
+/* Box Shadow
+-------------------------------------------------- */
+.shadow{
+	box-shadow: 0 1px 10px rgba(50, 50, 0, 0.5);
+}
+
+
+
+
+/* Connection Form
+-------------------------------------------------- */
+.login-logo {
+	position: absolute;
+	top: 100px;
+	left: 5%;
+	border: 2px solid @thumbnail-border;
+	max-width: 150px;
+}
+
+
+
+
+/* FLIP
+-------------------------------------------------- */
+.flip-container {
+	.perspective(1000);
+}
+/* flip the pane when hovered */
+.flip-container.flip .flipper{
+	.rotateY(180deg);
+}
+
+
+.flipper {
+	.transition(all .6s cubic-bezier(0.420, 0.000, 0.580, 1.380));
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+}
+
+/* hide back of pane during swap */
+.front,
+.back {
+	.backface-visibility(hidden);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+/* front pane, placed above back */
+.front {
+	z-index: 5;
+}
+
+/* back, initially hidden pane */
+.back {
+	.rotateY(180deg);
+}
+
+
+
+
+
+
+/*--------------------------------------------------
+/* TO REVIEW OR CONFIRM DELETE
+-------------------------------------------------- */
+
+
+/* Calendar
+-------------------------------------------------- */
+.calendar.thumbnail{
+	border-color: @gray-light;
+}
+
+
+
+.tab-pane-planning{
+	overflow-y: scroll;
+	margin-top: (@line-height-computed / 2);
+	margin-bottom: (@line-height-computed / 2);
+	height: 120px;
+
+	> ul li[data-name]{
+		width: 33%
+	}
+}
+
+
+
+
+
+/* Planning Task List
+-------------------------------------------------- */
+li.external-event{
+	padding: 9px;
+	cursor: move;
+}
+li.external-event:not(.disabled):hover{
+	background-color: @well-bg;
+}
+li.external-event.disabled{
+	.text-muted();
+	cursor: no-drop !important;
+}
+
+
+
+
+// object Actions //
+.row-actions{
+	display: inline-block;
+	margin: 0 0 0 15px;
+	font-size: 85%;
+}
+.nested-objects-actions{
+	font-size: 90%;
+}
+.row-actions a:hover i,
+.nested-objects-actions a:hover i,
+.accordion-toggle:hover i,
+.accordion-object:hover i {
+	text-decoration: none;
+}
+
+// object nestedObjects //
+ul.nested-objects li:hover .nested-objects-actions,
+.row-item:hover .row-actions,
+.row-nested-objects:hover .nested-objects-actions {
+	visibility: visible;
+	a:hover{
+		text-decoration: none;
+	};
+}
+
+
+
+/* objects list
+-------------------------------------------------- */
+.row-nested-objects-collapse {
+	.hide-soft();
+}
+.row-nested-objects-collapse.expend:hover td.nestedTD {
+	background-color: #fff;
+}
+.row-nested-objects-collapse td.nestedTD {
+	padding: 25px 3% 5px 3%;
+}
+.row-nested-objects-collapse:hover td.nestedTD {
+	background-color: #fff;
+}

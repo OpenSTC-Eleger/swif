@@ -1,7 +1,15 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 
 ], function(app){
+
+	'use strict';
 
 
 	/******************************************
@@ -10,8 +18,8 @@ define([
 	var PaginationView = Backbone.View.extend({
 
 		el              : '#pagination',
-		
-		templateHTML    : 'pagination',
+
+		templateHTML    : 'templates/others/pagination.html',
 
 		currentRoute    : null,
 
@@ -38,8 +46,8 @@ define([
 			this.page = options.page;
 
 			// Display Go To Page //
-			if(!_.isUndefined(options.displayGoToPage)){
-				this.displayGoToPage = this.displayGoToPage;
+			if(!_.isUndefined(options.displayGoToPage) && !options.displayGoToPage ){
+				this.displayGoToPage = options.displayGoToPage;
 			}
 
 			// Size //
@@ -67,7 +75,7 @@ define([
 			var self = this;
 
 			// Retrieve the template //
-			$.get('templates/' + this.templateHTML + '.html', function(templateData){
+			$.get(this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang    : app.lang,
 					route   : _(self.currentRoute).strLeftBack('/page'),
@@ -87,9 +95,10 @@ define([
 
 		/** Go to the page
 		*/
-		goToPage: function(e){
+		goToPage: function(){
 			var page = $(this.el).find('option:selected').val();
 
+			var navigateTo;
 
 			// Navigate to the page - Check if we are on a page //
 			if(_.str.include(_(this.currentRoute).strRightBack('/'), 'page')){
@@ -104,6 +113,6 @@ define([
 
 	});
 
-return PaginationView;
+	return PaginationView;
 
 });

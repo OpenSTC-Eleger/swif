@@ -31,7 +31,7 @@
 		<div class="modal-body">
 
 			<% if(_.isUndefined(loader)) { %>
-				
+
 				<div class="alert alert-<%= BookingModel.status.confirm.color %>">
 					<i class="fa <%= BookingModel.status.confirm.icon %> fa-fw fa-lg"></i>&nbsp;<%= booking.getConfirmNote() %>
 				</div>
@@ -60,7 +60,7 @@
 						var type = lang.citizen;
 						var name = booking.getCitizenName();
 						var phone = booking.getCitizenPhone();
-						var mail = booking.getCitizenEmail();
+						var mail = booking.getClaimerMail();
 					}
 					else {
 						var type = booking.getClaimer();

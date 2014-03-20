@@ -1,8 +1,13 @@
 .idea
 *.iml
 *.project
+.settings/
+.project
+.htaccess
 *.swp
+*.tar.gz
 config/configuration.json
 logo/
 dist/
 node_modules/
+npm-debug.log

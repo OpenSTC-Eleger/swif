@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'genericCollection'
 
@@ -12,16 +18,16 @@ define([
 	var STCGroupsCollection = GenericCollection.extend({
 
 		url: '/api/open_object/groups',
-
-
+		
+		
 		/** Collection Initialization
 		*/
-		initialize: function (options) {
+		initialize: function () {
 			//console.log('Groups collection Initialization');
 		},
 
 	});
 
-return STCGroupsCollection;
+	return STCGroupsCollection;
 
 });

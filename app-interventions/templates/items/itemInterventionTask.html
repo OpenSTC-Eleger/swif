@@ -1,7 +1,7 @@
 <td>
 	<!-- Display a clock when the task is planned -->
 	<% if(task.date_start != ''){ %>
-		<i 
+		<i
 			class="fa fa-clock-o displayInlineBlock" data-toggle="tooltip"
 			data-original-title="<%= moment(task.date_start).format('LLL') %>" >
 		</i>
@@ -42,26 +42,26 @@
 		<span class="label label-<%= tasksState[task.state].color %>"><%= tasksState[task.state].translation %></span>
 
 	<!-- Finish -->
-	<% } else { 
-							
+	<% } else {
+
 		if(_(task.effective_hours).toNumber(2) <= _(task.planned_hours).toNumber(2)){ %>
 			<span class="label label-<%= tasksState.done.color %>"><%= tasksState.done.translation %></span>
 		<% } else  { %>
 			<span class="label label-overrun"><%= tasksState.done.translation %></span>
-		<% } 
+		<% }
 	} %>
 </td>
 <!-- Actions Button -->
 <td>
 	<% if(task.actions.indexOf("light_mode_finished") > -1) { %>
-			
+
 		<div class="btn-group btn-group-xs">
 			<button class="btn btn-success buttonTaskDone" data-toggle="modal" data-taskid="<%= task.id %>" data-target="#modalTaskDone"><i class="fa fa-check fa-fw"></i>
 			</button>
 			<button class="btn dropdown-toggle no-outline" data-toggle="dropdown">
 				<span class="caret"></span>
 			</button>
-			<ul class="dropdown-menu pull-right text-left">
+			<ul class="dropdown-menu dropdown-menu-right text-left">
 				<% if(task.actions.indexOf("light_mode_unfinished") > -1) { %>
 					<li>
 						<a href="#" data-toggle="modal" data-taskid="<%= task.id %>" class="buttonNotFinish">

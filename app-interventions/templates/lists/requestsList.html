@@ -5,112 +5,118 @@
 
 		<% if(user.isDST() || user.isManager()){
 
-		  if(user.isDST()) { 
-				var classColor      = RequestModel.status.confirm.color;
-				var filterValue     = RequestModel.status.confirm.key;
-				var actionToProcess = lang.actions.confirm; 
+		  	var classColor      = '';
+			var filterValue     = '';
+			var actionToProcess = lang.actions.process;
+
+		  if(user.isDST()) {
+				classColor      = requestsState.to_confirm.color;
+				filterValue     = requestsState.to_confirm.key;
 			}
-			else if(user.isManager()){ 
-		   		var classColor      = RequestModel.status.wait.color;
-		   		var filterValue     = RequestModel.status.wait.key;
-		   		var actionToProcess = lang.actions.process; }
-			else{ 
-		   		var classColor      = '';
-		   		var actionToProcess = '';
-		   		var filterValue     = ''; 
-			}
+			else if(user.isManager()){
+		   		classColor      = requestsState.wait.color;
+		   		filterValue     = requestsState.wait.key;
+		   	}
 		%>
-		
-		<sup id="badgeActions" class="badge badge-<%= classColor %> badge-action" data-filter="<%= filterValue %>" data-toggle="tooltip" data-original-title="<%= actionToProcess %>" data-placement="bottom">
+
+		<sup id="specialBadge" class="badge badge-<%= classColor %> badge-action" data-filter="<%= filterValue %>" data-toggle="tooltip" data-original-title="<%= actionToProcess %>" data-placement="bottom">
 			<%= nbRequestsToDeal %>
 		</sup>
 
 		<% } %>
 
-		<sup id="bagdeCpt" class="badge"><%= nbRequests %></sup>
+		<sup id="badge" class="badge"><%= nbRequests %></sup>
 	</h1>
 </div>
 
 
 
+<!-- Table toolbar -->
+<div id="headerList" class="tableToolbar row"></div>
+<!-- Table toolbar -->
 
-	<!-- Table toolbar -->
-	<div class="tableToolbar row">
-		<div class="col-xs-7 col-md-9 col-lg-10">
-			<a href="#" class="btn btn-primary createRequest"><i class="fa fa-plus fa-fw"></i> <%= _.capitalize(lang.actions.addRequest) %></a>
+
+<!-- Message if No Request to Display -->
+<% if(nbRequests <= 0) { %>
+	<div class="tableToolbar">
+		<div class="alert alert-warning">
+			<i class="fa fa-info-circle fa-lg fa-fw"></i>&nbsp;<%= lang.infoMessages.noRequest %>
+		</div>
+	</div>
+<% } %>
+
+
+<div id="filter-informations" class="tableToolbar hide">
+	<div class="alert alert-info">
+		<i class="fa fa-filter fa-fw pull-left"></i>
+		<p id="filterContent" class="d-inline"><%= lang.activeFilter %>:</p>
+		<button type="button" class="btn btn-link btn-xs pull-right unapply-filter"><i class="fa fa-eraser fa-fw"></i> <%= lang.actions.unapplyFilter %></button>
+	</div>
+</div>
+
+
+
+<!-- Main view -->
+<div class="row">
+
+	<!-- Advance filter container -->
+	<div id="advanceFilterContainer" class="hide content-sidebar content-sidebar-right">
+	<div class="panel panel-default">
+
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<%= lang.advanceSearch %>
+				<a href="#" class="pull-right unapply-filter">
+					<i class="fa fa-eraser fa-fw text-muted" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.unapplyFilter) %>"></i>
+				</a>
+			</h4>
 		</div>
 
-		<form class="form-search pull-right col-xs-5 col-md-3 col-lg-2">
-			<div class="input-group">
-				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
-				<span class="input-group-btn">
-					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
-				</span>
-			</div>
-		</form>
-	</div>
-	<!-- Table toolbar -->
-
-
-
-	<!-- Message if No Request to Display -->
-	<% if(nbRequests <= 0) { %>
-		<div class="tableToolbar">
-			<div class="alert alert-info">
-				<i class="fa fa-info-circle fa-lg"></i>&nbsp;<%= lang.infoMessages.noRequest %>
-			</div>
+		<div class="panel-body">
+			<!-- Advance filter -->
+			<div id="advanced-filters-bar"></div>
 		</div>
-	<% } %>
-
-
-	<!-- Table Requests -->
-	<div class="table-responsive ">
-	<table class="table table-striped table-bordered table-hover table-sorter">
-		<thead>
-			<tr>
-				<th data-sort-column="id">N°</th>
-				<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
-				<th><%= _.capitalize(lang.place) %>  / <%= _.capitalize(lang.equipment) %></th>
-				<th><%= _.capitalize(lang.service) %></th>
-				<th><%= _.capitalize(lang.claiment) %></th>
-				<th data-sort-column="create_date"><%= _.capitalize(lang.createDate) %></th>
-				<th>
-					<%= _.capitalize(lang.status) %>
-					<div class="dropdown pull-right">
-						<a id="filterStateRequest" class="dropdown-toggle filter-button" data-toggle="dropdown" href="#"><i class="fa fa-filter fa-lg"></i></a>
-
-						<ul id="filterStateRequestList" class="dropdown-menu" role="menu" aria-labelledby="filterStateRequest">
-							<% _.each(requestsState, function (state, i) { %>
-								<li role="menuitem">
-									<a tabindex="-1" href="#<%= state.key %>"> 
-										<i class="badge badge-<%= state.color %>">&nbsp;</i>
-										&nbsp; <%= _.capitalize(state.translation) %>
-									</a>
-								</li>
-							<% }) %>
-								<li class="divider" role="menuitem"></li>
-								<li class="delete-filter disabled" role="menuitem"><a href="#delete-filter"><i class="fa fa-times"></i> <%= _.capitalize(lang.deleteFilter) %></a></li>
-						</ul>
-					</div>
-				</th>
-
-				<% if(user.isDST() || user.isManager()){ %>
-					<th class="actions"><%= _.capitalize(lang.action) %></th>
-				<% } %>
-			</tr>
-		</thead>
-		<tbody id="rows-items">
-			
-		</tbody>
-
-	</table>
 	</div>
-	<!-- /Table Requests -->
+	</div>
 
 
-	<!-- Table pagination -->
-	<div id="pagination" class="pull-right"></div>
-	<!-- /Table pagination -->
+	<div id="contentContainer" class="content-main">
+
+		<!-- Table Requests -->
+		<div class="table-responsive">
+		<table class="table table-striped table-bordered table-hover table-sorter table-vertical-align">
+			<thead>
+				<tr>
+					<th data-sort-column="id">N°</th>
+					<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
+					<th><%= _.capitalize(lang.place) %>  / <%= _.capitalize(lang.equipment) %></th>
+					<th><%= _.capitalize(lang.service) %></th>
+					<th><%= _.capitalize(lang.claiment) %></th>
+					<th data-sort-column="create_date"><%= _.capitalize(lang.createDate) %></th>
+					<th><%= _.capitalize(lang.status) %></th>
+
+					<% if(user.isDST() || user.isManager()){ %>
+						<th class="actions"><%= _.capitalize(lang.action) %></th>
+					<% } %>
+				</tr>
+			</thead>
+
+			<tbody id="rows-items">
+			</tbody>
+
+		</table>
+		</div>
+		<!-- /Table Requests -->
+
+		<!-- Table pagination -->
+		<div id="pagination" class="pull-right"></div>
+		<!-- /Table pagination -->
+
+	</div>
+
+</div>
+<!-- /Main view -->
+
 
 
 

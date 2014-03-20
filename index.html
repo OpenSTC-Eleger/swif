@@ -5,53 +5,41 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title></title>
 
-	<link rel="icon" type="image/png" href="css/images/favicon/favicon.png" />
-	<!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="css/images/favicon/favicon.ico" /><![endif]-->
+	<link rel="icon" type="image/png" href="medias/favicon/favicon.png">
+	<!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="medias/favicon/favicon.ico"><![endif]-->
 
 	<!--dist style sheet-->
 	<!--(if target dist)>
-	<link rel="stylesheet" type="text/css" href="css/swif.css" />
+	<link rel="stylesheet" type="text/css" href="style/swif.css">
 	<!(endif)-->
 
 	<!--(if target dev)><!-->
-	<link rel="stylesheet/less" type="text/css" href="css/startup.less"/>
+	<link rel="stylesheet/less" type="text/css" href="style/startup.less">
+
+	<script>
+		less = { env: 'development', strictMath: true };
+	</script>
 	<!--<!(endif)-->
 
 
-	<script data-main="startup" src="js/libs/requireJS-2.1.9.min.js"></script>
-	
 
-	<!--dist environment-->
-
-	<!--(if target dist)>
-
-	<!(endif)-->
-
-
-	<!--development environment-->
-
-	<!--(if target dev)><!-->
-	<!--Application-->
-
-	<!--<!(endif)-->
+	<script data-main="js/startup" src="js/libs/requireJS-2.1.9.min.js"></script>
 
 </head>
-<body id="app">
-
+<body>
 
 	<!-- Header NavBar -->
-	<nav id="header-navbar" class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
-	</nav>
+	<nav id="header-navbar" class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation"></nav>
 	<!-- /Header NavBar -->
 
 
 	<!-- Page Content -->
-	 <div class="container" id="rowContainer">
+	 <div class="container-fluid" id="rowContainer">
 
 			<!-- No Script message -->
 			<noscript>
 				<div class="alert">
-					<strong><i class="fa fa-warning fa-lg"></i>Attention</strong> 
+					<strong><i class="fa fa-warning fa-lg"></i>Attention</strong>
 					Vous avez désactivé le javascript. L'application utilise le Javascript pour fonctionner. Pensez à le réactiver!
 				</div>
 			</noscript>
@@ -61,20 +49,8 @@
 
 
 	<!-- Footer NavBar -->
-	<div id="footer-navbar" class="navbar navbar-default navbar-fixed-bottom navbar-inverse">
-	</div>
+	<div id="footer-navbar" class="navbar navbar-default navbar-fixed-bottom navbar-inverse"></div>
 	<!-- /Footer NavBar -->
-
-
-	<!-- Page Loader -->
-	<div id="modal-block" class="modal-backdrop in hide-soft"></div>
-	<div id="loader" class="well">
-		<h4 id="loaderMessage"></h4>
-		<div class="progress progress-striped active">
-			<div class="progress-bar" role="progressbar" style="width: 100%;"></div>
-		</div>
-	</div>
-	<!-- /Page Loader -->
 
 </body>
 </html>

@@ -13,7 +13,7 @@
 
 			<blockquote>
 				<p>
-					<%= task.getName() %><br />
+					<%= task.getName() %><br>
 					<!-- Display the Intervention -->
 					<% if(task.getIntervention()) { %>
 						<em class="text-muted"><i class="fa fa-thumb-tack"></i>&nbsp;<%= task.getIntervention() %></em>
@@ -29,7 +29,7 @@
 					<% }else{ %>
 						<i class="fa fa-user fa-fw"></i>&nbsp;<%= task.getUser() %>
 					<% } %>
-					
+
 				</small>
 			</blockquote>
 		</div>
@@ -40,7 +40,7 @@
 		    >
 		    	<%= _.capitalize(lang.actions.removeOfTheSchedule) %>
 		    </button>&nbsp;&nbsp;
-		    
+
 		    <a href="#" data-dismiss="modal"><%= _.capitalize(lang.actions.cancel) %></a>
 		</div>
 

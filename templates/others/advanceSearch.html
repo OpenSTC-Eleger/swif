@@ -1,0 +1,12 @@
+<form action="#" id="formAdvanceSearch" role="form">
+	
+	<div class="fields-container"></div>
+
+	<!-- Form Actions -->
+	<button type="submit" class="btn btn-primary btn-sm btn-block"><%= _.titleize(lang.actions.apply) %></button>
+	<button type="button" id="saveFilter" class="btn btn-link btn-xs pull-right"><%= _.titleize(lang.actions.save) %></button>
+
+</form>
+
+<!-- Modal form to save the filter -->
+<div id="modalSaveFilter" class="modal fade" role="dialog" aria-hidden="true"></div>

@@ -1,0 +1,64 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
+/* Highlight Animation
+-------------------------------------------------- */
+
+// WebKit
+@-webkit-keyframes highlight {
+	0%   { background-color: none }
+	25%  { background-color: lighten(@pink, 50%) }
+	50%  { background-color: lighten(@pink, 25%) }
+	100% { background-color: lighten(@pink, 50%) }
+}
+
+// Spec
+@keyframes highlight {
+	0%   { background-color: none }
+	25%  { background-color: lighten(@pink, 50%) }
+	50%  { background-color: lighten(@pink, 25%) }
+	100% { background-color: lighten(@pink, 50%) }
+}
+
+
+// Call animation for the active one
+.highlight td{
+	-webkit-animation: highlight 1s linear 1.5;
+	   -moz-animation: highlight 1s linear 1.5;
+	    -ms-animation: highlight 1s linear 1.5;
+	     -o-animation: highlight 1s linear 1.5;
+	        animation: highlight 1s linear 1.5;
+}
+
+
+
+
+
+/* Pulse Animation
+-------------------------------------------------- */
+@-webkit-keyframes pulse{
+	0%   { .scaleX(1.0); }
+	25%  { .scaleX(0.5); }
+	50%  { .scaleX(1.0); }
+	75%  { .scaleX(1.5); }
+	100% { .scaleX(1.0); }
+}
+
+// Spec
+@keyframes pulse {
+	0%   { .scaleX(1.0); }
+	25%  { .scaleX(0.5); }
+	50%  { .scaleX(1.0); }
+	75%  { .scaleX(1.5); }
+	100% { .scaleX(1.0); }
+}
+
+// TODO, maybe delete with Bootstrap 3.2 //
+.scaleX(@ratio) {
+	-webkit-transform: scale(@ratio);
+	    -ms-transform: scale(@ratio); // IE9 only
+	        transform: scale(@ratio);
+}

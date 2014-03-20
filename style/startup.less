@@ -1,0 +1,49 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
+/** Url
+*/
+@libsUrl         : 'vendors/';
+@appInterventions: '../app-interventions/style/';
+@appReservations : '../app-reservations/style/';
+
+
+// Twitter Bootstrap //
+@import '@{libsUrl}bootstrap-3.1.1/bootstrap';
+
+// Font Awesome //
+@import '@{libsUrl}font-awesome-4.0.3/font-awesome';
+
+// Bootstrap Datepicker //
+@import '@{libsUrl}bootstrap-datepicker-1.1.2';
+
+// Bootstrap Timepicker //
+@import '@{libsUrl}bootstrap-timepicker-0.2.3';
+
+// pNotify //
+@import '@{libsUrl}pnotify-1.2.2';
+
+// Bootstrap Switch //
+@import '@{libsUrl}bootstrap-switch-2.0.0';
+
+// Fullcalendar //
+@import (css) '@{libsUrl}fullcalendar-1.6.4.css';
+
+// Select2 //
+@import (css) '@{libsUrl}select2/select2-3.4.5.css';
+
+// NProgress //
+@import '@{libsUrl}NProgress-0.1.2';
+
+
+// Application Style //
+@import 'app/swif';
+
+// App Interventions Style //
+@import '@{appInterventions}interventions';
+
+// App Reservations Style //
+@import '@{appReservations}reservations';

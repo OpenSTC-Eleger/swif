@@ -11,7 +11,7 @@
 	<!-- Table toolbar -->
 	<div class="tableToolbar row">
 		<div class="col-xs-7 col-md-9 col-lg-10">
-			<a href="#" class="btn btn-primary modalNewClaimer"><i class="fa fa-plus fa-fw"></i> <%= _.capitalize(lang.actions.addClaimer) %></a>
+			<a href="#" class="btn btn-primary createModel"><i class="fa fa-plus fa-fw"></i> <%= _.capitalize(lang.actions.addClaimer) %></a>
 		</div>
 
 		<form class=" form-search pull-right col-xs-5 col-md-3 col-lg-2">
@@ -31,7 +31,7 @@
 			<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noClaimer %>.
 		</div>
 	<% } %>
-	
+
 
 	<div class="table-responsive">
 	<table class="table table-bordered table-hover table-striped-collapse table-sorter">
@@ -50,7 +50,7 @@
 	</table>
 	</div>
 
-	
+
 
 	<!-- Table pagination -->
 	<div id="pagination" class="pull-right"></div>
@@ -59,10 +59,10 @@
 
 
 
-<div id="modalEditClaimer" class="modal fade"></div>
+<div id="modalEditClaimer" class="modal fade" role="dialog" aria-hidden="true"></div>
 
-<div id="modalDeleteClaimer" class="modal fade"></div>
+<div id="modalDeleteClaimer" class="modal fade" role="dialog" aria-hidden="true"></div>
 
-<div id="modalEditContact" class="modal fade"></div>
+<div id="modalEditContact" class="modal fade" role="dialog" aria-hidden="true"></div>
 
-<div id="modalDeleteClaimerContact" class="modal fade"></div>
+<div id="modalDeleteClaimerContact" class="modal fade" role="dialog" aria-hidden="true"></div>

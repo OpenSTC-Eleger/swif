@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 	'appHelpers',
@@ -9,17 +15,17 @@ define([
 
 ], function (app, AppHelpers, ClaimerTypeModel, GenericListView, PaginationView, ModalDeleteView, ModalClaimerTypeView) {
 
-		'use strict';
+	'use strict';
 
 
 	/******************************************
-	* Row Place View
+	* Item Claimer Type View
 	*/
 	var ItemClaimerTypeView =  Backbone.View.extend({
 
 		tagName     : 'tr',
 		className   : 'row-item',
-		templateHTML: 'items/itemClaimerType',
+		templateHTML: 'templates/items/itemClaimerType.html',
 
 		// The DOM events //
 		events      : {
@@ -27,8 +33,10 @@ define([
 			'click a.modalDeleteClaimerType': 'modalDeleteClaimerType'
 		},
 
+
+
 		/** View Initialization
-		 */
+		*/
 		initialize: function () {
 			this.model.off();
 
@@ -39,17 +47,21 @@ define([
 			this.listenTo(this.model, 'destroy', this.destroy);
 		},
 
-		/** When the model is updated //
-		 */
-		change: function (e) {
+
+
+		/** When the model is updated
+		*/
+		change: function() {
 
 			this.render();
 			AppHelpers.highlight($(this.el));
 			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName() + ' : ' + app.lang.infoMessages.claimerTypeUpdateOk);
 		},
 
-		/** When the model is destroy //
-		 */
+
+
+		/** When the model is destroy
+		*/
 		destroy: function (e) {
 			var self = this;
 
@@ -62,13 +74,14 @@ define([
 		},
 
 
+
 		/** Display the view
-		 */
+		*/
 		render: function () {
 			var self = this;
 
 			// Retrieve the template //
-			$.get("templates/" + this.templateHTML + ".html", function (templateData) {
+			$.get(this.templateHTML, function (templateData) {
 
 				var template = _.template(templateData, {
 					lang       : app.lang,
@@ -86,8 +99,9 @@ define([
 		},
 
 
+
 		/** Display Modal form to add/sav a new Claimer type
-		 */
+		*/
 		modalUpdateClaimerType: function (e) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -100,8 +114,9 @@ define([
 		},
 
 
+
 		/** Modal to remove an Claimer Type
-		 */
+		*/
 		modalDeleteClaimerType: function (e) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -116,6 +131,6 @@ define([
 
 	});
 
-return ItemClaimerTypeView;
-		
+	return ItemClaimerTypeView;
+
 });

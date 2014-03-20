@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app'
 
@@ -13,15 +19,15 @@ define([
 
 		el           : '#rowContainer',
 
-		templateHTML : 'about',
+		templateHTML : 'templates/others/about.html',
 
-		
+
 
 		/** View Initialization
 		*/
-		initialize : function(user) {
+		initialize : function() {
 			app.router.render(this);
-	   },
+		},
 
 
 
@@ -33,12 +39,12 @@ define([
 			// Change the page title //
 			app.router.setPageTitle(app.lang.viewsTitles.about);
 
-			
-			// Retrieve the Login template // 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData){
-			 
+
+			// Retrieve the Login template //
+			$.get(this.templateHTML, function(templateData){
+
 				var template = _.template(templateData, {
-					lang   : app.lang, 
+					lang   : app.lang,
 					version: app.properties.version
 				});
 
@@ -50,9 +56,9 @@ define([
 			return this;
 		}
 
-	 
+
 	});
 
-return AboutView;
+	return AboutView;
 
 });

@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 	'appHelpers',
@@ -19,21 +25,20 @@ define([
 	*/
 	var UsersListView = GenericListView.extend({
 
-		templateHTML  : 'lists/usersList.html',
+		templateHTML: 'templates/lists/usersList.html',
 
+		model       : OfficerModel,
 
 
 		/** View Initialization
 		*/
-		initialize: function(params) {
-			this.options = params;
+		initialize: function() {
+			// Check if the collections is instantiate //
+			if (_.isUndefined(this.collection)) {
+				this.collection = new OfficersCollection();
+			}
 
-			var self = this;
-
-			this.initCollection().done(function(){
-
-				app.router.render(self);
-			})
+			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
 
@@ -47,8 +52,8 @@ define([
 			app.router.setPageTitle(app.lang.viewsTitles.usersList);
 
 
-			// Retrieve the template // 
-			$.get('templates/' + this.templateHTML, function(templateData){
+			// Retrieve the template //
+			$.get(this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang    : app.lang,
 					nbUsers : self.collection.cpt
@@ -57,69 +62,27 @@ define([
 				$(self.el).html(template);
 
 				// Call the render Generic View //
-				GenericListView.prototype.render(self.options);
+				GenericListView.prototype.render.apply(self);
 
 
 				// Create item user view //
-				_.each(self.collection.models, function(place, i){
+				_.each(self.collection.models, function(place){
 					var itemUserView  = new ItemUserView({model: place});
 					$('#rows-items').append(itemUserView.render().el);
 				});
 
 
 				// Pagination view //
-				app.views.paginationView = new PaginationView({ 
+				app.views.paginationView = new PaginationView({
 					page       : self.options.page.page,
 					collection : self.collection
-				})
+				});
 
 			});
 
 			$(this.el).hide().fadeIn();
 
 			return this;
-		},
-
-
-
-		/** Collection Initialisation
-		*/
-		initCollection: function(){
-			var self = this;
-
-			// Check if the collections is instantiate //
-			if(_.isUndefined(this.collection)){ this.collection = new OfficersCollection(); }
-
-
-			// Check the parameters //
-			if(_.isUndefined(this.options.sort)){
-				this.options.sort = this.collection.default_sort;
-			}
-			else{
-				this.options.sort = AppHelpers.calculPageSort(this.options.sort);	
-			}
-			this.options.page = AppHelpers.calculPageOffset(this.options.page);
-
-
-
-			// Create Fetch params //
-			this.fetchParams = {
-				silent : true,
-				data   : {
-					limit  : app.config.itemsPerPage,
-					offset : this.options.page.offset,
-					sort   : this.options.sort.by+' '+this.options.sort.order
-				}
-			};
-			if(!_.isUndefined(this.options.search)){
-				this.fetchParams.data.filters = AppHelpers.calculSearch({search: this.options.search }, OfficerModel.prototype.searchable_fields);
-			}
-
-
-			return $.when(self.collection.fetch(this.fetchParams))
-				.fail(function(e){
-					console.log(e);
-				})
 		}
 
 	});

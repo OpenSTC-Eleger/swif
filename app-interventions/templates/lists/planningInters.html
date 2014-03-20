@@ -1,5 +1,5 @@
-	
-	<!-- Interventions toolbar -->	
+
+	<!-- Interventions toolbar -->
 	<div id="planningToolbar" class="row tableToolbar">
 		<!-- href add intervention -->
 		<div class="col-xs-8 col-sm-12 col-md-8">
@@ -30,29 +30,29 @@
 					<li class="delete-filter disabled"><a href="#delete-filter"><%= _.capitalize(lang.deleteFilter) %></a></li>
 			</ul>
 		</div>
-		<br />
+		<br>
 	</div>
 	<!-- /Interventions toolbar -->
-	
-	
+
+
 	<!-- Intervention panel -->
 	<% if( _.size(interventions) == 0 ) { %>
 		<!-- No interventions to display -->
 		<div class="alert alert-info noInter">
 			<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noRequest %>
-		</div>	
+		</div>
 	<% } else{%>
 
 	<table class="table table-bordered table-hover table-striped-collapse">
 		<tbody id="inter-items">
 
 		</tbody>
-	
+
 	</table>
-	
+
 		<!-- Table pagination -->
 		<div id="pagination"></div>
 		<!-- /Table pagination -->
 	<% } %>
-		
+
 	<!-- /Intervention panel -->

@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 	'claimerContactModel',
@@ -5,7 +11,7 @@ define([
 
 ], function(app, ClaimerContactModel, moment){
 
-	'user strict';
+	'use strict';
 
 
 	/******************************************
@@ -27,28 +33,28 @@ define([
 			//console.log('User initialize: ' + this.getLogin());
 		},
 
-		
+
 		//method to retrieve attribute with standard return form
 		getAttribute: function(key,default_value){
 			var val = this.get(key);
 			if(_.isUndefined(default_value)){
 				default_value = false;
 			}
-			if(!_.isUndefined(val) && val != '' && val != false && val != null){
+			if(!_.isUndefined(val) && val !== '' && val !== false && val !== null){
 				return val;
 			}
 			else{
 				return default_value;
 			}
 		},
-		
+
 		getUID : function() {
 			return this.get('uid');
 		},
 		setUID : function(value) {
 			this.set({ uid : value });
 		},
-		
+
 		getGroups : function() {
 			return this.get('groupsID');
 		},
@@ -64,7 +70,7 @@ define([
 		},
 
 		getFirstname : function() {
-			if(this.get('firstname') != false){
+			if(this.get('firstname') !== false){
 				return this.get('firstname');
 			}
 			else{
@@ -76,7 +82,7 @@ define([
 		},
 
 		getLastname : function() {
-			if(this.get('lastname') != false){
+			if(this.get('lastname') !== false){
 				return this.get('lastname');
 			}
 			else{
@@ -116,22 +122,22 @@ define([
 		setAuthToken : function(value) {
 			this.set({ authToken : value });
 		},
-		
+
 		getService : function() {
 			return this.get('service_id');
 		},
 		setService : function(value) {
 			this.set({ service_id : value });
 		},
-		
+
 		getOfficers: function() {
 			return this.get('officers');
 		},
 
 		setOfficers : function(value) {
 			this.set({ officers : value });
-		},	
-		
+		},
+
 		getTeams: function() {
 			return this.get('teams');
 
@@ -143,7 +149,7 @@ define([
 		getContact : function() {
 			return this.get('contact_id');
 		},
-		
+
 		fetchContactAndClaimer: function(ret){
 			var contact_ids = this.getAttribute('contact_id',[]);
 			var deferred = $.Deferred();
@@ -162,7 +168,7 @@ define([
 			}
 			return deferred;
 		},
-		
+
 		setContact : function(value) {
 			this.set({ contact_id : value });
 		},
@@ -173,85 +179,87 @@ define([
 		setServices : function(value) {
 			this.set({ service_ids : value });
 		},
-		
+
 		getContext : function() {
 			return this.get('context');
 		},
 		setContext : function(value) {
 			this.set({ context : value });
 		},
-		
-		isManager: function(value) {
+
+		isManager: function() {
 			return this.get('isManager');
 		},
-		
+
 		setManager: function(value) {
 			this.set({ isManager : value });
 		},
-		
-		isDST: function(value) {
+
+		isDST: function() {
 			return this.get('isDST');
 		},
-		
-		isResaManager: function(value) {
+
+		isResaManager: function() {
 			return this.get('isResaManager');
 		},
-		
+
 		setDST: function(value) {
 			this.set({ isDST : value });
 		},
-		
+
 		setResaManager: function(value) {
 			this.set({ isResaManager : value });
 		},
-		
+
 		/** Get Officer By Id
 		*/
 		getOfficerById: function(id){
 			return _.find(this.getOfficers(), function(officer){
-				return officer.id == id
+				return officer.id == id;
 			});
 		},
 
 		setMenu: function (menu) {
 			this.set({menu: menu});
 		},
-		
+
 		/** Get officer's teams list selected in planning
 		*/
 		getOfficerIdsByTeamId: function(id) {
-			var self = this;
-			var officers = []
-			               
+			var officers = [];
+
 			var team = _.find(this.getTeams(), function(team){
-				return team.id == id
+				return team.id == id;
 			});
-			if(_.isUndefined(team)) return officers;
-			
-			_.each(team.members, function(member){			
+			if(_.isUndefined(team)){
+				return officers;
+			}
+
+			_.each(team.members, function(member){
 				officers.push(member.id);
 			});
-			return officers;	
+			return officers;
 		},
-		
+
 		/** Get Officer By Id
 		*/
 		getTeamById: function(id){
 			return _.find(this.getTeams(), function(team){
-				return team.id == id
+				return team.id == id;
 			});
 		},
 
 		/** Get team's officers list selected in planning
 		*/
 		getTeamIdsByOfficerId: function(id) {
-			var self = this;
-			var teams = []
+			var teams = [];
 
 			var officer = _.find(this.getOfficers(), function(officer){
-				return officer.id == id
+				return officer.id == id;
 			});
-			if(_.isUndefined(officer)) return teams;
+			if(_.isUndefined(officer)){
+				return teams;
+			}
 
 			_.each(officer.teams, function(team){
 				teams.push(team);
@@ -261,7 +269,7 @@ define([
 
 
 		getMenus: function () {
-			return this.get('menu')
+			return this.get('menu');
 		},
 
 
@@ -271,7 +279,7 @@ define([
 			var user = this;
 			return $.when($.ajax({
 				async: true,
-				url: this.urlA + '/' + this.get("uid") + '/manageable_teams',
+				url: this.urlA + '/' + this.get('uid') + '/manageable_teams',
 				headers: {Authorization: 'Token token=' + this.get('authToken')},
 				success: function (data) {
 					user.setTeams(data);
@@ -287,7 +295,7 @@ define([
 			var user = this;
 			return $.when($.ajax({
 				async: true,
-				url: this.urlA + '/' + this.get("uid") + '/manageable_officers',
+				url: this.urlA + '/' + this.get('uid') + '/manageable_officers',
 				headers: {Authorization: 'Token token=' + this.get('authToken')},
 				success: function (data) {
 					user.setOfficers(data);
@@ -302,7 +310,7 @@ define([
 		setUserData: function(data){
 
 			this.setLogin(data.user.login);
-			this.setUID(data.user.id)
+			this.setUID(data.user.id);
 			this.setAuthToken(data.token);
 			this.setMenu(data.menu.content);
 			this.setLastConnection(moment());
@@ -337,14 +345,14 @@ define([
 				type       : 'POST',
 				dataType   : 'json',
 				data       :  JSON.stringify(login_data)
-			})
+			});
 		},
 
 
 
 		/** Logout fonction
 		*/
-		logout: function(options){
+		logout: function(){
 			var self = this;
 
 			$.ajax({
@@ -366,6 +374,5 @@ define([
 
 	});
 
-
-	return UserModel
+	return UserModel;
 });

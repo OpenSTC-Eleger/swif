@@ -11,7 +11,7 @@
 	<!-- Modal Body  -->
 	<div class="modal-body">
 
-		
+
 		<blockquote>
 			<p><%= booking.getName() %></p>
 			<small><strong><i class="fa fa-user"></i>&nbsp;<%= _.capitalize(lang.contact) %> : </strong></i>&nbsp;&nbsp; <%= booking.getClaimerContact()  + " ("+ booking.getClaimer() + ")" %></small>
@@ -19,21 +19,21 @@
 		</blockquote>
 
 		<form id="formUpdateBookingList" action="#" class="form-horizontal">
-		
-			<% 
+
+			<%
 				var note = ''
-				if(state==BookingModel.status.done.key) 
-					note = booking.getResourceNames('newline') 
+				if(state==BookingModel.status.done.key)
+					note = booking.getResourceNames('newline')
 			%>
 			<% if(state == BookingModel.status.cancel.key && !isClaimer) { %>
 				<!--  send email Y/N -->
 				<div class="form-group">
-					<label for="sendMailToClaimer" class="col-sm-3 control-label" ><%= _.capitalize(lang.resa.sendMailToClaimer) %></label>				
+					<label for="sendMailToClaimer" class="col-sm-3 control-label" ><%= _.capitalize(lang.resa.sendMailToClaimer) %></label>
 					<div class="col-sm-9">
-						<input type="checkbox" class="make-switch" id="sendMailToClaimer" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"/>
+						<input type="checkbox" class="make-switch" id="sendMailToClaimer" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
 					</div>
-				</div>	
-			<% } %>	
+				</div>
+			<% } %>
 			<!-- note related to this action  -->
 			<div class="form-group">
 				<label for="allNote" class="control-label col-sm-3"><%= titleNote %>:</label>
@@ -45,12 +45,13 @@
 			<% if(state != BookingModel.status.cancel.key) { %>
 				<!--  Attach invoice -->
 				<div class="form-group">
-					<label for="sendInvoicing" class="col-sm-3 control-label" ><%= _.capitalize(lang.resa.actions.sendInvoicing) %></label>								
+					<label for="sendInvoicing" class="col-sm-3 control-label" ><%= _.capitalize(lang.resa.actions.sendInvoicing) %></label>
+
 					<div class="col-sm-9 col-sm-offset-3">
-						<input type="checkbox" class="make-switch" id="sendInvoicing" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"/>
+						<input type="checkbox" class="make-switch" id="sendInvoicing" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0">
 					</div>
-				</div>	
-			<% } %>	
+				</div>
+			<% } %>
 		</form>
 	</div>
 	<!-- /Modal Body -->

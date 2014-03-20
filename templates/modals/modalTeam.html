@@ -22,7 +22,7 @@
 					<label for="teamName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 
 					<div class="col-sm-9">
-						<input type="text" id="teamName" class="form-control" required value="<%= (_.isNull(team.getId()) ? '' : team.getName())%>" />
+						<input type="text" id="teamName" class="form-control" required value="<%= (_.isNull(team.getId()) ? '' : team.getName())%>">
 					</div>
 				</div>
 
@@ -31,12 +31,12 @@
 					<label for="teamForeman" class="control-label col-sm-3"><%= _.capitalize(lang.foreman) %>:</label>
 
 					<div class="col-sm-9">
-						<input id="teamForeman" class="select2" data-placeholder="<%= lang.actions.selectAAgent %>" required 
-							
+						<input id="teamForeman" class="select2" data-placeholder="<%= lang.actions.selectAAgent %>" required
+
 							<% if(!_.isNull(team.getId())){ %>
 								data-selected-value='<%= JSON.stringify(team.getManager('json')) %>'
 							<% } %>
-						/>
+						>
 					</div>
 				</div>
 

@@ -3,7 +3,7 @@
 
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h3 class="modal-title"><%= _.capitalize(lang.actions.addTask) %></h3>
+			<h3 class="modal-title"><i class="fa fa-edit fa-fw"></i>&nbsp;<%= _.capitalize(lang.actions.addTask) %></h3>
 		</div>
 
 		<div class="modal-body">
@@ -14,7 +14,7 @@
 					<label for="taskName" class="control-label col-sm-3" ><%= _.capitalize(lang.label) %>:</label>
 
 					<div class="col-sm-9">
-						<input type="text" id="taskName" name="taskName" class="taskInput form-control"  required />
+						<input type="text" id="taskName" name="taskName" class="taskInput form-control" required>
 					</div>
 				</div>
 
@@ -31,18 +31,18 @@
 								<li><a href="#" class="linkSelectUsersTeams" data-item="teams"><i class="fa fa-users fa-fw"></i> <%= lang.teams %></a></li>
 							</ul>
 							</div>
-							<input id="taskSelectUsersTeams" class="select2" required data-placeholder="<%= lang.actions.selectAAgentShort %>" data-item="officers"/>
+							<input id="taskSelectUsersTeams" class="select2" required data-placeholder="<%= lang.actions.selectAAgentShort %>" data-item="officers">
 						</div>
 						<!--</div>-->
 					</div>
 				</div>
-				
+
 				<!-- Task Category -->
 				<div class="form-group">
 					<label for="taskCategory" class="control-label col-sm-3"><%= _.capitalize(lang.category) %>:</label>
 
 					<div class="col-sm-9">
-						<input id="taskCategory" class="select2 taskInput taskSelect" required data-placeholder="<%= lang.actions.selectACategory %>"/>
+						<input id="taskCategory" class="select2 taskInput taskSelect" required data-placeholder="<%= lang.actions.selectACategory %>">
 					</div>
 				</div>
 
@@ -55,7 +55,7 @@
 							<!-- Start date -->
 							<div class="col-sm-6">
 								<div class="input-group">
-									<input type="text" class="datepicker taskInput input-small form-control" id="startDate" size="20" value="" required />
+									<input type="text" class="datepicker taskInput input-small form-control" id="startDate" size="20" value="" required>
 									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 								</div>
 							</div>
@@ -63,7 +63,7 @@
 							<!-- Start hour -->
 							<div class="col-sm-5">
 								<div class="input-group bootstrap-timepicker" >
-									<input type="text" class="timepicker-default input-small taskInput form-control" id='startHour' required />
+									<input type="text" class="timepicker-default input-small taskInput form-control" id='startHour' required>
 									<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 								</div>
 							</div>
@@ -82,15 +82,15 @@
 							<!-- End date -->
 							<div class="col-sm-6">
 								<div class="input-group">
-									<input type="text" class="datepicker taskInput input-small form-control" id="endDate" size="20" value="" placeholder="dd/mm/yyyy" required />
+									<input type="text" class="datepicker taskInput input-small form-control" id="endDate" size="20" value="" placeholder="dd/mm/yyyy" required>
 									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 								</div>
 							</div>
-							
+
 							<!-- End Hour -->
 							<div class="col-sm-5">
 								<div class="input-group bootstrap-timepicker">
-									<input type="text" class="timepicker-default input-small taskInput form-control" id='endHour' required />
+									<input type="text" class="timepicker-default input-small taskInput form-control" id='endHour' required>
 									<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 								</div>
 							</div>
@@ -109,10 +109,10 @@
 								<span class="input-group-addon linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
 									<i class="fa fa-tint"></i>
 								</span>
-								<input id="taskEquipmentAdd" class="select2 taskInput taskSelect" data-placeholder="<%= lang.actions.selectAVehicle %>"/>
+								<input id="taskEquipmentAdd" class="select2 taskInput taskSelect" data-placeholder="<%= lang.actions.selectAVehicle %>">
 						</div>
 					</div>
-				</div> 
+				</div>
 
 
 				<!-- Refueling Vehicle -->
@@ -123,19 +123,19 @@
 							<!-- KM -->
 							<div class="col-sm-4">
 								<label for="equipmentKmAdd"><%= _.capitalize(lang.milometer) %>:</label>
-								<input type="number" id="equipmentKmAdd" class="equipmentKm taskInput form-control" placeholder="<%= lang.inKm %>" />
+								<input type="number" id="equipmentKmAdd" class="equipmentKm taskInput form-control" placeholder="<%= lang.inKm %>">
 							</div>
 
 							<!-- Oil -->
 							<div class="col-sm-4">
 								<label for="equipmentOilQtityAdd"><%= _.capitalize(lang.quantity) %>:</label>
-								<input type="text" id="equipmentOilQtityAdd" class="taskInput form-control" placeholder="<%= lang.inLiter %>" />
+								<input type="text" id="equipmentOilQtityAdd" class="taskInput form-control" placeholder="<%= lang.inLiter %>">
 							</div>
 
 							<!-- Oil Price -->
 							<div class="col-sm-4">
 								<label for="equipmentOilPriceAdd"><%= _.capitalize(lang.price) %>:</label>
-								<input type="text" id="equipmentOilPriceAdd" class="taskInput form-control" placeholder="<%= lang.inEuro %>" />
+								<input type="text" id="equipmentOilPriceAdd" class="taskInput form-control" placeholder="<%= lang.inEuro %>">
 							</div>
 					</div>
 
@@ -147,8 +147,7 @@
 					<div class="form-group">
 						<label for="taskEquipmentAddList" class="control-label col-sm-3"><%= _.capitalize(lang.equipment) %>:</label>
 						<div class="col-sm-9">
-							<input id="taskEquipmentAddList" class="select2"
-								data-placeholder="<%= lang.actions.selectEquipments %>" data-multiple="multiple"/>
+							<input id="taskEquipmentAddList" class="select2" data-placeholder="<%= lang.actions.selectEquipments %>" data-multiple="multiple">
 						</div>
 					</div>
 				</fieldset>

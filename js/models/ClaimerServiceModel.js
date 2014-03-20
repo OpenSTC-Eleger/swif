@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 
@@ -5,17 +11,17 @@ define([
 
 ], function(app, GenericModel){
 
-	'user strict';
+	'use strict';
 
 
 	/******************************************
 	* Claimer Service Model
 	*/
 	var ClaimerServiceModel = GenericModel.extend({
-	 
+
 
 		fields       : ['id', 'name', 'code', 'manager_id', 'service_id', 'technical', 'user_ids', 'actions'],
-		
+
 		urlRoot      : '/api/openstc/departments',
 
 
@@ -25,82 +31,85 @@ define([
 				type : 'text'
 			},
 			{
-				key  : 'code', 
+				key  : 'code',
 				type : 'text'
 			}
 		],
 
-		
 
-	    /** Check if the Service is a technical service
-	    */
-	    isTechnical: function() {
-	        return this.get('technical');
-	    },
+		/** Check if the Service is a technical service
+		*/
+		isTechnical: function() {
+			return this.get('technical');
+		},
 
 		getCode: function(){
 			return this.get('code');
 		},
 
-	    getParentService : function(type) {
+		getParentService : function(type) {
+			var id, name = '';
 
 			// Check if the place have a parent place //
 			if(this.get('service_id')){
-				var id = this.get('service_id')[0];
-				var name = _.titleize(this.get('service_id')[1].toLowerCase());
-			}
-			else{
-				var id, name = '';
+				id = this.get('service_id')[0];
+				name = _.titleize(this.get('service_id')[1].toLowerCase());
 			}
 
-			switch (type){ 
-				case 'id': 
-					return id;
-				break;
+			var returnVal;
+			switch (type){
+				case 'id':
+					returnVal = id;
+					break;
 				case 'all':
-					return this.get('service_id');
-				break;
+					returnVal = this.get('service_id');
+					break;
 				case 'json':
-					return {id: id, name: name};
-				break;
-				default: 
-					return name;
+					returnVal = {id: id, name: name};
+					break;
+				default:
+					returnVal = name;
 			}
+
+			return returnVal;
 		},
 
 		getManager: function(type) {
 
+			var id, name = '';
+
 			// Check if the place have a parent place //
 			if(this.get('manager_id')){
-				var id = this.get('manager_id')[0];
-				var name = _.titleize(this.get('manager_id')[1].toLowerCase());
-			}
-			else{
-				var id, name = '';
+				id = this.get('manager_id')[0];
+				name = _.titleize(this.get('manager_id')[1].toLowerCase());
 			}
 
-			switch (type){ 
-				case 'id': 
-					return id;
-				break;
+			var returnVal;
+
+			switch (type){
+				case 'id':
+					returnVal = id;
+					break;
 				case 'all':
-					return this.get('manager_id');
-				break;
+					returnVal = this.get('manager_id');
+					break;
 				case 'json':
-					return {id: id, name: name};
-				break;
-				default: 
-					return name;
+					returnVal = {id: id, name: name};
+					break;
+				default:
+					returnVal = name;
 			}
+
+			return returnVal;
 		},
 
 
-	    getUsersId: function(){
+		getUsersId: function(){
 			return this.get('user_ids');
 		},
 
 
-	    getActions: function(){
+		getActions: function(){
 			return this.get('actions');
 		},
 
@@ -123,6 +132,6 @@ define([
 
 	});
 
-return ClaimerServiceModel;
+	return ClaimerServiceModel;
 
 });

@@ -9,7 +9,7 @@
 		data-html="true"
 		data-original-title="<%= _.capitalize(lang.about) %>"
 		data-delay="160"
-		data-content="<%= _(request.getDescription()).escapeHTML() %><hr /><%= lang.createdBy %>: <%= request.getCreateAuthor() %>">
+		data-content="<%= _(request.getDescription()).escapeHTML() %><hr><%= lang.createdBy %>: <%= request.getCreateAuthor() %>">
 		<%= request.getName() %>
 	</a>
 </td>
@@ -22,7 +22,7 @@
 	<% }else if(request.getSite()){ %>
 		<i class="fa fa-map-marker fa-fw"></i>&nbsp;<%= request.getSite() %>
 	<% }%>
-	
+
 	<span>
 </td>
 
@@ -40,9 +40,9 @@
 
 <!-- Claimer -->
 <td>
-	<span 
-		data-toggle="tooltip" 
-		data-html="true" 
+	<span
+		data-toggle="tooltip"
+		data-html="true"
 		data-original-title="<strong><%= request.fromCitizen() ? lang.citizen : request.getClaimerType() %></strong> <%= request.getClaimerContact() %>">
 			<%= request.fromCitizen() ? request.getCitizenName() : request.getClaimer() %>
 	</span>
@@ -57,8 +57,8 @@
 
 <!-- Request State -->
 <td>
-	<span 
-		class="label label-<%= RequestModel.status[request.getState()].color %>" 
+	<span
+		class="label label-<%= RequestModel.status[request.getState()].color %>"
 		data-toggle="tooltip"
 		data-original-title="<%= request.getInformations() %>">
 		<%= RequestModel.status[request.getState()].translation %>
@@ -71,7 +71,7 @@
 	<td class="text-center">
 
 	<!-- Check if the user can make action on the request -->
-	<% if(!_.isEmpty(request.getActions())){ 
+	<% if(!_.isEmpty(request.getActions())){
 		var actions = request.getActions();
 	%>
 
@@ -81,33 +81,29 @@
 			<!-- Check if the request is not in waiting state -->
 			<%
 
-			if(request.getState() != RequestModel.status.wait.key){
-				var mainAction = '';
-				var mainActionIcon = RequestModel.actions[request.getState()].icon;
-				var mainActionColor = RequestModel.actions[request.getState()].color;
-				var mainActionDisabled = 'disabled';
-			}else{
+			if( _.contains(actions, RequestModel.actions.valid.key)) {
 				var mainAction = RequestModel.actions.valid.key;
 				var mainActionColor = RequestModel.actions.valid.color;
 				var mainActionIcon = RequestModel.actions.valid.icon;
 				var mainActionDisabled = '';
-
-				/ Remove validate action from the array actions /
-				actions = _.without(actions, RequestModel.actions.valid.key);
-			} %>
-
+			}else{
+				var mainActionIcon = RequestModel.actions[request.getState()].icon;
+				var mainActionColor = RequestModel.actions[request.getState()].color;
+				var mainActionDisabled = 'disabled';
+			}
+			%>
 			<!-- Main action button -->
 			<button class="btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline button<%= _.capitalize(mainAction) %>Request">
 				<i class="fa <%= mainActionIcon %> fa-fw button<%= _.capitalize(mainAction) %>Request"></i>
 			</button>
-			
+
 			<!-- Dropdown button action -->
 			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 				<span class="fa fa-caret-down"></span>
 			</button>
-			
+
 			<!-- Other buttons action -->
-			<ul class="dropdown-menu pull-right text-left">
+			<ul class="dropdown-menu dropdown-menu-right text-left">
 				<% _.each(actions, function(action){ %>
 					<li>
 						<a href="#" class="button<%= _.capitalize(RequestModel.actions[action].key) %>Request">

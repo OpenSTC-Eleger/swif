@@ -3,14 +3,14 @@
 
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h3 class="modal-title"><%= lang.viewsTitles.statementTask %></h3>
+			<h3 class="modal-title"><i class="fa fa-edit fa-fw"></i>&nbsp;<%= lang.viewsTitles.statementTask %></h3>
 		</div>
 
 		<div class="modal-body">
 
 			<blockquote>
 				<p><%=task.name%></p>
-				<small><%= task.project_id[1]%></small>
+				<footer><%= task.project_id[1]%></footer>
 			</blockquote>
 
 			<form id="formTaskDone" action="#" class="form-horizontal" role="form">
@@ -19,7 +19,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="selectUsersTeams"><%= _.capitalize(lang.carryOutBy) %>:</label>
 
-					<div class="col-sm-9">	
+					<div class="col-sm-9">
 						   <div class="input-group">
 							<div class="input-group-btn">
 							<!--<div class="input-prepend">-->
@@ -29,7 +29,7 @@
 								<li><a href="#" class="linkSelectUsersTeams" data-item="teams"><i class="fa fa-users fa-fw"></i> <%= lang.teams %></a></li>
 							</ul>
 							</div>
-							<input id="selectUsersTeams" class="select2" required data-placeholder="<%= lang.actions.selectAAgentShort %>" data-item="officers"/>
+							<input id="selectUsersTeams" class="select2" required data-placeholder="<%= lang.actions.selectAAgentShort %>" data-item="officers">
 						</div>
 						<!--</div>-->
 					</div>
@@ -69,7 +69,7 @@
 
 					<div class="col-sm-9">
 					<div class="row">
-					
+
 					<!-- End date -->
 					<div class="col-sm-5">
 						<div class="input-group">
@@ -94,15 +94,15 @@
 					<!-- Remaining Time -->
 					<div id="remainingTimeSection" class="form-group">
 						<label for="eventRemainingTime" class="control-label col-sm-3"><%= lang.remainingTime %>:</label>
-						<div class="col-sm-9">
-							<div class="input-append bootstrap-timepicker">
+						<div class="col-sm-4">
+							<div class="input-group bootstrap-timepicker">
 								<input type="text" class="timepicker-default form-control" id="eventRemainingTime" value="02:00">
-								<span class="add-on"><i class="fa fa-clock-o"></i></span>
+								<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 							</div>
 						</div>
 					</div>
 				</div>
-				
+
 				<!-- Vehicle -->
 				<div class="form-group">
 					<label for="taskEquipmentDone" class="control-label col-sm-3"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
@@ -112,7 +112,7 @@
 							<span class="input-group-addon linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
 								<i class="fa fa-tint"></i>
 							</span>
-							<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect" data-placeholder="<%= lang.actions.selectAVehicle %>"/>						
+							<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect" data-placeholder="<%= lang.actions.selectAVehicle %>"/>
 						</div>
 					</div>
 				</div>
@@ -126,24 +126,24 @@
 							<!-- KM -->
 							<div class="col-sm-4">
 								<label for="equipmentKmDone"><%= _.capitalize(lang.milometer) %>:</label>
-								<input type="number" id="equipmentKmDone" class="equipmentKm form-control" placeholder="<%= lang.inKm %>" />
+								<input type="number" id="equipmentKmDone" class="equipmentKm form-control" placeholder="<%= lang.inKm %>">
 							</div>
 
 							<!-- Oil -->
 							<div class="col-sm-4">
 								<label for="equipmentOilQtityDone"><%= _.capitalize(lang.quantity) %>:</label>
-								<input type="text" id="equipmentOilQtityDone" class="form-control" placeholder="<%= lang.inLiter %>" />
+								<input type="text" id="equipmentOilQtityDone" class="form-control" placeholder="<%= lang.inLiter %>">
 							</div>
 
 							<!-- Oil Price -->
 							<div class="col-sm-4">
 								<label for="equipmentOilPriceDone"><%= _.capitalize(lang.price) %>:</label>
-								<input type="text" id="equipmentOilPriceDone" class="form-control" placeholder="<%= lang.inEuro %>" />
+								<input type="text" id="equipmentOilPriceDone" class="form-control" placeholder="<%= lang.inEuro %>">
 							</div>
 					</div>
 
 				</fieldset>
-				
+
 
 				<!-- Equipments -->
 				<fieldset>
@@ -151,7 +151,7 @@
 						<label for="taskEquipmentListDone" class="control-label col-sm-3"><%= _.capitalize(lang.equipment) %>:</label>
 						<div class="col-sm-9">
 							<input id="taskEquipmentListDone" class="select2 taskEquipment taskSelect taskInput"
-								data-placeholder="<%= lang.actions.selectEquipments %>" data-multiple="multiple"/>
+								data-placeholder="<%= lang.actions.selectEquipments %>" data-multiple="multiple">
 						</div>
 					</div>
 				</fieldset>

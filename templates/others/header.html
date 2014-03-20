@@ -1,0 +1,121 @@
+<!-- Container -->
+<div class="container-fluid">
+
+	<!-- Application name -->
+	<div class="navbar-header">
+		<% if(user.hasAuthToken()){ %>
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<% } %>
+		<a class="navbar-brand" href="#"><i class="fa fa-truck fa-lg fa-fw"></i> <%= lang.applicationName %> </a>
+	</div>
+
+
+	<!-- Display the menu if user is logged -->
+	<% if(user.hasAuthToken()){ %>
+	<div class="collapse navbar-collapse" id="navbar">
+		<%
+		var menus = user.getMenus();
+		if( !_.isUndefined(menus) ) {
+		%>
+		<!-- Main menu application -->
+		<ul id="nav-menu-app" class="nav navbar-nav" role="menu">
+
+			<%
+
+				_.each(menusToLoad, function (moduleName, shortName){
+
+					var moduleName = moduleName;
+
+					if(!_.isUndefined(menus[shortName])) {
+					 _.each(menus[shortName].children, function (menuRacine, i) {
+
+					 	var active = '';
+					 	if(currentModule == moduleName){ active = 'active';}
+					%>
+
+					<li class="dropdown <%= active %>" id="<%= moduleName %>" role="presentation">
+					<a data-toggle="dropdown" class="dropdown-toggle" role="menuitem" href="#" id="drop-menu-app-<%= menuRacine.id %>"><%= menuRacine.name %> <b class="caret"></b></a>
+			            <ul aria-labelledby="drop-menu-app-<%= menuRacine.id %>" role="menu" class="dropdown-menu">
+			                <% _.each(menuRacine.children, function (menuItem, i, a) {%>
+
+								<% if(_.isEmpty(menuItem.children)){
+
+									var active = '';
+									if(currentUrl == _.slugify(menuItem.tag)){ active = 'active'; }
+
+								%>
+									<li role="presentation" class="<%= active %>">
+										<a href="#<%= _.join('/', moduleName, _.slugify(menuItem.tag)) %>"  role="menuitem"><%= menuItem.name %></a>
+									</li>
+								<% } else { %>
+
+			                		<% if(i != 0){ %>
+										<li role="presentation" class="divider"></li>
+									<% } %>
+									<li role="presentation" class="dropdown-header"><%= menuItem.name %></li>
+									<% _.each(menuItem.children, function (menuItem, i) {
+
+										var url = '';
+
+										if(menusToLoad[menuItem.tag_module] != moduleName){
+											url = _.join('/', menusToLoad[menuItem.tag_module], _.join('/', moduleName, _.slugify(menuItem.tag)));
+										}
+										else{
+											url = _.join('/', moduleName, _.slugify(menuItem.tag));
+										}
+
+										var active = '';
+										if(currentUrl == _.slugify(menuItem.tag)){ active = 'active'; }
+									%>
+
+										<li role="presentation" class="<%= active %>"><a href="#<%= url %>"  role="menuitem"><%= menuItem.name %></a></li>
+									<% }); %>
+
+
+								<% } %>
+
+
+							<% }); %>
+						</ul>
+					</li>
+				<% }); }%>
+			<% });%>
+		</ul>
+
+
+		<!-- User menu application -->
+		<ul class="nav navbar-nav navbar-right" role="menu">
+
+			<li class="dropdown" role="menuitem">
+				<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+					<i class="fa fa-user fa-lg fa-fw"></i> <%= user.getFullname() %> <b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu" role="menu">
+					<li role="presentation">
+						<a href="#about" role="menuitem"><i class="fa fa-info-circle fa-fw"></i> <%= _.capitalize(lang.about) %></a>
+					</li>
+					<li role="presentation" class="disabled">
+						<a href="#help" role="menuitem"><i class="fa fa-question-circle fa-fw"></i> <%= _.capitalize(lang.help) %></a>
+					</li>
+					<li role="presentation" class="divider"></li>
+					<li role="presentation" class="disabled">
+						<a href="#settings" role="menuitem"><i class="fa fa-cog fa-fw"></i> <%= _.capitalize(lang.settings) %></a>
+					</li>
+					<li role="presentation">
+						<a href="#logout" role="menuitem"><i class="fa fa-sign-out fa-fw"></i> <%= _.capitalize(lang.actions.logOut) %></a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+
+		<% }%>
+
+	</div>
+	<% }; %>
+</div>
+<!-- /Container -->

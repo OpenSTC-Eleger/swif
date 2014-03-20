@@ -1,0 +1,22 @@
+<label for="ads_<%= field.key %>" class="control-label"><%= _.capitalize(field.label) %></label>
+<div class="input-group">
+
+	<div class="input-group-btn">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><%= currentOperator.symbol %></button>
+		<ul class="dropdown-menu" role="menu">
+			<% _.each(operators, function(op, key){
+
+				if(op.key == currentOperator.key){ var isActive = "active"; } else{ isActive = ""; }
+			%>
+
+				<li class="<%= isActive %>" data-operator="<%= key %>">
+					<a href="#"><span class="pull-right"><%= op.symbol %></span><%= _.capitalize(op.label) %></a>
+				</li>
+			<% }) %>
+		</ul>
+	</div>
+
+
+	<input type="text" id="ads_<%= field.key %>" class="datepicker form-control" placeholder="dd/mm/yyyy" value="<%= field.value %>">
+	<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+</div>

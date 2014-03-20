@@ -10,7 +10,7 @@
 
 			<blockquote>
 				<p><%= task.getName() %></p>
-				<small><i class="fa fa-thumb-tack fa-fw"></i>&nbsp;<%= task.getIntervention() %></small>
+				<footer><i class="fa fa-thumb-tack fa-fw"></i>&nbsp;<%= task.getIntervention() %></footer>
 
 				<!-- Display the affected Team or Use -->
 				<% if(task.affectedOnTeam()) { %>
@@ -21,9 +21,9 @@
 			</blockquote>
 
 		    <form id="formTaskDone" action="#" class="form-horizontal" role="form">
-			
+
 				<div id="timeSpentSection" class="form-group">
-					<label for="eventTimeSpent" class="control-label col-sm-3"><%= lang.spentHours %>:</label>			
+					<label for="eventTimeSpent" class="control-label col-sm-3"><%= lang.spentHours %>:</label>
 					<div class="col-sm-3">
 						<div class="input-group form-controls bootstrap-timepicker">
 							<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventTimeSpent" value="<%=timeSpentDefault%>">
@@ -53,7 +53,7 @@
 								<i class="fa fa-tint"></i>
 							</span>
 							<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect taskInput"
-								data-placeholder="<%= lang.actions.selectAVehicle %>"/>
+								data-placeholder="<%= lang.actions.selectAVehicle %>">
 						</div>
 					</div>
 				</div>
@@ -66,31 +66,31 @@
 							<!-- KM -->
 							<div class="col-sm-4">
 								<label for="equipmentKmDone"><%= _.capitalize(lang.milometer) %>:</label>
-								<input type="number" id="equipmentKmDone" class="equipmentKm taskInput form-control" placeholder="<%= lang.inKm %>" />
+								<input type="number" id="equipmentKmDone" class="equipmentKm taskInput form-control" placeholder="<%= lang.inKm %>">
 							</div>
 
 							<!-- Oil -->
 							<div class="col-sm-4">
 								<label for="equipmentOilQtityDone"><%= _.capitalize(lang.quantity) %>:</label>
-								<input type="text" id="equipmentOilQtityDone" class="taskInput form-control" placeholder="<%= lang.inLiter %>" />
+								<input type="text" id="equipmentOilQtityDone" class="taskInput form-control" placeholder="<%= lang.inLiter %>">
 							</div>
 
 							<!-- Oil Price -->
 							<div class="col-sm-4">
 								<label for="equipmentOilPriceDone"><%= _.capitalize(lang.price) %>:</label>
-								<input type="text" id="equipmentOilPriceDone" class="taskInput form-control" placeholder="<%= lang.inEuro %>" />
+								<input type="text" id="equipmentOilPriceDone" class="taskInput form-control" placeholder="<%= lang.inEuro %>">
 							</div>
 					</div>
 
 				</fieldset>
-				
+
 
 				<!-- Equipments -->
 				<div class="form-group">
 					<label for="taskEquipmentListDone" class="control-label col-sm-3"><%= _.capitalize(lang.equipment) %>:</label>
 					<div class="col-sm-9">
 						<input id="taskEquipmentListDone" class="select2 taskEquipment taskSelect taskInput"
-							data-placeholder="<%= lang.actions.selectEquipments %>" data-multiple="multiple"/>
+							data-placeholder="<%= lang.actions.selectEquipments %>" data-multiple="multiple">
 					</div>
 				</div>
 

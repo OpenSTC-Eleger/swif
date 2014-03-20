@@ -1,3 +1,9 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 
@@ -5,7 +11,7 @@ define([
 
 ], function(app, GenericModel){
 
-	'user strict';
+	'use strict';
 
 
 	/******************************************
@@ -27,20 +33,14 @@ define([
 
 
 		searchable_fields: [
-			{
-				key  : 'complete_name',
-				type : 'text'
-			},
-			{
-				key  : 'login',
-				type : 'text'
-			}
+			{ key: 'complete_name', type: 'text' },
+			{ key: 'login', type: 'text' }
 		],
 
-	   
+
 		// Officer firstname //
 		getFirstname : function() {
-			if(this.get('firstname') != false){
+			if(this.get('firstname') !== false){
 				return _.capitalize(this.get('firstname').toLowerCase());
 			}
 			else{ return ''; }
@@ -53,32 +53,31 @@ define([
 			return _.titleize(this.get('complete_name').toLowerCase());
 		},
 
-	    // Officer email //
-	    getEmail : function() {
-	        if(this.get('user_email')){
-	        	return this.get('user_email');
-	        }
-	    },
-	    setEmail : function(value) {
+		// Officer email //
+		getEmail : function() {
+			if(this.get('user_email')){
+				return this.get('user_email');
+			}
+		},
+		setEmail : function(value) {
 			this.set({ user_email : value });
 		},
 
-	    // Officer login //
-	    getLogin : function() {
-	        return this.get('login');
-	    },
-	    setLogin : function(value) {
-			if( value == 'undefined') return;
+		// Officer login //
+		getLogin : function() {
+			return this.get('login');
+		},
+		setLogin : function(value) {
 			this.set({ login : value });
 		},
 
 		// Officer password //
-	    setPassword : function(value) {
+		setPassword : function(value) {
 			this.set({ new_password : value });
 		},
 		// Group IDs //
 		getGroups: function() {
-		    return this.get('groups_id');
+			return this.get('groups_id');
 		},
 		setGroups : function(value) {
 			this.set({ groups_id : value });
@@ -87,37 +86,47 @@ define([
 
 		// Group IDs //
 		getLastConnection: function() {
-		    return this.get('date');
+			return this.get('date');
 		},
-		
+
 		// Group Name //
 		setGroupSTC : function(value) {
 			this.set({ current_group : value });
 		},
 		getGroupSTC : function(type) {
-			switch (type){ 
-				case 'id': 
-					return this.get('current_group')[0];
-				break;
+
+			var returnVal;
+
+			switch (type){
+				case 'id':
+					returnVal = this.get('current_group')[0];
+					break;
 				case 'json':
-					return {id: this.get('current_group')[0], name: this.get('current_group')[1]};
-				break;
+					returnVal = {id: this.get('current_group')[0], name: this.get('current_group')[1]};
+					break;
 				default:
-					return this.get('current_group')[1];
+					returnVal = this.get('current_group')[1];
 			}
+
+			return returnVal;
 		},
-		
+
 		getGroupResa : function(type) {
-			switch (type){ 
-				case 'id': 
-					return this.get('openresa_group')[0];
-				break;
+
+			var returnVal;
+
+			switch (type){
+				case 'id':
+					returnVal = this.get('openresa_group')[0];
+					break;
 				case 'json':
-					return {id: this.get('openresa_group')[0], name: this.get('openresa_group')[1]};
-				break;
+					returnVal = {id: this.get('openresa_group')[0], name: this.get('openresa_group')[1]};
+					break;
 				default:
-					return this.get('openresa_group')[1];
+					returnVal = this.get('openresa_group')[1];
 			}
+
+			return returnVal;
 		},
 
 		getServices : function(type){
@@ -126,19 +135,19 @@ define([
 
 			_.each(this.get('service_names'), function(s){
 				switch (type){
-					case 'id': 
+					case 'id':
 						placeServices.push(s[0]);
-					break;
-					case 'json': 
+						break;
+					case 'json':
 						placeServices.push({id: s[0], name: s[1]});
-					break;
+						break;
 					default:
 						placeServices.push(s[1]);
 				}
 			});
 
 			if(type == 'string'){
-				return _.toSentence(placeServices, ', ', ' '+app.lang.and+' ')
+				return _.toSentence(placeServices, ', ', ' '+app.lang.and+' ');
 			}
 			else{
 				return placeServices;
@@ -149,36 +158,41 @@ define([
 		},
 
 		getService : function(type) {
-			switch (type){ 
-				case 'id': 
-					return this.get('service_id')[0];
-				break;
+
+			var returnVal;
+
+			switch (type){
+				case 'id':
+					returnVal = this.get('service_id')[0];
+					break;
 				case 'json':
-					return {id: this.get('service_id')[0], name: this.get('service_id')[1]};
-				break;
+					returnVal = {id: this.get('service_id')[0], name: this.get('service_id')[1]};
+					break;
 				default:
-					return this.get('service_id')[1];
+					returnVal = this.get('service_id')[1];
 			}
+
+			return returnVal;
 		},
 
-		// Teams ID// 
+		// Teams ID//
 		getTeamsInArray: function(){
-			jsonTeamId = this.get('team_ids');
+			var jsonTeamId = this.get('team_ids');
 
 			var officerTeams = [];
 			_.each(jsonTeamId.models, function(item){
 				officerTeams.push(item.id);
-			})
+			});
 
 			return officerTeams;
 		},
-		
-		isDST: function(value) {
-	    	return this.get('isDST');
-	    },
-	    setDST: function(value) {
-	        this.set({ isDST : value });
-	    },
+
+		isDST: function() {
+			return this.get('isDST');
+		},
+		setDST: function(value) {
+			this.set({ isDST : value });
+		},
 
 		/** Get Informations of the model
 		*/
@@ -204,6 +218,6 @@ define([
 
 	});
 
-return OfficerModel;
+	return OfficerModel;
 
 });

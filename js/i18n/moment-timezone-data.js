@@ -1,5 +1,7 @@
 define(["moment-timezone"], function (moment) {
 
+    'use strict';
+
     moment.tz.add({
         "zones": {
             "Europe/London": [

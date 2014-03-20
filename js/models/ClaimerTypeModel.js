@@ -1,10 +1,16 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 	'genericModel',
 
 ], function(app, GenericModel){
 
-	'user strict';
+	'use strict';
 
 
 	/******************************************
@@ -13,29 +19,28 @@ define([
 	var ClaimerTypeModel = GenericModel.extend({
 
 
-		fields  : ['id', 'name', 'code', 'actions'],
+		fields  : ['id', 'name', 'code', 'actions', 'sending_mail'],
 
 		urlRoot : '/api/open_object/partner_types',
 
 
 		searchable_fields: [
-			{
-				key  : 'name', 
-				type : 'text'
-			},
-			{
-				key  : 'code', 
-				type : 'text'
-			}
+			{ key: 'name', type: 'text' },
+			{ key: 'code', type: 'text' }
 		],
 
-		
+
 		getCode : function() {
 			return this.get('code');
 		},
 		setCode : function(value, silent) {
 			this.set({ code : value }, {silent: silent});
 		},
+		
+		isSendingMail: function() {
+			return this.get('sending_mail');
+		},
+
 
 
 		/** Get Informations of the model
@@ -56,6 +61,6 @@ define([
 
 	});
 
-return ClaimerTypeModel;
+	return ClaimerTypeModel;
 
 });

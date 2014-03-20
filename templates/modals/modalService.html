@@ -12,7 +12,7 @@
 					<%= _.capitalize(lang.viewsTitles.editService) %>
 				<% } %>
 
-				
+
 				<% if(!_.isUndefined(loader)) { %>
 					<span class="modal-loader progress progress-striped active">
 						<span class="bar"></span>
@@ -21,9 +21,9 @@
 			</h3>
 		</div>
 
-	
+
 		<div class="modal-body">
-			
+
 			<% if(_.isUndefined(loader)) { %>
 			<form id="formSaveService" action="#" class="form-horizontal" role="form">
 				<fieldset>
@@ -34,7 +34,7 @@
 					<label for="serviceName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 
 					<div class="col-sm-9">
-						<input type="text" id="serviceName" class="form-control" required value="<%= (_.isNull(service.getId()) ? '' : service.getName()) %>" />
+						<input type="text" id="serviceName" class="form-control" required value="<%= (_.isNull(service.getId()) ? '' : service.getName()) %>">
 					</div>
 				</div>
 
@@ -43,7 +43,7 @@
 					<label for="serviceCode" class="control-label col-sm-3"><%= _.capitalize(lang.code) %>:</label>
 
 					<div class="col-sm-9">
-						<input type="text" id="serviceCode" class="form-control" required value="<%= (_.isNull(service.getId()) ? '' : service.getCode()) %>" />
+						<input type="text" id="serviceCode" class="form-control" required value="<%= (_.isNull(service.getId()) ? '' : service.getCode()) %>">
 						<span class="help-block" id="code-error"></span>
 					</div>
 				</div>
@@ -54,13 +54,13 @@
 					<label for="serviceManager" class="control-label col-sm-3"><%= _.capitalize(lang.manager) %>:</label>
 
 					<div class="col-sm-9">
-						<input id="serviceManager" class="select2" data-placeholder="<%= lang.actions.selectAAgent %>" 
+						<input id="serviceManager" class="select2" data-placeholder="<%= lang.actions.selectAAgent %>"
 
 							<% if(!_.isNull(service.getId())){
 								if(!_.isUndefined(service.getManager('id'))) { %>
 								data-selected-value='<%= JSON.stringify(service.getManager('json')) %>'
 							<% } } %>
-						/> 
+						>
 					</div>
 				</div>
 
@@ -69,14 +69,14 @@
 					<label for="serviceParentService" class="control-label col-sm-3"><%= _.capitalize(lang.parentService) %>:</label>
 
 					<div class="col-sm-9">
-						<input id="serviceParentService" class="select2" data-placeholder="<%= lang.actions.selectAService %>" 
-
+						<input id="serviceParentService" class="select2" data-placeholder="<%= lang.actions.selectAService %>"
+							required
 							<% if(!_.isNull(service.getId())){
 								if(!_.isUndefined(service.getParentService('id'))) { %>
 								data-selected-value='<%= JSON.stringify(service.getParentService('json')) %>'
 							<% } } %>
-
-						/> 
+							
+						>
 					</div>
 				</div>
 
@@ -87,7 +87,7 @@
 					<div class="col-sm-9">
 						<input type="checkbox" class="make-switch" id="switchTechnicalService" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"
 							<% if(!_.isNull(service.getId())){ if(service.isTechnical()) { %> checked <% } } %>
-							/>
+						>
 					</div>
 				</div>
 
@@ -97,10 +97,10 @@
 			</form>
 			<% } %>
 		</div>
-	
+
 
 		<div class="modal-footer">
-			<button type="submit" form="formSaveService" class="btn btn-primary" 
+			<button type="submit" form="formSaveService" class="btn btn-primary"
 				data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.saveInProgress %>"
 				<%= (_.isUndefined(loader) ? '' : 'disabled') %>
 			>

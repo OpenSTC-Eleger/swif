@@ -1,0 +1,53 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
+/* Input group addons Inner
+-------------------------------------------------- */
+.input-group-inner {
+	.form-control{
+		.border-right-radius(@border-radius-base) !important;
+	}
+}
+.input-group-inner.input-group-lg {
+	.form-control{
+		.border-right-radius(@border-radius-large) !important;
+	}
+}
+
+.input-group-addon-inner {
+	position: absolute;
+	padding: @padding-large-vertical @padding-large-horizontal;
+	right: (@padding-large-horizontal / 2);
+	z-index: @zindex-navbar;
+
+	i {
+		cursor: pointer;
+		.text-muted();
+	}
+}
+
+.input-group {
+	> .input-group-addon-inner{
+		height: @input-height-base;
+		top: -3px;
+	}
+
+	&-lg {
+		> .input-group-addon-inner {
+			height: @input-height-large;
+			top: 2px;
+		}
+	}
+}
+
+
+
+/* Panel in form
+-------------------------------------------------- */
+.form-horizontal .panel {
+	margin-top: @line-height-computed;
+	.noMarginBottom();
+}

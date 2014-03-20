@@ -4,7 +4,7 @@
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			<h3 class="modal-title">
-				<i class="fa fa-edit"></i>&nbsp;
+				<i class="fa fa-edit fa-fw"></i>&nbsp;
 				<% if(_.isNull(place.getId())){ %>
 				<%= _.capitalize(lang.viewsTitles.newPlace) %>
 				<% } else{ %>
@@ -42,7 +42,7 @@
 
 							<div class="col-sm-9">
 								<input type="text" id="placeName" class="form-control" required
-									   value="<%= (_.isNull(place.getId()) ? '' : place.getName())%>"/>
+									   value="<%= (_.isNull(place.getId()) ? '' : place.getName())%>">
 							</div>
 						</div>
 
@@ -59,7 +59,7 @@
 								if(!_.isUndefined(place.getType('id'))) { %>
 								data-selected-value='<%= JSON.stringify(place.getType('json')) %>'
 								<% } } %>
-								/>
+								>
 							</div>
 						</div>
 
@@ -76,7 +76,7 @@
 								if(!_.isUndefined(place.getParentPlace('id'))) { %>
 								data-selected-value='<%= JSON.stringify(place.getParentPlace('json')) %>'
 								<% } } %>
-								/>
+								>
 							</div>
 						</div>
 
@@ -93,7 +93,7 @@
 								if(!_.isEmpty(place.getServices())) { %>
 								data-selected-value='<%= JSON.stringify(place.getServices('json')) %>'
 								<% } } %>
-								/>
+								>
 							</div>
 						</div>
 
@@ -105,21 +105,21 @@
 								<div class="col-sm-4">
 									<label for="placeWidth"><%= _.capitalize(lang.width) %>:</label>
 									<input type="number" id="placeWidth" class="form-control"
-										   value="<%= (_.isNull(place.getId()) ? '' : place.getWidth()) %>"/>
+										   value="<%= (_.isNull(place.getId()) ? '' : place.getWidth()) %>">
 								</div>
 
 								<!-- Place Lenght -->
 								<div class="col-sm-4">
 									<label for="placeLength"><%= _.capitalize(lang.length) %>:</label>
 									<input type="number" id="placeLength" class="form-control"
-										   value="<%= (_.isNull(place.getId()) ? '' : place.getLength())%>"/>
+										   value="<%= (_.isNull(place.getId()) ? '' : place.getLength())%>">
 								</div>
 
 								<!-- Place Area -->
 								<div class="col-sm-4">
 									<label for="placeArea"><%= _.capitalize(lang.area) %>:</label>
 									<input type="number" id="placeArea" class="form-control"
-										   value="<%= (_.isNull(place.getId()) ? '' : place.getSurface())%>"/>
+										   value="<%= (_.isNull(place.getId()) ? '' : place.getSurface())%>">
 								</div>
 
 							</div>
@@ -162,7 +162,7 @@
 							<label class="col-sm-3 control-label">
 								<input type="checkbox" id="placeExternalBooking" value="1" <%= !_.isNull(place.getId())
 								&& place.getExternalBooking() ? 'checked' : ''%> class="checkbox-inline"><%=
-								_.capitalize(lang.external_booking) %>: </input>
+								_.capitalize(lang.external_booking) %>:
 							</label>
 
 							<div class="col-sm-9">
@@ -173,19 +173,19 @@
 								if(!_.isEmpty(place.getBookingClaimers())) { %>
 								data-selected-value='<%= JSON.stringify(place.getBookingClaimers('json')) %>'
 								<% } } %>
-								/>
+								>
 							</div>
 						</div>
-						
+
 						<div class="form-group">
 							<label for="placeBlockingBookable" class="col-sm-3 control-label"><%= _.capitalize(lang.blocking_bookable) %>: </label>
 							<div class="col-sm-9">
 								<input type="checkbox" class="make-switch" id="placeBlockingBookable" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"
 									<% if(!_.isNull(place.getId())){ if(place.get('block_booking',false)) { %> checked <% } } %>
-								/>
+								>
 							</div>
 						</div>
-						
+
 					</fieldset>
 				</div>
 			</form>

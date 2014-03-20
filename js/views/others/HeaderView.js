@@ -1,8 +1,15 @@
+/*!
+ * SWIF-OpenSTC
+ * Copyright 2013-2014 Siclic <contact@siclic.fr>
+ * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
+ */
+
 define([
 	'app',
 
 ], function(app){
 
+	'use strict';
 
 	/******************************************
 	* Header View
@@ -11,7 +18,7 @@ define([
 
 		el           : '#header-navbar',
 
-		templateHTML : 'header',
+		templateHTML : 'templates/others/header.html',
 
 
 		// The DOM events //
@@ -34,7 +41,7 @@ define([
 			var self = this;
 
 
-			var currentModule = _.str.strLeft(Backbone.history.fragment, '/');
+			var currentModule = _.strLeft(Backbone.history.fragment, '/');
 			var currentUrl    = _.strLeft(_.strRight(Backbone.history.fragment, '/'), '/');
 
 
@@ -44,7 +51,7 @@ define([
 			}
 
 
-			$.get("templates/" + this.templateHTML + ".html", function(templateData) {
+			$.get(this.templateHTML, function(templateData) {
 
 
 				var template = _.template(templateData, {

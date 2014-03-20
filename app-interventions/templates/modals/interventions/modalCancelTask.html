@@ -3,20 +3,20 @@
 
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h3 class="modal-title"><i class="fa fa-ban"></i>&nbsp<%= lang.viewsTitles.cancelTask %></h3>
+			<h3 class="modal-title"><i class="fa fa-ban fa-fw"></i>&nbsp<%= lang.viewsTitles.cancelTask %></h3>
 		</div>
 
-		
+
 		<!-- Modal Body -->
 		<div class="modal-body">
 
 			<blockquote id="infoModalCancelTask" class="spaceBottom">
 				<p><%= task.name%></p>
-				<small><%= task.project_id[1]%></small>
+				<footer><%= task.project_id[1]%></footer>
 			</blockquote>
 
 			<form id="formCancelTask" action="#" class="form-horizontal" role="form">
-			
+
 				<!-- Request refuse motif -->
 				<div class="form-group">
 					<label for="motifCancelTask" class="control-label col-sm-3"><%= _.capitalize(lang.reason) %>:</label>
