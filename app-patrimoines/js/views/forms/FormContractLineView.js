@@ -33,13 +33,14 @@ define(['app',
 		tagName: 'div',
 		className	: 'tab-pane fade',
 		templateHTML: '/templates/forms/form_contract_line.html',
+		templateRecurrenceHTML: '/templates/forms/form_recurrence.html',
 		collectionName: ContractLinesCollection,
 		modelName: ContractLineModel,
 		
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				
+				'blur #name'	:	'changeTabName'
 			}, GenericFormView.prototype.events);
 		},
 		
@@ -64,7 +65,7 @@ define(['app',
 			else{
 				pageTitle = app.lang.patrimoine.viewsTitles.contractLineDetails;
 			}
-
+			
 			var self = this;
 			// Retrieve the template //
 			$.get(app.menus.openpatrimoine + this.templateHTML, function(templateData){
@@ -80,10 +81,21 @@ define(['app',
 				});
 
 				$(self.el).html(template);
-				GenericFormView.prototype.render.apply(self);
-
+				$.get(app.menus.openpatrimoine + self.templateRecurrenceHTML, function(templateDataRecurrence){
+					var templateRecurrence = _.template(templateDataRecurrence, {
+						recurrence		: self.model,
+						lang			: app.lang
+					});
+					$(self.el).find('#recurrenceForm').html(templateRecurrence);
+					GenericFormView.prototype.render.apply(self);
+				});
 			});
 			return this;
+		},
+		
+		changeTabName: function(){
+			//Do not prevent the event here, it's used by GenericForm to update model
+			$('a[href="#' + this.$el.attr('id') + '"] .title').html(this.model.getAttribute('name',''));
 		},
 		
 	});
