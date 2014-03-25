@@ -1,0 +1,57 @@
+<div class="form-group field" data-field-name="recur_type" data-field-label="<%= lang.patrimoine.recurrenceType %>"></div>
+
+<div class="field-visible-if" data-field-name="recur_type" data-field-value="daily">
+		
+	<div class="form-group field" data-field-name="recur_periodicity" data-field-label="<%= lang.patrimoine.forEachDays %>"
+		data-field-addon="<%= lang.patrimoine.days%>"></div>
+</div>
+<div class="field-visible-if" data-field-name="recur_type" data-field-value="weekly">
+	<!-- weekly-periodicity-setting of recurrence-->
+		<div class="form-group">
+			<div class="col-sm-offset-3">
+				<label class="checkbox-inline field-element"> <input id="recur_week_monday" type="checkbox"
+					<%= recurrence.getAttribute('recur_week_monday',false) ? 'checked': ''%>>
+					<%= lang.patrimoine.weekdayMon%></input>
+				</label> <label class="checkbox-inline field-element"> <input id="recur_week_tuesday" type="checkbox"
+					<%= recurrence.getAttribute('recur_week_tuesday',false) ? 'checked': ''%>>
+					<%= lang.patrimoine.weekdayTue%></input>
+				</label> <label class="checkbox-inline field-element"> <input id="recur_week_wednesday" type="checkbox"
+					<%= recurrence.getAttribute('recur_week_wednesday',false) ? 'checked': ''%>>
+					<%= lang.patrimoine.weekdayWed%></input>
+				</label> <label class="checkbox-inline field-element"> <input id="recur_week_thursday" type="checkbox"
+					<%= recurrence.getAttribute('recur_week_thursday',false) ? 'checked': ''%>>
+					<%= lang.patrimoine.weekdayThu%></input>
+				</label> <label class="checkbox-inline field-element"> <input id="recur_week_friday" type="checkbox"
+					<%= recurrence.getAttribute('recur_week_friday',false) ? 'checked': ''%>>
+					<%= lang.patrimoine.weekdayFri%></input>
+				</label> <label class="checkbox-inline field-element"> <input id="recur_week_saturday" type="checkbox"
+					<%= recurrence.getAttribute('recur_week_saturday',false) ? 'checked': ''%>>
+					<%= lang.patrimoine.weekdaySat%></input>
+				</label> <label class="checkbox-inline field-element"> <input id="recur_week_sunday" type="checkbox"
+					<%= recurrence.getAttribute('recur_week_sunday',false) ? 'checked': ''%>>
+					<%= lang.patrimoine.weekdaySun%></input>
+				</label>
+			</div>
+		</div>
+		
+		<div class="form-group field" data-field-name="recur_periodicity" data-field-label="<%= lang.patrimoine.forEachWeeks %>"
+			data-field-addon="<%= lang.patrimoine.weeks%>"></div>
+</div>
+
+<!-- monthly-periodicity-setting of recurrence-->
+<div class="field-visible-if" data-field-name="recur_type" data-field-value="monthly">
+
+	<div class="form-group field" data-field-name="recur_month_type" data-field-label=""></div>
+	
+	<div class="field-visible-if" data-field-name="recur_month_type" data-field-value="monthday">
+		<div class="form-group field" data-field-name="recur_month_absolute" data-field-label="<%= lang.patrimoine.monthlyMonthday %>"
+			data-field-addon="<%= lang.patrimoine.ofMonth %>"></div>
+	</div>
+	<div class="field-visible-if" data-field-name="recur_month_type" data-field-value="monthweekday">
+		<div class="form-group field" data-field-name="recur_month_relative_weight" data-field-label="<%= lang.patrimoine.monthlyWeekday %>"></div>
+		<div class="form-group field" data-field-name="recur_month_relative_day" data-field-label=""></div>
+	</div>
+	
+	<div class="form-group field" data-field-name="recur_periodicity" data-field-label="<%= lang.patrimoine.forEachMonthday %>"
+		data-field-addon="<%= lang.patrimoine.months %>"></div>
+</div>
