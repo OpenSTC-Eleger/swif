@@ -27,4 +27,12 @@
 	<div class="field-visible-if" data-field-name="internal_inter" data-field-value="false">
 		<div class="form-group field" data-field-name="supplier_cost" data-field-label="<%= lang.patrimoine.supplierCost %>"></div>
 	</div>
+	<hr>
+	
+	<div class="form-group field" data-field-name="recurrence" data-field-label="<%= lang.patrimoine.recurrenteTask %>"
+		data-off-label="<%= lang.no %>" data-on-label="<%= lang.yes %>"></div>
+	
+	<div class="field-visible-if" data-field-name="recurrence" data-field-value="true">
+		<div id="recurrenceForm"></div>
+	</div>	
 </fieldset>
