@@ -11,11 +11,13 @@ requirejs.config({
 
 		// Collections //
 		contractsCollection					: '../app-patrimoines/js/collections/ContractsCollection',
-		contractLinesCollection					: '../app-patrimoines/js/collections/ContractLinesCollection',
-		
+		contractLinesCollection				: '../app-patrimoines/js/collections/ContractLinesCollection',
+		itemRecurrenceContractCollection	: '../app-patrimoines/js/collections/ItemRecurrenceContractCollection',
+
 		//Models
 		contractModel						: '../app-patrimoines/js/models/ContractModel',
-		contractLineModel						: '../app-patrimoines/js/models/ContractLineModel',
+		contractLineModel					: '../app-patrimoines/js/models/ContractLineModel',
+		itemRecurrenceContractModel			: '../app-patrimoines/js/models/ItemRecurrenceContractModel',
 		
 		//Views
 		contractsListView					: '../app-patrimoines/js/views/lists/ContractsListView',
@@ -23,6 +25,7 @@ requirejs.config({
 		formContractView					: '../app-patrimoines/js/views/forms/FormContractView',
 		formContractGeneralView				: '../app-patrimoines/js/views/forms/FormContractGeneralView',
 		formContractLineView				: '../app-patrimoines/js/views/forms/FormContractLineView',
+		formItemRecurrenceView				: '../app-patrimoines/js/views/forms/FormItemRecurrenceView',
 	}
 
 });

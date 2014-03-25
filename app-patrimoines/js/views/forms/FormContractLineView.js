@@ -8,8 +8,10 @@ define(['app',
 		'appHelpers',
 		'contractLineModel',
 		'contractLinesCollection',
+		'itemRecurrenceContractCollection',
 		
 		'genericFormView',
+		'formItemRecurrenceView',
 		'advancedSelectBoxView',
 		
 		'moment',
@@ -19,7 +21,7 @@ define(['app',
 		'bsSwitch'
 		
 
-], function (app, AppHelpers, ContractLineModel, ContractLinesCollection, GenericFormView, AdvancedSelectBoxView, moment) {
+], function (app, AppHelpers, ContractLineModel, ContractLinesCollection, ItemRecurrenceContractCollection, GenericFormView, FormItemRecurrenceView, AdvancedSelectBoxView, moment) {
 
 	'use strict';
 
@@ -88,6 +90,16 @@ define(['app',
 					});
 					$(self.el).find('#recurrenceForm').html(templateRecurrence);
 					GenericFormView.prototype.render.apply(self);
+					var taskCollection = new ItemRecurrenceContractCollection();
+					var task_ids = self.model.getAttribute('occurrence_ids',[]);
+					if(task_ids.length > 0){
+						taskCollection.fetch({data: {filters: {1: {field:'id', operator:'in', value:task_ids}}}}).done(function(){
+							taskCollection.each(function(task){
+								var taskView = new FormItemRecurrenceView({model:task});
+								$(self.el).find('.tasks-items').append(taskView.el);
+							});
+						});
+					}
 				});
 			});
 			return this;
