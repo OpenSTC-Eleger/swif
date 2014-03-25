@@ -9,13 +9,10 @@ define([
 	'appHelpers',
 	'itemRecurrenceContractModel',
 	'genericItemView',
-	'formContractView',
-	'modalDeleteView',
-	
-	'moment'
 
 
-], function(app, AppHelpers, ItemRecurrenceContractModel, GenericItemView, FormContractView, ModalDeleteView, moment){
+
+], function(app, AppHelpers, ItemRecurrenceContractModel, GenericItemView){
 
 	'use strict';
 
@@ -37,7 +34,6 @@ define([
 		/** View Initialization
 		*/
 		initialize: function (params) {
-			var self = this;
 			this.options = params;
 			if(!this.model){
 				this.model = new ItemRecurrenceContractModel();

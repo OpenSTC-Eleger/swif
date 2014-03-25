@@ -4,6 +4,7 @@
 	<div class="input-group">
 <% } %>
 	<select type="text" id="<%= field.fieldName %>" data-multiple='true' class="form-control field-element">
+	<option value=""></option>
 	<% _.each(field.definition.selection, function(item){ %>
 		<option value="<%= item[0]%>" <%= field.value == item[0] ? 'selected': ''%>><%= item[1]%></option>
 	<% });%>

@@ -30,7 +30,7 @@ define([
 			
 		],
 		readonlyFields: ['internal_inter', 'id'],
-		relatedFields: ['technical_service_id', 'supplier_id', 'internal_inter'],
+		relatedFields: ['technical_service_id', 'supplier_id', 'internal_inter', 'occurrence_ids'],
 		
 		getUserMainAction: function(){
 			var ret = '';

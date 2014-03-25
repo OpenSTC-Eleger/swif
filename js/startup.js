@@ -136,6 +136,7 @@ requirejs.config({
 		itemEquipmentView       : 'views/items/ItemEquipmentView',
 		itemClaimerTypeView     : 'views/items/ItemClaimerTypeView',
 		itemUserView            : 'views/items/ItemUserView',
+		genericItemView			: 'views/items/GenericItemView',
 
 		// Modals //
 		genericModalView        : 'views/modals/GenericModalView',

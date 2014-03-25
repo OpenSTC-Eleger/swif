@@ -1,5 +1,3 @@
-'agent_or_team_name'
-
 define([
 	'app',
 	'appHelpers',
@@ -18,9 +16,9 @@ define([
 		
 		urlRoot: '/api/openstc/tasks',
 
-		fields: ['id', 'name','date_deadline', 'state', 'user_id', 'team_id'],
+		fields: ['id', 'name', 'date_deadline', 'state', 'agent_or_team_name', 'user_id', 'team_id'],
 		
-		readonlyFields: ['data_deadline', 'id', 'state'],
+		readonlyFields: ['date_deadline', 'id', 'state'],
 		
 		searchable_fields: [
 			{
