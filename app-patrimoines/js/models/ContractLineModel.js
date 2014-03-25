@@ -16,7 +16,7 @@ define([
 		
 		urlRoot: '/api/openpatrimoine/contract_lines',
 
-		fields: ['id', 'name', 'is_team', 'agent_id', 'team_id', 'internal_inter', 'technical_service_id', 'planned_hours', 'task_categ_id' ,'supplier_cost', "recur_periodicity" ,"recur_week_monday" ,"recur_week_tuesday", "recur_week_wednesday", "recur_week_thursday", "recur_week_friday" ,"recur_week_saturday" ,"recur_week_sunday", "recur_month_type", "recur_month_absolute", "recur_month_relative_weight", "recur_month_relative_day", "recur_type date_start", "recur_length_type", "date_end recur_occurrence_nb", "occurrence_ids"],
+		fields: ['id', 'name', 'is_team', 'agent_id', 'team_id', 'internal_inter', 'technical_service_id', 'planned_hours', 'task_categ_id' ,'supplier_cost', 'recur_periodicity' ,'recur_week_monday' ,'recur_week_tuesday', 'recur_week_wednesday', 'recur_week_thursday', 'recur_week_friday' ,'recur_week_saturday' ,'recur_week_sunday', 'recur_month_type', 'recur_month_absolute', 'recur_month_relative_weight', 'recur_month_relative_day', 'recur_type date_start', 'recur_length_type', 'date_end recur_occurrence_nb', 'occurrence_ids'],
 
 		searchable_fields: [
 			{
