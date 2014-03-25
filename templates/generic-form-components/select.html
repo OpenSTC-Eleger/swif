@@ -1,11 +1,19 @@
 <% var key = field.fieldNameYes + '_' + field.fieldNameNo; %>
 <label for="<%= key %>" class="control-label col-sm-3"><%= _.capitalize(field.fieldLabel) %></label>
 <div class="col-sm-9">
+<% if(field.fieldAddon){ %>
+	<div class="input-group">
+<% } %>
 
 	<input class="select2 field-element" id="<%= field.fieldName %>" 
 	<%= field.definition.type == 'many2one' ? '' : 'data-multiple="true"' %> 
 	<%= field.value ? 'value="' + field.value[0] + '"' : ''%> 
 	data-url="<%= field.definition.url %>"
 	<%= field.fieldDomain ? 'data-domain="' + field.fieldDomain + '"' : '' %>
-	<%= field.fieldPlaceholder ? 'data-placeholder="' + field.fieldPlaceholder + '"' : '' %> />
+	<%= field.fieldPlaceholder ? 'data-placeholder="' + field.fieldPlaceholder + '"' : '' %>
+	/>
+	<% if(field.fieldAddon){ %>
+		<span class="input-group-addon"><%= field.fieldAddon %></span>
+		</div>
+	<% }%>
 </div>
