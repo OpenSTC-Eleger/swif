@@ -1,4 +1,11 @@
 <label for="<%= field.fieldName %>" class="control-label col-sm-3"><%= _.capitalize(field.fieldLabel) %></label>
 <div class="col-sm-4">
+<% if(field.fieldAddon){ %>
+	<div class="input-group">
+<% } %>
 	<input type="number" id="<%= field.fieldName %>" name="<%= field.fieldName %>" class="form-control field-element" value="<%= field.value ? field.value : '' %>" <%= field.fieldPlaceholder ? 'data-placeholder="' + field.fieldPlaceholder + '"' : '' %> />
+	<% if(field.fieldAddon){ %>
+		<span class="input-group-addon"><%= field.fieldAddon %></span>
+		</div>
+	<% }%>
 </div>
