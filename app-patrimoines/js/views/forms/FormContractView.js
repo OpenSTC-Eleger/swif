@@ -35,7 +35,10 @@ define(['app',
 		// The DOM events //
 		events: {
 			'click #addLine'				: 'actionAddLine',
-			'submit #formSaveModel'			: 'saveForm'
+			'click .removeLineHeader'		: 'actionRemoveLine',
+			'submit #formSaveModel'			: 'savePostForm',
+			'click #saveDraftFormContract'	: 'saveDraftForm',
+			'click #updateDraftForm'		: 'setDraftForm'
 		},
 		
 		/** View Initialization
@@ -45,7 +48,7 @@ define(['app',
 			var self = this;
 			this.options = arguments[0];
 			this.generalView = null;
-			this.linesViews = [];
+			this.linesViews = {};
 			this.initModel().done(function(){
 				app.router.render(self);
 			});
@@ -70,6 +73,10 @@ define(['app',
 		renderTabs: function(){
 			$('#lines .tab-pane').last().addClass('in active');
 			$('.lineHeader:last').tab('show');
+			$('.removeLineHeader').remove();
+			$('.lineHeader').each(function(){
+				$(this).append('<a class="removeLineHeader" href="#" data-view="' + $(this).attr('href').replace('#','') + '"><b> &times; </b></a>');
+			});
 		},
 		
 		/** Display the view
@@ -96,6 +103,7 @@ define(['app',
 					pageTitle	: pageTitle,
 					readonly	: false,
 					moment		: moment,
+					contract	: self.model,
 					user		: app.current_user
 				});
 
@@ -131,17 +139,51 @@ define(['app',
 		/**
 		 * Dispatch save to all sub-models on this view
 		 */
-		saveForm: function(e){
+		saveForm: function(e, stayOnForm, todo){
 			e.preventDefault();
 			var self = this;
+			var deferredArray = [];
 			//trigger "save" event of the general view
 			this.formGeneralView.saveForm(e).done(function(){
 				//trigger "save" event for each lineView attached to this one
 				_.each(self.linesViews, function(lineView){
 					lineView.model.set({contract_id: self.formGeneralView.model.getId()});
-					lineView.saveForm(e);
+					deferredArray.push(lineView.saveForm(e));
 				});
-				window.history.back();
+				$.when.apply($,deferredArray).then(function(){
+					deferredArray = [];
+					if(todo){
+						deferredArray.push(self.model.save(todo, {wait:true, patch:true}));
+					}
+					$.when.apply($, deferredArray).done(function(){
+						if(stayOnForm){
+							self.model.fetch().done(function(){
+								self.render();
+							});
+						}
+						else{
+							window.history.back();
+						}
+					});
+				});
+			});
+		},
+		
+		savePostForm: function(e){
+			e.preventDefault();
+			this.saveForm(e, false, {wkf_evolve:'post'});
+		},
+		
+		saveDraftForm: function(e){
+			this.saveForm(e, true);
+		},
+		
+		setDraftForm: function(){
+			var self = this;
+			this.model.save({wkf_evolve:'redraft'}, {patch:true,wait:true}).then(function(){
+				self.model.fetch().done(function(){
+					self.render();
+				});
 			});
 		},
 		
@@ -149,6 +191,21 @@ define(['app',
 			e.preventDefault();
 			this.addLine(null);
 			this.renderTabs();
+		},
+		
+		actionRemoveLine: function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			var toDelete = $(e.currentTarget).data('view');
+			var view = this.linesViews[toDelete];
+			if(view){
+				if(!view.model.isNew()){
+					this.model.addLineToRemove(view.model);
+				}
+				$('.lineHeader[href="#' + toDelete + '"]').remove();
+				view.remove();
+				delete this.linesViews[toDelete];
+			}
 		},
 		
 		/**
@@ -169,13 +226,13 @@ define(['app',
 				idString += 'new_task_' + (this.cptTasks++).toString();
 			}
 			params.id = idString;
-			var html = '<li><a class="lineHeader" data-toggle="tab" href="#' + idString + '"><b>' + name + '</b></li>';
+			var html = '<li><a class="lineHeader" data-toggle="tab" href="#' + idString + '"><b class="title">' + name + '</b></a></li>';
 			$(self.el).find('#linesHeader li:last').hide().fadeIn('slow').before(html);
 			
 			var lineView = new FormContractLineView(params);
-			this.linesViews.push(lineView);
+			this.linesViews[idString] = lineView;
 			$(this.el).find('#lines').append(lineView.el);
-			//$('a[href="#' + idString + '"]').tab('show');
+			
 		},
 		
 	});

@@ -34,18 +34,23 @@ define([
 		
 		getUserMainAction: function(){
 			var ret = '';
-			switch(this.getAttribute('state','')){
-			case 'draft':
-				ret = 'confirm';
-				break;
-			case 'confirm':
-				ret = 'done';
-				break;
-			case 'done':
-				ret = 'extend';
-				break;
-			default:
-				ret = 'confirm';
+			if(this.getAttribute('actions',[]).indexOf('renew') > -1){
+				ret = 'renew';
+			}
+			else{
+				switch(this.getAttribute('state','')){
+				case 'draft':
+					ret = 'confirm';
+					break;
+				case 'confirm':
+					ret = 'done';
+					break;
+				case 'done':
+					ret = 'renew';
+					break;
+				default:
+					ret = 'confirm';
+				}
 			}
 			return ret;
 		},
@@ -87,6 +92,10 @@ define([
 			return ret;
 		},
 		
+		addLineToRemove: function(model){
+			this.linesToRemove.push([2,model.get('id')]);
+		},
+		
 		/**
 		 * to move to GenericCollection
 		 */
@@ -114,6 +123,7 @@ define([
 		saveToBackend: function(){
 			var self = this;
 			var vals = this.getSaveVals();
+			vals.contract_line = this.linesToRemove;
 			var ret = this.save(vals,{patch:!this.isNew(), wait:true}).then(function(data){
 				if(self.isNew()){
 					self.set({id:data});
@@ -126,6 +136,7 @@ define([
 		/** Model Initialization
 		*/
 		initialize: function(){
+			this.linesToRemove = [];
 		},
 	
 	
