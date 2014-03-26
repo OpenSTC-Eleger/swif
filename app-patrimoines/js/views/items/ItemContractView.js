@@ -10,11 +10,11 @@ define([
 	'contractModel',
 	'formContractView',
 	'modalDeleteView',
-	
+	'genericFormModalView',
 	'moment'
 
 
-], function(app, AppHelpers, ContractModel, FormContractView, ModalDeleteView, moment){
+], function(app, AppHelpers, ContractModel, FormContractView, ModalDeleteView, GenericFormModalView, moment){
 
 	'use strict';
 
@@ -32,7 +32,8 @@ define([
 		
 		// The DOM events //
 		events: {
-			'click .actionDelete': 'modalDelete',
+			'click .actionDelete'	: 'modalDelete',
+			'click .actions'		: 'modalConfirm',
 		},
 		
 		/**
@@ -238,6 +239,18 @@ define([
 				model        : this.model,
 				modalTitle   : app.lang.viewsTitles.deleteContract,
 				modalConfirm : app.lang.warningMessages.confirmDeleteContract
+			});
+		},
+		
+		modalConfirm: function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			var action = $(e.currentTarget).data('action');
+		
+			new GenericFormModalView({
+				el			:'#modalView',
+				model		:this.model,
+				action		:action
 			});
 		}
 		
