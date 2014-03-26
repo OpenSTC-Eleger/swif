@@ -88,7 +88,7 @@ define(['app',
 		/**Compute popover value
 		 */
 		popoverValue: function(){
-			if(!this.model.getAvailable() && this.model.getParentBookingModel().hasActions('update')){
+			if(!this.model.getAvailable()){
 				var qty = parseInt(this.model.getAvailableQtity());
 				if(qty < 0){
 					qty = 0;
@@ -108,8 +108,9 @@ define(['app',
 		*/
 		render : function() {
 			var self = this;
-
-			// Retrieve the template //
+			var readonly = this.model.getParentBookingModel().getAttribute('state','draft') != 'draft';
+			var pricingEnabled = this.model.getParentBookingModel().hasActions('update') && app.current_user.isResaManager();
+			// Retrieve the template // 
 			$.get(app.menus.openresa + this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
@@ -117,7 +118,8 @@ define(['app',
 					line	: self.model,
 					bookable: self.model.bookable,
 					linesStat: BookingLineModel.status,
-					user	: app.current_user
+					readonly: readonly,
+					pricingEnabled: pricingEnabled
 				});
 
 				$(self.el).html(template);

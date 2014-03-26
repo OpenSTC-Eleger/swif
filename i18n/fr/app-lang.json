@@ -315,7 +315,8 @@
         "addAttach"         : "Ajouter une pièce jointe",
         "apply"             : "appliquer",
         "unapplyFilter"     : "Enlever le filtre",
-        "sendingMail"		: "Notifications"
+        "sendingMail"		: "Notifications",
+        "back"				: "Retour"
     },
 
     "errorMessages" : {

@@ -439,31 +439,37 @@ define([
 
 			var deferred = $.Deferred();
 			var deferredArray = [];
-
 			this.save(vals,{wait:true,silent:true,patch:!this.isNew()}).done(function(data){
 				if(self.isNew()){
 					self.set({id:data});
 				}
+				console.log('save recurrence');
+				console.log(self);
 				self.fetch({silent:true}).done(function(){
+					//i don't iterate directly with collection because each iteration make changes in collection 
+					//indeed, it removes item with .destroy() so that iterator and length-collection don't match and make bugs
+					_.each(self.occurrencesToRemove.pluck('id'),function(occurrenceIdToRemove){
+						var occurrenceToRemove = self.occurrencesToRemove.get(occurrenceIdToRemove);
+						console.log('delete occurrence : #' + occurrenceToRemove.getId().toString());
+						console.log(occurrenceToRemove);
+						deferredArray.push(occurrenceToRemove.destroy());
+					});
 					self.occurrences.each(function(occurrence){
 						occurrence.setRecurrenceId(self.getId());
 						if(!occurrence.get('is_template')){
 							deferredArray.push(occurrence.saveToBackend());
 						}
-						if(_.isEmpty(deferredArray)){
+					});
+					if(_.isEmpty(deferredArray)){
+						deferred.resolve();
+					}
+					else{
+						$.when.apply($,deferredArray).done(function(){
 							deferred.resolve();
-						}
-						else{
-							$.when.apply($,deferredArray).done(function(){
-								deferred.resolve();
-							}).fail(function(){
-								deferred.reject();
-							});
-						}
-					});
-					self.occurrencesToRemove.each(function(occurrenceToRemove){
-						deferredArray.push(occurrenceToRemove.destroy());
-					});
+						}).fail(function(){
+							deferred.reject();
+						});
+					}
 				}).fail(function(){
 					deferred.reject();
 				});
@@ -489,7 +495,9 @@ define([
 
 		destroyOccurrenceFromBackend: function(model){
 			this.occurrences.remove(model);
-			this.occurrencesToRemove.add(model.clone().off());
+			var modelToRemove = model.clone();
+			modelToRemove.off();
+			this.occurrencesToRemove.add(modelToRemove);
 			model.set({id:null},{silent:true});
 			model.destroy();
 		},

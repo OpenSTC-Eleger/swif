@@ -8,11 +8,11 @@
 
 	<% if ( booking.hasActions('update')) {
 	actions = _.without(actions, 'update') }%>
-<!-- <a href="#app-reservations/nouvelle-reservation/id/<%=booking.getId()%>" class="updateBooking">-->
+ <a href="#app-reservations/nouvelle-reservation/id/<%=booking.getId()%>" class="updateBooking">
 		<%= _.capitalize(_(booking.getName()).escapeHTML()) %>
 
-<!-- </a> -->
-
+ </a>
+	
 	<!-- Interventions action -->
 	<p class="row-actions invisible">
 
@@ -26,7 +26,12 @@
 		var action = BookingModel.actions.cancel;%>
 		&nbsp;<a href="#" class="actions" data-action="<%= action.key%>" data-toggle="modal"><i data-action="<%=action.key%>" class="actions fa <%= action.icon%> fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(action.translation) %>"></i></a>
 		<% } %>
-
+		
+		<% 
+		if(booking.hasActions('post')) {actions = _.without(actions,'post')}
+		if(booking.hasActions('redraft')) {actions = _.without(actions,'redraft')}
+		%>
+		
         <% if (booking.get('invoice_attachment_id') != 0) { %>
         &nbsp;<a target="_blank" href="/api/open_object/portable_documents/<%= booking.get('invoice_attachment_id') %>?token=<%= downloadToken %>" class="buttonDownload"><i class="fa fa-download fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.resa.actions.downloadInvoice) %>"></i></a>
         <% } %>
