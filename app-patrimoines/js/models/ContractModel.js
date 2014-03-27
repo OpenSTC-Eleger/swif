@@ -16,7 +16,7 @@ define([
 		
 		urlRoot: '/api/openpatrimoine/contracts',
 
-		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'technical_service_id', 'supplier_id', 'provider_name', 'patrimoine_is_equipment', 'equipment_id' ,'site_id' ,'patrimoine_name', 'state', 'description', 'deadline_delay', 'type_renewal', 'category_id', 'contract_line', 'contract_line_names'],
+		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'technical_service_id', 'supplier_id', 'provider_name', 'patrimoine_is_equipment', 'equipment_id' ,'site_id' ,'patrimoine_name', 'state', 'description', 'deadline_delay', 'type_renewal', 'category_id', 'contract_line', 'contract_line_names', 'delay_passed'],
 		
 		readonlyFields: ['contract_line_names', 'contract_line', 'id', 'state'],
 		
@@ -34,7 +34,7 @@ define([
 		
 		getUserMainAction: function(){
 			var ret = '';
-			if(this.getAttribute('actions',[]).indexOf('renew') > -1){
+			if(this.getAttribute('delay_passed',false) && this.getAttribute('actions',[]).indexOf('renew') > -1){
 				ret = 'renew';
 			}
 			else{
@@ -153,6 +153,12 @@ define([
 				color				: 'default',
 				icon				: 'fa-thumbs-o-up',
 				translation			: app.lang.closed
+			},
+			wait: {
+				key					: 'wait',
+				color				: 'info',
+				icon				: 'fa-check',
+				translation			: app.lang.wait,
 			},
 			draft: {
 				key					: 'draft',
