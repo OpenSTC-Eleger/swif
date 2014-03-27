@@ -203,6 +203,7 @@ define([
 		render : function() {
 			var self = this;
 			var formUrl = FormContractView.prototype.urlBuilder(this.model.getId());
+			var stateItem = ContractModel.status[this.model.getAttribute('state','draft')];
 			// Retrieve the template //
 			$.get(app.menus.openpatrimoine+this.templateHTML, function(templateData){
 				
@@ -213,7 +214,8 @@ define([
 					contract  : self.model,
 					mainAction: self.model.getUserActions().mainAction,
 					otherActions: self.model.getUserActions().otherActions,
-					formUrl		: formUrl
+					formUrl		: formUrl,
+					stateItem	: stateItem
 				});
 				$(self.el).html(template);
 				self.renderFieldsValues();
