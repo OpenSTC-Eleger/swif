@@ -49,7 +49,7 @@
 		"recurrenteTask"			: "Tâche récurrente",
 		
 		"actions" : {			
-			"addContract"			:"créer un contract",
+			"addContract"			:"créer un contrat",
 			"extendContract"		:"reconduire le contrat",
 			"deleteContract"		:"Supprimer le contrat",
 			"confirmDeleteContract"	:"Confirmer la suppression du contrat",
