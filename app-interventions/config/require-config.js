@@ -76,6 +76,7 @@ requirejs.config({
 		itemTaskDayView                 : '../app-interventions/js/views/items/ItemTaskDayView',
 		modalAddTaskView                : '../app-interventions/js/views/modals/tasks/ModalAddTaskView',
 		modalTaskDayDoneView            : '../app-interventions/js/views/modals/tasks/ModalTaskDayDoneView',
+		multiSelectBoxUsersView         : '../app-interventions/js/views/others/MultiSelectBoxUsersView'
 	}
 
 });

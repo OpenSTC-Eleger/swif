@@ -9,6 +9,7 @@ define([
 
 	'genericModalView',
 	'advancedSelectBoxView',
+	'multiSelectBoxUsersView',
 
 	'tasksCollection',
 	'taskModel',
@@ -24,7 +25,7 @@ define([
 	'moment-timezone',
 	'moment-timezone-data',
 
-], function(app, GenericModalView, AdvancedSelectBoxView, TasksCollection, TaskModel, CategoriesTasksCollection, EquipmentsCollection, PlacesCollection, ClaimersServicesCollection, TeamModel, TeamsCollection, OfficerModel, OfficersCollection, moment){
+], function(app, GenericModalView, AdvancedSelectBoxView, MultiSelectBoxUsersView, TasksCollection, TaskModel, CategoriesTasksCollection, EquipmentsCollection, PlacesCollection, ClaimersServicesCollection, TeamModel, TeamsCollection, OfficerModel, OfficersCollection, moment){
 
 	'use strict';
 
@@ -44,8 +45,6 @@ define([
 			return _.defaults({
 				'submit #formAddTask'         : 'saveTask',
 				'click .linkRefueling'        : 'accordionRefuelingInputs',
-				'change #taskSelectUsersTeams': 'fillOfficerTeam',
-				'click a.linkSelectUsersTeams': 'changeSelectListUsersTeams',
 			},
 			GenericModalView.prototype.events);
 
@@ -107,8 +106,9 @@ define([
 				self.taskEquipmentAddList = new AdvancedSelectBoxView({el:'#taskEquipmentAddList', url: EquipmentsCollection.prototype.url});
 				self.taskEquipmentAddList.render();
 
-				self.selectListOfficersTeamsView = new AdvancedSelectBoxView({el:'#taskSelectUsersTeams', url:  OfficersCollection.prototype.url});
-				self.selectListOfficersTeamsView.render();
+				// Create the view to select the user who have done the task //
+				self.multiSelectBoxUsersView = new MultiSelectBoxUsersView({el: '.multiSelectUsers'});
+
 
 				self.initSearchParams();
 
@@ -179,15 +179,6 @@ define([
 					}
 					var itemToLoad = modelJSON.team_id !== false ? 'teams' : 'officers';
 					self.updateSelectListUsersTeams(itemToLoad);
-					if(modelJSON.team_id !== false){
-						self.selectListOfficersTeamsView.setSelectedItem(modelJSON.team_id);
-						self.changeOfficerTeam(modelJSON.team_id[0]);
-					}
-					else{
-						self.selectListOfficersTeamsView.setSelectedItem(modelJSON.user_id);
-						self.changeOfficerTeam(modelJSON.user_id[0]);
-					}
-
 				}
 			});
 
@@ -204,7 +195,7 @@ define([
 
 			e.preventDefault();
 
-			var mNewDateStart =  moment( $('#startDate').val(), 'DD-MM-YYYY')
+			var mNewDateStart = moment( $('#startDate').val(), 'DD-MM-YYYY')
 									.add('hours',$('#startHour').val().split(':')[0] )
 									.add('minutes',$('#startHour').val().split(':')[1] );
 			var mNewDateEnd =  moment( $('#endDate').val(), 'DD-MM-YYYY')
@@ -237,14 +228,17 @@ define([
 				report_hours   : planned_hours,
 			};
 
-			if($('#taskSelectUsersTeams').data('item') === 'teams'){
+			// TODO retrieve the value of the multiSelectBoxUsersView //
+			var res = self.multiSelectBoxUsersView.getUserType();
+			if(res.type == 'team'){
 				params.user_id = false;
-				params.team_id = this.selectListOfficersTeamsView.getSelectedItem();
+				params.team_id = res.value;
 			}
 			else{
-				params.user_id = this.selectListOfficersTeamsView.getSelectedItem();
 				params.team_id = false;
+				params.user_id = res.value;
 			}
+
 
 			var task_model = new TaskModel(params);
 
@@ -312,49 +306,6 @@ define([
 
 				});
 			}
-		},
-
-
-
-		fillOfficerTeam: function(){
-			this.changeOfficerTeam(this.selectListOfficersTeamsView.getSelectedItem());
-		},
-
-
-
-		updateSelectListUsersTeams: function(itemToLoad){
-			if(itemToLoad === 'officers'){
-				$('#btnSelectUsersTeams > i.iconItem.fa-users').addClass('fa fa-user').removeClass('fa-users');
-				$('#taskSelectUsersTeams').data('item', 'officers');
-				$('#taskSelectUsersTeams').attr('data-placeholder', app.lang.actions.selectAAgentShort);
-
-				this.selectListOfficersTeamsView.setUrl(OfficersCollection.prototype.url);
-				this.selectListOfficersTeamsView.reset();
-				this.selectListOfficersTeamsView.setSearchParam({field:'id',operator:'>',value:'1'}, true);
-				this.selectListOfficersTeamsView.render();
-			}
-			else if(itemToLoad === 'teams'){
-				$('#btnSelectUsersTeams > i.iconItem.fa-user').addClass('fa-users').removeClass('fa-user');
-				$('#taskSelectUsersTeams').data('item', 'teams');
-				$('#taskSelectUsersTeams').attr('data-placeholder', app.lang.actions.selectATeamShort);
-
-				this.selectListOfficersTeamsView.setUrl(TeamsCollection.prototype.url);
-				this.selectListOfficersTeamsView.reset();
-				this.selectListOfficersTeamsView.resetSearchParams();
-				this.selectListOfficersTeamsView.render();
-			}
-		},
-
-
-
-		/** Update the <select> list of Users or Teams in the Modal Task Done
-		*/
-		changeSelectListUsersTeams: function(e){
-			e.preventDefault();
-			var link = $(e.currentTarget);
-
-			// Retrieve the item to refresh - Users or Teams //
-			this.updateSelectListUsersTeams(link.data('item'));
 		},
 
 

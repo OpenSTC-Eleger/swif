@@ -243,23 +243,28 @@ define([
 
 					var ids = _.words(element.val(), ',');
 
-					$.ajax({
-						url    : self.options.url,
-						method : 'GET',
-						data   : {
-							fields  : self.fields,
-							filters : [{ field: 'id', operator: 'in', value: ids }]
-						}
-					}).done(function(data){
 
-						var returnData = [];
+					// Check if some vals are pass //
+					if(!_.isEmpty(ids)){
 
-						_.each(data, function(item){
-							returnData.push({ id: item.id, text: _.titleize(self.getItemText(item).toLowerCase()) });
+						$.ajax({
+							url    : self.options.url,
+							method : 'GET',
+							data   : {
+								fields  : self.fields,
+								filters : [{ field: 'id', operator: 'in', value: ids }]
+							}
+						}).done(function(data){
+
+							var returnData = [];
+
+							_.each(data, function(item){
+								returnData.push({ id: item.id, text: _.titleize(self.getItemText(item).toLowerCase()) });
+							});
+
+							callback(returnData);
 						});
-
-						callback(returnData);
-					});
+					}
 
 				};
 			}
@@ -424,6 +429,12 @@ define([
 
 
 
+		open: function(){
+			this.select2.select2('open');
+		},
+
+
+
 		/** Reset the search Params
 		*/
 		resetSearchParams: function(){
@@ -436,6 +447,14 @@ define([
 		*/
 		setUrl: function(url){
 			this.options.url = url;
+		},
+
+
+
+		/** Set the placeholder
+		*/
+		setPlaceholder: function(placeholder){
+			this.options.placeholder = placeholder;
 		},
 
 
