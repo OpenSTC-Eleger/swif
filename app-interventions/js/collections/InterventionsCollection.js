@@ -23,7 +23,7 @@ define([
 
 		url    : '/api/openstc/interventions',
 
-		fields : ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid', 'create_date', 'ask_id', 'equipment_id', 'has_equipment'],
+		fields : ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid', 'create_date', 'ask_id', 'equipment_id', 'has_equipment', 'todo_tasks'],
 
 		advanced_searchable_fields: [
 			{ key: 'site1',         label: app.lang.place },

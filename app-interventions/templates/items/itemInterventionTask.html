@@ -6,6 +6,13 @@
 			data-original-title="<%= moment(task.date_start).format('LLL') %>" >
 		</i>
 	<% } %>
+	<!-- Display recurrence symbol if task is from a recurrence -->
+	<% if(task.recurrence_id){ %>
+		<i
+			class="fa fa-repeat displayInlineBlock" data-toggle="tooltip"
+			data-original-title="TODO: voir toutes les occurrences" >
+		</i>&nbsp;
+	<% } %>
 	<span class="<%= (task.state == tasksState.done.key ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
 	<span class="nested-objects-actions invisible">
 
