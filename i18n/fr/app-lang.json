@@ -319,7 +319,7 @@
         "apply"             : "appliquer",
         "unapplyFilter"     : "Enlever le filtre",
         "sendingMail"		: "Notifications",
-        "back"				: "Retour"
+        "back"				: "Retour",
         "extendContract"	: "Reconduire le contrat"
 
     },
