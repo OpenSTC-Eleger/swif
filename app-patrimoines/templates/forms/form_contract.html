@@ -2,7 +2,7 @@
 	<h1><%= _.capitalize(pageTitle) %></h1>
 </div>
 
-<% if(contract.getAttribute('state','draft') != 'draft'){ %>
+<% if(contract.getAttribute('state','draft') != 'draft' && contract.getAttribute('actions',[]).indexOf('update') > -1){ %>
 <button class="btn btn-primary" type="button" id="updateDraftForm"><%= lang.patrimoine.actions.setDraftForm %></button>
 <% } %>
 <form id="formSaveModel" action="#" class="form-horizontal container" role="form">
