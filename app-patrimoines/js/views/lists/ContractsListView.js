@@ -65,7 +65,7 @@ define([
 			var self = this;
 			var formUrl = FormContractView.prototype.urlBuilder();
 			// Change the page title //
-			app.router.setPageTitle(app.lang.viewsTitles.categoriesTasksList);
+			app.router.setPageTitle(app.lang.patrimoine.viewsTitles.contractsList);
 
 			// Retrieve the template //
 			$.get(app.menus.openpatrimoine + this.templateHTML, function(templateData){
