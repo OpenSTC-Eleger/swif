@@ -63,20 +63,6 @@ define([
 			return {mainAction: mainAction, otherActions: _.without(actions, mainAction)};
 		},
 		
-		//method to retrieve attribute with standard return form
-		getAttribute: function(key,default_value){
-			var val = this.get(key);
-			if(_.isUndefined(default_value)){
-				default_value = false;
-			}
-			if(!_.isUndefined(val) && val !== '' && val !== false && val !== null){
-				return val;
-			}
-			else{
-				return default_value;
-			}
-		},
-		
 		getId: function(){
 			return this.get('id');
 		},
@@ -95,30 +81,7 @@ define([
 		addLineToRemove: function(model){
 			this.linesToRemove.push([2,model.get('id')]);
 		},
-		
-		/**
-		 * to move to GenericCollection
-		 */
-		getSaveVals: function(){
-			var ret = {};
-			var self = this;
-			if(!_.isUndefined(this.collection)){
-				_.map(this.collection.fieldsMetadata, function(fieldDefinition, fieldName){
-					if(!_.contains(self.readonlyFields, fieldName)){
-						if(fieldDefinition.type == 'many2one'){
-							ret[fieldName] = self.getAttribute(fieldName, [false,''])[0];
-						}
-						else{
-							ret[fieldName] = self.getAttribute(fieldName, false);
-						}
-					}
-				});
-			}
-			else{
-				console.warning('Swif error: Could not save model because not any collection is linked with, and so can not retrieve metadata fields.');
-			}
-			return ret;
-		},
+
 		
 		saveToBackend: function(){
 			var self = this;
@@ -192,7 +155,7 @@ define([
 				key					: 'done',
 				color				: 'default',
 				icon				: 'fa-thumbs-o-up',
-				translation			: app.lang.actions.closed
+				translation			: app.lang.actions.close
 			},
 			renew: {
 				key					: 'renew',
