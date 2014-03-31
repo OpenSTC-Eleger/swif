@@ -73,19 +73,18 @@ define([
 			app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.absentTypeDeleteOk);
 		},
 
-
-
 		/** Display the view
 		*/
 		render : function() {
 			var self = this;
 			// Retrieve the template //
+			var stateItem = ItemRecurrenceContractModel.status[this.model.getAttribute('state','draft')];
 			$.get(app.menus.openpatrimoine+this.templateHTML, function(templateData){
 								
 				var template = _.template(templateData, {
 					lang        : app.lang,
-					task  : self.model,
-					
+					task		: self.model,
+					stateItem	: stateItem
 				});
 				$(self.el).html(template);
 				GenericItemView.prototype.render.apply(self);
