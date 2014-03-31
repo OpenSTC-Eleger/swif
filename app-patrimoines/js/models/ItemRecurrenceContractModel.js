@@ -61,7 +61,26 @@ define([
 	}, {
 		// Request State Initialization //
 		status : {
-
+			draft: {
+				key         : 'draft', // To Schedule //
+				color       : 'warning',
+				translation : app.lang.toScheduled
+			},
+			open: {
+				key         : 'open', // Scheduled //
+				color       : 'info',
+				translation : app.lang.planningFenced
+			},
+			done: {
+				key         : 'done', // Finish //
+				color       : 'success',
+				translation : app.lang.finished
+			},
+			cancelled: {
+				key         : 'cancelled', // cancel //
+				color       : 'danger',
+				translation : app.lang.cancelled
+			},
 		},
 		
 			// Actions of the requests //
