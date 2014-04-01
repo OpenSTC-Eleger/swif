@@ -32,7 +32,7 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'click a.modalCreateContract' : 'modalCreateContract',
+				'click a.createModel' : 'moveToForm',
 			},
 				GenericListView.prototype.events
 			);
@@ -64,7 +64,6 @@ define([
 		*/
 		render: function () {
 			var self = this;
-			var formUrl = FormContractView.prototype.urlBuilder();
 			// Change the page title //
 			app.router.setPageTitle(app.lang.patrimoine.viewsTitles.contractsList);
 
@@ -72,8 +71,7 @@ define([
 			$.get(app.menus.openpatrimoine + this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang  : app.lang,
-					nbContracts: self.collection.cpt,
-					formUrl: formUrl
+					nbContracts: self.collection.cpt
 				});
 
 				$(self.el).html(template);
@@ -93,15 +91,10 @@ define([
 			return this;
 		},
 
-		/** Modal form to create a new Cat
-		*/
-//		modalCreateCat: function(e){
-//			e.preventDefault();
-//
-//			app.views.modalCategoryTaskView = new ModalCategoryTaskView({
-//				el  : '#modalSaveCat'
-//			});
-//		},
-
+		moveToForm: function(e){
+			e.preventDefault();
+			app.router.navigate(FormContractView.prototype.urlBuilder(), {trigger:true, replace:true});
+		}
+		
 	});
 });
