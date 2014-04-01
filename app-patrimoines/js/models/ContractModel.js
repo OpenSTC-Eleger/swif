@@ -35,22 +35,23 @@ define([
 		
 		getUserMainAction: function(){
 			var ret = '';
-			if(this.getAttribute('delay_passed',false) && this.getAttribute('actions',[]).indexOf('renew') > -1){
+			if(this.getAttribute('delay_passed',false) && this.getAttribute('actions',[]).indexOf('close') > -1){
+				ret = 'close';
+			}
+			else if(this.getAttribute('warning_delay',false) && this.getAttribute('actions',[]).indexOf('renew') > -1){
 				ret = 'renew';
 			}
+			
 			else{
 				switch(this.getAttribute('state','')){
-				case 'draft':
+				case 'wait':
 					ret = 'confirm';
 					break;
 				case 'confirm':
-					ret = 'done';
-					break;
-				case 'done':
 					ret = 'renew';
 					break;
 				default:
-					ret = 'confirm';
+					ret = 'close';
 				}
 			}
 			return ret;
@@ -152,17 +153,24 @@ define([
 				translation			: app.lang.actions.validate
 			},
 			
-			done: {
-				key					: 'done',
-				color				: 'default',
-				icon				: 'fa-thumbs-o-up',
-				translation			: app.lang.actions.close
-			},
+//			done: {
+//				key					: 'done',
+//				color				: 'default',
+//				icon				: 'fa-thumbs-o-up',
+//				translation			: app.lang.actions.close
+//			},
 			renew: {
 				key					: 'renew',
-				color				: 'info',
-				icon				: 'fa-pencil',
+				color				: 'default',
+				icon				: 'fa-repeat',
 				translation			: app.lang.actions.extendContract
+			},
+			
+			close: {
+				key					: 'close',
+				color				: 'default',
+				icon				: 'fa-archive',
+				translation			: app.lang.actions.close
 			},
 			
 			foo: {

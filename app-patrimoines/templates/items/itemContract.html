@@ -14,8 +14,17 @@
 
 <td class="field" data-fieldname="date_start_order"></td>
 
-<td class="field" data-fieldname="date_end_order"></td>
+<td><span class="field" data-fieldname="date_end_order"></span>
+<% if(contract.getAttribute('state','draft') != 'done'){ %>
+	&nbsp;<% if(contract.getAttribute('delay_passed',false)){ %>
+		<i class="fa fa-warning fa-lg text-danger" data-toggle="tooltip" data-original-title="<%= lang.patrimoine.delayPassed %>"></i>
+	<% }else if(contract.getAttribute('warning_delay',false)){ %>
+		<i class="fa fa-warning fa-lg text-default" data-toggle="tooltip" data-original-title="<%= lang.patrimoine.delayNeartoPass %>"></i>
+	<% } %>
+<% } %>
+</td>
 
-<td><span class="label label-<%= stateItem.color %>" data-toggle="tooltip" data-original_title=""><%= stateItem.translation %></span></td>
+<td><span class="label label-<%= stateItem.color %>" data-toggle="tooltip" data-original_title=""><%= stateItem.translation %></span>
+</td>
 
-<td class="button-actions" data-actions="draft,confirm,renew,done" data-main-action="<%= mainAction%>"></td>
+<td class="button-actions" data-actions="draft,confirm,renew,close" data-main-action="<%= mainAction%>"></td>

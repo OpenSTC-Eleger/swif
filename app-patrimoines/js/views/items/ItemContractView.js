@@ -24,8 +24,11 @@ define([
 
 		className    : function(){
 			var ret = 'row-item';
-			if(this.model.getAttribute('warning_delay',false)){
-				ret += ' info';
+			if(this.model.getAttribute('state','draft') == 'done'){
+				ret += ' text-muted';
+			}
+			else if(this.model.getAttribute('warning_delay',false)){
+				ret += ' bolder';
 			}
 			return ret;
 		},
@@ -83,7 +86,7 @@ define([
 						value = self.classModel.actions[action];
 					}
 					else{
-						console.warning('Error, action "' + action + '" not present in model definition, please implement it in actions model attribute');
+						console.warn('Error, action "' + action + '" not present in model definition, please implement it in actions model attribute');
 					}
 				}
 				return value;

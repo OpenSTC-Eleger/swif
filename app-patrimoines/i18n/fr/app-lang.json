@@ -47,6 +47,8 @@
 		"fourth"					: "Quatrième",
 		"last"						: "Dernier",
 		"recurrenteTask"			: "Tâche récurrente",
+		"delayPassed"				: "Le délai de rétractaction a expiré",
+		"delayNeartoPass"			: "Le délai de rétractaction va bientôt expirer",
 		
 		"actions" : {			
 			"addContract"			:"créer un contrat",

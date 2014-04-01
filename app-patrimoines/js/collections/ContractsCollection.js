@@ -30,7 +30,8 @@ define([
             {key: 'technical_service_id', label:app.lang.technicalService},
             {key: 'supplier_id', label:app.lang.supplier},
             {key: 'date_start_order', label:app.lang.dateStart},
-            {key: 'date_end_order', label:app.lang.dateEnd}
+            {key: 'date_end_order', label:app.lang.dateEnd},
+            {key: 'state', label:app.lang.state}
 		],
 
 
