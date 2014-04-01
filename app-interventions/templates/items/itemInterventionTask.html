@@ -8,10 +8,10 @@
 	<% } %>
 	<!-- Display recurrence symbol if task is from a recurrence -->
 	<% if(task.recurrence_id){ %>
-		<i
+		<a href="#" class="modalRecurrenceDetails"><i
 			class="fa fa-repeat displayInlineBlock" data-toggle="tooltip"
 			data-original-title="TODO: voir toutes les occurrences" >
-		</i>&nbsp;
+		</i></a>&nbsp;
 	<% } %>
 	<span class="<%= (task.state == tasksState.done.key ? 'isCheck' : '') %>"><%= task.name %></span>&nbsp;
 	<span class="nested-objects-actions invisible">

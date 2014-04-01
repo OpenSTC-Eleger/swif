@@ -26,6 +26,7 @@ requirejs.config({
 		// Models //
 		requestModel                	: '../app-interventions/js/models/RequestModel',
 		taskModel                   	: '../app-interventions/js/models/TaskModel',
+		taskRecurrenceModel             : '../app-interventions/js/models/TaskRecurrenceModel',
 		taskSchedulesModel          	: '../app-interventions/js/models/TaskSchedulesModel',
 		categoryRequestModel        	: '../app-interventions/js/models/CategoryRequestModel',
 		categoryTaskModel           	: '../app-interventions/js/models/CategoryTaskModel',
@@ -70,12 +71,14 @@ requirejs.config({
 		modalInterventionAddTaskView    : '../app-interventions/js/views/modals/interventions/ModalInterventionAddTaskView',
 		modalCancelTaskView             : '../app-interventions/js/views/modals/interventions/ModalCancelTaskView',
 		modalTaskDoneView               : '../app-interventions/js/views/modals/interventions/ModalTaskDoneView',
-
+		modalRecurrenceTaskView			: '../app-interventions/js/views/modals/interventions/ModalRecurrenceTaskView',
+		modalRecurrenceTaskItemView		: '../app-interventions/js/views/modals/interventions/ModalRecurrenceTaskItemView',
+		
 		tasksListView                   : '../app-interventions/js/views/lists/TasksListView',
 		itemTaskDayListView             : '../app-interventions/js/views/items/ItemTaskDayListView',
 		itemTaskDayView                 : '../app-interventions/js/views/items/ItemTaskDayView',
 		modalAddTaskView                : '../app-interventions/js/views/modals/tasks/ModalAddTaskView',
-		modalTaskDayDoneView            : '../app-interventions/js/views/modals/tasks/ModalTaskDayDoneView',
+		modalTaskDayDoneView            : '../app-interventions/js/views/modals/tasks/ModalTaskDayDoneView'
 	}
 
 });

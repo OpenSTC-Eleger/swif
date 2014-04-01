@@ -22,7 +22,7 @@ define([
 
 		url         : '/api/openstc/tasks',
 
-		fields      : ['id', 'name', 'site1','actions','absent_type_id', 'category_id', 'date_end', 'date_start', 'effective_hours', 'equipment_ids', 'equipment_names', 'km', 'oil_price', 'oil_qtity', 'planned_hours', 'project_id', 'inter_desc', 'remaining_hours', 'state', 'team_id', 'total_hours', 'user_id', 'inter_equipment', 'recurrence_id'],
+		fields      : ['id', 'name', 'site1','actions','absent_type_id', 'category_id', 'date_end', 'date_start', 'effective_hours', 'equipment_ids', 'equipment_names', 'km', 'oil_price', 'oil_qtity', 'planned_hours', 'project_id', 'inter_desc', 'remaining_hours', 'state', 'team_id', 'total_hours', 'user_id', 'inter_equipment', 'date_deadline', 'recurrence_id' ,'agent_or_team_name'],
 
 		default_sort: { by: 'date_start', order: 'ASC' },
 
