@@ -33,6 +33,7 @@ define([
             {key: 'date_end_order', label:app.lang.dateEnd}
 		],
 
+
 		/** Get the number of Booking that the user have to deal
 		*/
 		specialCount: function(){

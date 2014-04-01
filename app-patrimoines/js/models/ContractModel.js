@@ -31,7 +31,6 @@ define([
 				type : 'text',
 				label: 'Libellé'
 			}
-			
 		],
 		
 		getUserMainAction: function(){

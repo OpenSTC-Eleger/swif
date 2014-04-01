@@ -323,7 +323,6 @@
         "sendingMail"		: "Notifications",
         "back"				: "Retour",
         "extendContract"	: "Reconduire le contrat"
-
     },
 
     "errorMessages" : {
