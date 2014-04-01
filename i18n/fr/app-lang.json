@@ -236,6 +236,8 @@
     "equalTo"                               : "égal à",
     "differentFrom"                         : "différent de",
     "activeFilter"                          : "Filtre actif",
+    "agentOrTeam"							: "Agent / Equipe",
+    "supplier"								: "Fournisseur",
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
     "monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
@@ -499,6 +501,7 @@
         "updateBooking"          : "Modifier Réservation",
         "usersList"              : "Liste des utilisateurs",
         "resetPassword"          : "Réinitialisation du mot de passe",
-        "saveFilter"             : "Enregistrement du filtre"
+        "saveFilter"             : "Enregistrement du filtre",
+        "taskOcurrences"         : "Tâches de la récurrence"
     }
 }

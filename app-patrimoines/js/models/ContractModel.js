@@ -23,11 +23,13 @@ define([
 		searchable_fields: [
 			{
 				key  : 'id',
-				type : 'numeric'
+				type : 'numeric',
+				label: 'N°'
 			},
 			{
 				key  : 'name',
-				type : 'text'
+				type : 'text',
+				label: 'Libellé'
 			}
 			
 		],

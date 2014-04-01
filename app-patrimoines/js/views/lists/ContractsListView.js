@@ -41,6 +41,7 @@ define([
 		/** View Initialization
 		*/
 		initialize: function() {
+			this.buttonAction = app.lang.patrimoine.actions.addContract;
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new ContractsCollection(); }
 			
