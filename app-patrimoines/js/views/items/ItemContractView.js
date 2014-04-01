@@ -22,7 +22,13 @@ define([
 
 		tagName      : 'tr',
 
-		className    : 'row-item',
+		className    : function(){
+			var ret = 'row-item';
+			if(this.model.getAttribute('warning_delay',false)){
+				ret += ' info';
+			}
+			return ret;
+		},
 
 		templateHTML : '/templates/items/itemContract.html',
 		templateSmallActionHTML : '/templates/others/templateSmallActionComponent.html',
