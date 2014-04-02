@@ -50,6 +50,7 @@
 		"delayPassed"				: "Le délai de rétractaction a expiré",
 		"delayNeartoPass"			: "Le délai de rétractaction va bientôt expirer",
 		
+		
 		"actions" : {			
 			"addContract"			:"créer un contrat",
 			"extendContract"		:"reconduire le contrat",
@@ -57,7 +58,10 @@
 			"confirmDeleteContract"	:"Confirmer la suppression du contrat",
 			"setDraftForm"			:"Modifier",
 			"savePost"				:"Enregistrer et soumettre le contrat",
-			"saveDraft"				:"Enregistrer"
+			"saveDraft"				:"Enregistrer",
+			"confirm"				:"Valider la confirmation du contrat",
+			"renew"					:"Valider la reconduction du contrat",
+			"close"					:"Valider la clôture du contract"
 		},
 		
 		"infoMessages" : {

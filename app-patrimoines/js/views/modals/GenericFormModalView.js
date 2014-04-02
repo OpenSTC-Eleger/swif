@@ -100,7 +100,8 @@ define(['app',
 					readonly	: false,
 					moment		: moment,
 					user		: app.current_user,
-					action		: self.action
+					action		: self.action,
+					model		: self.model
 				});
 
 				$(self.el).html(template);
