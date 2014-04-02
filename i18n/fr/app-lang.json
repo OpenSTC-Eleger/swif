@@ -238,6 +238,12 @@
     "activeFilter"                          : "Filtre actif",
     "agentOrTeam"							: "Agent / Equipe",
     "supplier"								: "Fournisseur",
+    "first"									: "Premier",
+    "second"								: "Deuxième",
+    "third"									: "Troisième",
+    "fourth"								: "Quatrième",
+    "last"									: "Dernier",
+    
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
     "monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],

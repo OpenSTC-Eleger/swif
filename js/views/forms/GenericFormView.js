@@ -84,7 +84,7 @@ define(['app',
 					//all is correctly set on html markup, now load the html template and parse it to render the component
 					var parser = self.formFieldParser[fieldData.definition.type];
 					$.get(parser, function(template){
-						dom.html(_.template(template, _.extend(self.templatesBinding,{ field:fieldData})));
+						dom.html(_.template(template, _.extend(self.templatesBinding,{ field:fieldData, lang:app.lang})));
 						deferred.resolve();
 					});
 				}
