@@ -18,7 +18,7 @@ define([
 
 		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'provider_name', 'patrimoine_is_equipment', 'patrimoine_name', 'state', 'description', 'deadline_delay', 'type_renewal', 'category_id', 'delay_passed', 'warning_delay'],
 
-		default_sort: { by: 'id', order: 'DESC' },
+		default_sort: { by: 'state_order', order: 'ASC' },
 		
 		specialCpt : 0,
 		
