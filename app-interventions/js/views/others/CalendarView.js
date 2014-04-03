@@ -6,6 +6,7 @@
 
 define([
 	'app',
+	'appHelpers',
 
 	'tasksCollection',
 
@@ -17,12 +18,14 @@ define([
 	'modalUnplanTaskView',
 
 	'fullcalendar',
-	'moment'
+	'moment',
+	'tabsContainerView'
 
-], function(app,
+], function(app, AppHelpers,
 				TasksCollection,
 				TaskModel, TaskSchedulesModel,
-				PrintingCalendarView, ModalAbsentTaskView, ModalUnplanTaskView, fullcalendar, moment){
+				PrintingCalendarView, ModalAbsentTaskView, ModalUnplanTaskView, fullcalendar, moment,
+				TabsContainerView){
 
 	'use strict';
 
@@ -45,12 +48,9 @@ define([
 		events: {
 			'click .fc-button-prev'                    : 'previousDate',
 			'click .fc-button-next'                    : 'nextDate',
-			'click #listAgents li a, #listTeams li a'  : 'selectPlanning',
-
-			'keyup #searchOfficerOrTeam'                : 'searchOfficerOrTeam'
 		},
 
-		urlParameters : ['officer', 'team', 'year', 'week'],
+		urlParameters : ['officer', 'team', 'provider', 'year', 'week'],
 
 
 		/**
@@ -62,42 +62,11 @@ define([
 			var self = this;
 
 			this.collections = this.options.collections;
-
-
-			// Initialize year,week parameters if not yet in url with current year/week (for prev/next button on calendar)
+			
 			if(_.isUndefined(this.options.year)) {
 				this.options.year = moment().year();
 				this.options.week = moment().week();
 			}
-
-			if(!_.isUndefined(this.options.team)) {
-				//get team model selected on calendar
-				this.teamMode = true;
-				this.model = _.find(this.collections.teams, function (o) {
-					return o.id == self.options.team;
-				});
-			} else {
-				//get officer model selected on calendar
-				if(_.isUndefined(this.options.officer)) {
-					this.model = this.collections.officers[0];
-					// Initialize first officer in tab if no officer passed in url
-					this.options.officer = this.model.id;
-					app.router.navigate(self.urlBuilder(), {trigger: false, replace: true});
-				}
-				else{
-					this.model = _.find(this.collections.officers, function (o) {
-						return o.id == self.options.officer;
-					});
-				}
-			}
-
-			//DOM element id for calendar with model
-			this.divCalendar = 'div#calendar_' + this.model.id;
-
-			if( !_.isUndefined(app.views.printingCalendarView) ){
-				app.views.printingCalendarView.close();
-			}
-
 		},
 
 
@@ -105,6 +74,11 @@ define([
 		*/
 		render: function() {
 			var self = this;
+			
+			this.model = app.views.tabsContainerView.getSelectedModel();
+			
+			//DOM element id for calendar with model
+			this.divCalendar = 'div#calendar_' +  this.model.id;
 
 			// Retrieve the template //
 			$.get(app.menus.openstc+this.templateHTML, function(templateData){
@@ -119,29 +93,7 @@ define([
 				// Init calendar
 				var momentDate = moment().year(self.options.year).week(self.options.week);
 				self.initCalendar(momentDate);
-
-
-				$('#searchOfficerOrTeam').focus();
-
-				$('*[data-toggle="popover"]').popover({trigger: 'hover', delay: { show: 400, hide: 100 }});
-
-
-				if(!_.isUndefined(self.options.team)) {
-					// Check if a Team was selected to select the Team Tab
-					$('#allTabs a[data-target="#tab-teams"]').tab('show');
-					// Select team was selected
-					$('a[href$='+self.options.team+']').parent().addClass('active');
-				}
-				// Select officer was selected
-				else if(!_.isUndefined(self.options.officer)) {
-					// Check if a Team was selected to select the Team Tab
-					$('#allTabs a[data-target="#tab-agents"]').tab('show');
-					// Select first officer
-					$('#pOfficer_'+self.options.officer).parent().addClass('active');
-				}
-				else{
-					$('#listAgents li:first').addClass('active');
-				}
+				
 			});
 
 			return this;
@@ -167,63 +119,6 @@ define([
 			//Add new url in pagination for intervention panel
 			app.views.planningInterListView.paginationRender(this.options);
 		},
-
-		/** Go to planning selected
-		*/
-		selectPlanning: function(e) {
-			e.preventDefault();
-
-			var link = $(e.target);
-			var linkId = link.attr('id');
-
-			this.teamMode = _.str.include( _(linkId).strLeft('_').toLowerCase(), 'officer' ) ? false : true;
-			var calendarName = _(link.attr('href')).strRightBack('/');
-
-			if(this.teamMode) {
-				this.options.team = calendarName;
-				delete this.options.officer;
-			} else {
-				this.options.officer = calendarName;
-				delete this.options.team;
-			}
-
-			app.router.navigate(this.urlBuilder(), {trigger: false, replace: true});
-			this.initialize(this.options);
-			this.render();
-
-			//Add new url in pagination for intervention panel
-			app.views.planningInterListView.paginationRender(this.options);
-
-		},
-
-
-		/** Constructs url for planning
-		*/
-		urlBuilder: function() {
-			var self = this;
-			// Retrieve the baseurl of the view //
-			var moduleName = _(Backbone.history.fragment).strLeft('/');
-
-			var pageUrl = _(_(Backbone.history.fragment).strRight('/')).strLeft('/');
-
-
-			if(pageUrl == app.config.menus.openbase){
-				pageUrl = pageUrl + '/' + _(_(_(Backbone.history.fragment).strRight('/')).strRight('/')).strLeft('/');
-			}
-
-
-			var url = _.join('/', moduleName, pageUrl);
-
-			// Iterate all urlParameters //
-			_.each(this.urlParameters, function(value){
-				// Check if the options parameter aren't undefined or null //
-				if(!_.isUndefined(self.options[value]) && !_.isNull(self.options[value])){
-					url += '/'+value+'/'+self.options[value];
-				}
-			});
-			return url;
-		},
-
 
 
 		/** Init fullcallendar
@@ -295,46 +190,26 @@ define([
 						silent : true,
 						data   : {}
 					};
+					
 
-					var domain = [
-						{ 'field' : 'date_start', 'operator' : '>', 'value' : moment(start).format('YYYY-MM-DD HH:mm:ss') },
-						{ 'field' : 'date_end', 'operator' : '<', 'value' : moment(end).format('YYYY-MM-DD HH:mm:ss')  },
-					];
 
-					if(self.teamMode){
-						var users = app.current_user.getOfficerIdsByTeamId(self.model.id);
-						if( users.length > 0 ){
-							domain.push('|', { 'field' : 'team_id.id', 'operator' : '=', 'value' : self.model.id }, { 'field' : 'user_id.id', 'operator' : 'in', 'value' : users  } );
-						}
-						else{
-							domain.push({ 'field' : 'user_id.id', 'operator' : '=', 'value' : self.model.id });
-						}
-					}
-					else{
-						var teams = app.current_user.getTeamIdsByOfficerId(self.model.id);
-						if( teams.length>0 ){
-							domain.push('|', { 'field' : 'user_id.id', 'operator' : '=', 'value' : self.model.id }, { 'field' : 'team_id.id', 'operator' : 'in', 'value' : teams  });
-						}
-						else{
-							domain.push({ 'field' : 'user_id.id', 'operator' : '=', 'value' : self.model.id });
-						}
-					}
-
-					fetchParams.data.filters = app.objectifyFilters(domain);
+					fetchParams.data.filters = AppHelpers.getPlanningDomain(self.options, self.model, start, end);
 					self.collection = new TasksCollection();
-
-					//Get tasks for domain
-					self.collection.fetch(fetchParams).done(function(){
-						//Transforms tasks in events for fullcalendar
-						self.events = self.fetchEvents();
-						self.collection.off();
-						self.listenTo(self.collection, 'add', self.refreshEvents);
-						self.listenTo(self.collection, 'change', self.refreshEvents);
-						self.listenTo(self.collection, 'remove', self.refreshEvents);
-
-						self.initPrintView();
-						//Display events on calendar
-						callback(self.events);
+					
+					//Get tasks 
+					$.ajax({
+						url: self.collection.url,
+						dataType: 'text',
+						data: fetchParams.data,
+						success: function(events) {
+							self.collection.set(JSON.parse(events));
+							self.listenTo(self.collection, 'add', self.refreshEvents);
+							self.listenTo(self.collection, 'remove', self.refreshEvents);
+							//Adapt data to display in calendar
+							self.events = self.fetchEvents();
+							self.initPrintView();
+							callback(self.events);
+						}
 					});
 				},
 
@@ -343,7 +218,7 @@ define([
 				/** Open leave time modal (Absent task)
 				*/
 				select: function(startDate, endDate, allDay) {
-
+				
 					app.views.modalAbsentTaskView = new ModalAbsentTaskView({
 						el        : '#modalAbsentTask',
 						model     : self.model,
@@ -502,7 +377,7 @@ define([
 				var task = model.toJSON();
 				var interModel = self.collections.interventions.get(model.getIntervention('id'));
 				if( ! _.isUndefined(interModel) ) {
-					self.listenTo(interModel, 'change', self.refreshEvents);
+					self.listenTo(model, 'change', self.refreshEvents);
 				}
 				var actionDisabled = task.state == TaskModel.status.done.key || task.state == TaskModel.status.cancelled.key;
 
@@ -587,49 +462,33 @@ define([
 		refreshEvents: function(){
 			$(this.divCalendar).fullCalendar( 'refetchEvents' );
 		},
-
-
-
-		/** Search officer and Teams //
+		
+		/** Constructs url for planning
 		*/
-		searchOfficerOrTeam: function(){
+		urlBuilder: function() {
+			var self = this;
+			// Retrieve the baseurl of the view //
+			var moduleName = _(Backbone.history.fragment).strLeft('/');
 
-			var search = $('#searchOfficerOrTeam').val().toLowerCase();
-
-
-			// If the term is not empty //
-			if(!_.isEmpty(search)){
-
-				_.each($('#listAgents li'), function(a){
-
-					if(!_.str.include($(a).data('name'), search)){
-						$(a).fadeOut('fast').addClass('thide');
-					}
-					else{
-						$(a).fadeIn('fast').removeClass('thide');
-					}
-				});
+			var pageUrl = _(_(Backbone.history.fragment).strRight('/')).strLeft('/');
 
 
-				_.each($('#listTeams li'), function(a){
-
-					if(!_.str.include($(a).data('name'), search)){
-						$(a).fadeOut('fast').addClass('thide');
-					}
-					else{
-						$(a).fadeIn('fast').removeClass('thide');
-					}
-				});
-			}
-			else{
-				$('#listAgents li').fadeIn().removeClass('thide');
-				$('#listTeams li').fadeIn().removeClass('thide');
+			if(pageUrl == app.config.menus.openbase){
+				pageUrl = pageUrl + '/' + _(_(_(Backbone.history.fragment).strRight('/')).strRight('/')).strLeft('/');
 			}
 
-			$('#nbOfficersDisplay').html($('#listAgents li:not(.thide)').size());
-			$('#nbTeamsDisplay').html($('#listTeams li:not(.thide)').size());
 
-		}
+			var url = _.join('/', moduleName, pageUrl);
+
+			// Iterate all urlParameters //
+			_.each(this.urlParameters, function(value){
+				// Check if the options parameter aren't undefined or null //
+				if(!_.isUndefined(self.options[value]) && !_.isNull(self.options[value])){
+					url += '/'+value+'/'+self.options[value];
+				}
+			});
+			return url;
+		},
 
 	});
 

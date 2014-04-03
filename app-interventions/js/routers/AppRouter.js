@@ -51,9 +51,9 @@ define([
 
 		/** Planning
 		*/
-		planning: function(officer, team, year, week){
+		planning: function(officer, team, provider, year, week){
 
-			var params = this.setContext({officer: officer, team : team, year : year, week : week});
+			var params = this.setContext({officer: officer, team : team, provider : provider, year : year, week : week});
 
 			app.views.planning = new PlanningView(params);
 		},

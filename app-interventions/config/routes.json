@@ -11,7 +11,7 @@
 	},
 
 	"planning": {
-		"url"		: "planning(/officer/:officer)(/team/:team)(/year/:year)(/week/:week)",
+		"url"		: "planning(/officer/:officer)(/team/:team)(/provider/:provider)(/year/:year)(/week/:week)",
 		"function"	: "planning"
 	},
 

@@ -14,9 +14,10 @@ define([
 	'interventionModel',
 
 	'calendarView',
-	'planningInterListView'
+	'planningInterListView',
+	'tabsContainerView'
 
-], function(app, AppHelpers, InterventionsCollection, TasksCollection, InterventionModel, CalendarView, PlanningInterListView ){
+], function(app, AppHelpers, InterventionsCollection, TasksCollection, InterventionModel, CalendarView, PlanningInterListView, TabsContainerView ){
 
 	'use strict';
 
@@ -92,8 +93,14 @@ define([
 				});
 
 				$(self.el).html(template);
+				
+				app.views.tabsContainerView = new TabsContainerView(self.options);
+				$('#tabs').append( app.views.tabsContainerView.render().el );
+
+				
 				//calendar panel
-				$('#calendar').append( new CalendarView(self.options).render().el );
+				app.views.calendarView  = new CalendarView(self.options);
+				
 
 				//interventions left panel
 				app.views.planningInterListView = new PlanningInterListView(self.options);
@@ -112,6 +119,10 @@ define([
 			this.initCollections().done(function(){
 				app.views.planningInterListView.render();
 			});
+		},
+		
+		calendarRender: function(){
+			$('#calendar').append( app.views.calendarView.render().el );
 		},
 
 
