@@ -41,7 +41,7 @@ define([
 				var actions = dom.attr('data-actions').split(',');
 				var ret = '';
 				var self = this;
-				return $.when($.get(app.menus.openpatrimoine+this.templateSmallActionHTML)).done(function(smallActionTemplate){
+				return $.when($.get(app.menus.openstcpatrimoine+this.templateSmallActionHTML)).done(function(smallActionTemplate){
 					_.each(actions, function(action){
 						
 						if(_.contains(self.authorizedActions, action)){
@@ -50,7 +50,7 @@ define([
 								ret += _.template(smallActionTemplate,{action:modelAction});
 							}
 							else{
-								console.warning('Error, action "' + action + '" not present in model definition, please implement it in actions model attribute');
+								console.warn('Error, action "' + action + '" not present in model definition, please implement it in actions model attribute');
 							}
 						}
 					});
@@ -83,7 +83,7 @@ define([
 				var actions = dom.attr('data-actions').split(',');
 				var mainAction = dom.attr('data-main-action');
 				
-				return $.when($.get(app.menus.openpatrimoine+this.templateButtonActionHTML)).done(function(buttonActionTemplate){
+				return $.when($.get(app.menus.openstcpatrimoine+this.templateButtonActionHTML)).done(function(buttonActionTemplate){
 					if(mainAction){
 						//if mainAction present in actions authorized to user, render the component, else, do nothing
 						var modelMainAction = getActionDefinition(mainAction);
@@ -122,6 +122,14 @@ define([
 			return integer.toString();
 		},
 		
+		toStringMany2one: function(value){
+			var ret = '';
+			if(value !== '' && value.length > 0){
+				ret = _.capitalize(value[1]);
+			}
+			return ret;
+		},
+		
 		/**
 		 * render data using data-fieldname and self.fieldsModel to know how to display value
 		 */
@@ -155,7 +163,8 @@ define([
 				char		: _.capitalize,
 				text		: _.capitalize,
 				integer		: this.integerToStr,
-				selection	: _.capitalize
+				selection	: _.capitalize,
+				many2one	: this.toStringMany2one
 			};
 			
 			this.options = params;
