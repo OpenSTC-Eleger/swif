@@ -232,18 +232,16 @@ define('appHelpers', [
 		 * TODO Get Planning domain
 		 */
 		getPlanningDomain: function(options, tabTypes, model, start, end) {
-		    	var tab = null;
-		    	_.any(options, function(value,key){
+			var tab = null;
+			_.any(options, function(value,key){
 				tab =  _.find(tabTypes,function(tab){
 					return tab.key == key;
 				});
 				if(!_.isUndefined(tab)){
-				    return true;
+					return true;
 				}
 			});
-		    	var field = tab.key
-			console.log( field );
-		    
+			//var field = tab.key;
 			var domain = [
 				{ 'field' : 'date_start', 'operator' : '>', 'value' : moment(start).format('YYYY-MM-DD HH:mm:ss') },
 				{ 'field' : 'date_end', 'operator' : '<', 'value' : moment(end).format('YYYY-MM-DD HH:mm:ss')  },

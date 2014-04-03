@@ -191,7 +191,7 @@ define([
 					return tab.key == key;
 				});
 				if( !_.isUndefined(tabSelected) ) {
-					self.modelId = value;					
+					self.modelId = value;
 					return true;
 				}
 				
@@ -285,7 +285,7 @@ define([
 			$('#counter-' + this.tabTypesSelected.key).html($('#list-' + this.tabTypesSelected.key +' li:not(.thide)').size());
 		},
 		
-		getTabTypes: function(e){
+		getTabTypes: function(){
 			return this.tabTypes;
 		},
 
