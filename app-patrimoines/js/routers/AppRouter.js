@@ -2,9 +2,10 @@ define([
 	'app',
 	'moment',
 	'contractsListView',
-	'formContractView'
+	'formContractView',
+	'contractTypesListView'
 
-], function(app, moment, ContractsListView, FormContractView){
+], function(app, moment, ContractsListView, FormContractView, ContractTypesListView){
 
 	'use strict';
 
@@ -25,6 +26,12 @@ define([
 	
 			var params = this.setContext({id: id});
 			app.views.contractFormView = new FormContractView(params);
+		},
+		
+		typeContract: function(search, filter, sort, page){
+			var params = this.setContext({search: search,  filter : filter, sort: sort, page: page});
+
+			app.views.contractTypesListView = new ContractTypesListView(params);
 		}
 	});
 });

@@ -435,7 +435,8 @@
 
 
     "helpMessages": {
-        "aboutNotification"       : "Notifie par email les changements d'états d'une demande/intervention les demandeurs appartenant à cette organisation"
+        "aboutNotification"       : "Notifie par email les changements d'états d'une demande/intervention les demandeurs appartenant à cette organisation",
+        "seeAllOccurrences"			: "voir toutes les occurrences"
     },
 
 

@@ -1,0 +1,82 @@
+<div class="page-header">
+	<h1>
+		<%= lang.patrimoine.viewsTitles.contractTypesList %>
+		<sup id="badge" class="badge"><%= nbContractTypes %></sup>
+	</h1>
+</div>
+
+	<!-- Table toolbar -->
+<div id="headerList" class="tableToolbar row"></div>
+
+	<!-- Table toolbar -->
+
+
+
+	<!-- Check if there is any Categories to display -->
+	<% if(nbContractTypes <= 0) { %>
+
+		<!-- No Absent Type to display -->
+		<div class="alert alert-info">
+			<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.patrimoine.infoMessages.noContractType %>.
+		</div>
+
+	<% } %>
+
+<div id="filter-informations" class="tableToolbar hide">
+	<div class="alert alert-info">
+		<i class="fa fa-filter fa-fw pull-left"></i>
+		<p id="filterContent" class="d-inline"><%= lang.activeFilter %>:</p>
+		<button type="button" class="btn btn-link btn-xs pull-right unapply-filter"><i class="fa fa-eraser fa-fw"></i> <%= lang.actions.unapplyFilter %></button>
+	</div>
+</div>
+
+<!-- Main Row -->
+<div class="row">
+
+	<!-- Advance filter container -->
+	<div id="advanceFilterContainer" class="hide content-sidebar content-sidebar-right">
+		<div class="panel panel-default">
+	
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<%= lang.advanceSearch %>
+					<a href="#" class="pull-right unapply-filter">
+						<i class="fa fa-eraser fa-fw text-muted" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.unapplyFilter) %>"></i>
+					</a>
+				</h4>
+			</div>
+	
+			<div class="panel-body">
+				<!-- Advance filter -->
+				<div id="advanced-filters-bar"></div>
+			</div>
+		</div>
+	</div>
+
+	<div id="contentContainer" class="content-main">
+		<!-- Table Contracts -->
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover table-striped table-sorter">
+				<thead>
+					<tr>
+						<th data-sort-column="name"><%= _.capitalize(lang.name) %></th>
+						<th data-sort-column="code"><%= _.capitalize(lang.code) %></th>
+						<th><%= _.capitalize(lang.parentCategory) %></th>
+					</tr>
+				</thead>
+				<tbody id="rows-items">
+		
+				</tbody>
+			</table>
+		</div>
+		<!-- Table pagination -->
+		<div id="pagination" class="pull-right"></div>
+		<!-- /Table pagination -->
+	</div>
+</div>
+
+<!-- Modals View component -->
+<div id="modalView" role="dialog" class="modal fade"></div>
+
+<!-- Modal Form Delete Cat -->
+<!-- <div id="modalDeleteAbsentType" class="modal fade" data-backdrop="static"></div> -->

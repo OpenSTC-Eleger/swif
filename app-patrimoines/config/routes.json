@@ -7,6 +7,11 @@
 	"contrat": {
 		"url"		: "contrat(/id/:id)",
 		"function"	: "contractForm"
+	},
+	
+	"typeContrat": {
+		"url"		: "configuration/types-de-contrat(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"function"	: "typeContract"
 	}
 
 }
