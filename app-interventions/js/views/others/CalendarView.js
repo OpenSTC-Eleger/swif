@@ -189,9 +189,8 @@ define([
 						data   : {}
 					};
 					
-
-
-					fetchParams.data.filters = AppHelpers.getPlanningDomain(self.options, self.tabTypes, self.model, start, end);
+					
+					fetchParams.data.filters = AppHelpers.getPlanningDomain(self.options, self.model, start, end);
 					self.collection = new TasksCollection();
 					
 					//Get tasks 
@@ -245,7 +244,7 @@ define([
 						start_lunch_time  : app.config.startLunchTime,
 						end_lunch_time    : app.config.endLunchTime,
 						start_dt          : copiedEventObject.start ,
-						team_mode         : self.teamMode,
+						type              : AppHelpers.getTaskType(self.options, self.tabTypes),
 						calendar_id       : self.model.id,
 					};
 

@@ -231,7 +231,7 @@ define('appHelpers', [
 		/**
 		 * TODO Get Planning domain
 		 */
-		getPlanningDomain: function(options, tabTypes, model, start, end) {
+		getTaskType: function(options, tabTypes) {
 			var tab = null;
 			_.any(options, function(value,key){
 				tab =  _.find(tabTypes,function(tab){
@@ -241,7 +241,13 @@ define('appHelpers', [
 					return true;
 				}
 			});
-			//var field = tab.key;
+			return tab.key;
+		},
+		
+		/**
+		 * TODO Get Planning domain
+		 */
+		getPlanningDomain: function(options, model, start, end) {
 			var domain = [
 				{ 'field' : 'date_start', 'operator' : '>', 'value' : moment(start).format('YYYY-MM-DD HH:mm:ss') },
 				{ 'field' : 'date_end', 'operator' : '<', 'value' : moment(end).format('YYYY-MM-DD HH:mm:ss')  },
