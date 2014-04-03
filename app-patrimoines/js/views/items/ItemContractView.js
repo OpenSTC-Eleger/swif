@@ -8,13 +8,15 @@ define([
 	'app',
 	'appHelpers',
 	'contractModel',
+	'contractsCollection',
+	
 	'formContractView',
 	'modalDeleteView',
-	'genericFormModalView',
+	'genericActionModalView',
 	'moment'
 
 
-], function(app, AppHelpers, ContractModel, FormContractView, ModalDeleteView, GenericFormModalView, moment){
+], function(app, AppHelpers, ContractModel, ContractsCollection, FormContractView, ModalDeleteView, GenericActionModalView, moment){
 
 	'use strict';
 
@@ -54,7 +56,7 @@ define([
 				var actions = dom.attr('data-actions').split(',');
 				var ret = '';
 				var self = this;
-				return $.when($.get(app.menus.openpatrimoine+this.templateSmallActionHTML)).done(function(smallActionTemplate){
+				return $.when($.get(app.menus.openstcpatrimoine+this.templateSmallActionHTML)).done(function(smallActionTemplate){
 					_.each(actions, function(action){
 						
 						if(_.contains(self.authorizedActions, action)){
@@ -96,7 +98,7 @@ define([
 				var actions = dom.attr('data-actions').split(',');
 				var mainAction = dom.attr('data-main-action');
 				
-				return $.when($.get(app.menus.openpatrimoine+this.templateButtonActionHTML)).done(function(buttonActionTemplate){
+				return $.when($.get(app.menus.openstcpatrimoine+this.templateButtonActionHTML)).done(function(buttonActionTemplate){
 					if(mainAction){
 						//if mainAction present in actions authorized to user, render the component, else, do nothing
 						var modelMainAction = getActionDefinition(mainAction);
@@ -214,7 +216,7 @@ define([
 			var formUrl = FormContractView.prototype.urlBuilder(this.model.getId());
 			var stateItem = ContractModel.status[this.model.getAttribute('state','draft')];
 			// Retrieve the template //
-			$.get(app.menus.openpatrimoine+this.templateHTML, function(templateData){
+			$.get(app.menus.openstcpatrimoine+this.templateHTML, function(templateData){
 				
 				if(_.isUndefined(self.actions)){self.authorizedActions = self.model.getAttribute('actions',[]);}
 				
@@ -257,11 +259,12 @@ define([
 			e.preventDefault();
 			e.stopPropagation();
 			var action = $(e.currentTarget).data('action');
-		
-			new GenericFormModalView({
+			var langAction = app.lang.patrimoine.modalContract;
+			new GenericActionModalView({
 				el			:'#modalView',
 				model		:this.model,
-				action		:action
+				action		:action,
+				langAction	:langAction,
 			});
 		}
 		
