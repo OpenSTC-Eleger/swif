@@ -158,9 +158,9 @@ requirejs.config({
 		numberFieldView         : 'views/form-components/NumberFieldView',
 			
 		// Tab componnents //
-		tabsContainerView     	: 'views/tabs/TabsContainerView',
-		tabHeadView     		: 'views/tabs/TabHeadView',
-		tabContentView     		: 'views/tabs/TabContentView',
+		tabsContainerView       : 'views/tabs/TabsContainerView',
+		tabHeadView             : 'views/tabs/TabHeadView',
+		tabContentView          : 'views/tabs/TabContentView',
 
 	},
 

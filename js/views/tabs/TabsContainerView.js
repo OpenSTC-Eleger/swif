@@ -33,23 +33,23 @@ define([
 		// Tabs types : describes all the necessary infomramtions to siplay tabs 
 		tabTypes : {
 			officer: {
-				key        	: 'officer',
-				label      	: app.lang.agent,
-				logo       	: 'fa-user',
+				key         : 'officer',
+				label       : app.lang.agent,
+				logo        : 'fa-user',
 				placeholder	: app.lang.actions.selectAAgent,
 				//not directly collection url but url to access backend method
-				url 		: app.current_user.getUrlManageableOfficers(),
+				url         : app.current_user.getUrlManageableOfficers(),
 			},
 			team: {
-				key        	: 'team',
-				label      	: app.lang.team,
-				logo       	: 'fa-users',
+				key         : 'team',
+				label       : app.lang.team,
+				logo        : 'fa-users',
 				placeholder	: app.lang.actions.selectATeam,
 				//not directly collection url but url to access backend method
-				url 		: app.current_user.getUrlManageableTeams(),
+				url         : app.current_user.getUrlManageableTeams(),
 			},
-			provider: {
-				key        : 'provider',
+			partner: {
+				key        : 'partner',
 				label      : app.lang.provider,
 				logo       : 'fa-truck',
 				placeholder: app.lang.actions.selectAProvider,
@@ -73,11 +73,11 @@ define([
 		* Initialize calendar view
 		*/
 		initialize: function(params){
-			var self = this;			
-			this.options = params;			
+			var self = this;
+			this.options = params;
 				
-			// Set the default user type //
-			this.tabTypesSelected = this.getTabSelected();			
+			// Set the tab to display
+			this.tabTypesSelected = this.getTabSelected();
 			
 			this.initCollection().done(function(){
 				self.render();
@@ -87,9 +87,9 @@ define([
 
 		/**
 		 * Init tab collection
-		 */	
+		 */
 		initCollection: function() {
-			var self = this
+			var self = this;
 			var user = app.current_user;
 			return $.when($.ajax({
 				async: true,
@@ -97,6 +97,8 @@ define([
 				headers: {Authorization: 'Token token=' + user.get('authToken')},
 				success: function (data) {
 					self.postRender(data);
+					//Set href selected
+					self.hrefSelected = self.getItem(parseInt(self.modelId));
 				}
 			}));
 
@@ -104,35 +106,35 @@ define([
 
 		/**
 		 * Build hrefs in tab
-		 */	
+		 */
 		postRender: function(data) {
 			
 			this.hrefList = [];
 			var self = this;
 
-			_.each(data, function(model,i){
-				var modelJSON = {}
+			_.each(data, function(model){
+				var modelJSON = {};
 				modelJSON.name  = (_.isUndefined(model.complete_name) ? model.name : model.complete_name);
 				modelJSON.id = model.id;
 				// Displays members popup on href hovering : used in particular for members team
 				if( !_.isUndefined(model.members) ) {
 					modelJSON.dataOriginalTitle = _.capitalize(self.label);
-					modelJSON.dataContent = "<ul class='list-unstyled'>"
+					modelJSON.dataContent = "<ul class='list-unstyled'>";
 					_.each(model.members,function( member ) {
-						modelJSON.dataContent += "<li><i class='fa fa-user'></i>" + 
-								(member.firstname != false ? member.firstname.replace(' ', '&nbsp;') : '') + 
-								"&nbsp;"+ member.name.toUpperCase().replace(' ', '&nbsp;')  + "</li>"
+						modelJSON.dataContent += "<li><i class='fa fa-user'></i>" +
+								(member.firstname !== false ? member.firstname.replace(' ', '&nbsp;') : '') +
+								"&nbsp;"+ member.name.toUpperCase().replace(' ', '&nbsp;')  + "</li>";
 					});
-					modelJSON.dataContent +=	"</ul>"; 
-					modelJSON.dataToggle = "popover";	
+					modelJSON.dataContent +=	"</ul>";
+					modelJSON.dataToggle = "popover";
 					modelJSON.dataHtml = "true";
 					modelJSON.dataPlacement = "left";
 				}
-				modelJSON.dataName = modelJSON.name.toLowerCase()
+				modelJSON.dataName = modelJSON.name.toLowerCase();
 				modelJSON.content =  model.name.toUpperCase() + '&nbsp;' + (_.isUndefined(model.firstname) ? '': model.firstname );
 				
 				//add href in list
-			    self.hrefList.push(modelJSON);
+				self.hrefList.push(modelJSON);
 			});
 						
 		},
@@ -147,7 +149,7 @@ define([
 			// Retrieve the template //
 			$.get(this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
-					lang    	: app.lang,
+					lang      : app.lang,
 				});
 
 				self.$el.html(template);
@@ -163,41 +165,37 @@ define([
 				var teamTabView = new TabHeadView({ tabType: self.tabTypes.team , counter: _.size( app.current_user.getTeams() )});
 				$("#allTabs").append ( teamTabView.el );
 				
-				//load provider header Tab
-				var providerTabView = new TabHeadView({ tabType: self.tabTypes.provider });
-				$("#allTabs").append ( providerTabView.el );
+				//load partner header Tab
+				var partnerTabView = new TabHeadView({ tabType: self.tabTypes.partner });
+				$("#allTabs").append ( partnerTabView.el );
 				
-				//load content tab
-				self.selectTabView = new TabContentView({el: '#tab-content', hrefList : self.hrefList, hrefSelected: self.hrefSelected, 
-					tabTypes : self.tabTypes,	tabTypesSelected : 	self.tabTypesSelected  });
-
-				//render content tab
+				self.selectTabView = new TabContentView({el: '#tab-content', hrefList : self.hrefList, hrefSelected: self.hrefSelected,
+				tabTypes : self.tabTypes,	tabTypesSelected : self.tabTypesSelected  });
+				
 				self.selectTabView.render();
 				
 			});
 			
 
 			return this;
-		},	
-	
-			
+		},
+		
 		/**
-		 * Get Tab selected from options in url : to load planning directly from url (with paramaters)
+		 * Get Tab selected from options in url 
 		 */
 		getTabSelected:function(){
 			var self = this;
 			var tabSelected = 'undefined';
-			_.any(this.options, function(value,key,list){
+			_.any(this.options, function(value,key){
 				tabSelected = _.find(self.tabTypes,function(tab){
-					return tab.key == key
+					return tab.key == key;
 				});
 				if( !_.isUndefined(tabSelected) ) {
-					self.modelId = value;
-					self.hrefSelected = self.getItem(parseInt(self.modelId));
+					self.modelId = value;					
 					return true;
 				}
 				
-			});			
+			});
 			return _.isUndefined(tabSelected)?this.tabTypes.officer:tabSelected;
 		},
 		
@@ -208,7 +206,7 @@ define([
 			return _.find(this.hrefList, function (o) {
 				return o.id == index;
 			});
-		},	
+		},
 		
 		/**
 		 * Get selected model corresponding to href selected
@@ -222,6 +220,9 @@ define([
 		changeTabType: function(e){
 			e.preventDefault();
 			var self = this;
+			
+			//reset search
+			$('#searchOfficerOrTeam').val('');
 
 			var link = $(e.currentTarget);
 
@@ -234,24 +235,27 @@ define([
 			var sl = link.data('type');
 
 			this.tabTypesSelected = this.tabTypes[sl];
-			//delete parameters (officer/team/provider) from options
+			this.hrefSelected = null;
+			//delete parameters (officer/team/partner) from options
 			AppHelpers.deleteOptions(this.options, this.tabTypes);
 
-			//Reload collection and rebuild view
+			//Reload collection and rebuild Tab content view
 			this.initCollection().done(function(){
-				self.render();
+				self.selectTabView.setKey(self.tabTypesSelected.key);
+				self.selectTabView.setHrefList(self.hrefList);
+				self.selectTabView.setHrefSelected(self.hrefList[0]);
+				self.selectTabView.render();
 			});
-		},	
-
+		},
 
 		/** Search in tab //
 		*/
 		search: function(){
 
-			var search = $('#searchOfficerOrTeam').val().toLowerCase();			
+			var search = $('#searchOfficerOrTeam').val().toLowerCase();
 			
 			// If the term is not empty //
-			if(!_.isEmpty(search)){			
+			if(!_.isEmpty(search)){
 				_.each($('#list-' + this.tabTypesSelected.key + ' li'), function(a){
 					//Hide or display href in tab
 					if(!_.str.include($(a).data('name'), search)){
@@ -261,6 +265,17 @@ define([
 						$(a).fadeIn('fast').removeClass('thide');
 					}
 				});
+				//TODO				
+//                _.each($('[id^=list-' + this.tabTypesSelected.key + '] li'), function(a){
+//
+//                        if(!_.str.include($(a).data('name'), search)){
+//                                $(a).fadeOut('fast').addClass('thide');
+//                        }
+//                        else{  
+//                                $(a).fadeIn('fast').removeClass('thide');
+//                        }
+//                });
+
 			}
 			else{
 				//Display all href in tab when search is empty
@@ -268,7 +283,11 @@ define([
 			}
 			//Update counter 
 			$('#counter-' + this.tabTypesSelected.key).html($('#list-' + this.tabTypesSelected.key +' li:not(.thide)').size());
-		}
+		},
+		
+		getTabTypes: function(e){
+			return this.tabTypes;
+		},
 
 	});
 

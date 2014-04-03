@@ -19,13 +19,11 @@ define([
 
 	'fullcalendar',
 	'moment',
-	'tabsContainerView'
 
 ], function(app, AppHelpers,
 				TasksCollection,
 				TaskModel, TaskSchedulesModel,
-				PrintingCalendarView, ModalAbsentTaskView, ModalUnplanTaskView, fullcalendar, moment,
-				TabsContainerView){
+				PrintingCalendarView, ModalAbsentTaskView, ModalUnplanTaskView, fullcalendar, moment){
 
 	'use strict';
 
@@ -50,7 +48,7 @@ define([
 			'click .fc-button-next'                    : 'nextDate',
 		},
 
-		urlParameters : ['officer', 'team', 'provider', 'year', 'week'],
+		urlParameters : ['officer', 'team', 'partner', 'year', 'week'],
 
 
 		/**
@@ -58,15 +56,15 @@ define([
 		*/
 		initialize: function(params){
 			this.options = params;
-
-			var self = this;
-
+			
 			this.collections = this.options.collections;
 			
 			if(_.isUndefined(this.options.year)) {
 				this.options.year = moment().year();
 				this.options.week = moment().week();
 			}
+			
+			this.tabTypes = app.views.tabsContainerView.getTabTypes();
 		},
 
 
@@ -193,7 +191,7 @@ define([
 					
 
 
-					fetchParams.data.filters = AppHelpers.getPlanningDomain(self.options, self.model, start, end);
+					fetchParams.data.filters = AppHelpers.getPlanningDomain(self.options, self.tabTypes, self.model, start, end);
 					self.collection = new TasksCollection();
 					
 					//Get tasks 

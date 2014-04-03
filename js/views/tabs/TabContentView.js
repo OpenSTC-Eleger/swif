@@ -29,7 +29,7 @@ define([
 		/**
 		* Initialize tab view
 		*/
-		initialize: function(params, active){			
+		initialize: function(params){
 			this.options = params;
 			
 			this.hrefList = this.options.hrefList;
@@ -49,10 +49,10 @@ define([
 			$.get(this.templateHTML, function(templateData){
 				
 				var template = _.template(templateData, {
-					lang    	: app.lang,
+					lang        : app.lang,
 					context		: app.menus.openstc,
 					array		: self.hrefList,
-					key 		: self.key,
+					key         : self.key,
 				});
 
 				self.$el.html(template);
@@ -69,19 +69,28 @@ define([
 				} else {
 					$('#cal_'+self.hrefSelected.id).parent().addClass('active');
 					self.resetPlanning(self.hrefSelected.id);
-				}				
+				}
 			});
 			return this;
 		},
 		
-
-
+		setKey: function(key){
+			this.key = key;
+		},
+		
+		setHrefList: function(hrefList){
+			this.hrefList = hrefList;
+		},
+		
+		setHrefSelected: function(hrefSelected){
+			this.hrefSelected = hrefSelected;
+		},
 		
 		/** Trigger Select planning event
 		*/
 		selectPlanning: function(e) {
-			e.preventDefault();		
-
+			e.preventDefault();
+			
 			var modelId = _($(e.target).attr('href')).strRightBack('#');
 			$(this.el).find('li').removeClass('active');
 			$(e.target).parent().addClass('active');
@@ -92,8 +101,8 @@ define([
 		/**
 		 * Display new calendar selected from tab
 		 */
-		resetPlanning: function(modelId){	
-			AppHelpers.deleteOptions(app.views.calendarView.options, this.tabTypes);			
+		resetPlanning: function(modelId){
+			AppHelpers.deleteOptions(app.views.calendarView.options, this.tabTypes);
 			app.views.calendarView.options[this.key] = modelId;
 			
 			app.router.navigate(app.views.calendarView.urlBuilder(), {trigger: false, replace: true});

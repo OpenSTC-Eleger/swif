@@ -29,7 +29,7 @@ define([
 		* Initialize tab view
 		*/
 		initialize: function(options){
-			this.options = options
+			this.options = options;
 			
 			this.tabType = this.options.tabType;
 
@@ -37,11 +37,11 @@ define([
 			this.key = this.tabType.key;
 			this.url = this.tabType.url;
 			this.counter = this.options.counter;
-			this.active = this.tabType.active;		
+			this.active = this.tabType.active;
 			
 			var self = this;
 			if( _.isUndefined(this.counter) ) {
-				//When counter is not already set (provider tab)
+				//When counter is not already set (partner tab)
 				this.initCounter().done(function() {
 					self.render();
 				});
@@ -60,10 +60,10 @@ define([
 			// Retrieve the template //
 			$.get(this.genericTemplateHTML, function(templateData){
 				var template = _.template(templateData, {
-					lang    	: app.lang,
+					lang        : app.lang,
 					label		: self.label,
-					key 		: self.key,
-					counter 	: self.counter,
+					key         : self.key,
+					counter     : self.counter,
 				});
 				
 				$(self.el).html(template);
