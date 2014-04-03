@@ -10,10 +10,10 @@ define([
 
 	'officersCollection',
 	'teamsCollection',
-	'claimersServicesCollection'
+	'claimersCollection'
 
 
-], function(app, AdvancedSelectBoxView, OfficersCollection, TeamsCollection, ClaimersServicesCollection){
+], function(app, AdvancedSelectBoxView, OfficersCollection, TeamsCollection, ClaimersCollection){
 
 	'use strict';
 
@@ -45,7 +45,7 @@ define([
 				label      : app.lang.provider,
 				logo       : 'fa-truck',
 				placeholder: app.lang.actions.selectAProvider,
-				url        : ClaimersServicesCollection.prototype.url
+				url        : ClaimersCollection.prototype.url
 			}
 		},
 

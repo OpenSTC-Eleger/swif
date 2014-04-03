@@ -15,24 +15,8 @@
 
 			<form id="formTaskDone" action="#" class="form-horizontal" role="form">
 
-				<!-- Users or Teams -->
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="selectUsersTeams"><%= _.capitalize(lang.carryOutBy) %>:</label>
-
-					<div class="col-sm-9">
-						   <div class="input-group">
-							<div class="input-group-btn">
-							<!--<div class="input-prepend">-->
-							<button class="btn dropdown-toggle" id="btnSelectUsersTeams" data-toggle="dropdown"><i class="fa fa-user fa-fw iconItem"></i>&nbsp; <span class="fa fa-caret-down"></span></button>
-							<ul class="dropdown-menu">
-								<li><a href="#" class="linkSelectUsersTeams" data-item="officers"><i class="fa fa-user fa-fw"></i> <%= lang.agents %></a></li>
-								<li><a href="#" class="linkSelectUsersTeams" data-item="teams"><i class="fa fa-users fa-fw"></i> <%= lang.teams %></a></li>
-							</ul>
-							</div>
-							<input id="selectUsersTeams" class="select2" required data-placeholder="<%= lang.actions.selectAAgentShort %>" data-item="officers">
-						</div>
-						<!--</div>-->
-					</div>
+				<!-- Multi Select Box Users -->
+				<div class="form-group multiSelectUsers">
 				</div>
 
 				<!-- Start date / Start Hour -->

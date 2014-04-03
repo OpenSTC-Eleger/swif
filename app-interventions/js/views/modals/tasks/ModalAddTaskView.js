@@ -232,11 +232,18 @@ define([
 			var res = self.multiSelectBoxUsersView.getUserType();
 			if(res.type == 'team'){
 				params.user_id = false;
+				params.partner_id = false;
 				params.team_id = res.value;
+			}
+			else if(res.type == 'officer'){
+				params.team_id = false;
+				params.partner_id = false;
+				params.user_id = res.value;
 			}
 			else{
 				params.team_id = false;
-				params.user_id = res.value;
+				params.user_id = false;
+				params.partner_id = res.value;
 			}
 
 
