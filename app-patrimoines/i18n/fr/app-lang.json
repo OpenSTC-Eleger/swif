@@ -59,13 +59,14 @@
 			"setDraftForm"			:"Modifier",
 			"savePost"				:"Enregistrer et soumettre le contrat",
 			"saveDraft"				:"Enregistrer",
-			"confirm"				:"Valider la confirmation du contrat",
-			"renew"					:"Valider la reconduction du contrat",
-			"close"					:"Valider la clôture du contract"
+			"addTypeContracts"		:"Ajouter une catégorie"
 		},
 		
 		"infoMessages" : {
-			"noContract"			:"aucun contrat à afficher"
+			"noContract"			:"aucun contrat à afficher",
+			"noContractType"		:"aucune catégorie à afficher",
+	        "contractTypesUpdateOk"	:"La catégorie a correctement été mise à jour",
+			"contractTypesDeleteOk"	:"la catégorie a bien été supprimée"
 		},
 		
 		"viewsTitles" : {
@@ -74,7 +75,18 @@
 			"contractDetails"		: "détails du contrat",
 			"newContractLine"		: "nouvelle tâche",
 			"contractLineDetails"	: "détails de la tâche",
-			"contractTasks"			: "Tâches prévues"
+			"contractTasks"			: "Tâches prévues",
+			"contractTypesList"		: "Catégories de contrat"
+		},
+		
+		"modalContractType": {
+			"update"				: "Mise à jour de la catégorie"
+		},
+		
+		"modalContract": {
+			"confirm"				:"Valider la mise en exécution du contrat",
+			"renew"					:"Valider la reconduction du contrat",
+			"close"					:"Valider la clôture du contract"
 		}
 	}
 }

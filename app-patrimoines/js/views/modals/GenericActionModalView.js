@@ -10,6 +10,8 @@ define(['app',
 		'contractsCollection',
 		
 		'genericFormView',
+		'advancedSelectBoxView',
+		
 		'moment',
 		'moment-timezone-data',
 		'bsTimepicker',
@@ -24,18 +26,17 @@ define(['app',
 	/******************************************
 	* Contract Form View
 	*/
-	return GenericFormView.extend({
+	var GenericActionModalView = GenericFormView.extend({
 
 		id          : 'modalView',
-		templateHTML: '/templates/modals/genericFormModal.html',
-		
+		templateHTML: '/templates/modals/genericActionModal.html',
 		
 		// The DOM events //
 		events: function(){
 			return _.defaults({
 				'show.bs.modal'					: 'show',
 				'shown.bs.modal'				: 'shown',
-				//'hidde.bs.modal'				: 'hide',
+				'hidde.bs.modal'				: 'hide',
 				'hidden.bs.modal'				: 'hidden',
 				'submit #formModalSaveModel'	: 'save',
 			}, GenericFormView.prototype.events);
@@ -46,7 +47,7 @@ define(['app',
 		/** Trigger when the modal is show
 		*/
 		show: function(){
-			this.delegateEvents();
+			this.delegateEvents(this.events());
 		},
 
 		/** Trigger when the modal is hidden
@@ -76,24 +77,13 @@ define(['app',
 		*/
 		initialize : function() {
 			this.modal = $(this.el);
+			this.sourceModel = this.model;
+			this.model = this.sourceModel.clone();
+			this.model.collection = this.sourceModel.collection;
+			this.model.off();
 			
-			this.templateForm = arguments ? arguments[0].templateForm : 'no_template_supplied';
-			this.title = arguments ? arguments[0].title : 'no_template_supplied';
-			this.collection = arguments ? arguments[0].collection : null;
-			this.modelName = arguments ? arguments[0].modelName : null;
-			
-			if(_.isUndefined(this.model)){
-				this.model = new this.modelName();
-				this.model.collection = this.collection;
-				this.sourceModel = this.model;
-			}
-			else{
-				this.sourceModel = this.model;
-				this.model = this.sourceModel.clone();
-				this.model.collection = this.sourceModel.collection;
-				this.model.off();
-			}
-			
+			this.action = arguments ? arguments[0].action : null;
+			this.langAction = arguments ? arguments[0].langAction : null;
 			arguments[0].notMainView = true;
 			GenericFormView.prototype.initialize.apply(this, arguments);
 		},
@@ -109,25 +99,16 @@ define(['app',
 
 				var template = _.template(templateData, {
 					lang		: app.lang,
+					langAction	: self.langAction,
 					readonly	: false,
 					moment		: moment,
-					title		: self.title,
 					user		: app.current_user,
+					action		: self.action,
 					model		: self.model
 				});
 
 				$(self.el).html(template);
-				$.get(self.templateForm, function(templateData2){
-					var template2 = _.template(templateData2, {
-						lang		: app.lang,
-						readonly	: false,
-						moment		: moment,
-						user		: app.current_user,
-						model		: self.model
-					});
-					$(self.el).find('#formModalSaveModel').html(template2);
-					GenericFormView.prototype.render.apply(self);
-				});
+				GenericFormView.prototype.render.apply(self);
 				
 				self.modal.modal('show');
 			});
@@ -137,16 +118,13 @@ define(['app',
 		save: function(e){
 			var self = this;
 			e.preventDefault();
-			var addToCollection = this.model.isNew();
-			this.model.saveToBackend().done(function(){
-				self.sourceModel.fetch().done(function(){
-					if(addToCollection){
-						self.model.collection.add(self.model);
-					}
-				});
+			var vals = {wkf_evolve:this.action};
+			this.model.save(vals, {patch:true,wait:true}).done(function(){
+				self.sourceModel.fetch();
 				self.modal.modal('hide');
 			});
 		},
 		
 	});
+	return GenericActionModalView;
 });
