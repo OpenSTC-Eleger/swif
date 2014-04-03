@@ -79,7 +79,7 @@ define([
 			var self = this;
 			// Retrieve the template //
 			var stateItem = ItemRecurrenceContractModel.status[this.model.getAttribute('state','draft')];
-			$.get(app.menus.openpatrimoine+this.templateHTML, function(templateData){
+			$.get(app.menus.openstcpatrimoine+this.templateHTML, function(templateData){
 								
 				var template = _.template(templateData, {
 					lang        : app.lang,

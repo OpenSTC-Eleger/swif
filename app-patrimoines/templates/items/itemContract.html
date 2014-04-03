@@ -5,7 +5,10 @@
 	<p class="row-actions invisible small-actions" data-actions="delete"></p>
 </td>
 
-<td class="field" data-fieldname="provider_name"></td>
+<td>
+<i class="<%= contract.getAttribute('internal_inter',false) ?'fa fa-sitemap' : 'fa fa-eur'%> fa-fw"></i>
+<span class="field" data-fieldname="provider_name"></span>
+</td>
 
 <td>
 <i class="<%= contract.getAttribute('patrimoine_is_equipment',false) ?'fa fa-wrench' : 'fa fa-map-marker'%> fa-fw"></i>

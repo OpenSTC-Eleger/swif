@@ -70,7 +70,7 @@ define(['app',
 			
 			var self = this;
 			// Retrieve the template //
-			$.get(app.menus.openpatrimoine + this.templateHTML, function(templateData){
+			$.get(app.menus.openstcpatrimoine + this.templateHTML, function(templateData){
 				//compute dates with user TZ
 
 				var template = _.template(templateData, {
@@ -83,7 +83,7 @@ define(['app',
 				});
 
 				$(self.el).html(template);
-				$.get(app.menus.openpatrimoine + self.templateRecurrenceHTML, function(templateDataRecurrence){
+				$.get(app.menus.openstcpatrimoine + self.templateRecurrenceHTML, function(templateDataRecurrence){
 					var templateRecurrence = _.template(templateDataRecurrence, {
 						recurrence		: self.model,
 						lang			: app.lang

@@ -68,7 +68,7 @@ define([
 			app.router.setPageTitle(app.lang.patrimoine.viewsTitles.contractsList);
 
 			// Retrieve the template //
-			$.get(app.menus.openpatrimoine + this.templateHTML, function(templateData){
+			$.get(app.menus.openstcpatrimoine + this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang  : app.lang,
 					nbContracts: self.collection.cpt

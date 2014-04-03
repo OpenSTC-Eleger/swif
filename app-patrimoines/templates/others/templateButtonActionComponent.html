@@ -18,7 +18,7 @@
 					<% _.each(otherActions, function(action){ %>
 						<li>
 							<a href="#" class="actions" data-action="<%= action.key%>">
-								<i class="fa <%= action.icon%> fa-fw" data-action="<%= action.key%>"></i>&nbsp;<%= action.translation %>
+								<i class="fa <%= action.icon%> fa-fw" data-action="<%= action.key%>"></i>&nbsp;<%= _.capitalize(action.translation) %>
 							</a>
 						</li>
 					<% });%>

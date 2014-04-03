@@ -30,16 +30,12 @@ define([
 	
 			// Construct a domain  //
 
-			var domain = [
-					{field:'state', operator:'=', value:ContractLineModel.status.remplir.key}
-				];
-
 	
 			return $.ajax({
 				url      : this.url,
 				method   : 'HEAD',
 				dataType : 'text',
-				data     : {filters: app.objectifyFilters(domain)},
+				data     : {},
 				success  : function(data, status, request){
 					var contentRange = request.getResponseHeader('Content-Range');
 					self.specialCpt = contentRange.match(/\d+$/);

@@ -13,7 +13,7 @@ define('app-patrimoines', [
 	return function(){
 
 		// Retrieve the routes and the lang of the modules //
-		$.when(app.loadStaticFile(app.menus.openpatrimoine+'/config/routes.json'), app.loadStaticFile(app.menus.openpatrimoine+'/i18n/'+app.config.lang+'/app-lang.json'))
+		$.when(app.loadStaticFile(app.menus.openstcpatrimoine+'/config/routes.json'), app.loadStaticFile(app.menus.openstcpatrimoine+'/i18n/'+app.config.lang+'/app-lang.json'))
 		.done(function(moduleRoutes, moduleLang){
 
 
@@ -25,7 +25,7 @@ define('app-patrimoines', [
 
 			// Prefix all the routes of the module with the module name //
 			_.each(moduleRoutes[0], function(route){
-				route.url = _.join('/', app.menus.openpatrimoine, route.url);
+				route.url = _.join('/', app.menus.openstcpatrimoine, route.url);
 			});
 
 			// Extend the routes //
