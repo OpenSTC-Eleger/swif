@@ -64,6 +64,7 @@ define([
 				this.options.week = moment().week();
 			}
 			
+			//Get tab types, used to dispatch backend: team, officer or partner task to save  
 			this.tabTypes = app.views.tabsContainerView.getTabTypes();
 		},
 
@@ -73,6 +74,7 @@ define([
 		render: function() {
 			var self = this;
 			
+			//Get model selected from href tab
 			this.model = app.views.tabsContainerView.getSelectedModel();
 			
 			//DOM element id for calendar with model

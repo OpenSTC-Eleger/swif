@@ -74,7 +74,7 @@ define([
 		*/
 		initialize: function(params){
 			var self = this;
-			this.options = params;
+			this.options = params.options;
 				
 			// Set the tab to display
 			this.tabTypesSelected = this.getTabSelected();

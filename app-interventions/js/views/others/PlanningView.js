@@ -94,10 +94,9 @@ define([
 
 				$(self.el).html(template);
 				
-				app.views.tabsContainerView = new TabsContainerView(self.options);
-				$('#tabs').append( app.views.tabsContainerView.render().el );
-
-				
+				//tabs render
+				app.views.tabsContainerView = new TabsContainerView({options :self.options, el : "#tabs"});
+								
 				//calendar panel
 				app.views.calendarView  = new CalendarView(self.options);
 				
@@ -120,7 +119,10 @@ define([
 				app.views.planningInterListView.render();
 			});
 		},
-		
+
+		/**
+		 * Render calender after href selected in tabs container
+		 */
 		calendarRender: function(){
 			$('#calendar').append( app.views.calendarView.render().el );
 		},
