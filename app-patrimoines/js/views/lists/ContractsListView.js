@@ -93,7 +93,7 @@ define([
 
 		moveToForm: function(e){
 			e.preventDefault();
-			app.router.navigate(FormContractView.prototype.urlBuilder(), {trigger:true, replace:true});
+			app.router.navigate(FormContractView.prototype.urlBuilder(), {trigger:true, replace:false});
 		}
 		
 	});

@@ -38,7 +38,8 @@ define(['app',
 			'click .removeLineHeader'		: 'actionRemoveLine',
 			'submit #formSaveModel'			: 'savePostForm',
 			'click #saveDraftFormContract'	: 'saveDraftForm',
-			'click #updateDraftForm'		: 'setDraftForm'
+			'click #updateDraftForm'		: 'setDraftForm',
+			'click #formBack'				: 'backToList',
 		},
 		
 		/** View Initialization
@@ -233,6 +234,11 @@ define(['app',
 			this.linesViews[idString] = lineView;
 			$(this.el).find('#lines').append(lineView.el);
 			
+		},
+		
+		backToList: function(e){
+			e.preventDefault();
+			window.history.back();
 		},
 		
 	});
