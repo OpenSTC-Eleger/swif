@@ -84,6 +84,8 @@ define(['app',
 			
 			this.action = arguments ? arguments[0].action : null;
 			this.langAction = arguments ? arguments[0].langAction : null;
+			this.templateForm = arguments ? arguments[0].templateForm : null;
+			
 			arguments[0].notMainView = true;
 			GenericFormView.prototype.initialize.apply(this, arguments);
 		},
@@ -91,13 +93,17 @@ define(['app',
 		/** Display the view
 		*/
 		render: function() {
-
 			var self = this;
+			var hasForm = false;
+			var arrayDeferred =  [$.ajax(app.menus.openstcpatrimoine + this.templateHTML)];
+			if(this.templateForm){
+				arrayDeferred.push($.ajax(this.templateForm));
+				hasForm = true;
+			}
 			// Retrieve the template //
-			$.get(app.menus.openstcpatrimoine + this.templateHTML, function(templateData){
-				//compute dates with user TZ
-
-				var template = _.template(templateData, {
+			$.when.apply($,arrayDeferred).done(function(templateData, templateData2){
+				
+				var template = _.template(hasForm ? templateData[0] : templateData, {
 					lang		: app.lang,
 					langAction	: self.langAction,
 					readonly	: false,
@@ -108,6 +114,16 @@ define(['app',
 				});
 
 				$(self.el).html(template);
+				if(hasForm){
+					var template2 = _.template(templateData2[0], {
+						lang		: app.lang,
+						readonly	: false,
+						moment		: moment,
+						user		: app.current_user,
+						model		: self.model
+					});
+					$(self.el).find('#formModalSaveModel').html(template2);
+				}
 				GenericFormView.prototype.render.apply(self);
 				
 				self.modal.modal('show');
@@ -118,7 +134,9 @@ define(['app',
 		save: function(e){
 			var self = this;
 			e.preventDefault();
-			var vals = {wkf_evolve:this.action};
+			var toSave = _.keys(this.model.changedAttributes());
+			var vals = this.model.getSaveVals(toSave);
+			vals.wkf_evolve = this.action;
 			this.model.save(vals, {patch:true,wait:true}).done(function(){
 				self.sourceModel.fetch();
 				self.modal.modal('hide');

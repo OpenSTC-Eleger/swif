@@ -61,11 +61,20 @@ define([
 		/**
 		 * to move to GenericCollection
 		 */
-		getSaveVals: function(){
-			var ret = {};
+		getSaveVals: function(attributes){
+			var fields = {};
 			var self = this;
+			if(!_.isUndefined(attributes)){
+				_.each(attributes, function(field){
+					fields[field] = self.collection.fieldsMetadata[field];
+				});
+			}
+			else{
+				fields = this.collection.fieldsMetadata;
+			}
+			var ret = {};
 			if(!_.isUndefined(this.collection)){
-				_.map(this.collection.fieldsMetadata, function(fieldDefinition, fieldName){
+				_.map(fields, function(fieldDefinition, fieldName){
 					if(!_.contains(self.readonlyFields, fieldName)){
 						if(fieldDefinition.type == 'many2one'){
 							ret[fieldName] = self.getAttribute(fieldName, [false,''])[0];
