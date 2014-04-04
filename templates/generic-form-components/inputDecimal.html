@@ -3,7 +3,11 @@
 <% if(field.fieldAddon){ %>
 	<div class="input-group">
 <% } %>
-	<input type="number" id="<%= field.fieldName %>" step="any" name="<%= field.fieldName %>" class="form-control field-element" value="<%= field.value ? field.value : '' %>" <%= field.fieldPlaceholder ? 'data-placeholder="' + field.fieldPlaceholder + '"' : '' %> />
+	<input type="number" id="<%= field.fieldName %>" step="any" name="<%= field.fieldName %>" class="form-control field-element"
+	 value="<%= field.value ? field.value : '' %>" 
+	 <%= field.fieldPlaceholder ? 'data-placeholder="' + field.fieldPlaceholder + '"' : '' %> 
+	 <%= !_.isUndefined(field.required) ? 'required' : '' %>
+	 />
 	<% if(field.fieldAddon){ %>
 		<span class="input-group-addon"><%= field.fieldAddon %></span>
 		</div>

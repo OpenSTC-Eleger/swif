@@ -4,7 +4,11 @@
 	
 		<% if(field.value){ var value = moment(field.value, 'YYYY-MM-DD').format('DD/MM/YYYY'); } else{ var value = ''; } %>
 	
-		<input type="text" id="<%= field.fieldName %>" class="datepicker form-control field-element" placeholder="dd/mm/yyyy" value="<%= value %>" <%= field.fieldPlaceholder ? 'data-placeholder="' + field.fieldPlaceholder + '"' : '' %> />
+		<input type="text" id="<%= field.fieldName %>" class="datepicker form-control field-element" placeholder="dd/mm/yyyy" 
+		value="<%= value %>" 
+		<%= field.fieldPlaceholder ? 'data-placeholder="' + field.fieldPlaceholder + '"' : '' %> 
+		<%= !_.isUndefined(field.required) ? 'required' : '' %>
+		/>
 		<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 	</div>
 </div>
