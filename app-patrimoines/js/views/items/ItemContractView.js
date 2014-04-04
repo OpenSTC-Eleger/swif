@@ -36,6 +36,7 @@ define([
 		},
 
 		templateHTML : '/templates/items/itemContract.html',
+		templateCancelContract: '/templates/modals/modalCancelContract.html',
 		templateSmallActionHTML : '/templates/others/templateSmallActionComponent.html',
 		templateButtonActionHTML : '/templates/others/templateButtonActionComponent.html',
 		
@@ -259,12 +260,17 @@ define([
 			e.preventDefault();
 			e.stopPropagation();
 			var action = $(e.currentTarget).data('action');
+			var templateForm = null;
+			if(action == 'cancel'){
+				templateForm = app.menus.openstcpatrimoine + this.templateCancelContract;
+			}
 			var langAction = app.lang.patrimoine.modalContract;
 			new GenericActionModalView({
 				el			:'#modalView',
 				model		:this.model,
 				action		:action,
 				langAction	:langAction,
+				templateForm:templateForm
 			});
 		}
 		

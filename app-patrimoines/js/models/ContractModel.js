@@ -16,7 +16,7 @@ define([
 		
 		urlRoot: '/api/openpatrimoine/contracts',
 
-		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'technical_service_id', 'supplier_id', 'provider_name', 'patrimoine_is_equipment', 'equipment_id' ,'site_id' ,'patrimoine_name', 'state', 'description', 'deadline_delay', 'type_renewal', 'category_id', 'contract_line', 'contract_line_names', 'delay_passed', 'warning_delay'],
+		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'technical_service_id', 'supplier_id', 'provider_name', 'patrimoine_is_equipment', 'equipment_id' ,'site_id' ,'patrimoine_name', 'state', 'description', 'deadline_delay', 'type_renewal', 'category_id', 'contract_line', 'contract_line_names', 'delay_passed', 'warning_delay', 'cancel_reason'],
 		
 		readonlyFields: ['contract_line_names', 'contract_line', 'id', 'state'],
 		
@@ -76,7 +76,18 @@ define([
 		getInformations: function(){
 			var ret = {};
 			ret.name = this.getAttribute('name','');
-			ret.infos = {key:app.lang.description, value:this.getAttribute('description','')};
+			var value = this.getAttribute('description','');
+			var lineNames = this.getAttribute('contract_line_names', []);
+			if(lineNames.length > 0){
+				value += '</footer><br><footer><strong>Tâches du contrat : </strong>';
+				value += '<ul>';
+				_.each(lineNames, function(lineName){
+					value += '<li>' + lineName[1] + '</i>';
+				});
+				value += '</ul>';
+			}
+			
+			ret.infos = {key:app.lang.note, value:value};
 			return ret;
 		},
 		
@@ -127,10 +138,18 @@ define([
 			},
 			draft: {
 				key					: 'draft',
-				color				: 'default',
+				color				: 'warning',
 				icon				: 'fa-pencil-o',
 				translation			: app.lang.draft
-			}
+			},
+			
+			cancel: {
+				key					: 'cancel',
+				color				: 'danger',
+				icon				: 'fa-ban',
+				translation			: app.lang.cancel
+			},
+			
 		},
 		
 			// Actions of the requests //
@@ -173,11 +192,12 @@ define([
 				translation			: app.lang.actions.close
 			},
 			
-			foo: {
-				key					: 'foo',
-				icon				: 'fa-ban-circle',
-				translation			: 'bar'
-			}
+			cancel: {
+				key					: 'cancel',
+				color				: 'danger',
+				icon				: 'fa-ban',
+				translation			: app.lang.actions.cancel
+			},
 
 		}
 	});
