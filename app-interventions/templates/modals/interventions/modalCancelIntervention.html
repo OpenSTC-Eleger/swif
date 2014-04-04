@@ -12,7 +12,15 @@
 				<p><%= inter.name %></p>
 				<small><%= inter.description %></small>
 			</blockquote>
-
+			
+			<% if(_.has(inter, 'contract_id') && inter.contract_id !== false){ %>
+				<hr>
+				<p class="text-center"><strong>
+				<i class="fa fa-warning text-danger"></i>&nbsp;
+				<%= lang.infoMessages.confirmCancelContractOfInter %></strong></p>
+				<hr>
+			<% } %>
+			
 			<form id="formCancelInter" action="#" class="form-horizontal" role="form">
 			
 				<!-- Request refuse motif -->

@@ -430,7 +430,8 @@
         "passwordReset"         : "Mot de passe correctement modifié",
         "filterSaveOk"          : "Filtre correctement enregistré",
         "filterDeleteOk"        : "Filtre correctement supprimé",
-        "noFilter"              : "Aucun filtre enregistré"
+        "noFilter"              : "Aucun filtre enregistré",
+        "confirmCancelContractOfInter": "Attention, cette intervention est liée à un contrat, annuler cette intervention annulera également le contrat"
     },
 
 
