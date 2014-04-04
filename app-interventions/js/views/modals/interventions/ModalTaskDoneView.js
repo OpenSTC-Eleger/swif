@@ -107,7 +107,6 @@ define([
 
 				if(hasService){
 					
-					self.selectListOfficersTeamsView.setSearchParam({field:'id', operator:'>', value:'1'});
 
 					self.selectVehicleView.setSearchParam('|');
 					self.selectVehicleView.setSearchParam({field:'service_ids',operator:'=?',value:'False'});

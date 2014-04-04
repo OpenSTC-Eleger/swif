@@ -26,10 +26,12 @@
 </td>
 <!-- Assign To -->
 <td>
-<% if(task.team_id == false){ %>
+<% if(task.user_id != false){ %>
 	<%= task.user_id[1] %>
-<% } else { %>
+<% } else if(task.team_id != false){ %>
 	<%= task.team_id[1] %>
+<% } else{ %>
+	<%= task.partner_id[1] %>
 <% } %>
 </td>
 <td><%= AppHelpers.decimalNumberToTime(task.planned_hours, 'human') %></td>
