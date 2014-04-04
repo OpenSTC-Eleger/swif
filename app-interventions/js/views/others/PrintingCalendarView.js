@@ -82,13 +82,15 @@ define([
 					titleFirstDay = momentDate.day(1).format('D MMM YYYY');
 				}
 			}
-
+			
+			$('#worker').text(this.calendar.model.name);
 			$('#printingCalendar .before-muted').html( app.lang.week + ' ' + momentDate.week() + ' - ' );
 			$('#printingCalendar .muted').html( titleFirstDay + ' ' + app.lang.to + ' ' + lastDayOfTheWeek.format('D MMM YYYY')  );
 
 			var self = this;
 
 			var elementToPrint = $('#printingCalendar');
+			
 			var table = $('#paperboard');
 
 			var tasks = _.filter(this.events, function(task){

@@ -67,11 +67,15 @@
             "downloadInvoice"                       : "Télécharger la facture/bon de réservation",
             "selectAll"                             : "Tout sélectionner",
             "unselectAll"                           : "Tout désélectionner",
-            "selectToggle"                          : "Inverser la sélection"
+            "selectToggle"                          : "Inverser la sélection",
+            "saveBooking"							: "Sauvegarder",
+            "postBooking"							: "Soumettre ma demande",
+            "redraftBooking"						: "Modifier (repassera par une validation)"
 		},
 
 		"infoMessages" : {
-			"noBooking"         				: "Aucune réservation à afficher"
+			"noBooking"         				: "Aucune réservation à afficher",
+			"redraftBookingUnauthorized"		: "Votre réservation démarre bientôt, elle ne peux plus être modifiée"
 		},
 
 		"viewsTitles" : {

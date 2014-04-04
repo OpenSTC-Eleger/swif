@@ -130,6 +130,22 @@ define([
 			);
 		},
 
+		/**
+		 * If a bookable is set to model, fetch it and return Deferred object
+		 */
+		fetchBookable: function(){
+			var bookable = this.getResource('id');
+			var deferred = $.Deferred();
+			if(bookable){
+				this.bookable.set({id:bookable});
+				deferred = this.bookable.fetch();
+			}
+			else{
+				deferred.resolve();
+			}
+			return deferred;
+		},
+		
 		getParentBookingModel: function(){
 			return this.parentBookingModel;
 		},
@@ -189,6 +205,8 @@ define([
 		*/
 		initialize: function(){
 			//console.log('Booking Model initialization');
+			//this.fetchRelated('tasks');
+			this.bookable = new BookableModel();
 			this.parentBookingModel = null;
 		},
 

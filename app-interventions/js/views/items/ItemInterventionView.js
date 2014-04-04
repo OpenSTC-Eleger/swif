@@ -154,6 +154,7 @@ define([
 
 				var deferred = $.Deferred();
 				deferred.always(function(){
+					$('#interId').html(interJSON.id);
 					$('#interName').html(interJSON.name);
 					$('#interDescription').html(interJSON.description);
 					$('#interService').html(!interJSON.service_id?'':interJSON.service_id[1]);
@@ -191,7 +192,7 @@ define([
 					ask.fetch().done(function(){
 						var askJSON = ask.toJSON();
 						if(askJSON.partner_id !== false){
-							$('#claimentName').html(askJSON.partner_id[1]+' - '+ !askJSON.partner_address?'':askJSON.partner_address[1]);
+							$('#claimentName').html(askJSON.partner_id[1]+' - '+ (!askJSON.partner_address?'':askJSON.partner_address[1]));
 							$('#claimentPhone').html(askJSON.partner_phone);
 
 						}

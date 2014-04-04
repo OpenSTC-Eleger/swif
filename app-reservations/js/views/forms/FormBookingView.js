@@ -4,11 +4,10 @@
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
 
-
-define(['app',
-		'appHelpers',
-
-		'bookingModel',
+define(['app', 
+		'appHelpers', 
+		
+		'bookingModelExtend',
 		'bookingLineModel',
 		'bookingRecurrenceModel',
 		'bookableModel',
@@ -33,7 +32,7 @@ define(['app',
 
 
 	/******************************************
-	* Requests Details View
+	* Booking Form View
 	*/
 	var FormBookingView = Backbone.View.extend({
 
@@ -65,7 +64,9 @@ define(['app',
 			'blur #bookingPeopleZip'			: 'changePeopleZip',
 
 			//Form Buttons
-			'submit #formSaveBooking'			 : 'saveBookingForm',
+			'click #saveFormBooking'			 : 'saveBookingForm',
+			'click #postFormBooking'			 : 'postBookingForm',
+			'click #redraftFormBooking'			 : 'redraftBookingForm',
 			'click #getRecurrenceDates'			 : 'getRecurrenceDates',
 			'switch-change #bookingAddRecurrence': 'changeAddRecurrence',
 			'switch-change #bookingIsCitizen'	 : 'changeIsCitizen',
@@ -93,23 +94,10 @@ define(['app',
 		},
 
 		initializeWithId: function(){
-			// Render with loader, store ajax calls in var 'waitDeferred' to call $.when at the end of  function//
 			var self = this;
 			this.model.set({id:this.options.id},{silent:true});
-			this.model.fetch({silent: true}).done(function(){
-				var waitDeferred = [];
-				//fetch and render lines
-				waitDeferred.push(self.model.fetchLines());
-
-				//fetch and render recurrence if exists
-				if(self.model.getRecurrence() != false){
-					var recurrence = new BookingRecurrenceModel({id:self.model.getRecurrence('id')});
-					waitDeferred.push(recurrence.fetch());
-					recurrence.setTemplate(self.model);
-				}
-				$.when.apply(self, waitDeferred).done(function(){
-					app.router.render(self);
-				})
+			this.model.fetchFromBackend().done(function(){
+				app.router.render(self);
 			});
 		},
 
@@ -124,11 +112,11 @@ define(['app',
 
 			this.claimers = new ClaimersCollection();
 			this.isClaimer = !app.current_user.isResaManager();
-			//fill the 2 selectBoxes with service_id.partner_id values
 			var ret = {};
 
 			//if view is called with a filled model (new booking from calendar or new form 'from scratch')
 			if(_.isUndefined(self.options.id)){
+				//if user is a claimer, retrieve it's corresponding partner and partner_contact
 				if(self.isClaimer){
 					app.current_user.fetchContactAndClaimer(ret).done(function(){
 						self.model.setClaimer([ret.claimer.id, ret.claimer.name]);
@@ -152,7 +140,7 @@ define(['app',
 
 		//compute if form can be modified or not
 		isEditable: function(){
-			return this.model.getState() == BookingModel.status.remplir.key;
+			return this.model.getState() == BookingModel.status.draft.key;
 		},
 
 		//compute display of button addBookable (readonly or visible)
@@ -171,9 +159,9 @@ define(['app',
 
 		//compute display of button save (readonly or visible)
 		updateDisplaySave: function(){
-			var elt = $('#saveFormBooking');
-			if(this.isEditable() && this.model.getStartDate() != ''
-				&& this.model.getEndDate() != '' && this.model.getClaimer('id') != false
+			var elt = $('button[form="formSaveBooking"]');
+			if(this.isEditable() && this.model.getStartDate() != '' 
+				&& this.model.getEndDate() != '' && this.model.getClaimer('id') != false 
 				&& this.model.lines.length > 0 && this.model.getAllDispo()){
 				elt.removeAttr('disabled');
 			}
@@ -243,7 +231,8 @@ define(['app',
 		/** Display the view
 		*/
 		render: function(loader) {
-
+			//boolean to know if form is fully rendered or not, used to avoid pb of change events
+			this.viewRendered = false;
 			var pageTitle = '';
 			if(_.isNull(this.model.getId())) {
 				pageTitle = app.lang.resa.viewsTitles.newAskingBooking;
@@ -255,13 +244,12 @@ define(['app',
 			// Change the page title //
 			app.router.setPageTitle(pageTitle);
 
-
 			var self = this;
 			// Retrieve the template //
 			$.get(app.menus.openresa + this.templateHTML, function(templateData){
 				//compute dates with user TZ
 				var checkin = self.model.getAttribute('checkin',false);
-				var checkout = self.model.getAttribute('checkout',false);;
+				var checkout = self.model.getAttribute('checkout',false);
 				var startDate = '';
 				var startHour = '';
 				var endDate = '';
@@ -299,9 +287,10 @@ define(['app',
 					$('#bookingPartner').attr('disabled');
 					$('#bookingContact').attr('disabled');
 				}
-
+				
+				$('*[data-toggle="tooltip"]').tooltip();
 				$('.make-switch').bootstrapSwitch();
-				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
+				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: true, modalBackdrop: false});
 				$(".datepicker").datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 
 				// Booking Claimer //
@@ -318,9 +307,8 @@ define(['app',
 				app.views.selectListAddBookableView = new AdvancedSelectBoxView({el: $('#bookingAddBookable'), url: BookablesCollection.prototype.url }),
 				app.views.selectListAddBookableView.resetSearchParams();
 				app.views.selectListAddBookableView.render();
-
-
-				//i initialize advancedSelectBox here to correclty trigger change event at init (and so, perform correct view updates)
+				
+				//i initialize advancedSelectBox here to correctly trigger change event at init (and so, perform correct view updates)
 				var partner = self.model.getClaimer('array');
 				if(partner != 0){
 					app.views.selectListClaimersView.setSelectedItem(partner);
@@ -336,6 +324,7 @@ define(['app',
 				self.updateDisplayCitizenInfos();
 				self.changeWholeDay();
 				$(this.el).hide().fadeIn('slow');
+				self.viewRendered = true;
 			});
 			return this;
 		},
@@ -344,27 +333,27 @@ define(['app',
 		 * Update searchParam of ClaimerContact (partner.id = self if partner_id is set, else, remove searchParams)
 		 */
 		changeBookingPartner: function(e){
+			var silent = !this.viewRendered;
 			var partner_id = app.views.selectListClaimersView.getSelectedItem();
 			if(partner_id != ''){
-				//TODO: implement filter to fetch only bookables authorized for partner
 				app.views.selectListClaimersContactsView.setSearchParam({'field':'partner_id.id','operator':'=','value':partner_id},true);
-
-				this.model.setClaimer([partner_id,app.views.selectListClaimersView.getSelectedText()]);
+				this.model.setClaimer([partner_id,app.views.selectListClaimersView.getSelectedText()], silent);
 			}
 			else{
 				app.views.selectListClaimersContactsView.resetSearchParams();
-				this.model.setClaimer(false);
+				this.model.setClaimer(false, silent);
 			}
-
 		},
 
 		changeBookingContact: function(e){
-			var contact_id = app.views.selectListClaimersContactsView.getSelectedItem();
-			if(contact_id){
-				this.model.setClaimerContact([contact_id, app.views.selectListClaimersContactsView.getSelectedText()]);
-			}
-			else{
-				this.model.setClaimerContact(false);
+			if(this.viewRendered){
+				var contact_id = app.views.selectListClaimersContactsView.getSelectedItem();
+				if(contact_id){
+					this.model.setClaimerContact([contact_id, app.views.selectListClaimersContactsView.getSelectedText()]);
+				}
+				else{
+					this.model.setClaimerContact(false);
+				}
 			}
 		},
 
@@ -372,61 +361,67 @@ define(['app',
 		 * each time a bookable is selected on AdvancedSelectBox, we create a new itemView (not any save before user click on validate)
 		 */
 		changeBookingAddBookable: function(e){
-			var self = this;
-			e.preventDefault();
-			//create lineModel and initialize values
-			var bookable_id = app.views.selectListAddBookableView.getSelectedItem();
-			if(bookable_id != ''){
-				var bookable_name = app.views.selectListAddBookableView.getSelectedText();
-				var lineModel = new BookingLineModel({
-					reserve_product:[bookable_id, bookable_name],
-					pricelist_amount:0});
-
-				lineModel.setQuantity(1);
-				lineModel.bookable = new BookableModel({id:bookable_id});
-				//reset selection to be able to add another bookable to booking
-				app.views.selectListAddBookableView.reset();
-
-				//perform manually updates to lineModel to get pricing, dispo, ...
-				var partner_id = this.model.getClaimer('id');
-				var checkin = this.model.getStartDate();
-				var checkout = this.model.getEndDate();
-				$.when(lineModel.fetchAvailableQtity(checkin,checkout),
-				lineModel.fetchPricing(partner_id,checkin,checkout),
-				lineModel.bookable.fetch()).always(function(){
-					self.model.addLine(lineModel);
-					var lineView = new ItemFormBookingLineView({model:lineModel});
-					$(self.el).find('#bookingLines').append(lineView.render().el);
-				})
-				.fail(function(e){
-					console.log(e);
-				});
+			if(this.viewRendered){
+				var self = this;
+				e.preventDefault();
+				//create lineModel and initialize values
+				var bookable_id = app.views.selectListAddBookableView.getSelectedItem();
+				if(bookable_id != ''){
+					var bookable_name = app.views.selectListAddBookableView.getSelectedText();
+					var lineModel = new BookingLineModel({
+						reserve_product:[bookable_id, bookable_name],
+						pricelist_amount:0});
+	
+					lineModel.setQuantity(1);
+					lineModel.bookable = new BookableModel({id:bookable_id});
+					//reset selection to be able to add another bookable to booking
+					app.views.selectListAddBookableView.reset();
+					
+					//perform manually updates to lineModel to get pricing, dispo, ...
+					var partner_id = this.model.getClaimer('id');
+					var checkin = this.model.getStartDate();
+					var checkout = this.model.getEndDate();
+					$.when(lineModel.fetchAvailableQtity(checkin,checkout),
+					lineModel.fetchPricing(partner_id,checkin,checkout),
+					lineModel.bookable.fetch()).always(function(){
+						self.model.addLine(lineModel);
+						var lineView = new ItemFormBookingLineView({model:lineModel});
+						$(self.el).find('#bookingLines').append(lineView.render().el);
+					})
+					.fail(function(e){
+						console.log(e);
+					});
+				}
 			}
 		},
 
 		changeBookingCheckin: function(e){
-			e.preventDefault();
-			if($("#bookingCheckin").val() != '' && $("#bookingCheckinHour").val() != ''){
-				var dateVal = new moment( $("#bookingCheckin").val(),"DD-MM-YYYY")
-				.add('hours',$("#bookingCheckinHour").val().split(":")[0] )
-				.add('minutes',$("#bookingCheckinHour").val().split(":")[1] );
-				this.model.setStartDate(moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss'));
-			}
-			else{
-				this.model.setStartDate('');
+			if(this.viewRendered){
+				e.preventDefault();
+				if($("#bookingCheckin").val() != '' && $("#bookingCheckinHour").val() != ''){
+					var dateVal = new moment( $("#bookingCheckin").val(),"DD-MM-YYYY")
+					.add('hours',$("#bookingCheckinHour").val().split(":")[0] )
+					.add('minutes',$("#bookingCheckinHour").val().split(":")[1] );
+					this.model.setStartDate(moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss'));
+				}
+				else{
+					this.model.setStartDate('');
+				}
 			}
 		},
 
 		changeBookingCheckout: function(e){
-			e.preventDefault();
-			if($("#bookingCheckout").val() != '' && $("#bookingCheckoutHour").val() != ''){
-				var dateVal = new moment( $("#bookingCheckout").val(),"DD-MM-YYYY")
-				.add('hours',$("#bookingCheckoutHour").val().split(":")[0] )
-				.add('minutes',$("#bookingCheckoutHour").val().split(":")[1] );
-				this.model.setEndDate(moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss'));
-			}
-			else{
-				this.model.setEndDate('');
+			if(this.viewRendered){
+				e.preventDefault();
+				if($("#bookingCheckout").val() != '' && $("#bookingCheckoutHour").val() != ''){
+					var dateVal = new moment( $("#bookingCheckout").val(),"DD-MM-YYYY")
+					.add('hours',$("#bookingCheckoutHour").val().split(":")[0] )
+					.add('minutes',$("#bookingCheckoutHour").val().split(":")[1] );
+					this.model.setEndDate(moment.utc(dateVal).format('YYYY-MM-DD HH:mm:ss'));
+				}
+				else{
+					this.model.setEndDate('');
+				}
 			}
 		},
 
@@ -490,6 +485,41 @@ define(['app',
 			}
 		},
 
+		/**
+		 * Save form and evolve workflow from 'draft' to 'remplir' state. Adapt url to call if it's a recurrente or a simple booking
+		 */
+		postBookingForm: function(e){
+			var self = this;
+			e.preventDefault();
+			this.model.saveToBackend()
+			.done(function(){
+				var model = (self.model.isTemplate() && self.model.recurrence != null) ? self.model.recurrence : self.model;
+				model.save({state_event:"save"},{wait:true,patch:true}).always(function(){
+					window.history.back();
+				});
+			})
+			.fail(function(e){
+				console.log(e);
+			});
+		},
+		
+		/**
+		 * evolve workflow to 'draft' state, fetch the model and render this view to update widget states (visible, readonly, etc.)
+		 */
+		redraftBookingForm: function(e){
+			e.preventDefault();
+			var self = this;
+			var model = (self.model.isTemplate() && self.model.recurrence != null) ? self.model.recurrence : self.model;
+			model.save({state_event:"redraft"}, {wait:true, patch:true}).done(function(){
+				self.model.fetchFromBackend().done(function(){
+					self.render();
+				});
+			});
+		},
+		
+		/**
+		 * Save only form, do not evolve workflow
+		 */
 		saveBookingForm: function(e){
 			e.preventDefault();
 			this.model.saveToBackend()
@@ -504,7 +534,6 @@ define(['app',
 
 		changeAddRecurrence: function(e){
 			var val = $('#bookingAddRecurrence').bootstrapSwitch('state');
-
 			if(val){
 				this.addRecurrence(e);
 			}
