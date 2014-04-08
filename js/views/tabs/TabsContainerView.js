@@ -39,6 +39,7 @@ define([
 				placeholder	: app.lang.actions.selectAAgent,
 				//not directly collection url but url to access backend method
 				url         : app.current_user.getUrlManageableOfficers(),
+				domain		: {}
 			},
 			team: {
 				key         : 'team',
@@ -47,6 +48,7 @@ define([
 				placeholder	: app.lang.actions.selectATeam,
 				//not directly collection url but url to access backend method
 				url         : app.current_user.getUrlManageableTeams(),
+				domain		: {}
 			},
 			partner: {
 				key        : 'partner',
@@ -55,6 +57,8 @@ define([
 				placeholder: app.lang.actions.selectAProvider,
 				//Collection url
 				url        : ClaimersCollection.prototype.url,
+				//Get only provider partner
+				domain     :{field: 'type_id.code', operator: '=', value: 'PRESTATAIRE'}
 			}
 		},
 		
@@ -93,6 +97,7 @@ define([
 			var user = app.current_user;
 			return $.when($.ajax({
 				async: true,
+				data: {filters: app.objectifyFilters([self.tabTypesSelected.domain])},
 				url: self.tabTypesSelected.url,
 				headers: {Authorization: 'Token token=' + user.get('authToken')},
 				success: function (data) {

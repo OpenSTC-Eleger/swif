@@ -31,21 +31,24 @@ define([
 				label      : app.lang.agent,
 				logo       : 'fa-user',
 				placeholder: app.lang.actions.selectAAgent,
-				url        : OfficersCollection.prototype.url
+				url        : OfficersCollection.prototype.url,
+				domain		: {}
 			},
 			team: {
 				key        : 'team',
 				label      : app.lang.team,
 				logo       : 'fa-users',
 				placeholder: app.lang.actions.selectATeam,
-				url        : TeamsCollection.prototype.url
+				url        : TeamsCollection.prototype.url,
+				domain		: {}
 			},
 			provider: {
 				key        : 'provider',
 				label      : app.lang.provider,
 				logo       : 'fa-truck',
 				placeholder: app.lang.actions.selectAProvider,
-				url        : ClaimersCollection.prototype.url
+				url        : ClaimersCollection.prototype.url,
+				domain     : {field: 'type_id.code', operator: '=', value: 'PRESTATAIRE'}
 			}
 		},
 
@@ -89,6 +92,9 @@ define([
 				$(self.el).html(template);
 
 				self.selectView = new AdvancedSelectBoxView({el: '#selectUsers', url: self.userTypesSelected.url, placeholder: self.userTypesSelected.placeholder });
+				if(!_.isEmpty(self.userTypesSelected.domain)){
+					self.selectView.setSearchParam(self.userTypesSelected.domain);
+				}
 				self.selectView.render();
 
 				// Display the default value on the button //
@@ -126,6 +132,11 @@ define([
 			this.userTypesSelected = this.userTypes[sl];
 			this.setSelectedUser();
 
+			this.selectView.resetSearchParams();
+			if(!_.isEmpty(this.userTypesSelected.domain)){
+				this.selectView.setSearchParam(this.userTypesSelected.domain);
+			}
+			
 			this.selectView.open();
 		},
 

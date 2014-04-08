@@ -36,6 +36,7 @@ define([
 			this.label = this.tabType.label;
 			this.key = this.tabType.key;
 			this.url = this.tabType.url;
+			this.domain = this.tabType.domain;
 			this.counter = this.options.counter;
 			this.active = this.tabType.active;
 			
@@ -86,7 +87,7 @@ define([
 				url      : this.url,
 				method   : 'HEAD',
 				dataType : 'text',
-				data     : {},
+				data     : {filters: app.objectifyFilters([this.domain])},
 				success  : function(data,status,request){
 					var contentRange = request.getResponseHeader('Content-Range');
 					self.counter = contentRange.match(/\d+$/)[0];
