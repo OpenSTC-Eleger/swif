@@ -6,3 +6,9 @@
 </td>
 
 <td><span class="label label-<%= stateItem.color %>"><%= stateItem.translation %></span></td>
+
+<td>
+<% if(task.getAttribute('actions',[]).indexOf('delete') > -1){ %>
+<a class="actionDelete" href="#"><i class="fa fa-times"></i></a>
+<% } %>
+</td>

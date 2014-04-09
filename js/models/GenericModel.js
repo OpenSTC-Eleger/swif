@@ -6,8 +6,9 @@
 
 define([
 	'backbone',
+	'moment',
 
-], function(Backbone){
+], function(Backbone, moment){
 
 	'use strict';
 
@@ -42,6 +43,14 @@ define([
 
 		getActions : function(){
 			return this.get('actions');
+		},
+		
+		getDateFr: function(field){
+			var val = this.getAttribute(field,'');
+			if(val !== ''){
+				val = moment(val).format('DD/MM/YYYY');
+			}
+			return val;
 		},
 		
 		//method to retrieve attribute with standard return form

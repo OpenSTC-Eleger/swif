@@ -28,7 +28,7 @@ define([
 		
 		// The DOM events //
 		events: {
-			'click .actionDelete': 'modalDelete',
+			'click .actionDelete': 'performDelete',
 		},
 		
 		/** View Initialization
@@ -70,7 +70,7 @@ define([
 				
 			});
 
-			app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.absentTypeDeleteOk);
+			app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.taskDeleteOk);
 		},
 
 		/** Display the view
@@ -92,6 +92,11 @@ define([
 			});
 
 			return this;
+		},
+		
+		performDelete: function(e){
+			e.preventDefault();
+			this.model.destroy();
 		},
 		
 	});

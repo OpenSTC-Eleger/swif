@@ -2,7 +2,7 @@ define([
 	'app',
 	'appHelpers',
 	'genericModel',
-	'moment'
+	
 
 
 ], function(app, AppHelpers, GenericModel){
@@ -77,9 +77,12 @@ define([
 			var ret = {};
 			ret.name = this.getAttribute('name','');
 			var value = this.getAttribute('description','');
+			value += '</footer><br><footer>';
+			value += '<strong>Dates :</strong> du ' + this.getDateFr('date_start_order') + ' au ' + this.getDateFr('date_end_order') + '</footer>';
+			
 			var lineNames = this.getAttribute('contract_line_names', []);
 			if(lineNames.length > 0){
-				value += '</footer><br><footer><strong>Tâches du contrat : </strong>';
+				value += '<br><footer><strong>Tâches du contrat : </strong>';
 				value += '<ul>';
 				_.each(lineNames, function(lineName){
 					value += '<li>' + lineName[1] + '</i>';

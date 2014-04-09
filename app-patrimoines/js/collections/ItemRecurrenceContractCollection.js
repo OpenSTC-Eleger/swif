@@ -1,9 +1,9 @@
 define([
 	'app',
 	'genericCollection',
-	'contractLineModel'
+	'itemRecurrenceContractModel'
 
-], function(app, GenericCollection, ContractLineModel){
+], function(app, GenericCollection, ItemRecurrenceContractModel){
 
 	'use strict';
 
@@ -12,11 +12,11 @@ define([
 	*/
 	return GenericCollection.extend({
 	
-		model : ContractLineModel,
+		model : ItemRecurrenceContractModel,
 		
 		url: '/api/openstc/tasks',
 
-		fields: ['id', 'name','date_deadline', 'agent_or_team_name', 'user_id', 'team_id', 'state'],
+		fields: ['id', 'name','date_deadline', 'agent_or_team_name', 'user_id', 'team_id', 'state', 'actions'],
 
 		default_sort: { by: 'id', order: 'DESC' },
 		

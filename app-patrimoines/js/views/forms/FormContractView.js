@@ -76,7 +76,7 @@ define(['app',
 			$('.lineHeader:last').tab('show');
 			$('.removeLineHeader').remove();
 			$('.lineHeader').each(function(){
-				$(this).append('<a class="removeLineHeader" href="#" data-view="' + $(this).attr('href').replace('#','') + '"><b> &times; </b></a>');
+				$(this).append('<a class="removeLineHeader" href="#" data-view="' + $(this).attr('href').replace('#','') + '">&nbsp;<i class="fa fa-times"></i></a>');
 			});
 		},
 		
@@ -172,7 +172,7 @@ define(['app',
 		
 		savePostForm: function(e){
 			e.preventDefault();
-			this.saveForm(e, false, {wkf_evolve:'post'});
+			this.saveForm(e, true, {wkf_evolve:'post'});
 		},
 		
 		saveDraftForm: function(e){
