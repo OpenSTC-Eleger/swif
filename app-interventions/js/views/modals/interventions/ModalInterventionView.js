@@ -323,7 +323,8 @@ define([
 					$('#btnSelectPlaceEquipment').find('.iconItem').removeClass('fa fa-map-marker');
 					$('#btnSelectPlaceEquipment').find('.iconItem').addClass('fa fa-wrench');
 				}
-				this.advancedSelectBoxInterventionPlaceOrEquipment.collection = collection;
+				this.advancedSelectBoxInterventionPlaceOrEquipment.setUrl(collection.url);
+				//this.advancedSelectBoxInterventionPlaceOrEquipment.collection = collection;
 				this.setParamOnSitesEquipments();
 				this.advancedSelectBoxInterventionPlaceOrEquipment.render();
 			}

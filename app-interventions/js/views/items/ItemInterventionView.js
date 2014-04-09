@@ -160,15 +160,17 @@ define([
 					$('#interService').html(!interJSON.service_id?'':interJSON.service_id[1]);
 
 					if(interJSON.has_equipment){
-						$('#interPlace').css({display:'inline-block'});
+						//$('#interPlace').css({display:'inline-block'});
 						//fill data with equipment and location
 						$('#interPlaceOrEquipment').html(interJSON.equipment_id[1]);
 						$('#interPlace').html(interJSON.site1[1]);
 					}
 					else{
-						$('#interPlace').css({display:'none'});
+						//$('#interPlace').css({display:'none'});
+						$('#interPlace').html(interJSON.site1[1]);
+						$('#interPlaceOrEquipment').html("");
 						//fill data of site1
-						$('#interPlaceOrEquipment').html(interJSON.site1[1]);
+						//$('#interPlaceOrEquipment').html(interJSON.site1[1]);
 					}
 					$('#interPlaceMore').html(interJSON.site_details);
 
