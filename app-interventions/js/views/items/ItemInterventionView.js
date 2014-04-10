@@ -190,16 +190,15 @@ define([
 				$('#claimentType').html('');
 				if(!interJSON.ask_id){
 					$('#claimentName').html(interJSON.create_uid[1]);
-					$('#interPlaceMore').html(interJSON.site_details==false?"":interJSON.site_details);
+					$('#interPlaceMore').html(interJSON.site_details===false?"":interJSON.site_details);
 					deferred.resolve();
-				}else{					
+				}else{
 					//retrieve ask associated, if exist
 					var ask = new RequestModel();
 					ask.setId(interJSON.ask_id[0]);
 					ask.fetch().done(function(){
 						var askJSON = ask.toJSON();
-						$('#interPlaceMore').html(askJSON.site_details==false?"":askJSON.site_details);
-						var claimerType = new ClaimerTypeModel();
+						$('#interPlaceMore').html(askJSON.site_details===false?"":askJSON.site_details);
 						if(askJSON.partner_id !== false){
 							$('#claimentName').html(askJSON.partner_id[1]+' - '+ (!askJSON.partner_address?'':askJSON.partner_address[1]));
 							$('#claimentPhone').html(askJSON.partner_phone);
@@ -210,20 +209,20 @@ define([
 								if(!_.isUndefined(claimerJSON.type_id) && claimerJSON.type_id !== false){
 									var claimerType = new ClaimerTypeModel();
 									claimerType.setId(claimerJSON.type_id[0]);
-									claimerType.fetch().done(function(){									
+									claimerType.fetch().done(function(){
 										$('#claimentType').html(claimerType.toJSON().name);
-										deferred.resolve();	
-									});								
+										deferred.resolve();
+									});
 								}
 								else{
-									deferred.resolve();	
+									deferred.resolve();
 								}
 							});
 						}
 						else{
 							$('#claimentName').html(askJSON.people_name);
 							$('#claimentPhone').html(askJSON.people_phone);
-							deferred.resolve();	
+							deferred.resolve();
 						}
 					})
 					.fail(function(e){
