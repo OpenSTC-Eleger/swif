@@ -16,7 +16,7 @@ define([
 		
 		url   : '/api/openpatrimoine/contracts',
 
-		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'provider_name', 'patrimoine_is_equipment', 'patrimoine_name', 'state', 'description', 'deadline_delay', 'type_renewal', 'category_id', 'delay_passed', 'warning_delay', 'contract_line_names', 'cancel_reason'],
+		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'provider_name', 'patrimoine_is_equipment', 'patrimoine_name', 'state', 'description', 'deadline_delay', 'type_renewal', 'category_id', 'delay_passed', 'warning_delay', 'contract_line_names', 'cancel_reason', 'remaining_delay', 'new_description', 'new_date_start_order', 'new_date_end_order'],
 
 		default_sort: { by: 'state_order', order: 'ASC' },
 		

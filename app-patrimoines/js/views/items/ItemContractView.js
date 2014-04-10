@@ -26,7 +26,8 @@ define([
 
 		className    : function(){
 			var ret = 'row-item';
-			if(this.model.getAttribute('state','draft') == 'done'){
+			var state = this.model.getAttribute('state','draft');
+			if(state == 'done' || state == 'cancel'){
 				ret += ' text-muted';
 			}
 			else if(this.model.getAttribute('warning_delay',false)){
@@ -37,6 +38,7 @@ define([
 
 		templateHTML : '/templates/items/itemContract.html',
 		templateCancelContract: '/templates/modals/modalCancelContract.html',
+		templateRenewContract: '/templates/modals/modalRenewContract.html',
 		templateSmallActionHTML : '/templates/others/templateSmallActionComponent.html',
 		templateButtonActionHTML : '/templates/others/templateButtonActionComponent.html',
 		
@@ -261,8 +263,13 @@ define([
 			e.stopPropagation();
 			var action = $(e.currentTarget).data('action');
 			var templateForm = null;
-			if(action == 'cancel'){
+			switch(action){
+			case 'cancel':
 				templateForm = app.menus.openstcpatrimoine + this.templateCancelContract;
+				break;
+			case 'renew':
+				templateForm = app.menus.openstcpatrimoine + this.templateRenewContract;
+				break;
 			}
 			var langAction = app.lang.patrimoine.modalContract;
 			new GenericActionModalView({

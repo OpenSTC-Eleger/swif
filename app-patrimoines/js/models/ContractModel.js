@@ -16,7 +16,7 @@ define([
 		
 		urlRoot: '/api/openpatrimoine/contracts',
 
-		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'technical_service_id', 'supplier_id', 'provider_name', 'patrimoine_is_equipment', 'equipment_id' ,'site_id' ,'patrimoine_name', 'state', 'description', 'deadline_delay', 'type_renewal', 'category_id', 'contract_line', 'contract_line_names', 'delay_passed', 'warning_delay', 'cancel_reason'],
+		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'technical_service_id', 'supplier_id', 'provider_name', 'patrimoine_is_equipment', 'equipment_id' ,'site_id' ,'patrimoine_name', 'state', 'description', 'deadline_delay', 'type_renewal', 'category_id', 'contract_line', 'contract_line_names', 'delay_passed', 'warning_delay', 'cancel_reason', 'remaining_delay', 'new_description', 'new_date_start_order', 'new_date_end_order'],
 		
 		readonlyFields: ['contract_line_names', 'contract_line', 'id', 'state'],
 		
@@ -78,7 +78,7 @@ define([
 			ret.name = this.getAttribute('name','');
 			var value = this.getAttribute('description','');
 			value += '</footer><br><footer>';
-			value += '<strong>Dates :</strong> du ' + this.getDateFr('date_start_order') + ' au ' + this.getDateFr('date_end_order') + '</footer>';
+			value += '<strong>Periode du contrat en cours :</strong> du ' + this.getDateFr('date_start_order') + ' au ' + this.getDateFr('date_end_order') + '</footer>';
 			
 			var lineNames = this.getAttribute('contract_line_names', []);
 			if(lineNames.length > 0){

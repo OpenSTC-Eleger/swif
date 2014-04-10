@@ -1,0 +1,20 @@
+<div class="form-group">
+	<label for="new_date_start_order" class="control-label col-sm-3">Nouvelle Période </label>
+	
+	<div class="col-sm-4">
+		<div class="input-group">
+			<input type="text" id="new_date_start_order" class="datepicker form-control field-element" placeholder="dd/mm/yyyy" value="<%= model.getDateFr('new_date_start_order') %>" required>
+			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+		</div>
+	</div>
+	<div class="col-sm-1 control-label">-</div>
+	<div class="col-sm-4">
+		<div class="input-group">
+			<input type="text" id="new_date_end_order" class="datepicker form-control field-element" placeholder="dd/mm/yyyy" value="<%= model.getDateFr('new_date_end_order') %>" required>
+			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+		</div>
+	</div>
+</div>
+
+<!-- Renewed contract note -->
+<div class="form-group field" data-field-label="<%= lang.patrimoine.newNote%>" data-required="required" data-field-name="new_description"></div>
