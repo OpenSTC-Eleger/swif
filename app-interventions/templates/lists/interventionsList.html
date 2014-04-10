@@ -125,7 +125,7 @@
 
 	<div>
 		<div>
-			<h1 style="float: left;">Fiche d'interventions</h1>
+			<h1 style="float: left;">Fiche d'interventions n°<span id="interId" class="field"></span></h1>
    			<img src="<%= cityLogo %>" style="float: right">
    		</div>
    		<hr style="clear: both;">
@@ -140,7 +140,6 @@
 				<strong id="interDeadline" class="field"></strong>
 			</p>
 			<div style="clear: both;">
-				<em style="text-decoration:underline;">N°:</em> <span id="interId" class="field"></span><br>
 				<em style="text-decoration:underline;"><%= _.capitalize(lang.intervention) %>:</em> <span id="interName" class="field"></span><br>
 				<em style="text-decoration:underline;"><%= _.capitalize(lang.description) %>:</em> <span id="interDescription" class="field"></span><br>
 				<em style="text-decoration:underline;" id="printPlaceOrEquipmentLabel"><%= _.capitalize(lang.materialEquipment) %>:</em> <span id="interPlaceOrEquipment" class="field"></span><br>
