@@ -226,7 +226,9 @@ define(['app',
 			}else{
 				value = $(e.target).val();
 			}
-			this.model.set(fieldName,value);
+			if(this.model.get(fieldName) !== value){
+				this.model.set(fieldName,value);
+			}
 		},
 		
 		/**
