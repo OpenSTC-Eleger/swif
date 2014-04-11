@@ -19,7 +19,7 @@
 		"Bootstrap-datepicker" : "1.1.2",
 		"Bootstrap-timepicker" : "0.2.3",
 		"Bootstrap-switch"     : "2.0.0",
-		"Select2"              : "3.4.5",
+		"Select2"              : "3.4.6",
 		"NProgress"            : "0.1.2"
 	}
 }
