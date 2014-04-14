@@ -243,6 +243,7 @@
     "third"									: "Troisième",
     "fourth"								: "Quatrième",
     "last"									: "Dernier",
+    "ContractNearToExpire"					: "Contrat est proche de son expiration",
     
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
