@@ -125,13 +125,17 @@ define([
 		},
 
 
-		affectedOnTeam: function(){
-			if(this.get('team_id') === false){
-				return false;
-			}else{
-				return true;
-			}
+		affectedTo: function(type){
 
+			if(this.get('user_id') !== false){
+				return this.getUser(type);
+			}
+			else if(this.get('team_id') !== false){
+				return this.getTeam(type);
+			}
+			else if(this.get('partner_id') !== false){
+				return this.getProvider(type);
+			}
 		},
 
 
@@ -145,6 +149,9 @@ define([
 						break;
 					case 'json':
 						returnVal = {id: this.get('user_id')[0], name: this.get('user_id')[1]};
+						break;
+					case 'logo':
+						returnVal = 'fa-user';
 						break;
 					default:
 						returnVal = this.get('user_id')[1];
@@ -171,6 +178,9 @@ define([
 					case 'json':
 						returnVal = {id: this.get('team_id')[0], name: this.get('team_id')[1]};
 						break;
+					case 'logo':
+						returnVal = 'fa-users';
+						break;
 					default:
 						returnVal = this.get('team_id')[1];
 				}
@@ -183,6 +193,32 @@ define([
 		},
 		setTeam : function(value, silent) {
 			this.set({ state : value }, {silent: silent});
+		},
+
+
+		getProvider : function(type) {
+			if(this.get('partner_id')){
+				var returnVal;
+
+				switch(type){
+					case 'id':
+						returnVal = this.get('partner_id')[0];
+						break;
+					case 'json':
+						returnVal = {id: this.get('partner_id')[0], name: this.get('partner_id')[1]};
+						break;
+					case 'logo':
+						returnVal = 'fa-truck';
+						break;
+					default:
+						returnVal = this.get('partner_id')[1];
+				}
+
+				return returnVal;
+			}
+			else{
+				return false;
+			}
 		},
 
 

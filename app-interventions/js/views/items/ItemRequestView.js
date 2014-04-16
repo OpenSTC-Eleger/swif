@@ -175,8 +175,6 @@ define([
 
 		displayModalUpdateRequest: function(e){
 
-			console.log(this.model);
-
 			e.preventDefault();
 			new ModalRequestView({el:'#modalRequest', requests: app.views.requestsListView.collection, model: this.model});
 

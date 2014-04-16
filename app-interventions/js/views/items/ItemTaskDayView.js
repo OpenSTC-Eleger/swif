@@ -72,12 +72,13 @@ define([
 
 
 				var template = _.template(templateData, {
-					lang                   : app.lang,
-					task					: self.model.toJSON(),
-					tasksStatus				: TaskModel.status,
-					date_start				: date_start,
-					date_end				: date_end,
-					AppHelpers				: AppHelpers
+					lang          : app.lang,
+					task          : self.model.toJSON(),
+					taskModel     : self.model,
+					tasksStatus   : TaskModel.status,
+					date_start    : date_start,
+					date_end      : date_end,
+					AppHelpers    : AppHelpers
 				});
 				$(self.el).attr('id', self.model.toJSON().id);
 				$(self.el).html(template);

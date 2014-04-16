@@ -13,13 +13,14 @@ define([
 	'equipmentsCollection',
 
 	'advancedSelectBoxView',
+	'multiSelectBoxUsersView',
 
 	'moment-timezone',
 	'moment-timezone-data',
 	'bsDatepicker-lang',
 	'bsTimepicker',
 
-], function(app, GenericModalView, OfficersCollection, TeamsCollection, EquipmentsCollection, AdvancedSelectBoxView, moment){
+], function(app, GenericModalView, OfficersCollection, TeamsCollection, EquipmentsCollection, AdvancedSelectBoxView, MultiSelectBoxUsersView, moment){
 
 	'use strict';
 
@@ -36,7 +37,6 @@ define([
 		events: function() {
 			return _.defaults({
 				'submit #formTaskDone'        : 'taskDone',
-				'click a.linkSelectUsersTeams': 'changeSelectListUsersTeams',
 				'click .linkRefueling'        : 'accordionRefuelingInputs'
 			},
 			GenericModalView.prototype.events);
@@ -53,6 +53,8 @@ define([
 			this.modal = $(this.el);
 			self.render();
 		},
+
+
 
 		/** Display the view
 		 */
@@ -94,7 +96,8 @@ define([
 				// Filter Equipment and user/team by service on intervention's task //
 				var hasService = (self.options.inter.toJSON().service_id && !_.isUndefined(self.options.inter.toJSON().service_id));
 
-				self.selectListOfficersTeamsView = new AdvancedSelectBoxView({ el:$('#selectUsersTeams'), url: OfficersCollection.prototype.url });
+				// Create the view to select the user who have done the task //
+				self.multiSelectBoxUsersView = new MultiSelectBoxUsersView({el: '.multiSelectUsers', serviceID: self.options.inter.getService('id')});
 
 				self.selectVehicleView = new AdvancedSelectBoxView({ el:'#taskEquipmentDone', url: EquipmentsCollection.prototype.url });
 				self.selectListEquipmentsView = new AdvancedSelectBoxView({ el:'#taskEquipmentListDone', url: EquipmentsCollection.prototype.url });
@@ -106,8 +109,6 @@ define([
 
 				if(hasService){
 
-					self.setSearchParamsOnUsersTeams();
-					self.selectListOfficersTeamsView.setSearchParam({field:'id', operator:'>', value:'1'});
 
 					self.selectVehicleView.setSearchParam('|');
 					self.selectVehicleView.setSearchParam({field:'service_ids',operator:'=?',value:'False'});
@@ -120,36 +121,19 @@ define([
 
 				self.selectVehicleView.render();
 				self.selectListEquipmentsView.render();
-				self.selectListOfficersTeamsView.render();
 
 			});
 
 			return this;
 		},
 
-		setSearchParamsOnUsersTeams: function(){
-			if(this.options.inter.toJSON().service_id && !_.isUndefined(this.options.inter.toJSON().service_id)){
-				this.selectListOfficersTeamsView.setSearchParam({field:'service_ids.id',operator:'=',value:this.options.inter.toJSON().service_id[0]}, true);
-			}
-		},
+
 
 		/** Save Task as Done (create another one if timeRemaining set)
 		 */
 		taskDone: function(e){
 			e.preventDefault();
 			var self = this;
-
-			var teamMode;
-			if($('#selectUsersTeams').data('item') === 'officers'){
-				teamMode = false;
-
-			}
-			else{
-				teamMode = true;
-			}
-
-			//var id = $('#selectUsersTeams').val();
-			var id = this.selectListOfficersTeamsView.getSelectedItem();
 
 			// Retrieve Start Date and Start Hour //
 			var mNewDateStart =  moment( $('#startDate').val(),'DD-MM-YYYY')
@@ -183,8 +167,6 @@ define([
 			var params = {
 				date_start     : mNewDateStart.toDate(),
 				date_end       : mNewDateEnd.toDate(),
-				team_id        : teamMode ? id : 0,
-				user_id        : !teamMode ? id : 0,
 				equipment_ids  : equipments,
 				vehicule       : vehicule,
 				km             : this.$('#equipmentKmDone').val(),
@@ -194,11 +176,29 @@ define([
 				remaining_hours: remaining_hours,
 			};
 
+			var res = self.multiSelectBoxUsersView.getUserType();
+			if(res.type == 'team'){
+				params.user_id = false;
+				params.partner_id = false;
+				params.team_id = res.value;
+			}
+			else if(res.type == 'officer'){
+				params.team_id = false;
+				params.partner_id = false;
+				params.user_id = res.value;
+			}
+			else{
+				params.team_id = false;
+				params.user_id = false;
+				params.partner_id = res.value;
+			}
+
+
 			this.model.save(params, {silent: true, patch: true, wait: true})
 				.done(function(){
 					//if task is "unfinished", must retrieve the newly created task with remainingHours
 					$.when(
-						self.options.tasks.fetch({data: {filters:{0:{'field':'project_id.id',operator: '=', value: self.options.inter.toJSON().id} }}}),
+						self.options.tasks.fetch({data: {filters:{0:{'field':'project_id.id', operator: '=', value: self.options.inter.toJSON().id} }}}),
 						self.model.fetch())
 					.done(function(){
 						self.modal.modal('hide');
@@ -216,46 +216,6 @@ define([
 		},
 
 
-		/** Update the <select> list of Users or Teams in the Modal Task Done
-		*/
-		changeSelectListUsersTeams: function(e){
-			e.preventDefault();
-			var link = $(e.target);
-
-			// Retrieve the item to refres - Users or Teams //
-			var itemToLoad;
-			if(link.is('a')){ itemToLoad = link.data('item'); }
-			else{ itemToLoad = link.parent('a').data('item'); }
-
-			this.selectedTaskJSON = this.model.toJSON();
-
-
-			//first, re-init filters with default ones
-			this.setSearchParamsOnUsersTeams();
-			//update Advanced selectBox Params (placeholder, collection and filters) according to itemToLoad
-			if(itemToLoad === 'officers'){
-				$('#btnSelectUsersTeams > i.iconItem.fa-users').addClass('fa-user').removeClass('fa-users');
-				$('#selectUsersTeams').data('item', 'officers');
-				$('#selectUsersTeams').attr('data-placeholder', app.lang.actions.selectAAgentShort);
-
-				this.selectListOfficersTeamsView.setUrl(OfficersCollection.prototype.url);
-				//filter to remove administrator record
-				this.selectListOfficersTeamsView.setSearchParam({field:'id', operator:'>',value:'1'});
-				this.selectListOfficersTeamsView.reset();
-				this.selectListOfficersTeamsView.render();
-			}
-			else if(itemToLoad === 'teams'){
-				$('#btnSelectUsersTeams > i.iconItem.fa-user').addClass('fa-users').removeClass('fa-user');
-				$('#selectUsersTeams').data('item', 'teams');
-				$('#selectUsersTeams').attr('data-placeholder', app.lang.actions.selectATeamShort);
-
-				this.selectListOfficersTeamsView.setUrl(TeamsCollection.prototype.url);
-				this.selectListOfficersTeamsView.reset();
-				this.selectListOfficersTeamsView.render();
-			}
-
-		},
-
 
 		/** Display or Hide Refueling Section (Inputs Km, Oil, Oil prize)
 		*/
@@ -264,7 +224,8 @@ define([
 
 			// Toggle Slide Refueling section //
 			$('.refueling-vehicle').stop().slideToggle();
-		},
+		}
+
 	});
 
 	return ModalTaskDoneView;

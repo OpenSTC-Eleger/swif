@@ -18,6 +18,8 @@ define([
 	*/
 	var OfficersCollection = GenericCollection.extend({
 
+		key         : 'officer',
+
 		model       : OfficerModel,
 
 		url         : '/api/open_object/users',
@@ -25,6 +27,8 @@ define([
 		fields      : ['complete_name', 'contact_id', 'date', 'firstname', 'current_group', 'openresa_group', 'id', 'isDST', 'isManager', 'isResaManager', 'lastname', 'login', 'name', 'phone', 'service_id', 'service_ids', 'service_names', 'user_email', 'actions'],
 
 		default_sort: { by: 'complete_name', order: 'ASC' },
+
+		logo        : 'fa-user',
 
 
 		/** Collection Initialization

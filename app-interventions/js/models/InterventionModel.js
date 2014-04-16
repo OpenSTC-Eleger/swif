@@ -176,6 +176,15 @@ define([
 			return this.get('actions');
 		},
 
+		getService: function(type){
+			if(type == 'id'){
+				return this.get('service_id')[0];
+			}
+			else{
+				return this.get('service_id')[1];
+			}
+		},
+
 		hasActions: function(action){
 			return this.getActions().indexOf(action) > -1;
 		},

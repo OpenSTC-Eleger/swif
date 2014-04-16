@@ -18,6 +18,8 @@ define([
 	*/
 	var ClaimersCollection = GenericCollection.extend({
 
+		key         : 'provider',
+
 		model       : ClaimerModel,
 
 		url         : '/api/open_object/partners',
@@ -25,6 +27,8 @@ define([
 		fields      : ['id', 'name', 'address', 'category_id', 'contract_ids', 'email', 'phone', 'service_id', 'task_ids', 'technical_service_id', 'technical_site_id', 'title', 'type_id', 'user_id'],
 
 		default_sort: { by: 'name', order: 'ASC' },
+
+		logo        : 'fa-truck',
 
 
 

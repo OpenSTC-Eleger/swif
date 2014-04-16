@@ -1,0 +1,17 @@
+
+<!-- Officers -->
+<div class="tab-pane  active  tab-pane-planning" id="tab-<%= key %>">
+	<!-- Header Tab-->
+	<!-- <div class="headerTab"></div> -->
+	<!-- Header Tab -->
+	<ul id="list-<%= key %>" class="nav nav-pills">
+		<%_.each(array, function (model, i) { %>
+			<li data-toggle="<%= model.dataToggle %>" data-name="<%= model.dataName %>" data-original-title="<%= model.dataOriginalTitle %>" 
+				data-html="<%= model.dataHtml %>" data-placement="<%= model.dataPlacement %>" data-content="<%= model.dataContent %>">
+				<a id="cal_<%= model.id %>" href="#<%= model.id %>">
+					<i class="fa fa-user fa-fw"></i>&nbsp;<%= model.content %>
+				</a>
+			</li>
+		<% }) %>
+	</ul>
+</div>
