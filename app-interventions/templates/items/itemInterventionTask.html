@@ -26,13 +26,7 @@
 </td>
 <!-- Assign To -->
 <td>
-<% if(task.user_id != false){ %>
-	<%= task.user_id[1] %>
-<% } else if(task.team_id != false){ %>
-	<%= task.team_id[1] %>
-<% } else{ %>
-	<%= task.partner_id[1] %>
-<% } %>
+<i class="fa <%= taskModel.affectedTo('logo') %>"/> &nbsp;<%= taskModel.affectedTo() %>
 </td>
 <td><%= AppHelpers.decimalNumberToTime(task.planned_hours, 'human') %></td>
 <td><%= AppHelpers.decimalNumberToTime(task.effective_hours, 'human') %></td>

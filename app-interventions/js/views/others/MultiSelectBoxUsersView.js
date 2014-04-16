@@ -76,8 +76,7 @@ define([
 				this.userTypes.officer.domain.push(domain);
 				this.userTypes.team.domain.push(domain);
 
-				var domain = { field: 'technical_service_id.id', operator: '=', value: options.serviceID };
-				this.userTypes.provider.domain.push(domain);
+				this.userTypes.provider.domain.push({ field: 'technical_service_id.id', operator: '=', value: options.serviceID });
 			}
 
 			this.render();

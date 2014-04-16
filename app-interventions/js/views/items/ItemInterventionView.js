@@ -139,12 +139,7 @@ define([
 
 					// User who made the Task //
 					if(task.getState() == TaskModel.status.done.key){
-						if(task.affectedOnTeam()){
-							doneBy = task.getTeam();
-						}
-						else{
-							doneBy = task.getUser();
-						}
+						doneBy = task.affectedTo();
 						dateStart = moment(task.getDateStart()).format('LLL');
 						dateEnd = moment(task.getDateEnd()).format('LLL');
 						equipment = task.getEquipments();

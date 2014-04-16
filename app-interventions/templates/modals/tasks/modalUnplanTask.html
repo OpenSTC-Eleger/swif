@@ -24,12 +24,7 @@
 
 				<!-- Display the affected Team or Use -->
 				<small>
-					<% if(task.affectedOnTeam()) { %>
-						<i class="fa fa-users fa-fw"></i>&nbsp;<%= task.getTeam() %>
-					<% }else{ %>
-						<i class="fa fa-user fa-fw"></i>&nbsp;<%= task.getUser() %>
-					<% } %>
-
+					<i class="fa <%= task.affectedTo('logo') %> fa-fw"></i>&nbsp;<%= task.affectedTo() %>
 				</small>
 			</blockquote>
 		</div>
