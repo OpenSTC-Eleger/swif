@@ -8,11 +8,11 @@
 
 			<ul class="dropdown-menu">
 				<% _.each(userTypes, function(u, key){
-					if(key == userTypesSelected.key){ var isActive = "active"; } else{ isActive = ""; }
+					if(key == userTypesSelected.collection.key){ var isActive = "active"; } else{ isActive = ""; }
 				%>
 
 					<li class="<%= isActive %>" data-type="<%= key %>">
-						<a href="#" class="linkSelectUsersTeams"><i class="fa <%= u.logo %> fa-fw"></i>&nbsp; <%= _.capitalize(u.label) %></a>
+						<a href="#" class="linkSelectUsersTeams"><i class="fa <%= u.collection.logo %> fa-fw"></i>&nbsp; <%= _.capitalize(u.label) %></a>
 					</li>
 				<% }) %>
 			</ul>

@@ -24,13 +24,13 @@ define([
 	* and tab selected and href selected in tab from url context
 	*/
 	var tabsContainerView = Backbone.View.extend({
-		
-		
+
+
 		//template name
 		templateHTML: 'templates/tabs/tabsContainer.html',
-				
-		
-		// Tabs types : describes all the necessary infomramtions to siplay tabs 
+
+
+		// Tabs types : describes all the necessary infomramtions to siplay tabs
 		tabTypes : {
 			officer: {
 				key         : 'officer',
@@ -61,16 +61,16 @@ define([
 				domain     :{field: 'type_id.code', operator: '=', value: 'PRESTATAIRE'}
 			}
 		},
-		
+
 		//Current tab selected
 		tabTypesSelected : '',
 
 
 		events: {
 			'keyup #searchOfficerOrTeam'    : 'search',
-			'click li a[data-toggle="tab"]'		: 'changeTabType',
+			'click li a[data-toggle="tab"]'	: 'changeTabType',
 		},
-		
+
 
 
 		/**
@@ -79,14 +79,14 @@ define([
 		initialize: function(params){
 			var self = this;
 			this.options = params.options;
-				
+
 			// Set the tab to display
 			this.tabTypesSelected = this.getTabSelected();
-			
+
 			this.initCollection().done(function(){
 				self.render();
 			});
-			
+
 		},
 
 		/**
@@ -113,7 +113,7 @@ define([
 		 * Build hrefs in tab
 		 */
 		postRender: function(data) {
-			
+
 			this.hrefList = [];
 			var self = this;
 
@@ -137,13 +137,13 @@ define([
 				}
 				modelJSON.dataName = modelJSON.name.toLowerCase();
 				modelJSON.content =  model.name.toUpperCase() + '&nbsp;' + (_.isUndefined(model.firstname) ? '': model.firstname );
-				
+
 				//add href in list
 				self.hrefList.push(modelJSON);
 			});
-						
+
 		},
-		
+
 
 
 		/** Display the view
@@ -158,35 +158,35 @@ define([
 				});
 
 				self.$el.html(template);
-				
+
 				//focus on search input field
 				$('#searchOfficerOrTeam').focus();
-				
+
 				//load officer header Tab
 				var officerTabView = new TabHeadView({ tabType: self.tabTypes.officer, counter: _.size( app.current_user.getOfficers() ), active:true  });
 				$("#allTabs").append( officerTabView.el );
-				
+
 				//load team header Tab
 				var teamTabView = new TabHeadView({ tabType: self.tabTypes.team , counter: _.size( app.current_user.getTeams() )});
 				$("#allTabs").append ( teamTabView.el );
-				
+
 				//load partner header Tab
 				var partnerTabView = new TabHeadView({ tabType: self.tabTypes.partner });
 				$("#allTabs").append ( partnerTabView.el );
-				
+
 				self.selectTabView = new TabContentView({el: '#tab-content', hrefList : self.hrefList, hrefSelected: self.hrefSelected,
 				tabTypes : self.tabTypes,	tabTypesSelected : self.tabTypesSelected  });
-				
+
 				self.selectTabView.render();
-				
+
 			});
-			
+
 
 			return this;
 		},
-		
+
 		/**
-		 * Get Tab selected from options in url 
+		 * Get Tab selected from options in url
 		 */
 		getTabSelected:function(){
 			var self = this;
@@ -199,11 +199,11 @@ define([
 					self.modelId = value;
 					return true;
 				}
-				
+
 			});
 			return _.isUndefined(tabSelected)?this.tabTypes.officer:tabSelected;
 		},
-		
+
 		/**
 		 * Get selected href from list
 		 */
@@ -212,20 +212,20 @@ define([
 				return o.id == index;
 			});
 		},
-		
+
 		/**
 		 * Get selected model corresponding to href selected
 		 */
 		getSelectedModel: function() {
 			return this.getItem(this.options[this.tabTypesSelected.key]);
 		},
-		
+
 		/** Change the tab Type
 		*/
 		changeTabType: function(e){
 			e.preventDefault();
 			var self = this;
-			
+
 			//reset search
 			$('#searchOfficerOrTeam').val('');
 
@@ -234,7 +234,7 @@ define([
 
 			// Set selected liste active //
 			$(this.el).find('.tab-header li').removeClass('active');
-			
+
 			link.addClass('active');
 
 			var sl = link.data('type');
@@ -258,7 +258,7 @@ define([
 		search: function(){
 
 			var search = $('#searchOfficerOrTeam').val().toLowerCase();
-			
+
 			// If the term is not empty //
 			if(!_.isEmpty(search)){
 				_.each($('#list-' + this.tabTypesSelected.key + ' li'), function(a){
@@ -270,13 +270,13 @@ define([
 						$(a).fadeIn('fast').removeClass('thide');
 					}
 				});
-				//TODO				
+				//TODO
 //                _.each($('[id^=list-' + this.tabTypesSelected.key + '] li'), function(a){
 //
 //                        if(!_.str.include($(a).data('name'), search)){
 //                                $(a).fadeOut('fast').addClass('thide');
 //                        }
-//                        else{  
+//                        else{
 //                                $(a).fadeIn('fast').removeClass('thide');
 //                        }
 //                });
@@ -286,10 +286,10 @@ define([
 				//Display all href in tab when search is empty
 				$('#list-' + this.tabTypesSelected.key + ' li').fadeIn().removeClass('thide');
 			}
-			//Update counter 
+			//Update counter
 			$('#counter-' + this.tabTypesSelected.key).html($('#list-' + this.tabTypesSelected.key +' li:not(.thide)').size());
 		},
-		
+
 		getTabTypes: function(){
 			return this.tabTypes;
 		},

@@ -18,6 +18,8 @@ define([
 	*/
 	var TeamsCollection = GenericCollection.extend({
 
+		key          : 'team',
+
 		model        : TeamModel,
 
 		url          : '/api/openstc/teams',
@@ -25,6 +27,8 @@ define([
 		fields       : ['id', 'name', 'actions', 'manager_id', 'service_names', 'user_names'],
 
 		default_sort : { by: 'name', order: 'ASC' },
+
+		logo         : 'fa-users',
 
 
 

@@ -54,6 +54,8 @@ define([
 			self.render();
 		},
 
+
+
 		/** Display the view
 		 */
 		render: function () {
@@ -95,7 +97,7 @@ define([
 				var hasService = (self.options.inter.toJSON().service_id && !_.isUndefined(self.options.inter.toJSON().service_id));
 
 				// Create the view to select the user who have done the task //
-				self.multiSelectBoxUsersView = new MultiSelectBoxUsersView({el: '.multiSelectUsers'});
+				self.multiSelectBoxUsersView = new MultiSelectBoxUsersView({el: '.multiSelectUsers', serviceID: self.options.inter.getService('id')});
 
 				self.selectVehicleView = new AdvancedSelectBoxView({ el:'#taskEquipmentDone', url: EquipmentsCollection.prototype.url });
 				self.selectListEquipmentsView = new AdvancedSelectBoxView({ el:'#taskEquipmentListDone', url: EquipmentsCollection.prototype.url });
@@ -106,7 +108,7 @@ define([
 				self.selectListEquipmentsView.setSearchParam({field:'internal_use', operator:'=', value:'True'});
 
 				if(hasService){
-					
+
 
 					self.selectVehicleView.setSearchParam('|');
 					self.selectVehicleView.setSearchParam({field:'service_ids',operator:'=?',value:'False'});
@@ -173,7 +175,7 @@ define([
 				report_hours   : mNewDateEnd.diff(mNewDateStart,'hours',true),
 				remaining_hours: remaining_hours,
 			};
-			
+
 			var res = self.multiSelectBoxUsersView.getUserType();
 			if(res.type == 'team'){
 				params.user_id = false;
@@ -196,7 +198,7 @@ define([
 				.done(function(){
 					//if task is "unfinished", must retrieve the newly created task with remainingHours
 					$.when(
-						self.options.tasks.fetch({data: {filters:{0:{'field':'project_id.id',operator: '=', value: self.options.inter.toJSON().id} }}}),
+						self.options.tasks.fetch({data: {filters:{0:{'field':'project_id.id', operator: '=', value: self.options.inter.toJSON().id} }}}),
 						self.model.fetch())
 					.done(function(){
 						self.modal.modal('hide');
@@ -213,6 +215,8 @@ define([
 
 		},
 
+
+
 		/** Display or Hide Refueling Section (Inputs Km, Oil, Oil prize)
 		*/
 		accordionRefuelingInputs: function(e){
@@ -220,7 +224,8 @@ define([
 
 			// Toggle Slide Refueling section //
 			$('.refueling-vehicle').stop().slideToggle();
-		},
+		}
+
 	});
 
 	return ModalTaskDoneView;

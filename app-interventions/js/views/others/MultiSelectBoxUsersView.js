@@ -25,34 +25,27 @@ define([
 
 		templateHTML: '/templates/others/multiSelectBoxUsersView.html',
 
-		userTypes : {
+		userTypesDefault : {
 			officer: {
-				key        : 'officer',
 				label      : app.lang.agent,
-				logo       : 'fa-user',
+				collection : OfficersCollection.prototype,
 				placeholder: app.lang.actions.selectAAgent,
-				url        : OfficersCollection.prototype.url,
-				domain		: {}
 			},
 			team: {
-				key        : 'team',
 				label      : app.lang.team,
-				logo       : 'fa-users',
+				collection : TeamsCollection.prototype,
 				placeholder: app.lang.actions.selectATeam,
-				url        : TeamsCollection.prototype.url,
-				domain		: {}
 			},
 			provider: {
-				key        : 'provider',
 				label      : app.lang.provider,
-				logo       : 'fa-truck',
+				collection : ClaimersCollection.prototype,
 				placeholder: app.lang.actions.selectAProvider,
-				url        : ClaimersCollection.prototype.url,
-				domain     : {field: 'type_id.code', operator: '=', value: 'PRESTATAIRE'}
 			}
 		},
 
 		userTypesSelected : '',
+
+		serviceID: '',
 
 
 		// The DOM events //
@@ -64,10 +57,28 @@ define([
 
 		/** View Initialization
 		*/
-		initialize: function() {
+		initialize: function(options) {
+			this.userTypes = _.clone(this.userTypesDefault);
+
+			this.userTypes.officer.domain = [];
+			this.userTypes.team.domain = [];
+			this.userTypes.provider.domain = [{ field: 'type_id.code', operator: '=', value: 'PRESTATAIRE' }];
 
 			// Set the default user type //
 			this.userTypesSelected = this.userTypes.officer;
+
+
+			// Check if an intervention id is pass in parameter //
+			if(!_.isUndefined(options.serviceID) && _.isEmpty(this.userTypesSelected.domain)){
+
+				// Set the domain //
+				var domain = { field: 'service_ids.id', operator: '=', value: options.serviceID };
+				this.userTypes.officer.domain.push(domain);
+				this.userTypes.team.domain.push(domain);
+
+				var domain = { field: 'technical_service_id.id', operator: '=', value: options.serviceID };
+				this.userTypes.provider.domain.push(domain);
+			}
 
 			this.render();
 		},
@@ -91,10 +102,9 @@ define([
 
 				$(self.el).html(template);
 
-				self.selectView = new AdvancedSelectBoxView({el: '#selectUsers', url: self.userTypesSelected.url, placeholder: self.userTypesSelected.placeholder });
-				if(!_.isEmpty(self.userTypesSelected.domain)){
-					self.selectView.setSearchParam(self.userTypesSelected.domain);
-				}
+				self.selectView = new AdvancedSelectBoxView({el: '#selectUsers', url: self.userTypesSelected.collection.url, placeholder: self.userTypesSelected.placeholder, minimumInputLength: 1 });
+				self.applyDomain();
+
 				self.selectView.render();
 
 				// Display the default value on the button //
@@ -110,7 +120,7 @@ define([
 		/** Get the use type {type: value, value: value}
 		*/
 		getUserType: function(){
-			return {type: this.userTypesSelected.key, value: this.selectView.getSelectedItem()};
+			return {type: this.userTypesSelected.collection.key, value: this.selectView.getSelectedItem()};
 		},
 
 
@@ -132,11 +142,8 @@ define([
 			this.userTypesSelected = this.userTypes[sl];
 			this.setSelectedUser();
 
-			this.selectView.resetSearchParams();
-			if(!_.isEmpty(this.userTypesSelected.domain)){
-				this.selectView.setSearchParam(this.userTypesSelected.domain);
-			}
-			
+			this.applyDomain();
+
 			this.selectView.open();
 		},
 
@@ -146,14 +153,31 @@ define([
 		*/
 		setSelectedUser: function(){
 
-			this.selectView.setUrl(this.userTypesSelected.url);
+			this.selectView.setUrl(this.userTypesSelected.collection.url);
 			this.selectView.setPlaceholder(this.userTypesSelected.placeholder);
 			this.selectView.reset();
 			this.selectView.render();
 
 
-			var s = '<i class="fa '+this.userTypesSelected.logo+' fa-fw"></i>&nbsp; <span class="fa fa-caret-down"></span>';
+			var s = '<i class="fa '+this.userTypesSelected.collection.logo+' fa-fw"></i>&nbsp; <span class="fa fa-caret-down"></span>';
 			$(this.el).find('.dropdown-toggle').html(s);
+		},
+
+
+
+		/** Set search params
+		*/
+		applyDomain: function() {
+			var self = this;
+
+			// Reset the search params //
+			this.selectView.resetSearchParams();
+
+			if(!_.isEmpty(this.userTypesSelected.domain)){
+				_.each(this.userTypesSelected.domain, function(domain){
+					self.selectView.setSearchParam(domain);
+				});
+			}
 		}
 
 	});
