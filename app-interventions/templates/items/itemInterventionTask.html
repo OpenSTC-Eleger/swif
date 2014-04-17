@@ -24,10 +24,14 @@
 		<% } %>
 	</span>
 </td>
+
 <!-- Assign To -->
 <td>
-<i class="fa <%= taskModel.affectedTo('logo') %>"/> &nbsp;<%= taskModel.affectedTo() %>
+	<% if(taskModel.affectedTo() !== false) { %>
+	<i class="fa <%= taskModel.affectedTo('logo') %>"/> &nbsp;<%= taskModel.affectedTo() %>
+	<% } %>
 </td>
+
 <td><%= AppHelpers.decimalNumberToTime(task.planned_hours, 'human') %></td>
 <td><%= AppHelpers.decimalNumberToTime(task.effective_hours, 'human') %></td>
 <td><%= AppHelpers.decimalNumberToTime(task.remaining_hours, 'human') %></td>

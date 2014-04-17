@@ -24,7 +24,9 @@
 
 				<!-- Display the affected Team or Use -->
 				<small>
-					<i class="fa <%= task.affectedTo('logo') %> fa-fw"></i>&nbsp;<%= task.affectedTo() %>
+					<% if(taskModel.affectedTo() !== false) { %>
+						<i class="fa <%= task.affectedTo('logo') %> fa-fw"></i>&nbsp;<%= task.affectedTo() %>
+					<% } %>
 				</small>
 			</blockquote>
 		</div>

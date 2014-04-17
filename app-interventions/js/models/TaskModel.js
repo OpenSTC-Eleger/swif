@@ -136,6 +136,9 @@ define([
 			else if(this.get('partner_id') !== false){
 				return this.getProvider(type);
 			}
+			else{
+				return false;
+			}
 		},
 
 

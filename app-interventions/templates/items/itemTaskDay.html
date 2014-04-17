@@ -12,7 +12,9 @@
 
 <!-- Assign To -->
 <td>
-<i class="fa <%= taskModel.affectedTo('logo') %>"/> &nbsp;<%= taskModel.affectedTo() %>
+	<% if(taskModel.affectedTo() !== false) { %>
+		<i class="fa <%= taskModel.affectedTo('logo') %>"></i> &nbsp;<%= taskModel.affectedTo() %>
+	<% } %>
 </td>
 
 <td><%= AppHelpers.decimalNumberToTime(task.planned_hours, 'human') %></td>
