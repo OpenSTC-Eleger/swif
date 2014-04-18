@@ -22,7 +22,7 @@ requirejs.config({
 
 		jqueryui              : 'libs/jquery-ui-1.10.3.custom.min',
 		datatables            : 'libs/jquery-dataTables-1.9.4-min',
-		moment                : 'libs/moment-2.5.0-min',
+		moment                : 'libs/moment-2.6.0-min',
 		'moment-timezone'     : 'libs/moment-timezone-0.0.1-min',
 		'moment-timezone-data': 'i18n/moment-timezone-data',
 
