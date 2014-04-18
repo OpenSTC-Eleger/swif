@@ -9,8 +9,6 @@
 		<!-- Modal Body -->
 		<div class="modal-body">
 
-			<% console.log(task.attributes) %>
-
 			<blockquote>
 				<p>
 					<%= task.getName() %><br>
@@ -24,7 +22,7 @@
 
 				<!-- Display the affected Team or Use -->
 				<small>
-					<% if(taskModel.affectedTo() !== false) { %>
+					<% if(task.affectedTo() !== false) { %>
 						<i class="fa <%= task.affectedTo('logo') %> fa-fw"></i>&nbsp;<%= task.affectedTo() %>
 					<% } %>
 				</small>

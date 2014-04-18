@@ -126,7 +126,7 @@ define([
 					modelJSON.dataOriginalTitle = _.capitalize(self.label);
 					modelJSON.dataContent = "<ul class='list-unstyled'>";
 					_.each(model.members,function( member ) {
-						modelJSON.dataContent += "<li><i class='fa fa-user'></i>" +
+						modelJSON.dataContent += "<li><i class='fa fa-user'></i> " +
 								(member.firstname !== false ? member.firstname.replace(' ', '&nbsp;') : '') +
 								"&nbsp;"+ member.name.toUpperCase().replace(' ', '&nbsp;')  + "</li>";
 					});
