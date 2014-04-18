@@ -18,7 +18,7 @@ requirejs.config({
 		jquery                : 'libs/jQuery-2.1.0-min',
 		printElement          : 'libs/jquery.printElement-2.0.0',
 		underscore            : 'libs/underscore-1.6.0-min',
-		backbone              : 'libs/backbone-1.1.1-min',
+		backbone              : 'libs/backbone-1.1.2-min',
 
 		jqueryui              : 'libs/jquery-ui-1.10.3.custom.min',
 		datatables            : 'libs/jquery-dataTables-1.9.4-min',
@@ -26,8 +26,8 @@ requirejs.config({
 		'moment-timezone'     : 'libs/moment-timezone-0.0.1-min',
 		'moment-timezone-data': 'i18n/moment-timezone-data',
 
-		'underscore.string'   : 'libs/underscore-string-2.3.2-min',
-		nprogress             : 'libs/NProgress-0.1.2',
+		'underscore.string'   : 'libs/underscore-string-2.3.3-min',
+		nprogress             : 'libs/NProgress-0.1.3',
 		pnotify               : 'libs/pnotify-1.2.2',
 		bootstrap             : 'libs/bootstrap-3.1.1-min',
 		bsDatepicker          : 'libs/bootstrap-datepicker-1.1.2',
@@ -36,7 +36,7 @@ requirejs.config({
 		fullcalendar          : 'libs/fullcalendar-1.6.4-min',
 		select2               : 'libs/select2-3.4.6-min',
 
-		less                  : 'libs/less-1.6.3-min',
+		less                  : 'libs/less-1.7.0-min',
 
 
 		/* #############
@@ -156,7 +156,7 @@ requirejs.config({
 		inputFieldView          : 'views/form-components/InputFieldView',
 		dateFieldView           : 'views/form-components/DateFieldView',
 		numberFieldView         : 'views/form-components/NumberFieldView',
-			
+
 		// Tab componnents //
 		tabsContainerView       : 'views/tabs/TabsContainerView',
 		tabHeadView             : 'views/tabs/TabHeadView',
@@ -179,7 +179,6 @@ requirejs.config({
 
 	shim: {
 		'nprogress': {
-			deps   : ['jquery'],
 			exports: 'NProgress'
 		},
 		'pnotify': {
