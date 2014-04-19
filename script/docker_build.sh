@@ -20,6 +20,14 @@ EOF
     exit 1
 }
 
+control_c() {
+    echo "  Ctrl-c pressed. Aborting as requested"
+    exit 1
+}
+
+# trap keyboard interrupt (control-c)
+trap control_c SIGINT
+
 docker_name=""
 docker_version=""
 docker_repo="dev.siclic.fr:5000"
