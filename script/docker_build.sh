@@ -68,11 +68,8 @@ image_id=$(sudo docker images | grep $docker_repo/$docker_name | grep latest | a
 sudo docker tag $image_id $docker_repo/$docker_name:$docker_version
 echo
 if $pushit; then
-    echo "Pushing $docker_repo/$docker_name:latest to repo"
-    sudo docker push $docker_repo/$docker_name:latest
-    echo
-    echo "Pushing $docker_repo/$docker_name:$docker_version to repo"
-    sudo docker push $docker_repo/$docker_name:$docker_version
+    echo "Pushing $docker_repo/$docker_name to repo"
+    sudo docker push $docker_repo/$docker_name
     echo
 fi
 echo "All done !"
