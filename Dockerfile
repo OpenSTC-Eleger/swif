@@ -48,7 +48,6 @@ RUN npm install
 RUN grunt
 
 # Nginx config
-ADD nginx/ssl /etc/nginx/ssl
 ADD nginx/nginx.conf /etc/nginx/nginx.conf
 ADD nginx/default.conf /etc/nginx/conf.d/default.conf
 
@@ -56,7 +55,6 @@ ADD nginx/default.conf /etc/nginx/conf.d/default.conf
 ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
 
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8080
 
 CMD /usr/local/bin/run
