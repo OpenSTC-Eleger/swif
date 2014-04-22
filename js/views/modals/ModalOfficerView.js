@@ -49,6 +49,9 @@ define([
 			var self = this;
 
 			this.modal = $(this.el);
+			
+			this.hasSTCmodule = !_.isUndefined(app.menus.openstc);
+			this.hasRESAmodule = !_.isUndefined(app.menus.openresa);
 
 
 			// Check if it's a create or an update //
@@ -91,14 +94,25 @@ define([
 				self.modal.html(template);
 
 				if(!loader){
+					
 					// Advance Select List View //
-					app.views.advancedSelectBoxOfficerGroupView = new AdvancedSelectBoxView({el: $('#officerGroup'), url: StcGroupsCollection.prototype.url });
-					app.views.advancedSelectBoxOfficerGroupView.setSearchParam({ field: 'name', operator: 'ilike', value: 'openstc' }, true);
-					app.views.advancedSelectBoxOfficerGroupView.render();
+					if(self.hasSTCmodule) {
+						app.views.advancedSelectBoxOfficerGroupView = new AdvancedSelectBoxView({el: $('#officerGroup'), url: StcGroupsCollection.prototype.url });
+						app.views.advancedSelectBoxOfficerGroupView.setSearchParam({ field: 'name', operator: 'ilike', value: 'openstc' }, true);
+						app.views.advancedSelectBoxOfficerGroupView.render();
+						$(".officerForm").removeClass('hide');
+						$('#officerGroup').prop('required', true);
+					}
 
-					app.views.advancedSelectBoxResaGroupView = new AdvancedSelectBoxView({el: $('#resaGroup'), url: StcGroupsCollection.prototype.url });
-					app.views.advancedSelectBoxResaGroupView.setSearchParam({ field: 'name', operator: 'ilike', value: 'openresa' }, true);
-					app.views.advancedSelectBoxResaGroupView.render();
+					if(self.hasRESAmodule) {
+						app.views.advancedSelectBoxResaGroupView = new AdvancedSelectBoxView({el: $('#resaGroup'), url: StcGroupsCollection.prototype.url });
+						app.views.advancedSelectBoxResaGroupView.setSearchParam({ field: 'name', operator: 'ilike', value: 'openresa' }, true);
+						app.views.advancedSelectBoxResaGroupView.render();
+						$(".resaForm").removeClass('hide');
+						if(!self.hasSTCmodule) {
+							$('#resaGroup').prop('required', true);
+						}
+					}
 
 					app.views.advancedSelectBoxOfficerServiceView = new AdvancedSelectBoxView({el: $('#officerService'), url: ClaimersServicesCollection.prototype.url });
 					app.views.advancedSelectBoxOfficerServiceView.render();
@@ -125,12 +139,26 @@ define([
 			// Set the button in loading State //
 			$(this.el).find('button[type=submit]').button('loading');
 
+			var groups = [];
+			if(this.hasSTCmodule){
+				var stcGroup = app.views.advancedSelectBoxOfficerGroupView.getSelectedItem();
+				if(!_.isBlank(stcGroup)){
+					groups.push(stcGroup);
+				}
+			}
+			
+			if(this.hasRESAmodule){
+				var resaGroup = app.views.advancedSelectBoxResaGroupView.getSelectedItem();
+				if(!_.isBlank(resaGroup)){
+					groups.push(resaGroup);
+				}
+			}
 
 			var params = {
 				firstname   : $('#officerFirstname').val(),
 				name        : $('#officerName').val(),
 				user_email  : $('#officerEmail').val(),
-				groups_id   : [[6, 0, [app.views.advancedSelectBoxOfficerGroupView.getSelectedItem() , app.views.advancedSelectBoxResaGroupView.getSelectedItem() ]]],
+				groups_id   : [[6, 0, groups]],
 				service_id  : app.views.advancedSelectBoxOfficerServiceView.getSelectedItem(),
 
 			};

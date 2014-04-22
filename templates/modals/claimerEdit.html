@@ -63,9 +63,9 @@
 						<label for="claimerTechnicalSite" class="control-label col-sm-3"><%= _.capitalize(lang.defaultPlace) %>:</label>
 
 						<div class="col-sm-9">
-							<input id="claimerTechnicalSite" class="select2" required
+							<input id="claimerTechnicalSite" class="select2"
 								   data-placeholder="<%= lang.actions.selectAPlace %>" data-minimum-input-length="2"
-							<% if(!claimer.isNew() && !_.isNull(claimer.get('technical_site_id'))) { %>
+							<% if(!claimer.isNew() && !_.isNull(claimer.get('technical_site_id')) && claimer.get('technical_site_id') !== false) { %>
 							data-selected-value='<%= JSON.stringify(claimer.objectifiedTechnicalSiteId()) %>'
 							<% } %>
 							>

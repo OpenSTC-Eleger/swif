@@ -12,12 +12,14 @@ define([
 	'interventionModel',
 	'taskModel',
 	'requestModel',
+	'claimerModel',
+	'claimerTypeModel',
 	'modalInterventionView',
 	'modalCancelInterventionView',
 	'moment',
 	'printElement',
 
-], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel, ModalInterventionView, ModalCancelInterventionView,moment){
+], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel, ClaimerModel, ClaimerTypeModel, ModalInterventionView, ModalCancelInterventionView,moment){
 
 	'use strict';
 
@@ -139,12 +141,7 @@ define([
 
 					// User who made the Task //
 					if(task.getState() == TaskModel.status.done.key){
-						if(task.affectedOnTeam()){
-							doneBy = task.getTeam();
-						}
-						else{
-							doneBy = task.getUser();
-						}
+						doneBy = task.affectedTo();
 						dateStart = moment(task.getDateStart()).format('LLL');
 						dateEnd = moment(task.getDateEnd()).format('LLL');
 						equipment = task.getEquipments();
@@ -154,22 +151,25 @@ define([
 
 				var deferred = $.Deferred();
 				deferred.always(function(){
+					$('#interId').html(interJSON.id);
 					$('#interName').html(interJSON.name);
 					$('#interDescription').html(interJSON.description);
 					$('#interService').html(!interJSON.service_id?'':interJSON.service_id[1]);
 
 					if(interJSON.has_equipment){
-						$('#interPlace').css({display:'inline-block'});
+						//$('#interPlace').css({display:'inline-block'});
 						//fill data with equipment and location
 						$('#interPlaceOrEquipment').html(interJSON.equipment_id[1]);
 						$('#interPlace').html(interJSON.site1[1]);
 					}
 					else{
-						$('#interPlace').css({display:'none'});
+						//$('#interPlace').css({display:'none'});
+						$('#interPlace').html(interJSON.site1[1]);
+						$('#interPlaceOrEquipment').html("");
 						//fill data of site1
-						$('#interPlaceOrEquipment').html(interJSON.site1[1]);
+						//$('#interPlaceOrEquipment').html(interJSON.site1[1]);
 					}
-					$('#interPlaceMore').html(interJSON.site_details);
+					
 
 					$('#printTask').printElement({
 						leaveOpen	: true,
@@ -180,9 +180,12 @@ define([
 					});
 				});
 
+				$('#claimentName').html('');
+				$('#claimentPhone').html('');
+				$('#claimentType').html('');
 				if(!interJSON.ask_id){
-
 					$('#claimentName').html(interJSON.create_uid[1]);
+					$('#interPlaceMore').html(interJSON.site_details===false?"":interJSON.site_details);
 					deferred.resolve();
 				}else{
 					//retrieve ask associated, if exist
@@ -190,19 +193,32 @@ define([
 					ask.setId(interJSON.ask_id[0]);
 					ask.fetch().done(function(){
 						var askJSON = ask.toJSON();
+						$('#interPlaceMore').html(askJSON.site_details===false?"":askJSON.site_details);
 						if(askJSON.partner_id !== false){
-							$('#claimentName').html(askJSON.partner_id[1]+' - '+ !askJSON.partner_address?'':askJSON.partner_address[1]);
+							$('#claimentName').html(askJSON.partner_id[1]+' - '+ (!askJSON.partner_address?'':askJSON.partner_address[1]));
 							$('#claimentPhone').html(askJSON.partner_phone);
-
+							var claimer = new ClaimerModel();
+							claimer.setId(askJSON.partner_id[0]);
+							claimer.fetch().done(function(){
+								var claimerJSON = claimer.toJSON();
+								if(!_.isUndefined(claimerJSON.type_id) && claimerJSON.type_id !== false){
+									var claimerType = new ClaimerTypeModel();
+									claimerType.setId(claimerJSON.type_id[0]);
+									claimerType.fetch().done(function(){
+										$('#claimentType').html(claimerType.toJSON().name);
+										deferred.resolve();
+									});
+								}
+								else{
+									deferred.resolve();
+								}
+							});
 						}
 						else{
 							$('#claimentName').html(askJSON.people_name);
 							$('#claimentPhone').html(askJSON.people_phone);
+							deferred.resolve();
 						}
-						if(!_.isUndefined(askJSON.partner_type) && askJSON.partner_type !== false){
-							$('#claimentType').html(askJSON.partner_type[1]);
-						}
-						deferred.resolve();
 					})
 					.fail(function(e){
 						console.log('An error occured');

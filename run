@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cat <<EOF > /etc/nginx/conf.d/barakafrites_upstream.conf
+upstream barakafrites {
+    server $BARAKAFRITES_PORT_9292_TCP_ADDR:9292;
+}
+EOF
+
+chmod 755 /swif/sites
+
+/usr/sbin/nginx && tail -F /var/log/nginx/nginx.log

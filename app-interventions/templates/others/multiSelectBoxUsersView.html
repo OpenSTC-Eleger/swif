@@ -1,0 +1,23 @@
+<label class="control-label col-sm-3" for="selectUsers"><%= _.capitalize(lang.carryOutBy) %>:</label>
+
+<div class="col-sm-9">
+	<div class="input-group">
+		<div class="input-group-btn">
+			<button class="btn btn-default dropdown-toggle btn-select" id="btnSelectUsersTeams" data-toggle="dropdown">
+			</button>
+
+			<ul class="dropdown-menu">
+				<% _.each(userTypes, function(u, key){
+					if(key == userTypesSelected.collection.key){ var isActive = "active"; } else{ isActive = ""; }
+				%>
+
+					<li class="<%= isActive %>" data-type="<%= key %>">
+						<a href="#" class="linkSelectUsersTeams"><i class="fa <%= u.collection.logo %> fa-fw"></i>&nbsp; <%= _.capitalize(u.label) %></a>
+					</li>
+				<% }) %>
+			</ul>
+		</div>
+
+		<input id="selectUsers" class="select2" required>
+	</div>
+</div>

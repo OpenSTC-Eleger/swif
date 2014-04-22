@@ -12,11 +12,9 @@
 
 <!-- Assign To -->
 <td>
-<% if(task.team_id == false){ %>
-	<%= task.user_id[1] %>
-<% } else { %>
-	<%= task.team_id[1] %>
-<% } %>
+	<% if(taskModel.affectedTo() !== false) { %>
+		<i class="fa <%= taskModel.affectedTo('logo') %>"></i> &nbsp;<%= taskModel.affectedTo() %>
+	<% } %>
 </td>
 
 <td><%= AppHelpers.decimalNumberToTime(task.planned_hours, 'human') %></td>

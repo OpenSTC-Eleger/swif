@@ -98,6 +98,7 @@ define([
 					interventionsState: InterventionModel.status,
 					tasksState        : TaskModel.status,
 					task              : self.model.toJSON(),
+					taskModel         : self.model,
 					AppHelpers        : AppHelpers,
 					moment            : moment
 				});

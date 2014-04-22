@@ -227,6 +227,69 @@ define('appHelpers', [
 				});
 			}
 		},
+		
+		/**
+		 * TODO Get Planning domain
+		 */
+		getTaskType: function(options, tabTypes) {
+			var tab = null;
+			_.any(options, function(value,key){
+				tab =  _.find(tabTypes,function(tab){
+					return tab.key == key;
+				});
+				if(!_.isUndefined(tab)){
+					return true;
+				}
+			});
+			return tab.key;
+		},
+		
+		/**
+		 * TODO Get Planning domain
+		 */
+		getPlanningDomain: function(options, model, start, end) {
+			var domain = [
+				{ 'field' : 'date_start', 'operator' : '>', 'value' : moment(start).format('YYYY-MM-DD HH:mm:ss') },
+				{ 'field' : 'date_end', 'operator' : '<', 'value' : moment(end).format('YYYY-MM-DD HH:mm:ss')  },
+			];
+			
+			if( !_.isUndefined(options.partner))
+			{
+				domain.push({'field' : 'partner_id.id', 'operator' : '=', 'value' : model.id});
+			}
+			else if( !_.isUndefined(options.team) )
+			{
+				var users = app.current_user.getOfficerIdsByTeamId(model.id);
+				if( users.length > 0 ){
+					domain.push('|', { 'field' : 'team_id.id', 'operator' : '=', 'value' : model.id }, { 'field' : 'user_id.id', 'operator' : 'in', 'value' : users  } );
+				}
+				else{
+					domain.push({ 'field' : 'user_id.id', 'operator' : '=', 'value' : model.id });
+				}
+			}
+			else
+			{
+				var teams = app.current_user.getTeamIdsByOfficerId(model.id);
+				if( teams.length>0 ){
+					domain.push('|', { 'field' : 'user_id.id', 'operator' : '=', 'value' : model.id }, { 'field' : 'team_id.id', 'operator' : 'in', 'value' : teams  });
+				}
+				else{
+					domain.push({ 'field' : 'user_id.id', 'operator' : '=', 'value' : model.id });
+				}
+			}
+
+			return app.objectifyFilters(domain);
+		},
+		
+		deleteOptions: function(options, toDelete){
+			_.any(options, function(value,key){
+				_.find(toDelete,function(tab){
+					if(tab.key == key) {
+						delete options[key];
+					}
+				});
+			});
+		},
 
 
 

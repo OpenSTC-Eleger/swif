@@ -13,10 +13,8 @@
 				<footer><i class="fa fa-thumb-tack fa-fw"></i>&nbsp;<%= task.getIntervention() %></footer>
 
 				<!-- Display the affected Team or Use -->
-				<% if(task.affectedOnTeam()) { %>
-				<small><i class="fa fa-users fa-fw"></i>&nbsp;<%= task.getTeam() %></small>
-				<% }else{ %>
-				<small><i class="fa fa-user fa-fw"></i>&nbsp;<%= task.getUser() %></small>
+				<% if(task.affectedTo() !== false) { %>
+					<small><i class="fa <%= task.affectedTo('logo') %>"></i> &nbsp;<%= task.affectedTo() %></small>
 				<% } %>
 			</blockquote>
 

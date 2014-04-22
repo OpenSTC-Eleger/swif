@@ -242,7 +242,11 @@ define([
 				select2Options.initSelection = function(element, callback){
 
 					var ids = _.words(element.val(), ',');
-					if(ids.length > 0){
+
+
+					// Check if some vals are pass //
+					if(!_.isEmpty(ids)){
+
 						$.ajax({
 							url    : self.options.url,
 							method : 'GET',
@@ -251,18 +255,17 @@ define([
 								filters : [{ field: 'id', operator: 'in', value: ids }]
 							}
 						}).done(function(data){
-	
+
 							var returnData = [];
-	
+
 							_.each(data, function(item){
 								returnData.push({ id: item.id, text: _.titleize(self.getItemText(item).toLowerCase()) });
 							});
-							if(!self.options.multiple){
-								returnData = returnData[0];
-							}
+
 							callback(returnData);
 						});
 					}
+
 				};
 			}
 			// Selection - Add the Query function if a url is pass //
@@ -426,6 +429,12 @@ define([
 
 
 
+		open: function(){
+			this.select2.select2('open');
+		},
+
+
+
 		/** Reset the search Params
 		*/
 		resetSearchParams: function(){
@@ -438,6 +447,14 @@ define([
 		*/
 		setUrl: function(url){
 			this.options.url = url;
+		},
+
+
+
+		/** Set the placeholder
+		*/
+		setPlaceholder: function(placeholder){
+			this.options.placeholder = placeholder;
 		},
 
 

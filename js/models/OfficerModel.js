@@ -79,6 +79,16 @@ define([
 		getGroups: function() {
 			return this.get('groups_id');
 		},
+		getSentenceGroups: function() {
+			var groups = [];
+			if(!_.isUndefined(this.getGroupSTC())){
+				groups.push(this.getGroupSTC());
+			}
+			if(!_.isUndefined(this.getGroupResa())){
+				groups.push(this.getGroupResa());
+			}
+			return _.toSentence( groups, ', ', ' '+app.lang.and+' ' );
+		},
 		setGroups : function(value) {
 			this.set({ groups_id : value });
 		},

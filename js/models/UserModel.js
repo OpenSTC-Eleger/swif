@@ -18,10 +18,7 @@ define([
 	* User Model
 	*/
 	var UserModel = Backbone.Model.extend({
-
-		urlA             : '/api/open_object/users',
-		urlAuthentication: '/sessions',
-
+		
 		defaults: {
 			uid             : null,
 			authToken       : null,
@@ -32,6 +29,20 @@ define([
 		initialize: function(){
 			//console.log('User initialize: ' + this.getLogin());
 		},
+
+
+		urlA	: '/api/open_object/users',
+		
+		getUrlManageableTeams:function(){
+			return this.urlA + '/' + this.get('uid') + '/manageable_teams';
+		},
+
+		getUrlManageableOfficers:function(){
+			return this.urlA + '/' + this.get('uid') + '/manageable_officers';
+		},
+		
+		urlAuthentication: '/sessions',
+
 
 
 		//method to retrieve attribute with standard return form
@@ -279,7 +290,7 @@ define([
 			var user = this;
 			return $.when($.ajax({
 				async: true,
-				url: this.urlA + '/' + this.get('uid') + '/manageable_teams',
+				url: this.getUrlManageableTeams(),
 				headers: {Authorization: 'Token token=' + this.get('authToken')},
 				success: function (data) {
 					user.setTeams(data);
@@ -295,7 +306,7 @@ define([
 			var user = this;
 			return $.when($.ajax({
 				async: true,
-				url: this.urlA + '/' + this.get('uid') + '/manageable_officers',
+				url: this.getUrlManageableOfficers(),
 				headers: {Authorization: 'Token token=' + this.get('authToken')},
 				success: function (data) {
 					user.setOfficers(data);
