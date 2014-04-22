@@ -128,6 +128,7 @@ define([
 					state     : TaskModel.status.draft.key,
 					user_id   : false,
 					team_id   : false,
+					partner_id: false,
 					date_end  : false,
 					date_start: false,
 				};
