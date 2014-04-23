@@ -39,7 +39,6 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				//'switch-change #switchWithForeman'     : 'setForemanInTeam',
 				'click #filterStateInterventionList li a': 'setFilterState',
 				'click a.modalCreateInter'               : 'displayModalSaveInter',
 				'click #pagination ul a'                 : 'goToPage',

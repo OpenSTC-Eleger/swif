@@ -89,9 +89,9 @@ define([
 
 
 			var params = {
-				state_event   		: this.options.state,
-				send_invoicing  	: $('#sendInvoicing').bootstrapSwitch('state'),
-				send_email			: $('#sendMailToClaimer').bootstrapSwitch('state')
+				state_event   	: this.options.state,
+				send_invoicing  : $('#sendInvoicing').bootstrapSwitch('state'),
+				send_email		: $('#sendMailToClaimer').bootstrapSwitch('state')
 			};
 
 			params[this.options.state+'_note'] = $('#note').val();

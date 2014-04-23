@@ -4,9 +4,9 @@
  * Licensed under AGPL-3.0 (https://www.gnu.org/licenses/agpl.txt)
  */
 
-define(['app', 
-		'appHelpers', 
-		
+define(['app',
+		'appHelpers',
+
 		'bookingModelExtend',
 		'bookingLineModel',
 		'bookingRecurrenceModel',
@@ -45,32 +45,32 @@ define(['app',
 
 		// The DOM events //
 		events: {
-			'change #bookingPartner'			: 'changeBookingPartner',
-			'change #bookingContact'			: 'changeBookingContact',
-			'change #bookingAddBookable'		: 'changeBookingAddBookable',
+			'change #bookingPartner'     : 'changeBookingPartner',
+			'change #bookingContact'     : 'changeBookingContact',
+			'change #bookingAddBookable' : 'changeBookingAddBookable',
 
-			'change #bookingCheckin'			: 'changeBookingCheckin',
-			'change #bookingCheckout'			: 'changeBookingCheckout',
-			'change #bookingCheckinHour'		: 'changeBookingCheckin',
-			'change #bookingCheckoutHour'		: 'changeBookingCheckout',
+			'change #bookingCheckin'     : 'changeBookingCheckin',
+			'change #bookingCheckout'    : 'changeBookingCheckout',
+			'change #bookingCheckinHour' : 'changeBookingCheckin',
+			'change #bookingCheckoutHour': 'changeBookingCheckout',
 
-			'blur #bookingName'					: 'changeName',
-			'blur #bookingNote'					: 'changeNote',
-			'blur #bookingPeopleName'			: 'changePeopleName',
-			'blur #bookingPeoplePhone'			: 'changePeoplePhone',
-			'blur #bookingPeopleMail'			: 'changePeopleEmail',
-			'blur #bookingPeopleStreet'			: 'changePeopleStreet',
-			'blur #bookingPeopleCity'			: 'changePeopleCity',
-			'blur #bookingPeopleZip'			: 'changePeopleZip',
+			'blur #bookingName'          : 'changeName',
+			'blur #bookingNote'          : 'changeNote',
+			'blur #bookingPeopleName'    : 'changePeopleName',
+			'blur #bookingPeoplePhone'   : 'changePeoplePhone',
+			'blur #bookingPeopleMail'    : 'changePeopleEmail',
+			'blur #bookingPeopleStreet'  : 'changePeopleStreet',
+			'blur #bookingPeopleCity'    : 'changePeopleCity',
+			'blur #bookingPeopleZip'     : 'changePeopleZip',
 
 			//Form Buttons
-			'click #saveFormBooking'			 : 'saveBookingForm',
-			'click #postFormBooking'			 : 'postBookingForm',
-			'click #redraftFormBooking'			 : 'redraftBookingForm',
-			'click #getRecurrenceDates'			 : 'getRecurrenceDates',
-			'switch-change #bookingAddRecurrence': 'changeAddRecurrence',
-			'switch-change #bookingIsCitizen'	 : 'changeIsCitizen',
-			'switch-change #bookingWholeDay'	 : 'changeWholeDay',
+			'click #saveFormBooking'     : 'saveBookingForm',
+			'click #postFormBooking'     : 'postBookingForm',
+			'click #redraftFormBooking'  : 'redraftBookingForm',
+			'click #getRecurrenceDates'  : 'getRecurrenceDates',
+			'switchChange.bootstrapSwitch #bookingAddRecurrence': 'changeAddRecurrence',
+			'switchChange.bootstrapSwitch #bookingIsCitizen'    : 'changeIsCitizen',
+			'switchChange.bootstrapSwitch #bookingWholeDay'     : 'changeWholeDay',
 		},
 		/**
 		 *@param id: id of Booking to route to
@@ -160,8 +160,8 @@ define(['app',
 		//compute display of button save (readonly or visible)
 		updateDisplaySave: function(){
 			var elt = $('button[form="formSaveBooking"]');
-			if(this.isEditable() && this.model.getStartDate() != '' 
-				&& this.model.getEndDate() != '' && this.model.getClaimer('id') != false 
+			if(this.isEditable() && this.model.getStartDate() != ''
+				&& this.model.getEndDate() != '' && this.model.getClaimer('id') != false
 				&& this.model.lines.length > 0 && this.model.getAllDispo()){
 				elt.removeAttr('disabled');
 			}
@@ -173,13 +173,13 @@ define(['app',
 		//compute display of button addRecurrence (readonly or visible)
 		updateDisplayAddRecurrence: function(){
 			var elt = $('#bookingAddRecurrence');
-	    	//@TODO: remove isHidden when tests are finished
-	    	var isHidden = this.recurrence != null && !this.isTemplate();
+			//@TODO: remove isHidden when tests are finished
+			var isHidden = this.recurrence != null && !this.isTemplate();
 			if(!isHidden && this.isEditable() && this.model.lines.length > 0){
-				elt.bootstrapSwitch('setDisabled', false);
+				elt.bootstrapSwitch('state', true);
 			}
 			else{
-				elt.bootstrapSwitch('setDisabled', true);
+				elt.bootstrapSwitch('state', false);
 			}
 		},
 
@@ -187,7 +187,7 @@ define(['app',
 
 			var val = $('#bookingIsCitizen').bootstrapSwitch('state');
 			if(this.isClaimer){
-				$('#bookingIsCitizen').bootstrapSwitch('setDisabled', true);
+				$('#bookingIsCitizen').bootstrapSwitch('state', false);
 			}
 			if(val){
 				$('#blockBookingContact').addClass('hide-soft');
@@ -287,7 +287,7 @@ define(['app',
 					$('#bookingPartner').attr('disabled');
 					$('#bookingContact').attr('disabled');
 				}
-				
+
 				$('*[data-toggle="tooltip"]').tooltip();
 				$('.make-switch').bootstrapSwitch();
 				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: true, modalBackdrop: false});
@@ -307,7 +307,7 @@ define(['app',
 				app.views.selectListAddBookableView = new AdvancedSelectBoxView({el: $('#bookingAddBookable'), url: BookablesCollection.prototype.url }),
 				app.views.selectListAddBookableView.resetSearchParams();
 				app.views.selectListAddBookableView.render();
-				
+
 				//i initialize advancedSelectBox here to correctly trigger change event at init (and so, perform correct view updates)
 				var partner = self.model.getClaimer('array');
 				if(partner != 0){
@@ -371,12 +371,12 @@ define(['app',
 					var lineModel = new BookingLineModel({
 						reserve_product:[bookable_id, bookable_name],
 						pricelist_amount:0});
-	
+
 					lineModel.setQuantity(1);
 					lineModel.bookable = new BookableModel({id:bookable_id});
 					//reset selection to be able to add another bookable to booking
 					app.views.selectListAddBookableView.reset();
-					
+
 					//perform manually updates to lineModel to get pricing, dispo, ...
 					var partner_id = this.model.getClaimer('id');
 					var checkin = this.model.getStartDate();
@@ -502,7 +502,7 @@ define(['app',
 				console.log(e);
 			});
 		},
-		
+
 		/**
 		 * evolve workflow to 'draft' state, fetch the model and render this view to update widget states (visible, readonly, etc.)
 		 */
@@ -516,7 +516,7 @@ define(['app',
 				});
 			});
 		},
-		
+
 		/**
 		 * Save only form, do not evolve workflow
 		 */

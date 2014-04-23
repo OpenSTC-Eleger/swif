@@ -41,17 +41,17 @@ define([
 		// The DOM events //
 		events: function() {
 			return _.defaults({
-				'submit #formSaveRequest'            : 'saveRequest',
+				'submit #formSaveRequest'                           : 'saveRequest',
 
-				'switch-change #switchCitizen'       : 'switchCitizen',
-				'switch-change #switchPlaceEquipment': 'switchPlaceEquipment',
+				'switchChange.bootstrapSwitch #switchCitizen'       : 'switchCitizen',
+				'switchChange.bootstrapSwitch #switchPlaceEquipment': 'switchPlaceEquipment',
 
-				'change #requestClaimer'             : 'changeClaimer',
-				'change #requestContact'             : 'changeContact',
+				'change #requestClaimer'                            : 'changeClaimer',
+				'change #requestContact'                            : 'changeContact',
 
-				'click #menuSelectPlaceEquipement li': 'changeSelectPlaceEquipment',
+				'click #menuSelectPlaceEquipement li'               : 'changeSelectPlaceEquipment',
 
-				'change #requestDetailService'       : 'fillDropdownService',
+				'change #requestDetailService'                      : 'fillDropdownService',
 			},
 				GenericModalView.prototype.events
 			);
@@ -151,13 +151,13 @@ define([
 
 		/** Swith if the resquest is from a citizen or not
 		*/
-		switchCitizen: function(event, data){
+		switchCitizen: function(event, state){
 
 			// Always Fade The claimer Details //
 			$('#claimerDetails').fadeOut();
 
 			// From a citizen //
-			if(data.value){
+			if(state){
 				$('.hide-citizen').fadeOut(function(){
 					$('.hide-no-citizen').fadeIn();
 
@@ -261,10 +261,10 @@ define([
 
 		/** Swith if the resquest is on a Place or Equipment
 		*/
-		switchPlaceEquipment: function(event, data){
+		switchPlaceEquipment: function(event, state){
 
 			// From a citizen //
-			if(data.value){
+			if(state){
 				$('.hide-no-place').fadeOut();
 			}
 			else{
