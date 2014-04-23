@@ -128,10 +128,10 @@
 					
 					<!-- Officer time cost -->
 					<div class="form-group">
-						<label for="officerTimeCost" class="control-label col-sm-3"><%= _.capitalize(lang.timeCost) %>:</label>
-						<div class="col-sm-3">
+						<label for="officerCost" class="control-label col-sm-3"><%= _.capitalize(lang.timeCost) %>:</label>
+						<div class="col-sm-4">
 							<div class="input-group">							
-								<input id="timeCost"type="number" class="form-control">
+								<input  id="officerCost"type="number" step="any" min="0" class="form-control" value="<%= officer.getCost() %>">
 								<span class="input-group-addon">€</span>
 							</div>
 						</div>
@@ -146,7 +146,7 @@
 
 					<!-- Officer login -->
 					<div class="form-group">
-						<label for="officerLogin" class="control-label col-sm-3"><%= _.capitalize(lang.login) %>:</label>
+						<label for="officerLogin" class="control-label col-sm-3">:<%= _.capitalize(lang.login) %></label>
 
 						<div class="col-sm-9">
 							<input type="text" id="officerLogin" class="form-control" required>
