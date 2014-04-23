@@ -303,8 +303,11 @@ module.exports = function(grunt) {
 	grunt.task.run('notify_hooks');
 
 
-	grunt.registerTask('default', ['checkVersion', 'build-css', 'targethtml', 'copy', 'uglify', 'compress', 'notify:build']);
+	// Build taks //
+	grunt.registerTask('default', ['jshint', 'checkVersion', 'build-css', 'targethtml', 'copy', 'uglify', 'compress', 'notify:build']);
+	grunt.registerTask('build-docker', ['build-css', 'targethtml', 'copy', 'uglify']);
 	grunt.registerTask('build-css', ['clean', 'less', 'csscomb', 'cssmin']);
+
 
 	// Check tasks //
 	grunt.registerTask('check', ['jshint', 'checkVersion', 'notify:check']);

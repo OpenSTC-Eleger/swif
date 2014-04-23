@@ -30,9 +30,11 @@ ADD fonts /srv/swif/fonts
 ADD medias /srv/swif/medias
 ADD config /srv/swif/config
 ADD grunt /srv/swif/grunt
-ADD grunt_docker/Gruntfile.js /srv/swif/Gruntfile.js
+ADD Gruntfile.js /srv/swif/Gruntfile.js
+ADD package.json /srv/swif/package.json
 ADD properties.json /srv/swif/properties.json
-ADD grunt_docker/package.json /srv/swif/package.json
+ADD AUTHORS /srv/swif/AUTHORS
+ADD LICENSE /srv/swif/LICENSE
 ADD style /srv/swif/style
 ADD templates /srv/swif/templates
 ADD i18n /srv/swif/i18n
@@ -40,12 +42,12 @@ ADD js /srv/swif/js
 ADD app-interventions /srv/swif/app-interventions
 ADD app-reservations /srv/swif/app-reservations
 ADD index.html /srv/swif/index.html
-ADD landing_page.html /var/www/index.html
+ADD nginx/index.html /var/www/index.html
 
 # Grunt compilation
 WORKDIR /srv/swif
 RUN npm install
-RUN grunt
+RUN grunt build-docker
 
 # Nginx config
 ADD nginx/nginx.conf /etc/nginx/nginx.conf
