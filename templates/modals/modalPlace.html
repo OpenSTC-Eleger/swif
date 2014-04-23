@@ -180,7 +180,7 @@
 						<div class="form-group">
 							<label for="placeBlockingBookable" class="col-sm-3 control-label"><%= _.capitalize(lang.blocking_bookable) %>: </label>
 							<div class="col-sm-9">
-								<input type="checkbox" class="make-switch" id="placeBlockingBookable" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"
+								<input type="checkbox" class="make-switch" id="placeBlockingBookable" data-on-text="<%= lang.yes %>" data-off-text="<%= lang.no %>" tabindex="0"
 									<% if(!_.isNull(place.getId())){ if(place.get('block_booking',false)) { %> checked <% } } %>
 								>
 							</div>
