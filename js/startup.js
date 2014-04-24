@@ -98,6 +98,7 @@ requirejs.config({
 		officerModel            : 'models/OfficerModel',
 		metaDataModel           : 'models/MetaDataModel',
 		filterModel             : 'models/FilterModel',
+		genericRecurrenceModel	: 'models/GenericRecurrenceModel',
 
 
 		/* #############
