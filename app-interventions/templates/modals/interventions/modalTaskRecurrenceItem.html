@@ -1,7 +1,7 @@
 <td class="field" data-fieldname="date_deadline"></td>
 
 <td>
-<i class="<%= task.getAttribute('user_id',false) ?'fa fa-user' : 'fa fa-users'%> fa-fw"></i>
+<i class="fa <%= task.getAttribute('user_id',false) ? 'fa-user' : task.getAttribute('team_id',false) ? 'fa-users' : 'fa-truck' %> fa-fw"></i>
 <span class="field" data-fieldname="agent_or_team_name"></span>
 </td>
 
