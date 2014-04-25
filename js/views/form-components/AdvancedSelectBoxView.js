@@ -261,7 +261,9 @@ define([
 							_.each(data, function(item){
 								returnData.push({ id: item.id, text: _.titleize(self.getItemText(item).toLowerCase()) });
 							});
-
+							if(!this.multiple){
+								returnData = returnData[0];
+							}
 							callback(returnData);
 						});
 					}
