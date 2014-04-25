@@ -83,7 +83,7 @@ define(['app',
 		/** Display the view
 		*/
 		render: function() {
-
+			this.linesViews = {};
 			var pageTitle = '';
 			if(_.isNull(this.model.getId())) {
 				pageTitle = app.lang.patrimoine.viewsTitles.newContract;
