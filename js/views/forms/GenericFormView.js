@@ -267,7 +267,7 @@ define(['app',
 					return select.getSelectedItem() ? [select.getSelectedItem(), select.getSelectedText()] : false;
 				},
 			};
-			this.initModel().done(function(){
+			return this.initModel().done(function(){
 				self.listenTo(self.model, 'change', self.modelChanged);
 				if(!self.options.notMainView){
 					app.router.render(self);
@@ -317,15 +317,16 @@ define(['app',
 					this.model = new this.modelName({id:this.options.id}, {parentModel: this.parentModel});
 				}
 			}
-			if(!this.model.isNew()){
-				arrayDeferred.push(this.model.fetch());
-			}
 			//if needed, initialize collection of the model
 			if(_.isUndefined(this.model.collection)){
 				this.model.collection = new this.collectionName();
 			}
 			//perform a head request to retrieve metadaFields
 			arrayDeferred.push(this.model.collection.count());
+			if(!this.model.isNew()){
+				arrayDeferred.push(this.model.fetch());
+			}
+			
 			return $.when.apply($, arrayDeferred);
 		}
 	});
