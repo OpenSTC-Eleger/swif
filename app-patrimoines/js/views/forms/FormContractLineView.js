@@ -7,6 +7,7 @@
 define(['app',
 		'appHelpers',
 		'contractLineModel',
+		'itemRecurrenceContractModel',
 		'contractLinesCollection',
 		'itemRecurrenceContractCollection',
 		
@@ -21,7 +22,7 @@ define(['app',
 		'bsSwitch'
 		
 
-], function (app, AppHelpers, ContractLineModel, ContractLinesCollection, ItemRecurrenceContractCollection, GenericFormView, FormItemRecurrenceView, AdvancedSelectBoxView, moment) {
+], function (app, AppHelpers, ContractLineModel, ItemRecurrenceContractModel, ContractLinesCollection, ItemRecurrenceContractCollection, GenericFormView, FormItemRecurrenceView, AdvancedSelectBoxView, moment) {
 
 	'use strict';
 
@@ -42,7 +43,8 @@ define(['app',
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'blur #name'	:	'changeTabName'
+				'blur #name'	:	'changeTabName',
+				'click .button-get-dates': 'fetchDates',
 			}, GenericFormView.prototype.events);
 		},
 		
@@ -50,10 +52,15 @@ define(['app',
 		*/
 		initialize : function() {
 			this.off();
+			var self = this;
 			this.options = arguments[0];
 			//TODO: find a better way to do that, problem is that options.id is already used by BackboneView to initialize this.el 
 			this.options.id = this.options.modelId;
-			GenericFormView.prototype.initialize.apply(this, arguments);
+			this.taskCollection = new ItemRecurrenceContractCollection();
+			this.listenTo(self.taskCollection, 'remove', this.removeOccurrence);
+			GenericFormView.prototype.initialize.apply(this, arguments).done(function(){
+				self.listenTo(self.model, 'recurrence', self.updateOccurrences);
+			});
 		},
 		
 		/** Display the view
@@ -90,19 +97,64 @@ define(['app',
 					});
 					$(self.el).find('#recurrenceForm').html(templateRecurrence);
 					GenericFormView.prototype.render.apply(self);
-					var taskCollection = new ItemRecurrenceContractCollection();
+					
 					var task_ids = self.model.getAttribute('occurrence_ids',[]);
 					if(task_ids.length > 0){
-						taskCollection.fetch({data: {filters: {1: {field:'id', operator:'in', value:task_ids}}}}).done(function(){
-							taskCollection.each(function(task){
-								var taskView = new FormItemRecurrenceView({model:task});
-								$(self.el).find('.tasks-items').append(taskView.el);
-							});
-						});
+						self.populateTableWithIds(task_ids);
 					}
 				});
 			});
 			return this;
+		},
+		
+		/**
+		 * Perform a call to backend to save a temp Model on server, and fetch the dates computed with the recurrence setting
+		 */
+		fetchDates: function(e){
+			e.preventDefault();
+			$(this.el).find('.tasks-items').empty();
+			this.model.fetchDates();
+		},
+		
+		/**
+		 * Triggered from RecurrenceModel, taskValues is an array of JSON values
+		 */
+		updateOccurrences: function(taskValues){
+			this.taskCollection.reset();
+			this.populateTableWithoutIds(taskValues);
+		},
+		
+		/**
+		 * called when an occurrence is deleted by user, this deletion is yet sent to server, but visually, component must be removed
+		 */
+		removeOccurrence: function(model){
+			this.model.removeOccurrence(model);
+		},
+		
+		/**
+		 * Create one FormItemRecurrenceView per task to display
+		 */
+		populateTableWithoutIds: function(taskValues){
+			var self = this;
+			//I call .count() method to fetch fields-metadata
+			this.taskCollection.count().done(function(){
+				_.each(taskValues, function(task){
+					var taskModel = new ItemRecurrenceContractModel(task);
+					self.taskCollection.add(taskModel);
+					var taskView = new FormItemRecurrenceView({model:taskModel});
+					$(self.el).find('.tasks-items').append(taskView.el);
+				});
+			});
+		},
+		
+		populateTableWithIds: function(task_ids){
+			var self = this;
+			this.taskCollection.fetch({data: {filters: {1: {field:'id', operator:'in', value:task_ids}}}}).done(function(){
+				self.taskCollection.each(function(task){
+					var taskView = new FormItemRecurrenceView({model:task});
+					$(self.el).find('.tasks-items').append(taskView.el);
+				});
+			});
 		},
 		
 		changeTabName: function(){
@@ -110,6 +162,17 @@ define(['app',
 			$('a[href="#' + this.$el.attr('id') + '"] .title').html(this.model.getAttribute('name',''));
 		},
 		
+		/**
+		 * Override basic behavior to save tasks to backend 
+		 * (already saved Task are not modified, deleted Tasks are already managed by RecurrenceModel when user clicked on 'remove' action)
+		 */
+		saveForm: function(){
+			var self = this;
+			this.taskCollection.each(function(taskModel){
+				self.model.addOccurrence(taskModel);
+			});
+			return GenericFormView.prototype.saveForm.apply(this, arguments);
+		},
 	});
 	return FormContractLineView;
 });
