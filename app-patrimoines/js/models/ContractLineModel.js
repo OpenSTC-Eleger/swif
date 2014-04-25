@@ -1,23 +1,25 @@
 define([
 	'app',
 	'appHelpers',
-	'genericModel',
+	'genericRecurrenceModel',
 	'moment'
 
 
-], function(app, AppHelpers, GenericModel){
+], function(app, AppHelpers, GenericRecurrenceModel){
 
 	'use strict';
 	
 	/******************************************
 	* Booking Model
 	*/
-	return GenericModel.extend({
+	return GenericRecurrenceModel.extend({
 		
 		urlRoot: '/api/openpatrimoine/contract_lines',
 
-		fields: ['id', 'name', 'is_team', 'agent_id', 'team_id', 'internal_inter', 'technical_service_id', 'planned_hours', 'task_categ_id' ,'supplier_cost', 'recur_periodicity' ,'recur_week_monday' ,'recur_week_tuesday', 'recur_week_wednesday', 'recur_week_thursday', 'recur_week_friday' ,'recur_week_saturday' ,'recur_week_sunday', 'recur_month_type', 'recur_month_absolute', 'recur_month_relative_weight', 'recur_month_relative_day', 'recur_type date_start', 'recur_length_type', 'date_end recur_occurrence_nb', 'occurrence_ids'],
+		fields: ['id', 'name', 'is_team', 'agent_id', 'team_id', 'internal_inter', 'technical_service_id', 'planned_hours', 'task_categ_id' ,'supplier_cost', 'recur_periodicity' ,'recur_week_monday' ,'recur_week_tuesday', 'recur_week_wednesday', 'recur_week_thursday', 'recur_week_friday' ,'recur_week_saturday' ,'recur_week_sunday', 'recur_month_type', 'recur_month_absolute', 'recur_month_relative_weight', 'recur_month_relative_day', 'recur_type', 'date_start', 'recur_length_type', 'date_end recur_occurrence_nb', 'occurrence_ids', 'partner_id'],
 
+		urlRecurrenceResource: '/api/openpatrimoine/contract_lines',
+		
 		searchable_fields: [
 			{
 				key  : 'id',
@@ -29,8 +31,15 @@ define([
 			}
 			
 		],
-		readonlyFields: ['internal_inter', 'id'],
-		relatedFields: ['technical_service_id', 'supplier_id', 'internal_inter', 'occurrence_ids'],
+		readonlyFields: ['id'],
+		
+		relatedFields: {
+			technical_service_id:'technical_service_id',
+			partner_id:'supplier_id',
+			internal_inter:'internal_inter',
+			date_start:'date_start_order',
+			date_end:'date_end_order'
+		},
 		
 		getUserMainAction: function(){
 			var ret = '';
@@ -58,20 +67,6 @@ define([
 			return {mainAction: mainAction, otherActions: _.without(actions, mainAction)};
 		},
 		
-		//method to retrieve attribute with standard return form
-		getAttribute: function(key,default_value){
-			var val = this.get(key);
-			if(_.isUndefined(default_value)){
-				default_value = false;
-			}
-			if(!_.isUndefined(val) && val !== '' && val !== false && val !== null){
-				return val;
-			}
-			else{
-				return default_value;
-			}
-		},
-		
 		getId: function(){
 			return this.get('id');
 		},
@@ -81,48 +76,12 @@ define([
 		},
 		
 		/**
-		 * to move to GenericCollection
-		 */
-		getSaveVals: function(){
-			var ret = {};
-			var self = this;
-			if(!_.isUndefined(this.collection)){
-				_.map(this.collection.fieldsMetadata, function(fieldDefinition, fieldName){
-					if(!_.contains(self.readonlyFields, fieldName)){
-						if(fieldDefinition.type == 'many2one'){
-							ret[fieldName] = self.getAttribute(fieldName, [false,''])[0];
-						}
-						else{
-							ret[fieldName] = self.getAttribute(fieldName, false);
-						}
-					}
-				});
-			}
-			else{
-				console.warning('Swif error: Could not save model because not any collection is linked with, and so can not retrieve metadata fields.');
-			}
-			return ret;
-		},
-		
-		saveToBackend: function(){
-			var self = this;
-			var vals = this.getSaveVals();
-			var ret = this.save(vals,{patch:!this.isNew(), wait:true}).then(function(data){
-				if(self.isNew()){
-					self.set({id:data});
-				}
-				return self.fetch();
-			});
-			return ret;
-		},
-		
-		/**
 		 * Copy all related data from parentModel to this model
 		 */
 		bubbleData: function(model){
 			var vals = {};
-			_.each(this.relatedFields, function(field){
-				vals[field] = model.getAttribute(field, false);
+			_.map(this.relatedFields, function(parentField, field){
+				vals[field] = model.getAttribute(parentField, false);
 			});
 			this.set(vals);
 		},
@@ -132,6 +91,7 @@ define([
 		 * Add a listener to always keep its related data up-to-date
 		*/
 		initialize: function(vals, options){
+			
 			var self = this;
 			if(options.parentModel){
 				this.parentModel = options.parentModel;
