@@ -38,7 +38,7 @@ define([
 			if(!this.model){
 				this.model = new ItemRecurrenceContractModel();
 			}
-			this.model.off();
+			
 			
 			// When the model are updated //
 			this.listenTo(this.model, 'change', this.change);
@@ -62,15 +62,12 @@ define([
 
 		/** When the model is destroy //
 		*/
-		destroy: function(e){
+		destroy: function(){
 			var self = this;
 
 			AppHelpers.highlight($(this.el)).done(function(){
 				self.remove();
-				
 			});
-
-			app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.infoMessages.taskDeleteOk);
 		},
 
 		/** Display the view
@@ -78,7 +75,7 @@ define([
 		render : function() {
 			var self = this;
 			// Retrieve the template //
-			var stateItem = ItemRecurrenceContractModel.status[this.model.getAttribute('state','draft')];
+			var stateItem = ItemRecurrenceContractModel.status[this.model.getAttribute('state','none')];
 			$.get(app.menus.openstcpatrimoine+this.templateHTML, function(templateData){
 								
 				var template = _.template(templateData, {
@@ -94,9 +91,13 @@ define([
 			return this;
 		},
 		
+		/**
+		 * perform smart delete from parentModel, 
+		 */
 		performDelete: function(e){
 			e.preventDefault();
-			this.model.destroy();
+			this.model.collection.remove(this.model);
+			this.destroy();
 		},
 		
 	});
