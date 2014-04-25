@@ -41,21 +41,23 @@
 <!-- monthly-periodicity-setting of recurrence-->
 <div class="field-visible-if" data-field-name="recur_type" data-field-value="monthly">
 
-	<div class="form-group field" data-field-name="recur_month_type" data-field-label=""></div>
+	<div class="form-group field" data-field-name="recur_month_type" data-field-label=" "></div>
 	
 	<div class="field-visible-if" data-field-name="recur_month_type" data-field-value="monthday">
 		<div class="form-group field" data-field-name="recur_month_absolute" data-field-label="<%= lang.patrimoine.monthlyMonthday %>"
 			data-field-addon="<%= lang.patrimoine.ofMonth %>"></div>
 	</div>
-	<div class="field-visible-if" data-field-name="recur_month_type" data-field-value="monthweekday">
-		<div class="form-group field" data-field-name="recur_month_relative_weight" data-field-label="<%= lang.patrimoine.monthlyWeekday %>"></div>
-		<div class="form-group field" data-field-name="recur_month_relative_day" data-field-label=""></div>
+	<div class="field-visible-if form-group" data-field-name="recur_month_type" data-field-value="monthweekday">
+		<div class="field" data-field-name="recur_month_relative_weight" data-field-label="<%= lang.patrimoine.monthlyWeekday %>"></div>
+		<div class="field" data-field-name="recur_month_relative_day" data-field-label="" data-field-addon="<%= lang.patrimoine.ofMonth %>"></div>
 	</div>
 	
 	<div class="form-group field" data-field-name="recur_periodicity" data-field-label="<%= lang.patrimoine.forEachMonthday %>"
 		data-field-addon="<%= lang.patrimoine.months %>"></div>
 	
 </div>
+
+<button type="button" class="btn btn-default pull-right button-get-dates">Générer Dates (traduire)</button>
 
 <!-- Occurrences generated -->
 <div class="table-responsive col-sm-10 col-sm-offset-1">
