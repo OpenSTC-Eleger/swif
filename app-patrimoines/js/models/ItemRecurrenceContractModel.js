@@ -16,9 +16,9 @@ define([
 		
 		urlRoot: '/api/openstc/tasks',
 
-		fields: ['id', 'name', 'date_deadline', 'state', 'agent_or_team_name', 'user_id', 'team_id', 'actions'],
+		fields: ['id', 'name', 'date_deadline', 'state', 'agent_or_team_name', 'user_id', 'team_id', 'actions', 'partner_id', 'recurrence_id'],
 		
-		readonlyFields: ['date_deadline', 'id', 'state'],
+		readonlyFields: ['id', 'state', 'actions'],
 		
 		searchable_fields: [
 			{
@@ -34,21 +34,6 @@ define([
 			
 		],
 		
-		
-		//method to retrieve attribute with standard return form
-		getAttribute: function(key,default_value){
-			var val = this.get(key);
-			if(_.isUndefined(default_value)){
-				default_value = false;
-			}
-			if(!_.isUndefined(val) && val !== '' && val !== false && val !== null){
-				return val;
-			}
-			else{
-				return default_value;
-			}
-		},
-		
 		getId: function(){
 			return this.get('id');
 		},
@@ -56,7 +41,7 @@ define([
 		/** Model Initialization
 		*/
 		initialize: function(){
-			this.linesToRemove = [];
+
 		},
 	
 	
@@ -83,6 +68,11 @@ define([
 				color       : 'danger',
 				translation : app.lang.cancelled
 			},
+			none: {
+				key			: 'none',
+				color		: '',
+				translation	: ''
+			}
 		},
 		
 			// Actions of the requests //
