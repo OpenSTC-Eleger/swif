@@ -245,6 +245,7 @@
     "fourth"								: "Quatrième",
     "last"									: "Dernier",
     "ContractNearToExpire"					: "Contrat est proche de son expiration",
+    "managerDepartment"						: "Service responsable",
     
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
