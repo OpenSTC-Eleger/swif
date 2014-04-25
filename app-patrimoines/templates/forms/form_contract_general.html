@@ -32,6 +32,9 @@ data-off-label="<i class='fa fa-map-marker fa-fw'>" data-on-label="<i class='fa 
 	<div class="form-group field" data-field-placeholder="<%= lang.actions.selectAPlace%>" data-field-label="<%= lang.place %>" data-field-name="site_id"></div>
 </div>
 
+<!-- contract department -->
+<div class="form-group field" data-field-placeholder="<%= lang.actions.selectAService%>" data-field-label="<%= lang.managerDepartment %>" data-field-name="technical_service_id"></div>
+
 <!-- contract actor (supplier or department ?) -->
 <div class="form-group field" data-field-label="<%= lang.patrimoine.internalIntervention %>" data-field-name="internal_inter"
 data-off-label="<%= lang.no%>" data-on-label="<%= lang.yes%>"></div>
@@ -41,10 +44,6 @@ data-off-label="<%= lang.no%>" data-on-label="<%= lang.yes%>"></div>
 	<div class="form-group field" data-field-placeholder="<%= lang.actions.selectAProvider%>" data-field-label="<%= lang.serviceProvider%>" data-field-name="supplier_id"></div>
 </div>
 
-<div class="field-visible-if" data-field-name="internal_inter" data-field-value="true">
-	<!-- contract department -->
-	<div class="form-group field" data-field-placeholder="<%= lang.actions.selectAService%>" data-field-label="<%= lang.service %>" data-field-name="technical_service_id"></div>
-</div>
 <!-- 				<div class="form-group field field-switch" data-field-placeholder="patrimoine" data-field-label="Patrimoine" -->
 <!-- 				data-field-switch-name="patrimoine_is_equipment" data-field-switch-icon-yes="" data-field-switch-icon-no="" -->
 <!-- 				data-field-name-yes="equipment_id" data-field-name-no="site_id"></div> -->
