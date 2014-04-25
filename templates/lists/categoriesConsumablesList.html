@@ -1,0 +1,67 @@
+<div class="page-header">
+	<h1>
+		<%= lang.viewsTitles.categoriesConsumablesList %>
+		<sup id="badge" class="badge"><%= nbCats %></sup>
+	</h1>
+</div>
+
+
+
+	<!-- Table toolbar -->
+	<div class="tableToolbar row">
+		<div class="col-xs-7 col-md-9 col-lg-10">
+			<a href="#" class="btn btn-primary modalCreateCat"><i class="fa fa-plus fa-fw"></i> <%= _.capitalize(lang.actions.addCategorie) %></a>
+		</div>
+
+		<form class=" form-search pull-right col-xs-5 col-md-3 col-lg-2">
+			<div class="input-group">
+				<input type="search" class="form-control" placeholder="<%= _.capitalize(lang.actions.search) %>..." autocomplete="off">
+				<span class="input-group-btn">
+					<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-lg"></i></button>
+				</span>
+			</div>
+		</form>
+	</div>	<!-- Table toolbar -->
+
+
+	<!-- Check if there is any Categories to display -->
+	<% if(nbCats <= 0) { %>
+
+		<!-- No Category to display -->
+		<div class="alert alert-info">
+			<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noCategorie %>.
+		</div>
+
+	<% } %>
+
+
+	<!-- Table Categories -->
+	<div class="table-responsive">
+	<table class="table table-bordered table-hover table-striped table-sorter">
+		<thead>
+			<tr>
+				<th data-sort-column="name"><%= _.capitalize(lang.name) %></th>
+				<th data-sort-column="code"><%= _.capitalize(lang.code) %></th>
+				<th data-sort-column="price"><%= _.capitalize(lang.price) %></th>
+				<!--  <th data-sort-column="consumable_parent_name"><%= _.capitalize(lang.parentCategory) %></th> -->
+				<th data-sort-column="service_ids"><%= _.capitalize(lang.associatedServices) %></th>				
+			</tr>
+		</thead>
+		<tbody id="rows-items">
+
+		</tbody>
+	</table>
+	</div>
+
+
+	<!-- Table pagination -->
+	<div id="pagination" class="pull-right"></div>
+	<!-- /Table pagination -->
+
+
+
+<!-- Modal Form to add/update a Cat -->
+<div id="modalSaveCat" class="modal fade"></div>
+
+<!-- Modal Form Delete Cat -->
+<div id="modalDeleteCat" class="modal fade" data-backdrop="static"></div>

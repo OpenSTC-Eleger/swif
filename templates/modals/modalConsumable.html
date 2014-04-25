@@ -1,0 +1,75 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 class="modal-title">
+				<i class="fa fa-edit"></i>&nbsp;
+				<% if(_.isNull(consumable.getId())){ %>
+					<%= _.capitalize(lang.viewsTitles.newConsumable) %>
+				<% } else{ %>
+					<%= _.capitalize(lang.viewsTitles.editConsumable) %>
+				<% } %>
+			</h3>
+		</div>
+
+		<!-- Modal Body -->
+		<div class="modal-body">
+
+			<form id="formSaveConsumable" action="#" class="form-horizontal" role="form">
+
+
+				<!-- Consumableegory name -->
+				<div class="form-group">
+					<label for="consumableName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
+
+					<div class="col-sm-9">
+						<input type="text" id="consumableName" class="form-control" required value="<%= (_.isNull(consumable.getId()) ? '' : consumable.getName())%>">
+					</div>
+				</div>
+
+				<!-- Consumableegory code -->
+				<div class="form-group">
+					<label for="consumableCode" class="control-label col-sm-3"><%= _.capitalize(lang.code) %>:</label>
+
+					<div class="col-sm-3">
+						<input type="text" id="consumableCode" required class="form-control" value="<%= (_.isNull(consumable.getId()) ? '' : consumable.getCode())%>">
+						<span class="help-block" id="code-error"></span>
+					</div>
+				</div>
+				
+				<!-- Place Parent -->
+				 <div class="form-group">
+					<label for="consumableType" class="col-sm-3 control-label"><%=
+						_.capitalize(lang.consumableCategory) %>:</label>
+
+					<div class="col-sm-9">
+						<input id="consumableType" class="select2"
+							   data-placeholder="<%= lang.actions.selectAConsumableCategory %>" data-minimum-input-length="2"
+
+						<% if(!_.isNull(consumable.getId())){
+						if(!_.isUndefined(consumable.getType('id'))) { %>
+						data-selected-value='<%= JSON.stringify(consumable.getType('json')) %>'
+						<% } } %>
+						>
+					</div>
+				</div>
+				
+
+
+			</form>
+		</div>
+		<!-- / Modal Body -->
+
+		<div class="modal-footer">
+			<button type="submit" form="formSaveConsumable" class="btn btn-primary"
+				data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.saveInProgress %>"
+			>
+				<%= _.capitalize(lang.actions.save) %>
+			</button>&nbsp;&nbsp;
+
+			<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+
+	</div>
+</div>
