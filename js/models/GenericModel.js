@@ -68,6 +68,32 @@ define([
 		},
 		
 		/**
+		 * @return array : empty array if value of 'fieldName' not refer to a *2many save-value, else return value of 'fieldName'
+			a correct *2many save-value is an Array of Array (correctVal = [ [0,0,{...}] ], [4,ID],... ] )
+		 */
+		check2ManyAction: function(fieldName){
+			var ret = [];
+			var field = this.getAttribute(fieldName,[]);
+			_.each(field, function(value){
+				//if value is number, means that it refers to an ID (from a fetch), we want only to keep action values.
+				//Not the best way to do that, must be reracto soon
+				if(!_.isNumber(value)){
+					ret.push(value);
+				}
+			});
+			
+			return ret;
+		},
+		
+		checkMany2OneAction: function(fieldName){
+			var val = this.getAttribute(fieldName,false);
+			if(_.isArray(val)){
+				val = val[0];
+			}
+			return val;
+		},
+		
+		/**
 		 * to move to GenericCollection
 		 */
 		getSaveVals: function(attributes){
@@ -85,10 +111,17 @@ define([
 			if(!_.isUndefined(this.collection)){
 				_.map(fields, function(fieldDefinition, fieldName){
 					if(!_.contains(self.readonlyFields, fieldName)){
-						if(fieldDefinition.type == 'many2one'){
-							ret[fieldName] = self.getAttribute(fieldName, [false,''])[0];
-						}
-						else{
+						switch(fieldDefinition.type){
+						case 'many2one':
+							ret[fieldName] = self.checkMany2OneAction(fieldName);
+							break;
+						case 'one2many':
+							ret[fieldName] = self.check2ManyAction(fieldName);
+							break;
+						case 'many2many':
+							ret[fieldName] = self.check2ManyAction(fieldName);
+							break;
+						default:
 							ret[fieldName] = self.getAttribute(fieldName, false);
 						}
 					}
@@ -97,10 +130,61 @@ define([
 			else{
 				console.warning('Swif error: Could not save model because not any collection is linked with, and so can not retrieve metadata fields.');
 			}
+			console.log(ret);
 			return ret;
 		},
 		
+		saveToBackend: function(){
+			var self = this;
+			var vals = this.getSaveVals();
+			var ret = this.save(vals,{patch:!this.isNew(), wait:true}).then(function(data){
+				if(self.isNew()){
+					self.set({id:data});
+				}
+				return self.fetch();
+			});
+			return ret;
+			
+		},
+		fetchMetadata: function(){
+			var self = this;
+			return $.ajax({
+				url      : this.urlRoot,
+				method   : 'HEAD',
+				dataType : 'text',
+				success  : function(data,status,request){
+
+					self.fieldsMetadata = {};
+					//for backward compatibility only
+					if(_.isUndefined(self.collection)){
+						self.collection = {};
+					}
+					//Set advanced filters for collection with metadatas
+					try {
+						self.fieldsMetadata = JSON.parse(request.getResponseHeader('Model-Fields'));
+						//for backward compatibility only
+						self.collection.fieldsMetadata = self.fieldsMetadata;
+						_.each(self.advanced_searchable_fields, function(fieldToKeep){
+							var field = _.find(self.fieldsMetadata,function(value,key){
+								return fieldToKeep.key == key;
+							});
+							_.extend(fieldToKeep, field);
+						});
+					}
+					catch(e){
+						console.log('Meta data are not valid');
+					}
+
+					//Get model Id to obtain his filters
+					self.modelId = request.getResponseHeader('Model-Id');
+
+				}
+
+			});
+		},
 	});
+	
+	
 
 	return GenericModel;
 
