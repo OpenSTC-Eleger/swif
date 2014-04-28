@@ -8,8 +8,9 @@ define([
 	'app',
 
 	'genericModel',
+	'moment'
 
-], function(app, GenericModel){
+], function(app, GenericModel, moment){
 
 	'use strict';
 

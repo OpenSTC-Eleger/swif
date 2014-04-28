@@ -22,7 +22,7 @@ define([
 
 		url          : '/api/open_object/consumable_categories',
 
-		fields       : ['id', 'name', 'code', 'price',  'service_ids', 'service_names' ], //'consumable_parent_id', 'consumable_parent_name',
+		fields       : ['id', 'name', 'code', 'service_ids', 'service_names' ], //'consumable_parent_id', 'consumable_parent_name',
 
 		default_sort : { by: 'name', order: 'ASC' },
 
