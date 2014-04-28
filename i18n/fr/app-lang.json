@@ -239,6 +239,10 @@
     "activeFilter"                          : "Filtre actif",
     "cost"                                  : "Coût",
     "consumableCategory"                    : "Catégorie de fourniture",
+    "byMeansOf"                             : "Au moyen de",
+    "consumable"                            : "Fourniture",
+    "serviceCost"                           : "Coût de la prestation",
+
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
     "monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
@@ -317,6 +321,7 @@
         "selectABookable"   : "Sélectionner une ressource",
         "selectAProvider"   : "Sélectionner un prestataire",
         "selectAConsumableCategory": "Sélectionner une catégorie de fourniture",
+        "selectConsumables" : "Sélectionner des fournitures",
         "displayPassword"   : "Afficher le mot de passe",
         "resetPassword"     : "Réinitialiser le mot de passe",
         "addAttach"         : "Ajouter une pièce jointe",
