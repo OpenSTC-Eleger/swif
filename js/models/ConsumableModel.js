@@ -19,7 +19,7 @@ define([
 	var ConsumableModel = GenericModel.extend({
 
 
-		fields       : ['id', 'name', 'code', 'complete_name',  'type_id', 'type_name'],
+		fields       : ['id', 'name', 'code', 'complete_name',  'type_id', 'type_name', 'hour_price'],
 
 		urlRoot    : '/api/open_object/consumables',
 
@@ -35,6 +35,13 @@ define([
 		},
 		setCode : function(value, silent) {
 			this.set({ code : value }, {silent: silent});
+		},
+		
+		getHourPrice : function() {
+			return this.get('hour_price');
+		},
+		setHourPrice : function(value, silent) {
+			this.set({ hour_price : value }, {silent: silent});
 		},
 		
 		getName : function() {

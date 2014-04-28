@@ -102,6 +102,7 @@ define([
 			var params = {
 				name: this.$('#consumableName').val(),
 				code: this.$('#consumableCode').val().toUpperCase(),
+				hour_price: this.$('#consumableHourPrice').val().toUpperCase(),
 				type_id: app.views.advancedSelectBoxConsumableTypes.getSelectedItem()
 			};
 

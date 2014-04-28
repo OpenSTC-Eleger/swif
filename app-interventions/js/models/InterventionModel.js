@@ -22,7 +22,7 @@ define([
 
 		urlRoot: '/api/openstc/interventions',
 
-		fields : ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'site_details', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid', 'create_date', 'ask_id'],
+		fields : ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'site_details', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid', 'create_date', 'ask_id', 'cost'],
 
 
 		searchable_fields: [

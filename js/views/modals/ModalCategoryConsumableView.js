@@ -107,7 +107,6 @@ define([
 			var params = {
 				name: this.$('#catName').val(),
 				code: this.$('#catCode').val().toUpperCase(),
-				price: this.$('#catPrice').val().toUpperCase(),
 				//consumable_parent_id: app.views.advancedSelectBoxCatParentView.getSelectedItem(),
 				service_ids: [[6, 0, app.views.advancedSelectBoxCatServices.getSelectedItems()]],
 			};

@@ -19,7 +19,7 @@ define([
 	var CategoryConsumableModel = GenericModel.extend({
 
 
-		fields     : ['id', 'name', 'code', 'price',  'service_ids', 'service_names' ], //'consumable_parent_id', 'consumable_parent_name',
+		fields     : ['id', 'name', 'code', 'service_ids', 'service_names' ], //'consumable_parent_id', 'consumable_parent_name',
 
 		urlRoot    : '/api/open_object/consumable_categories',
 
@@ -38,12 +38,7 @@ define([
 		},
 
 
-		getPrice : function() {
-			return this.get('price');
-		},
-		setPrice : function(value, silent) {
-			this.set({ price : value }, {silent: silent});
-		},
+
 		getParentConsumable : function(type) {
 
 			var id, name = '';
