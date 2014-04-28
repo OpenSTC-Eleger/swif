@@ -190,7 +190,7 @@
 						<!-- Equipment Lenght of Amort. -->
 						<div class="form-group">
 							<label for="equipmentLengthAmort" class="control-label col-sm-4"><%= _.capitalize(lang.amort) %>:</label>
-							<div class="col-sm-6">
+							<div class="col-sm-3">
 								<input type="number" class="form-control" id="equipmentLengthAmort" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getLengthAmort()) %>">
 								<span class="help-block"><%= lang.lenthAmort %></span>
 							</div>
@@ -199,8 +199,11 @@
 						<!-- Equipment purchase price -->
 						<div class="form-group">
 							<label for="equipmentPurchasePrice" class="control-label col-sm-4"><%= _.capitalize(lang.purchasePrice) %>:</label>
-							<div class="col-sm-6">
-								<input type="number" class="form-control" id="equipmentPurchasePrice" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getPurchasePrice()) %>">
+							<div class="col-sm-3">
+								<div class="input-group">
+									<input type="number" class="form-control" id="equipmentPurchasePrice" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getPurchasePrice()) %>">
+									<span class="input-group-addon"><i class="fa fa-eur"></i></span>
+								</div>
 							</div>
 						</div>
 						<!-- Equipment purchase date-->
@@ -221,8 +224,11 @@
 						<!-- Equipment hour price -->
 						<div class="form-group">
 							<label for="equipmentHourPrice" class="control-label col-sm-4"><%= _.capitalize(lang.hourPrice) %>:</label>
-							<div class="col-sm-6">
-								<input type="number" step="any" min="0" class="form-control" id="equipmentHourPrice" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getHourPrice()) %>">
+							<div class="col-sm-3">
+								<div class="input-group">
+									<input type="number" step="any" min="0" class="form-control" id="equipmentHourPrice" value="<%= (_.isNull(equipment.getId()) ? '' : equipment.getHourPrice()) %>">
+									<span class="input-group-addon"><i class="fa fa-eur"></i></span>
+								</div>
 							</div>
 						</div>
 
