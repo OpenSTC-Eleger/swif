@@ -75,7 +75,7 @@ define([
 
 				self.selectedTaskJSON = self.model.toJSON();
 
-				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
+				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: false, showInputs: false, modalBackdrop: false});
 				$('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 
 				$('#startDate').val(  moment().format('L') );
@@ -221,6 +221,7 @@ define([
 		*/
 		accordionRefuelingInputs: function(e){
 			e.preventDefault();
+
 
 			// Toggle Slide Refueling section //
 			$('.refueling-vehicle').stop().slideToggle();
