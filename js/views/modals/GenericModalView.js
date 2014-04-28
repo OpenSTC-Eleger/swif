@@ -26,6 +26,8 @@ define([
 			'shown.bs.modal' : 'shown',
 			'hidde.bs.modal' : 'hide',
 			'hidden.bs.modal': 'hidden',
+
+			'click [data-action="zenmode"]': 'toggleZenmode'
 		},
 
 
@@ -61,6 +63,15 @@ define([
 					this.modal.find('#'+this.options.elFocus).focus();
 				}
 			}
+		},
+
+
+		/** Toggle fullscreen mode
+		*/
+		toggleZenmode: function(){
+
+			$(this.el).find('.modal-dialog').toggleClass('modal-zenmode');
+			$('.modal-backdrop').toggleClass('zenmode');
 		}
 
 	});
