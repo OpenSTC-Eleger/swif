@@ -185,6 +185,13 @@ define([
 			}
 		},
 
+		/** Get the cost of the intervention
+		*/
+		getCost: function(){
+			//return _.numberFormat(this.get('cost'), 2, '.', ' ');
+			return 'TODO';
+		},
+
 		hasActions: function(action){
 			return this.getActions().indexOf(action) > -1;
 		},

@@ -8,8 +8,9 @@ define([
 	'app',
 
 	'genericModel',
+	'moment'
 
-], function(app, GenericModel){
+], function(app, GenericModel, moment){
 
 	'use strict';
 
@@ -96,7 +97,7 @@ define([
 
 		// Group IDs //
 		getLastConnection: function() {
-			return this.get('date');
+			return moment(this.get('date')).format('LLL');
 		},
 
 		// Group Name //
@@ -225,11 +226,11 @@ define([
 		getActions: function(){
 			return this.get('actions');
 		},
-		
+
 		getCost: function() {
 			return this.get('cost');
 		},
-		
+
 		setCost: function(cost){
 			this.set({ cost : cost });
 		}

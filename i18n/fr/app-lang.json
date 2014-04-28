@@ -237,7 +237,7 @@
     "equalTo"                               : "égal à",
     "differentFrom"                         : "différent de",
     "activeFilter"                          : "Filtre actif",
-    "timeCost"                              : "Coût horaire",
+    "cost"                                  : "Coût",
     "consumableCategory"                    : "Catégorie de fourniture",
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],

@@ -255,6 +255,13 @@ define([
 		},
 
 
+		/** Get the cost of the task
+		*/
+		getCost: function(){
+			//return _.numberFormat(this.get('cost'), 2, '.', ' ');
+			return 'TODO';
+		},
+
 
 		/** Get Informations of the model
 		*/
