@@ -6,7 +6,7 @@
 		"generalInfos"				:"infos générales",
 		"recurrenceSetting"			:"paramétrage récurrence",
 		"delay_deadline"			:"préavis (jours)",
-		"type_renewal"				:"Reconduction",
+		"typeRenewal"				:"Reconduction",
 		"supplierOrDepartment"		:"Prestataire / Service",
 		"internalIntervention"		:"En régie",
 		"taskAssignedTo"			:"Affectée à",
