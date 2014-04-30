@@ -6,9 +6,10 @@
 
 define([
 	'backbone',
+	'appHelpers',
 	'moment',
 
-], function(Backbone, moment){
+], function(Backbone, AppHelpers, moment){
 
 	'use strict';
 
@@ -51,6 +52,12 @@ define([
 				val = moment(val).format('DD/MM/YYYY');
 			}
 			return val;
+		},
+		
+		getDatetime: function(field){
+			var val = this.getAttribute(field,'1970-01-01 00:00:00');
+			val = AppHelpers.convertDateToTz(val);
+			return val.format('YYYY-MM-DD HH:mm:ss');
 		},
 		
 		//method to retrieve attribute with standard return form
