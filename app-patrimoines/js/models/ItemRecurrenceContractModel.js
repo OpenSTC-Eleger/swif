@@ -16,7 +16,7 @@ define([
 		
 		urlRoot: '/api/openstc/tasks',
 
-		fields: ['id', 'name', 'date_deadline', 'state', 'agent_or_team_name', 'user_id', 'team_id', 'actions', 'partner_id', 'recurrence_id'],
+		fields: ['id', 'name', 'date_deadline', 'state', 'agent_or_team_name', 'user_id', 'team_id', 'actions', 'partner_id', 'recurrence_id', 'date_start'],
 		
 		readonlyFields: ['id', 'state', 'actions'],
 		

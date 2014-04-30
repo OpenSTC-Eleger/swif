@@ -16,7 +16,7 @@ define([
 		
 		url: '/api/openstc/tasks',
 
-		fields: ['id', 'name','date_deadline', 'agent_or_team_name', 'user_id', 'team_id', 'state', 'actions'],
+		fields: ['id', 'name','date_deadline', 'agent_or_team_name', 'user_id', 'team_id', 'state', 'actions', 'date_start'],
 
 		default_sort: { by: 'id', order: 'DESC' },
 		

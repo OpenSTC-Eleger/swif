@@ -1,4 +1,12 @@
-<td class="field" data-fieldname="date_deadline"></td>
+<td>
+<% if(task.getAttribute('date_start',false)){ %>
+	<i
+		class="fa fa-clock-o displayInlineBlock" data-toggle="tooltip"
+		data-original-title="<%= moment(task.getDatetime('date_start')).format('LLL') %>" >
+	</i>&nbsp;
+<% } %>
+<span class="field" data-fieldname="date_deadline"></span>
+</td>
 
 <td>
 <i class="fa <%= task.getAttribute('user_id',false) ? 'fa-user' : task.getAttribute('team_id',false) ? 'fa-users' : 'fa-truck' %> fa-fw"></i>
