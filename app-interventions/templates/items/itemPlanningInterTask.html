@@ -5,10 +5,15 @@
 
 		var dateStart = moment(task.date_start).tz(UserModel.getContext().tz);
 		dateStart.add('minutes',-dateStart.zone());
+		var recurrenceClass = task.recurrence_id ? 'fa fa-refresh' : '';
 	%>
 
-	<i class="<%= taskClass %>" data-toggle="tooltip" data-placement="top" data-original-title="<%= dateStart.format('LLL') %>"></i> <%= task.name %>
-
+	<i class="<%= taskClass %>" data-toggle="tooltip" data-placement="top" data-original-title="<%= dateStart.format('LLL') %>"></i> 
+	<a href="#" class="modalRecurrenceDetails">
+		<i class="<%= recurrenceClass %>" data-toggle="tooltip" data-placement="top" data-original-title="<%= lang.helpMessages.seeAllOccurrences %>"></i>
+	</a>
+	<%= task.name %>
+	
 
 	<small class="nested-objects-actions invisible">
 		<% if( task.actions.indexOf("delete")>-1) { %>

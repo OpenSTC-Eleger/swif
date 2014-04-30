@@ -13,11 +13,13 @@ define([
 	'taskModel',
 	'userModel',
 	'interventionModel',
-
+	'taskRecurrenceModel',
+	
 	'modalDeleteView',
 	'modalCancelTaskView',
+	'modalRecurrenceTaskView',
 
-], function(app, AppHelpers, moment , MomentTimezoneData, TaskModel, UserModel, InterventionModel, ModalDeleteView, ModalCancelTaskView){
+], function(app, AppHelpers, moment , MomentTimezoneData, TaskModel, UserModel, InterventionModel, TaskRecurrenceModel, ModalDeleteView, ModalCancelTaskView, ModalRecurrenceTaskView){
 
 	'use strict';
 
@@ -50,7 +52,7 @@ define([
 
 			'click a.modalDeleteTask'    : 'displayModalDeleteTask',
 			'click a.buttonCancelTask'   : 'displayModalCancelTask',
-
+			'click a.modalRecurrenceDetails'		: 'displayModalRecurrenceDetails'
 		},
 
 		/** View Initialization
@@ -193,6 +195,14 @@ define([
 			e.preventDefault();
 			new ModalCancelTaskView({el: '#modalCancelTask', model: this.model});
 		},
+		
+		displayModalRecurrenceDetails: function(e){
+			e.preventDefault();
+			new ModalRecurrenceTaskView({
+				el:'#modalRecurrenceDetails',
+				model: new TaskRecurrenceModel({id:this.model.getAttribute('recurrence_id',[false,''])[0]})
+			});
+		}
 
 
 	});
