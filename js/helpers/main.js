@@ -7,14 +7,14 @@
 define('appHelpers', [
 
 	'app',
-	'userModel',
-
-	'filterModel',
+//	'userModel',
+//
+//	'filterModel',
 
 	'moment-timezone',
 	'moment-timezone-data'
 
-], function(app, UserModel, FilterModel, moment){
+], function(app, moment){
 
 	'use strict';
 
@@ -334,7 +334,19 @@ define('appHelpers', [
 			return convertedDate;
 		},
 
-
+		/**
+		 * @return: if user has a Timezone, create moment with this timezone and the 'date' parameter, and return UTC-formated date,
+		 * Else, return utc moment with 'date' parameter directly
+		 */
+		convertDateToUtc: function(date){
+			var userTz = app.current_user.getContext().tz;
+			var ret = moment.utc(date);
+			if(userTz){
+				var convertedDate = moment.tz(date, userTz);
+				ret = convertedDate.utc();
+			}
+			return ret;
+		},
 
 		/** Transform Hexa color into RGB color
 		*/
