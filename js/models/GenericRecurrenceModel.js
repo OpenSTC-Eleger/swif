@@ -69,6 +69,7 @@ define([
 		fetchDates: function(){
 			var self = this;
 			var data = this.getSaveVals();
+			delete data.occurrence_ids;
 			data.id = null;
 			var recurModel = new GenericModel(data);
 			recurModel.urlRoot = this.urlRecurrenceResource;
