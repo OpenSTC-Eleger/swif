@@ -24,7 +24,7 @@
 		"recurDaily"				: "Quotidienne",
 		"recurWeekly"				: "Hebdomadaire",
 		"recurMonthly"				: "Mensuelle",
-		"days"						: "Jours",
+		"days"						: "jours",
 		"weeks"						: "Semaines",
 		"months"					: "Mois",
 		"weekdayMon"				: "Lun.",
@@ -55,6 +55,7 @@
 		"newDateEnd"				: "Fin nouveau contrat",
 		"period"					: "Période",
 		"newPeriod"					: "Nouvelle Période",
+		"daysUnit"					: "jour(s)",
 		
 		"actions" : {			
 			"addContract"			:"créer un contrat",

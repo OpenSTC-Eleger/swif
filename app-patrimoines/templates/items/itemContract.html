@@ -22,7 +22,7 @@
 	&nbsp;<% if(contract.getAttribute('delay_passed',false)){ %>
 		<i class="fa fa-warning fa-lg text-danger" data-toggle="tooltip" data-original-title="<%= lang.patrimoine.delayPassed %>"></i>
 	<% }else if(contract.getAttribute('warning_delay',false)){ %>
-		<i class="fa fa-warning fa-lg text-default" data-toggle="tooltip" data-original-title="<%= lang.patrimoine.delayNeartoPass %> <%= parseInt(contract.getAttribute('remaining_delay',0) + 1) %> <%= lang.patrimoine.days %>"></i>
+		<i class="fa fa-warning fa-lg text-default" data-toggle="tooltip" data-original-title="<%= lang.patrimoine.delayNeartoPass %> <%= parseInt(contract.getAttribute('remaining_delay',0) + 1) %> <%= lang.patrimoine.daysUnit %>"></i>
 	<% } %>
 <% } %>
 </td>

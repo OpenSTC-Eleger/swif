@@ -1,10 +1,10 @@
-<td class="text-center">
+<div class="text-center">
 		<!-- Buttons group action -->
 		<div class="btn-group btn-group-sm">
 
 			<!-- Main action button -->
 			<button class="actions btn btn-<%= mainAction.color%> no-outline" data-action="<%= mainAction.key%>">
-				<i class="fa <%= mainAction.icon%> fa-fw fa-lg" data-action="<%= mainAction.key%>"></i>
+				<i class="fa <%= mainAction.icon%> fa-fw" data-action="<%= mainAction.key%>"></i>
 			</button>
 
 			<% if(otherActions.length > 0){ %>
@@ -26,4 +26,4 @@
 			<% }%>
 		</div>
 	
-</td>
+</div>
