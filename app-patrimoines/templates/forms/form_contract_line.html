@@ -21,12 +21,33 @@
 			<div class="form-group field" data-field-name="team_id" data-field-label="<%= lang.team%>" data-field-placeholder="<%= lang.actions.selectATeam %>"></div>
 		</div>
 		
-		<div class="form-group field" data-field-name="planned_hours" data-field-label="<%= lang.plannedHours %>"></div>
+		<div class="form-group field" data-field-name="planned_hours" data-field-label="<%= lang.estimatedLength %>" data-field-addon="<%= lang.time %>"></div>
+
+		<div class="form-group">
+			
+			<div class="field" data-field-name="plan_task" data-field-label="<%= lang.planTasks %>"
+			data-off-label="<%= lang.no %>" data-on-label="<%= lang.yes %>"></div>
+	
+			<div class="field-visible-if" data-field-name="plan_task" data-field-value="true">
+		
+				<div class="input-group bootstrap-timepicker col-sm-3">
+					<input type="text" class="timepicker-default form-control field-element" id="date_start" data-field-item="time" value="<%= lineModel.getDatetime('date_start').slice(11,16) %>">
+					<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+				</div>
+				<div class="input-group bootstrap-timepicker col-sm-3 hide-soft">
+					<input type="text" class="datepicker form-control field-element" id="date_start" data-field-item="date" value="<%= lineModel.getDateFr('date_start') %>">
+					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				</div>
+				
+			</div>
+		</div>
+		
 	</div>
 	
 	<div class="field-visible-if" data-field-name="internal_inter" data-field-value="false">
 		<div class="form-group field" data-field-name="supplier_cost" data-field-label="<%= lang.patrimoine.supplierCost %>"></div>
 	</div>
+	
 	<hr>
 	
 	<div class="form-group field" data-field-name="recurrence" data-field-label="<%= lang.patrimoine.recurrenteTask %>"

@@ -7,13 +7,15 @@
 <!-- contract note -->
 <div class="form-group field" data-field-label="<%= lang.note%>" data-field-name="description"></div>
 
-<!-- contract date start -->
-<div class="form-group field" data-field-label="<%= lang.dateStart%>" data-field-name="date_start_order"></div>
+<div class="form-group">
+	<!-- contract date start -->
+	<div class="field" data-field-label="<%= lang.patrimoine.period%>" data-field-name="date_start_order"></div>
+	<div class="col-sm-1 control-label control-label-center">-</div>
+	<!-- contract date end -->
+	<div class="field" data-field-label="" data-field-name="date_end_order"></div>
+</div>
 
-<!-- contract date end -->
-<div class="form-group field" data-field-label="<%= lang.dateEnd%>" data-field-name="date_end_order"></div>
-
-<!-- contract date deadline -->
+<!-- contract delay deadline -->
 <div class="form-group field" data-field-label="<%= lang.patrimoine.delay_deadline%>" data-field-name="deadline_delay"></div>
 
 <!-- contract type renewal -->
@@ -43,8 +45,4 @@ data-off-label="<%= lang.no%>" data-on-label="<%= lang.yes%>"></div>
 	<!-- contract supplier -->
 	<div class="form-group field" data-field-placeholder="<%= lang.actions.selectAProvider%>" data-field-label="<%= lang.serviceProvider%>" data-field-name="supplier_id"></div>
 </div>
-
-<!-- 				<div class="form-group field field-switch" data-field-placeholder="patrimoine" data-field-label="Patrimoine" -->
-<!-- 				data-field-switch-name="patrimoine_is_equipment" data-field-switch-icon-yes="" data-field-switch-icon-no="" -->
-<!-- 				data-field-name-yes="equipment_id" data-field-name-no="site_id"></div> -->
 
