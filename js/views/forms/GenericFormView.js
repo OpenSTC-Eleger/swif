@@ -241,6 +241,24 @@ define(['app',
 			this.updateDoms();
 		},
 		
+		/**
+		 * datetime component is divided into 2 components, 1 for "date" value, 1 for "item" value
+		 * @return: utc string value, or false if one of the 2 components is not set (or not correctly set)
+		 */
+		parseDatetimeValue: function(dom){
+			var currentDatetime = AppHelpers.convertDateToTz(this.model.getAttribute(dom.attr('id'), ''));
+			var dateItem = $(this.el).find('#' + dom.attr('id') + '[data-field-item="date"]');
+			var timeItem = $(this.el).find('#' + dom.attr('id') + '[data-field-item="time"]');
+			//retrieve tz value according to the HTML components
+			var strDatetime = (dateItem.val() ? moment(dateItem.val(), 'DD/MM/YYYY'): currentDatetime).format('YYYY-MM-DD') + ' ' +
+					(timeItem.val() ? timeItem.val() : currentDatetime.format('HH:mm:ss'));
+			//try to parse a moment with the strDatetime value
+			var ret = AppHelpers.convertDateToUtc(strDatetime);
+			//return false if moment is not valid, else return parsed string datetime
+			console.log(ret.isValid() ? ret.format('YYYY-MM-DD HH:mm:ss') : false);
+			return ret.isValid() ? ret.format('YYYY-MM-DD HH:mm:ss') : false;
+		},
+		
 		/** View Initialization
 		*/
 		initialize : function() {
@@ -262,6 +280,7 @@ define(['app',
 			this.formValueFieldParser = {
 				boolean: function(dom){return dom.prop('checked');},
 				date: function(dom){return dom.val() ? moment(dom.val(),'DD/MM/YYYY').format('YYYY-MM-DD') : false;},
+				datetime:function(dom){return self.parseDatetimeValue(dom);},
 				many2one: function(dom){
 					var select = self.advancedSelectBoxes[dom.attr('id')];
 					return select.getSelectedItem() ? [select.getSelectedItem(), select.getSelectedText()] : false;
@@ -288,6 +307,7 @@ define(['app',
 				self.updateDoms();
 				$(self.el).find('.make-switch').bootstrapSwitch();
 				$(self.el).find('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
+				$(self.el).find('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: true, modalBackdrop: false});
 			});
 		},
 		
