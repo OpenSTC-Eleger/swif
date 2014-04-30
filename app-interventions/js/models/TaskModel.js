@@ -258,8 +258,12 @@ define([
 		/** Get the cost of the task
 		*/
 		getCost: function(){
-			//return _.numberFormat(this.get('cost'), 2, '.', ' ');
-			return 'TODO';
+			if( this.get('cost') ){
+				return _.numberFormat(this.get('cost'), 2, '.', ' ') + '€';
+			}
+			else{
+				return "";
+			}
 		},
 
 

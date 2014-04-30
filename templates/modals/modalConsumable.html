@@ -44,7 +44,7 @@
 						_.capitalize(lang.consumableCategory) %>:</label>
 
 					<div class="col-sm-9">
-						<input id="consumableType" class="select2"
+						<input id="consumableType" class="select2" 
 							   data-placeholder="<%= lang.actions.selectAConsumableCategory %>" data-minimum-input-length="2"
 
 						<% if(!_.isNull(consumable.getId())){
@@ -57,11 +57,11 @@
 				
 				<!-- Hour price -->
 				<div class="form-group">
-					<label for="consumableHourPrice" class="control-label col-sm-3"><%= _.capitalize(lang.price) %>:</label>
+					<label for="consumablePrice" class="control-label col-sm-3"><%= _.capitalize(lang.price) %>:</label>
 
 					<div class="col-sm-3">
 						<div class="input-group">							
-							<input id="consumableHourPrice" type="number" step="any" min="0" class="form-control" value="<%= (_.isNull(consumable.getId()) ? '' : consumable.getHourPrice())%>">
+							<input id="consumablePrice" type="number" step="any" min="0" class="form-control" value="<%= (_.isNull(consumable.getId()) ? '' : consumable.getPrice())%>">
 							<span class="input-group-addon">€</span>
 						</div>
 					</div>
