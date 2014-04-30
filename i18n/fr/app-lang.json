@@ -173,6 +173,8 @@
     "milometer"             : "compteur",
     "price"                 : "prix",
     "oilPrice"              : "Prix Carburant",
+    "unitPrice"             : "Prix unitaire",
+    "unitPriceAcronym"      : "PU",
     "inLiter"               : "en litre",
     "inEuro"                : "en €uro",
     "observations"          : "observations",
@@ -242,6 +244,8 @@
     "byMeansOf"                             : "Au moyen de",
     "consumable"                            : "Fourniture",
     "serviceCost"                           : "Coût de la prestation",
+    "BOQAcronym"                            : "DQE",
+    "billofQuantities"                      : "Détail quantitatif estimatif",
 
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
@@ -285,6 +289,7 @@
         "refuse"            : "refuser",
         "validate"          : "valider",
         "search"            : "rechercher",
+        "duplicate"         : "dupliquer",
         "previous"          : "précédent",
         "next"              : "suivant",
         "previousWeek"      : "semaine précédente",
