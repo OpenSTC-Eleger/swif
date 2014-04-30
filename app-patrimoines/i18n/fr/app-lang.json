@@ -89,10 +89,10 @@
 		},
 		
 		"modalContract": {
-			"confirm"				:"Valider la mise en exécution du contrat",
-			"renew"					:"Valider la reconduction du contrat",
-			"close"					:"Valider la clôture du contrat",
-			"cancel"				:"Valider l'annulation du contrat"
+			"confirm"				:"Mise en exécution du contrat",
+			"renew"					:"Reconduction du contrat",
+			"close"					:"Clôture du contrat",
+			"cancel"				:"Annulation du contrat"
 		}
 	}
 }
