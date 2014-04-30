@@ -64,7 +64,8 @@
 			"setDraftForm"			:"Modifier",
 			"savePost"				:"Enregistrer et soumettre le contrat",
 			"saveDraft"				:"Enregistrer",
-			"addTypeContracts"		:"Ajouter une catégorie"
+			"addTypeContracts"		:"Ajouter une catégorie",
+			"generateDates"			: "Générer Dates"
 		},
 		
 		"infoMessages" : {
