@@ -6,10 +6,11 @@
 
 define([
 	'app',
-
+	'appHelpers',
 	'genericModel',
+	'moment'
 
-], function(app, GenericModel){
+], function(app, AppHelpers, GenericModel, moment){
 
 	'use strict';
 
@@ -30,11 +31,56 @@ define([
 		searchable_fields: [
 			{ key: '', type : '' }
 		],
-
 		
+		
+		defaults: function(){
+			var ret = {
+				recur_type: 'weekly',
+				recur_month_type: 'monthday',
+				recur_periodicity: 1
+			};
+			var relativeParser = {
+				0: 'first',
+				1: 'second',
+				2: 'third',
+				3: 'fourth',
+				4: 'last'
+			};
+			var dateStart = this.getAttribute('date_start',false);
+			if(dateStart){
+				var momentDateStart = AppHelpers.convertDateToTz(dateStart);
+				var momentStartMonth = moment().startOf('month');
+				if(momentDateStart.isValid()){
+					//to retrieve weekday in english
+					momentDateStart.lang('en');
+					var weekdayName = momentDateStart.format('dddd').toLowerCase();
+					ret['recur_week_' + weekdayName] = true;
+					ret.recur_month_relative_day = weekdayName;
+					ret.recur_month_absolute = momentDateStart.date();
+					//get the position of momentDateStart's weekday on the first week of the month
+					var firstCurrentWeekdayOfMonth = ((momentDateStart.isoWeekday() + 7 - momentStartMonth.isoWeekday()) % 7) + 1;
+					var weekdayNbOfMonth = (momentDateStart.date() - firstCurrentWeekdayOfMonth) / 7;
+					ret.recur_month_relative_weight = relativeParser[weekdayNbOfMonth];
+					
+				}
+			}
+			return ret;
+		},
 
 		initialize: function() {
-
+			this.listenTo(this, 'change:date_start', this.updateDefaults);
+		},
+		
+		/**
+		 * update default values of recurrence setting according to date_start value
+		 * If some fields are not yet set, set them the default values returned by defaults() method
+		 */
+		updateDefaults: function(model, value){
+			if(value){
+				var attrs = _.pick(model.toJSON(),model.recurFields);
+				attrs = _.defaults(attrs, model.defaults());
+				model.set(attrs);
+			}
 		},
 		
 		addOccurrence: function(model){

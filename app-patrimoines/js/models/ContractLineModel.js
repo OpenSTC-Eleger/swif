@@ -92,7 +92,7 @@ define([
 		 * Add a listener to always keep its related data up-to-date
 		*/
 		initialize: function(vals, options){
-			
+			GenericRecurrenceModel.prototype.initialize(arguments);
 			var self = this;
 			if(options.parentModel){
 				this.parentModel = options.parentModel;
