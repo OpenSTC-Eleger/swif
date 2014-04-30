@@ -53,6 +53,8 @@
 		"newNote"					: "Nouvelle note",
 		"newDateStart"				: "Début nouveau contrat",
 		"newDateEnd"				: "Fin nouveau contrat",
+		"period"					: "Période",
+		"newPeriod"					: "Nouvelle Période",
 		
 		"actions" : {			
 			"addContract"			:"créer un contrat",
