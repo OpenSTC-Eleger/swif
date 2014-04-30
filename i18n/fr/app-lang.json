@@ -246,6 +246,8 @@
     "last"									: "Dernier",
     "ContractNearToExpire"					: "Contrat est proche de son expiration",
     "managerDepartment"						: "Service responsable",
+    "estimatedLength"						: "Durée estimée",
+    "planTasks"								: "Planifier les tâches",
     
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
@@ -512,6 +514,6 @@
         "usersList"              : "Liste des utilisateurs",
         "resetPassword"          : "Réinitialisation du mot de passe",
         "saveFilter"             : "Enregistrement du filtre",
-        "taskOcurrences"         : "Tâches de la récurrence"
+        "taskOcurrences"         : "Tâche récurrente"
     }
 }
