@@ -37,7 +37,6 @@ define([
 			technical_service_id:'technical_service_id',
 			partner_id:'supplier_id',
 			internal_inter:'internal_inter',
-			date_start:'date_start_order',
 			date_end:'date_end_order'
 		},
 		
@@ -92,13 +91,16 @@ define([
 		 * Add a listener to always keep its related data up-to-date
 		*/
 		initialize: function(vals, options){
-			GenericRecurrenceModel.prototype.initialize(arguments);
 			var self = this;
 			if(options.parentModel){
 				this.parentModel = options.parentModel;
+				if(!this.getAttribute('date_start',false)){
+					this.set({date_start:this.parentModel.getDatetime('date_start_order')});
+				}
 				this.listenTo(this.parentModel, 'change', self.bubbleData);
 				this.bubbleData(this.parentModel);
 			}
+			GenericRecurrenceModel.prototype.initialize.apply(this, arguments);
 		},
 	
 	

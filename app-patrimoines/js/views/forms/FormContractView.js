@@ -51,8 +51,15 @@ define(['app',
 			this.generalView = null;
 			this.linesViews = {};
 			this.initModel().done(function(){
+				self.listenTo(self.model, 'change:date_start_order', self.bubbleDateStartLines);
 				app.router.render(self);
 			});
+		},
+		
+		bubbleDateStartLines: function(model, value){
+			if(value){
+				$('#date_start[data-field-item="date"]').val(model.getDateFr('date_start_order')).change();
+			}
 		},
 		
 		/**
