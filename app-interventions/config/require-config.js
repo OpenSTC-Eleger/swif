@@ -70,6 +70,7 @@ requirejs.config({
 		modalInterventionAddTaskView    : '../app-interventions/js/views/modals/interventions/ModalInterventionAddTaskView',
 		modalCancelTaskView             : '../app-interventions/js/views/modals/interventions/ModalCancelTaskView',
 		modalTaskDoneView               : '../app-interventions/js/views/modals/interventions/ModalTaskDoneView',
+		modalDetailCostView             : '../app-interventions/js/views/modals/tasks/ModalDetailCostView',
 
 		tasksListView                   : '../app-interventions/js/views/lists/TasksListView',
 		itemTaskDayListView             : '../app-interventions/js/views/items/ItemTaskDayListView',

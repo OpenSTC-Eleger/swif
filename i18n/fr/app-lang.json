@@ -246,6 +246,7 @@
     "serviceCost"                           : "Coût de la prestation",
     "BOQAcronym"                            : "DQE",
     "billofQuantities"                      : "Détail quantitatif estimatif",
+    "total"                                 : "Total",
 
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
@@ -520,6 +521,7 @@
         "categoriesConsumablesList" : "Catégories des fournitures",
         "consumablesList"           : "Fournitures",
         "newConsumable"             : "Nouvelle fourniture",
-        "editConsumable"            : "Nouvelle fourniture"
+        "editConsumable"            : "Nouvelle fourniture",
+        "costDetail"                : "Détail du coût"
     }
 }
