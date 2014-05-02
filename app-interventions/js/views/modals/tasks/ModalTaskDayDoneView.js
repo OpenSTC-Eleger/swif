@@ -158,6 +158,10 @@ define([
 				//consumables    : self.consumablesSelectView.getConsumables()
 			};
 
+
+			// Set the button in loading State //
+			$(this.el).find('button[type=submit]').button('loading');
+
 			this.model.save(params, {silent: true, patch: true, wait: true})
 				.done(function(){
 					//if task is "unfinished", must retrieve the newly created task with remainingHours
@@ -172,6 +176,9 @@ define([
 				})
 				.fail(function(e){
 					console.log(e);
+				})
+				.always(function () {
+					$(self.el).find('button[type=submit]').button('reset');
 				});
 
 		},
