@@ -25,7 +25,7 @@ define([
 		templateHTML : 'templates/form-components/consumablesSelect.html',
 
 
-		selectedConsumables: {},
+		selectedConsumables: [],
 
 		events: {
 			'click a[data-action="remove"]'    : 'removeRow',
@@ -43,11 +43,11 @@ define([
 						<a href="#" data-action="remove" data-toggle="tooltip" data-original-title="'+_.capitalize(app.lang.actions.delete)+'"> <i class="fa fa-trash-o fa-fw fa-lg"></i> </a> \
 					</p> \
 				</td> \
-				<td class="col-sm-4"><input type="text" class="form-control input-sm"></td> \
-				<td class="col-sm-2"><input type="number" class="form-control input-sm" value="1"></td> \
+				<td class="col-sm-4"><input type="text" class="fieldDQE form-control input-sm"></td> \
+				<td class="col-sm-2"><input type="number" step="1" min="1" class="fieldQuantity form-control input-sm" value="1"></td> \
 				<td class="col-sm-2"> \
 					<div class="input-group input-group-sm"> \
-						<input type="text" class="form-control input-sm"> \
+						<input type="text" class="fieldUnitPrice form-control input-sm"> \
 						<span class="input-group-addon"><i class="fa fa-eur"></i></span> \
 					</div> \
 				</td> \
@@ -83,7 +83,7 @@ define([
 				// Create the advance selectBox view and listen the change event //
 				self.advancedSelectBoxCatConsumables = new AdvancedSelectBoxView({el: $('#field_consumables'), url: OfficersCollection.prototype.url });
 				self.advancedSelectBoxCatConsumables.render();
-				self.advancedSelectBoxCatConsumables.select2.off().on('select2-selecting', function(e){ self.addConsumables(e); } );
+				self.advancedSelectBoxCatConsumables.select2.off().on('select2-selecting', function(e){ self.addConsumable(e); } );
 
 			});
 
@@ -94,18 +94,36 @@ define([
 
 		/** Function to add consumables inside the <table>
 		*/
-		addConsumables: function(e){
-
-			console.log(e);
+		addConsumable: function(e){
 
 			$(this.el).find('.tableConsumables.hide').removeClass('hide');
 
 			var consumable = e.object;
 
-			console.log(consumable);
-
 			$(this.el).find('.consumablesRows').append(_.template(this.rowTemplate, consumable));
 			$(this.el).find('*[data-toggle="tooltip"]').tooltip({ delay: { show: 250, hide: 0 }});
+		},
+
+
+
+		/** Function to get all the consumables inside the <table>
+		*/
+		getConsumables: function(){
+			var self = this;
+
+			_.each($(this.el).find('.consumablesRows tr'), function(row){
+
+				var consum = {
+					id        : $(row).data('id'),
+					dqe       : $(row).find('input.fieldDQE').val(),
+					quantity  : $(row).find('input.fieldQuantity').val(),
+					unit_price: $(row).find('input.fieldUnitPrice').val()
+				};
+
+				self.selectedConsumables.push(consum);
+			});
+
+			return self.selectedConsumables;
 		},
 
 
@@ -126,6 +144,7 @@ define([
 		},
 
 
+
 		/** Duplicate the row from the <table>
 		*/
 		duplicateRow: function(e){
@@ -137,8 +156,7 @@ define([
 
 			var obj = {object: {id: id, text: text}};
 
-			this.addConsumables(obj);
-
+			this.addConsumable(obj);
 		}
 
 
