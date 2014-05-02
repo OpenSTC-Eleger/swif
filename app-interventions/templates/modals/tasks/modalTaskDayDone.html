@@ -2,8 +2,8 @@
 	<div class="modal-content">
 
 		<div class="modal-header">
-		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		    <h3 class="modal-title"><%= lang.viewsTitles.statementTask %></h3>
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 class="modal-title"><i class="fa fa-edit fa-fw"></i>&nbsp;<%= lang.viewsTitles.statementTask %></h3>
 		</div>
 
 		<div class="modal-body">
@@ -18,49 +18,71 @@
 				<% } %>
 			</blockquote>
 
+
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs nav-justified">
+				<li class="active"><a href="#tabAboutTheTask" data-toggle="tab"><%= lang.aboutTheTask %></a></li>
+				<li><a href="#tabByMeansOf" data-toggle="tab"><%= lang.byMeansOf %></a></li>
+			</ul>
+
+
+
 		    <form id="formTaskDone" action="#" class="form-horizontal" role="form">
+		    <div class="tab-content">
 
-				<div id="timeSpentSection" class="form-group">
-					<label for="eventTimeSpent" class="control-label col-sm-3"><%= lang.spentHours %>:</label>
-					<div class="col-sm-3">
-						<div class="input-group form-controls bootstrap-timepicker">
-							<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventTimeSpent" value="<%=timeSpentDefault%>">
-							<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-						</div>
-					</div>
-				</div>
+		    	<!-- First Tab about the task -->
+				<fieldset id="tabAboutTheTask" class="tab-pane fade in active">
 
-				<!-- Remaining Time -->
-				<div id="remainingTimeSection" class="form-group">
-					<label for="eventRemainingTime" class="control-label col-sm-3"><%= lang.remainingHours %>:</label>
-					<div class="col-sm-3">
-						<div class="input-group form-controls bootstrap-timepicker">
-								<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventRemainingTime" value="02:00">
+
+					<!-- Time spent -->
+					<div id="timeSpentSection" class="form-group">
+						<label for="eventTimeSpent" class="control-label col-sm-4"><%= lang.spentHours %>:</label>
+						<div class="col-sm-3">
+							<div class="input-group form-controls bootstrap-timepicker">
+								<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventTimeSpent" value="<%=timeSpentDefault%>">
 								<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<!-- Vehicle -->
-				<div class="form-group">
-					<label for="taskEquipmentDone" class="linkRefueling control-label col-sm-3"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
 
-					<div class=" col-sm-9">
-						<div class="input-group">
-							<span class="input-group-addon linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
-								<i class="fa fa-tint"></i>
-							</span>
-							<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect taskInput"
-								data-placeholder="<%= lang.actions.selectAVehicle %>">
+					<!-- Remaining Time -->
+					<div id="remainingTimeSection" class="form-group">
+						<label for="eventRemainingTime" class="control-label col-sm-4"><%= lang.remainingHours %>:</label>
+						<div class="col-sm-3">
+							<div class="input-group form-controls bootstrap-timepicker">
+									<input type="text" class="timepicker-default input-mini taskInput form-control" id="eventRemainingTime" value="02:00">
+									<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<!-- Refueling Vehicle -->
-				<fieldset class="refueling-vehicle hide-soft">
-					<legend><i class="fa fa-tint"></i> <%= _.capitalize(lang.oil) %></legend>
+				</fieldset>
 
+
+
+				<!-- Second Tab about the task -->
+				<fieldset id="tabByMeansOf" class="tab-pane fade">
+
+					<!-- Vehicle -->
 					<div class="form-group">
+						<label for="taskEquipmentDone" class="linkRefueling control-label col-sm-3"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
+
+						<div class=" col-sm-9">
+							<div class="input-group">
+								<span class="input-group-addon linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
+									<i class="fa fa-tint"></i>
+								</span>
+								<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect taskInput"
+									data-placeholder="<%= lang.actions.selectAVehicle %>">
+							</div>
+						</div>
+					</div>
+
+
+					<!-- Refueling Vehicle -->
+					<div class="refueling-vehicle hide-soft well well-sm">
+						<div class="form-group">
 							<!-- KM -->
 							<div class="col-sm-4">
 								<label for="equipmentKmDone"><%= _.capitalize(lang.milometer) %>:</label>
@@ -78,22 +100,30 @@
 								<label for="equipmentOilPriceDone"><%= _.capitalize(lang.price) %>:</label>
 								<input type="text" id="equipmentOilPriceDone" class="taskInput form-control" placeholder="<%= lang.inEuro %>">
 							</div>
+						</div>
+					</div>
+
+
+					<!-- Equipments -->
+					<div class="form-group">
+						<label for="taskEquipmentListDone" class="control-label col-sm-3"><%= _.capitalize(lang.equipment) %>:</label>
+						<div class="col-sm-9">
+							<input id="taskEquipmentListDone" class="select2 taskEquipment taskSelect taskInput"
+								data-placeholder="<%= lang.actions.selectEquipments %>" data-multiple="multiple">
+						</div>
+					</div>
+
+
+					<!-- Consumables -->
+					<div id="consumablesSection">
 					</div>
 
 				</fieldset>
 
-
-				<!-- Equipments -->
-				<div class="form-group">
-					<label for="taskEquipmentListDone" class="control-label col-sm-3"><%= _.capitalize(lang.equipment) %>:</label>
-					<div class="col-sm-9">
-						<input id="taskEquipmentListDone" class="select2 taskEquipment taskSelect taskInput"
-							data-placeholder="<%= lang.actions.selectEquipments %>" data-multiple="multiple">
-					</div>
-				</div>
-
+		    </div>
 		    </form>
-		</div>
+
+		</div> <!-- /Modal Body -->
 
 		<div class="modal-footer">
 		    <button type="submit" form="formTaskDone" class="btn btn-primary"><%= _.capitalize(lang.actions.save) %></button>&nbsp;&nbsp;
