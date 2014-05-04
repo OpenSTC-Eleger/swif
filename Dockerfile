@@ -7,8 +7,9 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Setup nginx and NodeJS repository
 RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
+RUN echo "deb http://archive.ubuntu.com/ubuntu precise-updates main universe" >> /etc/apt/sources.list
 RUN apt-get update
-RUN apt-get install -y python-software-properties g++ make wget git
+RUN apt-get install -y python-software-properties g++ make wget
 RUN echo 'deb http://nginx.org/packages/ubuntu/ precise nginx' > /etc/apt/sources.list.d/nginx.list
 RUN wget --quiet --no-check-certificate -O - http://nginx.org/packages/keys/nginx_signing.key | apt-key add -
 RUN add-apt-repository ppa:chris-lea/node.js
@@ -58,5 +59,6 @@ ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
 
 EXPOSE 8080
+EXPOSE 8443
 
 CMD /usr/local/bin/run

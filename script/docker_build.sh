@@ -30,7 +30,7 @@ trap control_c SIGINT
 
 docker_name=""
 docker_version=""
-docker_repo="dev.siclic.fr:5000"
+docker_repo="siclic"
 pushit=false
 
 while getopts ":n:v:r:ph" opt; do
