@@ -182,7 +182,8 @@ define([
 				oil_price      : this.$('#equipmentOilPriceDone').val().replace(',', '.'),
 				report_hours   : mNewDateEnd.diff(mNewDateStart,'hours',true),
 				remaining_hours: remaining_hours,
-				//consumables    : self.consumablesSelectView.getConsumables()
+				cost           : this.$('#serviceCost').val().replace(',', '.'),
+				consumables    : self.consumablesSelectView.getConsumables()
 			};
 
 			var res = self.multiSelectBoxUsersView.getUserType();

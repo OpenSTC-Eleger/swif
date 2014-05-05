@@ -10,10 +10,8 @@ define([
 
 	'genericModalView',
 
-	'taskModel'
 
-
-], function(app, AppHelpers, GenericModalView, TaskModel){
+], function(app, AppHelpers, GenericModalView){
 
 
 	'use strict';
@@ -31,7 +29,7 @@ define([
 
 		// The DOM events //
 		events: function() {
-			return	GenericModalView.prototype.events
+			return	GenericModalView.prototype.events;
 		},
 
 

@@ -9,9 +9,9 @@ define([
 
 	'advancedSelectBoxView',
 
-	'officersCollection',
+	'consumablesCollection',
 
-], function(app, AdvancedSelectBoxView, OfficersCollection){
+], function(app, AdvancedSelectBoxView, ConsumablesCollection){
 
 	'use strict';
 
@@ -81,7 +81,7 @@ define([
 
 
 				// Create the advance selectBox view and listen the change event //
-				self.advancedSelectBoxCatConsumables = new AdvancedSelectBoxView({el: $('#field_consumables'), url: OfficersCollection.prototype.url });
+				self.advancedSelectBoxCatConsumables = new AdvancedSelectBoxView({el: $('#field_consumables'), url: ConsumablesCollection.prototype.url });
 				self.advancedSelectBoxCatConsumables.render();
 				self.advancedSelectBoxCatConsumables.select2.off().on('select2-selecting', function(e){ self.addConsumable(e); } );
 
