@@ -144,7 +144,7 @@ requirejs.config({
 		itemUserView                          : 'views/items/ItemUserView',
 		itemCategoryConsumableView            : 'views/items/ItemCategoryConsumableView',
 		itemConsumableView                    : 'views/items/ItemConsumableView',
-		
+
 		// Modals //
 		genericModalView                : 'views/modals/GenericModalView',
 		modalPlaceView                  : 'views/modals/ModalPlaceView',
@@ -166,7 +166,8 @@ requirejs.config({
 		inputFieldView          : 'views/form-components/InputFieldView',
 		dateFieldView           : 'views/form-components/DateFieldView',
 		numberFieldView         : 'views/form-components/NumberFieldView',
-			
+		consumablesSelectView   : 'views/form-components/ConsumablesSelectView',
+
 		// Tab componnents //
 		tabsContainerView       : 'views/tabs/TabsContainerView',
 		tabHeadView             : 'views/tabs/TabHeadView',

@@ -1,0 +1,74 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3 class="modal-title">
+				<i class="fa fa-eur"></i>&nbsp;
+				<%= _.capitalize(lang.viewsTitles.costDetail) %>
+			</h3>
+		</div>
+
+		<div class="modal-body">
+
+			<blockquote id="infoModalAbsentTask" class="spaceBottom">
+				<p><%= task.getName() %></p>
+				<footer></footer>
+			</blockquote>
+
+
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th><%= _.capitalize(lang.description) %></th>
+						<th><%= _.capitalize(lang.quantity) %></th>
+						<th><abbr title="<%= lang.unitPrice %>"><%= lang.unitPriceAcronym %></abbr></th>
+						<th><%= _.capitalize(lang.total) %></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><i class="fa fa-users"></i> Voirie</td>
+						<td>1.25</td>
+						<td class="text-right">200</td>
+						<td class="text-right">250</td>
+					</tr>
+					<tr>
+						<td><i class="fa fa-wrench"></i> Pot de peinture vert</td>
+						<td>3</td>
+						<td class="text-right">20</td>
+						<td class="text-right">60</td>
+					</tr>
+					<tr>
+						<td><i class="fa fa-wrench"></i> Pot de peinture rouge</td>
+						<td>3</td>
+						<td class="text-right">20</td>
+						<td class="text-right">60</td>
+					</tr>
+					<tr>
+						<td class="invisible"></td>
+						<td class="invisible"></td>
+						<td class="invisible"></td>
+						<td class="info text-right">370</td>
+					</tr>
+				</tbody>
+			</table>
+
+
+			<div class="progress">
+				<div class="progress-bar progress-bar-success" style="width: 67.58%" data-toggle="tooltip" data-original-title="250€">
+					<span class="sr-only">35% Complete (success)</span>RH
+				</div>
+				<div class="progress-bar progress-bar-warning" style="width: 32.42%" data-toggle="tooltip" data-original-title="120€">
+					<span class="sr-only">20% Complete (warning)</span>Matériel
+				</div>
+			</div>
+
+
+		</div>
+
+		<div class="modal-footer">
+			<button type="button" id="btnAddAbsentTask" data-dismiss="modal" class="btn btn-primary">Ok</button>
+		</div>
+	</div>
+</div>

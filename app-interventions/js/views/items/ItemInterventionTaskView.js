@@ -15,9 +15,10 @@ define([
 	'modalDeleteView',
 	'modalCancelTaskView',
 	'modalTaskDoneView',
+	'modalDetailCostView',
 	'moment',
 
-], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel, ModalDeleteView, ModalCancelTaskView, ModalTaskDoneView, moment){
+], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel, ModalDeleteView, ModalCancelTaskView, ModalTaskDoneView, ModalDetailCostView, moment){
 
 	'use strict';
 
@@ -43,6 +44,8 @@ define([
 			'click a.printTask'                      : 'print',
 
 			'click .buttonTaskDone, .buttonNotFinish': 'displayModalTaskDone',
+
+			'click a[data-action="detailCost"]'     : 'displayModalDetailCost'
 		},
 
 
@@ -242,9 +245,21 @@ define([
 		},
 
 
+
 		displayModalCancelTask: function(e) {
 			e.preventDefault();
+
 			new ModalCancelTaskView({el: '#modalCancelTask', model: this.model, inter:this.inter});
+		},
+
+
+
+		/** Modal to display the detail cost of the task
+		*/
+		displayModalDetailCost: function(e){
+			e.preventDefault();
+
+			new ModalDetailCostView({ el: '#modalDetailCostTask', model: this.model });
 		}
 
 	});

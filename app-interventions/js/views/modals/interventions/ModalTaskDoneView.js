@@ -15,13 +15,14 @@ define([
 
 	'advancedSelectBoxView',
 	'multiSelectBoxUsersView',
+	'consumablesSelectView',
 
 	'moment-timezone',
 	'moment-timezone-data',
 	'bsDatepicker-lang',
 	'bsTimepicker',
 
-], function(app, GenericModalView, OfficersCollection, TeamsCollection, EquipmentsCollection, ClaimersCollection, AdvancedSelectBoxView, MultiSelectBoxUsersView, moment){
+], function(app, GenericModalView, OfficersCollection, TeamsCollection, EquipmentsCollection, ClaimersCollection, AdvancedSelectBoxView, MultiSelectBoxUsersView, ConsumablesSelectView, moment){
 
 	'use strict';
 
@@ -46,7 +47,7 @@ define([
 
 		},
 
-		/** View Initialization
+		/**  Initialization
 		 */
 		initialize: function (params) {
 			var self = this;
@@ -125,6 +126,10 @@ define([
 				self.selectVehicleView.render();
 				self.selectListEquipmentsView.render();
 
+
+				// Create the consumables view //
+				self.consumablesSelectView = new ConsumablesSelectView({el: '#consumablesSection', serviceID: self.options.inter.getService('id')});
+
 			});
 
 			return this;
@@ -177,6 +182,7 @@ define([
 				oil_price      : this.$('#equipmentOilPriceDone').val().replace(',', '.'),
 				report_hours   : mNewDateEnd.diff(mNewDateStart,'hours',true),
 				remaining_hours: remaining_hours,
+				//consumables    : self.consumablesSelectView.getConsumables()
 			};
 
 			var res = self.multiSelectBoxUsersView.getUserType();
@@ -197,6 +203,9 @@ define([
 			}
 
 
+			// Set the button in loading State //
+			$(this.el).find('button[type=submit]').button('loading');
+
 			this.model.save(params, {silent: true, patch: true, wait: true})
 				.done(function(){
 					//if task is "unfinished", must retrieve the newly created task with remainingHours
@@ -214,8 +223,10 @@ define([
 				})
 				.fail(function(e){
 					console.log(e);
+				})
+				.always(function () {
+					$(self.el).find('button[type=submit]').button('reset');
 				});
-
 		},
 
 
