@@ -54,7 +54,7 @@ define([
 		/** When the model is updated //
 		*/
 		change: function(){
-
+			console.log('chagnechcagne');
 			this.render();
 			AppHelpers.highlight($(this.el));
 			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.catUpdateOk);

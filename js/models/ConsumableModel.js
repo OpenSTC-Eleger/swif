@@ -37,8 +37,16 @@ define([
 			this.set({ code : value }, {silent: silent});
 		},
 
-		getPrice : function() {
-			return this.get('price');
+		getPrice : function(withSymbol) {
+			var price = this.get('price');
+
+			if(!_.isUndefined(withSymbol)) {
+				return price+='€';
+			}
+			else{
+				return price;
+			}
+
 		},
 		setPrice : function(value, silent) {
 			this.set({ price : value }, {silent: silent});

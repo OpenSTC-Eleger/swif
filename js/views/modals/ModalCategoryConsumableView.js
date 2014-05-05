@@ -74,7 +74,7 @@ define([
 				});
 
 				self.modal.html(template);
-				
+
 				app.views.advancedSelectBoxCatParentView = new AdvancedSelectBoxView({el: $('#catParent'), url: CategoriesConsumablesCollection.prototype.url });
 				if(!self.model.isNew()){
 					app.views.advancedSelectBoxCatParentView.setSearchParam({ field: 'id', operator: '!=', value: self.model.getId() }, true);
@@ -112,14 +112,14 @@ define([
 			};
 
 
-			this.model.save(params)
+			this.model.save(params, {silent: true})
 				.done(function(data) {
 					self.modal.modal('hide');
 
 					// Create mode //
 					if(self.model.isNew()) {
 						self.model.setId(data);
-						self.model.fetch({silent: true, data : {fields : CategoriesConsumablesCollection.prototype.fields} }).done(function(){
+						self.model.fetch({data : {fields : CategoriesConsumablesCollection.prototype.fields} }).done(function(){
 							app.views.categoriesConsumablesListView.collection.add(self.model);
 						});
 					// Update mode //

@@ -40,10 +40,10 @@
 	<table class="table table-bordered table-hover table-striped table-sorter">
 		<thead>
 			<tr>
-				<th data-sort-column="name"><%= _.capitalize(lang.name) %></th>
-				<th data-sort-column="code"><%= _.capitalize(lang.code) %></th>
+				<th data-sort-column="name" class="col-sm-1"><%= _.capitalize(lang.name) %></th>
+				<th data-sort-column="code" class="col-sm-1"><%= _.capitalize(lang.code) %></th>
 				<!--  <th data-sort-column="consumable_parent_name"><%= _.capitalize(lang.parentCategory) %></th> -->
-				<th data-sort-column="service_ids"><%= _.capitalize(lang.associatedServices) %></th>				
+				<th data-sort-column="service_ids"><%= _.capitalize(lang.associatedServices) %></th>
 			</tr>
 		</thead>
 		<tbody id="rows-items">
