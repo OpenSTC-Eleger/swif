@@ -240,7 +240,6 @@
     "differentFrom"                         : "différent de",
     "activeFilter"                          : "Filtre actif",
     "cost"                                  : "Coût",
-    "consumableCategory"                    : "Catégorie de fourniture",
     "byMeansOf"                             : "Au moyen de",
     "consumable"                            : "Fourniture",
     "serviceCost"                           : "Coût de la prestation",
@@ -441,7 +440,7 @@
         "consumableCreateOk"    : "Fourniture correctement crée",
         "consumableUpdateOk"    : "Fourniture correctement enregistrée",
         "consumableDeleteOk"    : "Fourniture correctement supprimée",
-        "noConsumable"          : "Aucune fourniture"
+        "noConsumable"          : "Aucune fourniture à afficher"
     },
 
 

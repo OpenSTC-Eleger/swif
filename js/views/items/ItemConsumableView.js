@@ -54,7 +54,6 @@ define([
 		/** When the model is updated //
 		*/
 		change: function(){
-
 			this.render();
 			AppHelpers.highlight($(this.el));
 			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.consumableUpdateOk);
@@ -102,7 +101,7 @@ define([
 
 
 
-		/** Display Modal form to add/sav a new 
+		/** Display Modal form to add/sav a new
 		*/
 		modalUpdateConsumable: function(e){
 			e.preventDefault();
@@ -117,7 +116,7 @@ define([
 
 
 
-		/** Modal to remove a 
+		/** Modal to remove a
 		*/
 		modalDeleteConsumable: function(e){
 			e.preventDefault();

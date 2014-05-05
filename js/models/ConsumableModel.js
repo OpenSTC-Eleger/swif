@@ -19,7 +19,7 @@ define([
 	var ConsumableModel = GenericModel.extend({
 
 
-		fields       : ['id', 'name', 'code', 'complete_name',  'type_id', 'type_name', 'price'],
+		fields     : ['id', 'name', 'code', 'complete_name',  'type_id', 'type_name', 'price'],
 
 		urlRoot    : '/api/open_object/consumables',
 
@@ -36,30 +36,38 @@ define([
 		setCode : function(value, silent) {
 			this.set({ code : value }, {silent: silent});
 		},
-		
-		getPrice : function() {
-			return this.get('price');
+
+		getPrice : function(withSymbol) {
+			var price = this.get('price');
+
+			if(!_.isUndefined(withSymbol)) {
+				return price+='€';
+			}
+			else{
+				return price;
+			}
+
 		},
 		setPrice : function(value, silent) {
 			this.set({ price : value }, {silent: silent});
 		},
-		
+
 		getName : function() {
 			return this.get('name');
 		},
 		setName : function(value, silent) {
 			this.set({ name : value }, {silent: silent});
 		},
-		
+
 		getCompleteName : function() {
 			return _.titleize(this.get('complete_name').toLowerCase());
 		},
-		
-		
+
+
 		getType : function(type) {
 
 			var id, name = '';
-			
+
 			// Check if the place have a parent place //
 			if(this.get('type_id')){
 				id = this.get('type_id')[0];
@@ -70,9 +78,9 @@ define([
 					name = this.get('type_name');
 				}
 			}
-			
+
 			var returnVal;
-			
+
 			switch (type){
 				case 'id':
 					returnVal = id;
@@ -86,7 +94,7 @@ define([
 				default:
 					returnVal = name;
 			}
-			
+
 			return returnVal;
 		},
 		setType : function(value, silent) {

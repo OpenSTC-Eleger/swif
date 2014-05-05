@@ -35,7 +35,8 @@
 <td><%= AppHelpers.decimalNumberToTime(task.planned_hours, 'human') %></td>
 <td><%= AppHelpers.decimalNumberToTime(task.effective_hours, 'human') %></td>
 <td><%= AppHelpers.decimalNumberToTime(task.remaining_hours, 'human') %></td>
-<td><a href="#" data-action="detailCost" title="<%= lang.viewsTitles.costDetail %>"><%= taskModel.getCost() %></a> </td>
+<td><a href="#" data-action="detailCost" title="<%= lang.viewsTitles.costDetail %>"><%= taskModel.getCost() %></a></td>
+
 <!-- Task state -->
 <td>
 	<!-- To Schedule / Cancelled / Schedule / Absent -->

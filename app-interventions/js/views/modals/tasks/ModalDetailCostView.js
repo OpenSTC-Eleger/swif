@@ -8,7 +8,7 @@ define([
 	'app',
 	'appHelpers',
 
-	'genericModalView',
+	'genericModalView'
 
 
 ], function(app, AppHelpers, GenericModalView){
