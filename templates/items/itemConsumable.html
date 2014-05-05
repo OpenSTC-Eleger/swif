@@ -1,21 +1,21 @@
 <td>
-	<i class="fa fa-tag"></i>&nbsp; <%= consumable.getCompleteName() %>
+	<i class="fa fa-tag"></i>&nbsp; <%= consumable.getName() %>
 
 	<p class="row-actions invisible">
-		
+
 		<a href="#"  class="modalUpdateConsumable">
 			<i class="fa fa-pencil fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
 		</a>&nbsp;
-		
 
-		
+
+
 		<a href="#" class="modalDeleteConsumable">
 			<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
 		</a>
-		
+
 	</p>
 </td>
 
 <td data-form-id="consumableCode"><%= consumable.getCode() %></td>
 <td data-form-id="consumableType"><%= consumable.getType() %></td>
-<td data-form-id="catHourPrice"><%= consumable.getPrice() %></td>
+<td data-form-id="consumablePrice"><%= consumable.getPrice() %></td>

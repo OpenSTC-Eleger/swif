@@ -14,7 +14,7 @@ define([
 
 
 	/******************************************
-	* Consumable Categorie Collection - Intervention classification for budget
+	* Consumable Collection - Intervention classification for budget
 	*/
 	var ConsumablesCollection = GenericCollection.extend({
 
@@ -22,7 +22,7 @@ define([
 
 		url          : '/api/open_object/consumables',
 
-		fields       : ['id', 'name', 'code', 'complete_name',  'type_id', 'type_name', 'price'],
+		fields       : ['id', 'name', 'code', 'complete_name', 'type_id', 'type_name', 'price'],
 
 		default_sort : { by: 'name', order: 'ASC' },
 

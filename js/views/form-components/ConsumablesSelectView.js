@@ -10,8 +10,10 @@ define([
 	'advancedSelectBoxView',
 
 	'consumablesCollection',
+	'consumableModel'
 
-], function(app, AdvancedSelectBoxView, ConsumablesCollection){
+], function(app, AdvancedSelectBoxView, ConsumablesCollection, ConsumableModel){
+
 
 	'use strict';
 
@@ -35,9 +37,9 @@ define([
 
 		// Row template //
 		rowTemplate :
-			'<tr data-id="<%= id %>" data-text="<%= text %>" class="row-item"> \
+			'<tr data-id="<%= c.getId() %>" data-text="<%= c.getName() %>" class="row-item"> \
 				<td class="col-sm-4"> \
-					<span><%= text %></span> \
+					<span><%= c.getName() %></span> \
 					<p class="row-actions invisible"> \
 						<a href="#" data-action="duplicate" data-toggle="tooltip" data-original-title="'+_.capitalize(app.lang.actions.duplicate)+'"> <i class="fa fa-files-o fa-fw fa-lg"></i> </a> \
 						<a href="#" data-action="remove" data-toggle="tooltip" data-original-title="'+_.capitalize(app.lang.actions.delete)+'"> <i class="fa fa-trash-o fa-fw fa-lg"></i> </a> \
@@ -47,7 +49,7 @@ define([
 				<td class="col-sm-2"><input type="number" step="1" min="1" class="fieldQuantity form-control input-sm" value="1"></td> \
 				<td class="col-sm-2"> \
 					<div class="input-group input-group-sm"> \
-						<input type="text" class="fieldUnitPrice form-control input-sm"> \
+						<input type="text" value="<%= c.getPrice() %>" class="fieldUnitPrice form-control input-sm"> \
 						<span class="input-group-addon"><i class="fa fa-eur"></i></span> \
 					</div> \
 				</td> \
@@ -82,6 +84,7 @@ define([
 
 				// Create the advance selectBox view and listen the change event //
 				self.advancedSelectBoxCatConsumables = new AdvancedSelectBoxView({el: $('#field_consumables'), url: ConsumablesCollection.prototype.url });
+				self.advancedSelectBoxCatConsumables.setSearchParam({field:'type_id.service_ids', operator:'in', value:[self.serviceID]}, true);
 				self.advancedSelectBoxCatConsumables.render();
 				self.advancedSelectBoxCatConsumables.select2.off().on('select2-selecting', function(e){ self.addConsumable(e); } );
 
@@ -95,13 +98,18 @@ define([
 		/** Function to add consumables inside the <table>
 		*/
 		addConsumable: function(e){
+			var self = this;
 
 			$(this.el).find('.tableConsumables.hide').removeClass('hide');
 
-			var consumable = e.object;
+			var consumable = new ConsumableModel({ id: e.object.id });
 
-			$(this.el).find('.consumablesRows').append(_.template(this.rowTemplate, consumable));
-			$(this.el).find('*[data-toggle="tooltip"]').tooltip({ delay: { show: 250, hide: 0 }});
+			// Fetch information about the Consumable //
+			consumable.fetch({ data : {fields : ConsumableModel.prototype.fields} })
+			.done(function(){
+				$(self.el).find('.consumablesRows').append(_.template(self.rowTemplate, {c: consumable}));
+				$(self.el).find('*[data-toggle="tooltip"]').tooltip({ delay: { show: 250, hide: 0 }});
+			});
 		},
 
 
