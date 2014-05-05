@@ -189,7 +189,7 @@ define([
 		*/
 		getCost: function(){
 			if( this.get('cost') ){
-				var cost = parseFloat(this.get('cost'))
+				var cost = parseFloat(this.get('cost'));
 				return _.numberFormat(cost, 2, '.', ' ') + '€';
 			}
 			else{

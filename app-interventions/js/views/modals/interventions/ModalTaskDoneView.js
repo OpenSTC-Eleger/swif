@@ -101,7 +101,7 @@ define([
 
 				// Create the view to select the user who have done the task //
 				self.multiSelectBoxUsersView = new MultiSelectBoxUsersView({el: '.multiSelectUsers', serviceID: self.options.inter.getService('id')});
-				self.multiSelectBoxUsersView.off().on('userType-change', function(e){ self.serviceCostSection(); });
+				self.multiSelectBoxUsersView.off().on('userType-change', function(){ self.serviceCostSection(); });
 
 				self.selectVehicleView = new AdvancedSelectBoxView({ el:'#taskEquipmentDone', url: EquipmentsCollection.prototype.url });
 				self.selectListEquipmentsView = new AdvancedSelectBoxView({ el:'#taskEquipmentListDone', url: EquipmentsCollection.prototype.url });
@@ -244,7 +244,7 @@ define([
 		/** Function trigger when the user type change
 		* If the user type == provider the field service cost price appear
 		*/
-		serviceCostSection: function(e){
+		serviceCostSection: function(){
 			var t = this.multiSelectBoxUsersView.getUserType();
 
 			if(t.type == ClaimersCollection.prototype.key){
