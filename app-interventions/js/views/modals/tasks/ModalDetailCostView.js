@@ -47,7 +47,7 @@ define([
 
 		/** Display the view
 		*/
-		render : function() {
+		render : function(loader) {
 			var self = this;
 
 
@@ -56,7 +56,8 @@ define([
 
 				var template = _.template(templateData, {
 					lang  : app.lang,
-					task  : self.model
+					task  : self.model,
+					loader: loader
 				});
 
 				self.modal.html(template);

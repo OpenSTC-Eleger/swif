@@ -41,6 +41,7 @@ define([
 			var price = this.get('price');
 
 			if(!_.isUndefined(withSymbol)) {
+				price = _.numberFormat(price, 2, '.', ' ');
 				return price+='€';
 			}
 			else{

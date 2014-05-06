@@ -257,15 +257,40 @@ define([
 
 		/** Get the cost of the task
 		*/
-		getCost: function(){
-			if( this.get('cost') ){
-				var cost = parseFloat(this.get('cost'));
-				return _.numberFormat(cost, 2, '.', ' ') + '€';
+		getCost: function(type, withSymbol) {
+			var cost = '';
+
+			switch(type){
+				case 'total':
+					cost = parseFloat(this.get('cost'));
+					break;
+				case 'hr':
+					cost = parseFloat(this.get('hr_cost'));
+					break;
+				case 'equipment':
+					cost = parseFloat(this.get('equipment_cost'));
+					break;
+				case 'consumable':
+					cost = parseFloat(this.get('consumable_cost'));
+					break;
+			}
+
+			if(withSymbol) {
+				cost = _.numberFormat(cost, 2, '.', ' ');
+				return cost+='€';
 			}
 			else{
-				return "";
+				return cost;
 			}
 		},
+
+
+		/** Get the percentage cost
+		*/
+		getPercentageCost: function(type) {
+			return _.toNumber(( (this.getCost(type, false) * 100) / this.getCost('total', false) ), 2);
+		},
+
 
 
 		/** Get Informations of the model
