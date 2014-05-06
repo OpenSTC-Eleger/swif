@@ -155,7 +155,7 @@ define([
 				oil_price      : this.$('#equipmentOilPriceDone').val().replace(',', '.'),
 				report_hours   : spent_hours,
 				remaining_hours: remaining_hours,
-				//consumables    : self.consumablesSelectView.getConsumables()
+				consumables    : self.consumablesSelectView.getConsumables()
 			};
 
 
