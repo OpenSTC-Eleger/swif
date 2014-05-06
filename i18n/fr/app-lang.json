@@ -246,6 +246,8 @@
     "BOQAcronym"                            : "DQE",
     "billofQuantities"                      : "Détail quantitatif estimatif",
     "total"                                 : "Total",
+    "humanResources"                        : "Ressources humaines",
+    "humanResourceAcronym"                  : "RH",
 
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
