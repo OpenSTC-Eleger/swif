@@ -32,6 +32,7 @@ define(['app',
 		// The DOM events //
 		events: {
 			'change .field-element'			: 'performModelChange',
+			'switchChange.bootstrapSwitch'	: 'performModelChange',
 			'submit #formSaveModel'		: 'saveForm'
 			//Form Buttons
 		},
