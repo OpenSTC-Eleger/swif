@@ -89,11 +89,20 @@ define([
 			// Retrieve the template //
 			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 
-
+				var originIcon = '';
+				if(self.model.getAttribute('ask_id',false)){
+					originIcon = 'ask';
+				}
+				else if(self.model.getAttribute('contract_id',false)){
+					originIcon = 'contract';
+				}
+				
 				var template = _.template(templateData, {
 					lang                   : app.lang,
 					interventionsState     : InterventionModel.status,
 					intervention          : self.model,
+					originKey				: app.lang.intervention.originKey[originIcon],
+					originHelper			: app.lang.intervention.originHelper[originIcon]
 				});
 
 				$(self.el).html(template);

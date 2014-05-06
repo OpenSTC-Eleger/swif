@@ -1,5 +1,8 @@
 <td><%= intervention.id %></td>
 <td>
+	<% if(originKey){ %>
+		<kbd data-toggle="tooltip" data-original-title="<%= originHelper %>"><b><%= originKey %></b></kbd>
+	<% } %>
 	<a class="accordion-object" href="#collapse_<%= intervention.id %>" data-toggle="popover" data-content="<%= intervention.getDescription() %>" data-delay="160" data-original-title="<%= _.capitalize(lang.description) %>">
 		<i class="fa fa-tumb_tack">&nbsp;&nbsp;</i><%= _.capitalize(_(intervention.getName()).escapeHTML()) %>
 	</a>

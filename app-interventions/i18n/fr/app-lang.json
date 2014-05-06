@@ -1,3 +1,14 @@
 {
-
+	"intervention": {
+		
+		"originKey": {
+			"contract"	: "C",
+			"ask"		: "D"
+		},
+		
+		"originHelper": {
+			"contract"	: "Issue d'un contrat",
+			"ask"		: "Issue d'une demande d'intervention"
+		}
+	}
 }
