@@ -109,7 +109,7 @@ define(['app',
 				var template = _.template(templateData, {
 					lang		: app.lang,
 					pageTitle	: pageTitle,
-					readonly	: false,
+					readonly	: self.model.getAttribute('actions',['update']).indexOf('update') == -1,
 					moment		: moment,
 					contract	: self.model,
 					user		: app.current_user
