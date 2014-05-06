@@ -75,7 +75,7 @@
 								if(!_.isUndefined(service.getParentService('id'))) { %>
 								data-selected-value='<%= JSON.stringify(service.getParentService('json')) %>'
 							<% } } %>
-							
+
 						>
 					</div>
 				</div>
@@ -85,7 +85,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="switchTechnicalService"><%= _.capitalize(lang.technicalService) %>:</label>
 					<div class="col-sm-9">
-						<input type="checkbox" class="make-switch" id="switchTechnicalService" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"
+						<input type="checkbox" class="make-switch" id="switchTechnicalService" data-on-text="<%= lang.yes %>" data-off-text="<%= lang.no %>" tabindex="0"
 							<% if(!_.isNull(service.getId())){ if(service.isTechnical()) { %> checked <% } } %>
 						>
 					</div>

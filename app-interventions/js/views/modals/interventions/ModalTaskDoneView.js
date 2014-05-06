@@ -60,9 +60,6 @@ define([
 		 */
 		render: function () {
 
-			// Change the page title depending on the create value //
-			app.router.setPageTitle(app.lang.viewsTitles.newTask);
-
 
 			var self = this;
 			// Retrieve the template //

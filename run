@@ -1,8 +1,10 @@
 #!/bin/bash
 
+BARAKAFRITES_HOST=${BARAKAFRITES_HOST:-'172.17.42.1'}
+
 cat <<EOF > /etc/nginx/conf.d/barakafrites_upstream.conf
 upstream barakafrites {
-    server $BARAKAFRITES_PORT_9292_TCP_ADDR:9292;
+    server $BARAKAFRITES_HOST:9292;
 }
 EOF
 

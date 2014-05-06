@@ -50,7 +50,7 @@
 					<div class="form-group">
 						<label class="control-label col-sm-3" for="switchCitizen"><%= _.capitalize(lang.citizen) %></label>
 						<div class="col-sm-9">
-							<input class="make-switch" type="checkbox" id="switchCitizen" data-on-label="<%= lang.yes %>" data-off-label="<%= lang.no %>" tabindex="0"
+							<input class="make-switch" type="checkbox" id="switchCitizen" data-on-text="<%= lang.yes %>" data-off-text="<%= lang.no %>" tabindex="0"
 							<% if(!_.isNull(request.getId())){ if(request.fromCitizen()) { %> checked <% } } %>
 							>
 						</div>
@@ -102,7 +102,7 @@
 								<span></span>
 							</li>
 							<li id="claimerPhone" class="list-group-item">
-								<i class="fa fa	-phone fa-fw"></i>
+								<i class="fa fa-phone fa-fw"></i>
 								<span></span>
 							</li>
 							<li id="claimerEmail" class="list-group-item">
@@ -161,7 +161,7 @@
 					<div class="form-group">
 						<label class="control-label col-sm-3" for="switchPlaceEquipment"><%= _.capitalize(lang.placeOrEquipment) %></label>
 						<div class="col-sm-9">
-							<input type="checkbox" class="make-switch" id="switchPlaceEquipment" data-on="default" data-on-label="<i class='fa fa-map-marker fa-fw'>" data-off-label="<i class='fa fa-wrench fa-fw'>" tabindex="0"
+							<input type="checkbox" class="make-switch" id="switchPlaceEquipment" data-on-color="default" data-on-text="<i class='fa fa-map-marker fa-fw'>" data-off-text="<i class='fa fa-wrench fa-fw'>" tabindex="0"
 								<% if(!_.isNull(request.getId())){ if(!request.onEquipment()) { %> checked <% } }else{ %> checked <%  } %>
 							>
 						</div>

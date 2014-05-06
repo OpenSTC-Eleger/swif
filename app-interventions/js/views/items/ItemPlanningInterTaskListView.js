@@ -32,8 +32,8 @@ define([
 
 		// The DOM events //
 		events       : {
-			'switch-change .calendarSwitch': 'scheduledInter',
-			'click .btn.addTask'           : 'displayModalAddTask',
+			'switchChange.bootstrapSwitch .calendarSwitch': 'scheduledInter',
+			'click .btn.addTask'                          : 'displayModalAddTask',
 		},
 
 
@@ -130,16 +130,15 @@ define([
 
 		/** To Plan/unplanned Intervention
 		*/
-		scheduledInter: function(e) {
+		scheduledInter: function(e, state) {
 
-			var intervention = $(e.target);
 			//var id = _(intervention.parents('.accordion-body').attr('id')).strRightBack('_');
 
-			var params = { state: InterventionModel.status.open.key, };
+			var params = { state: InterventionModel.status.open.key };
 
 			// Retrieve the new status //
-			if(intervention.bootstrapSwitch('state')){
-				params = { state: InterventionModel.status.scheduled.key, };
+			if(state){
+				params = { state: InterventionModel.status.scheduled.key };
 			}
 
 			this.model.save(params,{patch:true, wait: true}).done(function(){
