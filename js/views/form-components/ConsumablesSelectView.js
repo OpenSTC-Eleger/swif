@@ -61,7 +61,7 @@ define([
 		initialize: function(options){
 
 			this.serviceID = options.serviceID;
-
+			this.selectedConsumables = [];
 			this.render();
 		},
 
@@ -124,8 +124,8 @@ define([
 				var consum = {
 					id        : $(row).data('id'),
 					dqe       : $(row).find('input.fieldDQE').val(),
-					quantity  : $(row).find('input.fieldQuantity').val(),
-					unit_price: $(row).find('input.fieldUnitPrice').val()
+					quantity  : $(row).find('input.fieldQuantity').val().replace(',', '.'),
+					unit_price: $(row).find('input.fieldUnitPrice').val().replace(',', '.')
 				};
 
 				self.selectedConsumables.push(consum);
