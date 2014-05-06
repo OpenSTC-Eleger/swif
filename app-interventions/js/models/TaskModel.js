@@ -79,6 +79,36 @@ define([
 			}
 		},
 
+
+		getConsumables : function(type) {
+
+			if(this.get('consumable_names')){
+				var consumables = [];
+
+				switch(type){
+					case 'id':
+						_.each(this.get('consumable_names'),function(consum){
+							consumables.push(consum[0]);
+						});
+						break;
+					case 'json':
+						_.each(this.get('consumable_names'),function(consum){
+							consumables.push({id: consum[0], name:consum[1]});
+						});
+						break;
+					default:
+						_.each(this.get('consumable_names'),function(consum){
+							consumables.push(consum[1]);
+						});
+				}
+
+				return consumables;
+			}
+			else{
+				return false;
+			}
+		},
+
 		getInterEquipment : function(type) {
 			if(this.get('inter_equipment')){
 
@@ -252,6 +282,11 @@ define([
 		},
 		setPlannedHours : function(value, silent) {
 			this.set({ planned_hours : value }, {silent: silent});
+		},
+
+
+		getEffectiveHours: function(){
+			return this.get('effective_hours');
 		},
 
 

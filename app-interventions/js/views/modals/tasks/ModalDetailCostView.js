@@ -50,7 +50,6 @@ define([
 		render : function(loader) {
 			var self = this;
 
-
 			// Retrieve the template //
 			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 

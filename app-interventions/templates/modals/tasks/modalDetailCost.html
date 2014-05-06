@@ -37,7 +37,7 @@
 				<% if(task.getCost('equipment', false) > 0) { %>
 				<li>
 					<span class="badge-success badge-sm">&nbsp;</span>
-					<strong><%= _.capitalize(lang.equipments) %></strong>
+					<strong><%= _.capitalize(lang.equipment) %></strong>
 					<small class="text-muted"><%= task.getCost('equipment', true) %></small>
 				</li>
 				<% } %>
@@ -59,7 +59,7 @@
 
 				<div class="progress-bar progress-bar-success" style="width: <%= task.getPercentageCost('equipment') %>%" data-toggle="tooltip"
 					 data-original-title="<%= task.getPercentageCost('equipment') %>%">
-					<span class="sr-only"><%= lang.equipments %></span><i class="fa fa-wrench fa-lg"></i>
+					<span class="sr-only"><%= lang.equipment %></span><i class="fa fa-wrench fa-lg"></i>
 				</div>
 
 				<div class="progress-bar progress-bar-warning" style="width: <%= task.getPercentageCost('consumable') %>%" data-toggle="tooltip"
@@ -70,78 +70,69 @@
 
 
 			<!-- Table information -->
-			<!--<table class="table table-bordered table-striped table-condensed">
+			<table class="table table-bordered table-striped table-condensed table-vertical-align">
 				<thead>
 					<tr>
-						<th>Type</th>
+						<th><%= _.capitalize(lang.type) %></th>
 						<th><%= _.capitalize(lang.description) %></th>
-						<th><%= _.capitalize(lang.quantity) %></th>
-						<th><abbr title="<%= lang.unitPrice %>"><%= lang.unitPriceAcronym %></abbr></th>
-						<th><%= _.capitalize(lang.total) %></th>
+						<!--<th><%= _.capitalize(lang.quantity) %></th>
+						<th><abbr title="<%= lang.unitPrice %>"><%= lang.unitPriceAcronym %></abbr></th>-->
+						<th class="text-right"><%= _.capitalize(lang.total) %></th>
 					</tr>
 				</thead>
+
+				<!-- RH -->
 				<tbody>
 					<tr>
-						<td>RH</td>
-						<td><i class="fa fa-users"></i> Voirie</td>
-						<td>1.25</td>
-						<td class="text-right">200</td>
-						<td class="text-right">250</td>
-					</tr>
-					<tr>
-						<td rowspan="2">Matériel</td>
-						<td><i class="fa fa-wrench"></i> Pot de peinture vert</td>
-						<td>3</td>
-						<td class="text-right">20</td>
-						<td class="text-right">60</td>
-					</tr>
-					<tr>
-						<td><i class="fa fa-wrench"></i> Pot de peinture rouge</td>
-						<td>3</td>
-						<td class="text-right">20</td>
-						<td class="text-right">60</td>
-					</tr>
-					<tr>
-						<td class="invisible"></td>
-						<td class="invisible"></td>
-						<td class="invisible"></td>
-						<td class="invisible"></td>
-						<td class="info text-right">370</td>
+						<td><%= lang.humanResourceAcronym %></td>
+						<td><i class="fa <%= task.affectedTo('logo') %>"/> &nbsp;<%= task.affectedTo() %></td>
+						<td class="text-right"><%= task.getCost('hr', true) %></td>
 					</tr>
 				</tbody>
+
+				<!-- Equipments -->
+				<% var equipments = task.getEquipments('json');
+				   if(_.size(equipments) > 0) { %>
 				<tbody>
 					<tr>
-						<td>RH</td>
-						<td><i class="fa fa-users"></i> Voirie</td>
-						<td>1.25</td>
-						<td class="text-right">200</td>
-						<td class="text-right">250</td>
+						<td rowspan="<%= _.size(equipments) %>"><%= lang.equipment %></td>
+						<td><i class="fa fa-wrench"></i> <%= equipments[0].name %></td>
+						<td rowspan="<%= _.size(equipments) %>" class="text-right"><%= task.getCost('equipment', true) %></td>
 					</tr>
+					<% 	_.each(_.rest(equipments), function(equip){ %>
 					<tr>
-						<td rowspan="2">Matériel</td>
-						<td><i class="fa fa-wrench"></i> Pot de peinture vert</td>
-						<td>3</td>
-						<td class="text-right">20</td>
-						<td class="text-right">60</td>
+						<td><i class="fa fa-wrench"></i> <%= equip.name %></td>
 					</tr>
+					<% }) %>
+				</tbody>
+				<% } %>
+
+				<!-- Consumables -->
+				<% var consumables = task.getConsumables('json');
+				   if(_.size(consumables) > 0) { %>
+				<tbody>
 					<tr>
-						<td><i class="fa fa-wrench"></i> Pot de peinture rouge</td>
-						<td>3</td>
-						<td class="text-right">20</td>
-						<td class="text-right">60</td>
+						<td rowspan="<%= _.size(consumables) %>"><%= lang.consumable %></td>
+						<td><i class="fa fa-barcode"></i>  <%= consumables[0].name %></td>
+						<td rowspan="<%= _.size(consumables) %>" class="text-right"><%= task.getCost('consumable', true) %></td></td>
 					</tr>
+					<% 	_.each(_.rest(consumables), function(cons){ %>
+					<tr>
+						<td><i class="fa fa-barcode"></i> <%= cons.name %></td>
+					</tr>
+					<% }) %>
+				</tbody>
+				<% } %>
+
+				<!-- Total -->
+				<tbody>
 					<tr>
 						<td class="invisible"></td>
 						<td class="invisible"></td>
-						<td class="invisible"></td>
-						<td class="invisible"></td>
-						<td class="info text-right">370</td>
+						<td class="info text-right"><%= task.getCost('total', true) %></td></td>
 					</tr>
 				</tbody>
-			</table>-->
-
-
-
+			</table>
 
 			<% } %>
 
