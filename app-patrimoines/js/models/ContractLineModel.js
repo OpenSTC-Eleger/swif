@@ -10,7 +10,7 @@ define([
 	'use strict';
 	
 	/******************************************
-	* Booking Model
+	* ContractLine Model
 	*/
 	return GenericRecurrenceModel.extend({
 		
@@ -38,32 +38,6 @@ define([
 			partner_id:'supplier_id',
 			internal_inter:'internal_inter',
 			date_end:'date_end_order'
-		},
-		
-		getUserMainAction: function(){
-			var ret = '';
-			switch(this.getAttribute('state','')){
-			case 'draft':
-				ret = 'confirm';
-				break;
-			case 'confirm':
-				ret = 'done';
-				break;
-			case 'done':
-				ret = 'extend';
-				break;
-			default:
-				ret = 'confirm';
-			}
-			return ret;
-		},
-		/**
-		 * Method used to compute actions authorized for user, and compute the mainAction to display on itemListViews
-		 */
-		getUserActions: function(){
-			var actions = this.getAttribute('actions',[]);
-			var mainAction = this.getUserMainAction();
-			return {mainAction: mainAction, otherActions: _.without(actions, mainAction)};
 		},
 		
 		getId: function(){
