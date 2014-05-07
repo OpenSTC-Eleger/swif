@@ -523,6 +523,6 @@
         "consumablesList"           : "Fournitures",
         "newConsumable"             : "Nouvelle fourniture",
         "editConsumable"            : "Nouvelle fourniture",
-        "costDetail"                : "Détail du coût"
+        "costDetail"                : "Détail des coûts"
     }
 }

@@ -6,12 +6,10 @@
 
 define([
 	'app',
-	'appHelpers',
-
 	'genericModalView'
 
 
-], function(app, AppHelpers, GenericModalView){
+], function(app, GenericModalView){
 
 
 	'use strict';
@@ -21,10 +19,10 @@ define([
 	/******************************************
 	* Task Detail Cost View
 	*/
-	var modalDetailCostView = GenericModalView.extend({
+	var modalDetailCostTaskView = GenericModalView.extend({
 
 
-		templateHTML : '/templates/modals/tasks/modalDetailCost.html',
+		templateHTML : '/templates/modals/tasks/modalTaskDetailCost.html',
 
 
 		// The DOM events //
@@ -75,6 +73,6 @@ define([
 	});
 
 
-	return modalDetailCostView;
+	return modalDetailCostTaskView;
 
 });

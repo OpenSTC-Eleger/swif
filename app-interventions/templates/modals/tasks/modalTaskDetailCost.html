@@ -14,7 +14,7 @@
 
 			<blockquote id="infoModalAbsentTask" class="spaceBottom">
 				<p><%= task.getName() %></p>
-				<footer><%= task.getIntervention() %></footer>
+				<footer><%= _.capitalize(task.getIntervention()) %></footer>
 			</blockquote>
 
 			<% if(!_.isUndefined(loader)) { %>
@@ -129,7 +129,7 @@
 					<tr>
 						<td class="invisible"></td>
 						<td class="invisible"></td>
-						<td class="info text-right"><%= task.getCost('total', true) %></td></td>
+						<td class="info text-right"><strong><%= task.getCost('total', true) %></strong></td>
 					</tr>
 				</tbody>
 			</table>
@@ -140,7 +140,7 @@
 		</div>
 
 		<div class="modal-footer">
-			<button type="button" id="btnAddAbsentTask" data-dismiss="modal" class="btn btn-primary">Ok</button>
+			<button type="button" data-dismiss="modal" class="btn btn-primary">Ok</button>
 		</div>
 	</div>
 </div>

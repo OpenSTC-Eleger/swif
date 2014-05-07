@@ -22,7 +22,7 @@ define([
 
 		urlRoot: '/api/openstc/interventions',
 
-		fields : ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'site_details', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid', 'create_date', 'ask_id', 'cost'],
+		fields : ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'site_details', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid', 'create_date', 'ask_id', 'cost', 'hr_cost', 'equipment_cost', 'consumable_cost'],
 
 
 		searchable_fields: [
@@ -185,17 +185,36 @@ define([
 			}
 		},
 
-		/** Get the cost of the intervention
+
+		/** Get the cost of the task
 		*/
-		getCost: function(){
-			if( this.get('cost') ){
-				var cost = parseFloat(this.get('cost'));
-				return _.numberFormat(cost, 2, '.', ' ') + '€';
+		getCost: function(type, withSymbol) {
+			var cost = 0;
+
+			switch(type){
+				case 'total':
+					cost = parseFloat(this.get('cost'));
+					break;
+				case 'hr':
+					cost = parseFloat(this.get('hr_cost'));
+					break;
+				case 'equipment':
+					cost = parseFloat(this.get('equipment_cost'));
+					break;
+				case 'consumable':
+					cost = parseFloat(this.get('consumable_cost'));
+					break;
+			}
+
+			if(withSymbol) {
+				cost = _.numberFormat(cost, 2, '.', ' ');
+				return cost+='€';
 			}
 			else{
-				return "";
+				return cost;
 			}
 		},
+
 
 		hasActions: function(action){
 			return this.getActions().indexOf(action) > -1;

@@ -1,0 +1,76 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+			<h3 class="modal-title">
+				<i class="fa fa-eur"></i>&nbsp;
+				<%= _.capitalize(lang.viewsTitles.costDetail) %>
+			</h3>
+		</div>
+
+		<div class="modal-body">
+
+			<blockquote id="infoModalAbsentTask" class="spaceBottom">
+				<p><%= _.capitalize(inter.getName()) %></p>
+			</blockquote>
+
+			<% if(!_.isUndefined(loader)) { %>
+			<div class="progress progress-striped active">
+				<div class="progress-bar" role="progressbar" style="width: 100%"></div>
+			</div>
+			<% } else { %>
+
+			<!-- Cost inter Stats summary -->
+			<ul class="list-inline nav-justified text-center">
+				<% if(inter.getCost('hr', false) > 0) { %>
+				<li>
+					<span class="badge-primary badge-sm">&nbsp;</span>
+					<strong><%= lang.humanResourceAcronym %></strong>
+					<small class="text-muted"><%= inter.getCost('hr', true) %></small>
+				</li>
+				<% } %>
+				<% if(inter.getCost('equipment', false) > 0) { %>
+				<li>
+					<span class="badge-success badge-sm">&nbsp;</span>
+					<strong><%= _.capitalize(lang.equipment) %></strong>
+					<small class="text-muted"><%= inter.getCost('equipment', true) %></small>
+				</li>
+				<% } %>
+				<% if(inter.getCost('consumable', false) > 0) { %>
+				<li>
+					<span class="badge-warning badge-sm">&nbsp;</span>
+					<strong><%= lang.consumable %></strong>
+					<small class="text-muted"><%= inter.getCost('consumable', true) %></small>
+				</li>
+				<% } %>
+			</ul>
+
+			<!-- Cost inter Stats progress-bar -->
+			<div class="progress">
+				<div class="progress-bar" style="width: <%= inter.getPercentageCost('hr') %>%" data-toggle="tooltip"
+					 data-original-title="<%= inter.getPercentageCost('hr') %>%">
+					<span class="sr-only"><%= lang.humanResources %></span><i class="fa fa-user fa-lg"></i>
+				</div>
+
+				<div class="progress-bar progress-bar-success" style="width: <%= inter.getPercentageCost('equipment') %>%" data-toggle="tooltip"
+					 data-original-title="<%= inter.getPercentageCost('equipment') %>%">
+					<span class="sr-only"><%= lang.equipment %></span><i class="fa fa-wrench fa-lg"></i>
+				</div>
+
+				<div class="progress-bar progress-bar-warning" style="width: <%= inter.getPercentageCost('consumable') %>%" data-toggle="tooltip"
+					 data-original-title="<%= inter.getPercentageCost('consumable') %>%">
+					<span class="sr-only"><%= lang.consumable %></span><i class="fa fa-barcode fa-lg"></i>
+				</div>
+			</div>
+
+			<% } %>
+
+		</div>
+
+		<div class="modal-footer">
+			<button type="button" data-dismiss="modal" class="btn btn-primary">Ok</button>
+		</div>
+	</div>
+</div>

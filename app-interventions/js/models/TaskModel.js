@@ -293,7 +293,7 @@ define([
 		/** Get the cost of the task
 		*/
 		getCost: function(type, withSymbol) {
-			var cost = '';
+			var cost = 0;
 
 			switch(type){
 				case 'total':

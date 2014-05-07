@@ -15,10 +15,10 @@ define([
 	'modalDeleteView',
 	'modalCancelTaskView',
 	'modalTaskDoneView',
-	'modalDetailCostView',
+	'modalDetailCostTaskView',
 	'moment',
 
-], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel, ModalDeleteView, ModalCancelTaskView, ModalTaskDoneView, ModalDetailCostView, moment){
+], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel, ModalDeleteView, ModalCancelTaskView, ModalTaskDoneView, ModalDetailCostTaskView, moment){
 
 	'use strict';
 
@@ -259,7 +259,7 @@ define([
 		displayModalDetailCost: function(e){
 			e.preventDefault();
 
-			new ModalDetailCostView({ el: '#modalDetailCostTask', model: this.model });
+			new ModalDetailCostTaskView({ el: '#modalDetailCost', model: this.model });
 		}
 
 	});
