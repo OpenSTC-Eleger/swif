@@ -24,7 +24,7 @@ define([
 		events: {
 			'show.bs.modal'  : 'show',
 			'shown.bs.modal' : 'shown',
-			'hidde.bs.modal' : 'hide',
+			'hide.bs.modal' : 'hide',
 			'hidden.bs.modal': 'hidden',
 
 			'click [data-action="zenmode"]': 'toggleZenmode'
@@ -37,6 +37,14 @@ define([
 		show: function(){
 			this.delegateEvents(this.events());
 		},
+
+
+		/** Trigger when the modal begin to hide
+		*/
+		hide: function(){
+			$('.modal-backdrop').removeClass('zenmode');
+		},
+
 
 
 		/** Trigger when the modal is hidden
@@ -64,6 +72,7 @@ define([
 				}
 			}
 		},
+
 
 
 		/** Toggle fullscreen mode

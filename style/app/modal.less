@@ -1,0 +1,28 @@
+/* Zen mode
+-------------------------------------------------- */
+.modal-zenmode{
+
+	@media (min-width: @screen-md-min) {
+		width: @modal-lg;
+	}
+
+	.modal-content{
+		border: none;
+		border-radius: 0;
+	 	.box-shadow(none);
+	}
+}
+
+.modal-backdrop.zenmode{
+	background-color: #fff;
+	opacity: 1;
+}
+
+.modal-header .btn-group .btn{
+
+	font-size: @font-size-base;
+
+	&.close{
+		margin-top: 0px;
+	}
+}
