@@ -7,10 +7,9 @@
 define([
 	'app',
 	'appHelpers',
-	'genericModel',
-	'moment'
+	'genericModel'
 
-], function(app, AppHelpers, GenericModel, moment){
+], function(app, AppHelpers, GenericModel){
 
 	'use strict';
 
@@ -49,7 +48,10 @@ define([
 			var dateStart = this.getAttribute('date_start',false);
 			if(dateStart){
 				var momentDateStart = AppHelpers.convertDateToTz(dateStart);
-				var momentStartMonth = moment().startOf('month');
+				var momentStartMonth = momentDateStart.clone().startOf('month');
+				console.log(momentStartMonth);
+				console.log(momentDateStart);
+				
 				if(momentDateStart.isValid()){
 					//to retrieve weekday in english
 					momentDateStart.lang('en');

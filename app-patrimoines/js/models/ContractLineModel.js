@@ -66,6 +66,7 @@ define([
 		*/
 		initialize: function(vals, options){
 			var self = this;
+			GenericRecurrenceModel.prototype.initialize.apply(this, arguments);
 			if(options.parentModel){
 				this.parentModel = options.parentModel;
 				if(!this.getAttribute('date_start',false)){
@@ -74,7 +75,6 @@ define([
 				this.listenTo(this.parentModel, 'change', self.bubbleData);
 				this.bubbleData(this.parentModel);
 			}
-			GenericRecurrenceModel.prototype.initialize.apply(this, arguments);
 		},
 	
 	
