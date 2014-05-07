@@ -151,8 +151,8 @@ define([
 					// User who made the Task //
 					if(task.getState() == TaskModel.status.done.key){
 						doneBy = task.affectedTo();
-						dateStart = moment(task.getDateStart()).format('LLL');
-						dateEnd = moment(task.getDateEnd()).format('LLL');
+						dateStart = moment(task.getDatetime('date_start')).format('LLL');
+						dateEnd = moment(task.getDatetime('date_end')).format('LLL');
 						equipment = task.getEquipments();
 					}
 					$('#tableTasks tbody').append('<tr style="height: 70px;"><td>'+taskJSON.name+'</td><td>'+AppHelpers.decimalNumberToTime(taskJSON.planned_hours, 'human')+'</td><td class="toFill">'+doneBy+'</td><td class="toFill">'+dateStart+'</td><td class="toFill">'+dateEnd+'</td><td class="toFill">'+equipment+'</td><td class="toFill"></td><td class="toFill"></td></tr>');

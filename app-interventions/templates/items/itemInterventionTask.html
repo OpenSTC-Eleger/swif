@@ -3,7 +3,7 @@
 	<% if(task.date_start != ''){ %>
 		<i
 			class="fa fa-clock-o displayInlineBlock" data-toggle="tooltip"
-			data-original-title="<%= moment(task.date_start).format('LLL') %>" >
+			data-original-title="<%= moment(taskModel.getDatetime('date_start')).format('LLL') %>" >
 		</i>&nbsp;
 	<% } %>
 	<!-- Display recurrence symbol if task is from a recurrence -->
