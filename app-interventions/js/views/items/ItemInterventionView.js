@@ -101,8 +101,8 @@ define([
 					lang                   : app.lang,
 					interventionsState     : InterventionModel.status,
 					intervention          : self.model,
-					originKey				: app.lang.intervention.originKey[originIcon],
-					originHelper			: app.lang.intervention.originHelper[originIcon]
+					originKey				: app.lang.interventionsLang.originKey[originIcon],
+					originHelper			: app.lang.interventionsLang.originHelper[originIcon]
 				});
 
 				$(self.el).html(template);
