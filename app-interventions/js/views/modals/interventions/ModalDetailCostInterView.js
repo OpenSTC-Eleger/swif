@@ -49,10 +49,6 @@ define([
 			var self = this;
 
 
-
-			console.log(this.model.attributes);
-
-
 			// Retrieve the template //
 			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 

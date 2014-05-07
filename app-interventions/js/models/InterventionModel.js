@@ -216,6 +216,13 @@ define([
 		},
 
 
+		/** Get the percentage cost
+		*/
+		getPercentageCost: function(type) {
+			return _.toNumber(( (this.getCost(type, false) * 100) / this.getCost('total', false) ), 2);
+		},
+
+
 		hasActions: function(action){
 			return this.getActions().indexOf(action) > -1;
 		},
