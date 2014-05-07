@@ -12,7 +12,8 @@ define(['app',
 		'moment-timezone-data',
 		'bsTimepicker',
 		'bsDatepicker-lang',
-		'bsSwitch'
+		'bsSwitch',
+		'select2'
 		
 
 ], function (app, AppHelpers, AdvancedSelectBoxView, moment) {
@@ -309,6 +310,9 @@ define(['app',
 				$(self.el).find('.make-switch').bootstrapSwitch();
 				$(self.el).find('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 				$(self.el).find('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: true, modalBackdrop: false});
+				$('fieldset[disabled] .invisibleOnReadonly').addClass('hide-soft');
+				$('fieldset[disabled] .removeOnReadonly').remove();
+				$('fieldset[disabled] .select2').select2('enable',false);
 			});
 		},
 		

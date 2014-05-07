@@ -83,7 +83,7 @@ define(['app',
 			$('.lineHeader:last').tab('show');
 			$('.removeLineHeader').remove();
 			$('.lineHeader').each(function(){
-				$(this).append('<a class="removeLineHeader" href="#" data-view="' + $(this).attr('href').replace('#','') + '">&nbsp;<i class="fa fa-times"></i></a>');
+				$(this).append('<a class="removeLineHeader invisibleOnReadonly" href="#" data-view="' + $(this).attr('href').replace('#','') + '">&nbsp;<i class="fa fa-times"></i></a>');
 			});
 		},
 		
@@ -102,6 +102,7 @@ define(['app',
 			app.router.setPageTitle(pageTitle);
 
 			var self = this;
+			var readonly = self.model.getAttribute('actions',['update']).indexOf('update') == -1;
 			// Retrieve the template //
 			$.get(app.menus.openstcpatrimoine + this.templateHTML, function(templateData){
 				//compute dates with user TZ
@@ -109,7 +110,7 @@ define(['app',
 				var template = _.template(templateData, {
 					lang		: app.lang,
 					pageTitle	: pageTitle,
-					readonly	: self.model.getAttribute('actions',['update']).indexOf('update') == -1,
+					readonly	: readonly,
 					moment		: moment,
 					contract	: self.model,
 					user		: app.current_user

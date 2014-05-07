@@ -49,8 +49,6 @@ define([
 			if(dateStart){
 				var momentDateStart = AppHelpers.convertDateToTz(dateStart);
 				var momentStartMonth = momentDateStart.clone().startOf('month');
-				console.log(momentStartMonth);
-				console.log(momentDateStart);
 				
 				if(momentDateStart.isValid()){
 					//to retrieve weekday in english
