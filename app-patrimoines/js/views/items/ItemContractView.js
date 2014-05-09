@@ -13,14 +13,15 @@ define([
 	'formContractView',
 	'modalDeleteView',
 	'genericActionModalView',
+	'genericItemView',
 	'moment'
 
 
-], function(app, AppHelpers, ContractModel, ContractsCollection, FormContractView, ModalDeleteView, GenericActionModalView, moment){
+], function(app, AppHelpers, ContractModel, ContractsCollection, FormContractView, ModalDeleteView, GenericActionModalView, GenericItemView){
 
 	'use strict';
 
-	return Backbone.View.extend({
+	return GenericItemView.extend({
 
 		tagName      : 'tr',
 
@@ -48,135 +49,14 @@ define([
 		events: {
 			'click .actionDelete'	: 'modalDelete',
 			'click .actions'		: 'modalConfirm',
-		},
-		
-		/**
-		 * Method used by template to display actions on the view.
-		 * if action not present in model.actions, display nothing, else, display the component
-		 */
-		renderSmallActions: function(dom){
-			if(dom){
-				var actions = dom.attr('data-actions').split(',');
-				var ret = '';
-				var self = this;
-				return $.when($.get(app.menus.openstcpatrimoine+this.templateSmallActionHTML)).done(function(smallActionTemplate){
-					_.each(actions, function(action){
-						
-						if(_.contains(self.authorizedActions, action)){
-							if(_.has(self.classModel.actions,action)){
-								var modelAction = self.classModel.actions[action];
-								ret += _.template(smallActionTemplate,{action:modelAction});
-							}
-							else{
-								console.warning('Error, action "' + action + '" not present in model definition, please implement it in actions model attribute');
-							}
-						}
-					});
-					dom.html(ret);
-				});
-			}
-		},
-		
-		/**
-		 * Method used by template to display button actions (right side) on the view.
-		 * if action not present in model.actions, display nothing, else, display the component
-		 */
-		renderButtonAction: function(dom){
-			var ret = '';
-			var self = this;
-			function getActionDefinition(action){
-				var value = null;
-				if(_.contains(self.authorizedActions, action)){
-					if(_.has(self.classModel.actions, action)){
-						value = self.classModel.actions[action];
-					}
-					else{
-						console.warn('Error, action "' + action + '" not present in model definition, please implement it in actions model attribute');
-					}
-				}
-				return value;
-			}
-			
-			if(dom){
-				var actions = dom.attr('data-actions').split(',');
-				var mainAction = dom.attr('data-main-action');
-				
-				return $.when($.get(app.menus.openstcpatrimoine+this.templateButtonActionHTML)).done(function(buttonActionTemplate){
-					if(mainAction){
-						//if mainAction present in actions authorized to user, render the component, else, do nothing
-						var modelMainAction = getActionDefinition(mainAction);
-						if(modelMainAction){
-							actions = _.without(actions, mainAction);
-							//retrieve other actions authorized to user and render them in the component
-							var modelOtherActions = [];
-							_.each(actions, function(action){
-								var elt = getActionDefinition(action);
-								if(elt){
-									modelOtherActions.push(elt);
-								}
-							});
-							ret = _.template(buttonActionTemplate, {
-								mainAction:modelMainAction,
-								otherActions: modelOtherActions
-							});
-						}
-					}
-					dom.html(ret);
-				});
-			}
-		},
-		
-		toFrDate: function(date){
-			var value = moment.utc(date);
-			return value.format('DD/MM/YYYY');
-		},
-		
-		toFrDatetime: function(datetime){
-			var value = AppHelpers.convertDateToTz(datetime);
-			return value.format('DD/MM/YYYY hh[h]mm');
-		},
-		
-		integerToStr: function(integer){
-			return integer.toString();
-		},
-		
-		/**
-		 * render data using data-fieldname and self.fieldsModel to know how to display value
-		 */
-		renderFieldsValues: function(){
-			var self = this;
-			$(this.el).find('.field').each(function(){
-				var field = $(this).data('fieldname');
-				if(_.has(self.model.collection.fieldsMetadata,field)){
-					var elt = self.model.collection.fieldsMetadata[field];
-					if(_.has(self.fieldParser,elt.type)){
-						var value = self.fieldParser[elt.type](self.model.getAttribute(field,''));
-						$(this).html(value);
-					}
-					else{
-						console.warn('Swif Error: Unrecognized field type "' + elt.type.toString() + '", authorized values are : "' + _.keys(self.fieldParser));
-					}
-				}
-				else{
-					console.warn('Swif Error: "' + field + '" not present on Collection, authorized values are : "' + _.keys(self.model.collection.fieldsMetadata));
-				}
-			});
-		},
-		
+		},		
 		
 		/** View Initialization
 		*/
 		initialize: function (params) {
-			this.fieldParser = {
-				date		: this.toFrDate,
-				datetime	: this.toFrDatetime,
-				char		: _.capitalize,
-				text		: _.capitalize,
-				integer		: this.integerToStr
-			};
 			
 			this.options = params;
-
+			
 			this.model.off();
 
 			// When the model are updated //
@@ -184,6 +64,7 @@ define([
 
 			// When the model are destroy //
 			this.listenTo(this.model,'destroy', this.destroy);
+			GenericItemView.prototype.initialize.apply(this, params);
 		},
 		
 		/** When the model is updated //
@@ -232,13 +113,7 @@ define([
 					stateItem	: stateItem
 				});
 				$(self.el).html(template);
-				self.renderFieldsValues();
-				$.when(self.renderButtonAction($(self.el).find('.button-actions')),
-						self.renderSmallActions($(self.el).find('.small-actions'))).always(function(){
-					// Set the Tooltip //
-					$('*[data-toggle="tooltip"]').tooltip();
-				});
-
+				GenericItemView.prototype.render.apply(self);
 			});
 
 			return this;
