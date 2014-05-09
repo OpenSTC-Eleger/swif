@@ -1,12 +1,13 @@
 <div class="text-center">
 		<!-- Buttons group action -->
 		<div class="btn-group btn-group-sm">
-
+			
 			<!-- Main action button -->
-			<button class="actions btn btn-<%= mainAction.color%> no-outline" data-action="<%= mainAction.key%>">
+			<button class="actions btn btn-<%= mainAction.color%> no-outline" data-action="<%= mainAction.key%>"
+			data-toggle="tooltip" data-original-title="<%= mainAction.translation %>">
 				<i class="fa <%= mainAction.icon%> fa-fw" data-action="<%= mainAction.key%>"></i>
 			</button>
-
+			
 			<% if(otherActions.length > 0){ %>
 				<!-- Dropdown button action(s) -->			
 				<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
