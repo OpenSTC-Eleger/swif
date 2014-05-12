@@ -29,9 +29,10 @@ define([
 			{ key: 'site1',         label: app.lang.place },
 			{ key: 'equipment_id',  label: app.lang.equipment },
 			{ key: 'service_id',    label: app.lang.service },
+			{ key: 'state',         label: app.lang.status },
+			{ key: 'cost',          label: app.lang.cost },
 			{ key: 'create_date',   label: app.lang.createDate },
-			{ key: 'date_deadline', label: app.lang.date_deadline },
-			{ key: 'state',         label: app.lang.status }
+			{ key: 'date_deadline', label: app.lang.date_deadline }
 		],
 
 		specialCpt: 0,
@@ -84,8 +85,8 @@ define([
 			});
 		},
 
-			
-		
+
+
 
 		/** Collection Sync
 		*/

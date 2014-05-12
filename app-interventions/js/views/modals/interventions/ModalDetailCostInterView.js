@@ -50,9 +50,6 @@ define([
 					self.render();
 				});
 			}
-			else{
-				this.render();
-			}
 		},
 
 
@@ -64,8 +61,6 @@ define([
 
 			// Retrieve the template //
 			$.get(app.menus.openstc+this.templateHTML, function(templateData){
-
-				console.log(self.model.getState());
 
 				var template = _.template(templateData, {
 					lang              : app.lang,
