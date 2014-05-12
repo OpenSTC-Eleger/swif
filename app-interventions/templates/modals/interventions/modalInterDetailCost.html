@@ -65,6 +65,77 @@
 				</div>
 			</div>
 
+
+			<!-- Table information -->
+			<table class="table table-bordered table-striped table-condensed table-vertical-align">
+				<thead>
+					<tr>
+						<th><%= _.capitalize(lang.type) %></th>
+						<th><%= _.capitalize(lang.description) %></th>
+						<!--<th><%= _.capitalize(lang.quantity) %></th>
+						<th><abbr title="<%= lang.unitPrice %>"><%= lang.unitPriceAcronym %></abbr></th>-->
+						<th class="text-right"><%= _.capitalize(lang.total) %></th>
+					</tr>
+				</thead>
+
+				<!-- RH -->
+				<% if(_.size(infos.hr) > 0) { %>
+				<tbody>
+					<tr>
+						<td rowspan="<%= _.size(infos.hr) %>"><%= lang.humanResourceAcronym %></td>
+						<td><i class="fa <%= infos.hr[0].logo %>"/> &nbsp;<%= infos.hr[0].type.name %></td>
+						<td rowspan="<%= _.size(infos.hr) %>" class="text-right"><%= inter.getCost('hr', true) %></td>
+					</tr>
+					<% 	_.each(_.rest(infos.hr), function(u){ %>
+					<tr>
+						<td><i class="fa <%= u.logo %>"></i> <%= u.type.name %></td>
+					</tr>
+					<% }) %>
+				</tbody>
+				<% } %>
+
+				<!-- Equipments -->
+				<% if(_.size(infos.equipments) > 0) { %>
+				<tbody>
+					<tr>
+						<td rowspan="<%= _.size(infos.equipments) %>"><%= lang.equipment %></td>
+						<td><i class="fa fa-wrench"></i> <%= infos.equipments[0].name %></td>
+						<td rowspan="<%= _.size(infos.equipments) %>" class="text-right"><%= inter.getCost('equipment', true) %></td>
+					</tr>
+					<% 	_.each(_.rest(infos.equipments), function(equip){ %>
+					<tr>
+						<td><i class="fa fa-wrench"></i> <%= equip.name %></td>
+					</tr>
+					<% }) %>
+				</tbody>
+				<% } %>
+
+				<!-- Consumables -->
+				<% if(_.size(infos.consumables) > 0) { %>
+				<tbody>
+					<tr>
+						<td rowspan="<%= _.size(infos.consumables) %>"><%= lang.consumable %></td>
+						<td><i class="fa fa-barcode"></i>  <%= infos.consumables[0].name %></td>
+						<td rowspan="<%= _.size(infos.consumables) %>" class="text-right"><%= inter.getCost('consumable', true) %></td></td>
+					</tr>
+					<% 	_.each(_.rest(infos.consumables), function(cons){ %>
+					<tr>
+						<td><i class="fa fa-barcode"></i> <%= cons.name %></td>
+					</tr>
+					<% }) %>
+				</tbody>
+				<% } %>
+
+				<!-- Total -->
+				<tbody>
+					<tr>
+						<td class="invisible"></td>
+						<td class="invisible"></td>
+						<td class="info text-right"><strong><%= inter.getCost('total', true) %></strong></td>
+					</tr>
+				</tbody>
+			</table>
+
 			<% } %>
 
 		</div>
