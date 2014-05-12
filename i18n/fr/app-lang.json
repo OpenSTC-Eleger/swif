@@ -376,6 +376,7 @@
 
     "infoMessages" : {
         "information"           : "Information",
+        "careful"               : "Attention",
         "successLogout"         : "Vous êtes maintenant déconnecté",
         "noRequest"             : "Aucune demande d'intervention à afficher",
         "noRequestPlanned"      : "Aucune intervention planifiées",
@@ -442,7 +443,8 @@
         "consumableCreateOk"    : "Fourniture correctement crée",
         "consumableUpdateOk"    : "Fourniture correctement enregistrée",
         "consumableDeleteOk"    : "Fourniture correctement supprimée",
-        "noConsumable"          : "Aucune fourniture à afficher"
+        "noConsumable"          : "Aucune fourniture à afficher",
+        "allTaskNotDonePriceCanBeUpdate" : "Toutes les tâches de l'intervention ne sont pas terminées, le coût peut donc être amené à changer."
     },
 
 

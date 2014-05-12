@@ -8,10 +8,11 @@ define([
 	'app',
 	'genericModalView',
 
+	'interventionModel',
 	'tasksCollection'
 
 
-], function(app, GenericModalView, TasksCollection){
+], function(app, GenericModalView, InterventionModel, TasksCollection){
 
 
 	'use strict';
@@ -64,11 +65,14 @@ define([
 			// Retrieve the template //
 			$.get(app.menus.openstc+this.templateHTML, function(templateData){
 
+				console.log(self.model.getState());
+
 				var template = _.template(templateData, {
-					lang  : app.lang,
-					inter : self.model,
-					loader: loader,
-					infos : self.getInformationsAboutTasks()
+					lang              : app.lang,
+					inter             : self.model,
+					interventionsState: InterventionModel.status,
+					loader            : loader,
+					infos             : self.getInformationsAboutTasks()
 				});
 
 				self.modal.html(template);

@@ -22,6 +22,15 @@
 			</div>
 			<% } else { %>
 
+
+			<!-- Information message -->
+			<% if(inter.getState() != interventionsState.finished.key && inter.getState() != interventionsState.template.key){ %>
+			<div class="alert alert-warning alert-dismissable">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				<strong><%= lang.infoMessages.careful %>!</strong> <%= lang.infoMessages.allTaskNotDonePriceCanBeUpdate %>
+			</div>
+			<% } %>
+
 			<!-- Cost inter Stats summary -->
 			<ul class="list-inline nav-justified text-center">
 				<% if(inter.getCost('hr', false) > 0) { %>
