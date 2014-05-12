@@ -74,7 +74,9 @@ define([
 						break;
 
 					case 'integer':
+					case 'float':
 						fieldView = new NumberFieldView({ field: field });
+						console.log(field);
 						break;
 
 					case 'date':
@@ -99,7 +101,7 @@ define([
 						fieldView = new AdvancedSelectBoxView({ field: field, data: data, template: true, multiple: true });
 						break;
 				}
-				
+
 				if( !_.isNull(fieldView)){
 					// Add the component //
 					$(self.el).append(fieldView.render().el);
