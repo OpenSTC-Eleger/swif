@@ -10,9 +10,10 @@
 	"endLunchTime"      : 14.0,
 
 	"menus" :  {
-		"openstc"  : "app-interventions",
-		"openresa" : "app-reservations",
-		"openbase" : "configuration"
+		"openstc"           : "app-interventions",
+		"openresa"          : "app-reservations",
+		"openstcpatrimoine" : "app-patrimoines",
+		"openbase"          : "configuration"
 	},
 
 	"medias": {
