@@ -259,6 +259,7 @@
     "total"                                 : "Total",
     "humanResources"                        : "Ressources humaines",
     "humanResourceAcronym"                  : "RH",
+    "zenMode"                               : "plein écran",
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
     "monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
@@ -326,7 +327,7 @@
         "selectAPlace"      : "Sélectionner un site",
         "selectAGroup"      : "Sélectionner un groupe",
         "selectAnEquipment" : "Sélectionner un équipement",
-        "selectEquipments"  : "Sélectionner des équipments",
+        "selectEquipments"  : "Sélectionner des équipements",
         "selectAPlaceType"  : "Sélectionner un type de site",
         "selectServices"    : "Sélectionner des services",
         "selectAService"    : "Sélectionner un service",
