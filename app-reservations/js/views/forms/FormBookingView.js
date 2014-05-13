@@ -176,10 +176,10 @@ define(['app',
 			//@TODO: remove isHidden when tests are finished
 			var isHidden = this.recurrence != null && !this.isTemplate();
 			if(!isHidden && this.isEditable() && this.model.lines.length > 0){
-				elt.bootstrapSwitch('state', true);
+				elt.bootstrapSwitch('disabled', false);
 			}
 			else{
-				elt.bootstrapSwitch('state', false);
+				elt.bootstrapSwitch('disabled', true);
 			}
 		},
 
