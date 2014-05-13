@@ -134,7 +134,7 @@ requirejs.config({
 		consumablesListView                : 'views/lists/ConsumablesListView',
 
 		// Items //
-		genericItemView			   : 'views/items/GenericItemView',
+		genericItemView            : 'views/items/GenericItemView',
 		itemPlaceView              : 'views/items/ItemPlaceView',
 		claimerView                : 'views/items/ClaimerView',
 		itemTeamView               : 'views/items/ItemTeamView',

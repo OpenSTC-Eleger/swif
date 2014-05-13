@@ -9,7 +9,7 @@ define([
 	'appHelpers',
 	'contractModel',
 	'contractsCollection',
-	
+
 	'formContractView',
 	'modalDeleteView',
 	'genericActionModalView',
@@ -42,21 +42,21 @@ define([
 		templateRenewContract: '/templates/modals/modalRenewContract.html',
 		templateSmallActionHTML : '/templates/others/templateSmallActionComponent.html',
 		templateButtonActionHTML : '/templates/others/templateButtonActionComponent.html',
-		
+
 		classModel	: ContractModel,
-		
+
 		// The DOM events //
 		events: {
 			'click .actionDelete'	: 'modalDelete',
 			'click .actions'		: 'modalConfirm',
-		},		
-		
+		},
+
 		/** View Initialization
 		*/
 		initialize: function (params) {
-			
+
 			this.options = params;
-			
+
 			this.model.off();
 
 			// When the model are updated //
@@ -66,7 +66,7 @@ define([
 			this.listenTo(this.model,'destroy', this.destroy);
 			GenericItemView.prototype.initialize.apply(this, params);
 		},
-		
+
 		/** When the model is updated //
 		*/
 		change: function(){
@@ -101,9 +101,9 @@ define([
 			var stateItem = ContractModel.status[this.model.getAttribute('state','draft')];
 			// Retrieve the template //
 			$.get(app.menus.openstcpatrimoine+this.templateHTML, function(templateData){
-				
+
 				if(_.isUndefined(self.actions)){self.authorizedActions = self.model.getAttribute('actions',[]);}
-				
+
 				var template = _.template(templateData, {
 					lang        : app.lang,
 					contract  : self.model,
@@ -118,7 +118,7 @@ define([
 
 			return this;
 		},
-		
+
 		/** Modal to remove a place
 		*/
 		modalDelete: function(e){
@@ -132,7 +132,7 @@ define([
 				modalConfirm : app.lang.warningMessages.confirmDeleteContract
 			});
 		},
-		
+
 		modalConfirm: function(e){
 			e.preventDefault();
 			e.stopPropagation();
@@ -155,6 +155,7 @@ define([
 				templateForm:templateForm
 			});
 		}
-		
+
 	});
+
 });
