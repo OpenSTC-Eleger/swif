@@ -71,47 +71,46 @@
 	<td class="text-center">
 
 	<!-- Check if the user can make action on the request -->
-	<% if(!_.isEmpty(request.getActions())){
+	<% if(!_.isEmpty(request.getActions())) {
 		var actions = request.getActions();
 	%>
 
 		<!-- Create the buttons group action -->
 		<div class="btn-group btn-group-sm">
 
-			<!-- Check if the request is not in waiting state -->
 			<%
-
-			if( _.contains(actions, RequestModel.actions.valid.key)) {
 				var mainAction = RequestModel.actions.valid.key;
 				var mainActionColor = RequestModel.actions.valid.color;
 				var mainActionIcon = RequestModel.actions.valid.icon;
-				var mainActionDisabled = '';
-			}else{
-				var mainActionIcon = RequestModel.actions[request.getState()].icon;
-				var mainActionColor = RequestModel.actions[request.getState()].color;
-				var mainActionDisabled = 'disabled';
-			}
 			%>
+
 			<!-- Main action button -->
-			<button class="btn btn-<%= mainActionColor %> <%= mainActionDisabled %> no-outline button<%= _.capitalize(mainAction) %>Request">
+			<button class="btn btn-<%= mainActionColor %> no-outline button<%= _.capitalize(mainAction) %>Request">
 				<i class="fa <%= mainActionIcon %> fa-fw button<%= _.capitalize(mainAction) %>Request"></i>
 			</button>
 
-			<!-- Dropdown button action -->
-			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-				<span class="fa fa-caret-down"></span>
-			</button>
 
-			<!-- Other buttons action -->
-			<ul class="dropdown-menu dropdown-menu-right text-left">
-				<% _.each(actions, function(action){ %>
-					<li>
-						<a href="#" class="button<%= _.capitalize(RequestModel.actions[action].key) %>Request">
-							<i class="fa <%= RequestModel.actions[action].icon %> fa-fw"></i>&nbsp;<%= _.capitalize(RequestModel.actions[action].translation) %>
-						</a>
-					</li>
-				<% }); %>
-			</ul>
+			<!-- Other buttons action except valid -->
+			<% var remainActions = _.without(actions, RequestModel.actions.valid.key);
+
+				if(_.size(remainActions) >= 1){ %>
+
+				<!-- Dropdown button action -->
+				<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					<span class="fa fa-caret-down"></span>
+				</button>
+
+				<ul class="dropdown-menu dropdown-menu-right text-left">
+					<% _.each(remainActions, function(action){ %>
+						<li>
+							<a href="#" class="button<%= _.capitalize(RequestModel.actions[action].key) %>Request">
+								<i class="fa <%= RequestModel.actions[action].icon %> fa-fw"></i>&nbsp;<%= _.capitalize(RequestModel.actions[action].translation) %>
+							</a>
+						</li>
+					<% }); %>
+				</ul>
+
+				<% } %>
 		</div>
 
 	<% } %>
