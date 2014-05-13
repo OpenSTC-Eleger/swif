@@ -17,9 +17,11 @@ define([
 	'equipmentsListView',
 	'claimersTypesListView',
 	'aboutView',
-	'usersListView'
+	'usersListView',
+	'categoriesConsumablesListView',
+	'consumablesListView'
 
-], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView, ClaimersListView, TeamsListView, ServicesListView, EquipmentsListView, ClaimersTypesListView, AboutView, UsersListView){
+], function(app, HeaderView, FooterView, LoginView, NotFoundView, PlacesListView, ClaimersListView, TeamsListView, ServicesListView, EquipmentsListView, ClaimersTypesListView, AboutView, UsersListView, CategoriesConsumablesListView, ConsumablesListView){
 
 	'use strict';
 
@@ -349,6 +351,28 @@ define([
 			var params = this.setContext({search: search, filter: filter, sort : sort, page : page});
 
 			app.views.equipmentsListView = new EquipmentsListView(params);
+		},
+
+
+
+		/** Consumables Categories List
+		*/
+		categoriesConsumables: function(search, filter, sort, page){
+	
+			var params = this.setContext({search: search, filter: filter, sort : sort, page : page});
+	
+			app.views.categoriesConsumablesListView = new CategoriesConsumablesListView(params);
+		},
+
+
+
+		/** Consumables List
+		*/
+		consumables: function(search, filter, sort, page){
+	
+			var params = this.setContext({search: search, filter: filter, sort : sort, page : page});
+	
+			app.views.consumablesListView = new ConsumablesListView(params);
 		}
 
 	});

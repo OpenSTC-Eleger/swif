@@ -1,0 +1,146 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+			<h3 class="modal-title">
+				<i class="fa fa-eur"></i>&nbsp;
+				<%= _.capitalize(lang.viewsTitles.costDetail) %>
+			</h3>
+		</div>
+
+		<div class="modal-body">
+
+			<blockquote id="infoModalAbsentTask" class="spaceBottom">
+				<p><%= task.getName() %></p>
+				<footer><%= _.capitalize(task.getIntervention()) %></footer>
+			</blockquote>
+
+			<% if(!_.isUndefined(loader)) { %>
+			<div class="progress progress-striped active">
+				<div class="progress-bar" role="progressbar" style="width: 100%"></div>
+			</div>
+			<% } else{ %>
+
+
+
+			<!-- Cost task Stats summary -->
+			<ul class="list-inline nav-justified text-center">
+				<% if(task.getCost('hr', false) > 0) { %>
+				<li>
+					<span class="badge-primary badge-sm">&nbsp;</span>
+					<strong><%= lang.humanResourceAcronym %></strong>
+					<small class="text-muted"><%= task.getCost('hr', true) %></small>
+				</li>
+				<% } %>
+				<% if(task.getCost('equipment', false) > 0) { %>
+				<li>
+					<span class="badge-success badge-sm">&nbsp;</span>
+					<strong><%= _.capitalize(lang.equipment) %></strong>
+					<small class="text-muted"><%= task.getCost('equipment', true) %></small>
+				</li>
+				<% } %>
+				<% if(task.getCost('consumable', false) > 0) { %>
+				<li>
+					<span class="badge-warning badge-sm">&nbsp;</span>
+					<strong><%= lang.consumable %></strong>
+					<small class="text-muted"><%= task.getCost('consumable', true) %></small>
+				</li>
+				<% } %>
+			</ul>
+
+			<!-- Cost task Stats progress-bar -->
+			<div class="progress">
+				<div class="progress-bar" style="width: <%= task.getPercentageCost('hr') %>%" data-toggle="tooltip"
+					 data-original-title="<%= task.getPercentageCost('hr') %>%">
+					<span class="sr-only"><%= lang.humanResources %></span><i class="fa fa-user fa-lg"></i>
+				</div>
+
+				<div class="progress-bar progress-bar-success" style="width: <%= task.getPercentageCost('equipment') %>%" data-toggle="tooltip"
+					 data-original-title="<%= task.getPercentageCost('equipment') %>%">
+					<span class="sr-only"><%= lang.equipment %></span><i class="fa fa-wrench fa-lg"></i>
+				</div>
+
+				<div class="progress-bar progress-bar-warning" style="width: <%= task.getPercentageCost('consumable') %>%" data-toggle="tooltip"
+					 data-original-title="<%= task.getPercentageCost('consumable') %>%">
+					<span class="sr-only"><%= lang.consumable %></span><i class="fa fa-barcode fa-lg"></i>
+				</div>
+			</div>
+
+
+			<!-- Table information -->
+			<table class="table table-bordered table-striped table-condensed table-vertical-align">
+				<thead>
+					<tr>
+						<th><%= _.capitalize(lang.type) %></th>
+						<th><%= _.capitalize(lang.description) %></th>
+						<!--<th><%= _.capitalize(lang.quantity) %></th>
+						<th><abbr title="<%= lang.unitPrice %>"><%= lang.unitPriceAcronym %></abbr></th>-->
+						<th class="text-right"><%= _.capitalize(lang.total) %></th>
+					</tr>
+				</thead>
+
+				<!-- RH -->
+				<tbody>
+					<tr>
+						<td><%= lang.humanResourceAcronym %></td>
+						<td><i class="fa <%= task.affectedTo('logo') %>"/> &nbsp;<%= task.affectedTo() %></td>
+						<td class="text-right"><%= task.getCost('hr', true) %></td>
+					</tr>
+				</tbody>
+
+				<!-- Equipments -->
+				<% var equipments = task.getEquipments('json');
+				   if(_.size(equipments) > 0) { %>
+				<tbody>
+					<tr>
+						<td rowspan="<%= _.size(equipments) %>"><%= lang.equipment %></td>
+						<td><i class="fa fa-wrench"></i> <%= equipments[0].name %></td>
+						<td rowspan="<%= _.size(equipments) %>" class="text-right"><%= task.getCost('equipment', true) %></td>
+					</tr>
+					<% 	_.each(_.rest(equipments), function(equip){ %>
+					<tr>
+						<td><i class="fa fa-wrench"></i> <%= equip.name %></td>
+					</tr>
+					<% }) %>
+				</tbody>
+				<% } %>
+
+				<!-- Consumables -->
+				<% var consumables = task.getConsumables('json');
+				   if(_.size(consumables) > 0) { %>
+				<tbody>
+					<tr>
+						<td rowspan="<%= _.size(consumables) %>"><%= lang.consumable %></td>
+						<td><i class="fa fa-barcode"></i>  <%= consumables[0].name %></td>
+						<td rowspan="<%= _.size(consumables) %>" class="text-right"><%= task.getCost('consumable', true) %></td></td>
+					</tr>
+					<% 	_.each(_.rest(consumables), function(cons){ %>
+					<tr>
+						<td><i class="fa fa-barcode"></i> <%= cons.name %></td>
+					</tr>
+					<% }) %>
+				</tbody>
+				<% } %>
+
+				<!-- Total -->
+				<tbody>
+					<tr>
+						<td class="invisible"></td>
+						<td class="invisible"></td>
+						<td class="info text-right"><strong><%= task.getCost('total', true) %></strong></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<% } %>
+
+
+		</div>
+
+		<div class="modal-footer">
+			<button type="button" data-dismiss="modal" class="btn btn-primary">Ok</button>
+		</div>
+	</div>
+</div>

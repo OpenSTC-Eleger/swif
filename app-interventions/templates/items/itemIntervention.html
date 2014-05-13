@@ -33,6 +33,13 @@
 <td><%= intervention.getPlannedHours('human') %></td>
 <td><%= intervention.getEffectiveHours('human') %></td>
 
+<!-- Cost -->
+<td class="text-right">
+	<% if(intervention.getCost('total', false) > 0) { %>
+	<a href="#" data-action="detailCost" title="<%= lang.viewsTitles.costDetail %>"><%= intervention.getCost('total', true) %></a>
+	<% } %>
+</td>
+
 
 <!-- Check the state of the intervention -->
 <td>

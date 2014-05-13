@@ -16,10 +16,11 @@ define([
 	'claimerTypeModel',
 	'modalInterventionView',
 	'modalCancelInterventionView',
+	'modalDetailCostInterView',
 	'moment',
 	'printElement',
 
-], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel, ClaimerModel, ClaimerTypeModel, ModalInterventionView, ModalCancelInterventionView,moment){
+], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel, ClaimerModel, ClaimerTypeModel, ModalInterventionView, ModalCancelInterventionView, ModalDetailCostInterView, moment){
 
 	'use strict';
 
@@ -44,6 +45,8 @@ define([
 			'click a.buttonCancelInter': 'displayModalCancelInter',
 			'click a.accordion-object' : 'tableAccordion',
 			'click a.modalSaveInter'   : 'displayModalSaveInter',
+
+			'click a[data-action="detailCost"]'   : 'displayModalDetailCost'
 		},
 
 
@@ -178,7 +181,7 @@ define([
 						//fill data of site1
 						//$('#interPlaceOrEquipment').html(interJSON.site1[1]);
 					}
-					
+
 
 					$('#printTask').printElement({
 						leaveOpen	: true,
@@ -292,6 +295,15 @@ define([
 		displayModalCancelInter: function(e) {
 			e.preventDefault();
 			new ModalCancelInterventionView({el: '#modalCancelInter', model: this.model});
+		},
+
+
+		/** Modal to display the detail cost of the intervention
+		*/
+		displayModalDetailCost: function(e){
+			e.preventDefault();
+
+			new ModalDetailCostInterView({ el: '#modalDetailCost', model: this.model });
 		}
 
 	});

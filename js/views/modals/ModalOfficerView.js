@@ -160,6 +160,7 @@ define([
 				user_email  : $('#officerEmail').val(),
 				groups_id   : [[6, 0, groups]],
 				service_id  : app.views.advancedSelectBoxOfficerServiceView.getSelectedItem(),
+				cost		: $('#officerCost').val()
 
 			};
 

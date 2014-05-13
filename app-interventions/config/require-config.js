@@ -73,7 +73,9 @@ requirejs.config({
 		modalTaskDoneView               : '../app-interventions/js/views/modals/interventions/ModalTaskDoneView',
 		modalRecurrenceTaskView			: '../app-interventions/js/views/modals/interventions/ModalRecurrenceTaskView',
 		modalRecurrenceTaskItemView		: '../app-interventions/js/views/modals/interventions/ModalRecurrenceTaskItemView',
-		
+		modalDetailCostTaskView         : '../app-interventions/js/views/modals/tasks/ModalDetailCostTaskView',
+		modalDetailCostInterView        : '../app-interventions/js/views/modals/interventions/ModalDetailCostInterView',
+
 		tasksListView                   : '../app-interventions/js/views/lists/TasksListView',
 		itemTaskDayListView             : '../app-interventions/js/views/items/ItemTaskDayListView',
 		itemTaskDayView                 : '../app-interventions/js/views/items/ItemTaskDayView',

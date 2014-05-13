@@ -9,6 +9,7 @@ define([
 
 	'genericModalView',
 	'advancedSelectBoxView',
+	'consumablesSelectView',
 
 	'taskModel',
 	'interventionModel',
@@ -17,7 +18,7 @@ define([
 	'moment-timezone',
 	'moment-timezone-data'
 
-], function(app, GenericModalView, AdvancedSelectBoxView, TaskModel, InterventionModel, EquipmentsCollection, moment){
+], function(app, GenericModalView, AdvancedSelectBoxView, ConsumablesSelectView, TaskModel, InterventionModel, EquipmentsCollection, moment){
 
 	'use strict';
 
@@ -106,7 +107,11 @@ define([
 					self.selectListEquipmentsDoneView.setSearchParam({field:'service_ids.id',operator:'=',value:interAssociated.toJSON().service_id[0]});
 
 					self.selectListEquipmentsDoneView.render();
+
+					// Create the consumables view //
+					self.consumablesSelectView = new ConsumablesSelectView({el: '#consumablesSection', serviceID: interAssociated.toJSON().service_id[0]});
 				});
+
 			});
 
 			return this;
@@ -143,14 +148,19 @@ define([
 			var spent_hours = mDurationSpentHours.asHours();
 
 			var params = {
-				equipment_ids: equipments,
-				vehicule: vehicule,
-				km: this.$('#equipmentKmDone').val(),
-				oil_qtity: this.$('#equipmentOilQtityDone').val().replace(',', '.'),
-				oil_price: this.$('#equipmentOilPriceDone').val().replace(',', '.'),
-				report_hours: spent_hours,
+				equipment_ids  : equipments,
+				vehicule       : vehicule,
+				km             : this.$('#equipmentKmDone').val(),
+				oil_qtity      : this.$('#equipmentOilQtityDone').val().replace(',', '.'),
+				oil_price      : this.$('#equipmentOilPriceDone').val().replace(',', '.'),
+				report_hours   : spent_hours,
 				remaining_hours: remaining_hours,
+				consumables    : self.consumablesSelectView.getConsumables()
 			};
+
+
+			// Set the button in loading State //
+			$(this.el).find('button[type=submit]').button('loading');
 
 			this.model.save(params, {silent: true, patch: true, wait: true})
 				.done(function(){
@@ -166,6 +176,9 @@ define([
 				})
 				.fail(function(e){
 					console.log(e);
+				})
+				.always(function () {
+					$(self.el).find('button[type=submit]').button('reset');
 				});
 
 		},
@@ -186,7 +199,7 @@ define([
 			var m = Math.floor(d % 3600 / 60);
 			var s = Math.floor(d % 3600 % 60);
 			return ((h > 0 ? h + ':' : '') + (m > 0 ? (h > 0 && m < 10 ? '0' : '') + m + ':' : '0:') + (s < 10 ? '0' : '') + s);
-		},
+		}
 
 	});
 

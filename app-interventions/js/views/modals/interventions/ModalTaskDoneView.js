@@ -11,16 +11,18 @@ define([
 	'officersCollection',
 	'teamsCollection',
 	'equipmentsCollection',
+	'claimersCollection',
 
 	'advancedSelectBoxView',
 	'multiSelectBoxUsersView',
+	'consumablesSelectView',
 
 	'moment-timezone',
 	'moment-timezone-data',
 	'bsDatepicker-lang',
 	'bsTimepicker',
 
-], function(app, GenericModalView, OfficersCollection, TeamsCollection, EquipmentsCollection, AdvancedSelectBoxView, MultiSelectBoxUsersView, moment){
+], function(app, GenericModalView, OfficersCollection, TeamsCollection, EquipmentsCollection, ClaimersCollection, AdvancedSelectBoxView, MultiSelectBoxUsersView, ConsumablesSelectView, moment){
 
 	'use strict';
 
@@ -37,13 +39,15 @@ define([
 		events: function() {
 			return _.defaults({
 				'submit #formTaskDone'        : 'taskDone',
-				'click .linkRefueling'        : 'accordionRefuelingInputs'
+				'click .linkRefueling'        : 'accordionRefuelingInputs',
+
+				'changeDate #startDate'       : 'startDateChange'
 			},
 			GenericModalView.prototype.events);
 
 		},
 
-		/** View Initialization
+		/**  Initialization
 		 */
 		initialize: function (params) {
 			var self = this;
@@ -72,8 +76,8 @@ define([
 
 				self.selectedTaskJSON = self.model.toJSON();
 
-				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
-				$('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
+				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: false, showInputs: false, modalBackdrop: false});
+				$('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr', todayHighlight: true });
 
 				$('#startDate').val(  moment().format('L') );
 				$('#endDate').val( moment().format('L') );
@@ -95,6 +99,7 @@ define([
 
 				// Create the view to select the user who have done the task //
 				self.multiSelectBoxUsersView = new MultiSelectBoxUsersView({el: '.multiSelectUsers', serviceID: self.options.inter.getService('id')});
+				self.multiSelectBoxUsersView.off().on('userType-change', function(){ self.serviceCostSection(); });
 
 				self.selectVehicleView = new AdvancedSelectBoxView({ el:'#taskEquipmentDone', url: EquipmentsCollection.prototype.url });
 				self.selectListEquipmentsView = new AdvancedSelectBoxView({ el:'#taskEquipmentListDone', url: EquipmentsCollection.prototype.url });
@@ -104,9 +109,8 @@ define([
 				self.selectVehicleView.setSearchParam({field:'internal_use', operator:'=', value:'True'});
 				self.selectListEquipmentsView.setSearchParam({field:'internal_use', operator:'=', value:'True'});
 
+
 				if(hasService){
-
-
 					self.selectVehicleView.setSearchParam('|');
 					self.selectVehicleView.setSearchParam({field:'service_ids',operator:'=?',value:'False'});
 					self.selectVehicleView.setSearchParam({field:'service_ids.id',operator:'=',value:self.options.inter.toJSON().service_id[0]});
@@ -119,6 +123,10 @@ define([
 				self.selectVehicleView.render();
 				self.selectListEquipmentsView.render();
 
+
+				// Create the consumables view //
+				self.consumablesSelectView = new ConsumablesSelectView({el: '#consumablesSection', serviceID: self.options.inter.getService('id')});
+
 			});
 
 			return this;
@@ -127,7 +135,7 @@ define([
 
 
 		/** Save Task as Done (create another one if timeRemaining set)
-		 */
+		*/
 		taskDone: function(e){
 			e.preventDefault();
 			var self = this;
@@ -171,25 +179,30 @@ define([
 				oil_price      : this.$('#equipmentOilPriceDone').val().replace(',', '.'),
 				report_hours   : mNewDateEnd.diff(mNewDateStart,'hours',true),
 				remaining_hours: remaining_hours,
+				cost           : this.$('#serviceCost').val().replace(',', '.'),
+				consumables    : self.consumablesSelectView.getConsumables()
 			};
 
 			var res = self.multiSelectBoxUsersView.getUserType();
-			if(res.type == 'team'){
+			if(res.type == TeamsCollection.prototype.key){
 				params.user_id = false;
 				params.partner_id = false;
 				params.team_id = res.value;
 			}
-			else if(res.type == 'officer'){
+			else if(res.type == OfficersCollection.prototype.key){
 				params.team_id = false;
 				params.partner_id = false;
 				params.user_id = res.value;
 			}
-			else{
+			else if(res.type == ClaimersCollection.prototype.key){
 				params.team_id = false;
 				params.user_id = false;
 				params.partner_id = res.value;
 			}
 
+
+			// Set the button in loading State //
+			$(this.el).find('button[type=submit]').button('loading');
 
 			this.model.save(params, {silent: true, patch: true, wait: true})
 				.done(function(){
@@ -208,8 +221,10 @@ define([
 				})
 				.fail(function(e){
 					console.log(e);
+				})
+				.always(function () {
+					$(self.el).find('button[type=submit]').button('reset');
 				});
-
 		},
 
 
@@ -219,8 +234,35 @@ define([
 		accordionRefuelingInputs: function(e){
 			e.preventDefault();
 
+
 			// Toggle Slide Refueling section //
 			$('.refueling-vehicle').stop().slideToggle();
+		},
+
+
+
+		/** Adjust end date field when start date change
+		*/
+		startDateChange: function(e){
+			var sDate = $(e.currentTarget).datepicker('getDate');
+			$('#endDate').datepicker('setStartDate', sDate);
+			$('#endDate').datepicker('setDate', sDate);
+		},
+
+
+		/** Function trigger when the user type change
+		* If the user type == provider the field service cost price appear
+		*/
+		serviceCostSection: function(){
+			var t = this.multiSelectBoxUsersView.getUserType();
+
+			if(t.type == ClaimersCollection.prototype.key){
+				$('#serviceCostSection').stop().slideDown();
+			}
+			else{
+				$('#serviceCostSection').stop().slideUp();
+			}
+
 		}
 
 	});

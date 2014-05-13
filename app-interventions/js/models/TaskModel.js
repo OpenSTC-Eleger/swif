@@ -79,6 +79,36 @@ define([
 			}
 		},
 
+
+		getConsumables : function(type) {
+
+			if(this.get('consumable_names')){
+				var consumables = [];
+
+				switch(type){
+					case 'id':
+						_.each(this.get('consumable_names'),function(consum){
+							consumables.push(consum[0]);
+						});
+						break;
+					case 'json':
+						_.each(this.get('consumable_names'),function(consum){
+							consumables.push({id: consum[0], name:consum[1]});
+						});
+						break;
+					default:
+						_.each(this.get('consumable_names'),function(consum){
+							consumables.push(consum[1]);
+						});
+				}
+
+				return consumables;
+			}
+			else{
+				return false;
+			}
+		},
+
 		getInterEquipment : function(type) {
 			if(this.get('inter_equipment')){
 
@@ -252,6 +282,48 @@ define([
 		},
 		setPlannedHours : function(value, silent) {
 			this.set({ planned_hours : value }, {silent: silent});
+		},
+
+
+		getEffectiveHours: function(){
+			return this.get('effective_hours');
+		},
+
+
+		/** Get the cost of the task
+		*/
+		getCost: function(type, withSymbol) {
+			var cost = 0;
+
+			switch(type){
+				case 'total':
+					cost = parseFloat(this.get('cost'));
+					break;
+				case 'hr':
+					cost = parseFloat(this.get('hr_cost'));
+					break;
+				case 'equipment':
+					cost = parseFloat(this.get('equipment_cost'));
+					break;
+				case 'consumable':
+					cost = parseFloat(this.get('consumable_cost'));
+					break;
+			}
+
+			if(withSymbol) {
+				cost = _.numberFormat(cost, 2, '.', ' ');
+				return cost+='€';
+			}
+			else{
+				return cost;
+			}
+		},
+
+
+		/** Get the percentage cost
+		*/
+		getPercentageCost: function(type) {
+			return _.toNumber(( (this.getCost(type, false) * 100) / this.getCost('total', false) ), 2);
 		},
 
 

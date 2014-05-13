@@ -72,9 +72,10 @@
 					<th data-sort-column="id">N°</th>
 					<th data-sort-column="name"><%= _.capitalize(lang.label) %></th>
 					<th><%= _.capitalize(lang.place) + ' / '%><%= _.capitalize(lang.equipment) %></th>
-					<th><%= _.capitalize(lang.dateDeadline) %></th>
+					<th data-sort-column="date_deadline"><%= _.capitalize(lang.dateDeadline) %></th>
 					<th><%= _.capitalize(lang.plannedHours) %></th>
 					<th><%= _.capitalize(lang.spentHours) %></th>
+					<th data-sort-column="cost"><%= _.capitalize(lang.cost) %></th>
 					<th><%= _.capitalize(lang.progressRate) %></th>
 				</tr>
 			</thead>
@@ -121,6 +122,10 @@
 <!-- Modal Form to view Recurrence Task details -->
 <div id="modalRecurrenceDetails" class="modal fade" role="dialog" aria-hidden="true"></div>
 
+<!-- Modal Details Inter Task -->
+<div id="modalDetailCost" class="modal fade" role="dialog" aria-hidden="true"></div>
+
+
 
 
 <!-- Form to print paperboard-->
@@ -129,7 +134,7 @@
 	<div>
 		<div>
 			<h1 style="float: left;">Fiche d'intervention n°<span id="interId" class="field"></span></h1>
-   			<img src="<%= cityLogo %>" style="float: right">
+   			<img src="<%= cityLogo %>" alt="logo" class="pull-right">
    		</div>
    		<hr style="clear: both;">
 

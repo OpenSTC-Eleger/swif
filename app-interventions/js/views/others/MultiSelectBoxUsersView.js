@@ -144,6 +144,8 @@ define([
 			this.applyDomain();
 
 			this.selectView.open();
+
+			this.trigger('userType-change');
 		},
 
 

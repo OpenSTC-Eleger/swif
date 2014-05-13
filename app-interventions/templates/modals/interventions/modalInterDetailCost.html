@@ -1,0 +1,156 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+			<h3 class="modal-title">
+				<i class="fa fa-eur"></i>&nbsp;
+				<%= _.capitalize(lang.viewsTitles.costDetail) %>
+			</h3>
+		</div>
+
+		<div class="modal-body">
+
+			<blockquote id="infoModalAbsentTask" class="spaceBottom">
+				<p><%= _.capitalize(inter.getName()) %></p>
+			</blockquote>
+
+			<% if(!_.isUndefined(loader)) { %>
+			<div class="progress progress-striped active">
+				<div class="progress-bar" role="progressbar" style="width: 100%"></div>
+			</div>
+			<% } else { %>
+
+
+			<!-- Information message -->
+			<% if(inter.getState() != interventionsState.finished.key && inter.getState() != interventionsState.template.key){ %>
+			<div class="alert alert-warning alert-dismissable">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				<strong><%= lang.infoMessages.careful %>!</strong> <%= lang.infoMessages.allTaskNotDonePriceCanBeUpdate %>
+			</div>
+			<% } %>
+
+			<!-- Cost inter Stats summary -->
+			<ul class="list-inline nav-justified text-center">
+				<% if(inter.getCost('hr', false) > 0) { %>
+				<li>
+					<span class="badge-primary badge-sm">&nbsp;</span>
+					<strong><%= lang.humanResourceAcronym %></strong>
+					<small class="text-muted"><%= inter.getCost('hr', true) %></small>
+				</li>
+				<% } %>
+				<% if(inter.getCost('equipment', false) > 0) { %>
+				<li>
+					<span class="badge-success badge-sm">&nbsp;</span>
+					<strong><%= _.capitalize(lang.equipment) %></strong>
+					<small class="text-muted"><%= inter.getCost('equipment', true) %></small>
+				</li>
+				<% } %>
+				<% if(inter.getCost('consumable', false) > 0) { %>
+				<li>
+					<span class="badge-warning badge-sm">&nbsp;</span>
+					<strong><%= lang.consumable %></strong>
+					<small class="text-muted"><%= inter.getCost('consumable', true) %></small>
+				</li>
+				<% } %>
+			</ul>
+
+			<!-- Cost inter Stats progress-bar -->
+			<div class="progress">
+				<div class="progress-bar" style="width: <%= inter.getPercentageCost('hr') %>%" data-toggle="tooltip"
+					 data-original-title="<%= inter.getPercentageCost('hr') %>%">
+					<span class="sr-only"><%= lang.humanResources %></span><i class="fa fa-user fa-lg"></i>
+				</div>
+
+				<div class="progress-bar progress-bar-success" style="width: <%= inter.getPercentageCost('equipment') %>%" data-toggle="tooltip"
+					 data-original-title="<%= inter.getPercentageCost('equipment') %>%">
+					<span class="sr-only"><%= lang.equipment %></span><i class="fa fa-wrench fa-lg"></i>
+				</div>
+
+				<div class="progress-bar progress-bar-warning" style="width: <%= inter.getPercentageCost('consumable') %>%" data-toggle="tooltip"
+					 data-original-title="<%= inter.getPercentageCost('consumable') %>%">
+					<span class="sr-only"><%= lang.consumable %></span><i class="fa fa-barcode fa-lg"></i>
+				</div>
+			</div>
+
+
+			<!-- Table information -->
+			<table class="table table-bordered table-striped table-condensed table-vertical-align">
+				<thead>
+					<tr>
+						<th><%= _.capitalize(lang.type) %></th>
+						<th><%= _.capitalize(lang.description) %></th>
+						<!--<th><%= _.capitalize(lang.quantity) %></th>
+						<th><abbr title="<%= lang.unitPrice %>"><%= lang.unitPriceAcronym %></abbr></th>-->
+						<th class="text-right"><%= _.capitalize(lang.total) %></th>
+					</tr>
+				</thead>
+
+				<!-- RH -->
+				<% if(_.size(infos.hr) > 0) { %>
+				<tbody>
+					<tr>
+						<td rowspan="<%= _.size(infos.hr) %>"><%= lang.humanResourceAcronym %></td>
+						<td><i class="fa <%= infos.hr[0].logo %>"/> &nbsp;<%= infos.hr[0].type.name %></td>
+						<td rowspan="<%= _.size(infos.hr) %>" class="text-right"><%= inter.getCost('hr', true) %></td>
+					</tr>
+					<% 	_.each(_.rest(infos.hr), function(u){ %>
+					<tr>
+						<td><i class="fa <%= u.logo %>"></i> <%= u.type.name %></td>
+					</tr>
+					<% }) %>
+				</tbody>
+				<% } %>
+
+				<!-- Equipments -->
+				<% if(_.size(infos.equipments) > 0) { %>
+				<tbody>
+					<tr>
+						<td rowspan="<%= _.size(infos.equipments) %>"><%= lang.equipment %></td>
+						<td><i class="fa fa-wrench"></i> <%= infos.equipments[0].name %></td>
+						<td rowspan="<%= _.size(infos.equipments) %>" class="text-right"><%= inter.getCost('equipment', true) %></td>
+					</tr>
+					<% 	_.each(_.rest(infos.equipments), function(equip){ %>
+					<tr>
+						<td><i class="fa fa-wrench"></i> <%= equip.name %></td>
+					</tr>
+					<% }) %>
+				</tbody>
+				<% } %>
+
+				<!-- Consumables -->
+				<% if(_.size(infos.consumables) > 0) { %>
+				<tbody>
+					<tr>
+						<td rowspan="<%= _.size(infos.consumables) %>"><%= lang.consumable %></td>
+						<td><i class="fa fa-barcode"></i>  <%= infos.consumables[0].name %></td>
+						<td rowspan="<%= _.size(infos.consumables) %>" class="text-right"><%= inter.getCost('consumable', true) %></td></td>
+					</tr>
+					<% 	_.each(_.rest(infos.consumables), function(cons){ %>
+					<tr>
+						<td><i class="fa fa-barcode"></i> <%= cons.name %></td>
+					</tr>
+					<% }) %>
+				</tbody>
+				<% } %>
+
+				<!-- Total -->
+				<tbody>
+					<tr>
+						<td class="invisible"></td>
+						<td class="invisible"></td>
+						<td class="info text-right"><strong><%= inter.getCost('total', true) %></strong></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<% } %>
+
+		</div>
+
+		<div class="modal-footer">
+			<button type="button" data-dismiss="modal" class="btn btn-primary">Ok</button>
+		</div>
+	</div>
+</div>

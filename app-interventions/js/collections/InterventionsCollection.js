@@ -23,15 +23,16 @@ define([
 
 		url    : '/api/openstc/interventions',
 
-		fields : ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'site_details', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid', 'create_date', 'ask_id', 'equipment_id', 'has_equipment', 'todo_tasks', 'contract_id'],
+		fields : ['id', 'name', 'description', 'tasks', 'state', 'service_id', 'site1', 'site_details', 'date_deadline', 'planned_hours', 'effective_hours', 'total_hours', 'tooltip', 'progress_rate', 'overPourcent', 'actions','create_uid', 'create_date', 'ask_id', 'equipment_id', 'has_equipment', 'todo_tasks', 'contract_id', 'cost', 'hr_cost', 'equipment_cost', 'consumable_cost'],
 
 		advanced_searchable_fields: [
 			{ key: 'site1',         label: app.lang.place },
 			{ key: 'equipment_id',  label: app.lang.equipment },
 			{ key: 'service_id',    label: app.lang.service },
+			{ key: 'state',         label: app.lang.status },
+			{ key: 'cost',          label: app.lang.cost },
 			{ key: 'create_date',   label: app.lang.createDate },
-			{ key: 'date_deadline', label: app.lang.date_deadline },
-			{ key: 'state',         label: app.lang.status }
+			{ key: 'date_deadline', label: app.lang.date_deadline }
 		],
 
 		specialCpt: 0,
@@ -84,8 +85,8 @@ define([
 			});
 		},
 
-			
-		
+
+
 
 		/** Collection Sync
 		*/

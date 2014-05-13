@@ -1,0 +1,25 @@
+<div class="form-group">
+
+	<label for="field_consumables" class="control-label col-sm-3"><%= _.capitalize(lang.consumable) %></label>
+
+	<div class="col-sm-9">
+		<input type="text" id="field_consumables" class="select2" data-minimum-input-length="2" data-placeholder="<%= lang.actions.selectConsumables %>">
+	</div>
+
+</div>
+
+
+<!-- Table that contains the selected consumables -->
+<table class="tableConsumables table table-striped table-condensed table-vertical-align hide noMarginBottom">
+	<thead>
+		<tr>
+			<th><%= _.capitalize(lang.name) %></th>
+			<th><abbr title="<%= _.capitalize(lang.billofQuantities) %>"><%= _.capitalize(lang.BOQAcronym) %></abbr></th>
+			<th class="text-center"><%= _.capitalize(lang.quantity) %></th>
+			<th class="text-center"><abbr title="<%= lang.unitPrice %>"><%= lang.unitPriceAcronym %></abbr></th>
+		</tr>
+	</thead>
+
+	<tbody class="consumablesRows">
+	</tbody>
+</table>

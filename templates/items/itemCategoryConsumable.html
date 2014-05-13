@@ -1,0 +1,21 @@
+<td>
+	<i class="fa fa-tag"></i>&nbsp; <%= cat.getName() %>
+
+	<p class="row-actions invisible">
+		
+		<a href="#"  class="modalUpdateCat">
+			<i class="fa fa-pencil fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
+		</a>&nbsp;
+		
+
+		
+		<a href="#" class="modalDeleteCat">
+			<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+		</a>
+		
+	</p>
+</td>
+
+<td data-form-id="catCode"><%= cat.getCode() %></td>
+<!--  <td data-form-id="catParentConsumable"><%= cat.getParentConsumable() %></td> -->
+<td data-form-id="catServices"><%= cat.getServices() %></td>

@@ -12,14 +12,16 @@ define([
 	'taskModel',
 	'requestModel',
 	'taskRecurrenceModel',
-	
+
 	'modalDeleteView',
 	'modalCancelTaskView',
 	'modalTaskDoneView',
 	'modalRecurrenceTaskView',
+	'modalDetailCostTaskView',
 	'moment'
 
-], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel, TaskRecurrenceModel, ModalDeleteView, ModalCancelTaskView, ModalTaskDoneView, ModalRecurrenceTaskView, moment){
+], function(app, AppHelpers, InterventionModel, TaskModel, RequestModel, TaskRecurrenceModel, ModalDeleteView, ModalCancelTaskView, ModalTaskDoneView, ModalRecurrenceTaskView, ModalDetailCostTaskView, moment){
+
 
 	'use strict';
 
@@ -45,8 +47,10 @@ define([
 			'click a.printTask'                      : 'print',
 
 			'click .buttonTaskDone, .buttonNotFinish': 'displayModalTaskDone',
-			
-			'click a.modalRecurrenceDetails'		: 'displayRecurrenceDetails'
+
+			'click a.modalRecurrenceDetails'		: 'displayRecurrenceDetails',
+
+			'click a[data-action="detailCost"]'     : 'displayModalDetailCost'
 		},
 
 
@@ -246,17 +250,30 @@ define([
 		},
 
 
+
 		displayModalCancelTask: function(e) {
 			e.preventDefault();
+
 			new ModalCancelTaskView({el: '#modalCancelTask', model: this.model, inter:this.inter});
 		},
-		
+
+
 		displayRecurrenceDetails: function(e){
 			e.preventDefault();
 			new ModalRecurrenceTaskView({
 				el:'#modalRecurrenceDetails',
 				model: new TaskRecurrenceModel({id:this.model.getAttribute('recurrence_id',[false,''])[0]})
 			});
+
+		},
+
+
+		/** Modal to display the detail cost of the task
+		*/
+		displayModalDetailCost: function(e){
+			e.preventDefault();
+
+			new ModalDetailCostTaskView({ el: '#modalDetailCost', model: this.model });
 		}
 
 	});

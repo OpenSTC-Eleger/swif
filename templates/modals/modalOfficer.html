@@ -126,6 +126,17 @@
 						</div>
 					</div>
 
+					<!-- Officer time cost -->
+					<div class="form-group">
+						<label for="officerCost" class="control-label col-sm-3"><%= _.capitalize(lang.hourPrice) %>:</label>
+						<div class="col-sm-4">
+							<div class="input-group">
+								<input  id="officerCost"type="number" step="any" min="0" class="form-control" value="<%= officer.getCost() %>">
+								<span class="input-group-addon"><i class="fa fa-eur"></i></span>
+							</div>
+						</div>
+					</div>
+
 				<fieldset>
 
 				<% if(_.isNull(officer.getId())) {%>

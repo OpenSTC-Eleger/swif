@@ -12,5 +12,6 @@
 	"browser"      : true,
 	"jquery"       : true,
 	"devel"        : true,
+	"multistr"     : true,
 	"globals"      : { "requirejs": true, "require": true, "module": true, "define": true, "_": true, "Backbone": true }
 }

@@ -75,6 +75,16 @@
 	"equipments": {
 		"url"       : "configuration/equipements(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"  : "equipments"
+	},
+
+	"categoriesConsumables": {
+		"url"       : "configuration/categories-des-fournitures(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"function"  : "categoriesConsumables"
+	},
+
+	"consumables": {
+		"url"       : "configuration/fournitures(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"function"  : "consumables"
 	}
 
 }
