@@ -53,6 +53,11 @@ sup.badge{
   .label-variant(@pink);
 }
 
+// Reverse (black)
+.badge-inverse {
+  .label-variant(@navbar-inverse-bg);
+}
+
 
 
 /* Badge-small
@@ -62,4 +67,12 @@ sup.badge{
   .square(11px);
   border-radius: 50%;
   vertical-align: middle;
+}
+
+
+/* No radius badge
+-------------------------------------------------- */
+.badge-square{
+  border-radius:  0;
+  padding: 3px 5px;
 }

@@ -99,13 +99,13 @@ define([
 				else if(self.model.getAttribute('contract_id',false)){
 					originIcon = 'contract';
 				}
-				
+
 				var template = _.template(templateData, {
-					lang                   : app.lang,
-					interventionsState     : InterventionModel.status,
-					intervention          : self.model,
-					originKey				: app.lang.interventionsLang.originKey[originIcon],
-					originHelper			: app.lang.interventionsLang.originHelper[originIcon]
+					lang              : app.lang,
+					interventionsState: InterventionModel.status,
+					intervention      : self.model,
+					originKey         : app.lang.interventionsLang.originKey[originIcon],
+					originHelper      : app.lang.interventionsLang.originHelper[originIcon]
 				});
 
 				$(self.el).html(template);

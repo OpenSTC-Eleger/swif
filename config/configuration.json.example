@@ -2,9 +2,6 @@
 	"openerp" : {
 		"database"  : "pontlabbe2"
 	},
-	"barakafrites": {
-		"url" : "http://localhost"
-	},
 
 	"itemsPerPage"      : 20,
 	"startWorkTime"     : 8.0,

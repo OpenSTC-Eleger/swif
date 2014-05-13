@@ -1,7 +1,9 @@
 <td><%= intervention.id %></td>
+
+<!-- Intervention name -->
 <td>
 	<% if(originKey){ %>
-		<kbd data-toggle="tooltip" data-original-title="<%= originHelper %>"><b><%= originKey %></b></kbd>
+		<span class="badge badge-square badge-inverse" data-toggle="tooltip" data-original-title="<%= originHelper %>"><%= originKey %></span>
 	<% } %>
 	<a class="accordion-object" href="#collapse_<%= intervention.id %>" data-toggle="popover" data-content="<%= intervention.getDescription() %>" data-delay="160" data-original-title="<%= _.capitalize(lang.description) %>">
 		<i class="fa fa-tumb_tack">&nbsp;&nbsp;</i><%= _.capitalize(_(intervention.getName()).escapeHTML()) %>
@@ -21,6 +23,8 @@
 		<% } %>
 	</p>
 </td>
+
+<!-- Intervention object (Site or Equipment) -->
 <td>
 <% if(intervention.onEquipment()){ %>
 	<i class="fa fa-wrench fa-fw"></i>&nbsp;<%= intervention.getEquipment() %> <small class="text-muted">(<%= intervention.getSite() %>)</small>
