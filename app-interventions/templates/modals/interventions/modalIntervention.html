@@ -3,15 +3,18 @@
 
 
 		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h3 class="modal-title">
+			<div class="btn-group btn-group-xs pull-right">
+				<a type="button" class="btn text-info hidden-xs" title="<%= lang.zenMode %>" data-action="zenmode"><i class="fa fa-arrows-alt"></i></a>
+				<a type="button" class="btn close" data-dismiss="modal"><i class="fa fa-times"></i></a>
+			</div>
+			<h4 class="modal-title">
 				<i class="fa fa-pencil-square-o"></i>&nbsp;
 				<% if(_.isNull(intervention.id)){ %>
 					<%= _.capitalize(lang.viewsTitles.newIntervention) %>
 				<% } else{ %>
 					<%= lang.viewsTitles.interventionDetail %> n°<%= intervention.id %>
 				<% } %>
-			</h3>
+			</h4>
 		</div>
 
 
@@ -20,105 +23,100 @@
 
 			<form id="formIntervention" action="#" class="form-horizontal" role="form">
 
-					<!-- About the intervention -->
-					<fieldset>
-						<legend><%= lang.aboutTheIntervention %></legend>
+				<!-- intervention Name -->
+				<div class="form-group">
+					<label for="interventionName" class="control-label col-sm-3"><%= _.capitalize(lang.label) %>:</label>
 
-							<!-- intervention Name -->
-							<div class="form-group">
-								<label for="interventionName" class="control-label col-sm-3"><%= _.capitalize(lang.label) %>:</label>
+					<div class="col-sm-9">
+						<input type="text" id="interventionName" class="form-control" value="<%= intervention.name %>" required="required">
+						<span class="help-inline"></span>
+					</div>
+				</div>
 
-								<div class="col-sm-9">
-									<input type="text" id="interventionName" class="form-control" value="<%= intervention.name %>" required="required">
-									<span class="help-inline"></span>
-								</div>
+				<div class="form-group">
+					<div class="col-sm-9 col-sm-offset-3">
+						<label for="isTemplate" class="checkbox"><%= _.capitalize(lang.templateTasks) %>
+							<input type="checkbox" id="isTemplate">
+						</label>
+					</div>
+				</div>
+
+				<!-- intervention Description -->
+				<div class="form-group">
+					<label for="interventionDescription" class="control-label col-sm-3"><%= _.capitalize(lang.description) %>:</label>
+
+					<div class="col-sm-9">
+						<textarea id="interventionDescription" rows="5" class="form-control" required><%= intervention.description %></textarea>
+					</div>
+				</div>
+
+				<!-- intervention DeadLine -->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="interventionDateDeadline"><%= _.capitalize(lang.dateDeadline) %>:</label>
+
+					<div class="col-sm-4">
+						<div class="input-group">
+						<input
+							type="text" class="form-control datepicker"
+							id="interventionDateDeadline"
+							value="<%= deadLineDt.format('L') %>"
+							placeholder="dd/mm/yyyy"
+							required>
+							<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						</div>
+					</div>
+				</div>
+
+
+				<!-- intervention Contact Service -->
+				<div class="form-group">
+					<label for="interventionDetailService" class="control-label col-sm-3" ><%= lang.serviceConcerned %>:</label>
+
+					<div class="col-sm-9">
+						<input id="interventionDetailService" class="select2" required data-placeholder="<%= lang.actions.selectAService %>">
+					</div>
+				</div>
+
+				<!-- intervention Patrimoine -->
+		        <div class="form-group">
+		            <label for="interventionPlaceEquipment" class="control-label col-sm-3"><%= _.capitalize(lang.placeOrEquipment) %>:</label>
+
+		            <div class="col-sm-9">
+		            	<div class="input-group">
+							<div class="input-group-btn">
+								<button class="btn btn-default dropdown-toggle" id="btnSelectPlaceEquipment" data-item="place" data-toggle="dropdown"><i class="fa fa-map-marker fa-fw iconItem"></i>&nbsp; <span class="fa fa-caret-down"></span></button>
+								<ul class="dropdown-menu">
+									<li><a href="#" class="linkSelectPlaceEquipment" data-item="place"><i class="fa fa-map-marker fa-fw"></i> <%= lang.place %></a></li>
+									<li><a href="#" class="linkSelectPlaceEquipment" data-item="equipment"><i class="fa fa-wrench fa-fw"></i> <%= lang.equipment %></a></li>
+								</ul>
 							</div>
-
-							<div class="form-group">
-								<div class="col-sm-9 col-sm-offset-3">
-									<label for="isTemplate" class="checkbox"><%= _.capitalize(lang.templateTasks) %>
-										<input type="checkbox" id="isTemplate">
-									</label>
-								</div>
-							</div>
-
-							<!-- intervention Description -->
-							<div class="form-group">
-								<label for="interventionDescription" class="control-label col-sm-3"><%= _.capitalize(lang.description) %>:</label>
-
-								<div class="col-sm-9">
-									<textarea id="interventionDescription" rows="5" class="form-control" required><%= intervention.description %></textarea>
-								</div>
-							</div>
-
-							<!-- intervention DeadLine -->
-							<div class="form-group">
-								<label class="control-label col-sm-3" for="interventionDateDeadline"><%= _.capitalize(lang.dateDeadline) %>:</label>
-
-								<div class="col-sm-4">
-									<div class="input-group">
-									<input
-										type="text" class="form-control datepicker"
-										id="interventionDateDeadline"
-										value="<%= deadLineDt.format('L') %>"
-										placeholder="dd/mm/yyyy"
-										required>
-										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-									</div>
-								</div>
-							</div>
-
-
-							<!-- intervention Contact Service -->
-							<div class="form-group">
-								<label for="interventionDetailService" class="control-label col-sm-3" ><%= lang.serviceConcerned %>:</label>
-
-								<div class="col-sm-9">
-									<input id="interventionDetailService" class="select2" required data-placeholder="<%= lang.actions.selectAService %>">
-								</div>
-							</div>
-
-					<!-- intervention Patrimoine -->
-	                <div class="form-group">
-	                    <label for="interventionPlaceEquipment" class="control-label col-sm-3"><%= _.capitalize(lang.placeOrEquipment) %>:</label>
-
-	                    <div class="col-sm-9">
-	                    	<div class="input-group">
-								<div class="input-group-btn">
-									<button class="btn dropdown-toggle" id="btnSelectPlaceEquipment" data-item="place" data-toggle="dropdown"><i class="fa fa-map-marker fa-fw iconItem"></i>&nbsp; <span class="fa fa-caret-down"></span></button>
-									<ul class="dropdown-menu">
-										<li><a href="#" class="linkSelectPlaceEquipment" data-item="place"><i class="fa fa-map-marker fa-fw"></i> <%= lang.place %></a></li>
-										<li><a href="#" class="linkSelectPlaceEquipment" data-item="equipment"><i class="fa fa-wrench fa-fw"></i> <%= lang.equipment %></a></li>
-									</ul>
-								</div>
-									<input id="interventionPlaceEquipment" class="select2" data-minimum-input-length="2"
-									required data-placeholder="<%= lang.actions.selectAPlace %>">
-		                        <span class="help-inline"></span>
-		                    </div>
-	                    </div>
-	                </div>
-
-		            <!-- Request Place (if Equipment) -->
-		            <div class="form-group" id="interventionPlaceIfEquipmentBlock" style="display: none;">
-		                <label for="interventionPlaceIfEquipment" class="control-label col-sm-3"><%= _.capitalize(lang.location) %>:</label>
-
-		                <div class="form-controls col-sm-9">
-							<input id="interventionPlaceIfEquipment" class="select2" data-placeholder="<%= lang.actions.selectAPlace %>">
+								<input id="interventionPlaceEquipment" class="select2" data-minimum-input-length="2"
+								required data-placeholder="<%= lang.actions.selectAPlace %>">
 		                    <span class="help-inline"></span>
 		                </div>
 		            </div>
+		        </div>
 
-					<!-- intervention Place precision -->
-					<div class="form-group">
-						<label for="interventionPlacePrecision" class="control-label col-sm-3"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
+				<!-- Request Place (if Equipment) -->
+				<div class="form-group" id="interventionPlaceIfEquipmentBlock" style="display: none;">
+				    <label for="interventionPlaceIfEquipment" class="control-label col-sm-3"><%= _.capitalize(lang.location) %>:</label>
 
-						<div class="form-controls col-sm-9">
-							 <textarea name="interventionPlacePrecision" class="form-control" id="interventionPlacePrecision" rows="2"><%= intervention.site_details!=false?intervention.site_details:'' %></textarea>
-							<span class="help-inline"></span>
-						</div>
+				    <div class="form-controls col-sm-9">
+						<input id="interventionPlaceIfEquipment" class="select2" data-placeholder="<%= lang.actions.selectAPlace %>">
+				        <span class="help-inline"></span>
+				    </div>
+				</div>
+
+				<!-- intervention Place precision -->
+				<div class="form-group">
+					<label for="interventionPlacePrecision" class="control-label col-sm-3"><%= _.capitalize(lang.informationOfTheSite) %>:</label>
+
+					<div class="form-controls col-sm-9">
+						 <textarea name="interventionPlacePrecision" class="form-control" id="interventionPlacePrecision" rows="2"><%= intervention.site_details!=false?intervention.site_details:'' %></textarea>
+						<span class="help-inline"></span>
 					</div>
+				</div>
 
-				</fieldset>
 			</form>
 		</div>
 		<!-- / Modal Body -->
