@@ -38,6 +38,7 @@ define(['app',
 				//'hidde.bs.modal'				: 'hide',
 				'hidden.bs.modal'				: 'hidden',
 				'submit #formModalSaveModel'	: 'save',
+				'click [data-action="zenmode"]': 'toggleZenmode'
 			}, GenericFormView.prototype.events);
 		},
 		
@@ -147,6 +148,13 @@ define(['app',
 				self.modal.modal('hide');
 			});
 		},
+		/** Toggle fullscreen mode
+		*/
+		toggleZenmode: function(){
+
+			$(this.el).find('.modal-dialog').toggleClass('modal-zenmode');
+			$('.modal-backdrop').toggleClass('zenmode');
+		}
 		
 	});
 });
