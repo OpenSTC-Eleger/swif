@@ -34,7 +34,7 @@ requirejs.config({
 		bsSwitch              : 'libs/bootstrap-switch-3.0.0-min',
 		bsTimepicker          : 'libs/bootstrap-timepicker-0.2.3',
 		fullcalendar          : 'libs/fullcalendar-1.6.4-min',
-		select2               : 'libs/select2-3.4.6-min',
+		select2               : 'libs/select2-3.4.8-min',
 
 		less                  : 'libs/less-1.7.0-min',
 

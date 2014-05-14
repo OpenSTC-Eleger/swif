@@ -95,7 +95,6 @@ module.exports = function(grunt) {
 			},
 			scripts_patrimoine: {
 				src: ['app-patrimoines/js/**/*.js', 'app-patrimoines/main.js']
-				//src: ['app-patrimoines/main.js', 'app-reservations/js/routers/*.js', 'app-reservations/js/models/*.js', 'app-reservations/js/collections/*.js']
 			},
 		},
 
