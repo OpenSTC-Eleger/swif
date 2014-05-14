@@ -596,6 +596,7 @@ define([
 				whole_day: this.getAttribute('whole_day',false),
 				note: this.getAttribute('note',false),
 				is_template: this.isTemplate(),
+				recurrence_id: this.recurrence ? this.recurrence.getId() : false
 			};
 		},
 
