@@ -11,9 +11,9 @@
 	<label class="control-label col-sm-3" for="date_start_order"><%= lang.patrimoine.period %></label>
 	<div class="col-sm-9">
 		<div class="input-daterange input-group datepicker">
-			<span class="input-group-addon">Du</span>
+			<span class="input-group-addon"><%= _.capitalize(lang.from) %></span>
 			<input type="text" id="date_start_order" class="form-control field-element" placeholder="dd/mm/yyyy" value="<%= contract.getDateFr('date_start_order') %>" required>
-			<span class="input-group-addon">Au</span>
+			<span class="input-group-addon"><%= _.capitalize(lang.to) %></span>
 			<input type="text" id="date_end_order" class="form-control field-element" placeholder="dd/mm/yyyy" value="<%= contract.getDateFr('date_end_order') %>" required>
 		</div>
 	</div>
