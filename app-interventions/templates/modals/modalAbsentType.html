@@ -2,15 +2,18 @@
 	<div class="modal-content">
 
 		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h3 class="modal-title">
+			<div class="btn-group btn-group-xs pull-right">
+				<a type="button" class="btn text-info hidden-xs" title="<%= lang.zenMode %>" data-action="zenmode"><i class="fa fa-arrows-alt"></i></a>
+				<a type="button" class="btn close" data-dismiss="modal"><i class="fa fa-times"></i></a>
+			</div>
+			<h4 class="modal-title">
 				<i class="fa fa-edit"></i>&nbsp;
 				<% if(_.isNull(absentType.getId())){ %>
 					<%= _.capitalize(lang.viewsTitles.newAbsentType) %>
 				<% } else{ %>
 					<%= _.capitalize(lang.viewsTitles.editAbsentType) %>
 				<% } %>
-			</h3>
+			</h4>
 		</div>
 
 		<div class="modal-body">

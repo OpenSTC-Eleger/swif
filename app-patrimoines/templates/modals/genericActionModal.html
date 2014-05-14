@@ -3,16 +3,16 @@
 
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h3 class="modal-title">
+			<h4 class="modal-title">
 				<i class="fa fa-edit">
 				<%= _.has(langAction, action) ? langAction[action] : ''%>
 				</i>&nbsp;
-			</h3>
+			</h4>
 		</div>
 
 		<!-- Modal Body  -->
 		<div class="modal-body">
-			
+
 			<% var information =  model.getInformations(); %>
 			<blockquote class="spaceBottom">
 				<p><%= information.name %></p>

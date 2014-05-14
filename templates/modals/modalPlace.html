@@ -2,8 +2,11 @@
 	<div class="modal-content">
 
 		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h3 class="modal-title">
+			<div class="btn-group btn-group-xs pull-right">
+				<a type="button" class="btn text-info hidden-xs" title="<%= lang.zenMode %>" data-action="zenmode"><i class="fa fa-arrows-alt"></i></a>
+				<a type="button" class="btn close" data-dismiss="modal"><i class="fa fa-times"></i></a>
+			</div>
+			<h4 class="modal-title">
 				<i class="fa fa-edit fa-fw"></i>&nbsp;
 				<% if(_.isNull(place.getId())){ %>
 				<%= _.capitalize(lang.viewsTitles.newPlace) %>
@@ -17,7 +20,7 @@
 						<span class="bar"></span>
 					</span>
 				<% } %>
-			</h3>
+			</h4>
 		</div>
 
 
@@ -140,8 +143,8 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">
 								<input type="checkbox" id="placeInternalBooking" <%= !_.isNull(place.getId()) &&
-								place.getInternalBooking() ? 'checked' : ''%> value="1" class="checkbox-inline"><%=
-								_.capitalize(lang.internal_booking) %>: </input>
+								place.getInternalBooking() ? 'checked' : ''%> value="1" class="checkbox-inline">
+								<%= _.capitalize(lang.internal_booking) %>:
 							</label>
 
 							<div class="col-sm-9">
@@ -161,8 +164,8 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">
 								<input type="checkbox" id="placeExternalBooking" value="1" <%= !_.isNull(place.getId())
-								&& place.getExternalBooking() ? 'checked' : ''%> class="checkbox-inline"><%=
-								_.capitalize(lang.external_booking) %>:
+								&& place.getExternalBooking() ? 'checked' : ''%> class="checkbox-inline">
+								<%= _.capitalize(lang.external_booking) %>:
 							</label>
 
 							<div class="col-sm-9">

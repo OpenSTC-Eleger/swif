@@ -3,14 +3,14 @@
 
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h3 class="modal-title">
+			<h4 class="modal-title">
 				<i class="fa fa-edit"></i>&nbsp;
 				<% if(_.isNull(cat.getId())){ %>
 					<%= _.capitalize(lang.viewsTitles.newCat) %>
 				<% } else{ %>
 					<%= _.capitalize(lang.viewsTitles.editCat) %>
 				<% } %>
-			</h3>
+			</h4>
 		</div>
 
 		<!-- Modal Body -->
@@ -38,7 +38,7 @@
 					</div>
 				</div>
 
-				
+
 				<!-- Place Parent -->
 				<!--  <div class="form-group">
 					<label for="catParent" class="col-sm-3 control-label"><%=
