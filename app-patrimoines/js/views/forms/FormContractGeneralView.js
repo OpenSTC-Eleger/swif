@@ -64,7 +64,8 @@ define(['app',
 					lang		: app.lang,
 					readonly	: false,
 					moment		: moment,
-					user		: app.current_user
+					user		: app.current_user,
+					contract	: self.model
 				});
 
 				$(self.el).html(template);

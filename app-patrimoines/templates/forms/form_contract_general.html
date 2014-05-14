@@ -8,11 +8,16 @@
 <div class="form-group field" data-field-label="<%= lang.note%>" data-field-name="description"></div>
 
 <div class="form-group">
-	<!-- contract date start -->
-	<div class="field" data-field-label="<%= lang.patrimoine.period%>" data-field-name="date_start_order"></div>
-	<div class="col-sm-1 control-label control-label-center">-</div>
-	<!-- contract date end -->
-	<div class="field" data-field-label="" data-field-name="date_end_order"></div>
+	<label class="control-label col-sm-3" for="date_start_order"><%= lang.patrimoine.period %></label>
+	<div class="col-sm-9">
+		<div class="input-daterange input-group datepicker">
+			<span class="input-group-addon">Du</span>
+			<input type="text" id="date_start_order" class="form-control field-element" placeholder="dd/mm/yyyy" value="<%= contract.getDateFr('date_start_order') %>" required>
+			<span class="input-group-addon">Au</span>
+			<input type="text" id="date_end_order" class="form-control field-element" placeholder="dd/mm/yyyy" value="<%= contract.getDateFr('date_end_order') %>" required>
+		</div>
+	</div>
+	
 </div>
 
 <!-- contract delay deadline -->
