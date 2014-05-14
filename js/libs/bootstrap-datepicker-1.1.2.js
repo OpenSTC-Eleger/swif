@@ -413,7 +413,7 @@
 			this.picker.show();
 			this.place();
 			this._attachSecondaryEvents();
-			this._trigger('show');
+			this._trigger('show.datepicker');
 		},
 
 		hide: function(){
@@ -435,7 +435,7 @@
 				)
 			)
 				this.setValue();
-			this._trigger('hide');
+			this._trigger('hide.datepicker');
 		},
 
 		remove: function(){
