@@ -180,7 +180,7 @@ define(['app',
 		
 		savePostForm: function(e){
 			e.preventDefault();
-			this.saveForm(e, true, {wkf_evolve:'post'});
+			this.saveForm(e, false, {wkf_evolve:'post'});
 		},
 		
 		saveDraftForm: function(e){
