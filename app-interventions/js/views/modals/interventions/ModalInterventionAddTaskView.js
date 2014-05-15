@@ -9,15 +9,19 @@ define([
 
 	'taskModel',
 	'categoriesTasksCollection',
+	'officersCollection',
+	'teamsCollection',
+	'claimersCollection',
 
 	'genericModalView',
 	'advancedSelectBoxView',
+	'multiSelectBoxUsersView',
 
 	'moment-timezone',
 	'moment-timezone-data',
 	'bsTimepicker',
 
-], function(app, TaskModel, CategoriesTasksCollection, GenericModalView, AdvancedSelectBoxView, moment){
+], function(app, TaskModel, CategoriesTasksCollection, OfficersCollection, TeamsCollection, ClaimersCollection, GenericModalView, AdvancedSelectBoxView, MultiSelectBoxUsersView, moment){
 
 	'use strict';
 
@@ -78,6 +82,10 @@ define([
 				}
 
 				app.views.advancedSelectBoxCategoriesInterventionAddTaskView.render();
+				
+				// Create the view to select the user who have done the task //
+				self.multiSelectBoxUsersView = new MultiSelectBoxUsersView({el: '.multiSelectUsers', serviceID: self.options.inter.getService('id')});
+				self.multiSelectBoxUsersView.off().on('userType-change', function(){ self.serviceCostSection(); });
 			});
 
 			return this;
@@ -115,6 +123,22 @@ define([
 				planned_hours: mDuration.asHours(),
 			};
 
+			var res = self.multiSelectBoxUsersView.getUserType();
+			if(res.type == TeamsCollection.prototype.key){
+				params.user_id = false;
+				params.partner_id = false;
+				params.team_id = res.value;
+			}
+			else if(res.type == OfficersCollection.prototype.key){
+				params.team_id = false;
+				params.partner_id = false;
+				params.user_id = res.value;
+			}
+			else if(res.type == ClaimersCollection.prototype.key){
+				params.team_id = false;
+				params.user_id = false;
+				params.partner_id = res.value;
+			}
 
 			this.model.save(params, {silent: true}).done(function(data){
 				self.model.setId(data, {silent: true});
@@ -131,6 +155,21 @@ define([
 			.fail(function(e){
 				console.log(e);
 			});
+		},
+		
+		/** Function trigger when the user type change
+		* If the user type == provider the field service cost price appear
+		*/
+		serviceCostSection: function(){
+			var t = this.multiSelectBoxUsersView.getUserType();
+
+			if(t.type == ClaimersCollection.prototype.key){
+				$('#serviceCostSection').stop().slideDown();
+			}
+			else{
+				$('#serviceCostSection').stop().slideUp();
+			}
+
 		}
 
 	});

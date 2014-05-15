@@ -96,6 +96,7 @@ define([
 					lang               : app.lang,
 					interventionsState : InterventionModel.status,
 					task               : model,
+					taskModel          : self.model,
 					InterventionModel  : InterventionModel,
 					TaskModel          : TaskModel,
 					UserModel          : app.current_user,
