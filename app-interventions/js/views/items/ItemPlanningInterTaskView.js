@@ -94,14 +94,12 @@ define([
 
 				var template = _.template(templateData, {
 					lang               : app.lang,
-					interventionsState : InterventionModel.status,
 					task               : model,
-					taskModel          : self.model,
-					InterventionModel  : InterventionModel,
 					TaskModel          : TaskModel,
-					UserModel          : app.current_user,
+					taskClass          : self.getIconClass(),
+					recurrenceClass    : model.recurrence_id ? 'fa fa-refresh' : '',
+					dataOriginalTitle  : self.getDataOriginalTitle(),
 					AppHelpers         : AppHelpers,
-					moment             : moment
 				});
 
 				$(self.el).html(template);
@@ -179,6 +177,45 @@ define([
 			return this;
 		},
 
+		/**
+		 * Get Icon class (it depends on state value)
+		 */
+		getIconClass: function() {
+			var taskClass ='';
+			if (this.model.affectedTo()!==false) {
+				taskClass ='fa ' + this.model.affectedTo('logo');
+			}
+			else if( this.model.getState()==TaskModel.status.draft.key) {
+				taskClass ='fa fa-chevron-right';
+			}
+			else if(this.model.getState()==TaskModel.status.open.key){
+				taskClass ='fa fa-clock-o';
+			}
+			return taskClass;
+		},
+
+
+		/** Adapts Title class
+		*/
+		getDataOriginalTitle: function() {
+			var dateStart = this.model.getDateStart();
+			if( dateStart!==false ) {
+				dateStart = moment(dateStart).tz(app.current_user.getContext().tz);
+				dateStart.add('minutes',-dateStart.zone());
+			}
+			var dataOriginalTitle = '';
+			if( dateStart!==false ){
+				dataOriginalTitle = dateStart.format('LLL');
+			}
+			
+			if( _.isBlank(dataOriginalTitle) ){
+				dataOriginalTitle = this.model.affectedTo()?this.model.affectedTo():'';
+			}
+			else{
+				dataOriginalTitle +=  ' - ' +  this.model.affectedTo();
+			}
+			return dataOriginalTitle;
+		},
 
 
 		/** Display modal Add to delete task
