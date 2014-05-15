@@ -7,14 +7,14 @@
 define(['app',
 		'appHelpers',
 		'advancedSelectBoxView',
-		
+
 		'moment',
 		'moment-timezone-data',
 		'bsTimepicker',
 		'bsDatepicker-lang',
 		'bsSwitch',
 		'select2'
-		
+
 
 ], function (app, AppHelpers, AdvancedSelectBoxView, moment) {
 
@@ -29,7 +29,7 @@ define(['app',
 		collectionName: null,
 		modelName: null,
 		templatesBinding: {moment: moment},
-		
+
 		// The DOM events //
 		events: {
 			'change .field-element'			: 'performModelChange',
@@ -52,7 +52,7 @@ define(['app',
 			}
 			return '#' + url;
 		},
-		
+
 		/**
 		 * Get value and definition of a field
 		 * retrieve data from "this.model"
@@ -72,7 +72,7 @@ define(['app',
 			}
 			return ret;
 		},
-		
+
 		renderOneComponent: function(dom){
 			var self = this;
 			var deferred = $.Deferred();
@@ -100,7 +100,7 @@ define(['app',
 			}
 			return deferred;
 		},
-		
+
 		renderOneSwitchComponent: function(dom){
 			var switchData = this.getField(dom.data('field-switch-name'));
 			var activeField = switchData.value ? dom.data('field-name-yes') : dom.data('field-name-no');
@@ -113,7 +113,7 @@ define(['app',
 				dom.html(_.template(templateData, fieldData));
 			});
 		},
-		
+
 		/**
 		 * Method used to render form according to field definitions
 		 */
@@ -130,7 +130,7 @@ define(['app',
 			});
 			return $.when.apply($,arrayDeferred);
 		},
-		
+
 		/**
 		 * compute OpenERP domain to an objectified domain (field: ..., operator: ..., value: ...)
 		 */
@@ -146,7 +146,7 @@ define(['app',
 			});
 			return ret;
 		},
-		
+
 		/**
 		 * Parse Url to replace variable (":technical_service_id" for example) with its value on the url
 		 * return a copy of the url parsed with the data
@@ -163,7 +163,7 @@ define(['app',
 			}
 			return ret;
 		},
-		
+
 		renderOneAvancedSelectBox: function(dom){
 			//if a component already exists, remove it properly
 			if(_.has(this.advancedSelectBoxes),dom.attr('id')){
@@ -171,22 +171,22 @@ define(['app',
 			}
 			//if url contains variable such as ":technical_service_id", then replace this variable with its value before applying url to the component
 			var url = this.parseUrl(dom.attr('data-url'));
-			
+
 			//create the component, apply url to it and store the component on a view attribute
 			var select = new AdvancedSelectBoxView({el: dom, url: url});
 			this.advancedSelectBoxes[dom.attr('id')] = select;
 			select.resetSearchParams();
-			
+
 			select.render();
 		},
-		
+
 		renderAdvancedSelectBoxes: function(){
 			var self = this;
 			$(this.el).find('input.select2.field-element').each(function(){
 				self.renderOneAvancedSelectBox($(this));
 			});
 		},
-		
+
 		/**
 		 * Method used to update visibility of the html components, based on html markup and model fields data
 		 */
@@ -203,7 +203,7 @@ define(['app',
 				}
 			});
 		},
-		
+
 		/**
 		 * for each advancedSelectBox, update their url (usually triggered after a model update)
 		 */
@@ -214,7 +214,7 @@ define(['app',
 				item.options.url = url;
 			});
 		},
-		
+
 		/**
 		 * store the new value (from the widget) on the model
 		 */
@@ -232,17 +232,17 @@ define(['app',
 				this.model.set(fieldName,value);
 			}
 		},
-		
+
 		/**
 		 * triggered at each change on the model
 		 * Used to perform dom updates for example
-		 * Can be override to make custom behavior according to specifics attributes changes 
+		 * Can be override to make custom behavior according to specifics attributes changes
 		 */
 		modelChanged: function(){
 			this.updateAdvancedSelectBoxUrl();
 			this.updateDoms();
 		},
-		
+
 		/**
 		 * datetime component is divided into 2 components, 1 for "date" value, 1 for "item" value
 		 * @return: utc string value, or false if one of the 2 components is not set (or not correctly set)
@@ -260,7 +260,7 @@ define(['app',
 			console.log(ret.isValid() ? ret.format('YYYY-MM-DD HH:mm:ss') : false);
 			return ret.isValid() ? ret.format('YYYY-MM-DD HH:mm:ss') : false;
 		},
-		
+
 		/** View Initialization
 		*/
 		initialize : function() {
@@ -298,7 +298,7 @@ define(['app',
 				}
 			});
 		},
-		
+
 		/** Display the view
 		*/
 		render: function() {
@@ -308,25 +308,25 @@ define(['app',
 				self.renderAdvancedSelectBoxes();
 				self.updateDoms();
 				$(self.el).find('.make-switch').bootstrapSwitch();
-				$(self.el).find('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
+				$(self.el).find('.input-daterange, input.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 				$(self.el).find('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: true, modalBackdrop: false});
 				$('fieldset[disabled] .invisibleOnReadonly').addClass('hide-soft');
 				$('fieldset[disabled] .removeOnReadonly').remove();
 				$('fieldset[disabled] .select2').select2('enable',false);
 			});
 		},
-		
+
 		/**
-		 * Save data into backend, use special behavior of method 'saveToBackebnd' to work fine with OpenERP 
+		 * Save data into backend, use special behavior of method 'saveToBackebnd' to work fine with OpenERP
 		 */
-		
+
 		saveForm: function(e){
 			e.preventDefault();
 			return this.model.saveToBackend().fail(function(e){
 				console.log(e);
 			});
 		},
-		
+
 		/**
 		 * Initialize model, fetch its data (if id is set on url) and perform a HEAD request to have fields definitions
 		 */
@@ -334,7 +334,7 @@ define(['app',
 			var arrayDeferred = [];
 			//if needed, initialize model
 			if(_.isUndefined(this.model)){
-				//Create instance of the model, and if set, link it with "this.parentModel" 
+				//Create instance of the model, and if set, link it with "this.parentModel"
 				if(_.isUndefined(this.options.id)){
 					this.model = new this.modelName({}, {parentModel: this.parentModel});
 				}
@@ -351,7 +351,7 @@ define(['app',
 			if(!this.model.isNew()){
 				arrayDeferred.push(this.model.fetch());
 			}
-			
+
 			return $.when.apply($, arrayDeferred);
 		}
 	});
