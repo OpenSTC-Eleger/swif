@@ -1,3 +1,12 @@
 {
+	"achatsstocks" : {
 
+		"plannedAmount"				: "Montant planifié",
+		"spentAmount"				: "Montant dépensé",
+
+
+		"viewsTitles" : {
+			"budgetsList"			: "Suivi des budgets"
+		}
+	}
 }

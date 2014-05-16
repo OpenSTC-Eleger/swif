@@ -44,6 +44,7 @@ define([
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new PlacesCollection(); }
 
+			this.buttonAction = 'Nouvelle ligne budgétaire';
 			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
@@ -55,7 +56,7 @@ define([
 			var self = this;
 
 			// Change the page title //
-			app.router.setPageTitle(app.lang.viewsTitles.budgetsList);
+			app.router.setPageTitle(app.lang.achatsstocks.viewsTitles.budgetsList);
 
 
 			// Retrieve the template //
