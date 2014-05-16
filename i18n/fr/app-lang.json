@@ -261,6 +261,10 @@
     "humanResources"                        : "Ressources humaines",
     "humanResourceAcronym"                  : "RH",
     "zenMode"                               : "plein écran",
+    "ContractValid"							: "Validé",
+    "contractClosed"						: "Clôturé",
+    "contractCancel"						: "Annulé",
+    
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
     "monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],

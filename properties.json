@@ -1,6 +1,6 @@
 {
 	"name"       : "OpenSTC",
-	"version"    : "1.6.0",
+	"version"    : "1.7.0",
 	"description": "Gestion des services techniques communaux",
 	"dependencies": {
 		"jQuery"               : "2.1.0",
