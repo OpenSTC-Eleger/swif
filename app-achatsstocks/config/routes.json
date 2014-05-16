@@ -3,6 +3,11 @@
 	"budgetsList": {
 		"url"		: "budgets(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"	: "budgetsList"
+	},
+	
+	"purchasesList": {
+		"url"		: "commandes(/search/:search)(/filter/:filter)(/sort/:sort)(/page/:page)",
+		"function"	: "purchasesList"
 	}
 
 }

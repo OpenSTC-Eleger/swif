@@ -1,3 +1,15 @@
 {
-
+	"achatsstock": {
+		
+		"amountTaxed"		: "Montant TTC",
+		
+		"actions": {
+			"addPurchase"	: "Créer une commande"
+		},
+		
+		"viewsTitles": {
+			"purchasesList": "listes des Commandes"
+		}
+		
+	}
 }

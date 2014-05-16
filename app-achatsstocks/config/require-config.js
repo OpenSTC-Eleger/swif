@@ -16,13 +16,14 @@ requirejs.config({
 		appAchatsStocksRouter      	    : '../app-achatsstocks/js/routers/AppRouter',
 
 		// Collections //
-		//requestsCollection          	: '../app-achatsstocks/js/collections/RequestsCollection',
+		purchasesCollection          	: '../app-achatsstocks/js/collections/PurchasesCollection',
 
 		// Models //
-		//requestModel                	: '../app-achatsstocks/js/models/RequestModel',
+		purchaseModel                	: '../app-achatsstocks/js/models/PurchaseModel',
 
 		// Views //
-		budgetsListView                	: '../app-achatsstocks/js/views/lists/BudgetsListView'
+		budgetsListView                	: '../app-achatsstocks/js/views/lists/BudgetsListView',
+		purchasesListView				: '../app-achatsstocks/js/views/lists/PurchasesListView',
 	}
 
 });
