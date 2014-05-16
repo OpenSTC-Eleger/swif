@@ -81,7 +81,7 @@ module.exports = function(grunt) {
 				src: ['Gruntfile.js']
 			},
 			jsonFile: {
-				src: ['properties.json', 'package.json', 'config/*.json.*', 'i18n/**/*.json', 'grunt/.*.json', 'app-interventions/config/*.json', 'app-reservations/config/*.json'],
+				src: ['properties.json', 'package.json', 'config/*.json.*', 'i18n/**/*.json', 'grunt/.*.json', 'app-interventions/config/*.json', 'app-reservations/config/*.json', 'app-patrimoines/config/*.json', 'app-achatsstocks/config/*.json'],
 			},
 			scripts_main: {
 				src: ['js/**/*.js', '!js/libs/*', '!js/i18n/*']
@@ -95,6 +95,9 @@ module.exports = function(grunt) {
 			},
 			scripts_patrimoine: {
 				src: ['app-patrimoines/js/**/*.js', 'app-patrimoines/main.js']
+			},
+			scripts_achatsstocks: {
+				src: ['app-achatsstocks/js/**/*.js', 'app-achatsstocks/main.js']
 			},
 		},
 

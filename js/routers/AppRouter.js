@@ -267,13 +267,25 @@ define([
 				this.notFound();
 			}
 		},
-		
+
 		/** Load The Patrimoines Module
 		*/
 		loadAppPatrimoines: function(){
 			this.closeCurrentView();
 			if(!require.defined('app-patrimoines')){
 				this.loadModule('app-patrimoines');
+			}
+			else{
+				this.notFound();
+			}
+		},
+
+		/** Load The AchatsStock Module
+		*/
+		loadAppAchatsStocks: function(){
+			this.closeCurrentView();
+			if(!require.defined('app-achatsstocks')){
+				this.loadModule('app-achatsstocks');
 			}
 			else{
 				this.notFound();
@@ -358,9 +370,9 @@ define([
 		/** Consumables Categories List
 		*/
 		categoriesConsumables: function(search, filter, sort, page){
-	
+
 			var params = this.setContext({search: search, filter: filter, sort : sort, page : page});
-	
+
 			app.views.categoriesConsumablesListView = new CategoriesConsumablesListView(params);
 		},
 
@@ -369,9 +381,9 @@ define([
 		/** Consumables List
 		*/
 		consumables: function(search, filter, sort, page){
-	
+
 			var params = this.setContext({search: search, filter: filter, sort : sort, page : page});
-	
+
 			app.views.consumablesListView = new ConsumablesListView(params);
 		}
 

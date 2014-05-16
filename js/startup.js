@@ -196,6 +196,11 @@ requirejs.config({
 			name    : 'app-patrimoines',
 			location: '../app-patrimoines',
 			main    : 'main'
+		},
+		{
+			name    : 'app-achatsstocks',
+			location: '../app-achatsstocks',
+			main    : 'main'
 		}
 	],
 
@@ -246,6 +251,9 @@ requirejs.config({
 		},
 		'app-patrimoines' : {
 			deps   : ['app-patrimoines/config/require-config']
+		},
+		'app-achatsstocks' : {
+			deps   : ['app-achatsstocks/config/require-config']
 		}
 
 	}

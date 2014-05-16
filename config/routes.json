@@ -29,7 +29,6 @@
 		"url"       : "app-interventions/*subroutes",
 		"function"  : "loadAppInterventions"
 	},
-
 	"app-reservations": {
 		"url"       : "app-reservations/*subroutes",
 		"function"  : "loadAppReservations"
@@ -37,6 +36,10 @@
 	"app-patrimoines": {
 		"url"       : "app-patrimoines/*subroutes",
 		"function"  : "loadAppPatrimoines"
+	},
+	"app-achatsstocks": {
+		"url"       : "app-achatsstocks/*subroutes",
+		"function"  : "loadAppAchatsStocks"
 	},
 
 

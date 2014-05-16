@@ -1,0 +1,8 @@
+{
+
+	"budgetsList": {
+		"url"		: "budgets(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"function"	: "budgetsList"
+	}
+
+}
