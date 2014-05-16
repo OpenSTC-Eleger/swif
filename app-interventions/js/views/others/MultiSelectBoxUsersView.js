@@ -46,6 +46,8 @@ define([
 		userTypesSelected : '',
 
 		serviceID: '',
+		
+		
 
 
 		// The DOM events //
@@ -78,6 +80,10 @@ define([
 
 				this.userTypes.provider.domain.push({ field: 'technical_service_id.id', operator: '=', value: options.serviceID });
 			}
+			
+			//Get label
+			this.label = _.isUndefined(options.label)?_.capitalize(app.lang.carryOutBy):_.capitalize(options.label);
+	
 
 			this.render();
 		},
@@ -96,7 +102,8 @@ define([
 				var template = _.template(templateData, {
 					lang             : app.lang,
 					userTypes        : self.userTypes,
-					userTypesSelected: self.userTypesSelected
+					userTypesSelected: self.userTypesSelected,
+					label            : self.label
 				});
 
 				$(self.el).html(template);
