@@ -9,11 +9,11 @@ define([
 	'appHelpers',
 
 	'genericListView',
-	'placeModel',
-	'placesCollection'
+	'budgetsCollection',
+	'budgetModel'
 
 
-], function(app, AppHelpers, GenericListView, PlaceModel, PlacesCollection){
+], function(app, AppHelpers, GenericListView, BudgetsCollection, BudgetModel){
 
 	'use strict';
 
@@ -24,7 +24,7 @@ define([
 
 		templateHTML  : '/templates/lists/budgetsList.html',
 
-		model         : PlaceModel,
+		model         : BudgetModel,
 
 
 		// The DOM events //
@@ -42,9 +42,9 @@ define([
 		*/
 		initialize: function () {
 			// Check if the collections is instantiate //
-			if(_.isUndefined(this.collection)){ this.collection = new PlacesCollection(); }
+			if(_.isUndefined(this.collection)){ this.collection = new BudgetsCollection(); }
 
-			this.buttonAction = 'Nouvelle ligne budgétaire';
+			this.buttonAction = app.lang.achatsstocks.actions.addBudget;
 			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
@@ -62,8 +62,8 @@ define([
 			// Retrieve the template //
 			$.get(app.menus.openachatsstocks + this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
-					lang    : app.lang,
-					nbBudgets: 55
+					lang     : app.lang,
+					nbBudgets: self.collection.cpt
 				});
 
 				$(self.el).html(template);

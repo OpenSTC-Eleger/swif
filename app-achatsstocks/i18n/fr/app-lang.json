@@ -4,6 +4,9 @@
 		"plannedAmount"				: "Montant planifié",
 		"spentAmount"				: "Montant dépensé",
 
+		"actions" : {
+			"addBudget"			    : "Nouveau budget"
+		},
 
 		"viewsTitles" : {
 			"budgetsList"			: "Suivi des budgets"
