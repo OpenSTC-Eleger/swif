@@ -125,13 +125,13 @@ define([
 			confirm: {
 				key					: 'confirm',
 				color				: 'success',
-				translation			: app.lang.valid
+				translation			: app.lang.ContractValid
 			},
 			done: {
 				key					: 'done',
 				color				: 'default',
 				icon				: 'fa-thumbs-o-up',
-				translation			: app.lang.closed
+				translation			: app.lang.contractClosed
 			},
 			wait: {
 				key					: 'wait',
@@ -150,7 +150,7 @@ define([
 				key					: 'cancel',
 				color				: 'danger',
 				icon				: 'fa-ban',
-				translation			: app.lang.cancel
+				translation			: app.lang.contractCancel
 			},
 			
 		},
