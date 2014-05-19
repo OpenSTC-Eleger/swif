@@ -13,18 +13,23 @@ requirejs.config({
 	paths: {
 
 		// Router //
-		appAchatsStocksRouter      	    : '../app-achatsstocks/js/routers/AppRouter',
+		appAchatsStocksRouter      	  : '../app-achatsstocks/js/routers/AppRouter',
 
-		// Collections //
-		purchasesCollection          	: '../app-achatsstocks/js/collections/PurchasesCollection',
+		budgetsCollection          	  : '../app-achatsstocks/js/collections/BudgetsCollection',
+		budgetLinesCollection         : '../app-achatsstocks/js/collections/BudgetLinesCollection',
+		purchasesCollection           : '../app-achatsstocks/js/collections/PurchasesCollection',
+
 
 		// Models //
-		purchaseModel                	: '../app-achatsstocks/js/models/PurchaseModel',
+		budgetModel                	  : '../app-achatsstocks/js/models/BudgetModel',
+		budgetLineModel               : '../app-achatsstocks/js/models/BudgetLineModel',
+		purchaseModel                 : '../app-achatsstocks/js/models/PurchaseModel',
 
 		// Views //
-		budgetsListView                	: '../app-achatsstocks/js/views/lists/BudgetsListView',
-		purchasesListView				: '../app-achatsstocks/js/views/lists/PurchasesListView',
-		itemPurchaseView				: '../app-achatsstocks/js/views/items/PurchaseItemView',
+		budgetsListView               : '../app-achatsstocks/js/views/lists/BudgetsListView',
+		purchasesListView             : '../app-achatsstocks/js/views/lists/PurchasesListView',
+		itemPurchaseView              : '../app-achatsstocks/js/views/items/PurchaseItemView',
+
 	}
 
 });

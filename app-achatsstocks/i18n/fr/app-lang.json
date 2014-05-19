@@ -1,14 +1,18 @@
 {
-	"achatsstock": {
+	"achatsstocks": {
 		
-		"amountTaxed"		: "Montant TTC",
+		"amountTaxed"				: "Montant TTC",
+		"plannedAmount"				: "Montant planifié",
+		"spentAmount"				: "Montant dépensé",
 		
 		"actions": {
-			"addPurchase"	: "Créer une commande"
+			"addPurchase"			: "Créer une commande",
+			"addBudget"			    : "Nouveau budget"
 		},
 		
 		"viewsTitles": {
-			"purchasesList": "listes des Commandes"
+			"purchasesList"			: "listes des Commandes",
+			"budgetsList"			: "Suivi des budgets"
 		}
 		
 	}

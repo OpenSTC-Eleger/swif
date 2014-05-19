@@ -44,7 +44,7 @@ define([
 		/** View Initialization
 		*/
 		initialize: function () {
-			this.buttonAction = app.lang.achatsstock.actions.addPurchase;
+			this.buttonAction = app.lang.achatsstocks.actions.addPurchase;
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new PurchasesCollection(); }
 
@@ -59,7 +59,7 @@ define([
 			var self = this;
 
 			// Change the page title //
-			app.router.setPageTitle(app.lang.achatsstock.viewsTitles.purchasesList);
+			app.router.setPageTitle(app.lang.achatsstocks.viewsTitles.purchasesList);
 
 
 			// Retrieve the template //
