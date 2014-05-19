@@ -1,15 +1,20 @@
 {
 	"achatsstocks" : {
 
-		"plannedAmount"				: "Montant planifié",
-		"spentAmount"				: "Montant dépensé",
+		"plannedAmount"             : "Montant planifié",
+		"spentAmount"               : "Montant dépensé",
 
 		"actions" : {
-			"addBudget"			    : "Nouveau budget"
+			"addBudget"             : "Nouveau budget"
+		},
+
+
+		"infoMessages": {
+			"noBudgets"             : "Aucun budget à afficher"
 		},
 
 		"viewsTitles" : {
-			"budgetsList"			: "Suivi des budgets"
+			"budgetsList"           : "Suivi des budgets"
 		}
 	}
 }

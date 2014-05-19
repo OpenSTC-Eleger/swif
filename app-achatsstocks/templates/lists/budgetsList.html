@@ -24,7 +24,7 @@
 <% if(nbBudgets <= 0) { %>
 	<!-- No budget to display -->
 	<div class="alert alert-info">
-		<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noPlace %>.
+		<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.achatsstocks.infoMessages.noBudgets %>.
 	</div>
 <% } %>
 
@@ -64,80 +64,22 @@
 
 		<!-- Table Budgets -->
 		<div class="table-responsive">
-		<table class="table table-bordered table-hover table-striped table-sorter">
+		<table class="table table-bordered table-hover table-striped table-sorter table-vertical-align">
 			<thead>
 				<tr>
 					<th data-sort-column="name"><%= _.capitalize(lang.name) %></th>
-					<th data-sort-column="name"><%= lang.achatsstocks.plannedAmount %></th>
-					<th data-sort-column="name"><%= lang.achatsstocks.spentAmount %></th>
-					<th data-sort-column="name"><%= _.capitalize(lang.service) %></th>
+					<th data-sort-column="planned_amount"><%= lang.achatsstocks.plannedAmount %></th>
+					<th data-sort-column="openstc_practical_amount"><%= lang.achatsstocks.spentAmount %></th>
+					<th data-sort-column="service_id.name"><%= _.capitalize(lang.service) %></th>
 					<th class="col-lg-3"><%= _.capitalize(lang.progressRate) %></th>
 				</tr>
 			</thead>
 			<tbody id="rows-items">
-				<tr>
-					<td>Petit équipements</td>
-					<td>15 000.00€</td>
-					<td>9 000.00€</td>
-					<td>Voirie</td>
-					<td>
-						<div class="progress">
-							<div class="progress-bar progress-bar-danger" style="width: 60%">8 000€</div>
-							<div class="progress-bar progress-bar-success" style="width: 40%">7 000€</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>Consommables</td>
-					<td>3 280.55€</td>
-					<td>80.55€</td>
-					<td>Bâtiment</td>
-					<td>
-						<div class="progress">
-							<div class="progress-bar progress-bar-danger" style="width: 2.45%">80.55€</div>
-							<div class="progress-bar progress-bar-warning" style="width: 25%">1 000€</div>
-							<div class="progress-bar progress-bar-success" style="width: 72.55%">2 500€</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>Maintenance</td>
-					<td>7 820.25€</td>
-					<td>0€</td>
-					<td>Bâtiment</td>
-					<td>
-						<div class="progress">
-							<div class="progress-bar progress-bar-warning" style="width: 34%">1 876.8€</div>
-							<div class="progress-bar progress-bar-success" style="width: 66%">5 943.45€</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>Réparation</td>
-					<td>7 820.25€</td>
-					<td>0€</td>
-					<td>Espace verts</td>
-					<td>
-						<div class="progress">
-							<div class="progress-bar progress-bar-success" style="width: 100%">7 820.25€</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>Fourniture plomberie</td>
-					<td>57 250.25€</td>
-					<td>57 250.25€</td>
-					<td>Propreté</td>
-					<td>
-						<div class="progress">
-							<div class="progress-bar progress-bar-danger" style="width: 100%">57 250.55€</div>
-						</div>
-					</td>
-				</tr>
 			</tbody>
+
 		</table>
 		</div>
-		<!-- /Table Places -->
+		<!-- /Table Budgets -->
 
 		<!-- Table pagination -->
 		<div id="pagination" class="pull-right"></div>
