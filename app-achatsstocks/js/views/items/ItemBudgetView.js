@@ -7,11 +7,9 @@
 
 define([
 	'app',
-	'appHelpers',
+	'appHelpers'
 
-	'budgetModel',
-
-], function(app, AppHelpers, BudgetModel){
+], function(app, AppHelpers){
 
 	'use strict';
 
