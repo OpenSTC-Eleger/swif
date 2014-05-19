@@ -16,7 +16,7 @@ define([
 		
 		url   : '/api/open_achats_stock/purchases',
 
-		fields: ['id', 'name', 'date_order', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'validation_order'],
+		fields: ['id', 'name', 'date_order', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'validation_order', 'actions', 'check_dst', 'check_elu'],
 
 		default_sort: { by: 'validation_order', order: 'ASC' },
 		

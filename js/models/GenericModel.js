@@ -45,6 +45,10 @@ define([
 		getActions : function(){
 			return this.get('actions');
 		},
+		hasAction: function(action){
+			var acts = this.getAttribute('actions',[]);
+			return acts.indexOf(action) > -1;
+		},
 		
 		getDateFr: function(field){
 			var val = this.getAttribute(field,'');

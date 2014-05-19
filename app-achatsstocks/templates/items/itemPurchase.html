@@ -1,0 +1,21 @@
+<td><span class="field" data-fieldname="name"></span>
+<p class="row-actions invisible small-actions" data-actions="delete"></p>
+</td>
+
+<td class="field" data-fieldname="description"></td>
+
+<td class="field" data-fieldname="service_id"></td>
+
+<td class="field" data-fieldname="partner_id"></td>
+
+<td class="field" data-fieldname="date_order"></td>
+
+<td>
+<span>
+<%= purchase.getCurrencyString('amount_total') %>
+</span>
+</td>
+
+<td><span class="label label-<%= stateItem.color %>" data-toggle="tooltip" data-original-title=""><%= stateItem.translation %></span>
+
+<td class="button-actions" data-actions="check_dst,check_elu,paid,cancel" data-main-action="<%= mainAction%>"></td>

@@ -16,7 +16,7 @@ define([
 		
 		urlRoot: '/api/open_achats_stock/purchases',
 
-		fields: ['id', 'name', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation'],
+		fields: ['id', 'name', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'actions', 'check_dst', 'check_elu'],
 		
 		//readonlyFields: ['contract_line_names', 'contract_line', 'id', 'state'],
 		
@@ -33,8 +33,21 @@ define([
 			}
 		],
 		
+		/**
+		 * @return: name of action to display on the main button, or empty string if not any action is authorized
+		 * use 'priority' variable to apply the priority of the main action (first index is the higher priority)
+		 */
 		getUserMainAction: function(){
-			return 'confirm';
+			var priority = ['check_elu','check_dst', 'paid','cancel'];
+			var ret = '';
+			for(var i=0;i < priority.length;i++){
+				if(this.hasAction(priority[i])){
+					ret = priority[i];
+					break;
+				}
+			}
+			
+			return ret;
 		},
 		/**
 		 * Method used to compute actions authorized for user, and compute the mainAction to display on itemListViews
@@ -42,6 +55,7 @@ define([
 		getUserActions: function(){
 			var actions = this.getAttribute('actions',[]);
 			var mainAction = this.getUserMainAction();
+			console.log(mainAction);
 			return {mainAction: mainAction, otherActions: _.without(actions, mainAction)};
 		},
 		
@@ -120,6 +134,32 @@ define([
 		
 			// Actions of the requests //
 		actions : {
+			delete: {
+				key					: 'delete',
+				color				: 'danger',
+				icon				: 'fa-trash-o',
+				translation			: app.lang.actions.delete
+			},
+			check_dst: {
+				key					: 'check_dst',
+				color				: 'success',
+				icon				: 'fa-check',
+				translation			: 'Validation Responsable'
+			},
+			
+			check_elu: {
+				key					: 'check_elu',
+				color				: 'success',
+				icon				: 'fa-check',
+				translation			: 'Validation Elu'
+			},
+			
+			cancel: {
+				key					: 'cancel',
+				color				: 'danger',
+				icon				: 'fa-times',
+				translation			: app.lang.actions.cancel
+			}
 		}
 	});
 });
