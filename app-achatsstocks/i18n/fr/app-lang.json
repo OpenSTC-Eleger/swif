@@ -3,9 +3,11 @@
 
 		"plannedAmount"             : "Montant planifié",
 		"spentAmount"               : "Montant dépensé",
+		"amountTaxed"				: "Montant TTC",
 
 		"actions" : {
-			"addBudget"             : "Nouveau budget"
+			"addBudget"             : "Nouveau budget",
+			"addPurchase"			: "Créer une commande",
 		},
 
 
@@ -14,7 +16,9 @@
 		},
 
 		"viewsTitles" : {
-			"budgetsList"           : "Suivi des budgets"
+			"budgetsList"           : "Suivi des budgets",
+			"purchasesList"			: "listes des Commandes"
 		}
+
 	}
 }

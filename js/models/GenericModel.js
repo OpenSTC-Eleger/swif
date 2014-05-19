@@ -60,6 +60,16 @@ define([
 			return val.format('YYYY-MM-DD HH:mm:ss');
 		},
 		
+		getCurrencyString: function(field, decimalSeparator, thousandSeparator, currency){
+			var decimalSep = decimalSeparator || ',';
+			var thousandSep = thousandSeparator || ' ';
+			var cur = currency || '&euro;';
+			
+			var value = parseFloat(this.getAttribute(field,0.00));
+			var ret = _.numberFormat(value, 2, decimalSep, thousandSep);
+			return ret + ' ' + cur;
+		},
+		
 		//method to retrieve attribute with standard return form
 		getAttribute: function(key,default_value){
 			var val = this.get(key);
