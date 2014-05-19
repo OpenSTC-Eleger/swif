@@ -5,17 +5,10 @@
  */
 
 define([
-	'app',
-	'appHelpers',
-
-	'requestModel',
-	'modalRequestView',
-	'modalValidRequestView',
-	'modalRefuseRequestView',
-	'modalConfirmRequestView'
+	'app'
 
 
-], function(app, AppHelpers, RequestModel, ModalRequestView, ModalValidRequestView, ModalRefuseRequestView, ModalConfirmRequestView){
+], function(app){
 
 	'use strict';
 
@@ -97,7 +90,7 @@ define([
 		/** Fetch tasks
 		*/
 		fetchData: function () {
-			var self = this;
+			/*var self = this;
 			var deferred = $.Deferred();
 			self.tasksCollection = new TasksCollection();
 			if( self.model.get('todo_tasks')!== false && _.size(self.model.get('todo_tasks'))>0 ) {
@@ -105,7 +98,7 @@ define([
 					deferred.resolve();
 				});
 			}
-			return deferred;
+			return deferred;*/
 		}
 
 

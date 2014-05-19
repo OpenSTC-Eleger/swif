@@ -33,14 +33,14 @@ define([
 
 			switch (type){
 				case 'id':
-						returnVal = this.get('service_id')[0];
+					returnVal = this.get('service_id')[0];
 					break;
 				case 'json':
 					returnVal = {id: this.get('service_id')[0], name: this.get('service_id')[1]};
 					break;
 				default:
 					returnVal = this.get('service_id')[1];
-			};
+			}
 
 			return returnVal;
 		},
