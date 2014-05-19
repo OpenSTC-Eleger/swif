@@ -11,10 +11,12 @@ define([
 	'purchasesCollection',
 	
 	'purchaseModel',
-	'genericListView'
+	
+	'genericListView',
+	'itemPurchaseView'
 
 
-], function(app, AppHelpers, PurchasesCollection, PurchaseModel, GenericListView){
+], function(app, AppHelpers, PurchasesCollection, PurchaseModel, GenericListView, ItemPurchaseView){
 
 	'use strict';
 
@@ -64,7 +66,7 @@ define([
 			$.get(app.menus.openachatsstocks + this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang    : app.lang,
-					nbPurchases: 42
+					nbPurchases: self.collection.cpt
 				});
 
 				$(self.el).html(template);
@@ -72,6 +74,12 @@ define([
 
 				// Call the render Generic View //
 				GenericListView.prototype.render.apply(self);
+				
+				_.each(self.collection.models, function(purchaseModel){
+					var itemPurchaseView  = new ItemPurchaseView({model: purchaseModel});
+					$('#rows-items').append(itemPurchaseView.render().el);
+				});
+
 
 			});
 

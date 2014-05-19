@@ -1,6 +1,6 @@
 <div class="page-header">
 	<h1>
-		<%= lang.achatsstock.viewsTitles.purchasesList %>
+		<%= _.capitalize(lang.achatsstock.viewsTitles.purchasesList) %>
 		<sup id="badge" class="badge"><%= nbPurchases %></sup>
 	</h1>
 </div>
@@ -61,12 +61,14 @@
 		<table class="table table-bordered table-hover table-striped table-sorter">
 			<thead>
 				<tr>
-					<th data-sort-column="name"><%= _.capitalize(lang.name) %></th>
-					<th><%= lang.service %></th>
-					<th><%= lang.supplier %></th>
-					<th><%= lang.achatsstock.amountTaxed %></th>
-					<th><%= lang.state %></th>
-					<th><%= lang.action %></th>
+					<th data-sort-column="name">N°</th>
+					<th data-sort-column="description"><%= _.capitalize(lang.description) %></th>
+					<th><%= _.capitalize(lang.service) %></th>
+					<th><%= _.capitalize(lang.supplier) %></th>
+					<th><%= _.capitalize(lang.createDate) %></th>
+					<th><%= _.capitalize(lang.achatsstock.amountTaxed) %></th>
+					<th><%= _.capitalize(lang.state) %></th>
+					<th><%= _.capitalize(lang.action) %></th>
 				</tr>
 			</thead>
 			<tbody id="rows-items">

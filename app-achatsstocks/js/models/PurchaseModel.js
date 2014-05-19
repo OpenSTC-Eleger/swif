@@ -16,7 +16,7 @@ define([
 		
 		urlRoot: '/api/open_achats_stock/purchases',
 
-		fields: ['id', 'name', 'description', 'service_id', 'partner_id', 'amount_total', 'state'],
+		fields: ['id', 'name', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation'],
 		
 		//readonlyFields: ['contract_line_names', 'contract_line', 'id', 'state'],
 		
@@ -87,17 +87,34 @@ define([
 	}, {
 		// Request State Initialization //
 		status : {
-			confirm: {
-				key					: 'confirm',
+			
+			budget_to_check: {
+				key					: 'budget_to_check',
+				color				: 'warning',
+				translation			: app.lang.draft,
+			},
+			
+			engagement_to_check: {
+				key					: 'engagement_to_check',
+				color				: 'info',
+				translation			: app.lang.wait
+			},
+			
+			done: {
+				key					: 'done',
 				color				: 'success',
 				translation			: app.lang.valid
 			},
-			done: {
-				key					: 'done',
+			purchase_paid: {
+				key					: 'purchase_paid',
 				color				: 'default',
-				icon				: 'fa-thumbs-o-up',
-				translation			: app.lang.closed
+				translation			: app.lang.purchasePaid
 			},
+			purchase_engaged: {
+				key					: 'purchase_engaged',
+				color				: 'success',
+				translation			: app.lang.valid
+			}
 			
 		},
 		

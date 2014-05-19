@@ -164,7 +164,8 @@ define([
 				text		: _.capitalize,
 				integer		: this.integerToStr,
 				selection	: _.capitalize,
-				many2one	: this.toStringMany2one
+				many2one	: this.toStringMany2one,
+				float		: this.integerToStr
 			};
 			
 			this.options = params;

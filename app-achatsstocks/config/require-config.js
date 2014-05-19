@@ -24,6 +24,7 @@ requirejs.config({
 		// Views //
 		budgetsListView                	: '../app-achatsstocks/js/views/lists/BudgetsListView',
 		purchasesListView				: '../app-achatsstocks/js/views/lists/PurchasesListView',
+		itemPurchaseView				: '../app-achatsstocks/js/views/items/PurchaseItemView',
 	}
 
 });
