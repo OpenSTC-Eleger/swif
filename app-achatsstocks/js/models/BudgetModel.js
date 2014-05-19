@@ -47,12 +47,32 @@ define([
 
 
 		getPlannedAmount: function(){
-			return this.get('planned_amount');
+			return this.getCurrencyString('planned_amount');
 		},
 
 
 		getSpentAmount: function(){
-			return this.get('openstc_practical_amount');
+			return this.getCurrencyString('openstc_practical_amount');
+		},
+
+
+		getRemainAmount: function(withSymbol){
+			var cost = this.get('planned_amount') - this.get('openstc_practical_amount');
+			cost = _.numberFormat(cost, 2, '.', ' ');
+
+			if(withSymbol) {
+				cost += '&euro;';
+			}
+
+			return cost;
+
+		},
+
+
+		/** Get the percentage cost
+		*/
+		getSpentAmountPercentage: function() {
+			return _.toNumber((this.get('openstc_practical_amount') * 100) / this.get('planned_amount'), 2);
 		}
 
 

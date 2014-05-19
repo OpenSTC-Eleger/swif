@@ -79,6 +79,9 @@ define([
 
 				$(self.el).html(template);
 
+				// Set the Tooltip //
+				$('*[data-toggle="tooltip"]').tooltip();
+
 				$('tr.row-object').css({ opacity: '1'});
 				$('tr.row-object > td').css({ backgroundColor: '#FFF'});
 				$('tr.row-object:nth-child(4n+1) > td').css({backgroundColor: '#F9F9F9' });
