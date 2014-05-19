@@ -29,18 +29,18 @@ define([
 		},
 
 		templateHTML : '/templates/items/itemPurchase.html',
-		
+
 		classModel	: PurchaseModel,
-		
+
 		// The DOM events //
 		events: {
 			'click .actionDelete'	: 'modalDelete'
 		},
-		
+
 		/** View Initialization
 		*/
 		initialize: function (params) {
-		
+
 			this.options = params;
 
 			this.model.off();
@@ -53,7 +53,7 @@ define([
 			GenericItemView.prototype.initialize.apply(this, params);
 
 		},
-		
+
 		/** When the model is updated //
 		*/
 		change: function(){
@@ -86,7 +86,7 @@ define([
 			var self = this;
 			var stateItem = PurchaseModel.status[this.model.getAttribute('validation','budget_to_check')];
 			$.get(app.menus.openachatsstocks+this.templateHTML, function(templateData){
-								
+
 				var template = _.template(templateData, {
 					lang        : app.lang,
 					purchase	: self.model,
@@ -100,7 +100,7 @@ define([
 
 			return this;
 		},
-		
+
 		/** Modal to remove a place
 		*/
 		modalDelete: function(e){
@@ -113,6 +113,6 @@ define([
 				modalTitle   : app.lang.viewsTitles.deleteContract,
 				modalConfirm : app.lang.warningMessages.confirmDeleteContract
 			});
-		}		
+		}
 	});
 });
