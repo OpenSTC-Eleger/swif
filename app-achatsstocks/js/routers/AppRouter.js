@@ -26,10 +26,11 @@ define([
 		*/
 		budgetsList: function(year, search, filter, sort, page) {
 
-			var params = this.setContext({year: year, search: search, filter: filter, sort: sort, page: page});
+			var params = this.setContext({search: search, filter: filter, sort: sort, page: page});
 			app.views.budgetsListView = new BudgetsListView(params);
 		},
-		
+
+
 		purchasesList: function(search, filter, sort, page) {
 			var params = this.setContext({search: search, filter: filter, sort: sort, page: page});
 			app.views.purchasesListView = new PurchasesListView(params);

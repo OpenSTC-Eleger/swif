@@ -6,14 +6,14 @@
 
 define([
 	'app',
-	'appHelpers',
+
+	'budgetsCollection',
+	'budgetModel',
 
 	'genericListView',
-	'budgetsCollection',
-	'budgetModel'
+	'itemBudgetView'
 
-
-], function(app, AppHelpers, GenericListView, BudgetsCollection, BudgetModel){
+], function(app, BudgetsCollection, BudgetModel, GenericListView, ItemBudgetView){
 
 	'use strict';
 
@@ -28,7 +28,7 @@ define([
 
 
 		// The DOM events //
-		events: function(){
+		events: function() {
 			return _.defaults({
 
 			},
@@ -40,7 +40,7 @@ define([
 
 		/** View Initialization
 		*/
-		initialize: function () {
+		initialize: function() {
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new BudgetsCollection(); }
 
@@ -52,7 +52,7 @@ define([
 
 		/** Display the view
 		*/
-		render: function () {
+		render: function() {
 			var self = this;
 
 			// Change the page title //
@@ -71,6 +71,14 @@ define([
 
 				// Call the render Generic View //
 				GenericListView.prototype.render.apply(self);
+
+
+				// Create item budget View //
+				_.each(self.collection.models, function(budget) {
+					var itemBudgetView = new ItemBudgetView({ model: budget });
+
+					$('#rows-items').append(itemBudgetView.render().el);
+				});
 
 			});
 

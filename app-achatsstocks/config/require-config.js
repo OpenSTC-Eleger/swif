@@ -25,10 +25,14 @@ requirejs.config({
 		budgetLineModel               : '../app-achatsstocks/js/models/BudgetLineModel',
 		purchaseModel                 : '../app-achatsstocks/js/models/PurchaseModel',
 
-		// Views //
+		// Views List //
 		budgetsListView               : '../app-achatsstocks/js/views/lists/BudgetsListView',
 		purchasesListView             : '../app-achatsstocks/js/views/lists/PurchasesListView',
-		itemPurchaseView              : '../app-achatsstocks/js/views/items/PurchaseItemView',
+
+		// View Items //
+		itemBudgetView                : '../app-achatsstocks/js/views/items/ItemBudgetView',
+		itemBudgetBudgetLineListView  : '../app-achatsstocks/js/views/items/ItemBudgetBudgetLineListView',
+		itemPurchaseView              : '../app-achatsstocks/js/views/items/PurchaseItemView'
 
 	}
 

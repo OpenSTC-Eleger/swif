@@ -23,39 +23,38 @@ define([
 
 
 		searchable_fields: [
-			{ key: 'name',  type: 'text' }
+			{ key: 'name',  type: 'text', label: app.lang.name }
 		],
 
 
+		getService : function(type){
 
-		getServices : function(type){
+			var returnVal;
 
-			var placeServices = [];
+			switch (type){
+				case 'id':
+						returnVal = this.get('service_id')[0];
+					break;
+				case 'json':
+					returnVal = {id: this.get('service_id')[0], name: this.get('service_id')[1]};
+					break;
+				default:
+					returnVal = this.get('service_id')[1];
+			};
 
-			_.each(this.get('service_names'), function(s){
-				switch (type){
-					case 'id':
-						placeServices.push(s[0]);
-						break;
-					case 'json':
-						placeServices.push({id: s[0], name: s[1]});
-						break;
-					default:
-						placeServices.push(s[1]);
-				}
-			});
-
-			if(type === 'string'){
-				return _.toSentence(placeServices, ', ', ' '+app.lang.and+' ');
-			}
-			else{
-				return placeServices;
-			}
+			return returnVal;
 		},
 
-		setServices : function(value, silent) {
-			this.set({ service_ids : [[6, 0, value]] }, {silent: silent});
+
+		getPlannedAmount: function(){
+			return this.get('planned_amount');
+		},
+
+
+		getSpentAmount: function(){
+			return this.get('openstc_practical_amount');
 		}
+
 
 	});
 

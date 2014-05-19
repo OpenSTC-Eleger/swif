@@ -1,19 +1,24 @@
 {
-	"achatsstocks": {
-		
+	"achatsstocks" : {
+
+		"plannedAmount"             : "Montant planifié",
+		"spentAmount"               : "Montant dépensé",
 		"amountTaxed"				: "Montant TTC",
-		"plannedAmount"				: "Montant planifié",
-		"spentAmount"				: "Montant dépensé",
-		
-		"actions": {
+
+		"actions" : {
+			"addBudget"             : "Nouveau budget",
 			"addPurchase"			: "Créer une commande",
-			"addBudget"			    : "Nouveau budget"
 		},
-		
-		"viewsTitles": {
-			"purchasesList"			: "listes des Commandes",
-			"budgetsList"			: "Suivi des budgets"
+
+
+		"infoMessages": {
+			"noBudgets"             : "Aucun budget à afficher"
+		},
+
+		"viewsTitles" : {
+			"budgetsList"           : "Suivi des budgets",
+			"purchasesList"			: "listes des Commandes"
 		}
-		
+
 	}
 }

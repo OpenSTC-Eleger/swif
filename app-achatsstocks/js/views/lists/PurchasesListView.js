@@ -7,11 +7,11 @@
 define([
 	'app',
 	'appHelpers',
-	
+
 	'purchasesCollection',
-	
+
 	'purchaseModel',
-	
+
 	'genericListView',
 	'itemPurchaseView'
 
@@ -74,7 +74,7 @@ define([
 
 				// Call the render Generic View //
 				GenericListView.prototype.render.apply(self);
-				
+
 				_.each(self.collection.models, function(purchaseModel){
 					var itemPurchaseView  = new ItemPurchaseView({model: purchaseModel});
 					$('#rows-items').append(itemPurchaseView.render().el);

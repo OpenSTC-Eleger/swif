@@ -8,22 +8,21 @@ define([
 	'app',
 	'appHelpers',
 
-	'taskModel',
+	'requestModel',
+	'modalRequestView',
+	'modalValidRequestView',
+	'modalRefuseRequestView',
+	'modalConfirmRequestView'
 
-	'tasksCollection',
 
-	'itemInterventionTaskView',
-	'modalInterventionAddTaskView'
-
-], function(app, AppHelpers, TaskModel, TasksCollection, ItemInterventionTaskView, ModalInterventionAddTaskView){
+], function(app, AppHelpers, RequestModel, ModalRequestView, ModalValidRequestView, ModalRefuseRequestView, ModalConfirmRequestView){
 
 	'use strict';
 
-
 	/******************************************
-	* Row Intervention Task List View
+	* Row Budget View
 	*/
-	var ItemInterventionTaskListView = Backbone.View.extend({
+	var ItemBudgetBudgetLineListView = Backbone.View.extend({
 
 		tagName     : 'tr',
 
@@ -32,14 +31,16 @@ define([
 
 		// The DOM events //
 		events       : {
-			'click .btn.addTask'      : 'displayModalAddTask',
+			//'click .btn.addTask'      : 'displayModalAddTask',
 		},
+
 
 
 		/** View Initialization
 		*/
 		initialize : function() {
 		},
+
 
 
 		/** When the model has updated //
@@ -49,41 +50,6 @@ define([
 			//Update Inter model
 			self.model.fetch();
 			this.partialRender();
-		},
-
-		addTask: function(model){
-			var itemTaskView  = new ItemInterventionTaskView({ model: model, inter:this.model, tasks:this.tasksCollection});
-			$(this.el).find('#row-nested-objects').append(itemTaskView.el);
-			this.tasksCollection.add(model);
-			this.listenTo(model, 'change', this.change);
-			this.listenTo(model, 'destroy', this.destroyTask);
-			this.partialRender();
-		},
-
-		destroyTask: function(model){
-			this.tasksCollection.remove(model);
-			//check if there is tasks, if not, display message infos instead of table
-			this.change();
-		},
-
-		updateList: function(){
-			if(_.size(this.tasksCollection) === 0){
-				$(this.el).find('.noTask').css({display:'block'});
-				$(this.el).find('.table-nested-objects').css({display: 'none'});
-			}
-			else{
-				$(this.el).find('.noTask').css({display: 'none'});
-				$(this.el).find('.table-nested-objects').css({display: 'table'});
-			}
-		},
-
-		/** Display the view
-		*/
-		partialRender: function(){
-			this.updateList();
-			if(this.model.toJSON().actions.indexOf('add_task') === -1){
-				$('button.addTask').attr('disabled','disabled');
-			}
 		},
 
 
@@ -97,8 +63,8 @@ define([
 
 
 				var template = _.template(templateData, {
-					lang                : app.lang,
-					intervention		: self.model.toJSON(),
+					lang     : app.lang,
+					budget   : self.model
 				});
 
 				$(self.el).html(template);
@@ -111,7 +77,7 @@ define([
 				self.updateList();
 
 				// Render tasks
-				if (!_.isUndefined(self.tasksCollection)) {
+				/*if (!_.isUndefined(self.tasksCollection)) {
 					$('#row-nested-objects').empty();
 					_.each(self.tasksCollection.models, function (task) {
 						var itemInterventionTaskView = new ItemInterventionTaskView({model: task, inter:self.model, tasks:self.tasksCollection});
@@ -119,9 +85,10 @@ define([
 						self.listenTo(task, 'change', self.change);
 						self.listenTo(task, 'destroy', self.destroyTask);
 					});
-				}
+				}*/
 
 			});
+
 			return this;
 		},
 
@@ -139,20 +106,11 @@ define([
 				});
 			}
 			return deferred;
-		},
-
-
-
-		/** Add task
-		*/
-		displayModalAddTask: function(e){
-			e.preventDefault();
-			var task = new TaskModel();
-			this.listenTo(task, 'sync', this.addTask);
-			new ModalInterventionAddTaskView({el: '#modalAddTask',  model : task, inter: this.model});
 		}
+
 
 	});
 
-	return ItemInterventionTaskListView;
+	return ItemBudgetBudgetLineListView;
+
 });
