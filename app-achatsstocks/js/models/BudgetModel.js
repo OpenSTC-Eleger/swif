@@ -52,7 +52,12 @@ define([
 
 
 		getSpentAmount: function(){
-			return this.getCurrencyString('openstc_practical_amount');
+			if(this.get('openstc_practical_amount') > 0){
+				return this.getCurrencyString('openstc_practical_amount');
+			}
+			else{
+				return '';
+			}
 		},
 
 

@@ -71,7 +71,7 @@ define([
 
 			var value = parseFloat(this.getAttribute(field,0.00));
 			var ret = _.numberFormat(value, 2, decimalSep, thousandSep);
-			return ret + ' ' + cur;
+			return ret + '' + cur;
 		},
 
 		//method to retrieve attribute with standard return form
