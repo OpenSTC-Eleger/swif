@@ -1,0 +1,69 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+			<div class="btn-group btn-group-xs pull-right">
+				<a type="button" class="btn text-info hidden-xs" title="<%= lang.zenMode %>" data-action="zenmode"><i class="fa fa-arrows-alt"></i></a>
+				<a type="button" class="btn close" data-dismiss="modal"><i class="fa fa-times"></i></a>
+			</div>
+			<h4 class="modal-title">
+				<i class="fa fa-edit"></i>&nbsp;
+				<% if(_.isUndefined(budget)){ %>
+					<%= _.capitalize(lang.achatsstocks.actions.addBudget) %>
+				<% } else{ %>
+					<%= _.capitalize(lang.achatsstocks.actions.editBudget) %>
+				<% } %>
+			</h4>
+		</div>
+
+		<div class="modal-body">
+			<form id="formSaveBudget" action="#" class="form-horizontal">
+
+
+				<!-- Budget name -->
+				<div class="form-group">
+					<label for="budgetName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
+
+					<div class="col-sm-9">
+						<input type="text" id="budgetName" class="form-control" required>
+					</div>
+				</div>
+
+				<!-- Budget service	-->
+				<div class="form-group">
+					<label for="budgetService" class="control-label col-sm-3"><%= _.capitalize(lang.service) %>:</label>
+
+					<div class="col-sm-9">
+						<input id="budgetService" class="select2" data-placeholder="<%= lang.actions.selectAService %>" data-minimum-input-length="2" required>
+					</div>
+				</div>
+
+				<!-- Budget date start -->
+				<div class="form-group">
+					<label for="budgetStartDate" class="control-label col-sm-3"><%= _.capitalize(lang.period) %>:</label>
+
+					<div class="col-sm-9">
+						<div class="input-daterange input-group">
+						<span class="input-group-addon"><%= lang.from %></span>
+							<input type="text" id="budgetStartDate" class="form-control field-element" placeholder="dd/mm/yyyy" value="01/01/<%= currentYear %>" required>
+							<span class="input-group-addon"><%= lang.to %></span>
+							<input type="text" id="budgetEndDate" class="form-control field-element" placeholder="dd/mm/yyyy" value="31/12/<%= currentYear %>" required>
+						</div>
+					</div>
+				</div>
+
+			</form>
+		</div>
+
+		<div class="modal-footer">
+			<button type="submit" form="formSaveBudget" class="btn btn-primary"
+				data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.saveInProgress %>">
+				<%= _.capitalize(lang.actions.save) %>
+			</button>&nbsp;&nbsp;
+
+			<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+
+
+	</div>
+</div>

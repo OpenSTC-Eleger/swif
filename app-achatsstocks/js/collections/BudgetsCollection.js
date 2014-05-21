@@ -5,10 +5,12 @@
  */
 
 define([
+	'app',
+
 	'genericCollection',
 	'budgetModel'
 
-], function(GenericCollection, BudgetModel){
+], function(app, GenericCollection, BudgetModel){
 
 	'use strict';
 
@@ -22,16 +24,30 @@ define([
 
 		url          : '/api/open_achats_stock/budgets',
 
-		fields       : ['id', 'name', 'service_id', 'planned_amount', 'openstc_practical_amount', 'date_from'],
+		fields       : ['id', 'name', 'service_id', 'planned_amount', 'openstc_practical_amount', 'date_from', 'date_to'],
 
 		default_sort : { by: 'name', order: 'ASC' },
+
+		advanced_searchable_fields: [
+			{ key: 'planned_amount' },
+			{ key: 'openstc_practical_amount' },
+			{ key: 'service_id' },
+			{ key: 'date_from' },
+			{ key: 'date_to' }
+		],
 
 
 
 		/** Collection Initialization
 		*/
 		initialize: function () {
-			//console.log('Categories Tasks Initialization');
+
+			// Set field translation //
+			this.advanced_searchable_fields[0].label = app.lang.achatsstocks.plannedAmount;
+			this.advanced_searchable_fields[1].label = app.lang.achatsstocks.spentAmount;
+			this.advanced_searchable_fields[2].label = app.lang.service;
+			this.advanced_searchable_fields[3].label = app.lang.dateStart;
+			this.advanced_searchable_fields[4].label = app.lang.dateEnd;
 		}
 
 	});
