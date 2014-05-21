@@ -150,7 +150,7 @@ define([
 			e.preventDefault();
 			var task = new TaskModel();
 			this.listenTo(task, 'sync', this.addTask);
-			new ModalInterventionAddTaskView({el: '#modalAddTask',  model : task, inter: this.model});
+			new ModalInterventionAddTaskView({el: '#modalTask',  model : task, inter: this.model});
 		}
 
 	});

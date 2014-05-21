@@ -266,6 +266,27 @@ define([
 		getDateStart : function() {
 			return this.get('date_start');
 		},
+		
+//		getDateStart: function(type, format){
+//			if(this.get('date_start') !== false){
+//		
+//				var returnVal;
+//				switch(type){
+//					case 'human':
+//						returnVal = moment(this.get('date_start')).format(format);
+//						break;
+//					default:
+//						returnVal = this.get('date_start');
+//						break;
+//				}
+//		
+//				return returnVal;
+//			}
+//			else{
+//				return '';
+//			}
+//		},		
+
 		setDateStart : function(value, silent) {
 			this.set({ date_start : value }, {silent: silent});
 		},
@@ -288,7 +309,26 @@ define([
 		getEffectiveHours: function(){
 			return this.get('effective_hours');
 		},
-
+		
+		getUserTypeSelected: function(){
+			if(this.getUser('id')!==false){
+				return 'officer';
+			}else if(this.getTeam('id')){
+				return 'team';
+			}else{
+				return 'provider';
+			}
+		},
+		
+		getUserIdSelected: function(){
+			if(this.getUser('json')!==false){
+				return this.get('user_id');
+			}else if(this.getTeam('json')){
+				return this.get('team_id');
+			}else{
+				return this.get('partner_id');
+			}
+		},
 
 		/** Get the cost of the task
 		*/

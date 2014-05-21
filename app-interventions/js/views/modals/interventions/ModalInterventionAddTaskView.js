@@ -81,36 +81,22 @@ define([
 				$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: false, modalBackdrop: false});
 
 				// Display only categories in dropdown belongs to intervention //
-				var interJSON = self.options.inter.toJSON();
+				
 				app.views.advancedSelectBoxCategoriesInterventionAddTaskView = new AdvancedSelectBoxView({ el: $('#taskCategory'), url: CategoriesTasksCollection.prototype.url });
 
-				if(interJSON.service_id.length > 0){
-					app.views.advancedSelectBoxCategoriesInterventionAddTaskView.setSearchParam({field: 'service_ids.id',operator: '=','value': interJSON.service_id[0]}, true);
-				}
+
 
 				app.views.advancedSelectBoxCategoriesInterventionAddTaskView.render();
 				
 				//_.isUndefined(self.inter)?app.lang.carryOutBy:app.lang.assignedTo
 				// Create the view to select the user who have done the task //
-				self.multiSelectBoxUsersView = new MultiSelectBoxUsersView({el: '.multiSelectUsers',serviceID: self.options.inter.getService('id'), label : _.isUndefined(self.inter)?app.lang.carryOutBy:app.lang.assignedTo});
+				self.multiSelectBoxUsersView = new MultiSelectBoxUsersView({el: '.multiSelectUsers',serviceID: !_.isUndefined(self.inter)?self.inter.getService('id'):undefined, label : !_.isUndefined(self.inter)?app.lang.carryOutBy:app.lang.assignedTo});
 				self.multiSelectBoxUsersView.off().on('userType-change', function(){ self.serviceCostSection(); });
 				
-				//Vehicles and equipments
-				self.selectVehicleView = new AdvancedSelectBoxView({ el:'#taskEquipmentDone', url: EquipmentsCollection.prototype.url });
-				self.selectListEquipmentsView = new AdvancedSelectBoxView({ el:'#taskEquipmentListDone', url: EquipmentsCollection.prototype.url });
-
-				self.selectVehicleView.setSearchParam({field:'categ_id.is_vehicle', operator:'=', value:'True'}, true);
-				self.selectListEquipmentsView.setSearchParam({field:'categ_id.is_equipment', operator:'=', value:'True'}, true);
-				self.selectVehicleView.setSearchParam({field:'internal_use', operator:'=', value:'True'});
-				self.selectListEquipmentsView.setSearchParam({field:'internal_use', operator:'=', value:'True'});
-				
-				self.selectVehicleView.render();
-				self.selectListEquipmentsView.render();
-
-
 
 				
-				if(_.isUndefined(self.inter)){
+				if(self.model.isNew() && _.isUndefined(self.inter)){
+					$('blockquote').hide();
 					//Init Dates and times components
 					$('.timepicker-default').timepicker({ showMeridian: false, disableFocus: false, showInputs: false, modalBackdrop: false});
 					$('.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr', todayHighlight: true });
@@ -121,22 +107,9 @@ define([
 					// Set Task Planned Hour //
 					$('#startHour').timepicker('setTime', moment().format('LT') );
 					$('#endHour').timepicker('setTime', moment().format('LT') );
-					$('blockquote').hide();
 					
-					var hasService = (self.inter.toJSON().service_id && !_.isUndefined(self.inter.toJSON().service_id));
-					
-					if(hasService){
-						self.selectVehicleView.setSearchParam('|');
-						self.selectVehicleView.setSearchParam({field:'service_ids',operator:'=?',value:'False'});
-						self.selectVehicleView.setSearchParam({field:'service_ids.id',operator:'=',value:self.options.inter.toJSON().service_id[0]});
-	
-						self.selectListEquipmentsView.setSearchParam('|');
-						self.selectListEquipmentsView.setSearchParam({field:'service_ids',operator:'=?',value:'False'});
-						self.selectListEquipmentsView.setSearchParam({field:'service_ids.id',operator:'=',value:self.options.inter.toJSON().service_id[0]});
-					}
-					// Create the consumables view //
-					self.consumablesSelectView = new ConsumablesSelectView({el: '#consumablesSection'});
-
+					$('#taskHour').attr("required",false);
+					$('#taskHour').closest('.form-group').hide();
 				}
 				else{
 					$('#startDate').attr("required",false);
@@ -148,8 +121,11 @@ define([
 					$('#endHour').attr("required",false);
 					$('#endHour').closest('.form-group').hide();
 					
-					// Create the consumables view //
-					self.consumablesSelectView = new ConsumablesSelectView({el: '#consumablesSection', serviceID: self.inter.getService('id')});
+					var interJSON = self.options.inter.toJSON();
+					
+					if(interJSON.service_id.length > 0){
+						app.views.advancedSelectBoxCategoriesInterventionAddTaskView.setSearchParam({field: 'service_ids.id',operator: '=','value': interJSON.service_id[0]}, true);
+					}
 				}
 			});
 
@@ -178,24 +154,13 @@ define([
 
 
 
-			
-			var vehicule =  this.selectVehicleView.getSelectedItem();
-			var equipments = this.selectListEquipmentsView.getSelectedItems();
-
-			if(vehicule > 0 ){
-				equipments.push( vehicule );
-			}
-			equipments = [[6,0,equipments]];
 
 			var params = {
 				
 
-				equipment_ids  : equipments,
-				vehicule       : vehicule,
 				name: this.$('#taskName').val(),
 				category_id: app.views.advancedSelectBoxCategoriesInterventionAddTaskView.getSelectedItem(),
-				
-				consumables    : this.consumablesSelectView.getConsumables()
+				cost           : this.$('#serviceCost').val().replace(',', '.'),
 			};
 
 			var res = self.multiSelectBoxUsersView.getUserType();
@@ -219,7 +184,7 @@ define([
 				var duration = $('#taskHour').val().split(':');
 				var mDuration = moment.duration ( { hours:duration[0], minutes:duration[1] });
 				params.planned_hours = mDuration.asHours();
-				params.project_id = this.inter.toJSON();
+				params.project_id = this.inter.toJSON().id;
 			}
 			else{
 				// Retrieve Start Date and Start Hour //
@@ -241,7 +206,7 @@ define([
 			
 
 			
-			this.model.save(params, {silent: true}).done(function(data){
+			this.model.save(params, {silent: true,patch: !this.model.isNew()}).done(function(data){
 				self.model.setId(data, {silent: true});
 				self.model.fetch().done(function(){
 					if(!_.isUndefined(self.options.tasks)){
@@ -250,8 +215,10 @@ define([
 				});
 
 				//force re-calculation asynchronously of intervention to update functional fields (planned_hours for example)
-				self.options.inter.fetch();
-				$('#modalAddTask').modal('hide');
+				if(!_.isUndefined(self.options.inter)){
+					self.options.inter.fetch();
+				}
+				$('#modalTask').modal('hide');
 			})
 			.fail(function(e){
 				console.log(e);

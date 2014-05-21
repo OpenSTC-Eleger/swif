@@ -19,9 +19,10 @@ define([
 
 	'itemTaskDayListView',
 	'modalAddTaskView',
+	'modalInterventionAddTaskView',
 	'moment',
 
-], function(app, AppHelpers, TasksCollection, TaskModel, OfficersCollection, OfficerModel, GenericListView, PaginationView, AdvancedSelectBoxView,ItemTaskDayListView, ModalAddTaskView, moment){
+], function(app, AppHelpers, TasksCollection, TaskModel, OfficersCollection, OfficerModel, GenericListView, PaginationView, AdvancedSelectBoxView,ItemTaskDayListView, ModalAddTaskView, ModalInterventionAddTaskView, moment){
 
 	'use strict';
 

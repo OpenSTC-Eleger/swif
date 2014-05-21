@@ -69,7 +69,7 @@ define([
 			// Retrieve the template //
 			$.get(app.menus.openstc + this.templateHTML, function(templateData){
 
-				var template = _.template(templateData, {lang: app.lang, task: self.model.toJSON(), inter: self.options.inter});
+				var template = _.template(templateData, {lang: app.lang, task: self.model, inter: self.options.inter});
 
 				self.modal.html(template);
 				self.modal.modal('show');
@@ -98,8 +98,11 @@ define([
 				var hasService = (self.options.inter.toJSON().service_id && !_.isUndefined(self.options.inter.toJSON().service_id));
 
 				// Create the view to select the user who have done the task //
-				self.multiSelectBoxUsersView = new MultiSelectBoxUsersView({el: '.multiSelectUsers', serviceID: self.options.inter.getService('id')});
+				self.multiSelectBoxUsersView = new MultiSelectBoxUsersView({el: '.multiSelectUsers', serviceID: self.options.inter.getService('id'),userTypeSelected:self.model.getUserTypeSelected(), userIdSelected: self.model.getUserIdSelected()});
 				self.multiSelectBoxUsersView.off().on('userType-change', function(){ self.serviceCostSection(); });
+				self.multiSelectBoxUsersView.off().on('select-init', function(){ self.serviceCostSection(); });
+				
+				
 
 				self.selectVehicleView = new AdvancedSelectBoxView({ el:'#taskEquipmentDone', url: EquipmentsCollection.prototype.url });
 				self.selectListEquipmentsView = new AdvancedSelectBoxView({ el:'#taskEquipmentListDone', url: EquipmentsCollection.prototype.url });
@@ -258,6 +261,7 @@ define([
 
 			if(t.type == ClaimersCollection.prototype.key){
 				$('#serviceCostSection').stop().slideDown();
+				$('#serviceCost').val(this.model.getCost('total'));
 			}
 			else{
 				$('#serviceCostSection').stop().slideUp();

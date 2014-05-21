@@ -67,8 +67,16 @@ define([
 			this.userTypes.provider.domain = [{ field: 'type_id.code', operator: '=', value: 'PRESTATAIRE' }];
 
 			// Set the default user type //
-			this.userTypesSelected = this.userTypes.officer;
-
+			if(!_.isUndefined(options.userTypeSelected)){
+				this.userTypesSelected = this.userTypes[options.userTypeSelected];
+				if(!_.isUndefined(options.userIdSelected)){
+					this.userIdSelected = options.userIdSelected;
+				}
+			}
+			else{
+				this.userTypesSelected = this.userTypes.officer;
+			}
+			
 
 			// Check if an intervention id is pass in parameter //
 			if(!_.isUndefined(options.serviceID) && _.isEmpty(this.userTypesSelected.domain)){
@@ -111,10 +119,18 @@ define([
 				self.selectView = new AdvancedSelectBoxView({el: '#selectUsers', url: self.userTypesSelected.collection.url, placeholder: self.userTypesSelected.placeholder, minimumInputLength: 1 });
 				self.applyDomain();
 
+				
+
 				self.selectView.render();
+				
+				self.trigger('select-init');
 
 				// Display the default value on the button //
 				self.setSelectedUser();
+				
+				if(!_.isUndefined(self.userIdSelected)){
+					self.selectView.setSelectedItem(self.userIdSelected);
+				}
 
 			});
 

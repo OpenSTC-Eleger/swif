@@ -114,7 +114,7 @@ define([
 				$('*[rel="popover"]').popover({trigger: 'hover'});
 
 				// Set the focus to the first input of the form //
-				$('#modalDeleteTask, #modalAddTask, #modalCancelTask').on('shown', function() {
+				$('#modalDeleteTask, #modalTask, #modalCancelTask').on('shown', function() {
 					$(this).find('input, textarea').first().focus();
 				});
 
@@ -246,7 +246,7 @@ define([
 				taskDone = true;
 	//			$('#remainingTimeSection').hide();
 			}
-			new ModalTaskDoneView({el:'#modalTaskDone', model: this.model, inter: this.inter, taskDone: taskDone, tasks: this.tasks});
+			new ModalTaskDoneView({el:'#modalTask', model: this.model, inter: this.inter, taskDone: taskDone, tasks: this.tasks});
 		},
 
 

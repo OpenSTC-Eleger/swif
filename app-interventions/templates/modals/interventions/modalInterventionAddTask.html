@@ -6,22 +6,17 @@
 				<a type="button" class="btn text-info hidden-xs" title="<%= lang.zenMode %>" data-action="zenmode"><i class="fa fa-arrows-alt"></i></a>
 				<a type="button" class="btn close" data-dismiss="modal"><i class="fa fa-times"></i></a>
 			</div>
-			<h4 class="modal-title"><i class="fa fa-edit fa-fw"></i>&nbsp;<%= lang.viewsTitles.statementTask %></h4>
+			<h4 class="modal-title"><i class="fa fa-edit fa-fw"></i>&nbsp;<%= lang.viewsTitles.newTask %></h4>
 		</div>
 
 		<div class="modal-body">
 
 			<blockquote>
-				<p><%= inter.getName() %></p>
-				<footer><%= inter.getDescription() %></footer>
+				<p><%= !_.isUndefined(inter)?inter.getName():'' %></p>
+				<footer><%= !_.isUndefined(inter)?inter.getDescription():'' %></footer>
 			</blockquote>
 
 
-			<!-- Nav tabs -->
-			<ul class="nav nav-tabs nav-justified">
-				<li class="active"><a href="#tabAboutTheTask" data-toggle="tab"><%= lang.aboutTheTask %></a></li>
-				<li><a href="#tabByMeansOf" data-toggle="tab"><%= lang.byMeansOf %></a></li>
-			</ul>
 
 
 			<form id="formAddTask" action="#" class="form-horizontal" role="form">
@@ -29,7 +24,7 @@
 
 
 			<!-- First Tab about the task -->
-			<fieldset id="tabAboutTheTask" class="tab-pane fade in active">
+			
 			
 				<!-- Task name -->
 				<div class="form-group">
@@ -122,67 +117,20 @@
 				</div>
 
 
-			</fieldset>
-
-
-			<!-- Second Tab about the task -->
-			<fieldset id="tabByMeansOf" class="tab-pane fade">
-
-				<!-- Vehicle -->
-				<div class="form-group">
-					<label for="taskEquipmentDone" class="control-label col-sm-3"><%= _.capitalize(lang.vehicleEquipment) %>:</label>
-
-					<div class="col-sm-9">
-						<div class="input-group">
-							<span class="input-group-addon linkRefueling" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.oil) %>">
-								<i class="fa fa-tint"></i>
-							</span>
-							<input id="taskEquipmentDone" class="select2 taskEquipment taskSelect" data-placeholder="<%= lang.actions.selectAVehicle %>"/>
+					<!-- Service cost -->
+					<div id="serviceCostSection" class="hide-soft">
+						<div class="form-group">
+							<label for="serviceCost" class="control-label col-sm-3"><%= lang.serviceCost %>:</label>
+							<div class="col-sm-4">
+								<div class="input-group bootstrap-timepicker">
+									<input type="text" class="form-control" id="serviceCost">
+									<span class="input-group-addon"><i class="fa fa-eur"></i></span>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
 
 
-				<!-- Refueling Vehicle -->
-				<div class="refueling-vehicle hide-soft well well-sm">
-					<div class="form-group">
-						<!-- KM -->
-						<div class="col-sm-4">
-							<label for="equipmentKmDone"><%= _.capitalize(lang.milometer) %>:</label>
-							<input type="number" id="equipmentKmDone" class="equipmentKm form-control" placeholder="<%= lang.inKm %>">
-						</div>
-
-						<!-- Oil -->
-						<div class="col-sm-4">
-							<label for="equipmentOilQtityDone"><%= _.capitalize(lang.quantity) %>:</label>
-							<input type="text" id="equipmentOilQtityDone" class="form-control" placeholder="<%= lang.inLiter %>">
-						</div>
-
-						<!-- Oil Price -->
-						<div class="col-sm-4">
-							<label for="equipmentOilPriceDone"><%= _.capitalize(lang.price) %>:</label>
-							<input type="text" id="equipmentOilPriceDone" class="form-control" placeholder="<%= lang.inEuro %>">
-						</div>
-					</div>
-				</div>
-
-
-				<!-- Equipments -->
-				<div class="form-group">
-					<label for="taskEquipmentListDone" class="control-label col-sm-3"><%= _.capitalize(lang.equipment) %>:</label>
-					<div class="col-sm-9">
-						<input id="taskEquipmentListDone" class="select2 taskEquipment taskSelect taskInput"
-							data-placeholder="<%= lang.actions.selectEquipments %>" data-multiple="multiple">
-					</div>
-				</div>
-
-
-				<!-- Consumables -->
-				<div id="consumablesSection">
-				</div>
-
-
-			</fieldset>
 
 			</div> <!-- /tab-content -->
 			</form>

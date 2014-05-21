@@ -156,7 +156,7 @@ define([
 		displayModalAddTask: function(e){
 			e.preventDefault();
 			var self = this;
-			new ModalInterventionAddTaskView({el: '#modalAddTask', inter: self.model});
+			new ModalInterventionAddTaskView({el: '#modalTask', inter: self.model});
 		},
 
 	});

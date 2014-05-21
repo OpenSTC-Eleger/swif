@@ -120,7 +120,7 @@ define([
 
 
 				// Set the focus to the first input of the form //
-				$('#modalAddInter, #modalAddTask').on('shown', function(){
+				$('#modalAddInter, #modalTask').on('shown', function(){
 					$(this).find('input').first().focus();
 				});
 

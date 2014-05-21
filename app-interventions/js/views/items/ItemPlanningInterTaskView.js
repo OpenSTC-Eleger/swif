@@ -128,7 +128,7 @@ define([
 				});
 
 				// Set the focus to the first input of the form //
-				$('#modalDeleteTask, #modalAddTask, #modalCancelTask').on('shown', function() {
+				$('#modalDeleteTask, #modalTask, #modalCancelTask').on('shown', function() {
 					$(this).find('input, textarea').first().focus();
 				});
 
