@@ -4,6 +4,8 @@
 		"plannedAmount"             : "Montant planifié",
 		"spentAmount"               : "Montant dépensé",
 		"amountTaxed"				: "Montant TTC",
+		"invoicesAttached"			: "Factures jointes",
+		"invoice_s"					: "Facture(s)",
 
 		"actions" : {
 			"addBudget"             : "Nouveau budget",
@@ -18,6 +20,14 @@
 		"viewsTitles" : {
 			"budgetsList"           : "Suivi des budgets",
 			"purchasesList"			: "listes des Commandes"
+		},
+		
+		"modalPurchase": {
+			"cancel"				: "Annulation de la commande",
+			"check_dst"				: "Validation en tant que Responsable",
+			"check_elu"				: "Validation en tant qu'Elu",
+			"refuse"				: "Refus de la commande",
+			"done"					: "indiquer la commande comme payée (clôture l'achat)"
 		}
 
 	}

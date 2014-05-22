@@ -16,13 +16,13 @@ define([
 		
 		url   : '/api/open_achats_stock/purchases',
 
-		fields: ['id', 'name', 'date_order', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'validation_order', 'actions', 'check_dst', 'check_elu'],
+		fields: ['id', 'name', 'date_order', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'validation_order', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'engage_to_treat'],
 
 		default_sort: { by: 'validation_order', order: 'ASC' },
 		
 		specialCpt : 0,
 		
-		advanced_searchable_fields: [],
+		advanced_searchable_fields: [{key: 'engage_to_treat', label: 'Engage to treat'}],
 
 
 		/** Get the number of Booking that the user have to deal
