@@ -12,10 +12,11 @@ define([
 	'genericItemView',
 	'modalDeleteView',
 //	'genericFormModalView',
+	'genericActionModalView',
 	'moment'
 
 
-], function(app, AppHelpers, PurchaseModel, PurchasesCollection, GenericItemView, ModalDeleteView){
+], function(app, AppHelpers, PurchaseModel, PurchasesCollection, GenericItemView, ModalDeleteView, GenericActionModalView){
 
 	'use strict';
 
@@ -34,7 +35,10 @@ define([
 
 		// The DOM events //
 		events: {
-			'click .actionDelete'	: 'modalDelete'
+			'click .actionDelete'	: 'modalDelete',
+			'click .actionCancel'	: 'modalCancel',
+			'click .actions'		: 'modalConfirm'
+			
 		},
 
 		/** View Initialization
@@ -113,6 +117,34 @@ define([
 				modalTitle   : app.lang.viewsTitles.deleteContract,
 				modalConfirm : app.lang.warningMessages.confirmDeleteContract
 			});
-		}
+		},
+		
+		modalConfirm: function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			var action = $(e.currentTarget).data('action');
+			var templateForm = null;
+//			switch(action){
+//			case 'cancel':
+//				templateForm = app.menus.openstcpatrimoine + this.templateCancelContract;
+//				break;
+//			case 'renew':
+//				templateForm = app.menus.openstcpatrimoine + this.templateRenewContract;
+//				break;
+//			}
+			var langAction = app.lang.achatsstocks.modalPurchase;
+			new GenericActionModalView({
+				el			:'#modalView',
+				model		:this.model,
+				action		:action,
+				langAction	:langAction,
+				templateForm:templateForm
+			});
+		},
+		
+		modalCancel: function(e){
+			$(e.currentTarget).data('action','cancel');
+			this.modalConfirm(e);
+		},
 	});
 });

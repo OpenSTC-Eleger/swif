@@ -163,6 +163,9 @@ requirejs.config({
 		modalSaveFilterView             : 'views/modals/ModalSaveFilterView',
 		modalCategoryConsumableView     : 'views/modals/ModalCategoryConsumableView',
 		modalConsumableView             : 'views/modals/ModalConsumableView',
+		genericActionModalView			: 'views/modals/GenericActionModalView',
+		genericFormModalView			: 'views/modals/GenericFormModalView',
+
 
 		// Form Components //
 		advancedSelectBoxView   : 'views/form-components/AdvancedSelectBoxView',

@@ -354,7 +354,9 @@
         "back"				: "Retour",
         "extendContract"	: "Reconduire le contrat",
         "saveDraft"			: "Sauvegarder",
-        "savepost"			: "Enregistrer et soumettre"
+        "savepost"			: "Enregistrer et soumettre",
+        "endPurchase"		: "Indiquer comme payée",
+        "manageInvoices"	: "Gérer les factures"
     },
 
     "errorMessages" : {
