@@ -261,6 +261,7 @@
     "humanResources"                        : "Ressources humaines",
     "humanResourceAcronym"                  : "RH",
     "zenMode"                               : "plein écran",
+    "period"                                : "Période",
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
     "monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
@@ -274,7 +275,7 @@
 	"purchasePaid"		: "Payée",
 	"purchaseEngaged"	: "Engagée",
 	"waitAuthorization"	: "Attente d'autorisation",
-	
+
     "actions" : {
         "logIn"             : "connectez-vous",
         "logOut"            : "déconnexion",

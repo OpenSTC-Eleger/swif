@@ -6,14 +6,16 @@
 
 define([
 	'app',
+	'appHelpers',
 
 	'budgetsCollection',
 	'budgetModel',
 
 	'genericListView',
-	'itemBudgetView'
+	'itemBudgetView',
+	'modalBudgetView'
 
-], function(app, BudgetsCollection, BudgetModel, GenericListView, ItemBudgetView){
+], function(app, AppHelpers, BudgetsCollection, BudgetModel, GenericListView, ItemBudgetView, ModalBudgetView){
 
 	'use strict';
 
@@ -30,7 +32,7 @@ define([
 		// The DOM events //
 		events: function() {
 			return _.defaults({
-
+				'click a.createModel'  : 'modalCreateBudget'
 			},
 				GenericListView.prototype.events
 			);
@@ -46,6 +48,21 @@ define([
 
 			this.buttonAction = app.lang.achatsstocks.actions.addBudget;
 			GenericListView.prototype.initialize.apply(this, arguments);
+		},
+
+
+
+		/** When the model ara created //
+		*/
+		add: function(model) {
+			var itemBudgetView = new ItemBudgetView({
+				model: model
+			});
+			$('#rows-items').prepend(itemBudgetView.render().el);
+			AppHelpers.highlight($(itemBudgetView.el));
+
+			app.notify('', 'success', app.lang.infoMessages.information, model.getName() + ' : ' + app.lang.achatsstocks.infoMessages.budgetSaveOk);
+			this.partialRender();
 		},
 
 
@@ -76,7 +93,6 @@ define([
 				// Create item budget View //
 				_.each(self.collection.models, function(budget) {
 					var itemBudgetView = new ItemBudgetView({ model: budget });
-
 					$('#rows-items').append(itemBudgetView.render().el);
 				});
 
@@ -85,6 +101,17 @@ define([
 			$(this.el).hide().fadeIn();
 
 			return this;
+		},
+
+
+		/** Modal form to create a new Request
+		*/
+		modalCreateBudget: function(e) {
+			e.preventDefault();
+
+			app.views.modalBudgetView = new ModalBudgetView({
+				el: '#modalSaveBudget'
+			});
 		}
 
 	});

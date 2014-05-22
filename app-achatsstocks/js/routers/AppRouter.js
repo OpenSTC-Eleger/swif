@@ -24,14 +24,18 @@ define([
 
 		/** Budgets List
 		*/
-		budgetsList: function(year, search, filter, sort, page) {
+		budgetsList: function(search, filter, sort, page) {
 
 			var params = this.setContext({search: search, filter: filter, sort: sort, page: page});
 			app.views.budgetsListView = new BudgetsListView(params);
 		},
 
 
+
+		/** Purchase list
+		*/
 		purchasesList: function(search, filter, sort, page) {
+
 			var params = this.setContext({search: search, filter: filter, sort: sort, page: page});
 			app.views.purchasesListView = new PurchasesListView(params);
 		}

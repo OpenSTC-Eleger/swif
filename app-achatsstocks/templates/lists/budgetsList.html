@@ -6,14 +6,6 @@
 </div>
 
 
-
-<div class="col-sm-12">
-	<h1 class="text-center text-info">Année 2014</h1>
-</ul>
-
-</div>
-
-
 <!-- Table toolbar -->
 <div id="headerList" class="tableToolbar row"></div>
 <!-- Table toolbar -->
@@ -70,7 +62,7 @@
 					<th data-sort-column="name"><%= _.capitalize(lang.name) %></th>
 					<th data-sort-column="planned_amount"><%= lang.achatsstocks.plannedAmount %></th>
 					<th data-sort-column="openstc_practical_amount"><%= lang.achatsstocks.spentAmount %></th>
-					<th data-sort-column="service_id.name"><%= _.capitalize(lang.service) %></th>
+					<th><%= _.capitalize(lang.service) %></th>
 					<th class="col-lg-3"><%= _.capitalize(lang.progressRate) %></th>
 				</tr>
 			</thead>
@@ -89,3 +81,7 @@
 
 </div>
 <!-- /Main view -->
+
+
+<!-- Modal save Budget -->
+<div id="modalSaveBudget" class="modal fade" role="dialog" aria-hidden="true"></div>

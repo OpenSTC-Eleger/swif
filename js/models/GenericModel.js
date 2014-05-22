@@ -49,7 +49,7 @@ define([
 			var acts = this.getAttribute('actions',[]);
 			return acts.indexOf(action) > -1;
 		},
-		
+
 		getDateFr: function(field){
 			var val = this.getAttribute(field,'');
 			if(val !== ''){
@@ -57,23 +57,23 @@ define([
 			}
 			return val;
 		},
-		
+
 		getDatetime: function(field){
 			var val = this.getAttribute(field,'1970-01-01 00:00:00');
 			val = AppHelpers.convertDateToTz(val);
 			return val.format('YYYY-MM-DD HH:mm:ss');
 		},
-		
+
 		getCurrencyString: function(field, decimalSeparator, thousandSeparator, currency){
 			var decimalSep = decimalSeparator || ',';
 			var thousandSep = thousandSeparator || ' ';
 			var cur = currency || '&euro;';
-			
+
 			var value = parseFloat(this.getAttribute(field,0.00));
 			var ret = _.numberFormat(value, 2, decimalSep, thousandSep);
-			return ret + ' ' + cur;
+			return ret + '' + cur;
 		},
-		
+
 		//method to retrieve attribute with standard return form
 		getAttribute: function(key,default_value){
 			var val = this.get(key);
@@ -87,7 +87,7 @@ define([
 				return default_value;
 			}
 		},
-		
+
 		/**
 		 * @return array : empty array if value of 'fieldName' not refer to a *2many save-value, else return value of 'fieldName'
 			a correct *2many save-value is an Array of Array (correctVal = [ [0,0,{...}] ], [4,ID],... ] )
@@ -102,10 +102,10 @@ define([
 					ret.push(value);
 				}
 			});
-			
+
 			return ret;
 		},
-		
+
 		checkMany2OneAction: function(fieldName){
 			var val = this.getAttribute(fieldName,false);
 			if(_.isArray(val)){
@@ -113,7 +113,7 @@ define([
 			}
 			return val;
 		},
-		
+
 		/**
 		 * to move to GenericCollection
 		 */
@@ -154,7 +154,7 @@ define([
 			console.log(ret);
 			return ret;
 		},
-		
+
 		saveToBackend: function(){
 			var self = this;
 			var vals = this.getSaveVals();
@@ -165,7 +165,7 @@ define([
 				return self.fetch();
 			});
 			return ret;
-			
+
 		},
 		fetchMetadata: function(){
 			var self = this;
@@ -204,8 +204,8 @@ define([
 			});
 		},
 	});
-	
-	
+
+
 
 	return GenericModel;
 

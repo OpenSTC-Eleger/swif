@@ -1,22 +1,24 @@
 <!-- Budget name -->
-<td><%= budget.getName() %></td>
+<td><a href="#TODO"><%= budget.getName() %></a></td>
 
 <!-- Planned amount -->
-<td><%= budget.getPlannedAmount() %></td>
+<td class="text-right"><%= budget.getPlannedAmount() %></td>
 
 <!-- Spent amount -->
-<td><%= budget.getSpentAmount() %></td>
+<td class="text-right"><%= budget.getSpentAmount() %></td>
 
 <td><%= budget.getService() %></td>
 
 <!-- Progress -->
 <td>
 	<div class="progress">
-		<div class="progress-bar progress-bar-danger" style="width: 35%">
-			<span class="sr-only">35% Complete (success)</span>
+		<div class="progress-bar progress-bar-danger" data-toggle="tooltip" data-original-title="<%= budget.getSpentAmountPercentage() %>%"
+			 style="width: <%= budget.getSpentAmountPercentage() %>%">
+			<span class="fa fa-flash fa-lg"></span>
 		</div>
-		<div class="progress-bar progress-bar-success" style="width: 20%">
-			<span class="sr-only">20% Complete (warning)</span>
+		<div class="progress-bar progress-bar-success" data-toggle="tooltip" data-original-title="<%= 100-budget.getSpentAmountPercentage() %>%"
+			 style="width: <%= (100-budget.getSpentAmountPercentage()) %>%">
+			<span class="fa fa-eur fa-lg"></span>
 		</div>
 	</div>
 </td>

@@ -14,12 +14,14 @@
 
 
 		"infoMessages": {
-			"noBudgets"             : "Aucun budget à afficher"
+			"noBudgets"             : "Aucun budget à afficher",
+			"budgetSaveOk"          : "Budget correctement enregistré"
 		},
 
 		"viewsTitles" : {
 			"budgetsList"           : "Suivi des budgets",
-			"purchasesList"			: "listes des Commandes"
+			"purchasesList"			: "listes des Commandes",
+			"editBudget"            : "Édition du budget"
 		},
 		
 		"modalPurchase": {
