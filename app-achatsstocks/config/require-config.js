@@ -33,7 +33,10 @@ requirejs.config({
 		itemBudgetView                : '../app-achatsstocks/js/views/items/ItemBudgetView',
 		itemBudgetBudgetLineListView  : '../app-achatsstocks/js/views/items/ItemBudgetBudgetLineListView',
 		itemPurchaseView              : '../app-achatsstocks/js/views/items/PurchaseItemView',
-		modalBudgetView               : '../app-achatsstocks/js/views/modals/ModalBudgetView'
+		modalBudgetView               : '../app-achatsstocks/js/views/modals/ModalBudgetView',
+		
+		// Views Forms //
+		purchaseFormView              : '../app-achatsstocks/js/views/forms/PurchaseFormView'
 
 	}
 

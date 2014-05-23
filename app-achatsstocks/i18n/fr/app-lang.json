@@ -6,10 +6,12 @@
 		"amountTaxed"				: "Montant TTC",
 		"invoicesAttached"			: "Factures jointes",
 		"invoice_s"					: "Facture(s)",
+		"defaultBudget"				: "Budget par défaut",
 
 		"actions" : {
 			"addBudget"             : "Nouveau budget",
-			"addPurchase"			: "Créer une commande"
+			"addPurchase"			: "Créer une commande",
+			"selectABudgetLine"		: "Sélectionner une ligne budgétaire"
 		},
 
 
@@ -21,7 +23,10 @@
 		"viewsTitles" : {
 			"budgetsList"           : "Suivi des budgets",
 			"purchasesList"			: "listes des Commandes",
-			"editBudget"            : "Édition du budget"
+			"editBudget"            : "Édition du budget",
+			"newPurchase"			: "Nouvelle commande",
+			"editPurchase"			: "Édition de la commande"
+			
 		},
 		
 		"modalPurchase": {

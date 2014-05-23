@@ -22,7 +22,7 @@ define([
 
 		url          : '/api/open_achats_stock/budget_lines',
 
-		fields       : ['id', 'name', 'service_names', 'openstc_practical_amount', 'planned_amount', 'crossovered_budget_id', 'analytic_account_id'],
+		fields       : ['id', 'name', 'service_names', 'openstc_practical_amount', 'planned_amount', 'crossovered_budget_id', 'analytic_account_id', 'complete_name'],
 
 		default_sort : { by: 'name', order: 'ASC' },
 

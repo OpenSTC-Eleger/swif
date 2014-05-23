@@ -13,10 +13,11 @@ define([
 	'modalDeleteView',
 //	'genericFormModalView',
 	'genericActionModalView',
+	'purchaseFormView',
 	'moment'
 
 
-], function(app, AppHelpers, PurchaseModel, PurchasesCollection, GenericItemView, ModalDeleteView, GenericActionModalView){
+], function(app, AppHelpers, PurchaseModel, PurchasesCollection, GenericItemView, ModalDeleteView, GenericActionModalView, PurchaseFormView){
 
 	'use strict';
 
@@ -87,6 +88,8 @@ define([
 		/** Display the view
 		*/
 		render : function() {
+			var urlForm = PurchaseFormView.prototype.urlBuilder.apply(this, [this.model.getAttribute('id',false)]);
+			
 			var self = this;
 			var stateItem = PurchaseModel.status[this.model.getAttribute('validation','budget_to_check')];
 			$.get(app.menus.openachatsstocks+this.templateHTML, function(templateData){
@@ -97,6 +100,7 @@ define([
 					stateItem	: stateItem,
 					mainAction: self.model.getUserActions().mainAction,
 					otherActions: self.model.getUserActions().otherActions,
+					urlForm		: urlForm,
 				});
 				$(self.el).html(template);
 				GenericItemView.prototype.render.apply(self);

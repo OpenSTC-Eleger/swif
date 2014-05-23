@@ -8,6 +8,11 @@
 	"purchasesList": {
 		"url"		: "commandes(/search/:search)(/filter/:filter)(/sort/:sort)(/page/:page)",
 		"function"	: "purchasesList"
+	},
+	
+	"purchasesForm": {
+		"url"		: "commande(/id/:id)",
+		"function"	: "purchasesForm"
 	}
 
 }

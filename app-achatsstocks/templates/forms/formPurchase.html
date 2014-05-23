@@ -1,0 +1,66 @@
+<div class="page-header">
+	<h1><%= _.capitalize(pageTitle) %></h1>
+</div>
+
+<% if(purchase.getAttribute('actions',[]).indexOf('redraft') > -1){ %>
+<button class="btn btn-primary" type="button" id="updateDraftForm"><%= lang.patrimoine.actions.setDraftForm %></button>
+<% } %>
+<form id="formSaveModel" action="#" class="form-horizontal container" role="form">
+	<div class="row">
+		
+		<!-- Purchase -->
+		<div class="col-sm-6">	
+			<fieldset <%= readonly ? 'disabled' : ''%>>
+				<legend><span class="text-info">1</span> - <%= _.capitalize('General') %></legend>
+				<div id="general_infos"></div>
+			
+			<div class="form-group field" data-field-name="description" data-field-required="required" data-field-label="<%= lang.note %>"></div>
+			
+			<div class="form-group field" data-field-name="service_id" data-field-required="required" data-field-label="<%= lang.service %>" 
+				data-field-placeholder="<%= lang.actions.selectAService %>"></div>
+			
+			<div class="form-group field" data-field-name="account_analytic_id" data-field-label="<%= lang.achatsstocks.defaultBudget %>" 
+				data-field-placeholder="<%= lang.achatsstocks.actions.selectABudgetLine %>" data-field-minimum-input-length="1"></div>
+			
+			<div class="form-group field" data-field-name="partner_id" data-field-required="required" data-field-label="<%= lang.supplier %>" 
+				data-field-placeholder="<%= lang.actions.selectASupplier %>"></div>
+			
+			</fieldset>
+		</div>
+	</div>
+	<!-- Purchase lines -->
+	<div class="row">
+		<div class="table-responsive col-sm-6">
+			<hr>
+			<table class="table table-bordered table-hover table-striped table-sorter">
+				<thead>
+					<tr>
+						<th><%= _.capitalize(lang.article) %></th>
+						<th><%= _.capitalize(lang.BOQAcronym) %></th>
+						<th><%= _.capitalize(lang.quantity) %></th>
+						<th><%= _.capitalize(lang.unitPriceAcronym) %></th>
+						<th><%= _.capitalize(lang.taxes) %></th>
+						
+					</tr>
+				</thead>
+				<tbody class="lines-items">
+			
+				</tbody>
+			</table>
+		</div>
+		
+	</div>
+
+	<hr />
+
+	<!-- Form Actions -->
+	<div class="col-sm-12 well">
+		<div class="text-center ">
+			<% if(purchase.getAttribute('validation','budget_to_check') == 'budget_to_check'){ %>
+			<button type="button" class="btn btn-default" id="saveDraftFormCurchase"><%= _.capitalize(lang.actions.saveDraft) %></button>&nbsp;
+			<button type="submit" class="btn btn-primary" form="formSaveModel" id="saveFormCurchase"><%= _.capitalize(lang.actions.savePost) %></button>&nbsp;
+			<% } %>
+			<a href="#" id="formBack" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+	</div>
+</form>
