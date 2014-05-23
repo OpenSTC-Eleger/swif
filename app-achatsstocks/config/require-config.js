@@ -15,10 +15,10 @@ requirejs.config({
 		// Router //
 		appAchatsStocksRouter      	  : '../app-achatsstocks/js/routers/AppRouter',
 
+		// Collections //
 		budgetsCollection          	  : '../app-achatsstocks/js/collections/BudgetsCollection',
 		budgetLinesCollection         : '../app-achatsstocks/js/collections/BudgetLinesCollection',
 		purchasesCollection           : '../app-achatsstocks/js/collections/PurchasesCollection',
-
 
 		// Models //
 		budgetModel                	  : '../app-achatsstocks/js/models/BudgetModel',
@@ -31,10 +31,13 @@ requirejs.config({
 
 		// View Items //
 		itemBudgetView                : '../app-achatsstocks/js/views/items/ItemBudgetView',
-		itemBudgetBudgetLineListView  : '../app-achatsstocks/js/views/items/ItemBudgetBudgetLineListView',
+		itemBudgetBudgetLinesListView : '../app-achatsstocks/js/views/items/ItemBudgetBudgetLinesListView',
 		itemPurchaseView              : '../app-achatsstocks/js/views/items/PurchaseItemView',
-		modalBudgetView               : '../app-achatsstocks/js/views/modals/ModalBudgetView'
+		itemBudgetBudgetLineView      : '../app-achatsstocks/js/views/items/ItemBudgetBudgetLineView',
 
+
+		// View Modals //
+		modalBudgetView               : '../app-achatsstocks/js/views/modals/ModalBudgetView'
 	}
 
 });

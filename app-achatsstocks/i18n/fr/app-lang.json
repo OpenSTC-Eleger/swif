@@ -7,12 +7,14 @@
 
 		"actions" : {
 			"addBudget"             : "Nouveau budget",
+			"addBudgetLine"         : "Nouvelle ligne budgétaire",
 			"addPurchase"			: "Créer une commande"
 		},
 
 
 		"infoMessages": {
 			"noBudgets"             : "Aucun budget à afficher",
+			"noBudgetLines"         : "Aucune ligne budgétaire à afficher",
 			"budgetSaveOk"          : "Budget correctement enregistré"
 		},
 
