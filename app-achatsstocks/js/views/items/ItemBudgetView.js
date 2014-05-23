@@ -101,7 +101,10 @@ define([
 
 			// Reset the default visibility //
 			$('tr.expend').css({ display: 'none' }).removeClass('expend');
-			//$('tr:not(".row-nested-objects-collapse")').css({ opacity: '0.45'});
+			$('tr.active').removeClass('active');
+
+			$('#rows-items tr').css({ opacity: '1'});
+
 
 			// If the table row isn't already expend //
 			if(!isExpend) {
@@ -113,8 +116,9 @@ define([
 				}
 
 				// Set the new visibility to the selected intervention //
+				$(this.el).addClass('active');
 				$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
-				//$(this.el).parents('tr.row-object').css({ opacity: '1'});
+				$('tr:not(.expend):not(.active)').css({ opacity: '0.45'});
 			}
 			else {
 				$('tr.row-object').css({ opacity: '1'});

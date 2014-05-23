@@ -40,7 +40,10 @@ define([
 			var params = this.setContext({search: search, filter: filter, sort: sort, page: page});
 			app.views.purchasesListView = new PurchasesListView(params);
 		},
-		
+
+
+		/** purchases form
+		*/
 		purchasesForm: function(id){
 			var params = this.setContext({id:id});
 			app.views.formPurchaseView = new PurchaseFormView(params);
