@@ -1,0 +1,38 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+			<div class="btn-group btn-group-xs pull-right">
+				<a type="button" class="btn text-info hidden-xs" title="<%= lang.zenMode %>" data-action="zenmode"><i class="fa fa-arrows-alt"></i></a>
+				<a type="button" class="btn close" data-dismiss="modal"><i class="fa fa-times"></i></a>
+			</div>
+			<h4 class="modal-title">
+				<i class="fa fa-edit">
+				<%= _.capitalize(title) %>
+				</i>&nbsp;
+			</h4>
+		</div>
+
+		<!-- Modal Body  -->
+		<div class="modal-body">
+			<form id="formModalSaveModel" class="form-horizontal container" role="form">
+
+			</form>
+
+		</div>
+		<!-- / Modal Body -->
+
+
+		<div class="modal-footer">
+			<button type="submit" form="formModalSaveModel" class="btn btn-primary"
+					data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.saveInProgress %>">
+			<%= _.capitalize(lang.actions.validate) %>
+			</button>&nbsp;&nbsp;
+			<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
+		</div>
+	</div>
+</div>
+
+
+
+

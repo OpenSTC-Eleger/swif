@@ -16,7 +16,7 @@ define([
 		
 		urlRoot: '/api/open_achats_stock/purchases',
 
-		fields: ['id', 'name', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'actions', 'check_dst', 'check_elu'],
+		fields: ['id', 'name', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'account_analytic_id'],
 		
 		//readonlyFields: ['contract_line_names', 'contract_line', 'id', 'state'],
 		
@@ -38,7 +38,7 @@ define([
 		 * use 'priority' variable to apply the priority of the main action (first index is the higher priority)
 		 */
 		getUserMainAction: function(){
-			var priority = ['check_elu','check_dst', 'paid','cancel'];
+			var priority = ['check_elu','check_dst', 'done', 'invoice','refuse'];
 			var ret = '';
 			for(var i=0;i < priority.length;i++){
 				if(this.hasAction(priority[i])){
@@ -55,7 +55,6 @@ define([
 		getUserActions: function(){
 			var actions = this.getAttribute('actions',[]);
 			var mainAction = this.getUserMainAction();
-			console.log(mainAction);
 			return {mainAction: mainAction, otherActions: _.without(actions, mainAction)};
 		},
 		
@@ -70,6 +69,36 @@ define([
 		getInformations: function(){
 			var ret = {};
 			ret.name = this.getAttribute('name','');
+			var value = this.getAttribute('description','');
+			var values = [];
+			values.push({key: app.lang.service, value: this.getAttribute('service_id', [0,''])[1]});
+			values.push({key: app.lang.agent, value: this.getAttribute('user_id', [0,''])[1]});
+			values.push({key: app.lang.total, value: this.getCurrencyString('amount_total')});
+			//did not add the last </footer> because the modal template do it yet, need a refacto to be easier to implement
+			_.each(values, function(val){
+				value += '</footer><br><footer><strong>' + val.key + ': </strong> ' + val.value;
+			});
+			ret.infos = {key: app.lang.note, value: value};
+			return ret;
+		},
+		
+		/**
+		 * @param field: field name to parse in html
+		 * @return: String containg html to be displayed in tooltips
+		 */
+		printAttachInfos: function(){
+			var attaches = this.getAttribute('attach_invoices', []);
+			var attachToTreatIds = this.getAttribute('attach_waiting_invoice_ids', []);
+			var ret = '<ul>';
+			var val = '';
+			_.each(attaches, function(attach){
+				val = '<li>' + attach.name + '</li>';
+				if(_.contains(attachToTreatIds, attach.id)){
+					val = '<strong>' + val + '(' + app.lang.actions.process + ')</strong>';
+				}
+				ret += val;
+			});
+			ret += '</ul>';
 			return ret;
 		},
 		
@@ -144,22 +173,44 @@ define([
 				key					: 'check_dst',
 				color				: 'success',
 				icon				: 'fa-check',
-				translation			: 'Validation Responsable'
+				translation			: 'Validation Responsable (traduire)'
 			},
 			
 			check_elu: {
 				key					: 'check_elu',
 				color				: 'success',
 				icon				: 'fa-check',
-				translation			: 'Validation Elu'
+				translation			: 'Validation Elu (traduire)'
 			},
 			
 			cancel: {
 				key					: 'cancel',
 				color				: 'danger',
-				icon				: 'fa-times',
+				icon				: 'fa-ban',
 				translation			: app.lang.actions.cancel
-			}
+			},
+			
+			refuse: {
+				key					: 'refuse',
+				color				: 'danger',
+				icon				: 'fa-times',
+				translation			: app.lang.actions.refuse
+			},
+			
+			done: {
+				key					: 'done',
+				color				: 'default',
+				icon				: 'fa-thumbs-o-up',
+				translation			: app.lang.actions.endPurchase
+			},
+			
+			invoice: {
+				key					: 'invoice',
+				color				: 'default',
+				icon				: 'fa-file-pdf-o',
+				translation			: app.lang.actions.manageInvoices
+			},
+			
 		}
 	});
 });

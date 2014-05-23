@@ -13,6 +13,7 @@
 	data-url="<%= field.definition.url %>"
 	<%= field.fieldDomain ? 'data-domain="' + field.fieldDomain + '"' : '' %>
 	<%= field.fieldPlaceholder ? 'data-placeholder="' + field.fieldPlaceholder + '"' : '' %>
+	<%= field.fieldMinimumInputLength ? 'data-minimum-input-length="' + field.fieldMinimumInputLength + '"' : '' %>
 	/>
 	<% if(field.fieldAddon){ %>
 		<span class="input-group-addon"><%= field.fieldAddon %></span>

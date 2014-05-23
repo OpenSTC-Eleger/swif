@@ -275,6 +275,8 @@
 	"purchasePaid"		: "Payée",
 	"purchaseEngaged"	: "Engagée",
 	"waitAuthorization"	: "Attente d'autorisation",
+	"article"			: "Article",
+	"taxes"				: "Taxes",
 
     "actions" : {
         "logIn"             : "connectez-vous",
@@ -344,6 +346,7 @@
         "selectAClaimerType": "Sélectionner un type de demandeur",
         "selectABookable"   : "Sélectionner une ressource",
         "selectAProvider"   : "Sélectionner un prestataire",
+        "selectASupplier"	: "Sélectionner un fournisseur",
         "selectAConsumableCategory": "Sélectionner une catégorie de fourniture",
         "selectConsumables" : "Sélectionner des fournitures",
         "displayPassword"   : "Afficher le mot de passe",
@@ -355,7 +358,9 @@
         "back"				: "Retour",
         "extendContract"	: "Reconduire le contrat",
         "saveDraft"			: "Sauvegarder",
-        "savepost"			: "Enregistrer et soumettre"
+        "savePost"			: "Enregistrer et soumettre",
+        "endPurchase"		: "Indiquer comme payée",
+        "manageInvoices"	: "Gérer les factures"
     },
 
     "errorMessages" : {

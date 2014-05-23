@@ -1,5 +1,6 @@
-<td><span class="field" data-fieldname="name"></span>
-<p class="row-actions invisible small-actions" data-actions="delete"></p>
+<td>
+<a href="<%= urlForm %>"><span class="field" data-fieldname="name"></span></a>
+<p class="row-actions invisible small-actions" data-actions="delete,cancel"></p>
 </td>
 
 <td class="field" data-fieldname="description"></td>
@@ -11,11 +12,15 @@
 <td class="field" data-fieldname="date_order"></td>
 
 <td>
-<span>
-<%= purchase.getCurrencyString('amount_total') %>
-</span>
-</td>
+<span><%= purchase.getCurrencyString('amount_total') %></span></td>
+
+<td  data-toggle="popover" data-original-title="<%= _.capitalize(lang.achatsstocks.invoicesAttached) %>" data-content="<%= purchase.printAttachInfos()%>">
+<%= purchase.getAttribute('attach_invoices',[]).length %> <%= _.capitalize(lang.achatsstocks.invoice_s) %>
+<% if(purchase.getAttribute('attach_waiting_invoice_ids',[]).length > 0){ %>
+	&nbsp;
+	<strong><i class="fa fa-info-circle fa-lg text-info"></i></strong>
+<% } %></td>
 
 <td><span class="label label-<%= stateItem.color %>" data-toggle="tooltip" data-original-title=""><%= stateItem.translation %></span>
 
-<td class="button-actions" data-actions="check_dst,check_elu,paid,cancel" data-main-action="<%= mainAction%>"></td>
+<td class="button-actions" data-actions="check_dst,check_elu,done,refuse,invoice" data-main-action="<%= mainAction%>"></td>

@@ -184,7 +184,7 @@ define([
 					self.renderSmallActions($(self.el).find('.small-actions'))).always(function(){
 				// Set the Tooltip //
 				$('*[data-toggle="tooltip"]').tooltip({container: 'body'});
-				$('*[data-toggle="popover"]').popover({trigger: 'hover', container: 'body'});
+				$('*[data-toggle="popover"]').popover({trigger: 'hover', container: 'body', html: true});
 			});
 
 			return this;
