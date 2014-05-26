@@ -13,9 +13,10 @@ define([
 
 	'genericListView',
 	'itemBudgetView',
+	'itemBudgetBudgetLinesListView',
 	'modalBudgetView'
 
-], function(app, AppHelpers, BudgetsCollection, BudgetModel, GenericListView, ItemBudgetView, ModalBudgetView){
+], function(app, AppHelpers, BudgetsCollection, BudgetModel, GenericListView, ItemBudgetView, ItemBudgetBudgetLinesListView, ModalBudgetView){
 
 	'use strict';
 
@@ -92,8 +93,10 @@ define([
 
 				// Create item budget View //
 				_.each(self.collection.models, function(budget) {
-					var itemBudgetView = new ItemBudgetView({ model: budget });
+					var detailedView = new ItemBudgetBudgetLinesListView({ model: budget });
+					var itemBudgetView = new ItemBudgetView({ model: budget, detailedView: detailedView });
 					$('#rows-items').append(itemBudgetView.render().el);
+					$('#rows-items').append( detailedView.render().el );
 				});
 
 			});
@@ -102,6 +105,7 @@ define([
 
 			return this;
 		},
+
 
 
 		/** Modal form to create a new Request

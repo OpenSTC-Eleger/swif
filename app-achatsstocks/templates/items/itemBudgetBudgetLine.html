@@ -1,0 +1,23 @@
+<!-- Budget name -->
+<td><%= budgetLine.getName() %></td>
+
+<!-- Planned amount -->
+<td class="text-right"><%= budgetLine.getPlannedAmount() %></td>
+
+<!-- Spent amount -->
+<td class="text-right"><%= budgetLine.getSpentAmount() %></td>
+
+
+<!-- Progress -->
+<td>
+	<div class="progress">
+		<div class="progress-bar progress-bar-danger" data-toggle="tooltip" data-original-title="<%= budgetLine.getSpentAmountPercentage() %>%"
+			 style="width: <%= budgetLine.getSpentAmountPercentage() %>%">
+			<span class="fa fa-flash fa-lg"></span>
+		</div>
+		<div class="progress-bar progress-bar-success" data-toggle="tooltip" data-original-title="<%= 100-budgetLine.getSpentAmountPercentage() %>%"
+			 style="width: <%= (100-budgetLine.getSpentAmountPercentage()) %>%">
+			<span class="fa fa-eur fa-lg"></span>
+		</div>
+	</div>
+</td>

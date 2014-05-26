@@ -10,6 +10,7 @@
 
 		"actions" : {
 			"addBudget"             : "Nouveau budget",
+			"addBudgetLine"         : "Nouvelle ligne budgétaire",
 			"addPurchase"			: "Créer une commande",
 			"selectABudgetLine"		: "Sélectionner une ligne budgétaire"
 		},
@@ -17,6 +18,7 @@
 
 		"infoMessages": {
 			"noBudgets"             : "Aucun budget à afficher",
+			"noBudgetLines"         : "Aucune ligne budgétaire à afficher",
 			"budgetSaveOk"          : "Budget correctement enregistré"
 		},
 
@@ -30,7 +32,7 @@
 			"purchaseLines"			: "Articles commandées"
 			
 		},
-		
+
 		"modalPurchase": {
 			"cancel"				: "Annulation de la commande",
 			"check_dst"				: "Validation en tant que Responsable",

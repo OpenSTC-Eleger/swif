@@ -34,10 +34,16 @@
 -------------------------------------------------- */
 .table-striped-collapse {
 	> tbody {
-	    > tr:nth-child(4n+1) {
+      > tr:nth-child(4n+1) {
+        > td,
+        > th {
+          background-color: @table-bg-accent;
+        }
+      }
+      > tr:nth-child(4n+1):hover {
 	      > td,
 	      > th {
-	        background-color: @table-bg-accent;
+	        background-color: @table-bg-active;
 	      }
 	    }
 	  }

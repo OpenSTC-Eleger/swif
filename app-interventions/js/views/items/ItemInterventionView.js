@@ -255,7 +255,7 @@ define([
 
 			// If the table row isn't already expend //
 			if(!isExpend){
-				// Fetch tasks
+				// Fetch tasks //
 				if(!_.isUndefined(this.detailedView)){
 					this.detailedView.fetchData().done(function () {
 						self.detailedView.render();

@@ -15,6 +15,7 @@ requirejs.config({
 		// Router //
 		appAchatsStocksRouter      	  : '../app-achatsstocks/js/routers/AppRouter',
 
+		// Collections //
 		budgetsCollection          	  : '../app-achatsstocks/js/collections/BudgetsCollection',
 		budgetLinesCollection         : '../app-achatsstocks/js/collections/BudgetLinesCollection',
 		purchasesCollection           : '../app-achatsstocks/js/collections/PurchasesCollection',
@@ -33,15 +34,17 @@ requirejs.config({
 
 		// View Items //
 		itemBudgetView                : '../app-achatsstocks/js/views/items/ItemBudgetView',
-		itemBudgetBudgetLineListView  : '../app-achatsstocks/js/views/items/ItemBudgetBudgetLineListView',
+		itemBudgetBudgetLinesListView : '../app-achatsstocks/js/views/items/ItemBudgetBudgetLinesListView',
 		itemPurchaseView              : '../app-achatsstocks/js/views/items/PurchaseItemView',
-		modalBudgetView               : '../app-achatsstocks/js/views/modals/ModalBudgetView',
-		
+		itemBudgetBudgetLineView      : '../app-achatsstocks/js/views/items/ItemBudgetBudgetLineView',
+
 		// Views Forms //
 		purchaseFormView              : '../app-achatsstocks/js/views/forms/PurchaseFormView',
 		purchaselineFormView          : '../app-achatsstocks/js/views/forms/PurchaseLineFormView'
 		
 
+		// View Modals //
+		modalBudgetView               : '../app-achatsstocks/js/views/modals/ModalBudgetView'
 	}
 
 });
