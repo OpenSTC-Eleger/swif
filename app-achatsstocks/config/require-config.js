@@ -39,7 +39,8 @@ requirejs.config({
 		purchaseFormView              : '../app-achatsstocks/js/views/forms/PurchaseFormView',
 
 		// View Modals //
-		modalBudgetView               : '../app-achatsstocks/js/views/modals/ModalBudgetView'
+		modalBudgetView               : '../app-achatsstocks/js/views/modals/ModalBudgetView',
+		modalBudgetLineView           : '../app-achatsstocks/js/views/modals/ModalBudgetLineView'
 	}
 
 });

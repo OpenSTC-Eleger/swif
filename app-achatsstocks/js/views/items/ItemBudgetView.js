@@ -7,9 +7,11 @@
 
 define([
 	'app',
-	'appHelpers'
+	'appHelpers',
 
-], function(app, AppHelpers){
+	'budgetModel'
+
+], function(app, AppHelpers, BudgetModel){
 
 	'use strict';
 
@@ -68,13 +70,13 @@ define([
 		render : function() {
 			var self = this;
 
-
 			// Retrieve the template //
 			$.get(app.menus.openachatsstocks+this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					lang     : app.lang,
-					budget   : self.model
+					lang        : app.lang,
+					budget      : self.model,
+					budgetState : BudgetModel.state
 				});
 
 				$(self.el).html(template);

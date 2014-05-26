@@ -7,6 +7,8 @@
 		"invoicesAttached"			: "Factures jointes",
 		"invoice_s"					: "Facture(s)",
 		"defaultBudget"				: "Budget par défaut",
+		"analyticAccount"           : "Compte Analytique",
+		"m14Account"                : "Compte M14",
 
 		"actions" : {
 			"addBudget"             : "Nouveau budget",
@@ -26,6 +28,7 @@
 			"budgetsList"           : "Suivi des budgets",
 			"purchasesList"			: "listes des Commandes",
 			"editBudget"            : "Édition du budget",
+			"editBudgetLine"        : "Édition de la ligne budgétaire",
 			"newPurchase"			: "Nouvelle commande",
 			"editPurchase"			: "Édition de la commande"
 

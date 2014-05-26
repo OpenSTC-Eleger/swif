@@ -78,8 +78,43 @@ define([
 		*/
 		getSpentAmountPercentage: function() {
 			return _.toNumber((this.get('openstc_practical_amount') * 100) / this.get('planned_amount'), 2);
-		}
+		},
 
+
+
+		/** Get the state of the Budget
+		*/
+		getState: function() {
+			return this.get('state');
+		},
+
+
+
+
+	}, {
+
+		// Status of the requests //
+		state : {
+			confirm: { // ena ttente
+				key        : 'confirm',
+				color      : 'info',
+				translation: app.lang.wait
+			},
+			validate: {
+				key        : 'validate',
+				color      : 'success',
+			},
+			done: {
+				key        : 'done',
+				color      : 'default',
+				translation: app.lang.completed
+			},
+			cancel: {
+				key        : 'cancel',
+				color      : 'danger',
+				translation: app.lang.stateCancelled
+			}
+		}
 
 	});
 
