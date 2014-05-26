@@ -11,7 +11,7 @@
 		<!-- Purchase -->
 		<div class="col-sm-6">	
 			<fieldset <%= readonly ? 'disabled' : ''%>>
-				<legend><span class="text-info">1</span> - <%= _.capitalize('General') %></legend>
+				<legend><span class="text-info">1</span> - <%= _.capitalize(lang.achatsstocks.viewsTitles.general) %></legend>
 				<div id="general_infos"></div>
 			
 			<div class="form-group field" data-field-name="description" data-field-required="required" data-field-label="<%= lang.note %>"></div>
@@ -30,26 +30,47 @@
 	</div>
 	<!-- Purchase lines -->
 	<div class="row">
-		<div class="table-responsive col-sm-6">
-			<hr>
-			<table class="table table-bordered table-hover table-striped table-sorter">
-				<thead>
-					<tr>
-						<th><%= _.capitalize(lang.article) %></th>
-						<th><%= _.capitalize(lang.BOQAcronym) %></th>
-						<th><%= _.capitalize(lang.quantity) %></th>
-						<th><%= _.capitalize(lang.unitPriceAcronym) %></th>
-						<th><%= _.capitalize(lang.taxes) %></th>
-						
-					</tr>
-				</thead>
-				<tbody class="lines-items">
-			
-				</tbody>
-			</table>
-		</div>
-		
+		<fieldset class="col-sm-12" <%= readonly ? 'disabled' : ''%>>
+			<legend><span class="text-info">2</span> - <%= _.capitalize(lang.achatsstocks.viewsTitles.purchaseLines) %></legend>
+			<div class="table-responsive">
+				<table class="table table-bordered table-hover table-striped table-sorter">
+					<thead>
+						<tr>
+							<th><%= _.capitalize(lang.article) %></th>
+							<th><%= _.capitalize(lang.BOQAcronym) %></th>
+							<th><%= _.capitalize(lang.quantity) %></th>
+							<th><%= _.capitalize(lang.unitPriceAcronym) %></th>
+							<th><%= _.capitalize(lang.taxes) %></th>
+							<th><%= _.capitalize(lang.action) %></th>
+							
+						</tr>
+					</thead>
+					<tbody id="lines-items">
+				
+					</tbody>
+				</table>
+			</div>
+		</fieldset>
 	</div>
+	
+	<fieldset class="col-sm-4 pull-right">
+		<table id="amounts" class="pull-right">
+			<tr>
+				<td><label for="amount_untaxed">Montant H.T : </label></td>
+				<td id="amount_untaxed"><%= purchase.getCurrencyString('amount_untaxed','') %></td>
+			</tr>
+			
+			<tr>
+				<td><label for="amount_untaxed">Montant Taxes : </label></td>
+				<td id="amount_tax"><%= purchase.getCurrencyString('amount_tax','') %></td>
+			</tr>
+			
+			<tr>
+				<td><label for="amount_total">Montant T.T.C : </label></td>
+				<td id="amount_total"><%= purchase.getCurrencyString('amount_total','') %></td>
+			</tr>
+		</table>
+	</fieldset>
 
 	<hr />
 

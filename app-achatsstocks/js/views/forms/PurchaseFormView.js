@@ -11,6 +11,7 @@ define(['app',
 		
 		'genericFormView',
 		'advancedSelectBoxView',
+		'purchaselineFormView',
 		
 		'moment',
 		'moment-timezone-data',
@@ -19,7 +20,7 @@ define(['app',
 		'bsSwitch'
 		
 
-], function (app, AppHelpers, PurchaseModel, PurchasesCollection, GenericFormView, AdvancedSelectBoxView, moment) {
+], function (app, AppHelpers, PurchaseModel, PurchasesCollection, GenericFormView, AdvancedSelectBoxView, PurchaselineFormView, moment) {
 
 	'use strict';
 
@@ -57,6 +58,18 @@ define(['app',
 			return '#' + url;
 		},
 		
+		addLine: function(id, model){
+			var params = {parentModel: this.model};
+			if(id){
+				params.id = id;
+			}
+			else if(model){
+				params.model = model;
+			}
+			var view = new PurchaselineFormView(params);
+			$('#lines-items').append(view.el);
+		},
+		
 		/** View Initialization
 		*/
 		initialize : function() {
@@ -88,6 +101,9 @@ define(['app',
 
 				$(self.el).html(template);
 				GenericFormView.prototype.render.apply(self);
+				_.each(self.model.getAttribute('order_line', []), function(line_id){
+					self.addLine(line_id);
+				});
 				
 				$(this.el).hide().fadeIn('slow');
 			});
@@ -95,5 +111,6 @@ define(['app',
 		},
 		
 	});
+	
 	return FormPurchaseView;
 });

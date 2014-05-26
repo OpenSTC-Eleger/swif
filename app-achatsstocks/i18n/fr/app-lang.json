@@ -30,8 +30,10 @@
 			"editBudget"            : "Édition du budget",
 			"editBudgetLine"        : "Édition de la ligne budgétaire",
 			"newPurchase"			: "Nouvelle commande",
-			"editPurchase"			: "Édition de la commande"
-
+			"editPurchase"			: "Édition de la commande",
+			"general"				: "Général",
+			"purchaseLines"			: "Articles commandées"
+			
 		},
 
 		"modalPurchase": {
