@@ -25,7 +25,9 @@
 			"purchasesList"			: "listes des Commandes",
 			"editBudget"            : "Édition du budget",
 			"newPurchase"			: "Nouvelle commande",
-			"editPurchase"			: "Édition de la commande"
+			"editPurchase"			: "Édition de la commande",
+			"general"				: "Général",
+			"purchaseLines"			: "Articles commandées"
 			
 		},
 		

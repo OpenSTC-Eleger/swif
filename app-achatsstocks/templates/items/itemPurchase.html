@@ -18,7 +18,8 @@
 <%= purchase.getAttribute('attach_invoices',[]).length %> <%= _.capitalize(lang.achatsstocks.invoice_s) %>
 <% if(purchase.getAttribute('attach_waiting_invoice_ids',[]).length > 0){ %>
 	&nbsp;
-	<strong><i class="fa fa-info-circle fa-lg text-info"></i></strong>
+	<span class="badge badge-primary"><%= purchase.getAttribute('attach_waiting_invoice_ids',[]).length %></span>
+<!-- 	<strong><i class="fa fa-info-circle fa-lg text-info"></i></strong> -->
 <% } %></td>
 
 <td><span class="label label-<%= stateItem.color %>" data-toggle="tooltip" data-original-title=""><%= stateItem.translation %></span>

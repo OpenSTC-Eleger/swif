@@ -1,0 +1,25 @@
+<td>
+<%= purchaseLine.getAttribute('product_id',[0,''])[1] %>
+</td>
+
+<td>
+	<input type="text" class="form-control field-element" id="name" name="name" value="<%= purchaseLine.getAttribute('name','') %>">
+</td>
+
+<td>
+	<div class="col-sm-8">
+		<input type="number" class="form-control field-element" id="product_qty" step="any" name="product_qty" value="<%= purchaseLine.getAttribute('product_qty','0') %>">
+	</div>
+</td>
+
+<td>
+	<div class="col-sm-8">
+		<input type="number" class="form-control field-element" id="price_unit" step="any" name="price_unit" value="<%= purchaseLine.getAttribute('price_unit','') %>">
+	</div>
+</td>
+
+<td>
+ 	<div class="field" data-field-name="taxes_id"></div>
+</td>
+
+<td></td>
