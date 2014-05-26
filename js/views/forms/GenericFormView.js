@@ -277,6 +277,7 @@ define(['app',
 				selection: 'templates/generic-form-components/inputList.html',
 				boolean	: 'templates/generic-form-components/bsSwitch.html',
 				many2one: 'templates/generic-form-components/select.html',
+				many2many:'templates/generic-form-components/select.html',
 				switchField: 'templates/generic-form-components/fieldSwitch.html',
 			};
 			this.formValueFieldParser = {
