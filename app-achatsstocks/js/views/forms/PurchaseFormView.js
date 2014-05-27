@@ -87,7 +87,7 @@ define(['app',
 			
 			var self = this;
 			// Retrieve the template //
-			$.get(app.menus.openachatsstocks + this.templateHTML, function(templateData){
+			$.get(app.menus.openstcachatstock + this.templateHTML, function(templateData){
 				//compute dates with user TZ
 
 				var template = _.template(templateData, {

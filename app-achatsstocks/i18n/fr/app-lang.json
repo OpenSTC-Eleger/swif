@@ -7,6 +7,7 @@
 		"invoicesAttached"			: "Factures jointes",
 		"invoice_s"					: "Facture(s)",
 		"defaultBudget"				: "Budget par défaut",
+		"parentAccount"				: "Compte parent",
 		"analyticAccount"           : "Compte Analytique",
 		"m14Account"                : "Compte M14",
 
@@ -14,23 +15,36 @@
 			"addBudget"             : "Nouveau budget",
 			"addBudgetLine"         : "Nouvelle ligne budgétaire",
 			"addPurchase"			: "Créer une commande",
-			"selectABudgetLine"		: "Sélectionner une ligne budgétaire"
+			"addAnalyticAccount"	: "Nouveau compte",
+			"selectABudgetLine"		: "Sélectionner une ligne budgétaire",
+			"selectAnAnalyticAccount": "Sélectionner un compte analytique"
+			
 		},
 
 
 		"infoMessages": {
 			"noBudgets"             : "Aucun budget à afficher",
 			"noBudgetLines"         : "Aucune ligne budgétaire à afficher",
-			"budgetSaveOk"          : "Budget correctement enregistré"
+			"budgetSaveOk"          : "Budget correctement enregistré",
+			"analyticAccountSaveOk"	: "Compte correctement enregistré",
+			"analyticAccountupdateOk": "Compte correctement mis à jour",
+			"analyticAccountDeleteOk": "Compte correctement supprimé"
+			
+		},
+		
+		"warningMessages": {
+			"confirmDeleteAnalyticAccount": "Etes-vous sûr de vouloir supprimer ce compte ?"
 		},
 
 		"viewsTitles" : {
 			"budgetsList"           : "Suivi des budgets",
 			"purchasesList"			: "listes des Commandes",
+			"AnalyticAccountsList"	: "Comptes Analytiques",
 			"editBudget"            : "Édition du budget",
 			"editBudgetLine"        : "Édition de la ligne budgétaire",
 			"newPurchase"			: "Nouvelle commande",
 			"editPurchase"			: "Édition de la commande",
+			"deleteAnalyticAccount" : "Supprimer un compte analytique",
 			"general"				: "Général",
 			"purchaseLines"			: "Articles commandées"
 
@@ -42,6 +56,11 @@
 			"check_elu"				: "Validation en tant qu'Elu",
 			"refuse"				: "Refus de la commande",
 			"done"					: "indiquer la commande comme payée (clôture l'achat)"
+		},
+		
+		"modalAnalyticAccount": {
+			"create"				: "Nouveau compte analytique",
+			"edit"					: "Edition du compte analytique"
 		}
 
 	}
