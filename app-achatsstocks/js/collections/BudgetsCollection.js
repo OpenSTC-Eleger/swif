@@ -24,7 +24,7 @@ define([
 
 		url          : '/api/open_achats_stock/budgets',
 
-		fields       : ['id', 'name', 'service_id', 'planned_amount', 'openstc_practical_amount', 'date_from', 'date_to'],
+		fields       : ['id', 'name', 'service_id', 'planned_amount', 'openstc_practical_amount', 'date_from', 'date_to', 'state', 'actions', 'validate_note', 'done_note', 'cancel_note'],
 
 		default_sort : { by: 'name', order: 'ASC' },
 

@@ -7,32 +7,28 @@
 define([
 	'app',
 
-	'budgetModel',
-	'budgetsCollection',
+	'budgetLineModel',
+	'budgetLinesCollection',
 
 	'genericModalView',
-	'advancedSelectBoxView',
+	'advancedSelectBoxView'
 
-	'claimersServicesCollection',
-	'moment'
-
-], function(app, BudgetModel, BudgetsCollection, GenericModalView, AdvancedSelectBoxView, ClaimersServicesCollection, moment){
+], function(app, BudgetLineModel, BudgetLinesCollection, GenericModalView, AdvancedSelectBoxView){
 	'use strict';
 
-
 	/******************************************
-	 * Modal Budget Line View
+	 * Booking Details View
 	 */
-	var ModalBudgetView = GenericModalView.extend({
+	var ModalBudgetLineView = GenericModalView.extend({
 
 
-		templateHTML: '/templates/modals/modalBudget.html',
+		templateHTML: '/templates/modals/modalBudgetLine.html',
 
 
 		// The DOM events //
 		events: function() {
 			return _.defaults({
-				'submit #formSaveBudget'     : 'saveBudget',
+				'submit #formSaveBudgetLine'     : 'saveBudgetLine',
 			},
 			GenericModalView.prototype.events);
 
@@ -52,7 +48,7 @@ define([
 			// Check if it's a create or an update //
 			if(_.isUndefined(this.model)){
 
-				this.model = new BudgetModel();
+				this.model = new BudgetLineModel();
 				this.render();
 			}
 			else{
@@ -76,18 +72,14 @@ define([
 
 				var template = _.template(templateData, {
 					lang        : app.lang,
-					budget      : undefined,
-					currentYear : moment().year()
+					budgetLine  : undefined
 				});
 
 				self.modal.html(template);
 
-				// Set the datepicker //
-				$(self.el).find('.input-daterange').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
-
 				// Create advance select bos Service //
-				self.selectListServicesView = new AdvancedSelectBoxView({el: $('#budgetService'), url: ClaimersServicesCollection.prototype.url});
-				self.selectListServicesView.render();
+				self.selectM14Account = new AdvancedSelectBoxView({el: $('#budgetLineAccount'), url: '/api/open_achats_stock/accounts'});
+				self.selectM14Account.render();
 
 				self.modal.modal('show');
 			});
@@ -98,8 +90,8 @@ define([
 
 
 		/** Save Budget
-		*/
-		saveBudget: function(e) {
+		*//*
+		saveBudgetLine: function(e) {
 			e.preventDefault();
 
 			var self = this;
@@ -137,9 +129,9 @@ define([
 				.always(function () {
 					$(self.el).find('button[type=submit]').button('reset');
 				});
-		}
+		}*/
 
 	});
 
-	return ModalBudgetView;
+	return ModalBudgetLineView;
 });

@@ -7,9 +7,11 @@
 
 define([
 	'app',
-	'appHelpers'
+	'appHelpers',
 
-], function(app, AppHelpers){
+	'budgetModel'
+
+], function(app, AppHelpers, BudgetModel){
 
 	'use strict';
 
@@ -68,13 +70,13 @@ define([
 		render : function() {
 			var self = this;
 
-
 			// Retrieve the template //
 			$.get(app.menus.openstcachatstock+this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					lang     : app.lang,
-					budget   : self.model
+					lang        : app.lang,
+					budget      : self.model,
+					budgetState : BudgetModel.state
 				});
 
 				$(self.el).html(template);
@@ -101,7 +103,10 @@ define([
 
 			// Reset the default visibility //
 			$('tr.expend').css({ display: 'none' }).removeClass('expend');
-			//$('tr:not(".row-nested-objects-collapse")').css({ opacity: '0.45'});
+			$('tr.active').removeClass('active');
+
+			$('#rows-items tr').css({ opacity: '1'});
+
 
 			// If the table row isn't already expend //
 			if(!isExpend) {
@@ -113,8 +118,9 @@ define([
 				}
 
 				// Set the new visibility to the selected intervention //
+				$(this.el).addClass('active');
 				$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
-				//$(this.el).parents('tr.row-object').css({ opacity: '1'});
+				$('tr:not(.expend):not(.active)').css({ opacity: '0.45'});
 			}
 			else {
 				$('tr.row-object').css({ opacity: '1'});

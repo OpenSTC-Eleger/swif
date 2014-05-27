@@ -8,10 +8,12 @@ define([
 	'app',
 
 	'budgetLinesCollection',
-	'itemBudgetBudgetLineView'
+	'itemBudgetBudgetLineView',
+
+	'modalBudgetLineView'
 
 
-], function(app, BudgetLinesCollection, ItemBudgetBudgetLineView){
+], function(app, BudgetLinesCollection, ItemBudgetBudgetLineView, ModalBudgetLineView){
 
 	'use strict';
 
@@ -34,7 +36,7 @@ define([
 
 		// The DOM events //
 		events       : {
-			//'click .btn.addTask'      : 'displayModalAddTask',
+			'click .btn.addBudgetLine'   : 'displayModalBudgetLine',
 		},
 
 
@@ -105,6 +107,19 @@ define([
 				deferred.resolve();
 			});
 			return deferred;
+		},
+
+
+
+		/** Display modal to add a Budget Line
+		*/
+		displayModalBudgetLine: function(e){
+
+			e.preventDefault();
+
+			app.views.modalBudgetLineView = new ModalBudgetLineView({
+				el: '#modalBudgetContainer'
+			});
 		}
 
 

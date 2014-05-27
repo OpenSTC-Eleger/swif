@@ -28,7 +28,6 @@ requirejs.config({
 		purchaseModel                 : '../app-achatsstocks/js/models/PurchaseModel',
 		purchaseLineModel             : '../app-achatsstocks/js/models/PurchaseLineModel',
 		analyticAccountModel          : '../app-achatsstocks/js/models/AnalyticAccountModel',
-		
 
 		// Views List //
 		budgetsListView               : '../app-achatsstocks/js/views/lists/BudgetsListView',
@@ -45,10 +44,10 @@ requirejs.config({
 		// Views Forms //
 		purchaseFormView              : '../app-achatsstocks/js/views/forms/PurchaseFormView',
 		purchaselineFormView          : '../app-achatsstocks/js/views/forms/PurchaseLineFormView',
-		
 
 		// View Modals //
-		modalBudgetView               : '../app-achatsstocks/js/views/modals/ModalBudgetView'
+		modalBudgetView               : '../app-achatsstocks/js/views/modals/ModalBudgetView',
+		modalBudgetLineView           : '../app-achatsstocks/js/views/modals/ModalBudgetLineView'
 	}
 
 });

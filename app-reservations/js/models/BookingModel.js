@@ -711,7 +711,7 @@ define([
 			this.lines.add(lineModel);
 			lineModel.setParentBookingModel(this);
 		},
-		
+
 		/**
 		 * Fetch BookingLines and return Deferred object. resolve deferred if all lines (and their bookable) have been fetch, reject otherwise
 		 */
@@ -794,7 +794,7 @@ define([
 					self.linesToRemove.each(function(lineToRemove){
 						deferredArray.push(lineToRemove.destroy());
 					});
-					
+
 					if(_.isEmpty(deferredArray)){
 						deferred.resolve();
 					}
@@ -808,7 +808,7 @@ define([
 							deferred.reject();
 						});
 					}
-					
+
 				}).fail(function(){
 					deferred.reject();
 				});
@@ -817,7 +817,7 @@ define([
 			});
 			return deferred;
 		},
-		
+
 		saveRecurrenceOnlyToBackend: function(){
 			var self = this;
 			var deferredArray = [];
@@ -901,7 +901,7 @@ define([
 				key        : 'cancel',
 				color      : 'danger',
 				icon       : 'fa-times',
-				translation: app.lang.cancel
+				translation: app.lang.cancelled
 			},
 			//= égal au 'closed' STC
 			done: {

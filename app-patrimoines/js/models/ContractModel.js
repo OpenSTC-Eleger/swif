@@ -2,24 +2,24 @@ define([
 	'app',
 	'appHelpers',
 	'genericModel',
-	
+
 
 
 ], function(app, AppHelpers, GenericModel){
 
 	'use strict';
-	
+
 	/******************************************
 	* Booking Model
 	*/
 	return GenericModel.extend({
-		
+
 		urlRoot: '/api/openpatrimoine/contracts',
 
 		fields: ['id', 'name', 'actions', 'date_start_order', 'date_end_order', 'internal_inter', 'technical_service_id', 'supplier_id', 'provider_name', 'patrimoine_is_equipment', 'equipment_id' ,'site_id' ,'patrimoine_name', 'state', 'description', 'deadline_delay', 'type_renewal', 'category_id', 'contract_line', 'contract_line_names', 'delay_passed', 'warning_delay', 'cancel_reason', 'remaining_delay', 'new_description', 'new_date_start_order', 'new_date_end_order', 'engage_to_treat'],
-		
+
 		readonlyFields: ['contract_line_names', 'contract_line', 'id', 'state'],
-		
+
 		searchable_fields: [
 			{
 				key  : 'id',
@@ -32,7 +32,7 @@ define([
 				label: 'Libellé'
 			}
 		],
-		
+
 		getUserMainAction: function(){
 			var ret = '';
 			if(this.getAttribute('delay_passed',false) && this.getAttribute('actions',[]).indexOf('close') > -1){
@@ -41,7 +41,7 @@ define([
 			else if(this.getAttribute('warning_delay',false) && this.getAttribute('actions',[]).indexOf('renew') > -1){
 				ret = 'renew';
 			}
-			
+
 			else{
 				switch(this.getAttribute('state','')){
 				case 'wait':
@@ -64,22 +64,22 @@ define([
 			var mainAction = this.getUserMainAction();
 			return {mainAction: mainAction, otherActions: _.without(actions, mainAction)};
 		},
-		
+
 		getId: function(){
 			return this.get('id');
 		},
-		
+
 		getName: function(){
 			return this.get('name');
 		},
-		
+
 		getInformations: function(){
 			var ret = {};
 			ret.name = this.getAttribute('name','');
 			var value = this.getAttribute('description','');
 			value += '</footer><br><footer>';
 			value += '<strong>Periode du contrat en cours :</strong> du ' + this.getDateFr('date_start_order') + ' au ' + this.getDateFr('date_end_order') + '</footer>';
-			
+
 			var lineNames = this.getAttribute('contract_line_names', []);
 			if(lineNames.length > 0){
 				value += '<br><footer><strong>Tâches du contrat : </strong>';
@@ -89,16 +89,16 @@ define([
 				});
 				value += '</ul>';
 			}
-			
+
 			ret.infos = {key:app.lang.note, value:value};
 			return ret;
 		},
-		
+
 		addLineToRemove: function(model){
 			this.linesToRemove.push([2,model.get('id')]);
 		},
 
-		
+
 		saveToBackend: function(){
 			var self = this;
 			var vals = this.getSaveVals();
@@ -111,14 +111,14 @@ define([
 			});
 			return ret;
 		},
-		
+
 		/** Model Initialization
 		*/
 		initialize: function(){
 			this.linesToRemove = [];
 		},
-	
-	
+
+
 	}, {
 		// Request State Initialization //
 		status : {
@@ -145,16 +145,16 @@ define([
 				icon				: 'fa-pencil-o',
 				translation			: app.lang.draft
 			},
-			
+
 			cancel: {
 				key					: 'cancel',
 				color				: 'danger',
 				icon				: 'fa-ban',
-				translation			: app.lang.cancel
+				translation			: app.lang.cancelled
 			},
-			
+
 		},
-		
+
 			// Actions of the requests //
 		actions : {
 			update: {
@@ -167,14 +167,14 @@ define([
 				icon				: 'fa-trash-o',
 				translation			: app.lang.actions.delete
 			},
-			
+
 			confirm: {
 				key					: 'confirm',
 				color				: 'success',
 				icon				: 'fa-check',
 				translation			: app.lang.actions.validate
 			},
-			
+
 //			done: {
 //				key					: 'done',
 //				color				: 'default',
@@ -187,14 +187,14 @@ define([
 				icon				: 'fa-repeat',
 				translation			: app.lang.actions.extendContract
 			},
-			
+
 			close: {
 				key					: 'close',
 				color				: 'default',
 				icon				: 'fa-archive',
 				translation			: app.lang.actions.close
 			},
-			
+
 			cancel: {
 				key					: 'cancel',
 				color				: 'danger',

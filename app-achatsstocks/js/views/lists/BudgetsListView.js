@@ -114,7 +114,7 @@ define([
 			e.preventDefault();
 
 			app.views.modalBudgetView = new ModalBudgetView({
-				el: '#modalSaveBudget'
+				el: '#modalBudgetContainer'
 			});
 		}
 

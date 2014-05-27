@@ -8,6 +8,8 @@
 		"invoice_s"					: "Facture(s)",
 		"defaultBudget"				: "Budget par défaut",
 		"parentAccount"				: "Compte parent",
+		"analyticAccount"           : "Compte Analytique",
+		"m14Account"                : "Compte M14",
 
 		"actions" : {
 			"addBudget"             : "Nouveau budget",
@@ -38,6 +40,7 @@
 			"purchasesList"			: "listes des Commandes",
 			"AnalyticAccountsList"	: "Comptes Analytiques",
 			"editBudget"            : "Édition du budget",
+			"editBudgetLine"        : "Édition de la ligne budgétaire",
 			"newPurchase"			: "Nouvelle commande",
 			"editPurchase"			: "Édition de la commande",
 			"deleteAnalyticAccount" : "Supprimer un compte analytique",
