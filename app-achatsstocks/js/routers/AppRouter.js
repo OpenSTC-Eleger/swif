@@ -9,9 +9,10 @@ define([
 
 	'budgetsListView',
 	'purchasesListView',
-	'purchaseFormView'
+	'purchaseFormView',
+	'accountAnalyticsListView'
 
-], function(app, BudgetsListView, PurchasesListView, PurchaseFormView){
+], function(app, BudgetsListView, PurchasesListView, PurchaseFormView, AccountAnalyticsListView){
 
 	'use strict';
 
@@ -44,6 +45,11 @@ define([
 		purchasesForm: function(id){
 			var params = this.setContext({id:id});
 			app.views.formPurchaseView = new PurchaseFormView(params);
+		},
+		
+		accountAnalyticsList: function(search, filter, sort, page) {
+			var params = this.setContext({search: search, filter: filter, sort: sort, page: page});
+			app.views.analyticAccountsListView = new AccountAnalyticsListView(params);			
 		}
 
 	});

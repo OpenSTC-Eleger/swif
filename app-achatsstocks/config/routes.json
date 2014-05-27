@@ -6,13 +6,18 @@
 	},
 	
 	"purchasesList": {
-		"url"		: "commandes(/search/:search)(/filter/:filter)(/sort/:sort)(/page/:page)",
+		"url"		: "commandes(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
 		"function"	: "purchasesList"
 	},
 	
 	"purchasesForm": {
 		"url"		: "commande(/id/:id)",
 		"function"	: "purchasesForm"
+	},
+	
+	"accountAnalyticsList": {
+		"url"		: "configuration/comptes-analytiques(/search/:search)(/filter/:filter)(/sort/:sort)(/page:page)",
+		"function"	: "accountAnalyticsList"
 	}
 
 }
