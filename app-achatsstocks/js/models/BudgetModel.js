@@ -90,12 +90,18 @@ define([
 
 
 
+		/** Get actions
+		*/
+		getActions: function() {
+			return this.get('actions');
+		}
+
 
 	}, {
 
 		// Status of the requests //
 		state : {
-			confirm: { // ena ttente
+			confirm: { // en attente
 				key        : 'confirm',
 				color      : 'info',
 				translation: app.lang.wait
@@ -104,7 +110,7 @@ define([
 				key        : 'validate',
 				color      : 'success',
 			},
-			done: {
+			done: { // Clôturer
 				key        : 'done',
 				color      : 'default',
 				translation: app.lang.completed
@@ -113,6 +119,33 @@ define([
 				key        : 'cancel',
 				color      : 'danger',
 				translation: app.lang.stateCancelled
+			}
+		},
+
+		actions : {
+			validate: {
+				key        : 'validate',
+				color      : 'success',
+				icon       : 'fa-check',
+				translation: app.lang.actions.validate
+			},
+			renew: {
+				key        : 'renew',
+				color      : 'warning',
+				icon       : 'fa-repeat',
+				translation: app.lang.actions.renew
+			},
+			done: {
+				key        : 'done',
+				color      : 'default',
+				icon       : 'fa-archive',
+				translation: app.lang.actions.close
+			},
+			cancel: {
+				key        : 'cancel',
+				color      : 'danger',
+				icon       : 'fa-ban',
+				translation: app.lang.actions.cancel
 			}
 		}
 

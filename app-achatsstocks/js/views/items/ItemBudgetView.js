@@ -76,7 +76,8 @@ define([
 				var template = _.template(templateData, {
 					lang        : app.lang,
 					budget      : self.model,
-					budgetState : BudgetModel.state
+					budgetState : BudgetModel.state,
+					budgetAction: BudgetModel.actions
 				});
 
 				$(self.el).html(template);

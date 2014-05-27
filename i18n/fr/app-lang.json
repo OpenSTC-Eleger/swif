@@ -360,7 +360,8 @@
         "saveDraft"			: "Sauvegarder",
         "savePost"			: "Enregistrer et soumettre",
         "endPurchase"		: "Indiquer comme payée",
-        "manageInvoices"	: "Gérer les factures"
+        "manageInvoices"	: "Gérer les factures",
+        "renew"             : "Renouveler"
     },
 
     "errorMessages" : {
