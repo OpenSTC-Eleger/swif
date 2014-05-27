@@ -19,7 +19,7 @@ define('app-achatsstocks', [
 	return function(){
 
 		// Retrieve the routes and the lang of the modules //
-		$.when(app.loadStaticFile(app.menus.openachatsstocks+'/config/routes.json'), app.loadStaticFile(app.menus.openachatsstocks+'/i18n/'+app.config.lang+'/app-lang.json'))
+		$.when(app.loadStaticFile(app.menus.openstcachatstock+'/config/routes.json'), app.loadStaticFile(app.menus.openstcachatstock+'/i18n/'+app.config.lang+'/app-lang.json'))
 		.done(function(moduleRoutes, moduleLang){
 
 
@@ -32,7 +32,7 @@ define('app-achatsstocks', [
 
 			// Prefix all the routes of the module with the module name //
 			_.each(moduleRoutes[0], function(route){
-				route.url = _.join('/', app.menus.openachatsstocks, route.url);
+				route.url = _.join('/', app.menus.openstcachatstock, route.url);
 			});
 
 			// Extend the routes //

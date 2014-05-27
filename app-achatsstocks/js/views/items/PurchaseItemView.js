@@ -92,7 +92,7 @@ define([
 			
 			var self = this;
 			var stateItem = PurchaseModel.status[this.model.getAttribute('validation','budget_to_check')];
-			$.get(app.menus.openachatsstocks+this.templateHTML, function(templateData){
+			$.get(app.menus.openstcachatstock+this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
 					lang        : app.lang,

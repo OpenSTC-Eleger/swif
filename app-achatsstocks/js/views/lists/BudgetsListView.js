@@ -78,7 +78,7 @@ define([
 
 
 			// Retrieve the template //
-			$.get(app.menus.openachatsstocks + this.templateHTML, function(templateData){
+			$.get(app.menus.openstcachatstock + this.templateHTML, function(templateData){
 				var template = _.template(templateData, {
 					lang     : app.lang,
 					nbBudgets: self.collection.cpt
