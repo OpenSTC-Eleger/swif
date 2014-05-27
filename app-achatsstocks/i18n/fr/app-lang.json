@@ -26,6 +26,7 @@
 			"noBudgets"             : "Aucun budget à afficher",
 			"noBudgetLines"         : "Aucune ligne budgétaire à afficher",
 			"budgetSaveOk"          : "Budget correctement enregistré",
+			"analyticAccountSaveOk"	: "Compte correctement enregistré",
 			"analyticAccountupdateOk": "Compte correctement mis à jour",
 			"analyticAccountDeleteOk": "Compte correctement supprimé"
 			

@@ -52,7 +52,17 @@ define([
 			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 
+		/** When the model is created //
+		*/
+		add: function(model){
 
+			var itemAccountAnalyticView  = new ItemAccountAnalyticView({ model: model });
+			$('#rows-items').prepend(itemAccountAnalyticView.render().el);
+			AppHelpers.highlight($(itemAccountAnalyticView.el));
+
+			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.achatsstocks.infoMessages.analyticAccountSaveOk);
+			this.partialRender();
+		},
 
 		/** Display the view
 		*/

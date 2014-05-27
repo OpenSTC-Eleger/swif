@@ -75,7 +75,7 @@ define([
 
 			AppHelpers.highlight($(this.el)).done(function(){
 				self.remove();
-				app.views.ContractsListView.partialRender();
+				app.views.analyticAccountsListView.partialRender();
 			});
 
 			app.notify('', 'success', app.lang.infoMessages.information, e.getName()+' : '+app.lang.achatsstocks.infoMessages.analyticAccountDeleteOk);
