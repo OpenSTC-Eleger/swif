@@ -12,13 +12,12 @@
 		"m14Account"                : "Compte M14",
 
 		"actions" : {
-			"addBudget"             : "Nouveau budget",
-			"addBudgetLine"         : "Nouvelle ligne budgétaire",
-			"addPurchase"			: "Créer une commande",
-			"addAnalyticAccount"	: "Nouveau compte",
-			"selectABudgetLine"		: "Sélectionner une ligne budgétaire",
+			"addBudget"              : "Nouveau budget",
+			"addBudgetLine"          : "Nouvelle ligne budgétaire",
+			"addPurchase"			 : "Créer une commande",
+			"addAnalyticAccount"	 : "Nouveau compte",
+			"selectABudgetLine"		 : "Sélectionner une ligne budgétaire",
 			"selectAnAnalyticAccount": "Sélectionner un compte analytique"
-
 		},
 
 
@@ -29,8 +28,8 @@
 			"analyticAccountSaveOk"  : "Compte correctement enregistré",
 			"analyticAccountupdateOk": "Compte correctement mis à jour",
 			"analyticAccountDeleteOk": "Compte correctement supprimé",
-			"budgetDeleteOk"         : "Budget correctement supprimé"
-
+			"budgetDeleteOk"         : "Budget correctement supprimé",
+			"budgetUpdateOk"         : "Budget correctement modifié"
 		},
 
 		"warningMessages": {

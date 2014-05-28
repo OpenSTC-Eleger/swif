@@ -10,9 +10,10 @@ define([
 	'appHelpers',
 
 	'budgetModel',
-	'modalDeleteView'
+	'modalDeleteView',
+	'modalBudgetView'
 
-], function(app, AppHelpers, BudgetModel, ModalDeleteView){
+], function(app, AppHelpers, BudgetModel, ModalDeleteView, ModalBudgetView){
 
 	'use strict';
 
@@ -33,7 +34,8 @@ define([
 		events       : {
 			'click a.accordion-object' : 'tableAccordion',
 
-			'click .buttonDeleteBudget': 'displayModalDeleteBudget'
+			'click .buttonDeleteBudget': 'displayModalDeleteBudget',
+			'click .buttonUpdateBudget': 'displayModalUpdateBudget'
 		},
 
 
@@ -61,12 +63,11 @@ define([
 
 			// Highlight the Row and recalculate the className //
 			AppHelpers.highlight($(self.el)).done(function(){
+				// Partial Render //
+				app.views.budgetsListView.partialRender();
 			});
 
-			app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.infoMessages.interventionUpdateOK);
-
-			// Partial Render //
-			app.views.interventions.partialRender();
+			app.notify('', 'success', app.lang.infoMessages.information, self.model.getName()+' : '+ app.lang.achatsstocks.infoMessages.budgetUpdateOk);
 		},
 
 
@@ -171,7 +172,20 @@ define([
 				modalTitle   : app.lang.achatsstocks.viewsTitles.deleteBudget,
 				modalConfirm : app.lang.achatsstocks.warningMessages.confirmDeleteBudget
 			});
+		},
+
+
+		/** Display modal to update the budget
+		*/
+		displayModalUpdateBudget: function(e){
+			e.preventDefault();
+
+			app.views.modalBudgetView = new ModalBudgetView({
+				el    : '#modalBudgetContainer',
+				model : this.model
+			});
 		}
+
 
 	});
 

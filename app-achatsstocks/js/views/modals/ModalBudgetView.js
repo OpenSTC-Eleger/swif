@@ -43,22 +43,13 @@ define([
 		/** View Initialization
 		*/
 		initialize: function (params) {
-			var self = this;
 			this.options = params;
 
 			this.modal = $(this.el);
 
-
 			// Check if it's a create or an update //
 			if(_.isUndefined(this.model)){
-
 				this.model = new BudgetModel();
-				this.render();
-			}
-			else{
-				this.model.fetch({silent: true, data : {fields : this.model.fields}}).done(function(){
-					self.render();
-				});
 			}
 
 			this.render();
@@ -76,7 +67,7 @@ define([
 
 				var template = _.template(templateData, {
 					lang        : app.lang,
-					budget      : undefined,
+					budget      : self.model,
 					currentYear : moment().year()
 				});
 

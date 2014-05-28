@@ -6,9 +6,11 @@
 
 define([
 	'app',
-	'genericModel'
+	'genericModel',
 
-], function(app, GenericModel){
+	'moment'
+
+], function(app, GenericModel, moment){
 
 	'use strict';
 
@@ -80,6 +82,18 @@ define([
 			return _.toNumber((this.get('openstc_practical_amount') * 100) / this.get('planned_amount'), 2);
 		},
 
+
+		/** Get start date
+		*/
+		getStartDate: function(){
+			return moment(this.get('date_from'), 'YYYY-MM-DD').format('DD/MM/YYYY');
+		},
+
+		/** Get end date
+		*/
+		getEndDate: function(){
+			return moment(this.get('date_to'), 'YYYY-MM-DD').format('DD/MM/YYYY');
+		},
 
 
 		/** Get the state of the Budget

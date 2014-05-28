@@ -8,10 +8,10 @@
 			</div>
 			<h4 class="modal-title">
 				<i class="fa fa-edit"></i>&nbsp;
-				<% if(_.isUndefined(budget)){ %>
+				<% if(budget.isNew()){ %>
 					<%= _.capitalize(lang.achatsstocks.actions.addBudget) %>
 				<% } else{ %>
-					<%= _.capitalize(lang.achatsstocks.actions.editBudget) %>
+					<%= _.capitalize(lang.achatsstocks.viewsTitles.editBudget) %>
 				<% } %>
 			</h4>
 		</div>
@@ -25,7 +25,7 @@
 					<label for="budgetName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 
 					<div class="col-sm-9">
-						<input type="text" id="budgetName" class="form-control" required>
+						<input type="text" id="budgetName" class="form-control" value="<%= (!budget.isNew() ? budget.getName() : '') %>" required>
 					</div>
 				</div>
 
@@ -34,20 +34,27 @@
 					<label for="budgetService" class="control-label col-sm-3"><%= _.capitalize(lang.service) %>:</label>
 
 					<div class="col-sm-9">
-						<input id="budgetService" class="select2" data-placeholder="<%= lang.actions.selectAService %>" data-minimum-input-length="2" required>
+						<input id="budgetService" class="select2" data-placeholder="<%= lang.actions.selectAService %>" data-minimum-input-length="2" required
+							<% if(!budget.isNew()){ %>
+								data-selected-value='<%= JSON.stringify(budget.getService('json')) %>'
+							<% } %>
+						>
 					</div>
 				</div>
 
 				<!-- Budget date start -->
 				<div class="form-group">
 					<label for="budgetStartDate" class="control-label col-sm-3"><%= _.capitalize(lang.period) %>:</label>
-
 					<div class="col-sm-9">
 						<div class="input-daterange input-group">
 						<span class="input-group-addon"><%= lang.from %></span>
-							<input type="text" id="budgetStartDate" class="form-control field-element" placeholder="dd/mm/yyyy" value="01/01/<%= currentYear %>" required>
+							<input type="text" id="budgetStartDate" class="form-control field-element" placeholder="dd/mm/yyyy"
+							       value="<%= (!budget.isNew() ? budget.getStartDate() : '01/01/'+currentYear) %>" required>
+
 							<span class="input-group-addon"><%= lang.to %></span>
-							<input type="text" id="budgetEndDate" class="form-control field-element" placeholder="dd/mm/yyyy" value="31/12/<%= currentYear %>" required>
+
+							<input type="text" id="budgetEndDate" class="form-control field-element" placeholder="dd/mm/yyyy"
+								   value="<%= (!budget.isNew() ? budget.getEndDate() : '31/12/'+currentYear) %>" required>
 						</div>
 					</div>
 				</div>
