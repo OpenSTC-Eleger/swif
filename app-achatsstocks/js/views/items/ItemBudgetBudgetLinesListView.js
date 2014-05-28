@@ -124,7 +124,8 @@ define([
 			e.preventDefault();
 
 			app.views.modalBudgetLineView = new ModalBudgetLineView({
-				el: '#modalBudgetContainer'
+				el    : '#modalBudgetContainer',
+				budget: this.model
 			});
 		}
 
