@@ -8,7 +8,22 @@
 %>
 
 <!-- Budget name -->
-<td><a class="accordion-object <%= isCheck %>" href="#collapse_<%= budget.getId() %>"><%= budget.getName() %></a></td>
+<td>
+	<a class="accordion-object <%= isCheck %>" href="#collapse_<%= budget.getId() %>"><%= budget.getName() %></a>
+	<p class="row-actions invisible">
+		<% if(state == budgetState.confirm.key){ %>
+		<a href="#" class="buttonUpdateBudget">
+			<i class="fa fa-pencil fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
+		</a>&nbsp;
+		<% } %>
+
+		<% if(_.contains(budget.getActions(), 'delete')){ %>
+		<a href="#" class="buttonDeleteBudget">
+			<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+		</a>
+		<% } %>
+	</p>
+</td>
 
 <!-- Planned amount -->
 <td class="text-right"><%= budget.getPlannedAmount() %></td>
@@ -69,7 +84,7 @@
 				var mainAction = budgetAction.renew;
 			}
 		%>
-		<button type="button" class="btn btn-<%= mainAction.color %>">
+		<button type="button" class="btn btn-<%= mainAction.color %> button<%= _.capitalize(mainAction.key) %>Budget">
 			<i class="fa fa-fw <%= mainAction.icon %>"></i>
 		</button>
 

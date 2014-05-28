@@ -9,9 +9,10 @@ define([
 	'app',
 	'appHelpers',
 
-	'budgetModel'
+	'budgetModel',
+	'modalDeleteView'
 
-], function(app, AppHelpers, BudgetModel){
+], function(app, AppHelpers, BudgetModel, ModalDeleteView){
 
 	'use strict';
 
@@ -21,14 +22,18 @@ define([
 	*/
 	var ItemBudgetView = Backbone.View.extend({
 
-		tagName     : 'tr',
+		tagName      : 'tr',
 
 		templateHTML : '/templates/items/itemBudget.html',
+
+		className    : 'row-item',
 
 
 		// The DOM events //
 		events       : {
-			'click a.accordion-object' : 'tableAccordion'
+			'click a.accordion-object' : 'tableAccordion',
+
+			'click .buttonDeleteBudget': 'displayModalDeleteBudget'
 		},
 
 
@@ -43,6 +48,7 @@ define([
 
 			// When the model are updated //
 			this.listenTo(this.model, 'change', this.change);
+			this.listenTo(this.model, 'destroy', this.destroy);
 		},
 
 
@@ -61,6 +67,21 @@ define([
 
 			// Partial Render //
 			app.views.interventions.partialRender();
+		},
+
+
+
+		destroy: function(){
+			var self = this;
+
+			AppHelpers.highlight($(this.el)).done(function(){
+				self.remove();
+				self.detailedView.remove();
+				app.views.budgetsListView.partialRender();
+				$('#rows-items tr').css({ opacity: '1'});
+			});
+
+			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.achatsstocks.infoMessages.budgetDeleteOk);
 		},
 
 
@@ -121,10 +142,10 @@ define([
 				// Set the new visibility to the selected intervention //
 				$(this.el).addClass('active');
 				$('#collapse_'+id).css({ display: 'table-row' }).addClass('expend');
-				$('tr:not(.expend):not(.active)').css({ opacity: '0.45'});
+				$('tbody tr:not(.expend):not(.active)').css({ opacity: '0.45'});
 			}
 			else {
-				$('tr.row-object').css({ opacity: '1'});
+				$('tbody tr.row-object').css({ opacity: '1'});
 			}
 		},
 
@@ -135,6 +156,21 @@ define([
 
 			// Fold up current accordion and expand //
 			this.expendAccordion();
+		},
+
+
+
+		/** Display modal to delete the budget
+		*/
+		displayModalDeleteBudget: function(e){
+			e.preventDefault();
+
+			app.views.modalDeleteView = new ModalDeleteView({
+				el           : '#modalBudgetContainer',
+				model        : this.model,
+				modalTitle   : app.lang.achatsstocks.viewsTitles.deleteBudget,
+				modalConfirm : app.lang.achatsstocks.warningMessages.confirmDeleteBudget
+			});
 		}
 
 	});

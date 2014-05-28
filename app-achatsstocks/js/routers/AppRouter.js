@@ -49,10 +49,10 @@ define([
 			var params = this.setContext({id:id});
 			app.views.formPurchaseView = new PurchaseFormView(params);
 		},
-		
+
 		accountAnalyticsList: function(search, filter, sort, page) {
 			var params = this.setContext({search: search, filter: filter, sort: sort, page: page});
-			app.views.analyticAccountsListView = new AccountAnalyticsListView(params);			
+			app.views.analyticAccountsListView = new AccountAnalyticsListView(params);
 		}
 
 	});

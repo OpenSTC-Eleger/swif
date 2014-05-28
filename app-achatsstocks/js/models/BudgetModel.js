@@ -94,6 +94,23 @@ define([
 		*/
 		getActions: function() {
 			return this.get('actions');
+		},
+
+
+		/** Get Informations of the model
+		*/
+		getInformations : function(){
+			var informations = {};
+
+			informations.name = this.getName();
+
+			if(!_.isEmpty(this.getService())){
+				informations.infos = {};
+				informations.infos.key = _.capitalize(app.lang.service);
+				informations.infos.value = this.getService();
+			}
+
+			return informations;
 		}
 
 
