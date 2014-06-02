@@ -1,6 +1,8 @@
 <!-- Budget name -->
 <td>
 	<%= budgetLine.getName() %>&nbsp;
+
+	<% if(budget.getState() != budgetState.confirm.key){ %>
 	<span class="nested-objects-actions invisible">
 		<a href="#" class="buttonUpdateBudgetLine">
 			<i class="fa fa-pencil fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
@@ -9,6 +11,7 @@
 			<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
 		</a>
 	</span>
+	<% } %>
 </td>
 
 <!-- Planned amount -->

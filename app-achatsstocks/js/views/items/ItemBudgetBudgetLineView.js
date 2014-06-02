@@ -6,9 +6,13 @@
  */
 
 define([
-	'app'
+	'app',
 
-], function(app){
+	'budgetModel',
+
+	'modalDeleteView'
+
+], function(app, BudgetModel, ModalDeleteView){
 
 	'use strict';
 
@@ -22,7 +26,12 @@ define([
 
 		templateHTML : '/templates/items/itemBudgetBudgetLine.html',
 
-		className   : 'row-nested-objects',
+		className    : 'row-nested-objects',
+
+
+		events       : {
+			'click .buttonDeleteBudgetLine': 'displayModalDeleteBudgetLine',
+		},
 
 
 
@@ -31,7 +40,20 @@ define([
 		initialize : function(params) {
 			this.options = params;
 
-			//this.model.off();
+			this.model.off();
+
+			// When the model are updated //
+			//this.listenTo(this.model, 'sync', this.change);
+			this.listenTo(this.model, 'destroy', this.destroy);
+		},
+
+
+
+		/** When the model is delete
+		*/
+		destroy: function(){
+			var self = this;
+			self.remove();
 		},
 
 
@@ -46,16 +68,36 @@ define([
 			$.get(app.menus.openstcachatstock+this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					lang       : app.lang,
-					budgetLine : self.model
+					lang        : app.lang,
+					budgetLine  : self.model,
+					budget      : self.options.budget,
+					budgetState : BudgetModel.state
 				});
 
 				$(self.el).html(template);
+
+				// Set the Tooltip / Popover //
+				$('*[data-toggle="tooltip"]').tooltip();
 
 			});
 
 			$(this.el).hide().fadeIn();
 			return this;
+		},
+
+
+
+		/** Display modal to delete the budget line
+		*/
+		displayModalDeleteBudgetLine: function(e){
+			e.preventDefault();
+
+			app.views.modalDeleteView = new ModalDeleteView({
+				el           : '#modalBudgetContainer',
+				model        : this.model,
+				modalTitle   : app.lang.achatsstocks.viewsTitles.deleteBudget,
+				modalConfirm : app.lang.achatsstocks.warningMessages.confirmDeleteBudget
+			});
 		}
 
 	});
