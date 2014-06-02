@@ -7,13 +7,14 @@
 define([
 	'app',
 
+	'analyticAccountModel',
 	'budgetLineModel',
 	'budgetLinesCollection',
 
 	'genericModalView',
 	'advancedSelectBoxView'
 
-], function(app, BudgetLineModel, BudgetLinesCollection, GenericModalView, AdvancedSelectBoxView){
+], function(app, AnalyticAccountModel, BudgetLineModel, BudgetLinesCollection, GenericModalView, AdvancedSelectBoxView){
 	'use strict';
 
 	/******************************************
@@ -77,7 +78,12 @@ define([
 
 				self.modal.html(template);
 
-				// Create advance select bos Service //
+
+				// Create advance selectbox AnalyticAccount //
+				self.selectAnalyticAccount = new AdvancedSelectBoxView({el: $('#budgetLineAnalyticAccount'), url: AnalyticAccountModel.prototype.urlRoot});
+				self.selectAnalyticAccount.render();
+
+				// Create advance AdvancedSelectBoxView Account //
 				self.selectM14Account = new AdvancedSelectBoxView({el: $('#budgetLineAccount'), url: '/api/open_achats_stock/accounts'});
 				self.selectM14Account.render();
 
@@ -90,7 +96,7 @@ define([
 
 
 		/** Save Budget
-		*//*
+		*/
 		saveBudgetLine: function(e) {
 			e.preventDefault();
 
@@ -100,11 +106,10 @@ define([
 			$(this.el).find('button[type=submit]').button('loading');
 
 			var params = {
-				name       : this.$('#budgetName').val(),
-				code       : this.$('#budgetName').val(),
-				service_id : this.selectListServicesView.getSelectedItem(),
-				date_from  : this.$('#budgetStartDate').val(),
-				date_to    : this.$('#budgetEndDate').val()
+				crossovered_budget_id   : this.options.budget.getId(),
+				analytic_account_id     : this.selectAnalyticAccount.getSelectedItem(),
+				openstc_general_account : this.selectM14Account.getSelectedItem(),
+				planned_amount          : $(this.el).find('#budgetLineAmount').val()
 			};
 
 
@@ -115,7 +120,7 @@ define([
 					// Create mode //
 					if(self.model.isNew()) {
 						self.model.setId(data);
-						self.model.fetch({silent: true, data : {fields : BudgetsCollection.prototype.fields} }).done(function(){
+						self.model.fetch({silent: true, data : {fields : BudgetLinesCollection.prototype.fields} }).done(function(){
 							app.views.budgetsListView.collection.add(self.model);
 						});
 					// Update mode //
@@ -129,7 +134,7 @@ define([
 				.always(function () {
 					$(self.el).find('button[type=submit]').button('reset');
 				});
-		}*/
+		}
 
 	});
 

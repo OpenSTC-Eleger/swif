@@ -37,7 +37,7 @@ define([
 		events: {
 			'click .actionDelete'	: 'modalDelete',
 			'click .actionUpdate'	: 'modalUpdate'
-			
+
 		},
 
 		/** View Initialization
@@ -85,12 +85,12 @@ define([
 
 		/** Display the view
 		*/
-		render : function() {			
+		render : function() {
 			var self = this;
 			$.get(app.menus.openstcachatstock+this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					lang        	: app.lang,
+					lang            : app.lang,
 					acountAnalytic	: self.model
 				});
 				$(self.el).html(template);
@@ -113,7 +113,7 @@ define([
 				modalConfirm : app.lang.achatsstocks.warningMessages.confirmDeleteAnalyticAccount
 			});
 		},
-		
+
 		modalUpdate: function(e){
 			e.preventDefault();
 			e.stopPropagation();

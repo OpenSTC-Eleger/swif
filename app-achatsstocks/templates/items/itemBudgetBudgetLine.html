@@ -1,5 +1,15 @@
 <!-- Budget name -->
-<td><%= budgetLine.getName() %></td>
+<td>
+	<%= budgetLine.getName() %>&nbsp;
+	<span class="nested-objects-actions invisible">
+		<a href="#" class="buttonUpdateBudgetLine">
+			<i class="fa fa-pencil fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
+		</a>&nbsp;
+		<a href="#" class="buttonDeleteBudgetLine">
+			<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+		</a>
+	</span>
+</td>
 
 <!-- Planned amount -->
 <td class="text-right"><%= budgetLine.getPlannedAmount() %></td>

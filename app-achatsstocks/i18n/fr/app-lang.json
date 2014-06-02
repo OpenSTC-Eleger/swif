@@ -13,28 +13,29 @@
 		"m14Account"                : "Compte M14",
 
 		"actions" : {
-			"addBudget"             : "Nouveau budget",
-			"addBudgetLine"         : "Nouvelle ligne budgétaire",
-			"addPurchase"			: "Créer une commande",
-			"addAnalyticAccount"	: "Nouveau compte",
-			"selectABudgetLine"		: "Sélectionner une ligne budgétaire",
+			"addBudget"              : "Nouveau budget",
+			"addBudgetLine"          : "Nouvelle ligne budgétaire",
+			"addPurchase"			 : "Créer une commande",
+			"addAnalyticAccount"	 : "Nouveau compte",
+			"selectABudgetLine"		 : "Sélectionner une ligne budgétaire",
 			"selectAnAnalyticAccount": "Sélectionner un compte analytique"
-			
 		},
 
 
 		"infoMessages": {
-			"noBudgets"             : "Aucun budget à afficher",
-			"noBudgetLines"         : "Aucune ligne budgétaire à afficher",
-			"budgetSaveOk"          : "Budget correctement enregistré",
-			"analyticAccountSaveOk"	: "Compte correctement enregistré",
+			"noBudgets"              : "Aucun budget à afficher",
+			"noBudgetLines"          : "Aucune ligne budgétaire à afficher",
+			"budgetSaveOk"           : "Budget correctement enregistré",
+			"analyticAccountSaveOk"  : "Compte correctement enregistré",
 			"analyticAccountupdateOk": "Compte correctement mis à jour",
-			"analyticAccountDeleteOk": "Compte correctement supprimé"
-			
+			"analyticAccountDeleteOk": "Compte correctement supprimé",
+			"budgetDeleteOk"         : "Budget correctement supprimé",
+			"budgetUpdateOk"         : "Budget correctement modifié"
 		},
-		
+
 		"warningMessages": {
-			"confirmDeleteAnalyticAccount": "Etes-vous sûr de vouloir supprimer ce compte ?"
+			"confirmDeleteAnalyticAccount": "Etes-vous sûr de vouloir supprimer ce compte ?",
+			"confirmDeleteBudget"         : "Etes-vous sûr de vouloir supprimer ce budget ?"
 		},
 
 		"viewsTitles" : {
@@ -47,8 +48,8 @@
 			"editPurchase"			: "Édition de la commande",
 			"deleteAnalyticAccount" : "Supprimer un compte analytique",
 			"general"				: "Général",
-			"purchaseLines"			: "Articles commandées"
-			
+			"purchaseLines"			: "Articles commandées",
+			"deleteBudget"          : "Supression du budget"
 		},
 
 		"modalPurchase": {
@@ -58,7 +59,7 @@
 			"refuse"				: "Refus de la commande",
 			"done"					: "indiquer la commande comme payée (clôture l'achat)"
 		},
-		
+
 		"modalAnalyticAccount": {
 			"create"				: "Nouveau compte analytique",
 			"edit"					: "Edition du compte analytique"

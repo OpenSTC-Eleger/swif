@@ -6,9 +6,11 @@
 
 define([
 	'app',
-	'genericModel'
+	'genericModel',
 
-], function(app, GenericModel){
+	'moment'
+
+], function(app, GenericModel, moment){
 
 	'use strict';
 
@@ -81,6 +83,18 @@ define([
 		},
 
 
+		/** Get start date
+		*/
+		getStartDate: function(){
+			return moment(this.get('date_from'), 'YYYY-MM-DD').format('DD/MM/YYYY');
+		},
+
+		/** Get end date
+		*/
+		getEndDate: function(){
+			return moment(this.get('date_to'), 'YYYY-MM-DD').format('DD/MM/YYYY');
+		},
+
 
 		/** Get the state of the Budget
 		*/
@@ -90,12 +104,35 @@ define([
 
 
 
+		/** Get actions
+		*/
+		getActions: function() {
+			return this.get('actions');
+		},
+
+
+		/** Get Informations of the model
+		*/
+		getInformations : function(){
+			var informations = {};
+
+			informations.name = this.getName();
+
+			if(!_.isEmpty(this.getService())){
+				informations.infos = {};
+				informations.infos.key = _.capitalize(app.lang.service);
+				informations.infos.value = this.getService();
+			}
+
+			return informations;
+		}
+
 
 	}, {
 
 		// Status of the requests //
 		state : {
-			confirm: { // ena ttente
+			confirm: { // en attente
 				key        : 'confirm',
 				color      : 'info',
 				translation: app.lang.wait
@@ -104,7 +141,7 @@ define([
 				key        : 'validate',
 				color      : 'success',
 			},
-			done: {
+			done: { // Clôturer
 				key        : 'done',
 				color      : 'default',
 				translation: app.lang.completed
@@ -113,6 +150,33 @@ define([
 				key        : 'cancel',
 				color      : 'danger',
 				translation: app.lang.stateCancelled
+			}
+		},
+
+		actions : {
+			validate: {
+				key        : 'validate',
+				color      : 'success',
+				icon       : 'fa-check',
+				translation: app.lang.actions.validate
+			},
+			renew: {
+				key        : 'renew',
+				color      : 'warning',
+				icon       : 'fa-repeat',
+				translation: app.lang.actions.renew
+			},
+			done: {
+				key        : 'done',
+				color      : 'default',
+				icon       : 'fa-archive',
+				translation: app.lang.actions.close
+			},
+			cancel: {
+				key        : 'cancel',
+				color      : 'danger',
+				icon       : 'fa-ban',
+				translation: app.lang.actions.cancel
 			}
 		}
 

@@ -8,7 +8,22 @@
 %>
 
 <!-- Budget name -->
-<td><a class="accordion-object <%= isCheck %>" href="#collapse_<%= budget.getId() %>"><%= budget.getName() %></a></td>
+<td>
+	<a class="accordion-object <%= isCheck %>" href="#collapse_<%= budget.getId() %>"><%= budget.getName() %></a>
+	<p class="row-actions invisible">
+		<% if(state == budgetState.confirm.key){ %>
+		<a href="#" class="buttonUpdateBudget">
+			<i class="fa fa-pencil fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
+		</a>&nbsp;
+		<% } %>
+
+		<% if(_.contains(budget.getActions(), 'delete')){ %>
+		<a href="#" class="buttonDeleteBudget">
+			<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
+		</a>
+		<% } %>
+	</p>
+</td>
 
 <!-- Planned amount -->
 <td class="text-right"><%= budget.getPlannedAmount() %></td>
@@ -50,20 +65,48 @@
 
 </td>
 
-<!-- Action -->
+<!-- Actions -->
 <td class="text-center">
-	<!-- Split button -->
+
+	<!-- Check if the user can make action on the budget -->
+	<% if(!_.isEmpty(budget.getActions())) {
+		var actions = _.without(budget.getActions(), 'delete');
+	%>
+
 	<div class="btn-group btn-group-sm">
-		<button type="button" class="btn btn-danger">Test</button>
-		<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-			<span class="caret"></span>
-			<span class="sr-only">Toggle Dropdown</span>
+
+		<!-- Main action -->
+		<%
+			if(state == budgetState.confirm.key) {
+				var mainAction = budgetAction.validate;
+			}
+			else if(state == budgetState.validate.key) {
+				var mainAction = budgetAction.renew;
+			}
+		%>
+		<button type="button" class="btn btn-<%= mainAction.color %> button<%= _.capitalize(mainAction.key) %>Budget">
+			<i class="fa fa-fw <%= mainAction.icon %>"></i>
 		</button>
+
+
+		<!-- Remain actions -->
+		<% var remainActions = _.without(actions, mainAction.key);
+			if(_.size(remainActions) > 0) {
+		%>
+
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 		<ul class="dropdown-menu dropdown-menu-right text-left" role="menu">
-			<li><a href="#">Action 1</a></li>
-			<li><a href="#">Action 2</a></li>
-			<li><a href="#">Action 3</a></li>
-			<li><a href="#">Action 4</a></li>
+			<% _.each(remainActions, function(action){ %>
+			<li>
+				<a href="#" class="button<%= _.capitalize(budgetAction[action].key) %>Budget">
+					<i class="fa <%= budgetAction[action].icon %> fa-fw"></i>&nbsp;<%= _.capitalize(budgetAction[action].translation) %>
+				</a>
+			</li>
+			<% }) %>
 		</ul>
+		<% } %>
 	</div>
+
+	<% } %>
+
 </td>

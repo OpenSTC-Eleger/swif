@@ -7,13 +7,14 @@
 define([
 	'app',
 
+	'budgetModel',
 	'budgetLinesCollection',
 	'itemBudgetBudgetLineView',
 
 	'modalBudgetLineView'
 
 
-], function(app, BudgetLinesCollection, ItemBudgetBudgetLineView, ModalBudgetLineView){
+], function(app, BudgetModel, BudgetLinesCollection, ItemBudgetBudgetLineView, ModalBudgetLineView){
 
 	'use strict';
 
@@ -66,9 +67,14 @@ define([
 				$(self.el).html(template);
 
 
+				// Check if the a budget line can be added //
+				if(self.model.getState() != BudgetModel.state.confirm.key){
+					$(self.el).find('.addBudgetLine').addClass('hide');
+				}
+
+
 				// Render budgetLines //
 				if (!_.isUndefined(self.collection)) {
-
 
 					// Check if the collection isn't empty //
 					if(_.isEmpty(self.collection.models)){
@@ -118,7 +124,8 @@ define([
 			e.preventDefault();
 
 			app.views.modalBudgetLineView = new ModalBudgetLineView({
-				el: '#modalBudgetContainer'
+				el    : '#modalBudgetContainer',
+				budget: this.model
 			});
 		}
 

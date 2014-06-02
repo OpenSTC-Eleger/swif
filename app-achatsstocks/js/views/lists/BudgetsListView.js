@@ -56,11 +56,13 @@ define([
 		/** When the model ara created //
 		*/
 		add: function(model) {
-			var itemBudgetView = new ItemBudgetView({
-				model: model
-			});
+			var detailedView = new ItemBudgetBudgetLinesListView({ model: model });
+			var itemBudgetView = new ItemBudgetView({ model: model, detailedView: detailedView });
+			$('#rows-items').prepend( detailedView.render().el );
 			$('#rows-items').prepend(itemBudgetView.render().el);
-			AppHelpers.highlight($(itemBudgetView.el));
+			AppHelpers.highlight($(itemBudgetView.el)).done(function(){
+				itemBudgetView.expendAccordion();
+			});
 
 			app.notify('', 'success', app.lang.infoMessages.information, model.getName() + ' : ' + app.lang.achatsstocks.infoMessages.budgetSaveOk);
 			this.partialRender();

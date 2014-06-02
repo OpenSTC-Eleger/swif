@@ -13,7 +13,7 @@
 		"openstc"           : "app-interventions",
 		"openresa"          : "app-reservations",
 		"openstcpatrimoine" : "app-patrimoines",
-		"openachatsstocks"  : "app-achatsstocks",
+		"openstcachatstock" : "app-achatsstocks",
 		"openbase"          : "configuration"
 	},
 

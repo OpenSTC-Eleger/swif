@@ -362,7 +362,8 @@
         "endPurchase"		: "Indiquer comme payée",
         "manageInvoices"	: "Gérer les factures",
         "purchaseSent"		: "Envoyer commande (mail)",
-        "receiveProducts"	: "Réceptionner articles"
+        "receiveProducts"	: "Réceptionner articles",
+        "renew"             : "Renouveler"
     },
 
     "errorMessages" : {
