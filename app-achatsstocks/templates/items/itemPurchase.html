@@ -22,6 +22,17 @@
 <!-- 	<strong><i class="fa fa-info-circle fa-lg text-info"></i></strong> -->
 <% } %></td>
 
-<td><span class="label label-<%= stateItem.color %>" data-toggle="tooltip" data-original-title=""><%= stateItem.translation %></span>
+<td>
+<% if(stateItem.widget && stateItem.widget == 'progress'){ %>
+<div class="progress" data-toggle="tooltip" data-original-title="Livrée à(i18n): <%= purchase.getAttribute('reception_progress',0.0) %>%">
+	<div class="progress-bar progress-bar-success"
+		 style="width: <%= purchase.getAttribute('reception_progress',0.0) %>%">
+		<span><%= purchase.getAttribute('reception_progress',0.0) %> %</span>
+	</div>
+</div>
 
-<td class="button-actions" data-actions="check_dst,check_elu,done,refuse,invoice" data-main-action="<%= mainAction%>"></td>
+<% } else{ %>
+<span class="label label-<%= stateItem.color %> text-center" data-toggle="tooltip" data-original-title=""><%= stateItem.translation %></span>
+<% } %>
+
+<td class="button-actions" data-actions="check_dst,check_elu,done,refuse,send_mail,receive" data-main-action="<%= mainAction%>"></td>
