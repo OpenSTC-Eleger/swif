@@ -22,7 +22,7 @@ define([
 
 		url          : '/api/open_achats_stock/purchase_lines',
 
-		fields       : ['id', 'name', 'product_id', 'product_qty', 'taxes_id', 'price_unit'],
+		fields       : ['id', 'name', 'product_id', 'product_qty', 'taxes_id', 'price_unit', 'budget_line_id'],
 
 		default_sort : { by: 'name', order: 'ASC' },
 

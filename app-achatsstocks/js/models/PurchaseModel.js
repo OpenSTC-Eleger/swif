@@ -16,7 +16,7 @@ define([
 		
 		urlRoot: '/api/open_achats_stock/purchases',
 
-		fields: ['id', 'name', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'account_analytic_id', 'order_line', 'amount_untaxed', 'amount_tax'],
+		fields: ['id', 'name', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'account_analytic_id', 'order_line', 'amount_untaxed', 'amount_tax', 'reception_progress'],
 		
 		//readonlyFields: ['contract_line_names', 'contract_line', 'id', 'state'],
 		
@@ -38,7 +38,7 @@ define([
 		 * use 'priority' variable to apply the priority of the main action (first index is the higher priority)
 		 */
 		getUserMainAction: function(){
-			var priority = ['check_elu','check_dst', 'done', 'invoice','refuse'];
+			var priority = ['check_elu','check_dst', 'done', 'receive', 'send_mail', 'refuse'];
 			var ret = '';
 			for(var i=0;i < priority.length;i++){
 				if(this.hasAction(priority[i])){
@@ -145,7 +145,8 @@ define([
 			
 			done: {
 				key					: 'done',
-				color				: 'success',
+				color				: 'default',
+				widget				: 'progress',
 				translation			: app.lang.valid
 			},
 			purchase_paid: {
@@ -155,7 +156,8 @@ define([
 			},
 			purchase_engaged: {
 				key					: 'purchase_engaged',
-				color				: 'success',
+				color				: 'default',
+				widget				: 'progress',
 				translation			: app.lang.valid
 			}
 			
@@ -204,12 +206,19 @@ define([
 				translation			: app.lang.actions.endPurchase
 			},
 			
-			invoice: {
-				key					: 'invoice',
+			send_mail: {
+				key					: 'send_mail',
 				color				: 'default',
-				icon				: 'fa-file-pdf-o',
-				translation			: app.lang.actions.manageInvoices
+				icon				: 'fa-envelope-o',
+				translation			: app.lang.actions.purchaseSent
 			},
+			
+			receive: {
+				key					: 'receive',
+				color				: 'default',
+				icon				: 'fa-truck',
+				translation			: app.lang.actions.receiveProducts
+			}
 			
 		}
 	});

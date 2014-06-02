@@ -361,6 +361,8 @@
         "savePost"			: "Enregistrer et soumettre",
         "endPurchase"		: "Indiquer comme payée",
         "manageInvoices"	: "Gérer les factures",
+        "purchaseSent"		: "Envoyer commande (mail)",
+        "receiveProducts"	: "Réceptionner articles",
         "renew"             : "Renouveler"
     },
 
