@@ -54,26 +54,16 @@
 		</fieldset>
 	</div>
 	
-	<fieldset class="col-sm-4 pull-right">
-		<table id="amounts" class="pull-right">
-			<tr>
-				<td><label for="amount_untaxed">Montant H.T : </label></td>
-				<td id="amount_untaxed"><%= purchase.getCurrencyString('amount_untaxed','') %></td>
-			</tr>
-			
-			<tr>
-				<td><label for="amount_untaxed">Montant Taxes : </label></td>
-				<td id="amount_tax"><%= purchase.getCurrencyString('amount_tax','') %></td>
-			</tr>
-			
-			<tr>
-				<td><label for="amount_total">Montant T.T.C : </label></td>
-				<td id="amount_total"><%= purchase.getCurrencyString('amount_total','') %></td>
-			</tr>
-		</table>
-	</fieldset>
-
-	<hr />
+	<dl id="amounts" class="dl-horizontal pull-right">
+		<dt>Montant H.T</dt>
+		<dd id="amount_untaxed"><span class="pull-right"><%= purchase.getCurrencyString('amount_untaxed','') %></span></dd>
+		
+		<dt>Montant Taxes</dt>
+		<dd id="amount_tax"><span class="pull-right"><%= purchase.getCurrencyString('amount_tax','') %></span></dd>
+	
+		<dt>Montant T.T.C</dt>
+		<dd id="amount_total"><span class="pull-right"><%= purchase.getCurrencyString('amount_total','') %></span></dd>
+	</dl>
 
 	<!-- Form Actions -->
 	<div class="col-sm-12 well">
