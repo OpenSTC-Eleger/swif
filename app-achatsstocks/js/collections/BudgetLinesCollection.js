@@ -6,9 +6,11 @@
 
 define([
 	'genericCollection',
-	'budgetModel'
+	'budgetModel',
 
-], function(GenericCollection, BudgetModel){
+	'budgetLineModel'
+
+], function(GenericCollection, BudgetModel, BudgetLineModel){
 
 	'use strict';
 
@@ -18,7 +20,7 @@ define([
 	*/
 	var BudgetLinesCollection = GenericCollection.extend({
 
-		model        : BudgetModel,
+		model        : BudgetLineModel,
 
 		url          : '/api/open_achats_stock/budget_lines',
 

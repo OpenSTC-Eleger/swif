@@ -48,8 +48,16 @@ define([
 			var self = this;
 			//Update Inter model
 			self.model.fetch();
-			this.partialRender();
+			//this.partialRender();
 		},
+
+
+		destroyBudgetLine: function(model){
+			this.collection.remove(model);
+			//check if there is tasks, if not, display message infos instead of table
+			this.change();
+		},
+
 
 
 
@@ -84,11 +92,12 @@ define([
 					else{
 
 						_.each(self.collection.models, function (budgetLine) {
-							var itemBudgetBudgetLineView = new ItemBudgetBudgetLineView({ model: budgetLine });
+
+							var itemBudgetBudgetLineView = new ItemBudgetBudgetLineView({ model: budgetLine, budget: self.model });
 							$(self.el).find('#row-nested-objects').append(itemBudgetBudgetLineView.render().el);
 
-							//self.listenTo(task, 'change', self.change);
-							//self.listenTo(task, 'destroy', self.destroyTask);
+							self.listenTo(budgetLine, 'change', self.change);
+							self.listenTo(budgetLine, 'destroy', self.destroyBudgetLine);
 						});
 
 					}
