@@ -56,6 +56,7 @@ define(['app',
 			this.options = arguments[0];
 			//TODO: find a better way to do that, problem is that options.id is already used by BackboneView to initialize this.el 
 			this.options.id = this.options.modelId;
+			this.readonly = this.options.readonly;
 			this.taskCollection = new ItemRecurrenceContractCollection();
 			this.listenTo(self.taskCollection, 'remove', this.removeOccurrence);
 			GenericFormView.prototype.initialize.apply(this, arguments).done(function(){
@@ -83,7 +84,7 @@ define(['app',
 				var template = _.template(templateData, {
 					lang		: app.lang,
 					pageTitle	: pageTitle,
-					readonly	: false,
+					readonly	: self.readonly,
 					moment		: moment,
 					lineModel	: self.model,
 					user		: app.current_user

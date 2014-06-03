@@ -102,7 +102,7 @@ define(['app',
 			app.router.setPageTitle(pageTitle);
 
 			var self = this;
-			var readonly = self.model.getAttribute('actions',['update']).indexOf('update') == -1;
+			this.readonly = self.model.getAttribute('actions',['update']).indexOf('update') == -1;
 			// Retrieve the template //
 			$.get(app.menus.openstcpatrimoine + this.templateHTML, function(templateData){
 				//compute dates with user TZ
@@ -110,7 +110,7 @@ define(['app',
 				var template = _.template(templateData, {
 					lang		: app.lang,
 					pageTitle	: pageTitle,
-					readonly	: readonly,
+					readonly	: self.readonly,
 					moment		: moment,
 					contract	: self.model,
 					user		: app.current_user
@@ -225,7 +225,7 @@ define(['app',
 			var self = this;
 			var idString = '';
 			var name = idAndName ? idAndName[1] : 'Nouvelle Tâche';
-			var params = {notMainView: true};
+			var params = {notMainView: true, readonly: this.readonly};
 			params.parentModel = this.model;
 			if(idAndName){
 				idString += 'task_' + idAndName[0].toString();

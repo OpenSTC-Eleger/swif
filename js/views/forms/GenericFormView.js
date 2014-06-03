@@ -310,9 +310,9 @@ define(['app',
 				$(self.el).find('.make-switch').bootstrapSwitch();
 				$(self.el).find('.input-daterange, input.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
 				$(self.el).find('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: true, modalBackdrop: false});
-				$('fieldset[disabled] .invisibleOnReadonly').addClass('hide-soft');
-				$('fieldset[disabled] .removeOnReadonly').remove();
-				$('fieldset[disabled] .select2').select2('enable',false);
+				$('[disabled] .invisibleOnReadonly').addClass('hide-soft');
+				$('[disabled] .removeOnReadonly').remove();
+				$('[disabled] .select2').select2('enable',false);
 			});
 		},
 

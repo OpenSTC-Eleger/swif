@@ -17,14 +17,12 @@
 		</div>
 		
 		<!-- Contract Lines -->
-		<div class="col-sm-6">
-			<fieldset <%= readonly ? 'disabled' : ''%>>
-				<legend><span class="text-info">2</span> - <%= _.capitalize(lang.patrimoine.viewsTitles.contractTasks) %></legend>
+		<div class="col-sm-6" <%= readonly ? 'disabled' : ''%>>
+				<!-- <legend><span class="text-info">2</span> - <%= _.capitalize(lang.patrimoine.viewsTitles.contractTasks) %></legend>-->
 				<ul id="linesHeader" class="nav nav-tabs">
 					<li class="removeOnReadonly"><a href="#" id="addLine"><i class="fa fa-plus fa-fw"></i> Nouvelle tâche</a></li>
 				</ul>
 				<div id="lines" class="tab-content"></div>
-			</fieldset>
 		</div>
 	</div>
 
