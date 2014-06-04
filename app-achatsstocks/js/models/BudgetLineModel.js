@@ -28,8 +28,15 @@ define([
 
 
 
-		getPlannedAmount: function(){
-			return this.getCurrencyString('planned_amount');
+		getPlannedAmount: function(withSymbol){
+			var cost = this.get('planned_amount');
+
+			if(withSymbol) {
+				cost = _.numberFormat(cost, 2, '.', ' ');
+				cost += '&euro;';
+			}
+
+			return cost;
 		},
 
 
@@ -52,7 +59,6 @@ define([
 			}
 
 			return cost;
-
 		},
 
 
@@ -78,6 +84,26 @@ define([
 					break;
 				default:
 					returnVal = this.get('openstc_general_account')[1];
+			}
+
+			return returnVal;
+		},
+
+
+		/** Get Analytique account
+		*/
+		getAnalytiqueAccount : function(type){
+			var returnVal;
+
+			switch (type){
+				case 'id':
+					returnVal = this.get('analytic_account_id')[0];
+					break;
+				case 'json':
+					returnVal = {id: this.get('analytic_account_id')[0], name: this.get('analytic_account_id')[1]};
+					break;
+				default:
+					returnVal = this.get('analytic_account_id')[1];
 			}
 
 			return returnVal;

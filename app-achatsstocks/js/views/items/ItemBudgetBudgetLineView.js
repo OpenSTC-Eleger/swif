@@ -7,12 +7,14 @@
 
 define([
 	'app',
+	'appHelpers',
 
 	'budgetModel',
 
-	'modalDeleteView'
+	'modalDeleteView',
+	'modalBudgetLineView'
 
-], function(app, BudgetModel, ModalDeleteView){
+], function(app, AppHelpers, BudgetModel, ModalDeleteView, ModalBudgetLineView){
 
 	'use strict';
 
@@ -30,7 +32,9 @@ define([
 
 
 		events       : {
-			'click .buttonDeleteBudgetLine': 'displayModalDeleteBudgetLine',
+			'click .buttonUpdateBudgetLine': 'displayModalUpdateBudgetLine',
+
+			'click .buttonDeleteBudgetLine': 'displayModalDeleteBudgetLine'
 		},
 
 
@@ -43,7 +47,7 @@ define([
 			this.model.off();
 
 			// When the model are updated //
-			//this.listenTo(this.model, 'sync', this.change);
+			this.listenTo(this.model, 'change', this.change);
 			this.listenTo(this.model, 'destroy', this.destroy);
 		},
 
@@ -54,6 +58,16 @@ define([
 		destroy: function(){
 			var self = this;
 			self.remove();
+		},
+
+
+		/** When the model ara updated //
+		*/
+		change: function(){
+
+			this.render();
+
+			AppHelpers.highlight($(this.el));
 		},
 
 
@@ -83,6 +97,20 @@ define([
 
 			$(this.el).hide().fadeIn();
 			return this;
+		},
+
+
+
+		/** Display modal to delete the budget line
+		*/
+		displayModalUpdateBudgetLine: function(e){
+			e.preventDefault();
+
+			app.views.modalBudgetLineView = new ModalBudgetLineView({
+				el    : '#modalBudgetContainer',
+				model : this.model,
+				budget: this.options.budget
+			});
 		},
 
 
