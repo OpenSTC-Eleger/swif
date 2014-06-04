@@ -12,19 +12,7 @@
 		<div class="col-sm-6">	
 			<fieldset <%= readonly ? 'disabled' : ''%>>
 				<legend><span class="text-info">1</span> - <%= _.capitalize(lang.achatsstocks.viewsTitles.general) %></legend>
-				<div id="general_infos"></div>
-			
-			<div class="form-group field" data-field-name="description" data-field-required="required" data-field-label="<%= lang.note %>"></div>
-			
-			<div class="form-group field" data-field-name="service_id" data-field-required="required" data-field-label="<%= lang.service %>" 
-				data-field-placeholder="<%= lang.actions.selectAService %>"></div>
-			
-			<div class="form-group field" data-field-name="account_analytic_id" data-field-label="<%= lang.achatsstocks.defaultBudget %>" 
-				data-field-placeholder="<%= lang.achatsstocks.actions.selectABudgetLine %>" data-field-minimum-input-length="1"></div>
-			
-			<div class="form-group field" data-field-name="partner_id" data-field-required="required" data-field-label="<%= lang.supplier %>" 
-				data-field-placeholder="<%= lang.actions.selectASupplier %>"></div>
-			
+					<div id="general-infos"></div>
 			</fieldset>
 		</div>
 	</div>
@@ -40,8 +28,8 @@
 							<th><%= _.capitalize(lang.BOQAcronym) %></th>
 							<th><%= _.capitalize(lang.quantity) %></th>
 							<th><%= _.capitalize(lang.unitPriceAcronym) %></th>
-							<th><%= _.capitalize(lang.taxes) %></th>
-							<th><%= _.capitalize(lang.achatsstocks.budgetToSpend) %></th>
+							<th class="col-sm-2"><%= _.capitalize(lang.taxes) %></th>
+							<th class="col-sm-3"><%= _.capitalize(lang.achatsstocks.budgetToSpend) %></th>
 							<th><%= _.capitalize(lang.action) %></th>
 							
 						</tr>
@@ -54,22 +42,28 @@
 		</fieldset>
 	</div>
 	
-	<dl id="amounts" class="dl-horizontal pull-right">
-		<dt>Montant H.T</dt>
-		<dd id="amount_untaxed"><span class="pull-right"><%= purchase.getCurrencyString('amount_untaxed','') %></span></dd>
+	<div class="col-sm-3 pull-right">
+		<table class="table table-bordered table-hover">
+			<tr>
+				<th>Montant H.T</th>
+				<td id="amount_untaxed"><span><%= purchase.getCurrencyString('amount_untaxed','') %></span></td>
+			</tr>
+			<tr>
+				<th>Montant Taxes</th>
+				<td id="amount_tax"><span><%= purchase.getCurrencyString('amount_tax','') %></span></td>
+			</tr>
+			<tr>
+				<th>Montant T.T.C</th>
+				<td id="amount_total"><span><%= purchase.getCurrencyString('amount_total','') %></span></td>
+			</tr>
+		</table>
+	</div>
 		
-		<dt>Montant Taxes</dt>
-		<dd id="amount_tax"><span class="pull-right"><%= purchase.getCurrencyString('amount_tax','') %></span></dd>
-	
-		<dt>Montant T.T.C</dt>
-		<dd id="amount_total"><span class="pull-right"><%= purchase.getCurrencyString('amount_total','') %></span></dd>
-	</dl>
-
 	<!-- Form Actions -->
 	<div class="col-sm-12 well">
 		<div class="text-center ">
 			<% if(purchase.getAttribute('validation','budget_to_check') == 'budget_to_check'){ %>
-			<button type="button" class="btn btn-default" id="saveDraftFormCurchase"><%= _.capitalize(lang.actions.saveDraft) %></button>&nbsp;
+			<button type="button" class="btn btn-default" id="saveDraftFormPurchase"><%= _.capitalize(lang.actions.saveDraft) %></button>&nbsp;
 			<button type="submit" class="btn btn-primary" form="formSaveModel" id="saveFormCurchase"><%= _.capitalize(lang.actions.savePost) %></button>&nbsp;
 			<% } %>
 			<a href="#" id="formBack" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
