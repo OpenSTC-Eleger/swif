@@ -29,6 +29,7 @@ define(['app',
 	var FormLinePurchaseView = GenericFormView.extend({
 
 		tagName		: 'tr',
+		className	: 'row-item',
 		templateHTML: '/templates/forms/formPurchaseLine.html',
 		collectionName: PurchaseLinesCollection,
 		modelName: PurchaseLineModel,
@@ -36,6 +37,8 @@ define(['app',
 		// The DOM events //
 		events: function(){
 			return _.defaults({
+				'click .removeLine'	: 'removeLine',
+				'click .copyLine'	: 'copyLine',
 				
 			}, GenericFormView.prototype.events);
 		},
@@ -70,6 +73,17 @@ define(['app',
 				$(this.el).hide().fadeIn('slow');
 			});
 			return this;
+		},
+		
+		copyLine: function(e){
+			e.preventDefault();
+			this.trigger('copy',this);
+		},
+		
+		removeLine: function(e){
+			e.preventDefault();
+			this.trigger('remove', this);
+			this.remove();
 		},
 		
 	});

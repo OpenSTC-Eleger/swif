@@ -7,6 +7,7 @@
 define(['app',
 		'appHelpers',
 		'purchaseModel',
+		'purchaseLineModel',
 		'purchasesCollection',
 		
 		'genericFormView',
@@ -21,7 +22,7 @@ define(['app',
 		'bsSwitch'
 		
 
-], function (app, AppHelpers, PurchaseModel, PurchasesCollection, GenericFormView, AdvancedSelectBoxView, PurchaselineFormView, PurchaseFormGeneralView, moment) {
+], function (app, AppHelpers, PurchaseModel, PurchaseLineModel, PurchasesCollection, GenericFormView, AdvancedSelectBoxView, PurchaselineFormView, PurchaseFormGeneralView, moment) {
 
 	'use strict';
 
@@ -39,7 +40,8 @@ define(['app',
 			'submit #formSaveModel'			: 'savePostForm',
 			'click #saveDraftFormPurchase'	: 'saveDraftForm',
 			'click #updateDraftForm'		: 'setDraftForm',
-			'click #formBack'				: 'backToList'
+			'click #formBack'				: 'backToList',
+			'change #purchaseSelectArticle'	: 'addLineWithArticle'
 		},
 		
 		/**
@@ -67,15 +69,36 @@ define(['app',
 				params.model = model;
 			}
 			var view = new PurchaselineFormView(params);
-			this.linesViews.push(view);
+			this.linesViews[view.cid] = view;
+			this.listenTo(view, 'remove', this.lineViewRemoved);
+			this.listenTo(view, 'copy', this.copyLineView);
 			$('#lines-items').append(view.el);
+		},
+		
+		addLineWithArticle: function(e){
+			e.preventDefault();
+			var val = this.selectArticle.getSelectedItem();
+			if(val){
+				this.addLine(false, new PurchaseLineModel({product_id: [this.selectArticle.getSelectedItem(), this.selectArticle.getSelectedText()]}));
+			}
+		},
+		
+		copyLineView: function(view){
+			var newModel = view.model.clone();
+			newModel.set({id:null});
+			this.addLine(false, newModel);
+		},
+		
+		lineViewRemoved: function(view){
+			this.model.addLineToRemove(view.model);
+			delete this.linesViews[view.cid];
 		},
 		
 		/** View Initialization
 		*/
 		initialize : function() {
 			var self = this;
-			this.linesViews = [];
+			this.linesViews = {};
 			this.options = arguments[0];
 			this.initModel().done(function(){
 				app.router.render(self);
@@ -85,6 +108,7 @@ define(['app',
 		/** Display the view
 		*/
 		render: function() {
+			this.linesViews = {}; //reset the array of lines
 			var pageTitle = app.lang.achatsstocks.viewsTitles.editPurchase;
 			if(this.model.isNew()){
 				pageTitle = app.lang.achatsstocks.viewsTitles.newPurchase;
@@ -107,6 +131,8 @@ define(['app',
 				$(self.el).html(template);
 				$(this.el).hide().fadeIn('slow');
 				
+				self.selectArticle = new AdvancedSelectBoxView({el: '#purchaseSelectArticle', url: '/api/open_achats_stock/products'});
+				self.selectArticle.render();
 				self.formGeneralView = new PurchaseFormGeneralView({model:self.model, notMainView:true});
 				_.each(self.model.getAttribute('order_line', []), function(line_id){
 					self.addLine(line_id);
@@ -172,7 +198,6 @@ define(['app',
 		},
 		
 		saveDraftForm: function(e){
-			console.log('saveDraft');
 			this.saveForm(e, true);
 		},
 		

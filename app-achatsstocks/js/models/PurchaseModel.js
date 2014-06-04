@@ -16,9 +16,9 @@ define([
 		
 		urlRoot: '/api/open_achats_stock/purchases',
 
-		fields: ['id', 'name', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'account_analytic_id', 'order_line', 'amount_untaxed', 'amount_tax', 'reception_progress'],
+		fields: ['id', 'name', 'description', 'date_order', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'account_analytic_id', 'order_line', 'amount_untaxed', 'amount_tax', 'reception_progress'],
 		
-		//readonlyFields: ['contract_line_names', 'contract_line', 'id', 'state'],
+		readonlyFields: ['id', 'name', 'date_order', 'amount_total', 'state', 'validation', 'actions', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'amount_untaxed', 'amount_tax', 'reception_progress'],
 		
 		searchable_fields: [
 			{
@@ -32,7 +32,7 @@ define([
 				label: 'Libellé'
 			}
 		],
-		
+
 		/**
 		 * @return: name of action to display on the main button, or empty string if not any action is authorized
 		 * use 'priority' variable to apply the priority of the main action (first index is the higher priority)
@@ -103,14 +103,17 @@ define([
 		},
 		
 		addLineToRemove: function(model){
-			this.linesToRemove.push([2,model.get('id')]);
+			if(!model.isNew()){
+				this.linesToRemove.push([2,model.get('id')]);
+			}
 		},
 
 		
 		saveToBackend: function(){
 			var self = this;
 			var vals = this.getSaveVals();
-			//vals.contract_line = this.linesToRemove;
+			vals.order_line = this.linesToRemove.slice(0); //clone the linesToRemove
+			this.linesToRemove = [];
 			var ret = this.save(vals,{patch:!this.isNew(), wait:true}).then(function(data){
 				if(self.isNew()){
 					self.set({id:data});

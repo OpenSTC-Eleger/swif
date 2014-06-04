@@ -160,7 +160,6 @@ define([
 			else{
 				console.warning('Swif error: Could not save model because not any collection is linked with, and so can not retrieve metadata fields.');
 			}
-			console.log(ret);
 			return ret;
 		},
 

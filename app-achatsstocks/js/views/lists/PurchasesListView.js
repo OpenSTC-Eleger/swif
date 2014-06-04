@@ -13,10 +13,11 @@ define([
 	'purchaseModel',
 
 	'genericListView',
-	'itemPurchaseView'
+	'itemPurchaseView',
+	'purchaseFormView'
 
 
-], function(app, AppHelpers, PurchasesCollection, PurchaseModel, GenericListView, ItemPurchaseView){
+], function(app, AppHelpers, PurchasesCollection, PurchaseModel, GenericListView, ItemPurchaseView, PurchaseFormView){
 
 	'use strict';
 
@@ -33,7 +34,7 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-
+				'click a.createModel' : 'moveToForm',
 			},
 				GenericListView.prototype.events
 			);
@@ -86,6 +87,11 @@ define([
 			$(this.el).hide().fadeIn();
 
 			return this;
+		},
+		
+		moveToForm: function(e){
+			e.preventDefault();
+			app.router.navigate(PurchaseFormView.prototype.urlBuilder(), {trigger:true, replace:false});
 		}
 
 	});

@@ -42,6 +42,17 @@
 		</fieldset>
 	</div>
 	
+	<!-- select a new article -->
+	<div class="col-sm-6">
+		<div class="form-group">
+			<label for="budgetService" class="control-label col-sm-3"><%= _.capitalize(lang.article) %>:</label>
+		
+			<div class="col-sm-9">
+				<input id="purchaseSelectArticle" class="select2" data-placeholder="<%= lang.actions.selectAnArticle %>" required>
+			</div>
+		</div>
+	</div>
+	
 	<div class="col-sm-3 pull-right">
 		<table class="table table-bordered table-hover">
 			<tr>

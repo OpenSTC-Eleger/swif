@@ -257,7 +257,6 @@ define(['app',
 			//try to parse a moment with the strDatetime value
 			var ret = AppHelpers.convertDateToUtc(strDatetime);
 			//return false if moment is not valid, else return parsed string datetime
-			console.log(ret.isValid() ? ret.format('YYYY-MM-DD HH:mm:ss') : false);
 			return ret.isValid() ? ret.format('YYYY-MM-DD HH:mm:ss') : false;
 		},
 
