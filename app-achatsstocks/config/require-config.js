@@ -43,6 +43,7 @@ requirejs.config({
 
 		// Views Forms //
 		purchaseFormView              : '../app-achatsstocks/js/views/forms/PurchaseFormView',
+		purchaseFormGeneralView       : '../app-achatsstocks/js/views/forms/PurchaseFormGeneralView',
 		purchaselineFormView          : '../app-achatsstocks/js/views/forms/PurchaseLineFormView',
 
 		// View Modals //

@@ -16,7 +16,7 @@ define([
 		
 		urlRoot: '/api/open_achats_stock/purchase_lines',
 
-		fields: ['id', 'name', 'product_id', 'product_qty', 'taxes_id', 'price_unit', 'budget_line_id'],
+		fields: ['id', 'name', 'product_id', 'product_qty', 'taxes_id', 'price_unit', 'budget_line_id', 'order_id'],
 		
 		searchable_fields: [
 			{

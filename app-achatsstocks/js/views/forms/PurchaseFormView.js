@@ -12,6 +12,7 @@ define(['app',
 		'genericFormView',
 		'advancedSelectBoxView',
 		'purchaselineFormView',
+		'purchaseFormGeneralView',
 		
 		'moment',
 		'moment-timezone-data',
@@ -20,26 +21,25 @@ define(['app',
 		'bsSwitch'
 		
 
-], function (app, AppHelpers, PurchaseModel, PurchasesCollection, GenericFormView, AdvancedSelectBoxView, PurchaselineFormView, moment) {
+], function (app, AppHelpers, PurchaseModel, PurchasesCollection, GenericFormView, AdvancedSelectBoxView, PurchaselineFormView, PurchaseFormGeneralView, moment) {
 
 	'use strict';
 
 	/******************************************
-	* Contract Form View
+	* Purchase Form View
 	*/
-	var FormPurchaseView = GenericFormView.extend({
+	var FormPurchaseView = Backbone.View.extend({
 
 		el          : '#rowContainer',
 		tagName		: 'div',
 		templateHTML: '/templates/forms/formPurchase.html',
-		collectionName: PurchasesCollection,
-		modelName: PurchaseModel,
 		
 		// The DOM events //
-		events: function(){
-			return _.defaults({
-				
-			}, GenericFormView.prototype.events);
+		events: {
+			'submit #formSaveModel'			: 'savePostForm',
+			'click #saveDraftFormPurchase'	: 'saveDraftForm',
+			'click #updateDraftForm'		: 'setDraftForm',
+			'click #formBack'				: 'backToList'
 		},
 		
 		/**
@@ -59,7 +59,7 @@ define(['app',
 		},
 		
 		addLine: function(id, model){
-			var params = {parentModel: this.model};
+			var params = {parentModel: this.model, notMainView:true};
 			if(id){
 				params.id = id;
 			}
@@ -67,14 +67,19 @@ define(['app',
 				params.model = model;
 			}
 			var view = new PurchaselineFormView(params);
+			this.linesViews.push(view);
 			$('#lines-items').append(view.el);
 		},
 		
 		/** View Initialization
 		*/
 		initialize : function() {
-			
-			GenericFormView.prototype.initialize.apply(this, arguments);
+			var self = this;
+			this.linesViews = [];
+			this.options = arguments[0];
+			this.initModel().done(function(){
+				app.router.render(self);
+			});
 		},
 		
 		/** Display the view
@@ -100,16 +105,81 @@ define(['app',
 				});
 
 				$(self.el).html(template);
-				GenericFormView.prototype.render.apply(self);
+				$(this.el).hide().fadeIn('slow');
+				
+				self.formGeneralView = new PurchaseFormGeneralView({model:self.model, notMainView:true});
 				_.each(self.model.getAttribute('order_line', []), function(line_id){
 					self.addLine(line_id);
 				});
 				
-				$(this.el).hide().fadeIn('slow');
+				
 			});
 			return this;
 		},
 		
+		/**
+		 * Initialize model, fetch its data (if id is set on url) and perform a HEAD request to have fields definitions
+		 */
+		initModel: function(){
+			var arrayDeferred = [];
+			//if needed, initialize model
+			if(_.isUndefined(this.options.id)){
+				this.model = new PurchaseModel();
+			}
+			else{
+				this.model = new PurchaseModel({id:this.options.id});
+				arrayDeferred.push(this.model.fetch());
+			}
+			return $.when.apply($, arrayDeferred);
+		},
+		
+		/**
+		 * Dispatch save to all sub-models on this view
+		 */
+		saveForm: function(e, stayOnForm, todo){
+			e.preventDefault();
+			var self = this;
+			var deferredArray = [];
+			//trigger "save" event of the general view
+			this.formGeneralView.saveForm(e).done(function(){
+				//trigger "save" event for each lineView attached to this one
+				_.each(self.linesViews, function(lineView){
+					lineView.model.set({order_id: self.formGeneralView.model.getId()});
+					deferredArray.push(lineView.saveForm(e));
+				});
+				$.when.apply($,deferredArray).then(function(){
+					deferredArray = [];
+					if(todo){
+						deferredArray.push(self.model.save(todo, {wait:true, patch:true}));
+					}
+					$.when.apply($, deferredArray).done(function(){
+						if(stayOnForm){
+							self.model.fetch().done(function(){
+								self.render();
+							});
+						}
+						else{
+							window.history.back();
+						}
+					});
+				});
+			});
+		},
+		
+		savePostForm: function(e){
+			e.preventDefault();
+			this.saveForm(e, false, {wkf_evolve:'post'});
+		},
+		
+		saveDraftForm: function(e){
+			console.log('saveDraft');
+			this.saveForm(e, true);
+		},
+		
+		backToList: function(e){
+			e.preventDefault();
+			window.history.back();
+		},
 	});
 	
 	return FormPurchaseView;
