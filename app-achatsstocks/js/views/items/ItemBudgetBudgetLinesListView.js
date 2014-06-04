@@ -8,13 +8,14 @@ define([
 	'app',
 
 	'budgetModel',
+	'budgetLineModel',
 	'budgetLinesCollection',
 	'itemBudgetBudgetLineView',
 
 	'modalBudgetLineView'
 
 
-], function(app, BudgetModel, BudgetLinesCollection, ItemBudgetBudgetLineView, ModalBudgetLineView){
+], function(app, BudgetModel, BudgetLineModel, BudgetLinesCollection, ItemBudgetBudgetLineView, ModalBudgetLineView){
 
 	'use strict';
 
@@ -41,33 +42,40 @@ define([
 		},
 
 
+		initialize: function(){
+			this.collection = new BudgetLinesCollection();
+			this.collection.off();
+			this.listenTo(this.collection, 'add', this.addBudgetLine);
+		},
+
 
 		/** When the model has updated //
 		*/
 		change: function(){
-			var self = this;
-			//Update Inter model
-			self.model.fetch();
-			//this.partialRender();
+			// Refetch the Budget Model //
+			this.model.fetch();
 		},
 
 
-		/*addTask: function(model) {
-			var itemTaskView  = new ItemInterventionTaskView({ model: model, inter:this.model, tasks:this.tasksCollection});
-			$(this.el).find('#row-nested-objects').append(itemTaskView.el);
-			this.tasksCollection.add(model);
+		addBudgetLine: function(model) {
+
+			var itemBudgetBudgetLineView = new ItemBudgetBudgetLineView({ model: model, budget: this.model });
+			$(this.el).find('#row-nested-objects').append(itemBudgetBudgetLineView.render().el);
+
 			this.listenTo(model, 'change', this.change);
-			this.listenTo(model, 'destroy', this.destroyTask);
+			this.listenTo(model, 'destroy', this.destroyBudgetLine);
 			this.partialRender();
-		},*/
+
+			this.change();
+		},
 
 
 		destroyBudgetLine: function(model) {
 			this.collection.remove(model);
 			//check if there is tasks, if not, display message infos instead of table
+			this.partialRender();
 			this.change();
 		},
-
 
 
 
@@ -79,7 +87,7 @@ define([
 
 
 				var template = _.template(templateData, {
-					lang          : app.lang
+					lang   : app.lang
 				});
 
 				$(self.el).html(template);
@@ -120,13 +128,28 @@ define([
 
 
 
+		partialRender: function(){
+
+			// Check if the collection isn't empty //
+			if(_.isEmpty(this.collection.models)){
+				$(this.el).find('table').addClass('hide');
+				$(this.el).find('.noBudgetLine').removeClass('hide');
+			}
+			else{
+				$(this.el).find('table').removeClass('hide');
+				$(this.el).find('.noBudgetLine').addClass('hide');
+			}
+		},
+
+
+
 		/** Fetch BudgetLines
 		*/
 		fetchData: function () {
 			$(this.el).empty(); // Clean the budgetLine container view //
 
 			var deferred = $.Deferred();
-			this.collection = new BudgetLinesCollection();
+			//this.collection = new BudgetLinesCollection();
 
 			this.collection.fetch({ silent: true, data: {filters: {0: {'field': 'crossovered_budget_id.id', 'operator': '=', 'value': this.model.getId()}}}}).done(function(){
 				deferred.resolve();
@@ -142,9 +165,17 @@ define([
 
 			e.preventDefault();
 
+
+			// Check if it's a create or an update //
+			var budgetModel = new BudgetLineModel();
+			//this.listenTo(budgetModel, 'sync', this.addBudgetLine);
+
+
 			app.views.modalBudgetLineView = new ModalBudgetLineView({
 				el    : '#modalBudgetContainer',
-				budget: this.model
+				model : budgetModel,
+				budget: this.model,
+				budgetLineCollection: this.collection
 			});
 		}
 

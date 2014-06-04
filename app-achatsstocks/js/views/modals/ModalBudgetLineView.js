@@ -44,11 +44,6 @@ define([
 
 			this.modal = $(this.el);
 
-			// Check if it's a create or an update //
-			if(_.isUndefined(this.model)){
-				this.model = new BudgetLineModel();
-			}
-
 			this.render();
 		},
 
@@ -111,7 +106,7 @@ define([
 					if(self.model.isNew()) {
 						self.model.setId(data);
 						self.model.fetch({silent: true, data : {fields : BudgetLinesCollection.prototype.fields} }).done(function(){
-							app.views.budgetsListView.collection.add(self.model);
+							self.options.budgetLineCollection.add(self.model);
 						});
 					// Update mode //
 					} else {
