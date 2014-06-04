@@ -113,6 +113,15 @@ define([
 			}
 			return val;
 		},
+		
+		checkMany2ManyAction: function(fieldName){
+			var ret = [];
+			var val = this.getAttribute(fieldName, []);
+			if(_.isArray(val)){
+				ret = [[6,0,val]];
+			}
+			return ret;
+		},
 
 		/**
 		 * to move to GenericCollection
@@ -140,7 +149,7 @@ define([
 							ret[fieldName] = self.check2ManyAction(fieldName);
 							break;
 						case 'many2many':
-							ret[fieldName] = self.check2ManyAction(fieldName);
+							ret[fieldName] = self.checkMany2ManyAction(fieldName);
 							break;
 						default:
 							ret[fieldName] = self.getAttribute(fieldName, false);

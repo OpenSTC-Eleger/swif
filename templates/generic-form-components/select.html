@@ -9,7 +9,7 @@
 	<input class="select2 field-element" id="<%= field.fieldName %>" 
 	<%= !_.isUndefined(field.required) ? 'required' : '' %>
 	<%= field.definition.type == 'many2one' ? '' : 'data-multiple="true"' %> 
-	<%= field.value ? 'value="' + field.value[0] + '"' : ''%> 
+	<%= !_.isEmpty(field.value) ? 'value="' + field.value[0] + '"' : ''%> 
 	data-url="<%= field.definition.url %>"
 	<%= field.fieldDomain ? 'data-domain="' + field.fieldDomain + '"' : '' %>
 	<%= field.fieldPlaceholder ? 'data-placeholder="' + field.fieldPlaceholder + '"' : '' %>

@@ -288,6 +288,10 @@ define(['app',
 					var select = self.advancedSelectBoxes[dom.attr('id')];
 					return select.getSelectedItem() ? [select.getSelectedItem(), select.getSelectedText()] : false;
 				},
+				many2many: function(dom){
+					var select = self.advancedSelectBoxes[dom.attr('id')];
+					return select.getSelectedItems();
+				},
 			};
 			return this.initModel().done(function(){
 				self.listenTo(self.model, 'change', self.modelChanged);
