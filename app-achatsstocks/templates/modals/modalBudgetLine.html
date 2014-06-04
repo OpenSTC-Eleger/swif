@@ -8,11 +8,11 @@
 			</div>
 			<h4 class="modal-title">
 				<i class="fa fa-edit"></i>&nbsp;
-				<% if(_.isUndefined(budgetLine)){ %>
+				<% if(budgetLine.isNew()){ %>
 					<%= _.capitalize(lang.achatsstocks.actions.addBudgetLine) %>
 				<% } else{ %>
-					<%= _.capitalize(lang.achatsstocks.actions.editBudgetLine) %>
-				<% } %>
+					<%= _.capitalize(lang.achatsstocks.viewsTitles.editBudgetLine) %>
+				<% } %>œ
 			</h4>
 		</div>
 
@@ -20,31 +20,39 @@
 			<form id="formSaveBudgetLine" action="#" class="form-horizontal">
 
 
-				<!-- Budget service	-->
+				<!-- Budget Line Analytique account	-->
 				<div class="form-group">
 					<label for="budgetLineAnalyticAccount" class="control-label col-sm-3"><%= _.capitalize(lang.achatsstocks.analyticAccount) %>:</label>
 
 					<div class="col-sm-9">
-						<input id="budgetLineAnalyticAccount" class="select2" data-placeholder="<%= lang.actions.selectAService %>" data-minimum-input-length="2" required>
+						<input id="budgetLineAnalyticAccount" class="select2" data-placeholder="<%= lang.actions.selectAService %>" data-minimum-input-length="2" required
+							<% if(!budgetLine.isNew()){ %>
+								data-selected-value='<%= JSON.stringify(budgetLine.getAnalytiqueAccount('json')) %>'
+							<% } %>
+						>
 					</div>
 				</div>
 
-				<!-- Budget service	-->
+				<!-- BudgetLine M14 Account -->
 				<div class="form-group">
 					<label for="budgetLineAccount" class="control-label col-sm-3"><%= _.capitalize(lang.achatsstocks.m14Account) %>:</label>
 
 					<div class="col-sm-9">
-						<input id="budgetLineAccount" class="select2" data-placeholder="<%= lang.actions.selectAService %>" data-minimum-input-length="2" required>
+						<input id="budgetLineAccount" class="select2" data-placeholder="<%= lang.actions.selectAService %>" data-minimum-input-length="2" required
+							<% if(!budgetLine.isNew()){ %>
+								data-selected-value='<%= JSON.stringify(budgetLine.getM14Account('json')) %>'
+							<% } %>
+						>
 					</div>
 				</div>
 
-				<!-- Budget service	-->
+				<!-- Budget line planned ammount -->
 				<div class="form-group">
 					<label for="budgetLineAmount" class="control-label col-sm-3"><%= _.capitalize(lang.achatsstocks.plannedAmount) %>:</label>
 
 					<div class="col-sm-4">
 						<div class="input-group">
-							<input type="number" id="budgetLineAmount" class="form-control" required>
+							<input type="number" step="0.01" id="budgetLineAmount" class="form-control" value="<%= (!budgetLine.isNew() ? budgetLine.getPlannedAmount(false) : '') %>" required>
   							<span class="input-group-addon"><i class="fa fa-eur"></i></span>
 						</div>
 					</div>

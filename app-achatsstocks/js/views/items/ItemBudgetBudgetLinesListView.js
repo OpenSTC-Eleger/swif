@@ -52,7 +52,17 @@ define([
 		},
 
 
-		destroyBudgetLine: function(model){
+		/*addTask: function(model) {
+			var itemTaskView  = new ItemInterventionTaskView({ model: model, inter:this.model, tasks:this.tasksCollection});
+			$(this.el).find('#row-nested-objects').append(itemTaskView.el);
+			this.tasksCollection.add(model);
+			this.listenTo(model, 'change', this.change);
+			this.listenTo(model, 'destroy', this.destroyTask);
+			this.partialRender();
+		},*/
+
+
+		destroyBudgetLine: function(model) {
 			this.collection.remove(model);
 			//check if there is tasks, if not, display message infos instead of table
 			this.change();

@@ -40,22 +40,13 @@ define([
 		/** View Initialization
 		*/
 		initialize: function (params) {
-			var self = this;
 			this.options = params;
 
 			this.modal = $(this.el);
 
-
 			// Check if it's a create or an update //
 			if(_.isUndefined(this.model)){
-
 				this.model = new BudgetLineModel();
-				this.render();
-			}
-			else{
-				this.model.fetch({silent: true, data : {fields : this.model.fields}}).done(function(){
-					self.render();
-				});
 			}
 
 			this.render();
@@ -73,11 +64,10 @@ define([
 
 				var template = _.template(templateData, {
 					lang        : app.lang,
-					budgetLine  : undefined
+					budgetLine  : self.model
 				});
 
 				self.modal.html(template);
-
 
 				// Create advance selectbox AnalyticAccount //
 				self.selectAnalyticAccount = new AdvancedSelectBoxView({el: $('#budgetLineAnalyticAccount'), url: AnalyticAccountModel.prototype.urlRoot});
