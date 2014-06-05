@@ -60,6 +60,10 @@
 			"done"					: "indiquer la commande comme payée (clôture l'achat)"
 		},
 
+		"modalBudget": {
+			"cancel"				: "Annulation du budget"
+		},
+
 		"modalAnalyticAccount": {
 			"create"				: "Nouveau compte analytique",
 			"edit"					: "Edition du compte analytique"

@@ -11,9 +11,10 @@ define([
 
 	'budgetModel',
 	'modalDeleteView',
-	'modalBudgetView'
+	'modalBudgetView',
+	'genericActionModalView'
 
-], function(app, AppHelpers, BudgetModel, ModalDeleteView, ModalBudgetView){
+], function(app, AppHelpers, BudgetModel, ModalDeleteView, ModalBudgetView, GenericActionModalView){
 
 	'use strict';
 
@@ -25,17 +26,26 @@ define([
 
 		tagName      : 'tr',
 
-		templateHTML : '/templates/items/itemBudget.html',
+		templateHTML             : '/templates/items/itemBudget.html',
+		templateHTMLCancelBudget : '/templates/modals/cancelBudget.html',
+		templateHTMLRenewBudget  : '/templates/modals/modalRenewContract.html',
 
 		className    : 'row-item',
 
 
 		// The DOM events //
 		events       : {
-			'click a.accordion-object' : 'tableAccordion',
+			'click a.accordion-object'   : 'tableAccordion',
 
-			'click .buttonDeleteBudget': 'displayModalDeleteBudget',
-			'click .buttonUpdateBudget': 'displayModalUpdateBudget'
+			'click .buttonDeleteBudget'  : 'displayModalDeleteBudget',
+			'click .buttonUpdateBudget'  : 'displayModalUpdateBudget',
+
+			'click .buttonRenewBudget'   : 'displayModalRenewBudget',
+			'click .buttonDoneBudget'    : 'displayModalDoneBudget',
+
+			'click .buttonValidateBudget': 'displayModalValidateBudget',
+			'click .buttonCancelBudget'  : 'displayModalCancelBudget'
+
 		},
 
 
@@ -184,6 +194,51 @@ define([
 				el    : '#modalBudgetContainer',
 				model : this.model
 			});
+		},
+
+
+		/** Display modal to renew the budget
+		*/
+		displayModalRenewBudget: function(e){
+			e.preventDefault();
+
+			console.log('Renew');
+		},
+
+
+		/** Display modal to done (cloture) the budget
+		*/
+		displayModalDoneBudget: function(e){
+			e.preventDefault();
+
+			console.log('Done');
+		},
+
+
+		/** Display modal to validate the budget
+		*/
+		displayModalValidateBudget: function(e){
+			e.preventDefault();
+
+			console.log('Validate');
+		},
+
+
+		/** Display modal to cancel the budget
+		*/
+		displayModalCancelBudget: function(e){
+			e.preventDefault();
+			var self = this;
+
+			var modal = new GenericActionModalView({
+				el			:'#modalBudgetContainer',
+				model		:this.model,
+				action		:'cancel',
+				langAction	:app.lang.achatsstocks.modalBudget,
+				templateForm:app.menus.openstcachatstock + this.templateHTMLCancelBudget
+			});
+
+			modal.off().on('sendForm', function(){ self.expendAccordion(); });
 		}
 
 

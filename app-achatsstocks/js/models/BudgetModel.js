@@ -103,6 +103,27 @@ define([
 		},
 
 
+		/** Get the note according to the state of the Budget
+		*/
+		getNote: function() {
+			var returnVal;
+
+			switch(this.getState()){
+				case BudgetModel.state.cancel.key:
+					returnVal = this.get('cancel_note');
+					break;
+				case BudgetModel.state.validate.key:
+					returnVal = this.get('validate_note');
+					break;
+				case BudgetModel.state.done.key:
+					returnVal = this.get('done_note');
+					break;
+			}
+
+			return returnVal;
+		},
+
+
 
 		/** Get actions
 		*/

@@ -23,7 +23,7 @@
 
 <!-- Progress -->
 <td>
-	<% if(budget.getState() != budgetState.confirm.key){ %>
+	<% if(budget.getState() == budgetState.validate.key || budget.getState() == budgetState.done.key){ %>
 	<div class="progress">
 		<div class="progress-bar progress-bar-danger" data-toggle="tooltip" data-original-title="<%= budgetLine.getSpentAmountPercentage() %>%"
 			 style="width: <%= budgetLine.getSpentAmountPercentage() %>%">
@@ -34,7 +34,9 @@
 			<span class="fa fa-eur fa-lg"></span>
 		</div>
 	</div>
+	<% } else if(budget.getState() ==  budgetState.cancel.key) { %>
+		<span class="label label-<%= budgetState.cancel.color %>"><%= budgetState.cancel.translation %></span>
 	<% } else { %>
-		<span class="label label-info" data-toggle="tooltip"><%= budgetState.confirm.translation %></span>
+		<span class="label label-<%= budgetState.confirm.color %>"><%= budgetState.confirm.translation %></span>
 	<% } %>
 </td>
