@@ -91,7 +91,7 @@ define([
 			var urlForm = PurchaseFormView.prototype.urlBuilder.apply(this, [this.model.getAttribute('id',false)]);
 			
 			var self = this;
-			var stateItem = PurchaseModel.status[this.model.getAttribute('validation','budget_to_check')];
+			var stateItem = PurchaseModel.status[this.model.getAttribute('state','draft')];
 			$.get(app.menus.openstcachatstock+this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {

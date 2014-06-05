@@ -134,36 +134,29 @@ define([
 		// Request State Initialization //
 		status : {
 			
-			budget_to_check: {
-				key					: 'budget_to_check',
+			draft: {
+				key					: 'draft',
 				color				: 'warning',
 				translation			: app.lang.draft,
 			},
 			
-			engagement_to_check: {
-				key					: 'engagement_to_check',
+			wait: {
+				key					: 'wait',
 				color				: 'info',
 				translation			: app.lang.wait
 			},
 			
+			approved: {
+				key					: 'approved',
+				color				: 'default',
+				widget				: 'progress',
+				translation			: app.lang.valid
+			},
 			done: {
 				key					: 'done',
 				color				: 'default',
-				widget				: 'progress',
-				translation			: app.lang.valid
-			},
-			purchase_paid: {
-				key					: 'purchase_paid',
-				color				: 'default',
 				translation			: app.lang.purchasePaid
-			},
-			purchase_engaged: {
-				key					: 'purchase_engaged',
-				color				: 'default',
-				widget				: 'progress',
-				translation			: app.lang.valid
-			}
-			
+			},			
 		},
 		
 			// Actions of the requests //

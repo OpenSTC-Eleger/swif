@@ -194,7 +194,7 @@ define(['app',
 		
 		savePostForm: function(e){
 			e.preventDefault();
-			this.saveForm(e, false, {wkf_evolve:'post'});
+			this.saveForm(e, false, {wkf_evolve:'purchase_confirm'});
 		},
 		
 		saveDraftForm: function(e){
