@@ -14,8 +14,8 @@
 <td>
 <span><%= purchase.getCurrencyString('amount_total') %></span></td>
 
-<td  data-toggle="popover" data-original-title="<%= _.capitalize(lang.achatsstocks.invoicesAttached) %>" data-content="<%= purchase.printAttachInfos()%>">
-<%= purchase.getAttribute('attach_invoices',[]).length %> <%= _.capitalize(lang.achatsstocks.invoice_s) %>
+<td  data-toggle="popover" data-original-title="<%= _.capitalize(lang.achatsstocks.invoicesAttached) %>" data-content="<%= purchase.printAttachInfos()%> <i><%= _.capitalize(lang.achatsstocks.actions.clickToAattachInvoice) %></i>">
+<%= purchase.getAttribute('attach_invoices',[]).length %> <%= _.capitalize(lang.achatsstocks.invoice) %><%= purchase.getAttribute('attach_invoices',[]).length > 1 ? 's' :'' %>
 <% if(purchase.getAttribute('attach_waiting_invoice_ids',[]).length > 0){ %>
 	&nbsp;
 	<span class="badge badge-primary"><%= purchase.getAttribute('attach_waiting_invoice_ids',[]).length %></span>
@@ -24,7 +24,7 @@
 
 <td>
 <% if(stateItem.widget && stateItem.widget == 'progress'){ %>
-<div class="progress" data-toggle="tooltip" data-original-title="Livrée à(i18n): <%= purchase.getAttribute('reception_progress',0.0) %>%">
+<div class="progress" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.achatsstocks.percentagePicking) + ': ' + purchase.getAttribute('reception_progress',0.0).toString() %>%">
 	<div class="progress-bar progress-bar-success"
 		 style="width: <%= purchase.getAttribute('reception_progress',0.0) %>%">
 		<span><%= purchase.getAttribute('reception_progress',0.0) %> %</span>

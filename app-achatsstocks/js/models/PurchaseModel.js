@@ -178,14 +178,14 @@ define([
 				key					: 'check_dst',
 				color				: 'success',
 				icon				: 'fa-check',
-				translation			: 'Validation Responsable (traduire)'
+				translation			: app.lang.actions.check_dst
 			},
 			
 			check_elu: {
 				key					: 'check_elu',
 				color				: 'success',
 				icon				: 'fa-check',
-				translation			: 'Validation Elu (traduire)'
+				translation			: app.lang.actions.check_elu
 			},
 			
 			cancel: {
