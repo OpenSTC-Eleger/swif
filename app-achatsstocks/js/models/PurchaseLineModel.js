@@ -31,6 +31,10 @@ define([
 		],
 		readonlyFields: ['id'],
 		
+		defaults: function(){
+			return {name: this.getAttribute('product_id', [0,''])[1]};
+		},
+		
 //		relatedFields: {
 //			technical_service_id:'technical_service_id',
 //			partner_id:'supplier_id',
@@ -63,6 +67,10 @@ define([
 		 * Add a listener to always keep its related data up-to-date
 		*/
 		initialize: function(vals, options){
+			options = options || {};
+			var defaultVals = this.defaults();
+			vals = _.omit(defaultVals, _.keys(vals));
+			this.set(vals);
 			GenericModel.prototype.initialize.apply(this, arguments);
 			if(options.parentModel){
 				this.parentModel = options.parentModel;

@@ -349,6 +349,7 @@
         "selectASupplier"	: "Sélectionner un fournisseur",
         "selectAConsumableCategory": "Sélectionner une catégorie de fourniture",
         "selectConsumables" : "Sélectionner des fournitures",
+        "selectAnArticle"	: "Sélectionner un article",
         "displayPassword"   : "Afficher le mot de passe",
         "resetPassword"     : "Réinitialiser le mot de passe",
         "addAttach"         : "Ajouter une pièce jointe",
@@ -361,9 +362,11 @@
         "savePost"			: "Enregistrer et soumettre",
         "endPurchase"		: "Indiquer comme payée",
         "manageInvoices"	: "Gérer les factures",
-        "purchaseSent"		: "Envoyer commande (mail)",
+        "purchaseSent"		: "Envoyer commande",
         "receiveProducts"	: "Réceptionner articles",
-        "renew"             : "Renouveler"
+        "renew"             : "Renouveler",
+        "check_dst"			: "Validation Responsable",
+        "check_elu"			: "Validation Elu"
     },
 
     "errorMessages" : {

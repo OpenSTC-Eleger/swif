@@ -5,12 +5,13 @@
 		"spentAmount"               : "Montant dépensé",
 		"amountTaxed"				: "Montant TTC",
 		"invoicesAttached"			: "Factures jointes",
-		"invoice_s"					: "Facture(s)",
+		"invoice"					: "Facture",
 		"defaultBudget"				: "Budget par défaut",
 		"budgetToSpend"				: "Budget à imputer",
 		"parentAccount"				: "Compte parent",
 		"analyticAccount"           : "Compte Analytique",
 		"m14Account"                : "Compte M14",
+		"percentagePicking"			: "Livrée à",
 
 		"actions" : {
 			"addBudget"              : "Nouveau budget",
@@ -18,7 +19,8 @@
 			"addPurchase"			 : "Créer une commande",
 			"addAnalyticAccount"	 : "Nouveau compte",
 			"selectABudgetLine"		 : "Sélectionner une ligne budgétaire",
-			"selectAnAnalyticAccount": "Sélectionner un compte analytique"
+			"selectAnAnalyticAccount": "Sélectionner un compte analytique",
+			"clickToAattachInvoice"  : "Cliquer pour ajouter une facture"			
 		},
 
 
