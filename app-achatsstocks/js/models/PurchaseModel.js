@@ -16,7 +16,7 @@ define([
 		
 		urlRoot: '/api/open_achats_stock/purchases',
 
-		fields: ['id', 'name', 'description', 'date_order', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'account_analytic_id', 'order_line', 'amount_untaxed', 'amount_tax', 'reception_progress'],
+		fields: ['id', 'name', 'description', 'date_order', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'account_analytic_id', 'order_line', 'amount_untaxed', 'amount_tax', 'shipped_rate'],
 		
 		readonlyFields: ['id', 'name', 'date_order', 'amount_total', 'state', 'validation', 'actions', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'amount_untaxed', 'amount_tax', 'reception_progress'],
 		

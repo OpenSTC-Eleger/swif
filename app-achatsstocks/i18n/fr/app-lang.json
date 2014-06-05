@@ -20,7 +20,7 @@
 			"addAnalyticAccount"	 : "Nouveau compte",
 			"selectABudgetLine"		 : "Sélectionner une ligne budgétaire",
 			"selectAnAnalyticAccount": "Sélectionner un compte analytique",
-			"clickToAattachInvoice"  : "Cliquer pour ajouter une facture"			
+			"clickToManageInvoices"  : "Cliquer pour gérer les factures"			
 		},
 
 
