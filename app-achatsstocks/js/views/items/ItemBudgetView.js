@@ -26,9 +26,9 @@ define([
 
 		tagName      : 'tr',
 
-		templateHTML             : '/templates/items/itemBudget.html',
-		templateHTMLCancelBudget : '/templates/modals/cancelBudget.html',
-		templateHTMLRenewBudget  : '/templates/modals/modalRenewContract.html',
+		templateHTML               : '/templates/items/itemBudget.html',
+		templateHTMLCancelBudget   : '/templates/modals/cancelBudget.html',
+		templateHTMLValidateBudget : '/templates/modals/validateBudget.html',
 
 		className    : 'row-item',
 
@@ -162,6 +162,22 @@ define([
 
 
 
+		collapseAccordion: function(){
+
+			var id = this.model.getId();
+			var isExpend = $('#collapse_'+id).hasClass('expend');
+
+			if(isExpend){
+				// Reset the default visibility //
+				$('tr.expend').css({ display: 'none' }).removeClass('expend');
+				$('tr.active').removeClass('active');
+
+				$('#rows-items tr').css({ opacity: '1'});
+			}
+		},
+
+
+
 		tableAccordion: function(e){
 			e.preventDefault();
 
@@ -220,7 +236,17 @@ define([
 		displayModalValidateBudget: function(e){
 			e.preventDefault();
 
-			console.log('Validate');
+			var self = this;
+
+			var modal = new GenericActionModalView({
+				el			:'#modalBudgetContainer',
+				model		:this.model,
+				action		:'validate',
+				langAction	:app.lang.achatsstocks.modalBudget,
+				templateForm:app.menus.openstcachatstock + this.templateHTMLValidateBudget
+			});
+
+			modal.off().on('sendForm', function(){ self.collapseAccordion(); });
 		},
 
 
@@ -238,7 +264,7 @@ define([
 				templateForm:app.menus.openstcachatstock + this.templateHTMLCancelBudget
 			});
 
-			modal.off().on('sendForm', function(){ self.expendAccordion(); });
+			modal.off().on('sendForm', function(){ self.collapseAccordion(); });
 		}
 
 

@@ -25,7 +25,7 @@
 					<label for="budgetLineAnalyticAccount" class="control-label col-sm-3"><%= _.capitalize(lang.achatsstocks.analyticAccount) %>:</label>
 
 					<div class="col-sm-9">
-						<input id="budgetLineAnalyticAccount" class="select2" data-placeholder="<%= lang.actions.selectAService %>" data-minimum-input-length="2" required
+						<input id="budgetLineAnalyticAccount" class="select2" data-placeholder="<%= lang.achatsstocks.actions.selectAnAnalyticAccount %>" data-minimum-input-length="2" required
 							<% if(!budgetLine.isNew()){ %>
 								data-selected-value='<%= JSON.stringify(budgetLine.getAnalytiqueAccount('json')) %>'
 							<% } %>
@@ -38,7 +38,7 @@
 					<label for="budgetLineAccount" class="control-label col-sm-3"><%= _.capitalize(lang.achatsstocks.m14Account) %>:</label>
 
 					<div class="col-sm-9">
-						<input id="budgetLineAccount" class="select2" data-placeholder="<%= lang.actions.selectAService %>" data-minimum-input-length="2" required
+						<input id="budgetLineAccount" class="select2" data-placeholder="<%= lang.achatsstocks.actions.selectAnAccount %>" data-minimum-input-length="2" required
 							<% if(!budgetLine.isNew()){ %>
 								data-selected-value='<%= JSON.stringify(budgetLine.getM14Account('json')) %>'
 							<% } %>
