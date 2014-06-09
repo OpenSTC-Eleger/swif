@@ -66,7 +66,8 @@
 
 		"modalBudget": {
 			"cancel"				: "Annulation du budget",
-			"validate"              : "Validation du budget"
+			"validate"              : "Validation du budget",
+			"renew"                 : "Reconduction du budget"
 		},
 
 		"modalAnalyticAccount": {

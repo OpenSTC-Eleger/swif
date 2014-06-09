@@ -29,6 +29,7 @@ define([
 		templateHTML               : '/templates/items/itemBudget.html',
 		templateHTMLCancelBudget   : '/templates/modals/cancelBudget.html',
 		templateHTMLValidateBudget : '/templates/modals/validateBudget.html',
+		templateHTMLRenewBudget    : '/templates/modals/renewBudget.html',
 
 		className    : 'row-item',
 
@@ -218,7 +219,17 @@ define([
 		displayModalRenewBudget: function(e){
 			e.preventDefault();
 
-			console.log('Renew');
+			var self = this;
+
+			var modal = new GenericActionModalView({
+				el			: '#modalBudgetContainer',
+				model		: this.model,
+				action		: 'renew',
+				langAction	: app.lang.achatsstocks.modalBudget,
+				templateForm: app.menus.openstcachatstock + this.templateHTMLRenewBudget
+			});
+
+			modal.off().on('sendForm', function(){ self.collapseAccordion(); });
 		},
 
 
