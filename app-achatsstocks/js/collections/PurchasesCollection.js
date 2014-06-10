@@ -16,8 +16,7 @@ define([
 		
 		url   : '/api/open_achats_stock/purchases',
 
-		fields: ['id', 'name', 'date_order', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'state_order', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'engage_to_treat', 'account_analytic_id', 'order_line', 'amount_untaxed', 'amount_tax', 'shipped_rate'],
-
+		fields: ['id', 'name', 'date_order', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'state_order', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'engage_to_treat', 'account_analytic_id', 'order_line', 'amount_untaxed', 'amount_tax', 'shipped_rate', 'supplier_mail_sent'],
 		default_sort: { by: 'state_order', order: 'ASC' },
 		
 		specialCpt : 0,
