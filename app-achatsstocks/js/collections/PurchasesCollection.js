@@ -21,7 +21,9 @@ define([
 		
 		specialCpt : 0,
 		
-		advanced_searchable_fields: [{key: 'engage_to_treat', label: 'Engage to treat'}],
+		advanced_searchable_fields: [
+			{key: 'engage_to_treat', label: 'Engage to treat'},
+			{key: 'supplier_mail_sent', label: 'Supplier mail sent'}],
 
 
 		/** Get the number of Booking that the user have to deal
