@@ -26,9 +26,11 @@ define([
 
 		tagName      : 'tr',
 
-		templateHTML               : '/templates/items/itemBudget.html',
-		templateHTMLCancelBudget   : '/templates/modals/cancelBudget.html',
-		templateHTMLValidateBudget : '/templates/modals/validateBudget.html',
+		templateHTML : '/templates/items/itemBudget.html',
+
+		templateHTMLCancelBudget    : '/templates/modals/cancelBudget.html',
+		templateHTMLValidateBudget  : '/templates/modals/validateBudget.html',
+		templateHTMLTerminateBudget : '/templates/modals/terminateBudget.html',
 
 		className    : 'row-item',
 
@@ -218,7 +220,17 @@ define([
 		displayModalRenewBudget: function(e){
 			e.preventDefault();
 
-			console.log('Renew');
+			var self = this;
+
+			var modal = new GenericActionModalView({
+				el			: '#modalBudgetContainer',
+				model		: this.model,
+				action		: BudgetModel.actions.renew.key,
+				langAction	: app.lang.achatsstocks.modalBudget,
+				templateForm: app.menus.openstcachatstock + this.templateHTMLTerminateBudget
+			});
+
+			modal.off().on('sendForm', function(){ self.collapseAccordion(); });
 		},
 
 
@@ -227,7 +239,7 @@ define([
 		displayModalDoneBudget: function(e){
 			e.preventDefault();
 
-			console.log('Done');
+
 		},
 
 
@@ -239,11 +251,11 @@ define([
 			var self = this;
 
 			var modal = new GenericActionModalView({
-				el			:'#modalBudgetContainer',
-				model		:this.model,
-				action		:'validate',
-				langAction	:app.lang.achatsstocks.modalBudget,
-				templateForm:app.menus.openstcachatstock + this.templateHTMLValidateBudget
+				el			: '#modalBudgetContainer',
+				model		: this.model,
+				action		: BudgetModel.actions.validate.key,
+				langAction	: app.lang.achatsstocks.modalBudget,
+				templateForm: app.menus.openstcachatstock + this.templateHTMLValidateBudget
 			});
 
 			modal.off().on('sendForm', function(){ self.collapseAccordion(); });
@@ -257,11 +269,11 @@ define([
 			var self = this;
 
 			var modal = new GenericActionModalView({
-				el			:'#modalBudgetContainer',
-				model		:this.model,
-				action		:'cancel',
-				langAction	:app.lang.achatsstocks.modalBudget,
-				templateForm:app.menus.openstcachatstock + this.templateHTMLCancelBudget
+				el			: '#modalBudgetContainer',
+				model		: this.model,
+				action		: BudgetModel.actions.cancel.key,
+				langAction	: app.lang.achatsstocks.modalBudget,
+				templateForm: app.menus.openstcachatstock + this.templateHTMLCancelBudget
 			});
 
 			modal.off().on('sendForm', function(){ self.collapseAccordion(); });
