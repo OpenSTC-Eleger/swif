@@ -64,9 +64,7 @@ define([
 		/** When the model ara updated //
 		*/
 		change: function(){
-
 			this.render();
-
 			AppHelpers.highlight($(this.el));
 		},
 

@@ -7,9 +7,7 @@
 				<a type="button" class="btn close" data-dismiss="modal"><i class="fa fa-times"></i></a>
 			</div>
 			<h4 class="modal-title">
-				<i class="fa fa-edit">
-				<%= _.has(langAction, action) ? langAction[action] : ''%>
-				</i>&nbsp;
+				<i class="fa fa-edit"></i>&nbsp; <%= _.has(langAction, action) ? langAction[action] : ''%>
 			</h4>
 		</div>
 
@@ -34,7 +32,7 @@
 		<div class="modal-footer">
 			<button type="submit" form="formModalSaveModel" class="btn btn-primary"
 					data-loading-text="<i class='fa fa-refresh fa-spin'></i>&nbsp; <%= lang.saveInProgress %>">
-			<%= _.capitalize(lang.actions.validate) %>
+			<%= _.capitalize(lang.actions.save) %>
 			</button>&nbsp;&nbsp;
 			<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
 		</div>

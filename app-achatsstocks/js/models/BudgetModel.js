@@ -89,17 +89,53 @@ define([
 			return moment(this.get('date_from'), 'YYYY-MM-DD').format('DD/MM/YYYY');
 		},
 
+		/** Get new start date
+		*/
+		getNewStartDate: function(){
+			return moment(this.get('date_from'), 'YYYY-MM-DD').add('years', 1).format('DD/MM/YYYY');
+		},
+
+
+
 		/** Get end date
 		*/
 		getEndDate: function(){
 			return moment(this.get('date_to'), 'YYYY-MM-DD').format('DD/MM/YYYY');
 		},
 
+		/** Get new start date
+		*/
+		getNewEndDate: function(){
+			return moment(this.get('date_to'), 'YYYY-MM-DD').add('years', 1).format('DD/MM/YYYY');
+		},
+
+
 
 		/** Get the state of the Budget
 		*/
 		getState: function() {
 			return this.get('state');
+		},
+
+
+		/** Get the note according to the state of the Budget
+		*/
+		getNote: function() {
+			var returnVal;
+
+			switch(this.getState()){
+				case BudgetModel.state.cancel.key:
+					returnVal = this.get('cancel_note');
+					break;
+				case BudgetModel.state.validate.key:
+					returnVal = this.get('validate_note');
+					break;
+				case BudgetModel.state.done.key:
+					returnVal = this.get('done_note');
+					break;
+			}
+
+			return returnVal;
 		},
 
 

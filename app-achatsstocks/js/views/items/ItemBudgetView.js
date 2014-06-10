@@ -11,9 +11,10 @@ define([
 
 	'budgetModel',
 	'modalDeleteView',
-	'modalBudgetView'
+	'modalBudgetView',
+	'genericActionModalView'
 
-], function(app, AppHelpers, BudgetModel, ModalDeleteView, ModalBudgetView){
+], function(app, AppHelpers, BudgetModel, ModalDeleteView, ModalBudgetView, GenericActionModalView){
 
 	'use strict';
 
@@ -25,17 +26,27 @@ define([
 
 		tagName      : 'tr',
 
-		templateHTML : '/templates/items/itemBudget.html',
+		templateHTML               : '/templates/items/itemBudget.html',
+		templateHTMLCancelBudget   : '/templates/modals/cancelBudget.html',
+		templateHTMLValidateBudget : '/templates/modals/validateBudget.html',
+		templateHTMLRenewBudget    : '/templates/modals/renewBudget.html',
 
 		className    : 'row-item',
 
 
 		// The DOM events //
 		events       : {
-			'click a.accordion-object' : 'tableAccordion',
+			'click a.accordion-object'   : 'tableAccordion',
 
-			'click .buttonDeleteBudget': 'displayModalDeleteBudget',
-			'click .buttonUpdateBudget': 'displayModalUpdateBudget'
+			'click .buttonDeleteBudget'  : 'displayModalDeleteBudget',
+			'click .buttonUpdateBudget'  : 'displayModalUpdateBudget',
+
+			'click .buttonRenewBudget'   : 'displayModalRenewBudget',
+			'click .buttonDoneBudget'    : 'displayModalDoneBudget',
+
+			'click .buttonValidateBudget': 'displayModalValidateBudget',
+			'click .buttonCancelBudget'  : 'displayModalCancelBudget'
+
 		},
 
 
@@ -152,6 +163,22 @@ define([
 
 
 
+		collapseAccordion: function(){
+
+			var id = this.model.getId();
+			var isExpend = $('#collapse_'+id).hasClass('expend');
+
+			if(isExpend){
+				// Reset the default visibility //
+				$('tr.expend').css({ display: 'none' }).removeClass('expend');
+				$('tr.active').removeClass('active');
+
+				$('#rows-items tr').css({ opacity: '1'});
+			}
+		},
+
+
+
 		tableAccordion: function(e){
 			e.preventDefault();
 
@@ -184,6 +211,71 @@ define([
 				el    : '#modalBudgetContainer',
 				model : this.model
 			});
+		},
+
+
+		/** Display modal to renew the budget
+		*/
+		displayModalRenewBudget: function(e){
+			e.preventDefault();
+
+			var self = this;
+
+			var modal = new GenericActionModalView({
+				el			: '#modalBudgetContainer',
+				model		: this.model,
+				action		: 'renew',
+				langAction	: app.lang.achatsstocks.modalBudget,
+				templateForm: app.menus.openstcachatstock + this.templateHTMLRenewBudget
+			});
+
+			modal.off().on('sendForm', function(){ self.collapseAccordion(); });
+		},
+
+
+		/** Display modal to done (cloture) the budget
+		*/
+		displayModalDoneBudget: function(e){
+			e.preventDefault();
+
+			console.log('Done');
+		},
+
+
+		/** Display modal to validate the budget
+		*/
+		displayModalValidateBudget: function(e){
+			e.preventDefault();
+
+			var self = this;
+
+			var modal = new GenericActionModalView({
+				el			:'#modalBudgetContainer',
+				model		:this.model,
+				action		:'validate',
+				langAction	:app.lang.achatsstocks.modalBudget,
+				templateForm:app.menus.openstcachatstock + this.templateHTMLValidateBudget
+			});
+
+			modal.off().on('sendForm', function(){ self.collapseAccordion(); });
+		},
+
+
+		/** Display modal to cancel the budget
+		*/
+		displayModalCancelBudget: function(e){
+			e.preventDefault();
+			var self = this;
+
+			var modal = new GenericActionModalView({
+				el			:'#modalBudgetContainer',
+				model		:this.model,
+				action		:'cancel',
+				langAction	:app.lang.achatsstocks.modalBudget,
+				templateForm:app.menus.openstcachatstock + this.templateHTMLCancelBudget
+			});
+
+			modal.off().on('sendForm', function(){ self.collapseAccordion(); });
 		}
 
 

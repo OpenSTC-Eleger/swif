@@ -6,16 +6,16 @@
 
 define(['app',
 		'appHelpers',
-		
+
 		'genericFormView',
 		'advancedSelectBoxView',
-		
+
 		'moment',
 		'moment-timezone-data',
 		'bsTimepicker',
 		'bsDatepicker-lang',
 		'bsSwitch'
-		
+
 
 ], function (app, AppHelpers, GenericFormView, moment) {
 
@@ -28,7 +28,7 @@ define(['app',
 
 		id          : 'modalView',
 		templateHTML: 'templates/modals/genericActionModal.html',
-		
+
 		// The DOM events //
 		events: function(){
 			return _.defaults({
@@ -40,7 +40,7 @@ define(['app',
 				'click [data-action="zenmode"]': 'toggleZenmode'
 			}, GenericFormView.prototype.events);
 		},
-		
+
 		modal : null,
 
 		/** Trigger when the modal is show
@@ -71,7 +71,7 @@ define(['app',
 				}
 			}
 		},
-		
+
 		/** View Initialization
 		*/
 		initialize : function() {
@@ -80,15 +80,15 @@ define(['app',
 			this.model = this.sourceModel.clone();
 			this.model.collection = this.sourceModel.collection;
 			this.model.off();
-			
+
 			this.action = arguments ? arguments[0].action : null;
 			this.langAction = arguments ? arguments[0].langAction : null;
 			this.templateForm = arguments ? arguments[0].templateForm : null;
-			
+
 			arguments[0].notMainView = true;
 			GenericFormView.prototype.initialize.apply(this, arguments);
 		},
-		
+
 		/** Display the view
 		*/
 		render: function() {
@@ -101,7 +101,7 @@ define(['app',
 			}
 			// Retrieve the template //
 			$.when.apply($,arrayDeferred).done(function(templateData, templateData2){
-				
+
 				var template = _.template(hasForm ? templateData[0] : templateData, {
 					lang		: app.lang,
 					langAction	: self.langAction,
@@ -124,12 +124,12 @@ define(['app',
 					$(self.el).find('#formModalSaveModel').html(template2);
 				}
 				GenericFormView.prototype.render.apply(self);
-				
+
 				self.modal.modal('show');
 			});
 			return this;
 		},
-		
+
 		save: function(e){
 			var self = this;
 			e.preventDefault();
@@ -139,9 +139,10 @@ define(['app',
 			this.model.save(vals, {patch:true,wait:true}).done(function(){
 				self.sourceModel.fetch();
 				self.modal.modal('hide');
+				self.trigger('sendForm');
 			});
 		},
-		
+
 		/** Toggle fullscreen mode
 		*/
 		toggleZenmode: function(){
@@ -149,7 +150,7 @@ define(['app',
 			$(this.el).find('.modal-dialog').toggleClass('modal-zenmode');
 			$('.modal-backdrop').toggleClass('zenmode');
 		}
-		
+
 	});
 	return GenericActionModalView;
 });

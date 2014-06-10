@@ -20,8 +20,9 @@
 			"addPurchase"			 : "Créer une commande",
 			"addAnalyticAccount"	 : "Nouveau compte",
 			"selectABudgetLine"		 : "Sélectionner une ligne budgétaire",
+			"selectAnAccount"		 : "Sélectionner un compte",
 			"selectAnAnalyticAccount": "Sélectionner un compte analytique",
-			"clickToManageInvoices"  : "Cliquer pour gérer les factures"			
+			"clickToManageInvoices"  : "Cliquer pour gérer les factures"
 		},
 
 
@@ -38,7 +39,8 @@
 
 		"warningMessages": {
 			"confirmDeleteAnalyticAccount": "Etes-vous sûr de vouloir supprimer ce compte ?",
-			"confirmDeleteBudget"         : "Etes-vous sûr de vouloir supprimer ce budget ?"
+			"confirmDeleteBudget"         : "Etes-vous sûr de vouloir supprimer ce budget ?",
+			"confirmValidateBudget"       : "Une fois validé, le budget ne pourra plus être modifié"
 		},
 
 		"viewsTitles" : {
@@ -63,6 +65,12 @@
 			"done"					: "indiquer la commande comme payée (clôture l'achat)",
 			"send_mail"				: "Envoi de la commande au fournisseur",
 			"send_mail_again"		: "Ré-envoi de la commande au fournisseur"
+		},
+
+		"modalBudget": {
+			"cancel"				: "Annulation du budget",
+			"validate"              : "Validation du budget",
+			"renew"                 : "Reconduction du budget"
 		},
 
 		"modalAnalyticAccount": {
