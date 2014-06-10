@@ -7,7 +7,12 @@
 
 <td class="field" data-fieldname="service_id"></td>
 
-<td class="field" data-fieldname="partner_id"></td>
+<td>
+<span class="field" data-fieldname="partner_id"></span>
+<% if(purchase.getAttribute('supplier_mail_sent',false)){ %>
+	<i class="fa fa-envelope-o fa-fw" data-toggle="tooltip" data-original-title="<%= lang.achatsstocks.sentToSupplier %>"></i>
+<% } %>
+</td>
 
 <td class="field" data-fieldname="date_order"></td>
 
@@ -29,9 +34,9 @@ data-content="<%= purchase.printAttachInfos()%> <i><%= _.capitalize(lang.achatss
 </td>
 
 <td>
-<% if(stateItem.widget && stateItem.widget == 'progress'){ %>
+<% if(stateItem.widget && stateItem.widget == 'progress' && purchase.getAttribute('shipped_rate',0.0) > 0.0){ %>
 <div class="progress" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.achatsstocks.percentagePicking) + ': ' + purchase.getAttribute('shipped_rate',0.0).toString() %>%">
-	<div class="progress-bar progress-bar-success"
+	<div class="progress-bar progress-bar-default"
 		 style="width: <%= purchase.getAttribute('shipped_rate',0.0) %>%">
 		<span><%= purchase.getAttribute('shipped_rate',0.0) %> %</span>
 	</div>
@@ -41,4 +46,4 @@ data-content="<%= purchase.printAttachInfos()%> <i><%= _.capitalize(lang.achatss
 <span class="label label-<%= stateItem.color %> text-center" data-toggle="tooltip" data-original-title=""><%= stateItem.translation %></span>
 <% } %>
 
-<td class="button-actions" data-actions="check_dst,check_elu,done,refuse,send_mail,receive" data-main-action="<%= mainAction%>"></td>
+<td class="button-actions" data-actions="check_dst,check_elu,done,refuse,send_mail,receive,send_mail_again" data-main-action="<%= mainAction%>"></td>
