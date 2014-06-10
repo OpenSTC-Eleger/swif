@@ -31,6 +31,8 @@ define([
 		templateHTMLCancelBudget    : '/templates/modals/cancelBudget.html',
 		templateHTMLValidateBudget  : '/templates/modals/validateBudget.html',
 		templateHTMLTerminateBudget : '/templates/modals/terminateBudget.html',
+		templateHTMLRenewBudget     : '/templates/modals/renewBudget.html',
+
 
 		className    : 'row-item',
 
@@ -220,17 +222,16 @@ define([
 		displayModalRenewBudget: function(e){
 			e.preventDefault();
 
-			var self = this;
-
 			var modal = new GenericActionModalView({
 				el			: '#modalBudgetContainer',
 				model		: this.model,
 				action		: BudgetModel.actions.renew.key,
 				langAction	: app.lang.achatsstocks.modalBudget,
-				templateForm: app.menus.openstcachatstock + this.templateHTMLTerminateBudget
+				templateForm: app.menus.openstcachatstock + this.templateHTMLRenewBudget,
+
 			});
 
-			modal.off().on('sendForm', function(){ self.collapseAccordion(); });
+			modal.off().on('sendForm', function(){ Backbone.history.loadUrl(); });
 		},
 
 
@@ -239,7 +240,17 @@ define([
 		displayModalDoneBudget: function(e){
 			e.preventDefault();
 
+			var self = this;
 
+			var modal = new GenericActionModalView({
+				el			: '#modalBudgetContainer',
+				model		: this.model,
+				action		: BudgetModel.actions.done.key,
+				langAction	: app.lang.achatsstocks.modalBudget,
+				templateForm: app.menus.openstcachatstock + this.templateHTMLTerminateBudget
+			});
+
+			modal.off().on('sendForm', function(){ self.collapseAccordion(); });
 		},
 
 

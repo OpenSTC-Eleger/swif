@@ -89,11 +89,26 @@ define([
 			return moment(this.get('date_from'), 'YYYY-MM-DD').format('DD/MM/YYYY');
 		},
 
+		/** Get new start date
+		*/
+		getNewStartDate: function(){
+			return moment(this.get('date_from'), 'YYYY-MM-DD').add('years', 1).format('DD/MM/YYYY');
+		},
+
+
+
 		/** Get end date
 		*/
 		getEndDate: function(){
 			return moment(this.get('date_to'), 'YYYY-MM-DD').format('DD/MM/YYYY');
 		},
+
+		/** Get new start date
+		*/
+		getNewEndDate: function(){
+			return moment(this.get('date_to'), 'YYYY-MM-DD').add('years', 1).format('DD/MM/YYYY');
+		},
+
 
 
 		/** Get the state of the Budget

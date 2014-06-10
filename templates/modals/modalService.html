@@ -52,21 +52,6 @@
 				</div>
 
 
-				<!-- Service Manager -->
-				<div class="form-group">
-					<label for="serviceManager" class="control-label col-sm-3"><%= _.capitalize(lang.manager) %>:</label>
-
-					<div class="col-sm-9">
-						<input id="serviceManager" class="select2" data-placeholder="<%= lang.actions.selectAAgent %>"
-
-							<% if(!_.isNull(service.getId())){
-								if(!_.isUndefined(service.getManager('id'))) { %>
-								data-selected-value='<%= JSON.stringify(service.getManager('json')) %>'
-							<% } } %>
-						>
-					</div>
-				</div>
-
 				<!-- Service Parent Service -->
 				<div class="form-group">
 					<label for="serviceParentService" class="control-label col-sm-3"><%= _.capitalize(lang.parentService) %>:</label>
@@ -84,6 +69,38 @@
 				</div>
 
 
+				<!-- Service Manager -->
+				<div class="form-group">
+					<label for="serviceManager" class="control-label col-sm-3"><%= _.capitalize(lang.manager) %>:</label>
+
+					<div class="col-sm-9">
+						<input id="serviceManager" class="select2" data-placeholder="<%= lang.actions.selectAAgent %>"
+
+							<% if(!_.isNull(service.getId())){
+								if(!_.isUndefined(service.getManager('id'))) { %>
+								data-selected-value='<%= JSON.stringify(service.getManager('json')) %>'
+							<% } } %>
+						>
+					</div>
+				</div>
+
+
+				<!-- Referent elected -->
+				<div class="form-group">
+					<label for="serviceElected" class="control-label col-sm-3"><%= _.capitalize(lang.refentElected) %>:</label>
+
+					<div class="col-sm-9">
+						<input id="serviceElected" class="select2" data-placeholder="<%= lang.actions.selectAnElected %>"
+
+							<% if(!_.isNull(service.getId())){
+								if(!_.isUndefined(service.getManager('id'))) { %>
+								data-selected-value='<%= JSON.stringify(service.getManager('json')) %>'
+							<% } } %>
+						>
+					</div>
+				</div>
+
+
 				<!-- is Technical Service -->
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="switchTechnicalService"><%= _.capitalize(lang.technicalService) %>:</label>
@@ -92,6 +109,42 @@
 							<% if(!_.isNull(service.getId())){ if(service.isTechnical()) { %> checked <% } } %>
 						>
 					</div>
+				</div>
+
+
+<hr>
+
+				<!-- Service buying threshold -->
+				<div class="form-group">
+					<label for="serviceBuyingTreshold" class="control-label col-sm-3"><%= _.capitalize(lang.buyingTreshold) %>:</label>
+
+					<div class="col-sm-4">
+						<div class="input-group">
+							<input type="number" step="0.01" id="serviceBuyingTreshold" class="form-control">
+  							<span class="input-group-addon"><i class="fa fa-eur"></i></span>
+						</div>
+					</div>
+				</div>
+
+
+				<!-- Service buying threshold -->
+				<div class="form-group">
+					<label for="serviceBuyingValidateBy" class="control-label col-sm-3"><%= _.capitalize(lang.toValidateBy) %>:</label>
+
+					<div class="col-sm-9">
+						<div class="input-group">
+							<div class="input-group-btn">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><%= lang.and %>&nbsp; <span class="fa fa-caret-down"></span></button>
+								<ul class="dropdown-menu">
+									<li><a href="#"><%= lang.and %></a></li>
+									<li><a href="#"><%= lang.or %></a></li>
+									<li><a href="#"><%= lang.then %></a></li>
+								</ul>
+							</div><!-- /btn-group -->
+							<input type="text" class="form-control">
+							</div><!-- /input-group -->
+					</div>
+
 				</div>
 
 

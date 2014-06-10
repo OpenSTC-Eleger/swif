@@ -133,8 +133,8 @@ define(['app',
 		save: function(e){
 			var self = this;
 			e.preventDefault();
-			var toSave = _.keys(this.model.changedAttributes());
-			var vals = this.model.getSaveVals(toSave);
+			//var toSave = _.keys(this.model.changedAttributes());
+			var vals = this.model.getSaveVals();
 			vals.wkf_evolve = this.action;
 			this.model.save(vals, {patch:true,wait:true}).done(function(){
 				self.sourceModel.fetch();

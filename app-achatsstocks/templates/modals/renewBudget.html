@@ -1,0 +1,30 @@
+<!-- Budget name -->
+<div class="form-group">
+	<label for="new_name" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
+
+	<div class="col-sm-9">
+		<input type="text" id="new_name" class="form-control field-element" value="<%= model.getName() %>" required>
+	</div>
+</div>
+
+<!-- Budget service	-->
+<div class="form-group field" data-field-placeholder="<%= lang.actions.selectAService%>" data-field-label="<%= lang.service %>" data-field-name="new_service_id"></div>
+
+
+<!-- Budget date start -->
+<div class="form-group">
+	<label for="new_date_from" class="control-label col-sm-3"><%= _.capitalize(lang.newPeriod) %>:</label>
+	<div class="col-sm-9">
+		<div class="input-daterange input-group">
+		<span class="input-group-addon"><%= lang.from %></span>
+
+			<input type="text" id="new_date_from" class="form-control field-element" placeholder="dd/mm/yyyy"
+			       value="<%= model.getNewStartDate() %>" required>
+
+			<span class="input-group-addon"><%= lang.to %></span>
+
+			<input type="text" id="new_date_to" class="form-control field-element" placeholder="dd/mm/yyyy"
+				   value="<%= model.getNewEndDate() %>" required>
+		</div>
+	</div>
+</div>
