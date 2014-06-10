@@ -12,6 +12,7 @@
 		"analyticAccount"           : "Compte Analytique",
 		"m14Account"                : "Compte M14",
 		"percentagePicking"			: "Livrée à",
+		"sentToSupplier"			: "Commande envoyée au fournisseur",
 
 		"actions" : {
 			"addBudget"              : "Nouveau budget",
@@ -21,7 +22,7 @@
 			"selectABudgetLine"		 : "Sélectionner une ligne budgétaire",
 			"selectAnAccount"		 : "Sélectionner un compte",
 			"selectAnAnalyticAccount": "Sélectionner un compte analytique",
-			"clickToAattachInvoice"  : "Cliquer pour ajouter une facture"
+			"clickToManageInvoices"  : "Cliquer pour gérer les factures"
 		},
 
 
@@ -61,7 +62,9 @@
 			"check_dst"				: "Validation en tant que Responsable",
 			"check_elu"				: "Validation en tant qu'Elu",
 			"refuse"				: "Refus de la commande",
-			"done"					: "indiquer la commande comme payée (clôture l'achat)"
+			"done"					: "indiquer la commande comme payée (clôture l'achat)",
+			"send_mail"				: "Envoi de la commande au fournisseur",
+			"send_mail_again"		: "Ré-envoi de la commande au fournisseur"
 		},
 
 		"modalBudget": {

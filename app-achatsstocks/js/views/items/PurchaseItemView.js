@@ -31,7 +31,8 @@ define([
 		},
 
 		templateHTML : '/templates/items/itemPurchase.html',
-
+		templateSendMailHTML: '/templates/modals/modalSendPurchase.html',
+		
 		classModel	: PurchaseModel,
 
 		// The DOM events //
@@ -91,7 +92,7 @@ define([
 			var urlForm = PurchaseFormView.prototype.urlBuilder.apply(this, [this.model.getAttribute('id',false)]);
 			
 			var self = this;
-			var stateItem = PurchaseModel.status[this.model.getAttribute('validation','budget_to_check')];
+			var stateItem = PurchaseModel.status[this.model.getAttribute('state','draft')];
 			$.get(app.menus.openstcachatstock+this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
@@ -128,14 +129,14 @@ define([
 			e.stopPropagation();
 			var action = $(e.currentTarget).data('action');
 			var templateForm = null;
-//			switch(action){
-//			case 'cancel':
-//				templateForm = app.menus.openstcpatrimoine + this.templateCancelContract;
-//				break;
-//			case 'renew':
-//				templateForm = app.menus.openstcpatrimoine + this.templateRenewContract;
-//				break;
-//			}
+			switch(action){
+			case 'send_mail':
+				templateForm = app.menus.openstcachatstock + this.templateSendMailHTML;
+				break;
+			case 'send_mail_again':
+				templateForm = app.menus.openstcachatstock + this.templateSendMailHTML;
+				break;
+			}
 			var langAction = app.lang.achatsstocks.modalPurchase;
 			new GenericActionModalView({
 				el			:'#modalView',

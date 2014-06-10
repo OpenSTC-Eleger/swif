@@ -16,7 +16,7 @@ define([
 		
 		urlRoot: '/api/open_achats_stock/purchases',
 
-		fields: ['id', 'name', 'description', 'date_order', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'account_analytic_id', 'order_line', 'amount_untaxed', 'amount_tax', 'reception_progress'],
+		fields: ['id', 'name', 'description', 'date_order', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'account_analytic_id', 'order_line', 'amount_untaxed', 'amount_tax', 'shipped_rate', 'supplier_mail_sent'],
 		
 		readonlyFields: ['id', 'name', 'date_order', 'amount_total', 'state', 'validation', 'actions', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'amount_untaxed', 'amount_tax', 'reception_progress'],
 		
@@ -38,7 +38,7 @@ define([
 		 * use 'priority' variable to apply the priority of the main action (first index is the higher priority)
 		 */
 		getUserMainAction: function(){
-			var priority = ['check_elu','check_dst', 'done', 'receive', 'send_mail', 'refuse'];
+			var priority = ['check_elu','check_dst', 'done', 'send_mail', 'receive', 'refuse'];
 			var ret = '';
 			for(var i=0;i < priority.length;i++){
 				if(this.hasAction(priority[i])){
@@ -134,36 +134,29 @@ define([
 		// Request State Initialization //
 		status : {
 			
-			budget_to_check: {
-				key					: 'budget_to_check',
+			draft: {
+				key					: 'draft',
 				color				: 'warning',
 				translation			: app.lang.draft,
 			},
 			
-			engagement_to_check: {
-				key					: 'engagement_to_check',
+			wait: {
+				key					: 'wait',
 				color				: 'info',
 				translation			: app.lang.wait
 			},
 			
+			approved: {
+				key					: 'approved',
+				color				: 'success',
+				widget				: 'progress',
+				translation			: app.lang.valid
+			},
 			done: {
 				key					: 'done',
 				color				: 'default',
-				widget				: 'progress',
-				translation			: app.lang.valid
-			},
-			purchase_paid: {
-				key					: 'purchase_paid',
-				color				: 'default',
 				translation			: app.lang.purchasePaid
-			},
-			purchase_engaged: {
-				key					: 'purchase_engaged',
-				color				: 'default',
-				widget				: 'progress',
-				translation			: app.lang.valid
-			}
-			
+			},			
 		},
 		
 			// Actions of the requests //
@@ -214,6 +207,13 @@ define([
 				color				: 'default',
 				icon				: 'fa-envelope-o',
 				translation			: app.lang.actions.purchaseSent
+			},
+			
+			send_mail_again: {
+				key					: 'send_mail_again',
+				color				: 'default',
+				icon				: 'fa-envelope-o',
+				translation			: app.lang.actions.sendPurchaseAgain
 			},
 			
 			receive: {

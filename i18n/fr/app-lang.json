@@ -367,11 +367,12 @@
         "savePost"			: "Enregistrer et soumettre",
         "endPurchase"		: "Indiquer comme payée",
         "manageInvoices"	: "Gérer les factures",
-        "purchaseSent"		: "Envoyer commande",
+        "purchaseSent"		: "Envoyer la commande",
         "receiveProducts"	: "Réceptionner articles",
         "renew"             : "Renouveler",
         "check_dst"			: "Validation Responsable",
-        "check_elu"			: "Validation Elu"
+        "check_elu"			: "Validation Elu",
+        "sendPurchaseAgain"	: "Ré-envoyer la commande"
     },
 
     "errorMessages" : {

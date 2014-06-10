@@ -48,7 +48,7 @@
 			<label for="budgetService" class="control-label col-sm-3"><%= _.capitalize(lang.article) %>:</label>
 		
 			<div class="col-sm-9">
-				<input id="purchaseSelectArticle" class="select2" data-placeholder="<%= lang.actions.selectAnArticle %>" required>
+				<input id="purchaseSelectArticle" class="select2" data-placeholder="<%= lang.actions.selectAnArticle %>">
 			</div>
 		</div>
 	</div>
@@ -73,7 +73,7 @@
 	<!-- Form Actions -->
 	<div class="col-sm-12 well">
 		<div class="text-center ">
-			<% if(purchase.getAttribute('validation','budget_to_check') == 'budget_to_check'){ %>
+			<% if(purchase.getAttribute('state','draft') == 'draft'){ %>
 			<button type="button" class="btn btn-default" id="saveDraftFormPurchase"><%= _.capitalize(lang.actions.saveDraft) %></button>&nbsp;
 			<button type="submit" class="btn btn-primary" form="formSaveModel" id="saveFormCurchase"><%= _.capitalize(lang.actions.savePost) %></button>&nbsp;
 			<% } %>
