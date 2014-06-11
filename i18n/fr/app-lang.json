@@ -567,6 +567,7 @@
         "consumablesList"           : "Fournitures",
         "newConsumable"             : "Nouvelle fourniture",
         "editConsumable"            : "Nouvelle fourniture",
-        "costDetail"                : "Détail des coûts"
+        "costDetail"                : "Détail des coûts",
+        "roleManagement"            : "Gestion des rôles"
     }
 }
