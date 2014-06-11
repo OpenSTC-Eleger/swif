@@ -33,7 +33,8 @@ define([
 			{ key: 'openstc_practical_amount' },
 			{ key: 'service_id' },
 			{ key: 'date_from' },
-			{ key: 'date_to' }
+			{ key: 'date_to' },
+			{ key: 'state' }
 		],
 
 
@@ -48,6 +49,7 @@ define([
 			this.advanced_searchable_fields[2].label = app.lang.service;
 			this.advanced_searchable_fields[3].label = app.lang.dateStart;
 			this.advanced_searchable_fields[4].label = app.lang.dateEnd;
+			this.advanced_searchable_fields[5].label = app.lang.state;
 		}
 
 	});

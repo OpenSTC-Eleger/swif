@@ -26,10 +26,10 @@ define([
 		filters    : [],
 
 		//Static variables uses to build url
-		URL_FILTER_CTXT    : '/filter/',
+		URL_FILTER_CTXT  : '/filter/',
 		URL_SORT_CTXT    : '/sort/',
 		URL_PAGE_CTXT    : '/page',
-		SLASH_CHAR	: '/',
+		SLASH_CHAR	     : '/',
 
 		// The DOM events //
 		events: {

@@ -94,7 +94,7 @@ define([
 
 
 				// Check if the a budget line can be added //
-				if(self.model.getState() != BudgetModel.state.confirm.key){
+				if(self.model.getState() != BudgetModel.status.confirm.key){
 					$(self.el).find('.addBudgetLine').addClass('hide');
 				}
 

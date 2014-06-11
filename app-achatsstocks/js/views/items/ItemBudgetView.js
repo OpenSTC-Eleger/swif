@@ -112,7 +112,7 @@ define([
 				var template = _.template(templateData, {
 					lang        : app.lang,
 					budget      : self.model,
-					budgetState : BudgetModel.state,
+					budgetState : BudgetModel.status,
 					budgetAction: BudgetModel.actions
 				});
 

@@ -6,6 +6,7 @@
 		<!-- Pre Recorded Filters -->
 		<li role="presentation" class="horizontal-align">
 			<!-- State Filter -->
+			<% console.log(states); %>
 			<% if(! _.isUndefined(states) ) {  %>
 				<% _.each(states, function (state, i) { %>
 					<a tabindex="-1" href="#filter-state_<%= state.key %>">

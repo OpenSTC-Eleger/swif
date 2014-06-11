@@ -118,8 +118,9 @@ define([
 
 				// Create the advanceSearch View //
 				app.views.advanceSearchView = new AdvanceSearchView({
-					collection : self.collection,
-					view       : self
+					collection  : self.collection,
+					modelStates : self.model.status,
+					view        : self
 				});
 
 
