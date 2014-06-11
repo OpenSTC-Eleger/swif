@@ -35,9 +35,6 @@ define([
 			this.activeSearch = options.activeSearch;
 			this.modelStates = options.modelStates;
 
-			console.log("---------------------");
-			console.log(this.activeSearch);
-
 			this.render();
 		},
 

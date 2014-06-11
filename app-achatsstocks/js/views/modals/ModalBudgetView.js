@@ -78,6 +78,7 @@ define([
 
 				// Create advance select bos Service //
 				self.selectListServicesView = new AdvancedSelectBoxView({el: $('#budgetService'), url: ClaimersServicesCollection.prototype.url});
+				self.selectListServicesView.setSearchParam({field: 'id', operator: 'in', value: app.current_user.getServices()}, true);
 				self.selectListServicesView.render();
 
 				self.modal.modal('show');
