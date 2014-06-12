@@ -36,6 +36,7 @@
     "description"           : "description",
     "groupInter"            : "intervention",
     "groupResa"             : "réservation",
+    "groupAchat"            : "Achats / Stocks",
     "group-inter"           : "groupe inter",
     "note"                  : "note",
     "status"                : "statut",

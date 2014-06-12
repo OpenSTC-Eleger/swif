@@ -25,11 +25,22 @@
 		</div>
 
 
+		<!-- Modal Body -->
 		<div class="modal-body">
+
+			<!-- Tabs -->
+			<ul class="nav nav-tabs nav-justified">
+				<li class="active"><a href="#" data-toggle="tab" data-target="#formAboutService"><%= _.capitalize(lang.about) %></a></li>
+				<li class="<%= (hasModuleAchat ? '' : 'disabled') %>"><a href="#" data-toggle="tab" data-target="#formModuleAchat"><%= lang.groupAchat %></a></li>
+			</ul>
 
 			<% if(_.isUndefined(loader)) { %>
 			<form id="formSaveService" action="#" class="form-horizontal" role="form">
-				<fieldset>
+				<div class="tab-content">
+
+
+				<!-- About the service -->
+				<fieldset id="formAboutService" class="tab-pane fade in active">
 
 
 				<!-- Service name -->
@@ -51,7 +62,6 @@
 					</div>
 				</div>
 
-
 				<!-- Service Parent Service -->
 				<div class="form-group">
 					<label for="serviceParentService" class="control-label col-sm-3"><%= _.capitalize(lang.parentService) %>:</label>
@@ -63,11 +73,9 @@
 								if(!_.isUndefined(service.getParentService('id'))) { %>
 								data-selected-value='<%= JSON.stringify(service.getParentService('json')) %>'
 							<% } } %>
-
 						>
 					</div>
 				</div>
-
 
 				<!-- Service Manager -->
 				<div class="form-group">
@@ -84,7 +92,6 @@
 					</div>
 				</div>
 
-
 				<!-- Referent elected -->
 				<div class="form-group">
 					<label for="serviceElected" class="control-label col-sm-3"><%= _.capitalize(lang.refentElected) %>:</label>
@@ -100,10 +107,10 @@
 					</div>
 				</div>
 
-
 				<!-- is Technical Service -->
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="switchTechnicalService"><%= _.capitalize(lang.technicalService) %>:</label>
+					
 					<div class="col-sm-9">
 						<input type="checkbox" class="make-switch" id="switchTechnicalService" data-on-text="<%= lang.yes %>" data-off-text="<%= lang.no %>" tabindex="0"
 							<% if(!_.isNull(service.getId())){ if(service.isTechnical()) { %> checked <% } } %>
@@ -111,8 +118,10 @@
 					</div>
 				</div>
 
+			</fieldset>
 
-<hr>
+
+			<fieldset id="formModuleAchat" class="tab-pane fade">
 
 				<!-- Service buying threshold -->
 				<div class="form-group">
@@ -147,12 +156,12 @@
 
 				</div>
 
+			</fieldset>
 
-				</fieldset>
-
-			</form>
-			<% } %>
-		</div>
+			</div>
+		</form>
+		<% } %>
+	</div> <!-- /Modal Body -->
 
 
 		<div class="modal-footer">

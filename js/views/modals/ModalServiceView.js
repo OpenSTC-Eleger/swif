@@ -34,7 +34,8 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'submit #formSaveService'     : 'saveService'
+				'submit #formSaveService'     : 'saveService',
+				'click li.disabled a'         : 'preventDefault'
 			},
 				GenericModalView.prototype.events
 			);
@@ -80,9 +81,10 @@ define([
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					lang   : app.lang,
-					service: self.model,
-					loader : loader
+					lang           : app.lang,
+					service        : self.model,
+					loader         : loader,
+					hasModuleAchat : !_.isUndefined(app.menus.openstcachatstock)
 				});
 
 
@@ -150,6 +152,13 @@ define([
 				.always(function () {
 					$(self.el).find('button[type=submit]').button('reset');
 				});
+		},
+
+
+
+		preventDefault: function(e) {
+			e.preventDefault();
+			e.stopPropagation();
 		}
 
 	});
