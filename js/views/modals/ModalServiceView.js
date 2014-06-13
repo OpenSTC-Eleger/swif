@@ -35,7 +35,8 @@ define([
 		events: function(){
 			return _.defaults({
 				'submit #formSaveService'     : 'saveService',
-				'click li.disabled a'         : 'preventDefault'
+				'click li.disabled a'         : 'preventDefault',
+				'click #selectValidator li a' : 'changeToValidate'
 			},
 				GenericModalView.prototype.events
 			);
@@ -98,6 +99,9 @@ define([
 					app.views.advancedSelectBoxServiceParentView = new AdvancedSelectBoxView({el: $('#serviceParentService'), url: ClaimersServicesCollection.prototype.url });
 					app.views.advancedSelectBoxServiceParentView.render();
 
+					app.views.advancedSelectBoxServiceElectedView = new AdvancedSelectBoxView({el: $('#serviceElected'), url: OfficersCollection.prototype.url });
+					app.views.advancedSelectBoxServiceElectedView.render();
+
 					$('.make-switch').bootstrapSwitch();
 				}
 
@@ -152,6 +156,15 @@ define([
 				.always(function () {
 					$(self.el).find('button[type=submit]').button('reset');
 				});
+		},
+
+
+
+		changeToValidate: function(e){
+			e.preventDefault();
+
+			console.log("coucou");
+
 		},
 
 

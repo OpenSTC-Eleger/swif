@@ -81,6 +81,7 @@
     "function"              : "Fonction",
     "contact"               : "contact",
     "manager"               : "chef de service",
+    "managerReferent"       : "chef de service référent",
     "width"                 : "largeur",
     "length"                : "longueur",
     "bookings"              : "réservations",
@@ -267,7 +268,8 @@
     "zenMode"                               : "plein écran",
     "period"                                : "Période",
     "newPeriod"                             : "Nouvelle période",
-    "refentElected"                         : "Élu référent",
+    "referentPeoples"                       : "Personnes référentes",
+    "elected"                               : "Élu",
     "buyingTreshold"                        : "Seuil d'achat",
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
@@ -498,6 +500,7 @@
     "viewsTitles": {
         "login"                     : "Connexion",
         "about"                     : "À propos d'OpenSTC",
+        "moduleSettings"            : "Paramètres des modules",
         "requestsList"              : "Demandes d'interventions",
         "requestDetail"             : "Détail de la demande",
         "interventionDetail"        : "Détail de l'intervention",
