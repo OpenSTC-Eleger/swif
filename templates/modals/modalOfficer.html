@@ -10,175 +10,205 @@
 			<h4 class="modal-title">
 				<i class="fa fa-edit"></i>&nbsp;
 				<% if(_.isNull(officer.getId())){ %>
-					<%= _.capitalize(lang.viewsTitles.newOfficer) %>
+					<%= _.capitalize(lang.viewsTitles.newPeople) %>
 				<% } else{ %>
-					<%= _.capitalize(lang.viewsTitles.editOfficer) %>
+					<%= _.capitalize(lang.viewsTitles.editPeople) %>
 				<% } %>
 
-
-				<% if(!_.isUndefined(loader)) { %>
-					<span class="modal-loader progress progress-striped active">
-						<span class="bar"></span>
-					</span>
-				<% } %>
 			</h4>
 		</div>
 
 		<div class="modal-body">
 
-			<% if(_.isUndefined(loader)) { %>
-			<form id="formSaveOfficer" action="#" class="form-horizontal" role="form">
-
-				<fieldset>
-					<legend><%= _.capitalize(lang.about) %></legend>
-
-					<!-- Officer firstname -->
-					<div class="form-group">
-						<label for="officerFirstname" class="control-label col-sm-3"><%= _.capitalize(lang.firstname) %>:</label>
-
-						<div class="col-sm-9">
-							<input type="text" id="officerFirstname" class="form-control" required value="<%= (_.isNull(officer.getId()) ? '' : officer.getFirstname())%>">
-						</div>
-					</div>
-
-					<!-- Officer name -->
-					<div class="form-group">
-						<label for="officerName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
-
-						<div class="col-sm-9">
-							<input type="text" id="officerName" class="form-control" required value="<%= (_.isNull(officer.getId()) ? '' : officer.getName()) %>">
-						</div>
-					</div>
-
-					<!-- Officer email -->
-					<div class="form-group">
-						<label for="officerEmail" class="control-label col-sm-3"><%= _.capitalize(lang.email) %>:</label>
-
-						<div class="col-sm-9">
-							<input type="email" id="officerEmail" class="form-control" value="<%= (_.isNull(officer.getId()) ? '' : officer.getEmail()) %>">
-						</div>
-					</div>
+			<% if(!_.isUndefined(loader)) { %>
+				<span class="modal-loader progress progress-striped active">
+					<span class="bar"></span>
+				</span>
+			<% } else { %>
 
 
-										<!-- Officer Service -->
-					<div class="form-group" >
-						<label for="officerService" class="control-label col-sm-3"><%= _.capitalize(lang.membershipService) %>:</label>
+				<!-- Tabs -->
+				<ul class="nav nav-tabs nav-justified">
+					<li class="active"><a href="#" data-toggle="tab" data-target="#sectionAboutOfficer"><%= _.capitalize(lang.about) %></a></li>
+					<li><a href="#" data-toggle="tab" data-target="#sectionOfficerSettings"><%= lang.settings %></a></li>
+				</ul>
 
-						<div class="col-sm-9">
-							<input id="officerService" class="select2" required data-placeholder="<%= lang.actions.selectAService %>"
+				<form id="formSaveOfficer" action="#" class="form-horizontal" role="form">
+					<div class="tab-content">
 
-							<% if(!_.isNull(officer.getId())){
-								if(!_.isUndefined(officer.getService('id'))) { %>
-								data-selected-value='<%= JSON.stringify(officer.getService('json')) %>'
-							<% }
-							}else{
-								var json = {id: service.getId(), name: service.getName()}
-							%>
-								data-selected-value='<%= JSON.stringify(json) %>'
+
+						<!-- About the officer -->
+						<fieldset id="sectionAboutOfficer" class="tab-pane fade in active">
+
+							<!-- Officer firstname -->
+							<div class="form-group">
+								<label for="officerFirstname" class="control-label col-sm-3"><%= _.capitalize(lang.firstname) %>:</label>
+
+								<div class="col-sm-9">
+									<input type="text" id="officerFirstname" class="form-control" required value="<%= (_.isNull(officer.getId()) ? '' : officer.getFirstname())%>">
+								</div>
+							</div>
+
+							<!-- Officer name -->
+							<div class="form-group">
+								<label for="officerName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
+
+								<div class="col-sm-9">
+									<input type="text" id="officerName" class="form-control" required value="<%= (_.isNull(officer.getId()) ? '' : officer.getName()) %>">
+								</div>
+							</div>
+
+							<!-- Officer email -->
+							<div class="form-group">
+								<label for="officerEmail" class="control-label col-sm-3"><%= _.capitalize(lang.email) %>:</label>
+
+								<div class="col-sm-9">
+									<input type="email" id="officerEmail" class="form-control" value="<%= (_.isNull(officer.getId()) ? '' : officer.getEmail()) %>">
+								</div>
+							</div>
+
+
+							<!-- Officer or Elected Function -->
+							<div class="form-group">
+								<label for="officerFunction" class="control-label col-sm-3"><%= _.capitalize(lang.status) %>:</label>
+								<div class="col-sm-9">
+									<input type="checkbox" class="make-switch" id="officerFunction" data-on-text="Agent" data-off-text="Elu" data-on-color="default" data-off-color="default" tabindex="0" checked>
+								</div>
+							</div>
+
+
+							<% if(_.isNull(officer.getId())) {%>
+							<fieldset>
+
+								<legend><%= _.capitalize(lang.connection) %></legend>
+
+								<!-- Officer login -->
+								<div class="form-group">
+									<label for="officerLogin" class="control-label col-sm-3"><%= _.capitalize(lang.login) %>:</label>
+
+									<div class="col-sm-9">
+										<input type="text" id="officerLogin" class="form-control" required>
+									</div>
+								</div>
+
+								<!-- Officer password -->
+								<div class="form-group">
+									<label for="officerPassword" class="control-label col-sm-3"><%= _.capitalize(lang.password) %>:</label>
+
+									<div class="col-sm-9">
+										<input type="password" id="officerPassword" class="form-control" pattern=".{6,}" required>
+										<span class="help-block"><%= lang.infoMessages.sixCharMin %></span>
+									</div>
+								</div>
+
+							</fieldset>
 							<% } %>
 
-							>
-						</div>
-					</div>
+						</fieldset><!-- /Section about officer -->
 
-					<!-- Officer Other Service -->
-					<div class="form-group">
-						<label for="officerOtherServices" class="control-label col-sm-3"><%= _.capitalize(lang.otherServices) %>:</label>
 
-						<div class="col-sm-9">
-							<input id="officerOtherServices" class="select2" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="true"
+						<!-- Section about officer setting -->
+						<fieldset id="sectionOfficerSettings" class="tab-pane fade">
 
-							<% if(!_.isNull(officer.getId())){
-								if(!_.isEmpty(officer.getServices())) { %>
-									data-selected-value='<%= JSON.stringify(officer.getServices('json')) %>'
-							<% } } %>
+							<!-- Officer Service -->
+							<div class="form-group" >
+								<label for="officerService" class="control-label col-sm-3"><%= _.capitalize(lang.membershipService) %>:</label>
 
-							>
-						</div>
-					</div>
+								<div class="col-sm-9">
+									<input id="officerService" class="select2" required data-placeholder="<%= lang.actions.selectAService %>"
 
-					<!-- Officer time cost -->
-					<div class="form-group">
-						<label for="officerCost" class="control-label col-sm-3"><%= _.capitalize(lang.hourPrice) %>:</label>
-						<div class="col-sm-4">
-							<div class="input-group">
-								<input  id="officerCost"type="number" step="any" min="0" class="form-control" value="<%= officer.getCost() %>">
-								<span class="input-group-addon"><i class="fa fa-eur"></i></span>
+									<% if(!_.isNull(officer.getId())){
+										if(!_.isUndefined(officer.getService('id'))) { %>
+										data-selected-value='<%= JSON.stringify(officer.getService('json')) %>'
+									<% }
+									}else{
+										var json = {id: service.getId(), name: service.getName()}
+									%>
+										data-selected-value='<%= JSON.stringify(json) %>'
+									<% } %>
+
+									>
+								</div>
 							</div>
-						</div>
-					</div>
 
-				</fieldset>
+							<!-- Officer Other Service -->
+							<div class="form-group">
+								<label for="officerOtherServices" class="control-label col-sm-3"><%= _.capitalize(lang.otherServices) %>:</label>
 
-				<fieldset>
-					<legend><%= _.capitalize(lang.viewsTitles.roleManagement) %></legend>
+								<div class="col-sm-9">
+									<input id="officerOtherServices" class="select2" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="true"
 
-					<!-- Officer Group -->
-					<div class="form-group hide officerForm">
+									<% if(!_.isNull(officer.getId())){
+										if(!_.isEmpty(officer.getServices())) { %>
+											data-selected-value='<%= JSON.stringify(officer.getServices('json')) %>'
+									<% } } %>
 
-						<label for="officerGroup" class="control-label col-sm-3"><%= _.capitalize(lang.groupInter) %>:</label>
+									>
+								</div>
+							</div>
 
-						<div class="col-sm-9">
-							<input id="officerGroup" class="select2" data-placeholder="<%= lang.actions.selectAGroup %>"
 
-							<% if(!_.isNull(officer.getId())){
-								if(!_.isUndefined(officer.getGroupSTC('id'))) { %>
-								data-selected-value='<%= JSON.stringify(officer.getGroupSTC('json')) %>'
-							<% } } %>
 
-							>
-						</div>
+							<!-- Only display if the fonction of the user is an officer -->
+							<section class="officer-section">
 
-					</div>
+								<!-- Officer time cost -->
+								<div class="form-group">
+									<label for="officerCost" class="control-label col-sm-3"><%= _.capitalize(lang.hourPrice) %>:</label>
+									<div class="col-sm-4">
+										<div class="input-group">
+											<input  id="officerCost"type="number" step="any" min="0" class="form-control" value="<%= officer.getCost() %>">
+											<span class="input-group-addon"><i class="fa fa-eur"></i></span>
+										</div>
+									</div>
+								</div>
 
-					<div class="form-group hide resaForm">
-						<label for="resaGroup" class="control-label col-sm-3"><%= _.capitalize(lang.groupResa) %>:</label>
+							</section>
 
-						<div class="col-sm-9">
-							<input id="resaGroup" class="select2" data-placeholder="<%= lang.actions.selectAGroup %>"
 
-							<% if(!_.isNull(officer.getId())){
-								if(!_.isUndefined(officer.getGroupResa('id'))) { %>
-								data-selected-value='<%= JSON.stringify(officer.getGroupResa('json')) %>'
-							<% } } %>
+							<fieldset>
+								<legend><%= _.capitalize(lang.viewsTitles.roleManagement) %></legend>
 
-							>
-						</div>
+								<!-- Officer Group -->
+								<div class="form-group hide officerForm">
 
-					</div>
+									<label for="officerGroup" class="control-label col-sm-3"><%= _.capitalize(lang.groupInter) %>:</label>
 
-				<fieldset>
+									<div class="col-sm-9">
+										<input id="officerGroup" class="select2" data-placeholder="<%= lang.actions.selectAGroup %>"
 
-				<% if(_.isNull(officer.getId())) {%>
-				<fieldset>
+										<% if(!_.isNull(officer.getId())){
+											if(!_.isUndefined(officer.getGroupSTC('id'))) { %>
+											data-selected-value='<%= JSON.stringify(officer.getGroupSTC('json')) %>'
+										<% } } %>
 
-					<legend><%= _.capitalize(lang.connection) %></legend>
+										>
+									</div>
 
-					<!-- Officer login -->
-					<div class="form-group">
-						<label for="officerLogin" class="control-label col-sm-3"><%= _.capitalize(lang.login) %>:</label>
+								</div>
 
-						<div class="col-sm-9">
-							<input type="text" id="officerLogin" class="form-control" required>
-						</div>
-					</div>
+								<div class="form-group hide resaForm">
+									<label for="resaGroup" class="control-label col-sm-3"><%= _.capitalize(lang.groupResa) %>:</label>
 
-					<!-- Officer password -->
-					<div class="form-group">
-						<label for="officerPassword" class="control-label col-sm-3"><%= _.capitalize(lang.password) %>:</label>
+									<div class="col-sm-9">
+										<input id="resaGroup" class="select2" data-placeholder="<%= lang.actions.selectAGroup %>"
 
-						<div class="col-sm-9">
-							<input type="password" id="officerPassword" class="form-control" pattern=".{6,}" required>
-							<span class="help-block"><%= lang.infoMessages.sixCharMin %></span>
-						</div>
-					</div>
+										<% if(!_.isNull(officer.getId())){
+											if(!_.isUndefined(officer.getGroupResa('id'))) { %>
+											data-selected-value='<%= JSON.stringify(officer.getGroupResa('json')) %>'
+										<% } } %>
 
-				</fieldset>
+										>
+									</div>
+
+								</div>
+
+						</fieldset> <!-- /Section about officer setting -->
+
+					<div> <!-- /Tab content -->
+				</form>
 				<% } %>
-
-			</form>
-			<% } %>
-		</div>
+		</div> <!-- /Modal body -->
 
 		<div class="modal-footer">
 			<button type="submit" form="formSaveOfficer" class="btn btn-primary"

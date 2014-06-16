@@ -1,5 +1,5 @@
 <td colspan="5" class="nestedTD">
-	
+
 	<table class="table table-striped table-condensed table-hover">
 		<thead>
 		<tr>
@@ -18,12 +18,12 @@
 	<!-- No Officer to display -->
 	<% if(_.isEmpty(service.getUsersId())) { %>
 	<div class="alert alert-info">
-		<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noOfficer %>.
+		<i class="fa fa-info-circle fa-lg"></i> &nbsp;<%= lang.infoMessages.noPeople %>.
 	</div>
 	<% } %>
 
 	<button class="btn btn-primary btn-sm modalCreateOfficer">
-		<i class="fa fa-plus fa-fw"></i>&nbsp; <%= _.capitalize(lang.actions.addOfficer) %>
+		<i class="fa fa-plus fa-fw"></i>&nbsp; <%= _.capitalize(lang.actions.addPeople) %>
 	</button>
 
 

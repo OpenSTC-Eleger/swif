@@ -33,7 +33,8 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'submit #formSaveOfficer'   : 'saveOfficer'
+				'submit #formSaveOfficer'                       : 'saveOfficer',
+				'switchChange.bootstrapSwitch #officerFunction' : 'switchOfficerFunction',
 			},
 				GenericModalView.prototype.events
 			);
@@ -49,7 +50,7 @@ define([
 			var self = this;
 
 			this.modal = $(this.el);
-			
+
 			this.hasSTCmodule = !_.isUndefined(app.menus.openstc);
 			this.hasRESAmodule = !_.isUndefined(app.menus.openresa);
 
@@ -94,7 +95,7 @@ define([
 				self.modal.html(template);
 
 				if(!loader){
-					
+
 					// Advance Select List View //
 					if(self.hasSTCmodule) {
 						app.views.advancedSelectBoxOfficerGroupView = new AdvancedSelectBoxView({el: $('#officerGroup'), url: StcGroupsCollection.prototype.url });
@@ -119,6 +120,9 @@ define([
 
 					app.views.advancedSelectBoxOfficerServicesView = new AdvancedSelectBoxView({el: $('#officerOtherServices'), url: ClaimersServicesCollection.prototype.url });
 					app.views.advancedSelectBoxOfficerServicesView.render();
+
+
+					$('.make-switch').bootstrapSwitch();
 				}
 
 				self.modal.modal('show');
@@ -146,7 +150,7 @@ define([
 					groups.push(stcGroup);
 				}
 			}
-			
+
 			if(this.hasRESAmodule){
 				var resaGroup = app.views.advancedSelectBoxResaGroupView.getSelectedItem();
 				if(!_.isBlank(resaGroup)){
@@ -197,6 +201,21 @@ define([
 				.always(function () {
 					$(self.el).find('button[type=submit]').button('reset');
 				});
+		},
+
+
+
+		/** When the function of the user is changed
+		*/
+		switchOfficerFunction: function(){
+
+			if(!$('#officerFunction').bootstrapSwitch('state')){
+				$(this.el).find('.officer-section').slideUp();
+			}
+			else{
+				$(this.el).find('.officer-section').slideDown();
+			}
+
 		}
 
 	});

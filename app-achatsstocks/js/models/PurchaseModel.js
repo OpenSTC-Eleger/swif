@@ -2,24 +2,24 @@ define([
 	'app',
 	'appHelpers',
 	'genericModel',
-	
+
 
 
 ], function(app, AppHelpers, GenericModel){
 
 	'use strict';
-	
+
 	/******************************************
 	* Booking Model
 	*/
 	return GenericModel.extend({
-		
+
 		urlRoot: '/api/open_achats_stock/purchases',
 
 		fields: ['id', 'name', 'description', 'date_order', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'account_analytic_id', 'order_line', 'amount_untaxed', 'amount_tax', 'shipped_rate', 'supplier_mail_sent'],
-		
+
 		readonlyFields: ['id', 'name', 'date_order', 'amount_total', 'state', 'validation', 'actions', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'amount_untaxed', 'amount_tax', 'reception_progress'],
-		
+
 		searchable_fields: [
 			{
 				key  : 'id',
@@ -46,7 +46,7 @@ define([
 					break;
 				}
 			}
-			
+
 			return ret;
 		},
 		/**
@@ -57,15 +57,15 @@ define([
 			var mainAction = this.getUserMainAction();
 			return {mainAction: mainAction, otherActions: _.without(actions, mainAction)};
 		},
-		
+
 		getId: function(){
 			return this.get('id');
 		},
-		
+
 		getName: function(){
 			return this.get('name');
 		},
-		
+
 		getInformations: function(){
 			var ret = {};
 			ret.name = this.getAttribute('name','');
@@ -81,7 +81,7 @@ define([
 			ret.infos = {key: app.lang.note, value: value};
 			return ret;
 		},
-		
+
 		/**
 		 * @param field: field name to parse in html
 		 * @return: String containg html to be displayed in tooltips
@@ -101,14 +101,14 @@ define([
 			ret += '</ul>';
 			return ret;
 		},
-		
+
 		addLineToRemove: function(model){
 			if(!model.isNew()){
 				this.linesToRemove.push([2,model.get('id')]);
 			}
 		},
 
-		
+
 		saveToBackend: function(){
 			var self = this;
 			var vals = this.getSaveVals();
@@ -122,30 +122,30 @@ define([
 			});
 			return ret;
 		},
-		
+
 		/** Model Initialization
 		*/
 		initialize: function(){
 			this.linesToRemove = [];
 		},
-	
-	
+
+
 	}, {
 		// Request State Initialization //
 		status : {
-			
+
 			draft: {
 				key					: 'draft',
 				color				: 'warning',
 				translation			: app.lang.draft,
 			},
-			
+
 			wait: {
 				key					: 'wait',
 				color				: 'info',
 				translation			: app.lang.wait
 			},
-			
+
 			approved: {
 				key					: 'approved',
 				color				: 'success',
@@ -156,9 +156,9 @@ define([
 				key					: 'done',
 				color				: 'default',
 				translation			: app.lang.purchasePaid
-			},			
+			},
 		},
-		
+
 			// Actions of the requests //
 		actions : {
 			delete: {
@@ -173,56 +173,56 @@ define([
 				icon				: 'fa-check',
 				translation			: app.lang.actions.check_dst
 			},
-			
+
 			check_elu: {
 				key					: 'check_elu',
 				color				: 'success',
 				icon				: 'fa-check',
 				translation			: app.lang.actions.check_elu
 			},
-			
+
 			cancel: {
 				key					: 'cancel',
 				color				: 'danger',
 				icon				: 'fa-ban',
 				translation			: app.lang.actions.cancel
 			},
-			
+
 			refuse: {
 				key					: 'refuse',
 				color				: 'danger',
 				icon				: 'fa-times',
 				translation			: app.lang.actions.refuse
 			},
-			
+
 			done: {
 				key					: 'done',
 				color				: 'default',
 				icon				: 'fa-thumbs-o-up',
 				translation			: app.lang.actions.endPurchase
 			},
-			
+
 			send_mail: {
 				key					: 'send_mail',
 				color				: 'default',
 				icon				: 'fa-envelope-o',
 				translation			: app.lang.actions.purchaseSent
 			},
-			
+
 			send_mail_again: {
 				key					: 'send_mail_again',
 				color				: 'default',
 				icon				: 'fa-envelope-o',
 				translation			: app.lang.actions.sendPurchaseAgain
 			},
-			
+
 			receive: {
 				key					: 'receive',
 				color				: 'default',
 				icon				: 'fa-truck',
 				translation			: app.lang.actions.receiveProducts
 			}
-			
+
 		}
 	});
 });
