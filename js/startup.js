@@ -82,6 +82,7 @@ requirejs.config({
 		filtersCollection                        : 'collections/FiltersCollection',
 		categoriesConsumablesCollection          : 'collections/CategoriesConsumablesCollection',
 		consumablesCollection                    : 'collections/ConsumablesCollection',
+		electedMembersCollection                 : 'collections/ElectedMembersCollection',
 
 
 		/* #############
@@ -103,6 +104,7 @@ requirejs.config({
 		genericRecurrenceModel	: 'models/GenericRecurrenceModel',
 		categoryConsumableModel : 'models/CategoryConsumableModel',
 		consumableModel         : 'models/ConsumableModel',
+		electedMemberModel      : 'models/ElectedMemberModel',
 
 
 		/* #############
