@@ -124,13 +124,13 @@ define([
 			var returnVal;
 
 			switch(this.getState()){
-				case BudgetModel.state.cancel.key:
+				case BudgetModel.status.cancel.key:
 					returnVal = this.get('cancel_note');
 					break;
-				case BudgetModel.state.validate.key:
+				case BudgetModel.status.validate.key:
 					returnVal = this.get('validate_note');
 					break;
-				case BudgetModel.state.done.key:
+				case BudgetModel.status.done.key:
 					returnVal = this.get('done_note');
 					break;
 			}
@@ -167,7 +167,7 @@ define([
 	}, {
 
 		// Status of the requests //
-		state : {
+		status : {
 			confirm: { // en attente
 				key        : 'confirm',
 				color      : 'info',
@@ -176,6 +176,7 @@ define([
 			validate: {
 				key        : 'validate',
 				color      : 'success',
+				translation: app.lang.confirm
 			},
 			done: { // Clôturer
 				key        : 'done',

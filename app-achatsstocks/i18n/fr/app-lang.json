@@ -70,6 +70,7 @@
 		"modalBudget": {
 			"cancel"				: "Annulation du budget",
 			"validate"              : "Validation du budget",
+			"done"                  : "Clôturer le budget",
 			"renew"                 : "Reconduction du budget"
 		},
 

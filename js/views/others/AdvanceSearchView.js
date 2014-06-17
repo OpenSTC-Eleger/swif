@@ -38,6 +38,7 @@ define([
 		/** View Initialization
 		*/
 		initialize: function(options){
+			this.options = options;
 			this.collection = options.collection;
 			this.view = options.view;
 		},
@@ -60,7 +61,7 @@ define([
 
 				$(self.el).html(template);
 
-				self.fieldContainerView = new FieldContainerView({ searchableFields: self.collection.advanced_searchable_fields, activeSearch: self.activeSearch });
+				self.fieldContainerView = new FieldContainerView({ searchableFields: self.collection.advanced_searchable_fields, activeSearch: self.activeSearch, modelStates: self.options.modelStates });
 			});
 
 			$(this.el).hide().fadeIn();

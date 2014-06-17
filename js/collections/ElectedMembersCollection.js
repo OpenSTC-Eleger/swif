@@ -5,28 +5,26 @@
  */
 
 define([
-	'genericCollection',
-	'officerModel'
+	'electedMemberModel',
+	'officersCollection'
 
-], function(GenericCollection, OfficerModel){
+], function(ElectedMemberModel, OfficersCollection){
 
 	'use strict';
 
 
 	/******************************************
-	* Officers Collection
+	* Elected Members Collection
 	*/
-	var OfficersCollection = GenericCollection.extend({
+	var ElectedMembersCollection = OfficersCollection.extend({
 
-		key         : 'officer',
+		key         : 'elected_member',
 
-		model       : OfficerModel,
+		model       : ElectedMemberModel,
 
-		url         : '/api/open_object/users',
+		url         : '/api/open_object/elected_members',
 
 		fields      : ['complete_name', 'contact_id', 'date', 'firstname', 'current_group', 'openresa_group', 'id', 'isDST', 'isManager', 'isResaManager', 'lastname', 'login', 'name', 'phone', 'service_id', 'service_ids', 'service_names', 'user_email', 'actions', 'cost'],
-
-		default_sort: { by: 'complete_name', order: 'ASC' },
 
 		logo        : 'fa-user',
 
@@ -34,11 +32,11 @@ define([
 		/** Collection Initialization
 		*/
 		initialize: function () {
-			//console.log('Officers collection Initialization');
+			//console.log('Elected members collection Initialization');
 		}
 
 	});
 
-	return OfficersCollection;
+	return ElectedMembersCollection;
 
 });

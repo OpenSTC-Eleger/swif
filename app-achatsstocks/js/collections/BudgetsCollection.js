@@ -24,7 +24,7 @@ define([
 
 		url          : '/api/open_achats_stock/budgets',
 
-		fields       : ['id', 'name', 'service_id', 'planned_amount', 'openstc_practical_amount', 'date_from', 'date_to', 'state', 'actions', 'validate_note', 'done_note', 'cancel_note', 'new_name', 'new_date_from', 'new_date_to'],
+		fields       : ['id', 'name', 'service_id', 'planned_amount', 'openstc_practical_amount', 'date_from', 'date_to', 'state', 'actions', 'validate_note', 'done_note', 'cancel_note', 'new_name', 'new_date_from', 'new_date_to', 'new_service_id'],
 
 		default_sort : { by: 'date_from', order: 'DESC' },
 
@@ -33,7 +33,8 @@ define([
 			{ key: 'openstc_practical_amount' },
 			{ key: 'service_id' },
 			{ key: 'date_from' },
-			{ key: 'date_to' }
+			{ key: 'date_to' },
+			{ key: 'state' }
 		],
 
 
@@ -48,6 +49,7 @@ define([
 			this.advanced_searchable_fields[2].label = app.lang.service;
 			this.advanced_searchable_fields[3].label = app.lang.dateStart;
 			this.advanced_searchable_fields[4].label = app.lang.dateEnd;
+			this.advanced_searchable_fields[5].label = app.lang.state;
 		}
 
 	});

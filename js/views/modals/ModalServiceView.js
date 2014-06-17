@@ -34,7 +34,9 @@ define([
 		// The DOM events //
 		events: function(){
 			return _.defaults({
-				'submit #formSaveService'     : 'saveService'
+				'submit #formSaveService'     : 'saveService',
+				'click li.disabled a'         : 'preventDefault',
+				'click #selectValidator li a' : 'changeToValidate'
 			},
 				GenericModalView.prototype.events
 			);
@@ -80,9 +82,10 @@ define([
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					lang   : app.lang,
-					service: self.model,
-					loader : loader
+					lang           : app.lang,
+					service        : self.model,
+					loader         : loader,
+					hasModuleAchat : !_.isUndefined(app.menus.openstcachatstock)
 				});
 
 
@@ -95,6 +98,9 @@ define([
 
 					app.views.advancedSelectBoxServiceParentView = new AdvancedSelectBoxView({el: $('#serviceParentService'), url: ClaimersServicesCollection.prototype.url });
 					app.views.advancedSelectBoxServiceParentView.render();
+
+					app.views.advancedSelectBoxServiceElectedView = new AdvancedSelectBoxView({el: $('#serviceElected'), url: OfficersCollection.prototype.url });
+					app.views.advancedSelectBoxServiceElectedView.render();
 
 					$('.make-switch').bootstrapSwitch();
 				}
@@ -150,6 +156,22 @@ define([
 				.always(function () {
 					$(self.el).find('button[type=submit]').button('reset');
 				});
+		},
+
+
+
+		changeToValidate: function(e){
+			e.preventDefault();
+
+			console.log("coucou");
+
+		},
+
+
+
+		preventDefault: function(e) {
+			e.preventDefault();
+			e.stopPropagation();
 		}
 
 	});

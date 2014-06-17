@@ -26,10 +26,10 @@ define([
 		filters    : [],
 
 		//Static variables uses to build url
-		URL_FILTER_CTXT    : '/filter/',
+		URL_FILTER_CTXT  : '/filter/',
 		URL_SORT_CTXT    : '/sort/',
 		URL_PAGE_CTXT    : '/page',
-		SLASH_CHAR	: '/',
+		SLASH_CHAR       : '/',
 
 		// The DOM events //
 		events: {
@@ -114,9 +114,9 @@ define([
 		prepareUrls: function(){
 			this.urlLeftPart = Backbone.history.fragment;
 			this.urlRightPart = null;
-			
+
 			if( _.str.include(this.urlLeftPart, this.URL_FILTER_CTXT) ) {
-				//url contains filter 
+				//url contains filter
 				this.urlArray = _.words(this.urlLeftPart, this.URL_FILTER_CTXT);
 				this.urlLeftPart = this.urlArray[0];
 				this.urlRightPart = _(this.urlArray[1]).strRight(this.SLASH_CHAR);

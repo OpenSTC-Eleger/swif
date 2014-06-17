@@ -26,10 +26,13 @@ define([
 
 		tagName      : 'tr',
 
-		templateHTML               : '/templates/items/itemBudget.html',
-		templateHTMLCancelBudget   : '/templates/modals/cancelBudget.html',
-		templateHTMLValidateBudget : '/templates/modals/validateBudget.html',
-		templateHTMLRenewBudget    : '/templates/modals/renewBudget.html',
+		templateHTML : '/templates/items/itemBudget.html',
+
+		templateHTMLCancelBudget    : '/templates/modals/cancelBudget.html',
+		templateHTMLValidateBudget  : '/templates/modals/validateBudget.html',
+		templateHTMLTerminateBudget : '/templates/modals/terminateBudget.html',
+		templateHTMLRenewBudget     : '/templates/modals/renewBudget.html',
+
 
 		className    : 'row-item',
 
@@ -109,7 +112,7 @@ define([
 				var template = _.template(templateData, {
 					lang        : app.lang,
 					budget      : self.model,
-					budgetState : BudgetModel.state,
+					budgetState : BudgetModel.status,
 					budgetAction: BudgetModel.actions
 				});
 
@@ -219,17 +222,16 @@ define([
 		displayModalRenewBudget: function(e){
 			e.preventDefault();
 
-			var self = this;
-
 			var modal = new GenericActionModalView({
 				el			: '#modalBudgetContainer',
 				model		: this.model,
-				action		: 'renew',
+				action		: BudgetModel.actions.renew.key,
 				langAction	: app.lang.achatsstocks.modalBudget,
-				templateForm: app.menus.openstcachatstock + this.templateHTMLRenewBudget
+				templateForm: app.menus.openstcachatstock + this.templateHTMLRenewBudget,
+
 			});
 
-			modal.off().on('sendForm', function(){ self.collapseAccordion(); });
+			modal.off().on('sendForm', function(){ Backbone.history.loadUrl(); });
 		},
 
 
@@ -238,7 +240,17 @@ define([
 		displayModalDoneBudget: function(e){
 			e.preventDefault();
 
-			console.log('Done');
+			var self = this;
+
+			var modal = new GenericActionModalView({
+				el			: '#modalBudgetContainer',
+				model		: this.model,
+				action		: BudgetModel.actions.done.key,
+				langAction	: app.lang.achatsstocks.modalBudget,
+				templateForm: app.menus.openstcachatstock + this.templateHTMLTerminateBudget
+			});
+
+			modal.off().on('sendForm', function(){ self.collapseAccordion(); });
 		},
 
 
@@ -250,11 +262,11 @@ define([
 			var self = this;
 
 			var modal = new GenericActionModalView({
-				el			:'#modalBudgetContainer',
-				model		:this.model,
-				action		:'validate',
-				langAction	:app.lang.achatsstocks.modalBudget,
-				templateForm:app.menus.openstcachatstock + this.templateHTMLValidateBudget
+				el			: '#modalBudgetContainer',
+				model		: this.model,
+				action		: BudgetModel.actions.validate.key,
+				langAction	: app.lang.achatsstocks.modalBudget,
+				templateForm: app.menus.openstcachatstock + this.templateHTMLValidateBudget
 			});
 
 			modal.off().on('sendForm', function(){ self.collapseAccordion(); });
@@ -268,11 +280,11 @@ define([
 			var self = this;
 
 			var modal = new GenericActionModalView({
-				el			:'#modalBudgetContainer',
-				model		:this.model,
-				action		:'cancel',
-				langAction	:app.lang.achatsstocks.modalBudget,
-				templateForm:app.menus.openstcachatstock + this.templateHTMLCancelBudget
+				el			: '#modalBudgetContainer',
+				model		: this.model,
+				action		: BudgetModel.actions.cancel.key,
+				langAction	: app.lang.achatsstocks.modalBudget,
+				templateForm: app.menus.openstcachatstock + this.templateHTMLCancelBudget
 			});
 
 			modal.off().on('sendForm', function(){ self.collapseAccordion(); });

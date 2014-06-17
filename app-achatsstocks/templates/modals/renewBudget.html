@@ -3,20 +3,12 @@
 	<label for="new_name" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 
 	<div class="col-sm-9">
-		<input type="text" id="new_name" class="form-control" value="<%= model.getName() %>" required>
+		<input type="text" id="new_name" class="form-control field-element" value="<%= model.getName() %>" required>
 	</div>
 </div>
 
 <!-- Budget service	-->
-<div class="form-group">
-	<label for="budgetService" class="control-label col-sm-3"><%= _.capitalize(lang.service) %>:</label>
-
-	<div class="col-sm-9">
-		<input id="service_id" class="select2 field-element" data-placeholder="<%= lang.actions.selectAService %>" data-url="" data-minimum-input-length="2" required
-			data-selected-value='<%= JSON.stringify(model.getService('json')) %>'
-		>
-	</div>
-</div>
+<div class="form-group field" data-field-placeholder="<%= lang.actions.selectAService%>" data-field-label="<%= lang.service %>" data-field-name="new_service_id"></div>
 
 
 <!-- Budget date start -->

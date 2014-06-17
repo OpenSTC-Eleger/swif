@@ -33,6 +33,7 @@ define([
 		initialize: function(options){
 			this.searchableFields = options.searchableFields;
 			this.activeSearch = options.activeSearch;
+			this.modelStates = options.modelStates;
 
 			this.render();
 		},
@@ -45,8 +46,6 @@ define([
 			var self = this;
 
 			this.components = [];
-
-
 
 			_.each(this.searchableFields, function(field){
 
@@ -76,7 +75,6 @@ define([
 					case 'integer':
 					case 'float':
 						fieldView = new NumberFieldView({ field: field });
-						console.log(field);
 						break;
 
 					case 'date':
@@ -91,9 +89,18 @@ define([
 					case 'selection':
 						var data = [];
 						_.each(field.selection, function(val) {
-							var text = app.lang[val[0]];
-							if( !_.isBlank(text) )
-							{
+							
+							var text;
+							if(field.key == 'state' && !_.isUndefined(self.modelStates)) {
+								if(!_.isUndefined(self.modelStates[val[0]])){
+									text = self.modelStates[val[0]].translation;
+								}
+							}
+							else{
+								text = app.lang[val[0]];
+							}
+							
+							if( !_.isBlank(text) ) {
 								data.push({ id: val[0], text: _.capitalize(text) });
 							}
 						});

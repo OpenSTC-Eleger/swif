@@ -83,7 +83,7 @@ define([
 					lang        : app.lang,
 					budgetLine  : self.model,
 					budget      : self.options.budget,
-					budgetState : BudgetModel.state
+					budgetState : BudgetModel.status
 				});
 
 				$(self.el).html(template);
