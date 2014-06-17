@@ -43,7 +43,7 @@ data-content="<%= purchase.printAttachInfos()%> <i><%= _.capitalize(lang.achatss
 </div>
 
 <% } else{ %>
-<span class="label label-<%= stateItem.color %> text-center" data-toggle="tooltip" data-original-title=""><%= stateItem.translation %></span>
+<span class="label label-<%= stateItem.color %> text-center" data-toggle="popover" data-content="<%= purchase.printStateTooltip() %>"><%= stateItem.translation %></span>
 <% } %>
 
-<td class="button-actions" data-actions="check_dst,check_elu,done,refuse,send_mail,receive,send_mail_again" data-main-action="<%= mainAction%>"></td>
+<td class="button-actions" data-actions="confirm,refuse,done,send_mail,receive,send_mail_again" data-main-action="<%= mainAction%>"></td>

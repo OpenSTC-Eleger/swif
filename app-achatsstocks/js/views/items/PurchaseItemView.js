@@ -32,6 +32,8 @@ define([
 
 		templateHTML : '/templates/items/itemPurchase.html',
 		templateSendMailHTML: '/templates/modals/modalSendPurchase.html',
+		templateValidateOrRefuseHTML: '/templates/modals/modalValidatePurchase.html',
+		
 		
 		classModel	: PurchaseModel,
 
@@ -66,7 +68,7 @@ define([
 
 			this.render();
 			AppHelpers.highlight($(this.el));
-			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.patrimoine.infoMessages.contractTypesUpdateOk);
+			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.achatsstocks.infoMessages.purchaseUpdateOk);
 		},
 
 
@@ -136,6 +138,13 @@ define([
 			case 'send_mail_again':
 				templateForm = app.menus.openstcachatstock + this.templateSendMailHTML;
 				break;
+			case 'confirm':
+				templateForm = app.menus.openstcachatstock + this.templateValidateOrRefuseHTML;
+				break;
+			case 'refuse':
+				templateForm = app.menus.openstcachatstock + this.templateValidateOrRefuseHTML;
+				break;
+			
 			}
 			var langAction = app.lang.achatsstocks.modalPurchase;
 			new GenericActionModalView({

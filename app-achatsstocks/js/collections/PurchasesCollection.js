@@ -16,12 +16,14 @@ define([
 		
 		url   : '/api/open_achats_stock/purchases',
 
-		fields: ['id', 'name', 'date_order', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'state_order', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'engage_to_treat', 'account_analytic_id', 'order_line', 'amount_untaxed', 'amount_tax', 'shipped_rate', 'supplier_mail_sent'],
+		fields: ['id', 'name', 'date_order', 'description', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'state_order', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'engage_to_treat', 'account_analytic_id', 'order_line', 'amount_untaxed', 'amount_tax', 'shipped_rate', 'supplier_mail_sent', 'validation_order_items', 'validation_note'],
 		default_sort: { by: 'state_order', order: 'ASC' },
 		
 		specialCpt : 0,
 		
-		advanced_searchable_fields: [{key: 'engage_to_treat', label: 'Engage to treat'}],
+		advanced_searchable_fields: [
+			{key: 'engage_to_treat', label: 'Engage to treat'},
+			{key: 'supplier_mail_sent', label: 'Supplier mail sent'}],
 
 
 		/** Get the number of Booking that the user have to deal
