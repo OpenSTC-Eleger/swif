@@ -281,6 +281,10 @@
 	"waitAuthorization"	: "Attente d'autorisation",
 	"article"			: "Article",
 	"taxes"				: "Taxes",
+	"waitingValidators"	: "En Attente de",
+    "confirmedValidators": "Ayants confirmé",
+    "refusedValidators"	: "Ayants refusé",
+    "buyer"				: "Acheteur",
 
     "actions" : {
         "logIn"             : "connectez-vous",
@@ -370,9 +374,9 @@
         "purchaseSent"		: "Envoyer la commande",
         "receiveProducts"	: "Réceptionner articles",
         "renew"             : "Renouveler",
-        "check_dst"			: "Validation Responsable",
-        "check_elu"			: "Validation Elu",
-        "sendPurchaseAgain"	: "Ré-envoyer la commande"
+        "check_confirm"		: "Valider",
+        "check_refuse"		: "Refuser",
+        "sendPurchaseAgain"	: "Ré-envoyer la commande"        
     },
 
     "errorMessages" : {
