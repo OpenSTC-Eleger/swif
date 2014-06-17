@@ -34,7 +34,8 @@
 			"analyticAccountupdateOk": "Compte correctement mis à jour",
 			"analyticAccountDeleteOk": "Compte correctement supprimé",
 			"budgetDeleteOk"         : "Budget correctement supprimé",
-			"budgetUpdateOk"         : "Budget correctement modifié"
+			"budgetUpdateOk"         : "Budget correctement modifié",
+			"purchaseUpdateOk"       : "Commande correctement modifiée"
 		},
 
 		"warningMessages": {
@@ -59,8 +60,7 @@
 
 		"modalPurchase": {
 			"cancel"				: "Annulation de la commande",
-			"check_dst"				: "Validation en tant que Responsable",
-			"check_elu"				: "Validation en tant qu'Elu",
+			"confirm"			: "Validation de la commande",
 			"refuse"				: "Refus de la commande",
 			"done"					: "indiquer la commande comme payée (clôture l'achat)",
 			"send_mail"				: "Envoi de la commande au fournisseur",
