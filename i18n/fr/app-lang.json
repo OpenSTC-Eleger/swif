@@ -8,7 +8,7 @@
     "connection"            : "connexion",
     "login"                 : "identifiant",
     "password"              : "mot de passe",
-    "lastConnection"        : "dernière connexion le",
+    "lastConnection"        : "dernière connexion",
     "settings"              : "paramètres",
     "daytime"               : "journée",
     "day"                   : "jour",
@@ -271,6 +271,7 @@
     "referentPeoples"                       : "Personnes référentes",
     "elected"                               : "Élu",
     "buyingTreshold"                        : "Seuil d'achat",
+    "role"                                  : "rôle",
 
     "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
     "monthNamesShort": ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"],
@@ -381,7 +382,7 @@
         "renew"             : "Renouveler",
         "check_confirm"		: "Valider",
         "check_refuse"		: "Refuser",
-        "sendPurchaseAgain"	: "Ré-envoyer la commande"        
+        "sendPurchaseAgain"	: "Ré-envoyer la commande"
     },
 
     "errorMessages" : {

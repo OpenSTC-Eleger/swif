@@ -17,7 +17,7 @@ define([
 		urlRoot: '/api/open_achats_stock/purchases',
 
 		fields: ['id', 'name', 'description', 'date_order', 'service_id', 'partner_id', 'amount_total', 'state', 'validation', 'actions', 'check_dst', 'check_elu', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'account_analytic_id', 'order_line', 'amount_untaxed', 'amount_tax', 'shipped_rate', 'supplier_mail_sent', 'validation_order_items', 'validation_note'],
-		
+
 		readonlyFields: ['id', 'name', 'date_order', 'amount_total', 'state', 'validation', 'actions', 'user_id', 'attach_invoices', 'attach_not_invoices', 'attach_waiting_invoice_ids', 'amount_untaxed', 'amount_tax', 'reception_progress', 'validation_order_items'],
 
 		searchable_fields: [
@@ -100,9 +100,9 @@ define([
 			ret += '</ul>';
 			return ret;
 		},
-		
+
 		/**
-		 * @return: String containing html to be displayed in tooltips 
+		 * @return: String containing html to be displayed in tooltips
 		 */
 		printValidationInfos: function(){
 			function printValidation(elt, label){
@@ -133,7 +133,7 @@ define([
 				this.linesToRemove.push([2,model.get('id')]);
 			}
 		},
-		
+
 		printStateTooltip: function(){
 			var ret = '';
 			if(this.getAttribute('state','draft') == 'wait'){
@@ -206,7 +206,7 @@ define([
 				icon				: 'fa-check',
 				translation			: app.lang.actions.check_confirm
 			},
-			
+
 			refuse: {
 				key					: 'refuse',
 				color				: 'danger',

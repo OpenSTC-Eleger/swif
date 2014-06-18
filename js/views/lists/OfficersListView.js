@@ -8,11 +8,11 @@ define([
 	'app',
 	'appHelpers',
 
-	'officersCollection',
-	'electedMembersCollection',
+	'usersCollection',
 	'itemOfficerView',
 	'modalOfficerView'
-], function(app, AppHelpers, OfficersCollection, ElectedMembersCollection, ItemOfficerView, ModalOfficerView){
+
+], function(app, AppHelpers, UsersCollection, ItemOfficerView, ModalOfficerView){
 
 	'use strict';
 
@@ -44,8 +44,7 @@ define([
 			this.options = params;
 
 			// Instantiate the collections //
-			this.collection = new OfficersCollection();
-			this.collectionElectedMembers = new ElectedMembersCollection();
+			this.collection = new UsersCollection();
 
 
 			this.collection.off();
@@ -115,11 +114,6 @@ define([
 						});
 					});
 
-
-					self.fetchElectedMembers().done(function(){
-						console.log("super");
-					});
-
 				}
 
 				this.isDisplay = true;
@@ -165,27 +159,7 @@ define([
 				.fail(function(e){
 					console.log(e);
 				});
-		},
-
-
-		/** Fetch elected members
-		*/
-		fetchElectedMembers: function(){
-
-			// Create Fetch params //
-			this.fetchParams = {
-				silent : true,
-				data   : {
-					filters : {0: {field: 'service_id.id', operator: '=', value: this.model.getId()}}
-				}
-			};
-
-			return $.when(this.collectionElectedMembers.fetch(this.fetchParams))
-				.fail(function(e){
-					console.log(e);
-				});
-		},
-
+		}
 
 	});
 

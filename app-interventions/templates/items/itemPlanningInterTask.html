@@ -3,17 +3,17 @@
 		else if( task.state == TaskModel.status.open.key ) taskClass = 'fa fa-clock-o';
 		else taskClass ='';
 
-		var dateStart = moment(task.date_start).tz(UserModel.getContext().tz);
+		var dateStart = moment(task.date_start).tz(CurrentUserModel.getContext().tz);
 		dateStart.add('minutes',-dateStart.zone());
 		var recurrenceClass = task.recurrence_id ? 'fa fa-refresh' : '';
 	%>
 
-	<i class="<%= taskClass %>" data-toggle="tooltip" data-placement="top" data-original-title="<%= dateStart.format('LLL') %>"></i> 
+	<i class="<%= taskClass %>" data-toggle="tooltip" data-placement="top" data-original-title="<%= dateStart.format('LLL') %>"></i>
 	<a href="#" class="modalRecurrenceDetails">
 		<i class="<%= recurrenceClass %>" data-toggle="tooltip" data-placement="top" data-original-title="<%= lang.helpMessages.seeAllOccurrences %>"></i>
 	</a>
 	<%= task.name %>
-	
+
 
 	<small class="nested-objects-actions invisible">
 		<% if( task.actions.indexOf("delete")>-1) { %>

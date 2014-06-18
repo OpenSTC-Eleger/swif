@@ -157,7 +157,7 @@
 									<label for="officerCost" class="control-label col-sm-3"><%= _.capitalize(lang.hourPrice) %>:</label>
 									<div class="col-sm-4">
 										<div class="input-group">
-											<input  id="officerCost"type="number" step="any" min="0" class="form-control" value="<%= officer.getCost() %>">
+											<input  id="officerCost"type="number" step="any" min="0" class="form-control" value="<%= (_.isNull(officer.getId()) ? '' : officer.getCost()) %>">
 											<span class="input-group-addon"><i class="fa fa-eur"></i></span>
 										</div>
 									</div>
@@ -202,13 +202,15 @@
 									</div>
 
 								</div>
+							</fieldset>
 
 						</fieldset> <!-- /Section about officer setting -->
 
-					<div> <!-- /Tab content -->
+					</div> <!-- /Tab content -->
 				</form>
 				<% } %>
 		</div> <!-- /Modal body -->
+
 
 		<div class="modal-footer">
 			<button type="submit" form="formSaveOfficer" class="btn btn-primary"
@@ -221,5 +223,6 @@
 			<a href="#" data-dismiss="modal" aria-hidden="true"><%= _.capitalize(lang.actions.cancel) %></a>
 		</div>
 
+
 	</div>
-</div>
+</div><!-- /modal-dialog -->

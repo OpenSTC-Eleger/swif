@@ -11,15 +11,15 @@ define([
 	'moment-timezone-data',
 
 	'taskModel',
-	'userModel',
+	'currentUserModel',
 	'interventionModel',
 	'taskRecurrenceModel',
-	
+
 	'modalDeleteView',
 	'modalCancelTaskView',
 	'modalRecurrenceTaskView',
 
-], function(app, AppHelpers, moment , MomentTimezoneData, TaskModel, UserModel, InterventionModel, TaskRecurrenceModel, ModalDeleteView, ModalCancelTaskView, ModalRecurrenceTaskView){
+], function(app, AppHelpers, moment , MomentTimezoneData, TaskModel, CurrentUserModel, InterventionModel, TaskRecurrenceModel, ModalDeleteView, ModalCancelTaskView, ModalRecurrenceTaskView){
 
 	'use strict';
 
@@ -98,7 +98,7 @@ define([
 					task               : model,
 					InterventionModel  : InterventionModel,
 					TaskModel          : TaskModel,
-					UserModel          : app.current_user,
+					CurrentUserModel   : app.current_user,
 					AppHelpers         : AppHelpers,
 					moment             : moment
 				});
@@ -195,7 +195,7 @@ define([
 			e.preventDefault();
 			new ModalCancelTaskView({el: '#modalCancelTask', model: this.model});
 		},
-		
+
 		displayModalRecurrenceDetails: function(e){
 			e.preventDefault();
 			new ModalRecurrenceTaskView({

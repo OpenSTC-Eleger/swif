@@ -5,30 +5,37 @@
  */
 
 define([
+	'genericCollection',
 	'userModel'
 
-], function(UserModel){
+], function(GenericCollection, UserModel){
 
 	'use strict';
 
 
 	/******************************************
-	* Users Collection - Person who are Log in
+	* Officers Collection
 	*/
-	var UsersCollection = Backbone.Collection.extend({
+	var UsersCollection = GenericCollection.extend({
 
 		model       : UserModel,
 
+		url         : '/api/open_object/users',
+
+		fields      : ['complete_name', 'contact_id', 'date', 'firstname', 'current_group', 'openresa_group', 'id', 'isDST', 'isManager', 'isResaManager', 'lastname', 'login', 'name', 'phone', 'service_id', 'service_ids', 'service_names', 'user_email', 'actions'],
+
+		default_sort: { by: 'complete_name', order: 'ASC' },
+
+		logo        : 'fa-user',
 
 
 		/** Collection Initialization
 		*/
-		initialize : function() {
-			//console.log('User collection initialize');
-		},
+		initialize: function () {
+			//console.log('Officers collection Initialization');
+		}
 
 	});
-
 
 	return UsersCollection;
 
