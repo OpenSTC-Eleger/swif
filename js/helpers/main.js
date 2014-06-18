@@ -7,9 +7,7 @@
 define('appHelpers', [
 
 	'app',
-//	'userModel',
-//
-//	'filterModel',
+
 
 	'moment-timezone',
 	'moment-timezone-data'
@@ -227,7 +225,7 @@ define('appHelpers', [
 				});
 			}
 		},
-		
+
 		/**
 		 * TODO Get Planning domain
 		 */
@@ -243,7 +241,7 @@ define('appHelpers', [
 			});
 			return tab.key;
 		},
-		
+
 		/**
 		 * TODO Get Planning domain
 		 */
@@ -252,7 +250,7 @@ define('appHelpers', [
 				{ 'field' : 'date_start', 'operator' : '>', 'value' : moment(start).format('YYYY-MM-DD HH:mm:ss') },
 				{ 'field' : 'date_end', 'operator' : '<', 'value' : moment(end).format('YYYY-MM-DD HH:mm:ss')  },
 			];
-			
+
 			if( !_.isUndefined(options.partner))
 			{
 				domain.push({'field' : 'partner_id.id', 'operator' : '=', 'value' : model.id});
@@ -280,7 +278,7 @@ define('appHelpers', [
 
 			return app.objectifyFilters(domain);
 		},
-		
+
 		deleteOptions: function(options, toDelete){
 			_.any(options, function(value,key){
 				_.find(toDelete,function(tab){

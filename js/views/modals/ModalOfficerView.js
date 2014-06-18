@@ -6,24 +6,24 @@
 
 define([
 	'app',
-	'officerModel',
-	'officersCollection',
+	'userModel',
+	'usersCollection',
 	'stcGroupsCollection',
 	'claimersServicesCollection',
 
 	'genericModalView',
 	'advancedSelectBoxView'
 
-], function(app, OfficerModel, OfficersCollection, StcGroupsCollection, ClaimersServicesCollection, GenericModalView, AdvancedSelectBoxView){
+], function(app, UserModel, UsersCollection, StcGroupsCollection, ClaimersServicesCollection, GenericModalView, AdvancedSelectBoxView){
 
 	'use strict';
 
 
 
 	/******************************************
-	* Officer Modal View
+	* User Modal View
 	*/
-	var ModalOfficerView = GenericModalView.extend({
+	var ModalUserView = GenericModalView.extend({
 
 
 		templateHTML : 'templates/modals/modalOfficer.html',
@@ -58,7 +58,7 @@ define([
 			// Check if it's a create or an update //
 			if(_.isUndefined(this.model)){
 
-				this.model = new OfficerModel();
+				this.model = new UserModel();
 				this.render();
 			}
 			else{
@@ -164,8 +164,8 @@ define([
 				user_email  : $('#officerEmail').val(),
 				groups_id   : [[6, 0, groups]],
 				service_id  : app.views.advancedSelectBoxOfficerServiceView.getSelectedItem(),
-				cost		: $('#officerCost').val()
-
+				cost		: $('#officerCost').val(),
+				status      : 'elected-member'
 			};
 
 			if(!_.isEmpty(app.views.advancedSelectBoxOfficerServicesView.getSelectedItems())){
@@ -186,7 +186,7 @@ define([
 					// Create mode //
 					if(self.model.isNew()) {
 						self.model.setId(data);
-						self.model.fetch({silent: true, data : {fields : OfficersCollection.prototype.fields} }).done(function(){
+						self.model.fetch({silent: true, data : {fields : UsersCollection.prototype.fields} }).done(function(){
 							self.options.officersListView.collection.add(self.model);
 						});
 					// Update mode //
@@ -220,5 +220,5 @@ define([
 
 	});
 
-	return ModalOfficerView;
+	return ModalUserView;
 });

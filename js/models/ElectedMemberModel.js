@@ -5,9 +5,9 @@
  */
 
 define([
-	'officerModel'
+	'userModel'
 
-], function(OfficerModel){
+], function(UserModel){
 
 	'use strict';
 
@@ -15,7 +15,7 @@ define([
 	/******************************************
 	* Elected Member Model
 	*/
-	var ElectedMember = OfficerModel.extend({
+	var ElectedMember = UserModel.extend({
 
 		urlRoot : '/api/open_object/elected_member',
 

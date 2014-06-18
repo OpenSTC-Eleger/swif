@@ -5,10 +5,10 @@
  */
 
 define([
-	'electedMemberModel',
-	'officersCollection'
+	'usersCollection',
+	'electedMemberModel'
 
-], function(ElectedMemberModel, OfficersCollection){
+], function(UsersCollection, ElectedMemberModel){
 
 	'use strict';
 
@@ -16,7 +16,7 @@ define([
 	/******************************************
 	* Elected Members Collection
 	*/
-	var ElectedMembersCollection = OfficersCollection.extend({
+	var ElectedMembersCollection = UsersCollection.extend({
 
 		key         : 'elected_member',
 

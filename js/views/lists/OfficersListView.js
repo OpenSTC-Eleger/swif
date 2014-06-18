@@ -8,10 +8,11 @@ define([
 	'app',
 	'appHelpers',
 
-	'officersCollection',
+	'usersCollection',
 	'itemOfficerView',
 	'modalOfficerView'
-], function(app, AppHelpers, OfficersCollection, ItemOfficerView, ModalOfficerView){
+
+], function(app, AppHelpers, UsersCollection, ItemOfficerView, ModalOfficerView){
 
 	'use strict';
 
@@ -42,8 +43,8 @@ define([
 		initialize: function (params) {
 			this.options = params;
 
-			// Instantiate the collection //
-			this.collection = new OfficersCollection();
+			// Instantiate the collections //
+			this.collection = new UsersCollection();
 
 
 			this.collection.off();
@@ -112,6 +113,7 @@ define([
 							$(self.el).find('#rows-officers').append(itemOfficerView.render().el);
 						});
 					});
+
 				}
 
 				this.isDisplay = true;
@@ -141,7 +143,6 @@ define([
 		*/
 		fetchOfficers: function(){
 			var self = this;
-
 
 			this.options.sort = this.collection.default_sort;
 

@@ -7,9 +7,9 @@
 define('main', [
 
 	// Load our app module and pass it to our definition function
-	'app', 'appRouter', 'moment', 'usersCollection', 'userModel'
+	'app', 'appRouter', 'moment', 'currentUserModel'
 
-], function (app, AppRouter, moment, UsersCollection, UserModel) {
+], function (app, AppRouter, moment, CurrentUserModel) {
 
 	'use strict';
 
@@ -42,7 +42,7 @@ define('main', [
 					moment.lang(app.config.lang);
 
 					// Interface to current_user, this should not be a collection stored in localstorage but just some current_user client state.
-					app.current_user = new UserModel(JSON.parse(localStorage.getItem('current_user')));  //app.current_user
+					app.current_user = new CurrentUserModel(JSON.parse(localStorage.getItem('current_user')));  //app.current_user
 
 					// Set the Ajax Setup //
 					app.setAjaxSetup();

@@ -8,14 +8,14 @@ define([
 	'app',
 	'appHelpers',
 
-	'officerModel',
-	'officersCollection',
+	'userModel',
+	'usersCollection',
 
 	'genericListView',
 	'itemUserView',
 	'paginationView'
 
-], function(app, AppHelpers, OfficerModel, OfficersCollection, GenericListView, ItemUserView, PaginationView){
+], function(app, AppHelpers, UserModel, UsersCollection, GenericListView, ItemUserView, PaginationView){
 
 	'use strict';
 
@@ -27,7 +27,7 @@ define([
 
 		templateHTML: 'templates/lists/usersList.html',
 
-		model       : OfficerModel,
+		model       : UserModel,
 
 
 		/** View Initialization
@@ -35,7 +35,7 @@ define([
 		initialize: function() {
 			// Check if the collections is instantiate //
 			if (_.isUndefined(this.collection)) {
-				this.collection = new OfficersCollection();
+				this.collection = new UsersCollection();
 			}
 
 			GenericListView.prototype.initialize.apply(this, arguments);

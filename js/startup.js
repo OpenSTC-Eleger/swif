@@ -67,6 +67,7 @@ requirejs.config({
 		*/
 		genericCollection                        : 'collections/GenericCollection',
 		usersCollection                          : 'collections/UsersCollection',
+		currentUsersCollection                   : 'collections/CurrentUsersCollection',
 		claimersCollection                       : 'collections/ClaimersCollection',
 		claimersContactsCollection               : 'collections/ClaimersContactsCollection',
 		claimersServicesCollection               : 'collections/ClaimersServicesCollection',
@@ -89,7 +90,12 @@ requirejs.config({
 		* Models
 		*/
 		genericModel            : 'models/GenericModel',
+		currentUserModel        : 'models/CurrentUserModel',
+
 		userModel               : 'models/UserModel',
+		officerModel            : 'models/OfficerModel',
+		electedMemberModel      : 'models/ElectedMemberModel',
+
 		claimerModel            : 'models/ClaimerModel',
 		claimerTypeModel        : 'models/ClaimerTypeModel',
 		claimerContactModel     : 'models/ClaimerContactModel',
@@ -98,13 +104,12 @@ requirejs.config({
 		equipmentTypeModel      : 'models/EquipmentTypeModel',
 		placeModel              : 'models/PlaceModel',
 		teamModel               : 'models/TeamModel',
-		officerModel            : 'models/OfficerModel',
 		metaDataModel           : 'models/MetaDataModel',
 		filterModel             : 'models/FilterModel',
 		genericRecurrenceModel	: 'models/GenericRecurrenceModel',
 		categoryConsumableModel : 'models/CategoryConsumableModel',
 		consumableModel         : 'models/ConsumableModel',
-		electedMemberModel      : 'models/ElectedMemberModel',
+
 
 
 		/* #############

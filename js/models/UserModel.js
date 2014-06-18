@@ -6,10 +6,11 @@
 
 define([
 	'app',
-	'claimerContactModel',
+
+	'genericModel',
 	'moment'
 
-], function(app, ClaimerContactModel, moment){
+], function(app, GenericModel, moment){
 
 	'use strict';
 
@@ -17,62 +18,53 @@ define([
 	/******************************************
 	* User Model
 	*/
-	var UserModel = Backbone.Model.extend({
-		
-		defaults: {
-			uid             : null,
-			authToken       : null,
-			isDST			: false,
-			isManager		: false
+	var UserModel = GenericModel.extend({
+
+		urlRoot : '/api/open_object/users',
+
+		fields: ['complete_name', 'contact_id', 'context_lang', 'context_tz', 'date', 'firstname', 'groups_id', 'current_group', 'openresa_group', 'id', 'isDST', 'isManager', 'isResaManager', 'lastname', 'login', 'name', 'phone', 'service_id', 'service_names', 'tasks', 'team_ids', 'user_email', 'actions', 'cost'],
+
+
+		defaults:{
+			id       :null,
+			isDST    : false,
+			isManager: false,
+			isResaManager: false
 		},
 
-		initialize: function(){
-			//console.log('User initialize: ' + this.getLogin());
-		},
+
+		searchable_fields: [
+			{ key: 'complete_name', type: 'text' },
+			{ key: 'login', type: 'text' }
+		],
 
 
-		urlA	: '/api/open_object/users',
-		
-		getUrlManageableTeams:function(){
-			return this.urlA + '/' + this.get('uid') + '/manageable_teams';
-		},
-
-		getUrlManageableOfficers:function(){
-			return this.urlA + '/' + this.get('uid') + '/manageable_officers';
-		},
-		
-		urlAuthentication: '/sessions',
-
-
-
-		//method to retrieve attribute with standard return form
-		getAttribute: function(key,default_value){
-			var val = this.get(key);
-			if(_.isUndefined(default_value)){
-				default_value = false;
+		// Officer firstname //
+		getFirstname : function() {
+			if(this.get('firstname') !== false){
+				return _.capitalize(this.get('firstname').toLowerCase());
 			}
-			if(!_.isUndefined(val) && val !== '' && val !== false && val !== null){
-				return val;
+			else{ return ''; }
+		},
+		setFirstname : function(value) {
+			this.set({ firstname : value });
+		},
+
+		getCompleteName : function() {
+			return _.titleize(this.get('complete_name').toLowerCase());
+		},
+
+		// Officer email //
+		getEmail : function() {
+			if(this.get('user_email')){
+				return this.get('user_email');
 			}
-			else{
-				return default_value;
-			}
+		},
+		setEmail : function(value) {
+			this.set({ user_email : value });
 		},
 
-		getUID : function() {
-			return this.get('uid');
-		},
-		setUID : function(value) {
-			this.set({ uid : value });
-		},
-
-		getGroups : function() {
-			return this.get('groupsID');
-		},
-		setGroups : function(value) {
-			this.set({ groupsID : value });
-		},
-
+		// Officer login //
 		getLogin : function() {
 			return this.get('login');
 		},
@@ -80,310 +72,179 @@ define([
 			this.set({ login : value });
 		},
 
-		getFirstname : function() {
-			if(this.get('firstname') !== false){
-				return this.get('firstname');
+		// Officer password //
+		setPassword : function(value) {
+			this.set({ new_password : value });
+		},
+		// Group IDs //
+		getGroups: function() {
+			return this.get('groups_id');
+		},
+		getSentenceGroups: function() {
+			var groups = [];
+			if(!_.isUndefined(this.getGroupSTC())){
+				groups.push(this.getGroupSTC());
+			}
+			if(!_.isUndefined(this.getGroupResa())){
+				groups.push(this.getGroupResa());
+			}
+			return _.toSentence( groups, ', ', ' '+app.lang.and+' ' );
+		},
+		setGroups : function(value) {
+			this.set({ groups_id : value });
+		},
+
+
+		// Group IDs //
+		getLastConnection: function() {
+			var date = '';
+			if(this.get('date')) {
+				date =  moment(this.get('date')).format('LLL');
+			}
+
+			return date;
+		},
+
+		// Group Name //
+		setGroupSTC : function(value) {
+			this.set({ current_group : value });
+		},
+		getGroupSTC : function(type) {
+
+			var returnVal;
+
+			switch (type){
+				case 'id':
+					returnVal = this.get('current_group')[0];
+					break;
+				case 'json':
+					returnVal = {id: this.get('current_group')[0], name: this.get('current_group')[1]};
+					break;
+				default:
+					returnVal = this.get('current_group')[1];
+			}
+
+			return returnVal;
+		},
+
+		getGroupResa : function(type) {
+
+			var returnVal;
+
+			switch (type){
+				case 'id':
+					returnVal = this.get('openresa_group')[0];
+					break;
+				case 'json':
+					returnVal = {id: this.get('openresa_group')[0], name: this.get('openresa_group')[1]};
+					break;
+				default:
+					returnVal = this.get('openresa_group')[1];
+			}
+
+			return returnVal;
+		},
+
+		getServices : function(type){
+
+			var placeServices = [];
+
+			_.each(this.get('service_names'), function(s){
+				switch (type){
+					case 'id':
+						placeServices.push(s[0]);
+						break;
+					case 'json':
+						placeServices.push({id: s[0], name: s[1]});
+						break;
+					default:
+						placeServices.push(s[1]);
+				}
+			});
+
+			if(type == 'string'){
+				return _.toSentence(placeServices, ', ', ' '+app.lang.and+' ');
 			}
 			else{
-				return '';
+				return placeServices;
 			}
 		},
-		setFirstname : function(value) {
-			this.set({ firstname : value });
-		},
-
-		getLastname : function() {
-			if(this.get('lastname') !== false){
-				return this.get('lastname');
-			}
-			else{
-				return '';
-			}
-		},
-		setLastname : function(value) {
-			this.set({ lastname : value.toUpperCase() });
-		},
-
-		getFullname : function() {
-			return this.getFirstname()+' '+this.getLastname();
-		},
-
-		getLastConnection : function() {
-			return moment(this.get('lastConnection')).format('LLL');
-		},
-		setLastConnection : function(value) {
-			this.set({ lastConnection : value });
-		},
-
-		destroySessionID: function(){
-			this.setSessionID('');
-		},
-
-		hasAuthToken: function () {
-			if(!_.isNull(this.get('authToken'))) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		},
-		getAuthToken : function() {
-			return this.get('authToken');
-		},
-		setAuthToken : function(value) {
-			this.set({ authToken : value });
-		},
-
-		getService : function() {
-			return this.get('service_id');
-		},
-		setService : function(value) {
-			this.set({ service_id : value });
-		},
-
-		getOfficers: function() {
-			return this.get('officers');
-		},
-
-		setOfficers : function(value) {
-			this.set({ officers : value });
-		},
-
-		getTeams: function() {
-			return this.get('teams');
-
-		},
-		setTeams : function(value) {
-			this.set({ teams : value });
-		},
-
-		getContact : function() {
-			return this.get('contact_id');
-		},
-
-		fetchContactAndClaimer: function(ret){
-			var contact_ids = this.getAttribute('contact_id',[]);
-			var deferred = $.Deferred();
-			if(contact_ids.length > 0){
-				var contact_id = contact_ids[0];
-				var claimerContact = new ClaimerContactModel({id:contact_id});
-				deferred = claimerContact.fetch({data:{fields:['name','partner_id']}}).done(function(){
-					var partner = claimerContact.get('partner_id');
-					ret.claimer = {id:partner[0], name:partner[1]};
-					ret.contact = {id:contact_id, name:claimerContact.get('name')};
-				});
-			}
-			else{
-				deferred.reject();
-				console.warn('Fail on method UserModel#fetchContactAndClaimer: not any ClaimerContact found for current user.');
-			}
-			return deferred;
-		},
-
-		setContact : function(value) {
-			this.set({ contact_id : value });
-		},
-
-		getServices : function() {
-			return this.get('service_ids');
-		},
-		setServices : function(value) {
+		setServicesID : function(value) {
 			this.set({ service_ids : value });
 		},
 
-		getContext : function() {
-			return this.get('context');
-		},
-		setContext : function(value) {
-			this.set({ context : value });
+		getService : function(type) {
+
+			var returnVal;
+
+			switch (type){
+				case 'id':
+					returnVal = this.get('service_id')[0];
+					break;
+				case 'json':
+					returnVal = {id: this.get('service_id')[0], name: this.get('service_id')[1]};
+					break;
+				default:
+					returnVal = this.get('service_id')[1];
+			}
+
+			return returnVal;
 		},
 
-		isManager: function() {
-			return this.get('isManager');
-		},
+		// Teams ID//
+		getTeamsInArray: function(){
+			var jsonTeamId = this.get('team_ids');
 
-		setManager: function(value) {
-			this.set({ isManager : value });
+			var officerTeams = [];
+			_.each(jsonTeamId.models, function(item){
+				officerTeams.push(item.id);
+			});
+
+			return officerTeams;
 		},
 
 		isDST: function() {
 			return this.get('isDST');
 		},
-
-		isResaManager: function() {
-			return this.get('isResaManager');
-		},
-
 		setDST: function(value) {
 			this.set({ isDST : value });
 		},
 
-		setResaManager: function(value) {
-			this.set({ isResaManager : value });
-		},
-
-		/** Get Officer By Id
+		/** Get Informations of the model
 		*/
-		getOfficerById: function(id){
-			return _.find(this.getOfficers(), function(officer){
-				return officer.id == id;
-			});
-		},
+		getInformations : function(){
+			var informations = {};
 
-		setMenu: function (menu) {
-			this.set({menu: menu});
-		},
+			informations.name = this.getCompleteName();
 
-		/** Get officer's teams list selected in planning
-		*/
-		getOfficerIdsByTeamId: function(id) {
-			var officers = [];
-
-			var team = _.find(this.getTeams(), function(team){
-				return team.id == id;
-			});
-			if(_.isUndefined(team)){
-				return officers;
+			if(!_.isEmpty(this.getService())){
+				informations.infos = {};
+				informations.infos.key = _.capitalize(app.lang.service);
+				informations.infos.value = this.getService();
 			}
 
-			_.each(team.members, function(member){
-				officers.push(member.id);
-			});
-			return officers;
-		},
-
-		/** Get Officer By Id
-		*/
-		getTeamById: function(id){
-			return _.find(this.getTeams(), function(team){
-				return team.id == id;
-			});
-		},
-
-		/** Get team's officers list selected in planning
-		*/
-		getTeamIdsByOfficerId: function(id) {
-			var teams = [];
-
-			var officer = _.find(this.getOfficers(), function(officer){
-				return officer.id == id;
-			});
-			if(_.isUndefined(officer)){
-				return teams;
-			}
-
-			_.each(officer.teams, function(team){
-				teams.push(team);
-			});
-			return teams;
-		},
-
-
-		getMenus: function () {
-			return this.get('menu');
-		},
-
-
-		/** Retrieve teams than current user can manage and stores them in user's data
-		*/
-		queryManagableTeams: function () {
-			var user = this;
-			return $.when($.ajax({
-				async: true,
-				url: this.getUrlManageableTeams(),
-				headers: {Authorization: 'Token token=' + this.get('authToken')},
-				success: function (data) {
-					user.setTeams(data);
-				}
-			}));
-
-		},
-
-
-		/** Retrieve officers than current user can manage and stores them in user's data
-		*/
-		queryManagableOfficers: function() {
-			var user = this;
-			return $.when($.ajax({
-				async: true,
-				url: this.getUrlManageableOfficers(),
-				headers: {Authorization: 'Token token=' + this.get('authToken')},
-				success: function (data) {
-					user.setOfficers(data);
-				}
-			}));
-
-		},
-
-
-		/** Set all attributes to the user after login
-		*/
-		setUserData: function(data){
-
-			this.setLogin(data.user.login);
-			this.setUID(data.user.id);
-			this.setAuthToken(data.token);
-			this.setMenu(data.menu.content);
-			this.setLastConnection(moment());
-			this.setContext({tz: data.user.context_tz, lang: data.user.context_lang});
-			this.setFirstname(data.user.firstname);
-			this.setLastname(data.user.name);
-			this.setGroups(data.user.groups_id);
-			this.setServices(data.user.service_ids);
-			this.setService(data.user.service_id);
-			this.setContact(data.user.contact_id);
-			this.setManager(data.user.isManager);
-			this.setDST(data.user.isDST);
-			this.setResaManager(data.user.isResaManager);
+			return informations;
 		},
 
 
 
-		/** Login function
-		*/
-		login: function (loginUser, passUser) {
-
-			var self = this;
-
-			var login_data = {
-				'dbname'  : app.config.openerp.database,
-				'login'   : loginUser,
-				'password': passUser,
-			};
-
-			return $.ajax({
-				url        :  self.urlAuthentication,
-				type       : 'POST',
-				dataType   : 'json',
-				data       :  JSON.stringify(login_data)
-			});
+		getActions: function(){
+			return this.get('actions');
 		},
 
 
 
-		/** Logout fonction
-		*/
-		logout: function(){
-			var self = this;
+		getCost: function() {
+			return this.get('cost');
+		},
 
-			$.ajax({
-				url    : self.urlAuthentication +'/'+ self.getAuthToken(),
-				method : 'DELETE'
-			})
-			.always(function () {
-				localStorage.clear();
-				self.clear();
-
-				// Refresh the header //
-				app.views.headerView.render();
-
-				// Navigate to the login Page //
-				Backbone.history.navigate(app.routes.login.url, {trigger: true, replace: true});
-			});
-
+		setCost: function(cost){
+			this.set({ cost : cost });
 		}
+
 
 	});
 
 	return UserModel;
+
 });
