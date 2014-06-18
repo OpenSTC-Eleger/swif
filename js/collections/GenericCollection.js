@@ -47,7 +47,7 @@ define([
 			}
 
 			return $.ajax({
-				url      : this.url,
+				url      : _.result(this, 'url'),
 				method   : 'HEAD',
 				dataType : 'text',
 				data     : paramFilter,
