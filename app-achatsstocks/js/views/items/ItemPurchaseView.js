@@ -9,15 +9,18 @@ define([
 	'appHelpers',
 	'purchaseModel',
 	'purchasesCollection',
+	'partialPickingsCollection',
+	
 	'genericItemView',
 	'modalDeleteView',
 //	'genericFormModalView',
 	'genericActionModalView',
+	'genericFormModalView',
 	'purchaseFormView',
 	'moment'
 
 
-], function(app, AppHelpers, PurchaseModel, PurchasesCollection, GenericItemView, ModalDeleteView, GenericActionModalView, PurchaseFormView){
+], function(app, AppHelpers, PurchaseModel, PurchasesCollection, PartialPickingsCollection, GenericItemView, ModalDeleteView, GenericActionModalView, GenericFormModalView, PurchaseFormView){
 
 	'use strict';
 
@@ -33,7 +36,7 @@ define([
 		templateHTML : '/templates/items/itemPurchase.html',
 		templateSendMailHTML: '/templates/modals/modalSendPurchase.html',
 		templateValidateOrRefuseHTML: '/templates/modals/modalValidatePurchase.html',
-		
+		templateReceiveHTML: '/templates/modals/modalReceivePurchase.html',
 		
 		classModel	: PurchaseModel,
 
@@ -130,35 +133,57 @@ define([
 			e.preventDefault();
 			e.stopPropagation();
 			var action = $(e.currentTarget).data('action');
-			var templateForm = null;
-			switch(action){
-			case 'send_mail':
-				templateForm = app.menus.openstcachatstock + this.templateSendMailHTML;
-				break;
-			case 'send_mail_again':
-				templateForm = app.menus.openstcachatstock + this.templateSendMailHTML;
-				break;
-			case 'confirm':
-				templateForm = app.menus.openstcachatstock + this.templateValidateOrRefuseHTML;
-				break;
-			case 'refuse':
-				templateForm = app.menus.openstcachatstock + this.templateValidateOrRefuseHTML;
-				break;
 			
+			//Custom behavior(s)
+			if(action == 'receive'){
+				this.modalReceive();
 			}
-			var langAction = app.lang.achatsstocks.modalPurchase;
-			new GenericActionModalView({
-				el			:'#modalView',
-				model		:this.model,
-				action		:action,
-				langAction	:langAction,
-				templateForm:templateForm
-			});
+			//Default behavior
+			else{
+				var templateForm = null;
+				
+				switch(action){
+				case 'send_mail':
+					templateForm = app.menus.openstcachatstock + this.templateSendMailHTML;
+					break;
+				case 'send_mail_again':
+					templateForm = app.menus.openstcachatstock + this.templateSendMailHTML;
+					break;
+				case 'confirm':
+					templateForm = app.menus.openstcachatstock + this.templateValidateOrRefuseHTML;
+					break;
+				case 'refuse':
+					templateForm = app.menus.openstcachatstock + this.templateValidateOrRefuseHTML;
+					break;
+				
+				}
+				var langAction = app.lang.achatsstocks.modalPurchase;
+				
+				new GenericActionModalView({
+					el			:'#modalView',
+					model		:this.model,
+					action		:action,
+					langAction	:langAction,
+					templateForm:templateForm
+				});
+			}
 		},
 		
 		modalCancel: function(e){
 			$(e.currentTarget).data('action','cancel');
 			this.modalConfirm(e);
+		},
+		
+		modalReceive: function(){
+			var partialPickingsCollection = new PartialPickingsCollection({nestedModel:this.model});
+			partialPickingsCollection.fetch().done(function(){
+				new GenericFormModalView({
+					el			:'#modalView',
+					model		:partialPickingsCollection.at(0),
+					title		:app.lang.achatsstocks.modalPurchase.receive,
+					templateForm:app.menus.openstcachatstock + this.templateReceiveHTML
+				});
+			});
 		},
 	});
 });
