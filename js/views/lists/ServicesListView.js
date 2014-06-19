@@ -10,7 +10,6 @@ define([
 
 	'claimersServicesCollection',
 	'claimerServiceModel',
-	'officerModel',
 
 	'genericListView',
 	'paginationView',
@@ -19,7 +18,7 @@ define([
 	'officersListView'
 
 
-], function(app, AppHelpers, ClaimersServicesCollection, ClaimerServiceModel, OfficerModel, GenericListView, PaginationView,ItemServiceView,ModalServiceView, OfficersListView){
+], function(app, AppHelpers, ClaimersServicesCollection, ClaimerServiceModel, GenericListView, PaginationView,ItemServiceView,ModalServiceView, OfficersListView){
 
 	'use strict';
 
@@ -30,7 +29,7 @@ define([
 	var ServicesListView = GenericListView.extend({
 
 		templateHTML: 'templates/lists/servicesList.html',
-		
+
 		model : ClaimerServiceModel,
 
 
@@ -50,7 +49,7 @@ define([
 		initialize: function () {
 			// Check if the collections is instantiate //
 			if(_.isUndefined(this.collection)){ this.collection = new ClaimersServicesCollection(); }
-			
+
 			GenericListView.prototype.initialize.apply(this, arguments);
 		},
 

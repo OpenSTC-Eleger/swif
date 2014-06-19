@@ -9,7 +9,7 @@
 			</div>
 			<h4 class="modal-title">
 				<i class="fa fa-edit"></i>&nbsp;
-				<% if(_.isNull(officer.getId())){ %>
+				<% if(_.isNull(user.getId())){ %>
 					<%= _.capitalize(lang.viewsTitles.newPeople) %>
 				<% } else{ %>
 					<%= _.capitalize(lang.viewsTitles.editPeople) %>
@@ -37,47 +37,55 @@
 					<div class="tab-content">
 
 
-						<!-- About the officer -->
+						<!-- About the User -->
 						<fieldset id="sectionAboutOfficer" class="tab-pane fade in active">
 
-							<!-- Officer firstname -->
+							<!-- User firstname -->
 							<div class="form-group">
 								<label for="officerFirstname" class="control-label col-sm-3"><%= _.capitalize(lang.firstname) %>:</label>
 
 								<div class="col-sm-9">
-									<input type="text" id="officerFirstname" class="form-control" required value="<%= (_.isNull(officer.getId()) ? '' : officer.getFirstname())%>">
+									<input type="text" id="officerFirstname" class="form-control" required value="<%= (_.isNull(user.getId()) ? '' : user.getFirstname())%>">
 								</div>
 							</div>
 
-							<!-- Officer name -->
+							<!-- User name -->
 							<div class="form-group">
 								<label for="officerName" class="control-label col-sm-3"><%= _.capitalize(lang.name) %>:</label>
 
 								<div class="col-sm-9">
-									<input type="text" id="officerName" class="form-control" required value="<%= (_.isNull(officer.getId()) ? '' : officer.getName()) %>">
+									<input type="text" id="officerName" class="form-control" required value="<%= (_.isNull(user.getId()) ? '' : user.getName()) %>">
 								</div>
 							</div>
 
-							<!-- Officer email -->
+							<!-- User email -->
 							<div class="form-group">
 								<label for="officerEmail" class="control-label col-sm-3"><%= _.capitalize(lang.email) %>:</label>
 
 								<div class="col-sm-9">
-									<input type="email" id="officerEmail" class="form-control" value="<%= (_.isNull(officer.getId()) ? '' : officer.getEmail()) %>">
+									<input type="email" id="officerEmail" class="form-control" value="<%= (_.isNull(user.getId()) ? '' : user.getEmail()) %>">
 								</div>
 							</div>
 
 
-							<!-- Officer or Elected Function -->
+							<!-- User or Elected Function -->
 							<div class="form-group">
 								<label for="officerFunction" class="control-label col-sm-3"><%= _.capitalize(lang.status) %>:</label>
 								<div class="col-sm-9">
-									<input type="checkbox" class="make-switch" id="officerFunction" data-on-text="Agent" data-off-text="Elu" data-on-color="default" data-off-color="default" tabindex="0" checked>
+									<input type="checkbox" class="make-switch" id="officerFunction" data-on-text="Agent" data-off-text="Elu" data-on-color="default" data-off-color="default" tabindex="0"
+									<% if(!_.isNull(user.getId())) {
+										if(user.getStatus() == UserStatus.officer){ %>
+											checked
+										<% }
+									} else{ %>
+										checked
+									<% } %>
+									>
 								</div>
 							</div>
 
 
-							<% if(_.isNull(officer.getId())) {%>
+							<% if(_.isNull(user.getId())) {%>
 							<fieldset>
 
 								<legend><%= _.capitalize(lang.connection) %></legend>
@@ -117,9 +125,9 @@
 								<div class="col-sm-9">
 									<input id="officerService" class="select2" required data-placeholder="<%= lang.actions.selectAService %>"
 
-									<% if(!_.isNull(officer.getId())){
-										if(!_.isUndefined(officer.getService('id'))) { %>
-										data-selected-value='<%= JSON.stringify(officer.getService('json')) %>'
+									<% if(!_.isNull(user.getId())){
+										if(!_.isUndefined(user.getService('id'))) { %>
+										data-selected-value='<%= JSON.stringify(user.getService('json')) %>'
 									<% }
 									}else{
 										var json = {id: service.getId(), name: service.getName()}
@@ -138,9 +146,9 @@
 								<div class="col-sm-9">
 									<input id="officerOtherServices" class="select2" data-placeholder="<%= lang.actions.selectServices %>" data-multiple="true"
 
-									<% if(!_.isNull(officer.getId())){
-										if(!_.isEmpty(officer.getServices())) { %>
-											data-selected-value='<%= JSON.stringify(officer.getServices('json')) %>'
+									<% if(!_.isNull(user.getId())){
+										if(!_.isEmpty(user.getServices())) { %>
+											data-selected-value='<%= JSON.stringify(user.getServices('json')) %>'
 									<% } } %>
 
 									>
@@ -157,7 +165,7 @@
 									<label for="officerCost" class="control-label col-sm-3"><%= _.capitalize(lang.hourPrice) %>:</label>
 									<div class="col-sm-4">
 										<div class="input-group">
-											<input  id="officerCost"type="number" step="any" min="0" class="form-control" value="<%= (_.isNull(officer.getId()) ? '' : officer.getCost()) %>">
+											<input  id="officerCost"type="number" step="any" min="0" class="form-control" value="<%= (_.isNull(user.getId()) ? '' : user.getCost()) %>">
 											<span class="input-group-addon"><i class="fa fa-eur"></i></span>
 										</div>
 									</div>
@@ -177,9 +185,9 @@
 									<div class="col-sm-9">
 										<input id="officerGroup" class="select2" data-placeholder="<%= lang.actions.selectAGroup %>"
 
-										<% if(!_.isNull(officer.getId())){
-											if(!_.isUndefined(officer.getGroupSTC('id'))) { %>
-											data-selected-value='<%= JSON.stringify(officer.getGroupSTC('json')) %>'
+										<% if(!_.isNull(user.getId())){
+											if(!_.isUndefined(user.getGroupSTC('id'))) { %>
+											data-selected-value='<%= JSON.stringify(user.getGroupSTC('json')) %>'
 										<% } } %>
 
 										>
@@ -193,9 +201,9 @@
 									<div class="col-sm-9">
 										<input id="resaGroup" class="select2" data-placeholder="<%= lang.actions.selectAGroup %>"
 
-										<% if(!_.isNull(officer.getId())){
-											if(!_.isUndefined(officer.getGroupResa('id'))) { %>
-											data-selected-value='<%= JSON.stringify(officer.getGroupResa('json')) %>'
+										<% if(!_.isNull(user.getId())){
+											if(!_.isUndefined(user.getGroupResa('id'))) { %>
+											data-selected-value='<%= JSON.stringify(user.getGroupResa('json')) %>'
 										<% } } %>
 
 										>

@@ -34,7 +34,7 @@ define([
 		events: function(){
 			return _.defaults({
 				'submit #formSaveOfficer'                       : 'saveOfficer',
-				'switchChange.bootstrapSwitch #officerFunction' : 'switchOfficerFunction',
+				'switchChange.bootstrapSwitch #officerFunction' : 'switchUserFunction',
 			},
 				GenericModalView.prototype.events
 			);
@@ -84,10 +84,11 @@ define([
 
 
 				var template = _.template(templateData, {
-					lang    : app.lang,
-					officer : self.model,
-					loader  : loader,
-					service : (!_.isUndefined(self.options.officersListView) ? self.options.officersListView.options.model : '')
+					lang      : app.lang,
+					user      : self.model,
+					UserStatus: UserModel.prototype.status,
+					loader    : loader,
+					service   : (!_.isUndefined(self.options.officersListView) ? self.options.officersListView.options.model : '')
 				});
 
 
@@ -123,6 +124,9 @@ define([
 
 
 					$('.make-switch').bootstrapSwitch();
+
+					// Make section appear or not //
+					self.switchUserFunction();
 				}
 
 				self.modal.modal('show');
@@ -158,6 +162,13 @@ define([
 				}
 			}
 
+
+			// User status //
+			var status = UserModel.prototype.status.officer;
+			if(!$('#officerFunction').bootstrapSwitch('state')){
+				status = UserModel.prototype.status.electedMember;
+			}
+
 			var params = {
 				firstname   : $('#officerFirstname').val(),
 				name        : $('#officerName').val(),
@@ -165,7 +176,7 @@ define([
 				groups_id   : [[6, 0, groups]],
 				service_id  : app.views.advancedSelectBoxOfficerServiceView.getSelectedItem(),
 				cost		: $('#officerCost').val(),
-				status      : 'elected-member'
+				status      : status
 			};
 
 			if(!_.isEmpty(app.views.advancedSelectBoxOfficerServicesView.getSelectedItems())){
@@ -205,9 +216,9 @@ define([
 
 
 
-		/** When the function of the user is changed
+		/** When the status of the user is changed
 		*/
-		switchOfficerFunction: function(){
+		switchUserFunction: function(){
 
 			if(!$('#officerFunction').bootstrapSwitch('state')){
 				$(this.el).find('.officer-section').slideUp();

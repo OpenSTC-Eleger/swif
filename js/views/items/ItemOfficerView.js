@@ -8,11 +8,11 @@ define([
 	'app',
 	'appHelpers',
 
-	'officerModel',
+	'userModel',
 	'modalOfficerView',
 	'modalDeleteView'
 
-], function(app, AppHelpers,OfficerModel, ModalOfficerView,ModalDeleteView){
+], function(app, AppHelpers, UserModel, ModalOfficerView,ModalDeleteView){
 
 	'use strict';
 
@@ -58,7 +58,7 @@ define([
 
 			this.render();
 			AppHelpers.highlight($(this.el));
-			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.officerUpdateOk);
+			app.notify('', 'success', app.lang.infoMessages.information, this.model.getName()+' : '+app.lang.infoMessages.userUpdateOk);
 		},
 
 
@@ -72,7 +72,7 @@ define([
 				self.remove();
 			});
 
-			app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.officerDeleteOk);
+			app.notify('', 'success', app.lang.infoMessages.information, e.getCompleteName()+' : '+app.lang.infoMessages.userDeleteOk);
 
 		},
 
@@ -87,14 +87,15 @@ define([
 			$.get(this.templateHTML, function(templateData){
 
 				var template = _.template(templateData, {
-					lang    : app.lang,
-					officer : self.model
+					lang      : app.lang,
+					user      : self.model,
+					UserStatus: UserModel.prototype.status
 				});
 
 				$(self.el).html(template);
 
 				// Set the Tooltip //
-				$('*[data-toggle="tooltip"]').tooltip();
+				$('*[data-toggle="tooltip"]').tooltip({ delay: { show: 300, hide: 0 }});
 			});
 
 			return this;
