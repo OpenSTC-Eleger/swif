@@ -64,7 +64,8 @@
 			"refuse"				: "Refus de la commande",
 			"done"					: "indiquer la commande comme payée (clôture l'achat)",
 			"send_mail"				: "Envoi de la commande au fournisseur",
-			"send_mail_again"		: "Ré-envoi de la commande au fournisseur"
+			"send_mail_again"		: "Ré-envoi de la commande au fournisseur",
+			"receive"				: "Réception d'articles"
 		},
 
 		"modalBudget": {

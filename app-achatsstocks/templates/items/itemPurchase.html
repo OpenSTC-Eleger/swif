@@ -35,10 +35,10 @@ data-content="<%= purchase.printAttachInfos()%> <i><%= _.capitalize(lang.achatss
 
 <td>
 <% if(stateItem.widget && stateItem.widget == 'progress' && purchase.getAttribute('shipped_rate',0.0) > 0.0){ %>
-<div class="progress" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.achatsstocks.percentagePicking) + ': ' + purchase.getAttribute('shipped_rate',0.0).toString() %>%">
+<div class="progress" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.achatsstocks.percentagePicking) + ': ' + _.toNumber(purchase.getAttribute('shipped_rate',0.0).toString(),2) %>%">
 	<div class="progress-bar progress-bar-default"
-		 style="width: <%= purchase.getAttribute('shipped_rate',0.0) %>%">
-		<span><%= purchase.getAttribute('shipped_rate',0.0) %> %</span>
+		 style="width: <%= _.toNumber(purchase.getAttribute('shipped_rate',0.0),2) %>%">
+		<span><%= _.toNumber(purchase.getAttribute('shipped_rate',0.0),2) %> %</span>
 	</div>
 </div>
 

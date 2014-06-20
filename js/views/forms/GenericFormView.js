@@ -263,8 +263,16 @@ define(['app',
 		/** View Initialization
 		*/
 		initialize : function() {
+			this.attached_views = {};
 			this.options = arguments[0];
-			this.parentModel = this.options.parentModel;
+			
+			this.templateHTML = this.templateHTML || this.options.templateHTML;
+			this.modelName = this.modelName || this.options.modelName;
+			this.collectionName = this.collectionName || this.options.collectionName;
+			this.parentModel = this.parentModel || this.options.parentModel;
+			this.autoRender = this.options.autoRender || false;
+			this.menu = this.options.menu || '';
+			
 			var self = this;
 			this.advancedSelectBoxes = {};
 			this.formFieldParser = {
@@ -292,6 +300,7 @@ define(['app',
 					return select.getSelectedItems();
 				},
 			};
+						
 			return this.initModel().done(function(){
 				self.listenTo(self.model, 'change', self.modelChanged);
 				if(!self.options.notMainView){
@@ -302,31 +311,66 @@ define(['app',
 				}
 			});
 		},
-
+		
 		/** Display the view
 		*/
 		render: function() {
-
 			var self = this;
-			self.renderFormComponents().always(function(){
-				self.renderAdvancedSelectBoxes();
-				self.updateDoms();
-				$(self.el).find('.make-switch').bootstrapSwitch();
-				$(self.el).find('.input-daterange, input.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
-				$(self.el).find('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: true, modalBackdrop: false});
-				$('fieldset[disabled] .invisibleOnReadonly').addClass('hide-soft');
-				$('fieldset[disabled] .removeOnReadonly').remove();
-				$('fieldset[disabled] .select2').select2('enable',false);
+			var deferred = $.Deferred();
+			if(this.autoRender){
+				// Retrieve the template //
+				$.get(this.menu + this.templateHTML, function(templateData){
+					//compute dates with user TZ
+
+					var template = _.template(templateData, {
+						lang		: app.lang,
+						readonly	: false,
+						moment		: moment,
+						user		: app.current_user,
+						model		: self.model
+					});
+
+					$(self.el).html(template);
+					deferred.resolve();
+				});
+			}
+			else{
+				deferred.resolve();	
+			}
+			
+			return deferred.then(function(){
+				return self.renderFormComponents().always(function(){
+					self.renderAdvancedSelectBoxes();
+					self.updateDoms();
+					$(self.el).find('.make-switch').bootstrapSwitch();
+					$(self.el).find('.input-daterange, input.datepicker').datepicker({ format: 'dd/mm/yyyy',	weekStart: 1, autoclose: true, language: 'fr' });
+					$(self.el).find('.timepicker-default').timepicker({ showMeridian: false, disableFocus: true, showInputs: true, modalBackdrop: false});
+					$('fieldset[disabled] .invisibleOnReadonly').addClass('hide-soft');
+					$('fieldset[disabled] .removeOnReadonly').remove();
+					$('fieldset[disabled] .select2').select2('enable',false);
+				});
 			});
 		},
-
+		
 		/**
 		 * Save data into backend, use special behavior of method 'saveToBackebnd' to work fine with OpenERP
+		 * When all saves are done (current model and optionnals children models), 'save' event is triggered (saved() method already catch this event on this view) 
 		 */
-
 		saveForm: function(e){
 			e.preventDefault();
-			return this.model.saveToBackend().fail(function(e){
+			var self = this;
+			return this.model.saveToBackend().then(function(){
+				var deferredArray = [];
+				_.each(self.attached_views, function(views, field){
+					_.each(views, function(view){
+						view.model.set(field, self.model.getId());
+						deferredArray.push(view.saveForm(e));
+					});
+				});
+				return $.when.apply($,deferredArray).done(function(){
+					self.trigger('saved',self);
+				});
+			}).fail(function(e){
 				console.log(e);
 			});
 		},

@@ -38,7 +38,7 @@ define([
 		 * use 'priority' variable to apply the priority of the main action (first index is the higher priority)
 		 */
 		getUserMainAction: function(){
-			var priority = ['confirm','refuse', 'done', 'send_mail', 'receive', 'refuse'];
+			var priority = ['confirm','refuse', 'done', 'send_mail', 'receive', 'send_mail_again', 'refuse'];
 			var ret = '';
 			for(var i=0;i < priority.length;i++){
 				if(this.hasAction(priority[i])){
