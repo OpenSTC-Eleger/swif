@@ -20,7 +20,7 @@ define([
 	var ClaimerServiceModel = GenericModel.extend({
 
 
-		fields       : ['id', 'name', 'code', 'manager_id', 'elected_member_id', 'service_id', 'technical', 'user_ids', 'actions'],
+		fields       : ['id', 'name', 'code', 'manager_id', 'elected_member_id', 'service_id', 'technical', 'user_ids', 'buying_threshold', 'actions'],
 
 		urlRoot      : '/api/openstc/departments',
 
@@ -142,6 +142,11 @@ define([
 
 		getActions: function(){
 			return this.get('actions');
+		},
+
+
+		getBuyingThreshold: function(){
+			return _.numberFormat(this.get('buying_threshold'), 2, '.', ' ');
 		},
 
 
