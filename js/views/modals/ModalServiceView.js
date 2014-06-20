@@ -10,12 +10,13 @@ define([
 	'claimersServicesCollection',
 	'claimerServiceModel',
 	'officersCollection',
+	'electedMembersCollection',
 
 	'genericModalView',
 	'advancedSelectBoxView',
 	'bsSwitch'
 
-], function(app, AppHelpers, ClaimersServicesCollection, ClaimerServiceModel, OfficersCollection, GenericModalView, AdvancedSelectBoxView){
+], function(app, AppHelpers, ClaimersServicesCollection, ClaimerServiceModel, OfficersCollection, ElectedMembersCollection, GenericModalView, AdvancedSelectBoxView){
 
 	'use strict';
 
@@ -92,15 +93,22 @@ define([
 				self.modal.html(template);
 
 				if(!loader){
-					// Advance Select List View //
-					app.views.advancedSelectBoxManagerView = new AdvancedSelectBoxView({el: $('#serviceManager'), url: OfficersCollection.prototype.url });
-					app.views.advancedSelectBoxManagerView.render();
-
 					app.views.advancedSelectBoxServiceParentView = new AdvancedSelectBoxView({el: $('#serviceParentService'), url: ClaimersServicesCollection.prototype.url });
 					app.views.advancedSelectBoxServiceParentView.render();
 
-					app.views.advancedSelectBoxServiceElectedView = new AdvancedSelectBoxView({el: $('#serviceElected'), url: OfficersCollection.prototype.url });
-					app.views.advancedSelectBoxServiceElectedView.render();
+
+
+					var searchParams = {field:'service_id.id', operator:'=', value: self.model.getId()};
+
+					// Referent Manager //
+					app.views.advancedSelectBoxManagerView = new AdvancedSelectBoxView({el: $('#serviceManager'), url: OfficersCollection.prototype.url });
+					app.views.advancedSelectBoxManagerView.setSearchParam(searchParams, true);
+					app.views.advancedSelectBoxManagerView.render();
+
+					// Referent electedMember //
+					app.views.advancedSelectBoxServiceElectedMemberView = new AdvancedSelectBoxView({el: $('#serviceElected'), url: ElectedMembersCollection.prototype.url });
+					app.views.advancedSelectBoxServiceElectedMemberView.setSearchParam(searchParams, true);
+					app.views.advancedSelectBoxServiceElectedMemberView.render();
 
 					$('.make-switch').bootstrapSwitch();
 				}
@@ -126,11 +134,12 @@ define([
 
 			// Set the properties of the model //
 			var params = {
-				name     : $('#serviceName').val(),
-				code     : $('#serviceCode').val().toUpperCase(),
-				technical: $('#switchTechnicalService').bootstrapSwitch('state'),
-				manager_id : app.views.advancedSelectBoxManagerView.getSelectedItem(),
-				service_id : app.views.advancedSelectBoxServiceParentView.getSelectedItem()
+				name              : $('#serviceName').val(),
+				code              : $('#serviceCode').val().toUpperCase(),
+				technical         : $('#switchTechnicalService').bootstrapSwitch('state'),
+				service_id        : app.views.advancedSelectBoxServiceParentView.getSelectedItem(),
+				manager_id        : app.views.advancedSelectBoxManagerView.getSelectedItem(),
+				elected_member_id : app.views.advancedSelectBoxServiceElectedMemberView.getSelectedItem()
 			};
 
 			this.model.unset('user_ids', { silent: true });

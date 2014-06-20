@@ -62,7 +62,7 @@ define([
 			AppHelpers.highlight($(itemOfficerView.el));
 			$('div.alert-info').fadeOut();
 
-			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.officerCreateOk);
+			app.notify('', 'success', app.lang.infoMessages.information, model.getName()+' : '+app.lang.infoMessages.userCreateOk);
 		},
 
 

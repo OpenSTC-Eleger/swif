@@ -22,7 +22,7 @@ define([
 
 		url          : '/api/openstc/departments',
 
-		fields       : ['id', 'name', 'code', 'service_id', 'technical', 'manager_id', 'user_ids', 'actions'],
+		fields       : ['id', 'name', 'code', 'service_id', 'technical', 'manager_id', 'elected_member_id', 'user_ids', 'actions'],
 
 		default_sort : { by: 'name', order: 'ASC' },
 

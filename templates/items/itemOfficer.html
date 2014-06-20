@@ -1,14 +1,20 @@
 <td>
-	<i class="fa fa-user">&nbsp;&nbsp;</i><%= officer.getCompleteName() %>
+
+	<% if(user.getStatus() == UserStatus.officer) { %>
+		<i class="fa fa-user" data-toggle="tooltip" data-original-title="<%= lang.agent %>">&nbsp;&nbsp;</i>
+	<% } else if(user.getStatus() == UserStatus.electedMember) { %>
+		<i class="fa fa-university" data-toggle="tooltip" data-original-title="<%= lang.elected %>">&nbsp;&nbsp;</i>
+	<% } %>
+	<%= user.getCompleteName() %>
 
 	<p class="row-actions invisible">
-		<% if(_.contains(officer.getActions(), 'update')){ %>
+		<% if(_.contains(user.getActions(), 'update')){ %>
 		<a href="#"  class="modalUpdateOfficer">
 			<i class="fa fa-pencil fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.update) %>"></i>
 		</a>&nbsp;
 		<% } %>
 
-		<% if(_.contains(officer.getActions(), 'delete')){ %>
+		<% if(_.contains(user.getActions(), 'delete')){ %>
 		<a href="#" class="modalDeleteOfficer">
 			<i class="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title="<%= _.capitalize(lang.actions.delete) %>"></i>
 		</a>
@@ -17,13 +23,13 @@
 </td>
 
 <!-- Login -->
-<td><%= officer.getLogin() %></td>
+<td><%= user.getLogin() %></td>
 
 <!-- Groupe -->
-<td><%= officer.getSentenceGroups() %></td>
+<td><%= user.getSentenceGroups() %></td>
 
 <!-- Email -->
-<td><a href="mailto:<%= officer.getEmail() %>"><%= officer.getEmail() %></a></td>
+<td><a href="mailto:<%= user.getEmail() %>"><%= user.getEmail() %></a></td>
 
 <!-- Last Connexion -->
-<td><%= officer.getLastConnection() %></td>
+<td><span data-toggle="tooltip" data-original-title="<%= user.getLastConnectionFromNow() %>"><%= user.getLastConnection() %></span></td>

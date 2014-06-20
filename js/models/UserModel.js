@@ -22,7 +22,7 @@ define([
 
 		urlRoot : '/api/open_object/users',
 
-		fields: ['complete_name', 'contact_id', 'context_lang', 'context_tz', 'date', 'firstname', 'groups_id', 'current_group', 'openresa_group', 'id', 'isDST', 'isManager', 'isResaManager', 'lastname', 'login', 'name', 'phone', 'service_id', 'service_names', 'tasks', 'team_ids', 'user_email', 'actions', 'cost'],
+		fields: ['complete_name', 'contact_id', 'status', 'context_lang', 'context_tz', 'date', 'firstname', 'groups_id', 'current_group', 'openresa_group', 'id', 'isDST', 'isManager', 'isResaManager', 'lastname', 'login', 'name', 'phone', 'service_id', 'service_names', 'tasks', 'team_ids', 'user_email', 'actions', 'cost'],
 
 
 		defaults:{
@@ -37,6 +37,11 @@ define([
 			{ key: 'complete_name', type: 'text' },
 			{ key: 'login', type: 'text' }
 		],
+
+		status: {
+			officer: 'agent',
+			electedMember: 'elected-member'
+		},
 
 
 		// Officer firstname //
@@ -72,6 +77,12 @@ define([
 			this.set({ login : value });
 		},
 
+
+		getStatus: function() {
+			return this.get('status');
+		},
+
+
 		// Officer password //
 		setPassword : function(value) {
 			this.set({ new_password : value });
@@ -104,6 +115,15 @@ define([
 
 			return date;
 		},
+		getLastConnectionFromNow: function() {
+			var date = '';
+			if(this.get('date')) {
+				date =  moment(this.get('date')).fromNow();
+			}
+
+			return date;
+		},
+
 
 		// Group Name //
 		setGroupSTC : function(value) {

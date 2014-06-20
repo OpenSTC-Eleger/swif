@@ -81,7 +81,7 @@
 				<!-- is Technical Service -->
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="switchTechnicalService"><%= _.capitalize(lang.technicalService) %>:</label>
-					
+
 					<div class="col-sm-9">
 						<input type="checkbox" class="make-switch" id="switchTechnicalService" data-on-text="<%= lang.yes %>" data-off-text="<%= lang.no %>" tabindex="0"
 							<% if(!_.isNull(service.getId())){ if(service.isTechnical()) { %> checked <% } } %>
@@ -89,6 +89,8 @@
 					</div>
 				</div>
 
+
+				<!-- Referent people -->
 				<fieldset>
 					<legend><%= lang.referentPeoples %></legend>
 
@@ -115,19 +117,20 @@
 					<div class="col-sm-9">
 						<input id="serviceElected" class="select2" data-placeholder="<%= lang.actions.selectAnElected %>"
 
-							<% if(!_.isNull(service.getId())){ %>
-								
-								
-							<% } %>
+							<% if(!_.isNull(service.getId())){
+								if(!_.isUndefined(service.getElectedMember('id'))) { %>
+								data-selected-value='<%= JSON.stringify(service.getElectedMember('json')) %>'
+							<% } } %>
 						>
 					</div>
 				</div>
 
-				</fieldset>
+				</fieldset><!-- /Referent people -->
 
 			</fieldset>
 
 
+			<!-- Module settings -->
 			<fieldset id="moduleSettings" class="tab-pane fade">
 
 
@@ -140,7 +143,7 @@
 
 				<div class="tab-content"> <!-- Tab content -->
 
-					
+
 					<div id="moduleBuying" class="tab-pane fade in active <%= (hasModuleAchat ? '' : 'hide') %>"> <!-- Tab Module Buying -->
 
 						<!-- Service buying threshold -->
@@ -175,13 +178,13 @@
 							</div>
 						</div>
 
-					</div> <!-- /Tab Module Buying -->
+					</div><!-- /Tab Module Buying -->
 
-				</div> <!-- /Tab content -->
+				</div><!-- /Tab content -->
 
-			</fieldset>
+			</fieldset><!-- /Module settings -->
 
-			</div>
+			</div><!-- /tab-content -->
 		</form>
 		<% } %>
 	</div> <!-- /Modal Body -->
