@@ -18,8 +18,8 @@ define([
 		
 		url: function(){
 			var ret = this.restUrl;
-			if(this.nestedModel && !this.nestedModel.isNew()){
-				ret = ret.replace(':purchase_id', this.nestedModel.getId().toString());
+			if(this.parentModel && !this.parentModel.isNew()){
+				ret = ret.replace(':purchase_id', this.parentModel.getId().toString());
 			}
 			return ret;
 		},
@@ -32,7 +32,7 @@ define([
 		
 		initialize: function(){
 			var params = arguments[0] || {};
-			this.nestedModel = params.nestedModel || null;
+			this.parentModel = params.parentModel || null;
 		}
 	});
 });

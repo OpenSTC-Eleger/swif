@@ -14,15 +14,17 @@ define([
 	
 		model : PartialPickingLineModel,
 		
-		restUrl   : '/api/open_achats_stock/partial_pickings/:partial_picking_id/partial_picking_lines',
+		//restUrl   : '/api/open_achats_stock/partial_pickings/:partial_picking_id/partial_picking_lines',
 		
-		url: function(){
-			var ret = this.restUrl;
-			if(this.nestedModel && !this.nestedModel.isNew()){
-				ret = ret.replace(':partial_picking_id', this.nestedModel.getId().toString());
-			}
-			return ret;
-		},
+//		url: function(){
+//			var ret = this.restUrl;
+//			if(this.parentModel && !this.parentModel.isNew()){
+//				ret = ret.replace(':partial_picking_id', this.parentModel.getId().toString());
+//			}
+//			return ret;
+//		},
+		
+		url: '/api/open_achats_stock/partial_picking_lines',
 
 		fields: ['id', 'product_id', 'quantity'],
 
@@ -33,7 +35,7 @@ define([
 		
 		initialize: function(){
 			var params = arguments[0] || {};
-			this.nestedModel = params.nestedModel || null;
+			this.parentModel = params.parentModel || null;
 		}
 	});
 });
