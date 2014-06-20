@@ -33,7 +33,7 @@ define(['app',
 			return _.defaults({
 				'show.bs.modal'					: 'show',
 				'shown.bs.modal'				: 'shown',
-				//'hidde.bs.modal'				: 'hide',
+				'hide.bs.modal' 				: 'hide',
 				'hidden.bs.modal'				: 'hidden',
 				'submit #formModalSaveModel'	: 'save',
 				'click [data-action="zenmode"]': 'toggleZenmode'
@@ -47,7 +47,13 @@ define(['app',
 		show: function(){
 			this.delegateEvents();
 		},
-
+		
+		/** Trigger when the modal begin to hide
+		*/
+		hide: function(){
+			$('.modal-backdrop').removeClass('zenmode');
+		},
+		
 		/** Trigger when the modal is hidden
 		*/
 		hidden: function(){
@@ -133,17 +139,26 @@ define(['app',
 			return this;
 		},
 		
+		saved: function(){
+			return $.Deferred().resolve();
+		},
+		
 		save: function(e){
 			var self = this;
 			e.preventDefault();
+			$(this.el).find('button[type=submit]').button('loading');
 			var addToCollection = this.model.isNew();
-			this.model.saveToBackend().done(function(){
+			return GenericFormView.prototype.saveForm.apply(this,[e]).done(function(){
+			//this.model.saveToBackend().done(function(){
 				self.sourceModel.fetch().done(function(){
 					if(addToCollection){
 						self.model.collection.add(self.model);
 					}
 				});
-				self.modal.modal('hide');
+				self.saved().done(function(){
+					$(self.el).find('button[type=submit]').button('reset');
+					self.modal.modal('hide');
+				});
 			});
 		},
 		/** Toggle fullscreen mode
