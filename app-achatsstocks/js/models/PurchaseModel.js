@@ -136,7 +136,7 @@ define([
 
 		printStateTooltip: function(){
 			var ret = '';
-			if(this.getAttribute('state','draft') == 'wait'){
+			if(_.contains(['wait','cancel'], this.getAttribute('state','draft'))){
 				ret = this.printValidationInfos();
 			}
 			return ret;
@@ -189,6 +189,12 @@ define([
 				key					: 'done',
 				color				: 'default',
 				translation			: app.lang.purchasePaid
+			},
+			
+			cancel: {
+				key					: 'cancel',
+				color				: 'danger',
+				translation			: app.lang.refused
 			},
 		},
 
