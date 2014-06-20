@@ -132,14 +132,16 @@ define([
 			$(this.el).find('button[type=submit]').button('loading');
 
 
+
 			// Set the properties of the model //
 			var params = {
-				name              : $('#serviceName').val(),
-				code              : $('#serviceCode').val().toUpperCase(),
-				technical         : $('#switchTechnicalService').bootstrapSwitch('state'),
-				service_id        : app.views.advancedSelectBoxServiceParentView.getSelectedItem(),
-				manager_id        : app.views.advancedSelectBoxManagerView.getSelectedItem(),
-				elected_member_id : app.views.advancedSelectBoxServiceElectedMemberView.getSelectedItem()
+				name               : $('#serviceName').val(),
+				code               : $('#serviceCode').val().toUpperCase(),
+				technical          : $('#switchTechnicalService').bootstrapSwitch('state'),
+				service_id         : app.views.advancedSelectBoxServiceParentView.getSelectedItem(),
+				manager_id         : app.views.advancedSelectBoxManagerView.getSelectedItem(),
+				elected_member_id  : app.views.advancedSelectBoxServiceElectedMemberView.getSelectedItem(),
+				buying_threshold   : _.toNumber($('#serviceBuyingThreshold').val(), 2)
 			};
 
 			this.model.unset('user_ids', { silent: true });
