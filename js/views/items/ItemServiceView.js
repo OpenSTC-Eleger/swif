@@ -121,8 +121,6 @@ define([
 			e.preventDefault();
 			e.stopPropagation();
 
-			console.log('Update du service');
-
 			app.views.modalServiceView = new ModalServiceView({
 				el      : '#modalSaveService',
 				model   : this.model,

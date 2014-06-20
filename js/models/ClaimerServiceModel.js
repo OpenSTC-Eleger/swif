@@ -20,7 +20,7 @@ define([
 	var ClaimerServiceModel = GenericModel.extend({
 
 
-		fields       : ['id', 'name', 'code', 'manager_id', 'service_id', 'technical', 'user_ids', 'actions'],
+		fields       : ['id', 'name', 'code', 'manager_id', 'elected_member_id', 'service_id', 'technical', 'user_ids', 'actions'],
 
 		urlRoot      : '/api/openstc/departments',
 
@@ -102,6 +102,37 @@ define([
 
 			return returnVal;
 		},
+
+
+		getElectedMember: function(type) {
+
+			var id, name = '';
+
+			// Check if the place have a parent place //
+			if(this.get('elected_member_id')){
+				id = this.get('elected_member_id')[0];
+				name = _.titleize(this.get('elected_member_id')[1].toLowerCase());
+			}
+
+			var returnVal;
+
+			switch (type){
+				case 'id':
+					returnVal = id;
+					break;
+				case 'all':
+					returnVal = this.get('manager_id');
+					break;
+				case 'json':
+					returnVal = {id: id, name: name};
+					break;
+				default:
+					returnVal = name;
+			}
+
+			return returnVal;
+		},
+
 
 
 		getUsersId: function(){
