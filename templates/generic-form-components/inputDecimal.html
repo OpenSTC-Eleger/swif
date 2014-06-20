@@ -1,5 +1,7 @@
+<% if(field.fieldLabel){ %>
 <label for="<%= field.fieldName %>" class="control-label col-sm-3"><%= _.capitalize(field.fieldLabel) %>:</label>
-<div class="col-sm-4">
+<% } %>
+<div class="<%= field.fieldLength ? field.fieldLength : 'col-sm-4' %>">
 <% if(field.fieldAddon){ %>
 	<div class="input-group">
 <% } %>
