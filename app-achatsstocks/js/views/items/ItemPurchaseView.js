@@ -13,14 +13,13 @@ define([
 	
 	'genericItemView',
 	'modalDeleteView',
-//	'genericFormModalView',
 	'genericActionModalView',
-	'genericFormModalView',
+	'modalReceivePurchaseView',
 	'purchaseFormView',
 	'moment'
 
 
-], function(app, AppHelpers, PurchaseModel, PurchasesCollection, PartialPickingsCollection, GenericItemView, ModalDeleteView, GenericActionModalView, GenericFormModalView, PurchaseFormView){
+], function(app, AppHelpers, PurchaseModel, PurchasesCollection, PartialPickingsCollection, GenericItemView, ModalDeleteView, GenericActionModalView, ModalReceivePurchaseView, PurchaseFormView){
 
 	'use strict';
 
@@ -175,13 +174,17 @@ define([
 		},
 		
 		modalReceive: function(){
-			var partialPickingsCollection = new PartialPickingsCollection({nestedModel:this.model});
+			var self = this;
+			var partialPickingsCollection = new PartialPickingsCollection({parentModel:this.model});
 			partialPickingsCollection.fetch().done(function(){
-				new GenericFormModalView({
+				var view = new ModalReceivePurchaseView({
 					el			:'#modalView',
 					model		:partialPickingsCollection.at(0),
 					title		:app.lang.achatsstocks.modalPurchase.receive,
-					templateForm:app.menus.openstcachatstock + this.templateReceiveHTML
+					templateForm:app.menus.openstcachatstock + self.templateReceiveHTML
+				});
+				self.listenTo(view, 'shipped', function(){
+					self.model.fetch();
 				});
 			});
 		},

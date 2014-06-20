@@ -53,7 +53,8 @@ requirejs.config({
 
 		// View Modals //
 		modalBudgetView               : '../app-achatsstocks/js/views/modals/ModalBudgetView',
-		modalBudgetLineView           : '../app-achatsstocks/js/views/modals/ModalBudgetLineView'
+		modalBudgetLineView           : '../app-achatsstocks/js/views/modals/ModalBudgetLineView',
+		modalReceivePurchaseView      : '../app-achatsstocks/js/views/modals/ModalReceivePurchaseView'
 	}
 
 });
