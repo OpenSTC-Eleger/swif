@@ -36,7 +36,7 @@ define(['app',
 		*/
 		initialize : function() {
 			this.modal = $(this.el);
-			this.title = '';
+			this.title = app.lang.achatsstocks.modalPurchase.receive;
 			var params = {
 				collectionName: PartialPickingsCollection,
 				modelName     : PartialPickingModel,
