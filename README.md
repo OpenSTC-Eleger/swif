@@ -1,4 +1,3 @@
-OpenSTC By Siclic http://www.siclic.fr
 
 Install Grunt
 =============
